@@ -30,32 +30,9 @@ namespace N2
 			return Context.Current.Query<T>();
 		}
 
-		public static class NH
+		public static SessionContext NH
 		{
-			public static ISession Session()
-			{
-				return Context.Current.Resolve<ISessionProvider>().OpenSession.Session;
-			}
-
-			public static ICriteria Criteria<T>() where T : class
-			{
-				return Session().CreateCriteria<T>();
-			}
-
-			public static IMultiCriteria MultiCriteria<T>()
-			{
-				return Session().CreateMultiCriteria();
-			}
-
-			public static IQuery Query(string queryString)
-			{
-				return Session().CreateQuery(queryString);
-			}
-
-			public static IMultiQuery MultiQuery()
-			{
-				return Session().CreateMultiQuery();
-			}
+			get { return Context.Current.Resolve<ISessionProvider>().OpenSession; }
 		}
 	}
 }

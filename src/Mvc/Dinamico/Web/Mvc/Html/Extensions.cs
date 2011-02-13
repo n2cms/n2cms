@@ -35,15 +35,28 @@ namespace N2.Web.Mvc.Html
 		{
 			return context.HttpContext.GetTheme();
 		}
+
 		internal static string GetTheme(this HttpContextBase context)
 		{
 			return context.Request[ThemeKey] 
 				?? context.Items[ThemeKey] as string 
 				?? "Default";
 		}
+
 		public static void SetTheme(this ControllerContext context, string theme)
 		{
 			context.HttpContext.Items[ThemeKey] = theme;
+		}
+
+		public static void InitTheme(this ControllerContext context)
+		{
+			var page = context.RequestContext.CurrentPage<ContentItem>() ?? N2.Find.StartPage;
+
+			var start = Find.Closest<IThemeable>(page);
+			if (start == null)
+				return;
+
+			context.SetTheme(start.Theme);
 		}
 	}
 }

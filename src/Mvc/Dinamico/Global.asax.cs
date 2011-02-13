@@ -19,7 +19,6 @@ namespace Dinamico
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
 			filters.Add(new HandleErrorAttribute());
-			filters.Add(new HandleThemeAttribute());
 		}
 
 		public static void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
@@ -42,7 +41,7 @@ namespace Dinamico
 			routes.MapRoute(
 				"Default", // Route name
 				"{controller}/{action}/{*id}", // URL with parameters
-				new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+				new { action = "Index", id = UrlParameter.Optional } // Parameter defaults
 			);
 		}
 

@@ -26,6 +26,7 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 		{
+			controllerContext.InitTheme();
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
 			return engine.FindView(controllerContext, viewName, masterName, useCache);

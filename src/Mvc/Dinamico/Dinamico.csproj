@@ -86,6 +86,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DynamicPartsController.cs" />
     <Compile Include="Controllers\DynamicPagesController.cs" />
     <Compile Include="Controllers\StartPageController.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
-    <Compile Include="Web\Mvc\HandleThemeAttribute.cs" />
     <Compile Include="Web\Mvc\Html\DisplayHelperExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using N2.Engine;
 
 namespace Dinamico.Models
 {
@@ -87,6 +88,7 @@ namespace Dinamico.Models
 		bool ChangePassword(string userName, string oldPassword, string newPassword);
 	}
 
+	[Service(typeof(IMembershipService))]
 	public class AccountMembershipService : IMembershipService
 	{
 		private readonly MembershipProvider _provider;
@@ -158,6 +160,7 @@ namespace Dinamico.Models
 		void SignOut();
 	}
 
+	[Service(typeof(IFormsAuthenticationService))]
 	public class FormsAuthenticationService : IFormsAuthenticationService
 	{
 		public void SignIn(string userName, bool createPersistentCookie)

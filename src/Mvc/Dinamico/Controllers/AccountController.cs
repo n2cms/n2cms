@@ -7,23 +7,20 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using Designerific.Models;
+using Dinamico.Models;
 
-namespace Designerific.Controllers
+namespace RazorTest.Controllers
 {
 	public class AccountController : Controller
 	{
+		public AccountController(IFormsAuthenticationService formsService, IMembershipService membershipService)
+		{
+			FormsService = formsService;
+			MembershipService = membershipService;
+		}
 
 		public IFormsAuthenticationService FormsService { get; set; }
 		public IMembershipService MembershipService { get; set; }
-
-		protected override void Initialize(RequestContext requestContext)
-		{
-			if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-			if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
-
-			base.Initialize(requestContext);
-		}
 
 		// **************************************
 		// URL: /Account/LogOn
@@ -48,7 +45,7 @@ namespace Designerific.Controllers
 					}
 					else
 					{
-						return RedirectToAction("Index", "Home");
+						return Redirect(N2.Find.StartPage.Url);
 					}
 				}
 				else
@@ -69,7 +66,7 @@ namespace Designerific.Controllers
 		{
 			FormsService.SignOut();
 
-			return RedirectToAction("Index", "Home");
+			return Redirect(N2.Find.StartPage.Url);
 		}
 
 		// **************************************
@@ -93,7 +90,7 @@ namespace Designerific.Controllers
 				if (createStatus == MembershipCreateStatus.Success)
 				{
 					FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
-					return RedirectToAction("Index", "Home");
+					return Redirect(N2.Find.StartPage.Url);
 				}
 				else
 				{

@@ -16,16 +16,17 @@ body
 a:link
 {
     color: #034af3;
-    text-decoration: underline;
+    text-decoration: none;
 }
 a:visited
 {
     color: #505abc;
+    text-decoration: none;
 }
 a:hover
 {
     color: #1d60ff;
-    text-decoration: none;
+    text-decoration: underline;
 }
 a:active
 {
@@ -293,14 +294,26 @@ div#title
     display:block;
     text-align:right;
     margin:10px;
-    color:White;
+    color:#ccc;
     position:relative;
 }
 
 #topnav a:link,
 #topnav a:visited
 {
-    color: white;
+    color:#eee;
+    margin-right:10px;
+}
+
+#logon.anonymous a
+{
+	padding-left:20px;
+	background:transparent url(/N2/Resources/icons/lock.png) no-repeat;
+}
+#logon.authenticated a
+{
+	padding-left:20px;
+	background:transparent url(/N2/Resources/icons/lock_open.png) no-repeat;
 }
 
 #searchform
@@ -317,11 +330,11 @@ div#title
 		padding:1px;
 		border:none;
 		vertical-align:middle;
-		color:#333;
+		color:#ccc;
 	}
 	#searchform input:focus
 	{
-		color:#000;
+		color:#fff;
 	}
 
 	#searchform button

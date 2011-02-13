@@ -11,6 +11,9 @@ using N2.Integrity;
 using System.Diagnostics;
 using N2.Engine;
 using System.Threading;
+using N2.Persistence.NH;
+using NHibernate;
+using NHibernate.Search;
 
 namespace N2
 {
@@ -515,5 +518,34 @@ namespace N2
 			else
 				return N2.Context.Current;
 		}
+
+		// NH Extensions
+
+		public static ICriteria Criteria<T>(this SessionContext sc) where T : class
+		{
+			return sc.Session.CreateCriteria<T>();
+		}
+
+		public static IMultiCriteria MultiCriteria<T>(this SessionContext sc)
+		{
+			return sc.Session.CreateMultiCriteria();
+		}
+
+		public static IQuery Query(this SessionContext sc, string queryString)
+		{
+			return sc.Session.CreateQuery(queryString);
+		}
+
+		public static IMultiQuery MultiQuery(this SessionContext sc)
+		{
+			return sc.Session.CreateMultiQuery();
+		}
+
+		public static IFullTextQuery FullText(this SessionContext sc, string text)
+		{
+			var s = NHibernate.Search.Search.CreateFullTextSession(sc.Session);
+			return s.CreateFullTextQuery<ContentItem>(string.Format("Title:({0}) or Details.StringValue:({0})", text));
+		}
+		
 	}
 }

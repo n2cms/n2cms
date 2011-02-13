@@ -292,6 +292,8 @@ namespace N2.Web.Mvc
 			bool useAreas = innerRoute.DataTokens.ContainsKey("area");
 			if (useAreas)
 				values[AreaKey] = areaPlaceHolder;
+			if (values.ContainsKey(ContentItemKey))
+				values.Remove(ContentItemKey);
 
 			VirtualPathData vpd = innerRoute.GetVirtualPath(requestContext, values);
 			if (vpd == null)
