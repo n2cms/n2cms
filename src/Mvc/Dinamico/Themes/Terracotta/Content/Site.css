@@ -9,3 +9,7 @@ body
 	{
 		background-color:#bc5420;
 	}
+	#searchform input:focus
+	{
+		background-color:#cc7440;
+	}
