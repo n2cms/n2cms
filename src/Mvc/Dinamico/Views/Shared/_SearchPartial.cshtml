@@ -1,7 +1,7 @@
 ﻿
 @{using (Html.BeginForm("Search", null, new { item = Content.StartPage }, FormMethod.Get, new { id = "searchform" }))
   {
-	<input name="q" />
+	<input name="q" value="Search"/>
 	<button type="submit"></button>
   }
 }
@@ -14,6 +14,10 @@
 			$("#searchresults").remove();
 			$(document).unbind("click", close);
 		}
+		$("#searchform input")
+			.each(function () { this.title = this.value; })
+			.focus(function () { if (this.value === this.title) this.value = ""; })
+			.blur(function () { if (this.value === "") this.value = this.title; });
 		$("#searchform").submit(function (e) {
 			e.preventDefault();
 			var data = $(this).serialize();
@@ -30,8 +34,17 @@
 			$(document).click(close);
 		});
 		if (location.hash.match("^#q=")) {
-			$("#searchform input").attr("value", location.hash.substr(3));
+			var text = location.hash.substr(3).replace(/[+]/g, " ");
+
+			$("#searchform input").attr("value", text);
 			$("#searchform").submit();
+
+			$("<script type='text/javascript' />").attr("src", "/Scripts/jquery.highlight-3.js").appendTo($("head"));
+			setTimeout(function () {
+				var splits = text.split(" ");
+				for(var i in splits)
+					$("#main *").highlight(splits[i]);
+			}, 1);
 		}
 	});
 //]]></script>

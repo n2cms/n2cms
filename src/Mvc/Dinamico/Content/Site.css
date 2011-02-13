@@ -317,6 +317,11 @@ div#title
 		padding:1px;
 		border:none;
 		vertical-align:middle;
+		color:#333;
+	}
+	#searchform input:focus
+	{
+		color:#000;
 	}
 
 	#searchform button
@@ -448,4 +453,8 @@ div#title
 
 #search
 {
+}
+.highlight
+{
+	background-color:Yellow;
 }

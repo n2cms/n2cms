@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery.highlight-3.js" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
     <Content Include="Themes\Terracotta\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Site.css" />

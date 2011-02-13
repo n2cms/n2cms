@@ -46,11 +46,13 @@ namespace Dinamico.Controllers
 			//    .Filters(new AccessFilter());
 			//var hits = query.Select().Select(i => i.IsPage ? i : i.ClosestPage()).Distinct();
 			var s = NHibernate.Search.Search.CreateFullTextSession(Find.NH.Session());
+
+			
 			//var bq = new Lucene.Net.Search.BooleanQuery();
 			//bq.Add(new Lucene.Net.Search.TermQuery(new Lucene.Net.Index.Term("Title", q)), Lucene.Net.Search.BooleanClause.Occur.SHOULD);
 			//bq.Add(new Lucene.Net.Search.TermQuery(new Lucene.Net.Index.Term("Details.StringValue", q)), Lucene.Net.Search.BooleanClause.Occur.SHOULD);
-			//.CreateFullTextQuery(bq).List<ContentItem>();
-			var hits = s.CreateFullTextQuery<ContentItem>(string.Format("Title:{0} or Details.StringValue:{0}", q))
+			//var hits = s.CreateFullTextQuery(bq)
+			var hits = s.CreateFullTextQuery<ContentItem>(string.Format("Title:({0}) or Details.StringValue:({0})", q))
 				.SetMaxResults(50)
 				.Enumerable<ContentItem>()
 				.Select(h => h.IsPage ? h : h.ClosestPage())
@@ -61,6 +63,7 @@ namespace Dinamico.Controllers
 			{
 				results.Append("<li>").Append(Link.To(hit)).Append("</li>");
 			}
+			
 			if (results.Length == 0)
 				return Content("<li>No hits</li>");
 
