@@ -114,6 +114,29 @@
 									<xs:attribute name="cacheProfile" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="resources" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="vpp" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="zips" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="add" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="virtualPath" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="rootID" type="xs:integer" use="optional" />
 						<xs:attribute name="startPageID" type="xs:integer" use="optional" />
@@ -144,7 +167,14 @@
 							</xs:element>
 							<xs:element name="errors" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="action" type="xs:string" use="optional" />
+									<xs:attribute name="action" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="None"/>
+												<xs:enumeration value="Email"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 									<xs:attribute name="mailTo" type="xs:string" use="optional" />
 									<xs:attribute name="mailFrom" type="xs:string" use="optional" />
 									<xs:attribute name="maxErrorReportsPerHour" type="xs:integer" use="optional" />

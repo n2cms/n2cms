@@ -75,6 +75,23 @@ namespace N2.Configuration
 		public OutputCacheElement OutputCache
 		{
 			get { return (OutputCacheElement)base["outputCache"]; }
+			set { base["outputCache"] = value; }
+		}
+
+		/// <summary>Web resource related config options.</summary>
+		[ConfigurationProperty("resources")]
+		public ResourcesElement Resources
+		{
+			get { return (ResourcesElement)base["resources"]; }
+			set { base["resources"] = value; }
+		}
+
+		/// <summary>Virtual path provider related config options.</summary>
+		[ConfigurationProperty("vpp")]
+		public VppElement Vpp
+		{
+			get { return (VppElement)base["vpp"]; }
+			set { base["vpp"] = value; }
 		}
 	}
 }

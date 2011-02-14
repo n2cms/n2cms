@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.IO;
 using System.Collections.Generic;
 using N2.Web;
+using System.Text.RegularExpressions;
+using System.IO.Compression;
 
 namespace N2.Edit.Js
 {
@@ -23,41 +26,73 @@ namespace N2.Edit.Js
 		{
 			this.Context = context;
 
-			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context)))
+			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
 			{
 				CacheUtility.NotModified(context.Response);
 			}
 
 			context.Response.ContentType = this.ContentType;
-			context.Response.Buffer = false;
 			SetCache(context);
+			var response = context.Response;
 
-			foreach (string file in GetFiles(context))
+			if (!Resources.Register.Debug)
 			{
-#if DEBUG
-				context.Response.Write(Environment.NewLine
-					+ Environment.NewLine
-					+ "/*** " + Path.GetFileName(file) + " ***/"
-					+ Environment.NewLine
-					+ Environment.NewLine);
-#else
-				context.Response.Write(Environment.NewLine + Environment.NewLine);
-#endif
+				if (context.Request.Headers["Accept-Encoding"].Contains("gzip"))
+				{
+					response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+					response.AppendHeader("Content-Encoding", "gzip");
+				}
+				else if (context.Request.Headers["Accept-Encoding"].Contains("deflate"))
+				{
+					response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+					response.AppendHeader("Content-Encoding", "deflate");
+				}
+			}
 
-				context.Response.Write(this.ReadFileContent(file));
+			foreach (var file in GetFiles(context))
+			{
+				if (Resources.Register.Debug)
+				{
+					response.Write(Environment.NewLine
+						+ Environment.NewLine
+						+ "/*** " + file.Name + " ***/"
+						+ Environment.NewLine);
+				}
+				response.Write(Environment.NewLine);
+
+				bool commenting = false;
+				foreach (var line in ReadLines(file))
+				{
+					string trimmed = line.Trim(' ', '\t');
+					response.Write(trimmed);
+					response.Write(Environment.NewLine);
+				}
 			}
 		}
 
-		protected virtual IEnumerable<string> GetFiles(HttpContext context)
+		private IEnumerable<string> ReadLines(VirtualFile file)
 		{
-			string dir = context.Server.MapPath(FolderUrl);
-			List<string> _files = new List<string>();
-			
-			foreach(string _mask in this.FileMasks) {
-				_files.AddRange(Directory.GetFiles(dir, _mask));
+			using(var s = file.Open())
+			using (var sr = new StreamReader(s))
+			{
+				while(sr.Peek() >= 0)
+				{
+					yield return sr.ReadLine();
+				}
 			}
-			
-			return _files.AsReadOnly();
+		}
+
+		protected virtual IEnumerable<VirtualFile> GetFiles(HttpContext context)
+		{
+			var vpp = HostingEnvironment.VirtualPathProvider;
+			if(vpp.DirectoryExists(FolderUrl))
+			{
+				foreach (VirtualFile file in vpp.GetDirectory(FolderUrl).Files)
+				{
+					if(FileMasks.Any(m => Regex.IsMatch(file.Name, m.Replace(".", "[.]").Replace("*", ".*") + "$")))
+						yield return file;
+				}
+			}
 		}
 		
 		protected virtual void SetCache(HttpContext context)

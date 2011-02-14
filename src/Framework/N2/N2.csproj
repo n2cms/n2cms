@@ -82,6 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\..\..\lib\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\log4net.dll</HintPath>
@@ -147,7 +150,11 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
+    <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
+    <Compile Include="Configuration\VppElement.cs" />
+    <Compile Include="Configuration\ZipVppElement.cs" />
+    <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ICommentable.cs" />
     <Compile Include="Definitions\IContentPage.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
@@ -205,6 +212,7 @@
     <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Persistence\DescendantItemFinder.cs" />
+    <Compile Include="Resources\ResourceInitializer.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
@@ -212,6 +220,13 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\Hosting\Util.cs" />
+    <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />
+    <Compile Include="Web\Hosting\ZipFileVirtualPathProvider.cs" />
+    <Compile Include="Web\Hosting\ZipVirtualDirectory.cs" />
+    <Compile Include="Web\Hosting\ZipVirtualFile.cs" />
+    <Compile Include="Web\Hosting\ZipVirtualPathCollection.cs" />
+    <Compile Include="Web\Hosting\ZipVppInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />

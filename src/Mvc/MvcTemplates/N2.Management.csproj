@@ -80,8 +80,8 @@
     <Content Include="N2\Login.aspx" />
     <Content Include="N2\Content\Move.aspx" />
     <Content Include="N2\Content\New.aspx" />
-    <Content Include="N2\Resources\Js\jquery-1.4.4.js" />
-    <Content Include="N2\Resources\Js\jquery-1.4.4.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.5.js" />
+    <Content Include="N2\Resources\Js\jquery-1.5.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
@@ -757,7 +757,6 @@
     <Content Include="N2\Resources\img\tabs_base.gif" />
     <Content Include="N2\Resources\img\tabs_begin.gif" />
     <Content Include="N2\Resources\img\tab_end.gif" />
-    <Content Include="N2\Resources\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
     <Content Include="N2\Resources\Js\parts.js" />
     <Content Include="N2\Users\Css\Membership.css" />
     <Content Include="N2\Users\Edit.aspx" />

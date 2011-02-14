@@ -95,6 +95,18 @@ namespace N2.Configuration
 			set { base["deleteItemUrl"] = value; }
 		}
 
+		/// <summary>
+		/// The ASP.NET Theme to use for the Edit directory
+		/// </summary>
+		[ConfigurationProperty("theme")]
+		public string EditTheme
+		{
+			get { return (string)base["theme"]; }
+			set { base["theme"] = value; }
+		}
+
+
+
 		[ConfigurationProperty("tinyMCE")]
 		public TinyMCEElement TinyMCE
 		{
@@ -124,16 +136,6 @@ namespace N2.Configuration
 			set { base["defaultDirectory"] = value; }
 		}
 
-		/// <summary>
-		/// The ASP.NET Theme to use for the Edit directory
-		/// </summary>
-		[ConfigurationProperty("theme")]
-		public string EditTheme
-		{
-			get { return (string)base["theme"]; }
-			set { base["theme"] = value; }
-		}
-
 		/// <summary>Information about versioning.</summary>
 		[ConfigurationProperty("versions")]
 		public VersionsElement Versions
@@ -156,15 +158,6 @@ namespace N2.Configuration
 		{
 			get { return (MembershipElement)base["membership"]; }
 			set { base["membership"] = value; }
-		}
-
-		// deprecated
-
-		[Obsolete("Use Versions.Enabled instead"), ConfigurationProperty("enableVersioning", DefaultValue = true)]
-		public bool EnableVersioning
-		{
-			get { return Versions.Enabled; }
-			set { Versions.Enabled = true; }
 		}
 	}
 }

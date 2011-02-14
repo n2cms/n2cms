@@ -49,7 +49,7 @@
 	window.onNavigating = function (options) {
 		if (options.force)
 			return;
-		$("a[data-path=" + options.path + "]", this.document).each(function () {
+		$("a[#" + options.path.replace(/\//g, "_") + "]", this.document).each(function () {
 			$(this).trigger("click");
 			options.showNavigation = function () { };
 		});

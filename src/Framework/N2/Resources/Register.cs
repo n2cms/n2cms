@@ -15,7 +15,8 @@ namespace N2.Resources
 	/// </summary>
 	public static class Register
 	{
-		public const string JQueryVersion = "1.4.4";
+		public static bool Debug { get; set; }
+		public const string JQueryVersion = "1.5";
 
 		#region page StyleSheet
 
@@ -218,11 +219,9 @@ namespace N2.Resources
 
 		public static string JQueryPath()
 		{
-#if DEBUG
-			return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js");
-#else
+			if (Debug)
+				return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js");
 			return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js");
-#endif
 		}
 
 		private static Script GetScriptHolder(Page page)
