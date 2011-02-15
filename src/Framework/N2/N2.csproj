@@ -87,10 +87,6 @@
       <HintPath>..\..\..\lib\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Lucene.Net, Version=2.9.2.2, Culture=neutral, PublicKeyToken=f5940d1699e37ff1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
@@ -103,7 +99,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Search">
+    <Reference Include="NHibernate.Search, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.Search.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Data.Linq, Version=1.13.41.2, Culture=neutral, PublicKeyToken=cab60358ab4081ea, processorArchitecture=MSIL">
@@ -203,6 +200,7 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Persistence\IPersister.cs" />
+    <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\PersistentContentItemListOfT.cs" />

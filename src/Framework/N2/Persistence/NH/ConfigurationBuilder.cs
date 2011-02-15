@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Lucene.Net.Analysis.Standard;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
@@ -18,7 +17,6 @@ using NHibernate.Bytecode;
 using NHibernate.Proxy;
 using NHibernate.ByteCode.Castle;
 using Castle.DynamicProxy;
-using Lucene.Net.Analysis;
 
 namespace N2.Persistence.NH
 {
@@ -29,12 +27,12 @@ namespace N2.Persistence.NH
 	[Service]
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
-		private ClassMappingGenerator generator;
-
-		bool tryLocatingHbmResources = false;
-		readonly IDefinitionManager definitions;
-		readonly IWebContext webContext;
-		IDictionary<string, string> properties = new Dictionary<string, string>();
+		private readonly ClassMappingGenerator generator;
+		private readonly IDefinitionManager definitions;
+		private readonly IWebContext webContext;
+		private readonly ConfigurationBuilderParticipator[] participators;
+	
+		IDictionary<string, string> properties = new Dictionary<string, string>();		
 		IList<Assembly> assemblies = new List<Assembly>();
 		IList<string> mappingNames = new List<string>();
 		string defaultMapping = "N2.Persistence.NH.Mappings.Default.hbm.xml,N2";
@@ -45,14 +43,15 @@ namespace N2.Persistence.NH
 		string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
 		string mappingEndTag = "</hibernate-mapping>";
-		bool searchEnabled = true;
-
+		bool tryLocatingHbmResources = false;
+		
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, IWebContext webContext, DatabaseSection config, ConnectionStringsSection connectionStrings)
+		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, IWebContext webContext, ConfigurationBuilderParticipator[] participators, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
 			this.generator = generator;
 			this.webContext = webContext;
+			this.participators = participators;
 
 			if (config == null) config = new DatabaseSection();
 
@@ -66,7 +65,6 @@ namespace N2.Persistence.NH
 			tablePrefix = config.TablePrefix;
 			batchSize = config.BatchSize;
 			childrenLaziness = config.ChildrenLaziness;
-			searchEnabled = config.Search.Enabled;
 		}
 
 		private void SetupMappings(DatabaseSection config)
@@ -94,14 +92,6 @@ namespace N2.Persistence.NH
 			SetupFlavourProperties(config, connectionStrings);
 
 			SetupCacheProperties(config);
-
-			// search
-
-			Properties["hibernate.search.default.directory_provider"] = typeof(NHibernate.Search.Store.FSDirectoryProvider).AssemblyQualifiedName;
-			Properties["hibernate.search.default.indexBase"] = webContext.MapPath(config.Search.IndexPath);
-			Properties["hibernate.search.default.indexBase.create"] = "true";
-			Properties[NHibernate.Search.Environment.AnalyzerClass] = typeof(SimpleAnalyzer).AssemblyQualifiedName;
-			Properties[NHibernate.Search.Environment.WorkerExecution] = config.Search.AsyncIndexing ? "async" : "sync";
 
 			// custom config properties
 
@@ -252,28 +242,21 @@ namespace N2.Persistence.NH
 		{
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
 
-
 			//NHibernate.Cfg.Environment.Isolation
-			//Properties[NHibernate.Cfg.Environment.PropertyBytecodeProvider
 			AddProperties(cfg);
-			AddSearchEvents(cfg);
 			AddDefaultMapping(cfg);
 			AddMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
+			InvokeParticipators(cfg);
 
 			return cfg;
 		}
 
-		private void AddSearchEvents(NHibernate.Cfg.Configuration cfg)
+		private void InvokeParticipators(NHibernate.Cfg.Configuration cfg)
 		{
-			if (!searchEnabled)
-				return;
-
-			var indexListener = new NHibernate.Search.Event.FullTextIndexEventListener();
-			cfg.SetListener(NHibernate.Event.ListenerType.PostInsert, indexListener);
-			cfg.SetListener(NHibernate.Event.ListenerType.PostUpdate, indexListener);
-			cfg.SetListener(NHibernate.Event.ListenerType.PostDelete, indexListener);
+			foreach (var participator in participators)
+				participator.AlterConfiguration(cfg);
 		}
 
 		protected virtual void AddDefaultMapping(NHibernate.Cfg.Configuration cfg)
