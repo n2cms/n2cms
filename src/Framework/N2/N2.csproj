@@ -82,9 +82,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>..\..\..\lib\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\log4net.dll</HintPath>
@@ -220,13 +217,6 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
-    <Compile Include="Web\Hosting\Util.cs" />
-    <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />
-    <Compile Include="Web\Hosting\ZipFileVirtualPathProvider.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualDirectory.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualFile.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualPathCollection.cs" />
-    <Compile Include="Web\Hosting\ZipVppInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
