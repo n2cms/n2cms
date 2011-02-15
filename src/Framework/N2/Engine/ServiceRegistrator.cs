@@ -3,6 +3,7 @@ using System.Linq;
 using N2.Plugin;
 using Castle.Core;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace N2.Engine
 {

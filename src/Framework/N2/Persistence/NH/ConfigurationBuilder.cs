@@ -18,6 +18,7 @@ using NHibernate.Bytecode;
 using NHibernate.Proxy;
 using NHibernate.ByteCode.Castle;
 using Castle.DynamicProxy;
+using Lucene.Net.Analysis;
 
 namespace N2.Persistence.NH
 {
@@ -99,7 +100,7 @@ namespace N2.Persistence.NH
 			Properties["hibernate.search.default.directory_provider"] = typeof(NHibernate.Search.Store.FSDirectoryProvider).AssemblyQualifiedName;
 			Properties["hibernate.search.default.indexBase"] = webContext.MapPath(config.Search.IndexPath);
 			Properties["hibernate.search.default.indexBase.create"] = "true";
-			Properties[NHibernate.Search.Environment.AnalyzerClass] = typeof(StandardAnalyzer).AssemblyQualifiedName;
+			Properties[NHibernate.Search.Environment.AnalyzerClass] = typeof(SimpleAnalyzer).AssemblyQualifiedName;
 			Properties[NHibernate.Search.Environment.WorkerExecution] = config.Search.AsyncIndexing ? "async" : "sync";
 
 			// custom config properties
@@ -263,56 +264,6 @@ namespace N2.Persistence.NH
 
 			return cfg;
 		}
-
-		//class PFF : IProxyFactoryFactory
-		//{
-		//    #region IProxyFactoryFactory Members
-
-		//    public NHibernate.Proxy.IProxyFactory BuildProxyFactory()
-		//    {
-		//        return new PF();
-		//    }
-
-		//    public bool IsInstrumented(Type entityClass)
-		//    {
-		//        return true;
-		//    }
-
-		//    public NHibernate.Proxy.IProxyValidator ProxyValidator
-		//    {
-		//        get { return new PV(); }
-		//    }
-
-		//    #endregion
-		//}
-
-		//class PF : AbstractProxyFactory
-		//{
-		//    private readonly ProxyGenerator generator = new ProxyGenerator();
-		//    N2.Persistence.Proxying.DetailPropertyInterceptorFactory dpif = new N2.Persistence.Proxying.DetailPropertyInterceptorFactory();
-		//    private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(N2.Persistence.Proxying.IInterceptedType), typeof(N2.Persistence.Proxying.IInterceptableType) };
-						
-		//    public override INHibernateProxy GetProxy(object id, NHibernate.Engine.ISessionImplementor session)
-		//    {
-		//        var initializer = new LazyInitializer(EntityName, PersistentClass, id, GetIdentifierMethod, SetIdentifierMethod, ComponentIdType, session);
-		//        var interceptor = dpif.Create(PersistentClass);
-
-		//        var interceptors = (interceptor == null) ? new Castle.DynamicProxy.IInterceptor[] { initializer } : new Castle.DynamicProxy.IInterceptor[] { initializer, interceptor };
-
-		//        object generatedProxy = IsClassProxy
-		//                                    ? generator.CreateClassProxy(PersistentClass, Interfaces.Union(additionalInterfacesToProxy).ToArray(), interceptors)
-		//                                    : generator.CreateInterfaceProxyWithoutTarget(Interfaces[0], Interfaces.Union(additionalInterfacesToProxy).ToArray(), interceptors);
-
-		//        initializer._constructed = true;
-		//        return (INHibernateProxy)generatedProxy;
-
-		//    }
-		//}
-
-		//class PV : DynProxyTypeValidator
-		//{
-		//}
-
 
 		private void AddSearchEvents(NHibernate.Cfg.Configuration cfg)
 		{

@@ -39,6 +39,7 @@ namespace Dinamico.Controllers
 
 			var hits = s.SetMaxResults(50)
 				.Enumerable<ContentItem>()
+				.Where(h => h != null)
 				.Select(h => h.IsPage ? h : h.ClosestPage())
 				.Where(N2.Filters.Duplicates().Match)
 				.Where(N2.Filters.Access().Match)

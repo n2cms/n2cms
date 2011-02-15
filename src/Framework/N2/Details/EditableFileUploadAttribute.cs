@@ -14,7 +14,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows to upload or select a file to use.
 	/// </summary>
-	public class EditableFileUploadAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
+	public class EditableFileUploadAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;

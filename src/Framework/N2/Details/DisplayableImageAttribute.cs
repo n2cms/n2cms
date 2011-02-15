@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace N2.Details
 {
-	public class DisplayableImageAttribute : AbstractDisplayableAttribute, IWritingDisplayable
+	public class DisplayableImageAttribute : AbstractDisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
 		private string alt = string.Empty;
 

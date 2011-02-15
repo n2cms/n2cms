@@ -4,7 +4,7 @@ using N2.Web.UI.WebControls;
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a literal used for presentation.</summary>
-	public class DisplayableHeadingAttribute : DisplayableAttribute, IWritingDisplayable
+	public class DisplayableHeadingAttribute : DisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
 		public DisplayableHeadingAttribute(int headingLevel) : base (typeof(Hn), "Text")
 		{

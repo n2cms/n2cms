@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 namespace N2.Details
 {
 	/// <summary>An editable checkbox attribute. Besides creating a checkbox it also uses the checkbox's text property to display text.</summary>
-	public class EditableCheckBoxAttribute : EditableAttribute, IWritingDisplayable
+	public class EditableCheckBoxAttribute : EditableAttribute, IWritingDisplayable, IDisplayable
 	{
 		private string checkBoxText;
 

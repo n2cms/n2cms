@@ -14,7 +14,7 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
+	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		private UrlSelectorMode openingMode = UrlSelectorMode.Items;
 		private UrlSelectorMode availableModes = UrlSelectorMode.All;

@@ -19,7 +19,7 @@ namespace N2.Details
 	/// 		set { SetDetail("FeedRoot", value); }
 	///		}
 	/// </example>
-	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
+	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		public EditableLinkAttribute()
 			: this(null, 100)
