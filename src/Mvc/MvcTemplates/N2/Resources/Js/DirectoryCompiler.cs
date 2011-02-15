@@ -35,7 +35,8 @@ namespace N2.Edit.Js
 			SetCache(context);
 			var response = context.Response;
 
-			if (!Resources.Register.Debug)
+			bool debug = Resources.Register.Debug;
+			if (!debug)
 			{
 				if (context.Request.Headers["Accept-Encoding"].Contains("gzip"))
 				{
@@ -51,7 +52,7 @@ namespace N2.Edit.Js
 
 			foreach (var file in GetFiles(context))
 			{
-				if (Resources.Register.Debug)
+				if (debug)
 				{
 					response.Write(Environment.NewLine
 						+ Environment.NewLine
@@ -60,12 +61,19 @@ namespace N2.Edit.Js
 				}
 				response.Write(Environment.NewLine);
 
-				bool commenting = false;
 				foreach (var line in ReadLines(file))
 				{
-					string trimmed = line.Trim(' ', '\t');
-					response.Write(trimmed);
-					response.Write(Environment.NewLine);
+					if (debug)
+						response.Write(line);
+					else
+					{
+						string trimmed = line.Trim(' ', '\t');
+						if (trimmed.Length > 0 && !trimmed.StartsWith("//"))
+						{
+							response.Write(trimmed);
+							response.Write(Environment.NewLine);
+						}
+					}
 				}
 			}
 		}
