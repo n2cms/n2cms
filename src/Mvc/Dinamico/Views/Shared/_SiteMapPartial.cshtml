@@ -1,29 +1,3 @@
 ﻿<span id="sitemap">
 	@Html.ActionLink("Site map", Content.StartPage, "SiteMap", null, new { id = "sitemapopener" })
 </span>
-<script type="text/javascript">//<![CDATA[
-	$(document).ready(function () {
-		var hash = "#sm";
-		function close(e) {
-			if ($(e.target).closest("#sitemap").is("*"))
-				return;
-			$("#sitemapresults").remove();
-			$(document).unbind("click", close);
-		}
-		$("#sitemapopener").click(function (e) {
-			e.preventDefault();
-			$("<ul id='sitemapresults'><li class='loading'>Loading...</li></ul>").appendTo("#sitemap")
-				.load(this.href, null, function () {
-					var here = location.href.replace(/#.*/, "");
-					$("a", this).each(function (i) {
-						if (i === 0) this.focus();
-						if (this.href === here) this.focus();
-						this.href += hash;
-					});
-				});
-			$(document).click(close);
-		});
-		if (location.hash === hash)
-			$("#sitemapopener").click();
-	});
-//]]></script>

@@ -4,6 +4,7 @@
 	<title>@Content.Data.Title</title>
 	<link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	@{ Html.Resources().JQuery(); }
+	@{ Html.Resources().JavaScript("~/Scripts/site.js"); }
 	@{
 		Content.PrependDefinition(re => 
 			{
