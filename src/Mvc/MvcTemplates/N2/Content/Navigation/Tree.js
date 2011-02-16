@@ -2,14 +2,14 @@
 	var dragMemory = null;
 	var onDrop = function (e, ui) {
 		var action = e.ctrlKey ? "copy" : "move";
-		var to = this.rel;
+		var to = $(this).attr("data-path");
 		var from = dragMemory;
 		parent.preview.location = "../paste.aspx?action=" + action
 								+ "&memory=" + encodeURIComponent(from)
 								+ "&selected=" + encodeURIComponent(to);
 	};
 	var onStart = function (e, ui) {
-		dragMemory = this.rel;
+		dragMemory = this.attr("data-path");
 	};
 
 	var toDraggable = function (container) {

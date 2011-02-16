@@ -9,7 +9,7 @@
 		var targetSelector = "a[target=preview]";
 		var handler = function (e) {
 			$(e.target).closest(targetSelector).each(function (e) {
-				n2nav.setupToolbar(this.rel);
+				n2nav.setupToolbar($(this).attr("data-path"));
 			});
 		};
 		jQuery(document).ready(function () {
