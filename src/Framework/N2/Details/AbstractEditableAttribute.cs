@@ -18,7 +18,7 @@ namespace N2.Details
 	/// class implements properties, provides comparison and equality but does
 	/// not add any controls.
 	/// </summary>
-	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
+	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
 	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty
 	{
 		private string[] authorizedRoles;
@@ -336,6 +336,11 @@ namespace N2.Details
 		public override int GetHashCode()
 		{
 			return Name.GetHashCode();
+		}
+
+		private string TypeName
+		{
+			get { return GetType().Name; }
 		}
 
 		#endregion

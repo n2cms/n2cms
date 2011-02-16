@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -79,6 +80,22 @@ namespace N2.Details
 			object value = item[propertyName];
 			if (value != null)
 				writer.Write("<h1>" + value + "</h1>");
+		}
+
+		#endregion
+
+		#region IDisplayable Members
+
+		public override Control AddTo(ContentItem item, string detailName, Control container)
+		{
+			var value = item[detailName];
+			if (value != null)
+			{
+				var heading = new Hn { Level = item.IsPage ? 1 : 2, Text = value.ToString() };
+				container.Controls.Add(heading);
+				return heading;
+			}
+			return null;
 		}
 
 		#endregion

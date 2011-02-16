@@ -539,13 +539,6 @@ namespace N2
 		public static IMultiQuery MultiQuery(this SessionContext sc)
 		{
 			return sc.Session.CreateMultiQuery();
-		}
-
-		public static IFullTextQuery FullText(this SessionContext sc, string text)
-		{
-			var s = NHibernate.Search.Search.CreateFullTextSession(sc.Session);
-			return s.CreateFullTextQuery<ContentItem>(string.Format("Title:({0}) or Details.StringValue:({0})", text));
-		}
-		
+		}		
 	}
 }

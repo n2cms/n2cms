@@ -10,15 +10,17 @@ namespace N2.Definitions.Dynamic
 	{
 		public DefinitionRegistrationExpression()
 		{
-			Containables = new List<IUniquelyNamed>();
+			Containables = new Dictionary<string, IUniquelyNamed>();
+			DefaultSortIncrement = 10;
 		}
 
 
 
-		public IList<IUniquelyNamed> Containables { get; private set; }
+		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
 		public string ContainerName { get; set; }
 		public int CurrentSortOrder { get; set; }
-		public int SortOffset { get; set; }
+		public int GlobalSortOffset { get; set; }
+		public int DefaultSortIncrement { get; set; }
 		public Type ItemType { get; set; }
 		public bool Ignore { get; set; }
 		public string Discriminator { get; set; }
@@ -28,62 +30,35 @@ namespace N2.Definitions.Dynamic
 
 
 
-		public DefinitionRegistrationExpression AddContainable<T>(T containable) where T : IContainable
+		public DefinitionRegistrationExpression Add(IContainable containable)
 		{
-			Containables.Add(containable);
+			Containables[containable.Name] = containable;
 			containable.ContainerName = ContainerName;
 
 			return this;
 		}
 
-		public DefinitionRegistrationExpression AddContainable<T>(T containable, Action<T> config) where T : IContainable
+		public DefinitionRegistrationExpression Add(IEditable editable, string title)
 		{
-			AddContainable(containable);
-
-			if (config != null) config(containable);
-
-			return this;
-		}
-
-		public DefinitionRegistrationExpression AddDisplayable<T>(T containable) where T : IDisplayable
-		{
-			Containables.Add(containable);
-
-			return this;
-		}
-
-		public DefinitionRegistrationExpression AddDisplayable<T>(T containable, Action<T> config) where T : IDisplayable
-		{
-			AddDisplayable(containable);
-
-			if (config != null) config(containable);
-
-			return this;
-		}
-
-		public DefinitionRegistrationExpression AddEditable<T>(T editable, string title, Action<T> config) where T : IEditable
-		{
-			AddContainable(editable, null);
 			editable.Title = title;
 			editable.SortOrder = NextSortOrder(null);
-			if (config != null) config(editable);
+			Add(editable);
 
 			return this;
 		}
 
-		public DefinitionRegistrationExpression AddEditable<T>(T editable, string name, string title, Action<T> config) where T : IEditable
+		public DefinitionRegistrationExpression Add(IEditable editable, string name, string title)
 		{
-			AddEditable(editable, title ?? name, null);
 			editable.Name = name;
-			if (config != null) config(editable);
+			Add(editable, title ?? name);
 
 			return this;
 		}
 
 		public int NextSortOrder(int? proposedSortOrder)
 		{
-			CurrentSortOrder = proposedSortOrder ?? ++CurrentSortOrder;
-			return CurrentSortOrder + SortOffset;
+			CurrentSortOrder = proposedSortOrder ?? (CurrentSortOrder + DefaultSortIncrement);
+			return CurrentSortOrder;
 		}
 
 		public ItemDefinition CreateDefinition(Definitions.Static.DefinitionTable definitions)
@@ -97,9 +72,14 @@ namespace N2.Definitions.Dynamic
 			id.Template = Template;
 
 			foreach (var c in Containables)
-				id.Add(c);
+				id.Add(c.Value);
 
 			return id;
+		}
+
+		public void Configure<T>(string propertyName, Action<T> configurationExpression)
+		{
+			configurationExpression((T)Containables[propertyName]);
 		}
 	}
 }

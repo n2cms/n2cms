@@ -50,21 +50,12 @@ namespace N2.Tests
 
 		protected virtual void CreateDatabaseSchema()
 		{
-#if NH2_1
 			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
-#else
-			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
-#endif
 		}
 
 		protected virtual void DropDatabaseSchema()
 		{
-#if NH2_1
 			schemaCreator.Execute(false, true, true, sessionProvider.OpenSession.Session.Connection, null);
-#else
-			schemaCreator.Execute(false, true, true, false, sessionProvider.OpenSession.Session.Connection, null);
-#endif
-			
 		}
 	}
 }

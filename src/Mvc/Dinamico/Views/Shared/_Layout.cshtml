@@ -31,16 +31,16 @@
 			</div>
 		</div>
 		<div id="main">
-			@if (IsSectionDefined("Main"))
-   {
-	   RenderSection("Main");
-   }
-   else
-   {
+	@if (IsSectionDefined("Main"))
+	{
+			RenderSection("Main");
+	}
+	else
+	{
 			@Html.Partial("_SubNavigationPartial")
 			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
 			<div id="content">@RenderBody()</div>
-			}
+	}
 			<div id="footer"></div>
 		</div>
 	</div>

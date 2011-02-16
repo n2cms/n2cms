@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
@@ -11,5 +12,13 @@ namespace N2.Persistence.NH
 	public abstract class ConfigurationBuilderParticipator
 	{
 		public abstract void AlterConfiguration(NHibernate.Cfg.Configuration cfg);
+	}
+
+	[Service(typeof(ConfigurationBuilderParticipator))]
+	public class EmptyConfigurationBuilderParticipator : ConfigurationBuilderParticipator
+	{
+		public override void AlterConfiguration(NHibernate.Cfg.Configuration cfg)
+		{
+		}
 	}
 }

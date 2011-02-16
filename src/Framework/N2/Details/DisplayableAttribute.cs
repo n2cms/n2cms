@@ -5,7 +5,6 @@ using System.Diagnostics;
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a control used for presentation.</summary>
-	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
     public class DisplayableAttribute : AbstractDisplayableAttribute
 	{
 		public DisplayableAttribute(Type controlType, string controlPropertyName)

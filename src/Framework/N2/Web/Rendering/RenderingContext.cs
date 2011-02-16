@@ -10,6 +10,5 @@ namespace N2.Web.Rendering
 		public ContentItem Content { get; set; }
 		public string PropertyName { get; set; }
 		public IDisplayable Displayable { get; set; }
-		public TextWriter Writer { get; set; }
 	}
 }

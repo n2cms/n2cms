@@ -88,11 +88,7 @@ namespace N2.Edit.Installation
 		public void ExportSchema(TextWriter output)
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-#if NH2_1
 			exporter.Execute(ConsoleOutput, NoDatabaseExport, false, null, output);
-#else
-			exporter.Execute(ConsoleOutput, NoDatabaseExport, false, true, null, output);
-#endif
 		}
 
 		public string ExportSchema()

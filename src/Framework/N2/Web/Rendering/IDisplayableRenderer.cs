@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace N2.Web.Rendering
 {
@@ -6,7 +7,7 @@ namespace N2.Web.Rendering
 	{
 		Type HandledDisplayableType { get; }
 
-		void Render(RenderingContext context);
+		void Render(RenderingContext context, TextWriter writer);
 	}
 
 }

@@ -24,20 +24,25 @@ namespace N2.Tests
     {
         public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
+			var participators = new ConfigurationBuilderParticipator[0];
+			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
+			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
+			Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, context, config, participators, itemTypes);
+        }
+
+		public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, IWebContext context, DatabaseSection config, ConfigurationBuilderParticipator[] participators, params Type[] itemTypes)
+		{
 			Setup(out definitions, out activator, out notifier, out proxyFactory, itemTypes);
 
-            DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
-            ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), new ThreadContext(), new ConfigurationBuilderParticipator[0], config, connectionStrings);
-
-            FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
+			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), new ThreadContext(), participators, config, connectionStrings);
 
 			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), new NHInterceptor(proxyFactory, configurationBuilder, notifier), context);
 
-            finder = new ItemFinder(sessionProvider, definitions);
+			finder = new ItemFinder(sessionProvider, definitions);
 
-            schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
-        }
+			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
+		}
 
 		public static IDefinitionManager SetupDefinitions(params Type[] itemTypes)
 		{
@@ -78,11 +83,7 @@ namespace N2.Tests
         {
             persister = new ContentPersister(itemRepository, linkRepository, finder);
 
-#if NH2_1
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
-#else
-			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
-#endif
         }
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, ItemFinder finder, SchemaExport schemaCreator)

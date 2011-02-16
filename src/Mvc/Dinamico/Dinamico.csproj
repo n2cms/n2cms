@@ -108,7 +108,10 @@
     <Compile Include="Web\Mvc\ContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
+    <Compile Include="Web\Mvc\DisplayBuilder.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
+    <Compile Include="Web\Mvc\DisplayRenderer.cs" />
+    <Compile Include="Web\Mvc\EditorBuilder.cs" />
     <Compile Include="Web\Mvc\Html\DisplayHelperExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
@@ -116,7 +119,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.5.js" />
+    <Content Include="Scripts\jquery-1.5.min.js" />
     <Content Include="Scripts\jquery.highlight-3.js" />
+    <Content Include="Scripts\Site.js" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
     <Content Include="Themes\Terracotta\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Site.css" />
@@ -130,9 +136,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\jquery-1.4.4.js" />
-    <Content Include="Scripts\jquery-1.4.4.min.js" />
-    <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.5-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

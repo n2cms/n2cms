@@ -8,131 +8,126 @@ namespace N2.Web.Mvc.Html
 {
 	public static class DisplayHelperExtensions
 	{
-		public static dynamic Title<TModel>(this DisplayHelper<TModel> display, string title = "Title", string container = null, Action<WithEditableTitleAttribute> config = null)
+		public static EditorBuilder<WithEditableTitleAttribute> Title<TModel>(this DisplayHelper<TModel> display, string title = "Title", string container = null)
 		{
-			return display.Editable("Title", title, container, config);
+			return display.Editable<WithEditableTitleAttribute>("Title", title, container);
 		}
 
-		public static dynamic Name<TModel>(this DisplayHelper<TModel> display, string title = "Name", string container = null, Action<WithEditableNameAttribute> config = null)
+		public static EditorBuilder<WithEditableNameAttribute> Name<TModel>(this DisplayHelper<TModel> display, string title = "Name", string container = null)
 		{
-			return display.Editable("Name", title, container, config);
+			return display.Editable<WithEditableNameAttribute>("Name", title, container);
 		}
 
-		public static dynamic PublishedRange<TModel>(this DisplayHelper<TModel> display, string title = "Published between", string container = null, Action<WithEditablePublishedRangeAttribute> config = null)
+		public static EditorBuilder<WithEditablePublishedRangeAttribute> PublishedRange<TModel>(this DisplayHelper<TModel> display, string title = "Published between", string container = null)
 		{
-			return display.Editable("Published", title, container, config);
+			return display.Editable<WithEditablePublishedRangeAttribute>("Published", title, container);
 		}
 
-		public static dynamic DateRange<TModel>(this DisplayHelper<TModel> display, string nameStart, string nameEnd, string title = "Dates", string container = null, Action<WithEditableDateRangeAttribute> config = null)
+		public static EditorBuilder<WithEditableDateRangeAttribute> DateRange<TModel>(this DisplayHelper<TModel> display, string nameStart, string nameEnd, string title = "Dates", string container = null)
 		{
-			Action<WithEditableDateRangeAttribute> config2;
-			if (config != null)
-				config2 = (a) => { a.NameEndRange = nameEnd; config(a); };
-			else
-				config2 = (a) => { a.NameEndRange = nameEnd; };
-
-			return display.Editable(nameStart, title, container, config2);
+			return display.Editable<WithEditableDateRangeAttribute>(nameStart, title, container)
+				.Configure(a => a.NameEndRange = nameEnd);
 		}
 
-		//public static dynamic CheckBox<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableCheckBoxAttribute> config = null)
+		//public static dynamic CheckBox<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableCheckBoxAttribute(title ?? name, re.NextSortOrder(null)), config);
+		//    return re.Add(new EditableCheckBoxAttribute(title ?? name, re.NextSortOrder(null)));
 		//}
 
-		//public static dynamic Children<TModel>(this DisplayHelper<TModel> display, string zoneName, string name = null, string title = null, Action<EditableChildrenAttribute> config = null)
+		//public static dynamic Children<TModel>(this DisplayHelper<TModel> display, string zoneName, string name = null, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableChildrenAttribute(title ?? zoneName, zoneName, re.NextSortOrder(null)), config);
+		//    return re.Add(new EditableChildrenAttribute(title ?? zoneName, zoneName, re.NextSortOrder(null)));
 		//}
 
-		//public static dynamic Date<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableDateAttribute> config = null)
+		//public static dynamic Date<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableDateAttribute(), name, title, config);
+		//    return re.Add(new EditableDateAttribute(), name, title);
 		//}
 
-		//public static dynamic Enum<TModel>(this DisplayHelper<TModel> display, string name, Type enumType, string title = null, Action<EditableEnumAttribute> config = null)
+		//public static dynamic Enum<TModel>(this DisplayHelper<TModel> display, string name, Type enumType, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableEnumAttribute(enumType), name, title, config);
+		//    return re.Add(new EditableEnumAttribute(enumType), name, title);
 		//}
 
-		//public static dynamic FileUpload<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableFileUploadAttribute> config = null)
+		//public static dynamic FileUpload<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableFileUploadAttribute(), name, title, config);
+		//    return re.Add(new EditableFileUploadAttribute(), name, title);
 		//}
 
-		public static dynamic FreeText<TModel>(this DisplayHelper<TModel> display, string name, string title = null, string container = null, Action<EditableFreeTextAreaAttribute> config = null)
+		public static EditorBuilder<EditableFreeTextAreaAttribute> FreeText<TModel>(this DisplayHelper<TModel> display, string name, string title = null, string container = null)
 		{
-			return display.Editable(name, title, container, config);
+			return display.Editable<EditableFreeTextAreaAttribute>(name, title, container);
 		}
 
-		//public static dynamic Image<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableImageAttribute> config = null)
+		//public static dynamic Image<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableImageAttribute(), name, title, config);
+		//    return re.Add(new EditableImageAttribute(), name, title);
 		//}
 
-		//public static dynamic ImageSize<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableImageSizeAttribute> config = null)
+		//public static dynamic ImageSize<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableImageSizeAttribute(), name, title, config);
+		//    return re.Add(new EditableImageSizeAttribute(), name, title);
 		//}
 
-		//public static dynamic Item<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableItemAttribute> config = null)
+		//public static dynamic Item<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableItemAttribute(), name, title, config);
+		//    return re.Add(new EditableItemAttribute(), name, title);
 		//}
 
-		//public static dynamic LanguagesDropDown<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableLanguagesDropDownAttribute> config = null)
+		//public static dynamic LanguagesDropDown<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableLanguagesDropDownAttribute(), name, title, config);
+		//    return re.Add(new EditableLanguagesDropDownAttribute(), name, title);
 		//}
 
-		//public static dynamic Link<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableLinkAttribute> config = null)
+		//public static dynamic Link<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableLinkAttribute(), name, title, config);
+		//    return re.Add(new EditableLinkAttribute(), name, title);
 		//}
 
-		public static dynamic Text<TModel>(this DisplayHelper<TModel> display, string name, string title = null, string container = null, Action<EditableTextBoxAttribute> config = null)
+		public static EditorBuilder<EditableTextBoxAttribute> Text<TModel>(this DisplayHelper<TModel> display, string name, string title = null, string container = null)
 		{
-			return display.Editable(name, title, container, config);
+			return display.Editable<EditableTextBoxAttribute>(name, title, container);
 		}
 
-		//public static dynamic ThemeSelection<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableThemeSelectionAttribute> config = null)
+		//public static dynamic ThemeSelection<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableThemeSelectionAttribute(), name, title, config);
+		//    return re.Add(new EditableThemeSelectionAttribute(), name, title);
 		//}
 
-		//public static dynamic Url<TModel>(this DisplayHelper<TModel> display, string name, string title = null, Action<EditableUrlAttribute> config = null)
+		//public static dynamic Url<TModel>(this DisplayHelper<TModel> display, string name, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableUrlAttribute(), name, title, config);
+		//    return re.Add(new EditableUrlAttribute(), name, title);
 		//}
 
-		//public static dynamic UserControl<TModel>(this DisplayHelper<TModel> display, string name, string userControlPath, string title = null, Action<EditableUserControlAttribute> config = null)
+		//public static dynamic UserControl<TModel>(this DisplayHelper<TModel> display, string name, string userControlPath, string title = null)
 		//{
 		//    if (re == null) return re;
 
-		//    return re.Add(new EditableUserControlAttribute(userControlPath, 0) { UserControlPath = userControlPath }, name, title, config);
+		//    return re.Add(new EditableUserControlAttribute(userControlPath, 0) { UserControlPath = userControlPath }, name, title);
 		//}
 	}
 

@@ -296,6 +296,13 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="search" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
+									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />

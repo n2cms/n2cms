@@ -1,6 +1,7 @@
 ﻿using N2.Details;
 using N2.Engine;
 using N2.Web.Mvc;
+using System.IO;
 
 namespace N2.Web.Rendering
 {
@@ -14,12 +15,12 @@ namespace N2.Web.Rendering
 			this.adapters = adapters;
 		}
 
-		public override void Render(RenderingContext context, EditableItemAttribute displayable)
+		public override void Render(RenderingContext context, EditableItemAttribute displayable, TextWriter writer)
 		{
 			var backup = context.Html.ViewContext.Writer;
 			try
 			{
-				context.Html.ViewContext.Writer = context.Writer;
+				context.Html.ViewContext.Writer = writer;
 				var referencedItem = context.Content[context.PropertyName] as ContentItem;
 				if (referencedItem != null)
 					adapters.ResolveAdapter<MvcAdapter>(context.Content).RenderTemplate(context.Html, referencedItem);

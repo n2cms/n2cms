@@ -10,7 +10,7 @@ namespace N2.Details
 	/// Represents a displayable attribute that can write it's value directly 
 	/// to a text writer without need of page context.
 	/// </summary>
-	public interface IWritingDisplayable
+	public interface IWritingDisplayable : IDisplayable // If you remove this inheritance consider ordering of the displayable renderers
 	{
 		/// <summary>Writes a detail value.</summary>
 		/// <param name="item">The item containing the value.</param>

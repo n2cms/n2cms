@@ -30,11 +30,7 @@ namespace N2.Edit.Tests.Trash
 		{
 			engine = new ContentEngine();
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
-#if NH2_1
 			schemaCreator.Execute(false, true, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);
-#else
-			schemaCreator.Execute(false, true, false, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);
-#endif
 
 			engine.Initialize();
 			engine.SecurityManager.Enabled = false;

@@ -41,9 +41,9 @@ namespace N2.Web.Mvc.Html
 			return renderer;
 		}
 
-		public void Render(RenderingContext context)
+		public void Render(RenderingContext context, TextWriter writer)
 		{
-			ResolveRenderer(context.Displayable.GetType()).Render(context);
+			ResolveRenderer(context.Displayable.GetType()).Render(context, writer);
 		}
 	}
 
@@ -150,15 +150,16 @@ namespace N2.Web.Mvc.Html
 			var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
 			if (displayable == null) return;
 
+			var writer = Html.ViewContext.Writer;
 			if (Wrapper != null)
-				Html.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+				writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
-			var ctx = new RenderingContext { Content = CurrentItem, Displayable = displayable, Html = Html, PropertyName = propertyName, Writer = Html.ViewContext.Writer };
+			var ctx = new RenderingContext { Content = CurrentItem, Displayable = displayable, Html = Html, PropertyName = propertyName };
 			Html.ResolveService<DisplayableRendererSelector>()
-				.Render(ctx);
+				.Render(ctx, writer);
 
 			if (Wrapper != null)
-				Html.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
+				writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
 		}
 	}
 }

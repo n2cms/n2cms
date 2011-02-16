@@ -16,6 +16,8 @@ using N2.Web.Mvc;
 using N2;
 using System.Diagnostics;
 using N2.Definitions.Dynamic;
+using System.Web.Hosting;
+using System.Web.Caching;
 
 namespace Dinamico.Definitions.Dynamic
 {
@@ -55,6 +57,24 @@ namespace Dinamico.Definitions.Dynamic
 		#endregion
 	}
 
+	[Service(typeof(IProvider<VirtualPathProvider>))]
+	public class VirtualPathProviderProvider : IProvider<VirtualPathProvider>
+	{
+		#region IProvider<VirtualPathProvider> Members
+
+		public VirtualPathProvider Get()
+		{
+			return HostingEnvironment.VirtualPathProvider;
+		}
+
+		public IEnumerable<VirtualPathProvider> GetAll()
+		{
+			return new[] { HostingEnvironment.VirtualPathProvider };
+		}
+
+		#endregion
+	}
+
 	[Service]
 	public class RazorTemplateRegistrator
 	{
@@ -82,21 +102,22 @@ namespace Dinamico.Definitions.Dynamic
 	{
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<ViewEngineCollection> viewEnginesProvider;
-		IFileSystem fs;
+		IProvider<VirtualPathProvider> vppProvider;
 		ContentActivator activator;
 		RazorTemplateRegistrator registrator;
-		List<Tuple<string, Type>> sources = new List<Tuple<string, Type>>();
+		List<Source> sources = new List<Source>();
 		bool rebuild = true;
 
-		public RazorTemplateProvider(RazorTemplateRegistrator registrator, IFileSystem fs, ContentActivator activator, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider)
+		public RazorTemplateProvider(RazorTemplateRegistrator registrator, ContentActivator activator, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider, IProvider<VirtualPathProvider> vppProvider)
 		{
 			this.registrator = registrator;
 			registrator.RegistrationAdded += registrator_RegistrationAdded;
 
-			this.fs = fs;
+			//this.fs = fs;
 			this.activator = activator;
 			this.httpContextProvider = httpContextProvider;
 			this.viewEnginesProvider = viewEnginesProvider;
+			this.vppProvider = vppProvider;
 			
 			HandleRegistrationQueue();
 		}
@@ -116,16 +137,12 @@ namespace Dinamico.Definitions.Dynamic
 				Type contentControllerType = Utility.GetBaseTypes(controllerType).FirstOrDefault(t => t.GetGenericTypeDefinition() == typeof(ContentController<>));
 				if (contentControllerType != null)
 					modelType = contentControllerType.GetGenericArguments().First();
-				sources.Add(new Tuple<string, Type>(controllerName, modelType));
+				sources.Add(new Source { ControllerName = controllerName, ModelType = modelType });
 				rebuild = true;
 			}
 		}
 
 		#region ITemplateProvider Members
-
-		class StubController : Controller
-		{
-		}
 
 		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
 		{
@@ -138,11 +155,20 @@ namespace Dinamico.Definitions.Dynamic
 			{
 				return new TemplateDefinition[0];
 			}
-
-			var definitions = httpContext.Cache["RazorDefinitions"] as IEnumerable<ItemDefinition>;
+			
+			const string cacheKey = "RazorDefinitions";
+			var definitions = httpContext.Cache[cacheKey] as IEnumerable<ItemDefinition>;
 			if (definitions == null || rebuild)
 			{
-				httpContext.Cache["RazorDefinitions"] = definitions = BuildDefinitions(httpContext).ToList();
+				var vpp = vppProvider.Get();
+				var pairs = BuildDefinitions(vpp, httpContext).ToList();
+				definitions = pairs.Select(p => p.Definition).ToList();
+
+				var files = pairs.Select(p => p.VirtualPath).ToList();
+				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+
+				httpContext.Cache.Remove(cacheKey);
+				httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate { Debug.WriteLine("Razor template changed"); }));
 				rebuild = false;
 			}
 			var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
@@ -170,23 +196,24 @@ namespace Dinamico.Definitions.Dynamic
 			return templates;
 		}
 
-		public IEnumerable<ItemDefinition> BuildDefinitions(HttpContextBase httpContext)
+		private IEnumerable<RazorFileDefinition> BuildDefinitions(VirtualPathProvider vpp, HttpContextBase httpContext)
 		{
 			foreach (var source in sources)
 			{
-				string controllerName = source.Item1;
-				Type modelType = source.Item2;
+				string virtualDir = "~/Views/" + source.ControllerName;
+				if (!vpp.DirectoryExists(virtualDir))
+					continue;
 
-				foreach (var file in fs.GetFiles("~/Views/" + controllerName).Where(f => f.Name.EndsWith(".cshtml")))
+				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(".cshtml")))
 				{
-					var definition = GetDefinition(httpContext, file, controllerName, modelType);
+					var definition = GetDefinition(httpContext, file, source.ControllerName, source.ModelType);
 					if (definition != null)
-						yield return definition;
+						yield return new RazorFileDefinition { Definition = definition, VirtualPath = file.VirtualPath };
 				}
 			}
 		}
 
-		private ItemDefinition GetDefinition(HttpContextBase httpContext, FileData file, string controllerName, Type modelType)
+		private ItemDefinition GetDefinition(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
 		{
 			var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
 			cctx.RouteData.Values.Add("controller", controllerName);
@@ -203,7 +230,7 @@ namespace Dinamico.Definitions.Dynamic
 			{
 				using (StringWriter sw = new StringWriter())
 				{
-					var vdd = new ViewDataDictionary { Model = new DynamicPage() };
+					var vdd = new ViewDataDictionary { Model = modelType != null ? Activator.CreateInstance(modelType) : new StubItem() };
 					vdd["RegistrationExpression"] = re;
 					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
 
@@ -234,5 +261,27 @@ namespace Dinamico.Definitions.Dynamic
 		}
 
 		#endregion
+
+
+
+		class RazorFileDefinition
+		{
+			public string VirtualPath { get; set; }
+			public ItemDefinition Definition { get; set; }
+		}
+
+		class Source
+		{
+			public string ControllerName { get; set; }
+			public Type ModelType { get; set; }
+		}
+
+		class StubController : Controller
+		{
+		}
+
+		class StubItem : ContentItem
+		{
+		}
 	}
 }

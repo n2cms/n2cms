@@ -15,7 +15,7 @@ namespace N2.Web.Mvc.Html
 			var re = GetRegistrationExpression<T>(content.Html);
 			if (re != null)
 			{
-				re.SortOffset = 0;
+				re.GlobalSortOffset = 0;
 				if (typeof(ContentItem).IsAssignableFrom(typeof(T)) && re.ItemType == null)
 				{
 					re.ItemType = typeof(T);
@@ -32,7 +32,7 @@ namespace N2.Web.Mvc.Html
 			var re = GetRegistrationExpression<T>(content.Html);
 			if (re != null)
 			{
-				re.SortOffset = 0;
+				re.GlobalSortOffset = 0;
 				registration(re);
 			}
 			return re;
@@ -43,7 +43,7 @@ namespace N2.Web.Mvc.Html
 			var re = GetRegistrationExpression<T>(content.Html);
 			if (re != null)
 			{
-				re.SortOffset = -1000;
+				re.GlobalSortOffset = -1000;
 				registration(re);
 			}
 			return re;
@@ -60,7 +60,7 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			re.AddContainable(new N2.Web.UI.TabContainerAttribute(containerName, tabName, re.NextSortOrder(sortOrder)));
+			re.Add(new N2.Web.UI.TabContainerAttribute(containerName, tabName, re.NextSortOrder(sortOrder)));
 
 			string previousContainerName = re.ContainerName;
 			re.ContainerName = containerName;
@@ -79,7 +79,7 @@ namespace N2.Web.Mvc.Html
 
 			string previousContainerName = re.ContainerName;
 			re.ContainerName = containerName;
-			re.AddContainable(new N2.Web.UI.FieldSetContainerAttribute(containerName, legend, re.NextSortOrder(sortOrder)));
+			re.Add(new N2.Web.UI.FieldSetContainerAttribute(containerName, legend, re.NextSortOrder(sortOrder)));
 
 			if (registration != null)
 			{
@@ -115,137 +115,137 @@ namespace N2.Web.Mvc.Html
 
 		// editables
 
-		public static DefinitionRegistrationExpression Title(this DefinitionRegistrationExpression re, string title = "Title", Action<WithEditableTitleAttribute> config = null)
+		public static DefinitionRegistrationExpression Title(this DefinitionRegistrationExpression re, string title = "Title")
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new WithEditableTitleAttribute(), title, config);
+			return re.Add(new WithEditableTitleAttribute(), title);
 		}
 
-		public static DefinitionRegistrationExpression Name(this DefinitionRegistrationExpression re, string title = "Name", Action<WithEditableNameAttribute> config = null)
+		public static DefinitionRegistrationExpression Name(this DefinitionRegistrationExpression re, string title = "Name")
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new WithEditableNameAttribute(), title, config);
+			return re.Add(new WithEditableNameAttribute(), title);
 		}
 
-		public static DefinitionRegistrationExpression PublishedRange(this DefinitionRegistrationExpression re, string title = "Published between", Action<WithEditablePublishedRangeAttribute> config = null)
+		public static DefinitionRegistrationExpression PublishedRange(this DefinitionRegistrationExpression re, string title = "Published between")
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new WithEditablePublishedRangeAttribute(), title, config);
+			return re.Add(new WithEditablePublishedRangeAttribute(), title);
 		}
 
-		public static DefinitionRegistrationExpression DateRange(this DefinitionRegistrationExpression re, string nameStart, string nameEnd, string title = "Name", Action<WithEditableDateRangeAttribute> config = null)
+		public static DefinitionRegistrationExpression DateRange(this DefinitionRegistrationExpression re, string nameStart, string nameEnd, string title = "Name")
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new WithEditableDateRangeAttribute(title, 0, nameStart, nameEnd), title, config);
+			return re.Add(new WithEditableDateRangeAttribute(title, 0, nameStart, nameEnd), title);
 		}
 
-		public static DefinitionRegistrationExpression CheckBox(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableCheckBoxAttribute> config = null)
+		public static DefinitionRegistrationExpression CheckBox(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddContainable(new EditableCheckBoxAttribute(title ?? name, re.NextSortOrder(null)), config);
+			return re.Add(new EditableCheckBoxAttribute(title ?? name, re.NextSortOrder(null)));
 		}
 
-		public static DefinitionRegistrationExpression Children(this DefinitionRegistrationExpression re, string zoneName, string name = null, string title = null, Action<EditableChildrenAttribute> config = null)
+		public static DefinitionRegistrationExpression Children(this DefinitionRegistrationExpression re, string zoneName, string name = null, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddContainable(new EditableChildrenAttribute(title ?? zoneName, zoneName, re.NextSortOrder(null)), config);
+			return re.Add(new EditableChildrenAttribute(title ?? zoneName, zoneName, re.NextSortOrder(null)));
 		}
 
-		public static DefinitionRegistrationExpression Date(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableDateAttribute> config = null)
+		public static DefinitionRegistrationExpression Date(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableDateAttribute(), name, title, config);
+			return re.Add(new EditableDateAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression Enum(this DefinitionRegistrationExpression re, string name, Type enumType, string title = null, Action<EditableEnumAttribute> config = null)
+		public static DefinitionRegistrationExpression Enum(this DefinitionRegistrationExpression re, string name, Type enumType, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableEnumAttribute(enumType), name, title, config);
+			return re.Add(new EditableEnumAttribute(enumType), name, title);
 		}
 
-		public static DefinitionRegistrationExpression FileUpload(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableFileUploadAttribute> config = null)
+		public static DefinitionRegistrationExpression FileUpload(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableFileUploadAttribute(), name, title, config);
+			return re.Add(new EditableFileUploadAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression FreeTextArea(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableFreeTextAreaAttribute> config = null)
+		public static DefinitionRegistrationExpression FreeTextArea(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableFreeTextAreaAttribute(), name, title, config);
+			return re.Add(new EditableFreeTextAreaAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression Image(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableImageAttribute> config = null)
+		public static DefinitionRegistrationExpression Image(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableImageAttribute(), name, title, config);
+			return re.Add(new EditableImageAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression ImageSize(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableImageSizeAttribute> config = null)
+		public static DefinitionRegistrationExpression ImageSize(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableImageSizeAttribute(), name, title, config);
+			return re.Add(new EditableImageSizeAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression Item(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableItemAttribute> config = null)
+		public static DefinitionRegistrationExpression Item(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableItemAttribute(), name, title, config);
+			return re.Add(new EditableItemAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression LanguagesDropDown(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableLanguagesDropDownAttribute> config = null)
+		public static DefinitionRegistrationExpression LanguagesDropDown(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableLanguagesDropDownAttribute(), name, title, config);
+			return re.Add(new EditableLanguagesDropDownAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression Link(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableLinkAttribute> config = null)
+		public static DefinitionRegistrationExpression Link(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableLinkAttribute(), name, title, config);
+			return re.Add(new EditableLinkAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression TextBox(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableTextBoxAttribute> config = null)
+		public static DefinitionRegistrationExpression TextBox(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableTextBoxAttribute(), name, title, config);
+			return re.Add(new EditableTextBoxAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression ThemeSelection(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableThemeSelectionAttribute> config = null)
+		public static DefinitionRegistrationExpression ThemeSelection(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableThemeSelectionAttribute(), name, title, config);
+			return re.Add(new EditableThemeSelectionAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression Url(this DefinitionRegistrationExpression re, string name, string title = null, Action<EditableUrlAttribute> config = null)
+		public static DefinitionRegistrationExpression Url(this DefinitionRegistrationExpression re, string name, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableUrlAttribute(), name, title, config);
+			return re.Add(new EditableUrlAttribute(), name, title);
 		}
 
-		public static DefinitionRegistrationExpression UserControl(this DefinitionRegistrationExpression re, string name, string userControlPath, string title = null, Action<EditableUserControlAttribute> config = null)
+		public static DefinitionRegistrationExpression UserControl(this DefinitionRegistrationExpression re, string name, string userControlPath, string title = null)
 		{
 			if (re == null) return re;
 
-			return re.AddEditable(new EditableUserControlAttribute(userControlPath, 0) { UserControlPath = userControlPath }, name, title, config);
+			return re.Add(new EditableUserControlAttribute(userControlPath, 0) { UserControlPath = userControlPath }, name, title);
 		}
 	}
 

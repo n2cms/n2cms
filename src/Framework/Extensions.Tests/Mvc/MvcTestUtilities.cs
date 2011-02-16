@@ -58,7 +58,7 @@ namespace N2.Extensions.Tests.Mvc
 				.Return(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()))
 				.Repeat.Any();
 			engine.Expect(e => e.Resolve<DisplayableRendererSelector>())
-				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new LiteralDisplayableRenderer(), new FallbackDisplayableRenderer() }))
+				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }))
 				.Repeat.Any();
 			return engine;
 		}

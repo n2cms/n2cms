@@ -1,11 +1,12 @@
 ﻿using System;
 using N2.Details;
+using System.IO;
 
 namespace N2.Web.Rendering
 {
 	public abstract class DisplayableRendererBase<TDisplayable> : IDisplayableRenderer
 	{
-		public abstract void Render(RenderingContext context, TDisplayable displayable);
+		public abstract void Render(RenderingContext context, TDisplayable displayable, TextWriter writer);
 
 		#region IDisplayableRenderer Members
 
@@ -14,9 +15,9 @@ namespace N2.Web.Rendering
 			get { return typeof(TDisplayable); }
 		}
 
-		public void Render(RenderingContext context)
+		public void Render(RenderingContext context, TextWriter writer)
 		{
-			Render(context, (TDisplayable)context.Displayable);
+			Render(context, (TDisplayable)context.Displayable, writer);
 		}
 
 		#endregion

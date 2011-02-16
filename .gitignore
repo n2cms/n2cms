@@ -8,6 +8,7 @@ src/Mvc/Dinamico/N2/
 src/Mvc/Dinamico/App_Data/SearchIndex/
 src/Mvc/MvcTemplates/App_Data/SearchIndex/
 src/Framework/Tests/App_Data/
+src/Framework/Extensions.Tests/App_Data/
 
 # User-specific files
 *.suo

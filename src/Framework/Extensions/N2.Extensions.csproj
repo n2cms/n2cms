@@ -105,8 +105,7 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="Extensions\FilterExtensions.cs" />
-    <Compile Include="Extensions\TrashExtensions.cs" />
+    <Compile Include="ContentExtensions.cs" />
     <Compile Include="Persistence\NH\SearchConfigurationBuilderParticipator.cs" />
     <Compile Include="Web\Hosting\Util.cs" />
     <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />

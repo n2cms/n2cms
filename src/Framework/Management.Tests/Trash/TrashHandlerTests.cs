@@ -109,11 +109,7 @@ namespace N2.Edit.Tests.Trash
 
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
 			var conn = engine.Resolve<ISessionProvider>().OpenSession.Session.Connection;
-#if NH2_1
 			schemaCreator.Execute(false, true, false, conn, null);
-#else
-			schemaCreator.Execute(false, true, false, false, conn, null);
-#endif
 
             engine.SecurityManager.Enabled = false;
 

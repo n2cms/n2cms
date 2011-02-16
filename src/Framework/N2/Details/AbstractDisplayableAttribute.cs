@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace N2.Details
 {
-	[DebuggerDisplay("{name, nq} ({GetType().Name, nq})")]
+	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
 	public abstract class AbstractDisplayableAttribute : Attribute, IDisplayable
 	{
 		private string cssClass = null;
@@ -48,6 +48,11 @@ namespace N2.Details
 		public override int GetHashCode()
 		{
 			return hashCode ?? (hashCode = (name == null) ? base.GetHashCode() : (GetType().FullName.GetHashCode() + name.GetHashCode())).Value;
+		}
+
+		private string TypeName
+		{
+			get { return GetType().Name; }
 		}
 		#endregion
 	}

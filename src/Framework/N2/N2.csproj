@@ -230,7 +230,7 @@
     <Compile Include="Web\Rendering\DisplayableRendererBaseOfTDisplayable.cs" />
     <Compile Include="Web\Rendering\FallbackDisplayableRenderer.cs" />
     <Compile Include="Web\Rendering\IDisplayableRenderer.cs" />
-    <Compile Include="Web\Rendering\LiteralDisplayableRenderer.cs" />
+    <Compile Include="Web\Rendering\WritingDisplayableRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingContext.cs" />
     <Compile Include="Web\RssWriter.cs" />
     <Compile Include="Web\UI\ContentPageConcern.cs" />

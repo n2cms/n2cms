@@ -58,7 +58,7 @@ namespace N2
     /// you should manually change the discriminator in the database or set the 
     /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
     /// </remarks>
-	[Serializable, DebuggerDisplay("{GetType().Name}: {Name}#{ID}")]
+	[Serializable, DebuggerDisplay("{Name, nq}#{ID} [{TypeName, nq}]")]
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
 	[Indexed]
@@ -914,7 +914,12 @@ namespace N2
 			if (!hashCode.HasValue)
 				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
 			return hashCode.Value;
-}
+		}
+
+		private string TypeName
+		{
+			get { return GetContentType().Name; }
+		}
 
 		/// <summary>Returns this item's name.</summary>
 		/// <returns>The item's name.</returns>
