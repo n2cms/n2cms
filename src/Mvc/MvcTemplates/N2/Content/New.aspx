@@ -12,7 +12,7 @@
 		<% for (int i = 0; i < AvailableDefinitions.Count; i++) { %>
 			<div class="type cf d<%= i %> a<%= i % 2 %>">
 			<% int templateIndex = 0; %>
-			<% foreach(var template in GetTemplates(AvailableDefinitions[i])){ %>
+			<% foreach(TemplateDefinition template in GetTemplates(AvailableDefinitions[i])){ %>
 				<a href="<%= GetEditUrl(template.Definition) %>" style="background-image:url(<%= ResolveUrl(template.Definition.IconUrl) %>)" class="<%= template.Definition.Template != null ? "template" : "definition"  %> t<%= templateIndex %>">
 					<span class="title"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Title") ?? template.Title %></span>
 					<span class="description"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Description") ?? template.Description %></span>
