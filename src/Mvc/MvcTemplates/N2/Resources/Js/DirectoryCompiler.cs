@@ -124,8 +124,8 @@ namespace N2.Edit.Js
 		}
 		
 		protected virtual string[] FileMasks { get { return new[] { "*.js" }; } }
-		
-		protected virtual string ContentType { get { return "text/javascript"; } }
+
+		protected virtual string ContentType { get { return "text/plain"; } }
 		
 		protected HttpContext Context { get; private set; }
 	}
