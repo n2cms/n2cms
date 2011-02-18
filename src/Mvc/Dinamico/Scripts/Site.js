@@ -69,3 +69,20 @@ $(document).ready(function () {
 	if (location.hash === hash)
 		$("#sitemapopener").click();
 });
+
+$(document).ready(function () {
+	function close(e) {
+		if ($(e.target).closest("#translations").is("*"))
+			return;
+		$("#translationsresults").remove();
+		$(document).unbind("click", close);
+	}
+	$("#translationsopener").click(function (e) {
+		e.preventDefault();
+		$("<ul id='translationsresults'><li class='loading'>Loading...</li></ul>").appendTo("#translations")
+			.load(this.href, null, function () {
+				$("a[href='" + location.href + "']", this).focus();
+			});
+		$(document).click(close);
+	});
+});

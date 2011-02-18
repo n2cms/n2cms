@@ -7,6 +7,7 @@ using N2.Collections;
 using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
 using N2.Definitions;
+using N2.Engine.Globalization;
 
 namespace N2.Web.Mvc
 {	
@@ -37,6 +38,17 @@ namespace N2.Web.Mvc
 		public ContentItem CurrentPage
 		{
 			get { return page.Html.CurrentPage(); }
+		}
+
+		public ILanguage CurrentLanguage
+		{
+			get { return page.Html.ResolveService<ILanguageGateway>().GetLanguage(CurrentPage); }
+		}
+
+		public IEnumerable<ILanguage> Translations()
+		{
+			var lg = page.Html.ResolveService<ILanguageGateway>();
+			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
 		}
 
 		public ContentItem StartPage

@@ -162,7 +162,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_LogOnPartial.cshtml" />
+    <Content Include="Views\Shared\TopPartials\_LogOn.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -206,10 +206,10 @@
     <Content Include="Views\Test\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_SiteMapPartial.cshtml" />
+    <Content Include="Views\Shared\TopPartials\_SiteMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_SearchPartial.cshtml" />
+    <Content Include="Views\Shared\TopPartials\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_SubNavigationPartial.cshtml" />
@@ -231,6 +231,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TopPartials\_Translations.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

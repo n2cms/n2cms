@@ -22,9 +22,10 @@
 				<h1>My MVC Application</h1>
 			</div>
 			<div id="topnav">
-				@Html.Partial("_LogOnPartial")
-				@Html.Partial("_SiteMapPartial")
-				@Html.Partial("_SearchPartial")
+				@Html.Partial("TopPartials/_LogOn")
+				@Html.Partial("TopPartials/_SiteMap")
+				@Html.Partial("TopPartials/_Translations")
+				@Html.Partial("TopPartials/_Search")
 			</div>
 			<div id="menucontainer">
 				@Html.Partial("_NavigationPartial")
@@ -32,11 +33,11 @@
 		</div>
 		<div id="main">
 	@if (IsSectionDefined("Main"))
-	{
-			RenderSection("Main");
-	}
-	else
-	{
+ {
+	 RenderSection("Main");
+ }
+ else
+ {
 			@Html.Partial("_SubNavigationPartial")
 			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
 			<div id="content">@RenderBody()</div>

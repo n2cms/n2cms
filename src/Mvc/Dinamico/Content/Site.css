@@ -32,7 +32,10 @@ a:active
 {
     color: #12eb87;
 }
-
+a img
+{
+	border:none;
+}
 p, ul
 {
     margin-bottom: 20px;
@@ -406,6 +409,41 @@ div#title
 			font-weight:bold;
 		}
 
+
+
+
+#translations
+{
+	display:inline-block;
+	position:relative;
+}
+	#translationsresults
+	{
+		position:absolute;
+		z-index:1000;
+		right:0;
+		background-color:#46351C;
+		list-style-type:none;
+		text-align:left;
+		max-height:500px;
+		min-width:200px;
+		overflow:auto;
+		padding:5px;
+	}
+		#translationsresults ul
+		{
+			padding-left:20px;
+			list-style-type:none;
+			margin:0;
+		}
+		#translationsresults a
+		{
+			display:block;
+		}
+		#translationsresults > li > a
+		{
+			font-weight:bold;
+		}
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error

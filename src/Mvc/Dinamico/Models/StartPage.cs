@@ -34,7 +34,7 @@ namespace Dinamico.Models
 					return "";
 
 				string[] parts = LanguageCode.Split('-');
-				return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
+				return N2.Web.Url.ResolveTokens(string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLower()));
 			}
 		}
 

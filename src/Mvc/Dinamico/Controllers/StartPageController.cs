@@ -11,6 +11,7 @@ using System.Text;
 using N2;
 using System.Text.RegularExpressions;
 using System.Web.Security;
+using N2.Engine.Globalization;
 
 namespace Dinamico.Controllers
 {
@@ -55,7 +56,21 @@ namespace Dinamico.Controllers
 				return Content("<li>No hits</li>");
 
 			return Content(results.ToString());
-				
+		}
+
+		public ActionResult Translations(int id)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			var lg = Engine.Resolve<ILanguageGateway>();
+			var translations = lg.FindTranslations(Engine.Persister.Get(id));
+			foreach (var language in translations)
+				sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
+
+			if (sb.Length == 0)
+				return Content("<li>This page is not translated</li>");
+
+			return Content(sb.ToString());
 		}
 	}
 }
