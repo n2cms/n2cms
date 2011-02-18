@@ -86,9 +86,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DynamicPartsController.cs" />
     <Compile Include="Controllers\DynamicPagesController.cs" />
+    <Compile Include="Controllers\LanguageIntersectionController.cs" />
     <Compile Include="Controllers\StartPageController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TextPageController.cs" />
@@ -99,6 +101,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\LanguageIntersection.cs" />
     <Compile Include="Models\DynamicPart.cs" />
     <Compile Include="Models\DynamicPage.cs" />
     <Compile Include="Models\StartPage.cs" />
@@ -182,9 +185,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\TextPage\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\DynamicPages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +228,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Terracotta\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -92,6 +92,7 @@ namespace N2.Web
 					if (checkInstallation)
 						CheckInstallation();
 					Url.SetToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
+					Url.SetToken("{IconsUrl}", Url.ResolveTokens(Url.ManagementUrlToken + "/Resources/icons"));
 				}
 			}
 

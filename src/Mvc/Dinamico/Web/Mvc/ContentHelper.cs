@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using N2.Collections;
 using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
+using N2.Definitions;
 
 namespace N2.Web.Mvc
 {	
@@ -40,12 +41,12 @@ namespace N2.Web.Mvc
 
 		public ContentItem StartPage
 		{
-			get { return N2.Find.StartPage; }
+			get { return N2.Find.Closest<IStartPage>(CurrentPage) as ContentItem ?? N2.Find.StartPage; }
 		}
 
 		public ContentItem RootPage
 		{
-			get { return N2.Find.RootItem; }
+			get { return N2.Find.Closest<IRootPage>(CurrentPage) as ContentItem ?? N2.Find.RootItem; }
 		}
 
 		protected virtual ItemFilter DefaultFilter

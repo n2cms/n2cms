@@ -105,9 +105,9 @@ namespace N2.Edit
 		/// <summary>Gets the url to the icon representing this item.</summary>
 		/// <param name="item">The item whose icon to get.</param>
 		/// <returns>An url to an icon.</returns>
-		public string GetIconUrl(ContentItem item)
+		public virtual string GetIconUrl(ContentItem item)
 		{
-			return ManagementPaths.ResolveResourceUrl(item.IconUrl);
+			return Url.ResolveTokens(item.IconUrl);
 		}
 	}
 }

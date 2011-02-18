@@ -9,7 +9,7 @@
 								+ "&selected=" + encodeURIComponent(to);
 	};
 	var onStart = function (e, ui) {
-		dragMemory = this.attr("data-path");
+		dragMemory = $(this).attr("data-path");
 	};
 
 	var toDraggable = function (container) {
