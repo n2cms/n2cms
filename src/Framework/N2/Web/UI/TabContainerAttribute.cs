@@ -5,7 +5,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
-	[Obsolete("The [TabPanel] is now renamed to [TabContainer] attribute to avoid confusion with a web control with a similar name.")]
+	[Obsolete("The [TabPanel] is now renamed to [TabContainer] attribute to avoid confusion with a web control with a similar name.", true)]
 	public class TabPanelAttribute : TabContainerAttribute
 	{
 		public TabPanelAttribute(string name, string tabText, int sortOrder)

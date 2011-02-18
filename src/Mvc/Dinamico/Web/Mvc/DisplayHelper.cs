@@ -1,40 +1,64 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using N2.Definitions;
+using N2.Definitions.Runtime;
 using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
-	public class DisplayHelper<TModel>
+	public class DisplayHelper<TModel> : IContentRegistration
 	{
 		public HtmlHelper<TModel> Html { get; set; }
-		ContentItem CurrentItem { get; set; }
+		
+		string ContainerName { get; set; }
 
-		public DisplayHelper(HtmlHelper<TModel> html, ContentItem current)
+		public DisplayHelper(HtmlHelper<TModel> html)
 		{
 			this.Html = html;
-			this.CurrentItem = current;
 		}
 
-		public DisplayBuilder<T> Displayable<T>(string name) where T : IContainable, new()
+		public EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new()
 		{
-			var re = RegisterExtensions.GetRegistrationExpression(Html);
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
 			if (re != null)
 			{
-				re.Add(new T() { Name = name });
+				re.Add(new T(), name, title);
 			}
 
-			return new DisplayBuilder<T>(Html, name, re);
+			return new DisplayRenderer<T>(Html, name, re);
 		}
 
-		public EditorBuilder<T> Editable<T>(string name, string title = null, string container = null) where T : IEditable, new()
+		public IDisposable BeginContainer(string containerName)
 		{
-			var re = RegisterExtensions.GetRegistrationExpression(Html);
-			if (re != null)
+			this.ContainerName = containerName;
+			return new ResetOnDispose<TModel> { PreviousContainerName = ContainerName, Helper = this };
+		}
+
+		public void EndContainer()
+		{
+			this.ContainerName = null;
+		}
+
+		#region class ResetOnDispose<TModel>
+		class ResetOnDispose<TModel> : IDisposable
+		{
+			public string PreviousContainerName { get; set; }
+			public DisplayHelper<TModel> Helper { get; set; }
+
+			#region IDisposable Members
+
+			public void Dispose()
 			{
-				re.Container(container, r => r.Add(new T(), name, title));
+				Helper.ContainerName = PreviousContainerName;
 			}
 
-			return new EditorBuilder<T>(Html, name, re);
+			#endregion
+		}
+		#endregion
+
+		public DisplayRenderer<IEditable> this[string detailname]
+		{
+			get { return new DisplayRenderer<IEditable>(Html, detailname, RegistrationExtensions.GetRegistrationExpression(Html)); }
 		}
 	}
 

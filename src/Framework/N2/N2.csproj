@@ -149,6 +149,9 @@
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\Runtime\ContentRegistration.cs" />
+    <Compile Include="Definitions\Runtime\IRegistration.cs" />
+    <Compile Include="Definitions\Runtime\IContentRegistration.cs" />
     <Compile Include="Definitions\ICommentable.cs" />
     <Compile Include="Definitions\IContentPage.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
@@ -222,6 +225,17 @@
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableRendererSelector.cs" />
+    <Compile Include="Web\Mvc\Html\ContainerRegistrationExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ContentItemExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ControlPanelExtensions.cs" />
+    <Compile Include="Web\Mvc\Builder.cs" />
+    <Compile Include="Web\Mvc\Html\EditableRegistrationExtensions.cs" />
+    <Compile Include="Web\Mvc\EditableBuilder.cs" />
+    <Compile Include="Web\Mvc\Html\EngineExnteions.cs" />
+    <Compile Include="Web\Mvc\Html\RegistrationExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ResourcesExtensions.cs" />
     <Compile Include="Web\Mvc\IControllerMapper.cs" />
     <Compile Include="Web\Mvc\RequestContextExtensions.cs" />
     <Compile Include="Web\Mvc\RouteExtensions.cs" />
@@ -899,9 +913,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Definitions\Dynamic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

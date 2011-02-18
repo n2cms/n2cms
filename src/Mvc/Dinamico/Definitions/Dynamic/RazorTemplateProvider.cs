@@ -15,7 +15,7 @@ using N2.Persistence;
 using N2.Web.Mvc;
 using N2;
 using System.Diagnostics;
-using N2.Definitions.Dynamic;
+using N2.Definitions.Runtime;
 using System.Web.Hosting;
 using System.Web.Caching;
 
@@ -222,7 +222,7 @@ namespace Dinamico.Definitions.Dynamic
 			if (v.View == null)
 				return null;
 
-			var re = new DefinitionRegistrationExpression();
+			var re = new ContentRegistration();
 			re.Template = N2.Web.Url.RemoveExtension(file.Name);
 			re.IsDefined = false;
 

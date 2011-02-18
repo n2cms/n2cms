@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using N2.Resources;
+using System.IO;
 
 namespace N2.Web.Mvc.Html
 {
@@ -14,7 +15,7 @@ namespace N2.Web.Mvc.Html
 	{
 		public static ResourcesHelper Resources(this HtmlHelper html)
 		{
-			return new ResourcesHelper { Html = html };
+			return new ResourcesHelper { Writer = html.ViewContext.Writer, ViewData = html.ViewData };
 		}
 
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
@@ -41,23 +42,24 @@ namespace N2.Web.Mvc.Html
 
 		public class ResourcesHelper
 		{
-			internal HtmlHelper Html { get; set; }
+			internal TextWriter Writer { get; set; }
+			internal IDictionary<string, object> ViewData { get; set; }
 
 			public ResourcesHelper JavaScript(string resourceUrl)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewData, resourceUrl));
+				Writer.Write(N2.Resources.Register.JavaScript(ViewData, resourceUrl));
 				return this;
 			}
 
 			public ResourcesHelper JavaScript(string script, ScriptOptions options)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewData, script, options));
+				Writer.Write(N2.Resources.Register.JavaScript(ViewData, script, options));
 				return this;
 			}
 
 			public ResourcesHelper StyleSheet(string resourceUrl)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.StyleSheet(Html.ViewData, resourceUrl));
+				Writer.Write(N2.Resources.Register.StyleSheet(ViewData, resourceUrl));
 				return this;
 			}
 		}

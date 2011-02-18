@@ -8,7 +8,7 @@ using N2.Edit.FileSystem;
 using System.Web.Routing;
 using N2.Web.Mvc.Html;
 using Dinamico.Models;
-using N2.Definitions.Dynamic;
+using N2.Definitions.Runtime;
 
 namespace Dinamico.Controllers
 {
@@ -21,7 +21,7 @@ namespace Dinamico.Controllers
 		{
 			StringWriter sw = new StringWriter();
 			IFileSystem files = N2.Context.Current.Resolve<IFileSystem>();
-			List<DefinitionRegistrationExpression> expressions = new List<DefinitionRegistrationExpression>();
+			List<ContentRegistration> expressions = new List<ContentRegistration>();
 			foreach (var file in files.GetFiles("~/Views/DynamicPages/").Where(f => f.Name.EndsWith(".cshtml")))
 			{
 				var cctx = new ControllerContext(ControllerContext.HttpContext, new RouteData(), new DynamicPagesController());
@@ -33,7 +33,7 @@ namespace Dinamico.Controllers
 				else
 				{
 					var vdd = new ViewDataDictionary { Model = new DynamicPage() };
-					var re = new DefinitionRegistrationExpression();
+					var re = new ContentRegistration();
 					vdd["RegistrationExpression"] = re;
 					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
 					expressions.Add(re);

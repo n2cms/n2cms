@@ -5,19 +5,22 @@ using System.Web.Mvc;
 using N2.Definitions;
 using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
+using N2.Definitions.Runtime;
 
 namespace N2.Web.Mvc
 {
-	public class DisplayRenderer : IHtmlString
+	public class DisplayRenderer<T> : EditableBuilder<T>, IHtmlString, IWriter, IRenderer where T : IEditable
 	{
 		protected RenderingContext Context { get; set; }
 
-		public DisplayRenderer(RenderingContext context)
+		public DisplayRenderer(RenderingContext context, ContentRegistration registration)
+			: base(context.PropertyName, registration)
 		{
 			this.Context = context;
 		}
 
-		public DisplayRenderer(HtmlHelper html, string propertyName)
+		public DisplayRenderer(HtmlHelper html, string propertyName, ContentRegistration registration)
+			: base(propertyName, registration)
 		{
 			Context = new RenderingContext();
 			Context.Content = html.CurrentItem();

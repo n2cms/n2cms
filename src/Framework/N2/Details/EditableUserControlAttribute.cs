@@ -11,10 +11,12 @@ namespace N2.Details
     [AttributeUsage(AttributeTargets.Property)]
     public class EditableUserControlAttribute : AbstractEditableAttribute
     {
-		string editorPropertyName;
-		string userControlPath;
-
 		#region Constructors
+		/// <summary>Don't forget to set the UserControlpath if you use this constructor.</summary>
+		public EditableUserControlAttribute()
+		{
+		}
+
 		/// <summary>Initializes a new instance of the EditableAttribute class set to use a user control.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="userControlPath">The virtual path of a user control used for editing</param>
@@ -24,7 +26,7 @@ namespace N2.Details
 			: base(title, sortOrder)
 		{
 			this.UserControlPath = userControlPath;
-			this.editorPropertyName = editorPropertyName;
+			this.UserControlPropertyName = editorPropertyName;
 		}
 		/// <summary>Initializes a new instance of the EditableAttribute class set to use a user control.</summary>
 		/// <param name="title">The label displayed to editors</param>
@@ -34,7 +36,7 @@ namespace N2.Details
 			: base(title, sortOrder)
 		{
 			this.UserControlPath = userControlPath;
-			this.editorPropertyName = null;
+			this.UserControlPropertyName = null;
 		}
 		/// <summary>Initializes a new instance of the EditableAttribute class set to use a user control.</summary>
 		/// <param name="userControlPath">The virtual path of a user control used for editing</param>
@@ -43,17 +45,16 @@ namespace N2.Details
 			: base("", sortOrder)
 		{
 			this.UserControlPath = userControlPath;
-			this.editorPropertyName = null;
+			this.UserControlPropertyName = null;
 		}
 		#endregion
 
 		#region Properties
 		/// <summary>Gets or sets the virtual path of a user control. This property is only considered when ControlType is <see cref="System.Web.UI.UserControl"/>.</summary>
-		public string UserControlPath
-		{
-			get { return userControlPath; }
-			set { userControlPath = value; }
-		} 
+		public string UserControlPath { get; set; }
+		
+		/// <summary>The name of the property on the user control to get/set the value from/to.</summary>
+		public string UserControlPropertyName { get; set; }
 		#endregion
 
 
@@ -67,7 +68,7 @@ namespace N2.Details
 			else
 			{
 				var current = item[Name];
-				var updated = Utility.GetProperty(editor, editorPropertyName);
+				var updated = Utility.GetProperty(editor, UserControlPropertyName);
 				if (current == updated)
 					return false;
 
@@ -85,7 +86,7 @@ namespace N2.Details
 			}
 			else
 			{
-				Utility.SetProperty(editor, editorPropertyName, item[Name]);
+				Utility.SetProperty(editor, UserControlPropertyName, item[Name]);
 			}
 		}
 

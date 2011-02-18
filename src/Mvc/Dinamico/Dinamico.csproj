@@ -92,7 +92,6 @@
     <Compile Include="Controllers\StartPageController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TextPageController.cs" />
-    <Compile Include="Definitions\Dynamic\DefinitionRegistrationExpression.cs" />
     <Compile Include="Definitions\Dynamic\RazorTemplateProvider.cs" />
     <Compile Include="Definitions\Dynamic\TemplateSelectorAttribute.cs" />
     <Compile Include="Details\EditableThemeAttribute.cs" />
@@ -108,13 +107,13 @@
     <Compile Include="Web\Mvc\ContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
-    <Compile Include="Web\Mvc\DisplayBuilder.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
-    <Compile Include="Web\Mvc\EditorBuilder.cs" />
-    <Compile Include="Web\Mvc\Html\DisplayHelperExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\DisplayRendererExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
+    <Compile Include="Web\Mvc\IRenderer.cs" />
+    <Compile Include="Web\Mvc\IWriter.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
   </ItemGroup>
   <ItemGroup>

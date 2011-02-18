@@ -49,6 +49,11 @@ namespace N2.Definitions.Static
 			return definition;
 		}
 
+		public IEnumerable<ItemDefinition> GetDefinitions()
+		{
+			return definitions.Values.ToList();
+		}
+
 		public void SetDefinition(Type contentType, string templateName, ItemDefinition definition)
 		{
 			if (contentType == null) throw new ArgumentNullException("contentType");

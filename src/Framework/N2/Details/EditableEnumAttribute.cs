@@ -11,7 +11,10 @@ namespace N2.Details
     /// </remarks>
     public class EditableEnumAttribute : EditableDropDownAttribute
     {
-        Type enumType;
+		public EditableEnumAttribute()
+			: this("", 10, typeof(EmptyEnum))
+		{
+		}
 
 		public EditableEnumAttribute(Type enumType)
 			: this("", 10, enumType)
@@ -25,18 +28,21 @@ namespace N2.Details
             if (!enumType.IsEnum) throw new ArgumentException("The parameter 'enumType' is not a type of enum.", "enumType");
             
             Required = true;
-            this.enumType = enumType;
+            EnumType = enumType;
         }
+
+		/// <summary>The type of enum listed by this editor.</summary>
+		public Type EnumType { get; set; }
 
         protected override System.Web.UI.WebControls.ListItem[] GetListItems()
         {
-            Array values = Enum.GetValues(enumType);
+            Array values = Enum.GetValues(EnumType);
             ListItem[] items = new ListItem[values.Length];
             for (int i = 0; i < values.Length; i++)
 			{
                 int value = (int)values.GetValue(i);
-                string name = Utility.GetGlobalResourceString(enumType.Name, Enum.GetName(enumType, value)) 
-                    ?? Enum.GetName(enumType, value);
+                string name = Utility.GetGlobalResourceString(EnumType.Name, Enum.GetName(EnumType, value)) 
+                    ?? Enum.GetName(EnumType, value);
                 items[i] = new ListItem(name, value.ToString());
             }
             return items;
@@ -51,7 +57,7 @@ namespace N2.Details
 
             if (value is string)
                 // an enum as string we assume
-                return ((int)Enum.Parse(enumType, (string)value)).ToString();
+                return ((int)Enum.Parse(EnumType, (string)value)).ToString();
             
             if (value is int)
                 // an enum as int we hope
@@ -71,12 +77,16 @@ namespace N2.Details
 
         private object GetEnumValue(int value)
         {
-            foreach (object e in Enum.GetValues(enumType))
+            foreach (object e in Enum.GetValues(EnumType))
             {
                 if ((int)e == value)
                     return e;
             }
             return null;
         }
+
+		enum EmptyEnum
+		{
+		}
     }
 }

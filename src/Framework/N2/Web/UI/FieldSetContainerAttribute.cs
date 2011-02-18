@@ -5,7 +5,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
-	[Obsolete("The [FieldSet] attribute is renamed to [FieldSetContainer] attribute to conform with a redefined nomenclature.")]
+	[Obsolete("The [FieldSet] attribute is renamed to [FieldSetContainer] attribute to conform with a redefined nomenclature.", true)]
 	public class FieldSetAttribute : FieldSetContainerAttribute
 	{
 		public FieldSetAttribute(string name, string legend, int sortOrder)

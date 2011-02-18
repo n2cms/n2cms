@@ -53,10 +53,13 @@ namespace N2.Web.Mvc.Html
 		public static void RenderControlPanel(this HtmlHelper html)
 		{
 			var engine = html.ContentEngine();
+			var item = html.CurrentItem() ?? html.StartPage();
+
 			if (!engine.SecurityManager.IsEditor(html.ViewContext.HttpContext.User))
 				return;
+			if (RegistrationExtensions.GetRegistrationExpression(html) != null)
+				return;
 
-			var item = html.CurrentItem() ?? html.StartPage();
 			var state = ControlPanel.GetState(html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
 			var settings = new
 			{
@@ -69,7 +72,8 @@ namespace N2.Web.Mvc.Html
 			};
 
 			html.Resources().JQuery()
-				.JQueryPlugins().JQueryUi()
+				.JQueryPlugins()
+				.JQueryUi()
 				.JavaScript("{ManagementUrl}/Resources/Js/parts.js").StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
 			string controlPanelHtml = format.Replace(settings);

@@ -133,7 +133,7 @@ namespace N2.Web.Mvc
 
 		public DisplayHelper<TModel> Display
 		{
-			get { return new DisplayHelper<TModel>(Html, CurrentItem); }
+			get { return new DisplayHelper<TModel>(Html); }
 		}
 
 		public dynamic Data
