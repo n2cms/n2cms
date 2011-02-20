@@ -34,7 +34,7 @@ namespace N2.Web
 				DateTimeOffset since;
 				if (DateTimeOffset.TryParse(ifModifiedSince, out since))
 					foreach (string file in filePaths)
-						if (File.Exists(file) && File.GetLastWriteTimeUtc(file) < since)
+						if (file != null && File.Exists(file) && File.GetLastWriteTimeUtc(file) < since)
 							return true;
 			}
 			return false;

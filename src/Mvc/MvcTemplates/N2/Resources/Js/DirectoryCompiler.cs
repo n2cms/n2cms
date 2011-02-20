@@ -24,7 +24,11 @@ namespace N2.Edit.Js
 
 		public void ProcessRequest(HttpContext context)
 		{
-			this.Context = context;
+			if (context == null) throw new ArgumentNullException("context");
+			if (context.Request == null) throw new ArgumentNullException("context.Request");
+			if (context.Request.Headers == null) throw new ArgumentNullException("context.Request.Headers");
+			if (context.Response == null) throw new ArgumentNullException("context.Response");
+			if (context.Server == null) throw new ArgumentNullException("context.Server");
 
 			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
 			{
@@ -36,45 +40,76 @@ namespace N2.Edit.Js
 			var response = context.Response;
 
 			bool debug = Resources.Register.Debug;
-			if (!debug)
+			if (debug)
 			{
-				if (context.Request.Headers["Accept-Encoding"].Contains("gzip"))
-				{
-					response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
-					response.AppendHeader("Content-Encoding", "gzip");
-				}
-				else if (context.Request.Headers["Accept-Encoding"].Contains("deflate"))
-				{
-					response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
-					response.AppendHeader("Content-Encoding", "deflate");
-				}
-			}
-
-			foreach (var file in GetFiles(context))
-			{
-				if (debug)
+				foreach (var file in GetFiles(context))
 				{
 					response.Write(Environment.NewLine
 						+ Environment.NewLine
 						+ "/*** " + file.Name + " ***/"
 						+ Environment.NewLine);
-				}
-				response.Write(Environment.NewLine);
+					
+					response.Write(Environment.NewLine);
 
-				foreach (var line in ReadLines(file))
-				{
-					if (debug)
-						response.Write(line);
-					else
+					foreach (var line in ReadLines(file))
 					{
-						string trimmed = line.Trim(' ', '\t');
-						if (trimmed.Length > 0 && !trimmed.StartsWith("//"))
-						{
-							response.Write(trimmed);
-							response.Write(Environment.NewLine);
-						}
+						response.Write(line);
+						response.Write(Environment.NewLine);
 					}
 				}
+			}
+			else
+			{
+				SetResponseFilter(context, response);
+				foreach (var file in GetFiles(context))
+				{
+					response.Write(Environment.NewLine);
+
+					bool commenting = false;
+					foreach (var line in ReadLines(file))
+					{
+						WriteLine(response, line, ref commenting);
+					}
+				}
+			}
+		}
+
+		private static void SetResponseFilter(HttpContext context, HttpResponse response)
+		{
+			string acceptEncoding = context.Request.Headers["Accept-Encoding"] ?? "";
+			if (acceptEncoding.Contains("gzip"))
+			{
+				response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+				response.AppendHeader("Content-Encoding", "gzip");
+			}
+			else if (acceptEncoding.Contains("deflate"))
+			{
+				response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+				response.AppendHeader("Content-Encoding", "deflate");
+			}
+		}
+
+		private static void WriteLine(HttpResponse response, string line, ref bool commenting)
+		{
+			string trimmed = line.Trim(' ', '\t');
+			if (commenting)
+			{
+				var endCommentIndex = trimmed.IndexOf("*/");
+				if (endCommentIndex >= 0)
+				{
+					commenting = false;
+					response.Write(trimmed.Substring(endCommentIndex + 2));
+					response.Write(Environment.NewLine);
+				}
+			}
+			else if (trimmed.StartsWith("/*"))
+			{
+				commenting = true;
+			}
+			else if (trimmed.Length > 0 && !trimmed.StartsWith("//"))
+			{
+				response.Write(trimmed);
+				response.Write(Environment.NewLine);
 			}
 		}
 
@@ -97,7 +132,9 @@ namespace N2.Edit.Js
 			{
 				foreach (VirtualFile file in vpp.GetDirectory(FolderUrl).Files)
 				{
-					if(FileMasks.Any(m => Regex.IsMatch(file.Name, m.Replace(".", "[.]").Replace("*", ".*") + "$")))
+					if (file == null)
+						continue;
+					if(FileMasks.Any(m => Regex.IsMatch(file.Name, m.Replace(".", "[.]").Replace("*", ".*") + "$", RegexOptions.Compiled | RegexOptions.IgnoreCase)))
 						yield return file;
 				}
 			}
@@ -126,7 +163,5 @@ namespace N2.Edit.Js
 		protected virtual string[] FileMasks { get { return new[] { "*.js" }; } }
 
 		protected virtual string ContentType { get { return "text/plain"; } }
-		
-		protected HttpContext Context { get; private set; }
 	}
 }
