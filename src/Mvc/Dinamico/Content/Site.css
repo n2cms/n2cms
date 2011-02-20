@@ -83,62 +83,62 @@ first child of the left and right table columns */
 /* PRIMARY LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
-/* you can specify a greater or lesser percentage for the 
-page width. Or, you can specify an exact pixel width. */
-.page
+#page
 {
-    width: 90%;
+    width: 900px;
     margin-left: auto;
     margin-right: auto;
 }
+	#header
+	{
+	}
+		#topnav
+		{
+			font-size:1.1em;
+			color:#ccc;
+			margin:10px;
+		}
+			#topnav a:link,
+			#topnav a:visited
+			{
+				color:#eee;
+				margin-right:10px;
+			}
 
-#header
-{
-    position: relative;
-    margin-bottom: 0px;
-    color: #000;
-    padding: 0;
-}
+		#menucontainer
+		{
+			padding-top:40px;
+		}
 
-#header h1
-{
-    font-weight: bold;
-    padding: 5px 0;
-    margin: 0;
-    color: #fff;
-    border: none;
-    line-height: 2em;
-    font-size: 32px !important;
-}
 
-#main
-{
-    padding: 30px 30px 15px 30px;
-    background-color: #fff;
-    margin-bottom: 30px;
-    _height: 1px; /* only IE6 applies CSS properties starting with an underscore */
-}
+	#main
+	{
+		padding: 30px 30px 15px 30px;
+		background-color: #fff;
+		margin-bottom: 30px;
+		_height: 1px; /* only IE6 applies CSS properties starting with an underscore */
+	}
 
-#sidebar
-{
-	width:200px;
-	float:left;
-}
+		#sidebar
+		{
+			width:200px;
+			float:left;
+		}
 
-#content
-{
-	margin-left:220px;
-}
+		#content
+		{
+			margin-left:220px;
+		}
 
-#footer
-{
-    color: #999;
-    padding: 10px 0;
-    text-align: center;
-    line-height: normal;
-    margin: 0;
-    font-size: .9em;
-}
+		#footer
+		{
+			color: #999;
+			padding: 10px 0;
+			text-align: center;
+			line-height: normal;
+			margin: 0;
+			font-size: .9em;
+		}
 
 /* TAB MENU   
 ----------------------------------------------------------*/
@@ -279,35 +279,30 @@ table th
     color:Red;
 }
 
-#menucontainer
-{
-    margin-top:40px;
-}
 
-div#title
+.results
 {
-    display:block;
-    float:left;
-    text-align:left;
+	position:absolute;
+	z-index:1000;
+	background-color:#46351C;
+	list-style-type:none;
+	text-align:left;
+	max-height:500px;
+	width:200px;
+	overflow:auto;
+	padding:5px;
 }
-
-#topnav
-{
-    font-size:1.1em;
-    display:block;
-    text-align:right;
-    margin:10px;
-    color:#ccc;
-    position:relative;
-}
-
-#topnav a:link,
-#topnav a:visited
-{
-    color:#eee;
-    margin-right:10px;
-}
-
+	.results ul
+	{
+		list-style-type:none;
+		padding:0;
+		margin:0;
+	}
+		.results ul li a
+		{
+			display:block;
+		}
+			
 #logon.anonymous a
 {
 	padding-left:20px;
@@ -381,7 +376,7 @@ div#title
 		padding-left:20px;
 		margin:0 5px;
 	}
-	#sitemapresults
+	.sitemapresults
 	{
 		position:absolute;
 		z-index:1000;
@@ -394,20 +389,19 @@ div#title
 		overflow:auto;
 		padding:5px;
 	}
-		#sitemapresults ul
+		.sitemapresults ul ul
 		{
 			padding-left:20px;
-			list-style-type:none;
 			margin:0;
 		}
-		#sitemapresults a
-		{
-			display:block;
-		}
-		#sitemapresults > li > a
-		{
-			font-weight:bold;
-		}
+			.sitemapresults ul a
+			{
+				display:block;
+			}
+			.sitemapresults > ul > li > a
+			{
+				font-weight:bold;
+			}
 
 
 
@@ -417,33 +411,6 @@ div#title
 	display:inline-block;
 	position:relative;
 }
-	#translationsresults
-	{
-		position:absolute;
-		z-index:1000;
-		right:0;
-		background-color:#46351C;
-		list-style-type:none;
-		text-align:left;
-		max-height:500px;
-		min-width:200px;
-		overflow:auto;
-		padding:5px;
-	}
-		#translationsresults ul
-		{
-			padding-left:20px;
-			list-style-type:none;
-			margin:0;
-		}
-		#translationsresults a
-		{
-			display:block;
-		}
-		#translationsresults > li > a
-		{
-			font-weight:bold;
-		}
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error

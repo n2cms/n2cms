@@ -12,6 +12,7 @@ using N2;
 using System.Text.RegularExpressions;
 using System.Web.Security;
 using N2.Engine.Globalization;
+using N2.Definitions;
 
 namespace Dinamico.Controllers
 {
@@ -25,16 +26,16 @@ namespace Dinamico.Controllers
 
 		public ActionResult SiteMap()
 		{
-			string content = Tree.From(N2.Find.StartPage)
+			string content = Tree.From(N2.Find.Closest<IStartPage>(CurrentPage) as ContentItem)
 				.Filters(new NavigationFilter())
 				.ExcludeRoot(true).ToString();
-			return Content(content);
+			return Content("<ul>" + content + "</ul>");
 		}
 
 		public ActionResult Search(string q)
 		{
 			if (string.IsNullOrWhiteSpace(q))
-				return Content("<li>A search term is required</li>");
+				return Content("<ul><li>A search term is required</li></ul>");
 
 			var s = Find.NH.FullText(q);
 
@@ -53,9 +54,9 @@ namespace Dinamico.Controllers
 			}
 			
 			if (results.Length == 0)
-				return Content("<li>No hits</li>");
+				return Content("<ul><li>No hits</li></ul>");
 
-			return Content(results.ToString());
+			return Content("<ul>" + results + "</ul>");
 		}
 
 		public ActionResult Translations(int id)
@@ -68,9 +69,9 @@ namespace Dinamico.Controllers
 				sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
 
 			if (sb.Length == 0)
-				return Content("<li>This page is not translated</li>");
+				return Content("<ul><li>This page is not translated</li></ul>");
 
-			return Content(sb.ToString());
+			return Content("<ul>" + sb + "</ul>");
 		}
 	}
 }

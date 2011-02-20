@@ -1,0 +1,10 @@
+﻿<span id="translations">
+	@{ if(Content.CurrentLanguage != null)
+	{
+		<a id="translationsopener" href="@Url.Action("Translations", new { item = Content.StartPage, id = Content.CurrentPage.ID })">
+			<img src="@Content.CurrentLanguage.FlagUrl" alt="@Content.CurrentLanguage.LanguageCode" />
+			@Content.CurrentLanguage.LanguageTitle.Split('(')[0]
+		</a>
+	}
+	}
+</span>

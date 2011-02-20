@@ -16,11 +16,8 @@
 </head>
 <body>
 	@{ Html.RenderControlPanel(); }
-	<div class="page">
+	<div id="page">
 		<div id="header">
-			<div id="title">
-				<h1>My MVC Application</h1>
-			</div>
 			<div id="topnav">
 				@Html.Partial("TopPartials/_LogOn")
 				@Html.Partial("TopPartials/_SiteMap")
