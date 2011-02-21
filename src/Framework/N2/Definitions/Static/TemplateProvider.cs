@@ -40,7 +40,7 @@ namespace N2.Definitions.Static
 			{
 				Definition = itemDefinition,
 				Description = itemDefinition.Description,
-				Name = itemDefinition.Discriminator,
+				Name = null,
 				Title = itemDefinition.Title
 			};
 		}

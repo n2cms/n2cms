@@ -29,6 +29,7 @@ namespace N2.Definitions.Runtime
 		public string Template { get; set; }
 		public string Title { get; set; }
 		public bool IsDefined { get; set; }
+		public bool ReplaceDefault { get; set; }
 
 
 

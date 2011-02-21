@@ -182,6 +182,7 @@ namespace Dinamico.Definitions.Dynamic
 					td.Template["TemplateName"] = d.Template;
 					td.TemplateUrl = null;
 					td.Title = d.Title;
+					td.ReplaceDefault = "Index".Equals(d.Template, StringComparison.InvariantCultureIgnoreCase);
 					return td;
 				}).ToArray();
 

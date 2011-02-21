@@ -30,6 +30,9 @@ namespace N2.Definitions
 		/// <summary>The item definition of the template.</summary>
 		public ItemDefinition Definition { get; set; }
 
+		/// <summary>Replace the defualt template.</summary>
+		public bool ReplaceDefault { get; set; }
+
 		#region Equals & GetHashCode
 
 		public override bool Equals(object obj)

@@ -13,17 +13,19 @@ namespace N2.Web.Parts
 	public class CreateUrlProvider : PartsAjaxService
 	{
         readonly IPersister persister;
-		readonly IEditUrlManager editUrlManager;
+		readonly IEditUrlManager managementPaths;
 		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
+		readonly ITemplateProvider[] templates;
         readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ITemplateProvider[] templates, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
 			: base(dispatcher)
 		{
             this.persister = persister;
-			this.editUrlManager = editUrlManager;
+			this.managementPaths = editUrlManager;
 			this.definitions = definitions;
+			this.templates = templates;
 			this.activator = activator;
             this.navigator = navigator;
 		}
@@ -37,28 +39,29 @@ namespace N2.Web.Parts
 		{
 			NameValueCollection response = new NameValueCollection();
 
-            ItemDefinition definition = GetDefinition(request["discriminator"]);
-			if (definition.Editables.Count > 0)
+			var template = GetTemplate(request["discriminator"], request["template"]);
+			if (template.Definition.Editables.Count > 0)
 			{
-				response["redirect"] = GetRedirectUrl(definition, request);
+				response["redirect"] = GetRedirectUrl(template, request);
 				response["dialog"] = "yes";
 			}
 			else
 			{
 				response["redirect"] = request["returnUrl"];
 				response["dialog"] = "no";
-				CreateItem(definition, request);
+				CreateItem(template, request);
 			}
 
 			return response;
 		}
 
-        private void CreateItem(ItemDefinition definition, NameValueCollection request)
+		private void CreateItem(TemplateDefinition template, NameValueCollection request)
         {
             ContentItem parent = navigator.Navigate(request["below"]);
-
-			ContentItem item = activator.CreateInstance(definition.ItemType, parent);
+			
+			ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
             item.ZoneName = request["zone"];
+			item["TemplateName"] = template.Name;
             
             string before = request["before"];
             if (!string.IsNullOrEmpty(before))
@@ -74,7 +77,7 @@ namespace N2.Web.Parts
             persister.Save(item);
         }
 
-		private string GetRedirectUrl(ItemDefinition definition, NameValueCollection request)
+		private string GetRedirectUrl(TemplateDefinition template, NameValueCollection request)
 		{
 			string zone = request["zone"];
 
@@ -85,12 +88,12 @@ namespace N2.Web.Parts
 			if (!string.IsNullOrEmpty(before))
 			{
                 ContentItem beforeItem = navigator.Navigate(before);
-                url = editUrlManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
+				url = managementPaths.GetEditNewPageUrl(beforeItem, template.Definition, zone, CreationPosition.Before);
 			}
 			else
 			{
                 ContentItem parent = navigator.Navigate(below);
-                url = editUrlManager.GetEditNewPageUrl(parent, definition, zone, CreationPosition.Below);
+				url = managementPaths.GetEditNewPageUrl(parent, template.Definition, zone, CreationPosition.Below);
 			}
 
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
@@ -98,16 +101,17 @@ namespace N2.Web.Parts
 			return url;
 		}
 
-		private ItemDefinition GetDefinition(string discriminator)
+		private TemplateDefinition GetTemplate(string discriminator, string templateName)
 		{
-			foreach (ItemDefinition definition in definitions.GetDefinitions())
-			{
-				if (definition.Discriminator == discriminator)
-				{
-					return definition;
-				}
-			}
-			throw new N2Exception("Definition not found: " + discriminator);
+			return templates.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateName);
+			//foreach (ItemDefinition definition in definitions.GetDefinitions())
+			//{
+			//    if (definition.Discriminator == discriminator)
+			//    {
+			//        return definition;
+			//    }
+			//}
+			//throw new N2Exception("Definition not found: " + discriminator);
 		}
 	}
 }

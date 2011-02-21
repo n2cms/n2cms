@@ -25,16 +25,24 @@ namespace N2.Definitions
 	{
 		public static IEnumerable<TemplateDefinition> GetTemplates(this IEnumerable<ITemplateProvider> providers, Type contentType)
 		{
-			return providers.SelectMany(tp => tp.GetTemplates(contentType));
+			var templates = providers.SelectMany(tp => tp.GetTemplates(contentType)).ToList();
+			if (!templates.Any(t => t.ReplaceDefault))
+				return templates;
+			return templates.Where(t => t.Name != null).ToList();
 		}
+
 		public static TemplateDefinition GetTemplate(this IEnumerable<ITemplateProvider> providers, Type contentType, string templateName)
 		{
-			return providers.GetTemplates(contentType).FirstOrDefault(td => td.Name == templateName);
+			return providers
+				.SelectMany(tp => tp.GetTemplates(contentType))
+				.FirstOrDefault(td => td.Name == templateName);
 		}
+
 		public static TemplateDefinition GetTemplate(this IEnumerable<ITemplateProvider> providers, ContentItem item)
 		{
 			return providers.Select(tp => tp.GetTemplate(item)).FirstOrDefault(t => t != null);
 		}
+
 		public static ItemDefinition GetDefinition(this IEnumerable<ITemplateProvider> providers, ContentItem item)
 		{
 			var template = providers.GetTemplate(item);

@@ -131,6 +131,7 @@
 					ctrlKey: e.ctrlKey,
 					item: $draggable.attr("data-item"),
 					discriminator: $draggable.attr("data-type"),
+					template: $draggable.attr("data-template"),
 					before: $droppable.filter(".before").next().attr("data-item") || "",
 					below: $droppable.closest(".dropZone").attr("data-item"),
 					zone: $droppable.closest(".dropZone").attr("data-zone"),

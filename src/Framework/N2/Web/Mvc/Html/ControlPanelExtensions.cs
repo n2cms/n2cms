@@ -113,11 +113,20 @@ namespace N2.Web.Mvc.Html
 			{
 				StringBuilder sb = new StringBuilder();
 
-				foreach (var d in ControlPanel.GetPartDefinitions(engine.ResolveAdapter<PartsAdapter>(item), item, null, html.ViewContext.HttpContext.User))
+				var a = engine.ResolveAdapter<PartsAdapter>(item);
+				foreach (var d in ControlPanel.GetPartDefinitions(a, item, null, html.ViewContext.HttpContext.User))
 				{
-					sb.AppendFormat(
-						"<div id='{0}' title='{1}' data-type='{2}' class='{3}'>{4}</div>",
-						d.Discriminator, d.ToolTip, d.Discriminator, "definition " + d.Discriminator, ControlPanel.FormatImageAndText(d.IconUrl, d.Title));
+					foreach (var t in a.GetTemplates(item, d))
+					{
+						sb.AppendFormat(
+							"<div id='{0}' title='{1}' data-type='{2}' data-template='{3}' class='{4}'>{5}</div>",
+								/*{0}*/ t.Definition.ToString().Replace('/', '-'),
+								/*{1}*/ t.Description,
+								/*{2}*/ t.Definition.Discriminator,
+								/*{3}*/ t.Name,
+								/*{4}*/ "definition " + t.Definition.Discriminator,
+								/*{5}*/ ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Title));
+					}
 				}
 
 				if (sb.Length > 0)

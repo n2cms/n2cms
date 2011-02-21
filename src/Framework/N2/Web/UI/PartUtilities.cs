@@ -14,6 +14,7 @@ namespace N2.Web.UI
 	public class PartUtilities
 	{
 		public const string TypeAttribute = "data-type";
+		public const string TemplateAttribute = "data-template";
 		public const string PathAttribute = "data-item";
 		public const string ZoneAttribute = "data-zone";
 		public const string AllowedAttribute = "data-allowed";

@@ -106,6 +106,8 @@ namespace N2.Web.UI.WebControls
 					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}
+				if (currentItem.ZoneName != ZoneName)
+					currentItem.ZoneName = ZoneName;
 				return currentItem;
 			}
 			set

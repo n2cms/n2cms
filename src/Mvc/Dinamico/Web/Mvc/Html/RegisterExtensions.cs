@@ -22,7 +22,8 @@ namespace N2.Web.Mvc.Html
 					re.Title = typeof(T).Name;
 				}
 				re.IsDefined = true;
-				registration(re);
+				if(registration != null)
+					registration(re);
 			}
 			return re;
 		}

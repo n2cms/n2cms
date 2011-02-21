@@ -20,6 +20,7 @@ namespace N2.Web.Parts
 		IWebContext webContext;
 		IPersister persister;
 		IDefinitionManager definitions;
+		ITemplateProvider[] templates;
 
 		public IPersister Persister
 		{
@@ -43,6 +44,12 @@ namespace N2.Web.Parts
 		{
 			get { return definitions ?? engine.Definitions; }
 			set { definitions = value; }
+		}
+
+		public ITemplateProvider[] Templates
+		{
+			get { return templates ?? engine.Container.ResolveAll<ITemplateProvider>(); }
+			set { templates = value; }
 		}
 
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
@@ -124,6 +131,11 @@ namespace N2.Web.Parts
 		protected virtual string GetTemplateUrl(ContentItem item)
 		{
 			return item.FindPath(PathData.DefaultAction).TemplateUrl;
+		}
+
+		public virtual IEnumerable<TemplateDefinition> GetTemplates(ContentItem item, ItemDefinition definition)
+		{
+			return Templates.GetTemplates(definition.ItemType);
 		}
 	}
 }

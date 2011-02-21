@@ -206,7 +206,7 @@ namespace N2.Edit
 
 		public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
 		{
-			return TemplateProviders.SelectMany(t => t.GetTemplates(definition.ItemType)).OrderBy(t => t.Definition.Template == null ? 0 : 1);
+			return TemplateProviders.GetTemplates(definition.ItemType).OrderBy(t => t.Definition.Template == null ? 0 : 1);
 		}
 
 		private void LoadZones()
