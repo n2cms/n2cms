@@ -3,11 +3,12 @@ The base color for this template is #5c87b2. If you'd like
 to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
+html,body { height:100%; overflow:auto; }
 body
 {
     background-color: #5c87b2;
-    font-size: 75%;
     font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    font-size: 80%;
     margin: 0;
     padding: 0;
     color: #696969;
@@ -94,20 +95,28 @@ first child of the left and right table columns */
 	}
 		#topnav
 		{
+			background-color:#fff;
 			font-size:1.1em;
 			color:#ccc;
-			margin:10px;
+			text-align:right;
+			float:right;
+			padding:2px 4px;
+			
+			-moz-border-radius-bottomleft: 2px 2px;
+			-moz-border-radius-bottomright: 2px 2px;
+			border-bottom-left-radius: 2px 2px;
+			border-bottom-right-radius: 2px 2px;
+			
+			border:solid 1px silver;
+			border-top:none;
 		}
-			#topnav a:link,
-			#topnav a:visited
+			#topnav span
 			{
-				color:#eee;
-				margin-right:10px;
+				margin-left:10px;
 			}
 
 		#menucontainer
 		{
-			padding-top:40px;
 		}
 
 
@@ -117,6 +126,10 @@ first child of the left and right table columns */
 		background-color: #fff;
 		margin-bottom: 30px;
 		_height: 1px; /* only IE6 applies CSS properties starting with an underscore */
+		-moz-border-radius-bottomleft: 2px 2px;
+		-moz-border-radius-bottomright: 2px 2px;
+		border-bottom-left-radius: 2px 2px;
+		border-bottom-right-radius: 2px 2px;
 	}
 
 		#sidebar
@@ -142,73 +155,84 @@ first child of the left and right table columns */
 
 /* TAB MENU   
 ----------------------------------------------------------*/
-ul.menu
+#menucontainer
 {
-    border-bottom: 1px #5C87B2 solid;
-    padding: 0 0 2px;
-    position: relative;
-    margin: 0;
-    text-align: right;
+	padding-top:50px;
 }
+	ul.menu
+	{
+		padding: 1px 0;
+		margin: 0;
+		display:block;
+		background-color:#fff;
+		border-bottom:solid 1px #ddd;
+	}
+	ul.level1
+	{
+		-moz-border-radius-topleft: 2px 2px;
+		-moz-border-radius-topright: 2px 2px;
+		border-top-left-radius: 2px 2px;
+		border-top-right-radius: 2px 2px;	
+	}
 
-ul.menu li
-{
-    display: inline;
-    list-style: none;
-}
+		ul.menu li
+		{
+			display: inline;
+			list-style: none;
+		}
 
-ul.menu li#greeting
-{
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    color: #fff;
-}
+		ul.menu li#greeting
+		{
+			padding: 10px 20px;
+			font-weight: bold;
+			text-decoration: none;
+			line-height: 2.8em;
+			color: #fff;
+		}
 
-ul.menu li a
-{
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
-}
+			ul.menu li a
+			{
+				padding: 10px 20px;
+				font-weight: bold;
+				text-decoration: none;
+				line-height: 2.8em;
+				background-color: #e8eef4;
+				color: #034af3;
+			}
 
-ul.menu li a:hover
-{
-    background-color: #fff;
-    text-decoration: none;
-}
+			ul.menu li a:hover
+			{
+				background-color: #fff;
+				text-decoration: none;
+			}
 
-ul.menu li a:active
-{
-    background-color: #a6e2a6;
-    text-decoration: none;
-}
+			ul.menu li a:active
+			{
+				background-color: #a6e2a6;
+				text-decoration: none;
+			}
 
-ul.menu li.selected a
-{
-    background-color: #fff;
-    color: #000;
-}
+			ul.menu li.selected a
+			{
+				background-color: #fff;
+				color: #000;
+			}
 
-ul.menu li a.trail
-{
-    color: #333;
-}
-ul.menu li a.current
-{
-    background-color: #fff;
-    color: #000;
-}
-ul.submenu li a
-{
-	font-size:.9em;
-    line-height: 2em;
-    padding: 5px 20px;
-}
+			ul.menu li a.trail
+			{
+				color: #333;
+			}
+			ul.menu li a.current
+			{
+				background-color: #fff;
+				color: #000;
+			}
+			ul.submenu li a
+			{
+				font-size:.9em;
+				line-height: 2em;
+				padding: 5px 20px;
+			}
 
 
 /* FORM LAYOUT ELEMENTS   
@@ -284,13 +308,20 @@ table th
 {
 	position:absolute;
 	z-index:1000;
-	background-color:#46351C;
+	background-color:#fff;
 	list-style-type:none;
 	text-align:left;
 	max-height:500px;
 	width:200px;
 	overflow:auto;
 	padding:5px;
+	-moz-border-radius-bottomleft: 2px 2px;
+	-moz-border-radius-bottomright: 2px 2px;
+	border-bottom-left-radius: 2px 2px;
+	border-bottom-right-radius: 2px 2px;
+	border:solid 1px silver;
+	border-top:none;
+	margin-top:5px;
 }
 	.results ul
 	{
@@ -325,14 +356,15 @@ table th
 		display:inline-block;
 		width:100px;
 		height:18px;
-		padding:1px;
 		border:none;
 		vertical-align:middle;
-		color:#ccc;
+		color:#999;
+		border:solid 1px #eee;
 	}
 	#searchform input:focus
 	{
-		color:#fff;
+		color:#333;
+		border-color:#ccc;
 	}
 
 	#searchform button
@@ -347,19 +379,6 @@ table th
 		vertical-align:middle;
 	}
 	
-	#searchresults
-	{
-		position:absolute;
-		z-index:1000;
-		right:0;
-		background:#46351C;
-		list-style-type:none;
-		padding:5px;
-		margin:4px 0;
-		max-height:500px;
-		min-width:200px;
-		text-align:left;
-	}
 		#searchresults a
 		{
 			display:block;
@@ -375,19 +394,6 @@ table th
 		background:transparent url(/N2/Resources/icons/sitemap_color.png) no-repeat;
 		padding-left:20px;
 		margin:0 5px;
-	}
-	.sitemapresults
-	{
-		position:absolute;
-		z-index:1000;
-		right:0;
-		background-color:#46351C;
-		list-style-type:none;
-		text-align:left;
-		max-height:500px;
-		min-width:200px;
-		overflow:auto;
-		padding:5px;
 	}
 		.sitemapresults ul ul
 		{

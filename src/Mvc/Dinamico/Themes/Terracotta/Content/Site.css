@@ -4,12 +4,16 @@ body
 {
     background:#ac3400 url(fade.png) no-repeat 50% 0;
 }
-
-	#searchform input
+h1
+{
+	color: #46351C;
+}
+	ul.menu
 	{
-		background-color:#bc5420;
+		border-color: #2EB67E;
 	}
-	#searchform input:focus
-	{
-		background-color:#cc7440;
-	}
+		ul.menu li a
+		{
+			color: #2EB67E;
+			background-color:transparent;
+		}
