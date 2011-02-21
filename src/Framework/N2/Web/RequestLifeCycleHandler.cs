@@ -5,6 +5,7 @@ using N2.Edit;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Web.UI;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -197,6 +198,7 @@ namespace N2.Web
 			{
 				return;
 			}
+			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
 			webContext.Response.Redirect(redirectUrl);
 		}
 	}
