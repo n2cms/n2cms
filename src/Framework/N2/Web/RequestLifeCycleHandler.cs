@@ -89,10 +89,10 @@ namespace N2.Web
 				if (webContext.IsWeb)
 				{
 					string dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
-					if (checkInstallation)
-						CheckInstallation();
 					Url.SetToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
 					Url.SetToken("{IconsUrl}", Url.ResolveTokens(Url.ManagementUrlToken + "/Resources/icons"));
+					if (checkInstallation)
+						CheckInstallation();
 				}
 			}
 
