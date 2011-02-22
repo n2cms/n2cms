@@ -1,4 +1,4 @@
-﻿@model IEnumerable<N2.Definitions.Runtime.DefinitionRegistrationExpression>
+﻿@model IEnumerable<N2.Definitions.Runtime.ContentRegistration>
 @{
     ViewBag.Title = "Index";
 }
@@ -9,7 +9,7 @@
 <h2>@re.Title</h2>
 
 <ul>
-	<li>@re.ItemType</li>
+	<li>@re.ContentType</li>
 @foreach (var c in re.Containables.OfType<N2.Definitions.IEditableContainer>().OrderBy(c => c.SortOrder))
 {
 	<li>
@@ -25,6 +25,10 @@
 @foreach (var e in re.Containables.OfType<N2.Definitions.IEditable>().Where(e => e.ContainerName == null).OrderBy(e => e.SortOrder))
 {
 	<li>@e.Name (@e.SortOrder)</li>
+}
+@foreach (var tp in re.TouchedPaths)
+{
+	<li>@tp</li>
 }
 </ul>
 }

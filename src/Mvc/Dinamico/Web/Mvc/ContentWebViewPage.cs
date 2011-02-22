@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -12,7 +13,7 @@ namespace N2.Web.Mvc
 
 		public ContentHelper<TModel> Content
 		{
-			get { return content ?? (content = new ContentHelper<TModel>(this.Html)); }
+			get { return content ?? (content = this.Html.Content()); }
 			set { content = value; }
 		}
 	}

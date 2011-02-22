@@ -164,7 +164,7 @@ namespace Dinamico.Definitions.Dynamic
 				var pairs = BuildDefinitions(vpp, httpContext).ToList();
 				definitions = pairs.Select(p => p.Definition).ToList();
 
-				var files = pairs.Select(p => p.VirtualPath).ToList();
+				var files = pairs.SelectMany(p => p.VirtualPaths).Distinct().ToList();
 				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
 				httpContext.Cache.Remove(cacheKey);
@@ -209,12 +209,12 @@ namespace Dinamico.Definitions.Dynamic
 				{
 					var definition = GetDefinition(httpContext, file, source.ControllerName, source.ModelType);
 					if (definition != null)
-						yield return new RazorFileDefinition { Definition = definition, VirtualPath = file.VirtualPath };
+						yield return definition;
 				}
 			}
 		}
 
-		private ItemDefinition GetDefinition(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
+		private RazorFileDefinition GetDefinition(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
 		{
 			var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
 			cctx.RouteData.Values.Add("controller", controllerName);
@@ -232,11 +232,16 @@ namespace Dinamico.Definitions.Dynamic
 				using (StringWriter sw = new StringWriter())
 				{
 					var vdd = new ViewDataDictionary { Model = modelType != null ? Activator.CreateInstance(modelType) : new StubItem() };
+					cctx.Controller.ViewData = vdd;
 					vdd["RegistrationExpression"] = re;
 					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
 
 					if (re.IsDefined)
-						return re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance);
+						return new RazorFileDefinition 
+						{
+							Definition = re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance), 
+							VirtualPaths = new [] { file.VirtualPath }.Union(re.TouchedPaths)
+						};
 				}
 			}
 			catch (Exception ex)
@@ -267,7 +272,7 @@ namespace Dinamico.Definitions.Dynamic
 
 		class RazorFileDefinition
 		{
-			public string VirtualPath { get; set; }
+			public IEnumerable<string> VirtualPaths { get; set; }
 			public ItemDefinition Definition { get; set; }
 		}
 

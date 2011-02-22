@@ -61,7 +61,11 @@ namespace N2.Web.Mvc.Html
 
 		public static ContentHelper<TModel> Content<TModel>(this HtmlHelper<TModel> html) where TModel: class
 		{
-			return new ContentHelper<TModel>(html);
+			string key = "ContentHelperOf" + typeof(TModel).Name;
+			var content = html.ViewContext.ViewData[key] as ContentHelper<TModel>;
+			if(content == null)
+				html.ViewContext.ViewData[key] = content = new ContentHelper<TModel>(html);
+			return content;
 		}
 	}
 }

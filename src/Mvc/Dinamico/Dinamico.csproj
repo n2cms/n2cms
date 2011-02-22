@@ -112,11 +112,13 @@
     <Compile Include="Web\Mvc\DataHelper.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
+    <Compile Include="Web\Mvc\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\DisplayRendererExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\IRenderer.cs" />
     <Compile Include="Web\Mvc\IWriter.cs" />
+    <Compile Include="Web\Mvc\RegistrationViewEngineDecorator.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Web\Mvc\TraverseHelper.cs" />
   </ItemGroup>

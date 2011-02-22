@@ -13,6 +13,7 @@ namespace N2.Definitions.Runtime
 		public ContentRegistration()
 		{
 			Containables = new Dictionary<string, IUniquelyNamed>();
+			TouchedPaths = new List<string>();
 			DefaultSortIncrement = 10;
 		}
 
@@ -20,6 +21,7 @@ namespace N2.Definitions.Runtime
 
 		public Type ContentType { get; set; }
 		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
+		public ICollection<string> TouchedPaths { get; private set; }
 		public string ContainerName { get; set; }
 		public int CurrentSortOrder { get; set; }
 		public int GlobalSortOffset { get; set; }

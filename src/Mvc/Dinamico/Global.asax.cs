@@ -47,7 +47,8 @@ namespace Dinamico
 
 		public static void RegisterViewEngines(ViewEngineCollection viewEngines)
 		{
-			viewEngines.Insert(0, new ThemeViewEngine<RazorViewEngine>());
+			viewEngines.RegisterThemeViewEngine<RazorViewEngine>();
+			viewEngines.WrapForTemplateRegistration();
 		}
 
 		protected void Application_Start()

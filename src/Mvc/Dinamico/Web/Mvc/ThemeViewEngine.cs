@@ -21,7 +21,8 @@ namespace N2.Web.Mvc
 		{
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
-			return engine.FindPartialView(controllerContext, partialViewName, useCache);
+			var result = engine.FindPartialView(controllerContext, partialViewName, useCache);
+			return result;
 		}
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
@@ -29,7 +30,8 @@ namespace N2.Web.Mvc
 			controllerContext.InitTheme();
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
-			return engine.FindView(controllerContext, viewName, masterName, useCache);
+			var result = engine.FindView(controllerContext, viewName, masterName, useCache);
+			return result;
 		}
 
 		public void ReleaseView(ControllerContext controllerContext, IView view)

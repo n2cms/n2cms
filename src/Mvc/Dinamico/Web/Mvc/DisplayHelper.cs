@@ -39,11 +39,11 @@ namespace N2.Web.Mvc
 			this.ContainerName = null;
 		}
 
-		#region class ResetOnDispose<TModel>
-		class ResetOnDispose<TModel> : IDisposable
+		#region class ResetOnDispose<T>
+		class ResetOnDispose<T> : IDisposable
 		{
 			public string PreviousContainerName { get; set; }
-			public DisplayHelper<TModel> Helper { get; set; }
+			public DisplayHelper<T> Helper { get; set; }
 
 			#region IDisposable Members
 

@@ -11,7 +11,11 @@ namespace N2.Web.Mvc.Html
 	{
 		public static ContentRegistration GetRegistrationExpression(HtmlHelper html)
 		{
-			return html.ViewContext.ViewData["RegistrationExpression"] as ContentRegistration;
+			return GetRegistrationExpression(html.ViewContext.ViewData);
+		}
+		public static ContentRegistration GetRegistrationExpression(IDictionary<string, object> viewData)
+		{
+			return viewData["RegistrationExpression"] as ContentRegistration;
 		}
 	}
 }
