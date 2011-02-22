@@ -4,47 +4,52 @@
 
 $.fn.plupdown = function (options) {
 	options = $.extend({
-		callback: null,
+		callback: function () { },
 		loadingHtml: "<ul><li class='loading'>Loading...</li></ul>",
 		resultsClass: "results"
 	}, options);
-	var close = null;
 	var isForm = this.is("form");
 
-	var f = function (e) {
+	var close = function (e) {
+		if ($(e.target).closest(".resultsinner").any())
+			return;
+		$(".results").each(function () {
+			$($(this).data("opener")).removeClass("open");
+		}).removeData("opener").remove();
+		$(document).unbind("click", close);
+		$(document).unbind("submit", close);
+	};
+
+	var open = function (e) {
 		e.preventDefault();
+		if ($(this).is(".open"))
+			return;
 		e.stopPropagation();
+		close(e);
+		$(this).addClass("open");
 
 		var o = $(this).offset();
 		var h = $(this).height();
 
 		var url = isForm ? this.action : this.href;
 		var data = isForm ? $(this).serialize() : {};
-		$("<div class='" + options.resultsClass + "'></div>").appendTo(document.body)
+		var $r = $("<div/>").addClass(options.resultsClass).appendTo(document.body)
 			.css({
 				position: "absolute",
 				top: (o.top + h) + "px",
-				left: o.left + "px"
+				left: Math.min(o.left, $(window).width() - 220) + "px"
 			})
+			.html("<a href='#close' class='closer'>&nbsp;</a><div class='resultsinner'/>")
+			.data("opener", this);
+		$r.children(".resultsinner")
 			.html(options.loadingHtml)
 			.load(url, data, options.callback);
 
-		if (close)
-			return;
-		else
-			close = function (e) {
-				if ($(e.target).closest(".results").any())
-					return;
-				$(".results").remove();
-				$(document).unbind("click", close);
-			};
-		$(document.body).click(close);
+		$(document.body).bind("click", close);
+		$(document.body).bind("submit", close);
 	};
 
-	if (isForm)
-		this.submit(f);
-	else
-		this.click(f);
+	this.bind(isForm ? "submit" : "click", open);
 
 	return this;
 };

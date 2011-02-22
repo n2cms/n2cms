@@ -12,7 +12,7 @@ namespace N2.Web.Mvc
 
 		public ContentHelper<TModel> Content
 		{
-			get { return content ?? (content = new ContentHelper<TModel>(this)); }
+			get { return content ?? (content = new ContentHelper<TModel>(this.Html)); }
 			set { content = value; }
 		}
 	}

@@ -118,6 +118,7 @@
     <Compile Include="Web\Mvc\IRenderer.cs" />
     <Compile Include="Web\Mvc\IWriter.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
+    <Compile Include="Web\Mvc\TraverseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

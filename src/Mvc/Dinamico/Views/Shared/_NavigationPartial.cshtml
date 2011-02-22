@@ -1,12 +1,12 @@
 ﻿<ul id="menu" class="menu level1">
-	<li>@Content.LinkTo(Content.StartPage).Class(Content.CurrentPage == Content.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.StartPage, takeLevels: 2, rootless: true)
+	<li>@Content.LinkTo(Content.Traverse.StartPage).Class(Content.CurrentPage == Content.Traverse.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.Traverse.StartPage, takeLevels: 2, rootless: true)
 </ul>
-@foreach (var a in Content.AncestorsBetween(1, 5))
+@foreach (var a in Content.Traverse.AncestorsBetween(1, 5))
 {
-if(Content.Children(a).Any())
+if (Content.Traverse.Children(a).Any())
 {
-<ul class="submenu menu @("level"+Content.Level(a))">
-	@foreach (var c in Content.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
+<ul class="submenu menu @("level" + Content.Traverse.LevelOf(a))">
+	@foreach (var c in Content.Traverse.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
 </ul>
 }
 }

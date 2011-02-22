@@ -13,16 +13,17 @@ namespace N2.Web.Mvc
 {	
 	public class ContentHelper<TModel> where TModel : class
 	{
-		ContentWebViewPage<TModel> page;
+		HtmlHelper<TModel> html;
+		TraverseHelper traverse;
 
-		public ContentHelper(ContentWebViewPage<TModel> page)
+		public ContentHelper(HtmlHelper<TModel> html)
 		{
-			this.page = page;
+			this.html = html;
 		}
 
 		public HtmlHelper<TModel> Html
 		{
-			get { return page.Html; }
+			get { return html; }
 		}
 
 		public TModel Model
@@ -32,83 +33,22 @@ namespace N2.Web.Mvc
 
 		public ContentItem CurrentItem
 		{
-			get { return page.Html.CurrentItem(); }
+			get { return Html.CurrentItem(); }
 		}
 
 		public ContentItem CurrentPage
 		{
-			get { return page.Html.CurrentPage(); }
+			get { return Html.CurrentPage(); }
 		}
 
-		public ILanguage CurrentLanguage
+		public TraverseHelper Traverse
 		{
-			get { return page.Html.ResolveService<ILanguageGateway>().GetLanguage(CurrentPage); }
-		}
-
-		public IEnumerable<ILanguage> Translations()
-		{
-			var lg = page.Html.ResolveService<ILanguageGateway>();
-			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
-		}
-
-		public ContentItem StartPage
-		{
-			get { return N2.Find.Closest<IStartPage>(CurrentPage) as ContentItem ?? N2.Find.StartPage; }
-		}
-
-		public ContentItem RootPage
-		{
-			get { return N2.Find.Closest<IRootPage>(CurrentPage) as ContentItem ?? N2.Find.RootItem; }
-		}
-
-		protected virtual ItemFilter DefaultFilter
-		{
-			get { return new NavigationFilter(); }
-		}
-
-		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
-		{
-			return (filter ?? DefaultFilter).Pipe(N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true));
-		}
-
-		public IEnumerable<ContentItem> AncestorsBetween(int skipLevel = 0, int takeLevels = 1)
-		{
-			return N2.Find.EnumerateParents(CurrentItem, StartPage, true).Reverse().Skip(skipLevel).Take(takeLevels);
-		}
-
-		public IEnumerable<ContentItem> Children(ContentItem item, ItemFilter filter = null)
-		{
-			return item.GetChildren(filter ?? new NavigationFilter());
-		}
-
-		public IEnumerable<ContentItem> Descendants(ContentItem item, ItemFilter filter = null)
-		{
-			return N2.Find.EnumerateChildren(item).Where((filter ?? DefaultFilter).Match);
-		}
-
-		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
-		{
-			if (item == null)
-				item = CurrentItem;
-			if (item.Parent == null)
-				return Enumerable.Empty<ContentItem>();
-
-			return item.Parent.GetChildren(new NavigationFilter());
-		}
-
-		public int Level(ContentItem item = null)
-		{
-			return Ancestors(item).Count();
-		}
-
-		public ContentItem AncestorAtLevel(int level)
-		{
-			return Ancestors().Reverse().Skip(level).FirstOrDefault();
+			get { return traverse ?? (traverse = new TraverseHelper(Html)); }
 		}
 
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
 		{
-			return TreeFrom(AncestorAtLevel(skipLevels), takeLevels, rootless, cssGetter, filter);
+			return TreeFrom(Traverse.AncestorAtLevel(skipLevels), takeLevels, rootless, cssGetter, filter);
 		}
 
 		public Tree TreeFrom(ContentItem item, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
@@ -119,12 +59,12 @@ namespace N2.Web.Mvc
 			return new TreeBuilder(new TreeHierarchyBuilder(item, takeLevels))
 				.ExcludeRoot(rootless)
 				.LinkProvider((i) => LinkTo(i).Class(cssGetter(i)))
-				.Filters(filter ?? DefaultFilter);
+				.Filters(filter ?? Traverse.DefaultFilter());
 		}
 
 		public string GetNavigationClass(ContentItem item)
 		{
-			return Model == item ? "current" : Ancestors().Contains(item) ? "trail" : "";
+			return Model == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
 		}
 
 		public ILinkBuilder LinkTo(ContentItem item)

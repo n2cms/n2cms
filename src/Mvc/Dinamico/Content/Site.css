@@ -323,6 +323,15 @@ table th
 	border-top:none;
 	margin-top:5px;
 }
+	.results .closer
+	{
+		position:absolute;
+		right:8px;
+		width:16px;
+		height:16px;
+		display:block;
+		background:transparent url(../n2/resources/icons/cross.png) no-repeat 50% 50%;
+	}
 	.results ul
 	{
 		list-style-type:none;
@@ -355,7 +364,7 @@ table th
 	{
 		display:inline-block;
 		width:100px;
-		height:18px;
+		height:16px;
 		border:none;
 		vertical-align:middle;
 		color:#999;

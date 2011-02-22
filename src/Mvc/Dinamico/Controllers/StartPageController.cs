@@ -26,7 +26,7 @@ namespace Dinamico.Controllers
 
 		public ActionResult SiteMap()
 		{
-			string content = Tree.From(N2.Find.Closest<IStartPage>(CurrentPage) as ContentItem)
+			string content = Tree.From(N2.Find.ClosestOf<IStartPage>(CurrentPage))
 				.Filters(new NavigationFilter())
 				.ExcludeRoot(true).ToString();
 			return Content("<ul>" + content + "</ul>");
@@ -43,9 +43,9 @@ namespace Dinamico.Controllers
 				.Enumerable<ContentItem>()
 				.Where(h => h != null)
 				.Select(h => h.IsPage ? h : h.ClosestPage())
-				.Where(N2.Filters.Duplicates().Match)
-				.Where(N2.Filters.Access().Match)
-				.Where(N2.Filters.AncestorOrSelf(N2.Find.StartPage).Match);
+				.Where(N2.Filter.Duplicates().Match)
+				.Where(N2.Filter.Access().Match)
+				.Where(N2.Filter.AncestorOrSelf(N2.Find.StartPage).Match);
 
 			StringBuilder results = new StringBuilder();
 			foreach (var hit in hits)

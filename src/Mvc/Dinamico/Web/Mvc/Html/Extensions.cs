@@ -58,5 +58,10 @@ namespace N2.Web.Mvc.Html
 
 			context.SetTheme(start.Theme);
 		}
+
+		public static ContentHelper<TModel> Content<TModel>(this HtmlHelper<TModel> html) where TModel: class
+		{
+			return new ContentHelper<TModel>(html);
+		}
 	}
 }
