@@ -21,7 +21,7 @@ namespace Dinamico.Controllers
     {
 		public ActionResult NotFound()
 		{
-			return View();
+			return View(GetSearchResults(string.Join(" ", Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Split('/')), 10).ToList());
 		}
 
 		public ActionResult SiteMap()
@@ -37,15 +37,7 @@ namespace Dinamico.Controllers
 			if (string.IsNullOrWhiteSpace(q))
 				return Content("<ul><li>A search term is required</li></ul>");
 
-			var s = Find.NH.FullText(q);
-
-			var hits = s.SetMaxResults(50)
-				.Enumerable<ContentItem>()
-				.Where(h => h != null)
-				.Select(h => h.IsPage ? h : h.ClosestPage())
-				.Where(N2.Filter.Duplicates().Match)
-				.Where(N2.Filter.Access().Match)
-				.Where(N2.Filter.AncestorOrSelf(N2.Find.StartPage).Match);
+			var hits = GetSearchResults(q, 50);
 
 			StringBuilder results = new StringBuilder();
 			foreach (var hit in hits)
@@ -57,6 +49,20 @@ namespace Dinamico.Controllers
 				return Content("<ul><li>No hits</li></ul>");
 
 			return Content("<ul>" + results + "</ul>");
+		}
+
+		private IEnumerable<ContentItem> GetSearchResults(string text, int take)
+		{
+			var s = Find.NH.FullText(text);
+
+			var hits = s.SetMaxResults(take)
+				.Enumerable<ContentItem>()
+				.Where(h => h != null)
+				.Select(h => h.IsPage ? h : h.ClosestPage())
+				.Where(N2.Filter.Access().Match)
+				.Where(N2.Filter.AncestorOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage).Match)
+				.Where(N2.Filter.Duplicates().Match);
+			return hits;
 		}
 
 		public ActionResult Translations(int id)

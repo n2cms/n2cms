@@ -1,9 +1,23 @@
-﻿@{
+﻿@model IEnumerable<N2.ContentItem>
+
+@{
 	ViewBag.Title = "404 Not Found";
+	Response.Status = "404 Not Found";
 }
 
 <h2>404 Not Found</h2>
 <p>The resource you were looking for is no longer here.</p>
+@if (Model.Any())
+{
+<h3>Similar pages</h3>
+<ul>
+@foreach (var i in Model)
+{
+	<li>@Content.LinkTo(i)</li>
+}
+</ul>
+}
+<h3>Site map</h3>
 <ul>
 <li>@Content.LinkTo(Content.Traverse.StartPage)</li>
 @Content.TreeFrom(Content.Traverse.StartPage, rootless: true)
