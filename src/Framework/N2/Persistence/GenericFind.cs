@@ -16,7 +16,7 @@ namespace N2.Persistence
 		/// <summary>Gets the current start page (this may vary depending on host url).</summary>
 		public static TStart StartPage
 		{
-			get { return (TStart)Context.Current.UrlParser.StartPage; }
+			get { return Closest<TStart>(CurrentPage) ?? (TStart)Context.Current.UrlParser.StartPage; }
 		}
 
 		/// <summary>Gets the site's root items.</summary>

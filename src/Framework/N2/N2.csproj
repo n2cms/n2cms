@@ -187,7 +187,7 @@
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
-    <Compile Include="Filters.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="Linq\ContentQueryable.cs" />
     <Compile Include="Linq\ContentQueryProvider.cs" />
     <Compile Include="Linq\EngineExtensions.cs" />
