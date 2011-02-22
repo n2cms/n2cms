@@ -9,7 +9,7 @@ namespace N2
 	/// <summary>
 	/// Provides access to common filters.
 	/// </summary>
-	public static class Filters
+	public static class Filter
 	{
 		/// <summary>Filters by access</summary>
 		/// <returns>A filter.</returns>
@@ -21,12 +21,20 @@ namespace N2
 		/// <summary>Filters by all the provided filters.</summary>
 		/// <param name="filters">The filters to aggregate.</param>
 		/// <returns>A filter.</returns>
-		public static ItemFilter Composition(params ItemFilter[] filters)
+		public static ItemFilter All(params ItemFilter[] filters)
 		{
 			return new CompositeFilter(filters);
 		}
 
-		/// <summary>Filters by counting items..</summary>
+		/// <summary>Filters by all the provided filters.</summary>
+		/// <param name="filters">The filters to aggregate.</param>
+		/// <returns>A filter.</returns>
+		public static ItemFilter Any(params ItemFilter[] filters)
+		{
+			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
+		}
+
+		/// <summary>Filters by counting items. This filter must be reset after each usage.</summary>
 		/// <param name="skip">Number of items to skip.</param>
 		/// <param name="take">Number of items to take.</param>
 		/// <returns>A filter.</returns>
