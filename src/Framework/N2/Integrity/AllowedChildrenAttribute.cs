@@ -57,7 +57,7 @@ namespace N2.Integrity
 
 		#region IAllowedDefinitionFilter Members
 
-		public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
+		public AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery context)
 		{
 			return IsAssignable(context.ChildDefinition.ItemType) ? AllowedDefinitionResult.Allow : AllowedDefinitionResult.DontCare;
 		}

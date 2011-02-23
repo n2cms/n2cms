@@ -25,6 +25,11 @@ namespace N2.Integrity
 	[AttributeUsage(AttributeTargets.Class)]
 	public class RestrictParentsAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner
 	{
+		/// <summary>
+		/// Restrict children by template name, allow only children with these template name.
+		/// </summary>
+		public string[] TemplateNames { get; set; }
+
 		/// <summary>Initializes a new instance of the RestrictParentsAttribute which is used to restrict which types of items may be added below which.</summary>
 		public RestrictParentsAttribute()
 		{
@@ -73,12 +78,13 @@ namespace N2.Integrity
 
 			#region IAllowedDefinitionFilter Members
 
-			public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
+			public AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery context)
 			{
 				if (ChildType.IsAssignableFrom(context.ChildDefinition.ItemType))
 				{
 					if (this.Attribute.Types == null || this.Attribute.Types.Any(t => t.IsAssignableFrom(context.ParentDefinition.ItemType)))
-						return AllowedDefinitionResult.Allow;
+						if (this.Attribute.TemplateNames == null || this.Attribute.TemplateNames.Contains(context.ParentDefinition.Template))
+							return AllowedDefinitionResult.Allow;
 					return AllowedDefinitionResult.Deny;
 				}
 				return AllowedDefinitionResult.DontCare;

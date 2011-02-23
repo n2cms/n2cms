@@ -174,13 +174,11 @@ namespace N2.Definitions
 			IEnumerable<ItemDefinition> all = definitions.GetDefinitions().ToList();
 			foreach (var d in all)
 			{
-				var ctx = new AllowedDefinitionContext { Parent = parentItem, ParentDefinition = this, ChildDefinition = d, Definitions = definitions };
+				var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = this, ChildDefinition = d, Definitions = definitions };
 				var filters = AllowedChildFilters.Union(d.AllowedParentFilters).ToList();
 				if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
 					yield return d;
-				else if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
-					continue;
-				else
+				else if (!filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
 					yield return d;
 			}
 		}

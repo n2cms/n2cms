@@ -164,6 +164,8 @@
     <Compile Include="Definitions\Static\DefinitionTable.cs" />
     <Compile Include="Definitions\Static\TemplateProvider.cs" />
     <Compile Include="Details\ILiteralDisplayable.cs" />
+    <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
+    <Compile Include="Definitions\AllowedDefinitionResult.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
