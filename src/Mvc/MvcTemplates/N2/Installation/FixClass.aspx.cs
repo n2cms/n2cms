@@ -23,13 +23,14 @@ namespace N2.Edit.Install
                 using (IDbConnection conn = installer.GetConnection())
                 {
                     conn.Open();
-                    string sql = string.Format("select * from {0}item where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
-                    using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, sql))
+					string discriminator = GetDiscriminator(conn, int.Parse(Request["id"]));
+					string itemsSql = string.Format("select * from {0}item where Type = '{1}'", tablePrefix, discriminator);
+					using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, itemsSql))
                     {
                         cmd.Connection = conn;
                         dgrItems.DataSource = cmd.ExecuteReader();
                     }
-
+					
                     ddlType.DataSource = N2.Context.Definitions.GetDefinitions();
                     DataBind();
                 }
@@ -47,7 +48,8 @@ namespace N2.Edit.Install
 
                     List<int> ids = new List<int>();
 
-                    cmd.CommandText = string.Format("select id from {0}item where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
+					string discriminator = GetDiscriminator(conn, int.Parse(Request["id"]));
+					cmd.CommandText = string.Format("select id from {0}item where Type = '{1}'", tablePrefix, discriminator);
                     AppendIds(cmd, ids);
                     AppendChildrenIdsRecursive(cmd, ids);
 
@@ -103,8 +105,9 @@ namespace N2.Edit.Install
         {
             using (IDbConnection conn = installer.GetConnection())
             {
-                conn.Open();
-                string sql = string.Format("update {0}item set type = '", tablePrefix) + ddlType.SelectedValue.Replace("'", "''") + string.Format("' where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
+				conn.Open();
+				string discriminator = GetDiscriminator(conn, int.Parse(Request["id"]));
+				string sql = string.Format("update {0}item set type = '{1}' where Type = '{2}'", tablePrefix, ddlType.SelectedValue.Replace("'", "''"), discriminator);
                 using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, sql))
                 {
                     cmd.Connection = conn;
@@ -115,5 +118,15 @@ namespace N2.Edit.Install
             }
 
         }
+
+		private string GetDiscriminator(IDbConnection conn, int id)
+		{
+			string typeSql = string.Format("select Type from {0}item where ID = {1}", tablePrefix, id);
+			using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, typeSql))
+			{
+				cmd.Connection = conn;
+				return (string)cmd.ExecuteScalar();
+			}
+		}
     }
 }
