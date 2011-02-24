@@ -100,6 +100,8 @@ namespace Dinamico.Definitions.Dynamic
 	[Service(typeof(ITemplateProvider))]
 	public class RazorTemplateProvider : ITemplateProvider
 	{
+		public static bool SwallowExceptions { get; set; }
+
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<ViewEngineCollection> viewEnginesProvider;
 		IProvider<VirtualPathProvider> vppProvider;
@@ -165,7 +167,8 @@ namespace Dinamico.Definitions.Dynamic
 				definitions = pairs.Select(p => p.Definition).ToList();
 
 				var files = pairs.SelectMany(p => p.VirtualPaths).Distinct().ToList();
-				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+				var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
+				var cacheDependency = vpp.GetCacheDependency(dirs.FirstOrDefault(), dirs, DateTime.UtcNow);
 
 				httpContext.Cache.Remove(cacheKey);
 				httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate { Debug.WriteLine("Razor template changed"); }));
@@ -218,38 +221,45 @@ namespace Dinamico.Definitions.Dynamic
 		{
 			var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
 			cctx.RouteData.Values.Add("controller", controllerName);
-			var v = viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null);
+			var result = viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null);
 
-			if (v.View == null)
+			if (result.View == null)
 				return null;
 
-			var re = new ContentRegistration();
-			re.Template = N2.Web.Url.RemoveExtension(file.Name);
-			re.IsDefined = false;
+			if (!SwallowExceptions)
+				return RenderView(file, modelType, cctx, result);
 
 			try
 			{
-				using (StringWriter sw = new StringWriter())
-				{
-					var vdd = new ViewDataDictionary { Model = modelType != null ? Activator.CreateInstance(modelType) : new StubItem() };
-					cctx.Controller.ViewData = vdd;
-					vdd["RegistrationExpression"] = re;
-					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
-
-					if (re.IsDefined)
-						return new RazorFileDefinition 
-						{
-							Definition = re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance), 
-							VirtualPaths = new [] { file.VirtualPath }.Union(re.TouchedPaths)
-						};
-				}
+				return RenderView(file, modelType, cctx, result);
 			}
 			catch (Exception ex)
 			{
 				Trace.WriteLine(ex);
+				return null;
 			}
+		}
 
-			return null;
+		private static RazorFileDefinition RenderView(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
+		{
+			var re = new ContentRegistration();
+			re.Template = N2.Web.Url.RemoveExtension(file.Name);
+			re.IsDefined = false;
+			using (StringWriter sw = new StringWriter())
+			{
+				var vdd = new ViewDataDictionary { Model = modelType != null ? Activator.CreateInstance(modelType) : new StubItem() };
+				cctx.Controller.ViewData = vdd;
+				vdd["RegistrationExpression"] = re;
+				result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
+
+				if (re.IsDefined)
+					return new RazorFileDefinition
+					{
+						Definition = re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance),
+						VirtualPaths = new[] { file.VirtualPath }.Union(re.TouchedPaths)
+					};
+				return null;
+			}
 		}
 
 		public TemplateDefinition GetTemplate(N2.ContentItem item)

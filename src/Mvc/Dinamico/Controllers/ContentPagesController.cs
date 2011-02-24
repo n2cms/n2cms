@@ -4,8 +4,8 @@ using N2.Web.Mvc;
 
 namespace Dinamico.Controllers
 {
-	[Controls(typeof(Models.DynamicPage))]
-    public class DynamicPagesController : ContentController<Models.DynamicPage>
+	[Controls(typeof(Models.ContentPage))]
+    public class ContentPagesController : ContentController<Models.ContentPage>
     {
 
         public override ActionResult Index()

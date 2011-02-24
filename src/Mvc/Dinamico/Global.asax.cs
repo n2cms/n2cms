@@ -16,9 +16,21 @@ namespace Dinamico
 
 	public class MvcApplication : System.Web.HttpApplication
 	{
-		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+		protected void Application_Start()
 		{
-			filters.Add(new HandleErrorAttribute());
+			var engine = N2.Context.Current;
+
+			AreaRegistration.RegisterAllAreas();
+
+			RegisterControllerFactory(ControllerBuilder.Current, engine);
+			RegisterGlobalFilters(GlobalFilters.Filters);
+			RegisterRoutes(RouteTable.Routes, engine);
+			RegisterViewEngines(ViewEngines.Engines);
+
+			engine.Resolve<RazorTemplateRegistrator>()
+				.Add<Controllers.ContentPagesController>()
+				.Add<Controllers.ContentPartsController>()
+				.Add<Controllers.ListingPagesController>();
 		}
 
 		public static void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
@@ -30,6 +42,11 @@ namespace Dinamico
 				.ControllerFactory;
 
 			controllerBuilder.SetControllerFactory(controllerFactory);
+		}
+
+		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+		{
+			filters.Add(new HandleErrorAttribute());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
@@ -49,22 +66,6 @@ namespace Dinamico
 		{
 			viewEngines.RegisterThemeViewEngine<RazorViewEngine>();
 			viewEngines.WrapForTemplateRegistration();
-		}
-
-		protected void Application_Start()
-		{
-			var engine = N2.Context.Current;
-			RegisterControllerFactory(ControllerBuilder.Current, engine);
-
-			AreaRegistration.RegisterAllAreas();
-
-			RegisterGlobalFilters(GlobalFilters.Filters);
-			RegisterRoutes(RouteTable.Routes, engine);
-			RegisterViewEngines(ViewEngines.Engines);
-
-			engine.Resolve<RazorTemplateRegistrator>()
-				.Add<Controllers.DynamicPagesController>()
-				.Add<Controllers.DynamicPartsController>();
 		}
 	}
 }

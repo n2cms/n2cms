@@ -247,6 +247,7 @@ namespace N2.Persistence
 		/// <returns>An enumeration of all children of an item.</returns>
 		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef, bool useMasterVersion)
 		{
+			if (item == null) yield break;
 			if (useMasterVersion && item.VersionOf != null) item = item.VersionOf;
 
 			if(includeSlef)

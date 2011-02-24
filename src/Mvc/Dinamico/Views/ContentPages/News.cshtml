@@ -1,0 +1,12 @@
+﻿@model Dinamico.Models.ContentPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "News page";
+	});
+}
+
+@Content.Display.PublishedRange()
+
+@Html.Partial("_TextContentPartial")

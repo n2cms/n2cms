@@ -1,0 +1,15 @@
+﻿@model Dinamico.Models.ListingPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "Listing";
+	});
+}
+
+@foreach (var child in Content.Traverse.Descendants(Content.CurrentPage).Where(d => d.IsPage))
+{
+	<div class="item">
+		@Content.LinkTo(child)
+	</div>
+}

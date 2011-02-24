@@ -8,8 +8,8 @@ using N2.Web;
 
 namespace Dinamico.Controllers
 {
-	[Controls(typeof(Models.DynamicPart))]
-	public class DynamicPartsController : ContentController<Models.DynamicPart>
+	[Controls(typeof(Models.ContentPart))]
+	public class ContentPartsController : ContentController<Models.ContentPart>
     {
 
         public override ActionResult Index()

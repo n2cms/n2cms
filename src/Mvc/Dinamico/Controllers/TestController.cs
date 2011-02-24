@@ -24,7 +24,7 @@ namespace Dinamico.Controllers
 			List<ContentRegistration> expressions = new List<ContentRegistration>();
 			foreach (var file in files.GetFiles("~/Views/DynamicPages/").Where(f => f.Name.EndsWith(".cshtml")))
 			{
-				var cctx = new ControllerContext(ControllerContext.HttpContext, new RouteData(), new DynamicPagesController());
+				var cctx = new ControllerContext(ControllerContext.HttpContext, new RouteData(), new ContentPagesController());
 				cctx.RouteData.Values.Add("controller", "DynamicPages");
 				var v = ViewEngines.Engines.FindView(cctx, file.VirtualPath, null);
 
@@ -32,7 +32,7 @@ namespace Dinamico.Controllers
 					sw.Write(string.Join(", ", v.SearchedLocations.ToArray()));
 				else
 				{
-					var vdd = new ViewDataDictionary { Model = new DynamicPage() };
+					var vdd = new ViewDataDictionary { Model = new ContentPage() };
 					var re = new ContentRegistration();
 					vdd["RegistrationExpression"] = re;
 					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
