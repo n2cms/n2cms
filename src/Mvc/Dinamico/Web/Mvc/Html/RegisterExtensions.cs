@@ -5,6 +5,7 @@ using System.Web;
 using N2.Definitions.Runtime;
 using N2.Details;
 using System.Web.Mvc;
+using N2.Definitions;
 
 namespace N2.Web.Mvc.Html
 {
@@ -109,140 +110,10 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		//// editables
-
-		//public static ContentRegistrationExpression Title(this ContentRegistrationExpression re, string title = "Title")
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new WithEditableTitleAttribute(), title);
-		//}
-
-		//public static ContentRegistrationExpression Name(this ContentRegistrationExpression re, string title = "Name")
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new WithEditableNameAttribute(), title);
-		//}
-
-		//public static ContentRegistrationExpression PublishedRange(this ContentRegistrationExpression re, string title = "Published between")
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new WithEditablePublishedRangeAttribute(), title);
-		//}
-
-		//public static ContentRegistrationExpression DateRange(this ContentRegistrationExpression re, string nameStart, string nameEnd, string title = "Name")
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new WithEditableDateRangeAttribute(title, 0, nameStart, nameEnd), title);
-		//}
-
-		//public static ContentRegistrationExpression CheckBox(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableCheckBoxAttribute(title ?? name, re.NextSortOrder(null)));
-		//}
-
-		//public static ContentRegistrationExpression Children(this ContentRegistrationExpression re, string zoneName, string name = null, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableChildrenAttribute(title ?? zoneName, zoneName, re.NextSortOrder(null)));
-		//}
-
-		//public static ContentRegistrationExpression Date(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableDateAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression Enum(this ContentRegistrationExpression re, string name, Type enumType, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableEnumAttribute(enumType), name, title);
-		//}
-
-		//public static ContentRegistrationExpression FileUpload(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableFileUploadAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression FreeTextArea(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableFreeTextAreaAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression Image(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableImageAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression ImageSize(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableImageSizeAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression Item(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableItemAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression LanguagesDropDown(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableLanguagesDropDownAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression Link(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableLinkAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression TextBox(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableTextBoxAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression ThemeSelection(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableThemeSelectionAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression Url(this ContentRegistrationExpression re, string name, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableUrlAttribute(), name, title);
-		//}
-
-		//public static ContentRegistrationExpression UserControl(this ContentRegistrationExpression re, string name, string userControlPath, string title = null)
-		//{
-		//    if (re == null) return re;
-
-		//    return re.Add(new EditableUserControlAttribute(userControlPath, 0) { UserControlPath = userControlPath }, name, title);
-		//}
+		public static DisplayRenderer<T> Display<T>(this EditableBuilder<T> builder) where T : IEditable
+		{
+			return builder as DisplayRenderer<T>;
+		}
 	}
 
 }

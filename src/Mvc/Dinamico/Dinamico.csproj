@@ -127,10 +127,9 @@
     <Compile Include="Web\Mvc\ContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
-    <Compile Include="Web\Mvc\DisplayHelper.cs" />
+    <Compile Include="Web\Mvc\RegisterHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
     <Compile Include="Web\Mvc\Extensions.cs" />
-    <Compile Include="Web\Mvc\Html\DisplayRendererExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\IRenderer.cs" />

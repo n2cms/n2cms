@@ -86,9 +86,9 @@ namespace N2.Web.Mvc
 			return Html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
 		}
 
-		public DisplayHelper<TModel> Display
+		public RegisterHelper Register
 		{
-			get { return new DisplayHelper<TModel>(Html); }
+			get { return new RegisterHelper(Html); }
 		}
 
 		public dynamic Data
