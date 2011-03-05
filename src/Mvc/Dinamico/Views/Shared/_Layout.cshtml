@@ -16,31 +16,24 @@
 </head>
 <body>
 	@{ Html.RenderControlPanel(); }
-	<div id="page">
-		<div id="header">
-			<div id="topnav">
-				@Html.Partial("TopPartials/_LogOn")
-				@Html.Partial("TopPartials/_SiteMap")
-				@Html.Partial("TopPartials/_Translations")
-				@Html.Partial("TopPartials/_Search")
-			</div>
-			<div id="menucontainer">
-				@Html.Partial("_NavigationPartial")
-			</div>
+	<div id="wrapper">
+	@if (IsSectionDefined("Page")) { RenderSection("Page"); }
+	else
+	{
+		<div id="top">@{ Html.RenderPartial("Partials/_Top"); }</div>
+		<div id="header" class="clearfix">@{ Html.RenderPartial("Partials/_Header"); }</div>
+		<div id="main" class="clearfix">
+			@if (IsSectionDefined("Main")) { RenderSection("Main"); }
+			else
+			{
+				Html.RenderPartial("Partials/_PreContent");
+				<div id="aside" role="complementary">@if (IsSectionDefined("Aside")) { RenderSection("Aside"); } else { Html.DroppableZone("Aside").Render(); }</div>
+				<div id="content" role="main">@RenderBody()</div>
+				Html.RenderPartial("Partials/_PostContent");
+			}
+			<div id="footer" class="clearfix">@{ Html.RenderPartial("Partials/_Footer"); }</div>
 		</div>
-		<div id="main">
-	@if (IsSectionDefined("Main"))
- {
-	 RenderSection("Main");
- }
- else
- {
-			@Html.Partial("_SubNavigationPartial")
-			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
-			<div id="content">@RenderBody()</div>
 	}
-			<div id="footer"></div>
-		</div>
 	</div>
 </body>
 </html>

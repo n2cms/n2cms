@@ -43,6 +43,8 @@ namespace N2.Details
 			set { focus = value; }
 		}
 
+		public string CssClass { get; set; }
+
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			TextBox tb = (TextBox)editor;
@@ -79,7 +81,18 @@ namespace N2.Details
 		{
 			object value = item[propertyName];
 			if (value != null)
-				writer.Write("<h1>" + value + "</h1>");
+			{
+				int headingLevel = item.IsPage ? 1 : 2;
+				writer.Write("<h");
+				writer.Write(headingLevel);
+				if(CssClass != null)
+					writer.Write(" class='" + CssClass + "'");
+				writer.Write(">");
+				writer.Write(value);
+				writer.Write("</h");
+				writer.Write(headingLevel);
+				writer.Write(">");
+			}
 		}
 
 		#endregion
@@ -92,6 +105,7 @@ namespace N2.Details
 			if (value != null)
 			{
 				var heading = new Hn { Level = item.IsPage ? 1 : 2, Text = value.ToString() };
+				heading.CssClass = CssClass;
 				container.Controls.Add(heading);
 				return heading;
 			}

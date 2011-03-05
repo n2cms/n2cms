@@ -1,0 +1,61 @@
+@import "../../../Content/Mood.css";
+
+h1
+{
+	color: #46351C;
+}
+html
+{
+	background:#444;
+}
+	div#top
+	{
+		background-color:#fff;
+		-moz-border-radius-bottomleft: 5px 5px;
+		-moz-border-radius-bottomright: 5px 5px;
+		border-bottom-left-radius: 5px 5px;
+		border-bottom-right-radius: 5px 5px;
+	}
+	div#header .topmenu
+	{
+		background-color:#fff;
+		-moz-border-radius: 5px 5px;
+		border-radius: 5px 5px;
+	}
+		div#header .topmenu li a
+		{
+			background:transparent;
+		}
+	div#main
+	{
+		background-color:#fff;
+		-moz-border-radius: 5px 5px;
+		border-radius: 5px 5px;
+		-moz-border-radius-topright: 0;
+		border-top-right-radius: 0;
+	}
+		div#main ul.submenu
+		{
+			padding:0;
+			margin:0;
+			border-bottom:solid 1px #CCC;
+		}
+			div#main ul.submenu li
+			{
+				display:inline-block;
+			}
+				div#main ul.submenu li a
+				{
+					display:block;
+					padding: .5em 1em;
+				}
+
+/* elements */
+
+.dropmenu
+{
+	-moz-border-radius-bottomleft: 5px 5px;
+	-moz-border-radius-bottomright: 5px 5px;
+	border-bottom-left-radius: 5px 5px;
+	border-bottom-right-radius: 5px 5px;
+}

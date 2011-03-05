@@ -1,19 +1,5 @@
-﻿@import url(/Content/Site.css);
-
-body
-{
-    background:#ac3400 url(fade.png) no-repeat 50% 0;
-}
-h1
-{
-	color: #46351C;
-}
-	ul.menu
-	{
-		border-color: #2EB67E;
-	}
-		ul.menu li a
-		{
-			color: #2EB67E;
-			background-color:transparent;
-		}
+﻿@import "../../../Content/Blueprint.css";
+@import "../../../Content/Layout.css";
+@import "../../../Content/Elements.css";
+@import "../../../Content/Features.css";
+@import "Mood.css";

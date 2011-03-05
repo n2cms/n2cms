@@ -1,0 +1,39 @@
+/* forms, buttons and widgets */
+
+.updated
+{
+	color:#999;
+}
+.author
+{
+	color:#999;
+	font-style:italic;
+}
+.dropmenu
+{
+	min-width:200px;
+	min-height:2em;
+	background-color:#fff;
+	margin-top:.5em;
+	padding:1em 2em 2em 0;
+	
+	-moz-box-shadow: 0 2px 2px #999;
+	-webkit-box-shadow: 0 2px 2px #999;
+	box-shadow: 0 2px 2px #999;
+}
+	.dropmenu .closer
+	{
+		text-decoration:none;
+		position:absolute;
+		right:8px;
+		width:16px;
+		height:16px;
+		display:block;
+		background:transparent url(../n2/resources/icons/cross.png) no-repeat 50% 50%;
+	}
+	.dropmenu ul
+	{
+		list-style-type:none;
+		padding:0 1em;
+		margin:0;
+	}

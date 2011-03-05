@@ -64,12 +64,14 @@ namespace N2.Web.Mvc
 
 		public string GetNavigationClass(ContentItem item)
 		{
-			return Model == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
+			return CurrentItem == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
 		}
 
 		public ILinkBuilder LinkTo(ContentItem item)
 		{
-			return new LinkBuilder(item);
+			var lb = new LinkBuilder(item);
+			lb.ClassName = GetNavigationClass(item);
+			return lb;
 		}
 
 		public IItemFinder Find()

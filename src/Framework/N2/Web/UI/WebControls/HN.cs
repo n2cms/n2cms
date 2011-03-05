@@ -37,6 +37,8 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["Text"] = value; }
 		}
 
+		public string CssClass { get; set; }
+
 		protected virtual int DefaultLevel
 		{
 			get { return 1; }
@@ -51,6 +53,8 @@ namespace N2.Web.UI.WebControls
 				string tag = TagKey;
 				writer.WriteFullBeginTag(tag);
 				writer.Write(Text);
+				if (CssClass != null)
+					writer.WriteAttribute("class", CssClass);
 				writer.WriteEndTag(tag);
 			}
 			else

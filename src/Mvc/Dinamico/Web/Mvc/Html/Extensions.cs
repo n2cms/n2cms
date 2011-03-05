@@ -17,18 +17,32 @@ namespace N2.Web.Mvc.Html
 			return new HtmlString(instance.ToString());
 		}
 
+		// themed resources
+
 		public static string ThemedContent(this UrlHelper url, string contentPath)
 		{
-			string theme = url.RequestContext.HttpContext.GetTheme();
+			return ResolveThemedContent(url.RequestContext.HttpContext, HostingEnvironment.VirtualPathProvider, contentPath);
+		}
+
+		public static string ThemedStyleSheet(this HtmlHelper html, string stylePath)
+		{
+			return N2.Resources.Register.StyleSheet(html.ViewContext.ViewData, ResolveThemedContent(html.ViewContext.HttpContext, HostingEnvironment.VirtualPathProvider, stylePath));
+		}
+
+		private static string ResolveThemedContent(HttpContextBase httpContext, VirtualPathProvider vpp, string contentPath)
+		{
+			string theme = httpContext.GetTheme();
 			if (string.IsNullOrEmpty(theme))
-				return url.Content(contentPath);
+				return Url.ToAbsolute(contentPath);
 
 			string themeContentPath = "~/Themes/" + theme + contentPath.TrimStart('~');
-			if (!HostingEnvironment.VirtualPathProvider.FileExists(themeContentPath))
-				return url.Content(contentPath);
+			if (!vpp.FileExists(themeContentPath))
+				return Url.ToAbsolute(contentPath);
 
-			return url.Content(themeContentPath);
+			return Url.ToAbsolute(themeContentPath);
 		}
+
+		// theming
 
 		private const string ThemeKey = "theme";
 		public static string GetTheme(this ControllerContext context)
@@ -38,9 +52,9 @@ namespace N2.Web.Mvc.Html
 
 		internal static string GetTheme(this HttpContextBase context)
 		{
-			return context.Request[ThemeKey] 
-				?? context.Items[ThemeKey] as string 
-				?? "Default";
+			return context.Request[ThemeKey] // preview theme via query string
+				?? context.Items[ThemeKey] as string // previously initialized theme
+				?? "Default"; // fallback
 		}
 
 		public static void SetTheme(this ControllerContext context, string theme)
@@ -50,14 +64,26 @@ namespace N2.Web.Mvc.Html
 
 		public static void InitTheme(this ControllerContext context)
 		{
-			var page = context.RequestContext.CurrentPage<ContentItem>() ?? N2.Find.StartPage;
+			var page = context.RequestContext.CurrentPage<ContentItem>() 
+				?? context.RequestContext.StartPage();
 
-			var start = Find.Closest<IThemeable>(page);
+			InitTheme(context, page);
+		}
+
+		private static void InitTheme(ControllerContext context, ContentItem page)
+		{
+			var start = Find.ClosestOf<IThemeable>(page);
 			if (start == null)
 				return;
 
-			context.SetTheme(start.Theme);
+			var themeSource = start as IThemeable;
+			if (string.IsNullOrEmpty(themeSource.Theme))
+				InitTheme(context, start.Parent);
+			else
+				context.SetTheme(themeSource.Theme);
 		}
+
+		// content helper
 
 		public static ContentHelper<TModel> Content<TModel>(this HtmlHelper<TModel> html) where TModel: class
 		{

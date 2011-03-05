@@ -1,0 +1,77 @@
+/* SIZE AND LAYOUT OF THE PAGE */
+
+html,body
+{
+	height:100%;
+}
+	div#wrapper
+	{
+		position:relative;
+		width:960px;
+		margin:0 auto;
+	}
+		div#top
+		{
+			float:right;
+			padding:.5em;
+		}
+			div#top span
+			{
+				float:left;
+				margin:0 .5em;
+			}
+		div#header
+		{
+			padding-top:5em;
+		}
+		div#main
+		{
+			padding:1em;
+		}
+		div#nav ul
+		{
+			list-style-type:none;
+			padding:0;
+			margin:0;
+			margin-bottom:1px;
+		}
+		div#nav a
+		{
+			text-decoration:none;
+		}
+		div#nav a:hover
+		{
+			text-decoration:underline;
+		}
+		div#nav li a.trail
+		{
+			font-weight:bold;
+		}
+		div#nav li a.current
+		{
+			font-weight:bold;
+			color:#000;
+		}
+			div#nav ul li
+			{
+				display:inline-block;
+			}
+			div#nav ul li a
+			{
+				display:block;
+				background-color:#fff;
+				padding:.5em 1em;
+			}
+			div#nav .topmenu
+			{
+				font-size:1.5em;
+			}
+			div#nav .submenu
+			{
+				background-color:#fff;
+			}
+			
+		div#content
+		{
+			padding-top:1em;
+		}

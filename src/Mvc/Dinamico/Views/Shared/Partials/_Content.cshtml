@@ -1,0 +1,16 @@
+﻿@{
+	Content.PrependDefinition(re => 
+	{
+		re.Container("Content", e =>
+		{
+			e.Name();
+		});
+		
+	});
+}
+@Content.Display.Title().Container("Content").Configure(e => e.CssClass = "entry-title")
+<span class="updated">@Content.Display.PublishedRange().Container("Advanced")</span>
+<div class="entry-content">
+	@Content.Display.FreeText("Text").Container("Content")
+</div>
+<span class="author">@Content.CurrentItem.SavedBy</span>

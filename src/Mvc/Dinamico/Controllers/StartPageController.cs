@@ -24,12 +24,16 @@ namespace Dinamico.Controllers
 			return View(GetSearchResults(string.Join(" ", Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Split('/')), 10).ToList());
 		}
 
+		[ContentOutputCache]
 		public ActionResult SiteMap()
 		{
-			string content = Tree.From(N2.Find.ClosestOf<IStartPage>(CurrentPage))
+			var start = N2.Find.ClosestOf<IStartPage>(CurrentPage);
+			string content = Tree.From(start)
 				.Filters(new NavigationFilter())
 				.ExcludeRoot(true).ToString();
-			return Content("<ul>" + content + "</ul>");
+			return Content("<ul>" 
+				+ "<li>" + Link.To(start) + "</li>"
+				+ content + "</ul>");
 		}
 
 		public ActionResult Search(string q)
@@ -65,6 +69,7 @@ namespace Dinamico.Controllers
 			return hits;
 		}
 
+		[ContentOutputCache]
 		public ActionResult Translations(int id)
 		{
 			StringBuilder sb = new StringBuilder();

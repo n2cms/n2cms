@@ -1,0 +1,29 @@
+/* styles specific to features */
+
+#searchform input
+{
+	display:inline-block;
+	width:100px;
+	height:16px;
+	border:none;
+	vertical-align:middle;
+	color:#999;
+	border:solid 1px #eee;
+}
+#searchform input:focus
+{
+	color:#333;
+	border-color:#ccc;
+}
+#searchform button
+{
+	cursor:pointer;
+	display:inline-block;
+	width:20px;
+	height:20px;
+	padding:0;
+	right:0;
+	background:transparent url(/N2/Resources/icons/zoom.png) no-repeat 50% 50%;
+	border:none;
+	vertical-align:middle;
+}

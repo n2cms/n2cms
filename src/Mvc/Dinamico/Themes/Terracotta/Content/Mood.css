@@ -1,0 +1,52 @@
+@import "../../../Content/Mood.css";
+
+html
+{
+	background:#ac3400 url(fade.png) no-repeat 50% 0;
+}
+	div#top
+	{
+		-moz-border-radius-bottomleft: 2px 2px;
+		-moz-border-radius-bottomright: 2px 2px;
+		border-bottom-left-radius: 2px 2px;
+		border-bottom-right-radius: 2px 2px;
+	}
+	div#nav
+	{
+		background:url("fade.png") no-repeat scroll 50% 0 #bc5430;
+		-moz-border-radius-topleft: 2px 2px;
+		-moz-border-radius-topright: 2px 2px;
+		border-top-left-radius: 2px 2px;
+		border-top-right-radius: 2px 2px;
+	}
+		div#nav ul li a
+		{
+			background-color: transparent;
+			color:#fff;
+		}
+		div#nav ul li a.current
+		{
+			color:#000;
+		}
+	div#nav ul.submenu
+	{
+		background-color:transparent;
+		border-top:solid 1px #fff;
+	}
+	div#main
+	{
+		-moz-border-radius-bottomleft: 2px 2px;
+		-moz-border-radius-bottomright: 2px 2px;
+		border-bottom-left-radius: 2px 2px;
+		border-bottom-right-radius: 2px 2px;
+	}
+
+/* elements */
+
+.dropmenu
+{
+	-moz-border-radius-bottomleft: 2px 2px;
+	-moz-border-radius-bottomright: 2px 2px;
+	border-bottom-left-radius: 2px 2px;
+	border-bottom-right-radius: 2px 2px;
+}

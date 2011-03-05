@@ -1,0 +1,22 @@
+/* APPEARANCE, COLORS AND FONTS */
+
+h1
+{
+	color: #46351C;
+}
+html
+{
+	background:#5c87b2;
+}
+body 
+{
+	background:transparent; 
+}
+	div#top
+	{
+		background-color:#fff;
+	}
+	div#main
+	{
+		background-color:#fff;
+	}

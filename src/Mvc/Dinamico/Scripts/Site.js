@@ -6,14 +6,14 @@ $.fn.plupdown = function (options) {
 	options = $.extend({
 		callback: function () { },
 		loadingHtml: "<ul><li class='loading'>Loading...</li></ul>",
-		resultsClass: "results"
+		resultsClass: "dropmenu"
 	}, options);
 	var isForm = this.is("form");
 
 	var close = function (e) {
-		if ($(e.target).closest(".resultsinner").any())
+		if ($(e.target).closest(".inner").any())
 			return;
-		$(".results").each(function () {
+		$(".dropmenu").each(function () {
 			$($(this).data("opener")).removeClass("open");
 		}).removeData("opener").remove();
 		$(document).unbind("click", close);
@@ -39,9 +39,9 @@ $.fn.plupdown = function (options) {
 				top: (o.top + h) + "px",
 				left: Math.min(o.left, $(window).width() - 220) + "px"
 			})
-			.html("<a href='#close' class='closer'>&nbsp;</a><div class='resultsinner'/>")
+			.html("<a href='#close' class='closer'>&nbsp;</a><div class='inner'/>")
 			.data("opener", this);
-		$r.children(".resultsinner")
+		$r.children(".inner")
 			.html(options.loadingHtml)
 			.load(url, data, options.callback);
 
@@ -108,7 +108,7 @@ $(document).ready(function () {
 	// Sitemap
 
 	$("#sitemapopener").plupdown({
-		resultsClass: "results sitemapresults",
+		resultsClass: "dropmenu sitemapresults",
 		callback: function () {
 			var here = location.href.replace(/#.*/, "");
 			$("a", this).each(function (i) {
