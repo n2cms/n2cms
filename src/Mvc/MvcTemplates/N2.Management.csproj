@@ -80,8 +80,8 @@
     <Content Include="N2\Login.aspx" />
     <Content Include="N2\Content\Move.aspx" />
     <Content Include="N2\Content\New.aspx" />
-    <Content Include="N2\Resources\Js\jquery-1.5.js" />
-    <Content Include="N2\Resources\Js\jquery-1.5.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.5.1.js" />
+    <Content Include="N2\Resources\Js\jquery-1.5.1.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="N2\Resources\tiny_mce\langs\en.js" />
     <Content Include="N2\Resources\tiny_mce\license.txt" />

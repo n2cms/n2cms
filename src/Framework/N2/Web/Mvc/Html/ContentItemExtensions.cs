@@ -59,8 +59,8 @@ namespace N2.Web.Mvc.Html
 		{
 			if (viewData == null) throw new ArgumentNullException("viewData");
 
-			return viewData.Model as T
-				?? viewData[ContentRoute.ContentItemKey] as T;
+			return viewData[ContentRoute.ContentItemKey] as T
+				?? viewData.Model as T;
 		}
 		private static T CurrentPage<T>(this ViewDataDictionary viewData) where T : ContentItem
 		{
