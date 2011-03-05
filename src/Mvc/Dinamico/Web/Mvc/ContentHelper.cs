@@ -15,6 +15,8 @@ namespace N2.Web.Mvc
 	{
 		HtmlHelper<TModel> html;
 		TraverseHelper traverse;
+		ContentItem currentItem;
+		ContentItem currentPage;
 
 		public ContentHelper(HtmlHelper<TModel> html)
 		{
@@ -26,19 +28,16 @@ namespace N2.Web.Mvc
 			get { return html; }
 		}
 
-		public TModel Model
-		{
-			get { return Html.ViewData.Model as TModel; }
-		}
-
 		public ContentItem CurrentItem
 		{
-			get { return Html.CurrentItem(); }
+			get { return currentItem ?? (currentItem = Html.CurrentItem()); }
+			set { currentItem = value; }
 		}
 
 		public ContentItem CurrentPage
 		{
-			get { return Html.CurrentPage(); }
+			get { return currentPage ?? (currentPage = Html.CurrentPage()); }
+			set { currentPage = value; }
 		}
 
 		public TraverseHelper Traverse
@@ -91,6 +90,11 @@ namespace N2.Web.Mvc
 			get { return new RegisterHelper(Html); }
 		}
 
+		public dynamic Display
+		{
+			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
+		}
+
 		public dynamic Data
 		{
 			get 
@@ -104,6 +108,50 @@ namespace N2.Web.Mvc
 				return data;
 			}
 		}
+
+		public IDisposable BeginScope(ContentItem newCurrentItem)
+		{
+			currentItem = null;
+			return new ContentScope(newCurrentItem, Html.ViewContext.ViewData);
+		}
+
+		public void EndScope()
+		{
+			currentItem = null;
+			ContentScope.End(Html.ViewData);
+		}
+
+		#region class ContentScope
+		class ContentScope : IDisposable
+		{
+			ViewDataDictionary viewData;
+
+			public ContentScope(ContentItem newCurrentItem, ViewDataDictionary viewData)
+			{
+				this.viewData = viewData;
+				viewData["PreviousItem"] = viewData[ContentRoute.ContentItemKey];
+				viewData[ContentRoute.ContentItemKey] = newCurrentItem;
+			}
+
+			#region IDisposable Members
+
+			public void Dispose()
+			{
+				End(viewData);
+			}
+
+			public static void End(ViewDataDictionary viewData)
+			{
+				if (viewData["PreviousItem"] == null)
+					viewData.Remove(ContentRoute.ContentItemKey);
+				else
+					viewData[ContentRoute.ContentItemKey] = viewData["PreviousItem"];
+				viewData.Remove("PreviousItem");
+			}
+
+			#endregion
+		}
+		#endregion
 	}
 
 	public class TreeBuilder : Tree, IHtmlString

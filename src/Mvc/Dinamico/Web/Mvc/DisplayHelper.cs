@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using N2.Web.Mvc;
+using N2.Definitions;
+using N2.Web.Mvc.Html;
+using System.Dynamic;
+using System.Web.Mvc;
+using System.Web.UI;
+using System.IO;
+
+namespace N2.Web.Mvc
+{
+	public class DisplayHelper : DynamicObject // where TModel : class
+	{
+		public ContentItem Current { get; set; }
+		public HtmlHelper Html { get; set; }
+
+		public DisplayRenderer<IEditable> this[string detailname]
+		{
+			get { return new DisplayRenderer<IEditable>(Html, detailname); }
+		}
+
+		public override IEnumerable<string> GetDynamicMemberNames()
+		{
+			return Current.GetContentType().GetProperties().Select(p => p.Name);
+		}
+
+		public override bool TryGetMember(GetMemberBinder binder, out object result)
+		{
+			if (Current == null)
+		    {
+		        result = null;
+		        return true;
+		    }
+
+		    string name = binder.Name;
+
+		    try
+		    {
+				object data = Html.DisplayContent(Current, name).ToString();
+		        result = data.ToHtmlString();
+		    }
+		    catch (N2Exception)
+		    {
+		        if (Html.ViewData.ContainsKey("RegistrationExpression"))
+		        {
+		            result = null;
+		            return true;
+		        }
+
+				var template = Html.ResolveServices<ITemplateProvider>().GetTemplate(Current);
+		        var displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == name);
+
+		        object data;
+		        if (displayable != null)
+		        {
+		            var vp = new ViewPage();
+					displayable.AddTo(Current, name, vp);
+
+		            using (var sw = new StringWriter())
+		            using (var htw = new HtmlTextWriter(sw))
+		            {
+		                vp.RenderControl(htw);
+		                data = sw.ToString();
+		            }
+		        }
+		        else
+					data = Current[name];
+
+		        result = data.ToHtmlString();
+		    }
+
+		    return true;
+		}
+	}
+}

@@ -20,3 +20,14 @@ body
 	{
 		background-color:#fff;
 	}
+	div#footer
+	{
+		margin-top:1px;
+		background-color:#4c77a2;
+		color:#fff;
+	}
+		div#footer a, div#footer a:visited
+		{
+			color:#fff;
+		}
+	

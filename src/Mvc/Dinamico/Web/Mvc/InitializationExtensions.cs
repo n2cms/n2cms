@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace N2.Web.Mvc
 {
-	public static class Extensions
+	public static class InitializationExtensions
 	{
 		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines) where T : VirtualPathProviderViewEngine, new()
 		{

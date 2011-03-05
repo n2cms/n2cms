@@ -26,7 +26,6 @@ html,body
 		}
 		div#main
 		{
-			padding:1em;
 		}
 		div#nav ul
 		{
@@ -73,5 +72,9 @@ html,body
 			
 		div#content
 		{
-			padding-top:1em;
+			padding:1em;
+		}
+		div#footer
+		{
+			padding:1em 1em 0 1em;
 		}

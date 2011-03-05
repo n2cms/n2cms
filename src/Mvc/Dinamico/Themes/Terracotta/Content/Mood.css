@@ -40,6 +40,11 @@ html
 		border-bottom-left-radius: 2px 2px;
 		border-bottom-right-radius: 2px 2px;
 	}
+	div#footer
+	{
+		background:url("fade.png") no-repeat scroll 50% -150px #bc5430;
+	}
+	
 
 /* elements */
 

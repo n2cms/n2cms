@@ -53,5 +53,8 @@ namespace Dinamico.Models
 		}
 
 		#endregion
+
+		[EditableFreeTextArea("Footer text", 200)]
+		public virtual string FooterText { get; set; }
 	}
 }

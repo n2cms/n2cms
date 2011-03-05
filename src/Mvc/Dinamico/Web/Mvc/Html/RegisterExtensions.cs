@@ -110,9 +110,9 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static DisplayRenderer<T> Display<T>(this EditableBuilder<T> builder) where T : IEditable
+		public static RegisteringDisplayRenderer<T> Display<T>(this EditableBuilder<T> builder) where T : IEditable
 		{
-			return builder as DisplayRenderer<T>;
+			return builder as RegisteringDisplayRenderer<T>;
 		}
 	}
 
