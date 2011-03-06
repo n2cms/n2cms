@@ -172,6 +172,9 @@
     <Content Include="Scripts\jquery-1.5.min.js" />
     <Content Include="Scripts\jquery.highlight-3.js" />
     <Content Include="Scripts\Site.js" />
+    <Content Include="Themes\Concrete\Content\Layout.css" />
+    <Content Include="Themes\Concrete\Content\Mood.css" />
+    <Content Include="Themes\Concrete\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Mood.css" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
     <Content Include="Content\Blueprint.css" />

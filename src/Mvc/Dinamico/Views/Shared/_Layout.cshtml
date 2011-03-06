@@ -22,17 +22,19 @@
 	{
 		<div id="top">@{ Html.RenderPartial("Partials/_Top"); }</div>
 		<div id="header" class="clearfix">@{ Html.RenderPartial("Partials/_Header"); }</div>
-		<div id="main" class="clearfix">
-			@if (IsSectionDefined("Main")) { RenderSection("Main"); }
-			else
-			{
-				Html.RenderPartial("Partials/_PreContent");
-				<div id="aside" role="complementary">@if (IsSectionDefined("Aside")) { RenderSection("Aside"); } else { Html.DroppableZone("Aside").Render(); }</div>
-				<div id="content" role="main">@RenderBody()</div>
-				Html.RenderPartial("Partials/_PostContent");
-			}
+		<div id="page">
+			<div id="main" class="clearfix">
+				@if (IsSectionDefined("Main")) { RenderSection("Main"); }
+				else
+				{
+					Html.RenderPartial("Partials/_PreContent");
+					<div id="aside" role="complementary">@if (IsSectionDefined("Aside")) { RenderSection("Aside"); } else { Html.DroppableZone("Aside").Render(); }</div>
+					<div id="content" role="main">@RenderBody()</div>
+					Html.RenderPartial("Partials/_PostContent");
+				}
+			</div>
+			<div id="footer" class="clearfix">@{ Html.RenderPartial("Partials/_Footer"); }</div>
 		</div>
-		<div id="footer" class="clearfix">@{ Html.RenderPartial("Partials/_Footer"); }</div>
 	}
 	</div>
 	@{ Html.Zone("Scripts").Render(); }

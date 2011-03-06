@@ -1,0 +1,5 @@
+﻿<div id="nav" role="navigation">
+<ul id="menu" class="topmenu menu level1">
+	<li>@Content.LinkTo(Content.Traverse.StartPage).Class(Content.CurrentPage == Content.Traverse.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.Traverse.StartPage, takeLevels: 2, rootless: true)
+</ul>
+</div>
