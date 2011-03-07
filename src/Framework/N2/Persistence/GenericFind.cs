@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Web;
+using N2.Definitions;
 
 namespace N2.Persistence
 {
@@ -16,7 +17,7 @@ namespace N2.Persistence
 		/// <summary>Gets the current start page (this may vary depending on host url).</summary>
 		public static TStart StartPage
 		{
-			get { return Closest<TStart>(CurrentPage) ?? (TStart)Context.Current.UrlParser.StartPage; }
+			get { return ClosestOf<IStartPage>(CurrentPage) as TStart ?? (TStart)Context.Current.UrlParser.StartPage; }
 		}
 
 		/// <summary>Gets the site's root items.</summary>
