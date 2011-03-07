@@ -309,6 +309,18 @@
     <Content Include="Views\Shared\Partials\_Footer.cshtml" />
     <Content Include="Views\Shared\Partials\_PostContent.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Concrete\Views\Shared\Partials\_Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Concrete\Views\Shared\Partials\_PreContent.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Concrete\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\Helpers.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

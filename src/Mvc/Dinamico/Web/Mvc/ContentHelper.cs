@@ -11,19 +11,19 @@ using N2.Engine.Globalization;
 
 namespace N2.Web.Mvc
 {	
-	public class ContentHelper<TModel> where TModel : class
+	public class ContentHelper
 	{
-		HtmlHelper<TModel> html;
+		HtmlHelper html;
 		TraverseHelper traverse;
 		ContentItem currentItem;
 		ContentItem currentPage;
 
-		public ContentHelper(HtmlHelper<TModel> html)
+		public ContentHelper(HtmlHelper html)
 		{
 			this.html = html;
 		}
 
-		public HtmlHelper<TModel> Html
+		public HtmlHelper Html
 		{
 			get { return html; }
 		}

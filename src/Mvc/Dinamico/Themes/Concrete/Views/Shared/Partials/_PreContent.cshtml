@@ -1,9 +1,1 @@
-﻿@foreach (var a in Content.Traverse.AncestorsBetween(1, 5))
-{
-if(Content.Traverse.Children(a).Any())
-{
-<ul class="submenu menu @("level"+Content.Traverse.LevelOf(a))">
-	@foreach (var c in Content.Traverse.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
-</ul>
-}
-}
+﻿@Helpers.SubNavigation(1, 2)

@@ -85,12 +85,12 @@ namespace N2.Web.Mvc.Html
 
 		// content helper
 
-		public static ContentHelper<TModel> Content<TModel>(this HtmlHelper<TModel> html) where TModel: class
+		public static ContentHelper Content(this HtmlHelper html)
 		{
-			string key = "ContentHelperOf" + typeof(TModel).Name;
-			var content = html.ViewContext.ViewData[key] as ContentHelper<TModel>;
-			if(content == null)
-				html.ViewContext.ViewData[key] = content = new ContentHelper<TModel>(html);
+			string key = "ContentHelperOf" + html.GetHashCode();
+			var content = html.ViewContext.ViewData[key] as ContentHelper;
+			if (content == null)
+				html.ViewContext.ViewData[key] = content = new ContentHelper(html);
 			return content;
 		}
 	}

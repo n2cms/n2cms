@@ -1,15 +1,4 @@
-﻿
-<div id="nav" role="navigation">
-<ul id="menu" class="topmenu menu level1">
-	<li>@Content.LinkTo(Content.Traverse.StartPage).Class(Content.CurrentPage == Content.Traverse.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.Traverse.StartPage, takeLevels: 2, rootless: true)
-</ul>
-@foreach (var a in Content.Traverse.AncestorsBetween(1, 5))
-{
-if (Content.Traverse.Children(a).Any())
-{
-<ul class="submenu menu @("level" + Content.Traverse.LevelOf(a))">
-	@foreach (var c in Content.Traverse.Children(a)){<li>@Content.LinkTo(c)</li>}
-</ul>
-}
-}
+﻿<div id="nav" role="navigation">
+@Helpers.TopNavigation()
+@Helpers.SubNavigation(1, 2)
 </div>

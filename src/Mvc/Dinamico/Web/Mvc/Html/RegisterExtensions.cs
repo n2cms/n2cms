@@ -11,16 +11,20 @@ namespace N2.Web.Mvc.Html
 {
 	public static class RegisterExtensions
 	{
-		public static ContentRegistration Define<T>(this ContentHelper<T> content, Action<ContentRegistration> registration = null) where T : class
+		public static ContentRegistration Define(this ContentHelper content, Action<ContentRegistration> registration = null)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
 			{
 				re.GlobalSortOffset = 0;
-				if (typeof(ContentItem).IsAssignableFrom(typeof(T)) && re.ContentType == null)
+				if (content.Html.GetType().IsGenericType)
 				{
-					re.ContentType = typeof(T);
-					re.Title = typeof(T).Name;
+					var contentType = content.Html.GetType().GetGenericArguments().First();
+					if (typeof(ContentItem).IsAssignableFrom(contentType) && re.ContentType == null)
+					{
+						re.ContentType = contentType;
+						re.Title = contentType.Name;
+					}
 				}
 				re.IsDefined = true;
 				if(registration != null)
@@ -29,7 +33,7 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static ContentRegistration AppendDefinition<T>(this ContentHelper<T> content, Action<ContentRegistration> registration = null) where T : class
+		public static ContentRegistration AppendDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
@@ -40,7 +44,7 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static ContentRegistration PrependDefinition<T>(this ContentHelper<T> content, Action<ContentRegistration> registration = null) where T : class
+		public static ContentRegistration PrependDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
