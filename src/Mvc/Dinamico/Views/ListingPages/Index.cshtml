@@ -7,9 +7,18 @@
 	});
 }
 
-@foreach (var child in Content.Traverse.Descendants(Content.CurrentPage).Where(d => d.IsPage))
+<div class="list>
+@foreach (var child in Content.Traverse.DescendantPages(Content.CurrentPage))
 {
+	using (Content.BeginContentScope(child))
+ {
 	<div class="item">
-		@Content.LinkTo(child)
+		<a href="@child.Url">
+			@Content.Render.Image("Image", "thumb")
+			<strong>@child.Title</strong>
+			<p>@child["Introduction"]</p>
+		</a>
 	</div>
+ }
 }
+</div>

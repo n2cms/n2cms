@@ -8,6 +8,9 @@ using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
 using N2.Definitions;
 using N2.Engine.Globalization;
+using N2.Web.Rendering;
+using N2.Details;
+using System.IO;
 
 namespace N2.Web.Mvc
 {	
@@ -109,13 +112,18 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		public IDisposable BeginScope(ContentItem newCurrentItem)
+		public RenderHelper Render
+		{
+			get { return new RenderHelper { Html = Html, Content = CurrentItem }; }
+		}
+
+		public IDisposable BeginContentScope(ContentItem newCurrentItem)
 		{
 			currentItem = null;
 			return new ContentScope(newCurrentItem, Html.ViewContext.ViewData);
 		}
 
-		public void EndScope()
+		public void EndContentScope()
 		{
 			currentItem = null;
 			ContentScope.End(Html.ViewData);

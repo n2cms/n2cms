@@ -9,6 +9,7 @@ using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.IO;
+using N2.Details;
 
 namespace N2.Web.Mvc
 {
@@ -17,9 +18,9 @@ namespace N2.Web.Mvc
 		public ContentItem Current { get; set; }
 		public HtmlHelper Html { get; set; }
 
-		public DisplayRenderer<IEditable> this[string detailname]
+		public DisplayRenderer<IDisplayable> this[string detailname]
 		{
-			get { return new DisplayRenderer<IEditable>(Html, detailname); }
+			get { return new DisplayRenderer<IDisplayable>(Html, detailname); }
 		}
 
 		public override IEnumerable<string> GetDynamicMemberNames()

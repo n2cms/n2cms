@@ -128,12 +128,14 @@
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
+    <Compile Include="Web\Mvc\Html\RenderExtensions.cs" />
     <Compile Include="Web\Mvc\RegisterHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
     <Compile Include="Web\Mvc\InitializationExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RegistrationViewEngineDecorator.cs" />
+    <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Web\Mvc\TraverseHelper.cs" />
   </ItemGroup>

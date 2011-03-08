@@ -75,6 +75,11 @@ namespace N2.Web.Mvc
 			return N2.Find.EnumerateChildren(item).Where((filter ?? DefaultFilter()).Match);
 		}
 
+		public IEnumerable<ContentItem> DescendantPages(ContentItem item, ItemFilter filter = null)
+		{
+			return N2.Find.EnumerateChildren(item).Where(p => p.IsPage).Where((filter ?? DefaultFilter()).Match);
+		}
+
 		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
 		{
 			if (item == null)

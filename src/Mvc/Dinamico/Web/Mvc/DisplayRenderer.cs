@@ -6,10 +6,11 @@ using N2.Definitions;
 using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
 using N2.Definitions.Runtime;
+using N2.Details;
 
 namespace N2.Web.Mvc
 {
-	public class DisplayRenderer<T> : IHtmlString where T : IEditable
+	public class DisplayRenderer<T> : IHtmlString where T : IDisplayable
 	{
 		protected RenderingContext Context { get; set; }
 

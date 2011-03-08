@@ -167,8 +167,8 @@ namespace Dinamico.Definitions.Dynamic
 				definitions = pairs.Select(p => p.Definition).ToList();
 
 				var files = pairs.SelectMany(p => p.VirtualPaths).Distinct().ToList();
-				var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
-				var cacheDependency = vpp.GetCacheDependency(dirs.FirstOrDefault(), dirs, DateTime.UtcNow);
+				//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
+				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
 				httpContext.Cache.Remove(cacheKey);
 				httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate { Debug.WriteLine("Razor template changed"); }));

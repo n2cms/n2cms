@@ -3,3 +3,5 @@
 @import "../../../Content/Elements.css";
 @import "../../../Content/Features.css";
 @import "Mood.css";
+
+#content img.main { width:920px; }
