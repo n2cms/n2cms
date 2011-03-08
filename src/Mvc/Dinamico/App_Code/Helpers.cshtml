@@ -10,9 +10,11 @@
 
 @helper SubNavigation(int skipLevels, int takeLevels){
 	var Content = ((WebViewPage)PageContext.Page).Html.Content();
+	int level = skipLevels;
 	foreach (var a in Content.Traverse.AncestorsBetween(skipLevels, takeLevels)){
+		level++;
 		if (Content.Traverse.Children(a).Any()){
-<ul class="submenu menu @("level" + Content.Traverse.LevelOf(a))">
+<ul class="submenu menu @("level" + level)">
 			@foreach (var c in Content.Traverse.Children(a)){
 	<li>@Content.LinkTo(c)</li>
 			}
