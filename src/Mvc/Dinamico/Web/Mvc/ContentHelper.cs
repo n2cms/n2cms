@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Collections;
-using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
-using N2.Definitions;
-using N2.Engine.Globalization;
-using N2.Web.Rendering;
-using N2.Details;
-using System.IO;
 
 namespace N2.Web.Mvc
 {	
@@ -48,6 +41,38 @@ namespace N2.Web.Mvc
 			get { return traverse ?? (traverse = new TraverseHelper(Html)); }
 		}
 
+		public RegisterHelper Register
+		{
+			get { return new RegisterHelper(Html); }
+		}
+
+		public dynamic Display
+		{
+			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
+		}
+
+		public dynamic Data
+		{
+			get
+			{
+				if (CurrentItem == null)
+					return new DataHelper(() => CurrentItem);
+
+				string key = "DataHelper" + CurrentItem.ID;
+				var data = Html.ViewContext.ViewData[key] as DataHelper;
+				if (data == null)
+					Html.ViewContext.ViewData[key] = data = new DataHelper(() => CurrentItem);
+				return data;
+			}
+		}
+
+		public RenderHelper Render
+		{
+			get { return new RenderHelper { Html = Html, Content = CurrentItem }; }
+		}
+
+		// markup
+
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
 		{
 			return TreeFrom(Traverse.AncestorAtLevel(skipLevels), takeLevels, rootless, cssGetter, filter);
@@ -76,46 +101,7 @@ namespace N2.Web.Mvc
 			return lb;
 		}
 
-		public IItemFinder Find()
-		{
-			return Html.ResolveService<IItemFinder>();
-		}
-
-		public IQueryAction FindDescendant(ContentItem root = null)
-		{
-			if (root == null)
-				root = CurrentItem;
-			return Html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
-		}
-
-		public RegisterHelper Register
-		{
-			get { return new RegisterHelper(Html); }
-		}
-
-		public dynamic Display
-		{
-			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
-		}
-
-		public dynamic Data
-		{
-			get 
-			{
-				if(CurrentItem == null)
-					return new DataHelper(null);
-
-				var data = Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] as DataHelper;
-				if(data == null)
-					Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] = data = new DataHelper(CurrentItem);
-				return data;
-			}
-		}
-
-		public RenderHelper Render
-		{
-			get { return new RenderHelper { Html = Html, Content = CurrentItem }; }
-		}
+		// content scope
 
 		public IDisposable BeginContentScope(ContentItem newCurrentItem)
 		{
@@ -126,7 +112,7 @@ namespace N2.Web.Mvc
 		public void EndContentScope()
 		{
 			currentItem = null;
-			ContentScope.End(Html.ViewData);
+			ContentScope.End(Html.ViewContext.ViewData);
 		}
 
 		#region class ContentScope

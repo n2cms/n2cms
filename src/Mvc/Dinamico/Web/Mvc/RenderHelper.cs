@@ -29,28 +29,4 @@ namespace N2.Web.Mvc
 			});
 		}
 	}
-
-	//public class RendererAdapter : IHtmlString
-	//{
-	//    public RendererAdapter()
-	//    {
-	//    }
-
-	//    public ContentItem Content { get; set; }
-	//    public string DetailName { get; set; }
-	//    public IWritingDisplayable Displayable { get; set; }
-
-	//    #region IHtmlString Members
-
-	//    public string ToHtmlString()
-	//    {
-	//        using (var tw = new StringWriter())
-	//        {
-	//            Displayable.Write(Content, DetailName, tw);
-	//            return tw.ToHtmlString();
-	//        }
-	//    }
-
-	//    #endregion
-	//}
 }

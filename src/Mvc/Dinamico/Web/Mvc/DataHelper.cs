@@ -10,17 +10,17 @@ namespace N2.Web.Mvc
 {
 	public class DataHelper : DynamicObject
 	{
-		ContentItem current;
+		Func<ContentItem> current;
 		Dictionary<string, object> overrides = new Dictionary<string, object>();
 
-		public DataHelper(ContentItem current)
+		public DataHelper(Func<ContentItem> current)
 		{
 			this.current = current;
 		}
 		
 		public override IEnumerable<string> GetDynamicMemberNames()
 		{
-			return current.GetContentType().GetProperties().Select(p => p.Name);
+			return current().GetContentType().GetProperties().Select(p => p.Name);
 		}
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
@@ -38,7 +38,7 @@ namespace N2.Web.Mvc
 				return true;
 			}
 
-			result = current[name];
+			result = current()[name];
 			return true;
 		}
 

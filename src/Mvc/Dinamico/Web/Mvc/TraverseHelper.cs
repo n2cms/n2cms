@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using N2.Collections;
-using N2.Engine.Globalization;
-using N2.Web.Mvc.Html;
 using System.Web.Mvc;
+using N2.Collections;
 using N2.Definitions;
+using N2.Engine.Globalization;
+using N2.Persistence.Finder;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -99,6 +98,17 @@ namespace N2.Web.Mvc
 		{
 			return Ancestors().Reverse().Skip(level).FirstOrDefault();
 		}
+		
+		public IItemFinder Find()
+		{
+			return html.ResolveService<IItemFinder>();
+		}
 
+		public IQueryAction FindDescendant(ContentItem root = null)
+		{
+			if (root == null)
+				root = CurrentItem;
+			return html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
+		}
 	}
 }
