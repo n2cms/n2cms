@@ -54,6 +54,11 @@ namespace N2.Details
 			set { cssClass = value; }
 		}
 
+		/// <summary>The image size to display by default if available.</summary>
+		public string PreferredSize { get; set; }
+
+
+
 		protected override Control AddEditor(Control container)
 		{
 			FileSelector selector = new FileSelector();
@@ -82,13 +87,13 @@ namespace N2.Details
 		#region IDisplayable Members
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			return DisplayableImageAttribute.AddImage(container, item, detailName, CssClass, Alt);
+			return DisplayableImageAttribute.AddImage(container, item, detailName, PreferredSize, CssClass, Alt);
 		}
 
 		[Obsolete("Use DisplayableImageAttribute.AddImage")]
 		public static Control AddImage(Control container, ContentItem item, string detailName, string cssClass, string altText)
 		{
-			return DisplayableImageAttribute.AddImage(container, item, detailName, cssClass, altText);
+			return DisplayableImageAttribute.AddImage(container, item, detailName, null, cssClass, altText);
 		}
 		#endregion
 
@@ -107,7 +112,7 @@ namespace N2.Details
 
 		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
+			DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
 		}
 
 		#endregion

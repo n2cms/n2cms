@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web.Hosting;
 
 namespace N2.Web.Drawing
 {
@@ -39,5 +40,21 @@ namespace N2.Web.Drawing
 
 		/// <summary>Separator between the size suffix and the file name.</summary>
 		public const string Separator = "_";
+
+		/// <summary>Gets the path of a resized version of the image, if it exists, otherwise the given image url.</summary>
+		/// <param name="url">The base url of an image.</param>
+		/// <param name="resizedSuffix">The size suffix to append before the extension.</param>
+		/// <returns>A resized image url if it exists.</returns>
+		public static string GetExistingImagePath(string imageUrl, string preferredSize)
+		{
+			if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(preferredSize))
+				return imageUrl;
+
+			string preferredUrl = ImagesUtility.GetResizedPath(imageUrl, preferredSize);
+			if (HostingEnvironment.VirtualPathProvider.FileExists(preferredUrl))
+				return preferredUrl;
+
+			return Url.ToAbsolute(imageUrl);
+		}
 	}
 }

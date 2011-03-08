@@ -1,6 +1,8 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Mvc;
+using System.Web.Hosting;
+using N2.Web.Drawing;
 
 namespace N2.Details
 {
@@ -14,9 +16,12 @@ namespace N2.Details
 			set { alt = value; }
 		}
 
+		/// <summary>The image size to display by default if available.</summary>
+		public string PreferredSize { get; set; }
+
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			return AddImage(container, item, detailName, CssClass, Alt);
+			return AddImage(container, item, detailName, PreferredSize, CssClass, Alt);
 		}
 
 		/// <summary>Adds an image control to the container.</summary>
@@ -26,13 +31,13 @@ namespace N2.Details
 		/// <param name="cssClass">The css class to applky to the image element.</param>
 		/// <param name="altText">Alt alternative text to apply to the image element.</param>
 		/// <returns>An image control.</returns>
-		public static Control AddImage(Control container, ContentItem item, string detailName, string cssClass, string altText)
+		public static Control AddImage(Control container, ContentItem item, string detailName, string preferredSize, string cssClass, string altText)
 		{
 			string imageUrl = item[detailName] as string;
 			if (!string.IsNullOrEmpty(imageUrl))
 			{
 				Image image = new Image();
-				image.ImageUrl = N2.Web.Url.ToAbsolute(imageUrl);
+				image.ImageUrl = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize);
 				image.AlternateText = item.GetDetail(detailName + "_AlternateText", altText);
 				image.CssClass = item.GetDetail(detailName + "_CssClass", cssClass);
 				container.Controls.Add(image);
@@ -45,14 +50,14 @@ namespace N2.Details
 		/// <param name="item">The item containing the data.</param>
 		/// <param name="detailName">The name of the property to write.</param>
 		/// <param name="writer">The writer to write to.</param>
-		public static void WriteImage(ContentItem item, string detailName, string alt, string cssClass, System.IO.TextWriter writer)
+		public static void WriteImage(ContentItem item, string detailName, string preferredSize, string alt, string cssClass, System.IO.TextWriter writer)
 		{
 			string imageUrl = item[detailName] as string;
 			if (string.IsNullOrEmpty(imageUrl))
 				return;
 
 			TagBuilder tb = new TagBuilder("img");
-			tb.Attributes["src"] = N2.Web.Url.ToAbsolute(imageUrl);
+			tb.Attributes["src"] = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize);
 			tb.Attributes["alt"] = item.GetDetail(detailName + "_AlternateText", alt);
 			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
 			if (!string.IsNullOrEmpty(cssClass))
@@ -65,7 +70,7 @@ namespace N2.Details
 
 		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, detailName, alt, CssClass, writer);
+			DisplayableImageAttribute.WriteImage(item, detailName, PreferredSize, alt, CssClass, writer);
 		}
 
 		#endregion

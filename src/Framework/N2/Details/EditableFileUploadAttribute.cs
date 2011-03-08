@@ -50,6 +50,11 @@ namespace N2.Details
 		/// <summary>CSS class on the image element.</summary>
 		public string UploadText { get; set; }
 
+		/// <summary>The image size to display by default if available.</summary>
+		public string PreferredSize { get; set; }
+
+
+
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			SelectorUploadComposite composite = (SelectorUploadComposite)editor;
@@ -164,7 +169,7 @@ namespace N2.Details
 						return null;
 				}
 
-				return DisplayableImageAttribute.AddImage(container, item, detailName, CssClass, Alt);
+				return DisplayableImageAttribute.AddImage(container, item, detailName, PreferredSize, CssClass, Alt);
 			}
 			return null;
 		}
@@ -197,7 +202,7 @@ namespace N2.Details
 				case ".png":
 				case ".jpg":
 				case ".jpeg":
-					DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
+					DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
 					return;
 				default:
 					WriteUrl(item, propertyName, cssClass, writer, url);
