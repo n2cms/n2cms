@@ -175,7 +175,7 @@
             <asp:Repeater ID="rptAssembly" runat="server">
                 <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
-                <asp:Repeater runat="server" DataSource=<%# Eval("FullName").ToString().Split(',') %>>
+                <asp:Repeater runat="server" DataSource=<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>>
 					<ItemTemplate>
 						<td><%# Container.DataItem %></td>
 					</ItemTemplate>

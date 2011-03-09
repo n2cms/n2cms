@@ -37,9 +37,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\AntiXSSLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="dotless.Core">
-      <HintPath>..\..\..\lib\dotless.Core.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlSanitizationLibrary, Version=4.0.0.0, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HtmlSanitizationLibrary.dll</HintPath>
