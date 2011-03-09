@@ -14,7 +14,6 @@ namespace N2.Management.Content.Templates
 	{
 		ContentTemplateRepository repository;
 		DefinitionBuilder definitionBuilder;
-		ItemDefinition[] staticDefinitions = null;
 
 		public ContentTemplateProvider(ContentTemplateRepository repository, DefinitionBuilder definitionBuilder)
 		{

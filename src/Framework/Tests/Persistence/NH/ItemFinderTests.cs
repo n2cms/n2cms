@@ -1066,6 +1066,7 @@ namespace N2.Tests.Persistence.NH
 		public void FilterByProperty_String_Like_NonMatchingValue()
 		{
 			var items = finder.Where.Property("StringPersistableProperty").Like("non in table%").Select();
+			var all = new List<ContentItem>(finder.All.Select());
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
 		[Test]
@@ -1096,13 +1097,13 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FilterByProperty_DateTime_GreaterThan_MatchingValue()
 		{
-			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 29, 59)).Select();
+			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 29, 50)).Select();
 			Assert.That(items.Count, Is.EqualTo(3));
 		}
 		[Test]
 		public void FilterByProperty_DateTime_GreaterThan_NonMatchingValue()
 		{
-			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 30, 01)).Select();
+			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 30, 10)).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
 		[Test]

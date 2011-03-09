@@ -1,3 +1,4 @@
+- Permissions in management plugins (ThreadId=248967)
 - remove language associations (ThreadId=229288)
 - index template replaces default
 - static parts

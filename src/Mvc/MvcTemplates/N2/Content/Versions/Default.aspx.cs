@@ -93,7 +93,7 @@ namespace N2.Edit.Versions
 
 		protected bool IsPublished(object dataItem)
 		{
-			return publishedItem == dataItem;
+			return publishedItem.Equals(dataItem);
 		}
 	}
 }

@@ -82,8 +82,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
 	ProjectSection(SolutionItems) = preProject
-		..\lib\Antlr3.Runtime.dll = ..\lib\Antlr3.Runtime.dll
-		..\lib\Castle.Core.dll = ..\lib\Castle.Core.dll
 		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
 		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
 		..\lib\log4net.dll = ..\lib\log4net.dll

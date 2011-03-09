@@ -49,16 +49,31 @@ namespace N2.Persistence
 			string columnName = Column ?? info.Name;
 			string length = Length > 0 ? Length.ToString() : "{StringLength}";
             bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
-			var type = isNullable
+			var propertyType = isNullable
                 ? info.PropertyType.GetGenericArguments()[0]
                 : info.PropertyType;
-			string typeName = type.FullName + ", " + info.PropertyType.Assembly.FullName.Split(',')[0];
-
+			string typeName = GetTypeName(propertyType);
 			string format = propertyFormat;
-			if (typeof(ContentItem).IsAssignableFrom(type))
+			if (typeof(ContentItem).IsAssignableFrom(propertyType))
 				format = relationFormat;
 			return string.Format(format, info.Name, columnName, typeName, length);
         }
+
+		private static string GetTypeName(Type propertyType)
+		{
+			if(propertyType == typeof(string))
+				return "StringClob";
+			else if(propertyType == typeof(bool))
+				return "Boolean";
+			else if(propertyType == typeof(int))
+				return "Int32";
+			else if(propertyType == typeof(double))
+				return "Double";
+			else if(propertyType == typeof(DateTime))
+				return "DateTime";
+			else
+				return propertyType.FullName + ", " + propertyType.Assembly.FullName.Split(',')[0];
+		}
 
 		#region IInterceptableProperty Members
 
