@@ -32,13 +32,14 @@ namespace N2.Web.Mvc
 				return true;
 			}
 
-			if (current == null)
+			var item = current();
+			if (item == null)
 			{
 				result = null;
 				return true;
 			}
 
-			result = current()[name];
+			result = item[name];
 			return true;
 		}
 

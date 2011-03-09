@@ -4,10 +4,8 @@
 	Content.Define(re => 
 	{
 		re.Title = "News page";
+		re.ContentModifiers.Add(new N2.Details.DefaultValueAttribute { Name = "Visible", Value = false });
 	});
 }
 
-@Content.Register.FileUpload("Image").Configure(fu => { fu.PreferredSize = "wide"; fu.CssClass = "main"; }).Container(Dinamico.Constants.Containers.Content).Display()
-@Content.Register.PublishedRange().Display()
-
-@Html.Partial("Partials/_Content")
+@Html.Partial("Partials/_BlogContent")

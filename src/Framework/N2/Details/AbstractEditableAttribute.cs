@@ -10,6 +10,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using System.Diagnostics;
+using N2.Edit.Workflow;
 
 namespace N2.Details
 {
@@ -19,7 +20,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty, IContentModifier
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -325,7 +326,7 @@ namespace N2.Details
 		/// <returns>True if the items are of the same type and have the same name.</returns>
 		public override bool Equals(object obj)
 		{
-			IUniquelyNamed other = obj as IUniquelyNamed;
+			var other = obj as AbstractEditableAttribute;
 			if (other == null)
 				return false;
 			return (Name == other.Name);
@@ -441,6 +442,21 @@ namespace N2.Details
 				return literal;
 			}
 			return null;
+		}
+
+		#endregion
+
+		#region IContentModifier Members
+
+		ContentState IContentModifier.ChangingTo
+		{
+			get { return ContentState.New; }
+		}
+
+		void IContentModifier.Modify(ContentItem item)
+		{
+			if (DefaultValue != null)
+				item[Name] = DefaultValue;
 		}
 
 		#endregion

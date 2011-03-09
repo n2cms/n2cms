@@ -238,7 +238,7 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void TextPage_HasThreeEditables()
+		public void TextPage_Has2InheritedEditables_AndOneAddedToProperty()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionTextPage));
 			IList<IEditable> editables = definition.Editables;

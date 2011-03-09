@@ -7,18 +7,9 @@
 	});
 }
 
-<div class="list>
-@foreach (var child in Content.Traverse.DescendantPages(Content.CurrentPage))
-{
-	using (Content.BeginContentScope(child))
- {
-	<div class="item">
-		<a href="@child.Url">
-			@Content.Render.Image("Image", "thumb")
-			<strong>@child.Title</strong>
-			<p>@child["Introduction"]</p>
-		</a>
-	</div>
- }
-}
-</div>
+@Html.Partial("Partials/_Content")
+
+@Html.Loop(Content.Traverse.DescendantPages(Content.CurrentPage, N2.Filter.Access()),
+	template:@<div class="item"><a href="@item.Data.Url">@Content.Render.Image("Image", "thumb")<strong>@item.Data.Title</strong>@item.Data["Introduction"]</a></div>,
+	containerTemplate:@<div class="list">@item.RenderContents()</div>,
+	emptyTemplate:@<p>No items</p>)

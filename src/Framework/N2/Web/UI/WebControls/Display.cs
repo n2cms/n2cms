@@ -81,7 +81,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Inserted before the display control if a control was added.</summary>
-		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		[System.ComponentModel.DefaultValueAttribute((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
 		public virtual ITemplate HeaderTemplate
 		{
 			get { return this.headerTemplate; }
@@ -89,7 +89,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Added after the display control if a control was added.</summary>
-		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		[System.ComponentModel.DefaultValueAttribute((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
 		public virtual ITemplate FooterTemplate
 		{
 			get { return this.footerTemplate; }

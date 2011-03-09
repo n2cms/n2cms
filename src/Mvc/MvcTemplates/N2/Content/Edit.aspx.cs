@@ -290,6 +290,7 @@ namespace N2.Edit
 					ie.Definition = info.Definition;
 					ie.CurrentItem = info.Template;
 					ie.CurrentItem.Parent = Selection.SelectedItem;
+					ie.ApplyContentModifications(ContentState.New);
 				}
 				else
 				{
@@ -306,7 +307,7 @@ namespace N2.Edit
                 if(d == null)
                     throw new N2Exception("Couldn't find any definition for type '" + t + "'");
                 ie.Discriminator = d.Discriminator;
-                ie.ParentPath = Selection.SelectedItem.Path;
+				ie.ParentPath = Selection.SelectedItem.Path;
 			}
 			else
 			{

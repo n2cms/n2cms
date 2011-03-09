@@ -70,8 +70,13 @@ namespace N2.Definitions
 			SortOrder = 1000;
 			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
 			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
+			ContentModifiers = new List<IContentModifier>();
 			AvailableZones = new List<AvailableZoneAttribute>();
 			AllowedZoneNames = new List<string>();
+			Editables = new List<IEditable>();
+			Containers = new List<IEditableContainer>();
+			EditableModifiers = new List<EditorModifierAttribute>();
+			Displayables = new List<IDisplayable>();
 			IsPage = true;
 			Enabled = true;
 			AllowedIn = AllowedZones.None;
@@ -149,7 +154,14 @@ namespace N2.Definitions
 		public IEditableContainer RootContainer { get; private set; }
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
-		public IList<EditorModifierAttribute> Modifiers { get; private set; }
+		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
+
+		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
+		[Obsolete("Use EditableModifiers")]
+		public IList<EditorModifierAttribute> Modifiers { get { return EditableModifiers; } }
+
+		/// <summary>Default modifiers for the content item before it transitions to a state.</summary>
+		public IList<IContentModifier> ContentModifiers { get; set; }
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
 		public IList<IDisplayable> Displayables { get; private set; }
@@ -160,9 +172,7 @@ namespace N2.Definitions
 		public IList<IAllowedDefinitionFilter> AllowedChildFilters { get; private set; }
 
 		/// <summary>Filters allowed definitions above this definition.</summary>
-		public List<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
-
-
+		public IList<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
 
 		#endregion
 
@@ -227,7 +237,7 @@ namespace N2.Definitions
 		public IList<EditorModifierAttribute> GetModifiers(string detailName)
 		{
 			var filtered = new List<EditorModifierAttribute>();
-			foreach (EditorModifierAttribute a in Modifiers)
+			foreach (EditorModifierAttribute a in EditableModifiers)
 				if (a.Name == detailName)
 					filtered.Add(a);
 			return filtered;
@@ -278,17 +288,25 @@ namespace N2.Definitions
 		/// <param name="containable">The editable to add.</param>
 		public void Add(IUniquelyNamed containable)
 		{
-			if (containable is IEditable)
+			AddRange(new[] { containable });
+		}
+
+		/// <summary>Adds an enumeration of containable editor or container to existing editors and to a container.</summary>
+		/// <param name="containables">The editables to add.</param>
+		public void AddRange(IEnumerable<IUniquelyNamed> containables)
+		{
+			foreach (var containable in containables)
 			{
-				Editables.AddOrReplace(containable as IEditable);
-			}
-			if (containable is IEditableContainer)
-			{
-				Containers.AddOrReplace(containable as IEditableContainer);
-			}
-			if (containable is IDisplayable)
-			{
-				Displayables.AddOrReplace(containable as IDisplayable);
+				if (containable is IEditable)
+					Editables.AddOrReplace(containable as IEditable);
+				if (containable is IEditableContainer)
+					Containers.AddOrReplace(containable as IEditableContainer);
+				if (containable is EditorModifierAttribute)
+					EditableModifiers.Add(containable as EditorModifierAttribute);
+				if (containable is IDisplayable)
+					Displayables.AddOrReplace(containable as IDisplayable);
+				if (containable is IContentModifier)
+					ContentModifiers.Add(containable as IContentModifier);
 			}
 			ReloadRoot();
 		}
@@ -309,15 +327,24 @@ namespace N2.Definitions
 										"' amont the definition's Editables and Containers.");
 		}
 
-		public void Remove(IContainable containable)
+		public void Remove(IUniquelyNamed containable)
 		{
-			if (containable is IEditable)
-				Editables.Remove((IEditable)containable);
-			else if (containable is IEditableContainer)
-				Containers.Remove((IEditableContainer)containable);
-			else
-				throw new ArgumentException("Invalid argument " + containable);
+			RemoveRange(new[] { containable });
+		}
 
+		public void RemoveRange(IEnumerable<IUniquelyNamed> containables)
+		{
+			foreach (var containable in containables)
+			{
+				if (containable is IEditable)
+					Editables.Remove(containable as IEditable);
+				if (containable is IEditableContainer)
+					Containers.Remove(containable as IEditableContainer);
+				if (containable is IDisplayable)
+					Displayables.Remove(containable as IDisplayable);
+				if (containable is IContentModifier)
+					ContentModifiers.Remove(containable as IContentModifier);
+			}
 			ReloadRoot();
 		}
 
@@ -327,14 +354,9 @@ namespace N2.Definitions
 			if (initializedTypes.Contains(type))
 				return this;
 
-			Editables = Union(Editables, explorer.Find<IEditable>(type));
-			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
-			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
-			Displayables = Union(Displayables, explorer.Find<IDisplayable>(type));
+			AddRange(explorer.Find<IUniquelyNamed>(type));
 			foreach (ISimpleDefinitionRefiner refiner in type.GetCustomAttributes(typeof(ISimpleDefinitionRefiner), true))
 				refiner.Refine(this);
-
-			ReloadRoot();
 
 			initializedTypes.Add(type);
 			return this;
@@ -343,17 +365,6 @@ namespace N2.Definitions
 		private void ReloadRoot()
 		{
 			RootContainer = hierarchyBuilder.Build(Containers, Editables);
-		}
-
-		private static IList<T> Union<T>(IList<T> collection, IList<T> toAdd)
-		{
-			if (collection == null)
-				return new List<T>(toAdd);
-
-			var list = new List<T>(collection);
-			foreach (var item in toAdd)
-				list.Add(item);
-			return list;
 		}
 
 		#endregion
@@ -415,7 +426,7 @@ namespace N2.Definitions
 			id.IconUrl = IconUrl;
 			id.Installer = Installer;
 			id.IsDefined = IsDefined;
-			id.Modifiers = Modifiers.ToList();
+			id.EditableModifiers = EditableModifiers.ToList();
 			id.NumberOfItems = 0;
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;

@@ -10,6 +10,8 @@
 }
 @Content.Register.FileUpload("Image").Configure(fu => { fu.PreferredSize = "wide"; fu.CssClass = "main"; }).Container(Dinamico.Constants.Containers.Content).Display()
 @Content.Register.Title().Container("Content").Configure(e => e.CssClass = "entry-title").Display()
+<span class="updated">@Content.Register.PublishedRange().Container("Advanced").Display()</span>
 <div class="entry-content">
 	@Content.Register.FreeText("Text").Container("Content").Display()
 </div>
+<span class="author">@Content.CurrentItem.SavedBy</span>

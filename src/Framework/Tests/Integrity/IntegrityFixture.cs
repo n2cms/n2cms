@@ -54,7 +54,7 @@ namespace N2.Tests.Integrity
 			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(new Definitions.Root(), null, null), startPageDefinition);
 			Assert.AreEqual(0, rootDefinition.GetEditables(null).Count);
 			Assert.AreEqual(0, rootDefinition.GetModifiers("Title").Count); 
-			Assert.AreEqual(0, rootDefinition.Modifiers.Count);
+			Assert.AreEqual(0, rootDefinition.EditableModifiers.Count);
 			Assert.AreEqual(0, rootDefinition.SortOrder);
 			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Title);
 		}

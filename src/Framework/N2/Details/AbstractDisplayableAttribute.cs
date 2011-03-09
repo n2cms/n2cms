@@ -37,7 +37,7 @@ namespace N2.Details
 		/// <returns>True if the items are of the same type and have the same name.</returns>
 		public override bool Equals(object obj)
 		{
-			IDisplayable other = obj as IDisplayable;
+			var other = obj as AbstractDisplayableAttribute;
 			if (other == null)
 				return false;
 			return name == other.Name;

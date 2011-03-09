@@ -14,6 +14,7 @@ namespace N2.Definitions.Runtime
 		{
 			Containables = new Dictionary<string, IUniquelyNamed>();
 			TouchedPaths = new List<string>();
+			ContentModifiers = new List<IContentModifier>();
 			DefaultSortIncrement = 10;
 		}
 
@@ -21,6 +22,7 @@ namespace N2.Definitions.Runtime
 
 		public Type ContentType { get; set; }
 		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
+		public ICollection<IContentModifier> ContentModifiers { get; set; }
 		public ICollection<string> TouchedPaths { get; private set; }
 		public string ContainerName { get; set; }
 		public int CurrentSortOrder { get; set; }
@@ -68,12 +70,12 @@ namespace N2.Definitions.Runtime
 
 		public ItemDefinition CreateDefinition(DefinitionTable definitions)
 		{
-			var id = definitions.GetDefinition(ContentType).Initialize(ContentType).Clone();
+			var definition = definitions.GetDefinition(ContentType).Initialize(ContentType).Clone();
 
 			foreach (IDefinitionRefiner refiner in ContentType.GetCustomAttributes(typeof(IDefinitionRefiner), true))
-				refiner.Refine(id, definitions.GetDefinitions().ToList());
+				refiner.Refine(definition, definitions.GetDefinitions().ToList());
 
-			return AppendDefinition(id);
+			return AppendDefinition(definition);
 		}
 
 		public ItemDefinition AppendDefinition(ItemDefinition definition)
@@ -83,6 +85,9 @@ namespace N2.Definitions.Runtime
 
 			foreach (var c in Containables)
 				definition.Add(c.Value);
+
+			foreach (var dv in ContentModifiers)
+				definition.ContentModifiers.Add(dv);
 
 			return definition;
 		}

@@ -11,6 +11,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -105,6 +106,7 @@ namespace N2.Web.UI.WebControls
 					ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(ParentPath));
 					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
+					ApplyContentModifications(ContentState.New);
 				}
 				if (currentItem.ZoneName != ZoneName)
 					currentItem.ZoneName = ZoneName;
@@ -127,6 +129,12 @@ namespace N2.Web.UI.WebControls
 					Discriminator = null;
 				}
 			}
+		}
+
+		public void ApplyContentModifications(ContentState changingTo)
+		{
+			foreach (var d in GetDefinition().ContentModifiers.Where(cm => (cm.ChangingTo & changingTo) == changingTo))
+				d.Modify(currentItem);
 		}
 
 		/// <summary>Gets or sets the zone name that the edited item will be set to.</summary>

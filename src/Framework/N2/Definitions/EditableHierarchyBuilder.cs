@@ -41,11 +41,11 @@ namespace N2.Definitions
 						throw new N2Exception("The container '{0}' cannot reference itself as containing container. Change the ContainerName property.", container.Name);
 
 					IEditableContainer parentContainer = FindContainer(container.ContainerName, containers);
-					
+
 					if (parentContainer == null)
-						throw new N2Exception("The container '{0}' references another containing container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.", container.Name, container.ContainerName);
-					
-					parentContainer.AddContained(container);
+						rootContainer.AddContained(container);
+					else
+						parentContainer.AddContained(container);
 				}
 				else
 				{

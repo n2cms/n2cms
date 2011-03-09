@@ -5,9 +5,25 @@ using System.Web.Mvc;
 using N2.Definitions;
 using N2.Details;
 using System.Web.Hosting;
+using System.Web.WebPages;
+using System.IO;
 
 namespace N2.Web.Mvc.Html
 {
+	public class Template<T>
+	{
+		public int Index { get; set; }
+		public bool First { get; set; }
+		public bool Last { get; set; }
+		public T Data { get; set; }
+		public Action<TextWriter> ContentRenderer { get; set; }
+
+		public HelperResult RenderContents()
+		{
+			return new HelperResult(ContentRenderer);
+		}
+	}
+
 	public static class Extensions
 	{
 		public static IHtmlString ToHtmlString(this object instance)
@@ -17,70 +33,56 @@ namespace N2.Web.Mvc.Html
 			return new HtmlString(instance.ToString());
 		}
 
-		// themed resources
-
-		public static string ThemedContent(this UrlHelper url, string contentPath)
+		public static HelperResult Loop<T>(this HtmlHelper html, 
+			IEnumerable<T> items, 
+			Func<Template<T>, HelperResult> template,
+			Func<Template<IEnumerable<T>>, HelperResult> containerTemplate = null,
+			Func<string, HelperResult> emptyTemplate = null)
 		{
-			return ResolveThemedContent(url.RequestContext.HttpContext, HostingEnvironment.VirtualPathProvider, contentPath);
-		}
-
-		public static string ThemedStyleSheet(this HtmlHelper html, string stylePath)
-		{
-			return N2.Resources.Register.StyleSheet(html.ViewContext.ViewData, ResolveThemedContent(html.ViewContext.HttpContext, HostingEnvironment.VirtualPathProvider, stylePath));
-		}
-
-		private static string ResolveThemedContent(HttpContextBase httpContext, VirtualPathProvider vpp, string contentPath)
-		{
-			string theme = httpContext.GetTheme();
-			if (string.IsNullOrEmpty(theme))
-				return Url.ToAbsolute(contentPath);
-
-			string themeContentPath = "~/Themes/" + theme + contentPath.TrimStart('~');
-			if (!vpp.FileExists(themeContentPath))
-				return Url.ToAbsolute(contentPath);
-
-			return Url.ToAbsolute(themeContentPath);
-		}
-
-		// theming
-
-		private const string ThemeKey = "theme";
-		public static string GetTheme(this ControllerContext context)
-		{
-			return context.HttpContext.GetTheme();
-		}
-
-		internal static string GetTheme(this HttpContextBase context)
-		{
-			return context.Request[ThemeKey] // preview theme via query string
-				?? context.Items[ThemeKey] as string // previously initialized theme
-				?? "Default"; // fallback
-		}
-
-		public static void SetTheme(this ControllerContext context, string theme)
-		{
-			context.HttpContext.Items[ThemeKey] = theme;
-		}
-
-		public static void InitTheme(this ControllerContext context)
-		{
-			var page = context.RequestContext.CurrentPage<ContentItem>() 
-				?? context.RequestContext.StartPage();
-
-			InitTheme(context, page);
-		}
-
-		private static void InitTheme(ControllerContext context, ContentItem page)
-		{
-			var start = Find.ClosestOf<IThemeable>(page);
-			if (start == null)
-				return;
-
-			var themeSource = start as IThemeable;
-			if (string.IsNullOrEmpty(themeSource.Theme))
-				InitTheme(context, start.Parent);
-			else
-				context.SetTheme(themeSource.Theme);
+			return new System.Web.WebPages.HelperResult((tw) =>
+				{
+					using(var enumerator = items.GetEnumerator())
+					{
+						if (enumerator.MoveNext())
+						{
+							var ctx = new Template<T> { First = true };
+							Action<TextWriter> renderContents = (tw2) =>
+								{
+									while (true)
+									{
+										ctx.Data = enumerator.Current;
+										ctx.Last = !enumerator.MoveNext();
+										if(ctx.Data is ContentItem)
+										{
+											using(html.Content().BeginContentScope(ctx.Data as ContentItem))
+											{
+												template(ctx).WriteTo(tw2);
+											}
+										}
+										else
+										{
+											template(ctx).WriteTo(tw2);
+										}
+										if(ctx.Last)
+											break;
+										ctx.Index++;
+									}
+								};
+							if (containerTemplate != null)
+							{
+								containerTemplate(new Template<IEnumerable<T>> { First = true, Data = items, Last = true, ContentRenderer = renderContents }).WriteTo(tw);
+							}
+							else
+							{
+								renderContents(tw);
+							}
+						}
+						else if(emptyTemplate != null)
+						{
+							emptyTemplate("").WriteTo(tw);
+						}
+					}
+				});
 		}
 
 		// content helper

@@ -167,7 +167,7 @@ namespace N2.Tests.Definitions
 		public void HasCorrectNumberOfEditorModifiers()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.AreEqual(2, definition.Modifiers.Count);
+			Assert.AreEqual(2, definition.EditableModifiers.Count);
 		}
 
 		[Test]

@@ -16,16 +16,18 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (Calendar))]
 	public class Event : ContentPageBase, ISyndicatable
 	{
-		public Event()
-		{
-			Visible = false;
-		}
-
 		[EditableDate("Event date", 22, ContainerName = Tabs.Content)]
 		public virtual DateTime? EventDate
 		{
 			get { return (DateTime?) GetDetail("EventDate"); }
 			set { SetDetail("EventDate", value); }
+		}
+
+		[DefaultValue(false)]
+		public override bool Visible
+		{
+			get { return base.Visible; }
+			set { base.Visible = value; }
 		}
 
         [DisplayableLiteral]

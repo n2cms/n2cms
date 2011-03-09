@@ -60,18 +60,20 @@ namespace N2.Definitions
 				foreach (T editableOnProperty in propertyOnItem.GetCustomAttributes(typeof(T), false))
 				{
 					editableOnProperty.Name = propertyOnItem.Name;
-					if (!attributes.Contains(editableOnProperty))
+					
+					if (editableOnProperty is ISecurable)
 					{
-						if (editableOnProperty is ISecurable)
+						foreach (DetailAuthorizedRolesAttribute rolesAttribute in propertyOnItem.GetCustomAttributes(typeof (DetailAuthorizedRolesAttribute), false))
 						{
-							foreach (DetailAuthorizedRolesAttribute rolesAttribute in propertyOnItem.GetCustomAttributes(typeof (DetailAuthorizedRolesAttribute), false))
-							{
-								ISecurable s = editableOnProperty as ISecurable;
-								s.AuthorizedRoles = rolesAttribute.Roles;
-							}
+							ISecurable s = editableOnProperty as ISecurable;
+							s.AuthorizedRoles = rolesAttribute.Roles;
 						}
-						attributes.Add(editableOnProperty);
 					}
+
+					if (attributes.Contains(editableOnProperty))
+						continue;
+					
+					attributes.Add(editableOnProperty);
 				}
 			}
 		}
@@ -82,16 +84,13 @@ namespace N2.Definitions
 			{
 				foreach (T editableOnClass in t.GetCustomAttributes(typeof (T), true))
 				{
-					if (!attributes.Contains(editableOnClass))
-					{
-						if (editableOnClass.Name == null)
-							throw new N2Exception(
-								"The attribute {0} does not have a Name defined. Since it's defined on the class instead of a property it must have a name.",
-								editableOnClass);
+					if (editableOnClass.Name == null)
+						throw new N2Exception("The attribute {0} does not have a Name defined. Since it's defined on the class instead of a property it must have a name.", editableOnClass);
 
-						if (!attributes.Contains(editableOnClass))
-							attributes.Add(editableOnClass);
-					}
+					if (attributes.Contains(editableOnClass))
+						continue;
+
+					attributes.Add(editableOnClass);
 				}
 			}
 		}

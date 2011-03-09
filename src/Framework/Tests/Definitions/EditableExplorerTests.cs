@@ -142,14 +142,14 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void InvalidContainerReferenceIsExceptional()
+		public void InvalidContainerReference_IsIgnored()
 		{
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			containers.RemoveAt(2); // inside1
 			
-			Assert.Throws<N2Exception>(() => hierarchyBuilder.Build(containers, editables));
+			Assert.DoesNotThrow(() => hierarchyBuilder.Build(containers, editables));
 		}
 	}
 }
