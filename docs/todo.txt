@@ -1,3 +1,6 @@
+- delete and remove language association
+- move list referencing items (ThreadId=249105)
+- deleted and state
 - Permissions in management plugins (ThreadId=248967)
 - remove language associations (ThreadId=229288)
 - index template replaces default
