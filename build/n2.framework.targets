@@ -63,7 +63,8 @@
 																		 $(ManagementFolder)\bin\Wiki*;
 																		 $(ManagementFolder)\bin\Microsoft.Web.Mvc*;
 																		 $(ManagementFolder)\bin\MvcContrib*;
-																		 $(ManagementFolder)\bin\N2.Templates.Mvc*;"/>
+																		 $(ManagementFolder)\bin\N2.Templates.Mvc*;
+																		 $(ManagementFolder)\bin\System*;"/>
 		</ItemGroup>
 	</Target>
 
