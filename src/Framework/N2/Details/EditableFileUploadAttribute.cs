@@ -8,6 +8,7 @@ using N2.Edit.FileSystem;
 using System.Web;
 using System.IO;
 using System.Web.UI.HtmlControls;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -72,7 +73,7 @@ namespace N2.Details
 
 				fs.WriteFile(filePath, postedFile.InputStream);
 
-				item[Name] = filePath;
+				item[Name] = Url.ToAbsolute(filePath);
 				return true;
 			} 
 
