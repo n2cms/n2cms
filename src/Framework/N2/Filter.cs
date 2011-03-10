@@ -145,7 +145,7 @@ namespace N2
 		/// <summary>Filters items below an item of a certain type.</summary>
 		/// <typeparam name="T">The type of item to exist as ancestor or self.</typeparam>
 		/// <returns>A filter that filters on a type of ancestor.</returns>
-		public static ItemFilter AncestorOf<T>() where T: class
+		public static ItemFilter DescendantOf<T>() where T: class
 		{
 			return new DelegateFilter(ci => Find.Closest<T>(ci) != null);
 		}
