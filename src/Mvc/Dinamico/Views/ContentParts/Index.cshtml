@@ -1,7 +1,7 @@
 ﻿@model Dinamico.Models.ContentPart
 		   
-@{ Content.Define(); }
+@{ Content.Define(ie => ie.Title = "Text"); }
 
-<fieldset><legend>Index</legend>
-	This is part @Model.ID
-</fieldset>
+<div class="part @Content.CurrentItem.GetContentType().Name">
+@Content.Register.FreeText("Text")
+</div>

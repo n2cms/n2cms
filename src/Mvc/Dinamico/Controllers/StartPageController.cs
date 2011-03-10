@@ -17,7 +17,7 @@ using N2.Definitions;
 namespace Dinamico.Controllers
 {
 	[Controls(typeof(StartPage))]
-	public class StartPageController : ContentController
+	public class StartPageController : ContentController<StartPage>
     {
 		public ActionResult NotFound()
 		{

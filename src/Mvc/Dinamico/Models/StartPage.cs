@@ -8,6 +8,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Engine.Globalization;
 using System.Globalization;
+using N2.Web.UI;
 
 namespace Dinamico.Models
 {
@@ -15,11 +16,12 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
+	[TabContainer(Constants.Containers.Site, "Site", 1000)]
 	public class StartPage : TextPage, IStartPage, IStructuralPage, IThemeable, ILanguage
 	{
 		#region IThemeable Members
 
-		[EditableThemeAttribute]
+		[EditableThemeAttribute(ContainerName = Constants.Containers.Site)]
 		public virtual string Theme { get; set; }
 
 		#endregion
@@ -54,7 +56,10 @@ namespace Dinamico.Models
 
 		#endregion
 
-		[EditableFreeTextArea("Footer text", 200)]
+		[EditableFreeTextArea("Footer text", 200, ContainerName = Constants.Containers.Site)]
 		public virtual string FooterText { get; set; }
+
+		[EditableTextBox(ContainerName = Constants.Containers.Advanced)]
+		public virtual string TemplateName { get; set; }
 	}
 }

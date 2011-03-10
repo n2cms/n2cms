@@ -100,8 +100,6 @@ namespace Dinamico.Definitions.Dynamic
 	[Service(typeof(ITemplateProvider))]
 	public class RazorTemplateProvider : ITemplateProvider
 	{
-		public static bool SwallowExceptions { get; set; }
-
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<ViewEngineCollection> viewEnginesProvider;
 		IProvider<VirtualPathProvider> vppProvider;
@@ -136,7 +134,7 @@ namespace Dinamico.Definitions.Dynamic
 				var controllerType = registrator.QueuedRegistrations.Dequeue();
 				string controllerName = controllerType.Name.Substring(0, controllerType.Name.Length - "Controller".Length);
 				Type modelType = typeof(ContentItem);
-				Type contentControllerType = Utility.GetBaseTypes(controllerType).FirstOrDefault(t => t.GetGenericTypeDefinition() == typeof(ContentController<>));
+				Type contentControllerType = Utility.GetBaseTypes(controllerType).FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ContentController<>));
 				if (contentControllerType != null)
 					modelType = contentControllerType.GetGenericArguments().First();
 				sources.Add(new Source { ControllerName = controllerName, ModelType = modelType });
@@ -219,38 +217,47 @@ namespace Dinamico.Definitions.Dynamic
 
 		private RazorFileDefinition GetDefinition(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
 		{
-			var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
-			cctx.RouteData.Values.Add("controller", controllerName);
+			if(modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
+				return null;
+			
+			var model = Activator.CreateInstance(modelType) as ContentItem;
+
+			var rd = new RouteData();
+			rd.ApplyCurrentItem(controllerName, Path.GetFileNameWithoutExtension(file.Name), model.IsPage ? model : new StubItem(), model.IsPage ? null : model);
+
+			var cctx = new ControllerContext(httpContext, rd, new StubController());
+			
 			var result = viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null);
 
 			if (result.View == null)
 				return null;
 
-			if (!SwallowExceptions)
-				return RenderView(file, modelType, cctx, result);
-
-			try
-			{
-				return RenderView(file, modelType, cctx, result);
-			}
-			catch (Exception ex)
-			{
-				Trace.WriteLine(ex);
-				return null;
-			}
+			return RenderView(file, modelType, cctx, result);
 		}
 
 		private static RazorFileDefinition RenderView(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
 		{
 			var re = new ContentRegistration();
+			re.ContentType = modelType;
 			re.Template = N2.Web.Url.RemoveExtension(file.Name);
 			re.IsDefined = false;
 			using (StringWriter sw = new StringWriter())
 			{
-				var vdd = new ViewDataDictionary { Model = modelType != null ? Activator.CreateInstance(modelType) : new StubItem() };
+				var vdd = new ViewDataDictionary();
 				cctx.Controller.ViewData = vdd;
 				vdd["RegistrationExpression"] = re;
-				result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
+
+				try
+				{
+					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
+				}
+				catch (Exception ex)
+				{
+					Trace.WriteLine(ex);
+					if (re.IsDefined)
+						throw;
+					return null;
+				}
 
 				if (re.IsDefined)
 					return new RazorFileDefinition
@@ -295,7 +302,6 @@ namespace Dinamico.Definitions.Dynamic
 		class StubController : Controller
 		{
 		}
-
 		class StubItem : ContentItem
 		{
 		}

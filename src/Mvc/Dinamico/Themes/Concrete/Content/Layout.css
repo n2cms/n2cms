@@ -22,10 +22,10 @@ div#page { width:960px; background-color:#fff; margin:0 auto; }
 /*	.path { clear:both; margin:0 0 15px 0; font-size:.7em; color:#E5D7C4; }
 		.path a { color:#BFB4A4; }
 */
-	div#content { clear:both; }
+	div#content { }
 		div#content { float:left; width:590px; }
 			div#content img.main { width:590px; }
-		div#aside { float:left; width:280px; margin:15px 0 0 30px; }
+		div#aside { float:right; width:280px; margin:15px 0 0 30px; }
 /*			.columns .uc, #extras .uc { margin-bottom:15px; }
 				.columns .uc h4, #extras .uc h4 { padding:5px 15px; background:#403C37; color:#FFEFDA; margin:0; }
 				.columns .uc .box, #extras .uc .box { border:solid 1px #E5D7C4; }

@@ -16,6 +16,8 @@ namespace N2.Web.Mvc.Html
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
 			{
+				FakeModel(content, re);
+
 				re.GlobalSortOffset = 0;
 				if (content.Html.GetType().IsGenericType)
 				{
@@ -31,6 +33,25 @@ namespace N2.Web.Mvc.Html
 					registration(re);
 			}
 			return re;
+		}
+
+		private static void FakeModel(ContentHelper content, ContentRegistration re)
+		{
+			if (content.Html.ViewContext.ViewData.Model == null)
+			{
+				var modelType = content.Html.GetType().GetGenericArguments()[0];
+				object model;
+				if (modelType.IsAssignableFrom(re.ContentType) && !re.ContentType.IsAbstract)
+					model = Activator.CreateInstance(re.ContentType);
+				else if (typeof(ContentItem).IsAssignableFrom(modelType) && !modelType.IsAbstract)
+					model = Activator.CreateInstance(modelType);
+				else if (modelType.IsGenericType && typeof(IEnumerable<>).IsAssignableFrom(modelType.GetGenericTypeDefinition()))
+					model = Array.CreateInstance(modelType.GetGenericTypeDefinition().MakeArrayType(), 0);
+				else
+					return;
+
+				content.Html.ViewContext.ViewData.Model = content.Html.ViewData.Model = model;
+			}
 		}
 
 		public static ContentRegistration AppendDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)

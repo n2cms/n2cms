@@ -11,6 +11,7 @@ namespace Dinamico
 		{
 			public const string Content = "Content";
 			public const string Site = "Site";
+			public const string Advanced = "Advanced";
 		}
 	}
 }

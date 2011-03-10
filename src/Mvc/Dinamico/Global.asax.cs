@@ -28,6 +28,7 @@ namespace Dinamico
 			RegisterViewEngines(ViewEngines.Engines);
 
 			engine.Resolve<RazorTemplateRegistrator>()
+				.Add<Controllers.StartPageController>()
 				.Add<Controllers.ContentPagesController>()
 				.Add<Controllers.ContentPartsController>()
 				.Add<Controllers.ListingPagesController>();

@@ -26,6 +26,12 @@ html
 		{
 			background:transparent;
 		}
+	img.main
+	{
+		width:920px;
+		margin:20px auto 0 auto;
+		display:block;
+	}
 	div#main
 	{
 		background-color:#fff;

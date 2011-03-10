@@ -2,7 +2,7 @@
 
 html,body
 {
-	height:100%;
+	min-height:100%;
 }
 	div#wrapper
 	{
@@ -73,6 +73,12 @@ html,body
 		div#content
 		{
 			padding:20px;
+		}
+		div#aside
+		{
+			width:250px;
+			float:right;
+			background-color:Red;
 		}
 		div#footer
 		{
