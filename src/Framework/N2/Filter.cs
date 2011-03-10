@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Collections;
+using N2.Edit.Workflow;
 
 namespace N2
 {
@@ -125,5 +126,28 @@ namespace N2
 			return new VisibleFilter();
 		}
 
+		/// <summary>Inverses the given filter.</summary>
+		/// <param name="itemFilter">The filter to inverse.</param>
+		/// <returns>A filter that does the inverse of the given filter.</returns>
+		public static ItemFilter Not(ItemFilter filterToInverse)
+		{
+			return new InverseFilter(filterToInverse);
+		}
+
+		/// <summary>Filters items returning those of the given state.</summary>
+		/// <param name="state">The state to return.</param>
+		/// <returns>A filter that filters on content state.</returns>
+		public static ItemFilter State(ContentState state)
+		{
+			return new DelegateFilter(ci => (ci.State & state) == state);
+		}
+
+		/// <summary>Filters items below an item of a certain type.</summary>
+		/// <typeparam name="T">The type of item to exist as ancestor or self.</typeparam>
+		/// <returns>A filter that filters on a type of ancestor.</returns>
+		public static ItemFilter AncestorOf<T>() where T: class
+		{
+			return new DelegateFilter(ci => Find.Closest<T>(ci) != null);
+		}
 	}
 }
