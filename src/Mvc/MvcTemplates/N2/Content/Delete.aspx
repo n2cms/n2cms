@@ -6,7 +6,6 @@
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnDelete" runat="server" OnClick="OnDeleteClick" CssClass="command" meta:resourceKey="btnDelete">delete</asp:LinkButton>
-    <asp:HyperLink runat="server" ID="hlReferencingItems" CssClass="plain command" Text="List Referencing Items" meta:resourceKey="hlReferencingItems" />
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
@@ -17,6 +16,7 @@
 		<asp:Repeater ID="rptReferencing" runat="server">
 			<ItemTemplate><div><edit:ContentLink runat="server" DataSource='<%# Container.DataItem %>' /></div></ItemTemplate>
 		</asp:Repeater>
+		<asp:HyperLink runat="server" ID="hlReferencingItems" CssClass="hrtop" Text="List Referencing Items" meta:resourceKey="hlReferencingItems" />
 	</fieldset>
 	<edit:FieldSet class="affectedItems" runat="server" Legend="Affected items" meta:resourceKey="affectedItems">
 		<uc1:AffectedItems id="itemsToDelete" runat="server" />

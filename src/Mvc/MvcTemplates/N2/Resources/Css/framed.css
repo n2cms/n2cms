@@ -502,3 +502,10 @@ div.dp-popup .dp-nav-next .dp-nav-next-month
 	float:left;
 	margin-bottom:10px;
 }
+.hrtop
+{
+	border-top:solid 1px #ddd;
+	margin-top:5px;
+	padding-top:5px;
+	display:block;
+}

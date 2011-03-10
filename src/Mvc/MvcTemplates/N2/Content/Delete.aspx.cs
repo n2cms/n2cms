@@ -26,8 +26,7 @@ namespace N2.Edit
 					chkAllow.Text += " (" + count + ")";
 					rptReferencing.DataSource = q.MaxResults(10).Select();
 					rptReferencing.DataBind();
-					if (count > 10)
-						referencingItems.Controls.Add(new LiteralControl("..."));
+					hlReferencingItems.Visible = (count > 10);
 				}
 				else
 					referencingItems.Visible = false;

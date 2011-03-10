@@ -139,6 +139,6 @@
     <value>Referencing items</value>
   </data>
   <data name="hlReferencingItems.Text" xml:space="preserve">
-    <value>List Referencing Items</value>
+    <value>Show all &amp;raquo;</value>
   </data>
 </root>

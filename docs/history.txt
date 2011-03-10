@@ -1,4 +1,5 @@
 ﻿2.2
+- Moved list referencing items into the box (ThreadId=249105)
 - Changed EditableFileUpload to save absolute path (ThreadId=232277)
 - Refactored definition manager to allow multiple definition providers
 - Added support for dependency on multiple services

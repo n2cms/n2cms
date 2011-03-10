@@ -21,6 +21,7 @@
 			class="referencingItems"
 			runat="server"
 			Legend="Items referencing the items you're deleting"
+			style="padding:8px;"
 			meta:resourceKey="referencingItems">
 		<edit:ReferencingItems
 				id="referencingItems"
