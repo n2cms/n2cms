@@ -314,8 +314,10 @@ namespace N2.Edit
 				ie.Definition = Templates.GetDefinition(Selection.SelectedItem);
                 ie.CurrentItem = Selection.SelectedItem;
 			}
-			ie.ZoneName = base.Page.Request["zoneName"];
-
+			if (Request["zoneName"] != null)
+			{
+				ie.ZoneName = Request["zoneName"];
+			}
             dpFuturePublishDate.SelectedDate = ie.CurrentItem.Published;
 		}
 
