@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -21,8 +22,25 @@ namespace N2.Edit.Install
 			rptCns.DataSource = ConfigurationManager.ConnectionStrings;
 			rptCns.DataBind();
 
-			string connectionStringName = Request.QueryString["cn"] ?? ConfigurationManager.ConnectionStrings[0].Name;
-			sdsItems.ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+			string connectionStringName = Request.QueryString["cn"] ?? "N2CMS";
+			ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+			sdsItems.ConnectionString = settings.ConnectionString;
+			//sdsItems.ProviderName = settings.ProviderName;
+
+			//if (settings.ProviderName.StartsWith("System.Data.SqlServerCe"))
+			//{
+			//    gvItems.DataSourceID = "";
+			//    gvItems.AllowPaging = false;
+			//    gvItems.AllowSorting = false;
+				
+			//    using(var cmd = N2.Find.NH.Connection.CreateCommand())
+			//    {
+			//        cmd.CommandText = string.Format("SELECT * FROM [{0}Item]", tablePrefix);
+			//        gvItems.DataSource = cmd.ExecuteReader();
+			//    }
+			//    gvItems.DataBind();
+			//}
 
 			if (!IsPostBack)
 			{

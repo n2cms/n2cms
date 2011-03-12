@@ -9,6 +9,7 @@ namespace N2.Templates.Tests.Wiki
 		{
 			PageNotFound += delegate { };
 		}
+
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
         public string Extension
