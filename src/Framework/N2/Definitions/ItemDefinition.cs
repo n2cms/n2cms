@@ -126,7 +126,7 @@ namespace N2.Definitions
 		public string Description { get; set; }
 
 		/// <summary>Gets or sets the type of this item.</summary>
-		public Type ItemType { get; private set; }
+		public Type ItemType { get; internal set; }
 
 		/// <summary>Gets zones available in this items of this class.</summary>
 		public IList<AvailableZoneAttribute> AvailableZones { get; private set; }
@@ -155,6 +155,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
+
+		/// <summary>The container name of editors that have no other container.</summary>
+		public string DefaultContainerName { get; set; }
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		[Obsolete("Use EditableModifiers")]
@@ -364,7 +367,7 @@ namespace N2.Definitions
 
 		private void ReloadRoot()
 		{
-			RootContainer = hierarchyBuilder.Build(Containers, Editables);
+			RootContainer = hierarchyBuilder.Build(Containers, Editables, DefaultContainerName);
 		}
 
 		#endregion

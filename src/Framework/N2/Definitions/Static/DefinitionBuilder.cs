@@ -48,6 +48,7 @@ namespace N2.Definitions.Static
 			foreach (Type itemType in FindConcreteTypes())
 			{
 				var definition = staticDefinitions.GetDefinition(itemType).Clone();
+				definition.DefaultContainerName = config.Definitions.DefaultContainerName;
 				definitions.Add(definition);
 			}
 
@@ -62,45 +63,81 @@ namespace N2.Definitions.Static
 
 			foreach(DefinitionElement element in config.Definitions.AllElements)
 			{
-				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
-				if (definition != null)
-					definitions.Remove(definition);
+				if (element.Name == "*")
+					UpdateMatchingDefinitions(definitions, element);
 				else
-				{
-					Type itemType = EnsureType<ContentItem>(element.Type);
-
-					definition = new ItemDefinition(itemType);
-					definition.Discriminator = element.Name;
-					definition.Initialize(itemType);
-				}
-
-				definition.SortOrder = element.SortOrder ?? definition.SortOrder;
-				definition.Title = element.Title ?? definition.Title;
-				definition.ToolTip = element.ToolTip ?? definition.ToolTip;
-				definition.IsDefined = true;
-
-				foreach (ContainableElement editable in element.Editables.AllElements)
-				{
-					AddContainable(definition, editable);
-				}
-				foreach(ContainableElement editable in element.Editables.RemovedElements)
-				{
-					RemoveContainable(definition, editable);
-				}
-				foreach (ContainableElement container in element.Containers.AllElements)
-				{
-					AddContainable(definition, container);
-				}
-				foreach (ContainableElement container in element.Containers.RemovedElements)
-				{
-					RemoveContainable(definition, container);
-				}
-
-				definitions.Add(definition);
+					AddOrUpdateDefinition(definitions, element);
 			}
 
 			definitions.Sort();
 			return definitions;
+		}
+
+		private void UpdateMatchingDefinitions(IEnumerable<ItemDefinition> definitions, DefinitionElement element)
+		{
+			if (string.IsNullOrEmpty(element.Type))
+				return;
+			Type itemType = EnsureType<ContentItem>(element.Type);
+
+			foreach (var definition in definitions)
+			{
+				if (!itemType.IsAssignableFrom(definition.ItemType))
+					continue;
+
+				UpdateDefinitionFromConfiguration(element, definition);
+			}
+		}
+
+		private void AddOrUpdateDefinition(List<ItemDefinition> definitions, DefinitionElement element)
+		{
+			ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
+
+			if (definition == null)
+			{
+				Type itemType = EnsureType<ContentItem>(element.Type);
+				definition.Discriminator = element.Name;
+				definition = new ItemDefinition(itemType);
+				definition.Initialize(definition.ItemType);
+
+				definitions.Add(definition);
+			}
+			else
+			{
+				Type changedType = Type.GetType(element.Type);
+				if (changedType != null && changedType != definition.ItemType)
+				{
+					definition.ItemType = changedType;
+					definition.Initialize(definition.ItemType);
+				}
+			}
+
+			UpdateDefinitionFromConfiguration(element, definition);
+		}
+
+		private void UpdateDefinitionFromConfiguration(DefinitionElement element, ItemDefinition definition)
+		{
+			definition.DefaultContainerName = element.DefaultContainerName ?? config.Definitions.DefaultContainerName;
+			definition.SortOrder = element.SortOrder ?? definition.SortOrder;
+			definition.Title = element.Title ?? definition.Title;
+			definition.ToolTip = element.ToolTip ?? definition.ToolTip;
+			definition.IsDefined = true;
+
+			foreach (ContainableElement editable in element.Editables.AllElements)
+			{
+				AddContainable(definition, editable);
+			}
+			foreach (ContainableElement editable in element.Editables.RemovedElements)
+			{
+				RemoveContainable(definition, editable);
+			}
+			foreach (ContainableElement container in element.Containers.AllElements)
+			{
+				AddContainable(definition, container);
+			}
+			foreach (ContainableElement container in element.Containers.RemovedElements)
+			{
+				RemoveContainable(definition, container);
+			}
 		}
 
 		void AddContainable(ItemDefinition definition, ContainableElement editable)
@@ -110,6 +147,7 @@ namespace N2.Definitions.Static
 			{
 				IContainable containable = Activator.CreateInstance(editableType) as IContainable;
 				Utility.SetProperty(containable, "Name", editable.Name);
+				Utility.SetProperty(containable, "Title", editable.Title);
 				Utility.SetProperty(containable, "ContainerName", editable.ContainerName);
 				Utility.SetProperty(containable, "SortOrder", editable.SortOrder);
 				foreach (string key in editable.EditableProperties.Keys)

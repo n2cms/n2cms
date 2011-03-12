@@ -221,6 +221,7 @@
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Mvc\Html\ContentUrlExtensions.cs" />
     <Compile Include="Web\Rendering\DisplayableRendererSelector.cs" />
     <Compile Include="Web\Mvc\Html\ContainerRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />

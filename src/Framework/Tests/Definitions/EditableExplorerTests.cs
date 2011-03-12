@@ -56,7 +56,7 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(Items.DefinitionTextPage);
 			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
+			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
 
 			List<IContainable> contained = rootContainer.GetContained(null);
 			Assert.AreEqual(2, contained.Count);
@@ -91,7 +91,7 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
+			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
 
 			IContainable property0 = rootContainer.GetContained(null)[0];
 			Assert.AreSame(property0, editables[0]);
@@ -118,7 +118,7 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
+			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
 
 			IEditableContainer first = rootContainer.GetContained(null)[0] as IEditableContainer;
 			Assert.IsNotNull(first);
@@ -148,8 +148,8 @@ namespace N2.Tests.Definitions
 			IList<IEditable> editables = new List<IEditable>();
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			containers.RemoveAt(2); // inside1
-			
-			Assert.DoesNotThrow(() => hierarchyBuilder.Build(containers, editables));
+
+			Assert.DoesNotThrow(() => hierarchyBuilder.Build(containers, editables, ""));
 		}
 	}
 }

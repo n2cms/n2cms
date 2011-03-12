@@ -6,7 +6,13 @@ namespace N2.Details
 	/// <summary>Associate a property/detail with a literal used for presentation.</summary>
 	public class DisplayableHeadingAttribute : DisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
-		public DisplayableHeadingAttribute(int headingLevel) : base (typeof(Hn), "Text")
+		public DisplayableHeadingAttribute()
+			: this(1)
+		{
+		}
+
+		public DisplayableHeadingAttribute(int headingLevel)
+			: base(typeof(Hn), "Text")
 		{
 			HeadingLevel = headingLevel;
 		}

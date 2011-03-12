@@ -62,5 +62,13 @@ namespace N2.Configuration
 			get { return (ContainableCollection)base["containers"]; }
 			set { base["containers"] = value; }
 		}
+
+		/// <summary>The default container to add editables to if no other container has been specified.</summary>
+		[ConfigurationProperty("defaultContainerName")]
+		public string DefaultContainerName
+		{
+			get { return (string)base["defaultContainerName"]; }
+			set { base["defaultContainerName"] = value; }
+		}
 	}
 }

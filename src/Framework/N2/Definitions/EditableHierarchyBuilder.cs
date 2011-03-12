@@ -14,12 +14,12 @@ namespace N2.Definitions
 		/// <param name="containers">The containers to add to themselves or the root container.</param>
 		/// <param name="editables">The editables to add to the containers or a root container.</param>
 		/// <returns>A new root container.</returns>
-		public virtual IEditableContainer Build<T>(IList<IEditableContainer> containers, IList<T> editables) where T : IContainable
+		public virtual IEditableContainer Build<T>(IList<IEditableContainer> containers, IList<T> editables, string defaultContainerName) where T : IContainable
 		{
 			IEditableContainer rootContainer = new RootContainer();
 			ClearContainers(containers);
 			AddContainersToRootContainer(rootContainer, containers);
-			AddEditorsToContainers(rootContainer, containers, editables);
+			AddEditorsToContainers(rootContainer, containers, editables, defaultContainerName);
 			return rootContainer;
 		}
 
@@ -66,13 +66,15 @@ namespace N2.Definitions
 			return null;
 		}
 
-		private static void AddEditorsToContainers<T>(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables) where T : IContainable
+		private static void AddEditorsToContainers<T>(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables, string defaultContainerName) where T : IContainable
 		{
 			foreach (T editable in editables)
 			{
 				if (editable.ContainerName != null)
 				{
-					IEditableContainer container = FindContainer(editable.ContainerName, containers);
+					IEditableContainer container = FindContainer(editable.ContainerName, containers)
+						?? FindContainer(defaultContainerName, containers);
+
 					if (container != null)
 						container.AddContained(editable);
 					else

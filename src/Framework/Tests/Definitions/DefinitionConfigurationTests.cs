@@ -180,6 +180,47 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
+		public void Configuration_CanAdd_Editable_ToExistingDefinition()
+		{
+			var definitionCollection = new DefinitionCollection();
+			definitionCollection.Add(new DefinitionElement
+			{
+				Name = "DefinitionTextPage",
+				Editables = new ContainableCollection { new ContainableElement {
+					Name = "MetaTitle", 
+					Title = "Page title", 
+					Type = typeof(N2.Details.EditableTextBoxAttribute).AssemblyQualifiedName } }
+			});
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+
+			var definitions = builder.GetDefinitions();
+			var textDefinition = definitions.Single(d => d.ItemType == typeof(DefinitionTextPage));
+
+			Assert.That(textDefinition.Editables.Any(e => e.Name == "MetaTitle"));
+		}
+
+		[Test]
+		public void Configuration_CanChange_Editable_OnExistingDefinition()
+		{
+			var definitionCollection = new DefinitionCollection();
+			definitionCollection.Add(new DefinitionElement
+			{
+				Name = "DefinitionTextPage",
+				Editables = new ContainableCollection { new ContainableElement {
+					Name = "Title", 
+					Title = "Page title in navigation", 
+					Type = typeof(EditableTextBoxAttribute).AssemblyQualifiedName } }
+			});
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+
+			var definitions = builder.GetDefinitions();
+			var textDefinition = definitions.Single(d => d.ItemType == typeof(DefinitionTextPage));
+
+			Assert.That(textDefinition.Editables.Any(e => e.Title == "Page title in navigation" && e.GetType() == typeof(EditableTextBoxAttribute)));
+			Assert.That(textDefinition.Editables.Any(e => e.Title == "Title" || e.GetType() == typeof(WithEditableTitleAttribute)), Is.False);
+		}
+
+		[Test]
 		public void Configuration_CanRemove_Editable_FromDefinition()
 		{
 			DefinitionElement definitionElement = new DefinitionElement { Name = "DefinitionTextPage" };

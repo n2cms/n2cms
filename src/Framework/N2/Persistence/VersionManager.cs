@@ -6,6 +6,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Definitions;
 using N2.Collections;
+using N2.Configuration;
 
 namespace N2.Persistence
 {
@@ -18,12 +19,14 @@ namespace N2.Persistence
         readonly IRepository<int, ContentItem> itemRepository;
 		readonly IItemFinder finder;
         readonly StateChanger stateChanger;
+		int maximumVersionsPerItem = 100;
 
-		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger)
+		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger, EditSection config)
 		{
 			this.itemRepository = itemRepository;
 			this.finder = finder;
             this.stateChanger = stateChanger;
+			maximumVersionsPerItem = config.Versions.MaximumPerItem;
 		}
 
 		#region Versioning Methods
@@ -54,6 +57,8 @@ namespace N2.Persistence
 
 				if (ItemSavedVersion != null)
 					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+
+				TrimVersionCountTo(item, maximumVersionsPerItem);
 
 				return oldVersion;
 			}

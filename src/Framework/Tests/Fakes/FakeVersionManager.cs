@@ -15,7 +15,7 @@ namespace N2.Tests.Fakes
         public FakeVersionManager(FakeRepository<ContentItem> itemRepository, StateChanger stateChanger)
 		{
             this.itemRepository = itemRepository;
-            original = new VersionManager(itemRepository, null, stateChanger);
+            original = new VersionManager(itemRepository, null, stateChanger, new N2.Configuration.EditSection());
 		}
         #region IVersionManager Members
 

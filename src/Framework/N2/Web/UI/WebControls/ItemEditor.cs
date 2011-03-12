@@ -108,8 +108,6 @@ namespace N2.Web.UI.WebControls
 					currentItem.ZoneName = ZoneName;
 					ApplyContentModifications(ContentState.New);
 				}
-				if (currentItem.ZoneName != ZoneName)
-					currentItem.ZoneName = ZoneName;
 				return currentItem;
 			}
 			set
@@ -140,7 +138,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the zone name that the edited item will be set to.</summary>
 		public string ZoneName
 		{
-			get { return (string)(ViewState["ZoneName"] ?? ""); }
+			get { return (string)ViewState["ZoneName"]; }
 			set { ViewState["ZoneName"] = value; }
 		}
 
@@ -228,6 +226,8 @@ namespace N2.Web.UI.WebControls
 			{
 				BinderContext = value;
 				EnsureChildControls();
+				if (ZoneName != null && ZoneName != value.Content.ZoneName)
+					value.Content.ZoneName = ZoneName;
 				foreach (string key in AddedEditors.Keys)
 					BinderContext.GetDefinedDetails().Add(key);
 				var modifiedDetails = EditAdapter.UpdateItem(value.Definition, value.Content, AddedEditors, Page.User);

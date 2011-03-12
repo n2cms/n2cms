@@ -19,20 +19,25 @@ namespace N2.Persistence.NH
             set { session = value; }
         }
 
-        /// <summary>
-        /// Indicates wheter content has changed during the request.
-        /// </summary>
-        public bool ContentChanged
-        {
-            get { return contentChanged; }
-            set { contentChanged = value; }
-        }
+		///// <summary>
+		///// Indicates wheter content has changed during the request.
+		///// </summary>
+		//public bool ContentChanged
+		//{
+		//    get { return contentChanged; }
+		//    set { contentChanged = value; }
+		//}
 
         public SessionContext(ISessionProvider provider, ISession session)
         {
             this.provider = provider;
             this.session = session;
         }
+
+		public System.Data.IDbConnection Connection
+		{
+			get { return Session.Connection; }
+		}
 
         #region IDisposable Members
 

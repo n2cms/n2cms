@@ -25,6 +25,8 @@ namespace N2.Definitions
 	{
 		public static IEnumerable<TemplateDefinition> GetTemplates(this IEnumerable<ITemplateProvider> providers, Type contentType)
 		{
+			if (contentType == null) return new TemplateDefinition[0];
+
 			var templates = providers.SelectMany(tp => tp.GetTemplates(contentType)).ToList();
 			if (!templates.Any(t => t.ReplaceDefault))
 				return templates;
@@ -33,6 +35,8 @@ namespace N2.Definitions
 
 		public static TemplateDefinition GetTemplate(this IEnumerable<ITemplateProvider> providers, Type contentType, string templateName)
 		{
+			if (contentType == null) return null;
+
 			return providers
 				.SelectMany(tp => tp.GetTemplates(contentType))
 				.FirstOrDefault(td => td.Name == templateName);
@@ -40,11 +44,15 @@ namespace N2.Definitions
 
 		public static TemplateDefinition GetTemplate(this IEnumerable<ITemplateProvider> providers, ContentItem item)
 		{
+			if (item == null) return null;
+
 			return providers.Select(tp => tp.GetTemplate(item)).FirstOrDefault(t => t != null);
 		}
 
 		public static ItemDefinition GetDefinition(this IEnumerable<ITemplateProvider> providers, ContentItem item)
 		{
+			if (item == null) return null;
+
 			var template = providers.GetTemplate(item);
 			if (template == null)
 				return null;

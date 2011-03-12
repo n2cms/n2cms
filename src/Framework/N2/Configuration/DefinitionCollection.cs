@@ -18,5 +18,13 @@ namespace N2.Configuration
 			element.ToolTip = reader.GetAttribute("toolTip");
 			element.Type = reader.GetAttribute("type");
 		}
+
+		/// <summary>The default container to add editables to if no other container has been specified.</summary>
+		[ConfigurationProperty("defaultContainerName", DefaultValue = "Content")]
+		public string DefaultContainerName
+		{
+			get { return (string)base["defaultContainerName"]; }
+			set { base["defaultContainerName"] = value; }
+		}
 	}
 }
