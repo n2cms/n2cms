@@ -1,2 +1,13 @@
-﻿@Content.Define(re => re.Title = "Start page")
-@Html.Partial("Partials/_Content")
+﻿@Content.Define(re => 
+	{
+		re.Title = "Start page";
+		re.Container("Content", e => e.Name());
+	})
+
+@section main {
+<div id="main" class="clearfix">
+	@{ Html.RenderPartial("LayoutPartials/_PreContent"); }
+	@Content.Register.FreeText("Text").Container("Content").Display().Wrap(@<div id="content">@item.RenderContents()</div>)
+	@{ Html.RenderPartial("LayoutPartials/_PostContent"); }
+</div>
+}

@@ -61,5 +61,8 @@ namespace Dinamico.Models
 
 		[EditableTextBox(ContainerName = Constants.Containers.Advanced)]
 		public virtual string TemplateName { get; set; }
+
+		[EditableFileUpload(ContainerName = Constants.Containers.Site)]
+		public virtual string Logotype { get; set; }
 	}
 }

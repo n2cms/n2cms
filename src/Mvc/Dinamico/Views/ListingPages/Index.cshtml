@@ -7,9 +7,11 @@
 	});
 }
 
-@Html.Partial("Partials/_Content")
+@Html.Partial("LayoutPartials/_Content")
 
 @Html.Loop(Content.Traverse.DescendantPages(Content.CurrentPage, N2.Filter.Access()),
-	template:@<div class="item"><a href="@item.Data.Url">@Content.Render.Image("Image", "thumb")<strong>@item.Data.Title</strong>@item.Data["Introduction"]</a></div>,
-	containerTemplate:@<div class="list">@item.RenderContents()</div>,
-	emptyTemplate:@<p>No items</p>)
+	template:@<div class="item">
+		@Html.Partial("Partials/ContentLink", item.Data)
+	</div>,
+	wrapper: @<div class="list">@item.RenderContents()</div>,
+	empty:@<p>No items</p>)

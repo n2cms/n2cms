@@ -1,7 +1,6 @@
 ﻿@model Dinamico.Models.ContentPart
 		   
 @{ Content.Define(ie => ie.Title = "Text"); }
-
-<div class="part @Content.CurrentItem.GetContentType().Name">
+<div class="part text">
 @Content.Register.FreeText("Text")
 </div>

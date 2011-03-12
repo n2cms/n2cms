@@ -1,82 +1,32 @@
 @import "../../../Content/Mood.css";
 
-h1
-{
-	color: #46351C;
-}
-html
-{
-	background:#444;
-}
-	div#top
-	{
+html { background:#444; }
+h1 { color: #46351C; }
+	div#top {
 		background-color:#fff;
-		-moz-border-radius-bottomleft: 5px 5px;
-		-moz-border-radius-bottomright: 5px 5px;
-		border-bottom-left-radius: 5px 5px;
-		border-bottom-right-radius: 5px 5px;
+		-moz-border-radius-bottomleft: 5px 5px; -moz-border-radius-bottomright: 5px 5px; border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
 	}
-	div#header .topmenu
-	{
+	div#header .topmenu {
 		background-color:#fff;
-		-moz-border-radius: 5px 5px;
-		border-radius: 5px 5px;
+		-moz-border-radius: 5px 5px; border-radius: 5px 5px;
 	}
-		div#header .topmenu li a
-		{
-			background:transparent;
-		}
-	img.main
-	{
-		width:920px;
-		margin:20px auto 0 auto;
-		display:block;
-	}
-	div#main
-	{
+		div#header ul.topmenu li a { background:transparent; }
+	img.main { width:920px; margin:20px auto 0 auto; display:block; }
+	div#main {
 		background-color:#fff;
-		-moz-border-radius: 5px 5px;
-		border-radius: 5px 5px;
+		-moz-border-radius: 5px 5px; border-radius: 5px 5px;
 	}
-		div#main ul.submenu
-		{
-			padding:0;
-			margin:0;
-			border-bottom:solid 1px #CCC;
-		}
-			div#main ul.submenu li
-			{
-				display:inline-block;
-			}
-				div#main ul.submenu li a
-				{
-					display:block;
-					padding: .5em 1em;
-				}
-	div#footer
-	{
-		background:#333;
-		margin-top:-4px;
-		z-index:-1;
-		position:absolute;
-		width:960px;
-		padding:0;
-		-moz-border-radius-bottomleft: 5px 5px;
-		-moz-border-radius-bottomright: 5px 5px;
-		border-bottom-left-radius: 5px 5px;
-		border-bottom-right-radius: 5px 5px;
+		div#main ul.submenu { padding:0; margin:0; border-bottom:solid 1px #CCC; }
+			div#main ul.submenu li { display:inline-block; }
+				div#main ul.submenu li a { display:block; padding: .5em 1em; }
+	div#footer {
+		background:#333; margin-top:-4px; z-index:-1; position:absolute; width:960px; padding:0;
+		-moz-border-radius-bottomleft: 5px 5px; -moz-border-radius-bottomright: 5px 5px; border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
 	}
-		div#footer > table
-		{
-			margin:1em;
-		}
+		div#footer > table { margin:1em; }
 
 /* elements */
 
-.dropmenu
-{
-	-moz-border-radius-bottomleft: 5px 5px;
-	-moz-border-radius-bottomright: 5px 5px;
-	border-bottom-left-radius: 5px 5px;
-	border-bottom-right-radius: 5px 5px;
+.dropmenu {
+	-moz-border-radius-bottomleft: 5px 5px; -moz-border-radius-bottomright: 5px 5px; border-bottom-left-radius: 5px 5px;  border-bottom-right-radius: 5px 5px;
 }

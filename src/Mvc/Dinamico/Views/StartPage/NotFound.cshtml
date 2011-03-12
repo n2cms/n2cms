@@ -5,11 +5,11 @@
 	Response.Status = "404 Not Found";
 }
 
-<h2>404 Not Found</h2>
-<p>The resource you were looking for is no longer here.</p>
+<h1>404 Not Found</h1>
+<p>This is not the resource you are looking for.</p>
 @if (Model.Any())
 {
-<h3>Similar pages</h3>
+<h2>Similar pages</h2>
 <ul>
 @foreach (var i in Model)
 {
@@ -17,7 +17,7 @@
 }
 </ul>
 }
-<h3>Site map</h3>
+<h2>Site map</h2>
 <ul>
 <li>@Content.LinkTo(Content.Traverse.StartPage)</li>
 @Content.TreeFrom(Content.Traverse.StartPage, rootless: true)

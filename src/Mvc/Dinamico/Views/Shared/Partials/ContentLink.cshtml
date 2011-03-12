@@ -1,0 +1,13 @@
+﻿@model N2.ContentItem
+
+@if(Model != null && Model.ID != 0)
+{
+	using (@Content.BeginContentScope(Model))
+	{
+		<a href="@Content.CurrentItem.Url" class="contentlink clearfix">
+		@Content.Render.Image("Image", (string)@ViewBag.preferredSize ?? "thumb")
+		<h3>@Content.CurrentItem.Title</h3>
+		@N2.Utility.ExtractFirstSentences(@Content.Data.Text as string, 200).ToHtmlString()
+		</a>
+	}
+}

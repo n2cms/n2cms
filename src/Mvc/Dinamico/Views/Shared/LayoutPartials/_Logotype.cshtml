@@ -1,0 +1,4 @@
+﻿@using (Content.BeginContentScope(Content.Traverse.StartPage))
+{
+	Content.Render.Image("Logotype").Wrap(@<a href="@Content.CurrentItem.Url" title="@Content.CurrentItem.Title" class="logotype">@item.RenderContents()</a>).Render();
+}

@@ -6,6 +6,8 @@ $.fn.plupdown = function (options) {
 	options = $.extend({
 		callback: function () { },
 		loadingHtml: "<ul><li class='loading'>Loading...</li></ul>",
+		opener: true,
+		openerClass: "opener",
 		resultsClass: "dropmenu"
 	}, options);
 	var isForm = this.is("form");
@@ -49,7 +51,9 @@ $.fn.plupdown = function (options) {
 		$(document.body).bind("submit", close);
 	};
 
-	this.bind(isForm ? "submit" : "click", open);
+	var $o = this.bind(isForm ? "submit" : "click", open);
+	if(options.opener)
+		$o.addClass(options.openerClass).append("<span class='arrow'>&nbsp;</span>");
 
 	return this;
 };
@@ -91,7 +95,8 @@ $(document).ready(function () {
 					$(this).focus().click(function () { $("span.highlight").removeClass("highlight"); highlight(value); });
 				this.href += "#q=" + value;
 			});
-		}
+		},
+		opener: false
 	});
 
 	if (location.hash.match("^#q=")) {

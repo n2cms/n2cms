@@ -17,23 +17,23 @@
 <body>
 	@{ Html.RenderControlPanel(); }
 	<div id="wrapper">
-	@if (IsSectionDefined("Page")) { RenderSection("Page"); }
+	@if (IsSectionDefined("page")) { <div>@RenderSection("page")</div> }
 	else
 	{
-		<div id="top">@{ Html.RenderPartial("Partials/_Top"); }</div>
-		<div id="header" class="clearfix">@{ Html.RenderPartial("Partials/_Header"); }</div>
+		<div id="top">@{ Html.RenderPartial("LayoutPartials/_Top"); }</div>
+		<div id="header" class="clearfix">@{ Html.RenderPartial("LayoutPartials/_Header"); }</div>
 		<div id="page">
+			@if (IsSectionDefined("main")) { <div>@RenderSection("main")</div> }
+			else
+			{
 			<div id="main" class="clearfix">
-				@if (IsSectionDefined("Main")) { RenderSection("Main"); }
-				else
-				{
-					Html.RenderPartial("Partials/_PreContent");
-					<div id="aside" role="complementary">@if (IsSectionDefined("Aside")) { RenderSection("Aside"); } else { Html.DroppableZone("Aside").Render(); }</div>
-					<div id="content" role="main">@RenderBody()</div>
-					Html.RenderPartial("Partials/_PostContent");
-				}
+				@{ Html.RenderPartial("LayoutPartials/_PreContent"); }
+				<div id="aside" role="complementary">@if (IsSectionDefined("Aside")) { <div>@RenderSection("Aside")</div> } else { Html.DroppableZone("Aside").Render(); }</div>
+				<div id="content" role="main">@RenderBody()</div>
+				@{ Html.RenderPartial("LayoutPartials/_PostContent"); }
 			</div>
-			<div id="footer" class="clearfix">@{ Html.RenderPartial("Partials/_Footer"); }</div>
+			}
+			<div id="footer" class="clearfix">@{ Html.RenderPartial("LayoutPartials/_Footer"); }</div>
 		</div>
 	}
 	</div>

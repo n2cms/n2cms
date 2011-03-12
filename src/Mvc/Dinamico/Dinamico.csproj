@@ -127,11 +127,13 @@
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
     <Compile Include="Web\Mvc\Html\ThemeExtensions.cs" />
     <Compile Include="Web\Mvc\Html\RenderExtensions.cs" />
+    <Compile Include="Web\Mvc\IDisplayRenderer.cs" />
     <Compile Include="Web\Mvc\RegisterHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
     <Compile Include="Web\Mvc\InitializationExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
+    <Compile Include="Web\Mvc\RegisteringDisplayRenderer.cs" />
     <Compile Include="Web\Mvc\RegistrationViewEngineDecorator.cs" />
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
@@ -213,7 +215,7 @@
     <Content Include="Views\Account\LogOn.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\Partials\_LogOn.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_LogOn.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -242,7 +244,7 @@
     <Content Include="Views\ContentParts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_Header.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\StartPage\NotFound.cshtml" />
@@ -254,25 +256,25 @@
     <Content Include="Views\Test\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_SiteMap.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_SiteMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_Search.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_PreContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Dark\Views\Shared\Partials\_PreContent.cshtml" />
+    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\_PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Dark\Views\Shared\Partials\_Header.cshtml" />
+    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Dark\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_Content.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Content.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Terracotta\Views\Web.config" />
@@ -281,10 +283,10 @@
     <Content Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_Translations.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Translations.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Other.cshtml" />
+    <Content Include="Views\ContentParts\TwoColumns.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ListingPages\Index.cshtml" />
@@ -305,24 +307,39 @@
     <Content Include="Content\Mood.css" />
     <Content Include="Content\Print.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Shared\Partials\_Top.cshtml" />
-    <Content Include="Views\Shared\Partials\_Footer.cshtml" />
-    <Content Include="Views\Shared\Partials\_PostContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Top.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_Footer.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_PostContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Concrete\Views\Shared\Partials\_Header.cshtml" />
+    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Concrete\Views\Shared\Partials\_PreContent.cshtml" />
+    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\_PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Concrete\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\Helpers.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_BlogContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\_BlogContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\_TopNavigation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\LayoutPartials\_SubNavigation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\LayoutPartials\_Logotype.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ContentParts\Teaser.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Partials\ContentLink.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ContentParts\Listing.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

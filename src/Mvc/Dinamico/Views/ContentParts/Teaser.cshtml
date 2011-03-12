@@ -1,0 +1,20 @@
+﻿@model Dinamico.Models.ContentPart
+@using N2.Web.Mvc.Html
+		   
+@{ Content.Define(ie => 
+	   {
+		   ie.Title = "Teaser";
+		   ie.Link("ForwardsTo");
+		   ie.CheckBox("LargeImage").Title("Large image").Configure(e => e.DefaultValue = true);
+	   }); }
+
+<div class="part teaser">
+@if (Content.HasValue("ForwardsTo"))
+{
+	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", (Content.Data.LargeImage ?? true) ?  "half" : "thumb" } })
+}
+else
+{
+	<p>No target</p>
+}
+</div>

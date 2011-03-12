@@ -1,0 +1,13 @@
+﻿@{
+	int level = 1;
+	foreach (var a in Content.Traverse.AncestorsBetween(level, 2)){
+		level++;
+		if (Content.Traverse.Children(a).Any()){
+<ul class="submenu menu @("level" + level)">
+			@foreach (var c in Content.Traverse.Children(a, filter: N2.Filter.Navigation())) {
+<li>@Content.LinkTo(c)</li>
+			}
+</ul>
+		}
+	}
+}

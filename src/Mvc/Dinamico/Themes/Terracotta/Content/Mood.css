@@ -1,57 +1,24 @@
 @import "../../../Content/Mood.css";
 
-html
-{
-	background:#ac3400 url(fade.png) no-repeat 50% 0;
-}
-	div#top
-	{
-		-moz-border-radius-bottomleft: 2px 2px;
-		-moz-border-radius-bottomright: 2px 2px;
-		border-bottom-left-radius: 2px 2px;
-		border-bottom-right-radius: 2px 2px;
+html { background:#ac3400 url(fade.png) no-repeat 50% 0; }
+	div#top {
+		-moz-border-radius-bottomleft: 2px 2px; -moz-border-radius-bottomright: 2px 2px; border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
 	}
-	div#nav
-	{
+	div#nav {
 		background:url("fade.png") no-repeat scroll 50% 0 #bc5430;
-		-moz-border-radius-topleft: 2px 2px;
-		-moz-border-radius-topright: 2px 2px;
-		border-top-left-radius: 2px 2px;
-		border-top-right-radius: 2px 2px;
+		-moz-border-radius-topleft: 2px 2px; -moz-border-radius-topright: 2px 2px; border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px;
 	}
-		div#nav ul li a
-		{
-			background-color: transparent;
-			color:#fff;
-		}
-		div#nav ul li a.current
-		{
-			color:#000;
-		}
-	div#nav ul.submenu
-	{
-		background-color:transparent;
-		border-top:solid 1px #ac3400;
+		div#nav ul.submenu { background-color:transparent; border-top:solid 1px #ac3400; }
+			div#nav ul.menu li a { background-color: transparent; color:#fff; }
+			div#nav ul.menu li a.current { color:#000; }
+	div#main {
+		-moz-border-radius-bottomleft: 2px 2px; -moz-border-radius-bottomright: 2px 2px; border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
 	}
-	div#main
-	{
-		-moz-border-radius-bottomleft: 2px 2px;
-		-moz-border-radius-bottomright: 2px 2px;
-		border-bottom-left-radius: 2px 2px;
-		border-bottom-right-radius: 2px 2px;
-	}
-	div#footer
-	{
-		background:url("fade.png") no-repeat scroll 50% -150px #bc5430;
-	}
+	div#footer { background:url("fade.png") no-repeat scroll 50% -150px #bc5430; }
 	
 
 /* elements */
 
-.dropmenu
-{
-	-moz-border-radius-bottomleft: 2px 2px;
-	-moz-border-radius-bottomright: 2px 2px;
-	border-bottom-left-radius: 2px 2px;
-	border-bottom-right-radius: 2px 2px;
+.dropmenu {
+	-moz-border-radius-bottomleft: 2px 2px; -moz-border-radius-bottomright: 2px 2px; border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
 }

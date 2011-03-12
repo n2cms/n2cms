@@ -51,7 +51,7 @@ namespace N2.Web.Mvc
 
 		public virtual ItemFilter DefaultFilter()
 		{
-			return new NavigationFilter();
+			return N2.Filter.Access();
 		}
 
 		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
@@ -64,9 +64,16 @@ namespace N2.Web.Mvc
 			return N2.Find.EnumerateParents(CurrentItem, StartPage, true).Reverse().Skip(skipLevel).Take(takeLevels);
 		}
 
+		public IEnumerable<ContentItem> Children(ItemFilter filter = null)
+		{
+			return Children(CurrentItem, filter ?? DefaultFilter());
+		}
+
 		public IEnumerable<ContentItem> Children(ContentItem item, ItemFilter filter = null)
 		{
-			return item.GetChildren(filter ?? new NavigationFilter());
+			if (item == null) return Enumerable.Empty<ContentItem>();
+
+			return item.GetChildren(filter ?? DefaultFilter());
 		}
 
 		public IEnumerable<ContentItem> Descendants(ContentItem item, ItemFilter filter = null)
@@ -86,7 +93,7 @@ namespace N2.Web.Mvc
 			if (item.Parent == null)
 				return Enumerable.Empty<ContentItem>();
 
-			return item.Parent.GetChildren(new NavigationFilter());
+			return item.Parent.GetChildren(DefaultFilter());
 		}
 
 		public int LevelOf(ContentItem item = null)

@@ -86,7 +86,7 @@ namespace N2.Web.Mvc
 			return new TreeBuilder(new TreeHierarchyBuilder(item, takeLevels))
 				.ExcludeRoot(rootless)
 				.LinkProvider((i) => LinkTo(i).Class(cssGetter(i)))
-				.Filters(filter ?? Traverse.DefaultFilter());
+				.Filters(filter ?? N2.Filter.Navigation());
 		}
 
 		public string GetNavigationClass(ContentItem item)
@@ -99,6 +99,11 @@ namespace N2.Web.Mvc
 			var lb = new LinkBuilder(item);
 			lb.ClassName = GetNavigationClass(item);
 			return lb;
+		}
+
+		public bool HasValue(string detailName)
+		{
+			return CurrentItem[detailName] != null;
 		}
 
 		// content scope

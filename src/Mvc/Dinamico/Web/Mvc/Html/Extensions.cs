@@ -10,17 +10,22 @@ using System.IO;
 
 namespace N2.Web.Mvc.Html
 {
-	public class Template<T>
+	public class ListTemplate<T> : Template<T>
 	{
 		public int Index { get; set; }
 		public bool First { get; set; }
 		public bool Last { get; set; }
+	}
+
+	public class Template<T>
+	{
 		public T Data { get; set; }
 		public Action<TextWriter> ContentRenderer { get; set; }
+		static Action<TextWriter> fallback = (tw) => { };
 
 		public HelperResult RenderContents()
 		{
-			return new HelperResult(ContentRenderer);
+			return new HelperResult(ContentRenderer ?? fallback);
 		}
 	}
 
@@ -35,9 +40,9 @@ namespace N2.Web.Mvc.Html
 
 		public static HelperResult Loop<T>(this HtmlHelper html, 
 			IEnumerable<T> items, 
-			Func<Template<T>, HelperResult> template,
-			Func<Template<IEnumerable<T>>, HelperResult> containerTemplate = null,
-			Func<string, HelperResult> emptyTemplate = null)
+			Func<ListTemplate<T>, HelperResult> template,
+			Func<Template<IEnumerable<T>>, HelperResult> wrapper = null,
+			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
 		{
 			return new System.Web.WebPages.HelperResult((tw) =>
 				{
@@ -45,7 +50,7 @@ namespace N2.Web.Mvc.Html
 					{
 						if (enumerator.MoveNext())
 						{
-							var ctx = new Template<T> { First = true };
+							var ctx = new ListTemplate<T> { First = true };
 							Action<TextWriter> renderContents = (tw2) =>
 								{
 									while (true)
@@ -68,18 +73,18 @@ namespace N2.Web.Mvc.Html
 										ctx.Index++;
 									}
 								};
-							if (containerTemplate != null)
+							if (wrapper != null)
 							{
-								containerTemplate(new Template<IEnumerable<T>> { First = true, Data = items, Last = true, ContentRenderer = renderContents }).WriteTo(tw);
+								wrapper(new Template<IEnumerable<T>> { Data = items, ContentRenderer = renderContents }).WriteTo(tw);
 							}
 							else
 							{
 								renderContents(tw);
 							}
 						}
-						else if(emptyTemplate != null)
+						else if(empty != null)
 						{
-							emptyTemplate("").WriteTo(tw);
+							empty(new Template<IEnumerable<T>> { Data = items }).WriteTo(tw);
 						}
 					}
 				});

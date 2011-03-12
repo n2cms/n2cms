@@ -135,9 +135,9 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static RegisteringDisplayRenderer<T> Display<T>(this EditableBuilder<T> builder) where T : IEditable
+		public static IDisplayRenderer Display<T>(this EditableBuilder<T> builder) where T : IEditable
 		{
-			return builder as RegisteringDisplayRenderer<T>;
+			return builder as IDisplayRenderer;
 		}
 	}
 

@@ -1,33 +1,15 @@
 /* APPEARANCE, COLORS AND FONTS */
 
-h1
-{
-	color: #46351C;
-}
-html
-{
-	background:#5c87b2;
-}
-body 
-{
-	background:transparent; 
-}
-	div#top
-	{
-		background-color:#fff;
-	}
-	div#main
-	{
-		background-color:#fff;
-	}
-	div#footer
-	{
-		margin-top:1px;
-		background-color:#4c77a2;
-		color:#fff;
-	}
-		div#footer a, div#footer a:visited
-		{
-			color:#fff;
-		}
+html { background:#5c87b2; }
+body { background:transparent; }
+h1 { color: #46351C; }
+	div#top { background-color:#fff; }
+		div#nav .submenu { background-color:#fff; }
+		div#nav .topmenu { font-size:1.5em; }
+			div#nav ul.menu li a { background-color:#fff; }
+	div#main { background-color:#fff; }
+	div#aside {}
+		div#aside .part {}
+	div#footer { margin-top:1px; background-color:#4c77a2; color:#fff; }
+		div#footer a, div#footer a:visited { color:#fff; }
 	
