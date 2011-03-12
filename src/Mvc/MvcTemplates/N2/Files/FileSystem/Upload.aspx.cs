@@ -20,8 +20,15 @@ namespace N2.Management.Files.FileSystem
 		{
 			hlCancel.NavigateUrl = Selection.ActionUrl("info");
 
-			var config = ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
-			maxFileSize = config.MaxRequestLength * 1024 - 10000;
+			try
+			{
+				var config = ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
+				maxFileSize = config.MaxRequestLength * 1024 - 10000;
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Trace.WriteLine(ex);
+			}
 		}
 
 		protected void btnAlternative_Command(object sender, CommandEventArgs args)
