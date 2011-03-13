@@ -25,6 +25,7 @@ namespace N2.Tests.Definitions
 	public class ContentRegistrationTests
 	{
 		ContentRegistration registration;
+		ItemDefinition sourceDefinition;
 
 		class EmptyItem : ContentItem
 		{
@@ -35,6 +36,7 @@ namespace N2.Tests.Definitions
 		{
 			registration = new ContentRegistration();
 			registration.ContentType = typeof(EmptyItem);
+			sourceDefinition = new DefinitionMap().GetOrCreateDefinition(registration.ContentType);
 		}
 
 		[Test]
@@ -42,7 +44,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.CheckBox("Visible", "Show the page in navigation");
 
-			var definition = registration.CreateDefinition(new DefinitionTable());
+			var definition = registration.AppendDefinition(sourceDefinition);
 
 			var editable = (EditableCheckBoxAttribute)definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<EditableCheckBoxAttribute>());
@@ -56,7 +58,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.DateRange("From", "To", "Opening hours");
 
-			var definition = registration.CreateDefinition(new DefinitionTable());
+			var definition = registration.AppendDefinition(sourceDefinition);
 
 			var editable = (WithEditableDateRangeAttribute)definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<WithEditableDateRangeAttribute>());
@@ -70,7 +72,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.Title("The name of the page");
 
-			var definition = registration.CreateDefinition(new DefinitionTable());
+			var definition = registration.AppendDefinition(sourceDefinition);
 
 			var editable = definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<WithEditableTitleAttribute>());
@@ -83,7 +85,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.Tab("Content", "Primary content");
 
-			var definition = registration.CreateDefinition(new DefinitionTable());
+			var definition = registration.AppendDefinition(sourceDefinition);
 
 			var container = definition.Containers.Single();
 			Assert.That(container, Is.InstanceOf<TabContainerAttribute>());

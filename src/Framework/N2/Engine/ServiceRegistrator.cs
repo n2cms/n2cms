@@ -4,6 +4,7 @@ using N2.Plugin;
 using Castle.Core;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace N2.Engine
 {
@@ -38,7 +39,18 @@ namespace N2.Engine
 			foreach (var info in services)
 			{
 				Type serviceType = info.Attribute.ServiceType ?? info.DecoratedType;
-				container.AddComponent(info.Attribute.Key ?? info.DecoratedType.FullName, serviceType, info.DecoratedType);
+				string key = info.Attribute.Key ?? info.DecoratedType.FullName;
+				if(string.IsNullOrEmpty(info.Attribute.StaticAccessor))
+					container.AddComponent(key, serviceType, info.DecoratedType);
+				else
+				{
+					var pi = info.DecoratedType.GetProperty(info.Attribute.StaticAccessor, BindingFlags.Public | BindingFlags.Static);
+					if(pi == null) throw new InvalidOperationException("[Service(StaticAccessor = \"" + info.Attribute.StaticAccessor + "\")] on " + info.DecoratedType + " doesn't match an existing static property on that type. Add a static property or remove the static accessor declaration.");
+					var instance = pi.GetValue(null, null);
+					if(instance == null) new InvalidOperationException("[Service(StaticAccessor = \"" + info.Attribute.StaticAccessor + "\")] on " + info.DecoratedType + " defines a property that returned null. Make sure this static property returns a value.");
+					if(!serviceType.IsAssignableFrom(instance.GetType())) new InvalidOperationException("[Service(StaticAccessor = \"" + info.Attribute.StaticAccessor + "\")] on " + info.DecoratedType + " defines a property that returned an invalid type. The returned object must be assignable to " + serviceType);
+					container.AddComponentInstance(key, serviceType, instance);
+				}
 			}
 		}
 

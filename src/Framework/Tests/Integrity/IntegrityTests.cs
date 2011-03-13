@@ -59,24 +59,14 @@ namespace N2.Tests.Integrity
 
 		private ITypeFinder CreateTypeFinder()
 		{
-			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
-			Expect.On(typeFinder)
-				.Call(typeFinder.GetAssemblies())
-				.Return(new Assembly[] {typeof (AlternativePage).Assembly})
-				.Repeat.Any();
-			Expect.On(typeFinder)
-				.Call(typeFinder.Find(typeof (ContentItem)))
-				.Return(new Type[]
-				        	{
-				        		typeof (AlternativePage),
-				        		typeof (AlternativeStartPage),
-				        		typeof (Page),
-				        		typeof (Root),
-				        		typeof (StartPage),
-				        		typeof (SubPage)
-				        	});
-			mocks.Replay(typeFinder);
-			return typeFinder;
+			return new FakeTypeFinder(
+				typeof (AlternativePage).Assembly, 
+				typeof (AlternativePage),
+				typeof (AlternativeStartPage),
+				typeof (Page),
+				typeof (Root),
+				typeof (StartPage),
+				typeof (SubPage));
 		}
 
 		private void CreatePersister()

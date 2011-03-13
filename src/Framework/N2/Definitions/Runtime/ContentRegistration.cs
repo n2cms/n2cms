@@ -68,16 +68,6 @@ namespace N2.Definitions.Runtime
 			return CurrentSortOrder;
 		}
 
-		public ItemDefinition CreateDefinition(DefinitionTable definitions)
-		{
-			var definition = definitions.GetDefinition(ContentType).Initialize(ContentType).Clone();
-
-			foreach (IDefinitionRefiner refiner in ContentType.GetCustomAttributes(typeof(IDefinitionRefiner), true))
-				refiner.Refine(definition, definitions.GetDefinitions().ToList());
-
-			return AppendDefinition(definition);
-		}
-
 		public ItemDefinition AppendDefinition(ItemDefinition definition)
 		{
 			definition.Title = Title;

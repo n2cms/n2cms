@@ -8,7 +8,7 @@ namespace N2.Tests.Definitions.Static
 	[TestFixture]
 	public class DefinitionTableTests
 	{
-		ItemDefinition definition = DefinitionTable.Instance.GetDefinition(typeof(DescribablePage));
+		ItemDefinition definition = DefinitionMap.Instance.GetOrCreateDefinition(typeof(DescribablePage));
 		ContentItem page = new DescribablePage();
 
 		[Test]

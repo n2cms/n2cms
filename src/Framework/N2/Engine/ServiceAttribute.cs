@@ -25,5 +25,8 @@ namespace N2.Engine
 
 		/// <summary>Configurations for which this service is registered.</summary>
 		public string Configuration { get; set; }
+
+		/// <summary>A static accessor property used to retrieve the service instance instead of instiatating it.</summary>
+		public string StaticAccessor { get; set; }
     }
 }

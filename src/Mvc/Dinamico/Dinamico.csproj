@@ -108,6 +108,7 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TextPageController.cs" />
     <Compile Include="Definitions\Dynamic\RazorTemplateProvider.cs" />
+    <Compile Include="Definitions\Dynamic\RazorTemplateRegistrator.cs" />
     <Compile Include="Definitions\Dynamic\TemplateSelectorAttribute.cs" />
     <Compile Include="Details\EditableThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">

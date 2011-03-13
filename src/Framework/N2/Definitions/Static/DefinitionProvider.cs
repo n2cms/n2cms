@@ -9,16 +9,16 @@ namespace N2.Definitions.Static
 	[Service(typeof(IDefinitionProvider))]
 	public class DefinitionProvider : IDefinitionProvider
 	{
-		ItemDefinition[] definitions;
+		DefinitionBuilder definitionBuilder;
 
 		public DefinitionProvider(DefinitionBuilder definitionBuilder)
 		{
-			this.definitions = definitionBuilder.GetDefinitions().ToArray();
+			this.definitionBuilder = definitionBuilder;
 		}
 
 		public IEnumerable<ItemDefinition> GetDefinitions()
 		{
-			return definitions;
+			return definitionBuilder.GetDefinitions();
 		}
 	}
 }

@@ -430,6 +430,7 @@ namespace N2.Definitions
 			id.Installer = Installer;
 			id.IsDefined = IsDefined;
 			id.EditableModifiers = EditableModifiers.ToList();
+			id.ContentModifiers = ContentModifiers.ToList();
 			id.NumberOfItems = 0;
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;

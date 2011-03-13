@@ -18,85 +18,10 @@ using System.Diagnostics;
 using N2.Definitions.Runtime;
 using System.Web.Hosting;
 using System.Web.Caching;
+using N2.Definitions.Static;
 
 namespace Dinamico.Definitions.Dynamic
 {
-	[Service(typeof(IProvider<HttpContextBase>))]
-	public class HttpContextProvider : IProvider<HttpContextBase>
-	{
-		#region IProvider<HttpContextBase> Members
-
-		public HttpContextBase Get()
-		{
-			return new HttpContextWrapper(HttpContext.Current);
-		}
-
-		public IEnumerable<HttpContextBase> GetAll()
-		{
-			return new[] { Get() };
-		}
-
-		#endregion
-	}
-
-	[Service(typeof(IProvider<ViewEngineCollection>))]
-	public class ViewEngineCollectionProvider : IProvider<ViewEngineCollection>
-	{
-		#region IProvider<ViewEngineCollection> Members
-
-		public ViewEngineCollection Get()
-		{
-			return ViewEngines.Engines;
-		}
-
-		public IEnumerable<ViewEngineCollection> GetAll()
-		{
-			return new[] { ViewEngines.Engines };
-		}
-
-		#endregion
-	}
-
-	[Service(typeof(IProvider<VirtualPathProvider>))]
-	public class VirtualPathProviderProvider : IProvider<VirtualPathProvider>
-	{
-		#region IProvider<VirtualPathProvider> Members
-
-		public VirtualPathProvider Get()
-		{
-			return HostingEnvironment.VirtualPathProvider;
-		}
-
-		public IEnumerable<VirtualPathProvider> GetAll()
-		{
-			return new[] { HostingEnvironment.VirtualPathProvider };
-		}
-
-		#endregion
-	}
-
-	[Service]
-	public class RazorTemplateRegistrator
-	{
-		public RazorTemplateRegistrator()
-		{
-			QueuedRegistrations = new Queue<Type>();
-		}
-
-		public RazorTemplateRegistrator Add<T>() where T : Controller
-		{
-			QueuedRegistrations.Enqueue(typeof(T));
-			if (RegistrationAdded != null)
-				RegistrationAdded.Invoke(this, new EventArgs());
-
-			return this;
-		}
-
-		public event EventHandler RegistrationAdded;
-
-		public Queue<Type> QueuedRegistrations { get; set; }
-	}
-
 	[Service(typeof(ITemplateProvider))]
 	public class RazorTemplateProvider : ITemplateProvider
 	{
@@ -107,23 +32,20 @@ namespace Dinamico.Definitions.Dynamic
 		RazorTemplateRegistrator registrator;
 		List<Source> sources = new List<Source>();
 		bool rebuild = true;
+		DefinitionBuilder builder;
+		DefinitionMap map;
 
-		public RazorTemplateProvider(RazorTemplateRegistrator registrator, ContentActivator activator, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider, IProvider<VirtualPathProvider> vppProvider)
+		public RazorTemplateProvider(RazorTemplateRegistrator registrator, ContentActivator activator, DefinitionBuilder builder, DefinitionMap map, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider, IProvider<VirtualPathProvider> vppProvider)
 		{
 			this.registrator = registrator;
-			registrator.RegistrationAdded += registrator_RegistrationAdded;
-
-			//this.fs = fs;
 			this.activator = activator;
+			this.builder = builder;
+			this.map = map;
 			this.httpContextProvider = httpContextProvider;
 			this.viewEnginesProvider = viewEnginesProvider;
 			this.vppProvider = vppProvider;
-			
-			HandleRegistrationQueue();
-		}
 
-		void registrator_RegistrationAdded(object sender, EventArgs e)
-		{
+			registrator.RegistrationAdded += (s, a) => HandleRegistrationQueue();
 			HandleRegistrationQueue();
 		}
 
@@ -161,10 +83,10 @@ namespace Dinamico.Definitions.Dynamic
 			if (definitions == null || rebuild)
 			{
 				var vpp = vppProvider.Get();
-				var pairs = BuildDefinitions(vpp, httpContext).ToList();
-				definitions = pairs.Select(p => p.Definition).ToList();
+				var registrations = FindRegistrations(vpp, httpContext).ToList();
+				definitions = BuildDefinitions(registrations);
 
-				var files = pairs.SelectMany(p => p.VirtualPaths).Distinct().ToList();
+				var files = registrations.SelectMany(p => p.VirtualPaths).Distinct().ToList();
 				//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
 				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
@@ -190,7 +112,7 @@ namespace Dinamico.Definitions.Dynamic
 			if (templates.Length > 1)
 			{
 				foreach (var t in templates)
-				{
+				{					
 					t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", Title = "Template", AllTemplates = templates, ContainerName = "Advanced", HelpTitle = "The page must be saved for another template's fields to appear" });
 				}
 			}
@@ -198,7 +120,16 @@ namespace Dinamico.Definitions.Dynamic
 			return templates;
 		}
 
-		private IEnumerable<RazorFileDefinition> BuildDefinitions(VirtualPathProvider vpp, HttpContextBase httpContext)
+		private IEnumerable<ItemDefinition> BuildDefinitions(List<RazorFileDefinition> registrations)
+		{
+			var definitions = registrations.Select(r => r.Definition).ToList();
+			builder.ExecuteRefiners(definitions);
+			foreach (var registration in registrations)
+				registration.Registration.AppendDefinition(registration.Definition);
+			return definitions;
+		}
+
+		private IEnumerable<RazorFileDefinition> FindRegistrations(VirtualPathProvider vpp, HttpContextBase httpContext)
 		{
 			foreach (var source in sources)
 			{
@@ -208,14 +139,14 @@ namespace Dinamico.Definitions.Dynamic
 
 				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(".cshtml")))
 				{
-					var definition = GetDefinition(httpContext, file, source.ControllerName, source.ModelType);
+					var definition = BuildRegistration(httpContext, file, source.ControllerName, source.ModelType);
 					if (definition != null)
 						yield return definition;
 				}
 			}
 		}
 
-		private RazorFileDefinition GetDefinition(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
+		private RazorFileDefinition BuildRegistration(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
 		{
 			if(modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
 				return null;
@@ -232,10 +163,10 @@ namespace Dinamico.Definitions.Dynamic
 			if (result.View == null)
 				return null;
 
-			return RenderView(file, modelType, cctx, result);
+			return RenderViewForRegistration(file, modelType, cctx, result);
 		}
 
-		private static RazorFileDefinition RenderView(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
+		private RazorFileDefinition RenderViewForRegistration(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
 		{
 			var re = new ContentRegistration();
 			re.ContentType = modelType;
@@ -260,13 +191,23 @@ namespace Dinamico.Definitions.Dynamic
 				}
 
 				if (re.IsDefined)
+				{
 					return new RazorFileDefinition
 					{
-						Definition = re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance),
+						Registration = re,
+						Definition = GetOrCreateDefinition(re),
 						VirtualPaths = new[] { file.VirtualPath }.Union(re.TouchedPaths)
 					};
+				}
 				return null;
 			}
+		}
+
+		private ItemDefinition GetOrCreateDefinition(ContentRegistration re)
+		{
+			var definition = builder.GetDefinitions().FirstOrDefault(d => d.ItemType == re.ContentType)
+				?? map.GetOrCreateDefinition(re.ContentType, re.Template);
+			return definition.Clone();
 		}
 
 		public TemplateDefinition GetTemplate(N2.ContentItem item)
@@ -290,6 +231,7 @@ namespace Dinamico.Definitions.Dynamic
 		class RazorFileDefinition
 		{
 			public IEnumerable<string> VirtualPaths { get; set; }
+			public ContentRegistration Registration { get; set; }
 			public ItemDefinition Definition { get; set; }
 		}
 

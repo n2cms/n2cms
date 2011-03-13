@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
@@ -16,11 +17,13 @@ namespace N2.Definitions.Static
 	[Service]
 	public class DefinitionBuilder
 	{
-		private readonly DefinitionTable staticDefinitions;
+		private readonly DefinitionMap staticDefinitions;
 		private readonly ITypeFinder typeFinder;
 		private readonly EngineSection config;
+		
+		private ItemDefinition[] definitionsCache;
 
-		public DefinitionBuilder(DefinitionTable staticDefinitions, ITypeFinder typeFinder, EngineSection config)
+		public DefinitionBuilder(DefinitionMap staticDefinitions, ITypeFinder typeFinder, EngineSection config)
 		{
 			this.staticDefinitions = staticDefinitions;
 			this.typeFinder = typeFinder;
@@ -28,7 +31,7 @@ namespace N2.Definitions.Static
 		}
 
 		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
-			: this(DefinitionTable.Instance, typeFinder, config)
+			: this(DefinitionMap.Instance, typeFinder, config)
 		{
 		}
 
@@ -36,10 +39,13 @@ namespace N2.Definitions.Static
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
 		public virtual IEnumerable<ItemDefinition> GetDefinitions()
 		{
+			if (definitionsCache != null)
+				return definitionsCache;
+
 			List<ItemDefinition> definitions = FindDefinitions();
 			ExecuteRefiners(definitions);
-			
-			return definitions;
+
+			return definitionsCache = definitions.ToArray();
 		}
 
 		protected List<ItemDefinition> FindDefinitions()
@@ -47,7 +53,7 @@ namespace N2.Definitions.Static
 			List<ItemDefinition> definitions = new List<ItemDefinition>();
 			foreach (Type itemType in FindConcreteTypes())
 			{
-				var definition = staticDefinitions.GetDefinition(itemType).Clone();
+				var definition = staticDefinitions.GetOrCreateDefinition(itemType).Clone();
 				definition.DefaultContainerName = config.Definitions.DefaultContainerName;
 				definitions.Add(definition);
 			}
@@ -175,7 +181,7 @@ namespace N2.Definitions.Static
 			return type;
 		}
 
-		protected void ExecuteRefiners(IList<ItemDefinition> definitions)
+		public void ExecuteRefiners(IList<ItemDefinition> definitions)
 		{
 			// these are executed one time per definition
 			List<ISortableRefiner> globalRefiners = new List<ISortableRefiner>();
