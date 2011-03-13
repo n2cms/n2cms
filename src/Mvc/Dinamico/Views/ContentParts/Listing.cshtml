@@ -9,5 +9,7 @@
 
 
 <div class="part teaser">
-	@Html.Loop(Content.Traverse.Children((N2.ContentItem)Content.Data.ListFrom), @<div>@Html.Partial("Partials/ContentLink", item.Data, new ViewDataDictionary { {"preferredSize", "thumb"} })</div>)
+	@Html.Loop(Content.Traverse.Children((N2.ContentItem)Content.Data.ListFrom),
+		template: @<div class="item">@Html.Partial("Partials/ContentLink", item.Data, new ViewDataDictionary { {"preferredSize", "thumb"} })</div>,
+		wrapper:@<div class="list">@item.RenderContents()</div>)
 </div>

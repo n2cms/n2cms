@@ -34,6 +34,7 @@ using N2.Edit.Workflow;
 using N2.Definitions;
 using N2.Persistence.Proxying;
 using NHibernate.Search.Attributes;
+using System.Runtime.CompilerServices;
 
 namespace N2
 {
@@ -705,9 +706,12 @@ namespace N2
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
         {
-			ContentItem cloned = (ContentItem)MemberwiseClone(); //Activator.CreateInstance(GetContentType(), true);
+			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetContentType(), true); //(ContentItem)MemberwiseClone(); 
 
-			ClearUnclonable(cloned);
+			CloneUnversionableFields(this, cloned);
+			CloneFields(this, cloned);
+			CloneAutoProperties(this, cloned);
+			//ClearUnclonable(cloned);
 			CloneDetails(this, cloned);
 			CloneChildren(this, cloned, includeChildren);
 			CloneAuthorizedRoles(this, cloned);
@@ -716,32 +720,50 @@ namespace N2
         }
 
 		#region Clone Helper Methods
+		static void CloneUnversionableFields(ContentItem source, ContentItem destination)
+		{
+			destination.zoneName = source.zoneName;
+			destination.expires = source.expires;
+		}
+
 		static void CloneFields(ContentItem source, ContentItem destination)
 		{
 			destination.title = source.title;
-			destination.name = source.name;
+			if(source.id.ToString() != source.name)
+				destination.name = source.name;
+			destination.alteredPermissions = source.alteredPermissions;
 			destination.created = source.created;
 			destination.updated = source.updated;
 			destination.versionIndex = source.versionIndex;
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
+			destination.state = source.state;
 			destination.url = null;
 		}
 
-		private static void ClearUnclonable(ContentItem destination)
+		static void CloneAutoProperties(ContentItem source, ContentItem destination)
 		{
-			destination.id = 0;
-			destination.url = null;
-			destination.parent = null;
-			destination.versionOf = null;
-			destination.ancestralTrail = null;
-			destination.hashCode = null;
-			destination.authorizedRoles = new List<Security.AuthorizedRole>();
-			destination.children = new ItemList<ContentItem>();
-			destination.details = new ContentList<ContentDetail>();
-			destination.detailCollections = new ContentList<DetailCollection>();
+			foreach (var pi in source.GetContentType().GetProperties())
+				if (pi.CanRead && pi.CanWrite && pi.GetGetMethod().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length > 0)
+					pi.SetValue(destination, pi.GetValue(source, null), null);
 		}
+
+		//private static void ClearUnclonable(ContentItem destination)
+		//{
+		//    if (destination.id.ToString() == destination.name)
+		//        destination.name = null;
+		//    destination.id = 0;
+		//    destination.url = null;
+		//    destination.parent = null;
+		//    destination.versionOf = null;
+		//    destination.ancestralTrail = null;
+		//    destination.hashCode = null;
+		//    destination.authorizedRoles = new List<Security.AuthorizedRole>();
+		//    destination.children = new ItemList<ContentItem>();
+		//    destination.details = new ContentList<ContentDetail>();
+		//    destination.detailCollections = new ContentList<DetailCollection>();
+		//}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
 		{

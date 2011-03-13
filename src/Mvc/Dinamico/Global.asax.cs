@@ -18,6 +18,8 @@ namespace Dinamico
 	{
 		protected void Application_Start()
 		{
+			//log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(Server.MapPath("~/N2/Installation/log4net.config")));
+
 			var engine = N2.Context.Current;
 
 			AreaRegistration.RegisterAllAreas();

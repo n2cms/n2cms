@@ -330,6 +330,7 @@
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
+    <Content Include="N2\Installation\log4net.config" />
     <None Include="N2\Installation\mysql.upgrade.2.sql" />
     <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />

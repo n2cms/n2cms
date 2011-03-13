@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace N2.Tests.Persistence.Proxying
 {
+	#region Classes InterceptableItem, InterceptableInheritorItem, IgnoringItem
 	public class InterceptableItem : ContentItem
 	{
 		[EditableCheckBox("My Property", 100)]
@@ -38,6 +39,7 @@ namespace N2.Tests.Persistence.Proxying
 		[EditableCheckBox("Ignored Property", 100, PersistAs = PropertyPersistenceLocation.Ignore)]
 		public virtual bool IgnoredProperty { get; set; }
 	}
+	#endregion
 
 	[TestFixture]
 	public class InterceptionFactoryTests
@@ -307,5 +309,22 @@ namespace N2.Tests.Persistence.Proxying
 
 			Assert.That(wasChanged, Is.False);
 		}
+
+		//// Copy
+		
+		//[Test]
+		//public void Copy()
+		//{
+		//    var item1 = factory.Create(typeof(InterceptableItem).FullName, 1) as ContentItem;
+		//    var item2 = factory.Create(typeof(InterceptableItem).FullName, 2) as ContentItem;
+		//    item2.AddTo(item1);
+		//    var item3 = factory.Create(typeof(InterceptableItem).FullName, 3) as ContentItem;
+		//    item3.AddTo(item2);
+
+		//    var clone = item1.Clone(true);
+		//    var tn1 = factory.GetTypeName(clone);
+		//    var tn2 = factory.GetTypeName(clone.Children[0]);
+		//    var tn3 = factory.GetTypeName(clone.Children[0].Children[0]);
+		//}
 	}
 }

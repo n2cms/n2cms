@@ -34,14 +34,15 @@ namespace N2.Tests
 		{
 			Setup(out definitions, out activator, out notifier, out proxyFactory, itemTypes);
 
-			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), new ThreadContext(), participators, config, connectionStrings);
+			var connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
+			var configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), new ThreadContext(), participators, config, connectionStrings);
+			var configurationSource = new ConfigurationSource(configurationBuilder);
 
-			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), new NHInterceptor(proxyFactory, configurationBuilder, notifier), context);
+			sessionProvider = new FakeSessionProvider(configurationSource, new NHInterceptor(proxyFactory, configurationSource, notifier), context);
 
 			finder = new ItemFinder(sessionProvider, definitions);
 
-			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
+			schemaCreator = new SchemaExport(configurationSource.BuildConfiguration());
 		}
 
 		public static IDefinitionManager SetupDefinitions(params Type[] itemTypes)

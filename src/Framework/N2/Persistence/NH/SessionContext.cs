@@ -11,22 +11,12 @@ namespace N2.Persistence.NH
     {
         private ISession session;
         private ISessionProvider provider;
-        private bool contentChanged;
 
         public ISession Session
         {
             get { return session; }
             set { session = value; }
         }
-
-		///// <summary>
-		///// Indicates wheter content has changed during the request.
-		///// </summary>
-		//public bool ContentChanged
-		//{
-		//    get { return contentChanged; }
-		//    set { contentChanged = value; }
-		//}
 
         public SessionContext(ISessionProvider provider, ISession session)
         {

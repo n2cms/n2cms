@@ -357,6 +357,15 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
+		public void CloningItem_WithNameSetToID_ClearsName()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "1", null);
+			ContentItem clone = root.Clone(false);
+
+			Assert.That(clone.Name, Is.Null);
+		}
+
+		[Test]
 		public void CanCloneItem_WithProtectedDefaultConstructor()
 		{
 			ContentItem root = CreateOneItem<AnItemWithProtectedDefaultConstructor>(1, "root", null);

@@ -1,3 +1,4 @@
+- clear name of copied child parts
 - copy hierarchies and missing discriminator
 - delete and remove language association
 - deleted and state

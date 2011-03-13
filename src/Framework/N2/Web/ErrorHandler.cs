@@ -72,12 +72,7 @@ namespace N2.Web
 		public void Notify(Exception ex)
 		{
 			errorCount++;
-
-			if (ex is HttpUnhandledException)
-				ex = ex.InnerException;
-			if (ex is TargetInvocationException)
-				ex = ex.InnerException;
-
+			
 			if (ex != null)
 			{
 				Trace.TraceError("ErrorHandler.Notify: " + FormatError(ex));
@@ -89,6 +84,13 @@ namespace N2.Web
 				}
 				if (handleWrongClassException)
 				{
+					if (ex is HttpUnhandledException)
+						ex = ex.InnerException;
+					if (ex is HttpException)
+						ex = ex.InnerException;
+					if (ex is TargetInvocationException)
+						ex = ex.InnerException;
+
 					TryHandleWrongClassException(ex);
 				}
 			}

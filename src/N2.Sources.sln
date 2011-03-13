@@ -88,7 +88,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
 		..\lib\NHibernate.ByteCode.Castle.dll = ..\lib\NHibernate.ByteCode.Castle.dll
-		..\lib\NHibernate.dll = ..\lib\NHibernate.dll
 		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
 		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll
 		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll

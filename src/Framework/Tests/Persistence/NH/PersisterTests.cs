@@ -127,7 +127,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void CanCopy()
+		public void Copy_ShouldCreate_CopyOfCopiedItem()
 		{
 			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
@@ -160,6 +160,73 @@ namespace N2.Tests.Persistence.NH
 				Assert.AreNotEqual(root, item1.Children[0]);
 				Assert.AreNotEqual(item1, item1.Children[0]);
 				Assert.AreNotEqual(item2, item1.Children[0]);
+			}
+		}
+
+		[Test]
+		public void Copy_OfDeepHierarchy_ShouldCopyDescendants()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
+			ContentItem item3 = CreateOneItem<Definitions.PersistableItem1>(0, "item3", item2);
+			ContentItem item4 = CreateOneItem<Definitions.PersistableItem1>(0, "item4", item3);
+			ContentItem copy = null;
+
+			using (persister)
+			{
+				persister.Save(root);
+			}
+
+			using (persister)
+			{
+				item1 = persister.Get(item1.ID);
+
+				copy = persister.Copy(item1, item1);
+			}
+
+			using (persister)
+			{
+				copy = persister.Get(copy.ID);
+				
+				Assert.That(copy.Name, Is.EqualTo(item1.Name));
+				Assert.That(copy.Parent, Is.EqualTo(item1));
+				Assert.That(copy.Children[0].Name, Is.EqualTo(item2.Name));
+				Assert.That(copy.Children[0].ID, Is.Not.EqualTo(item2.ID));
+				Assert.That(copy.Children[0].Children[0].Name, Is.EqualTo(item3.Name));
+				Assert.That(copy.Children[0].Children[0].ID, Is.Not.EqualTo(item3.ID));
+				Assert.That(copy.Children[0].Children[0].Children[0].Name, Is.EqualTo(item4.Name));
+				Assert.That(copy.Children[0].Children[0].Children[0].ID, Is.Not.EqualTo(item4.ID));
+			}
+		}
+
+		[Test]
+		public void Copy_IgnoringChildren_DoesntCopyChildren()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
+			ContentItem copy = null;
+
+			using (persister)
+			{
+				persister.Save(root);
+			}
+
+			using (persister)
+			{
+				item1 = persister.Get(item1.ID);
+
+				copy = persister.Copy(item1, item1, false);
+			}
+
+			using (persister)
+			{
+				copy = persister.Get(copy.ID);
+
+				Assert.That(copy.Name, Is.EqualTo(item1.Name));
+				Assert.That(copy.Parent, Is.EqualTo(item1));
+				Assert.That(copy.Children.Count, Is.EqualTo(0));
 			}
 		}
 

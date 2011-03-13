@@ -73,7 +73,7 @@ namespace N2.Tests.Definitions
 
 		#endregion
 
-		[Test]
+		[Test, Obsolete]
 		public void CanCreate_NewItemInstance()
 		{
 			DefinitionTextPage item = definitions.CreateInstance<DefinitionTextPage>(null);
@@ -407,7 +407,7 @@ namespace N2.Tests.Definitions
 			Assert.IsNotEmpty(definition.Title);
 		}
 
-		[Test]
+		[Test, Obsolete]
 		public void Item_Inherits_AllowedReaders_FromParent()
 		{
 			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
@@ -430,7 +430,7 @@ namespace N2.Tests.Definitions
 			}
 		}
 
-		[Test]
+		[Test, Obsolete]
 		public void Item_Inherits_AllowedEditors_FromParent()
 		{
 			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());

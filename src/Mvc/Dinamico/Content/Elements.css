@@ -15,3 +15,5 @@ a.opener { text-decoration:none }
 	.dropmenu ul { list-style-type:none; padding:0 1em; margin:0; }
 
 .separator { border-top:solid 1px #eee; padding-top:20px; }
+
+.list .item { margin-bottom:20px;

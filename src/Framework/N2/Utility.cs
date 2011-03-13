@@ -22,6 +22,9 @@ namespace N2
 	/// </summary>
 	public static class Utility
 	{
+		/// <summary>A global settings indicating whether persistence events should be triggered for versions of items.</summary>
+		public static bool VersionsTriggersEvents { get; set; }
+
 		/// <summary>Converts a value to a destination type.</summary>
 		/// <param name="value">The value to convert.</param>
 		/// <param name="destinationType">The type to convert the value to.</param>
@@ -358,7 +361,7 @@ namespace N2
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
 		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> handler, ContentItem item, object sender, Action<ContentItem> finalAction)
 		{
-			if (handler != null && item.VersionOf == null)
+			if (handler != null && (VersionsTriggersEvents || item.VersionOf == null))
 			{
 				CancellableItemEventArgs args = new CancellableItemEventArgs(item, finalAction);
 				
@@ -380,7 +383,7 @@ namespace N2
 		/// <returns>The result of the action (if any).</returns>
 		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
 		{
-			if (handler != null && source.VersionOf == null)
+			if (handler != null && (VersionsTriggersEvents || source.VersionOf == null))
 			{
 				CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination, finalAction);
 
