@@ -92,7 +92,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Any(cd => cd.Name == name && cd.LinkedItem == value);
+			if (name == null) return (ci) => ci.Details.Any(cd => cd.LinkedItem == value);
+
 			return (ci) => ci.Details.Any(cd => cd.Name == name && cd.LinkedItem == value);
 		}
 
