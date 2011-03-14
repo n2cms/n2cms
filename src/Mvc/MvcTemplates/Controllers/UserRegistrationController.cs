@@ -70,7 +70,7 @@ namespace N2.Templates.Mvc.Controllers
 			string un = model.RegisterUserName;
 			string pw = model.RegisterPassword;
 
-			Membership.CreateUser(un, pw);
+			Membership.CreateUser(un, pw, model.RegisterEmail);
 
 			Roles.AddUserToRoles(un, CurrentItem.Roles.ToArray<string>());
 			MembershipUser user = Membership.GetUser(un);
