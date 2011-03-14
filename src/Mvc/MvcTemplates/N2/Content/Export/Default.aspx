@@ -9,6 +9,7 @@
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
+	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
     <n2:tabpanel id="tpExport" runat="server" ToolTip="Export" meta:resourceKey="tpExport" >
 		<div>
 		    <asp:Button ID="btnExport" runat="server" CssClass="command" OnCommand="btnExport_Command" CausesValidation="false" meta:resourceKey="btnExport" Text="Export these items" />
@@ -53,4 +54,5 @@
 		    </asp:View>
 	    </asp:MultiView>
     </n2:tabpanel>
+	</edit:PersistentOnlyPanel>
 </asp:Content>

@@ -186,4 +186,7 @@
   <data name="lblLocation.Text" xml:space="preserve">
     <value>Location</value>
   </data>
+  <data name="popNotSupported.Text" xml:space="preserve">
+    <value>This is not supported for this type of item.</value>
+  </data>
 </root>

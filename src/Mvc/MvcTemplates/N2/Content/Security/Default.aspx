@@ -11,6 +11,8 @@
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourcekey="hlCancelResource1">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
+
     <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
     <style>
 		.defaults td { border-bottom:solid 1px #ccc;}
@@ -87,4 +89,5 @@
 		</tbody>
     </table>
 </div>
+</edit:PersistentOnlyPanel>
 </asp:Content>

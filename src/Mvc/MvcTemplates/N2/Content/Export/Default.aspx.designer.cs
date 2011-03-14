@@ -22,6 +22,15 @@ namespace N2.Edit.Export {
         protected global::N2.Edit.Web.UI.Controls.CancelLink hlCancel;
         
         /// <summary>
+        /// popNotSupported control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PersistentOnlyPanel popNotSupported;
+        
+        /// <summary>
         /// btnExport control.
         /// </summary>
         /// <remarks>

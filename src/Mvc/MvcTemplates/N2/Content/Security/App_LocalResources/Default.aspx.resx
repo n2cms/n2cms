@@ -153,4 +153,7 @@
   <data name="DefaultText" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="popNotSupported.Text" xml:space="preserve">
+    <value>This is not supported for this type of item.</value>
+  </data>
 </root>

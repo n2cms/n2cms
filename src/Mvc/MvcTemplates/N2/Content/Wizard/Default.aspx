@@ -7,8 +7,9 @@
 	<edit:CancelLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
-        <asp:GridView ID="gvLocations" runat="server" 
+	<edit:PersistentOnlyPanel runat="server" meta:resourceKey="popNotSupported">
+		<n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
+																																																																																	<asp:GridView ID="gvLocations" runat="server" 
 			OnRowDeleting="gvLocations_OnRowDeleting" DataKeyNames="ID"
 			CssClass="gv" AutoGenerateColumns="false" ShowHeader="false">
 			<Columns>
@@ -35,9 +36,9 @@
 				<asp:Literal ID="ltWizards" Text="No wizards configured" runat="server" meta:resourceKey="ltWizards" />
 			</EmptyDataTemplate>
         </asp:GridView>
-    </n2:tabpanel>
-    <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
-        <asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
+		</n2:tabpanel>
+		<n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
+																																																																																																																																				<asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">
                     <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" CssClass="label" meta:resourcekey="lblLocation" />
@@ -81,5 +82,6 @@
                 <asp:Label runat="server" Text="Added" meta:resourcekey="LabelResource3" />
             </asp:View>
         </asp:MultiView>
-    </n2:tabpanel>
+		</n2:tabpanel>
+	</edit:PersistentOnlyPanel>
 </asp:Content>

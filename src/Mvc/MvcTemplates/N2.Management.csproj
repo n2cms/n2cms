@@ -814,6 +814,7 @@
     <Compile Include="N2\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="N2\Web\UI\Controls\InfoLabel.cs" />
     <Compile Include="N2\Web\UI\Controls\ContentLink.cs" />
+    <Compile Include="N2\Web\UI\Controls\PersistentOnlyPanel.cs" />
     <Compile Include="N2\Web\UI\Controls\ResizedImage.cs" />
     <Compile Include="N2\Web\UI\Controls\ToolbarPluginDisplay.cs" />
     <Compile Include="N2\Web\UI\Controls\Tree.cs" />

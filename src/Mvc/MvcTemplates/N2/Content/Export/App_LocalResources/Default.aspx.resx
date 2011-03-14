@@ -174,4 +174,7 @@
   <data name="chkDefinedDetails.ToolTip" xml:space="preserve">
     <value>Export only data inputted by a user (cleans export file from deprecated information and computer generated data)</value>
   </data>
+  <data name="popNotSupported.Text" xml:space="preserve">
+    <value>This is not supported for this type of item.</value>
+  </data>
 </root>
