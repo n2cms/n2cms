@@ -33,6 +33,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 			{
 				string html = new TagBuilder("input")
 					.Attr("type", "text")
+					.Attr("name", ElementID)
 					.Attr("size", (Columns ?? 60).ToString())
 					.ToString(TagRenderMode.SelfClosing);
 				return MvcHtmlString.Create(html);
@@ -41,6 +42,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 			{
 				string html = new TagBuilder("textarea")
 					.Attr("rows", Rows.ToString())
+					.Attr("name", ElementID)
 					.Attr("cols", (Columns ?? 60).ToString())
 					.ToString();
 				return MvcHtmlString.Create(html);

@@ -1,4 +1,6 @@
 ﻿2.2
+- Applied sYgiL's patch 30259: N2.Templates.Mvc.Models.Parts.Questions.TextQuestion is missing name attribute
+- Applied sYgiL's patch 30299: Email is not saved on registration 
 - Moved list referencing items into the box (ThreadId=249105)
 - Changed EditableFileUpload to save absolute path (ThreadId=232277)
 - Refactored definition manager to allow multiple definition providers
