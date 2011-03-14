@@ -209,8 +209,10 @@
     <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Persistence\DescendantItemFinder.cs" />
+    <Compile Include="Plugin\PluginExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
+    <Compile Include="Security\IPermittable.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
     <Compile Include="Utility.cs" />

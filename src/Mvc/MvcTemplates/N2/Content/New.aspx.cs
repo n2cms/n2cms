@@ -32,9 +32,14 @@ using System.Web.UI;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("NEW", "new", "{ManagementUrl}/Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
+	[NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10,
+		GlobalResourceClassName = "Navigation",
+		RequiredPermission = Permission.Write)]
+	[ToolbarPlugin("NEW", "new", "{ManagementUrl}/Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Write)]
+	[ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
+		RequiredPermission = Permission.Write)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

@@ -5,6 +5,7 @@ using N2.Configuration;
 using N2.Engine;
 using System.Reflection;
 using System.Security.Principal;
+using N2.Security;
 
 namespace N2.Plugin
 {
@@ -16,32 +17,37 @@ namespace N2.Plugin
     {
         private IList<IPlugin> plugins = null;
         private readonly ITypeFinder typeFinder;
+		private readonly ISecurityManager security;
 		public IEnumerable<InterfacePluginElement> addedPlugins = new InterfacePluginElement[0];
 		public IEnumerable<InterfacePluginElement> removedPlugins = new InterfacePluginElement[0];
 
-        public PluginFinder(ITypeFinder typeFinder, EngineSection config)
+        public PluginFinder(ITypeFinder typeFinder, ISecurityManager security, EngineSection config)
         {
         	addedPlugins = config.InterfacePlugins.AllElements;
         	removedPlugins = config.InterfacePlugins.RemovedElements;
 			this.typeFinder = typeFinder;
+			this.security = security;
 			this.plugins = FindPlugins();
 		}
 
+		[Obsolete("Use constructor(ITypeFinder, ISecurityManager, EngineSection)", true)]
 		public PluginFinder(ITypeFinder typeFinder)
 		{
 			this.typeFinder = typeFinder;
 			this.plugins = FindPlugins();
 		}
 
-    	/// <summary>Gets plugins found in the environment sorted and filtered by the given user.</summary>
+		/// <summary>Gets plugins found in the environment sorted and filtered by the given user.</summary>
     	/// <typeparam name="T">The type of plugin to get.</typeparam>
     	/// <param name="user">The user that should be authorized for the plugin.</param>
     	/// <returns>An enumeration of plugins.</returns>
     	public IEnumerable<T> GetPlugins<T>(IPrincipal user) where T : class, IPlugin
         {
-            foreach (T plugin in GetPlugins<T>())
-                if (plugin.IsAuthorized(user))
-                    yield return plugin;
+			foreach (T plugin in GetPlugins<T>())
+			{
+				if(plugin.IsAuthorized(user, security))
+					yield return plugin;
+			}
         }
 
         public IEnumerable<T> GetPlugins<T>() where T : class, IPlugin

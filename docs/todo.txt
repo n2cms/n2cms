@@ -1,5 +1,3 @@
-- clear name of copied child parts
-- copy hierarchies and missing discriminator
 - delete and remove language association
 - deleted and state
 - Permissions in management plugins (ThreadId=248967)

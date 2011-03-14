@@ -4,6 +4,7 @@ using System.Web.UI;
 using N2.Engine;
 using N2.Plugin;
 using System.Web.UI.WebControls;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -11,28 +12,17 @@ namespace N2.Edit
 	/// Classes extending this abstract class are collected and may be 
 	/// retrieved by user interfaces in the editing interface.
 	/// </summary>
-	public abstract class AdministrativePluginAttribute : Attribute, IPlugin
+	public abstract class AdministrativePluginAttribute : Attribute, IPlugin, ISecurable, IPermittable
 	{
-		private string[] authorizedRoles;
 		private bool enabled = true;
-		private string name;
 		private int sortOrder = int.MaxValue;
-		private Type decorates;
 		private IEngine engine;
 
 		#region Public Properties
 
-		public Type Decorates
-		{
-			get { return decorates; }
-			set { decorates = value; }
-		}
+		public Type Decorates { get; set; }
 
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+		public string Name { get; set; }
 
 		public int SortOrder
 		{
@@ -40,17 +30,17 @@ namespace N2.Edit
 			set { sortOrder = value; }
 		}
 
-		public string[] AuthorizedRoles
-		{
-			get { return authorizedRoles; }
-			set { authorizedRoles = value; }
-		}
+		/// <summary>Specific roles required to use this plugin.</summary>
+		public string[] AuthorizedRoles { get; set; }
 
 		public bool Enabled
 		{
 			get { return enabled; }
 			set { enabled = value; }
 		}
+
+		/// <summary>The minimum permission to require to allow this plugin.</summary>
+		public Permission RequiredPermission { get; set; }
 
 		/// <summary>Url to the anchor's image icon.</summary>
 		public string IconUrl { get; set; }
@@ -67,14 +57,11 @@ namespace N2.Edit
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
-		public bool IsAuthorized(IPrincipal user)
+		public bool IsAuthorized(IPrincipal user, ISecurityManager security)
 		{
-			if (user == null || authorizedRoles == null)
-				return true;
-			foreach (string role in authorizedRoles)
-				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
-					return true;
-			return false;
+			if (user == null) return true;
+
+			return PluginExtensions.IsAuthorized(this, user, security);
 		}
 
 		protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)

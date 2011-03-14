@@ -9,6 +9,7 @@ using Rhino.Mocks.Interfaces;
 using System.Reflection;
 using System.Threading;
 using N2.Web;
+using N2.Configuration;
 
 namespace N2.Tests.Plugin.Scheduling
 {
@@ -39,7 +40,7 @@ namespace N2.Tests.Plugin.Scheduling
             var ctx = mocks.DynamicMock<IWebContext>();
             mocks.Replay(ctx);
 
-            IPluginFinder plugins = new PluginFinder(types);
+			IPluginFinder plugins = new PluginFinder(types, null, new EngineSection());
 
 			AsyncWorker worker = new AsyncWorker();
 			worker.QueueUserWorkItem = delegate(WaitCallback function)

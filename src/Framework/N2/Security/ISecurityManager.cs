@@ -41,7 +41,17 @@ namespace N2.Security
 		[Obsolete("Use PermissionMap.IsInRoles")]
 		bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
 
-		/// <summary>Finds out wether a user is permitted to perform for a certain operation.</summary>
+		/// <summary>Find out if a principal has a certain permission by default.</summary>
+		/// <param name="user">The principal to check for allowance.</param>
+		/// <param name="permission">The type of permission to map against.</param>
+		/// <returns>True if the system is configured to allow the user to the given permission.</returns>
+		bool IsAuthorized(IPrincipal user, Permission permission);
+
+		/// <summary>Find out if a principal has a certain permission for an item.</summary>
+		/// <param name="item">The item to check against.</param>
+		/// <param name="user">The principal to check for allowance.</param>
+		/// <param name="permission">The type of permission to map against.</param>
+		/// <returns>True if the item has public access or the principal is allowed to access it.</returns>
 		bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission);
 
 		/// <summary>Copies permissions from the source to the destination.</summary>

@@ -46,6 +46,11 @@ namespace N2.Tests.Fakes
 			return false;
 		}
 
+		public bool IsAuthorized(IPrincipal user, Permission permission)
+		{
+			return user.Identity.Name == permission.ToString();
+		}
+
 		public bool IsAuthorized(IPrincipal principal, ContentItem item, Permission permission)
 		{
 			if (principal == null)

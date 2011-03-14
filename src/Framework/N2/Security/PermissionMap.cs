@@ -59,9 +59,11 @@ namespace N2.Security
 		/// <summary>Asks the user if it is in any of the roles.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <param name="roles">The roles to look for.</param>
-		/// <returns>True if the user is in any of the given roles.</returns>
+		/// <returns>True if the user is in any of the given roles or the roles are null.</returns>
 		public static bool IsInRoles(IPrincipal user, IEnumerable<string> roles)
 		{
+			if (roles == null) return true;
+
 			foreach (string role in roles)
 				if (user.IsInRole(role))
 					return true;

@@ -1,10 +1,15 @@
 using System;
 using N2.Web;
+using N2.Security;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Paste", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 60, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("PASTE", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 50, ToolTip = "paste", GlobalResourceClassName = "Toolbar")] 
+	[NavigationLinkPlugin("Paste", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 60,
+		GlobalResourceClassName = "Navigation",
+		RequiredPermission = Permission.Publish)]
+	[ToolbarPlugin("PASTE", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 50, ToolTip = "paste", 
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Publish)] 
 	public partial class paste : Web.EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

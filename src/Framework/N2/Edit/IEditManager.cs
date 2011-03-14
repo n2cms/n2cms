@@ -25,6 +25,7 @@ namespace N2.Edit
 		/// <summary>Gets edit mode plugins found in the environment sorted and filtered by the given user.</summary>
 		/// <typeparam name="T">The type of plugin to get.</typeparam>
 		/// <param name="user">The user that should be authorized for the plugin.</param>
+		/// <param name="item">The item to filter item-specific permissions for.</param>
 		/// <returns>An enumeration of plugins.</returns>
 		IEnumerable<T> GetPlugins<T>(IPrincipal user)
 			where T : AdministrativePluginAttribute;

@@ -22,7 +22,7 @@ namespace N2.Edit.Web.UI.Controls
 
 			var start = Engine.Resolve<IUrlParser>().StartPage;
 			var root = Engine.Persister.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-            foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
+			foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
                 if ((plugin.Area & Area) != Area)
 					continue;

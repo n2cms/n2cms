@@ -1,13 +1,14 @@
 using System;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
+using N2.Security;
 
 namespace N2.Edit.Membership
 {
-	[MembershipToolbarPlugin("USERS", "users", "{ManagementUrl}/Users/Users.aspx", "{ManagementUrl}/Resources/icons/group_key.png", 110, 
+	[MembershipToolbarPlugin("USERS", "users", "{ManagementUrl}/Users/Users.aspx", "{ManagementUrl}/Resources/icons/group_key.png", 110,
 		ToolTip = "administer users",
-		AuthorizedRoles = new string[] { "Administrators", "Admin" }, 
-		GlobalResourceClassName = "Toolbar")]
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Administer)]
 	public partial class Users : EditPage
 	{
 		protected void odsUsers_ItemCommand(object sender, DataGridCommandEventArgs args)

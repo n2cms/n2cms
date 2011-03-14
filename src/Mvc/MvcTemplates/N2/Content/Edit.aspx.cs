@@ -15,16 +15,21 @@ using System.Web;
 namespace N2.Edit
 {
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
-		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit", 
-		GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-    [ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
+		GlobalResourceClassName = "Navigation", 
+		RequiredPermission = Permission.Write)]
+	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
+		GlobalResourceClassName = "Toolbar", 
+		RequiredPermission = Permission.Write)]
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
+		RequiredPermission = Permission.Write)]
+	[ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing, 
+		RequiredPermission = Permission.Write)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
-		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
-	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 
-		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
-	[ControlPanelEditingSave("Save changes", 10)]
+		RequiredPermission = Permission.Publish)]
+	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30,
+		RequiredPermission = Permission.Publish)]
+	[ControlPanelEditingSave("Save changes", 10,
+		RequiredPermission = Permission.Write)]
     [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
 		UrlEncode = false)]
 	public partial class Edit : EditPage

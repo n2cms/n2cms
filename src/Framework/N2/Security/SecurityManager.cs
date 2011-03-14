@@ -47,17 +47,6 @@ namespace N2.Security
 		public PermissionMap Administrators { get; set; }
 		public PermissionMap Editors { get; set; }
 		public PermissionMap Writers { get; set; }
-		
-		/// <summary>Creates a new instance of the security manager.</summary>
-		[Obsolete("Don't use", true)]
-		public SecurityManager(Web.IWebContext webContext)
-		{
-			this.webContext = webContext;
-
-			Administrators = new PermissionMap(Permission.Full, defaultAdministratorRoles, defaultAdministratorUsers);
-			Editors = new PermissionMap(Permission.ReadWritePublish, defaultEditorRoles, none);
-			Writers = new PermissionMap(Permission.ReadWrite, defaultWriterRoles, none);
-        }
 
         /// <summary>Creates a new instance of the security manager.</summary>
         public SecurityManager(Web.IWebContext webContext, Configuration.EditSection config)
@@ -183,6 +172,18 @@ namespace N2.Security
 				return false;
 			}
 			return item.IsAuthorized(user);
+		}
+
+
+		/// <summary>Find out if a principal has a certain permission by default.</summary>
+		/// <param name="user">The principal to check for allowance.</param>
+		/// <param name="permission">The type of permission to map against.</param>
+		/// <returns>True if the system is configured to allow the user to the given permission.</returns>
+		public virtual bool IsAuthorized(IPrincipal user, Permission permission)
+		{
+			return (Administrators.MapsTo(permission) && Administrators.Contains(user))
+			   || (Editors.MapsTo(permission) && Editors.Contains(user))
+			   || (Writers.MapsTo(permission) && Writers.Contains(user));
 		}
 
 		/// <summary>Find out if a principal has a certain permission for an item.</summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
+using N2.Security;
 
 namespace N2.Plugin
 {
@@ -12,6 +13,5 @@ namespace N2.Plugin
         string Name { get; set; }
         Type Decorates { get; set; }
         int SortOrder { get; }
-        bool IsAuthorized(IPrincipal user);
     }
 }

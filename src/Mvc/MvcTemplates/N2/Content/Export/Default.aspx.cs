@@ -9,10 +9,13 @@ using N2.Xml;
 using N2.Web.UI;
 using System.Text;
 using N2.Edit.FileSystem;
+using N2.Security;
 
 namespace N2.Edit.Export
 {
-    [ToolbarPlugin("EXPORT", "exportimport", "{ManagementUrl}/Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("EXPORT", "exportimport", "{ManagementUrl}/Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", 
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Administer)]
 	public partial class Default : EditPage
 	{
 		protected Control tpExport;
