@@ -38,7 +38,8 @@
         </asp:GridView>
 		</n2:tabpanel>
 		<n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
-																																																																																																																																				<asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
+			<edit:PermissionPanel id="ppAdd" RequiredPermission="Publish" runat="server" meta:resourceKey="ppPermitted">
+			<asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">
                     <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" CssClass="label" meta:resourcekey="lblLocation" />
@@ -82,6 +83,7 @@
                 <asp:Label runat="server" Text="Added" meta:resourcekey="LabelResource3" />
             </asp:View>
         </asp:MultiView>
+			</edit:PermissionPanel>
 		</n2:tabpanel>
 	</edit:PersistentOnlyPanel>
 </asp:Content>

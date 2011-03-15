@@ -109,5 +109,13 @@ namespace N2.Edit
 		{
 			return Url.ResolveTokens(item.IconUrl);
 		}
+
+		/// <summary>Gets the permissions for the logged in user towards an item.</summary>
+		/// <param name="item">The item for which permissions should be retrieved.</param>
+		/// <returns>A permission flag.</returns>
+		public virtual Permission GetMaximumPermission(ContentItem item)
+		{
+			return PermissionMap.GetMaximumPermission(Security.GetPermissions(WebContext.User, item));
+		}
 	}
 }

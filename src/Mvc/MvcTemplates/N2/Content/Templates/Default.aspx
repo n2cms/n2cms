@@ -9,6 +9,7 @@
 <style>
 	fieldset div.container { max-height:120px; overflow:auto; margin-bottom:20px; }
 </style>
+	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
     <n2:tabpanel ID="tpTemplates" runat="server" ToolTip="Templates" CssClass="tabPanel" meta:resourcekey="tpTemplates" RegisterTabCss="False">
         <asp:GridView id="gvTemplates" runat="server" AutoGenerateColumns="False" CssClass="gv" ShowHeader="false"
 			DataKeyNames="Name" OnRowDeleting="gvTemplates_OnRowDeleting"
@@ -34,6 +35,7 @@
         </asp:GridView>
     </n2:tabpanel>
     <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add template" CssClass="tabPanel" meta:resourcekey="tpAdd" RegisterTabCss="False">
+		<edit:PermissionPanel id="ppAdd" RequiredPermission="Publish" runat="server" meta:resourceKey="ppPermitted">
 		<table>
 		<tr><td>
 			<asp:Label ID="lblTitle" runat="server" AssociatedControlID="txtTitle" CssClass="label"
@@ -75,5 +77,7 @@
 		</td></tr></table>
 		<asp:Button runat="server" Text="Add" ID="btnAdd" OnCommand="btnAdd_Command" 
 			meta:resourcekey="btnAddResource1" />
+		</edit:PermissionPanel>
     </n2:tabpanel>
+	</edit:PermissionPanel>
 </asp:Content>

@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
 using N2.Web;
+using N2.Plugin;
 
 namespace N2.Edit
 {
@@ -19,7 +20,7 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			if (!IsAuthorized(context.HttpContext.User, context.Engine.SecurityManager))
+			if (!context.Engine.SecurityManager.IsAuthorized(this, context.HttpContext.User, context.Selected))
 				return null;
 
 			if(!ActiveFor(container, context.State)) return null;

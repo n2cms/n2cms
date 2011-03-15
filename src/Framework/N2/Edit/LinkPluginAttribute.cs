@@ -87,7 +87,7 @@ namespace N2.Edit
 			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;
-			a.Attributes["class"] = Name;
+			a.Attributes["class"] = Name + " " + RequiredPermission.ToString();
 			a.Text = tooltip;
             a.ToolTip = tooltip;
 			a.Text = title;

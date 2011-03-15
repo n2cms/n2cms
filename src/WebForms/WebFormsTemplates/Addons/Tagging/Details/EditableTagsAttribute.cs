@@ -63,7 +63,7 @@ namespace N2.Addons.Tagging.Details
 			List<ITag> tags = new List<ITag>();
 			foreach (ContentItem link in links)
 			{
-				if(link.Parent == group)
+				if(link.Parent != null && link.Parent.Equals(group))
 					tags.Add(link as ITag);
 			}
 			return tags;
@@ -115,7 +115,7 @@ namespace N2.Addons.Tagging.Details
 			if (links != null)
 			{
 				foreach (ContentItem link in links)
-					if(link.Parent == group)
+					if(link.Parent != null && link.Parent.Equals(group))
 						yield return link.Title;
 			}
 		}

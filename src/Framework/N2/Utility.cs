@@ -542,6 +542,17 @@ namespace N2
 		public static IMultiQuery MultiQuery(this SessionContext sc)
 		{
 			return sc.Session.CreateMultiQuery();
-		}		
+		}
+
+		// Content Extensions
+
+		public static bool IsPublished(this ContentItem item)
+		{
+			return item.Published.HasValue && item.Published <= Utility.CurrentTime();
+		}
+		public static bool IsExpired(this ContentItem item)
+		{
+			return item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime();
+		}
 	}
 }

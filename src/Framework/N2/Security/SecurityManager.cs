@@ -193,8 +193,10 @@ namespace N2.Security
 		/// <returns>True if the item has public access or the principal is allowed to access it.</returns>
 		public virtual bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission)
 		{
-			if(permission == Permission.None)
+			if (permission == Permission.None)
 				return true;
+			if (item == null)
+				return IsAuthorized(user, permission);
 			if (permission == Permission.Read)
 				return IsAuthorized(item, user);
 
@@ -229,6 +231,23 @@ namespace N2.Security
 					continue;
 				DynamicPermissionMap.SetRoles(destination, p, roles.ToArray());
 			}
+		}
+
+		/// <summary>Gets the permissions for a certain user towards an item.</summary>
+		/// <param name="user">The user whose permissoins to get.</param>
+		/// <param name="item">The item for which permissions should be retrieved.</param>
+		/// <returns>A permission flag.</returns>
+		public Permission GetPermissions(IPrincipal user, ContentItem item)
+		{
+			return GetPermiossions(user, item, Administrators)
+				| GetPermiossions(user, item, Editors)
+				| GetPermiossions(user, item, Writers)
+				| (item.IsAuthorized(user) ? Permission.Read : Permission.None);
+		}
+
+		private Permission GetPermiossions(IPrincipal user, ContentItem item, PermissionMap map)
+		{
+			return map.Authorizes(user, item, map.Permissions) ? map.Permissions : Permission.None;
 		}
 
 		#endregion

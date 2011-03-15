@@ -150,4 +150,7 @@
   <data name="to.TextFormat" xml:space="preserve">
     <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
 </root>

@@ -101,7 +101,7 @@ namespace N2.Web.UI.WebControls
 			@"
 jQuery(document).ready(function(){{
     if(window.n2ctx){{
-		n2ctx.refresh({{ navigationUrl: '{2}', path: '{0}', force:false }});
+		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:false }});
 		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
 		else jQuery('.cpView').hide();
 	}}
@@ -291,9 +291,10 @@ window.n2ddcp = new n2DragDrop();
 				writer.WriteLineNoTabs("n2ctx.select('preview');");
 				if (CurrentItem != null)
 				{
+					var adapter = Engine.GetContentAdapter<NodeAdapter>(CurrentItem);
 					string navigationUrl = Engine.ManagementPaths.GetNavigationUrl(CurrentItem);
-					string previewUrl = Engine.GetContentAdapter<NodeAdapter>(CurrentItem).GetPreviewUrl(CurrentItem);
-					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
+					string previewUrl = adapter.GetPreviewUrl(CurrentItem);
+					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl, adapter.GetMaximumPermission(CurrentItem));
 					writer.WriteLineNoTabs(script);
 				}
 				writer.WriteLineNoTabs("}");

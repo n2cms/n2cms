@@ -12,7 +12,7 @@ namespace N2.Edit
 		GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "{ManagementUrl}/Content/Default.aspx?selected={Selected.Path}", "Manage content", -50, ControlPanelState.Visible,
 		Target = Targets.Top,
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Read)]
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
 		Target = Targets.Top)]
 	public partial class Default : Web.EditPage

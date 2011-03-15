@@ -62,6 +62,11 @@ namespace N2.Tests.Fakes
 		{
 		}
 
+		public Permission GetPermissions(IPrincipal user, ContentItem item)
+		{
+			return item["Permission"] as Permission? ?? Permission.None;
+		}
+
 		#endregion
 	}
 }

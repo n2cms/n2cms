@@ -42,6 +42,8 @@ namespace N2.Security
 
 		public virtual bool Authorizes(IPrincipal user, ContentItem item, Permission permission)
 		{
+			if (item == null) throw new ArgumentNullException("item");
+
 			if(permission == Permission.Read && !item.IsAuthorized(user))
 				return false;
 
@@ -68,6 +70,17 @@ namespace N2.Security
 				if (user.IsInRole(role))
 					return true;
 			return false;
+		}
+
+		private static Permission[] Levels = { Permission.Administer, Permission.Publish, Permission.Write, Permission.Read, Permission.None };
+		public static Permission GetMaximumPermission(Permission permissionFlags)
+		{
+			foreach (var level in Levels)
+			{
+				if ((level & permissionFlags) == level)
+					return level;
+			}
+			return Permission.None;
 		}
 
 		#region ICloneable Members

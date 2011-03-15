@@ -29,6 +29,8 @@ namespace N2.Security
 
 		public override bool Authorizes(IPrincipal user, ContentItem item, Permission permission)
 		{
+			if (item == null) throw new ArgumentNullException("item");
+
 			if(permission == Permission.None)
 				return true;
 			if (!MapsTo(permission))

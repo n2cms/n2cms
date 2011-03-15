@@ -32,12 +32,19 @@ n2nav.onTargetClick = function(el){
 n2nav.handlers = {
 	fallback: function(e) {
 		n2nav.onTargetClick(this)
-		n2nav.setupToolbar(n2nav.getPath(this), this.href);
+		n2nav.update({ 
+			path: n2nav.getPath(this), 
+			previewUrl: this.href,
+			permission: $(this).attr("data-permission")
+		});
 	}
 };
 
 n2nav.setupToolbar = function(path, url) {
 	n2ctx.update({ path: path, previewUrl: url });
+}
+n2nav.update = function (options) {
+	n2ctx.update(options);
 }
 
 
@@ -56,7 +63,7 @@ var n2toggle = {
     }
 };
 
-var initn2context = function(w) {
+var initn2context = function (w) {
 	if (w.n2ctx)
 		return w.n2ctx;
 
@@ -75,49 +82,49 @@ var initn2context = function(w) {
 		actionType: null,
 
 		// whether there is a top frame
-		hasTop: function() {
+		hasTop: function () {
 			return false;
 		},
 
 		// selects a toolbar item by name
-		toolbarSelect: function(name, context) {
+		toolbarSelect: function (name, context) {
 			w.n2.select(name);
 		},
 
 		// copy/paste
-		memorize: function(selected, action) {
+		memorize: function (selected, action) {
 			this.memorizedPath = selected;
 			this.actionType = action;
 		},
-		getSelected: function() {
+		getSelected: function () {
 			return this.selectedPath;
 		},
-		path: function(value) {
+		path: function (value) {
 			if (arguments.length == 0)
 				return this._path;
 
 			this._path = value;
 			return this;
 		},
-		getSelectedUrl: function() {
+		getSelectedUrl: function () {
 			return this.selectedUrl;
 		},
-		getMemory: function() {
+		getMemory: function () {
 			return encodeURIComponent(this.memorizedPath);
 		},
-		getAction: function() {
+		getAction: function () {
 			return encodeURIComponent(this.actionType);
 		},
 
-		initToolbar: function() {
-			$(".command a").click(function(e) {
+		initToolbar: function () {
+			$(".command a").click(function (e) {
 				if (this.hash == "#stop")
 					e.preventDefault();
 			});
 		},
 
 		// selection memory
-		update: function(options) {
+		update: function (options) {
 			if (!this.hasTop()) return;
 
 			options.previewUrl = options.previewUrl || this.selectedUrl;
@@ -144,11 +151,12 @@ var initn2context = function(w) {
 					href = href.replace(format, formats[key]);
 				}
 				a.href = href;
-
 			}
+
+			w.document.getElementById("top").className = options.permission;
 		},
 
-		append: function(url, data) {
+		append: function (url, data) {
 			return url + (url.indexOf('?') >= 0 ? "&" : "?") + jQuery.param(data);
 		},
 
@@ -157,13 +165,13 @@ var initn2context = function(w) {
 		/// * navigationUrl: url to load navigation frame
 		/// * force: force navigation refresh (default true)
 		/// * path: update path to
-		refresh: function(options) {
+		refresh: function (options) {
 			options = jQuery.extend({ previewUrl: null, navigationUrl: null, force: true,
-				showPreview: function() {
+				showPreview: function () {
 					var previewFrame = w.document.getElementById("previewFrame");
 					previewFrame.src = this.previewUrl;
 				},
-				showNavigation: function(ctx) {
+				showNavigation: function (ctx) {
 					var navigationFrame = w.document.getElementById("navigationFrame");
 					navigationFrame.src = ctx.append(this.navigationUrl, { location: ctx.location });
 				}
@@ -190,7 +198,7 @@ var initn2context = function(w) {
 		},
 
 		// toolbar selection
-		select: function(name) {
+		select: function (name) {
 			if (!name) return;
 
 			$s = jQuery("#" + name);
@@ -198,14 +206,14 @@ var initn2context = function(w) {
 			$s.addClass("selected");
 			jQuery(document.body).addClass(name + "Selected");
 		},
-		unselectFrame: function(frame) {
-			jQuery(".selected a").filter(function() { return this.target === frame || !this.target; })
+		unselectFrame: function (frame) {
+			jQuery(".selected a").filter(function () { return this.target === frame || !this.target; })
                 .closest(".selected")
-                .each(function() {
+                .each(function () {
                 	n2.unselect(this.id);
                 });
 		},
-		unselect: function(name) {
+		unselect: function (name) {
 			if (!name) return;
 
 			jQuery("#" + name).removeClass("selected");

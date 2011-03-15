@@ -12,6 +12,7 @@
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
+	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
 
     <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
     <style>
@@ -89,5 +90,6 @@
 		</tbody>
     </table>
 </div>
-</edit:PersistentOnlyPanel>
+	</edit:PermissionPanel>
+	</edit:PersistentOnlyPanel>
 </asp:Content>

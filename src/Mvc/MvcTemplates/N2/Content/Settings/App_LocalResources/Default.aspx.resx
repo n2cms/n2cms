@@ -123,6 +123,9 @@
   <data name="btnSaveResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
   <data name="settingsPage.Title" xml:space="preserve">
     <value>Settings</value>
   </data>

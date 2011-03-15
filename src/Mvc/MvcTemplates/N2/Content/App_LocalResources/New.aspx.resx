@@ -147,4 +147,7 @@
   <data name="lblNone.Text" xml:space="preserve">
     <value>Nothing can be created here.</value>
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
 </root>

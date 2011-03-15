@@ -8,6 +8,7 @@
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />
+	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
 	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="ID" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
@@ -48,4 +49,5 @@
 			</asp:TemplateField>
 		</Columns>
 	</asp:GridView>
+	</edit:PermissionPanel>
 </asp:Content>

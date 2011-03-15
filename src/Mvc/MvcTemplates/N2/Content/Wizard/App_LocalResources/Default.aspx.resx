@@ -189,4 +189,7 @@
   <data name="popNotSupported.Text" xml:space="preserve">
     <value>This is not supported for this type of item.</value>
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
 </root>

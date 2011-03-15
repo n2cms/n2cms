@@ -60,16 +60,15 @@ namespace N2.Edit.Trash
 		}
 
 		#region RegisterRefreshNavigationScript
-		private const string refreshScriptFormat = @"n2ctx.refresh({{ navigationUrl: '{1}', path: '{4}'}});";
+		private const string refreshScriptFormat = @"n2ctx.refresh({{ id: {0}, path: '{1}', navigationUrl: '{2}', permission: '{3}'}});";
 
 		protected virtual void RegisterRefreshNavigationScript(ContentItem item)
 		{
 			string script = string.Format(refreshScriptFormat,
-				VirtualPathUtility.ToAbsolute(Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Default.aspx")), // 0
-				GetNavigationUrl(item), // 1
-				item.ID, // 2
-				item.FindPath(PathData.DefaultAction).RewrittenUrl, // 3
-				item.Path // 4
+				item.ID, // 0
+				item.Path, // 1
+				GetNavigationUrl(item), // 2
+				Engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item) // 3
 				);
 
 			ClientScript.RegisterClientScriptBlock(

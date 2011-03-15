@@ -5,6 +5,7 @@
 (function($) {
     function getName(titleid, whitespace, tolower, replacements){
         var titleBox=document.getElementById(titleid);
+		if (!titleBox) return null;
         var name = titleBox.value.replace(/[.]+/g, '-')
 	        .replace(/[%?&/+:<>]/g, '')
 	        .replace(/\s+/g, whitespace)

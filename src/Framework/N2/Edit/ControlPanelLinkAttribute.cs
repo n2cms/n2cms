@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using N2.Plugin;
 using N2.Web;
 using N2.Web.UI.WebControls;
-using System.Web.UI.WebControls;
 
 namespace N2.Edit
 {
@@ -65,7 +66,7 @@ namespace N2.Edit
 				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
-            link.CssClass = Name;
+			link.CssClass = Name + " authorized" + context.Engine.SecurityManager.IsAuthorized(this, context.HttpContext.User, context.Selected);
 			
 			AddTargetAttribute(link);
 

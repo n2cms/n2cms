@@ -7,12 +7,14 @@ using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Edit.Web;
 using N2.Definitions;
+using N2.Security;
 
 namespace N2.Management.Content.Templates
 {
 	[ToolbarPlugin("TEMPL", "templates", "{ManagementUrl}/Content/Templates/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_white_swoosh.png", 56,
 		ToolTip = "create items with default content",
-		GlobalResourceClassName = "Toolbar")]
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Write)]
 	public partial class Default : EditPage
 	{
 		protected ContentTemplateRepository Templates { get; set; }

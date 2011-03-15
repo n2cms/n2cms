@@ -75,6 +75,33 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
     display:block;
 }
 
+.None		.None,
+.Read		.None,
+.Read		.Read,
+.Write		.None,
+.Write		.Read,
+.Write		.Write,
+.Publish	.None,
+.Publish	.Read,
+.Publish	.Write,
+.Publish	.Publish,
+.Administer .None,
+.Administer .Read,
+.Administer .Write,
+.Administer .Publish,
+.Administer .Administer { opacity:1; filter: alpha(opacity=33); }
+
+.None		.Read,
+.None		.Write,
+.None		.Publish,
+.None		.Administer,
+.Read		.Write,
+.Read		.Publish,
+.Read		.Administer,
+.Write		.Publish,
+.Write		.Administer,
+.Publish	.Administer { opacity:.33; filter: alpha(opacity=33); }
+
 /* disable paste */
 
 .disabled

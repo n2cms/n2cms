@@ -31,6 +31,15 @@ namespace N2.Edit.Versions {
         protected global::System.Web.UI.WebControls.CustomValidator cvVersionable;
         
         /// <summary>
+        /// ppPermitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppPermitted;
+        
+        /// <summary>
         /// gvHistory control.
         /// </summary>
         /// <remarks>

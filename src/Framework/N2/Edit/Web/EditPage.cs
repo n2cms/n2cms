@@ -29,7 +29,10 @@ namespace N2.Edit.Web
 		/// <returns>True if the user is authorized.</returns>
 		protected virtual void Authorize(IPrincipal user)
 		{
-			Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+			if(Engine.SecurityManager.IsAuthorized(user, Permission.Write))
+				Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Read);
+			else
+				Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
 		}
 	
 		protected override void OnInit(EventArgs e)
@@ -94,8 +97,13 @@ namespace N2.Edit.Web
             if(!string.IsNullOrEmpty(Request["returnUrl"]))
                 return Request["returnUrl"];
 			var item = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
-			return Engine.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
+			return NodeAdapter(item).GetPreviewUrl(item);
         }
+
+		private NodeAdapter NodeAdapter(ContentItem item)
+		{
+			return Engine.GetContentAdapter<NodeAdapter>(item);
+		}
 
 		/// <summary>Checks that the user has the required permission on the given item. Throws exceptions if authorization is missing.</summary>
 		/// <param name="item">The item to check permissions on.</param>
@@ -146,9 +154,9 @@ namespace N2.Edit.Web
 		}
 
     	#region Refresh Methods
-		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}' }});";
-		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}' }});";
-		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}' }});";
+		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}' }});";
+		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}' }});";
+		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}' }});";
 
         protected virtual void Refresh(ContentItem item)
         {
@@ -168,7 +176,8 @@ namespace N2.Edit.Web
                 GetNavigationUrl(item), // 1
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
-                item.Path // 4
+                item.Path, // 4
+				NodeAdapter(item).GetMaximumPermission(item)
             );
 
             ClientScript.RegisterClientScriptBlock(
@@ -205,7 +214,8 @@ namespace N2.Edit.Web
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3
-				item.Path // 4
+				item.Path, // 4
+				NodeAdapter(item).GetMaximumPermission(item)
 				);
 			return script;
 		}
@@ -217,19 +227,16 @@ namespace N2.Edit.Web
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return Request["returnUrl"] ?? Engine.GetContentAdapter<NodeAdapter>(selectedItem).GetPreviewUrl(selectedItem);
+			return Request["returnUrl"] ?? NodeAdapter(selectedItem).GetPreviewUrl(selectedItem);
 		}
 		#endregion
 
 		#region Setup Toolbar Methods
-		protected virtual string SetupToolbarScriptFormat
-		{
-			get { return "n2ctx.update({{ path:'{0}', previewUrl:'{2}'}});"; }
-		}
+		const string UpdateToolbarScript = "n2ctx.update({{ path:'{0}', id:'{1}', previewUrl:'{2}', permission:'{3}'}});";
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)
 		{
-			string script = string.Format(SetupToolbarScriptFormat, item.Path, item.ID, GetPreviewUrl(item));
+			string script = string.Format(UpdateToolbarScript, item.Path, item.ID, GetPreviewUrl(item), NodeAdapter(item).GetMaximumPermission(item));
 			ClientScript.RegisterClientScriptBlock(typeof(EditPage), "AddSetupToolbarScript", script, true);
 		}
 
@@ -255,7 +262,7 @@ namespace N2.Edit.Web
 		#endregion
 
 		#region Error Handling
-		protected void SetErrorMessage(BaseValidator validator, N2.Integrity.NameOccupiedException ex)
+		protected virtual void SetErrorMessage(BaseValidator validator, N2.Integrity.NameOccupiedException ex)
 		{
 			Trace.Write(ex.ToString());
 

@@ -58,5 +58,11 @@ namespace N2.Security
 		/// <param name="source">The item whose permissions to carry over.</param>
 		/// <param name="destination">The item whose permissions will be modified.</param>
 		void CopyPermissions(ContentItem source, ContentItem destination);
+
+		/// <summary>Gets the permissions for a certain user towards an item.</summary>
+		/// <param name="user">The user whose permissoins to get.</param>
+		/// <param name="item">The item for which permissions should be retrieved.</param>
+		/// <returns>A permission flag.</returns>
+		Permission GetPermissions(IPrincipal user, ContentItem item);
 	}
 }

@@ -49,6 +49,15 @@ namespace N2.Edit.Wizard {
         protected global::N2.Web.UI.WebControls.TabPanel tpAdd;
         
         /// <summary>
+        /// ppAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppAdd;
+        
+        /// <summary>
         /// mvAdd control.
         /// </summary>
         /// <remarks>

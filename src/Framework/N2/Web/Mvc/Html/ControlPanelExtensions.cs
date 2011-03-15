@@ -25,7 +25,7 @@ namespace N2.Web.Mvc.Html
 
 	n2ctx.select('preview');
 	$(document).ready(function () {
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', force: false });
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false });
 		if (n2ctx.hasTop()) $('.cpAdminister').hide();
 		else $('.cpView').hide();
 				
@@ -68,7 +68,8 @@ namespace N2.Web.Mvc.Html
 				Path = item.Path,
 				Plugins = Plugins(html, item, state),
 				Definitions = Definitions(html, engine, item, state),
-				Version = typeof(ContentItem).Assembly.GetName().Version.ToString()
+				Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
+				Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item)
 			};
 
 			html.Resources().JQuery()

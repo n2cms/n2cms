@@ -131,7 +131,8 @@ namespace N2.Edit.Web.UI.Controls
 				.Attribute("data-path", item.Path)
 				.Attribute("data-url", item.Url)
 				.Attribute("data-page", item.IsPage.ToString().ToLower())
-				.Attribute("data-zone", item.ZoneName);
+				.Attribute("data-zone", item.ZoneName)
+				.Attribute("data-permission", adapter.GetMaximumPermission(item).ToString());
 
 			builder.Href(adapter.GetPreviewUrl(item));
 

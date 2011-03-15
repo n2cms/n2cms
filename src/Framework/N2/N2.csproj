@@ -252,6 +252,7 @@
     <Compile Include="Web\UI\ContentPageConcern.cs" />
     <Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />
     <Compile Include="Web\UI\ItemDataSourceView.cs" />
+    <Compile Include="Web\UI\PageExtensions.cs" />
     <Compile Include="Web\UI\QueryDataSourceView.cs" />
     <Compile Include="Web\UI\ChildrenDataSourceView.cs" />
     <Compile Include="Web\UI\ControlEventArgs.cs" />

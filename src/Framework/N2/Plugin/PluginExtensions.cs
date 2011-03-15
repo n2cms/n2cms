@@ -9,14 +9,14 @@ namespace N2.Plugin
 {
 	public static class PluginExtensions
 	{
-		public static bool IsAuthorized(this IPlugin plugin, IPrincipal user, ISecurityManager security)
+		public static bool IsAuthorized(this ISecurityManager security, IPlugin plugin, IPrincipal user, ContentItem item)
 		{
 			var securable = plugin as ISecurable;
 			if (securable != null && securable.AuthorizedRoles != null && !PermissionMap.IsInRoles(user, securable.AuthorizedRoles))
 				return false;
 
 			var permittable = plugin as IPermittable;
-			if (permittable != null && permittable.RequiredPermission > Permission.Read && !security.IsAuthorized(user, permittable.RequiredPermission))
+			if (permittable != null && permittable.RequiredPermission > Permission.Read && !security.IsAuthorized(user, item, permittable.RequiredPermission))
 				return false;
 
 			return true;

@@ -88,7 +88,7 @@ namespace N2.Addons.Wiki.Renderers
         {
             string[] fragments = fragment.Split('|');
             ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
-            if (existingArticle != null && existingArticle != context.Article.WikiRoot)
+			if (existingArticle != null && existingArticle != null && existingArticle.Equals(context.Article.WikiRoot))
             {
                 return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], existingArticle.Url, true);
             }

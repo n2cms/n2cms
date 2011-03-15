@@ -22,6 +22,15 @@ namespace N2.Management.Content.Templates {
         protected global::N2.Edit.Web.UI.Controls.CancelLink hlCancel;
         
         /// <summary>
+        /// ppPermitted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppPermitted;
+        
+        /// <summary>
         /// tpTemplates control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace N2.Management.Content.Templates {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Web.UI.WebControls.TabPanel tpAdd;
+        
+        /// <summary>
+        /// ppAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.PermissionPanel ppAdd;
         
         /// <summary>
         /// lblTitle control.

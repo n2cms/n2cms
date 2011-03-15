@@ -204,4 +204,7 @@
   <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
 </root>

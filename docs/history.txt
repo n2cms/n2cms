@@ -1,4 +1,5 @@
 ﻿2.2
+- Permissions for management plugins with visualization and improved security checks (ThreadId=248967)
 - Applied sYgiL's patch 30259: N2.Templates.Mvc.Models.Parts.Questions.TextQuestion is missing name attribute
 - Applied sYgiL's patch 30299: Email is not saved on registration 
 - Moved list referencing items into the box (ThreadId=249105)
@@ -9,8 +10,6 @@
 - Fixed LINQ support
 - Added support for retrieving only items in zone by child collection
 - Added support for retrieving item by name in child collection
-
-2.1.2
 - Query for languages rather than recursively iterate to fix slowness (#30025)
 
 2.1.1

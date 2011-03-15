@@ -45,7 +45,7 @@ namespace N2.Plugin
         {
 			foreach (T plugin in GetPlugins<T>())
 			{
-				if(plugin.IsAuthorized(user, security))
+				if(security.IsAuthorized(plugin, user, null))
 					yield return plugin;
 			}
         }

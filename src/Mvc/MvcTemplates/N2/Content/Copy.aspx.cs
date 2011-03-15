@@ -6,7 +6,7 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "{ManagementUrl}/Resources/icons/page_copy.png", 50,
 		GlobalResourceClassName = "Navigation",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Read)]
 	[ToolbarPlugin("COPY", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/page_copy.png", 40,
 		ToolTip = "copy",
 		GlobalResourceClassName = "Toolbar",
@@ -19,11 +19,7 @@ namespace N2.Edit
 			{
 				try
 				{
-					EnsureAuthorization(Permission.Write);
-					EnsureAuthorization(Selection.MemorizedItem, Permission.Read);
-
-					N2.ContentItem newItem = Engine.Persister.Copy(Selection.MemorizedItem, Selection.SelectedItem);
-					Refresh(newItem, ToolbarArea.Both);
+					PerformCopy(Selection.MemorizedItem);
 				}
 				catch (N2.Integrity.NameOccupiedException ex)
 				{
@@ -33,10 +29,12 @@ namespace N2.Edit
 				catch (PermissionDeniedException ex)
 				{
 					SetErrorMessage(cvCopy, ex);
+					btnCopy.Enabled = false;
 				}
 				catch (N2.Definitions.NotAllowedParentException ex)
 				{
 					SetErrorMessage(this.cvCopy, ex);
+					btnCopy.Enabled = false;
 				}
 				catch (N2Exception ex)
 				{
@@ -72,8 +70,8 @@ namespace N2.Edit
 				pnlNewName.Visible = false;
 				N2.ContentItem newItem = Selection.MemorizedItem.Clone(true);
 				newItem.Name = txtNewName.Text;
-				newItem = Engine.Persister.Copy(newItem, Selection.SelectedItem);
-				Refresh(newItem, ToolbarArea.Both);
+				
+				PerformCopy(newItem);
 			}
 			catch (N2.Integrity.NameOccupiedException ex)
 			{
@@ -88,6 +86,29 @@ namespace N2.Edit
 			{
 				SetErrorMessage(this.cvCopy, ex);
 			}
+		}
+
+		private void PerformCopy(N2.ContentItem newItem)
+		{
+			EnsureAuthorization(Permission.Write);
+			EnsureAuthorization(Selection.MemorizedItem, Permission.Read);
+
+			var persister = Engine.Persister;
+			newItem = persister.Copy(newItem, Selection.SelectedItem);
+
+			var security = Engine.SecurityManager;
+			if (security.GetPermissions(User, newItem) != security.GetPermissions(User, Selection.SelectedItem))
+			{
+				security.CopyPermissions(newItem.Parent, newItem);
+				persister.Repository.Save(newItem);
+			}
+			if (newItem.IsPublished() && !security.IsAuthorized(User, newItem, Permission.Publish))
+			{
+				newItem.Published = null;
+				persister.Repository.Save(newItem);
+			}
+
+			Refresh(newItem, ToolbarArea.Both);
 		}
 	}
 }

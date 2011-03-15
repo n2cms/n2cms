@@ -150,4 +150,10 @@
   <data name="ltNoChildren.Text" xml:space="preserve">
     <value>No children</value>
   </data>
+  <data name="ppPermitted.Text" xml:space="preserve">
+    <value>You do not have sufficient permissions.</value>
+  </data>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Templates</value>
+  </data>
 </root>

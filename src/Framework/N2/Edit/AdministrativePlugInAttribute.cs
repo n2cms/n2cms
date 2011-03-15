@@ -61,7 +61,7 @@ namespace N2.Edit
 		{
 			if (user == null) return true;
 
-			return PluginExtensions.IsAuthorized(this, user, security);
+			return security.IsAuthorized(this, user, null);
 		}
 
 		protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)

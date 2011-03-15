@@ -30,11 +30,7 @@ namespace N2.Edit
 
                 try
                 {
-                	EnsureAuthorization(Permission.Write);
-					EnsureAuthorization(toMove, Permission.Write);
-
-                    Engine.Persister.Move(toMove, Selection.SelectedItem);
-                    Refresh(toMove, ToolbarArea.Both);
+					PerformMove(toMove);
                 }
                 catch (NameOccupiedException ex)
                 {
@@ -43,15 +39,18 @@ namespace N2.Edit
                 }
                 catch (DestinationOnOrBelowItselfException ex)
                 {
-                    SetErrorMessage(cvMove, ex);
+					SetErrorMessage(cvMove, ex);
+					btnMove.Enabled = false;
                 }
                 catch (PermissionDeniedException ex)
                 {
-                    SetErrorMessage(cvMove, ex);
+					SetErrorMessage(cvMove, ex);
+					btnMove.Enabled = false;
                 }
                 catch (NotAllowedParentException ex)
                 {
-                    SetErrorMessage(cvMove, ex);
+					SetErrorMessage(cvMove, ex);
+					btnMove.Enabled = false;
                 }
 				catch(NullReferenceException ex)
 				{
@@ -67,6 +66,15 @@ namespace N2.Edit
 			}
 
 			LoadDefaultsAndInfo(toMove, Selection.SelectedItem);
+		}
+
+		private void PerformMove(ContentItem toMove)
+		{
+			EnsureAuthorization(Permission.Write);
+			EnsureAuthorization(toMove, toMove.IsPublished() ? Permission.Publish : Permission.Write);
+
+			Engine.Persister.Move(toMove, Selection.SelectedItem);
+			Refresh(toMove, ToolbarArea.Both);
 		}
 
 		private void LoadDefaultsAndInfo(ContentItem moved, ContentItem destination)
@@ -91,10 +99,9 @@ namespace N2.Edit
 		{
 			try
 			{
-                var movedItem = Selection.MemorizedItem;
+				var movedItem = Selection.MemorizedItem;
                 movedItem.Name = txtNewName.Text;
-                Engine.Persister.Move(movedItem, Selection.SelectedItem);
-                Refresh(movedItem, ToolbarArea.Both);
+				PerformMove(movedItem);
 			}
 			catch (NameOccupiedException ex)
 			{
