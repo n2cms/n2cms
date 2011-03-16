@@ -11,6 +11,7 @@
 - Added support for retrieving only items in zone by child collection
 - Added support for retrieving item by name in child collection
 - Query for languages rather than recursively iterate to fix slowness (#30025)
+- MVC Css/Js registration
 
 2.1.1
 - Fixed some sorting issues with [SortChildren] attribute (ThreadId=241678)

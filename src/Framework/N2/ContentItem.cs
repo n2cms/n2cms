@@ -723,6 +723,7 @@ namespace N2
 		static void CloneUnversionableFields(ContentItem source, ContentItem destination)
 		{
 			destination.zoneName = source.zoneName;
+			destination.published = source.published;
 			destination.expires = source.expires;
 		}
 
