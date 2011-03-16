@@ -1,6 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Engine;
+using N2.Security;
+using N2.Collections;
+using N2.Configuration;
 
 namespace N2.Definitions
 {
@@ -10,80 +14,79 @@ namespace N2.Definitions
 	[Service]
 	public class EditableHierarchyBuilder
 	{
+		ISecurityManager security;
+		string defaultContainerName;
+		
+		public EditableHierarchyBuilder(ISecurityManager security, EngineSection config)
+		{
+			this.security = security;
+			this.defaultContainerName = config.Definitions.DefaultContainerName;
+		}
+
 		/// <summary>Build the container hierarchy adding containers and editors to a root container.</summary>
 		/// <param name="containers">The containers to add to themselves or the root container.</param>
 		/// <param name="editables">The editables to add to the containers or a root container.</param>
 		/// <returns>A new root container.</returns>
-		public virtual IEditableContainer Build<T>(IList<IEditableContainer> containers, IList<T> editables, string defaultContainerName) where T : IContainable
+		public virtual HierarchyNode<IContainable> Build(IEnumerable<IContainable> containers, IEnumerable<IContainable> editables)
 		{
-			IEditableContainer rootContainer = new RootContainer();
-			ClearContainers(containers);
-			AddContainersToRootContainer(rootContainer, containers);
-			AddEditorsToContainers(rootContainer, containers, editables, defaultContainerName);
-			return rootContainer;
+			HierarchyNode<IContainable> root = new HierarchyNode<IContainable>(new RootContainer());
+			var containerNodes = AddContainersToRootContainer(root, containers);
+			AddEditorsToContainers(root, containerNodes, editables, defaultContainerName);
+			SortChildrenRecursive(root);
+			return root;
+		}
+
+		private void SortChildrenRecursive(HierarchyNode<IContainable> root)
+		{
+			root.Children = root.Children.OrderBy(c => c.Current.SortOrder).ToList();
+			foreach (var c in root.Children)
+				SortChildrenRecursive(c);
 		}
 
 		#region Helpers
 
-		private void ClearContainers(IList<IEditableContainer> containers)
+		private IEnumerable<HierarchyNode<IContainable>> AddContainersToRootContainer(HierarchyNode<IContainable> rootContainer, IEnumerable<IContainable> containersToProcess)
 		{
-			foreach (IEditableContainer container in containers)
-				container.ClearContained();
-		}
-
-		private static void AddContainersToRootContainer(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers)
-		{
-			foreach (IEditableContainer container in  containers)
+			var addedContainers = new List<HierarchyNode<IContainable>>(new HierarchyNode<IContainable>[] { rootContainer });
+			var queue = new Queue<IContainable>(containersToProcess);
+			while (queue.Count > 0)
 			{
-				if (container.ContainerName != null)
+				var current = queue.Dequeue();
+				if (current.ContainerName == current.Name) throw new N2Exception("The container '{0}' cannot reference itself as containing container. Change the ContainerName property.", current.Name);
+
+				string containerName = current.ContainerName ?? defaultContainerName;
+				var container = addedContainers.FirstOrDefault(c => c.Current.Name == containerName);
+				if (container != null)
 				{
-					if (container.ContainerName == container.Name)
-						throw new N2Exception("The container '{0}' cannot reference itself as containing container. Change the ContainerName property.", container.Name);
-
-					IEditableContainer parentContainer = FindContainer(container.ContainerName, containers);
-
-					if (parentContainer == null)
-						rootContainer.AddContained(container);
-					else
-						parentContainer.AddContained(container);
+					// the container was previously in the loop
+					var node = new HierarchyNode<IContainable>(current);
+					container.Add(node);
+					addedContainers.Add(node);
+				}
+				else if (!queue.Any(c => c.Name == containerName))
+				{
+					// no container - add to root
+					var node = new HierarchyNode<IContainable>(current);
+					rootContainer.Add(node);
+					addedContainers.Add(node);
 				}
 				else
-				{
-					rootContainer.AddContained(container);
-				}
+					// the container is in the queue - add this to end
+					queue.Enqueue(current);
 			}
+			return addedContainers;
 		}
 
-		private static IEditableContainer FindContainer(string name, IEnumerable<IEditableContainer> containers)
-		{
-			foreach (IEditableContainer container in containers)
-			{
-				if (container.Name == name)
-				{
-					return container;
-				}
-			}
-			return null;
-		}
-
-		private static void AddEditorsToContainers<T>(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables, string defaultContainerName) where T : IContainable
+		private static void AddEditorsToContainers<T>(HierarchyNode<IContainable> rootContainer, IEnumerable<HierarchyNode<IContainable>> containers, IEnumerable<T> editables, string defaultContainerName) where T : IContainable
 		{
 			foreach (T editable in editables)
 			{
-				if (editable.ContainerName != null)
-				{
-					IEditableContainer container = FindContainer(editable.ContainerName, containers)
-						?? FindContainer(defaultContainerName, containers);
-
-					if (container != null)
-						container.AddContained(editable);
-					else
-						rootContainer.AddContained(editable);
-				}
+				string containerName = editable.ContainerName ?? defaultContainerName;
+				var container = containers.FirstOrDefault(c => c.Current.Name == containerName);
+				if (container != null)
+					container.Add(new HierarchyNode<IContainable>(editable));
 				else
-				{
-					rootContainer.AddContained(editable);
-				}
+					rootContainer.Add(new HierarchyNode<IContainable>(editable));
 			}
 		}
 

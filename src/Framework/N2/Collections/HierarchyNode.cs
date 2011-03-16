@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using N2.Engine;
+using System.Diagnostics;
 
 namespace N2.Collections
 {
@@ -11,38 +12,25 @@ namespace N2.Collections
 	/// navigated.
 	/// </summary>
 	/// <typeparam name="T">The type of data to wrap.</typeparam>
+	[DebuggerDisplay("{Current} Count={Children.Count}")]
 	public class HierarchyNode<T>
 	{
-		private T current;
-		IList<HierarchyNode<T>> children = new List<HierarchyNode<T>>();
-		HierarchyNode<T> parent;
-
 		/// <summary>Creates a new instance of the hierarchy node.</summary>
 		/// <param name="current">The current node.</param>
 		public HierarchyNode(T current)
 		{
-			this.current = current;
+			Current = current;
+			Children = new List<HierarchyNode<T>>();
 		}
 
 		/// <summary>Gets or sets the current node.</summary>
-		public T Current
-		{
-			get { return current; }
-			set { current = value; }
-		}
+		public T Current { get; set; }
 
 		/// <summary>Gets or sets the parent node.</summary>
-		public HierarchyNode<T> Parent
-		{
-			get { return parent; }
-			set { parent = value; }
-		}
+		public HierarchyNode<T> Parent { get; set; }
 
 		/// <summary>Gets a list of child nodes.</summary>
-		public IList<HierarchyNode<T>> Children
-		{
-			get { return children; }
-		}
+		public IList<HierarchyNode<T>> Children { get; set; }
 
 		public string ToString(Func<T, string> begin, Func<T, string> indent, Func<T, string> outdent, Func<T, string> end)
 		{
@@ -66,6 +54,12 @@ namespace N2.Collections
 				writer.Write(outdent(Current));
 			}
 			writer.Write(end(Current));
+		}
+
+		public void Add(HierarchyNode<T> node)
+		{
+			Children.Add(node);
+			node.Parent = this;
 		}
 
 		#region Equals & GetHashCode

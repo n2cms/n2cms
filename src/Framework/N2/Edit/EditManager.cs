@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Principal;
@@ -36,11 +37,12 @@ namespace N2.Edit
 		private readonly StateChanger stateChanger;
 		private readonly IList<string> uploadFolders = new List<string>();
 		private readonly IVersionManager versioner;
+		private readonly EditableHierarchyBuilder interfaceBuilder;
 		protected EventHandlerList Events = new EventHandlerList();
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
 		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-		                   IEditUrlManager urls, StateChanger changer, EditSection config)
+		                   IEditUrlManager urls, StateChanger changer, EditableHierarchyBuilder interfaceBuilder, EditSection config)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
@@ -49,6 +51,7 @@ namespace N2.Edit
 			this.pluginFinder = pluginFinder;
 			this.urls = urls;
 			this.stateChanger = changer;
+			this.interfaceBuilder = interfaceBuilder;
 			this.settings = settings;
 
 			EditTheme = config.EditTheme;
@@ -77,12 +80,28 @@ namespace N2.Edit
 		/// <param name="itemType">The type of content item whose editors to add.</param>
 		/// <param name="editorContainer">The container onto which add the editors.</param>
 		/// <param name="user">The user whose credentials will be queried.</param>
-		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, Control editorContainer, IPrincipal user)
+		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control editorContainer, IPrincipal user)
 		{
-			IEditableContainer rootContainer = definition.RootContainer;
 			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
-			AddEditorsRecursive(rootContainer, editorContainer, user, addedEditors);
+			var root = interfaceBuilder.Build(definition.Containers.OfType<IContainable>(), definition.Editables.OfType<IContainable>());
+			AddEditorsRecursive(item, editorContainer, root, user, addedEditors);
 			return addedEditors;
+		}
+
+		private void AddEditorsRecursive(ContentItem item, Control containerControl, HierarchyNode<IContainable> node, IPrincipal user, IDictionary<string, Control> addedEditors)
+		{
+			foreach (var childNode in node.Children
+				.Where(n => securityManager.IsAuthorized(n.Current, user, item))
+				.OrderBy(n => n.Current.SortOrder))
+			{
+				var editorControl = childNode.Current.AddTo(containerControl);
+				if (childNode.Current is IEditable)
+				{
+					addedEditors[childNode.Current.Name] = editorControl;
+					OnAddedEditor(new ControlEventArgs(editorControl));
+				}
+				AddEditorsRecursive(item, editorControl, childNode, user, addedEditors);
+			}
 		}
 
 		/// <summary>Sets initial editor values.</summary>
@@ -95,8 +114,12 @@ namespace N2.Edit
 			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
 			ApplyModifications(definition, addedEditors);
-			foreach (IEditable e in definition.GetEditables(user))
+
+			foreach (IEditable e in definition.Editables)
 			{
+				if (!securityManager.IsAuthorized(e, user, item))
+					continue; 
+
 				if (addedEditors.ContainsKey(e.Name) && addedEditors[e.Name] != null)
 					e.UpdateEditor(item, addedEditors[e.Name]);
 			}
@@ -114,8 +137,11 @@ namespace N2.Edit
 
 			var updatedDetails = new List<string>();
 
-			foreach (IEditable e in definition.GetEditables(user))
+			foreach (IEditable e in definition.Editables)
 			{
+				if (!securityManager.IsAuthorized(e, user, item))
+					continue;
+
 				if (addedEditors.ContainsKey(e.Name))
 				{
 					bool wasUpdated = e.UpdateItem(item, addedEditors[e.Name]);
@@ -211,29 +237,29 @@ namespace N2.Edit
 
 		#region Helpers
 
-		/// <summary>Adds editors and containers to the supplied container.</summary>
-		/// <param name="containerControl">The control on which editors and containres will be added.</param>
-		/// <param name="contained">The definition that will add a control in the container.</param>
-		/// <param name="user"></param>
-		/// <param name="addedEditors"></param>
-		public virtual void AddEditorsRecursive(IContainable contained, Control containerControl, IPrincipal user,
-		                                        IDictionary<string, Control> addedEditors)
-		{
-			Control added = contained.AddTo(containerControl);
+		///// <summary>Adds editors and containers to the supplied container.</summary>
+		///// <param name="containerControl">The control on which editors and containres will be added.</param>
+		///// <param name="contained">The definition that will add a control in the container.</param>
+		///// <param name="user"></param>
+		///// <param name="addedEditors"></param>
+		//public virtual void AddEditorsRecursive(IContainable contained, Control containerControl, IPrincipal user,
+		//                                        IDictionary<string, Control> addedEditors)
+		//{
+		//    Control added = contained.AddTo(containerControl);
 
-			if (contained is IEditable)
-			{
-				addedEditors[contained.Name] = added;
-				OnAddedEditor(new ControlEventArgs(added));
-			}
-			if (contained is IEditableContainer)
-			{
-				foreach (IContainable subContained in ((IEditableContainer) contained).GetContained(user))
-				{
-					AddEditorsRecursive(subContained, added, user, addedEditors);
-				}
-			}
-		}
+		//    if (contained is IEditable)
+		//    {
+		//        addedEditors[contained.Name] = added;
+		//        OnAddedEditor(new ControlEventArgs(added));
+		//    }
+		//    if (contained is IEditableContainer)
+		//    {
+		//        foreach (IContainable subContained in ((IEditableContainer) contained).GetContained(user))
+		//        {
+		//            AddEditorsRecursive(subContained, added, user, addedEditors);
+		//        }
+		//    }
+		//}
 
 		#endregion
 

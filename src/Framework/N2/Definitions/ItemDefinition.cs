@@ -41,17 +41,15 @@ namespace N2.Definitions
 	public class ItemDefinition : IComparable<ItemDefinition>, ICloneable
 	{
 		private AttributeExplorer explorer = new AttributeExplorer();
-		private EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
 		private string iconUrl;
 
 		#region Constructors
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
-		public ItemDefinition(Type itemType, AttributeExplorer explorer, EditableHierarchyBuilder hierarchyBuilder)
+		public ItemDefinition(Type itemType, AttributeExplorer explorer)
 			: this(itemType)
 		{
 			this.explorer = explorer;
-			this.hierarchyBuilder = hierarchyBuilder;
 		}
 
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
@@ -150,8 +148,8 @@ namespace N2.Definitions
 		/// <summary>Gets or sets containers defined for the item.</summary>
 		public IList<IEditableContainer> Containers { get; private set; }
 
-		/// <summary>Gets or sets the root container used to build the edit interface.</summary>
-		public IEditableContainer RootContainer { get; private set; }
+		///// <summary>Gets or sets the root container used to build the edit interface.</summary>
+		//public IEditableContainer RootContainer { get; private set; }
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
@@ -223,16 +221,16 @@ namespace N2.Definitions
 			return AllowedZoneNames.Contains(zoneName);
 		}
 
-		/// <summary>Gets editable attributes available to user.</summary>
-		/// <returns>A filtered list of editable fields.</returns>
-		public IList<IEditable> GetEditables(IPrincipal user)
-		{
-			var filteredList = new List<IEditable>();
-			foreach (IEditable e in Editables)
-				if (e.IsAuthorized(user))
-					filteredList.Add(e);
-			return filteredList;
-		}
+		///// <summary>Gets editable attributes available to user.</summary>
+		///// <returns>A filtered list of editable fields.</returns>
+		//public IList<IEditable> GetEditables(IPrincipal user)
+		//{
+		//    var filteredList = new List<IEditable>();
+		//    foreach (IEditable e in Editables)
+		//        if (e.IsAuthorized(user))
+		//            filteredList.Add(e);
+		//    return filteredList;
+		//}
 
 		/// <summary>Gets the editor modifications for the specified detail name.</summary>
 		/// <param name="detailName"></param>
@@ -311,7 +309,7 @@ namespace N2.Definitions
 				if (containable is IContentModifier)
 					ContentModifiers.Add(containable as IContentModifier);
 			}
-			ReloadRoot();
+			//ReloadRoot();
 		}
 
 		public IContainable Get(string containableName)
@@ -348,7 +346,7 @@ namespace N2.Definitions
 				if (containable is IContentModifier)
 					ContentModifiers.Remove(containable as IContentModifier);
 			}
-			ReloadRoot();
+			//ReloadRoot();
 		}
 
 		private HashSet<Type> initializedTypes = new HashSet<Type>();
@@ -365,10 +363,10 @@ namespace N2.Definitions
 			return this;
 		}
 
-		private void ReloadRoot()
-		{
-			RootContainer = hierarchyBuilder.Build(Containers, Editables, DefaultContainerName);
-		}
+		//private void ReloadRoot()
+		//{
+		//    RootContainer = hierarchyBuilder.Build(Containers, Editables, DefaultContainerName);
+		//}
 
 		#endregion
 
@@ -437,7 +435,7 @@ namespace N2.Definitions
 			id.Template = Template;
 			id.Title = Title;
 			id.ToolTip = ToolTip;
-			id.ReloadRoot();
+			//id.ReloadRoot();
 			return id;
 		}
 

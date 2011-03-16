@@ -18,7 +18,7 @@ namespace N2.Tests.Edit
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Repeat.Never();
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             AssertItemHasValuesFromEditors(item);
         }
@@ -35,7 +35,7 @@ namespace N2.Tests.Edit
 			mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             AssertItemHasValuesFromEditors(item);
         }
@@ -52,7 +52,7 @@ namespace N2.Tests.Edit
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
-            DoTheSaving(null, editor);
+            DoTheSaving(CreatePrincipal("someone"), editor);
 
             AssertItemHasValuesFromEditors(item);
         }
@@ -70,7 +70,7 @@ namespace N2.Tests.Edit
 			mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionOnly);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(persister.Repository.Get(28), Is.Null);
 
@@ -96,7 +96,7 @@ namespace N2.Tests.Edit
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             mocks.VerifyAll();
         }
@@ -116,7 +116,7 @@ namespace N2.Tests.Edit
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(versionToBeMaster, ItemEditorVersioningMode.SaveAsMaster);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(persister.Repository.Get(1), Is.EqualTo(currentMaster));
         }
@@ -130,7 +130,7 @@ namespace N2.Tests.Edit
             mocks.ReplayAll();
 
 			IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionOnly);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(newItem.ID, Is.GreaterThan(0));
             Assert.IsNull(newItem.Published);
@@ -148,7 +148,7 @@ namespace N2.Tests.Edit
 			mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionAndSave);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(persister.Repository.Get(1), Is.EqualTo(newItem));
             Assert.IsNotNull(newItem.Published, "Unpublished item should have been published.");
@@ -172,7 +172,7 @@ namespace N2.Tests.Edit
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(versionToBeMaster, ItemEditorVersioningMode.SaveAsMaster);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(persister.Repository.Get(1), Is.EqualTo(currentMaster));
             Assert.IsNotNull(currentMaster.Published);
@@ -194,7 +194,7 @@ namespace N2.Tests.Edit
             editManager.SavingVersion += new EventHandler<CancellableItemEventArgs>(editManager_SavingVersion);
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             Assert.IsTrue(savingVersionEventInvoked, "The saving version event wasn't invoked");
         }
@@ -210,7 +210,7 @@ namespace N2.Tests.Edit
 			mocks.ReplayAll();
 
             var editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             mocks.VerifyAll();
 		}
@@ -226,7 +226,7 @@ namespace N2.Tests.Edit
 			mocks.ReplayAll();
 
 			var editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
-			DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			mocks.VerifyAll();
 		}
@@ -241,7 +241,7 @@ namespace N2.Tests.Edit
             editManager.SavingVersion += editManager_SavingVersion;
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             Assert.IsFalse(savingVersionEventInvoked, "The saving version event should not have been invoked.");
         }

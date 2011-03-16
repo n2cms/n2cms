@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Plugin;
+using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
 

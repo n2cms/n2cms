@@ -15,17 +15,17 @@ namespace N2.Tests.Edit
     public class WhileEditingContentData : EditManagerTests
     {
         [Test]
-        public void CanAddEditors()
+        public void AddedEditors_AreReturned()
         {
             Type itemType = typeof(ComplexContainersItem);
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), editorContainer, null);
+            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), new ComplexContainersItem(), editorContainer, CreatePrincipal("someone"));
             Assert.AreEqual(5, added.Count);
             TypeAssert.Equals<TextBox>(added["MyProperty0"]);
             TypeAssert.Equals<TextBox>(added["MyProperty1"]);
             TypeAssert.Equals<TextBox>(added["MyProperty2"]);
-            TypeAssert.Equals<FreeTextArea>(added["MyProperty3"]);
-            TypeAssert.Equals<CheckBox>(added["MyProperty4"]);
+			TypeAssert.Equals<FreeTextArea>(added["MyProperty3"]);
+			TypeAssert.Equals<CheckBox>(added["MyProperty4"]);
 
             WebControlAssert.Contains(typeof(FieldSet), editorContainer);
             WebControlAssert.Contains(typeof(TextBox), editorContainer);
@@ -57,7 +57,7 @@ namespace N2.Tests.Edit
             item.MyProperty3 = "rock";
             item.MyProperty4 = true;
 
-			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, null);
+			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, CreatePrincipal("someone"));
 
             Assert.AreEqual("one", tbp0.Text);
             Assert.AreEqual("two", tbp1.Text);
@@ -90,7 +90,7 @@ namespace N2.Tests.Edit
             ftap3.Text = "rock";
             cbp4.Checked = true;
 
-			editManager.UpdateItem(definitions.GetDefinition(item.GetContentType()), item, added, null);
+			editManager.UpdateItem(definitions.GetDefinition(item.GetContentType()), item, added, CreatePrincipal("someone"));
 
             Assert.AreEqual("one", item.MyProperty0);
             Assert.AreEqual("two", item.MyProperty1);
@@ -117,9 +117,9 @@ namespace N2.Tests.Edit
             ftap3.Text = "rock";
             cbp4.Checked = true;
 
-			var result = editManager.UpdateItem(definitions.GetDefinition(item.GetContentType()), item, added, null);
+			var result = editManager.UpdateItem(definitions.GetDefinition(item.GetContentType()), item, added, CreatePrincipal("someone"));
 
-            Assert.IsTrue(result.Length > 0, "UpdateItem didn't return true even though the editors were changed.");
+            Assert.That(result.Length, Is.GreaterThan(0), "UpdateItem didn't return true even though the editors were changed.");
         }
 
         [Test]
@@ -128,14 +128,14 @@ namespace N2.Tests.Edit
             ComplexContainersItem item = new ComplexContainersItem();
             Type itemType = item.GetContentType();
             Control editorContainer = new Control();
-			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), editorContainer, null);
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), item, editorContainer, CreatePrincipal("someone"));
 
             item.MyProperty0 = "one";
             item.MyProperty1 = "two";
             item.MyProperty2 = "three";
             item.MyProperty3 = "rock";
             item.MyProperty4 = true;
-			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, null);
+			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, CreatePrincipal("someone"));
 
 			var result = editManager.UpdateItem(definitions.GetDefinition(item.GetContentType()), item, added, null);
 
@@ -148,7 +148,7 @@ namespace N2.Tests.Edit
             ComplexContainersItem item = new ComplexContainersItem();
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.SaveOnly);
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
             AssertItemHasValuesFromEditors(item);
         }
@@ -169,7 +169,7 @@ namespace N2.Tests.Edit
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(item.ID, Is.GreaterThan(0));
         }
@@ -186,7 +186,7 @@ namespace N2.Tests.Edit
 			IPrincipal user = CreatePrincipal("Joe");
 
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), editorContainer, null);
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), item, editorContainer, CreatePrincipal("someone"));
             Assert.AreEqual(5, added.Count);
 
             IItemEditor editor = mocks.StrictMock<IItemEditor>();
@@ -213,7 +213,7 @@ namespace N2.Tests.Edit
 			IPrincipal user = CreatePrincipal("Joe", "Editor");
 
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithSecuredContainer)), editorContainer, user);
+            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithSecuredContainer)), item, editorContainer, user);
 			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, user);
 
             Assert.That(added.Count, Is.EqualTo(0));
@@ -228,7 +228,7 @@ namespace N2.Tests.Edit
 			IPrincipal user = CreatePrincipal("Joe", "Administrators");
 
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithSecuredContainer)), editorContainer, user);
+            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithSecuredContainer)), item, editorContainer, user);
 			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, user);
 
             Assert.That(((TextBox)added["HiddenText"]).Text, Is.EqualTo("Yes way"));
@@ -242,7 +242,7 @@ namespace N2.Tests.Edit
 			IPrincipal user = CreatePrincipal("Joe", "ÜberEditor");
 
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), editorContainer, user);
+            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), item, editorContainer, user);
             Assert.AreEqual(7, added.Count);
         }
 
@@ -252,7 +252,7 @@ namespace N2.Tests.Edit
             Page p = new Page();
             Assert.AreEqual(0, p.Validators.Count);
 
-            editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithRequiredProperty)), p, null);
+			editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithRequiredProperty)), new ItemWithRequiredProperty(), p, CreatePrincipal("someone"));
 
             typeof (Page).GetMethod("InitRecursive", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(p, new[] {p});
 
@@ -264,7 +264,7 @@ namespace N2.Tests.Edit
         {
             Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
 
-        	Assert.Throws<ArgumentNullException>(() => editManager.UpdateEditors(null, null, editors, null));
+			Assert.Throws<ArgumentNullException>(() => editManager.UpdateEditors(null, null, editors, null));
         }
 
         [Test]
@@ -295,10 +295,10 @@ namespace N2.Tests.Edit
         public void AppliesModifications()
         {
             Control editorContainer = new Control();
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithModification)), editorContainer, null);
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithModification)), new ItemWithModification(), editorContainer, CreatePrincipal("someone"));
 
             ItemWithModification item = new ItemWithModification();
-			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, null);
+			editManager.UpdateEditors(definitions.GetDefinition(item.GetContentType()), item, added, CreatePrincipal("someone"));
 
             TextBox tb = added["Essay"] as TextBox;
 
@@ -310,15 +310,17 @@ namespace N2.Tests.Edit
         public void AddingEditor_InvokesEvent()
         {
             Control editorContainer = new Control();
-            editManager.AddedEditor += new EventHandler<N2.Web.UI.ControlEventArgs>(editManager_AddedEditor);
-            IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), editorContainer, null);
+			
+			List<Control> noticedByEvent = new List<Control>();
+			editManager.AddedEditor += delegate(object sender, N2.Web.UI.ControlEventArgs e) {noticedByEvent.Add(e.Control); };
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(typeof(ComplexContainersItem)), new ComplexContainersItem(), editorContainer, CreatePrincipal("someone"));
 
             Assert.AreEqual(5, noticedByEvent.Count);
             EnumerableAssert.Contains(noticedByEvent, added["MyProperty0"]);
-            EnumerableAssert.Contains(noticedByEvent, added["MyProperty0"]);
-            EnumerableAssert.Contains(noticedByEvent, added["MyProperty0"]);
-            EnumerableAssert.Contains(noticedByEvent, added["MyProperty0"]);
-            EnumerableAssert.Contains(noticedByEvent, added["MyProperty0"]);
+            EnumerableAssert.Contains(noticedByEvent, added["MyProperty1"]);
+            EnumerableAssert.Contains(noticedByEvent, added["MyProperty2"]);
+			EnumerableAssert.Contains(noticedByEvent, added["MyProperty3"]);
+			EnumerableAssert.Contains(noticedByEvent, added["MyProperty4"]);
         }
 
         [Test]
@@ -339,7 +341,7 @@ namespace N2.Tests.Edit
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
-            DoTheSaving(null, editor);
+			DoTheSaving(CreatePrincipal("someone"), editor);
 
 			Assert.That(persister.Repository.Get(22), Is.Null);
         }

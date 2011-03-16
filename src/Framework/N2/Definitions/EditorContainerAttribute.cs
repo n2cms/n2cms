@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
+using N2.Security;
 
 namespace N2.Definitions
 {
 	/// <summary>Attribute classes assignable from the EditorContainerAttribute are responsible for defining and creating container controls on which editors can be added.</summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public abstract class EditorContainerAttribute : Attribute, IEditableContainer
+	public abstract class EditorContainerAttribute : Attribute, IEditableContainer, ISecurable, IPermittable
 	{
 		#region Constructor
 
@@ -89,61 +90,6 @@ namespace N2.Definitions
 
 		#region Methods
 
-		/// <summary>Find out whether a user has permission to view this container.</summary>
-		/// <param name="user">The user to check.</param>
-		/// <returns>True if the user has the required permissions.</returns>
-		public virtual bool IsAuthorized(IPrincipal user)
-		{
-			if (authorizedRoles == null)
-				return true;
-			else if (user == null)
-				return false;
-
-			foreach (string role in authorizedRoles)
-				if (user.IsInRole(role))
-					return true;
-            if (authorizedUsers != null)
-                foreach (string name in authorizedUsers)
-                    if (string.Equals(user.Identity.Name, name, StringComparison.OrdinalIgnoreCase))
-                        return true;
-			return false;
-		}
-
-		/// <summary>Adds an editor or sub-container definition to tihs container.</summary>
-		/// <param name="subElement">The editor or sub-container to add.</param>
-		public virtual void AddContained(IContainable subElement)
-		{
-			this.ContainedEditors.Add(subElement);
-			this.ContainedEditors.Sort();
-		}
-
-		/// <summary>Removes an editor or sub-container from the container.</summary>
-		/// <param name="containable">The editor or sub-container to remove.</param>
-		public void RemoveContained(IContainable containable)
-		{
-			this.ContainedEditors.Remove(containable);
-		}
-
-		/// <summary>Removes all editors or sub-container from the container.</summary>
-		public void ClearContained()
-		{
-			this.ContainedEditors.Clear();
-		}
-
-		/// <summary>Gets editors and sub-containers in this container.</summary>
-		/// <param name="user">The user to check.</param>
-		/// <returns>A list of editors or containers the user is authorized to access.</returns>
-		public virtual List<IContainable> GetContained(IPrincipal user)
-		{
-			List<IContainable> containables = new List<IContainable>();
-			foreach (IContainable containable in this.ContainedEditors)
-			{
-				if (containable.IsAuthorized(user))
-					containables.Add(containable);
-			}
-			return containables;
-		}
-
 		/// <summary>Gets a localized resource string from the global resource with the name denoted by <see cref="LocalizationClassKey"/>. The resource key follows the pattern <see cref="Name"/>.key where the name is the name of the detail and the key is the supplied parameter.</summary>
 		/// <param name="key">A part of the resource key used for finding the localized resource.</param>
 		/// <returns>A localized string if found, or null.</returns>
@@ -194,5 +140,11 @@ namespace N2.Definitions
 			else
 				return ((EditorContainerAttribute) obj).Name == this.Name;
 		}
+
+		#region IPermittable Members
+
+		public Permission RequiredPermission { get; set; }
+
+		#endregion
 	}
 }

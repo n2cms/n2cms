@@ -20,7 +20,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty, IContentModifier
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentModifier
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -458,6 +458,12 @@ namespace N2.Details
 			if (DefaultValue != null)
 				item[Name] = DefaultValue;
 		}
+
+		#endregion
+
+		#region IPermittable Members
+
+		public Permission RequiredPermission { get; set; }
 
 		#endregion
 	}

@@ -77,7 +77,7 @@ namespace N2.Tests
         {
             var changer = new N2.Edit.Workflow.StateChanger();
 			versions = new VersionManager(persister.Repository, finder, changer, new N2.Configuration.EditSection());
-            editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, null);
+			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection()), null);
         }
 
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)

@@ -36,9 +36,9 @@ namespace N2.Edit
 		/// <param name="container">The container onto which to add editors.</param>
 		/// <param name="user">The user to filter access by.</param>
 		/// <returns>A editor name to control map of added editors.</returns>
-		public virtual IDictionary<string, Control> AddDefinedEditors(ItemDefinition definition, Control container, IPrincipal user)
+		public virtual IDictionary<string, Control> AddDefinedEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user)
 		{
-			return EditManager.AddEditors(definition, container, user);
+			return EditManager.AddEditors(definition, item, container, user);
 		}
 
 		/// <summary>Updates editors with values from the item.</summary>

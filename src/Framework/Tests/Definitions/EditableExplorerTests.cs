@@ -1,15 +1,20 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using N2.Definitions;
+using N2.Collections;
+using N2.Security;
+using N2.Web;
+using N2.Configuration;
 
 namespace N2.Tests.Definitions
 {
 	[TestFixture]
 	public class EditableExplorerTests : ItemTestsBase
 	{
-		EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
+		EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection());
 		AttributeExplorer explorer = new AttributeExplorer();
 
 
@@ -56,26 +61,35 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(Items.DefinitionTextPage);
 			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
+			HierarchyNode<IContainable> rootContainer = hierarchyBuilder.Build(containers.OfType<IContainable>(), editables.OfType<IContainable>());
 
-			List<IContainable> contained = rootContainer.GetContained(null);
+			var contained = rootContainer.Children;
 			Assert.AreEqual(2, contained.Count);
 
-			Assert.AreEqual(typeof(N2.Details.WithEditableNameAttribute), contained[0].GetType());
-			
-			IEditableContainer fieldSet = contained[1] as IEditableContainer;
+			Assert.AreEqual(typeof(N2.Details.WithEditableNameAttribute), contained[0].Current.GetType());
+
+			var fieldSet = contained[1] as HierarchyNode<IContainable>;
 			Assert.IsNotNull(fieldSet);
-			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), fieldSet.GetType());
+			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), fieldSet.Current.GetType());
 
-			List<IContainable> containedByFieldSet = fieldSet.GetContained(null);
-			Assert.AreEqual(typeof(N2.Details.WithEditableTitleAttribute), containedByFieldSet[0].GetType());
+			var containedByFieldSet = fieldSet.Children;//.GetContained(null);
+			Assert.AreEqual(typeof(N2.Details.WithEditableTitleAttribute), containedByFieldSet[0].Current.GetType());
 
-			IEditableContainer innerFieldSet = containedByFieldSet[1] as IEditableContainer;
+			var innerFieldSet = containedByFieldSet[1];
 			Assert.IsNotNull(innerFieldSet);
-			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), innerFieldSet.GetType());
+			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), innerFieldSet.Current.GetType());
 
-			List<IContainable> containedByInnerFieldSet = innerFieldSet.GetContained(null);
-			Assert.AreEqual(typeof(N2.Details.EditableFreeTextAreaAttribute), containedByInnerFieldSet[0].GetType());
+			var containedByInnerFieldSet = innerFieldSet.Children;//.GetContained(null);
+			Assert.AreEqual(typeof(N2.Details.EditableFreeTextAreaAttribute), containedByInnerFieldSet[0].Current.GetType());
+		}
+
+		private void Print(HierarchyNode<IContainable> current)
+		{
+			System.Diagnostics.Debug.WriteLine(current.Current);
+			System.Diagnostics.Debug.Indent();
+			foreach (var child in current.Children)
+				Print(child);
+			System.Diagnostics.Debug.Unindent();
 		}
 
 
@@ -91,25 +105,25 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
+			var rootContainer = hierarchyBuilder.Build(containers.OfType<IContainable>(), editables.OfType<IContainable>());
 
-			IContainable property0 = rootContainer.GetContained(null)[0];
-			Assert.AreSame(property0, editables[0]);
+			var property0 = rootContainer.Children[0];//.GetContained(null)[0];
+			Assert.AreSame(property0.Current, editables[0]);
 
-			IEditableContainer first = rootContainer.GetContained(null)[1] as IEditableContainer;
-			Assert.AreSame(first, containers[1]);
+			var first = rootContainer.Children[1];//.GetContained(null)[1] as IEditableContainer;
+			Assert.AreSame(first.Current, containers[1]);
 
-			IContainable property1 = first.GetContained(null)[1];
-			Assert.AreSame(property1, editables[1]);
+			var property1 = first.Children[1];//.GetContained(null)[1];
+			Assert.AreSame(property1.Current, editables[1]);
 
-			IEditableContainer inside1 = first.GetContained(null)[2] as IEditableContainer;
-			Assert.AreEqual(inside1, containers[2]);
+			var inside1 = first.Children[2];//.GetContained(null)[2] as IEditableContainer;
+			Assert.AreEqual(inside1.Current, containers[2]);
 
-			IContainable property2 = inside1.GetContained(null)[0];
-			Assert.AreSame(property2, editables[2]);
+			var property2 = inside1.Children[0];//.GetContained(null)[0];
+			Assert.AreSame(property2.Current, editables[2]);
 
-			IEditableContainer inside1_1 = (IEditableContainer)inside1.GetContained(null)[1];
-			Assert.AreEqual(inside1_1, containers[4]);
+			var inside1_1 = inside1.Children[1];//.GetContained(null)[1];
+			Assert.AreEqual(inside1_1.Current, containers[4]);
 		}
 
 		[Test]
@@ -118,27 +132,27 @@ namespace N2.Tests.Definitions
 			Type itemType = typeof(Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables, "");
+			HierarchyNode<IContainable> rootContainer = hierarchyBuilder.Build(containers.OfType<IContainable>(), editables.OfType<IContainable>());
 
-			IEditableContainer first = rootContainer.GetContained(null)[0] as IEditableContainer;
-			Assert.IsNotNull(first);
-			Assert.AreSame(first, containers[1]);
-			Assert.AreEqual(3, first.GetContained(null).Count);
+			var first = rootContainer.Children[0];//.GetContained(null)[0] as IEditableContainer;
+			Assert.IsNotNull(first.Current);
+			Assert.AreSame(first.Current, containers[1]);
+			Assert.AreEqual(3, first.Children.Count);//.GetContained(null).Count);
 			
-			IEditableContainer inside3 = first.GetContained(null)[0] as IEditableContainer;
-			Assert.IsNotNull(inside3);
-			Assert.AreSame(inside3, containers[0]);
-			Assert.AreEqual(0, inside3.GetContained(null).Count);
+			var inside3 = first.Children[0];//.GetContained(null)[0] as IEditableContainer;
+			Assert.IsNotNull(inside3.Current);
+			Assert.AreSame(inside3.Current, containers[0]);
+			Assert.AreEqual(0, inside3.Children.Count);//.GetContained(null).Count);
 
-			IEditableContainer inside1 = first.GetContained(null)[1] as IEditableContainer;
-			Assert.IsNotNull(inside1);
-			Assert.AreSame(inside1, containers[2]);
-			Assert.AreEqual(1, inside1.GetContained(null).Count);
+			var inside1 = first.Children[1];//.GetContained(null)[1] as IEditableContainer;
+			Assert.IsNotNull(inside1.Current);
+			Assert.AreSame(inside1.Current, containers[2]);
+			Assert.AreEqual(1, inside1.Children.Count);//.GetContained(null).Count);
 
-			IEditableContainer inside2 = first.GetContained(null)[2] as IEditableContainer;
-			Assert.IsNotNull(inside2);
-			Assert.AreSame(inside2, containers[3]);
-			Assert.AreEqual(0, inside2.GetContained(null).Count);
+			var inside2 = first.Children[2];//.GetContained(null)[2] as IEditableContainer;
+			Assert.IsNotNull(inside2.Current);
+			Assert.AreSame(inside2.Current, containers[3]);
+			Assert.AreEqual(0, inside2.Children.Count);//.GetContained(null).Count);
 		}
 
 		[Test]
@@ -149,7 +163,7 @@ namespace N2.Tests.Definitions
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			containers.RemoveAt(2); // inside1
 
-			Assert.DoesNotThrow(() => hierarchyBuilder.Build(containers, editables, ""));
+			Assert.DoesNotThrow(() => hierarchyBuilder.Build(containers.OfType<IContainable>(), editables.OfType<IContainable>()));
 		}
 	}
 }

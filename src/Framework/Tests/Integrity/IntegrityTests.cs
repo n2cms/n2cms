@@ -60,13 +60,13 @@ namespace N2.Tests.Integrity
 		private ITypeFinder CreateTypeFinder()
 		{
 			return new FakeTypeFinder(
-				typeof (AlternativePage).Assembly, 
-				typeof (AlternativePage),
-				typeof (AlternativeStartPage),
-				typeof (Page),
-				typeof (Root),
-				typeof (StartPage),
-				typeof (SubPage));
+				typeof (IntegrityAlternativePage).Assembly, 
+				typeof (IntegrityAlternativePage),
+				typeof (IntegrityAlternativeStartPage),
+				typeof (IntegrityPage),
+				typeof (IntegrityRoot),
+				typeof (IntegrityStartPage),
+				typeof (IntegritySubPage));
 		}
 
 		private void CreatePersister()
@@ -96,8 +96,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanMoveItem()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 			bool canMove = integrityManger.CanMove(page, startPage);
 			Assert.IsTrue(canMove, "The page couldn't be moved to the destination.");
 		}
@@ -105,8 +105,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanMoveItemEvent()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			moving.Raise(persister, new CancellableDestinationEventArgs(page, startPage));
 		}
@@ -114,7 +114,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveItemOntoItself()
 		{
-			Page page = new Page();
+			IntegrityPage page = new IntegrityPage();
 			bool canMove = integrityManger.CanMove(page, page);
 			Assert.IsFalse(canMove, "The page could be moved onto itself.");
 		}
@@ -122,7 +122,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveItemOntoItselfEvent()
 		{
-			Page page = new Page();
+			IntegrityPage page = new IntegrityPage();
 
 			ExceptionAssert.Throws<DestinationOnOrBelowItselfException>(delegate
 			{
@@ -133,8 +133,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveItemBelowItself()
 		{
-			Page page = new Page();
-			Page page2 = CreateOneItem<Page>(2, "Rutger", page);
+			IntegrityPage page = new IntegrityPage();
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Rutger", page);
 
 			bool canMove = integrityManger.CanMove(page, page2);
 			Assert.IsFalse(canMove, "The page could be moved below itself.");
@@ -143,8 +143,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveItemBelowItselfEvent()
 		{
-			Page page = new Page();
-			Page page2 = CreateOneItem<Page>(2, "Rutger", page);
+			IntegrityPage page = new IntegrityPage();
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Rutger", page);
 
 			ExceptionAssert.Throws<DestinationOnOrBelowItselfException>(delegate
 			{
@@ -155,9 +155,9 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveIfNameIsOccupied()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", null);
 
 			bool canMove = integrityManger.CanMove(page3, startPage);
 			Assert.IsFalse(canMove, "The page could be moved even though the name was occupied.");
@@ -166,9 +166,9 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveIfNameIsOccupiedEvent()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", null);
 
 			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
@@ -179,8 +179,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveIfTypeIsntAllowed()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			bool canMove = integrityManger.CanMove(startPage, page);
 			Assert.IsFalse(canMove, "The start page could be moved even though a page isn't an allowed destination.");
@@ -189,8 +189,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotMoveIfTypeIsntAllowedEvent()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
@@ -205,8 +205,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanCopyItem()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 			bool canCopy = integrityManger.CanCopy(page, startPage);
 			Assert.IsTrue(canCopy, "The page couldn't be copied to the destination.");
 		}
@@ -214,8 +214,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanCopyItemEvent()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			copying.Raise(persister, new CancellableDestinationEventArgs(page, startPage));
 		}
@@ -223,9 +223,9 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotCopyIfNameIsOccupied()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", null);
 
 			bool canCopy = integrityManger.CanCopy(page3, startPage);
 			Assert.IsFalse(canCopy, "The page could be copied even though the name was occupied.");
@@ -234,9 +234,9 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotCopyIfNameIsOccupiedEvent()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", null);
 
 			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
@@ -247,8 +247,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotCopyIfTypeIsntAllowed()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			bool canCopy = integrityManger.CanCopy(startPage, page);
 			Assert.IsFalse(canCopy, "The start page could be copied even though a page isn't an allowed destination.");
@@ -257,8 +257,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotCopyIfTypeIsntAllowedEvent()
 		{
-			StartPage startPage = new StartPage();
-			Page page = new Page();
+			IntegrityStartPage startPage = new IntegrityStartPage();
+			IntegrityPage page = new IntegrityPage();
 
 			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
@@ -273,7 +273,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanDelete()
 		{
-			Page page = new Page();
+			IntegrityPage page = new IntegrityPage();
 
 			mocks.Record();
 			Expect.On(parser).Call(parser.IsRootOrStartPage(page)).Return(false);
@@ -288,7 +288,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanDeleteEvent()
 		{
-			Page page = new Page();
+			IntegrityPage page = new IntegrityPage();
 
 			mocks.Record();
 			Expect.On(parser).Call(parser.IsRootOrStartPage(page)).Return(false);
@@ -302,7 +302,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotDeleteStartPage()
 		{
-			StartPage startPage = new StartPage();
+			IntegrityStartPage startPage = new IntegrityStartPage();
 
 			mocks.Record();
 			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
@@ -317,7 +317,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotDeleteStartPageEvent()
 		{
-			StartPage startPage = new StartPage();
+			IntegrityStartPage startPage = new IntegrityStartPage();
 
 			mocks.Record();
 			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
@@ -337,7 +337,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanSave()
 		{
-			StartPage startPage = new StartPage();
+			IntegrityStartPage startPage = new IntegrityStartPage();
 
 			bool canSave = integrityManger.CanSave(startPage);
 			Assert.IsTrue(canSave, "Couldn't save");
@@ -346,7 +346,7 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CanSaveEvent()
 		{
-			StartPage startPage = new StartPage();
+			IntegrityStartPage startPage = new IntegrityStartPage();
 
 			saving.Raise(persister, new CancellableItemEventArgs(startPage));
 		}
@@ -354,11 +354,11 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotSaveNotLocallyUniqueItem()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
 			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);
 
 			bool canSave = integrityManger.CanSave(page3);
 			Assert.IsFalse(canSave, "Could save even though the item isn't the only sibling with the same name.");
@@ -367,11 +367,11 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void LocallyUniqueItemThatWithoutNameYet()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
 			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
-			Page page2 = CreateOneItem<Page>(2, null, startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, null, startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);
 
 			bool isUnique = integrityManger.IsLocallyUnique("Sasha", page2);
 			Assert.IsFalse(isUnique, "Shouldn't have been locally unique.");
@@ -380,11 +380,11 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotSaveNotLocallyUniqueItemEvent()
 		{
-			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
 			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
-			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
-			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
+			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
+			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);
 
 			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
@@ -395,8 +395,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotSaveUnallowedItem()
 		{
-			Page page = CreateOneItem<Page>(1, "John", null);
-			StartPage startPage = CreateOneItem<StartPage>(2, "Leonidas", page);
+			IntegrityPage page = CreateOneItem<IntegrityPage>(1, "John", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(2, "Leonidas", page);
 
 			bool canSave = integrityManger.CanSave(startPage);
 			Assert.IsFalse(canSave, "Could save even though the start page isn't below a page.");
@@ -405,8 +405,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void CannotSaveUnallowedItemEvent()
 		{
-			Page page = CreateOneItem<Page>(1, "John", null);
-			StartPage startPage = CreateOneItem<StartPage>(2, "Leonidas", page);
+			IntegrityPage page = CreateOneItem<IntegrityPage>(1, "John", null);
+			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(2, "Leonidas", page);
 
 			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
@@ -416,63 +416,41 @@ namespace N2.Tests.Integrity
 
 		#endregion
 
-		#region Security
-
-		[Test]
-		public void UserCanEditAccessibleDetail()
-		{
-			ItemDefinition definition = definitions.GetDefinition(typeof (Page));
-			Assert.AreEqual(1,
-			                definition.GetEditables(SecurityUtilities.CreatePrincipal("UserNotInTheGroup", "ACertainGroup")).
-			                	Count);
-		}
-
-		[Test]
-		public void UserCannotEditInaccessibleDetail()
-		{
-			ItemDefinition definition = definitions.GetDefinition(typeof (Page));
-			Assert.AreEqual(0,
-			                definition.GetEditables(SecurityUtilities.CreatePrincipal("UserNotInTheGroup", "Administrator")).
-			                	Count);
-		}
-
-		#endregion
-
 		#region Create
 
 		[Test]
 		public void CannotCreate_ItemBelow_UnallowedParent()
 		{
-			var page = new Page();
+			var page = new IntegrityPage();
 
 			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
-				var neverReturned = activator.CreateInstance<StartPage>(page);
+				var neverReturned = activator.CreateInstance<IntegrityStartPage>(page);
 			});
 		}
 
 		[Test]
 		public void AllowedItem_BelowSubClass_OfRoot_NotAllowedBelow_RootItem()
 		{
-			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
+			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.AlternativePage>(root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.IntegrityAlternativePage>(root));
 		}
 
 		[Test]
 		public void Root_IsntAllowed_BelowAllowedItem_BelowRoot()
 		{
-			ContentItem root = CreateOneItem<Definitions.Page>(0, "page", null);
+			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "page", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.StartPage>(root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.IntegrityStartPage>(root));
 		}
 
 		[Test]
 		public void UnAllowedItemBelowRoot()
 		{
-			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
+			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance(typeof(Definitions.SubPage), root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance(typeof(Definitions.IntegritySubPage), root));
 		}
 
 		#endregion

@@ -14,6 +14,8 @@ using N2.Tests.Edit.Items;
 using System.Security.Principal;
 using N2.Persistence.Proxying;
 using N2.Definitions.Static;
+using N2.Security;
+using N2.Web;
 
 namespace N2.Tests.Edit
 {
@@ -48,7 +50,7 @@ namespace N2.Tests.Edit
 
 			versioner = mocks.StrictMock<IVersionManager>();
 			var urls = new FakeEditUrlManager();
-			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditSection());
+			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection()), new EditSection());
 			editManager.EnableVersioning = true;
 
 			var engine = new FakeEngine();
@@ -63,14 +65,8 @@ namespace N2.Tests.Edit
 		{
 			Type itemType = item.GetContentType();
 			Control editorContainer = new Control();
-			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), editorContainer, null);
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), item, editorContainer, CreatePrincipal("someone"));
 			return added;
-		}
-
-		protected List<Control> noticedByEvent = new List<Control>();
-		protected void editManager_AddedEditor(object sender, N2.Web.UI.ControlEventArgs e)
-		{
-			noticedByEvent.Add(e.Control);
 		}
 
 		protected bool savingVersionEventInvoked = false;

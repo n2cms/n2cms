@@ -159,7 +159,7 @@ namespace N2.Web.UI.WebControls
 
 			if (definition != null)
 			{
-				AddedEditors = EditAdapter.AddDefinedEditors(definition, this, Page.User);
+				AddedEditors = EditAdapter.AddDefinedEditors(definition, CurrentItem, this, Page.User);
 				if (!Page.IsPostBack)
 				{
 					EditAdapter.LoadAddedEditors(definition, CurrentItem, AddedEditors, Page.User);

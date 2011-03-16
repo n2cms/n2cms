@@ -12,8 +12,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void AllowedItemBelowRoot()
 		{
-			Definitions.StartPage root = CreateRoot();
-			ContentItem item = CreateItemBelow(root, typeof(Definitions.Page));
+			Definitions.IntegrityStartPage root = CreateRoot();
+			ContentItem item = CreateItemBelow(root, typeof(Definitions.IntegrityPage));
 
 			Assert.IsNotNull(item);
 		}
@@ -21,8 +21,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void AllowedPropagatesToSubclasses()
 		{
-			ContentItem root = CreateItemBelow(null, typeof(Definitions.AlternativeStartPage));
-			ContentItem item = CreateItemBelow(root, typeof(Definitions.Page));
+			ContentItem root = CreateItemBelow(null, typeof(Definitions.IntegrityAlternativeStartPage));
+			ContentItem item = CreateItemBelow(root, typeof(Definitions.IntegrityPage));
 
 			Assert.IsNotNull(item);
 		}
@@ -30,8 +30,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void AllowedItemBelowSubClassOfRoot()
 		{
-			ContentItem root = CreateItemBelow(null, typeof(Definitions.AlternativeStartPage));
-			ContentItem item = CreateItemBelow(root, typeof(Definitions.AlternativePage));
+			ContentItem root = CreateItemBelow(null, typeof(Definitions.IntegrityAlternativeStartPage));
+			ContentItem item = CreateItemBelow(root, typeof(Definitions.IntegrityAlternativePage));
 
 			Assert.IsNotNull(item);
 		}
@@ -39,8 +39,8 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void ValidateRootDefinition()
 		{
-			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.Root));
-			ItemDefinition startPageDefinition = engine.Definitions.GetDefinition(typeof(Definitions.StartPage));
+			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.IntegrityRoot));
+			ItemDefinition startPageDefinition = engine.Definitions.GetDefinition(typeof(Definitions.IntegrityStartPage));
 
 			Assert.That(rootDefinition.GetAllowedChildren(engine.Definitions, null).Contains(startPageDefinition));
 			//EnumerableAssert.Contains(rootDefinition.AllowedChildren, startPageDefinition);
@@ -48,29 +48,29 @@ namespace N2.Tests.Integrity
 			Assert.AreEqual(0, rootDefinition.AvailableZones.Count);
 			Assert.AreEqual(0, rootDefinition.Containers.Count);
 			Assert.IsEmpty(rootDefinition.Description);
-			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Discriminator);
+			Assert.AreEqual(typeof(Definitions.IntegrityRoot).Name, rootDefinition.Discriminator);
 			Assert.That(rootDefinition.Displayables.Count, Is.EqualTo(17));
 			Assert.AreEqual(0, rootDefinition.Editables.Count);
-			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(new Definitions.Root(), null, null), startPageDefinition);
-			Assert.AreEqual(0, rootDefinition.GetEditables(null).Count);
+			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(new Definitions.IntegrityRoot(), null, null), startPageDefinition);
+			Assert.AreEqual(0, rootDefinition.Editables.Count);
 			Assert.AreEqual(0, rootDefinition.GetModifiers("Title").Count); 
 			Assert.AreEqual(0, rootDefinition.EditableModifiers.Count);
 			Assert.AreEqual(0, rootDefinition.SortOrder);
-			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Title);
+			Assert.AreEqual(typeof(Definitions.IntegrityRoot).Name, rootDefinition.Title);
 		}
 
 		[Test]
 		public void AllowedChildren_Superceedes_NoAllowedParents()
 		{
-			ContentItem realRoot = CreateItemBelow(null, typeof(Definitions.Root));
-			ContentItem item = CreateItemBelow(realRoot, typeof(Definitions.StartPage));
+			ContentItem realRoot = CreateItemBelow(null, typeof(Definitions.IntegrityRoot));
+			ContentItem item = CreateItemBelow(realRoot, typeof(Definitions.IntegrityStartPage));
 			
 			Assert.IsNotNull(item);
 		}
 
-		private Definitions.StartPage CreateRoot()
+		private Definitions.IntegrityStartPage CreateRoot()
 		{
-			return (Definitions.StartPage)CreateItemBelow(null, typeof(Definitions.StartPage));
+			return (Definitions.IntegrityStartPage)CreateItemBelow(null, typeof(Definitions.IntegrityStartPage));
 		}
 
 		private ContentItem CreateItemBelow(ContentItem parent, Type itemType)

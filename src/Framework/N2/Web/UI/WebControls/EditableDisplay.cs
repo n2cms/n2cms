@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using N2.Definitions;
+using N2.Security;
 
 namespace N2.Web.UI.WebControls
 {
@@ -55,9 +56,10 @@ namespace N2.Web.UI.WebControls
 
 		private IEditable GetEditable(Type itemType)
 		{
-			foreach (IEditable editable in N2.Context.Definitions.GetDefinition(itemType).GetEditables(Page.User))
+			foreach (IEditable editable in N2.Context.Definitions.GetDefinition(itemType).Editables)
 				if (editable.Name == PropertyName)
-					return editable;
+					if (N2.Context.Current.SecurityManager.IsAuthorized(editable, Page.User, CurrentItem))
+						return editable;
 			return null;
 		}
 	}
