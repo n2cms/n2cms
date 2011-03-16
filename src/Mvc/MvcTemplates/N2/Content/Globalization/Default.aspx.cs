@@ -10,7 +10,8 @@ namespace N2.Edit.Globalization
 {
     [ToolbarPlugin("LANGS", "globalization", "{ManagementUrl}/Content/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/world.png", 150, 
 		ToolTip = "view translations",
-		GlobalResourceClassName = "Toolbar")]
+		GlobalResourceClassName = "Toolbar",
+		OptionProvider = typeof(GlobalizationOptionProvider))]
 	public partial class _Default : EditPage
 	{
 		protected ILanguageGateway gateway;
