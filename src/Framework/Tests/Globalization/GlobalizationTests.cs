@@ -8,6 +8,7 @@ using N2.Tests.Globalization.Items;
 using N2.Engine;
 using System.Linq;
 using N2.Persistence;
+using N2.Edit.Trash;
 
 namespace N2.Tests.Globalization
 {
@@ -509,6 +510,46 @@ namespace N2.Tests.Globalization
 			Assert.That(english1copy[LanguageGateway.LanguageKey], Is.Null, "Expected language association to be cleared from copy.");
 			Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(2));
 		}
+
+		[Test]
+		public void Translations_AreNotCarried_WhenMoving_ToTrash()
+		{
+			ContentItem english1 = CreateOneItem<TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(english1);
+
+			ContentItem swedish1 = CreateOneItem<TranslatedPage>(0, "swedish1", swedish);
+			engine.Persister.Save(swedish1);
+
+			ContentItem trash = CreateOneItem<Trash>(0, "trash", root);
+			engine.Persister.Save(trash);
+
+			ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+			gateway.Associate(new[] { english1, swedish1 });
+
+			engine.Persister.Delete(english1);
+
+			Assert.That(!gateway.FindTranslations(swedish1).Contains(english1));
+			Assert.That(english1[LanguageGateway.LanguageKey], Is.Null, "Expected language association to be cleared from copy.");
+			Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(1));
+		}
+
+		class Trash : ContentItem, ITrashCan
+		{
+			#region ITrashCan Members
+
+			public bool Enabled
+			{
+				get { return true; }
+			}
+
+			public TrashPurgeInterval PurgeInterval
+			{
+				get { return TrashPurgeInterval.Monthly; }
+			}
+
+			#endregion
+		}
+
 
         private class LanguageKeyScope : IDisposable
         {

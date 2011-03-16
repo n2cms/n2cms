@@ -14,6 +14,7 @@ using N2.Details;
 using System.Collections.Generic;
 using N2.Configuration;
 using N2.Engine;
+using N2.Engine.Globalization;
 
 namespace N2.Edit.Tests.Trash
 {

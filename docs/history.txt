@@ -1,4 +1,5 @@
 ﻿2.2
+- delete and remove language association
 - Permissions for management plugins with visualization and improved security checks (ThreadId=248967)
 - Applied sYgiL's patch 30259: N2.Templates.Mvc.Models.Parts.Questions.TextQuestion is missing name attribute
 - Applied sYgiL's patch 30299: Email is not saved on registration 

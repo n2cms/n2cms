@@ -3,6 +3,7 @@ using N2.Web;
 using N2.Definitions;
 using N2.Configuration;
 using N2.Plugin;
+using N2.Edit.Trash;
 
 namespace N2.Engine.Globalization
 {
@@ -72,7 +73,11 @@ namespace N2.Engine.Globalization
 
 		void persister_ItemDeleting(object sender, CancellableItemEventArgs e)
 		{
-			if (!autoDeleteTranslations) return;
+			if (!autoDeleteTranslations)
+			{
+				gateway.Unassociate(e.AffectedItem);
+				return;
+			}
 
 			// prevent infinite recursion
 			if (context.RequestItems[DeletingKey] != null) return;
