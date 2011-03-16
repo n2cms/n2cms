@@ -8,6 +8,7 @@ using N2.Templates.Mvc.Models.Parts;
 using N2.Web.UI;
 using N2.Integrity;
 using N2.Definitions;
+using N2.Security;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -16,8 +17,8 @@ namespace N2.Templates.Mvc.Models.Pages
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
 		IconUrl = "~/Content/Img/page_world.png")]
-	[TabContainer(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] {"admin"},
-		AuthorizedRoles = new[] {"Administrators"})]
+	[TabContainer(LanguageRoot.SiteArea, "Site", 70, 
+		RequiredPermission = Permission.Administer)]
 	[RestrictParents(typeof (StartPage))]
 	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
 	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
