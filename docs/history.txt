@@ -1,5 +1,6 @@
 ﻿2.2
-- delete and remove language association
+- State of deleted items is set to deleted
+- Remove language association from deleted items
 - Permissions for management plugins with visualization and improved security checks (ThreadId=248967)
 - Applied sYgiL's patch 30259: N2.Templates.Mvc.Models.Parts.Questions.TextQuestion is missing name attribute
 - Applied sYgiL's patch 30299: Email is not saved on registration 

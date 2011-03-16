@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using N2.Configuration;
 using N2.Engine;
 using N2.Engine.Globalization;
+using N2.Edit.Workflow;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -177,6 +178,27 @@ namespace N2.Edit.Tests.Trash
 
             mocks.VerifyAll();
         }
+
+		[Test]
+		public void ThrownItem_ChangesState_ToDeleted()
+		{
+			TrashHandler th = CreateTrashHandler();
+			th.Throw(item);
+
+			Assert.That(item.State, Is.EqualTo(ContentState.Deleted));
+		}
+
+		[Test]
+		public void RestoredItem_ChangesState_ToPreviousState()
+		{
+			item.State = ContentState.Published;
+
+			TrashHandler th = CreateTrashHandler();
+			th.Throw(item);
+			th.Restore(item);
+
+			Assert.That(item.State, Is.EqualTo(ContentState.Published));
+		}
 
         #region Helper methods
 

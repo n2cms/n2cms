@@ -1,4 +1,3 @@
-- deleted and state
 - remove language associations (ThreadId=229288)
 - index template replaces default
 - static parts

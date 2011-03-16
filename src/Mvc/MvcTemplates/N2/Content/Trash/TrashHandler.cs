@@ -6,6 +6,7 @@ using N2.Web;
 using N2.Security;
 using System.Collections.Generic;
 using N2.Persistence.Finder;
+using N2.Edit.Workflow;
 
 namespace N2.Edit.Trash
 {
@@ -17,6 +18,7 @@ namespace N2.Edit.Trash
 	{
 		public const string TrashContainerName = "Trash";
 		public const string FormerName = "FormerName";
+		public const string FormerState = "FormerState";
 		public const string FormerParent = "FormerParent";
 		public const string FormerExpires = "FormerExpires";
 		public const string DeletedDate = "DeletedDate";
@@ -109,9 +111,11 @@ namespace N2.Edit.Trash
 			item[FormerName] = item.Name;
 			item[FormerParent] = item.Parent;
 			item[FormerExpires] = item.Expires;
+			item[FormerState] = (int)item.State;
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
+			item.State = Workflow.ContentState.Deleted;
 
             foreach (ContentItem child in item.Children)
                 ExpireTrashedItem(child);
@@ -133,11 +137,13 @@ namespace N2.Edit.Trash
 		{
 			item.Name = (string)item["FormerName"];
 			item.Expires = (DateTime?)item["FormerExpires"];
-
-			item["FormerName"] = null;
-			item["FormerParent"] = null;
-			item["FormerExpires"] = null;
-			item["DeletedDate"] = null;
+			if (item[FormerState] != null)
+				item.State = (ContentState)item[FormerState];
+			item[FormerName] = null;
+			item[FormerParent] = null;
+			item[FormerExpires] = null;
+			item[FormerState] = null;
+			item[DeletedDate] = null;
 
             foreach (ContentItem child in item.Children)
                 RestoreValues(child);
