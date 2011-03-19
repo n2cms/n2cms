@@ -10,7 +10,7 @@ namespace Dinamico.Controllers
 
         public override ActionResult Index()
         {
-            return View(CurrentItem.TemplateName, CurrentItem);
+			return View((string)CurrentItem["TemplateName"], CurrentItem);
         }
     }
 }

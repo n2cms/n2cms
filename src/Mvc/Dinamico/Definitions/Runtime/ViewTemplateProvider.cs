@@ -90,13 +90,11 @@ namespace N2.Definitions.Runtime
 					return td;
 				}).ToArray();
 
-			if (templates.Length > 1)
-			{
-				foreach (var t in templates)
-				{					
-					t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", Title = "Template", AllTemplates = templates, ContainerName = "Advanced", HelpTitle = "The page must be saved for another template's fields to appear" });
-				}
+			foreach (var t in templates)
+			{					
+				t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", Title = "Template", AllTemplates = templates, ContainerName = "Advanced", Required = true, HelpTitle = "The page must be saved for another template's fields to appear" });
 			}
+			
 
 			return templates;
 		}
