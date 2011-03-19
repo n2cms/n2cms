@@ -12,7 +12,7 @@ namespace N2.Collections
 	/// navigated.
 	/// </summary>
 	/// <typeparam name="T">The type of data to wrap.</typeparam>
-	[DebuggerDisplay("{Current} Count={Children.Count}")]
+	[DebuggerDisplay("{Current} Count={Children}")]
 	public class HierarchyNode<T>
 	{
 		/// <summary>Creates a new instance of the hierarchy node.</summary>

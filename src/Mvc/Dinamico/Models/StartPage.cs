@@ -56,11 +56,11 @@ namespace Dinamico.Models
 
 		#endregion
 
-		[EditableFreeTextArea("Footer text", 200, ContainerName = Constants.Containers.Site)]
-		public virtual string FooterText { get; set; }
-
 		[EditableTextBox(ContainerName = Constants.Containers.Advanced)]
 		public virtual string TemplateName { get; set; }
+
+		[EditableFreeTextArea("Footer text", 200, ContainerName = Constants.Containers.Site)]
+		public virtual string FooterText { get; set; }
 
 		[EditableFileUpload(ContainerName = Constants.Containers.Site)]
 		public virtual string Logotype { get; set; }

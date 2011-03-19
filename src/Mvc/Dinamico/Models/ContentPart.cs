@@ -1,6 +1,4 @@
 ﻿using N2;
-using N2.Details;
-using Dinamico.Definitions.Dynamic;
 
 namespace Dinamico.Models
 {

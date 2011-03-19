@@ -6,7 +6,7 @@ using N2.Details;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 
-namespace Dinamico.Definitions.Dynamic
+namespace N2.Definitions.Runtime
 {
 	public class TemplateSelectorAttribute : EditableDropDownAttribute
 	{

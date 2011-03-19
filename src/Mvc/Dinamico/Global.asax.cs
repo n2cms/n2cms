@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
-using N2.Web.Mvc;
+using N2.Definitions.Runtime;
 using N2.Engine;
-using System.Reflection;
-using Dinamico.Definitions.Dynamic;
+using N2.Web.Mvc;
 
 namespace Dinamico
 {
@@ -29,7 +25,7 @@ namespace Dinamico
 			RegisterRoutes(RouteTable.Routes, engine);
 			RegisterViewEngines(ViewEngines.Engines);
 
-			engine.Resolve<RazorTemplateRegistrator>()
+			engine.Resolve<ViewTemplateRegistrator>()
 				.Add<Controllers.StartPageController>()
 				.Add<Controllers.ContentPagesController>()
 				.Add<Controllers.ContentPartsController>()

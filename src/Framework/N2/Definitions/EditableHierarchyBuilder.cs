@@ -54,7 +54,7 @@ namespace N2.Definitions
 				var current = queue.Dequeue();
 				if (current.ContainerName == current.Name) throw new N2Exception("The container '{0}' cannot reference itself as containing container. Change the ContainerName property.", current.Name);
 
-				string containerName = current.ContainerName ?? defaultContainerName;
+				string containerName = current.ContainerName;
 				var container = addedContainers.FirstOrDefault(c => c.Current.Name == containerName);
 				if (container != null)
 				{
