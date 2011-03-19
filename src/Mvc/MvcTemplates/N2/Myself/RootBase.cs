@@ -19,7 +19,7 @@ namespace N2.Management.Myself
     [AvailableZone("Right", "Right")]
     [AvailableZone("Above", "Above")]
     [AvailableZone("Below", "Below")]
-	public class RootBase : ContentItem, IRootPage
+	public class RootBase : ContentItem, IRootPage, ISystemNode
     {
         public override string Url
         {

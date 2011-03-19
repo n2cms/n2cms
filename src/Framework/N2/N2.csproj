@@ -120,6 +120,7 @@
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\CountFilter.cs" />
+    <Compile Include="Collections\FilterHelper.cs" />
     <Compile Include="Collections\IContentItemListOfT.cs" />
     <Compile Include="Collections\IContentListOfT.cs" />
     <Compile Include="Collections\INameable.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Details\IContentModifier.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistration.cs" />
     <Compile Include="Definitions\Runtime\IRegistration.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />

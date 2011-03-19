@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ContextMenu.ascx.cs" Inherits="N2.Edit.Navigation.ContextMenu" %>
-<div id="contextMenu" class="focusGroup">
+<div id="contextMenu" class="focusGroup ui-menu">
     <asp:PlaceHolder ID="plhMenuItems" runat="server" />
 </div>
 

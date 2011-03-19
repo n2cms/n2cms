@@ -63,6 +63,8 @@ namespace N2.Edit
 
 		protected override void OnInit(EventArgs e)
 		{
+			N2.Resources.Register.JQueryUi(this);
+
 			if(Request["refresh"] == "true")
                 Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 
@@ -70,6 +72,7 @@ namespace N2.Edit
 			InitItemEditor();
 			InitTitle();
 			InitButtons();
+
 			base.OnInit(e);
 		}
 

@@ -43,40 +43,40 @@
 	</edit:PermissionPanel>
 
     <script type="text/javascript">
-    	$(document).ready(function() {
+    	$(document).ready(function () {
     		// future publish
-    		$("#futurePanel").hide().click(function(e) { e.stopPropagation(); });
-    		$(".future").click(function(e) {
+    		$("#futurePanel").hide().click(function (e) { e.stopPropagation(); });
+    		$(".future").click(function (e) {
     			$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
     			$("#futurePanel input:first").focus();
     			e.preventDefault();
     			e.stopPropagation();
     		});
 
-    		$("#futurePanel .cancel").click(function() {
+    		$("#futurePanel .cancel").click(function () {
     			$("#futurePanel").hide();
     		});
-    		$(document.body).click(function(e) {
+    		$(document.body).click(function (e) {
     			if ($(e.target).closest(".jCalendar").length == 0)
     				$("#futurePanel").hide();
     		});
 
-    		$(".helpPanel").click(function() {
+    		$(".helpPanel").click(function () {
     			var $hp = $(this);
     			$hp.toggleClass("helpVisible");
     		});
 
     		$(".right fieldset").hide();
 
-    		$(".showInfo").toggle(function() {
+    		$(".showInfo").toggle(function () {
     			n2toggle.show(this, ".infoBox");
-    		}, function() {
+    		}, function () {
     			n2toggle.hide(this, ".infoBox");
     		});
 
-    		$(".showZones").toggle(function() {
+    		$(".showZones").toggle(function () {
     			n2toggle.show(this, ".zonesBox");
-    		}, function() {
+    		}, function () {
     			n2toggle.hide(this, ".zonesBox");
     		});
 
@@ -86,19 +86,19 @@
     			$(".showZones").click();
 
     		// hide mce toolbar to prevent it getting skewed
-    		$(".tabs a").click(function() {
+    		$(".tabs a").click(function () {
     			$(".mceExternalToolbar").hide();
     		});
-    		$("input").focus(function() {
+    		$("input").focus(function () {
     			$(".mceExternalToolbar").hide();
     		});
 
     		$(".dimmable").n2dimmable();
 
-    		$(".uploader > label").each(function() {
+    		$(".uploader > label").each(function () {
     			$("<a href='#' class='revealer'/>").html(this.innerHTML)
     			.insertBefore(this)
-    			.click(function() {
+    			.click(function () {
     				$(this).hide()
     				.siblings().show()
     				.end().closest(".editDetail").addClass("crowded");
@@ -106,6 +106,10 @@
     		});
 
     		$(".expandable").n2expandable({ visible: ".uncontractable" });
+
+    		$(".fileSelector").n2autocomplete({ filter: "io" });
+    		$(".itemSelector").n2autocomplete({ filter: "pages" });
+    		$(".urlSelector").n2autocomplete({ filter: "any" });
     	});
 
     </script>

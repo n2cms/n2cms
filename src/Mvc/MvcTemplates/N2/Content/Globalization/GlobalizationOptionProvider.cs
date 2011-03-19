@@ -15,7 +15,6 @@ namespace N2.Edit.Globalization
 	{
 		ILanguageGateway languages;
 		IEditUrlManager editUrlManager;
-		ISecurityManager security;
 
 		public GlobalizationOptionProvider(ILanguageGateway languages, IEditUrlManager editUrlManager)
 		{

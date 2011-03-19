@@ -291,6 +291,12 @@ namespace N2.Resources
 			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
+		public static void JQueryUi(Page page)
+		{
+			JQuery(page);
+			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version));
+		}
+
 		public static void TinyMCE(Page page)
 		{
 			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));

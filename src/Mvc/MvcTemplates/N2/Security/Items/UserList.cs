@@ -15,7 +15,7 @@ namespace N2.Security.Items
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	[Throwable(AllowInTrash.No)]
-	public class UserList : ContentItem
+	public class UserList : ContentItem, ISystemNode
 	{
 		[EditableTextBox("Roles", 100, TextMode=TextBoxMode.MultiLine)]
 		[DetailAuthorizedRoles("admin", "Administrators")]

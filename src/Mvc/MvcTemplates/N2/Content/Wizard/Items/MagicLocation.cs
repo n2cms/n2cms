@@ -12,7 +12,7 @@ namespace N2.Edit.Wizard.Items
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
     [NotThrowable]
-    public class MagicLocation : ContentItem
+	public class MagicLocation : ContentItem, ISystemNode
 	{
 		public bool HasLocation
 		{

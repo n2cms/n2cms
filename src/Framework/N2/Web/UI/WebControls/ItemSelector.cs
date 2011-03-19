@@ -10,7 +10,7 @@ namespace N2.Web.UI.WebControls
 	{
 		public ItemSelector()
 		{
-			CssClass = "itemSelector urlSelector";
+			CssClass = "itemSelector selector";
 			DefaultMode = UrlSelectorMode.Items;
 			AvailableModes = UrlSelectorMode.Items;
 			BrowserUrl = N2.Web.Url.Parse(Engine.ManagementPaths.EditTreeUrl).AppendQuery("location=contentselection");

@@ -160,13 +160,14 @@ body.framed .validator ul{
     .striped, .striped td, .striped th {  }
 
 /* NAVIGATCONTEXTMENU */
-body.framed #contextMenu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; padding:1px; }
-    body.framed #contextMenu a { margin:1px; display:block; padding:2px 1px 0 1px; white-space:nowrap; border:solid 1px #fff; background:transparent none no-repeat 3px 50%; padding-left:22px; }
-    body.framed #contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
-    body.framed #contextMenu .separator { border-bottom:solid 1px #dedad7; margin:1px 0;}
-    body.framed #contextMenu .languages { display:block; width:75px; padding-top:2px; }
-		body.framed #contextMenu .languages a { display:inline-block; line-height:11px; padding:1px; }
-			body.framed #contextMenu .languages a img { margin:0; }
+body.framed .ui-menu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; padding:1px; list-style-type:none; margin:0; box-shadow: #666 2px 2px 8px -3px; }
+    body.framed .ui-menu a { margin:1px; display:block; padding:2px 1px 1px 1px; white-space:nowrap; border:solid 1px #fff; background:transparent none no-repeat 3px 50%; cursor:pointer; }
+    body.framed .ui-menu a.iconed { padding-left:22px; }
+    body.framed .ui-menu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
+    body.framed .ui-menu .separator { border-bottom:solid 1px #dedad7; margin:1px 0;}
+    body.framed .ui-menu .languages { display:block; width:75px; padding-top:2px; }
+		body.framed .ui-menu .languages a { display:inline-block; line-height:11px; padding:1px; }
+			body.framed .ui-menu .languages a img { margin:0; }
 
 /* NAVIGATIONTABLE */
 body.framed .path { display:block; }

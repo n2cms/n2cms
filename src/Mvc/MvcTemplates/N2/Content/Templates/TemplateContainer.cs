@@ -16,7 +16,7 @@ namespace N2.Management.Content.Templates
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
 	[NotThrowable]
-	public class TemplateContainer : ContentItem
+	public class TemplateContainer : ContentItem, ISystemNode
 	{
 	}
 }

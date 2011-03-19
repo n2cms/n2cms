@@ -7,7 +7,7 @@ namespace N2.Web.UI.WebControls
 	{
 		public FileSelector()
 		{
-			this.CssClass = "fileSelector urlSelector";
+			this.CssClass = "fileSelector selector";
 			this.DefaultMode = UrlSelectorMode.Files;
 			this.AvailableModes = UrlSelectorMode.Files;
 			BrowserUrl = N2.Web.Url.Parse(Engine.ManagementPaths.EditTreeUrl).AppendQuery("location=filesselection");

@@ -9,7 +9,7 @@ namespace N2.Edit.Wizard.Items
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]
-    public class Wonderland : ContentItem
+	public class Wonderland : ContentItem, ISystemNode
 	{
 		public override bool IsPage
 		{

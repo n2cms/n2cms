@@ -5,7 +5,7 @@ namespace N2.Management.Myself
 {
 	[RestrictParents(typeof(IRootPage))]
 	[AllowedZones("Left", "Center", "Right")]
-	public abstract class RootPartBase : ContentItem
+	public abstract class RootPartBase : ContentItem, ISystemNode
 	{
 	}
 }

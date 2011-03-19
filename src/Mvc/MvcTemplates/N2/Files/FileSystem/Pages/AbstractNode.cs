@@ -10,7 +10,7 @@ using N2.Web.Drawing;
 namespace N2.Edit.FileSystem.Items
 {
     [Throwable(AllowInTrash.No), Versionable(AllowVersions.No), PermissionRemap(From = Permission.Publish, To = Permission.Write)]
-    public abstract class AbstractNode : ContentItem, INode, IDependentEntity<IFileSystem>
+	public abstract class AbstractNode : ContentItem, INode, IDependentEntity<IFileSystem>, ISystemNode
     {
 		IFileSystem fileSystem;
 		protected string iconUrl;

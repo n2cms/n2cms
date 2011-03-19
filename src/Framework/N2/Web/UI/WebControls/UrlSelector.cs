@@ -24,7 +24,7 @@ namespace N2.Web.UI.WebControls
 	{
 		public UrlSelector()
 		{
-			CssClass = "urlSelector";
+			CssClass = "urlSelector selector";
 		}
 
 		protected IEngine Engine
