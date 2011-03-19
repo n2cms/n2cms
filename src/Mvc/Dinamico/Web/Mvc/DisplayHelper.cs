@@ -13,7 +13,7 @@ using N2.Details;
 
 namespace N2.Web.Mvc
 {
-	public class DisplayHelper : DynamicObject // where TModel : class
+	public class DisplayHelper : DynamicObject
 	{
 		public ContentItem Current { get; set; }
 		public HtmlHelper Html { get; set; }

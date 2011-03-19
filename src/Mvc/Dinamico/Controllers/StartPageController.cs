@@ -63,9 +63,9 @@ namespace Dinamico.Controllers
 				.Enumerable<ContentItem>()
 				.Where(h => h != null)
 				.Select(h => h.IsPage ? h : h.ClosestPage())
-				.Where(N2.Filter.Access().Match)
-				.Where(N2.Filter.AncestorOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage).Match)
-				.Where(N2.Filter.Duplicates().Match);
+				.Where(N2.Filter.Is.Accessible().Match)
+				.Where(N2.Filter.Is.DescendantOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage).Match)
+				.Where(N2.Filter.Is.Distinct().Match);
 			return hits;
 		}
 

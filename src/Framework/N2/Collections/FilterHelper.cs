@@ -8,12 +8,6 @@ namespace N2.Collections
 {
 	public class FilterHelper
 	{
-		Func<ContentItem> currentItemProvider;
-		public FilterHelper(Func<ContentItem> currentItemProvider)
-		{
-			this.currentItemProvider = currentItemProvider;
-		}
-
 		/// <summary>Filters by access</summary>
 		/// <returns>A filter.</returns>
 		public ItemFilter Accessible()
@@ -56,7 +50,7 @@ namespace N2.Collections
 
 		/// <summary>Filters away duplicates.</summary>
 		/// <returns>A filter.</returns>
-		public ItemFilter Unique()
+		public ItemFilter Distinct()
 		{
 			return new DuplicateFilter();
 		}
@@ -92,7 +86,7 @@ namespace N2.Collections
 		/// <summary>Filters items below an ancestor.</summary>
 		/// <param name="ancestor">The ancestor of the items to pass.</param>
 		/// <returns>A filter.</returns>
-		public ItemFilter Descendant(ContentItem ancestor)
+		public ItemFilter DescendantOf(ContentItem ancestor)
 		{
 			return new ParentFilter(ancestor);
 		}
@@ -100,7 +94,7 @@ namespace N2.Collections
 		/// <summary>Filters items below an ancestor or the ancestor itself.</summary>
 		/// <param name="ancestor">The ancestor of the items to pass.</param>
 		/// <returns>A filter.</returns>
-		public ItemFilter AncestorOrSelf(ContentItem ancestor)
+		public ItemFilter DescendantOrSelf(ContentItem ancestor)
 		{
 			return Custom(i => i == ancestor || i.AncestralTrail.StartsWith(Utility.GetTrail(ancestor)));
 		}

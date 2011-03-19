@@ -142,7 +142,7 @@ namespace N2.Engine.Globalization
 				return new ContentItem[0];
 
 			int key = (int)item[LanguageKey];
-			return finder.Where.Detail(LanguageKey).Eq(key).Filters(new AccessFilter(context.User, security), Filter.Not(Filter.DescendantOf<ITrashCan>())).Select();
+			return finder.Where.Detail(LanguageKey).Eq(key).Filters(new AccessFilter(context.User, security), Filter.Is.Not(Filter.Is.DescendantOf<ITrashCan>())).Select();
 		}
 
 		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)

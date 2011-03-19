@@ -11,7 +11,12 @@ namespace N2.Web.Mvc.Html
 {
 	public static class RegisterExtensions
 	{
-		public static ContentRegistration Define(this ContentHelper content, Action<ContentRegistration> registration = null)
+		public static ContentRegistration Define(this ContentHelper content)
+		{
+			return content.Define(null);
+		}
+
+		public static ContentRegistration Define(this ContentHelper content, Action<ContentRegistration> registration)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
@@ -54,7 +59,12 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-		public static ContentRegistration AppendDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)
+		public static ContentRegistration AppendDefinition(this ContentHelper content)
+		{
+			return content.AppendDefinition(null);
+		}
+
+		public static ContentRegistration AppendDefinition(this ContentHelper content, Action<ContentRegistration> registration)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
@@ -63,6 +73,11 @@ namespace N2.Web.Mvc.Html
 				registration(re);
 			}
 			return re;
+		}
+
+		public static ContentRegistration PrependDefinition(this ContentHelper content)
+		{
+			return content.PrependDefinition(null);
 		}
 
 		public static ContentRegistration PrependDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)

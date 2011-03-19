@@ -71,6 +71,11 @@ namespace N2.Web.Mvc
 			get { return new RenderHelper { Html = Html, Content = CurrentItem }; }
 		}
 
+		public FilterHelper Is
+		{
+			get { return new FilterHelper(); }
+		}
+
 		// markup
 
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
@@ -86,7 +91,7 @@ namespace N2.Web.Mvc
 			return new TreeBuilder(new TreeHierarchyBuilder(item, takeLevels))
 				.ExcludeRoot(rootless)
 				.LinkProvider((i) => LinkTo(i).Class(cssGetter(i)))
-				.Filters(filter ?? N2.Filter.Navigation());
+				.Filters(filter ?? N2.Filter.Is.Navigatable());
 		}
 
 		public string GetNavigationClass(ContentItem item)

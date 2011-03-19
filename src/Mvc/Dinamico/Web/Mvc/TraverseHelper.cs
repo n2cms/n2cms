@@ -51,7 +51,7 @@ namespace N2.Web.Mvc
 
 		public virtual ItemFilter DefaultFilter()
 		{
-			return N2.Filter.Access();
+			return N2.Filter.Is.Accessible();
 		}
 
 		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
@@ -72,7 +72,7 @@ namespace N2.Web.Mvc
 		public IEnumerable<ContentItem> Children(ContentItem item, ItemFilter filter = null)
 		{
 			if (item == null) return Enumerable.Empty<ContentItem>();
-
+			
 			return item.GetChildren(filter ?? DefaultFilter());
 		}
 

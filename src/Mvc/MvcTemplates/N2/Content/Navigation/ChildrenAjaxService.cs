@@ -52,22 +52,23 @@ namespace N2.Management.Content.Navigation
 
 		private ItemFilter CreateFilter(string filter)
 		{
+			FilterHelper filterIs = Filter.Is;
 			switch (filter)
 			{
 				case "any":
-					return Filter.All(Filter.Not(Filter.Parts()), Filter.Not(Filter.Type<ISystemNode>()));
+					return filterIs.All(filterIs.Not(filterIs.Part()), filterIs.Not(filterIs.Type<ISystemNode>()));
 				case "parts":
-					return Filter.All(Filter.Parts(), Filter.Not(Filter.Type<ISystemNode>()));
+					return filterIs.All(filterIs.Part(), filterIs.Not(filterIs.Type<ISystemNode>()));
 				case "pages":
-					return Filter.All(Filter.Pages(), Filter.Not(Filter.Type<ISystemNode>()));
+					return filterIs.All(filterIs.Page(), filterIs.Not(filterIs.Type<ISystemNode>()));
 				case "files":
-					return Filter.Type<File>();
+					return filterIs.Type<File>();
 				case "directories":
-					return Filter.Type<AbstractDirectory>();
+					return filterIs.Type<AbstractDirectory>();
 				case "io":
-					return Filter.Type<AbstractNode>();
+					return filterIs.Type<AbstractNode>();
 				default:
-					return Filter.Nothing();
+					return filterIs.Anything();
 			}
 		}
 
