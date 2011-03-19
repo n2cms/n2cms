@@ -17,6 +17,8 @@ namespace N2.Web.Mvc
 			this.Html = html;
 		}
 
+		#region IContentRegistration Members
+
 		public EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new()
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);
@@ -27,6 +29,15 @@ namespace N2.Web.Mvc
 
 			return new RegisteringDisplayRenderer<T>(Html, name, re);
 		}
+
+		public void RegisterModifier(Details.IContentModifier modifier)
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+				re.ContentModifiers.Add(modifier);
+		}
+
+		#endregion
 
 		public IDisposable BeginContainer(string containerName)
 		{

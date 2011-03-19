@@ -104,7 +104,12 @@ namespace N2.Definitions.Runtime
 			Add(container);
 			return new Builder<T>(container.Name, this);
 		}
+		public void RegisterModifier(IContentModifier modifier)
+		{
+			ContentModifiers.Add(modifier);
+		}
 
 		#endregion
+
 	}
 }

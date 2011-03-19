@@ -4,7 +4,7 @@
 	Content.Define(re => 
 	{
 		re.Title = "News page";
-		re.ContentModifiers.Add(new N2.Details.DefaultValueAttribute { Name = "Visible", Value = false });
+		re.DefaultValue("Visible", false);
 	});
 }
 

@@ -17,5 +17,13 @@ namespace N2.Web.Mvc.Html
 		{
 			return viewData["RegistrationExpression"] as ContentRegistration;
 		}
+
+		public static IContentRegistration DefaultValue(this IContentRegistration registration, string name, object value)
+		{
+			if (registration == null) return null;
+
+			registration.RegisterModifier(new N2.Details.DefaultValueAttribute { Name = name, Value = value });
+			return registration;
+		}
 	}
 }
