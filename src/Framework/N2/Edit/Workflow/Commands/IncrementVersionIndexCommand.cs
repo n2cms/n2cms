@@ -19,7 +19,7 @@ namespace N2.Edit.Workflow.Commands
         {
             var masterVersion = state.Content.VersionOf ?? state.Content;
             var versions = versionProvider.GetVersionsOf(masterVersion);
-            if (versions.Count > 0)
+            if (versions.Count > 1)
             {
                 int greatestIndex = versions.Max(v => v.VersionIndex);
                 state.Content.VersionIndex = greatestIndex + 1;

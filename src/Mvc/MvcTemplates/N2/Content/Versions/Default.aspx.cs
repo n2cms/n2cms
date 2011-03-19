@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using N2.Web;
 using System.Web.Security;
 using N2.Security;
+using N2.Edit.Workflow;
 
 namespace N2.Edit.Versions
 {
@@ -38,32 +40,36 @@ namespace N2.Edit.Versions
 		{
             ContentItem currentVersion = Selection.SelectedItem;
 			int id = Convert.ToInt32(e.CommandArgument);
-			if (currentVersion.ID == id)
+			if (e.CommandName == "Publish")
 			{
-				if (e.CommandName == "Publish")
+				if (currentVersion.ID == id)
 				{
 					currentVersion.SavedBy = User.Identity.Name;
 					if (!currentVersion.Published.HasValue)
 						currentVersion.Published = DateTime.Now;
+					Engine.Resolve<StateChanger>().ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
+					Refresh(currentVersion, ToolbarArea.Both);
+
+				}
+				else
+				{
+					N2.ContentItem versionToRestore = Engine.Persister.Get(id);
+					bool storeCurrent = versionToRestore.State == ContentState.Unpublished;
+					ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, storeCurrent);
+
+					currentVersion.SavedBy = User.Identity.Name;
+					
+					if (!currentVersion.Published.HasValue)
+						currentVersion.Published = DateTime.Now;
+					if (storeCurrent)
+						currentVersion.VersionIndex = versioner.GetVersionsOf(currentVersion).Max(v => v.VersionIndex) + 1;
+					Engine.Resolve<StateChanger>().ChangeTo(currentVersion, ContentState.Published);
+					persister.Save(currentVersion);
+					Refresh(currentVersion, ToolbarArea.Both);
 				}
 			}
-			else if (e.CommandName == "Publish")
-			{
-				N2.ContentItem versionToRestore = Engine.Persister.Get(id);
-				
-				ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, true);
-
-				currentVersion.SavedBy = User.Identity.Name;
-				currentVersion.VersionIndex = unpublishedVersion.VersionIndex + 1;
-				if (!currentVersion.Published.HasValue)
-					currentVersion.Published = DateTime.Now;
-				persister.Save(currentVersion);
-				
-				Refresh(currentVersion, ToolbarArea.Both);
-				DataBind();
-			}
-			else if (e.CommandName == "Delete")
+			else if (currentVersion.ID != id && e.CommandName == "Delete")
 			{
 				ContentItem item = Engine.Persister.Get(id);
 				persister.Delete(item);
@@ -81,7 +87,7 @@ namespace N2.Edit.Versions
 
 			IList<ContentItem> versions = versioner.GetVersionsOf(publishedItem);
 
-			gvHistory.DataSource = versions;
+			gvHistory.DataSource = versions.Select(v => new { v.ID, v.Title, v.State, v.IconUrl, v.Published, v.Expires, v.VersionIndex, v.SavedBy, Content = v });
 			gvHistory.DataBind();
 		}
 

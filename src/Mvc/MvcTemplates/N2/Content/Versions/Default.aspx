@@ -13,14 +13,14 @@
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Container.DataItem) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
-					<%# ((N2.ContentItem)Container.DataItem)["FuturePublishDate"] is DateTime ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Container.DataItem)["FuturePublishDate"] + "'/>" : ""%>
-					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Container.DataItem).VersionIndex + 1 %></span>
+					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
+					<%# ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] is DateTime ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
+					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%></span>
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
+				<a href="<%# GetPreviewUrl((N2.ContentItem)Eval("Content")) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
@@ -33,17 +33,17 @@
 			<asp:BoundField HeaderText="Saved by" DataField="SavedBy" meta:resourceKey="savedBy" />
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Container.DataItem) %>' />
+					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Eval("Content")) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible="<%# IsVisible(Container.DataItem) %>" />
+					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Visible="<%# IsVisible(Container.DataItem) %>"
+					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) %>'
 						OnClientClick="return confirm('Are you sure you want to Delete this version?');" />
 				</ItemTemplate>
 			</asp:TemplateField>
