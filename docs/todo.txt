@@ -1,4 +1,3 @@
-- publish, republish, delayed-publish status, version index = 0
 - chrome context menu
 - remove language associations (ThreadId=229288)
 - index template replaces default

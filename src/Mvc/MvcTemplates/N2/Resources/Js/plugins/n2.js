@@ -153,7 +153,7 @@ var initn2context = function (w) {
 				a.href = href;
 			}
 
-			w.document.getElementById("top").className = options.permission;
+			w.document.getElementById("permission").className = options.permission;
 		},
 
 		append: function (url, data) {

@@ -18,7 +18,7 @@
 </head>
 	<body id="default" class="edit">
 		<div class="frameForm">
-				<div id="top">
+				<div id="permission"><div id="top">
 					<div id="topbar" class="header cf themeBg">
 				        <asp:ContentPlaceHolder ID="Toolbar" runat="server">
         					<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
@@ -35,7 +35,7 @@
 						<div class="blinds"></div>
 					</div>
 
-				</div>
+				</div></div>
                 
 		        <asp:ContentPlaceHolder ID="Content" runat="server">
 				</asp:ContentPlaceHolder>
