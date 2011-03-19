@@ -46,7 +46,7 @@ namespace N2.Edit
 		protected string ZoneName = null;
 		protected IDefinitionManager Definitions;
 		protected ITemplateProvider[] TemplateProviders;
-		protected IList<ItemDefinition> AvailableDefinitions;
+		protected IList<ItemDefinition> AvailableDefinitions = new List<ItemDefinition>();
 
 		public ContentItem ActualItem
 		{
