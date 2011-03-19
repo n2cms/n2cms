@@ -40,17 +40,26 @@ namespace N2.Edit.Versions
 			int id = Convert.ToInt32(e.CommandArgument);
 			if (currentVersion.ID == id)
 			{
-				// do nothing
+				if (e.CommandName == "Publish")
+				{
+					currentVersion.SavedBy = User.Identity.Name;
+					if (!currentVersion.Published.HasValue)
+						currentVersion.Published = DateTime.Now;
+					persister.Save(currentVersion);
+				}
 			}
 			else if (e.CommandName == "Publish")
 			{
-				N2.ContentItem versionToRestored = Engine.Persister.Get(id);
-				ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestored, true);
+				N2.ContentItem versionToRestore = Engine.Persister.Get(id);
+				
+				ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, true);
 
 				currentVersion.SavedBy = User.Identity.Name;
 				currentVersion.VersionIndex = unpublishedVersion.VersionIndex + 1;
+				if (!currentVersion.Published.HasValue)
+					currentVersion.Published = DateTime.Now;
 				persister.Save(currentVersion);
-
+				
 				Refresh(currentVersion, ToolbarArea.Both);
 				DataBind();
 			}
@@ -89,12 +98,13 @@ namespace N2.Edit.Versions
 		protected bool IsVisible(object dataItem)
 		{
 			return Engine.SecurityManager.IsAuthorized(User, dataItem as ContentItem, Permission.Publish)
-				&& !IsPublished(dataItem);
+				&& !IsPublished(dataItem as ContentItem);
 		}
 
 		protected bool IsPublished(object dataItem)
 		{
-			return publishedItem.Equals(dataItem);
+			var item = dataItem as ContentItem;
+			return publishedItem.Equals(item) && item.Published.HasValue;
 		}
 	}
 }
