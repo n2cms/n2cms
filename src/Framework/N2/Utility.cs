@@ -42,7 +42,30 @@ namespace N2
 				if (destinationType.IsEnum && value is int)
 					return Enum.ToObject(destinationType, (int)value);
 				if (!destinationType.IsAssignableFrom(value.GetType()))
-					return System.Convert.ChangeType(value, destinationType);
+					try
+					{
+						return System.Convert.ChangeType(value, destinationType);
+					}
+					catch (InvalidCastException)
+					{
+						if (value is string)
+						{
+							var parseMethod = destinationType.GetMethods(BindingFlags.Static | BindingFlags.Public)
+								.Where(m => m.Name == "Parse")
+								.Where(m => m.GetParameters().Length == 1)
+								.Where(m => m.GetParameters()[0].ParameterType == typeof(string))
+								.FirstOrDefault();
+							if (parseMethod != null && parseMethod.GetParameters().Length == 1 && parseMethod.GetParameters()[0].ParameterType == typeof(string))
+								return parseMethod.Invoke(null, new[] { value });
+							var constructor = destinationType.GetConstructors()
+								.Where(c => c.GetParameters().Length == 1)
+								.Where(c => c.GetParameters()[0].ParameterType == typeof(string))
+								.FirstOrDefault();
+							if (constructor != null)
+								return constructor.Invoke(new[] { value });
+						}
+						throw;
+					}
 			}
 			return value;
 		}

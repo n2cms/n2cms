@@ -1,6 +1,7 @@
 using N2.Details;
 using N2.Persistence.Serialization;
 using System;
+using System.Xml.Linq;
 
 namespace N2.Tests.Serialization.Items
 {
@@ -20,13 +21,18 @@ namespace N2.Tests.Serialization.Items
 			get { return (string)(GetDetail("TextFile") ?? string.Empty); }
 			set { SetDetail("TextFile", value); }
 		}
-		
+
 		public Version Version
 		{
 			get { return new Version(GetDetail("Version", "1.0.0.0")); }
 			set { SetDetail("Version", value.ToString(), "1.0.0.0"); }
 		}
 
+		public XDocument Xml
+		{
+			get { return XDocument.Parse(GetDetail("Xml", "<root/>")); }
+			set { SetDetail("Xml", value.ToString()); }
+		}
 	}
 
 	public class XmlableItem2 : XmlableItem

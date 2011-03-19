@@ -8,6 +8,7 @@ using N2.Persistence.Serialization;
 using N2.Tests.Serialization.Items;
 using System.Threading;
 using N2.Web;
+using System.Xml.Linq;
 
 namespace N2.Tests.Serialization
 {
@@ -56,6 +57,17 @@ namespace N2.Tests.Serialization
 			XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
 
 			Assert.That(readItem.Version, Is.EqualTo(new Version(2, 0)));
+		}
+
+		[Test]
+		public void ExportedImportedItem_CanContain_XDocumentProperties_CastingToString()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.Xml = XDocument.Parse("<root>hello</root>");
+
+			XmlableItem readItem = ExportAndImport(item, ExportOptions.Default);
+
+			Assert.That(readItem.Xml.ToString(), Is.EqualTo("<root>hello</root>"));
 		}
 
 		[Test]

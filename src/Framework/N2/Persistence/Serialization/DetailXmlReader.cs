@@ -33,7 +33,8 @@ namespace N2.Persistence.Serialization
 				if (value is string)
 					value = PrepareStringDetail(item, name, value as string);
 
-				item.SetDetail(name, value, type);
+				item[name] = value;
+				//item.SetDetail(name, value, type);
 			}
 			else
 			{

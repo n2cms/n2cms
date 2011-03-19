@@ -1,5 +1,3 @@
-- chrome context menu
-- remove language associations (ThreadId=229288)
 - index template replaces default
 - static parts
 - Find.Items.Where.Detail().IsNull() (ThreadId=243772)
