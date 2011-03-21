@@ -14,7 +14,7 @@
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
 					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
-					<%# ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] is DateTime ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
+					<%# IsFuturePublished(Eval("Content")) ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
 					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%></span>
 				</ItemTemplate>
 			</asp:TemplateField>
@@ -38,7 +38,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) %>' />
+					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) || IsFuturePublished(Eval("Content")) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>

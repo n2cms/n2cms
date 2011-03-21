@@ -360,6 +360,7 @@ namespace N2.Edit
 				item.Published = dpFuturePublishDate.SelectedDate;
 			else
 				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
+			item.State = ContentState.Waiting;
 			Engine.Persister.Save(item);
 			return item;
         }

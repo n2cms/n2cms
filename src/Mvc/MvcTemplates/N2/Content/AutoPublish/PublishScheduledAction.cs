@@ -39,6 +39,18 @@ namespace N2.Edit.AutoPublish
 				else
 					Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
             }
+
+			var implicitAutoPublish = Finder
+				.Where.Published.Le(Utility.CurrentTime())
+				.And.State.Eq(Workflow.ContentState.Waiting)
+				.Select();
+			for (int i = 0; i < implicitAutoPublish.Count; i++)
+			{
+				// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
+				var item = implicitAutoPublish[i];
+				item.State = Workflow.ContentState.Published;
+				Persister.Save(item);
+			}
         }
     }
 }

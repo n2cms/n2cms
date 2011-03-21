@@ -45,7 +45,7 @@ namespace N2.Edit.Versions
 				if (currentVersion.ID == id)
 				{
 					currentVersion.SavedBy = User.Identity.Name;
-					if (!currentVersion.Published.HasValue)
+					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
 						currentVersion.Published = DateTime.Now;
 					Engine.Resolve<StateChanger>().ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
@@ -60,7 +60,7 @@ namespace N2.Edit.Versions
 
 					currentVersion.SavedBy = User.Identity.Name;
 					
-					if (!currentVersion.Published.HasValue)
+					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
 						currentVersion.Published = DateTime.Now;
 					if (storeCurrent)
 						currentVersion.VersionIndex = versioner.GetVersionsOf(currentVersion).Max(v => v.VersionIndex) + 1;
@@ -111,6 +111,17 @@ namespace N2.Edit.Versions
 		{
 			var item = dataItem as ContentItem;
 			return publishedItem.Equals(item) && item.Published.HasValue;
+		}
+
+		protected bool IsFuturePublished(object dataItem)
+		{
+			var item = dataItem as ContentItem;
+			if (item["FuturePublishDate"] is DateTime)
+				return true;
+			if (item.VersionOf == null && item.Published.HasValue && item.Published > Utility.CurrentTime())
+				return true;
+			
+			return false;
 		}
 	}
 }
