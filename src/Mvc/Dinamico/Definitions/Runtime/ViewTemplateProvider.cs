@@ -32,16 +32,15 @@ namespace N2.Definitions.Runtime
 			this.httpContextProvider = httpContextProvider;
 			this.vppProvider = vppProvider;
 
-			registrator.RegistrationAdded += (s, a) => HandleRegistrationQueue();
-			HandleRegistrationQueue();
+			registrator.RegistrationAdded += (s, a) => rebuild = true;
 		}
 
-		private void HandleRegistrationQueue()
+		private void DequeueRegistrations()
 		{
 			while (registrator.QueuedRegistrations.Count > 0)
 			{
-				sources.Add(registrator.QueuedRegistrations.Dequeue());
-				rebuild = true;
+				var source = registrator.QueuedRegistrations.Dequeue();
+				sources.Add(source);
 			}
 		}
 
@@ -61,20 +60,26 @@ namespace N2.Definitions.Runtime
 			
 			const string cacheKey = "RazorDefinitions";
 			var definitions = httpContext.Cache[cacheKey] as IEnumerable<ItemDefinition>;
-			if (definitions == null || rebuild)
+			lock (this)
 			{
-				var vpp = vppProvider.Get();
-				var registrations = analyzer.FindRegistrations(vpp, httpContext, sources).ToList();
-				definitions = BuildDefinitions(registrations);
+				if (definitions == null || rebuild)
+				{
+					DequeueRegistrations();
 
-				var files = registrations.SelectMany(p => p.TouchedPaths).Distinct().ToList();
-				//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
-				var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+					var vpp = vppProvider.Get();
+					var registrations = analyzer.FindRegistrations(vpp, httpContext, sources).ToList();
+					definitions = BuildDefinitions(registrations);
 
-				httpContext.Cache.Remove(cacheKey);
-				httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate { Debug.WriteLine("Razor template changed"); }));
-				rebuild = false;
+					var files = registrations.SelectMany(p => p.TouchedPaths).Distinct().ToList();
+					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
+					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
+
+					httpContext.Cache.Remove(cacheKey);
+					httpContext.Cache.Add(cacheKey, definitions, cacheDependency, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, new CacheItemRemovedCallback(delegate { Debug.WriteLine("Razor template changed"); }));
+					rebuild = false;
+				}
 			}
+
 			var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
 				{
 					var td = new TemplateDefinition();
@@ -89,12 +94,6 @@ namespace N2.Definitions.Runtime
 					td.ReplaceDefault = "Index".Equals(d.Template, StringComparison.InvariantCultureIgnoreCase);
 					return td;
 				}).ToArray();
-
-			foreach (var t in templates)
-			{					
-				t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", Title = "Template", AllTemplates = templates, ContainerName = "Advanced", Required = true, HelpTitle = "The page must be saved for another template's fields to appear" });
-			}
-			
 
 			return templates;
 		}

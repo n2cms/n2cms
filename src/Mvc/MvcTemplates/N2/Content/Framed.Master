@@ -3,11 +3,13 @@
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
-    <form id="f" runat="server" class="framed">
+    <form id="f" runat="server">
         <div id="toolbar" class="toolbar"><div class="inner">
             <asp:ContentPlaceHolder ID="Toolbar" runat="server" />
         </div></div>
-        <asp:ContentPlaceHolder ID="Outside" runat="server" />
+      	<div id="outside" class="outside">
+ 	         <asp:ContentPlaceHolder ID="Outside" runat="server" />
+        </div>
         <div id="content" class="content">
 			<h1 id="h1" runat="server" />
             <asp:ContentPlaceHolder ID="Content" runat="server" />

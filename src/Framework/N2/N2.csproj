@@ -143,6 +143,8 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Details\WithEditableVisibilityAttribute.cs" />
+    <Compile Include="Details\EditableMetaTagAttribute.cs" />
     <Compile Include="Details\IContentModifier.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistration.cs" />
     <Compile Include="Definitions\Runtime\IRegistration.cs" />
@@ -162,6 +164,7 @@
     <Compile Include="Details\ILiteralDisplayable.cs" />
     <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
+    <Compile Include="Edit\IPlaceHolderAccessor.cs" />
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
@@ -260,6 +263,8 @@
     <Compile Include="Web\UI\ChildrenDataSourceView.cs" />
     <Compile Include="Web\UI\ControlEventArgs.cs" />
     <Compile Include="Web\UI\ItemHierarchicalDataSourceView.cs" />
+    <Compile Include="Web\UI\SidebarContainerAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\Box.cs" />
     <Compile Include="Web\UI\WebControls\CurrentItemParameter.cs" />
     <Compile Include="Web\UI\WebControls\FileSelector.cs" />
     <Compile Include="Web\UI\WebControls\Display.cs" />

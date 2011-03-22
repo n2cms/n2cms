@@ -10,11 +10,17 @@ namespace N2.Definitions.Runtime
 {
 	public class TemplateSelectorAttribute : EditableDropDownAttribute
 	{
+		public class Info
+		{
+			public string Title { get; set; }
+			public string Name { get; set; }
+		}
+
 		public TemplateSelectorAttribute()
 		{
 		}
 
-		public TemplateDefinition[] AllTemplates { get; set; }
+		public Info[] AllTemplates { get; set; }
 
 		protected override ListItem[] GetListItems()
 		{

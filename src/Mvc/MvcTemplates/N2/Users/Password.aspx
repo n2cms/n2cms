@@ -10,8 +10,6 @@
     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
 		CssClass="command" meta:resourcekey="hlBackResource1">cancel</asp:HyperLink>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Outside" runat="server">
-</asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
     <asp:Label ID="Label1" runat="server" AssociatedControlID="txtPassword" 
 		Text="New password" meta:resourcekey="Label1Resource1"></asp:Label>

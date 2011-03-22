@@ -265,7 +265,8 @@ namespace N2.Web.UI.WebControls
 
 		public override void RenderBeginTag(HtmlTextWriter writer)
 		{
-			writer.Write(Prefix);
+			if(!string.IsNullOrEmpty(Prefix))
+				writer.Write("<span class='prefix'>" + Prefix + "</span>");
 			base.RenderBeginTag(writer);
 		}
 
@@ -274,7 +275,8 @@ namespace N2.Web.UI.WebControls
 		public override void RenderEndTag(HtmlTextWriter writer)
 		{
 			base.RenderEndTag(writer);
-			writer.Write(Suffix);
+			if(!string.IsNullOrEmpty(Suffix))
+				writer.Write("<span class='suffix'>" + Suffix + "</span>");
 			if (!IsValid)
 				writer.Write("<span style='color:red'>*</span>");
 		}

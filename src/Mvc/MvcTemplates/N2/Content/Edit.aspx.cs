@@ -32,7 +32,7 @@ namespace N2.Edit
 		RequiredPermission = Permission.Write)]
     [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
 		UrlEncode = false)]
-	public partial class Edit : EditPage
+	public partial class Edit : EditPage, IItemEditor
 	{
 		protected PlaceHolder phPluginArea;
 
@@ -285,6 +285,8 @@ namespace N2.Edit
 
 		private void InitItemEditor()
 		{
+			ie.AddPlaceHolder("Sidebar", phSidebar);
+
 			string dataType = Request["dataType"];
 			string discriminator = Request["discriminator"];
 			string template = Request["template"];
@@ -334,8 +336,7 @@ namespace N2.Edit
 			Type itemType = ie.CurrentItemType;
 			ucZones.CurrentItem = ie.CurrentItem;
 			ItemDefinition definition = N2.Context.Definitions.GetDefinition(itemType);
-			ucZones.DataSource = definition.AvailableZones;
-			ucZones.DataBind();
+			ucZones.LoadZonesOf(definition, ie.CurrentItem);
 		}
 
 		private void LoadInfo()
@@ -364,5 +365,41 @@ namespace N2.Edit
 			Engine.Persister.Save(item);
 			return item;
         }
-    }
+
+		#region IItemEditor Members
+
+		public ItemEditorVersioningMode VersioningMode
+		{
+			get { return ie.VersioningMode; }
+			set { ie.VersioningMode = value; }
+		}
+
+		public string ZoneName
+		{
+			get { return ie.ZoneName; }
+			set { ie.ZoneName = value; }
+		}
+
+		public IDictionary<string, System.Web.UI.Control> AddedEditors
+		{
+			get { return ie.AddedEditors; }
+		}
+
+		public event EventHandler<ItemEventArgs> Saved
+		{
+			add { ie.Saved += value; }
+			remove { ie.Saved -= value; }
+		}
+
+		#endregion
+
+		#region IItemContainer Members
+
+		public ContentItem CurrentItem
+		{
+			get { return ie.CurrentItem; }
+		}
+
+		#endregion
+	}
 }

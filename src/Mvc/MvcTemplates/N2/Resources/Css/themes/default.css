@@ -24,7 +24,8 @@ body .toolbar,
 body .framed .optionGroup,
 body .framed .commandOptions .opener,
 body .gv th,
-body .gv thead td
+body .gv thead td,
+body.framed .outside
 {
     background-color:#ddc;
 	border-color:#ccc;

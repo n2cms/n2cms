@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Web;
+using N2.Integrity;
 
 namespace N2.Edit
 {
@@ -140,5 +142,11 @@ namespace N2.Edit
 			Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, nextItem);
 			Response.Redirect(Request.Url.PathAndQuery);
 		}
-    }
+
+		public void LoadZonesOf(Definitions.ItemDefinition definition, ContentItem contentItem)
+		{
+			DataSource = definition.AvailableZones.Union(contentItem.Children.FindZoneNames().Where(zn => !string.IsNullOrEmpty(zn)).Select(zn => new AvailableZoneAttribute(zn, zn)));
+			DataBind();
+		}
+	}
 }

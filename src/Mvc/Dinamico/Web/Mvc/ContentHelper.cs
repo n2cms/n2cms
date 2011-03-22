@@ -101,6 +101,8 @@ namespace N2.Web.Mvc
 
 		public ILinkBuilder LinkTo(ContentItem item)
 		{
+			if (item == null) return new LinkBuilder();
+
 			var lb = new LinkBuilder(item);
 			lb.ClassName = GetNavigationClass(item);
 			return lb;

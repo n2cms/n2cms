@@ -6,8 +6,6 @@
 	<asp:HyperLink runat="server" NavigateUrl="Users.aspx" CssClass="command" 
 		meta:resourcekey="HyperLinkResource1">cancel</asp:HyperLink>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Outside" runat="server">
-</asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<asp:CreateUserWizard ID="createUserWizard" runat="server" 
 		OnCreatedUser="createUserWizard_CreatedUser" 

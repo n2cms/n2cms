@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AvailableZones.ascx.cs" Inherits="N2.Edit.AvailableZones" meta:resourceKey="AvailableZonesResource" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
-<edit:FieldSet Legend="Zones" runat="server" class="zonesBox" meta:resourceKey="fsZones" >
+<%@ Register TagPrefix="n2" Namespace="N2.Web.UI.WebControls" Assembly="N2" %>
+<n2:Box ID="boxZones" HeadingText="Zones" CssClass="box zonesBox" runat="server" meta:resourceKey="boxZones">
 	<asp:Repeater ID="rptZones" runat="server">
 		<HeaderTemplate><dl></HeaderTemplate>
 		<ItemTemplate>
@@ -32,4 +33,4 @@
 		</ItemTemplate>
 		<FooterTemplate></dl></FooterTemplate>
 	</asp:Repeater>
-</edit:FieldSet>
+</n2:Box>

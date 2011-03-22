@@ -13,6 +13,15 @@ namespace N2.Edit {
     public partial class AvailableZones {
         
         /// <summary>
+        /// boxZones control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.Box boxZones;
+        
+        /// <summary>
         /// rptZones control.
         /// </summary>
         /// <remarks>

@@ -15,6 +15,8 @@ namespace N2.Definitions.Runtime
 			QueuedRegistrations = new Queue<ViewTemplateSource>();
 		}
 
+		public string TemplateSelectorContainerName { get; set; }
+
 		public event EventHandler RegistrationAdded;
 
 		public Queue<ViewTemplateSource> QueuedRegistrations { get; set; }
@@ -32,12 +34,21 @@ namespace N2.Definitions.Runtime
 			Type contentControllerType = Utility.GetBaseTypes(controllerType).FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ContentController<>));
 			if (contentControllerType != null)
 				modelType = contentControllerType.GetGenericArguments().First();
-			var source = new ViewTemplateSource { ControllerName = controllerName, ModelType = modelType };
+			var source = new ViewTemplateSource { ControllerName = controllerName, ModelType = modelType, TemplateSelectorContainerName = TemplateSelectorContainerName, ViewFileExtension = viewFileExtension };
 
 			QueuedRegistrations.Enqueue(source);
 
 			if (RegistrationAdded != null)
 				RegistrationAdded.Invoke(this, new EventArgs());
+
+			return this;
+		}
+
+		public ViewTemplateRegistrator ShowSelectorIn(string templateSelectorContainerName)
+		{
+			TemplateSelectorContainerName = templateSelectorContainerName;
+			foreach(var qr in QueuedRegistrations)
+				qr.TemplateSelectorContainerName = templateSelectorContainerName;
 
 			return this;
 		}

@@ -174,7 +174,7 @@ namespace N2.Details
 
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		public virtual void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
 			writer.Write(item[propertyName]);
 		}

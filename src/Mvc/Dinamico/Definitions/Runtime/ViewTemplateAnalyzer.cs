@@ -25,10 +25,7 @@ namespace N2.Definitions.Runtime
 			this.viewEnginesProvider = viewEnginesProvider;
 			this.map = map;
 			this.builder = builder;
-			FileExtension = ".cshtml";
 		}
-
-		public string FileExtension { get; set; }
 
 		public virtual IEnumerable<ViewTemplateDescription> FindRegistrations(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
 		{
@@ -38,12 +35,31 @@ namespace N2.Definitions.Runtime
 				if (!vpp.DirectoryExists(virtualDir))
 					continue;
 
-				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(FileExtension)))
+				List<ViewTemplateDescription> descriptions = new List<ViewTemplateDescription>();
+				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(source.ViewFileExtension)))
 				{
 					var description = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
 					if (description != null)
-						yield return description;
+						descriptions.Add(description);
 				}
+
+				foreach (var description in descriptions)
+				{
+					description.Definition.Add(new TemplateSelectorAttribute 
+					{ 
+						Name = "TemplateName", 
+						Title = "Template", 
+						AllTemplates = descriptions.Select(d => new TemplateSelectorAttribute.Info { Name = d.Registration.Template, Title = d.Registration.Title }).ToArray(), 
+						ContainerName = source.TemplateSelectorContainerName, 
+						Required = true, 
+						HelpTitle = "The page must be saved for another template's fields to appear",
+						RequiredPermission = Security.Permission.Administer
+					});
+				}
+
+
+				foreach (var description in descriptions)
+					yield return description;
 			}
 		}
 
@@ -55,11 +71,15 @@ namespace N2.Definitions.Runtime
 			var model = Activator.CreateInstance(modelType) as ContentItem;
 
 			var rd = new RouteData();
-			rd.ApplyCurrentItem(controllerName, Path.GetFileNameWithoutExtension(file.Name), model.IsPage ? model : new StubItem(), model.IsPage ? null : model);
+			bool isPage = model.IsPage;
+			rd.ApplyCurrentItem(controllerName, Path.GetFileNameWithoutExtension(file.Name), isPage ? model : new StubItem(), isPage ? null : model);
 
 			var cctx = new ControllerContext(httpContext, rd, new StubController());
 
-			var result = viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null);
+			var result = isPage
+				? viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null)
+				: viewEnginesProvider.Get().FindPartialView(cctx, file.VirtualPath);
+
 
 			if (result.View == null)
 				return null;

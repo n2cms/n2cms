@@ -55,7 +55,8 @@ body .framed .optionGroup,
 body .framed .commandOptions .opener,
 body .gv th,
 body .gv thead td,
-body .toolbar .option
+body .toolbar .option,
+body.framed .outside
 {
     background-color:#aaa;
 	border-color:#666;

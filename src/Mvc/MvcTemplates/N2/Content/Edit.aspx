@@ -8,9 +8,8 @@
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
-		<asp:PlaceHolder runat="server" ID="phPluginArea" />
-		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
-		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
+	 <%--onclick="$(document.body).toggleClass('rightExpanded');"--%>
+		<asp:PlaceHolder runat="server" ID="phPluginArea" /><a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
     </div>
     <n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSavePublish" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
@@ -21,10 +20,9 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
-	<div class="right">
-		<uc1:ItemInfo id="ucInfo" runat="server" />
-		<uc1:AvailableZones id="ucZones" runat="server" />
-    </div>
+	<uc1:ItemInfo id="ucInfo" runat="server" />
+	<asp:PlaceHolder runat="server" ID="phSidebar" />
+	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
@@ -66,13 +64,13 @@
     			$hp.toggleClass("helpVisible");
     		});
 
-    		$(".right fieldset").hide();
+    		//    		$(".right fieldset").hide();
 
-    		$(".showInfo").toggle(function () {
-    			n2toggle.show(this, ".infoBox");
-    		}, function () {
-    			n2toggle.hide(this, ".infoBox");
-    		});
+    		//    		$(".showInfo").toggle(function () {
+    		//    			n2toggle.show(this, ".infoBox");
+    		//    		}, function () {
+    		//    			n2toggle.hide(this, ".infoBox");
+    		//    		});
 
     		$(".showZones").toggle(function () {
     			n2toggle.show(this, ".zonesBox");
@@ -110,6 +108,9 @@
     		$(".fileSelector").n2autocomplete({ filter: "io" });
     		$(".itemSelector").n2autocomplete({ filter: "pages" });
     		$(".urlSelector").n2autocomplete({ filter: "any" });
+
+    		$("form").n2expandableBox({ opener: ".rightOpener", opened: "#outside" });
+    		$("#outside .box").n2expandableBox({ opener: "h4", opened: ".box-inner" });
     	});
 
     </script>

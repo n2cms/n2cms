@@ -9,9 +9,7 @@ using N2.Definitions;
 namespace Dinamico.Models
 {
 	[PageDefinition]
-	[WithEditableTitle, WithEditableName]
-	public class ListingPage : ContentItem,
-		IStructuralPage // this interface can be used by modules to interact with this app
+	public class ListingPage : TextPage
 	{
 	}
 }

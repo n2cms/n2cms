@@ -88,12 +88,40 @@ namespace N2.Web.Mvc
 
 		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
 		{
-			if (item == null)
-				item = CurrentItem;
-			if (item.Parent == null)
-				return Enumerable.Empty<ContentItem>();
+			if (item == null) item = CurrentItem;
+			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
 
 			return item.Parent.GetChildren(DefaultFilter());
+		}
+
+		public ContentItem PreviousSibling(ContentItem item = null)
+		{
+			if (item == null) item = CurrentItem;
+
+			ContentItem previous = null;
+			foreach (var sibling in Siblings(item))
+			{
+				if (sibling == item)
+					return previous;
+				
+				previous = sibling;
+			}
+			return null;
+		}
+
+		public ContentItem NextSibling(ContentItem item = null)
+		{
+			if (item == null) item = CurrentItem;
+
+			bool next = false;
+			foreach (var sibling in Siblings(item))
+			{
+				if (next)
+					return sibling;
+				if (sibling == item)
+					next = true;
+			}
+			return null;
 		}
 
 		public int LevelOf(ContentItem item = null)

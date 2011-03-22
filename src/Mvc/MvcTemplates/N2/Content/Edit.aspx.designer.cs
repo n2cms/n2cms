@@ -13,24 +13,6 @@ namespace N2.Edit {
     public partial class Edit {
         
         /// <summary>
-        /// hlZones control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlZones;
-        
-        /// <summary>
-        /// hlInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlInfo;
-        
-        /// <summary>
         /// om control.
         /// </summary>
         /// <remarks>
@@ -92,6 +74,15 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Edit.ItemInfo ucInfo;
+        
+        /// <summary>
+        /// phSidebar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phSidebar;
         
         /// <summary>
         /// ucZones control.

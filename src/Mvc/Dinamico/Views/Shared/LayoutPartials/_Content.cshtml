@@ -1,11 +1,10 @@
 ﻿@{
 	Content.PrependDefinition(re => 
 	{
-		re.Container("Content", e =>
+		re.Container("Metadata", e =>
 		{
-			e.Name();
+			e.Name().Title("Path Segment");
 		});
-		
 	});
 }
 @Content.Register.Title().Container("Content").Configure(e => e.CssClass = "entry-title").Display()

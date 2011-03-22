@@ -25,7 +25,7 @@ using N2.Persistence;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A form that generates an edit interface for content items.</summary>
-	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<CommandContext>
+	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<CommandContext>, IPlaceHolderAccessor
 	{
 		#region Constructor
 
@@ -45,6 +45,7 @@ namespace N2.Web.UI.WebControls
 
 		#region Private Fields
 		private ContentItem currentItem;
+		private IDictionary<string, Control> placeholders = new Dictionary<string, Control>();
 		#endregion
 
 		#region Properties
@@ -115,12 +116,12 @@ namespace N2.Web.UI.WebControls
 				currentItem = value;
 				if (value != null)
 				{
-					var definition = Engine.Definitions.GetDefinition(value.GetContentType());
-					Discriminator = definition.Discriminator;
+					Definition = Engine.Container.ResolveAll<ITemplateProvider>().GetDefinition(value);
+					Discriminator = Definition.Discriminator;
 					if (value.VersionOf != null && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
 					EnsureChildControls();
-					Engine.EditManager.UpdateEditors(definition, value, AddedEditors, Page.User);
+					Engine.EditManager.UpdateEditors(Definition, value, AddedEditors, Page.User);
 				}
 				else
 				{
@@ -257,6 +258,22 @@ namespace N2.Web.UI.WebControls
 				BinderContext = null;
 			}
 
+		}
+
+		#endregion
+
+		#region IPlaceHolderAccessor Members
+
+		public void AddPlaceHolder(string name, Control container)
+		{
+			placeholders[name] = container;
+		}
+
+		public Control GetPlaceHolder(string name)
+		{
+			Control container;
+			placeholders.TryGetValue(name, out container);
+			return container;
 		}
 
 		#endregion

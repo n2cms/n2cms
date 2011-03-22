@@ -57,7 +57,7 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableFileUploadAttribute>(name, title);
 		}
 
-		public static EditableBuilder<EditableFreeTextAreaAttribute> FreeText(this IContentRegistration registration, string name, string title = null, string container = null)
+		public static EditableBuilder<EditableFreeTextAreaAttribute> FreeText(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableFreeTextAreaAttribute>(name, title);
 		}
@@ -87,9 +87,14 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableLinkAttribute>(name, title);
 		}
 
-		public static EditableBuilder<EditableTextBoxAttribute> Text(this IContentRegistration registration, string name, string title = null, string container = null)
+		public static EditableBuilder<EditableTextBoxAttribute> Text(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableTextBoxAttribute>(name, title);
+		}
+
+		public static EditableBuilder<EditableMetaTagAttribute> Meta(this IContentRegistration registration, string name, string title = null)
+		{
+			return registration.RegisterEditable<EditableMetaTagAttribute>(name, title);
 		}
 
 		public static EditableBuilder<EditableThemeSelectionAttribute> ThemeSelection(this IContentRegistration registration, string name, string title = null)
