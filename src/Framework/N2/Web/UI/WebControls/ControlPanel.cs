@@ -230,8 +230,7 @@ jQuery(document).ready(function(){{
 
 		private void RegisterDragDropScripts()
 		{
-			Register.JQuery(Page);
-			Register.JavaScript(Page, "{ManagementUrl}/Resources/Js/jquery.ui.ashx");
+			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
 			Register.JavaScript(Page, @"

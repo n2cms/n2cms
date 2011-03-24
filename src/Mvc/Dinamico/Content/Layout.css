@@ -25,6 +25,6 @@ html,body { min-height:100%; }
 		div#footer { padding:20px 20px 0 20px; }
 
 /* layout parts */
-	.part { margin:0 20px 20px 20px; }
+	#content .part { margin-bottom:20px; }
 	.columns .column { width:50%; margin-left:20px; width:450px; float:left; }
 		.columns .column .part { margin-left:0; margin-right:0; }

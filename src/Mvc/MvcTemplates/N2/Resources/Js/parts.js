@@ -5,7 +5,8 @@
 		modal: true,
 		width: 800,
 		height: 600,
-		closeOnEscape: true
+		closeOnEscape: true,
+		resizable: true
 	};
 
 	window.n2DragDrop = function (urls, messages) {
@@ -30,6 +31,7 @@
 			$(document.body).addClass("dragDrop");
 			$('.titleBar a.command').live('click', function (e) {
 				e.preventDefault();
+				e.stopPropagation();
 				self.showDialog($(this).attr('href'));
 			});
 		},
@@ -71,7 +73,7 @@
 			$(document.body).addClass("dragging");
 			var shadow = document.createElement('div');
 			$(shadow).addClass("dragShadow")
-				.css({ height: $t.height(), width: $t.width() })
+				.css({ height: Math.min($t.height(), 200), width: $t.width() })
 				.text(handler.messages.helper).appendTo("body");
 			return shadow;
 		},
@@ -103,7 +105,7 @@
 					currentlyOver = this;
 					var $t = $(this);
 					$t.data("html", $t.html()).data("height", $t.height());
-					$t.html(ui.draggable.html()).css("height", "auto");
+					//$t.html(ui.draggable.html()).css("height", "auto");
 					ui.helper.height($t.height()).width($t.width());
 				},
 				out: function (e, ui) {

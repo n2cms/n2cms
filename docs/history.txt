@@ -1,4 +1,5 @@
 ﻿2.2
+- Carousel slider for dinamico
 - State of deleted items is set to deleted
 - Remove language association from deleted items
 - Permissions for management plugins with visualization and improved security checks (ThreadId=248967)

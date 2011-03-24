@@ -168,7 +168,6 @@ namespace N2.Details
 			if (MaxLength > 0) tb.MaxLength = MaxLength;
 			if (Columns > 0) tb.Columns = Columns;
 			if (Rows > 0) tb.Rows = Rows;
-			if (Columns > 0) tb.Rows = Rows;
 			tb.TextMode = TextMode;
 		}
 

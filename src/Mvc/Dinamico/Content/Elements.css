@@ -16,8 +16,10 @@ a.opener { text-decoration:none }
 
 .separator { border-top:solid 1px #eee; padding-top:20px; }
 
-.list .item { margin-bottom:20px; }
+.list-item { margin-bottom:20px; }
 
 .pager { text-align:center; border-top: solid 1px #eee; padding-top:10px; margin-top:10px; }
 	.pager .previous { float:left; }
 	.pager .next { float:right; }
+	
+.part { margin-bottom:20px; }

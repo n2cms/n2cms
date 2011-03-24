@@ -16,12 +16,12 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
-	[TabContainer(Constants.Containers.Site, "Site", 1000)]
+	[TabContainer(Detaults.Containers.Site, "Site", 1000)]
 	public class StartPage : TextPage, IStartPage, IStructuralPage, IThemeable, ILanguage
 	{
 		#region IThemeable Members
 
-		[EditableThemeAttribute(ContainerName = Constants.Containers.Site)]
+		[EditableThemeAttribute(ContainerName = Detaults.Containers.Site)]
 		public virtual string Theme { get; set; }
 
 		#endregion
@@ -40,7 +40,7 @@ namespace Dinamico.Models
 			}
 		}
 
-		[EditableLanguagesDropDown("Language", 100, ContainerName = Constants.Containers.Site)]
+		[EditableLanguagesDropDown("Language", 100, ContainerName = Detaults.Containers.Site)]
 		public virtual string LanguageCode { get; set; }
 
 		public string LanguageTitle
@@ -56,10 +56,10 @@ namespace Dinamico.Models
 
 		#endregion
 		
-		[EditableFreeTextArea("Footer text", 200, ContainerName = Constants.Containers.Site)]
+		[EditableFreeTextArea("Footer text", 200, ContainerName = Detaults.Containers.Site)]
 		public virtual string FooterText { get; set; }
 
-		[EditableFileUpload(ContainerName = Constants.Containers.Site)]
+		[EditableFileUpload(ContainerName = Detaults.Containers.Site)]
 		public virtual string Logotype { get; set; }
 	}
 }

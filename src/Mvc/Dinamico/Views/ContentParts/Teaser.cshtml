@@ -5,13 +5,12 @@
 	   {
 		   ie.Title = "Teaser";
 		   ie.Link("ForwardsTo");
-		   ie.CheckBox("LargeImage").Title("Large image").Configure(e => e.DefaultValue = true);
+		   ie.ImageSize("ImageSize", "Image Size").Configure(e => e.DefaultValue = "");
 	   }); }
-
 <div class="part teaser">
 @if (Content.HasValue("ForwardsTo"))
 {
-	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", (Content.Data.LargeImage ?? true) ?  "half" : "thumb" } })
+	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", Dinamico.Detaults.ImageSize(Content.Data.ImageSize, Content.CurrentItem.ZoneName) } })
 }
 else
 {

@@ -8,6 +8,7 @@ using N2.Configuration;
 using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
 using System.Web;
+using N2.Resources;
 
 namespace N2.Edit.Navigation
 {
@@ -16,15 +17,11 @@ namespace N2.Edit.Navigation
 		protected HtmlInputHidden inputLocation;
 		protected HtmlInputFile inputFile;
 		protected IFileSystem FS;
-
-		protected override void OnPreInit(EventArgs e)
-		{
-			base.OnPreInit(e);
-			FS = Engine.Resolve<IFileSystem>();
-		}
-
+		
 		protected override void OnInit(EventArgs e)
 		{
+			FS = Engine.Resolve<IFileSystem>();
+			Register.JQueryUi(Page);
 			var selected = Selection.SelectedItem;
 			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
 			{

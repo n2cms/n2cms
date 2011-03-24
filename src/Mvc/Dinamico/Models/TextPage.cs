@@ -9,7 +9,7 @@ namespace Dinamico.Models
 	[WithEditableName(ContainerName = "Metadata")]
 	[WithEditableVisibility(ContainerName = "Metadata")]
 	[SidebarContainer("Metadata", 100, HeadingText = "Metadata")]
-	[TabContainer(Constants.Containers.Content, "Content", 1000)]
+	[TabContainer(Detaults.Containers.Content, "Content", 1000)]
 	public abstract class TextPage : ContentItem,
 		IStructuralPage // this interface can be used by modules to interact with this app
 	{

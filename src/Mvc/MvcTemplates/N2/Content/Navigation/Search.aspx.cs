@@ -11,6 +11,7 @@ namespace N2.Edit.Navigation
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
+			Register.JQueryUi(Page);
 
 			string query = Request.QueryString["query"];
             if (string.IsNullOrEmpty(query))

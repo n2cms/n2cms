@@ -1,4 +1,4 @@
-- dinamico carousel
+- AttributeTransformerBase (ThreadId=250548)
 - content transformers/extractors (extract summary, parse wiki)
 - index template replaces default
 - static parts

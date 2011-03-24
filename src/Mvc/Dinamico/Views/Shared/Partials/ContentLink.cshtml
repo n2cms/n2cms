@@ -2,12 +2,15 @@
 
 @if(Model != null && Model.ID != 0)
 {
+	string imgSize = (string)@ViewBag.preferredSize ?? "thumb";
 	using (@Content.BeginContentScope(Model))
 	{
-		<a href="@Content.CurrentItem.Url" class="contentlink clearfix">
-		@Content.Render.Image("Image", (string)@ViewBag.preferredSize ?? "thumb")
-		<h3>@Content.CurrentItem.Title</h3>
-		@N2.Utility.ExtractFirstSentences(@Content.Data.Text as string, 200).ToHtmlString()
-		</a>
+<div class="contentlink clearfix @(imgSize)Size">
+	<a class="img" href="@Content.CurrentItem.Url">@Content.Render.Image("Image", imgSize)</a>		
+	<div class="content">
+		<h3><a class="heading" href="@Content.CurrentItem.Url">@Content.CurrentItem.Title</a></h3>
+		<a class="summary" href="@Content.CurrentItem.Url">@N2.Utility.ExtractFirstSentences(@Content.Data.Text as string, 200).ToHtmlString()</a>
+	</div>
+</div>
 	}
 }

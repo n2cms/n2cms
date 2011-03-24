@@ -24,9 +24,19 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			ListControl ddl = editor as ListControl;
-			if (!ddl.SelectedValue.Equals(GetValue(item), StringComparison.InvariantCultureIgnoreCase))
+			string current = GetValue(item);
+			object value = GetValue(ddl);
+			if (!value.Equals(current))
 			{
-                item[Name] = GetValue(ddl);
+				if (value != null && value.Equals(item[Name]))
+					item[Name] = null;
+				else
+					item[Name] = value;
+				return true;
+			}
+			else if (current != null && current.Equals(DefaultValue))
+			{
+				item[Name] = value;
 				return true;
 			}
 			return false;
@@ -54,7 +64,7 @@ namespace N2.Details
         /// <returns>A string to use as selected value.</returns>
         protected virtual string GetValue(ContentItem item)
         {
-            return item[Name] as string;
+            return (item[Name] ?? DefaultValue) as string;
         }
 		
 		protected abstract ListControl CreateEditor();

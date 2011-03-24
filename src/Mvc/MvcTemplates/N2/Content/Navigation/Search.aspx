@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
 		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
 		</asp:PlaceHolder>
-        <script src="../../Resources/Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
 <body class="framed navigation search">
     <form id="form1" runat="server">
