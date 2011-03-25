@@ -90,7 +90,7 @@
 
 	<!-- Clean sources -->
 
-	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies;Templates-Mvc-PrepareDependencies;Templates-PrepareDependencies">
+	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies;Source-PrepareDependencies">
 	</Target>
 
 	<Target Name="Clean-Output">

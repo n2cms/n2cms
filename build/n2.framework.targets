@@ -77,6 +77,11 @@
 		<Message Text="Framework-EditFiles:" Importance="high" />
 		<Message Text="@(Framework-EditFiles)" />
 	</Target>
+
+	<Target Name="CopyManagementFilesToManagementFilesDestination" Condition="'$(ManagementFilesDestination)' != ''" DependsOnTargets="Framework-CreateItemGroups-EditFiles">
+		<Message Text="xcopy management files to $(ManagementFilesDestination)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(ManagementFilesDestination)\%(RecursiveDir)" />
+	</Target>
 	
 	<!-- Deploy -->
 

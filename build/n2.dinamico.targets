@@ -19,8 +19,9 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(SqlServerCeBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 
-		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />
-		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" Importance="high" />
+		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" />
+		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />
+		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Dinamico-SourceFolder)\N2" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />
 	</Target>
 
 	<Target Name="Dinamico-Build">
