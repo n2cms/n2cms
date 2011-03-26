@@ -9,6 +9,7 @@ using N2.Details;
 using N2.Engine.Globalization;
 using System.Globalization;
 using N2.Web.UI;
+using N2.Web;
 
 namespace Dinamico.Models
 {
@@ -16,12 +17,12 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
-	[TabContainer(Detaults.Containers.Site, "Site", 1000)]
-	public class StartPage : TextPage, IStartPage, IStructuralPage, IThemeable, ILanguage
+	[TabContainer(Defaults.Containers.Site, "Site", 1000)]
+	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
 	{
 		#region IThemeable Members
 
-		[EditableThemeAttribute(ContainerName = Detaults.Containers.Site)]
+		[EditableThemeAttribute(ContainerName = Defaults.Containers.Site)]
 		public virtual string Theme { get; set; }
 
 		#endregion
@@ -40,7 +41,7 @@ namespace Dinamico.Models
 			}
 		}
 
-		[EditableLanguagesDropDown("Language", 100, ContainerName = Detaults.Containers.Site)]
+		[EditableLanguagesDropDown("Language", 100, ContainerName = Defaults.Containers.Site)]
 		public virtual string LanguageCode { get; set; }
 
 		public string LanguageTitle
@@ -56,10 +57,23 @@ namespace Dinamico.Models
 
 		#endregion
 		
-		[EditableFreeTextArea("Footer text", 200, ContainerName = Detaults.Containers.Site)]
+		[EditableFreeTextArea("Footer text", 200, ContainerName = Defaults.Containers.Site)]
 		public virtual string FooterText { get; set; }
 
-		[EditableFileUpload(ContainerName = Detaults.Containers.Site)]
+		[EditableFileUpload(ContainerName = Defaults.Containers.Site)]
 		public virtual string Logotype { get; set; }
+
+		#region ISitesSource Members
+
+		[EditableTextBox(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
+		public virtual string HostName { get; set; }
+
+		public IEnumerable<Site> GetSites()
+		{
+			if (!string.IsNullOrEmpty(HostName))
+				yield return new Site(Find.EnumerateParents(this, null, true).Last().ID, ID, HostName) { Wildcards = true };
+		}
+
+		#endregion
 	}
 }

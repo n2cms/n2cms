@@ -29,7 +29,7 @@ namespace Dinamico.Controllers
 		{
 			var start = N2.Find.ClosestOf<IStartPage>(CurrentPage);
 			string content = Tree.From(start)
-				.Filters(new NavigationFilter())
+				.Filters(N2.Filter.Is.Accessible())
 				.ExcludeRoot(true).ToString();
 			return Content("<ul>" 
 				+ "<li>" + Link.To(start) + "</li>"
@@ -63,9 +63,9 @@ namespace Dinamico.Controllers
 				.Enumerable<ContentItem>()
 				.Where(h => h != null)
 				.Select(h => h.IsPage ? h : h.ClosestPage())
-				.Where(N2.Filter.Is.Accessible().Match)
-				.Where(N2.Filter.Is.DescendantOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage).Match)
-				.Where(N2.Filter.Is.Distinct().Match);
+				.Where(N2.Filter.Is.Accessible())
+				.Where(N2.Filter.Is.DescendantOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage))
+				.Where(N2.Filter.Is.Distinct());
 			return hits;
 		}
 

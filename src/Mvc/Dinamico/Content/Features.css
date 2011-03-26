@@ -7,7 +7,8 @@
 
 div.contentlink a { text-decoration:none; color:#666 }
 div.contentlink a:hover { text-decoration:none; }
-div.contentlink.thumbSize a.img { float:left; margin-right:10px; }
+div.contentlink.thumbSize a.img,
+div.contentlink.cubeSize a.img  { float:left; margin-right:10px; }
 div.contentlink h3 { display:inline; margin-right:10px; }
 div.contentlink:hover { background-color:#DEF; }
 

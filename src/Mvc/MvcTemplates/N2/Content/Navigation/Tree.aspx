@@ -1,5 +1,5 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Tree.aspx.cs" Inherits="N2.Edit.Navigation.Tree" meta:resourceKey="treePage" %>
-<%@ Register TagPrefix="nav" TagName="ContextMenu" Src="ContextMenu.ascx" %>
+<%@ Register TagPrefix="edit" TagName="ContextMenu" Src="ContextMenu.ascx" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,11 +32,21 @@
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
 
-		<% if(Request["destinationType"] != null) {%>
+		<%
+			bool isTinyPopup = Request["destinationType"] != null;
+			bool isSelection = Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection";
+			bool isFilesSelection = Request["location"] == "filesselection";
+			bool isContentSelection = Request["location"] == "contentselection";
+			bool isFilesNavigation = Request["location"] == "files";
+			bool isContentNavigation = Request["location"] == "content" || string.IsNullOrEmpty(Request["location"]);			
+			bool isNavigation = isFilesNavigation || isContentNavigation;
+		%>
+
+		<% if(isTinyPopup) {%>
         <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
 		<%} %>
         
-        <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
+        <% if (isSelection) { %>
         <script type="text/javascript">
         	var updateOpenerWithUrlAndClose = function(relativeUrl) {
         		function selectIn(opener) {
@@ -64,7 +74,7 @@
         <% } %>
 		
         <script type="text/javascript">
-		<% if (Request["location"] == "filesselection") { %>
+		<% if (isFilesSelection) { %>
         	n2nav.handlers["fallback"] = function(e) {
         		e.preventDefault();
         		if ($(this).attr("data-type") == "File")
@@ -74,7 +84,7 @@
         	};
     	<% } %>
 		
-		<% if (Request["location"] == "contentselection") { %>
+		<% if (isContentSelection) { %>
 			n2nav.handlers["fallback"] = function(e) {
 				e.preventDefault();
 				if ($(this).attr("data-id") != "0")
@@ -82,7 +92,7 @@
 			};
     	<% } %>
 		
-		<% if (Request["location"] == "files") { %>
+		<% if (isFilesNavigation) { %>
         	var fallback = n2nav.handlers["fallback"];
         	n2nav.handlers["fallback"] = function(e) {
         		var type = $(this).attr("data-type");
@@ -95,7 +105,9 @@
     	<% } %>
         </script>
 
-        <nav:ContextMenu id="cm" runat="server" />
+		<% if (isNavigation) { %>
+        <edit:ContextMenu id="cm" runat="server" />
+    	<% } %>
     </form>
 </body>
 </html>

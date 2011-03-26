@@ -100,6 +100,9 @@ namespace N2.Edit.Navigation
 					selected = recentlySelected;
 				}
 			}
+			catch (ArgumentException)
+			{
+			}
 			catch (HttpException)
 			{
 			}

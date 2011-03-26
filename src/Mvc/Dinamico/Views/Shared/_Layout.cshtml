@@ -18,7 +18,7 @@
 </head>
 <body>
 	@{ Html.RenderControlPanel(); }
-	<div id="wrapper">
+	<div id="wrapper" class="clearfix">
 	@if (IsSectionDefined("page"))
  { <div>@RenderSection("page")</div> }
  else

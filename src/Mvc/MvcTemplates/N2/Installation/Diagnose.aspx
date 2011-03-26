@@ -49,11 +49,10 @@
 					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
 <% try { %>
 					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
-<% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
-<% try { %>
 					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
-<% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
-</tbody>
+					<tr><th>Url parser type</th><td><%= N2.Context.Current.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
+<% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
+				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
 					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>

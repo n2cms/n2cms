@@ -98,7 +98,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Detaults.cs" />
+    <Compile Include="Defaults.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ContentPartsController.cs" />
     <Compile Include="Controllers\ContentPagesController.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="Controllers\ListingPagesController.cs" />
     <Compile Include="Controllers\StartPageController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\TextPageController.cs" />
+    <Compile Include="Controllers\FallbackController.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
@@ -118,12 +118,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\PageModelBase.cs" />
     <Compile Include="Models\LanguageIntersection.cs" />
     <Compile Include="Models\ContentPart.cs" />
     <Compile Include="Models\ContentPage.cs" />
     <Compile Include="Models\ListingPage.cs" />
+    <Compile Include="Models\PartModelBase.cs" />
     <Compile Include="Models\StartPage.cs" />
-    <Compile Include="Models\TextPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mvc\ContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />

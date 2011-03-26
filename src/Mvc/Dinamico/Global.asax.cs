@@ -26,7 +26,7 @@ namespace Dinamico
 			RegisterViewEngines(ViewEngines.Engines);
 
 			engine.Resolve<ViewTemplateRegistrator>()
-				.ShowSelectorIn("Metadata")
+				.ShowSelectorIn(Defaults.Containers.Metadata)
 				.Add<Controllers.StartPageController>()
 				.Add<Controllers.ContentPagesController>()
 				.Add<Controllers.ContentPartsController>()
