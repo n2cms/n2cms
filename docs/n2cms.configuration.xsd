@@ -138,10 +138,11 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
-						<xs:attribute name="rootID" type="xs:integer" use="optional" />
-						<xs:attribute name="startPageID" type="xs:integer" use="optional" />
-						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" />
-						<xs:attribute name="wildcards" type="xs:boolean" use="optional" />
+						<xs:attribute name="rootID" type="xs:integer" use="optional" default="1" />
+						<xs:attribute name="startPageID" type="xs:integer" use="optional" default="1" />
+						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" default="false" />
+						<xs:attribute name="dynamicSites" type="xs:boolean" use="optional" default="true" />
+						<xs:attribute name="wildcards" type="xs:boolean" use="optional" default="false" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
