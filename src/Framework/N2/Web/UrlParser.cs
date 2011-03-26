@@ -26,6 +26,8 @@ namespace N2.Web
 		{
 			if (host == null) throw new ArgumentNullException("host");
 
+			Debug.WriteLine("UrlParser");
+
 			this.persister = persister;
 			this.webContext = webContext;
 			this.host = host;

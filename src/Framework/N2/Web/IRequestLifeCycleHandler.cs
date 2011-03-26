@@ -1,5 +1,6 @@
 using System.Web;
 using N2.Engine;
+using System;
 
 namespace N2.Web
 {
@@ -9,6 +10,7 @@ namespace N2.Web
 	/// </summary>
 	public interface IRequestLifeCycleHandler
 	{
+		[Obsolete]
 		void Initialize();
 	}
 }

@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
-using N2.Persistence;
+using System.Diagnostics;
 using N2.Configuration;
+using N2.Persistence;
 
 namespace N2.Web
 {
@@ -10,25 +10,10 @@ namespace N2.Web
 	/// </summary>
 	public class MultipleSitesParser : UrlParser
 	{
-		public MultipleSitesParser(IPersister persister, IWebContext webContext, IHost host, ISitesProvider sitesProvider, HostSection config)
+		public MultipleSitesParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
 			: base(persister, webContext, host, config)
 		{
-			if (config == null) throw new ArgumentNullException("config");
-
-            if (config.DynamicSites)
-            {
-                host.AddSites(sitesProvider.GetSites());
-                persister.ItemSaved += delegate(object sender, ItemEventArgs e)
-                {
-                    if(e.AffectedItem is ISitesSource)
-                    {
-                        IList<Site> sites = Host.ExtractSites(config);
-                        sites = Host.Union(sites, sitesProvider.GetSites());
-
-                        host.ReplaceSites(host.DefaultSite, sites);
-                    }
-                };
-            }
+			Debug.WriteLine("MultipleSitesParser");
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>

@@ -6,6 +6,7 @@ using N2.Edit.Installation;
 using N2.Engine;
 using N2.Web.UI;
 using System.Diagnostics;
+using N2.Plugin;
 
 namespace N2.Web
 {
@@ -14,7 +15,7 @@ namespace N2.Web
 	/// authorizing and closing NHibernate session.
 	/// </summary>
 	[Service(typeof (IRequestLifeCycleHandler))]
-	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
+	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IAutoStart
 	{
 		private readonly IContentAdapterProvider adapters;
 		private readonly EventBroker broker;
@@ -58,15 +59,9 @@ namespace N2.Web
 
 		#region IRequestLifeCycleHandler Members
 
+		[Obsolete]
 		public void Initialize()
 		{
-			broker.BeginRequest += Application_BeginRequest;
-			broker.PostResolveRequestCache += Application_PostResolveRequestCache;
-			broker.PostMapRequestHandler += Application_PostMapRequestHandler;
-			broker.AuthorizeRequest += Application_AuthorizeRequest;
-			broker.AcquireRequestState += Application_AcquireRequestState;
-			broker.Error += Application_Error;
-			broker.EndRequest += Application_EndRequest;
 		}
 
 		#endregion
@@ -201,5 +196,31 @@ namespace N2.Web
 			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
 			webContext.Response.Redirect(redirectUrl);
 		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			broker.BeginRequest += Application_BeginRequest;
+			broker.PostResolveRequestCache += Application_PostResolveRequestCache;
+			broker.PostMapRequestHandler += Application_PostMapRequestHandler;
+			broker.AuthorizeRequest += Application_AuthorizeRequest;
+			broker.AcquireRequestState += Application_AcquireRequestState;
+			broker.Error += Application_Error;
+			broker.EndRequest += Application_EndRequest;
+		}
+
+		public void Stop()
+		{
+			broker.BeginRequest -= Application_BeginRequest;
+			broker.PostResolveRequestCache -= Application_PostResolveRequestCache;
+			broker.PostMapRequestHandler -= Application_PostMapRequestHandler;
+			broker.AuthorizeRequest -= Application_AuthorizeRequest;
+			broker.AcquireRequestState -= Application_AcquireRequestState;
+			broker.Error -= Application_Error;
+			broker.EndRequest -= Application_EndRequest;
+		}
+
+		#endregion
 	}
 }

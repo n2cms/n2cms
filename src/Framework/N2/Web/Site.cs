@@ -87,7 +87,7 @@ namespace N2.Web
 		#region ToString
 		public override string ToString()
 		{
-			return base.ToString() + " [" + authority + "] #" + startPageID;
+			return base.ToString() + " @" + (Wildcards ? "*." : "") + authority + " #" + startPageID;
 		}
 		public override bool Equals(object obj)
 		{

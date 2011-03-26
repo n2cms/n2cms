@@ -189,10 +189,10 @@ namespace N2.Engine
 			{
 				try
 				{
-					Assembly a = Assembly.ReflectionOnlyLoadFrom(dllPath);
-					if (Matches(a.FullName) && !loadedAssemblyNames.Contains(a.FullName))
+					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
+					if (Matches(assumedAssemblyName) && !loadedAssemblyNames.Contains(assumedAssemblyName))
 					{
-						App.Load(a.FullName);
+						App.Load(assumedAssemblyName);
 					}
 				}
 				catch (BadImageFormatException ex)

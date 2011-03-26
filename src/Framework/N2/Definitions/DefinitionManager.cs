@@ -8,6 +8,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence.Proxying;
 using N2.Plugin;
+using System.Diagnostics;
 
 namespace N2.Definitions
 {
@@ -22,6 +23,7 @@ namespace N2.Definitions
 
 		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
+			Debug.WriteLine("DefinitionManager");
 			this.definitionProviders = definitionProviders;
 			this.activator = activator;
 		}
@@ -114,6 +116,7 @@ namespace N2.Definitions
 
 		public void Start()
 		{
+			Debug.WriteLine("DefinitionManager.Start");
 			activator.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
 			activator.ItemCreated += new EventHandler<ItemEventArgs>(activator_ItemCreated);
 		}

@@ -143,16 +143,9 @@ namespace N2.Engine
 
 		public void Initialize()
 		{
-			try
-			{
-				var bootstrapper = container.Resolve<IPluginBootstrapper>();
-				var plugins = bootstrapper.GetPluginDefinitions();
-				bootstrapper.InitializePlugins(this, plugins);
-			}
-			finally
-			{
-				container.Resolve<Web.IRequestLifeCycleHandler>().Initialize();
-			}
+			var bootstrapper = container.Resolve<IPluginBootstrapper>();
+			var plugins = bootstrapper.GetPluginDefinitions();
+			bootstrapper.InitializePlugins(this, plugins);
 
 			container.StartComponents();
 		}

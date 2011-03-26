@@ -31,6 +31,22 @@ namespace N2.Collections
 			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
 		}
 
+		/// <summary>Filters by all the provided filters.</summary>
+		/// <param name="filters">The filters to aggregate.</param>
+		/// <returns>A filter.</returns>
+		public ItemFilter All(ItemFilter first, IEnumerable<ItemFilter> alsoRequired)
+		{
+			return new CompositeFilter(new ItemFilter[] { first }.Union(alsoRequired));
+		}
+
+		/// <summary>Filters by all the provided filters.</summary>
+		/// <param name="filters">The filters to aggregate.</param>
+		/// <returns>A filter.</returns>
+		public ItemFilter Any(ItemFilter first, IEnumerable<ItemFilter> filters)
+		{
+			return new DelegateFilter(i => first.Match(i) || filters.Any(f => f.Match(i)));
+		}
+
 		/// <summary>Filters by counting items. This filter must be reset after each usage.</summary>
 		/// <param name="skip">Number of items to skip.</param>
 		/// <param name="take">Number of items to take.</param>

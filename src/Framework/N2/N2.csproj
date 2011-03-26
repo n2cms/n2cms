@@ -225,6 +225,7 @@
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
+    <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
