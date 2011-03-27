@@ -61,3 +61,15 @@ div.anythingSlider .start-stop.playing { background-image:url(../N2/Resources/Ic
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { }
 
 div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop { transition-duration: 0; -o-transition-duration: 0; -moz-transition-duration: 0; -webkit-transition-duration: 0; }
+
+
+div.gmap > div
+{
+	height:450px;
+	text-align:center;
+}
+div.column1 div.gmap > div,
+div.column2 div.gmap > div
+{
+	height:300px;
+}

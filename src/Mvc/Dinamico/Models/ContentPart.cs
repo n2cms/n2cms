@@ -3,7 +3,7 @@
 namespace Dinamico.Models
 {
 	[PartDefinition]
-	public class ContentPart : ContentItem
+	public class ContentPart : PartModelBase
 	{
 	}
 }

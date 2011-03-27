@@ -76,6 +76,14 @@ namespace N2.Web.Mvc
 			get { return new FilterHelper(); }
 		}
 
+		public string UniqueID(string prefix = null)
+		{
+			if (string.IsNullOrEmpty(prefix))
+				return "_" + CurrentItem.ID;
+
+			return prefix + CurrentItem.ID;
+		}
+
 		// markup
 
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
@@ -110,7 +118,7 @@ namespace N2.Web.Mvc
 
 		public bool HasValue(string detailName)
 		{
-			return CurrentItem[detailName] != null;
+			return CurrentItem[detailName] != null && !("".Equals(CurrentItem[detailName]));
 		}
 
 		// content scope

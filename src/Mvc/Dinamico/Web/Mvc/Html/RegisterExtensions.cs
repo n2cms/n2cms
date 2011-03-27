@@ -6,6 +6,8 @@ using N2.Definitions.Runtime;
 using N2.Details;
 using System.Web.Mvc;
 using N2.Definitions;
+using N2.Persistence.Proxying;
+using N2.Security;
 
 namespace N2.Web.Mvc.Html
 {
@@ -114,10 +116,10 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			string previousContainerName = re.ContainerName;
-			re.ContainerName = containerName;
 			re.Add(new N2.Web.UI.FieldSetContainerAttribute(containerName, legend, re.NextSortOrder(sortOrder)));
 
+			string previousContainerName = re.ContainerName;
+			re.ContainerName = containerName;
 			if (registration != null)
 			{
 				registration(re);
@@ -148,6 +150,36 @@ namespace N2.Web.Mvc.Html
 
 			re.ContainerName = null;
 			return re;
+		}
+
+		public static EditableBuilder<T> DefaultValue<T>(this EditableBuilder<T> builder, object value) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => e.DefaultValue = value);
+			return builder;
+		}
+
+		public static EditableBuilder<T> Required<T>(this EditableBuilder<T> builder, string requiredMessage = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.Required = true; e.RequiredMessage = requiredMessage; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> Validation<T>(this EditableBuilder<T> builder, string validationExpression, string validationMessage = null, string validationText = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.Validate = true; e.ValidationExpression = validationExpression; e.ValidationMessage = validationMessage; e.ValidationText = validationText; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> RequiredPermission<T>(this EditableBuilder<T> builder, Permission requiredPermission) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.RequiredPermission = requiredPermission; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> Help<T>(this EditableBuilder<T> builder, string title = null, string text = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.HelpTitle = title; e.HelpText = text ; });
+			return builder;
 		}
 
 		public static IDisplayRenderer Display<T>(this EditableBuilder<T> builder) where T : IEditable

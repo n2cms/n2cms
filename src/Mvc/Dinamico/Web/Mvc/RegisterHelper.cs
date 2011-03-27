@@ -30,6 +30,17 @@ namespace N2.Web.Mvc
 			return new RegisteringDisplayRenderer<T>(Html, name, re);
 		}
 
+		public EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+			{
+				re.Add(editable, editable.Name, editable.Title);
+			}
+
+			return new RegisteringDisplayRenderer<T>(Html, editable.Name, re);
+		}
+
 		public void RegisterModifier(Details.IContentModifier modifier)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);

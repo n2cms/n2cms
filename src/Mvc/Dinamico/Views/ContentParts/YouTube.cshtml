@@ -3,14 +3,14 @@
 @{ Content.Define(re =>
 	   {
 		   re.Title = "YouTube video";
-		   re.Text("WatchUrl", "YouTube address");
+		   re.Text("WatchUrl", "YouTube address").DefaultValue("");
 		   re.CheckBox("HD", "High Definition");
 	   });
 }
 
 @if (Content.HasValue("WatchUrl"))
 {
-	string uniqueId = "v" + Content.CurrentItem.ID;
+	string uniqueId = Content.UniqueID("v");
 	var watchUrl = new N2.Web.Url(Content.Data.WatchUrl);
 	N2.Web.Url embed = "http://www.youtube.com/v/" + watchUrl.GetQuery("v"); //"http://www.youtube.com/embed/" + watchUrl.GetQuery("v");
 	if (Content.HasValue("HD"))

@@ -8,6 +8,7 @@ namespace N2.Definitions.Runtime
 	public interface IContentRegistration
 	{
 		EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new();
+		EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable;
 		void RegisterModifier(IContentModifier modifier);
 	}
 }

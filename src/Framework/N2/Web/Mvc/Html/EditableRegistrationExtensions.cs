@@ -52,6 +52,22 @@ namespace N2.Web.Mvc.Html
 				.Configure(e => e.EnumType = enumType);
 		}
 
+		public static EditableBuilder<EditableDropDownAttribute> DropDown(this IContentRegistration registration, string name, params System.Web.UI.WebControls.ListItem[] listItems)
+		{
+			return registration.RegisterEditable<EditableDropDownAttribute>(new CustomDropDownAttribute() { Name = name, Title = name })
+				.Configure(e => ((CustomDropDownAttribute)e).ListItems = listItems);
+		}
+
+		class CustomDropDownAttribute : EditableDropDownAttribute
+		{
+			public System.Web.UI.WebControls.ListItem[] ListItems { get; set; }
+			protected override System.Web.UI.WebControls.ListItem[] GetListItems()
+			{
+				return ListItems;
+			}
+		}
+
+
 		public static EditableBuilder<EditableFileUploadAttribute> FileUpload(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableFileUploadAttribute>(name, title);

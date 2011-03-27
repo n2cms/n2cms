@@ -1,4 +1,5 @@
 ﻿2.2
+- Youtube videp player
 - Carousel slider for dinamico
 - State of deleted items is set to deleted
 - Remove language association from deleted items

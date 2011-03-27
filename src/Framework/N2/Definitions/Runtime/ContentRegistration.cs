@@ -94,6 +94,11 @@ namespace N2.Definitions.Runtime
 			Add(new T(), name, title);
 			return new EditableBuilder<T>(name, this);
 		}
+		EditableBuilder<T> IContentRegistration.RegisterEditable<T>(T editable)
+		{
+			Add(editable);
+			return new EditableBuilder<T>(editable.Name, this);
+		}
 
 		#endregion
 
