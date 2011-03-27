@@ -1,13 +1,6 @@
 ﻿(function ($) {
 	var isDragging = false;
 	var dialog = null;
-	var dialogOptions = {
-		modal: true,
-		width: 800,
-		height: 600,
-		closeOnEscape: true,
-		resizable: true
-	};
 
 	window.n2DragDrop = function (urls, messages) {
 		this.urls = $.extend({
@@ -50,7 +43,14 @@
 					dialog.dialog('close');
 				});
 			});
-			dialog.dialog(dialogOptions);
+
+			dialog.dialog({
+				modal: true,
+				width: Math.min(1000, $(window).width() - 50),
+				height: Math.min(800, $(window).height() - 50),
+				closeOnEscape: true,
+				resizable: true
+			});
 		},
 
 		makeDraggable: function () {
@@ -87,7 +87,7 @@
 				var title = $(zone).attr("title");
 				if (allowed.indexOf(type + ",") >= 0) {
 					$(zone).append("<div class='dropPoint below'/>");
-					$(".zoneItem", zone).before("<div class='dropPoint before'/>");
+					$(".zoneItem", zone).not(function () { return $(this).closest(".dropZone")[0] === zone; }).each(function (i) { $(this).before("<div class='dropPoint before' title='" + i + "'/>"); });
 				}
 				$(".dropPoint", zone).html("<div class='description'>" + title + "</div>");
 			});
@@ -119,6 +119,7 @@
 		},
 
 		onDrop: function (e, ui) {
+			console.log(this, e, ui);
 			if (isDragging) {
 				isDragging = false;
 
