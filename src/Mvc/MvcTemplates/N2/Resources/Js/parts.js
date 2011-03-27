@@ -119,7 +119,6 @@
 		},
 
 		onDrop: function (e, ui) {
-			console.log(this, e, ui);
 			if (isDragging) {
 				isDragging = false;
 
@@ -146,14 +145,16 @@
 			}
 		},
 
-		stopDragging: function (e) {
+		stopDragging: function (e, ui) {
+			$(this).html($(this).data("html")); // restore html removed by jquery ui
 			$(this).removeClass("dragged");
 			$(".dropPoint").remove();
 			$(document.body).removeClass("dragging");
 			setTimeout(function () { isDragging = false; }, 100);
 		},
 
-		startDragging: function (e) {
+		startDragging: function (e, ui) {
+			$(this).data("html", $(this).html());
 			var dragged = this;
 			var handler = $(dragged).data("handler");
 			handler.makeDropPoints(dragged);
