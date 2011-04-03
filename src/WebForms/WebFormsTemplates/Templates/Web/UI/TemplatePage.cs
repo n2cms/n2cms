@@ -26,13 +26,5 @@ namespace N2.Templates.Web.UI
 		{
 			get { return base.ID ?? "P"; }
 		}
-
-		protected override void OnPreInit(EventArgs e)
-		{
-			foreach (var concern in Engine.Container.ResolveAll<TemplateConcern>())
-				concern.OnPreInit(this);
-
-			base.OnPreInit(e);
-		}
 	}
 }

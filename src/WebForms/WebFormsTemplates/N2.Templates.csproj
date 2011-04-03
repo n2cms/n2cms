@@ -143,7 +143,6 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
-    <Compile Include="Templates\Services\TemplateConcern.cs" />
     <Compile Include="Templates\Web\MasterPageConcern.cs" />
     <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
     <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
