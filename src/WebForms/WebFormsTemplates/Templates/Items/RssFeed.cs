@@ -25,7 +25,7 @@ namespace N2.Templates.Items
             set { SetDetail("FeedRoot", value); }
         }
 
-        [EditableText("Number of items", 100)]
+		[EditableNumber("Number of items", 100)]
         public virtual int NumberOfItems
         {
             get { return (int) (GetDetail("NumberOfItems") ?? 10); }

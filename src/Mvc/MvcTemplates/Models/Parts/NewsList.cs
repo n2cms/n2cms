@@ -5,6 +5,7 @@ using N2.Collections;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Models.Pages;
+using System.Web.UI.WebControls;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -37,7 +38,7 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("Container", value); }
 		}
 
-		[EditableText("Max news", 120)]
+		[EditableNumber("Max news", 120)]
 		public virtual int MaxNews
 		{
 			get { return (int) (GetDetail("MaxNews") ?? 3); }

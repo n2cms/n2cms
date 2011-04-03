@@ -7,6 +7,7 @@ using N2.Templates.Mvc.Services;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Definitions;
+using System.Web.UI.WebControls;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -26,7 +27,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { SetDetail("FeedRoot", value); }
 		}
 
-		[EditableText("Number of items", 100, ContainerName = Tabs.Content)]
+		[EditableNumber("Number of items", 100, ContainerName = Tabs.Content)]
 		public virtual int NumberOfItems
 		{
 			get { return (int) (GetDetail("NumberOfItems") ?? 10); }

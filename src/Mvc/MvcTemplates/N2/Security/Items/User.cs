@@ -92,28 +92,28 @@ namespace N2.Security.Items
 			set { SetDetail("Comment", value, string.Empty); }
 		}
 
-		[EditableText("Last Login Date", 160)]
+		[EditableDate("Last Login Date", 160)]
 		public virtual DateTime LastLoginDate
 		{
 			get { return (DateTime) (GetDetail("LastLoginDate") ?? Published.Value); }
 			set { SetDetail("LastLoginDate", value, Published.Value); }
 		}
 
-		[EditableText("Last Activity Date", 162)]
+		[EditableDate("Last Activity Date", 162)]
 		public virtual DateTime LastActivityDate
 		{
 			get { return (DateTime) (GetDetail("LastActivityDate") ?? Published.Value); }
 			set { SetDetail("LastActivityDate", value, Published.Value); }
 		}
 
-		[EditableText("Last Password Changed Date", 164)]
+		[EditableDate("Last Password Changed Date", 164)]
 		public virtual DateTime LastPasswordChangedDate
 		{
 			get { return (DateTime) (GetDetail("LastPasswordChangedDate") ?? Published.Value); }
 			set { SetDetail("LastPasswordChangedDate", value, Published.Value); }
 		}
 
-		[EditableText("Last Lockout Date", 166)]
+		[EditableDate("Last Lockout Date", 166)]
 		public virtual DateTime? LastLockoutDate
 		{
 			get { return (DateTime?) GetDetail("LastLockoutDate"); }

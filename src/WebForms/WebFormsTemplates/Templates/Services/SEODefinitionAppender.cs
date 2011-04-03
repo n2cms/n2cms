@@ -63,7 +63,8 @@ namespace N2.Templates.Services
 
         private void AddEditableText(ItemDefinition definition, string title, string name, int sortOrder, int maxLength)
         {
-            EditableTextAttribute titleEditor = new EditableTextAttribute(title, sortOrder, maxLength);
+            EditableTextAttribute titleEditor = new EditableTextAttribute(title, sortOrder);
+			titleEditor.MaxLength = maxLength;
             titleEditor.Name = name;
             titleEditor.ContainerName = "seo";
             definition.Add(titleEditor);

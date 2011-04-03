@@ -79,14 +79,14 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("SourceCodeUrl", value, ""); }
         }
 
-        [EditableText("Votes", 100, ContainerName = Tabs.Content)]
+		[EditableNumber("Votes", 100, ContainerName = Tabs.Content)]
         public virtual int Votes
         {
             get { return GetDetail("Votes", 0); }
             set { SetDetail("Votes", value, 0); }
         }
 
-        [EditableText("Downloads", 100, ContainerName = Tabs.Content)]
+		[EditableNumber("Downloads", 100, ContainerName = Tabs.Content)]
         public virtual int Downloads
         {
             get { return GetDetail("Downloads", 0); }

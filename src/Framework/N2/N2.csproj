@@ -143,6 +143,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Details\EditableNumberAttribute.cs" />
     <Compile Include="Details\WithEditableVisibilityAttribute.cs" />
     <Compile Include="Details\EditableMetaTagAttribute.cs" />
     <Compile Include="Details\IContentModifier.cs" />

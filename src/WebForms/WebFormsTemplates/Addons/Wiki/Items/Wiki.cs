@@ -79,7 +79,7 @@ namespace N2.Addons.Wiki.Items
 			set { SetDetail("EnableFreeText", value, false); }
 		}
 
-		[EditableText("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
+		[EditableNumber("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
 		public virtual int ImageWidth
 		{
 			get { return (int)(GetDetail("ImageWidth") ?? 500); }

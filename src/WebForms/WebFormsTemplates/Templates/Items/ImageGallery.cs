@@ -16,28 +16,28 @@ namespace N2.Templates.Items
         #region GallerySettings
         public const string GallerySettings = "gallerySettings";
 
-        [EditableText("Max Image Width", 200, ContainerName = GallerySettings)]
+		[EditableNumber("Max Image Width", 200, ContainerName = GallerySettings)]
         public virtual int MaxImageWidth
         {
             get { return (int)(GetDetail("MaxImageWidth") ?? 685); }
             set { SetDetail("MaxImageWidth", value); }
         }
 
-        [EditableText("Max Image Height", 210, ContainerName = GallerySettings)]
+		[EditableNumber("Max Image Height", 210, ContainerName = GallerySettings)]
         public virtual int MaxImageHeight
         {
             get { return (int)(GetDetail("MaxImageHeight") ?? 685); }
             set { SetDetail("MaxImageHeight", value); }
         }
 
-        [EditableText("Max Thumbnail Width", 220, ContainerName = GallerySettings)]
+		[EditableNumber("Max Thumbnail Width", 220, ContainerName = GallerySettings)]
         public virtual int MaxThumbnailWidth
         {
             get { return (int)(GetDetail("MaxThumbnailWidth") ?? 70); }
             set { SetDetail("MaxThumbnailWidth", value); }
         }
 
-        [EditableText("Max Thumbnail Height", 230, ContainerName = GallerySettings)]
+		[EditableNumber("Max Thumbnail Height", 230, ContainerName = GallerySettings)]
         public virtual int MaxThumbnailHeight
         {
             get { return (int)(GetDetail("MaxThumbnailHeight") ?? 60); }

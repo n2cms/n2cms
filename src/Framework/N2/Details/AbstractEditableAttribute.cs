@@ -181,14 +181,18 @@ namespace N2.Details
 			if (label != null && editor != null && !string.IsNullOrEmpty(editor.ID))
 				label.AssociatedControlID = editor.ID;
 
-			if (Required)
-				AddRequiredFieldValidator(panel, editor);
-			if (Validate)
-				AddRegularExpressionValidator(panel, editor);
-
+			AddValidation(panel, editor);
 			AddHelp(panel);
 
 			return editor;
+		}
+
+		protected virtual void AddValidation(Control container, Control editor)
+		{
+			if (Required)
+				AddRequiredFieldValidator(container, editor);
+			if (Validate)
+				AddRegularExpressionValidator(container, editor);
 		}
 
 		protected virtual Control AddHelp(Control container)

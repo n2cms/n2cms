@@ -8,14 +8,14 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 	[PartDefinition("Text question (textbox)")]
 	public class TextQuestion : Question
 	{
-		[EditableText("Rows", 110)]
+		[EditableNumber("Rows", 110)]
 		public virtual int Rows
 		{
 			get { return (int) (GetDetail("Rows") ?? 1); }
 			set { SetDetail("Rows", value, 1); }
 		}
 
-		[EditableText("Columns", 120)]
+		[EditableNumber("Columns", 120)]
 		public virtual int? Columns
 		{
 			get { return (int?) GetDetail("Columns"); }

@@ -68,7 +68,8 @@ namespace N2.Templates.Mvc.Services
 
 		private EditableTextAttribute AddEditableText(ItemDefinition definition, string title, string name, int sortOrder, int maxLength)
 		{
-			EditableTextAttribute editor = new EditableTextAttribute(title, sortOrder, maxLength);
+			EditableTextAttribute editor = new EditableTextAttribute(title, sortOrder);
+			editor.MaxLength = maxLength;
 			editor.Name = name;
 			editor.ContainerName = Tabs.Details;
 			definition.Add(editor);

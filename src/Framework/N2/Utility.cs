@@ -577,5 +577,24 @@ namespace N2
 		{
 			return item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime();
 		}
+
+		public static bool SetPropertyOrDetail(ContentItem item, string detailName, object value)
+		{
+			object existing = item[detailName];
+			if (existing == null && value == null)
+				return false;
+
+			if ((existing == null && value != null) || (existing != null && value == null))
+			{
+				item[detailName] = value;
+				return true;
+			}
+
+			if (value.Equals(existing))
+				return false;
+
+			item[detailName] = value;
+			return true;
+		}
 	}
 }

@@ -27,7 +27,7 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("RssUrls", value, string.Empty); }
 		}
 
-		[EditableText("Max Count", 130)]
+		[EditableNumber("Max Count", 130)]
 		public virtual int MaxCount
 		{
 			get { return (int) (GetDetail("MaxCount") ?? 5); }

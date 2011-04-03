@@ -11,7 +11,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 	public class FileAttachmentQuestion : Question
 	{
 
-		[EditableText("Max file size (kB)", 100)]
+		[EditableNumber("Max file size (kB)", 100)]
 		public virtual int MaxFileSize { get; set; }
 
 		[EditableText("Allowed file extensions", 100, HelpText = "Separate multiple extensions with comma (,)")]

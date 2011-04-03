@@ -21,7 +21,7 @@ namespace N2.Management.Myself
 			set { base.Title = value; }
 		}
 
-		[EditableText("Latest changes max count", 100)]
+		[EditableNumber("Latest changes max count", 100)]
 		public virtual int LatestChangesMaxCount
 		{
 			get { return (int)(GetDetail("LatestChangesMaxCount") ?? 2); }
