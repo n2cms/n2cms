@@ -14,7 +14,7 @@ namespace N2.Edit.Workflow
         {
         }
 
-		public CommandContext(ItemDefinition definition, ContentItem content, string userInterface, IPrincipal user, IBinder<CommandContext> binder, IValidator<CommandContext> validator)
+		public CommandContext(ItemDefinition definition, ContentItem content, string userInterface, IPrincipal user, IContentForm<CommandContext> binder, IValidator<CommandContext> validator)
         {
 			Definition = definition;
             Content = content;
@@ -34,7 +34,7 @@ namespace N2.Edit.Workflow
 
 		public IDictionary<string, object> Parameters { get; set; }
 		public IValidator<CommandContext> Validator { get; set; }
-		public IBinder<CommandContext> Binder { get; set; }
+		public IContentForm<CommandContext> Binder { get; set; }
 
         public ICollection<ValidationError> ValidationErrors { get; set; }
         public ICollection<Exception> Errors { get; set; }

@@ -534,7 +534,7 @@
     <Compile Include="Edit\Workflow\Commands\UseNewVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\ValidateCommand.cs" />
     <Compile Include="Edit\Workflow\ContentState.cs" />
-    <Compile Include="Edit\Workflow\IBinderOfT.cs" />
+    <Compile Include="Edit\Workflow\IContentFormOfT.cs" />
     <Compile Include="Edit\Workflow\ICommandFactory.cs" />
     <Compile Include="Edit\Workflow\Interfaces.cs" />
     <Compile Include="Edit\Workflow\IValidatorOfT.cs" />

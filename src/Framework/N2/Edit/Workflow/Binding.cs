@@ -50,7 +50,7 @@ namespace N2.Edit.Workflow
 			return definedDetails as IList<string>;
 		}
 
-		public static CommandContext CreateNestedContext(this CommandContext context, IBinder<CommandContext> subBinder, ContentItem subItem, ItemDefinition subDefinition)
+		public static CommandContext CreateNestedContext(this CommandContext context, IContentForm<CommandContext> subBinder, ContentItem subItem, ItemDefinition subDefinition)
 		{
 			return new CommandContext(subDefinition, subItem, context.Interface, context.User)
 			{

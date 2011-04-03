@@ -143,7 +143,7 @@ namespace N2.Edit
 
 		#endregion
 
-		public class EditorCollectionBinder : IBinder<CommandContext>
+		public class EditorCollectionBinder : IContentForm<CommandContext>
 		{
 			ItemDefinition definition;
 			IDictionary<string, Control> editors;

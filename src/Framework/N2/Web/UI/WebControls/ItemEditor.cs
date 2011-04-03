@@ -26,7 +26,7 @@ using N2.Persistence;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A form that generates an edit interface for content items.</summary>
-	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<CommandContext>, IPlaceHolderAccessor
+	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IContentForm<CommandContext>, IPlaceHolderAccessor
 	{
 		#region Constructor
 

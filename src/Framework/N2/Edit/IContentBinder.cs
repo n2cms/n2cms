@@ -9,7 +9,7 @@ namespace N2.Edit
 	/// <summary>
 	/// Binds values between a content item and it's interface.
 	/// </summary>
-	public interface IContentBinder : IBinder<ContentItem>
+	public interface IContentBinder : IContentForm<ContentItem>
 	{
 	}
 }

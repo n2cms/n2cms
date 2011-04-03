@@ -24,7 +24,7 @@ namespace N2.Tests.Workflow
         protected IDefinitionManager definitions;
         protected FakeVersionManager versions;
         protected ContentItem item, child;
-		protected IBinder<CommandContext> nullBinder = new NullBinder<CommandContext>();
+		protected IContentForm<CommandContext> nullBinder = new NullBinder<CommandContext>();
 		protected IValidator<CommandContext> nullValidator = new NullValidator<CommandContext>();
         
         [SetUp]
