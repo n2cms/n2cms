@@ -471,7 +471,6 @@
     <Compile Include="Templates\Web\UI\TemplateUserControl2.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Templates\Web\UI\WebControls\Box.cs" />
     <Compile Include="Templates\Web\UI\WebControls\IBreadcrumbAppearance.cs" />
     <Compile Include="Templates\Web\UI\WebControls\Menu.cs" />
     <Compile Include="Templates\Web\UI\WebControls\Path.cs" />

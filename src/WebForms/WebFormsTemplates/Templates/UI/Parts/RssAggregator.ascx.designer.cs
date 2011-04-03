@@ -20,7 +20,7 @@ namespace N2.Templates.UI.Parts {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Templates.Web.UI.WebControls.Box Box1;
+        protected global::N2.Web.UI.WebControls.Box Box1;
         
         /// <summary>
         /// rptRss control.

@@ -3,38 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
+using System.Web;
 
 namespace N2.Web.UI.WebControls
 {
-	public class Box : PlaceHolder
+	public class Box : Panel
 	{
 		public Box()
 		{
 			CssClass = "box";
-			InnerCssClass = "box-inner";
+			InnerCssClass = "inner box-inner";
 			HeadingCssClass = "box-heading";
 			RenderInnerContainer = true;
 		}
 
 		public string HeadingText { get; set; }
 		public string HeadingCssClass { get; set; }
-		public string CssClass { get; set; }
 		public string InnerCssClass { get; set; }
 		public bool RenderInnerContainer { get; set; }
 
-		public override void RenderControl(System.Web.UI.HtmlTextWriter writer)
+		public override void RenderBeginTag(System.Web.UI.HtmlTextWriter writer)
 		{
-			writer.Write("<div id=\"" + ClientID + "\" class=\"" + CssClass + "\">");
+			base.RenderBeginTag(writer);
 			if (!string.IsNullOrEmpty(HeadingText))
 				writer.Write("<h4 class=\"" + HeadingCssClass + "\">" + HeadingText + "</h4>");
-			if(RenderInnerContainer)
+			if (RenderInnerContainer)
 				writer.Write("<div class=\"" + InnerCssClass + "\">");
+		}
 
-			base.RenderControl(writer);
-
-			if(RenderInnerContainer)
+		public override void RenderEndTag(System.Web.UI.HtmlTextWriter writer)
+		{
+			if (RenderInnerContainer)
 				writer.Write("</div>");
-			writer.Write("</div>");
+			base.RenderEndTag(writer);
 		}
 	}
 }
