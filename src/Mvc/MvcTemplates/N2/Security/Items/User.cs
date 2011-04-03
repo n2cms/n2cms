@@ -16,28 +16,28 @@ namespace N2.Security.Items
 	[Versionable(AllowVersions.No)]
     public class User : N2.ContentItem
 	{
-		[EditableTextBox("Title", 10, Required = true)]
+		[EditableText("Title", 10, Required = true)]
 		public override string Title
 		{
 			get { return base.Title; }
 			set { base.Title = value; }
 		}
 
-		[EditableTextBox("Title", 20, Required = true)]
+		[EditableText("Title", 20, Required = true)]
 		public override string Name
 		{
 			get { return base.Name; }
 			set { base.Name = value; }
 		}
 
-		[EditableTextBox("Password", 30)]
+		[EditableText("Password", 30)]
 		public virtual string Password
 		{
 			get { return (string) (GetDetail("Password") ?? string.Empty); }
 			set { SetDetail("Password", value, string.Empty); }
 		}
 
-		[EditableTextBox("Email", 40)]
+		[EditableText("Email", 40)]
 		public virtual string Email
 		{
 			get { return (string) (GetDetail("Email") ?? string.Empty); }
@@ -50,14 +50,14 @@ namespace N2.Security.Items
 			get { return GetDetailCollection("Roles", true); }
 		}
 
-		[EditableTextBox("PasswordQuestion", 120)]
+		[EditableText("PasswordQuestion", 120)]
 		public virtual string PasswordQuestion
 		{
 			get { return (string) (GetDetail("PasswordQuestion") ?? string.Empty); }
 			set { SetDetail("PasswordQuestion", value, string.Empty); }
 		}
 
-		[EditableTextBox("PasswordAnswer", 130)]
+		[EditableText("PasswordAnswer", 130)]
 		public virtual string PasswordAnswer
 		{
 			get { return (string) (GetDetail("PasswordAnswer") ?? string.Empty); }
@@ -85,35 +85,35 @@ namespace N2.Security.Items
 			set { SetDetail("IsLockedOut", value, false); }
 		}
 
-		[EditableTextBox("Comment", 150)]
+		[EditableText("Comment", 150)]
 		public virtual string Comment
 		{
 			get { return (string) (GetDetail("Comment") ?? string.Empty); }
 			set { SetDetail("Comment", value, string.Empty); }
 		}
 
-		[EditableTextBox("Last Login Date", 160)]
+		[EditableText("Last Login Date", 160)]
 		public virtual DateTime LastLoginDate
 		{
 			get { return (DateTime) (GetDetail("LastLoginDate") ?? Published.Value); }
 			set { SetDetail("LastLoginDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("Last Activity Date", 162)]
+		[EditableText("Last Activity Date", 162)]
 		public virtual DateTime LastActivityDate
 		{
 			get { return (DateTime) (GetDetail("LastActivityDate") ?? Published.Value); }
 			set { SetDetail("LastActivityDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("Last Password Changed Date", 164)]
+		[EditableText("Last Password Changed Date", 164)]
 		public virtual DateTime LastPasswordChangedDate
 		{
 			get { return (DateTime) (GetDetail("LastPasswordChangedDate") ?? Published.Value); }
 			set { SetDetail("LastPasswordChangedDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("Last Lockout Date", 166)]
+		[EditableText("Last Lockout Date", 166)]
 		public virtual DateTime? LastLockoutDate
 		{
 			get { return (DateTime?) GetDetail("LastLockoutDate"); }

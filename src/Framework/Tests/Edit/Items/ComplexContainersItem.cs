@@ -20,19 +20,19 @@ namespace N2.Tests.Edit.Items
 			Name = name;
 		}
 
-		[N2.Details.EditableTextBox("My Property 0", 0)]
+		[N2.Details.EditableText("My Property 0", 0)]
         public virtual string MyProperty0
         {
             get { return (string)(GetDetail("MyProperty0") ?? ""); }
             set { SetDetail<string>("MyProperty0", value); }
         }
-        [N2.Details.EditableTextBox("My Property 1", 1, ContainerName = "first")]
+        [N2.Details.EditableText("My Property 1", 1, ContainerName = "first")]
 		public virtual string MyProperty1
 		{
             get { return (string)(GetDetail("MyProperty1") ?? ""); }
             set { SetDetail<string>("MyProperty1", value); }
 		}
-        [N2.Details.EditableTextBox("My Property 2", 2, ContainerName = "inside1")]
+        [N2.Details.EditableText("My Property 2", 2, ContainerName = "inside1")]
         public virtual string MyProperty2
         {
             get { return (string)(GetDetail("MyProperty2") ?? ""); }
@@ -59,7 +59,7 @@ namespace N2.Tests.Edit.Items
 			set { SetDetail<bool>("MyProperty5", value); }
 		}
 
-		[N2.Details.EditableTextBox("My Property 6", 2010)]
+		[N2.Details.EditableText("My Property 6", 2010)]
 		[N2.Details.DetailAuthorizedRoles("ÜberEditor")]
 		public virtual string MyProperty6
 		{

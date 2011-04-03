@@ -17,7 +17,7 @@ namespace N2.Security.Items
 	[Throwable(AllowInTrash.No)]
 	public class UserList : ContentItem, ISystemNode
 	{
-		[EditableTextBox("Roles", 100, TextMode=TextBoxMode.MultiLine)]
+		[EditableText("Roles", 100, TextMode=TextBoxMode.MultiLine)]
 		[DetailAuthorizedRoles("admin", "Administrators")]
 		public virtual string Roles
 		{

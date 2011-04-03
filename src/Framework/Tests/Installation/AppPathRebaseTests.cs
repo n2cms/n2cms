@@ -31,7 +31,7 @@ namespace N2.Tests.Installation
 		[EditableFreeTextArea]
 		public string Text { get; set; }
 
-		[EditableTextBox]
+		[EditableText]
 		public string Heading { get; set; }
 	}
 

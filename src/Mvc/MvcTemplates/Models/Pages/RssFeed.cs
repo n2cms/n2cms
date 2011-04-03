@@ -26,21 +26,21 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { SetDetail("FeedRoot", value); }
 		}
 
-		[EditableTextBox("Number of items", 100, ContainerName = Tabs.Content)]
+		[EditableText("Number of items", 100, ContainerName = Tabs.Content)]
 		public virtual int NumberOfItems
 		{
 			get { return (int) (GetDetail("NumberOfItems") ?? 10); }
 			set { SetDetail("NumberOfItems", value, 10); }
 		}
 
-		[EditableTextBox("Tagline", 110, ContainerName = Tabs.Content)]
+		[EditableText("Tagline", 110, ContainerName = Tabs.Content)]
 		public virtual string Tagline
 		{
 			get { return (string) (GetDetail("Tagline") ?? string.Empty); }
 			set { SetDetail("Tagline", value, string.Empty); }
 		}
 
-		[EditableTextBox("Author", 120, ContainerName = Tabs.Content)]
+		[EditableText("Author", 120, ContainerName = Tabs.Content)]
 		public virtual string Author
 		{
 			get { return (string) (GetDetail("Author") ?? string.Empty); }

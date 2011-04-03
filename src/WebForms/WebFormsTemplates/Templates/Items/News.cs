@@ -23,7 +23,7 @@ namespace N2.Templates.Items
             Utility.Insert(this, newParent, "Published DESC");
         }
 
-        [EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
+        [EditableText("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
             Columns = 80)]
         public virtual string Introduction
         {

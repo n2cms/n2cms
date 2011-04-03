@@ -11,7 +11,7 @@ namespace Dinamico.Models
 		[Persistable(Length = 256)] // to minimize select+1
 		public virtual string Image { get; set; }
 
-		[EditableTextBox]
+		[EditableText]
 		[Persistable(Length = 1024)] // to minimize select+1
 		public virtual string Summary { get; set; }
 

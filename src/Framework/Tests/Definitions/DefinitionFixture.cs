@@ -50,7 +50,7 @@ namespace N2.Tests.Definitions
 			List<Type> expected = new List<Type>();
 			expected.Add(typeof (EditableAttribute));
 			expected.Add(typeof (CustomizedEditableAttribute));
-			expected.Add(typeof (EditableTextBoxAttribute));
+			expected.Add(typeof (EditableTextAttribute));
 			expected.Add(typeof (EditableFreeTextAreaAttribute));
 
 			foreach (IEditable a in definition.Editables)

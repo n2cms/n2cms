@@ -22,7 +22,7 @@ namespace N2.Templates.Items
             set { SetDetail("SuccessPage", value); }
         }
 
-        [EditableTextBox("VerificationSubject", 100, ContainerName = "verification")]
+        [EditableText("VerificationSubject", 100, ContainerName = "verification")]
         public virtual string VerificationSubject
         {
             get { return (string)(GetDetail("VerificationSubject") ?? string.Empty); }
@@ -36,7 +36,7 @@ namespace N2.Templates.Items
             set { SetDetail("VerifiedPage", value); }
         }
 
-        [EditableTextBox("VerificationText", 110, TextMode = TextBoxMode.MultiLine, Rows = 4, ContainerName = "verification")]
+        [EditableText("VerificationText", 110, TextMode = TextBoxMode.MultiLine, Rows = 4, ContainerName = "verification")]
         public virtual string VerificationText
         {
             get { return (string)(GetDetail("VerificationText") ?? VerificationBody); }
@@ -50,7 +50,7 @@ namespace N2.Templates.Items
             set { SetDetail("RequireVerification", value, true); }
         }
 
-        [EditableTextBox("Verification Sender Email", 120, ContainerName = "verification")]
+        [EditableText("Verification Sender Email", 120, ContainerName = "verification")]
         public virtual string VerificationSender
         {
             get { return (string)(GetDetail("VerificationSender") ?? string.Empty); }

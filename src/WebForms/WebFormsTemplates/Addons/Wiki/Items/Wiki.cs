@@ -25,7 +25,7 @@ namespace N2.Addons.Wiki.Items
         }
 
         public static string DefaultUploadFolder = "/Upload/Wiki/";
-        [EditableTextBox("Upload Folder", 100, ContainerName = Wiki.WikiTab)]
+        [EditableText("Upload Folder", 100, ContainerName = Wiki.WikiTab)]
         public virtual string UploadFolder
         {
             get { return (string)(GetDetail("UploadFolder") ?? DefaultUploadFolder); }
@@ -79,7 +79,7 @@ namespace N2.Addons.Wiki.Items
 			set { SetDetail("EnableFreeText", value, false); }
 		}
 
-		[EditableTextBox("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
+		[EditableText("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
 		public virtual int ImageWidth
 		{
 			get { return (int)(GetDetail("ImageWidth") ?? 500); }

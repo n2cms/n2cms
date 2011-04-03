@@ -17,7 +17,7 @@ namespace N2.Edit.Trash
     [NotThrowable]
 	public class TrashContainerItem : N2.ContentItem, ITrashCan, ISystemNode
 	{
-		[EditableTextBox("Number of days to keep deleted items", 100)]
+		[EditableText("Number of days to keep deleted items", 100)]
 		public virtual int KeepDays
 		{
 			get { return (int)(GetDetail("KeepDays") ?? 31); }

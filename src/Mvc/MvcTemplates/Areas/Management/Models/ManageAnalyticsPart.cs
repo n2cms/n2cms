@@ -14,35 +14,35 @@ namespace N2.Templates.Mvc.Areas.Management.Models
 	[RestrictParents(typeof(IRootPage))]
 	public class ManageAnalyticsPart : AnalyticsPartBase
 	{
-		[EditableTextBox("Token", 100)]
+		[EditableText("Token", 100)]
 		public virtual string Token
 		{
 			get { return (string)GetDetail("Token"); }
 			set { SetDetail("Token", value, string.Empty); }
 		}
 
-		[EditableTextBox("AccountID", 100)]
+		[EditableText("AccountID", 100)]
 		public virtual int AccountID
 		{
 			get { return GetDetail("AccountID", 0); }
 			set { SetDetail("AccountID", value, 0); }
 		}
 
-		[EditableTextBox("ProfileID", 100)]
+		[EditableText("ProfileID", 100)]
 		public virtual int ProfileID
 		{
 			get { return GetDetail("ProfileID", 0); }
 			set { SetDetail("ProfileID", value, 0); }
 		}
 
-		[EditableTextBox("AccountName", 100)]
+		[EditableText("AccountName", 100)]
 		public virtual string AccountName
 		{
 			get { return GetDetail("AccountName", ""); }
 			set { SetDetail("AccountName", value, ""); }
 		}
 
-		[EditableTextBox("ChartPeriod", 100)]
+		[EditableText("ChartPeriod", 100)]
 		public virtual int ChartPeriod
 		{
 			get { return GetDetail("ChartPeriod", 31); }

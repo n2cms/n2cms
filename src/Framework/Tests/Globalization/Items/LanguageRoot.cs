@@ -10,21 +10,21 @@ namespace N2.Tests.Globalization.Items
 	[FieldSetContainer("globalization", "Globalization", 200)]
 	public class LanguageRoot : ContentItem, ILanguage
 	{
-		[EditableTextBox("FlagUrl", 100, ContainerName = "globalization")]
+		[EditableText("FlagUrl", 100, ContainerName = "globalization")]
 		public virtual string FlagUrl
 		{
 			get { return (string)(GetDetail("FlagUrl") ?? string.Empty); }
 			set { SetDetail("FlagUrl", value, string.Empty); }
 		}
 
-		[EditableTextBox("LanguageTitle", 110, ContainerName = "globalization")]
+		[EditableText("LanguageTitle", 110, ContainerName = "globalization")]
 		public virtual string LanguageTitle
 		{
 			get { return (string)(GetDetail("LanguageTitle") ?? string.Empty); }
 			set { SetDetail("LanguageTitle", value, string.Empty); }
 		}
 
-		[EditableTextBox("LanguageCode", 120, ContainerName = "globalization")]
+		[EditableText("LanguageCode", 120, ContainerName = "globalization")]
 		public virtual string LanguageCode
 		{
 			get { return (string)(GetDetail("LanguageCode") ?? string.Empty); }

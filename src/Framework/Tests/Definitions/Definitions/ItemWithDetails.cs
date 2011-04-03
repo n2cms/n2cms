@@ -33,7 +33,7 @@ namespace N2.Tests.Definitions.Definitions
 			set { SetDetail<string>("TestProperty2", value); }
 		}
 
-		[N2.Details.EditableTextBox("TestProperty4", 444)]
+		[N2.Details.EditableText("TestProperty4", 444)]
 		[N2.Web.UI.EditorModifier("Text", "hello")]
 		public virtual string TestProperty4
 		{

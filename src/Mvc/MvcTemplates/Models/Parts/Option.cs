@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Option")]
 	public class Option : PartBase
 	{
-		[N2.Details.EditableTextBox("Answers", 100)]
+		[N2.Details.EditableText("Answers", 100)]
 		public virtual int Answers
 		{
 			get { return (int) (GetDetail("Answers") ?? 0); }

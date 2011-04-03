@@ -84,7 +84,7 @@ namespace N2.Templates.Items
             set { SetDetail("Image", value, string.Empty); }
         }
 
-        [EditableTextBox("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
+        [EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
         public virtual string FooterText
         {
             get { return (string)(GetDetail("FooterText") ?? string.Empty); }

@@ -10,7 +10,7 @@ namespace N2.Tests.Edit.Items
     [FieldSetContainer("hiddenFromEditors", "Naughty naughty", 100, AuthorizedRoles = new string[] { "Administrators" })]
     public class ItemWithSecuredContainer : ContentItem
     {
-        [EditableTextBox("Hidden text", 10, ContainerName = "hiddenFromEditors")]
+        [EditableText("Hidden text", 10, ContainerName = "hiddenFromEditors")]
         public string HiddenText { get; set; }
     }
 }

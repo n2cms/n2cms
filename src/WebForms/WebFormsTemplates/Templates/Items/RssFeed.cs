@@ -25,21 +25,21 @@ namespace N2.Templates.Items
             set { SetDetail("FeedRoot", value); }
         }
 
-        [EditableTextBox("Number of items", 100)]
+        [EditableText("Number of items", 100)]
         public virtual int NumberOfItems
         {
             get { return (int) (GetDetail("NumberOfItems") ?? 10); }
             set { SetDetail("NumberOfItems", value, 10); }
         }
 
-        [EditableTextBox("Tagline", 110)]
+        [EditableText("Tagline", 110)]
         public virtual string Tagline
         {
             get { return (string) (GetDetail("Tagline") ?? string.Empty); }
             set { SetDetail("Tagline", value, string.Empty); }
         }
 
-        [EditableTextBox("Author", 120)]
+        [EditableText("Author", 120)]
         public virtual string Author
         {
             get { return (string) (GetDetail("Author") ?? string.Empty); }

@@ -189,7 +189,7 @@ namespace N2.Tests.Definitions
 				Editables = new ContainableCollection { new ContainableElement {
 					Name = "MetaTitle", 
 					Title = "Page title", 
-					Type = typeof(N2.Details.EditableTextBoxAttribute).AssemblyQualifiedName } }
+					Type = typeof(N2.Details.EditableTextAttribute).AssemblyQualifiedName } }
 			});
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
@@ -209,14 +209,14 @@ namespace N2.Tests.Definitions
 				Editables = new ContainableCollection { new ContainableElement {
 					Name = "Title", 
 					Title = "Page title in navigation", 
-					Type = typeof(EditableTextBoxAttribute).AssemblyQualifiedName } }
+					Type = typeof(EditableTextAttribute).AssemblyQualifiedName } }
 			});
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textDefinition = definitions.Single(d => d.ItemType == typeof(DefinitionTextPage));
 
-			Assert.That(textDefinition.Editables.Any(e => e.Title == "Page title in navigation" && e.GetType() == typeof(EditableTextBoxAttribute)));
+			Assert.That(textDefinition.Editables.Any(e => e.Title == "Page title in navigation" && e.GetType() == typeof(EditableTextAttribute)));
 			Assert.That(textDefinition.Editables.Any(e => e.Title == "Title" || e.GetType() == typeof(WithEditableTitleAttribute)), Is.False);
 		}
 

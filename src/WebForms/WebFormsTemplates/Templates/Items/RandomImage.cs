@@ -26,7 +26,7 @@ namespace N2.Templates.Items
             }
         }
 
-        [EditableTextBox("Images", 100, Rows = 8, Columns = 40, TextMode = TextBoxMode.MultiLine)]
+        [EditableText("Images", 100, Rows = 8, Columns = 40, TextMode = TextBoxMode.MultiLine)]
         public virtual string Images
         {
             get { return (string)(GetDetail("Images") ?? string.Empty); }

@@ -7,7 +7,7 @@ using System.Web.UI;
 
 namespace N2.Details
 {
-	public class EditableMetaTagAttribute : EditableTextBoxAttribute
+	public class EditableMetaTagAttribute : EditableTextAttribute
 	{
 		public override System.Web.UI.Control AddTo(ContentItem item, string detailName, System.Web.UI.Control container)
 		{

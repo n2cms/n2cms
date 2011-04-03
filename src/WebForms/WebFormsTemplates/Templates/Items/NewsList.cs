@@ -35,7 +35,7 @@ namespace N2.Templates.Items
             set { SetDetail("Container", value); }
         }
 
-        [EditableTextBox("Max news", 120)]
+        [EditableText("Max news", 120)]
         public virtual int MaxNews
         {
             get { return (int) (GetDetail("MaxNews") ?? 3); }

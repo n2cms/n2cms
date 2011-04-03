@@ -26,7 +26,7 @@ namespace N2.Templates.Items
             set { SetDetail("RssUrl", value, string.Empty); }
         }
 
-        [EditableTextBox("Max Count", 130)]
+        [EditableText("Max Count", 130)]
         public virtual int MaxCount
         {
             get { return (int)(GetDetail("MaxCount") ?? 5); }

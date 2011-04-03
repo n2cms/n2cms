@@ -103,9 +103,9 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableLinkAttribute>(name, title);
 		}
 
-		public static EditableBuilder<EditableTextBoxAttribute> Text(this IContentRegistration registration, string name, string title = null)
+		public static EditableBuilder<EditableTextAttribute> Text(this IContentRegistration registration, string name, string title = null)
 		{
-			return registration.RegisterEditable<EditableTextBoxAttribute>(name, title);
+			return registration.RegisterEditable<EditableTextAttribute>(name, title);
 		}
 
 		public static EditableBuilder<EditableMetaTagAttribute> Meta(this IContentRegistration registration, string name, string title = null)

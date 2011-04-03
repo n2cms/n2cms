@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	public class Top : PartBase
 	{
 		[DisplayableHeading(2)]
-		[EditableTextBox("Top text", 40, ContainerName = "top")]
+		[EditableText("Top text", 40, ContainerName = "top")]
 		public override string Title
 		{
 			get { return base.Title; }

@@ -44,7 +44,7 @@ namespace N2.Tests.Persistence.NH
 		[Persistable]
 		public virtual ContentItem LinkProperty { get; set; }
 
-		[Persistable, EditableTextBox]
+		[Persistable, EditableText]
 		public virtual string PersistableEditableProperty { get; set; }
     }
 	#endregion

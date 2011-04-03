@@ -23,7 +23,7 @@ namespace N2.Addons.AddonCatalog.Items
             Visible = false;
         }
 
-		[EditableTextBox("Text", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
+		[EditableText("Text", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
 		public override string Text
 		{
 			get { return base.Text; }
@@ -44,77 +44,77 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("Requirements", (int)value, (int)Requirement.None); }
         }
 
-        [EditableTextBox("Last Tested Version", 100, ContainerName = Tabs.Content)]
+        [EditableText("Last Tested Version", 100, ContainerName = Tabs.Content)]
         public virtual string LastTestedVersion
         {
             get { return GetDetail("LastTestedVersion", ""); }
             set { SetDetail("LastTestedVersion", value, ""); }
         }
 
-        [EditableTextBox("Version", 100, ContainerName = Tabs.Content)]
+        [EditableText("Version", 100, ContainerName = Tabs.Content)]
         public virtual string AddonVersion
         {
             get { return GetDetail("AddonVersion", ""); }
             set { SetDetail("AddonVersion", value, ""); }
         }
 
-		[EditableTextBox("Summary", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
+		[EditableText("Summary", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
         public virtual string Summary
         {
             get { return GetDetail("Summary", ""); }
             set { SetDetail("Summary", value, ""); }
         }
 
-        [EditableTextBox("HomepageUrl", 100, ContainerName = Tabs.Content)]
+        [EditableText("HomepageUrl", 100, ContainerName = Tabs.Content)]
         public virtual string HomepageUrl
         {
             get { return GetDetail("HomepageUrl", ""); }
             set { SetDetail("HomepageUrl", value, ""); }
         }
 
-        [EditableTextBox("SourceCodeUrl", 100, ContainerName = Tabs.Content)]
+        [EditableText("SourceCodeUrl", 100, ContainerName = Tabs.Content)]
         public virtual string SourceCodeUrl
         {
             get { return GetDetail("SourceCodeUrl", ""); }
             set { SetDetail("SourceCodeUrl", value, ""); }
         }
 
-        [EditableTextBox("Votes", 100, ContainerName = Tabs.Content)]
+        [EditableText("Votes", 100, ContainerName = Tabs.Content)]
         public virtual int Votes
         {
             get { return GetDetail("Votes", 0); }
             set { SetDetail("Votes", value, 0); }
         }
 
-        [EditableTextBox("Downloads", 100, ContainerName = Tabs.Content)]
+        [EditableText("Downloads", 100, ContainerName = Tabs.Content)]
         public virtual int Downloads
         {
             get { return GetDetail("Downloads", 0); }
             set { SetDetail("Downloads", value, 0); }
         }
 
-		[EditableTextBox("UploadedFileUrl", 100, ContainerName = Tabs.Content)]
+		[EditableText("UploadedFileUrl", 100, ContainerName = Tabs.Content)]
         public virtual string UploadedFileUrl
         {
             get { return GetDetail("UploadedFileUrl", ""); }
             set { SetDetail("UploadedFileUrl", value, ""); }
         }
 
-		[EditableTextBox("ContactEmail", 100, ContainerName = Tabs.Content)]
+		[EditableText("ContactEmail", 100, ContainerName = Tabs.Content)]
         public virtual string ContactEmail
         {
             get { return GetDetail("ContactEmail", ""); }
             set { SetDetail("ContactEmail", value, ""); }
 		}
 
-		[EditableTextBox("ContactName", 100, ContainerName = Tabs.Content)]
+		[EditableText("ContactName", 100, ContainerName = Tabs.Content)]
 		public virtual string ContactName
 		{
 			get { return GetDetail("ContactName", ""); }
 			set { SetDetail("ContactName", value, ""); }
 		}
 
-		[EditableTextBox("AuthorUserName", 100, ContainerName = Tabs.Content)]
+		[EditableText("AuthorUserName", 100, ContainerName = Tabs.Content)]
 		public virtual string AuthorUserName
 		{
 			get { return GetDetail<string>("AuthorUserName", null); }

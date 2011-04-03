@@ -33,14 +33,14 @@ namespace N2.Edit.Wizard.Items
 			set { SetDetail("ItemDiscriminator", value); }
 		}
 
-		[EditableTextBox("Content template", 110)]
+		[EditableText("Content template", 110)]
 		public virtual string ContentTemplate
 		{
 			get { return (string)GetDetail("ContentTemplate"); }
 			set { SetDetail("ContentTemplate", value); }
 		}
 
-		[EditableTextBox("Zone name", 120)]
+		[EditableText("Zone name", 120)]
 		public virtual string ItemZoneName
 		{
 			get { return (string)GetDetail("ItemZoneName"); }
@@ -66,7 +66,7 @@ namespace N2.Edit.Wizard.Items
 			return null;
 		}
 
-		[EditableTextBox("Tooltip", 140)]
+		[EditableText("Tooltip", 140)]
 		public virtual string ToolTip
 		{	
 			get { return (string)(GetDetail("ToolTip") ?? string.Empty); }

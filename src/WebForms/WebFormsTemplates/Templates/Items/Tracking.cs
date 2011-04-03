@@ -25,7 +25,7 @@ namespace N2.Templates.Items
             set { SetDetail("TrackEditors", value, false); }
         }
 
-        [EditableTextBox("UACCT code", 100)]
+        [EditableText("UACCT code", 100)]
         public virtual string UACCT
         {
             get { return (string)(GetDetail("UACCT") ?? string.Empty); }

@@ -19,7 +19,7 @@ namespace N2.Templates.Items
             set { base.Title = value; }
         }
 
-        [EditableTextBox("Linked text", 100, TextMode = TextBoxMode.MultiLine)]
+        [EditableText("Linked text", 100, TextMode = TextBoxMode.MultiLine)]
         public virtual string LinkText
         {
             get { return (string)GetDetail("LinkText"); }

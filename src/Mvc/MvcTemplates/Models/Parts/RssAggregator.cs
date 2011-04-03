@@ -20,14 +20,14 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("Text", value, string.Empty); }
 		}
 
-		[EditableTextBox("Rss Urls", 120, Rows = 3, TextMode = TextBoxMode.MultiLine)]
+		[EditableText("Rss Urls", 120, Rows = 3, TextMode = TextBoxMode.MultiLine)]
 		public virtual string RssUrls
 		{
 			get { return GetDetail("RssUrls", GetDetail("RssUrl", "")); }
 			set { SetDetail("RssUrls", value, string.Empty); }
 		}
 
-		[EditableTextBox("Max Count", 130)]
+		[EditableText("Max Count", 130)]
 		public virtual int MaxCount
 		{
 			get { return (int) (GetDetail("MaxCount") ?? 5); }

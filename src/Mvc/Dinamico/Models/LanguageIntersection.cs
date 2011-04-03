@@ -27,7 +27,7 @@ namespace Dinamico.Models
 
 		#region ISitesSource Members
 
-		[EditableTextBox(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
+		[EditableText(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
 		public virtual string HostName { get; set; }
 
 		public IEnumerable<Site> GetSites()

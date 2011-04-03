@@ -45,28 +45,28 @@ namespace N2.Templates.Items
             get { return GetChildren(); }
         }
 
-		[EditableTextBox("Mail from", 120, ContainerName = EmailTab)]
+		[EditableText("Mail from", 120, ContainerName = EmailTab)]
         public virtual string MailFrom
         {
             get { return (string) (GetDetail("MailFrom") ?? string.Empty); }
             set { SetDetail("MailFrom", value, string.Empty); }
         }
 
-		[EditableTextBox("Mail to", 122, ContainerName = EmailTab)]
+		[EditableText("Mail to", 122, ContainerName = EmailTab)]
         public virtual string MailTo
         {
             get { return (string) (GetDetail("MailTo") ?? string.Empty); }
             set { SetDetail("MailTo", value, string.Empty); }
         }
 
-		[EditableTextBox("Mail subject", 124, ContainerName = EmailTab)]
+		[EditableText("Mail subject", 124, ContainerName = EmailTab)]
         public virtual string MailSubject
         {
             get { return (string) (GetDetail("MailSubject") ?? string.Empty); }
             set { SetDetail("MailSubject", value, string.Empty); }
         }
 
-		[EditableTextBox("Mail intro", 126, ContainerName = EmailTab)]
+		[EditableText("Mail intro", 126, ContainerName = EmailTab)]
         [EditorModifier("TextMode", TextBoxMode.MultiLine)]
         public virtual string MailBody
         {

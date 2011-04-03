@@ -8,7 +8,7 @@ namespace N2.Tests.Definitions.Items
 	[PageDefinition]
 	public class DefinitionRemovable : ContentItem
 	{
-		[EditableTextBox]
+		[EditableText]
 		public string Description { get; set; }
 
 		[EditableFreeTextArea]

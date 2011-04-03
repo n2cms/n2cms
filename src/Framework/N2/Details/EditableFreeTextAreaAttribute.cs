@@ -21,7 +21,7 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute, IRelativityTransformer
+	public class EditableFreeTextAreaAttribute : EditableTextAttribute, IRelativityTransformer
 	{
 		public EditableFreeTextAreaAttribute()
 			: base(null, 100)

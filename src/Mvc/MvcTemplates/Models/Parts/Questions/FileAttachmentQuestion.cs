@@ -11,10 +11,10 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 	public class FileAttachmentQuestion : Question
 	{
 
-		[EditableTextBox("Max file size (kB)", 100)]
+		[EditableText("Max file size (kB)", 100)]
 		public virtual int MaxFileSize { get; set; }
 
-		[EditableTextBox("Allowed file extensions", 100, HelpText = "Separate multiple extensions with comma (,)")]
+		[EditableText("Allowed file extensions", 100, HelpText = "Separate multiple extensions with comma (,)")]
 		public virtual string AllowedFileExtensions { get; set; }
 		public override System.Web.Mvc.MvcHtmlString CreateHtmlElement()
 		{

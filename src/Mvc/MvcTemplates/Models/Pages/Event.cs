@@ -42,7 +42,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			}
 		}
 
-		[EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
+		[EditableText("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
 			Columns = 80)]
 		public virtual string Introduction
 		{

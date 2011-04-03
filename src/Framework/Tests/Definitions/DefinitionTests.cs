@@ -462,7 +462,7 @@ namespace N2.Tests.Definitions
 			Assert.That(textEditables.Count(), Is.EqualTo(1));
 			Assert.That(editable.Title, Is.EqualTo("Plain Text"));
 			Assert.That(editable.SortOrder, Is.EqualTo(200));
-			Assert.That(editable, Is.TypeOf(typeof(EditableTextBoxAttribute)));
+			Assert.That(editable, Is.TypeOf(typeof(EditableTextAttribute)));
 		}
 
 		[Test]

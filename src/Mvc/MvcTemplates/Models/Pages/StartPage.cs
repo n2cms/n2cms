@@ -27,7 +27,7 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		// site
 
-		[EditableTextBox("Host Name", 72, ContainerName = MiscArea)]
+		[EditableText("Host Name", 72, ContainerName = MiscArea)]
 		public virtual string HostName
 		{
 			get { return (string) (GetDetail("HostName") ?? string.Empty); }

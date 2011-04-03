@@ -14,7 +14,7 @@ namespace N2.Templates.Items
     public class Top : AbstractItem
     {
 		[DisplayableHeading(2)]
-		[EditableTextBox("Top text", 40, ContainerName = "top")]
+		[EditableText("Top text", 40, ContainerName = "top")]
         public override string Title
         {
             get { return base.Title; }

@@ -7,7 +7,7 @@ namespace N2.Tests.Edit.Items
 {
 	public class ItemWithModification : N2.ContentItem
 	{
-		[N2.Details.EditableTextBox("Essay", 10)]
+		[N2.Details.EditableText("Essay", 10)]
 		[N2.Web.UI.EditorModifier("TextMode", TextBoxMode.MultiLine)]
 		[N2.Web.UI.EditorModifier("Rows", 10)]
 		public virtual string Essay

@@ -23,14 +23,14 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("Text", value, string.Empty); }
 		}
 
-		[EditableTextBox("Failure Text", 110)]
+		[EditableText("Failure Text", 110)]
 		public virtual string FailureText
 		{
 			get { return (string) (GetDetail("FailureText") ?? string.Empty); }
 			set { SetDetail("FailureText", value, string.Empty); }
 		}
 
-		[EditableTextBox("Logout Text", 120)]
+		[EditableText("Logout Text", 120)]
 		public virtual string LogoutText
 		{
 			get { return GetDetail("LogoutText", "Logout"); }
