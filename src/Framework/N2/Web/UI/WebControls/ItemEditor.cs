@@ -11,15 +11,16 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
-using N2.Engine;
+using N2.Edit.Web;
 using N2.Edit.Workflow;
-using System.Web;
+using N2.Engine;
 using N2.Persistence;
 
 namespace N2.Web.UI.WebControls
@@ -176,10 +177,11 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
+		[Obsolete("Use CommandDispatcher")]
 		public ContentItem Save(ContentItem item, ItemEditorVersioningMode mode)
 		{
 			EnsureChildControls();
-			BinderContext = new CommandContext(GetDefinition(), item, "Unknown", Page.User, this, new N2.Edit.Web.PageValidator<CommandContext>(Page));
+			BinderContext = CreateCommandContext();
 			item = EditAdapter.SaveItem(item, AddedEditors, mode, Page.User);
 			if (Saved != null)
 				Saved.Invoke(this, new ItemEventArgs(item));
@@ -188,6 +190,7 @@ namespace N2.Web.UI.WebControls
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
 		/// <returns>The saved item.</returns>
+		[Obsolete("Use CommandDispatcher")]
 		public ContentItem Save()
 		{
 			CurrentItem = Save(CurrentItem, VersioningMode);
@@ -197,7 +200,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-			UpdateObject(new CommandContext(GetDefinition(), CurrentItem, "Unknown", Page.User, this, new NullValidator<CommandContext>()));
+			UpdateObject(CreateCommandContext());
 		}
 
 		#endregion
@@ -277,5 +280,10 @@ namespace N2.Web.UI.WebControls
 		}
 
 		#endregion
+
+		public CommandContext CreateCommandContext()
+		{
+			return new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
+		}
 	}
 }

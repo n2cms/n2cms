@@ -116,7 +116,7 @@ namespace N2.Edit
 
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = ie.CreateCommandContext();
 			ctx.Parameters["MoveBefore"] = Request["before"];
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			Commands.Publish(ctx);
@@ -126,7 +126,7 @@ namespace N2.Edit
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = ie.CreateCommandContext();
 			Commands.Save(ctx);
 
 			string returnUrl = Request["returnUrl"];
@@ -145,7 +145,7 @@ namespace N2.Edit
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = ie.CreateCommandContext();
             Commands.Save(ctx);
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
@@ -345,18 +345,15 @@ namespace N2.Edit
 			ucInfo.DataBind();
 		}
 
-		private ContentItem SaveVersion()
-		{
-			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionOnly : ItemEditorVersioningMode.SaveOnly;
-			return ie.Save(ie.CurrentItem, mode);
-		}
-
         private ContentItem SaveVersionForFuturePublishing()
         {
             // Explicitly setting the current versions FuturePublishDate.
             // The database will end up with two new rows in the detail table.
             // On row pointing to the master and one to the latest/new version.
-            var item = SaveVersion();
+			var cc = ie.CreateCommandContext();
+			Commands.Save(cc);
+
+			var item = cc.Content;
 			if (item.VersionOf == null)
 				item.Published = dpFuturePublishDate.SelectedDate;
 			else

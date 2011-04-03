@@ -4,6 +4,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Definitions;
+using N2.Edit.Workflow;
 
 namespace N2.Edit
 {
@@ -34,7 +36,15 @@ namespace N2.Edit
 
 					foreach (IItemEditor itemEditor in itemEditors)
 					{
-						Context.Current.EditManager.Save(itemEditor.CurrentItem, itemEditor.AddedEditors, itemEditor.VersioningMode, container.Page.User);
+						var definition = Engine.Definitions.GetDefinition(itemEditor.CurrentItem);
+						Engine.Resolve<CommandDispatcher>().Publish(
+							new CommandContext(
+								definition,
+								itemEditor.CurrentItem,
+								Interfaces.Viewing,
+								container.Page.User,
+								new EditorCollectionBinder(definition, itemEditor.AddedEditors),
+								new NullValidator<CommandContext>()));
 					}
 
 					RedirectTo(container.Page, context.Selected);
@@ -132,5 +142,40 @@ namespace N2.Edit
 		}
 
 		#endregion
+
+		public class EditorCollectionBinder : IBinder<CommandContext>
+		{
+			ItemDefinition definition;
+			IDictionary<string, Control> editors;
+
+			public EditorCollectionBinder(ItemDefinition definition, IDictionary<string, Control> editors)
+			{
+				this.definition = definition;
+				this.editors = editors;
+			}
+
+			#region IBinder<CommandContext> Members
+
+			public bool UpdateObject(CommandContext value)
+			{
+				bool wasUpdated = false;
+				foreach (var kvp in editors)
+				{
+					var editable = definition.Get(kvp.Key) as IEditable;
+					if (editable != null)
+					{
+						wasUpdated |= editable.UpdateItem(value.Content, kvp.Value);
+					}
+				}
+				return wasUpdated;
+			}
+
+			public void UpdateInterface(CommandContext value)
+			{
+				throw new NotImplementedException();
+			}
+
+			#endregion
+		}
 	}
 }

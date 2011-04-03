@@ -72,7 +72,7 @@ namespace N2.Persistence.NH
 				sc.Session.Flush();
 		}
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
             SessionContext sc = CurrentSession;
 

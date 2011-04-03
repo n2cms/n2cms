@@ -10,7 +10,7 @@ namespace N2.Tests.Web.UrlParsing
 	[TestFixture]
 	public class CachingUrlParserTests : ParserTestsBase
 	{
-		protected FakeRepository<ContentItem> repository;
+		new protected FakeRepository<ContentItem> repository;
 
 		[SetUp]
 		public override void SetUp()

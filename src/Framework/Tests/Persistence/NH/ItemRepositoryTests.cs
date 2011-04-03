@@ -12,7 +12,7 @@ namespace N2.Tests.Persistence.NH
 	public class ItemRepositoryTests : DatabasePreparingBase
 	{
 		NHRepository<int, ContentItem> repository;
-		ISessionProvider sessionProvider;
+		new ISessionProvider sessionProvider;
 
 		[SetUp]
 		public override void SetUp()

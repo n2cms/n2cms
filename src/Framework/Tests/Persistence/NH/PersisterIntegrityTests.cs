@@ -13,7 +13,7 @@ namespace N2.Tests.Persistence.NH
 	public class PersisterIntegrityTests : PersisterTestsBase
 	{
 		IUrlParser parser;
-		FakeItemFinder finder;
+		new FakeItemFinder finder;
 
 		[SetUp]
 		public override void SetUp()

@@ -1,4 +1,5 @@
 using N2.Collections;
+using System;
 
 namespace N2.Tests.Web.Items
 {
@@ -9,6 +10,7 @@ namespace N2.Tests.Web.Items
 			get { return "/" + Name + Extension; }
 		}
 
+		[Obsolete]
 		public override string RewrittenUrl
 		{
 			get { return TemplateUrl.TrimStart('~') + "?page=" + ID; }

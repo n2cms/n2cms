@@ -23,7 +23,6 @@ namespace N2.Definitions
 
 		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
-			Debug.WriteLine("DefinitionManager");
 			this.definitionProviders = definitionProviders;
 			this.activator = activator;
 		}

@@ -66,6 +66,7 @@ namespace N2.Edit
 		/// <param name="versioningMode">How to treat the item beeing saved in respect to versioning.</param>
 		/// <param name="user">The user that is performing the saving.</param>
 		/// <returns>The item to continue using.</returns>
+		[Obsolete("Use CommandDispatcher")]
 		public virtual ContentItem SaveItem(ContentItem item, IDictionary<string, Control> addedEditors, ItemEditorVersioningMode versioningMode, IPrincipal user)
 		{
 			return EditManager.Save(item, addedEditors, versioningMode, user);

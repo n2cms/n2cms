@@ -66,7 +66,11 @@ namespace N2.Details
 						IItemEditor fallbackEditor = ItemUtility.FindInParents<IItemEditor>(editor.Parent);
 						if (fallbackEditor != null)
 						{
-							fallbackEditor.Saved += delegate { childEditor.Save(); };
+							fallbackEditor.Saved += delegate
+							{
+								var cc = childEditor.CreateCommandContext();
+								Engine.Resolve<CommandDispatcher>().Publish(cc);
+							};
 						}
 					}
 				}

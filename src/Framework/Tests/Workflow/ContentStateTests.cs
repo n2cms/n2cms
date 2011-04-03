@@ -68,6 +68,7 @@ namespace N2.Tests.Workflow
         // edit manater
 
         [Test]
+		[Obsolete]
         public void VersionAndSave_SetsItemStateTo_Published()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -77,7 +78,8 @@ namespace N2.Tests.Workflow
             Assert.That(item.State, Is.EqualTo(ContentState.Published));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void SaveOnly_SetsItemStateTo_Published()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -87,7 +89,8 @@ namespace N2.Tests.Workflow
             Assert.That(item.State, Is.EqualTo(ContentState.Published));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void SaveOnly_OnVersion_SetsItemStateTo_Draft()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -99,7 +102,8 @@ namespace N2.Tests.Workflow
             Assert.That(result.State, Is.EqualTo(ContentState.Draft));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void SaveVersion_OnPublishedItem_SetsVersionedItemStateTo_Unpublished()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -110,6 +114,7 @@ namespace N2.Tests.Workflow
         }
 
         [Test]
+		[Obsolete]
         public void SaveVersion_OnDraft_SetsVersionedItemStateTo_Unpublished()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -119,7 +124,8 @@ namespace N2.Tests.Workflow
             Assert.That(version.State, Is.EqualTo(ContentState.Draft));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void SaveAsMaster_SetsItemState_Published()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -131,7 +137,8 @@ namespace N2.Tests.Workflow
             Assert.That(result.State, Is.EqualTo(ContentState.Published));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void VersionOnly_SetsVersionedItemStateTo_Draft()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -142,7 +149,8 @@ namespace N2.Tests.Workflow
             Assert.That(result.State, Is.EqualTo(ContentState.Draft));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void VersionOnly_DoesntAffect_MasterVersionState()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -152,7 +160,8 @@ namespace N2.Tests.Workflow
             Assert.That(item.State, Is.EqualTo(ContentState.Published));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void VersionOnly_DoesntAffect_MasterVersionIndex()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -163,7 +172,8 @@ namespace N2.Tests.Workflow
             Assert.That(item.VersionIndex, Is.EqualTo(initialIndex));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void VersionOnly_SavedItem_IncrementsVersionIndex()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);
@@ -174,7 +184,8 @@ namespace N2.Tests.Workflow
             Assert.That(version.VersionIndex, Is.EqualTo(item.VersionIndex + 1));
         }
 
-        [Test]
+		[Test]
+		[Obsolete]
         public void Publish_DoesntAffect_OldVersionsIndex()
         {
 			var item = activator.CreateInstance<StatefulItem>(null);

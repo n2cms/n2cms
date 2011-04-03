@@ -29,7 +29,7 @@ namespace N2.Tests.Fakes
             return GetVersionsOf(publishedItem).Take(count).ToList();
         }
 
-        public void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
+        public override void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
         {
         }
 
