@@ -18,7 +18,7 @@ namespace N2.Persistence
 
 		public void Fulfil(object entity)
 		{
-			var dependet = entity as IDependentEntity<T>;
+			var dependet = entity as IInjectable<T>;
 			if (dependet != null)
 				dependet.Set(dependency);
 		}

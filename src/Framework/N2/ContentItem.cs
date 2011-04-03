@@ -22,19 +22,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
 using N2.Collections;
-using N2.Details;
-using N2.Integrity;
-using N2.Persistence;
-using N2.Web;
-using N2.Edit.Workflow;
 using N2.Definitions;
+using N2.Details;
+using N2.Edit.Workflow;
+using N2.Engine;
+using N2.Persistence;
 using N2.Persistence.Proxying;
+using N2.Web;
 using NHibernate.Search.Attributes;
-using System.Runtime.CompilerServices;
 
 namespace N2
 {
@@ -66,7 +66,7 @@ namespace N2
 	public abstract class ContentItem : IComparable, 
 		IComparable<ContentItem>, 
 		ICloneable,
-		IDependentEntity<IUrlParser>, 
+		IInjectable<IUrlParser>, 
 		INode, 
 		IUpdatable<ContentItem>, 
 		IInterceptableType,
@@ -1035,7 +1035,7 @@ namespace N2
 
 		#region IDependentEntity<IUrlParser> Members
 
-		void IDependentEntity<IUrlParser>.Set(IUrlParser dependency)
+		void IInjectable<IUrlParser>.Set(IUrlParser dependency)
 		{
 			urlParser = dependency;
 		}

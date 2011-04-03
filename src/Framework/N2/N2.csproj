@@ -549,7 +549,7 @@
     <Compile Include="Persistence\EntityDependencySetter.cs" />
     <Compile Include="Persistence\ContentDependencyInjector.cs" />
     <Compile Include="Persistence\IDependencySetter.cs" />
-    <Compile Include="Persistence\IDependentEntityOfT.cs" />
+    <Compile Include="Engine\IInjectableOfT.cs" />
     <Compile Include="Persistence\ItemNotifier.cs" />
     <Compile Include="Persistence\Proxying\DetailPropertyInterceptor.cs" />
     <Compile Include="Persistence\Proxying\EmptyProxyFactory.cs" />

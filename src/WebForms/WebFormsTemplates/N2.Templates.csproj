@@ -579,9 +579,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
-    <Content Include="App_Data\Web.n2.host.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
+    <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Corporate\amazed.gif" />

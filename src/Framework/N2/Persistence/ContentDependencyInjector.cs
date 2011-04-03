@@ -43,7 +43,7 @@ namespace N2.Persistence
 			{
 				foreach (var interfaceType in definition.ItemType.GetInterfaces())
 				{
-					if (interfaceType.IsGenericType && typeof(IDependentEntity<>) == interfaceType.GetGenericTypeDefinition())
+					if (interfaceType.IsGenericType && typeof(IInjectable<>) == interfaceType.GetGenericTypeDefinition())
 					{
 						Type genericType = interfaceType.GetGenericArguments()[0];
 						Type providerType = typeof(EntityDependencySetter<>).MakeGenericType(genericType);

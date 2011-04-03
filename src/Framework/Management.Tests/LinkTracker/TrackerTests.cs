@@ -1,17 +1,16 @@
 using N2.Configuration;
+using N2.Details;
 using N2.Edit.FileSystem;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.LinkTracker;
 using N2.Edit.Tests.FileSystem;
+using N2.Engine;
+using N2.Persistence;
 using N2.Tests;
 using N2.Tests.Fakes;
+using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Persistence;
-using N2.Web;
-using N2.Details;
-using N2.Persistence.Proxying;
-using N2.Persistence.NH;
 
 namespace N2.Edit.Tests.LinkTracker
 {
@@ -158,7 +157,7 @@ namespace N2.Edit.Tests.LinkTracker
 				new FakePathProvider(((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).BasePath);
 
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
-			((IDependentEntity<IUrlParser>)rootDir).Set(new UrlParser(persister, null, new Host(null, 1, 1), new HostSection()));
+			((IInjectable<IUrlParser>)rootDir).Set(new UrlParser(persister, null, new Host(null, 1, 1), new HostSection()));
 
 			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
 			persister.Save(root);

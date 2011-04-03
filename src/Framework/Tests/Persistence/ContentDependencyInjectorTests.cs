@@ -32,8 +32,8 @@ namespace N2.Tests.Persistence
 	}
 
 	public class InjectableItem : ContentItem,
-		IDependentEntity<IItemNotifier>,
-		IDependentEntity<IServiceContainer>
+		IInjectable<IItemNotifier>,
+		IInjectable<IServiceContainer>
 	{
 		public IItemNotifier dependency1;
 		public IServiceContainer dependency2;

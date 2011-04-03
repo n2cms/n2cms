@@ -1,16 +1,14 @@
-﻿using N2.Edit.Trash;
-using N2.Persistence;
-using N2.Web;
-using N2.Management.Files;
-using System;
-using N2.Security;
+﻿using System;
 using N2.Definitions;
+using N2.Engine;
+using N2.Security;
+using N2.Web;
 using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem.Items
 {
     [Throwable(AllowInTrash.No), Versionable(AllowVersions.No), PermissionRemap(From = Permission.Publish, To = Permission.Write)]
-	public abstract class AbstractNode : ContentItem, INode, IDependentEntity<IFileSystem>, ISystemNode
+	public abstract class AbstractNode : ContentItem, INode, IInjectable<IFileSystem>, ISystemNode
     {
 		IFileSystem fileSystem;
 		protected string iconUrl;
