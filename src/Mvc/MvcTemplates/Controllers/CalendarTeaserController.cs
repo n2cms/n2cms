@@ -5,6 +5,7 @@ using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -13,7 +14,10 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			var hits = CurrentItem.Container.GetEvents().Where(e => e.EventDate > DateTime.Today);
+			var container = CurrentItem.Container;
+			var hits = container != null
+				? container.GetEvents().Where(e => e.EventDate > DateTime.Today)
+				: new Event[0];
 
 			return PartialView(new CalendarTeaserModel(CurrentItem, hits.Take(5).ToList()));
 		}
