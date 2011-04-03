@@ -95,7 +95,7 @@ namespace N2.Tests.Workflow
             var version = MakeVersion(item);
             version.State = ContentState.Unpublished;
 
-			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(version), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);

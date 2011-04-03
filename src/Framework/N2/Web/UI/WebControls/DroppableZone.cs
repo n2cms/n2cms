@@ -94,7 +94,7 @@ namespace N2.Web.UI.WebControls
 
     	private ItemDefinition GetDefinition(ContentItem item)
 		{
-			return N2.Context.Definitions.GetDefinition(item.GetContentType());
+			return N2.Context.Definitions.GetDefinition(item);
 		}
 
         public static string GetToolTip(ItemDefinition definition, string zoneName)

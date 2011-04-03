@@ -286,7 +286,7 @@ namespace N2.Edit
 					SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
-				bool wasUpdated = UpdateItem(definitions.GetDefinition(itemToUpdate.GetContentType()), itemToUpdate, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(itemToUpdate), itemToUpdate, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
 					itemToUpdate.Published = published ?? Utility.CurrentTime();
@@ -303,7 +303,7 @@ namespace N2.Edit
 
 		private ContentItem SaveOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
+			bool wasUpdated = UpdateItem(definitions.GetDefinition(item), item, addedEditors, user).Length > 0;
 			if (wasUpdated || IsNew(item))
 			{
 				if (item.VersionOf == null)
@@ -329,7 +329,7 @@ namespace N2.Edit
 					SaveVersion(item);
 
 				DateTime? initialPublished = item.Published;
-				bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(item), item, addedEditors, user).Length > 0;
 				DateTime? updatedPublished = item.Published;
 
 				// the item was the only version of an unpublished item - publish it
@@ -362,7 +362,7 @@ namespace N2.Edit
 				if (ShouldCreateVersionOf(item))
 					item = SaveVersion(item);
 
-				bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(item), item, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(item))
 				{
 					item.Published = null;

@@ -83,7 +83,7 @@ namespace N2.Web.UI
 			{
 				IDefinitionManager definitions = Engine.Definitions;
 				ContentActivator activator = Engine.Resolve<ContentActivator>();
-				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem.GetContentType());
+				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem);
 
 				if (parentDefinition.IsChildAllowed(definitions, parentDefinition))
 				{

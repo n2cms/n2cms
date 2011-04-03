@@ -40,8 +40,7 @@ namespace N2.Web.UI.WebControls
             ContentItem item = ItemUtility.FindCurrentItem(this.Parent);
 			if (item != null && item.Parent != null)
             {
-				Type parentItemType = item.Parent.GetContentType();
-				N2.Definitions.ItemDefinition definition = N2.Context.Definitions.GetDefinition(parentItemType);
+				N2.Definitions.ItemDefinition definition = N2.Context.Definitions.GetDefinition(item.Parent);
 				this.DataSource = definition.AvailableZones;
 				this.DataTextField = "Title";
                 this.DataValueField = "ZoneName";

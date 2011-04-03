@@ -89,7 +89,7 @@ namespace N2.Definitions
 		public virtual IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
 			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
-			var definition = GetDefinition(parentItem.GetContentType());
+			var definition = GetDefinition(parentItem);
 			foreach (ItemDefinition childDefinition in definition.GetAllowedChildren(this, parentItem))
 			{
 				if (!childDefinition.IsDefined)

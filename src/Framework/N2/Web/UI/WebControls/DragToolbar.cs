@@ -35,7 +35,7 @@ namespace N2.Web.UI.WebControls
 		[Obsolete("Don't use", true)]
 		public ItemDefinition Definition
 		{
-			get { return definition ?? (definition = N2.Context.Definitions.GetDefinition(CurrentItem.GetContentType())); }
+			get { return definition ?? (definition = N2.Context.Definitions.GetDefinition(CurrentItem)); }
 		}
 
 		protected override void Render(HtmlTextWriter writer)

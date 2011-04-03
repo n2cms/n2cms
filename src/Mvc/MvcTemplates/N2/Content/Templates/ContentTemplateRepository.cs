@@ -54,7 +54,7 @@ namespace N2.Management.Content.Templates
 				Title = template.Title,
 				Description = template.GetDetail(TemplateDescription, ""),
 				TemplateUrl = template.Url,
-				Definition = definitions.GetDefinition(template.GetContentType()).Clone(),
+				Definition = definitions.GetDefinition(template).Clone(),
 				Template = clone,
 				Original = template
 			};

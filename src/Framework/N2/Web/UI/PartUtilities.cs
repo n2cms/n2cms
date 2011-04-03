@@ -48,7 +48,7 @@ namespace N2.Web.UI
 
 		public void WriteTitleBar(TextWriter writer, ContentItem item, string returnUrl)
 		{
-			var definition = definitions.GetDefinition(item.GetContentType());
+			var definition = definitions.GetDefinition(item);
 
 			writer.Write("<div class='titleBar ");
 			writer.Write(definition.Discriminator);

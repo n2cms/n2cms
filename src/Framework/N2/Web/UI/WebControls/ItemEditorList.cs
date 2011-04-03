@@ -347,7 +347,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddToContainer(Control container, ItemEditor itemEditor, ContentItem item)
 		{
 			var fs = new FieldSet();
-			fs.Legend = Engine.Definitions.GetDefinition(item.GetContentType()).Title;
+			fs.Legend = Engine.Definitions.GetDefinition(item).Title;
 			container.Controls.Add(fs);
 			fs.Controls.Add(itemEditor);
 		}

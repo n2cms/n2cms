@@ -85,7 +85,7 @@ namespace N2.Edit
 		{
 			base.OnLoad(e);
 
-			ParentItemDefinition = Definitions.GetDefinition(ActualItem.GetContentType());
+			ParentItemDefinition = Definitions.GetDefinition(ActualItem);
 			if (!IsPostBack)
 			{
 				LoadZones();
@@ -95,7 +95,7 @@ namespace N2.Edit
 
 		protected void rblPosition_OnSelectedIndexChanged(object sender, EventArgs args)
 		{
-			ParentItemDefinition = Definitions.GetDefinition(ActualItem.GetContentType());
+			ParentItemDefinition = Definitions.GetDefinition(ActualItem);
 			LoadZones();
 			ZoneName = rblZone.SelectedValue;
 		}

@@ -48,7 +48,7 @@ namespace N2.Web.Mvc.Html
 				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
 					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem.GetContentType()), ZoneName))
+					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName))
 					.Write(">");
 
 				if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))
@@ -90,7 +90,7 @@ namespace N2.Web.Mvc.Html
         {			
             if (state == ControlPanelState.DragDrop)
             {
-				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model.GetContentType());
+				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
                 writer.WriteAttribute(PartUtilities.PathAttribute, model.Path)

@@ -86,7 +86,7 @@ namespace N2.Integrity
 				return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetContentType()), destination.GetContentType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source), destination.GetContentType());
 
 			return null;
         }
@@ -100,7 +100,7 @@ namespace N2.Integrity
                 return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetContentType()), destination.GetContentType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source), destination.GetContentType());
 
 			return null;
 		}
@@ -124,7 +124,7 @@ namespace N2.Integrity
                 return new NameOccupiedException(item, item.Parent);
 
 			if (!IsTypeAllowedBelowDestination(item, item.Parent))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item.GetContentType()), item.Parent.GetContentType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item), item.Parent.GetContentType());
 
 			return null;
 		}
@@ -135,8 +135,8 @@ namespace N2.Integrity
 		/// <returns>The exception that would be thrown if the item was created.</returns>
 		public Exception GetCreateException(ContentItem item, ContentItem parent)
 		{
-			ItemDefinition parentDefinition = definitions.GetDefinition(parent.GetContentType());
-			ItemDefinition itemDefinition = definitions.GetDefinition(item.GetContentType());
+			ItemDefinition parentDefinition = definitions.GetDefinition(parent);
+			ItemDefinition itemDefinition = definitions.GetDefinition(item);
 
 			if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parent + "' of type '" + parent.GetContentType() + "'");
 			if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
@@ -206,8 +206,8 @@ namespace N2.Integrity
 		{
 			if (destination != null)
 			{
-				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source.GetContentType());
-				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination.GetContentType());
+				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source);
+				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination);
 
 				return destinationDefinition.IsChildAllowed(definitions, sourceDefinition);
 			}

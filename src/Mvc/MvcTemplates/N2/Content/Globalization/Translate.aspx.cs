@@ -35,7 +35,7 @@ namespace N2.Edit.Globalization
 					if(parentTranslation != null)
 					{
 						// create new translation below translated parent
-                        ItemDefinition definition = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetContentType());
+                        ItemDefinition definition = Engine.Definitions.GetDefinition(Selection.SelectedItem);
 						Url url = Engine.ManagementPaths.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
                         url = url.AppendQuery(LanguageGateway.LanguageKey, Selection.SelectedItem[LanguageGateway.LanguageKey] ?? Selection.SelectedItem.ID);
 						Response.Redirect(url);

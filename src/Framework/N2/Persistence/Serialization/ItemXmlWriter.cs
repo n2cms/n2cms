@@ -74,7 +74,7 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("visible", item.Visible);
 			itemElement.WriteAttribute("savedBy", item.SavedBy);
 			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
-			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item.GetContentType()).Discriminator);
+			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item).Discriminator);
 		}
 	}
 }

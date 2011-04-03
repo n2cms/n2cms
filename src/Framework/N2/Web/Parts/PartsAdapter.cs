@@ -86,7 +86,7 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Definitions.GetDefinition(parentItem.GetContentType());
+			ItemDefinition containerDefinition = Definitions.GetDefinition(parentItem);
 
 			foreach (ItemDefinition childDefinition in containerDefinition.GetAllowedChildren(Definitions, parentItem))
 			{
