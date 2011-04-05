@@ -14,7 +14,7 @@ namespace N2.Definitions.Runtime
 		{
 			Containables = new Dictionary<string, IUniquelyNamed>();
 			TouchedPaths = new List<string>();
-			ContentModifiers = new List<IContentModifier>();
+			ContentModifiers = new List<IContentTransformer>();
 			DefaultSortIncrement = 10;
 		}
 
@@ -22,7 +22,7 @@ namespace N2.Definitions.Runtime
 
 		public Type ContentType { get; set; }
 		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
-		public ICollection<IContentModifier> ContentModifiers { get; set; }
+		public ICollection<IContentTransformer> ContentModifiers { get; set; }
 		public ICollection<string> TouchedPaths { get; private set; }
 		public string ContainerName { get; set; }
 		public int CurrentSortOrder { get; set; }
@@ -77,7 +77,7 @@ namespace N2.Definitions.Runtime
 				definition.Add(c.Value);
 
 			foreach (var dv in ContentModifiers)
-				definition.ContentModifiers.Add(dv);
+				definition.ContentTransformers.Add(dv);
 
 			return definition;
 		}
@@ -109,7 +109,7 @@ namespace N2.Definitions.Runtime
 			Add(container);
 			return new Builder<T>(container.Name, this);
 		}
-		public void RegisterModifier(IContentModifier modifier)
+		public void RegisterModifier(IContentTransformer modifier)
 		{
 			ContentModifiers.Add(modifier);
 		}

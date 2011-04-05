@@ -20,11 +20,13 @@ namespace N2.Definitions
 	{
 		private readonly IDefinitionProvider[] definitionProviders;
 		private readonly ContentActivator activator;
+		private readonly StateChanger stateChanger;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator, StateChanger changer)
 		{
 			this.definitionProviders = definitionProviders;
 			this.activator = activator;
+			this.stateChanger = changer;
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
@@ -115,20 +117,28 @@ namespace N2.Definitions
 
 		public void Start()
 		{
-			Debug.WriteLine("DefinitionManager.Start");
+			activator.ItemCreated += activator_ItemCreated;
+			stateChanger.StateChanged += stateChanger_StateChanged;
+
 			activator.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
-			activator.ItemCreated += new EventHandler<ItemEventArgs>(activator_ItemCreated);
+		}
+
+		public void Stop()
+		{
+			activator.ItemCreated -= activator_ItemCreated;
+			stateChanger.StateChanged -= stateChanger_StateChanged;
+		}
+
+		void stateChanger_StateChanged(object sender, StateChangedEventArgs e)
+		{
+			foreach (var ct in GetDefinition(e.AffectedItem).ContentTransformers.Where(ct => (ct.ChangingTo & e.AffectedItem.State) == e.AffectedItem.State))
+				ct.Transform(e.AffectedItem);
 		}
 
 		void activator_ItemCreated(object sender, ItemEventArgs e)
 		{
 			if (ItemCreated != null)
 				ItemCreated(this, e);
-		}
-
-		public void Stop()
-		{
-			activator.ItemCreated -= new EventHandler<ItemEventArgs>(activator_ItemCreated);
 		}
 
 		#endregion

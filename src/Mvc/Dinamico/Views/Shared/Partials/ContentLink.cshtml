@@ -9,7 +9,7 @@
 	<a class="img" href="@Content.CurrentItem.Url">@Content.Render.Image("Image", imgSize)</a>		
 	<div class="content">
 		<h3><a class="heading" href="@Content.CurrentItem.Url">@Content.CurrentItem.Title</a></h3>
-		<a class="summary" href="@Content.CurrentItem.Url">@N2.Utility.ExtractFirstSentences(@Content.Data.Text as string, 200).ToHtmlString()</a>
+		<a class="summary" href="@Content.CurrentItem.Url">@Content.Display.Summary</a>
 	</div>
 </div>
 	}

@@ -128,6 +128,12 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableUserControlAttribute>(name, title)
 				.Configure(e => e.UserControlPath = userControlPath);
 		}
+
+		public static EditableBuilder<EditableSummaryAttribute> Summary(this IContentRegistration registration, string name, string title = null, string source = null)
+		{
+			return registration.RegisterEditable<EditableSummaryAttribute>(name, title)
+				.Configure(e => e.Source = source );
+		}
 	}
 
 }

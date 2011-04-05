@@ -1,14 +1,14 @@
 ﻿@{
 	Content.PrependDefinition(re => 
 	{
-		re.Container("Content", e =>
+		re.Container(Dinamico.Defaults.Containers.Metadata, e =>
 		{
 			e.Name();
 		});
-		
 	});
 }
 @Content.Register.Title().Container("Content").Configure(e => e.CssClass = "entry-title").Display()
+@{ Content.Register.Summary("Summary", source: "Text"); }
 <span class="updated">@Content.Register.PublishedRange().Container("Advanced").Display()</span>
 <div class="entry-content">
 	@Content.Register.FreeText("Text").Container("Content").Display()

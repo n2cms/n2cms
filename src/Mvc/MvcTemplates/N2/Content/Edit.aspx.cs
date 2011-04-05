@@ -300,7 +300,6 @@ namespace N2.Edit
 					ie.Definition = info.Definition;
 					ie.CurrentItem = info.Template;
 					ie.CurrentItem.Parent = Selection.SelectedItem;
-					ie.ApplyContentModifications(ContentState.New);
 				}
 				else
 				{
@@ -358,7 +357,7 @@ namespace N2.Edit
 				item.Published = dpFuturePublishDate.SelectedDate;
 			else
 				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
-			item.State = ContentState.Waiting;
+			Engine.Resolve<StateChanger>().ChangeTo(item, ContentState.Waiting);
 			Engine.Persister.Save(item);
 			return item;
         }

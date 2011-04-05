@@ -26,6 +26,7 @@ namespace N2.Edit.Trash
 		private readonly IItemFinder finder;
 		private readonly ISecurityManager security;
 		private readonly ContainerRepository<TrashContainerItem> container;
+		private readonly StateChanger stateChanger;
 
 		/// <summary>Instructs this class to navigate rather than query for items.</summary>
 		public bool UseNavigationMode
@@ -34,12 +35,13 @@ namespace N2.Edit.Trash
 			set { container.Navigate = value; }
 		}
 
-		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container)
+		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger)
 		{
 			this.finder = finder;
 			this.persister = persister;
 			this.security = security;
 			this.container = container;
+			this.stateChanger = stateChanger;
 		}
 
         /// <summary>The container of thrown items.</summary>
@@ -115,7 +117,7 @@ namespace N2.Edit.Trash
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
-			item.State = Workflow.ContentState.Deleted;
+			stateChanger.ChangeTo(item, ContentState.Deleted);
 
             foreach (ContentItem child in item.Children)
                 ExpireTrashedItem(child);
@@ -138,7 +140,7 @@ namespace N2.Edit.Trash
 			item.Name = (string)item["FormerName"];
 			item.Expires = (DateTime?)item["FormerExpires"];
 			if (item[FormerState] != null)
-				item.State = (ContentState)item[FormerState];
+				stateChanger.ChangeTo(item, (ContentState)item[FormerState]);
 			item[FormerName] = null;
 			item[FormerParent] = null;
 			item[FormerExpires] = null;

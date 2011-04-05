@@ -59,7 +59,7 @@ namespace N2
 		/// <returns>True if the item is in the trash can.</returns>
 		public static bool IsRecycled(this ContentItem item)
 		{
-			if (item.State == Edit.Workflow.ContentState.Deleted)
+			if (item.State == ContentState.Deleted)
 				return true;
 
 			foreach (ContentItem ancestor in Find.EnumerateParents(item))

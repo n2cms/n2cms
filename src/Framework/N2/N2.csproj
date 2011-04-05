@@ -144,9 +144,10 @@
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Details\EditableNumberAttribute.cs" />
+    <Compile Include="Details\EditableSummaryAttribute.cs" />
     <Compile Include="Details\WithEditableVisibilityAttribute.cs" />
     <Compile Include="Details\EditableMetaTagAttribute.cs" />
-    <Compile Include="Details\IContentModifier.cs" />
+    <Compile Include="Details\IContentTransformer.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistration.cs" />
     <Compile Include="Definitions\Runtime\IRegistration.cs" />
     <Compile Include="Definitions\Runtime\IContentRegistration.cs" />
@@ -534,7 +535,7 @@
     <Compile Include="Edit\Workflow\Commands\UseMasterCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UseNewVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\ValidateCommand.cs" />
-    <Compile Include="Edit\Workflow\ContentState.cs" />
+    <Compile Include="ContentState.cs" />
     <Compile Include="Edit\Workflow\IContentFormOfT.cs" />
     <Compile Include="Edit\Workflow\ICommandFactory.cs" />
     <Compile Include="Edit\Workflow\Interfaces.cs" />

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(Poll))]
+	//[Controls(typeof(Poll))]
 	public class PollController : TemplatesControllerBase<Poll>
 	{
 		public override ActionResult Index()

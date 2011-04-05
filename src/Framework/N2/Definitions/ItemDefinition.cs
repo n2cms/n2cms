@@ -68,7 +68,7 @@ namespace N2.Definitions
 			SortOrder = 1000;
 			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
 			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
-			ContentModifiers = new List<IContentModifier>();
+			ContentTransformers = new List<IContentTransformer>();
 			AvailableZones = new List<AvailableZoneAttribute>();
 			AllowedZoneNames = new List<string>();
 			Editables = new List<IEditable>();
@@ -162,7 +162,7 @@ namespace N2.Definitions
 		public IList<EditorModifierAttribute> Modifiers { get { return EditableModifiers; } }
 
 		/// <summary>Default modifiers for the content item before it transitions to a state.</summary>
-		public IList<IContentModifier> ContentModifiers { get; set; }
+		public IList<IContentTransformer> ContentTransformers { get; set; }
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
 		public IList<IDisplayable> Displayables { get; private set; }
@@ -306,8 +306,8 @@ namespace N2.Definitions
 					EditableModifiers.Add(containable as EditorModifierAttribute);
 				if (containable is IDisplayable)
 					Displayables.AddOrReplace(containable as IDisplayable);
-				if (containable is IContentModifier)
-					ContentModifiers.Add(containable as IContentModifier);
+				if (containable is IContentTransformer)
+					ContentTransformers.Add(containable as IContentTransformer);
 			}
 			//ReloadRoot();
 		}
@@ -343,8 +343,8 @@ namespace N2.Definitions
 					Containers.Remove(containable as IEditableContainer);
 				if (containable is IDisplayable)
 					Displayables.Remove(containable as IDisplayable);
-				if (containable is IContentModifier)
-					ContentModifiers.Remove(containable as IContentModifier);
+				if (containable is IContentTransformer)
+					ContentTransformers.Remove(containable as IContentTransformer);
 			}
 			//ReloadRoot();
 		}
@@ -428,7 +428,7 @@ namespace N2.Definitions
 			id.Installer = Installer;
 			id.IsDefined = IsDefined;
 			id.EditableModifiers = EditableModifiers.ToList();
-			id.ContentModifiers = ContentModifiers.ToList();
+			id.ContentTransformers = ContentTransformers.ToList();
 			id.NumberOfItems = 0;
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;

@@ -19,6 +19,7 @@ using HtmlHelper = System.Web.Mvc.HtmlHelper;
 using N2.Persistence.Proxying;
 using N2.Persistence;
 using N2.Definitions.Static;
+using N2.Edit.Workflow;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -62,7 +63,8 @@ namespace N2.Extensions.Tests.Mvc
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
 				.ToArray();
 
-			var definitions = new DefinitionManager(new [] { new DefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection())) }, new ContentActivator(new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory()));
+			var changer = new StateChanger();
+			var definitions = new DefinitionManager(new [] { new DefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection())) }, new ContentActivator(changer, null, new EmptyProxyFactory()), changer);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());

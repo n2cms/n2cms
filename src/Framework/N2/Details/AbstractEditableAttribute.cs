@@ -20,7 +20,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentModifier
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -450,17 +450,20 @@ namespace N2.Details
 
 		#endregion
 
-		#region IContentModifier Members
+		#region IContentTransformer Members
 
-		ContentState IContentModifier.ChangingTo
+		ContentState IContentTransformer.ChangingTo
 		{
 			get { return ContentState.New; }
 		}
 
-		void IContentModifier.Modify(ContentItem item)
+		bool IContentTransformer.Transform(ContentItem item)
 		{
-			if (DefaultValue != null)
-				item[Name] = DefaultValue;
+			if (DefaultValue == null)
+				return false;
+
+			item[Name] = DefaultValue;
+			return true;
 		}
 
 		#endregion

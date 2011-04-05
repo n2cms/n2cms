@@ -1,5 +1,5 @@
 ﻿/* FRAMED */
-body { background-image:url(../../Resources/Img/lighten5.png); background-repeat:repeat-x; }
+body { background-image:url(../../Resources/Img/lighten10.png); background-repeat:repeat-x; }
 .tabPanel  { background-color:#fff; }
 
 a img,
@@ -7,7 +7,7 @@ a img,
 
 /* toolbar */
 
-.toolbar { position:fixed; z-index:20; top:0; width:100%; height:30px; padding:2px; border-bottom:solid 1px #ddd; }
+.toolbar { position:fixed; z-index:20; top:0; width:100%; height:30px; padding:2px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; }
 	.toolbar .inner { margin: 0 10px;}
 	.toolbar a,
 	.toolbar .command { display:block; float:left; height:15px; padding:7px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; }

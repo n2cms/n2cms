@@ -7,7 +7,7 @@ using N2.Edit.Workflow;
 
 namespace N2.Details
 {
-	public class DefaultValueAttribute : Attribute, IContentModifier, IUniquelyNamed
+	public class DefaultValueAttribute : Attribute, IContentTransformer, IUniquelyNamed
 	{
 		public DefaultValueAttribute()
 		{
@@ -29,11 +29,13 @@ namespace N2.Details
 			get { return ContentState.New; }
 		}
 
-		public void Modify(ContentItem item)
+		public bool Transform(ContentItem item)
 		{
 			if (Name == null)
-				return;
+				return false;
+
 			item[Name] = Value;
+			return true;
 		}
 
 		#endregion

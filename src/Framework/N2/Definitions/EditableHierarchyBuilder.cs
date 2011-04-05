@@ -82,7 +82,7 @@ namespace N2.Definitions
 			foreach (T editable in editables)
 			{
 				string containerName = editable.ContainerName ?? defaultContainerName;
-				var container = containers.FirstOrDefault(c => c.Current.Name == containerName);
+				var container = containers.FirstOrDefault(c => string.Equals(c.Current.Name, containerName, StringComparison.InvariantCultureIgnoreCase));
 				if (container != null)
 					container.Add(new HierarchyNode<IContainable>(editable));
 				else

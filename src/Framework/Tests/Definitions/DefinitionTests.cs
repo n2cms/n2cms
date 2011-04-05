@@ -67,8 +67,9 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new [] {new DefinitionProvider(builder)}, activator);
+			var changer = new N2.Edit.Workflow.StateChanger();
+			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
+			definitions = new DefinitionManager(new [] {new DefinitionProvider(builder)}, activator, changer);
 		}
 
 		#endregion

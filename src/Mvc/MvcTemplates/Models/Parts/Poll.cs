@@ -17,7 +17,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[RestrictParents(typeof (ContentPageBase))]
 	[AllowedChildren(typeof (SingleSelect))]
 	[FieldSetContainer("questionContainer", "Question", 100)]
-	public class Poll : SidebarItem, IAddablePart
+	public class Poll : ContentItem, IAddablePart
 	{
 		[PollCreatorDetail(QuestionText = "Question", CreateNewText = "Create as new question", Title = "Alternatives",
 			SortOrder = 100, ContainerName = "questionContainer")]

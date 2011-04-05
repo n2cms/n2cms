@@ -33,7 +33,7 @@ namespace N2.Edit.Tests.Trash
 		    
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
             th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
@@ -145,7 +145,7 @@ namespace N2.Edit.Tests.Trash
             mocks.ReplayAll();
 
 			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -171,7 +171,7 @@ namespace N2.Edit.Tests.Trash
             mocks.ReplayAll();
 
 			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null)) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger()) { UseNavigationMode = true };
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
@@ -214,7 +214,7 @@ namespace N2.Edit.Tests.Trash
 			
             mocks.ReplayAll();
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
