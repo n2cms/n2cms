@@ -13,7 +13,7 @@ namespace N2.Templates.Web.UI.WebControls
 	/// <summary>
 	/// A web control that emits a nested list of ul's and li's.
 	/// </summary>
-	public class Menu : WebControl//, IContentTemplate
+	public class Menu : WebControl, IContentTemplate
 	{
 		private ItemFilter[] filters = null;
 		private ContentItem startPage;
