@@ -6,17 +6,19 @@ using N2.Collections;
 using N2.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace N2.Templates.Web.UI.WebControls
 {
 	/// <summary>
 	/// A web control that emits a nested list of ul's and li's.
 	/// </summary>
-	public class Menu : WebControl, IContentTemplate
+	public class Menu : WebControl//, IContentTemplate
 	{
 		private ItemFilter[] filters = null;
 		private ContentItem startPage;
 		private ContentItem currentItem = null;
+		Dictionary<string, Control> addedControls = new Dictionary<string, Control>();
 
 		public Menu()
 		{
@@ -25,13 +27,13 @@ namespace N2.Templates.Web.UI.WebControls
 
 		public virtual ContentItem CurrentItem
 		{
-			get { return currentItem ?? (currentItem = Find.ClosestPage(NamingContainer)); }
+			get { return currentItem ?? (currentItem = (Site != null && Site.DesignMode) ? null : Find.ClosestPage(NamingContainer)); }
 			set { currentItem = value; }
 		}
-
+		
 		public ContentItem StartPage
 		{
-			get { return startPage ?? Find.ClosestLanguageRoot; }
+			get { return startPage ?? (startPage = (Site != null && Site.DesignMode) ? null : Find.ClosestLanguageRoot); }
 			set { startPage = value; }
 		}
 
@@ -71,6 +73,12 @@ namespace N2.Templates.Web.UI.WebControls
 			set { ViewState["MaxLevels"] = value; }
 		}
 
+		private ItemFilter[] Filters
+		{
+			get { return filters; }
+			set { filters = value; }
+		}
+
 		protected override HtmlTextWriterTag TagKey
 		{
 			get { return HtmlTextWriterTag.Ul; }
@@ -80,15 +88,17 @@ namespace N2.Templates.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
-			BuildControlHierarchy(CurrentItem, StartPage);
-			
 			base.CreateChildControls();
+			if (Site != null && Site.DesignMode)
+				return;
+
+			BuildControlHierarchy(CurrentItem, StartPage);
 		}
-		
+
 		private static HtmlGenericControl CreateAndAdd(Control container, string tagName, string cssClass)
 		{
 			HtmlGenericControl hgc = new HtmlGenericControl(tagName);
-			if(!string.IsNullOrEmpty(cssClass))
+			if (!string.IsNullOrEmpty(cssClass))
 				hgc.Attributes["class"] = cssClass;
 			container.Controls.Add(hgc);
 			return hgc;
@@ -101,21 +111,21 @@ namespace N2.Templates.Web.UI.WebControls
 					return true;
 			return false;
 		}
-		
+
 		private void BuildControlHierarchy(ContentItem currentItem, ContentItem startPage)
 		{
-            if(currentItem == null)
-                currentItem = startPage;
+			if (currentItem == null)
+				currentItem = startPage;
 
 			ItemList children = currentItem.GetChildren();
 			if (children.Count > 0)
 				currentItem = children[0];
 			IEnumerable<ContentItem> ancestors = GetAncestors(currentItem, startPage);
 			ContentItem startingPoint = GetStartingPoint();
-			if(startingPoint != null)
+			if (startingPoint != null)
 			{
 				HierarchyBuilder builder = null;
-						
+
 				if (BranchMode)
 				{
 					builder = new BranchHierarchyBuilder(currentItem, startingPoint);
@@ -124,7 +134,7 @@ namespace N2.Templates.Web.UI.WebControls
 				{
 					builder = new TreeHierarchyBuilder(startingPoint, MaxLevels);
 				}
-				
+
 				HierarchyNode<ContentItem> node = builder.Children(Filters).Build();
 				if (node.Current != null)
 				{
@@ -133,17 +143,15 @@ namespace N2.Templates.Web.UI.WebControls
 			}
 		}
 
-		Dictionary<string, Control> addedControls = new Dictionary<string, Control>();
-
 		private void AddControlsRecursive(Control container, HierarchyNode<ContentItem> ih, ContentItem selectedPage, IEnumerable<ContentItem> ancestors)
 		{
 			foreach (HierarchyNode<ContentItem> childHierarchy in ih.Children)
 			{
 				if (!childHierarchy.Current.IsPage)
 					continue;
-				
+
 				ContentItem current = childHierarchy.Current;
-				
+
 				string _cssClass =
 					current == selectedPage
 					|| string.Equals(current.Url, selectedPage.Url, StringComparison.OrdinalIgnoreCase)
@@ -151,13 +159,13 @@ namespace N2.Templates.Web.UI.WebControls
 						: Contains(ancestors, current)
 							? "trail"
 							: string.Empty;
-				
+
 				HtmlGenericControl li = CreateAndAdd(container, "li", _cssClass);
 
 				if (UseMenuIdentifiers)
 				{
 					string name = Regex.Replace(current.Name, "[^_0-1a-z]", "", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-					if(!addedControls.ContainsKey(name))
+					if (!addedControls.ContainsKey(name))
 					{
 						addedControls[current.Name] = li;
 						li.Attributes["id"] = MenuIdentifierPrefix + name;
@@ -165,18 +173,12 @@ namespace N2.Templates.Web.UI.WebControls
 				}
 
 				li.Controls.Add(N2.Web.Link.To(current).ToControl());
-				
+
 				HtmlGenericControl ul = new HtmlGenericControl("ul");
 				AddControlsRecursive(ul, childHierarchy, selectedPage, ancestors);
 				if (ul.Controls.Count > 0)
 					li.Controls.Add(ul);
 			}
-		}
-
-		private ItemFilter[] Filters
-		{
-			get { return filters; }
-			set { filters = value; }
 		}
 
 		private ContentItem GetStartingPoint()
@@ -190,15 +192,5 @@ namespace N2.Templates.Web.UI.WebControls
 		}
 
 		#endregion [rgn]
-
-		#region IPageItemContainer Members
-
-		[Obsolete("Use CurrentItem", true)]
-		public ContentItem CurrentPage
-		{
-			get { return CurrentItem; }
-		}
-
-		#endregion
 	}
 }

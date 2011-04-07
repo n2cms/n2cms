@@ -30,7 +30,6 @@ namespace N2.Collections
 		/// Initializes a new instance of the <see cref="AccessFilter"/> class.
 		/// </summary>
 		public AccessFilter()
-			: this(CurrentUser(), CurrentSecurityManager())
 		{
 		}
 
@@ -51,7 +50,7 @@ namespace N2.Collections
 		/// <value>The user.</value>
 		public IPrincipal User
 		{
-			get { return user; }
+			get { return user ?? CurrentUser(); }
 			set { user = value; }
 		}
 
@@ -61,7 +60,7 @@ namespace N2.Collections
 		/// <value>The security manager.</value>
 		public ISecurityManager SecurityManager
 		{
-			get { return securityManager; }
+			get { return securityManager ?? CurrentSecurityManager(); }
 			set { securityManager = value; }
 		}
 

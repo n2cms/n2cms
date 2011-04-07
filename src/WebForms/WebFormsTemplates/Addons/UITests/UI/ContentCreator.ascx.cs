@@ -13,8 +13,7 @@ namespace N2.Addons.UITests.UI
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			ItemDefinition pageDefinition = Engine.Definitions.GetDefinition(CurrentPage);
-			ddlType.DataSource = Engine.Definitions.GetAllowedChildren(pageDefinition, null, Page.User);
+			ddlType.DataSource = Engine.Definitions.GetAllowedChildren(CurrentPage, null, Page.User);
 			ddlType.DataBind();
 		}
 

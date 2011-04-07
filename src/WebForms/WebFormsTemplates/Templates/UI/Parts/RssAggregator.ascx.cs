@@ -49,7 +49,7 @@ namespace N2.Templates.UI.Parts
                 catch (Exception ex)
                 {
                     items = new RssItem[0];
-                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                    Engine.Resolve<IErrorNotifier>().Notify(ex);
                 }
                 Cache.Add(CacheKey,
                           items,

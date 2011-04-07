@@ -79,7 +79,7 @@ namespace N2.Templates.UI.Parts
 			        cvError.Text = ex.Message;
 			        cvError.IsValid = false;
 			        UserCreator.Visible = false;
-                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                    Engine.Resolve<IErrorNotifier>().Notify(ex);
 			    }
 			}
             else if (CurrentItem.SuccessPage != null)
