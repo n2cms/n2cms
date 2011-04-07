@@ -38,6 +38,11 @@ namespace N2.Definitions.Static
 				?? CreateDefinition(contentType, templateName);
 		}
 
+		public ItemDefinition GetOrCreateDefinition(ContentItem item)
+		{
+			return GetOrCreateDefinition(item.GetContentType(), item["TemplateName"] as string);
+		}
+
 		private ItemDefinition GetDefinition(Type contentType, string templateName)
 		{
 			string key = contentType.FullName + templateName;
@@ -50,7 +55,12 @@ namespace N2.Definitions.Static
 
 		private ItemDefinition CreateDefinition(Type contentType, string templateName)
 		{
-			ItemDefinition definition = new ItemDefinition(contentType);
+			ItemDefinition definition = GetDefinition(contentType, null);
+			if (definition != null)
+				definition = definition.Clone();
+			else
+				definition = new ItemDefinition(contentType);
+
 			definition.Template = templateName;
 			definition.Initialize(contentType);
 

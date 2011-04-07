@@ -7,6 +7,7 @@ using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using NUnit.Framework;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -37,7 +38,7 @@ namespace N2.Tests.Persistence.NH
 			engine.Resolve<IHost>().DefaultSite.RootItemID = rootItem.ID;
 			engine.Resolve<IHost>().DefaultSite.StartPageID = startPage.ID;
 
-			finder = new ItemFinder(sessionProvider, engine.Definitions);
+			finder = new ItemFinder(sessionProvider, new DefinitionMap());
 
 			sessionProvider.OpenSession.Session.Clear();
 		}

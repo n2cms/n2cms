@@ -126,9 +126,8 @@ namespace N2.Definitions.Runtime
 
 		private ItemDefinition GetOrCreateDefinition(ContentRegistration re)
 		{
-			var definition = builder.GetDefinitions().FirstOrDefault(d => d.ItemType == re.ContentType)
-				?? map.GetOrCreateDefinition(re.ContentType, re.Template);
-			return definition.Clone();
+			var definition = map.GetOrCreateDefinition(re.ContentType, re.Template);
+			return definition;
 		}
 
 		class StubController : Controller

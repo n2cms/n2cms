@@ -75,7 +75,7 @@ namespace N2.Plugin.Scheduling
         public virtual void OnError(Exception ex)
         {
             if(Engine != null)
-                Engine.Resolve<IErrorHandler>().Notify(ex);
+                Engine.Resolve<IErrorNotifier>().Notify(ex);
         }
     }
 }

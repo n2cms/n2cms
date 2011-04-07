@@ -1,3 +1,4 @@
+- ITemplateable/TemplateName in n2item
 - Warn removing files referenced somewhere (ThreadId=252444)
 - IRedirect
 - AttributeTransformerBase (ThreadId=250548)

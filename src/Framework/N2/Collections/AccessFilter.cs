@@ -50,7 +50,7 @@ namespace N2.Collections
 		/// <value>The user.</value>
 		public IPrincipal User
 		{
-			get { return user ?? CurrentUser(); }
+			get { return user ?? (user = CurrentUser()); }
 			set { user = value; }
 		}
 
@@ -60,7 +60,7 @@ namespace N2.Collections
 		/// <value>The security manager.</value>
 		public ISecurityManager SecurityManager
 		{
-			get { return securityManager ?? CurrentSecurityManager(); }
+			get { return securityManager ?? (securityManager = CurrentSecurityManager()); }
 			set { securityManager = value; }
 		}
 

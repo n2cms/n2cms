@@ -1,6 +1,8 @@
 using N2.Definitions;
 using N2.Persistence.Finder;
 using N2.Engine;
+using N2.Definitions.Static;
+using System;
 
 namespace N2.Persistence.NH.Finder
 {
@@ -11,24 +13,24 @@ namespace N2.Persistence.NH.Finder
 	public class ItemFinder : IItemFinder
 	{
 		ISessionProvider sessionProvider;
-		private readonly IDefinitionManager definitions;
+		DefinitionMap map;
 
-		public ItemFinder(ISessionProvider sessionProvider, IDefinitionManager definitions)
+		public ItemFinder(ISessionProvider sessionProvider, DefinitionMap map)
 		{
 			this.sessionProvider = sessionProvider;
-			this.definitions = definitions;
+			this.map = map;
 		}
 
 		/// <summary>Starts the building of a query.</summary>
 		public IQueryBuilder Where
 		{
-			get { return new QueryBuilder(sessionProvider, definitions); }
+			get { return new QueryBuilder(sessionProvider, map); }
 		}
 
 		/// <summary>Allows selection of all items.</summary>
 		public IQueryEnding All
 		{
-			get { return new QueryBuilder(sessionProvider, definitions); }
+			get { return new QueryBuilder(sessionProvider, map); }
 		}
 	}
 }

@@ -47,13 +47,13 @@ namespace N2.Tests.Integrity
 			parser = mocks.StrictMock<IUrlParser>();
 
 			ITypeFinder typeFinder = CreateTypeFinder();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, activator, changer);
-			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
+			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer);
+			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);
 			enforcer.Start();

@@ -45,7 +45,6 @@ namespace N2.Edit
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
 		protected IDefinitionManager Definitions;
-		protected ITemplateProvider[] TemplateProviders;
 		protected IList<ItemDefinition> AvailableDefinitions = new List<ItemDefinition>();
 
 		public ContentItem ActualItem
@@ -62,8 +61,7 @@ namespace N2.Edit
 		protected override void OnPreInit(EventArgs e)
 		{
 			base.OnPreInit(e);
-			Definitions = Engine.Resolve<IDefinitionManager>();
-			TemplateProviders = Engine.Container.ResolveAll<ITemplateProvider>();
+			Definitions = Engine.Definitions;
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -211,7 +209,7 @@ namespace N2.Edit
 
 		public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
 		{
-			return TemplateProviders.GetTemplates(definition.ItemType).OrderBy(t => t.Definition.Template == null ? 0 : 1);
+			return Definitions.GetTemplates(definition.ItemType).OrderBy(t => t.Definition.Template == null ? 0 : 1);
 		}
 
 		private void LoadZones()

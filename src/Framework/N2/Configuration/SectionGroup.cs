@@ -19,5 +19,9 @@ namespace N2.Configuration
 		{
 			get { return (HostSection)Sections["host"]; }
 		}
+		public EditSection Edit
+		{
+			get { return (EditSection)Sections["edit"]; }
+		}
 	}
 }

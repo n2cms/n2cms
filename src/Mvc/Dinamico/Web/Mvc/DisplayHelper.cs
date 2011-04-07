@@ -51,7 +51,7 @@ namespace N2.Web.Mvc
 		            return true;
 		        }
 
-				var template = Html.ResolveServices<ITemplateProvider>().GetTemplate(Current);
+				var template = Html.ResolveService<IDefinitionManager>().GetTemplate(Current);
 		        var displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == name);
 
 		        object data;

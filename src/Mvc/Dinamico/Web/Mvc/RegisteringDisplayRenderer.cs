@@ -27,8 +27,7 @@ namespace N2.Web.Mvc
 		{
 			Context = new RenderingContext();
 			Context.Content = html.CurrentItem();
-			var providers = html.ResolveServices<ITemplateProvider>();
-			var template = providers.GetTemplate(Context.Content);
+			var template = html.ResolveService<IDefinitionManager>().GetTemplate(Context.Content);
 			if (template != null)
 				Context.Displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == propertyName);
 			Context.Html = html;

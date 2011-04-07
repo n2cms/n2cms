@@ -66,5 +66,21 @@ namespace N2.Definitions
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete("Use ContentActivator", false)]
 		event EventHandler<ItemEventArgs> ItemCreated;
+
+		/// <summary>Gets all templates for a certain content type.</summary>
+		/// <param name="contentType">The type of a content item.</param>
+		/// <returns>An enumeration of templates.</returns>
+		IEnumerable<TemplateDefinition> GetTemplates(Type contentType);
+
+		/// <summary>Gets a tmeplate by name and content type.</summary>
+		/// <param name="contentType">The type of content item.</param>
+		/// <param name="templateName">The name of the template.</param>
+		/// <returns>A matching template or null if no template is available.</returns>
+		TemplateDefinition GetTemplate(Type contentType, string templateName);
+
+		/// <summary>Gets the template of a content item.</summary>
+		/// <param name="item">The item whose template to get.</param>
+		/// <returns>The item's template.</returns>
+		TemplateDefinition GetTemplate(ContentItem item);		
 	}
 }

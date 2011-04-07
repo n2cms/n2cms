@@ -95,7 +95,7 @@ namespace N2.Edit.Globalization
             }
             catch (N2Exception ex)
             {
-                Engine.Resolve<IErrorHandler>().Notify(ex);
+                Engine.Resolve<IErrorNotifier>().Notify(ex);
                 cvAssociateLanguageRoots.IsValid = false;
             }
             DataBind();

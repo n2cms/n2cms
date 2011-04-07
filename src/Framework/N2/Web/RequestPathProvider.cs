@@ -15,14 +15,13 @@ namespace N2.Web
 	{
 		private readonly IWebContext webContext;
 		private readonly IUrlParser parser;
-		private readonly IErrorHandler errorHandler;
+		private readonly IErrorNotifier errorHandler;
 		private readonly bool rewriteEmptyExtension = true;
 		private readonly bool observeAllExtensions = true;
 		private readonly string[] observedExtensions = new[] {".aspx"};
 		private readonly string[] nonRewritablePaths;
 
-		public RequestPathProvider(IWebContext webContext, IUrlParser parser, 
-			IErrorHandler errorHandler, HostSection config)
+		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config)
 		{
 			this.webContext = webContext;
 			this.parser = parser;

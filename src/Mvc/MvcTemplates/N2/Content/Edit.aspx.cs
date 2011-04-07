@@ -43,7 +43,6 @@ namespace N2.Edit
 
 		protected ISecurityManager Security;
 		protected IDefinitionManager Definitions;
-		protected ITemplateProvider[] Templates;
 		protected IVersionManager Versions;
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
@@ -54,7 +53,6 @@ namespace N2.Edit
 			base.OnPreInit(e);
 			Security = Engine.SecurityManager;
 			Definitions = Engine.Definitions;
-			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
 			Versions = Engine.Resolve<IVersionManager>();
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
@@ -176,7 +174,7 @@ namespace N2.Edit
                 string message = string.Empty;
                 foreach (var ex in ctx.Errors)
                 {
-                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                    Engine.Resolve<IErrorNotifier>().Notify(ex);
                     message += ex.Message + "<br/>";
                 }
                 FailValidation(message);
@@ -269,7 +267,7 @@ namespace N2.Edit
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Templates.GetTemplate(definition.ItemType, template);
+					var info = Definitions.GetTemplate(definition.ItemType, template);
 					definitionTitle = info.Title;
 				}
 
@@ -296,7 +294,7 @@ namespace N2.Edit
 				var definition = Definitions.GetDefinition(discriminator);
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Templates.GetTemplate(definition.ItemType, template);
+					var info = Definitions.GetTemplate(definition.ItemType, template);
 					ie.Definition = info.Definition;
 					ie.CurrentItem = info.Template;
 					ie.CurrentItem.Parent = Selection.SelectedItem;
@@ -320,7 +318,7 @@ namespace N2.Edit
 			}
 			else
 			{
-				ie.Definition = Templates.GetDefinition(Selection.SelectedItem);
+				ie.Definition = Definitions.GetDefinition(Selection.SelectedItem);
                 ie.CurrentItem = Selection.SelectedItem;
 			}
 			if (Request["zoneName"] != null)

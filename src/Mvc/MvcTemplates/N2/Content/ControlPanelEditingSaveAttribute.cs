@@ -161,7 +161,7 @@ namespace N2.Edit
 				bool wasUpdated = false;
 				foreach (var kvp in editors)
 				{
-					var editable = definition.Get(kvp.Key) as IEditable;
+					var editable = definition.GetContainable(kvp.Key) as IEditable;
 					if (editable != null)
 					{
 						wasUpdated |= editable.UpdateItem(value.Content, kvp.Value);

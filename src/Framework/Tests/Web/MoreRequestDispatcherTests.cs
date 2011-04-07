@@ -58,11 +58,10 @@ namespace N2.Tests.Web
 		protected FakeWebContextWrapper webContext;
 		ContentItem root, two, three;
 		CustomExtensionItem one;
-		ErrorHandler errorHandler;
+		IErrorNotifier errorHandler;
 		IEngine engine;
 		ContentAdapterProvider adapterProvider;
 		protected RewriteMethod rewriteMethod = RewriteMethod.BeginRequest;
-		IEditUrlManager editUrlManager;
 
 		[SetUp]
 		public override void SetUp()
@@ -75,11 +74,10 @@ namespace N2.Tests.Web
 			CreateOneItem<DataItem>(4, "four", root);
 			three = CreateOneItem<PageItem>(5, "three.3", root);
 
-			editUrlManager = new FakeEditUrlManager();
 			webContext = new FakeWebContextWrapper();
 			var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod } };
 			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
-			errorHandler = new ErrorHandler(webContext, null, null);
+			errorHandler = new FakeErrorHandler();
 			engine = new FakeEngine();
 			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
 			adapterProvider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
@@ -224,7 +222,9 @@ namespace N2.Tests.Web
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
 			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, editUrlManager, new EditSection(), config);
+
+			handler = new FakeRequestLifeCycleHandler(webContext, dispatcher, adapterProvider, errorHandler,
+				new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(config, null, null, new EditSection()) });
 		}
 	}
 }

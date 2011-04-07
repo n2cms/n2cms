@@ -16,16 +16,14 @@ namespace N2.Web.Parts
 		readonly IEditUrlManager managementPaths;
 		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
-		readonly ITemplateProvider[] templates;
         readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ITemplateProvider[] templates, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
 			: base(dispatcher)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
 			this.definitions = definitions;
-			this.templates = templates;
 			this.activator = activator;
             this.navigator = navigator;
 		}
@@ -103,15 +101,7 @@ namespace N2.Web.Parts
 
 		private TemplateDefinition GetTemplate(string discriminator, string templateName)
 		{
-			return templates.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateName);
-			//foreach (ItemDefinition definition in definitions.GetDefinitions())
-			//{
-			//    if (definition.Discriminator == discriminator)
-			//    {
-			//        return definition;
-			//    }
-			//}
-			//throw new N2Exception("Definition not found: " + discriminator);
+			return definitions.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateName);
 		}
 	}
 }

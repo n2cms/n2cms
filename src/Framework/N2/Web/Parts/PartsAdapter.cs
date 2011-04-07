@@ -135,7 +135,7 @@ namespace N2.Web.Parts
 
 		public virtual IEnumerable<TemplateDefinition> GetTemplates(ContentItem item, ItemDefinition definition)
 		{
-			return Templates.GetTemplates(definition.ItemType);
+			return Definitions.GetTemplates(definition.ItemType);
 		}
 	}
 }

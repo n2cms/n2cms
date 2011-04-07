@@ -39,7 +39,7 @@ namespace N2.Configuration
 			set { base["cacheProviderClass"] = value; }
 		}
 
-		/// <summary>The connection string to pick amont the connection strings in the connectionStrings section.</summary>
+		/// <summary>The connection string to pick among the connection strings in the connectionStrings section.</summary>
 		[ConfigurationProperty("connectionStringName", DefaultValue = "N2CMS")]
 		public string ConnectionStringName
 		{

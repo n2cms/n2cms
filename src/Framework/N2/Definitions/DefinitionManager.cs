@@ -9,6 +9,7 @@ using N2.Engine;
 using N2.Persistence.Proxying;
 using N2.Plugin;
 using System.Diagnostics;
+using N2.Definitions.Static;
 
 namespace N2.Definitions
 {
@@ -19,12 +20,14 @@ namespace N2.Definitions
 	public class DefinitionManager : IDefinitionManager, IAutoStart
 	{
 		private readonly IDefinitionProvider[] definitionProviders;
+		private readonly ITemplateProvider[] providers;
 		private readonly ContentActivator activator;
 		private readonly StateChanger stateChanger;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator, StateChanger changer)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] providers, ContentActivator activator, StateChanger changer)
 		{
 			this.definitionProviders = definitionProviders;
+			this.providers = providers;
 			this.activator = activator;
 			this.stateChanger = changer;
 		}
@@ -73,6 +76,10 @@ namespace N2.Definitions
 		/// <returns>The definition matching a certain item.</returns>
 		public virtual ItemDefinition GetDefinition(ContentItem item)
 		{
+			var t = GetTemplate(item);
+			if (t != null)
+				return t.Definition;
+
 			return GetDefinition(item.GetContentType());
 		}
 
@@ -112,6 +119,44 @@ namespace N2.Definitions
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete]
 		public event EventHandler<ItemEventArgs> ItemCreated;
+
+
+		public virtual IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
+		{
+			if (contentType == null) return new TemplateDefinition[0];
+
+			var templates = providers.SelectMany(tp => tp.GetTemplates(contentType)).ToList();
+			if (!templates.Any(t => t.ReplaceDefault))
+				return templates;
+			return templates.Where(t => t.Name != null).ToList();
+		}
+
+		public virtual TemplateDefinition GetTemplate(Type contentType, string templateName)
+		{
+			if (contentType == null) return null;
+
+			return providers
+				.SelectMany(tp => tp.GetTemplates(contentType))
+				.FirstOrDefault(td => td.Name == templateName);
+		}
+
+		public virtual TemplateDefinition GetTemplate(ContentItem item)
+		{
+			if (item == null) return null;
+
+			return providers.Select(tp => tp.GetTemplate(item)).FirstOrDefault(t => t != null);
+		}
+
+		//public static ItemDefinition GetDefinition(ContentItem item)
+		//{
+		//    if (item == null) return null;
+
+		//    var template = providers.GetTemplate(item);
+		//    if (template == null)
+		//        return null;
+		//    return template.Definition;
+		//}
+		
 
 		#region IAutoStart Members
 

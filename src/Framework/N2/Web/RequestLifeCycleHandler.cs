@@ -14,57 +14,37 @@ namespace N2.Web
 	/// Handles the request life cycle for N2 by invoking url rewriting, 
 	/// authorizing and closing NHibernate session.
 	/// </summary>
-	[Service(typeof (IRequestLifeCycleHandler))]
-	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IAutoStart
+	[Service]
+	public class RequestLifeCycleHandler : IAutoStart
 	{
 		private readonly IContentAdapterProvider adapters;
 		private readonly EventBroker broker;
 		private readonly RequestPathProvider dispatcher;
-		private readonly IErrorHandler errors;
-		private readonly IEditUrlManager editUrlManager;
-		private readonly InstallationManager installer;
+		private readonly IErrorNotifier errors;
 		private readonly IWebContext webContext;
-		protected bool checkInstallation;
+
 		protected bool initialized;
 		protected RewriteMethod rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
-		protected string welcomeUrl;
 		protected string managementUrl;
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
 		/// <param name="broker"></param>
-		/// <param name="installer"></param>
 		/// <param name="dispatcher"></param>
 		/// <param name="adapters"></param>
 		/// <param name="errors"></param>
-		/// <param name="editConfig"></param>
-		/// <param name="hostConfig"></param>
-		/// <param name="managementUrls"></param>
-		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer,
-									   RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors,
-									   IEditUrlManager editUrlManager, EditSection editConfig, HostSection hostConfig)
+		/// <param name="configuration"></param>
+		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorNotifier errors,
+									   ConfigurationManagerWrapper configuration)
 		{
-			checkInstallation = editConfig.Installer.CheckInstallationStatus;
-			welcomeUrl = editConfig.Installer.WelcomeUrl;
-			managementUrl = editConfig.ManagementInterfaceUrl;
-			rewriteMethod = hostConfig.Web.Rewrite;
+			rewriteMethod = configuration.Sections.Web.Web.Rewrite;
+			managementUrl = configuration.Sections.Management.ManagementInterfaceUrl;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;
 			this.errors = errors;
-			this.editUrlManager = editUrlManager;
-			this.installer = installer;
 			this.dispatcher = dispatcher;
 		}
-
-		#region IRequestLifeCycleHandler Members
-
-		[Obsolete]
-		public void Initialize()
-		{
-		}
-
-		#endregion
 
 		#region class RewriteMemory
 
@@ -87,8 +67,6 @@ namespace N2.Web
 					string dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
 					Url.SetToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
 					Url.SetToken("{IconsUrl}", Url.ResolveTokens(Url.ManagementUrlToken + "/Resources/icons"));
-					if (checkInstallation)
-						CheckInstallation();
 				}
 			}
 
@@ -165,36 +143,6 @@ namespace N2.Web
 		protected virtual void Application_EndRequest(object sender, EventArgs e)
 		{
 			webContext.Close();
-		}
-
-		private void CheckInstallation()
-		{
-			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl)
-				.StartsWith(webContext.ToAppRelative(editUrlManager.GetManagementInterfaceUrl()), StringComparison.InvariantCultureIgnoreCase);
-			if (isEditing)
-				return;
-
-			DatabaseStatus status = installer.GetStatus();
-			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
-
-			if (status.NeedsUpgrade)
-			{
-				redirectUrl = redirectUrl.AppendQuery("action", "upgrade");
-			}
-			else if (!status.IsInstalled)
-			{
-				redirectUrl = redirectUrl.AppendQuery("action", "install");
-			}
-			else if (status.NeedsRebase)
-			{
-				redirectUrl = redirectUrl.AppendQuery("action", "rebase");
-			}
-			else
-			{
-				return;
-			}
-			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
-			webContext.Response.Redirect(redirectUrl);
 		}
 
 		#region IAutoStart Members

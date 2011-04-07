@@ -9,6 +9,7 @@ using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using N2.Edit.Workflow;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -40,7 +41,7 @@ namespace N2.Tests.Persistence.NH
 			engine.Resolve<IHost>().DefaultSite.StartPageID = startPage.ID;
 
 			ISessionProvider sessionProvider = engine.Resolve<ISessionProvider>();
-			finder = new ItemFinder(sessionProvider, engine.Definitions);
+			finder = new ItemFinder(sessionProvider, new DefinitionMap());
 		}
 		
 		#endregion

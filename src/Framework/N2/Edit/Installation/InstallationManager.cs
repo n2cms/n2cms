@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -20,6 +21,7 @@ using NHibernate.SqlTypes;
 using System.Diagnostics;
 using N2.Installation;
 using N2.Engine;
+using N2.Definitions.Static;
 
 namespace N2.Edit.Installation
 {
@@ -34,18 +36,18 @@ namespace N2.Edit.Installation
 		public const string installationHost = "Installation.Host";
 		
 		IConfigurationBuilder configurationBuilder;
-        IDefinitionManager definitions;
 		ContentActivator activator;
         Importer importer;
         IPersister persister;
         ISessionProvider sessionProvider;
         IHost host;
     	IWebContext webContext;
+		DefinitionMap map;
 
-        public InstallationManager(IHost host, IDefinitionManager definitions, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
+		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
 		{
             this.host = host;
-            this.definitions = definitions;
+			this.map = map;
 			this.activator = activator;
             this.importer = importer;
             this.persister = persister;
@@ -304,7 +306,7 @@ namespace N2.Edit.Installation
 			if (rootItem != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 rootItem.ID, rootItem.Name, rootItem.GetContentType(),
-									 definitions.GetDefinition(rootItem), rootItem.Published, rootItem.Expires);
+									 map.GetOrCreateDefinition(rootItem), rootItem.Published, rootItem.Expires);
 			else
 				return "No root item found with the id: " + rootID;
 		}
@@ -318,7 +320,7 @@ namespace N2.Edit.Installation
 			if(startPage != null)
 				return String.Format("Start page OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 startPage.ID, startPage.Name, startPage.GetContentType(),
-									 definitions.GetDefinition(startPage), startPage.Published, startPage.Expires);
+									 map.GetOrCreateDefinition(startPage), startPage.Published, startPage.Expires);
 			else
 				return "No start page found with the id: " + startID;
 		}
@@ -386,12 +388,12 @@ namespace N2.Edit.Installation
 
 		/// <summary>Gets definitions suitable as start pages.</summary>
 		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetStartDefinitions()
+		public IEnumerable<ItemDefinition> GetStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
 		{
 			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
 			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
 
-			foreach (ItemDefinition d in definitions.GetDefinitions())
+			foreach (ItemDefinition d in allDefinitions)
 			{
 				InstallerHint hint = d.Installer;
 
@@ -409,12 +411,12 @@ namespace N2.Edit.Installation
 
 		/// <summary>Gets definitions suitable as root nodes.</summary>
 		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetRootDefinitions()
+		public IEnumerable<ItemDefinition> GetRootDefinitions(IEnumerable<ItemDefinition> allDefinitions)
 		{
 			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
 			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
 
-			foreach (ItemDefinition d in definitions.GetDefinitions())
+			foreach (ItemDefinition d in allDefinitions)
 			{
 				InstallerHint hint = d.Installer;
 
@@ -432,12 +434,12 @@ namespace N2.Edit.Installation
 
 		/// <summary>Gets definitions suitable as start pages and root node.</summary>
 		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetRootAndStartDefinitions()
+		public IEnumerable<ItemDefinition> GetRootAndStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
 		{
 			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
 			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
 			
-			foreach (ItemDefinition d in definitions.GetDefinitions())
+			foreach (ItemDefinition d in allDefinitions)
 			{
 				InstallerHint hint = d.Installer;
 

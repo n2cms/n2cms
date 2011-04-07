@@ -18,10 +18,10 @@ namespace N2.Plugin.Scheduling
         IHeart heart;
     	readonly IWorker worker;
     	Web.IWebContext context;
-        IErrorHandler errorHandler;
+        IErrorNotifier errorHandler;
 		IEngine engine;
 
-        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, IWorker worker, IWebContext context, IErrorHandler errorHandler)
+        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler)
         {
 			this.engine = engine;
             actions = new List<ScheduledAction>(InstantiateActions(plugins));

@@ -293,7 +293,7 @@ namespace N2.Edit.Web
 
 		protected void SetErrorMessage(BaseValidator validator, Exception exception)
 		{
-            Engine.Resolve<IErrorHandler>().Notify(exception);
+            Engine.Resolve<IErrorNotifier>().Notify(exception);
 
 			SetErrorMessage(validator, exception.Message);
 		}

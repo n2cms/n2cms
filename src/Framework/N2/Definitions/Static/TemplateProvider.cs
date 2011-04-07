@@ -9,18 +9,18 @@ namespace N2.Definitions.Static
 	[Service(typeof(ITemplateProvider))]
 	public class TemplateProvider : ITemplateProvider
 	{
-		IDefinitionManager definitions;
+		DefinitionMap map;
 
-		public TemplateProvider(IDefinitionManager definitions)
+		public TemplateProvider(DefinitionMap map)
 		{
-			this.definitions = definitions;
+			this.map = map;
 		}
 
 		#region ITemplateProvider Members
 
 		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
 		{
-			yield return CreateTemplate(definitions.GetDefinition(contentType));
+			yield return CreateTemplate(map.GetOrCreateDefinition(contentType));
 		}
 
 		public TemplateDefinition GetTemplate(ContentItem item)
@@ -28,7 +28,7 @@ namespace N2.Definitions.Static
 			if (item["TemplatName"] != null)
 				return null;
 
-			var template = CreateTemplate(definitions.GetDefinition(item));
+			var template = CreateTemplate(map.GetOrCreateDefinition(item));
 			template.Original = item;
 			template.Template = item.Clone(false);
 			return template;

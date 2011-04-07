@@ -12,10 +12,10 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof (UserRegistration))]
 	public class UserRegistrationController : TemplatesControllerBase<UserRegistration>
 	{
-		private readonly IErrorHandler errorHandler;
+		private readonly IErrorNotifier errorHandler;
 		private readonly IMailSender mailSender;
 
-		public UserRegistrationController(IMailSender mailSender, IErrorHandler errorHandler)
+		public UserRegistrationController(IMailSender mailSender, IErrorNotifier errorHandler)
 		{
 			this.mailSender = mailSender;
 			this.errorHandler = errorHandler;

@@ -88,6 +88,7 @@ namespace N2
         private bool visible = true;
 		private ContentItem versionOf = null;
 		private string savedBy;
+		//private string templateName;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
@@ -300,7 +301,7 @@ namespace N2
 		/// <summary>Gets whether this item is a page. This is used for and site map purposes.</summary>
 		public virtual bool IsPage
 		{
-			get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(GetContentType()).IsPage; }
+			get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IsPage; }
 		}
 
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
@@ -321,16 +322,23 @@ namespace N2
 		}
 
 		/// <summary>Gets the template that handle the presentation of this content item. For non page items (IsPage) this can be a user control (ascx).</summary>
-        public virtual string TemplateUrl
-        {
-            get { return "~/Default.aspx"; }
-        }
+		public virtual string TemplateUrl
+		{
+			get { return "~/Default.aspx"; }
+		}
+
+		///// <summary>Gets or sets the sub-definition name of this item.</summary>
+		//public virtual string TemplateName
+		//{
+		//    get { return templateName; }
+		//    set { templateName = value; }
+		//}
 		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		[DisplayableImage]
 		public virtual string IconUrl
         {
-			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(GetContentType()).IconUrl); }
+			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconUrl); }
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
@@ -371,16 +379,29 @@ namespace N2
 
                 switch (detailName)
                 {
-                    case "ID":
-                        return ID;
-                    case "Title":
-                        return Title;
-                    case "Name":
-                        return Name;
-                    case "Url":
-                        return Url;
-                    case "TemplateUrl":
-                        return TemplateUrl;
+					case "AlteredPermissions":	return AlteredPermissions;
+					case "AncestralTrail":		return AncestralTrail;
+					case "Created":				return Created;
+					case "Expires":				return Expires;
+					case "Extension":			return Extension;
+					case "IconUrl":				return IconUrl;
+					case "ID":					return ID;
+					case "IsPage":				return IsPage;
+					case "Name":				return Name;
+					case "Parent":				return Parent;
+					case "Path":				return Path;
+					case "Published":			return Published;
+					case "SavedBy":				return SavedBy;
+					case "SortOrder":			return SortOrder;
+					case "State":				return State;
+					//case "TemplateName":		return TemplateName;
+                    case "TemplateUrl":			return TemplateUrl;
+					case "Title":				return Title;
+					case "Updated":				return Updated;
+					case "Url":					return Url;
+					case "VersionIndex":		return VersionIndex;
+					case "Visible":				return Visible;
+					case "ZoneName":			return ZoneName;
                     default:
 						return Utility.Evaluate(this, detailName)
 							?? GetDetail(detailName)
@@ -392,19 +413,44 @@ namespace N2
                 if (string.IsNullOrEmpty(detailName))
 					throw new ArgumentNullException("Parameter 'detailName' cannot be null or empty.", "detailName");
 
-                PropertyInfo info = GetContentType().GetProperty(detailName);
-				if (info != null && info.CanWrite)
+				switch (detailName)
 				{
-					if (value != null && info.PropertyType != value.GetType())
-						value = Utility.Convert(value, info.PropertyType);
-					info.SetValue(this, value, null);
-				}
-				else if (value is Details.DetailCollection)
-					throw new N2Exception("Cannot set a detail collection this way, add it to the DetailCollections collection instead.");
-				else
-				{
-					SetDetail(detailName, value);
-				}       
+					
+					case "AlteredPermissions":	AlteredPermissions = Utility.Convert<Security.Permission>(value); break;
+					case "AncestralTrail":		AncestralTrail = Utility.Convert<string>(value); break;
+					case "Created":				Created = Utility.Convert<DateTime>(value); break;
+					case "Expires":				Expires = Utility.Convert<DateTime?>(value); break;
+					case "ID":					ID = Utility.Convert<int>(value); break;
+					case "Name":				Name = Utility.Convert<string>(value); break;
+					case "Parent":				Parent = Utility.Convert<ContentItem>(value); break;
+					case "Published":			Published = Utility.Convert<DateTime?>(value); break;
+					case "SavedBy":				SavedBy = Utility.Convert<string>(value); break;
+					case "SortOrder":			SortOrder = Utility.Convert<int>(value); break;
+					case "State":				State = Utility.Convert<ContentState>(value); break;
+					//case "TemplateName":		TemplateName = Utility.Convert<string>(value); break;
+					case "Title":				Title = Utility.Convert<string>(value); break;
+					case "Updated":				Updated = Utility.Convert<DateTime>(value); break;
+					case "VersionIndex":		VersionIndex = Utility.Convert<int>(value); break;
+					case "Visible":				Visible = Utility.Convert<bool>(value); break;
+					case "ZoneName":			ZoneName = Utility.Convert<string>(value); break;
+					default:
+						{
+							PropertyInfo info = GetContentType().GetProperty(detailName);
+							if (info != null && info.CanWrite)
+							{
+								if (value != null && info.PropertyType != value.GetType())
+									value = Utility.Convert(value, info.PropertyType);
+								info.SetValue(this, value, null);
+							}
+							else if (value is Details.DetailCollection)
+								throw new N2Exception("Cannot set a detail collection this way, add it to the DetailCollections collection instead.");
+							else
+							{
+								SetDetail(detailName, value);
+							}
+						}
+						break;
+				}     
             }
         }
         #endregion

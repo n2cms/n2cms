@@ -6,6 +6,7 @@ using N2.Definitions;
 using N2.Persistence.Finder;
 using NHibernate;
 using N2.Edit.Workflow;
+using N2.Definitions.Static;
 
 namespace N2.Persistence.NH.Finder
 {
@@ -19,8 +20,8 @@ namespace N2.Persistence.NH.Finder
 		#region Fields
 
 		[NonSerialized] private ISessionProvider sessionProvider;
+		[NonSerialized] private DefinitionMap map;
 
-		private readonly IDefinitionManager definitions;
 		private IList<IHqlProvider> criterias = new List<IHqlProvider>();
 		private Operator currentOperator = Operator.None;
 		private VersionOption versions = VersionOption.Exclude;
@@ -35,10 +36,10 @@ namespace N2.Persistence.NH.Finder
 
 		#region Constructor
 
-		public QueryBuilder(ISessionProvider sessionProvider, IDefinitionManager definitions)
+		public QueryBuilder(ISessionProvider sessionProvider, DefinitionMap map)
 		{
 			this.sessionProvider = sessionProvider;
-			this.definitions = definitions;
+			this.map = map;
 		}
 
 		#endregion
@@ -238,7 +239,7 @@ namespace N2.Persistence.NH.Finder
 		{
 			if (value == null) throw new ArgumentNullException("value");
 
-			ItemDefinition definition = definitions.GetDefinition(value);
+			ItemDefinition definition = map.GetOrCreateDefinition(value);
 			if(definition == null)
 				throw new ArgumentException("Could not find the definition associated with the type '" + value.FullName + "'. Please ensure this is a non-abstract class deriving from N2.ContentItem and that it is decorated by the [Definition] attribute.");
 			return definition.Discriminator;

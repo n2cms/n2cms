@@ -13,9 +13,9 @@ namespace N2.Edit.LinkTracker
 		Persistence.IPersister persister;
 		Persistence.Finder.IItemFinder find;
 		N2.Web.IUrlParser urlParser;
-        N2.Web.IErrorHandler errorHandler;
+        N2.Web.IErrorNotifier errorHandler;
 
-        public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser, N2.Web.IErrorHandler errorHandler)
+        public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser, N2.Web.IErrorNotifier errorHandler)
 		{
 			this.persister = persister;
 			this.find = find;

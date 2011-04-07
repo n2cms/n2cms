@@ -18,7 +18,7 @@ namespace N2.Tests.Web
 
 			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection);
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace N2.Tests.Web
 
 			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection);
 		}
 	}
 	

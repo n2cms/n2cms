@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Web.UI;
 using N2.Details;
 using System.ComponentModel;
+using System.Web;
 
 namespace N2.Web.UI.WebControls
 {
@@ -105,6 +106,9 @@ namespace N2.Web.UI.WebControls
 
 		protected void AddDisplayable()
 		{
+			if (Site != null && Site.DesignMode)
+				return;
+
 			if (Displayable != null)
 			{
 				displayer = Displayable.AddTo(CurrentItem, PropertyName, this);
@@ -193,6 +197,9 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
+				if (Site != null && Site.DesignMode)
+					return null;
+
 				if (currentItem == null)
 				{
 					currentItem = ItemUtility.FindCurrentItem(Parent) ?? N2.Context.CurrentPage;

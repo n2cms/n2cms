@@ -73,7 +73,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.integrity", typeof(IIntegrityManager), typeof(IntegrityManager));
 			engine.Container.AddComponent("n2.integrityEnforcer", typeof(IIntegrityEnforcer), typeof(IntegrityEnforcer));
 			engine.Container.AddComponent("n2.installer", typeof(InstallationManager), typeof(InstallationManager));
-			engine.Container.AddComponent("n2.errorHandler", typeof(IErrorHandler), typeof(ErrorHandler));
+			engine.Container.AddComponent("n2.errorHandler", typeof(IErrorNotifier), typeof(ErrorHandler));
 
 			engine.Container.AddComponent("n2.itemXmlWriter", typeof(ItemXmlWriter), typeof(ItemXmlWriter));
 			engine.Container.AddComponent("n2.itemXmlReader", typeof(ItemXmlReader), typeof(ItemXmlReader));
@@ -83,7 +83,7 @@ namespace N2.Engine.Configuration
 
 			engine.Container.AddComponent("n2.worker", typeof(IWorker), typeof(AsyncWorker));
 
-			engine.Container.AddComponent("n2.requestHandler", typeof(IRequestLifeCycleHandler), typeof(RequestLifeCycleHandler));
+			engine.Container.AddComponent("n2.requestHandler", typeof(RequestLifeCycleHandler), typeof(RequestLifeCycleHandler));
 			engine.Container.AddComponent("n2.pluginFinder", typeof(IPluginFinder), typeof(PluginFinder));
 			engine.Container.AddComponent("n2.scheduler", typeof(Scheduler), typeof(Scheduler));
 

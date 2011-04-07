@@ -64,7 +64,7 @@ namespace N2.Extensions.Tests.Mvc
 				.ToArray();
 
 			var changer = new StateChanger();
-			var definitions = new DefinitionManager(new [] { new DefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection())) }, new ContentActivator(changer, null, new EmptyProxyFactory()), changer);
+			var definitions = new DefinitionManager(new[] { new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection())) }, new ITemplateProvider[0], new ContentActivator(changer, null, new EmptyProxyFactory()), changer);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());

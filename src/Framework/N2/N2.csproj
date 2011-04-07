@@ -166,6 +166,7 @@
     <Compile Include="Details\ILiteralDisplayable.cs" />
     <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
+    <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
+    <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
@@ -349,7 +351,6 @@
     <Compile Include="Persistence\Parameter.cs" />
     <Compile Include="Plugin\IPluginBootstrapper.cs" />
     <Compile Include="Plugin\PluginBootstrapper.cs" />
-    <Compile Include="Web\IRequestLifeCycleHandler.cs" />
     <Compile Include="Web\ISitesSource.cs" />
     <Compile Include="Web\ISitesProvider.cs" />
     <Compile Include="Web\IUrlParser.cs" />
@@ -765,7 +766,7 @@
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
     <Compile Include="Web\IClosable.cs" />
-    <Compile Include="Web\IErrorHandler.cs" />
+    <Compile Include="Web\IErrorNotifier.cs" />
     <Compile Include="Web\IHost.cs" />
     <Compile Include="Web\IPathFinder.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />

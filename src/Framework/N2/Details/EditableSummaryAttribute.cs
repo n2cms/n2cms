@@ -102,7 +102,6 @@ namespace N2.Details
 			}
 			if (item.State == ContentState.Published && Source != null && !IsManualSummary(item))
 			{
-				string summary = "";
 				if (Sources != null && Sources.Length > 0)
 				{
 					StringBuilder sb = new StringBuilder();

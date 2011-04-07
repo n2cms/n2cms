@@ -57,8 +57,7 @@ namespace N2.Definitions
 		public ItemDefinition(Type itemType)
 		{
 			if (!itemType.IsSubclassOf(typeof (ContentItem)))
-				throw new N2Exception(
-					"Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
+				throw new ArgumentException("Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName, "itemType");
 
 			ItemType = itemType;
 			Title = itemType.Name;
@@ -196,7 +195,7 @@ namespace N2.Definitions
 
 		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)
 		{
-			return GetAllowedChildren(definitions, null).Contains(itemDefinition);
+			return GetAllowedChildren(definitions, null).Any(d => d.ItemType == itemDefinition.ItemType);
 		}
 
 		/// <summary>Find out if this item is allowed in a zone.</summary>
@@ -312,20 +311,18 @@ namespace N2.Definitions
 			//ReloadRoot();
 		}
 
-		public IContainable Get(string containableName)
+		public IContainable GetContainable(string containableName)
 		{
-			foreach (IEditable editable in Editables)
-			{
-				if (editable.Name == containableName)
-					return editable;
-			}
-			foreach (IEditableContainer container in Containers)
-			{
-				if (container.Name == containableName)
-					return container;
-			}
-			throw new ArgumentException("Could not find the containable '" + containableName +
-										"' amont the definition's Editables and Containers.");
+			return Editables.Where(e => e.Name == containableName).OfType<IContainable>().FirstOrDefault()
+				?? Containers.Where(c => c.Name == containableName).FirstOrDefault();
+		}
+
+		public IEnumerable<IUniquelyNamed> GetNamed(string name)
+		{
+			return Editables.Where(e => e.Name == name).OfType<IUniquelyNamed>()
+				.Union(Containers.Where(c => c.Name == name).OfType<IUniquelyNamed>())
+				.Union(Displayables.Where(d => d.Name == name).OfType<IUniquelyNamed>())
+				.ToList();
 		}
 
 		public void Remove(IUniquelyNamed containable)
@@ -346,7 +343,6 @@ namespace N2.Definitions
 				if (containable is IContentTransformer)
 					ContentTransformers.Remove(containable as IContentTransformer);
 			}
-			//ReloadRoot();
 		}
 
 		private HashSet<Type> initializedTypes = new HashSet<Type>();
@@ -447,7 +443,7 @@ namespace N2.Definitions
 		#endregion
 	}
 
-	internal static class CollectionExtensions
+	public static class CollectionExtensions
 	{
 		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) where T : IUniquelyNamed
 		{

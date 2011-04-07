@@ -116,7 +116,7 @@ namespace N2.Web.UI.WebControls
 				currentItem = value;
 				if (value != null)
 				{
-					Definition = Engine.Container.ResolveAll<ITemplateProvider>().GetDefinition(value);
+					Definition = Engine.Definitions.GetDefinition(value);
 					Discriminator = Definition.Discriminator;
 					if (value.VersionOf != null && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;

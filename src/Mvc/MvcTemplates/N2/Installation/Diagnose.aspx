@@ -116,6 +116,7 @@
 								<td colspan="2">Zones</td>
 								<td colspan="2">Details</td>
 								<td rowspan="2">Templates</td>
+								<td rowspan="2">Templates (2)</td>
 							</tr>
 							<tr>
 								<td>Type</td>
@@ -130,36 +131,48 @@
 				</HeaderTemplate>
                 <ItemTemplate>
                     <tr class="<%# Eval("Enabled", "Enabled{0}") %> <%# Eval("IsDefined", "IsDefined{0}") %>"><td>
-                        <b><%# Eval("Title") %></b><br /><%# Eval("ItemType") %><br/><%# Eval("Discriminator") %>
+                        <b><%# Eval("Title") %></b><br /><span style="color:gray"><%# Eval("ItemType") %></span><br/><%# Eval("Discriminator") %>
                     </td><td>
                         <!-- Child definitions -->
                         <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# AllowedChildren(Container.DataItem) %>'>
-                            <ItemTemplate><%# Eval("Title")%><br></ItemTemplate>
+                            <ItemTemplate><%# Eval("Title")%></ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Available zones -->
                         <asp:Repeater ID="Repeater2" runat="server" DataSource='<%# Eval("AvailableZones") %>'>
-                            <ItemTemplate><%# Eval("ZoneName") %> (<%# Eval("Title") %>)<br></ItemTemplate>
+                            <ItemTemplate><%# Eval("ZoneName") %>&nbsp;(<%# Eval("Title") %>)</ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
 						<b><%# Eval("AllowedIn")%>: </b><br />
                         <!-- Allowed in zone -->
                         <asp:Repeater ID="Repeater3" runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
-                            <ItemTemplate><%# Container.DataItem %><br></ItemTemplate>
+                            <ItemTemplate><%# Container.DataItem %></ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Editable attributes -->
                         <asp:Repeater ID="Repeater4" runat="server" DataSource='<%# Eval("Editables") %>'>
-                            <ItemTemplate><%# Eval("Title")%> (<%# Eval("Name")%>)<br></ItemTemplate>
+                            <ItemTemplate><%# Eval("Title")%>&nbsp;(<%# Eval("Name")%>)</ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Displayable attributes -->
                         <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
-                            <ItemTemplate><%# ((N2.Details.IDisplayable)Container.DataItem).Name %><br></ItemTemplate>
+                            <ItemTemplate><%# ((N2.Details.IDisplayable)Container.DataItem).Name %></ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
                             <ItemTemplate><%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
+                        </asp:Repeater>&nbsp;
+                    </td><td>
+                        <asp:Repeater ID="Repeater7" runat="server" DataSource='<%# N2.Context.Current.Definitions.GetTemplates((Type)Eval("ItemType")) %>'>
+                            <ItemTemplate>
+								<%# Eval("Title") %>
+							</ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td></tr>
                 </ItemTemplate>

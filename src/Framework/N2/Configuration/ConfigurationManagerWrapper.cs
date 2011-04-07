@@ -19,7 +19,7 @@ namespace N2.Configuration
 			this.sectionGroup = sectionGroup;
 		}
 
-		public ContentSectionTable Sections { get; protected set; }
+		public ContentSectionTable Sections { get; set; }
 
 		public virtual T GetSection<T>(string sectionName) where T : ConfigurationSection
 		{

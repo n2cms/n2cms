@@ -28,7 +28,7 @@ namespace N2.Persistence.NH
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
 		private readonly ClassMappingGenerator generator;
-		private readonly IDefinitionManager definitions;
+		private readonly IDefinitionProvider[] definitionProviders;
 		private readonly IWebContext webContext;
 		private readonly ConfigurationBuilderParticipator[] participators;
 	
@@ -46,9 +46,9 @@ namespace N2.Persistence.NH
 		bool tryLocatingHbmResources = false;
 		
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, IWebContext webContext, ConfigurationBuilderParticipator[] participators, DatabaseSection config, ConnectionStringsSection connectionStrings)
+		public ConfigurationBuilder(IDefinitionProvider[] definitionProviders, ClassMappingGenerator generator, IWebContext webContext, ConfigurationBuilderParticipator[] participators, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
-			this.definitions = definitions;
+			this.definitionProviders = definitionProviders;
 			this.generator = generator;
 			this.webContext = webContext;
 			this.participators = participators;
@@ -323,18 +323,19 @@ namespace N2.Persistence.NH
 			Debug.Write("Adding");
 			StringBuilder mappings = new StringBuilder(mappingStartTag);
 
-			var allTypes = definitions.GetDefinitions()
+			var definitions = definitionProviders.SelectMany(dp => dp.GetDefinitions()).ToList();
+			var allTypes = definitions
 				.Select(d => d.ItemType)
 				.SelectMany(t => Utility.GetBaseTypesAndSelf(t))
 				.Distinct()
-				.OrderBy(t => Utility.GetBaseTypes(t).Count())
 				.Where(t => t.IsSubclassOf(typeof(ContentItem)))
+				.OrderBy(t => Utility.InheritanceDepth(t))
 				.ToList();
 
 			foreach(var type in allTypes)
 			{
 				string discriminator = type.Name;
-				var definition = definitions.GetDefinition(type);
+				var definition = definitions.FirstOrDefault(d => d.ItemType == type);
 				if(definition != null)
 					discriminator = definition.Discriminator ?? discriminator;
 

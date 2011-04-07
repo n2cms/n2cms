@@ -62,13 +62,13 @@ namespace N2.Edit.Install
 			{
 				try
 				{
-					IEnumerable<ItemDefinition> rootDefinitions = Installer.GetRootDefinitions();
+					IEnumerable<ItemDefinition> rootDefinitions = Installer.GetRootDefinitions(Engine.Definitions.GetDefinitions());
 					LoadRootTypes(ddlRoot, rootDefinitions, "[root node]");
-					
-					IEnumerable<ItemDefinition> startDefinitions = Installer.GetStartDefinitions();
+
+					IEnumerable<ItemDefinition> startDefinitions = Installer.GetStartDefinitions(Engine.Definitions.GetDefinitions());
 					LoadStartTypes(ddlStartPage, startDefinitions, "[start node]");
-					
-					IEnumerable<ItemDefinition> startAndStartDefinitions = Installer.GetRootAndStartDefinitions();
+
+					IEnumerable<ItemDefinition> startAndStartDefinitions = Installer.GetRootAndStartDefinitions(Engine.Definitions.GetDefinitions());
 					LoadRootTypes(ddlRootAndStart, startAndStartDefinitions, "[root and start node]");
 
 					LoadExistingExports();

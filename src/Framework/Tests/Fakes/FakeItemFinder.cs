@@ -5,20 +5,18 @@ using System.Text;
 using N2.Persistence.NH.Finder;
 using N2.Persistence.Finder;
 using N2.Definitions;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Fakes
 {
 	public class FakeItemFinder : IItemFinder
 	{
-		IDefinitionManager definitions;
-
-		public FakeItemFinder(IDefinitionManager definitions)
-			: this(definitions, () => Enumerable.Empty<ContentItem>())
+		public FakeItemFinder()
+			: this(() => Enumerable.Empty<ContentItem>())
 		{
 		}
-		public FakeItemFinder(IDefinitionManager definitions, Func<IEnumerable<ContentItem>> selector)
+		public FakeItemFinder(Func<IEnumerable<ContentItem>> selector)
 		{
-			this.definitions = definitions;
 			Selector = selector; 
 		}
 
@@ -28,20 +26,20 @@ namespace N2.Tests.Fakes
 
 		public IQueryBuilder Where
 		{
-			get { return new FakeQueryBuilder(definitions, () => Selector()); }
+			get { return new FakeQueryBuilder(() => Selector()); }
 		}
 
 		public IQueryEnding All
 		{
-			get { return new FakeQueryBuilder(definitions, () => Selector()); }
+			get { return new FakeQueryBuilder(() => Selector()); }
 		}
 
 		#endregion
 
 		class FakeQueryBuilder : QueryBuilder
 		{
-			public FakeQueryBuilder(IDefinitionManager definitions, Func<IEnumerable<ContentItem>> selector)
-				: base(null, definitions)
+			public FakeQueryBuilder(Func<IEnumerable<ContentItem>> selector)
+				: base(null, new DefinitionMap())
 			{
 				this.Selector = selector;
 			}

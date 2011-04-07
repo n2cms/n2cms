@@ -19,7 +19,6 @@ namespace N2.Edit.Wizard
 		protected IDefinitionManager Definitions;
 		protected IEditUrlManager Edits;
 		protected LocationWizard Wizard;
-		protected ITemplateProvider[] Templates;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -28,7 +27,6 @@ namespace N2.Edit.Wizard
 			Definitions = Engine.Definitions;
 			Edits = Engine.ManagementPaths;
 			Wizard = Engine.Resolve<LocationWizard>();
-			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -50,7 +48,7 @@ namespace N2.Edit.Wizard
 						{
 							Value = d.Discriminator,
 							Title = d.Title
-						}}.Union(Templates.GetTemplates(d.ItemType).Select(t =>
+						}}.Union(Definitions.GetTemplates(d.ItemType).Select(t =>
 							new 
 							{
 								Value = d.Discriminator + ":" + t.Name,

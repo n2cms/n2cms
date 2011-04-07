@@ -22,7 +22,7 @@ namespace N2.Engine.Globalization
 		readonly IPersister persister;
 		readonly IItemFinder finder;
 		readonly IEditUrlManager editUrlManager;
-		readonly ITemplateProvider[] templates;
+		readonly IDefinitionManager definitions;
 		readonly IHost host;
 		int recursionDepth = 3;
     	readonly ISecurityManager security;
@@ -35,7 +35,7 @@ namespace N2.Engine.Globalization
 			IPersister persister,
 			IItemFinder finder,
 			IEditUrlManager editUrlManager,
-			ITemplateProvider[] templates,
+			IDefinitionManager definitions,
 			IHost host,
 			ISecurityManager security,
 			IWebContext context,
@@ -46,7 +46,7 @@ namespace N2.Engine.Globalization
 			this.persister = persister;
 			this.finder = finder;
 			this.editUrlManager = editUrlManager;
-			this.templates = templates;
+			this.definitions = definitions;
 			this.host = host;
 			this.security = security;
 			this.context = context;
@@ -162,7 +162,7 @@ namespace N2.Engine.Globalization
 					if (translation == null && language == itemlanguage)
 						translation = item;
 
-					ItemDefinition definition = templates.GetDefinition(item);
+					ItemDefinition definition = definitions.GetDefinition(item);
 					if (translation != null)
 					{
 						string url = editUrlManager.GetEditExistingItemUrl(translation);

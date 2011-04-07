@@ -42,11 +42,8 @@ namespace N2.Definitions
 			if (AffectedType != null && !AffectedType.IsAssignableFrom(currentDefinition.ItemType))
 				return;
 
-			var containable = currentDefinition.Get(Name);
-			if(containable == null)
-				return;
-
-			currentDefinition.Remove(containable);
+			var containable = currentDefinition.GetNamed(Name);
+			currentDefinition.RemoveRange(containable);
 		}
 	}
 }

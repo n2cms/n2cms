@@ -41,6 +41,7 @@ namespace N2.Tests.Integrity
 		{
 			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.IntegrityRoot));
 			ItemDefinition startPageDefinition = engine.Definitions.GetDefinition(typeof(Definitions.IntegrityStartPage));
+			var all = engine.Definitions.GetDefinitions().ToArray();
 
 			Assert.That(rootDefinition.GetAllowedChildren(engine.Definitions, null).Contains(startPageDefinition));
 			//EnumerableAssert.Contains(rootDefinition.AllowedChildren, startPageDefinition);

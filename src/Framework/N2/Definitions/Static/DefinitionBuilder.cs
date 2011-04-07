@@ -30,10 +30,10 @@ namespace N2.Definitions.Static
 			this.config = config;
 		}
 
-		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
-			: this(DefinitionMap.Instance, typeFinder, config)
-		{
-		}
+		//public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
+		//    : this(DefinitionMap.Instance, typeFinder, config)
+		//{
+		//}
 
 		/// <summary>Builds item definitions in the current environment.</summary>
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
@@ -53,7 +53,7 @@ namespace N2.Definitions.Static
 			List<ItemDefinition> definitions = new List<ItemDefinition>();
 			foreach (Type itemType in FindConcreteTypes())
 			{
-				var definition = staticDefinitions.GetOrCreateDefinition(itemType).Clone();
+				var definition = staticDefinitions.GetOrCreateDefinition(itemType);
 				definition.DefaultContainerName = config.Definitions.DefaultContainerName;
 				definitions.Add(definition);
 			}
@@ -170,7 +170,7 @@ namespace N2.Definitions.Static
 
 		void RemoveContainable(ItemDefinition definition, ContainableElement editable)
 		{
-			definition.Remove(definition.Get(editable.Name));
+			definition.RemoveRange(definition.GetNamed(editable.Name));
 		}
 
 		Type EnsureType<T>(string typeName)

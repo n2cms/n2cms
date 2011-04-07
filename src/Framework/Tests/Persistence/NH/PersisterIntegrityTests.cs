@@ -23,7 +23,7 @@ namespace N2.Tests.Persistence.NH
 			parser = mocks.StrictMock<IUrlParser>();
 			mocks.ReplayAll();
 
-			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
+			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
 
 			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, activator);

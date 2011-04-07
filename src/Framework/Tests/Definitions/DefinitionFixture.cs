@@ -28,13 +28,13 @@ namespace N2.Tests.Definitions
 
 			Assert.AreSame(definitionByType, definitionByString);
 		}
+
 		[Test]
 		public void GetDefinitionByUnknownTypeReturnsNull()
 		{
 			ItemDefinition shouldBeNull = engine.Definitions.GetDefinition("IsNotDefined");
 			Assert.IsNull(shouldBeNull);
 		}
-
 
 		[Test]
 		public void ItemHasCorrectNumberOfDetails()

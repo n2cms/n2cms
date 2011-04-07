@@ -18,7 +18,7 @@ namespace N2.Tests.Plugin.Scheduling
     {
         Scheduler scheduler;
         IEventRaiser raiser;
-        IErrorHandler errorHandler;
+        IErrorNotifier errorHandler;
 
         [SetUp]
         public override void SetUp()
@@ -34,7 +34,7 @@ namespace N2.Tests.Plugin.Scheduling
             raiser = LastCall.IgnoreArguments().GetEventRaiser();
             mocks.Replay(heart);
 
-            errorHandler = mocks.DynamicMock<IErrorHandler>();
+            errorHandler = mocks.DynamicMock<IErrorNotifier>();
             mocks.Replay(errorHandler);
 
             var ctx = mocks.DynamicMock<IWebContext>();

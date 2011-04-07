@@ -64,12 +64,12 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new [] {new DefinitionProvider(builder)}, activator, changer);
+			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer);
 		}
 
 		#endregion

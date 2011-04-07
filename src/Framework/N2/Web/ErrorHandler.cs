@@ -9,16 +9,33 @@ using N2.Engine;
 using N2.Security;
 using N2.Web.Mail;
 using NHibernate;
+using N2.Plugin;
 
 namespace N2.Web
 {
+	[Service(typeof (IErrorNotifier))]
+	public class ErrorNotifier : IErrorNotifier
+	{
+		#region IErrorNotifier Members
+
+		public void Notify(Exception ex)
+		{
+			if (ErrorOccured != null)
+				ErrorOccured(this, new ErrorEventArgs { Error = ex });
+		}
+
+		public event EventHandler<ErrorEventArgs> ErrorOccured;
+
+		#endregion
+	}
+
 	/// <summary>
 	/// Is notified of errors in the web context and tries to do something barely useful about them.
 	/// </summary>
-	[Service(typeof (IErrorHandler))]
-	public class ErrorHandler : IErrorHandler
+	[Service]
+	public class ErrorHandler : IAutoStart
 	{
-		private readonly EditSection editConfig;
+		private readonly IErrorNotifier notifier;
 		private readonly ErrorAction action = ErrorAction.None;
 		private readonly IWebContext context;
 		private readonly bool handleWrongClassException = true;
@@ -27,6 +44,7 @@ namespace N2.Web
 		private readonly IMailSender mailSender;
 		private readonly string mailTo;
 
+		private string fixClassUrl;
 		private readonly int maxErrorReportsPerHour = -1;
 		private readonly ISecurityManager security;
 		private readonly object syncLock = new object();
@@ -34,31 +52,22 @@ namespace N2.Web
 		private long errorsThisHour;
 		private int hour = DateTime.Now.Hour;
 
-		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer)
+		public ErrorHandler(IErrorNotifier notifier, IWebContext context, ISecurityManager security, InstallationManager installer, IMailSender mailSender, 
+			ConfigurationManagerWrapper configuration)
 		{
+			this.notifier = notifier;
 			this.context = context;
 			this.security = security;
 			this.installer = installer;
-		}
-
-		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer,
-		                    EngineSection config, EditSection editConfig)
-			: this(context, security, installer)
-		{
-			this.editConfig = editConfig;
-			action = config.Errors.Action;
-			mailTo = config.Errors.MailTo;
-			mailFrom = config.Errors.MailFrom;
-			maxErrorReportsPerHour = config.Errors.MaxErrorReportsPerHour;
-			handleWrongClassException = config.Errors.HandleWrongClassException;
-			mailSender = new SmtpMailSender();
-		}
-
-		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer,
-		                    IMailSender mailSender, EngineSection config, EditSection editConfig)
-			: this(context, security, installer, config, editConfig)
-		{
 			this.mailSender = mailSender;
+
+			fixClassUrl = configuration.Sections.Management.Installer.FixClassUrl;
+			action = configuration.Sections.Engine.Errors.Action;
+			mailTo = configuration.Sections.Engine.Errors.MailTo;
+			mailFrom = configuration.Sections.Engine.Errors.MailFrom;
+			maxErrorReportsPerHour = configuration.Sections.Engine.Errors.MaxErrorReportsPerHour;
+			handleWrongClassException = configuration.Sections.Engine.Errors.HandleWrongClassException;
+			mailSender = new SmtpMailSender();
 		}
 
 		/// <summary>Total number of errors since startup.</summary>
@@ -69,10 +78,11 @@ namespace N2.Web
 
 		#region IErrorHandler Members
 
-		public void Notify(Exception ex)
+		public void Handle(object sender, ErrorEventArgs e)
 		{
 			errorCount++;
-			
+
+			Exception ex = e.Error;
 			if (ex != null)
 			{
 				Trace.TraceError("ErrorHandler.Notify: " + FormatError(ex));
@@ -166,7 +176,7 @@ namespace N2.Web
 
 		private void RedirectToFix(WrongClassException wex)
 		{
-			string url = Url.Parse(editConfig.Installer.FixClassUrl).ResolveTokens().AppendQuery("id", wex.Identifier);
+			string url = Url.Parse(fixClassUrl).ResolveTokens().AppendQuery("id", wex.Identifier);
 			Trace.WriteLine("Redirecting to '" + url + "' to fix exception: " + wex);
 			context.ClearError();
 			context.Response.Redirect(url);
@@ -193,5 +203,19 @@ namespace N2.Web
 			body.Append(ex.ToString());
 			return body.ToString();
 		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			notifier.ErrorOccured += Handle;
+		}
+
+		public void Stop()
+		{
+			notifier.ErrorOccured -= Handle;
+		}
+
+		#endregion
 	}
 }

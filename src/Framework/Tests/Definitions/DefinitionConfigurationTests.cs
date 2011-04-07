@@ -136,7 +136,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(new DefinitionElement { Name = "DefinitionUndefined", Type = typeof(DefinitionUndefined).AssemblyQualifiedName });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var undefinedDefinition = definitions
@@ -150,7 +150,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Remove(new DefinitionElement { Name = "DefinitionTextPage" });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinitions = definitions
@@ -167,7 +167,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions
@@ -191,7 +191,7 @@ namespace N2.Tests.Definitions
 					Title = "Page title", 
 					Type = typeof(N2.Details.EditableTextAttribute).AssemblyQualifiedName } }
 			});
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textDefinition = definitions.Single(d => d.ItemType == typeof(DefinitionTextPage));
@@ -211,7 +211,7 @@ namespace N2.Tests.Definitions
 					Title = "Page title in navigation", 
 					Type = typeof(EditableTextAttribute).AssemblyQualifiedName } }
 			});
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textDefinition = definitions.Single(d => d.ItemType == typeof(DefinitionTextPage));
@@ -228,7 +228,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions

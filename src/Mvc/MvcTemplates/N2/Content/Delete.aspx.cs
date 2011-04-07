@@ -106,7 +106,7 @@ namespace N2.Edit
             }
             catch (Exception ex)
             {
-                Engine.Resolve<IErrorHandler>().Notify(ex);
+                Engine.Resolve<IErrorNotifier>().Notify(ex);
                 cvException.IsValid = false;
                 cvException.Text = ex.Message;
             }

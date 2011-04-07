@@ -60,6 +60,9 @@ namespace N2.Web.UI
 		/// <param name="item">The current item.</param>
 		protected virtual void ApplyConcerns(ContentItem item)
 		{
+			if (HttpContext.Current == null)
+				return;
+
 			foreach (var concern in Engine.Container.ResolveAll<ContentPageConcern>())
 				concern.OnPreInit(this, item);
 		}
