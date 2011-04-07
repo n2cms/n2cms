@@ -10,7 +10,7 @@ div.contentlink a:hover { text-decoration:none; }
 div.contentlink.thumbSize a.img,
 div.contentlink.cubeSize a.img  { float:left; margin-right:10px; }
 div.contentlink h3 { display:inline; margin-right:10px; }
-div.contentlink:hover { background-color:#DEF; }
+div.contentlink:hover { background-color:#F0F8FF; outline: solid 1px #09F; }
 
 /*
     AnythingSlider v1.4.1+ Default (base) theme
