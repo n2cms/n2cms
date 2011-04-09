@@ -22,6 +22,8 @@ namespace N2.Tests.Edit
 		{
 			base.SetUp();
 
+			savedItems = new List<ContentItem>();
+
 			IPersister persister = mocks.Stub<IPersister>();
 			Expect.Call(delegate { persister.Save(null); })
 				.IgnoreArguments()
@@ -116,8 +118,8 @@ namespace N2.Tests.Edit
 		public void SortDown_ChangedItems_AreSaved()
 		{
 			sorter.MoveDown(page1);
-			Assert.That(savedItems.IndexOf(page1), Is.GreaterThanOrEqualTo(0));
-			Assert.That(savedItems.IndexOf(page3), Is.GreaterThanOrEqualTo(0));
+			Assert.That(savedItems.Count, Is.EqualTo(1));
+			Assert.That(page1.SortOrder, Is.GreaterThan(page2.SortOrder));
 		}
 
 		[Test]
@@ -223,5 +225,16 @@ namespace N2.Tests.Edit
             Assert.That(root.Children[2], Is.EqualTo(page3));
             Assert.That(root.Children[3], Is.EqualTo(page4));
         }
+
+		[Test]
+		public void PuttingItemFirst_DoesntSave_SubsequentPages()
+		{
+			var page0 = CreateOneItem<NormalPage>(0, "page0", null);
+			page0.Parent = root;
+			page0.SortOrder = 1000;
+			sorter.MoveTo(page0, NodePosition.Before, page1);
+			Assert.That(savedItems.Count, Is.EqualTo(1));
+			Assert.That(savedItems.Contains(page0));
+		}
 	}
 }

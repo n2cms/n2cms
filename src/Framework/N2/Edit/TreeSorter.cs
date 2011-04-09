@@ -71,7 +71,9 @@ namespace N2.Edit
             if (relativeTo == null) throw new ArgumentNullException("relativeTo");
             if (relativeTo.Parent == null) throw new ArgumentException("The supplied item '" + relativeTo + "' has no parent to add to.", "relativeTo");
             
-			if (item.Parent != relativeTo.Parent)
+			if (item.Parent == null 
+				|| item.Parent != relativeTo.Parent
+				|| !item.Parent.Children.Contains(item))
 				item.AddTo(relativeTo.Parent);
 
 			IList<ContentItem> siblings = item.Parent.Children;

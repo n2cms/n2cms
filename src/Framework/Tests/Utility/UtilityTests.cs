@@ -35,7 +35,7 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
-		public void UpdateSortOrder_CanSetUniqueSortOrder()
+		public void UpdateSortOrder_SetsUniqueSortOrder_ForEachItem()
 		{
 			Assert.AreEqual(0, item1.SortOrder);
 			Assert.AreEqual(0, item2.SortOrder);
@@ -54,7 +54,7 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
-		public void UpdateSortOrder_DoesntChangeAlreadyOrderedItems()
+		public void UpdateSortOrder_DoesntChange_AlreadyOrderedItems()
 		{
 			item1.SortOrder = 1;
 			item2.SortOrder = 2;
@@ -68,7 +68,7 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
-		public void UpdateSortOrder_CanFixOrderOnLastItem()
+		public void UpdateSortOrder_CanFixOrder_OnLastItem()
 		{
 			item1.SortOrder = 1;
 			item2.SortOrder = 2;
@@ -80,6 +80,102 @@ namespace N2.Tests.Utility
 
 			EnumerableAssert.Count(1, changedItems);
 			Assert.Less(item4.SortOrder, item5.SortOrder);
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_OnFirstItem_EqualToNext()
+		{
+			item1.SortOrder = 0;
+			item2.SortOrder = 0;
+			item3.SortOrder = 1;
+			item4.SortOrder = 2;
+			item5.SortOrder = 3;
+
+			IEnumerable<ContentItem> changedItems = N2.Utility.UpdateSortOrder(items);
+
+			Assert.That(changedItems.Count(), Is.EqualTo(1));
+			Assert.That(item1.SortOrder, Is.LessThan(item2.SortOrder));
+			Assert.That(item2.SortOrder, Is.LessThan(item3.SortOrder));
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_OnFirstItem_GreaterThanNext()
+		{
+			item1.SortOrder = 1000;
+			item2.SortOrder = 2;
+			item3.SortOrder = 3;
+			item4.SortOrder = 4;
+			item5.SortOrder = 5;
+
+			IEnumerable<ContentItem> changedItems = N2.Utility.UpdateSortOrder(items);
+
+			Assert.That(changedItems.Count(), Is.EqualTo(1));
+			Assert.That(item1.SortOrder, Is.LessThan(item2.SortOrder));
+			Assert.That(item2.SortOrder, Is.LessThan(item3.SortOrder));
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_OnFirstItem_EqualToNext_LowerBound()
+		{
+			item1.SortOrder = int.MinValue;
+			item2.SortOrder = int.MinValue;
+			item3.SortOrder = 0;
+			item4.SortOrder = 1;
+			item5.SortOrder = 2;
+
+			IEnumerable<ContentItem> changedItems = N2.Utility.UpdateSortOrder(items);
+
+			Assert.That(item1.SortOrder, Is.LessThan(item2.SortOrder));
+			Assert.That(item2.SortOrder, Is.LessThan(item3.SortOrder));
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_OnFirstItem_GreaterThanNext_LowerBound()
+		{
+			item1.SortOrder = 0;
+			item2.SortOrder = int.MinValue;
+			item3.SortOrder = 0;
+			item4.SortOrder = 1;
+			item5.SortOrder = 2;
+
+			IEnumerable<ContentItem> changedItems = N2.Utility.UpdateSortOrder(items);
+
+			Assert.That(item1.SortOrder, Is.LessThan(item2.SortOrder));
+			Assert.That(item2.SortOrder, Is.LessThan(item3.SortOrder));
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_IncrementallyOn4()
+		{
+			var muchosElementos = new List<ContentItem>();
+
+			muchosElementos.Add(CreateOneItem<UtilityItem>(1, "i1", null));
+			N2.Utility.UpdateSortOrder(muchosElementos);
+			muchosElementos.Insert(0, CreateOneItem<UtilityItem>(2, "i2", null));
+			N2.Utility.UpdateSortOrder(muchosElementos);
+			muchosElementos.Insert(0, CreateOneItem<UtilityItem>(3, "i3", null));
+			N2.Utility.UpdateSortOrder(muchosElementos);
+			muchosElementos.Insert(0, CreateOneItem<UtilityItem>(4, "i4", null));
+			N2.Utility.UpdateSortOrder(muchosElementos);
+
+			Assert.That(muchosElementos[0].SortOrder, Is.LessThan(muchosElementos[1].SortOrder));
+			Assert.That(muchosElementos[1].SortOrder, Is.LessThan(muchosElementos[2].SortOrder));
+			Assert.That(muchosElementos[2].SortOrder, Is.LessThan(muchosElementos[3].SortOrder));
+		}
+
+		[Test]
+		public void UpdateSortOrder_CanFixOrder_IncrementallyOn1000()
+		{
+			var muchosElementos = new List<ContentItem>();
+			for (int i = 0; i < 1000; i++)
+			{
+				muchosElementos.Insert(0, CreateOneItem<UtilityItem>(i, "i" + i, null));
+				N2.Utility.UpdateSortOrder(muchosElementos);
+			}
+			for (int i = 1; i < muchosElementos.Count; i++)
+			{
+				Assert.That(muchosElementos[i - 1].SortOrder, Is.LessThan(muchosElementos[i].SortOrder), "At " + i);
+			}
 		}
 
 		[TestCase(0, 1)]

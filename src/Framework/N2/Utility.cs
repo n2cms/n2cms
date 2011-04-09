@@ -167,15 +167,42 @@ namespace N2
 		{
 			List<ContentItem> updatedItems = new List<ContentItem>();
 			int lastSortOrder = int.MinValue;
-			foreach (ContentItem sibling in siblings)
+			int sortOrderBeforeLast = int.MinValue;
+			ContentItem last = null;
+			foreach (ContentItem current in siblings)
 			{
-				if (sibling.SortOrder <= lastSortOrder)
+				if (current.SortOrder <= lastSortOrder)
 				{
-					sibling.SortOrder = ++lastSortOrder;
-					updatedItems.Add(sibling);
+					int gapBeforeLast = (int)Math.Min((long)lastSortOrder - sortOrderBeforeLast, int.MaxValue);
+					int gapBeforeCurrent = (int)Math.Min((long)current.SortOrder - sortOrderBeforeLast, int.MaxValue);
+					if (gapBeforeLast > 1 && gapBeforeCurrent > 2)
+					{
+						if (current.SortOrder > sortOrderBeforeLast)
+						{
+							// 0
+							// -1b
+							last.SortOrder = lastSortOrder = current.SortOrder - 1;
+							updatedItems.Add(last);
+						}
+						else
+						{
+							// 0
+							// -2b
+							last.SortOrder = lastSortOrder = sortOrderBeforeLast + 1;
+							updatedItems.Add(last);
+							current.SortOrder = sortOrderBeforeLast + 2;
+							updatedItems.Add(current);
+						}
+					}
+					else
+					{
+						current.SortOrder = lastSortOrder + 1;
+						updatedItems.Add(current);
+					}
 				}
-				else
-					lastSortOrder = sibling.SortOrder;
+				sortOrderBeforeLast = lastSortOrder;
+				lastSortOrder = current.SortOrder;
+				last = current;
 			}
 			return updatedItems;
 		}
