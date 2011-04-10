@@ -183,6 +183,7 @@
     <Content Include="Themes\Concrete\Content\Layout.css" />
     <Content Include="Themes\Concrete\Content\Mood.css" />
     <Content Include="Themes\Concrete\Content\Site.css" />
+    <Content Include="Themes\Dark\Content\Elements.css" />
     <Content Include="Themes\Dark\Content\Mood.css" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
     <Content Include="Content\Blueprint.css" />
