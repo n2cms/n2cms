@@ -41,7 +41,7 @@ namespace N2.Management.Content.Templates
 			return GetTemplates(item.GetContentType()).Where(t => t.Name == templateName).Select(t =>
 			{
 				t.Original = t.Template;
-				t.Template = item;
+				t.Template = () => item;
 				return t;
 			}).FirstOrDefault();
 		}

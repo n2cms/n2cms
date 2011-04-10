@@ -29,8 +29,8 @@ namespace N2.Definitions.Static
 				return null;
 
 			var template = CreateTemplate(map.GetOrCreateDefinition(item));
-			template.Original = item;
-			template.Template = item.Clone(false);
+			template.Original = () => item;
+			template.Template = () => item.Clone(false);
 			return template;
 		}
 

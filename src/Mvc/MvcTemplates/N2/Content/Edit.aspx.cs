@@ -296,7 +296,7 @@ namespace N2.Edit
 				{
 					var info = Definitions.GetTemplate(definition.ItemType, template);
 					ie.Definition = info.Definition;
-					ie.CurrentItem = info.Template;
+					ie.CurrentItem = info.Template();
 					ie.CurrentItem.Parent = Selection.SelectedItem;
 				}
 				else

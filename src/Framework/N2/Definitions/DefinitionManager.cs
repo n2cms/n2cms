@@ -147,17 +147,6 @@ namespace N2.Definitions
 			return providers.Select(tp => tp.GetTemplate(item)).FirstOrDefault(t => t != null);
 		}
 
-		//public static ItemDefinition GetDefinition(ContentItem item)
-		//{
-		//    if (item == null) return null;
-
-		//    var template = providers.GetTemplate(item);
-		//    if (template == null)
-		//        return null;
-		//    return template.Definition;
-		//}
-		
-
 		#region IAutoStart Members
 
 		public void Start()

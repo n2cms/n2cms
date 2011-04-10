@@ -44,11 +44,6 @@ namespace N2.Management.Content.Templates
 
 		private TemplateDefinition CreateTemplateInfo(ContentItem template)
 		{
-			var clone = template.Clone(true);
-			clone.SetDetail(TemplateDescription, null, typeof(string));
-			clone.Title = "";
-			clone.Name = null;
-			clone["TemplateName"] = template.Name;
 			var info = new TemplateDefinition
 			{
 				Name = template.Name,
@@ -56,8 +51,16 @@ namespace N2.Management.Content.Templates
 				Description = template.GetDetail(TemplateDescription, ""),
 				TemplateUrl = template.Url,
 				Definition = map.GetOrCreateDefinition(template.GetContentType(), template.Name),
-				Template = clone,
-				Original = template
+				Template = () =>
+				{
+					var clone = template.Clone(true);
+					clone.SetDetail(TemplateDescription, null, typeof(string));
+					clone.Title = "";
+					clone.Name = null;
+					clone["TemplateName"] = template.Name;
+					return clone;
+				},
+				Original = () => template
 			};
 			return info;
 		}
@@ -78,9 +81,9 @@ namespace N2.Management.Content.Templates
 		{
 			foreach(var template in GetAllTemplates())
 			{
-				if (template.Template.GetContentType() != contentType)
+				if (template.Definition.ItemType != contentType)
 					continue;
-				if (!template.Template.IsAuthorized(user))
+				if (!template.Template().IsAuthorized(user))
 					continue;
 
 				yield return template;

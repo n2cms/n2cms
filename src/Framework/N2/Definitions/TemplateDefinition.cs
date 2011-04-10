@@ -22,10 +22,10 @@ namespace N2.Definitions
 		public string TemplateUrl { get; set; }
 
 		/// <summary>A copy of the template.</summary>
-		public ContentItem Template { get; set; }
+		public Func<ContentItem> Template { get; set; }
 
 		/// <summary>The original template.</summary>
-		public ContentItem Original { get; set; }
+		public Func<ContentItem> Original { get; set; }
 
 		/// <summary>The item definition of the template.</summary>
 		public ItemDefinition Definition { get; set; }

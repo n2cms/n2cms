@@ -86,9 +86,8 @@ namespace N2.Definitions.Runtime
 					td.Definition = d;
 					td.Description = d.Description;
 					td.Name = d.Template;
-					td.Original = null;
-					td.Template = activator.CreateInstance(d.ItemType, null);
-					td.Template["TemplateName"] = d.Template;
+					td.Original = () => null;
+					td.Template = () => activator.CreateInstance(d.ItemType, null, d.Template);
 					td.TemplateUrl = null;
 					td.Title = d.Title;
 					td.ReplaceDefault = "Index".Equals(d.Template, StringComparison.InvariantCultureIgnoreCase);
@@ -107,7 +106,7 @@ namespace N2.Definitions.Runtime
 			return GetTemplates(item.GetContentType()).Where(t => t.Name == templateName).Select(t =>
 				{
 					t.Original = t.Template;
-					t.Template = item;
+					t.Template = () => item;
 					return t;
 				}).FirstOrDefault();
 		}
