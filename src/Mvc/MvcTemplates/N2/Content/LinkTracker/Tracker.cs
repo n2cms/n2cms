@@ -135,7 +135,7 @@ namespace N2.Edit.LinkTracker
 					.Filters(new Collections.DuplicateFilter())
 					.Select();
 			else
-				return find.Where.Detail(LinkDetailName).Eq(item.Url)
+				return find.Where.Detail(LinkDetailName).Like(item.Url)
 					.Filters(new Collections.DuplicateFilter())
 					.Select();
 		}
