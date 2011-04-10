@@ -27,6 +27,12 @@
 				e.stopPropagation();
 				self.showDialog($(this).attr('href'));
 			});
+			var host = window.location.protocol + "//" + window.location.host + window.location.port + "/";
+			$("a").filter(function () { return this.href.indexOf(host) == 0; })
+				.filter(function () { return this.parentNode.className.indexOf('control') != 0; })
+				.each(function () {
+					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
+				});
 		},
 
 		showDialog: function (href) {
