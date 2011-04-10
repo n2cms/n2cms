@@ -1,4 +1,5 @@
 ﻿2.2
+- Warning when removing files referenced somewhere (ThreadId=252444)
 - Google map part
 - Youtube video player part
 - Carousel slider for dinamico
