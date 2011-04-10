@@ -11,12 +11,10 @@ namespace N2.Edit.LinkTracker
 		{
 			base.OnLoad(e);
 
-			if (Selection.SelectedItem.ID != 0)
-			{
-				rptReferencingItems.DataSource = Engine.Resolve<Tracker>().FindReferrers(Selection.SelectedItem);
-				rptReferencedItems.DataSource = Engine.Resolve<Tracker>().FindLinkedItems(Selection.SelectedItem);
-				DataBind();
-			}
+			var tracker = Engine.Resolve<Tracker>();
+			rptReferencingItems.DataSource = tracker.FindReferrers(Selection.SelectedItem);
+			rptReferencedItems.DataSource = tracker.FindLinkedItems(Selection.SelectedItem);
+			DataBind();
 		}
 	}
 }

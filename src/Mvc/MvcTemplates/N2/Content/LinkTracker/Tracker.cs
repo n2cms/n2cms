@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using N2.Details;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace N2.Edit.LinkTracker
 		/// <param name="item">The item that is beeing saved.</param>
 		protected virtual void OnTrackingLinks(ContentItem item)
 		{
-			IList<ContentItem> referencedItems = FindLinkedItems(item);
+			var referencedItems = FindLinkedObjects(item).ToList();
 			DetailCollection links = item.GetDetailCollection(LinkDetailName, false);
 			if (referencedItems.Count > 0)
 			{
@@ -59,7 +60,16 @@ namespace N2.Edit.LinkTracker
 		/// <returns>A list of items referenced in html text by the supplied item.</returns>
 		public virtual IList<ContentItem> FindLinkedItems(ContentItem item)
 		{
-			N2.Collections.ItemList items = new N2.Collections.ItemList();
+			return FindLinkedObjects(item).OfType<ContentItem>().ToList();
+		}
+		
+		/// <summary>Finds items linked by the supplied item. This method only finds links in html text to items within the site.</summary>
+		/// <param name="item">The item to examine for links.</param>
+		/// <returns>A list of items referenced in html text by the supplied item.</returns>
+		public virtual IEnumerable<object> FindLinkedObjects(ContentItem item)
+		{
+			HashSet<object> existing = new HashSet<object>();
+
 			foreach (ContentDetail detail in item.Details)
 			{
 				if (detail.StringValue != null)
@@ -71,22 +81,31 @@ namespace N2.Edit.LinkTracker
                         else if (!(link.StartsWith("/") || link.StartsWith("~") || link.Contains("://")))
                             continue;
 
+						object referencedItemOrLink = null;
 						try
 						{
 							ContentItem referencedItem = urlParser.Parse(link);
-							if (referencedItem != null && referencedItem.ID != 0 && !items.Contains(referencedItem))
+							if (referencedItem != null && referencedItem.ID != 0)
 							{
-								items.Add(referencedItem);
+								referencedItemOrLink = referencedItem;
 							}
 						}
 						catch (Exception ex)
 						{
                             errorHandler.Notify(ex);
 						}
+
+						if (referencedItemOrLink == null)
+							referencedItemOrLink = link;
+
+						if (!existing.Contains(referencedItemOrLink))
+						{
+							existing.Add(referencedItemOrLink);
+							yield return referencedItemOrLink;
+						}
 					}
 				}
 			}
-			return items;
 		}
 
 		/// <summary>Finds links in a html string using regular expressions.</summary>
@@ -101,6 +120,8 @@ namespace N2.Edit.LinkTracker
 				if (m.Groups["link"].Success)
 					links.Add(m.Groups["link"].Value);
 			}
+			if (links.Count == 0 && !html.Contains(Environment.NewLine) && (html.StartsWith("/") || Regex.IsMatch(html, "^\\w+://", RegexOptions.Compiled | RegexOptions.IgnoreCase)))
+				links.Add(html);
 			return links;
 		}
 
@@ -109,22 +130,27 @@ namespace N2.Edit.LinkTracker
 		/// <returns>A list of items linking to the supplied item.</returns>
 		public virtual IList<ContentItem> FindReferrers(ContentItem item)
 		{
-			return find.Where.Detail(LinkDetailName).Eq(item)
-				.Filters(new Collections.DuplicateFilter())
-				.Select();
-		} 
+			if (item.ID != 0)
+				return find.Where.Detail(LinkDetailName).Eq(item)
+					.Filters(new Collections.DuplicateFilter())
+					.Select();
+			else
+				return find.Where.Detail(LinkDetailName).Eq(item.Url)
+					.Filters(new Collections.DuplicateFilter())
+					.Select();
+		}
 		#endregion
 
 		#region IStartable Members
 
 		public void Start()
 		{
-			persister.ItemSaving += new EventHandler<CancellableItemEventArgs>(persister_ItemSaving);
+			persister.ItemSaving += persister_ItemSaving;
 		}
 
 		public void Stop()
 		{
-			persister.ItemSaving -= new EventHandler<CancellableItemEventArgs>(persister_ItemSaving);
+			persister.ItemSaving -= persister_ItemSaving;
 		}
 
 		#endregion

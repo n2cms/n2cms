@@ -22,19 +22,17 @@ namespace N2.Edit
             itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
 
+			var q = Engine.Resolve<IItemFinder>().Where.Detail(LinkTracker.Tracker.LinkDetailName).Eq(Selection.SelectedItem.Url);
 			if (Selection.SelectedItem.ID != 0)
+				q = q.Or.Detail().Eq(Selection.SelectedItem);
+
+			int count = q.Count();
+			if (count > 0)
 			{
-				var q = Engine.Resolve<IItemFinder>().Where.Detail().Eq(Selection.SelectedItem);
-				int count = q.Count();
-				if (count > 0)
-				{
-					chkAllow.Text += " (" + count + ")";
-					rptReferencing.DataSource = q.MaxResults(10).Select();
-					rptReferencing.DataBind();
-					hlReferencingItems.Visible = (count > 10);
-				}
-				else
-					referencingItems.Visible = false;
+				chkAllow.Text += " (" + count + ")";
+				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Filter.Is.Distinct()).Select();
+				rptReferencing.DataBind();
+				hlReferencingItems.Visible = (count > 10);
 			}
 			else
 				referencingItems.Visible = false;

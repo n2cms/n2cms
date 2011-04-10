@@ -139,7 +139,7 @@ namespace N2.Edit.Tests.LinkTracker
 		}
 
 		[Test]
-		public void HandlesFtpLinks()
+		public void StoresFtpLink_AsString()
 		{
 			mocks.ReplayAll();
 
@@ -147,14 +147,15 @@ namespace N2.Edit.Tests.LinkTracker
 			persister.Save(root);
 
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-			Assert.IsNull(links);
+			Assert.That(links, Is.Not.Null);
+			Assert.That(links[0], Is.EqualTo("ftp://ftp.n2cms.com"));
 		}
 
 		[Test]
-		public void DoesNotTrackLinks_ToItems_WithZeroID()
+		public void TracksUrl_ToItemsWithoutId()
 		{
-			((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).PathProvider =
-				new FakePathProvider(((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).BasePath);
+			((FakeFileSystem)Context.Current.Resolve<IFileSystem>()).PathProvider =
+				new FakePathProvider(((FakeFileSystem)Context.Current.Resolve<IFileSystem>()).BasePath);
 
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
 			((IInjectable<IUrlParser>)rootDir).Set(new UrlParser(persister, null, new Host(null, 1, 1), new HostSection()));
@@ -163,7 +164,8 @@ namespace N2.Edit.Tests.LinkTracker
 			persister.Save(root);
 
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-			Assert.IsNull(links);
+			Assert.That(links, Is.Not.Null);
+			Assert.That(links[0], Is.EqualTo("/FileSystem/upload/File.txt"));
 		}
 	}
 }

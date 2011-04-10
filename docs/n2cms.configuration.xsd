@@ -260,6 +260,7 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+									<xs:attribute name="defaultContainerName" default="Content" type="xs:string" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

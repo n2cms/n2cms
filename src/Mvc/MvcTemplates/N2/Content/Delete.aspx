@@ -13,9 +13,11 @@
     <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
 	<fieldset id="referencingItems" runat="server" style="padding:8px; margin-bottom:10px">
 		<legend><asp:CheckBox ID="chkAllow" Checked="true" AutoPostBack="true" OnCheckedChanged="chkAllow_OnCheckedChanged" runat="server" Text="Delete and break references" meta:resourceKey="chkAllow" /></legend>
+		<div style="padding: 5px;">
 		<asp:Repeater ID="rptReferencing" runat="server">
 			<ItemTemplate><div><edit:ContentLink runat="server" DataSource='<%# Container.DataItem %>' /></div></ItemTemplate>
 		</asp:Repeater>
+		</div>
 		<asp:HyperLink runat="server" ID="hlReferencingItems" CssClass="hrtop" Text="List Referencing Items" meta:resourceKey="hlReferencingItems" />
 	</fieldset>
 	<edit:FieldSet class="affectedItems" runat="server" Legend="Affected items" meta:resourceKey="affectedItems">

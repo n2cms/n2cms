@@ -4,10 +4,9 @@
 	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
     <table><tbody><tr><td>
 	<edit:FieldSet class="referencingItems" runat="server" Legend="Incoming links" meta:resourceKey="referencingItems">
-		<div style="margin:10px">
+		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencingItems">
 			<ItemTemplate>
 				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
@@ -23,7 +22,7 @@
 		<img src="../../Resources/Icons/link_go.png" alt="right" />
 	</td><td>
 	<edit:FieldSet class="referencedItems" runat="server" Legend="Outgoing links" meta:resourceKey="referencedItems">
-		<div style="margin:10px">
+		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencedItems">
 			<ItemTemplate>
 				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
@@ -32,5 +31,4 @@
 		</div>
 	</edit:FieldSet>
 	</td></tr></tbody></table>
-	</edit:PersistentOnlyPanel>
 </asp:Content>
