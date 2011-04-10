@@ -93,7 +93,9 @@
 				var title = $(zone).attr("title");
 				if (allowed.indexOf(type + ",") >= 0) {
 					$(zone).append("<div class='dropPoint below'/>");
-					$(".zoneItem", zone).not(function () { return $(this).closest(".dropZone")[0] === zone; }).each(function (i) { $(this).before("<div class='dropPoint before' title='" + i + "'/>"); });
+					$(".zoneItem", zone)
+						.not(function () { return $(this).closest(".dropZone")[0] !== zone; })
+						.each(function (i) { $(this).before("<div class='dropPoint before' title='" + i + "'/>"); });
 				}
 				$(".dropPoint", zone).html("<div class='description'>" + title + "</div>");
 			});
