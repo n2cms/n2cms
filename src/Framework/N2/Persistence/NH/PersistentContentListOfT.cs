@@ -104,9 +104,9 @@ namespace N2.Persistence.NH
 
 		public T FindNamed(string name)
 		{
-			if (WasInitialized) return List.FirstOrDefault(i => i.Name == name);
+			if (WasInitialized) return List.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 
-			return ((ISession)Session).CreateFilter(this, "where Name=:name").SetParameter("name", name).UniqueResult<T>();
+			return ((ISession)Session).CreateFilter(this, "where Name like :name").SetParameter("name", name).UniqueResult<T>();
 		}
 
 		#endregion
