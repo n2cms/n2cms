@@ -13,6 +13,7 @@ namespace N2.Templates.Items
 		IconUrl = "~/Templates/UI/Img/calendar.png")]
     [RestrictParents(typeof(IStructuralPage))]
 	[ConventionTemplate("CalendarList")]
+	[SortChildren(SortBy.Expression, SortExpression = "EventDate")]
     public class Calendar : AbstractContentPage
     {
         public virtual IEnumerable<Event> GetEvents()

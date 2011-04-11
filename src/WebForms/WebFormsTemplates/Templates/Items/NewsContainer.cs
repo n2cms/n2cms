@@ -10,6 +10,7 @@ namespace N2.Templates.Items
 		IconUrl = "~/Templates/UI/Img/newspaper_link.png")]
     [RestrictParents(typeof (IStructuralPage))]
 	[ConventionTemplate("NewsList")]
+	[SortChildren(SortBy.PublishedDescending)]
     public class NewsContainer : AbstractContentPage
     {
     }
