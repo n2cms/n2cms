@@ -143,6 +143,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Details\DisplayableTokensAttribute.cs" />
     <Compile Include="Details\EditableNumberAttribute.cs" />
     <Compile Include="Details\EditableSummaryAttribute.cs" />
     <Compile Include="Details\WithEditableVisibilityAttribute.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Web\Rendering\WritingDisplayableRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingContext.cs" />
     <Compile Include="Web\RssWriter.cs" />
+    <Compile Include="Web\Parsing\Tokenizer.cs" />
     <Compile Include="Web\UI\ContentPageConcern.cs" />
     <Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />
     <Compile Include="Web\UI\ItemDataSourceView.cs" />

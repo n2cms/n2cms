@@ -4,6 +4,8 @@ using System.Text;
 using System.Web.UI;
 using N2.Definitions;
 using System.Diagnostics;
+using System.IO;
+using N2.Engine;
 
 namespace N2.Details
 {
@@ -13,11 +15,18 @@ namespace N2.Details
 		private string cssClass = null;
 		private string name;
 		int? hashCode;
-
+		IEngine engine;
+		
 		public string CssClass
 		{
 			get { return cssClass; }
 			set { cssClass = value; }
+		}
+
+		public IEngine Engine
+		{
+			get { return engine ?? (engine = Context.Current); }
+			set { engine = value; }
 		}
 
 		#region IDisplayable Members
@@ -28,7 +37,29 @@ namespace N2.Details
 			set { name = value; }
 		}
 
-		public abstract Control AddTo(ContentItem item, string detailName, Control container);
+		public virtual Control AddTo(ContentItem item, string detailName, Control container)
+		{
+			using (var sw = new StringWriter())
+			{
+				Write(item, detailName, sw);
+				string html = sw.ToString();
+				if (string.IsNullOrEmpty(html))
+					return null;
+
+				var lc = new LiteralControl(html);
+				container.Controls.Add(lc);
+				return lc;
+			}
+		}
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public virtual void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
+		{
+			writer.Write("[Override AddTo or Write]");
+		}
+
 		#endregion
 
 		#region Equals & GetHashCode

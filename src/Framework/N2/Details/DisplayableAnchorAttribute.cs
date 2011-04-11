@@ -31,23 +31,9 @@ namespace N2.Details
 			return null;
 		}
 
-		//[Obsolete]
-		//public static Control AddAnchor(Control container, ContentItem linkedItem)
-		//{
-		//    return AddAnchor(container, linkedItem, null, null);
-		//}
-
-		//[Obsolete]
-		//public static Control AddAnchor(Control container, ContentItem linkedItem, string target, string cssClass)
-		//{
-		//    Control anchor = GetLinkBuilder(linkedItem, target, cssClass).ToControl();
-		//    container.Controls.Add(anchor);
-		//    return anchor;
-		//}
-
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
+		public override void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
 		{
 			ContentItem linkedItem = item[detailName] as ContentItem;
 			if (linkedItem != null)

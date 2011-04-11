@@ -29,7 +29,7 @@ namespace N2.Details
 
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
 			var value = item[propertyName] as string;
 			if (value != null)
