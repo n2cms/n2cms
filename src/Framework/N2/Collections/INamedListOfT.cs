@@ -23,9 +23,9 @@ namespace N2.Collections
 		ICollection<T> Values { get; }
 
 		/// <summary>Gets or sets the element with the specified key.</summary>
-		/// <param name="key">The key of the element to get or set.</param>
+		/// <param name="name">The key of the element to get or set.</param>
 		/// <returns>The element with the specified key.</returns>
-		T this[string key] { get; set; }
+		T this[string name] { get; set; }
 
 		/// <summary>Adds an element with the provided key and value to the list.</summary>
 		/// <param name="key">The object to use as the key of the element to add.</param>

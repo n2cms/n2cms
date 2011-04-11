@@ -52,17 +52,24 @@ namespace N2.Web
 			return data;
 		}
 
-		public virtual PathData ResolveUrl(string url)
+		public virtual PathData ResolveUrl(Url url)
 		{
 			try
 			{
-				if (IsObservable(url)) return parser.ResolvePath(url);
+				if (IsObservable(url))
+					return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 			}
 			catch (Exception ex)
 			{
 				errorHandler.Notify(ex);
 			}
 			return PathData.Empty;
+		}
+
+		[Obsolete("Use ResolveUrl((Url)url))")]
+		public virtual PathData ResolveUrl(string url)
+		{
+			return ResolveUrl(new Url(url));
 		}
 
 		private bool IsObservable(Url url)

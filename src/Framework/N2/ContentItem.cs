@@ -605,13 +605,12 @@ namespace N2
 
 			int slashIndex = remainingUrl.IndexOf('/');
 			string nameSegment = HttpUtility.UrlDecode(slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex));
-			foreach (ContentItem child in GetChildren(new NullFilter()))
+
+			var child = Children.FindNamed(nameSegment);
+			if (child != null)
 			{
-				if (child.IsNamed(nameSegment))
-				{
-					remainingUrl = slashIndex < 0 ? null : remainingUrl.Substring(slashIndex + 1);
-					return child.FindPath(remainingUrl);
-				}
+				remainingUrl = slashIndex < 0 ? null : remainingUrl.Substring(slashIndex + 1);
+				return child.FindPath(remainingUrl);
 			}
 
 			return PathDictionary.GetPath(this, remainingUrl);

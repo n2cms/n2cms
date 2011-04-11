@@ -99,7 +99,7 @@ namespace N2.Management.Files
 		{
 			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
-				if (Url.RemoveExtension(path).EndsWith("_" + size.Name))
+				if (Url.RemoveAnyExtension(path).EndsWith("_" + size.Name))
 					return true;
 			}
 			return false;

@@ -20,6 +20,8 @@ namespace N2.Web
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
 		static string defaultExtension = ".aspx";
+		static string defaultDocument = "Default.aspx";
+
 		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" } };
 
 		string scheme;
@@ -215,7 +217,7 @@ namespace N2.Web
 
 		public string PathWithoutExtension
 		{
-			get { return RemoveExtension(path); }
+			get { return RemoveAnyExtension(path); }
 		}
 
 		/// <summary>The combination of the path and the query string, e.g. /path.aspx?key=value.</summary>
@@ -295,6 +297,13 @@ namespace N2.Web
 		{
 			get { return defaultExtension; }
 			set { defaultExtension = value; }
+		}
+
+		/// <summary>The default document to use when removing default document from paths.</summary>
+		public static string DefaultDocument
+		{
+			get { return Url.defaultDocument; }
+			set { Url.defaultDocument = value; }
 		}
 
 		/// <summary>Removes the hash (#...) from an url.</summary>
@@ -565,6 +574,34 @@ namespace N2.Web
 			return new Url(scheme, authority, PathWithoutExtension, query, fragment);
 		}
 
+		/// <summary>Returns the url without the file extension (if any).</summary>
+		/// <param name="validExtensions">Extensions that may be removed.</param>
+		/// <returns>An url with it's extension removed.</returns>
+		public Url RemoveExtension(params string[] validExtensions)
+		{
+			var pathExtension = Array.Find(validExtensions, x => path.EndsWith(x, StringComparison.InvariantCultureIgnoreCase));
+			if (pathExtension == null)
+				return this;
+			return new Url(scheme, authority, path.Substring(0, path.Length - pathExtension.Length), query, fragment);
+		}
+
+		/// <summary>Removes the given default document from the end of the url, if there.</summary>
+		/// <param name="defualtDocument">The default document to remove, e.g. "Default.aspx"</param>
+		/// <returns>An url without ending default document, or the same url if no ending default document.</returns>
+		public Url RemoveDefaultDocument(string defualtDocument)
+		{
+			if (!path.EndsWith("/" + defualtDocument, StringComparison.InvariantCultureIgnoreCase))
+				return this;
+
+			return new Url(scheme, authority, RemoveLastSegment(path), query, fragment);
+		}
+
+		private string GetLastSegment(string path)
+		{
+			int lastSegmentIndex = GetLastSignificatSlash(path);
+			return path.Substring(lastSegmentIndex + 1);
+		}
+
 		/// <summary>Converts a possibly relative to an absolute url.</summary>
 		/// <param name="path">The url to convert.</param>
 		/// <returns>The absolute url.</returns>
@@ -649,7 +686,7 @@ namespace N2.Web
 		/// <summary>Removes the file extension from a path.</summary>
 		/// <param name="path">The server relative path.</param>
 		/// <returns>The path without the file extension or the same path if no extension was found.</returns>
-		public static string RemoveExtension(string path)
+		public static string RemoveAnyExtension(string path)
 		{
 			int index = path.LastIndexOfAny(dotsAndSlashes);
 

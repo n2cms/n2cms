@@ -1039,5 +1039,32 @@ namespace N2.Tests.Web
 				Url.ApplicationPath = "/";
 			}
 		}
+
+		[Test]
+		public void RemoveExtension_RemovesAnyExtension()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension();
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void RemoveExtension_RemovesValidExtension()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension(".aspx");
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void RemoveExtension_DesontRemove_InvalidExtension()
+		{
+			Url url = "/hello.gif";
+			string result = url.RemoveExtension(".aspx");
+
+			Assert.That(result, Is.EqualTo("/hello.gif"));
+		}
     }
 }

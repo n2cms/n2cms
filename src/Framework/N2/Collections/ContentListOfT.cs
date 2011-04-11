@@ -159,19 +159,19 @@ namespace N2.Collections
 			get { return inner.ToList(); }
 		}
 
-		public T this[string key]
+		public T this[string name]
 		{
 			get
 			{
-				return inner.FirstOrDefault(i => i.Name == key);
+				return FindNamed(name);
 			}
 			set
 			{
-				EnsureName(key, value);
+				EnsureName(name, value);
 
-				int index = inner.FindIndex(i => i.Name == key);
+				int index = inner.FindIndex(i => i.Name == name);
 				if (index < 0)
-					Add(key, value);
+					Add(name, value);
 				else
 					inner[index] = value;
 			}
@@ -179,7 +179,7 @@ namespace N2.Collections
 
 		public T FindNamed(string name)
 		{
-			return inner.FirstOrDefault(i => i.Name == name);
+			return inner.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		#endregion

@@ -47,7 +47,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void MasterDetails_WithNoAction()
 		{
-			Url url = "/master.aspx";
+			Url url = "/master";
 			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo(PathData.DefaultAction));
@@ -67,7 +67,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void ListDetails_WithNoAction()
 		{
-			Url url = "/list.aspx";
+			Url url = "/list";
 			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo(PathData.DefaultAction));

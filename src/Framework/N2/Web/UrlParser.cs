@@ -15,7 +15,6 @@ namespace N2.Web
         protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
-		private string defaultDocument = "Default.aspx";
 		readonly bool ignoreExistingFiles;
 
 
@@ -25,8 +24,6 @@ namespace N2.Web
 		public UrlParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
 		{
 			if (host == null) throw new ArgumentNullException("host");
-
-			Debug.WriteLine("UrlParser");
 
 			this.persister = persister;
 			this.webContext = webContext;
@@ -50,8 +47,8 @@ namespace N2.Web
         /// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
         public string DefaultDocument
         {
-            get { return defaultDocument; }
-            set { defaultDocument = value; }
+            get { return Url.DefaultDocument; }
+			set { Url.DefaultDocument = value; }
         }
 
 		public PathData ResolvePath(Url url)

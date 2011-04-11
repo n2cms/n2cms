@@ -91,7 +91,7 @@ namespace N2.Definitions.Runtime
 		{
 			var re = new ContentRegistration();
 			re.ContentType = modelType;
-			re.Template = N2.Web.Url.RemoveExtension(file.Name);
+			re.Template = N2.Web.Url.RemoveAnyExtension(file.Name);
 			re.IsDefined = false;
 			using (StringWriter sw = new StringWriter())
 			{

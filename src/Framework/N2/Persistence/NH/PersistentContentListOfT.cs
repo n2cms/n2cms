@@ -84,19 +84,19 @@ namespace N2.Persistence.NH
 			get { return List.ToList(); }
 		}
 
-		public T this[string key]
+		public T this[string name]
 		{
 			get
 			{
-				return FindNamed(key);
+				return FindNamed(name);
 			}
 			set
 			{
-				EnsureName(key, value);
+				EnsureName(name, value);
 
-				var result = List.Select((item, index) => new { item, index }).FirstOrDefault(i => i.item.Name == key);
+				var result = List.Select((item, index) => new { item, index }).FirstOrDefault(i => i.item.Name == name);
 				if (result == null)
-					Add(key, value);
+					Add(name, value);
 				else
 					this[result.index] = value;
 			}
