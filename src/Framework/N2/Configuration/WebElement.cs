@@ -45,10 +45,10 @@ namespace N2.Configuration
 		}
 
         /// <summary>Look for a content page when the requested resource has no extension.</summary>
-        [ConfigurationProperty("observeEmptyExtension")]
+        [ConfigurationProperty("observeEmptyExtension", DefaultValue = true)]
         public bool ObserveEmptyExtension
         {
-            get { return (bool)base["observeEmptyExtension"] || string.IsNullOrEmpty(Extension) || Extension == "/"; }
+            get { return (bool)base["observeEmptyExtension"]; }
             set { base["observeEmptyExtension"] = value; }
 		}
 
