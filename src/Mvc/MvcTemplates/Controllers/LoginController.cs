@@ -21,7 +21,8 @@ namespace N2.Templates.Mvc.Controllers
 
 		public ActionResult Login(string userName, string password, bool? remember)
 		{
-			if(Membership.ValidateUser(userName, password) || FormsAuthentication.Authenticate(userName, password))
+			if(Membership.ValidateUser(userName, password) 
+				|| FormsAuthentication.Authenticate(userName, password))
 			{
 				FormsAuthentication.SetAuthCookie(userName, remember ?? false);
 				return RedirectToParentPage();
