@@ -4,18 +4,21 @@ using System.Linq;
 using System.Text;
 using N2.Engine;
 using System.IO;
+using System.Diagnostics;
 
 namespace N2.Web.Parsing
 {
 	public enum TokenType
 	{
-		Whitespace,
 		Word,
+		Whitespace,
+		NewLine,
 		Element,
 		EndElement,
 		Symbol
 	}
 
+	[DebuggerDisplay("[{Type} Fragment={Fragment}]")]
 	public class Token
 	{
 		public int Index { get; set; }
@@ -181,6 +184,9 @@ namespace N2.Web.Parsing
 
 		private Token ReadWhitespace(TextReader reader, ref char c)
 		{
+			if (IsNewline(c))
+				return ReadNewline(reader, ref c);
+
 			using (var sw = new StringWriter())
 			{
 				while (c != 0)
@@ -195,6 +201,29 @@ namespace N2.Web.Parsing
 				}
 				return new Token { Type = TokenType.Whitespace, Fragment = sw.ToString() };
 			}
+		}
+
+		private Token ReadNewline(TextReader reader, ref char c)
+		{
+			using (var sw = new StringWriter())
+			{
+				while (c != 0)
+				{
+					if (IsNewline(c))
+						sw.Write(c);
+					else
+						break;
+
+					if (WasEof(reader, out c))
+						break;
+				}
+				return new Token { Type = TokenType.NewLine, Fragment = sw.ToString() };
+			}
+		}
+
+		private static bool IsNewline(char c)
+		{
+			return c == '\n' || c == '\r';
 		}
 
 		private bool WasEof(TextReader reader, out char c)

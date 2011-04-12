@@ -196,6 +196,8 @@
     <Compile Include="Types.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />
+    <Compile Include="Web\Parsing\Extensions.cs" />
+    <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
