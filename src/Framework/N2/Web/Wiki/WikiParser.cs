@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using N2.Web.Parsing;
+using N2.Web.Wiki.Analyzers;
 
-namespace N2.Web.Parsing.Wiki
+namespace N2.Web.Wiki
 {
 	public class WikiParser : Parser
 	{

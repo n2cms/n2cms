@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Web.Parsing;
 
-namespace N2.Web.Parsing.Wiki
+namespace N2.Web.Wiki.Analyzers
 {
 	public class OrderedListItemAnalyzer : StartStopAnalyzerBase
 	{
@@ -26,7 +27,7 @@ namespace N2.Web.Parsing.Wiki
 			return tokens[index].Type == StopType || index == tokens.Count - 1;
 		}
 
-		protected override string ExtractData(List<Token> blockTokens)
+		protected override string ExtractData(IList<Token> blockTokens)
 		{
 			return blockTokens.Skip(1).Select(t => t.Fragment).StringJoin().Trim(' ', '\t', '\r', '\n');
 		}

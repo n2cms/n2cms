@@ -56,7 +56,7 @@ namespace N2.Web.Parsing
 			return true;
 		}
 
-		protected virtual string ExtractData(List<Token> blockTokens)
+		protected virtual string ExtractData(IList<Token> blockTokens)
 		{
 			return blockTokens.Skip(1).Take(blockTokens.Count - 2).Select(t => t.Fragment).StringJoin();
 		}

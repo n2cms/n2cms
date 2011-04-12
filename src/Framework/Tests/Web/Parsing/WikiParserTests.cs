@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using N2.Web.Parsing;
-using N2.Web.Parsing.Wiki;
+using N2.Web.Wiki;
 using NUnit.Framework;
 
 namespace N2.Tests.Web.Parsing
