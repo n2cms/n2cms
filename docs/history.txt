@@ -1,4 +1,18 @@
 ﻿2.2
+- Applied janpub's patch #9133: Many improvements on the content membership provider:
+	- CreateUser - OnValidatingPassword call added // TODO: RequiresUniqueEmail validation
+	- GetNumberOfUsersOnline - Membership.UserIsOnlineTimeWindow instead of hardcoded value (20)
+	- GetPassword - EnablePasswordRetrieval assertion added
+	- GetUser(object providerUserKey, bool userIsOnline) existing code had updated wrong LastLoginDate property; fixed to LastActivityDate, added Bridge.Save(u) call to save changes.
+	- GetUser(string username, bool userIsOnline) Bridge.Save(u) call added to save LastActivityDate change.
+	- ValidateUser - u.LastLoginDate update added
+	- PasswordReset - Membership.GeneratePassword used, EnablePasswordReset and RequiresQuestionAndAnswer assertions added/ fixed.
+	- Intro comments added
+	- Password generation enhanced, custom generatedPasswordLength property added
+	- Encrypted password retrieval supported by GetPassword
+	- Provider properties may be set in Web.config, built-in default values are preserved
+	- MembershipPasswordFormat.Clear is used by default, hashed and encrypted passwords are supported as well (Web.config machineKey should be set)
+	- ResetPassword behaves as expected.  
 - Warning when removing files referenced somewhere (ThreadId=252444)
 - Google map part
 - Youtube video player part

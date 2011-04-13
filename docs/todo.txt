@@ -1,7 +1,7 @@
 - ITemplateable/TemplateName in n2item
 - IRedirect
 - AttributeTransformerBase (ThreadId=250548)
-- content transformers/extractors (extract summary, parse wiki)
+- content transformers/extractors (parse wiki)
 - index template replaces default
 - static parts
 - Find.Items.Where.Detail().IsNull() (ThreadId=243772)
