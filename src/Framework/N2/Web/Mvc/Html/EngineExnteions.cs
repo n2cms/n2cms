@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using N2.Engine;
 using System.Web.Routing;
+using N2.Definitions;
 
 namespace N2.Web.Mvc.Html
 {
@@ -27,6 +28,11 @@ namespace N2.Web.Mvc.Html
 		{
 			return html.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
 				?? N2.Context.Current;
+		}
+
+		public static ItemDefinition Definition(this HtmlHelper html, ContentItem item)
+		{
+			return html.ContentEngine().Definitions.GetDefinition(item);
 		}
 
 		public static T ResolveService<T>(this HtmlHelper helper) where T : class

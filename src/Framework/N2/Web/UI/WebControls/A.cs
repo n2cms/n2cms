@@ -41,32 +41,24 @@ namespace N2.Web.UI.WebControls
 			set
 			{
 				Controls.Clear();
-				Controls.Add(new LiteralControl(value));
+				if(!string.IsNullOrEmpty(value))
+					Controls.Add(new LiteralControl(value));
 			}
 		}
 
 		protected override void Render(HtmlTextWriter writer)
 		{
-			if (string.IsNullOrEmpty(HRef))
+			if (Controls.Count == 0)
+			{
+				// nothing
+			}
+			else if (string.IsNullOrEmpty(HRef))
 			{
 				writer.Write("<span");
 				RenderAttributes(writer);
 				writer.Write(">");
 				RenderChildren(writer);
 				writer.Write("</span>");
-
-				//HtmlGenericControl span = new HtmlGenericControl("span");
-				//if (!string.IsNullOrEmpty(Title))
-				//    span.Attributes["title"] = Title;
-				//foreach (KeyValuePair<string, string> pair in Attributes)
-				//{
-				//    span.Attributes[pair.Key] = pair.Value;
-				//}
-				//foreach (Control c in Controls)
-				//{
-				//    span.Controls.Add(c);
-				//}
-				//return span;
 			}
 			else
 			{

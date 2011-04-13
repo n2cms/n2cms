@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -29,8 +30,15 @@ namespace N2.Definitions
 			AddEditablesDefinedOnProperties(typeToExplore, attributes);
 			AddEditablesDefinedOnClass(typeToExplore, attributes);
 
-			if (attributes.Count > 1 && (attributes[0] is IComparable || attributes[0] is IComparable<T>))
-				attributes.Sort();
+			attributes.Sort(
+				(f, s) =>
+				{
+					if (f is IComparable<T>)
+						return (f as IComparable<T>).CompareTo(s);
+					if (s is IComparable<T>)
+						return -(s as IComparable<T>).CompareTo(f);
+					return 0;
+				});
 
 			return attributes;
 		}

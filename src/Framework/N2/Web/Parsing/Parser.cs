@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace N2.Web.Parsing
 {
@@ -9,10 +10,17 @@ namespace N2.Web.Parsing
 	{
 		public Parser(params AnalyzerBase[] analyzers)
 		{
+			Tokenizer = new Tokenizer();
 			Analyzers = analyzers;
 		}
 
+		public Tokenizer Tokenizer { get; set; }
 		public IEnumerable<AnalyzerBase> Analyzers { get; set; }
+
+		public IEnumerable<Component> Parse(string text)
+		{
+			return Parse(Tokenizer.Tokenize(new StringReader(text)));
+		}
 
 		public IEnumerable<Component> Parse(IEnumerable<Token> inputTokens)
 		{
@@ -46,8 +54,10 @@ namespace N2.Web.Parsing
 		private static Component CreateTextBlock(IList<Token> list, int indexAtEndOfLast, int currentIndex)
 		{
 			var blockTokens = list.Skip(indexAtEndOfLast).Take(currentIndex - indexAtEndOfLast).ToList();
-			var b = new Component { Command = "Text", Tokens = blockTokens, Data = blockTokens.Select(t => t.Fragment).StringJoin() };
+			var b = new Component { Command = TextCommand, Tokens = blockTokens, Data = blockTokens.Select(t => t.Fragment).StringJoin() };
 			return b;
 		}
+
+		public const string TextCommand = "Text";
 	}
 }

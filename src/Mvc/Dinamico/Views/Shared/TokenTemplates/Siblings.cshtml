@@ -1,0 +1,13 @@
+﻿@model string
+@{ var current = Content.CurrentPage; }
+@Html.UnorderedList(Content.Traverse.Siblings(Content.Is.Navigatable()), 
+	@<span>
+	@if (item.Data != current)
+	{
+		@Content.LinkTo(item.Data)
+	}
+	else
+	{
+		@item.Data.Title
+	}
+	</span>)

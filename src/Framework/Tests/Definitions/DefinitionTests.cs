@@ -500,5 +500,14 @@ namespace N2.Tests.Definitions
 
 			Assert.That(definition.Discriminator, Is.EqualTo("DefinitionRemovedByParent"));
 		}
+
+		[Test]
+		public void Displayable_TakesPrecedence_OverEditable_WhenDefined()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionTextPage));
+
+			var displayable = definition.Displayables.Single(d => d.Name == "Text");
+			Assert.That(displayable, Is.InstanceOfType<DisplayableLiteralAttribute>());
+		}
 	}
 }

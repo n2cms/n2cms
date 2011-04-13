@@ -308,7 +308,6 @@ namespace N2.Definitions
 				if (containable is IContentTransformer)
 					ContentTransformers.Add(containable as IContentTransformer);
 			}
-			//ReloadRoot();
 		}
 
 		public IContainable GetContainable(string containableName)
@@ -358,11 +357,6 @@ namespace N2.Definitions
 			initializedTypes.Add(type);
 			return this;
 		}
-
-		//private void ReloadRoot()
-		//{
-		//    RootContainer = hierarchyBuilder.Build(Containers, Editables, DefaultContainerName);
-		//}
 
 		#endregion
 
@@ -431,7 +425,6 @@ namespace N2.Definitions
 			id.Template = Template;
 			id.Title = Title;
 			id.ToolTip = ToolTip;
-			//id.ReloadRoot();
 			return id;
 		}
 
@@ -447,10 +440,16 @@ namespace N2.Definitions
 	{
 		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) where T : IUniquelyNamed
 		{
+			return CollectionExtensions.AddOrReplace(collection, item, false);
+		}
+		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item, bool replaceIfComparedBefore) where T : IUniquelyNamed
+		{
 			var existing = collection.FirstOrDefault(i => i.Name == item.Name);
 			if (existing != null)
 				collection.Remove(existing);
+
 			collection.Add(item);
+
 			return collection;
 		}
 	}

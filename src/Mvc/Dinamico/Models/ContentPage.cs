@@ -16,6 +16,7 @@ namespace Dinamico.Models
 		public virtual string Summary { get; set; }
 
 		[EditableFreeTextArea]
+		[DisplayableTokens]
 		public virtual string Text { get; set; }
 	}
 }

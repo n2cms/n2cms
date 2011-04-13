@@ -11,6 +11,6 @@
 @{ Content.Register.Summary("Summary", source: "Text"); }
 <span class="updated">@Content.Register.PublishedRange().Container("Advanced").Display()</span>
 <div class="entry-content">
-	@Content.Register.FreeText("Text").Container("Content").Display()
+	@Content.Display.Text
 </div>
 <span class="author">@Content.CurrentItem.SavedBy</span>

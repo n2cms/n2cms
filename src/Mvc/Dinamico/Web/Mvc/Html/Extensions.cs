@@ -44,50 +44,62 @@ namespace N2.Web.Mvc.Html
 			Func<Template<IEnumerable<T>>, HelperResult> wrapper = null,
 			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
 		{
-			return new System.Web.WebPages.HelperResult((tw) =>
+			return new HelperResult((tw) =>
+			{
+				using(var enumerator = items.GetEnumerator())
 				{
-					using(var enumerator = items.GetEnumerator())
+					if (enumerator.MoveNext())
 					{
-						if (enumerator.MoveNext())
+						Action<TextWriter> renderContents = (tw2) =>
 						{
 							var ctx = new ListTemplate<T> { First = true };
-							Action<TextWriter> renderContents = (tw2) =>
+							while (true)
+							{
+								ctx.Data = enumerator.Current;
+								ctx.Last = enumerator.MoveNext() == false;
+								if (ctx.Data is ContentItem)
 								{
-									while (true)
+									using(html.Content().BeginContentScope(ctx.Data as ContentItem))
 									{
-										ctx.Data = enumerator.Current;
-										ctx.Last = !enumerator.MoveNext();
-										if(ctx.Data is ContentItem)
-										{
-											using(html.Content().BeginContentScope(ctx.Data as ContentItem))
-											{
-												template(ctx).WriteTo(tw2);
-											}
-										}
-										else
-										{
-											template(ctx).WriteTo(tw2);
-										}
-										if(ctx.Last)
-											break;
-										ctx.Index++;
+										template(ctx).WriteTo(tw2);
 									}
-								};
-							if (wrapper != null)
-							{
-								wrapper(new Template<IEnumerable<T>> { Data = items, ContentRenderer = renderContents }).WriteTo(tw);
+								}
+								else
+								{
+									template(ctx).WriteTo(tw2);
+								}
+								if (ctx.Last)
+									break;
+								ctx.Index++;
+								if (ctx.First)
+									ctx.First = false;
 							}
-							else
-							{
-								renderContents(tw);
-							}
-						}
-						else if(empty != null)
+						};
+						if (wrapper != null)
 						{
-							empty(new Template<IEnumerable<T>> { Data = items }).WriteTo(tw);
+							wrapper(new Template<IEnumerable<T>> { Data = items, ContentRenderer = renderContents }).WriteTo(tw);
+						}
+						else
+						{
+							renderContents(tw);
 						}
 					}
-				});
+					else if(empty != null)
+					{
+						empty(new Template<IEnumerable<T>> { Data = items }).WriteTo(tw);
+					}
+				}
+			});
+		}
+
+		public static HelperResult UnorderedList<T>(this HtmlHelper html, IEnumerable<T> items,
+			Func<ListTemplate<T>, HelperResult> template,
+			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
+		{
+			return Loop(html, items, 
+				template: (lt) => new HelperResult((tw) => { tw.Write("<li>"); template(lt).WriteTo(tw); tw.Write("</li>"); }),
+				wrapper: (lt) => new HelperResult((tw) => { tw.Write("<ul>"); lt.RenderContents().WriteTo(tw); tw.Write("</ul>"); }),
+				empty: empty);
 		}
 
 		// content helper

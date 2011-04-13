@@ -88,10 +88,20 @@ namespace N2.Web.Mvc
 
 		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
 		{
+			return Siblings(item, null);
+		}
+
+		public IEnumerable<ContentItem> Siblings(ItemFilter filter = null)
+		{
+			return Siblings(null, filter);
+		}
+
+		public IEnumerable<ContentItem> Siblings(ContentItem item = null, ItemFilter filter = null)
+		{
 			if (item == null) item = CurrentItem;
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
 
-			return item.Parent.GetChildren(DefaultFilter());
+			return item.Parent.GetChildren(filter ?? DefaultFilter());
 		}
 
 		public ContentItem PreviousSibling(ContentItem item = null)
@@ -144,6 +154,14 @@ namespace N2.Web.Mvc
 			if (root == null)
 				root = CurrentItem;
 			return html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
+		}
+
+		public ContentItem Parent(ContentItem item = null)
+		{
+			if (item == null) item = CurrentItem;
+			if (item == StartPage) return null;
+
+			return item.Parent;
 		}
 	}
 }

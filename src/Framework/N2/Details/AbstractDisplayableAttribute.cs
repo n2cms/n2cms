@@ -10,7 +10,7 @@ using N2.Engine;
 namespace N2.Details
 {
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractDisplayableAttribute : Attribute, IDisplayable
+	public abstract class AbstractDisplayableAttribute : Attribute, IDisplayable, IComparable<IUniquelyNamed>
 	{
 		private string cssClass = null;
 		private string name;
@@ -85,6 +85,24 @@ namespace N2.Details
 		{
 			get { return GetType().Name; }
 		}
+		#endregion
+
+		#region IComparable<IUniquelyNamed> Members
+
+		int IComparable<IUniquelyNamed>.CompareTo(IUniquelyNamed other)
+		{
+			var containable = other as IContainable;
+			if (containable != null)
+				return 1;
+
+			if (other is IDisplayable)
+				return 0;
+			if (other == null)
+				return 1;
+
+			return Name.CompareTo(other.Name);
+		}
+
 		#endregion
 	}
 }

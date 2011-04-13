@@ -12,10 +12,8 @@ namespace N2.Details
 	{
 		public override void Write(ContentItem item, string detailName, TextWriter writer)
 		{
-			//base.Write(item, detailName, writer);
+			throw new Exception("Should neve rhappen");
 		}
-
-
 
 		#region IContentTransformer Members
 
@@ -26,18 +24,31 @@ namespace N2.Details
 
 		public bool Transform(ContentItem item)
 		{
-			string html = item[Name] as string;
-			if(html != null)
+			string text = item[Name] as string;
+			if(text != null)
 			{
-				//var tokens = Engine.Container.ResolveAll<TokenBase>();
-				//var context = new TokenizingContext { Text = html };
-				//for (context.Index = 0; context.Index < html.Length; context.Index++)
-				//{
-				//    foreach (var token in tokens)
-				//    {
-
-				//    }
-				//}
+				string detailName = Name + "_Tokens";
+				int i = 0;
+				var p = new Parser(new Web.Wiki.Analyzers.TemplateAnalyzer());
+				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
+				{
+					var dc = item.GetDetailCollection(detailName, true);
+					var cd = new ContentDetail(item, detailName, c.Data) { EnclosingCollection = dc, IntValue = c.Tokens.First().Index };
+					if (dc.Details.Count > i)
+						dc.Details[i] = cd;
+					else
+						dc.Details.Add(cd);
+					i++;					
+				}
+				if (i > 0)
+				{
+					var dc = item.GetDetailCollection(detailName, true);
+					for (int j = dc.Details.Count - 1; j >= i; i--)
+					{
+						dc.Details.RemoveAt(j);
+					}
+					return true;
+				}
 			}
 			return false;
 		}

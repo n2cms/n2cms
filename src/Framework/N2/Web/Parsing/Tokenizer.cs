@@ -8,25 +8,7 @@ using System.Diagnostics;
 
 namespace N2.Web.Parsing
 {
-	public enum TokenType
-	{
-		Word,
-		Whitespace,
-		NewLine,
-		Element,
-		EndElement,
-		Symbol
-	}
-
-	[DebuggerDisplay("[{Type} Fragment={Fragment}]")]
-	public class Token
-	{
-		public int Index { get; set; }
-		public TokenType Type { get; set; }
-		public string Fragment { get; set; }
-	}
-
-	[Service(typeof(Tokenizer))]
+	//[Service(typeof(Tokenizer))]
 	public class Tokenizer
 	{
 		public virtual IEnumerable<Token> Tokenize(TextReader reader)

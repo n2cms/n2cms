@@ -1,16 +1,12 @@
 using System;
-using System.Linq;
-using System.IO;
-using System.Web.Mvc;
-using System.Web.UI;
-using N2.Web.UI;
-using N2.Web.UI.WebControls;
-using N2.Details;
-using System.Web.Routing;
 using System.Diagnostics;
-using N2.Engine;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
+using N2.Definitions.Static;
 using N2.Web.Rendering;
+using N2.Web.UI;
 
 namespace N2.Web.Mvc.Html
 {
@@ -114,8 +110,14 @@ namespace N2.Web.Mvc.Html
 
 		private void RenderDisplayable()
 		{
-			var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
-			if (displayable == null) return;
+			var displayable = DefinitionMap.Instance.GetOrCreateDefinition(CurrentItem).Displayables.FirstOrDefault(d => d.Name == propertyName);
+
+			if (displayable == null)
+			{
+				if (!swallowExceptions)
+					throw new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, CurrentItem.ID, CurrentItem.GetContentType());
+				return;
+			}
 
 			var writer = Html.ViewContext.Writer;
 			if (Wrapper != null)

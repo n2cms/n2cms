@@ -20,7 +20,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer, IComparable<IUniquelyNamed>
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -471,6 +471,24 @@ namespace N2.Details
 		#region IPermittable Members
 
 		public Permission RequiredPermission { get; set; }
+
+		#endregion
+
+		#region IComparable<IUniquelyNamed> Members
+
+		int IComparable<IUniquelyNamed>.CompareTo(IUniquelyNamed other)
+		{
+			var containable = other as IContainable;
+			if (containable != null)
+				return ((IComparable<IContainable>)this).CompareTo(containable);
+			
+			if (other is IDisplayable)
+				return -1;
+			if (other == null)
+				return 1;
+
+			return Name.CompareTo(other.Name);
+		}
 
 		#endregion
 	}

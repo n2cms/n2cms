@@ -36,6 +36,7 @@ namespace N2.Tests.Definitions.Definitions
             set { SetDetail<string>("MyProperty3", value); }
         }
         [N2.Details.EditableCheckBox("My Property 4", 4, ContainerName = "inside1_1")]
+		[N2.Details.DisplayableLiteral]
         public virtual bool MyProperty4
         {
 			get { return (bool)(GetDetail("MyProperty4") ?? false); }
