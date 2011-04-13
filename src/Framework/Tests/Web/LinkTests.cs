@@ -71,7 +71,7 @@ namespace N2.Tests.Web
 		public void CanCreateEmptyLink()
 		{
 			string anchor = Link.To(null).ToString();
-			Assert.AreEqual("<span></span>", anchor);
+			Assert.AreEqual("", anchor);
 		}
 
 		[Test]
