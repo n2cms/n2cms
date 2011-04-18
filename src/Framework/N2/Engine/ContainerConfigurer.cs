@@ -60,7 +60,7 @@ namespace N2.Engine
 				? ConfigurationKeys.FullTrust
 				: ConfigurationKeys.MediumTrust;
 			configurations.Add(trustConfiguration);
-			var configured = configuration.GetContentSection<EngineSection>("engine").ComponentConfigurations;
+			var configured = configuration.Sections.Engine.ComponentConfigurations;
 			configurations.AddRange(configured.AddedElements.Select(e => e.Name));
 			configurations.RemoveAll(c => configured.RemovedElements.Any(e => c == e.Name));
 			return configurations.ToArray();

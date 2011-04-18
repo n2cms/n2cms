@@ -111,7 +111,7 @@ namespace N2.Security
 				return new List<Items.User>();
 
 			return finder.Where.Parent.Eq(users)
-				.And.Type.Eq(typeof(Items.User))
+				.And.Type.Eq(userType)
 				.And.Name.Like(username)
 				.FirstResult(firstResult)
 				.MaxResults(maxResults)
@@ -135,7 +135,7 @@ namespace N2.Security
 
 		protected Items.UserList CreateUserContainer(ContentItem parent)
 		{
-			Items.UserList m = Context.Current.Resolve<ContentActivator>().CreateInstance<Items.UserList>(parent);
+			Items.UserList m = activator.CreateInstance<Items.UserList>(parent);
 			m.Title = "Users";
 			m.Name = UserContainerName;
 			foreach (string role in DefaultRoles)

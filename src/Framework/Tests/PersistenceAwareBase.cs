@@ -22,7 +22,7 @@ namespace N2.Tests
 		public virtual void TestFixtureSetUp()
 		{
 			engine = CreateEngine();
-
+			
 			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
 			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
 			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());

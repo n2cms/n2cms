@@ -16,6 +16,7 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Edit.Workflow;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -106,7 +107,7 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void Throwing_IsIntercepted_InMediumTrust()
         {
-			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), new EventBroker(), new ContainerConfigurer());
 			engine.Initialize();
 
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
@@ -116,7 +117,7 @@ namespace N2.Edit.Tests.Trash
             engine.SecurityManager.Enabled = false;
 
             ContentItem root = new ThrowableItem();
-            root.Name = "root";
+            root.Name = "root_mediumtrust";
 
             ContentItem item = new ThrowableItem();
             item.Name = "bin's destiny";

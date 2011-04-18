@@ -75,7 +75,7 @@ namespace N2.Configuration
             set { base["components"] = value; }
 		}
 
-		/// <summary>Add or remove item definitions. This is most commonly used to prevent unwanted item definitions appearing.</summary>
+		/// <summary>Component configuration keys used register further services.</summary>
 		[ConfigurationProperty("componentConfigurations")]
 		public NameCollection ComponentConfigurations
 		{

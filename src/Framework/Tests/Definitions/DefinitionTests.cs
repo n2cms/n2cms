@@ -507,7 +507,7 @@ namespace N2.Tests.Definitions
 			var definition = definitions.GetDefinition(typeof(DefinitionTextPage));
 
 			var displayable = definition.Displayables.Single(d => d.Name == "Text");
-			Assert.That(displayable, Is.InstanceOfType<DisplayableLiteralAttribute>());
+			Assert.That(displayable, Is.InstanceOf<DisplayableLiteralAttribute>());
 		}
 	}
 }
