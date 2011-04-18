@@ -40,6 +40,7 @@ namespace N2.Tests
 			var configurationSource = new ConfigurationSource(configurationBuilder);
 
 			sessionProvider = new FakeSessionProvider(configurationSource, new NHInterceptor(proxyFactory, configurationSource, notifier), context);
+			sessionProvider.CurrentSession = null;
 
 			finder = new ItemFinder(sessionProvider, new DefinitionMap());
 
