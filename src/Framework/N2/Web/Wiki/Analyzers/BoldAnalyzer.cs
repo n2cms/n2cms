@@ -11,6 +11,7 @@ namespace N2.Web.Wiki.Analyzers
 		public BoldAnalyzer()
 			: base("'''")
 		{
+			ParseSubComponents = true;
 		}
 	}
 }

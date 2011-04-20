@@ -20,7 +20,7 @@ namespace N2.Addons.Wiki.Renderers
 
         public Control AddTo(Control container, ViewContext context)
         {
-            string fragment = context.Fragment.Value.Trim('[',']');
+            string fragment = context.Fragment.ToString().Trim('[',']');
             int colonIndex = fragment.IndexOf(':');
             if (colonIndex >= 0)
             {

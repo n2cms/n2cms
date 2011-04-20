@@ -7,7 +7,7 @@ namespace N2.Web.Parsing
 {
 	public enum TokenType
 	{
-		Word,
+		Text,
 		Whitespace,
 		NewLine,
 		Element,

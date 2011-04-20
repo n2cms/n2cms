@@ -13,6 +13,7 @@ namespace N2.Templates.Tests.Wiki
 {
 	using N2.Addons.Wiki;
 	using N2.Engine;
+	using N2.Web.Wiki;
 
     [TestFixture]
     public class RenderingWikiText : ItemTestsBase
@@ -406,14 +407,32 @@ Line 2
             Assert.That(output, Is.EqualTo("<h2>Heading</h2>"));
         }
 
-        [Test]
-        public void WillNotAdd_LineBreak_AfterUnorderedList()
-        {
-            string input = @"* Heading
+		[Test]
+		public void WillNotAdd_LineBreak_BetweenHeading_AndText()
+		{
+			string input = @"==Heading==
+hello";
+			string output = ParseAndRenderWikiText(input);
+			Assert.That(output, Is.EqualTo("<h2>Heading</h2>hello"));
+		}
+
+		[Test]
+		public void WillNotAdd_LineBreak_AfterUnorderedList()
+		{
+			string input = @"* List
 ";
-            string output = ParseAndRenderWikiText(input);
-            Assert.That(output, Is.EqualTo("<ul><li>Heading</li></ul>"));
-        }
+			string output = ParseAndRenderWikiText(input);
+			Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>"));
+		}
+
+		[Test]
+		public void WillNotAdd_LineBreak_BetweenUnorderedList_AndText()
+		{
+			string input = @"* List
+hello";
+			string output = ParseAndRenderWikiText(input);
+			Assert.That(output, Is.EqualTo("<ul><li>List</li></ul>hello"));
+		}
 
         private string ParseAndRenderWikiText(string text)
         {

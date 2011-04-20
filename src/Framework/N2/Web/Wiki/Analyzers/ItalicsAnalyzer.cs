@@ -12,6 +12,7 @@ namespace N2.Web.Wiki.Analyzers
 			: base("''")
 		{
 			AllowMarkup = true;
+			ParseSubComponents = true;
 		}
 	}
 }

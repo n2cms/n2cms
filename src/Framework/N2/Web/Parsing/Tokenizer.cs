@@ -19,11 +19,11 @@ namespace N2.Web.Parsing
 			if (WasEof(reader, out c))
 				yield break;
 
-			while(c != '\0')
+			while (c != '\0')
 			{
 				if(char.IsWhiteSpace(c))
 					yield return FixIndex(ref index, ReadWhitespace(reader, ref c));
-				if (IsSymbol(c))
+				else if (IsSymbol(c))
 					yield return FixIndex(ref index, ReadSymbol(reader, ref c));
 				else
 					yield return FixIndex(ref index, ReadText(reader, ref c));
@@ -34,21 +34,6 @@ namespace N2.Web.Parsing
 		{
 			if(c == '<')
 				return ReadElement(reader, ref c);
-
-			//using (var sw = new StringWriter())
-			//{
-			//    while (c != 0)
-			//    {
-			//        sw.Write(c);
-
-			//        if (WasEof(reader, out c))
-			//            break;
-			//        if(c == '<' || !IsSymbol(c))
-			//            break;
-			//    }
-
-			//    return new Token { Type = TokenType.Symbol, Fragment = sw.ToString() };
-			//}
 
 			char original = c;
 			using (var sw = new StringWriter())
@@ -65,10 +50,6 @@ namespace N2.Web.Parsing
 
 				return new Token { Type = TokenType.Symbol, Fragment = sw.ToString() };
 			}
-
-			//var t = new Token { Type = TokenType.Symbol, Fragment = c.ToString() };
-			//WasEof(reader, out c);
-			//return t;
 		}
 
 		private Token ReadText(TextReader reader, ref char c)
@@ -90,7 +71,7 @@ namespace N2.Web.Parsing
 						break;
 				}
 
-				return new Token { Type = TokenType.Word, Fragment = sw.ToString() };
+				return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
 			}
 		}
 

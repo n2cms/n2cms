@@ -30,12 +30,12 @@ namespace N2.Web.Parsing
 			{
 				foreach (var analyzer in Analyzers)
 				{
-					Component b = analyzer.GetComponent(tokens, i);
+					Component b = analyzer.GetComponent(this, tokens, i);
 					if (b == null)
 						continue;
 
 					if (indexAtEndOfLast < i)
-						yield return CreateTextBlock(tokens, indexAtEndOfLast, i);
+						yield return CreateText(tokens, indexAtEndOfLast, i);
 
 					yield return b;
 
@@ -48,13 +48,19 @@ namespace N2.Web.Parsing
 			}
 
 			if (indexAtEndOfLast < tokens.Count)
-				yield return CreateTextBlock(tokens, indexAtEndOfLast, tokens.Count);
+				yield return CreateText(tokens, indexAtEndOfLast, tokens.Count);
 		}
 
-		private static Component CreateTextBlock(IList<Token> list, int indexAtEndOfLast, int currentIndex)
+		private static Component CreateText(IList<Token> list, int indexAtEndOfLast, int currentIndex)
 		{
 			var blockTokens = list.Skip(indexAtEndOfLast).Take(currentIndex - indexAtEndOfLast).ToList();
-			var b = new Component { Command = TextCommand, Tokens = blockTokens, Data = blockTokens.Select(t => t.Fragment).StringJoin() };
+			var b = new Component
+			{ 
+				Command = TextCommand, 
+				Argument = blockTokens[0].Fragment,
+				Tokens = blockTokens, 
+				Components = Component.None
+			};
 			return b;
 		}
 

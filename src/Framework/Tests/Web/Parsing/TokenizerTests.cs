@@ -19,7 +19,7 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(token.Fragment, Is.EqualTo(text));
 			Assert.That(token.Index, Is.EqualTo(0));
-			Assert.That(token.Type, Is.EqualTo(TokenType.Word));
+			Assert.That(token.Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(tokens[0].Fragment, Is.EqualTo("Hello"));
 			Assert.That(tokens[0].Index, Is.EqualTo(0));
-			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo(" "));
 			Assert.That(tokens[1].Index, Is.EqualTo(5));
@@ -38,7 +38,7 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("World"));
 			Assert.That(tokens[2].Index, Is.EqualTo(6));
-			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -53,7 +53,7 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo("Hello"));
 			Assert.That(tokens[1].Index, Is.EqualTo(3));
-			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("</p>"));
 			Assert.That(tokens[2].Index, Is.EqualTo(8));
@@ -74,7 +74,7 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo("Hello"));
 			Assert.That(tokens[1].Index, Is.EqualTo(3));
-			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo(" "));
 
@@ -119,13 +119,13 @@ namespace N2.Tests.Web.Parsing
 			var tokens = text.Tokenize().ToList();
 
 			Assert.That(tokens[0].Fragment, Is.EqualTo("Hello"));
-			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo("\t"));
 			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.Whitespace));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("World"));
-			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -135,13 +135,13 @@ namespace N2.Tests.Web.Parsing
 			var tokens = text.Tokenize().ToList();
 
 			Assert.That(tokens[0].Fragment, Is.EqualTo("Hello"));
-			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo("\n"));
 			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.NewLine));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("World"));
-			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -151,13 +151,13 @@ namespace N2.Tests.Web.Parsing
 			var tokens = text.Tokenize().ToList();
 
 			Assert.That(tokens[0].Fragment, Is.EqualTo("Hello"));
-			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo("\r"));
 			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.NewLine));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("World"));
-			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -167,13 +167,13 @@ namespace N2.Tests.Web.Parsing
 			var tokens = text.Tokenize().ToList();
 
 			Assert.That(tokens[0].Fragment, Is.EqualTo("Hello"));
-			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Text));
 
 			Assert.That(tokens[1].Fragment, Is.EqualTo(Environment.NewLine));
 			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.NewLine));
 
 			Assert.That(tokens[2].Fragment, Is.EqualTo("World"));
-			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Word));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[TestCase("§")]
@@ -227,7 +227,7 @@ namespace N2.Tests.Web.Parsing
 			var token = text.Tokenize().Single();
 
 			Assert.That(token.Fragment, Is.EqualTo(text));
-			Assert.That(token.Type, Is.EqualTo(TokenType.Word));
+			Assert.That(token.Type, Is.EqualTo(TokenType.Text));
 		}
 
 		[Test]
@@ -274,6 +274,16 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(tokens[3].Fragment, Is.EqualTo("?"));
 			Assert.That(tokens[3].Type, Is.EqualTo(TokenType.Symbol));
+		}
+
+		[Test]
+		public void Newline_DoesntCause_TrailingEmptyToken()
+		{
+			string text = @"
+";
+			var blocks = text.Tokenize();
+
+			Assert.That(blocks.Last().Fragment, Is.Not.EqualTo(""));
 		}
 	}
 }

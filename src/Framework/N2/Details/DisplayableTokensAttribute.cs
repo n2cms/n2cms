@@ -5,16 +5,12 @@ using System.Text;
 using System.IO;
 using System.Web.UI;
 using N2.Web.Parsing;
+using N2.Web.Wiki.Analyzers;
 
 namespace N2.Details
 {
-	public class DisplayableTokensAttribute : AbstractDisplayableAttribute, IWritingDisplayable, IContentTransformer
+	public class DisplayableTokensAttribute : AbstractDisplayableAttribute, IContentTransformer
 	{
-		public override void Write(ContentItem item, string detailName, TextWriter writer)
-		{
-			throw new Exception("Should neve rhappen");
-		}
-
 		#region IContentTransformer Members
 
 		public ContentState ChangingTo
@@ -29,11 +25,11 @@ namespace N2.Details
 			{
 				string detailName = Name + "_Tokens";
 				int i = 0;
-				var p = new Parser(new Web.Wiki.Analyzers.TemplateAnalyzer());
+				var p = new Parser(new TemplateAnalyzer());
 				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
 				{
 					var dc = item.GetDetailCollection(detailName, true);
-					var cd = new ContentDetail(item, detailName, c.Data) { EnclosingCollection = dc, IntValue = c.Tokens.First().Index };
+					var cd = new ContentDetail(item, detailName, c.Tokens.Select(t => t.Fragment).StringJoin()) { EnclosingCollection = dc, IntValue = c.Tokens.First().Index };
 					if (dc.Details.Count > i)
 						dc.Details[i] = cd;
 					else

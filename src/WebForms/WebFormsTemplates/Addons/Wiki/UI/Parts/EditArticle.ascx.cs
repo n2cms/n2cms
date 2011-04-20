@@ -3,6 +3,7 @@ using N2.Addons.Wiki.Web;
 using N2.Persistence;
 using N2.Resources;
 using N2.Web;
+using N2.Web.Wiki;
 
 namespace N2.Addons.Wiki.UI.Parts
 {

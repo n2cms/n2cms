@@ -7,7 +7,7 @@ namespace N2.Web.Parsing
 {
 	public abstract class AnalyzerBase : IComparable<AnalyzerBase>
 	{
-		public abstract Component GetComponent(IList<Token> tokens, int index);
+		public abstract Component GetComponent(Parser parser, IList<Token> tokens, int index);
 
 		public int SortOrder { get; set; }
 

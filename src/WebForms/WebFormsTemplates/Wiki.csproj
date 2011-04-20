@@ -62,19 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addons\Wiki\Fragment.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\CommentFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\ExternalLinkFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\FormatFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\HeadingFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\InternalLinkFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\LineFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\ListFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\OrderedListFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\RegexFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\TemplateFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\TextFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\UnorderedListFragmenter.cs" />
-    <Compile Include="Addons\Wiki\Fragmenters\UserInfoFragmenter.cs" />
     <Compile Include="Addons\Wiki\IArticle.cs" />
     <Compile Include="Addons\Wiki\IFragmenter.cs" />
     <Compile Include="Addons\Wiki\IRenderer.cs" />
@@ -91,10 +78,10 @@
     <Compile Include="Addons\Wiki\Renderers\InternalLinkRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\LineRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\ListRenderer.cs" />
-    <Compile Include="Addons\Wiki\Renderers\OrderedListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\OrderedListItemRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\TemplateRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\TextRenderer.cs" />
-    <Compile Include="Addons\Wiki\Renderers\UnorderedListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\UnorderedListItemRenderer.cs" />
     <Compile Include="Addons\Wiki\Renderers\UserInfoRenderer.cs" />
     <Compile Include="Addons\Wiki\RenderingContext.cs" />
     <Compile Include="Addons\Wiki\Tabs.cs" />
@@ -243,8 +230,6 @@
     <Compile Include="Addons\Wiki\Web\WikiUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Addons\Wiki\WikiInitializer.cs" />
-    <Compile Include="Addons\Wiki\WikiParser.cs" />
     <Compile Include="Addons\Wiki\WikiRenderer.cs" />
     <Compile Include="Addons\Wiki\WikiTemplateAttribute.cs" />
     <Compile Include="Addons\Wiki\WikiTextAttribute.cs" />

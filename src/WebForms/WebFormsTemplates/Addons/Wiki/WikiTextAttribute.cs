@@ -3,6 +3,7 @@ using N2.Details;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
+using N2.Web.Wiki;
 
 namespace N2.Addons.Wiki
 {
@@ -32,7 +33,7 @@ namespace N2.Addons.Wiki
             PlaceHolder ph = new PlaceHolder();
             container.Controls.Add(ph);
 
-            renderer.AddTo(parser.Parse((string)item[detailName]), ph, item);
+            renderer.AddTo(parser.Parse((string)item[detailName]), ph, item as IArticle);
             
             return ph;
         }

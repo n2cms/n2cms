@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using N2.Web.Parsing;
+using System.Web.UI.WebControls;
 
 namespace N2.Addons.Wiki.Renderers
 {
@@ -11,25 +13,48 @@ namespace N2.Addons.Wiki.Renderers
         protected abstract string BeginTag { get; }
         protected abstract string EndTag { get; }
 
-        public Control AddTo(Control container, ViewContext context)
+        public Control AddTo(Control overallContainer, ViewContext context)
         {
-            Fragment f = context.Fragment;
-            int level = f.Value.Length;
+            Component f = context.Fragment;
+			int prevLevel = (context.Previous == null || context.Previous.Command != f.Command) ? 0 : context.Previous.Argument.Length;
+			int nextLevel = (context.Next == null || context.Next.Command != f.Command) ? 0 : context.Next.Argument.Length;
+			int level = f.Argument.Length;
 
-            if (f.Previous == null || f.Previous.Name != f.Name || f.Previous.Value.Length != level)
-            {
-                container.Controls.Add(new LiteralControl(BeginTag));
-            }
+			var container = new PlaceHolder();
+			overallContainer.Controls.Add(container);
 
-            HtmlGenericControl li = new HtmlGenericControl("li");
-            container.Controls.Add(li);
+			if(prevLevel < level)
+			{
+				for (int i = prevLevel; i < level; i++)
+				{
+					Add(BeginTag, container);
+					Add("<li>", container);
+				}
+			}
+			else
+				Add("<li>", container);
 
-            if (f.Next == null || f.Next.Name != f.Name || f.Next.Value.Length != level)
-            {
-                container.Controls.Add(new LiteralControl(EndTag));
-            }
+            context.Renderer.AddTo(context.Fragment.Components, container, context.Article);
 
-            return li;
+			if (nextLevel < level)
+			{
+				for (int i = nextLevel; i < level; i++)
+				{
+					Add("</li>", container);
+					Add(EndTag, container);
+				}
+				if (nextLevel != 0)
+					Add("</li>", container);
+			}
+			else if (nextLevel == level)
+				Add("</li>", container);
+
+            return container;
         }
+
+		private void Add(string html, Control container)
+		{
+			container.Controls.Add(new LiteralControl(html));
+		}
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using N2.Addons.Wiki.Renderers;
 using N2.Plugin;
 using N2.Web;
+using N2.Engine;
+using N2.Web.Parsing;
 
 namespace N2.Addons.Wiki
 {
@@ -12,6 +15,7 @@ namespace N2.Addons.Wiki
     /// Turns a stream of wiki fragments into asp.net controls responsible for 
     /// rendering the user interface.
     /// </summary>
+	[Service]
     public class WikiRenderer
     {
         IDictionary<string, IRenderer> renderers = new Dictionary<string, IRenderer>();
@@ -26,10 +30,12 @@ namespace N2.Addons.Wiki
             Renderers["Template"] = new TemplateRenderer(pluginFinder.GetPlugins<ITemplateRenderer>());
             Renderers["Heading"] = new HeadingRenderer();
             Renderers["Line"] = new LineRenderer();
-            Renderers["OrderedList"] = new OrderedListRenderer();
-            Renderers["UnorderedList"] = new UnorderedListRenderer();
-            Renderers["Format"] = new FormatRenderer();
-        }
+            Renderers["OrderedListItem"] = new OrderedListItemRenderer();
+            Renderers["UnorderedListItem"] = new UnorderedListItemRenderer();
+			Renderers["Bold"] = new FormatRenderer();
+			Renderers["Italics"] = new FormatRenderer();
+			Renderers["BoldItalics"] = new FormatRenderer();
+		}
 
         public IRenderer FallbackRenderer { get; set; }
 
@@ -38,7 +44,7 @@ namespace N2.Addons.Wiki
             get { return renderers; }
         }
 
-        public void AddTo(IEnumerable<Fragment> fragments, Control container, ContentItem article)
+        public void AddTo(IEnumerable<Component> fragments, Control container, IArticle article)
         {
             if (fragments == null) throw new ArgumentNullException("fragments");
             if (container == null) throw new ArgumentNullException("container");
@@ -47,16 +53,21 @@ namespace N2.Addons.Wiki
             AddTo(fragments, container, article, new Dictionary<string, object>());
         }
 
-        protected virtual void AddTo(IEnumerable<Fragment> fragments, Control container, ContentItem article, IDictionary<string,object> state)
+		protected virtual void AddTo(IEnumerable<Component> fragments, Control container, IArticle article, IDictionary<string, object> state)
         {
-            foreach (Fragment f in fragments)
-            {
-                var ctx = new ViewContext { Article = article as IArticle, Fragment = f, State = state };
-                if (Renderers.ContainsKey(f.Name))
+			var list = fragments.ToList();
+			for (int i = 0; i < list.Count; i++)
+			{
+				var f = list[i];
+				var ctx = new ViewContext { Renderer = this, Article = article, Fragment = f, State = state };
+				if (i > 0)
+					ctx.Previous = list[i - 1];
+				if (i < list.Count - 1)
+					ctx.Next = list[i + 1];
+
+				if (Renderers.ContainsKey(f.Command))
                 {
-                    Control c = Renderers[f.Name].AddTo(container, ctx);
-                    if (f.ChildFragments != null)
-                        AddTo(f.ChildFragments, c, article, state);
+					Control c = Renderers[f.Command].AddTo(container, ctx);
                 }
                 else if (FallbackRenderer != null)
                 {

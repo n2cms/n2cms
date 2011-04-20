@@ -14,5 +14,10 @@ namespace N2.Web.Parsing
 				sb.Append(s);
 			return sb.ToString();
 		}
+
+		public static bool IsWithinBounds<T>(this ICollection<T> collection, int index)
+		{
+			return index >= 0 && index < collection.Count;
+		}
 	}
 }

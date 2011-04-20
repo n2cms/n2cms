@@ -18,7 +18,7 @@ namespace N2.Addons.Wiki.Renderers
 
         public Control AddTo(Control container, ViewContext context)
         {
-            string fragment = context.Fragment.Value;
+            string fragment = context.Fragment.ToString();
             string key = fragment.Substring(2, fragment.Length -4).ToLower();
             if (renderers.ContainsKey(key))
                 return renderers[key].AddTo(container, context);

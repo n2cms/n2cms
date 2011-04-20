@@ -14,7 +14,8 @@ namespace N2.Addons.Wiki.Renderers
         public Control AddTo(Control container, ViewContext context)
         {
             Literal l = new Literal();
-            l.Text = context.Fragment.Value.Substring(1, context.Fragment.Value.Length - 2);
+			var text = context.Fragment.ToString();
+			l.Text = text.Substring(1, text.Length - 2);
             container.Controls.Add(l);
             return l;
         }
