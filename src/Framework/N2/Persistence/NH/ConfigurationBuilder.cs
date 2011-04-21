@@ -81,7 +81,6 @@ namespace N2.Persistence.NH
 		protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
-			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
 
 			// connection
 
