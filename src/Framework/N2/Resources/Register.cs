@@ -16,7 +16,7 @@ namespace N2.Resources
 	public static class Register
 	{
 		public static bool Debug { get; set; }
-		public const string JQueryVersion = "1.5.1";
+		public const string JQueryVersion = "1.5.2";
 
 		#region page StyleSheet
 
