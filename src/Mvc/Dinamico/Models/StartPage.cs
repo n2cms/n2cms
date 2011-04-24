@@ -58,6 +58,7 @@ namespace Dinamico.Models
 		#endregion
 		
 		[EditableFreeTextArea("Footer text", 200, ContainerName = Defaults.Containers.Site)]
+		[DisplayableTokens]
 		public virtual string FooterText { get; set; }
 
 		[EditableFileUpload(ContainerName = Defaults.Containers.Site)]

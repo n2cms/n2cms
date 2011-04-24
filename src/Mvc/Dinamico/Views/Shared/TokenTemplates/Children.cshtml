@@ -1,2 +1,15 @@
 ﻿@model string
-@Html.UnorderedList(Content.Traverse.Children(), @<span>@Content.LinkTo(item.Data)</span>)
+@{ N2.ContentItem current = null; }
+@if (Model != null)
+{
+	int id;
+	if (int.TryParse(Model, out id))
+	{
+		current = Html.ResolveService<N2.Persistence.IPersister>().Get(id);
+	}
+	else
+	{
+		current = Content.Traverse.Path(Model);
+	}
+}
+@Html.UnorderedList(Content.Traverse.Children(current, Content.Is.Page()), @<span>@Content.LinkTo(item.Data)</span>)

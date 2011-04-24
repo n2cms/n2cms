@@ -163,5 +163,10 @@ namespace N2.Web.Mvc
 
 			return item.Parent;
 		}
+
+		public ContentItem Path(string path, ContentItem startItem = null)
+		{
+			return (startItem ?? StartPage).FindPath(path).CurrentItem;
+		}
 	}
 }
