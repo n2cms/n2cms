@@ -137,7 +137,7 @@ namespace N2.Definitions
 
 			return providers
 				.SelectMany(tp => tp.GetTemplates(contentType))
-				.FirstOrDefault(td => td.Name == templateName);
+				.FirstOrDefault(td => string.Equals(td.Name ?? "", templateName ?? ""));
 		}
 
 		public virtual TemplateDefinition GetTemplate(ContentItem item)
