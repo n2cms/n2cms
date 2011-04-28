@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 namespace N2.Edit.Installation
 {
+	[Service]
 	public class InstallationChecker : IAutoStart
 	{
 		IWebContext webContext;

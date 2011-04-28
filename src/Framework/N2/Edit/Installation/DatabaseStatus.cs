@@ -7,7 +7,7 @@ namespace N2.Edit.Installation
 	/// </summary>
 	public class DatabaseStatus
 	{
-		public const int RequiredDatabaseVersion = 4;
+		public const int RequiredDatabaseVersion = 5;
 
 		public string ConnectionType { get; set; }
 		public int AuthorizedRoles { get; set; }
@@ -35,6 +35,7 @@ namespace N2.Edit.Installation
 		/// 1: N2 uptil 1.5
 		/// 2: N2 uptil 2.0b2
 		/// 3: N2 from 2.0
+		/// 4: N2 from 2.2
 		/// </summary>
 		public int DatabaseVersion { get; set; }
 
