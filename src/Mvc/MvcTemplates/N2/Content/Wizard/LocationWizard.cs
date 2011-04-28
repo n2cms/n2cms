@@ -39,7 +39,7 @@ namespace N2.Edit.Wizard
 			}
 		}
 
-		public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string templateName, string title, string zone)
+		public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string templateKey, string title, string zone)
 		{
 			ContentItem wonderland = containers.GetOrCreateBelowRoot((container) =>
 			{
@@ -50,7 +50,7 @@ namespace N2.Edit.Wizard
 			Items.MagicLocation ml = Context.Current.Resolve<ContentActivator>().CreateInstance<Items.MagicLocation>(wonderland);
 			ml.Location = location;
 			ml.ItemDiscriminator = discriminator;
-			ml.ContentTemplate = templateName;
+			ml.ContentTemplate = templateKey;
 			ml.Title = title;
 			ml.ItemZoneName = zone;
 			persister.Save(ml);

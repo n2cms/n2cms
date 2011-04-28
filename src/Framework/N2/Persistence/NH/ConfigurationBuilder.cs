@@ -283,6 +283,7 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.Expires, cm => { });
 			ca.Property(x => x.Name, cm => { cm.Length(250); });
 			ca.Property(x => x.ZoneName, cm => { cm.Length(50); });
+			ca.Property(x => x.TemplateKey, cm => { cm.Length(50); });
 			ca.Property(x => x.Title, cm => { cm.Length(250); });
 			ca.Property(x => x.SortOrder, cm => { });
 			ca.Property(x => x.Visible, cm => { });

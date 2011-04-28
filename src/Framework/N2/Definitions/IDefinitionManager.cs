@@ -74,9 +74,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets a tmeplate by name and content type.</summary>
 		/// <param name="contentType">The type of content item.</param>
-		/// <param name="templateName">The name of the template.</param>
+		/// <param name="templateKey">The name of the template.</param>
 		/// <returns>A matching template or null if no template is available.</returns>
-		TemplateDefinition GetTemplate(Type contentType, string templateName);
+		TemplateDefinition GetTemplate(Type contentType, string templateKey);
 
 		/// <summary>Gets the template of a content item.</summary>
 		/// <param name="item">The item whose template to get.</param>

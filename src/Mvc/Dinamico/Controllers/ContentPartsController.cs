@@ -14,7 +14,7 @@ namespace Dinamico.Controllers
 
         public override ActionResult Index()
         {
-			return PartialView((string)CurrentItem["TemplateName"], CurrentItem);
+			return PartialView((string)CurrentItem.TemplateKey, CurrentItem);
         }
 
     }

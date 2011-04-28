@@ -39,7 +39,7 @@ namespace N2.Details
 				if (i > 0)
 				{
 					var dc = item.GetDetailCollection(detailName, true);
-					for (int j = dc.Details.Count - 1; j >= i; i--)
+					for (int j = dc.Details.Count - 1; j >= i; j--)
 					{
 						dc.Details.RemoveAt(j);
 					}

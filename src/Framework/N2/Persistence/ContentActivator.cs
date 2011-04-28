@@ -41,15 +41,15 @@ namespace N2.Persistence
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <param name="itemType">Type of item to create</param>
 		/// <param name="parentItem">Parent of the item to create.</param>
-		/// <param name="templateName">The type of template the item is associated with.</param>
+		/// <param name="templateKey">The type of template the item is associated with.</param>
 		/// <returns>A new instance of an item.</returns>
-		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateName)
+		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey)
 		{
 			object intercepted = interceptor.Create(itemType.FullName, 0);
 			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
 				as ContentItem;
-			if (templateName != null)
-				item["TemplateName"] = templateName;
+			if (templateKey != null)
+				item.TemplateKey = templateKey;
 			OnItemCreating(item, parentItem);
 			return item;
 		}

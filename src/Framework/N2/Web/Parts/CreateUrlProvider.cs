@@ -59,7 +59,7 @@ namespace N2.Web.Parts
 			
 			ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
             item.ZoneName = request["zone"];
-			item["TemplateName"] = template.Name;
+			item.TemplateKey = template.Name;
             
             string before = request["before"];
             if (!string.IsNullOrEmpty(before))
@@ -99,9 +99,9 @@ namespace N2.Web.Parts
 			return url;
 		}
 
-		private TemplateDefinition GetTemplate(string discriminator, string templateName)
+		private TemplateDefinition GetTemplate(string discriminator, string templateKey)
 		{
-			return definitions.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateName);
+			return definitions.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateKey);
 		}
 	}
 }

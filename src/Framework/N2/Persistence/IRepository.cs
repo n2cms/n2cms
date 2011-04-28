@@ -56,6 +56,14 @@ namespace N2.Persistence
     	/// <typeparam name="T">The type of entity to get.</typeparam>
     	/// <returns>Either the entity that matches the id, or a null</returns>
     	T Get<T>(TKey id);
+
+		/// <summary>
+		/// Finds entitities from the persistance store with matching property values.
+		/// </summary>
+		/// <param name="propertyName">The name of the property to search for.</param>
+		/// <param name="value">The value to search for.</param>
+		/// <returns>Entities with matching values.</returns>
+		IEnumerable<TEntity> Find(string propertyName, object value);
 		
 		/// <summary>
 		/// Load the entity from the persistance store
@@ -106,8 +114,11 @@ namespace N2.Persistence
 		/// <returns></returns>
 		long Count();
 
+		/// <summary>Flushes changes made to items in this repository.</summary>
 		void Flush();
 
+		/// <summary>Begins a transaction.</summary>
+		/// <returns>A disposable transaction wrapper.</returns>
 		ITransaction BeginTransaction();
 	}
 }

@@ -131,13 +131,13 @@ namespace N2.Definitions
 			return templates.Where(t => t.Name != null).ToList();
 		}
 
-		public virtual TemplateDefinition GetTemplate(Type contentType, string templateName)
+		public virtual TemplateDefinition GetTemplate(Type contentType, string templateKey)
 		{
 			if (contentType == null) return null;
 
 			return providers
 				.SelectMany(tp => tp.GetTemplates(contentType))
-				.FirstOrDefault(td => string.Equals(td.Name ?? "", templateName ?? ""));
+				.FirstOrDefault(td => string.Equals(td.Name ?? "", templateKey ?? ""));
 		}
 
 		public virtual TemplateDefinition GetTemplate(ContentItem item)

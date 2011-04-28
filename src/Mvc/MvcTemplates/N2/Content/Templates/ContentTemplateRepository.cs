@@ -32,13 +32,13 @@ namespace N2.Management.Content.Templates
 
 		#region ITemplateRepository Members
 
-		public TemplateDefinition GetTemplate(string templateName)
+		public TemplateDefinition GetTemplate(string templateKey)
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
 				return null;
 
-			var template = templates.GetChild(templateName);
+			var template = templates.GetChild(templateKey);
 			return CreateTemplateInfo(template);
 		}
 
@@ -57,7 +57,7 @@ namespace N2.Management.Content.Templates
 					clone.SetDetail(TemplateDescription, null, typeof(string));
 					clone.Title = "";
 					clone.Name = null;
-					clone["TemplateName"] = template.Name;
+					clone.TemplateKey = template.Name;
 					return clone;
 				},
 				Original = () => template
@@ -105,13 +105,13 @@ namespace N2.Management.Content.Templates
 			persister.Save(templateItem);
 		}
 
-		public void RemoveTemplate(string templateName)
+		public void RemoveTemplate(string templateKey)
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
 				return;
 
-			ContentItem template = templates.GetChild(templateName);
+			ContentItem template = templates.GetChild(templateKey);
 			if (template == null)
 				return;
 

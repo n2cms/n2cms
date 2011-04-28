@@ -77,7 +77,8 @@ namespace N2
         private int id;
         private string title;
         private string name;
-        private string zoneName;
+		private string zoneName;
+		private string templateKey;
 		private ContentItem parent = null;
         private DateTime created;
         private DateTime updated;
@@ -88,7 +89,6 @@ namespace N2
         private bool visible = true;
 		private ContentItem versionOf = null;
 		private string savedBy;
-		//private string templateName;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
@@ -167,6 +167,14 @@ namespace N2
 		{
 			get { return zoneName; }
 			set { zoneName = value; }
+		}
+
+		/// <summary>Gets or sets the sub-definition name of this item.</summary>
+		[DisplayableLiteral]
+		public virtual string TemplateKey
+		{
+			get { return templateKey; }
+			set { templateKey = value; }
 		}
 
 		/// <summary>Gets or sets when this item was initially created.</summary>
@@ -327,13 +335,6 @@ namespace N2
 			get { return "~/Default.aspx"; }
 		}
 
-		///// <summary>Gets or sets the sub-definition name of this item.</summary>
-		//public virtual string TemplateName
-		//{
-		//    get { return templateName; }
-		//    set { templateName = value; }
-		//}
-		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		[DisplayableImage]
 		public virtual string IconUrl
@@ -394,7 +395,7 @@ namespace N2
 					case "SavedBy":				return SavedBy;
 					case "SortOrder":			return SortOrder;
 					case "State":				return State;
-					//case "TemplateName":		return TemplateName;
+					case "TemplateKey":			return TemplateKey;
                     case "TemplateUrl":			return TemplateUrl;
 					case "Title":				return Title;
 					case "Updated":				return Updated;
@@ -426,7 +427,7 @@ namespace N2
 					case "SavedBy":				SavedBy = Utility.Convert<string>(value); break;
 					case "SortOrder":			SortOrder = Utility.Convert<int>(value); break;
 					case "State":				State = Utility.Convert<ContentState>(value); break;
-					//case "TemplateName":		TemplateName = Utility.Convert<string>(value); break;
+					case "TemplateKey":			TemplateKey = Utility.Convert<string>(value); break;
 					case "Title":				Title = Utility.Convert<string>(value); break;
 					case "Updated":				Updated = Utility.Convert<DateTime>(value); break;
 					case "VersionIndex":		VersionIndex = Utility.Convert<int>(value); break;

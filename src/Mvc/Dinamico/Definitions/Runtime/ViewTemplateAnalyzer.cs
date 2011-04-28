@@ -47,7 +47,7 @@ namespace N2.Definitions.Runtime
 				{
 					description.Definition.Add(new TemplateSelectorAttribute 
 					{ 
-						Name = "TemplateName", 
+						Name = "TemplateKey", 
 						Title = "Template", 
 						AllTemplates = descriptions.Select(d => new TemplateSelectorAttribute.Info { Name = d.Registration.Template, Title = d.Registration.Title }).ToArray(), 
 						ContainerName = source.TemplateSelectorContainerName, 
