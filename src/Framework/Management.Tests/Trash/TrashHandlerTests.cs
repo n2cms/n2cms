@@ -109,6 +109,7 @@ namespace N2.Edit.Tests.Trash
         {
 			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), new EventBroker(), new ContainerConfigurer());
 			engine.Initialize();
+			engine.Persister.Dispose();
 
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
 			var conn = engine.Resolve<ISessionProvider>().OpenSession.Session.Connection;
