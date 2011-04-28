@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
+using NHibernate.Mapping.ByCode;
 
 namespace N2.Configuration
 {
@@ -56,10 +57,10 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The type of nhibernate laziness to use. Supported values are "true", "false", and "extra".</summary>
-		[ConfigurationProperty("childrenLaziness", DefaultValue = "extra")]
-		public string ChildrenLaziness
+		[ConfigurationProperty("childrenLaziness", DefaultValue = CollectionLazy.Extra)]
+		public CollectionLazy ChildrenLaziness
 		{
-			get { return (string)base["childrenLaziness"]; }
+			get { return (CollectionLazy)base["childrenLaziness"]; }
 			set { base["childrenLaziness"] = value; }
 		}
 

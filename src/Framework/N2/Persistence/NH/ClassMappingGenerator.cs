@@ -7,6 +7,9 @@ using System.Reflection;
 using N2.Persistence;
 using System.Diagnostics;
 using N2.Engine;
+using NHibernate.Mapping.ByCode;
+using N2.Definitions.Static;
+using NHibernate.Cfg.MappingSchema;
 
 namespace N2.Persistence.NH
 {
@@ -16,12 +19,20 @@ namespace N2.Persistence.NH
 	[Service]
     public class ClassMappingGenerator
     {
+		DefinitionMap map;
+
+		public ClassMappingGenerator(DefinitionMap map)
+		{
+			this.map = map;
+		}
+
         private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false"">{3}</subclass>";
 
         /// <summary>Gets the mapping xml for a type</summary>
         /// <param name="definition">The type to generate mapping for</param>
         /// <param name="allDefinitions">All definitions in the system.</param>
         /// <returns>An xml string</returns>
+		[Obsolete]
         public virtual string GetMapping(Type entityType, Type parentType, string discriminator)
         {
 			string typeName = GetName(entityType);
@@ -32,6 +43,7 @@ namespace N2.Persistence.NH
             return string.Format(classFormat, typeName, parentName, discriminator, properties);
         }
 
+		[Obsolete]
         private string GetProperties(Type attributedType)
         {
 			StringBuilder properties = new StringBuilder();
@@ -54,7 +66,7 @@ namespace N2.Persistence.NH
 
         private static string GetName(Type t)
         {
-            return t.FullName + ", " + t.Assembly.FullName.Split(',')[0];
+			return t.FullName + ", " + t.Assembly.FullName.Split(',')[0];
         }
 
 		// helper classes
@@ -64,6 +76,35 @@ namespace N2.Persistence.NH
 			public PersistableAttribute Attribute { get; set; }
 			public PropertyInfo DeclaringProperty { get; set; }
 		}
-    }
+		
+		public virtual void MapTypes(List<Type> allTypes, NHibernate.Cfg.Configuration cfg, Func<string, string> formatter)
+		{
+			var m = new HbmMapping();
+			m.Items = allTypes.Select(t =>
+				{
+					var sc = new HbmSubclass();
+					sc.name = GetName(t);
+					sc.extends = GetName(t.BaseType);
+					sc.discriminatorvalue = map.GetOrCreateDefinition(t).Discriminator ?? t.Name;
+					sc.lazy = false;
+					sc.lazySpecified = true;
+
+					var propertyMappings = GetPersistables(t)
+						.Select(p => p.Attribute.GetPropertyMapping(p.DeclaringProperty, formatter))
+						.ToList();
+					if (propertyMappings.Count > 0)
+					{
+						if (sc.Items == null)
+							sc.Items = propertyMappings.ToArray();
+						else
+							sc.Items = sc.Items.Union(propertyMappings).ToArray();
+					}
+
+					return sc;
+				}).ToArray();
+			var dbg = m.AsString();
+			cfg.AddDeserializedMapping(m, "N2");
+		}
+	}
 
 }

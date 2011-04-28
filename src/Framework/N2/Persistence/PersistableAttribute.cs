@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using N2.Persistence.Proxying;
+using NHibernate.Cfg.MappingSchema;
 
 namespace N2.Persistence
 {
@@ -38,10 +39,27 @@ namespace N2.Persistence
 		/// <summary>Where to store this property (default is column).</summary>
 		public PropertyPersistenceLocation PersistAs { get; set; }
 
+		public object GetPropertyMapping(PropertyInfo info, Func<string, string> formatter)
+		{
+			string columnName = Column ?? info.Name;
+			string length = Length > 0 ? Length.ToString() : "{StringLength}";
+			bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
+			var propertyType = isNullable
+				? info.PropertyType.GetGenericArguments()[0]
+				: info.PropertyType;
+			string typeName = GetTypeName(propertyType);
+
+			if (typeof(ContentItem).IsAssignableFrom(propertyType))
+				return new HbmManyToOne { name = info.Name, column = formatter(columnName), @class = typeName };
+
+			return new HbmProperty { name = info.Name, column = formatter(columnName), type = new HbmType { name = typeName }, length = formatter(length) };
+		}
+
         /// <summary>Generates the mapping xml for this property.</summary>
         /// <param name="info">The property the attribute was added to.</param>
         /// <returns>An hbm xml snippet.</returns>
-        public virtual string GenerateMapping(PropertyInfo info)
+		[Obsolete("Use GetPropertyMapping", true)]
+		public virtual string GenerateMapping(PropertyInfo info)
         {
             const string propertyFormat = "<property name=\"{0}\" column=\"{1}\" type=\"{2}\" length=\"{3}\" />";
 			const string relationFormat = "<many-to-one name=\"{0}\" column=\"{1}\" class=\"{2}\" not-null=\"false\" />";

@@ -415,7 +415,6 @@ namespace N2
 
 				switch (detailName)
 				{
-					
 					case "AlteredPermissions":	AlteredPermissions = Utility.Convert<Security.Permission>(value); break;
 					case "AncestralTrail":		AncestralTrail = Utility.Convert<string>(value); break;
 					case "Created":				Created = Utility.Convert<DateTime>(value); break;
@@ -511,7 +510,7 @@ namespace N2
 			ContentDetail detail = null;
 			if (Details.TryGetValue(detailName, out detail))
 			{
-				if (value != null && detail.ValueType.IsAssignableFrom(valueType))
+				if (value != null)
 				{
 					// update an existing detail of same type
 					detail.Value = value;

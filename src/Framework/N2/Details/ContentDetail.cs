@@ -405,7 +405,7 @@ namespace N2.Details
 
         #endregion
 
-		public void AddTo(ContentItem newEnclosingItem)
+		public virtual void AddTo(ContentItem newEnclosingItem)
 		{
 			AddTo((DetailCollection)null);
 
@@ -421,13 +421,13 @@ namespace N2.Details
 			}
 		}
 
-		internal void RemoveFromEnclosingItem()
+		protected internal virtual void RemoveFromEnclosingItem()
 		{
 			if (EnclosingItem != null)
 				EnclosingItem.Details.Remove(Name);
 		}
 
-		public void AddTo(DetailCollection newEnclosingCollection)
+		public virtual void AddTo(DetailCollection newEnclosingCollection)
 		{
 			RemoveFromEnclosingCollection();
 
@@ -435,7 +435,7 @@ namespace N2.Details
 				newEnclosingCollection.Add(newEnclosingCollection);
 		}
 
-		internal void RemoveFromEnclosingCollection()
+		protected internal virtual void RemoveFromEnclosingCollection()
 		{
 			if (EnclosingCollection != null)
 				EnclosingCollection.Remove(this);
