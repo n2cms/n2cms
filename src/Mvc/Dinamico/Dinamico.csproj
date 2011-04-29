@@ -107,11 +107,6 @@
     <Compile Include="Controllers\StartPageController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\FallbackController.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Details\EditableThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
