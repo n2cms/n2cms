@@ -77,10 +77,15 @@ namespace N2.Web.Mvc.Html
 				?? N2.Find.StartPage;
 		}
 
-		public static ContentItem StartPage<T>(this HtmlHelper html) where T : ContentItem
+		public static T StartPage<T>(this HtmlHelper html) where T : ContentItem
 		{
 			return Find.Closest<T>(html.CurrentItem())
-				?? N2.Find.StartPage;
+				?? N2.Find.StartPage as T;
+		}
+
+		public static ContentItem RootPage(this HtmlHelper html)
+		{
+			return Find.EnumerateParents(html.CurrentItem(), null, true).LastOrDefault();
 		}
     }
 }

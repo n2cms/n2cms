@@ -31,7 +31,7 @@ namespace N2.Web.Mvc
 			get
 			{
 				return engine
-					?? (engine = RouteData.GetEngine());
+					?? (engine = RouteExtensions.GetEngine(RouteData));
 			}
 			set { engine = value; }
 		}

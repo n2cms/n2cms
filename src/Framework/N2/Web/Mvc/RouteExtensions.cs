@@ -7,11 +7,28 @@ using N2.Persistence;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq.Expressions;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
 	public static class RouteExtensions
 	{
+		public static IEngine GetEngine(RouteData routeData)
+		{
+			return routeData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
+				?? N2.Context.Current;
+		}
+
+		public static T ResolveService<T>(RouteData routeData) where T : class
+		{
+			return GetEngine(routeData).Resolve<T>();
+		}
+
+		public static T[] ResolveServices<T>(RouteData routeData) where T : class
+		{
+			return GetEngine(routeData).Container.ResolveAll<T>();
+		}
+
 		public static RouteData ApplyCurrentItem(this RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;

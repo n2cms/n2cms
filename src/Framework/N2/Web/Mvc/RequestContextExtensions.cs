@@ -49,23 +49,7 @@ namespace N2.Web.Mvc
 			if (context == null) throw new ArgumentNullException("context");
 
 			return context.RouteData.DataTokens[key] as T
-				?? context.RouteData.Values.CurrentItem<T>(key, context.RouteData.GetEngine().Persister);
-		}
-
-		internal static IEngine GetEngine(this RouteData routeData)
-		{
-			return routeData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
-				?? N2.Context.Current;
-		}
-
-		internal static T ResolveService<T>(this RouteData routeData) where T : class
-		{
-			return routeData.GetEngine().Resolve<T>();
-		}
-
-		internal static T[] ResolveServices<T>(this RouteData routeData) where T : class
-		{
-			return routeData.GetEngine().Container.ResolveAll<T>();
+				?? context.RouteData.Values.CurrentItem<T>(key, RouteExtensions.GetEngine(context.RouteData).Persister);
 		}
 	}
 }

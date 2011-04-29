@@ -4,6 +4,8 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Definitions;
 using N2.Details;
+using N2.Web.Mvc;
+using N2.Web.Mvc.Html;
 using System.Web.Hosting;
 
 namespace N2.Web.Mvc.Html
@@ -55,7 +57,8 @@ namespace N2.Web.Mvc.Html
 
 		public static void InitTheme(this ControllerContext context)
 		{
-			var page = context.RequestContext.CurrentPage<ContentItem>() 
+			var page = context.RequestContext.CurrentPage<ContentItem>()
+
 				?? context.RequestContext.StartPage();
 
 			InitTheme(context, page);

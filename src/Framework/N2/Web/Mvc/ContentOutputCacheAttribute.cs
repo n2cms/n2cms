@@ -39,7 +39,7 @@ namespace N2.Web.Mvc
 			if (user == null || user.Identity.IsAuthenticated)
 				return;
 
-			ICacheManager cacheManager = requestContext.RouteData.ResolveService<ICacheManager>();
+			ICacheManager cacheManager = RouteExtensions.ResolveService<ICacheManager>(requestContext.RouteData);
 			if (!cacheManager.Enabled)
 				return;
 
