@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
+using N2.Linq;
 using N2.Security;
 using N2.Web;
 using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Cfg.Loquacious;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
+using ConfigurationErrorsException = System.Configuration.ConfigurationErrorsException;
+using ConnectionStringSettings = System.Configuration.ConnectionStringSettings;
+using ConnectionStringsSection = System.Configuration.ConnectionStringsSection;
 
 namespace N2.Persistence.NH
 {
@@ -39,9 +42,6 @@ namespace N2.Persistence.NH
 		int batchSize = 25;
 		CollectionLazy childrenLaziness = CollectionLazy.Extra;
 		int stringLength = 1073741823;
-		string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
-		string mappingEndTag = "</hibernate-mapping>";
 		bool tryLocatingHbmResources = false;
 		
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
@@ -472,6 +472,8 @@ namespace N2.Persistence.NH
 		/// <param name="cfg"></param>
 		protected virtual void AddProperties(NHibernate.Cfg.Configuration cfg)
 		{
+			cfg.LinqToHqlGeneratorsRegistry<WhereDetailHqlGeneratorRegistry>();
+
 			foreach (KeyValuePair<string, string> pair in Properties)
 			{
 				cfg.SetProperty(pair.Key, pair.Value);

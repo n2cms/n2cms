@@ -1,8 +1,6 @@
-- linq extensions
-- conform
+- template selector attribute
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf
-- ITemplateable/TemplateName in n2item
 - IRedirect
 - AttributeTransformerBase (ThreadId=250548)
 - content transformers/extractors (parse wiki)

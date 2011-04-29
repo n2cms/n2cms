@@ -23,8 +23,8 @@ using N2.Linq;
 [assembly: InternalsVisibleTo("N2.Extensions.Tests")]
 
 // N2.Linq
-[assembly: TypeForwardedTo(typeof(ContentQueryable<>))]
-[assembly: TypeForwardedTo(typeof(ContentQueryProvider))]
+//[assembly: TypeForwardedTo(typeof(ContentQueryable<>))]
+//[assembly: TypeForwardedTo(typeof(ContentQueryProvider))]
 [assembly: TypeForwardedTo(typeof(EngineExtensions))]
 [assembly: TypeForwardedTo(typeof(QueryableExtensions))]
 

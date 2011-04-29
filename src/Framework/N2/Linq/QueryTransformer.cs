@@ -5,54 +5,35 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using N2.Details;
+using NHibernate.Linq;
 
 namespace N2.Linq
 {
 	/// <summary>
 	/// Translates queries against properties on an object to detail sub-select queries
 	/// </summary>
-	public class ContentQueryProvider : IQueryProvider
+	internal class QueryTransformer
 	{
 		static MethodInfo anyMethodInfo = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
 		static MethodInfo ofTypeMethodInfo = typeof(Enumerable).GetMethod("OfType").GetGenericMethodDefinition();
-			
-		readonly IQueryProvider queryProvider;
-		internal Dictionary<Expression, bool> WhereDetailExpressions = new Dictionary<Expression, bool>();
-		
-		public ContentQueryProvider(IQueryProvider queryProvider)
-		{
-			this.queryProvider = queryProvider;
-		}
 
 		#region IQueryProvider Members
 
-		public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+		public Expression ToDetailSubselect<TElement>(Expression expression)
 		{
-			MethodCallExpression mcExpression = expression as MethodCallExpression;
-
-			if (mcExpression != null && mcExpression.NodeType == ExpressionType.Call && mcExpression.Arguments.Count > 1 && mcExpression.Arguments[1].NodeType == ExpressionType.Quote)
+			var expressionToReplace = expression as Expression<Func<TElement, bool>>;
+			if (expressionToReplace != null)
 			{
-				UnaryExpression ue = mcExpression.Arguments[1] as UnaryExpression;
-				
-				if (ue != null && ue.Operand.NodeType == ExpressionType.Lambda)
-				{
-					var expressionToReplace = ue.Operand as Expression<Func<TElement, bool>>; // ci => (ci.StringProperty2 = "another string")
-					
-					if (expressionToReplace != null && WhereDetailExpressions.ContainsKey(expressionToReplace))
-					{
-						ParameterExpression itemParameter = expressionToReplace.Parameters[0];
-						Expression translation = Translate<TElement>(itemParameter, expressionToReplace.Body);
+				Debug.WriteLine("Translating: " + expression);
 
-						var translationLambda = Expression.Lambda(translation, itemParameter);
-						var quote = Expression.Quote(translationLambda);
-						Debug.WriteLine("Translating: " + expression);
-						expression = Expression.Call(mcExpression.Object, mcExpression.Method, mcExpression.Arguments[0], quote);
-						Debug.WriteLine("Into:        " + expression);
-					}
-				}
+				ParameterExpression itemParameter = expressionToReplace.Parameters[0];
+				Expression translation = Translate<TElement>(itemParameter, expressionToReplace.Body);
+				var translationLambda = Expression.Lambda(translation, itemParameter);
+				expression = Expression.Quote(translationLambda);
+
+				Debug.WriteLine("Into:        " + expression);
 			}
-
-			return new ContentQueryable<TElement>(this, queryProvider.CreateQuery<TElement>(expression));
+			return expression;
 		}
 
 		Expression Translate<TElement>(ParameterExpression itemParameter, Expression expressionBody)
@@ -139,7 +120,7 @@ namespace N2.Linq
 		private Type GetExpressionType(MemberExpression nameExpression)
 		{
 			if (nameExpression.Member.MemberType == MemberTypes.Property)
-				return ((PropertyInfo) nameExpression.Member).PropertyType;
+				return ((PropertyInfo)nameExpression.Member).PropertyType;
 
 			throw new NotSupportedException("Comparison of " + nameExpression);
 		}
@@ -185,7 +166,7 @@ namespace N2.Linq
 
 			Expression left;
 			Expression right;
-			if(comparison.IsLeftToRight)
+			if (comparison.IsLeftToRight)
 			{
 				left = propertyAccess;
 				right = GetValueExpression(comparison);
@@ -218,28 +199,10 @@ namespace N2.Linq
 
 		private static Expression GetValueExpression(ComparisonInfo comparison)
 		{
-			if(comparison.ValueExpression.Type.IsValueType)
+			if (comparison.ValueExpression.Type.IsValueType)
 				return Expression.Convert(comparison.ValueExpression, typeof(Nullable<>).MakeGenericType(comparison.ValueExpression.Type));
 
 			return comparison.ValueExpression;
-		}
-
-		public IQueryable CreateQuery(Expression expression)
-		{
-			Debug.WriteLine("CreateQuery: " + expression);
-			return queryProvider.CreateQuery(expression);
-		}
-
-		public TResult Execute<TResult>(Expression expression)
-		{
-			Debug.WriteLine("Execute: " + expression);
-			return queryProvider.Execute<TResult>(expression);
-		}
-
-		public object Execute(Expression expression)
-		{
-			Debug.WriteLine("Execute: " + expression);
-			return queryProvider.Execute(expression);
 		}
 
 		#endregion
@@ -259,7 +222,7 @@ namespace N2.Linq
 				info.ValueExpression = expressionBody.Right; // 123
 				info.IsLeftToRight = true;
 				info.Type = expressionBody.NodeType;
-				
+
 				if (info.NameExpression == null)
 				{
 					// to support ("constant" == item.Property)
@@ -267,7 +230,7 @@ namespace N2.Linq
 					info.ValueExpression = expressionBody.Left;
 					info.IsLeftToRight = false;
 				}
-				
+
 				return info;
 			}
 		}

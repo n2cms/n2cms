@@ -3,14 +3,14 @@ using System.Linq.Expressions;
 
 namespace N2.Linq
 {
-	public class ContentQueryable<T> : IQueryable<T>
+	internal class ContentQueryable<T> : IQueryable<T>
 	{
 		readonly IQueryable<T> query;
 		readonly ContentQueryProvider provider;
 
 		public ContentQueryable(IQueryable<T> query)
 		{
-			provider = new ContentQueryProvider(query.Provider);
+			provider = new ContentQueryProvider(query);
 			this.query = query;
 		}
 		public ContentQueryable(ContentQueryProvider provider, IQueryable<T> query)

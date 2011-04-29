@@ -2,16 +2,20 @@
 using System.Linq;
 using System.Linq.Expressions;
 using N2.Details;
+using System.Reflection;
 
 namespace N2.Linq
 {
 	public static class QueryableExtensions
 	{
-		public static IQueryable<T> WhereDetail<T>(this IQueryable<T> query, Expression<Func<T, bool>> expr) where T : ContentItem
+		static MethodInfo whereMethodInfo = typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
+		
+		public static IQueryable<TSource> WhereDetail<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) where TSource : ContentItem
 		{
-			if (query.Provider is ContentQueryProvider)
-				((ContentQueryProvider)query.Provider).WhereDetailExpressions[expr] = true;
-			return query.Where(expr);
+			var whereOfT = whereMethodInfo.MakeGenericMethod(new Type[] { typeof(TSource) });
+			var transformedExpression = new QueryTransformer().ToDetailSubselect<TSource>(predicate);
+			var whereDetailSubselectExpression = Expression.Call(whereOfT, source.Expression, transformedExpression);
+			return source.Provider.CreateQuery<TSource>(whereDetailSubselectExpression);
 		}
 
 		public static IQueryable<T> WhereDetailEquals<T, TValue>(this IQueryable<T> query, TValue value) where T : ContentItem

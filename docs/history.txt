@@ -1,4 +1,6 @@
 ﻿2.2
+- ITemplateable/TemplateKey in n2item
+- conform
 - Applied janpub's patch #9133: Many improvements on the content membership provider:
 	- CreateUser - OnValidatingPassword call added // TODO: RequiresUniqueEmail validation
 	- GetNumberOfUsersOnline - Membership.UserIsOnlineTimeWindow instead of hardcoded value (20)
