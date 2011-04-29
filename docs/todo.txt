@@ -1,9 +1,9 @@
-- template selector attribute
+- theme on login page
+- site settings toolbar
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf
 - IRedirect
 - AttributeTransformerBase (ThreadId=250548)
-- content transformers/extractors (parse wiki)
 - index template replaces default
 - static parts
 - Find.Items.Where.Detail().IsNull() (ThreadId=243772)

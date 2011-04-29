@@ -18,6 +18,7 @@ namespace Dinamico.Models
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
 	[TabContainer(Defaults.Containers.Site, "Site", 1000)]
+	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
 	{
 		#region IThemeable Members

@@ -9,7 +9,6 @@ namespace N2.Definitions.Runtime
 	{
 		public string ControllerName { get; set; }
 		public Type ModelType { get; set; }
-		public string TemplateSelectorContainerName { get; set; }
 		public string ViewFileExtension { get; set; }
 	}
 }

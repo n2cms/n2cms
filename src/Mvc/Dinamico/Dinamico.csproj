@@ -111,7 +111,6 @@
     <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
-    <Compile Include="Definitions\Runtime\TemplateSelectorAttribute.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Details\EditableThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">

@@ -5,6 +5,7 @@ using N2.Persistence;
 namespace Dinamico.Models
 {
 	[PageDefinition]
+	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class ContentPage : PageModelBase
 	{
 		[EditableFileUpload]

@@ -44,21 +44,6 @@ namespace N2.Definitions.Runtime
 				}
 
 				foreach (var description in descriptions)
-				{
-					description.Definition.Add(new TemplateSelectorAttribute 
-					{ 
-						Name = "TemplateKey", 
-						Title = "Template", 
-						AllTemplates = descriptions.Select(d => new TemplateSelectorAttribute.Info { Name = d.Registration.Template, Title = d.Registration.Title }).ToArray(), 
-						ContainerName = source.TemplateSelectorContainerName, 
-						Required = true, 
-						HelpTitle = "The page must be saved for another template's fields to appear",
-						RequiredPermission = Security.Permission.Administer
-					});
-				}
-
-
-				foreach (var description in descriptions)
 					yield return description;
 			}
 		}
