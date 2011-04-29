@@ -58,7 +58,7 @@ namespace N2.Web.Mvc.Html
 		public static void InitTheme(this ControllerContext context)
 		{
 			var page = context.RequestContext.CurrentPage<ContentItem>()
-
+				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).Parse(context.HttpContext.Request["returnUrl"])
 				?? context.RequestContext.StartPage();
 
 			InitTheme(context, page);

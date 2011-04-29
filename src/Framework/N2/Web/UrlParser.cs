@@ -142,7 +142,7 @@ namespace N2.Web
 		/// <returns>The content item matching the supplied url.</returns>
 		public virtual ContentItem Parse(string url)
 		{
-			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
+			if (string.IsNullOrEmpty(url)) return null;
 
             ContentItem startingPoint = GetStartPage(url);
 			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) ?? Parse(startingPoint, url);

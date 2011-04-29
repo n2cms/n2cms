@@ -123,17 +123,40 @@ namespace N2.Web.Mvc
 
 		// content scope
 
-		public IDisposable BeginContentScope(ContentItem newCurrentItem)
+		public IDisposable BeginScope(ContentItem newCurrentItem)
 		{
 			currentItem = null;
 			return new ContentScope(newCurrentItem, Html.ViewContext.ViewData);
 		}
 
-		public void EndContentScope()
+		public IDisposable BeginScope(string newCurrentItemUrl)
+		{
+			if (newCurrentItemUrl != null)
+			{
+				var item = Html.ResolveService<IUrlParser>().Parse(newCurrentItemUrl);
+				if(item != null)
+					return new ContentScope(item, html.ViewContext.ViewData);
+			}
+			return new EmptyDisposable();
+		}
+
+		public void EndScope()
 		{
 			currentItem = null;
 			ContentScope.End(Html.ViewContext.ViewData);
 		}
+
+		class EmptyDisposable : IDisposable
+		{
+			#region IDisposable Members
+
+			public void Dispose()
+			{
+			}
+
+			#endregion
+		}
+
 
 		#region class ContentScope
 		class ContentScope : IDisposable

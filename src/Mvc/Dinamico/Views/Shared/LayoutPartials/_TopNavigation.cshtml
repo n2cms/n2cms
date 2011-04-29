@@ -1,3 +1,13 @@
-﻿<ul id="menu" class="topmenu menu level1">
-	<li>@Content.LinkTo(Content.Traverse.StartPage).Class(Content.CurrentPage == Content.Traverse.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.Traverse.StartPage, takeLevels: 2, rootless: true)
+﻿@{
+	var start = Content.Traverse.StartPage;
+	var current = Content.CurrentPage;
+	if(current == null)
+	{
+		Content.BeginScope(Request["returnUrl"]);
+		current = Content.CurrentItem;
+		start = Content.Traverse.StartPage;
+	}
+}
+<ul id="menu" class="topmenu menu level1">
+	<li>@Content.LinkTo(start).Class(current == start ? "current" : "")</li>@Content.TreeFrom(start, takeLevels: 2, rootless: true)
 </ul>

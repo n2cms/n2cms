@@ -59,7 +59,7 @@ namespace N2.Web.Mvc.Html
 								ctx.Last = enumerator.MoveNext() == false;
 								if (ctx.Data is ContentItem)
 								{
-									using(html.Content().BeginContentScope(ctx.Data as ContentItem))
+									using(html.Content().BeginScope(ctx.Data as ContentItem))
 									{
 										template(ctx).WriteTo(tw2);
 									}

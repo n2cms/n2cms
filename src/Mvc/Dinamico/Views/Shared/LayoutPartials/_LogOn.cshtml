@@ -4,6 +4,6 @@
 }
 else
 {
-	<span id="logon" class="item anonymous">@Html.ActionLink("Log on", "LogOn", "Account")</span>
+	<span id="logon" class="item anonymous">@Html.ActionLink("Log on", "LogOn", new { controller = "Account", returnUrl = Request.Url.PathAndQuery })</span>
 }
 </span>

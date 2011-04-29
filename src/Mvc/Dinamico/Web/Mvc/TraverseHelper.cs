@@ -41,12 +41,12 @@ namespace N2.Web.Mvc
 
 		public ContentItem StartPage
 		{
-			get { return N2.Find.ClosestOf<IStartPage>(CurrentPage) ?? N2.Find.StartPage; }
+			get { return N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? N2.Find.StartPage; }
 		}
 
 		public ContentItem RootPage
 		{
-			get { return N2.Find.ClosestOf<IRootPage>(CurrentPage) ?? N2.Find.RootItem; }
+			get { return N2.Find.ClosestOf<IRootPage>(CurrentItem) ?? N2.Find.RootItem; }
 		}
 
 		public virtual ItemFilter DefaultFilter()

@@ -21,6 +21,8 @@ namespace N2.Web
 		/// <returns>The content item matching the supplied url.</returns>
 		public override ContentItem Parse(string url)
 		{
+			if (string.IsNullOrEmpty(url)) return null;
+
 			if (url.StartsWith("/") || url.StartsWith("~/"))
 				return base.Parse(url);
 			
