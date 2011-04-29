@@ -25,8 +25,10 @@ namespace N2.Templates.UI.Parts
 
 		void LoginBox_Authenticate(object sender, AuthenticateEventArgs e)
 		{
-			e.Authenticated = Membership.ValidateUser(LoginBox.UserName, LoginBox.Password)
-				|| FormsAuthentication.Authenticate(LoginBox.UserName, LoginBox.Password);
+			if (Membership.ValidateUser(LoginBox.UserName, LoginBox.Password))
+				e.Authenticated = Membership.GetUser(LoginBox.UserName).IsApproved;
+			else if (FormsAuthentication.Authenticate(LoginBox.UserName, LoginBox.Password))
+				e.Authenticated = true;
 		}
 
 		void LoginBox_LoggedIn(object sender, EventArgs e)
