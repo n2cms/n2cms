@@ -14,7 +14,7 @@
 			<% int templateIndex = 0; %>
 			<% foreach(TemplateDefinition template in GetTemplates(AvailableDefinitions[i])){ %>
 				<a href="<%= GetEditUrl(template.Definition) %>" style="background-image:url(<%= ResolveUrl(template.Definition.IconUrl) %>)" class="<%= template.Definition.Template != null ? "template" : "definition"  %> t<%= templateIndex %>">
-					<span class="title"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Title") ?? template.Title %></span>
+					<span class="title"><%= GetLocalizedString("Definitions", template.Definition.Discriminator + template.Name, "Title") ?? template.Title %></span>
 					<span class="description"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Description") ?? template.Description %></span>
 				</a>
 				<% templateIndex++; %>

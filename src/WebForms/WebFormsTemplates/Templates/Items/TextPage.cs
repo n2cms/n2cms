@@ -13,6 +13,10 @@ namespace N2.Templates.Items
 		Description = "A simple text page. It displays a vertical menu, the content and provides a sidebar column", 
 		SortOrder = 20)]
 	[ConventionTemplate("Text")]
+	[Template("Wide", "~/Templates/UI/Views/WideText.aspx", 
+		SelectableAsDefault = true,
+		TemplateTitle = "Wide Text Page",
+		TemplateDescription = "A simple Text page without sidebar column")]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
 		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]

@@ -580,6 +580,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\UI\Views\WideText.aspx" />
     <Content Include="Web.config" />
     <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
