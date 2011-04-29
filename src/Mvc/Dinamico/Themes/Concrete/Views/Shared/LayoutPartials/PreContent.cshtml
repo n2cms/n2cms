@@ -1,5 +1,3 @@
-﻿<div class="clearfix">
-@{ Html.RenderPartial("LayoutPartials/_SubNavigation"); }
-</div>
+﻿@{ Html.RenderPartial("LayoutPartials/SubNavigation"); }
 @{ Html.DroppableZone("PreContent").Render(); }
 @Content.Register.FileUpload("Image").Configure(fu => { fu.PreferredSize = "wide"; fu.CssClass = "main"; }).Container(Dinamico.Defaults.Containers.Content).Display()

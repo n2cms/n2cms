@@ -216,7 +216,7 @@
     <Content Include="Views\Account\LogOn.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\_LogOn.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\LogOn.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -245,7 +245,7 @@
     <Content Include="Views\ContentParts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Header.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\StartPage\NotFound.cshtml" />
@@ -257,25 +257,25 @@
     <Content Include="Views\Test\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_SiteMap.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\SiteMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Search.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_PreContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\_PreContent.cshtml" />
+    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\_Header.cshtml" />
+    <Content Include="Themes\Dark\Views\Shared\LayoutPartials\Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Dark\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Content.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Content.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Terracotta\Views\Web.config" />
@@ -284,7 +284,7 @@
     <Content Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Translations.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Translations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ContentParts\TwoColumns.cshtml" />
@@ -308,30 +308,30 @@
     <Content Include="Content\Mood.css" />
     <Content Include="Content\Print.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Shared\LayoutPartials\_Top.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\_Footer.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\_PostContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Top.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Footer.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\PostContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\_Header.cshtml" />
+    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\_PreContent.cshtml" />
+    <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Concrete\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_BlogContent.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\BlogContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_TopNavigation.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\TopNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_SubNavigation.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\SubNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Logotype.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Logotype.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ContentParts\Teaser.cshtml" />
@@ -343,7 +343,7 @@
     <Content Include="Views\ContentParts\Listing.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\_Head.cshtml" />
+    <Content Include="Views\Shared\LayoutPartials\Head.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ContentParts\Slider.cshtml" />

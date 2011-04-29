@@ -7,7 +7,7 @@
 	});
 }
 
-@Html.Partial("LayoutPartials/_Content")
+@Html.Partial("LayoutPartials/Content")
 
 @Html.Loop(Content.Traverse.DescendantPages(Content.CurrentPage, Content.Is.Accessible()),
 	template:@<div class="item">
