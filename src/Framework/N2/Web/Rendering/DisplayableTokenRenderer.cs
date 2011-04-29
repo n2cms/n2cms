@@ -20,9 +20,8 @@ namespace N2.Web.Rendering
 			{
 				int lastFragmentEnd = 0;
 
-				for (int i = 0; i < tokens.Details.Count; i++)
+				foreach(var detail in tokens.Details)
 				{
-					var detail = tokens.Details[i];
 					if (lastFragmentEnd < detail.IntValue)
 						writer.Write(text.Substring(lastFragmentEnd, detail.IntValue.Value - lastFragmentEnd));
 

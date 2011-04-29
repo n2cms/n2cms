@@ -1,4 +1,4 @@
-- theme on login page
+- issue with cache and multiple details
 - site settings toolbar
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf
