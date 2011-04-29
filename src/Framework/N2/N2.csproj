@@ -143,6 +143,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Details\WithEditableTemplateSelectionAttribute.cs" />
     <Compile Include="Details\DisplayableTokensAttribute.cs" />
     <Compile Include="Details\EditableNumberAttribute.cs" />
     <Compile Include="Details\EditableSummaryAttribute.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Obsolete\DoubleDetail.cs" />
     <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
-    <Compile Include="Details\EditableTextBoxAttribute.cs" />
+    <Compile Include="Details\EditableTextAttribute.cs" />
     <Compile Include="Obsolete\StringDetail.cs" />
     <Compile Include="Obsolete\DateTimeDetail.cs" />
     <Compile Include="Obsolete\ObjectDetail.cs" />

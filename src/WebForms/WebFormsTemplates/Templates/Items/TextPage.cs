@@ -17,6 +17,7 @@ namespace N2.Templates.Items
 		SelectableAsDefault = true,
 		TemplateTitle = "Wide Text Page",
 		TemplateDescription = "A simple Text page without sidebar column")]
+	[WithEditableTemplateSelection(ContainerName = Tabs.Advanced)]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
 		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]

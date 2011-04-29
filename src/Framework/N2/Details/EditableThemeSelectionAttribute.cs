@@ -16,7 +16,7 @@ namespace N2.Details
 	public class EditableThemeSelectionAttribute : EditableListControlAttribute
 	{
 		public EditableThemeSelectionAttribute()
-			: this("", 14)
+			: this("Theme", 14)
 		{
 		}
 
