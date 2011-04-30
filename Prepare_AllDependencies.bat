@@ -1,3 +1,3 @@
 @echo off
-cd build
-cmd /c "build.bat /target:PrepareDependencies" & pause & exit 
+cd /d %~dp0build
+cmd /c "build.bat /target:PrepareDependencies" & pause & exit /b
