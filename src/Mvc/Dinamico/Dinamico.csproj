@@ -381,6 +381,15 @@
   <ItemGroup>
     <Content Include="Views\Shared\TokenTemplates\TOC.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Published.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Author.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
