@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="ControlDesigners.aspx.cs" Inherits="N2.Addons.UITests.UI.ControlDesigners" %>
+﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" Inherits="N2.Web.UI.ContentPage" %>
 <html>
 <head runat="server">
 	

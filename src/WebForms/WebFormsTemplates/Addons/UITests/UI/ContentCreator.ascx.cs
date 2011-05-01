@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Addons.UITests.UI
 {
@@ -31,7 +32,7 @@ namespace N2.Addons.UITests.UI
 			int width = int.Parse(txtWidth.Text);
 			for (int i = 1; i <= width; i++)
 			{
-				ContentItem item = Engine.Definitions.CreateInstance(type, parent);
+				ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(type, parent);
 				item.Name = txtName.Text + i;
 				item.Title = txtName.Text + " " + i;
 				item.AddTo(parent);

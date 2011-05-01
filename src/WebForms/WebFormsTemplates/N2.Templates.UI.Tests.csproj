@@ -100,13 +100,6 @@
     <Compile Include="Addons\UITests\UI\ContentCreator.ascx.designer.cs">
       <DependentUpon>ContentCreator.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.cs">
-      <DependentUpon>ControlDesigners.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.designer.cs">
-      <DependentUpon>ControlDesigners.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Addons\UITests\UI\EditableUc2.ascx.cs">
       <DependentUpon>EditableUc2.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
