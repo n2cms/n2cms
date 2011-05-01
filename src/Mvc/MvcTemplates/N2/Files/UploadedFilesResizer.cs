@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Web;
 using N2.Configuration;
 using N2.Edit;
@@ -16,12 +17,14 @@ namespace N2.Management.Files
 		IFileSystem files;
 		ImageResizer resizer;
 		ImagesElement images;
+		string[] sizeNames;
 
 		public UploadedFilesResizer(IFileSystem files, ImageResizer resizer, EditSection config)
 		{
 			this.files = files;
 			this.resizer = resizer;
 			this.images = config.Images;
+			sizeNames = config.Images.Sizes.AllElements.Select(s => s.Name).ToArray();
 		}
 
 		void files_FileWritten(object sender, FileEventArgs e)
@@ -75,7 +78,7 @@ namespace N2.Management.Files
 
 							using (var destinationStream = files.OpenFile(resizedPath))
 							{
-								resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode), destinationStream);
+								resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
 							}
 						}
 					}
@@ -106,9 +109,10 @@ namespace N2.Management.Files
 
 		private bool IsResizedPath(string path)
 		{
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
+			string extensionlessPath = Url.RemoveAnyExtension(path);
+			foreach (var sizeName in sizeNames)
 			{
-				if (Url.RemoveAnyExtension(path).EndsWith("_" + size.Name))
+				if (extensionlessPath.EndsWith("_" + sizeName))
 					return true;
 			}
 			return false;

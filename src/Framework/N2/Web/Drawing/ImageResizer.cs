@@ -8,6 +8,9 @@ using N2.Configuration;
 
 namespace N2.Web.Drawing
 {
+	/// <summary>
+	/// Parameters for the <see cref="ImageResizer"/>.
+	/// </summary>
 	public class ImageResizeParameters
 	{
 		public ImageResizeParameters(double maxWidth, double maxHeight)
@@ -20,13 +23,13 @@ namespace N2.Web.Drawing
 			Mode = mode;
 			MaxWidth = maxWidth;
 			MaxHeight = maxHeight;
-			Quality = 90L;
+			Quality = 90;
 		}
 
 		public ImageResizeMode Mode { get; set; }
 		public double MaxWidth { get; set; }
 		public double MaxHeight { get; set; }
-		public long Quality { get; set; }
+		public int Quality { get; set; }
 	}
 
 	/// <summary>
@@ -143,7 +146,7 @@ namespace N2.Web.Drawing
                 if (codec != null && codec.MimeType.Equals("image/jpeg"))
                 {
                     EncoderParameters encoderParams = new EncoderParameters(1);
-                    encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, parameters.Quality);
+					encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
 
                     resized.Save(output, codec, encoderParams);                    
                 }

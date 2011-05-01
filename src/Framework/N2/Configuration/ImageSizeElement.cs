@@ -25,6 +25,14 @@ namespace N2.Configuration
 			set { base["height"] = value; }
 		}
 
+		/// <summary>Maximum height of images resized to this size.</summary>
+		[ConfigurationProperty("quality", DefaultValue = 90)]
+		public int Quality
+		{
+			get { return (int)base["quality"]; }
+			set { base["quality"] = value; }
+		}
+
 		/// <summary>Replace existing file when creating this image size.</summary>
 		[ConfigurationProperty("replace", DefaultValue = false)]
 		public bool Replace
