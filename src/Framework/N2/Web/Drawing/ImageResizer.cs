@@ -8,74 +8,101 @@ using N2.Configuration;
 
 namespace N2.Web.Drawing
 {
+	public class ImageResizeParameters
+	{
+		public ImageResizeParameters(double maxWidth, double maxHeight)
+			: this(maxWidth, maxHeight, ImageResizeMode.Fit)
+		{
+		}
+
+		public ImageResizeParameters(double maxWidth, double maxHeight, ImageResizeMode mode)
+		{
+			Mode = mode;
+			MaxWidth = maxWidth;
+			MaxHeight = maxHeight;
+			Quality = 90L;
+		}
+
+		public ImageResizeMode Mode { get; set; }
+		public double MaxWidth { get; set; }
+		public double MaxHeight { get; set; }
+		public long Quality { get; set; }
+	}
+
 	/// <summary>
 	/// Resizes an image.
 	/// </summary>
 	[Service]
     public class ImageResizer
     {
-		[Obsolete("Use overload with resize mode")]
+		[Obsolete("Use overload with parameters")]
 		private void Resize(string imagePath, double maxWidth, double maxHeight, Stream output)
 		{
 			Resize(imagePath, maxWidth, maxHeight, ImageResizeMode.Fit, output);
 		}
 
-		private bool Resize(string physicalImagePath, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
-        {
-            if (physicalImagePath == null) throw new ArgumentNullException("imagePath");
-
-			if (!File.Exists(physicalImagePath))
-				return false;
-            
-            using (Bitmap original = new Bitmap(physicalImagePath))
-			{
-				//if (original.Width < maxWidth && original.Height < maxHeight)
-				//{
-				//    using (var fs = File.OpenRead(physicalImagePath))
-				//    {
-				//        TransferBetweenStreams(fs, outputStream);
-				//    }
-				//    return true;
-				//}
-				Resize(Path.GetExtension(physicalImagePath), original, maxWidth, maxHeight, mode, outputStream);
-				return true;
-            }
-		}
-
-		[Obsolete("Use overload with resize mode")]
+		[Obsolete("Use overload with parameters")]
 		public virtual void Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, Stream outputStream)
 		{
-			Resize(inputStream, extension, maxWidth, maxHeight, ImageResizeMode.Fit, outputStream);
+			Resize(inputStream, new ImageResizeParameters(maxWidth, maxHeight, ImageResizeMode.Fit), outputStream);
 		}
 
+		[Obsolete("Use overload with parameters")]
 		public virtual bool Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
+		{
+			return Resize(inputStream, new ImageResizeParameters(maxWidth, maxHeight, mode), outputStream);
+		}
+
+		[Obsolete("Use overload with parameters")]
+		public virtual byte[] GetResizedBytes(Stream imageStream, string extension, double maxWidth, double maxHeight, ImageResizeMode mode)
+		{
+			return GetResizedBytes(imageStream, new ImageResizeParameters(maxWidth, maxHeight, mode));
+		}
+
+
+
+		public virtual bool Resize(Stream inputStream, ImageResizeParameters parameters, Stream outputStream)
 		{
 			using (Bitmap original = new Bitmap(inputStream))
 			{
-				//if (original.Width < maxWidth && original.Height < maxHeight)
-				//{
-				//    TransferBetweenStreams(inputStream, outputStream);
-				//    return true;
-				//}
-
-				Resize(extension, original, maxWidth, maxHeight, mode, outputStream);
+				Resize(original, parameters, outputStream);
 				return true;
 			}
 		}
 
-		public virtual byte[] GetResizedBytes(Stream imageStream, string extension, double maxWidth, double maxHeight, ImageResizeMode mode)
+		public virtual byte[] GetResizedBytes(Stream imageStream, ImageResizeParameters parameters)
 		{
 			using (Bitmap original = new Bitmap(imageStream))
 			{
 				var ms = new MemoryStream();
-				Resize(extension, original, maxWidth, maxHeight, mode, ms);
+				Resize(original, parameters, ms);
 				return ms.GetBuffer();
 			}
 		}
 
-    	private void Resize(string extension, Bitmap original, double maxWidth, double maxHeight, ImageResizeMode mode, Stream output)
+
+
+		private bool Resize(string physicalImagePath, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
+		{
+			if (physicalImagePath == null) throw new ArgumentNullException("imagePath");
+
+			if (!File.Exists(physicalImagePath))
+				return false;
+
+			using (Bitmap original = new Bitmap(physicalImagePath))
+			{
+				Resize(original, new ImageResizeParameters(maxWidth, maxHeight, mode), outputStream);
+				return true;
+			}
+		}
+
+		private void Resize(Bitmap original, ImageResizeParameters parameters, Stream output)
     	{
     		Bitmap resized;
+			var mode = parameters.Mode;
+			var maxWidth = parameters.MaxWidth;
+			var maxHeight = parameters.MaxHeight;
+			var quality = parameters.Quality;
 
 			if (mode == ImageResizeMode.Fit)
 			{
@@ -89,7 +116,7 @@ namespace N2.Web.Drawing
 
     		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
-    		Graphics g = CreateGraphics(original, ref resized, extension);
+    		Graphics g = CreateGraphics(original, ref resized);
 
     		using (g)
     		{
@@ -111,12 +138,12 @@ namespace N2.Web.Drawing
 				}
 
                 // Use higher quality compression if the original image is jpg. Default is 75L.
-                ImageCodecInfo codec = getEncoderInfo(original.RawFormat.Guid);
+                ImageCodecInfo codec = GetEncoderInfo(original.RawFormat.Guid);
 
                 if (codec != null && codec.MimeType.Equals("image/jpeg"))
                 {
                     EncoderParameters encoderParams = new EncoderParameters(1);
-                    encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 90L);
+                    encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, parameters.Quality);
 
                     resized.Save(output, codec, encoderParams);                    
                 }
@@ -127,7 +154,7 @@ namespace N2.Web.Drawing
     		}
     	}
 
-        private ImageCodecInfo getEncoderInfo(Guid formatID)
+        private ImageCodecInfo GetEncoderInfo(Guid formatID)
         {
             // Get image codecs for all image formats
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
@@ -139,17 +166,19 @@ namespace N2.Web.Drawing
             return null;
         }
 
-		private Graphics CreateGraphics(Bitmap original, ref Bitmap resized, string extension)
+		private Graphics CreateGraphics(Bitmap original, ref Bitmap resized)
 		{
-			switch (extension.ToLower())
+			ImageCodecInfo info = GetEncoderInfo(original.RawFormat.Guid);
+
+			switch (info.MimeType)
 			{
-				case ".jpg":
-				case ".jpeg":
+				case "image/jpeg":
 					if (resized.PixelFormat == PixelFormat.Format1bppIndexed || resized.PixelFormat == PixelFormat.Format4bppIndexed || resized.PixelFormat == PixelFormat.Format8bppIndexed)
 						return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 					return Graphics.FromImage(resized);
-				case ".gif":
+				case "image/gif":
 					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
+				case "image/png":
 				default:
 					return GetResizedBitmap(ref resized, original.PixelFormat);
 			}

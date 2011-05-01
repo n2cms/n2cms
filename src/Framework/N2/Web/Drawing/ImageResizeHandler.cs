@@ -54,7 +54,7 @@ namespace N2.Web.Drawing
 				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
 				using (var s = fs.OpenFile(imageUrl))
 				{
-					var resized = ir.GetResizedBytes(s, extension, width, height, mode);
+					var resized = ir.GetResizedBytes(s, new ImageResizeParameters(width, height, mode));
 					context.Response.BinaryWrite(resized);
 				}
 			}

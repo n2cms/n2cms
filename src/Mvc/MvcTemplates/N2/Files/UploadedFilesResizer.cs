@@ -75,7 +75,7 @@ namespace N2.Management.Files
 
 							using (var destinationStream = files.OpenFile(resizedPath))
 							{
-								resizer.Resize(sourceStream, url.Extension, size.Width, size.Height, size.Mode, destinationStream);
+								resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode), destinationStream);
 							}
 						}
 					}
