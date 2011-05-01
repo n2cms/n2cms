@@ -198,6 +198,34 @@
                 <FooterTemplate></tbody></table></FooterTemplate>
             </asp:Repeater>
             <asp:Label ID="lblAssemblies" runat="server" />
+
+			<% try { %>
+			<table class="t"><thead><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
+			<tbody>
+			<% foreach (var kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
+				<tr><td><%= kvp.Key%></td><td><%= kvp.Value%></td></tr>
+			<% } %>
+			</tbody></table>
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
+
+			<% try { %>
+
+			<% if (Request["showcache"] != null) { %>
+			<table id="runtimecache" class="t"><thead><tr><td>Runtime Cache Key</td><td>Value</td></tr></thead>
+			<tbody>
+			<% foreach (System.Collections.DictionaryEntry c in Context.Cache) { if(Request["cachefilter"] != null && !c.Key.ToString().Contains(Request["cachefilter"])) continue; %>
+				<tr><td><%= c.Key %></td><td><%= c.Value is System.Collections.DictionaryEntry ? ("<b>" + ((System.Collections.DictionaryEntry)c.Value).Key + "</b>: " + ((System.Collections.DictionaryEntry)c.Value).Value) : c.Value%></td></tr>
+			<% } %>
+			</tbody></table>
+			<% } else { %>
+			<table class="t"><thead><td colspan="2">Runtime Cache</td></thead><tbody><tr><th>Count</th><td><%= Context.Cache.Count %> <a href="?showcache=true#runtimecache">(Show)</a></td></tr></tbody></table>
+			<% } %>
+
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
         </div>
     </form>
 </body>
