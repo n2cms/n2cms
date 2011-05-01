@@ -311,6 +311,7 @@ namespace N2.Persistence.NH
 				cm.Inverse(true);
 				cm.Type<ContentListFactory<ContentDetail>>();
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
+				cm.Fetch(CollectionFetchMode.Subselect);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.Cache(m => m.Usage(CacheUsage.NonstrictReadWrite));
 				cm.Where("DetailCollectionID IS NULL");
@@ -321,6 +322,7 @@ namespace N2.Persistence.NH
 				cm.Inverse(true);
 				cm.Type<ContentListFactory<DetailCollection>>();
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
+				cm.Fetch(CollectionFetchMode.Subselect);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.Cache(m => m.Usage(CacheUsage.NonstrictReadWrite));
 			}, cr => cr.OneToMany());
@@ -329,6 +331,7 @@ namespace N2.Persistence.NH
 				cm.Key(k => k.Column("ItemID"));
 				cm.Inverse(true);
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
+				cm.Fetch(CollectionFetchMode.Subselect);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.Cache(m => m.Usage(CacheUsage.NonstrictReadWrite));
 			}, cr => cr.OneToMany());
@@ -366,7 +369,8 @@ namespace N2.Persistence.NH
 				cm.Key(k => k.Column("DetailCollectionID"));
 				cm.Inverse(true);
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
-				cm.Lazy(CollectionLazy.NoLazy);
+				cm.Lazy(CollectionLazy.Lazy);
+				cm.Fetch(CollectionFetchMode.Subselect);
 				cm.Cache(m => m.Usage(CacheUsage.NonstrictReadWrite));
 			}, cr => cr.OneToMany());
 		}
