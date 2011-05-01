@@ -64,6 +64,15 @@ namespace N2.Management.Files
 					{
 						if (!files.FileExists(resizedPath) || size.Replace)
 						{
+                            // Delete the image before writing.
+                            // Fixes a weird bug where overwriting the original file while it still exists
+                            //  leaves the resized image the with the exact same file size as the original even 
+                            //  though it should be smaller.
+                            if (files.FileExists(resizedPath))
+                            {
+                                files.DeleteFile(resizedPath);
+                            }
+
 							using (var destinationStream = files.OpenFile(resizedPath))
 							{
 								resizer.Resize(sourceStream, url.Extension, size.Width, size.Height, size.Mode, destinationStream);

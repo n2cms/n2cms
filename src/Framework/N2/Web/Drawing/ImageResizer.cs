@@ -109,9 +109,35 @@ namespace N2.Web.Drawing
 						: new Rectangle(Point.Empty, resized.Size);
 					g.DrawImage(original, destinationFrame, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
 				}
-    			resized.Save(output, original.RawFormat);
+
+                // Use higher quality compression if the original image is jpg. Default is 75L.
+                ImageCodecInfo codec = getEncoderInfo(original.RawFormat.Guid);
+
+                if (codec != null && codec.MimeType.Equals("image/jpeg"))
+                {
+                    EncoderParameters encoderParams = new EncoderParameters(1);
+                    encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 90L);
+
+                    resized.Save(output, codec, encoderParams);                    
+                }
+                else
+                {
+    			    resized.Save(output, original.RawFormat);
+                }
     		}
     	}
+
+        private ImageCodecInfo getEncoderInfo(Guid formatID)
+        {
+            // Get image codecs for all image formats
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+
+            // Find the correct image codec
+            for (int i = 0; i < codecs.Length; i++)
+                if (codecs[i].FormatID == formatID)
+                    return codecs[i];
+            return null;
+        }
 
 		private Graphics CreateGraphics(Bitmap original, ref Bitmap resized, string extension)
 		{
