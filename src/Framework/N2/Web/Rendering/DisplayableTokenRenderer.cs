@@ -3,6 +3,7 @@ using N2.Engine;
 using System.IO;
 using System.Web.Mvc;
 using System.Diagnostics;
+using System;
 
 namespace N2.Web.Rendering
 {
@@ -25,7 +26,10 @@ namespace N2.Web.Rendering
 					if (lastFragmentEnd < detail.IntValue)
 						writer.Write(text.Substring(lastFragmentEnd, detail.IntValue.Value - lastFragmentEnd));
 
-					string tokenTemplate = detail.StringValue.TextUntil(2, '|', '}');
+					int pipeIndex = detail.StringValue.IndexOf('|', 2);
+					int bracketIndex = detail.StringValue.IndexOf('}', 2);
+
+					string tokenTemplate = detail.StringValue.Substring(2, Math.Min(pipeIndex, bracketIndex) - 2);
 
 					ViewEngineResult vr = null;
 					try
@@ -38,8 +42,8 @@ namespace N2.Web.Rendering
 					}
 					if (vr != null && vr.View != null)
 					{
-						var model = (detail.StringValue.Length > tokenTemplate.Length + 4)
-							? detail.StringValue.Substring(2 + tokenTemplate.Length + 2, detail.StringValue.Length - 2 - tokenTemplate.Length - 2 - 2)
+						var model = (pipeIndex < bracketIndex)
+							? detail.StringValue.Substring(pipeIndex + 1, bracketIndex - pipeIndex - 1)
 							: null;
 						var vc = new ViewContext(context.Html.ViewContext, vr.View, new ViewDataDictionary(model) { { "ParentViewContext", context.Html.ViewContext } }, context.Html.ViewContext.TempData, writer);
 						vr.View.Render(vc, writer);

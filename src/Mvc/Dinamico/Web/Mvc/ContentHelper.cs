@@ -10,8 +10,6 @@ namespace N2.Web.Mvc
 	public class ContentHelper
 	{
 		HtmlHelper html;
-		ContentItem currentItem;
-		ContentItem currentPage;
 
 		public ContentHelper(HtmlHelper html)
 		{
@@ -25,14 +23,12 @@ namespace N2.Web.Mvc
 
 		public ContentItem CurrentItem
 		{
-			get { return currentItem ?? (currentItem = Html.CurrentItem()); }
-			set { currentItem = value; }
+			get { return Html.CurrentItem(); }
 		}
 
 		public ContentItem CurrentPage
 		{
-			get { return currentPage ?? (currentPage = Html.CurrentPage()); }
-			set { currentPage = value; }
+			get { return Html.CurrentPage(); }
 		}
 
 		public TraverseHelper Traverse
@@ -129,7 +125,6 @@ namespace N2.Web.Mvc
 
 		public IDisposable BeginScope(ContentItem newCurrentItem)
 		{
-			currentItem = null;
 			return new ContentScope(newCurrentItem, Html.ViewContext.ViewData);
 		}
 
@@ -137,14 +132,13 @@ namespace N2.Web.Mvc
 		{
 			if (newCurrentItemUrlOrId != null)
 			{
-				var item = Html.ResolveService<IUrlParser>().Parse(newCurrentItemUrlOrId);
+				int id;
+				ContentItem item = null;
+				if (int.TryParse(newCurrentItemUrlOrId, out id))
+					item = html.ContentEngine().Persister.Get(id);
 
-				if (item == null)
-				{
-					int id;
-					if (int.TryParse(newCurrentItemUrlOrId, out id))
-						item = html.ContentEngine().Persister.Get(id);
-				}
+				if(item == null)
+					item = Html.ResolveService<IUrlParser>().Parse(newCurrentItemUrlOrId);
 
 				if (item != null)
 					return new ContentScope(item, html.ViewContext.ViewData);
@@ -154,7 +148,6 @@ namespace N2.Web.Mvc
 
 		public void EndScope()
 		{
-			currentItem = null;
 			ContentScope.End(Html.ViewContext.ViewData);
 		}
 
