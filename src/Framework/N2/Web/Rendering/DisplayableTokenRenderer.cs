@@ -26,10 +26,7 @@ namespace N2.Web.Rendering
 					if (lastFragmentEnd < detail.IntValue)
 						writer.Write(text.Substring(lastFragmentEnd, detail.IntValue.Value - lastFragmentEnd));
 
-					int pipeIndex = detail.StringValue.IndexOf('|', 2);
-					int bracketIndex = detail.StringValue.IndexOf('}', 2);
-
-					string tokenTemplate = detail.StringValue.Substring(2, Math.Min(pipeIndex, bracketIndex) - 2);
+					string tokenTemplate = detail.StringValue.TextUntil('|', '}');
 
 					ViewEngineResult vr = null;
 					try
@@ -42,8 +39,8 @@ namespace N2.Web.Rendering
 					}
 					if (vr != null && vr.View != null)
 					{
-						var model = (pipeIndex < bracketIndex)
-							? detail.StringValue.Substring(pipeIndex + 1, bracketIndex - pipeIndex - 1)
+						var model = detail.StringValue[tokenTemplate.Length] == '|'
+							? detail.StringValue.Substring(tokenTemplate.Length + 3, detail.StringValue.Length - 5)
 							: null;
 						var vc = new ViewContext(context.Html.ViewContext, vr.View, new ViewDataDictionary(model) { { "ParentViewContext", context.Html.ViewContext } }, context.Html.ViewContext.TempData, writer);
 						vr.View.Render(vc, writer);
