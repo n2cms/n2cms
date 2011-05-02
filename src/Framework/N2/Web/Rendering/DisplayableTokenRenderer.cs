@@ -39,7 +39,7 @@ namespace N2.Web.Rendering
 					if (vr != null && vr.View != null)
 					{
 						var model = (detail.StringValue.Length > tokenTemplate.Length + 4)
-							? detail.StringValue.Substring(2 + tokenTemplate.Length + 1, detail.StringValue.Length - 2 - tokenTemplate.Length - 1 - 2)
+							? detail.StringValue.Substring(2 + tokenTemplate.Length + 2, detail.StringValue.Length - 2 - tokenTemplate.Length - 2 - 2)
 							: null;
 						var vc = new ViewContext(context.Html.ViewContext, vr.View, new ViewDataDictionary(model) { { "ParentViewContext", context.Html.ViewContext } }, context.Html.ViewContext.TempData, writer);
 						vr.View.Render(vc, writer);

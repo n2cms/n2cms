@@ -42,6 +42,7 @@ namespace N2.Web.Mvc.Html
 			IEnumerable<T> items, 
 			Func<ListTemplate<T>, HelperResult> template,
 			Func<Template<IEnumerable<T>>, HelperResult> wrapper = null,
+			Func<ListTemplate<T>, HelperResult> separator = null,
 			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
 		{
 			return new HelperResult((tw) =>
@@ -57,19 +58,14 @@ namespace N2.Web.Mvc.Html
 							{
 								ctx.Data = enumerator.Current;
 								ctx.Last = enumerator.MoveNext() == false;
-								if (ctx.Data is ContentItem)
-								{
-									using(html.Content().BeginScope(ctx.Data as ContentItem))
-									{
-										template(ctx).WriteTo(tw2);
-									}
-								}
-								else
-								{
-									template(ctx).WriteTo(tw2);
-								}
+
+								template(ctx).WriteTo(tw2);
+
 								if (ctx.Last)
 									break;
+								else if (separator != null)
+									separator(ctx).WriteTo(tw2);
+
 								ctx.Index++;
 								if (ctx.First)
 									ctx.First = false;

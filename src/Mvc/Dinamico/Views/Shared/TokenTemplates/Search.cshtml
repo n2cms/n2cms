@@ -1,0 +1,3 @@
+﻿@model string
+@{ var changes = Content.Find.Text(Model).Where(i => i != null); }
+@Html.UnorderedList(Content.Is.Page().Pipe(changes), @<span>@Content.LinkTo(item.Data)</span>)

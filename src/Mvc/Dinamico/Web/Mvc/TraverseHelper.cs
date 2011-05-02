@@ -6,6 +6,8 @@ using N2.Definitions;
 using N2.Engine.Globalization;
 using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
+using N2.Persistence.NH;
+using System;
 
 namespace N2.Web.Mvc
 {
@@ -59,9 +61,19 @@ namespace N2.Web.Mvc
 			return (filter ?? DefaultFilter()).Pipe(N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true));
 		}
 
-		public IEnumerable<ContentItem> AncestorsBetween(int skipLevel = 0, int takeLevels = 1)
+		public IEnumerable<ContentItem> AncestorsBetween(int startLevel = 0, int stopLevel = 5)
 		{
-			return N2.Find.EnumerateParents(CurrentItem, StartPage, true).Reverse().Skip(skipLevel).Take(takeLevels);
+			var ancestors = N2.Find.EnumerateParents(CurrentItem, StartPage, true).ToList();
+			ancestors.Reverse();
+			if (stopLevel < 0)
+				stopLevel = ancestors.Count + stopLevel;
+
+			if (startLevel < stopLevel)
+				for (int i = startLevel; i < stopLevel && i < ancestors.Count; i++)
+					yield return ancestors[i];
+			else
+				for (int i = Math.Min(stopLevel, ancestors.Count - 1); i >= startLevel; i--)
+					yield return ancestors[i];
 		}
 
 		public IEnumerable<ContentItem> Children(ItemFilter filter = null)
@@ -142,18 +154,6 @@ namespace N2.Web.Mvc
 		public ContentItem AncestorAtLevel(int level)
 		{
 			return Ancestors().Reverse().Skip(level).FirstOrDefault();
-		}
-		
-		public IItemFinder Find()
-		{
-			return html.ResolveService<IItemFinder>();
-		}
-
-		public IQueryAction FindDescendant(ContentItem root = null)
-		{
-			if (root == null)
-				root = CurrentItem;
-			return html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
 		}
 
 		public ContentItem Parent(ContentItem item = null)

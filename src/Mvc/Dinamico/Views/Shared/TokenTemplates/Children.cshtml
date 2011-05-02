@@ -1,15 +1,5 @@
 ﻿@model string
-@{ N2.ContentItem current = null; }
-@if (Model != null)
+@using (Content.BeginScope(Model))
 {
-	int id;
-	if (int.TryParse(Model, out id))
-	{
-		current = Html.ResolveService<N2.Persistence.IPersister>().Get(id);
-	}
-	else
-	{
-		current = Content.Traverse.Path(Model);
-	}
+@Html.UnorderedList(Content.Traverse.Children(Content.CurrentItem, Content.Is.Page()), @<span>@Content.LinkTo(item.Data)</span>)	
 }
-@Html.UnorderedList(Content.Traverse.Children(current, Content.Is.Page()), @<span>@Content.LinkTo(item.Data)</span>)

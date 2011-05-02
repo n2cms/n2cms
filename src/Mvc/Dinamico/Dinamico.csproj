@@ -127,6 +127,7 @@
     <Compile Include="Web\Mvc\Html\ThemeExtensions.cs" />
     <Compile Include="Web\Mvc\Html\RenderExtensions.cs" />
     <Compile Include="Web\Mvc\IDisplayRenderer.cs" />
+    <Compile Include="Web\Mvc\QueryHelper.cs" />
     <Compile Include="Web\Mvc\RegisterHelper.cs" />
     <Compile Include="Web\Mvc\DisplayRenderer.cs" />
     <Compile Include="Web\Mvc\InitializationExtensions.cs" />
@@ -389,6 +390,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\TokenTemplates\Author.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Changes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

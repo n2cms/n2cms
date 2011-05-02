@@ -1,0 +1,3 @@
+﻿@model string
+@{ var changes = Content.Find.Items().All.Filters(Content.Is.Page()).MaxResults(10).OrderBy.Updated.Desc.Select(); }
+@Html.UnorderedList(changes, @<span>@Content.LinkTo(item.Data)</span>)

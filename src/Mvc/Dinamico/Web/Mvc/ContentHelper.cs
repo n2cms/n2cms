@@ -10,7 +10,6 @@ namespace N2.Web.Mvc
 	public class ContentHelper
 	{
 		HtmlHelper html;
-		TraverseHelper traverse;
 		ContentItem currentItem;
 		ContentItem currentPage;
 
@@ -38,7 +37,12 @@ namespace N2.Web.Mvc
 
 		public TraverseHelper Traverse
 		{
-			get { return traverse ?? (traverse = new TraverseHelper(Html)); }
+			get {  return new TraverseHelper(Html); }
+		}
+
+		public QueryHelper Find
+		{
+			get { return new QueryHelper(Html); }
 		}
 
 		public RegisterHelper Register
@@ -129,12 +133,20 @@ namespace N2.Web.Mvc
 			return new ContentScope(newCurrentItem, Html.ViewContext.ViewData);
 		}
 
-		public IDisposable BeginScope(string newCurrentItemUrl)
+		public IDisposable BeginScope(string newCurrentItemUrlOrId)
 		{
-			if (newCurrentItemUrl != null)
+			if (newCurrentItemUrlOrId != null)
 			{
-				var item = Html.ResolveService<IUrlParser>().Parse(newCurrentItemUrl);
-				if(item != null)
+				var item = Html.ResolveService<IUrlParser>().Parse(newCurrentItemUrlOrId);
+
+				if (item == null)
+				{
+					int id;
+					if (int.TryParse(newCurrentItemUrlOrId, out id))
+						item = html.ContentEngine().Persister.Get(id);
+				}
+
+				if (item != null)
 					return new ContentScope(item, html.ViewContext.ViewData);
 			}
 			return new EmptyDisposable();
