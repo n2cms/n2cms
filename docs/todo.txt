@@ -1,5 +1,4 @@
 - Associated parts with external entity (ThreadId=251116)
-- issue with cache and multiple details (footer tokens)
 - site settings toolbar
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf

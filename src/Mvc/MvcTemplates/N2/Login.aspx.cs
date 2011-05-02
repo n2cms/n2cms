@@ -31,8 +31,8 @@ namespace N2.Edit
 		{
 			try
 			{
-				if (FormsAuthentication.Authenticate(Login1.UserName, Login1.Password) 
-					|| System.Web.Security.Membership.ValidateUser(Login1.UserName, Login1.Password))
+				if (FormsAuthentication.Authenticate(Login1.UserName, Login1.Password)
+					|| (System.Web.Security.Membership.ValidateUser(Login1.UserName, Login1.Password) && System.Web.Security.Membership.GetUser(Login1.UserName).IsApproved))
 				{
 					e.Authenticated = true;
 					//Travis Pettijohn - Oct 2010 - pettijohn.com
