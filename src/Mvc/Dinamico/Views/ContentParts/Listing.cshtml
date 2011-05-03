@@ -13,7 +13,7 @@
 <div class="part listing">
 	@{
 		bool tease = Content.Data.Tease ?? false;
-		int count = int.Parse(Content.Data.Count ?? "3") + (tease ? 1 : 0);
+		int count = Convert.ToInt32(Content.Data.Count ?? 3) + (tease ? 1 : 0);
 		var children = Content.Traverse.Children((N2.ContentItem)Content.Data.ListFrom).Take(count);
 	}
 	@if(tease)
