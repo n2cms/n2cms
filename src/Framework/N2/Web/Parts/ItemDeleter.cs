@@ -7,14 +7,13 @@ using N2.Engine;
 
 namespace N2.Web.Parts
 {
-	[Service]
+	[Service(typeof(IAjaxService))]
 	public class ItemDeleter : PartsAjaxService
 	{
 		readonly IPersister persister;
         readonly Navigator navigator;
 
-		public ItemDeleter(IPersister persister, Navigator navigator, AjaxRequestDispatcher dispatcher)
-			: base(dispatcher)
+		public ItemDeleter(IPersister persister, Navigator navigator)
 		{
 			this.persister = persister;
             this.navigator = navigator;

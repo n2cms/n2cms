@@ -1,5 +1,8 @@
 using System.Web;
 using N2.Web;
+using N2.Engine;
+using N2.Plugin;
+using System;
 
 namespace N2.Web
 {
@@ -14,22 +17,59 @@ namespace N2.Web
 	///	&lt;/httpHandlers&gt;
 	/// ...
 	/// </example>
-	public class AjaxRequestHandler : IHttpHandler
+	[Service]
+	public class AjaxRequestHandler : IHttpHandler, IAutoStart
 	{
-		private readonly bool isReusable = false;
+		AjaxRequestDispatcher dispatcher;
+		EventBroker broker;
+
+		public AjaxRequestHandler()
+		{
+		}
+
+		public AjaxRequestHandler(AjaxRequestDispatcher dispatcher, EventBroker broker)
+		{
+			this.dispatcher = dispatcher;
+			this.broker = broker;
+		}
+
+
+
+		public bool IsReusable { get; set; }
+
+
 
 		public void ProcessRequest(HttpContext context)
 		{
-			AjaxRequestDispatcher dispatcher = Context.Current.Resolve<AjaxRequestDispatcher>();
-			string response = dispatcher.Handle(context);
-			context.Response.ContentType = "text/plain";
-            //context.Response.CacheControl = "no-cache";
-			context.Response.Write(response);
+			if (dispatcher == null)
+				dispatcher = N2.Context.Current.Resolve<AjaxRequestDispatcher>();
+
+			dispatcher.Handle(new HttpContextWrapper(context));
 		}
 
-		public bool IsReusable
+		void PostResolveRequestCache(object sender, EventArgs args)
 		{
-			get { return isReusable; }
+			HttpApplication app = sender as HttpApplication;
+			if (app.Context.Handler != null)
+				return;
+			if (!app.Context.Request.AppRelativeCurrentExecutionFilePath.EndsWith(".n2.ashx"))
+				return;
+
+			app.Context.RemapHandler(this);
 		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			broker.PostResolveRequestCache += PostResolveRequestCache;
+		}
+
+		public void Stop()
+		{
+			broker.PostResolveRequestCache -= PostResolveRequestCache;
+		}
+
+		#endregion
 	}
 }

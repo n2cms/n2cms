@@ -81,7 +81,7 @@ namespace N2.Web.Mvc.Html
 			html.ViewContext.Writer.Write(controlPanelHtml);
 
 			if (state == ControlPanelState.DragDrop)
-				html.Resources().JavaScript(@"window.n2ddcp = new n2DragDrop();", ScriptOptions.DocumentReady);
+				html.Resources().JavaScript(ControlPanel.DragDropScriptInitialization(), ScriptOptions.DocumentReady);
 		}
 
 		private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)

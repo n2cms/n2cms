@@ -233,9 +233,7 @@ jQuery(document).ready(function(){{
 			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
-			Register.JavaScript(Page, @"
-window.n2ddcp = new n2DragDrop();
-", ScriptOptions.DocumentReady);
+			Register.JavaScript(Page, DragDropScriptInitialization(), ScriptOptions.DocumentReady);
 		}
 
 		protected virtual void AddPlugins(ControlPanelState state)
@@ -424,5 +422,10 @@ window.n2ddcp = new n2DragDrop();
 		 TemplateContainer(typeof (SimpleTemplateContainer))]
 		public virtual ITemplate DragDropFooterTemplate { get; set; }
 		#endregion
+
+		public static string DragDropScriptInitialization()
+		{
+			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/copy.n2.ashx', move:'{0}/move.n2.ashx', remove:'{0}/remove.n2.ashx', create:'{0}/create.n2.ashx' }});", Url.ResolveTokens("{ManagementUrl}/Resources/Js"));
+		}
 	}
 }

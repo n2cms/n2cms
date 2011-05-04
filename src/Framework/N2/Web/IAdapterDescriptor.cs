@@ -11,13 +11,13 @@ namespace N2.Web
 	{
 		/// <summary>The type of content item to re-define controller for.</summary>
 		Type ItemType { get; }
-
+		
 		/// <summary>The type of controller to instantiate when the relationship is satisfied.</summary>
 		Type AdapterType { get; set; }
 
 		/// <summary>Checks a whether the controller is the right one for a certain path.</summary>
 		/// <param name="path">The path containing information about the current content item.</param>
-		/// <param name="requiredType">The type of controller required by the caller. This is typically a type of interface deriving from <see cref="IContentAdapter"/>.</param>
+		/// <param name="requiredType">The type of controller required by the caller. This is typically a type of interface deriving from <see cref="AbstractContentAdapter"/>.</param>
 		/// <returns>True if the controller is the right one.</returns>
 		bool IsAdapterFor(PathData path, Type requiredType);
 

@@ -2,21 +2,16 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using N2.Plugin;
+using System.Web;
+using N2.Engine;
 
 namespace N2.Web.Parts
 {
 	/// <summary>
 	/// Ajax service that adds itself to the ajax request dispatecher upon start.
 	/// </summary>
-	public abstract class PartsAjaxService : IAjaxService, IAutoStart
+	public abstract class PartsAjaxService : IAjaxService
 	{
-		private readonly AjaxRequestDispatcher dispatcher;
-
-		public PartsAjaxService(AjaxRequestDispatcher dispatcher)
-		{
-			this.dispatcher = dispatcher;
-		}
-
 		public abstract string Name { get;}
 
 		public bool RequiresEditAccess
@@ -24,10 +19,16 @@ namespace N2.Web.Parts
 			get { return true; }
 		}
 
-		public string Handle(NameValueCollection request)
+		public bool IsValidHttpMethod(string httpMethod)
 		{
-			NameValueCollection response = HandleRequest(request);
-            return ToJson(response);
+			return httpMethod == "POST";
+		}
+
+		public void Handle(HttpContextBase context)
+		{
+			NameValueCollection response = HandleRequest(context.Request.Form);
+			context.Response.ContentType = "application/json";
+			context.Response.Write(ToJson(response));
         }
 
         protected string ToJson(NameValueCollection response)
@@ -45,15 +46,5 @@ namespace N2.Web.Parts
         }
 
 		public abstract NameValueCollection HandleRequest(NameValueCollection request);
-
-		public void Start()
-		{
-			dispatcher.AddHandler(this);
-		}
-
-		public void Stop()
-		{
-			dispatcher.RemoveHandler(this);
-		}
 	}
 }

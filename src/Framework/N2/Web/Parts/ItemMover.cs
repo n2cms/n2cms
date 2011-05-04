@@ -9,14 +9,13 @@ using N2.Engine;
 
 namespace N2.Web.Parts
 {
-	[Service]
-    public class ItemMover : PartsAjaxService
+	[Service(typeof(IAjaxService))]
+	public class ItemMover : PartsAjaxService
     {
         private readonly Navigator navigator;
         private readonly IPersister persister;
 
-        public ItemMover(IPersister persister, Navigator navigator, AjaxRequestDispatcher dispatcher)
-            : base(dispatcher)
+        public ItemMover(IPersister persister, Navigator navigator)
         {
             this.persister = persister;
             this.navigator = navigator;

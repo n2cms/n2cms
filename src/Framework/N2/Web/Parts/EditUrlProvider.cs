@@ -5,14 +5,13 @@ using N2.Engine;
 
 namespace N2.Web.Parts
 {
-	[Service]
+	[Service(typeof(IAjaxService))]
 	public class EditUrlProvider : PartsAjaxService
 	{
 		private readonly IEditUrlManager editUrlManager;
 		private readonly Navigator navigator;
 
-		public EditUrlProvider(Navigator navigator, IEditUrlManager editUrlManager, AjaxRequestDispatcher dispatcher)
-			: base(dispatcher)
+		public EditUrlProvider(Navigator navigator, IEditUrlManager editUrlManager)
 		{
 			this.navigator = navigator;
 			this.editUrlManager = editUrlManager;

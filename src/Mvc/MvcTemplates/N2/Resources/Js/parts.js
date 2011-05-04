@@ -199,7 +199,7 @@
 			var url = self.urls[command.action];
 
 			var reloaded = false;
-			$.getJSON(url, command, function (data) {
+			$.post(url, command, function (data) {
 				reloaded = true;
 				if (data.redirect && command.action == "create" && data.dialog !== "no")
 					self.showDialog(data.redirect);
@@ -207,7 +207,7 @@
 					window.location = data.redirect;
 				else
 					window.location.reload();
-			});
+			}, "json");
 
 			// hack: why no success??
 			setTimeout(function () {

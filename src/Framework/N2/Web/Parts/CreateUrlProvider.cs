@@ -9,7 +9,7 @@ using N2.Engine;
 
 namespace N2.Web.Parts
 {
-	[Service]
+	[Service(typeof(IAjaxService))]
 	public class CreateUrlProvider : PartsAjaxService
 	{
         readonly IPersister persister;
@@ -18,8 +18,7 @@ namespace N2.Web.Parts
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
-			: base(dispatcher)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
