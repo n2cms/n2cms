@@ -7,7 +7,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Templates.Mvc.Models.Pages;
 using System.Web.Routing;
-using N2.Extensions.Tests.Fakes;
+using N2.Tests.Fakes;
 
 namespace N2.Templates.Mvc.Tests.Controllers
 {

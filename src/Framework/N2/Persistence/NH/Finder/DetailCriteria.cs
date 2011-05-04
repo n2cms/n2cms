@@ -62,13 +62,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Like(string value)
 		{
-			query.Criterias.Add(new DetailHqlProvider<string>(op, name, Comparison.Like, value));
+			query.Criterias.Add(new DetailHqlProvider<string>(op, name, Comparison.Like, value ?? ""));
 			return query;
 		}
 
 		public IQueryAction NotLike(string value)
 		{
-			query.Criterias.Add(new DetailHqlProvider<string>(op, name, Comparison.NotLike, value));
+			query.Criterias.Add(new DetailHqlProvider<string>(op, name, Comparison.NotLike, value ?? ""));
 			return query;
 		}
 

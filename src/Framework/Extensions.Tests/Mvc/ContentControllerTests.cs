@@ -3,10 +3,9 @@ using System.Web.Mvc;
 using N2.Engine;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Extensions.Tests.Fakes;
-using N2.Web.Mvc;
 
 namespace N2.Extensions.Tests.Mvc
 {

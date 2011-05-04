@@ -113,7 +113,6 @@
     </Compile>
     <Compile Include="Extensions\FilterExtensionsTests.cs" />
     <Compile Include="Extensions\TrashExtensionsTests.cs" />
-    <Compile Include="Fakes\FakeHttpServerUtility.cs" />
     <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
     <Compile Include="Mvc\ContentRouteTests_GetRouteData.cs" />
@@ -127,10 +126,7 @@
     <Compile Include="Mvc\Controllers\RegularController.cs" />
     <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
     <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />
-    <Compile Include="Fakes\FakeHttpContext.cs" />
-    <Compile Include="Fakes\FakeHttpRequest.cs" />
-    <Compile Include="Fakes\FakeHttpResponse.cs" />
-    <Compile Include="Fakes\FakeTypeFinder.cs" />
+    <Compile Include="Fakes\FakeTypeFinder2.cs" />
     <Compile Include="Mvc\Controllers\SearchController.cs" />
     <Compile Include="Mvc\Controllers\TestItemController.cs" />
     <Compile Include="Mvc\Html\DisplayExtensionsTests.cs" />

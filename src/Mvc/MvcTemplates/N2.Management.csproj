@@ -68,6 +68,7 @@
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
+    <Content Include="N2\Externals\External.ascx" />
     <Content Include="N2\Files\Js\FileSelection.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
@@ -486,6 +487,15 @@
     <Compile Include="N2\Empty.aspx.designer.cs">
       <DependentUpon>Empty.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Externals\External.ascx.cs">
+      <DependentUpon>External.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Externals\External.ascx.designer.cs">
+      <DependentUpon>External.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Externals\ExternalContentRepository.cs" />
+    <Compile Include="N2\Externals\ExternalItem.cs" />
     <Compile Include="N2\Files\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

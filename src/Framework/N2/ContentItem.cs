@@ -99,7 +99,7 @@ namespace N2
         private int versionIndex;
         private ContentState state = ContentState.None;
 		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
-        #endregion
+		#endregion
 
         #region Constructor
         /// <summary>Creates a new instance of the ContentItem.</summary>
@@ -756,7 +756,6 @@ namespace N2
 			CloneUnversionableFields(this, cloned);
 			CloneFields(this, cloned);
 			CloneAutoProperties(this, cloned);
-			//ClearUnclonable(cloned);
 			CloneDetails(this, cloned);
 			CloneChildren(this, cloned, includeChildren);
 			CloneAuthorizedRoles(this, cloned);
@@ -794,22 +793,6 @@ namespace N2
 				if (pi.CanRead && pi.CanWrite && pi.GetGetMethod().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length > 0)
 					pi.SetValue(destination, pi.GetValue(source, null), null);
 		}
-
-		//private static void ClearUnclonable(ContentItem destination)
-		//{
-		//    if (destination.id.ToString() == destination.name)
-		//        destination.name = null;
-		//    destination.id = 0;
-		//    destination.url = null;
-		//    destination.parent = null;
-		//    destination.versionOf = null;
-		//    destination.ancestralTrail = null;
-		//    destination.hashCode = null;
-		//    destination.authorizedRoles = new List<Security.AuthorizedRole>();
-		//    destination.children = new ItemList<ContentItem>();
-		//    destination.details = new ContentList<ContentDetail>();
-		//    destination.detailCollections = new ContentList<DetailCollection>();
-		//}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
 		{
@@ -1068,7 +1051,6 @@ namespace N2
 
 		#endregion
 
-
 		#region IInterceptable Members
 
 		public virtual Type GetContentType()
@@ -1078,7 +1060,7 @@ namespace N2
 
 		#endregion
 
-		#region IDependentEntity<IUrlParser> Members
+		#region IInjectable<IUrlParser> Members
 
 		void IInjectable<IUrlParser>.Set(IUrlParser dependency)
 		{

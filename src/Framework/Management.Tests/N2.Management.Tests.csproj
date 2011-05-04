@@ -86,9 +86,17 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExternalContent\ExternalContentTests.cs" />
+    <Compile Include="ExternalContent\ExternalContentRepositoryTests.cs" />
     <Compile Include="FileSystem\FakeFileSystem.cs" />
     <Compile Include="FileSystem\FakePathProvider.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />

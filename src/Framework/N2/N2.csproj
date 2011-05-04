@@ -132,6 +132,7 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="CancellableItemEventArgs.cs" />
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
+    <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Mvc\ExternalContentAttribute.cs" />
     <Compile Include="Web\Mvc\Html\ContentUrlExtensions.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
@@ -784,7 +787,6 @@
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ControlsAttribute.cs" />
     <Compile Include="Web\HttpRequestContextAccessor.cs" />
-    <Compile Include="Engine\IContentAdapter.cs" />
     <Compile Include="Web\IAdapterDescriptor.cs" />
     <Compile Include="Web\IRequestContextAccessor.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />

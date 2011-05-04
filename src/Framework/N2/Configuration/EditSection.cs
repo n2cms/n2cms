@@ -128,7 +128,7 @@ namespace N2.Configuration
 			set { base["settingsEditors"] = value; }
 		}
 
-		/// <summary>Information about default directories, used to find default directory for a page.</summary>
+		/// <summary>Configuration about default directories, used to find default directory for a page.</summary>
 		[ConfigurationProperty("defaultDirectory")]
 		public DefaultDirectoryElement DefaultDirectory
 		{
@@ -136,7 +136,7 @@ namespace N2.Configuration
 			set { base["defaultDirectory"] = value; }
 		}
 
-		/// <summary>Information about versioning.</summary>
+		/// <summary>Configuration about versioning.</summary>
 		[ConfigurationProperty("versions")]
 		public VersionsElement Versions
 		{
@@ -144,7 +144,7 @@ namespace N2.Configuration
 			set { base["versions"] = value; }
 		}
 
-		/// <summary>Information about images.</summary>
+		/// <summary>Configuration about images.</summary>
 		[ConfigurationProperty("images")]
 		public ImagesElement Images
 		{
@@ -152,12 +152,20 @@ namespace N2.Configuration
 			set { base["images"] = value; }
 		}
 
-		/// <summary>Information about membership.</summary>
+		/// <summary>Configuration about membership.</summary>
 		[ConfigurationProperty("membership")]
 		public MembershipElement Membership
 		{
 			get { return (MembershipElement)base["membership"]; }
 			set { base["membership"] = value; }
+		}
+
+		/// <summary>Configuration about external items.</summary>
+		[ConfigurationProperty("externals")]
+		public ExternalsElement Externals
+		{
+			get { return (ExternalsElement)base["externals"]; }
+			set { base["externals"] = value; }
 		}
 	}
 }

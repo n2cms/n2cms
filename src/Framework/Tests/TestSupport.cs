@@ -17,6 +17,7 @@ using N2.Edit.Workflow;
 using N2.Persistence.Proxying;
 using NHibernate;
 using N2.Definitions.Static;
+using Rhino.Mocks;
 
 namespace N2.Tests
 {
@@ -99,5 +100,22 @@ namespace N2.Tests
 
             Setup(out persister, sessionProvider, itemRepository, linkRepository, finder, schemaCreator);
         }
-    }
+
+		public static ContentPersister SetupFakePersister()
+		{
+			FakeRepository<ContentItem> repository;
+			FakeRepository<ContentDetail> linkRepository;
+			IItemFinder finder;
+			return SetupFakePersister(out repository, out linkRepository, out finder);
+		}
+
+		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository, out IItemFinder finder)
+		{
+			repository = new Fakes.FakeRepository<ContentItem>();
+			linkRepository = new Fakes.FakeRepository<ContentDetail>();
+			finder = MockRepository.GenerateStub<N2.Persistence.Finder.IItemFinder>();
+			
+			return new ContentPersister(repository, linkRepository, finder);
+		}
+	}
 }

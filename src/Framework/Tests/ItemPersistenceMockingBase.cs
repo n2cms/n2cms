@@ -28,14 +28,10 @@ namespace N2.Tests
 
 		protected virtual IPersister CreatePersister()
 		{
-			repository = new Fakes.FakeRepository<ContentItem>();
-
-			var linkRepository = mocks.Stub<INHRepository<int, ContentDetail>>();
-			linkRepository.Replay();
-			var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
-			finder.Replay();
-
-			return persister = new ContentPersister(repository, linkRepository, finder);
+			persister = TestSupport.SetupFakePersister();
+			repository = (FakeRepository<ContentItem>)persister.Repository;
+			
+			return persister;
 		}
 
 		protected override T CreateOneItem<T>(int itemID, string name, ContentItem parent)

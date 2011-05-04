@@ -135,6 +135,7 @@
     <Compile Include="Areas\Management\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
     <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
     <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
     <Compile Include="Areas\Tests\Controllers\StaticController.cs" />
@@ -310,6 +311,7 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Tests\Views\External\Index.aspx" />
     <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />

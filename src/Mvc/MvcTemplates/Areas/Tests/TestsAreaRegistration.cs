@@ -16,9 +16,10 @@ namespace N2.Templates.Mvc.Areas.Tests
 		{
 			context.MapContentRoute<Models.TestItemBase>();
 			context.MapRoute("hello",
-				"Tests/{controller}/{action}",
-				new { action = "Index" },
-				new { area = new NonContentConstraint() }
+				"Tests/{controller}/{action}/{id}",
+				new { action = "Index", id = UrlParameter.Optional },
+				new { area = new NonContentConstraint() },
+				new [] { "N2.Templates.Mvc.Areas.Tests.Controllers" }
 				);
 		}
 	}

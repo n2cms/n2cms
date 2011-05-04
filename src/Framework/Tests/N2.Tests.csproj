@@ -110,6 +110,11 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -177,6 +182,11 @@
     <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
     <Compile Include="Fakes\FakeEditUrlManager.cs" />
     <Compile Include="Fakes\FakeFileSystem2.cs" />
+    <Compile Include="Fakes\FakeHttpContext.cs" />
+    <Compile Include="Fakes\FakeHttpRequest.cs" />
+    <Compile Include="Fakes\FakeHttpResponse.cs" />
+    <Compile Include="Fakes\FakeHttpServerUtility.cs" />
+    <Compile Include="Fakes\FakeHttpSessionState.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
     <Compile Include="Installation\AppPathRebaseTests.cs" />

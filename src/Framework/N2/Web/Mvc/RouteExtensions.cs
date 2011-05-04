@@ -29,6 +29,22 @@ namespace N2.Web.Mvc
 			return GetEngine(routeData).Container.ResolveAll<T>();
 		}
 
+
+
+		/// <summary>Applies existing or creates external content on the route data.</summary>
+		/// <param name="data">The data that will receive external content.</param>
+		/// <param name="family">The group to associate external content to.</param>
+		/// <param name="key">The key of this particular external content.</param>
+		/// <param name="url">The url on which this external content item is displayed.</param>
+		/// <returns>The external content item itself.</returns>
+		public static ContentItem ApplyExternalContent(this RouteData data, string family, string key, string url)
+		{
+			var item = ResolveService<Edit.IExternalContentRepository>(data).GetOrCreate(family, key, url);
+			data.ApplyContentItem(ContentRoute.ContentPageKey, item);
+			return item;
+		}
+
+		/// <summary>Applies the current content item and controller to the route data.</summary>
 		public static RouteData ApplyCurrentItem(this RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;
@@ -51,6 +67,8 @@ namespace N2.Web.Mvc
 
 			return data;
 		}
+
+
 
 		public static ContentItem CurrentItem(this RouteData routeData)
 		{

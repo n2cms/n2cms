@@ -139,14 +139,14 @@ namespace N2.Engine
 
 				switch (extension.ToLower())
 				{
-					case ".css":
 					case ".gif":
 					case ".png":
 					case ".jpg":
 					case ".jpeg":
+					case ".swf":
 					case ".js":
+					case ".css":
 					case ".axd":
-					case ".ashx":
 						return true;
 				}
 			}

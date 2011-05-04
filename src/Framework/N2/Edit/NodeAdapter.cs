@@ -56,6 +56,8 @@ namespace N2.Edit
 			set { editUrlManager = value; }
 		}
 
+
+
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{
 			foreach (string uploadFolder in site.UploadFolders)
