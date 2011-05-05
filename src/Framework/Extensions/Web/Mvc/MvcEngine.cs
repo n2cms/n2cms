@@ -57,7 +57,17 @@ namespace N2.Web.Mvc
 		{
 			foreach (Type type in assembly.GetExportedTypes())
 				if (IsController(type))
-					engine.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
+					engine.Container.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
+		}
+
+		/// <summary>
+		/// Registers all controllers in assemblies normally considered for content definition with the Engine, so that they may be resolved correctly.
+		/// </summary>
+		/// <param name="engine"></param>
+		public static void RegisterAllControllers(this IEngine engine)
+		{
+			foreach (Type type in engine.Resolve<ITypeFinder>().Find(typeof(IController)))
+				engine.Container.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
 		}
 
 		private static bool IsController(Type type)

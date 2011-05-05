@@ -42,6 +42,7 @@ namespace N2.Engine
 		/// <summary>The base of the web site.</summary>
 		IHost Host { get; }
 
+		/// <summary>The inversion of control container supporting this application.</summary>
 		IServiceContainer Container { get; }
 
 		/// <summary>
@@ -62,40 +63,45 @@ namespace N2.Engine
 		/// <summary>Resolves a named service configured for the factory.</summary>
 		/// <param name="key">The name of the service to resolve.</param>
 		/// <returns>An instance of the resolved service.</returns>
-		[Obsolete("No longer supported.  Use another method on the Container property")]
+		[Obsolete("No longer supported.  Use another method on the Container property", true)]
 		object Resolve(string key);
 
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">The name of the component.</param>
 		/// <param name="classType">The type of component.</param>
+		[Obsolete("Use Container.AddComponent")]
 		void AddComponent(string key, Type classType);
 
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">The name of the component.</param>
 		/// <param name="serviceType">The service interface of the component.</param>
 		/// <param name="classType">The type of component.</param>
+		[Obsolete("Use Container.AddComponent")]
 		void AddComponent(string key, Type serviceType, Type classType);
 
 		/// <summary>Adds a compnent instance to the container.</summary>
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of service to provide.</param>
 		/// <param name="instance">The service instance to add.</param>
+		[Obsolete("Use Container.AddComponentInstance")]
 		void AddComponentInstance(string key, Type serviceType, object instance);
 
 		/// <summary>Adds a compnent instance to the container.</summary>
 		/// <param name="key">A unique key.</param>
 		/// <param name="classType">The type of component.</param>
 		/// <param name="lifeStyle">The lifestyle that the component will be instantiated with.</param>
+		[Obsolete("Use Container.AddComponentLifeStyle")]
 		void AddComponentLifeStyle(string key, Type classType, ComponentLifeStyle lifeStyle);
 
 		/// <summary>Adds a "facility" to the IoC container. Unless this has been changed it's assumed that tihs is a <see cref="Castle.MicroKernel.IFacility"/>.</summary>
 		/// <param name="key">The name of the facility.</param>
 		/// <param name="facility">The facility instance.</param>
-		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation")]
+		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation", true)]
 		void AddFacility(string key, object facility);
 
 		/// <summary>Releases a component from the IoC container.</summary>
 		/// <param name="instance">The component instance to release.</param>
+		[Obsolete("Use Container.Release")]
 		void Release(object instance);
 	}
 

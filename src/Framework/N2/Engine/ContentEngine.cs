@@ -182,6 +182,7 @@ namespace N2.Engine
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of component to register.</param>
+		[Obsolete("Use Container.AddComponent")]
 		public virtual void AddComponent(string key, Type serviceType)
 		{
 			AddComponent(key, serviceType, serviceType);
@@ -191,6 +192,7 @@ namespace N2.Engine
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of service to provide.</param>
 		/// <param name="classType">The type of component to register.</param>
+		[Obsolete("Use Container.AddComponent")]
 		public virtual void AddComponent(string key, Type serviceType, Type classType)
 		{
 			Container.AddComponent(key, serviceType, classType);
@@ -200,17 +202,19 @@ namespace N2.Engine
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of service to provide.</param>
 		/// <param name="instance">The service instance to add.</param>
+		[Obsolete("Use Container.AddComponentInstance")]
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			Container.AddComponentInstance(key, serviceType, instance);
 		}
 
+		[Obsolete("Use Container.AddComponentLifeStyle")]
 		public void AddComponentLifeStyle(string key, Type classType, ComponentLifeStyle lifeStyle)
 		{
 			Container.AddComponentLifeStyle(key, classType, lifeStyle);
 		}
 
-		[Obsolete("Not supportable by all service containers. Use the IServiceContainer implementation of this")]
+		[Obsolete("Not supportable by all service containers. Use the IServiceContainer implementation of this", true)]
 		public void AddFacility(string key, object facility)
 		{
 			var windsorServiceContainer = container as WindsorServiceContainer;
@@ -221,11 +225,13 @@ namespace N2.Engine
 			windsorServiceContainer.Container.AddFacility(key, (IFacility) facility);
 		}
 
+		[Obsolete("Use Container.Release")]
 		public void Release(object instance)
 		{
 			Container.Release(instance);
 		}
 
+		[Obsolete("Use Container.AddComponentInstance")]
 		public T AddComponentInstance<T>(T instance) where T : class
 		{
 			if (instance != null)

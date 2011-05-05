@@ -151,7 +151,6 @@
     <Compile Include="Templates\Services\NotFoundHandler.cs" />
     <Compile Include="Templates\Services\PermissionDeniedHandler.cs" />
     <Compile Include="Templates\Tabs.cs" />
-    <Compile Include="Templates\Services\TemplatesInitializer.cs" />
     <Compile Include="Templates\UI\Layouts\Translation.cs" />
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>

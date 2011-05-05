@@ -451,7 +451,6 @@
     <Compile Include="N2\Content\Globalization\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Content\Globalization\LanguageInitializer.cs" />
     <Compile Include="N2\Content\Globalization\LanguageMenu.ascx.cs">
       <DependentUpon>LanguageMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -662,7 +661,6 @@
     <Compile Include="N2\Content\LinkTracker\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Content\LinkTracker\LinkTrackerInitializer.cs" />
     <Compile Include="N2\Content\LinkTracker\Tracker.cs" />
     <Compile Include="N2\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -809,7 +807,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Trash\DeleteInterceptor.cs" />
-    <Compile Include="N2\Content\Trash\TrashcanInitializer.cs" />
     <Compile Include="N2\Content\Trash\TrashCleanupAgent.cs" />
     <Compile Include="N2\Content\Trash\TrashContainerItem.cs" />
     <Compile Include="N2\Content\Trash\TrashHandler.cs" />
@@ -855,7 +852,6 @@
     <Compile Include="N2\Content\Wizard\Items\Wonderland.cs" />
     <Compile Include="N2\Content\Wizard\LocationWizard.cs" />
     <Compile Include="N2\Content\Wizard\Settings.cs" />
-    <Compile Include="N2\Content\Wizard\WizardInitialzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Content\App_LocalResources\AvailableZones.ascx.resx">

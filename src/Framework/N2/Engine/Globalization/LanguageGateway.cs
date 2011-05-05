@@ -15,6 +15,7 @@ namespace N2.Engine.Globalization
     /// <summary>
     /// Globalization handler.
     /// </summary>
+	[Service(typeof(ILanguageGateway))]
 	public class LanguageGateway : ILanguageGateway
 	{
 		public const string LanguageKey = "LanguageKey";

@@ -295,7 +295,6 @@
     <Compile Include="Services\PermissionDeniedHandler.cs" />
     <Compile Include="Services\SeoDefinitionAppender.cs" />
     <Compile Include="Services\SyndicatableDefinitionAppender.cs" />
-    <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
     <Compile Include="Services\SeoConcern.cs" />
     <Compile Include="Services\WebForms\LanguageConcern.cs" />

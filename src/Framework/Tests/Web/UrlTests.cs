@@ -928,7 +928,7 @@ namespace N2.Tests.Web
                 var engine = new FakeEngine();
                 var webContext = new FakeWebContextWrapper();
                 webContext.isWeb = true;
-                engine.AddComponentInstance("", typeof(IWebContext), webContext);
+				engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
                 Singleton<IEngine>.Instance = engine;
 
                 webContext.Url = "http://site1/app";
@@ -953,7 +953,7 @@ namespace N2.Tests.Web
                 var engine = new FakeEngine();
                 var webContext = new FakeWebContextWrapper();
                 webContext.isWeb = true;
-                engine.AddComponentInstance("", typeof (IWebContext), webContext);
+				engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
                 Singleton<IEngine>.Instance = engine;
 
                 webContext.Url = "http://site1/app";

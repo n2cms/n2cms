@@ -7,6 +7,7 @@ using N2.Security;
 using System.Collections.Generic;
 using N2.Persistence.Finder;
 using N2.Edit.Workflow;
+using N2.Engine;
 
 namespace N2.Edit.Trash
 {
@@ -14,6 +15,7 @@ namespace N2.Edit.Trash
 	/// Can throw and restore items. Thrown items are moved to a trash 
 	/// container item.
 	/// </summary>
+	[Service(typeof(ITrashHandler))]
 	public class TrashHandler : ITrashHandler
 	{
 		public const string TrashContainerName = "Trash";

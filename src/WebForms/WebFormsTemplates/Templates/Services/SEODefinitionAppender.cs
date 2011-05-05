@@ -3,10 +3,12 @@ using N2.Definitions;
 using N2.Details;
 using N2.Web.UI;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Templates.Services
 {
-    public class SeoDefinitionAppender : IAutoStart
+	[Service]
+	public class SeoDefinitionAppender : IAutoStart
     {
         private readonly IDefinitionManager definitions;
         private string titleTitle = "Page title";

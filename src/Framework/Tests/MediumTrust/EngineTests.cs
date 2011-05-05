@@ -25,7 +25,7 @@ namespace N2.Tests.MediumTrust
 		[Test]
 		public void CanResolve_AddedComponent()
 		{
-			engine.AddComponent("my.component", typeof(MyService));
+			engine.Container.AddComponent("my.component", typeof(MyService), typeof(MyService));
 
 			var sc = engine.Resolve<MyService>();
 			Assert.That(sc, Is.Not.Null);
@@ -34,7 +34,7 @@ namespace N2.Tests.MediumTrust
 		[Test]
 		public void CanResolve_AddedComponent_WithDependencies()
 		{
-			engine.AddComponent("my.component", typeof(MyClient));
+			engine.Container.AddComponent("my.component", typeof(MyClient), typeof(MyClient));
 
 			var mc = engine.Resolve<MyClient>();
 			Assert.That(mc, Is.Not.Null);
@@ -44,8 +44,8 @@ namespace N2.Tests.MediumTrust
 		[Test, Ignore("TODO")]
 		public void CanInject_DependencyProperty()
 		{
-			engine.AddComponent("my.service", typeof(MyService));
-			engine.AddComponent("my.component", typeof(MyClientWithProperty));
+			engine.Container.AddComponent("my.service", typeof(MyService), typeof(MyService));
+			engine.Container.AddComponent("my.component", typeof(MyClientWithProperty), typeof(MyClientWithProperty));
 
 			var mc = engine.Resolve<MyClientWithProperty>();
 			Assert.That(mc, Is.Not.Null);

@@ -4,9 +4,11 @@ using N2.Details;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Web.UI;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Services
 {
+	[Service]
 	public class SeoDefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;

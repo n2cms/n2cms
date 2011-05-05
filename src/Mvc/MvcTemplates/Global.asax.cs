@@ -28,7 +28,7 @@ namespace N2.Templates.Mvc
 
 		public void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
 		{
-			engine.RegisterControllers(typeof(StartController).Assembly);
+			engine.RegisterAllControllers();
 
 			var controllerFactory = engine.Resolve<ControllerFactoryConfigurator>()
 				.NotFound<StartController>(sc => sc.NotFound())

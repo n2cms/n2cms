@@ -73,7 +73,7 @@ namespace N2.Web.Mvc
 				disposable.Dispose();
 			}
 
-			engine.Release(controller);
+			engine.Container.Release(controller);
 		}
 
 		class Pair

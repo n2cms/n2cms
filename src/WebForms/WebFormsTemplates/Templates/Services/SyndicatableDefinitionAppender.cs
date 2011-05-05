@@ -2,6 +2,7 @@ using Castle.Core;
 using N2.Definitions;
 using N2.Details;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Templates.Services
 {
@@ -10,7 +11,8 @@ namespace N2.Templates.Services
     /// to the items implementing the <see cref="ISyndicatable" />
     /// interface.
     /// </summary>
-    public class SyndicatableDefinitionAppender : IAutoStart
+	[Service]
+	public class SyndicatableDefinitionAppender : IAutoStart
     {
         private readonly IDefinitionManager definitions;
         private string checkBoxText = "Make available for syndication.";

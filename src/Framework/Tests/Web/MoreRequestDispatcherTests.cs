@@ -79,7 +79,7 @@ namespace N2.Tests.Web
 			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new FakeErrorHandler();
 			engine = new FakeEngine();
-			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
+			engine.Container.AddComponentInstance(null, typeof(IWebContext), webContext);
 			adapterProvider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
 			adapterProvider.Start();
 

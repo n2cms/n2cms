@@ -4,10 +4,12 @@ using N2.Details;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Edit.LinkTracker
 {
 	/// <summary>This class examines saved items and keeps tracks of links in html.</summary>
+	[Service]
 	public class Tracker : IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";

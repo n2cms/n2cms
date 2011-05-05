@@ -34,7 +34,7 @@ namespace Dinamico
 
 		public static void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
 		{
-			engine.RegisterControllers(Assembly.GetExecutingAssembly());
+			engine.RegisterAllControllers();
 
 			var controllerFactory = engine.Resolve<ControllerFactoryConfigurator>()
 				.NotFound<Controllers.StartPageController>(sc => sc.NotFound())

@@ -1,8 +1,11 @@
+- search paging broken (discussions/256533)
 - tokens
 	- next sibling
 	- previous sibling
 	- image carousel
-	- tracked link
+	- tracking link
+	- facebook like
+	- twitter
 - site settings toolbar
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf

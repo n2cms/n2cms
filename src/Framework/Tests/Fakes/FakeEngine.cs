@@ -91,31 +91,37 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
+		[Obsolete("Use Container.AddComponent")]
 		public void AddComponent(string key, Type serviceType)
 		{
 			AddComponent(key, serviceType, serviceType);
 		}
 
+		[Obsolete("Use Container.AddComponent")]
 		public void AddComponent(string key, Type serviceType, Type classType)
 		{
 			AddComponentInstance(key, serviceType, Activator.CreateInstance(classType));
 		}
 
+		[Obsolete("Use Container.AddComponentInstance")]
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			container.AddComponentInstance(key, serviceType, instance);
 		}
 
+		[Obsolete("Use Container.AddComponentLifeStyle")]
 		public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
 		{
 			container.AddComponent(key, serviceType, serviceType);
 		}
 
+		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation", true)]
 		public void AddFacility(string key, object facility)
 		{
 			throw new NotImplementedException();
 		}
 
+		[Obsolete("Use Container.Release")]
 		public void Release(object instance)
 		{
 			throw new NotImplementedException();

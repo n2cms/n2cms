@@ -2,6 +2,7 @@ using Castle.Core;
 using N2.Definitions;
 using N2.Details;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Services
 {
@@ -10,6 +11,7 @@ namespace N2.Templates.Mvc.Services
 	/// to the items implementing the <see cref="ISyndicatable" />
 	/// interface.
 	/// </summary>
+	[Service]
 	public class SyndicatableDefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;

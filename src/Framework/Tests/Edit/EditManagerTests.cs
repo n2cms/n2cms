@@ -54,9 +54,9 @@ namespace N2.Tests.Edit
 			editManager.EnableVersioning = true;
 
 			var engine = new FakeEngine();
-			engine.AddComponentInstance("editManager", typeof(IEditManager), editManager);
+			engine.Container.AddComponentInstance("editManager", typeof(IEditManager), editManager);
 
-			engine.AddComponentInstance("editSection", typeof(EditSection), new EditSection());
+			engine.Container.AddComponentInstance("editSection", typeof(EditSection), new EditSection());
 
 			Context.Replace(engine);
 		}
