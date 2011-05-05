@@ -291,19 +291,7 @@ namespace N2.Edit
 			
 			if (!string.IsNullOrEmpty(discriminator))
 			{
-				var definition = Definitions.GetDefinition(discriminator);
-				if (!string.IsNullOrEmpty(template))
-				{
-					var info = Definitions.GetTemplate(definition.ItemType, template);
-					ie.Definition = info.Definition;
-					ie.CurrentItem = info.Template();
-					ie.CurrentItem.Parent = Selection.SelectedItem;
-				}
-				else
-				{
-					ie.Discriminator = definition.Discriminator;
-					ie.ParentPath = Selection.SelectedItem.Path;
-				}
+				ie.Initialize(discriminator, template, Selection.SelectedItem);
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{

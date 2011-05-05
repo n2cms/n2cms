@@ -278,5 +278,23 @@ namespace N2.Web.UI.WebControls
 		{
 			return new CommandContext(Definition ?? GetDefinition(), CurrentItem, Interfaces.Editing, Page.User, this, new PageValidator<CommandContext>(Page));
 		}
+
+		public void Initialize(string discriminator, string template, ContentItem parent)
+		{
+			var definition = Engine.Definitions.GetDefinition(discriminator);
+			if (!string.IsNullOrEmpty(template))
+			{
+				var info = Engine.Definitions.GetTemplate(definition.ItemType, template);
+				Definition = info.Definition;
+				CurrentItem = info.Template();
+				CurrentItem.Parent = parent;
+			}
+			else
+			{
+				Discriminator = definition.Discriminator;
+				ParentPath = parent.Path;
+			}
+			EnsureChildControls();
+		}
 	}
 }
