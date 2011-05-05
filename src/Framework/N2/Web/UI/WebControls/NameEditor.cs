@@ -155,30 +155,33 @@ namespace N2.Web.UI.WebControls
 		{
 			IItemEditor itemEditor = ItemUtility.FindInParents<IItemEditor>(Parent);
 
-			if (itemEditor != null)
+			if (itemEditor == null)
+				return;
+			
+			try
 			{
-				try
+				if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
 				{
-					if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
-					{
-                        TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
-                        keepUpdated.Visible = ShowKeepUpdated ?? Config.ShowKeepUpdated;
+					Control tbTitle = itemEditor.AddedEditors[TitleEditorName];
+					if (tbTitle == null)
+						return;
 
-						string titleID = tbTitle.ClientID;
-						string nameID = editor.ClientID;
-						char whitespaceReplacement = (WhitespaceReplacement ?? Config.WhitespaceReplacement);
-						string toLower = (ToLower ?? Config.ToLower).ToString().ToLower();
-						string replacements = GetReplacementsJson();
-						string keepUpdatedBoxID = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
-                        string s = string.Format("jQuery('#{0}').n2name({{nameId:'{0}', titleId:'{1}', whitespaceReplacement:'{2}', toLower:{3}, replacements:{4}, keepUpdatedBoxId:'{5}'}});",
-                            nameID, titleID, whitespaceReplacement, toLower, replacements, keepUpdatedBoxID);
-						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
-					}
+					keepUpdated.Visible = ShowKeepUpdated ?? Config.ShowKeepUpdated;
+
+					string titleID = tbTitle.ClientID;
+					string nameID = editor.ClientID;
+					char whitespaceReplacement = (WhitespaceReplacement ?? Config.WhitespaceReplacement);
+					string toLower = (ToLower ?? Config.ToLower).ToString().ToLower();
+					string replacements = GetReplacementsJson();
+					string keepUpdatedBoxID = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
+					string s = string.Format("jQuery('#{0}').n2name({{nameId:'{0}', titleId:'{1}', whitespaceReplacement:'{2}', toLower:{3}, replacements:{4}, keepUpdatedBoxId:'{5}'}});",
+						nameID, titleID, whitespaceReplacement, toLower, replacements, keepUpdatedBoxID);
+					Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
 				}
-				catch (KeyNotFoundException ex)
-				{
-					throw new N2Exception("No editor definition found for the Title property. The NameEditor copies the title and adjusts it for beeing part of the url. Either add a title editor or use another control to edit the name.", ex);
-				}
+			}
+			catch (KeyNotFoundException ex)
+			{
+				throw new N2Exception("No editor definition found for the Title property. The NameEditor copies the title and adjusts it for beeing part of the url. Either add a title editor or use another control to edit the name.", ex);
 			}
 
 			base.OnPreRender(e);
