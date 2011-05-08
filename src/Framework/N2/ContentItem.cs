@@ -779,6 +779,7 @@ namespace N2
 			destination.alteredPermissions = source.alteredPermissions;
 			destination.created = source.created;
 			destination.updated = source.updated;
+			destination.templateKey = source.templateKey;
 			destination.versionIndex = source.versionIndex;
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;

@@ -6,11 +6,11 @@ namespace N2.Persistence.Serialization
 {
 	public class ElementWriter : IDisposable
 	{
-		private readonly XmlTextWriter writer;
+		public XmlTextWriter Writer { get; private set; }
 
 		public ElementWriter(string elementName, XmlTextWriter writer)
 		{
-			this.writer = writer;
+			this.Writer = writer;
 			writer.WriteStartElement(elementName);
 		}
 
@@ -33,46 +33,39 @@ namespace N2.Persistence.Serialization
 
 		public void WriteAttribute(string attributeName, DateTime value)
 		{
-            WriteAttribute(attributeName, ToUniversalString(value));
+            WriteAttribute(attributeName, SerializationUtility.ToUniversalString(value));
 		}
 
 	    public void WriteAttribute(string attributeName, DateTime? value)
 		{
-            WriteAttribute(attributeName, value.HasValue ? ToUniversalString(value.Value) : string.Empty);
-        }
-
-        internal static string ToUniversalString(DateTime? value)
-        {
-			if (!value.HasValue)
-				return "";
-            return value.Value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
+			WriteAttribute(attributeName, value.HasValue ? SerializationUtility.ToUniversalString(value.Value) : string.Empty);
         }
 
 		public void WriteAttribute(string attributeName, string value)
 		{
-			writer.WriteAttributeString(attributeName, value);
+			Writer.WriteAttributeString(attributeName, value);
 		}
 
 		public void WriteAttribute(string prefix, string localName, string ns, string value)
 		{
-			writer.WriteAttributeString(prefix, localName, ns, value);
+			Writer.WriteAttributeString(prefix, localName, ns, value);
 		}
 
 		#endregion
 
 		public void Dispose()
 		{
-			writer.WriteEndElement();
+			Writer.WriteEndElement();
 		}
 
 		public void Write(string value)
 		{
-			writer.WriteString(value);
+			Writer.WriteString(value);
 		}
 
 		public void WriteCData(string value)
 		{
-			writer.WriteCData(value);
+			Writer.WriteCData(value);
 		}
 	}
 }

@@ -19,5 +19,12 @@ namespace N2.Persistence.Serialization
 		{
 			return string.Format("{0},{1}", type.AssemblyQualifiedName.Split(','));
 		}
+
+		public static string ToUniversalString(DateTime? value)
+		{
+			if (!value.HasValue)
+				return "";
+			return value.Value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
+		}
 	}
 }

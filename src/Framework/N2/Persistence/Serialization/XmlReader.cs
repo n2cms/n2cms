@@ -30,9 +30,11 @@ namespace N2.Persistence.Serialization
 				BinaryFormatter formatter = new BinaryFormatter();
 				return formatter.Deserialize(new MemoryStream(buffer));
 			}
-			else if(type == typeof(DateTime)) {
+			else if (type == typeof(DateTime))
+			{
 				return ToNullableDateTime(value);
-			} else
+			}
+			else
 				return Utility.Convert(value, type);
 		}
 

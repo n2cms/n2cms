@@ -65,6 +65,7 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("parent", item.Parent != null ? item.Parent.ID.ToString() : string.Empty);
 			itemElement.WriteAttribute("title", item.Title);
 			itemElement.WriteAttribute("zoneName", item.ZoneName);
+			itemElement.WriteAttribute("templateKey", item.TemplateKey);
 			itemElement.WriteAttribute("created", item.Created);
 			itemElement.WriteAttribute("updated", item.Updated);
 			itemElement.WriteAttribute("published", item.Published);

@@ -97,6 +97,8 @@ namespace N2.Persistence.Serialization
 			item.Visible = Convert.ToBoolean(attributes["visible"]);
 			if (!string.IsNullOrEmpty(attributes["zoneName"]))
 				item.ZoneName = attributes["zoneName"];
+			if (!string.IsNullOrEmpty(attributes["templateKey"]))
+				item.TemplateKey = attributes["templateKey"];
 			HandleParentRelation(item, attributes["parent"], journal);
 		}
 

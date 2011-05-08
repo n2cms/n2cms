@@ -9,6 +9,8 @@ using N2.Tests.Serialization.Items;
 using System.Threading;
 using N2.Web;
 using System.Xml.Linq;
+using N2.Details;
+using System.Collections;
 
 namespace N2.Tests.Serialization
 {
@@ -248,6 +250,75 @@ namespace N2.Tests.Serialization
 			{
 				Url.ApplicationPath = null;
 			}
+		}
+
+		[Test]
+		public void CanExport_AndImport_Detail_WithMultipleValues()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			var detail = N2.Details.ContentDetail.Multi("Hello",
+				booleanValue: true,
+				dateTimeValue: new DateTime(2010, 6, 16),
+				doubleValue: 10.7,
+				linkedValue: item,integerValue: 123,
+				objectValue: new[] { 1, 2, 3 },
+				stringValue: "World");
+			detail.AddTo(item);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+			var readDetail = readItem.Details["Hello"];
+
+			Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
+			Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
+			Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
+			Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
+			Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
+			Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
+			Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
+			Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
+		}
+
+		[Test]
+		public void CanExport_AndImport_DetailCollection_WithMultipleValues()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			var collection = item.GetDetailCollection("World", true);
+			var detail = N2.Details.ContentDetail.Multi("Hello",
+				booleanValue: true,
+				dateTimeValue: new DateTime(2010, 6, 16),
+				doubleValue: 10.7,
+				linkedValue: item, 
+				integerValue: 123,
+				objectValue: new[] { 1, 2, 3 },
+				stringValue: "World");
+			detail.AddTo(collection);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+			var readDetail = readItem.GetDetailCollection("World", false).Details[0];
+
+			Assert.That(readDetail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.MultiType));
+			Assert.That(readDetail.BoolValue, Is.EqualTo(detail.BoolValue));
+			Assert.That(readDetail.DateTimeValue, Is.EqualTo(detail.DateTimeValue));
+			Assert.That(readDetail.DoubleValue, Is.EqualTo(detail.DoubleValue));
+			Assert.That(readDetail.IntValue, Is.EqualTo(detail.IntValue));
+			Assert.That(readDetail.LinkedItem, Is.EqualTo(detail.LinkedItem));
+			Assert.That(readDetail.ObjectValue, Is.EquivalentTo((IEnumerable)detail.ObjectValue));
+			Assert.That(readDetail.StringValue, Is.EqualTo(detail.StringValue));
+		}
+
+
+		[Test]
+		public void TemplateKey_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.TemplateKey = "Hello";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+			
+			Assert.That(readItem.TemplateKey, Is.EqualTo(item.TemplateKey));
 		}
 
         private void AssertEquals(DateTime? expected, DateTime? actual)
@@ -648,12 +719,11 @@ Public License instead of this License.
 
 		private static string ExportToString(ContentItem item, Exporter exporter, ExportOptions options)
 		{
-			StringBuilder sb = new StringBuilder();
-			StringWriter sw = new StringWriter(sb);
-
-            exporter.Export(item, options, sw);
-
-			return sb.ToString();
+			using (var sw = new StringWriter())
+			{
+				exporter.Export(item, options, sw);
+				return sw.ToString();
+			}
 		}
 	}
 }

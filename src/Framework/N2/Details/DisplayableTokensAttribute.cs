@@ -29,7 +29,10 @@ namespace N2.Details
 				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
 				{
 					var dc = item.GetDetailCollection(detailName, true);
-					var cd = new ContentDetail(item, detailName, c.Tokens.Select(t => t.Fragment).StringJoin()) { EnclosingCollection = dc, IntValue = c.Tokens.First().Index };
+					var cd = ContentDetail.Multi(detailName, stringValue: c.Tokens.Select(t => t.Fragment).StringJoin(), integerValue: c.Tokens.First().Index);
+					cd.EnclosingItem = item;
+					cd.EnclosingCollection = dc;
+
 					if (dc.Details.Count > i)
 						dc.Details[i] = cd;
 					else

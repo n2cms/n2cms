@@ -1,16 +1,15 @@
-using System;
 using N2.Configuration;
-using N2.Tests.Fakes;
-using NUnit.Framework;
 using N2.Definitions;
-using N2.Persistence;
-using N2.Persistence.Serialization;
-using N2.Tests.Serialization.Items;
-using N2.Web;
-using Rhino.Mocks;
-using N2.Persistence.Proxying;
 using N2.Definitions.Static;
 using N2.Edit.Workflow;
+using N2.Persistence;
+using N2.Persistence.Proxying;
+using N2.Persistence.Serialization;
+using N2.Tests.Fakes;
+using N2.Tests.Serialization.Items;
+using N2.Web;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Serialization
 {
