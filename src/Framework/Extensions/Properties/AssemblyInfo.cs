@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using N2.Web.Mvc;
 using N2.Linq;
+using N2.Web.Mvc;
 
 // General Information about an assembly is controlled through the following set of attributes. Change these attribute values to modify the information associated with an assembly.
 [assembly: AssemblyTitle("N2.Extensions")]

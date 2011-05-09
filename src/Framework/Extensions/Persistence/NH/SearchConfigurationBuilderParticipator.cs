@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Engine;
-using N2.Persistence.NH;
+﻿using Lucene.Net.Analysis;
 using N2.Configuration;
+using N2.Engine;
 using N2.Web;
-using Lucene.Net.Analysis;
 
 namespace N2.Persistence.NH
 {

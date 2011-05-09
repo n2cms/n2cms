@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NHibernate.Search;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using N2.Collections;
-using N2.Persistence.NH;
 using N2.Edit.Trash;
+using N2.Persistence.NH;
+using NHibernate.Search;
 
 namespace N2
 {

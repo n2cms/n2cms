@@ -24,10 +24,9 @@ You're free to use this VPP under the same license as DotNetZip.
 **/
 
 using System;
+using System.Collections;
 //using System.Collections.Generic;
 //using System.Text;
-using System.Collections;
-using Ionic.Zip;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
