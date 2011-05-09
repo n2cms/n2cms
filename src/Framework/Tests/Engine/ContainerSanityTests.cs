@@ -1,9 +1,9 @@
-using N2.Engine.Castle;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.Installation;
 using N2.Engine;
+using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
-using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Persistence.Finder;
@@ -11,7 +11,6 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web;
 using NUnit.Framework;
-using N2.Edit.Installation;
 
 namespace N2.Tests.Engine
 {

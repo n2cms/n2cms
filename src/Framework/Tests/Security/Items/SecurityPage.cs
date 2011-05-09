@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Security;
 
 namespace N2.Tests.Security.Items

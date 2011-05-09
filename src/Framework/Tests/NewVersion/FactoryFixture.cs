@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using System.Configuration;
-using N2.Engine;
-using N2.Engine.Castle;
 
 namespace N2.Tests.NewVersion
 {

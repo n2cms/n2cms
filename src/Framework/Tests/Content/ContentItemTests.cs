@@ -1,7 +1,7 @@
 ﻿using System;
+using N2.Details;
 using N2.Security;
 using NUnit.Framework;
-using N2.Details;
 
 namespace N2.Tests.Content
 {

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Tests.Edit.Items
 {
 	public class ItemWithRequiredProperty : N2.ContentItem

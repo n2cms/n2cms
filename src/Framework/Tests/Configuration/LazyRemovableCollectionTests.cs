@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using System.Linq;
 using N2.Configuration;
+using NUnit.Framework;
 
 namespace N2.Tests.Configuration
 {

@@ -1,5 +1,5 @@
-using NUnit.Framework;
 using N2.Collections;
+using NUnit.Framework;
 
 namespace N2.Tests.Collections
 {

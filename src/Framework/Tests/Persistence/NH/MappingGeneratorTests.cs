@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+using N2.Details;
 using N2.Persistence;
 using N2.Persistence.Proxying;
-using N2.Details;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using N2.Persistence;
-using N2.Persistence.NH;
-using N2.Web;
-using NUnit.Framework;
 using N2.Details;
 using N2.Edit.Installation;
-using Rhino.Mocks;
+using N2.Persistence;
 using N2.Persistence.Finder;
+using N2.Web;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Installation
 {

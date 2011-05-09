@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using NUnit.Framework;
-using N2.Persistence.NH;
-using N2.Persistence;
-using N2.Details;
-using N2.Tests.Persistence.Definitions;
 using System.Diagnostics;
+using N2.Details;
+using N2.Persistence;
+using N2.Persistence.NH;
+using N2.Tests.Persistence.Definitions;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {

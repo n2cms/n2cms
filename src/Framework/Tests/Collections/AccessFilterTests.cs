@@ -1,8 +1,8 @@
-using N2.Configuration;
-using NUnit.Framework;
-using N2.Collections;
 using System.Security.Principal;
+using N2.Collections;
+using N2.Configuration;
 using N2.Security;
+using NUnit.Framework;
 
 namespace N2.Tests.Collections
 {

@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using N2.Configuration;
 using N2.Edit.FileSystem;
 using N2.Web;
 using NUnit.Framework;
-using N2.Configuration;
 
 namespace N2.Tests.Edit.FileSystem
 {

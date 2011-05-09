@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
+﻿using N2.Persistence;
 using N2.Web;
-using N2.Persistence;
+using NUnit.Framework;
 
 namespace N2.Tests.Globalization
 {

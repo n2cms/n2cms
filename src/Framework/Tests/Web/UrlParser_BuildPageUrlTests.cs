@@ -1,8 +1,7 @@
-using System;
 using N2.Configuration;
+using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
-using N2.Tests.Web.Items;
 
 namespace N2.Tests.Web
 {

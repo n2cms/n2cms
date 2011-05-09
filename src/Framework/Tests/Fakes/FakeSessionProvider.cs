@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Web;
 using NHibernate;

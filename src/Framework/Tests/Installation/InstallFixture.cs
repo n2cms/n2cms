@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using N2.Tests.Persistence.Definitions;
+using NUnit.Framework;
 
 namespace N2.Tests.Installation
 {

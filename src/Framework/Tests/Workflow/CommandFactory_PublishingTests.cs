@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using NUnit.Framework;
+﻿using System.Linq;
 using N2.Edit.Workflow;
-using Rhino.Mocks;
 using N2.Tests.Workflow.Items;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Workflow
 {

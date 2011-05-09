@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Tests.Edit.Items
 {
 	[N2.Web.UI.FieldSetContainer("first", "Fieldset with two fieldsets", 10)]

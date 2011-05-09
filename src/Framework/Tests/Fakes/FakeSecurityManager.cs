@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-using N2.Security;
 using N2.Collections;
+using N2.Security;
 
 namespace N2.Tests.Fakes
 {

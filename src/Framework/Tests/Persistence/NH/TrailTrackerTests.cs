@@ -1,10 +1,9 @@
 ﻿using System.Threading;
-using N2.Edit;
+using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
-using N2.Engine;
 
 namespace N2.Tests.Persistence.NH
 {

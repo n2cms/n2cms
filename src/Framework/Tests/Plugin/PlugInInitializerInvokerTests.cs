@@ -1,11 +1,8 @@
-using System;
 using N2.Configuration;
-using NUnit.Framework;
-using N2.Plugin;
 using N2.Engine;
-using Rhino.Mocks;
-using System.Reflection;
+using N2.Plugin;
 using N2.Tests.Plugin;
+using NUnit.Framework;
 
 namespace N2.Tests.PlugIn
 {

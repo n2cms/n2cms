@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using N2;
-using NUnit.Framework;
 using N2.Persistence;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence
 {

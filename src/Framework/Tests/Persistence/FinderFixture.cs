@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using N2.Persistence;
 
 namespace N2.Tests.Persistence
 {

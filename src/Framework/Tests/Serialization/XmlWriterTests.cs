@@ -4,12 +4,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
-using NUnit.Framework;
-using N2.Definitions;
 using N2.Details;
-using N2.Security;
 using N2.Persistence.Serialization;
+using N2.Security;
 using N2.Tests.Serialization.Items;
+using NUnit.Framework;
 
 namespace N2.Tests.Serialization
 {

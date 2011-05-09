@@ -1,11 +1,9 @@
-using NUnit.Framework;
-using N2.Integrity;
-using N2.Web;
-using N2.Tests.Fakes;
-using System.Linq;
 using System;
-using N2.Definitions;
-using Rhino.Mocks;
+using System.Linq;
+using N2.Integrity;
+using N2.Tests.Fakes;
+using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {

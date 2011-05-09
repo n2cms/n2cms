@@ -1,7 +1,7 @@
-using N2.Details;
-using N2.Persistence.Serialization;
 using System;
 using System.Xml.Linq;
+using N2.Details;
+using N2.Persistence.Serialization;
 
 namespace N2.Tests.Serialization.Items
 {

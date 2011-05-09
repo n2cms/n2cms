@@ -1,6 +1,6 @@
 using System.Linq;
-using NUnit.Framework;
 using N2.Tests.Collections;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence
 {

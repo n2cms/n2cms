@@ -1,14 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Configuration;
+using System.IO;
 using System.Text;
 using System.Web;
 using N2.Engine;
+using N2.Engine.Castle;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
-using System.Configuration;
-using System.Collections;
-using System;
-using N2.Engine.MediumTrust;
-using N2.Engine.Castle;
 
 namespace N2.Tests.Web.WebControls
 {

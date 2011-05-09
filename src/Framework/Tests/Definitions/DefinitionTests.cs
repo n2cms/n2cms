@@ -1,20 +1,19 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using N2.Configuration;
-using NUnit.Framework;
 using N2.Definitions;
+using N2.Definitions.Static;
 using N2.Details;
 using N2.Integrity;
 using N2.Persistence;
-using N2.Tests.Definitions.Items;
-using N2.Tests.Fakes;
 using N2.Persistence.Proxying;
 using N2.Security;
-using Rhino.Mocks;
+using N2.Tests.Definitions.Items;
 using N2.Web;
-using N2.Definitions.Static;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Definitions
 {

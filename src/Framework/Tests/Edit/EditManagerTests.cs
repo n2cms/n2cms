@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
-using N2.Configuration;
-using N2.Tests.Fakes;
-using NUnit.Framework;
-using N2.Edit;
-using N2.Definitions;
+using System.Security.Principal;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Web.UI.WebControls;
-using Rhino.Mocks;
-using N2.Persistence;
-using N2.Tests.Edit.Items;
-using System.Security.Principal;
-using N2.Persistence.Proxying;
+using N2.Configuration;
+using N2.Definitions;
 using N2.Definitions.Static;
+using N2.Edit;
+using N2.Persistence;
+using N2.Persistence.Proxying;
 using N2.Security;
+using N2.Tests.Edit.Items;
+using N2.Tests.Fakes;
 using N2.Web;
+using N2.Web.UI.WebControls;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Edit
 {

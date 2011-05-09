@@ -1,13 +1,4 @@
-using System;
-using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
-using System.Diagnostics;
-using N2.Definitions;
-using N2.Persistence;
-using NHibernate.Tool.hbm2ddl;
-using N2.Persistence.NH.Finder;
-using N2.Tests.Fakes;
-using N2.Persistence.NH;
 
 namespace N2.Tests.Persistence.NH
 {
