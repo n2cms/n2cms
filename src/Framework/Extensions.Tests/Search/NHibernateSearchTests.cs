@@ -1,21 +1,8 @@
-using System;
-using System.Linq;
-using N2.Tests.Persistence.Definitions;
-using NUnit.Framework;
-using System.Diagnostics;
-using N2.Definitions;
-using N2.Persistence;
-using NHibernate.Tool.hbm2ddl;
-using N2.Persistence.NH.Finder;
-using N2.Tests.Fakes;
-using N2.Persistence.NH;
-using N2.Collections;
-using N2.Details;
-using System.Collections;
-using NHibernate.Engine;
-using N2.Edit.Workflow;
 using System.Configuration;
 using N2.Configuration;
+using N2.Persistence.NH;
+using N2.Tests.Fakes;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {

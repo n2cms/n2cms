@@ -1,8 +1,7 @@
-﻿using System.Web.Mvc.Html;
+﻿using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
-using N2.Extensions.Tests.Mvc.Controllers;
 using NUnit.Framework;
-using HtmlHelper = System.Web.Mvc.HtmlHelper;
 
 namespace N2.Extensions.Tests.Mvc
 {

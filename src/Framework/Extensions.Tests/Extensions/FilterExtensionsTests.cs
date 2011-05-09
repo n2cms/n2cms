@@ -1,9 +1,8 @@
-﻿using N2.Engine;
+﻿using System;
+using N2.Collections;
 using N2.Security;
 using N2.Tests.Fakes;
 using NUnit.Framework;
-using N2.Collections;
-using System;
 
 namespace N2.Extensions.Tests.Extensions
 {

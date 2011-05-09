@@ -10,7 +10,6 @@ using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Tests.Fakes;
 
 namespace N2.Extensions.Tests.Mvc
 {

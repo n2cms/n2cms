@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using N2.Tests;
+﻿using N2.Tests;
+using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Extensions
 {
