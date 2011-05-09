@@ -1,12 +1,10 @@
 using System;
+using System.Security.Principal;
 using System.Web.Security;
+using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 using N2.Security.Details;
-using N2.Edit.Trash;
-using N2.Persistence;
-using N2.Definitions;
-using System.Security.Principal;
 
 namespace N2.Security.Items
 {

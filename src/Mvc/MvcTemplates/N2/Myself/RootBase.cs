@@ -1,9 +1,7 @@
-using N2.Details;
-using N2.Integrity;
-using N2.Installation;
-using N2.Web;
-using N2.Web.UI;
 using N2.Definitions;
+using N2.Installation;
+using N2.Integrity;
+using N2.Web;
 
 namespace N2.Management.Myself
 {

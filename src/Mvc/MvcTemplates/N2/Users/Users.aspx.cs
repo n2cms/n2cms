@@ -1,4 +1,3 @@
-using System;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Security;

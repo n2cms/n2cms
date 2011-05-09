@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Edit.Installation;
-using N2.Persistence;
-using N2.Persistence.Finder;
-using N2.Details;
-using N2.Persistence.NH;
 
 namespace N2.Management.Installation
 {

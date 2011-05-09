@@ -9,17 +9,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
-using N2.Installation;
-using N2.Web;
-using N2.Engine;
 using N2.Edit.Installation;
-using System.Collections.Generic;
+using N2.Engine;
+using N2.Web;
 
 namespace N2.Edit.Install
 {

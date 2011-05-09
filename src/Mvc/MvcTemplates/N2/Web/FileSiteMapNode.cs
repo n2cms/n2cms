@@ -1,6 +1,4 @@
 using System.Web;
-using System.IO;
-using System.Web.Hosting;
 
 namespace N2.Edit.Web
 {
