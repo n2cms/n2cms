@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Definitions;
 using N2.Edit;
 using N2.Edit.Web;
-using N2.Definitions;
 using N2.Security;
 
 namespace N2.Management.Content.Templates

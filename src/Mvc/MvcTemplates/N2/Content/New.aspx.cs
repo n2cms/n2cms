@@ -19,16 +19,15 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
+using N2.Collections;
 using N2.Definitions;
 using N2.Integrity;
-using N2.Web.UI.WebControls;
 using N2.Security;
 using N2.Web;
-using N2.Collections;
-using System.Web.UI;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {

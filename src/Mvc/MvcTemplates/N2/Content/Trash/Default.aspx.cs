@@ -1,7 +1,5 @@
 using System;
-using System.Web;
 using System.Web.UI.WebControls;
-using N2.Web;
 using N2.Web.UI;
 
 namespace N2.Edit.Trash

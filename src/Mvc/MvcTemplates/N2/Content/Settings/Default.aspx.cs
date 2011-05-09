@@ -1,7 +1,7 @@
 using System;
-using N2.Configuration;
 using System.Configuration;
 using System.Web.UI;
+using N2.Configuration;
 using N2.Web;
 
 namespace N2.Edit.Settings

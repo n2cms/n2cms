@@ -1,14 +1,8 @@
 using System;
-using System.Configuration;
-using N2.Plugin.Scheduling;
 using System.Diagnostics;
-using N2.Engine;
-using System.Net;
-using N2.Web;
-using N2.Configuration;
 using N2.Persistence;
-using System.Collections.Generic;
 using N2.Persistence.Finder;
+using N2.Plugin.Scheduling;
 
 namespace N2.Edit.AutoPublish
 {

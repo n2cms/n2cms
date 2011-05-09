@@ -1,4 +1,3 @@
-using System;
 
 namespace N2.Edit.Navigation
 {

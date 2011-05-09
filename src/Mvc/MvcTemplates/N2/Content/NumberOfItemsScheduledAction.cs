@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using N2.Plugin.Scheduling;
-using N2.Engine;
-using N2.Definitions;
-using N2.Persistence;
+﻿using N2.Definitions;
 using N2.Persistence.Finder;
+using N2.Plugin.Scheduling;
 
 namespace N2.Management.Content
 {

@@ -1,7 +1,7 @@
 using System;
 using N2.Configuration;
-using N2.Web.UI.WebControls;
 using N2.Security;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {

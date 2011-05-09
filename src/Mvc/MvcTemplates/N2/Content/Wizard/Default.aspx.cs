@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Wizard.Items;
-using N2.Edit;
 
 namespace N2.Edit.Wizard
 {
