@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Persistence
+﻿namespace N2.Persistence
 {
 	/// <summary>
 	/// Fulfils the dependency of an object. This class is used by the <see cref="ContentDependencyInjector"/>.

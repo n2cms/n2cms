@@ -1,7 +1,6 @@
+using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Mvc;
-using System.Web.Hosting;
 using N2.Web.Drawing;
 
 namespace N2.Details

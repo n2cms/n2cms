@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Edit.Workflow
+﻿namespace N2.Edit.Workflow
 {
     /// <summary>
     /// Converys information about state changes

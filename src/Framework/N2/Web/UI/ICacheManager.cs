@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System.Web;
 using System.Web.UI;
-using System.Web;
+
 namespace N2.Web.UI
 {
     public interface ICacheManager

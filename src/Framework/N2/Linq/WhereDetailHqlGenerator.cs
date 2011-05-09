@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NHibernate.Linq.Functions;
-using NHibernate.Linq;
 using System.Reflection;
+using NHibernate.Linq;
+using NHibernate.Linq.Functions;
 
 namespace N2.Linq
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace N2.Edit.Workflow.Commands
+﻿namespace N2.Edit.Workflow.Commands
 {
 	public class RedirectToEditCommand : CommandBase<CommandContext>
 	{

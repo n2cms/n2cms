@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using N2.Configuration;
-using N2.Engine;
 using System.Reflection;
 using System.Security.Principal;
+using N2.Configuration;
+using N2.Engine;
 using N2.Security;
 
 namespace N2.Plugin

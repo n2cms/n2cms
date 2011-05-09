@@ -1,5 +1,4 @@
-﻿using System;
-namespace N2.Security
+﻿namespace N2.Security
 {
 	/// <summary>
 	/// Editable attributes implementing this interface can have their 

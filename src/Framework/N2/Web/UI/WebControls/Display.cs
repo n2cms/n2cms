@@ -1,9 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Web.UI;
 using N2.Details;
-using System.ComponentModel;
-using System.Web;
 
 namespace N2.Web.UI.WebControls
 {

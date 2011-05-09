@@ -1,9 +1,7 @@
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 using System.Xml;
 using N2.Details;
-using System.Collections.Generic;
 
 namespace N2.Persistence.Serialization
 {

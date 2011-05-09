@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using N2.Security;
 
 namespace N2.Definitions
 {

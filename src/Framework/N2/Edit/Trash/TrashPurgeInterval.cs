@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-
-namespace N2.Edit.Trash
+﻿namespace N2.Edit.Trash
 {
 	/// <summary>
 	/// Specifies intervals after which deleted items can be purged from trash.

@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using System.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {

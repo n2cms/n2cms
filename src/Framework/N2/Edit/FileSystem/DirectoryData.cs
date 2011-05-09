@@ -1,5 +1,3 @@
-using System;
-
 namespace N2.Edit.FileSystem
 {
 	/// <summary>

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Definitions
 {
 	/// <summary>An interface used by N2 to inject content item's dependency to the definition manager (needed by the definition property).</summary>

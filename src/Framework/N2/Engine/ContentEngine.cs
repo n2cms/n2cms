@@ -11,17 +11,16 @@
 #endregion
 
 using System;
-using System.Configuration;
 using Castle.MicroKernel;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;
+using N2.Engine.Castle;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Plugin;
 using N2.Security;
 using N2.Web;
-using N2.Engine.Castle;
 
 namespace N2.Engine
 {

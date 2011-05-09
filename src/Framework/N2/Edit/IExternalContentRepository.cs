@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Edit
+﻿namespace N2.Edit
 {
 	/// <summary>
 	/// Service providing content items based on an external family and key.

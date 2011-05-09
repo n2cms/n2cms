@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Configuration
+﻿namespace N2.Configuration
 {
     /// <summary>
     /// Represents a way to map a friendly url to a template.

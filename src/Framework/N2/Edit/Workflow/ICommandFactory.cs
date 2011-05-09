@@ -1,5 +1,5 @@
-﻿using System;
-using N2.Edit.Workflow.Commands;
+﻿using N2.Edit.Workflow.Commands;
+
 namespace N2.Edit.Workflow
 {
     /// <summary>

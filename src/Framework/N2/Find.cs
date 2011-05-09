@@ -10,7 +10,6 @@
 
 using System.Linq;
 using N2.Linq;
-using NHibernate;
 using N2.Persistence.NH;
 
 namespace N2

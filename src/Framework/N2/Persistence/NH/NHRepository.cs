@@ -30,10 +30,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using N2.Engine;
 using NHibernate;
 using NHibernate.Criterion;
-using N2.Engine;
 
 namespace N2.Persistence.NH
 {

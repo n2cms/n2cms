@@ -1,7 +1,5 @@
-using System.Web;
 using System.Web.UI;
 using N2.Resources;
-using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {

@@ -1,13 +1,12 @@
 using System;
-using System.Web.Hosting;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using N2.Edit;
-using N2.Resources;
-using N2.Configuration;
 using System.Configuration;
 using System.Text;
+using System.Web.Hosting;
+using System.Web.UI.WebControls;
+using N2.Configuration;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {

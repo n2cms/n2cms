@@ -1,8 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Xml;
 using System.Linq;
-using System.Collections;
+using System.Xml;
 
 namespace N2.Configuration
 {

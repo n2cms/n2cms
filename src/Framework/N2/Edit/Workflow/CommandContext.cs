@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Web;
-using N2.Edit;
 using N2.Definitions;
 
 namespace N2.Edit.Workflow

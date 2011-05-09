@@ -1,4 +1,3 @@
-using System;
 using N2.Persistence.Finder;
 
 namespace N2.Persistence.NH.Finder

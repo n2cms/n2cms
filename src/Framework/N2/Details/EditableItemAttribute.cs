@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Web.UI;
 using N2.Definitions;
+using N2.Edit.Workflow;
+using N2.Persistence;
 using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
-using N2.Edit.Workflow;
-using N2.Persistence;
 
 namespace N2.Details
 {

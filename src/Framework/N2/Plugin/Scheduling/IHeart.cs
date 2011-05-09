@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace N2.Plugin.Scheduling
 {
     /// <summary>

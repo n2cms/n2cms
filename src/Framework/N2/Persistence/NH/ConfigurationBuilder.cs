@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,12 +14,8 @@ using N2.Security;
 using N2.Web;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Cfg.Loquacious;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
-using ConfigurationErrorsException = System.Configuration.ConfigurationErrorsException;
-using ConnectionStringSettings = System.Configuration.ConnectionStringSettings;
-using ConnectionStringsSection = System.Configuration.ConnectionStringsSection;
 
 namespace N2.Persistence.NH
 {

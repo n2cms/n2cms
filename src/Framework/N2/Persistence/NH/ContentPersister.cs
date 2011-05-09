@@ -11,16 +11,14 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
-using N2.Collections;
+using System.Linq;
+using N2.Definitions;
 using N2.Details;
+using N2.Engine;
 using N2.Persistence.Finder;
 using NHibernate.Criterion;
-using NHibernate;
-using N2.Engine;
-using N2.Definitions;
 
 namespace N2.Persistence.NH
 {

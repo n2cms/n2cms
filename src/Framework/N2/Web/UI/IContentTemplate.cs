@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Web.UI
+﻿namespace N2.Web.UI
 {
 	/// <summary>
 	/// This interface is used for setting the content item associated with a 

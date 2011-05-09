@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Configuration;
+﻿using System.Configuration;
 using N2.Web.Drawing;
 
 namespace N2.Configuration

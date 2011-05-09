@@ -21,7 +21,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using N2.Collections;
 
 namespace N2.Details

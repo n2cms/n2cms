@@ -1,18 +1,17 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Castle.Core;
+using Castle.Core.Internal;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Facilities;
-using Castle.MicroKernel.LifecycleConcerns;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Naming;
 using Castle.Windsor;
 using N2.Plugin;
-using Castle.MicroKernel.SubSystems.Naming;
-using Castle.Core.Internal;
 
 namespace N2.Engine.Castle
 {

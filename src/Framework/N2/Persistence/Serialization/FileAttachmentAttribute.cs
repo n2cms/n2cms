@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
-using N2.Web;
 
 namespace N2.Persistence.Serialization
 {

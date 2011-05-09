@@ -1,5 +1,4 @@
 ﻿using System;
-using NHibernate;
 
 namespace N2.Persistence
 {

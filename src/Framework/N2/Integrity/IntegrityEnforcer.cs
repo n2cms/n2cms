@@ -1,8 +1,6 @@
-using System;
+using N2.Engine;
 using N2.Persistence;
 using N2.Plugin;
-using N2.Engine;
-using N2.Definitions;
 
 namespace N2.Integrity
 {

@@ -1,12 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using N2.Edit.Web;
-using N2.Resources;
-using System.Threading;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {

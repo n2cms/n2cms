@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using N2.Engine;
-using N2.Persistence.NH;
 using N2.Details;
-using NHibernate.Linq;
+using N2.Engine;
 using N2.Persistence.Finder;
+using N2.Persistence.NH;
+using NHibernate.Linq;
 
 namespace N2.Linq
 {

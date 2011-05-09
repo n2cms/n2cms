@@ -1,9 +1,6 @@
-using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace N2.Details
 {

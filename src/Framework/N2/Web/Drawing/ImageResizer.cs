@@ -1,10 +1,9 @@
 using System;
-using System.IO;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using N2.Engine;
-using N2.Configuration;
 
 namespace N2.Web.Drawing
 {

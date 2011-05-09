@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.CodeDom;
-using System.Web;
-using System.Web.UI;
-using System.ComponentModel;
 using System.Web.Compilation;
 
 namespace N2.Web.Compilation

@@ -1,5 +1,4 @@
-﻿using System;
-namespace N2.Integrity
+﻿namespace N2.Integrity
 {
 	public interface IIntegrityEnforcer
 	{

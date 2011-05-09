@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using N2.Persistence.Finder;
 
 namespace N2.Collections
 {

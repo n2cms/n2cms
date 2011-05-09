@@ -1,27 +1,24 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using N2.Definitions;
-using N2.Details;
+using N2.Definitions.Static;
+using N2.Engine;
+using N2.Installation;
+using N2.Persistence;
 using N2.Persistence.NH;
-using N2.Security;
 using N2.Persistence.Serialization;
 using N2.Web;
 using NHibernate;
 using NHibernate.Driver;
-using NHibernate.Tool.hbm2ddl;
-using Environment=NHibernate.Cfg.Environment;
-using N2.Persistence;
 using NHibernate.SqlTypes;
-using System.Diagnostics;
-using N2.Installation;
-using N2.Engine;
-using N2.Definitions.Static;
+using NHibernate.Tool.hbm2ddl;
+using Environment = NHibernate.Cfg.Environment;
 
 namespace N2.Edit.Installation
 {

@@ -1,26 +1,25 @@
 ﻿using N2.Configuration;
 using N2.Definitions;
+using N2.Definitions.Static;
 using N2.Edit;
 using N2.Edit.FileSystem;
+using N2.Edit.Installation;
 using N2.Edit.Settings;
+using N2.Edit.Workflow;
 using N2.Engine.MediumTrust;
-using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
+using N2.Persistence.Serialization;
 using N2.Plugin;
 using N2.Plugin.Scheduling;
 using N2.Security;
-using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Web.UI;
-using N2.Edit.Workflow;
 using NHibernate;
 using NHibernate.Cfg;
-using N2.Edit.Installation;
-using N2.Definitions.Static;
 
 namespace N2.Engine.Configuration
 {

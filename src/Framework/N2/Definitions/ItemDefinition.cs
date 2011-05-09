@@ -21,16 +21,14 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Security.Principal;
-using N2.Definitions.Static;
 using N2.Details;
 using N2.Installation;
 using N2.Integrity;
-using N2.Web.UI;
 using N2.Web;
+using N2.Web.UI;
 
 namespace N2.Definitions
 {

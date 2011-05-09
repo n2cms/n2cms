@@ -1,4 +1,3 @@
-using System.Collections.Specialized;
 using System.Web;
 
 namespace N2.Web

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Web.Drawing
+﻿namespace N2.Web.Drawing
 {
 	/// <summary>
 	/// How to fit the image in the max width and height.

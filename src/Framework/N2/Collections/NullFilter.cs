@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Collections
+﻿namespace N2.Collections
 {
     /// <summary>
     /// A very positive filter that match any item.

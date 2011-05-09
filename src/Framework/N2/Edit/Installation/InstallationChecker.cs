@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Plugin;
-using N2.Engine;
-using N2.Web;
-using N2.Configuration;
 using System.Diagnostics;
+using N2.Configuration;
+using N2.Engine;
+using N2.Plugin;
+using N2.Web;
 
 namespace N2.Edit.Installation
 {

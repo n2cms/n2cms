@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using N2.Details;
 
 namespace N2.Web.Rendering

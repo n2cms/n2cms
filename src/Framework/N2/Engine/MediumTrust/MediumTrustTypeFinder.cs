@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web.Configuration;
-using N2.Engine;
-using N2.Web;
 using N2.Configuration;
+using N2.Web;
 
 namespace N2.Engine.MediumTrust
 {

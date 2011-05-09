@@ -1,4 +1,3 @@
-using System;
 using System.Web.UI;
 
 namespace N2.Web.UI.WebControls

@@ -1,10 +1,8 @@
 using System;
-using N2;
-using N2.Web.UI;
-using N2.Engine;
-using N2.Persistence.Finder;
 using System.Collections.Generic;
 using N2.Definitions;
+using N2.Engine;
+using N2.Persistence.Finder;
 
 namespace N2.Integrity
 {

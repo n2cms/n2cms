@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
-using System.IO;
 using N2.Persistence.Proxying;
 using NHibernate.Cfg.MappingSchema;
 

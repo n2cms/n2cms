@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Collections
+﻿namespace N2.Collections
 {
 	/// <summary>
 	/// An item that has a name.

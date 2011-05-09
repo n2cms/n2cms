@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Specialized;
-using System.Web;
 using N2.Definitions;
 using N2.Edit;
-using N2.Persistence;
-using N2.Web;
 using N2.Engine;
+using N2.Persistence;
 
 namespace N2.Web.Parts
 {

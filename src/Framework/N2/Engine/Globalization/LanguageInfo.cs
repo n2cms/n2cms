@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Engine.Globalization
+﻿namespace N2.Engine.Globalization
 {
 	/// <summary>
 	/// Used to cache information about a language available in the system.

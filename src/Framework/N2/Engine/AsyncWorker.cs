@@ -1,5 +1,5 @@
-﻿using System.Threading;
-using System;
+﻿using System;
+using System.Threading;
 
 namespace N2.Engine
 {

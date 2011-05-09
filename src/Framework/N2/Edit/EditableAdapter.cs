@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI;
+using N2.Definitions;
 using N2.Edit.FileSystem;
 using N2.Engine;
-using N2.Web;
 using N2.Web.UI.WebControls;
-using N2.Definitions;
 
 namespace N2.Edit
 {

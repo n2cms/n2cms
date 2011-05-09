@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 namespace N2.Persistence.Serialization
 {
     /// <summary>

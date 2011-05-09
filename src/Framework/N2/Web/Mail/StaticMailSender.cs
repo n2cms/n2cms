@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net.Mail;
-using System.Net;
 
 namespace N2.Web.Mail
 {

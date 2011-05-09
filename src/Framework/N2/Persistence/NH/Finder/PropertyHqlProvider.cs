@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
-using NHibernate;
 
 namespace N2.Persistence.NH.Finder
 {

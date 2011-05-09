@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
