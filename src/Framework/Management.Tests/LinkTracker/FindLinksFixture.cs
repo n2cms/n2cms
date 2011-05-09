@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using N2.Edit.LinkTracker;
+using NUnit.Framework;
 
 namespace N2.Edit.Tests.LinkTracker
 {

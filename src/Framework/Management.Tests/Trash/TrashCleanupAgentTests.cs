@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using N2.Tests;
-using N2.Tests.Fakes;
-using N2.Persistence.NH;
-using N2.Definitions;
 using N2.Edit.Trash;
-using N2.Persistence;
-using N2.Web;
 using N2.Engine;
-using Rhino.Mocks;
-using N2.Configuration;
+using N2.Persistence.NH;
+using N2.Tests;
+using N2.Web;
 using NHibernate.Tool.hbm2ddl;
+using NUnit.Framework;
 
 namespace N2.Edit.Tests.Trash
 {

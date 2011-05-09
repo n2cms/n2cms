@@ -1,12 +1,12 @@
 using System;
-using NUnit.Framework;
+using N2.Definitions;
+using N2.Edit.Trash;
+using N2.Edit.Workflow;
 using N2.Persistence;
 using N2.Web;
+using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using N2.Edit.Trash;
-using N2.Definitions;
-using N2.Edit.Workflow;
 
 namespace N2.Edit.Tests.Trash
 {
