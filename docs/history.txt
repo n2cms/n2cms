@@ -1,4 +1,6 @@
 ﻿2.2
+- Find.Items.Where.Detail().IsNull() (ThreadId=243772)
+- fixed search paging (discussions/256533)
 - Associated parts with external entity (ThreadId=251116)
 - ITemplateable/TemplateKey in n2item
 - nh 3.2a2

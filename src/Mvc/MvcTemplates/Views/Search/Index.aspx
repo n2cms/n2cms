@@ -21,17 +21,17 @@
 		</div>
 		<div id="pg">
 			<%if (Model.PageNumber > 0){%>
-			<%=Html.ActionLink((string)GetLocalResourceObject("PrevLink"), "Index", "Search", new { id = "pg-prev" })%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("PrevLink"), "Index", "Search", new { q = Model.SearchTerm, p = Model.PageNumber - 1 }, new { id = "pg-prev" })%>
 			<%}%>
 			<%for(i = 0; i < Model.TotalPages; i++){%>
 				<%if(i == Model.PageNumber){%>
 				<strong><%=i + 1%></strong>
 				<%}else{%>
-				<%=Html.ActionLink((i + 1).ToString(), "Index", "Search")%>
+				<%=Html.ActionLink((i + 1).ToString(), "Index", "Search", new { q = Model.SearchTerm, p = i }, null)%>
 				<%}%>
 			<%} %>
 			<%if(Model.PageNumber < Model.TotalPages - 1){%>
-			<%=Html.ActionLink((string)GetLocalResourceObject("NextLink"), "Index", "Search", new { id = "pg-next" })%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("NextLink"), "Index", "Search", new { q = Model.SearchTerm, p = Model.PageNumber + 1 }, new { id = "pg-next" })%>
 			<%}%>
 		</div>
 	<%}else if(Model.HasSearchTerm){%>

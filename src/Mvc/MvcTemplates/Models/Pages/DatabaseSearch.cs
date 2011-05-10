@@ -13,29 +13,31 @@ namespace N2.Templates.Mvc.Models.Pages
 	{
 		public virtual IQueryEnding CreateQuery(string query)
 		{
-			List<ItemFilter> filters = GetFilters();
 			string like = '%' + query + '%';
 
-			return Find.Items
-				.Where.Title.Like(like)
-				.Or.Name.Like(like)
-				.Or.Detail().Like(like)
-				.Filters(filters);
+			var q = Find.Items.Where
+				.OpenBracket()
+					.Title.Like(like)
+					.Or.Name.Like(like)
+					.Or.Detail().Like(like)
+				.CloseBracket()
+				.And.ZoneName.IsNull(true);
+
+			if (SearchRoot != null)
+				q = q.And.AncestralTrail.Like(Utility.GetTrail(SearchRoot) + "%");
+
+			return q;
 		}
 
 		public override ICollection<ContentItem> Search(string query, int pageNumber, int pageSize, out int totalRecords)
 		{
-			var n2Query = CreateQuery(query);
+			var q = CreateQuery(query);
+			totalRecords = q.Count();
 
-			var records = n2Query.Select();
-
-			totalRecords = records.Count;
-
-			return n2Query
-				.Select()
-				.Skip(pageSize*pageNumber)
-				.Take(pageSize)
-				.ToList();
+			return q.FirstResult(pageSize*pageNumber)
+				.MaxResults(pageSize)
+				.Filters(GetFilters())
+				.Select();
 		}
 	}
 }

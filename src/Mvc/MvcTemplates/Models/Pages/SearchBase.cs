@@ -22,9 +22,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		protected virtual List<ItemFilter> GetFilters()
 		{
 			List<ItemFilter> filters = new List<ItemFilter>();
-			filters.Add(new NavigationFilter());
-			if (SearchRoot != null)
-				filters.Add(new ParentFilter(SearchRoot));
+			filters.Add(Filter.Is.Navigatable());
 			return filters;
 		}
 	}

@@ -1,5 +1,4 @@
 ? saving parts issue (discussions/256042)
-- search paging broken (discussions/256533)
 - tokens
 	- next sibling
 	- previous sibling
@@ -14,7 +13,6 @@
 - AttributeTransformerBase (ThreadId=250548)
 - index template replaces default
 - static parts
-- Find.Items.Where.Detail().IsNull() (ThreadId=243772)
 - fix wiki (ThreadId=243022)
 - property interception to detail collections
 - property interception avoid proceeding unecessarily
