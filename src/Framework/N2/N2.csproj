@@ -215,10 +215,14 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
+    <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailNullHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyNullHqlProvider.cs" />
     <Compile Include="Persistence\NH\PersistentContentItemListOfT.cs" />
     <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />

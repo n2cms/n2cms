@@ -11,11 +11,4 @@ namespace N2.Persistence.Finder
 
         IQueryAction IsNotNull();
     }
-
-    public interface INullableCriteria<T> : ICriteria<T>
-    {
-        IQueryAction IsNull();
-
-        IQueryAction IsNotNull();
-    }
 }

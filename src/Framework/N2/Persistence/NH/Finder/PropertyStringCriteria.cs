@@ -16,6 +16,17 @@ namespace N2.Persistence.NH.Finder
 			this.name = name;
 		}
 
+		#region ICriteria<string> Members
+
+		public IQueryAction IsNull(bool isNull)
+		{
+			query.Criterias.Add(new PropertyIsNullHqlProvider<string>(op, name, !isNull));
+
+			return query;
+		}
+
+		#endregion
+
 		#region IStringCriteria Members
 
 		public IQueryAction Like(string value)

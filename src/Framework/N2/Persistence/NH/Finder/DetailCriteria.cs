@@ -77,6 +77,13 @@ namespace N2.Persistence.NH.Finder
 			query.Criterias.Add(new DetailInHqlProvider<T>(op, name, values));
 			return query;
 		}
+
+		public IQueryAction Null<T>(bool isNull)
+		{
+			query.Criterias.Add(new DetailNullHqlProvider<T>(op, name, isNull));
+			return query;
+		}
+
 		#endregion
 	}
 }

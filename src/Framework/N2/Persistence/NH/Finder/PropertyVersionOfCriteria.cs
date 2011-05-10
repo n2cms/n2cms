@@ -36,5 +36,16 @@ namespace N2.Persistence.NH.Finder
 		}
 		#endregion
 
+
+		#region ICriteria<ContentItem> Members
+
+		public IQueryAction IsNull(bool isNull)
+		{
+			query.Criterias.Add(new PropertyIsNullHqlProvider<ContentItem>(op, "VersionOf", !isNull));
+
+			return query;
+		}
+
+		#endregion
 	}
 }

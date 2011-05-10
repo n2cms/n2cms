@@ -13,6 +13,8 @@ namespace N2.Persistence
 		GreaterOrEqual,
 		LessOrEqual,
 		Like,
-		NotLike
+		NotLike,
+		Null,
+		NotNull
 	}
 }

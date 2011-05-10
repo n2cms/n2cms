@@ -17,5 +17,10 @@ namespace N2.Persistence.Finder
 		IQueryAction NotEq(T value);
 
 		IQueryAction In(params T[] anyOf);
+
+		/// <summary>The parameter is or isn't null.</summary>
+		/// <param name="isNull">True if the parameter should be null.</param>
+		/// <returns></returns>
+		IQueryAction IsNull(bool isNull = true);
 	}
 }

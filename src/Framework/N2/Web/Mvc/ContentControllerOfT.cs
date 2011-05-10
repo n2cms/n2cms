@@ -78,7 +78,10 @@ namespace N2.Web.Mvc
 		/// <returns>A reference to the item's template.</returns>
 		public virtual ActionResult Index()
 		{
-			return View(CurrentItem);
+			if (CurrentItem.IsPage)
+				return View(CurrentItem);
+			else
+				return PartialView(CurrentItem);
 		}
 
 

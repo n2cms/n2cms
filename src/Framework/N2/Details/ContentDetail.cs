@@ -404,6 +404,35 @@ namespace N2.Details
 			else
 				return "Value";
 		}
+
+		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value type.</summary>
+		/// <typeparam name="T">The value type for which the to retrieve the associated property.</typeparam>
+		/// <returns>The name of the property on the detail class that can encapsulate the given value.</returns>
+		public static string GetAssociatedPropertyName<T>()
+		{
+			return GetAssociatedPropertyName(typeof(T));
+		}
+
+		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value type.</summary>
+		/// <param name="valueType">The value type for which the to retrieve the associated property.</param>
+		/// <returns>The name of the property on the detail class that can encapsulate the given value.</returns>
+		public static string GetAssociatedPropertyName(Type valueType)
+		{
+			if (valueType == typeof(bool))
+				return "BoolValue";
+			else if (valueType == typeof(int))
+				return "IntValue";
+			else if (valueType == typeof(double))
+				return "DoubleValue";
+			else if (valueType == typeof(DateTime))
+				return "DateTimeValue";
+			else if (valueType == typeof(string))
+				return "StringValue";
+			else if (typeof(ContentItem).IsAssignableFrom(valueType))
+				return "LinkedItem";
+			else
+				return "Value";
+		}
 		#endregion
 
         #region Equals, HashCode and ToString Overrides
