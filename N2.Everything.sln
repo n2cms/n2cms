@@ -107,6 +107,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B56F738-E780-4F6E-9B7F-7D161F7E3521}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebForms", "WebForms", "{2F1767D9-B52F-497D-8AE1-9B80B9EC5441}"
 EndProject
@@ -172,6 +175,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCS", "examples\MinimalCSharp\wwwroot\AppCS.csproj", "{1A6297F1-B181-473D-936B-BFE8D27B79ED}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppVB", "examples\MinimalVisualBasic\wwwroot\AppVB.vbproj", "{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "src\Mvc\Dinamico\Dinamico.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -243,6 +248,10 @@ Global
 		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -276,6 +285,7 @@ Global
 		{250D978B-3C2C-4151-9A69-B36F3F53E8B8} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {AF8671B0-7A7E-43EF-BE48-4A2006C53CED}
 		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {AF8671B0-7A7E-43EF-BE48-4A2006C53CED}
+		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9} = {AF8671B0-7A7E-43EF-BE48-4A2006C53CED}
 		{ADCE41A8-1D80-4153-B869-2BD119086BF5} = {CB15BB2E-35B2-499D-9C27-D29F08432CAD}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution

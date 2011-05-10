@@ -14,19 +14,21 @@ HOW TO GET STARTED
 	* Examples - Minimal C#
 	* Examples - Minimal Visual Basic
 	* Examples - Minimal MVC
+	* Src - Dinamico
 	* Src - MVC Templates
 	* Src - WebForm Templates
-3. Choose between N2.Everything-vs2008 to open everything, or venture down the 
+3. Choose between N2.Everything.sln to open everything, or venture down the 
    directory structure of Src or Examples and open a solution down there.
 4. Find the Visual Studio solution explorer find the web project you chose (2.), 
    right-click on it and select "Set as StartUp Project".
-5. Set the a web site project as startup project (N2.Templates... in src)
+5. Set the a web site project as startup project (N2.Templates.* or Dinamico in src)
 6. Compile and run (Ctrl+F5)
 
 
 
 WHERE TO FIND INFORMATION
 
+* http://n2cms.codeplex.com/releases/ (Download N2 CMS 2.x Developer Documentation)
 * http://n2cms.com/Documentation.aspx
 * http://google.com
 * http://n2cms.codeplex.com/Thread/List.aspx
