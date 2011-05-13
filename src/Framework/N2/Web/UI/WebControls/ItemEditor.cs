@@ -51,6 +51,8 @@ namespace N2.Web.UI.WebControls
 
 		#region Properties
 
+		public Type ContainerTypeFilter { get; set; }
+
 		public virtual IEngine Engine { get; set; }
 
 		/// <summary>The content adapter related to the current page item.</summary>
@@ -154,7 +156,7 @@ namespace N2.Web.UI.WebControls
 
 			if (definition != null)
 			{
-				AddedEditors = EditAdapter.AddDefinedEditors(definition, CurrentItem, this, Page.User);
+				AddedEditors = EditAdapter.AddDefinedEditors(definition, CurrentItem, this, Page.User, ContainerTypeFilter);
 				if (!Page.IsPostBack)
 				{
 					EditAdapter.LoadAddedEditors(definition, CurrentItem, AddedEditors, Page.User);

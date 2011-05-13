@@ -1,4 +1,5 @@
 ﻿2.2
+- Site settings via toolbar [RecursiveContainer]
 - Find.Items.Where.Detail().IsNull() (ThreadId=243772)
 - fixed search paging (discussions/256533)
 - Associated parts with external entity (ThreadId=251116)

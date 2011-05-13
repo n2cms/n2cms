@@ -6,7 +6,6 @@
 	- tracking link
 	- facebook like
 	- twitter
-- site settings toolbar
 - tokens in mvc templates & wf
 - lucene search in mvc templates & wf
 - IRedirect

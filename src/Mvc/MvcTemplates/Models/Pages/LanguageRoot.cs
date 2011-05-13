@@ -12,12 +12,11 @@ using N2.Security;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
-	//[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
 	[PageDefinition("Language root",
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
 		IconUrl = "~/Content/Img/page_world.png")]
-	[TabContainer(LanguageRoot.SiteArea, "Site", 70, 
+	[RecursiveContainer(LanguageRoot.SiteArea, 70, 
 		RequiredPermission = Permission.Administer)]
 	[RestrictParents(typeof (StartPage))]
 	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]

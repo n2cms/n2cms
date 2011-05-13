@@ -21,9 +21,10 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["RegisterTabCss"] = value; }
 		}
 
-		protected override void OnLoad(EventArgs e)
+		public string TabText
 		{
-			base.OnLoad(e);
+			get { return base.ToolTip; }
+			set { base.ToolTip = value; }
 		}
 
 		protected override void OnPreRender(EventArgs e)

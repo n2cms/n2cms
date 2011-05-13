@@ -77,14 +77,36 @@ namespace N2.Edit
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
-		/// <param name="itemType">The type of content item whose editors to add.</param>
+		/// <param name="definition">The definition containing editor information.</param>
+		/// <param name="item">The content item whose editors to add.</param>
 		/// <param name="editorContainer">The container onto which add the editors.</param>
 		/// <param name="user">The user whose credentials will be queried.</param>
-		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control editorContainer, IPrincipal user)
+		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user)
+		{
+			return AddEditors(definition, item, container, user, null);
+		}
+
+		/// <summary>Adds defined editors and containers to a control.</summary>
+		/// <param name="definition">The definition containing editor information.</param>
+		/// <param name="item">The content item whose editors to add.</param>
+		/// <param name="container">The container onto which add the editors.</param>
+		/// <param name="user">The user whose permissions to use when adding editors.</param>
+		/// <param name="containerNameFilter">Only add editors within this container.</param>
+		/// <returns>A list of added editors.</returns>
+		public IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter)
 		{
 			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
 			var root = interfaceBuilder.Build(definition.Containers.OfType<IContainable>(), definition.Editables.OfType<IContainable>());
-			AddEditorsRecursive(item, editorContainer, root, user, addedEditors);
+			if (containerTypeFilter != null)
+			{
+				root = new HierarchyNode<IContainable>(new RootContainer())
+				{
+					Children = root.DescendantsAndSelf()
+						.Where(d => containerTypeFilter.IsAssignableFrom(d.Current.GetType()))
+						.ToList()
+				};
+			}
+			AddEditorsRecursive(item, container, root, user, addedEditors);
 			return addedEditors;
 		}
 
@@ -94,13 +116,16 @@ namespace N2.Edit
 				.Where(n => securityManager.IsAuthorized(n.Current, user, item))
 				.OrderBy(n => n.Current.SortOrder))
 			{
-				var editorControl = childNode.Current.AddTo(containerControl);
+				var control = childNode.Current.AddTo(containerControl);
+				if (control == null)
+					continue;
+
 				if (childNode.Current is IEditable)
 				{
-					addedEditors[childNode.Current.Name] = editorControl;
-					OnAddedEditor(new ControlEventArgs(editorControl));
+					addedEditors[childNode.Current.Name] = control;
+					OnAddedEditor(new ControlEventArgs(control));
 				}
-				AddEditorsRecursive(item, editorControl, childNode, user, addedEditors);
+				AddEditorsRecursive(item, control, childNode, user, addedEditors);
 			}
 		}
 

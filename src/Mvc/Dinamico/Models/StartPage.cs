@@ -10,6 +10,7 @@ using N2.Engine.Globalization;
 using System.Globalization;
 using N2.Web.UI;
 using N2.Web;
+using N2.Security;
 
 namespace Dinamico.Models
 {
@@ -17,7 +18,8 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
-	[TabContainer(Defaults.Containers.Site, "Site", 1000)]
+	[RecursiveContainer(Defaults.Containers.Site, 1000,
+		RequiredPermission = Permission.Administer)]
 	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
 	{

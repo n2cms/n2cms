@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\CountFilter.cs" />
     <Compile Include="Collections\FilterHelper.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
+    <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\CommentAnalyzer.cs" />

@@ -31,11 +31,21 @@ namespace N2.Edit
 			where T : AdministrativePluginAttribute;
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
-		/// <param name="itemType">The type of content item whose editors to add.</param>
-		/// <param name="editorContainer">The container onto which add the editors.</param>
+		/// <param name="definition">The definition containing editor information.</param>
+		/// <param name="item">The content item whose editors to add.</param>
+		/// <param name="container">The container onto which add the editors.</param>
 		/// <param name="user">The user whose permissions to use when adding editors.</param>
 		/// <returns>A list of added editors.</returns>
-		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control editorContainer, IPrincipal user);
+		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user);
+
+		/// <summary>Adds defined editors and containers to a control.</summary>
+		/// <param name="definition">The definition containing editor information.</param>
+		/// <param name="item">The content item whose editors to add.</param>
+		/// <param name="container">The container onto which add the editors.</param>
+		/// <param name="user">The user whose permissions to use when adding editors.</param>
+		/// <param name="containerNameFilter">Only add editors within this container.</param>
+		/// <returns>A list of added editors.</returns>
+		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter);
 
 		/// <summary>Sets initial editor values.</summary>
 		/// <param name="addedEditors">Previously added editor controls.</param>

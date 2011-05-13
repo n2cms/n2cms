@@ -623,5 +623,14 @@ namespace N2
 			item[detailName] = value;
 			return true;
 		}
+
+		/// <summary>Formats a string using properties from the value object.</summary>
+		/// <param name="format">A format string, e.g. Hello {Title}.</param>
+		/// <param name="values">A value object, e.g. new { Title = "Hello" }</param>
+		/// <returns>The format string with any format placeholders replaced by value properties.</returns>
+		public static string Format(string format, object values)
+		{
+			return Regex.Replace(format, "{([\\w\\.]+)}", m => (string)Utility.Evaluate(values, m.Groups[1].Value), RegexOptions.Compiled);
+		}
 	}
 }
