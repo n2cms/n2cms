@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using N2.Definitions;
 using N2.Installation;
 

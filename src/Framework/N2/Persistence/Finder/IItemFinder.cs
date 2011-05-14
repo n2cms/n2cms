@@ -1,5 +1,4 @@
-﻿using System;
-namespace N2.Persistence.Finder
+﻿namespace N2.Persistence.Finder
 {
 	/// <summary>
 	/// Classes implementing this interface are responsible creating a query 

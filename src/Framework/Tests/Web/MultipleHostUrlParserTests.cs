@@ -1,6 +1,6 @@
+using N2.Configuration;
 using N2.Tests.Fakes;
 using N2.Web;
-using N2.Configuration;
 
 namespace N2.Tests.Web
 {

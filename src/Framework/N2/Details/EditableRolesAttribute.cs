@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using N2.Details;
+﻿using System.Collections.Generic;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Security;
+using N2.Details;
 
 namespace N2.Security.Details
 {

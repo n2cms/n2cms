@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Web.Configuration;
 using N2.Engine;
 
 namespace N2.Configuration

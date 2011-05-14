@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Tests.Definitions.Items
+﻿namespace N2.Tests.Definitions.Items
 {
 	[PartDefinition]
 	public class DefinitionPartDefinedItem : ContentItem

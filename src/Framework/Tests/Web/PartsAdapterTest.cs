@@ -1,16 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using N2.Configuration;
+using N2.Definitions;
 using N2.Engine;
-using N2.Persistence;
-using N2.Persistence.NH;
-using N2.Tests.Fakes;
+using N2.Engine.MediumTrust;
 using N2.Tests.Web.Items;
-using N2.Web;
 using N2.Web.Parts;
 using NUnit.Framework;
-using N2.Definitions;
-using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Web
 {

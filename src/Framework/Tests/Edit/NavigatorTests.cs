@@ -1,9 +1,7 @@
-﻿using NUnit.Framework;
-using N2.Edit;
-using N2.Persistence;
-using N2.Web;
+﻿using N2.Edit;
 using N2.Tests.Content;
-using Rhino.Mocks;
+using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Edit
 {

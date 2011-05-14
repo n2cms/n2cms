@@ -1,5 +1,6 @@
-using N2.Security;
 using System.Security.Principal;
+using N2.Security;
+
 namespace N2.Collections
 {
 	/// <summary>

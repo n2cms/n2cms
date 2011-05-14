@@ -1,6 +1,5 @@
 using System.Configuration;
 using N2.Configuration;
-using N2.Edit;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;

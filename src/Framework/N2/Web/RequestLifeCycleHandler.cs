@@ -1,12 +1,9 @@
 using System;
 using System.Web;
 using N2.Configuration;
-using N2.Edit;
-using N2.Edit.Installation;
 using N2.Engine;
-using N2.Web.UI;
-using System.Diagnostics;
 using N2.Plugin;
+using N2.Web.UI;
 
 namespace N2.Web
 {

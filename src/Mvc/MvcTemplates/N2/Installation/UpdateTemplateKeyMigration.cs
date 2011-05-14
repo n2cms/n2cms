@@ -1,7 +1,6 @@
-﻿using N2.Edit.Installation;
+﻿using N2.Details;
+using N2.Edit.Installation;
 using N2.Persistence;
-using N2.Security;
-using N2.Details;
 
 namespace N2.Management.Installation
 {

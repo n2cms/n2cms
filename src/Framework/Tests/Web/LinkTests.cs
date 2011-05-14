@@ -1,7 +1,7 @@
 using System.Web.UI.HtmlControls;
 using N2.Tests.Web.Items;
-using NUnit.Framework;
 using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Web
 {

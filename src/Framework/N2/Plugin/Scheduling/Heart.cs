@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Timers;
 using System.Diagnostics;
+using System.Timers;
 using N2.Engine;
 
 namespace N2.Plugin.Scheduling

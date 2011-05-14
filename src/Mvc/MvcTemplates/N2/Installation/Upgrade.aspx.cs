@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
-using N2.Installation;
-using N2.Edit.Installation;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Install
 {

@@ -4,22 +4,20 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Configuration;
 using N2.Definitions;
-using N2.Edit;
+using N2.Definitions.Static;
+using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
+using N2.Persistence;
+using N2.Persistence.Proxying;
 using N2.Tests;
 using N2.Tests.Fakes;
 using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
-using HtmlHelper = System.Web.Mvc.HtmlHelper;
-using N2.Persistence.Proxying;
-using N2.Persistence;
-using N2.Definitions.Static;
-using N2.Edit.Workflow;
 
 namespace N2.Extensions.Tests.Mvc
 {

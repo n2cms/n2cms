@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Tests.Persistence;
-using NUnit.Framework;
+﻿using System.Linq;
 using N2.Edit;
-using N2.Edit.FileSystem;
-using N2.Web;
 using N2.Edit.Workflow;
 using N2.Security;
 using N2.Tests.Fakes;
+using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Edit
 {

@@ -1,9 +1,9 @@
+using System.Collections;
+using System.Web;
 using N2.Configuration;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
-using System.Web;
-using System.Collections;
 
 namespace N2.Tests.Web.UrlParsing
 {

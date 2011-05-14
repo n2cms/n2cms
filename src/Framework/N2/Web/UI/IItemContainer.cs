@@ -18,10 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Web.UI
 {
     /// <summary>Defines an interface that controls can use when traversing the control hierarchy to find the current most relevant item.</summary>

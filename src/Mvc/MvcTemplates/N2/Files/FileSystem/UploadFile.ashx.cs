@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
+using System.Web.Security;
+using N2.Edit;
 using N2.Edit.FileSystem;
 using N2.Web;
-using N2.Edit;
-using System.Web.Security;
 
 namespace N2.Management.Files.FileSystem
 {

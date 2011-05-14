@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Web.UI;
+﻿using System.Linq;
 using N2.Web.Parsing;
 using N2.Web.Wiki.Analyzers;
 

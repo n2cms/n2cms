@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Data;
 using N2.Configuration;
-using N2.Installation;
-using N2.Web;
 using N2.Edit.Installation;
+using N2.Web;
 
 namespace N2.Edit.Install
 {

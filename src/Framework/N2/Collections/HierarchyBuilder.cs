@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using N2.Engine;
 using System;
+
 namespace N2.Collections
 {
 	/// <summary>

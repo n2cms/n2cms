@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using System.Linq;
+using N2.Configuration;
+using N2.Definitions;
+using N2.Edit;
 using N2.Edit.Workflow;
 using N2.Security;
 using N2.Tests.Fakes;
-using N2.Configuration;
-using N2.Edit.Workflow.Commands;
-using N2.Definitions;
-using N2.Edit;
-using Rhino.Mocks;
-using N2.Persistence;
-using N2.Persistence.NH;
 using N2.Tests.Workflow.Items;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Workflow
 {

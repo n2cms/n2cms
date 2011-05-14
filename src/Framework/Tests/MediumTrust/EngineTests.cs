@@ -1,7 +1,7 @@
 ﻿using N2.Engine;
-using NUnit.Framework;
 using N2.Engine.MediumTrust;
 using N2.Persistence;
+using NUnit.Framework;
 
 namespace N2.Tests.MediumTrust
 {

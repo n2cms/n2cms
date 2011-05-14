@@ -2,12 +2,10 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using N2.Web;
-using NHibernate.Criterion;
 
 namespace N2.Details
 {

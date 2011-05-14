@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
 using N2.Collections;
+using NUnit.Framework;
 
 namespace N2.Tests.Collections
 {

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Collections;
 using N2.Definitions;
+using N2.Definitions.Static;
 using N2.Persistence.Finder;
 using NHibernate;
-using N2.Edit.Workflow;
-using N2.Definitions.Static;
 
 namespace N2.Persistence.NH.Finder
 {

@@ -1,13 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using NHibernate.UserTypes;
-using NHibernate.Engine;
-using NHibernate.Collection;
 using N2.Collections;
+using NHibernate.Collection;
+using NHibernate.Engine;
 using NHibernate.Persister.Collection;
+using NHibernate.UserTypes;
 
 namespace N2.Persistence.NH
 {

@@ -1,13 +1,7 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Resources;
-using System.Text;
-using N2.Definitions.Static;
 
 namespace N2.Details
 {

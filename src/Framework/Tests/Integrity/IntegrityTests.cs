@@ -1,22 +1,18 @@
 using System;
-using System.Reflection;
+using System.Linq;
 using N2.Configuration;
-using NUnit.Framework;
 using N2.Definitions;
-using N2.Details;
+using N2.Definitions.Static;
 using N2.Engine;
 using N2.Integrity;
 using N2.Persistence;
+using N2.Persistence.Proxying;
+using N2.Tests.Fakes;
 using N2.Tests.Integrity.Definitions;
 using N2.Web;
-using N2.Web.UI;
+using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using N2.Tests.Fakes;
-using System.Linq;
-using N2.Persistence.Proxying;
-using N2.Definitions.Static;
-using N2.Edit.Workflow;
 
 namespace N2.Tests.Integrity
 {

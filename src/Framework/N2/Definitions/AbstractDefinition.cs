@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using N2.Web;
-using N2.Definitions.Static;
 using System;
+using N2.Web;
 
 namespace N2.Definitions
 {

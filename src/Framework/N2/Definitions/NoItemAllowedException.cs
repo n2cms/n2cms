@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Definitions
 {
 	/// <summary>This exception is thrown when trying to adding an item to a parent that doesn't support any types of child items.</summary>

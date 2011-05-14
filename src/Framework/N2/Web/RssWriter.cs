@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using N2.Persistence.Serialization;
-using N2.Web;
 using N2.Definitions;
 using N2.Engine;
+using N2.Persistence.Serialization;
 
 namespace N2.Web
 {

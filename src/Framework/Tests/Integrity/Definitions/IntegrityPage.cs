@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using N2;
-
 namespace N2.Tests.Integrity.Definitions
 {
 	[N2.PageDefinition("Page", Name = "DefinitionsPage")]

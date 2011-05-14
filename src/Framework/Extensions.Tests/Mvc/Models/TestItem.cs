@@ -1,5 +1,3 @@
-using System;
-
 namespace N2.Extensions.Tests.Mvc.Models
 {
 	public class TestItem : ContentItem

@@ -1,6 +1,5 @@
 using System;
 using N2.Security;
-using N2.Web;
 
 namespace N2.Edit
 {

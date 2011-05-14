@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI;
 using N2.Engine;
-using N2.Web;
 
 namespace N2.Edit.Web
 {

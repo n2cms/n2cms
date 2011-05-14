@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Persistence.Proxying
+﻿namespace N2.Persistence.Proxying
 {
 	/// <summary>
 	/// When added to an attribute this interface instructs the proxying system on how to deal with a property.

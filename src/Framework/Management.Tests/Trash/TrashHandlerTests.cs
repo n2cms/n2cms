@@ -1,22 +1,15 @@
 using System;
-using System.Linq;
+using N2.Definitions;
+using N2.Edit.Trash;
+using N2.Edit.Workflow;
+using N2.Engine;
+using N2.Engine.MediumTrust;
+using N2.Persistence;
+using N2.Persistence.NH;
+using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
-using N2.Definitions;
-using N2.Persistence;
-using N2.Web;
 using Rhino.Mocks;
-using N2.Engine.MediumTrust;
-using N2.Edit.Trash;
-using N2.Persistence.NH;
-using N2.Tests.Fakes;
-using N2.Details;
-using System.Collections.Generic;
-using N2.Configuration;
-using N2.Engine;
-using N2.Engine.Globalization;
-using N2.Edit.Workflow;
-using N2.Edit.Installation;
 
 namespace N2.Edit.Tests.Trash
 {

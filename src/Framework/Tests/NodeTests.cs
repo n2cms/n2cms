@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using N2.Tests.Content;
 using NUnit.Framework;
-using N2.Tests.Content;
 
 namespace N2.Tests
 {

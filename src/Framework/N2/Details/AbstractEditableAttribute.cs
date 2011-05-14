@@ -1,16 +1,14 @@
 using System;
+using System.Diagnostics;
 using System.Security.Principal;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Definitions;
-using N2.Security;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
-using System.Diagnostics;
-using N2.Edit.Workflow;
+using N2.Security;
 
 namespace N2.Details
 {

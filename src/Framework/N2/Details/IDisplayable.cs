@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using System.Web.UI;
 using N2.Definitions;
 

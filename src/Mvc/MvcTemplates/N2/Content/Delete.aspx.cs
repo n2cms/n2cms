@@ -1,9 +1,8 @@
 using System;
+using N2.Persistence.Finder;
+using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
-using N2.Security;
-using N2.Persistence.Finder;
-using System.Web.UI;
 
 namespace N2.Edit
 {

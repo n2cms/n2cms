@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using N2.Configuration;
-using N2.Web.UI.WebControls;
-using NUnit.Framework;
-using N2.Tests.Edit.Items;
-using N2.Edit;
 using System.Security.Principal;
+using N2.Configuration;
+using N2.Edit;
 using N2.Plugin;
 using N2.Security;
+using N2.Tests.Edit.Items;
 using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Plugin
 {

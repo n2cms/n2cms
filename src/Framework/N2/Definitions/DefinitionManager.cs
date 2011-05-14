@@ -1,15 +1,11 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using N2.Persistence;
+using System.Linq;
 using System.Security.Principal;
-using N2.Security;
 using N2.Edit.Workflow;
 using N2.Engine;
-using N2.Persistence.Proxying;
+using N2.Persistence;
 using N2.Plugin;
-using System.Diagnostics;
-using N2.Definitions.Static;
 
 namespace N2.Definitions
 {

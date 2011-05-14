@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-using N2.Collections;
+﻿using N2.Collections;
 
 namespace N2.Edit.Trash
 {

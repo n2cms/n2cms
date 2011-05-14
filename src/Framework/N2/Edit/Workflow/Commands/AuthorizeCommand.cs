@@ -1,5 +1,4 @@
-﻿using N2.Edit;
-using N2.Security;
+﻿using N2.Security;
 
 namespace N2.Edit.Workflow.Commands
 {

@@ -1,5 +1,5 @@
-using NHibernate;
 using N2.Engine;
+using NHibernate;
 
 namespace N2.Persistence.NH
 {

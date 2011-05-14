@@ -7,8 +7,8 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
-using N2.Web.Parts;
 using N2.Persistence;
+using N2.Web.Parts;
 
 namespace N2.Web.UI.WebControls
 {

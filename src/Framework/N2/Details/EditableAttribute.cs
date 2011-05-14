@@ -20,10 +20,6 @@
 
 using System;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Security.Principal;
-using N2.Definitions;
 
 namespace N2.Details
 {

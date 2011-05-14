@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI;
-using N2.Web.UI;
 using N2.Resources;
+using N2.Web.UI;
 
 namespace N2.Edit
 {

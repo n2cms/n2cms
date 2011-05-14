@@ -2,7 +2,6 @@
 using N2.Web.Parsing;
 using N2.Web.Wiki;
 using NUnit.Framework;
-using System;
 
 namespace N2.Tests.Web.Parsing
 {

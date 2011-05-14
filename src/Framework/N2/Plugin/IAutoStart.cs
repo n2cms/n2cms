@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace N2.Plugin
+﻿namespace N2.Plugin
 {
 	/// <summary>
 	/// Informs the IServiceContainer that a component should be started 

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using N2.Collections;
 using N2.Persistence.Serialization;
 

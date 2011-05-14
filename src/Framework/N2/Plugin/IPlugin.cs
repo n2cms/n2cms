@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Security.Principal;
-using N2.Security;
 
 namespace N2.Plugin
 {

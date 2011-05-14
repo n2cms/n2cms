@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence;
+using NUnit.Framework;
 
 namespace N2.Tests.Integrity
 {

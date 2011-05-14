@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace N2.Edit.FileSystem
+﻿namespace N2.Edit.FileSystem
 {
 	/// <summary>
 	/// Finds the default folder associated with an item.

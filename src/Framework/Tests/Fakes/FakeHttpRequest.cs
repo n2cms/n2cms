@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Specialized;
 using System.Web;
-using System;
 
 namespace N2.Tests.Fakes
 {

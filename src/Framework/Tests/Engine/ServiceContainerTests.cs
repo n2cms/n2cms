@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using System.Linq;
+using N2.Engine;
 using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
-using N2.Engine;
-using N2.Tests.Engine.Services;
 using N2.Plugin;
+using N2.Tests.Engine.Services;
+using NUnit.Framework;
 
 namespace N2.Tests.Engine
 {

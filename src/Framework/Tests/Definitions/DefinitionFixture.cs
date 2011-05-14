@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
+using N2.Persistence;
 using N2.Tests.Definitions.Definitions;
 using N2.Tests.Definitions.Definitions.Details;
-using N2.Persistence;
+using NUnit.Framework;
 
 namespace N2.Tests.Definitions
 {

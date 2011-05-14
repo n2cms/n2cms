@@ -1,19 +1,16 @@
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
-using System.Web;
-using N2.Integrity;
-using System.Diagnostics;
-using N2.Engine;
 using System.Threading;
+using System.Web;
+using N2.Engine;
+using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
-using NHibernate.Search;
 
 namespace N2
 {

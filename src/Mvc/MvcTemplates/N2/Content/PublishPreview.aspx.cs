@@ -1,7 +1,6 @@
 ﻿using System;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
-using N2.Web;
 
 namespace N2.Edit
 {

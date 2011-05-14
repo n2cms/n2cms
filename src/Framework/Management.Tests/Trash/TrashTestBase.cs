@@ -1,7 +1,7 @@
+using N2.Edit.Trash;
+using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Web;
-using N2.Edit.Trash;
 
 namespace N2.Edit.Tests.Trash
 {

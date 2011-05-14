@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using N2.Persistence;
+﻿using System.Linq;
 
 namespace N2.Edit.Workflow.Commands
 {

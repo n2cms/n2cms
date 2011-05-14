@@ -1,9 +1,8 @@
 ﻿using System;
-using N2.Edit;
+using N2.Edit.Workflow.Commands;
 using N2.Engine;
 using N2.Persistence;
 using N2.Security;
-using N2.Edit.Workflow.Commands;
 
 namespace N2.Edit.Workflow
 {

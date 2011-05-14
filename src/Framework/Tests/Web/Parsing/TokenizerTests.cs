@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using N2.Web.Parsing;
-using System.IO;
+using NUnit.Framework;
 
 namespace N2.Tests.Web.Parsing
 {

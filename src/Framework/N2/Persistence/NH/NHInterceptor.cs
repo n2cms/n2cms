@@ -1,9 +1,8 @@
-using System;
-using NHibernate;
-using NHibernate.Type;
 using System.Diagnostics;
 using N2.Engine;
 using N2.Persistence.Proxying;
+using NHibernate;
+using NHibernate.Type;
 
 namespace N2.Persistence.NH
 {

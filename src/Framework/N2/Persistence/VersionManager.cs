@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using N2.Persistence.Finder;
-using N2.Edit.Workflow;
-using N2.Engine;
-using N2.Definitions;
 using N2.Collections;
 using N2.Configuration;
+using N2.Definitions;
+using N2.Edit.Workflow;
+using N2.Engine;
+using N2.Persistence.Finder;
 
 namespace N2.Persistence
 {

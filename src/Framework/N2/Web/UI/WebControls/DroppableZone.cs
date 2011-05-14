@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
-using N2.Edit;
 using N2.Integrity;
 
 namespace N2.Web.UI.WebControls

@@ -1,9 +1,9 @@
 using System;
+using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
-using N2.Persistence;
-using N2.Persistence.NH;
 
 namespace N2.Tests.Persistence.NH
 {

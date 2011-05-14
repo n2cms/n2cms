@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Engine;
-using N2.Security;
-using N2.Persistence;
-using N2.Edit;
-using N2.Web;
-
-namespace N2.Edit.Workflow.Commands
+﻿namespace N2.Edit.Workflow.Commands
 {
     public class UpdateContentStateCommand : CommandBase<CommandContext>
     {

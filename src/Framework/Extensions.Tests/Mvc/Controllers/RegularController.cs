@@ -1,4 +1,3 @@
-using System;
 using N2.Extensions.Tests.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;

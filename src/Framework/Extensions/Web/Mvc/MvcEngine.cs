@@ -1,10 +1,7 @@
 using System;
 using System.Reflection;
-using System.Security;
 using System.Web.Mvc;
 using N2.Engine;
-using N2.Engine.MediumTrust;
-using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {

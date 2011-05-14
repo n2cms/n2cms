@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using N2.Edit.FileSystem;
-using System.Web;
 
 namespace N2.Tests.Fakes
 {

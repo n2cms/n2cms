@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Details
+﻿namespace N2.Details
 {
 	/// <summary>
 	/// Tells the system when to make managementUrls in a detail relative or absolute.

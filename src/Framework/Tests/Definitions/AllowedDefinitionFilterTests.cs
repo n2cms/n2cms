@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using N2.Definitions;
-using Rhino.Mocks;
-using N2.Tests.Definitions.Items;
 using N2.Integrity;
+using N2.Tests.Definitions.Items;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Definitions
 {

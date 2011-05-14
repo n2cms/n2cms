@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Engine
+﻿namespace N2.Engine
 {
 	/// <summary>
 	/// Sets a dependency on a loaded entity.

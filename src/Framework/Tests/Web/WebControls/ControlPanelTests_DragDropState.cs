@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using System.Web.UI;
+using System.Web;
 using System.Xml.Linq;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
-using System.Web;
 
 namespace N2.Tests.Web.WebControls
 {

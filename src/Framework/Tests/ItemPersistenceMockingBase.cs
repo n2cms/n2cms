@@ -1,11 +1,8 @@
 using System;
-using N2.Details;
 using N2.Persistence;
-using N2.Persistence.NH;
-using NUnit.Framework;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 using N2.Tests.Fakes;
+using NUnit.Framework;
+using Rhino.Mocks.Interfaces;
 
 namespace N2.Tests
 {

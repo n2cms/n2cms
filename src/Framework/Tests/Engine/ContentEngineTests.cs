@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
-using N2.Engine;
-using N2.Web;
-using N2.Persistence.NH;
-using System.Configuration;
+﻿using N2.Engine;
 using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
+using N2.Persistence.NH;
+using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Engine
 {

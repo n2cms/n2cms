@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using N2.Persistence;
 using N2.Engine;
 
 namespace N2.Persistence.Serialization

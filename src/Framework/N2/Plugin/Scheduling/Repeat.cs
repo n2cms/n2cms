@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Plugin.Scheduling
+﻿namespace N2.Plugin.Scheduling
 {
     /// <summary>
     /// Specifies wether an action should be executed more than once.

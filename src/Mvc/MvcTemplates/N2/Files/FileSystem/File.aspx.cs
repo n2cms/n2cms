@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-using N2.Edit.Web;
-using N2.Edit.FileSystem.Items;
-using N2.Resources;
 using N2.Configuration;
-using System.Collections;
-using System.Collections.Generic;
+using N2.Edit.FileSystem.Items;
+using N2.Edit.Web;
+using N2.Resources;
 
 namespace N2.Edit.FileSystem
 {

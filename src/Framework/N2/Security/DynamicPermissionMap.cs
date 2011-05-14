@@ -1,7 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using N2.Details;
-using System.Collections.Generic;
-using System;
 
 namespace N2.Security
 {

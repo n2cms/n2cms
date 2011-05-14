@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Security.Principal;
-
-using N2;
 using N2.Configuration;
-using NUnit.Framework;
+using N2.Persistence;
 using N2.Security;
+using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using N2.Definitions;
-using N2.Persistence;
 
 namespace N2.Tests.Security
 {

@@ -1,5 +1,5 @@
-using System.Xml;
 using System.Configuration;
+using System.Xml;
 
 namespace N2.Configuration
 {

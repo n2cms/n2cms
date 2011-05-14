@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using N2.Details;
 using System.Reflection;
 
 namespace N2.Linq

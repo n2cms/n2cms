@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using N2.Tests;
-using N2.Management.Files;
-using N2.Web;
-using N2.Edit.FileSystem;
-using N2.Configuration;
+﻿using System.Linq;
 using N2.Collections;
+using N2.Configuration;
 using N2.Edit.Installation;
+using N2.Management.Files;
+using N2.Tests;
+using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Edit.Tests.FileSystem
 {

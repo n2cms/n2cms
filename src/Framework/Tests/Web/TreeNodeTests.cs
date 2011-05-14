@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using N2.Tests.Web.Items;
-using NUnit.Framework;
-using N2.Web.UI.WebControls;
-using System.Web.UI;
 using System.IO;
+using System.Text;
+using System.Web.UI;
+using N2.Tests.Web.Items;
+using N2.Web.UI.WebControls;
+using NUnit.Framework;
 
 namespace N2.Tests.Web
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using N2.Engine.Configuration;
 using N2.Plugin;
 
 namespace N2.Engine

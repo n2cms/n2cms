@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using N2.Details;
 using N2.Definitions.Runtime;
+using N2.Details;
 
 namespace N2.Web.Mvc.Html
 {

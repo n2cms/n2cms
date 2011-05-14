@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Collections;
-using N2.Definitions;
 using N2.Edit;
 
 namespace N2.Web.UI.WebControls

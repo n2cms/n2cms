@@ -1,5 +1,4 @@
-﻿using System;
-namespace N2.Web.Mail
+﻿namespace N2.Web.Mail
 {
 	/// <summary>
 	/// Sends email messages.

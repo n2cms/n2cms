@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Definitions;
-using System.Reflection;
-using N2.Persistence;
 using System.Diagnostics;
-using N2.Engine;
-using NHibernate.Mapping.ByCode;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using N2.Definitions.Static;
+using N2.Engine;
 using NHibernate.Cfg.MappingSchema;
+using NHibernate.Mapping.ByCode;
 
 namespace N2.Persistence.NH
 {

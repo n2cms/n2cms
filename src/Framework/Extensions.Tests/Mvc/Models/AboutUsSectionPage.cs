@@ -1,6 +1,4 @@
-﻿using N2.Web.Mvc;
-
-namespace N2.Extensions.Tests.Mvc.Models
+﻿namespace N2.Extensions.Tests.Mvc.Models
 {
 
 

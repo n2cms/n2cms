@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Security;
-using NUnit.Framework;
-using N2.Tests.Persistence;
-using N2.Persistence.NH.Finder;
-using NHibernate.Tool.hbm2ddl;
-using N2.Persistence.Proxying;
-using N2.Persistence;
-using N2.Definitions;
-using N2.Tests.Fakes;
-using N2.Persistence.NH;
-using N2.Web;
-using N2.Details;
 using N2.Configuration;
+using N2.Definitions;
+using N2.Details;
 using N2.Management.Myself;
-using N2.Security.Items;
 using N2.Management.Tests.Security.Items;
+using N2.Persistence;
+using N2.Persistence.NH;
+using N2.Persistence.NH.Finder;
+using N2.Persistence.Proxying;
+using N2.Security;
+using N2.Security.Items;
+using N2.Tests.Fakes;
+using N2.Web;
+using NHibernate.Tool.hbm2ddl;
+using NUnit.Framework;
 
 namespace N2.Tests.Security
 {

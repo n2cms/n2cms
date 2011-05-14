@@ -1,12 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.Diagnostics;
-using System.Web.UI;
-using N2.Edit;
-using N2.Web.UI;
-using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {

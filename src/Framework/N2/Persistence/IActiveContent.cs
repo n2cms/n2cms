@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Persistence
+﻿namespace N2.Persistence
 {
     /// <summary>
     /// Content items implementing this interface are responsible for their 

@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using N2.Details;
-using N2.Definitions;
-using System.Web.UI;
-using N2.Web.UI.WebControls;
-using N2.Edit.Web;
-using N2.Collections;
-using N2.Web.Parts;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
-using System.Web.Hosting;
-using System.IO;
+using System.Web.UI;
+using N2.Collections;
+using N2.Definitions;
+using N2.Details;
+using N2.Web.Parts;
+using N2.Web.UI.WebControls;
+using NUnit.Framework;
 
 namespace N2.Tests.Details
 {

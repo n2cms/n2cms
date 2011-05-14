@@ -1,5 +1,4 @@
-﻿using System;
-using N2.Definitions;
+﻿using N2.Definitions;
 using N2.Edit;
 
 namespace N2.Engine.Globalization

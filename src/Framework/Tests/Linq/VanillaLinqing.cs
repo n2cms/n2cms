@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
 using N2.Linq;
-using N2.Details;
+using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Linq
 {

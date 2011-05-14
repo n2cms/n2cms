@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Diagnostics;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Configuration;
-using N2.Resources;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace N2.Web.UI.WebControls
 {

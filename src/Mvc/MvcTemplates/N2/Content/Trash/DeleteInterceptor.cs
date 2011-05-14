@@ -1,7 +1,6 @@
-using Castle.Core;
+using N2.Engine;
 using N2.Persistence;
 using N2.Plugin;
-using N2.Engine;
 
 namespace N2.Edit.Trash
 {

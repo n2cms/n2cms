@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Castle.DynamicProxy;
 using System.Reflection;
-using NHibernate.Proxy;
-using NHibernate.Engine;
+using Castle.DynamicProxy;
 
 namespace N2.Persistence.Proxying
 {

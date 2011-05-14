@@ -1,6 +1,6 @@
 using N2.Definitions;
-using N2.Installation;
 using N2.Edit.Trash;
+using N2.Installation;
 
 namespace N2.Edit.Wizard.Items
 {

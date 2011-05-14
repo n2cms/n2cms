@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using N2.Definitions.Static;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using NUnit.Framework;
-using N2.Definitions.Static;
 
 namespace N2.Tests.Persistence.NH
 {

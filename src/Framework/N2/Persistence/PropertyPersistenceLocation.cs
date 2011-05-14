@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Persistence
+﻿namespace N2.Persistence
 {
 	/// <summary>
 	/// Instructs the system on where to store a property.

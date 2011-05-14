@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using N2.Definitions;
-using System.Web.UI;
 using System.Security.Principal;
+using System.Web.UI;
+using N2.Definitions;
 
 namespace N2.Edit
 {

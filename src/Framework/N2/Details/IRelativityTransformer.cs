@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace N2.Details
+﻿namespace N2.Details
 {
 	/// <summary>
 	/// Used by the export/import system to transform to and from absolute paths 

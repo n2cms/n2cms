@@ -1,13 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
-using N2.Details;
-using N2.Edit;
-using N2.Engine;
-using N2.Web.UI;
 using N2.Configuration;
+using N2.Engine;
 
 namespace N2.Definitions.Static
 {
