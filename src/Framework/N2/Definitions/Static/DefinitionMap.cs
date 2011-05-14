@@ -53,7 +53,7 @@ namespace N2.Definitions.Static
 			return null;
 		}
 
-		private ItemDefinition CreateDefinition(Type contentType, string templateKey)
+		public ItemDefinition CreateDefinition(Type contentType, string templateKey)
 		{
 			ItemDefinition definition = GetDefinition(contentType, null);
 			if (definition != null)

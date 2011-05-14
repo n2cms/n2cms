@@ -9,6 +9,7 @@ using N2.Definitions;
 namespace Dinamico.Models
 {
 	[PageDefinition]
+	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class ListingPage : ContentPage
 	{
 	}

@@ -27,7 +27,7 @@ namespace N2.Definitions.Runtime
 			this.builder = builder;
 		}
 
-		public virtual IEnumerable<ViewTemplateDescription> FindRegistrations(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
+		public virtual IEnumerable<ViewTemplateDescription> AnalyzeViews(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
 		{
 			foreach (var source in sources)
 			{
@@ -111,7 +111,7 @@ namespace N2.Definitions.Runtime
 
 		private ItemDefinition GetOrCreateDefinition(ContentRegistration re)
 		{
-			var definition = map.GetOrCreateDefinition(re.ContentType, re.Template);
+			var definition = map.CreateDefinition(re.ContentType, re.Template);
 			return definition;
 		}
 

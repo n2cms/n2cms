@@ -67,10 +67,10 @@ namespace N2.Definitions.Runtime
 					DequeueRegistrations();
 
 					var vpp = vppProvider.Get();
-					var registrations = analyzer.FindRegistrations(vpp, httpContext, sources).ToList();
-					definitions = BuildDefinitions(registrations);
+					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
+					definitions = BuildDefinitions(descriptions);
 
-					var files = registrations.SelectMany(p => p.TouchedPaths).Distinct().ToList();
+					var files = descriptions.SelectMany(p => p.TouchedPaths).Distinct().ToList();
 					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
 					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
