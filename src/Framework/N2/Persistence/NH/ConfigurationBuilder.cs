@@ -19,6 +19,7 @@ using NHibernate.Mapping.ByCode;
 using ConfigurationErrorsException = System.Configuration.ConfigurationErrorsException;
 using ConnectionStringSettings = System.Configuration.ConnectionStringSettings;
 using ConnectionStringsSection = System.Configuration.ConnectionStringsSection;
+using System.Xml;
 
 namespace N2.Persistence.NH
 {
@@ -414,9 +415,12 @@ namespace N2.Persistence.NH
 
 					using (StreamReader reader = new StreamReader(stream))
 					{
-						string mappingXml = reader.ReadToEnd();
+						var mappingXml = reader.ReadToEnd();
 						mappingXml = FormatMapping(mappingXml);
-						cfg.AddXml(mappingXml);
+
+						var xmlReader = new XmlTextReader(mappingXml, XmlNodeType.Document, null);
+						var mappingDocument = cfg.LoadMappingDocument(xmlReader, "N2");
+						cfg.AddDeserializedMapping(mappingDocument.Document, mappingDocument.Name);
 					}
 				}
 			}
@@ -441,6 +445,7 @@ namespace N2.Persistence.NH
 				.SelectMany(t => Utility.GetBaseTypesAndSelf(t))
 				.Distinct()
 				.Where(t => t.IsSubclassOf(typeof(ContentItem)))
+				.Where(t => !IsMapped(cfg, t))
 				.OrderBy(t => Utility.InheritanceDepth(t))
 				.ToList();
 
