@@ -1,7 +1,5 @@
 ? saving parts issue (discussions/256042)
 - tokens
-	- next sibling
-	- previous sibling
 	- image carousel
 	- tracking link
 	- facebook like
