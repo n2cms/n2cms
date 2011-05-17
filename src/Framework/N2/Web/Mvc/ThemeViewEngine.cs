@@ -14,10 +14,11 @@ namespace N2.Web.Mvc
 	public class ThemeViewEngine<T> : IViewEngine where T : VirtualPathProviderViewEngine, new()
 	{
 		Dictionary<string, T> engines = new Dictionary<string, T>();
+		string themeFolderPath;
 		private string[] fileExtensions;
 
 		public ThemeViewEngine()
-			: this(new string[] { "cshtml", "vbhtml" })
+			: this("~/Themes/", new string[] { "cshtml", "vbhtml" })
 		{
 		}
 
@@ -25,8 +26,9 @@ namespace N2.Web.Mvc
 		/// File extensions are only assigned when using ASP.NET MVC 3.0 or greater.
 		/// </summary>
 		/// <param name="fileExtensions"></param>
-		public ThemeViewEngine(params string[] fileExtensions)
+		public ThemeViewEngine(string themeFolderPath, string[] fileExtensions)
 		{
+			this.themeFolderPath = themeFolderPath;
 			this.fileExtensions = fileExtensions;
 		}
 
@@ -64,7 +66,7 @@ namespace N2.Web.Mvc
 			T engine;
 			if (!engines.TryGetValue(theme, out engine))
 			{
-				string themePath = "~/Themes/" + theme;
+				string themePath = themeFolderPath + theme;
 			
 				engine = new T();
 				engine.AreaViewLocationFormats = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };

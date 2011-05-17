@@ -12,9 +12,9 @@ namespace N2.Web.Mvc
 		/// <typeparam name="T">The type of view engine to use as base.</typeparam>
 		/// <param name="viewEngines">Placeholder.</param>
 		/// <returns>The theme view engine that was inserted.</returns>
-		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines) where T : VirtualPathProviderViewEngine, new()
+		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath = "~/Themes/") where T : VirtualPathProviderViewEngine, new()
 		{
-			var tve = new ThemeViewEngine<T>();
+			var tve = new ThemeViewEngine<T>(themeFolderPath, new string[] { "cshtml", "vbhtml" });
 			viewEngines.Insert(0, tve);
 			return tve;
 		}
