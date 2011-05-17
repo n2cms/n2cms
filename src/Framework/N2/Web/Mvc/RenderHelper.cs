@@ -20,13 +20,18 @@ namespace N2.Web.Mvc
 
 		public DisplayRenderer<T> Displayable<T>(T displayable) where T : IWritingDisplayable
 		{
-			return new DisplayRenderer<T>(new Rendering.RenderingContext
+			return CreateDisplayRenderer<T>(new Rendering.RenderingContext
 			{
 				Content = Content,
 				Displayable = displayable,
 				Html = Html,
 				PropertyName = displayable.Name
 			});
+		}
+
+		protected virtual DisplayRenderer<T> CreateDisplayRenderer<T>(Rendering.RenderingContext context) where T : IWritingDisplayable
+		{
+			return new DisplayRenderer<T>(context);
 		}
 	}
 }

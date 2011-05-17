@@ -27,7 +27,7 @@ namespace N2.Web.Mvc
 				re.Add(new T(), name, title);
 			}
 
-			return new RegisteringDisplayRenderer<T>(Html, name, re);
+			return CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext.Create(Html, name), re);
 		}
 
 		public EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable
@@ -38,7 +38,7 @@ namespace N2.Web.Mvc
 				re.Add(editable, editable.Name, editable.Title);
 			}
 
-			return new RegisteringDisplayRenderer<T>(Html, editable.Name, re);
+			return CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext.Create(Html, editable.Name), re);
 		}
 
 		public void RegisterModifier(Details.IContentTransformer modifier)
@@ -77,5 +77,10 @@ namespace N2.Web.Mvc
 			#endregion
 		}
 		#endregion
+
+		protected virtual RegisteringDisplayRenderer<T> CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext context, ContentRegistration re) where T : IEditable
+		{
+			return new RegisteringDisplayRenderer<T>(context, re);
+		}
 	}
 }

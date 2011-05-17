@@ -4,6 +4,17 @@ namespace N2.Web.Mvc.Html
 {
 	public static class ContentHtmlExtensions
 	{
+		// content helper
+
+		public static ContentHelper Content(this HtmlHelper html)
+		{
+			string key = "ContentHelperOf" + html.GetHashCode();
+			var content = html.ViewContext.ViewData[key] as ContentHelper;
+			if (content == null)
+				html.ViewContext.ViewData[key] = content = new ContentHelper(html);
+			return content;
+		}
+
 		public static bool HasValue(this HtmlHelper html, string detailName)
 		{
 			var item = html.CurrentItem();

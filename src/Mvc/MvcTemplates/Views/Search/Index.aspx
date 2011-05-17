@@ -8,7 +8,7 @@
 	<%} %>
 
 	<%if(Model.Results.Count > 0){
-       string resultMessage = string.Format((string)GetLocalResourceObject("SearchResultFmt"), Model.TotalResults, Model.SearchTerm);
+       string resultMessage = string.Format((string)GetLocalResourceObject("SearchResultFmt"), Model.TotalResults, Html.Encode(Model.SearchTerm));
        %>
 		<span><%=Html.Encode(resultMessage)%></span>
 		<div class="list">
@@ -21,17 +21,17 @@
 		</div>
 		<div id="pg">
 			<%if (Model.PageNumber > 0){%>
-			<%=Html.ActionLink((string)GetLocalResourceObject("PrevLink"), "Index", "Search", new { q = Model.SearchTerm, p = Model.PageNumber - 1 }, new { id = "pg-prev" })%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("PrevLink"), "Index", "Search", new { q = Html.Encode(Model.SearchTerm), p = Model.PageNumber - 1 }, new { id = "pg-prev" })%>
 			<%}%>
 			<%for(i = 0; i < Model.TotalPages; i++){%>
 				<%if(i == Model.PageNumber){%>
 				<strong><%=i + 1%></strong>
 				<%}else{%>
-				<%=Html.ActionLink((i + 1).ToString(), "Index", "Search", new { q = Model.SearchTerm, p = i }, null)%>
+				<%=Html.ActionLink((i + 1).ToString(), "Index", "Search", new { q = Html.Encode(Model.SearchTerm), p = i }, null)%>
 				<%}%>
 			<%} %>
 			<%if(Model.PageNumber < Model.TotalPages - 1){%>
-			<%=Html.ActionLink((string)GetLocalResourceObject("NextLink"), "Index", "Search", new { q = Model.SearchTerm, p = Model.PageNumber + 1 }, new { id = "pg-next" })%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("NextLink"), "Index", "Search", new { q = Html.Encode(Model.SearchTerm), p = Model.PageNumber + 1 }, new { id = "pg-next" })%>
 			<%}%>
 		</div>
 	<%}else if(Model.HasSearchTerm){%>

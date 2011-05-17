@@ -24,7 +24,23 @@ namespace N2.Collections
 		/// <summary>Filters by all the provided filters.</summary>
 		/// <param name="filters">The filters to aggregate.</param>
 		/// <returns>A filter.</returns>
+		public ItemFilter All(IEnumerable<ItemFilter> filters)
+		{
+			return new CompositeFilter(filters);
+		}
+
+		/// <summary>Filters by all the provided filters.</summary>
+		/// <param name="filters">The filters to aggregate.</param>
+		/// <returns>A filter.</returns>
 		public ItemFilter Any(params ItemFilter[] filters)
+		{
+			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
+		}
+
+		/// <summary>Filters by all the provided filters.</summary>
+		/// <param name="filters">The filters to aggregate.</param>
+		/// <returns>A filter.</returns>
+		public ItemFilter Any(IEnumerable<ItemFilter> filters)
 		{
 			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
 		}

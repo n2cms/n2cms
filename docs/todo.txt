@@ -1,4 +1,3 @@
-? saving parts issue (discussions/256042)
 - tokens
 	- image carousel
 	- tracking link

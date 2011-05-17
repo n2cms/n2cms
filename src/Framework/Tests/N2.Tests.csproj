@@ -204,6 +204,7 @@
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />
+    <Compile Include="Web\Mvc\ContentHelperTests.cs" />
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />

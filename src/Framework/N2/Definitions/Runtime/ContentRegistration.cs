@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using N2.Details;
-using N2.Web.Mvc;
 
 namespace N2.Definitions.Runtime
 {

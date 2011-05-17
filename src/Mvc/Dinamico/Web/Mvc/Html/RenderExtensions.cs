@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using N2.Details;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.WebPages;
+using N2.Details;
 
 namespace N2.Web.Mvc.Html
 {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <remarks>This code is here since it has dependencies on ASP.NET 3.0 which isn't a requirement for N2 in general.</remarks>
 	public static class RenderExtensions
 	{
+		#region class DisplayWrapper
 		class DisplayWrapper : IDisplayRenderer, IHtmlString
 		{
 			public IDisplayRenderer Wrapped { get; set; }
@@ -65,6 +68,7 @@ namespace N2.Web.Mvc.Html
 
 			#endregion
 		}
+		#endregion
 
 		public static IDisplayRenderer Wrap(this IDisplayRenderer renderer, Func<Template<IDisplayRenderer>, HelperResult> template)
 		{

@@ -9,7 +9,11 @@ namespace N2.Web
 	/// <summary>
 	/// A link representation that can be conver to text or an anchor control.
 	/// </summary>
-	public class Link : ILinkBuilder
+	public class Link : 
+#if NET4
+		System.Web.IHtmlString, 
+#endif
+		ILinkBuilder
 	{
 		#region Fields
 
@@ -58,7 +62,7 @@ namespace N2.Web
 		}
 
 		public Link(ContentItem item, string className)
-			: this(string.Empty, string.Empty, string.Empty, item.Url, className)
+			: this(string.Empty, string.Empty, string.Empty, string.Empty, className)
 		{
 			UpdateFrom(item);
 		}
@@ -209,6 +213,15 @@ namespace N2.Web
 		{
 			this.url = url.SetFragment(fragment);
 			return this;
+		}
+
+		#endregion
+
+		#region IHtmlString Members
+
+		public string ToHtmlString()
+		{
+			return ToString();
 		}
 
 		#endregion

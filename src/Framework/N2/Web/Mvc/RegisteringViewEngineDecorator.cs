@@ -7,11 +7,11 @@ using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
-	public class RegistrationViewEngineDecorator : IViewEngine
+	public class RegisteringViewEngineDecorator : IViewEngine
 	{
 		IViewEngine inner;
 
-		public RegistrationViewEngineDecorator(IViewEngine inner)
+		public RegisteringViewEngineDecorator(IViewEngine inner)
 		{
 			this.inner = inner;
 		}
@@ -52,11 +52,11 @@ namespace N2.Web.Mvc
 			if (re == null)
 				return;
 
-			var razorView = result.View as RazorView;
-			if (razorView == null)
+			var viewPath = Utility.GetProperty(result.View, "ViewPath") as string;
+			if (viewPath == null)
 				return;
 
-			re.TouchedPaths.Add(razorView.ViewPath);
+			re.TouchedPaths.Add(viewPath);
 		}
 	}
 }

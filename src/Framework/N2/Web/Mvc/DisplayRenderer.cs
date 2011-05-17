@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Linq;
 using System.Web;
-using N2.Web.Rendering;
-using N2.Definitions.Runtime;
-using N2.Web.Mvc;
-using System.IO;
+using System.Web.Mvc;
 using N2.Definitions;
 using N2.Web.Mvc.Html;
-using System.Web.Mvc;
+using N2.Web.Rendering;
+using N2.Definitions.Runtime;
+using N2.Details;
 
 namespace N2.Web.Mvc
 {
-	public class RegisteringDisplayRenderer<T> : EditableBuilder<T>, IHtmlString, IDisplayRenderer where T : IEditable
+	public class DisplayRenderer<T> : 
+#if NET4
+		IHtmlString, 
+#endif
+		IDisplayRenderer where T : IDisplayable
 	{
 		public RenderingContext Context { get; set; }
 
-		public RegisteringDisplayRenderer(RenderingContext context, ContentRegistration registration)
-			: base(context.PropertyName, registration)
+		public DisplayRenderer(RenderingContext context)
 		{
 			this.Context = context;
 		}
 
-		public RegisteringDisplayRenderer(HtmlHelper html, string propertyName, ContentRegistration registration)
-			: base(propertyName, registration)
+		public DisplayRenderer(HtmlHelper html, string propertyName)
 		{
 			Context = new RenderingContext();
 			Context.Content = html.CurrentItem();
@@ -69,5 +69,4 @@ namespace N2.Web.Mvc
 				.Render(Context, writer);
 		}
 	}
-
 }

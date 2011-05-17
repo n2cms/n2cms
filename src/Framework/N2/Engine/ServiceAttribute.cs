@@ -28,5 +28,8 @@ namespace N2.Engine
 
 		/// <summary>A static accessor property used to retrieve the service instance instead of instiatating it.</summary>
 		public string StaticAccessor { get; set; }
+
+		/// <summary>A service defined by a <see cref="ServiceAttribute"/> to replace with the attributed implementation.</summary>
+		public Type Replaces { get; set; }
     }
 }

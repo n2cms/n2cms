@@ -106,6 +106,8 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
+    <Compile Include="Persistence\NH\LuceneTextSearcher.cs" />
+    <Compile Include="Persistence\NH\ReindexTextMigration.cs" />
     <Compile Include="Persistence\NH\SearchConfigurationBuilderParticipator.cs" />
     <Compile Include="Web\Hosting\Util.cs" />
     <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />

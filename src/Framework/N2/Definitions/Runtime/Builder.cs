@@ -1,8 +1,6 @@
 ﻿using System;
-using N2.Definitions;
-using N2.Definitions.Runtime;
 
-namespace N2.Web.Mvc
+namespace N2.Definitions.Runtime
 {
 	public class Builder<T> where T : IContainable
 	{

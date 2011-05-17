@@ -3,7 +3,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Collections;
+using N2.Linq;
 using N2.Web.Mvc.Html;
+using N2.Persistence.Finder;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {	
@@ -31,50 +34,47 @@ namespace N2.Web.Mvc
 			get { return Html.CurrentPage(); }
 		}
 
-		public TraverseHelper Traverse
+		public virtual TraverseHelper Traverse
 		{
 			get {  return new TraverseHelper(Html); }
 		}
 
-		public QueryHelper Find
+		public virtual IQueryable<T> Query<T>()
 		{
-			get { return new QueryHelper(Html); }
+			return Html.ContentEngine().Query<T>();
 		}
 
-		public RegisterHelper Register
+		public IItemFinder Find
+		{
+			get { return Html.ResolveService<IItemFinder>(); }
+		}
+
+		public virtual RegisterHelper Register
 		{
 			get { return new RegisterHelper(Html); }
 		}
 
-		public dynamic Display
-		{
-			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
-		}
-
-		public dynamic Data
-		{
-			get
-			{
-				if (CurrentItem == null)
-					return new DataHelper(() => CurrentItem);
-
-				string key = "DataHelper" + CurrentItem.ID;
-				var data = Html.ViewContext.ViewData[key] as DataHelper;
-				if (data == null)
-					Html.ViewContext.ViewData[key] = data = new DataHelper(() => CurrentItem);
-				return data;
-			}
-		}
-
-		public RenderHelper Render
+		public virtual RenderHelper Render
 		{
 			get { return new RenderHelper { Html = Html, Content = CurrentItem }; }
 		}
 
-		public FilterHelper Is
+		public virtual FilterHelper Is
 		{
 			get { return new FilterHelper(); }
 		}
+
+		public virtual IEngine Engine
+		{
+			get { return Html.ContentEngine(); }
+		}
+
+		public virtual IServiceContainer Services
+		{
+			get { return Html.ResolveService<IServiceContainer>(); }
+		}
+
+		// markup
 
 		public string UniqueID(string prefix = null)
 		{
@@ -83,8 +83,6 @@ namespace N2.Web.Mvc
 
 			return prefix + CurrentItem.ID;
 		}
-
-		// markup
 
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
 		{
@@ -96,7 +94,7 @@ namespace N2.Web.Mvc
 			if (cssGetter == null)
 				cssGetter = GetNavigationClass;
 
-			return new TreeBuilder(new TreeHierarchyBuilder(item, takeLevels))
+			return CreateTree(new TreeHierarchyBuilder(item, takeLevels))
 				.ExcludeRoot(rootless)
 				.LinkProvider((i) => LinkTo(i).Class(cssGetter(i)))
 				.Filters(filter ?? N2.Filter.Is.Navigatable());
@@ -109,9 +107,9 @@ namespace N2.Web.Mvc
 
 		public ILinkBuilder LinkTo(ContentItem item)
 		{
-			if (item == null) return new LinkBuilder();
+			if (item == null) return CreateLink(item);
 
-			var lb = new LinkBuilder(item);
+			var lb = CreateLink(item);
 			lb.ClassName = GetNavigationClass(item);
 			return lb;
 		}
@@ -194,84 +192,17 @@ namespace N2.Web.Mvc
 			#endregion
 		}
 		#endregion
+
+		protected virtual Link CreateLink(ContentItem item)
+		{
+			return new Link(item);
+		}
+
+		protected virtual Tree CreateTree(HierarchyBuilder hierarchy)
+		{
+			return new Tree(hierarchy);
+		}
 	}
 
-	public class TreeBuilder : Tree, IHtmlString
-	{
-		#region Constructor
 
-		public TreeBuilder(HierarchyBuilder builder)
-			: base(builder)
-		{
-		}
-
-		public TreeBuilder(HierarchyNode<ContentItem> root)
-			: base(root)
-		{
-		}
-
-		#endregion
-
-		#region IHtmlString Members
-
-		public string ToHtmlString()
-		{
-			return ToString();
-		}
-
-		#endregion
-	}
-
-	public class LinkBuilder : Link, IHtmlString
-	{
-		#region Constructor
-
-		public LinkBuilder()
-			: base(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
-		{
-		}
-
-		public LinkBuilder(string text, string href)
-			: base(text, string.Empty, string.Empty, href, string.Empty)
-		{
-		}
-
-		public LinkBuilder(string text, string title, string target, string href)
-			: base(text, title, target, href, string.Empty)
-		{
-		}
-
-		public LinkBuilder(string text, string title, string target, string href, string className)
-			: base(text, title, target, href, className)
-		{
-		}
-
-		public LinkBuilder(ILink link)
-		{
-			UpdateFrom(link);
-		}
-
-		public LinkBuilder(ContentItem item)
-			: base(item, string.Empty)
-		{
-		}
-
-		public LinkBuilder(ContentItem item, string className)
-			: base(item.Title, string.Empty, string.Empty, item.Url, className)
-		{
-			if (item is ILink)
-				UpdateFrom(item as ILink);
-		}
-
-		#endregion
-
-		#region IHtmlString Members
-
-		public string ToHtmlString()
-		{
-			return ToString();
-		}
-
-		#endregion
-	}
 }

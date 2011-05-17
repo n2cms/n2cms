@@ -139,6 +139,33 @@ namespace N2
 			pi.SetValue(instance, value, new object[0]);
 		}
 
+		/// <summary>Sets a property on an object to a valuae.</summary>
+		/// <param name="instance">The object whose property to set.</param>
+		/// <param name="propertyName">The name of the property to set.</param>
+		/// <param name="value">The value to set the property to.</param>
+		public static bool TrySetProperty(object instance, string propertyName, object value)
+		{
+			if (instance == null) return false;
+			if (propertyName == null) return false;
+
+			Type instanceType = instance.GetType();
+			PropertyInfo pi = instanceType.GetProperty(propertyName);
+			if (pi == null) return false;
+			if (!pi.CanWrite) return false;
+
+			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
+				value = Convert(value, pi.PropertyType);
+			try
+			{
+				pi.SetValue(instance, value, new object[0]);
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
 		/// <summary>Gets a value from a property.</summary>
 		/// <param name="instance">The object whose property to get.</param>
 		/// <param name="propertyName">The name of the property to get.</param>

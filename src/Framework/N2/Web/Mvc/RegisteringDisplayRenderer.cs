@@ -1,33 +1,29 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using N2.Definitions;
-using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
 using N2.Definitions.Runtime;
-using N2.Details;
+using N2.Web.Mvc;
+using System.IO;
+using N2.Definitions;
+using N2.Web.Mvc.Html;
+using System.Web.Mvc;
 
 namespace N2.Web.Mvc
 {
-	public class DisplayRenderer<T> : IHtmlString, IDisplayRenderer where T : IDisplayable
+	public class RegisteringDisplayRenderer<T> : EditableBuilder<T>,
+#if NET4
+		IHtmlString, 
+#endif
+		IDisplayRenderer where T : IEditable
 	{
 		public RenderingContext Context { get; set; }
 
-		public DisplayRenderer(RenderingContext context)
+		public RegisteringDisplayRenderer(RenderingContext context, ContentRegistration registration)
+			: base(context.PropertyName, registration)
 		{
 			this.Context = context;
-		}
-
-		public DisplayRenderer(HtmlHelper html, string propertyName)
-		{
-			Context = new RenderingContext();
-			Context.Content = html.CurrentItem();
-			var template = html.ResolveService<IDefinitionManager>().GetTemplate(Context.Content);
-			if (template != null)
-				Context.Displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == propertyName);
-			Context.Html = html;
-			Context.PropertyName = propertyName;
 		}
 
 		#region IHtmlString Members
@@ -65,4 +61,5 @@ namespace N2.Web.Mvc
 				.Render(Context, writer);
 		}
 	}
+
 }

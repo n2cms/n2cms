@@ -296,5 +296,17 @@ namespace N2.Tests.Engine
 			Assert.That(container.Resolve<IBarometer>(), Is.InstanceOf<HighService>());
 			Assert.That(container.ResolveAll<IBarometer>().Count(), Is.EqualTo(1));
 		}
+
+		[Test]
+		public void Services_CanOverride_OtherServices()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(InterfacedService), typeof(ReplacingService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FilterServices(registrator.FindServices()));
+
+			Assert.That(container.Resolve<IService>(), Is.InstanceOf<ReplacingService>());
+			Assert.That(container.ResolveAll<IService>().Count(), Is.EqualTo(1));
+		}
 	}
 }

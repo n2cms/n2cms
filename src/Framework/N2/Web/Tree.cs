@@ -11,6 +11,9 @@ namespace N2.Web
 	/// Creates a hierarchical tree of ul and li:s for usage on web pages.
 	/// </summary>
 	public class Tree
+#if NET4
+		: System.Web.IHtmlString
+#endif
 	{
 		private HierarchyNode<ContentItem> root;
 
@@ -148,5 +151,14 @@ namespace N2.Web
 			}
 			return node;
 		}
+
+		#region IHtmlString Members
+
+		public string ToHtmlString()
+		{
+			return ToString();
+		}
+
+		#endregion
 	}
 }
