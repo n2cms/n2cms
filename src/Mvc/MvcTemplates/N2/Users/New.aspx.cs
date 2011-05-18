@@ -8,6 +8,14 @@ namespace N2.Edit.Membership
 {
 	public partial class New : EditPage
 	{
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			createUserWizard.Question = Guid.NewGuid().ToString();
+			createUserWizard.Answer = Guid.NewGuid().ToString();
+		}
+
 		protected void createUserWizard_CreatedUser(object sender, EventArgs e)
 		{
 			var _cuw = sender as CreateUserWizard;
