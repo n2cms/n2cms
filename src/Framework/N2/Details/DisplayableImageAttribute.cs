@@ -62,7 +62,7 @@ namespace N2.Details
 			if (!string.IsNullOrEmpty(cssClass))
 				tb.AddCssClass(cssClass);
 
-			writer.Write(tb.ToString());
+			writer.Write(tb.ToString(TagRenderMode.SelfClosing));
 		}
 
 		#region IWritingDisplayable Members

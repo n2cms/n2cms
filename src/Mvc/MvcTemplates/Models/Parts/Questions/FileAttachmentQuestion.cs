@@ -21,7 +21,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 			TagBuilder tb = new TagBuilder("input");
 			tb.Attributes["type"] = "file";
 			tb.Attributes["name"] = ElementID;
-			return MvcHtmlString.Create(tb.ToString());
+			return MvcHtmlString.Create(tb.ToString(TagRenderMode.SelfClosing));
 		}
 
 		public override void AppendAnswer(Details.AnswerContext context, string postedValue)

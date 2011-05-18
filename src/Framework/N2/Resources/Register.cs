@@ -323,10 +323,10 @@ namespace N2.Resources
 
 			RegisterResource(stateCollection, resourceUrl);
 
-			return string.Format("<script type='text/javascript' src='{0}'></script>", Url.ResolveTokens(resourceUrl));
+			return string.Format("<script type=\"text/javascript\" src=\"{0}\"></script>", Url.ResolveTokens(resourceUrl));
 		}
 
-		const string scriptFormat = @"<script type='text/javascript'>//<![CDATA[
+		const string scriptFormat = @"<script type=""text/javascript"">//<![CDATA[
 {0}//]]></script>";
 		public static string JavaScript(IDictionary<string, object> stateCollection, string script, ScriptOptions options)
 		{
@@ -374,7 +374,7 @@ namespace N2.Resources
 
 			RegisterResource(stateCollection, resourceUrl);
 
-			return string.Format("<link rel='stylesheet' type='text/css' href='{0}'/>", Url.ResolveTokens(resourceUrl));
+			return string.Format("<link rel=\"stylesheet\" type=\"text/css\" href=\"{0}\"/>", Url.ResolveTokens(resourceUrl));
 		}
 		#endregion
 	}
