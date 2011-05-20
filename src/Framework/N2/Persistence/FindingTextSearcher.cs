@@ -31,7 +31,6 @@ namespace N2.Persistence
 		public IEnumerable<ContentItem> Search(ContentItem ancestor, string query, int skip, int take, out int totalRecords)
 		{
 			var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w + "%");
-			int taken = 0;
 			var q = finder.Where.AncestralTrail.Like(Utility.GetTrail(ancestor) + "%");
 			foreach (var word in words)
 			{

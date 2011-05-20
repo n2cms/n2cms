@@ -18,8 +18,8 @@ namespace N2.Tests.Definitions
 		[SetUp]
 		public void SetUp()
 		{
-			parentDefinition = new ItemDefinition(typeof(DefinitionControllingParent)) { Template = "List" };
-			childDefinition = new ItemDefinition(typeof(DefinitionOppressedChild)) { Template = "Wide" };
+			parentDefinition = new ItemDefinition(typeof(DefinitionControllingParent)) { TemplateKey = "List" };
+			childDefinition = new ItemDefinition(typeof(DefinitionOppressedChild)) { TemplateKey = "Wide" };
 
 			definitions = MockRepository.GenerateStub<IDefinitionManager>();
 			definitions.Expect(d => d.GetDefinitions()).Return(new[] { parentDefinition, childDefinition }).Repeat.Any();

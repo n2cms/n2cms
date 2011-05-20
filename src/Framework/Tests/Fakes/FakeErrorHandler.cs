@@ -11,9 +11,10 @@ namespace N2.Tests.Fakes
 		public void Notify(Exception ex)
 		{
 			Assert.Fail(ex.ToString());
+			ErrorOccured(this, new ErrorEventArgs { Error = ex });
 		}
 
-		public event EventHandler<ErrorEventArgs> ErrorOccured;
+		public event EventHandler<ErrorEventArgs> ErrorOccured = delegate { };
 
 		#endregion
 	}

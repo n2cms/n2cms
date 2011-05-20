@@ -83,7 +83,7 @@ namespace N2.Integrity
 				if (ChildType.IsAssignableFrom(context.ChildDefinition.ItemType))
 				{
 					if (this.Attribute.Types == null || this.Attribute.Types.Any(t => t.IsAssignableFrom(context.ParentDefinition.ItemType)))
-						if (this.Attribute.TemplateNames == null || this.Attribute.TemplateNames.Contains(context.ParentDefinition.Template))
+						if (this.Attribute.TemplateNames == null || this.Attribute.TemplateNames.Contains(context.ParentDefinition.TemplateKey))
 							return AllowedDefinitionResult.Allow;
 					return AllowedDefinitionResult.Deny;
 				}

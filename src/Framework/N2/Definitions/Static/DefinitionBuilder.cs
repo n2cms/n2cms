@@ -26,11 +26,6 @@ namespace N2.Definitions.Static
 			this.config = config;
 		}
 
-		//public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
-		//    : this(DefinitionMap.Instance, typeFinder, config)
-		//{
-		//}
-
 		/// <summary>Builds item definitions in the current environment.</summary>
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
 		public virtual IEnumerable<ItemDefinition> GetDefinitions()

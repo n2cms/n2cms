@@ -60,7 +60,7 @@ namespace N2.Definitions.Static
 			else
 				definition = new ItemDefinition(contentType);
 
-			definition.Template = templateKey;
+			definition.TemplateKey = templateKey;
 			definition.Initialize(contentType);
 
 			SetDefinition(contentType, templateKey, definition);

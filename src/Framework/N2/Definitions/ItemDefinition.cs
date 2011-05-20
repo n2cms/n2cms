@@ -82,7 +82,7 @@ namespace N2.Definitions
 		#region Properties
 
 		/// <summary>Variant of an item with the same discriminator.</summary>
-		public string Template { get; set; }
+		public string TemplateKey { get; set; }
 
 		/// <summary>Discriminator of an item this item is related to.</summary>
 		public string RelatedTo { get; set; }
@@ -374,7 +374,7 @@ namespace N2.Definitions
 
 		public override string ToString()
 		{
-			return Discriminator + (Template != null ? "/" + Template : null);
+			return Discriminator + (TemplateKey != null ? "/" + TemplateKey : null);
 		}
 
 		public override int GetHashCode()
@@ -390,7 +390,7 @@ namespace N2.Definitions
 			if (id == null)
 				return false;
 
-			return Discriminator == id.Discriminator && Template == id.Template;
+			return Discriminator == id.Discriminator && TemplateKey == id.TemplateKey;
 		}
 
 		#endregion
@@ -420,7 +420,7 @@ namespace N2.Definitions
 			id.NumberOfItems = 0;
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
-			id.Template = Template;
+			id.TemplateKey = TemplateKey;
 			id.Title = Title;
 			id.ToolTip = ToolTip;
 			return id;

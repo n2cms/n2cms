@@ -85,12 +85,12 @@ namespace N2.Definitions.Runtime
 					var td = new TemplateDefinition();
 					td.Definition = d;
 					td.Description = d.Description;
-					td.Name = d.Template;
+					td.Name = d.TemplateKey;
 					td.Original = () => null;
-					td.Template = () => activator.CreateInstance(d.ItemType, null, d.Template);
+					td.Template = () => activator.CreateInstance(d.ItemType, null, d.TemplateKey);
 					td.TemplateUrl = null;
 					td.Title = d.Title;
-					td.ReplaceDefault = "Index".Equals(d.Template, StringComparison.InvariantCultureIgnoreCase);
+					td.ReplaceDefault = "Index".Equals(d.TemplateKey, StringComparison.InvariantCultureIgnoreCase);
 					return td;
 				}).ToArray();
 

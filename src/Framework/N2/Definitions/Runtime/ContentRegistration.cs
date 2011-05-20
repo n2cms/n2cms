@@ -67,7 +67,7 @@ namespace N2.Definitions.Runtime
 		public ItemDefinition AppendDefinition(ItemDefinition definition)
 		{
 			definition.Title = Title;
-			definition.Template = Template;
+			definition.TemplateKey = Template;
 
 			foreach (var c in Containables)
 				definition.Add(c.Value);

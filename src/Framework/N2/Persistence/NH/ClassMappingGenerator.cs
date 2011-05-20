@@ -100,7 +100,10 @@ namespace N2.Persistence.NH
 
 					return sc;
 				}).ToArray();
-			var dbg = m.AsString();
+			if (Debugger.IsAttached)
+			{
+				var dbg = m.AsString();
+			}
 			cfg.AddDeserializedMapping(m, "N2");
 		}
 	}

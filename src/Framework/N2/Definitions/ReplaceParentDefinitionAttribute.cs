@@ -45,7 +45,11 @@ namespace N2.Definitions
 					if (ReplacementMode == DefinitionReplacementMode.Remove)
 					{
 						allDefinitions.Remove(definition);
-						if(AssumeParentDiscriminator)
+						var shadowDefinition = currentDefinition.Clone();
+						shadowDefinition.Discriminator += "Disabled";
+						N2.Definitions.Static.DefinitionMap.Instance.SetDefinition(definition.ItemType, definition.TemplateKey, shadowDefinition);
+
+						if (AssumeParentDiscriminator)
 							currentDefinition.Discriminator = definition.Discriminator;
 					}
 					else
