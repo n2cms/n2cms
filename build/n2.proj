@@ -28,6 +28,7 @@
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
 		<Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
 		<Platform Condition="'$(Platform)' == 'MCD'">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'BPC'">Any CPU</Platform>
 		
 		<MSBuildCommunityTasksPath>$(RootFolder)\lib</MSBuildCommunityTasksPath>
 	</PropertyGroup>
