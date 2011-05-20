@@ -8,7 +8,7 @@
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
     <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
-    <style>
+    <style type="text/css">
         label{font-weight:bold;margin:5px 10px 0 0;}
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
@@ -187,7 +187,7 @@
             <asp:Repeater ID="rptAssembly" runat="server">
                 <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
-                <asp:Repeater runat="server" DataSource=<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>>
+                <asp:Repeater runat="server" DataSource="<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>">
 					<ItemTemplate>
 						<td><%# Container.DataItem %></td>
 					</ItemTemplate>
@@ -202,7 +202,7 @@
 			<% try { %>
 			<table class="t"><thead><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
 			<tbody>
-			<% foreach (var kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
+			<% foreach (KeyValuePair<string, NHibernate.Cache.ICache> kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
 				<tr><td><%= kvp.Key%></td><td><%= kvp.Value%></td></tr>
 			<% } %>
 			</tbody></table>

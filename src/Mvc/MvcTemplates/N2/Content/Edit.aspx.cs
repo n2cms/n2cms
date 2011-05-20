@@ -317,9 +317,8 @@ namespace N2.Edit
 
 		private void LoadZones()
 		{
-			Type itemType = ie.CurrentItemType;
 			ucZones.CurrentItem = ie.CurrentItem;
-			ItemDefinition definition = N2.Context.Definitions.GetDefinition(itemType);
+			ItemDefinition definition = Engine.Definitions.GetDefinition(ie.CurrentItem);
 			ucZones.LoadZonesOf(definition, ie.CurrentItem);
 		}
 

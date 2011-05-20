@@ -31,10 +31,8 @@
 							meta:resourcekey="lblEmailResource1">Email</asp:Label>
 						<asp:TextBox ID="Email" runat="server" meta:resourcekey="EmailResource2" />
 					</div>
-					<asp:TextBox ID="Question" runat="server" Visible="False" 
-						Text="<%$ Code:Guid.NewGuid() %>" meta:resourcekey="QuestionResource1" />
-					<asp:TextBox ID="Answer" runat="server" Visible="False" 
-						Text="<%$ Code:Guid.NewGuid() %>" meta:resourcekey="AnswerResource1" />
+					<asp:TextBox ID="Question" runat="server" Visible="False" meta:resourcekey="QuestionResource1" />
+					<asp:TextBox ID="Answer" runat="server" Visible="False" meta:resourcekey="AnswerResource1" />
 					<div>
 						<asp:Label ID="lblRoles" runat="server" AssociatedControlID="cblRoles" 
 							meta:resourcekey="lblRolesResource1">Roles</asp:Label>
