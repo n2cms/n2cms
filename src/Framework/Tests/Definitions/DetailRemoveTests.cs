@@ -4,6 +4,7 @@ using N2.Configuration;
 using N2.Definitions.Static;
 using N2.Tests.Definitions.Items;
 using NUnit.Framework;
+using N2.Definitions;
 
 namespace N2.Tests.Definitions
 {
@@ -25,7 +26,7 @@ namespace N2.Tests.Definitions
 		{
 			base.SetUp();
 
-			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new EngineSection());
+			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
 		}
 
 		[Test]

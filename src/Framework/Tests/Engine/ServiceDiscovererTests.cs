@@ -4,6 +4,7 @@ using N2.Engine.Castle;
 using N2.Engine.MediumTrust;
 using N2.Tests.Engine.Services;
 using NUnit.Framework;
+using System;
 
 namespace N2.Tests.Engine
 {
@@ -136,10 +137,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void GenericServices_CanDepend_OnService()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(DependingGenericSelfService<>));
-
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(SelfService), typeof(DependingGenericSelfService<>));
 
 			var service = container.Resolve<DependingGenericSelfService<string>>();
 			Assert.That(service, Is.InstanceOf<DependingGenericSelfService<string>>());
@@ -149,9 +147,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void CanResolve_MultipleServices()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(HighService), typeof(LowService));
 
 			var services = container.ResolveAll<IBarometer>();
 			Assert.That(services.Count(), Is.EqualTo(2));
@@ -160,9 +156,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolveAll_GivesAnArray_OfTheRequestedArrayType()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(HighService), typeof(LowService));
 
 			var services = container.ResolveAll<IBarometer>();
 			Assert.That(services, Is.InstanceOf<IBarometer[]>());
@@ -171,9 +165,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolveAll_WithTypeArgument_GivesAnArray_OfTheRequestedArrayType()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(HighService), typeof(LowService));
 
 			var services = container.ResolveAll(typeof(IBarometer));
 			Assert.That(services, Is.InstanceOf<IBarometer[]>());
@@ -182,9 +174,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void CanDependOn_MultipleServices()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(HighService), typeof(LowService));
 			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
 
 			var watcher = container.Resolve<BarometerWatcher>();
@@ -192,11 +182,18 @@ namespace N2.Tests.Engine
 		}
 
 		[Test]
+		public void CanDependOn_MultipleServices_WhenNoServicesAvailable()
+		{
+			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
+
+			var watcher = container.Resolve<BarometerWatcher>();
+			Assert.That(watcher.Barometers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
 		public void Services_DependingOn_MultipleServices_CanBeSingletons()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
-			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.RegisterServices(registrator.FindServices());
+			FindAndRegister(typeof(HighService), typeof(LowService));
 			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
 
 			var watcher = container.Resolve<BarometerWatcher>();
@@ -307,6 +304,13 @@ namespace N2.Tests.Engine
 
 			Assert.That(container.Resolve<IService>(), Is.InstanceOf<ReplacingService>());
 			Assert.That(container.ResolveAll<IService>().Count(), Is.EqualTo(1));
+		}
+
+		private void FindAndRegister(params Type[] types)
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(types);
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
 		}
 	}
 }

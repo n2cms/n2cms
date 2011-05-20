@@ -87,7 +87,7 @@ namespace N2.Engine.MediumTrust
 		{
 			Func<Type, IEnumerable<object>> listResolver;
 			if (!listResolvers.TryGetValue(serviceType, out listResolver))
-				return new object[0];
+				return Activator.CreateInstance(serviceType.MakeArrayType(), 0) as Array;
 			
 			var instances = listResolver(serviceType).ToList().ToArray();
 			var returnArray = Activator.CreateInstance(serviceType.MakeArrayType(), instances.Length) as Array;
@@ -326,7 +326,7 @@ namespace N2.Engine.MediumTrust
 				bool resolverExists = resolvers.ContainsKey(parameter.ParameterType);
 				bool genericResolverExists = (parameter.ParameterType.IsGenericType && resolvers.ContainsKey(parameter.ParameterType.GetGenericTypeDefinition()));
 				bool arrayResolverExists = (parameter.ParameterType.IsArray && resolvers.ContainsKey(parameter.ParameterType.GetElementType()));
-				if (!resolverExists && !genericResolverExists && !arrayResolverExists)
+				if (!resolverExists && !genericResolverExists && !arrayResolverExists && !parameter.ParameterType.IsArray)
 				{
 					result.Add(parameter);
 				}

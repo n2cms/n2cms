@@ -36,6 +36,7 @@ namespace N2.Tests.Serialization
 			definitions = new DefinitionManager(
 				new[] {new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), 
 					finder, 
+					new TransformerBase<IUniquelyNamed>[0],
 					new EngineSection()))}, 
 				new ITemplateProvider[0],
 				activator, new StateChanger());

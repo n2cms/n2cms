@@ -1,6 +1,7 @@
 ﻿using N2;
 using N2.Details;
 using N2.Persistence;
+using N2.Definitions;
 
 namespace Dinamico.Models
 {

@@ -15,14 +15,16 @@ namespace N2.Definitions.Static
 	{
 		private readonly DefinitionMap staticDefinitions;
 		private readonly ITypeFinder typeFinder;
+		TransformerBase<IUniquelyNamed>[] transformers;
 		private readonly EngineSection config;
 		
 		private ItemDefinition[] definitionsCache;
 
-		public DefinitionBuilder(DefinitionMap staticDefinitions, ITypeFinder typeFinder, EngineSection config)
+		public DefinitionBuilder(DefinitionMap staticDefinitions, ITypeFinder typeFinder, TransformerBase<IUniquelyNamed>[] transformers, EngineSection config)
 		{
 			this.staticDefinitions = staticDefinitions;
 			this.typeFinder = typeFinder;
+			this.transformers = transformers;
 			this.config = config;
 		}
 
@@ -35,8 +37,29 @@ namespace N2.Definitions.Static
 
 			List<ItemDefinition> definitions = FindDefinitions();
 			ExecuteRefiners(definitions);
+			ExecuteTransformers(definitions);
+
 
 			return definitionsCache = definitions.ToArray();
+		}
+
+		private void ExecuteTransformers(List<ItemDefinition> definitions)
+		{
+			foreach (var d in definitions)
+			{
+				ExecuteRefiners(d.Editables);
+				ExecuteRefiners(d.Containers);
+				ExecuteRefiners(d.EditableModifiers);
+				ExecuteRefiners(d.Displayables);
+			}
+		}
+
+		private void ExecuteRefiners<T>(IList<T> attributes) where T : IUniquelyNamed
+		{
+			for (int i = 0; i < attributes.Count; i++)
+				foreach (var t in transformers)
+					if (t.IsTransformable(attributes[i]))
+						attributes[i] = (T)t.Transform(attributes[i]);
 		}
 
 		protected List<ItemDefinition> FindDefinitions()

@@ -145,6 +145,7 @@
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
+    <Compile Include="Definitions\AttributeTransformerTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\DetailRemoveTests.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Definitions\Static\DescribablePart.cs" />
     <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
     <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
+    <Compile Include="Definitions\Items\TitleTransformer.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EditableChildrenTest.cs" />
     <Compile Include="Details\EnumableItem.cs" />
@@ -436,9 +438,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Xml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
