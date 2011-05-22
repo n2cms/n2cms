@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web.UI;
@@ -141,20 +142,11 @@ namespace N2.Web.UI.WebControls
                 return ThrowUnless(swallowExceptions, new ArgumentNullException("item"));
 			}
 
-			PropertyInfo pi = item.GetContentType().GetProperty(propertyName);
-            if (pi == null)
-			{
-                return ThrowUnless(swallowExceptions, new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetContentType()));
-			}
-			else
-			{
-				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
-                if (attributes.Length == 0)
-				{
-                    return ThrowUnless(swallowExceptions, new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetContentType()));
-				}
-				return attributes[0];
-			}
+			var displayable = N2.Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(item).Displayables.FirstOrDefault(d => d.Name == propertyName);
+			if (displayable == null)
+                return ThrowUnless(swallowExceptions, new N2Exception("No displayable '{0}' found for the item #{1} of type '{2}'.", propertyName, item.ID, item.GetContentType()));
+			
+			return displayable;
 		}
 
         private static IDisplayable ThrowUnless<T>(bool swallowExceptions, T ex)

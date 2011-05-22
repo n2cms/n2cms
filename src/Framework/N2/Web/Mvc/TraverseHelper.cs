@@ -76,7 +76,12 @@ namespace N2.Web.Mvc
 					yield return ancestors[i];
 		}
 
-		public IEnumerable<ContentItem> Children(ItemFilter filter = null)
+		public IEnumerable<ContentItem> Children()
+		{
+			return Children(null);
+		}
+
+		public IEnumerable<ContentItem> Children(ItemFilter filter)
 		{
 			return Children(CurrentItem, filter ?? DefaultFilter());
 		}
@@ -155,8 +160,13 @@ namespace N2.Web.Mvc
 		{
 			return Ancestors().Reverse().Skip(level).FirstOrDefault();
 		}
+		
+		public ContentItem Parent()
+		{
+			return Parent(null);
+		}
 
-		public ContentItem Parent(ContentItem item = null)
+		public ContentItem Parent(ContentItem item)
 		{
 			if (item == null) item = CurrentItem;
 			if (item == StartPage) return null;

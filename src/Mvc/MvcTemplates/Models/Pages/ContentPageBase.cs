@@ -25,6 +25,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		// editables
 
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
+		[DisplayableTokens]
 		public virtual string Text { get; set; }
 
 		[EditableCheckBox("Visible", 12, ContainerName = Tabs.Details)]

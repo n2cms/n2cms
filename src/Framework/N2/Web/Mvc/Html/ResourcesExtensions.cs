@@ -59,6 +59,11 @@ namespace N2.Web.Mvc.Html
 				Writer.Write(N2.Resources.Register.StyleSheet(ViewData, resourceUrl));
 				return this;
 			}
+
+			public override string ToString()
+			{
+				return "";
+			}
 		}
 	}
 }

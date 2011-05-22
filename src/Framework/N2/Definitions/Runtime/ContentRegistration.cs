@@ -26,7 +26,7 @@ namespace N2.Definitions.Runtime
 		public int DefaultSortIncrement { get; set; }
 		public bool Ignore { get; set; }
 		public string Discriminator { get; set; }
-		public string Template { get; set; }
+		public string TemplateKey { get; set; }
 		public string Title { get; set; }
 		public bool IsDefined { get; set; }
 		public bool ReplaceDefault { get; set; }
@@ -67,7 +67,7 @@ namespace N2.Definitions.Runtime
 		public ItemDefinition AppendDefinition(ItemDefinition definition)
 		{
 			definition.Title = Title;
-			definition.TemplateKey = Template;
+			definition.TemplateKey = TemplateKey;
 
 			foreach (var c in Containables)
 				definition.Add(c.Value);

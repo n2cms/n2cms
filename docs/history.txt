@@ -1,4 +1,6 @@
 ﻿2.2
+- Tokens in MVC Templates & WebForm Templates
+- AttributeTransformerBase to globally alter editables (ThreadId=250548)
 - tokens
 	- next sibling
 	- previous sibling

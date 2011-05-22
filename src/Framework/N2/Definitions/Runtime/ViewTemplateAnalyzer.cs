@@ -76,7 +76,7 @@ namespace N2.Definitions.Runtime
 		{
 			var re = new ContentRegistration();
 			re.ContentType = modelType;
-			re.Template = N2.Web.Url.RemoveAnyExtension(file.Name);
+			re.TemplateKey = N2.Web.Url.RemoveAnyExtension(file.Name);
 			re.IsDefined = false;
 			using (StringWriter sw = new StringWriter())
 			{
@@ -111,7 +111,7 @@ namespace N2.Definitions.Runtime
 
 		private ItemDefinition GetOrCreateDefinition(ContentRegistration re)
 		{
-			var definition = map.CreateDefinition(re.ContentType, re.Template);
+			var definition = map.CreateDefinition(re.ContentType, re.TemplateKey);
 			return definition;
 		}
 

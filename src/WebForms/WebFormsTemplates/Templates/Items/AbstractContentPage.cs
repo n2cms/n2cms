@@ -21,6 +21,7 @@ namespace N2.Templates.Items
 	public abstract class AbstractContentPage : AbstractPage, IContentPage
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
+		[DisplayableTokens]
 		public virtual string Text
 		{
 			get { return (string) (GetDetail("Text") ?? string.Empty); }
