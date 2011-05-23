@@ -799,7 +799,7 @@
     <Compile Include="Security\Permission.cs" />
     <Compile Include="Security\PermissionMap.cs" />
     <Compile Include="Security\SecurityManager.cs" />
-    <Compile Include="Engine\EventBroker.cs" />
+    <Compile Include="Web\EventBroker.cs" />
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
     <Compile Include="Web\PathDictionary.cs" />

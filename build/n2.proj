@@ -21,7 +21,7 @@
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<DeployPrefix>n2cms_2.1.1_</DeployPrefix>
+		<DeployPrefix>n2cms_2.2_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 
@@ -64,14 +64,8 @@
 
 	<!-- Deploy -->
 
-	<Target Name="Deploy" DependsOnTargets="Clean-Output">
-		<Message Text="Deploying Everything"/>
-
-		<CallTarget Targets="Framework-Deploy"/>
-		<CallTarget Targets="Templates-Deploy"/>
-		<CallTarget Targets="Templates-Mvc-Deploy"/>
-		<CallTarget Targets="Examples-Deploy"/>
-		<CallTarget Targets="Source-Deploy"/>
+	<Target Name="Deploy" DependsOnTargets="Clean-Output;Framework-Deploy;Templates-Deploy;Templates-Mvc-Deploy;Dinamico-Deploy;Examples-Deploy;Source-Deploy">
+		<Message Text="Deployed Everything"/>
 		<RemoveDir Directories="$(DeployFolder)\temp" ContinueOnError="true" />
 	</Target>
 
@@ -79,13 +73,13 @@
 
 	<Target Name="ZipDeploy" DependsOnTargets="Deploy;Zip">
 		<ItemGroup>
-			<zips Include="$(DeployFolder)\*.zip" />
+			<_zips Include="$(DeployFolder)\*.zip" />
 		</ItemGroup>
-		<Message Text="Deployed: %(zips.filename)%(zips.extension)" />
+		<Message Text="Deployed: %(_zips.filename)%(_zips.extension)" />
 	</Target>
 
-	<Target Name="Zip">
-		<CallTarget Targets="Framework-Zip;Source-Zip;Templates-Zip;Templates-Mvc-Zip;Examples-Zip" />
+	<Target Name="Zip" DependsOnTargets="Framework-Zip;Source-Zip;Templates-Zip;Templates-Mvc-Zip;Dinamico-Zip;Examples-Zip">
+		<Message Text="Zipped Everything"/>
 	</Target>
 
 	<!-- Clean sources -->

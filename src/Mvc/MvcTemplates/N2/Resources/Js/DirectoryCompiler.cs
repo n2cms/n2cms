@@ -30,7 +30,7 @@ namespace N2.Edit.Js
 			if (context.Response == null) throw new ArgumentNullException("context.Response");
 			if (context.Server == null) throw new ArgumentNullException("context.Server");
 
-			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
+			if (CacheUtility.IsUnmodifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
 			{
 				CacheUtility.NotModified(context.Response);
 			}

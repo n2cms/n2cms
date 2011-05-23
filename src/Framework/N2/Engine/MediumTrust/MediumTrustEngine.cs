@@ -1,4 +1,5 @@
 using System;
+using N2.Web;
 
 namespace N2.Engine.MediumTrust
 {

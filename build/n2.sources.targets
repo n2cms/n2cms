@@ -28,7 +28,10 @@
 											 $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
 											 $(MSBuildProjectDirectory)\..\**\Thumbs.db;
 											 $(DeployFolder)\**\*;
+											 $(Templates-SourceFolder)\N2\**\*;
+											 $(Dinamico-SourceFolder)\N2\**\*;
 											 $(Examples-Folder)\**\N2\**\*;
+											 $(LibFolder)\*.xml;
 											 $(LibFolder)\*.pdb" />
 		</ItemGroup>
 
