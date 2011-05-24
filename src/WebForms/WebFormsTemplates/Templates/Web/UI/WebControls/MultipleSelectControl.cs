@@ -9,6 +9,7 @@ namespace N2.Templates.Web.UI.WebControls
     {
         MultipleSelect item;
         CheckBoxList list;
+        RequiredFieldValidatorForCheckBoxLists rfv;
 
         public MultipleSelectControl(MultipleSelect item, RepeatDirection direction)
         {
@@ -23,16 +24,33 @@ namespace N2.Templates.Web.UI.WebControls
             l.Text = item.Title;
             l.CssClass = "label";
             l.AssociatedControlID = item.Name;
-            this.Controls.Add(l);
-
+            
             list.ID = item.Name;
             list.CssClass = "alternatives";
             list.DataSource = item.GetChildren();
             list.DataTextField = "Title";
             list.DataValueField = "ID";
             list.DataBind();
-            this.Controls.Add(list);
 
+            if (item["Required"] != null && (bool)item["Required"] == true)
+            {
+                rfv = new RequiredFieldValidatorForCheckBoxLists();
+                rfv.ControlToValidate = list.ID;
+                rfv.ErrorMessage = "Required Field";
+                rfv.ValidationGroup = "Form";
+                rfv.ID = "Required" + item.ID;
+                rfv.SetFocusOnError = true;
+                rfv.Enabled = true;
+                rfv.Display = ValidatorDisplay.Dynamic;
+                rfv.EnableClientScript = true;
+                list.ValidationGroup = "Form";
+                list.CausesValidation = true;
+
+                Controls.Add(rfv);
+            }
+
+            this.Controls.Add(l);
+            this.Controls.Add(list);
             base.OnInit(e);
         }
 

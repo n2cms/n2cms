@@ -143,6 +143,7 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
+    <Compile Include="Templates\Services\QuestionRequiredDefinitionAppender.cs" />
     <Compile Include="Templates\Web\MasterPageConcern.cs" />
     <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
     <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
@@ -450,6 +451,7 @@
     </Compile>
     <Compile Include="Templates\Web\UI\WebControls\IQuestionControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\MultipleSelectControl.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\RequiredFieldValidatorForCheckBoxLists.cs" />
     <Compile Include="Templates\Web\UI\WebControls\SingleSelectControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\TextControl.cs" />
     <Compile Include="Templates\Web\Adapters\FormAdapter.cs" />

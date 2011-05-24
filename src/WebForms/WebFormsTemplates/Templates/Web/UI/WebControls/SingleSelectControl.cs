@@ -8,6 +8,7 @@ namespace N2.Templates.Web.UI.WebControls
     {
         readonly RadioButtonList rbl;
         readonly Label l;
+        RequiredFieldValidator rfv; 
 
         public SingleSelectControl(SingleSelect question, RepeatDirection direction)
         {
@@ -20,6 +21,24 @@ namespace N2.Templates.Web.UI.WebControls
             rbl.RepeatLayout = RepeatLayout.Flow;
             rbl.RepeatDirection = direction;
             rbl.DataBind();
+
+            if (question["Required"] != null && (bool)question["Required"] == true)
+            {
+                rfv = new RequiredFieldValidator();
+                rfv.ControlToValidate = rbl.ID;
+                rfv.ErrorMessage = "Required Field";
+                rfv.ValidationGroup = "Form";
+                rfv.ID = "Required" + question.ID;
+                rfv.SetFocusOnError = true;
+                rfv.Enabled = true;
+                rfv.Display = ValidatorDisplay.Dynamic;
+                rfv.EnableClientScript = true;
+                rfv.InitialValue = "";
+                rbl.ValidationGroup = "Form";
+                rbl.CausesValidation = true;
+
+                Controls.Add(rfv);
+            }
 
             l = new Label();
             l.CssClass = "label";
