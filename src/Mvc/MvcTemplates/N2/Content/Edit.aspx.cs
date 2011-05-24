@@ -261,7 +261,7 @@ namespace N2.Edit
 			{
 				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
 				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;
-				string format = GetLocalResourceString("EditPage.TitleFormat.New");
+				string format = GetLocalResourceString("EditPage.TitleFormat.New", "New \"{0}\"");
 				
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
@@ -275,7 +275,7 @@ namespace N2.Edit
 			}
 			else
 			{
-				string format = GetLocalResourceString("EditPage.TitleFormat.Update");
+				string format = GetLocalResourceString("EditPage.TitleFormat.Update", "Edit \"{0}\"");
 				Title = string.Format(format, ie.CurrentItem.Title);
 			}
 		}

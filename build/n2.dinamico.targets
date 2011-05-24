@@ -72,7 +72,6 @@ public static string ScriptMain()
 		</PropertyGroup>
 		<Delete Files="$(Dinamico-DeployFolder-Path)\N2\N2.zip" Condition="Exists('$(Dinamico-DeployFolder-Path)\N2\N2.zip')" />
 		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
-		<Copy SourceFiles="@(Framework-EditFiles-Resx)" DestinationFolder="$(Dinamico-DeployFolder-Path)\N2\%(RecursiveDir)" />
 		
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Dinamico-DeployFolder)\" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Dinamico-DeployFolder)\Snippets" />

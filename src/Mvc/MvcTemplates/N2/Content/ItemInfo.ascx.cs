@@ -14,5 +14,18 @@ namespace N2.Edit
 			get { return currentItem; }
 			set { currentItem = value; }
 		}
+
+		protected string GetStateText(ContentItem item)
+		{
+			string fallback = item.State.ToString();
+			try
+			{
+				return (string)GetLocalResourceObject(fallback) ?? fallback;
+			}
+			catch
+			{
+				return fallback;
+			}
+		}
 	}
 }

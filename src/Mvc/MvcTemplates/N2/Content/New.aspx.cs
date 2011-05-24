@@ -189,7 +189,7 @@ namespace N2.Edit
 
 			if (allowedChildrenCount == 0)
 			{
-				Title = string.Format(GetLocalResourceString("NewPage.Title.NoneAllowed"), ParentItemDefinition.Title);
+				Title = string.Format(GetLocalResourceString("NewPage.Title.NoneAllowed", "No item is allowed below an item of type \"{0}\""), ParentItemDefinition.Title);
 			}
 			else if (allowedChildrenCount == 1 && allowedChildren.Count == 1)
 			{
@@ -197,7 +197,7 @@ namespace N2.Edit
 			}
 			else
 			{
-				Title = string.Format(GetLocalResourceString("NewPage.Title.Select"), ActualItem.Title);
+				Title = string.Format(GetLocalResourceString("NewPage.Title.Select", "Select type of item below \"{0}\""), ActualItem.Title);
 
 				var top = allowedChildren.OrderByDescending(d => d.NumberOfItems).ThenBy(d => d.SortOrder).Take(1).ToList();
 				var rest = allowedChildren.Except(top).ToList();
