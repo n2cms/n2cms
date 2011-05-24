@@ -8,26 +8,32 @@ namespace N2.Persistence.NH.Finder
 	public class VersionOfHqlProvider : IHqlProvider
 	{
 		Operator op;
-		int itemID;
+		int? itemID;
 
 		public VersionOfHqlProvider(Operator op, ContentItem item)
 		{
 			this.op=op;
-			this.itemID = item.ID;
+			if (item != null)
+				this.itemID = item.ID;
 		}
 
 		#region IHqlProvider Members
 
 		public void AppendHql(StringBuilder from, StringBuilder where, int index)
 		{
-			where.AppendFormat(" {0} VersionOfID = :v{1}",
-				GetOperator(),
-				index);
+			if (itemID.HasValue)
+				where.AppendFormat(" {0} VersionOfID = :v{1}",
+					GetOperator(),
+					index);
+			else
+				where.AppendFormat(" {0} VersionOfID IS NULL",
+					GetOperator());
 		}
 
 		public void SetParameters(NHibernate.IQuery query, int index)
 		{
-			query.SetParameter("v" + index, this.itemID);
+			if(itemID.HasValue)
+				query.SetParameter("v" + index, this.itemID.Value);
 		}
 
 		#endregion

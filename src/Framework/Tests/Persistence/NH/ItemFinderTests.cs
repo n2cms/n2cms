@@ -242,6 +242,13 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void ByProperty_VersionOf_Null()
+		{
+			IList<ContentItem> items = finder.Where.VersionOf.Eq(null).Select();
+			Assert.AreEqual(5, items.Count);
+		}
+
+		[Test]
 		public void ByPropertyVersionOfOrVersionOf()
 		{
 			IList<ContentItem> items = finder.Where
