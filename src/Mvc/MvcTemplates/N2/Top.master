@@ -8,11 +8,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="robots" content="noindex, nofollow" />
     <title>N2</title>
-	<link rel="stylesheet" href="Resources/Css/all.css" type="text/css" />
-	<link rel="stylesheet" href="Resources/Css/default.css" type="text/css" />
+	<asp:PlaceHolder runat="server">
+	<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/all.css") %>" type="text/css" />
+	<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/default.css") %>" type="text/css" />
 	<!--[if IE 6]>
-	<link rel="stylesheet" href="Resources/Css/IE6.css" type="text/css" />
+	<link rel="stylesheet" href="<%= ResolveUrl("Resources/Css/IE6.css") %>" type="text/css" />
 	<![endif]-->
+	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server">
     </asp:ContentPlaceHolder>
 </head>

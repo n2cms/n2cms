@@ -85,7 +85,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
 		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
 		..\lib\log4net.dll = ..\lib\log4net.dll
-		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
 		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
 		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll

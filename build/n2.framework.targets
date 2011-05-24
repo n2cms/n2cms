@@ -34,9 +34,10 @@
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">
 		<ItemGroup>
-			<Framework-EditFiles	Include="$(EditFolder)\**\*.as?x;
+			<Framework-EditFiles-Resx	Include="$(EditFolder)\**\*.resx;" />
+			<Framework-EditFiles	Include="@(Framework-EditFiles-Resx);
+																		 $(EditFolder)\**\*.as?x;
 																		 $(EditFolder)\**\*.master;
-																		 $(EditFolder)\**\*.resx;
 																		 $(EditFolder)\**\*.config;
 																		 $(EditFolder)\**\*.css;
 																		 $(EditFolder)\**\*.js;

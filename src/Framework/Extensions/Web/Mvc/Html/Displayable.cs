@@ -65,6 +65,13 @@ namespace N2.Web.Mvc.Html
 			return this;
 		}
 
+		public Displayable SwallowExceptions(bool swallow)
+		{
+			swallowExceptions = swallow;
+
+			return this;
+		}
+
 		public override string ToString()
 		{
 			var previousWriter = Html.ViewContext.Writer;

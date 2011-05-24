@@ -25,21 +25,32 @@ You're free to use this VPP under the same license as DotNetZip.
 
 using System;
 using System.Web.Hosting;
+using System.IO;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
-    class ZipVirtualFile : VirtualFile
-    {
-        ZipFile _zipFile;
+	class ZipVirtualFile : VirtualFile
+	{
+		static object lockObject = new object();
 
-        public ZipVirtualFile (String virtualPath, ZipFile zipFile)
-            : base(virtualPath) {
-            _zipFile = zipFile;
-        }
+		ZipFile _zipFile;
 
-        public override System.IO.Stream Open () {
-            ZipEntry entry = _zipFile[Util.ConvertVirtualPathToZipPath(base.VirtualPath,true)];
-            return entry.OpenReader();
-        }
-    }
+		public ZipVirtualFile(String virtualPath, ZipFile zipFile)
+			: base(virtualPath)
+		{
+			_zipFile = zipFile;
+		}
+
+		public override System.IO.Stream Open()
+		{
+			ZipEntry entry = _zipFile[Util.ConvertVirtualPathToZipPath(base.VirtualPath, true)];
+			var buffer = new byte[entry.UncompressedSize];
+			lock (lockObject)
+			{
+				entry.OpenReader().Read(buffer, 0, buffer.Length);
+			}
+			var ms = new MemoryStream(buffer);
+			return ms;
+		}
+	}
 }

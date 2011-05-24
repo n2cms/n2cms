@@ -41,7 +41,7 @@ namespace N2.Web.Mvc
 
 		    try
 		    {
-				object data = Html.DisplayContent(Current, name).ToString();
+				object data = Html.DisplayContent(Current, name).SwallowExceptions(true).ToString();
 		        result = data.ToHtmlString();
 		    }
 		    catch (N2Exception)

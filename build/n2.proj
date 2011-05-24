@@ -32,7 +32,7 @@
 		<MSBuildCommunityTasksPath>$(RootFolder)\lib</MSBuildCommunityTasksPath>
 	</PropertyGroup>
 
-	<Import Project="$(RootFolder)\lib\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="$(RootFolder)\build\lib\MSBuild.Community.Tasks.targets"/>
 	<Import Project="n2.framework.targets"/>
 	<Import Project="n2.templates.webforms.targets"/>
 	<Import Project="n2.templates.mvc.targets"/>

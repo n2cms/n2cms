@@ -44,16 +44,35 @@ namespace N2.Web.Hosting
 				if (Modified.HasValue && CacheUtility.IsUnmodifiedSince(context.Request, Modified.Value))
 					CacheUtility.NotModified(context.Response);
 
-				string contentType = GetContentType(context.Request.AppRelativeCurrentExecutionFilePath);
-				if (contentType != null)
-					context.Response.ContentType = contentType;
 
-				N2.Web.CacheUtility.SetValidUntilExpires(context.Response, DateTime.UtcNow);
+				byte[] cached = context.Cache["VirtualPathFileHandler:" + context.Request.AppRelativeCurrentExecutionFilePath] as byte[];
+				if (cached != null)
+				{
+					context.Response.ContentType = GetContentType(context.Request.AppRelativeCurrentExecutionFilePath);
+					context.Response.OutputStream.Write(cached, 0, cached.Length);
+					return;
+				}
+				
 
 				var f = vpp.GetFile(context.Request.AppRelativeCurrentExecutionFilePath);
 				using (var s = f.Open())
 				{
-					TransferBetweenStreams(s, context.Response.OutputStream);
+					byte[] buffer = new byte[131072];
+					int readBytes = ReadBlock(s, buffer);
+					if (readBytes <= 0)
+						return;
+
+					N2.Web.CacheUtility.SetValidUntilExpires(context.Response, DateTime.UtcNow);
+					context.Response.ContentType = GetContentType(context.Request.AppRelativeCurrentExecutionFilePath);
+					context.Response.OutputStream.Write(buffer, 0, readBytes);
+
+					if (readBytes < buffer.Length)
+					{
+						cached = new byte[readBytes];
+						Array.Copy(buffer, cached, readBytes);
+						context.Cache.Add("VirtualPathFileHandler:" + context.Request.AppRelativeCurrentExecutionFilePath, cached, vpp.GetCacheDependency(context.Request.AppRelativeCurrentExecutionFilePath, new[] { context.Request.AppRelativeCurrentExecutionFilePath }, DateTime.UtcNow), DateTime.MaxValue, TimeSpan.FromMinutes(1), System.Web.Caching.CacheItemPriority.BelowNormal, null);
+					}
+					TransferBetweenStreams(buffer, s, context.Response.OutputStream);
 				}
 			}
 		}
@@ -77,24 +96,30 @@ namespace N2.Web.Hosting
 				case ".htm":
 				case ".html":
 					return "text/html";
+				case ".txt":
+					return "text/txt";
 				case ".swf":
 					return "application/x-shockwave-flash";
 				default:
-					return null;
+					return "application/data";
 			}
 		}
 
-		protected virtual void TransferBetweenStreams(Stream inputStream, Stream outputStream)
+		protected virtual void TransferBetweenStreams(byte[] buffer, Stream inputStream, Stream outputStream)
 		{
-			byte[] buffer = new byte[32768];
 			while (true)
 			{
-				int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+				int bytesRead = ReadBlock(inputStream, buffer);
 				if (bytesRead <= 0)
 					break;
 
 				outputStream.Write(buffer, 0, bytesRead);
 			}
+		}
+
+		private int ReadBlock(Stream inputStream, byte[] buffer)
+		{
+			return inputStream.Read(buffer, 0, buffer.Length);
 		}
 
 		#endregion

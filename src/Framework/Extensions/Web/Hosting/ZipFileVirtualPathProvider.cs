@@ -24,19 +24,27 @@ You're free to use this VPP under the same license as DotNetZip.
 **/
 
 using System;
+using System.Linq;
 using System.Web.Hosting;
 using System.Collections.Generic;
+using System.Web;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Web.Caching;
+using System.Collections;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
 	public class ZipFileVirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
 		ZipFile zipFile;
+		string zipFilePath;
 		Dictionary<string, bool> fileOrDirectoryCache;
 
 		public ZipFileVirtualPathProvider(string zipFilename)
 			: base()
 		{
+			this.zipFilePath = zipFilename;
 			zipFile = ZipFile.Read(zipFilename);
 		}
 
@@ -47,30 +55,54 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override bool FileExists(string virtualPath)
 		{
-			return Exists(virtualPath, true) ?? Previous.FileExists(virtualPath);
+			bool exists = Exists(virtualPath, true) || Previous.FileExists(virtualPath);
+			return exists;
 		}
 
 		public override bool DirectoryExists(string virtualDir)
 		{
-			return Exists(virtualDir, false) ?? Previous.DirectoryExists(virtualDir);
+			bool exists = Exists(virtualDir, false) || Previous.DirectoryExists(virtualDir);
+			return exists;
 		}
 
 		public override VirtualFile GetFile(string virtualPath)
 		{
-			ZipEntry zipEntry = GetEntry(virtualPath, true);
-			if (zipEntry != null && !zipEntry.IsDirectory)
-				return new ZipVirtualFile(virtualPath, zipFile);
-
+			if (Exists(virtualPath, true))
+			{
+				ZipEntry zipEntry = GetEntry(virtualPath, true);
+				if (zipEntry != null && !zipEntry.IsDirectory)
+					return new ZipVirtualFile(virtualPath, zipFile);
+			}
 			return Previous.GetFile(virtualPath);
 		}
 
 		public override VirtualDirectory GetDirectory(string virtualDir)
 		{
-			ZipEntry zipEntry = GetEntry(virtualDir, false);
-			if (zipEntry != null && zipEntry.IsDirectory)
-				return new ZipVirtualDirectory(virtualDir, zipFile);
-
+			if (Exists(virtualDir, false))
+			{
+				ZipEntry zipEntry = GetEntry(virtualDir, false);
+				if (zipEntry != null && zipEntry.IsDirectory)
+					return new ZipVirtualDirectory(virtualDir, zipFile);
+			}
 			return Previous.GetDirectory(virtualDir);
+		}
+
+		public override string GetFileHash(string virtualPath, System.Collections.IEnumerable virtualPathDependencies)
+		{
+			if (Exists(virtualPath, true))
+				return zipFilePath + File.GetLastWriteTimeUtc(zipFilePath) + virtualPath;
+			
+			return Previous.GetFileHash(virtualPath, virtualPathDependencies);
+		}
+
+		public override CacheDependency GetCacheDependency(String virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
+		{
+			var filesNotBelongingToZip = virtualPathDependencies.OfType<string>().Where(f => !Exists(f, true));
+
+			if (filesNotBelongingToZip.Any())
+				return Previous.GetCacheDependency(virtualPath, filesNotBelongingToZip, utcStart);
+			else
+				return new CacheDependency(zipFilePath);
 		}
 
 		private ZipEntry GetEntry(string virtualPath, bool isFile)
@@ -79,33 +111,15 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 			return zipFile[zipPath];
 		}
 
-		public override string GetFileHash(string virtualPath, System.Collections.IEnumerable virtualPathDependencies)
-		{
-			if (Previous.FileExists(virtualPath))
-				return Previous.GetFileHash(virtualPath, virtualPathDependencies);
-			return null;
-		}
-
-		public override System.Web.Caching.CacheDependency GetCacheDependency(String virtualPath, System.Collections.IEnumerable virtualPathDependencies, DateTime utcStart)
-		{
-			if (Previous.FileExists(virtualPath))
-				return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
-			return null;
-		}
-
-		private bool? Exists(string virtualDir, bool isFile)
+		private bool Exists(string virtualPath, bool isFile)
 		{
 			EnsureCache();
 
 			bool result = false;
-			if (fileOrDirectoryCache.TryGetValue(Util.ConvertVirtualPathToZipPath(virtualDir, isFile), out result))
+			if (fileOrDirectoryCache.TryGetValue(Util.ConvertVirtualPathToZipPath(virtualPath, isFile), out result))
 				return result != isFile;
 
-			ZipEntry zipEntry = GetEntry(virtualDir, isFile);
-			if (zipEntry != null)
-				return isFile != zipEntry.IsDirectory;
-
-			return null;
+			return false;
 		}
 
 		void EnsureCache()
@@ -119,9 +133,12 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 					return;
 
 				var temp = new Dictionary<string, bool>(StringComparer.InvariantCultureIgnoreCase);
-				foreach (var entry in zipFile.Entries)
+
+				var r = new Regex("^.*/");
+				foreach (var entryFileName in zipFile.EntryFileNames)
 				{
-					temp[entry.FileName] = entry.IsDirectory;
+					temp[entryFileName] = false;
+					temp[r.Match(entryFileName).Value] = true;
 				}
 				fileOrDirectoryCache = temp;
 			}
