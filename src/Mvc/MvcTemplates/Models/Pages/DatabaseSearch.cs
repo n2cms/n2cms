@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using N2.Collections;
-using N2.Persistence.Finder;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -11,6 +10,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/zoom.png")]
 	public class DatabaseSearch : SearchBase
 	{
+		[Obsolete("Text search is now used")]
 		public override ICollection<ContentItem> Search(string query, int pageNumber, int pageSize, out int totalRecords)
 		{
 			return Context.Current.Resolve<Persistence.ITextSearcher>()

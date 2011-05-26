@@ -6,11 +6,18 @@ namespace N2.Collections
 {
 	public class FilterHelper
 	{
-		/// <summary>Filters by access</summary>
+		/// <summary>Filters by access.</summary>
 		/// <returns>A filter.</returns>
 		public ItemFilter Accessible()
 		{
-			return new AccessFilter();
+			return new CompositeFilter(new AccessFilter(), new PublishedFilter());
+		}
+
+		/// <summary>Filters by access and pages.</summary>
+		/// <returns>A filter.</returns>
+		public ItemFilter AccessiblePage()
+		{
+			return new CompositeFilter(new PageFilter(), new PublishedFilter(), new AccessFilter());
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>

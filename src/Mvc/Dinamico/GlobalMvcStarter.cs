@@ -17,7 +17,6 @@ namespace Dinamico
 			//log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(Server.MapPath("~/N2/Installation/log4net.config")));
 
 			RegisterControllerFactory(ControllerBuilder.Current, engine);
-			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes, engine);
 			RegisterViewEngines(ViewEngines.Engines);
 			RegisterViewTemplates(engine);
@@ -44,11 +43,6 @@ namespace Dinamico
 				.ControllerFactory;
 
 			controllerBuilder.SetControllerFactory(controllerFactory);
-		}
-
-		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-		{
-			filters.Add(new HandleErrorAttribute());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
