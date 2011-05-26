@@ -119,6 +119,7 @@
     <Compile Include="Models\ListingPage.cs" />
     <Compile Include="Models\PartModelBase.cs" />
     <Compile Include="Models\StartPage.cs" />
+    <Compile Include="GlobalMvcStarter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\ContentWebViewPageOfT.cs" />
@@ -160,6 +161,7 @@
     <Content Include="Content\blueprint\_examples\typography.html" />
     <Content Include="Content\blueprint\_examples\valid.png" />
     <Content Include="Content\Features.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.5.js" />
     <Content Include="Scripts\jquery-1.5.min.js" />

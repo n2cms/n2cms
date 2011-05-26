@@ -41,6 +41,7 @@ namespace N2.Web.Mvc
 		readonly IRouteHandler routeHandler;
 		readonly IControllerMapper controllerMapper;
 		readonly Route innerRoute;
+		string managementPath;
 
 		public ContentRoute(IEngine engine)
 			: this(engine, null, null, null)
@@ -49,6 +50,7 @@ namespace N2.Web.Mvc
 
 		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute)
 		{
+			managementPath = engine.ManagementPaths.GetManagementInterfaceUrl().ToUrl().ApplicationRelativePath;
 			this.engine = engine;
 			this.routeHandler = routeHandler ?? new MvcRouteHandler();
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
@@ -90,11 +92,11 @@ namespace N2.Web.Mvc
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-			if (path.StartsWith(engine.ManagementPaths.GetManagementInterfaceUrl(), StringComparison.InvariantCultureIgnoreCase))
+			if (path.StartsWith(managementPath, StringComparison.InvariantCultureIgnoreCase))
 				return new RouteData(this, new StopRoutingHandler());
 			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return new RouteData(this, new StopRoutingHandler());
-			if (path.EndsWith(".n2.ashx", StringComparison.InvariantCultureIgnoreCase))
+			if (path.EndsWith(".ashx", StringComparison.InvariantCultureIgnoreCase))
 				return new RouteData(this, new StopRoutingHandler());
 
 			RouteData routeData = null;

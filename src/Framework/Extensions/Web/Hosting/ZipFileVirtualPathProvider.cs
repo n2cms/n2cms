@@ -32,6 +32,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
 using System.Collections;
+using System.Diagnostics;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
@@ -56,6 +57,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 		public override bool FileExists(string virtualPath)
 		{
 			bool exists = Exists(virtualPath, true) || Previous.FileExists(virtualPath);
+			Trace.WriteLine("ZipVPP: " + exists + " " + virtualPath);
 			return exists;
 		}
 

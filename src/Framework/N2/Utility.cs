@@ -516,7 +516,7 @@ namespace N2
 		/// <returns>The current trust level.</returns>
 		internal static AspNetHostingPermissionLevel GetTrustLevel()
 		{
-			foreach (AspNetHostingPermissionLevel trustLevel in new[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium, AspNetHostingPermissionLevel.Low, AspNetHostingPermissionLevel.Minimal })
+			foreach (AspNetHostingPermissionLevel trustLevel in new[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium })
 			{
 				try
 				{

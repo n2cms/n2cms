@@ -18,7 +18,7 @@ namespace N2.Web.Mvc
 		public static ContentRoute MapContentRoute(this RouteCollection routes, string name, IEngine engine)
 		{
 			var cr = new ContentRoute(engine);
-			routes.Add(name, cr);
+			routes.Insert(0, cr);
 			return cr;
 		}
 
@@ -58,7 +58,7 @@ namespace N2.Web.Mvc
 			}
 
 			var cr = new ContentRoute(engine, rh, null, innerRoute);
-			routes.Add(name, cr);
+			routes.Insert(0, cr);
 			return cr;
 		}
 
@@ -74,7 +74,7 @@ namespace N2.Web.Mvc
 			where T : ContentItem
 		{
 			var cr = new ContentRoute<T>(engine);
-			routes.Add(name, cr);
+			routes.Insert(0, cr);
 			return cr;
 		}
 
@@ -119,7 +119,7 @@ namespace N2.Web.Mvc
 			}
 
 			var cr = new ContentRoute<T>(engine, rh, null, innerRoute);
-			routes.Add(name, cr);
+			routes.Insert(0, cr);
 			return cr;
 		}
 	}

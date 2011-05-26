@@ -47,6 +47,7 @@ namespace N2.Engine.MediumTrust
 
 			if (instance is IAutoStart)
 			{
+				Trace.WriteLine("Starting " + instance);
 				(instance as IAutoStart).Start();
 			}
 		}
@@ -151,6 +152,7 @@ namespace N2.Engine.MediumTrust
 				}
 
 				IAutoStart instance = Resolve(serviceType) as IAutoStart;
+				Trace.WriteLine("Starting " + instance);
 				instance.Start();
 			}
 		}
@@ -164,7 +166,7 @@ namespace N2.Engine.MediumTrust
 		{
 			if (resolvers.ContainsKey(serviceType))
 			{
-				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting of " + classType);
+				Trace.WriteLine("Already contains service " + serviceType + ". " + classType + " is now default.");
 			}
 
 			var instanceResolver = CreateInstanceResolver(key, classType);
@@ -184,6 +186,7 @@ namespace N2.Engine.MediumTrust
 					if (container.TryGetValue(type, out instance))
 						return instance;
 
+					Trace.WriteLine("Creating " + classType);
 					object componentInstance = CreateInstance(key, type, classType);
 					container[type] = componentInstance;
 					return componentInstance;
