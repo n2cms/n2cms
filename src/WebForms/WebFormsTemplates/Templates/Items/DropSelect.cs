@@ -15,7 +15,6 @@ namespace N2.Templates.Items
     [N2.Definition("Single Select (Dropdown)", "Dropdown")]
     public class DropSelect : OptionSelectQuestion, IAddablePart
     {
-
         [EditableOptions(Title = "Options", SortOrder = 20)]
         public override IList<Option> Options
         {

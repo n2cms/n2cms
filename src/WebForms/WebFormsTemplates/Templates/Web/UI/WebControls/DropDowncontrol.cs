@@ -11,8 +11,6 @@ namespace N2.Templates.Web.UI.WebControls
 {
     public class DropDowncontrol : Control, IQuestionControl
     {
-
-
         public readonly Label mlable;
         public readonly DropDownList mDropdown;
         public readonly RequiredFieldValidator rfv;
