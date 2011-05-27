@@ -1,0 +1,80 @@
+/* clearfix */
+.cf:after,
+.editDetail:after,
+.tree li:after,
+.ui-helper-clearfix:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
+
+.cf,
+.editDetail,
+.tree li,
+.ui-helper-clearfix { *display: inline-block; }
+
+/* Hides from IE-mac \*/
+body.framed * html .cf,
+body.framed * html .editDetail,
+body.framed * html .tree li,
+.ui-helper-clearfix { height: 1%; }
+
+body.framed .cf,
+body.framed .editDetail,
+body.framed .tree li,
+.ui-helper-clearfix { display: block; }
+/* End hide from IE-mac */
+
+body { padding:0; margin:0; }
+body, td { font-family:Arial, Sans-Serif; font-size:12px; color:#333333; }
+td,th { overflow:auto; vertical-align:top; text-align:left; }
+a { color:#333333; text-decoration:none; }
+a:hover{ text-decoration:underline; }
+    a img{ vertical-align:middle; text-decoration:none; }
+img{ border:none; }
+h1{ margin:1em 0; font-size:1.5em; }
+h2{ border-top:solid 1px silver; margin:5px 0; padding-top:5px; font-size:1.2em; width:95%; }
+
+/* toolbar */
+body.framed fieldset{
+}
+.command img{
+	position:relative;
+	top:-2px;
+}
+body.framed .toolbar .command[disabled=disabled]{
+	color:silver;
+	opacity:.5;
+}
+
+body.framed .commandOptions{
+	float:left;
+}
+body.framed .toolbar .rightAligned{
+	float:right;
+}
+
+/* permission visualization */
+
+.None		.None,
+.Read		.None,
+.Read		.Read,
+.Write		.None,
+.Write		.Read,
+.Write		.Write,
+.Publish	.None,
+.Publish	.Read,
+.Publish	.Write,
+.Publish	.Publish,
+.Administer .None,
+.Administer .Read,
+.Administer .Write,
+.Administer .Publish,
+.Administer .Administer { opacity:1; filter: alpha(opacity=100); }
+
+.None		.Read,
+.None		.Write,
+.None		.Publish,
+.None		.Administer,
+.Read		.Write,
+.Read		.Publish,
+.Read		.Administer,
+.Write		.Publish,
+.Write		.Administer,
+.Publish	.Administer { opacity:.33; filter: alpha(opacity=33); cursor:default; }
