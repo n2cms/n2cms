@@ -30,7 +30,7 @@ namespace N2.Persistence.Search
 				if (indexable == null || !indexable.Index)
 					continue;
 
-				yield return new IndexableContent { Name = e.Name, Text = indexable.GetIndexableText(item, e.Name) };
+				yield return new IndexableContent { Name = e.Name, TextContent = indexable.GetIndexableText(item, e.Name) };
 			}
 		}
 

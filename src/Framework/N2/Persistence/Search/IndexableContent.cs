@@ -11,6 +11,6 @@ namespace N2.Persistence.Search
 	public class IndexableContent
 	{
 		public string Name { get; set; }
-		public string Text { get; set; }
+		public string TextContent { get; set; }
 	}
 }

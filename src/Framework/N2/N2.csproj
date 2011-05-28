@@ -220,6 +220,7 @@
     <Compile Include="Persistence\FindingTextSearcher.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
+    <Compile Include="Persistence\Search\IIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
     <Compile Include="Persistence\Search\IndexableContent.cs" />
     <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />

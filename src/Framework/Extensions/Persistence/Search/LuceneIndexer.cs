@@ -160,10 +160,10 @@ namespace N2.Persistence.Search
 				roles = "Everyone";
 			doc.Add(new Field("Roles", roles, Field.Store.YES, Field.Index.ANALYZED));
 
-			var texts = ExtractTexts(item);
-			foreach (var kvp in texts)
-				doc.Add(new Field("Detail." + kvp.Key, kvp.Value, Field.Store.NO, Field.Index.ANALYZED));
-			string text = CombineTexts(texts);
+			var texts = extractor.Extract(item);
+			foreach (var t in texts)
+				doc.Add(new Field("Detail." + t.Name, t.TextContent, Field.Store.NO, Field.Index.ANALYZED));
+			string text = extractor.Join(texts);
 			doc.Add(new Field("Text", text, Field.Store.NO, Field.Index.ANALYZED));
 			
 			using(var sw = new StringWriter())
@@ -179,8 +179,7 @@ namespace N2.Persistence.Search
 			foreach (var part in parent.Children.FindParts())
 			{
 				partTexts.WriteLine(part.Title);
-				var texts = ExtractTexts(part);
-				string text = CombineTexts(texts);
+				string text = extractor.Join(extractor.Extract(part));
 				partTexts.WriteLine(text);
 
 				AppendPartsRecursive(part, partTexts);
@@ -193,11 +192,6 @@ namespace N2.Persistence.Search
 			foreach (var value in texts.Values)
 				sb.AppendLine(value);
 			return sb.ToString();
-		}
-
-		private IDictionary<string, string> ExtractTexts(ContentItem item)
-		{
-			return extractor.Extract(item).ToDictionary(ic => ic.Name, ic => ic.Text);
 		}
 	}
 }

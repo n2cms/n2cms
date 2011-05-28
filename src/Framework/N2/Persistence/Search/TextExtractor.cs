@@ -21,7 +21,15 @@ namespace N2.Persistence.Search
 
 		public virtual IEnumerable<IndexableContent> Extract(ContentItem item)
 		{
-			return extractors.SelectMany(e => e.Extract(item));
+			return extractors.SelectMany(e => e.Extract(item)).Where(ic => !string.IsNullOrEmpty(ic.TextContent));
+		}
+
+		public virtual string Join(IEnumerable<IndexableContent> content)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (var c in content)
+				sb.AppendLine(c.TextContent);
+			return sb.ToString();
 		}
 	}
 }
