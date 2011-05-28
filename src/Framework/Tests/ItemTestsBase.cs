@@ -35,6 +35,7 @@ namespace N2.Tests
 			item.ID = id;
 			item.Name = name;
 			item.Title = name;
+			item.AncestralTrail = N2.Utility.GetTrail(parent);
 			item.AddTo(parent);
 			return item;
 		}

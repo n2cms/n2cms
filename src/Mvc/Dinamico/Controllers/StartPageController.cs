@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Web.Security;
 using N2.Engine.Globalization;
 using N2.Definitions;
+using N2.Persistence.Search;
 
 namespace Dinamico.Controllers
 {
@@ -57,15 +58,8 @@ namespace Dinamico.Controllers
 
 		private IEnumerable<ContentItem> GetSearchResults(string text, int take)
 		{
-			var s = Find.NH.FullText(text);
-
-			var hits = s.SetMaxResults(take)
-				.Enumerable<ContentItem>()
-				.Where(h => h != null)
-				.Select(h => h.IsPage ? h : h.ClosestPage())
-				.Where(N2.Filter.Is.Accessible())
-				.Where(N2.Filter.Is.DescendantOrSelf(CurrentPage ?? Engine.Resolve<IWebContext>().CurrentPath.StopItem ?? N2.Find.StartPage))
-				.Where(N2.Filter.Is.Distinct());
+			var query = SearchQuery.For(text).ReadableBy(User, Roles.GetRolesForUser).Below(CurrentPage);
+			var hits = Engine.Resolve<ITextSearcher>().Search(query).Hits.Select(h => h.Content);
 			return hits;
 		}
 

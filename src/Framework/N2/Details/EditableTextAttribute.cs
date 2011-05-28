@@ -21,6 +21,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Persistence.Search;
 
 namespace N2.Details
 {
@@ -35,7 +36,7 @@ namespace N2.Details
 	/// public override DateTime Published { get; set; }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableTextAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
+	public class EditableTextAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable, IIndexableProperty
 	{
 		private int maxLength = 0;
 		private int columns = 0;
@@ -45,6 +46,7 @@ namespace N2.Details
 		public EditableTextAttribute()
 			: base(null, 50)
 		{
+			Index = true;
 		}
 
 		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
@@ -53,6 +55,7 @@ namespace N2.Details
 		public EditableTextAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			Index = true;
 		}
 
 		#region Properties
@@ -158,6 +161,21 @@ namespace N2.Details
 		public virtual void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
 			writer.Write(item[propertyName]);
+		}
+
+		#endregion
+
+		#region IIndexableProperty Members
+
+		public bool Index { get; set; }
+
+		public virtual string GetIndexableText(ContentItem item, string name)
+		{
+			object value = item[name];
+			if (value == null)
+				return null;
+
+			return value.ToString();
 		}
 
 		#endregion

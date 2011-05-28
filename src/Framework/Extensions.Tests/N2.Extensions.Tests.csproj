@@ -141,7 +141,7 @@
     <Compile Include="Mvc\N2ViewEngineTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Search\NHibernateSearchTests.cs" />
+    <Compile Include="Search\LuceneSearchTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Extensions\N2.Extensions.csproj">

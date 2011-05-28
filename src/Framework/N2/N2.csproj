@@ -91,10 +91,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Search, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.Search.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" Condition="'$(Configuration)' != 'NET2.0'">
@@ -223,7 +219,12 @@
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\FindingTextSearcher.cs" />
     <Compile Include="Persistence\IPersister.cs" />
-    <Compile Include="Persistence\ITextSearcher.cs" />
+    <Compile Include="Persistence\Search\IIndexableProperty.cs" />
+    <Compile Include="Persistence\Search\IndexableAttribute.cs" />
+    <Compile Include="Persistence\Search\IndexableContent.cs" />
+    <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />
+    <Compile Include="Persistence\Search\ITextExtractor.cs" />
+    <Compile Include="Persistence\Search\ITextSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
@@ -233,6 +234,10 @@
     <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Persistence\DescendantItemFinder.cs" />
+    <Compile Include="Persistence\Search\SearchHit.cs" />
+    <Compile Include="Persistence\Search\SearchQuery.cs" />
+    <Compile Include="Persistence\Search\SearchResult.cs" />
+    <Compile Include="Persistence\Search\TextExtractor.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />

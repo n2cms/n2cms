@@ -1,7 +1,14 @@
 using System;
+using N2.Persistence.Search;
+using N2.Details;
 
 namespace N2.Tests.Persistence.Definitions
 {
+	[PartDefinition("Default persistable part", Name = "PersistablePart")]
+	public class PersistablePart1 : ContentItem
+	{
+	}
+
 	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
 	public class PersistableItem1 : N2.ContentItem
 	{
@@ -11,6 +18,7 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<bool>("BoolProperty", value); }
 		}
 
+		[EditableNumber]
 		public virtual int IntProperty
 		{
 			get { return (int)(GetDetail("IntProperty") ?? 0); }
@@ -27,6 +35,7 @@ namespace N2.Tests.Persistence.Definitions
 			get { return (double)(GetDetail("DoubleProperty") ?? 0); }
 			set { SetDetail<double>("DoubleProperty", value); }
 		}
+		[Indexable]
 		public virtual string StringProperty
 		{
 			get { return (string)(GetDetail("StringProperty") ?? string.Empty); }
