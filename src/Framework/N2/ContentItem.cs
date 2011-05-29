@@ -76,6 +76,7 @@ namespace N2
         private string name;
 		private string zoneName;
 		private string templateKey;
+		private int? translationKey;
 		private ContentItem parent = null;
         private DateTime created;
         private DateTime updated;
@@ -167,6 +168,13 @@ namespace N2
 		{
 			get { return templateKey; }
 			set { templateKey = value; }
+		}
+
+		/// <summary>A key shared by translations of an item. It's used to find translations and associate items as translations.</summary>
+		public int? TranslationKey
+		{
+			get { return translationKey; }
+			set { translationKey = value; }
 		}
 
 		/// <summary>Gets or sets when this item was initially created.</summary>

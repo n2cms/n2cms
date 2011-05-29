@@ -15,7 +15,7 @@ namespace N2.Management.Installation
 			this.repository = repository;
 			this.installer = installer;
 
-			Title = "Update template keys";
+			Title = "Update template keys to v2.2 model";
 			Description = "The information previously known as TemplateName detail is now stored as a TemplateKey property";
 		}
 

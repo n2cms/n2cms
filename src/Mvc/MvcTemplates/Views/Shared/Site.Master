@@ -21,6 +21,11 @@
 		</asp:ContentPlaceHolder>
 		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
 			<div id="page" class="cf">
+<fieldset><legend>[<%= CurrentItem.TranslationKey %>/<%= CurrentItem["LanguageKey"]%>]</legend>
+<% foreach (var d in CurrentItem.Details) { Response.Write("<li>" + d.Name + "</li>"); } %>
+</fieldset>
+
+
 				<asp:ContentPlaceHolder ID="PageTop" runat="server">
 					<%=Html.DisplayContent("TopImage").SwallowExceptions()%>
 				</asp:ContentPlaceHolder>

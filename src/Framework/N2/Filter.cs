@@ -23,10 +23,5 @@ namespace N2
 		{
 			return Is.Any(first, alternativeOptions);
 		}
-
-		public static IEnumerable<ContentItem> Where(this IEnumerable<ContentItem> items, ItemFilter filter)
-		{
-			return items.Where(filter.Match);
-		}
 	}
 }

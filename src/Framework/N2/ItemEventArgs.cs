@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace N2
 {
@@ -28,6 +29,7 @@ namespace N2
     public class ItemEventArgs : EventArgs
     {
         private ContentItem affectedItem;
+
         
         /// <summary>Creates a new instance of the ItemEventArgs.</summary>
         /// <param name="item">The item the associated with these event arguments.</param>
@@ -35,6 +37,7 @@ namespace N2
         {
             this.affectedItem = item;
         }
+
 
         /// <summary>Gets or sets the item associated with these arguments.</summary>
         public ContentItem AffectedItem
