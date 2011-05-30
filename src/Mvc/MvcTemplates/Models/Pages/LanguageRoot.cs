@@ -69,29 +69,29 @@ namespace N2.Templates.Mvc.Models.Pages
 		[FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "top")]
 		public virtual string TopImage
 		{
-			get { return (string) (GetDetail("TopImage") ?? string.Empty); }
+			get { return GetDetail("TopImage", string.Empty); }
 			set { SetDetail("TopImage", value, string.Empty); }
 		}
 
 		[FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
-			get { return (string) (GetDetail("Image") ?? string.Empty); }
+			get { return GetDetail("Image", string.Empty); }
 			set { SetDetail("Image", value, string.Empty); }
 		}
 
 		[EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
 		public virtual string FooterText
 		{
-			get { return (string) (GetDetail("FooterText") ?? string.Empty); }
+			get { return GetDetail("FooterText", string.Empty); }
 			set { SetDetail("FooterText", value, string.Empty); }
 		}
 
 		[EditableItem("Header", 100, ContainerName = SiteArea)]
 		public virtual Top Header
 		{
-			get { return (Top) GetDetail("Header"); }
-			set { SetDetail("Header", value); }
+			get { return (Top)Children["Header"]; }
+			set { Children["Header"] = value; }
 		}
 	}
 }
