@@ -305,6 +305,7 @@
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

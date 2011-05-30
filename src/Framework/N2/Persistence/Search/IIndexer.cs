@@ -20,5 +20,8 @@ namespace N2.Persistence.Search
 		/// <summary>Updates the index with the given item.</summary>
 		/// <param name="item">The item containing content to be indexed.</param>
 		void Update(N2.ContentItem item);
+
+		/// <summary>Unlocks the index.</summary>
+		void Unlock();
 	}
 }

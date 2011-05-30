@@ -21,9 +21,11 @@ namespace N2.Persistence.Search
 	public class LuceneAccesor
 	{
 		string indexPath;
+		public long LockTimeout { get; set; }
 
 		public LuceneAccesor(IWebContext webContext, DatabaseSection config)
 		{
+			LockTimeout = 2000L;
 			indexPath = Path.Combine(webContext.MapPath(config.Search.IndexPath), "Pages");
 		}
 
@@ -37,6 +39,7 @@ namespace N2.Persistence.Search
 		public virtual IndexWriter GetWriter(Directory d, Analyzer a)
 		{
 			var iw = new IndexWriter(d, a, create: !d.IndexExists(), mfl: IndexWriter.MaxFieldLength.UNLIMITED);
+			iw.SetWriteLockTimeout(LockTimeout);
 			return iw;
 		}
 
@@ -68,7 +71,8 @@ namespace N2.Persistence.Search
 
 		public virtual IndexSearcher GetSearcher(Directory dir)
 		{
-			return new IndexSearcher(dir, readOnly: true);
+			var s = new IndexSearcher(dir, readOnly: true);
+			return s;
 		}
 
 		public virtual QueryParser GetQueryParser()

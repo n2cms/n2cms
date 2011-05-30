@@ -37,9 +37,12 @@ namespace N2.Persistence.Search
 		/// <summary>Clears the index.</summary>
 		public virtual void Clear()
 		{
+			Trace.WriteLine("Clearing index");
+
 			var d = accessor.GetDirectory();
 			if (d.IndexExists())
 			{
+				d.ClearLock("write.lock"); ;
 				var w = accessor.GetWriter(d, accessor.GetAnalyzer());
 				if (w.NumDocs() > 0)
 				{
@@ -59,9 +62,18 @@ namespace N2.Persistence.Search
 			}
 		}
 
+		/// <summary>Unlocks the index.</summary>
+		public virtual void Unlock()
+		{
+			Trace.WriteLine("Unlocking index");
+			accessor.GetDirectory().ClearLock("write.lock");
+		}
+
 		/// <summary>Optimizes the index.</summary>
 		public virtual void Optimize()
 		{
+			Trace.WriteLine("Optimizing index");
+
 			var d = accessor.GetDirectory();
 			if (d.IndexExists())
 			{
@@ -88,14 +100,14 @@ namespace N2.Persistence.Search
 			if(item == null)
 				return;
 
+			Trace.WriteLine("Updating item #" + item.ID);
+
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
 
 			var iw = accessor.GetWriter();
 			try
 			{
-				Trace.WriteLine("Updating index " + item.Title + " #" + item.ID);
-
 				var doc = CreateDocument(item);
 				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
 			}
@@ -109,13 +121,13 @@ namespace N2.Persistence.Search
 		/// <param name="itemID">The id of the item to delete.</param>
 		public virtual void Delete(int itemID)
 		{
+			Trace.WriteLine("Deleting item #" + itemID);
+
 			var dir = accessor.GetDirectory();
 			var iw = accessor.GetWriter(dir, accessor.GetAnalyzer());
 			var s = accessor.GetSearcher(dir);
 			try
 			{
-				Trace.WriteLine("Deleting index #" + itemID);
-
 				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
 				var query = new PrefixQuery(new Term("Trail", trail));
 				iw.DeleteDocuments(query);

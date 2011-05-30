@@ -5,6 +5,9 @@ using System.Text;
 using N2.Engine;
 using N2.Plugin;
 using N2.Configuration;
+using Lucene.Net.Store;
+using N2.Web;
+using System.Threading;
 
 namespace N2.Persistence.Search
 {
@@ -17,17 +20,25 @@ namespace N2.Persistence.Search
 		IIndexer indexer;
 		IPersister persister;
 		IWorker worker;
+		IErrorNotifier errors;
 		bool async;
 		bool enabled;
+		bool handleErrors;
 
-		public ContentChangeTracker(IIndexer indexer, IPersister persister, IWorker worker, DatabaseSection config)
+		public ContentChangeTracker(IIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
 		{
 			this.indexer = indexer;
 			this.persister = persister;
 			this.worker = worker;
+			this.errors = errors;
 			this.async = config.Search.AsyncIndexing;
 			this.enabled = config.Search.Enabled;
+			this.handleErrors = config.Search.HandleErrors;
+			
+			RetryInterval = TimeSpan.FromMinutes(2);
 		}
+
+		public TimeSpan RetryInterval { get; set; }
 
 		public void ItemChanged(int itemID, bool affectsChildren)
 		{
@@ -56,6 +67,9 @@ namespace N2.Persistence.Search
 
 		protected void DoWork(Action action)
 		{
+			if (handleErrors)
+				action = WrapActionInErrorHandling(action);
+			
 			if (async)
 				worker.DoWork(() =>
 					{
@@ -64,6 +78,56 @@ namespace N2.Persistence.Search
 					});
 			else
 				action();
+		}
+
+		Queue<Action> errorQueue = new Queue<Action>();
+		DateTime lastAttempt = DateTime.Now;
+
+		private Action WrapActionInErrorHandling(Action action)
+		{
+			var original = action;
+			return () =>
+			{
+				try
+				{
+					original();
+				}
+				catch (LockObtainFailedException ex)
+				{
+					AppendError(original, ex);
+				}
+				catch (ThreadAbortException ex)
+				{
+					AppendError(original, ex);
+				}
+				RetryFailedActions();
+			};
+		}
+
+		private void AppendError(Action original, Exception ex)
+		{
+			errors.Notify(ex);
+			lock (errorQueue)
+			{
+				errorQueue.Enqueue(original);
+			}
+		}
+
+		private void RetryFailedActions()
+		{
+			if (errorQueue.Count == 0)
+				return;
+
+			if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
+			{
+				lock (errorQueue)
+				{
+					indexer.Unlock();
+					lastAttempt = DateTime.Now;
+					while (errorQueue.Count > 0)
+						DoWork(errorQueue.Dequeue());
+				}
+			}
 		}
 
 		#region IAutoStart Members
