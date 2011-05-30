@@ -141,7 +141,7 @@ namespace N2.Engine.Globalization
 				return new ContentItem[0];
 
 			return persister.Repository.Find(TranslationKey, item.TranslationKey)
-				.Where(Filter.Is.Accessible())
+				.Where(Filter.Is.Accessible(context.User, security))
 				.Where(Filter.Is.Not(Filter.Is.DescendantOf<ITrashCan>()));
 		}
 

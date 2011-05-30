@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using N2.Security;
 
 namespace N2.Collections
 {
@@ -13,11 +15,25 @@ namespace N2.Collections
 			return new CompositeFilter(new AccessFilter(), new PublishedFilter());
 		}
 
+		/// <summary>Filters by access.</summary>
+		/// <returns>A filter.</returns>
+		public ItemFilter Accessible(IPrincipal user, ISecurityManager security)
+		{
+			return new CompositeFilter(new AccessFilter(user, security), new PublishedFilter());
+		}
+
 		/// <summary>Filters by access and pages.</summary>
 		/// <returns>A filter.</returns>
 		public ItemFilter AccessiblePage()
 		{
 			return new CompositeFilter(new PageFilter(), new PublishedFilter(), new AccessFilter());
+		}
+
+		/// <summary>Filters by access and pages.</summary>
+		/// <returns>A filter.</returns>
+		public ItemFilter AccessiblePage(IPrincipal user, ISecurityManager security)
+		{
+			return new CompositeFilter(new PageFilter(), new PublishedFilter(), new AccessFilter(user, security));
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>

@@ -19,15 +19,6 @@ namespace N2.Tests.Globalization
 		protected LanguageRoot swedish;
 		protected LanguageRoot italian;
 
-		[TestFixtureSetUp]
-		public override void TestFixtureSetUp()
-		{
-			base.TestFixtureSetUp();
-
-			engine.Container.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
-			engine.Container.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor), typeof(LanguageInterceptor));
-		}
-
 		[SetUp]
 		public override void SetUp()
 		{
