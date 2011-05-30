@@ -11,7 +11,8 @@ namespace N2.Templates.Items
     [RestrictParents(typeof(AbstractContentPage))]
     [AllowedZones(Zones.SiteRight, Zones.Right, Zones.RecursiveRight, Zones.SiteLeft)]
     [WithEditableTitle("Title", 90)]
-    public class SocialBookmarks : AbstractItem
+	[RestrictCardinality]
+	public class SocialBookmarks : AbstractItem
     {
 		[DisplayableHeading(4)]
 		public override string Title

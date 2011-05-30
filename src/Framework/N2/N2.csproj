@@ -176,6 +176,7 @@
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
+    <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Linq\WhereDetailHqlGenerator.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />

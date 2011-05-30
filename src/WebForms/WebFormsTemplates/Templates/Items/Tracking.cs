@@ -9,7 +9,8 @@ namespace N2.Templates.Items
 		SortOrder = 2000)]
     [RestrictParents(typeof(LanguageRoot))]
     [AllowedZones(Zones.SiteRight)]
-    public class Tracking : Templates.Items.AbstractItem
+	[RestrictCardinality]
+	public class Tracking : Templates.Items.AbstractItem
     {
         [EditableCheckBox("Enabled", 100)]
         public virtual bool Enabled
