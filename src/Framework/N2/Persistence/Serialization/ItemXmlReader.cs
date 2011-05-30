@@ -99,6 +99,8 @@ namespace N2.Persistence.Serialization
 				item.ZoneName = attributes["zoneName"];
 			if (!string.IsNullOrEmpty(attributes["templateKey"]))
 				item.TemplateKey = attributes["templateKey"];
+			if (!string.IsNullOrEmpty(attributes["translationKey"]))
+				item.TranslationKey = Convert.ToInt32(attributes["translationKey"]);
 			HandleParentRelation(item, attributes["parent"], journal);
 		}
 

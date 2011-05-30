@@ -27,7 +27,18 @@ namespace N2.Tests.Serialization
 			Assert.AreEqual(item.ID, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
-        }
+		}
+
+		[Test]
+		public void ExportedImportedItem_KeepsTranslationKey()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.TranslationKey = 123;
+
+			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+
+			Assert.AreEqual(item.TranslationKey, readItem.TranslationKey);
+		}
 
         [Test]
         public void ExportedImportedItem_MaintainsSameType()
