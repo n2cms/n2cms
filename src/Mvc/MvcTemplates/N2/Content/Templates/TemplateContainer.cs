@@ -9,7 +9,7 @@ namespace N2.Management.Content.Templates
 		IconUrl = "{ManagementUrl}/Resources/icons/page_white_swoosh.png")]
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
-	[NotThrowable]
+	[Throwable(AllowInTrash.No)]
 	public class TemplateContainer : ContentItem, ISystemNode
 	{
 	}

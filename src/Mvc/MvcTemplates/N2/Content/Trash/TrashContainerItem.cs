@@ -12,7 +12,7 @@ namespace N2.Edit.Trash
 		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx")]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
-    [NotThrowable]
+	[Throwable(AllowInTrash.No)]
 	public class TrashContainerItem : N2.ContentItem, ITrashCan, ISystemNode
 	{
 		[EditableNumber("Number of days to keep deleted items", 100)]

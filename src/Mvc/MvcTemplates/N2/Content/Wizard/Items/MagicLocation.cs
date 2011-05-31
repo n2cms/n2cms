@@ -10,7 +10,7 @@ namespace N2.Edit.Wizard.Items
 		IconUrl = "{ManagementUrl}/Resources/icons/wand.png")]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
-    [NotThrowable]
+	[Throwable(AllowInTrash.No)]
 	public class MagicLocation : ContentItem, ISystemNode
 	{
 		public bool HasLocation

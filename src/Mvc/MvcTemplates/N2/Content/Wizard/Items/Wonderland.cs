@@ -8,7 +8,7 @@ namespace N2.Edit.Wizard.Items
 		IconUrl = "{ManagementUrl}/Resources/icons/wand.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
-    [NotThrowable]
+	[Throwable(AllowInTrash.No)]
 	public class Wonderland : ContentItem, ISystemNode
 	{
 		public override bool IsPage
