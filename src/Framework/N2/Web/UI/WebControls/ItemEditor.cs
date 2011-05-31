@@ -286,6 +286,8 @@ namespace N2.Web.UI.WebControls
 			if (!string.IsNullOrEmpty(template))
 			{
 				var info = Engine.Definitions.GetTemplate(definition.ItemType, template);
+				if (info == null)
+					throw new InvalidOperationException("Failed to find definition for type " + definition.ItemType + " and template " + template);
 				Definition = info.Definition;
 				CurrentItem = info.Template();
 				CurrentItem.Parent = parent;
