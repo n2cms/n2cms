@@ -391,25 +391,23 @@ namespace N2.Tests.Integrity
 		}
 
 		[Test]
-		public void CannotSaveUnallowedItem()
+		public void CanSave_UnallowedItem()
 		{
 			IntegrityPage page = CreateOneItem<IntegrityPage>(1, "John", null);
 			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(2, "Leonidas", page);
 
 			bool canSave = integrityManger.CanSave(startPage);
-			Assert.IsFalse(canSave, "Could save even though the start page isn't below a page.");
+			Assert.IsTrue(canSave);
 		}
 
 		[Test]
-		public void CannotSaveUnallowedItemEvent()
+		public void CanSave_UnallowedItemEvent()
 		{
 			IntegrityPage page = CreateOneItem<IntegrityPage>(1, "John", null);
 			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(2, "Leonidas", page);
 
-			ExceptionAssert.Throws<NotAllowedParentException>(delegate
-			{
-				saving.Raise(persister, new CancellableItemEventArgs(startPage));
-			});
+
+			Assert.DoesNotThrow(() => saving.Raise(persister, new CancellableItemEventArgs(startPage)));
 		}
 
 		#endregion

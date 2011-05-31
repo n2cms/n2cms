@@ -121,9 +121,6 @@ namespace N2.Integrity
             if (!IsLocallyUnique(item.Name, item))
                 return new NameOccupiedException(item, item.Parent);
 
-			if (!IsTypeAllowedBelowDestination(item, item.Parent))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item), item.Parent.GetContentType());
-
 			return null;
 		}
 

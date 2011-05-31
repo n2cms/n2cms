@@ -37,7 +37,7 @@ namespace N2.Edit.Installation
 
 		private void CheckInstallation()
 		{
-			string currentUrl = webContext.ToAppRelative(webContext.Url.LocalUrl);
+			string currentUrl = Url.ToRelative(webContext.Url.LocalUrl);
 			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
 			if (isEditing)
 				return;
@@ -62,7 +62,7 @@ namespace N2.Edit.Installation
 				return;
 			}
 			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
-			webContext.Response.Redirect(redirectUrl);
+			webContext.HttpContext.Response.Redirect(redirectUrl);
 		}
 
 		#region IAutoStart Members
