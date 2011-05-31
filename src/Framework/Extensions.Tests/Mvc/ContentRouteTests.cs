@@ -63,7 +63,8 @@ namespace N2.Extensions.Tests.Mvc
 
 			var changer = new StateChanger();
 			var definitions = new DefinitionManager(new[] { new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection())) }, new ITemplateProvider[0], new ContentActivator(changer, null, new EmptyProxyFactory()), changer);
-			var webContext = new ThreadContext();
+			httpContext = new FakeHttpContext();
+			var webContext = new FakeWebContextWrapper(httpContext);
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
@@ -80,7 +81,6 @@ namespace N2.Extensions.Tests.Mvc
 
 			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper, null);
 
-			httpContext = new FakeHttpContext();
 			routes = new RouteCollection { route };
 		}
 

@@ -38,7 +38,7 @@ namespace N2.Edit.Installation
 		private void CheckInstallation()
 		{
 			string currentUrl = webContext.ToAppRelative(webContext.Url.LocalUrl);
-			bool isEditing = currentUrl.StartsWith(webContext.ToAppRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
+			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
 			if (isEditing)
 				return;
 

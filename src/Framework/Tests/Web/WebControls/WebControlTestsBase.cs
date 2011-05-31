@@ -30,8 +30,6 @@ namespace N2.Tests.Web.WebControls
 			engine.Initialize();
 			engine.Host.CurrentSite.RootItemID = 1;
 			engine.Host.CurrentSite.StartPageID = 1;
-
-			page = CreateOneItem<PageItem>(1, "page", null);
 		}
 
 		[SetUp]
@@ -39,6 +37,7 @@ namespace N2.Tests.Web.WebControls
 		{
 			base.SetUp();
 
+			page = CreateOneItem<PageItem>(1, "page", null);
 			data = CreateOneItem<DataItem>(2, "data", page);
 			data.ZoneName = ZoneName;
 		}

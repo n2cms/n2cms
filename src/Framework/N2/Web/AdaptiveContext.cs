@@ -18,13 +18,18 @@ namespace N2.Web
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		public bool IsWeb
 		{
-			get { return HttpContext.Current != null; }
+			get { return System.Web.HttpContext.Current != null; }
 		}
 
 		/// <summary>Returns either the web or the thread context depending on <see cref="IsWeb"/>.</summary>
 		protected IWebContext CurrentContext
 		{
 			get { return IsWeb ? web : thread; }
+		}
+
+		public HttpContextBase HttpContext
+		{
+			get { return CurrentContext.HttpContext; }
 		}
 
 		/// <summary>Gets a dictionary of request scoped items.</summary>
@@ -40,18 +45,21 @@ namespace N2.Web
 		}
 
 		/// <summary>The current request object.</summary>
+		[Obsolete("Use HttpContext.Request")]
 		public HttpRequest Request
 		{
 			get { return CurrentContext.Request; }
 		}
 
 		/// <summary>The current response object.</summary>
+		[Obsolete("Use HttpContext.Response")]
 		public HttpResponse Response
 		{
 			get { return CurrentContext.Response; }
 		}
 
 		/// <summary>The handler associated with this request.</summary>
+		[Obsolete("Use HttpContext.Handler")]
 		public IHttpHandler Handler
 		{
 			get { return CurrentContext.Handler; }
@@ -72,12 +80,14 @@ namespace N2.Web
 		}
 
 		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
+		[Obsolete("Use HttpContext.SkipAuthorization")]
 		public bool SkipAuthorization
 		{
 			get { return CurrentContext.SkipAuthorization; }
 		}
 
 		/// <summary>The physical path on disk to the requested page.</summary>
+		[Obsolete("Use HttpContext.Request.PhysicalPath")]
 		public string PhysicalPath
 		{
 			get { return CurrentContext.PhysicalPath; }
@@ -92,6 +102,7 @@ namespace N2.Web
 		/// <summary>Converts a virtual path to an an absolute path. E.g. ~/hello.aspx -> /MyVirtualDirectory/hello.aspx.</summary>
 		/// <param name="virtualPath">The virtual url to make absolute.</param>
 		/// <returns>The absolute url.</returns>
+		[Obsolete("Use N2.Web.Url.ToAbsolute(path)")]
 		public string ToAbsolute(string virtualPath)
 		{
 			return CurrentContext.ToAbsolute(virtualPath);
@@ -100,6 +111,7 @@ namespace N2.Web
 		/// <summary>Converts an absolute url to an app relative path. E.g. /MyVirtualDirectory/hello.aspx -> ~/hello.aspx.</summary>
 		/// <param name="virtualPath">The absolute url to convert.</param>
 		/// <returns>An app relative url.</returns>
+		[Obsolete("Use N2.Web.Url.ToRelative(path)")]
 		public string ToAppRelative(string virtualPath)
 		{
 			return CurrentContext.ToAppRelative(virtualPath);
@@ -115,6 +127,7 @@ namespace N2.Web
 
 		/// <summary>Rewrites the request to the given path.</summary>
 		/// <param name="path">The path to the template that will handle the request.</param>
+		[Obsolete("Use HttpContext.RewritePath(path)")]
 		public void RewritePath(string path)
 		{
 			CurrentContext.RewritePath(path);
@@ -123,18 +136,14 @@ namespace N2.Web
 		/// <summary>Rewrites the request to the given path.</summary>
 		/// <param name="path">The path to the template that will handle the request.</param>
 		/// <param name="query">The query string to rewrite to.</param>
+		[Obsolete("Use HttpContext.RewritePath(path, \"\", queryString)")]
 		public void RewritePath(string path, string query)
 		{
 			CurrentContext.RewritePath(path, query);
 		}
 
-		[Obsolete]
-		public void TransferRequest(string path)
-		{
-			CurrentContext.TransferRequest(path);
-		}
-
 		/// <summary>Calls into HttpContext.ClearError().</summary>
+		[Obsolete("Use HttpContext.ClearError()")]
 		public void ClearError()
 		{
 			CurrentContext.ClearError();

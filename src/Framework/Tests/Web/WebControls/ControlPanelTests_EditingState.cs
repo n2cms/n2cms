@@ -18,7 +18,7 @@ namespace N2.Tests.Web.WebControls
 		[Test]
 		public void CanRenderItem_InDroppableZone_WhenDragDrop()
 		{
-			Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current);
+			Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current, page);
 			z.CurrentItem = page;
 			z.ZoneName = ZoneName;
 

@@ -22,7 +22,7 @@ namespace N2.Tests.Web.WebControls
 		{
 			N2.Context.Current.Definitions.GetDefinitions();
 
-            Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current);
+			Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current, page);
 			z.CurrentItem = page;
 			z.ZoneName = ZoneName;
 

@@ -99,7 +99,7 @@ namespace N2.Web
 				}
 			}
 
-			data.Ignore = !IgnoreExisting(webContext.PhysicalPath);
+			data.Ignore = !IgnoreExisting(webContext.HttpContext.Request.PhysicalPath);
 			return UseItemIfAvailable(item, data);
 		}
 
