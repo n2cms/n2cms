@@ -49,6 +49,9 @@ namespace N2.Definitions.Runtime
 		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
 		{
 			var httpContext = httpContextProvider.Get();
+			if (httpContext == null)
+				return new TemplateDefinition[0];
+
 			try
 			{
 				httpContext.Request.GetType();

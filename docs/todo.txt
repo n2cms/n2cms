@@ -1,3 +1,4 @@
+- contenttype from model discussions/259496
 - remove external item from new items list
 - extend user screen (discussions/257790)
 - document security (http://n2cms.codeplex.com/discussions/257790)

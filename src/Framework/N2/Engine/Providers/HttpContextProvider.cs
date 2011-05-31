@@ -10,6 +10,8 @@ namespace N2.Engine.Providers
 
 		public HttpContextBase Get()
 		{
+			if (HttpContext.Current == null)
+				return null;
 			return new HttpContextWrapper(HttpContext.Current);
 		}
 
