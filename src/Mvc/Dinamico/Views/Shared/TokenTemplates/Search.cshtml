@@ -1,3 +1,4 @@
 ﻿@model string
-@{ int total = 0; var changes = Content.Services.Resolve<N2.Persistence.ITextSearcher>().Search(Content.Traverse.StartPage, Model, 0, 10, out total); }
-@Html.UnorderedList(Content.Is.Page().Pipe(changes), @<span>@Content.LinkTo(item.Data)</span>)
+
+@{ var result = Content.Services.Resolve<N2.Persistence.Search.ITextSearcher>().Search(N2.Persistence.Search.SearchQuery.For(Model).Below(Content.Traverse.StartPage).Pages(true)); }
+@Html.UnorderedList(result.Hits, @<span>@Content.LinkTo(item.Data.Content)</span>)
