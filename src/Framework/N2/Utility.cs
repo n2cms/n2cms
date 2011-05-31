@@ -579,9 +579,18 @@ namespace N2
 		/// <param name="engine">Used to resolve the provider.</param>
 		/// <param name="item">The item whose adapter to get.</param>
 		/// <returns>The most relevant adapter.</returns>
-		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T:AbstractContentAdapter
+		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		/// <summary>Shorthand for resolving an object via an IProvider.</summary>
+		/// <typeparam name="T">The type of object to retrieve.</typeparam>
+		/// <param name="engine">Used to resolve the provider.</param>
+		/// <returns>The the provided value.</returns>
+		internal static T GetProviderInstance<T>(this IEngine engine)
+		{
+			return engine.Resolve<IProvider<T>>().Get();
 		}
 
 		/// <summary>Tries to retrieve the engine provided by an accessor on the page, or falls back to the global singleton.</summary>

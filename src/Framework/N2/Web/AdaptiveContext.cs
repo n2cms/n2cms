@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Security.Principal;
 using System.Web;
+using N2.Engine;
+using N2.Engine.Providers;
 
 namespace N2.Web
 {
@@ -12,8 +14,14 @@ namespace N2.Web
 	/// </summary>
 	public class AdaptiveContext : IWebContext, IDisposable
 	{
-		readonly IWebContext thread = new ThreadContext();
-		readonly IWebContext web = new WebRequestContext();
+		readonly IWebContext thread;
+		readonly IWebContext web;
+
+		public AdaptiveContext()
+		{
+			thread = new ThreadContext();
+			web = new WebRequestContext(new HttpContextProvider());
+		}
 
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		public bool IsWeb

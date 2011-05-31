@@ -173,6 +173,9 @@
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Engine\Providers\ContentHelperProvider.cs" />
+    <Compile Include="Engine\Providers\RouteCollectionProvider.cs" />
+    <Compile Include="Engine\Providers\HtmlHelperProvider.cs" />
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />

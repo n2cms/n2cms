@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Hosting;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -12,6 +13,13 @@ namespace N2.Web
     /// </summary>
     public class WebRequestContext : IWebContext, IDisposable
     {
+		IProvider<HttpContextBase> httpContextProvider;
+
+		public WebRequestContext(IProvider<HttpContextBase> httpContextProvider)
+		{
+			this.httpContextProvider = httpContextProvider;
+		}
+
         /// <summary>Provides access to HttpContext.Current.</summary>
         protected virtual HttpContext CurrentHttpContext
         {
@@ -25,7 +33,7 @@ namespace N2.Web
 
 		public virtual HttpContextBase HttpContext
 		{
-			get { return new HttpContextWrapper(CurrentHttpContext); }
+			get { return httpContextProvider.Get(); }
 		}
 
         public bool IsWeb
