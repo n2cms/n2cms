@@ -70,6 +70,10 @@ namespace N2.Persistence.Search
 				q += string.Format(" +Language:({0})", query.LanguageCode);
 			if (query.Exclution != null)
 				q += string.Format(" -({0})", CreateQuery(query.Exclution));
+			if (query.Intersection != null)
+				q = string.Format("+({0}) +({1})", q, CreateQuery(query.Intersection));
+			if (query.Union != null)
+				q = string.Format("({0}) ({1})", q, CreateQuery(query.Union));
 
 			Trace.WriteLine("CreateQuery: " + q);
 

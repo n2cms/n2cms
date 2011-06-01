@@ -411,7 +411,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void Not_Text()
+		public void Except_Text()
 		{
 			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
 			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
@@ -426,7 +426,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void Not_Type()
+		public void Except_Type()
 		{
 			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
 			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
@@ -438,6 +438,134 @@ namespace N2.Tests.Persistence.NH
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void Except_Operator()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello") - Query.For(typeof(IPage)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void Except_Operator_Multiple()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello world", root);
+			var part2 = CreateOneItem<PersistablePart1>(4, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+			indexer.Update(part2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello") - Query.For(typeof(IPage)) - Query.For("region"));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void And()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").And(Query.For("world")));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Contains(page));
+		}
+
+		[Test]
+		public void And_Operator()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello") & Query.For("world"));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Contains(page));
+		}
+
+		[Test]
+		public void And_Operator_Multiple()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world hunger", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello world fulfillment", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello") & Query.For("world") & Query.For("hunger"));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Contains(page));
+		}
+
+		[Test]
+		public void Or()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("region").Or(Query.For("world")));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
+			Assert.That(hits.Contains(page));
+			Assert.That(hits.Contains(page2));
+		}
+
+		[Test]
+		public void Or_Operator()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("region") | Query.For("world"));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
+			Assert.That(hits.Contains(page));
+			Assert.That(hits.Contains(page2));
+		}
+
+		[Test]
+		public void Or_Operator_Multiple()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var page2 = CreateOneItem<PersistableItem1>(3, "Hello region", root);
+			var page3 = CreateOneItem<PersistableItem1>(4, "Hello universe", root);
+			indexer.Update(page);
+			indexer.Update(page2);
+			indexer.Update(page3);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("region") | Query.For("world") | Query.For("universe"));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(3));
+			Assert.That(hits.Contains(page));
+			Assert.That(hits.Contains(page2));
+			Assert.That(hits.Contains(page3));
 		}
 
 		[Test]

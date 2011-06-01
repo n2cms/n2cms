@@ -38,11 +38,17 @@ namespace N2.Persistence.Search
 		/// <summary>Types the matches should belong to (either one of them).</summary>
 		public Type[] Types { get; set; }
 
-		/// <summary>Types the matches should belong to (either one of them).</summary>
-		public Query Exclution { get; set; }
-
 		/// <summary>Search for pages belonging to the given language code.</summary>
 		public string LanguageCode { get; set; }
+
+		/// <summary>Query whose hits excludes hits from this query.</summary>
+		public Query Exclution { get; set; }
+
+		/// <summary>Query whose hits this query results must also match.</summary>
+		public Query Intersection { get; set; }
+
+		/// <summary>Query whose hits are added to this query results.</summary>
+		public Query Union { get; set; }
 
 		/// <summary>Gets a search query for the given search expression.</summary>
 		/// <param name="textQuery">The text to search for.</param>
@@ -136,20 +142,51 @@ namespace N2.Persistence.Search
 
 		public Query Except(Query excludeQuery)
 		{
+			if (Exclution != null)
+				excludeQuery.Or(Exclution);
 			Exclution = excludeQuery;
 			return this;
 		}
 
 		public Query Except(string text)
 		{
-			Exclution = Query.For(text);
-			return this;
+			return Except(Query.For(text));
 		}
 
 		public Query Except(params Type[] types)
 		{
-			Exclution = Query.For(types);
+			return Except(Query.For(types));
+		}
+
+		public static Query operator -(Query q1, Query q2)
+		{
+			return q1.Except(q2);
+		}
+
+		public Query And(Query andQuery)
+		{
+			if (Intersection != null)
+				andQuery.Intersection = Intersection;
+			Intersection = andQuery;
 			return this;
+		}
+
+		public static Query operator &(Query q1, Query q2)
+		{
+			return q1.And(q2);
+		}
+
+		public Query Or(Query orQuery)
+		{
+			if (Union != null)
+				orQuery.Union = Union;
+			Union = orQuery;
+			return this;
+		}
+
+		public static Query operator |(Query q1, Query q2)
+		{
+			return q1.Or(q2);
 		}
 
 		/// <summary>Converts a string to a search query.</summary>
