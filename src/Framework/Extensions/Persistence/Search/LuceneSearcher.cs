@@ -33,13 +33,15 @@ namespace N2.Persistence.Search
 
 				var result = new Result();
 				result.Total = hits.totalHits;
-				result.Hits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
+				var resultHits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
 				{
 					var doc = s.Doc(hit.doc);
 					int id = int.Parse(doc.Get("ID"));
 					ContentItem item = persister.Get(id);
 					return new Hit { Content = item, Score = hit.score };
 				}).ToList();
+				result.Hits = resultHits;
+				result.Count = resultHits.Count;
 				return result;
 			}
 			finally
@@ -64,6 +66,8 @@ namespace N2.Persistence.Search
 				q += string.Format(" +Roles:(Everyone {0})", string.Join(" ", query.Roles.ToArray()));
 			if (query.Types != null)
 				q += string.Format(" +Types:({0})", string.Join(" ", query.Types.Select(t => t.Name).ToArray()));
+			if (query.LanguageCode != null)
+				q += string.Format(" +Language:({0})", query.LanguageCode);
 			if (query.Exclution != null)
 				q += string.Format(" -({0})", CreateQuery(query.Exclution));
 

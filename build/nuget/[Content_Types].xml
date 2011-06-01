@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+	<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
+	<Default Extension="nuspec" ContentType="application/octet" />
+	<Default Extension="bat" ContentType="application/octet" />
+	<Default Extension="transform" ContentType="application/octet" />
+	<Default Extension="css" ContentType="application/octet" />
+	<Default Extension="png" ContentType="application/octet" />
+	<Default Extension="js" ContentType="application/octet" />
+	<Default Extension="config" ContentType="application/octet" />
+	<Default Extension="cshtml" ContentType="application/octet" />
+	<Default Extension="ps1" ContentType="application/octet" />
+	<Default Extension="psmdcp" ContentType="application/vnd.openxmlformats-package.core-properties+xml" />
+</Types>

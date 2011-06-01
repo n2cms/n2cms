@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>jQuery</id>
+    <version>{Version}</version>
+    <title>N2 CMS {Version}</title>
+    <authors>Cristian Libardo</authors>
+    <owners>Cristian Libardo</owners>
+    <licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+    <projectUrl>http://n2cms.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>N2 CMS is a lightweight CMS library.</description>
+    <summary>N2 CMS is a lightweight CMS library that offers light integration with your project with useful helpers, along with a nifty management UI and easy modelling of content.</summary>
+    <language>en-US</language>
+    <tags>N2 CMS</tags>
+  </metadata>
+</package>

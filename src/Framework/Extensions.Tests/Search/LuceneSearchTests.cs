@@ -26,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			base.SetUp();
 
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistablePart1));
+			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
@@ -35,7 +35,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void LuceneSearch_OnTitle()
+		public void Title()
 		{
 			var item = CreateOneItem<PersistableItem1>(2, "Hello world", root);
 			indexer.Update(item);
@@ -47,7 +47,64 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void NHibernateSearch_IndexableProperty()
+		public void Skip()
+		{
+			indexer.Update(CreateOneItem<PersistableItem1>(3, "Hello country", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(2, "Hello world", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(4, "Hello universe", root));
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits1 = searcher.Search(Query.For("hello").Take(1));
+			var hits2 = searcher.Search(Query.For("hello").Skip(1).Take(1));
+			var hits3 = searcher.Search(Query.For("hello").Skip(2).Take(1));
+
+			Assert.That(hits1.Single(), Is.Not.EqualTo(hits2.Single()));
+			Assert.That(hits2.Single(), Is.Not.EqualTo(hits3.Single()));
+			Assert.That(hits3.Single(), Is.Not.EqualTo(hits1.Single()));
+		}
+
+		[Test]
+		public void Take()
+		{
+			indexer.Update(CreateOneItem<PersistableItem1>(3, "Hello country", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(2, "Hello world", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(4, "Hello universe", root));
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits1 = searcher.Search(Query.For("hello").Take(1));
+
+			Assert.That(hits1.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Count_IsNumberOfItemsInHits()
+		{
+			indexer.Update(CreateOneItem<PersistableItem1>(3, "Hello country", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(2, "Hello world", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(4, "Hello universe", root));
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").Take(2));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
+			Assert.That(hits.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Total_IsNumberOfItemsInIndex()
+		{
+			indexer.Update(CreateOneItem<PersistableItem1>(3, "Hello country", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(2, "Hello world", root));
+			indexer.Update(CreateOneItem<PersistableItem1>(4, "Hello universe", root));
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").Take(2));
+
+			Assert.That(hits.Total, Is.EqualTo(3));
+		}
+
+		[Test]
+		public void IndexableProperty()
 		{
 			var item = CreateOneItem<Definitions.PersistableItem1>(2, "Hello world", root);
 			item.StringProperty = "Hej Världen";
@@ -60,7 +117,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void NHibernateSearch_EditableProperty()
+		public void EditableProperty()
 		{
 			var item = CreateOneItem<Definitions.PersistableItem1>(2, "Hello world", root);
 			item.IntProperty = 444;
@@ -362,7 +419,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(part);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(Query.For("hello").Except(Query.For("world")));
+			var hits = searcher.Search(Query.For("hello").Except("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
@@ -377,10 +434,76 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(part);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(Query.For("hello").Except(Query.For(typeof(IPage))));
+			var hits = searcher.Search(Query.For("hello").Except(typeof(IPage)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void Language()
+		{
+			var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);
+			sv.LanguageCode = "sv";
+			var en = CreateOneItem<PersistableItem2>(3, "Engelska", root);
+			en.LanguageCode = "en";
+
+			var svitem = CreateOneItem<PersistableItem1>(4, "Hello världen", sv);
+			indexer.Update(svitem);
+
+			var enitem = CreateOneItem<PersistableItem1>(5, "Hello world", en);
+			indexer.Update(enitem);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("hello").Language(sv));
+
+			Assert.That(result.Hits.Count(), Is.EqualTo(1));
+			Assert.That(result.Single(), Is.EqualTo(svitem));
+		}
+
+		[Test]
+		public void Language_ByLanguageCode()
+		{
+			var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);
+			sv.LanguageCode = "sv";
+			var en = CreateOneItem<PersistableItem2>(3, "Engelska", root);
+			en.LanguageCode = "en";
+
+			var svitem = CreateOneItem<PersistableItem1>(4, "Hello världen", sv);
+			indexer.Update(svitem);
+
+			var enitem = CreateOneItem<PersistableItem1>(5, "Hello world", en);
+			indexer.Update(enitem);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("hello").Language(sv.LanguageCode));
+
+			Assert.That(result.Hits.Count(), Is.EqualTo(1));
+			Assert.That(result.Single(), Is.EqualTo(svitem));
+		}
+
+		[Test]
+		public void Language_IncludesLanguageRoot()
+		{
+			var sv = CreateOneItem<PersistableItem2>(2, "Svenska", root);
+			sv.LanguageCode = "sv";
+			indexer.Update(sv);
+
+			var en = CreateOneItem<PersistableItem2>(3, "Engelska", root);
+			en.LanguageCode = "en";
+			indexer.Update(en);
+
+			var svitem = CreateOneItem<PersistableItem1>(4, "Hello världen", sv);
+			indexer.Update(svitem);
+
+			var enitem = CreateOneItem<PersistableItem1>(5, "Hello world", en);
+			indexer.Update(enitem);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("").Language(sv));
+
+			Assert.That(result.Hits.Count(), Is.EqualTo(2));
+			Assert.That(result.Contains(sv));
 		}
 	}
 }

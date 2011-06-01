@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Principal;
+using N2.Engine.Globalization;
 
 namespace N2.Persistence.Search
 {
@@ -39,6 +40,9 @@ namespace N2.Persistence.Search
 
 		/// <summary>Types the matches should belong to (either one of them).</summary>
 		public Query Exclution { get; set; }
+
+		/// <summary>Search for pages belonging to the given language code.</summary>
+		public string LanguageCode { get; set; }
 
 		/// <summary>Gets a search query for the given search expression.</summary>
 		/// <param name="textQuery">The text to search for.</param>
@@ -136,12 +140,38 @@ namespace N2.Persistence.Search
 			return this;
 		}
 
+		public Query Except(string text)
+		{
+			Exclution = Query.For(text);
+			return this;
+		}
+
+		public Query Except(params Type[] types)
+		{
+			Exclution = Query.For(types);
+			return this;
+		}
+
 		/// <summary>Converts a string to a search query.</summary>
 		/// <param name="searchText">The search expression.</param>
 		/// <returns>A <see cref="Query"/> object.</returns>
 		public static implicit operator Query(string searchText)
 		{
 			return Query.For(searchText);
+		}
+
+		public Query Language(string languageCode)
+		{
+			LanguageCode = languageCode;
+			return this;
+		}
+
+		public Query Language(ILanguage language)
+		{
+			if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
+				return Language(language.LanguageCode);
+			
+			return this;
 		}
 	}
 }

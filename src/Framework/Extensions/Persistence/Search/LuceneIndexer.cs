@@ -14,6 +14,7 @@ using Lucene.Net.Documents;
 using System.Globalization;
 using Lucene.Net.Search;
 using System.Diagnostics;
+using N2.Engine.Globalization;
 
 namespace N2.Persistence.Search
 {
@@ -167,15 +168,9 @@ namespace N2.Persistence.Search
 			doc.Add(new Field("AlteredPermissions", ((int)item.AlteredPermissions).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("State", ((int)item.State).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("IsPage", item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			string roles = string.Join(" ", item.AuthorizedRoles.Select(r => r.Role).ToArray());
-			if (string.IsNullOrEmpty(roles))
-				roles = "Everyone";
-			doc.Add(new Field("Roles", roles, Field.Store.YES, Field.Index.ANALYZED));
-			string types = string.Join(" ", 
-				Utility.GetBaseTypesAndSelf(item.GetContentType())
-				.Union(item.GetContentType().GetInterfaces()
-					.Where(t => t.GetCustomAttributes(typeof(SearchableTypeAttribute), false).Any())).Select(t => t.Name).ToArray());
-			doc.Add(new Field("Types", types, Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field("Roles", GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field("Types", GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field("Language", GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)
@@ -189,6 +184,32 @@ namespace N2.Persistence.Search
 				doc.Add(new Field("PartsText", sw.ToString(), Field.Store.NO, Field.Index.ANALYZED));
 			}
 			return doc;
+		}
+
+		private string GetLanguage(ContentItem item)
+		{
+			var language = Find.Closest<ILanguage>(item);
+			if(language == null)
+				return "";
+
+			return language.LanguageCode ?? "";
+		}
+
+		private static string GetTypes(ContentItem item)
+		{
+			string types = string.Join(" ",
+				Utility.GetBaseTypesAndSelf(item.GetContentType())
+				.Union(item.GetContentType().GetInterfaces()
+					.Where(t => t.GetCustomAttributes(typeof(SearchableTypeAttribute), false).Any())).Select(t => t.Name).ToArray());
+			return types;
+		}
+
+		private static string GetRoles(ContentItem item)
+		{
+			string roles = string.Join(" ", item.AuthorizedRoles.Select(r => r.Role).ToArray());
+			if (string.IsNullOrEmpty(roles))
+				roles = "Everyone";
+			return roles;
 		}
 
 		private void AppendPartsRecursive(ContentItem parent, StringWriter partTexts)
