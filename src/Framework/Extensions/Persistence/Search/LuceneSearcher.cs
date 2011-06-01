@@ -23,22 +23,22 @@ namespace N2.Persistence.Search
 
 		#region ITextSearcher Members
 
-		public SearchResult Search(SearchQuery query)
+		public Result Search(N2.Persistence.Search.Query query)
 		{
 			var s = accessor.GetSearcher();
 			try
 			{
 				var q = CreateQuery(query);
-				var hits = s.Search(q, query.Skip + query.Take);
+				var hits = s.Search(q, query.SkipHits + query.TakeHits);
 
-				var result = new SearchResult();
+				var result = new Result();
 				result.Total = hits.totalHits;
-				result.Hits = hits.scoreDocs.Skip(query.Skip).Take(query.Take).Select(hit =>
+				result.Hits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
 				{
 					var doc = s.Doc(hit.doc);
 					int id = int.Parse(doc.Get("ID"));
 					ContentItem item = persister.Get(id);
-					return new SearchHit { Content = item, Score = hit.score };
+					return new Hit { Content = item, Score = hit.score };
 				}).ToList();
 				return result;
 			}
@@ -48,11 +48,13 @@ namespace N2.Persistence.Search
 			}
 		}
 
-		protected virtual Query CreateQuery(SearchQuery query)
+		protected virtual Lucene.Net.Search.Query CreateQuery(N2.Persistence.Search.Query query)
 		{
-			var q = query.OnlyPages.HasValue && query.OnlyPages.Value
-				? string.Format("+(Title:({0})^4 Text:({0}) PartsText:({0}))", query.Text)
-				: string.Format("+(Title:({0})^4 Text:({0}))", query.Text);
+			var q = "";
+			if(!string.IsNullOrEmpty(query.Text))
+				q = query.OnlyPages.HasValue
+					 ? string.Format("+(Title:({0})^4 Text:({0}) PartsText:({0}))", query.Text)
+					 : string.Format("+(Title:({0})^4 Text:({0}))", query.Text);
 
 			if (query.Ancestor != null)
 				q += string.Format(" +Trail:{0}*", Utility.GetTrail(query.Ancestor));
@@ -60,6 +62,10 @@ namespace N2.Persistence.Search
 				q += string.Format(" +IsPage:{0}", query.OnlyPages.Value.ToString().ToLower());
 			if (query.Roles != null)
 				q += string.Format(" +Roles:(Everyone {0})", string.Join(" ", query.Roles.ToArray()));
+			if (query.Types != null)
+				q += string.Format(" +Types:({0})", string.Join(" ", query.Types.Select(t => t.Name).ToArray()));
+			if (query.Exclution != null)
+				q += string.Format(" -({0})", CreateQuery(query.Exclution));
 
 			Trace.WriteLine("CreateQuery: " + q);
 

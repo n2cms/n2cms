@@ -8,10 +8,10 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// The results of a search query.
 	/// </summary>
-	public class SearchResult
+	public class Result
 	{
 		/// <summary>Search hits.</summary>
-		public IEnumerable<SearchHit> Hits { get; set; }
+		public IEnumerable<Hit> Hits { get; set; }
 
 		/// <summary>Total number of items given the search expression.</summary>
 		public int Total { get; set; }

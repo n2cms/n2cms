@@ -43,11 +43,11 @@ namespace N2.Persistence.Search
 			return q.FirstResult(skip).MaxResults(take).Select();
 		}
 
-		public SearchResult Search(SearchQuery query)
+		public Result Search(Query query)
 		{
-			var result = new SearchResult();
+			var result = new Result();
 			int total;
-			result.Hits = Search(query.Ancestor, query.Text, query.Skip, query.Take, out total).Select(i => new SearchHit { Content = i, Score = i.Title.ToLower().Contains(query.Text.ToLower()) ? 1 : .5 });
+			result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, out total).Select(i => new Hit { Content = i, Score = i.Title.ToLower().Contains(query.Text.ToLower()) ? 1 : .5 });
 			result.Total = total;
 			return result;
 		}

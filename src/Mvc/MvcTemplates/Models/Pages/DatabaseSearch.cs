@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using N2.Persistence.Search;
+using N2.Definitions;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -14,8 +15,9 @@ namespace N2.Templates.Mvc.Models.Pages
 		[Obsolete("Text search is now used from the controller")]
 		public override ICollection<ContentItem> Search(string query, int pageNumber, int pageSize, out int totalRecords)
 		{
+			var q = Query.For(query).Below(SearchRoot).Range(pageSize * pageNumber, pageSize).Pages(true).Except(Query.For(typeof(ISystemNode)));
 			var result = Context.Current.Resolve<ITextSearcher>()
-				.Search(SearchQuery.For(query).Below(SearchRoot).Range(pageSize * pageNumber, pageSize).Pages(true));
+				.Search(q);
 			
 			totalRecords = result.Total;
 			return result.Hits.Select(h => h.Content)

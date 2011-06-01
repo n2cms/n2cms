@@ -58,7 +58,7 @@ namespace Dinamico.Controllers
 
 		private IEnumerable<ContentItem> GetSearchResults(string text, int take)
 		{
-			var query = SearchQuery.For(text).ReadableBy(User, Roles.GetRolesForUser).Below(CurrentPage);
+			var query = Query.For(text).Below(CurrentPage).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
 			var hits = Engine.Resolve<ITextSearcher>().Search(query).Hits.Select(h => h.Content);
 			return hits;
 		}

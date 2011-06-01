@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using N2.Persistence.Search;
 using System.Web.Security;
+using N2.Definitions;
 
 namespace N2.Templates.UI.Views
 {
@@ -26,11 +27,12 @@ namespace N2.Templates.UI.Views
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-			var query = SearchQuery.For(txtQuery.Text)
+			var query = Query.For(txtQuery.Text)
 				.Below(CurrentItem.SearchRoot)
 				.Range(0, 100)
 				.Pages(true)
-				.ReadableBy(User, Roles.GetRolesForUser);
+				.ReadableBy(User, Roles.GetRolesForUser)
+				.Except(Query.For(typeof(ISystemNode)));
 			var result = Engine.Resolve<ITextSearcher>().Search(query);
 			Hits = result.Hits.Select(h => h.Content).Where(Filter.Is.Accessible()).ToList();
 			TotalCount = result.Total;

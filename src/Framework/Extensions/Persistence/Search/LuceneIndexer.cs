@@ -171,6 +171,11 @@ namespace N2.Persistence.Search
 			if (string.IsNullOrEmpty(roles))
 				roles = "Everyone";
 			doc.Add(new Field("Roles", roles, Field.Store.YES, Field.Index.ANALYZED));
+			string types = string.Join(" ", 
+				Utility.GetBaseTypesAndSelf(item.GetContentType())
+				.Union(item.GetContentType().GetInterfaces()
+					.Where(t => t.GetCustomAttributes(typeof(SearchableTypeAttribute), false).Any())).Select(t => t.Name).ToArray());
+			doc.Add(new Field("Types", types, Field.Store.YES, Field.Index.ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)

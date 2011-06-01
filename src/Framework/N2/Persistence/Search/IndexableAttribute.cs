@@ -10,6 +10,7 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// A property that should be indexed by the search service.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class IndexableAttribute : Attribute, IIndexableProperty, IEditable
 	{
 		#region IIndexableProperty Members

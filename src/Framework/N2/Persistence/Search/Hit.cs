@@ -8,7 +8,7 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// A single search result.
 	/// </summary>
-	public class SearchHit
+	public class Hit
 	{
 		/// <summary>
 		/// The content item found.

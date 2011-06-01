@@ -3,7 +3,7 @@
 <% var content = Html.Content(); %>
 <% var searcher = content.Services.Resolve<ITextSearcher>(); %>
 <% int total = 0; %>
-<% var results = searcher.Search(SearchQuery.For(Model).Below(content.Traverse.StartPage).Pages(true)); %>
+<% var results = searcher.Search(Query.For(Model).Below(content.Traverse.StartPage).Pages(true).Except(Query.For(typeof(N2.Definitions.ISystemNode)))); %>
 <% if(results.Hits.Any()) { %>
 <ul>
 	<% foreach (var item in results.Hits) { %>

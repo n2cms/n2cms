@@ -10,6 +10,7 @@ using N2.Persistence;
 using N2.Tests.Persistence.Definitions;
 using System.Diagnostics;
 using System.IO;
+using N2.Definitions;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -40,7 +41,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello"));
+			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -53,7 +54,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("världen"));
+			var hits = searcher.Search(Query.For("världen"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -66,7 +67,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("444"));
+			var hits = searcher.Search(Query.For("444"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -79,7 +80,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello root"));
+			var hits = searcher.Search(Query.For("hello root"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
 		}
@@ -96,8 +97,8 @@ namespace N2.Tests.Persistence.NH
 
 			var searcher = new LuceneSearcher(accessor, persister);
 
-			var hits1 = searcher.Search(SearchQuery.For("hello"));
-			var hits2 = searcher.Search(SearchQuery.For("root"));
+			var hits1 = searcher.Search(Query.For("hello"));
+			var hits2 = searcher.Search(Query.For("root"));
 
 			Assert.That(hits1.Hits.Select(h => h.Content).First(), Is.EqualTo(item));
 			Assert.That(hits2.Hits.Select(h => h.Content).First(), Is.EqualTo(root));
@@ -116,7 +117,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item2b);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("item").Below(item1));
+			var hits = searcher.Search(Query.For("item").Below(item1));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(item1));
@@ -132,7 +133,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(part1);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("first").Pages(true));
+			var hits = searcher.Search(Query.For("first").Pages(true));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(page1));
@@ -147,7 +148,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(part1);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("first").Pages(false));
+			var hits = searcher.Search(Query.For("first").Pages(false));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(part1));
@@ -163,7 +164,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(part1);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("part").Pages(true));
+			var hits = searcher.Search(Query.For("part").Pages(true));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 			Assert.That(hits.Hits.Select(h => h.Content).Contains(page1));
@@ -177,7 +178,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Delete(item.ID);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello"));
+			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
 		}
@@ -193,7 +194,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Delete(item.ID);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("world"));
+			var hits = searcher.Search(Query.For("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
 		}
@@ -206,7 +207,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello").ReadableBy("Everyone"));
+			var hits = searcher.Search(Query.For("hello").ReadableBy("Everyone"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
 		}
@@ -219,7 +220,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello"));
+			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -232,7 +233,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello").ReadableBy("Members"));
+			var hits = searcher.Search(Query.For("hello").ReadableBy("Members"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -246,7 +247,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello").ReadableBy("Writers", "Editors"));
+			var hits = searcher.Search(Query.For("hello").ReadableBy("Writers", "Editors"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -258,7 +259,7 @@ namespace N2.Tests.Persistence.NH
 			indexer.Update(item);
 
 			var searcher = new LuceneSearcher(accessor, persister);
-			var hits = searcher.Search(SearchQuery.For("hello").ReadableBy("Members"));
+			var hits = searcher.Search(Query.For("hello").ReadableBy("Members"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
 		}
@@ -273,6 +274,113 @@ namespace N2.Tests.Persistence.NH
 			indexer.Optimize();
 
 			Assert.IsTrue(true);
+		}
+
+		[Test]
+		public void PagesCanBeFoundByType()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").OfType(typeof(PersistablePart1)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void PagesCanBeFound_ByContentType()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").OfType(typeof(PersistablePart1)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void PagesCanBeFound_ByInterfaceType()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").OfType(typeof(IPart)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void PagesCanBeFound_ByMultipleTypes()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").OfType(typeof(IPart), typeof(IPage)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(page));
+		}
+
+		[Test]
+		public void PagesCanBeFound_ByObjectType()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").OfType(typeof(object)));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(page));
+		}
+
+		[Test]
+		public void Not_Text()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").Except(Query.For("world")));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
+		}
+
+		[Test]
+		public void Not_Type()
+		{
+			var page = CreateOneItem<PersistableItem1>(2, "Hello world", root);
+			var part = CreateOneItem<PersistablePart1>(3, "Hello region", root);
+			indexer.Update(page);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var hits = searcher.Search(Query.For("hello").Except(Query.For(typeof(IPage))));
+
+			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
+			Assert.That(hits.Hits.Select(h => h.Content).Contains(part));
 		}
 	}
 }

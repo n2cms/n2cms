@@ -14,6 +14,6 @@ namespace N2.Persistence.Search
 		/// <summary>Searches for items below an ancestor that matches the given query. The results are not checked for permissions.</summary>
 		/// <param name="query">An object containing the text to search for.</param>
 		/// <returns>A result object containing an enumeration of items matching the search query.</returns>
-		SearchResult Search(SearchQuery query);
+		Result Search(Query query);
 	}
 }

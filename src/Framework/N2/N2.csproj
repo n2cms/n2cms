@@ -228,6 +228,7 @@
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
     <Compile Include="Persistence\Search\IndexableContent.cs" />
     <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />
+    <Compile Include="Persistence\Search\SearchableTypeAttribute.cs" />
     <Compile Include="Persistence\Search\ITextExtractor.cs" />
     <Compile Include="Persistence\Search\ITextSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
@@ -239,9 +240,9 @@
     <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Persistence\DescendantItemFinder.cs" />
-    <Compile Include="Persistence\Search\SearchHit.cs" />
-    <Compile Include="Persistence\Search\SearchQuery.cs" />
-    <Compile Include="Persistence\Search\SearchResult.cs" />
+    <Compile Include="Persistence\Search\Hit.cs" />
+    <Compile Include="Persistence\Search\Query.cs" />
+    <Compile Include="Persistence\Search\Result.cs" />
     <Compile Include="Persistence\Search\TextExtractor.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />

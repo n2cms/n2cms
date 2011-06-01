@@ -1,16 +1,17 @@
 using System;
 using N2.Persistence.Search;
 using N2.Details;
+using N2.Definitions;
 
 namespace N2.Tests.Persistence.Definitions
 {
 	[PartDefinition("Default persistable part", Name = "PersistablePart")]
-	public class PersistablePart1 : ContentItem
+	public class PersistablePart1 : ContentItem, IPart
 	{
 	}
 
 	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
-	public class PersistableItem1 : N2.ContentItem
+	public class PersistableItem1 : N2.ContentItem, IPage
 	{
 		public virtual bool BoolProperty
 		{

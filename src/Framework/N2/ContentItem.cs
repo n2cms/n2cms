@@ -33,6 +33,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Web;
+using N2.Persistence.Search;
 
 namespace N2
 {
@@ -60,6 +61,7 @@ namespace N2
 	[Serializable, DebuggerDisplay("{Name, nq}#{ID} [{TypeName, nq}]")]
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
+	[SearchableType]
 	public abstract class ContentItem : IComparable, 
 		IComparable<ContentItem>, 
 		ICloneable,
