@@ -3,13 +3,14 @@ using System.Web.Security;
 using System.Web.UI.WebControls;
 using System.Web.Configuration;
 using System.Configuration;
+using N2.Web;
 
 namespace N2.Edit.Install.Begin
 {
 	public partial class Default : System.Web.UI.Page
 	{
 		protected bool needsPasswordChange = false;
-		protected bool cannotChangePassword = false;
+		protected bool autoLogin = false;
 		protected string continueUrl;
 		protected string action;
 		protected Version version;
@@ -34,10 +35,16 @@ namespace N2.Edit.Install.Begin
 			continueUrl = N2.Web.Url.ResolveTokens(continueUrl);
 
 			needsPasswordChange = FormsAuthentication.Authenticate("admin", "changeme");
+
+			autoLogin = Request["autologin"] == "true";
+			if (autoLogin)
+				return;
+
 			System.Configuration.Configuration cfg;
 			if (!TryOpenWebConfiguration(out cfg))
 			{
-				cannotChangePassword = true;
+				FormsAuthentication.SetAuthCookie("admin", false);
+				Response.Redirect(Url.Parse(Request.RawUrl).AppendQuery("autologin", "true"));
 			}
 		}
 
