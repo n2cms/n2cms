@@ -56,6 +56,8 @@ namespace N2.Edit.Install.Begin
 				if (TryOpenWebConfiguration(out cfg))
 				{
 					AuthenticationSection authentication = cfg.GetSection("system.web/authentication") as AuthenticationSection;
+					if(chkLoginUrl.Checked)
+						authentication.Forms.LoginUrl = "N2/Login.aspx";
 					authentication.Forms.Credentials.Users["admin"].Password = txtPassword.Text;
 
 					cfg.Save();

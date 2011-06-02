@@ -56,5 +56,14 @@ namespace N2.Edit.Install.Begin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtRepeatPassword;
+        
+        /// <summary>
+        /// chkLoginUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkLoginUrl;
     }
 }

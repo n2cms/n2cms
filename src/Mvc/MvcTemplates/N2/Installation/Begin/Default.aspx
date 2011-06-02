@@ -16,7 +16,7 @@
 		.warning{color:#f00;}
 		.ok{color:#0d0;}
 		textarea{width:80%;height:120px}
-		label { width:120px; display:inline-block; }
+		label { min-width:120px; display:inline-block; }
 	</style>
 </head>
 <body>
@@ -29,10 +29,11 @@
 		<div class="tabPanel">
 			<asp:CustomValidator ID="cvSave" runat="server" />
 			<% if (needsPasswordChange && !autoLogin) { %>
-				<h1>Welcome to N2 CMS</h1>
+				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a></h1>
 				<p>Please give a new password for the user <strong>admin</strong>.</p>
-				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" runat="server" /></p>
-				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" runat="server" /></p>
+				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" Text="Password is required" runat="server" /></p>
+				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" Text="Passwords doesn't match" runat="server" /></p>
+				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /></p>
 				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
 			<%} else if (action == "install"){%>
 				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation</h1>

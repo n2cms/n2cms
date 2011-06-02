@@ -58,15 +58,15 @@ namespace N2.Web.Hosting
 
 					string extension = VirtualPathUtility.GetExtension(requestPath).ToLower();
 					if (extension == "")
-						context.RewritePath(requestPath.TrimEnd('/') + "/Default.aspx");
-					//// There's a problem with RouteTable.Routes keeping storing the default vpp before we register our vpp, in which case
-					//// RouteExistingFiles will not handle files in the zip vpp. The workaround currently resides in ContentRoute where
-					//// we return StopRoutingHandler for any request inside the /N2/ path. An alternative is commented here below.
-					//if (extension == "" || extension == ".aspx" || extension == ".axd" || extension == ".ashx")
-					//{
-					//    var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
-					//    context.RemapHandler(handler as IHttpHandler);
-					//}
+						requestPath = requestPath.TrimEnd('/') + "/Default.aspx"; //context.RewritePath(requestPath.TrimEnd('/') + "/Default.aspx");
+
+					// There's a problem with RouteTable.Routes keeping storing the default vpp before we register our vpp, in which case
+					// RouteExistingFiles will not handle files in the zip vpp. This is a workaround.
+					if (extension == "" || extension == ".aspx" || extension == ".axd" || extension == ".ashx")
+					{
+					    var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
+					    context.RemapHandler(handler as IHttpHandler);
+					}
 					else if (staticFileExtensions.Contains(extension) && vpp.FileExists(requestPath))
 						context.RemapHandler(new VirtualPathFileHandler() { Modified = lastModified });
 				};
