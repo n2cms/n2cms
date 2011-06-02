@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using N2.Configuration;
 using N2.Persistence;
+using N2.Plugin;
 
 namespace N2.Web
 {
@@ -16,7 +17,6 @@ namespace N2.Web
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
 		readonly bool ignoreExistingFiles;
-
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
@@ -41,7 +41,7 @@ namespace N2.Web
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
-			get { return persister.Repository.Load(host.CurrentSite.StartPageID); }
+			get { return persister.Repository.Get(host.CurrentSite.StartPageID); }
 		}
 
         /// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>

@@ -62,7 +62,7 @@ namespace N2.Web.Mvc
 
 		public void WriteTo(TextWriter writer)
 		{
-			if (Context.Displayable == null)
+			if (Context.Displayable == null || Context.Content == null)
 				return;
 
 			Context.Html.ResolveService<DisplayableRendererSelector>()

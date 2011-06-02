@@ -16,42 +16,57 @@
 		.warning{color:#f00;}
 		.ok{color:#0d0;}
 		textarea{width:80%;height:120px}
+		label { width:120px; display:inline-block; }
 	</style>
 </head>
 <body>
 	<form id="form1" runat="server">
 	<div>
-		<% 
-			string action = Request["action"];
-			Version version = typeof (N2.ContentItem).Assembly.GetName().Version;
-			N2.Configuration.InstallerElement config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
-
-			string continueUrl = action == "install"
-			                     	? config.InstallUrl
-			                     	: action == "upgrade"
-			                     	  	? config.UpgradeUrl
-			                     	  	: action == "rebase"
-			                     	  	  	? config.RebaseUrl
-			                     	  	  	: config.InstallUrl;
-			continueUrl = N2.Web.Url.ResolveTokens(continueUrl);
-		%>
 		<ul class="tabs">
 			<li class="tab selected"><a href="#">0. Prepare yourself</a></li>
 			<li class="tab"><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
 		</ul>
 		<div class="tabPanel">
-			<% if(action == "install") {%>
+			<asp:CustomValidator ID="cvSave" runat="server" />
+			<% if (needsPasswordChange && !cannotChangePassword) { %>
+				<h1>Welcome to N2 CMS</h1>
+				<p>Please give a new password for the user <strong>admin</strong>.</p>
+				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" runat="server" /></p>
+				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" runat="server" /></p>
+				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
+			<%} else if (action == "install"){%>
 				<h1>Welcome to N2 CMS Installation</h1>
 				<p>Congratulations! You're well on your way to the <a href="http://n2cms.com/">N2 CMS</a> experience.</p>
-				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<% if (cannotChangePassword) { %>
+				<p>
+					To continue you need to log in with the username <strong>admin</strong> and the password <strong>changeme</strong>. 
+					Your configuration does not allow changing this password here, you must <strong>change this password manually</strong> in web.config.
+				</p>
+				<% } else { %>
+				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
+				<% } %>
 				<p>Okay, <a href="<%= continueUrl %>">please help me <strong>install</strong> a the database for a new site &raquo;</a></p>
 			<%} else if(action == "upgrade") {%>
 				<h1>Welcome to N2 CMS Upgrade to <%= version %></h1>
-				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<% if (cannotChangePassword) { %>
+				<p>
+					To continue you need to log in with the username <strong>admin</strong> and the password <strong>changeme</strong>. 
+					Your configuration does not allow changing this password here, you must <strong>change this password manually</strong> in web.config.
+				</p>
+				<% } else { %>
+				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
+				<% } %>
 				<p><a href="<%= continueUrl %>">I want to <strong>upgrade</strong> from a previous version &raquo;</a></p>
 			<%} else if (action == "rebase") {%>
 				<h1>Welcome to N2 CMS Rebase Tool</h1>
-				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<% if (cannotChangePassword) { %>
+				<p>
+					To continue you need to log in with the username <strong>admin</strong> and the password <strong>changeme</strong>. 
+					Your configuration does not allow changing this password here, you must <strong>change this password manually</strong> in web.config.
+				</p>
+				<% } else { %>
+				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
+				<% } %>
 				<p><a href="<%= continueUrl %>"><strong>Rebase</strong> from a previous virtual directory &raquo;</a></p>
 			<%} else {%>
 				<h1>Welcome to N2 CMS</h1>

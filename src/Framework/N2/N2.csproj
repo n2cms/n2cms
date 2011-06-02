@@ -112,6 +112,7 @@
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
+    <Compile Include="Collections\NoHierarchyBuilder.cs" />
     <Compile Include="Collections\CountFilter.cs" />
     <Compile Include="Collections\FilterHelper.cs" />
     <Compile Include="Collections\IContentItemListOfT.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Persistence\Search\Query.cs" />
     <Compile Include="Persistence\Search\Result.cs" />
     <Compile Include="Persistence\Search\TextExtractor.cs" />
+    <Compile Include="Plugin\ConnectionContext.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />

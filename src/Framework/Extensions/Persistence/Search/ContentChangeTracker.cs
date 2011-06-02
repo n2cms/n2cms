@@ -8,6 +8,7 @@ using N2.Configuration;
 using Lucene.Net.Store;
 using N2.Web;
 using System.Threading;
+using System.Security;
 
 namespace N2.Persistence.Search
 {
@@ -97,6 +98,10 @@ namespace N2.Persistence.Search
 					AppendError(original, ex);
 				}
 				catch (ThreadAbortException ex)
+				{
+					AppendError(original, ex);
+				}
+				catch (SecurityException ex)
 				{
 					AppendError(original, ex);
 				}

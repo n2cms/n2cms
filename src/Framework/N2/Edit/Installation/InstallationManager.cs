@@ -19,6 +19,7 @@ using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
+using N2.Plugin;
 
 namespace N2.Edit.Installation
 {
@@ -40,8 +41,9 @@ namespace N2.Edit.Installation
         IHost host;
     	IWebContext webContext;
 		DefinitionMap map;
+		ConnectionContext connectionContext;
 
-		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
+		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionContext connectionContext)
 		{
             this.host = host;
 			this.map = map;
@@ -51,6 +53,7 @@ namespace N2.Edit.Installation
             this.sessionProvider = sessionProvider;
             this.configurationBuilder = configurationBuilder;
         	this.webContext = webContext;
+			this.connectionContext = connectionContext;
 		}
         
 		NHibernate.Cfg.Configuration cfg;
@@ -473,6 +476,11 @@ namespace N2.Edit.Installation
 					yield return item;
 				}
 			}
+		}
+
+		public void UpdateStatus(SystemStatusLevel currentLevel)
+		{
+			connectionContext.SetConnected(currentLevel);
 		}
 	}
 }

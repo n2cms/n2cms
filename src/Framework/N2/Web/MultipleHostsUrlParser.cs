@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using N2.Configuration;
 using N2.Persistence;
+using N2.Plugin;
 
 namespace N2.Web
 {
@@ -13,7 +14,6 @@ namespace N2.Web
 		public MultipleSitesParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
 			: base(persister, webContext, host, config)
 		{
-			Debug.WriteLine("MultipleSitesParser");
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>

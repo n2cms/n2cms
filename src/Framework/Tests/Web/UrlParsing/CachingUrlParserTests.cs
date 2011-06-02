@@ -16,7 +16,7 @@ namespace N2.Tests.Web.UrlParsing
 		public override void SetUp()
 		{
 			base.SetUp();
-			UrlParser inner = new UrlParser(persister, wrapper, host, new HostSection());
+			UrlParser inner = TestSupport.Setup(persister, wrapper, host);
 			parser = new CachingUrlParserDecorator(inner, persister);
 			CreateDefaultStructure();
 			repository = (FakeRepository<ContentItem>) persister.Repository;
@@ -102,7 +102,7 @@ namespace N2.Tests.Web.UrlParsing
 
 			var data = parser.ResolvePath("/item1/item1_1");
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Load(1)"), "Should have re-resolve template from start page.");
+			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have re-resolve template from start page.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 	}

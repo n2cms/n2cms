@@ -66,7 +66,7 @@ namespace N2.Extensions.Tests.Mvc
 			httpContext = new FakeHttpContext();
 			var webContext = new FakeWebContextWrapper(httpContext);
 			var host = new Host(webContext, root.ID, root.ID);
-			var parser = new UrlParser(persister, webContext, host, new HostSection());
+			var parser = TestSupport.Setup(persister, webContext, host);
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
 

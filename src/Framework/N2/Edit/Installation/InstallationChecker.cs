@@ -4,6 +4,8 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Plugin;
 using N2.Web;
+using System.Web.Configuration;
+using System.Configuration;
 
 namespace N2.Edit.Installation
 {
@@ -12,21 +14,27 @@ namespace N2.Edit.Installation
 	{
 		IWebContext webContext;
 		EventBroker broker;
-		InstallationManager installer;
 		protected bool checkInstallation;
 		protected string welcomeUrl;
 		protected string managementUrl;
+		DatabaseStatus status;
+		InstallationManager installer;
 
 		public InstallationChecker(IWebContext webContext, EventBroker broker, ConfigurationManagerWrapper configuration, InstallationManager installer)
 		{
+			this.installer = installer;
 			if (configuration.Sections.Management.Installer.CheckInstallationStatus)
 			{
 				welcomeUrl = configuration.Sections.Management.Installer.WelcomeUrl;
 				managementUrl = configuration.Sections.Management.ManagementInterfaceUrl;
-				this.installer = installer;
 				this.webContext = webContext;
 				this.broker = broker;
 				this.broker.BeginRequest += BeginRequest;
+				this.status = installer.GetStatus();
+			}
+			else
+			{
+				installer.UpdateStatus(SystemStatusLevel.Unconfirmed);
 			}
 		}
 
@@ -41,11 +49,27 @@ namespace N2.Edit.Installation
 			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
 			if (isEditing)
 				return;
+			
+			try 
+			{
+				AuthenticationSection authentication = ConfigurationManager.GetSection("system.web/authentication") as AuthenticationSection;
+				if (currentUrl.StartsWith(Url.ToAbsolute(authentication.Forms.LoginUrl), StringComparison.InvariantCultureIgnoreCase))
+					// don't redirect from login page
+					return;
+			}
+			catch (Exception ex)
+			{
+				Trace.TraceWarning(ex.ToString());
+			}
+			var status = this.status;
 
-			DatabaseStatus status = installer.GetStatus();
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
-
-			if (status.NeedsUpgrade)
+			if (status == null)
+			{
+				Trace.TraceWarning("Null status");
+				return;
+			}
+			else if (status.NeedsUpgrade)
 			{
 				redirectUrl = redirectUrl.AppendQuery("action", "upgrade");
 			}
@@ -59,9 +83,15 @@ namespace N2.Edit.Installation
 			}
 			else
 			{
+				this.status = null;
+				installer.UpdateStatus(status.Level);
+				this.broker.BeginRequest -= BeginRequest;
 				return;
 			}
+
 			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
+			installer.UpdateStatus(status.Level);
+			this.status = null;
 			webContext.HttpContext.Response.Redirect(redirectUrl);
 		}
 

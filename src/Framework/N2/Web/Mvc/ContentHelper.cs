@@ -91,6 +91,9 @@ namespace N2.Web.Mvc
 
 		public Tree TreeFrom(ContentItem item, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
 		{
+			if (item == null)
+				return CreateTree(new NoHierarchyBuilder());
+
 			if (cssGetter == null)
 				cssGetter = GetNavigationClass;
 

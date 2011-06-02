@@ -87,12 +87,47 @@
 
 	<PropertyGroup>
 		<Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
+		<Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
+	</Target>
+
+	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy">
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
+		
+		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
+		<PropertyGroup>
+			<Code>
+				<![CDATA[
+public static string ScriptMain()
+{
+			Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(@"$(Framework-NugetFolder)\content\N2\N2.zip");
+			zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
+			zf.AddDirectory(@"$(Framework-DeployFolder)\N2\", "N2");
+			zf.Save();
+			return "";
+}
+			]]>
+			</Code>
+		</PropertyGroup>
+		<Delete Files="$(Framework-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Framework-NugetFolder)\content\N2\N2.zip')" />
+		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Framework-NugetFolder)\content\N2\" />
+		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
+
+		<ItemGroup>
+			<NugetIncludes Include="$(BuildFolder)\Nuget\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(NugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Framework-NugetFolder)\N2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\lib\" />
+		<Copy SourceFiles="$(RootFolder)\lib\System.Data.SQLite.dll;" DestinationFolder="$(Framework-NugetFolder)\lib\" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
 	</Target>
 
 	<Target Name="Framework-ZipDeploy" DependsOnTargets="Framework-Deploy;Framework-Zip" />

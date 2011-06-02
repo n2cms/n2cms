@@ -42,11 +42,8 @@ namespace N2.Web
 		{
 			Url url = webContext.Url;
 			string path = url.Path;
-			foreach (string nonRewritablePath in nonRewritablePaths)
-			{
-				if (path.StartsWith(nonRewritablePath, StringComparison.InvariantCultureIgnoreCase))
-					return PathData.Empty;
-			}
+			if (!IsRewritable(url))
+				return PathData.Empty;
 
 			PathData data = ResolveUrl(url);
 			return data;
@@ -56,7 +53,7 @@ namespace N2.Web
 		{
 			try
 			{
-				if (IsObservable(url))
+				if (IsRewritable(url) && IsObservable(url))
 					return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 			}
 			catch (Exception ex)
@@ -64,6 +61,17 @@ namespace N2.Web
 				errorHandler.Notify(ex);
 			}
 			return PathData.Empty;
+		}
+
+		private bool IsRewritable(Url url)
+		{
+			string path = url.Path;
+			foreach (string nonRewritablePath in nonRewritablePaths)
+			{
+				if (path.StartsWith(nonRewritablePath, StringComparison.InvariantCultureIgnoreCase))
+					return false;
+			}
+			return true;
 		}
 
 		[Obsolete("Use ResolveUrl((Url)url))")]

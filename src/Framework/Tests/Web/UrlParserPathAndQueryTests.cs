@@ -63,7 +63,7 @@ namespace N2.Tests.Web
         public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
         {
             host = new Host(wrapper, 10, 1);
-            parser = new UrlParser(persister, wrapper, host, new HostSection());
+			parser = TestSupport.Setup(persister, wrapper, host);
 
             CreateDefaultStructure();
             ContentItem root = CreateOneItem<PageItem>(10, "root", null);
