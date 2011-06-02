@@ -33,32 +33,31 @@ namespace N2.Persistence.Serialization
 					{
 						detailElement.WriteAttribute("name", name);
 						Type type = value.GetType();
-
-						string contents;
+						
 						if (type == typeof(string))
-							contents = (string)value;
+							Write(detailElement, type, (string)value, true);
 						else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal))
-							contents = value.ToString();
+							Write(detailElement, type, value.ToString(), false);
 						else if (type == typeof(DateTime))
-							contents = SerializationUtility.ToUniversalString(((DateTime)value));
+							Write(detailElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);
 						else if (type.IsEnum)
-							contents = ((int)value).ToString();
+							Write(detailElement, type, ((int)value).ToString(), false);
 						else if (typeof(ContentItem).IsAssignableFrom(type))
-						{
-							type = typeof(ContentItem);
-							contents = (((ContentItem)value).ID).ToString();
-						}
+							Write(detailElement, typeof(ContentItem), (((ContentItem)value).ID).ToString(), false);
 						else
-						{
-							type = typeof(object);
-							contents = SerializationUtility.ToBase64String(value);
-						}
-
-						detailElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(type));
-						detailElement.WriteCData(contents);
+							Write(detailElement, typeof(object), SerializationUtility.ToBase64String(value), false);
 					}
 				}
 			}
+		}
+
+		private void Write(ElementWriter detailElement, Type type, string contents, bool cdata)
+		{
+			detailElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(type));
+			if(cdata)
+				detailElement.WriteCData(contents);
+			else
+				detailElement.Write(contents);
 		}
 
 		#endregion

@@ -70,6 +70,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='Exists']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual("True", nodes.Current.Value);
 		}
@@ -83,6 +85,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='Age']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual(28.ToString(), nodes.Current.Value);
 		}
@@ -96,6 +100,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='Weight']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual(73.4.ToString(), nodes.Current.Value);
 		}
@@ -109,6 +115,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='FavouriteColor']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual("black", nodes.Current.Value);
 		}
@@ -123,6 +131,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='Alphabet']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual(alphabet, nodes.Current.Value);
 		}
@@ -137,6 +147,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='MixedFeelings']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 
 			object[] fromString = Deserialize(nodes) as object[];
@@ -157,6 +169,8 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/details/detail[@name='Target']");
+			nodes.MoveNext();
+
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual("2", nodes.Current.Value);
 		}
@@ -169,6 +183,7 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/authorized/role");
+
 			Assert.AreEqual(0, nodes.Count);
 		}
 
@@ -180,6 +195,7 @@ namespace N2.Tests.Serialization
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
 			XPathNodeIterator nodes = xpn.Select("//item/authorizations/role");
+			nodes.MoveNext();
 
 			Assert.AreEqual(1, nodes.Count);
 			Assert.AreEqual("Administrator", nodes.Current.Value);
