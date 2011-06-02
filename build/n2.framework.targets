@@ -119,9 +119,9 @@ public static string ScriptMain()
 		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
 
 		<ItemGroup>
-			<NugetIncludes Include="$(BuildFolder)\Nuget\**\*" />
+			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
 		</ItemGroup>
-		<Copy SourceFiles="@(NugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(frameworkNugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
 		<FileUpdate Files="$(Framework-NugetFolder)\N2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\lib\" />
