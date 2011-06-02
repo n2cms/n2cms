@@ -40,6 +40,17 @@ namespace N2.Tests.Serialization
 			Assert.AreEqual(item.TranslationKey, readItem.TranslationKey);
 		}
 
+		[Test]
+		public void ExportedImportedItem_KeepsState()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.State = ContentState.Deleted;
+
+			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+
+			Assert.AreEqual(item.State, readItem.State);
+		}
+
         [Test]
         public void ExportedImportedItem_MaintainsSameType()
         {
@@ -330,6 +341,79 @@ namespace N2.Tests.Serialization
 			ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
 			
 			Assert.That(readItem.TemplateKey, Is.EqualTo(item.TemplateKey));
+		}
+
+		[Test]
+		public void PersistableNumber_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.PersistableNumber = 432;
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableNumber, Is.EqualTo(item.PersistableNumber));
+		}
+
+		[Test]
+		public void PersistableDate_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.PersistableDate = new DateTime(2010, 6, 16);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableDate, Is.EqualTo(item.PersistableDate));
+		}
+
+		[Test]
+		public void PersistableText_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.PersistableText = "Hello World";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableText, Is.EqualTo(item.PersistableText));
+		}
+
+		[Test]
+		public void PersistableLink_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			var child = CreateOneItem<XmlableItem>(2, "item", item);
+			item.PersistableLink = child;
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableLink, Is.EqualTo(item.PersistableLink));
+		}
+
+		[Test]
+		public void PersistableEnum_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.PersistableEnum = ContentState.Published;
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableEnum, Is.EqualTo(item.PersistableEnum));
+		}
+
+		[Test]
+		public void PersistableObject_IsTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.PersistableObject = new [] { "Hello", "World" };
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.PersistableObject, Is.EquivalentTo(item.PersistableObject));
 		}
 
         private void AssertEquals(DateTime? expected, DateTime? actual)

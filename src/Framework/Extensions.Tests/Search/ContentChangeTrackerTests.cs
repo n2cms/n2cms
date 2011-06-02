@@ -29,7 +29,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			base.SetUp();
 
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistablePart1));
+			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));

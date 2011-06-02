@@ -72,6 +72,7 @@ namespace N2.Definitions
 			Containers = new List<IEditableContainer>();
 			EditableModifiers = new List<EditorModifierAttribute>();
 			Displayables = new List<IDisplayable>();
+			NamedOperators = new List<IUniquelyNamed>();
 			IsPage = true;
 			Enabled = true;
 			AllowedIn = AllowedZones.None;
@@ -145,9 +146,6 @@ namespace N2.Definitions
 		/// <summary>Gets or sets containers defined for the item.</summary>
 		public IList<IEditableContainer> Containers { get; private set; }
 
-		///// <summary>Gets or sets the root container used to build the edit interface.</summary>
-		//public IEditableContainer RootContainer { get; private set; }
-
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
 
@@ -163,6 +161,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
 		public IList<IDisplayable> Displayables { get; private set; }
+
+		/// <summary>Named items associated to a property.</summary>
+		public IList<IUniquelyNamed> NamedOperators { get; private set; }
 
 		public AllowedZones AllowedIn { get; set; }
 
@@ -217,17 +218,6 @@ namespace N2.Definitions
 
 			return AllowedZoneNames.Contains(zoneName);
 		}
-
-		///// <summary>Gets editable attributes available to user.</summary>
-		///// <returns>A filtered list of editable fields.</returns>
-		//public IList<IEditable> GetEditables(IPrincipal user)
-		//{
-		//    var filteredList = new List<IEditable>();
-		//    foreach (IEditable e in Editables)
-		//        if (e.IsAuthorized(user))
-		//            filteredList.Add(e);
-		//    return filteredList;
-		//}
 
 		/// <summary>Gets the editor modifications for the specified detail name.</summary>
 		/// <param name="detailName"></param>
@@ -305,6 +295,8 @@ namespace N2.Definitions
 					Displayables.AddOrReplace(containable as IDisplayable);
 				if (containable is IContentTransformer)
 					ContentTransformers.Add(containable as IContentTransformer);
+				
+				NamedOperators.Add(containable);
 			}
 		}
 
@@ -316,10 +308,7 @@ namespace N2.Definitions
 
 		public IEnumerable<IUniquelyNamed> GetNamed(string name)
 		{
-			return Editables.Where(e => e.Name == name).OfType<IUniquelyNamed>()
-				.Union(Containers.Where(c => c.Name == name).OfType<IUniquelyNamed>())
-				.Union(Displayables.Where(d => d.Name == name).OfType<IUniquelyNamed>())
-				.ToList();
+			return NamedOperators.Where(o => o.Name == name).ToList();
 		}
 
 		public void Remove(IUniquelyNamed containable)
@@ -339,6 +328,8 @@ namespace N2.Definitions
 					Displayables.Remove(containable as IDisplayable);
 				if (containable is IContentTransformer)
 					ContentTransformers.Remove(containable as IContentTransformer);
+
+				NamedOperators.Remove(containable);
 			}
 		}
 

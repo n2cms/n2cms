@@ -391,6 +391,7 @@ namespace N2
 					case "State":				return State;
 					case "TemplateKey":			return TemplateKey;
                     case "TemplateUrl":			return TemplateUrl;
+					case "TranslationKey":		return TranslationKey;
 					case "Title":				return Title;
 					case "Updated":				return Updated;
 					case "Url":					return Url;
@@ -422,6 +423,7 @@ namespace N2
 					case "SortOrder":			SortOrder = Utility.Convert<int>(value); break;
 					case "State":				State = Utility.Convert<ContentState>(value); break;
 					case "TemplateKey":			TemplateKey = Utility.Convert<string>(value); break;
+					case "TranslationKey":		TranslationKey = Utility.Convert<int>(value); break;
 					case "Title":				Title = Utility.Convert<string>(value); break;
 					case "Updated":				Updated = Utility.Convert<DateTime>(value); break;
 					case "VersionIndex":		VersionIndex = Utility.Convert<int>(value); break;

@@ -83,30 +83,6 @@ namespace N2.Persistence.Serialization
 			return multiDetail;
 		}
 
-		private static void SetLinkedItem(string value, ReadingJournal journal, Action<ContentItem> setter)
-		{
-			int referencedItemID = int.Parse(value);
-			ContentItem referencedItem = journal.Find(referencedItemID);
-			if (referencedItem != null)
-			{
-				setter(referencedItem);
-			}
-			else
-			{
-				EventHandler<ItemEventArgs> handler = null;
-				handler = delegate(object sender, ItemEventArgs e)
-				{
-					if (e.AffectedItem.ID == referencedItemID)
-					{
-						setter(e.AffectedItem);
-						journal.ItemAdded -= handler;
-					}
-				};
-
-				journal.ItemAdded += handler;
-			}
-		}
-
 		private string PrepareStringDetail(ContentItem item, string name, string value)
 		{
 			if (value.StartsWith("~"))

@@ -245,6 +245,8 @@
     <Compile Include="Persistence\Search\Query.cs" />
     <Compile Include="Persistence\Search\Result.cs" />
     <Compile Include="Persistence\Search\TextExtractor.cs" />
+    <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
+    <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Plugin\ConnectionContext.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />

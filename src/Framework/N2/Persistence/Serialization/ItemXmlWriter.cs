@@ -54,6 +54,7 @@ namespace N2.Persistence.Serialization
 			yield return new DetailCollectionXmlWriter();
 			yield return new ChildXmlWriter();
 			yield return new AuthorizationXmlWriter();
+			yield return new PersistablePropertyXmlWriter(definitions);
             if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
 			    yield return new AttachmentXmlWriter();
         }
@@ -68,6 +69,7 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("templateKey", item.TemplateKey);
 			if (item.TranslationKey.HasValue)
 				itemElement.WriteAttribute("translationKey", item.TranslationKey.Value);
+			itemElement.WriteAttribute("state", (int)item.State);
 			itemElement.WriteAttribute("created", item.Created);
 			itemElement.WriteAttribute("updated", item.Updated);
 			itemElement.WriteAttribute("published", item.Published);

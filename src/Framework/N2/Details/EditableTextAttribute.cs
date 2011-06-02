@@ -169,9 +169,9 @@ namespace N2.Details
 
 		public bool Index { get; set; }
 
-		public virtual string GetIndexableText(ContentItem item, string name)
+		public virtual string GetIndexableText(ContentItem item)
 		{
-			object value = item[name];
+			object value = item[Name];
 			if (value == null)
 				return null;
 

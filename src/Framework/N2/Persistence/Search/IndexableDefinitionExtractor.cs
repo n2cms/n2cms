@@ -24,13 +24,10 @@ namespace N2.Persistence.Search
 
 		public IEnumerable<IndexableContent> Extract(ContentItem item)
 		{
-			foreach (var e in definitions.GetDefinition(item).Editables)
+			foreach (var indexable in definitions.GetDefinition(item).NamedOperators.OfType<IIndexableProperty>())
 			{
-				var indexable = e as IIndexableProperty;
-				if (indexable == null || !indexable.Index)
-					continue;
-
-				yield return new IndexableContent { Name = e.Name, TextContent = indexable.GetIndexableText(item, e.Name) };
+				if (indexable.Index)
+					yield return new IndexableContent { Name = indexable.Name, TextContent = indexable.GetIndexableText(item) };
 			}
 		}
 
