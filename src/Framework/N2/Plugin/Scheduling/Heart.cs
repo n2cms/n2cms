@@ -18,32 +18,33 @@ namespace N2.Plugin.Scheduling
             timer = new Timer(60 * 1000);
         }
 
-        public Heart(Configuration.EngineSection config)
+        public Heart(ConnectionContext connection, Configuration.EngineSection config)
         {
             if (config.Scheduler.Interval < 1) throw new ArgumentException("Cannot beat at a pace below 1 per second. Set engine.scheduler.interval to at least 1.", "config");
 
             timer = new Timer(config.Scheduler.Interval * 1000);
+            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+			connection.Online += delegate { timer.Start(); };
+			connection.Interrupted += delegate { timer.Stop(); };
+			connection.Resumed += delegate { timer.Start(); };
         }
 
-        public event EventHandler Beat;
+		/// <summary>Occurs when a time unit has elapsed.</summary>
+		public event EventHandler Beat;
+
+		void timer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			Debug.WriteLine("Beat: " + DateTime.Now);
+			if (Beat != null)
+				Beat(this, e);
+		}
 
         public void Start()
         {
-            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
-            timer.Start();
-        }
-
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            Debug.WriteLine("Beat: " + DateTime.Now);
-            if (Beat != null)
-                Beat(this, e);
         }
 
         public void Stop()
         {
-            timer.Elapsed -= new ElapsedEventHandler(timer_Elapsed);
-            timer.Stop();
         }
     }
 }

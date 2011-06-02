@@ -13,25 +13,21 @@ namespace N2.Plugin
 	[Service]
 	public class ConnectionContext
 	{
-		public ConnectionContext()
-		{
-		}
-
 		public bool? IsConnected { get; protected set; }
 		public SystemStatusLevel StatusLevel { get; protected set; }
 
-		event EventHandler connected;
-		event EventHandler reconnected;
-		event EventHandler disconnected;
+		event EventHandler online;
+		event EventHandler interrupted;
+		event EventHandler resumed;
 
 		/// <summary>Occurs the fist time a connection to the database is made.</summary>
-		public event EventHandler Connected
+		public event EventHandler Online
 		{
 			add 
 			{
 				lock (this)
 				{
-					connected += value;
+					online += value;
 					if (IsConnected.HasValue && IsConnected.Value)
 						value(this, new EventArgs());
 				}
@@ -40,45 +36,45 @@ namespace N2.Plugin
 			{
 				lock (this)
 				{
-					connected -= value; 
+					online -= value; 
 				}
 			}
 		}
 
 		/// <summary>Occurs when the connection to the database is broken.</summary>
-		public event EventHandler Disconnected
+		public event EventHandler Interrupted
 		{
 			add
 			{
 				lock (this)
 				{
-					disconnected += value;
+					resumed += value;
 				}
 			}
 			remove
 			{
 				lock (this)
 				{
-					disconnected -= value;
+					resumed -= value;
 				}
 			}
 		}
 
 		/// <summary>Occurs when the connection to the database is resumed.</summary>
-		public event EventHandler Reconnected
+		public event EventHandler Resumed
 		{
 			add
 			{
 				lock (this)
 				{
-					reconnected += value;
+					interrupted += value;
 				}
 			}
 			remove
 			{
 				lock (this)
 				{
-					reconnected -= value;
+					interrupted -= value;
 				}
 			}
 		}
@@ -92,18 +88,18 @@ namespace N2.Plugin
 
 				if (previous.HasValue)
 				{
-					if (previous.Value && !IsConnected.Value && disconnected != null)
+					if (previous.Value && !IsConnected.Value && resumed != null)
 						// from connected to disconnected
-						disconnected(this, new EventArgs());
-					if (!previous.Value && IsConnected.Value && reconnected != null)
+						resumed(this, new EventArgs());
+					if (!previous.Value && IsConnected.Value && interrupted != null)
 						// from disconnected to connected
-						reconnected(this, new EventArgs());
+						interrupted(this, new EventArgs());
 				}
 				else
 				{
-					if (IsConnected.Value & connected != null)
+					if (IsConnected.Value & online != null)
 						// from unknown to connected
-						connected(this, new EventArgs());
+						online(this, new EventArgs());
 				}
 			}
 		}
