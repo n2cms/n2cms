@@ -16,7 +16,8 @@ a.opener { text-decoration:none }
 
 .separator { border-top:solid 1px #eee; padding-top:20px; }
 
-.list-item { margin-bottom:20px; }
+.list-item { padding-bottom:10px; border-bottom:solid 1px #eee; margin-bottom:10px; }
+.list-item:last-child { border-bottom:none; }
 
 .pager { text-align:center; border-top: solid 1px #eee; padding-top:10px; margin-top:10px; }
 	.pager .previous { float:left; }
