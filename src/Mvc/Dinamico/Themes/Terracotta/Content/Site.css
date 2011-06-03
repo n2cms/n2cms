@@ -1,7 +1,8 @@
-﻿@import "../../../Content/Blueprint.css";
+﻿@import "../../../Content/Boilerhead.css";
 @import "../../../Content/Layout.css";
 @import "../../../Content/Elements.css";
 @import "../../../Content/Features.css";
 @import "Mood.css";
+@import "../../../Content/Boilerfoot.css";
 
 #content img.main { width:920px; }

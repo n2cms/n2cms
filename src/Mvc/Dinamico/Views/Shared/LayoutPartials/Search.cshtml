@@ -1,8 +1,6 @@
-﻿<span id="search" class="item">
-@{using (Html.BeginForm("Search", null, new { item = Content.Traverse.StartPage }, FormMethod.Get, new { id = "searchform" }))
+﻿@{using (Html.BeginForm("Search", null, new { id = "search", item = Content.Traverse.StartPage }, FormMethod.Get, new { id = "searchform" }))
   {
 	<input name="q" value="Search"/>
 	<button type="submit"></button>
   }
 }
-</span>

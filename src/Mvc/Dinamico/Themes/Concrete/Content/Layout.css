@@ -2,8 +2,6 @@
 
 	div#wrapper { width:auto; }
 		div#top { position:absolute; right:50%; margin-right:-350px; top:5px; z-index:10; text-align:right; }
-			div#top span.item { }
-			div#top span#search { display:block; margin-top:35px;}
 		div#header { min-width:960px; padding-top:0; }
 			div#header a.logotype {
 				left:auto;
@@ -12,12 +10,6 @@
 				margin-right: -450px;
 			}
 				div#header a.logotype img { height:80px; }
-/*	div#header .inner { height:100px; width:960px; margin:0 auto; position:relative; }
-	div#header .uc { position:absolute; top:15px; right:30px; }
-		div#header .uc img { vertical-align:middle; }
-		div#header .uc h2 { display:inline; }
-			div#header .uc h2 a { color:#E5D7C4; }
-*/
 		div#nav { width:960px; margin:0 auto; }
 			div#nav ul.menu li { float:left; }
 				div#nav ul.menu li a { float:left; height:20px; padding:60px 30px 20px 30px; }
@@ -25,20 +17,12 @@
 	div#page { width:960px; background-color:#fff; margin:0 auto; }
 		div#page .submenu { border-bottom:solid 1px #E5D7C4; margin:0; padding:0; }
 			div#page .submenu li { display:inline-block; white-space:nowrap; }
-			div#page .submenu li a { display:block; padding:10px 10px 10px 20px;  }
+			div#page .submenu li a { display:block; padding:10px 10px 10px 20px; }
 			div#page .submenu li a.trail { font-weight:bold; }
 			div#page .submenu li a.current { font-weight:bold; color:#403C37; }
-/*	.path { clear:both; margin:0 0 15px 0; font-size:.7em; color:#E5D7C4; }
-		.path a { color:#BFB4A4; }
-*/
 	div#content { }
 		div#content { float:left; width:590px; }
 			div#content img.main { width:590px; }
 		div#aside { float:right; width:280px; margin:15px 0 0 30px; }
-/*			.columns .uc, #extras .uc { margin-bottom:15px; }
-				.columns .uc h4, #extras .uc h4 { padding:5px 15px; background:#403C37; color:#FFEFDA; margin:0; }
-				.columns .uc .box, #extras .uc .box { border:solid 1px #E5D7C4; }
-					.columns .uc .inner, #extras .uc .inner { padding:15px; }
-*/
 	div#footer { margin:0 auto; padding:15px 30px; }
 		div#footer a { float:right; }

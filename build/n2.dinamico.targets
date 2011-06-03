@@ -86,6 +86,7 @@ public static string ScriptMain()
 		<ItemGroup>
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
 																	 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
+																						$(Dinamico-SourceFolder)\Global.*;
 																						$(Dinamico-SourceFolder)\*.csproj;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)"			DestinationFolder="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)" />

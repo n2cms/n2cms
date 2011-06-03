@@ -132,34 +132,9 @@
     <Compile Include="Web\Mvc\Html\TemplateOfT.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blueprint\ie.css" />
-    <Content Include="Content\blueprint\plugins\buttons\icons\cross.png" />
-    <Content Include="Content\blueprint\plugins\buttons\icons\key.png" />
-    <Content Include="Content\blueprint\plugins\buttons\icons\tick.png" />
-    <Content Include="Content\blueprint\plugins\buttons\readme.txt" />
-    <Content Include="Content\blueprint\plugins\buttons\screen.css" />
-    <Content Include="Content\blueprint\plugins\fancy-type\readme.txt" />
-    <Content Include="Content\blueprint\plugins\fancy-type\screen.css" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\doc.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\email.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\external.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\feed.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\im.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\pdf.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\visited.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\icons\xls.png" />
-    <Content Include="Content\blueprint\plugins\link-icons\readme.txt" />
-    <Content Include="Content\blueprint\plugins\link-icons\screen.css" />
-    <Content Include="Content\blueprint\plugins\rtl\readme.txt" />
-    <Content Include="Content\blueprint\plugins\rtl\screen.css" />
-    <Content Include="Content\blueprint\print.css" />
-    <Content Include="Content\blueprint\screen.css" />
-    <Content Include="Content\blueprint\_examples\forms_example.html" />
-    <Content Include="Content\blueprint\_examples\grid.html" />
-    <Content Include="Content\blueprint\_examples\layout_example.html" />
-    <Content Include="Content\blueprint\_examples\test.jpg" />
-    <Content Include="Content\blueprint\_examples\typography.html" />
-    <Content Include="Content\blueprint\_examples\valid.png" />
+    <Content Include="apple-touch-icon.png" />
+    <Content Include="Content\Boilerfoot.css" />
+    <Content Include="Content\Boilerhead.css" />
     <Content Include="Content\Features.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -174,7 +149,6 @@
     <Content Include="Themes\Dark\Content\Elements.css" />
     <Content Include="Themes\Dark\Content\Mood.css" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
-    <Content Include="Content\Blueprint.css" />
     <Content Include="Themes\Dark\Content\Layout.css" />
     <Content Include="Themes\Terracotta\Content\Mood.css" />
     <Content Include="Themes\Terracotta\Content\Site.css" />
@@ -290,9 +264,6 @@
     <Content Include="Views\ContentPages\News.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_Blueprint.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
@@ -300,7 +271,6 @@
     <Content Include="Content\IE.css" />
     <Content Include="Content\Layout.css" />
     <Content Include="Content\Mood.css" />
-    <Content Include="Content\Print.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Shared\LayoutPartials\Top.cshtml" />
     <Content Include="Views\Shared\LayoutPartials\Footer.cshtml" />

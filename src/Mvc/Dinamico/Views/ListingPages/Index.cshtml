@@ -10,7 +10,7 @@
 @Html.Partial("LayoutPartials/Content")
 
 @Html.Loop(Content.Traverse.DescendantPages(Content.CurrentPage, Content.Is.Accessible()),
-	template:@<div class="item">
+	template:@<div class="list-item">
 		@Html.Partial("Partials/ContentLink", item.Data)
 	</div>,
 	wrapper: @<div class="list">@item.RenderContents()</div>,

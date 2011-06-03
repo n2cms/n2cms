@@ -7,6 +7,9 @@ using N2.Web.Mvc;
 
 namespace Dinamico
 {
+	/// <summary>
+	/// This initialization code is placed in a separate file not to overwrite existing global config when adding dinamico as library package (nuget)
+	/// </summary>
 	[AutoInitialize]
 	public class GlobalMvcStarter : IPluginInitializer
 	{

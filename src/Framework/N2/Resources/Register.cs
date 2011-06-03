@@ -374,7 +374,7 @@ namespace N2.Resources
 
 			RegisterResource(stateCollection, resourceUrl);
 
-			return string.Format("<link rel=\"stylesheet\" type=\"text/css\" href=\"{0}\"/>", Url.ResolveTokens(resourceUrl));
+			return string.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />", Url.ResolveTokens(resourceUrl));
 		}
 		#endregion
 	}
