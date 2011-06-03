@@ -15,10 +15,11 @@ namespace N2.Web.Mvc
 	{
 		Dictionary<string, T> engines = new Dictionary<string, T>();
 		string themeFolderPath;
-		private string[] fileExtensions;
+		private string[] viewExtensions;
+		private string[] masterExtensions;
 
 		public ThemeViewEngine()
-			: this("~/Themes/", new string[] { "cshtml", "vbhtml" })
+			: this("~/Themes/", new string[] { "cshtml", "vbhtml" }, new string[] { "cshtml", "vbhtml" })
 		{
 		}
 
@@ -26,10 +27,11 @@ namespace N2.Web.Mvc
 		/// File extensions are only assigned when using ASP.NET MVC 3.0 or greater.
 		/// </summary>
 		/// <param name="fileExtensions"></param>
-		public ThemeViewEngine(string themeFolderPath, string[] fileExtensions)
+		public ThemeViewEngine(string themeFolderPath, string[] fileExtensions, string[] masterExtensions)
 		{
-			this.themeFolderPath = themeFolderPath;
-			this.fileExtensions = fileExtensions;
+			this.themeFolderPath = themeFolderPath.Trim('~', '/');
+			this.viewExtensions = fileExtensions;
+			this.masterExtensions = masterExtensions;
 		}
 
 		#region IViewEngine Members
@@ -66,16 +68,22 @@ namespace N2.Web.Mvc
 			T engine;
 			if (!engines.TryGetValue(theme, out engine))
 			{
-				string themePath = themeFolderPath + theme;
+				string defaultThemePath = "~/" + themeFolderPath + "/Default/";
+				string themePath = "~/" + themeFolderPath + "/" + theme + "/";
 			
 				engine = new T();
-				engine.AreaViewLocationFormats = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
-				engine.AreaMasterLocationFormats = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
-				engine.AreaPartialViewLocationFormats = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
-				engine.ViewLocationFormats = new string[] { themePath + "/Views/{1}/{0}.cshtml", themePath + "/Views/{1}/{0}.vbhtml", themePath + "/Views/Shared/{0}.cshtml", themePath + "/Views/Shared/{0}.vbhtml" };
-				engine.MasterLocationFormats = new string[] { themePath + "/Views/{1}/{0}.cshtml", themePath + "/Views/{1}/{0}.vbhtml", themePath + "/Views/Shared/{0}.cshtml", themePath + "/Views/Shared/{0}.vbhtml" };
-				engine.PartialViewLocationFormats = new string[] { themePath + "/Views/{1}/{0}.cshtml", themePath + "/Views/{1}/{0}.vbhtml", themePath + "/Views/Shared/{0}.cshtml", themePath + "/Views/Shared/{0}.vbhtml" };
-				Utility.TrySetProperty(engine, "FileExtensions", fileExtensions);
+				engine.AreaViewLocationFormats = GetAreaLocations(defaultThemePath, themePath, viewExtensions);
+					//new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
+				engine.AreaMasterLocationFormats = GetAreaLocations(defaultThemePath, themePath, masterExtensions);
+					// = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
+				engine.AreaPartialViewLocationFormats = engine.AreaViewLocationFormats;
+					// = new string[] { themePath + "/Areas/{2}/Views/{1}/{0}.cshtml", themePath + "/Areas/{2}/Views/{1}/{0}.vbhtml", themePath + "/Areas/{2}/Views/Shared/{0}.cshtml", themePath + "/Areas/{2}/Views/Shared/{0}.vbhtml" };
+				engine.ViewLocationFormats = GetLocations(defaultThemePath, themePath, viewExtensions);
+					//new string[] { themePath + "/Views/{1}/{0}.cshtml", themePath + "/Views/{1}/{0}.vbhtml", themePath + "/Views/Shared/{0}.cshtml", themePath + "/Views/Shared/{0}.vbhtml" };
+				engine.MasterLocationFormats = GetLocations(defaultThemePath, themePath, masterExtensions);
+				engine.PartialViewLocationFormats = engine.ViewLocationFormats;
+					//new string[] { themePath + "/Views/{1}/{0}.cshtml", themePath + "/Views/{1}/{0}.vbhtml", themePath + "/Views/Shared/{0}.cshtml", themePath + "/Views/Shared/{0}.vbhtml" };
+				Utility.TrySetProperty(engine, "FileExtensions", viewExtensions);
 
 				var temp = new Dictionary<string, T>(engines);
 				temp[theme] = engine;
@@ -83,6 +91,24 @@ namespace N2.Web.Mvc
 			}
 
 			return engine;
+		}
+
+		private string[] GetAreaLocations(string defaultThemePath, string themePath, string[] extensions)
+		{
+			return extensions.SelectMany(ext => new[] { 
+					themePath + "Areas/{2}/Views/{1}/{0}." + ext, 
+					themePath + "Areas/{2}/Views/Shared/{0}." + ext, 
+					defaultThemePath + "Areas/{2}/Views/{1}/{0}." + ext, 
+					defaultThemePath + "Areas/{2}/Views/Shared/{0}." + ext }).ToArray();
+		}
+
+		private string[] GetLocations(string defaultThemePath, string themePath, string[] extensions)
+		{
+			return extensions.SelectMany(ext => new[] { 
+					themePath + "Views/{1}/{0}." + ext, 
+					themePath + "Views/Shared/{0}." + ext, 
+					defaultThemePath + "Views/{1}/{0}." + ext, 
+					defaultThemePath + "Views/Shared/{0}." + ext }).ToArray();
 		}
 
 		#endregion

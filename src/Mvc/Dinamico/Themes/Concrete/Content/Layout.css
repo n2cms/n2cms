@@ -1,4 +1,4 @@
-@import "../../../Content/Layout.css";
+@import "../../Default/Content/Layout.css";
 
 	div#wrapper { width:auto; }
 		div#top { position:absolute; right:50%; margin-right:-350px; top:5px; z-index:10; text-align:right; }

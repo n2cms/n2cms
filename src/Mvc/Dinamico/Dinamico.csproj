@@ -133,9 +133,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apple-touch-icon.png" />
-    <Content Include="Content\Boilerfoot.css" />
-    <Content Include="Content\Boilerhead.css" />
-    <Content Include="Content\Features.css" />
+    <Content Include="Content\readme.txt" />
+    <Content Include="Themes\Default\Content\Boilerfoot.css" />
+    <Content Include="Themes\Default\Content\Boilerhead.css" />
+    <Content Include="Themes\Default\Content\Features.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.5.js" />
@@ -148,11 +149,13 @@
     <Content Include="Themes\Concrete\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Elements.css" />
     <Content Include="Themes\Dark\Content\Mood.css" />
+    <Content Include="Themes\readme.txt" />
     <Content Include="Themes\Terracotta\Content\fade.png" />
     <Content Include="Themes\Dark\Content\Layout.css" />
     <Content Include="Themes\Terracotta\Content\Mood.css" />
     <Content Include="Themes\Terracotta\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Site.css" />
+    <Content Include="Views\readme.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -178,19 +181,18 @@
     <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Views\Account\LogOn.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\LogOn.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Themes\Default\Views\_ViewStart.cshtml" />
+    <Content Include="Themes\Default\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Themes\Default\Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Themes\Default\Views\Account\LogOn.cshtml" />
+    <Content Include="Themes\Default\Views\Account\Register.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\Error.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\LogOn.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\_Layout.cshtml" />
+    <Content Include="Themes\Default\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Themes\Default\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
@@ -207,31 +209,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentPages\Index.cshtml" />
+    <Content Include="Themes\Default\Views\ContentPages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Index.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Header.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\StartPage\NotFound.cshtml" />
+    <Content Include="Themes\Default\Views\StartPage\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\StartPage\Index.cshtml" />
+    <Content Include="Themes\Default\Views\StartPage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Themes\Default\Views\Test\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\SiteMap.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\SiteMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Search.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\PreContent.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\PreContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Dark\Views\Shared\LayoutPartials\PreContent.cshtml" />
@@ -243,38 +245,38 @@
     <Content Include="Themes\Dark\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Content.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Content.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Terracotta\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Index.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Translations.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Translations.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\TwoColumns.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\TwoColumns.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ListingPages\Index.cshtml" />
+    <Content Include="Themes\Default\Views\ListingPages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentPages\News.cshtml" />
+    <Content Include="Themes\Default\Views\ContentPages\News.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Elements.css" />
-    <Content Include="Content\IE.css" />
-    <Content Include="Content\Layout.css" />
-    <Content Include="Content\Mood.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Views\Shared\LayoutPartials\Top.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\Footer.cshtml" />
-    <Content Include="Views\Shared\LayoutPartials\PostContent.cshtml" />
+    <Content Include="Themes\Default\Content\Elements.css" />
+    <Content Include="Themes\Default\Content\IE.css" />
+    <Content Include="Themes\Default\Content\Layout.css" />
+    <Content Include="Themes\Default\Content\Mood.css" />
+    <Content Include="Themes\Default\Content\Site.css" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Top.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Footer.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\PostContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Concrete\Views\Shared\LayoutPartials\Header.cshtml" />
@@ -286,91 +288,91 @@
     <Content Include="Themes\Concrete\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\BlogContent.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\BlogContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\TopNavigation.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\TopNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\SubNavigation.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Logotype.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Logotype.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Teaser.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Teaser.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\ContentLink.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\Partials\ContentLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Listing.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Listing.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\LayoutPartials\Head.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\LayoutPartials\Head.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Slider.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Slider.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\ContentSlider.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\ContentSlider.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\YouTube.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\YouTube.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\GMap.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\GMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Partials\GMapCoordinate.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Partials\GMapCoordinate.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentParts\Partials\GMapAddress.cshtml" />
+    <Content Include="Themes\Default\Views\ContentParts\Partials\GMapAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Children.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Children.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\FirstChild.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\FirstChild.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Siblings.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Siblings.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Parent.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Parent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\StartPage.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\StartPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\TOC.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\TOC.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Detail.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Published.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Published.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Author.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Author.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Changes.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Changes.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Search.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\Breadcrumb.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\NextSibling.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\NextSibling.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\TokenTemplates\PreviousSibling.cshtml" />
+    <Content Include="Themes\Default\Views\Shared\TokenTemplates\PreviousSibling.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ListingPages\WithBenefits.cshtml" />
+    <Content Include="Themes\Default\Views\ListingPages\WithBenefits.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

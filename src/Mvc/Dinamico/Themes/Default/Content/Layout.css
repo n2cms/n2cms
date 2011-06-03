@@ -16,7 +16,7 @@ html,body { min-height:100%; }
 			div#nav li a.trail { font-weight:bold; }
 			div#nav li a.current { font-weight:bold; color:#000; }
 				div#nav ul li { display:inline-block; }
-				div#nav ul li a { display:block; padding:10px 10px 10px 20px; }
+				div#nav ul li a { display:block; padding:10px 20px; }
 			
 		div#content { margin: 0 20px 20px 20px; padding-top:20px; }
 		.columns {}

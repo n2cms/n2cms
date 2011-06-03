@@ -29,10 +29,14 @@ namespace N2.Web.Mvc.Html
 				return Url.ToAbsolute(contentPath);
 
 			string themeContentPath = "~/Themes/" + theme + contentPath.TrimStart('~');
-			if (!vpp.FileExists(themeContentPath))
-				return Url.ToAbsolute(contentPath);
+			if (vpp.FileExists(themeContentPath))
+				return Url.ToAbsolute(themeContentPath);
 
-			return Url.ToAbsolute(themeContentPath);
+			string defaultThemeContentPath = "~/Themes/Default" + contentPath.TrimStart('~');
+			if (vpp.FileExists(defaultThemeContentPath))
+				return Url.ToAbsolute(defaultThemeContentPath);
+
+			return Url.ToAbsolute(contentPath);
 		}
 
 		// theming

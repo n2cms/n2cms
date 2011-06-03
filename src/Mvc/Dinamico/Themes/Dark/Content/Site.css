@@ -1,6 +1,6 @@
-﻿@import "../../../Content/Boilerhead.css";
+﻿@import "../../Default/Content/Boilerhead.css";
 @import "Layout.css";
 @import "Elements.css";
-@import "../../../Content/Features.css";
+@import "../../Default/Content/Features.css";
 @import "Mood.css";
-@import "../../../Content/Boilerfoot.css";
+@import "../../Default/Content/Boilerfoot.css";

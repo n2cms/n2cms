@@ -1,4 +1,4 @@
-@import "../../../Content/Mood.css";
+@import "../../Default/Content/Mood.css";
 
 html { background-color:#bbc695 }
 body { font:.9em Arial,SansSerif; color:#403C37; }

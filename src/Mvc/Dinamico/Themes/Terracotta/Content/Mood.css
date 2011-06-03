@@ -1,4 +1,4 @@
-@import "../../../Content/Mood.css";
+@import "../../Default/Content/Mood.css";
 
 html { background:#ac3400 url(fade.png) no-repeat 50% 0; }
 	div#top {
