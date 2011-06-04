@@ -297,6 +297,7 @@ namespace N2.Edit.Install
 			if (ExecuteWithErrorHandling(SaveConfiguration) == null)
 			{
 				lblWebConfigUpdated.Text = "Configuration updated.";
+				status = null;
 			}
 		}
 

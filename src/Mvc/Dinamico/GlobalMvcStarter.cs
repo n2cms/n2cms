@@ -55,7 +55,7 @@ namespace Dinamico
 
 		public static void RegisterViewEngines(ViewEngineCollection viewEngines)
 		{
-			viewEngines.RegisterThemeViewEngine<RazorViewEngine>();
+			viewEngines.RegisterThemeViewEngine<RazorViewEngine>("~/Layouts/");
 			viewEngines.DecorateViewTemplateRegistration();
 		}
 	}

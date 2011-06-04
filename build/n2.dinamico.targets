@@ -95,10 +95,11 @@ public static string ScriptMain()
 		</ItemGroup>
 		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.ico' or '%(Extension)' == '.png' or '%(Extension)' == '.sdf' or '%(Extension)' == '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.ico' and '%(Extension)' != '.png' and '%(Extension)' != '.sdf' and '%(Extension)' != '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->
-		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
-		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />
-		<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="namespace Dinamico" ReplacementText="namespace $rootnamespace$" />
-		<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="using Dinamico" ReplacementText="using $rootnamespace$" />
+		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
+		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->
+		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
+		<!--<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="namespace Dinamico" ReplacementText="namespace $rootnamespace$" />
+		<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="using Dinamico" ReplacementText="using $rootnamespace$" />-->
 
 		<ItemGroup>
 			<dinamicoNugetIncludes Include="$(BuildFolder)\Nuget\Dinamico\**\*" />

@@ -5,7 +5,7 @@
 	string uniqueId = "p" + Content.CurrentItem.ID;
 }
 
-<script type="text/javascript" src="@Url.ThemedContent("Scripts/jquery.anythingslider.js")"></script>
+@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
 
 <div class="slider partSlider">
 	<div id="@uniqueId">

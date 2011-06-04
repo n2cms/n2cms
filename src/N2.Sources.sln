@@ -173,9 +173,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Dinamico\Content\Views\Web.config.transform = ..\build\nuget\Dinamico\Content\Views\Web.config.transform
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

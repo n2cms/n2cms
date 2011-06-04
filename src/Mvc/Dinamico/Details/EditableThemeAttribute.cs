@@ -18,7 +18,7 @@ namespace N2.Details
 		{
 			List<ListItem> items = new List<ListItem>();
 
-			var dir = HostingEnvironment.VirtualPathProvider.GetDirectory("~/Themes/");
+			var dir = HostingEnvironment.VirtualPathProvider.GetDirectory("~/Layouts/");
 			if (dir != null)
 			{
 				items.AddRange(dir.Directories.OfType<VirtualDirectory>()

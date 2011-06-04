@@ -11,7 +11,7 @@
 	<title>@Content.Data.Title</title>
 	@{ Html.RenderPartial("LayoutPartials/Head"); }
 	@{ Html.Resources().JQuery(); }
-	@{ Html.Resources().JavaScript("~/Scripts/site.js"); }
+	@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/site.js")); }
 	@{
 		Content.PrependDefinition(re =>
 		{

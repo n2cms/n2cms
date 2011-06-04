@@ -7,6 +7,7 @@ using N2.Details;
 using N2.Web.Mvc;
 using N2.Web.Mvc.Html;
 using System.Web.Hosting;
+using System.Web.Routing;
 
 namespace N2.Web.Mvc.Html
 {
@@ -14,25 +15,27 @@ namespace N2.Web.Mvc.Html
 	{
 		public static string ThemedContent(this UrlHelper url, string contentPath)
 		{
-			return ResolveThemedContent(url.RequestContext.HttpContext, HostingEnvironment.VirtualPathProvider, contentPath);
+			return ResolveThemedContent(url.RequestContext, HostingEnvironment.VirtualPathProvider, contentPath);
 		}
 
 		public static string ThemedStyleSheet(this HtmlHelper html, string stylePath)
 		{
-			return N2.Resources.Register.StyleSheet(html.ViewContext.ViewData, ResolveThemedContent(html.ViewContext.HttpContext, HostingEnvironment.VirtualPathProvider, stylePath));
+			return N2.Resources.Register.StyleSheet(html.ViewContext.ViewData, ResolveThemedContent(html.ViewContext.RequestContext, HostingEnvironment.VirtualPathProvider, stylePath));
 		}
 
-		private static string ResolveThemedContent(HttpContextBase httpContext, VirtualPathProvider vpp, string contentPath)
+		private static string ResolveThemedContent(RequestContext requestContext, VirtualPathProvider vpp, string contentPath)
 		{
-			string theme = httpContext.GetTheme();
-			if (string.IsNullOrEmpty(theme))
-				return Url.ToAbsolute(contentPath);
+			string themeFolderPath = requestContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] as string ?? "~/Layouts/";
 
-			string themeContentPath = "~/Themes/" + theme + contentPath.TrimStart('~');
-			if (vpp.FileExists(themeContentPath))
-				return Url.ToAbsolute(themeContentPath);
+			string theme = requestContext.HttpContext.GetTheme();
+			if (!string.IsNullOrEmpty(theme))
+			{
+				string themeContentPath = themeFolderPath + theme + contentPath.TrimStart('~');
+				if (vpp.FileExists(themeContentPath))
+					return Url.ToAbsolute(themeContentPath);
+			}
 
-			string defaultThemeContentPath = "~/Themes/Default" + contentPath.TrimStart('~');
+			string defaultThemeContentPath = themeFolderPath + "Default" + contentPath.TrimStart('~');
 			if (vpp.FileExists(defaultThemeContentPath))
 				return Url.ToAbsolute(defaultThemeContentPath);
 

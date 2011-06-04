@@ -36,7 +36,7 @@
 				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /></p>
 				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
 			<%} else if (action == "install"){%>
-				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation</h1>
+				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation Wizard</h1>
 				<% if (autoLogin) { %>
 				<p>
 					You have been automatically logged in with the user <strong>admin</strong> and the password <strong>changeme</strong>. 
@@ -45,9 +45,9 @@
 				<% } else { %>
 				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
 				<% } %>
-				<p>Okay, <a href="<%= continueUrl %>">please help me <strong>install</strong> a the database for a new site &raquo;</a></p>
+				<p>Okay, <a href="<%= continueUrl %>">please help me <strong>install</strong> the database on a new site &raquo;</a></p>
 			<%} else if(action == "upgrade") {%>
-				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Upgrade to <%= version %></h1>
+				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Upgrade Wizard</h1>
 				<% if (autoLogin) { %>
 				<p>
 					You have been automatically logged in with the user <strong>admin</strong> and the password <strong>changeme</strong>. 
@@ -56,9 +56,9 @@
 				<% } else { %>
 				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
 				<% } %>
-				<p><a href="<%= continueUrl %>">I want to <strong>upgrade</strong> from a previous version &raquo;</a></p>
+				<p><a href="<%= continueUrl %>">Please help me <strong>upgrade</strong> from a previous version &raquo;</a></p>
 			<%} else if (action == "rebase") {%>
-				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Rebase Tool</h1>
+				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Rebase Wizard</h1>
 				<% if (autoLogin) { %>
 				<p>
 					You have been automatically logged in with the user <strong>admin</strong> and the password <strong>changeme</strong>. 
@@ -67,7 +67,7 @@
 				<% } else { %>
 				<p>To continue you need to log in with the username <strong>admin</strong> and the password you specified during installation.</p>
 				<% } %>
-				<p><a href="<%= continueUrl %>"><strong>Rebase</strong> from a previous virtual directory &raquo;</a></p>
+				<p><a href="<%= continueUrl %>"><strong>Rebase</strong> links from a previous virtual directory &raquo;</a></p>
 			<%} else {%>
 				<h1>Welcome to N2 CMS</h1>
 				<p>What do you want to do with <a href="http://n2cms.com/">N2 CMS</a>?</p>
