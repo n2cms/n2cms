@@ -14,6 +14,8 @@ namespace N2.Web.Mvc
 		/// <returns>The theme view engine that was inserted.</returns>
 		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath, string[] fileExtensions, string[] masterExtensions) where T : VirtualPathProviderViewEngine, new()
 		{
+			Url.SetToken(Url.ThemesUrlToken, themeFolderPath);
+			
 			var tve = new ThemeViewEngine<T>(themeFolderPath, fileExtensions, masterExtensions);
 			viewEngines.Insert(0, tve);
 			return tve;
@@ -25,6 +27,8 @@ namespace N2.Web.Mvc
 		/// <returns>The theme view engine that was inserted.</returns>
 		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath = "~/Themes/") where T : VirtualPathProviderViewEngine, new()
 		{
+			Url.SetToken(Url.ThemesUrlToken, themeFolderPath);
+
 			var tve = new ThemeViewEngine<T>(themeFolderPath, new string[] { "cshtml" }, new string[] { "cshtml" });
 			viewEngines.Insert(0, tve);
 			return tve;

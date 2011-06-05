@@ -35,7 +35,7 @@ div.partSlider div.listing { background:#333; height:100%; }
 	div.partSlider div.listing .list-item { padding:20px 20px 0 20px; margin:0; }
 		div.partSlider div.listing .list-item div.halfSize { margin:0; }
 div.partSlider div.wideSize { position:relative; }
-div.partSlider div.wideSize div.content { position:absolute; padding:20px 20px 50px 20px; bottom:0; left:0; right:0; background:transparent url(../N2/Resources/img/bg_00050.png); }
+div.partSlider div.wideSize div.content { position:absolute; padding:20px 20px 50px 20px; bottom:0; left:0; right:0; background:transparent url(../../../../N2/Resources/img/bg_00050.png); }
 div.partSlider div.wideSize div.content a { color:#fff; }
 
 /* anythingSlider viewport window */
@@ -56,8 +56,8 @@ div.anythingSlider .thumbNav li { display: inline; }
 div.anythingSlider .thumbNav a { display: inline-block; text-decoration: none; padding: 2px 8px; height: 18px; margin: 0 5px 0 0; background-repeat: repeat-x; text-align: center; outline: 0; border-radius:2px; }
 
 /* Autoplay Start/Stop button */
-div.anythingSlider .start-stop { width: 22px; height: 22px; overflow:hidden; text-align: center; text-decoration: none; float: right; z-index: 100; outline: 0; background:#222 url(../N2/Resources/Icons/control_play.png) no-repeat 50% 50%; text-indent:-9999px; margin:10px; border-radius:2px; }
-div.anythingSlider .start-stop.playing { background-image:url(../N2/Resources/Icons/control_stop.png); }
+div.anythingSlider .start-stop { width: 22px; height: 22px; overflow:hidden; text-align: center; text-decoration: none; float: right; z-index: 100; outline: 0; background:#222 url(../../../../N2/Resources/Icons/control_play.png) no-repeat 50% 50%; text-indent:-9999px; margin:10px; border-radius:2px; }
+div.anythingSlider .start-stop.playing { background-image:url(../../../../N2/Resources/Icons/control_stop.png); }
 div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover { }
 
 div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop { transition-duration: 0; -o-transition-duration: 0; -moz-transition-duration: 0; -webkit-transition-duration: 0; }

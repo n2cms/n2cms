@@ -6,6 +6,7 @@ using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Resources;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -25,10 +26,17 @@ namespace N2.Details
 		{
 		}
 
+
+
+		/// <summary>Show a preview theme link next to the drop down.</summary>
+		public bool EnablePreview { get; set; }
+
+
+
 		protected override Control AddEditor(Control container)
 		{
 			var editor = base.AddEditor(container);
-			Register.JavaScript(container.Page, Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/jquery.editableThemeSelection.js"));
+			Register.JavaScript(container.Page, N2.Web.Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.editableThemeSelection.js"));
 			
 			StringBuilder initializationScript = new StringBuilder();
 			initializationScript.AppendFormat("jQuery('#{0}').editableThemeSelection({{ '' : null", editor.ClientID);
@@ -40,7 +48,7 @@ namespace N2.Details
 				{
 					initializationScript.AppendFormat(", '{0}' : '{1}'", 
 						themeName, 
-						container.ResolveClientUrl(string.Format("~/App_Themes/{0}/thumbnail.jpg", themeName)));
+						container.ResolveClientUrl(Url.ResolveTokens(Url.ThemesUrlToken + themeName + "/thumbnail.jpg")));
 				}
 				else
 				{
@@ -52,6 +60,29 @@ namespace N2.Details
 			Register.JavaScript(container.Page, initializationScript.ToString(), ScriptOptions.DocumentReady);
 
 			return editor;
+		}
+
+		public override void UpdateEditor(ContentItem item, Control editor)
+		{
+			base.UpdateEditor(item, editor);
+
+			AddPreviewLink(item, editor);
+		}
+
+		private void AddPreviewLink(ContentItem item, Control editor)
+		{
+			if (!EnablePreview || editor.FindControl(editor.ID + "_preview") != null)
+				return; // prevent double add in some situations
+
+			var preview = new HyperLink()
+			{
+				ID = editor.ID + "_preview",
+				Text = "Preview",
+				NavigateUrl = "#",
+				CssClass = "themePreview"
+			};
+			preview.Attributes["onclick"] = "window.open('" + N2.Web.Url.Parse(item.Url).AppendQuery("theme", "") + "' + document.getElementById('" + editor.ClientID + "').value, 'previewTheme', 'width=900,height=500'); return false;";
+			editor.Parent.Controls.AddAt(editor.Parent.Controls.IndexOf(editor) + 1, preview);
 		}
 
 		protected override ListControl CreateEditor()
@@ -75,7 +106,7 @@ namespace N2.Details
 
 		private IEnumerable<string> GetThemeDirectories()
 		{
-			string path = HostingEnvironment.MapPath("~/App_Themes/");
+			string path = HostingEnvironment.MapPath(Url.ResolveTokens(Url.ThemesUrlToken));
 			if (Directory.Exists(path))
 			{
 				foreach (string directoryPath in Directory.GetDirectories(path))

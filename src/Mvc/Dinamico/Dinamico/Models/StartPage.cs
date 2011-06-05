@@ -25,7 +25,7 @@ namespace Dinamico.Models
 	{
 		#region IThemeable Members
 
-		[EditableThemeAttribute(ContainerName = Defaults.Containers.Site)]
+		[EditableThemeSelection(EnablePreview = true, ContainerName = Defaults.Containers.Site)]
 		public virtual string Theme { get; set; }
 
 		#endregion

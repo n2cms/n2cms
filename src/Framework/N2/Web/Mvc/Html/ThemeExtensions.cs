@@ -25,7 +25,8 @@ namespace N2.Web.Mvc.Html
 
 		private static string ResolveThemedContent(RequestContext requestContext, VirtualPathProvider vpp, string contentPath)
 		{
-			string themeFolderPath = requestContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] as string ?? "~/Layouts/";
+			string themeFolderPath = requestContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] as string 
+				?? Url.ResolveTokens(Url.ThemesUrlToken);
 
 			string theme = requestContext.HttpContext.GetTheme();
 			if (!string.IsNullOrEmpty(theme))

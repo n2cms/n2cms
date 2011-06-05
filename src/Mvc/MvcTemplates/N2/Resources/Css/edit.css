@@ -181,3 +181,4 @@ hr
 
 .themeThumbnail { position:relative; }
 .themeThumbnail img { position:absolute; top:-15px; left:10px; z-index:1000; }
+.themePreview { margin-left:10px; }

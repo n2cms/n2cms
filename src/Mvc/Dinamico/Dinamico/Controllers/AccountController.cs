@@ -9,7 +9,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using Dinamico.Models;
 
-namespace RazorTest.Controllers
+namespace Dinamico.Controllers
 {
 	public class AccountController : Controller
 	{
