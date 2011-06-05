@@ -125,7 +125,7 @@ namespace N2.Engine
 		/// <param name="assemblies"></param>
 		private void AddAssembliesInAppDomain(List<string> addedAssemblyNames, List<Assembly> assemblies)
 		{
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+			foreach (Assembly assembly in App.GetAssemblies())
 			{
 				if (Matches(assembly.FullName))
 				{
