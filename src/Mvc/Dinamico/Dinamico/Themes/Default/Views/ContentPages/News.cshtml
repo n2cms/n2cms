@@ -9,21 +9,7 @@
 }
 
 @Html.Partial("LayoutPartials/BlogContent")
-@*@using (Content.BeginScope(Content.CurrentItem.Parent))
+@using (Content.BeginScope(Content.CurrentItem.Parent))
 {
 	@Content.Render.Tokens("NewsFooter")
-}*@
-
-<div class="pager">
-@{ var previous = @Content.Traverse.PreviousSibling(); }
-@if (previous != null)
-{
-<span class="previous">@Content.LinkTo(previous).Text("&laquo; " + previous.Title)</span>
 }
-<span class="up">@Content.LinkTo(Content.CurrentItem.Parent)</span>
-@{ var next = @Content.Traverse.NextSibling(); }
-@if (next != null)
-{
-	<span class="next">@Content.LinkTo(next).Text(next.Title + " &raquo;")</span>
-}
-</div>

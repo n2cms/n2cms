@@ -2,7 +2,7 @@
 
 namespace N2.Definitions.Runtime
 {
-	public class Builder<T> where T : IContainable
+	public class Builder<T> where T : IUniquelyNamed
 	{
 		string PropertyName { get; set; }
 		ContentRegistration Registration { get; set; }

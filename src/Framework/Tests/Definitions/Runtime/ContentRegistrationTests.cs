@@ -69,7 +69,7 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void Container()
+		public void Container_CanBeRegistered()
 		{
 			registration.Tab("Content", "Primary content");
 
@@ -79,6 +79,46 @@ namespace N2.Tests.Definitions
 			Assert.That(container, Is.InstanceOf<TabContainerAttribute>());
 			Assert.That(container.Name, Is.EqualTo("Content"));
 			Assert.That(((TabContainerAttribute)container).TabText, Is.EqualTo("Primary content"));
+		}
+
+		[Test]
+		public void Container_WithEditable_CanBeRegistered()
+		{
+			registration.Tab("Content", "Primary content", re => re.FreeText("Text"));
+
+			var definition = registration.AppendDefinition(sourceDefinition);
+
+			var editable = definition.Editables.Single();
+			Assert.That(editable.ContainerName, Is.EqualTo("Content"));
+		}
+
+		[Test]
+		public void Displayable_CanBeRegistered()
+		{
+			registration.Add(new DisplayableTokensAttribute { Name = "Hello" });
+
+			var definition = registration.AppendDefinition(sourceDefinition);
+
+			var displayable = definition.Displayables.Single(d => d.Name == "Hello");
+			Assert.That(displayable, Is.InstanceOf<DisplayableTokensAttribute>());
+			Assert.That(displayable.Name, Is.EqualTo("Hello"));
+		}
+
+		[Test]
+		public void EditableAndDisplayable_SharingTheSameTurf()
+		{
+			registration.FreeText("Hello");
+			registration.Add(new DisplayableTokensAttribute { Name = "Hello" });
+
+			var definition = registration.AppendDefinition(sourceDefinition);
+
+			var editable = definition.Editables.Single(d => d.Name == "Hello");
+			var displayable = definition.Displayables.Single(d => d.Name == "Hello");
+
+			Assert.That(editable, Is.InstanceOf<EditableFreeTextAreaAttribute>());
+			Assert.That(editable.Name, Is.EqualTo("Hello"));
+			Assert.That(displayable, Is.InstanceOf<DisplayableTokensAttribute>());
+			Assert.That(displayable.Name, Is.EqualTo("Hello"));
 		}
 	}
 }

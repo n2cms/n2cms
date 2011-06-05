@@ -1,7 +1,8 @@
 ﻿@model string
+
 @using (Content.BeginScope(Model))
 {
 	N2.ContentItem prev = null;
-	Content.Traverse.Children(Content.CurrentItem.Parent, Content.Is.Navigatable()).SkipWhile(i => { if (i != Content.CurrentItem) { prev = i; return true; } else return false; }).FirstOrDefault();
+	Content.Traverse.Children(Content.CurrentItem.Parent, Content.Is.AccessiblePage()).SkipWhile(i => { if (i != Content.CurrentItem) { prev = i; return true; } else return false; }).FirstOrDefault();
 	@Content.LinkTo(prev)
 }

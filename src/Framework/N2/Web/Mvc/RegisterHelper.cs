@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using N2.Definitions;
 using N2.Definitions.Runtime;
 using N2.Web.Mvc.Html;
+using N2.Details;
 
 namespace N2.Web.Mvc
 {
@@ -15,6 +16,18 @@ namespace N2.Web.Mvc
 		public RegisterHelper(HtmlHelper html)
 		{
 			this.Html = html;
+		}
+
+
+		public Builder<T> RegisterDisplayable<T>(string name) where T : IDisplayable, new()
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+			{
+				re.Add(new T() { Name = name });
+			}
+
+			return new Builder<T>(name, re);
 		}
 
 		#region IContentRegistration Members

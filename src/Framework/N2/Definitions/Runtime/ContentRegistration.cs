@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using N2.Details;
+using N2.Collections;
 
 namespace N2.Definitions.Runtime
 {
@@ -8,7 +9,7 @@ namespace N2.Definitions.Runtime
 	{
 		public ContentRegistration()
 		{
-			Containables = new Dictionary<string, IUniquelyNamed>();
+			Containables = new ContentList<IUniquelyNamed>();
 			TouchedPaths = new List<string>();
 			ContentModifiers = new List<IContentTransformer>();
 			DefaultSortIncrement = 10;
@@ -17,7 +18,7 @@ namespace N2.Definitions.Runtime
 
 
 		public Type ContentType { get; set; }
-		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
+		public ContentList<IUniquelyNamed> Containables { get; private set; }
 		public ICollection<IContentTransformer> ContentModifiers { get; set; }
 		public ICollection<string> TouchedPaths { get; private set; }
 		public string ContainerName { get; set; }
@@ -33,9 +34,16 @@ namespace N2.Definitions.Runtime
 
 
 
+		public ContentRegistration Add(IUniquelyNamed named)
+		{
+			Containables.Add(named);
+
+			return this;
+		}
+
 		public ContentRegistration Add(IContainable containable)
 		{
-			Containables[containable.Name] = containable;
+			Containables.Add(containable);
 			containable.ContainerName = ContainerName;
 
 			return this;
@@ -70,7 +78,7 @@ namespace N2.Definitions.Runtime
 			definition.TemplateKey = TemplateKey;
 
 			foreach (var c in Containables)
-				definition.Add(c.Value);
+				definition.Add(c);
 
 			foreach (var dv in ContentModifiers)
 				definition.ContentTransformers.Add(dv);

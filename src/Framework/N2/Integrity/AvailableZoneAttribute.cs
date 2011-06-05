@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Definitions;
+using N2.Collections;
 
 namespace N2.Integrity
 {
@@ -69,6 +70,12 @@ namespace N2.Integrity
 			get { return ZoneName; }
 			set { ZoneName = value; }
 		}
+
+		#endregion
+
+		#region INameable Members
+
+		string INameable.Name { get { return ZoneName; } }
 
 		#endregion
 	}

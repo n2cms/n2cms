@@ -2,7 +2,7 @@
 <% var content = Html.Content(); %>
 <% using (content.BeginScope(Model)) {
 	N2.ContentItem prev = null;
-	content.Traverse.Children(content.CurrentItem.Parent, content.Is.Navigatable())
+	content.Traverse.Children(content.CurrentItem.Parent, content.Is.AccessiblePage())
 		.SkipWhile(i => { if (i != content.CurrentItem) { prev = i; return true; } else return false; })
 		.FirstOrDefault(); %>
 	<%= content.LinkTo(prev) %>
