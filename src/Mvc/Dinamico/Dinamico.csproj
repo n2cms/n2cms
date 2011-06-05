@@ -103,7 +103,6 @@
     <Compile Include="Dinamico\Controllers\ContentPartsController.cs" />
     <Compile Include="Dinamico\Controllers\ContentPagesController.cs" />
     <Compile Include="Dinamico\Controllers\LanguageIntersectionController.cs" />
-    <Compile Include="Dinamico\Controllers\ListingPagesController.cs" />
     <Compile Include="Dinamico\Controllers\StartPageController.cs" />
     <Compile Include="Dinamico\Controllers\TestController.cs" />
     <Compile Include="Dinamico\Controllers\FallbackController.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="Dinamico\Models\LanguageIntersection.cs" />
     <Compile Include="Dinamico\Models\ContentPart.cs" />
     <Compile Include="Dinamico\Models\ContentPage.cs" />
-    <Compile Include="Dinamico\Models\ListingPage.cs" />
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
     <Compile Include="Dinamico\Models\StartPage.cs" />
     <Compile Include="GlobalMvcStarter.cs" />
