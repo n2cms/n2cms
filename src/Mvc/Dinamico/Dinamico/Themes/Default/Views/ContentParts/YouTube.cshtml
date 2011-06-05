@@ -8,12 +8,12 @@
 	   });
 }
 
-@if (Content.HasValue("WatchUrl"))
+@if (Content.Has.WatchUrl)
 {
 	string uniqueId = Content.UniqueID("v");
 	var watchUrl = new N2.Web.Url(Content.Data.WatchUrl);
 	N2.Web.Url embed = "http://www.youtube.com/v/" + watchUrl.GetQuery("v"); //"http://www.youtube.com/embed/" + watchUrl.GetQuery("v");
-	if (Content.HasValue("HD"))
+	if (Content.Has.HD)
 	{
 		embed = embed.AppendQuery("hd", Content.Data.HD ? 1 : 0);
 	}

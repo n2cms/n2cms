@@ -33,7 +33,8 @@ namespace Dinamico
 			engine.RegisterViewTemplates<Controllers.StartPageController>()
 				.Add<Controllers.ContentPagesController>()
 				.Add<Controllers.ContentPartsController>()
-				.Add<Controllers.ListingPagesController>();
+				//.Add<Controllers.ListingPagesController>()
+				;
 		}
 
 		public static void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)

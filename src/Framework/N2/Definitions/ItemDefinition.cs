@@ -365,6 +365,11 @@ namespace N2.Definitions
 
 		public override string ToString()
 		{
+			return GetDiscriminatorWithTemplateKey();
+		}
+
+		public string GetDiscriminatorWithTemplateKey()
+		{
 			return Discriminator + (TemplateKey != null ? "/" + TemplateKey : null);
 		}
 

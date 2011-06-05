@@ -1,3 +1,5 @@
+- @Content.On(other).Render
+- @Content.Register.Editable.And.Displayable
 - contenttype from model discussions/259496
 - extend user screen (discussions/257790)
 - document security (http://n2cms.codeplex.com/discussions/257790)

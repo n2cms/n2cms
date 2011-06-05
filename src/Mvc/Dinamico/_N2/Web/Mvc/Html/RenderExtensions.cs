@@ -92,5 +92,9 @@ namespace N2.Web.Mvc.Html
 		{
 			return render.Displayable(new DisplayableHeadingAttribute { Name = detailName, HeadingLevel = headingLevel });
 		}
+		public static DisplayRenderer<DisplayableTokensAttribute> Tokens(this RenderHelper render, string detailName)
+		{
+			return render.Displayable(new DisplayableTokensAttribute { Name = detailName });
+		}
 	}
 }

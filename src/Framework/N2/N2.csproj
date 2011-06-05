@@ -145,6 +145,7 @@
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
+    <Compile Include="Details\EditableDefinitionAttribute.cs" />
     <Compile Include="Details\IMultipleValue.cs" />
     <Compile Include="Definitions\AttributeTransformerAttribute.cs" />
     <Compile Include="Details\WithEditableTemplateSelectionAttribute.cs" />

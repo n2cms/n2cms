@@ -61,7 +61,7 @@ namespace N2.Web.Mvc
 
 		public virtual FilterHelper Is
 		{
-			get { return new FilterHelper(); }
+			get { return new FilterHelper(Engine); }
 		}
 
 		public virtual IEngine Engine

@@ -11,7 +11,7 @@ namespace N2
 	{
 		public static FilterHelper Is
 		{
-			get { return new FilterHelper(); }
+			get { return new FilterHelper(Context.Current); }
 		}
 
 		public static ItemFilter And(this ItemFilter first, params ItemFilter[] alsoRequired)

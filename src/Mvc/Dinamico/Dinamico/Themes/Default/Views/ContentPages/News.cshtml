@@ -9,6 +9,10 @@
 }
 
 @Html.Partial("LayoutPartials/BlogContent")
+@*@using (Content.BeginScope(Content.CurrentItem.Parent))
+{
+	@Content.Render.Tokens("NewsFooter")
+}*@
 
 <div class="pager">
 @{ var previous = @Content.Traverse.PreviousSibling(); }

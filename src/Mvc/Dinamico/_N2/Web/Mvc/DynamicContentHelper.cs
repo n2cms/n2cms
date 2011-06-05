@@ -21,6 +21,11 @@ namespace N2.Web.Mvc
 			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
 		}
 
+		public dynamic Has
+		{
+			get { return new HasValueHelper(HasValue); }
+		}
+
 		public dynamic Data
 		{
 			get

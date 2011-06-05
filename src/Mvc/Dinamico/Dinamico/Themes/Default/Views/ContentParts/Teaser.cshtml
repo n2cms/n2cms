@@ -8,7 +8,7 @@
 		   ie.ImageSize("ImageSize", "Image Size").Configure(e => e.DefaultValue = "");
 	   }); }
 <div class="part teaser">
-@if (Content.HasValue("ForwardsTo"))
+@if (Content.Has.ForwardsTo)
 {
 	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.CurrentItem.ZoneName) } })
 }

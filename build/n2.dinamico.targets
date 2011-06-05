@@ -87,7 +87,6 @@ public static string ScriptMain()
 		<ItemGroup>
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
 																	 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
-																						$(Dinamico-SourceFolder)\Scripts\*;
 																						$(Dinamico-SourceFolder)\Global.*;
 																						$(Dinamico-SourceFolder)\web.*;
 																						$(Dinamico-SourceFolder)\Properties\*;
