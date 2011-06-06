@@ -8,57 +8,68 @@ using N2.Persistence.Finder;
 using N2.Web.Mvc.Html;
 using N2.Persistence.NH;
 using System;
+using N2.Engine;
+using N2.Web;
 
-namespace N2.Web.Mvc
+namespace N2.Collections
 {
+	/// <summary>
+	/// Simplifies traversing items in the content hierarchy.
+	/// </summary>
 	public class TraverseHelper
 	{
-		HtmlHelper html;
+		IEngine engine;
+		FilterHelper filter;
+		Func<PathData> pathGetter;
+		ItemFilter defaultFilter;
 
-		public TraverseHelper(HtmlHelper html)
+		public TraverseHelper(IEngine engine, FilterHelper filter, Func<PathData> pathGetter)
 		{
-			this.html = html;
+			this.engine = engine;
+			this.filter = filter;
+			this.pathGetter = pathGetter;
 		}
 
 		public ContentItem CurrentItem
 		{
-			get { return html.CurrentItem(); }
+			get { return pathGetter().CurrentItem; }
 		}
 
 		public ContentItem CurrentPage
 		{
-			get { return html.CurrentPage(); }
-		}
-
-		public ILanguage CurrentLanguage
-		{
-			get { return html.ResolveService<ILanguageGateway>().GetLanguage(CurrentPage); }
-		}
-
-		public IEnumerable<ILanguage> Translations()
-		{
-			var lg = html.ResolveService<ILanguageGateway>();
-			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
+			get { return pathGetter().CurrentPage; }
 		}
 
 		public ContentItem StartPage
 		{
-			get { return N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? N2.Find.StartPage; }
+			get { return N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? engine.UrlParser.StartPage; }
 		}
 
 		public ContentItem RootPage
 		{
-			get { return N2.Find.ClosestOf<IRootPage>(CurrentItem) ?? N2.Find.RootItem; }
+			get { return N2.Find.ClosestOf<IRootPage>(CurrentItem) ?? engine.Persister.Repository.Get(engine.Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
-		public virtual ItemFilter DefaultFilter()
+		public ILanguage CurrentLanguage
 		{
-			return N2.Filter.Is.Accessible();
+			get { return engine.Resolve<ILanguageGateway>().GetLanguage(CurrentPage); }
+		}
+
+		public ItemFilter DefaultFilter
+		{
+			get { return defaultFilter ?? (defaultFilter = filter.Accessible()); }
+			set { defaultFilter = value; }
+		}
+
+		public IEnumerable<ILanguage> Translations()
+		{
+			var lg = engine.Resolve<ILanguageGateway>();
+			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
 		}
 
 		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
 		{
-			return (filter ?? DefaultFilter()).Pipe(N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true));
+			return (filter ?? DefaultFilter).Pipe(N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true));
 		}
 
 		public IEnumerable<ContentItem> AncestorsBetween(int startLevel = 0, int stopLevel = 5)
@@ -83,29 +94,34 @@ namespace N2.Web.Mvc
 
 		public IEnumerable<ContentItem> Children(ItemFilter filter)
 		{
-			return Children(CurrentItem, filter ?? DefaultFilter());
+			return Children(CurrentItem, filter ?? DefaultFilter);
 		}
 
-		public IEnumerable<ContentItem> Children(ContentItem item, ItemFilter filter = null)
+		public IEnumerable<ContentItem> Children(ContentItem parent, ItemFilter filter = null)
 		{
-			if (item == null) return Enumerable.Empty<ContentItem>();
+			if (parent == null) return Enumerable.Empty<ContentItem>();
 			
-			return item.GetChildren(filter ?? DefaultFilter());
+			return parent.GetChildren(filter ?? DefaultFilter);
 		}
 
-		public IEnumerable<ContentItem> Descendants(ContentItem item, ItemFilter filter = null)
+		public IEnumerable<ContentItem> Descendants()
 		{
-			return N2.Find.EnumerateChildren(item).Where((filter ?? DefaultFilter()).Match);
+			return N2.Find.EnumerateChildren(CurrentItem).Where(DefaultFilter);
 		}
 
-		public IEnumerable<ContentItem> DescendantPages(ContentItem item, ItemFilter filter = null)
+		public IEnumerable<ContentItem> Descendants(ContentItem ancestor, ItemFilter filter = null)
 		{
-			return N2.Find.EnumerateChildren(item).Where(p => p.IsPage).Where((filter ?? DefaultFilter()).Match);
+			return N2.Find.EnumerateChildren(ancestor).Where((filter ?? DefaultFilter).Match);
 		}
 
-		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
+		public IEnumerable<ContentItem> DescendantPages(ContentItem ancestor, ItemFilter filter = null)
 		{
-			return Siblings(item, null);
+			return N2.Find.EnumerateChildren(ancestor).Where(p => p.IsPage).Where((filter ?? DefaultFilter).Match);
+		}
+
+		public IEnumerable<ContentItem> Siblings(ContentItem sibling = null)
+		{
+			return Siblings(sibling, null);
 		}
 
 		public IEnumerable<ContentItem> Siblings(ItemFilter filter = null)
@@ -118,7 +134,7 @@ namespace N2.Web.Mvc
 			if (item == null) item = CurrentItem;
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
 
-			return item.Parent.GetChildren(filter ?? DefaultFilter());
+			return item.Parent.GetChildren(filter ?? DefaultFilter);
 		}
 
 		public ContentItem PreviousSibling(ContentItem item = null)

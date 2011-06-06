@@ -21,7 +21,7 @@
 		var first = children.FirstOrDefault();
 		if (first != null)
 		{
-			<div class="list-item">@Html.Partial("Partials/ContentLink", first, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.CurrentItem.ZoneName) } })</div>
+			<div class="list-item">@Html.Partial("Partials/ContentLink", first, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Path.CurrentItem.ZoneName) } })</div>
 		}
 		children = children.Skip(1);
 	}

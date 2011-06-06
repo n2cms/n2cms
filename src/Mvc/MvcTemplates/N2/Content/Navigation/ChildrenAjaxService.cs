@@ -55,7 +55,7 @@ namespace N2.Management.Content.Navigation
 
 		private ItemFilter CreateFilter(string filter)
 		{
-			FilterHelper filterIs = Filter.Is;
+			FilterHelper filterIs = N2.Content.Is;
 			switch (filter)
 			{
 				case "any":

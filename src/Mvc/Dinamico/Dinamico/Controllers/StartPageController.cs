@@ -30,7 +30,7 @@ namespace Dinamico.Controllers
 		{
 			var start = N2.Find.ClosestOf<IStartPage>(CurrentPage);
 			string content = Tree.From(start)
-				.Filters(N2.Filter.Is.Accessible())
+				.Filters(N2.Content.Is.Accessible())
 				.ExcludeRoot(true).ToString();
 			return Content("<ul>" 
 				+ "<li>" + Link.To(start) + "</li>"

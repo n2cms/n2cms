@@ -21,7 +21,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			
 			totalRecords = result.Total;
 			return result.Hits.Select(h => h.Content)
-				.Where(Filter.Is.All(GetFilters()).Match)
+				.Where(Content.Is.All(GetFilters()).Match)
 				.ToList();
 		}
 	}

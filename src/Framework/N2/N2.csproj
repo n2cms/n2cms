@@ -175,7 +175,8 @@
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
-    <Compile Include="Engine\Providers\ContentHelperProvider.cs" />
+    <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
+    <Compile Include="Engine\Providers\PathDataProvider.cs" />
     <Compile Include="Engine\Providers\RouteCollectionProvider.cs" />
     <Compile Include="Engine\Providers\HtmlHelperProvider.cs" />
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
@@ -206,7 +207,7 @@
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
-    <Compile Include="Filter.cs" />
+    <Compile Include="Content.cs" />
     <Compile Include="Linq\QueryTransformer.cs" />
     <Compile Include="Linq\EngineExtensions.cs" />
     <Compile Include="Linq\QueryableExtensions.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\FindingTextSearcher.cs" />
     <Compile Include="Persistence\IPersister.cs" />
+    <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
     <Compile Include="Persistence\Search\IIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
@@ -259,13 +261,15 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\ContentHelperBase.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
-    <Compile Include="Web\Mvc\ContentHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
@@ -283,12 +287,13 @@
     <Compile Include="Web\Mvc\RegisteringViewEngineDecorator.cs" />
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
-    <Compile Include="Web\Mvc\TraverseHelper.cs" />
+    <Compile Include="Collections\TraverseHelper.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
+    <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
@@ -965,9 +970,6 @@
     <Compile Include="Web\Parts\PartsAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Engine\n2.configuration.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
@@ -977,8 +979,6 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Web\n2.multiplesites.xml" />
-    <EmbeddedResource Include="Web\n2.notweb.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

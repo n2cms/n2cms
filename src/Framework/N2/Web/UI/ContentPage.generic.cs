@@ -14,7 +14,7 @@ namespace N2.Web.UI
     {
 		private TPage currentPage = null;
 		private IEngine engine = null;
-		private ContentHelper content = null;
+		private FormsContentHelper content = null;
 
 		/// <summary>Gets the current CMS Engine.</summary>
 		public IEngine Engine
@@ -36,9 +36,9 @@ namespace N2.Web.UI
 			get { return CurrentPage; }
 		}
 
-		public ContentHelper Content
+		public FormsContentHelper Content
 		{
-			get { return content ?? (content = engine.GetProviderInstance<ContentHelper>()); }
+			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
 			set { content = value; }
 		}
 

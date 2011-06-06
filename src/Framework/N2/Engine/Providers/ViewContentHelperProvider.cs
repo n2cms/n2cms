@@ -8,24 +8,24 @@ using N2.Web.Mvc;
 
 namespace N2.Engine.Providers
 {
-	[Service(typeof(IProvider<ContentHelper>))]
-	public class ContentHelperProvider : IProvider<ContentHelper>
+	[Service(typeof(IProvider<ViewContentHelper>))]
+	public class ViewContentHelperProvider : IProvider<ViewContentHelper>
 	{
 		IProvider<HtmlHelper> htmlHelperProvider;
 
-		public ContentHelperProvider(IProvider<HtmlHelper> htmlHelperProvider)
+		public ViewContentHelperProvider(IProvider<HtmlHelper> htmlHelperProvider)
 		{
 			this.htmlHelperProvider = htmlHelperProvider;
 		}
 
 		#region IProvider<ContentHelper> Members
 
-		public ContentHelper Get()
+		public ViewContentHelper Get()
 		{
-			return new ContentHelper(htmlHelperProvider.Get());
+			return new ViewContentHelper(htmlHelperProvider.Get());
 		}
 
-		public IEnumerable<ContentHelper> GetAll()
+		public IEnumerable<ViewContentHelper> GetAll()
 		{
 			return new[] { Get() };
 		}

@@ -21,6 +21,7 @@ namespace N2.Web.Mvc
 		T currentItem;
 		ContentItem currentPage;
 		IEngine engine;
+		ControllerContentHelper content = null;
 
 		/// <summary>
 		/// Used to resolve services.
@@ -68,6 +69,12 @@ namespace N2.Web.Mvc
 					?? (currentPart = ControllerContext.RequestContext.CurrentPart<ContentItem>());
 			}
 			set { currentPart = value; }
+		}
+
+		public ControllerContentHelper Content
+		{
+			get { return content ?? (content = new ControllerContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
+			set { content = value; }
 		}
 		#endregion
 

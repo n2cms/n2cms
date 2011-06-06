@@ -9,7 +9,7 @@
 }
 
 @Html.Partial("LayoutPartials/BlogContent")
-@using (Content.BeginScope(Content.CurrentItem.Parent))
+@using (Content.BeginScope(Content.Traverse.Parent()))
 {
 	@Content.Render.Tokens("NewsFooter")
 }

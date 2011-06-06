@@ -91,7 +91,6 @@ namespace N2.Web
 		public PathData(ContentItem item, string templateUrl)
 			: this(item, templateUrl, DefaultAction, string.Empty)
 		{
-
 		}
 
 		public PathData(int id, int pageID, string path, string templateUrl, string action, string arguments, bool ignore, IDictionary<string, string> queryParameters)

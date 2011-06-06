@@ -141,8 +141,8 @@ namespace N2.Engine.Globalization
 				return new ContentItem[0];
 
 			return persister.Repository.Find(TranslationKey, item.TranslationKey)
-				.Where(Filter.Is.Accessible(context.User, security))
-				.Where(Filter.Is.Not(Filter.Is.DescendantOf<ITrashCan>()));
+				.Where(Content.Is.Accessible(context.User, security))
+				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
 		}
 
 		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)

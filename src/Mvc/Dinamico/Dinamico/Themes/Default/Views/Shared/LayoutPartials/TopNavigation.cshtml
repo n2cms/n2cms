@@ -1,10 +1,10 @@
 ﻿@{
 	var start = Content.Traverse.StartPage;
-	var current = Content.CurrentPage;
+	var current = Content.Path.CurrentPage;
 	if(current == null)
 	{
 		Content.BeginScope(Request["returnUrl"]);
-		current = Content.CurrentItem;
+		current = Content.Path.CurrentItem;
 		start = Content.Traverse.StartPage;
 	}
 }

@@ -29,7 +29,7 @@ namespace N2.Edit
 			if (count > 0)
 			{
 				chkAllow.Text += " (" + count + ")";
-				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Filter.Is.Distinct()).Select();
+				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
 				rptReferencing.DataBind();
 				hlReferencingItems.Visible = (count > 10);
 			}

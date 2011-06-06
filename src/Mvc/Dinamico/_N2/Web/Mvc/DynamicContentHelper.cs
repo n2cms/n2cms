@@ -9,7 +9,7 @@ using N2.Collections;
 namespace N2.Web.Mvc
 {
 	/// <remarks>This code is here since it has dependencies on ASP.NET 3.0 which isn't a requirement for N2 in general.</remarks>
-	public class DynamicContentHelper : ContentHelper
+	public class DynamicContentHelper : ViewContentHelper
 	{
 		public DynamicContentHelper(HtmlHelper html)
 			: base(html)
@@ -18,7 +18,7 @@ namespace N2.Web.Mvc
 
 		public dynamic Display
 		{
-			get { return new DisplayHelper { Html = Html, Current = CurrentItem }; }
+			get { return new DisplayHelper { Html = Html, Current = Path.CurrentItem }; }
 		}
 
 		public dynamic Has
@@ -30,20 +30,20 @@ namespace N2.Web.Mvc
 		{
 			get
 			{
-				if (CurrentItem == null)
-					return new DataHelper(() => CurrentItem);
+				if (Path.CurrentItem == null)
+					return new DataHelper(() => Path.CurrentItem);
 
-				string key = "DataHelper" + CurrentItem.ID;
+				string key = "DataHelper" + Path.CurrentItem.ID;
 				var data = Html.ViewContext.ViewData[key] as DataHelper;
 				if (data == null)
-					Html.ViewContext.ViewData[key] = data = new DataHelper(() => CurrentItem);
+					Html.ViewContext.ViewData[key] = data = new DataHelper(() => Path.CurrentItem);
 				return data;
 			}
 		}
 
 		public override RenderHelper Render
 		{
-			get { return new DynamicRenderHelper { Html = Html, Content = CurrentItem }; }
+			get { return new DynamicRenderHelper { Html = Html, Content = Path.CurrentItem }; }
 		}
 
 		#region class DynamicRenderHelper

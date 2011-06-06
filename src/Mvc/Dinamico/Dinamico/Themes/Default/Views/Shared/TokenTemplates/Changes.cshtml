@@ -1,5 +1,5 @@
 ﻿@model string
-@{ var changes = Content.Query<N2.ContentItem>()
+@{ var changes = Content.Search.Items
 	   .Where(ci => ci.ZoneName == null)
 	   .Where(ci => ci.State != N2.ContentState.Deleted)
 	   .OrderByDescending(ci => ci.Updated)
