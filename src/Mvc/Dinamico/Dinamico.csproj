@@ -124,6 +124,7 @@
     <Compile Include="_N2\Web\Mvc\DataHelper.cs" />
     <Compile Include="_N2\Web\Mvc\DisplayHelper.cs" />
     <Compile Include="_N2\Web\Mvc\DynamicContentHelper.cs" />
+    <Compile Include="_N2\Web\Mvc\HtmlBuildersInitializer.cs" />
     <Compile Include="_N2\Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="_N2\Web\Mvc\Html\ListTemplateOfT.cs" />
     <Compile Include="_N2\Web\Mvc\Html\RenderExtensions.cs" />

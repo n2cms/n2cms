@@ -4,11 +4,21 @@ using N2.Definitions;
 using N2.Definitions.Runtime;
 using N2.Web.Mvc.Html;
 using N2.Details;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
 	public class RegisterHelper : IContentRegistration
 	{
+		#region Static
+		public static RegisteringDisplayRendererFactory RendererFactory { get; set; }
+
+		static RegisterHelper()
+		{
+			RendererFactory = new RegisteringDisplayRendererFactory();
+		}
+		#endregion
+
 		public HtmlHelper Html { get; set; }
 		
 		string ContainerName { get; set; }
@@ -40,7 +50,7 @@ namespace N2.Web.Mvc
 				re.Add(new T(), name, title);
 			}
 
-			return CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext.Create(Html, name), re);
+			return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, name), re);
 		}
 
 		public EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable
@@ -51,7 +61,7 @@ namespace N2.Web.Mvc
 				re.Add(editable, editable.Name, editable.Title);
 			}
 
-			return CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext.Create(Html, editable.Name), re);
+			return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, editable.Name), re);
 		}
 
 		public void RegisterModifier(Details.IContentTransformer modifier)
@@ -91,9 +101,14 @@ namespace N2.Web.Mvc
 		}
 		#endregion
 
-		protected virtual RegisteringDisplayRenderer<T> CreateRegisteringDisplayRenderer<T>(Rendering.RenderingContext context, ContentRegistration re) where T : IEditable
+		#region class RegisteringDisplayRendererFactory
+		public class RegisteringDisplayRendererFactory
 		{
-			return new RegisteringDisplayRenderer<T>(context, re);
+			public virtual RegisteringDisplayRenderer<T> Create<T>(Rendering.RenderingContext context, ContentRegistration re) where T : IEditable
+			{
+				return new RegisteringDisplayRenderer<T>(context, re);
+			}
 		}
+		#endregion
 	}
 }

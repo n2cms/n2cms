@@ -77,7 +77,7 @@ namespace N2.Web.Mvc
 			if (item == null) return CreateLink(item);
 
 			var lb = CreateLink(item);
-			lb.ClassName = GetNavigationClass(item);
+			lb.Class(GetNavigationClass(item));
 			return lb;
 		}
 
@@ -86,14 +86,14 @@ namespace N2.Web.Mvc
 			return Path.CurrentItem[detailName] != null && !("".Equals(Path.CurrentItem[detailName]));
 		}
 
-		protected virtual Link CreateLink(ContentItem item)
+		protected virtual ILinkBuilder CreateLink(ContentItem item)
 		{
-			return new Link(item);
+			return Link.To(item);
 		}
 
 		protected virtual Tree CreateTree(HierarchyBuilder hierarchy)
 		{
-			return new Tree(hierarchy);
+			return Tree.Using(hierarchy);
 		}
 	}
 
