@@ -9,6 +9,9 @@ using N2.Linq;
 
 namespace N2.Persistence
 {
+	/// <summary>
+	/// Simplifies access to APIs related to search and querying.
+	/// </summary>
 	public class SearchHelper
 	{
 		IEngine engine;
