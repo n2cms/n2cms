@@ -7,6 +7,7 @@ using N2.Collections;
 using N2.Linq;
 using N2.Persistence.Finder;
 using N2.Persistence;
+using N2.Security;
 
 namespace N2.Web
 {
@@ -60,30 +61,55 @@ namespace N2.Web
 
 		public virtual ContentHelperBase At(ContentItem otherContentItem)
 		{
+			EnsureAuthorized(otherContentItem);
+
 			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Path.CurrentPage });
 		}
 
 		public IDisposable BeginScope(ContentItem newCurrentItem)
 		{
+			EnsureAuthorized(newCurrentItem);
+
 			return new ContentScope(newCurrentItem, this);
+		}
+
+		private void EnsureAuthorized(ContentItem newCurrentItem)
+		{
+			var user = Services.Resolve<IWebContext>().User;
+			if (!Engine.SecurityManager.IsAuthorized(newCurrentItem, user))
+				throw new PermissionDeniedException(newCurrentItem, user);
 		}
 
 		public IDisposable BeginScope(string newCurrentItemUrlOrId)
 		{
 			if (newCurrentItemUrlOrId != null)
 			{
-				int id;
-				ContentItem item = null;
-				if (int.TryParse(newCurrentItemUrlOrId, out id))
-					item = Engine.Persister.Get(id);
-
-				if (item == null)
-					item = Services.Resolve<IUrlParser>().Parse(newCurrentItemUrlOrId);
+				ContentItem item = Parse(newCurrentItemUrlOrId);
 
 				if (item != null)
-					return new ContentScope(item, this);
+					return BeginScope(item);
 			}
 			return new EmptyDisposable();
+		}
+
+		private ContentItem Parse(string newCurrentItemUrlOrId)
+		{
+			int id;
+			ContentItem item = null;
+			if (int.TryParse(newCurrentItemUrlOrId, out id))
+				item = Engine.Persister.Get(id);
+
+			if (item == null)
+				item = Services.Resolve<IUrlParser>().Parse(newCurrentItemUrlOrId);
+			return item;
+		}
+
+		public IDisposable BeginScope(string newCurrentItemUrlOrId, bool reallyBeginScope)
+		{
+			if (!reallyBeginScope)
+				return new EmptyDisposable();
+
+			return BeginScope(newCurrentItemUrlOrId);
 		}
 
 		#region class EmptyDisposable

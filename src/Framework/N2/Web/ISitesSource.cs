@@ -8,6 +8,9 @@ namespace N2.Web
 	/// </summary>
 	public interface ISitesSource
 	{
+		/// <summary>Gets sites specified by a site node.</summary>
+		/// <returns>An enumeration of sites.</returns>
+		/// <remarks>The returned sites are cached.</remarks>
 		IEnumerable<Site> GetSites();
 	}
 }

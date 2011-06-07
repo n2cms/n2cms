@@ -21,7 +21,7 @@ namespace N2.Templates.Items
     [TabContainer(Tabs.Advanced, "Advanced", 100)]
     [RestrictParents(typeof(IStructuralPage))]
 	[ConventionTemplate]
-    public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance
+    public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance, IRedirect
     {
         public override string Url
         {
@@ -57,5 +57,14 @@ namespace N2.Templates.Items
         }
 
         #endregion
+
+		#region IRedirect Members
+
+		public ContentItem RedirectTo
+		{
+			get { return Context.Current.UrlParser.Parse(RedirectUrl); }
+		}
+
+		#endregion
     }
 }

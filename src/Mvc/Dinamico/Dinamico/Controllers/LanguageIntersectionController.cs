@@ -15,7 +15,7 @@ namespace Dinamico.Controllers
     {
         public override ActionResult Index()
         {
-			ContentItem language = Request.SelectLanguage(CurrentPage);
+			ContentItem language = Request.SelectLanguage(CurrentItem);
 			if (language != null)
 			{
 				if (language.Url.StartsWith("http"))
@@ -24,7 +24,10 @@ namespace Dinamico.Controllers
 				return ViewPage(language);
 			}
 
-			return View(CurrentPage);
+			if(CurrentItem.RedirectUrl != CurrentItem.Url)
+				return Redirect(CurrentItem.RedirectUrl);
+
+			return View(CurrentItem);
         }
 
     }

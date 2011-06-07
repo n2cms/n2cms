@@ -42,7 +42,14 @@ namespace N2.Collections
 
 		public ContentItem StartPage
 		{
-			get { return N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? engine.UrlParser.StartPage; }
+			get 
+			{ 
+				var page = N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? engine.UrlParser.StartPage;
+				var redirect = page as IRedirect;
+				if (redirect != null && redirect.RedirectTo != null)
+					return redirect.RedirectTo;
+				return page;
+			}
 		}
 
 		public ContentItem RootPage

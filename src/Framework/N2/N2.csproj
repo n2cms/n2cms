@@ -137,6 +137,7 @@
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />

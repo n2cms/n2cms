@@ -16,7 +16,7 @@ namespace Dinamico.Models
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage))]
 	[TabContainer(Defaults.Containers.Site, "Site", 1000)]
-	public class LanguageIntersection : PageModelBase, IThemeable, ISitesSource
+	public class LanguageIntersection : PageModelBase, IThemeable, ISitesSource, IRedirect
 	{
 		#region IThemeable Members
 
@@ -34,6 +34,20 @@ namespace Dinamico.Models
 		{
 			if (!string.IsNullOrEmpty(HostName))
 				yield return new Site(Find.EnumerateParents(this, null, true).Last().ID, ID, HostName) { Wildcards = true };
+		}
+
+		#endregion
+
+		#region IRedirect Members
+
+		public string RedirectUrl
+		{
+			get { return Children.OfType<StartPage>().Select(sp => sp.Url).FirstOrDefault() ?? this.Url; }
+		}
+
+		public ContentItem RedirectTo
+		{
+			get { return Children.OfType<StartPage>().FirstOrDefault(); }
 		}
 
 		#endregion

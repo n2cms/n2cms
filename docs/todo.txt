@@ -7,8 +7,6 @@
 	- facebook like
 	- twitter
 	- youtube
-	- subsequentsiblings
-	- precedingsiblings
 - IRedirect
 - index template replaces default
 - static parts

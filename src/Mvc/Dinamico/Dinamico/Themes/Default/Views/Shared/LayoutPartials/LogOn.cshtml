@@ -4,5 +4,5 @@
 }
 else
 {
-	@Html.ActionLink("Log on", "LogOn", new { controller = "Account", returnUrl = Request.Url.PathAndQuery })
+	@Html.ActionLink("Log on", "LogOn", new { controller = "Account", returnUrl = Request["returnUrl"] ?? (Content.Path.IsEmpty() ? Content.Traverse.StartPage.Url : Content.Path.CurrentPage.Url) })
 }
