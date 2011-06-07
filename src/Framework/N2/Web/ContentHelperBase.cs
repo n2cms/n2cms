@@ -75,6 +75,8 @@ namespace N2.Web
 
 		private void EnsureAuthorized(ContentItem newCurrentItem)
 		{
+			if (newCurrentItem == null) 
+				return;
 			var user = Services.Resolve<IWebContext>().User;
 			if (!Engine.SecurityManager.IsAuthorized(newCurrentItem, user))
 				throw new PermissionDeniedException(newCurrentItem, user);

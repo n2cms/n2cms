@@ -119,7 +119,7 @@ namespace N2.Definitions.Runtime
 			var definitions = registrations.Select(r => r.Definition).ToList();
 			builder.ExecuteRefiners(definitions);
 			foreach (var registration in registrations)
-				registration.Registration.AppendDefinition(registration.Definition);
+				registration.Registration.AppendToDefinition(registration.Definition);
 			return definitions;
 		}
 

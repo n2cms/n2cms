@@ -93,21 +93,8 @@ namespace N2.Definitions
 		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
 		public virtual IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
-			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
 			var definition = GetDefinition(parentItem);
-			foreach (ItemDefinition childDefinition in definition.GetAllowedChildren(this, parentItem))
-			{
-				if (!childDefinition.IsDefined)
-					continue;
-				if (!childDefinition.Enabled)
-					continue;
-				if(!childDefinition.IsAllowedInZone(zoneName))
-					continue;
-				if (!childDefinition.IsAuthorized(user))
-					continue;
-
-				allowedChildItems.Add(childDefinition);
-			}
+			var allowedChildItems = definition.GetAllowedChildren(this, parentItem).Where(d => d.IsAllowed(zoneName, user)).ToList();
 			allowedChildItems.Sort();
 			return allowedChildItems;
 		}

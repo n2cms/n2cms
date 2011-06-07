@@ -28,7 +28,7 @@ namespace N2.Integrity
 		/// <summary>
 		/// Restrict children by template name, allow only children with these template name.
 		/// </summary>
-		public string[] TemplateNames { get; set; }
+		public string[] TemplateKeys { get; set; }
 
 		/// <summary>Initializes a new instance of the RestrictParentsAttribute which is used to restrict which types of items may be added below which.</summary>
 		public RestrictParentsAttribute()
@@ -84,7 +84,7 @@ namespace N2.Integrity
 				{
 					if (this.Attribute.Types != null && !this.Attribute.Types.Any(t => t.IsAssignableFrom(context.ParentDefinition.ItemType)))
 						return AllowedDefinitionResult.Deny;
-					if (this.Attribute.TemplateNames != null && !this.Attribute.TemplateNames.Contains(context.ParentDefinition.TemplateKey))
+					if (this.Attribute.TemplateKeys != null && !this.Attribute.TemplateKeys.Contains(context.ParentDefinition.TemplateKey))
 						return AllowedDefinitionResult.Deny;
 				}
 				return AllowedDefinitionResult.DontCare;

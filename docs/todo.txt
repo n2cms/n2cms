@@ -7,7 +7,6 @@
 	- facebook like
 	- twitter
 	- youtube
-- IRedirect
 - index template replaces default
 - static parts
 - fix wiki (ThreadId=243022)

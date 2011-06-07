@@ -180,16 +180,7 @@ namespace N2.Definitions
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
 		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
 		{
-			IEnumerable<ItemDefinition> all = definitions.GetDefinitions().ToList();
-			foreach (var d in all)
-			{
-				var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = this, ChildDefinition = d, Definitions = definitions };
-				var filters = AllowedChildFilters.Union(d.AllowedParentFilters).ToList();
-				if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
-					yield return d;
-				else if (!filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
-					yield return d;
-			}
+			return definitions.GetDefinitions().AllowedBelow(parentItem, definitions);
 		}
 
 		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)
@@ -428,6 +419,14 @@ namespace N2.Definitions
 		}
 
 		#endregion
+
+		public bool IsAllowed(string zoneName, IPrincipal user)
+		{
+			return IsDefined
+				&& Enabled
+				&& IsAllowedInZone(zoneName)
+				&& IsAuthorized(user);
+		}
 	}
 
 	public static class CollectionExtensions

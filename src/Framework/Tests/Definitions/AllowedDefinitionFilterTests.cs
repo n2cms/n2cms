@@ -50,7 +50,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void RestrictParentsAttribute_AllowsChildren_WithCorrectParentTemplateName()
 		{
-			var rca = new RestrictParentsAttribute(typeof(DefinitionControllingParent)) { TemplateNames = new[] { "List" } };
+			var rca = new RestrictParentsAttribute(typeof(DefinitionControllingParent)) { TemplateKeys = new[] { "List" } };
 			rca.Refine(childDefinition, new List<ItemDefinition>());
 
 			var allowedChildren = parentDefinition.GetAllowedChildren(definitions, new DefinitionControllingParent()).ToList();
@@ -61,7 +61,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void RestrictParentsAttribute_DisallowsChildren_WithIncorrectParentTemplateName()
 		{
-			var rca = new RestrictParentsAttribute(typeof(DefinitionControllingParent)) { TemplateNames = new[] { "Single" } };
+			var rca = new RestrictParentsAttribute(typeof(DefinitionControllingParent)) { TemplateKeys = new[] { "Single" } };
 			rca.Refine(childDefinition, new List<ItemDefinition>());
 
 			var allowedChildren = parentDefinition.GetAllowedChildren(definitions, new DefinitionControllingParent()).ToList();

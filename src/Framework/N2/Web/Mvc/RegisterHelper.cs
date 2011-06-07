@@ -71,6 +71,14 @@ namespace N2.Web.Mvc
 				re.ContentModifiers.Add(modifier);
 		}
 
+		public Builder<T> RegisterRefiner<T>(T refiner) where T : ISortableRefiner
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+				return re.RegisterRefiner<T>(refiner);
+			return new Builder<T>(null);
+		}
+
 		#endregion
 
 		public IDisposable BeginContainer(string containerName)
