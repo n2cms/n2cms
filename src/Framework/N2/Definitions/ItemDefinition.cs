@@ -180,7 +180,7 @@ namespace N2.Definitions
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
 		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
 		{
-			return definitions.GetDefinitions().AllowedBelow(parentItem, definitions);
+			return definitions.GetDefinitions().AllowedBelow(this, parentItem, definitions);
 		}
 
 		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)

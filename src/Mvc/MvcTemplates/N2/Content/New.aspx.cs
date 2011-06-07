@@ -209,7 +209,7 @@ namespace N2.Edit
 		public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
 		{
 			return Definitions.GetTemplates(definition.ItemType)
-				.AllowedBelow(Selection.SelectedItem, Engine.Definitions)
+				.AllowedBelow(Definitions.GetDefinition(Selection.SelectedItem), Selection.SelectedItem, Engine.Definitions)
 				.Where(t => t.Definition.IsAllowed(ZoneName, User))
 				.OrderBy(t => (t.Definition.TemplateKey ?? "Index") == "Index" ? 0 : 1)
 				.ThenBy(t => t.Definition.SortOrder);

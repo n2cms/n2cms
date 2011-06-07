@@ -7,9 +7,8 @@ namespace N2.Definitions
 {
 	public static class DefinitionExtensions
 	{
-		public static IEnumerable<ItemDefinition> AllowedBelow(this IEnumerable<ItemDefinition> allDefinitions, ContentItem parentItem, IDefinitionManager definitions)
+		public static IEnumerable<ItemDefinition> AllowedBelow(this IEnumerable<ItemDefinition> allDefinitions, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
 		{
-			var parentDefinition = definitions.GetDefinition(parentItem);
 			foreach (var definition in allDefinitions)
 			{
 				if (IsAllowed(definition, parentItem, parentDefinition, definitions))
@@ -17,9 +16,8 @@ namespace N2.Definitions
 			}
 		}
 
-		public static IEnumerable<TemplateDefinition> AllowedBelow(this IEnumerable<TemplateDefinition> allTemplates, ContentItem parentItem, IDefinitionManager definitions)
+		public static IEnumerable<TemplateDefinition> AllowedBelow(this IEnumerable<TemplateDefinition> allTemplates, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
 		{
-			var parentDefinition = definitions.GetDefinition(parentItem);
 			foreach (var template in allTemplates)
 			{
 				if (IsAllowed(template.Definition, parentItem, parentDefinition, definitions))
