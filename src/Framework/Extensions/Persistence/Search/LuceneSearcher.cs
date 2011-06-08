@@ -46,7 +46,7 @@ namespace N2.Persistence.Search
 			}
 			finally
 			{
-				s.Close();
+				//s.Close();
 			}
 		}
 

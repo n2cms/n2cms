@@ -45,19 +45,9 @@ namespace N2.Tests.Persistence.NH
 
 		public override void TearDown()
 		{
-			base.TearDown();
 			indexer.Unlock();
-		}
-
-		[Test]
-		public void LockTimeoutException_WillNotIndexImmediately()
-		{
-			var world = CreateOneItem<PersistableItem1>(2, "hello world", root);
-
-			accessor.GetDirectory().MakeLock("write.lock").Obtain();
-			tracker.ItemChanged(world.ID, false);
-
-			Assert.That(searcher.Search("hello").Hits.Count(), Is.EqualTo(0));
+			accessor.Dispose();
+			base.TearDown();
 		}
 
 		[Test]

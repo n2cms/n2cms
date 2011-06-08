@@ -44,22 +44,22 @@ namespace N2.Persistence.Search
 			if (d.IndexExists())
 			{
 				d.ClearLock("write.lock"); ;
-				var w = accessor.GetWriter(d, accessor.GetAnalyzer());
+				var w = accessor.GetWriter();
 				if (w.NumDocs() > 0)
 				{
 					try
 					{
 						w.DeleteAll();
 						w.Commit();
-						w.WaitForMerges();
+						accessor.RecreateSearcher();
 					}
 					finally
 					{
-						w.Close(true);
+						//w.Close(true);
 					}
 				}
 				d.ClearLock("write.lock"); ;
-				d.Close();
+				//d.Close();
 			}
 		}
 
@@ -78,19 +78,20 @@ namespace N2.Persistence.Search
 			var d = accessor.GetDirectory();
 			if (d.IndexExists())
 			{
-				var iw = accessor.GetWriter(d, accessor.GetAnalyzer());
+				var iw = accessor.GetWriter();
 				if (iw.NumDocs() > 0)
 				{
 					try
 					{
 						iw.Optimize(true);
+						iw.Commit();
 					}
 					finally
 					{
-						iw.Close();
+						//iw.Close();
 					}
 				}
-				d.Close();
+				//d.Close();
 			}
 		}
 
@@ -111,10 +112,12 @@ namespace N2.Persistence.Search
 			{
 				var doc = CreateDocument(item);
 				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
+				iw.Commit();
+				accessor.RecreateSearcher();
 			}
 			finally
 			{
-				iw.Close(waitForMerges:true);
+				//iw.Close(waitForMerges:true);
 			}
 		}
 
@@ -124,19 +127,19 @@ namespace N2.Persistence.Search
 		{
 			Trace.WriteLine("Deleting item #" + itemID);
 
-			var dir = accessor.GetDirectory();
-			var iw = accessor.GetWriter(dir, accessor.GetAnalyzer());
-			var s = accessor.GetSearcher(dir);
+			var iw = accessor.GetWriter();
+			var s = accessor.GetSearcher();
 			try
 			{
 				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
 				var query = new PrefixQuery(new Term("Trail", trail));
 				iw.DeleteDocuments(query);
+				iw.Commit();
+				accessor.RecreateSearcher();
 			}
 			finally
 			{
-				iw.Flush(true, true, true);
-				iw.Close(waitForMerges:true);
+				//iw.Close(waitForMerges:true);
 			}
 		}
 

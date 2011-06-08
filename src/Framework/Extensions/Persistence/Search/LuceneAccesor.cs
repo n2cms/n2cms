@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
@@ -18,10 +19,13 @@ namespace N2.Persistence.Search
 	/// Simplifies access to the lucene API.
 	/// </summary>
 	[Service]
-	public class LuceneAccesor
+	public class LuceneAccesor : IDisposable
 	{
 		string indexPath;
 		public long LockTimeout { get; set; }
+		Directory directory;
+		IndexSearcher searcher;
+		IndexWriter writer;
 
 		public LuceneAccesor(IWebContext webContext, DatabaseSection config)
 		{
@@ -31,12 +35,13 @@ namespace N2.Persistence.Search
 
 		public IndexWriter GetWriter()
 		{
-			var d = GetDirectory();
-			var a = GetAnalyzer();
-			return GetWriter(d, a);
+			lock (this)
+			{
+				return writer ?? (writer = CreateWriter(GetDirectory(), GetAnalyzer()));
+			}
 		}
 
-		public virtual IndexWriter GetWriter(Directory d, Analyzer a)
+		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
 			var iw = new IndexWriter(d, a, create: !d.IndexExists(), mfl: IndexWriter.MaxFieldLength.UNLIMITED);
 			iw.SetWriteLockTimeout(LockTimeout);
@@ -59,17 +64,22 @@ namespace N2.Persistence.Search
 
 		public virtual Directory GetDirectory()
 		{
-			var d = new SimpleFSDirectory(new DirectoryInfo(indexPath), new SimpleFSLockFactory());
-			return d;
+			lock (this)
+			{
+				var d = directory ?? (directory = new SimpleFSDirectory(new DirectoryInfo(indexPath), new SimpleFSLockFactory()));
+				return d;
+			}
 		}
 
 		public IndexSearcher GetSearcher()
 		{
-			var dir = GetDirectory();
-			return GetSearcher(dir);
+			lock (this)
+			{
+				return searcher ?? (searcher = CreateSearcher(GetDirectory()));
+			}
 		}
 
-		public virtual IndexSearcher GetSearcher(Directory dir)
+		protected virtual IndexSearcher CreateSearcher(Directory dir)
 		{
 			var s = new IndexSearcher(dir, readOnly: true);
 			return s;
@@ -78,6 +88,26 @@ namespace N2.Persistence.Search
 		public virtual QueryParser GetQueryParser()
 		{
 			return new QueryParser(Version.LUCENE_29, "Text", GetAnalyzer());
+		}
+
+		public void Dispose()
+		{
+			lock (this)
+			{
+				if (writer != null)
+					writer.Close(waitForMerges: true);
+				writer = null;
+				searcher = null;
+				directory = null;
+			}
+		}
+
+		public void RecreateSearcher()
+		{
+			lock (this)
+			{
+				searcher = null;
+			}
 		}
 	}
 }

@@ -34,6 +34,13 @@ namespace N2.Tests.Persistence.NH
 			indexer.Clear();
 		}
 
+		[TearDown]
+		public override void TearDown()
+		{
+			accessor.Dispose();
+			base.TearDown();
+		}
+
 		[Test]
 		public void Title()
 		{
