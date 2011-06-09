@@ -47,6 +47,19 @@
 		</ItemGroup>
 	</Target>
 
+	<Target Name="Framework-DeployResources">
+		<ItemGroup>
+			<Framework-Resources	Include="$(EditFolder)\**\*.resx"
+														Exclude="$(EditFolder)\**\*.da.resx;
+																		 $(EditFolder)\**\*.it.resx;
+																		 $(EditFolder)\**\*.mk.resx;
+																		 $(EditFolder)\**\*.nl.resx;
+																		 $(EditFolder)\**\*.ru.resx;
+																		 $(EditFolder)\**\*.sl.resx;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(Framework-Resources)" DestinationFolder="$(DeployFolder)\$(DeployPrefix)Resources\N2\%(RecursiveDir)\" />
+	</Target>
+
 	<Target Name="Framework-CreateItemGroups-BinFiles" DependsOnTargets="Framework-Build">
 		<ItemGroup>
 			<Framework-BinFiles		Include="$(ManagementFolder)\bin\*.dll;
