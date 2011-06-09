@@ -183,9 +183,9 @@ namespace N2.Definitions
 			return definitions.GetDefinitions().AllowedBelow(this, parentItem, definitions);
 		}
 
-		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)
+		public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition)
 		{
-			return GetAllowedChildren(definitions, null).Any(d => d.ItemType == itemDefinition.ItemType);
+			return GetAllowedChildren(definitions, parentItem).Any(d => d.ItemType == childDefinition.ItemType);
 		}
 
 		/// <summary>Find out if this item is allowed in a zone.</summary>
