@@ -50,7 +50,7 @@ namespace N2.Web.Mvc
 
 		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute)
 		{
-			managementPath = engine.ManagementPaths.GetManagementInterfaceUrl().ToUrl().ApplicationRelativePath;
+			managementPath = Url.ResolveTokens(Url.ManagementUrlToken + "/");
 			this.engine = engine;
 			this.routeHandler = routeHandler ?? new MvcRouteHandler();
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();

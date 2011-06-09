@@ -131,6 +131,7 @@
     <Compile Include="Mvc\Controllers\TestItemController.cs" />
     <Compile Include="Mvc\Html\DisplayExtensionsTests.cs" />
     <Compile Include="Mvc\Html\EditableDisplayExtensionsTests.cs" />
+    <Compile Include="Mvc\MapContentRouteTests.cs" />
     <Compile Include="Mvc\Models\RegularPage.cs" />
     <Compile Include="Mvc\Models\ExecutiveTeamPage.cs" />
     <Compile Include="Mvc\Models\AboutUsSectionPage.cs" />

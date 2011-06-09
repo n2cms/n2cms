@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
@@ -17,8 +18,10 @@ namespace N2.Web.Mvc
 		/// <returns>The added content route instance.</returns>
 		public static ContentRoute MapContentRoute(this RouteCollection routes, string name, IEngine engine)
 		{
+			int indexOfFirstNonContentRoute = routes.Select((rb, i) => new { rb, i }).Where(x => !(x.rb is ContentRoute)).Select(x => x.i).FirstOrDefault();
+			
 			var cr = new ContentRoute(engine);
-			routes.Insert(0, cr);
+			routes.Insert(indexOfFirstNonContentRoute, cr);
 			return cr;
 		}
 

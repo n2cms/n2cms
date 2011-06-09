@@ -31,8 +31,12 @@ namespace N2.Security.Items
 		[EditableText("Password", 30)]
 		public virtual string Password
 		{
-			get { return (string) (GetDetail("Password") ?? string.Empty); }
-			set { SetDetail("Password", value, string.Empty); }
+			get { return "****"; }
+			set
+			{ 
+				if(value != "****")
+					SetDetail("Password", value, string.Empty);
+			}
 		}
 
 		[EditableText("Email", 40)]
