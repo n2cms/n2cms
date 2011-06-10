@@ -21,21 +21,28 @@ namespace N2.Persistence
 			this.engine = engine;
 		}
 
+		/// <summary>Query for published content items using LINQ.</summary>
 		public IQueryable<ContentItem> Items
 		{
 			get { return Query<ContentItem>().Where(i => i.VersionOf == null); }
 		}
 
+		/// <summary>Find items using the finder API.</summary>
+		/// <remarks>This API is comparable to using LINQ but not as comperhensive.</remarks>
 		public IItemFinder Find
 		{
 			get { return engine.Resolve<IItemFinder>(); }
 		}
 
+		/// <summary>Performs text search for content items.</summary>
 		public ITextSearcher Text
 		{
 			get { return engine.Resolve<ITextSearcher>(); }
 		}
 
+		/// <summary>Queries a persisted entity using LINQ.</summary>
+		/// <typeparam name="T">The type of entity to query. Only types mapped via NHibernate are queryable.</typeparam>
+		/// <returns>A queryable expression.</returns>
 		public virtual IQueryable<T> Query<T>()
 		{
 			return engine.Query<T>();

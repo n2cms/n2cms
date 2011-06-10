@@ -38,27 +38,27 @@ namespace N2.Web
 			get { return PathGetter(); }
 		}
 
-		// traversing & filtering
-
+		/// <summary>Traverse the content hieararchy.</summary>
 		public virtual TraverseHelper Traverse
 		{
 			get { return new TraverseHelper(Engine, Is, PathGetter); }
 		}
 
+		/// <summary>Filter collections of items.</summary>
 		public virtual FilterHelper Is
 		{
 			get { return new FilterHelper(Engine); }
 		}
 
-		// querying & finding
-
+		/// <summary>Search for content stored in the system.</summary>
 		public SearchHelper Search
 		{
 			get { return new SearchHelper(Engine); }
 		}
 
-		// changing scope
-
+		/// <summary>Get a content helper for an alternative scope.</summary>
+		/// <param name="otherContentItem">The current item of the alternative scope.</param>
+		/// <returns>Another content helper with a different scope.</returns>
 		public virtual ContentHelperBase At(ContentItem otherContentItem)
 		{
 			EnsureAuthorized(otherContentItem);
@@ -66,6 +66,9 @@ namespace N2.Web
 			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Path.CurrentPage });
 		}
 
+		/// <summary>Begins a new scope using the current content helper.</summary>
+		/// <param name="newCurrentItem">The current item to use in the new scope.</param>
+		/// <returns>An object that restores the scope upon disposal.</returns>
 		public IDisposable BeginScope(ContentItem newCurrentItem)
 		{
 			EnsureAuthorized(newCurrentItem);
@@ -82,6 +85,9 @@ namespace N2.Web
 				throw new PermissionDeniedException(newCurrentItem, user);
 		}
 
+		/// <summary>Begins a new scope using the current content helper.</summary>
+		/// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
+		/// <returns>An object that restores the scope upon disposal.</returns>
 		public IDisposable BeginScope(string newCurrentItemUrlOrId)
 		{
 			if (newCurrentItemUrlOrId != null)
@@ -106,6 +112,10 @@ namespace N2.Web
 			return item;
 		}
 
+		/// <summary>Begins a new scope using the current content helper.</summary>
+		/// <param name="newCurrentItemUrlOrId">A string that is parsed as an item id or item url.</param>
+		/// <param name="reallyBeginScope">Option to keep the current scope when the paramter is false.</param>
+		/// <returns>An object that restores the scope upon disposal.</returns>
 		public IDisposable BeginScope(string newCurrentItemUrlOrId, bool reallyBeginScope)
 		{
 			if (!reallyBeginScope)
