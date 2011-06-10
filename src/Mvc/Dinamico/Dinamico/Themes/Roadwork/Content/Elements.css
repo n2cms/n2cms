@@ -1,0 +1,6 @@
+@import "../../Default/Content/Elements.css";
+
+/* forms, buttons and widgets */
+
+.dropmenu { background-color:#666; }
+	.dropmenu a { color:#fff }

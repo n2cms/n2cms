@@ -132,6 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apple-touch-icon.png" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\fade.png" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\Layout.css" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\Mood.css" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\Site.css" />
     <Content Include="Dinamico\Themes\Default\Content\Boilerfoot.css" />
     <Content Include="Dinamico\Themes\Default\Content\Boilerhead.css" />
     <Content Include="Dinamico\Themes\Default\Content\Features.css" />
@@ -368,6 +372,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\SubsequentSiblings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dinamico\Themes\Roadwork\Views\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
