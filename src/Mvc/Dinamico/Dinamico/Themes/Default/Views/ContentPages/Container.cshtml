@@ -17,8 +17,8 @@
 
 @{
 	var items = Content.Data.ShowDescendants ?? false
-		? Content.Traverse.DescendantPages(Content.Path.CurrentPage, Content.Is.Accessible())
-		: Content.Traverse.Children(Content.Path.CurrentPage, Content.Is.Accessible());
+		? Content.Traverse.DescendantPages(Content.Current.Page, Content.Is.Accessible())
+		: Content.Traverse.Children(Content.Current.Page, Content.Is.Accessible());
 	if (Content.Has.ListingType)
 	{
 		items = items.Where(Content.Is.Definition((string)Content.Data.ListingType));

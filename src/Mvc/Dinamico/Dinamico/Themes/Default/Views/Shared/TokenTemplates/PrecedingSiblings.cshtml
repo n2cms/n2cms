@@ -2,5 +2,5 @@
 
 @using (Content.BeginScope(Model))
 {
-	@Html.UnorderedList(Content.Traverse.Siblings(Content.Is.AccessiblePage()).TakeWhile(s => s != Content.Path.CurrentItem), @<span>@Content.LinkTo(item.Data)</span>)
+	@Html.UnorderedList(Content.Traverse.Siblings(Content.Is.AccessiblePage()).TakeWhile(s => s != Content.Current.Item), @<span>@Content.LinkTo(item.Data)</span>)
 }

@@ -1,4 +1,4 @@
-- contexthelper in contenthelper
+- css compilation, compression and minification
 - search extensions similar to traverse
 - nuget issues http://n2cms.codeplex.com/discussions/260635
 - contenttype from model discussions/259496

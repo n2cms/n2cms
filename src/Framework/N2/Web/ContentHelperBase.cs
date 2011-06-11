@@ -33,6 +33,7 @@ namespace N2.Web
 
 		protected Func<PathData> PathGetter { get; set; }
 
+		[Obsolete]
 		public PathData Path
 		{
 			get { return PathGetter(); }
@@ -56,6 +57,12 @@ namespace N2.Web
 			get { return new SearchHelper(Engine); }
 		}
 
+		/// <summary>Access items in the current context.</summary>
+		public ContextHelper Current
+		{
+			get { return new ContextHelper(Engine, PathGetter); }
+		}
+
 		/// <summary>Get a content helper for an alternative scope.</summary>
 		/// <param name="otherContentItem">The current item of the alternative scope.</param>
 		/// <returns>Another content helper with a different scope.</returns>
@@ -63,7 +70,7 @@ namespace N2.Web
 		{
 			EnsureAuthorized(otherContentItem);
 
-			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Path.CurrentPage });
+			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Current.Page});
 		}
 
 		/// <summary>Begins a new scope using the current content helper.</summary>
@@ -71,6 +78,8 @@ namespace N2.Web
 		/// <returns>An object that restores the scope upon disposal.</returns>
 		public IDisposable BeginScope(ContentItem newCurrentItem)
 		{
+			if (newCurrentItem == null) return new EmptyDisposable();
+
 			EnsureAuthorized(newCurrentItem);
 
 			return new ContentScope(newCurrentItem, this);
@@ -78,8 +87,6 @@ namespace N2.Web
 
 		private void EnsureAuthorized(ContentItem newCurrentItem)
 		{
-			if (newCurrentItem == null) 
-				return;
 			var user = Services.Resolve<IWebContext>().User;
 			if (!Engine.SecurityManager.IsAuthorized(newCurrentItem, user))
 				throw new PermissionDeniedException(newCurrentItem, user);
@@ -147,7 +154,7 @@ namespace N2.Web
 			{
 				this.contentHelper = contentHelper;
 				previousGetter = contentHelper.PathGetter;
-				contentHelper.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = previousGetter().CurrentPage };
+				contentHelper.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = newCurrentItem.IsPage ? newCurrentItem : previousGetter().CurrentPage };
 			}
 
 			#region IDisposable Members

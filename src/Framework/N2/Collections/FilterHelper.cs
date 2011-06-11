@@ -247,5 +247,13 @@ namespace N2.Collections
 		{
 			return new DelegateFilter(ci => Find.Closest<T>(ci) != null);
 		}
+
+		/// <summary>Filters items in a certain zone.</summary>
+		/// <param name="zoneName">The name of the zone the items should be in.</param>
+		/// <returns>A filter that filters on zone name.</returns>
+		public ItemFilter InZone(string zoneName)
+		{
+			return new ZoneFilter(zoneName);
+		}
 	}
 }

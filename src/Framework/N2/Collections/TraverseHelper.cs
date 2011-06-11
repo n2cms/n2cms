@@ -30,12 +30,12 @@ namespace N2.Collections
 			this.pathGetter = pathGetter;
 		}
 
-		public ContentItem CurrentItem
+		protected ContentItem CurrentItem
 		{
 			get { return pathGetter().CurrentItem; }
 		}
 
-		public ContentItem CurrentPage
+		protected ContentItem CurrentPage
 		{
 			get { return pathGetter().CurrentPage; }
 		}
@@ -57,28 +57,34 @@ namespace N2.Collections
 			get { return N2.Find.ClosestOf<IRootPage>(CurrentItem) ?? engine.Persister.Repository.Get(engine.Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
-		public ILanguage CurrentLanguage
-		{
-			get { return engine.Resolve<ILanguageGateway>().GetLanguage(CurrentPage); }
-		}
-
+		/// <summary>The default filter to apply to all results from this object.</summary>
 		public ItemFilter DefaultFilter
 		{
 			get { return defaultFilter ?? (defaultFilter = filter.Accessible()); }
 			set { defaultFilter = value; }
 		}
 
+		/// <summary>Translations of the current item.</summary>
+		/// <returns></returns>
 		public IEnumerable<ILanguage> Translations()
 		{
 			var lg = engine.Resolve<ILanguageGateway>();
 			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
 		}
 
+		/// <summary>Ancestors of a given item.</summary>
+		/// <param name="item"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
 		{
-			return (filter ?? DefaultFilter).Pipe(N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true));
+			return N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true).Where(filter ?? DefaultFilter);
 		}
 
+		/// <summary>Ancestors between a start level and a descendant level.</summary>
+		/// <param name="startLevel"></param>
+		/// <param name="stopLevel"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> AncestorsBetween(int startLevel = 0, int stopLevel = 5)
 		{
 			var ancestors = N2.Find.EnumerateParents(CurrentItem, StartPage, true).ToList();
@@ -94,49 +100,110 @@ namespace N2.Collections
 					yield return ancestors[i];
 		}
 
+		/// <summary>Children of the current item.</summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Children()
 		{
 			return Children(null);
 		}
 
+		/// <summary>Children of the current item.</summary>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Children(ItemFilter filter)
 		{
 			return Children(CurrentItem, filter ?? DefaultFilter);
 		}
 
+		/// <summary>Children of a given item.</summary>
+		/// <param name="parent"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Children(ContentItem parent, ItemFilter filter = null)
 		{
 			if (parent == null) return Enumerable.Empty<ContentItem>();
 			
 			return parent.GetChildren(filter ?? DefaultFilter);
 		}
+		
+		/// <summary>Pages below the current item.</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> ChildPages()
+		{
+			return Children(CurrentPage, Content.Is.AccessiblePage());
+		}
 
+		/// <summary>Parts below the current item.</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> ChildParts()
+		{
+			return Children(Content.Is.Accessible() & Content.Is.Part());
+		}
+
+		/// <summary>Parts in a given zone below the current item.</summary>
+		/// <param name="zoneName"></param>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> ChildParts(string zoneName)
+		{
+			return Children(Content.Is.Accessible() & Content.Is.Part() & Content.Is.InZone(zoneName));
+		}
+
+		/// <summary>Descendants of the current item.</summary>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Descendants()
 		{
 			return N2.Find.EnumerateChildren(CurrentItem).Where(DefaultFilter);
 		}
 
+		/// <summary>Descendants of a given item.</summary>
+		/// <param name="ancestor"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> Descendants(ContentItem ancestor, ItemFilter filter = null)
 		{
-			return N2.Find.EnumerateChildren(ancestor).Where((filter ?? DefaultFilter).Match);
+			return N2.Find.EnumerateChildren(ancestor).Where(filter ?? DefaultFilter);
 		}
 
+		/// <summary>Descendant pages of a given item.</summary>
+		/// <param name="ancestor"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> DescendantPages(ContentItem ancestor, ItemFilter filter = null)
 		{
-			return N2.Find.EnumerateChildren(ancestor).Where(p => p.IsPage).Where((filter ?? DefaultFilter).Match);
+			return N2.Find.EnumerateChildren(ancestor).Where(Content.Is.Page()).Where(filter ?? DefaultFilter);
 		}
 
-		public IEnumerable<ContentItem> Siblings(ContentItem sibling = null)
+		/// <summary>Siblings of the current item.</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> Siblings()
+		{
+			return Siblings(null, null);
+		}
+
+		/// <summary>Siblings of a given item.</summary>
+		/// <param name="item"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> Siblings(ContentItem sibling)
 		{
 			return Siblings(sibling, null);
 		}
 
-		public IEnumerable<ContentItem> Siblings(ItemFilter filter = null)
+		/// <summary>Siblings of the current item.</summary>
+		/// <param name="item"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> Siblings(ItemFilter filter)
 		{
 			return Siblings(null, filter);
 		}
 
-		public IEnumerable<ContentItem> Siblings(ContentItem item = null, ItemFilter filter = null)
+		/// <summary>Siblings of a given item.</summary>
+		/// <param name="item"></param>
+		/// <param name="filter"></param>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> Siblings(ContentItem item, ItemFilter filter)
 		{
 			if (item == null) item = CurrentItem;
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
@@ -144,6 +211,9 @@ namespace N2.Collections
 			return item.Parent.GetChildren(filter ?? DefaultFilter);
 		}
 
+		/// <summary>The previous sibling among a given item's parent's children.</summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
 		public ContentItem PreviousSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
@@ -159,6 +229,9 @@ namespace N2.Collections
 			return null;
 		}
 
+		/// <summary>The next sibling among a given item's parent's children.</summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
 		public ContentItem NextSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
@@ -174,27 +247,45 @@ namespace N2.Collections
 			return null;
 		}
 
+		/// <summary>The level index of a given item.</summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
 		public int LevelOf(ContentItem item = null)
 		{
 			return Ancestors(item).Count();
 		}
 
-		public ContentItem AncestorAtLevel(int level)
+		/// <summary>The item at a given level from the start page.</summary>
+		/// <param name="levelIndex"></param>
+		/// <returns></returns>
+		public ContentItem AncestorAtLevel(int levelIndex)
 		{
-			return Ancestors().Reverse().Skip(level).FirstOrDefault();
+			return Ancestors().Reverse().Skip(levelIndex).FirstOrDefault();
 		}
 		
+		/// <summary>The parent of the current item (page or part).</summary>
+		/// <returns></returns>
 		public ContentItem Parent()
 		{
-			return Parent(null);
+			return Parent(CurrentItem);
 		}
 
+		/// <summary>The parent of a given item.</summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
 		public ContentItem Parent(ContentItem item)
 		{
 			if (item == null) item = CurrentItem;
 			if (item == StartPage) return null;
 
 			return item.Parent;
+		}
+
+		/// <summary>The parent of the current page.</summary>
+		/// <returns></returns>
+		public ContentItem PageParent()
+		{
+			return Parent(CurrentPage);
 		}
 
 		public ContentItem Path(string path, ContentItem startItem = null)

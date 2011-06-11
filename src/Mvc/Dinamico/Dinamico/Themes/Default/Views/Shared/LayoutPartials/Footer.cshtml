@@ -1,5 +1,5 @@
 ﻿@{
-	bool isOutOfStructure = Content.Path.CurrentItem == null && !string.IsNullOrEmpty(Request["returnUrl"]);
+	bool isOutOfStructure = Content.Current.Item == null && !string.IsNullOrEmpty(Request["returnUrl"]);
 	using (isOutOfStructure ? Content.BeginScope(Request["returnUrl"]) : Content.BeginScope(Content.Traverse.StartPage))
 	{
 	   @Content.Display.FooterText

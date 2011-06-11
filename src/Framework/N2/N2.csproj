@@ -264,6 +264,7 @@
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
     <Compile Include="Web\ContentHelperBase.cs" />
+    <Compile Include="Web\ContextHelper.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />

@@ -35,7 +35,7 @@ namespace N2.Web.Mvc
 
 		public virtual RenderHelper Render
 		{
-			get { return new RenderHelper { Html = Html, Content = Path.CurrentItem }; }
+			get { return new RenderHelper { Html = Html, Content = Current.Page }; }
 		}
 
 		// markup
@@ -43,9 +43,9 @@ namespace N2.Web.Mvc
 		public string UniqueID(string prefix = null)
 		{
 			if (string.IsNullOrEmpty(prefix))
-				return "_" + Path.CurrentItem.ID;
+				return "_" + Current.Page.ID;
 
-			return prefix + Path.CurrentItem.ID;
+			return prefix + Current.Page.ID;
 		}
 
 		public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
@@ -69,7 +69,7 @@ namespace N2.Web.Mvc
 
 		public string GetNavigationClass(ContentItem item)
 		{
-			return Path.CurrentItem == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
+			return Current.Page == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
 		}
 
 		public ILinkBuilder LinkTo(ContentItem item)
@@ -83,7 +83,7 @@ namespace N2.Web.Mvc
 
 		public bool HasValue(string detailName)
 		{
-			return Path.CurrentItem[detailName] != null && !("".Equals(Path.CurrentItem[detailName]));
+			return Current.Item[detailName] != null && !("".Equals(Current.Item[detailName]));
 		}
 
 		protected virtual ILinkBuilder CreateLink(ContentItem item)

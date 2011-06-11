@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<string>" %>
 <% var content = Html.Content(); %>
-<% var current = content.Path.CurrentPage; %>
+<% var current = content.Current.Page; %>
 <ul>
 <% foreach (var item in content.Traverse.Siblings(content.Is.Navigatable()))
    { %>

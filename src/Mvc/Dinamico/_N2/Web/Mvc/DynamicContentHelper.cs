@@ -18,7 +18,7 @@ namespace N2.Web.Mvc
 
 		public dynamic Display
 		{
-			get { return new DisplayHelper { Html = Html, Current = Path.CurrentItem }; }
+			get { return new DisplayHelper { Html = Html, Current = Current.Item }; }
 		}
 
 		public dynamic Has
@@ -30,14 +30,38 @@ namespace N2.Web.Mvc
 		{
 			get
 			{
-				if (Path.CurrentItem == null)
-					return new DataHelper(() => Path.CurrentItem);
+				if (Current.Item == null)
+					return new DataHelper(() => Current.Item);
 
-				string key = "DataHelper" + Path.CurrentItem.ID;
+				string key = "DataHelper" + Current.Item.ID;
 				var data = Html.ViewContext.ViewData[key] as DataHelper;
 				if (data == null)
-					Html.ViewContext.ViewData[key] = data = new DataHelper(() => Path.CurrentItem);
+					Html.ViewContext.ViewData[key] = data = new DataHelper(() => Current.Item);
 				return data;
+			}
+		}
+
+		public TranslateHelper Translate
+		{
+			get { return new TranslateHelper(); }
+		}
+
+		// Room for future improvement.
+		public class TranslateHelper
+		{
+			public IHtmlString this[string key]
+			{
+				get { return Html(key); }
+			}
+
+			public IHtmlString Html(string key)
+			{
+				return new HtmlString(key);
+			}
+
+			public string Text(string key)
+			{
+				return key;
 			}
 		}
 	}

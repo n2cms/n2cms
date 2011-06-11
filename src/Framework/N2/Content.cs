@@ -24,9 +24,8 @@ namespace N2
 		/// </summary>
 		public static TraverseHelper Traverse
 		{
-			get { return new TraverseHelper(Context.Current, Is, () => Context.Current.Resolve<IWebContext>().CurrentPath); }
+			get { return new TraverseHelper(Context.Current, Is, PathGetter); }
 		}
-
 
 		/// <summary>
 		/// Simplifies access to APIs related to search and querying.
@@ -34,6 +33,19 @@ namespace N2
 		public static SearchHelper Search
 		{
 			get { return new SearchHelper(Context.Current); }
+		}
+
+		/// <summary>
+		/// Simplifies access to the current page
+		/// </summary>
+		public static ContextHelper Current
+		{
+			get { return new ContextHelper(Context.Current, PathGetter); }
+		}
+
+		private static System.Func<PathData> PathGetter
+		{
+			get { return () => Context.Current.Resolve<IWebContext>().CurrentPath; }
 		}
 	}
 }

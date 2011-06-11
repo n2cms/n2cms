@@ -1,11 +1,11 @@
-﻿@using(Content.BeginScope(Request["returnUrl"], Content.Path.CurrentPage == null))
+﻿@using (Content.BeginScope(Request["returnUrl"], Content.Current.Page == null))
 {
 	var start = Content.Traverse.StartPage;
-	var current = Content.Path.CurrentPage;
+	var current = Content.Current.Page;
 <ul id="menu" class="topmenu menu level1">
 	<li class="logo">@using (Content.BeginScope(Content.Traverse.StartPage))
 {
-	Content.Render.Image("Logotype").Wrap(@<a href="@Content.Path.CurrentItem.Url" title="@Content.Path.CurrentItem.Title" class="logotype">@item.RenderContents()</a>).Render();
+	Content.Render.Image("Logotype").Wrap(@<a href="@Content.Current.Item.Url" title="@Content.Current.Item.Title" class="logotype">@item.RenderContents()</a>).Render();
 }</li>
 	@Content.TreeFrom(start, takeLevels: 2, rootless: true)
 </ul>

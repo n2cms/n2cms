@@ -1,5 +1,5 @@
 ﻿@model string
-@{ var current = Content.Path.CurrentPage; }
+@{ var current = Content.Current.Page; }
 @Html.UnorderedList(Content.Traverse.Siblings(Content.Is.Navigatable()), 
 	@<span>
 	@if (item.Data != current)
