@@ -11,7 +11,7 @@ a.opener { text-decoration:none }
 	-webkit-box-shadow: 0 2px 2px #999;
 	box-shadow: 0 2px 2px #999;
 }
-	.dropmenu .closer { text-decoration:none; position:absolute; right:8px; width:16px; height:16px; display:block; background:transparent url(../n2/resources/icons/cross.png) no-repeat 50% 50%; }
+	.dropmenu .closer { text-decoration:none; position:absolute; right:8px; width:16px; height:16px; display:block; background:transparent url(../../../../n2/resources/icons/cross.png) no-repeat 50% 50%; }
 	.dropmenu ul { list-style-type:none; padding:0 1em; margin:0; }
 
 .separator { border-top:solid 1px #eee; padding-top:20px; }

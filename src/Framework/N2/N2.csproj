@@ -265,6 +265,7 @@
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
     <Compile Include="Web\ContentHelperBase.cs" />
     <Compile Include="Web\ContextHelper.cs" />
+    <Compile Include="Web\CssCompilerHandler.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
+    <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\CommentAnalyzer.cs" />
