@@ -34,6 +34,7 @@ namespace N2.Extensions.Tests.Linq
 			item.DoubleProperty = 123456789;
 			item.BooleanProperty = false;
 			item.ContentItemProperty = root;
+			item.AddTo(root);
 
 			engine.Persister.Repository.Save(root);
 			engine.Persister.Repository.Save(item);
