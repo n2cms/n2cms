@@ -126,12 +126,19 @@ namespace N2.Collections
 			
 			return parent.GetChildren(filter ?? DefaultFilter);
 		}
-		
+
 		/// <summary>Pages below the current item.</summary>
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildPages()
 		{
 			return Children(CurrentPage, Content.Is.AccessiblePage());
+		}
+
+		/// <summary>Pages below a given item.</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> ChildPages(ContentItem item)
+		{
+			return Children(item, Content.Is.AccessiblePage());
 		}
 
 		/// <summary>Parts below the current item.</summary>
