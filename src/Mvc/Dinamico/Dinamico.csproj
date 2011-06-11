@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dinamico\Defaults.cs" />
-    <Compile Include="Dinamico\Controllers\AccountController.cs" />
+    <Compile Include="Dinamico\Controllers\MembershipController.cs" />
     <Compile Include="Dinamico\Controllers\ContentPartsController.cs" />
     <Compile Include="Dinamico\Controllers\ContentPagesController.cs" />
     <Compile Include="Dinamico\Controllers\LanguageIntersectionController.cs" />
@@ -177,10 +177,10 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Dinamico\Themes\Default\Views\_ViewStart.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Account\ChangePassword.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Account\LogOn.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Account\Register.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Membership\ChangePassword.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Membership\ChangePasswordSuccess.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Membership\LogOn.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Membership\Register.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\Error.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\LayoutPartials\LogOn.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\_Layout.cshtml" />
@@ -245,9 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Terracotta\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Dinamico\Themes\Default\Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Default\Views\Shared\LayoutPartials\Translations.cshtml" />

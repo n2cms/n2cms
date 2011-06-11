@@ -110,7 +110,14 @@
 	</Target>
 
 	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
+		<ItemGroup>
+			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
+																			 $(ManagementFolder)\bin\N2.xml*;
+																			 $(LibFolder)\NHibernate.Caches.*.dll;"
+															Exclude="$(ManagementFolder)\bin\N2.Security.*;
+																			 $(ManagementFolder)\bin\N2.Templates.*;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
 		
 		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
 		<PropertyGroup>
@@ -138,7 +145,7 @@ public static string ScriptMain()
 		<FileUpdate Files="$(Framework-NugetFolder)\N2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\lib\" />
-		<Copy SourceFiles="$(RootFolder)\lib\System.Data.SQLite.dll;" DestinationFolder="$(Framework-NugetFolder)\lib\" />
+		<!--<Copy SourceFiles="$(RootFolder)\lib\System.Data.SQLite.dll;" DestinationFolder="$(Framework-NugetFolder)\lib\" />-->
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
 	</Target>

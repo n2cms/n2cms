@@ -11,9 +11,9 @@ using Dinamico.Models;
 
 namespace Dinamico.Controllers
 {
-	public class AccountController : Controller
+	public class MembershipController : Controller
 	{
-		public AccountController(IFormsAuthenticationService formsService, IMembershipService membershipService)
+		public MembershipController(IFormsAuthenticationService formsService, IMembershipService membershipService)
 		{
 			FormsService = formsService;
 			MembershipService = membershipService;

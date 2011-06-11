@@ -90,7 +90,8 @@ public static string ScriptMain()
 																						$(Dinamico-SourceFolder)\Global.*;
 																						$(Dinamico-SourceFolder)\web.*;
 																						$(Dinamico-SourceFolder)\Properties\*;
-																						$(Dinamico-SourceFolder)\*.csproj;" />
+																						$(Dinamico-SourceFolder)\*.csproj;
+																						$(Dinamico-SourceFolder)\App_Data\*.sdf;" />
 		</ItemGroup>
 		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.ico' or '%(Extension)' == '.png' or '%(Extension)' == '.sdf' or '%(Extension)' == '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.ico' and '%(Extension)' != '.png' and '%(Extension)' != '.sdf' and '%(Extension)' != '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->

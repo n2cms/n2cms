@@ -68,17 +68,17 @@
 
 		<!-- These membership and role providers store their data as content items. You can also use the forms authentication 
 					 credentials only (then remove these sections) or the default ASP.NET providers (search for asp.net membership) -->
-		<membership defaultProvider="ContentMembershipProvider">
+		<membership>
 			<providers>
-				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" />
+				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
 			</providers>
 		</membership>
-		<roleManager enabled="true" defaultProvider="ContentRoleProvider">
+		<roleManager>
 			<providers>
 				<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
 			</providers>
 		</roleManager>
-		<profile defaultProvider="ContentProfileProvider">
+		<profile>
 			<providers>
 				<add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
 			</providers>

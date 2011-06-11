@@ -11,22 +11,25 @@ namespace N2.Web
 	[Service]
 	public class MultipleSitesInitializer : IAutoStart
 	{
-		public MultipleSitesInitializer(IPersister persister, IHost host, ISitesProvider sitesProvider, HostSection config, IDefinitionManager ignored)
+		public MultipleSitesInitializer(IPersister persister, IHost host, ISitesProvider sitesProvider, ConnectionContext context, HostSection config, IDefinitionManager ignored)
 		{
 			Debug.WriteLine("MultipleSitesInitializer");
 
 			if (config.MultipleSites && config.DynamicSites)
 			{
-				host.AddSites(sitesProvider.GetSites());
-				persister.ItemSaved += delegate(object sender, ItemEventArgs e)
+				context.Online += delegate
 				{
-					if (e.AffectedItem is ISitesSource)
+					host.AddSites(sitesProvider.GetSites());
+					persister.ItemSaved += delegate(object sender, ItemEventArgs e)
 					{
-						IList<Site> sites = Host.ExtractSites(config);
-						sites = Host.Union(sites, sitesProvider.GetSites());
+						if (e.AffectedItem is ISitesSource)
+						{
+							IList<Site> sites = Host.ExtractSites(config);
+							sites = Host.Union(sites, sitesProvider.GetSites());
 
-						host.ReplaceSites(host.DefaultSite, sites);
-					}
+							host.ReplaceSites(host.DefaultSite, sites);
+						}
+					};
 				};
 			}
 		}

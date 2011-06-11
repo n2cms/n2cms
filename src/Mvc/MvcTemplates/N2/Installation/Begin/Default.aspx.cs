@@ -55,10 +55,20 @@ namespace N2.Edit.Install.Begin
 				System.Configuration.Configuration cfg;
 				if (TryOpenWebConfiguration(out cfg))
 				{
-					AuthenticationSection authentication = cfg.GetSection("system.web/authentication") as AuthenticationSection;
+					var authentication = (AuthenticationSection)cfg.GetSection("system.web/authentication");
 					if(chkLoginUrl.Checked)
 						authentication.Forms.LoginUrl = "N2/Login.aspx";
 					authentication.Forms.Credentials.Users["admin"].Password = txtPassword.Text;
+
+					var membership = (MembershipSection)cfg.GetSection("system.web/membership");
+					membership.DefaultProvider = "ContentMembershipProvider";
+
+					var roleManager = (RoleManagerSection)cfg.GetSection("system.web/roleManager");
+					roleManager.Enabled = true;
+					roleManager.DefaultProvider = "ContentRoleProvider";
+
+					var profile = (ProfileSection)cfg.GetSection("system.web/profile");
+					profile.DefaultProvider = "ContentProfileProvider";
 
 					cfg.Save();
 
