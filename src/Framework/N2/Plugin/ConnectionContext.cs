@@ -79,7 +79,7 @@ namespace N2.Plugin
 			}
 		}
 
-		public void SetConnected(SystemStatusLevel statusLevel)
+		public ConnectionContext SetConnected(SystemStatusLevel statusLevel)
 		{
 			lock (this)
 			{
@@ -102,6 +102,7 @@ namespace N2.Plugin
 						online(this, new EventArgs());
 				}
 			}
+			return this;
 		}
 	}
 }
