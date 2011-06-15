@@ -45,14 +45,18 @@ namespace N2.Edit.FileSystem
 
 		private string GetShadowFolder(ContentItem item)
 		{
-			if(mode == DefaultDirectoryMode.UploadFolder)
+			if (mode == DefaultDirectoryMode.UploadFolder)
 				return null;
 
 			if (mode == DefaultDirectoryMode.NodeName)
 				return GetFolderRoot() + item.Name + "/";
 
+			if (item.VersionOf != null)
+				item = item.VersionOf;
+
 			string segments = null;
 			ContentItem current = mode == DefaultDirectoryMode.RecursiveNamesFromParent ? item.Parent : item;
+
 			for (; current != null && current.Parent != null && !host.IsStartPage(current); current = current.Parent)
 			{
 				if (mode == DefaultDirectoryMode.TopNodeName)

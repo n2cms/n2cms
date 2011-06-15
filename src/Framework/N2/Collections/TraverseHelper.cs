@@ -68,8 +68,16 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ILanguage> Translations()
 		{
+			return Translations(CurrentPage);
+		}
+
+		/// <summary>Translations of the current item.</summary>
+		/// <returns></returns>
+		public IEnumerable<ILanguage> Translations(ContentItem item)
+		{
+			UseMasterVersion(ref item);
 			var lg = engine.Resolve<ILanguageGateway>();
-			return lg.FindTranslations(CurrentPage).Select(i => lg.GetLanguage(i));
+			return lg.FindTranslations(item).Select(i => lg.GetLanguage(i));
 		}
 
 		/// <summary>Ancestors of a given item.</summary>
@@ -123,6 +131,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> Children(ContentItem parent, ItemFilter filter = null)
 		{
 			if (parent == null) return Enumerable.Empty<ContentItem>();
+			UseMasterVersion(ref parent);
 			
 			return parent.GetChildren(filter ?? DefaultFilter);
 		}
@@ -214,6 +223,7 @@ namespace N2.Collections
 		{
 			if (item == null) item = CurrentItem;
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
+			UseMasterVersion(ref item);
 
 			return item.Parent.GetChildren(filter ?? DefaultFilter);
 		}
@@ -224,6 +234,7 @@ namespace N2.Collections
 		public ContentItem PreviousSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
+			UseMasterVersion(ref item);
 
 			ContentItem previous = null;
 			foreach (var sibling in Siblings(item))
@@ -242,6 +253,7 @@ namespace N2.Collections
 		public ContentItem NextSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
+			UseMasterVersion(ref item);
 
 			bool next = false;
 			foreach (var sibling in Siblings(item))
@@ -284,6 +296,7 @@ namespace N2.Collections
 		{
 			if (item == null) item = CurrentItem;
 			if (item == StartPage) return null;
+			UseMasterVersion(ref item);
 
 			return item.Parent;
 		}
@@ -298,6 +311,12 @@ namespace N2.Collections
 		public ContentItem Path(string path, ContentItem startItem = null)
 		{
 			return (startItem ?? StartPage).FindPath(path).CurrentItem;
+		}
+
+		private void UseMasterVersion(ref ContentItem item)
+		{
+			if (item != null && item.VersionOf != null)
+				item = item.VersionOf;
 		}
 	}
 }
