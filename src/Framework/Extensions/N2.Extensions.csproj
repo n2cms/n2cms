@@ -125,7 +125,6 @@
     <Compile Include="Web\Mvc\MvcAdapter.cs" />
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\Obsolete\N2ControllerFactory.cs" />
-    <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\ContentViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>

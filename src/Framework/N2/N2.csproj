@@ -140,6 +140,7 @@
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Definitions\IWebFormsAddable.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />

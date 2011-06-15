@@ -24,7 +24,7 @@ namespace N2.Web.UI.WebControls
 			base.CreateControlHierarchy(useDataSource);
 		}
 
-		protected override void OnItemCreated(System.Web.UI.WebControls.RepeaterItemEventArgs e)
+		protected override void OnItemCreated(RepeaterItemEventArgs e)
 		{
 			base.OnItemCreated(e);
 

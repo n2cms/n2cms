@@ -48,5 +48,29 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(rc.Skip(1).First(), Is.InstanceOf<ContentRoute>());
 		}
 
+		[Test]
+		public void GenericContentRoute_IsInsertedBefore_ContentRoute()
+		{
+			RouteCollection rc = new RouteCollection();
+			rc.MapContentRoute("content", MockRepository.GenerateStub<IEngine>());
+			rc.MapContentRoute<Models.RegularPage>("area", MockRepository.GenerateStub<IEngine>());
+
+			Assert.That(rc.Count, Is.EqualTo(2));
+			Assert.That(rc.First(), Is.InstanceOf<ContentRoute<Models.RegularPage>>());
+			Assert.That(rc.Skip(1).First(), Is.InstanceOf<ContentRoute>());
+		}
+
+		[Test]
+		public void GenericContentRoute_IsntPushedBackBy_ContentRoute()
+		{
+			RouteCollection rc = new RouteCollection();
+			rc.MapContentRoute<Models.RegularPage>("area", MockRepository.GenerateStub<IEngine>());
+			rc.MapContentRoute("content", MockRepository.GenerateStub<IEngine>());
+
+			Assert.That(rc.Count, Is.EqualTo(2));
+			Assert.That(rc.First(), Is.InstanceOf<ContentRoute<Models.RegularPage>>());
+			Assert.That(rc.Skip(1).First(), Is.InstanceOf<ContentRoute>());
+		}
+
 	}
 }
