@@ -1,1 +1,1 @@
-build /t:framework-nuget&dinamico-nuget & pause
+build /t:framework-nuget;dinamico-nuget & pause
