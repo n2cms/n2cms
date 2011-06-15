@@ -96,7 +96,7 @@ table.editDetail { border-collapse:collapse; }
 #content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border:none; padding:2px; border:solid 1px #AAA; }
 #content .mceToolbar table { background-color:transparent; }
 #content .mceStatusbar { background:#F8F8E8 url(../../Resources/Img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
-
+.mceListBoxMenu td,th { overflow:visible; } /* fix: IE9 may show horizontal scrollbars in drop down menu */
 
 .framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
 .framed .toolbar .iconed:hover  { background-position:1px 4px; padding-left:19px; }
