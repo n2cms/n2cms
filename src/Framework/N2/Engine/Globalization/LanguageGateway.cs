@@ -236,8 +236,11 @@ namespace N2.Engine.Globalization
         /// <param name="item">The item to remove as translation.</param>
         public void Unassociate(ContentItem item)
         {
-            item.TranslationKey = null;
-            persister.Repository.Save(item);
+			if (item.TranslationKey != null)
+			{
+				item.TranslationKey = null;
+				persister.Repository.Save(item);
+			}
         }
 
         /// <summary>Throws an exception if any of the items is a language root.</summary>
