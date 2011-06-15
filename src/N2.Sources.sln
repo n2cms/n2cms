@@ -22,30 +22,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0AFCEA00-8510-48F6-B949-22796F899C77}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\releases\release_1.3.3.txt = ..\docs\releases\release_1.3.3.txt
-		..\docs\releases\release_1.3.4.txt = ..\docs\releases\release_1.3.4.txt
-		..\docs\releases\release_1.3.5.txt = ..\docs\releases\release_1.3.5.txt
-		..\docs\releases\release_1.4.1.txt = ..\docs\releases\release_1.4.1.txt
-		..\docs\releases\release_1.4.2.txt = ..\docs\releases\release_1.4.2.txt
-		..\docs\releases\release_1.4.3.txt = ..\docs\releases\release_1.4.3.txt
-		..\docs\releases\release_1.4.4.txt = ..\docs\releases\release_1.4.4.txt
-		..\docs\releases\release_1.4.5.txt = ..\docs\releases\release_1.4.5.txt
-		..\docs\releases\release_1.4.txt = ..\docs\releases\release_1.4.txt
 		..\docs\releases\release_1.5.txt = ..\docs\releases\release_1.5.txt
 		..\docs\releases\release_2.0.txt = ..\docs\releases\release_2.0.txt
 		..\docs\releases\release_2.1.txt = ..\docs\releases\release_2.1.txt
-		..\docs\releases\upgrade_1.3.3.txt = ..\docs\releases\upgrade_1.3.3.txt
-		..\docs\releases\upgrade_1.3.4.txt = ..\docs\releases\upgrade_1.3.4.txt
-		..\docs\releases\upgrade_1.3.5.txt = ..\docs\releases\upgrade_1.3.5.txt
-		..\docs\releases\upgrade_1.4.1.txt = ..\docs\releases\upgrade_1.4.1.txt
-		..\docs\releases\upgrade_1.4.2.txt = ..\docs\releases\upgrade_1.4.2.txt
-		..\docs\releases\upgrade_1.4.3.txt = ..\docs\releases\upgrade_1.4.3.txt
-		..\docs\releases\upgrade_1.4.4.txt = ..\docs\releases\upgrade_1.4.4.txt
-		..\docs\releases\upgrade_1.4.5.txt = ..\docs\releases\upgrade_1.4.5.txt
-		..\docs\releases\upgrade_1.4.txt = ..\docs\releases\upgrade_1.4.txt
+		..\docs\releases\release_2.2.txt = ..\docs\releases\release_2.2.txt
 		..\docs\releases\upgrade_1.5.txt = ..\docs\releases\upgrade_1.5.txt
 		..\docs\releases\upgrade_2.0.txt = ..\docs\releases\upgrade_2.0.txt
 		..\docs\releases\upgrade_2.1.txt = ..\docs\releases\upgrade_2.1.txt
+		..\docs\releases\upgrade_2.2.txt = ..\docs\releases\upgrade_2.2.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}"

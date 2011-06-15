@@ -1,3 +1,4 @@
+- save&preview and editablechildren (workitem/30541)
 - nuget issues http://n2cms.codeplex.com/discussions/260635
 - contenttype from model discussions/259496
 - extend user screen (discussions/257790)
