@@ -62,10 +62,10 @@ namespace N2.Configuration
 		}
 
 		/// <summary>NHibernate option for database query batching.</summary>
-		[ConfigurationProperty("batchSize", DefaultValue = 25)]
-		public int BatchSize
+		[ConfigurationProperty("batchSize")]
+		public int? BatchSize
 		{
-			get { return (int)base["batchSize"]; }
+			get { return (int?)base["batchSize"]; }
 			set { base["batchSize"] = value; }
 		}
 
