@@ -17,6 +17,7 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
+using NHibernate.AdoNet;
 
 namespace N2.Persistence.NH
 {
@@ -51,17 +52,16 @@ namespace N2.Persistence.NH
 			this.participators = participators;
 
 			if (config == null) config = new DatabaseSection();
+			TryLocatingHbmResources = config.TryLocatingHbmResources;
+			tablePrefix = config.TablePrefix;
+			batchSize = config.BatchSize;
+			childrenLaziness = config.ChildrenLaziness;
 
 			if (!string.IsNullOrEmpty(config.HibernateMapping))
 				DefaultMapping = config.HibernateMapping;
 
 			SetupProperties(config, connectionStrings);
 			SetupMappings(config);
-
-			TryLocatingHbmResources = config.TryLocatingHbmResources;
-			tablePrefix = config.TablePrefix;
-			batchSize = config.BatchSize;
-			childrenLaziness = config.ChildrenLaziness;
 		}
 
 		private void SetupMappings(DatabaseSection config)
@@ -85,7 +85,10 @@ namespace N2.Persistence.NH
 			Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
 			Properties[NHibernate.Cfg.Environment.Hbm2ddlKeyWords] = "none";
 
-			SetupFlavourProperties(config, connectionStrings);
+			var flavor = SetupFlavourProperties(config, connectionStrings);
+			
+			if (batchSize <= 1)
+				Properties[NHibernate.Cfg.Environment.BatchStrategy] = typeof(NonBatchingBatcherFactory).AssemblyQualifiedName;
 
 			SetupCacheProperties(config);
 
@@ -97,7 +100,7 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		private void SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
+		private DatabaseFlavour SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			DatabaseFlavour flavour = config.Flavour;
 			if (flavour == DatabaseFlavour.AutoDetect)
@@ -172,6 +175,7 @@ namespace N2.Persistence.NH
 				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
+			return flavour;
 		}
 
 		private DatabaseFlavour DetectFlavor(ConnectionStringSettings css)
