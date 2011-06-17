@@ -71,6 +71,7 @@ namespace N2.Web.Mvc
 			set { currentPart = value; }
 		}
 
+		/// <summary>Access to commonly used APIs.</summary>
 		public ControllerContentHelper Content
 		{
 			get { return content ?? (content = new ControllerContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }

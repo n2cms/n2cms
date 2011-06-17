@@ -17,6 +17,7 @@ namespace N2.Web.UI
 			set { currentItem = value; }
 		}
 
+		/// <summary>Access to commonly used APIs.</summary>
 		public FormsContentHelper Content
 		{
 			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }

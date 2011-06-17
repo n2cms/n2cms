@@ -4,12 +4,13 @@
 	<!-- Framework -->
 
 	<ItemGroup>
-		<Framework-Dependencies Include="$(LibFolder)\Castle*;
-									$(LibFolder)\Iesi.Collections.dll;
-									$(LibFolder)\log4net.dll;
-									$(LibFolder)\NHibernate.dll;
-									$(LibFolder)\NHibernate.Caches.SysCache2.dll;
-									$(RootFolder)\lib\System.Data.SQLite.dll"/>
+		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
+																		 $(LibFolder)\Castle.Windsor.*;
+																		 $(LibFolder)\Iesi.Collections.dll;
+																		 $(LibFolder)\log4net.dll;
+																		 $(LibFolder)\NHibernate.dll;
+																		 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
+																		 $(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
 												$(DocFolder)\howto_install.txt;
