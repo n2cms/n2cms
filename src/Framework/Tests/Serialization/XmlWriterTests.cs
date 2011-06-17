@@ -9,6 +9,7 @@ using N2.Persistence.Serialization;
 using N2.Security;
 using N2.Tests.Serialization.Items;
 using NUnit.Framework;
+using System.Web;
 
 namespace N2.Tests.Serialization
 {
@@ -134,7 +135,7 @@ namespace N2.Tests.Serialization
 			nodes.MoveNext();
 
 			Assert.AreEqual(1, nodes.Count);
-			Assert.AreEqual(alphabet, nodes.Current.Value);
+			Assert.AreEqual(HttpUtility.HtmlEncode(alphabet), nodes.Current.Value);
 		}
 
 		[Test]

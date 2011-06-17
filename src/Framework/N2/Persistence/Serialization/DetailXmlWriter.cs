@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using N2.Details;
+using System.Web;
 
 namespace N2.Persistence.Serialization
 {
@@ -79,17 +80,9 @@ namespace N2.Persistence.Serialization
 
 					if (!string.IsNullOrEmpty(value))
 					{
-						var pi = item.GetContentType().GetProperty(detail.Name);
-						if (pi != null)
-						{
-							var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
-							foreach (IRelativityTransformer transformer in transformers)
-							{
-								if (transformer.RelativeWhen == RelativityMode.Always || transformer.RelativeWhen == RelativityMode.ImportingOrExporting)
-									value = transformer.Rebase(value, applicationPath, "~/");
-							}
-						}
-
+						value = ExecuteRelativityTransformers(item, detail.Name, value);
+						element.WriteAttribute("encoded", true);
+						value = HttpUtility.HtmlEncode(value);
 						element.WriteCData(value);
 					}
 					return;
@@ -97,6 +90,21 @@ namespace N2.Persistence.Serialization
 				default:
 					throw new InvalidOperationException("Invalid detail type: " + valueTypeKey);
 			}
+		}
+
+		private string ExecuteRelativityTransformers(ContentItem item, string detailName, string value)
+		{
+			var pi = item.GetContentType().GetProperty(detailName);
+			if (pi != null)
+			{
+				var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
+				foreach (IRelativityTransformer transformer in transformers)
+				{
+					if (transformer.RelativeWhen == RelativityMode.Always || transformer.RelativeWhen == RelativityMode.ImportingOrExporting)
+						value = transformer.Rebase(value, applicationPath, "~/");
+				}
+			}
+			return value;
 		}
 
 		private void WriteMultiValue(ContentItem item, ContentDetail detail, string valueTypeKey, object value, XmlTextWriter writer)

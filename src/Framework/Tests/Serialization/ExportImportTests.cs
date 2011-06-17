@@ -416,6 +416,18 @@ namespace N2.Tests.Serialization
 			Assert.That(readItem.PersistableObject, Is.EquivalentTo(item.PersistableObject));
 		}
 
+		[Test]
+		public void Scripts_AreTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.TextFile = "<script><![CDATA[alert(1);]]></script>";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			Assert.That(readItem.TextFile, Is.EqualTo(item.TextFile));
+		}
+
         private void AssertEquals(DateTime? expected, DateTime? actual)
         {
             Assert.That(expected.HasValue, Is.EqualTo(actual.HasValue));
