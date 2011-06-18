@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using N2.Engine;
+using N2.Web.Mvc;
 
 namespace N2.Web.UI
 {
@@ -13,6 +14,7 @@ namespace N2.Web.UI
     {
 		private TPage currentPage = null;
 		private IEngine engine = null;
+		private FormsContentHelper content = null;
 
 		/// <summary>Gets the current CMS Engine.</summary>
 		public IEngine Engine
@@ -32,6 +34,12 @@ namespace N2.Web.UI
 		public virtual TPage CurrentItem
 		{
 			get { return CurrentPage; }
+		}
+
+		public FormsContentHelper Content
+		{
+			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
+			set { content = value; }
 		}
 
         protected virtual bool AllowOutputCache

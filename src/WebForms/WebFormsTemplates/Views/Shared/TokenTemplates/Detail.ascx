@@ -3,6 +3,6 @@
 	var segments = Model.Split('|');
 	using (Html.Content().BeginScope(segments.Length > 1 ? segments[1] : null))
 	{ %>
-		<%= Html.Content().CurrentItem[segments[0]]%>
+		<%= Html.Content().Path.CurrentItem[segments[0]]%>
 	<% }
 } %>

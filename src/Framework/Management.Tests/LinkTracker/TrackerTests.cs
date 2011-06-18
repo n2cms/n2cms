@@ -31,7 +31,7 @@ namespace N2.Edit.Tests.LinkTracker
 			base.SetUp();
 
 			var wrapper = new N2.Tests.Fakes.FakeWebContextWrapper();
-			parser = new UrlParser(persister, wrapper, new Host(wrapper, 1, 1), new HostSection());
+			parser = TestSupport.Setup(persister, wrapper, new Host(wrapper, 1, 1));
 
 			root = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(2, "item1", root);
@@ -158,7 +158,7 @@ namespace N2.Edit.Tests.LinkTracker
 				new FakePathProvider(((FakeFileSystem)Context.Current.Resolve<IFileSystem>()).BasePath);
 
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
-			((IInjectable<IUrlParser>)rootDir).Set(new UrlParser(persister, null, new Host(null, 1, 1), new HostSection()));
+			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
 
 			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
 			persister.Save(root);

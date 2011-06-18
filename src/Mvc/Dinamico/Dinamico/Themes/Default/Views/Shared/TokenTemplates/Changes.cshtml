@@ -1,0 +1,7 @@
+﻿@model string
+@{ var changes = Content.Search.Items
+	   .Where(ci => ci.ZoneName == null)
+	   .Where(ci => ci.State != N2.ContentState.Deleted)
+	   .OrderByDescending(ci => ci.Updated)
+	   .Take(10); }
+@Html.UnorderedList(changes, @<span>@Content.LinkTo(item.Data)</span>)

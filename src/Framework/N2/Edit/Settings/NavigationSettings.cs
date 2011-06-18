@@ -23,8 +23,8 @@ namespace N2.Edit.Settings
 		/// </summary>
 		public bool DisplayDataItems
 		{
-			get { return Boolean.Parse(GetCookie(context.Request.Cookies).Value); }
-			set { GetCookie(context.Response.Cookies).Value = value.ToString(); }
+			get { return Boolean.Parse(GetCookie(context.HttpContext.Request.Cookies).Value); }
+			set { GetCookie(context.HttpContext.Response.Cookies).Value = value.ToString(); }
 		}
 
 		private static HttpCookie GetCookie(HttpCookieCollection cookies)

@@ -3,7 +3,7 @@
     <asp:TextBox ID="txtQuery" runat="server"></asp:TextBox>
     <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
     
-    <asp:Label Text='<%# string.Format("{0} pages found.", Hits.Count) %>' runat="server" />
+    <asp:Label Text='<%# string.Format("{0} pages found.", TotalCount) %>' runat="server" />
     <asp:Repeater ID="rptHits" runat="server" DataSource='<%# Hits %>'>
         <HeaderTemplate><div class="list"></HeaderTemplate>
         <ItemTemplate>

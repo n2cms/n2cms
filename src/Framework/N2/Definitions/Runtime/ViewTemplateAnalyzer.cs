@@ -10,6 +10,7 @@ using System.Web.Routing;
 using N2.Definitions.Static;
 using N2.Engine;
 using N2.Web.Mvc;
+using N2.Web;
 
 namespace N2.Definitions.Runtime
 {
@@ -31,9 +32,13 @@ namespace N2.Definitions.Runtime
 		{
 			foreach (var source in sources)
 			{
-				string virtualDir = "~/Views/" + source.ControllerName;
+				string virtualDir = Url.ResolveTokens(Url.ThemesUrlToken) + "Default/Views/" + source.ControllerName;
 				if (!vpp.DirectoryExists(virtualDir))
-					continue;
+				{
+					virtualDir = "~/Views/" + source.ControllerName;
+					if (!vpp.DirectoryExists(virtualDir))
+						continue;
+				}
 
 				List<ViewTemplateDescription> descriptions = new List<ViewTemplateDescription>();
 				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(source.ViewFileExtension)))

@@ -115,26 +115,6 @@
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
-    <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
-    <Compile Include="Areas\Management\Models\AnalyticsViewModel.cs" />
-    <Compile Include="Areas\Management\Models\Extensions.cs" />
-    <Compile Include="Areas\Management\Models\ManageAnalyticsPart.cs" />
-    <Compile Include="Areas\Management\Models\AnalyticsPartBase.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\AnalyticsAccountInfo.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\CityReport.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\Dimension.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\GenericEntry.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\Metric.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\ReportRequestor.cs" />
-    <Compile Include="Areas\Management\Models\ReimersGoogle\TokenRequestor.cs" />
-    <Compile Include="Areas\Management\Models\ConfigureAnalyticsViewModel.cs" />
-    <Compile Include="Areas\Management\Root.aspx.cs">
-      <DependentUpon>Root.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Areas\Management\Root.aspx.designer.cs">
-      <DependentUpon>Root.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
     <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
     <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
@@ -438,8 +418,6 @@
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
     <Content Include="Areas\Tests\Views\Web.config" />
-    <Content Include="Areas\Management\Web.config" />
-    <Content Include="Areas\Management\Views\Web.config" />
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
     <Content Include="App_Themes\ContentFocus\content_top.gif" />
     <Content Include="App_Themes\ContentFocus\list_dark.gif" />
@@ -586,16 +564,6 @@
     <Content Include="App_Themes\Stripes\top_bg.gif" />
     <Content Include="App_Themes\Stripes\top_bg.png" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
-    <Content Include="Areas\Management\Resources\excanvas.js" />
-    <Content Include="Areas\Management\Resources\excanvas.min.js" />
-    <Content Include="Areas\Management\Resources\jquery.flot.js" />
-    <Content Include="Areas\Management\Resources\jquery.flot.min.js" />
-    <Content Include="Areas\Management\Root.aspx" />
-    <Content Include="Areas\Management\Views\ManageAnalytics\ConfigureStatistics.ascx" />
-    <Content Include="Areas\Management\Views\ManageAnalytics\Index.ascx" />
-    <Content Include="Areas\Management\Views\ManageAnalytics\InputToken.ascx" />
-    <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
-    <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="Areas\Tests\Demo\lav.jpg" />
     <Content Include="Areas\Tests\Demo\lime.jpg" />
     <Content Include="Areas\Tests\Demo\logo_white.png" />
@@ -668,7 +636,6 @@
     <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Upload\" />
     <Folder Include="Views\Shared\App_LocalResources\" />

@@ -22,30 +22,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0AFCEA00-8510-48F6-B949-22796F899C77}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\releases\release_1.3.3.txt = ..\docs\releases\release_1.3.3.txt
-		..\docs\releases\release_1.3.4.txt = ..\docs\releases\release_1.3.4.txt
-		..\docs\releases\release_1.3.5.txt = ..\docs\releases\release_1.3.5.txt
-		..\docs\releases\release_1.4.1.txt = ..\docs\releases\release_1.4.1.txt
-		..\docs\releases\release_1.4.2.txt = ..\docs\releases\release_1.4.2.txt
-		..\docs\releases\release_1.4.3.txt = ..\docs\releases\release_1.4.3.txt
-		..\docs\releases\release_1.4.4.txt = ..\docs\releases\release_1.4.4.txt
-		..\docs\releases\release_1.4.5.txt = ..\docs\releases\release_1.4.5.txt
-		..\docs\releases\release_1.4.txt = ..\docs\releases\release_1.4.txt
 		..\docs\releases\release_1.5.txt = ..\docs\releases\release_1.5.txt
 		..\docs\releases\release_2.0.txt = ..\docs\releases\release_2.0.txt
 		..\docs\releases\release_2.1.txt = ..\docs\releases\release_2.1.txt
-		..\docs\releases\upgrade_1.3.3.txt = ..\docs\releases\upgrade_1.3.3.txt
-		..\docs\releases\upgrade_1.3.4.txt = ..\docs\releases\upgrade_1.3.4.txt
-		..\docs\releases\upgrade_1.3.5.txt = ..\docs\releases\upgrade_1.3.5.txt
-		..\docs\releases\upgrade_1.4.1.txt = ..\docs\releases\upgrade_1.4.1.txt
-		..\docs\releases\upgrade_1.4.2.txt = ..\docs\releases\upgrade_1.4.2.txt
-		..\docs\releases\upgrade_1.4.3.txt = ..\docs\releases\upgrade_1.4.3.txt
-		..\docs\releases\upgrade_1.4.4.txt = ..\docs\releases\upgrade_1.4.4.txt
-		..\docs\releases\upgrade_1.4.5.txt = ..\docs\releases\upgrade_1.4.5.txt
-		..\docs\releases\upgrade_1.4.txt = ..\docs\releases\upgrade_1.4.txt
+		..\docs\releases\release_2.2.txt = ..\docs\releases\release_2.2.txt
 		..\docs\releases\upgrade_1.5.txt = ..\docs\releases\upgrade_1.5.txt
 		..\docs\releases\upgrade_2.0.txt = ..\docs\releases\upgrade_2.0.txt
 		..\docs\releases\upgrade_2.1.txt = ..\docs\releases\upgrade_2.1.txt
+		..\docs\releases\upgrade_2.2.txt = ..\docs\releases\upgrade_2.2.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}"
@@ -85,7 +69,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
 		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
 		..\lib\log4net.dll = ..\lib\log4net.dll
-		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
 		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
 		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll
@@ -148,6 +131,32 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "Mvc\MvcTemplates\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "Mvc\Dinamico\Dinamico.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5-CF13-47DD-942E-72E34B26FE48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{68ABA761-8210-4BE8-9F6D-6D3A69D273B0}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\N2.nuspec = ..\build\nuget\Framework\N2.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dinamico", "Dinamico", "{18314BAF-CA7C-491D-9CBF-0B458B8E150B}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{957E14F3-B354-43BB-8C30-AFFC2901D227}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{D4F398AB-0B6C-4123-A89C-2F3649A5272D}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -432,6 +441,7 @@ Global
 		{D42D096E-399D-4618-AEB4-9B023BA1316D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{CEE6525F-F502-4890-AA36-7B8755A5E47D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{5B744FE6-34F6-4BEC-A500-570D703BB946} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
+		{4508EBF5-CF13-47DD-942E-72E34B26FE48} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{0F286C8B-A322-43E6-B02C-F118BF29D3D5} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{77B21028-EA50-4CED-8334-307E836B0ECB} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{250D978B-3C2C-4151-9A69-B36F3F53E8B8} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
@@ -441,5 +451,11 @@ Global
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
+		{68ABA761-8210-4BE8-9F6D-6D3A69D273B0} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{18314BAF-CA7C-491D-9CBF-0B458B8E150B} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{957E14F3-B354-43BB-8C30-AFFC2901D227} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
+		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
+		{D4F398AB-0B6C-4123-A89C-2F3649A5272D} = {957E14F3-B354-43BB-8C30-AFFC2901D227}
+		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}
 	EndGlobalSection
 EndGlobal

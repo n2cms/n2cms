@@ -19,6 +19,7 @@ using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
+using N2.Plugin;
 
 namespace N2.Edit.Installation
 {
@@ -40,8 +41,9 @@ namespace N2.Edit.Installation
         IHost host;
     	IWebContext webContext;
 		DefinitionMap map;
+		ConnectionContext connectionContext;
 
-		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
+		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionContext connectionContext)
 		{
             this.host = host;
 			this.map = map;
@@ -51,6 +53,7 @@ namespace N2.Edit.Installation
             this.sessionProvider = sessionProvider;
             this.configurationBuilder = configurationBuilder;
         	this.webContext = webContext;
+			this.connectionContext = connectionContext;
 		}
         
 		NHibernate.Cfg.Configuration cfg;
@@ -154,7 +157,7 @@ namespace N2.Edit.Installation
 					return;
 
 				status.AppPath = status.RootItem[installationAppPath] as string;
-				status.NeedsRebase = !string.IsNullOrEmpty(status.AppPath) && !string.Equals(status.AppPath, webContext.ToAbsolute("~/"));
+				status.NeedsRebase = !string.IsNullOrEmpty(status.AppPath) && !string.Equals(status.AppPath, N2.Web.Url.ToAbsolute("~/"));
 			}
 			catch (Exception ex)
 			{
@@ -320,7 +323,7 @@ namespace N2.Edit.Installation
 			ContentItem item = activator.CreateInstance(type, null);
 			item.Name = name;
 			item.Title = title;
-			item[InstallationAppPath] = webContext.ToAbsolute("~/");
+			item[InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
 			item[installationHost] = webContext.Url.HostUrl.ToString();
 			persister.Save(item);
 			return item;
@@ -369,7 +372,7 @@ namespace N2.Edit.Installation
 		public ContentItem InsertExportFile(Stream stream, string filename)
 		{
 			IImportRecord record = importer.Read(stream, filename);
-			record.RootItem["Installation.AppPath"] = webContext.ToAbsolute("~/");
+			record.RootItem["Installation.AppPath"] = N2.Web.Url.ToAbsolute("~/");
 			record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString(); 
 			importer.Import(record, null, ImportOption.All);
 
@@ -473,6 +476,11 @@ namespace N2.Edit.Installation
 					yield return item;
 				}
 			}
+		}
+
+		public void UpdateStatus(SystemStatusLevel currentLevel)
+		{
+			connectionContext.SetConnected(currentLevel);
 		}
 	}
 }

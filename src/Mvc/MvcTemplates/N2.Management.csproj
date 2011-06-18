@@ -60,9 +60,15 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Content\AffectedItems.ascx" />
@@ -73,6 +79,15 @@
     <Content Include="N2\Files\Js\FileSelection.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
+    <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />
+    <Content Include="N2\Myself\Analytics\Resources\jquery.flot.js" />
+    <Content Include="N2\Myself\Analytics\Resources\jquery.flot.min.js" />
+    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\ConfigureStatistics.ascx" />
+    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\Index.ascx" />
+    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\InputToken.ascx" />
+    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\SelectAccount.ascx" />
+    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="N2\Resources\Css\editor.css" />
     <Content Include="N2\Resources\Css\default.css" />
     <Content Include="N2\Files\Css\filemanager.css" />
@@ -115,6 +130,8 @@
     <Content Include="N2\Resources\tiny_mce\plugins\advlink\link.htm" />
     <Content Include="N2\Resources\tiny_mce\plugins\advlist\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\advlist\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\autolink\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\autolink\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\autoresize\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\autoresize\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\autosave\editor_plugin.js" />
@@ -182,30 +199,22 @@
     <Content Include="N2\Resources\tiny_mce\plugins\layer\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\legacyoutput\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\legacyoutput\editor_plugin_src.js" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\css\content.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\lists\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\lists\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\css\media.css" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\editor_plugin_src.js" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\flash.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\flv_player.swf" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\quicktime.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\realmedia.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\shockwave.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\trans.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\media\img\windowsmedia.gif" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\js\embed.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\js\media.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\langs\en_dlg.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\media\media.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\moxieplayer.swf" />
     <Content Include="N2\Resources\tiny_mce\plugins\nonbreaking\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\nonbreaking\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\noneditable\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\noneditable\editor_plugin_src.js" />
-    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\css\content.css" />
     <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\editor_plugin_src.js" />
-    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\img\pagebreak.gif" />
-    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\img\trans.gif" />
     <Content Include="N2\Resources\tiny_mce\plugins\paste\editor_plugin.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\paste\editor_plugin_src.js" />
     <Content Include="N2\Resources\tiny_mce\plugins\paste\js\pastetext.js" />
@@ -291,7 +300,16 @@
     <Content Include="N2\Resources\tiny_mce\themes\advanced\editor_template_src.js" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\image.htm" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\img\colorpicker.jpg" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\flash.gif" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\img\icons.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\iframe.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\pagebreak.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\quicktime.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\realmedia.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\shockwave.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\trans.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\video.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\windowsmedia.gif" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\js\about.js" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\js\anchor.js" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\js\charmap.js" />
@@ -302,6 +320,7 @@
     <Content Include="N2\Resources\tiny_mce\themes\advanced\langs\en.js" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\langs\en_dlg.js" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\link.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\shortcuts.htm" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\content.css" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\dialog.css" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\buttons.png" />
@@ -311,6 +330,9 @@
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\progress.gif" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\tabs.gif" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\ui.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\highcontrast\content.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\highcontrast\dialog.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\highcontrast\ui.css" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\content.css" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\dialog.css" />
     <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\img\button_bg.png" />
@@ -348,6 +370,7 @@
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
     <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config" />
+    <Content Include="N2\Myself\Analytics\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -543,6 +566,7 @@
     </Compile>
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Installation\UpdateTranslationKeyMigration.cs" />
     <Compile Include="N2\Installation\UpdateTemplateKeyMigration.cs" />
     <Compile Include="N2\Installation\Rebase.aspx.cs">
       <DependentUpon>Rebase.aspx</DependentUpon>
@@ -555,6 +579,21 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="N2\Myself\Analytics\ManagementAreaRegistration.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\AnalyticsPartBase.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\AnalyticsViewModel.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ConfigureAnalyticsViewModel.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\Extensions.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\AnalyticsAccountInfo.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\CityReport.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\Dimension.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\GenericEntry.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\Metric.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\ReportRequestor.cs" />
+    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\TokenRequestor.cs" />
+    <Compile Include="N2\Myself\Analytics\PrivateViewEngineDecorator.cs" />
     <Compile Include="N2\Security\ContentMembershipProvider.cs" />
     <Compile Include="N2\Security\ContentProfileProvider.cs" />
     <Compile Include="N2\Security\ContentRoleProvider.cs" />
@@ -826,6 +865,7 @@
     <Compile Include="N2\Content\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Web\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="N2\Web\DirectoryNode.cs" />
     <Compile Include="N2\Web\FileNode.cs" />
     <Compile Include="N2\Web\FileSiteMapNode.cs">
@@ -2383,7 +2423,7 @@
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -2411,6 +2451,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
+    <Folder Include="N2\Myself\Analytics\Views\Shared\" />
+    <Folder Include="N2\Resources\tiny_mce\plugins\media\img\" />
+    <Folder Include="N2\Resources\tiny_mce\plugins\pagebreak\css\" />
+    <Folder Include="N2\Resources\tiny_mce\plugins\pagebreak\img\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

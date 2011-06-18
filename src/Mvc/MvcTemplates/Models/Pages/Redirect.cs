@@ -4,7 +4,6 @@ using N2.Web.Mvc;
 using N2.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Definitions;
-using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -20,7 +19,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	 WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[TabContainer(Tabs.Advanced, "Advanced", 100)]
 	[RestrictParents(typeof (IStructuralPage))]
-	public class Redirect : PageBase, IStructuralPage
+	public class Redirect : PageBase, IStructuralPage, IRedirect
 	{
 		public override string Url
 		{
@@ -53,6 +52,15 @@ namespace N2.Templates.Mvc.Models.Pages
 		public bool VisibleInBreadcrumb
 		{
 			get { return false; }
+		}
+
+		#endregion
+
+		#region IRedirect Members
+
+		public ContentItem RedirectTo
+		{
+			get { return Context.Current.UrlParser.Parse(RedirectUrl); }
 		}
 
 		#endregion

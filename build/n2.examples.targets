@@ -152,7 +152,8 @@
 											$(Examples-Folder)\**\*.resharper;
 											$(Examples-Folder)\**\*.user;
 											$(Examples-Folder)\**\bin\Debug\*.*;
-											$(Examples-Folder)\**\bin\Release\*.*;
+											$(Examples-Folder)\**\bin\Debug\*.*;
+											$(Examples-Folder)\**\App_Data\SearchIndex\**\*;
 											$(Examples-Folder)\**\*.pdb;
 											$(Examples-Folder)\**\*WithProjectReferences.*" />
 		</ItemGroup>

@@ -1,3 +1,0 @@
-﻿@model string
-@{ int total = 0; var changes = Content.Services.Resolve<N2.Persistence.ITextSearcher>().Search(Content.Traverse.StartPage, Model, 0, 10, out total); }
-@Html.UnorderedList(Content.Is.Page().Pipe(changes), @<span>@Content.LinkTo(item.Data)</span>)

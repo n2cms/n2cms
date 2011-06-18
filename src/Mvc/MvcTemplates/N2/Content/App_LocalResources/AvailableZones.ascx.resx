@@ -126,7 +126,7 @@
   <data name="hlDelete.ToolTip" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="hlNew.TextFormat" xml:space="preserve">
+  <data name="hlNew.Text" xml:space="preserve">
     <value>New</value>
   </data>
   <data name="hlNew.ToolTip" xml:space="preserve">

@@ -50,7 +50,7 @@ namespace N2.Engine.Globalization
 
 		private string GetLanguageKey()
 		{
-			return context.Url.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
+			return context.Url.LocalUrl.GetQuery(LanguageGateway.TranslationKey);
 		}
 
 		private void UpdateSortOrder(ContentItem item)
@@ -66,7 +66,7 @@ namespace N2.Engine.Globalization
 
 		void persister_ItemCopied(object sender, DestinationEventArgs e)
 		{
-			e.AffectedItem[LanguageGateway.LanguageKey] = null;
+			e.AffectedItem.TranslationKey = null;
 			persister.Save(e.AffectedItem);
 		}
 
@@ -147,9 +147,9 @@ namespace N2.Engine.Globalization
 			if (languageKeyString != null)
 			{
 				int.TryParse(languageKeyString, out languageKey);
-				if (item[LanguageGateway.LanguageKey] == null)
+				if (item.TranslationKey == null)
 				{
-					item[LanguageGateway.LanguageKey] = languageKey;
+					item.TranslationKey = languageKey;
 					persister.Save(item);
 
 					if (languageKey != item.ID)
@@ -163,11 +163,11 @@ namespace N2.Engine.Globalization
 		private void EnsureLanguageKeyOnInitialTranslation(ContentItem item, int languageKey)
 		{
 			ContentItem initialTranslation = persister.Get(languageKey);
-			if (initialTranslation == null || initialTranslation[LanguageGateway.LanguageKey] != null)
+			if (initialTranslation == null || initialTranslation.TranslationKey != null)
 				return;
 
-			initialTranslation[LanguageGateway.LanguageKey] = languageKey;
-			persister.Save(initialTranslation);
+			initialTranslation.TranslationKey = languageKey;
+			persister.Save(item);
 		}
 
 		#region IStartable Members

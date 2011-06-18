@@ -1,0 +1,8 @@
+﻿@using (Content.BeginScope(Request["returnUrl"], Content.Current.Page == null))
+{
+	var start = Content.Traverse.StartPage;
+	var current = Content.Current.Page;
+<ul id="menu" class="topmenu menu level1">
+	<li>@Content.LinkTo(start).Class(current == start ? "current" : "")</li>@Content.TreeFrom(start, takeLevels: 2, rootless: true)
+</ul>
+}

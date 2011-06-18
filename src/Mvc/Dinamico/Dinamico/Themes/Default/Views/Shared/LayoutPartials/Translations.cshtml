@@ -1,0 +1,8 @@
+﻿@{ if(Content.Current.Language != null)
+{
+	<a id="translationsopener" href="@Url.Action("Translations", new { item = Content.Traverse.StartPage, id = Content.Current.Page.ID })">
+		<img src="@Content.Current.Language.FlagUrl" alt="@Content.Current.Language.LanguageCode" />
+		@Content.Current.Language.LanguageTitle.Split('(')[0]
+	</a>
+}
+}

@@ -2,6 +2,7 @@ using System;
 using N2.Configuration;
 using N2.Security;
 using N2.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace N2.Edit
 {
@@ -39,7 +40,7 @@ namespace N2.Edit
 			catch(Exception ex)
 			{
 				Trace.Write(ex.ToString());
-				Response.Redirect(Engine.Resolve<EditSection>().Installer.WelcomeUrl);
+				Response.Redirect(N2.Web.Url.ResolveTokens(Engine.Resolve<EditSection>().Installer.WelcomeUrl));
 			}
 
 			base.OnInit(e);

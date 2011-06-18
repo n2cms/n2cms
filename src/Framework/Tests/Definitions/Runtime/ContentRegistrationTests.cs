@@ -6,6 +6,7 @@ using N2.Details;
 using N2.Web.Mvc.Html;
 using N2.Web.UI;
 using NUnit.Framework;
+using N2.Integrity;
 
 namespace N2.Tests.Definitions
 {
@@ -32,7 +33,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.CheckBox("Visible", "Show the page in navigation");
 
-			var definition = registration.AppendDefinition(sourceDefinition);
+			var definition = registration.AppendToDefinition(sourceDefinition);
 
 			var editable = (EditableCheckBoxAttribute)definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<EditableCheckBoxAttribute>());
@@ -46,7 +47,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.DateRange("From", "To", "Opening hours");
 
-			var definition = registration.AppendDefinition(sourceDefinition);
+			var definition = registration.AppendToDefinition(sourceDefinition);
 
 			var editable = (WithEditableDateRangeAttribute)definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<WithEditableDateRangeAttribute>());
@@ -60,7 +61,7 @@ namespace N2.Tests.Definitions
 		{
 			registration.Title("The name of the page");
 
-			var definition = registration.AppendDefinition(sourceDefinition);
+			var definition = registration.AppendToDefinition(sourceDefinition);
 
 			var editable = definition.Editables.Single();
 			Assert.That(editable, Is.InstanceOf<WithEditableTitleAttribute>());
@@ -69,16 +70,77 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void Container()
+		public void Container_CanBeRegistered()
 		{
 			registration.Tab("Content", "Primary content");
 
-			var definition = registration.AppendDefinition(sourceDefinition);
+			var definition = registration.AppendToDefinition(sourceDefinition);
 
 			var container = definition.Containers.Single();
 			Assert.That(container, Is.InstanceOf<TabContainerAttribute>());
 			Assert.That(container.Name, Is.EqualTo("Content"));
 			Assert.That(((TabContainerAttribute)container).TabText, Is.EqualTo("Primary content"));
+		}
+
+		[Test]
+		public void Container_WithEditable_CanBeRegistered()
+		{
+			registration.Tab("Content", "Primary content", re => re.FreeText("Text"));
+
+			var definition = registration.AppendToDefinition(sourceDefinition);
+
+			var editable = definition.Editables.Single();
+			Assert.That(editable.ContainerName, Is.EqualTo("Content"));
+		}
+
+		[Test]
+		public void Displayable_CanBeRegistered()
+		{
+			registration.Add(new DisplayableTokensAttribute { Name = "Hello" });
+
+			var definition = registration.AppendToDefinition(sourceDefinition);
+
+			var displayable = definition.Displayables.Single(d => d.Name == "Hello");
+			Assert.That(displayable, Is.InstanceOf<DisplayableTokensAttribute>());
+			Assert.That(displayable.Name, Is.EqualTo("Hello"));
+		}
+
+		[Test]
+		public void EditableAndDisplayable_SharingTheSameTurf()
+		{
+			registration.FreeText("Hello");
+			registration.Add(new DisplayableTokensAttribute { Name = "Hello" });
+
+			var definition = registration.AppendToDefinition(sourceDefinition);
+
+			var editable = definition.Editables.Single(d => d.Name == "Hello");
+			var displayable = definition.Displayables.Single(d => d.Name == "Hello");
+
+			Assert.That(editable, Is.InstanceOf<EditableFreeTextAreaAttribute>());
+			Assert.That(editable.Name, Is.EqualTo("Hello"));
+			Assert.That(displayable, Is.InstanceOf<DisplayableTokensAttribute>());
+			Assert.That(displayable.Name, Is.EqualTo("Hello"));
+		}
+
+		[Test]
+		public void Restrictions_CanBeRegistered()
+		{
+			registration.RestrictChildren("Hello");
+
+			var definition = registration.AppendToDefinition(sourceDefinition);
+
+			Assert.That(definition.AllowedChildFilters.OfType<RestrictChildrenAttribute>().Single().TemplateNames.Single(), Is.EqualTo("Hello"));
+		}
+
+		[Test]
+		public void Restrictions_CanBeRegistered_AndConfigured()
+		{
+			registration.RestrictChildren(typeof(Definitions.SideshowItem)).Configure(rc => rc.TemplateNames = new [] { "World" });
+
+			var definition = registration.AppendToDefinition(sourceDefinition);
+
+			Assert.That(definition.AllowedChildFilters.OfType<RestrictChildrenAttribute>().Single().Types.Single(), Is.EqualTo(typeof(Definitions.SideshowItem)));
+			Assert.That(definition.AllowedChildFilters.OfType<RestrictChildrenAttribute>().Single().TemplateNames.Single(), Is.EqualTo("World"));
 		}
 	}
 }

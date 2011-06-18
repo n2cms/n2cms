@@ -121,9 +121,6 @@ namespace N2.Integrity
             if (!IsLocallyUnique(item.Name, item))
                 return new NameOccupiedException(item, item.Parent);
 
-			if (!IsTypeAllowedBelowDestination(item, item.Parent))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item), item.Parent.GetContentType());
-
 			return null;
 		}
 
@@ -139,7 +136,7 @@ namespace N2.Integrity
 			if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parent + "' of type '" + parent.GetContentType() + "'");
 			if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
 
-			if (!parentDefinition.IsChildAllowed(definitions, itemDefinition))
+			if (!parentDefinition.IsChildAllowed(definitions, parent, itemDefinition))
 				return new NotAllowedParentException(itemDefinition, parent.GetContentType());
 
 			return null;
@@ -207,7 +204,7 @@ namespace N2.Integrity
 				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source);
 				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination);
 
-				return destinationDefinition.IsChildAllowed(definitions, sourceDefinition);
+				return destinationDefinition.IsChildAllowed(definitions, destination, sourceDefinition);
 			}
 			return true;
 		}

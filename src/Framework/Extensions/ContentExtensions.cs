@@ -2,7 +2,6 @@
 using N2.Collections;
 using N2.Edit.Trash;
 using N2.Persistence.NH;
-using NHibernate.Search;
 
 namespace N2
 {
@@ -64,29 +63,6 @@ namespace N2
 					return true;
 			}
 			return false;
-		}
-
-
-		/// <summary>Creates a full text query for content items.</summary>
-		/// <param name="sc">N2.Find.NH...</param>
-		/// <returns>A full text query object.</returns>
-		public static IFullTextSession FullText(this SessionContext sc)
-		{
-			return NHibernate.Search.Search.CreateFullTextSession(sc.Session);
-		}
-
-		/// <summary>Creates a full text query for content items containing the given text.</summary>
-		/// <param name="sc">N2.Find.NH...</param>
-		/// <param name="text">The text to look for.</param>
-		/// <returns>A full text query object.</returns>
-		public static IFullTextQuery FullText(this SessionContext sc, string text)
-		{
-			return sc.FullText().CreateFullTextQuery<ContentItem>(FormatQuery(text));
-		}
-
-		public static string FormatQuery(string text)
-		{
-			return string.Format("Title:({0}) or Details.StringValue:({0})", text);
 		}
 	}
 }

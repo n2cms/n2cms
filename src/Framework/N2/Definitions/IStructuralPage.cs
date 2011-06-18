@@ -1,4 +1,5 @@
 
+using N2.Persistence.Search;
 namespace N2.Definitions
 {
 	/// <summary>
@@ -6,6 +7,7 @@ namespace N2.Definitions
 	/// allows collaboration between modules that doesn't know about each other. 
 	/// Classes implementing this interface are eligeble for having child pages.
 	/// </summary>
+	[SearchableType]
 	public interface IStructuralPage : IPage
 	{
 	}

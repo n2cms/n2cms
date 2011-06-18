@@ -85,9 +85,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Search">
-      <HintPath>..\..\..\lib\NHibernate.Search.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\nunit.framework.dll</HintPath>
@@ -123,6 +120,7 @@
   <ItemGroup>
     <Compile Include="Collections\AccessFilterTests.cs" />
     <Compile Include="Collections\CompositeFilterTests.cs" />
+    <Compile Include="Collections\FilterCompositionTests.cs" />
     <Compile Include="Collections\ItemListTests.cs" />
     <Compile Include="Collections\PublishedFilterTests.cs" />
     <Compile Include="Collections\NavigationFilterTests.cs" />

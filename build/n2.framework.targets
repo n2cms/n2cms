@@ -4,12 +4,13 @@
 	<!-- Framework -->
 
 	<ItemGroup>
-		<Framework-Dependencies Include="$(LibFolder)\Castle*;
-									$(LibFolder)\Iesi.Collections.dll;
-									$(LibFolder)\log4net.dll;
-									$(LibFolder)\NHibernate.dll;
-									$(LibFolder)\NHibernate.Caches.SysCache2.dll;
-									$(RootFolder)\lib\System.Data.SQLite.dll"/>
+		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
+																		 $(LibFolder)\Castle.Windsor.*;
+																		 $(LibFolder)\Iesi.Collections.dll;
+																		 $(LibFolder)\log4net.dll;
+																		 $(LibFolder)\NHibernate.dll;
+																		 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
+																		 $(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
 												$(DocFolder)\howto_install.txt;
@@ -34,9 +35,9 @@
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">
 		<ItemGroup>
-			<Framework-EditFiles	Include="$(EditFolder)\**\*.as?x;
+			<Framework-EditFiles	Include="$(EditFolder)\**\*.resx;
+																		 $(EditFolder)\**\*.as?x;
 																		 $(EditFolder)\**\*.master;
-																		 $(EditFolder)\**\*.resx;
 																		 $(EditFolder)\**\*.config;
 																		 $(EditFolder)\**\*.css;
 																		 $(EditFolder)\**\*.js;
@@ -45,6 +46,19 @@
 																		 $(EditFolder)\**\*.swf"
 														Exclude="$(EditFolder)\**\*_src.js;" />
 		</ItemGroup>
+	</Target>
+
+	<Target Name="Framework-DeployResources">
+		<ItemGroup>
+			<Framework-Resources	Include="$(EditFolder)\**\*.resx"
+														Exclude="$(EditFolder)\**\*.da.resx;
+																		 $(EditFolder)\**\*.it.resx;
+																		 $(EditFolder)\**\*.mk.resx;
+																		 $(EditFolder)\**\*.nl.resx;
+																		 $(EditFolder)\**\*.ru.resx;
+																		 $(EditFolder)\**\*.sl.resx;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(Framework-Resources)" DestinationFolder="$(DeployFolder)\$(DeployPrefix)Resources\N2\%(RecursiveDir)\" />
 	</Target>
 
 	<Target Name="Framework-CreateItemGroups-BinFiles" DependsOnTargets="Framework-Build">
@@ -87,12 +101,54 @@
 
 	<PropertyGroup>
 		<Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
+		<Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
+	</Target>
+
+	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy">
+		<ItemGroup>
+			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
+																			 $(ManagementFolder)\bin\N2.xml*;
+																			 $(LibFolder)\NHibernate.Caches.*.dll;"
+															Exclude="$(ManagementFolder)\bin\N2.Security.*;
+																			 $(ManagementFolder)\bin\N2.Templates.*;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
+		
+		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
+		<PropertyGroup>
+			<Code>
+				<![CDATA[
+public static string ScriptMain()
+{
+			Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(@"$(Framework-NugetFolder)\content\N2\N2.zip");
+			zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
+			zf.AddDirectory(@"$(Framework-DeployFolder)\N2\", "N2");
+			zf.Save();
+			return "";
+}
+			]]>
+			</Code>
+		</PropertyGroup>
+		<Delete Files="$(Framework-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Framework-NugetFolder)\content\N2\N2.zip')" />
+		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Framework-NugetFolder)\content\N2\" />
+		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
+
+		<ItemGroup>
+			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(frameworkNugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Framework-NugetFolder)\N2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\lib\" />
+		<!--<Copy SourceFiles="$(RootFolder)\lib\System.Data.SQLite.dll;" DestinationFolder="$(Framework-NugetFolder)\lib\" />-->
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
 	</Target>
 
 	<Target Name="Framework-ZipDeploy" DependsOnTargets="Framework-Deploy;Framework-Zip" />

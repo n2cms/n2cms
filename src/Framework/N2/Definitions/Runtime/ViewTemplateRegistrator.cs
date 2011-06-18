@@ -7,6 +7,31 @@ using N2.Web.Mvc;
 
 namespace N2.Definitions.Runtime
 {
+	public static class ViewTemplateRegistratorExtensions
+	{
+		/// <summary>Analyzes views in the controllers's view folder looking for dynamic template registrations.</summary>
+		/// <typeparam name="T">The type of controller to analyze.</typeparam>
+		/// <param name="engine">The engine from which to resolve the <see cref="ViewTemplateRegistrator"/>.</param>
+		/// <returns>The singleton <see cref="ViewTemplateRegistrator"/> instance.</returns>
+		public static ViewTemplateRegistrator RegisterViewTemplates<T>(this IEngine engine) where T : IController
+		{
+			return engine.Resolve<ViewTemplateRegistrator>().Add<T>();
+		}
+
+		/// <summary>Analyzes views in the controllers's view folder looking for dynamic template registrations.</summary>
+		/// <typeparam name="T">The type of controller to analyze.</typeparam>
+		/// <param name="engine">The engine from which to resolve the <see cref="ViewTemplateRegistrator"/>.</param>
+		/// <param name="viewFileExtension">The type of view file to analyze. By the default .cshtml files are analyzed.</param>
+		/// <returns>The singleton <see cref="ViewTemplateRegistrator"/> instance.</returns>
+		public static ViewTemplateRegistrator RegisterViewTemplates<T>(this IEngine engine, string viewFileExtension) where T : IController
+		{
+			return engine.Resolve<ViewTemplateRegistrator>().Add<T>(viewFileExtension);
+		}
+	}
+
+	/// <summary>
+	/// Conveys information about controllers registered for view template discovery.
+	/// </summary>
 	[Service]
 	public class ViewTemplateRegistrator
 	{
@@ -19,12 +44,21 @@ namespace N2.Definitions.Runtime
 
 		public Queue<ViewTemplateSource> QueuedRegistrations { get; set; }
 
-		public ViewTemplateRegistrator Add<T>() where T : Controller
+		/// <summary>Analyzes views in the controllers's view folder looking for dynamic template registrations.</summary>
+		/// <typeparam name="T">The type of controller to analyze.</typeparam>
+		/// <param name="engine">The engine from which to resolve the <see cref="ViewTemplateRegistrator"/>.</param>
+		/// <returns>The singleton <see cref="ViewTemplateRegistrator"/> instance.</returns>
+		public ViewTemplateRegistrator Add<T>() where T : IController
 		{
 			return Add<T>(".cshtml");
 		}
 
-		public ViewTemplateRegistrator Add<T>(string viewFileExtension) where T : Controller
+		/// <summary>Analyzes views in the controllers's view folder looking for dynamic template registrations.</summary>
+		/// <typeparam name="T">The type of controller to analyze.</typeparam>
+		/// <param name="engine">The engine from which to resolve the <see cref="ViewTemplateRegistrator"/>.</param>
+		/// <param name="viewFileExtension">The type of view file to analyze. By the default .cshtml files are analyzed.</param>
+		/// <returns>The singleton <see cref="ViewTemplateRegistrator"/> instance.</returns>
+		public ViewTemplateRegistrator Add<T>(string viewFileExtension) where T : IController
 		{
 			var controllerType = typeof(T);
 			string controllerName = controllerType.Name.Substring(0, controllerType.Name.Length - "Controller".Length);

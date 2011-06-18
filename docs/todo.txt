@@ -1,4 +1,7 @@
-- remove external item from new items list
+- CDATA contents discussions/233085
+- save&preview and editablechildren (workitem/30541)
+- nuget issues http://n2cms.codeplex.com/discussions/260635
+- contenttype from model discussions/259496
 - extend user screen (discussions/257790)
 - document security (http://n2cms.codeplex.com/discussions/257790)
 - tokens
@@ -6,8 +9,7 @@
 	- tracking link
 	- facebook like
 	- twitter
-- lucene search in mvc templates & wf
-- IRedirect
+	- youtube
 - index template replaces default
 - static parts
 - fix wiki (ThreadId=243022)

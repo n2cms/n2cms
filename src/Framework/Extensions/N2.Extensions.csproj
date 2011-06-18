@@ -72,10 +72,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Search, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.Search.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -106,9 +102,13 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
-    <Compile Include="Persistence\NH\LuceneTextSearcher.cs" />
-    <Compile Include="Persistence\NH\ReindexTextMigration.cs" />
-    <Compile Include="Persistence\NH\SearchConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\Search\IRepository.cs" />
+    <Compile Include="Persistence\Search\LuceneAccesor.cs" />
+    <Compile Include="Persistence\Search\LuceneExtensions.cs" />
+    <Compile Include="Persistence\Search\LuceneSearcher.cs" />
+    <Compile Include="Persistence\Search\ReindexTextMigration.cs" />
+    <Compile Include="Persistence\Search\ContentChangeTracker.cs" />
+    <Compile Include="Persistence\Search\LuceneIndexer.cs" />
     <Compile Include="Web\Hosting\Util.cs" />
     <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />
     <Compile Include="Web\Hosting\ZipFileVirtualPathProvider.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Web\Mvc\MvcAdapter.cs" />
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\Obsolete\N2ControllerFactory.cs" />
-    <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\ContentViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>

@@ -7,6 +7,11 @@ namespace N2.Web.Mvc.Html
 {
     public static class ContentItemExtensions
 	{
+		public static PathData CurrentPath(this HtmlHelper helper)
+		{
+			return new PathData { CurrentItem = helper.CurrentItem<ContentItem>(), CurrentPage = helper.CurrentPage<ContentItem>() };
+		}
+
         public static ContentItem CurrentPage(this HtmlHelper helper)
         {
             return helper.CurrentPage<ContentItem>();

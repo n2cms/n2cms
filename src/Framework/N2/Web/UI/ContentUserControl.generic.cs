@@ -8,6 +8,7 @@ namespace N2.Web.UI
 		where TPage : N2.ContentItem
 	{
 		private TPage currentPage = null;
+		private FormsContentHelper content = null;
 
 		/// <summary>Gets the current CMS Engine.</summary>
 		public N2.Engine.IEngine Engine
@@ -34,6 +35,13 @@ namespace N2.Web.UI
 		public virtual TPage CurrentItem
 		{
 			get { return CurrentPage; }
+		}
+
+		/// <summary>Access to commonly used APIs.</summary>
+		public FormsContentHelper Content
+		{
+			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
+			set { content = value; }
 		}
 
 		ContentItem IItemContainer.CurrentItem

@@ -24,98 +24,126 @@ You're free to use this VPP under the same license as DotNetZip.
 **/
 
 using System;
+using System.Linq;
 using System.Web.Hosting;
-//using System.Collections.Generic;
-//using System.Text;
+using System.Collections.Generic;
+using System.Web;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Web.Caching;
+using System.Collections;
+using System.Diagnostics;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
-    public class ZipFileVirtualPathProvider : System.Web.Hosting.VirtualPathProvider
-    {
-        ZipFile _zipFile;
+	public class ZipFileVirtualPathProvider : System.Web.Hosting.VirtualPathProvider
+	{
+		ZipFile zipFile;
+		string zipFilePath;
+		Dictionary<string, bool> fileOrDirectoryCache;
 
-        public ZipFileVirtualPathProvider (string zipFilename)
-            : base () {
-            _zipFile =  ZipFile.Read(zipFilename);
-        }
-
-        ~ZipFileVirtualPathProvider () {
-            _zipFile.Dispose ();
-        }
-
-        public override bool FileExists (string virtualPath)
+		public ZipFileVirtualPathProvider(string zipFilename)
+			: base()
 		{
-			ZipEntry zipEntry = GetEntry(virtualPath, true);
-
-			if (zipEntry != null)
-			{
-				//if (zipEntry.IsDirectory)
-				//{
-				//    zipPath += "Default.aspx";
-				//    zipEntry = _zipFile[zipPath];
-				//    if (zipEntry == null)
-				//        return false;
-				//}
-				return !zipEntry.IsDirectory;
-			}
-
-			return Previous.FileExists(virtualPath);
+			this.zipFilePath = zipFilename;
+			zipFile = ZipFile.Read(zipFilename);
 		}
 
-		public override bool DirectoryExists (string virtualDir)
+		~ZipFileVirtualPathProvider()
 		{
-			ZipEntry zipEntry = GetEntry(virtualDir, false);
-
-			if (zipEntry != null)
-			{
-				return zipEntry.IsDirectory;
-			}
-
-			return Previous.DirectoryExists(virtualDir);
+			zipFile.Dispose();
 		}
 
-        public override VirtualFile GetFile (string virtualPath)
+		public override bool FileExists(string virtualPath)
 		{
-			ZipEntry zipEntry = GetEntry(virtualPath, true);
-			if (zipEntry != null && !zipEntry.IsDirectory)
-				return new ZipVirtualFile(virtualPath, _zipFile);
+			bool exists = Exists(virtualPath, true) || Previous.FileExists(virtualPath);
+			Trace.WriteLine("ZipVPP: " + exists + " " + virtualPath);
+			return exists;
+		}
 
+		public override bool DirectoryExists(string virtualDir)
+		{
+			bool exists = Exists(virtualDir, false) || Previous.DirectoryExists(virtualDir);
+			return exists;
+		}
+
+		public override VirtualFile GetFile(string virtualPath)
+		{
+			if (Exists(virtualPath, true))
+			{
+				ZipEntry zipEntry = GetEntry(virtualPath, true);
+				if (zipEntry != null && !zipEntry.IsDirectory)
+					return new ZipVirtualFile(virtualPath, zipFile);
+			}
 			return Previous.GetFile(virtualPath);
+		}
 
-			////string zipPath = Util.ConvertVirtualPathToZipPath(virtualPath, false);
-			////ZipEntry zipEntry = _zipFile[zipPath];
-			////if (zipEntry != null && zipEntry.IsDirectory)
-			////    virtualPath += "Default.aspx";
-			//return new ZipVirtualFile (virtualPath, _zipFile);
-        }
-
-		public override VirtualDirectory GetDirectory (string virtualDir)
+		public override VirtualDirectory GetDirectory(string virtualDir)
 		{
-			ZipEntry zipEntry = GetEntry(virtualDir, false);
-			if (zipEntry != null && zipEntry.IsDirectory)
-				return new ZipVirtualDirectory(virtualDir, _zipFile);
-
+			if (Exists(virtualDir, false))
+			{
+				ZipEntry zipEntry = GetEntry(virtualDir, false);
+				if (zipEntry != null && zipEntry.IsDirectory)
+					return new ZipVirtualDirectory(virtualDir, zipFile);
+			}
 			return Previous.GetDirectory(virtualDir);
+		}
+
+		public override string GetFileHash(string virtualPath, System.Collections.IEnumerable virtualPathDependencies)
+		{
+			if (Exists(virtualPath, true))
+				return zipFilePath + File.GetLastWriteTimeUtc(zipFilePath) + virtualPath;
+			
+			return Previous.GetFileHash(virtualPath, virtualPathDependencies);
+		}
+
+		public override CacheDependency GetCacheDependency(String virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
+		{
+			var filesNotBelongingToZip = virtualPathDependencies.OfType<string>().Where(f => !Exists(f, true));
+
+			if (filesNotBelongingToZip.Any())
+				return Previous.GetCacheDependency(virtualPath, filesNotBelongingToZip, utcStart);
+			else
+				return new CacheDependency(zipFilePath);
 		}
 
 		private ZipEntry GetEntry(string virtualPath, bool isFile)
 		{
 			string zipPath = Util.ConvertVirtualPathToZipPath(virtualPath, isFile);
-			return _zipFile[zipPath];
+			return zipFile[zipPath];
 		}
 
-        public override string GetFileHash(string virtualPath, System.Collections.IEnumerable virtualPathDependencies)
-        {
-			if (Previous.FileExists(virtualPath))
-				return Previous.GetFileHash(virtualPath, virtualPathDependencies);
-			return null;
-		}
-
-        public override System.Web.Caching.CacheDependency GetCacheDependency(String virtualPath, System.Collections.IEnumerable virtualPathDependencies, DateTime utcStart)
+		private bool Exists(string virtualPath, bool isFile)
 		{
-			if (Previous.FileExists(virtualPath))
-				return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
-			return null;
-        }
-    }
+			EnsureCache();
+
+			bool result = false;
+			if (fileOrDirectoryCache.TryGetValue(Util.ConvertVirtualPathToZipPath(virtualPath, isFile), out result))
+				return result != isFile;
+
+			return false;
+		}
+
+		void EnsureCache()
+		{
+			if (fileOrDirectoryCache != null)
+				return;
+
+			lock (this)
+			{
+				if (fileOrDirectoryCache != null)
+					return;
+
+				var temp = new Dictionary<string, bool>(StringComparer.InvariantCultureIgnoreCase);
+
+				var r = new Regex("^.*/");
+				foreach (var entryFileName in zipFile.EntryFileNames)
+				{
+					temp[entryFileName] = false;
+					temp[r.Match(entryFileName).Value] = true;
+				}
+				fileOrDirectoryCache = temp;
+			}
+		}
+	}
 }

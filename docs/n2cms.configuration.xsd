@@ -128,10 +128,12 @@
 													<xs:element name="add" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:attribute name="name" type="xs:string" use="required" />
-															<xs:attribute name="virtualPath" type="xs:string" use="required" />
+															<xs:attribute name="observedPath" type="xs:string" use="required" />
+															<xs:attribute name="filePath" type="xs:string" use="required" />
 														</xs:complexType>
 													</xs:element>
 												</xs:sequence>
+												<xs:attribute name="staticFileExtensions" type="xs:string" use="optional" default=".js,.css,.gif,.png,.jpg,.htm,.html,.swf" />
 											</xs:complexType>
 										</xs:element>
 									</xs:all>
@@ -303,6 +305,7 @@
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

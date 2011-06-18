@@ -7,6 +7,16 @@ namespace N2.Linq
 {
 	public static class QueryableExtensions
 	{
+		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()));
+		}
+
+		public static IQueryable<TSource> WhereDescendantOrSelf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()) || ci == ancestor);
+		}
+
 		static MethodInfo whereMethodInfo = typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
 		
 		public static IQueryable<TSource> WhereDetail<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) where TSource : ContentItem

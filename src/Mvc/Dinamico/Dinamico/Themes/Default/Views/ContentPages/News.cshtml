@@ -1,0 +1,16 @@
+﻿@model Dinamico.Models.ContentPage
+
+@{
+	Content.Define(re => 
+	{
+		re.Title = "News page";
+		re.DefaultValue("Visible", false);
+		re.RestrictParents("Container");
+	});
+}
+
+@Html.Partial("LayoutPartials/BlogContent")
+@using (Content.BeginScope(Content.Traverse.Parent()))
+{
+	@Content.Render.Tokens("NewsFooter")
+}

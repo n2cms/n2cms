@@ -1,4 +1,6 @@
 ﻿2.2
+- [RestrictCardinality] to restrict number of items of a certain type below a container
+- Lucene search in mvc templates & wf
 - Tokens in MVC Templates & WebForm Templates
 - AttributeTransformerBase to globally alter editables (ThreadId=250548)
 - tokens

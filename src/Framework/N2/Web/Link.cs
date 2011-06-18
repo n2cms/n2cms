@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
+using System;
 
 namespace N2.Web
 {
@@ -15,6 +16,16 @@ namespace N2.Web
 #endif
 		ILinkBuilder
 	{
+		#region Static
+
+		static Link()
+		{
+			LinkFactory = (linkTarget) => new Link(linkTarget);
+		}
+		public static Func<ILink, ILinkBuilder> LinkFactory { get; set; }
+		
+		#endregion
+
 		#region Fields
 
 		private string text;
@@ -150,7 +161,7 @@ namespace N2.Web
 
 		public static ILinkBuilder To(ILink linkTarget)
 		{
-			return new Link(linkTarget);
+			return LinkFactory(linkTarget);
 		}
 
 		#endregion

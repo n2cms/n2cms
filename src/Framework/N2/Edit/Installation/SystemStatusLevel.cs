@@ -8,6 +8,7 @@
 		OldVersion = 3,
 		NoRootNode = 4,
 		NoStartNode = 5,
+		Unconfirmed = 88,
 		UpAndRunning = 99
 	}
 }

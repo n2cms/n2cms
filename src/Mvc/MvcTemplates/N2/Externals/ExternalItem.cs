@@ -7,6 +7,7 @@ namespace N2.Management.Externals
 	[Template(ExternalItem.ContainerTemplateKey, "{ManagementUrl}/Externals/External.ascx")]
 	[Versionable(AllowVersions.No)]
 	[Throwable(AllowInTrash.No)]
+	[ItemAuthorizedRoles(Roles = new string[0])]
 	public class ExternalItem : ContentItem, ISystemNode
 	{
 		public const string ContainerTemplateKey = "container";

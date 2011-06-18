@@ -7,6 +7,7 @@ using N2.Engine;
 using N2.Engine.Castle;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
+using N2.Web;
 
 namespace N2.Tests.Web.WebControls
 {
@@ -23,14 +24,12 @@ namespace N2.Tests.Web.WebControls
 			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None),
 				"n2nodb",
 				new WindsorServiceContainer(),
-				EventBroker.Instance,
+				new EventBroker(),
 				new ContainerConfigurer());
 			N2.Context.Replace(engine);
 			engine.Initialize();
 			engine.Host.CurrentSite.RootItemID = 1;
 			engine.Host.CurrentSite.StartPageID = 1;
-
-			page = CreateOneItem<PageItem>(1, "page", null);
 		}
 
 		[SetUp]
@@ -38,6 +37,7 @@ namespace N2.Tests.Web.WebControls
 		{
 			base.SetUp();
 
+			page = CreateOneItem<PageItem>(1, "page", null);
 			data = CreateOneItem<DataItem>(2, "data", page);
 			data.ZoneName = ZoneName;
 		}

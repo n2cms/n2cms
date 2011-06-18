@@ -6,50 +6,6 @@ using Castle.DynamicProxy;
 
 namespace N2.Persistence.Proxying
 {
-	//public class DetailPropertyLazyInitializer : AbstractLazyInitializer
-	//{
-	//    Type persistentClass;
-
-	//    public DetailPropertyLazyInitializer(Type persistentClass, string entityName, object id, ISessionImplementor session)
-	//        : base(entityName, id, session)
-	//    {
-	//        this.persistentClass = persistentClass;
-	//    }
-		
-	//    public override Type PersistentClass
-	//    {
-	//        get { return persistentClass; }
-	//    }
-
-	//    public override void Initialize()
-	//    {
-	//        //base.Initialize();
-	//    }
-	//}
-
-	//public class NHibernateProxyInterceptor : IInterceptor
-	//{
-	//    private static MethodInfo getNHibernateProxyMethod = typeof(INHibernateProxy).GetProperty("HibernateLazyInitializer").GetGetMethod();
-
-	//    ILazyInitializer lazyItializer;
-
-	//    public NHibernateProxyInterceptor(ILazyInitializer lazyItializer)
-	//    {
-	//        this.lazyItializer = lazyItializer;
-	//    }
-
-	//    #region IInterceptor Members
-
-	//    public void Intercept(IInvocation invocation)
-	//    {
-	//        if (invocation.Method == getNHibernateProxyMethod)
-	//            invocation.ReturnValue = lazyItializer;
-	//        else invocation.Proceed();
-	//    }
-
-	//    #endregion
-	//}
-
 	/// <summary>
 	/// Intercepts detail property calls and calls Get/SetDetail.
 	/// </summary>
@@ -58,13 +14,11 @@ namespace N2.Persistence.Proxying
 		private readonly IDictionary<MethodInfo, Action<IInvocation>> methods = new Dictionary<MethodInfo, Action<IInvocation>>();
 		private static readonly Action<IInvocation> proceedAction = (invocation) => invocation.Proceed();
 		private static MethodInfo getEntityNameMethod = typeof(IInterceptedType).GetMethod("GetTypeName");
-		private static MethodInfo getPersistentClassMethod = typeof(NHibernate.Search.Util.IProxiedEntity).GetMethod("GetPersistentClass");
 		
 		public DetailPropertyInterceptor(Type interceptedType, IEnumerable<PropertyInfo> interceptedProperties)
 		{
 			string typeName = interceptedType.FullName;
 			methods[getEntityNameMethod] = invocation => invocation.ReturnValue = typeName;
-			methods[getPersistentClassMethod] = invocation => invocation.ReturnValue = interceptedType;
 			
 			Action<IInvocation> getContentTypeAction = invocation => invocation.ReturnValue = interceptedType;
 			for (Type t = interceptedType; t != null; t = t.BaseType)

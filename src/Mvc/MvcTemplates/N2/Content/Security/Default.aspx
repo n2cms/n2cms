@@ -62,7 +62,7 @@
 		
 		<tbody class="defaults">
 			<tr>
-				<td><%= GetLocalResourceString("DefaultText")%></td>
+				<td><%= GetLocalResourceString("DefaultText", "Default")%></td>
 			<asp:Repeater ID="rptEveryone" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
 				<td>
 					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" Enabled="<%# IsAuthorized(Selection.SelectedItem, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />

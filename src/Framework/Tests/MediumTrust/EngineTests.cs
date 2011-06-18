@@ -2,6 +2,7 @@
 using N2.Engine.MediumTrust;
 using N2.Persistence;
 using NUnit.Framework;
+using N2.Web;
 
 namespace N2.Tests.MediumTrust
 {
@@ -13,7 +14,7 @@ namespace N2.Tests.MediumTrust
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			engine = new ContentEngine(new MediumTrustServiceContainer(), new EventBroker(), new ContainerConfigurer());
 		}
 
 		[Test]

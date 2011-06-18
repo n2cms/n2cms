@@ -24,7 +24,7 @@
 			</td></tr>
 		</ItemTemplate>
 		<EmptyTemplate>
-			<asp:Label runat="server" ID="lblNoItems" meta:resourcekey="lblNoItems" Text="No locations added." />
+			<div class="inner"><asp:Label runat="server" ID="lblNoItems" meta:resourcekey="lblNoItems" Text="No locations added." /></div>
 		</EmptyTemplate>
 		<FooterTemplate></tbody></table></FooterTemplate>
 	</n2:Repeater>

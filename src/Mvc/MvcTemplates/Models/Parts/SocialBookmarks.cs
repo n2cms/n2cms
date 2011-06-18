@@ -10,6 +10,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		IconUrl = "~/Content/Img/digg.png")]
 	[RestrictParents(typeof (ContentPageBase))]
 	[WithEditableTitle("Title", 90)]
+	[RestrictCardinality]
 	public class SocialBookmarks : PartBase
 	{
 		[DisplayableHeading(4)]

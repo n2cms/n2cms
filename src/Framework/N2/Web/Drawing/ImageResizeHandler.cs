@@ -41,7 +41,7 @@ namespace N2.Web.Drawing
 			if (fs.FileExists(imageUrl))
 			{
 				string path = context.Server.MapPath(imageUrl);
-				if (CacheUtility.IsModifiedSince(context.Request, path))
+				if (CacheUtility.IsUnmodifiedSince(context.Request, path))
 				{
 					CacheUtility.NotModified(context.Response);
 				}

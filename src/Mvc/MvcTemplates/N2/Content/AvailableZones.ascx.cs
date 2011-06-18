@@ -29,11 +29,6 @@ namespace N2.Edit
             get { return currentItem; }
             set { currentItem = value; }
         }
-		protected string GetNewDataItemText(object dataItem)
-		{
-			return string.Format((string)GetLocalResourceObject("hlNew.TextFormat"),
-				DataBinder.Eval(dataItem, "Title"));
-		}
 	
         protected string GetNewDataItemUrl(object dataItem)
         {

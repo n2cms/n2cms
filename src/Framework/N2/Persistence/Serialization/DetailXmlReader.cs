@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
 using N2.Details;
+using System.Web;
 
 namespace N2.Persistence.Serialization
 {
@@ -40,7 +41,7 @@ namespace N2.Persistence.Serialization
 			{
 				object value = Parse(navigator.Value, type);
 				if (value is string)
-					value = PrepareStringDetail(item, name, value as string);
+					value = PrepareStringDetail(item, name, value as string, attributes.ContainsKey("encoded") && Convert.ToBoolean(attributes["encoded"]));
 
 				item[name] = value;
 				//item.SetDetail(name, value, type);
@@ -76,38 +77,15 @@ namespace N2.Persistence.Serialization
 						multiDetail.ObjectValue = Parse(valueElement.Value, typeof(object));
 						break;
 					case ContentDetail.TypeKeys.StringType:
-						multiDetail.StringValue = (string)PrepareStringDetail(item, name, valueElement.Value);
+						Dictionary<string, string> attributes = GetAttributes(navigator);
+						multiDetail.StringValue = PrepareStringDetail(item, name, valueElement.Value, attributes.ContainsKey("encoded") && Convert.ToBoolean(attributes["encoded"]));
 						break;
 				}
 			}
 			return multiDetail;
 		}
 
-		private static void SetLinkedItem(string value, ReadingJournal journal, Action<ContentItem> setter)
-		{
-			int referencedItemID = int.Parse(value);
-			ContentItem referencedItem = journal.Find(referencedItemID);
-			if (referencedItem != null)
-			{
-				setter(referencedItem);
-			}
-			else
-			{
-				EventHandler<ItemEventArgs> handler = null;
-				handler = delegate(object sender, ItemEventArgs e)
-				{
-					if (e.AffectedItem.ID == referencedItemID)
-					{
-						setter(e.AffectedItem);
-						journal.ItemAdded -= handler;
-					}
-				};
-
-				journal.ItemAdded += handler;
-			}
-		}
-
-		private string PrepareStringDetail(ContentItem item, string name, string value)
+		private string PrepareStringDetail(ContentItem item, string name, string value, bool encoded)
 		{
 			if (value.StartsWith("~"))
 			{
@@ -121,6 +99,10 @@ namespace N2.Persistence.Serialization
 							value = transformer.Rebase(value, "~/", applicationPath);
 					}
 				}
+			}
+			else if (encoded)
+			{
+				value = HttpUtility.HtmlDecode(value);
 			}
 			return value;
 		}

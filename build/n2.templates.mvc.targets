@@ -33,6 +33,7 @@
 												$(Templates-Mvc-SourceFolder)\**\*.user;
 												$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
 												$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
+												$(Templates-Mvc-SourceFolder)\App_Data\SearchIndex\**\*;
 												$(Templates-Mvc-SourceFolder)\N2\**\*;
 												$(Templates-Mvc-SourceFolder)\N2.Management.*" />
 		</ItemGroup>

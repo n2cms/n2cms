@@ -14,16 +14,16 @@ namespace N2.Web
 		/// <param name="request">The request to check for last headers.</param>
 		/// <param name="filePaths">Paths to file that may have changed.</param>
 		/// <returns>True if the file has changed or no request header.</returns>
-		public static bool IsModifiedSince(HttpRequest request, params string[] filePaths)
+		public static bool IsUnmodifiedSince(HttpRequest request, params string[] filePaths)
 		{
-			return IsModifiedSince(request, (IEnumerable<string>)filePaths);
+			return IsUnmodifiedSince(request, (IEnumerable<string>)filePaths);
 		}
 
 		/// <summary>Checks the request's If-Modified-Since against a file last write time.</summary>
 		/// <param name="request">The request to check for last headers.</param>
 		/// <param name="filePaths">Paths to file that may have changed.</param>
 		/// <returns>True if the file has changed or no request header.</returns>
-		public static bool IsModifiedSince(HttpRequest request, IEnumerable<string> filePaths)
+		public static bool IsUnmodifiedSince(HttpRequest request, IEnumerable<string> filePaths)
 		{
 			string ifModifiedSince = request.Headers["If-Modified-Since"];
 			if (!string.IsNullOrEmpty(ifModifiedSince))
@@ -37,6 +37,23 @@ namespace N2.Web
 			return false;
 		}
 
+		/// <summary>Checks the request's If-Modified-Since against a date.</summary>
+		/// <param name="request">The request to check for last headers.</param>
+		/// <param name="utcDate">The date to compare against.</param>
+		/// <returns>True if the file has changed or no request header.</returns>
+		public static bool IsUnmodifiedSince(HttpRequest request, DateTime utcDate)
+		{
+			string ifModifiedSince = request.Headers["If-Modified-Since"];
+			if (!string.IsNullOrEmpty(ifModifiedSince))
+			{
+				DateTimeOffset since;
+				if (DateTimeOffset.TryParse(ifModifiedSince, out since))
+					if (utcDate < since)
+						return true;
+			}
+			return false;
+		}
+
 		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
 		/// <param name="response">The response whose cache to modify.</param>
 		/// <param name="expirationTime">The time before the resource expires.</param>
@@ -46,6 +63,18 @@ namespace N2.Web
 			response.Cache.SetCacheability(HttpCacheability.Public);
 			response.Cache.SetLastModified(DateTime.UtcNow);
 			response.Cache.SetMaxAge(expirationTime);
+			response.Cache.SetValidUntilExpires(true);
+		}
+
+		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
+		/// <param name="response">The response whose cache to modify.</param>
+		/// <param name="lastModified">The time the resource was modified.</param>
+		public static void SetValidUntilExpires(HttpResponse response, DateTime utcLastModified)
+		{
+			response.Cache.SetExpires(DateTime.UtcNow.AddMonths(1));
+			response.Cache.SetCacheability(HttpCacheability.Public);
+			response.Cache.SetLastModified(utcLastModified);
+			response.Cache.SetMaxAge(TimeSpan.FromDays(31));
 			response.Cache.SetValidUntilExpires(true);
 		}
 

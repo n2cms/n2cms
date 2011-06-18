@@ -5,7 +5,7 @@ using System.Text;
 using N2.Engine;
 using N2.Persistence.Finder;
 
-namespace N2.Persistence
+namespace N2.Persistence.Search
 {
 	/// <summary>
 	/// Searches for text using the finder API which results in LIKE database queries.
@@ -41,6 +41,15 @@ namespace N2.Persistence
 			}
 			totalRecords = q.Count();
 			return q.FirstResult(skip).MaxResults(take).Select();
+		}
+
+		public Result Search(Query query)
+		{
+			var result = new Result();
+			int total;
+			result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, out total).Select(i => new Hit { Content = i, Score = i.Title.ToLower().Contains(query.Text.ToLower()) ? 1 : .5 });
+			result.Total = total;
+			return result;
 		}
 
 		#endregion

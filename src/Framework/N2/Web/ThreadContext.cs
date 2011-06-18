@@ -48,6 +48,11 @@ namespace N2.Web
             get { return false; }
         }
 
+		public virtual HttpContextBase HttpContext
+		{
+			get { return null; }
+		}
+
         public ContentItem CurrentPage
         {
             get { return currentPage; }
@@ -69,6 +74,7 @@ namespace N2.Web
 		}
 
 		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
+		[Obsolete("Use HttpContext.SkipAuthorization")]
 		public bool SkipAuthorization { get; set; }
 
 		public virtual void Close()
@@ -100,56 +106,60 @@ namespace N2.Web
             return Path.Combine(baseDirectory, path);
         }
 
-        public virtual IHttpHandler Handler
+		[Obsolete("Use HttpContext.Handler")]
+		public virtual IHttpHandler Handler
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public virtual HttpRequest Request
+		[Obsolete("Use HttpContext.Request")]
+		public virtual HttpRequest Request
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public virtual HttpResponse Response
+		[Obsolete("Use HttpContext.Response")]
+		public virtual HttpResponse Response
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public virtual string PhysicalPath
+		[Obsolete("Use HttpContext.Request.PhysicalPath")]
+		public virtual string PhysicalPath
         {
 			get { return MapPath(Url.Path); }
         }
 
+		[Obsolete("Use HttpContext.RewritePath(path)")]
 		public virtual void RewritePath(string path)
 		{
 			throw new NotSupportedException("RewritePath not supported in thread context. No handler when not running in http web context.");
 		}
 
+		[Obsolete("Use HttpContext.RewritePath(path, \"\", queryString)")]
 		public virtual void RewritePath(string path, string query)
 		{
 			throw new NotSupportedException("RewritePath not supported in thread context. No handler when not running in http web context.");
 		}
 
-        public virtual string ToAbsolute(string virtualPath)
+		[Obsolete("Use N2.Web.Url.ToAbsolute(path)")]
+		public virtual string ToAbsolute(string virtualPath)
         {
         	return virtualPath.TrimStart('~');
         }
 
-        public virtual string ToAppRelative(string virtualPath)
+		[Obsolete("Use N2.Web.Url.ToRelative(path)")]
+		public virtual string ToAppRelative(string virtualPath)
         {
         	return "~" + ToAbsolute(virtualPath);
         }
 
-		[Obsolete]
-        public void TransferRequest(string path)
-        {
-			throw new NotSupportedException("TransferRequest is not supported in thread context. No handler when not running in http web context.");
-        }
-
 		/// <summary>Doen't do anything.</summary>
+		[Obsolete("Use HttpContext.ClearError()")]
 		public void ClearError()
 		{
 		}
+
 
 		#region IDisposable Members
 

@@ -30,7 +30,7 @@ namespace N2.Configuration
 			List<string> paths = new List<string>();
 			foreach (var vpe in AllElements)
 			{
-				paths.Add(webContext.ToAbsolute(vpe.VirtualPath));
+				paths.Add(N2.Web.Url.ToAbsolute(N2.Web.Url.ResolveTokens(vpe.VirtualPath)));
 			}
 
 			return paths.ToArray();

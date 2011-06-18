@@ -38,6 +38,7 @@ namespace N2.Persistence.Serialization
 			readers["details"] = new DetailXmlReader();
 			readers["detailCollections"] = new DetailCollectionXmlReader();
 			readers["authorizations"] = new AuthorizationXmlReader();
+			readers["properties"] = new PersistablePropertyXmlReader();
 			readers["attachments"] = new AttachmentXmlReader();
 			return readers;
 		}
@@ -97,8 +98,12 @@ namespace N2.Persistence.Serialization
 			item.Visible = Convert.ToBoolean(attributes["visible"]);
 			if (!string.IsNullOrEmpty(attributes["zoneName"]))
 				item.ZoneName = attributes["zoneName"];
-			if (!string.IsNullOrEmpty(attributes["templateKey"]))
+			if (attributes.ContainsKey("templateKey") && !string.IsNullOrEmpty(attributes["templateKey"]))
 				item.TemplateKey = attributes["templateKey"];
+			if (attributes.ContainsKey("translationKey") && !string.IsNullOrEmpty(attributes["translationKey"]))
+				item.TranslationKey = Convert.ToInt32(attributes["translationKey"]);
+			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
+				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
 			HandleParentRelation(item, attributes["parent"], journal);
 		}
 

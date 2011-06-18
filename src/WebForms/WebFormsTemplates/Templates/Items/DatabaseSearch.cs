@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace N2.Templates.Items
@@ -8,6 +9,7 @@ namespace N2.Templates.Items
 		IconUrl = "~/Templates/UI/Img/zoom.png")]
     public class DatabaseSearch : AbstractSearch
     {
+		[Obsolete("Text search is now used")]
         public virtual Persistence.Finder.IQueryEnding CreateQuery(string query)
         {
             List<Collections.ItemFilter> filters = GetFilters();
@@ -19,7 +21,8 @@ namespace N2.Templates.Items
                 .Filters(filters);
         }
 
-        public override ICollection<ContentItem> Search(string query)
+		[Obsolete("Text search is now used")]
+		public override ICollection<ContentItem> Search(string query)
         {
             return CreateQuery(query).Select();
         }

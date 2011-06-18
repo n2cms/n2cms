@@ -2,6 +2,8 @@
 using System.Reflection;
 using N2.Persistence.Proxying;
 using NHibernate.Cfg.MappingSchema;
+using N2.Definitions;
+using N2.Collections;
 
 namespace N2.Persistence
 {
@@ -19,7 +21,7 @@ namespace N2.Persistence
     /// }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-	public class PersistableAttribute : Attribute, IInterceptableProperty
+	public class PersistableAttribute : Attribute, IInterceptableProperty, IUniquelyNamed
     {
 		public PersistableAttribute()
 		{
@@ -95,6 +97,18 @@ namespace N2.Persistence
 		{
 			get { return null; }
 		}
+
+		#endregion
+
+		#region IUniquelyNamed Members
+
+		string IUniquelyNamed.Name { get; set; }
+		 
+		#endregion
+
+		#region INameable Members
+
+		string INameable.Name { get { return ((IUniquelyNamed)this).Name; } }
 
 		#endregion
 	}

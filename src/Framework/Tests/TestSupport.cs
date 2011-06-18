@@ -116,5 +116,10 @@ namespace N2.Tests
 			
 			return new ContentPersister(repository, linkRepository, finder);
 		}
+
+		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
+		{
+			return new UrlParser(persister, wrapper, host, new HostSection());
+		}
 	}
 }

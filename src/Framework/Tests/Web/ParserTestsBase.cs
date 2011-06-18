@@ -28,7 +28,7 @@ namespace N2.Tests.Web
 
         protected virtual UrlParser CreateUrlParser()
         {
-            return new UrlParser(persister, wrapper, host, new HostSection());
+			return TestSupport.Setup(persister, wrapper, host);
         }
 
 		protected void CreateDefaultStructure()

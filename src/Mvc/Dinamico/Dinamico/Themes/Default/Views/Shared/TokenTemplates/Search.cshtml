@@ -1,0 +1,4 @@
+﻿@model string
+
+@{ var result = Content.Services.Resolve<N2.Persistence.Search.ITextSearcher>().Search(N2.Persistence.Search.Query.For(Model).Below(Content.Traverse.StartPage).Pages(true).Except(N2.Persistence.Search.Query.For(typeof(N2.Definitions.ISystemNode)))); }
+@Html.UnorderedList(result.Hits, @<span>@Content.LinkTo(item.Data.Content)</span>)

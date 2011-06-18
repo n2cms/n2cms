@@ -39,7 +39,7 @@ namespace N2.Web
 				return;
 
 			string templateUrl = GetHandlerPath(path);
-			WebContext.RewritePath(templateUrl);
+			WebContext.HttpContext.RewritePath(templateUrl);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>

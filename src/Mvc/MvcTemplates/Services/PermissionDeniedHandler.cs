@@ -28,7 +28,7 @@ namespace N2.Templates.Mvc.Services
 			if (startPage != null && startPage.LoginPage != null)
 			{
 				e.Cancel = true;
-				context.Response.Redirect(Url.Parse(startPage.LoginPage.Url).AppendQuery("returnUrl", context.Url.LocalUrl));
+				context.HttpContext.Response.Redirect(Url.Parse(startPage.LoginPage.Url).AppendQuery("returnUrl", context.Url.LocalUrl));
 			}
 		}
 

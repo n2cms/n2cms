@@ -64,5 +64,45 @@ namespace N2.Collections
 		}
 
 		#endregion
+
+		#region implicit operator Func<ContentItem, bool>
+		public static implicit operator Func<ContentItem, bool>(ItemFilter filter)
+		{
+			if (filter == null)
+				return (ci) => true;
+			return filter.Match;
+		}
+
+		public static implicit operator ItemFilter(Func<ContentItem, bool> isPositiveMatch)
+		{
+			if (isPositiveMatch == null)
+				return new NullFilter();
+			return new DelegateFilter(isPositiveMatch);
+		}
+		#endregion
+
+		#region Operators
+
+		public static ItemFilter operator &(ItemFilter f1, ItemFilter f2)
+		{
+			return new CompositeFilter(f1, f2);
+		}
+
+		public static ItemFilter operator |(ItemFilter f1, ItemFilter f2)
+		{
+			return new DelegateFilter(i => f1.Match(i) || f2.Match(i));
+		}
+
+		public static ItemFilter operator +(ItemFilter f1, ItemFilter f2)
+		{
+			return new CompositeFilter(f1, f2);
+		}
+
+		public static ItemFilter operator -(ItemFilter f1, ItemFilter f2)
+		{
+			return new CompositeFilter(f1, new InverseFilter(f2));
+		}
+
+		#endregion
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using N2.Definitions.Runtime;
 using N2.Details;
+using N2.Integrity;
 
 namespace N2.Web.Mvc.Html
 {
@@ -130,6 +131,36 @@ namespace N2.Web.Mvc.Html
 		{
 			return registration.RegisterEditable<EditableSummaryAttribute>(name, title)
 				.Configure(e => e.Source = source );
+		}
+
+		public static Builder<RestrictParentsAttribute> RestrictParents(this IContentRegistration registration, AllowedTypes allowedTypes)
+		{
+			return registration.RegisterRefiner<RestrictParentsAttribute>(new RestrictParentsAttribute(allowedTypes));
+		}
+
+		public static Builder<RestrictParentsAttribute> RestrictParents(this IContentRegistration registration, params Type[] allowedParentTypes)
+		{
+			return registration.RegisterRefiner<RestrictParentsAttribute>(new RestrictParentsAttribute(allowedParentTypes));
+		}
+
+		public static Builder<RestrictParentsAttribute> RestrictParents(this IContentRegistration registration, params string[] allowedParentTemplateKeys)
+		{
+			return registration.RegisterRefiner<RestrictParentsAttribute>(new RestrictParentsAttribute(AllowedTypes.All) { TemplateKeys = allowedParentTemplateKeys });
+		}
+
+		public static Builder<RestrictChildrenAttribute> RestrictChildren(this IContentRegistration registration, AllowedTypes allowedTypes)
+		{
+			return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(allowedTypes));
+		}
+
+		public static Builder<RestrictChildrenAttribute> RestrictChildren(this IContentRegistration registration, params Type[] allowedChildTypes)
+		{
+			return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(allowedChildTypes));
+		}
+
+		public static Builder<RestrictChildrenAttribute> RestrictChildren(this IContentRegistration registration, params string[] allowedChildTemplateKeys)
+		{
+			return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(AllowedTypes.All) { TemplateNames = allowedChildTemplateKeys });
 		}
 	}
 

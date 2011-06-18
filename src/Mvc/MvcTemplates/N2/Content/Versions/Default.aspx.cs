@@ -22,7 +22,7 @@ namespace N2.Edit.Versions
 
 		protected override void OnInit(EventArgs e)
 		{
-            Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title"), Selection.SelectedItem.Title);
+            Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
 
 			persister = Engine.Persister;
 			versioner = Engine.Resolve<Persistence.IVersionManager>();

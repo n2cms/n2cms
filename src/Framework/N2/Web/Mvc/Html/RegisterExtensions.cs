@@ -13,12 +13,12 @@ namespace N2.Web.Mvc.Html
 {
 	public static class RegisterExtensions
 	{
-		public static ContentRegistration Define(this ContentHelper content)
+		public static ContentRegistration Define(this ViewContentHelper content)
 		{
 			return content.Define(null);
 		}
 
-		public static ContentRegistration Define(this ContentHelper content, Action<ContentRegistration> registration)
+		public static ContentRegistration Define(this ViewContentHelper content, Action<ContentRegistration> registration)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
@@ -42,7 +42,7 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		private static void FakeModel(ContentHelper content, ContentRegistration re)
+		private static void FakeModel(ViewContentHelper content, ContentRegistration re)
 		{
 			if (content.Html.ViewContext.ViewData.Model == null)
 			{
@@ -61,12 +61,12 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-		public static ContentRegistration AppendDefinition(this ContentHelper content)
+		public static ContentRegistration AppendDefinition(this ViewContentHelper content)
 		{
 			return content.AppendDefinition(null);
 		}
 
-		public static ContentRegistration AppendDefinition(this ContentHelper content, Action<ContentRegistration> registration)
+		public static ContentRegistration AppendDefinition(this ViewContentHelper content, Action<ContentRegistration> registration)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
@@ -77,12 +77,12 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static ContentRegistration PrependDefinition(this ContentHelper content)
+		public static ContentRegistration PrependDefinition(this ViewContentHelper content)
 		{
 			return content.PrependDefinition(null);
 		}
 
-		public static ContentRegistration PrependDefinition(this ContentHelper content, Action<ContentRegistration> registration = null)
+		public static ContentRegistration PrependDefinition(this ViewContentHelper content, Action<ContentRegistration> registration = null)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)

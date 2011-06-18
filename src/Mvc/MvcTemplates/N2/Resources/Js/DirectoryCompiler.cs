@@ -30,7 +30,7 @@ namespace N2.Edit.Js
 			if (context.Response == null) throw new ArgumentNullException("context.Response");
 			if (context.Server == null) throw new ArgumentNullException("context.Server");
 
-			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
+			if (CacheUtility.IsUnmodifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
 			{
 				CacheUtility.NotModified(context.Response);
 			}
@@ -60,7 +60,8 @@ namespace N2.Edit.Js
 			}
 			else
 			{
-				SetResponseFilter(context, response);
+				context.TrySetCompressionFilter();
+
 				foreach (var file in GetFiles(context))
 				{
 					response.Write(Environment.NewLine);
@@ -71,21 +72,6 @@ namespace N2.Edit.Js
 						WriteLine(response, line, ref commenting);
 					}
 				}
-			}
-		}
-
-		private static void SetResponseFilter(HttpContext context, HttpResponse response)
-		{
-			string acceptEncoding = context.Request.Headers["Accept-Encoding"] ?? "";
-			if (acceptEncoding.Contains("gzip"))
-			{
-				response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
-				response.AppendHeader("Content-Encoding", "gzip");
-			}
-			else if (acceptEncoding.Contains("deflate"))
-			{
-				response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
-				response.AppendHeader("Content-Encoding", "deflate");
 			}
 		}
 

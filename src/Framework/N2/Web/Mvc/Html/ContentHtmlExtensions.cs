@@ -6,12 +6,12 @@ namespace N2.Web.Mvc.Html
 	{
 		// content helper
 
-		public static ContentHelper Content(this HtmlHelper html)
+		public static ViewContentHelper Content(this HtmlHelper html)
 		{
 			string key = "ContentHelperOf" + html.GetHashCode();
-			var content = html.ViewContext.ViewData[key] as ContentHelper;
+			var content = html.ViewContext.ViewData[key] as ViewContentHelper;
 			if (content == null)
-				html.ViewContext.ViewData[key] = content = new ContentHelper(html);
+				html.ViewContext.ViewData[key] = content = new ViewContentHelper(html);
 			return content;
 		}
 

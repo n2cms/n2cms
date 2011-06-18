@@ -5,12 +5,13 @@ using N2.Edit.Trash;
 using N2.Templates.Items;
 using N2.Collections;
 using System.Collections.Generic;
+using N2.Definitions;
 
 namespace N2.Addons.UITests.Items
 {
 	[Definition("Multiple Tests Page", SortOrder = 10000)]
 	[WithEditableTitle, WithEditableName]
-	[NotThrowable]
+	[Throwable(AllowInTrash.No)]
 	[RestrictParents(typeof(AbstractContentPage))]
 	public class AdaptiveItemPage : ContentItem
 	{

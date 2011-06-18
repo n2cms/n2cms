@@ -2,6 +2,7 @@ using System;
 using System.Xml.Linq;
 using N2.Details;
 using N2.Persistence.Serialization;
+using N2.Persistence;
 
 namespace N2.Tests.Serialization.Items
 {
@@ -21,6 +22,30 @@ namespace N2.Tests.Serialization.Items
 			get { return (string)(GetDetail("TextFile") ?? string.Empty); }
 			set { SetDetail("TextFile", value); }
 		}
+
+		[Persistable]
+		[EditableNumber]
+		public virtual int PersistableNumber { get; set; }
+
+		[Persistable]
+		[EditableDate]
+		public virtual DateTime PersistableDate { get; set; }
+
+		[Persistable]
+		[EditableText]
+		public virtual string PersistableText { get; set; }
+
+		[Persistable]
+		[EditableLink]
+		public virtual XmlableItem PersistableLink { get; set; }
+
+		[Persistable]
+		[EditableEnum]
+		public virtual ContentState PersistableEnum { get; set; }
+
+		[Persistable]
+		[EditableEnum]
+		public virtual string[] PersistableObject { get; set; }
 
 		public Version Version
 		{

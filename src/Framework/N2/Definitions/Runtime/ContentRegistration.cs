@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Details;
+using N2.Collections;
 
 namespace N2.Definitions.Runtime
 {
@@ -8,17 +10,19 @@ namespace N2.Definitions.Runtime
 	{
 		public ContentRegistration()
 		{
-			Containables = new Dictionary<string, IUniquelyNamed>();
+			Containables = new ContentList<IUniquelyNamed>();
 			TouchedPaths = new List<string>();
 			ContentModifiers = new List<IContentTransformer>();
+			Refiners = new List<ISortableRefiner>();
 			DefaultSortIncrement = 10;
 		}
 
 
 
 		public Type ContentType { get; set; }
-		public IDictionary<string, IUniquelyNamed> Containables { get; private set; }
+		public ContentList<IUniquelyNamed> Containables { get; private set; }
 		public ICollection<IContentTransformer> ContentModifiers { get; set; }
+		public ICollection<ISortableRefiner> Refiners { get; set; }
 		public ICollection<string> TouchedPaths { get; private set; }
 		public string ContainerName { get; set; }
 		public int CurrentSortOrder { get; set; }
@@ -33,9 +37,23 @@ namespace N2.Definitions.Runtime
 
 
 
+		public ContentRegistration Add(ISortableRefiner refiner)
+		{
+			Refiners.Add(refiner);
+
+			return this;
+		}
+
+		public ContentRegistration Add(IUniquelyNamed named)
+		{
+			Containables.Add(named);
+
+			return this;
+		}
+
 		public ContentRegistration Add(IContainable containable)
 		{
-			Containables[containable.Name] = containable;
+			Containables.Add(containable);
 			containable.ContainerName = ContainerName;
 
 			return this;
@@ -64,16 +82,19 @@ namespace N2.Definitions.Runtime
 			return CurrentSortOrder;
 		}
 
-		public ItemDefinition AppendDefinition(ItemDefinition definition)
+		public ItemDefinition AppendToDefinition(ItemDefinition definition)
 		{
 			definition.Title = Title;
 			definition.TemplateKey = TemplateKey;
 
 			foreach (var c in Containables)
-				definition.Add(c.Value);
+				definition.Add(c);
 
 			foreach (var dv in ContentModifiers)
 				definition.ContentTransformers.Add(dv);
+
+			foreach (var refiner in Refiners.OrderBy(r => r.RefinementOrder))
+				refiner.Refine(definition, new[] { definition });
 
 			return definition;
 		}
@@ -110,7 +131,30 @@ namespace N2.Definitions.Runtime
 			ContentModifiers.Add(modifier);
 		}
 
-		#endregion
+		public Builder<T> RegisterRefiner<T>(T refiner) where T : ISortableRefiner
+		{
+			Add(refiner);
+			return new InstanceBuilder<T>(this) { Instance = refiner };
+		}
 
+		#region class InstanceBuilder
+		class InstanceBuilder<T> : Builder<T>
+		{
+			public InstanceBuilder(ContentRegistration re)
+				: base(re)
+			{
+			}
+
+			public T Instance { get; set; }
+
+			public override Builder<T> Configure(Action<T> configurationExpression)
+			{
+				if (Registration != null && configurationExpression != null)
+					configurationExpression(Instance);
+				return this;
+			}
+		}
+		#endregion
+		#endregion
 	}
 }

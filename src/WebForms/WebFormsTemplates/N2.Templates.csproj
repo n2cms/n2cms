@@ -58,6 +58,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -503,6 +504,10 @@
     <Compile Include="Templates\Zones.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
+      <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
+      <Name>N2.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

@@ -84,7 +84,7 @@ namespace N2.Web.UI
 				ContentActivator activator = Engine.Resolve<ContentActivator>();
 				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem);
 
-				if (parentDefinition.IsChildAllowed(definitions, parentDefinition))
+				if (parentDefinition.IsChildAllowed(definitions, parentItem, parentDefinition))
 				{
 					e.AffectedItem = Engine.Resolve<ContentActivator>().CreateInstance(parentItem.GetContentType(), parentItem);
 					return;

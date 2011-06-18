@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Configuration;
@@ -18,10 +19,9 @@ namespace N2.Engine.Globalization
 	[Service(typeof(ILanguageGateway))]
 	public class LanguageGateway : ILanguageGateway
 	{
-		public const string LanguageKey = "LanguageKey";
+		public const string TranslationKey = "TranslationKey";
 
 		readonly IPersister persister;
-		readonly IItemFinder finder;
 		readonly IEditUrlManager editUrlManager;
 		readonly IDefinitionManager definitions;
 		readonly IHost host;
@@ -34,7 +34,6 @@ namespace N2.Engine.Globalization
 
 		public LanguageGateway(
 			IPersister persister,
-			IItemFinder finder,
 			IEditUrlManager editUrlManager,
 			IDefinitionManager definitions,
 			IHost host,
@@ -45,7 +44,6 @@ namespace N2.Engine.Globalization
 			EngineSection config)
 		{
 			this.persister = persister;
-			this.finder = finder;
 			this.editUrlManager = editUrlManager;
 			this.definitions = definitions;
 			this.host = host;
@@ -139,11 +137,12 @@ namespace N2.Engine.Globalization
 				return languages;
 			}
 
-			if (item[LanguageKey] == null)
+			if (item.TranslationKey == null)
 				return new ContentItem[0];
 
-			int key = (int)item[LanguageKey];
-			return finder.Where.Detail(LanguageKey).Eq(key).Filters(new AccessFilter(context.User, security), Filter.Is.Not(Filter.Is.DescendantOf<ITrashCan>())).Select();
+			return persister.Repository.Find(TranslationKey, item.TranslationKey)
+				.Where(Content.Is.Accessible(context.User, security))
+				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
 		}
 
 		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)
@@ -186,7 +185,7 @@ namespace N2.Engine.Globalization
 						}
 
 						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-						url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
+						url = url.AppendQuery(TranslationKey, item.TranslationKey ?? item.ID);
 
 						yield return new TranslateSpecification(url, language, translation, definition, editUrlManager);
 					}
@@ -237,8 +236,11 @@ namespace N2.Engine.Globalization
         /// <param name="item">The item to remove as translation.</param>
         public void Unassociate(ContentItem item)
         {
-            item[LanguageKey] = null;
-            persister.Save(item);
+			if (item.TranslationKey != null)
+			{
+				item.TranslationKey = null;
+				persister.Repository.Save(item);
+			}
         }
 
         /// <summary>Throws an exception if any of the items is a language root.</summary>
@@ -259,19 +261,19 @@ namespace N2.Engine.Globalization
             foreach (ContentItem item in items)
             {
                 appointedMaster = item;
-                if (appointedMaster[LanguageKey] != null)
+                if (appointedMaster.TranslationKey != null)
                     break;
             }
             foreach (ContentItem item in items)
             {
-                if (item[LanguageGateway.LanguageKey] != null && item.ID == (int)item[LanguageGateway.LanguageKey])
+                if (item.TranslationKey != null && item.ID == (int)item.TranslationKey)
                 {
                     appointedMaster = item;
                     break;
                 }
             }
-            if (appointedMaster[LanguageGateway.LanguageKey] == null)
-                appointedMaster[LanguageGateway.LanguageKey] = appointedMaster.ID;
+            if (appointedMaster.TranslationKey == null)
+                appointedMaster.TranslationKey = appointedMaster.ID;
             return appointedMaster;
         }
 
@@ -291,10 +293,10 @@ namespace N2.Engine.Globalization
                 }
                 else if (existingTranslation != null)
                 {
-                    existingTranslation[LanguageGateway.LanguageKey] = null;
+                    existingTranslation.TranslationKey = null;
                     yield return existingTranslation;
                 }
-                item[LanguageGateway.LanguageKey] = appointedMaster[LanguageGateway.LanguageKey];
+                item.TranslationKey = appointedMaster.TranslationKey;
                 yield return item;
             }
 		}

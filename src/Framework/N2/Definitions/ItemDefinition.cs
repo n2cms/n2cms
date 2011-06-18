@@ -72,6 +72,7 @@ namespace N2.Definitions
 			Containers = new List<IEditableContainer>();
 			EditableModifiers = new List<EditorModifierAttribute>();
 			Displayables = new List<IDisplayable>();
+			NamedOperators = new List<IUniquelyNamed>();
 			IsPage = true;
 			Enabled = true;
 			AllowedIn = AllowedZones.None;
@@ -145,9 +146,6 @@ namespace N2.Definitions
 		/// <summary>Gets or sets containers defined for the item.</summary>
 		public IList<IEditableContainer> Containers { get; private set; }
 
-		///// <summary>Gets or sets the root container used to build the edit interface.</summary>
-		//public IEditableContainer RootContainer { get; private set; }
-
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
 
@@ -164,6 +162,9 @@ namespace N2.Definitions
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
 		public IList<IDisplayable> Displayables { get; private set; }
 
+		/// <summary>Named items associated to a property.</summary>
+		public IList<IUniquelyNamed> NamedOperators { get; private set; }
+
 		public AllowedZones AllowedIn { get; set; }
 
 		/// <summary>Filters allowed definitions below this definition.</summary>
@@ -179,21 +180,12 @@ namespace N2.Definitions
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
 		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
 		{
-			IEnumerable<ItemDefinition> all = definitions.GetDefinitions().ToList();
-			foreach (var d in all)
-			{
-				var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = this, ChildDefinition = d, Definitions = definitions };
-				var filters = AllowedChildFilters.Union(d.AllowedParentFilters).ToList();
-				if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
-					yield return d;
-				else if (!filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
-					yield return d;
-			}
+			return definitions.GetDefinitions().AllowedBelow(this, parentItem, definitions);
 		}
 
-		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)
+		public bool IsChildAllowed(IDefinitionManager definitions, ContentItem parentItem, ItemDefinition childDefinition)
 		{
-			return GetAllowedChildren(definitions, null).Any(d => d.ItemType == itemDefinition.ItemType);
+			return GetAllowedChildren(definitions, parentItem).Any(d => d.ItemType == childDefinition.ItemType);
 		}
 
 		/// <summary>Find out if this item is allowed in a zone.</summary>
@@ -217,17 +209,6 @@ namespace N2.Definitions
 
 			return AllowedZoneNames.Contains(zoneName);
 		}
-
-		///// <summary>Gets editable attributes available to user.</summary>
-		///// <returns>A filtered list of editable fields.</returns>
-		//public IList<IEditable> GetEditables(IPrincipal user)
-		//{
-		//    var filteredList = new List<IEditable>();
-		//    foreach (IEditable e in Editables)
-		//        if (e.IsAuthorized(user))
-		//            filteredList.Add(e);
-		//    return filteredList;
-		//}
 
 		/// <summary>Gets the editor modifications for the specified detail name.</summary>
 		/// <param name="detailName"></param>
@@ -305,6 +286,8 @@ namespace N2.Definitions
 					Displayables.AddOrReplace(containable as IDisplayable);
 				if (containable is IContentTransformer)
 					ContentTransformers.Add(containable as IContentTransformer);
+				
+				NamedOperators.Add(containable);
 			}
 		}
 
@@ -316,10 +299,7 @@ namespace N2.Definitions
 
 		public IEnumerable<IUniquelyNamed> GetNamed(string name)
 		{
-			return Editables.Where(e => e.Name == name).OfType<IUniquelyNamed>()
-				.Union(Containers.Where(c => c.Name == name).OfType<IUniquelyNamed>())
-				.Union(Displayables.Where(d => d.Name == name).OfType<IUniquelyNamed>())
-				.ToList();
+			return NamedOperators.Where(o => o.Name == name).ToList();
 		}
 
 		public void Remove(IUniquelyNamed containable)
@@ -339,6 +319,8 @@ namespace N2.Definitions
 					Displayables.Remove(containable as IDisplayable);
 				if (containable is IContentTransformer)
 					ContentTransformers.Remove(containable as IContentTransformer);
+
+				NamedOperators.Remove(containable);
 			}
 		}
 
@@ -373,6 +355,11 @@ namespace N2.Definitions
 		#region Equals, GetHashCode & ToString Methods
 
 		public override string ToString()
+		{
+			return GetDiscriminatorWithTemplateKey();
+		}
+
+		public string GetDiscriminatorWithTemplateKey()
 		{
 			return Discriminator + (TemplateKey != null ? "/" + TemplateKey : null);
 		}
@@ -432,6 +419,14 @@ namespace N2.Definitions
 		}
 
 		#endregion
+
+		public bool IsAllowed(string zoneName, IPrincipal user)
+		{
+			return IsDefined
+				&& Enabled
+				&& IsAllowedInZone(zoneName)
+				&& IsAuthorized(user);
+		}
 	}
 
 	public static class CollectionExtensions

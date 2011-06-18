@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
+using N2.Web.UI;
 
 namespace N2.Tests.Web.WebControls
 {
@@ -19,7 +20,7 @@ namespace N2.Tests.Web.WebControls
 		[Test]
 		public void CanRenderItem_InZone()
 		{
-			Zone z = new Zone().AddedToFakePage(HttpContext.Current);
+			Zone z = new Zone().AddedToFakePage(HttpContext.Current, page);
 			z.CurrentItem = page;
 			z.ZoneName = "TheZone";
 
@@ -32,7 +33,7 @@ namespace N2.Tests.Web.WebControls
 		[Test]
 		public void CanRenderItem_InDroppableZone()
 		{
-            Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current);
+			Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current, page);
 			z.CurrentItem = page;
 			z.ZoneName = "TheZone";
 
@@ -45,7 +46,7 @@ namespace N2.Tests.Web.WebControls
 		[Test]
 		public void CanRenderItem_InDroppableZone_WhenDragDrop()
 		{
-            Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current);
+			Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current, page);
 			z.CurrentItem = page;
             z.ZoneName = "TheZone";
 
@@ -58,12 +59,13 @@ namespace N2.Tests.Web.WebControls
 
 	public static class ControlExtensions
 	{
-        public static T AddedToFakePage<T>(this T control, HttpContext context)
+        public static T AddedToFakePage<T>(this T control, HttpContext context, ContentItem item)
             where T : Control
         {
-            Page p = new Page();
-            p.Set("_request", context.Request);
-            control.Page = p;
+			var p = new ContentPage();
+			p.Set("_request", context.Request);
+			p.CurrentPage = item;
+			control.Page = p;
 
             return control;
         }

@@ -1,8 +1,10 @@
-﻿namespace N2.Definitions
+﻿using N2.Persistence.Search;
+namespace N2.Definitions
 {
 	/// <summary>
 	/// Marks a page containing text content.
 	/// </summary>
+	[SearchableType]
 	public interface IContentPage : IPage
 	{
 		/// <summary>The title of the page.</summary>

@@ -2,20 +2,25 @@
 
 namespace N2.Definitions.Runtime
 {
-	public class Builder<T> where T : IContainable
+	public class Builder<T>
 	{
 		string PropertyName { get; set; }
-		ContentRegistration Registration { get; set; }
+		protected ContentRegistration Registration { get; set; }
 
 
-		public Builder(string propertyName, ContentRegistration re)
+		public Builder(ContentRegistration re)
 		{
-			this.PropertyName = propertyName;
 			this.Registration = re;
 		}
 
+		public Builder(string propertyName, ContentRegistration re)
+			: this(re)
+		{
+			this.PropertyName = propertyName;
+		}
 
-		public Builder<T> Configure(Action<T> configurationExpression)
+
+		public virtual Builder<T> Configure(Action<T> configurationExpression)
 		{
 			if (Registration != null && configurationExpression != null)
 				Registration.Configure(PropertyName, configurationExpression);

@@ -25,7 +25,7 @@
 			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>
-					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State")) %>' />
+					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State"), Eval("State").ToString()) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />

@@ -4,7 +4,6 @@ namespace N2.Definitions.Runtime
 {
 	public class EditableBuilder<T> : Builder<T> where T : IEditable
 	{
-		ContentRegistration Registration { get; set; }
 		string PropertyName { get; set; }
 		
 		public EditableBuilder(string propertyName, ContentRegistration re)

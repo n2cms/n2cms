@@ -41,5 +41,16 @@ namespace N2.Tests.Fakes
 		{
 			get { return session; }
 		}
+
+		public override void RewritePath(string path)
+		{
+			RewritePath(path, "", "");
+		}
+		public override void RewritePath(string filePath, string pathInfo, string queryString)
+		{
+			request.SetQuery(queryString);
+			request.rawUrl = filePath;
+			request.appRelativeCurrentExecutionFilePath = Url.ToRelative(filePath);
+		}
 	}
 }

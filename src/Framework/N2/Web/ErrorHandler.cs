@@ -178,8 +178,8 @@ namespace N2.Web
 		{
 			string url = Url.Parse(fixClassUrl).ResolveTokens().AppendQuery("id", wex.Identifier);
 			Trace.WriteLine("Redirecting to '" + url + "' to fix exception: " + wex);
-			context.ClearError();
-			context.Response.Redirect(url);
+			context.HttpContext.ClearError();
+			context.HttpContext.Response.Redirect(url);
 		}
 
 		private static string FormatError(Exception ex)

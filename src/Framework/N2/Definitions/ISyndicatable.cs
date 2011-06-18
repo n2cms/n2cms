@@ -1,10 +1,12 @@
 ﻿using System;
+using N2.Persistence.Search;
 
 namespace N2.Definitions
 {
 	/// <summary>
 	/// Marks an item that is available for syndication.
 	/// </summary>
+	[SearchableType]
 	public interface ISyndicatable
 	{
 		/// <summary>The title of the syndicated item.</summary>

@@ -19,15 +19,6 @@ namespace N2.Tests.Globalization
 		protected LanguageRoot swedish;
 		protected LanguageRoot italian;
 
-		[TestFixtureSetUp]
-		public override void TestFixtureSetUp()
-		{
-			base.TestFixtureSetUp();
-
-			engine.Container.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
-			engine.Container.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor), typeof(LanguageInterceptor));
-		}
-
 		[SetUp]
 		public override void SetUp()
 		{
@@ -54,7 +45,7 @@ namespace N2.Tests.Globalization
 
 			engine.Persister.Save(englishSub);
 
-			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.Null);
+			Assert.That(englishSub.TranslationKey, Is.Null);
 		}
 
 		[Test]
@@ -64,7 +55,7 @@ namespace N2.Tests.Globalization
 
 			engine.Persister.Save(page);
 
-			Assert.That(page[LanguageGateway.LanguageKey], Is.Null);
+			Assert.That(page.TranslationKey, Is.Null);
 		}
 
 		[Test]
@@ -80,7 +71,7 @@ namespace N2.Tests.Globalization
                 engine.Persister.Save(swedishSub);
             }
 
-			Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub[LanguageGateway.LanguageKey]));
+			Assert.That(swedishSub.TranslationKey, Is.EqualTo(englishSub.TranslationKey));
 		}
 
 		[Test]
@@ -105,7 +96,7 @@ namespace N2.Tests.Globalization
 				swedish = engine.Persister.Get<LanguageRoot>(swedish.ID);
 				ContentItem englishSub = english.Children[english.Children.Count - 1];
 				ContentItem swedishSub = swedish.Children[swedish.Children.Count - 1];
-				Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub[LanguageGateway.LanguageKey]));
+				Assert.That(swedishSub.TranslationKey, Is.EqualTo(englishSub.TranslationKey));
 			}
 		}
 
@@ -164,7 +155,7 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(englishSub);
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
+			swedishSub.TranslationKey = englishSub.ID;
 			engine.Persister.Save(swedishSub);
 
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
@@ -183,7 +174,7 @@ namespace N2.Tests.Globalization
             engine.Persister.Save(englishSub);
 
             var swedishSub = CreateOneItem<TranslatedPage>(0, "swedish1", swedish);
-            swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
+            swedishSub.TranslationKey = englishSub.ID;
             engine.Persister.Save(swedishSub);
 
             englishSub.Authorize = false;
@@ -227,7 +218,7 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(englishSub);
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
+			swedishSub.TranslationKey = englishSub.ID;
 			engine.Persister.Save(swedishSub);
 
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
@@ -344,8 +335,8 @@ namespace N2.Tests.Globalization
                 engine.Persister.Save(swedishSub);
             }
 
-			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
-			Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
+			Assert.That(englishSub.TranslationKey, Is.EqualTo(englishSub.ID));
+			Assert.That(swedishSub.TranslationKey, Is.EqualTo(englishSub.ID));
 		}
 
 		[Test]
@@ -388,7 +379,7 @@ namespace N2.Tests.Globalization
 
 			engine.Persister.Save(englishSub);
 
-			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.Null);
+			Assert.That(englishSub.TranslationKey, Is.Null);
 		}
 
         [Test]
@@ -507,7 +498,7 @@ namespace N2.Tests.Globalization
 			ContentItem english1copy = engine.Persister.Copy(english1, english1);
 
 			Assert.That(!gateway.FindTranslations(swedish1).Contains(english1copy));
-			Assert.That(english1copy[LanguageGateway.LanguageKey], Is.Null, "Expected language association to be cleared from copy.");
+			Assert.That(english1copy.TranslationKey, Is.Null, "Expected language association to be cleared from copy.");
 			Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(2));
 		}
 
@@ -529,7 +520,7 @@ namespace N2.Tests.Globalization
 			engine.Persister.Delete(english1);
 
 			Assert.That(!gateway.FindTranslations(swedish1).Contains(english1));
-			Assert.That(english1[LanguageGateway.LanguageKey], Is.Null, "Expected language association to be cleared from copy.");
+			Assert.That(english1.TranslationKey, Is.Null, "Expected language association to be cleared from copy.");
 			Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(1));
 		}
 
@@ -557,14 +548,14 @@ namespace N2.Tests.Globalization
             public LanguageKeyScope(IEngine engine, int key)
             {
                 context = (ThreadContext)engine.Resolve<IWebContext>();
-                context.Url = context.Url.SetQueryParameter(LanguageGateway.LanguageKey, key.ToString());
+                context.Url = context.Url.SetQueryParameter(LanguageGateway.TranslationKey, key.ToString());
             }
 
             #region IDisposable Members
 
             public void Dispose()
             {
-                context.Url = context.Url.SetQueryParameter(LanguageGateway.LanguageKey, null);
+                context.Url = context.Url.SetQueryParameter(LanguageGateway.TranslationKey, null);
             }
 
             #endregion

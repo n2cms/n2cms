@@ -356,5 +356,31 @@ namespace N2.Extensions.Tests.Linq
 
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
+
+		[Test]
+		public void CanSelectItems_WhereDescendantOf()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDescendantOf(root);
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(item));
+		}
+
+		[Test]
+		public void CanSelectItems_WhereDescendantOrSelf()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDescendantOrSelf(root);
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count(), Is.EqualTo(2));
+			Assert.That(items.Contains(root));
+			Assert.That(items.Contains(item));
+		}
 	}
 }

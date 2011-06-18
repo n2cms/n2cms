@@ -49,6 +49,9 @@ namespace N2.Definitions.Runtime
 		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
 		{
 			var httpContext = httpContextProvider.Get();
+			if (httpContext == null)
+				return new TemplateDefinition[0];
+
 			try
 			{
 				httpContext.Request.GetType();
@@ -116,7 +119,7 @@ namespace N2.Definitions.Runtime
 			var definitions = registrations.Select(r => r.Definition).ToList();
 			builder.ExecuteRefiners(definitions);
 			foreach (var registration in registrations)
-				registration.Registration.AppendDefinition(registration.Definition);
+				registration.Registration.AppendToDefinition(registration.Definition);
 			return definitions;
 		}
 

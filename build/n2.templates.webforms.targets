@@ -11,7 +11,11 @@
 
 
 	<Target Name="Templates-Build">
-		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+		<PropertyGroup>
+			<_WebFormProperties>Configuration=$(Configuration);Platform=AnyCPU;</_WebFormProperties>
+		</PropertyGroup>
+		<Message Text="$(_WebFormProperties)" Importance="high" />
+		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="$(_WebFormProperties)" />
 	</Target>
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
@@ -28,6 +32,7 @@
 																		$(Templates-SourceFolder)\**\*.user;
 																		$(Templates-SourceFolder)\**\*.Publish.xml;
 																		$(Templates-SourceFolder)\**\Thumbs.db;
+																		$(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
 																		$(Templates-SourceFolder)\N2\**\*;
 																		$(Templates-SourceFolder)\N2.Management.*" />
 		</ItemGroup>

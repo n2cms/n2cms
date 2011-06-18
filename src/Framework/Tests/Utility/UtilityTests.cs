@@ -598,7 +598,10 @@ namespace N2.Tests.Utility
 		}
 
 		[TestCase(typeof(ICloneable), 0)]
-		[TestCase(typeof(IEditable), 2)] // IEditable(0) : IContainable(1) : IUniquelyNamed(2)
+		[TestCase(typeof(IEditable), 3)] // IEditable(3) : IContainable(2) : IUniquelyNamed(1) : INameable(0)
+		[TestCase(typeof(IContainable), 2)] // IContainable(2) : IUniquelyNamed(1) : INameable(0)
+		[TestCase(typeof(IUniquelyNamed), 1)] // IUniquelyNamed(1) : INameable(0)
+		[TestCase(typeof(INameable), 0)] // INameable(0)
 		public void InheritanceDepth_Interfaces(Type type, int expectedDepth)
 		{
 			Assert.That(N2.Utility.InheritanceDepth(type), Is.EqualTo(expectedDepth));

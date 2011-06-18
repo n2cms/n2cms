@@ -29,7 +29,7 @@ namespace N2.Edit
 			if (count > 0)
 			{
 				chkAllow.Text += " (" + count + ")";
-				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Filter.Is.Distinct()).Select();
+				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
 				rptReferencing.DataBind();
 				hlReferencingItems.Visible = (count > 10);
 			}
@@ -70,7 +70,7 @@ namespace N2.Edit
 
                 btnDelete.Focus();
             }
-            this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat"),
+            this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat", "Delete \"{0}\""),
                 Selection.SelectedItem.Title);
 
             base.OnLoad(e);
@@ -78,7 +78,7 @@ namespace N2.Edit
 
 		private void RegisterConfirmAlert()
 		{
-            string message = string.Format(GetLocalResourceString("confirm.message"), Selection.SelectedItem.Title, Selection.SelectedItem.Url);
+            string message = string.Format(GetLocalResourceString("confirm.message", "Delete {0} ({1})?"), Selection.SelectedItem.Title, Selection.SelectedItem.Url);
 			ClientScript.RegisterClientScriptBlock(typeof(Delete), "confirm",
                 string.Format(@"jQuery(document).ready( function() {{
 	if(confirm('{0}')){{

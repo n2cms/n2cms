@@ -109,7 +109,7 @@ namespace N2.Web
 				if (info != null)
 				{
 					Url path = info.OriginalPath;
-					webContext.RewritePath(path.Path, path.Query ?? "");
+					webContext.HttpContext.RewritePath(path.Path, "", path.Query ?? "");
 				}
 			}
 		}
@@ -120,7 +120,7 @@ namespace N2.Web
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
 			var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
-			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.Handler);
+			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
 		}
 
 		protected virtual void Application_Error(object sender, EventArgs e)

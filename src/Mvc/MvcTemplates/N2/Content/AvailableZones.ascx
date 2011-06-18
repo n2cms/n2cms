@@ -7,7 +7,7 @@
 		<ItemTemplate>
 			<dt>
 				<asp:HyperLink CssClass="new" ID="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>"
-					ImageUrl="../Resources/icons/add.png" Text="<%# GetNewDataItemText(Container.DataItem) %>" meta:resourceKey="hlNew" />
+					ImageUrl="../Resources/icons/add.png" Text="New" meta:resourceKey="hlNew" />
 				<strong><%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %></strong>
 			</dt>
 			<asp:Repeater ID="rptItems" runat="server" DataSource="<%# GetItemsInZone(Container.DataItem) %>">
