@@ -93,6 +93,7 @@
     <Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
     <Compile Include="Templates\Find.cs" />
     <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
+    <Compile Include="Templates\Items\DropSelect.cs" />
     <Compile Include="Templates\Items\RootPage.cs" />
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
     <Compile Include="Templates\Items\AbstractItem.cs" />
@@ -449,6 +450,7 @@
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Web\UI\WebControls\DropDowncontrol.cs" />
     <Compile Include="Templates\Web\UI\WebControls\IQuestionControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\MultipleSelectControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\RequiredFieldValidatorForCheckBoxLists.cs" />
