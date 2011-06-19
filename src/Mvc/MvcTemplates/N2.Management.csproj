@@ -102,8 +102,9 @@
     <Content Include="N2\Resources\img\bg_fff20.png" />
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
-    <Content Include="N2\Resources\Js\jquery-1.5.2.js" />
-    <Content Include="N2\Resources\Js\jquery-1.5.2.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
+    <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandableBox.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2autocomplete.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
