@@ -491,8 +491,6 @@ namespace N2.Persistence.NH
 		/// <param name="cfg"></param>
 		protected virtual void AddProperties(NHibernate.Cfg.Configuration cfg)
 		{
-			cfg.LinqToHqlGeneratorsRegistry<WhereDetailHqlGeneratorRegistry>();
-
 			foreach (KeyValuePair<string, string> pair in Properties)
 			{
 				cfg.SetProperty(pair.Key, pair.Value);

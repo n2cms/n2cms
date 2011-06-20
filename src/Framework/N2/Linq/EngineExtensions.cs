@@ -4,6 +4,7 @@ using N2.Engine;
 using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using NHibernate.Linq;
+using System;
 
 namespace N2.Linq
 {
@@ -60,13 +61,22 @@ namespace N2.Linq
             return engine.QueryItems<ContentItem>(versions);
         }
 
-        /// <summary>Creates a query for details in the N2 database.</summary>
-        /// <typeparam name="T">The type of detail to retrieve.</typeparam>
-        /// <param name="engine">The engine onto which the extension method is attached.</param>
-        /// <returns>A query that can be extended.</returns>
-        public static IQueryable<T> QueryDetails<T>(this IEngine engine) where T : ContentDetail
+		[Obsolete("Use QueryDetails without generic type parameter")]
+		/// <summary>Creates a query for details in the N2 database.</summary>
+		/// <typeparam name="T">The type of detail to retrieve.</typeparam>
+		/// <param name="engine">The engine onto which the extension method is attached.</param>
+		/// <returns>A query that can be extended.</returns>
+		public static IQueryable<T> QueryDetails<T>(this IEngine engine) where T : ContentDetail
 		{
 			return engine.Query<T>();
+		}
+
+		/// <summary>Creates a query for details in the N2 database.</summary>
+		/// <param name="engine">The engine onto which the extension method is attached.</param>
+		/// <returns>A query that can be extended.</returns>
+		public static IQueryable<ContentDetail> QueryDetails(this IEngine engine)
+		{
+			return engine.Query<ContentDetail>();
 		}
 
         /// <summary>Creates a query for detail collections.</summary>

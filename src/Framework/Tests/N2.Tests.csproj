@@ -191,6 +191,7 @@
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
+    <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />

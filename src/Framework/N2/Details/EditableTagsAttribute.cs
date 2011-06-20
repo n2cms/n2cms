@@ -8,7 +8,7 @@ using N2.Persistence;
 
 namespace N2.Details
 {
-	internal class EditableTagsAttribute : EditableTextAttribute
+	public class EditableTagsAttribute : EditableTextAttribute
 	{
 		public EditableTagsAttribute()
 		{
@@ -21,6 +21,21 @@ namespace N2.Details
 			var editor = base.CreateEditor();
 			editor.CssClass += " tagsEditor";
 			return editor;
+		}
+
+		public override void UpdateEditor(ContentItem item, Control editor)
+		{
+			var tb = (ITextControl)editor;
+			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
+			tb.Text = string.Join(Environment.NewLine, tags.ToArray());
+		}
+
+		public override bool UpdateItem(ContentItem item, Control editor)
+		{
+			var tb = (ITextControl)editor;
+			var rows = tb.Text.Split('\r', '\n', ',').Where(r => !string.IsNullOrEmpty(r)).Select(r => r.Trim()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
+			Engine.Resolve<TagsRepository>().SetTags(item, Name, rows);
+			return true;
 		}
 	}
 }

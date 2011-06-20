@@ -187,7 +187,6 @@
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
-    <Compile Include="Linq\WhereDetailHqlGenerator.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
@@ -254,6 +253,7 @@
     <Compile Include="Persistence\Search\TextExtractor.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
+    <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Plugin\ConnectionContext.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />
