@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace N2.Persistence.Proxying
 {
@@ -19,7 +20,17 @@ namespace N2.Persistence.Proxying
 
 		/// <summary>Gets a value from the underlying detail store.</summary>
 		/// <param name="detailName">The name of the detail.</param>
-		/// <returns>The value of the given detial name of null.</returns>
+		/// <returns>The value of the given detial name or null.</returns>
 		object GetDetail(string detailName);
+
+		/// <summary>Sets a value to the underlying detail store.</summary>
+		/// <param name="detailName">The name of the detail.</param>
+		/// <param name="values">The values to set.</param>
+		void SetDetailCollection(string detailCollectionName, IEnumerable values);
+
+		/// <summary>Gets a value from the underlying detail store.</summary>
+		/// <param name="detailName">The name of the detail.</param>
+		/// <returns>The value of the given detial name or null.</returns>
+		IEnumerable GetDetailCollection(string detailCollectionName);
 	}
 }

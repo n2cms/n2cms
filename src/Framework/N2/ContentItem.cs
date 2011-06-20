@@ -1048,7 +1048,24 @@ namespace N2
 
 		#endregion
 
-		#region IInterceptable Members
+		#region IInterceptableType Members
+
+		void IInterceptableType.SetDetailCollection(string detailCollectionName, System.Collections.IEnumerable values)
+		{
+			if (values == null)
+			{
+				if (DetailCollections.ContainsKey(detailCollectionName))
+					DetailCollections.Remove(detailCollectionName);
+				return;
+			}
+			var collection = GetDetailCollection(detailCollectionName, true);
+			collection.Replace(values);
+		}
+
+		System.Collections.IEnumerable IInterceptableType.GetDetailCollection(string detailCollectionName)
+		{
+			return GetDetailCollection(detailCollectionName, false);
+		}
 
 		public virtual Type GetContentType()
 		{

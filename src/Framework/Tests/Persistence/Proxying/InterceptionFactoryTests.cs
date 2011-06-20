@@ -3,6 +3,7 @@ using N2.Details;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -17,6 +18,12 @@ namespace N2.Tests.Persistence.Proxying
 
 		[EditableFreeTextArea("My Property", 100)]
 		public virtual string StringProperty { get; set; }
+
+		[EditableFreeTextArea("My String", 100, PersistAs = PropertyPersistenceLocation.DetailCollection, DefaultValue = new string[0])]
+		public virtual IEnumerable<string> StringCollectionProperty { get; set; }
+
+		[EditableFreeTextArea("My Numbers", 100, PersistAs = PropertyPersistenceLocation.DetailCollection)]
+		public virtual IEnumerable<int> IntCollectionProperty { get; set; }
 
 		[EditableItem("My Property", 100)]
 		public virtual ContentItem LinkProperty { get; set; }
@@ -154,6 +161,72 @@ namespace N2.Tests.Persistence.Proxying
 			item.StringProperty = "";
 
 			Assert.That(item.GetDetail("StringProperty"), Is.Null);
+		}
+
+		// COLLECTIONS
+
+		[Test]
+		public void Setting_StringCollectionProperty_AssignesToDetailCollection()
+		{
+			item.StringCollectionProperty = new string[] { "hello", "world" };
+			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.EquivalentTo(new string[] { "hello", "world" }));
+		}
+
+		[Test]
+		public void Getting_StringCollectionProperty_YieldsDefaultValue()
+		{
+			Assert.That(item.StringCollectionProperty, Is.EquivalentTo(new string[0]));
+		}
+
+		[Test]
+		public void Setting_StringCollectionProperty_ToDefaultValue_DoesntStoreValue()
+		{
+			item.StringCollectionProperty = new string[0];
+
+			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.Null);
+		}
+
+		[Test]
+		public void Setting_StringCollectionProperty_ToDefaultValue_ClearsStoredValue()
+		{
+			item.StringCollectionProperty = new string[] { "hello", "world" };
+			item.StringCollectionProperty = new string[0];
+
+			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.Null);
+		}
+
+		[Test]
+		public void Changing_StringCollectionProperty_AffectsDetailCollection()
+		{
+			item.StringCollectionProperty = new string[] { "hello", "world" };
+			item.StringCollectionProperty = new string[] { "world" };
+
+			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.EquivalentTo(new string[] { "world" }));
+		}
+
+		[Test]
+		public void Setting_StringCollectionProperty_ToNull_RemovesCollection()
+		{
+			item.StringCollectionProperty = new string[] { "hello", "world" };
+			item.StringCollectionProperty = null;
+
+			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.Null);
+		}
+
+		[Test]
+		public void Getting_IntCollectionProperty_WithoutDefaultValue_YieldsNull()
+		{
+			var value = item.IntCollectionProperty;
+
+			Assert.That(value, Is.Null);
+		}
+
+		[Test]
+		public void Setting_IntCollectionProperty_AssignsDetailCollections()
+		{
+			item.IntCollectionProperty = new int[0];
+
+			Assert.That(item.GetDetailCollection("IntCollectionProperty", false), Is.EquivalentTo(new int[0]));
 		}
 
 		// LINK
