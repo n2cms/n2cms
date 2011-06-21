@@ -7,6 +7,7 @@
 		meta:resourcekey="HyperLinkResource1">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
+	<div class="tabPanel">
 	<asp:CreateUserWizard ID="createUserWizard" runat="server" 
 		OnCreatedUser="createUserWizard_CreatedUser" 
 		OnContinueButtonClick="createUserWizard_FinishButtonClick" 
@@ -45,4 +46,5 @@
 			<asp:CompleteWizardStep runat="server"></asp:CompleteWizardStep>
 		</WizardSteps>
 	</asp:CreateUserWizard>
+	</div>
 </asp:Content>

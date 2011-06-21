@@ -11,8 +11,10 @@
 		CssClass="command" meta:resourcekey="hlBackResource1">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
+	<div class="tabPanel">
     <asp:Label ID="Label1" runat="server" AssociatedControlID="txtPassword" 
 		Text="New password" meta:resourcekey="Label1Resource1"></asp:Label>
     <asp:TextBox ID="txtPassword" runat="server" 
 		meta:resourcekey="txtPasswordResource1"></asp:TextBox>
+	</div>
 </asp:Content>

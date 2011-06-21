@@ -102,6 +102,7 @@
     <Content Include="N2\Resources\img\bg_fff20.png" />
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
+    <Content Include="N2\Resources\Js\EditableTags.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />

@@ -11,6 +11,7 @@
 		CssClass="command" meta:resourcekey="hlBackResource1">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
+	<div class="tabPanel">
     <asp:Label ID="lblEmail" runat="server" AssociatedControlID="txtEmail" 
 		Text="Email" meta:resourcekey="lblEmailResource1" />
     <asp:TextBox ID="txtEmail" runat="server" 
@@ -20,4 +21,5 @@
     <asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
 		DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" />
     <asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
+	</div>
 </asp:Content>

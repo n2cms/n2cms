@@ -16,21 +16,21 @@ namespace N2.Persistence.Proxying
 		/// <param name="detailName">The name of the detail.</param>
 		/// <param name="value">The value to set.</param>
 		/// <param name="valueType">The type of value to assign.</param>
-		void SetDetail(string detailName, object value, Type valueType);
+		void SetValue(string detailName, object value, Type valueType);
 
 		/// <summary>Gets a value from the underlying detail store.</summary>
 		/// <param name="detailName">The name of the detail.</param>
 		/// <returns>The value of the given detial name or null.</returns>
-		object GetDetail(string detailName);
+		object GetValue(string detailName);
 
-		/// <summary>Sets a value to the underlying detail store.</summary>
-		/// <param name="detailName">The name of the detail.</param>
+		/// <summary>Sets values to the underlying detail store.</summary>
+		/// <param name="detailCollectionName">The name of the detail.</param>
 		/// <param name="values">The values to set.</param>
-		void SetDetailCollection(string detailCollectionName, IEnumerable values);
+		void SetValues(string detailCollectionName, IEnumerable values);
 
-		/// <summary>Gets a value from the underlying detail store.</summary>
-		/// <param name="detailName">The name of the detail.</param>
+		/// <summary>Gets values from the underlying detail store.</summary>
+		/// <param name="detailCollectionName">The name of the detail.</param>
 		/// <returns>The value of the given detial name or null.</returns>
-		IEnumerable GetDetailCollection(string detailCollectionName);
+		IEnumerable GetValues(string detailCollectionName);
 	}
 }

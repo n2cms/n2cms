@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 using System.Collections;
+using N2.Details;
 
 namespace N2.Persistence.Proxying
 {
@@ -62,7 +63,7 @@ namespace N2.Persistence.Proxying
 					if (defaultValue != null && !typeof(IEnumerable).IsAssignableFrom(defaultValue.GetType()))
 						throw new InvalidCastException("The property " + property.Name + " has a default value type " + property.PropertyType + " but a type assignable from IEnumerable is required for usage of PropertyPersistenceLocation.DetailCollection");
 
-					methods[getMethod] = GetGetDetailCollection(property.Name, defaultValue);
+					methods[getMethod] = GetGetDetailCollection(property.Name, property.PropertyType, defaultValue);
 
 					if (setMethod == null)
 						continue; // no public setter? that's okay
@@ -97,7 +98,7 @@ namespace N2.Persistence.Proxying
 			return invocation =>
 			{
 				var instance = invocation.Proxy as IInterceptableType;
-				invocation.ReturnValue = instance.GetDetail(propertyName) ?? defaultValue;
+				invocation.ReturnValue = instance.GetValue(propertyName) ?? defaultValue;
 			};
 		}
 
@@ -111,7 +112,7 @@ namespace N2.Persistence.Proxying
 					if (defaultValue.Equals(value))
 						value = null;
 
-					instance.SetDetail(propertyName, value, valueType);
+					instance.SetValue(propertyName, value, valueType);
 				};
 			else
 				return invocation =>
@@ -119,17 +120,54 @@ namespace N2.Persistence.Proxying
 					var instance = invocation.Proxy as IInterceptableType;
 					var value = invocation.Arguments[0];
 
-					instance.SetDetail(propertyName, value, valueType);
+					instance.SetValue(propertyName, value, valueType);
 				};
 		}
 
-		private Action<IInvocation> GetGetDetailCollection(string propertyName, object defaultValue)
+		private Action<IInvocation> GetGetDetailCollection(string propertyName, Type propertyType, object defaultValue)
 		{
-			return invocation =>
+			if (propertyType.IsAssignableFrom(typeof(DetailCollection)))
+				return invocation =>
+				{
+					var instance = invocation.Proxy as IInterceptableType;
+					var collection = instance.GetValues(propertyName);
+					invocation.ReturnValue = collection ?? defaultValue;
+				};
+			else
+				return invocation =>
+				{
+					var instance = invocation.Proxy as IInterceptableType;
+					var collection = instance.GetValues(propertyName);
+					if (collection != null)
+						collection = ConvertTo(collection, propertyType, propertyName);
+					invocation.ReturnValue = collection ?? defaultValue;
+				};
+		}
+
+		private IEnumerable ConvertTo(IEnumerable collection, Type propertyType, string propertyName)
+		{
+			if (propertyType.IsArray)
 			{
-				var instance = invocation.Proxy as IInterceptableType;
-				invocation.ReturnValue = instance.GetDetailCollection(propertyName) ?? defaultValue;
-			};
+				return CreateReturnArrayOfType(collection, propertyType.GetElementType());
+			}
+			if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+			{
+				return CreateReturnArrayOfType(collection, propertyType.GetGenericArguments()[0]);
+			}
+
+			throw new NotSupportedException("The property type " + propertyType + " on the property " + propertyName + " is not supported for an auto-implemented detail collection property. Only IEnumerable<T> and T[] are supported.");
+		}
+
+		private static IEnumerable CreateReturnArrayOfType(IEnumerable collection, Type elementType)
+		{
+			List<object> items = new List<object>();
+			foreach (var item in collection)
+				items.Add(item);
+
+			var returnArray = Array.CreateInstance(elementType, items.Count);
+			for (int i = 0; i < items.Count; i++)
+				returnArray.SetValue(items[i], i);
+			return returnArray;
 		}
 
 		private Action<IInvocation> GetSetDetailCollection(string propertyName, IEnumerable defaultValue, Type type)
@@ -140,11 +178,11 @@ namespace N2.Persistence.Proxying
 					var instance = invocation.Proxy as IInterceptableType;
 					var value = invocation.Arguments[0] as IEnumerable;
 					if (value == null)
-						instance.SetDetailCollection(propertyName, value);
+						instance.SetValues(propertyName, value);
 					else if(CollectionEquals(defaultValue, value))
-						instance.SetDetailCollection(propertyName, null);
+						instance.SetValues(propertyName, null);
 					else
-						instance.SetDetailCollection(propertyName, value);
+						instance.SetValues(propertyName, value);
 				};
 			else
 				return invocation =>
@@ -152,7 +190,7 @@ namespace N2.Persistence.Proxying
 					var instance = invocation.Proxy as IInterceptableType;
 					var value = invocation.Arguments[0];
 
-					instance.SetDetailCollection(propertyName, value as IEnumerable);
+					instance.SetValues(propertyName, value as IEnumerable);
 				};
 		}
 

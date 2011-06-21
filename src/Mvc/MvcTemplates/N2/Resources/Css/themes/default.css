@@ -23,12 +23,15 @@ body .subbar
 body .toolbar, 
 body .framed .optionGroup,
 body .framed .commandOptions .opener,
-body .gv th,
-body .gv thead td,
 body.framed .outside
 {
     background-color:#ddc;
 	border-color:#bbc;
+}
+body .gv th,
+body .gv thead td
+{
+    background-color:#ddc;
 }
 body,
 body .gv .alt td { background-color:#F8F8E8; }

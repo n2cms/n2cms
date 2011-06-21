@@ -5,14 +5,34 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Persistence;
+using N2.Resources;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows editing tags on an item.
+	/// </summary>
+	/// <example>
+	///	// model decoration
+	/// [EditableTags(ContainerName = Tabs.Advanced)]
+	/// public virtual IEnumerable<string> Tags { get; set; }
+	/// 
+	/// // locating the tags repository
+	/// var repository = N2.Context.Current.Resolve&lt;N2.Persistence.TagsRepository&gt;();
+	/// 
+	/// // getting tags of an item
+	/// var tags = repository.GetTags(item, "Tags");
+	/// 
+	/// // finding all tags
+	/// var tags = repository.FindTags(Find.StartPage, "Tags");
+	/// 
+	/// // find tagged items
+	/// var tags = repository.FindTagged(Find.StartPage, "Tags", "CMS");
+	/// </example>
 	public class EditableTagsAttribute : EditableTextAttribute
 	{
 		public EditableTagsAttribute()
 		{
-			TextMode = TextBoxMode.MultiLine;
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
 		}
 
@@ -23,11 +43,17 @@ namespace N2.Details
 			return editor;
 		}
 
+		protected override Control AddEditor(Control container)
+		{
+			container.Page.JavaScript("{ManagementUrl}/Resources/Js/EditableTags.js");
+			return base.AddEditor(container);
+		}
+
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			var tb = (ITextControl)editor;
 			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
-			tb.Text = string.Join(Environment.NewLine, tags.ToArray());
+			tb.Text = string.Join(", ", tags.ToArray());
 		}
 
 		public override bool UpdateItem(ContentItem item, Control editor)

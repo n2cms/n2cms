@@ -23,7 +23,7 @@ namespace N2.Tests.Persistence.Proxying
 		public virtual IEnumerable<string> StringCollectionProperty { get; set; }
 
 		[EditableFreeTextArea("My Numbers", 100, PersistAs = PropertyPersistenceLocation.DetailCollection)]
-		public virtual IEnumerable<int> IntCollectionProperty { get; set; }
+		public virtual int[] IntCollectionProperty { get; set; }
 
 		[EditableItem("My Property", 100)]
 		public virtual ContentItem LinkProperty { get; set; }
@@ -173,6 +173,13 @@ namespace N2.Tests.Persistence.Proxying
 		}
 
 		[Test]
+		public void Getting_StringCollectionProperty_RetrievesFromDetailCollection()
+		{
+			item.GetDetailCollection("StringCollectionProperty", true).AddRange(new string[] { "hello", "world" });
+			Assert.That(item.StringCollectionProperty, Is.EquivalentTo(new string[] { "hello", "world" }));
+		}
+
+		[Test]
 		public void Getting_StringCollectionProperty_YieldsDefaultValue()
 		{
 			Assert.That(item.StringCollectionProperty, Is.EquivalentTo(new string[0]));
@@ -211,6 +218,13 @@ namespace N2.Tests.Persistence.Proxying
 			item.StringCollectionProperty = null;
 
 			Assert.That(item.GetDetailCollection("StringCollectionProperty", false), Is.Null);
+		}
+
+		[Test]
+		public void Getting_ArrayCollectionProperty_RetrievesFromDetailCollection()
+		{
+			item.GetDetailCollection("IntCollectionProperty", true).AddRange(new[] { 123, 234 });
+			Assert.That(item.IntCollectionProperty, Is.EquivalentTo(new[] { 123, 234 }));
 		}
 
 		[Test]

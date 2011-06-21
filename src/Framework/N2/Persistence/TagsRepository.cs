@@ -61,7 +61,7 @@ namespace N2.Persistence
 		/// <returns></returns>
 		public virtual IEnumerable<string> GetTags(ContentItem item, string tagGroup)
 		{
-			return ((item as IInterceptableType).GetDetailCollection(tagGroup) ?? new string[0]).OfType<string>();
+			return ((item as IInterceptableType).GetValues(tagGroup) ?? new string[0]).OfType<string>();
 		}
 
 		/// <summary>Sets tags on a given item without saving it.</summary>
@@ -70,7 +70,7 @@ namespace N2.Persistence
 		/// <param name="rows"></param>
 		public virtual void SetTags(ContentItem item, string tagGroup, IEnumerable<string> rows)
 		{
-			(item as IInterceptableType).SetDetailCollection(tagGroup, rows);
+			(item as IInterceptableType).SetValues(tagGroup, rows);
 		}
 
 		/// <summary>Sets tags on a given item and saves it.</summary>

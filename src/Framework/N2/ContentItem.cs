@@ -1050,7 +1050,17 @@ namespace N2
 
 		#region IInterceptableType Members
 
-		void IInterceptableType.SetDetailCollection(string detailCollectionName, System.Collections.IEnumerable values)
+		void IInterceptableType.SetValue(string detailName, object value, Type valueType)
+		{
+			SetDetail(detailName, value, valueType);
+		}
+
+		object IInterceptableType.GetValue(string detailName)
+		{
+			return GetDetail(detailName);
+		}
+
+		void IInterceptableType.SetValues(string detailCollectionName, System.Collections.IEnumerable values)
 		{
 			if (values == null)
 			{
@@ -1062,7 +1072,7 @@ namespace N2
 			collection.Replace(values);
 		}
 
-		System.Collections.IEnumerable IInterceptableType.GetDetailCollection(string detailCollectionName)
+		System.Collections.IEnumerable IInterceptableType.GetValues(string detailCollectionName)
 		{
 			return GetDetailCollection(detailCollectionName, false);
 		}

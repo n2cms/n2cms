@@ -9,21 +9,20 @@ namespace N2.Templates.Mvc.Models.Parts
 	[Disable]
 	[PartDefinition("Top",
 		IconUrl = "~/Content/Img/page_white_star.png")]
-	[N2.Web.UI.FieldSetContainer("top", "Top", 100)]
 	[RestrictParents(typeof (LanguageRoot))]
 	// The top region is placed on the start page and displayed on all underlying pages
 	[AllowedZones("SiteTop")]
 	public class Top : PartBase
 	{
 		[DisplayableHeading(2)]
-		[EditableText("Top text", 40, ContainerName = "top")]
+		[EditableText("Top text", 40)]
 		public override string Title
 		{
 			get { return base.Title; }
 			set { base.Title = value; }
 		}
 
-		[EditableUrl("Top text url", 42, ContainerName = "top")]
+		[EditableUrl("Top text url", 42)]
 		public virtual string TopTextUrl
 		{
 			get
@@ -34,14 +33,14 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("TopTextUrl", value, "~/"); }
 		}
 
-		[FileAttachment, EditableFileUploadAttribute("Logo", 50, ContainerName = "top", Alt = "Logo")]
+		[FileAttachment, EditableFileUploadAttribute("Logo", 50, Alt = "Logo")]
 		public virtual string LogoUrl
 		{
 			get { return (string) (GetDetail("LogoUrl") ?? string.Empty); }
 			set { SetDetail("LogoUrl", value); }
 		}
 
-		[EditableUrl("Logo url", 52, ContainerName = "top")]
+		[EditableUrl("Logo url", 52)]
 		public virtual string LogoLinkUrl
 		{
 			get { return (string) (GetDetail("LogoLinkUrl") ?? "/"); }

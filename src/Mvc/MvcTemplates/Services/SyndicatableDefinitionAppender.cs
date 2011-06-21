@@ -15,9 +15,9 @@ namespace N2.Templates.Mvc.Services
 	public class SyndicatableDefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;
-		private string checkBoxText = "Make available for syndication.";
-		private string containerName = Tabs.Content;
-		private int sortOrder = 30;
+		private string checkBoxText = "Make available for syndication (RSS).";
+		private string containerName = Tabs.Details;
+		private int sortOrder = 0;
 		public static readonly string SyndicatableDetailName = "Syndicate";
 
 		public SyndicatableDefinitionAppender(IDefinitionManager definitions)

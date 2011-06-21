@@ -92,14 +92,14 @@ namespace N2.Persistence.Proxying
 				yield return (interceptable) =>
 					{
 						object propertyValue = getter.Invoke(interceptable, null);
-						object detailValue = interceptable.GetDetail(propertyName);
+						object detailValue = interceptable.GetValue(propertyName);
 
 						if (propertyValue == null && detailValue == null)
 							return false;
 						if (propertyValue != null && propertyValue.Equals(detailValue))
 							return false;
 						
-						interceptable.SetDetail(propertyName, propertyValue, propertyType);
+						interceptable.SetValue(propertyName, propertyValue, propertyType);
 						return true;
 					};
 			}

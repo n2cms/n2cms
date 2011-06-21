@@ -138,6 +138,9 @@
   <data name="lblSelected.Text" xml:space="preserve">
     <value>Selected: </value>
   </data>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Translations Overview</value>
+  </data>
   <data name="ppPermitted.Text" xml:space="preserve">
     <value>You do not have sufficient permissions.</value>
   </data>

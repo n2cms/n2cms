@@ -11,7 +11,9 @@
 		.framed .outside .box .box-inner { padding:10px; margin:0; background-color:#fff; }
 			.framed .outside .box .box-inner .editDetail { margin-bottom:10px; }
 				.framed .outside .box .box-inner .editDetail .editorLabel { display:block; }
-				.framed .outside .box .box-inner .editDetail .textEditor { display:block; width:97%; }
+				.framed .outside .box .box-inner .editDetail .prefix { display:block; }
+				.framed .outside .box .box-inner .editDetail .textEditor { width:85%; }
+		.framed .outside .box hr { width:250px; margin:10px 0 10px -10px; }
 
 body.rightExpanded #content { margin-right:265px; }
 
@@ -38,19 +40,20 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .content fieldset { clear:left; padding:10px; }
 
 .framed .titleEditor { width:580px; }
-.framed .itemEditor textarea.textEditor { width:580px; }
-.framed .itemEditor textarea.freeTextArea { width:580px; height:380px; }
-.framed .itemEditor .editDetail { margin:0 0 10px 0; clear:left; }
-.framed .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
-	.framed .itemEditor td .editorLabel { width:106px; }
-.framed .itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
-.framed .itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
-.framed .itemEditor .editControl input { vertical-align:middle; }
-.framed .itemEditor .nameEditor { width:142px; }
-.framed .itemEditor .prefix { color:silver; vertical-align:middle; font-size:.9em; }
-.framed .itemEditor .selector  { width:426px; }
-.framed .itemEditor .textEditor { width:284px; }
-.framed .itemEditor .titleEditor { font-size:1.5em; }
+.framed textarea.textEditor { width:580px; }
+.framed textarea.freeTextArea { width:580px; height:380px; }
+.framed .editDetail { margin:0 0 10px 0; clear:left; }
+.framed .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 10px; }
+.framed .itemEditor .tabPanel .editorLabel { margin:0 0 5px 0; }
+	.framed td .editorLabel { width:106px; }
+.framed .editControl { float:left; padding:0; margin:0 0 5px 0; }
+.framed .editControl label { font-weight:normal; display:inline; float:none; }
+.framed .editControl input { vertical-align:middle; }
+.framed .nameEditor { width:142px; }
+.framed .prefix { color:silver; vertical-align:middle; font-size:.9em; }
+.framed .selector  { width:426px; }
+.framed .textEditor { width:284px; }
+.framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 .framed .popupButton { margin-right:10px;}
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *
