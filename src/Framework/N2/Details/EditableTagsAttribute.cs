@@ -53,19 +53,28 @@ namespace N2.Details
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			var tb = (ITextControl)editor;
-			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
-			tb.Text = string.Join(", ", tags.ToArray());
+			tb.Text = GetTagsText(item);
 		}
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			var tb = (ITextControl)editor;
-			var rows = tb.Text.Split('\r', '\n', ',').Where(r => !string.IsNullOrEmpty(r)).Select(r => r.Trim()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
+			var rows = tb.Text.Split('\r', '\n', ',').Select(t => t.Trim()).Where(t => !string.IsNullOrEmpty(t)).ToList();
 			Engine.Resolve<TagsRepository>().SetTags(item, Name, rows);
 			return true;
 		}
 
 		public override string GetIndexableText(ContentItem item)
+		{
+			return GetTagsText(item);
+		}
+
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(GetTagsText(item));
+		}
+
+		private string GetTagsText(ContentItem item)
 		{
 			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
 			return string.Join(", ", tags.ToArray());

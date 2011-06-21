@@ -15,5 +15,7 @@ namespace N2.Templates.Mvc.Models
 		public bool IsLast { get; set; }
 		public int Skip { get; set; }
 		public int Take { get; set; }
+
+		public string Tag { get; set; }
 	}
 }

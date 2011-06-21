@@ -162,6 +162,11 @@ namespace N2.Web.Mvc.Html
 		{
 			return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(AllowedTypes.All) { TemplateNames = allowedChildTemplateKeys });
 		}
+
+		public static EditableBuilder<EditableTagsAttribute> Tags(this IContentRegistration registration, string name)
+		{
+			return registration.RegisterEditable<EditableTagsAttribute>(name, name);
+		}
 	}
 
 }

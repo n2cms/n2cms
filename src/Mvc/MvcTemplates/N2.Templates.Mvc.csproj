@@ -167,6 +167,7 @@
     <Compile Include="Models\ContentModelBase.cs" />
     <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Models\Parts\ABTestingContainer.cs" />
+    <Compile Include="Models\Parts\TagCloud.cs" />
     <Compile Include="Models\Parts\Questions\FileAttachmentQuestion.cs" />
     <Compile Include="Models\Parts\Questions\MultipleSelect.cs" />
     <Compile Include="Models\Parts\Questions\OptionSelectQuestion.cs" />
@@ -178,6 +179,11 @@
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>News.aspx.resx</DependentUpon>
+    </Compile>
     <Compile Include="Zones.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
@@ -375,7 +381,12 @@
     <Content Include="Global.asax" />
     <Content Include="Views\ABTesting\Index.ascx" />
     <Content Include="Views\RssAggregator\Index.ascx" />
+    <EmbeddedResource Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>News.aspx.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <Content Include="Views\Shared\Empty.ascx" />
+    <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Author.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Breadcrumb.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Changes.ascx" />
@@ -638,7 +649,6 @@
   <ItemGroup>
     <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Upload\" />
-    <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controllers\Resources\UserRegistration.resx">

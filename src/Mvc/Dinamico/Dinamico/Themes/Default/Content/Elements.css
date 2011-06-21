@@ -1,7 +1,10 @@
 /* forms, buttons and widgets */
 
 .updated { color:#999; }
-.author { color:#999; font-style:italic; }
+.author { color:#666; font-style:italic; margin-right:1em; }
+.tags { margin-right:1em; }
+	.tags label { color:#aaa; }
+	.tags #tags { color:#666; font-style:italic; }
 
 a.opener { text-decoration:none }
 	a.opener span { background: transparent url(/N2/Resources/icons/bullet_arrow_down.png) no-repeat 0 1px; display:inline-block; height:16px; width:16px; }

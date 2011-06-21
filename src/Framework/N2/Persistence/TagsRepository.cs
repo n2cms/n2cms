@@ -39,6 +39,24 @@ namespace N2.Persistence
 				.ToList();
 		}
 
+		/// <summary>Finds all stored tags.</summary>
+		/// <param name="ancestor"></param>
+		/// <param name="tagGroup"></param>
+		/// <returns></returns>
+		public virtual IEnumerable<KeyValuePair<string, int>> FindTagSizes(ContentItem ancestor, string tagGroup)
+		{
+			var details = engine.QueryItems()
+				.WherePublished()
+				.WhereDescendantOrSelf(ancestor)
+				.SelectMany(i => i.DetailCollections)
+				.Where(dc => dc.Name == tagGroup)
+				.SelectMany(dc => dc.Details);
+			return details.GroupBy(d => d.StringValue)
+				.Select(g => new { g.Key, Count = g.Count() })
+				.ToList()
+				.Select(g => new KeyValuePair<string, int>(g.Key, g.Count));
+		}
+
 		/// <summary>Finds items with a certain tag.</summary>
 		/// <param name="ancestor"></param>
 		/// <param name="tagGroup"></param>
