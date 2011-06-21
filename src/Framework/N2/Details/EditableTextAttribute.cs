@@ -33,7 +33,7 @@ namespace N2.Details
 	/// public virtual string Heading { get; set; }
 	/// 
 	/// [N2.Details.EditableText("Published", 80)]
-	/// public override DateTime Published { get; set; }
+	/// public virtual DateTime PublishedDate { get; set; }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableTextAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable, IIndexableProperty

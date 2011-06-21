@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Persistence;
 using N2.Resources;
+using N2.Persistence.Search;
 
 namespace N2.Details
 {
@@ -62,6 +63,12 @@ namespace N2.Details
 			var rows = tb.Text.Split('\r', '\n', ',').Where(r => !string.IsNullOrEmpty(r)).Select(r => r.Trim()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
 			Engine.Resolve<TagsRepository>().SetTags(item, Name, rows);
 			return true;
+		}
+
+		public override string GetIndexableText(ContentItem item)
+		{
+			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
+			return string.Join(", ", tags.ToArray());
 		}
 	}
 }
