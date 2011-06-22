@@ -58,7 +58,7 @@ namespace N2.Web.Mvc
 			if (viewContext == null)
 				return;
 
-			var re = RegistrationExtensions.GetRegistrationExpression(viewContext.ViewData);
+			var re = RegistrationExtensions.GetRegistrationExpression(viewContext.HttpContext);
 			if (re == null)
 				return;
 

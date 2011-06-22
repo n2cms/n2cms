@@ -87,7 +87,7 @@ namespace N2.Definitions.Runtime
 			{
 				var vdd = new ViewDataDictionary();
 				cctx.Controller.ViewData = vdd;
-				vdd["RegistrationExpression"] = re;
+				N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, re);
 
 				try
 				{
@@ -99,6 +99,10 @@ namespace N2.Definitions.Runtime
 					if (re.IsDefined)
 						throw;
 					return null;
+				}
+				finally
+				{
+					N2.Web.Mvc.Html.RegistrationExtensions.SetRegistrationExpression(cctx.HttpContext, null);
 				}
 
 				if (re.IsDefined)
