@@ -74,7 +74,7 @@ $(document).ready(function () {
 
 	function highlight(text) {
 		if (!window.highlightLoaded)
-			$("<script type='text/javascript' />").attr("src", "/Scripts/jquery.highlight-3.js").appendTo($("head"));
+			$("<script type='text/javascript' />").attr("src", "/Dinamico/Themes/Default/Scripts/jquery.highlight-3.js").appendTo($("head"));
 		window.highlightLoaded = true;
 		setTimeout(function () {
 			var splits = text.split(" ");

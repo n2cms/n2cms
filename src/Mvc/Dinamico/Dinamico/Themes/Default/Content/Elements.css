@@ -27,3 +27,5 @@ a.opener { text-decoration:none }
 	.pager .next { float:right; }
 	
 .part { margin-bottom:20px; }
+
+.highlight { background:yellow; }
