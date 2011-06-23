@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCS", "wwwroot\AppCS.csproj", "{1A6297F1-B181-473D-936B-BFE8D27B79ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Release|.NET.ActiveCfg = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

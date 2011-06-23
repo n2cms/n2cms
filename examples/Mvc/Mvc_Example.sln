@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
 EndProject
 Global
