@@ -8,9 +8,7 @@
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<n2:SlidingCurtain runat="server">
-		<n2:DragDropControlPanel runat="server" />
-	</n2:SlidingCurtain>
+	<% Html.RenderControlPanel(); %>
     <div class="page">
 
         <div id="header">

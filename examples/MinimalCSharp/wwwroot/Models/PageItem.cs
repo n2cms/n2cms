@@ -12,7 +12,7 @@ namespace App.Models
 	/// in this class it's Title and Name are also editable. This is because of the 
 	/// abstract base class <see cref="MyItemBase"/> it derives from.
 	/// </summary>
-	[PageDefinition("Default page", TemplateUrl = "~/Default.aspx", InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
+	[PageDefinition("Default page", TemplateUrl = "~/UI/Page.aspx", InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[WithEditableName]
 	public class PageItem : MyItemBase
 	{

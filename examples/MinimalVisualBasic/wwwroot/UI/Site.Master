@@ -11,6 +11,7 @@
 </head>
 <body>
     <form id="form2" runat="server">
+		<n2:SlidingCurtain ID="sc" runat="server"><n2:ControlPanel ID="cp" runat="server" /></n2:SlidingCurtain>
         <h5 class="header">The N2 Example Site</h5>
         <div class="menu">
 			<asp:SiteMapDataSource ID="N2SiteMap" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />

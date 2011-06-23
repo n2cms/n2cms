@@ -15,7 +15,7 @@ namespace MvcTest
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             
 			// This route detects content item paths and executes their controller
-			routes.Add(new ContentRoute(engine));
+			routes.MapContentRoute("Content", engine);
             
 			// This controller fallbacks to a controller unrelated to N2
 			routes.MapRoute(
@@ -27,20 +27,12 @@ namespace MvcTest
 
 		protected void Application_Start(object sender, EventArgs e)
 		{
-			// normally the engine is initialized by the initializer module but it can also be initialized this programmatically
-			// since we attach programmatically we need to associate the event broker with a http application
+			var engine = N2.Context.Current;
 
-			var engine = MvcEngine.Create();
+			// This registers controllers for IoC
+			engine.RegisterAllControllers();
 
-			engine.RegisterControllers(typeof(GlobalApplication).Assembly);
-
-			RegisterRoutes(RouteTable.Routes, engine);
-		}
-
-		public override void Init()
-		{
-			EventBroker.Instance.Attach(this);
-			base.Init();
+			RegisterRoutes(RouteTable.Routes, N2.Context.Current);
 		}
 	}
 }

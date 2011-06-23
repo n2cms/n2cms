@@ -9,6 +9,9 @@ src/Mvc/Dinamico/App_Data/SearchIndex/
 src/Mvc/MvcTemplates/App_Data/SearchIndex/
 src/Framework/Tests/App_Data/
 src/Framework/Extensions.Tests/App_Data/
+examples/MinimalCSharp/wwwroot/App_Data/SearchIndex/
+examples/MinimalVisualBasic/wwwroot/App_Data/SearchIndex/
+examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
 
 # User-specific files
 *.suo
