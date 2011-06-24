@@ -33,6 +33,7 @@ using System.Text.RegularExpressions;
 using System.Web.Caching;
 using System.Collections;
 using System.Diagnostics;
+using N2.Web;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
@@ -56,6 +57,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override bool FileExists(string virtualPath)
 		{
+			//virtualPath = ToRelative(virtualPath);
 			bool exists = Exists(virtualPath, true) || Previous.FileExists(virtualPath);
 			Trace.WriteLine("ZipVPP: " + exists + " " + virtualPath);
 			return exists;
@@ -63,12 +65,14 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override bool DirectoryExists(string virtualDir)
 		{
+			//virtualDir = ToRelative(virtualDir);
 			bool exists = Exists(virtualDir, false) || Previous.DirectoryExists(virtualDir);
 			return exists;
 		}
 
 		public override VirtualFile GetFile(string virtualPath)
 		{
+			//virtualPath = ToRelative(virtualPath);
 			if (Exists(virtualPath, true))
 			{
 				ZipEntry zipEntry = GetEntry(virtualPath, true);
@@ -80,6 +84,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override VirtualDirectory GetDirectory(string virtualDir)
 		{
+			//virtualDir = ToRelative(virtualDir);
 			if (Exists(virtualDir, false))
 			{
 				ZipEntry zipEntry = GetEntry(virtualDir, false);
@@ -91,6 +96,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override string GetFileHash(string virtualPath, System.Collections.IEnumerable virtualPathDependencies)
 		{
+			//virtualPath = ToRelative(virtualPath);
 			if (Exists(virtualPath, true))
 				return zipFilePath + File.GetLastWriteTimeUtc(zipFilePath) + virtualPath;
 			
@@ -99,7 +105,8 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override CacheDependency GetCacheDependency(String virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
 		{
-			var filesNotBelongingToZip = virtualPathDependencies.OfType<string>().Where(f => !Exists(f, true));
+			//virtualPath = ToRelative(virtualPath);
+			var filesNotBelongingToZip = virtualPathDependencies.OfType<string>().Select(f => ToRelative(f)).Where(f => !Exists(f, true));
 
 			if (filesNotBelongingToZip.Any())
 				return Previous.GetCacheDependency(virtualPath, filesNotBelongingToZip, utcStart);
@@ -144,6 +151,11 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 				}
 				fileOrDirectoryCache = temp;
 			}
+		}
+
+		private string ToRelative(string virtualPath)
+		{
+			return Url.ToRelative(virtualPath);
 		}
 	}
 }

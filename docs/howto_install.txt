@@ -16,6 +16,7 @@ B. Templates package
 
 B1. (unzip & go)
  * Same procedure as A (example package)
+ * Run Prepare.bat
 
 B2. (Web Platform Installer)
  * Start IIS Manager
