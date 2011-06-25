@@ -21,15 +21,17 @@ namespace N2.Edit.FileSystem.Editables
         }
         private class CompositeEditor : Control
         {
-            public HtmlInputFile Upload = new HtmlInputFile();
-            public TextBox ChangeName = new TextBox();
+			public HtmlInputFile Upload = new HtmlInputFile { ID = "u" };
+			public TextBox ChangeName = new TextBox { ID = "n" };
+			public RegularExpressionValidator ChangeNameExpressionValidator = new RegularExpressionValidator { ControlToValidate = "n", ValidationExpression = EditableFileUploadAttribute.InvalidCharactersExpression, Display = ValidatorDisplay.Dynamic, ErrorMessage = "Invalid characters in file name" };
+			public RequiredFieldValidator ChangeNameRequiredValidator = new RequiredFieldValidator { ControlToValidate = "n", Display = ValidatorDisplay.Dynamic, ErrorMessage = "File name required" };
 
             protected override void OnInit(EventArgs e)
-            {
-                Upload.ID = "u";
-                Controls.Add(Upload);
-                ChangeName.ID = "n";
-                Controls.Add(ChangeName);
+			{
+				Controls.Add(Upload);
+				Controls.Add(ChangeName);
+				Controls.Add(ChangeNameExpressionValidator);
+				Controls.Add(ChangeNameRequiredValidator);
 
                 base.OnInit(e);
             }
