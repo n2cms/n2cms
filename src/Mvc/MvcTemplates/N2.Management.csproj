@@ -568,6 +568,7 @@
     </Compile>
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Installation\InstallationUtility.cs" />
     <Compile Include="N2\Installation\UpdateTranslationKeyMigration.cs" />
     <Compile Include="N2\Installation\UpdateTemplateKeyMigration.cs" />
     <Compile Include="N2\Installation\Rebase.aspx.cs">

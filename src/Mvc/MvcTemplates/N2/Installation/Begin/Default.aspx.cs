@@ -9,6 +9,7 @@ namespace N2.Edit.Install.Begin
 {
 	public partial class Default : System.Web.UI.Page
 	{
+		protected bool installationAllowed = true;
 		protected bool needsPasswordChange = false;
 		protected bool autoLogin = false;
 		protected string continueUrl;
@@ -23,6 +24,7 @@ namespace N2.Edit.Install.Begin
 			action = Request["action"];
 			version = typeof(N2.ContentItem).Assembly.GetName().Version;
 			config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
+			installationAllowed = config.AllowInstallation;
 
 			continueUrl = action == "install"
 									? config.InstallUrl
@@ -35,7 +37,6 @@ namespace N2.Edit.Install.Begin
 			continueUrl = N2.Web.Url.ResolveTokens(continueUrl);
 
 			needsPasswordChange = FormsAuthentication.Authenticate("admin", "changeme");
-
 			autoLogin = Request["autologin"] == "true";
 			if (autoLogin)
 				return;

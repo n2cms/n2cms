@@ -51,12 +51,11 @@
 				<% } %>
             </asp:Panel>
             <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
+				<h1>Create datbase tables</h1>
 				<% if (Status.HasSchema){ %>
 				<p><a href="#createschema" onclick="return show.call(this, 'createschema');">Re-create database tables.</a></p>
 			    <% } %>
-
 				<div id="createschema" style='display: <%= Status.HasSchema ? "none" : "block"%>'>
-					<h1>Create datbase tables</h1>
 					<asp:Literal runat="server" Visible='<%# !Status.IsConnected %>'>
 						<p class="warning"><b>Advice: </b>Go back and check database connection. </p>
 					</asp:Literal>
@@ -68,18 +67,13 @@
 					</p>
 					<textarea readonly="readonly"><%= Installer.ExportSchema() %></textarea>
 					<p class="buttons"><asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="Create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/></p>
+					<hr />
+					<p>
+						Optionally I can 
+						<asp:LinkButton ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
+						for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
+					</p>
 				</div>
-				<hr />
-				<p>
-					Optionally I can 
-					<asp:LinkButton ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
-					for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
-				</p>
-				<%--<p>
-					You can also download sql scripts from 
-					<a href="http://n2cms.com/Documentation/The database.aspx">the n2 cms home page</a> 
-					(if you're using MySQL this is the preferred option).
-				</p>--%>
 				<p>
 					<asp:Label CssClass="ok" runat="server" ID="lblInstall" />
 				</p>
@@ -186,13 +180,12 @@
 			<asp:PlaceHolder runat="server" Visible="<%# IsDefaultPassword() %>">
             <p><b>IMPORTANT!</b> Change the default password in web.config. Once you've created a new administrator user using the management interface, comment out the credentials configuration section entirely.</p>
             </asp:PlaceHolder>
-            <p><b>Advice:</b> remove the installation wizard located below /n2/installation/ to prevent nasty surprises.</p>
-            <p>Please 
-				<asp:Button runat="server" OnClick="btnRestart_Click" Text="restart" CausesValidation="false" />
-				before you continue.
-            </p>
-            <p>Good luck and happy <a href="..">managing</a>!</p>
-            <p>/Cristian</p>
+			<% if(Status.IsInstalled) { %>
+			<p><strong>Advice:</strong> For security reasons it's adviced to disable this installation wizard and enable it only when needed.</p>
+            <p><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
+			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually:" /></p>
+			<pre><code>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation="<strong>false</strong>"/&gt;</code></pre>
+			<%} %>
         </n2:TabPanel>
         <pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>
         <p style="color:#999"><%# Status.ToStatusString() %></p>

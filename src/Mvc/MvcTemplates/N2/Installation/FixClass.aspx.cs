@@ -4,6 +4,7 @@ using System.Data;
 using N2.Configuration;
 using N2.Edit.Installation;
 using N2.Web;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -11,6 +12,12 @@ namespace N2.Edit.Install
     {
         InstallationManager installer = N2.Context.Current.Resolve<InstallationManager>();
         string tablePrefix = N2.Context.Current.Resolve<DatabaseSection>().TablePrefix;
+
+		protected override void OnInit(EventArgs e)
+		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+			base.OnInit(e);
+		}
 
         protected void Page_Load(object sender, EventArgs e)
         {

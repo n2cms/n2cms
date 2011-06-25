@@ -263,5 +263,14 @@ namespace N2.Edit.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Web.UI.WebControls.TabPanel Finish;
+        
+        /// <summary>
+        /// ltDisableFailed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDisableFailed;
     }
 }

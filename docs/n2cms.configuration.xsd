@@ -344,6 +344,7 @@
 							<xs:element name="installer" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="checkInstallationStatus" type="xs:boolean" use="optional" />
+									<xs:attribute name="allowInstallation" type="xs:boolean" use="optional" />
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>

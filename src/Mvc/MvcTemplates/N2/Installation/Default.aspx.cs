@@ -14,6 +14,7 @@ using N2.Definitions;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Installation;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -54,6 +55,12 @@ namespace N2.Edit.Install
 		}
 
 		protected IEngine Engine { get { return N2.Context.Current; } }
+
+		protected override void OnInit(EventArgs e)
+		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+			base.OnInit(e);
+		}
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -170,10 +177,21 @@ namespace N2.Edit.Install
 			{
 				if (ExecuteWithErrorHandling(im.Install) != null)
 				{
-					if(ExecuteWithErrorHandling(im.Install) == null)
+					if (ExecuteWithErrorHandling(im.Install) == null)
+					{
+						// retry once upon error
 						lblInstall.Text = "Database created, now insert root items.";
+						ShowTab("Content");
+					}
 				}
+				else
+					ShowTab("Content");
 			}
+		}
+
+		private void ShowTab(string tabName)
+		{
+			ClientScript.RegisterStartupScript(GetType(), "Content", "$(document).ready(function(){$.fn.n2tabs_show($('#" + tabName + "'));});", true);
 		}
 
 		protected void btnExportSchema_Click(object sender, EventArgs e)
@@ -270,7 +288,8 @@ namespace N2.Edit.Install
             if (ExecuteWithErrorHandling(delegate { InsertFromFile(path); }) == null)
             {
                 plhAddContent.Visible = false;
-            }
+				ShowTab("Finish");
+			}
 		}
 
 		private void InsertFromFile(string path)
@@ -315,7 +334,19 @@ namespace N2.Edit.Install
 
 		protected void btnRestart_Click(object sender, EventArgs e)
 		{
-			ExecuteWithErrorHandling(HttpRuntime.UnloadAppDomain);
+			try
+			{
+				System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~");
+				EditSection edit = (EditSection)cfg.GetSection("n2/edit");
+				edit.Installer.AllowInstallation = false;
+				cfg.Save();
+
+				Response.Redirect(Engine.ManagementPaths.GetManagementInterfaceUrl());
+			}
+			catch
+			{
+				ltDisableFailed.Text = "Failed writing to web.config, please change this manually in web.config:";
+			}
 		}
 
 		protected override void OnPreRender(EventArgs e)
