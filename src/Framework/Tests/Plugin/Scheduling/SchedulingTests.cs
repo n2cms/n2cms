@@ -40,7 +40,7 @@ namespace N2.Tests.Plugin.Scheduling
             var ctx = mocks.DynamicMock<IWebContext>();
             mocks.Replay(ctx);
 
-			IPluginFinder plugins = new PluginFinder(types, null, new EngineSection());
+			IPluginFinder plugins = new PluginFinder(types, null, TestSupport.SetupEngineSection());
 
 			AsyncWorker worker = new AsyncWorker();
 			worker.QueueUserWorkItem = delegate(WaitCallback function)

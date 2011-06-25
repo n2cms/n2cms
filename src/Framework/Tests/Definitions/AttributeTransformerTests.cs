@@ -20,7 +20,7 @@ namespace N2.Tests.Definitions
 		{
 			base.SetUp();
 
-			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[] { new TitleTransformer() }, new EngineSection());
+			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[] { new TitleTransformer() }, TestSupport.SetupEngineSection());
 		}
 
 		protected override Type[] GetTypes()

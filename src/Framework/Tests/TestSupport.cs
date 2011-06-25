@@ -63,7 +63,7 @@ namespace N2.Tests
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
@@ -82,7 +82,7 @@ namespace N2.Tests
         {
             var changer = new N2.Edit.Workflow.StateChanger();
 			versions = new VersionManager(persister.Repository, finder, changer, new N2.Configuration.EditSection());
-			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection()), null);
+			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)
@@ -120,6 +120,11 @@ namespace N2.Tests
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
 		{
 			return new UrlParser(persister, wrapper, host, new HostSection());
+		}
+
+		public static EngineSection SetupEngineSection()
+		{
+			return new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } };
 		}
 	}
 }

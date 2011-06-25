@@ -131,7 +131,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Configuration_CanAdd_Definition()
 		{
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Add(new DefinitionElement { Name = "DefinitionUndefined", Type = typeof(DefinitionUndefined).AssemblyQualifiedName });
 			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = definitionCollection });
 
@@ -145,7 +145,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Configuration_CanRemove_Definition()
 		{
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Remove(new DefinitionElement { Name = "DefinitionTextPage" });
 			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = definitionCollection });
 
@@ -161,7 +161,7 @@ namespace N2.Tests.Definitions
 		{
 			DefinitionElement definitionElement = new DefinitionElement { Name = "DefinitionTextPage" };
 			definitionElement.Containers.Add(new ContainableElement { Name = "X", Type = typeof(EditableCheckBoxAttribute).AssemblyQualifiedName });
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Add(definitionElement);
 
 			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = definitionCollection });
@@ -179,7 +179,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Configuration_CanAdd_Editable_ToExistingDefinition()
 		{
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Add(new DefinitionElement
 			{
 				Name = "DefinitionTextPage",
@@ -199,7 +199,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Configuration_CanChange_Editable_OnExistingDefinition()
 		{
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Add(new DefinitionElement
 			{
 				Name = "DefinitionTextPage",
@@ -222,7 +222,7 @@ namespace N2.Tests.Definitions
 		{
 			DefinitionElement definitionElement = new DefinitionElement { Name = "DefinitionTextPage" };
 			definitionElement.Containers.Remove(new ContainableElement { Name = "Text" });
-			var definitionCollection = new DefinitionCollection();
+			var definitionCollection = new DefinitionCollection { DefineUnattributedTypes = true };
 			definitionCollection.Add(definitionElement);
 
 			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = definitionCollection });

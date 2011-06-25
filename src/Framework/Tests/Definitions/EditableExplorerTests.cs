@@ -13,7 +13,7 @@ namespace N2.Tests.Definitions
 	[TestFixture]
 	public class EditableExplorerTests : ItemTestsBase
 	{
-		EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection());
+		EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), TestSupport.SetupEngineSection());
 		AttributeExplorer explorer = new AttributeExplorer();
 
 

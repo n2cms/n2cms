@@ -28,6 +28,8 @@ namespace N2.Tests
 		{
 			foreach (object listObject in list)
 			{
+				if (o == null && listObject != null)
+					continue;
 				if (o.Equals(listObject))
 					Assert.Fail(message);
 			}

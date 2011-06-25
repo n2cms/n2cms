@@ -26,7 +26,7 @@ namespace N2.Tests.Definitions
 		{
 			base.SetUp();
 
-			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
+			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], TestSupport.SetupEngineSection());
 		}
 
 		[Test]
