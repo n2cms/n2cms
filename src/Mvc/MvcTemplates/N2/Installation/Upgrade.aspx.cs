@@ -100,7 +100,7 @@ namespace N2.Edit.Install
 
 
 
-		protected Exception ExecuteWithErrorHandling(_Default.Execute action)
+		protected Exception ExecuteWithErrorHandling(Action action)
 		{
 			try
 			{

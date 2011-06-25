@@ -158,7 +158,7 @@
   <host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
   ...</textarea>
             <p class="buttons">
-				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" />
+				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
             </p>
 </asp:PlaceHolder>
 			<p><asp:Label runat="server" ID="lblWebConfigUpdated" /></p>
@@ -178,7 +178,7 @@
 			<p><strong>Advice:</strong> For security reasons it's advised to disable this installation wizard and enable it only when needed.</p>
             <p class="buttons"><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
 			<hr />
-			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually and browse to the <a href='..'>management UI</a>:" /></p>
+			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually before browsing to the <a href='..'>management UI</a>:" /></p>
 			<textarea>&lt;n2&gt;
   &lt;edit&gt;
     &lt;installer allowInstallation="false"/&gt;</textarea>

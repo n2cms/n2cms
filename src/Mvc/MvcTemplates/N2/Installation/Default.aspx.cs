@@ -24,8 +24,6 @@ namespace N2.Edit.Install
 		protected Label errorLabel;
 		protected FileUpload fileUpload;
 
-		private DatabaseStatus status;
-
 		protected int RootId
 		{
 			get { return (int)(ViewState["rootId"] ?? 0); }
@@ -44,6 +42,7 @@ namespace N2.Edit.Install
 			get { return Engine.Resolve<InstallationManager>(); }
 		}
 
+		private DatabaseStatus status;
 		protected DatabaseStatus Status
 		{
 			get
@@ -254,6 +253,7 @@ namespace N2.Edit.Install
 					phDiffer.Visible = false;
 					RootId = root.ID;
 					Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
+					ShowTab("Finish");
 				}
 				else
 				{
@@ -283,8 +283,6 @@ namespace N2.Edit.Install
             if (ExecuteWithErrorHandling(delegate { InsertFromFile(path); }) == null)
             {
                 plhAddContent.Visible = false;
-				if(!phSame.Visible && !phDiffer.Visible)
-					ShowTab("Finish");
 			}
 		}
 
@@ -313,6 +311,15 @@ namespace N2.Edit.Install
 			{
 				lblWebConfigUpdated.Text = "Configuration updated.";
 				status = null;
+				Engine.Host.DefaultSite.RootItemID = RootId;
+				Engine.Host.DefaultSite.StartPageID = StartId;
+
+				ShowTab("Finish");
+				Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
+			}
+			else
+			{
+				lblWebConfigUpdated.Text = "Failed to update configuration. Please update it manually.";
 			}
 		}
 
@@ -325,7 +332,6 @@ namespace N2.Edit.Install
 			host.StartPageID = StartId;
 
 			cfg.Save();
-			Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
 		}
 
 		protected void btnRestart_Click(object sender, EventArgs e)
@@ -420,17 +426,17 @@ namespace N2.Edit.Install
 				}
 				phDiffer.DataBind();
 			}
-			
+
+			if (!phSame.Visible && !phDiffer.Visible)
+				ShowTab("Finish");
 		}
 
-		public delegate void Execute();
-
-		protected Exception ExecuteWithErrorHandling(Execute action)
+		protected Exception ExecuteWithErrorHandling(Action action)
 		{
 			return ExecuteWithErrorHandling<Exception>(action);
 		}
 
-		protected T ExecuteWithErrorHandling<T>(Execute action)
+		protected T ExecuteWithErrorHandling<T>(Action action)
 			where T:Exception
 		{
 			try
