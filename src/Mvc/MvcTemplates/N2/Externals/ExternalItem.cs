@@ -1,9 +1,10 @@
 ﻿using N2.Definitions;
 using N2.Web;
+using N2.Installation;
 
 namespace N2.Management.Externals
 {
-	[Definition(IconUrl = "{ManagementUrl}/Resources/icons/shape_square.png")]
+	[Definition(IconUrl = "{ManagementUrl}/Resources/icons/shape_square.png", Installer = InstallerHint.NeverRootOrStartPage)]
 	[Template(ExternalItem.ContainerTemplateKey, "{ManagementUrl}/Externals/External.ascx")]
 	[Versionable(AllowVersions.No)]
 	[Throwable(AllowInTrash.No)]
