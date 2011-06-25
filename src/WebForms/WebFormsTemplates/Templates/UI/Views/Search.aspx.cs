@@ -13,6 +13,9 @@ namespace N2.Templates.UI.Views
         {
             base.OnLoad(e);
             Resources.Register.StyleSheet(this, "~/Templates/UI/Css/Search.css", N2.Resources.Media.All);
+            string s = Request.Form["TbSearch"].ToString();
+            if (!string.IsNullOrEmpty(s))
+            { DoSearch(s); }
         }
 
 		private IEnumerable<ContentItem> hits = new List<ContentItem>();
@@ -37,6 +40,20 @@ namespace N2.Templates.UI.Views
 			Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
 			TotalCount = result.Total;
 			
+            DataBind();
+        }
+
+        protected void DoSearch(string Search) {
+
+            var query = Query.For(Search)
+                    .Below(CurrentItem.SearchRoot)
+                    .Range(0, 100)
+                    .Pages(true)
+                    .ReadableBy(User, Roles.GetRolesForUser)
+                    .Except(Query.For(typeof(ISystemNode)));
+            var result = Engine.Resolve<ITextSearcher>().Search(query);
+            Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
+            TotalCount = result.Total;
             DataBind();
         }
     }
