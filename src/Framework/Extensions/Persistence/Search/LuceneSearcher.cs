@@ -39,7 +39,7 @@ namespace N2.Persistence.Search
 					int id = int.Parse(doc.Get("ID"));
 					ContentItem item = persister.Get(id);
 					return new Hit { Content = item, Score = hit.score };
-				}).ToList();
+				}).Where(h => h.Content != null).ToList();
 				result.Hits = resultHits;
 				result.Count = resultHits.Count;
 				return result;
