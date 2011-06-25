@@ -61,6 +61,9 @@ namespace N2.Persistence.Search
 
 		public void ItemChanged(int itemID, bool affectsChildren)
 		{
+			if (itemID == 0)
+				return;
+
 			DoWork(() =>
 			{
 				var item = persister.Get(itemID);
@@ -78,6 +81,9 @@ namespace N2.Persistence.Search
 
 		public void ItemDeleted(int itemID)
 		{
+			if (itemID == 0)
+				return;
+
 			DoWork(() =>
 			{
 				indexer.Delete(itemID);
