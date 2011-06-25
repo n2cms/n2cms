@@ -40,9 +40,9 @@ namespace N2.Persistence.Search
 		{
 			Trace.WriteLine("Clearing index");
 
-			var d = accessor.GetDirectory();
-			if (d.IndexExists())
+			if (accessor.IndexExists())
 			{
+				var d = accessor.GetDirectory();
 				d.ClearLock("write.lock"); ;
 				var w = accessor.GetWriter();
 				if (w.NumDocs() > 0)
@@ -75,9 +75,9 @@ namespace N2.Persistence.Search
 		{
 			Trace.WriteLine("Optimizing index");
 
-			var d = accessor.GetDirectory();
-			if (d.IndexExists())
+			if (accessor.IndexExists())
 			{
+				var d = accessor.GetDirectory();
 				var iw = accessor.GetWriter();
 				if (iw.NumDocs() > 0)
 				{

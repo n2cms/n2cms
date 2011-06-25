@@ -18,12 +18,21 @@ namespace N2.Edit.LinkTracker
 		N2.Web.IUrlParser urlParser;
         N2.Web.IErrorNotifier errorHandler;
 
-        public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser, N2.Web.IErrorNotifier errorHandler)
+        public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler)
 		{
 			this.persister = persister;
 			this.find = find;
 			this.urlParser = urlParser;
             this.errorHandler = errorHandler;
+
+			connections.Online += delegate
+			{
+				persister.ItemSaving += persister_ItemSaving;
+			};
+			connections.Offline += delegate
+			{
+				persister.ItemSaving -= persister_ItemSaving;
+			};
 		}
 
 		void persister_ItemSaving(object sender, CancellableItemEventArgs e)
@@ -147,12 +156,10 @@ namespace N2.Edit.LinkTracker
 
 		public void Start()
 		{
-			persister.ItemSaving += persister_ItemSaving;
 		}
 
 		public void Stop()
 		{
-			persister.ItemSaving -= persister_ItemSaving;
 		}
 
 		#endregion

@@ -27,7 +27,7 @@ namespace N2.Persistence.Search
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return accessor.GetDirectory().IndexExists() == false;
+			return accessor.IndexExists() == false;
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)

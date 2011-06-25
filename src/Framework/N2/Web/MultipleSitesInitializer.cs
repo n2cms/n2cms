@@ -11,7 +11,7 @@ namespace N2.Web
 	[Service]
 	public class MultipleSitesInitializer : IAutoStart
 	{
-		public MultipleSitesInitializer(IPersister persister, IHost host, ISitesProvider sitesProvider, ConnectionContext context, HostSection config, IDefinitionManager ignored)
+		public MultipleSitesInitializer(IPersister persister, IHost host, ISitesProvider sitesProvider, ConnectionMonitor context, HostSection config, IDefinitionManager ignored)
 		{
 			Debug.WriteLine("MultipleSitesInitializer");
 

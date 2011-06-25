@@ -18,7 +18,7 @@ namespace N2.Plugin.Scheduling
             timer = new Timer(60 * 1000);
         }
 
-        public Heart(ConnectionContext connection, Configuration.EngineSection config)
+        public Heart(ConnectionMonitor connection, Configuration.EngineSection config)
         {
             if (config.Scheduler.Interval < 1) throw new ArgumentException("Cannot beat at a pace below 1 per second. Set engine.scheduler.interval to at least 1.", "config");
 

@@ -38,7 +38,7 @@ namespace N2.Edit.Tests.LinkTracker
 			item2 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(3, "item2", root);
 
 			var errorHandler = new FakeErrorHandler();
-			linkFactory = new Tracker(persister, null, parser, errorHandler);
+			linkFactory = new Tracker(persister, null, parser, new N2.Plugin.ConnectionMonitor(), errorHandler);
 			linkFactory.Start();
 		}
 

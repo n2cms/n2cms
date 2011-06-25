@@ -24,7 +24,7 @@ namespace N2.Engine
 
 		/// <summary>Starts the execution of the specified work.</summary>
 		/// <param name="action">The method to execute.</param>
-		public void DoWork(Action action)
+		public virtual void DoWork(Action action)
 		{
 			Interlocked.Increment(ref executingWorkItems);
 			QueueUserWorkItem(delegate
@@ -38,6 +38,30 @@ namespace N2.Engine
 						Interlocked.Decrement(ref executingWorkItems);
 					}
 				});
+		}
+
+		/// <summary>Starts the execution of the specified work with error handling.</summary>
+		/// <param name="action">The method to execute.</param>
+		/// <param name="onError">Action to execute when an error occurs.</param>
+		/// <typeparam name="T">The type of exceptions to handle.</typeparam>
+		public virtual void DoWork<T>(Action action, Action<T> onError) where T : Exception
+		{
+			Interlocked.Increment(ref executingWorkItems);
+			QueueUserWorkItem(delegate
+			{
+				try
+				{
+					action();
+				}
+				catch (T ex)
+				{
+					onError(ex);
+				}
+				finally
+				{
+					Interlocked.Decrement(ref executingWorkItems);
+				}
+			});
 		}
 
 		#endregion
