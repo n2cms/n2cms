@@ -16,7 +16,7 @@
     	.warning{color:#f00;}
     	.ok{color:#0c0;}
     	.buttons { text-align:right; }
-    	textarea{width:95%;height:120px; border:none; background-color:#FFB}
+    	textarea{width:95%;height:50px; border:none; background-color:#DDE}
     	pre { overflow:auto; font-size:10px; color:Gray; }
     </style>
 	<script type="text/javascript">
@@ -143,27 +143,21 @@
             </p>
 <asp:PlaceHolder ID="phSame" runat="server" Visible="false">
             <h4>Example web.config with same root as start page</h4>
-            <p>
                 <textarea rows="4">
-...
-	<n2>
-		<host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
-		...
-	</n2>
-...</textarea>
-				Please help me <asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="update web.config" CausesValidation="false" /> by writing these values to web.config (will cause app restart).
+<n2>
+  <host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
+  ...</textarea>
+            <p class="buttons">
+				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
             </p>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="phDiffer" runat="server" Visible="false">
             <h4>Example web.config with different root as start pages</h4>
-            <p>
                 <textarea rows="4">
-...
-	<n2>
-		<host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
-		...
-	</n2>
-...</textarea>
+<n2>
+  <host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
+  ...</textarea>
+            <p class="buttons">
 				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" />
             </p>
 </asp:PlaceHolder>
@@ -181,10 +175,14 @@
             <p><b>IMPORTANT!</b> Change the default password in web.config. Once you've created a new administrator user using the management interface, comment out the credentials configuration section entirely.</p>
             </asp:PlaceHolder>
 			<% if(Status.IsInstalled) { %>
-			<p><strong>Advice:</strong> For security reasons it's adviced to disable this installation wizard and enable it only when needed.</p>
-            <p><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
-			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually:" /></p>
-			<pre><code>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation="<strong>false</strong>"/&gt;</code></pre>
+			<p><strong>Advice:</strong> For security reasons it's advised to disable this installation wizard and enable it only when needed.</p>
+            <p class="buttons"><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
+			<hr />
+			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually and browse to the <a href='..'>management UI</a>:" /></p>
+			<textarea>&lt;n2&gt;
+  &lt;edit&gt;
+    &lt;installer allowInstallation="false"/&gt;</textarea>
+  ...
 			<%} %>
         </n2:TabPanel>
         <pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>

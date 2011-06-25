@@ -189,11 +189,6 @@ namespace N2.Edit.Install
 			}
 		}
 
-		private void ShowTab(string tabName)
-		{
-			ClientScript.RegisterStartupScript(GetType(), "Content", "$(document).ready(function(){$.fn.n2tabs_show($('#" + tabName + "'));});", true);
-		}
-
 		protected void btnExportSchema_Click(object sender, EventArgs e)
 		{
 			Response.ContentType = "application/octet-stream";
@@ -288,7 +283,8 @@ namespace N2.Edit.Install
             if (ExecuteWithErrorHandling(delegate { InsertFromFile(path); }) == null)
             {
                 plhAddContent.Visible = false;
-				ShowTab("Finish");
+				if(!phSame.Visible && !phDiffer.Visible)
+					ShowTab("Finish");
 			}
 		}
 
@@ -468,7 +464,13 @@ namespace N2.Edit.Install
 				return false;
 			}
 		}
+
+		private void ShowTab(string tabName)
+		{
+			ClientScript.RegisterStartupScript(GetType(), "Content", "$(document).ready(function(){setTimeout(function(){$.fn.n2tabs_show($('#" + tabName + "'));}, 10);});", true);
+		}
 	}
+
 	/// <summary>
 	/// SqlCEDBHelper courtesy of Ayende Rahien from Rhino.Commons.Helpers
 	/// Full code can be found here: https://svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/Helpers/SqlCEDbHelper.cs

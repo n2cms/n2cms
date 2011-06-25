@@ -1,5 +1,4 @@
 - fix fist-time installation lucene error leaving lock
-- require explicit config for diagnose
 - tree html helper
 - link html helper
 - required form fields webform + dropdown
