@@ -10,6 +10,7 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<h1><% foreach (N2.ContentItem node in ancestors){ %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 
+	<div class="tabPanel">
 	<a href="<%= SelectedItem.Url %>">
 		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
@@ -19,5 +20,6 @@
 	<div class="fileContents">
 		<asp:TextBox ID="txtContent" runat="server" CssClass="fileContents" Visible="false" TextMode="MultiLine" />
 		<edit:ResizedImage MaxHeight="200" MaxWidth="300" ImageUrl="<%# SelectedFile.Url %>" runat="server" />
+	</div>
 	</div>
 </asp:Content>

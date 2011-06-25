@@ -640,5 +640,28 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(result.Hits.Count(), Is.EqualTo(2));
 			Assert.That(result.Contains(sv));
 		}
+
+		[Test]
+		public void NonDetail_IndexableProperty_IsIndexed()
+		{
+			root.NonDetailProperty = "Lorem dolor";
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("dolor"));
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void NonDetail_IndexableOnlyGetterProperty_IsIndexed()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("ipsum"));
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
 	}
 }

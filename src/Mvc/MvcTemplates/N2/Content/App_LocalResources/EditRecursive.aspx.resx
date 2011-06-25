@@ -123,6 +123,9 @@
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
   <data name="vsEdit.HeaderText" xml:space="preserve">
     <value>The item couldn't be saved. Please look at the following:</value>
   </data>

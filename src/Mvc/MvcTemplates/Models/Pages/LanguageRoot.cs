@@ -19,8 +19,9 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RecursiveContainer(LanguageRoot.SiteArea, 70, 
 		RequiredPermission = Permission.Administer)]
 	[RestrictParents(typeof (StartPage))]
-	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
-	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
+	[TabContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
+	[TabContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
+	[TabContainer("top", "Top", 100, ContainerName = LanguageRoot.SiteArea)]
 	public class LanguageRoot : ContentPageBase, IStructuralPage, ILanguage, IStartPage
 	{
 		public LanguageRoot()
@@ -87,7 +88,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { SetDetail("FooterText", value, string.Empty); }
 		}
 
-		[EditableItem("Header", 100, ContainerName = SiteArea)]
+		[EditableItem("Header", 100, ContainerName = "Top")]
 		public virtual Top Header
 		{
 			get { return (Top)Children["Header"]; }

@@ -23,20 +23,44 @@ namespace N2.Templates.Mvc.Controllers
 			this.finder = finder;
 		}
 
+		[NonAction]
 		public override ActionResult Index()
 		{
-			var model = GetNews(0, 20);
+			return base.Index();
+		}
+
+		public virtual ActionResult Index(string tag)
+		{
+			var model = string.IsNullOrEmpty(tag)
+				? GetNews(0, 20)
+				: GetNews(tag, 0, 20);
 			return View(model);
 		}
 
-		public ActionResult Range(int skip, int take, bool? fragment)
+		public ActionResult Range(int skip, int take, bool? fragment, string tag)
 		{
-			var model = GetNews(skip, take);
+			var model = string.IsNullOrEmpty(tag)
+				? GetNews(skip, take)
+				: GetNews(tag, skip, take);
 
 			if(fragment.HasValue && fragment.Value)
 				return PartialView(model);
 
 			return View("Index", model);
+		}
+
+		private NewsContainerModel GetNews(string tag, int skip, int take)
+		{
+			IList<News> news = finder.Where.Type.Eq(typeof(News))
+				.And.Parent.Eq(CurrentPage)
+				.And.Detail("Tags").Like(tag)
+				.FirstResult(skip)
+				.MaxResults(take + 1)
+				.OrderBy.Published.Desc
+				.Select<News>();
+			var model = CreateModel(skip, take, news);
+			model.Tag = tag;
+			return model;
 		}
 
 		private NewsContainerModel GetNews(int skip, int take)
@@ -48,6 +72,11 @@ namespace N2.Templates.Mvc.Controllers
 				.OrderBy.Published.Desc
 				.Select<News>();
 
+			return CreateModel(skip, take, news);
+		}
+
+		private NewsContainerModel CreateModel(int skip, int take, IList<News> news)
+		{
 			var model = new NewsContainerModel
 			{
 				Container = CurrentItem,

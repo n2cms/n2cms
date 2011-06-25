@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.master" Inherits="System.Web.Mvc.ViewPage<NewsContainerModel>" %>
 
 <asp:Content ID="mc" ContentPlaceHolderID="PostContent" runat="server">
-
     <div class="list">
 		<% Html.RenderPartial("Range", Model); %>
     </div>

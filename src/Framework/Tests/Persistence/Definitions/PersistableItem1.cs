@@ -42,6 +42,7 @@ namespace N2.Tests.Persistence.Definitions
 			get { return (string)(GetDetail("StringProperty") ?? string.Empty); }
 			set { SetDetail<string>("StringProperty", value); }
 		}
+
 		public virtual ContentItem LinkProperty
 		{
 			get { return (ContentItem)GetDetail("LinkProperty"); }
@@ -85,5 +86,11 @@ namespace N2.Tests.Persistence.Definitions
 				return result;
 			}
 		}
+
+		[Indexable]
+		public virtual string NonDetailProperty { get; set; }
+
+		[Indexable]
+		public virtual string NonDetailOnlyGetterProperty { get { return "Lorem ipsum"; } }
 	}
 }

@@ -61,14 +61,19 @@ namespace N2.Edit.Install.Begin
 					authentication.Forms.Credentials.Users["admin"].Password = txtPassword.Text;
 
 					var membership = (MembershipSection)cfg.GetSection("system.web/membership");
-					membership.DefaultProvider = "ContentMembershipProvider";
+					if (membership.Providers["ContentMembershipProvider"] != null)
+						membership.DefaultProvider = "ContentMembershipProvider";
 
 					var roleManager = (RoleManagerSection)cfg.GetSection("system.web/roleManager");
-					roleManager.Enabled = true;
-					roleManager.DefaultProvider = "ContentRoleProvider";
+					if (roleManager.Providers["ContentRoleProvider"] != null)
+					{
+						roleManager.Enabled = true;
+						roleManager.DefaultProvider = "ContentRoleProvider";
+					}
 
 					var profile = (ProfileSection)cfg.GetSection("system.web/profile");
-					profile.DefaultProvider = "ContentProfileProvider";
+					if (profile.Providers["ContentProfileProvider"] != null)
+						profile.DefaultProvider = "ContentProfileProvider";
 
 					cfg.Save();
 

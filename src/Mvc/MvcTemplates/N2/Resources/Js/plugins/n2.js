@@ -225,34 +225,8 @@ var initn2context = function (w) {
 };
 window.n2 = initn2context(window);
 
-window.n2.frameManager = {
-    init: function() {
-        var self = this;
-        self.repaint();
-        $("#splitter").splitter({
-            type: 'v',
-            cookie: 'n2spl',
-            anchorToWindow: true,
-            onStart: function() {
-                this.parent().addClass("activeSplitter");
-            },
-            onStop: function() {
-                this.parent().removeClass("activeSplitter");
-                self.repaint();
-            },
-            sizeLeft: true
-        });
-        $(window).bind("resize", function() {
-            self.repaint();
-        });
-        setTimeout(function() { self.repaint.call(self); }, 100); // chrome hack
-    },
-    repaint: function() {
-        var h = $(document).height() - $('#top').height();
-        jQuery("#splitter,.pane").height(h);
-    },
-    contentHeight: function() {
-        return ;
-    }
-};;
-
+window.n2.layout = {
+	init: function () {
+		$("#splitter-container,.pane").layout({ useStateCookie: true, cookie: { expires: 365 }, defaults: { spacing_closed: 12 }, north: { resizable: false }, west: { minWidth: 250 }, center: { minWidth: 250} });
+	}
+}

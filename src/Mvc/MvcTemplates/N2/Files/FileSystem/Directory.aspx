@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
 	<h1><% foreach (N2.ContentItem node in ancestors) { %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
-	<div class="directory">
+	<div class="directory tabPanel cf">
 		<asp:Repeater ID="rptDirectories" runat="server">
 			<ItemTemplate>
 				<div class="file">

@@ -43,6 +43,9 @@ namespace N2.Edit
 				Response.Redirect(N2.Web.Url.ResolveTokens(Engine.Resolve<EditSection>().Installer.WelcomeUrl));
 			}
 
+			Resources.Register.JQueryUi(Page);
+			Resources.Register.JQueryPlugins(Page);
+
 			base.OnInit(e);
 		}
 	}

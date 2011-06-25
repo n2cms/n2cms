@@ -13,7 +13,7 @@ body .box
 }
 
 body .subbar,
-body #splitter .vsplitbar
+body .ui-layout-resizer
 {
     background-color:#668F91; 
     border-color:#648D8F;

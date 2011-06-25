@@ -72,7 +72,7 @@ namespace N2.Web.Mvc
 		}
 
 		/// <summary>Access to commonly used APIs.</summary>
-		public ControllerContentHelper Content
+		public new ControllerContentHelper Content
 		{
 			get { return content ?? (content = new ControllerContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
 			set { content = value; }

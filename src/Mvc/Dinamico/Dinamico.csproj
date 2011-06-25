@@ -117,17 +117,17 @@
     <Compile Include="Dinamico\Models\StartPage.cs" />
     <Compile Include="Dinamico\GlobalMvcStarter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\ContentWebViewPage.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\ContentWebViewPageOfT.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\HasValueHelper.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\DataHelper.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\DisplayHelper.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\DynamicContentHelper.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\HtmlBuildersInitializer.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\Html\HtmlExtensions.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\Html\ListTemplateOfT.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\Html\RenderExtensions.cs" />
-    <Compile Include="Dinamico\_N2\Web\Mvc\Html\TemplateOfT.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\ContentWebViewPage.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\ContentWebViewPageOfT.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\HasValueHelper.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\DataHelper.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\DisplayHelper.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\DynamicContentHelper.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\HtmlBuildersInitializer.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\Html\HtmlExtensions.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\Html\ListTemplateOfT.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\Html\RenderExtensions.cs" />
+    <Compile Include="Dinamico\N2\Web\Mvc\Html\TemplateOfT.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="apple-touch-icon.png" />
@@ -184,7 +184,7 @@
     <Content Include="Dinamico\Themes\Default\Views\Shared\LayoutPartials\LogOn.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\_Layout.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Web.config" />
-    <Content Include="Dinamico\_N2\readme.txt" />
+    <Content Include="Dinamico\N2\readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

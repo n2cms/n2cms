@@ -11,13 +11,12 @@
 </asp:Content>
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-	<div id="splitter" class="content">
-		<div id="leftPane" class="pane">
-			<iframe id="navigationFrame" src="../Content/Navigation/Tree.aspx?location=files&root=/&selected=<%= Server.UrlEncode(Request["selected"]) %>" frameborder="0" name="navigation" class="frame"></iframe>
-		</div>
-		<div id="rightPane" class="pane">
-			<iframe id="previewFrame" src="../Empty.aspx" frameborder="0" name="preview" class="frame"></iframe>
-		</div>
+	<div id="leftPane" class="ui-layout-pane ui-layout-west">
+		<iframe id="navigationFrame" src="../Content/Navigation/Tree.aspx?location=files&root=/&selected=<%= Server.UrlEncode(Request["selected"]) %>" frameborder="0" name="navigation" class="frame"></iframe>
+	</div>
+
+	<div id="rightPane" class="ui-layout-pane ui-layout-center">
+		<iframe id="previewFrame" src="../Empty.aspx" frameborder="0" name="preview" class="frame"></iframe>
 	</div>
 	
 	<script type="text/javascript">
@@ -27,8 +26,8 @@
 		n2ctx.update({ path: '<%= Selection.SelectedItem.Path %>', previewUrl: '<%= ResolveClientUrl(Selection.SelectedItem.Url) %>' });
 		n2ctx.location = "files";
 		
-		window.n2.frameManager.init();
 		jQuery(document).ready(function() {
+			n2.layout.init();
 			jQuery(".command").n2glow();
 			jQuery(".operations a").click(function(e) {
 				if (jQuery(document.body).is(".editSelected, .wizardSelected, .versionsSelected, .securitySelected, .exportimportSelected, .globalizationSelected, .linktrackerSelected, .usersSelected")) {

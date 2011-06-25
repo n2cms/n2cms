@@ -102,6 +102,11 @@ namespace N2.Definitions.Runtime
 
 		public TemplateDefinition GetTemplate(N2.ContentItem item)
 		{
+			var httpContext = httpContextProvider.Get();
+			if (httpContext != null)
+				if (N2.Web.Mvc.Html.RegistrationExtensions.GetRegistrationExpression(httpContext) != null)
+					return null;
+
 			string templateKey = item.TemplateKey;
 			if (templateKey == null)
 				return null;

@@ -8,20 +8,12 @@ namespace N2.Web.UI
 		where TPart : N2.ContentItem
 	{
 		private TPart currentItem = null;
-		private FormsContentHelper content = null;
 
 		/// <summary>Gets the current data item of the dynamically added part.</summary>
 		public new TPart CurrentItem
 		{
 			get { return this.currentItem ?? (currentItem = ItemUtility.CurrentContentItem as TPart); }
 			set { currentItem = value; }
-		}
-
-		/// <summary>Access to commonly used APIs.</summary>
-		public FormsContentHelper Content
-		{
-			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
-			set { content = value; }
 		}
 
 		/// <summary>Gets whether the current data item is referenced in the query string. This usually occurs when the item is selected in edit mode.</summary>

@@ -151,3 +151,19 @@ table.calendar
 	color:Red;
 	margin-left:10px;
 }
+.tags { margin-bottom:10px; }
+	.tags label { color:#999; margin-right:5px; }
+	.tags span { color:#000; }	
+.tagcloud {  }
+	.tagcloud a { line-height:10px; vertical-align:baseline; color:#333; }
+	.tagcloud a.freq0 { font-size:.7em; color:#999 }
+	.tagcloud a.freq1 { font-size:.85em; color:#777 }
+	.tagcloud a.freq2 { font-size:1em; color:#555 }
+	.tagcloud a.freq3 { font-size:1.15em; }
+	.tagcloud a.freq4 { font-size:1.3em; }
+	.tagcloud a.freq5 { font-size:1.4em; }
+	.tagcloud a.freq6 { font-size:1.5em; }
+	.tagcloud a.freq7 { font-size:1.6em; }
+	.tagcloud a.freq8 { font-size:1.7em; }
+	.tagcloud a.freq9 { font-size:1.8em; }
+	

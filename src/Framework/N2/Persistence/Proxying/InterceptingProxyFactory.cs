@@ -92,14 +92,14 @@ namespace N2.Persistence.Proxying
 				yield return (interceptable) =>
 					{
 						object propertyValue = getter.Invoke(interceptable, null);
-						object detailValue = interceptable.GetDetail(propertyName);
+						object detailValue = interceptable.GetValue(propertyName);
 
 						if (propertyValue == null && detailValue == null)
 							return false;
 						if (propertyValue != null && propertyValue.Equals(detailValue))
 							return false;
 						
-						interceptable.SetDetail(propertyName, propertyValue, propertyType);
+						interceptable.SetValue(propertyName, propertyValue, propertyType);
 						return true;
 					};
 			}
@@ -119,9 +119,9 @@ namespace N2.Persistence.Proxying
 						continue;
 
 					var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
-					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail))
+					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
 						continue;
-					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail))
+					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
 						continue;
 
 					yield return property;

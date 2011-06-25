@@ -5,6 +5,7 @@ using N2.Integrity;
 using N2.Templates.Mvc.Services;
 using N2.Web.Mvc;
 using N2.Persistence;
+using System.Collections.Generic;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -33,5 +34,8 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public virtual bool Syndicate { get; set; }
+
+		[EditableTags(SortOrder = 200)]
+		public virtual IEnumerable<string> Tags { get; set; }
 	}
 }

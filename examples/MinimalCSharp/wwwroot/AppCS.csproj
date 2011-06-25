@@ -74,12 +74,12 @@
     <Compile Include="Models\PageItem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="UI\Page.aspx.cs">
+      <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="UI\Page.aspx.designer.cs">
+      <DependentUpon>Page.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\Calculator.ascx.cs">
       <DependentUpon>Calculator.ascx</DependentUpon>
@@ -99,6 +99,7 @@
   <ItemGroup>
     <Content Include="App_Themes\Default\Default.css" />
     <Content Include="Default.aspx" />
+    <Content Include="UI\Page.aspx" />
     <Content Include="UI\Calculator.ascx" />
     <Content Include="web.config" />
   </ItemGroup>

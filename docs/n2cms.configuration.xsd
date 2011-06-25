@@ -507,13 +507,6 @@
 						<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="templates">
-					<xs:complexType>
-						<xs:attribute name="mailConfiguration" type="xs:string" use="optional" />
-						<xs:attribute name="masterPageFile" type="xs:string" use="optional" />
-						<xs:attribute name="imageHandlerPath" type="xs:string" use="optional" />
-					</xs:complexType>
-				</xs:element>
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

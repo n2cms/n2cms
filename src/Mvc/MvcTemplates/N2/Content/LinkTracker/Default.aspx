@@ -4,6 +4,7 @@
 	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
+	<div class="tabPanel">
     <table><tbody><tr><td>
 	<edit:FieldSet class="referencingItems" runat="server" Legend="Incoming links" meta:resourceKey="referencingItems">
 		<div style="margin:10px;min-height:15px;">
@@ -31,4 +32,5 @@
 		</div>
 	</edit:FieldSet>
 	</td></tr></tbody></table>
+	</div>
 </asp:Content>

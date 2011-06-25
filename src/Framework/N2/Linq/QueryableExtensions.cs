@@ -7,6 +7,11 @@ namespace N2.Linq
 {
 	public static class QueryableExtensions
 	{
+		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.State == ContentState.Published && ci.Published <= Utility.CurrentTime() && (ci.Expires == null || ci.Expires < Utility.CurrentTime()));
+		}
+
 		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
 			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()));
@@ -26,6 +31,14 @@ namespace N2.Linq
 			var whereDetailSubselectExpression = Expression.Call(whereOfT, source.Expression, transformedExpression);
 			return source.Provider.CreateQuery<TSource>(whereDetailSubselectExpression);
 		}
+
+		//public static IQueryable<TSource> WhereDetailCollection<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) where TSource : ContentItem
+		//{
+		//    var whereOfT = whereMethodInfo.MakeGenericMethod(new Type[] { typeof(TSource) });
+		//    var transformedExpression = new QueryTransformer().ToDetailSubselect<TSource>(predicate);
+		//    var whereDetailSubselectExpression = Expression.Call(whereOfT, source.Expression, transformedExpression);
+		//    return source.Provider.CreateQuery<TSource>(whereDetailSubselectExpression);
+		//}
 
 		public static IQueryable<T> WhereDetailEquals<T, TValue>(this IQueryable<T> query, TValue value) where T : ContentItem
 		{

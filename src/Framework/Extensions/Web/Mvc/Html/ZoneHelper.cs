@@ -28,12 +28,11 @@ namespace N2.Web.Mvc.Html
 
 		public override string ToString()
 		{
-			var partialResult = new StringBuilder();
-            using (var writer = new StringWriter(partialResult))
+            using (var writer = new StringWriter())
             {
-                Render(writer);
+				Render(writer);
+				return writer.ToString();
             }
-			return partialResult.ToString();
 		}
 
         public virtual void Render()
@@ -43,6 +42,9 @@ namespace N2.Web.Mvc.Html
 
         public virtual void Render(TextWriter writer)
         {
+			if (N2.Web.Mvc.Html.RegistrationExtensions.GetRegistrationExpression(Html) != null)
+				return;
+
 			foreach (var child in PartsAdapter.GetItemsInZone(CurrentItem, ZoneName))
             {
                 RenderTemplate(writer, child);

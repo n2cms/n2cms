@@ -13,7 +13,7 @@ namespace N2.Resources
 	public static class Register
 	{
 		public static bool Debug { get; set; }
-		public const string JQueryVersion = "1.5.2";
+		public const string JQueryVersion = "1.6.1";
 
 		#region page StyleSheet
 
@@ -21,7 +21,7 @@ namespace N2.Resources
 		/// <param name="page">The page onto which to register the style sheet.</param>
 		/// <param name="type">The type whose assembly contains the embedded style sheet.</param>
 		/// <param name="resourceName">The name of the embedded resource.</param>
-		public static void StyleSheet(Page page, Type type, string resourceName)
+		public static void StyleSheet(this Page page, Type type, string resourceName)
 		{
 			StyleSheet(page, page.ClientScript.GetWebResourceUrl(type, resourceName), Media.All);
 		}
@@ -29,7 +29,7 @@ namespace N2.Resources
 		/// <summary>Register a style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
 		/// <param name="resourceUrl">The url to the style sheet to register.</param>
-		public static void StyleSheet(Page page, string resourceUrl)
+		public static void StyleSheet(this Page page, string resourceUrl)
 		{
 			StyleSheet(page, resourceUrl, Media.All);
 		}
@@ -38,7 +38,7 @@ namespace N2.Resources
 		/// <param name="page">The page onto which to register the style sheet.</param>
 		/// <param name="resourceUrl">The url to the style sheet to register.</param>
 		/// <param name="media">The media type to assign, e.g. print.</param>
-		public static void StyleSheet(Page page, string resourceUrl, Media media)
+		public static void StyleSheet(this Page page, string resourceUrl, Media media)
 		{
 			if (page == null) throw new ArgumentNullException("page");
 			if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
@@ -50,7 +50,7 @@ namespace N2.Resources
 				PlaceHolder holder = GetPlaceHolder(page);
 
 				HtmlLink link = new HtmlLink();
-				link.Href = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
+				link.Href = Url.ResolveTokens(resourceUrl);
 				link.Attributes["type"] = "text/css";
 				link.Attributes["media"] = media.ToString().ToLower();
 				link.Attributes["rel"] = "stylesheet";
@@ -68,7 +68,7 @@ namespace N2.Resources
 		/// <param name="page">The page in whose header to register the javascript.</param>
 		/// <param name="type">The type in whose assembly the javascript is embedded.</param>
 		/// <param name="resourceName">The name of the embedded resource.</param>
-		public static void JavaScript(Page page, Type type, string resourceName)
+		public static void JavaScript(this Page page, Type type, string resourceName)
 		{
 			JavaScript(page, page.ClientScript.GetWebResourceUrl(type, resourceName));
 		}
@@ -78,7 +78,7 @@ namespace N2.Resources
 		/// <param name="type">The type in whose assembly the javascript is embedded.</param>
 		/// <param name="resourceName">The name of the embedded resource.</param>
 		/// <param name="options">Options flag.</param>
-		public static void JavaScript(Page page, Type type, string resourceName, ScriptOptions options)
+		public static void JavaScript(this Page page, Type type, string resourceName, ScriptOptions options)
 		{
 			JavaScript(page, page.ClientScript.GetWebResourceUrl(type, resourceName), options);
 		}
@@ -88,7 +88,7 @@ namespace N2.Resources
 		/// <param name="script">The script to add.</param>
 		/// <param name="position">Where to add the script.</param>
 		/// <param name="options">Script registration options.</param>
-		public static void JavaScript(Page page, string script, ScriptPosition position, ScriptOptions options)
+		public static void JavaScript(this Page page, string script, ScriptPosition position, ScriptOptions options)
 		{
 			if (page == null) throw new ArgumentNullException("page");
 			
@@ -109,7 +109,7 @@ namespace N2.Resources
 					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, EmbedDocumentReady(script), true);
 				}
 				else if (Is(options, ScriptOptions.Include))
-					page.ClientScript.RegisterClientScriptInclude(key, page.Engine().ManagementPaths.ResolveResourceUrl(script));
+					page.ClientScript.RegisterClientScriptInclude(key, Url.ResolveTokens(script));
 				else
 					throw new ArgumentException("options");
 			}
@@ -122,7 +122,7 @@ namespace N2.Resources
 			return "jQuery(document).ready(function(){" + script + "});";
 		}
 
-		public static void JavaScript(Page page, string script, ScriptOptions options)
+		public static void JavaScript(this Page page, string script, ScriptOptions options)
 		{
 			if (page == null) throw new ArgumentNullException("page");
 			
@@ -186,7 +186,7 @@ namespace N2.Resources
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
-			resourceUrl = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
+			resourceUrl = Url.ResolveTokens(resourceUrl);
 
 			script.Attributes["src"] = resourceUrl;
 			script.Attributes["type"] = "text/javascript";
@@ -201,7 +201,7 @@ namespace N2.Resources
 		/// <summary>Registers a script reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the javascript.</param>
 		/// <param name="resourceUrl">The url to the javascript to register.</param>
-		public static void JavaScript(Page page, string resourceUrl)
+		public static void JavaScript(this Page page, string resourceUrl)
 		{
 			if (page == null) throw new ArgumentNullException("page");
 			if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
@@ -209,7 +209,7 @@ namespace N2.Resources
 			JavaScript(page, resourceUrl, ScriptOptions.Include);
 		}
 
-		public static void JQuery(Page page)
+		public static void JQuery(this Page page)
 		{
 			JavaScript(page, JQueryPath(), ScriptOptions.Prioritize | ScriptOptions.Include);
 		}
@@ -266,7 +266,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/TabPanel.css"));
+					StyleSheet(page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/TabPanel.css"));
 				}
 			}
 		}
@@ -282,21 +282,21 @@ namespace N2.Resources
 		}
 		#endregion
 
-		public static void JQueryPlugins(Page page)
+		public static void JQueryPlugins(this Page page)
 		{
 			JQuery(page);
 			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
-		public static void JQueryUi(Page page)
+		public static void JQueryUi(this Page page)
 		{
 			JQuery(page);
 			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
-		public static void TinyMCE(Page page)
+		public static void TinyMCE(this Page page)
 		{
-			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
+			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
 		}
 
 		#endregion

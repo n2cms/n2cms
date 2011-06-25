@@ -8,6 +8,9 @@
 		/// <summary>Auto-implemented virtual properties will be intercepted and stored as details. Other properties are ignored.</summary>
 		Detail,
 
+		/// <summary>Auto-implemented virtual properties will be intercepted and stored as detail collection values. Other properties are ignored.</summary>
+		DetailCollection,
+
 		///// <summary>Detail values are retrieved on load and restored before save.</summary>
 		//AssignedDetail,
 		

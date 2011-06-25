@@ -96,6 +96,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{5B744F
 		..\build\deploy\install.sql = ..\build\deploy\install.sql
 		..\build\deploy\manifest.xml = ..\build\deploy\manifest.xml
 		..\build\deploy\parameters.xml = ..\build\deploy\parameters.xml
+		..\build\deploy\Prepare.bat = ..\build\deploy\Prepare.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "Framework\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"

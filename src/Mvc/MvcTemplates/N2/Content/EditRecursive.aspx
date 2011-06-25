@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/N2/Content/Framed.master" AutoEventWireup="true" CodeBehind="EditRecursive.aspx.cs" Inherits="N2.Management.Content.EditRecursive" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/N2/Content/Framed.master" AutoEventWireup="true" CodeBehind="EditRecursive.aspx.cs" Inherits="N2.Management.Content.EditRecursive" meta:resourcekey="PageResource1" %>
 <%@ Import namespace="N2"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 

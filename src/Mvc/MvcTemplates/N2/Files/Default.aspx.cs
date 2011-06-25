@@ -8,5 +8,12 @@ namespace N2.Management.Files
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
+		protected override void OnInit(System.EventArgs e)
+		{
+			base.OnInit(e);
+
+			Resources.Register.JQueryUi(Page);
+			Resources.Register.JQueryPlugins(Page);
+		}
 	}
 }

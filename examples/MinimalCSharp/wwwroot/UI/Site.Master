@@ -11,7 +11,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<n2:SlidingCurtain ID="SlidingCurtain1" runat="server"><n2:ControlPanel ID="ControlPanel1" runat="server" /></n2:SlidingCurtain>
+		<n2:SlidingCurtain ID="sc" runat="server"><n2:ControlPanel ID="cp" runat="server" /></n2:SlidingCurtain>
 		<h5 class="header">The N2 Example Site</h5>
 		<div class="menu">
 			<asp:SiteMapDataSource ID="N2SiteMap" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />

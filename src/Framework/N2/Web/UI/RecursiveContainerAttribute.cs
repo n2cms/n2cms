@@ -5,6 +5,7 @@ using System.Text;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
@@ -35,13 +36,12 @@ namespace N2.Web.UI
 				return null;
 
 			var item = ItemUtility.FindCurrentItem(container);
-			var text = item.Title;
-			if (HeadingFormat != null)
-				text = Utility.Format(HeadingFormat, item);
 
-			var tp = new WebControls.TabPanel();
-			tp.TabText = text;
+			var tp = new Panel();
 			container.Controls.Add(tp);
+
+			if (HeadingFormat != null)
+				tp.Controls.Add(new Hn { Text = Utility.Format(HeadingFormat, item) });
 
 			return tp;
 		}

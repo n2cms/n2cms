@@ -14,7 +14,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[WithEditableTitle("Title", 4, Focus = true, ContainerName = Tabs.Content)]
 	[TabContainer(Tabs.Content, "Content", 0)]
 	[TabContainer(Tabs.Advanced, "Advanced", 100)]
-	[ExpandableContainer(Tabs.Details, 6, Legend = "Details", ContainerName = Tabs.Content)]
+	[SidebarContainer(Tabs.Details, 6, HeadingText = "Details")]
 	public abstract class PageBase : ContentItem
 	{
 		// editables

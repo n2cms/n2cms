@@ -22,6 +22,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Persistence.Search;
+using System.IO;
 
 namespace N2.Details
 {
@@ -33,7 +34,7 @@ namespace N2.Details
 	/// public virtual string Heading { get; set; }
 	/// 
 	/// [N2.Details.EditableText("Published", 80)]
-	/// public override DateTime Published { get; set; }
+	/// public virtual DateTime PublishedDate { get; set; }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableTextAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable, IIndexableProperty
@@ -94,15 +95,20 @@ namespace N2.Details
 
 		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
 		{
-			string text = item[detailName] as string;
-		
-			if(string.IsNullOrEmpty(text))
-				return null;
+			using (var sw = new StringWriter())
+			{
+				Write(item, detailName, sw);
 
-			Literal l = new Literal();
-			l.Text = text;
-			container.Controls.Add(l);
-			return l;
+				string text = sw.ToString();
+				if (string.IsNullOrEmpty(text))
+					return null;
+
+				Literal l = new Literal();
+				l.Text = text;
+				container.Controls.Add(l);
+				return l;
+
+			}
 		}
 
 		#endregion
