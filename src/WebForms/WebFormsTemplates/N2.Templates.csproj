@@ -772,13 +772,7 @@
     <Content Include="Templates\UI\Parts\Text.ascx" />
     <Content Include="Templates\UI\Parts\Top.ascx" />
     <Content Include="Templates\UI\Layouts\TopMenu.ascx" />
-    <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.sv.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.resx">

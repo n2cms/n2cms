@@ -16,7 +16,7 @@ namespace N2.Edit.Settings
 			EditSection config = Engine.Resolve<EditSection>();
 			if (config == null) throw new ConfigurationErrorsException("Cannot find configuration n2/edit");
 
-			foreach(SettingsEditorElement element in config.SettingsEditors)
+			foreach(SettingsEditorElement element in config.SettingsEditors.AllElements)
 			{
 				Control editor = LoadControl(Url.ResolveTokens(element.Path));
 				phSettings.Controls.Add(editor);

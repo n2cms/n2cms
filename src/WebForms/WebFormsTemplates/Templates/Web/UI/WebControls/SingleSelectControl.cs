@@ -6,57 +6,65 @@ namespace N2.Templates.Web.UI.WebControls
 {
     public class SingleSelectControl : Control, IQuestionControl
     {
-        readonly RadioButtonList rbl;
+        readonly ListControl lc;
         readonly Label l;
-        RequiredFieldValidator rfv; 
+		readonly CustomValidator cv;
 
-        public SingleSelectControl(SingleSelect question, RepeatDirection direction)
+        public SingleSelectControl(SingleSelect question)
         {
-            rbl = new RadioButtonList();
-            rbl.CssClass = "alternatives";
-            rbl.ID = "q" + question.ID;
-            rbl.DataTextField = "Title";
-            rbl.DataValueField = "ID";
-            rbl.DataSource = question.GetChildren();
-            rbl.RepeatLayout = RepeatLayout.Flow;
-            rbl.RepeatDirection = direction;
-            rbl.DataBind();
+			RepeatDirection direction = question.Vertical ?  RepeatDirection.Vertical : RepeatDirection.Horizontal;
 
-            if (question["Required"] != null && (bool)question["Required"] == true)
-            {
-                rfv = new RequiredFieldValidator();
-                rfv.ControlToValidate = rbl.ID;
-                rfv.ErrorMessage = "Required Field";
-                rfv.ValidationGroup = "Form";
-                rfv.ID = "Required" + question.ID;
-                rfv.SetFocusOnError = true;
-                rfv.Enabled = true;
-                rfv.Display = ValidatorDisplay.Dynamic;
-                rfv.EnableClientScript = true;
-                rfv.InitialValue = "";
-                rbl.ValidationGroup = "Form";
-                rbl.CausesValidation = true;
+			switch (question.SelectionType)
+			{
+				case Items.SingleSelectType.DropDown:
+					lc = new DropDownList();
+					break;
+				case Items.SingleSelectType.ListBox:
+					var lb = new ListBox();
+					lb.SelectionMode = ListSelectionMode.Single;
+					lc = lb;
+					break;
+				case Items.SingleSelectType.RadioButtons:
+					var rbl = new RadioButtonList();
+					rbl.RepeatLayout = RepeatLayout.Flow;
+					rbl.RepeatDirection = direction;
+					lc = rbl;
+					break;
+			}
 
-                Controls.Add(rfv);
-            }
+            lc.CssClass = "alternatives";
+            lc.ID = "q" + question.ID;
+            lc.DataTextField = "Title";
+            lc.DataValueField = "ID";
+            lc.DataSource = question.GetChildren();
+            lc.DataBind();
 
             l = new Label();
             l.CssClass = "label";
             l.Text = question.Title;
-            l.AssociatedControlID = rbl.ID;
+            l.AssociatedControlID = lc.ID;
 
-            Controls.Add(l);
-            Controls.Add(rbl);
+			Controls.Add(l);
+			Controls.Add(lc);
+
+			if (question.Required)
+			{
+				cv = new CustomValidator { Display = ValidatorDisplay.Dynamic, Text = "*" };
+				cv.ErrorMessage = question.Title + " is required";
+				cv.ServerValidate += (s, a) => a.IsValid = !string.IsNullOrEmpty(AnswerText);
+				cv.ValidationGroup = "Form";
+				Controls.Add(cv);
+			}
         }
 
         public int SelectedIndex
         {
-            get { return rbl.SelectedIndex; }
+            get { return lc.SelectedIndex; }
         }
 
         public string SelectedValue
         {
-            get { return rbl.SelectedValue; }
+            get { return lc.SelectedValue; }
         }
 
         #region IQuestionControl Members
@@ -65,8 +73,8 @@ namespace N2.Templates.Web.UI.WebControls
         {
             get 
             {
-                return rbl.SelectedIndex >= 0
-                           ? rbl.SelectedItem.Text
+                return lc.SelectedIndex >= 0
+                           ? lc.SelectedItem.Text
                            : string.Empty;
             }
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using N2.Edit.Installation;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -31,6 +32,8 @@ namespace N2.Edit.Install
 
 		protected override void OnInit(EventArgs e)
 		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+
 			base.OnInit(e);
 
 			foreach(var m in Migrator.GetAllMigrations())
@@ -97,7 +100,7 @@ namespace N2.Edit.Install
 
 
 
-		protected Exception ExecuteWithErrorHandling(_Default.Execute action)
+		protected Exception ExecuteWithErrorHandling(Action action)
 		{
 			try
 			{

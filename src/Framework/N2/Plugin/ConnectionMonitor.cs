@@ -11,7 +11,7 @@ namespace N2.Plugin
 	/// Using events on this class allows for executing actions when the database connection is up.
 	/// </summary>
 	[Service]
-	public class ConnectionContext
+	public class ConnectionMonitor : IAutoStart
 	{
 		public bool? IsConnected { get; protected set; }
 		public SystemStatusLevel StatusLevel { get; protected set; }
@@ -40,6 +40,9 @@ namespace N2.Plugin
 				}
 			}
 		}
+
+		/// <summary>Occurs when the web site is shutting down.</summary>
+		public event EventHandler Offline;
 
 		/// <summary>Occurs when the connection to the database is broken.</summary>
 		public event EventHandler Interrupted
@@ -79,7 +82,7 @@ namespace N2.Plugin
 			}
 		}
 
-		public ConnectionContext SetConnected(SystemStatusLevel statusLevel)
+		public ConnectionMonitor SetConnected(SystemStatusLevel statusLevel)
 		{
 			lock (this)
 			{
@@ -104,5 +107,19 @@ namespace N2.Plugin
 			}
 			return this;
 		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+		}
+
+		public void Stop()
+		{
+			if (Offline != null)
+				Offline(this, new EventArgs());
+		}
+
+		#endregion
 	}
 }

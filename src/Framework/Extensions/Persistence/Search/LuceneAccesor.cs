@@ -43,7 +43,7 @@ namespace N2.Persistence.Search
 
 		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
-			var iw = new IndexWriter(d, a, create: !d.IndexExists(), mfl: IndexWriter.MaxFieldLength.UNLIMITED);
+			var iw = new IndexWriter(d, a, create: !IndexExists(), mfl: IndexWriter.MaxFieldLength.UNLIMITED);
 			iw.SetWriteLockTimeout(LockTimeout);
 			return iw;
 		}
@@ -108,6 +108,11 @@ namespace N2.Persistence.Search
 			{
 				searcher = null;
 			}
+		}
+
+		public virtual bool IndexExists()
+		{
+			return System.IO.Directory.Exists(indexPath) && GetDirectory().IndexExists();
 		}
 	}
 }

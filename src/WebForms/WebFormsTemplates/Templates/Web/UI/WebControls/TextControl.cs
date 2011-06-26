@@ -8,7 +8,7 @@ namespace N2.Templates.Web.UI.WebControls
     {
         TextBox tb;
         Label l;
-        RequiredFieldValidator rfv; 
+		RequiredFieldValidator rfv;
 
         public TextControl(TextQuestion question)
         {
@@ -25,32 +25,22 @@ namespace N2.Templates.Web.UI.WebControls
                 tb.Columns = question.Columns.Value;
             }
 
-            if (question["Required"] != null && (bool)question["Required"] == true)
-            {
-                rfv = new RequiredFieldValidator();
-                rfv.ControlToValidate = tb.ID;
-                rfv.ErrorMessage = "Required Field";
-                rfv.ValidationGroup = "Form";
-                rfv.ID = "Required" + question.ID;
-                rfv.SetFocusOnError = true;
-                rfv.Enabled = true;
-                rfv.Display = ValidatorDisplay.Dynamic;
-                rfv.EnableClientScript = true;
-                rfv.InitialValue = "";
-                tb.ValidationGroup = "Form";
-                tb.CausesValidation = true;
-
-                Controls.Add(rfv);
-            
-            }
-
             l = new Label();
             l.CssClass = "label";
             l.Text = question.Title;
             l.AssociatedControlID = tb.ID;
 
             Controls.Add(l);
-            Controls.Add(tb);
+			Controls.Add(tb);
+
+			if (question.Required)
+			{
+				rfv = new RequiredFieldValidator { Display = ValidatorDisplay.Dynamic, Text = "*" }; 
+				rfv.ErrorMessage = question.Title + " is required";
+				rfv.ControlToValidate = tb.ID;
+				rfv.ValidationGroup = "Form";
+				this.Controls.Add(rfv);
+			}
         }
 
         public string AnswerText

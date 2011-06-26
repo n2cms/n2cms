@@ -7,7 +7,7 @@ namespace N2.Configuration
 {
     public class PermissionElement : ConfigurationElement
 	{
-		[ConfigurationProperty("dynamic", DefaultValue = false)]
+		[ConfigurationProperty("dynamic", DefaultValue = true)]
 		public bool Dynamic
 		{
 			get { return (bool)base["dynamic"]; }

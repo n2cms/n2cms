@@ -188,7 +188,7 @@ namespace N2.Web.UI.WebControls
 		string GetReplacementsJson()
 		{
 			StringBuilder sb = new StringBuilder("[");
-			foreach(PatternValueElement element in Config.Replacements)
+			foreach(PatternValueElement element in Config.Replacements.AllElements)
 			{
 				if (sb.Length > 1)
 					sb.Append(", ");
@@ -242,7 +242,7 @@ namespace N2.Web.UI.WebControls
 						return;
 					}
 
-					foreach(PatternValueElement element in Config.Replacements)
+					foreach(PatternValueElement element in Config.Replacements.AllElements)
 					{
 						if(element.ServerValidate && Regex.IsMatch(Text, element.Pattern, RegexOptions.Compiled))
 						{

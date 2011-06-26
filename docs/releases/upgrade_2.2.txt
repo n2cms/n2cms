@@ -1,6 +1,6 @@
 * Make a complete backup (including database)
 * Delete /n2, and /bin
-* Drop upgrade files 
+* Drop upgrade files (Compiled framework and management)
 * In web.config enable <n2><edit><installer checkInstallationStatus="true" />
 * Recompile your solution
 * Browse to the site (you are redirected to /n2/installation/upgrade.aspx)

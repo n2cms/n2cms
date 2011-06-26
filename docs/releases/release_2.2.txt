@@ -1,0 +1,26 @@
+Dinamico Templates (beta) - an MVC3 & Razor based template pack using the template-first! development paradigm
+* Boilerplate CSS & HTML5
+* Advanced theming with css comipilation (concrete, dark, roadwork, terracotta)
+* Template-first! development style
+* Content, news, listing, slider, image sizes, search, sitemap, globalization, youtube, google map
+Display Tokens replaces text tokens with rendered content (usage [DisplayableToken], tokens: {{precedingsibling}} and {{subsequentsibling}}, {{nextsibling}}, {{previoussibling}} , {{author}}, {{detail}}, and {{published}}, {{children}}, {{firstchild}}, {{parnet}}, {{siblings}}, {{startpage}} and {{toc}})
+Tag Cloud - Available In MVC Templates ([EditableTags], TagsRepository)
+Nuget support for installing N2 CMS Frmaework or Dinamico Templates
+Framwork improvements
+* LINQ querying works again with improvements such as WhereDescendantOf and WhereDescendantOrSelf
+* ContentHelper provides quick access to APIs: Traverse, Is (filters), Search, Current (context), Register (register editor and display data, dinamico only), Display (display data using default display, dinamico only), Data (get access to data, dinamico only), Has (is data available, dinamico only), 
+* [RestrictCardinality] to restrict number of items of a certain type below a container
+* Deploy and run N2 Management within a zip file
+* Easier service replacement [Service(Replaces=typeof(DefaultImplementation))]
+* Improved [Template] to set alternative templates via management UI (using [WithEditableTemplate])
+* [EditableSummary] extracts sentences from text
+* Fluent registration for scripts and styles
+* Control panel helper
+* ItemFilter operators (-&|)
+* CssCompiler (compacts, gzips and combines css)
+* Children collection database queries (Children.FindZoneNames, .FindNamed, .FindPages, .FindParts, .FindRange, .Query)
+* Support for external content ([ExternalContent] associates items with controllers not routed through n2)
+* Lucene based search (searcher.Search(Query.For("region") | Query.For("world")))
+Management improvements
+* Warning when removing files referenced somewhere (ThreadId=252444)
+* Site settings via toolbar ([RecursiveContainer])

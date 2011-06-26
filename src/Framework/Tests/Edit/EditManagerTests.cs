@@ -42,7 +42,7 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], TestSupport.SetupEngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -50,7 +50,7 @@ namespace N2.Tests.Edit
 
 			versioner = mocks.StrictMock<IVersionManager>();
 			var urls = new FakeEditUrlManager();
-			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), new EngineSection()), new EditSection());
+			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), TestSupport.SetupEngineSection()), new EditSection());
 			editManager.EnableVersioning = true;
 
 			var engine = new FakeEngine();

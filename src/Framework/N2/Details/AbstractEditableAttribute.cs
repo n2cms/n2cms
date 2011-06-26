@@ -369,6 +369,7 @@ namespace N2.Details
 			label.ID = "lbl" + Name;
 			label.Text = GetLocalizedText("Title") ?? Title;
 			label.CssClass = "editorLabel";
+			label.Attributes["data-sortorder"] = SortOrder.ToString();
 			container.Controls.Add(label);
 			return label;
 		}

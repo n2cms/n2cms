@@ -69,7 +69,8 @@ namespace N2.Definitions.Static
 			{
 				var definition = staticDefinitions.GetOrCreateDefinition(itemType);
 				definition.DefaultContainerName = config.Definitions.DefaultContainerName;
-				definitions.Add(definition);
+				if(definition.IsDefined || config.Definitions.DefineUnattributedTypes)
+					definitions.Add(definition);
 			}
 
 			foreach (DefinitionElement element in config.Definitions.RemovedElements)

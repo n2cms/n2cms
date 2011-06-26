@@ -1,3 +1,7 @@
+- fix fist-time installation lucene error leaving lock
+- tree html helper
+- link html helper
+- required form fields webform + dropdown
 - nuget in virtual directory application
 - dinamico drop down example theme
 - master page in themes directory

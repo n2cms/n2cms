@@ -4,7 +4,8 @@
 		<n2:Display runat="server" PropertyName="Title" />
 		<n2:Display runat="server" PropertyName="IntroText" />
         <div class="inputForm">
-            <n2:Zone id="zq" runat="server" ZoneName="Questions" />
+			<asp:ValidationSummary ID="vsQuestions" runat="server" CssClass="vs" HeaderText="The form isn't complete. Please review the following and try again." ValidationGroup="Form" meta:resourcekey="vsQuestions" />
+            <n2:DroppableZone id="zq" runat="server" ZoneName="Questions" />
         </div>
         <asp:Button Text="Send" ID="btnSubmit" runat="server" OnCommand="btnSubmit_Command" meta:resourcekey="btnSubmitResource1" />
     </asp:View>

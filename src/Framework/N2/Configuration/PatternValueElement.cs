@@ -5,7 +5,7 @@ namespace N2.Configuration
 	/// <summary>
 	/// Defines a replacment pattern for the name editor.
 	/// </summary>
-	public class PatternValueElement : ConfigurationElement
+	public class PatternValueElement : ConfigurationElement, IIdentifiable
 	{
 		public PatternValueElement()
 		{
@@ -51,5 +51,15 @@ namespace N2.Configuration
 			get { return (bool)base["serverValidate"]; }
 			set { base["serverValidate"] = value; }
 		}
+
+		#region IIdentifiable Members
+
+		public object ElementKey
+		{
+			get { return Name; }
+			set { Name = (string)value; }
+		}
+
+		#endregion
 	}
 }

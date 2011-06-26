@@ -25,7 +25,7 @@ namespace N2.Tests.Plugin
 			//new[] { typeof(SeveralPlugins), typeof(PermittablePlugins) }
 
 			var edit = new EditSection();// { Editors = new PermissionElement(), Administrators  };
-			finder = new PluginFinder(typeFinder, new SecurityManager(new ThreadContext(), edit), new EngineSection());
+			finder = new PluginFinder(typeFinder, new SecurityManager(new ThreadContext(), edit), TestSupport.SetupEngineSection());
         }
 
         protected override Type[] GetTypes()

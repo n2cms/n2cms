@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Hosting;
 
 namespace N2.Web.Drawing
@@ -51,8 +52,14 @@ namespace N2.Web.Drawing
 				return imageUrl;
 
 			string preferredUrl = ImagesUtility.GetResizedPath(imageUrl, preferredSize);
-			if (HostingEnvironment.VirtualPathProvider.FileExists(preferredUrl))
-				return preferredUrl;
+			try
+			{
+				if (HostingEnvironment.VirtualPathProvider.FileExists(preferredUrl))
+					return preferredUrl;
+			}
+			catch (InvalidOperationException)
+			{
+			}
 
 			return Url.ToAbsolute(imageUrl);
 		}

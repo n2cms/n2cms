@@ -41,9 +41,9 @@ namespace N2.Edit.Installation
         IHost host;
     	IWebContext webContext;
 		DefinitionMap map;
-		ConnectionContext connectionContext;
+		ConnectionMonitor connectionContext;
 
-		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionContext connectionContext)
+		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext)
 		{
             this.host = host;
 			this.map = map;

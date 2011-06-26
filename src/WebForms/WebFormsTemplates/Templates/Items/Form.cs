@@ -13,7 +13,7 @@ namespace N2.Templates.Items
 		IconUrl = "~/Templates/UI/Img/report.png")]
     [AllowedZones("Content", "ColumnLeft", "ColumnRight")]
     [RestrictParents(typeof (AbstractContentPage))]
-    [AllowedChildren(typeof (Question))]
+    [RestrictChildren(typeof (Question))]
     [AvailableZone("Questions", "Questions")]
     [WithEditableTitle(Required = false, ContainerName = Form.ContentTab)]
 	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]

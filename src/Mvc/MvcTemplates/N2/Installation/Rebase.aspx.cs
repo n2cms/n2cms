@@ -22,6 +22,14 @@ namespace N2.Management.Installation
 				return status;
 			}
 		}
+
+		protected override void OnInit(EventArgs e)
+		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+
+			base.OnInit(e);
+		}
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
 

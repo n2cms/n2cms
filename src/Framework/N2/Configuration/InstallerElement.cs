@@ -12,6 +12,14 @@ namespace N2.Configuration
 			set { base["checkInstallationStatus"] = value; }
 		}
 
+		/// <summary>When set to false this option disallows usage of the potentially dangerous interfaces located below /n2/installation/.</summary>
+		[ConfigurationProperty("allowInstallation", DefaultValue = true)]
+		public bool AllowInstallation
+		{
+			get { return (bool)base["allowInstallation"]; }
+			set { base["allowInstallation"] = value; }
+		}
+
 		[ConfigurationProperty("welcomeUrl", DefaultValue = "{ManagementUrl}/Installation/Begin/Default.aspx")]
 		public string WelcomeUrl
 		{

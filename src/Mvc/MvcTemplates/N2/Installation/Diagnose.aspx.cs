@@ -19,6 +19,7 @@ using N2.Definitions;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Web;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -26,6 +27,12 @@ namespace N2.Edit.Install
 	{
 		protected IHost host;
 		protected string[] recentChanges = new string[0];
+
+		protected override void OnInit(EventArgs e)
+		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+			base.OnInit(e);
+		}
 
 		protected override void OnLoad(EventArgs e)
 		{

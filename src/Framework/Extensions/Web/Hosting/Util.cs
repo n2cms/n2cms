@@ -24,6 +24,7 @@ You're free to use this VPP under the same license as DotNetZip.
 **/
 
 using System;
+using System.Web;
 
 namespace Ionic.Zip.Web.VirtualPathProvider
 {
@@ -40,13 +41,22 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 			}
 			else if (virtualPath[0] == '/')
 			{
+				virtualPath = ToAppRelative(virtualPath);
 				if (!isFile)
-					return virtualPath.Substring(1).TrimEnd('/') + "/";
+					return virtualPath.Substring(2).TrimEnd('/') + "/";
 				else
-					return virtualPath.Substring (1);
+					return virtualPath.Substring(2);
 			}
 			else
 				return virtualPath;
+		}
+
+		private static string ToAppRelative(String virtualPath)
+		{
+			if(HttpContext.Current == null || !virtualPath.StartsWith(HttpContext.Current.Request.ApplicationPath))
+				return "~" + virtualPath;
+
+			return VirtualPathUtility.ToAppRelative(virtualPath);
 		}
 
 		internal static string ConvertZipPathToVirtualPath (String zipPath)

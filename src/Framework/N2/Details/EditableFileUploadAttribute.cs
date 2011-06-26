@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using N2.Edit.FileSystem;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using System.Text.RegularExpressions;
 
 namespace N2.Details
 {
@@ -66,6 +67,7 @@ namespace N2.Details
 					fs.CreateDirectory(directoryPath);
 
 				string fileName = Path.GetFileName(postedFile.FileName);
+				fileName = Regex.Replace(fileName, InvalidCharactersExpression, "-");
 				string filePath = VirtualPathUtility.Combine(directoryPath, fileName);
 
 				fs.WriteFile(filePath, postedFile.InputStream);
@@ -218,5 +220,7 @@ namespace N2.Details
 		}
 
 		#endregion
+
+		public const string InvalidCharactersExpression = "[+]";
 	}
 }

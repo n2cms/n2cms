@@ -2,7 +2,7 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
-	public class SettingsEditorElement : ConfigurationElement
+	public class SettingsEditorElement : ConfigurationElement, IIdentifiable
 	{
 		public SettingsEditorElement()
 		{
@@ -28,5 +28,15 @@ namespace N2.Configuration
 			get { return (string)base["path"]; }
 			set { base["path"] = value; }
 		}
+
+		#region IIdentifiable Members
+
+		public object ElementKey
+		{
+			get { return Name; }
+			set { Name = (string)value; }
+		}
+
+		#endregion
 	}
 }

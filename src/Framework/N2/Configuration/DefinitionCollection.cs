@@ -8,6 +8,14 @@ namespace N2.Configuration
 	[ConfigurationCollection(typeof(DefinitionElement))]
 	public class DefinitionCollection : LazyRemovableCollection<DefinitionElement>
 	{
+		/// <summary>When set to true this setting makes item types without a [Definition] attribute to be defined.</summary>
+		[ConfigurationProperty("defineUnattributedTypes", DefaultValue = false)]
+		public bool DefineUnattributedTypes
+		{
+			get { return (bool)base["defineUnattributedTypes"]; }
+			set { base["defineUnattributedTypes"] = value; }
+		}
+
 		protected override void OnDeserializeRemoveElement(DefinitionElement element, System.Xml.XmlReader reader)
 		{
 			element.Description = reader.GetAttribute("description");

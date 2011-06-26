@@ -37,7 +37,7 @@ namespace N2.Tests.Serialization
 				new[] {new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), 
 					finder, 
 					new TransformerBase<IUniquelyNamed>[0],
-					new EngineSection()))}, 
+					TestSupport.SetupEngineSection()))}, 
 				new ITemplateProvider[0],
 				activator, new StateChanger());
 			definitions.Start();

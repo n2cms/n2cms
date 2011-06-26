@@ -14,6 +14,7 @@ using N2.Definitions;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Installation;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -22,8 +23,6 @@ namespace N2.Edit.Install
 		protected CustomValidator cvExisting;
 		protected Label errorLabel;
 		protected FileUpload fileUpload;
-
-		private DatabaseStatus status;
 
 		protected int RootId
 		{
@@ -43,6 +42,7 @@ namespace N2.Edit.Install
 			get { return Engine.Resolve<InstallationManager>(); }
 		}
 
+		private DatabaseStatus status;
 		protected DatabaseStatus Status
 		{
 			get
@@ -54,6 +54,12 @@ namespace N2.Edit.Install
 		}
 
 		protected IEngine Engine { get { return N2.Context.Current; } }
+
+		protected override void OnInit(EventArgs e)
+		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+			base.OnInit(e);
+		}
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -170,9 +176,15 @@ namespace N2.Edit.Install
 			{
 				if (ExecuteWithErrorHandling(im.Install) != null)
 				{
-					if(ExecuteWithErrorHandling(im.Install) == null)
+					if (ExecuteWithErrorHandling(im.Install) == null)
+					{
+						// retry once upon error
 						lblInstall.Text = "Database created, now insert root items.";
+						ShowTab("Content");
+					}
 				}
+				else
+					ShowTab("Content");
 			}
 		}
 
@@ -241,6 +253,7 @@ namespace N2.Edit.Install
 					phDiffer.Visible = false;
 					RootId = root.ID;
 					Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
+					ShowTab("Finish");
 				}
 				else
 				{
@@ -270,7 +283,7 @@ namespace N2.Edit.Install
             if (ExecuteWithErrorHandling(delegate { InsertFromFile(path); }) == null)
             {
                 plhAddContent.Visible = false;
-            }
+			}
 		}
 
 		private void InsertFromFile(string path)
@@ -298,6 +311,15 @@ namespace N2.Edit.Install
 			{
 				lblWebConfigUpdated.Text = "Configuration updated.";
 				status = null;
+				Engine.Host.DefaultSite.RootItemID = RootId;
+				Engine.Host.DefaultSite.StartPageID = StartId;
+
+				ShowTab("Finish");
+				Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
+			}
+			else
+			{
+				lblWebConfigUpdated.Text = "Failed to update configuration. Please update it manually.";
 			}
 		}
 
@@ -310,12 +332,23 @@ namespace N2.Edit.Install
 			host.StartPageID = StartId;
 
 			cfg.Save();
-			Installer.UpdateStatus(SystemStatusLevel.UpAndRunning);
 		}
 
 		protected void btnRestart_Click(object sender, EventArgs e)
 		{
-			ExecuteWithErrorHandling(HttpRuntime.UnloadAppDomain);
+			try
+			{
+				System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~");
+				EditSection edit = (EditSection)cfg.GetSection("n2/edit");
+				edit.Installer.AllowInstallation = false;
+				cfg.Save();
+
+				Response.Redirect(Engine.ManagementPaths.GetManagementInterfaceUrl());
+			}
+			catch
+			{
+				ltDisableFailed.Text = "Failed writing to web.config, please change this manually in web.config:";
+			}
 		}
 
 		protected override void OnPreRender(EventArgs e)
@@ -393,17 +426,17 @@ namespace N2.Edit.Install
 				}
 				phDiffer.DataBind();
 			}
-			
+
+			if (!phSame.Visible && !phDiffer.Visible)
+				ShowTab("Finish");
 		}
 
-		public delegate void Execute();
-
-		protected Exception ExecuteWithErrorHandling(Execute action)
+		protected Exception ExecuteWithErrorHandling(Action action)
 		{
 			return ExecuteWithErrorHandling<Exception>(action);
 		}
 
-		protected T ExecuteWithErrorHandling<T>(Execute action)
+		protected T ExecuteWithErrorHandling<T>(Action action)
 			where T:Exception
 		{
 			try
@@ -437,7 +470,13 @@ namespace N2.Edit.Install
 				return false;
 			}
 		}
+
+		private void ShowTab(string tabName)
+		{
+			ClientScript.RegisterStartupScript(GetType(), "Content", "$(document).ready(function(){setTimeout(function(){$.fn.n2tabs_show($('#" + tabName + "'));}, 10);});", true);
+		}
 	}
+
 	/// <summary>
 	/// SqlCEDBHelper courtesy of Ayende Rahien from Rhino.Commons.Helpers
 	/// Full code can be found here: https://svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/Helpers/SqlCEDbHelper.cs

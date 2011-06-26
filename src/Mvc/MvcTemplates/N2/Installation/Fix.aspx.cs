@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using N2.Configuration;
+using N2.Management.Installation;
 
 namespace N2.Edit.Install
 {
@@ -10,6 +11,8 @@ namespace N2.Edit.Install
         
         protected override void OnInit(EventArgs e)
 		{
+			InstallationUtility.CheckInstallationAllowed(Context);
+
 			rptCns.DataSource = ConfigurationManager.ConnectionStrings;
 			rptCns.DataBind();
 

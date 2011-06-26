@@ -7,51 +7,39 @@ namespace N2.Templates.Web.UI.WebControls
 {
     public class MultipleSelectControl : Control, IQuestionControl
     {
-        MultipleSelect item;
+		Label l;
+		MultipleSelect item;
         CheckBoxList list;
-        RequiredFieldValidatorForCheckBoxLists rfv;
+		CustomValidator cv;
 
         public MultipleSelectControl(MultipleSelect item, RepeatDirection direction)
         {
             this.item = item;
-            list = new CheckBoxList();
-            list.RepeatDirection = direction;
-        }
 
-        protected override void OnInit(EventArgs e)
-        {
-            Label l = new Label();
-            l.Text = item.Title;
-            l.CssClass = "label";
-            l.AssociatedControlID = item.Name;
-            
-            list.ID = item.Name;
-            list.CssClass = "alternatives";
-            list.DataSource = item.GetChildren();
-            list.DataTextField = "Title";
-            list.DataValueField = "ID";
-            list.DataBind();
+			l = new Label();
+			l.Text = item.Title;
+			l.CssClass = "label";
+			l.AssociatedControlID = item.Name;
+			this.Controls.Add(l);
 
-            if (item["Required"] != null && (bool)item["Required"] == true)
-            {
-                rfv = new RequiredFieldValidatorForCheckBoxLists();
-                rfv.ControlToValidate = list.ID;
-                rfv.ErrorMessage = "Required Field";
-                rfv.ValidationGroup = "Form";
-                rfv.ID = "Required" + item.ID;
-                rfv.SetFocusOnError = true;
-                rfv.Enabled = true;
-                rfv.Display = ValidatorDisplay.Dynamic;
-                rfv.EnableClientScript = true;
-                list.ValidationGroup = "Form";
-                list.CausesValidation = true;
+			list = new CheckBoxList();
+			list.RepeatDirection = direction;
+			list.ID = item.Name;
+			list.CssClass = "alternatives";
+			list.DataSource = item.GetChildren();
+			list.DataTextField = "Title";
+			list.DataValueField = "ID";
+			list.DataBind();
+			this.Controls.Add(list);
 
-                Controls.Add(rfv);
-            }
-
-            this.Controls.Add(l);
-            this.Controls.Add(list);
-            base.OnInit(e);
+			if (item.Required)
+			{
+				cv = new CustomValidator { Display = ValidatorDisplay.Dynamic, Text = "*" };
+				cv.ErrorMessage = item.Title + " is required";
+				cv.ServerValidate += (s, a) => a.IsValid = !string.IsNullOrEmpty(AnswerText);
+				cv.ValidationGroup = "Form";
+				this.Controls.Add(cv);
+			}
         }
 
         protected override void Render(HtmlTextWriter writer)

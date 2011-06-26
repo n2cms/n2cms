@@ -63,7 +63,7 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -409,7 +409,7 @@ namespace N2.Tests.Definitions
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionUndefined));
 
-			Assert.IsFalse(definition.IsDefined);
+			Assert.That(definition.IsDefined, Is.False);
 		}
 
 		[Test]

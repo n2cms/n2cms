@@ -23,26 +23,47 @@ namespace N2.Persistence.Search
 		IWorker worker;
 		IErrorNotifier errors;
 		bool async;
-		bool enabled;
 		bool handleErrors;
 
-		public ContentChangeTracker(IIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
+		public ContentChangeTracker(IIndexer indexer, IPersister persister, IWorker worker, ConnectionMonitor connection, IErrorNotifier errors, DatabaseSection config)
 		{
 			this.indexer = indexer;
 			this.persister = persister;
 			this.worker = worker;
 			this.errors = errors;
 			this.async = config.Search.AsyncIndexing;
-			this.enabled = config.Search.Enabled;
 			this.handleErrors = config.Search.HandleErrors;
 			
 			RetryInterval = TimeSpan.FromMinutes(2);
+
+			if(config.Search.Enabled)
+			{
+				connection.Online += delegate
+				{
+					persister.ItemSaved += persister_ItemSaved;
+					persister.ItemMoving += persister_ItemMoving;
+					persister.ItemMoved += persister_ItemMoved;
+					persister.ItemCopied += persister_ItemCopied;
+					persister.ItemDeleted += persister_ItemDeleted;
+				};
+				connection.Offline += delegate
+				{
+					persister.ItemSaved -= persister_ItemSaved;
+					persister.ItemMoving -= persister_ItemMoving;
+					persister.ItemMoved -= persister_ItemMoved;
+					persister.ItemCopied -= persister_ItemCopied;
+					persister.ItemDeleted -= persister_ItemDeleted;
+				};
+			}
 		}
 
 		public TimeSpan RetryInterval { get; set; }
 
 		public void ItemChanged(int itemID, bool affectsChildren)
 		{
+			if (itemID == 0)
+				return;
+
 			DoWork(() =>
 			{
 				var item = persister.Get(itemID);
@@ -60,6 +81,9 @@ namespace N2.Persistence.Search
 
 		public void ItemDeleted(int itemID)
 		{
+			if (itemID == 0)
+				return;
+
 			DoWork(() =>
 			{
 				indexer.Delete(itemID);
@@ -139,25 +163,10 @@ namespace N2.Persistence.Search
 
 		public void Start()
 		{
-			if (!enabled)
-				return;
-
-			persister.ItemSaved += persister_ItemSaved;
-			persister.ItemMoved += persister_ItemMoved;
-			persister.ItemCopied += persister_ItemCopied;
-			persister.ItemDeleted += persister_ItemDeleted;
 		}
 
 		public void Stop()
 		{
-			if (!enabled)
-				return;
-
-			persister.ItemSaved -= persister_ItemSaved;
-			persister.ItemMoving -= persister_ItemMoving;
-			persister.ItemMoved -= persister_ItemMoved;
-			persister.ItemCopied -= persister_ItemCopied;
-			persister.ItemDeleted -= persister_ItemDeleted;
 		}
 
 		void persister_ItemDeleted(object sender, ItemEventArgs e)

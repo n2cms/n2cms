@@ -123,4 +123,7 @@
   <data name="btnSubmitResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="vsQuestions.Text" xml:space="preserve">
+    <value>The form isn't complete. Please review the following and try again.</value>
+  </data>
 </root>

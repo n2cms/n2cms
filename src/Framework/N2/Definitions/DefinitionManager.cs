@@ -137,7 +137,7 @@ namespace N2.Definitions
 			activator.ItemCreated += activator_ItemCreated;
 			stateChanger.StateChanged += stateChanger_StateChanged;
 
-			activator.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
+			activator.Initialize(GetDefinitions().Select(d => d.ItemType));
 		}
 
 		public void Stop()
