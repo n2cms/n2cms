@@ -13,7 +13,15 @@ using NHibernate;
 
 namespace N2.Web
 {
+
+	[Obsolete("Use IErrorNotifier")]
+	public interface IErrorHandler
+	{
+		void Notify(Exception ex);
+	}
+
 	[Service(typeof (IErrorNotifier))]
+	[Service(typeof(IErrorHandler))]
 	public class ErrorNotifier : IErrorNotifier
 	{
 		#region IErrorNotifier Members

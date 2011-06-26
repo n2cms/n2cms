@@ -63,6 +63,14 @@ namespace N2.Definitions
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
 		IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user);
 
+		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
+		/// <param name="definition">The parent definition whose allowed children to get.</param>
+		/// <param name="zoneName">The zone name.</param>
+		/// <param name="user">The user to use for filtering by access rights.</param>
+		/// <returns>A list of definitions allowed by the given criterias.</returns>
+		[Obsolete("Use GetAllowedChildren(parentItem, ...)")]
+		IList<ItemDefinition> GetAllowedChildren(ItemDefinition parentDefinition, string zoneName, IPrincipal user);
+
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete("Use ContentActivator", false)]
 		event EventHandler<ItemEventArgs> ItemCreated;

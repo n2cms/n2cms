@@ -1,9 +1,22 @@
+Upgrade N2 CMS Framework TO 2.2
 * Make a complete backup (including database)
 * Delete /n2, and /bin
-* Drop upgrade files (Compiled framework and management)
+* Copy upgrade files (found in n2cms_2.2_Framework.zip)
 * In web.config enable <n2><edit><installer checkInstallationStatus="true" />
+	#if Using N2.Templates.Mvc? Then you also need to:
+	* Remove or exclude /Areas/Management/* except for Root.aspx and Models/RootPage.cs
+	* Modify /Global.asax.cs: engine.RegisterControllers(typeof(StartController).Assembly) -> engine.RegisterAllControllers())
+	#endif
 * Recompile your solution
 * Browse to the site (you are redirected to /n2/installation/upgrade.aspx)
 * Log in as an administrator
 * Click "update tables and run migrations"
-* That's it
+* That's it!
+
+UPGRADE N2.Templates.Mvc to 2.2
+* Upgrade N2 CMS Framework TO 2.2 (above)
+* If you have made modifications you should stop here and reconsider.
+  Read "Modifying vs. Extending" in the Developer Documentation.
+  If you go on all your changes may be overwritten.
+* Copy new files and overwrite existing (found in n2cms_2.2_Templates_Mvc.zip)
+* That's it!
