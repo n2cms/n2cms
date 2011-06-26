@@ -603,7 +603,9 @@
     <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
     <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
     <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
   <ItemGroup>

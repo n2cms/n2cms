@@ -33,13 +33,13 @@ namespace N2.Persistence.Search
 
 				var result = new Result();
 				result.Total = hits.totalHits;
-				var resultHits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
-				{
-					var doc = s.Doc(hit.doc);
-					int id = int.Parse(doc.Get("ID"));
-					ContentItem item = persister.Get(id);
-					return new Hit { Content = item, Score = hit.score };
-				}).ToList();
+                var resultHits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
+                {
+                    var doc = s.Doc(hit.doc);
+                    int id = int.Parse(doc.Get("ID"));
+                    ContentItem item = persister.Get(id);
+                    return new Hit { Content = item, Score = hit.score };
+                }).Where(h => h.Content != null).ToList();
 				result.Hits = resultHits;
 				result.Count = resultHits.Count;
 				return result;
