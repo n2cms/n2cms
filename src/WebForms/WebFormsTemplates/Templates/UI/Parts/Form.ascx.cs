@@ -18,6 +18,10 @@ namespace N2.Templates.UI.Parts
 
         protected void btnSubmit_Command(object sender, CommandEventArgs args)
         {
+			Page.Validate("Form");
+			if (!Page.IsValid)
+				return;
+			
             StringBuilder sb = new StringBuilder(CurrentItem.MailBody);
             foreach (Control c in zq.Controls)
             {

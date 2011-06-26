@@ -8,6 +8,7 @@ namespace N2.Templates.Web.UI.WebControls
     {
         TextBox tb;
         Label l;
+		RequiredFieldValidator rfv;
 
         public TextControl(TextQuestion question)
         {
@@ -30,7 +31,16 @@ namespace N2.Templates.Web.UI.WebControls
             l.AssociatedControlID = tb.ID;
 
             Controls.Add(l);
-            Controls.Add(tb);
+			Controls.Add(tb);
+
+			if (question.Required)
+			{
+				rfv = new RequiredFieldValidator { Display = ValidatorDisplay.Dynamic, Text = "*" }; 
+				rfv.ErrorMessage = question.Title + " is required";
+				rfv.ControlToValidate = tb.ID;
+				rfv.ValidationGroup = "Form";
+				this.Controls.Add(rfv);
+			}
         }
 
         public string AnswerText
