@@ -97,12 +97,11 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\Page.aspx.designer.vb">
-      <DependentUpon>Page.aspx</DependentUpon>
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\Page.aspx.vb">
-      <DependentUpon>Page.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\MyItemBase.vb" />
     <Compile Include="Models\PageItem.vb" />
@@ -115,13 +114,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default.aspx" />
     <Content Include="web.config" />
     <Content Include="UI\Site.Master" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Default\Default.css" />
-    <Content Include="UI\Page.aspx" />
+    <Content Include="Default.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
