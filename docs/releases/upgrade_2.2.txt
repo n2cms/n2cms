@@ -18,5 +18,5 @@ UPGRADE N2.Templates.Mvc to 2.2
 * If you have made modifications you should stop here and reconsider.
   Read "Modifying vs. Extending" in the Developer Documentation.
   If you go on all your changes may be overwritten.
-* Copy new files and overwrite existing (found in n2cms_2.2_Templates_Mvc.zip)
+* Copy new files (found in n2cms_2.2_Templates_Mvc.zip) and overwrite existing except for web.config
 * That's it!
