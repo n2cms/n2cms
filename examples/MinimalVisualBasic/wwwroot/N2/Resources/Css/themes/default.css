@@ -1,0 +1,44 @@
+﻿
+/* DEFUALT THEME */
+
+body .header,
+#home h4
+{
+    background-color:#79C;
+}
+body .box
+{
+}
+
+body .subbar,
+body #splitter .vsplitbar
+{
+    background-color:#ccb; 
+    border-color:#aa9;
+}
+body .subbar
+{
+    border-top-color:#ccc;
+}
+body .toolbar, 
+body .framed .optionGroup,
+body .framed .commandOptions .opener,
+body .gv th,
+body .gv thead td,
+body.framed .outside
+{
+    background-color:#ddc;
+	border-color:#bbc;
+}
+body,
+body .gv .alt td { background-color:#F8F8E8; }
+
+body .toolbar .toggled,
+body .toolbar .command:hover
+{
+	border-color:#bbb;
+}
+body .toolbar a
+{
+	color:#333;
+}

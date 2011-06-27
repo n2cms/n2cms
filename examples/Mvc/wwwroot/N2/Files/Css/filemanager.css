@@ -1,0 +1,108 @@
+﻿html body
+{
+	padding:0;
+}
+a.node
+{
+	text-decoration:none;
+	opacity:.10;
+	filter: alpha(opacity=10);
+	-moz-opacity: 0.10;
+}
+a.enabled
+{
+	opacity:1.00;
+	filter: alpha(opacity=100);
+	-moz-opacity: 1.00;
+}
+.toolbar .checkbox
+{
+	float:left;
+	color:silver;
+	white-space:nowrap;
+	padding:4px;
+}
+.toolbar .checkbox input
+{
+	float:left;
+}
+.toolbar .command
+{
+	display:none;
+}
+.toolbar .switch,
+.toolbar .cancel
+{
+	display:inline;
+}
+.file .fileTool,
+.folder .folderTool
+{
+	display:inline;
+}
+
+.actions
+{
+	height:1px;
+	overflow:hidden;
+}
+.upload .command,
+.newFolder .command
+{
+	display:none;
+}
+.upload .cancel,
+.newFolder .cancel
+{
+	display:block;
+}
+
+
+.upload .actions,
+.newFolder .actions
+{
+	height:auto;
+	overflow:visible;
+}
+.actions .actionPanel
+{
+	height:1px;
+	overflow:hidden;
+}
+.actions .actionPanel input
+{
+	margin-top:1px;
+}
+
+.upload .uploadPanel,
+.newFolder .newFolderPanel
+{
+    padding:10px;
+	height:auto;
+	_height:1px;
+	overflow:visible;
+    margin-bottom:10px;
+    border:solid 1px #DEDAD7;
+    background-color:#F7F7F7;
+}
+.upload .tree,
+.newFolder .tree
+{
+	display:none;
+}
+
+#navigation
+{
+	clear:both;
+}
+
+.selected
+{
+	color:Black;
+	font-weight:bold;
+}
+
+.tree li
+{
+    background-color:#fff;
+}

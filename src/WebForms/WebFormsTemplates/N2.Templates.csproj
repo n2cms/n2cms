@@ -94,6 +94,7 @@
     <Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
     <Compile Include="Templates\Find.cs" />
     <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
+    <Compile Include="Templates\Items\DropSelect.cs" />
     <Compile Include="Templates\Items\RootPage.cs" />
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
     <Compile Include="Templates\Items\AbstractItem.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
+    <Compile Include="Templates\Services\QuestionRequiredDefinitionAppender.cs" />
     <Compile Include="Templates\Web\MasterPageConcern.cs" />
     <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
     <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
@@ -449,8 +451,10 @@
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\Web\UI\WebControls\DropDowncontrol.cs" />
     <Compile Include="Templates\Web\UI\WebControls\IQuestionControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\MultipleSelectControl.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\RequiredFieldValidatorForCheckBoxLists.cs" />
     <Compile Include="Templates\Web\UI\WebControls\SingleSelectControl.cs" />
     <Compile Include="Templates\Web\UI\WebControls\TextControl.cs" />
     <Compile Include="Templates\Web\Adapters\FormAdapter.cs" />
@@ -599,7 +603,9 @@
     <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
     <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
     <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
   <ItemGroup>

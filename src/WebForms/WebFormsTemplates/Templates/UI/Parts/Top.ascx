@@ -3,3 +3,6 @@
 	<n2:Display PropertyName="LogoUrl" runat="server" />
 </a>
 <h2 class="siteHeader" runat="server" visible='<%$ HasValue: Title %>'><a href="<%= this.Page.ResolveClientUrl(CurrentItem.TopTextUrl) %>"><%= CurrentItem.Title %></a></h2>
+
+
+

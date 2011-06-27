@@ -27,16 +27,15 @@ namespace N2.Templates.UI.Views
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-			var query = Query.For(txtQuery.Text)
-				.Below(CurrentItem.SearchRoot)
-				.Range(0, 100)
-				.Pages(true)
-				.ReadableBy(User, Roles.GetRolesForUser)
-				.Except(Query.For(typeof(ISystemNode)));
-			var result = Engine.Resolve<ITextSearcher>().Search(query);
-			Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
-			TotalCount = result.Total;
-			
+            var query = Query.For(txtQuery.Text)
+                    .Below(CurrentItem.SearchRoot)
+                    .Range(0, 100)
+                    .Pages(true)
+                    .ReadableBy(User, Roles.GetRolesForUser)
+                    .Except(Query.For(typeof(ISystemNode)));
+            var result = Engine.Resolve<ITextSearcher>().Search(query);
+            Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
+            TotalCount = result.Total;
             DataBind();
         }
     }
