@@ -24,17 +24,19 @@ namespace N2.Security
 	{
 		ItemBridge bridge;
 
-		private bool enablePasswordReset;
-		private bool enablePasswordRetrieval;
-		int maxInvalidPasswordAttempts = 4;
+		// Note: see MSDN for additional info
+		// http://msdn.microsoft.com/en-us/library/9x1zytyd.aspx
+		private bool enablePasswordReset = true;  // default value is true (MSDN)
+		private bool enablePasswordRetrieval = false; // default value is false (MSDN)
+		int maxInvalidPasswordAttempts = 4; // note: tracking is not implemented by the provider yet
 		private int minRequiredNonAlphanumericCharacters = 0;
 		private int minRequiredPasswordLength = 5;
 		private int generatedPasswordLength = 6;
 		private int passwordAttemptWindow = 20;
 		private MembershipPasswordFormat passwordFormat = MembershipPasswordFormat.Clear;
 		private string passwordStrengthRegularExpression = ".*";
-		private bool requiresQuestionAndAnswer = false;
-		private bool requiresUniqueEmail = false;
+		private bool requiresQuestionAndAnswer = true; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false.
+		private bool requiresUniqueEmail = true; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false. Note: still unused by the provider.
 
 		public ContentMembershipProvider()
 		{
