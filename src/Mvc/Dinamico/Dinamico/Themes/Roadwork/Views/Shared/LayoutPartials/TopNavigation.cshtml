@@ -3,9 +3,9 @@
 	var start = Content.Traverse.StartPage;
 	var current = Content.Current.Page;
 <ul id="menu" class="topmenu menu level1">
-	<li class="logo">@using (Content.BeginScope(Content.Traverse.StartPage))
+	<li class="home">@using (Content.BeginScope(Content.Traverse.StartPage))
 {
-	Content.Render.Image("Logotype").Wrap(@<a href="@Content.Current.Item.Url" title="@Content.Current.Item.Title" class="logotype">@item.RenderContents()</a>).Render();
+	<a href="@Content.Current.Item.Url" title="@Content.Current.Item.Title"><img src="@Url.ThemedContent("~/Content/home.png")" alt="@Content.Current.Page.Title" /></a>
 }</li>
 	@Content.TreeFrom(start, takeLevels: 2, rootless: true)
 </ul>
