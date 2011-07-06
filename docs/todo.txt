@@ -1,3 +1,5 @@
+- displayablemedia (discussions/263535)
+- allowed zones in dinamico view templates (discussions/263700)
 - folder picker (ThreadId=240497)
 - fix fist-time installation lucene error leaving lock
 - tree html helper
