@@ -20,6 +20,7 @@ namespace N2.Web.UI.WebControls
 		static NameValueCollection configSettings = new NameValueCollection();
 		static bool configEnabled = true;
 		static bool isInitalized = false;
+                private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
 
 		public FreeTextArea()
 		{
@@ -38,6 +39,12 @@ namespace N2.Web.UI.WebControls
 			get { return (string)(ViewState["DocumentBaseUrl"]); }
 			set { ViewState["DocumentBaseUrl"] = value; }
 		}
+
+                /// <summary> Custom TinyMCE config options </summary>  
+                /// <remarks> Will override Web.config TinyMCE settings.
+                ///   See: http://tinymce.moxiecode.com/wiki.php/Configuration
+                /// </remarks>
+                public IDictionary<string, string> CustomOverrides { get { return customOverrides_; } }
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -92,6 +99,9 @@ namespace N2.Web.UI.WebControls
 
 			foreach (string key in configSettings.AllKeys)
 				overrides[key] = configSettings[key];
+
+                        foreach (var item in CustomOverrides) 
+				overrides[item.Key] = item.Value;
 
 			return ToJsonString(overrides);
 		}
