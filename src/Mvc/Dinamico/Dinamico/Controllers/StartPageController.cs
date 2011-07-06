@@ -22,6 +22,7 @@ namespace Dinamico.Controllers
     {
 		public ActionResult NotFound()
 		{
+			Response.Status = "404 Not Found";
 			return View(GetSearchResults(string.Join(" ", Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Split('/')), 10).ToList());
 		}
 

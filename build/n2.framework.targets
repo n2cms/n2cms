@@ -126,18 +126,24 @@
 				<![CDATA[
 public static string ScriptMain()
 {
-			Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(@"$(Framework-NugetFolder)\content\N2\N2.zip");
-			zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
-			zf.AddDirectory(@"$(Framework-DeployFolder)\N2\", "N2");
-			zf.Save();
-			return "";
+	AddDirectoryToZipFile(@"$(Framework-NugetFolder)\content\N2\N2.zip", @"$(Framework-DeployFolder)\N2\", "N2");
+	return "";
+}
+private static void AddDirectoryToZipFile(string zipFileName, string directoryToAdd, string pathInArchive)
+{
+	Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(zipFileName);
+	zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
+	zf.AddDirectory(directoryToAdd, pathInArchive);
+	zf.Save();
 }
 			]]>
 			</Code>
 		</PropertyGroup>
 		<Delete Files="$(Framework-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Framework-NugetFolder)\content\N2\N2.zip')" />
 		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Framework-NugetFolder)\content\N2\" />
-		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
+		<!-- temporary hack -->
+		<Exec Command="gacutil -i $(LibFolder)\Ionic.Zip.Reduced.dll" ContinueOnError="true" />
+		<Script Code="$(Code)" Language="C#" Imports="System.Reflection" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
 
 		<ItemGroup>
 			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />

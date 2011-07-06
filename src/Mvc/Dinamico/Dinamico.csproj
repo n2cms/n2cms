@@ -132,6 +132,7 @@
   <ItemGroup>
     <Content Include="apple-touch-icon.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Layout.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Site.css" />

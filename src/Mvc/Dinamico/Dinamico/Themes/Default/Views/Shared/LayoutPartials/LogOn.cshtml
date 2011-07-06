@@ -4,5 +4,6 @@
 }
 else
 {
-	@Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = Request["returnUrl"] ?? (Content.Current.IsEmpty ? Content.Traverse.StartPage.Url : Content.Current.Page.Url) })
+	var returnUrl = Request["returnUrl"] ?? Content.Data.Url ?? Content.Traverse.StartPage.Url;
+	@Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = returnUrl })
 }

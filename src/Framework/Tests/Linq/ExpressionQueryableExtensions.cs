@@ -315,6 +315,20 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Contains(item));
 		}
 
+		[Test, Ignore]
+		public void CanSelectItems_Where_DetailBackingProperty_Equals_ContentItemField2()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.ContentItemProperty.Name == "root");
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(!items.Contains(root));
+			Assert.That(items.Contains(item));
+		}
+
 		[Test]
 		public void CanSelectItems_Where_MultipleTimes()
 		{

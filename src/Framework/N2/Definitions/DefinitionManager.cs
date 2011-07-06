@@ -99,6 +99,19 @@ namespace N2.Definitions
 			return allowedChildItems;
 		}
 
+		/// <summary>Gets items allowed below this item in a certain zone.</summary>
+		/// <param name="parentItem">The parent whose allowed children to get.</param>
+		/// <param name="zoneName">The zone whose allowed child item types to get.</param>
+		/// <param name="user">The user whose access to query.</param>
+		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
+		[Obsolete("Use GetAllowedChildren(parentItem, ...)")]
+		public virtual IList<ItemDefinition> GetAllowedChildren(ItemDefinition parentDefinition, string zoneName, IPrincipal user)
+		{
+			var allowedChildItems = parentDefinition.GetAllowedChildren(this, null).Where(d => d.IsAllowed(zoneName, user)).ToList();
+			allowedChildItems.Sort();
+			return allowedChildItems;
+		}
+
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete]
 		public event EventHandler<ItemEventArgs> ItemCreated;

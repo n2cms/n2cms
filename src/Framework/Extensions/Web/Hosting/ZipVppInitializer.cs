@@ -64,8 +64,11 @@ namespace N2.Web.Hosting
 					// RouteExistingFiles will not handle files in the zip vpp. This is a workaround.
 					if (extension == "" || extension == ".aspx" || extension == ".axd" || extension == ".ashx")
 					{
-					    var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
-					    context.RemapHandler(handler as IHttpHandler);
+						if (vpp.FileExists(requestPath))
+						{
+							var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
+							context.RemapHandler(handler as IHttpHandler);
+						}
 					}
 					else if (staticFileExtensions.Contains(extension) && vpp.FileExists(requestPath))
 						context.RemapHandler(new VirtualPathFileHandler() { Modified = lastModified });

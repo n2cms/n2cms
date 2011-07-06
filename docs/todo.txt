@@ -1,8 +1,9 @@
+- displayablemedia (discussions/263535)
+- allowed zones in dinamico view templates (discussions/263700)
+- folder picker (ThreadId=240497)
 - fix fist-time installation lucene error leaving lock
 - tree html helper
 - link html helper
-- required form fields webform + dropdown
-- nuget in virtual directory application
 - dinamico drop down example theme
 - master page in themes directory
 - save&preview and editablechildren (workitem/30541)
@@ -21,7 +22,6 @@
 - fix wiki (ThreadId=243022)
 - property interception to detail collections
 - property interception avoid proceeding unecessarily
-- folder picker (ThreadId=240497)
 - limit number of items in a zone (ThreadId=241156)
 - show path in screens
 - modal file selectors

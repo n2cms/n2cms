@@ -9,7 +9,7 @@ namespace N2.Details
 	/// </summary>
 	[Serializable]
 	[DebuggerDisplay("{Name}: StringValue: {StringValue}")]
-	[Obsolete("Use ContentDetail instead", true)]
+	[Obsolete("Use ContentDetail instead (this is a breaking change)")]
 	public class StringDetail : ContentDetail
 	{
 	}
