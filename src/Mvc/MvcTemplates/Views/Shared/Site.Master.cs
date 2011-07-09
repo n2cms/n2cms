@@ -44,7 +44,7 @@ namespace N2.Templates.Mvc.Views.Shared
 			var rd = new RouteData();
 
 			var currentPage = (Page is IItemContainer) ? (Page as IItemContainer).CurrentItem : N2.Context.CurrentPage;
-			rd.ApplyCurrentItem("WebForms", "Index", currentPage, currentPage);
+			RouteExtensions.ApplyCurrentItem(rd, "WebForms", "Index", currentPage, currentPage);
 			rd.DataTokens[ContentRoute.ContentEngineKey] = N2.Context.Current;
 
 			var rqctx = new RequestContext(ctx, rd);

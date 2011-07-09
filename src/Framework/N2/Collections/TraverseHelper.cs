@@ -42,14 +42,7 @@ namespace N2.Collections
 
 		public ContentItem StartPage
 		{
-			get 
-			{ 
-				var page = N2.Find.ClosestOf<IStartPage>(CurrentItem) ?? engine.UrlParser.StartPage;
-				var redirect = page as IRedirect;
-				if (redirect != null && redirect.RedirectTo != null)
-					return redirect.RedirectTo;
-				return page;
-			}
+			get { return ClosestStartPage(CurrentItem); }
 		}
 
 		public ContentItem RootPage
@@ -75,7 +68,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ILanguage> Translations(ContentItem item)
 		{
-			UseMasterVersion(ref item);
+			TryMasterVersion(ref item);
 			var lg = engine.Resolve<ILanguageGateway>();
 			return lg.FindTranslations(item).Select(i => lg.GetLanguage(i));
 		}
@@ -131,7 +124,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> Children(ContentItem parent, ItemFilter filter = null)
 		{
 			if (parent == null) return Enumerable.Empty<ContentItem>();
-			UseMasterVersion(ref parent);
+			TryMasterVersion(ref parent);
 			
 			return parent.GetChildren(filter ?? DefaultFilter);
 		}
@@ -223,7 +216,7 @@ namespace N2.Collections
 		{
 			if (item == null) item = CurrentItem;
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
-			UseMasterVersion(ref item);
+			TryMasterVersion(ref item);
 
 			return item.Parent.GetChildren(filter ?? DefaultFilter);
 		}
@@ -234,7 +227,7 @@ namespace N2.Collections
 		public ContentItem PreviousSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
-			UseMasterVersion(ref item);
+			TryMasterVersion(ref item);
 
 			ContentItem previous = null;
 			foreach (var sibling in Siblings(item))
@@ -253,7 +246,7 @@ namespace N2.Collections
 		public ContentItem NextSibling(ContentItem item = null)
 		{
 			if (item == null) item = CurrentItem;
-			UseMasterVersion(ref item);
+			TryMasterVersion(ref item);
 
 			bool next = false;
 			foreach (var sibling in Siblings(item))
@@ -296,7 +289,7 @@ namespace N2.Collections
 		{
 			if (item == null) item = CurrentItem;
 			if (item == StartPage) return null;
-			UseMasterVersion(ref item);
+			TryMasterVersion(ref item);
 
 			return item.Parent;
 		}
@@ -308,15 +301,64 @@ namespace N2.Collections
 			return Parent(CurrentPage);
 		}
 
-		public ContentItem Path(string path, ContentItem startItem = null)
+		public PathData Path(string path, ContentItem startItem = null)
 		{
-			return (startItem ?? StartPage).FindPath(path).CurrentItem;
+			return (startItem ?? engine.UrlParser.StartPage).FindPath(path);
 		}
 
-		private void UseMasterVersion(ref ContentItem item)
+		/// <summary>Gets the item at of the specified type.</summary>
+		/// <returns>An ancestor at the specified level.</returns>
+		public static ContentItem ClosestOf<T>(ContentItem item) where T : class
+		{
+			return Closest<T>(item) as ContentItem;
+		}
+
+		/// <summary>Gets the item at of the specified type.</summary>
+		/// <returns>An ancestor at the specified level.</returns>
+		public static T Closest<T>(ContentItem item) where T : class
+		{
+			if (item == null)
+				return null;
+
+			var typed = item as T;
+			if (typed != null)
+				return typed;
+
+			if (item.VersionOf != null)
+				return Closest<T>(item.VersionOf);
+
+			return Closest<T>(item.Parent);
+		}
+
+		/// <summary>Gets the closest start page ancestor of the given item.</summary>
+		/// <param name="item">The item whose start page to get.</param>
+		/// <returns>The closest start page node.</returns>
+		public ContentItem ClosestStartPage(ContentItem item = null)
+		{
+			var startPage = ClosestOf<IStartPage>(item ?? CurrentItem) ?? engine.UrlParser.StartPage;
+			TryRedirect(ref startPage);
+			return startPage;
+		}
+
+		private bool TryRedirect(ref ContentItem page)
+		{
+			var redirect = page as IRedirect;
+			if (redirect != null && redirect.RedirectTo != null)
+			{
+				page = redirect.RedirectTo;
+				return true;
+			}
+			return false;
+		}
+
+		private bool TryMasterVersion(ref ContentItem item)
 		{
 			if (item != null && item.VersionOf != null)
+			{
 				item = item.VersionOf;
+				return true;
+			}
+			return false;
 		}
 	}
 }

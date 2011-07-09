@@ -31,7 +31,7 @@ namespace N2.Details
 		{
 			var httpContext = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
-			routeData.ApplyCurrentItem("webforms", "index", item.ClosestPage(), item);
+			RouteExtensions.ApplyCurrentItem(routeData, "webforms", "index", item.ClosestPage(), item);
 			return new HtmlHelper(
 				new ViewContext(
 					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },

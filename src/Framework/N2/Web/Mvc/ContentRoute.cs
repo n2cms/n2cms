@@ -169,7 +169,7 @@ namespace N2.Web.Mvc
 			foreach (var tokenPair in innerRoute.DataTokens)
 				data.DataTokens[tokenPair.Key] = tokenPair.Value;
 
-			data.ApplyCurrentItem(controllerName, actionName, page, part);
+			RouteExtensions.ApplyCurrentItem(data, controllerName, actionName, page, part);
 			data.DataTokens[ContentEngineKey] = engine;
 
 			return data;

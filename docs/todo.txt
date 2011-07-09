@@ -1,3 +1,4 @@
+- upgrade with custom login (discussions/264178)
 - displayablemedia (discussions/263535)
 - allowed zones in dinamico view templates (discussions/263700)
 - folder picker (ThreadId=240497)

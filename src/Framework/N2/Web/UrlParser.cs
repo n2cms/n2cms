@@ -53,6 +53,8 @@ namespace N2.Web
 
 		public PathData ResolvePath(Url url)
 		{
+			if (url == null) return PathData.Empty;
+
 			Url requestedUrl = url;
 			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.ItemQueryKey);
 			ContentItem page = TryLoadingFromQueryString(requestedUrl, PathData.PageQueryKey);

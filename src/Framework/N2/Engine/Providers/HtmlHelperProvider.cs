@@ -43,7 +43,7 @@ namespace N2.Engine.Providers
 		private RouteData GetRouteData()
 		{
 			var routeData = new RouteData();
-			routeData.ApplyCurrentItem("webforms", "index", webContext.CurrentPath.CurrentPage, webContext.CurrentPath.CurrentItem);
+			RouteExtensions.ApplyCurrentItem(routeData, "webforms", "index", webContext.CurrentPath.CurrentPage, webContext.CurrentPath.CurrentItem);
 			return routeData;
 		}
 

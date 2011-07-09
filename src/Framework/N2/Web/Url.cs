@@ -312,6 +312,8 @@ namespace N2.Web
 		/// <returns>An url without the hash part.</returns>
 		public static string RemoveHash(string url)
 		{
+			if (url == null) return null;
+
 			int hashIndex = url.IndexOf('#');
 			if (hashIndex >= 0)
 				url = url.Substring(0, hashIndex);
@@ -323,8 +325,8 @@ namespace N2.Web
 		/// <returns>An Url object or null if the input was null.</returns>
 		public static Url Parse(string url)
 		{
-			if (url == null)
-				return null;
+			if (url == null) return null;
+
 			if (url.StartsWith("~"))
 				url = ToAbsolute(url);
 

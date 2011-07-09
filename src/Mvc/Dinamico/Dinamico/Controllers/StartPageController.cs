@@ -22,14 +22,23 @@ namespace Dinamico.Controllers
     {
 		public ActionResult NotFound()
 		{
+			var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
+			
+			var startPage = Content.Traverse.ClosestStartPage(closestMatch);
+			var urlText = Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Replace('/', ' ');
+			var similarPages = GetSearchResults(startPage, urlText, 10).ToList();
+
+			ControllerContext.RouteData.ApplyCurrentItem(new ContentPage { Parent = startPage }, null);
+			Response.TrySkipIisCustomErrors = true;
 			Response.Status = "404 Not Found";
-			return View(GetSearchResults(string.Join(" ", Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Split('/')), 10).ToList());
+
+			return View(similarPages);
 		}
 
 		[ContentOutputCache]
 		public ActionResult SiteMap()
 		{
-			var start = N2.Find.ClosestOf<IStartPage>(CurrentPage);
+			var start = this.Content.Traverse.StartPage;
 			string content = Tree.From(start)
 				.Filters(N2.Content.Is.Accessible())
 				.ExcludeRoot(true).ToString();
@@ -43,7 +52,7 @@ namespace Dinamico.Controllers
 			if (string.IsNullOrWhiteSpace(q))
 				return Content("<ul><li>A search term is required</li></ul>");
 
-			var hits = GetSearchResults(q, 50);
+			var hits = GetSearchResults(CurrentPage ?? this.Content.Traverse.StartPage, q, 50);
 
 			StringBuilder results = new StringBuilder();
 			foreach (var hit in hits)
@@ -57,9 +66,9 @@ namespace Dinamico.Controllers
 			return Content("<ul>" + results + "</ul>");
 		}
 
-		private IEnumerable<ContentItem> GetSearchResults(string text, int take)
+		private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
 		{
-			var query = Query.For(text).Below(CurrentPage).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
+			var query = Query.For(text).Below(root).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
 			var hits = Engine.Resolve<ITextSearcher>().Search(query).Hits.Select(h => h.Content);
 			return hits;
 		}

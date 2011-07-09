@@ -137,7 +137,7 @@ namespace N2.Templates.Mvc.Services
 					page = ic.CurrentItem;
 
 				var rd = new RouteData();
-				rd.ApplyCurrentItem("webform", "Index", page, item);
+				RouteExtensions.ApplyCurrentItem(rd, "webform", "Index", page, item);
 				return rd;
 			}
 

@@ -38,14 +38,19 @@ namespace N2.Web.Mvc
 			return item;
 		}
 
+		/// <summary>Applies the current content item to the route data.</summary>
+		public static RouteData ApplyCurrentItem(this RouteData data, ContentItem page, ContentItem part)
+		{
+			return data.ApplyContentItem(ContentRoute.ContentPageKey, page)
+				.ApplyContentItem(ContentRoute.ContentPartKey, part);
+		}
+
 		/// <summary>Applies the current content item and controller to the route data.</summary>
-		public static RouteData ApplyCurrentItem(this RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
+		public static RouteData ApplyCurrentItem(RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;
 			data.Values[ContentRoute.ActionKey] = actionName;
-
-			return data.ApplyContentItem(ContentRoute.ContentPageKey, page)
-				.ApplyContentItem(ContentRoute.ContentPartKey, part);
+			return data.ApplyCurrentItem(page, part);
 		}
 
 		internal static RouteData ApplyContentItem(this RouteData data, string key, ContentItem item)
