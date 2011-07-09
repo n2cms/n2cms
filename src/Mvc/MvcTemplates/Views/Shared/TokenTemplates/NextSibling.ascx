@@ -1,5 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<string>" %>
-<% using (Html.Content().BeginScope(Model)) { %>
-	var next = Html.Content().Traverse.Children(Content.Traverse.Parent(), Content.Is.AccessiblePage()).SkipWhile(i => i != content.Current.Item).Skip(1).FirstOrDefault();
-	<%= Html.Content().LinkTo(next) %>
-<% } %>	
+<% var content = Html.Content(); %>
+<% using (content.BeginScope(Model)) {
+	N2.ContentItem next = content.Traverse.Children(content.Traverse.Parent(), content.Is.AccessiblePage())
+		.SkipWhile(i => i != content.Current.Item)
+		.Skip(1)
+		.FirstOrDefault(); %>
+	<%= content.LinkTo(next) %>
+<% } %>
