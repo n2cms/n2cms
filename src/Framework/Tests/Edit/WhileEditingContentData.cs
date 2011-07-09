@@ -175,6 +175,7 @@ namespace N2.Tests.Edit
         }
 
         [Test]
+		[Obsolete]
         public void SavingWithLimitedPrincipal_DoesntChange_SecuredProperties()
         {
             ComplexContainersItem item = new ComplexContainersItem();

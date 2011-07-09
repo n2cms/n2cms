@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Security;
+using System.Security.Principal;
 
 namespace N2.Definitions
 {
 	public static class DefinitionExtensions
 	{
+		public static IEnumerable<T> WhereAuthorized<T>(this IEnumerable<T> allSecurable, ISecurityManager security, IPrincipal user, ContentItem parentItem)
+			where T : ISecurableBase
+		{
+			return allSecurable.Where(s => security.IsAuthorized(s, user, parentItem));
+		}
+
 		public static IEnumerable<ItemDefinition> AllowedBelow(this IEnumerable<ItemDefinition> allDefinitions, ItemDefinition parentDefinition, ContentItem parentItem, IDefinitionManager definitions)
 		{
 			foreach (var definition in allDefinitions)

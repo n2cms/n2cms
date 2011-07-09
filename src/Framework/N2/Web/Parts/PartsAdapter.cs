@@ -6,6 +6,7 @@ using N2.Definitions;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
+using N2.Security;
 
 namespace N2.Web.Parts
 {
@@ -20,6 +21,7 @@ namespace N2.Web.Parts
 		IPersister persister;
 		IDefinitionManager definitions;
 		ITemplateProvider[] templates;
+		ISecurityManager security;
 
 		public IPersister Persister
 		{
@@ -51,6 +53,12 @@ namespace N2.Web.Parts
 			set { templates = value; }
 		}
 
+		public ISecurityManager Security
+		{
+			get { return security ?? engine.Container.Resolve<ISecurityManager>(); }
+			set { security = value; }
+		}
+
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
@@ -70,13 +78,7 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
-			foreach (var childDefinition in GetAllowedDefinitions(parentItem, user))
-			{
-				if (childDefinition.IsAllowedInZone(zoneName))
-				{
-					yield return childDefinition;
-				}
-			}
+			return Definitions.GetAllowedChildren(parentItem, zoneName).WhereAuthorized(Security, user, parentItem);
 		}
 
 		/// <summary>Retrieves allowed item definitions.</summary>
@@ -85,15 +87,7 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Definitions.GetDefinition(parentItem);
-
-			foreach (ItemDefinition childDefinition in containerDefinition.GetAllowedChildren(Definitions, parentItem))
-			{
-				if (childDefinition.Enabled && childDefinition.IsAuthorized(user) && childDefinition.AllowedIn != N2.Integrity.AllowedZones.None)
-				{
-					yield return childDefinition;
-				}
-			}
+			return Definitions.GetAllowedChildren(parentItem, null).WhereAuthorized(Security, user, parentItem);
 		}
 
 		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control). Override this method to adapt how a parent gets it's children added.</summary>

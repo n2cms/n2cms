@@ -5,6 +5,7 @@ using N2.Web.Parts;
 
 namespace N2.Tests.Web.Items
 {
+	[PartDefinition]
 	public class DataItem : N2.ContentItem, IAddablePart
 	{
 		public override ItemList GetChildren(string childZoneName)

@@ -29,6 +29,7 @@ using N2.Installation;
 using N2.Integrity;
 using N2.Web;
 using N2.Web.UI;
+using N2.Security;
 
 namespace N2.Definitions
 {
@@ -36,7 +37,7 @@ namespace N2.Definitions
 	/// Represents the definition of a content item. Expose reflected 
 	/// information a types attributes.
 	/// </summary>
-	public class ItemDefinition : IComparable<ItemDefinition>, ICloneable
+	public class ItemDefinition : IComparable<ItemDefinition>, ICloneable, IPermittable, ISecurable
 	{
 		private AttributeExplorer explorer = new AttributeExplorer();
 		private string iconUrl;
@@ -97,8 +98,11 @@ namespace N2.Definitions
 		/// <summary>Whether the defined type is a page or a part.</summary>
 		public bool IsPage { get; set; }
 
-		/// <summary>Gets roles or users allowed to edit items defined by this definition.</summary>
-		public IList<string> AuthorizedRoles { get; set; }
+		/// <summary>Gets roles or users allowed to create/edit/delete items defined by this definition.</summary>
+		public string[] AuthorizedRoles { get; set; }
+
+		/// <summary>Permission required to create/edit/delete items defined by this definition.</summary>
+		public Security.Permission RequiredPermission { get; set; }
 
 		/// <summary>Gets the name used when presenting this item class to editors.</summary>
 		public string Title { get; set; }
@@ -193,6 +197,9 @@ namespace N2.Definitions
 		/// <returns>True if the item is allowed in the zone.</returns>
 		public bool IsAllowedInZone(string zoneName)
 		{
+			if(!IsDefined || !Enabled)
+				return false;
+
 			if (AllowedIn == AllowedZones.All)
 				return true;
 			if (AllowedIn == AllowedZones.AllNamed && !string.IsNullOrEmpty(zoneName))
@@ -245,6 +252,7 @@ namespace N2.Definitions
 			return false;
 		}
 
+		[Obsolete]
 		public bool IsAuthorized(IPrincipal user)
 		{
 			if (user == null || AuthorizedRoles == null)
@@ -391,7 +399,7 @@ namespace N2.Definitions
 			id.AllowedIn = AllowedIn;
 			id.AllowedParentFilters = AllowedParentFilters.ToList();
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
-			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToList() : AuthorizedRoles;
+			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
 			id.Containers = Containers.ToList();
 			id.Description = Description;
@@ -420,6 +428,7 @@ namespace N2.Definitions
 
 		#endregion
 
+		[Obsolete]
 		public bool IsAllowed(string zoneName, IPrincipal user)
 		{
 			return IsDefined

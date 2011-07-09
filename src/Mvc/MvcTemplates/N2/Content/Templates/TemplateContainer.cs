@@ -6,8 +6,8 @@ namespace N2.Management.Content.Templates
 {
 	[PartDefinition("Template Container",
 		TemplateUrl = "{ManagementUrl}/Empty.aspx",
-		IconUrl = "{ManagementUrl}/Resources/icons/page_white_swoosh.png")]
-	[ItemAuthorizedRoles(Roles = new string[0])]
+		IconUrl = "{ManagementUrl}/Resources/icons/page_white_swoosh.png",
+		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
 	[Throwable(AllowInTrash.No)]
 	public class TemplateContainer : ContentItem, ISystemNode

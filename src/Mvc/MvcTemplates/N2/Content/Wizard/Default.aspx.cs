@@ -40,7 +40,8 @@ namespace N2.Edit.Wizard
 		{
 			lblLocationTitle.DataBind();
 			txtTitle.Text = Selection.SelectedItem.Title;
-			ddlTypes.DataSource = Definitions.GetAllowedChildren(Selection.SelectedItem, "", User)
+			ddlTypes.DataSource = Definitions.GetAllowedChildren(Selection.SelectedItem, null)
+				.WhereAuthorized(Engine.SecurityManager, User, Selection.SelectedItem)
 				.SelectMany(d =>
 					{
 						return new [] { new 

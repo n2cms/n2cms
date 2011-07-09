@@ -9,9 +9,9 @@ namespace N2.Edit.Trash
 		Name = "TrashContainerItem", 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         IconUrl = "{ManagementUrl}/Resources/icons/bin.png", 
-		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx")]
+		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx",
+		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
-	[ItemAuthorizedRoles(Roles = new string[0])]
 	[Throwable(AllowInTrash.No)]
 	public class TrashContainerItem : N2.ContentItem, ITrashCan, ISystemNode
 	{

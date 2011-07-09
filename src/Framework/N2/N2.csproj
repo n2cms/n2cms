@@ -255,6 +255,7 @@
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
+    <Compile Include="Security\ISecurableBase.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
     <Compile Include="Resources\ResourceInitializer.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />

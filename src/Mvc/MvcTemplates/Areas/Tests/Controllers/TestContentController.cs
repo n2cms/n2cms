@@ -34,7 +34,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if (CurrentItem.IsPage)
 				return View();
 			else
-				return PartialView("Partial", definitions.GetAllowedChildren(CurrentPage, null, User));
+				return PartialView("Partial", definitions.GetAllowedChildren(CurrentPage, null).WhereAuthorized(Engine.SecurityManager, User, CurrentPage));
 		}
 
 		public ActionResult Test()

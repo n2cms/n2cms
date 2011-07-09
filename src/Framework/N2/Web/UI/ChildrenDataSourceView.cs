@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Persistence;
+using N2.Security;
 
 namespace N2.Web.UI
 {
@@ -81,6 +83,7 @@ namespace N2.Web.UI
 			if (e.AffectedItem != null)
 			{
 				IDefinitionManager definitions = Engine.Definitions;
+				ISecurityManager security = Engine.SecurityManager;
 				ContentActivator activator = Engine.Resolve<ContentActivator>();
 				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem);
 
@@ -89,7 +92,7 @@ namespace N2.Web.UI
 					e.AffectedItem = Engine.Resolve<ContentActivator>().CreateInstance(parentItem.GetContentType(), parentItem);
 					return;
 				}
-				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentItem, null, HttpContext.Current.User))
+				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentItem, null).WhereAuthorized(security, HttpContext.Current.User, parentItem))
 				{
 					e.AffectedItem = activator.CreateInstance(definition.ItemType, parentItem);
 					return;

@@ -30,6 +30,7 @@ namespace N2.Definitions
 	/// allowed roles can create new items decorated with this attribute.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
+	[Obsolete("Use AuthorizedRoles/RequiredPermission property on [(Page/Part)Definition]")]
 	public class ItemAuthorizedRolesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
 		public string[] Roles { get; set; }

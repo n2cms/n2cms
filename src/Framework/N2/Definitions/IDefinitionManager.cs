@@ -56,11 +56,18 @@ namespace N2.Definitions
 		[Obsolete("Use ContentActivator", false)]
 		ContentItem CreateInstance(Type itemType, ContentItem parent);
 
+		/// <summary>Gets child types allowed below a certain item and zone.</summary>
+		/// <param name="parentItem">The parent item whose allowed children to get.</param>
+		/// <param name="zoneName">The zone name.</param>
+		/// <returns>A list of definitions allowed by the given criterias.</returns>
+		IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName);
+
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
 		/// <param name="parentItem">The parent item whose allowed children to get.</param>
 		/// <param name="zoneName">The zone name.</param>
 		/// <param name="user">The user to use for filtering by access rights.</param>
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
+		[Obsolete("Use GetAllowedChildren(parentItem, zoneName).Where(d => Security.IsAuthorized(d, ...))")]
 		IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user);
 
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
@@ -89,6 +96,6 @@ namespace N2.Definitions
 		/// <summary>Gets the template of a content item.</summary>
 		/// <param name="item">The item whose template to get.</param>
 		/// <returns>The item's template.</returns>
-		TemplateDefinition GetTemplate(ContentItem item);		
+		TemplateDefinition GetTemplate(ContentItem item);
 	}
 }

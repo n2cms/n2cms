@@ -1,5 +1,6 @@
 using System;
 using N2.Web;
+using N2.Security;
 
 namespace N2.Definitions
 {
@@ -32,6 +33,12 @@ namespace N2.Definitions
 		/// <summary>Whether the defined item is a page or not. This affects whether the item is displayed in the edit tree and how it's url is calculated.</summary>
 		public bool IsPage { get; protected set; }
 
+		/// <summary>Roles allowed to create/edit/delete items of this type.</summary>
+		public string[] AuthorizedRoles { get; set; }
+
+		/// <summary>Permission required to create/edit/delete items of this type.</summary>
+		public Permission RequiredPermission { get; set; }
+
 		protected AbstractDefinition()
 		{
 		}
@@ -62,6 +69,11 @@ namespace N2.Definitions
 			currentDefinition.IsPage = IsPage;
 
 			currentDefinition.IsDefined = true;
+
+			if (AuthorizedRoles != null)
+				currentDefinition.AuthorizedRoles = AuthorizedRoles;
+			if (RequiredPermission != Permission.None)
+				currentDefinition.RequiredPermission = RequiredPermission;
 		}
 
 		#endregion

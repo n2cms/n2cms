@@ -179,7 +179,9 @@ namespace N2.Edit
 		private void LoadAllowedTypes()
 		{
 			int allowedChildrenCount = ParentItemDefinition.GetAllowedChildren(Definitions, Selection.SelectedItem).Count();
-			IList<ItemDefinition> allowedChildren = Definitions.GetAllowedChildren(Selection.SelectedItem, ZoneName, this.User);
+			IList<ItemDefinition> allowedChildren = Definitions.GetAllowedChildren(Selection.SelectedItem, ZoneName)
+				.WhereAuthorized(Engine.SecurityManager, User, Selection.SelectedItem)
+				.ToList();
 
 			if(!IsAuthorized(Permission.Write))
 			{
@@ -210,7 +212,8 @@ namespace N2.Edit
 		{
 			return Definitions.GetTemplates(definition.ItemType)
 				.AllowedBelow(Definitions.GetDefinition(Selection.SelectedItem), Selection.SelectedItem, Engine.Definitions)
-				.Where(t => t.Definition.IsAllowed(ZoneName, User))
+				.Where(t => t.Definition.IsAllowedInZone(ZoneName))
+				.Where(t => Engine.SecurityManager.IsAuthorized(t.Definition, User, Selection.SelectedItem))
 				.OrderBy(t => (t.Definition.TemplateKey ?? "Index") == "Index" ? 0 : 1)
 				.ThenBy(t => t.Definition.SortOrder);
 		}

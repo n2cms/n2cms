@@ -3,6 +3,7 @@ using N2.Collections;
 
 namespace N2.Tests.Web.Items
 {
+	[PageDefinition]
 	public class PageItem : ContentItem
 	{
 		public override string Url

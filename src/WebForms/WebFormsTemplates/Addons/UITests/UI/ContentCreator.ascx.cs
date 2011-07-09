@@ -14,7 +14,8 @@ namespace N2.Addons.UITests.UI
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			ddlType.DataSource = Engine.Definitions.GetAllowedChildren(CurrentPage, null, Page.User);
+			ddlType.DataSource = Engine.Definitions.GetAllowedChildren(CurrentPage, null)
+				.WhereAuthorized(Engine.SecurityManager, Page.User, CurrentPage);
 			ddlType.DataBind();
 		}
 

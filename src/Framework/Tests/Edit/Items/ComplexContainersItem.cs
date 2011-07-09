@@ -1,3 +1,4 @@
+using System;
 namespace N2.Tests.Edit.Items
 {
 	[N2.Web.UI.FieldSetContainer("first", "Fieldset with two fieldsets", 10)]
@@ -47,6 +48,7 @@ namespace N2.Tests.Edit.Items
             set { SetDetail<bool>("MyProperty4", value); }
 		}
 
+		[Obsolete]
 		[N2.Details.EditableCheckBox("My Property 5", 2001)]
 		[N2.Details.DetailAuthorizedRoles("ÜberEditor")]
 		public virtual bool MyProperty5
@@ -55,6 +57,7 @@ namespace N2.Tests.Edit.Items
 			set { SetDetail<bool>("MyProperty5", value); }
 		}
 
+		[Obsolete]
 		[N2.Details.EditableText("My Property 6", 2010)]
 		[N2.Details.DetailAuthorizedRoles("ÜberEditor")]
 		public virtual string MyProperty6

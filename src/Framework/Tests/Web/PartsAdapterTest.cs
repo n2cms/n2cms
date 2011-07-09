@@ -99,7 +99,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
-			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", null);
+			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", CreatePrincipal("admin"));
 
 			Assert.That(items.Count(), Is.GreaterThan(0));
 		}

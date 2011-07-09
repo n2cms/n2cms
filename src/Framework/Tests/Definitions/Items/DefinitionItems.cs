@@ -7,8 +7,7 @@ using N2.Web.UI;
 
 namespace N2.Tests.Definitions.Items
 {
-	[PageDefinition]
-	[ItemAuthorizedRoles(Roles = new string[0])]
+	[PageDefinition(AuthorizedRoles = new string[0])]
 	public class DefinitionAutoCreatedItem : N2.ContentItem
 	{
 	}

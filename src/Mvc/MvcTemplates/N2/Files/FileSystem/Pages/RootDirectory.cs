@@ -2,6 +2,7 @@
 using N2.Installation;
 using N2.Integrity;
 using N2.Web;
+using N2.Security;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -10,9 +11,9 @@ namespace N2.Edit.FileSystem.Items
 		SortOrder = 600, 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         IconUrl = "{ManagementUrl}/Resources/icons/folder.png",
-		TemplateUrl = "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
+		TemplateUrl = "{ManagementUrl}/Files/FileSystem/Directory.aspx",
+		RequiredPermission = Permission.Administer)]
     [RestrictParents(typeof(IFileSystemContainer))]
-    [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
 	[Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
 	[Disable]

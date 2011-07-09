@@ -6,19 +6,26 @@ using System.Web.UI.WebControls;
 using N2.Collections;
 using N2.Definitions;
 using N2.Details;
+using N2.Engine;
 
 namespace N2.Security.Items
 {
     [PartDefinition("User List", 
-		SortOrder = 2000, 
-		IconUrl= "{ManagementUrl}/Resources/icons/group.png")]
+		SortOrder = 2000,
+		IconUrl = "{ManagementUrl}/Resources/icons/group.png",
+		AuthorizedRoles = new string[0])]
 	[WithEditableTitle("Title", 10)]
-	[ItemAuthorizedRoles(Roles = new string[0])]
 	[Throwable(AllowInTrash.No)]
-	public class UserList : ContentItem, ISystemNode
+	public class UserList : ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
-		[EditableText("Roles", 100, TextMode=TextBoxMode.MultiLine)]
-		[DetailAuthorizedRoles("admin", "Administrators")]
+		ISecurityManager securityManager;
+
+		protected ISecurityManager SecurityManager
+		{
+			get { return securityManager ?? Context.Current.SecurityManager; }
+		}
+
+		[EditableText("Roles", 100, TextMode = TextBoxMode.MultiLine, Rows = 10, RequiredPermission = Permission.Administer)]
 		public virtual string Roles
 		{
 			get { return (string) (GetDetail("Roles") ?? "Everyone"); }
@@ -80,7 +87,16 @@ namespace N2.Security.Items
 
 		public override bool IsAuthorized(IPrincipal user)
 		{
-			return base.IsAuthorized(user) && Context.SecurityManager.IsAdmin(user);
+			return base.IsAuthorized(user) && SecurityManager.IsAdmin(user);
 		}
+
+		#region IInjectable<ISecurityManager> Members
+
+		void IInjectable<ISecurityManager>.Set(ISecurityManager securityManager)
+		{
+			this.securityManager = securityManager;
+		}
+
+		#endregion
 	}
 }
