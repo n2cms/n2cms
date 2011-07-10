@@ -121,29 +121,9 @@
 		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
 		
 		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
-		<PropertyGroup>
-			<Code>
-				<![CDATA[
-public static string ScriptMain()
-{
-	AddDirectoryToZipFile(@"$(Framework-NugetFolder)\content\N2\N2.zip", @"$(Framework-DeployFolder)\N2\", "N2");
-	return "";
-}
-private static void AddDirectoryToZipFile(string zipFileName, string directoryToAdd, string pathInArchive)
-{
-	Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(zipFileName);
-	zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
-	zf.AddDirectory(directoryToAdd, pathInArchive);
-	zf.Save();
-}
-			]]>
-			</Code>
-		</PropertyGroup>
 		<Delete Files="$(Framework-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Framework-NugetFolder)\content\N2\N2.zip')" />
 		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Framework-NugetFolder)\content\N2\" />
-		<!-- temporary hack -->
-		<Exec Command="gacutil -i $(LibFolder)\Ionic.Zip.Reduced.dll" ContinueOnError="true" />
-		<Script Code="$(Code)" Language="C#" Imports="System.Reflection" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
+		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Framework-NugetFolder)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 
 		<ItemGroup>
 			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />

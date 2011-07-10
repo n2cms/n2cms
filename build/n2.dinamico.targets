@@ -60,22 +60,8 @@
 		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Dinamico-DeployFolder-Path)\N2\" />
 		<FileUpdate Files="$(Dinamico-DeployFolder-Path)\web.config" Regex="&lt;vpp /&gt;" ReplacementText="$(VppZipConfig)" />
 		<!-- Using DotNetZip since MSBuild Community Tasks Zip doesn't include directory entries -->
-		<PropertyGroup>
-			<Code>
-				<![CDATA[
-public static string ScriptMain()
-{
-			Ionic.Zip.ZipFile zf = new Ionic.Zip.ZipFile(@"$(Dinamico-DeployFolder-Path)\N2\N2.zip");
-			zf.CompressionLevel = Ionic.Zlib.CompressionLevel.None;
-			zf.AddDirectory(@"$(Framework-DeployFolder)\N2\", "N2");
-			zf.Save();
-			return "";
-}
-			]]>
-			</Code>
-		</PropertyGroup>
 		<Delete Files="$(Dinamico-DeployFolder-Path)\N2\N2.zip" Condition="Exists('$(Dinamico-DeployFolder-Path)\N2\N2.zip')" />
-		<Script Code="$(Code)" Language="C#" References="$(LibFolder)\Ionic.Zip.Reduced.dll"/>
+		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Dinamico-DeployFolder-Path)\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
 		
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Dinamico-DeployFolder)\" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Dinamico-DeployFolder)\Snippets" />
