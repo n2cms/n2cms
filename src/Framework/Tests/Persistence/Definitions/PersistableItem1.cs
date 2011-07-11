@@ -93,4 +93,11 @@ namespace N2.Tests.Persistence.Definitions
 		[Indexable]
 		public virtual string NonDetailOnlyGetterProperty { get { return "Lorem ipsum"; } }
 	}
+
+
+	[PageDefinition("NonIndexable persistable Item")]
+	[Indexable(IsIndexable = false)]
+	public class PersistableItem1b : PersistableItem1
+	{
+	}
 }

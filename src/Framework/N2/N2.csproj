@@ -231,6 +231,7 @@
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
+    <Compile Include="Persistence\Search\IIndexableType.cs" />
     <Compile Include="Persistence\Search\IIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
     <Compile Include="Persistence\Search\IndexableContent.cs" />

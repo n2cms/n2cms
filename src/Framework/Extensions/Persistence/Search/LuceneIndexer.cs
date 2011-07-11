@@ -99,7 +99,7 @@ namespace N2.Persistence.Search
 		/// <param name="item">The item containing content to be indexed.</param>
 		public virtual void Update(ContentItem item)
 		{
-			if(item == null)
+			if(item == null || item.ID == 0)
 				return;
 
 			Trace.WriteLine("Updating item #" + item.ID);
@@ -108,17 +108,14 @@ namespace N2.Persistence.Search
 			    Update(Find.ClosestPage(item));
 
 			var iw = accessor.GetWriter();
-			try
-			{
-				var doc = CreateDocument(item);
-				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
-				iw.Commit();
-				accessor.RecreateSearcher();
-			}
-			finally
-			{
-				//iw.Close(waitForMerges:true);
-			}
+
+			if (!extractor.IsIndexable(item))
+				return;
+
+			var doc = CreateDocument(item);
+			iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
+			iw.Commit();
+			accessor.RecreateSearcher();
 		}
 
 		/// <summary>Delets an item from the index and any descendants.</summary>

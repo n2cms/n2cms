@@ -3,6 +3,7 @@ using N2.Details;
 using N2.Edit.Trash;
 //using N2.Edit.Wizard.Details;
 using N2.Integrity;
+using N2.Persistence.Search;
 
 namespace N2.Edit.Wizard.Items
 {
@@ -11,6 +12,7 @@ namespace N2.Edit.Wizard.Items
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
 	[Throwable(AllowInTrash.No)]
+	[Indexable(IsIndexable = false)]
 	public class MagicLocation : ContentItem, ISystemNode
 	{
 		public bool HasLocation

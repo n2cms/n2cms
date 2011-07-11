@@ -663,5 +663,17 @@ namespace N2.Tests.Persistence.NH
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
 		}
+
+		[Test]
+		public void NonIndexableClass_IsNotIndexed()
+		{
+			var child = CreateOneItem<PersistableItem1b>(2, "child", root);
+			indexer.Update(child);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("child"));
+
+			Assert.That(result.Hits.Any(), Is.False);
+		}
 	}
 }

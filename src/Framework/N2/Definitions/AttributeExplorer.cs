@@ -91,7 +91,7 @@ namespace N2.Definitions
 				foreach (T editableOnClass in t.GetCustomAttributes(typeof (T), true))
 				{
 					if (editableOnClass.Name == null)
-						throw new N2Exception("The attribute {0} does not have a Name defined. Since it's defined on the class instead of a property it must have a name.", editableOnClass);
+						continue;
 
 					if (attributes.Contains(editableOnClass))
 						continue;

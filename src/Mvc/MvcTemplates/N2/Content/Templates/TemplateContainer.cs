@@ -1,6 +1,7 @@
 ﻿using N2.Definitions;
 using N2.Edit.Trash;
 using N2.Integrity;
+using N2.Persistence.Search;
 
 namespace N2.Management.Content.Templates
 {
@@ -10,6 +11,7 @@ namespace N2.Management.Content.Templates
 		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
 	[Throwable(AllowInTrash.No)]
+	[Indexable(IsIndexable = false)]
 	public class TemplateContainer : ContentItem, ISystemNode
 	{
 	}

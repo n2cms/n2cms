@@ -7,6 +7,7 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
+using N2.Persistence.Search;
 
 namespace N2.Security.Items
 {
@@ -16,6 +17,7 @@ namespace N2.Security.Items
 		AuthorizedRoles = new string[0])]
 	[WithEditableTitle("Title", 10)]
 	[Throwable(AllowInTrash.No)]
+	[Indexable(IsIndexable = false)]
 	public class UserList : ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
 		ISecurityManager securityManager;

@@ -47,7 +47,7 @@ namespace N2.Details
 		public EditableTextAttribute()
 			: base(null, 50)
 		{
-			Index = true;
+			IsIndexable = true;
 		}
 
 		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
@@ -56,7 +56,7 @@ namespace N2.Details
 		public EditableTextAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
-			Index = true;
+			IsIndexable = true;
 		}
 
 		#region Properties
@@ -173,7 +173,7 @@ namespace N2.Details
 
 		#region IIndexableProperty Members
 
-		public bool Index { get; set; }
+		public bool IsIndexable { get; set; }
 
 		public virtual string GetIndexableText(ContentItem item)
 		{

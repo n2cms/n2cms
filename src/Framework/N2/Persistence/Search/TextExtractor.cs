@@ -19,6 +19,14 @@ namespace N2.Persistence.Search
 			this.extractors = extractors;
 		}
 
+		public virtual bool IsIndexable(ContentItem item)
+		{
+			if (item.GetContentType().GetCustomAttributes(false).OfType<IIndexableType>().Any(it => !it.IsIndexable))
+				return false;
+
+			return true;
+		}
+
 		public virtual IEnumerable<IndexableContent> Extract(ContentItem item)
 		{
 			return extractors.SelectMany(e => e.Extract(item)).Where(ic => !string.IsNullOrEmpty(ic.TextContent));

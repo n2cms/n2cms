@@ -5,12 +5,8 @@ using System.Text;
 
 namespace N2.Persistence.Search
 {
-	public interface IIndexableProperty
+	public interface IIndexableType
 	{
 		bool IsIndexable { get; }
-
-		string Name { get; }
-
-		string GetIndexableText(ContentItem item);
 	}
 }
