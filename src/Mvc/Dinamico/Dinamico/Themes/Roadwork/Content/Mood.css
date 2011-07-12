@@ -10,10 +10,10 @@ html { background:#666; font-family:Arial, Sans-Serif; }
 		div#nav ul.topmenu { margin-bottom:0; border-radius: 5px; background:#f27d00; box-shadow:#ff8d07 0 25px 25px 0 inset; border:solid 1px #f27d00; border-bottom-style:none; }
 			div#nav ul.topmenu a { height:22px; padding:15px; color:#fff; border-radius: 3px 3px 0 0; border-left:solid 1px #f27d00; height }
 			div#nav ul.topmenu li.logo a { border-left:none; }
-			div#nav ul.topmenu a.current, div#nav ul.topmenu a.trail { background-color:#fff; color:#000; border-left:none; }
+			div#nav ul.topmenu a.expanded { background-color:#fff; color:#000; border-left:none; }
 		div#nav ul.submenu { background-color:#fff; border-top:none; border:solid 1px #ccc; border-top-style:none; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}
 			div#nav ul.menu li a { background-color: transparent; }
-			div#nav ul.menu li a.current { color:#000; }
+			div#nav ul.menu li a.expanded { color:#000; }
 	div#page { background:#fff; margin-top:-1px; }
 		div#main {}
 	div#footer { background:transparent; box-shadow:#444 0 15px 30px -15px inset; padding-bottom:100px; }

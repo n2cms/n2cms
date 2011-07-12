@@ -68,6 +68,29 @@ $.fn.clearonfocus = function () {
 		.blur(function () { if (this.value === "") this.value = this.title; });
 };
 
+$.fn.menudown = function (options) {
+	options = $.extend({ submenuclass: "submenu" }, options);
+	var top = this;
+	var open = function () {
+		$(top).find(".opened").children(".closer").trigger("click");
+		$(this).siblings("a").addClass("expanded");
+		$(this.parentNode).addClass("opened");
+		$(this).siblings("ul").clone().addClass(options.submenuclass).insertAfter(top).each(function () { $(top).data("submenu", this) });
+	};
+	var close = function () {
+		$(top.data("submenu")).remove();
+		$(this.parentNode).removeClass("opened");
+		$(this).siblings("a").removeClass("expanded");
+	};
+	$(this).addClass("menudown");
+	$(this).find("ul").each(function () {
+		$("<a href='#submenu' class='opener toggler'>&nbsp;</a>").prependTo(this.parentNode).click(open);
+		$("<a href='#submenu' class='closer toggler'>&nbsp;</a>").prependTo(this.parentNode).click(close);
+		$(this.parentNode).addClass("openable");
+	});
+	$(this).find(".current,.trail").siblings(".opener").trigger("click");
+}
+
 $(document).ready(function () {
 
 	// Search
