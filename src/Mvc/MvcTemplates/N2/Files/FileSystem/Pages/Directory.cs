@@ -36,7 +36,13 @@ namespace N2.Edit.FileSystem.Items
 
 		public override string Url
 		{
-			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
+			get 
+			{
+				return url 
+					?? (Parent != null
+						? N2.Web.Url.Combine(Parent.Url, Name) 
+						: N2.Web.Url.Combine("~/", Name));
+			}
 		}
 
 		public override string IconUrl
