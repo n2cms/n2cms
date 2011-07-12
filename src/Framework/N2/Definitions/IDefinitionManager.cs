@@ -62,6 +62,11 @@ namespace N2.Definitions
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
 		IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName);
 
+		/// <summary>Gets child types allowed below a certain item and zone.</summary>
+		/// <param name="parentItem">The parent item whose allowed children to get.</param>
+		/// <returns>A list of definitions allowed by the given criterias.</returns>
+		IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem);
+
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
 		/// <param name="parentItem">The parent item whose allowed children to get.</param>
 		/// <param name="zoneName">The zone name.</param>

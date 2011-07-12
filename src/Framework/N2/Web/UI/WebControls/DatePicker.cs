@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -75,20 +76,37 @@ namespace N2.Web.UI.WebControls
 		{
 			Register.JQuery(Page);
 			Register.JQueryPlugins(Page);
-			string script = string.Format(DateScriptFormat, FirstDayOfWeek, DateFormat, FirstDate);
+			string script = string.Format(DateScriptFormat, 
+				/* {0} */ FirstDayOfWeek,
+				/* {1} */ DateFormat,
+				/* {2} */ FirstDate,
+				/* {3} */ ToJsonArray(FormatInfo.ShortestDayNames),
+				/* {4} */ ToJsonArray(FormatInfo.DayNames),
+				/* {5} */ ToJsonArray(FormatInfo.AbbreviatedMonthNames),
+				/* {6} */ ToJsonArray(FormatInfo.MonthNames),
+				/* {7} */ Url.ResolveTokens("{ManagementUrl}/Resources/icons/calendar.png")
+				);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 		}
 
+		private string ToJsonArray(string[] strings)
+		{
+			return "[" + string.Join(",", strings.Select(s => "'" + s + "'").ToArray()) + "]";
+		}
+
 		protected const string DateScriptFormat = @"
-Date.firstDayOfWeek = {0};
-Date.format = '{1}';
-jQuery.dpText.TEXT_CHOOSE_DATE = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-jQuery('.datePicker').datePicker({{ startDate: '{2}' }});";
+jQuery('.datePicker').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMin:{3}, dayNames:{4}, monthNamesShort:{5}, monthNames:{6}, showOn:'button', buttonImage:'{7}' }});";
 
 		protected virtual int FirstDayOfWeek
 		{
-			get { return (int)Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek; }
+			get { return (int)FormatInfo.FirstDayOfWeek; }
 		}
+
+		private static DateTimeFormatInfo FormatInfo
+		{
+			get { return Thread.CurrentThread.CurrentCulture.DateTimeFormat; }
+		}
+
 		protected virtual string DateFormat
 		{
 			get

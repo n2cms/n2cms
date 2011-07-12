@@ -1,24 +1,20 @@
 /* clearfix */
 .cf:after,
 .editDetail:after,
-.tree li:after,
-.ui-helper-clearfix:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
+.tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
 
 .cf,
 .editDetail,
-.tree li,
-.ui-helper-clearfix { *display: inline-block; }
+.tree li { *display: inline-block; }
 
 /* Hides from IE-mac \*/
 body.framed * html .cf,
 body.framed * html .editDetail,
-body.framed * html .tree li,
-.ui-helper-clearfix { height: 1%; }
+body.framed * html .tree li { height: 1%; }
 
 body.framed .cf,
 body.framed .editDetail,
-body.framed .tree li,
-.ui-helper-clearfix { display: block; }
+body.framed .tree li { display: block; }
 /* End hide from IE-mac */
 
 body { padding:0; margin:0; }

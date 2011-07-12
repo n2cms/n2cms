@@ -1,4 +1,6 @@
-﻿.sc, .sc a, .titleBar, .dragShadow {font-family:Arial, Sans-Serif; font-size:12px; color:#333; text-align:left;}
+﻿@import url("smoothness/jquery-ui-1.8.14.custom.css");
+
+.sc, .sc a, .titleBar, .dragShadow {font-family:Arial, Sans-Serif; font-size:12px; color:#333; text-align:left;}
 
 .zoneItem   { position:relative;}
 .titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 1px; 
@@ -77,17 +79,7 @@
 .definitionimg { vertical-align:middle;margin-right:1px;}
 * html .masked select { visibility:hidden;}
 
-.ui-dialog { background-color:#666; position:relative; padding:0 1px 15px 1px; }
-	.ui-dialog .ui-dialog-content { background-color:#fff; }
-		.ui-dialog .ui-dialog-content iframe { width:100%; height:100%; border:0; margin-bottom:10px; }
+.ui-dialog { padding-bottom:15px; }
+	.ui-dialog .ui-dialog-content { background-color:#fff; padding:0; }
+		.ui-dialog .ui-dialog-content iframe { width:100%; height:100%; border:0; margin-bottom:10px; margin-top:3px; }
 		.ui-dialog.ui-resizable-resizing .ui-dialog-content iframe { visibility:hidden; }
-	.ui-dialog-titlebar { cursor:move; }
-	.ui-dialog-titlebar .ui-dialog-titlebar-close {float:right;padding:5px;color:#FFF; text-decoration:none}
-	.ui-widget-overlay { background-color:#666;position:absolute;top:0;left:0;opacity:0.6; }
-	.ui-dialog .ui-icon-closethick { background:transparent url(../icons/cross.png) no-repeat 50% 50%; width:18px; height:18px; text-indent:-9999px; display:inline-block; }
-	.ui-dialog .ui-resizable-se { position:absolute; bottom: 1px; height: 14px; right: 1px; width: 14px; background:transparent url(../img/ui/sprite.png) no-repeat -80px -224px; cursor:se-resize; }
-
-.ui-helper-clearfix:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
-.ui-helper-clearfix { display: inline-block; }
-* html .ui-helper-clearfix { height: 1%; }
-.ui-helper-clearfix { display: block; }

@@ -88,16 +88,24 @@ namespace N2.Definitions
 
 		/// <summary>Gets child types allowed below a certain item and zone.</summary>
 		/// <param name="parentItem">The parent item whose allowed children to get.</param>
+		/// <returns>A list of definitions allowed by the given criterias.</returns>
+		public virtual IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem)
+		{
+			var definition = GetDefinition(parentItem);
+			var allowedChildItems = definition.GetAllowedChildren(this, parentItem)
+				.ToList();
+			allowedChildItems.Sort();
+			return allowedChildItems;
+		}
+
+		/// <summary>Gets child types allowed below a certain item and zone.</summary>
+		/// <param name="parentItem">The parent item whose allowed children to get.</param>
 		/// <param name="zoneName">The zone name.</param>
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName)
 		{
-			var definition = GetDefinition(parentItem);
-			var allowedChildItems = definition.GetAllowedChildren(this, parentItem)
-				.Where(d => d.IsAllowedInZone(zoneName))
-				.ToList();
-			allowedChildItems.Sort();
-			return allowedChildItems;
+			return GetAllowedChildren(parentItem)
+				.Where(d => d.IsAllowedInZone(zoneName));
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>
