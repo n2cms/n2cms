@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI;
 using N2.Collections;
@@ -78,7 +79,8 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
-			return Definitions.GetAllowedChildren(parentItem, zoneName).WhereAuthorized(Security, user, parentItem);
+			return Definitions.GetAllowedChildren(parentItem, zoneName)
+				.WhereAuthorized(Security, user, parentItem);
 		}
 
 		/// <summary>Retrieves allowed item definitions.</summary>
@@ -87,7 +89,9 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
-			return Definitions.GetAllowedChildren(parentItem, null).WhereAuthorized(Security, user, parentItem);
+			return Definitions.GetAllowedChildren(parentItem)
+				.Where(d => d.AllowedIn != Integrity.AllowedZones.None)
+				.WhereAuthorized(Security, user, parentItem);
 		}
 
 		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control). Override this method to adapt how a parent gets it's children added.</summary>
