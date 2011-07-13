@@ -22,7 +22,7 @@ html { background:#666; font-family:Arial, Sans-Serif; }
 /* elements */
 
 .dropmenu {
-	-moz-border-radius-bottomleft: 2px 2px; -moz-border-radius-bottomright: 2px 2px; border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
+	border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
 }
 .slider
 {

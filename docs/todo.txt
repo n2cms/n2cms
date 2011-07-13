@@ -5,7 +5,6 @@
 - fix fist-time installation lucene error leaving lock
 - tree html helper
 - link html helper
-- dinamico drop down example theme
 - master page in themes directory
 - save&preview and editablechildren (workitem/30541)
 - nuget issues http://n2cms.codeplex.com/discussions/260635

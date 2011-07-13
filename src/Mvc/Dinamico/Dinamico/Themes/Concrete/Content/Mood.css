@@ -20,5 +20,5 @@ div#footer { background-color:#403C37; color:#E5D7C4 }
 
 .dropmenu {
 	background-color:#403C37;
-	-moz-border-radius-bottomleft: 5px 5px; -moz-border-radius-bottomright: 5px 5px; border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
+	border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
 }
