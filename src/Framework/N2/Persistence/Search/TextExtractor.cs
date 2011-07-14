@@ -21,7 +21,7 @@ namespace N2.Persistence.Search
 
 		public virtual bool IsIndexable(ContentItem item)
 		{
-			if (item.GetContentType().GetCustomAttributes(false).OfType<IIndexableType>().Any(it => !it.IsIndexable))
+			if (item.GetContentType().GetCustomAttributes(true).OfType<IIndexableType>().Any(it => !it.IsIndexable))
 				return false;
 
 			return true;
