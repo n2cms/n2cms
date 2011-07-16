@@ -590,8 +590,8 @@ namespace N2.Tests.Utility
 		}
 
 		[TestCase(typeof(object), 0)]
-		[TestCase(typeof(ContentItem), 1)]
-		[TestCase(typeof(UtilityItem), 2)]
+		[TestCase(typeof(ContentItem), 2)] // ContentItem(2) : INode(1) : ILink(0)
+		[TestCase(typeof(UtilityItem), 3)] // UtilityItem(3) : ContentItem(2) : INode(1) : ILink(0)
 		public void InheritanceDepth_Classes(Type type, int expectedDepth)
 		{
 			Assert.That(N2.Utility.InheritanceDepth(type), Is.EqualTo(expectedDepth));

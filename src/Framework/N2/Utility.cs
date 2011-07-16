@@ -566,10 +566,14 @@ namespace N2
 
 		public static int InheritanceDepth(Type type)
 		{
-			if (type == null || type == typeof(object))
+			if (type == null)
+				return -1;
+			if (type == typeof(object))
 				return 0;
 
-			return 1 + Math.Max(InheritanceDepth(type.BaseType), type.GetInterfaces().Select(t => 1 + InheritanceDepth(t)).OrderByDescending(d => d).FirstOrDefault());
+			return Math.Max(
+				1 + InheritanceDepth(type.BaseType), 
+				type.GetInterfaces().Select(t => 1 + InheritanceDepth(t)).OrderByDescending(d => d).FirstOrDefault());
 		}
 
 		/// <summary>Shorthand for resolving an adapter.</summary>
