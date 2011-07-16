@@ -568,10 +568,8 @@ namespace N2
 		{
 			if (type == null || type == typeof(object))
 				return 0;
-			if (type.IsInterface)
-				return type.GetInterfaces().Select(t => 1 + InheritanceDepth(t)).OrderByDescending(d => d).FirstOrDefault();
 
-			return 1 + InheritanceDepth(type.BaseType);
+			return 1 + Math.Max(InheritanceDepth(type.BaseType), type.GetInterfaces().Select(t => 1 + InheritanceDepth(t)).OrderByDescending(d => d).FirstOrDefault());
 		}
 
 		/// <summary>Shorthand for resolving an adapter.</summary>
