@@ -5,10 +5,11 @@ using System.IO;
 using System.Web;
 using N2.Collections;
 using N2.Web.Drawing;
+using N2.Definitions;
 
 namespace N2.Edit.FileSystem.Items
 {
-    public abstract class AbstractDirectory : AbstractNode
+    public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory
     {
 		public override ContentItem GetChild(string childName)
 		{

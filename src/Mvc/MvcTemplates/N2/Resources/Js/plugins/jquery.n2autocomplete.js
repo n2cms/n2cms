@@ -20,7 +20,7 @@
 		    if (term in cache) {
 		    	response(filter(term, filterText, cache[term]));
 		    } else {
-				var lastXhr = $.post("children.n2.ashx", { action:"children", path:term, filter:options.filter }, function (data, status, xhr) {
+				var lastXhr = $.post("children.n2.ashx", { action:"children", path:term, filter:options.filter, selectableTypes:options.selectableTypes, selectableExtensions: options.selectableExtensions }, function (data, status, xhr) {
 		    		cache[term] = data.children;
 					if (xhr === lastXhr) {
 		    			response(filter(term, filterText, data.children));

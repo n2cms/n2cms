@@ -77,9 +77,9 @@
 		<% if (isFilesSelection) { %>
         	n2nav.handlers["fallback"] = function(e) {
         		e.preventDefault();
-        		if ($(this).attr("data-type") == "File")
+        		if ($(this).attr("data-selectable") == "true")
         			updateOpenerAndClose.call(this, e);
-        		if ($(this).attr("data-type") == "Directory")
+        		else if ($(this).attr("data-type") == "Directory")
         			$(".uploadDirectoryLocation").attr("value", $(this).attr("data-url"));
         	};
     	<% } %>

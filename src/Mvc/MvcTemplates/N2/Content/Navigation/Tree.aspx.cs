@@ -75,7 +75,9 @@ namespace N2.Edit.Navigation
 				siteTreeView.RootNode = Engine.Resolve<Navigator>().Navigate(Request["root"] ?? "/");
 				siteTreeView.SelectedItem = selected;
 			}
-			
+
+			siteTreeView.SelectableTypes = Request["selectableTypes"];
+			siteTreeView.SelectableExtensions = Request["selectableExtensions"];
 			siteTreeView.DataBind();
 
 			base.OnInit(e);

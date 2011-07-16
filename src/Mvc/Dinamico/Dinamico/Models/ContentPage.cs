@@ -9,7 +9,7 @@ namespace Dinamico.Models
 	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class ContentPage : PageModelBase
 	{
-		[EditableFileUpload]
+		[EditableMediaUpload]
 		[Persistable(Length = 256)] // to minimize select+1
 		public virtual string Image { get; set; }
 

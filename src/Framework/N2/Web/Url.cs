@@ -333,6 +333,14 @@ namespace N2.Web
 			return new Url(url);
 		}
 
+		/// <summary>Converts a string URI to an Url class. The method will make any app-relative managementUrls absolute and resolve tokens within the url string.</summary>
+		/// <param name="url">The URI to parse.</param>
+		/// <returns>An Url object or null if the input was null.</returns>
+		public static Url ParseTokenized(string url)
+		{
+			return Url.Parse(ResolveTokens(url));
+		}
+
 		public string GetQuery(string key)
 		{
 			IDictionary<string, string> queries = GetQueries();

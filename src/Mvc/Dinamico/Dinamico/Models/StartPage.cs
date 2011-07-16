@@ -66,6 +66,9 @@ namespace Dinamico.Models
 
 		[EditableFileUpload(ContainerName = Defaults.Containers.Site)]
 		public virtual string Logotype { get; set; }
+		
+		[EditableFolderSelection]
+		public virtual string Folder { get; set; }
 
 		#region ISitesSource Members
 

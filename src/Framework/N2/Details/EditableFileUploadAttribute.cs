@@ -56,7 +56,7 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			SelectorUploadComposite composite = (SelectorUploadComposite)editor;
+			SelectingUploadCompositeControl composite = (SelectingUploadCompositeControl)editor;
 
 			HttpPostedFile postedFile = composite.UploadControl.PostedFile;
 			if (postedFile != null && !string.IsNullOrEmpty(postedFile.FileName))
@@ -87,13 +87,13 @@ namespace N2.Details
 
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
-			SelectorUploadComposite composite = (SelectorUploadComposite)editor;
+			SelectingUploadCompositeControl composite = (SelectingUploadCompositeControl)editor;
 			composite.Select(item[Name] as string);
 		}
 
 		protected override Control AddEditor(Control container)
 		{
-			SelectorUploadComposite composite = new SelectorUploadComposite();
+			SelectingUploadCompositeControl composite = new SelectingUploadCompositeControl();
 			composite.ID = Name;
 			composite.UploadLabel.Text = UploadText ?? "Upload";
 			container.Controls.Add(composite);
@@ -102,76 +102,19 @@ namespace N2.Details
 
 
 
-		class SelectorUploadComposite : Control, INamingContainer
-		{
-			public HtmlGenericControl SelectorContainer { get; set; }
-			public HtmlGenericControl UploadContainer { get; set; }
-			public FileSelector SelectorControl { get; set; }
-			public Label UploadLabel { get; set; }
-			public FileUpload UploadControl { get; set; }
-
-			public SelectorUploadComposite()
-			{
-				SelectorControl = new FileSelector();
-				SelectorControl.ID = "Selector";
-				UploadControl = new FileUpload();
-				UploadControl.ID = "Uploader";
-				UploadLabel = new Label();
-				UploadLabel.AssociatedControlID = UploadControl.ID;
-			}
-
-			protected override void CreateChildControls()
-			{
-				base.CreateChildControls();
-
-				SelectorContainer = new HtmlGenericControl("span");
-				SelectorContainer.Attributes["class"] = "uploadableContainer selector";
-				Controls.Add(SelectorContainer);
-
-				SelectorContainer.Controls.Add(SelectorControl);
-
-				UploadContainer = new HtmlGenericControl("span");
-				UploadContainer.Attributes["class"] = "uploadableContainer uploader";
-				Controls.Add(UploadContainer);
-
-				UploadContainer.Controls.Add(UploadLabel);
-				UploadContainer.Controls.Add(UploadControl);
-			}
-
-			public void Select(string url)
-			{
-				EnsureChildControls();
-				SelectorControl.Url = url;
-
-				if (string.IsNullOrEmpty(url))
-					SelectorContainer.Attributes["class"] = "uploadableContainer selector";
-				else
-					UploadContainer.Attributes["class"] = "uploadableContainer uploader";
-			}
-		}
 
 		#region IDisplayable Members
 
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			string url = item[detailName] as string;
-			if(!string.IsNullOrEmpty(url))
+			using (var sw = new StringWriter())
 			{
-				string extension = VirtualPathUtility.GetExtension(url);
-				switch (extension.ToLower())
-				{
-					case ".gif":
-					case ".png":
-					case ".jpg":
-					case ".jpeg":
-						break;
-					default:
-						return null;
-				}
+				Write(item, detailName, sw);
 
-				return DisplayableImageAttribute.AddImage(container, item, detailName, PreferredSize, CssClass, Alt);
+				LiteralControl lc = new LiteralControl(sw.ToString());
+				container.Controls.Add(lc);
+				return lc;
 			}
-			return null;
 		}
 
 		#endregion
@@ -189,7 +132,7 @@ namespace N2.Details
 
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string propertyName, TextWriter writer)
+		public virtual void Write(ContentItem item, string propertyName, TextWriter writer)
 		{
 			string url = item[propertyName] as string;
 			if (string.IsNullOrEmpty(url))
@@ -198,6 +141,7 @@ namespace N2.Details
 			string extension = VirtualPathUtility.GetExtension(url);
 			switch (extension.ToLower())
 			{
+				case ".bmp":
 				case ".gif":
 				case ".png":
 				case ".jpg":

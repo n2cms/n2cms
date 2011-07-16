@@ -5,6 +5,7 @@ using N2.Engine;
 using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
+using N2.Definitions;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -15,7 +16,7 @@ namespace N2.Edit.FileSystem.Items
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/File.aspx")]
-    public class File : AbstractNode, IActiveContent, IInjectable<IEditUrlManager>
+    public class File : AbstractNode, IActiveContent, IInjectable<IEditUrlManager>, IFileSystemFile
     {
 		IEditUrlManager managementPaths;
 
@@ -75,13 +76,23 @@ namespace N2.Edit.FileSystem.Items
 					case ".gif":
 					case ".png":
 					case ".jpg":
+					case ".tif":
+					case ".tiff":
 					case ".jpeg":
 						return IconPath("page_white_picture");
 					case ".pdf":
 						return IconPath("page_white_acrobat");
+					case ".c":
+					case ".cpp":
+					case ".class":
+					case ".java":
 					case ".cs":
 					case ".vb":
 					case ".js":
+					case ".dtd":
+					case ".m":
+					case ".pl":
+					case ".py":
 						return IconPath("page_white_csharp");
 					case ".html":
 					case ".htm":
@@ -92,23 +103,36 @@ namespace N2.Edit.FileSystem.Items
 					case ".ascx":
 					case ".ashx":
 					case ".php":
+					case ".css":
+					case ".sql":
+					case ".fla":
 						return IconPath("page_white_code");
 					case ".zip":
 					case ".gz":
 					case ".7z":
 					case ".rar":
+					case ".sit":
+					case ".tar":
+					case ".pkg":
+					case ".msi":
+					case ".cab":
 						return IconPath("page_white_compressed");
 					case ".swf":
 						return IconPath("page_white_flash");
 					case ".txt":
+					case ".log":
 						return IconPath("page_white_text");
+					case ".csv":
 					case ".xls":
 					case ".xlsx":
+					case ".wks":
 						return IconPath("page_white_excel");
 					case ".xps":
 					case ".ppt":
 					case ".pptx":
+					case ".pps":
 						return IconPath("page_white_powerpoint");
+					case ".rtf":
 					case ".doc":
 					case ".docx":
 						return IconPath("page_white_word");
@@ -119,6 +143,24 @@ namespace N2.Edit.FileSystem.Items
 					case ".flv":
 					case ".mp4":
 					case ".mov":
+
+					case ".3g2":
+					case ".3gp":
+					case ".asf":
+					case ".asx":
+					case ".rm":
+					case ".vob":
+
+					case ".aif":
+					case ".iff":
+					case ".m3u":
+					case ".m4a":
+					case ".mid":
+					case ".mp3":
+					case ".mpa":
+					case ".ra":
+					case ".wav":
+					case ".wma":
 						return IconPath("page_white_dvd");
 					default:
 						return IconPath("page_white");

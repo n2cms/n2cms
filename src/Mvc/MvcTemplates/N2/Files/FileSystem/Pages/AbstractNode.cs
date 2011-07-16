@@ -12,7 +12,7 @@ namespace N2.Edit.FileSystem.Items
 	[Versionable(AllowVersions.No)]
 	[PermissionRemap(From = Permission.Publish, To = Permission.Write)]
 	[Indexable(IsIndexable = false)]
-	public abstract class AbstractNode : ContentItem, INode, IInjectable<IFileSystem>, ISystemNode
+	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IInjectable<IFileSystem>
     {
 		IFileSystem fileSystem;
 		protected string iconUrl;

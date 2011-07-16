@@ -138,6 +138,8 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
+    <Compile Include="Definitions\IFileSystemFile.cs" />
+    <Compile Include="Definitions\IFileSystemDirectory.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
@@ -148,8 +150,11 @@
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
+    <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
+    <Compile Include="Details\EditableMediaUploadAttribute.cs" />
     <Compile Include="Details\EditableDefinitionAttribute.cs" />
     <Compile Include="Details\EditableTagsAttribute.cs" />
+    <Compile Include="Definitions\IFileSystemNode.cs" />
     <Compile Include="Details\IMultipleValue.cs" />
     <Compile Include="Definitions\AttributeTransformerAttribute.cs" />
     <Compile Include="Details\WithEditableTemplateSelectionAttribute.cs" />
@@ -305,6 +310,7 @@
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
@@ -984,9 +990,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

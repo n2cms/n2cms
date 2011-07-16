@@ -1,4 +1,5 @@
 using System.Web.UI;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {
@@ -39,6 +40,11 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			Page.Validators.Add(this);
+		}
+
+		protected override void RegisterClientScripts()
+		{
+			Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'pages', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
 		}
 
 		#region IValidator Members

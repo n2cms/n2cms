@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Web.UI;
 using N2.Web;
 using N2.Web.UI.WebControls;
@@ -10,11 +12,7 @@ namespace N2.Details
 	/// </summary>
 	/// <example>
 	///		[EditableLink("Feed root", 90)]
-	///		public virtual ContentItem FeedRoot
-	///		{
-	/// 		get { return (ContentItem)GetDetail("FeedRoot"); }
-	/// 		set { SetDetail("FeedRoot", value); }
-	///		}
+	///		public virtual ContentItem FeedRoot { get; set; }
 	/// </example>
 	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
@@ -27,6 +25,9 @@ namespace N2.Details
 			: base(title, sortOrder)
 		{
 		}
+
+		/// <summary>Content item types that may be selected using this selector.</summary>
+		public Type[] SelectableTypes { get; set; }
 
 		protected override Control AddEditor(Control container)
 		{
@@ -43,6 +44,7 @@ namespace N2.Details
 			var pi = item.GetType().GetProperty(Name);
 			if(pi != null)
 				selector.RequiredType = pi.PropertyType;
+			selector.SelectableTypes = string.Join(",", (SelectableTypes ?? new[] { selector.RequiredType ?? typeof(ContentItem) }).Select(t => t.Name).ToArray());
 		}
 		
 		public override bool UpdateItem(ContentItem item, Control editor)

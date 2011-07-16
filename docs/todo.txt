@@ -1,7 +1,6 @@
+- file names with _ (discussions/265070)
 - upgrade with custom login (discussions/264178)
-- displayablemedia (discussions/263535)
 - allowed zones in dinamico view templates (discussions/263700)
-- folder picker (ThreadId=240497)
 - fix fist-time installation lucene error leaving lock
 - tree html helper
 - link html helper
@@ -20,9 +19,7 @@
 - index template replaces default
 - static parts
 - fix wiki (ThreadId=243022)
-- property interception to detail collections
 - property interception avoid proceeding unecessarily
-- limit number of items in a zone (ThreadId=241156)
 - show path in screens
 - modal file selectors
 - change to ordinal string comparisons

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using N2.Collections;
@@ -20,6 +21,10 @@ namespace N2.Edit.Web.UI.Controls
 		public Tree()
 		{
 		}
+
+		public string SelectableExtensions { get; set; }
+
+		public string SelectableTypes { get; set; }
 
 		private static IEditUrlManager ManagementPaths
 		{
@@ -76,48 +81,57 @@ namespace N2.Edit.Web.UI.Controls
 			var tree = new N2.Web.Tree(Nodes)
 				.OpenTo(SelectedItem)
 				.Filters(Filter)
-				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item), item, item.Path == SelectedItem.Path, Target))
+				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item), item, item.Path == SelectedItem.Path, Target, IsSelectable(item, SelectableTypes, SelectableExtensions)))
 				.ToControl();
 
-			AppendExpanderNodeRecursive(tree, Filter, Target, adapters);
+			AppendExpanderNodeRecursive(tree, Filter, Target, adapters, SelectableTypes, SelectableExtensions);
 
 			Controls.Add(tree);
 			
 			base.CreateChildControls();
 		}
 
-		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter, string target, IContentAdapterProvider adapters)
+		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter, string target, IContentAdapterProvider adapters, string selectableTypes, string selectableExtensions)
 		{
 			TreeNode tn = tree as TreeNode;
 			if (tn != null)
 			{
 				foreach (Control child in tn.Controls)
 				{
-					AppendExpanderNodeRecursive(child, filter, target, adapters);
+					AppendExpanderNodeRecursive(child, filter, target, adapters, selectableTypes, selectableExtensions);
 				}
 				if (tn.Controls.Count == 0 && adapters.ResolveAdapter<NodeAdapter>(tn.Node).HasChildren(tn.Node, filter))
 				{
-					AppendExpanderNode(tn, target);
+					AppendExpanderNode(tn, target, selectableTypes, selectableExtensions);
 				}
 			}
 		}
 
-		public static void AppendExpanderNode(TreeNode tn, string target)
+		public static void AppendExpanderNode(TreeNode tn, string target, string selectableTypes, string selectableExtensions)
 		{
 			Li li = new Li();
 			
-			li.Text = "{url:" + ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
+			li.Text = "{url:" + Url.ParseTokenized("{ManagementUrl}/Content/Navigation/LoadTree.ashx")
+				.AppendQuery("target", target)
+				.AppendQuery("selected", HttpUtility.UrlEncode(tn.Node.Path))
+				.AppendQuery("selectableTypes", selectableTypes)
+				.AppendQuery("selectableExtensions", selectableExtensions)
+				+ "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);
 		}
 
-		internal static ILinkBuilder BuildLink(NodeAdapter adapter, ContentItem item, bool selected, string target)
+		internal static ILinkBuilder BuildLink(NodeAdapter adapter, ContentItem item, bool isSelected, string target, bool isSelectable)
 		{
 			INode node = item;
 			string className = node.ClassNames;
-			if (selected)
+			if (isSelected)
 				className += "selected ";
+			if (isSelectable)
+				className += "selectable ";
+			else
+				className += "unselectable ";
 
 			ILinkBuilder builder = Link.To(node)
 				.Target(target)
@@ -134,9 +148,28 @@ namespace N2.Edit.Web.UI.Controls
 				.Attribute("data-zone", item.ZoneName)
 				.Attribute("data-permission", adapter.GetMaximumPermission(item).ToString());
 
+			if (isSelected)
+				builder.Attribute("data-selected", "true");
+			if (isSelectable)
+				builder.Attribute("data-selectable", "true");
+
 			builder.Href(adapter.GetPreviewUrl(item));
 
 			return builder;
+		}
+
+		internal static bool IsSelectable(ContentItem item, string selectableTypes, string selectableExtensions)
+		{
+			var baseTypesAndInterfaceNames = item.GetContentType().GetInterfaces().Select(i => i.Name)
+				.Union(Utility.GetBaseTypesAndSelf(item.GetContentType()).Select(t => t.Name));
+
+			bool isSelectableType = string.IsNullOrEmpty(selectableTypes)
+				|| selectableTypes.Split(',').Intersect(baseTypesAndInterfaceNames).Any();
+
+			bool isSelectableExtension = string.IsNullOrEmpty(selectableExtensions) 
+				|| selectableExtensions.Split(',').Contains(VirtualPathUtility.GetExtension(item.Url), StringComparer.InvariantCultureIgnoreCase);
+			
+			return isSelectableType && isSelectableExtension;
 		}
 	}
 }

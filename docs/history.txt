@@ -1,4 +1,9 @@
-﻿2.2
+﻿2.2.1
+- SelectableTypes on [EditableLink] (discussions/240497)
+- [EditableMediaUpload] (discussions/263535)
+- [EditableFolderSelection] (discussions/240497)
+
+2.2
 - [RestrictCardinality] to restrict number of items of a certain type below a container
 - Lucene search in mvc templates & wf
 - Tokens in MVC Templates & WebForm Templates

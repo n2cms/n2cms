@@ -138,8 +138,7 @@ body.framed .validator ul{
     .striped, .striped td, .striped th {  }
 
 /* NAVIGATCONTEXTMENU */
-body.framed .ui-menu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; padding:1px; list-style-type:none; margin:0; box-shadow: #666 2px 2px 8px -3px; }
-    body.framed .ui-menu a { margin:1px; display:block; padding:2px 1px 1px 1px; white-space:nowrap; border:solid 1px #fff; background:transparent none no-repeat 3px 50%; cursor:pointer; }
+body.framed .ui-menu { box-shadow: #666 2px 2px 8px -3px; }
     body.framed .ui-menu a.iconed { padding-left:22px; }
     body.framed .ui-menu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
     body.framed .ui-menu .separator { border-bottom:solid 1px #dedad7; margin:1px 0;}
@@ -216,6 +215,9 @@ body.framed #nav .invisible{ color:#999;}
 body.framed #nav .unpublished,
 body.framed #nav .expired,
 body.framed #nav .locked { color:#C66; }
+body.framed #nav .leaf .unselectable, body.framed #nav .leaf-last .unselectable { color: #ccc }
+body.framed #nav .leaf .unselectable img, body.framed #nav .leaf-last .unselectable img { opacity:.5 }
+body.framed #nav .selectable:hover { outline: solid 1px #ccf; background-color:#eef; }
 
 body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/icons/bullet_key.png) no-repeat 100% 50%; }
 body.framed #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/icons/bullet_arrow_down.png) no-repeat 100% 50%; }

@@ -99,16 +99,16 @@ namespace N2.Resources
 			else if (position == ScriptPosition.Bottom)
 			{
 				string key = script.GetHashCode().ToString();
-				if (Is(options, ScriptOptions.None))
-					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, script);
-				else if (Is(options, ScriptOptions.ScriptTags))
-					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, script, true);
-				else if (Is(options, ScriptOptions.DocumentReady))
+				if (options.Is(ScriptOptions.None))
+					page.ClientScript.RegisterStartupScript(typeof(Register), key, script);
+				else if (options.Is(ScriptOptions.ScriptTags))
+					page.ClientScript.RegisterStartupScript(typeof(Register), key, script, true);
+				else if (options.Is(ScriptOptions.DocumentReady))
 				{
-					JQuery(page);
-					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, EmbedDocumentReady(script), true);
+					page.JQuery();
+					page.ClientScript.RegisterStartupScript(typeof (Register), key, EmbedDocumentReady(script), true);
 				}
-				else if (Is(options, ScriptOptions.Include))
+				else if (options.Is(ScriptOptions.Include))
 					page.ClientScript.RegisterClientScriptInclude(key, Url.ResolveTokens(script));
 				else
 					throw new ArgumentException("options");
@@ -130,25 +130,25 @@ namespace N2.Resources
 			{
 				PlaceHolder holder = GetPlaceHolder(page);
 
-				if (Is(options, ScriptOptions.Include))
+				if (options.Is(ScriptOptions.Include))
 				{
-					AddScriptInclude(page, script, holder, Is(options, ScriptOptions.Prioritize));
+					AddScriptInclude(page, script, holder, options.Is(ScriptOptions.Prioritize));
 				}
-				else if (Is(options, ScriptOptions.None))
+				else if (options.Is(ScriptOptions.None))
 				{
-					holder.Page.Items[script] = AddString(script, holder, Is(options, ScriptOptions.Prioritize));
+					holder.Page.Items[script] = AddString(holder, script, options.Is(ScriptOptions.Prioritize));
 				}
 				else
 				{
 					Script scriptHolder = GetScriptHolder(page);
-					if (Is(options, ScriptOptions.ScriptTags))
+					if (options.Is(ScriptOptions.ScriptTags))
 					{
-						holder.Page.Items[script] = AddString(script + Environment.NewLine, scriptHolder, Is(options, ScriptOptions.Prioritize));
+						holder.Page.Items[script] = AddString(scriptHolder, script + Environment.NewLine, Is(options, ScriptOptions.Prioritize));
 					}
-					else if (Is(options, ScriptOptions.DocumentReady))
+					else if (options.Is(ScriptOptions.DocumentReady))
 					{
 						JQuery(page);
-						holder.Page.Items[script] = AddString(EmbedDocumentReady(script) + Environment.NewLine, scriptHolder, Is(options, ScriptOptions.Prioritize));
+						holder.Page.Items[script] = AddString(scriptHolder, EmbedDocumentReady(script) + Environment.NewLine, options.Is(ScriptOptions.Prioritize));
 					}
 				}
 			}
@@ -168,7 +168,7 @@ namespace N2.Resources
 			}
 		}
 
-		private static Literal AddString(string script, Control holder, bool priority)
+		private static Literal AddString(Control holder, string script, bool priority)
 		{
 			Literal l = new Literal();
 			l.Text = script;
@@ -211,7 +211,7 @@ namespace N2.Resources
 
 		public static void JQuery(this Page page)
 		{
-			JavaScript(page, JQueryPath(), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, JQueryPath(), ScriptPosition.Header, ScriptOptions.Prioritize | ScriptOptions.Include);
 		}
 
 		public static string JQueryPath()
@@ -276,7 +276,7 @@ namespace N2.Resources
 			TabPanel(page, selector, true);
 		}
 
-		private static bool Is(ScriptOptions options, ScriptOptions expectedOption)
+		private static bool Is(this ScriptOptions options, ScriptOptions expectedOption)
 		{
 			return (options & expectedOption) == expectedOption;
 		}
@@ -284,14 +284,14 @@ namespace N2.Resources
 
 		public static void JQueryPlugins(this Page page)
 		{
-			JQuery(page);
-			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
+			page.JQuery();
+			page.JavaScript(Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
 		public static void JQueryUi(this Page page)
 		{
-			JQuery(page);
-			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version));
+			page.JQuery();
+			page.JavaScript(Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
 		public static void TinyMCE(this Page page)

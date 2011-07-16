@@ -55,7 +55,17 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .textEditor { width:284px; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
-.framed .popupButton { margin-right:10px;}
+.framed .selectorButtons { }
+	.framed .selectorButtons input { vertical-align:middle; width:22px; height:22px; text-align:center; text-indent:-50px; border:solid 1px #bbb; background:#f8f8f8 none no-repeat 50% 50%; margin-left:-1px; }
+	.framed .selectorButtons input:hover { border-color:#999; background-color:#f0f0f0; }
+	.framed .selectorButtons .clearButton { background-image:url(../icons/cross.png); }
+	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }
+	.framed .editDetail .selectorButtons,
+	.framed .editDetail .revealer { visibility:hidden; }
+	.framed .editDetail:hover .selectorButtons,
+	.framed .editDetail:hover .revealer { visibility:visible; }
+	.framed .editDetail .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
+	
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
 table.editDetail { border-collapse:collapse; }

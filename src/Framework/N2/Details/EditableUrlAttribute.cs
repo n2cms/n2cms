@@ -7,11 +7,7 @@ namespace N2.Details
 	/// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="N2.Web.UI.WebControls.UrlSelector"/> web control as editor/url selector.</summary>
 	/// <example>
 	/// [N2.Details.EditableUrl("Url to page or document", 50)]
-	/// public virtual string PageOrDocumentUrl
-	/// {
-	///     get { return (string)GetDetail("PageOrDocumentUrl"); }
-	///		set { SetDetail("PageOrDocumentUrl", value); }
-	/// }
+	/// public virtual string PageOrDocumentUrl { get; set; }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable

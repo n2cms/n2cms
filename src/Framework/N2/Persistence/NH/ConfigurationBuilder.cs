@@ -38,7 +38,6 @@ namespace N2.Persistence.NH
 		IDictionary<string, string> properties = new Dictionary<string, string>();		
 		IList<Assembly> assemblies = new List<Assembly>();
 		IList<string> mappingNames = new List<string>();
-		string defaultMapping = "N2.Persistence.NH.Mappings.Default.hbm.xml,N2";
 		string tablePrefix = "n2";
 		int? batchSize = 25;
 		CollectionLazy childrenLaziness = CollectionLazy.Extra;
@@ -58,9 +57,6 @@ namespace N2.Persistence.NH
 			tablePrefix = config.TablePrefix;
 			batchSize = config.BatchSize;
 			childrenLaziness = config.ChildrenLaziness;
-
-			if (!string.IsNullOrEmpty(config.HibernateMapping))
-				DefaultMapping = config.HibernateMapping;
 
 			SetupProperties(config, connectionStrings);
 			SetupMappings(config);
@@ -231,13 +227,6 @@ namespace N2.Persistence.NH
 		{
 			get { return properties; }
 			set { properties = value; }
-		}
-
-		/// <summary>Gets or sets a path to an embedded mapping file that are always added to the NHibernate configuration. Items should be in manifest resource stream format followed by a comma and the assembly name, e.g. "N2.Mappings.MySQL.hbm.xml,N2".</summary>
-		public string DefaultMapping
-		{
-			get { return defaultMapping; }
-			set { defaultMapping = value; }
 		}
 
 		#endregion
@@ -439,7 +428,7 @@ namespace N2.Persistence.NH
 		protected Stream GetStreamFromName(string name)
 		{
 			string[] pathAssemblyPair = name.Split(',');
-			if (pathAssemblyPair.Length != 2) throw new ArgumentException("Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
+			if (pathAssemblyPair.Length != 2) throw new ArgumentException("Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + name);
 
 			Assembly a = Assembly.Load(pathAssemblyPair[1]);
 			return a.GetManifestResourceStream(pathAssemblyPair[0]);

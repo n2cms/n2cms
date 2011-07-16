@@ -11,10 +11,12 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Engine;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {
@@ -26,9 +28,17 @@ namespace N2.Web.UI.WebControls
 			CssClass = "urlSelector selector";
 		}
 
+		/// <summary>Content item types that may be selected using this selector.</summary>
+		public string SelectableTypes { get; set; }
+
+		/// <summary>File extensions that may be selected using this selector.</summary>
+		public string SelectableExtensions { get; set; }
+
+		protected IEngine engine;
 		protected IEngine Engine
 		{
-			get { return N2.Context.Current; }
+			get { return engine ?? N2.Context.Current; }
+			set { engine = value; }
 		}
 
 		/// <summary>Text on the button used to open the popup.</summary>
@@ -62,7 +72,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Format for the javascript invoked when the open popup button is clicked.</summary>
 		protected virtual string OpenPopupFormat
 		{
-			get { return "openUrlSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}');"; }
+			get { return "openUrlSelectorPopup('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');"; }
 		}
 
 		public virtual UrlSelectorMode DefaultMode
@@ -77,33 +87,29 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["AvailableModes"] = value; }
 		}
 
-		#region Script
-		private string script =
-			@"
-function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
-	var tb = document.getElementById(tbId);
-	window.open(popupUrl
-				+ '&tbid=' + tbId 
-				+ '&defaultMode=' + defaultMode 
-				+ '&availableModes=' + availableModes
-				+ '&selectedUrl=' + encodeURIComponent(tb.value),
-		null, 
-		popupOptions);
-}}
-";
-		#endregion
-
 		/// <summary>Initializes the UrlSelector control.</summary>
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 
 			EnsureChildControls();
-			Page.ClientScript.RegisterClientScriptBlock(
-				typeof(UrlSelector),
-				"N2.Web.UI.WebControls.FileSelector.script",
-				script,
-				true);
+
+			Page.JavaScript("{ManagementUrl}/Resources/Js/UrlSelection.js");
+		}
+
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			Page.JQueryUi();
+			Page.JQueryPlugins();
+
+			RegisterClientScripts();
+		}
+
+		protected virtual void RegisterClientScripts()
+		{
+			Page.JavaScript("$('#" + ClientID + "').n2autocomplete({ filter: 'any', selectableTypes:'" + SelectableTypes + "' });", ScriptPosition.Bottom, ScriptOptions.DocumentReady | ScriptOptions.ScriptTags);
 		}
 
 		/// <summary>Renders and tag and the open popup window button.</summary>
@@ -117,18 +123,33 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 		/// <summary>Renders the open popup button.</summary>
 		private void RenderButton(HtmlTextWriter writer)
 		{
-			HtmlInputButton hib = new HtmlInputButton();
-			hib.ID = ID + "-button";
-			hib.Value = ButtonText;
-			hib.Attributes["class"] = "popupButton selectorButton";
-			Controls.Add(hib);
-			hib.Attributes["onclick"] = string.Format(OpenPopupFormat,
+			HtmlGenericControl span = new HtmlGenericControl("span");
+			Controls.Add(span);
+			HtmlInputButton pb = new HtmlInputButton();
+			span.Controls.Add(pb);
+			HtmlInputButton cb = new HtmlInputButton();
+			span.Controls.Add(cb);
+
+			span.Attributes["class"] = "selectorButtons";
+
+			pb.Value = ButtonText;
+			pb.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Select") ?? "Select";
+			pb.Attributes["class"] = "popupButton selectorButton";
+			pb.Attributes["onclick"] = string.Format(OpenPopupFormat,
 													  N2.Web.Url.ResolveTokens(BrowserUrl),
 													  ClientID,
 													  PopupOptions,
 													  DefaultMode,
-													  AvailableModes);
-			hib.RenderControl(writer);
+													  AvailableModes,
+													  SelectableTypes,
+													  SelectableExtensions
+													  );
+			cb.Value = "x";
+			cb.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Clear") ?? "Clear";
+			cb.Attributes["class"] = "clearButton";
+			cb.Attributes["onclick"] = "document.getElementById('" + ClientID + "').value = '';";
+
+			span.RenderControl(writer);
 		}
 	}
 }

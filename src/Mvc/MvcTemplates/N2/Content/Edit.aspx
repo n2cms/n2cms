@@ -105,10 +105,6 @@
 
     		$(".expandable").n2expandable({ visible: ".uncontractable" });
 
-    		$(".fileSelector").n2autocomplete({ filter: "io" });
-    		$(".itemSelector").n2autocomplete({ filter: "pages" });
-    		$(".urlSelector").n2autocomplete({ filter: "any" });
-
     		$("form").n2expandableBox({ opener: ".rightOpener", opened: "#outside" });
     		$("#outside .box").n2expandableBox({ opener: "h4", opened: ".box-inner" });
     	});
