@@ -2,11 +2,13 @@ Upgrade N2 CMS Framework TO 2.2
 * Make a complete backup (including database)
 * Delete /n2, and /bin
 * Copy upgrade files (found in n2cms_2.2_Framework.zip)
-* In web.config enable <n2><edit><installer checkInstallationStatus="true" />
-	#if Using N2.Templates.Mvc? Then you also need to:
-	* Remove or exclude /Areas/Management/* except for Root.aspx and Models/RootPage.cs
-	* Modify /Global.asax.cs: engine.RegisterControllers(typeof(StartController).Assembly) -> engine.RegisterAllControllers())
-	#endif
+* In web.config...
+	* enable <n2><edit><installer checkInstallationStatus="true" />
+	* #if using custom "loginUrl": temporarily set it to /n2/login.aspx #endif
+#if using N2.Templates.Mvc:
+* Remove or exclude /Areas/Management/* except for Root.aspx and Models/RootPage.cs
+* Modify /Global.asax.cs: engine.RegisterControllers(typeof(StartController).Assembly) -> engine.RegisterAllControllers())
+#endif
 * Recompile your solution
 * Browse to the site (you are redirected to /n2/installation/upgrade.aspx)
 * Log in as an administrator
