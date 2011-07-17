@@ -86,11 +86,12 @@ namespace N2.Web.Mvc.Html
 		/// <returns></returns>
 		public static HelperResult UnorderedList<T>(this HtmlHelper html, IEnumerable<T> items,
 			Func<ListTemplate<T>, HelperResult> template,
-			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
+			Func<Template<IEnumerable<T>>, HelperResult> empty = null,
+			string className = null)
 		{
 			return Loop(html, items,
 				template: (lt) => new HelperResult((tw) => { tw.Write("<li>"); template(lt).WriteTo(tw); tw.Write("</li>"); }),
-				wrapper: (lt) => new HelperResult((tw) => { tw.Write("<ul>"); lt.RenderContents().WriteTo(tw); tw.Write("</ul>"); }),
+				wrapper: (lt) => new HelperResult((tw) => { tw.Write("<ul"); if (!string.IsNullOrEmpty(className)) tw.Write(" class=\"" + className + "\""); tw.Write(">"); lt.RenderContents().WriteTo(tw); tw.Write("</ul>"); }),
 				empty: empty);
 		}
 	}

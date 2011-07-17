@@ -28,7 +28,7 @@
  { <div>@RenderSection("page")</div> }
  else
  {
-		<div id="top">@{ Html.RenderPartial("LayoutPartials/Top"); }</div>
+		<div id="top" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Top"); }</div>
 		<div id="header" class="clearfix">@{ Html.RenderPartial("LayoutPartials/Header"); }</div>
 		<div id="page">
 			@if (IsSectionDefined("main"))

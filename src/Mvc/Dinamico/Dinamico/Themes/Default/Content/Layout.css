@@ -3,8 +3,8 @@
 html,body { min-height:100%; }
 	div#wrapper { position:relative; width:960px; margin:0 auto; }
 		div#top { position:absolute; right:0; padding:5px; z-index:10 }
-			div#top ul { list-style-type:none; margin-left:0; }
-				div#top ul li { display:inline-block;  margin:0 5px; }
+			div#top ul { float:right; list-style-type:none; margin-left:0; }
+				div#top ul li { float:left;  margin:0 5px; }
 		div#header { padding-top:100px; position:relative; }
 			div#header a.logotype { position:absolute; top: 10px; left:20px; }
 				div#header a.logotype img { height:80px; }
@@ -14,7 +14,7 @@ html,body { min-height:100%; }
 				div#nav a:hover { text-decoration:underline; }
 				div#nav li a.trail { font-weight:bold; }
 				div#nav li a.current { font-weight:bold; color:#000; }
-					div#nav ul li { display:inline-block; }
+					div#nav ul li { float:left; }
 					div#nav ul li a { display:block; padding:10px 20px; }
 		div#page { }
 			div#main { }

@@ -2,7 +2,7 @@
 {
 	var start = Content.Traverse.StartPage;
 	var current = Content.Current.Page;
-<ul id="menu" class="topmenu menu level1">
+<ul id="menu" class="topmenu menu clearfix level1">
 	<li class="home">@Html.ActionLink(Content.Traverse.StartPage)</li>
 	@Content.TreeFrom(start, takeLevels: 3, rootless: true)
 </ul>

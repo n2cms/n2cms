@@ -2,7 +2,7 @@
 {
 	var start = Content.Traverse.StartPage;
 	var current = Content.Current.Page;
-<ul id="menu" class="topmenu menu level1">
+<ul id="menu" class="topmenu menu clearfix level1">
 	<li class="home">@using (Content.BeginScope(Content.Traverse.StartPage))
 {
 	<a href="@Content.Current.Item.Url" title="@Content.Current.Item.Title"><img src="@Url.ThemedContent("~/Content/home.png")" alt="@Content.Current.Page.Title" /></a>
@@ -11,6 +11,6 @@
 </ul>
 }
 <script type='text/javascript'>//<![CDATA[
-	$("#menu").menudown({ submenuclass: "submenu menu level2" });
+	$("#menu").menudown({ submenuclass: "submenu menu clearfix level2" });
 //]]></script>
 

@@ -131,6 +131,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apple-touch-icon.png" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\Elements.css" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\fade.png" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\home.png" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\Layout.css" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\Mood.css" />
+    <Content Include="Dinamico\Themes\Cloudy\Content\Site.css" />
+    <Content Include="Dinamico\Themes\Concrete\Thumbnail.jpg" />
+    <Content Include="Dinamico\Themes\Dark\Thumbnail.jpg" />
+    <Content Include="Dinamico\Themes\Default\Thumbnail.jpg" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Layout.css" />
@@ -139,6 +149,9 @@
     <Content Include="Dinamico\Themes\Default\Content\Boilerfoot.css" />
     <Content Include="Dinamico\Themes\Default\Content\Boilerhead.css" />
     <Content Include="Dinamico\Themes\Default\Content\Features.css" />
+    <Content Include="Dinamico\Themes\Roadwork\Content\TopNavigation.css" />
+    <Content Include="Dinamico\Themes\Roadwork\Thumbnail.jpg" />
+    <Content Include="Dinamico\Themes\Terracotta\Thumbnail.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Dinamico\Themes\Default\Scripts\jquery.anythingslider.js" />
@@ -384,6 +397,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\Header.cshtml" />
+    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\PreContent.cshtml" />
+    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
+    <Content Include="Dinamico\Themes\Cloudy\Views\Shared\LayoutPartials\TopNavigation.cshtml" />
+    <Content Include="Dinamico\Themes\Cloudy\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

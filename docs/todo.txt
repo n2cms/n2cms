@@ -1,5 +1,5 @@
 - file names with _ (discussions/265070)
-- lucene problems (discussions/262292)
+- reproduce lucene problems (discussions/262292)
 - allowed zones in dinamico view templates (discussions/263700)
 - fix fist-time installation lucene error leaving lock
 - tree html helper
