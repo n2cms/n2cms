@@ -138,9 +138,9 @@ body.framed .validator ul{
     .striped, .striped td, .striped th {  }
 
 /* NAVIGATCONTEXTMENU */
-body.framed .ui-menu { box-shadow: #666 2px 2px 8px -3px; }
-    body.framed .ui-menu a.iconed { padding-left:22px; }
-    body.framed .ui-menu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
+body.framed .ui-menu { box-shadow: #666 2px 2px 8px -3px; background-color:#fff; }
+    body.framed .ui-menu a.iconed {background:transparent none no-repeat 2px 1px; display:block; padding:2px 1px 2px 22px; }
+    body.framed .ui-menu a:hover { background-color:#f7f7f7; outline:solid 1px #dedad7; text-decoration:none; }
     body.framed .ui-menu .separator { border-bottom:solid 1px #dedad7; margin:1px 0;}
     body.framed .ui-menu .languages { display:block; width:75px; padding-top:2px; }
 		body.framed .ui-menu .languages a { display:inline-block; line-height:11px; padding:1px; }
