@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -21,14 +22,27 @@ namespace N2.Collections
 			Children = new List<HierarchyNode<T>>();
 		}
 
+		/// <summary>Creates a new instance of the hierarchy node.</summary>
+		/// <param name="current">The current node.</param>
+		public HierarchyNode(T current, IEnumerable<HierarchyNode<T>> children)
+		{
+			Current = current;
+			Children = new List<HierarchyNode<T>>(children);
+		}
+
 		/// <summary>Gets or sets the current node.</summary>
 		public T Current { get; set; }
 
 		/// <summary>Gets or sets the parent node.</summary>
 		public HierarchyNode<T> Parent { get; set; }
 
+		private IList<HierarchyNode<T>> children;
 		/// <summary>Gets a list of child nodes.</summary>
-		public IList<HierarchyNode<T>> Children { get; set; }
+		public IList<HierarchyNode<T>> Children
+		{
+			get { return children ?? (children = new List<HierarchyNode<T>>()); }
+			set { children = value; }
+		}
 
 		public string ToString(Func<T, string> begin, Func<T, string> indent, Func<T, string> outdent, Func<T, string> end)
 		{
@@ -78,5 +92,16 @@ namespace N2.Collections
 			return Current.GetHashCode();
 		}
 		#endregion
+
+		/// <summary>Creates a deep copy of the hierarchy.</summary>
+		/// <param name="childSelector"></param>
+		/// <returns></returns>
+		public HierarchyNode<T> Clone(Func<T, bool> childSelector = null)
+		{
+			var clonedChildren = childSelector != null
+				? Children.Where(c => childSelector(c.Current))
+				: Children;
+			return new HierarchyNode<T>(Current, clonedChildren);
+		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Web.UI;
 using N2.Collections;
 using N2.Web.UI.WebControls;
 using System;
+using System.Web.Mvc;
 
 namespace N2.Web
 {
@@ -16,70 +17,107 @@ namespace N2.Web
 		: System.Web.IHtmlString
 #endif
 	{
-		private HierarchyNode<ContentItem> root;
+		private HierarchyBuilder hierarchy;
 
-		public delegate ILinkBuilder LinkProviderDelegate(ContentItem currentItem);
-		public delegate string ClassProviderDelegate(ContentItem currentItem);
-
-		private LinkProviderDelegate linkProvider;
-		private ClassProviderDelegate classProvider = delegate { return string.Empty; };
+		private Action<HierarchyNode<ContentItem>, TextWriter> linkWriter;
+		private event Action<HierarchyNode<ContentItem>, TagBuilder> tagModifier;
 		private ItemFilter filter = new NullFilter();
-		private bool exclude = false;
+		private bool excludeRoot = false;
+		Func<ContentItem, string> liClassProvider; // obsolete
 
 		#region Constructor
 
 		public Tree(HierarchyBuilder builder)
 		{
-			root = builder.Build();
-			linkProvider = Link.To;
+			hierarchy = builder ?? new FixedHierarchyBuilder(new HierarchyNode<ContentItem>(null));
+			linkWriter = (n, w) => Link.To(n.Current).WriteTo(w);
 		}
 
 		public Tree(HierarchyNode<ContentItem> root)
+			: this(new FixedHierarchyBuilder(root ?? new HierarchyNode<ContentItem>(null)))
 		{
-			this.root = root;
-			linkProvider = Link.To;
 		}
 
 		#endregion
 
 		#region Methods
 
-		public Tree LinkProvider(LinkProviderDelegate linkProvider)
+		[Obsolete("Use LinkWriter")]
+		public Tree LinkProvider(Func<ContentItem, ILinkBuilder> linkProvider)
 		{
-			this.linkProvider = linkProvider;
+			LinkWriter((n, w) => linkProvider(n.Current).WriteTo(w));
 			return this;
 		}
 
-		public Tree ClassProvider(ClassProviderDelegate classProvider)
+		public Tree LinkWriter(Action<HierarchyNode<ContentItem>, TextWriter> linkWriter)
 		{
-			this.classProvider = classProvider;
+			this.linkWriter = linkWriter;
 			return this;
 		}
 
-		public Tree OpenTo(ContentItem item)
+		/// <summary>Provides the id for the list item elements in the resulting html.</summary>
+		/// <param name="ulIdProvider">Returns an id for the list element given a content item and hierarchy depth.</param>
+		/// <returns>The same <see cref="Tree"/> instance.</returns>
+		public Tree IdProvider(Func<HierarchyNode<ContentItem>, string> ulIdProvider, Func<HierarchyNode<ContentItem>, string> liIdProvider)
 		{
-			IList<ContentItem> items = Find.ListParents(item);
-			return ClassProvider(delegate(ContentItem current)
-			                	{
-			                		return items.Contains(current) || current == item
-			                		       	? "open"
-			                		       	: string.Empty;
-			                	});
+			if(ulIdProvider != null)
+				tagModifier += (n, t) => { if (t.TagName == "ul") t.AddAttributeUnlessEmpty("id", ulIdProvider(n)); };
+			if(liIdProvider != null)
+				tagModifier += (n, t) => { if (t.TagName == "li") t.AddAttributeUnlessEmpty("id", liIdProvider(n)); };
+
+			return this;
 		}
 
+		/// <summary>Provides the class name for the list item elements in the resulting html.</summary>
+		/// <param name="liClassProvider">Returns a css class for a content item.</param>
+		/// <returns>The same tree instance.</returns>
+		[Obsolete("Use other ClassProvider overload")]
+		public Tree ClassProvider(Func<ContentItem, string> liClassProvider)
+		{
+			this.liClassProvider = liClassProvider;
+			ClassProvider(null, (n) => liClassProvider(n.Current));
+			return this;
+		}
+
+		/// <summary>Provides the class name for the list item elements in the resulting html.</summary>
+		/// <param name="ulClassProvider">Returns a css class for the list element given a content item and hierarchy depth.</param>
+		/// <param name="liClassProvider">Returns a css class for the list item element given a content item.</param>
+		/// <returns>The same <see cref="Tree"/> instance.</returns>
+		public Tree ClassProvider(Func<HierarchyNode<ContentItem>, string> ulClassProvider, Func<HierarchyNode<ContentItem>, string> liClassProvider)
+		{
+			if (ulClassProvider != null)
+				tagModifier += (n, t) => { if (t.TagName == "ul") t.AddAttributeUnlessEmpty("class", ulClassProvider(n)); };
+			if (liClassProvider != null)
+				tagModifier += (n, t) => { if (t.TagName == "li") t.AddAttributeUnlessEmpty("class", liClassProvider(n)); };
+
+			return this;
+		}
+
+		/// <summary>Applies filters to the hierarchy for this tree.</summary>
+		/// <param name="filters">The filters to apply.</param>
+		/// <returns>The same <see cref="Tree"/> instance.</returns>
 		public Tree Filters(params ItemFilter[] filters)
 		{
-			if (filters.Length == 1)
-				this.filter = filters[0];
-			else
-				this.filter = new CompositeFilter(filters);
+			hierarchy.Children(filters);
 
 			return this;
 		}
 
+		/// <summary>Do not render the root element and surrounding list element.</summary>
+		/// <param name="exclude">True to exclude the root.</param>
+		/// <returns>The same <see cref="Tree"/> instance.</returns>
 		public Tree ExcludeRoot(bool exclude)
 		{
-			this.exclude = exclude;
+			this.excludeRoot = exclude;
+			return this;
+		}
+
+		/// <summary>Modifies container tags before they are written.</summary>
+		/// <param name="tagModifier"></param>
+		/// <returns></returns>
+		public Tree Tag(Action<HierarchyNode<ContentItem>, TagBuilder> tagModifier)
+		{
+			this.tagModifier = tagModifier;
 			return this;
 		}
 
@@ -120,6 +158,11 @@ namespace N2.Web
 			return TreeFactory(hierarchy);
 		}
 
+		public static Tree Using(HierarchyNode<ContentItem> node)
+		{
+			return TreeFactory(new FixedHierarchyBuilder(node));
+		}
+
 		public static Func<HierarchyBuilder, Tree> TreeFactory { get; set; }
 
 		static Tree()
@@ -129,40 +172,88 @@ namespace N2.Web
 
 		#endregion
 
+		public void WriteTo(TextWriter writer)
+		{
+			var root = hierarchy.Build();
+			if (excludeRoot || root.Current == null)
+				WriteChildren(writer, root, !excludeRoot);
+			else
+			{
+				using (TagWrapper.Begin("ul", root, tagModifier, writer))
+				{
+					using (TagWrapper.Begin("li", root, tagModifier, writer))
+					{
+						linkWriter(root, writer);
+						WriteChildren(writer, root, !excludeRoot);
+					}
+				}
+			}
+		}
+
+		private void WriteChildren(TextWriter writer, HierarchyNode<ContentItem> parent, bool renderUl)
+		{
+			IDisposable wrapper = null;
+			foreach (var child in parent.Children)
+			{
+				if (!filter.Match(child.Current))
+					continue;
+
+				if (renderUl && wrapper == null)
+					wrapper = TagWrapper.Begin("ul", child, tagModifier, writer);
+
+				using (TagWrapper.Begin("li", child, tagModifier, writer))
+				{
+					linkWriter(child, writer);
+					WriteChildren(writer, child, true);
+				}
+			}
+
+			if (wrapper != null)
+				wrapper.Dispose();
+		}
+
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			using (HtmlTextWriter writer = new HtmlTextWriter(new StringWriter(sb)))
+			using (var sw = new StringWriter())
 			{
-				Control root = ToControl();
-				root.RenderControl(writer);
+				WriteTo(sw);
+				return sw.ToString();
 			}
-			return sb.ToString();
 		}
 
 		public Control ToControl()
 		{
+			var root = hierarchy.Build();
 			TreeNode rootNode = BuildNodesRecursive(root);
-			rootNode.ChildrenOnly = exclude;
+			rootNode.ChildrenOnly = excludeRoot;
 			return rootNode;
 		}
 
-		private TreeNode BuildNodesRecursive(HierarchyNode<ContentItem> navigator)
+		private TreeNode BuildNodesRecursive(HierarchyNode<ContentItem> parent)
 		{
-			ContentItem item = navigator.Current;
+			ContentItem item = parent.Current;
 
-			TreeNode node = new TreeNode(item, linkProvider(item).ToControl());
-			node.LiClass = classProvider(item);
+			TreeNode node = new TreeNode(item, new LiteralControl(Invoke(parent, linkWriter)));
+			node.LiClass = liClassProvider != null ? liClassProvider(parent.Current) : null;
 
-			foreach (var childNavigator in navigator.Children)
+			foreach (var child in parent.Children)
 			{
-				if (!filter.Match(childNavigator.Current))
+				if (!filter.Match(child.Current))
 					continue;
 
-				TreeNode childNode = BuildNodesRecursive(childNavigator);
+				TreeNode childNode = BuildNodesRecursive(child);
 				node.Controls.Add(childNode);
 			}
 			return node;
+		}
+
+		private string Invoke(HierarchyNode<ContentItem> parent, Action<HierarchyNode<ContentItem>, TextWriter> actor)
+		{
+			using (var sw = new StringWriter())
+			{
+				actor(parent, sw);
+				return sw.ToString();
+			}
 		}
 
 		#region IHtmlString Members

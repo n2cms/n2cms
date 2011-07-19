@@ -10,7 +10,7 @@
 
 @if (Content.Has.WatchUrl)
 {
-	string uniqueId = Content.UniqueID("v");
+	string uniqueId = Html.UniqueID("v");
 	var watchUrl = new N2.Web.Url(Content.Data.WatchUrl);
 	N2.Web.Url embed = "http://www.youtube.com/v/" + watchUrl.GetQuery("v"); //"http://www.youtube.com/embed/" + watchUrl.GetQuery("v");
 	if (Content.Has.HD)

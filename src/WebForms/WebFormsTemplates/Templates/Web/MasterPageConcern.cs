@@ -1,6 +1,7 @@
 using System.IO;
-using N2.Templates.Configuration;
+using System.Linq;
 using System.Configuration;
+using N2.Templates.Configuration;
 using N2.Web.UI;
 using N2.Templates.Services;
 using N2.Templates.Web.UI;
@@ -27,10 +28,8 @@ namespace N2.Templates.Web
 
 		public override void OnPreInit(System.Web.UI.Page page, ContentItem item)
 		{
-			if (!string.IsNullOrEmpty(masterPageFile))
-			{
+			if (!string.IsNullOrEmpty(masterPageFile) && !string.IsNullOrEmpty(page.MasterPageFile))
 				page.MasterPageFile = masterPageFile;
-			}
 		}
 	}
 }

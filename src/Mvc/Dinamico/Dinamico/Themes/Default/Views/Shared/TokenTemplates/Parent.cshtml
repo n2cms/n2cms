@@ -1,5 +1,5 @@
 ﻿@model string
 @using (Content.BeginScope(Model))
 {
-@Content.LinkTo(Content.Traverse.Parent())
+@Html.Link(Content.Traverse.Parent())
 }

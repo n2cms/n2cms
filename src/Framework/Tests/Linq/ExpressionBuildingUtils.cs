@@ -6,7 +6,7 @@ using N2.Details;
 
 namespace N2.Extensions.Tests.Linq
 {
-	class ExpressionBuilding
+	class ExpressionBuildingUtils
 	{
 		public void Test()
 		{

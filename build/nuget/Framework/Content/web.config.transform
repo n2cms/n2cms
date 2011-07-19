@@ -98,7 +98,8 @@
 				<add tagType="System.Web.UI.HtmlControls.HtmlForm"  mappedTagType="N2.Web.UI.WebControls.RawUrlForm"/>
 			</tagMapping>
 			<namespaces>
-				<add namespace="N2.Web.Mvc.Html" />
+				<add namespace="N2.Linq"/>
+				<add namespace="N2.Web.Mvc.Html"/>
 			</namespaces>
 		</pages>
 

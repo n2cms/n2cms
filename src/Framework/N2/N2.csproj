@@ -112,6 +112,8 @@
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
+    <Compile Include="Collections\ParallelRootHierarchyBuilder.cs" />
+    <Compile Include="Collections\FixedHierarchyBuilder.cs" />
     <Compile Include="Collections\NoHierarchyBuilder.cs" />
     <Compile Include="Collections\CountFilter.cs" />
     <Compile Include="Collections\FilterHelper.cs" />
@@ -282,6 +284,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
@@ -308,6 +311,7 @@
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
+    <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />

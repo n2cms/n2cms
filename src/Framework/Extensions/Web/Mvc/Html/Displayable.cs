@@ -14,7 +14,8 @@ namespace N2.Web.Mvc.Html
 	{
 		readonly string propertyName;
 		string path;
-		bool swallowExceptions;
+		bool swallowExceptions = false;
+		bool isOptional = true;
 
         public Displayable(HtmlHelper helper, string propertyName, ContentItem currentItem)
             : base(helper, currentItem)
@@ -72,6 +73,16 @@ namespace N2.Web.Mvc.Html
 			return this;
 		}
 
+		/// <summary>Control whether the displayable will throw exceptions when no displayable with a matching name is found.</summary>
+		/// <param name="isOptional">Optional is true by default.</param>
+		/// <returns>The same <see cref="Displayable"/> object.</returns>
+		public Displayable Optional(bool isOptional = true)
+		{
+			this.isOptional = isOptional;
+
+			return this;
+		}
+
 		public override string ToString()
 		{
 			var previousWriter = Html.ViewContext.Writer;
@@ -81,7 +92,7 @@ namespace N2.Web.Mvc.Html
 				{
 					Html.ViewContext.Writer = writer;
 					
-					Render();
+					Render(writer);
 
 					return writer.ToString();
 				}
@@ -92,7 +103,7 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-        internal void Render()
+        internal void Render(TextWriter writer)
         {
             if (!string.IsNullOrEmpty(path))
                 CurrentItem = ItemUtility.WalkPath(CurrentItem, path);
@@ -104,7 +115,7 @@ namespace N2.Web.Mvc.Html
 			{
 				try
 				{
-					RenderDisplayable();
+					RenderDisplayable(writer);
 				}
 				catch (Exception ex)
 				{
@@ -112,21 +123,21 @@ namespace N2.Web.Mvc.Html
 				}
 			}
 			else
-				RenderDisplayable();
+				RenderDisplayable(writer);
         }
 
-		private void RenderDisplayable()
+		private void RenderDisplayable(TextWriter writer)
 		{
 			var displayable = DefinitionMap.Instance.GetOrCreateDefinition(CurrentItem).Displayables.FirstOrDefault(d => d.Name == propertyName);
 
 			if (displayable == null)
 			{
-				if (!swallowExceptions)
-					throw new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, CurrentItem.ID, CurrentItem.GetContentType());
-				return;
+				if (isOptional || swallowExceptions)
+					return;
+
+				throw new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, CurrentItem.ID, CurrentItem.GetContentType());
 			}
 
-			var writer = Html.ViewContext.Writer;
 			if (Wrapper != null)
 				writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 

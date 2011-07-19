@@ -87,6 +87,16 @@ namespace N2.Tests.Collections
 		}
 
 		[Test]
+		public void Parent_IsSet()
+		{
+			HierarchyNode<ContentItem> node = new BranchHierarchyBuilder(a_a_a, null).Build();
+
+			Assert.That(node.Parent, Is.Null);
+			Assert.That(node.Children[0].Parent, Is.EqualTo(node));
+			Assert.That(node.Children[0].Children[0].Parent, Is.EqualTo(node.Children[0]));
+		}
+
+		[Test]
 		public void CanBuildCompleteHierarchy()
 		{
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(new TreeHierarchyBuilder(a));

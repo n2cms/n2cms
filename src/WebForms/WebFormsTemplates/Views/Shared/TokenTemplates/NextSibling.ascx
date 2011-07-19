@@ -5,5 +5,5 @@
 		.SkipWhile(i => i != content.Current.Item)
 		.Skip(1)
 		.FirstOrDefault(); %>
-	<%= content.LinkTo(next) %>
+	<%= Html.Link(next) %>
 <% } %>	

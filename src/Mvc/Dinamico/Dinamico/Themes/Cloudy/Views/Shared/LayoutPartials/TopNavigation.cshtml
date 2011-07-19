@@ -1,9 +1,4 @@
 ﻿@using (Content.BeginScope(Request["returnUrl"], Content.Current.Page == null))
 {
-	var start = Content.Traverse.StartPage;
-	var current = Content.Current.Page;
-<ul id="menu" class="topmenu menu clearfix level1">
-	<li class="home">@Html.ActionLink(Content.Traverse.StartPage)</li>
-	@Content.TreeFrom(start, takeLevels: 3, rootless: true)
-</ul>
+	@Html.Tree(takeLevels: 3, htmlAttributes: new { id="menu",  @class="topmenu menu clearfix level1"});
 }

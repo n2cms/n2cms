@@ -5,6 +5,8 @@ using System.Web;
 using System.IO;
 using System.Web.WebPages;
 using System.Web.Mvc;
+using N2.Collections;
+using System.Web.Routing;
 
 namespace N2.Web.Mvc.Html
 {
@@ -33,6 +35,16 @@ namespace N2.Web.Mvc.Html
 			Func<Template<IEnumerable<T>>, HelperResult> wrapper = null,
 			Func<ListTemplate<T>, HelperResult> separator = null,
 			Func<Template<IEnumerable<T>>, HelperResult> empty = null)
+		{
+			return Loop<T>(items, template, wrapper, separator, empty);
+		}
+
+		private static HelperResult Loop<T>(
+			IEnumerable<T> items, 
+			Func<ListTemplate<T>, HelperResult> template, 
+			Func<Template<IEnumerable<T>>, HelperResult> wrapper, 
+			Func<ListTemplate<T>, HelperResult> separator, 
+			Func<Template<IEnumerable<T>>, HelperResult> empty)
 		{
 			return new HelperResult((tw) =>
 			{
@@ -89,9 +101,22 @@ namespace N2.Web.Mvc.Html
 			Func<Template<IEnumerable<T>>, HelperResult> empty = null,
 			string className = null)
 		{
-			return Loop(html, items,
+			return UnorderedList<T>(items, template, empty, className);
+		}
+
+		private static HelperResult UnorderedList<T>(IEnumerable<T> items, Func<ListTemplate<T>, HelperResult> template, Func<Template<IEnumerable<T>>, HelperResult> empty, string className)
+		{
+			return Loop(items,
 				template: (lt) => new HelperResult((tw) => { tw.Write("<li>"); template(lt).WriteTo(tw); tw.Write("</li>"); }),
-				wrapper: (lt) => new HelperResult((tw) => { tw.Write("<ul"); if (!string.IsNullOrEmpty(className)) tw.Write(" class=\"" + className + "\""); tw.Write(">"); lt.RenderContents().WriteTo(tw); tw.Write("</ul>"); }),
+				wrapper: (lt) => new HelperResult((tw) => 
+				{
+					tw.Write("<ul");
+					if (!string.IsNullOrEmpty(className))
+						tw.Write(" class=\"" + className + "\""); tw.Write(">");
+					lt.RenderContents().WriteTo(tw);
+					tw.Write("</ul>");
+				}),
+				separator: null,
 				empty: empty);
 		}
 	}

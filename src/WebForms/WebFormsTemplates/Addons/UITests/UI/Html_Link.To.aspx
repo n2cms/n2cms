@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
-    <style>code,textarea { width:99%; dipslay:block }</style>
+    <style>code,textarea { width:99%; dipslay:block } ul { margin-left:20px; list-style-type:circle }</style>
 </head>
 <body>
     <%= N2.Web.Link.To(CurrentPage).Text("Back") %>

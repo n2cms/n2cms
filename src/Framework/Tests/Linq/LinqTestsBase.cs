@@ -19,6 +19,7 @@ namespace N2.Extensions.Tests.Linq
 			CreateDatabaseSchema();
 
 			root = CreateOneItem<LinqItem>(0, "root", null);
+			root.State = ContentState.Published;
 			root.StringProperty = "a string";
 			root.StringProperty2 = "another string";
 			root.IntProperty = 123;
@@ -34,12 +35,11 @@ namespace N2.Extensions.Tests.Linq
 			item.DoubleProperty = 123456789;
 			item.BooleanProperty = false;
 			item.ContentItemProperty = root;
+			item.ZoneName = "Hello";
 			item.AddTo(root);
 
 			engine.Persister.Repository.Save(root);
 			engine.Persister.Repository.Save(item);
-
-			Debug.WriteLine("===== Starting Test =====");
 		}
 	}
 }

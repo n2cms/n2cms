@@ -10,7 +10,7 @@ namespace N2.Extensions.Tests.Linq
 	/// </summary>
 	[TestFixture]
 //	[Ignore]
-	public class VanillaLinqing : LinqTestsBase
+	public class VanillaLinqingTests : LinqTestsBase
 	{
 		[Test]
 		public void CanSelect_Count()
@@ -175,6 +175,16 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Count, Is.EqualTo(2));
 			Assert.That(items.Contains(root));
 			Assert.That(items.Contains(item));
+		}
+
+		[Test]
+		public void CanSkipAndTake()
+		{
+			var query = engine.QueryItems<LinqItem>().OrderBy(ci => ci.ID).Skip(1).Take(1);
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(item));
 		}
 	}
 }

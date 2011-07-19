@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using N2.Linq;
 using NUnit.Framework;
@@ -8,6 +9,32 @@ namespace N2.Extensions.Tests.Linq
 	[TestFixture]
 	public class ExpressionQueryableExtensions : LinqTestsBase
 	{
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ViaExtension()
+		{
+			var query = engine.QueryItems()
+				.WhereDetailEquals("StringProperty2", "another string");
+
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingAnyDetail_ViaExtension()
+		{
+			var query = engine.QueryItems()
+				.WhereDetailEquals("yet another string");
+
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(!items.Contains(root));
+			Assert.That(items.Contains(item));
+		}
+
 		//Expr: value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(value(N2.Linq.QueryableExtensions+<>c__DisplayClassc`1[N2.Extensions.Tests.Linq.LinqItem]).
 		[Test]
 		public void CanSelectItems_Where_DetailBackingProperty_Equals_StringConstant()
@@ -395,6 +422,78 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Count(), Is.EqualTo(2));
 			Assert.That(items.Contains(root));
 			Assert.That(items.Contains(item));
+		}
+
+		[Test]
+		public void WherePage_ItemWithZone_IsNotSelected()
+		{
+			var query = engine.QueryItems().WherePage();
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(root));
+		}
+
+		[Test]
+		public void WhereNotPage_ItemWithZone_IsNotSelected()
+		{
+			var query = engine.QueryItems().WherePage(isPage: false);
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(item));
+		}
+
+		[Test]
+		public void WherePublished_PendingItem_IsNotSelected()
+		{
+			item.Published = DateTime.Now.AddSeconds(10);
+			engine.Persister.Repository.Save(item);
+
+			var query = engine.QueryItems().WherePublished();
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(root));
+		}
+
+		[Test]
+		public void WherePublished_ItemWithWaitingState_IsNotSelected()
+		{
+			item.State = ContentState.Waiting;
+			engine.Persister.Repository.Save(item);
+
+			var query = engine.QueryItems().WherePublished();
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(root));
+		}
+
+		[Test]
+		public void WherePublished_ExpiredItem_IsNotSelected()
+		{
+			item.Expires = DateTime.Now.AddSeconds(-10);
+			engine.Persister.Repository.Save(item);
+
+			var query = engine.QueryItems().WherePublished();
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(root));
+		}
+
+		[Test]
+		public void WherePublished_ItemWithUnpublishedState_IsNotSelected()
+		{
+			item.State = ContentState.Unpublished;
+			engine.Persister.Repository.Save(item);
+
+			var query = engine.QueryItems().WherePublished();
+
+			var items = query.ToList();
+
+			Assert.That(items.Single(), Is.EqualTo(root));
 		}
 	}
 }

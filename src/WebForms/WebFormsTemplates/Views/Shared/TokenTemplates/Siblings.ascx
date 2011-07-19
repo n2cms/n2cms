@@ -4,6 +4,6 @@
 <ul>
 <% foreach (var item in content.Traverse.Siblings(content.Is.Navigatable()))
    { %>
-	<li><%= (item != current) ? content.LinkTo(item).ToString() : string.Format("<span>{0}</span>", item.Title)%></li>
+	<li><%= (item != current) ? Html.Link(item).ToString() : string.Format("<span>{0}</span>", item.Title)%></li>
 <% } %>
 </ul>

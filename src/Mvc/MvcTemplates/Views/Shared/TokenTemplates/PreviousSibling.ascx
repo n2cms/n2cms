@@ -5,5 +5,5 @@
 	content.Traverse.Children(content.Traverse.Parent(), content.Is.AccessiblePage())
 		.SkipWhile(i => { if (i != content.Current.Item) { prev = i; return true; } else return false; })
 		.FirstOrDefault(); %>
-	<%= content.LinkTo(prev) %>
+	<%= Html.Link(prev) %>
 <% } %>

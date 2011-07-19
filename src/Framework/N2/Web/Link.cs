@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
 using System;
+using System.Web.Mvc;
 
 namespace N2.Web
 {
@@ -33,7 +34,7 @@ namespace N2.Web
 		private string target;
 		private string className;
 		private Url url;
-		private IDictionary<string, string> attributes = new Dictionary<string, string>();
+		private IDictionary<string, string> attributes;
 		#endregion
 
 		#region Constructor
@@ -82,10 +83,14 @@ namespace N2.Web
 
 		#region Properties
 		
+		private bool HasAttributes
+		{
+			get { return attributes != null && attributes.Count > 0; }
+		}
 
 		public IDictionary<string, string> Attributes
 		{
-			get { return attributes; }
+			get { return attributes ?? (attributes = new Dictionary<string, string>()); }
 			set { attributes = value; }
 		}
 
@@ -146,13 +151,28 @@ namespace N2.Web
 
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			using (HtmlTextWriter writer = new HtmlTextWriter(new StringWriter(sb)))
-			{
-				Control anchor = ToControl();
-				anchor.RenderControl(writer);
-			}
-			return sb.ToString();
+			if (string.IsNullOrEmpty(Contents))
+				return "";
+
+			string url = Url;
+			var tag = string.IsNullOrEmpty(url)
+				? new TagBuilder("span")
+				: new TagBuilder("a").AddAttributeUnlessEmpty("href", Url).AddAttributeUnlessEmpty("target", Target);
+			
+			tag.AddAttributeUnlessEmpty("title", ToolTip);
+			tag.AddAttributeUnlessEmpty("class", ClassName);
+
+			if(HasAttributes)
+				foreach(var kvp in Attributes)
+					tag.AddAttributeUnlessEmpty(kvp.Key, kvp.Value);
+
+			tag.InnerHtml = Contents;
+			return tag.ToString();
+		}
+
+		public void WriteTo(TextWriter writer)
+		{
+			writer.Write(ToString());
 		}
 
 		#endregion

@@ -143,5 +143,15 @@ namespace N2.Tests.Collections
 			var result = node.ToString((c) => "[" + c.ID, (p) => "<", p => ">", (c) => "]");
 			Assert.That(result, Is.EqualTo("[1<[2][3]>]"));
 		}
+
+		[Test]
+		public void Parent_IsSet()
+		{
+			HierarchyNode<ContentItem> node = new TreeHierarchyBuilder(a, 3).Build();
+
+			Assert.That(node.Parent, Is.Null);
+			Assert.That(node.Children[0].Parent, Is.EqualTo(node));
+			Assert.That(node.Children[0].Children[0].Parent, Is.EqualTo(node.Children[0]));
+		}
 	}
 }

@@ -26,15 +26,17 @@ namespace N2.Collections
 
 		protected virtual HierarchyNode<ContentItem> BuildHierarchyTree(ContentItem currentItem, int remainingDepth)
 		{
-			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(currentItem);
+			HierarchyNode<ContentItem> parent = new HierarchyNode<ContentItem>(currentItem);
 			if (remainingDepth > 1)
 			{
 				foreach (ContentItem childItem in GetChildren(currentItem))
 				{
-					node.Children.Add(BuildHierarchyTree(childItem, remainingDepth - 1));
+					var childNode = BuildHierarchyTree(childItem, remainingDepth - 1);
+					childNode.Parent = parent;
+					parent.Children.Add(childNode);
 				}
 			}
-			return node;
+			return parent;
 		}
 	}
 }

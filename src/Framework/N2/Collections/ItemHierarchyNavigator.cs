@@ -18,7 +18,7 @@ namespace N2.Collections
 
 		public ItemHierarchyNavigator(HierarchyBuilder builder, params ItemFilter[] filters)
 		{
-			currentNode = builder.Build(filters);
+			currentNode = builder.Children(filters).Build();
 		}
 
 		public ItemHierarchyNavigator(HierarchyBuilder builder)

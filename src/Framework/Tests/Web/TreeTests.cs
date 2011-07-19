@@ -91,7 +91,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanChangeClassProvider()
 		{
-			string treeString = Tree.From(a_b).ClassProvider(delegate(ContentItem item) { return item.Name; })
+			string treeString = Tree.From(a_b).ClassProvider(null, delegate(HierarchyNode<ContentItem> n) { return n.Current.Name; })
 				.ToString();
 			string expected
 				= "<ul>"
@@ -108,14 +108,14 @@ namespace N2.Tests.Web
 		public void CanChangeLinkProvider()
 		{
 			string treeString =
-				Tree.From(a_b).LinkProvider(delegate(ContentItem item) { return Link.To(item).Class(item.Name); })
+				Tree.From(a_b).LinkWriter((n, w) => Link.To(n.Current).Class(n.Current.Name).WriteTo(w))
 					.ToString();
 			string expected
 				= "<ul>"
-				  + "<li><a href=\"/a_b.aspx\" class=\"a_b\">a_b</a>"
+				  + "<li><a class=\"a_b\" href=\"/a_b.aspx\">a_b</a>"
 				  + "<ul>"
-				  + "<li><a href=\"/a_b_a.aspx\" class=\"a_b_a\">a_b_a</a></li>"
-				  + "<li><a href=\"/a_b_b.aspx\" class=\"a_b_b\">a_b_b</a></li>"
+				  + "<li><a class=\"a_b_a\" href=\"/a_b_a.aspx\">a_b_a</a></li>"
+				  + "<li><a class=\"a_b_b\" href=\"/a_b_b.aspx\">a_b_b</a></li>"
 				  + "</ul></li>"
 				  + "</ul>";
 			Assert.AreEqual(expected, treeString);

@@ -1,6 +1,6 @@
 ﻿@model Dinamico.Models.ContentPart
 
-@{ string uniqueId = Content.UniqueID("v"); }
+@{ string uniqueId = Html.UniqueID("gma"); }
 
 <div id="@uniqueId">
 	@Content.Data.Location

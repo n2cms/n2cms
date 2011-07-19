@@ -48,10 +48,7 @@ namespace N2.Web.UI.WebControls
 			ItemFilter[] filters = GetFilters();
 			Web.Tree t = N2.Web.Tree.From(RootItem)
 				.OpenTo(CurrentItem).Filters(filters)
-				.LinkProvider(delegate(ContentItem item)
-								{
-									return BuildLink(item, CurrentItem, Target);
-								});
+				.LinkWriter((n, w) => BuildLink(n.Current, CurrentItem, Target).WriteTo(w));
 			Control ul = t.ToControl();
 			Controls.Add(ul);
 

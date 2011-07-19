@@ -6,7 +6,7 @@
 <% if(results.Hits.Any()) { %>
 <ul>
 	<% foreach (var item in results.Hits) { %>
-	<li><span><%= content.LinkTo(item.Content) %></span></li>
+	<li><span><%= Html.Link(item.Content) %></span></li>
 	<% } %>
 </ul>
 <% } %>

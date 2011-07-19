@@ -1,12 +1,13 @@
 using System.IO;
 using System.Web.UI;
+using System;
 
 namespace N2.Web
 {
 	/// <summary>
 	/// Builds and modifies a link to somewhere.
 	/// </summary>
-	public interface ILinkBuilder : ILink
+	public interface ILinkBuilder
 	{
 		/// <summary>Sets the link href.</summary>
 		/// <param name="href">An url.</param>
@@ -21,7 +22,7 @@ namespace N2.Web
 		/// <summary>Sets the link target frame.</summary>
 		/// <param name="target">A window or frame name.</param>
 		/// <returns>The same object for chaining.</returns>
-		new ILinkBuilder Target(string target);
+		ILinkBuilder Target(string target);
 
 		/// <summary>Sets the link title/tooltip.</summary>
 		/// <param name="title">A string.</param>
@@ -38,6 +39,7 @@ namespace N2.Web
 		/// <param name="query">A query string with one or more query parameters.</param>
 		/// <returns>The same object for chaining.</returns>
 		ILinkBuilder Query(string query);
+
 		/// <summary>Adds a query key value pair to any existing query.</summary>
 		/// <param name="key">The query key.</param>
 		/// <param name="value">The query value.</param>
@@ -55,6 +57,10 @@ namespace N2.Web
 		/// <returns>The same object for chaining.</returns>
 		ILinkBuilder Attribute(string key, string value);
 
+		/// <summary>Writes the link to the given writer.</summary>
+		/// <param name="writer">The writer that the link html will be written to (unless empty).</param>
+		void WriteTo(TextWriter writer);
+
 		/// <summary>Gets the link's string representation.</summary>
 		/// <returns>A string anchor.</returns>
 		string ToString();
@@ -62,21 +68,5 @@ namespace N2.Web
 		/// <summary>Creates an anchor control representing the link.</summary>
 		/// <returns>An anchor control.</returns>
 		Control ToControl();
-	}
-
-	internal static class LinkBuilderExtensions
-	{
-		public static Control AddTo(this ILinkBuilder builder, Control container)
-		{
-			var c = builder.ToControl();
-			if (c != null)
-				container.Controls.Add(c);
-			return c;
-		}
-
-		public static void WriteTo(this ILinkBuilder builder, TextWriter writer)
-		{
-			writer.Write(builder.ToString());
-		}
 	}
 }

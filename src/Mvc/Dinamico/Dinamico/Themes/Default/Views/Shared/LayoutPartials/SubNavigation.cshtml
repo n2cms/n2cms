@@ -2,6 +2,6 @@
 	int level = 1;
 	foreach (var a in Content.Traverse.AncestorsBetween(level, 2)){
 		level++;
-		@Html.UnorderedList(Content.Traverse.Children(a, filter: Content.Is.Navigatable()), @<span>@Content.LinkTo(item.Data)</span>, className: "submenu menu clearfix level" + level);
+		@Html.UnorderedList(Content.Traverse.Children(a, filter: Content.Is.Navigatable()), @<span>@Html.Link(item.Data)</span>, className: "submenu menu clearfix level" + level);
 	}
 }

@@ -1,4 +1,4 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<string>" %>
 <% using (Html.Content().BeginScope(Model)) { %>
-<%= Html.Content().LinkTo(Html.Content().Traverse.Parent())%>
+<%= Html.Link(Html.Content().Traverse.Parent())%>
 <% } %>

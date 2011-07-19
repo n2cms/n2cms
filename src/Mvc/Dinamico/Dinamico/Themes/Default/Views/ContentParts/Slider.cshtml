@@ -2,7 +2,7 @@
 		   
 @{ 
 	Content.Define(ie => ie.Title = "Parts Slider");
-	string uniqueId = "p" + Content.Current.Item.ID;
+	string uniqueId = Html.UniqueID("s");
 }
 
 @{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }

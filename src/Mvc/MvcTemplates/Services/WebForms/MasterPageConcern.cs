@@ -1,3 +1,4 @@
+using System.Linq;
 using N2.Web.UI;
 using N2.Engine;
 
@@ -14,10 +15,8 @@ namespace N2.Templates.Mvc.Services.WebForms
 
 		public override void OnPreInit(System.Web.UI.Page page, ContentItem item)
 		{
-			if (!string.IsNullOrEmpty(masterPageFile))
-			{
+			if (!string.IsNullOrEmpty(masterPageFile) && !string.IsNullOrEmpty(page.MasterPageFile))
 				page.MasterPageFile = masterPageFile;
-			}
 		}
 	}
 }

@@ -15,7 +15,7 @@
         Waiting = 4,
         /// <summary>The item is published.</summary>
         Published = 16,
-        /// <summary>The item is previously published.</summary>
+        /// <summary>The item was previously published.</summary>
         Unpublished = 32,
         /// <summary>The item is deleted and resides in the trash can.</summary>
         Deleted = 64

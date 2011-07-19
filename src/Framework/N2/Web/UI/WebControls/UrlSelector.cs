@@ -34,7 +34,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>File extensions that may be selected using this selector.</summary>
 		public string SelectableExtensions { get; set; }
 
-		protected IEngine engine;
+		private IEngine engine;
 		protected IEngine Engine
 		{
 			get { return engine ?? N2.Context.Current; }

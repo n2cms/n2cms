@@ -101,7 +101,7 @@ namespace N2.Tests.Web
 
 			string anchor = Link.To(item).Query("feedingTime=soon").AddQuery("hungry", "yes").ToString();
 
-			Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&hungry=yes\">yoda</a>", anchor);
+			Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
 		}
 
 		[Test]
@@ -111,7 +111,7 @@ namespace N2.Tests.Web
 
 			string anchor = Link.To(item).AddQuery("feedingTime", "soon").AddQuery("hungry", "yes").ToString();
 
-			Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&hungry=yes\">yoda</a>", anchor);
+			Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon&amp;hungry=yes\">yoda</a>", anchor);
 		}
 
 		[Test]

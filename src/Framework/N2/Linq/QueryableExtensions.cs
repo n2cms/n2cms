@@ -9,7 +9,10 @@ namespace N2.Linq
 	{
 		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
 		{
-			return source.Where(ci => ci.State == ContentState.Published && ci.Published <= Utility.CurrentTime() && (ci.Expires == null || ci.Expires < Utility.CurrentTime()));
+			var time = Utility.CurrentTime();
+			return source.Where(ci => ci.State == ContentState.Published 
+				&& (ci.Published != null && ci.Published >= time) 
+				&& (ci.Expires == null || ci.Expires < time));
 		}
 
 		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
@@ -22,6 +25,14 @@ namespace N2.Linq
 			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()) || ci == ancestor);
 		}
 
+		public static IQueryable<TSource> WherePage<TSource>(this IQueryable<TSource> source, bool isPage = true) where TSource : ContentItem
+		{
+			if (isPage)
+				return source.Where(ci => ci.ZoneName == null);
+			else
+				return source.Where(ci => ci.ZoneName != null);
+		}
+
 		static MethodInfo whereMethodInfo = typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
 		
 		public static IQueryable<TSource> WhereDetail<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) where TSource : ContentItem
@@ -31,14 +42,6 @@ namespace N2.Linq
 			var whereDetailSubselectExpression = Expression.Call(whereOfT, source.Expression, transformedExpression);
 			return source.Provider.CreateQuery<TSource>(whereDetailSubselectExpression);
 		}
-
-		//public static IQueryable<TSource> WhereDetailCollection<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, bool>> predicate) where TSource : ContentItem
-		//{
-		//    var whereOfT = whereMethodInfo.MakeGenericMethod(new Type[] { typeof(TSource) });
-		//    var transformedExpression = new QueryTransformer().ToDetailSubselect<TSource>(predicate);
-		//    var whereDetailSubselectExpression = Expression.Call(whereOfT, source.Expression, transformedExpression);
-		//    return source.Provider.CreateQuery<TSource>(whereDetailSubselectExpression);
-		//}
 
 		public static IQueryable<T> WhereDetailEquals<T, TValue>(this IQueryable<T> query, TValue value) where T : ContentItem
 		{

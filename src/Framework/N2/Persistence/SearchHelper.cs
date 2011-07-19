@@ -21,10 +21,30 @@ namespace N2.Persistence
 			this.engine = engine;
 		}
 
-		/// <summary>Query for published content items using LINQ.</summary>
+		/// <summary>Query for content items using LINQ.</summary>
+		/// <remarks>Pending or expired pages may be included in the result.</remarks>
 		public IQueryable<ContentItem> Items
 		{
 			get { return Query<ContentItem>().Where(i => i.VersionOf == null); }
+		}
+
+		/// <summary>Query for content pages using LINQ.</summary>
+		/// <remarks>Pending or expired pages may be included in the result.</remarks>
+		public IQueryable<ContentItem> Pages
+		{
+			get { return Items.WherePage(isPage: true); }
+		}
+
+		/// <summary>Query for published content pages using LINQ.</summary>
+		public IQueryable<ContentItem> PublishedPages
+		{
+			get { return Pages.WherePublished(); }
+		}
+
+		/// <summary>Query for published content pages below a certain root using LINQ.</summary>
+		public IQueryable<ContentItem> PublishedPagesBelow(ContentItem ancestorOrSelf)
+		{
+			return PublishedPages.WhereDescendantOrSelf(ancestorOrSelf);
 		}
 
 		/// <summary>Find items using the finder API.</summary>

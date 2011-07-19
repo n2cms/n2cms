@@ -1,16 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" AutoEventWireup="true" Inherits="N2.Web.UI.ContentPage" %>
 <%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="N2.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
     <style>
-        code,textarea { width:99%; height:100px; dipslay:block }
+        code,textarea { width:99%; height:100px; display:block }
         a.current, li.current > a { font-weight:bold; text-decoration:none; }
         li.current > a { color:Red; }
         a.current { color:Green; }
         li.open > a { font-style:italic }
         li.first { border-left:solid 5px blue; }
+        li { margin-left:20px; list-style-type:circle }
     </style>
 </head>
 <body>

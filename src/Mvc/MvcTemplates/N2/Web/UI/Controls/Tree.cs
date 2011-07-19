@@ -81,7 +81,7 @@ namespace N2.Edit.Web.UI.Controls
 			var tree = new N2.Web.Tree(Nodes)
 				.OpenTo(SelectedItem)
 				.Filters(Filter)
-				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item), item, item.Path == SelectedItem.Path, Target, IsSelectable(item, SelectableTypes, SelectableExtensions)))
+				.LinkWriter((n, w) => BuildLink(adapters.ResolveAdapter<NodeAdapter>(n.Current), n.Current, n.Current.Path == SelectedItem.Path, Target, IsSelectable(n.Current, SelectableTypes, SelectableExtensions)).WriteTo(w))
 				.ToControl();
 
 			AppendExpanderNodeRecursive(tree, Filter, Target, adapters, SelectableTypes, SelectableExtensions);

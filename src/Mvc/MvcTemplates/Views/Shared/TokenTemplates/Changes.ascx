@@ -7,7 +7,7 @@
 <% if(changes.Any()) { %>
 <ul>
 <% foreach(var item in changes) { %>
-<li><span><%= Html.Content().LinkTo(item) %></span></li>
+<li><span><%= Html.Link(item) %></span></li>
 <% } %>
 </ul>
 <% } %>
