@@ -206,6 +206,11 @@ namespace N2.Collections
 			return Inner.Where(i => i.ZoneName == zoneName).ToList();
 		}
 
+		public IList<T> FindNavigatablePages()
+		{
+			return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).ToList();
+		}
+
 		public IList<T> FindPages()
 		{
 			return this.Where(i => i.ZoneName == null).ToList();

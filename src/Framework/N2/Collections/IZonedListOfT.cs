@@ -8,7 +8,12 @@ namespace N2.Collections
 	/// <typeparam name="T">The type of item in the list.</typeparam>
 	public interface IZonedList<T> where T : class, IPlaceable
 	{
-		/// <summary>Retrieves items where the zone name is null.</summary>
+		/// <summary>Retrieves visible and published pages where the zone name is null.</summary>
+		/// <returns>A list of items that are considered to be pages.</returns>
+		/// <remarks>This method does not perform security checks.</remarks>
+		IList<T> FindNavigatablePages();
+
+		/// <summary>Retrieves pages where the zone name is null.</summary>
 		/// <returns>A list of items that are considered to be pages.</returns>
 		IList<T> FindPages();
 

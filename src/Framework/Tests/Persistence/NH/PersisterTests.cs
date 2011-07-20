@@ -621,7 +621,7 @@ namespace N2.Tests.Persistence.NH
 
 		[TestCase(true)]
 		[TestCase(false)]
-		public void Children_WhichArePages_CanBeFound(bool forceInitialize)
+		public void FindPages_ReturnsPages_NotInZone(bool forceInitialize)
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
 			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
@@ -638,10 +638,92 @@ namespace N2.Tests.Persistence.NH
 
 				if (forceInitialize)
 				{
-					var temp = item.Children[0]; // initilze
+					var temp = item.Children[0]; // initialize
 				}
 
 				var pages = item.Children.FindPages();
+
+				Assert.That(pages.Single(), Is.EqualTo(child1));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void FindNavigatablePages_ReturnsPages_NotInZone(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.ZoneName = "Zone";
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initialize
+				}
+
+				var pages = item.Children.FindNavigatablePages();
+
+				Assert.That(pages.Single(), Is.EqualTo(child1));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void FindNavigatablePages_ReturnsPages_ThatAreVisible(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child1.Visible = false;
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initialize
+				}
+
+				var pages = item.Children.FindNavigatablePages();
+
+				Assert.That(pages.Single(), Is.EqualTo(child2));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void FindNavigatablePages_ReturnsPages_ThatArePublished(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.Expires = DateTime.Now.AddSeconds(-10);
+			child2.State = ContentState.Unpublished;
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initialize
+				}
+
+				var pages = item.Children.FindNavigatablePages();
 
 				Assert.That(pages.Single(), Is.EqualTo(child1));
 			}

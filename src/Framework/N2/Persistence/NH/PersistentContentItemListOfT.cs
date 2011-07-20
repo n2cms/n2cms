@@ -26,11 +26,21 @@ namespace N2.Persistence.NH
 			if (this.WasInitialized)
 				return this.Where(i => i.ZoneName == zoneName).ToList();
 
-			var session = ((ISession)Session);
 			if (zoneName == null)
-				return session.CreateFilter(this, "where ZoneName is null").List<T>();
+				return Session.CreateFilter(this, "where ZoneName is null").List<T>();
 			else
-				return session.CreateFilter(this, "where ZoneName=:zoneName").SetParameter("zoneName", zoneName).List<T>();
+				return Session.CreateFilter(this, "where ZoneName = :zoneName").SetParameter("zoneName", zoneName).List<T>();
+		}
+
+		public IList<T> FindNavigatablePages()
+		{
+			if (this.WasInitialized)
+				return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).ToList();
+
+			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires)")
+				.SetParameter("published", Utility.CurrentTime())
+				.SetParameter("expires", Utility.CurrentTime())
+				.List<T>();
 		}
 
 		public IList<T> FindPages()
@@ -38,8 +48,7 @@ namespace N2.Persistence.NH
 			if (this.WasInitialized)
 				return this.Where(i => i.ZoneName == null).ToList();
 
-			var session = ((ISession)Session);
-			return session.CreateFilter(this, "where ZoneName is null").List<T>();
+			return Session.CreateFilter(this, "where ZoneName is null").List<T>();
 		}
 
 		public IList<T> FindParts()
@@ -47,8 +56,7 @@ namespace N2.Persistence.NH
 			if (this.WasInitialized)
 				return this.Where(i => i.ZoneName != null).ToList();
 
-			var session = ((ISession)Session);
-			return session.CreateFilter(this, "where ZoneName is not null").List<T>();
+			return Session.CreateFilter(this, "where ZoneName is not null").List<T>();
 		}
 
 		public IList<string> FindZoneNames()
@@ -56,8 +64,7 @@ namespace N2.Persistence.NH
 			if (this.WasInitialized)
 				return this.Select(i => i.ZoneName).Distinct().ToList();
 
-			var session = ((ISession)Session);
-			return session.CreateFilter(this, "select distinct ZoneName").List<string>();
+			return Session.CreateFilter(this, "select distinct ZoneName").List<string>();
 		}
 
 		#endregion
@@ -70,9 +77,14 @@ namespace N2.Persistence.NH
 				return this.AsQueryable<T>();
 
 			var parent = Owner as ContentItem;
-			return ((ISession)Session).Query<T>().Where(i => i.Parent == parent);
+			return Session.Query<T>().Where(i => i.Parent == parent);
 		}
 
 		#endregion
+
+		private new ISession Session
+		{
+			get { return ((ISession)base.Session); }
+		}
 	}
 }
