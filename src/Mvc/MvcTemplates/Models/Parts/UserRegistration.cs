@@ -11,6 +11,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[AllowedZones(Zones.Content)]
 	[N2.Web.UI.FieldSetContainer("registration", "Registration", 30)]
 	[N2.Web.UI.FieldSetContainer("verification", "Verification", 40)]
+	[RestrictCardinality]
 	public class UserRegistration : PartBase
 	{
 		private const string VerificationBody = @"Please verify your e-mail. Click here:

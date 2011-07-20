@@ -7,6 +7,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Login", Name = "Login",
 		IconUrl = "~/Content/Img/key.png")]
 	[WithEditableTitle("Title", 10)]
+	[RestrictCardinality]
 	public class LoginItem : PartBase
 	{
 		[DisplayableHeading(4)]

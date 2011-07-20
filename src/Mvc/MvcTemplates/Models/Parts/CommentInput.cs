@@ -8,6 +8,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		IconUrl = "~/Content/Img/comment_add.png")]
 	[RestrictParents(typeof (ICommentable))]
 	[AllowedZones(Zones.Content, Zones.RecursiveBelow)]
+	[RestrictCardinality]
 	public class CommentInput : PartBase
 	{
 	}
