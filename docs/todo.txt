@@ -1,3 +1,5 @@
+- navigation add thingy
+- quick edit editable
 - select only pages for navigation
 - file names with _ (discussions/265070)
 - reproduce lucene problems (discussions/262292)

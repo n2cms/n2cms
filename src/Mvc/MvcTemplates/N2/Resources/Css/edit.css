@@ -111,9 +111,6 @@ table.editDetail { border-collapse:collapse; }
 #content .mceStatusbar { background:#F8F8E8 url(../../Resources/Img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
 .mceListBoxMenu td,th { overflow:visible; } /* fix: IE9 may show horizontal scrollbars in drop down menu */
 
-.framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
-.framed .toolbar .iconed:hover  { background-position:1px 4px; padding-left:19px; }
-
 .framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
 .framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
 .framed .preview.iconed { background-image:url(../../Resources/icons/zoom.png); }
