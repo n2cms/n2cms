@@ -1,12 +1,12 @@
 ﻿@model Dinamico.Models.LogOnModel
 
 @{
-    ViewBag.Title = "Log On";
+    ViewBag.Title = Content.Translate.Text("Log On");
 }
 
-<h1>Log On</h1>
+<h1>@Content.Translate.Text("Log On")</h1>
 <p>
-    Please enter your username and password. @Html.ActionLink("Register", "Register") if you don't have an account.
+	@Content.Translate.Text("Please enter your username and password.") @Html.ActionLink(Content.Translate.Text("Register"), "Register", new { returnUrl = Request["returnUrl"] }) @Content.Translate.Text("if you don't have an account.")
 </p>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -22,7 +22,7 @@
 @using (Html.BeginForm()) {
     <div>
         <fieldset>
-            <legend>Account Information</legend>
+            <legend>@Content.Translate.Text("Account Information")</legend>
 
             <div class="editor-label">
                 @Html.LabelFor(m => m.UserName)
@@ -46,7 +46,7 @@
             </div>
 
             <p>
-                <input type="submit" value="Log On" />
+                <input type="submit" value="@Content.Translate.Text("Log On")" />
             </p>
         </fieldset>
     </div>

@@ -8,6 +8,17 @@ namespace N2.Security
 	/// </summary>
 	public class PermissionDeniedException : HttpException
 	{
+		public PermissionDeniedException()
+			: base(401, "Permission denied")
+		{
+		}
+
+		public PermissionDeniedException(ContentItem item)
+			: base(401, "Permission denied")
+		{
+			this.item = item;
+		}
+
 		public PermissionDeniedException(ContentItem item, IPrincipal user)
 			: base(401, "Permission denied")
 		{

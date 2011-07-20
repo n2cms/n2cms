@@ -74,6 +74,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
 		{
+			TryMasterVersion(ref item);
 			return N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true).Where(filter ?? DefaultFilter);
 		}
 
@@ -135,6 +136,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildPages(ContentItem parent)
 		{
+			TryMasterVersion(ref parent);
 			return (parent ?? CurrentPage).Children.FindPages().Where(new AccessiblePageFilter(engine.Resolve<IWebContext>().User, engine.SecurityManager));
 		}
 
@@ -149,6 +151,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> NavigatableChildPages(ContentItem parent)
 		{
+			TryMasterVersion(ref parent);
 			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter());
 		}
 
@@ -172,6 +175,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildParts(ContentItem parent, string zoneName)
 		{
+			TryMasterVersion(ref parent);
 			return (parent ?? CurrentItem).Children.FindParts(zoneName).Where(CreateAccessFilter());
 		}
 
@@ -188,6 +192,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> Descendants(ContentItem ancestor, ItemFilter filter = null)
 		{
+			TryMasterVersion(ref ancestor);
 			return N2.Find.EnumerateChildren(ancestor).Where(filter ?? DefaultFilter);
 		}
 
@@ -197,6 +202,7 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> DescendantPages(ContentItem ancestor, ItemFilter filter = null)
 		{
+			TryMasterVersion(ref ancestor);
 			return N2.Find.EnumerateChildren(ancestor).Where(Content.Is.Page()).Where(filter ?? DefaultFilter);
 		}
 
@@ -232,6 +238,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> Siblings(ContentItem item, ItemFilter filter)
 		{
 			if (item == null) item = CurrentItem;
+			if (item == null) return Enumerable.Empty<ContentItem>();
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
 			TryMasterVersion(ref item);
 
@@ -337,6 +344,8 @@ namespace N2.Collections
 			if (item == null)
 				return null;
 
+			TryMasterVersion(ref item);
+
 			var typed = item as T;
 			if (typed != null)
 				return typed;
@@ -352,6 +361,7 @@ namespace N2.Collections
 		/// <returns>The closest start page node.</returns>
 		public ContentItem ClosestStartPage(ContentItem item = null)
 		{
+			TryMasterVersion(ref item);
 			var startPage = ClosestOf<IStartPage>(item ?? CurrentItem) ?? engine.UrlParser.StartPage;
 			TryRedirect(ref startPage);
 			return startPage;
@@ -368,7 +378,7 @@ namespace N2.Collections
 			return false;
 		}
 
-		private bool TryMasterVersion(ref ContentItem item)
+		private static bool TryMasterVersion(ref ContentItem item)
 		{
 			if (item != null && item.VersionOf != null)
 			{

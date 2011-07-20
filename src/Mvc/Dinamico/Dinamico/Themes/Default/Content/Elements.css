@@ -29,3 +29,9 @@ a.opener { text-decoration:none }
 .part { margin-bottom:20px; }
 
 .highlight { background:yellow; }
+
+form fieldset { border:solid 1px silver; padding:19px; }
+form fieldset legend { background-color:#fff; font-style:italic; }
+form .editor-label { float:left; clear:left; min-width:150px; margin-bottom:1em; }
+form .editor-field { float:left; margin-bottom:5px; }
+form p { clear:both; }

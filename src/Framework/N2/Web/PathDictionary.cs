@@ -90,7 +90,10 @@ namespace N2.Web
 			{
 				PathData data = finder.GetPath(item, remainingUrl);
 				if (data != null)
+				{
+					data.StopItem = item;
 					return data;
+				}
 			}
 
 			return PathData.None(item, remainingUrl);

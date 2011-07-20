@@ -74,16 +74,19 @@ namespace N2.Web
 		{
 			if (newCurrentItem == null) return new EmptyDisposable();
 
-			EnsureAuthorized(newCurrentItem);
-
 			return new ContentScope(newCurrentItem, this);
 		}
 
 		private void EnsureAuthorized(ContentItem newCurrentItem)
 		{
+			if (!IsAuthorized(newCurrentItem))
+				throw new PermissionDeniedException(newCurrentItem);
+		}
+
+		private bool IsAuthorized(ContentItem item)
+		{
 			var user = Services.Resolve<IWebContext>().User;
-			if (!Engine.SecurityManager.IsAuthorized(newCurrentItem, user))
-				throw new PermissionDeniedException(newCurrentItem, user);
+			return Engine.SecurityManager.IsAuthorized(item, user);
 		}
 
 		/// <summary>Begins a new scope using the current content helper.</summary>
@@ -101,15 +104,26 @@ namespace N2.Web
 			return new EmptyDisposable();
 		}
 
-		private ContentItem Parse(string newCurrentItemUrlOrId)
+		/// <summary>Tries to parse the given string as an item id, or an item url.</summary>
+		/// <param name="itemUrlOrId">An id, or the url to an item.</param>
+		/// <returns>An item or, null if no match was found.</returns>
+		/// <remarks>If the logged on user isn't authoriezd towards the item null is returned.</remarks>
+		public ContentItem Parse(string itemUrlOrId)
 		{
+			if (string.IsNullOrEmpty(itemUrlOrId))
+				return null;
+
 			int id;
 			ContentItem item = null;
-			if (int.TryParse(newCurrentItemUrlOrId, out id))
+			if (int.TryParse(itemUrlOrId, out id))
 				item = Engine.Persister.Get(id);
 
 			if (item == null)
-				item = Services.Resolve<IUrlParser>().Parse(newCurrentItemUrlOrId);
+				item = Services.Resolve<IUrlParser>().Parse(itemUrlOrId);
+
+			if (!IsAuthorized(item))
+				return null;
+
 			return item;
 		}
 

@@ -1,4 +1,1 @@
-﻿@using (Content.BeginScope(Request["returnUrl"], Content.Current.Page == null))
-{
-	@Html.Tree(takeLevels: 3, htmlAttributes: new { id="menu",  @class="topmenu menu clearfix level1"});
-}
+﻿@Html.Tree(Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage, takeLevels: 3, htmlAttributes: new { id = "menu", @class = "topmenu menu clearfix level1" });

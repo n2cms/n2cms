@@ -1,10 +1,11 @@
 ﻿@using (Content.BeginScope(Request["returnUrl"], reallyBeginScope: Content.Current.Page == null))
 {
+	var startPage = Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage;
 <ul id="menu" class="topmenu menu clearfix level1">
 	<li class="home">
-		<a href="@Content.Traverse.StartPage.Url" title="@Content.Traverse.StartPage.Title"><img src="@Url.ThemedContent("~/Content/home.png")" alt="@Content.Traverse.StartPage.Title" /></a>
+		<a href="@startPage.Url" title="@startPage.Title"><img src="@Url.ThemedContent("~/Content/home.png")" alt="@startPage.Title" /></a>
 	</li>
-	@Html.Tree(parallelRoot: false, takeLevels: 3).ExcludeRoot(true)
+	@Html.Tree(startPage, parallelRoot: false, takeLevels: 3).ExcludeRoot(true)
 </ul>
 }
 <script type='text/javascript'>//<![CDATA[
