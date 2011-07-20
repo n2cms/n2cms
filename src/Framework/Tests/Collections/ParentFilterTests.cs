@@ -49,7 +49,7 @@ namespace N2.Tests.Collections
 		[TestCase(5, 0)]
 		public void CanFilterByParentID(int parentID, int expectedCount)
 		{
-			ParentFilter filter = new ParentFilter(parentID);
+			AncestorFilter filter = new AncestorFilter(parentID);
 			filter.Filter(allItems);
 			Assert.AreEqual(expectedCount, allItems.Count);
 		}
@@ -57,7 +57,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void CanFilterByParentItem()
 		{
-			ParentFilter filter = new ParentFilter(child1);
+			AncestorFilter filter = new AncestorFilter(child1);
 			filter.Filter(allItems);
 			Assert.AreEqual(3, allItems.Count);
 		}

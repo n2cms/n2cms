@@ -169,7 +169,7 @@ namespace N2.Xml
 
 		protected virtual IEnumerable<ContentItem> GetChildren(ContentItem item)
 		{
-			return new N2.Collections.ItemList(item.Children, new CompositeFilter(Filters));
+			return new N2.Collections.ItemList(item.Children, new AllFilter(Filters));
 		}
 
 		protected string GetDateTimeString(DateTime date)

@@ -121,6 +121,7 @@
     <Compile Include="Collections\AccessFilterTests.cs" />
     <Compile Include="Collections\CompositeFilterTests.cs" />
     <Compile Include="Collections\FilterCompositionTests.cs" />
+    <Compile Include="Collections\FilterTests.cs" />
     <Compile Include="Collections\ItemListTests.cs" />
     <Compile Include="Collections\PublishedFilterTests.cs" />
     <Compile Include="Collections\NavigationFilterTests.cs" />

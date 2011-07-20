@@ -670,7 +670,7 @@ namespace N2.Tests.Persistence.NH
 		public void FindWithFilterEnumeration()
 		{
 			IList<ItemFilter> filters = new List<ItemFilter>();
-			filters.Add(new ParentFilter(startPage));
+			filters.Add(new AncestorFilter(startPage));
 			filters.Add(new CountFilter(0, 2));
 			IList<ContentItem> items = finder.All
 				.Filters(filters)

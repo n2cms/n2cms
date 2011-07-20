@@ -85,7 +85,7 @@ namespace N2.Collections
 
 		public static ItemFilter operator &(ItemFilter f1, ItemFilter f2)
 		{
-			return new CompositeFilter(f1, f2);
+			return new AllFilter(f1, f2);
 		}
 
 		public static ItemFilter operator |(ItemFilter f1, ItemFilter f2)
@@ -95,12 +95,12 @@ namespace N2.Collections
 
 		public static ItemFilter operator +(ItemFilter f1, ItemFilter f2)
 		{
-			return new CompositeFilter(f1, f2);
+			return new AllFilter(f1, f2);
 		}
 
 		public static ItemFilter operator -(ItemFilter f1, ItemFilter f2)
 		{
-			return new CompositeFilter(f1, new InverseFilter(f2));
+			return new AllFilter(f1, new InverseFilter(f2));
 		}
 
 		#endregion

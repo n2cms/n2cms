@@ -236,7 +236,7 @@ namespace N2.Edit
 			ItemFilter filter = new AccessFilter(user, securityManager);
 			if (!settings.DisplayDataItems)
 			{
-				filter = new CompositeFilter(new PageFilter(), filter);
+				filter = new AllFilter(new PageFilter(), filter);
 			}
 			return filter;
 		}

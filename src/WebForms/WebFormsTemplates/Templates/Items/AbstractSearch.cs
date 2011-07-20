@@ -27,7 +27,7 @@ namespace N2.Templates.Items
             List<ItemFilter> filters = new List<ItemFilter>();
             filters.Add(new NavigationFilter());
             if (SearchRoot != null)
-                filters.Add(new ParentFilter(SearchRoot));
+                filters.Add(new AncestorFilter(SearchRoot));
             return filters;
         }
     }

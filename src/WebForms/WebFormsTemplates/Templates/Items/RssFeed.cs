@@ -84,7 +84,7 @@ namespace N2.Templates.Items
         {
             ItemFilter[] filters;
             if(FeedRoot != null)
-                filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter(), new ParentFilter(FeedRoot) };
+                filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter(), new AncestorFilter(FeedRoot) };
             else
                 filters = new ItemFilter[] {  };
             return filters;

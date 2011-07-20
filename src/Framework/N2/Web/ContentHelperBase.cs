@@ -33,12 +33,6 @@ namespace N2.Web
 
 		protected Func<PathData> PathGetter { get; set; }
 
-		[Obsolete]
-		public PathData Path
-		{
-			get { return PathGetter(); }
-		}
-
 		/// <summary>Traverse the content hieararchy.</summary>
 		public virtual TraverseHelper Traverse
 		{

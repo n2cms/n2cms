@@ -140,7 +140,7 @@ namespace N2.Web.UI.WebControls
 				if (ZoneName != null) filters.Add(new ZoneFilter(ZoneName));
 				if (PageFilter) filters.Add(new PageFilter());
 				if (NavigationFilter) filters.Add(new NavigationFilter());
-				childrenView.Filter = new CompositeFilter(filters);
+				childrenView.Filter = new AllFilter(filters);
 				childrenView.SortBy = SortBy;
 			}
 			return childrenView;

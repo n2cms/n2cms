@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using N2.Collections;
 using N2.Definitions;
-using N2.Engine.Globalization;
-using N2.Persistence.Finder;
-using N2.Web.Mvc.Html;
-using N2.Persistence.NH;
-using System;
 using N2.Engine;
+using N2.Engine.Globalization;
 using N2.Web;
 
 namespace N2.Collections
@@ -133,14 +128,28 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildPages()
 		{
-			return Children(CurrentPage, Content.Is.AccessiblePage());
+			return ChildPages(CurrentPage);
 		}
 
 		/// <summary>Pages below a given item.</summary>
 		/// <returns></returns>
-		public IEnumerable<ContentItem> ChildPages(ContentItem item)
+		public IEnumerable<ContentItem> ChildPages(ContentItem parent)
 		{
-			return Children(item, Content.Is.AccessiblePage());
+			return (parent ?? CurrentPage).Children.FindPages().Where(new AccessiblePageFilter(engine.Resolve<IWebContext>().User, engine.SecurityManager));
+		}
+
+		/// <summary>Pages below the current item suitable for display in a navigation (visible, published, accessible).</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> NavigatableChildPages()
+		{
+			return NavigatableChildPages(CurrentPage);
+		}
+
+		/// <summary>Pages below the given item suitable for display in a navigation (visible, published, accessible).</summary>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> NavigatableChildPages(ContentItem parent)
+		{
+			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter());
 		}
 
 		/// <summary>Parts below the current item.</summary>
@@ -155,7 +164,15 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildParts(string zoneName)
 		{
-			return Children(Content.Is.Accessible() & Content.Is.Part() & Content.Is.InZone(zoneName));
+			return ChildParts(CurrentItem, zoneName);
+		}
+
+		/// <summary>Parts in a given zone below the current item.</summary>
+		/// <param name="zoneName"></param>
+		/// <returns></returns>
+		public IEnumerable<ContentItem> ChildParts(ContentItem parent, string zoneName)
+		{
+			return (parent ?? CurrentItem).Children.FindParts(zoneName).Where(CreateAccessFilter());
 		}
 
 		/// <summary>Descendants of the current item.</summary>
@@ -359,6 +376,11 @@ namespace N2.Collections
 				return true;
 			}
 			return false;
+		}
+
+		private AccessFilter CreateAccessFilter()
+		{
+			return new AccessFilter(engine.Resolve<IWebContext>().User, engine.SecurityManager);
 		}
 	}
 }

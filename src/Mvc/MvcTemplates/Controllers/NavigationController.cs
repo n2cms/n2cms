@@ -31,7 +31,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		private IEnumerable<Translation> GetTranslations()
 		{
-			ItemFilter languageFilter = new CompositeFilter(new AccessFilter(), new PublishedFilter());
+			ItemFilter languageFilter = new AllFilter(new AccessFilter(), new PublishedFilter());
 			IEnumerable<ContentItem> translations = _languageGateway.FindTranslations(Find.ClosestStartPage);
 			foreach (ContentItem translation in languageFilter.Pipe(translations))
 			{

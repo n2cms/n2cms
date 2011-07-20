@@ -15,7 +15,7 @@ namespace N2.Web.UI
 		#region Private Fields
 		private ContentItem parentItem = null;
 		private Collections.ItemList allItems = null;
-        private Collections.CompositeFilter filter;
+        private Collections.AllFilter filter;
 		#endregion
 
 		#region Constructors
@@ -38,7 +38,7 @@ namespace N2.Web.UI
 			}
         }
 
-        public Collections.CompositeFilter Filter
+        public Collections.AllFilter Filter
         {
             get { return filter; }
             set { filter = value; }
@@ -47,7 +47,7 @@ namespace N2.Web.UI
         [Obsolete("Use Filter instaed")]
 		public IEnumerable<Collections.ItemFilter> Filters
 		{
-			set { filter = new Collections.CompositeFilter(value); }
+			set { filter = new Collections.AllFilter(value); }
 		}
 
 		public string SortBy { get; set; }

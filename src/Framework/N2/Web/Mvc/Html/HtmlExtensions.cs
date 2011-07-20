@@ -27,8 +27,10 @@ namespace N2.Web.Mvc.Html
 			var builder = parallelRoot
 				? (HierarchyBuilder)new ParallelRootHierarchyBuilder(startsFrom, takeLevels)
 				: (HierarchyBuilder)new TreeHierarchyBuilder(startsFrom, takeLevels);
+			
+			builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter);
 
-			var tree = N2.Web.Tree.Using(builder).Filters(filter);
+			var tree = N2.Web.Tree.Using(builder);
 			if (htmlAttributes != null)
 				tree.Tag(ApplyToRootUl(htmlAttributes));
 

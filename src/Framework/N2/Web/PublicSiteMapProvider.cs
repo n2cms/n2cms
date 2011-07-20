@@ -69,7 +69,7 @@ namespace N2.Web
 			filters.Add(new PublishedFilter());
 			if (SecurityTrimmingEnabled)
 				filters.Add(new AccessFilter());
-			return new CompositeFilter(filters.ToArray());
+			return new AllFilter(filters.ToArray());
 		}
 
         public override SiteMapNode GetParentNode(SiteMapNode node)

@@ -408,7 +408,7 @@ namespace N2.Persistence.NH.Finder
 				items = new ItemList<T>();
 			else if (Filters != null)
 			{
-				var filter = CompositeFilter.Wrap(Filters);
+				var filter = AllFilter.Wrap(Filters);
 				items = ToListWithFillup<T>(retrievedItems, filter, /*maxRequeries*/10);
 			}
 			else

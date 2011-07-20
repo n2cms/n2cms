@@ -28,7 +28,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter Accessible(IPrincipal user, ISecurityManager security)
 		{
-			return new CompositeFilter(new AccessFilter(user, security), new PublishedFilter());
+			return new AllFilter(new AccessFilter(user, security), new PublishedFilter());
 		}
 
 		/// <summary>Filters by access and pages.</summary>
@@ -42,7 +42,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter AccessiblePage(IPrincipal user, ISecurityManager security)
 		{
-			return new CompositeFilter(new PageFilter(), new PublishedFilter(), new AccessFilter(user, security));
+			return new AccessiblePageFilter(user, security);
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -50,7 +50,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter All(params ItemFilter[] filters)
 		{
-			return new CompositeFilter(filters);
+			return new AllFilter(filters);
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -58,7 +58,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter All(IEnumerable<ItemFilter> filters)
 		{
-			return new CompositeFilter(filters);
+			return new AllFilter(filters);
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -66,7 +66,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter Any(params ItemFilter[] filters)
 		{
-			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
+			return new AnyFilter(filters);
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -74,7 +74,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter Any(IEnumerable<ItemFilter> filters)
 		{
-			return new DelegateFilter(i => filters.Any(f => f.Match(i)));
+			return new AnyFilter(filters);
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -82,7 +82,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter All(ItemFilter first, IEnumerable<ItemFilter> alsoRequired)
 		{
-			return new CompositeFilter(new ItemFilter[] { first }.Union(alsoRequired));
+			return new AllFilter(new [] { first }.Union(alsoRequired));
 		}
 
 		/// <summary>Filters by all the provided filters.</summary>
@@ -90,7 +90,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter Any(ItemFilter first, IEnumerable<ItemFilter> filters)
 		{
-			return new DelegateFilter(i => first.Match(i) || filters.Any(f => f.Match(i)));
+			return new AnyFilter(new [] { first }.Union(filters));
 		}
 
 		/// <summary>Filters by counting items. This filter must be reset after each usage.</summary>
@@ -142,7 +142,7 @@ namespace N2.Collections
 		/// <returns>A filter apart.</returns>
 		public ItemFilter Part()
 		{
-			return Not(Page());
+			return new PartFilter();
 		}
 
 		/// <summary>Filters items below an ancestor.</summary>
@@ -150,7 +150,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter DescendantOf(ContentItem ancestor)
 		{
-			return new ParentFilter(ancestor);
+			return new AncestorFilter(ancestor);
 		}
 
 		/// <summary>Filters items below an ancestor or the ancestor itself.</summary>
@@ -158,7 +158,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter DescendantOrSelf(ContentItem ancestor)
 		{
-			return Custom(i => i == ancestor || i.AncestralTrail.StartsWith(Utility.GetTrail(ancestor)));
+			return new AncestorFilter(ancestor, true);
 		}
 
 		/// <summary>Filters by items that are published and not expired.</summary>
@@ -233,11 +233,11 @@ namespace N2.Collections
 		}
 
 		/// <summary>Filters items returning those of the given state.</summary>
-		/// <param name="state">The state to return.</param>
+		/// <param name="requiredState">The state to return.</param>
 		/// <returns>A filter that filters on content state.</returns>
-		public ItemFilter State(ContentState state)
+		public ItemFilter State(ContentState requiredState)
 		{
-			return new DelegateFilter(ci => (ci.State & state) == state);
+			return new StateFilter(requiredState);
 		}
 
 		/// <summary>Filters items below an item of a certain type.</summary>

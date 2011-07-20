@@ -681,7 +681,7 @@ namespace N2
         public virtual ItemList GetChildren(string childZoneName)
         {
 			return GetChildren(
-                new CompositeFilter(
+                new AllFilter(
                     new ZoneFilter(childZoneName), 
                     new AccessFilter()));
         }
@@ -691,7 +691,7 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual ItemList GetChildren(params ItemFilter[] filters)
 		{
-			return GetChildren(new CompositeFilter(filters));
+			return GetChildren(new AllFilter(filters));
 		}
 
 		/// <summary>Gets children applying filters.</summary>

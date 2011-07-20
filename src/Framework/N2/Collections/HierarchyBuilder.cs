@@ -33,7 +33,7 @@ namespace N2.Collections
 		{
 			Filter = (filters.Length == 1)
 				? filters[0]
-				: new CompositeFilter(filters);
+				: new AllFilter(filters);
 
 			GetChildren = (item) => item.GetChildren(filters);
 			return this;

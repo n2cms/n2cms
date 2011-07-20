@@ -110,8 +110,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
+    <Compile Include="Collections\ChildFactoryDelegate.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
+    <Compile Include="Collections\AccessiblePageFilter.cs" />
+    <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\StateFilter.cs" />
+    <Compile Include="Collections\PartFilter.cs" />
     <Compile Include="Collections\ParallelRootHierarchyBuilder.cs" />
     <Compile Include="Collections\FixedHierarchyBuilder.cs" />
     <Compile Include="Collections\NoHierarchyBuilder.cs" />
@@ -483,7 +488,6 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="Collections\ChildFactoryDelegate.cs" />
     <Compile Include="Collections\IPipelineOfT.cs" />
     <Compile Include="Configuration\AssemblyCollection.cs" />
     <Compile Include="Configuration\AssemblyElement.cs" />
@@ -502,7 +506,7 @@
     <Compile Include="Configuration\VirtualPathElement.cs" />
     <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
-    <Compile Include="Collections\CompositeFilter.cs" />
+    <Compile Include="Collections\AllFilter.cs" />
     <Compile Include="Collections\DelegateFilter.cs" />
     <Compile Include="Collections\HierarchyNode.cs" />
     <Compile Include="Collections\IHierarchyNavigator.cs" />
@@ -512,7 +516,7 @@
     <Compile Include="Collections\NavigationFilter.cs" />
     <Compile Include="Collections\NullFilter.cs" />
     <Compile Include="Collections\PageFilter.cs" />
-    <Compile Include="Collections\ParentFilter.cs" />
+    <Compile Include="Collections\AncestorFilter.cs" />
     <Compile Include="Collections\PublishedFilter.cs" />
     <Compile Include="Collections\RecursiveFinder.cs" />
     <Compile Include="Collections\TreeHierarchyBuilder.cs" />
