@@ -48,6 +48,16 @@ namespace N2.Web.Mvc.Html
 </div></div>
 ";
 
+		/// <summary>Gets the curent state of the control panel.</summary>
+		/// <param name="html"></param>
+		/// <returns></returns>
+		public static ControlPanelState GetControlPanelState(HtmlHelper html)
+		{
+			return ControlPanel.GetState(html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
+		}
+
+		/// <summary>Renders the openable control panel displayed in the upper left corner on N2 sites.</summary>
+		/// <param name="html"></param>
 		public static void RenderControlPanel(this HtmlHelper html)
 		{
 			var engine = html.ContentEngine();
@@ -58,7 +68,7 @@ namespace N2.Web.Mvc.Html
 			if (RegistrationExtensions.GetRegistrationExpression(html) != null)
 				return;
 
-			var state = ControlPanel.GetState(html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
+			var state = GetControlPanelState(html);
 			var settings = new
 			{
 				NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),

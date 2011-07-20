@@ -117,7 +117,7 @@ namespace N2.Web
 		/// <returns></returns>
 		public Tree Tag(Action<HierarchyNode<ContentItem>, TagBuilder> tagModifier)
 		{
-			this.tagModifier = tagModifier;
+			this.tagModifier += tagModifier;
 			return this;
 		}
 
