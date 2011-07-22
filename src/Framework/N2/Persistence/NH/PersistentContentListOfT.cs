@@ -113,20 +113,32 @@ namespace N2.Persistence.NH
 
 		#region IPageableList<T> Members
 
-		public virtual IList<T> FindRange(int skip, int take)
+		public virtual IQueryable<T> FindRange(int skip, int take)
 		{
 			if (this.WasInitialized)
 				return this.Skip(skip)
 					.Take(take)
-					.ToList();
+					.AsQueryable();
 
-			IQuery pagedList = ((ISession)Session)
+			//return Query().Skip(skip).Take(take);
+			return ((ISession)Session)
 				.CreateFilter(this, "")
 				.SetFirstResult(skip)
 				.SetMaxResults(take)
-				.SetCacheable(true);
+				.SetCacheable(true)
+				.List<T>().AsQueryable();
+		}
 
-			return pagedList.List<T>();
+		#endregion
+
+		#region IQueryableList<T> Members
+
+		public virtual IQueryable<T> Query()
+		{
+			if (WasInitialized)
+				return this.AsQueryable<T>();
+
+			throw new NotSupportedException("Cannot query since we don't know the parent relation in this case.");
 		}
 
 		#endregion

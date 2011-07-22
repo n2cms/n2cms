@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace N2.Collections
 {
@@ -12,6 +13,6 @@ namespace N2.Collections
 		/// <param name="skip">The number of items to skip.</param>
 		/// <param name="take">The number of items to take.</param>
 		/// <returns>A list of items within the given range.</returns>
-		IList<T> FindRange(int skip, int take);
+		IQueryable<T> FindRange(int skip, int take);
 	}
 }

@@ -59,7 +59,7 @@ namespace N2.Tests.Edit
 			adapter.NodeFactory.Register(new FunctionalNodeProvider("/hello/", (path) => new Items.NormalPage { Name = "World" }));
 
 			var children = adapter.GetChildren(root, Interfaces.Managing);
-			Assert.That(children.Count(), Is.EqualTo(1 + root.Children.FindPages().Count));
+			Assert.That(children.Count(), Is.EqualTo(1 + root.Children.FindPages().Count()));
 			Assert.That(children.Any(c => c.Name == "World"));
 		}
 

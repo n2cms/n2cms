@@ -21,57 +21,67 @@ namespace N2.Persistence.NH
 
 		#region IZonedList<T> Members
 
-		public IList<T> FindParts(string zoneName)
+		public IQueryable<T> FindParts(string zoneName)
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName == zoneName).ToList();
+				return this.Where(i => i.ZoneName == zoneName).AsQueryable();
 
 			if (zoneName == null)
-				return Session.CreateFilter(this, "where ZoneName is null").List<T>();
+				//return Query().Where(i => i.ZoneName == null); 
+				return Session.CreateFilter(this, "where ZoneName is null").List<T>().AsQueryable();
 			else
-				return Session.CreateFilter(this, "where ZoneName = :zoneName").SetParameter("zoneName", zoneName).List<T>();
+				//return Query().Where(i => i.ZoneName == zoneName); 
+				return Session.CreateFilter(this, "where ZoneName = :zoneName").SetParameter("zoneName", zoneName).List<T>().AsQueryable();
 		}
 
-		public IList<T> FindNavigatablePages()
+		public IQueryable<T> FindNavigatablePages()
 		{
 			if (this.WasInitialized)
-				return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).ToList();
+				return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).AsQueryable();
 
+			//var now = Utility.CurrentTime();
+			//return Query().Where(i => i.ZoneName == null)
+			//    .Where(i => i.Visible == true)
+			//    .Where(i => i.Published <= now)
+			//    .Where(i => i.Expires == null || now < i.Expires);
 			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires)")
 				.SetParameter("published", Utility.CurrentTime())
 				.SetParameter("expires", Utility.CurrentTime())
-				.List<T>();
+				.List<T>().AsQueryable();
 		}
 
-		public IList<T> FindPages()
+		public IQueryable<T> FindPages()
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName == null).ToList();
+				return this.Where(i => i.ZoneName == null).AsQueryable();
 
-			return Session.CreateFilter(this, "where ZoneName is null").List<T>();
+			//return Query().Where(i => i.ZoneName == null);
+			return Session.CreateFilter(this, "where ZoneName is null").List<T>().AsQueryable();
 		}
 
-		public IList<T> FindParts()
+		public IQueryable<T> FindParts()
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName != null).ToList();
+				return this.Where(i => i.ZoneName != null).AsQueryable();
 
-			return Session.CreateFilter(this, "where ZoneName is not null").List<T>();
+			//return Query().Where(i => i.ZoneName != null);
+			return Session.CreateFilter(this, "where ZoneName is not null").List<T>().AsQueryable();
 		}
 
-		public IList<string> FindZoneNames()
+		public IEnumerable<string> FindZoneNames()
 		{
 			if (this.WasInitialized)
-				return this.Select(i => i.ZoneName).Distinct().ToList();
+				return this.Select(i => i.ZoneName).Distinct();
 
-			return Session.CreateFilter(this, "select distinct ZoneName").List<string>();
+			//return Query().Select(i => i.ZoneName).Distinct();
+			return Session.CreateFilter(this, "select distinct ZoneName").List<string>().AsQueryable();
 		}
 
 		#endregion
 
 		#region IQueryableList<T> Members
 
-		public IQueryable<T> Query()
+		public override IQueryable<T> Query()
 		{
 			if (WasInitialized)
 				return this.AsQueryable<T>();

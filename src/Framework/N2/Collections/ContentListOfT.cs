@@ -251,9 +251,18 @@ namespace N2.Collections
 
 		#region IPageableList<T> Members
 
-		public IList<T> FindRange(int skip, int take)
+		public IQueryable<T> FindRange(int skip, int take)
 		{
-			return inner.Skip(skip).Take(take).ToList();
+			return inner.Skip(skip).Take(take).AsQueryable();
+		}
+
+		#endregion
+
+		#region IQueryableList<T> Members
+
+		public virtual IQueryable<T> Query()
+		{
+			return inner.AsQueryable<T>();
 		}
 
 		#endregion
