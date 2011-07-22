@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Edit.FileSystem;
@@ -6,6 +7,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Security;
 using N2.Web;
+using N2.Edit.Settings;
 
 namespace N2.Edit
 {
@@ -18,6 +20,13 @@ namespace N2.Edit
 		IFileSystem fileSystem;
 		VirtualNodeFactory nodeFactory;
 		ISecurityManager security;
+		NavigationSettings settings;
+
+		public NavigationSettings Settings
+		{
+			get { return settings ?? engine.Resolve<NavigationSettings>(); }
+			set { settings = value; }
+		}
 
 		public ISecurityManager Security
 		{
@@ -71,10 +80,13 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			foreach (var child in parent.GetChildren(new AccessFilter(WebContext.User, Security)))
-			{
+			var children = Settings.DisplayDataItems
+				? parent.Children.Where(new AccessFilter(WebContext.User, Security))
+				: parent.Children.FindPages().Where(new AllFilter(new AccessFilter(WebContext.User, Security), new PageFilter()));
+
+			foreach (var child in children)
 				yield return child;
-			}
+
 			if (Interfaces.Managing == userInterface)
 			{
 				foreach (var child in NodeFactory.GetChildren(parent.Path))
