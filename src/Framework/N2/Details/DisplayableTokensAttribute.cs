@@ -72,9 +72,9 @@ namespace N2.Details
 					else
 						dc.Details.Add(cd);
 					i++;
-                }
-                // Changed: if (i > 0) --> if (i >= 0)
-                // If i == 0, no Tokens were found, so remove all details.
+                                }
+                                // Changed: if (i > 0) --> if (i >= 0)
+                                // If i == 0, no Tokens were found, so remove all details.
 				if (i >= 0)
 				{
 					var dc = item.GetDetailCollection(detailName, true);
