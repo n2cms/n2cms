@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using N2.Details;
 using NUnit.Framework;
+using N2.Tests.Details.Models;
 
 namespace N2.Tests.Details
 {

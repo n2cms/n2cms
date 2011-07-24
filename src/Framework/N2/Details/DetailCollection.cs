@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using N2.Collections;
@@ -26,7 +27,7 @@ using N2.Collections;
 namespace N2.Details
 {
 	/// <summary>A named collection of details. This is used by content items to group related details together.</summary>
-	public class DetailCollection : IList, ICloneable, INameable
+	public class DetailCollection : IList, ICloneable, INameable, IEnumerable<object>
 	{
 		#region Constructors
 		/// <summary>Creates a new (uninitialized) instance of the DetailCollection class.</summary>
@@ -371,6 +372,15 @@ namespace N2.Details
 			DetailCollection other = obj as DetailCollection;
 			return other != null && id != 0 && id == other.id;
 		}
+		#endregion
+
+		#region IEnumerable<object> Members
+
+		public IEnumerator<object> GetEnumerator()
+		{
+			return this.Details.Select(d => d.Value).GetEnumerator();
+		}
+
 		#endregion
 	}
 }

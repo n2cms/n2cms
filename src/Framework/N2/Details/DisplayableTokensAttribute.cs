@@ -14,6 +14,9 @@ namespace N2.Details
 {
 	public class DisplayableTokensAttribute : AbstractDisplayableAttribute, IContentTransformer
 	{
+		/// <summary>String that suffixes the detail name when tokens are stored in the detail collection.</summary>
+		public const string CollectionSuffix = "_Tokens";
+
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			using(var sw = new StringWriter())
@@ -57,7 +60,7 @@ namespace N2.Details
 			string text = item[Name] as string;
 			if(text != null)
 			{
-				string detailName = Name + "_Tokens";
+				string detailName = Name + CollectionSuffix;
 				int i = 0;
 				var p = new Parser(new TemplateAnalyzer());
 				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
@@ -94,7 +97,7 @@ namespace N2.Details
 			if (text == null)
 				return;
 
-			var tokens = context.Content.GetDetailCollection(context.PropertyName + "_Tokens", false);
+			var tokens = context.Content.GetDetailCollection(context.PropertyName + CollectionSuffix, false);
 			if (tokens != null)
 			{
 				int lastFragmentEnd = 0;
