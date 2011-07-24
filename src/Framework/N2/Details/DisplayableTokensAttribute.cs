@@ -19,7 +19,7 @@ namespace N2.Details
 
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			using(var sw = new StringWriter())
+			using (var sw = new StringWriter())
 			{
 				var rc = new RenderingContext { Content = item, Displayable = this, Html = CreateHtmlHelper(item, sw), PropertyName = detailName };
 				Render(rc, sw);
@@ -38,11 +38,11 @@ namespace N2.Details
 			return new HtmlHelper(
 				new ViewContext(
 					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },
-					new WebFormView(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath), 
-					new ViewDataDictionary(), 
-					new TempDataDictionary(), 
-					writer), 
-				new ViewPage(), 
+					new WebFormView(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath),
+					new ViewDataDictionary(),
+					new TempDataDictionary(),
+					writer),
+				new ViewPage(),
 				RouteTable.Routes);
 		}
 
@@ -58,15 +58,15 @@ namespace N2.Details
 		public bool Transform(ContentItem item)
 		{
 			string text = item[Name] as string;
-			if(text != null)
+			if (text != null)
 			{
-				string detailName = Name + CollectionSuffix;
+				string collectionName = Name + CollectionSuffix;
 				int i = 0;
 				var p = new Parser(new TemplateAnalyzer());
 				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
 				{
-					var dc = item.GetDetailCollection(detailName, true);
-					var cd = ContentDetail.Multi(detailName, stringValue: c.Tokens.Select(t => t.Fragment).StringJoin(), integerValue: c.Tokens.First().Index);
+					var dc = item.GetDetailCollection(collectionName, true);
+					var cd = ContentDetail.Multi(collectionName, stringValue: c.Tokens.Select(t => t.Fragment).StringJoin(), integerValue: c.Tokens.First().Index);
 					cd.EnclosingItem = item;
 					cd.EnclosingCollection = dc;
 
@@ -75,17 +75,24 @@ namespace N2.Details
 					else
 						dc.Details.Add(cd);
 					i++;
-                                }
-                                // Changed: if (i > 0) --> if (i >= 0)
-                                // If i == 0, no Tokens were found, so remove all details.
-				if (i >= 0)
+				}
+				if (i > 0)
 				{
-					var dc = item.GetDetailCollection(detailName, true);
+					var dc = item.GetDetailCollection(collectionName, true);
 					for (int j = dc.Details.Count - 1; j >= i; j--)
 					{
 						dc.Details.RemoveAt(j);
 					}
 					return true;
+				}
+				else if (i == 0)
+				{
+					var dc = item.GetDetailCollection(collectionName, false);
+					if (dc != null)
+					{
+						item.DetailCollections.Remove(dc);
+						return true;
+					}
 				}
 			}
 			return false;

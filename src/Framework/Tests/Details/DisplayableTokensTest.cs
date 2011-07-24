@@ -78,6 +78,19 @@ namespace N2.Tests.Details
 		}
 
 		[Test]
+		public void AllTokens_CanBeRemoved()
+		{
+			item.DaysString = "{{token}}{{second}}";
+			dta.Transform(item);
+
+			item.DaysString = "";
+			dta.Transform(item);
+
+			var collection = item.GetDetailCollection("DaysString_Tokens", false);
+			Assert.That(collection, Is.Null);
+		}
+
+		[Test]
 		public void SavingToken_Token_IsGivenIndex()
 		{
 			item.DaysString = "{{token}}";
