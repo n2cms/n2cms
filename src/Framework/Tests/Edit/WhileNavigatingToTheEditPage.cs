@@ -20,7 +20,7 @@ namespace N2.Tests.Edit
 
 			Assert.That(editUrl,
 			            Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode(root.Path) +
-			                       "&discriminator=ComplexContainersItem&zoneName=&after=" + HttpUtility.UrlEncode(item.Path)));
+			                       "&discriminator=ComplexContainersItem&after=" + HttpUtility.UrlEncode(item.Path)));
 		}
 
 		[Test]
@@ -34,7 +34,7 @@ namespace N2.Tests.Edit
 
 			Assert.That(editUrl,
 			            Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode(root.Path) +
-			                       "&discriminator=ComplexContainersItem&zoneName=&before=" + HttpUtility.UrlEncode(item.Path)));
+			                       "&discriminator=ComplexContainersItem&before=" + HttpUtility.UrlEncode(item.Path)));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace N2.Tests.Edit
 
 			Assert.That(editUrl,
 			            Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode("/child/") +
-			                       "&discriminator=ComplexContainersItem&zoneName="));
+			                       "&discriminator=ComplexContainersItem"));
 		}
 
 		[Test]
