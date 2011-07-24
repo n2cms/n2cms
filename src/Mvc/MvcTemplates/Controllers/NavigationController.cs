@@ -6,6 +6,7 @@ using N2.Collections;
 using N2.Engine.Globalization;
 using N2.Templates.Mvc.Models;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Edit;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -23,7 +24,7 @@ namespace N2.Templates.Mvc.Controllers
             // Top menu for the current language starts at the nearest language root
             ContentItem branchRoot = Find.ClosestLanguageRoot;
 			var selected = Find.AncestorAtLevel(2, Find.EnumerateParents(CurrentPage, branchRoot, true), CurrentPage);
-			var topLevelPages = branchRoot.GetChildren(new NavigationFilter());
+			var topLevelPages = branchRoot.GetChildren(new NavigationFilter()).TryAppendCreatorNode(Engine, branchRoot);
 			var model = new TopMenuModel(GetTranslations(), selected ?? branchRoot, topLevelPages);
 
 			return PartialView(model);
@@ -51,17 +52,19 @@ namespace N2.Templates.Mvc.Controllers
 			ContentItem branchRoot = Find.AncestorAtLevel(2, ancestors, N2.Find.CurrentPage);
 			var model = new SubMenuModel();
 
-			if (branchRoot != null && !startPage.Equals(CurrentPage) && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
+			if (branchRoot != null && !startPage.Equals(CurrentPage))
 			{
-				model.CurrentItem = Find.AncestorAtLevel(3, ancestors, CurrentPage) ?? CurrentPage;
-				model.BranchRoot = branchRoot;
-				model.Items = branchRoot.GetChildren(new NavigationFilter());
-			}
-			else
-			{
-				model.Visible = false;
+				var children = branchRoot.GetChildren(new NavigationFilter()).TryAppendCreatorNode(Engine, branchRoot).ToList();
+				if(children.Count > 0)
+				{
+					model.CurrentItem = Find.AncestorAtLevel(3, ancestors, CurrentPage) ?? CurrentPage;
+					model.BranchRoot = branchRoot;
+					model.Items = children;
+					return PartialView(model);
+				}
 			}
 
+			model.Visible = false;
 			return PartialView(model);
 		}
 

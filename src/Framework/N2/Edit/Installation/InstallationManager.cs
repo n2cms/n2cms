@@ -459,6 +459,7 @@ namespace N2.Edit.Installation
 
 		public const string QueryItemsWithAuthorizedRoles = "select distinct ci from ContentItem ci join ci.AuthorizedRoles ar where ci.AlteredPermissions is null or ci.AlteredPermissions = 0 order by ci.ID";
 		public const string QueryItemsWithoutAncestralTrail = "from ContentItem ci where ci.AncestralTrail is null order by ci.ID";
+
 		public virtual IEnumerable<ContentItem> ExecuteQuery(string query)
 		{
 			int iterationSize = 100;

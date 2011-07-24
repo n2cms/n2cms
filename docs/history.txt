@@ -1,4 +1,5 @@
 ﻿2.2.1
+- Add.. from navigation when using drag'n'drop mode
 - SelectableTypes on [EditableLink] (discussions/240497)
 - [EditableMediaUpload] (discussions/263535)
 - [EditableFolderSelection] (discussions/240497)

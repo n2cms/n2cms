@@ -362,6 +362,14 @@ namespace N2.Web
 
 		public Url AppendQuery(string key, string value)
 		{
+			return AppendQuery(key, value, true);
+		}
+
+		public Url AppendQuery(string key, string value, bool unlessNull)
+		{
+			if (unlessNull && value == null)
+				return this;
+				 
 			return AppendQuery(key + "=" + HttpUtility.UrlEncode(value));
 		}
 

@@ -13,6 +13,7 @@ using N2.Engine;
 using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
+using N2.Security;
 
 namespace N2.Web.UI.WebControls
 {
@@ -121,7 +122,7 @@ jQuery(document).ready(function(){{
 
 		protected override void CreateChildControls()
 		{
-			ControlPanelState state = GetState(Page.User, Page.Request.QueryString);
+			ControlPanelState state = GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
 
 			if (state == ControlPanelState.Hidden)
 			{
@@ -331,14 +332,20 @@ jQuery(document).ready(function(){{
 		public static ControlPanelState GetState(Control control)
 		{
 			if (HttpContext.Current != null)
-				return GetState(control.Page.User, control.Page.Request.QueryString);
+				return GetState(control.Page.GetEngine().SecurityManager, control.Page.User, control.Page.Request.QueryString);
 
 			return ControlPanelState.Unknown;
 		}
-
+		
+		[Obsolete("Use overload with security parameter")]
 		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
 		{
-			if (N2.Context.SecurityManager.IsEditor(user))
+			return GetState(N2.Context.Current.SecurityManager, user, queryString);
+		}
+
+		public static ControlPanelState GetState(ISecurityManager security, IPrincipal user, NameValueCollection queryString)
+		{
+			if (security.IsEditor(user))
 			{
 				if (queryString["edit"] == "true")
 					return ControlPanelState.Editing;

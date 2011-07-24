@@ -1,4 +1,4 @@
-- navigation add thingy
+- nhibernate method not found (discussions/265951)
 - quick edit editable
 - select only pages for navigation
 - file names with _ (discussions/265070)

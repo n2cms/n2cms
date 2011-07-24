@@ -38,7 +38,7 @@ namespace N2.Web.UI.WebControls
 		{
 			IEngine e = N2.Context.Current;
 
-			if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
+			if (ControlPanel.GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
 			{
 				e.Resolve<PartUtilities>().WriteTitleBar(writer, CurrentItem, Page.Request.RawUrl);
 			}

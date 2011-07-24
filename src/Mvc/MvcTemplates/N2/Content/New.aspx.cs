@@ -87,19 +87,19 @@ namespace N2.Edit
 			{
 				LoadZones();
 			}
-			ZoneName = rblZone.SelectedValue;
+			ZoneName = GetSelectedZone();
         }
 
 		protected void rblPosition_OnSelectedIndexChanged(object sender, EventArgs args)
 		{
 			ParentItemDefinition = Definitions.GetDefinition(ActualItem);
 			LoadZones();
-			ZoneName = rblZone.SelectedValue;
+			ZoneName = GetSelectedZone();
 		}
 
 		protected void rblZone_OnSelectedIndexChanged(object sender, EventArgs args)
 		{
-			ZoneName = rblZone.SelectedValue;
+			ZoneName = GetSelectedZone();
 		}
 
 		protected override void OnPreRender(EventArgs e)
@@ -261,6 +261,11 @@ namespace N2.Edit
 		protected string GetLocalizedString(string classKey, string key)
 		{
 			return Utility.GetGlobalResourceString(classKey, key);
+		}
+
+		private string GetSelectedZone()
+		{
+			return string.IsNullOrEmpty(rblZone.SelectedValue) ? null : rblZone.SelectedValue;
 		}
     }
     

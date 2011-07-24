@@ -6,7 +6,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Collections;
 using N2.Engine;
+using N2.Edit;
 using System.IO;
+using N2.Web.UI.WebControls;
 
 namespace N2.Web.Mvc.Html
 {
@@ -19,6 +21,7 @@ namespace N2.Web.Mvc.Html
 			ContentItem current = null,
 			int takeLevels = 2,
 			bool parallelRoot = true,
+			bool appendCreatorNode = false,
 			ItemFilter filter = null,
 			object htmlAttributes = null)
 		{
@@ -30,40 +33,18 @@ namespace N2.Web.Mvc.Html
 				? (HierarchyBuilder)new ParallelRootHierarchyBuilder(startsFrom, takeLevels)
 				: (HierarchyBuilder)new TreeHierarchyBuilder(startsFrom, takeLevels);
 
-			var state = ControlPanelExtensions.GetControlPanelState(html);
-			if (state == UI.WebControls.ControlPanelState.DragDrop)
-				builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter).Union(i.ID != 0 ? new[] { new CreatorItem(html.ContentEngine(), i) } : new ContentItem[0]);
+			if (appendCreatorNode && ControlPanelExtensions.GetControlPanelState(html) == ControlPanelState.DragDrop)
+				builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter).AppendCreatorNode(html.ContentEngine(), i);
 			else
 				builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter);
 
 			var tree = N2.Web.Tree.Using(builder);
 			if (htmlAttributes != null)
 				tree.Tag(ApplyToRootUl(htmlAttributes));
-			if (state == UI.WebControls.ControlPanelState.DragDrop)
-				tree.Tag((hn, tb) => { if (tb.TagName == "li" && hn.Current is CreatorItem) tb.AddCssClass("creator"); });
 
 			ClassifyAnchors(startsFrom, current, parallelRoot, tree);
 
 			return tree;
-		}
-
-		class CreatorItem : ContentItem
-		{
-			public CreatorItem()
-			{
-			}
-
-			public CreatorItem(IEngine engine, ContentItem parent)
-			{
-				this.url = engine.EditManager.GetSelectNewItemUrl(parent);
-				this.Title = "<span class='creator-add'>&nbsp;</span>Add...";
-			}
-
-			string url;
-			public override string Url
-			{
-				get { return url; }
-			}
 		}
 
 		private static void ClassifyAnchors(ContentItem startsFrom, ContentItem current, bool parallelRoot, Web.Tree tree)

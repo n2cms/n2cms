@@ -99,20 +99,31 @@ namespace N2.Web.Mvc.Html
 		public static HelperResult UnorderedList<T>(this HtmlHelper html, IEnumerable<T> items,
 			Func<ListTemplate<T>, HelperResult> template,
 			Func<Template<IEnumerable<T>>, HelperResult> empty = null,
-			string className = null)
+			object htmlAttributes = null)
 		{
-			return UnorderedList<T>(items, template, empty, className);
+			return UnorderedList<T>(items, template, empty, htmlAttributes);
 		}
 
-		private static HelperResult UnorderedList<T>(IEnumerable<T> items, Func<ListTemplate<T>, HelperResult> template, Func<Template<IEnumerable<T>>, HelperResult> empty, string className)
+		private static HelperResult UnorderedList<T>(IEnumerable<T> items, Func<ListTemplate<T>, HelperResult> template, Func<Template<IEnumerable<T>>, HelperResult> empty, object htmlAttributes)
 		{
 			return Loop(items,
 				template: (lt) => new HelperResult((tw) => { tw.Write("<li>"); template(lt).WriteTo(tw); tw.Write("</li>"); }),
 				wrapper: (lt) => new HelperResult((tw) => 
 				{
 					tw.Write("<ul");
-					if (!string.IsNullOrEmpty(className))
-						tw.Write(" class=\"" + className + "\""); tw.Write(">");
+					if (htmlAttributes != null)
+					{
+						foreach (var kvp in new RouteValueDictionary(htmlAttributes))
+						{
+							if (kvp.Value != null && "" != kvp.Value)
+							{
+								tw.Write(" " + kvp.Key + "=\"");
+								HttpUtility.HtmlAttributeEncode(kvp.Value.ToString(), tw);
+								tw.Write("\"");
+							}
+						}
+					}
+					tw.Write(">");
 					lt.RenderContents().WriteTo(tw);
 					tw.Write("</ul>");
 				}),

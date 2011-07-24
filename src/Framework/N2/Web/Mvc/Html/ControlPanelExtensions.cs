@@ -53,7 +53,7 @@ namespace N2.Web.Mvc.Html
 		/// <returns></returns>
 		public static ControlPanelState GetControlPanelState(HtmlHelper html)
 		{
-			return ControlPanel.GetState(html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
+			return ControlPanel.GetState(html.ContentEngine().SecurityManager, html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
 		}
 
 		/// <summary>Renders the openable control panel displayed in the upper left corner on N2 sites.</summary>
