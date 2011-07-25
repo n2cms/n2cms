@@ -1,10 +1,9 @@
+- recursive quickener
 - nhibernate method not found (discussions/265951)
 - quick edit editable
-- select only pages for navigation
 - file names with _ (discussions/265070)
-- reproduce lucene problems (discussions/262292)
+- reproduce lucene problems (discussions/262292) - fix fist-time installation lucene error leaving lock
 - allowed zones in dinamico view templates (discussions/263700)
-- fix fist-time installation lucene error leaving lock
 - master page in themes directory
 - save&preview and editablechildren (workitem/30541)
 - nuget issues http://n2cms.codeplex.com/discussions/260635

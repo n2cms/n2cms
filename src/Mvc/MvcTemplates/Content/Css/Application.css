@@ -166,4 +166,9 @@ table.calendar
 	.tagcloud a.freq7 { font-size:1.6em; }
 	.tagcloud a.freq8 { font-size:1.7em; }
 	.tagcloud a.freq9 { font-size:1.8em; }
-	
+
+/* login */
+.login label { min-width:70px; display:inline-block; }
+.login .tb { width:130px; }
+.login .ff { margin-bottom:5px; }
+.register td { padding:0 5px 5px 0; }

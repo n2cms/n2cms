@@ -70,11 +70,6 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 .columns .left { float:left; width:280px; }
 .columns .right { float:right; width:280px; }
 
-/* login */
-.login .tb { width:130px; }
-.login .ff { margin-bottom:5px; }
-.register td { padding:0 5px 5px 0; }
-
 /* gallery */
 .imageGallery #content { margin:0; }
 .imageGallery .path { margin-top:15px; }

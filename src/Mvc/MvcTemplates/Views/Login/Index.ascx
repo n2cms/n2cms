@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<LoginModel, LoginItem>" %>
-<div class="uc">
+<div class="uc login">
 	<h4><%=Model.CurrentItem.Title%></h4>
 	<div class="box">
 		<div class="inner">
@@ -16,8 +16,8 @@
 				<input id="password" name="password" class="tb" type="password" />
 			</div>
 			<div class="ff remember">
+				<input id="remember" name="remember" class="cb" type="checkbox" />
 				<label for="remember"><%=GetLocalResourceObject("RememberMe") %></label>
-				<input id="remember" name="remember" class="tb" type="checkbox" />
 			</div>
 			<div class="bf">
 				<%=Html.AntiForgeryToken("login")%>
