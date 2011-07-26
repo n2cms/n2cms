@@ -284,6 +284,7 @@
     <Compile Include="Web\ContextHelper.cs" />
     <Compile Include="Web\CssCompilerHandler.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
+    <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />

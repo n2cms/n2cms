@@ -120,6 +120,7 @@
     <Content Include="N2\Resources\Js\EditableTags.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandableBox.js" />

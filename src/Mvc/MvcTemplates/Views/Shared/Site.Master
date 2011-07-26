@@ -15,7 +15,7 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header"><div class="inner">
-				<%= Html.DisplayContent(Start, p => p.Header) %>
+				<%= Html.DisplayContent(Start, p => p.Header).Editable(false) %>
 				<% Html.RenderAction("TopMenu", "Navigation", new { area = "" }); %>
 			</div></div>
 		</asp:ContentPlaceHolder>

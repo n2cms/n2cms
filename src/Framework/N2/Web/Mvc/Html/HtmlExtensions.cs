@@ -65,8 +65,7 @@ namespace N2.Web.Mvc.Html
 				if (n.Parent != null && n.Parent.Current != null)
 					return;
 
-				foreach (var kvp in new RouteValueDictionary(htmlAttributes))
-					t.Attributes[kvp.Key] = kvp.Value != null ? kvp.Value.ToString() : null;
+				t.MergeAttributes(htmlAttributes);
 			};
 		}
 

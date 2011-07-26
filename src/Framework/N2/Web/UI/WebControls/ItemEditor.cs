@@ -52,6 +52,8 @@ namespace N2.Web.UI.WebControls
 
 		public Type ContainerTypeFilter { get; set; }
 
+		public string[] EditableNameFilter { get; set; }
+
 		public virtual IEngine Engine { get; set; }
 
 		/// <summary>The content adapter related to the current page item.</summary>
@@ -155,7 +157,7 @@ namespace N2.Web.UI.WebControls
 
 			if (definition != null)
 			{
-				AddedEditors = EditAdapter.AddDefinedEditors(definition, CurrentItem, this, Page.User, ContainerTypeFilter);
+				AddedEditors = EditAdapter.AddDefinedEditors(definition, CurrentItem, this, Page.User, ContainerTypeFilter, EditableNameFilter);
 				if (!Page.IsPostBack)
 				{
 					EditAdapter.LoadAddedEditors(definition, CurrentItem, AddedEditors, Page.User);

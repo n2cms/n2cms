@@ -5,7 +5,7 @@
 .zoneItem   { position:relative;}
 .titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 1px; 
               font-size:.8em; position:relative; border:solid 1px #e3e5e4;
-              height:20px; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px; overflow:hidden; white-space:nowrap;}
+              height:20px; box-shadow: #666 4px 4px 10px -2px; overflow:hidden; white-space:nowrap;}
 .zoneItem .titleBar	{ background-image:url(../../Resources/Img/gripper.gif); cursor:move;}
 .dropZone .titleBar { position:absolute; left:-10px; top:-10px; z-index:900; padding-left:18px }
 	.zoneItem .zoneItem .titleBar	{ left:-5px; top:-5px; }
@@ -39,7 +39,7 @@
 .droppable-hover { background-color:#8e8; outline:solid 2px #393; }
 
 .sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:990; border:none 1px #ccb; border-style:none solid solid none;
-    background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px;
+    background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px; 
 }
     .sc .scContent { }
         .controlPanel { }
@@ -85,3 +85,10 @@
 		.ui-dialog.ui-resizable-resizing .ui-dialog-content iframe { visibility:hidden; }
 
 a .creator-add { background: url(../../Resources/icons/add.png) no-repeat 50% 50%; width:10px; height:10px; height:10px; display:inline-block; margin-right:2px; vertical-align:middle; overflow:hidden; }
+
+.editable { display:inline-block; position:relative; }
+	.editable .editor { position:absolute; top:0; right:0; background:#fff url(../../Resources/icons/pencil.png) no-repeat 50% 50%; text-indent:-9999px; width:16px; height:16px; padding:1px; overflow:hidden; border:1px solid #e3e5e4; box-shadow: #666 2px 2px 5px -1px; opacity:.5;}
+.editable:hover { outline:dotted 2px #d1d4d3; }
+	.editable:hover .editor { opacity:1;}
+
+#editorDialog { overflow:hidden; }

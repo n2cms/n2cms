@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Engine;
+using System.Web.Routing;
 
 namespace N2.Web.Rendering
 {
@@ -35,7 +36,15 @@ namespace N2.Web.Rendering
 
 		public void Render(RenderingContext context, TextWriter writer)
 		{
-			ResolveRenderer(context.Displayable.GetType()).Render(context, writer);
+			var tw = context.IsEditable 
+				? TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", context.Content.ID }, { "data-path", context.Content.Path }, { "data-property", context.PropertyName }, { "data-displayable", context.Displayable.GetType().Name }, { "class", "editable" } })
+				: new EmptyDisposable();
+
+			using (tw)
+			{
+				var renderer = ResolveRenderer(context.Displayable.GetType());
+				renderer.Render(context, writer);
+			}
 		}
 	}
 }

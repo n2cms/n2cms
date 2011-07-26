@@ -16,7 +16,7 @@
         <asp:ContentPlaceHolder ID="Head" runat="server" />
         </asp:PlaceHolder>
     </head>
-    <body class="framed">
+    <body class="framed <%= Page.GetType().BaseType.Name %>">
 		<asp:ContentPlaceHolder ID="Frame" runat="server">
 			<div id="toolbar" class="toolbar"><div class="inner">
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />

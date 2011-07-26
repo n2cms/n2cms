@@ -25,7 +25,6 @@ namespace N2.Web.Parts
 		{
 			var response = new NameValueCollection();
 			response["redirect"] = GetRedirectUrl(request);
-			;
 			return response;
 		}
 

@@ -83,7 +83,7 @@ namespace N2.Edit
 		/// <param name="user">The user whose credentials will be queried.</param>
 		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user)
 		{
-			return AddEditors(definition, item, container, user, null);
+			return AddEditors(definition, item, container, user, null, null);
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
@@ -91,18 +91,22 @@ namespace N2.Edit
 		/// <param name="item">The content item whose editors to add.</param>
 		/// <param name="container">The container onto which add the editors.</param>
 		/// <param name="user">The user whose permissions to use when adding editors.</param>
-		/// <param name="containerNameFilter">Only add editors within this container.</param>
+		/// <param name="containerNameFilter">Only add editors with these names.</param>
+		/// <param name="containerTypeFilter">Only add editors within this container type.</param>
 		/// <returns>A list of added editors.</returns>
-		public IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter)
+		public IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter, IEnumerable<string> editableNameFilter)
 		{
 			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
 			var root = interfaceBuilder.Build(definition.Containers.OfType<IContainable>(), definition.Editables.OfType<IContainable>());
-			if (containerTypeFilter != null)
+			if (containerTypeFilter != null || editableNameFilter != null)
 			{
+				if (containerTypeFilter == null) containerTypeFilter = typeof(object);
+
 				root = new HierarchyNode<IContainable>(new RootContainer())
 				{
 					Children = root.DescendantsAndSelf()
-						.Where(d => containerTypeFilter.IsAssignableFrom(d.Current.GetType()))
+						.Where(d => containerTypeFilter == null || containerTypeFilter.IsAssignableFrom(d.Current.GetType()))
+						.Where(d => editableNameFilter == null || editableNameFilter.Contains(d.Current.Name))
 						.ToList()
 				};
 			}

@@ -58,12 +58,12 @@ namespace N2.Management.Content {
         protected global::System.Web.UI.WebControls.CustomValidator cvException;
         
         /// <summary>
-        /// phAncestors control.
+        /// ie control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phAncestors;
+        protected global::N2.Web.UI.WebControls.ItemEditor ie;
     }
 }
