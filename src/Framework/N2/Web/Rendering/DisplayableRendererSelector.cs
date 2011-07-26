@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using N2.Engine;
 using System.Web.Routing;
+using N2.Details;
 
 namespace N2.Web.Rendering
 {
@@ -36,9 +37,7 @@ namespace N2.Web.Rendering
 
 		public void Render(RenderingContext context, TextWriter writer)
 		{
-			var tw = context.IsEditable 
-				? TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", context.Content.ID }, { "data-path", context.Content.Path }, { "data-property", context.PropertyName }, { "data-displayable", context.Displayable.GetType().Name }, { "class", "editable" } })
-				: new EmptyDisposable();
+			var tw = WebExtensions.GetEditableWrapper(context.Content, context.IsEditable, context.PropertyName, context.Displayable, writer);
 
 			using (tw)
 			{

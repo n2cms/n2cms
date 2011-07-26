@@ -6,6 +6,8 @@ using System.Web;
 using System.IO.Compression;
 using System.Web.Mvc;
 using System.Web.Routing;
+using N2.Details;
+using System.IO;
 
 namespace N2.Web
 {
@@ -52,6 +54,13 @@ namespace N2.Web
 			tag.Attributes[attribute] = value;
 
 			return tag;
+		}
+
+		internal static IDisposable GetEditableWrapper(ContentItem item, bool isEditable, string propertyName, IDisplayable displayable, TextWriter writer)
+		{
+			return isEditable
+							? TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable" } })
+							: new EmptyDisposable();
 		}
 	}
 }
