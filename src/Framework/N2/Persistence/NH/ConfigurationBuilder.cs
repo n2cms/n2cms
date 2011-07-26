@@ -9,6 +9,7 @@ using System.Xml;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.FileSystem.NH;
 using N2.Engine;
 using N2.Linq;
 using N2.Security;
@@ -262,6 +263,7 @@ namespace N2.Persistence.NH
 			mm.Class<ContentItem>(ContentItemCustomization);
 			mm.Class<ContentDetail>(ContentDetailCustomization);
 			mm.Class<DetailCollection>(DetailCollectionCustomization);
+            mm.Class<FileSystemItem>(FileSystemItemCustomization);
 			mm.Class<AuthorizedRole>(AuthorizedRoleCustomization);
 
 			var compiledMapping = mm.CompileMappingForAllExplicitAddedEntities();
@@ -374,6 +376,22 @@ namespace N2.Persistence.NH
 				cm.Cache(m => m.Usage(CacheUsage.NonstrictReadWrite));
 			}, cr => cr.OneToMany());
 		}
+
+        void FileSystemItemCustomization(IClassMapper<FileSystemItem> ca)
+        {
+            ca.Table(tablePrefix + "FileSystemItem");
+            ca.Lazy(true);
+            ca.Id(x => x.ID, cm => {cm.Generator(Generators.Native);});
+
+            ca.Component(x => x.Path, cm =>
+                                           {
+                                               cm.Property( x => x.Parent, ccm => {ccm.Length(1024);});
+                                               cm.Property( x => x.Name, ccm => { ccm.Length(255);});
+                                           } );
+            ca.Property( x => x.Created, cm => {cm.NotNullable(true);});
+            ca.Property( x => x.Length, cm => {} );
+            ca.Property( cm => cm.Data, cm => {cm.Type(NHibernateUtil.BinaryBlob); cm.Length(2147483647);});
+        }
 
 		void AuthorizedRoleCustomization(IClassMapper<AuthorizedRole> ca)
 		{

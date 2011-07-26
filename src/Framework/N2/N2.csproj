@@ -190,6 +190,11 @@
     <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
     <Compile Include="Edit\EditExtensions.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemHandlerFactory.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
+    <Compile Include="Edit\FileSystem\NH\Path.cs" />
+    <Compile Include="Edit\FileSystem\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />

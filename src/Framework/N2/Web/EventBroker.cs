@@ -36,6 +36,7 @@ namespace N2.Web
 			application.PostMapRequestHandler += Application_PostMapRequestHandler;
 
 			application.AcquireRequestState += Application_AcquireRequestState;
+            application.PreRequestHandlerExecute += Application_PreRequestHandlerExecute;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
 
@@ -48,6 +49,7 @@ namespace N2.Web
 		public EventHandler<EventArgs> PostResolveAnyRequestCache;
 		public EventHandler<EventArgs> AcquireRequestState;
 		public EventHandler<EventArgs> PostMapRequestHandler;
+        public EventHandler<EventArgs> PreRequestHandlerExecute;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
@@ -100,6 +102,15 @@ namespace N2.Web
 				AcquireRequestState(sender, e);
 			}
 		}
+
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            if (PreRequestHandlerExecute != null && !IsStaticResource(sender))
+            {
+                Debug.WriteLine("Application_PreRequestHandlerExecute");
+                PreRequestHandlerExecute(sender, e);
+            }
+        }
 
 		protected void Application_Error(object sender, EventArgs e)
 		{
