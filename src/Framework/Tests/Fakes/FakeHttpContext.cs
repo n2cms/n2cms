@@ -1,5 +1,6 @@
 using System.Web;
 using N2.Web;
+using System.Security.Principal;
 
 namespace N2.Tests.Fakes
 {
@@ -51,6 +52,12 @@ namespace N2.Tests.Fakes
 			request.SetQuery(queryString);
 			request.rawUrl = filePath;
 			request.appRelativeCurrentExecutionFilePath = Url.ToRelative(filePath);
+		}
+		private System.Security.Principal.IPrincipal user = new GenericPrincipal(new GenericIdentity(""), new string[0]);
+		public override System.Security.Principal.IPrincipal User
+		{
+			get { return user; }
+			set{ user = value; }
 		}
 	}
 }

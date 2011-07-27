@@ -7,6 +7,7 @@ using N2.Web.Mvc;
 using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
 using Rhino.Mocks;
+using N2.Security;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -17,7 +18,8 @@ namespace N2.Extensions.Tests.Mvc
         {
             var page = new ViewPage<T>();
             page.ViewData = new ViewDataDictionary<T>(model);
-            page.ViewContext = new ViewContext(new ControllerContext(), new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter());
+			var ctx = new FakeHttpContext();
+			page.ViewContext = new ViewContext(new ControllerContext { HttpContext = ctx }, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
 			return page;
@@ -55,6 +57,9 @@ namespace N2.Extensions.Tests.Mvc
 				.Repeat.Any();
 			engine.Expect(e => e.Resolve<DisplayableRendererSelector>())
 				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }))
+				.Repeat.Any();
+			engine.Expect(e => e.SecurityManager)
+				.Return(MockRepository.GenerateStub<ISecurityManager>())
 				.Repeat.Any();
 			return engine;
 		}
