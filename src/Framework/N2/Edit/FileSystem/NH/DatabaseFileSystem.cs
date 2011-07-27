@@ -93,14 +93,19 @@ namespace N2.Edit.FileSystem.NH
                 .UniqueResult<FileSystemItem>();
         }
 
+        private void EnsureParentExists(Path target)
+        {
+            if(!DirectoryExists(target.Parent))
+            {
+                CreateDirectory(target.Parent);
+            }
+        }
+
         private void AssertParentExists(Path target)
         {
             var uploadFolders = new EditSection().UploadFolders;
-
             if (uploadFolders.Folders.Any(uploadFolder => Path.Directory(uploadFolder).ToString() == target.Parent))
-            {
-                return;
-            }
+                EnsureParentExists(target);
 
             if (!DirectoryExists(target.Parent))
             {
@@ -152,7 +157,7 @@ namespace N2.Edit.FileSystem.NH
             var source = Path.File(fromVirtualPath);
             var target = Path.File(destinationVirtualPath);
 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
                 AssertParentExists(target);
 
@@ -169,7 +174,7 @@ namespace N2.Edit.FileSystem.NH
 
         public void DeleteFile(string virtualPath)
         {
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
                 var path = Path.File(virtualPath);
                 var item = GetSpecificItem(path);
@@ -188,7 +193,7 @@ namespace N2.Edit.FileSystem.NH
             var source = Path.File(fromVirtualPath);
             var target = Path.File(destinationVirtualPath);
 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
                 AssertParentExists(target);
 
@@ -247,7 +252,7 @@ namespace N2.Edit.FileSystem.NH
         {
             var file = GetSpecificItem(virtualPath);
                 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             using (var buffer = new MemoryStream())
             {
                 if (inputStream != null)
@@ -260,14 +265,14 @@ namespace N2.Edit.FileSystem.NH
                 file.Data = buffer.GetBuffer();
                 file.Created = DateTime.Now;
                 file.Length = buffer.Length;
-                _sessionProvider.OpenSession.Session.Save(file);
+                _sessionProvider.OpenSession.Session.Update(file);
                 trx.Commit();
             }
         }
 
         private void CreateFile(Path virtualPath, Stream inputStream)
         {
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             using (var buffer = new MemoryStream())
             {
                 AssertParentExists(virtualPath);
@@ -315,7 +320,7 @@ namespace N2.Edit.FileSystem.NH
                 throw new ApplicationException("Cannot move directory into own subdictory.");
             }
 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(source);
                 var descendants = _sessionProvider.OpenSession.Session
@@ -343,7 +348,7 @@ namespace N2.Edit.FileSystem.NH
         {
             var path = Path.Directory(virtualPath);
 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(path);
 
@@ -367,9 +372,16 @@ namespace N2.Edit.FileSystem.NH
         {
             var path = Path.Directory(virtualPath);
 
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            // Ensure consistent behavoir with the System.UI.Directory methods used by mapped and virtual filesystem
+            if(DirectoryExists(path.ToString()))
+                throw new IOException("The directory " + path.ToString() + " already exists.");
+
+            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
             {
-                AssertParentExists(path);
+                if (virtualPath != "/")
+                {
+                    EnsureParentExists(path);
+                }
 
                 var item = new FileSystemItem
                 {
