@@ -1,7 +1,9 @@
 ﻿using System.Web.UI;
+using System;
 
 namespace N2.Web.UI.WebControls
 {
+	[Obsolete("Not used any more")]
 	public class TreeNode : Control
 	{
 		ContentItem node;

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Details;
 using System.IO;
+using System.Web.UI;
 
 namespace N2.Web
 {
@@ -64,5 +65,27 @@ namespace N2.Web
 			else
 				return new EmptyDisposable();
 		}
+		/// <summary>Converts a string to an <see cref="Url"/></summary>
+		/// <param name="url">The url string.</param>
+		/// <returns>The string parsed into an Url.</returns>
+		public static Url ToUrl(this string url)
+		{
+			return Url.Parse(url);
+		}
+
+		public static Tree OpenTo(this Tree treeBuilder, ContentItem item)
+		{
+			var items = new HashSet<ContentItem>(Find.EnumerateParents(item));
+			return treeBuilder.ClassProvider(null, n => items.Contains(n.Current) || n.Current == item ? "open" : string.Empty);
+		}
+
+		internal static Control AddTo(this ILinkBuilder builder, Control container)
+		{
+			var c = builder.ToControl();
+			if (c != null)
+				container.Controls.Add(c);
+			return c;
+		}
+
 	}
 }

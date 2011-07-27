@@ -1,6 +1,5 @@
 - recursive quickener
 - nhibernate method not found (discussions/265951)
-- quick edit editable
 - file names with _ (discussions/265070)
 - reproduce lucene problems (discussions/262292) - fix fist-time installation lucene error leaving lock
 - allowed zones in dinamico view templates (discussions/263700)

@@ -221,30 +221,19 @@ namespace N2.Web
 			}
 		}
 
-		public Control ToControl()
+		class DelegateControl : Control
 		{
-			var root = hierarchy.Build();
-			TreeNode rootNode = BuildNodesRecursive(root);
-			rootNode.ChildrenOnly = excludeRoot;
-			return rootNode;
+			public Action<TextWriter> RenderDelegate { get; set; }
+
+			protected override void Render(HtmlTextWriter writer)
+			{
+				RenderDelegate(writer);
+			}
 		}
 
-		private TreeNode BuildNodesRecursive(HierarchyNode<ContentItem> parent)
+		public Control ToControl()
 		{
-			ContentItem item = parent.Current;
-
-			TreeNode node = new TreeNode(item, new LiteralControl(Invoke(parent, linkWriter)));
-			node.LiClass = liClassProvider != null ? liClassProvider(parent.Current) : null;
-
-			foreach (var child in parent.Children)
-			{
-				if (!filter.Match(child.Current))
-					continue;
-
-				TreeNode childNode = BuildNodesRecursive(child);
-				node.Controls.Add(childNode);
-			}
-			return node;
+			return new DelegateControl { RenderDelegate = this.WriteTo };
 		}
 
 		private string Invoke(HierarchyNode<ContentItem> parent, Action<HierarchyNode<ContentItem>, TextWriter> actor)

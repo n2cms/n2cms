@@ -224,6 +224,7 @@
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
+    <Compile Include="N2\Content\Navigation\TreeUtility.cs" />
     <Compile Include="N2\Content\NumberOfItemsScheduledAction.cs" />
     <Compile Include="N2\Content\Templates\ContentTemplateProvider.cs" />
     <Compile Include="N2\Content\Templates\Default.aspx.cs">

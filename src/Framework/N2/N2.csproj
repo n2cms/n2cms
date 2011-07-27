@@ -703,7 +703,6 @@
     <Compile Include="Security\PermissionRemapAttribute.cs" />
     <Compile Include="Web\CacheUtility.cs" />
     <Compile Include="Web\Drawing\ImageResizeMode.cs" />
-    <Compile Include="Web\Extensions.cs" />
     <Compile Include="Web\Drawing\ImageResizeHandler.cs" />
     <Compile Include="Web\Drawing\ImageResizer.cs" />
     <Compile Include="Web\Drawing\ImagesUtility.cs" />
