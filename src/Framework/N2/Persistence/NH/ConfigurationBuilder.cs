@@ -380,7 +380,6 @@ namespace N2.Persistence.NH
         void FileSystemItemCustomization(IClassMapper<FileSystemItem> ca)
         {
             ca.Table(tablePrefix + "FileSystemItem");
-            ca.Lazy(true);
             ca.Id(x => x.ID, cm => {cm.Generator(Generators.Native);});
 
             ca.Component(x => x.Path, cm =>
@@ -390,7 +389,7 @@ namespace N2.Persistence.NH
                                            } );
             ca.Property( x => x.Created, cm => {cm.NotNullable(true);});
             ca.Property( x => x.Length, cm => {} );
-            ca.Property( cm => cm.Data, cm => {cm.Type(NHibernateUtil.BinaryBlob); cm.Length(2147483647);});
+            ca.Property( cm => cm.Data, cm => {cm.Type(NHibernateUtil.BinaryBlob); cm.Length(2147483647); cm.Lazy(true);});
         }
 
 		void AuthorizedRoleCustomization(IClassMapper<AuthorizedRole> ca)
