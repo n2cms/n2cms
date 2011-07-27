@@ -145,6 +145,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
+    <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
     <Compile Include="Definitions\IFileSystemDirectory.cs" />
     <Compile Include="Definitions\IRedirect.cs" />

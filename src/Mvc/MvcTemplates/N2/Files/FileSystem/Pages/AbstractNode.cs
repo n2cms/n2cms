@@ -5,6 +5,7 @@ using N2.Security;
 using N2.Web;
 using N2.Web.Drawing;
 using N2.Persistence.Search;
+using System.Collections.Generic;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -12,7 +13,7 @@ namespace N2.Edit.FileSystem.Items
 	[Versionable(AllowVersions.No)]
 	[PermissionRemap(From = Permission.Publish, To = Permission.Write)]
 	[Indexable(IsIndexable = false)]
-	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IInjectable<IFileSystem>
+	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IInjectable<IFileSystem>, IActiveChildren
     {
 		IFileSystem fileSystem;
 		protected string iconUrl;
@@ -93,6 +94,15 @@ namespace N2.Edit.FileSystem.Items
 		public void Set(IFileSystem dependency)
 		{
 			fileSystem = dependency;
+		}
+
+		#endregion
+
+		#region IActiveChildren Members
+
+		IEnumerable<ContentItem> IActiveChildren.GetChildren(Collections.ItemFilter filter)
+		{
+			return GetChildren(filter);
 		}
 
 		#endregion

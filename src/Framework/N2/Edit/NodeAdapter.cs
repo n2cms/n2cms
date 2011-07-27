@@ -8,6 +8,7 @@ using N2.Engine;
 using N2.Security;
 using N2.Web;
 using N2.Edit.Settings;
+using N2.Definitions;
 
 namespace N2.Edit
 {
@@ -80,9 +81,8 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			var children = Settings.DisplayDataItems
-				? parent.Children.Where(new AccessFilter(WebContext.User, Security))
-				: parent.Children.FindPages().Where(new AllFilter(new AccessFilter(WebContext.User, Security), new PageFilter()));
+			IEnumerable<ContentItem> children;
+			children = GetNodeChildren(parent);
 
 			foreach (var child in children)
 				yield return child;
@@ -94,6 +94,18 @@ namespace N2.Edit
 					yield return child;
 				}
 			}
+		}
+
+		protected virtual IEnumerable<ContentItem> GetNodeChildren(ContentItem parent)
+		{
+			IEnumerable<ContentItem> children;
+			if (parent is IActiveChildren)
+				children = ((IActiveChildren)parent).GetChildren(new AccessFilter(WebContext.User, Security));
+			else if (Settings.DisplayDataItems)
+				children = parent.Children.Where(new AccessFilter(WebContext.User, Security));
+			else
+				children = parent.Children.FindPages().Where(new AccessiblePageFilter(WebContext.User, Security));
+			return children;
 		}
 
 		/// <summary>Returns true when an item has children.</summary>
