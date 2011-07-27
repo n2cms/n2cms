@@ -11,6 +11,9 @@ namespace N2.Web.Mvc
 	public class RenderHelper
 	{
 		#region Static
+		public static bool DefaultSwallowExceptions = false;
+		public static bool DefaultEditable = true;
+		public static bool DefaultOptional = true;
 		public static DisplayRendererFactory RendererFactory { get; set; }
 
 		static RenderHelper()
@@ -31,6 +34,7 @@ namespace N2.Web.Mvc
 		{
 			return RendererFactory.Create<T>(new Rendering.RenderingContext
 			{
+				IsEditable = DefaultEditable,
 				Content = Content,
 				Displayable = displayable,
 				Html = Html,

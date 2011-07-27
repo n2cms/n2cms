@@ -164,6 +164,7 @@
     <Compile Include="Definitions\IFileSystemNode.cs" />
     <Compile Include="Details\IMultipleValue.cs" />
     <Compile Include="Definitions\AttributeTransformerAttribute.cs" />
+    <Compile Include="Details\IViewEditable.cs" />
     <Compile Include="Details\WithEditableTemplateSelectionAttribute.cs" />
     <Compile Include="Details\DisplayableTokensAttribute.cs" />
     <Compile Include="Details\EditableNumberAttribute.cs" />

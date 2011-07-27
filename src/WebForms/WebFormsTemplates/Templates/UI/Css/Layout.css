@@ -18,3 +18,6 @@ a img { border:none; vertical-align:middle; }
 #textContent { position:relative; }
 
 .vs { background-color:#ffc; outline: solid 1px red; padding:5px; margin-bottom:10px; }
+
+/* editing */
+.editable.DisplayableHeadingAttribute { display:block; }

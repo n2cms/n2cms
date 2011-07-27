@@ -172,3 +172,6 @@ table.calendar
 .login .tb { width:130px; }
 .login .ff { margin-bottom:5px; }
 .register td { padding:0 5px 5px 0; }
+
+/* editing */
+.editable.DisplayableHeadingAttribute { display:block; }

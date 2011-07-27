@@ -58,9 +58,11 @@ namespace N2.Web
 
 		internal static IDisposable GetEditableWrapper(ContentItem item, bool isEditable, string propertyName, IDisplayable displayable, TextWriter writer)
 		{
-			return isEditable
-							? TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable" } })
-							: new EmptyDisposable();
+			var viewEditable = displayable as IViewEditable;
+			if (isEditable && (viewEditable == null || viewEditable.IsViewEditable) && item != null && displayable != null)
+				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName } });
+			else
+				return new EmptyDisposable();
 		}
 	}
 }

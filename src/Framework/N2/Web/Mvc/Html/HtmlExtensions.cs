@@ -96,5 +96,15 @@ namespace N2.Web.Mvc.Html
 
 			return prefix + html.CurrentItem().ID;
 		}
+
+		/// <summary>Begins an editable wrapper that can be used to edit a single property in a view.</summary>
+		/// <param name="html"></param>
+		/// <param name="item"></param>
+		/// <param name="displayableName"></param>
+		/// <returns>A disposable object that must be called to close the editable wrapper element.</returns>
+		public static IDisposable BeginEditableWrapper(this HtmlHelper html, ContentItem item, string displayableName)
+		{
+			return WebExtensions.GetEditableWrapper(item, true, displayableName, html.ContentEngine().Definitions.GetDefinition(item).Displayables[displayableName], html.ViewContext.Writer);
+		}
 	}
 }

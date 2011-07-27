@@ -8,6 +8,7 @@ using N2.Web.Rendering;
 using N2.Definitions.Runtime;
 using N2.Details;
 using N2.Web.UI.WebControls;
+using System.Diagnostics;
 
 namespace N2.Web.Mvc
 {
@@ -17,11 +18,9 @@ namespace N2.Web.Mvc
 #endif
 		IDisplayRenderer where T : IDisplayable
 	{
-		public static bool DefaultEditable = false;
-		public static bool DefaultOptional = true;
-
-		private bool isEditable = DefaultEditable;
-		private bool isOptional = DefaultOptional;
+		private bool isEditable = RenderHelper.DefaultEditable;
+		private bool isOptional = RenderHelper.DefaultOptional;
+		private bool swallowExceptions = RenderHelper.DefaultSwallowExceptions;
 
 		public RenderingContext Context { get; set; }
 
@@ -36,6 +35,16 @@ namespace N2.Web.Mvc
 		public DisplayRenderer<T> Editable(bool isEditable = true)
 		{
 			this.isEditable = isEditable;
+
+			return this;
+		}
+
+		/// <summary>Control whether this property can be edited via the the UI when navigating using the drag-drop mode.</summary>
+		/// <param name="isEditable"></param>
+		/// <returns>The same object.</returns>
+		public DisplayRenderer<T> SwallowExceptions(bool hideExceptions = true)
+		{
+			this.swallowExceptions = hideExceptions;
 
 			return this;
 		}
@@ -95,8 +104,21 @@ namespace N2.Web.Mvc
 			if (Context.Displayable == null || Context.Content == null)
 				return;
 
-			Context.Html.ResolveService<DisplayableRendererSelector>()
-				.Render(Context, writer);
+			var renderer = Context.Html.ResolveService<DisplayableRendererSelector>();
+			if (swallowExceptions)
+			{
+				try 
+				{
+					renderer.Render(Context, writer);		
+				}
+				catch (System.Exception ex)
+				{
+					Trace.Write(ex);
+				}
+			}
+			else
+				renderer.Render(Context, writer);
 		}
+
 	}
 }

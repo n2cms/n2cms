@@ -75,6 +75,14 @@ namespace N2.Web.Mvc.Html
 			return new DisplayWrapper { Wrapped = renderer, Template = template };
 		}
 
+		public static IDisplayRenderer Editable(this IDisplayRenderer render, bool isEditable)
+		{
+			render.Context.IsEditable = isEditable;
+			return render;
+		}
+
+
+
 		public static DisplayRenderer<DisplayableImageAttribute> Image(this RenderHelper render, string detailName)
 		{
 			return render.Displayable<DisplayableImageAttribute>(detailName);
@@ -92,6 +100,12 @@ namespace N2.Web.Mvc.Html
 		{
 			return render.Displayable(new DisplayableHeadingAttribute { Name = detailName, HeadingLevel = headingLevel });
 		}
+
+		public static DisplayRenderer<DisplayableLiteralAttribute> Text(this RenderHelper render, string detailName)
+		{
+			return render.Displayable(new DisplayableLiteralAttribute { Name = detailName });
+		}
+
 		public static DisplayRenderer<DisplayableTokensAttribute> Tokens(this RenderHelper render, string detailName)
 		{
 			return render.Displayable(new DisplayableTokensAttribute { Name = detailName });

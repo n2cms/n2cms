@@ -10,6 +10,8 @@
 		   ie.ImageSize("ImageSize", "Teaser image size").Configure(e => e.DefaultValue = "");
 	   }); }
 
+@using (Html.BeginEditableWrapper(Content.Current.Item, "ForwardsTo"))
+{
 <div class="part listing">
 	@{
 		bool tease = Content.Data.Tease ?? false;
@@ -29,3 +31,4 @@
 		template: @<div class="list-item">@Html.Partial("Partials/ContentLink", item.Data, new ViewDataDictionary { { "preferredSize", "thumb" } })</div>,
 		wrapper: @<div class="list">@item.RenderContents()</div>)
 </div>
+}

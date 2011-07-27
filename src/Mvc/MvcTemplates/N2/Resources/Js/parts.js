@@ -86,9 +86,13 @@
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {
 					e.preventDefault();
+					e.stopPropagation();
 					self.showDialog(url /* + encodeURIComponent(window.location.search.indexOf("scroll=") < 0 ? ("&scroll=" + window.pageYOffset) : "")*/, { width: 700, height: 520 });
 				};
-				$(this).dblclick(openDialog);
+				$(this).dblclick(openDialog).each(function () {
+					if ($(this).closest("a").length > 0)
+						$(this).click(function (e) { console.log(this); e.preventDefault(); e.stopPropagation(); });
+				});
 				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
 			});
 		},
@@ -99,7 +103,7 @@
 				return;
 			var ampIndex = q.indexOf("&", index);
 			var scroll = q.substr(index, (ampIndex < 0 ? q.length : ampIndex) - index);
-			setTimeout(function(){
+			setTimeout(function () {
 				window.scrollTo(0, scroll);
 			}, 10);
 		},

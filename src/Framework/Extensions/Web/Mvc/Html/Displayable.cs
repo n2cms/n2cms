@@ -13,15 +13,11 @@ namespace N2.Web.Mvc.Html
 {
 	public class Displayable : ItemHelper
 	{
-		public static bool DefaultEditable = true;
-		public static bool DefaultOptional = true;
-		public static bool DefaultSwallowExceptions = false;
-
 		readonly string propertyName;
 		string path;
-		bool swallowExceptions = DefaultSwallowExceptions;
-		bool isOptional = DefaultOptional;
-		bool isEditable = DefaultEditable;
+		bool swallowExceptions = RenderHelper.DefaultSwallowExceptions;
+		bool isOptional = RenderHelper.DefaultOptional;
+		bool isEditable = RenderHelper.DefaultEditable;
 
         public Displayable(HtmlHelper helper, string propertyName, ContentItem currentItem)
             : base(helper, currentItem)

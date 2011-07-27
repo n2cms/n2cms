@@ -39,7 +39,6 @@
                     <asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
                         <div id="main">
                             <asp:ContentPlaceHolder ID="PreContent" runat="server">
-                                <n2:DraggableToolbar ID="dt" runat="server" />
                                 <n2:DroppableZone ID="zra" runat="server" ZoneName="RecursiveAbove" />
                             </asp:ContentPlaceHolder>
                             <asp:ContentPlaceHolder ID="Content" runat="server">

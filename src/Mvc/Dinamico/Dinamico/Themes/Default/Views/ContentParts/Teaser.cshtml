@@ -7,6 +7,8 @@
 		   ie.Link("ForwardsTo");
 		   ie.ImageSize("ImageSize", "Image Size").Configure(e => e.DefaultValue = "");
 	   }); }
+@using (Html.BeginEditableWrapper(Content.Current.Item, "ForwardsTo"))
+{
 <div class="part teaser">
 @if (Content.Has.ForwardsTo)
 {
@@ -17,3 +19,4 @@ else
 	<p>@Content.Translate["No target"]</p>
 }
 </div>
+}
