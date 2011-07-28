@@ -33,7 +33,7 @@ namespace N2.Edit.FileSystem.NH
                 this.attachedTo = attachedTo;
                 this.fileSys = fileSys;
                 
-                Write(data, 0, data.Length);
+                base.Write(data, 0, data.Length);
                 Position = 0;
             }
 
