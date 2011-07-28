@@ -6,6 +6,7 @@ using N2.Management.Files;
 using N2.Tests;
 using N2.Web;
 using NUnit.Framework;
+using N2.Edit.FileSystem.Items;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -35,8 +36,8 @@ namespace N2.Edit.Tests.FileSystem
 
 			vnf = new VirtualNodeFactory();
 			config = new EditSection();
-			
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new FakeStatus(), config);
+
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new FakeStatus(), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }));
 		}
 
 		class FakeStatus : DatabaseStatusCache

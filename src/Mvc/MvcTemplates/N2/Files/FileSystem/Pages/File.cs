@@ -195,6 +195,7 @@ namespace N2.Edit.FileSystem.Items
 
 		internal void Add(File file)
 		{
+			file.Parent = this;
 			Children.Add(file);
 		}
 

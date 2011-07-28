@@ -123,8 +123,7 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.CreateDirectory(to);
-			Directory copy = new Directory(FileSystem.GetDirectory(to), d);
-			copy.Set(FileSystem);
+			Directory copy = New(FileSystem.GetDirectory(to), d, FileSystem, ImageSizes);
 
 			foreach (File f in GetFiles())
 				f.CopyTo(copy);
@@ -136,5 +135,13 @@ namespace N2.Edit.FileSystem.Items
 		}
 
 		#endregion
+
+		internal static Items.Directory New(DirectoryData dir, ContentItem parent, IFileSystem fs, ImageSizeCache sizes)
+		{
+			var node = new Directory(dir, parent);
+			node.Set(fs);
+			node.Set(sizes);
+			return node;
+		}
 	}
 }

@@ -27,6 +27,7 @@ namespace N2.Management.Files
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
 		DatabaseStatusCache dbStatus;
+		ImageSizeCache imageSizes;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
@@ -36,7 +37,7 @@ namespace N2.Management.Files
 		/// <param name="fs">The fs.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
-		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig)
+		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig, ImageSizeCache imageSizes)
 		{
 			this.host = host;
 			this.persister = persister;
@@ -45,7 +46,7 @@ namespace N2.Management.Files
 			this.dbStatus = dbStatus;
 			this.folders = editConfig.UploadFolders;
 
-			nodeProvider = new FolderNodeProvider(fs, persister);
+			nodeProvider = new FolderNodeProvider(fs, persister, imageSizes);
 		}
 
 		#region IAutoStart Members
@@ -122,14 +123,16 @@ namespace N2.Management.Files
 		{
 			IFileSystem fs;
 			IPersister persister;
+			ImageSizeCache imageSizes;
 
 			public FolderPair[] UploadFolderPaths { get; set; }
 
-			public FolderNodeProvider(IFileSystem fs, IPersister persister)
+			public FolderNodeProvider(IFileSystem fs, IPersister persister, ImageSizeCache imageSizes)
 			{
 				UploadFolderPaths = new FolderPair[0];
 				this.fs = fs;
 				this.persister = persister;
+				this.imageSizes = imageSizes;
 			}
 
 
@@ -171,8 +174,7 @@ namespace N2.Management.Files
 				var dd = fs.GetDirectory(pair.FolderPath);
 				var parent = persister.Get(pair.ParentID);
 
-				var dir = new Directory(dd, parent);
-				dir.Set(fs);
+				var dir = Directory.New(dd, parent, fs, imageSizes);
 				dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
 				dir.Name = dir.Title;
 
