@@ -63,11 +63,13 @@ namespace N2.Edit.FileSystem
 
 			
             var uploadFolders = new EditSection().UploadFolders;
+            if (!uploadFolders.Folders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
+                return;
+            
+            if (!(Context.Current.Resolve<IFileSystem>()).FileExists(app.Request.Path))
+                return;
 
-            if (uploadFolders.Folders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase)))
-            {
-                app.Context.Handler = new UploadFileHttpHandler(Context.Current.Resolve<IFileSystem>());
-            }
+            app.Context.Handler = new UploadFileHttpHandler(Context.Current.Resolve<IFileSystem>());
         }
     }
 }
