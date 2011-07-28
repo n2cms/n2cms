@@ -49,16 +49,6 @@ namespace N2.Persistence.NH
             set { flushAt = value; }
         }
 
-        public virtual SessionContext CreateSession
-        {
-            get
-            {
-                ISession s = nhSessionFactory.OpenSession(Interceptor);
-                s.FlushMode = FlushAt;
-                return CurrentSession = new SessionContext(this, s);
-            }
-        }
-
 		public virtual SessionContext OpenSession
 		{
             get
@@ -66,7 +56,9 @@ namespace N2.Persistence.NH
                 SessionContext sc = CurrentSession;
                 if(sc == null)
                 {
-                    sc = CreateSession;
+                    ISession s = nhSessionFactory.OpenSession(Interceptor);
+				    s.FlushMode = FlushAt;
+                    CurrentSession = sc = new SessionContext(this, s);
                 }
                 return sc;
             }

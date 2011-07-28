@@ -12,10 +12,6 @@ namespace N2.Persistence.NH
         /// <returns>A NHibernate session.</returns>
         SessionContext OpenSession { get; }
 
-        /// <summary>Returns a new session and puts it in the current request.</summary>
-        /// <returns>A NHibernate session.</returns>
-        SessionContext CreateSession { get; }
-
         /// <summary>Persists changes to disk.</summary>
 		void Flush();
 	}

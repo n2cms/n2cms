@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Configuration;
-using N2.Engine;
 using N2.Persistence.NH;
 using N2.Plugin;
 using NHibernate.Criterion;
-using N2.Plugin;
-using N2.Engine;
 using N2.Web;
-using System.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
@@ -157,7 +153,7 @@ namespace N2.Edit.FileSystem.NH
             var source = Path.File(fromVirtualPath);
             var target = Path.File(destinationVirtualPath);
 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 AssertParentExists(target);
 
@@ -174,7 +170,7 @@ namespace N2.Edit.FileSystem.NH
 
         public void DeleteFile(string virtualPath)
         {
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 var path = Path.File(virtualPath);
                 var item = GetSpecificItem(path);
@@ -193,7 +189,7 @@ namespace N2.Edit.FileSystem.NH
             var source = Path.File(fromVirtualPath);
             var target = Path.File(destinationVirtualPath);
 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 AssertParentExists(target);
 
@@ -252,7 +248,7 @@ namespace N2.Edit.FileSystem.NH
         {
             var file = GetSpecificItem(virtualPath);
                 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             using (var buffer = new MemoryStream())
             {
                 if (inputStream != null)
@@ -272,7 +268,7 @@ namespace N2.Edit.FileSystem.NH
 
         private void CreateFile(Path virtualPath, Stream inputStream)
         {
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             using (var buffer = new MemoryStream())
             {
                 AssertParentExists(virtualPath);
@@ -320,7 +316,7 @@ namespace N2.Edit.FileSystem.NH
                 throw new ApplicationException("Cannot move directory into own subdictory.");
             }
 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(source);
                 var descendants = _sessionProvider.OpenSession.Session
@@ -348,7 +344,7 @@ namespace N2.Edit.FileSystem.NH
         {
             var path = Path.Directory(virtualPath);
 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(path);
 
@@ -376,7 +372,7 @@ namespace N2.Edit.FileSystem.NH
             if(DirectoryExists(path.ToString()))
                 throw new IOException("The directory " + path.ToString() + " already exists.");
 
-            using (var trx = _sessionProvider.CreateSession.Session.BeginTransaction())
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 if (virtualPath != "/")
                 {
