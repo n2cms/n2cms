@@ -27,7 +27,6 @@ namespace N2.Management.Files
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
 		DatabaseStatusCache dbStatus;
-		ImageSizeCache imageSizes;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
