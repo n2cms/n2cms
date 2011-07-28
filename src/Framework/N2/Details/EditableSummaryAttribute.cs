@@ -19,6 +19,7 @@ namespace N2.Details
 		public EditableSummaryAttribute(string title, int sortOrder, params string[] sourceDetailNames)
 			: base(title, sortOrder)
 		{
+			IsViewEditable = false;
 			Sources = sourceDetailNames;
 			TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine;
 			Columns = 72;

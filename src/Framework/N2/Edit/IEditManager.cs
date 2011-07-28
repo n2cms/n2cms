@@ -43,9 +43,10 @@ namespace N2.Edit
 		/// <param name="item">The content item whose editors to add.</param>
 		/// <param name="container">The container onto which add the editors.</param>
 		/// <param name="user">The user whose permissions to use when adding editors.</param>
-		/// <param name="containerNameFilter">Only add editors within this container.</param>
+		/// <param name="containerNameFilter">Only add editors with these names.</param>
+		/// <param name="containerTypeFilter">Only add editors within this container type.</param>
 		/// <returns>A list of added editors.</returns>
-		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter);
+		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter, IEnumerable<string> editableNameFilter);
 
 		/// <summary>Sets initial editor values.</summary>
 		/// <param name="addedEditors">Previously added editor controls.</param>

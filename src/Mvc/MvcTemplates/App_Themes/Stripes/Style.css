@@ -109,11 +109,6 @@ body #page { background-color:Transparent; }
 
 .socialBookmarks a { white-space:nowrap; }
 
-/* login */
-.login .tb { width:130px; }
-.login .ff { margin-bottom:5px; }
-.register td { padding:0 5px 5px 0; }
-
 /* gallery */
 .thumbnail { opacity:.4; }
 .thumbnail:hover, .selected { opacity:1; }

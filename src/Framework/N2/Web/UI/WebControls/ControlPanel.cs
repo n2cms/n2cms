@@ -432,7 +432,7 @@ jQuery(document).ready(function(){{
 
 		public static string DragDropScriptInitialization()
 		{
-			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/copy.n2.ashx', move:'{0}/move.n2.ashx', remove:'{0}/remove.n2.ashx', create:'{0}/create.n2.ashx' }});", Url.ResolveTokens("{ManagementUrl}/Resources/Js"));
+			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx' }});", Url.ResolveTokens("{ManagementUrl}"));
 		}
 	}
 }

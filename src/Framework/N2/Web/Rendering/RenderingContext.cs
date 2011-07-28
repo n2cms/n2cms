@@ -12,6 +12,7 @@ namespace N2.Web.Rendering
 		public ContentItem Content { get; set; }
 		public string PropertyName { get; set; }
 		public IDisplayable Displayable { get; set; }
+		public bool IsEditable { get; set; }
 
 		public static RenderingContext Create(HtmlHelper html, string propertyName)
 		{

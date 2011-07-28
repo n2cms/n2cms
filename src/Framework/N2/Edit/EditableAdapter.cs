@@ -6,6 +6,7 @@ using N2.Definitions;
 using N2.Edit.FileSystem;
 using N2.Engine;
 using N2.Web.UI.WebControls;
+using System.Linq;
 
 namespace N2.Edit
 {
@@ -48,9 +49,23 @@ namespace N2.Edit
 		/// <param name="user">The user to filter access by.</param>
 		/// <param name="containerNameFilter">Only add editors within this container name.</param>
 		/// <returns>A editor name to control map of added editors.</returns>
+		[Obsolete("Use overload with editableNameFilter parameter")]
 		public virtual IDictionary<string, Control> AddDefinedEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter)
 		{
-			return EditManager.AddEditors(definition, item, container, user, containerTypeFilter);
+			return AddDefinedEditors(definition, item, container, user, containerTypeFilter, null);
+		}
+
+		/// <summary>Adds the editors defined for the item to the control hierarchy.</summary>
+		/// <param name="definition">The definition containing editor information.</param>
+		/// <param name="item">The specific item being added.</param>
+		/// <param name="container">The container onto which to add editors.</param>
+		/// <param name="user">The user to filter access by.</param>
+		/// <param name="containerNameFilter">Only add editors with these names.</param>
+		/// <param name="containerTypeFilter">Only add editors within this container type.</param>
+		/// <returns>A editor name to control map of added editors.</returns>
+		public virtual IDictionary<string, Control> AddDefinedEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter, IEnumerable<string> editableNameFilter)
+		{
+			return EditManager.AddEditors(definition, item, container, user, containerTypeFilter, editableNameFilter);
 		}
 
 		/// <summary>Updates editors with values from the item.</summary>

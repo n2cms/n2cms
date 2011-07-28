@@ -102,11 +102,6 @@ body { margin:0; background-color:#cce5a2; }
 .columns .left { float:left; width:245px; }
 .columns .right { float:right; width:245px; }
 
-/* login */
-.login .tb { width:130px; }
-.login .ff { margin-bottom:5px; }
-.register td { padding:0 5px 5px 0; }
-
 /* news */
 .intro {font-size:1.1em;font-style:italic;}
 

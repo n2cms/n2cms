@@ -139,19 +139,6 @@ namespace N2.Web
 			return BeginScope(newCurrentItemUrlOrId);
 		}
 
-		#region class EmptyDisposable
-		class EmptyDisposable : IDisposable
-		{
-			#region IDisposable Members
-
-			public void Dispose()
-			{
-			}
-
-			#endregion
-		}
-		#endregion
-
 		#region class ContentScope
 		class ContentScope : IDisposable
 		{

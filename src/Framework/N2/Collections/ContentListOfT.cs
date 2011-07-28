@@ -11,7 +11,17 @@ namespace N2.Collections
 	/// <typeparam name="T">The type of item to list.</typeparam>
 	public class ContentList<T> : IContentList<T>, IList where T : class, INameable
 	{
-		private List<T> inner = new List<T>();
+		public ContentList()
+		{
+			inner = new List<T>();
+		}
+
+		public ContentList(IEnumerable<T> inner)
+		{
+			this.inner = inner.ToList();
+		}
+
+		private List<T> inner;
 
 		protected List<T> Inner
 		{

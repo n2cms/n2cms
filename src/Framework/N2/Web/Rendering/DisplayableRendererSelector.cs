@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Engine;
+using System.Web.Routing;
+using N2.Details;
 
 namespace N2.Web.Rendering
 {
@@ -35,7 +37,13 @@ namespace N2.Web.Rendering
 
 		public void Render(RenderingContext context, TextWriter writer)
 		{
-			ResolveRenderer(context.Displayable.GetType()).Render(context, writer);
+			var tw = WebExtensions.GetEditableWrapper(context.Content, context.IsEditable, context.PropertyName, context.Displayable, writer);
+
+			using (tw)
+			{
+				var renderer = ResolveRenderer(context.Displayable.GetType());
+				renderer.Render(context, writer);
+			}
 		}
 	}
 }

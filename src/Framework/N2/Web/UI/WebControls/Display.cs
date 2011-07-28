@@ -29,7 +29,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets the displayable attribute</summary>
 		public IDisplayable Displayable
 		{
-			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem, SwallowExceptions)); }
+			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem, SwallowExceptions, Optional)); }
 		}
 
 		/// <summary>Gets the control responsible of displaying the detail.</summary>
@@ -74,7 +74,21 @@ namespace N2.Web.UI.WebControls
             set { ViewState["Format"] = value; }
         }
 
-		/// <summary>Prevent this control from throwing exceptions when irregularities are discovered, e.g. there is no property with the given name on the page.</summary>
+		/// <summary>Prevent this control from throwing exceptions when no displayable with the given name on the page.</summary>
+		public bool Optional
+		{
+			get { return (bool)(ViewState["Optional"] ?? true); }
+			set { ViewState["Optional"] = value; }
+		}
+
+		/// <summary>Controls whether this property can be edited via the the UI when navigating using the drag-drop mode.</summary>
+		public bool Editable
+		{
+			get { return (bool)(ViewState["Editable"] ?? true); }
+			set { ViewState["Editable"] = value; }
+		}
+
+		/// <summary>Prevent this control from throwing exceptions when any irregularities occurs, e.g. there is no property with the given name on the page.</summary>
 		public bool SwallowExceptions
 		{
 			get { return (bool)(ViewState["SwallowExceptions"] ?? false); }
@@ -135,7 +149,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 
-        public static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item, bool swallowExceptions)
+        public static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item, bool swallowExceptions, bool optional)
 		{
             if (item == null)
 			{
@@ -144,7 +158,7 @@ namespace N2.Web.UI.WebControls
 
 			var displayable = N2.Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(item).Displayables.FirstOrDefault(d => d.Name == propertyName);
 			if (displayable == null)
-                return ThrowUnless(swallowExceptions, new N2Exception("No displayable '{0}' found for the item #{1} of type '{2}'.", propertyName, item.ID, item.GetContentType()));
+				return ThrowUnless(swallowExceptions || optional, new N2Exception("No displayable '{0}' found for the item #{1} of type '{2}'.", propertyName, item.ID, item.GetContentType()));
 			
 			return displayable;
 		}
@@ -159,25 +173,28 @@ namespace N2.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            string format = Format;
-            if (!string.IsNullOrEmpty(format))
-            {
-                int index = format.IndexOf("{0}");
-                if (index > 0)
-                {
-                    writer.Write(format.Substring(0, index));
-                    base.Render(writer);
-                    writer.Write(format.Substring(index + 3));
-                }
-                else
-                {
-                    writer.Write(format);
-                }
-            }
-            else
-            {
-                base.Render(writer);
-            }
+			using (WebExtensions.GetEditableWrapper(CurrentItem, Editable && ControlPanel.GetState(this) == ControlPanelState.DragDrop, PropertyName, Displayable, writer))
+			{
+				string format = Format;
+				if (!string.IsNullOrEmpty(format))
+				{
+					int index = format.IndexOf("{0}");
+					if (index > 0)
+					{
+						writer.Write(format.Substring(0, index));
+						base.Render(writer);
+						writer.Write(format.Substring(index + 3));
+					}
+					else
+					{
+						writer.Write(format);
+					}
+				}
+				else
+				{
+					base.Render(writer);
+				}
+			}
         }
 
 		#region IItemContainer Members

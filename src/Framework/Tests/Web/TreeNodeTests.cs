@@ -4,10 +4,12 @@ using System.Web.UI;
 using N2.Tests.Web.Items;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
+using System;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
+	[Obsolete]
 	public class TreeNodeTests : ItemTestsBase
 	{
 		[Test]

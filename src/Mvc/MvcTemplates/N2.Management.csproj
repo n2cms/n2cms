@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Content\AffectedItems.ascx" />
+    <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
@@ -119,6 +120,7 @@
     <Content Include="N2\Resources\Js\EditableTags.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
     <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandableBox.js" />
@@ -161,6 +163,13 @@
     <Compile Include="N2\Content\ControlPanelEditingSaveAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelPreviewDiscardAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />
+    <Compile Include="N2\Content\EditSingle.aspx.cs">
+      <DependentUpon>EditSingle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\EditSingle.aspx.designer.cs">
+      <DependentUpon>EditSingle.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Copy.aspx.cs">
       <DependentUpon>Copy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -215,6 +224,7 @@
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
+    <Compile Include="N2\Content\Navigation\TreeUtility.cs" />
     <Compile Include="N2\Content\NumberOfItemsScheduledAction.cs" />
     <Compile Include="N2\Content\Templates\ContentTemplateProvider.cs" />
     <Compile Include="N2\Content\Templates\Default.aspx.cs">

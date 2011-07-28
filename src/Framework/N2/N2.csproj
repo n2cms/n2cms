@@ -145,6 +145,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
+    <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
     <Compile Include="Definitions\IFileSystemDirectory.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Definitions\IFileSystemNode.cs" />
     <Compile Include="Details\IMultipleValue.cs" />
     <Compile Include="Definitions\AttributeTransformerAttribute.cs" />
+    <Compile Include="Details\IViewEditable.cs" />
     <Compile Include="Details\WithEditableTemplateSelectionAttribute.cs" />
     <Compile Include="Details\DisplayableTokensAttribute.cs" />
     <Compile Include="Details\EditableNumberAttribute.cs" />
@@ -289,6 +291,7 @@
     <Compile Include="Web\ContextHelper.cs" />
     <Compile Include="Web\CssCompilerHandler.cs" />
     <Compile Include="Web\CurrentPageProvider.cs" />
+    <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
@@ -705,7 +708,6 @@
     <Compile Include="Security\PermissionRemapAttribute.cs" />
     <Compile Include="Web\CacheUtility.cs" />
     <Compile Include="Web\Drawing\ImageResizeMode.cs" />
-    <Compile Include="Web\Extensions.cs" />
     <Compile Include="Web\Drawing\ImageResizeHandler.cs" />
     <Compile Include="Web\Drawing\ImageResizer.cs" />
     <Compile Include="Web\Drawing\ImagesUtility.cs" />

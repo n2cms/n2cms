@@ -18,7 +18,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer, IComparable<IUniquelyNamed>
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, IViewEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer, IComparable<IUniquelyNamed>
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -102,12 +102,14 @@ namespace N2.Details
 		/// <summary>Default/empty constructor.</summary>
 		public AbstractEditableAttribute()
 		{
+			IsViewEditable = true;
 		}
 
 		/// <summary>Initializes a new instance of the AbstractEditableAttribute.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public AbstractEditableAttribute(string title, int sortOrder)
+			: this()
 		{
 			Title = title;
 			SortOrder = sortOrder;
@@ -118,10 +120,9 @@ namespace N2.Details
 		/// <param name="name">The name used for equality comparison and reference.</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public AbstractEditableAttribute(string title, string name, int sortOrder)
+			: this(title, sortOrder)
 		{
-			Title = title;
 			Name = name;
-			SortOrder = sortOrder;
 		}
 
 		#endregion
@@ -488,6 +489,13 @@ namespace N2.Details
 
 			return Name.CompareTo(other.Name);
 		}
+
+		#endregion
+
+		#region IViewEditable Members
+
+		/// <summary>Determines whether this editable can be managed when viewing a page in drag'n'drop mode.</summary>
+		public bool IsViewEditable { get; set; }
 
 		#endregion
 	}

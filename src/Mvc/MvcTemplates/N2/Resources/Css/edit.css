@@ -202,3 +202,7 @@ div.tagsinput input { width:80px; margin:0px; border: 1px solid transparent; pad
 div.tagsinput div { display:block; float: left; } 
 .tags_clear { clear: both; width: 100%; height: 0px; }
 
+.EditSingle .editDetail { display:none; margin-left:10px; }
+	.EditSingle .editDetail .editorLabel { display:none; }
+	.EditSingle .editDetail .editDetail { margin-left:0; }
+		.EditSingle .editDetail .editDetail .editorLabel { display:block; }

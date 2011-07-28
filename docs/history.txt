@@ -1,4 +1,5 @@
 ﻿2.2.1
+- Quick edit editable on view
 - Add.. from navigation when using drag'n'drop mode
 - SelectableTypes on [EditableLink] (discussions/240497)
 - [EditableMediaUpload] (discussions/263535)

@@ -7,7 +7,8 @@
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
 			remove: 'delete.n2.ashx',
-			create: 'create.n2.ashx'
+			create: 'create.n2.ashx',
+			editsingle: '/N2/Content/EditSingle.aspx'
 		}, urls);
 		this.messages = $.extend({
 			deleting: 'Do you really want to delete?',
@@ -33,12 +34,15 @@
 				.each(function () {
 					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
 				});
+
+			self.makeEditable();
+			self.scroll();
 		},
 
-		showDialog: function (href) {
+		showDialog: function (href, dialogOptions) {
 			window.scrollTop = 0;
 			if (dialog) dialog.remove();
-			dialog = $('<div id="dialog" />').hide();
+			dialog = $('<div id="editorDialog" />').hide();
 			$(document).append(dialog);
 			var iframe = document.createElement('iframe');
 			dialog.append(iframe);
@@ -50,13 +54,13 @@
 				});
 			});
 
-			dialog.dialog({
+			dialog.dialog($.extend({
 				modal: true,
 				width: Math.min(1000, $(window).width() - 50),
 				height: Math.min(800, $(window).height() - 50),
 				closeOnEscape: true,
 				resizable: true
-			});
+			}, dialogOptions));
 		},
 
 		makeDraggable: function () {
@@ -72,6 +76,37 @@
 			$draggables.data("handler", this);
 		},
 
+		makeEditable: function () {
+			var self = this;
+			$(".editable").each(function () {
+				var $t = $(this);
+				var url = self.urls.editsingle
+					+ "?selected=" + $t.attr("data-path")
+					+ "&property=" + $t.attr("data-property")
+					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
+				var openDialog = function (e) {
+					e.preventDefault();
+					e.stopPropagation();
+					self.showDialog(url /* + encodeURIComponent(window.location.search.indexOf("scroll=") < 0 ? ("&scroll=" + window.pageYOffset) : "")*/, { width: 700, height: 520 });
+				};
+				$(this).dblclick(openDialog).each(function () {
+					if ($(this).closest("a").length > 0)
+						$(this).click(function (e) { console.log(this); e.preventDefault(); e.stopPropagation(); });
+				});
+				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
+			});
+		},
+		scroll: function () {
+			var q = window.location.search;
+			var index = q.indexOf("&scroll=") + 8;
+			if (index < 0)
+				return;
+			var ampIndex = q.indexOf("&", index);
+			var scroll = q.substr(index, (ampIndex < 0 ? q.length : ampIndex) - index);
+			setTimeout(function () {
+				window.scrollTo(0, scroll);
+			}, 10);
+		},
 		makeDragHelper: function (e) {
 			isDragging = true;
 			var $t = $(this);

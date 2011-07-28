@@ -64,14 +64,6 @@
     			$hp.toggleClass("helpVisible");
     		});
 
-    		//    		$(".right fieldset").hide();
-
-    		//    		$(".showInfo").toggle(function () {
-    		//    			n2toggle.show(this, ".infoBox");
-    		//    		}, function () {
-    		//    			n2toggle.hide(this, ".infoBox");
-    		//    		});
-
     		$(".showZones").toggle(function () {
     			n2toggle.show(this, ".zonesBox");
     		}, function () {
@@ -93,15 +85,7 @@
 
     		$(".dimmable").n2dimmable();
 
-    		$(".uploader > label").each(function () {
-    			$("<a href='#' class='revealer'/>").html(this.innerHTML)
-    			.insertBefore(this)
-    			.click(function () {
-    				$(this).hide()
-    				.siblings().show()
-    				.end().closest(".editDetail").addClass("crowded");
-    			}).siblings().hide();
-    		});
+    		$(".uploader > label").n2revealer();
 
     		$(".expandable").n2expandable({ visible: ".uncontractable" });
 

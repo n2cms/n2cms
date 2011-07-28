@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Web.Mvc;
 using N2.Collections;
+using System.Web.Routing;
 
 namespace N2.Web
 {
@@ -26,6 +27,22 @@ namespace N2.Web
 			var tag = new TagBuilder(tagName);
 			if (tagModifier != null)
 				tagModifier(node, tag);
+
+			return new TagWrapper(tag, writer);
+		}
+
+		public static IDisposable Begin(string tagName, TextWriter writer, object htmlAttributes)
+		{
+			var tag = new TagBuilder(tagName);
+			tag.MergeAttributes(htmlAttributes);
+
+			return new TagWrapper(tag, writer);
+		}
+
+		public static IDisposable Begin(string tagName, TextWriter writer, RouteValueDictionary htmlAttributes)
+		{
+			var tag = new TagBuilder(tagName);
+			tag.MergeAttributes(htmlAttributes);
 
 			return new TagWrapper(tag, writer);
 		}

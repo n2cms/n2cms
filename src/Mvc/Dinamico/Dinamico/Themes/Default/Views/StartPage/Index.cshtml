@@ -1,15 +1,9 @@
 ﻿@model Dinamico.Models.StartPage
 
-@Content.Define(re => 
-	{
-		re.Title = "Start page";
-		re.Container("Content", e => e.Name());
-	})
-
 @section main {
 <div id="main" class="clearfix">
 	@{ Html.RenderPartial("LayoutPartials/PreContent"); }
-	@Content.Register.FreeText("Text").Container("Content").Display().Wrap(@<div id="content">@item.RenderContents()</div>)
+	@Content.Render.Tokens("Text").Wrap(@<div id="content">@item.RenderContents()</div>)
 	@{ Html.RenderPartial("LayoutPartials/PostContent"); }
 </div>
 }

@@ -30,6 +30,7 @@ using N2.Integrity;
 using N2.Web;
 using N2.Web.UI;
 using N2.Security;
+using N2.Collections;
 
 namespace N2.Definitions
 {
@@ -72,7 +73,7 @@ namespace N2.Definitions
 			Editables = new List<IEditable>();
 			Containers = new List<IEditableContainer>();
 			EditableModifiers = new List<EditorModifierAttribute>();
-			Displayables = new List<IDisplayable>();
+			Displayables = new ContentList<IDisplayable>();
 			NamedOperators = new List<IUniquelyNamed>();
 			IsPage = true;
 			Enabled = true;
@@ -164,7 +165,7 @@ namespace N2.Definitions
 		public IList<IContentTransformer> ContentTransformers { get; set; }
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
-		public IList<IDisplayable> Displayables { get; private set; }
+		public IContentList<IDisplayable> Displayables { get; private set; }
 
 		/// <summary>Named items associated to a property.</summary>
 		public IList<IUniquelyNamed> NamedOperators { get; private set; }
@@ -404,7 +405,7 @@ namespace N2.Definitions
 			id.Containers = Containers.ToList();
 			id.Description = Description;
 			id.Discriminator = Discriminator;
-			id.Displayables = Displayables.ToList();
+			id.Displayables = new ContentList<IDisplayable>(Displayables);
 			id.Editables = Editables.ToList();
 			id.Enabled = Enabled;
 			id.IconUrl = IconUrl;
