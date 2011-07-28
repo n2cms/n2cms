@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Web;
+using N2.Configuration;
 using N2.Engine;
 
 namespace N2.Web
@@ -142,7 +145,6 @@ namespace N2.Web
 		/// .jpeg
 		/// .js
 		/// .axd
-		/// .ashx
 		/// </remarks>
 		protected static bool IsStaticResource(object sender)
 		{
@@ -150,10 +152,9 @@ namespace N2.Web
 			if(application != null)
 			{
 				string path = application.Request.Path;
-				string extension = VirtualPathUtility.GetExtension(path);
-				
-				if(extension == null) return false;
 
+				string extension = VirtualPathUtility.GetExtension(path);
+				if(extension == null) return false;
 				switch (extension.ToLower())
 				{
 					case ".gif":
@@ -164,7 +165,7 @@ namespace N2.Web
 					case ".js":
 					case ".css":
 					case ".axd":
-						return true;
+                        return File.Exists(application.Request.PhysicalPath);
 				}
 			}
 			return false;
