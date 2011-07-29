@@ -1,6 +1,8 @@
+- asp.net theming in virtual directory (discussions/266494)
+- linq default values (discussions/250998)
+- select query strings breaks with url scan discussions/266434
 - recursive quickener
 - nhibernate method not found (discussions/265951)
-- file names with _ (discussions/265070)
 - reproduce lucene problems (discussions/262292) - fix fist-time installation lucene error leaving lock
 - allowed zones in dinamico view templates (discussions/263700)
 - master page in themes directory

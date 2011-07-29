@@ -8,6 +8,7 @@ using N2.Edit.FileSystem.Items;
 using N2.Engine;
 using N2.Resources;
 using N2.Web;
+using N2.Configuration;
 
 namespace N2.Edit.Navigation
 {
@@ -16,10 +17,12 @@ namespace N2.Edit.Navigation
 		protected HtmlInputHidden inputLocation;
 		protected HtmlInputFile inputFile;
 		protected IFileSystem FS;
+		protected EditSection Config;
 		
 		protected override void OnInit(EventArgs e)
 		{
 			FS = Engine.Resolve<IFileSystem>();
+			Config = Engine.Resolve<ConfigurationManagerWrapper>().Sections.Management;
 			Register.JQueryUi(Page);
 			var selected = Selection.SelectedItem;
 			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
@@ -53,8 +56,7 @@ namespace N2.Edit.Navigation
 				{
 					var dd = FS.GetDirectory(uploadFolder);
 
-					var dir = new Directory(dd, root.Current);
-					dir.Set(FS);
+					var dir = Directory.New(dd, root.Current, FS, Engine.Resolve<ImageSizeCache>());
 					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
 					root.Children.Add(node);
 				}
