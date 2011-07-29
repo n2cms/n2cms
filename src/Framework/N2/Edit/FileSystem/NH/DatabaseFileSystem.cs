@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using N2.Configuration;
@@ -93,7 +94,7 @@ namespace N2.Edit.FileSystem.NH
         {
             if(!DirectoryExists(target.Parent))
             {
-                CreateDirectory(target.Parent);
+                _CreateDirectory(target.Parent);
             }
         }
 
@@ -367,25 +368,13 @@ namespace N2.Edit.FileSystem.NH
         public void CreateDirectory(string virtualPath)
         {
             var path = Path.Directory(virtualPath);
-
             // Ensure consistent behavoir with the System.UI.Directory methods used by mapped and virtual filesystem
             if(DirectoryExists(path.ToString()))
                 throw new IOException("The directory " + path.ToString() + " already exists.");
 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
-                if (virtualPath != "/")
-                {
-                    EnsureParentExists(path);
-                }
-
-                var item = new FileSystemItem
-                {
-                    Path = path,
-                    Created = DateTime.Now
-                };
-
-                _sessionProvider.OpenSession.Session.Save(item);
+                _CreateDirectory(virtualPath);
                 trx.Commit();
             }
 
@@ -393,6 +382,24 @@ namespace N2.Edit.FileSystem.NH
             {
                 DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
             }
+        }
+
+        private void _CreateDirectory(string virtualPath)
+        {
+            var path = Path.Directory(virtualPath);
+
+            if (virtualPath != "/")
+            {
+                EnsureParentExists(path);
+            }
+
+            var item = new FileSystemItem
+                           {
+                               Path = path,
+                               Created = DateTime.Now
+                           };
+
+            _sessionProvider.OpenSession.Session.Save(item);
         }
 
         public event EventHandler<FileEventArgs> FileWritten;
