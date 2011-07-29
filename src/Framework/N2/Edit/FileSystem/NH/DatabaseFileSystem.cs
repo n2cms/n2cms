@@ -322,7 +322,7 @@ namespace N2.Edit.FileSystem.NH
                 var directory = GetSpecificItem(source);
                 var descendants = _sessionProvider.OpenSession.Session
                     .CreateCriteria<FileSystemItem>()
-                    .Add(Restrictions.Like("Path.Parent", directory.Path.Parent, MatchMode.Start))
+                    .Add(Restrictions.Like("Path.Parent", directory.Path.ToString(), MatchMode.Start))
                     .List<FileSystemItem>();
 
                 foreach (var item in descendants)

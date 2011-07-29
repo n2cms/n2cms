@@ -48,7 +48,7 @@ namespace N2.Edit.FileSystem.NH
                 throw new ApplicationException("Rebase parameters \"source\" and \"target\" should both be directory paths.");
             }
 
-            Parent = target + Parent.Substring(source.ToString().Length);
+            Parent = new Path(target + ToString().Substring(source.ToString().Length)).Parent;
         }
     }
 
