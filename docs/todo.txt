@@ -1,4 +1,3 @@
-- asp.net theming in virtual directory (discussions/266494)
 - linq default values (discussions/250998)
 - select query strings breaks with url scan discussions/266434
 - recursive quickener

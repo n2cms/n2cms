@@ -1,4 +1,5 @@
 ﻿2.2.1
+- Fixed asp.net theming in virtual directory (discussions/266494)
 - Fixed non-relevant sub-files for all matching names with _ (discussions/265070)
 - Quick edit editable on view
 - Add.. from navigation when using drag'n'drop mode
