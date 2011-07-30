@@ -41,7 +41,7 @@
 * SelectableTypes on [EditableLink]
 * Refactored item.Children.Find... to return IQueryable (in memory so far)
 * Performance improvements rendering navigation
-* Bug fixes, e.g.: dinamico 404 on 1st request and login error, date picker, indexing error, tokens not removed (by wrohrbach), NH version issue
+* Bug fixes, e.g.: dinamico 404 on 1st request and login error, date picker, indexing error, tokens not removed (by wrohrbach), NH version issue (now 3.2GA)
 
 ! First time with N2?
 * Try the [url:demo site|http://demo.n2cms.com/]

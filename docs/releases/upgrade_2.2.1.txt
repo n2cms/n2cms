@@ -1,5 +1,6 @@
 Upgrade N2 CMS Framework TO 2.2.1
-* Navigate to /n2/installation/upgrade.aspx and execute migrations
+* Upgrade N2 CMS Framework TO 2.2 (below)
+* Navigate to /n2/installation/upgrade.aspx and execute migrations 
 
 Upgrade N2 CMS Framework TO 2.2
 * Make a complete backup (including database)
