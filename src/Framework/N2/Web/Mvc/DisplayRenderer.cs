@@ -24,10 +24,28 @@ namespace N2.Web.Mvc
 
 		public RenderingContext Context { get; set; }
 
+
+
 		public DisplayRenderer(RenderingContext context)
 		{
 			this.Context = context;
 		}
+
+		public DisplayRenderer(HtmlHelper html, string propertyName)
+		{
+			Context = new RenderingContext();
+			Context.Content = html.CurrentItem();
+			var template = html.ResolveService<IDefinitionManager>().GetTemplate(Context.Content);
+			if (template != null)
+				Context.Displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == propertyName);
+			if(!isOptional && Context.Displayable == null)
+				throw new N2Exception("No displayable registered for the name '{0}' of the item #{1} of type {2}", propertyName, Context.Content.ID, Context.Content.GetContentType());
+			Context.Html = html;
+			Context.PropertyName = propertyName;
+			Context.IsEditable = RenderHelper.DefaultEditable;
+		}
+
+
 
 		/// <summary>Control whether this property can be edited via the the UI when navigating using the drag-drop mode.</summary>
 		/// <param name="isEditable"></param>
@@ -59,20 +77,6 @@ namespace N2.Web.Mvc
 			return this;
 		}
 
-		public DisplayRenderer(HtmlHelper html, string propertyName)
-		{
-			Context = new RenderingContext();
-			Context.Content = html.CurrentItem();
-			var template = html.ResolveService<IDefinitionManager>().GetTemplate(Context.Content);
-			if (template != null)
-				Context.Displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == propertyName);
-			if(!isOptional && Context.Displayable == null)
-				throw new N2Exception("No displayable registered for the name '{0}' of the item #{1} of type {2}", propertyName, Context.Content.ID, Context.Content.GetContentType());
-			Context.Html = html;
-			Context.PropertyName = propertyName;
-			Context.IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(html) == ControlPanelState.DragDrop;
-		}
-
 		#region IHtmlString Members
 
 		public string ToHtmlString()
@@ -84,9 +88,6 @@ namespace N2.Web.Mvc
 
 		public void Render()
 		{
-			if (Context.Displayable == null)
-				return;
-
 			WriteTo(Context.Html.ViewContext.Writer);
 		}
 
@@ -103,6 +104,8 @@ namespace N2.Web.Mvc
 		{
 			if (Context.Displayable == null || Context.Content == null)
 				return;
+
+			Context.IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(Context.Html) == ControlPanelState.DragDrop;
 
 			var renderer = Context.Html.ResolveService<DisplayableRendererSelector>();
 			if (swallowExceptions)

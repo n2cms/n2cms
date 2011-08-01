@@ -25,10 +25,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0A
 		..\docs\releases\release_1.5.txt = ..\docs\releases\release_1.5.txt
 		..\docs\releases\release_2.0.txt = ..\docs\releases\release_2.0.txt
 		..\docs\releases\release_2.1.txt = ..\docs\releases\release_2.1.txt
+		..\docs\releases\release_2.2.1.txt = ..\docs\releases\release_2.2.1.txt
 		..\docs\releases\release_2.2.txt = ..\docs\releases\release_2.2.txt
 		..\docs\releases\upgrade_1.5.txt = ..\docs\releases\upgrade_1.5.txt
 		..\docs\releases\upgrade_2.0.txt = ..\docs\releases\upgrade_2.0.txt
 		..\docs\releases\upgrade_2.1.txt = ..\docs\releases\upgrade_2.1.txt
+		..\docs\releases\upgrade_2.2.1.txt = ..\docs\releases\upgrade_2.2.1.txt
 		..\docs\releases\upgrade_2.2.txt = ..\docs\releases\upgrade_2.2.txt
 	EndProjectSection
 EndProject

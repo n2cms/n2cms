@@ -266,7 +266,7 @@ namespace N2.Persistence.NH
             mm.Class<FileSystemItem>(FileSystemItemCustomization);
 			mm.Class<AuthorizedRole>(AuthorizedRoleCustomization);
 
-			var compiledMapping = mm.CompileMappingForAllExplicitAddedEntities();
+			var compiledMapping = mm.CompileMappingForAllExplicitlyAddedEntities();
 			var debugXml = compiledMapping.AsString();
 			cfg.AddDeserializedMapping(compiledMapping, "N2");
 		}

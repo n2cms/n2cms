@@ -47,6 +47,10 @@ namespace N2.Tests.Fakes
 		{
 			RewritePath(path, "", "");
 		}
+		public override void RewritePath(string path, bool rebaseClientPath)
+		{
+			RewritePath(path, "", "");
+		}
 		public override void RewritePath(string filePath, string pathInfo, string queryString)
 		{
 			request.SetQuery(queryString);
