@@ -39,9 +39,9 @@ namespace N2.Configuration
 		}
 
 		[ConfigurationProperty("uploadFolders")]
-		public FileSystemFolderCollection UploadFolders
+		public RootFileSystemFolderCollection UploadFolders
 		{
-			get { return (FileSystemFolderCollection)base["uploadFolders"]; }
+			get { return (RootFileSystemFolderCollection)base["uploadFolders"]; }
 			set { base["uploadFolders"] = value; }
 		}
 

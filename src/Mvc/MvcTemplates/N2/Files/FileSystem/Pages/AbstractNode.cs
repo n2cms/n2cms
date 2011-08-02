@@ -13,10 +13,11 @@ namespace N2.Edit.FileSystem.Items
 	[Versionable(AllowVersions.No)]
 	[PermissionRemap(From = Permission.Publish, To = Permission.Write)]
 	[Indexable(IsIndexable = false)]
-	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IInjectable<IFileSystem>, IActiveChildren
+	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>
     {
+		public ImageSizeCache ImageSizes { get; protected set; }
+
 		IFileSystem fileSystem;
-		protected string iconUrl;
 
     	protected virtual IFileSystem FileSystem
     	{
@@ -26,7 +27,7 @@ namespace N2.Edit.FileSystem.Items
 
 		public override string Path
 		{
-			get { return base.Path; }
+			get { return (Parent != null ? Parent.Path : "/" ) + Name + "/"; }
 		}
 
 		public virtual AbstractDirectory Directory
@@ -38,22 +39,6 @@ namespace N2.Edit.FileSystem.Items
         {
             get { return string.Empty; }
         }
-
-		public override string IconUrl
-		{
-			get 
-			{
-				if (iconUrl == null)
-				{
-					string icon = ImagesUtility.GetResizedPath(Url, "icon");
-					if (FileSystem.FileExists(icon))
-						this.iconUrl = icon;
-					else
-						this.iconUrl = base.IconUrl;
-				}
-				return iconUrl;
-			}
-		}
 
         string INode.PreviewUrl
         {
@@ -89,7 +74,16 @@ namespace N2.Edit.FileSystem.Items
 			return first.TrimEnd('/') + "/" + second.TrimStart('/');
 		}
 
-		#region IDependentEntity<IFileSystem> Members
+		#region IActiveChildren Members
+
+		IEnumerable<ContentItem> IActiveChildren.GetChildren(Collections.ItemFilter filter)
+		{
+			return GetChildren(filter);
+		}
+
+		#endregion
+
+		#region IInjectable<IFileSystem> Members
 
 		public void Set(IFileSystem dependency)
 		{
@@ -98,11 +92,11 @@ namespace N2.Edit.FileSystem.Items
 
 		#endregion
 
-		#region IActiveChildren Members
+		#region IInjectable<ImageSizeCache> Members
 
-		IEnumerable<ContentItem> IActiveChildren.GetChildren(Collections.ItemFilter filter)
+		public void Set(ImageSizeCache dependency)
 		{
-			return GetChildren(filter);
+			ImageSizes = dependency;
 		}
 
 		#endregion

@@ -56,6 +56,7 @@ namespace N2.Details
 		protected override Control AddEditor(Control container)
 		{
 			FileSelector selector = new FileSelector();
+			selector.SelectableExtensions = FileSelector.ImageExtensions;
 			selector.ID = Name;
 			container.Controls.Add(selector);
 			return selector;

@@ -90,7 +90,7 @@ namespace N2.Management.Content.Navigation
 				|| selectableTypes.Split(',').Intersect(baseTypesAndInterfaceNames).Any();
 
 			bool isSelectableExtension = string.IsNullOrEmpty(selectableExtensions)
-				|| selectableExtensions.Split(',').Contains(VirtualPathUtility.GetExtension(item.Url), StringComparer.InvariantCultureIgnoreCase);
+				|| selectableExtensions.Split(',').Contains(item.Url.ToUrl().Extension, StringComparer.InvariantCultureIgnoreCase);
 
 			return isSelectableType && isSelectableExtension;
 		}

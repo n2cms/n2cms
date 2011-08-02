@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.HtmlControls;
@@ -9,6 +10,8 @@ using N2.Engine;
 using N2.Resources;
 using N2.Web;
 using N2.Configuration;
+using N2.Edit;
+using N2.Edit.Workflow;
 
 namespace N2.Edit.Navigation
 {
@@ -64,6 +67,9 @@ namespace N2.Edit.Navigation
 				AddSiteFilesNodes(root, host.DefaultSite, selectionTrail);
 				foreach (var site in host.Sites)
 				{
+					if (site.StartPageID == host.DefaultSite.StartPageID)
+						continue;
+
 					AddSiteFilesNodes(root, site, selectionTrail);
 				}
 
@@ -116,27 +122,26 @@ namespace N2.Edit.Navigation
 			if (string.IsNullOrEmpty(uploadFolder))
 				return false;
 			uploadFolder = Url.ToRelative(uploadFolder);
-			foreach (string availableFolder in Engine.EditManager.UploadFolders)
+			foreach (string availableFolder in Engine.EditManager.UploadFolders
+				.Union(Engine.Host.Sites.SelectMany(s => s.UploadFolders)))
 			{
 				if (uploadFolder.StartsWith(Url.ToRelative(availableFolder), StringComparison.InvariantCultureIgnoreCase))
 					return true;
 			}
+
 			return false;
 		}
 
 		private void AddSiteFilesNodes(HierarchyNode<ContentItem> parent, Site site, List<ContentItem> selectionTrail)
 		{
-			var siteNode = Engine.Persister.Get(site.StartPageID);
+			var startPage = Engine.Persister.Get(site.StartPageID);
+			var sizes = Engine.Resolve<ImageSizeCache>();
 
 			HierarchyNode<ContentItem> node = null;
-			foreach (DirectoryData dd in Engine.Resolve<IContentAdapterProvider>()
-				.ResolveAdapter<NodeAdapter>(siteNode)
-				.GetUploadDirectories(site))
+			foreach(var dir in Engine.GetContentAdapter<NodeAdapter>(startPage).GetChildren(startPage, Interfaces.Managing).OfType<Directory>())
 			{
-				if(node == null)
-					node = new HierarchyNode<ContentItem>(siteNode);
-				var dir = new Directory(dd, parent.Current);
-				dir.Set(FS);
+				if (node == null)
+					node = new HierarchyNode<ContentItem>(startPage);
 				var directoryNode = CreateDirectoryNode(FS, dir, node, selectionTrail);
 				node.Children.Add(directoryNode);
 			}

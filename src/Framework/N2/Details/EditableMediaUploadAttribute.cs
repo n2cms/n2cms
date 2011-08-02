@@ -7,6 +7,7 @@ using N2.Edit.FileSystem;
 using N2.Web;
 using N2.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using N2.Web.Drawing;
 
 namespace N2.Details
 {
@@ -52,31 +53,18 @@ namespace N2.Details
 				return;
 
 			string extension = VirtualPathUtility.GetExtension(url);
-			switch (extension.ToLower())
+			switch (ImagesUtility.GetExtensionGroup(extension))
 			{
-				case ".bmp":
-				case ".gif":
-				case ".png":
-				case ".jpg":
-				case ".jpeg":
+				case ImagesUtility.ExtensionGroups.Images:
 					base.Write(item, propertyName, writer);
 					return;
-				case ".swf":
+				case ImagesUtility.ExtensionGroups.Flash:
 					WriteFlash(url, writer);
 					return;
-				case ".mpg":
-				case ".mpeg":
-				case ".mp4":
-				case ".avi":
-				case ".wmv":
+				case ImagesUtility.ExtensionGroups.Video:
 					WriteMovie(url, writer);
 					return;
-				case ".aif":
-				case ".m4a":
-				case ".mid":
-				case ".mp3":
-				case ".wav":
-				case ".wma":
+				case ImagesUtility.ExtensionGroups.Audio:
 					WriteAudio(url, writer);
 					return;
 			}

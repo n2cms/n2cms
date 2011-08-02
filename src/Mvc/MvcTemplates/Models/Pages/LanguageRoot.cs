@@ -67,14 +67,14 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		#endregion
 
-		[FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "top")]
+		[FileAttachment, EditableImageUpload("Top Image", 88, ContainerName = Tabs.Content, CssClass = "top")]
 		public virtual string TopImage
 		{
 			get { return GetDetail("TopImage", string.Empty); }
 			set { SetDetail("TopImage", value, string.Empty); }
 		}
 
-		[FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableImageUpload("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
 			get { return GetDetail("Image", string.Empty); }

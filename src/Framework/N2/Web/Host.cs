@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Configuration;
 using N2.Engine;
+using System.Configuration;
 
 namespace N2.Web
 {
@@ -151,13 +152,29 @@ namespace N2.Web
 			{
 				Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
 				s.Wildcards = configElement.Wildcards || config.Wildcards;
-				foreach (FolderElement folder in configElement.UploadFolders)
-					s.UploadFolders.Add(folder.Path);
+				
+				foreach (FolderElement folder in configElement.UploadFolders.AllElements)
+				{
+					if (string.IsNullOrEmpty(folder.Path))
+						throw new ConfigurationErrorsException("Upload path configured for site '" + configElement.Name + "' cannot be empty.");
+					s.UploadFolders.Add(FixPath(folder.Path));
+				}
 				foreach (string key in configElement.Settings.AllKeys)
 					s.Settings[key] = configElement.Settings[key].Value;
 				sites.Add(s);
 			}
 			return sites;
+		}
+
+		private static string FixPath(string path)
+		{
+			if (!path.EndsWith("/"))
+				path = path + "/";
+			if (path.StartsWith("/"))
+				path = "~" + path;
+			else if (!path.StartsWith("~"))
+				path = "~/" + path;
+			return path;
 		}
 
 		/// <summary>Is triggered when the sites collection changes.</summary>

@@ -63,5 +63,132 @@ namespace N2.Web.Drawing
 
 			return Url.ToAbsolute(imageUrl);
 		}
+
+		public static string GetIconUrl(string resourceUrl)
+		{
+			return IconPath(GetExtensionGroup(VirtualPathUtility.GetExtension(resourceUrl)));
+		}
+
+		public static string GetExtensionGroup(string extension)
+		{
+			extension = (extension ?? "").ToLower();
+			switch (extension)
+			{
+				case ".gif":
+				case ".png":
+				case ".jpg":
+				case ".tif":
+				case ".tiff":
+				case ".jpeg":
+					return ExtensionGroups.Images;
+				case ".pdf":
+					return ExtensionGroups.Pdf;
+				case ".c":
+				case ".cpp":
+				case ".class":
+				case ".java":
+				case ".cs":
+				case ".vb":
+				case ".js":
+				case ".dtd":
+				case ".m":
+				case ".pl":
+				case ".py":
+					return ExtensionGroups.ServerCode;
+				case ".html":
+				case ".htm":
+				case ".xml":
+				case ".xsd":
+				case ".xslt":
+				case ".aspx":
+				case ".ascx":
+				case ".ashx":
+				case ".php":
+				case ".css":
+				case ".sql":
+				case ".fla":
+					return ExtensionGroups.ClientCode;
+				case ".zip":
+				case ".gz":
+				case ".7z":
+				case ".rar":
+				case ".sit":
+				case ".tar":
+				case ".pkg":
+				case ".msi":
+				case ".cab":
+					return ExtensionGroups.Compressed;
+				case ".swf":
+					return ExtensionGroups.Flash;
+				case ".txt":
+				case ".log":
+					return ExtensionGroups.Text;
+				case ".csv":
+				case ".xls":
+				case ".xlsx":
+				case ".wks":
+					return ExtensionGroups.Excel;
+				case ".xps":
+				case ".ppt":
+				case ".pptx":
+				case ".pps":
+					return ExtensionGroups.Powerpoint;
+				case ".rtf":
+				case ".doc":
+				case ".docx":
+					return ExtensionGroups.Word;
+				case ".mpg":
+				case ".mpeg":
+				case ".avi":
+				case ".wmv":
+				case ".flv":
+				case ".mp4":
+				case ".mov":
+
+				case ".3g2":
+				case ".3gp":
+				case ".asf":
+				case ".asx":
+				case ".rm":
+				case ".vob":
+					return ExtensionGroups.Video;
+
+				case ".aif":
+				case ".iff":
+				case ".m3u":
+				case ".m4a":
+				case ".mid":
+				case ".mp3":
+				case ".mpa":
+				case ".ra":
+				case ".wav":
+				case ".wma":
+					return ExtensionGroups.Audio;
+				default:
+					return ExtensionGroups.Default;
+			}
+		}
+
+		private static string IconPath(string iconName)
+		{
+			return N2.Web.Url.ResolveTokens("{ManagementUrl}/Resources/icons/" + iconName + ".png");
+		}
+
+		static public class ExtensionGroups
+		{
+			public const string Images = "page_white_picture";
+			public const string Pdf = "page_white_acrobat";
+			public const string ServerCode = "page_white_csharp";
+			public const string ClientCode = "page_white_code";
+			public const string Compressed = "page_white_compressed";
+			public const string Flash = "page_white_flash";
+			public const string Text = "page_white_text";
+			public const string Excel = "page_white_excel";
+			public const string Powerpoint = "page_white_powerpoint";
+			public const string Word = "page_white_word";
+			public const string Audio = "page_white_cd";
+			public const string Video = "page_white_dvd";
+			public const string Default = "page_white";
+		}
 	}
 }

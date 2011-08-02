@@ -7,6 +7,7 @@ using N2.Edit.FileSystem;
 using N2.Web;
 using N2.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using N2.Web.Drawing;
 
 namespace N2.Details
 {
@@ -139,13 +140,9 @@ namespace N2.Details
 				return;
 			
 			string extension = VirtualPathUtility.GetExtension(url);
-			switch (extension.ToLower())
+			switch (ImagesUtility.GetExtensionGroup(extension))
 			{
-				case ".bmp":
-				case ".gif":
-				case ".png":
-				case ".jpg":
-				case ".jpeg":
+				case ImagesUtility.ExtensionGroups.Images:
 					DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
 					return;
 				default:
