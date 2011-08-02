@@ -33,7 +33,6 @@
 * Warning when removing files referenced somewhere (ThreadId=252444)
 * Site settings via toolbar ({"[RecursiveContainer]"})
 * Improved installation experience and security
-[url:To the complete list...|https://github.com/n2cms/n2cms/commits/2.2.1]
 
 !! What's new in 2.2.1 update
 * Direct editing of details (available via drag'n'drop)
@@ -42,6 +41,7 @@
 * Refactored item.Children.Find... to return IQueryable (in memory so far)
 * Performance improvements rendering navigation
 * Bug fixes, e.g.: dinamico 404 on 1st request and login error, date picker, indexing error, tokens not removed (by wrohrbach), NH version issue (now 3.2GA)
+[url:To the complete list...|https://github.com/n2cms/n2cms/commits/2.2.1]
 
 ! First time with N2?
 * Try the [url:demo site|http://demo.n2cms.com/]

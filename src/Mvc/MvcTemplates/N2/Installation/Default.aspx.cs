@@ -429,6 +429,8 @@ namespace N2.Edit.Install
 
 			if (!phSame.Visible && !phDiffer.Visible)
 				ShowTab("Finish");
+
+			Engine.Resolve<N2.Persistence.Search.IIndexer>().Update(root);
 		}
 
 		protected Exception ExecuteWithErrorHandling(Action action)

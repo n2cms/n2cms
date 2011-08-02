@@ -1,0 +1,2 @@
+<img src="../../Dinamico/Themes/Terracotta/Thumbnail.jpg" style="float:left;"/>
+<b>Sample Data</b> with multiple languages and themes

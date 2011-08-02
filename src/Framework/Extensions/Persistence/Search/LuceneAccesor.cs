@@ -66,6 +66,9 @@ namespace N2.Persistence.Search
 		{
 			lock (this)
 			{
+				if (!System.IO.Directory.Exists(indexPath))
+					System.IO.Directory.CreateDirectory(indexPath);
+				
 				var d = directory ?? (directory = new SimpleFSDirectory(new DirectoryInfo(indexPath), new SimpleFSLockFactory()));
 				return d;
 			}
