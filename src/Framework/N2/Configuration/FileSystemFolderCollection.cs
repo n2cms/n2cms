@@ -6,13 +6,6 @@ namespace N2.Configuration
 	[ConfigurationCollection(typeof(FolderElement))]
 	public class FileSystemFolderCollection : LazyRemovableCollection<FolderElement>
     {
-        public FileSystemFolderCollection()
-        {
-            FolderElement folder = new FolderElement();
-            folder.Path = "~/upload/";
-            AddDefault(folder);
-        }
-
 		public void Add(string folderPath)
 		{
 			BaseAdd(new FolderElement { Path = folderPath });

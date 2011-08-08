@@ -21,7 +21,8 @@
 
 	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<ItemGroup>
-			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
+			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*;
+																  $(BuildFolder)\deploy\MvcTemplates\**\*"
 							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
 												$(Templates-Mvc-SourceFolder)\**\.git\**\*;
 												$(Templates-Mvc-SourceFolder)\**\obj\**\*;

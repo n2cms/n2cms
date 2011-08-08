@@ -10,13 +10,20 @@ namespace N2.Addons.UITests.UI
 		{
 			base.OnInit(e);
 
-			ie.CurrentItem = CurrentPage;
+			if (Request["new"] == "true")
+			{
+				ie.Initialize(Engine.Definitions.GetDefinition(CurrentItem).Discriminator, null, CurrentItem.Parent);
+			}
+			else
+			{
+				ie.CurrentItem = CurrentPage;
+			}
 		}
 
 		protected void Save_Click(object sender, EventArgs e)
 		{
 			Engine.Resolve<CommandDispatcher>().Publish(ie.CreateCommandContext());
-			Response.Redirect(CurrentPage.Url);
+			Response.Redirect(ie.CurrentItem.Url);
 		}
 	}
 }

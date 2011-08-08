@@ -23,10 +23,8 @@ namespace N2.Edit.FileSystem.Items
 		}
 	}
 
-    public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory, IInjectable<ImageSizeCache>
+    public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory
     {
-		public ImageSizeCache ImageSizes { get; protected set; }
-
 		public override ContentItem GetChild(string childName)
 		{
 			string name = HttpUtility.UrlDecode(childName.Trim('/'));
@@ -57,6 +55,7 @@ namespace N2.Edit.FileSystem.Items
 				{
 					var file = new File(fd, this);
 					file.Set(FileSystem);
+					file.Set(ImageSizes);
 
 					if (lastFile != null
 						&& file.Name.StartsWith(lastFileName + ImagesUtility.Separator)
@@ -150,14 +149,5 @@ namespace N2.Edit.FileSystem.Items
         	
 			throw new N2Exception(item + " is not a Directory.");
         }
-
-		#region IInjectable<ImageSizeCache> Members
-
-		public void Set(ImageSizeCache dependency)
-		{
-			ImageSizes = dependency;
-		}
-
-		#endregion
 	}
 }

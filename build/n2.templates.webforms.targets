@@ -20,7 +20,8 @@
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
-			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*"
+			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*;
+																	 $(BuildFolder)\deploy\WebFormTemplates\**\*"
 													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
 																		$(Templates-SourceFolder)\**\.git\**\*;
 																		$(Templates-SourceFolder)\**\obj\**\*;

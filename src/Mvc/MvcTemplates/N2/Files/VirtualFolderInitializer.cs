@@ -9,6 +9,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Plugin;
 using N2.Web;
+using N2.Collections;
 
 namespace N2.Management.Files
 {

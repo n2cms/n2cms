@@ -22,6 +22,7 @@ namespace N2.Edit
 		public ContentItem Navigate(ContentItem startingPoint, string path)
 		{
 			return startingPoint.GetChild(path) 
+				?? virtualNodes.Get(startingPoint.Path + path.TrimStart('/'))
 				?? virtualNodes.Get(path);
 		}
 

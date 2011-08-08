@@ -22,7 +22,7 @@ namespace N2.Tests.Edit.FileSystem
 			host = new Host(new Fakes.FakeWebContextWrapper(), 1, 1);
 			config = new EditSection();
 			config.DefaultDirectory = new DefaultDirectoryElement();
-			config.UploadFolders = new FileSystemFolderCollection();
+			config.UploadFolders = new RootFileSystemFolderCollection();
 
 			root = CreateOneItem<Items.NormalPage>(1, "root", null);
 			item1 = CreateOneItem<Items.NormalPage>(2, "item1", root);
