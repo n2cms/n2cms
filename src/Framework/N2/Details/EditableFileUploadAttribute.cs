@@ -162,6 +162,7 @@ namespace N2.Details
 
 		#endregion
 
+		public const string ValidCharactersExpression = "^[^+]*$";
 		public const string InvalidCharactersExpression = "[+]";
 	}
 }

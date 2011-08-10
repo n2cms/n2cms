@@ -23,7 +23,7 @@ namespace N2.Edit.FileSystem.Editables
         {
 			public HtmlInputFile Upload = new HtmlInputFile { ID = "u" };
 			public TextBox ChangeName = new TextBox { ID = "n" };
-			public RegularExpressionValidator ChangeNameExpressionValidator = new RegularExpressionValidator { ControlToValidate = "n", ValidationExpression = EditableFileUploadAttribute.InvalidCharactersExpression, Display = ValidatorDisplay.Dynamic, ErrorMessage = "Invalid characters in file name" };
+			public RegularExpressionValidator ChangeNameExpressionValidator = new RegularExpressionValidator { ControlToValidate = "n", ValidationExpression = EditableFileUploadAttribute.ValidCharactersExpression, Display = ValidatorDisplay.Dynamic, ErrorMessage = "Invalid characters in file name" };
 			public RequiredFieldValidator ChangeNameRequiredValidator = new RequiredFieldValidator { ControlToValidate = "n", Display = ValidatorDisplay.Dynamic, ErrorMessage = "File name required" };
 
             protected override void OnInit(EventArgs e)
@@ -68,7 +68,9 @@ namespace N2.Edit.FileSystem.Editables
             }
             else
             {
-                ce.ChangeName.Visible = false;
+				ce.ChangeName.Visible = false;
+				ce.ChangeNameExpressionValidator.Enabled = false;
+				ce.ChangeNameRequiredValidator.Enabled = false;
             }
         }
 
