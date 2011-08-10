@@ -1,3 +1,5 @@
+- Restrict upload folders shown for EditableImage (discussions/268170)
+- languages associated to sites (discussions/264798)
 - linq default values (discussions/250998)
 - select query strings breaks with url scan discussions/266434
 - recursive quickener
