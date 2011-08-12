@@ -27,7 +27,7 @@ namespace N2.Configuration
 			AddDefault(new PatternValueElement("smallUE", "[ü]", "ue", true));
 			AddDefault(new PatternValueElement("capitalUE", "[Ü]", "Ue", true));
 			AddDefault(new PatternValueElement("germanSZ", "[ß]", "ss", true));
-			AddDefault(new PatternValueElement("theRest", "[^. a-zA-Z0-9_-]", "", true));
+            AddDefault(new PatternValueElement("theRest", "[^. א-תa-zA-Z0-9_-]", "", true));
 		}
 	}
 }
