@@ -129,6 +129,9 @@ namespace N2.Persistence.Search
 			try
 			{
 				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
+				if (trail == null)
+					return; // not indexed
+
 				var query = new PrefixQuery(new Term("Trail", trail));
 				iw.DeleteDocuments(query);
 				iw.Commit();
