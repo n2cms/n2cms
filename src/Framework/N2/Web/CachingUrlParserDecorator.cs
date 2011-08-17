@@ -61,6 +61,9 @@ namespace N2.Web
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
 		public PathData ResolvePath(Url url)
 		{
+			if (url == null)
+				return PathData.Empty;
+
 			string key = url.ToString().ToLowerInvariant();
 
 			PathData data = HttpRuntime.Cache[key] as PathData;
