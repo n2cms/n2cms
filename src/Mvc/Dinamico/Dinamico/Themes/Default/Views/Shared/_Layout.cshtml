@@ -22,7 +22,7 @@
 	@if (IsSectionDefined("head")) { @RenderSection("head") }
 </head>
 <body>
-	@{ Html.RenderControlPanel(); }
+	@{ Html.ControlPanel().Render(); }
 	<div id="wrapper" class="clearfix">
 	@if (IsSectionDefined("page"))
  { <div>@RenderSection("page")</div> }

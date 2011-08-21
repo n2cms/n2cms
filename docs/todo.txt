@@ -1,4 +1,3 @@
-- Html.RenderControlPanel + disable page update
 - Closed session when checking installation status (discussions/267048)
 - Restrict upload folders shown for EditableImage (discussions/268170)
 - languages associated to sites (discussions/264798)

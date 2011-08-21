@@ -1,5 +1,6 @@
 ﻿2.2.1.1
 - Updated DotNetZip to 1.9.1.8
+- Html.ControlPanel().RefreshNavigation(false) to disable page update
 
 2.2.1
 - Fixed asp.net theming in virtual directory (discussions/266494)

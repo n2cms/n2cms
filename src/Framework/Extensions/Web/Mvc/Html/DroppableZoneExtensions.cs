@@ -8,7 +8,7 @@ namespace N2.Web.Mvc.Html
 	{
         public static ControlPanelState ControlPanelState(this HttpContextBase context)
         {
-            return ControlPanel.GetState(N2.Context.Current.SecurityManager, context.User, context.Request.QueryString);
+            return N2.Web.UI.WebControls.ControlPanel.GetState(N2.Context.Current.SecurityManager, context.User, context.Request.QueryString);
         }
 
         /// <summary>

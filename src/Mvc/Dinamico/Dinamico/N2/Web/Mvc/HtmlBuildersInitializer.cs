@@ -11,6 +11,7 @@ using N2.Definitions;
 using N2.Web.Rendering;
 using N2.Definitions.Runtime;
 using N2.Details;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -36,6 +37,12 @@ namespace N2.Web.Mvc
 			// do nothing, work already done
 		}
 
+		#endregion
+
+		#region class ControlPanelBuilder
+		public class ControlPanelBuilder : ControlPanelExtensions.ControlPanelHelper, IHtmlString
+		{
+		}
 		#endregion
 
 		#region class LinkBuilder

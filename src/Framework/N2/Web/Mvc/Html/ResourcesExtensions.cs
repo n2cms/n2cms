@@ -15,6 +15,11 @@ namespace N2.Web.Mvc.Html
 			return new ResourcesHelper { Writer = html.ViewContext.Writer, ViewData = html.ViewData };
 		}
 
+		public static ResourcesHelper Resources(this HtmlHelper html, TextWriter writer)
+		{
+			return new ResourcesHelper { Writer = writer, ViewData = html.ViewData };
+		}
+
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(N2.Resources.Register.JQueryPath());
