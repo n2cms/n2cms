@@ -14,6 +14,7 @@ namespace N2.Edit.FileSystem.NH
     public class DatabaseFileSystem : IFileSystem, IAutoStart
     {
         private readonly ISessionProvider _sessionProvider;
+        private const long UploadFileSize = long.MaxValue;
 
 		#region class DatabaseFileSystemStream
 		private class DatabaseFileSystemStream : MemoryStream
@@ -245,21 +246,34 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
+        private static bool IsStreamSizeOk(Stream inputStream)
+        {
+            if (inputStream == null || !inputStream.CanSeek)
+                return true;
+
+            return UploadFileSize > inputStream.Length;
+        }
+
+        private static void CheckStreamSize(Stream inputStream, Path virtualPath)
+        {
+            if (!IsStreamSizeOk(inputStream))
+                throw new Exception(virtualPath + " could not be uploaded created because its size (" + inputStream.Length + ") exceeds the configured UploadFileMaxSize");
+        }
+
         private void UpdateFile(Path virtualPath, Stream inputStream)
         {
+            CheckStreamSize(inputStream, virtualPath);
+
             var file = GetSpecificItem(virtualPath);
                 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
-            using (var buffer = new MemoryStream())
+            using (var buffer = (inputStream.CanSeek && (inputStream.Length <= int.MaxValue ) ? new MemoryStream((int)inputStream.Length) : new MemoryStream()))
             {
-                if (inputStream != null)
-                {
-                    inputStream.Position = 0;
-                    CopyStream(inputStream, buffer);
-                    inputStream.Position = 0;
-                }
+                inputStream.Position = 0;
+                CopyStream(inputStream, buffer);
+                inputStream.Position = 0;
 
-                file.Data = buffer.GetBuffer();
+                file.Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray();
                 file.Created = DateTime.Now;
                 file.Length = buffer.Length;
                 _sessionProvider.OpenSession.Session.Update(file);
@@ -269,21 +283,21 @@ namespace N2.Edit.FileSystem.NH
 
         private void CreateFile(Path virtualPath, Stream inputStream)
         {
+            CheckStreamSize(inputStream,virtualPath);
+
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
-            using (var buffer = new MemoryStream())
+            using (var buffer = (inputStream.CanSeek && (inputStream.Length <= int.MaxValue) ? new MemoryStream((int)inputStream.Length) : new MemoryStream()))
             {
                 AssertParentExists(virtualPath);
 
-                if (inputStream != null)
-                {
-                    CopyStream(inputStream, buffer);
-                    inputStream.Position = 0;
-                }
+                inputStream.Position = 0;
+                CopyStream(inputStream, buffer);
+                inputStream.Position = 0;
 
                 var item = new FileSystemItem
                                {
                                    Path = virtualPath,
-                                   Data = buffer.GetBuffer(),
+                                   Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray(),
                                    Created = DateTime.Now,
                                    Length = buffer.Length
                                };
@@ -416,6 +430,9 @@ namespace N2.Edit.FileSystem.NH
             int r;
             while ((r = input.Read(b, 0, b.Length)) > 0)
                 output.Write(b, 0, r);
+
+            if(!IsStreamSizeOk(output))
+                throw new Exception("File with size " + output.Length + " could not be uploaded created because it exceeds the configured UploadFileMaxSize");
         }
 
         public void Start()
