@@ -34,10 +34,13 @@ namespace N2.Edit.FileSystem.NH
             foreach (var file in files)
             {
                 var relativeFile = FullToRelative(file);
+                
+                if (fs.FileExists(relativeFile)) continue;
+
                 returnValue += "<br />" + relativeFile;
-                using(var fileStream = System.IO.File.OpenRead(file))
+                using (var fileStream = System.IO.File.OpenRead(file))
                 {
-                    fs.WriteFile(relativeFile, fileStream);   
+                    fs.WriteFile(relativeFile, fileStream);
                     fileStream.Close();
                 }
             }
@@ -46,9 +49,9 @@ namespace N2.Edit.FileSystem.NH
             foreach (var subdir in subdirs)
             {
                 var relativeDir = FullToRelative(subdir);
-                returnValue += "<br />" + relativeDir;
                 if (!fs.DirectoryExists(relativeDir))
                 {
+                    returnValue += "<br />" + relativeDir;
                     fs.CreateDirectory(relativeDir);
                 }
                 CopyFilesInDirectoryRecursively(subdir);
