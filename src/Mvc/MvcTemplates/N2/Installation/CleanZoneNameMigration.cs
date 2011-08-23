@@ -19,7 +19,7 @@ namespace N2.Management.Installation
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return status.DatabaseVersion < 4 || repository.Find("ZoneName", "").Any();
+			return status.DatabaseVersion < 4 || !status.HasSchema || repository.Find("ZoneName", "").Any();
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
