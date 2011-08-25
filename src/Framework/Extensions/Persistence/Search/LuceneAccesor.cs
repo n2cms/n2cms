@@ -12,6 +12,7 @@ using N2.Engine;
 using N2.Web;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
+using System.Diagnostics;
 
 namespace N2.Persistence.Search
 {
@@ -33,6 +34,11 @@ namespace N2.Persistence.Search
 			indexPath = Path.Combine(webContext.MapPath(config.Search.IndexPath), "Pages");
 		}
 
+		~LuceneAccesor()
+		{
+			Dispose();
+		}
+
 		public IndexWriter GetWriter()
 		{
 			lock (this)
@@ -43,7 +49,23 @@ namespace N2.Persistence.Search
 
 		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
-			var iw = new IndexWriter(d, a, create: !IndexExists(), mfl: IndexWriter.MaxFieldLength.UNLIMITED);
+			try
+			{
+				return CreateWriterNoTry(d, a);
+			}
+			catch (Lucene.Net.Store.LockObtainFailedException)
+			{
+				Trace.WriteLine("Failed to obtain lock, deleting it and retrying.");
+				ClearLock();
+				return CreateWriterNoTry(d, a);
+			}
+		}
+
+		private IndexWriter CreateWriterNoTry(Directory d, Analyzer a)
+		{
+			var indexExists = IndexExists();
+			Trace.WriteLine("Creating index writer, index exists: " + indexExists);
+			var iw = new IndexWriter(d, a, create: !indexExists, mfl: IndexWriter.MaxFieldLength.UNLIMITED);
 			iw.SetWriteLockTimeout(LockTimeout);
 			return iw;
 		}
@@ -116,6 +138,12 @@ namespace N2.Persistence.Search
 		public virtual bool IndexExists()
 		{
 			return System.IO.Directory.Exists(indexPath) && GetDirectory().IndexExists();
+		}
+
+		public virtual void ClearLock()
+		{
+			var d = GetDirectory();
+			d.ClearLock("write.lock"); ;
 		}
 	}
 }

@@ -42,24 +42,15 @@ namespace N2.Persistence.Search
 
 			if (accessor.IndexExists())
 			{
-				var d = accessor.GetDirectory();
-				d.ClearLock("write.lock"); ;
+				accessor.ClearLock();
 				var w = accessor.GetWriter();
 				if (w.NumDocs() > 0)
 				{
-					try
-					{
-						w.DeleteAll();
-						w.Commit();
-						accessor.RecreateSearcher();
-					}
-					finally
-					{
-						//w.Close(true);
-					}
+					w.DeleteAll();
+					w.Commit();
+					accessor.RecreateSearcher();
 				}
-				d.ClearLock("write.lock"); ;
-				//d.Close();
+				accessor.ClearLock();
 			}
 		}
 
@@ -81,17 +72,9 @@ namespace N2.Persistence.Search
 				var iw = accessor.GetWriter();
 				if (iw.NumDocs() > 0)
 				{
-					try
-					{
-						iw.Optimize(true);
-						iw.Commit();
-					}
-					finally
-					{
-						//iw.Close();
-					}
+					iw.Optimize(true);
+					iw.Commit();
 				}
-				//d.Close();
 			}
 		}
 
@@ -107,15 +90,18 @@ namespace N2.Persistence.Search
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
 
-			var iw = accessor.GetWriter();
+			lock (accessor)
+			{
+				var iw = accessor.GetWriter();
 
-			if (!extractor.IsIndexable(item))
-				return;
+				if (!extractor.IsIndexable(item))
+					return;
 
-			var doc = CreateDocument(item);
-			iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
-			iw.Commit();
-			accessor.RecreateSearcher();
+				var doc = CreateDocument(item);
+				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
+				iw.Commit();
+				accessor.RecreateSearcher();
+			}
 		}
 
 		/// <summary>Delets an item from the index and any descendants.</summary>
@@ -124,10 +110,10 @@ namespace N2.Persistence.Search
 		{
 			Trace.WriteLine("Deleting item #" + itemID);
 
-			var iw = accessor.GetWriter();
-			var s = accessor.GetSearcher();
-			try
+			lock (accessor)
 			{
+				var iw = accessor.GetWriter();
+				var s = accessor.GetSearcher();
 				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
 				if (trail == null)
 					return; // not indexed
@@ -136,10 +122,6 @@ namespace N2.Persistence.Search
 				iw.DeleteDocuments(query);
 				iw.Commit();
 				accessor.RecreateSearcher();
-			}
-			finally
-			{
-				//iw.Close(waitForMerges:true);
 			}
 		}
 
