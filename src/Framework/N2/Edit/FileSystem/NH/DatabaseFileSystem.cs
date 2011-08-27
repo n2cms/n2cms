@@ -221,7 +221,7 @@ namespace N2.Edit.FileSystem.NH
 
             if(!FileExists(path.ToString()))
             {
-                CreateFile(path, null);
+                CreateFile(path, new MemoryStream());
             }
             var blob = GetSpecificItem(path);
 
