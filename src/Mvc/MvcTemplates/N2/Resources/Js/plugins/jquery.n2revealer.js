@@ -1,7 +1,7 @@
 ﻿(function ($) {
 	$.fn.n2revealer = function () {
 		this.each(function () {
-			$("<a href='#' class='revealer'/>").html(this.innerHTML)
+			$("<a href='javascript:void(0);' class='revealer'/>").html(this.innerHTML)
     			.insertBefore(this)
     			.click(function () {
     				$(this).hide()
