@@ -11,7 +11,7 @@ namespace N2.Linq
 		{
 			var time = Utility.CurrentTime();
 			return source.Where(ci => ci.State == ContentState.Published 
-				&& (ci.Published != null && ci.Published >= time) 
+				&& (ci.Published != null && ci.Published <= time) 
 				&& (ci.Expires == null || ci.Expires < time));
 		}
 
