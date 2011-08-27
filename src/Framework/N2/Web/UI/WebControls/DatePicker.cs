@@ -115,7 +115,7 @@ jQuery('.datePicker').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMi
 				string datePattern = culture.DateTimeFormat.ShortDatePattern;
 				datePattern = Regex.Replace(datePattern, "M+", "mm");
 				datePattern = Regex.Replace(datePattern, "d+", "dd");
-				datePattern = Regex.Replace(datePattern, "y+", delegate(Match m) { return m.Value.Length < 3 ? "yy" : "yyyy"; });
+				datePattern = Regex.Replace(datePattern, "y+", delegate(Match m) { return m.Value.Length < 3 ? "y" : "yy"; });
 				return datePattern;
 			}
 		}
