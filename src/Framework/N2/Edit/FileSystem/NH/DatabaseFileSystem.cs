@@ -139,7 +139,7 @@ namespace N2.Edit.FileSystem.NH
             var item = GetSpecificItem(path);
 
             return item == null
-                ? new DirectoryData { VirtualPath = path.ToString() }
+                ? new DirectoryData { Name = path.Name, VirtualPath = path.ToString() }
                 : item.ToDirectoryData();
         }
 
