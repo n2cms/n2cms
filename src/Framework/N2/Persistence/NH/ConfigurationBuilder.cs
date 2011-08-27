@@ -384,8 +384,9 @@ namespace N2.Persistence.NH
 
             ca.Component(x => x.Path, cm =>
                                            {
-                                               cm.Property( x => x.Parent, ccm => {ccm.Length(1024);});
-                                               cm.Property( x => x.Name, ccm => { ccm.Length(255);});
+											   cm.Property(x => x.Parent, ccm => { ccm.Length(1024); });
+											   cm.Property(x => x.Name, ccm => { ccm.Length(255); });
+											   cm.Property(x => x.IsDirectory, ccm => { ccm.Formula("Data is null"); });
                                            } );
             ca.Property( x => x.Created, cm => {cm.NotNullable(true);});
             ca.Property( x => x.Length, cm => {} );

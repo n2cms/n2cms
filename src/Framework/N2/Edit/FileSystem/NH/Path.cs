@@ -4,9 +4,9 @@ namespace N2.Edit.FileSystem.NH
 {
     public class Path
     {
-        public string Parent { get; private set; }
-        public string Name { get; private set; }
-        private bool _isDirectory;
+        public string Parent { get; set; }
+        public string Name { get; set; }
+		public bool IsDirectory { get; set; }
 
         public Path(){}
 
@@ -21,18 +21,18 @@ namespace N2.Edit.FileSystem.NH
 
         public static Path File(string virtualPath)
         {
-            return new Path(virtualPath) { _isDirectory = false };
+            return new Path(virtualPath) { IsDirectory = false };
         }
 
         public static Path Directory(string virtualPath)
         {
-            return new Path(virtualPath) { _isDirectory = true };
+            return new Path(virtualPath) { IsDirectory = true };
         }
 
         public override string ToString()
         {
             var path = Parent + Name;
-            if (_isDirectory) path += '/';
+            if (IsDirectory) path += '/';
             return path;
         }
 
@@ -43,13 +43,13 @@ namespace N2.Edit.FileSystem.NH
 
         public void Rebase(Path source, Path target)
         {
-            if (!source._isDirectory || !target._isDirectory)
+            if (!source.IsDirectory || !target.IsDirectory)
             {
                 throw new ApplicationException("Rebase parameters \"source\" and \"target\" should both be directory paths.");
             }
 
             Parent = new Path(target + ToString().Substring(source.ToString().Length)).Parent;
         }
-    }
+	}
 
 }
