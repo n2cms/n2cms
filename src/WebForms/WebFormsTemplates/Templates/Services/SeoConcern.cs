@@ -23,7 +23,8 @@ namespace N2.Templates.Services
 
 			page.PreRender += delegate
 			{
-				page.Title = item[HeadTitle] as string ?? item.Title;
+				string headTitle = item[HeadTitle] as string;
+				page.Title = string.IsNullOrEmpty(headTitle) ? item.Title : headTitle;
 				AddMeta(page, "keywords", item[MetaKeywords] as string);
 				AddMeta(page, "description", item[MetaDescription] as string);
 			};
