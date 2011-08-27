@@ -60,8 +60,8 @@
 	<!-- Clean -->
 
 	<Target Name="Clean" DependsOnTargets="Source-Clean;Examples-Clean;">
-		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Debug" />
-		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Release" />
+		<MSBuild Projects="$(RootFolder)\N2.Everything.sln" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="$(RootFolder)\N2.Everything.sln" Targets="Clean" Properties="Configuration=Release" />
 	</Target>
 
 	<!-- Deploy -->
