@@ -21,7 +21,7 @@ namespace N2.Edit.Settings
 		/// <summary>
 		/// Whether the user has chosen to display data items.
 		/// </summary>
-		public virtual bool DisplayDataItems
+		public bool DisplayDataItems
 		{
 			get { return Boolean.Parse(GetCookie(context.HttpContext.Request.Cookies).Value); }
 			set { GetCookie(context.HttpContext.Response.Cookies).Value = value.ToString(); }

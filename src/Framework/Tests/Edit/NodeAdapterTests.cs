@@ -35,7 +35,7 @@ namespace N2.Tests.Edit
 			adapter.WebContext = new Fakes.FakeWebContextWrapper();
 			adapter.Security = new SecurityManager(adapter.WebContext, new N2.Configuration.EditSection());
 			adapter.Host = new Host(null, root.ID, start.ID);
-			adapter.Settings = new FakeNavigationSettings();
+//			adapter.Settings = new FakeNavigationSettings();
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void Parts_AreReturned_WhenDisplayDataItems()
 		{
-			adapter.Settings.DisplayDataItems = true;
+//			adapter.Settings.DisplayDataItems = true;
 			var children = adapter.GetChildren(root, Interfaces.Managing);
 			Assert.That(children, Is.EquivalentTo(new [] { start, part }));
 		}
@@ -114,7 +114,7 @@ namespace N2.Tests.Edit
 
 			bool displayDataItems;
 
-			public override bool DisplayDataItems
+			public bool DisplayDataItems
 			{
 				get { return displayDataItems; }
 				set { displayDataItems = value; }
