@@ -51,6 +51,7 @@
 					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
 					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
 					<tr><th>Url parser type</th><td><%= N2.Context.Current.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
+					<tr><th>File System type</th><td><%= N2.Context.Current.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
 				</tbody>
 				<tbody>
