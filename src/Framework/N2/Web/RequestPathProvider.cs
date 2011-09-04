@@ -41,7 +41,6 @@ namespace N2.Web
 		public virtual PathData GetCurrentPath()
 		{
 			Url url = webContext.Url;
-			string path = url.Path;
 			if (!IsRewritable(url))
 				return PathData.Empty;
 

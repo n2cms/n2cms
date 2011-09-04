@@ -66,7 +66,6 @@ namespace N2.Web
 					Url.SetToken("{IconsUrl}", Url.ResolveTokens(Url.ManagementUrlToken + "/Resources/icons"));
 				}
 			}
-
 			PathData data = dispatcher.GetCurrentPath();
 			webContext.CurrentPath = data;
 
