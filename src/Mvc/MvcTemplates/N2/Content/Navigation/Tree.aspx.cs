@@ -30,7 +30,7 @@ namespace N2.Edit.Navigation
 			var selected = Selection.SelectedItem;
 			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
 			{
-				string uploadFolder = Request["inputLocation"];
+				string uploadFolder = Request[inputLocation.UniqueID];
 				if(!IsAvailable(uploadFolder))
 					throw new N2Exception("Cannot upload to " + Server.HtmlEncode(uploadFolder));
 
@@ -87,6 +87,8 @@ namespace N2.Edit.Navigation
 			siteTreeView.SelectableTypes = Request["selectableTypes"];
 			siteTreeView.SelectableExtensions = Request["selectableExtensions"];
 			siteTreeView.DataBind();
+
+			inputLocation.Value = siteTreeView.SelectedItem.Url;
 
 			base.OnInit(e);
 		}
