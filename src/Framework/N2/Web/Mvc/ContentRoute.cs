@@ -123,7 +123,8 @@ namespace N2.Web.Mvc
 			//the full url (with host) should be passed to UrlParser.ResolvePath():
 			string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
 			string hostAndRawUrl = String.Format("{0}://{1}{2}", request.Url.Scheme, host, Url.ToAbsolute(request.AppRelativeCurrentExecutionFilePath));
-			PathData td = engine.UrlParser.ResolvePath(hostAndRawUrl);
+            Url url = new Url(hostAndRawUrl).RemoveExtension(Url.DefaultExtension);
+            PathData td = engine.UrlParser.ResolvePath(url);
 
 			var page = td.CurrentPage;
 
