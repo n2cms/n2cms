@@ -34,8 +34,13 @@ namespace N2.Engine
 		public virtual void RegisterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services)
 		{
 			var allServices = services.ToList();
-			var replacementServices = allServices.Where(s => s.Attribute.Replaces != null).Select(s => s.Attribute.Replaces).ToList();
-			foreach (var info in allServices.Where(s => !replacementServices.Contains(s.DecoratedType)))
+			var replacementServices = allServices
+				.Where(s => s.Attribute.Replaces != null)
+				.Select(s => s.Attribute.Replaces).ToList();
+			var addedServices = allServices
+				.Where(s => !replacementServices.Contains(s.DecoratedType))
+				.Where(s => s.Attribute.Replaces != null || s.Attribute.ServiceType == null || !replacementServices.Contains(s.Attribute.ServiceType));
+			foreach (var info in addedServices)
 			{
 				Type serviceType = info.Attribute.ServiceType ?? info.DecoratedType;
 				string key = info.Attribute.Key ?? info.DecoratedType.FullName;
