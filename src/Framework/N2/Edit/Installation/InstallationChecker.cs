@@ -46,9 +46,6 @@ namespace N2.Edit.Installation
 		private void CheckInstallation()
 		{
 			string currentUrl = Url.ToRelative(webContext.Url.LocalUrl);
-			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
-			if (isEditing)
-				return;
 			
 			try 
 			{
@@ -67,6 +64,7 @@ namespace N2.Edit.Installation
 			if (status == null)
 			{
 				Trace.TraceWarning("Null status");
+				installer.UpdateStatus(SystemStatusLevel.Unknown);
 				return;
 			}
 			else if (status.NeedsUpgrade)
@@ -89,8 +87,14 @@ namespace N2.Edit.Installation
 				return;
 			}
 
-			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
 			installer.UpdateStatus(status.Level);
+
+			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
+			if (isEditing)
+				return;
+
+			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
+			
 			this.status = null;
 			webContext.HttpContext.Response.Redirect(redirectUrl);
 		}

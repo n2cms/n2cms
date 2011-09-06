@@ -7,6 +7,9 @@ using N2.Tests;
 using N2.Web;
 using NUnit.Framework;
 using N2.Edit.FileSystem.Items;
+using N2.Tests.Fakes;
+using N2.Edit.FileSystem;
+using System;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -14,7 +17,7 @@ namespace N2.Edit.Tests.FileSystem
 	public class VirtualFolderInitializerTests : ItemPersistenceMockingBase
 	{
 		Host host;
-		FakeFileSystem fs;
+		FakeMappedFileSystem fs;
 		VirtualNodeFactory vnf;
 		EditSection config;
 		VirtualFolderInitializer initializer;
@@ -31,13 +34,13 @@ namespace N2.Edit.Tests.FileSystem
 			start = CreateOneItem<RootNode>(2, "start", root);
 			host = new Host(new ThreadContext(), root.ID, start.ID);
 
-			fs = new FakeFileSystem();
-			fs.PathProvider = new FakePathProvider(fs.BasePath);
+			fs = new FakeMappedFileSystem();
+			fs.BasePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
 
 			vnf = new VirtualNodeFactory();
 			config = new EditSection();
 
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new FakeStatus(), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }));
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }));
 		}
 
 		class FakeStatus : DatabaseStatusCache

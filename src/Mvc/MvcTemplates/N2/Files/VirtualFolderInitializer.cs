@@ -27,7 +27,7 @@ namespace N2.Management.Files
 		IFileSystem fs;
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
-		DatabaseStatusCache dbStatus;
+		private ConnectionMonitor monitor;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
@@ -37,13 +37,13 @@ namespace N2.Management.Files
 		/// <param name="fs">The fs.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
-		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig, ImageSizeCache imageSizes)
+		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, ConnectionMonitor monitor, EditSection editConfig, ImageSizeCache imageSizes)
 		{
 			this.host = host;
 			this.persister = persister;
 			this.fs = fs;
 			this.virtualNodes = virtualNodes;
-			this.dbStatus = dbStatus;
+			this.monitor = monitor;
 			this.folders = editConfig.UploadFolders;
 
 			nodeProvider = new FolderNodeProvider(fs, persister, imageSizes);
@@ -53,29 +53,23 @@ namespace N2.Management.Files
 
 		public void Start()
 		{
-			if (dbStatus.GetStatus() >= SystemStatusLevel.UpAndRunning)
-			{
-				nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
-				virtualNodes.Register(nodeProvider);
-				host.SitesChanged += host_SitesChanged;
-			}
-			else
-				dbStatus.DatabaseStatusChanged += dbStatus_DatabaseStatusChanged;
-		}
-
-		void dbStatus_DatabaseStatusChanged(object sender, EventArgs e)
-		{
-			dbStatus.DatabaseStatusChanged -= dbStatus_DatabaseStatusChanged;
-			Start();
+			monitor.Online += monitor_Online;
+			host.SitesChanged += host_SitesChanged;
 		}
 
 		public void Stop()
 		{
+			monitor.Online -= monitor_Online;
 			host.SitesChanged -= host_SitesChanged;
-			virtualNodes.Unregister(nodeProvider);
 		}
 
 		#endregion
+
+		void monitor_Online(object sender, EventArgs e)
+		{
+			nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
+			virtualNodes.Register(nodeProvider);
+		}
 
 		void host_SitesChanged(object sender, SitesChangedEventArgs e)
 		{
@@ -172,6 +166,11 @@ namespace N2.Management.Files
 			private Directory CreateDirectory(FolderPair pair)
 			{
 				var dd = fs.GetDirectory(pair.FolderPath);
+				if (dd == null)
+				{
+					fs.CreateDirectory(pair.FolderPath);
+					dd = fs.GetDirectory(pair.FolderPath);
+				}
 				var parent = persister.Get(pair.ParentID);
 
 				var dir = Directory.New(dd, parent, fs, imageSizes);

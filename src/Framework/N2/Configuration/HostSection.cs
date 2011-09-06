@@ -6,7 +6,7 @@ namespace N2.Configuration
 	/// Section configuring host settings such as root, and start node ids and 
 	/// multiple sites.
 	/// </summary>
-	public class HostSection : ConfigurationSectionBase
+	public class HostSection : ContentConfigurationSectionBase
 	{
 		[ConfigurationProperty("rootID", DefaultValue = 1)]
 		public int RootID

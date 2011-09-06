@@ -13,13 +13,12 @@ namespace N2.Persistence.Serialization
 	{
 		public string Name { get; set; }
 
-		public void Write(ContentItem item, XmlTextWriter writer)
+		public void Write(IFileSystem fs, ContentItem item, XmlTextWriter writer)
 		{
 			string url = item[Name] as string;
 			if(!string.IsNullOrEmpty(url))
 			{
 				string path = url;
-                var fs = (Context.Current.Resolve<IFileSystem>());
 				if(fs.FileExists(path))
 				{
 					using(ElementWriter ew = new ElementWriter("file", writer))
@@ -60,13 +59,12 @@ namespace N2.Persistence.Serialization
 			return null;
 		}
 
-		public void Import(Attachment a)
+		public void Import(IFileSystem fs, Attachment a)
 		{
 			if (a.HasContents)
 			{
 				string path = a.Url;
 
-                var fs = (Context.Current.Resolve<IFileSystem>());
                 if(!fs.DirectoryExists(Path.GetDirectoryName(path)))
                 {
                     fs.CreateDirectory(Path.GetDirectoryName(path));

@@ -175,7 +175,8 @@
     <Compile Include="Fakes\FakeDatabaseStatusCache.cs" />
     <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
     <Compile Include="Fakes\FakeEditUrlManager.cs" />
-    <Compile Include="Fakes\FakeFileSystem2.cs" />
+    <Compile Include="Fakes\FakeMappedFileSystem.cs" />
+    <Compile Include="Fakes\FakeMemoryFileSystem.cs" />
     <Compile Include="Fakes\FakeHttpContext.cs" />
     <Compile Include="Fakes\FakeHttpRequest.cs" />
     <Compile Include="Fakes\FakeHttpResponse.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Fakes\FakeHttpSessionState.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Fakes\FakeVppFileSystem.cs" />
     <Compile Include="Installation\AppPathRebaseTests.cs" />
     <Compile Include="Linq\ExpressionBuildingUtils.cs" />
     <Compile Include="Linq\ExpressionQueryableExtensionsTests.cs" />

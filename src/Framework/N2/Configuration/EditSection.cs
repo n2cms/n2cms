@@ -5,7 +5,7 @@ namespace N2.Configuration
 	/// <summary>
 	/// Configuration related to the edit interface.
 	/// </summary>
-	public class EditSection : ConfigurationSectionBase
+	public class EditSection : ContentConfigurationSectionBase
 	{
 		[ConfigurationProperty("installer")]
 		public InstallerElement Installer

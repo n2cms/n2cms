@@ -11,6 +11,7 @@ using N2.Persistence.Serialization;
 using N2.Tests.Serialization.Items;
 using N2.Web;
 using NUnit.Framework;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Serialization
 {
@@ -178,25 +179,35 @@ namespace N2.Tests.Serialization
 		{
 			XmlableItem destination = new XmlableItem();
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			string file = "TestFile.txt";
+			string path = "/Serialization/" + file;
 			item.TextFile = "/Serialization/TestFile.txt";
+			var sourceFs = new FakeMemoryFileSystem();
+			sourceFs.files.Add(path, new N2.Edit.FileSystem.FileData { Name = file, VirtualPath = path });
+			sourceFs.contents.Add(path, Encoding.UTF8.GetBytes("Just a little file."));
 
-            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
-			string path = AppDomain.CurrentDomain.BaseDirectory + @"\Serialization\TestFile.txt";
-			File.Delete(path);
-			
-			IImportRecord record = ImportFromString(xml, CreateImporter());
+			string xml = ExportToString(item, CreateExporter(sourceFs), ExportOptions.Default);
+			//string path = AppDomain.CurrentDomain.BaseDirectory + @"\Serialization\TestFile.txt";
+
+			var destinationFs = new FakeMemoryFileSystem();
+			IImportRecord record = ImportFromString(xml, CreateImporter(destinationFs));
 			XmlableItem readItem = (XmlableItem)record.RootItem;
 			Assert.AreEqual(item.ID, readItem.ID);
-			Assert.That(!File.Exists(path));
-			
-			CreateImporter().Import(record, destination, ImportOption.All);
+			Assert.That(!destinationFs.FileExists(path));
+
+			CreateImporter(destinationFs).Import(record, destination, ImportOption.All);
 			Assert.AreEqual(0, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
 			Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
 
-			Assert.That(File.Exists(path));
-			Assert.AreEqual("Just a little file.", File.ReadAllText(path));
+			var temp = new byte[1000];
+			var size = destinationFs.OpenFile(path).Read(temp, 0, 1000);
+			var buffer = new byte[size];
+			Array.Copy(temp, buffer, size);
+
+			Assert.That(destinationFs.FileExists("/Serialization/TestFile.txt"));
+			Assert.AreEqual("Just a little file.", Encoding.UTF8.GetString(buffer));
         }
 
         [Test]
@@ -793,7 +804,7 @@ Public License instead of this License.
 			item["License"] = lgplLicense;
 
 			Exporter exporter = new GZipExporter(CreateWriter());
-			Importer importer = new GZipImporter(null, CreateReader());
+			Importer importer = new GZipImporter(null, CreateReader(), new FakeMemoryFileSystem());
 
 			StringBuilder sb = new StringBuilder();
 			HttpResponse hr  = new HttpResponse(new StringWriter(sb));

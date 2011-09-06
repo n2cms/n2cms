@@ -11,17 +11,6 @@ namespace N2.Engine
 	/// </summary>
 	public class ContainerConfigurer
 	{
-		/// <summary>
-		/// Known configuration keys used to configure services.
-		/// </summary>
-		public static class ConfigurationKeys
-		{
-			/// <summary>Key used to configure services intended for medium trust.</summary>
-			public const string MediumTrust = "MediumTrust";
-			/// <summary>Key used to configure services intended for full trust.</summary>
-			public const string FullTrust = "FullTrust";
-		}
-
 		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
 			configuration.Start();
@@ -48,22 +37,21 @@ namespace N2.Engine
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
 			var services = registrator.FindServices();
-			var configurations = GetComponentConfigurations(configuration);
-			services = registrator.FilterServices(services, configurations);
+			var configurationKeys = GetComponentConfigurationKeys(configuration);
+			services = registrator.FilterServices(services, configurationKeys);
 			registrator.RegisterServices(services);
 		}
 
-		protected virtual string[] GetComponentConfigurations(ConfigurationManagerWrapper configuration)
+		protected virtual string[] GetComponentConfigurationKeys(ConfigurationManagerWrapper configuration)
 		{
-			List<string> configurations = new List<string>();
-			string trustConfiguration = (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium)
-				? ConfigurationKeys.FullTrust
-				: ConfigurationKeys.MediumTrust;
-			configurations.Add(trustConfiguration);
-			var configured = configuration.Sections.Engine.ComponentConfigurations;
-			configurations.AddRange(configured.AddedElements.Select(e => e.Name));
-			configurations.RemoveAll(c => configured.RemovedElements.Any(e => c == e.Name));
-			return configurations.ToArray();
+			List<string> configurationKeys = new List<string>();
+
+			configuration.Sections.Database.ApplyComponentConfigurationKeys(configurationKeys);
+			configuration.Sections.Management.ApplyComponentConfigurationKeys(configurationKeys);
+			configuration.Sections.Web.ApplyComponentConfigurationKeys(configurationKeys);
+			configuration.Sections.Engine.ApplyComponentConfigurationKeys(configurationKeys);
+			
+			return configurationKeys.ToArray();
 		}
 
 		private void AddComponentInstance(IServiceContainer container, object instance)

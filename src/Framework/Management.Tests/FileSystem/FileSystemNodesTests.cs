@@ -9,15 +9,17 @@ using N2.Web;
 using NUnit.Framework;
 using Directory = N2.Edit.FileSystem.Items.Directory;
 using File = N2.Edit.FileSystem.Items.File;
+using N2.Tests.Fakes;
 
-namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
+namespace N2.Edit.Tests.FileSystem
 {
     [TestFixture]
-    public class IFileSystemTests : DatabasePreparingBase
+    public class FileSystemNodeTests : DatabasePreparingBase
 	{
 		#region Set up & tear down
 		string basePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
-		IFileSystem fs;
+		string backupPath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem_backup\";
+		FakeMappedFileSystem fs;
         RootNode root;
         RootDirectory upload;
         
@@ -32,8 +34,8 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 
             Url.DefaultExtension = "/";
         	Url.ApplicationPath = "/";
-            
-			fs = engine.Resolve<IFileSystem>();
+			fs = (FakeMappedFileSystem)engine.Resolve<IFileSystem>();
+			fs.BasePath = basePath;
 
 			fs.DirectoryCreated += (s, e) => Triggered("DirectoryCreated", e);
 			fs.DirectoryDeleted += (s, e) => Triggered("DirectoryDeleted", e);
@@ -42,11 +44,14 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 			fs.FileDeleted += (s, e) => Triggered("FileDeleted", e);
 			fs.FileMoved += (s, e) => Triggered("FileMoved", e);
 			fs.FileWritten += (s, e) => Triggered("FileWritten", e);
+
+			System.IO.Directory.Move(basePath, backupPath);
 		}
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
+			System.IO.Directory.Move(backupPath, basePath);
 			Url.DefaultExtension = ".aspx";
         }
 
@@ -54,11 +59,8 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
         public override void SetUp()
         {
             base.SetUp();
-
-            operations = new List<string>();
-            arguments = new List<FileEventArgs>();
-
-			CopyFilesRecursively(new DirectoryInfo(basePath), "/", fs);
+			
+			CopyFilesRecursively(new DirectoryInfo(backupPath), new DirectoryInfo(basePath));
 
 			operations = new List<string>();
 			arguments = new List<FileEventArgs>();
@@ -77,23 +79,16 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 		[TearDown]
 		public override void TearDown()
 		{
-            // It is of course wrong to use the IFileSystem method to clean up
-			fs.DeleteDirectory("/");
+			System.IO.Directory.Delete(basePath, true);
 			base.TearDown();
 		}
 
-		public static void CopyFilesRecursively(DirectoryInfo source, string targetVirtualPath, IFileSystem fs)
+		public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
 		{
-            foreach (DirectoryInfo dir in source.GetDirectories())
-            {
-                string newDirVirtualPath = Path.Combine(targetVirtualPath, dir.Name);
-                fs.CreateDirectory(newDirVirtualPath);
-                CopyFilesRecursively(dir, newDirVirtualPath, fs);
-            }
-            foreach (FileInfo file in source.GetFiles())
-            {
-                fs.WriteFile(Path.Combine(targetVirtualPath, file.Name), file.OpenRead());
-            }
+			foreach (DirectoryInfo dir in source.GetDirectories())
+				CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+			foreach (FileInfo file in source.GetFiles())
+				file.CopyTo(Path.Combine(target.FullName, file.Name));
 		}
 
 		void Triggered(string operation, FileEventArgs args)
@@ -178,19 +173,19 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
         public void CanMoveFile_ToOtherDirectory()
         {
 			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
-			string sourcePath = "/Upload/Folder 2/Folder 3/File 3.txt";
-			string destinationPath = @"/Upload/Folder1/File 3.txt";
+			string sourcePath = MapPath(@"/Upload/Folder 2/Folder 3/File 3.txt");
+			string destinationPath = MapPath(@"/Upload/Folder1/File 3.txt");
 			Directory d = (Directory)upload.GetChild("Folder1");
             try
             {
                 f.AddTo(d);
-                Assert.That(fs.FileExists(destinationPath));
-                Assert.That(!fs.FileExists(sourcePath));
+                Assert.That(System.IO.File.Exists(destinationPath));
+                Assert.That(!System.IO.File.Exists(sourcePath));
             }
             finally
             {
-				if(fs.FileExists(destinationPath))
-					fs.MoveFile(destinationPath, sourcePath);
+				if(System.IO.File.Exists(destinationPath))
+					System.IO.File.Move(destinationPath, sourcePath);
             }
 		}
 
@@ -198,8 +193,8 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 		public void MovingFile_TriggersEvent()
 		{
 			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
-			string sourcePath = @"/Upload/Folder 2/Folder 3/File 3.txt";
-			string destinationPath = @"/Upload/Folder1/File 3.txt";
+			string sourcePath = MapPath(@"/Upload/Folder 2/Folder 3/File 3.txt");
+			string destinationPath = MapPath(@"/Upload/Folder1/File 3.txt");
 			Directory d = (Directory)upload.GetChild("Folder1");
 			try
 			{
@@ -220,18 +215,18 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
         public void CanMoveFile_ToRootDirectory()
         {
 			File f = (File)upload.GetChild("Folder 2/File 2.txt");
-			string sourcePath = @"/Upload/Folder 2/File 2.txt";
-			string destinationPath = @"/Upload/File 2.txt";
+			string sourcePath = MapPath(@"/Upload/Folder 2/File 2.txt");
+			string destinationPath = MapPath(@"/Upload/File 2.txt");
             try
             {
                 f.AddTo(upload);
-                Assert.That(fs.FileExists(destinationPath));
-                Assert.That(!fs.FileExists(sourcePath));
+                Assert.That(System.IO.File.Exists(destinationPath));
+                Assert.That(!System.IO.File.Exists(sourcePath));
             }
             finally
             {
-				if (fs.FileExists(destinationPath))
-					fs.MoveFile(destinationPath, sourcePath);
+				if (System.IO.File.Exists(destinationPath))
+					System.IO.File.Move(destinationPath, sourcePath);
             }
         }
 
@@ -239,22 +234,18 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
         public void CanMoveDirectory_ToOtherDirectory()
         {
 			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = "/Upload/Folder 2/Folder 3";
-    	    string fileInSourcePath = Path.Combine(sourcePath, "File 3.txt");
-            string destinationPath = "/Upload/Folder1/Folder 3";
-            string fileInDestinationPath = Path.Combine(destinationPath, "File 3.txt");
+			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
+            string destinationPath = MapPath("/Upload/Folder1/Folder 3");
             try
             {
 				d.AddTo(upload.GetChild("Folder1"));
-                Assert.That(fs.DirectoryExists(destinationPath));
-                Assert.That(fs.FileExists(fileInDestinationPath));
-                Assert.That(!fs.DirectoryExists(sourcePath));
-                Assert.That(!fs.FileExists(fileInSourcePath));
+                Assert.That(System.IO.Directory.Exists(destinationPath));
+                Assert.That(!System.IO.Directory.Exists(sourcePath));
             }
             finally
             {
-				if(fs.DirectoryExists(destinationPath))
-					fs.MoveDirectory(destinationPath, sourcePath);
+				if(System.IO.Directory.Exists(destinationPath))
+					System.IO.Directory.Move(destinationPath, sourcePath);
             }
 		}
 
@@ -262,19 +253,19 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 		public void MoveDirectory_TriggersEvent()
 		{
 			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = "/Upload/Folder 2/Folder 3";
-			string destinationPath = "/Upload/Folder1/Folder 3";
+			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
+			string destinationPath = MapPath("/Upload/Folder1/Folder 3");
 			try
 			{
 				d.AddTo(upload.GetChild("Folder1"));
-				Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder 2/Folder 3/"));
+				Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder 2/Folder 3"));
 				Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder1/Folder 3"));
 				Assert.That(operations[0], Is.EqualTo("DirectoryMoved"));
 			}
 			finally
 			{
-				if (fs.DirectoryExists(destinationPath))
-					fs.MoveDirectory(destinationPath, sourcePath);
+				if (System.IO.Directory.Exists(destinationPath))
+					System.IO.Directory.Move(destinationPath, sourcePath);
 			}
 		}
 
@@ -282,18 +273,18 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
         public void CanMoveDirectory_ToRootDirectory()
         {
 			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = "/Upload/Folder 2/Folder 3";
-            string destinationPath = "/Upload/Folder 3";
+			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
+            string destinationPath = MapPath("/Upload/Folder 3");
             try
             {
                 d.AddTo(upload);
-                Assert.That(fs.DirectoryExists(destinationPath));
-                Assert.That(!fs.DirectoryExists(sourcePath));
+                Assert.That(System.IO.Directory.Exists(destinationPath));
+                Assert.That(!System.IO.Directory.Exists(sourcePath));
             }
             finally
             {
-				if (fs.DirectoryExists(destinationPath))
-					fs.MoveDirectory(destinationPath, sourcePath);
+				if (System.IO.Directory.Exists(destinationPath))
+					System.IO.Directory.Move(destinationPath, sourcePath);
             }
         }
 
@@ -393,6 +384,11 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
                 if (fCopy != null)
                     fCopy.Delete();
             }
+		}
+
+		string MapPath(string path)
+		{
+			return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FileSystem" + path.Replace('/', '\\'));
 		}
     }
 }

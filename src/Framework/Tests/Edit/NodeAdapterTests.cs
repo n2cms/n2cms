@@ -12,7 +12,7 @@ namespace N2.Tests.Edit
 	public class NodeAdapterTests : N2.Tests.ItemPersistenceMockingBase
 	{
 		NodeAdapter adapter;
-		FakeFileSystem2 fs;
+		FakeMemoryFileSystem fs;
 
 		ContentItem root;
 		ContentItem start;
@@ -30,12 +30,12 @@ namespace N2.Tests.Edit
 
 			adapter = new NodeAdapter();
 			adapter.ManagementPaths = new EditUrlManager(new N2.Configuration.EditSection());
-			adapter.FileSystem = fs = new FakeFileSystem2();
+			adapter.FileSystem = fs = new FakeMemoryFileSystem();
 			adapter.NodeFactory = new VirtualNodeFactory();
 			adapter.WebContext = new Fakes.FakeWebContextWrapper();
 			adapter.Security = new SecurityManager(adapter.WebContext, new N2.Configuration.EditSection());
 			adapter.Host = new Host(null, root.ID, start.ID);
-//			adapter.Settings = new FakeNavigationSettings();
+			adapter.Settings = new FakeNavigationSettings();
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void Parts_AreReturned_WhenDisplayDataItems()
 		{
-//			adapter.Settings.DisplayDataItems = true;
+			adapter.Settings.DisplayDataItems = true;
 			var children = adapter.GetChildren(root, Interfaces.Managing);
 			Assert.That(children, Is.EquivalentTo(new [] { start, part }));
 		}
@@ -114,7 +114,7 @@ namespace N2.Tests.Edit
 
 			bool displayDataItems;
 
-			public bool DisplayDataItems
+			public override bool DisplayDataItems
 			{
 				get { return displayDataItems; }
 				set { displayDataItems = value; }

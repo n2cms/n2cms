@@ -9,6 +9,7 @@ using System.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
+	[Service(Configuration = "dbfs")]
 	public class FileSystemHandlerFactory : IAutoStart
 	{
 		private readonly IFileSystem fs;

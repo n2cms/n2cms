@@ -10,6 +10,7 @@ using N2.Security;
 using N2.Tests.Serialization.Items;
 using NUnit.Framework;
 using System.Web;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Serialization
 {
@@ -371,7 +372,7 @@ namespace N2.Tests.Serialization
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item.ImageUrl = "da image";
-			AttachmentXmlWriter axw = new AttachmentXmlWriter();
+			AttachmentXmlWriter axw = new AttachmentXmlWriter(new FakeMemoryFileSystem());
 
 			StringBuilder sb = new StringBuilder();
 			StringWriter sw = new StringWriter(sb);

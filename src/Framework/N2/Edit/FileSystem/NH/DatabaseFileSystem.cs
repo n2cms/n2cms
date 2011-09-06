@@ -8,9 +8,11 @@ using N2.Persistence.NH;
 using N2.Plugin;
 using NHibernate.Criterion;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem.NH
 {
+	[Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
     public class DatabaseFileSystem : IFileSystem, IAutoStart
     {
         private readonly ISessionProvider _sessionProvider;
@@ -74,7 +76,7 @@ namespace N2.Edit.FileSystem.NH
             this._sessionProvider = sessionProvider;
         }
 
-        private IEnumerable<FileSystemItem> FindChildren(Path path, ICriterion criterion)
+        private IEnumerable<FileSystemItem> FindChildren(FileSystemPath path, ICriterion criterion)
         {
             return _sessionProvider.OpenSession.Session
                 .CreateCriteria<FileSystemItem>()
@@ -83,7 +85,7 @@ namespace N2.Edit.FileSystem.NH
                 .List<FileSystemItem>();
         }
 
-        private FileSystemItem GetSpecificItem(Path path)
+        private FileSystemItem GetSpecificItem(FileSystemPath path)
         {
             return _sessionProvider.OpenSession.Session
                 .CreateCriteria<FileSystemItem>()
@@ -91,19 +93,17 @@ namespace N2.Edit.FileSystem.NH
                 .UniqueResult<FileSystemItem>();
         }
 
-        private void EnsureParentExists(Path target)
+        private void EnsureParentExists(FileSystemPath target)
         {
             if(!DirectoryExists(target.Parent))
             {
-                _CreateDirectory(target.Parent);
+                CreateDirectoryInternal(target.Parent);
             }
         }
 
-        private void AssertParentExists(Path target)
+        private void AssertParentExists(FileSystemPath target)
         {
-            var uploadFolders = new EditSection().UploadFolders;
-            if (uploadFolders.Folders.Any(uploadFolder => Path.Directory(uploadFolder).ToString() == target.Parent))
-                EnsureParentExists(target);
+            EnsureParentExists(target);
 
             if (!DirectoryExists(target.Parent))
             {
@@ -113,7 +113,7 @@ namespace N2.Edit.FileSystem.NH
 
         public IEnumerable<FileData> GetFiles(string parentVirtualPath)
         {
-            var path = Path.Directory(parentVirtualPath);
+            var path = FileSystemPath.Directory(parentVirtualPath);
 
             return from child in FindChildren(path, Restrictions.IsNotNull("Length"))
                    select child.ToFileData();
@@ -121,13 +121,17 @@ namespace N2.Edit.FileSystem.NH
 
         public FileData GetFile(string virtualPath)
         {
-            var path = Path.File(virtualPath);
-            return GetSpecificItem(path).ToFileData();
+            var path = FileSystemPath.File(virtualPath);
+			var item = GetSpecificItem(path);
+
+			return item == null
+				? null
+				: item.ToFileData();
         }
 
         public IEnumerable<DirectoryData> GetDirectories(string parentVirtualPath)
         {
-            var path = Path.Directory(parentVirtualPath);
+            var path = FileSystemPath.Directory(parentVirtualPath);
 
             return from child in FindChildren(path, Restrictions.IsNull("Length"))
                    select child.ToDirectoryData();
@@ -135,25 +139,25 @@ namespace N2.Edit.FileSystem.NH
 
         public DirectoryData GetDirectory(string virtualPath)
         {
-            var path = Path.Directory(virtualPath);
+            var path = FileSystemPath.Directory(virtualPath);
             var item = GetSpecificItem(path);
 
             return item == null
-                ? new DirectoryData { Name = path.Name, VirtualPath = path.ToString() }
+                ? null
                 : item.ToDirectoryData();
         }
 
         public bool FileExists(string virtualPath)
         {
-            var path = Path.File(virtualPath);
+            var path = FileSystemPath.File(virtualPath);
             var item = GetSpecificItem(path);
             return item != null && item.Length.HasValue;
         }
 
         public void MoveFile(string fromVirtualPath, string destinationVirtualPath)
         {
-            var source = Path.File(fromVirtualPath);
-            var target = Path.File(destinationVirtualPath);
+            var source = FileSystemPath.File(fromVirtualPath);
+            var target = FileSystemPath.File(destinationVirtualPath);
 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
@@ -161,6 +165,7 @@ namespace N2.Edit.FileSystem.NH
 
                 var file = GetSpecificItem(source);
                 file.Path = target;
+				file.Updated = Utility.CurrentTime();
                 trx.Commit();
             }
 
@@ -174,7 +179,7 @@ namespace N2.Edit.FileSystem.NH
         {
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
-                var path = Path.File(virtualPath);
+                var path = FileSystemPath.File(virtualPath);
                 var item = GetSpecificItem(path);
                 _sessionProvider.OpenSession.Session.Delete(item);
                 trx.Commit();
@@ -188,8 +193,8 @@ namespace N2.Edit.FileSystem.NH
 
         public void CopyFile(string fromVirtualPath, string destinationVirtualPath)
         {
-            var source = Path.File(fromVirtualPath);
-            var target = Path.File(destinationVirtualPath);
+            var source = FileSystemPath.File(fromVirtualPath);
+            var target = FileSystemPath.File(destinationVirtualPath);
 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
@@ -202,10 +207,11 @@ namespace N2.Edit.FileSystem.NH
                     Path = target,
                     Data = file.Data,
                     Length = file.Length,
-                    Created = DateTime.Now
+					Created = Utility.CurrentTime(),
+					Updated = Utility.CurrentTime()
                 };
 
-                _sessionProvider.OpenSession.Session.Save(copy);
+                _sessionProvider.OpenSession.Session.SaveOrUpdate(copy);
                 trx.Commit();
             }
 
@@ -217,7 +223,7 @@ namespace N2.Edit.FileSystem.NH
 
         public Stream OpenFile(string virtualPath)
         {
-            var path = Path.File(virtualPath);
+            var path = FileSystemPath.File(virtualPath);
 
             if(!FileExists(path.ToString()))
             {
@@ -233,11 +239,11 @@ namespace N2.Edit.FileSystem.NH
         {
             if (!FileExists(virtualPath))
             {
-                CreateFile(Path.File(virtualPath), inputStream);
+                CreateFile(FileSystemPath.File(virtualPath), inputStream);
             }
             else
             {
-                UpdateFile(Path.File(virtualPath), inputStream);
+                UpdateFile(FileSystemPath.File(virtualPath), inputStream);
             }
 
             if (FileWritten != null)
@@ -254,18 +260,19 @@ namespace N2.Edit.FileSystem.NH
             return UploadFileSize > inputStream.Length;
         }
 
-        private static void CheckStreamSize(Stream inputStream, Path virtualPath)
+        private static void CheckStreamSize(Stream inputStream, FileSystemPath virtualPath)
         {
             if (!IsStreamSizeOk(inputStream))
                 throw new Exception(virtualPath + " could not be uploaded created because its size (" + inputStream.Length + ") exceeds the configured UploadFileMaxSize");
         }
 
-        private void UpdateFile(Path virtualPath, Stream inputStream)
+        private void UpdateFile(FileSystemPath virtualPath, Stream inputStream)
         {
             CheckStreamSize(inputStream, virtualPath);
 
             var file = GetSpecificItem(virtualPath);
-                
+			file.Updated = Utility.CurrentTime();
+
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             using (var buffer = (inputStream.CanSeek && (inputStream.Length <= int.MaxValue ) ? new MemoryStream((int)inputStream.Length) : new MemoryStream()))
             {
@@ -274,14 +281,15 @@ namespace N2.Edit.FileSystem.NH
                 inputStream.Position = 0;
 
                 file.Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray();
-                file.Created = DateTime.Now;
+				file.Created = Utility.CurrentTime();
+				file.Updated = Utility.CurrentTime();
                 file.Length = buffer.Length;
                 _sessionProvider.OpenSession.Session.Update(file);
                 trx.Commit();
             }
         }
 
-        private void CreateFile(Path virtualPath, Stream inputStream)
+        private void CreateFile(FileSystemPath virtualPath, Stream inputStream)
         {
             CheckStreamSize(inputStream,virtualPath);
 
@@ -298,7 +306,8 @@ namespace N2.Edit.FileSystem.NH
                                {
                                    Path = virtualPath,
                                    Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray(),
-                                   Created = DateTime.Now,
+								   Created = Utility.CurrentTime(),
+								   Updated = Utility.CurrentTime(),
                                    Length = buffer.Length
                                };
 
@@ -309,22 +318,22 @@ namespace N2.Edit.FileSystem.NH
 
         public void ReadFileContents(string virtualPath, Stream outputStream)
         {
-            var path = Path.File(virtualPath);
+            var path = FileSystemPath.File(virtualPath);
             var blob = GetSpecificItem(path);
             outputStream.Write(blob.Data, 0, blob.Data.Length);
         }
 
         public bool DirectoryExists(string virtualPath)
         {
-            var path = Path.Directory(virtualPath);
+            var path = FileSystemPath.Directory(virtualPath);
             var item = GetSpecificItem(path);
             return item != null && !item.Length.HasValue;
         }
 
         public void MoveDirectory(string fromVirtualPath, string destinationVirtualPath)
         {
-            var source = Path.Directory(fromVirtualPath);
-            var target = Path.Directory(destinationVirtualPath);
+            var source = FileSystemPath.Directory(fromVirtualPath);
+            var target = FileSystemPath.Directory(destinationVirtualPath);
 
             if (target.IsDescendantOf(source))
             {
@@ -344,7 +353,9 @@ namespace N2.Edit.FileSystem.NH
                     item.Path.Rebase(source, target);
                 }
 
+				directory.Updated = Utility.CurrentTime();
                 directory.Path = target;
+				_sessionProvider.OpenSession.Session.Update(directory);
 
                 trx.Commit();
             }
@@ -357,14 +368,14 @@ namespace N2.Edit.FileSystem.NH
 
         public void DeleteDirectory(string virtualPath)
         {
-            var path = Path.Directory(virtualPath);
+            var path = FileSystemPath.Directory(virtualPath);
 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(path);
 
                 _sessionProvider.OpenSession.Session
-                    .CreateQuery("delete from N2.Edit.FileSystem.NH.FileSystemItem where Path.Parent like :parent")
+                    .CreateQuery("delete from " + typeof(FileSystemItem).Name + " where Path.Parent like :parent")
                     .SetParameter("parent", path + "%")
                     .ExecuteUpdate();
 
@@ -381,14 +392,14 @@ namespace N2.Edit.FileSystem.NH
 
         public void CreateDirectory(string virtualPath)
         {
-            var path = Path.Directory(virtualPath);
+            var path = FileSystemPath.Directory(virtualPath);
             // Ensure consistent behavoir with the System.UI.Directory methods used by mapped and virtual filesystem
             if(DirectoryExists(path.ToString()))
                 throw new IOException("The directory " + path.ToString() + " already exists.");
 
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
-                _CreateDirectory(virtualPath);
+                CreateDirectoryInternal(virtualPath);
                 trx.Commit();
             }
 
@@ -398,9 +409,9 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
-        private void _CreateDirectory(string virtualPath)
+        private void CreateDirectoryInternal(string virtualPath)
         {
-            var path = Path.Directory(virtualPath);
+            var path = FileSystemPath.Directory(virtualPath);
 
             if (virtualPath != "/")
             {
@@ -410,7 +421,8 @@ namespace N2.Edit.FileSystem.NH
             var item = new FileSystemItem
                            {
                                Path = path,
-                               Created = DateTime.Now
+							   Created = Utility.CurrentTime(),
+							   Updated = Utility.CurrentTime()
                            };
 
             _sessionProvider.OpenSession.Session.Save(item);

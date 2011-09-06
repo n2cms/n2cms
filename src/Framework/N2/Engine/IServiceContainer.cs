@@ -38,6 +38,10 @@ namespace N2.Engine
 		/// <returns>All services registered to serve the provided interface.</returns>
 		Array ResolveAll(Type serviceType);
 
+		/// <summary>Retrieves registered types.</summary>
+		/// <returns>All registered services.</returns>
+		IEnumerable<ServiceInfo> Diagnose();
+
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>

@@ -20,6 +20,7 @@ using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
 using N2.Plugin;
+using N2.Configuration;
 
 namespace N2.Edit.Installation
 {
@@ -42,8 +43,9 @@ namespace N2.Edit.Installation
     	IWebContext webContext;
 		DefinitionMap map;
 		ConnectionMonitor connectionContext;
+		bool isDatabaseFileSystemEnbled = false;
 
-		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext)
+		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config)
 		{
             this.host = host;
 			this.map = map;
@@ -54,6 +56,7 @@ namespace N2.Edit.Installation
             this.configurationBuilder = configurationBuilder;
         	this.webContext = webContext;
 			this.connectionContext = connectionContext;
+			this.isDatabaseFileSystemEnbled = config.Files.StorageLocation == FileStoreLocation.Database;
 		}
         
 		NHibernate.Cfg.Configuration cfg;
@@ -187,24 +190,31 @@ namespace N2.Edit.Installation
 			try
 			{
 				status.DatabaseVersion = 0;
-				sessionProvider.OpenSession.Session.CreateQuery("select ci.ID from ContentItem ci").SetMaxResults(1).List();
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.ID from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 1;
 
 				// checking for properties added between version 1 and 2
-				sessionProvider.OpenSession.Session.CreateQuery("select ci.AncestralTrail from ContentItem ci").SetMaxResults(1).List();
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.AncestralTrail from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 2;
 
 				// checking for properties added between version 2 and 3
-				sessionProvider.OpenSession.Session.CreateQuery("select ci.AlteredPermissions from ContentItem ci").SetMaxResults(1).List();
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.AlteredPermissions from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 3;
 
 				// checking for properties added between version 3 and 4
-				sessionProvider.OpenSession.Session.CreateQuery("select ci.TemplateKey from ContentItem ci").SetMaxResults(1).List();
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.TemplateKey from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 4;
 
+				if (isDatabaseFileSystemEnbled)
+				{
+					// checking file system table (if enabled)
+					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name +  " ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 5;
+				}
+
 				// checking persistable properties added in application
-				sessionProvider.OpenSession.Session.CreateQuery("select ci from ContentItem ci").SetMaxResults(1).List();
-				status.DatabaseVersion = 5;
+				sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
+				status.DatabaseVersion = DatabaseStatus.RequiredDatabaseVersion;
 			}
 			catch (Exception ex)
 			{

@@ -72,5 +72,17 @@ namespace N2.Edit.FileSystem
 			btnSave.Visible = false;
 			btnCancel.Visible = false;
 		}
+
+		const double GB = 1024 * 1024 * 1024;
+		const double MB = 1024 * 1024;
+		const double kB = 1024;
+
+		protected string GetFileSize(long size)
+		{
+			if (size > GB) return string.Format("{0:0.0} GB", size / GB);
+			if (size > MB) return string.Format("{0:0.0} MB", size / MB);
+			if (size > kB) return string.Format("{0:0.0} kB", size / kB);
+			return string.Format("{0} B", size);
+		}
     }
 }

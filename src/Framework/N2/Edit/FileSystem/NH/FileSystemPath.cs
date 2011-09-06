@@ -2,15 +2,17 @@
 
 namespace N2.Edit.FileSystem.NH
 {
-    public class Path
+    public class FileSystemPath
     {
         public string Parent { get; set; }
         public string Name { get; set; }
 		public bool IsDirectory { get; set; }
 
-        public Path(){}
+        public FileSystemPath()
+		{
+		}
 
-        private Path(string virtualPath)
+        private FileSystemPath(string virtualPath)
         {
             var sanitizedPath = virtualPath.TrimStart('~').TrimEnd('/').Replace('\\', '/');
             var lastSlash = sanitizedPath.LastIndexOf('/') + 1;
@@ -19,14 +21,14 @@ namespace N2.Edit.FileSystem.NH
             Name = sanitizedPath.Substring(lastSlash);
         }
 
-        public static Path File(string virtualPath)
+        public static FileSystemPath File(string virtualPath)
         {
-            return new Path(virtualPath) { IsDirectory = false };
+            return new FileSystemPath(virtualPath) { IsDirectory = false };
         }
 
-        public static Path Directory(string virtualPath)
+        public static FileSystemPath Directory(string virtualPath)
         {
-            return new Path(virtualPath) { IsDirectory = true };
+            return new FileSystemPath(virtualPath) { IsDirectory = true };
         }
 
         public override string ToString()
@@ -36,19 +38,19 @@ namespace N2.Edit.FileSystem.NH
             return path;
         }
 
-        public bool IsDescendantOf(Path source)
+        public bool IsDescendantOf(FileSystemPath source)
         {
             return Parent.StartsWith(source.ToString());
         }
 
-        public void Rebase(Path source, Path target)
+        public void Rebase(FileSystemPath source, FileSystemPath target)
         {
             if (!source.IsDirectory || !target.IsDirectory)
             {
                 throw new ApplicationException("Rebase parameters \"source\" and \"target\" should both be directory paths.");
             }
 
-            Parent = new Path(target + ToString().Substring(source.ToString().Length)).Parent;
+            Parent = new FileSystemPath(target + ToString().Substring(source.ToString().Length)).Parent;
         }
 	}
 

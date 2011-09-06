@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.XPath;
 using N2.Details;
+using N2.Edit.FileSystem;
 
 namespace N2.Persistence.Serialization
 {
@@ -11,11 +12,13 @@ namespace N2.Persistence.Serialization
 	{
 		private readonly IPersister persister;
 		private readonly ItemXmlReader reader;
+		private IFileSystem fs;
 
-		public Importer(IPersister persister, ItemXmlReader reader)
+		public Importer(IPersister persister, ItemXmlReader reader, IFileSystem fs)
 		{
 			this.persister = persister;
 			this.reader = reader;
+			this.fs = fs;
 		}
 
 		public virtual IImportRecord Read(string path)
@@ -84,7 +87,7 @@ namespace N2.Persistence.Serialization
 				{
                     try
                     {
-                        a.Import();
+                        a.Import(fs);
                     }
                     catch (Exception ex)
                     {

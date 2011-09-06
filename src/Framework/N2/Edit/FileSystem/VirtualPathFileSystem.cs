@@ -35,6 +35,9 @@ namespace N2.Edit.FileSystem
 		{
 			VirtualFile file = PathProvider.GetFile(virtualPath);
 
+			if (file == null)
+				return null;
+
 			FileData f = new FileData();
 			f.Name = file.Name;
 			f.VirtualPath = file.VirtualPath;
@@ -193,12 +196,16 @@ namespace N2.Edit.FileSystem
 		/// <param name="inputStream">An input stream of the file contents.</param>
 		public virtual void WriteFile(string virtualPath, Stream inputStream)
 		{
-			string path = MapPath(virtualPath); 
+			string path = MapPath(virtualPath);
+			if (!Directory.Exists(Path.GetDirectoryName(path)))
+				Directory.CreateDirectory((Path.GetDirectoryName(path)));
+			
 			if (FileExists(virtualPath))
 			{
 				using(Stream fileStream = File.OpenWrite(path))
 				{
-					TransferBetweenStreams(inputStream, fileStream);
+					long length = TransferBetweenStreams(inputStream, fileStream);
+					fileStream.SetLength(length);
 				}
 			}
 			else
@@ -213,8 +220,9 @@ namespace N2.Edit.FileSystem
 				FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
-		void TransferBetweenStreams(Stream inputStream, Stream outputStream)
+		long TransferBetweenStreams(Stream inputStream, Stream outputStream)
 		{
+			long inputStreamLength = 0;
 			byte[] buffer = new byte[32768];
 			while (true)
 			{
@@ -223,7 +231,9 @@ namespace N2.Edit.FileSystem
 					break;
 
 				outputStream.Write(buffer, 0, bytesRead);
+				inputStreamLength += bytesRead;
 			}
+			return inputStreamLength;
 		}
 
 		/// <summary>Read file contents to a stream.</summary>

@@ -14,7 +14,7 @@
 	<a href="<%= SelectedItem.Url %>">
 		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
-		(<%= SelectedFile.Size / 1024 %> kB)
+		(<%= GetFileSize(SelectedFile.Size) %>)
 	</a>
 
 	<div class="fileContents">

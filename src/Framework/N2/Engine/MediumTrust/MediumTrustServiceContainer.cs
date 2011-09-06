@@ -96,6 +96,14 @@ namespace N2.Engine.MediumTrust
 			return returnArray;
 		}
 
+		/// <summary>Resolves all services.</summary>
+		/// <returns>All registered services.</returns>
+		public override IEnumerable<ServiceInfo> Diagnose()
+		{
+			return resolvers.Keys
+				.Select(t => new ServiceInfo { Key = t.FullName, ServiceType = t, ImplementationType = t, Resolve = () => Resolve(t), ResolveAll = () => ResolveAll(t) });
+		}
+
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>

@@ -97,10 +97,9 @@
   <ItemGroup>
     <Compile Include="ExternalContent\ExternalContentTests.cs" />
     <Compile Include="ExternalContent\ExternalContentRepositoryTests.cs" />
-    <Compile Include="FileSystem\DatabaseFileSystem\DatebaseFileSystemTests.cs" />
-    <Compile Include="FileSystem\FakeFileSystem.cs" />
-    <Compile Include="FileSystem\FakePathProvider.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />
+    <Compile Include="FileSystem\FakePathProvider.cs" />
+    <Compile Include="FileSystem\FileSystemNodesTests.cs" />
     <Compile Include="FileSystem\RootNode.cs" />
     <Compile Include="FileSystem\VirtualFolderInitializerTests.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />
