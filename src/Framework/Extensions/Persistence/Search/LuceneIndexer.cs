@@ -21,7 +21,7 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// Wraps the usage of lucene to index content items.
 	/// </summary>
-	[Service(typeof(IIndexer))]
+	[Service(typeof(IIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
 		LuceneAccesor accessor;

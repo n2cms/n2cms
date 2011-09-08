@@ -122,6 +122,8 @@ namespace N2.Configuration
 		{
 			if (Files.StorageLocation == FileStoreLocation.Database)
 				configurationKeys.Add("dbfs");
+			if (Search.Enabled)
+				configurationKeys.Add("lucene");
 		}
 	}
 }

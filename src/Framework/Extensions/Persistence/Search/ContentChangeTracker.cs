@@ -15,7 +15,7 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// Observes changes in the content structure and invokes the <see cref="ILuceneIndexer"/> to perform indexing.
 	/// </summary>
-	[Service]
+	[Service(Configuration = "lucene")]
 	public class ContentChangeTracker : IAutoStart
 	{
 		IIndexer indexer;

@@ -8,7 +8,7 @@ using N2.Engine;
 
 namespace N2.Persistence.Search
 {
-	[Service(typeof(AbstractMigration))]
+	[Service(typeof(AbstractMigration), Configuration = "lucene")]
 	public class ReindexTextMigration : AbstractMigration
 	{
 		IRepository<int, ContentItem> repository;

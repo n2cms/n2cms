@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace N2.Persistence.Search
 {
-	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher))]
+	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher), Configuration = "lucene")]
 	public class LuceneSearcher : ITextSearcher
 	{
 		LuceneAccesor accessor;
