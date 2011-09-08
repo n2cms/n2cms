@@ -28,10 +28,12 @@ namespace N2.Persistence.Search
 		/// <param name="skip">A number of items to skip.</param>
 		/// <param name="take">A number of items to take.</param>
 		/// <returns>An enumeration of items matching the search query.</returns>
-		public IEnumerable<ContentItem> Search(ContentItem ancestor, string query, int skip, int take, out int totalRecords)
+		public IEnumerable<ContentItem> Search(ContentItem ancestor, string query, int skip, int take, bool? onlyPages, Type[] types, out int totalRecords)
 		{
+			var q = finder.Where.AncestralTrail.Like(Utility.GetTrail(ancestor) + "%")
+				.And.Title.IsNull(false);
+
 			var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w + "%");
-			var q = finder.Where.AncestralTrail.Like(Utility.GetTrail(ancestor) + "%");
 			foreach (var word in words)
 			{
 				q = q.And.OpenBracket()
@@ -39,6 +41,14 @@ namespace N2.Persistence.Search
 					.Or.Detail().Like(word)
 				.CloseBracket();
 			}
+			if (onlyPages.HasValue)
+				q = q.And.OpenBracket()
+					.ZoneName.IsNull(onlyPages.Value)
+					.Or.ZoneName.Eq("")
+				.CloseBracket();
+			if (types != null)
+				q = q.And.Type.In(types);
+
 			totalRecords = q.Count();
 			return q.FirstResult(skip).MaxResults(take).Select();
 		}
@@ -47,7 +57,8 @@ namespace N2.Persistence.Search
 		{
 			var result = new Result();
 			int total;
-			result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, out total).Select(i => new Hit { Content = i, Score = i.Title.ToLower().Contains(query.Text.ToLower()) ? 1 : .5 });
+			result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, query.OnlyPages, query.Types, out total)
+				.Select(i => new Hit { Content = i, Score = (i.Title != null && i.Title.ToLower().Contains(query.Text.ToLower())) ? 1 : .5 });
 			result.Total = total;
 			return result;
 		}
