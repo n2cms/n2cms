@@ -2,16 +2,27 @@
 using System.Linq;
 using System.Web;
 using N2.Configuration;
+using N2.Engine;
+using N2.Plugin;
+using N2.Web;
 
-namespace N2.Edit.FileSystem
+namespace N2.Edit.FileSystem.NH
 {
-    class UploadFileHttpHandler : IHttpHandler
+	/// <summary>
+	/// Handles requests for files in the database file system.
+	/// </summary>
+	[Service(Configuration = "dbfs")]
+    public class UploadFileHttpHandler : IHttpHandler, IAutoStart
     {
-		IFileSystem fileSystem;
+		private IFileSystem fileSystem;
+		private UploadFolderSource folderSource;
+		private EventBroker broker;
 
-		public UploadFileHttpHandler(IFileSystem fileSystem)
+		public UploadFileHttpHandler(IFileSystem fileSystem, UploadFolderSource folderSource, EventBroker broker)
 		{
 			this.fileSystem = fileSystem;
+			this.folderSource = folderSource;
+			this.broker = broker;
 		}
 
         public void ProcessRequest(HttpContext context)
@@ -56,20 +67,34 @@ namespace N2.Edit.FileSystem
             get { return true; }
         }
 
-        internal static void HttpApplication_PreRequestHandlerExecute(object sender, EventArgs e)
+        private void HttpApplication_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
             if (app == null) return;
 
-			
-            var uploadFolders = new EditSection().UploadFolders;
-            if (!uploadFolders.Folders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
-                return;
-            
-            if (!(Context.Current.Resolve<IFileSystem>()).FileExists(app.Request.Path))
+
+			var uploadFolders = folderSource.GetUploadFoldersForCurrentSite();
+            if (!uploadFolders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
                 return;
 
-            app.Context.Handler = new UploadFileHttpHandler(Context.Current.Resolve<IFileSystem>());
+			if (!fileSystem.FileExists(app.Request.Path))
+                return;
+
+			app.Context.Handler = this;
         }
-    }
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			broker.PreRequestHandlerExecute += HttpApplication_PreRequestHandlerExecute;
+		}
+
+		public void Stop()
+		{
+			broker.PreRequestHandlerExecute -= HttpApplication_PreRequestHandlerExecute;
+		}
+
+		#endregion
+	}
 }

@@ -2,6 +2,9 @@
 
 namespace N2.Edit.FileSystem.NH
 {
+	/// <summary>
+	/// A path component used by <see cref="FileSystemItem"/>.
+	/// </summary>
     public class FileSystemPath
     {
         public string Parent { get; set; }

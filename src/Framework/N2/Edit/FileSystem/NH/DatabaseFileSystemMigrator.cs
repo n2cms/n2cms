@@ -8,26 +8,38 @@ using N2.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
-    public static class DatabaseFileSystemMigrator
+	/// <summary>
+	/// Moves files into the database file system.
+	/// </summary>
+    public class DatabaseFileSystemMigrator
     {
-        static string returnValue = "";
-        static IFileSystem fs = (Context.Current.Resolve<IFileSystem>());
+		private string returnValue = "";
+		private IFileSystem fs;
+		private UploadFolderSource folderSource;
+		private IWebContext webContext;
 
-        public static string CopyToDb()
+		public DatabaseFileSystemMigrator(IFileSystem fs, UploadFolderSource folderSource, IWebContext webContext)
+		{
+			this.fs = fs;
+			this.folderSource = folderSource;
+			this.webContext = webContext;
+		}
+
+        public string CopyToDb()
         {
             if (fs.GetType() != typeof(DatabaseFileSystem))
                 throw new Exception("Database filesystem not configured");
 
-            var uploadFolders = new EditSection().UploadFolders;
+            var uploadFolders = folderSource.GetUploadFoldersForAllSites();
             foreach (var uploadFolder in uploadFolders)
             {
-                CopyFilesInDirectoryRecursively(HttpContext.Current.Server.MapPath(uploadFolder.Path));
+                CopyFilesInDirectoryRecursively(webContext.MapPath(uploadFolder));
             }
 
             return returnValue;
         }
 
-        private static void CopyFilesInDirectoryRecursively(string dirPath)
+        private void CopyFilesInDirectoryRecursively(string dirPath)
         {
             var files = System.IO.Directory.GetFiles(dirPath);
             
@@ -58,7 +70,7 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
-        private static string FullToRelative(string physicalPath)
+        private string FullToRelative(string physicalPath)
         {
             var basePath = HttpContext.Current.Server.MapPath("~/");
             return physicalPath.Replace(basePath, "~/").Replace(@"\", "/");

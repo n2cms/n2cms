@@ -200,12 +200,12 @@
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemMigrator.cs" />
     <Compile Include="Edit\FileSystem\NH\FileConfigurationParticipator.cs" />
-    <Compile Include="Edit\FileSystem\NH\FileSystemHandlerFactory.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemPath.cs" />
-    <Compile Include="Edit\FileSystem\UploadFileHttpHandler.cs" />
+    <Compile Include="Edit\FileSystem\NH\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Edit\UploadFolderSource.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
     <Compile Include="Engine\Providers\PathDataProvider.cs" />
     <Compile Include="Engine\Providers\RouteCollectionProvider.cs" />

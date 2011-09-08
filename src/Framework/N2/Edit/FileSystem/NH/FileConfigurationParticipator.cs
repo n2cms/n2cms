@@ -10,6 +10,9 @@ using N2.Configuration;
 
 namespace N2.Edit.FileSystem.NH
 {
+	/// <summary>
+	/// Configures the database file system in the NHibernate configuration.
+	/// </summary>
 	[Service(typeof(ConfigurationBuilderParticipator), Configuration = "dbfs")]
 	public class FileConfigurationParticipator : ConfigurationBuilderParticipator
 	{

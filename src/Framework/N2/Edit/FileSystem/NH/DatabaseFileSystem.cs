@@ -12,8 +12,11 @@ using N2.Engine;
 
 namespace N2.Edit.FileSystem.NH
 {
+	/// <summary>
+	/// A file system implementation that stores files in the database.
+	/// </summary>
 	[Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
-    public class DatabaseFileSystem : IFileSystem, IAutoStart
+    public class DatabaseFileSystem : IFileSystem
     {
         private readonly ISessionProvider _sessionProvider;
         private const long UploadFileSize = long.MaxValue;
@@ -445,16 +448,6 @@ namespace N2.Edit.FileSystem.NH
 
             if(!IsStreamSizeOk(output))
                 throw new Exception("File with size " + output.Length + " could not be uploaded created because it exceeds the configured UploadFileMaxSize");
-        }
-
-        public void Start()
-        {
-            EventBroker.Instance.PreRequestHandlerExecute += UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
-        }
-
-        public void Stop()
-        {
-            EventBroker.Instance.PreRequestHandlerExecute -= UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
         }
     }
 }
