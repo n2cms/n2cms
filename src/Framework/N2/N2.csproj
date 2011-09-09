@@ -199,6 +199,7 @@
     <Compile Include="Edit\EditExtensions.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemMigrator.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemStream.cs" />
     <Compile Include="Edit\FileSystem\NH\FileConfigurationParticipator.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemPath.cs" />

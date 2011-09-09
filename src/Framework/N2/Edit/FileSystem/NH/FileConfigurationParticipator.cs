@@ -31,6 +31,7 @@ namespace N2.Edit.FileSystem.NH
 		{
 			ModelMapper mm = new ModelMapper();
 			mm.Class<FileSystemItem>(FileSystemItemCustomization);
+			mm.Class<FileSystemChunk>(FileSystemChunkCustomization);
 
 			var compiledMapping = mm.CompileMappingForAllExplicitlyAddedEntities();
 			cfg.AddDeserializedMapping(compiledMapping, "N2");
@@ -38,8 +39,9 @@ namespace N2.Edit.FileSystem.NH
 
 		void FileSystemItemCustomization(IClassMapper<FileSystemItem> ca)
 		{
-			ca.Table(tablePrefix + "File");
+			ca.Table(tablePrefix + "FSItem");
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); });
 
 			ca.Component(x => x.Path, cm =>
 			{
@@ -49,9 +51,25 @@ namespace N2.Edit.FileSystem.NH
 			});
 			ca.Property(x => x.Created, cm => { cm.NotNullable(true); });
 			ca.Property(x => x.Updated, cm => { cm.NotNullable(true); });
-			ca.Property(x => x.Offset, cm => { });
 			ca.Property(x => x.Length, cm => { });
-			ca.Property(cm => cm.Data, cm => { cm.Type(NHibernateUtil.BinaryBlob); cm.Length(2147483647); cm.Lazy(true); });
+			ca.Bag(x => x.Chunks, cm =>
+				{
+					cm.Key(k => k.Column("FileID"));
+					cm.Inverse(true);
+					cm.Cascade(Cascade.All);
+					cm.OrderBy(ci => ci.Offset);
+					cm.Lazy(CollectionLazy.Extra);
+				}, cr => cr.OneToMany());
+
+		}
+
+		void FileSystemChunkCustomization(IClassMapper<FileSystemChunk> ca)
+		{
+			ca.Table(tablePrefix + "FSChunk");
+			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
+			ca.ManyToOne(x => x.BelongsTo, m => { m.Column("FileID"); });
+			ca.Property(x => x.Offset, cm => { });
+			ca.Property(cm => cm.Data, cm => { cm.Type(NHibernateUtil.BinaryBlob); cm.Length(ConfigurationBuilder.BlobLength); cm.Lazy(false); });
 		}
 
 	}

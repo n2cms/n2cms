@@ -13,8 +13,10 @@ using File = N2.Edit.FileSystem.Items.File;
 using N2.Persistence.NH;
 using System.Text;
 using N2.Tests.Fakes;
+using N2.Edit.FileSystem.NH;
+using N2.Configuration;
 
-namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
+namespace N2.Edit.Tests.FileSystem
 {
 
 	[TestFixture]
@@ -22,7 +24,7 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 	{
 		protected override IFileSystem CreateFileSystem()
 		{
-			return new N2.Edit.FileSystem.NH.DatabaseFileSystem(engine.Resolve<ISessionProvider>());
+			return new DatabaseFileSystem(engine.Resolve<ISessionProvider>(), new DatabaseSection { Files = new FilesElement { ChunkSize = 100 } });
 		}
 	}
 
@@ -47,7 +49,7 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
     public abstract class FileSystemTests : DatabasePreparingBase
 	{
 		#region Set up & tear down
-		IFileSystem fs;
+		protected IFileSystem fs;
         
 		List<string> operations;
 		List<FileEventArgs> arguments;
@@ -377,6 +379,23 @@ namespace N2.Edit.Tests.FileSystem.DatabaseFileSystem
 
 			var f = fs.GetFile("/upload/hello/world.txt");
 			Assert.That(f, Is.Null);
+		}
+
+		[TestCase("")]
+		[TestCase("hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		public void OpenFile_ReadsFileSizes(string text)
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes(text)));
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo(text));
+			}
 		}
 
 		[Test]
