@@ -3,15 +3,6 @@ using System.Collections.Generic;
 
 namespace N2.Edit.FileSystem.NH
 {
-
-	public class FileSystemChunk
-	{
-		public virtual int ID { get; protected set; }
-		public virtual FileSystemItem BelongsTo { get; set; }
-		public virtual int Offset { get; set; }
-		public virtual byte[] Data { get; set; }
-	}
-
 	/// <summary>
 	/// A persisted file or folder in the file system.
 	/// </summary>

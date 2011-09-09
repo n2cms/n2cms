@@ -201,6 +201,7 @@
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemMigrator.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemStream.cs" />
     <Compile Include="Edit\FileSystem\NH\FileConfigurationParticipator.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemChunk.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemPath.cs" />
     <Compile Include="Edit\FileSystem\NH\UploadFileHttpHandler.cs" />
