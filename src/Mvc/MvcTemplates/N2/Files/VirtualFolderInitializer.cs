@@ -156,7 +156,7 @@ namespace N2.Management.Files
 				{
 					if (pair.ParentPath.Equals(path, StringComparison.InvariantCultureIgnoreCase))
 					{
-						var dd = fs.GetDirectory(pair.FolderPath);
+						var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
 						var dir = CreateDirectory(pair);
 						yield return dir;
 					}
@@ -165,12 +165,7 @@ namespace N2.Management.Files
 
 			private Directory CreateDirectory(FolderPair pair)
 			{
-				var dd = fs.GetDirectory(pair.FolderPath);
-				if (dd == null)
-				{
-					fs.CreateDirectory(pair.FolderPath);
-					dd = fs.GetDirectory(pair.FolderPath);
-				}
+				var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
 				var parent = persister.Get(pair.ParentID);
 
 				var dir = Directory.New(dd, parent, fs, imageSizes);

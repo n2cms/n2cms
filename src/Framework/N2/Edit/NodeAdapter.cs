@@ -71,7 +71,7 @@ namespace N2.Edit
 		{
 			foreach (string uploadFolder in site.UploadFolders)
 			{
-				yield return FileSystem.GetDirectory(uploadFolder);
+				yield return FileSystem.GetDirectoryOrVirtual(uploadFolder);
 			}
 		}
 

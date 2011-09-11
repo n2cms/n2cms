@@ -197,6 +197,7 @@
     <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
     <Compile Include="Edit\EditExtensions.cs" />
+    <Compile Include="Edit\FileSystem\FileSystemExtensions.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemMigrator.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemStream.cs" />
