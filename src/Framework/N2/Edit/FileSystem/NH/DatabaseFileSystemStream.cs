@@ -10,7 +10,7 @@ namespace N2.Edit.FileSystem.NH
 	/// <summary>
 	/// Allows reading and writing to files in the database.
 	/// </summary>
-	internal class DatabaseFileSystemStream : MemoryStream
+	internal class DatabaseFileSystemStream : Stream
 	{
 		private readonly FileSystemItem file;
 		private readonly DatabaseFileSystem fs;
@@ -31,43 +31,39 @@ namespace N2.Edit.FileSystem.NH
 			Position = 0;
 		}
 
-		public override sealed long Position
-		{
-			get { return base.Position; }
-			set { base.Position = value; }
-		}
+		public override sealed long Position { get; set; }
 
 		public override long Length
 		{
-			get { return Math.Max(base.Length, file.Length.Value); }
+			get { return file.Length ?? 0; }
+		}
+
+		MemoryStream writeStream;
+		MemoryStream WriteStream
+		{
+			get { return writeStream ?? (writeStream = new MemoryStream()); }
 		}
 
 		public override sealed void Write(byte[] buffer, int offset, int count)
 		{
 			changed = true;
-			base.Write(buffer, offset, count);
+			WriteStream.Write(buffer, offset, count);
 		}
 
 		public override void WriteByte(byte value)
 		{
 			changed = true;
-			base.WriteByte(value);
+			WriteStream.WriteByte(value);
 		}
 
 		public override void Flush()
 		{
-			if (changed)
-				fs.UpdateFile(file.Path, this);
-
-			base.Flush();
+			if(writeStream != null)
+				fs.UpdateFile(file.Path, writeStream);
 		}
 
-		object endedBuffer = null;
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			if (object.ReferenceEquals(endedBuffer, buffer))
-				return 0;
-
 			//  000000000011111111112222222233333333
 			//	0-9       10-19     20-29
 			//  10        10        10
@@ -77,29 +73,28 @@ namespace N2.Edit.FileSystem.NH
 
 			int writtenBytes = 0;
 
+			var pos = (int)Position + offset;
 			foreach(var chunk in session.CreateQuery("from " + typeof(FileSystemChunk).Name + " fsc where fsc.BelongsTo = :file and fsc.Offset >= :minimum and fsc.Offset < :maximum order by fsc.Offset")
 				.SetParameter("file", file)
-				.SetParameter("minimum", offset - chunkSize)
-				.SetParameter("maximum", offset + count)
+				.SetParameter("minimum", pos - chunkSize)
+				.SetParameter("maximum", pos + count)
 				.Enumerable<FileSystemChunk>())
 			{
-				if (chunk.Offset >= offset)
+				if (chunk.Offset >= pos)
 				{
-					int bytes = Math.Min(chunk.Data.Length, count - (chunk.Offset - offset));
+					int bytes = Math.Min(chunk.Data.Length, count - (chunk.Offset - pos));
 					writtenBytes += bytes;
-					Array.Copy(chunk.Data, 0, buffer, chunk.Offset - offset, bytes);
+					Array.Copy(chunk.Data, 0, buffer, chunk.Offset - pos, bytes);
 				}
 				else //chunk.Offset < offset
 				{
-					int bytes = Math.Min(chunk.Data.Length - (offset - chunk.Offset), count);
+					int bytes = Math.Min(chunk.Data.Length - (pos - chunk.Offset), count);
 					writtenBytes += bytes;
-					Array.Copy(chunk.Data, offset - chunk.Offset, buffer, 0, bytes);
+					Array.Copy(chunk.Data, pos - chunk.Offset, buffer, 0, bytes);
 				}
 			}
 
-			if (writtenBytes == Length)
-				endedBuffer = buffer;
-
+			Position += writtenBytes;
 			return writtenBytes;
 		}
 
@@ -115,6 +110,37 @@ namespace N2.Edit.FileSystem.NH
 		{
 			Flush();
 			base.Dispose(disposing);
+		}
+
+		public override bool CanRead
+		{
+			get { return true; }
+		}
+
+		public override bool CanSeek
+		{
+			get { return true; }
+		}
+
+		public override bool CanWrite
+		{
+			get { return true; }
+		}
+
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			if (origin == SeekOrigin.Begin)
+				Position = offset;
+			else if (origin == SeekOrigin.Current)
+				Position += offset;
+			else
+				Position = file.Length ?? 0 + offset;
+			
+			return Position;
+		}
+
+		public override void SetLength(long value)
+		{
 		}
 	}
 }

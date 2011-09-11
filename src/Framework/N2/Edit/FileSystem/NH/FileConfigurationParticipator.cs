@@ -41,6 +41,7 @@ namespace N2.Edit.FileSystem.NH
 		{
 			ca.Table(tablePrefix + "FSItem");
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
+			ca.Lazy(false);
 			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); });
 
 			ca.Component(x => x.Path, cm =>
@@ -52,20 +53,20 @@ namespace N2.Edit.FileSystem.NH
 			ca.Property(x => x.Created, cm => { cm.NotNullable(true); });
 			ca.Property(x => x.Updated, cm => { cm.NotNullable(true); });
 			ca.Property(x => x.Length, cm => { });
-			ca.Bag(x => x.Chunks, cm =>
-				{
-					cm.Key(k => k.Column("FileID"));
-					cm.Inverse(true);
-					cm.Cascade(Cascade.All);
-					cm.OrderBy(ci => ci.Offset);
-					cm.Lazy(CollectionLazy.Extra);
-				}, cr => cr.OneToMany());
-
+			//ca.Bag(x => x.Chunks, cm =>
+			//    {
+			//        cm.Key(k => k.Column("FileID"));
+			//        cm.Inverse(true);
+			//        cm.Cascade(Cascade.All);
+			//        cm.OrderBy(ci => ci.Offset);
+			//        cm.Lazy(CollectionLazy.Extra);
+			//    }, cr => cr.OneToMany());
 		}
 
 		void FileSystemChunkCustomization(IClassMapper<FileSystemChunk> ca)
 		{
 			ca.Table(tablePrefix + "FSChunk");
+			ca.Lazy(false);
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.BelongsTo, m => { m.Column("FileID"); });
 			ca.Property(x => x.Offset, cm => { });

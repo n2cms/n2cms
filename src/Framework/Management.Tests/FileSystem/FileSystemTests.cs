@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using N2.Edit.FileSystem;
-using N2.Edit.FileSystem.Items;
-using N2.Persistence;
-using N2.Tests.Persistence;
-using N2.Web;
-using NUnit.Framework;
-using Directory = N2.Edit.FileSystem.Items.Directory;
-using File = N2.Edit.FileSystem.Items.File;
-using N2.Persistence.NH;
+using System.Linq;
 using System.Text;
-using N2.Tests.Fakes;
-using N2.Edit.FileSystem.NH;
 using N2.Configuration;
+using N2.Edit.FileSystem;
+using N2.Edit.FileSystem.NH;
+using N2.Persistence.NH;
+using N2.Tests.Fakes;
+using N2.Tests.Persistence;
+using NUnit.Framework;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -27,7 +22,7 @@ namespace N2.Edit.Tests.FileSystem
 			return new DatabaseFileSystem(engine.Resolve<ISessionProvider>(), new DatabaseSection { Files = new FilesElement { ChunkSize = 100 } });
 		}
 	}
-
+	
 	[TestFixture]
 	public class FileSystemTests_VirtualFileSystem : FileSystemTests
 	{
@@ -385,6 +380,7 @@ namespace N2.Edit.Tests.FileSystem
 		[TestCase("hello world")]
 		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
 		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
 		public void OpenFile_ReadsFileSizes(string text)
 		{
 			fs.CreateDirectory("/upload/hello");
@@ -403,10 +399,66 @@ namespace N2.Edit.Tests.FileSystem
 		{
 			fs.CreateDirectory("/upload/hello");
 			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("world hello")));
+
+			var buffer = new byte["world".Length];
+			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("world hello"));
+			}
+		}
+
+		[Test]
+		public void WriteFile_ExpandFileContents()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello")));
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			var buffer = new byte["world".Length];
+			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("hello world"));
+			}
+		}
+
+		[Test]
+		public void WriteFile_ReduceFileContents()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
 			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("world")));
 
 			var buffer = new byte["world".Length];
 			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("world"));
+			}
+		}
+
+		[Test]
+		public void OpenFile_ToWriteFileContents_ChangesFile()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello")));
+
+			using (var s = fs.OpenFile("/upload/hello/world.txt"))
+			{
+				var buffer = Encoding.UTF8.GetBytes("world");
+				s.Write(buffer, 0, buffer.Length);
+			}
 
 			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
 			{

@@ -158,7 +158,8 @@ namespace N2.Edit.FileSystem.NH
             var source = FileSystemPath.File(fromVirtualPath);
             var target = FileSystemPath.File(destinationVirtualPath);
 
-            using (var trx = Session.BeginTransaction())
+			var s = Session;
+            using (var trx = s.BeginTransaction())
             {
                 AssertParentExists(target);
 
@@ -172,12 +173,16 @@ namespace N2.Edit.FileSystem.NH
 					Updated = Utility.CurrentTime()
                 };
 
-                Session.Save(copy);
+                s.Save(copy);
 
 				foreach (var sourceChunk in GetChunks(file))
 				{
 					var chunkCopy = CreateChunk(copy, sourceChunk.Offset, sourceChunk.Data);
-					Session.Save(chunkCopy);
+					s.Save(chunkCopy);
+					
+					s.Flush();
+					s.Evict(sourceChunk);
+					s.Evict(chunkCopy);
 				}
 
                 trx.Commit();
@@ -241,11 +246,14 @@ namespace N2.Edit.FileSystem.NH
         internal void UpdateFile(FileSystemPath virtualPath, Stream inputStream)
         {
             CheckStreamSize(inputStream, virtualPath);
+			if (inputStream.CanSeek && inputStream.Position > 0)
+				inputStream.Position = 0;
 
             var file = GetSpecificItem(virtualPath);
 			file.Updated = Utility.CurrentTime();
 
-			using (var trx = Session.BeginTransaction())
+			var s = Session;
+			using (var trx = s.BeginTransaction())
 			{
 				var temp = new byte[chunkSize];
 				int offset = 0;
@@ -256,7 +264,9 @@ namespace N2.Edit.FileSystem.NH
 				{
 					if (endOfInputFile)
 					{
-						Session.Delete(chunk);
+						s.Delete(chunk);
+						s.Flush();
+						s.Evict(chunk);
 						continue;
 					}
 
@@ -266,7 +276,9 @@ namespace N2.Edit.FileSystem.NH
 					
 					if (endOfInputFile)
 					{
-						Session.Delete(chunk);
+						s.Delete(chunk);
+						s.Flush();
+						s.Evict(chunk);
 						continue;
 					}
 
@@ -274,7 +286,9 @@ namespace N2.Edit.FileSystem.NH
 
 					chunk.Offset = offset;
 					chunk.Data = buffer;
-					Session.Update(chunk);
+					s.Update(chunk);
+					s.Flush();
+					s.Evict(chunk);
 
 					offset += size;
 				}
@@ -288,11 +302,13 @@ namespace N2.Edit.FileSystem.NH
 					length += size;
 					var buffer = Copy(temp, size);
 					var chunk = CreateChunk(file, offset, buffer);
-					Session.Save(chunk);
+					s.Save(chunk);
+					s.Flush();
+					s.Evict(chunk);
 				}
 
 				file.Length = length;
-				Session.Update(file);
+				s.Update(file);
 				
 				trx.Commit();
 			}
@@ -312,7 +328,6 @@ namespace N2.Edit.FileSystem.NH
             CheckStreamSize(inputStream, virtualPath);
 			long fileSize = inputStream.CanSeek ? inputStream.Length : 0;
 			
-			//using (var session = _sessionProvider.SessionFactory.OpenStatelessSession())
 			using (var trx = Session.BeginTransaction())
 			{
 				var item = new FileSystemItem
@@ -391,15 +406,16 @@ namespace N2.Edit.FileSystem.NH
 			foreach (var chunk in GetChunks(path))
 			{
 				outputStream.Write(chunk.Data, 0, chunk.Data.Length);
+				Session.Evict(chunk);
 			}
         }
 
 		private IEnumerable<FileSystemChunk> GetChunks(FileSystemPath filePath)
 		{
 			return Session.CreateQuery("from FileSystemChunk fsc where fsc.BelongsTo.Path.Parent = :parentPath and fsc.BelongsTo.Path.Name = :name order by fsc.Offset")
-							.SetParameter("parentPath", filePath.Parent)
-							.SetParameter("name", filePath.Name)
-							.Enumerable<FileSystemChunk>();
+				.SetParameter("parentPath", filePath.Parent)
+				.SetParameter("name", filePath.Name)
+				.Enumerable<FileSystemChunk>();
 		}
 
 		private IEnumerable<FileSystemChunk> GetChunks(FileSystemItem file)
