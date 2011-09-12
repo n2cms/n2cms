@@ -24,27 +24,27 @@ namespace N2.Persistence.NH
 		public IQueryable<T> FindParts(string zoneName)
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName == zoneName).AsQueryable();
+				return this.Where(i => i.ZoneName == zoneName).OrderBy(i => i.SortOrder).AsQueryable();
 
 			if (zoneName == null)
 				//return Query().Where(i => i.ZoneName == null); 
-				return Session.CreateFilter(this, "where ZoneName is null").List<T>().AsQueryable();
+				return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").List<T>().AsQueryable();
 			else
 				//return Query().Where(i => i.ZoneName == zoneName); 
-				return Session.CreateFilter(this, "where ZoneName = :zoneName").SetParameter("zoneName", zoneName).List<T>().AsQueryable();
+				return Session.CreateFilter(this, "where ZoneName = :zoneName order by SortOrder").SetParameter("zoneName", zoneName).List<T>().AsQueryable();
 		}
 
 		public IQueryable<T> FindNavigatablePages()
 		{
 			if (this.WasInitialized)
-				return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).AsQueryable();
+				return FindPages().Where(p => new VisibleFilter().Match(p) && new PublishedFilter().Match(p)).OrderBy(i => i.SortOrder).AsQueryable();
 
 			//var now = Utility.CurrentTime();
 			//return Query().Where(i => i.ZoneName == null)
 			//    .Where(i => i.Visible == true)
 			//    .Where(i => i.Published <= now)
 			//    .Where(i => i.Expires == null || now < i.Expires);
-			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires)")
+			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires) order by SortOrder")
 				.SetParameter("published", Utility.CurrentTime())
 				.SetParameter("expires", Utility.CurrentTime())
 				.List<T>().AsQueryable();
@@ -53,19 +53,19 @@ namespace N2.Persistence.NH
 		public IQueryable<T> FindPages()
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName == null).AsQueryable();
+				return this.Where(i => i.ZoneName == null).OrderBy(i => i.SortOrder).AsQueryable();
 
 			//return Query().Where(i => i.ZoneName == null);
-			return Session.CreateFilter(this, "where ZoneName is null").List<T>().AsQueryable();
+			return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").List<T>().AsQueryable();
 		}
 
 		public IQueryable<T> FindParts()
 		{
 			if (this.WasInitialized)
-				return this.Where(i => i.ZoneName != null).AsQueryable();
+				return this.Where(i => i.ZoneName != null).OrderBy(i => i.SortOrder).AsQueryable();
 
 			//return Query().Where(i => i.ZoneName != null);
-			return Session.CreateFilter(this, "where ZoneName is not null").List<T>().AsQueryable();
+			return Session.CreateFilter(this, "where ZoneName is not null order by SortOrder").List<T>().AsQueryable();
 		}
 
 		public IEnumerable<string> FindZoneNames()
