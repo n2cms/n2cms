@@ -35,14 +35,15 @@ namespace N2.Security
 		private int passwordAttemptWindow = 20;
 		private MembershipPasswordFormat passwordFormat = MembershipPasswordFormat.Clear;
 		private string passwordStrengthRegularExpression = ".*";
-		private bool requiresQuestionAndAnswer = true; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false.
+		private bool requiresQuestionAndAnswer = false; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false.
 		private bool requiresUniqueEmail = true; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false. Note: still unused by the provider.
 
 		public ContentMembershipProvider()
 		{
 		}
+
 		public ContentMembershipProvider(ItemBridge bridge)
-			: base()
+			: this()
 		{
 			this.bridge = bridge;
 		}
