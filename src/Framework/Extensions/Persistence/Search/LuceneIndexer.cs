@@ -146,7 +146,8 @@ namespace N2.Persistence.Search
 			doc.Add(new Field("Updated", DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("Published", item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("Expires", item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Url", item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			if (item.IsPage)
+				doc.Add(new Field("Url", item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("Path", item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("AncestralTrail", (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field("Trail", Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
