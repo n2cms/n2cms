@@ -66,24 +66,36 @@ namespace N2.Web
 
 			string key = url.ToString().ToLowerInvariant();
 
-			PathData data = HttpRuntime.Cache[key] as PathData;
-			if(data == null)
-			{
-				data = inner.ResolvePath(url);
-				if (!data.IsEmpty() && data.IsCacheable)
-				{
-					Debug.WriteLine("Adding " + url + " to cache");
-					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-				}
-			}
-			else
-			{
-				Debug.WriteLine("Retrieving " + url + " from cache");
-				data = data.Attach(persister);
-				data.UpdateParameters(Url.Parse(url).GetQueries());
-			}
-			
-			return data;
+            var data = HttpContext.Current == null ? null : HttpContext.Current.Items[key] as PathData;
+            if (data == null)
+            {
+                data = HttpRuntime.Cache[key] as PathData;
+                if (data == null)
+                {
+                    data = inner.ResolvePath(url);
+                    if (!data.IsEmpty() && data.IsCacheable)
+                    {
+                        // We only global cache the path data if the current url has CMS Content
+                        Debug.WriteLine("Adding " + url + " to cache");
+                        HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+                    }
+                    else
+                    {
+                        // If there is no content for the given url we add it to a first level request cache 
+                        // so we don't have to do unnecessary lookups in the same request.
+                        if (HttpContext.Current != null)
+                            HttpContext.Current.Items.Add(key, data);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Retrieving " + url + " from cache");
+                    data = data.Attach(persister);
+                    data.UpdateParameters(Url.Parse(url).GetQueries());
+                }
+            }
+
+		    return data;
 		}
 
 		/// <summary>Finds an item by traversing names from the starting point root.</summary>
