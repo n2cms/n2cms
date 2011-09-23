@@ -116,7 +116,6 @@ namespace N2.Web
                         }
                     }
                 }
-		        data = PathData.Empty;
 		    }
 		    else
 		    {
@@ -125,7 +124,7 @@ namespace N2.Web
 		        data.UpdateParameters(Url.Parse(url).GetQueries());
 		    }
 
-		    return data;
+            return data ?? PathData.Empty;
 		}
 
 	    /// <summary>Finds an item by traversing names from the starting point root.</summary>
