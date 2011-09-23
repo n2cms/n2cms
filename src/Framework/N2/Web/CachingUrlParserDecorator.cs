@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
@@ -12,6 +14,17 @@ namespace N2.Web
 		readonly IUrlParser inner;
 		readonly IPersister persister;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
+
+	    private static readonly HashSet<string> contentParameters = new HashSet<string>
+	                                                                    {
+	                                                                        PathData.ItemQueryKey,
+	                                                                        PathData.PageQueryKey,
+	                                                                        "action",
+	                                                                        "arguments"
+	                                                                    };
+
+        private static readonly object classLock = new object();
+
 				
 		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister)
 		{
@@ -59,46 +72,63 @@ namespace N2.Web
 		/// <summary>Finds the content item and the template associated with an url.</summary>
 		/// <param name="url">The url to the template to locate.</param>
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
-		public PathData ResolvePath(Url url)
+        public PathData ResolvePath(Url url)
 		{
-			if (url == null)
-				return PathData.Empty;
+		    if (url == null)
+		        return PathData.Empty;
 
-			string key = url.ToString().ToLowerInvariant();
-
-            var data = HttpContext.Current == null ? null : HttpContext.Current.Items[key] as PathData;
-            if (data == null)
+            // To minimise the amount of unique urls process and cache remove all the querystring parameters we don't care about
+            foreach (var queryParameter in url.GetQueries())
             {
-                data = HttpRuntime.Cache[key] as PathData;
-                if (data == null)
-                {
-                    data = inner.ResolvePath(url);
-                    if (!data.IsEmpty() && data.IsCacheable)
-                    {
-                        // We only global cache the path data if the current url has CMS Content
-                        Debug.WriteLine("Adding " + url + " to cache");
-                        HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-                    }
-                    else
-                    {
-                        // If there is no content for the given url we add it to a first level request cache 
-                        // so we don't have to do unnecessary lookups in the same request.
-                        if (HttpContext.Current != null)
-                            HttpContext.Current.Items.Add(key, data);
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Retrieving " + url + " from cache");
-                    data = data.Attach(persister);
-                    data.UpdateParameters(Url.Parse(url).GetQueries());
-                }
+                if (!contentParameters.Contains(queryParameter.Key.ToLowerInvariant()))
+                    url = url.RemoveQuery(queryParameter.Key);
             }
+
+		    string key = url.ToString().ToLowerInvariant();
+
+		    var contentKey = "N2." + key;
+		    var noContentKey = "N2.NoContent." + key;
+
+            PathData data;
+            if ((data = HttpRuntime.Cache[contentKey] as PathData) == null)
+		    {
+                if (HttpRuntime.Cache[noContentKey] == null)
+                {
+                    lock (classLock)
+                    {
+                        if (data == null)
+                        {
+                            data = inner.ResolvePath(url);
+                            if (data.IsCacheable)
+                            {
+                                if (data.IsEmpty())
+                                {
+                                    Debug.WriteLine("Adding " + url + " to no content cache");
+                                    HttpRuntime.Cache.Add(noContentKey, true, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+                                }
+                                else
+                                {
+                                    // We only global cache the path data if the current url has CMS Content
+                                    Debug.WriteLine("Adding " + url + " to cache");
+                                    HttpRuntime.Cache.Add(contentKey, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+                                }
+                            }
+                        }
+                    }
+                }
+		        data = PathData.Empty;
+		    }
+		    else
+		    {
+		        Debug.WriteLine("Retrieving " + url + " from cache");
+		        data = data.Attach(persister);
+		        data.UpdateParameters(Url.Parse(url).GetQueries());
+		    }
 
 		    return data;
 		}
 
-		/// <summary>Finds an item by traversing names from the starting point root.</summary>
+	    /// <summary>Finds an item by traversing names from the starting point root.</summary>
 		/// <param name="url">The url that should be traversed.</param>
 		/// <returns>The content item matching the supplied url.</returns>
 		public ContentItem Parse(string url)
