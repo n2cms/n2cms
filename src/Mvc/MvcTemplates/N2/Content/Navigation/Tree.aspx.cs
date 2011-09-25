@@ -12,6 +12,7 @@ using N2.Web;
 using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Edit.Navigation
 {
@@ -59,7 +60,7 @@ namespace N2.Edit.Navigation
 				{
 					var dd = FS.GetDirectory(uploadFolder);
 
-					var dir = Directory.New(dd, root.Current, FS, Engine.Resolve<ImageSizeCache>());
+					var dir = Directory.New(dd, root.Current, Engine.Resolve<IDependencyInjector>());
 					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
 					root.Children.Add(node);
 				}
