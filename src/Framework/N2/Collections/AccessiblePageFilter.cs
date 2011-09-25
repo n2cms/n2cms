@@ -17,5 +17,10 @@ namespace N2.Collections
 			: base(new PageFilter(), new PublishedFilter(), new AccessFilter(user, securityManager))
 		{
 		}
+
+		public override string ToString()
+		{
+			return "AsccessiblePage";
+		}
 	}
 }

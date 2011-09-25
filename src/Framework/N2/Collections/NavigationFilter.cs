@@ -18,5 +18,10 @@ namespace N2.Collections
 			: base(new PageFilter(), new VisibleFilter(), new PublishedFilter(), new AccessFilter(user, securityManager))
 		{
 		}
+
+		public override string ToString()
+		{
+			return "Navigatable" + base.ToString();
+		}
 	}
 }
