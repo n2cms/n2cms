@@ -12,7 +12,7 @@
 		};
 		TREE.option = $.extend(TREE.option, opt);
 		TREE.setAjaxNodes = function(obj) {
-			var url = $.trim($('>li', obj).text());
+			var url = $.trim($(obj).children("li").text());
 			if (url && url.indexOf('url:')) {
 				url = $.trim(url.replace(/.*\{url:(.*)\}/i, '$1'));
 				$.ajax({
@@ -42,7 +42,7 @@
 		};
 		TREE.closeNearby = function(obj) {
 			$(obj).siblings().filter('.folder-open, .folder-open-last').each(function() {
-				var childUl = $('>ul', this);
+				var childUl = $(this).children("ul");
 				var className = this.className;
 				className = className.replace('open', 'close');
 				$(this).attr('class', className);
@@ -58,7 +58,7 @@
 			$('>.toggler', obj).bind('click', function(e) {
 				e.preventDefault();
 
-				var childUl = $('>ul', obj);
+				var childUl = $(obj).children("ul");
 				var className = obj.className;
 				if (childUl.is(':visible')) {
 					className = className.replace('open', 'close');
@@ -89,7 +89,7 @@
 			$('li', obj).each(function(i) {
 				var className = this.className;
 				var open = false;
-				var childNode = $('>ul', this);
+				var childNode = $(this).children("ul");
 
 				if (childNode.size() > 0) {
 					var setClassName = 'folder-';
