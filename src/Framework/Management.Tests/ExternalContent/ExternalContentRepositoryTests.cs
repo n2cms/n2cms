@@ -28,13 +28,12 @@ namespace N2.Management.Tests.ExternalContent
 		{
 			FakeRepository<ContentItem> itemRepository;
 			FakeRepository<ContentDetail> linkRepository;
-			IItemFinder finder;
-			var persister = TestSupport.SetupFakePersister(out itemRepository, out linkRepository, out finder);
+			var persister = TestSupport.SetupFakePersister(out itemRepository, out linkRepository);
 			var activator = new Persistence.ContentActivator(new Edit.Workflow.StateChanger(), MockRepository.GenerateStub<IItemNotifier>(), new Persistence.Proxying.EmptyProxyFactory());
 			itemRepository.Save(root = new ExternalItem { ID = 1, Name = "root" });
 			itemRepository.Save(start = new ExternalItem { ID = 2, Name = "start" });
 
-			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, finder, new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, new Configuration.EditSection());
+			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, new Configuration.EditSection());
 		}
 
 		[Test]

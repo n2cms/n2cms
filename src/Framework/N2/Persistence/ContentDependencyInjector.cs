@@ -10,8 +10,8 @@ namespace N2.Persistence
 	/// <summary>
 	/// Injects dependencies onto content items as they are created.
 	/// </summary>
-	[Service]
-	public class ContentDependencyInjector : IAutoStart
+	[Service(typeof(IDependencyInjector))]
+	public class ContentDependencyInjector : IAutoStart, IDependencyInjector
 	{
 		readonly IDefinitionManager definitions;
 		readonly IServiceContainer services;
@@ -25,7 +25,7 @@ namespace N2.Persistence
 			this.notifier = notifier;
 		}
 
-		public virtual bool FilfilDependencies(ContentItem item)
+		public virtual bool FulfilDependencies(ContentItem item)
 		{
 			bool dependenciesInjted = false;
 			foreach (var provider in GetSetters(item.GetContentType()))
@@ -69,7 +69,7 @@ namespace N2.Persistence
 
 		void notifier_ItemCreated(object sender, NotifiableItemEventArgs e)
 		{
-			e.WasModified = FilfilDependencies(e.AffectedItem);
+			e.WasModified = FulfilDependencies(e.AffectedItem);
 		}
 
 		#region IAutoStart Members

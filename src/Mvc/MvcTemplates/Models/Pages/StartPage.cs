@@ -27,13 +27,6 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		// site
 
-		[EditableText("Host Name", 72, ContainerName = MiscArea)]
-		public virtual string HostName
-		{
-			get { return (string) (GetDetail("HostName") ?? string.Empty); }
-			set { SetDetail("HostName", value); }
-		}
-
 		[EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea,
 			HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage
@@ -72,8 +65,24 @@ namespace N2.Templates.Mvc.Models.Pages
 
 			Site s = new Site((Parent ?? this).ID, ID, HostName);
 			s.Wildcards = true;
+			if (SiteUpload)
+				s.UploadFolders.Add("~/Upload/" + HostName);
 
 			return new Site[] {s};
+		}
+
+		[EditableText("Host Name", 72, ContainerName = MiscArea)]
+		public virtual string HostName
+		{
+			get { return (string)(GetDetail("HostName") ?? string.Empty); }
+			set { SetDetail("HostName", value); }
+		}
+
+		[EditableCheckBox("Site Upload", 73, ContainerName = MiscArea)]
+		public virtual bool SiteUpload
+		{
+			get { return GetDetail("SiteUpload", false); }
+			set { SetDetail("SiteUpload", value, false); }
 		}
 
 		// content

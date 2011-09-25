@@ -38,8 +38,8 @@ namespace N2.Extensions.Tests.Linq
 			item.ZoneName = "Hello";
 			item.AddTo(root);
 
-			engine.Persister.Repository.Save(root);
-			engine.Persister.Repository.Save(item);
+			engine.Persister.Repository.SaveOrUpdate(root);
+			engine.Persister.Repository.SaveOrUpdate(item);
 		}
 	}
 }

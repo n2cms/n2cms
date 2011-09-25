@@ -64,6 +64,11 @@ namespace N2.Tests.Fakes
 			return item["Permission"] as Permission? ?? Permission.None;
 		}
 
+		public ItemFilter GetAuthorizationFilter(Permission permission)
+		{
+			return new NullFilter();
+		}
+
 		#endregion
 	}
 }

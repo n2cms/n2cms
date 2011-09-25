@@ -140,7 +140,12 @@ namespace N2.Edit.FileSystem
 
 		private void CreateFile(string virtualPath, System.IO.Stream inputStream)
 		{
-			using (var s = File.Create(MapPath(virtualPath)))
+			string mappedPath = MapPath(virtualPath);
+
+			if (!Directory.Exists(Path.GetDirectoryName(mappedPath)))
+				Directory.CreateDirectory(Path.GetDirectoryName(mappedPath));
+
+			using (var s = File.Create(mappedPath))
 			{
 				TransferBetweenStreams(inputStream, s);
 			}

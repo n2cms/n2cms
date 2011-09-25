@@ -50,6 +50,7 @@ namespace N2.Persistence
 		void Move(ContentItem source, ContentItem destination);
 
 		/// <summary>Persist changes.</summary>
+		[Obsolete("Use Repository.Flush()")]
 		void Flush();
 
 		/// <summary>Occurs before an item is saved</summary>
