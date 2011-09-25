@@ -239,7 +239,7 @@ namespace N2.Engine.Globalization
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
-				persister.Repository.Save(item);
+				persister.Repository.SaveOrUpdate(item);
 			}
         }
 

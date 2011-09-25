@@ -32,7 +32,7 @@ namespace N2.Management.Installation
 				foreach (var item in installer.ExecuteQuery(InstallationManager.QueryItemsWithAuthorizedRoles))
 				{
 					item.AlteredPermissions |= Permission.Read;
-					repository.Update(item);
+					repository.SaveOrUpdate(item);
 					updatedItems++;
 				}
 

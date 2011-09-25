@@ -5,6 +5,30 @@ namespace N2.Persistence.NH
 {
 	public interface INHRepository<TKey, TEntity> : IRepository<TKey, TEntity>
 	{
+
+		/// <summary>
+		/// Load the entity from the persistance store
+		/// Will throw an exception if there isn't an entity that matches
+		/// the id.
+		/// </summary>
+		/// <param name="id">The entity's id</param>
+		/// <returns>The entity that matches the id</returns>
+		TEntity Load(TKey id);
+
+		/// <summary>
+		/// Register te entity for save in the database when the unit of work
+		/// is completed. (INSERT)
+		/// </summary>
+		/// <param name="entity">the entity to save</param>
+		void Save(TEntity entity);
+
+		/// <summary>
+		/// Register the entity for update in the database when the unit of work
+		/// is completed. (UPDATE)
+		/// </summary>
+		/// <param name="entity"></param>
+		void Update(TEntity entity);
+
 		/// <summary>
 		/// Loads all the entities that match the criteria
 		/// by order

@@ -54,6 +54,11 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
+		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		{
+			throw new NotImplementedException();
+		}
+
 		public TEntity Load(TKey id)
 		{
 			lastOperation = "Load(" + id + ")";
@@ -250,5 +255,6 @@ namespace N2.Tests.Fakes
 		}
 
 		#endregion
+
 	}
 }

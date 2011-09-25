@@ -35,7 +35,7 @@ namespace N2.Management.Installation
 				{
 					detail.EnclosingItem.TranslationKey = detail.IntValue;
 					detail.EnclosingItem.SetDetail("LanguageKey", null, typeof(int));
-					itemRepository.Update(detail.EnclosingItem);
+					itemRepository.SaveOrUpdate(detail.EnclosingItem);
 					updatedItems++;
 				}
 				itemRepository.Flush();

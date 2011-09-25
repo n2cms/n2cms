@@ -32,7 +32,7 @@ namespace N2.Management.Installation
 					if (item.IsPage)
 					{
 						item.ZoneName = null;
-						repository.Update(item);
+						repository.SaveOrUpdate(item);
 						updatedItems++;
 					}
 				}

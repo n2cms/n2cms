@@ -57,21 +57,19 @@ namespace N2.Persistence
     	T Get<T>(TKey id);
 
 		/// <summary>
-		/// Finds entitities from the persistance store with matching property values.
+		/// Finds entitities from the persistance store with matching property value.
 		/// </summary>
 		/// <param name="propertyName">The name of the property to search for.</param>
 		/// <param name="value">The value to search for.</param>
 		/// <returns>Entities with matching values.</returns>
 		IEnumerable<TEntity> Find(string propertyName, object value);
-		
+
 		/// <summary>
-		/// Load the entity from the persistance store
-		/// Will throw an exception if there isn't an entity that matches
-		/// the id.
+		/// Finds entitities from the persistance store with matching property values.
 		/// </summary>
-		/// <param name="id">The entity's id</param>
-		/// <returns>The entity that matches the id</returns>
-		TEntity Load(TKey id);
+		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <returns>Entities with matching values.</returns>
+		IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll);
 
 		/// <summary>
 		/// Register the entity for deletion when the unit of work
@@ -79,20 +77,6 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="entity">The entity to delete</param>
 		void Delete(TEntity entity);
-
-		/// <summary>
-		/// Register te entity for save in the database when the unit of work
-		/// is completed. (INSERT)
-		/// </summary>
-		/// <param name="entity">the entity to save</param>
-		void Save(TEntity entity);
-
-		/// <summary>
-		/// Register the entity for update in the database when the unit of work
-		/// is completed. (UPDATE)
-		/// </summary>
-		/// <param name="entity"></param>
-		void Update(TEntity entity);
 
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work

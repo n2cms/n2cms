@@ -126,7 +126,7 @@ namespace N2.Persistence
             ((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
 
             currentItem.Updated = Utility.CurrentTime();
-            itemRepository.Update(currentItem);
+            itemRepository.SaveOrUpdate(currentItem);
 
             if (ItemReplacedVersion != null)
                 ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));

@@ -31,7 +31,7 @@ namespace N2.Management.Installation
 				foreach (var item in installer.ExecuteQuery(InstallationManager.QueryItemsWithoutAncestralTrail))
 				{
 					item.AncestralTrail = Utility.GetTrail(item.Parent);
-					repository.Update(item);
+					repository.SaveOrUpdate(item);
 					updatedItems++;
 				}
 

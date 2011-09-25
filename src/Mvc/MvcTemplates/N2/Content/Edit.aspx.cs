@@ -247,7 +247,7 @@ namespace N2.Edit
 		private void InitPlugins()
 		{
 			var start = Engine.Resolve<IUrlParser>().StartPage;
-			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			var root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (EditToolbarPluginAttribute plugin in EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
 				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root,

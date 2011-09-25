@@ -29,6 +29,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Engine;
 using NHibernate;
@@ -173,12 +174,27 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			if (value == null)
-				return FindAll(Expression.IsNull(propertyName));
-			if(value is string)
-				return FindAll(Expression.Like(propertyName, value));
+			return FindAll(CreateExpression(propertyName, value));
+		}
 
-			return FindAll(Expression.Eq(propertyName, value));
+		/// <summary>
+		/// Finds entitities from the persistance store with matching property values.
+		/// </summary>
+		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <returns>Entities with matching values.</returns>
+		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		{
+			return FindAll(propertyValuesToMatchAll.Select(kvp => CreateExpression(kvp.Name, kvp.Value)).ToArray());
+		}
+
+		private static ICriterion CreateExpression(string propertyName, object value)
+		{
+			if (value == null)
+				return Expression.IsNull(propertyName);
+			if (value is string)
+				return Expression.Like(propertyName, value);
+
+			return Expression.Eq(propertyName, value);
 		}
 
 		/// <summary>
@@ -367,5 +383,6 @@ namespace N2.Persistence.NH
 		}
 
 		#endregion
+
 	}
 }
