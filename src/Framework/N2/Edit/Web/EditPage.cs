@@ -154,9 +154,9 @@ namespace N2.Edit.Web
 		}
 
     	#region Refresh Methods
-		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}' }});";
-		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}' }});";
-		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}' }});";
+		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6} }});";
+		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6} }});";
+		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6} }});";
 
         protected virtual void Refresh(ContentItem item)
         {
@@ -177,7 +177,8 @@ namespace N2.Edit.Web
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
                 item.Path, // 4
-				NodeAdapter(item).GetMaximumPermission(item)
+				NodeAdapter(item).GetMaximumPermission(item), // permission:'{5}',
+				"true" // force:{6}
             );
 
             ClientScript.RegisterClientScriptBlock(
@@ -189,9 +190,9 @@ namespace N2.Edit.Web
         /// <summary>Referesh the selected frames after loading the page.</summary>
         /// <param name="item"></param>
         /// <param name="area"></param>
-		protected virtual void Refresh(ContentItem item, ToolbarArea area)
+		protected virtual void Refresh(ContentItem item, ToolbarArea area, bool force = true)
 		{
-			string script = GetRefreshScript(item, area);
+			string script = GetRefreshScript(item, area, force);
 
 			ClientScript.RegisterClientScriptBlock(
 				typeof(EditPage),
@@ -199,7 +200,7 @@ namespace N2.Edit.Web
 				script, true);
 		}
 
-		protected string GetRefreshScript(ContentItem item, ToolbarArea area)
+		protected string GetRefreshScript(ContentItem item, ToolbarArea area, bool force = true)
 		{
 			string format;
 			if (area == ToolbarArea.Both)
@@ -215,7 +216,8 @@ namespace N2.Edit.Web
 				GetPreviewUrl(item), // 2
 				item.ID, // 3
 				item.Path, // 4
-				NodeAdapter(item).GetMaximumPermission(item)
+				NodeAdapter(item).GetMaximumPermission(item), // 5
+				force.ToString().ToLower() // 6
 				);
 			return script;
 		}
