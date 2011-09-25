@@ -244,7 +244,7 @@ jQuery(document).ready(function(){{
 			Controls.Add(pluginPanel);
 
 			ContentItem start = Engine.Resolve<IUrlParser>().StartPage;
-			ContentItem root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
 				var span = new HtmlGenericControl("span");

@@ -236,9 +236,9 @@ namespace N2.Web
 			
 			// reload persistent objects and clone non-immutable objects
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
-			data.CurrentItem = persister.Repository.Load(ID);
+			data.CurrentItem = persister.Repository.Get(ID);
 			if (PageID != 0)
-				data.CurrentPage = persister.Repository.Load(PageID);
+				data.CurrentPage = persister.Repository.Get(PageID);
 
 			return data;
 		}
