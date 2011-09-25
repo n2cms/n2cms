@@ -1,3 +1,10 @@
+- Module guidance (discussions/273235)
+- Updated minimal MVC example to MVC3 (discussions/273372)
+- Antipspam on form (discussions/273271)
+- Reindex all admin screen
+- Bulk editing & adding (discussions/272297)
+- Change "selected" query string (discussions/83451)
+- Date time picker time warning missing (discussions/272907)
 - Closed session when checking installation status (discussions/267048)
 - Restrict upload folders shown for EditableImage (discussions/268170)
 - languages associated to sites (discussions/264798)
