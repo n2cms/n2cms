@@ -13,6 +13,7 @@ namespace N2.Web
 	{
 		readonly IUrlParser inner;
 		readonly IPersister persister;
+        readonly IWebContext webContext;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
 	    private static readonly HashSet<string> contentParameters = new HashSet<string>
@@ -22,14 +23,14 @@ namespace N2.Web
 	                                                                        "action",
 	                                                                        "arguments"
 	                                                                    };
-
         private static readonly object classLock = new object();
 
 				
-		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister)
+		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext)
 		{
 			this.inner = inner;
 			this.persister = persister;
+		    this.webContext = webContext;
 		}
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound
@@ -45,8 +46,9 @@ namespace N2.Web
 
 		public ContentItem CurrentPage
 		{
-			get { return inner.CurrentPage; }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
 		}
+
 		public TimeSpan SlidingExpiration
 		{
 			get { return slidingExpiration; }

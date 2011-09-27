@@ -17,7 +17,7 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			base.SetUp();
 			UrlParser inner = TestSupport.Setup(persister, wrapper, host);
-			parser = new CachingUrlParserDecorator(inner, persister);
+			parser = new CachingUrlParserDecorator(inner, persister, wrapper);
 			CreateDefaultStructure();
 			repository = (FakeRepository<ContentItem>) persister.Repository;
 		}

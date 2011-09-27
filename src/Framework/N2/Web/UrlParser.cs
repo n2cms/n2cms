@@ -33,16 +33,10 @@ namespace N2.Web
 		}
 
 		/// <summary>Parses the current url to retrieve the current page.</summary>
-		public ContentItem CurrentPage
-		{
-			get
-			{
-                if (webContext.CurrentPage == null)
-                    return webContext.IsWeb ? webContext.CurrentPage : (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage);
-
-			    return webContext.CurrentPage;
-			}
-		}
+        public ContentItem CurrentPage
+        {
+            get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
+        }
 
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
