@@ -76,6 +76,7 @@ namespace N2.Edit.Tests.Trash
 		}
 
 		[Test]
+		[Obsolete]
 		public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
 		{
 			IDefinitionManager definitions = mocks.Stub<IDefinitionManager>();
