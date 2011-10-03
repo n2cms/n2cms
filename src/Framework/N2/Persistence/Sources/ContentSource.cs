@@ -15,7 +15,7 @@ namespace N2.Persistence.Sources
 	/// Dispatches between content sources in the system.
 	/// </summary>
 	[Service]
-	public class ContentSource : SourceBase
+	public class ContentSource
 	{
 		static ContentItem[] NoItems = new ContentItem[0];
 
@@ -32,14 +32,14 @@ namespace N2.Persistence.Sources
 			Sources = temp;
 		}
 
-		public override PathData ResolvePath(string path)
+		public virtual PathData ResolvePath(string path)
 		{
 			return Sources.Select(s => s.ResolvePath(path))
 				.FirstOrDefault(p => !p.IsEmpty())
 				?? PathData.Empty;
 		}
 
-		public override PathData ResolvePath(ContentItem startingPoint, string path)
+		public virtual PathData ResolvePath(ContentItem startingPoint, string path)
 		{
 			return Sources.Select(s => s.ResolvePath(startingPoint, path))
 				.FirstOrDefault(p => !p.IsEmpty())
@@ -48,9 +48,7 @@ namespace N2.Persistence.Sources
 
 		public virtual IEnumerable<ContentItem> GetChildren(Query query)
 		{
-			IEnumerable<ContentItem> items = NoItems;
-
-			AppendChildren(NoItems, query);
+			IEnumerable<ContentItem> items = AppendChildren(NoItems, query);
 
 			if (query.SkipAuthorization)
 				return items;
@@ -68,7 +66,7 @@ namespace N2.Persistence.Sources
 			return Sources.FirstOrDefault(s => s.IsProvidedBy(item));
 		}
 
-		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		public virtual IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
 			foreach (var source in Sources)
 			{
@@ -77,30 +75,30 @@ namespace N2.Persistence.Sources
 			return previousChildren;
 		}
 
-		public override bool IsProvidedBy(ContentItem item)
+		public virtual bool IsProvidedBy(ContentItem item)
 		{
 			return Sources.Any(s => s.IsProvidedBy(item));
 		}
 
-		public override void Save(ContentItem item)
+		public virtual void Save(ContentItem item)
 		{
 			var source = GetSourceOrThrow(item);
 			source.Save(item);
 		}
 
-		public override void Delete(ContentItem item)
+		public virtual void Delete(ContentItem item)
 		{
 			var source = GetSourceOrThrow(item);
 			source.Delete(item);
 		}
 
-		public override void Move(ContentItem sourceItem, ContentItem destination)
+		public virtual void Move(ContentItem sourceItem, ContentItem destination)
 		{
 			var source = GetSourceOrThrow(sourceItem);
 			source.Move(sourceItem, destination);
 		}
 
-		public override ContentItem Copy(ContentItem sourceItem, ContentItem destination)
+		public virtual ContentItem Copy(ContentItem sourceItem, ContentItem destination)
 		{
 			var source = GetSourceOrThrow(sourceItem);
 			return source.Copy(sourceItem, destination);
