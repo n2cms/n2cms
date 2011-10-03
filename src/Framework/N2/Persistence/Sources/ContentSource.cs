@@ -19,7 +19,6 @@ namespace N2.Persistence.Sources
 	{
 		static ContentItem[] NoItems = new ContentItem[0];
 
-		private IWebContext webContext;
 		private ISecurityManager security;
 
 		public IEnumerable<SourceBase> Sources { get; protected set; }
@@ -33,14 +32,14 @@ namespace N2.Persistence.Sources
 			Sources = temp;
 		}
 
-		public virtual PathData ResolvePath(string path)
+		public override PathData ResolvePath(string path)
 		{
 			return Sources.Select(s => s.ResolvePath(path))
 				.FirstOrDefault(p => !p.IsEmpty())
 				?? PathData.Empty;
 		}
 
-		public virtual PathData ResolvePath(ContentItem startingPoint, string path)
+		public override PathData ResolvePath(ContentItem startingPoint, string path)
 		{
 			return Sources.Select(s => s.ResolvePath(startingPoint, path))
 				.FirstOrDefault(p => !p.IsEmpty())
