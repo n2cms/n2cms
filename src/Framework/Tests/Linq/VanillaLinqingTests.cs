@@ -186,5 +186,31 @@ namespace N2.Extensions.Tests.Linq
 
 			Assert.That(items.Single(), Is.EqualTo(item));
 		}
+
+		[Test]
+		public void DetailCollection_Name()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(i => i.DetailCollections
+					.Any(dc => dc.Details
+						.Any(d => d.Name == "CollectionProperty")));
+
+			var root = query.Single();
+
+			Assert.That(root, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void DetailCollection_StringValue()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(i => i.DetailCollections
+					.Any(dc => dc.Details
+						.Any(d => d.StringValue == "hello")));
+
+			var root = query.Single();
+
+			Assert.That(root, Is.EqualTo(root));
+		}
 	}
 }
