@@ -71,10 +71,43 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-		/// <summary>Finds the content item and the template associated with an url.</summary>
+        private PathData GetStartNode(Url url, string remainingPath)
+        {
+            if (string.IsNullOrEmpty(remainingPath))
+                return PathData.Empty;
+
+            var lastSlash = remainingPath.LastIndexOf('/');
+            if (lastSlash == 0)
+                return PathData.Empty;
+
+            remainingPath = remainingPath.Substring(0, lastSlash);
+
+            string contentKey;
+            string noContentKey;
+
+            GetCacheKeys(new Url(url.Scheme, url.Authority, remainingPath, url.Query, url.Fragment), out contentKey, out noContentKey);
+
+            PathData data;
+            if ((data = HttpRuntime.Cache[contentKey] as PathData) == null)
+                return GetStartNode(url, remainingPath);
+
+            return data;
+        }
+        
+        private void GetCacheKeys(Url url, out string contentKey, out string noContentKey)
+        {
+            string key = url.ToString().ToLowerInvariant();
+
+            contentKey = "N2." + key;
+            noContentKey = "N2.NoContent." + key;
+        }
+
+	    /// <summary>Finds the content item and the template associated with an url.</summary>
 		/// <param name="url">The url to the template to locate.</param>
+        /// <param name="startNode">The node to start finding path from if none supplied will start from StartNode</param>
+        /// <param name="remainingPath">The remaining path to search</param>
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
-        public PathData ResolvePath(Url url)
+        public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 		    if (url == null)
 		        return PathData.Empty;
@@ -86,10 +119,9 @@ namespace N2.Web
                     url = url.RemoveQuery(queryParameter.Key);
             }
 
-		    string key = url.ToString().ToLowerInvariant();
-
-		    var contentKey = "N2." + key;
-		    var noContentKey = "N2.NoContent." + key;
+		    string contentKey;
+            string noContentKey;
+	        GetCacheKeys(url, out contentKey, out noContentKey);
 
             PathData data;
             if ((data = HttpRuntime.Cache[contentKey] as PathData) == null)
@@ -100,7 +132,11 @@ namespace N2.Web
                     {
                         if (data == null)
                         {
-                            data = inner.ResolvePath(url);
+                            remainingPath = Url.ToRelative(url.Path).TrimStart('~');
+                            var path = GetStartNode(url, remainingPath);
+                            var contentItem = persister.Get(path.ID);
+                            data = path.ID == 0 ? inner.ResolvePath(url) : inner.ResolvePath(url, contentItem, remainingPath.Replace(contentItem.Url, ""));
+
                             if (data.IsCacheable)
                             {
                                 if (data.IsEmpty())

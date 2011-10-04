@@ -51,7 +51,7 @@ namespace N2.Web
 			set { Url.DefaultDocument = value; }
         }
 
-		public PathData ResolvePath(Url url)
+		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
 
@@ -71,11 +71,11 @@ namespace N2.Web
 				return directData;
 			}
 
-			ContentItem startPage = GetStartPage(requestedUrl);
+			ContentItem startPage = startNode ?? GetStartPage(requestedUrl);
 			if (startPage == null)
 				return PathData.Empty;
 			
-			string path = Url.ToRelative(requestedUrl.Path).TrimStart('~');
+			string path = remainingPath ?? Url.ToRelative(requestedUrl.Path).TrimStart('~');
 			PathData data = startPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())
