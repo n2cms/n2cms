@@ -9,7 +9,7 @@ namespace N2.Edit.Navigation
 			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
 			Engine.Resolve<ITreeSorter>().MoveDown(selectedNode);
 
-			context.Response.Redirect("Tree.aspx?selected=" + HttpUtility.UrlEncode(selectedNode.Path));
+			context.Response.Redirect("Tree.aspx?" + SelectionUtility.SelectedQueryKey + "=" + HttpUtility.UrlEncode(selectedNode.Path));
 		}
 	}
 }

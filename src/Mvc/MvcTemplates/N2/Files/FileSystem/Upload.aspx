@@ -8,7 +8,7 @@
 		//fileTypes=&fileTypeDescription=&totalUploadSize=
 		string FlashVars = "completeFunction=onUploadComplete()"
 			+ "&fileSizeLimit=" + maxFileSize 
-			+ "&uploadPage=" + Server.UrlEncode("UploadFile.ashx?selected=" + Selection.SelectedItem.Path + "&ticket=" + FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)));
+			+ "&uploadPage=" + Server.UrlEncode("UploadFile.ashx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Selection.SelectedItem.Path + "&ticket=" + FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)));
 	 %>
 	<script type="text/javascript">
 		function onUploadComplete() {

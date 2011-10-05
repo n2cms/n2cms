@@ -32,7 +32,7 @@ namespace N2.Management.Content.Navigation
 						var li = new TagBuilder("li");
 						li.InnerHtml = "{url:" + Url.ParseTokenized("{ManagementUrl}/Content/Navigation/LoadTree.ashx")
 							.AppendQuery("target", target)
-							.AppendQuery("selected", HttpUtility.UrlEncode(n.Current.Path))
+							.AppendQuery(SelectionUtility.SelectedQueryKey, HttpUtility.UrlEncode(n.Current.Path))
 							.AppendQuery("selectableTypes", selectableTypes)
 							.AppendQuery("selectableExtensions", selectableExtensions)
 							+ "}";

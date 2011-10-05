@@ -14,7 +14,7 @@ namespace N2.Edit.Web
 		/// <summary>Gets the selected url from the calling page.</summary>
 		protected string OpenerInputUrl
 		{
-			get { return Request.QueryString[PathData.SelectedQueryKey + "Url"]; }
+			get { return Request.QueryString[SelectionUtility.SelectedQueryKey + "Url"]; }
 		}
 
 		/// <summary>Gets wether the dialog is to return a value to an input in the opener window.</summary>

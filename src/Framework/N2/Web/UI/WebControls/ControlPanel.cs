@@ -231,6 +231,7 @@ jQuery(document).ready(function(){{
 
 		private void RegisterDragDropScripts()
 		{
+			Register.JavaScript(Page, Register.SelectedQueryKeyRegistrationScript(), ScriptPosition.Header, ScriptOptions.ScriptTags | ScriptOptions.Prioritize);
 			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
@@ -251,7 +252,7 @@ jQuery(document).ready(function(){{
 				span.Attributes["class"] = "control";
 				pluginPanel.Controls.Add(span);
 
-				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine, new HttpContextWrapper(Context)));
+				plugin.AddTo(span, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 

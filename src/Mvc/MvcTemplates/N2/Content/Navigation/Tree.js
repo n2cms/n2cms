@@ -6,7 +6,7 @@
 		var from = dragMemory;
 		parent.preview.location = "../paste.aspx?action=" + action
 								+ "&memory=" + encodeURIComponent(from)
-								+ "&selected=" + encodeURIComponent(to);
+								+ "&" + n2SelectedQueryKey + "=" + encodeURIComponent(to);
 	};
 	var onStart = function (e, ui) {
 		dragMemory = $(this).attr("data-path");

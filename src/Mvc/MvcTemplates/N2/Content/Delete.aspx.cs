@@ -6,13 +6,13 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?selected={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
+	[NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Publish)]
-    [ToolbarPlugin("DEL", "delete", "{ManagementUrl}/Content/delete.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, ToolTip = "delete",
+	[ToolbarPlugin("DEL", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, ToolTip = "delete",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
-	[ControlPanelLink("cpDelete", "{ManagementUrl}/Resources/icons/cross.png", "{ManagementUrl}/Content/Delete.aspx?selected={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible,
+	[ControlPanelLink("cpDelete", "{ManagementUrl}/Resources/icons/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible,
 		RequiredPermission = Permission.Publish)]
 	public partial class Delete : Web.EditPage
     {
@@ -36,7 +36,7 @@ namespace N2.Edit
 			else
 				referencingItems.Visible = false;
 
-			this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
+			this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?" + SelectionUtility.SelectedQueryKey + "=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
 
             base.OnInit(e);
         }

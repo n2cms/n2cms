@@ -8,8 +8,8 @@
     <head runat="server">
         <title>Navigation</title>
         <asp:PlaceHolder runat="server">
-		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%= MapCssUrl("all.css") %>" type="text/css" />
+		<link rel="stylesheet" href="<%= MapCssUrl("framed.css") %>" type="text/css" />
 		</asp:PlaceHolder>
 		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
 		<script src="Tree.js" type="text/javascript"></script>

@@ -62,7 +62,7 @@ namespace N2.Edit.Web.UI.Controls
 
 		private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
 		{
-			plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root,
+			plugin.AddTo(command, new PluginContext(Selection, start, root,
 			                                        ControlPanelState.Visible,
 			                                        Engine, new HttpContextWrapper(Context)));
 		}

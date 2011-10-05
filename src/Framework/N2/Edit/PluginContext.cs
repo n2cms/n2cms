@@ -12,12 +12,13 @@ namespace N2.Edit
 	/// </summary>
 	public class PluginContext
 	{
-		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, ControlPanelState state, 
+		public PluginContext(SelectionUtility selection, ContentItem startItem, ContentItem rootItem, ControlPanelState state, 
 			IEngine engine, HttpContextBase httpContext)
 		{
+			Selection = selection;
 			State = state;
-			Selected = selected;
-			Memorized = memorizedItem;
+			Selected = selection.SelectedItem;
+			Memorized = selection.MemorizedItem;
 			Start = startItem;
 			Root = rootItem;
 
@@ -25,6 +26,7 @@ namespace N2.Edit
 			HttpContext = httpContext;
 		}
 
+		public SelectionUtility Selection { get; set; }
 		public ControlPanelState State { get; set;}
 		public ContentItem Selected { get; set; }
 		public ContentItem Memorized { get; set; }

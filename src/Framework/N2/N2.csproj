@@ -137,6 +137,7 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\PathsElement.cs" />
     <Compile Include="Configuration\RootFileSystemFolderCollection.cs" />
     <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
