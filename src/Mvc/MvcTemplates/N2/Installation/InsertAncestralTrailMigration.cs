@@ -7,9 +7,9 @@ namespace N2.Management.Installation
 	public class InsertAncestralTrailMigration : AbstractMigration
 	{
 		InstallationManager installer;
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 
-		public InsertAncestralTrailMigration(IRepository<int, ContentItem> repository, InstallationManager installer)
+		public InsertAncestralTrailMigration(IRepository<ContentItem> repository, InstallationManager installer)
 		{
 			this.repository = repository;
 			this.installer = installer;

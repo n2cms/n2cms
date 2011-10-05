@@ -28,11 +28,11 @@ namespace N2.Persistence.NH
 	[Service(typeof(IPersister))]
 	public class ContentPersister : IPersister
 	{
-		private readonly IRepository<int, ContentItem> itemRepository;
-		private readonly IRepository<int, ContentDetail> linkRepository;
+		private readonly IRepository<ContentItem> itemRepository;
+		private readonly IRepository<ContentDetail> linkRepository;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(IRepository<int, ContentItem> itemRepository, IRepository<int, ContentDetail> linkRepository)
+		public ContentPersister(IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository)
 		{
 			this.itemRepository = itemRepository;
 			this.linkRepository = linkRepository;
@@ -320,7 +320,7 @@ namespace N2.Persistence.NH
         {
             itemRepository.Flush();
         }
-        public IRepository<int, ContentItem> Repository
+        public IRepository<ContentItem> Repository
         {
             get { return this.itemRepository; }
         }

@@ -86,7 +86,7 @@ namespace N2.Tests
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<ContentItem> itemRepository, INHRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
             persister = new ContentPersister(itemRepository, linkRepository);
 
@@ -95,8 +95,8 @@ namespace N2.Tests
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
         {
-            IRepository<int, ContentItem> itemRepository = new ContentItemRepository(sessionProvider);
-            INHRepository<int, ContentDetail> linkRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+            var itemRepository = new ContentItemRepository(sessionProvider);
+            var linkRepository = new NHRepository<ContentDetail>(sessionProvider);
 
             Setup(out persister, sessionProvider, itemRepository, linkRepository, schemaCreator);
         }

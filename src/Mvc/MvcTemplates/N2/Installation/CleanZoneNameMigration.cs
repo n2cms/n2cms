@@ -7,9 +7,9 @@ namespace N2.Management.Installation
 	[N2.Engine.Service(typeof(AbstractMigration))]
 	public class CleanZoneNameMigration : AbstractMigration
 	{
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 
-		public CleanZoneNameMigration(IRepository<int, ContentItem> repository)
+		public CleanZoneNameMigration(IRepository<ContentItem> repository)
 		{
 			this.repository = repository;
 

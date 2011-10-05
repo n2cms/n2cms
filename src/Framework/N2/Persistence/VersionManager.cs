@@ -15,12 +15,12 @@ namespace N2.Persistence
 	[Service(typeof(IVersionManager))]
 	public class VersionManager : IVersionManager
 	{
-        readonly IRepository<int, ContentItem> itemRepository;
+        readonly IRepository<ContentItem> itemRepository;
 		readonly IItemFinder finder;
         readonly StateChanger stateChanger;
 		int maximumVersionsPerItem = 100;
 
-		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger, EditSection config)
+		public VersionManager(IRepository<ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger, EditSection config)
 		{
 			this.itemRepository = itemRepository;
 			this.finder = finder;

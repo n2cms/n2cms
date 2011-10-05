@@ -36,7 +36,7 @@ namespace N2.Tests.Security
 		public virtual void TestFixtureSetUp()
 		{
 			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
-			persister = new ContentPersister(new NHRepository<int, ContentItem>(sessionProvider), new NHRepository<int, ContentDetail>(sessionProvider));
+			persister = new ContentPersister(new NHRepository<ContentItem>(sessionProvider), new NHRepository<ContentDetail>(sessionProvider));
 		}
 
 		[SetUp]

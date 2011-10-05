@@ -10,9 +10,9 @@ namespace N2.Persistence.Sources
 	public class DatabaseSource : SourceBase
 	{
 		private IHost host;
-		private IRepository<int, ContentItem> repository;
+		private IRepository<ContentItem> repository;
 
-		public DatabaseSource(IHost host, IRepository<int, ContentItem> repository)
+		public DatabaseSource(IHost host, IRepository<ContentItem> repository)
 		{
 			this.host = host;
 			this.repository = repository;

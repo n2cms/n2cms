@@ -8,9 +8,9 @@ namespace N2.Management.Installation
 	public class UpdateAlteredPermissionsMigration : AbstractMigration
 	{
 		InstallationManager installer;
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 
-		public UpdateAlteredPermissionsMigration(IRepository<int, ContentItem> repository, InstallationManager installer)
+		public UpdateAlteredPermissionsMigration(IRepository<ContentItem> repository, InstallationManager installer)
 		{
 			this.repository = repository;
 			this.installer = installer;

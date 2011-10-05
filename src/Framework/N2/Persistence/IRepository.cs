@@ -31,13 +31,13 @@ using System.Collections.Generic;
 
 namespace N2.Persistence
 {
+	
     /// <summary>
     /// The repository is a single point for database operations. All 
     /// persistence operations on database should pass through here.
     /// </summary>
-    /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-	public interface IRepository<TKey, TEntity> : IDisposable
+	public interface IRepository<TEntity> : IDisposable
 	{
 		/// <summary>
 		/// Get the entity from the persistance store, or return null
@@ -45,16 +45,16 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		TEntity Get(TKey id);
+		TEntity Get(object id);
 
-    	/// <summary>
-    	/// Get the entity from the persistance store, or return null
-    	/// if it doesn't exist.
-    	/// </summary>
-    	/// <param name="id">The entity's id</param>
-    	/// <typeparam name="T">The type of entity to get.</typeparam>
-    	/// <returns>Either the entity that matches the id, or a null</returns>
-    	T Get<T>(TKey id);
+		/// <summary>
+		/// Get the entity from the persistance store, or return null
+		/// if it doesn't exist.
+		/// </summary>
+		/// <param name="id">The entity's id</param>
+		/// <typeparam name="T">The type of entity to get.</typeparam>
+		/// <returns>Either the entity that matches the id, or a null</returns>
+		T Get<T>(object id);
 
 		/// <summary>
 		/// Finds entitities from the persistance store with matching property value.
@@ -103,5 +103,32 @@ namespace N2.Persistence
 		/// <summary>Begins a transaction.</summary>
 		/// <returns>A disposable transaction wrapper.</returns>
 		ITransaction BeginTransaction();
+	}
+
+    /// <summary>
+    /// The repository is a single point for database operations. All 
+    /// persistence operations on database should pass through here.
+    /// </summary>
+    /// <typeparam name="TKey">The primary key type.</typeparam>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+	[Obsolete("Use IRepository<TEntity>")]
+	public interface IRepository<TKey, TEntity> : IRepository<TEntity>
+	{
+		/// <summary>
+		/// Get the entity from the persistance store, or return null
+		/// if it doesn't exist.
+		/// </summary>
+		/// <param name="id">The entity's id</param>
+		/// <returns>Either the entity that matches the id, or a null</returns>
+		new TEntity Get(TKey id);
+
+    	/// <summary>
+    	/// Get the entity from the persistance store, or return null
+    	/// if it doesn't exist.
+    	/// </summary>
+    	/// <param name="id">The entity's id</param>
+    	/// <typeparam name="T">The type of entity to get.</typeparam>
+    	/// <returns>Either the entity that matches the id, or a null</returns>
+		new T Get<T>(TKey id);
 	}
 }

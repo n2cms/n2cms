@@ -101,7 +101,6 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
-    <Compile Include="Persistence\Search\IRepository.cs" />
     <Compile Include="Persistence\Search\LuceneAccesor.cs" />
     <Compile Include="Persistence\Search\LuceneExtensions.cs" />
     <Compile Include="Persistence\Search\LuceneSearcher.cs" />

@@ -6,34 +6,34 @@ using N2.Persistence.NH;
 
 namespace N2.Tests.Fakes
 {
-	public class FakeRepository<TEntity> : FakeRepository<int, TEntity> where TEntity : class
-	{
-		public override void Save(TEntity entity)
-		{
-			base.Save(entity);
-			maxID = Math.Max(GetKey(entity), maxID);
-		}
-		protected override int GetKey(TEntity entity)
-		{
-			int id = base.GetKey(entity);
-			if(id == 0)
-			{
-				var p = entity.GetType().GetProperty("ID");
-				p.SetValue(entity, id = ++maxID, new object[0]);
-			}
-			return id;
-		}
-	}
+	//public class FakeRepository<TEntity> : FakeRepository<int, TEntity> where TEntity : class
+	//{
+	//    public override void Save(TEntity entity)
+	//    {
+	//        base.Save(entity);
+	//        maxID = Math.Max(GetKey(entity), maxID);
+	//    }
+	//    protected override int GetKey(TEntity entity)
+	//    {
+	//        int id = base.GetKey(entity);
+	//        if(id == 0)
+	//        {
+	//            var p = entity.GetType().GetProperty("ID");
+	//            p.SetValue(entity, id = ++maxID, new object[0]);
+	//        }
+	//        return id;
+	//    }
+	//}
 
-	public class FakeRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity : class
+	public class FakeRepository<TEntity> : INHRepository<TEntity> where TEntity : class
 	{
 		public string lastOperation;
-		public TKey maxID;
-		public Dictionary<TKey, TEntity> database = new Dictionary<TKey, TEntity>();
+		public int maxID;
+		public Dictionary<object, TEntity> database = new Dictionary<object, TEntity>();
 
 		#region IRepository<TKey,TEntity> Members
 
-		public TEntity Get(TKey id)
+		public TEntity Get(object id)
 		{
 			lastOperation = "Get(" + id + ")";
 
@@ -42,7 +42,7 @@ namespace N2.Tests.Fakes
 			return null;
 		}
 
-		public T Get<T>(TKey id)
+		public T Get<T>(object id)
 		{
 			lastOperation = "Get<" + typeof(T).Name + ">(" + id + ")";
 
@@ -59,7 +59,7 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
-		public TEntity Load(TKey id)
+		public TEntity Load(object id)
 		{
 			lastOperation = "Load(" + id + ")";
 
@@ -77,17 +77,23 @@ namespace N2.Tests.Fakes
 		{
 			lastOperation = "Save(" + entity + ")";
 
-			TKey key = GetKey(entity);
+			object key = GetKey(entity);
 			database[key] = entity;
+
+			if (key is int)
+				maxID = Math.Max(maxID, (int)key);
 		}
 
-		protected virtual TKey GetKey(TEntity entity)
+		protected virtual object GetKey(TEntity entity)
 		{
 			var q = database.Keys.Where(k => database[k] == entity);
 			if (q.Count() > 0)
 				return q.Single();
 			var p = entity.GetType().GetProperty("ID");
-			TKey key = (TKey)p.GetValue(entity, new object[0]);
+			object key = p.GetValue(entity, new object[0]);
+			if (key is int && (int)key == 0)
+				key = ++maxID;
+
 			p.SetValue(entity, key, new object[0]);
 			return key;
 		}

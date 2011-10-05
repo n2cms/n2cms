@@ -37,23 +37,24 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
-	[Service(typeof(IRepository<int, ContentItem>), Key = "n2.repository.ContentItem")]
-	public class ContentItemRepository : NHRepository<int, ContentItem>
+	[Service(typeof(IRepository<ContentItem>), Key = "n2.repository.ContentItem")]
+	public class ContentItemRepository : NHRepository<ContentItem>
 	{
 		public ContentItemRepository(ISessionProvider sessionProvider)
 			: base(sessionProvider)
 		{
 		}
 
-		public override ContentItem Get(int id)
+		object zero = 0;
+		public override ContentItem Get(object id)
 		{
-			if (id == 0) return null;
+			if (id == zero) return null;
 			return SessionProvider.OpenSession.Session.Get<ContentItem>(id);
 		}
 
-		public override T Get<T>(int id)
+		public override T Get<T>(object id)
 		{
-			if (id == 0) return default(T);
+			if (id == zero) return default(T);
 			return SessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
@@ -66,9 +67,33 @@ namespace N2.Persistence.NH
 		}
 	}
 
-	[Service(typeof(IRepository<,>), Key = "n2.repository.generic")]
-	[Service(typeof(INHRepository<,>), Key = "n2.nhrepository.generic")]
-	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity : class 
+	[Obsolete("Use NHRepository<TEntity>")]
+	[Service(typeof(IRepository<,>), Key = "n2.repository.generic2")]
+	public class NHRepository<TKey, TEntity> : NHRepository<TEntity>, IRepository<int, TEntity> where TEntity : class
+	{
+		public NHRepository(ISessionProvider sessionProvider)
+			: base(sessionProvider)
+		{
+		}
+
+		#region IRepository<int,TEntity> Members
+
+		public TEntity Get(int id)
+		{
+			return base.Get(id);
+		}
+
+		public T Get<T>(int id)
+		{
+			return base.Get<T>(id);
+		}
+
+		#endregion
+	}
+
+	[Service(typeof(IRepository<>), Key = "n2.repository.generic")]
+	[Service(typeof(INHRepository<>), Key = "n2.nhrepository.generic")]
+	public class NHRepository<TEntity> : INHRepository<TEntity> where TEntity : class 
 	{
 		private ISessionProvider sessionProvider;
 
@@ -97,7 +122,7 @@ namespace N2.Persistence.NH
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		public virtual TEntity Get(TKey id)
+		public virtual TEntity Get(object id)
 		{
 			return sessionProvider.OpenSession.Session.Get<TEntity>(id);
 		}
@@ -109,7 +134,7 @@ namespace N2.Persistence.NH
 		/// <param name="id">The entity's id</param>
 		/// <typeparam name="T">The type of entity to get.</typeparam>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		public virtual T Get<T>(TKey id)
+		public virtual T Get<T>(object id)
 		{
 			return sessionProvider.OpenSession.Session.Get<T>(id);
 		}
@@ -121,7 +146,7 @@ namespace N2.Persistence.NH
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>The entity that matches the id</returns>
-		public TEntity Load(TKey id)
+		public TEntity Load(object id)
 		{
 			return sessionProvider.OpenSession.Session.Load<TEntity>(id);
 		}
