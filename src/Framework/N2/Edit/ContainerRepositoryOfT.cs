@@ -71,6 +71,8 @@ namespace N2.Edit
 			if (Navigate)
 			{
 				var q = containerContainer.Children.Query().OfType<T>();
+				if (!string.IsNullOrEmpty(name))
+					q = q.Where(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 				return q.FirstOrDefault();
 			}
 			else
@@ -78,7 +80,7 @@ namespace N2.Edit
 				var q = finder.Where.Parent.Eq(containerContainer)
 					.And.Type.Eq(typeof(T));
 				if (!string.IsNullOrEmpty(name))
-					q = q.And.Name.Eq(name);
+					q = q.And.Name.Like(name);
 				var items = q.MaxResults(1).Select<T>();
 				return items.Count > 0 ? items[0] : null;
 			}
