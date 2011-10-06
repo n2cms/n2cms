@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace N2.Web.Mvc
 {
@@ -47,7 +48,10 @@ namespace N2.Web.Mvc
 		public string Family { get; set; }
 
 		/// <summary>Optional route value key where the family is retrieved.</summary>
-		public string FamilyValueKey { get; set; }
+		public string FamilyRouteParameter { get; set; }
+
+		/// <summary>An expression that filters the key to prevent spam.</summary>
+		public string KeyFilterExpression { get; set; }
 
 		/// <summary>The type of content item to associate with this controller.</summary>
 		public Type ContentType { get; set; }
@@ -59,8 +63,11 @@ namespace N2.Web.Mvc
 			if (filterContext.RouteData.CurrentItem() != null)
 				return;
 
-			string family = Family ?? filterContext.RouteData.Values[FamilyValueKey ?? "controller"] as string;
+			string family = Family ?? filterContext.RouteData.Values[FamilyRouteParameter ?? "controller"] as string;
 			string key = keyRouteParameter == null ? "" : filterContext.RouteData.Values[keyRouteParameter] as string;
+			if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(KeyFilterExpression))
+				key = Regex.Match(key, KeyFilterExpression, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline).Value;
+
 			string url = filterContext.RequestContext.HttpContext.Request.Url.PathAndQuery;
 			filterContext.RouteData.ApplyExternalContent(family, key, url, contentType: ContentType);
 		}
