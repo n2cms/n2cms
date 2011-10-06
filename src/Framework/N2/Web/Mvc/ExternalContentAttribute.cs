@@ -46,6 +46,12 @@ namespace N2.Web.Mvc
 		/// <summary>Optional external content family to use, the controller name is used by default.</summary>
 		public string Family { get; set; }
 
+		/// <summary>Optional route value key where the family is retrieved.</summary>
+		public string FamilyValueKey { get; set; }
+
+		/// <summary>The type of content item to associate with this controller.</summary>
+		public Type ContentType { get; set; }
+
 		/// <summary>Applies the external content item to the route data.</summary>
 		/// <param name="filterContext">The context which is modified.</param>
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -53,10 +59,10 @@ namespace N2.Web.Mvc
 			if (filterContext.RouteData.CurrentItem() != null)
 				return;
 
-			string family = Family ?? filterContext.RouteData.Values["controller"] as string;
+			string family = Family ?? filterContext.RouteData.Values[FamilyValueKey ?? "controller"] as string;
 			string key = keyRouteParameter == null ? "" : filterContext.RouteData.Values[keyRouteParameter] as string;
 			string url = filterContext.RequestContext.HttpContext.Request.Url.PathAndQuery;
-			filterContext.RouteData.ApplyExternalContent(family, key, url);
+			filterContext.RouteData.ApplyExternalContent(family, key, url, contentType: ContentType);
 		}
 	}
 }

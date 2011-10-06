@@ -66,18 +66,20 @@ namespace N2.Edit
 		/// <summary>Gets a container or null if no container exists.</summary>
 		/// <param name="containerContainer"></param>
 		/// <returns></returns>
-		public virtual T Get(ContentItem containerContainer) 
+		public virtual T Get(ContentItem containerContainer, string name = null) 
 		{
 			if (Navigate)
 			{
-				return containerContainer.Children.Query().OfType<T>().FirstOrDefault();
+				var q = containerContainer.Children.Query().OfType<T>();
+				return q.FirstOrDefault();
 			}
 			else
 			{
-				var items = finder.Where.Parent.Eq(containerContainer)
-					.And.Type.Eq(typeof(T))
-					.MaxResults(1)
-					.Select<T>();
+				var q = finder.Where.Parent.Eq(containerContainer)
+					.And.Type.Eq(typeof(T));
+				if (!string.IsNullOrEmpty(name))
+					q = q.And.Name.Eq(name);
+				var items = q.MaxResults(1).Select<T>();
 				return items.Count > 0 ? items[0] : null;
 			}
 		}
@@ -86,18 +88,19 @@ namespace N2.Edit
 		/// <param name="containerContainer"></param>
 		/// <param name="setupCreatedItem"></param>
 		/// <returns></returns>
-		public virtual T GetOrCreate(ContentItem containerContainer, Action<T> setupCreatedItem)
+		public virtual T GetOrCreate(ContentItem containerContainer, Action<T> setupCreatedItem, string name = null)
 		{
-			return Get(containerContainer) ?? Create(containerContainer, setupCreatedItem);
+			return Get(containerContainer, name) ?? Create(containerContainer, setupCreatedItem, name);
 		}
 
 		/// <summary>Creates a container.</summary>
 		/// <param name="containerContainer"></param>
 		/// <param name="setupCreatedItem"></param>
 		/// <returns></returns>
-		protected virtual T Create(ContentItem containerContainer, Action<T> setupCreatedItem)
+		protected virtual T Create(ContentItem containerContainer, Action<T> setupCreatedItem, string name = null)
 		{
 			var container = activator.CreateInstance<T>(containerContainer);
+			container.Name = name;
 			setupCreatedItem(container);
 			persister.Save(container);
 			return container;
