@@ -100,6 +100,8 @@ namespace N2.Edit
                     Refresh(parent, ToolbarArea.Both);
                 else
                     Refresh(N2.Context.UrlParser.StartPage, ToolbarArea.Both);
+
+				ppPermitted.Visible = false;
             }
             catch (Exception ex)
             {
