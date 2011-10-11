@@ -29,8 +29,8 @@ namespace N2.Definitions.Static
 				string templateKey = ta.Action;
 				var definition = map.GetOrCreateDefinition(contentType, templateKey);
 				var template = CreateTemplate(definition);
-				template.Original = () => null;
-				template.Template = () => activator.CreateInstance(contentType, null, templateKey);
+				template.OriginalFactory = () => null;
+				template.TemplateFactory = () => activator.CreateInstance(contentType, null, templateKey);
 				template.Title = ta.TemplateTitle ?? definition.Title;
 				template.Description = ta.TemplateDescription ?? definition.Description;
 				template.Name = templateKey;
@@ -44,8 +44,8 @@ namespace N2.Definitions.Static
 				return null;
 
 			var template = CreateTemplate(map.GetOrCreateDefinition(item));
-			template.Original = () => item;
-			template.Template = () => item.Clone(false);
+			template.OriginalFactory = () => item;
+			template.TemplateFactory = () => item.Clone(false);
 			return template;
 		}
 

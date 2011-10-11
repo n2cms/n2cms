@@ -291,7 +291,7 @@ namespace N2.Web.UI.WebControls
 				if (info == null)
 					throw new InvalidOperationException("Failed to find definition for type " + definition.ItemType + " and template " + template);
 				Definition = info.Definition;
-				var item = info.Template();
+				var item = info.TemplateFactory();
 				item.Parent = parent;
 				CurrentItem = item;
 			}
