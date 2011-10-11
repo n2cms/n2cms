@@ -21,12 +21,17 @@ namespace N2.Edit.FileSystem
 				yield break;
 			foreach (var file in new DirectoryInfo(path).GetFiles())
 				if(!file.Name.StartsWith("."))
-					yield return GetFile(N2.Web.Url.Combine(parentVirtualPath, file.Name));
+					yield return GetFile(N2.Web.Url.Combine(parentVirtualPath, file.Name), file);
 		}
 
 		public FileData GetFile(string virtualPath)
 		{
 			FileInfo info = new FileInfo(MapPath(virtualPath));
+			return GetFile(virtualPath, info);
+		}
+
+		private static FileData GetFile(string virtualPath, FileInfo info)
+		{
 			return new FileData
 			{
 				Name = info.Name,
@@ -44,18 +49,23 @@ namespace N2.Edit.FileSystem
 				yield break;
 			foreach (var dir in new DirectoryInfo(path).GetDirectories())
 				if (!dir.Name.StartsWith("."))
-					yield return GetDirectory(N2.Web.Url.Combine(parentVirtualPath, dir.Name));
+					yield return GetDirectory(N2.Web.Url.Combine(parentVirtualPath, dir.Name), dir);
 		}
 
 		public DirectoryData GetDirectory(string virtualPath)
 		{
 			DirectoryInfo info = new DirectoryInfo(MapPath(virtualPath));
-			return new DirectoryData 
-			{ 
+			return GetDirectory(virtualPath, info);
+		}
+
+		private static DirectoryData GetDirectory(string virtualPath, DirectoryInfo info)
+		{
+			return new DirectoryData
+			{
 				Name = info.Name,
 				Created = GetSafely(info, i => i.CreationTime),
-				Updated = GetSafely(info, i => i.LastWriteTime), 
-				VirtualPath = virtualPath 
+				Updated = GetSafely(info, i => i.LastWriteTime),
+				VirtualPath = virtualPath
 			};
 		}
 
