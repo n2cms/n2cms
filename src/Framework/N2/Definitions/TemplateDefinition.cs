@@ -19,10 +19,16 @@ namespace N2.Definitions
 		public string TemplateUrl { get; set; }
 
 		/// <summary>A copy of the template.</summary>
-		public Func<ContentItem> Template { get; set; }
+		public ContentItem Template { get { return TemplateFactory(); } }
+
+		/// <summary>A copy of the template.</summary>
+		public Func<ContentItem> TemplateFactory { get; set; }
+
+		/// <summary>A copy of the template.</summary>
+		public ContentItem Original { get { return OriginalFactory(); } }
 
 		/// <summary>The original template.</summary>
-		public Func<ContentItem> Original { get; set; }
+		public Func<ContentItem> OriginalFactory { get; set; }
 
 		/// <summary>The item definition of the template.</summary>
 		public ItemDefinition Definition { get; set; }

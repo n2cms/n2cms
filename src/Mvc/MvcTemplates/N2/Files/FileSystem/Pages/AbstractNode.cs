@@ -44,7 +44,7 @@ namespace N2.Edit.FileSystem.Items
 
         string INode.PreviewUrl
         {
-			get { return N2.Web.Url.Parse(FindPath("info").TemplateUrl).AppendQuery("selected", Path).ResolveTokens(); }
+			get { return N2.Web.Url.Parse(FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, Path).ResolveTokens(); }
         }
 
 		public override PathData FindPath(string remainingUrl)

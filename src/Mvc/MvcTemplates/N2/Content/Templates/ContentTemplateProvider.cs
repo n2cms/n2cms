@@ -38,8 +38,8 @@ namespace N2.Management.Content.Templates
 
 			return GetTemplates(item.GetContentType()).Where(t => t.Name == templateKey).Select(t =>
 			{
-				t.Original = t.Template;
-				t.Template = () => item;
+				t.OriginalFactory = t.TemplateFactory;
+				t.TemplateFactory = () => item;
 				return t;
 			}).FirstOrDefault();
 		}

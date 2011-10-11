@@ -12,7 +12,7 @@
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<div id="leftPane" class="ui-layout-pane ui-layout-west">
-		<iframe id="navigationFrame" src="../Content/Navigation/Tree.aspx?location=files&root=/&selected=<%= Server.UrlEncode(Request["selected"]) %>" frameborder="0" name="navigation" class="frame"></iframe>
+		<iframe id="navigationFrame" src="../Content/Navigation/Tree.aspx?location=files&root=/&<%= N2.Edit.SelectionUtility.SelectedQueryKey %>=<%= Server.UrlEncode(Request[N2.Edit.SelectionUtility.SelectedQueryKey]) %>" frameborder="0" name="navigation" class="frame"></iframe>
 	</div>
 
 	<div id="rightPane" class="ui-layout-pane ui-layout-center">

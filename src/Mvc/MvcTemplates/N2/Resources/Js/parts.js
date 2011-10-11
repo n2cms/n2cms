@@ -81,7 +81,7 @@
 			$(".editable").each(function () {
 				var $t = $(this);
 				var url = self.urls.editsingle
-					+ "?selected=" + $t.attr("data-path")
+					+ "?" + n2SelectedQueryKey + "=" + $t.attr("data-path")
 					+ "&property=" + $t.attr("data-property")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {

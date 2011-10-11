@@ -27,6 +27,12 @@ namespace N2.Edit
 			this.engine = engine;
 		}
 
+		public SelectionUtility(ContentItem selectedItem, ContentItem memorizedItem)
+		{
+			this.selectedItem = selectedItem;
+			this.memorizedItem = memorizedItem;
+		}
+
         /// <summary>The selected item.</summary>
         public ContentItem SelectedItem
         {
@@ -43,12 +49,16 @@ namespace N2.Edit
 
         private ContentItem GetMemoryFromUrl()
         {
+			if (request == null) return null; // explicitly passed memory
+
             return engine.Resolve<Navigator>().Navigate(request["memory"]);
         }
 
         private ContentItem GetSelectionFromUrl()
         {
-            string selected = request["selected"];
+			if (request == null) return null; // explicitly passed selection
+
+			string selected = request[SelectedQueryKey];
             if (!string.IsNullOrEmpty(selected))
                 return engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
@@ -81,7 +91,14 @@ namespace N2.Edit
 
 		public string ActionUrl(string actionName)
 		{
-			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery("selected", SelectedItem.Path).ResolveTokens();
+			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery(SelectedQueryKey, SelectedItem.Path).ResolveTokens();
 		}
+
+
+		static SelectionUtility()
+		{
+			SelectedQueryKey = "selected";
+		}
+		public static string SelectedQueryKey { get; set; }
 	}
 }

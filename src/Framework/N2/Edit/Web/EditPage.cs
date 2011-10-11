@@ -24,6 +24,12 @@ namespace N2.Edit.Web
 			Authorize(User);
 		}
 
+		protected virtual void SetupClientConstants()
+		{
+			if(Page.Header != null)
+				this.JavaScript(Register.SelectedQueryKeyRegistrationScript(), ScriptOptions.Prioritize | ScriptOptions.ScriptTags);
+		}
+
 		/// <summary>Determines whether the current page can be displayed.</summary>
 		/// <param name="user">The user to authorize.</param>
 		/// <returns>True if the user is authorized.</returns>
@@ -43,6 +49,7 @@ namespace N2.Edit.Web
 			RegisterThemeCss();
 			Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
+			SetupClientConstants();
 
             base.OnInit(e);
 		}

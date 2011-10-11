@@ -5,6 +5,7 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Integrity;
 using NUnit.Framework;
+using N2.Edit;
 
 namespace N2.Tests.Utility
 {
@@ -276,6 +277,13 @@ namespace N2.Tests.Utility
 		{
 			object value = N2.Utility.Evaluate(item1, "Parent.ID");
 			Assert.IsNull(value);
+		}
+
+		[Test]
+		public void EvaluateStaticProperty_GivesPropertyValue()
+		{
+			object value = N2.Utility.Evaluate(new SelectionUtility((ContentItem)null, (ContentItem)null), "SelectedQueryKey");
+			Assert.That(value, Is.EqualTo(SelectionUtility.SelectedQueryKey));
 		}
 
 		[TestCase("123", 123, typeof (int))]

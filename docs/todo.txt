@@ -1,4 +1,5 @@
 - Module guidance (discussions/273235)
+- DefaultValue on programmatically added editables (discussions/273892)
 - Updated minimal MVC example to MVC3 (discussions/273372)
 - Antipspam on form (discussions/273271)
 - Reindex all admin screen
@@ -9,6 +10,7 @@
 - Restrict upload folders shown for EditableImage (discussions/268170)
 - languages associated to sites (discussions/264798)
 - linq default values (discussions/250998)
+- anti-spam and required on forms (discussions/273271)
 - select query strings breaks with url scan discussions/266434
 - recursive quickener
 - nhibernate method not found (discussions/265951)

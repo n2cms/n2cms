@@ -35,7 +35,7 @@ namespace N2.Web
 									   ConfigurationManagerWrapper configuration)
 		{
 			rewriteMethod = configuration.Sections.Web.Web.Rewrite;
-			managementUrl = configuration.Sections.Management.ManagementInterfaceUrl;
+			managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;

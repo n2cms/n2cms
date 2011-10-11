@@ -12,20 +12,20 @@ namespace N2.Collections
 		/// <summary>Retrieves visible and published pages where the zone name is null.</summary>
 		/// <returns>A list of items that are considered to be pages.</returns>
 		/// <remarks>This method does not perform security checks.</remarks>
-		IQueryable<T> FindNavigatablePages();
+		IEnumerable<T> FindNavigatablePages();
 
 		/// <summary>Retrieves pages where the zone name is null.</summary>
 		/// <returns>A list of items that are considered to be pages.</returns>
-		IQueryable<T> FindPages();
+		IEnumerable<T> FindPages();
 
 		/// <summary>Retrieves items where the zone name is not null.</summary>
 		/// <returns>A list of items that are considered to be parts.</returns>
-		IQueryable<T> FindParts();
+		IEnumerable<T> FindParts();
 
 		/// <summary>Retrieves items a zone with a particular name.</summary>
 		/// <param name="zoneName">The name of the zone.</param>
 		/// <returns>A list of items in the zone.</returns>
-		IQueryable<T> FindParts(string zoneName);
+		IEnumerable<T> FindParts(string zoneName);
 
 		/// <summary>Retrieves names of zones in this list.</summary>
 		/// <returns>A distinct set of zone names.</returns>

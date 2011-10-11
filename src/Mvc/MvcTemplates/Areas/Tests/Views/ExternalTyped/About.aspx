@@ -4,4 +4,7 @@
 	[<%= Html.CurrentItem().GetContentType().Name %>]
 	[<%= Html.CurrentItem().Name %>
 	#<%= Html.CurrentItem().ID %>]
+
+	<%= Html.DisplayContent("Title") %>
+	<%= Html.DisplayContent("Text") %>
 </asp:Content>

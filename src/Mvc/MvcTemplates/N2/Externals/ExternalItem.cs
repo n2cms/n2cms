@@ -1,6 +1,7 @@
 ﻿using N2.Definitions;
 using N2.Web;
 using N2.Installation;
+using N2.Integrity;
 
 namespace N2.Management.Externals
 {
@@ -11,6 +12,7 @@ namespace N2.Management.Externals
 	[Template(ExternalItem.ContainerTemplateKey, "{ManagementUrl}/Externals/External.ascx")]
 	[Versionable(AllowVersions.No)]
 	[Throwable(AllowInTrash.No)]
+	[AllowedChildren(typeof(ContentItem))]
 	public class ExternalItem : ContentItem, ISystemNode
 	{
 		public const string ContainerTemplateKey = "container";

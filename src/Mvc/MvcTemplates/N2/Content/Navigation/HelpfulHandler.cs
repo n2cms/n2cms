@@ -21,7 +21,7 @@ namespace N2.Edit.Navigation
 
 		protected ContentItem GetSelectedItem(NameValueCollection queryString)
 		{
-			string path = queryString[PathData.SelectedQueryKey];
+			string path = queryString[SelectionUtility.SelectedQueryKey];
 			return N2.Context.Current.Resolve<N2.Edit.Navigator>().Navigate(path);
 		}
 	}
