@@ -30,7 +30,7 @@
 			    <tr class="selected">
 			        <td>
 						<% if (Selection.SelectedItem.Parent != null){ %>
-							<a href="Default.aspx?selected=<%# Selection.SelectedItem.Parent.Path %>"><img src="../../Resources/icons/bullet_toggle_minus.png" class="up" /></a>
+							<a href="Default.aspx?<%# N2.Edit.SelectionUtility.SelectedQueryKey %>=<%# Selection.SelectedItem.Parent.Path %>"><img src="../../Resources/icons/bullet_toggle_minus.png" class="up" /></a>
 						<% } %>
 					</td>
 			        <lang:Languages runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>' />
@@ -41,7 +41,7 @@
 				<ItemTemplate>
 					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
 					    <td>
-							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# Eval("Path", "Default.aspx?selected={0}") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
+							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Eval("Path") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
 						</td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
 					</tr>
@@ -53,7 +53,7 @@
 				<ItemTemplate>
 					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
 					    <td>
-							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# Eval("Path", "Default.aspx?selected={0}") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
+							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# Eval("Path", "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "={0}") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
 						</td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
 					</tr>

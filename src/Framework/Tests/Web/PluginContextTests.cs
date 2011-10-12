@@ -11,7 +11,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanEvaluate()
 		{
-			PluginContext ctx = new PluginContext(new Items.CustomExtensionPage(), null, null, null, ControlPanelState.Visible, null, null);
+			PluginContext ctx = new PluginContext(new SelectionUtility(new Items.CustomExtensionPage(), null), null, null, ControlPanelState.Visible, null, null);
 
 			var result = ctx.Format("{Selected.ID}", false);
 			Assert.That(result, Is.EqualTo("0"));
@@ -20,7 +20,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanEvaluate_Selected_AsSelected_ItemPath()
 		{
-			PluginContext ctx = new PluginContext(new Items.CustomExtensionPage(), null, null, null, ControlPanelState.Visible, null, null);
+			PluginContext ctx = new PluginContext(new SelectionUtility(new Items.CustomExtensionPage(), null), null, null, ControlPanelState.Visible, null, null);
 
 			var result = ctx.Format("Selected: {selected}", false);
 			Assert.That(result, Is.EqualTo("Selected: /"));
@@ -29,7 +29,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanEvaluate_Selected_AsSelected_AndUrlEncoded_ItemPath()
 		{
-			PluginContext ctx = new PluginContext(new Items.CustomExtensionPage(), null, null, null, ControlPanelState.Visible, null, null);
+			PluginContext ctx = new PluginContext(new SelectionUtility(new Items.CustomExtensionPage(), null), null, null, ControlPanelState.Visible, null, null);
 
 			var result = ctx.Format("Selected: {selected}", true);
 			Assert.That(result, Is.EqualTo("Selected: " + HttpUtility.UrlEncode("/")));

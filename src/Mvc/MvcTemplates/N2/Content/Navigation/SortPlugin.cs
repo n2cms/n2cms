@@ -24,14 +24,14 @@ namespace N2.Edit.Navigation
 			container.Controls.Add(div);
 
 			HtmlAnchor up = AddSortAnchor(div, context,
-			                              context.Format("{ManagementUrl}/Navigation/sortUp.ashx?selected={Selected.Path}", true),
+										  context.Format("{ManagementUrl}/Navigation/sortUp.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
 			                              "{ManagementUrl}/Resources/icons/bullet_arrow_up.png", "up");
-			RegisterToolbarUrl(container, up.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortUp.ashx?selected={selected}"));
+			RegisterToolbarUrl(container, up.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortUp.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}"));
 
 			HtmlAnchor down = AddSortAnchor(div, context,
-			                                context.Format("{ManagementUrl}/Navigation/sortDown.ashx?selected={Selected.Path}", true),
+											context.Format("{ManagementUrl}/Navigation/sortDown.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
 			                                "{ManagementUrl}/Resources/icons/bullet_arrow_down.png", "down");
-			RegisterToolbarUrl(container, down.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortDown.ashx?selected={selected}"));
+			RegisterToolbarUrl(container, down.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortDown.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}"));
 
 			return div;
 		}

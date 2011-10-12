@@ -125,6 +125,7 @@ namespace N2.Web.Mvc.Html
 				};
 
 				Html.Resources(writer).JQuery()
+					.Constnats()
 					.JQueryPlugins()
 					.JQueryUi()
 					.JavaScript("{ManagementUrl}/Resources/Js/parts.js").StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
@@ -148,7 +149,7 @@ namespace N2.Web.Mvc.Html
 				{
 					var span = new System.Web.UI.HtmlControls.HtmlGenericControl("span");
 					span.Attributes["class"] = "control";
-					var pluginControl = plugin.AddTo(span, new PluginContext(item, null, start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
+					var pluginControl = plugin.AddTo(span, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
 
 					if (pluginControl != null)
 						p.Controls.Add(span);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Configuration;
 using N2.Web;
+using N2.Edit;
 
 namespace N2.Engine
 {
@@ -36,7 +37,7 @@ namespace N2.Engine
 				RegisterConfiguredComponents(engine.Container, configuration.Sections.Engine);
 			AddComponentInstance(engine.Container, configuration.Sections.Web);
 			if (configuration.Sections.Web != null)
-				InitializeEnvironment(engine.Container, configuration.Sections.Web);
+				InitializeEnvironment(engine.Container, configuration.Sections);
 			AddComponentInstance(engine.Container, configuration.Sections.Database);
 			AddComponentInstance(engine.Container, configuration.Sections.Management);
 
@@ -71,25 +72,31 @@ namespace N2.Engine
 			container.AddComponentInstance(instance.GetType().FullName, instance.GetType(), instance);
 		}
 
-		protected virtual void InitializeEnvironment(IServiceContainer container, HostSection hostConfig)
+		protected virtual void InitializeEnvironment(IServiceContainer container, ConfigurationManagerWrapper.ContentSectionTable config)
 		{
-			if (hostConfig != null)
+			if (config.Web != null)
 			{
-				Url.DefaultExtension = hostConfig.Web.Extension;
-				PathData.PageQueryKey = hostConfig.Web.PageQueryKey;
-				PathData.ItemQueryKey = hostConfig.Web.ItemQueryKey;
-				PathData.PartQueryKey = hostConfig.Web.PartQueryKey;
+				Url.DefaultExtension = config.Web.Web.Extension;
+				PathData.PageQueryKey = config.Web.Web.PageQueryKey;
+				PathData.ItemQueryKey = config.Web.Web.ItemQueryKey;
+				PathData.PartQueryKey = config.Web.Web.PartQueryKey;
 
-				if (!hostConfig.Web.IsWeb)
+
+				if (!config.Web.Web.IsWeb)
 					container.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
 
-				if (hostConfig.Web.Urls.EnableCaching)
+				if (config.Web.Web.Urls.EnableCaching)
 					container.AddComponent("n2.web.cachingUrlParser", typeof(IUrlParser), typeof(CachingUrlParserDecorator));
 
-				if (hostConfig.MultipleSites)
+				if (config.Web.MultipleSites)
 					container.AddComponent("n2.multipleSitesParser", typeof(IUrlParser), typeof(MultipleSitesParser));
 				else
 					container.AddComponent("n2.urlParser", typeof(IUrlParser), typeof(UrlParser));
+			}
+			if (config.Management != null)
+			{
+				SelectionUtility.SelectedQueryKey = config.Management.Paths.SelectedQueryKey;
+				Url.SetToken("{Selection.SelectedQueryKey}", SelectionUtility.SelectedQueryKey);
 			}
 		}
 

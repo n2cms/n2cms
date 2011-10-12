@@ -104,7 +104,7 @@ namespace N2.Edit
 			else if (Settings.DisplayDataItems)
 				children = parent.Children.Where(new AccessFilter(WebContext.User, Security));
 			else
-				children = parent.Children.FindPages().Where(new AccessiblePageFilter(WebContext.User, Security));
+				children = parent.Children.FindPages().Where(new AllFilter(new PageFilter(), new AccessFilter(WebContext.User, Security)));
 			return children;
 		}
 

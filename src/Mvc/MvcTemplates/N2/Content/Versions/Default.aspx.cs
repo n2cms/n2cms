@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Edit.Versions
 {
-    [ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90, 
+	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90, 
         ToolTip = "versions", 
         GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]

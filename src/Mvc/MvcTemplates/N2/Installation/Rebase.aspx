@@ -35,7 +35,7 @@
 			<% int count = 0;
 			foreach (N2.Edit.Installation.RebaseInfo item in RebasedLinks) {%>
 			<tr>
-				<td><a href="../Content/Default.aspx?selected=<%= item.ItemPath %>" title="<%= item.ItemID %>"><%= item.ItemTitle%></a></td>
+				<td><a href="../Content/Default.aspx?<%= N2.Edit.SelectionUtility.SelectedQueryKey %>=<%= item.ItemPath %>" title="<%= item.ItemID %>"><%= item.ItemTitle%></a></td>
 				<td><%= item.PropertyName%></td>
 			</tr>
 			<% count++; } %>

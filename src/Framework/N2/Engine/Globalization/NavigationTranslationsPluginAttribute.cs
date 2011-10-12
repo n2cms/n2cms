@@ -32,7 +32,7 @@ namespace N2.Engine.Globalization
             {
 				Url url = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
-                url = url.AppendQuery("selected={selected}");
+                url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "={selected}");
 
                 HyperLink h = new HyperLink();
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');

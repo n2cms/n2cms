@@ -12,16 +12,18 @@ namespace N2.Management.Externals
 	{
 		ContainerRepository<ExternalItem> containerRepository;
 		IPersister persister;
+		ContentActivator activator;
 		Type externalItemType;
 
-		public ExternalContentRepository(ContainerRepository<ExternalItem> containerRepository, IPersister persister, EditSection config)
+		public ExternalContentRepository(ContainerRepository<ExternalItem> containerRepository, IPersister persister, ContentActivator activator, EditSection config)
 		{
 			this.containerRepository = containerRepository;
 			this.persister = persister;
+			this.activator = activator;
 			externalItemType = Type.GetType(config.Externals.ExternalItemType) ?? typeof(ExternalItem);
 		}
 
-		public ContentItem GetOrCreate(string familyKey, string key, string url)
+		public ContentItem GetOrCreate(string familyKey, string key, string url, Type contentType = null)
 		{
 			var container = containerRepository.GetOrCreateBelowStart((ei) => 
 			{
@@ -37,20 +39,23 @@ namespace N2.Management.Externals
 				ei.Title = familyKey;
 				ei.Name = familyKey;
 				ei.ZoneName = ExternalItem.ExternalContainerName;
-			});
+			}, name: familyKey);
 
 			if (string.IsNullOrEmpty(key))
 				key = ExternalItem.SingleItemKey;
 
 			var item = familyContainer.Children.FindNamed(key)
-				?? Create(familyKey, key, url, familyContainer);
+				?? Create(familyKey, key, url, familyContainer, contentType);
 			return item;
 		}
 
-		private ExternalItem Create(string family, string key, Url url, ExternalItem container)
+		private ContentItem Create(string family, string key, Url url, ContentItem container, Type contentType)
 		{
 			string externalUrl = url.RemoveQuery("edit").ToString();
-			var item = new ExternalItem { Title = "", Name = key, ZoneName = family, Parent = container };
+			var item = activator.CreateInstance(contentType ?? externalItemType, container);
+			item.Title = "";
+			item.Name = key;
+			item.ZoneName = family;
 			item["ExternalUrl"] = externalUrl;
 			persister.Save(item);
 			return item;
