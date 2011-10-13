@@ -71,7 +71,7 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-        private PathData GetStartNode(Url url, string remainingPath)
+        private PathData GetStartNode(Url url, ref string remainingPath)
         {
             if (string.IsNullOrEmpty(remainingPath))
                 return PathData.Empty;
@@ -89,7 +89,7 @@ namespace N2.Web
 
             PathData data;
             if ((data = HttpRuntime.Cache[contentKey] as PathData) == null)
-                return GetStartNode(url, remainingPath);
+                return GetStartNode(url, ref remainingPath);
 
             return data;
         }
@@ -133,9 +133,13 @@ namespace N2.Web
                         if (data == null)
                         {
                             remainingPath = Url.ToRelative(url.Path).TrimStart('~');
-                            var path = GetStartNode(url, remainingPath);
-                            var contentItem = persister.Get(path.ID);
-                            data = path.ID == 0 ? inner.ResolvePath(url) : inner.ResolvePath(url, contentItem, remainingPath.Replace(contentItem.Url, ""));
+
+                            string path = remainingPath;
+                            var pathData = GetStartNode(url, ref path);
+
+                            var contentItem = persister.Get(pathData.ID);
+
+                            data = pathData.ID == 0 ? inner.ResolvePath(url) : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
 
                             if (data.IsCacheable)
                             {
