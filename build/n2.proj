@@ -27,7 +27,7 @@
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-		<Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'X64'">Any CPU</Platform>
 		<Platform Condition="'$(Platform)' == 'MCD'">Any CPU</Platform>
 		<Platform Condition="'$(Platform)' == 'BPC'">Any CPU</Platform>
 		
@@ -126,8 +126,6 @@
 		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SQLite.dll;
 																		 $(LibFolder)\**\NHibernate*.dll;
 																		 $(LibFolder)\**\Castle*.dll;
-																		 $(LibFolder)\**\Antlr3.Runtime.dll;
-																		 $(LibFolder)\**\Iesi.Collections.dll;
 																		 $(LibFolder)\**\log4net.dll;" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(SqlCe)' != ''">
