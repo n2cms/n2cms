@@ -74,7 +74,14 @@ namespace N2.Persistence.Search
 				q = string.Format("+({0}) +({1})", q, CreateQuery(query.Intersection));
 			if (query.Union != null)
 				q = string.Format("({0}) ({1})", q, CreateQuery(query.Union));
-
+            if (query.Details.Count > 0)
+                foreach (var kvp in query.Details)
+                {
+                    if (LuceneIndexer.Properties.All.Contains(kvp.Key))
+                        q += string.Format(" +{0}:({1})", kvp.Key, kvp.Value);
+                    else
+                        q += string.Format(" +Detail.{0}:({1})", kvp.Key, kvp.Value);
+                }
 			Trace.WriteLine("CreateQuery: " + q);
 
 			return accessor.GetQueryParser().Parse(q);
