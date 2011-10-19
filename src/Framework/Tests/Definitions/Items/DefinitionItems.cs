@@ -7,6 +7,18 @@ using N2.Web.UI;
 
 namespace N2.Tests.Definitions.Items
 {
+    [PageDefinition]
+    [RestrictChildren(typeof(ChildWithCardinality))]
+    public class RestrictsChildWithCardinality : N2.ContentItem
+    {
+    }
+
+    [PageDefinition]
+    [RestrictCardinality]
+    public class ChildWithCardinality : N2.ContentItem
+    {
+    }
+
 	[PageDefinition(AuthorizedRoles = new string[0])]
 	public class DefinitionAutoCreatedItem : N2.ContentItem
 	{
