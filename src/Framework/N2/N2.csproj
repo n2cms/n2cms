@@ -247,6 +247,7 @@
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\FindingTextSearcher.cs" />
     <Compile Include="Persistence\IPersister.cs" />
+    <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
     <Compile Include="Persistence\Search\IIndexableType.cs" />
