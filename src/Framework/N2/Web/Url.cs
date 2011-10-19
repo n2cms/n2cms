@@ -673,6 +673,9 @@ namespace N2.Web
 			{
 				if (applicationPath == null)
 				{
+                    if(HttpContext.Current == null)
+                        return "/";
+
 					try
 					{
 						applicationPath = VirtualPathUtility.ToAbsolute("~/");

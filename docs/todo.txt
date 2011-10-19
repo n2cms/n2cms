@@ -1,3 +1,4 @@
+- Fix problem with cascade saving of proxied items (discussions/276267)
 - DefaultValue on programmatically added editables (discussions/273892)
 - Closed session when checking installation status (discussions/267048)
 - Restrict upload folders shown for EditableImage (discussions/268170)

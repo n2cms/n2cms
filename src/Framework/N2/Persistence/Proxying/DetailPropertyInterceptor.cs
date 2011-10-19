@@ -11,8 +11,18 @@ namespace N2.Persistence.Proxying
 	/// <summary>
 	/// Intercepts detail property calls and calls Get/SetDetail.
 	/// </summary>
-	public class DetailPropertyInterceptor : IInterceptor
-	{
+	public class DetailPropertyInterceptor : IInterceptor, N2.Persistence.Proxying.IInterceptorBuilder
+    {
+        public IInterceptor Interceptor
+        {
+            get { return this; }
+        }
+
+        public IEnumerable<MethodInfo> GetInterceptedMethods()
+        {
+            return methods.Keys;
+        }
+
 		private readonly IDictionary<MethodInfo, Action<IInvocation>> methods = new Dictionary<MethodInfo, Action<IInvocation>>();
 		private static readonly Action<IInvocation> proceedAction = (invocation) => invocation.Proceed();
 		private static MethodInfo getEntityNameMethod = typeof(IInterceptedType).GetMethod("GetTypeName");
