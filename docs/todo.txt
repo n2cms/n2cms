@@ -1,3 +1,4 @@
+- Multiple item editor (discussions/273083)
 - Take a look at misc utils (discussions/277160)
 - Container nodes without url segment (discussions/277009)
 - Investigate memory usage for many small sites (discussions/276419)

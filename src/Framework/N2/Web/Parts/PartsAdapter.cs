@@ -90,7 +90,7 @@ namespace N2.Web.Parts
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
 			return Definitions.GetAllowedChildren(parentItem)
-				.Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None)
+                .Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None && d.Enabled)
 				.WhereAuthorized(Security, user, parentItem);
 		}
 
