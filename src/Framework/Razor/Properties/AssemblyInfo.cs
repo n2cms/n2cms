@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 
 // General Information about an assembly is controlled through the following set of attributes. Change these attribute values to modify the information associated with an assembly.
-[assembly: AssemblyTitle("N2")]
+[assembly: AssemblyTitle("N2.Razor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("N2 CMS")]
@@ -16,9 +16,7 @@ using System.Security;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("485f74c4-6f2a-41b5-93cc-f5f64f84d037")]
+[assembly: Guid("f9b8ac8a-099f-40bc-ac93-9d97b6402489")]
 
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
-
-[assembly: InternalsVisibleTo("N2.Extensions.Tests")]

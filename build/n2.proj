@@ -27,7 +27,8 @@
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-		<Platform Condition="'$(Platform)' == 'X64'">Any CPU</Platform>
+    <Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+    <Platform Condition="'$(Platform)' == 'X64'">Any CPU</Platform>
 		<Platform Condition="'$(Platform)' == 'MCD'">Any CPU</Platform>
 		<Platform Condition="'$(Platform)' == 'BPC'">Any CPU</Platform>
 		
@@ -94,6 +95,8 @@
 	</Target>
 
 	<Target Name="Test" DependsOnTargets="Framework-Build">
+    <Message Text="Configuration: $(Configuration)"/>
+    <Message Text="Platform: $(Platform)"/>
 		<ItemGroup>
 			<AssembliesToTest Include="$(SrcFolder)\Framework\Tests\bin\$(Configuration)\*.Tests.dll;"/>
 			<AssembliesToTest Include="$(SrcFolder)\Framework\Management.Tests\bin\$(Configuration)\N2.Management.Tests.dll;"/>
