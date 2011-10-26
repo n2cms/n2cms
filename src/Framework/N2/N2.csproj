@@ -188,6 +188,8 @@
     <Compile Include="Edit\EditExtensions.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
+    <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
     <Compile Include="Engine\Providers\PathDataProvider.cs" />
     <Compile Include="Engine\Providers\RouteCollectionProvider.cs" />

@@ -25,7 +25,7 @@ namespace N2.Edit.Globalization
 
         private void Initialize()
         {
-            gateway = Engine.Resolve<ILanguageGateway>();
+            gateway = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(Selection.SelectedItem);
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
             bool isGlobalized = gateway.GetLanguage(Selection.SelectedItem) != null;
