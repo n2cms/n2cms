@@ -14,9 +14,9 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		private readonly ILanguageGateway _languageGateway;
 
-		public NavigationController(ILanguageGateway languageGateway)
+		public NavigationController(LanguageGatewaySelector languageGatewaySelector)
 		{
-			_languageGateway = languageGateway;
+			_languageGateway = languageGatewaySelector.GetLanguageGateway();
 		}
 
 		public PartialViewResult TopMenu()

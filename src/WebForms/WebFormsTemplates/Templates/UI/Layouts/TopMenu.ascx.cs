@@ -17,7 +17,7 @@ namespace N2.Templates.UI.Layouts
         protected ILanguageGateway languages;
         protected override void OnInit(EventArgs e)
         {
-            languages = Engine.Resolve<ILanguageGateway>();
+            languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
 
             if (languages.Enabled)
             {
