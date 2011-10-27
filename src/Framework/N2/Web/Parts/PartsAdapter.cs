@@ -8,6 +8,8 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Security;
+using System;
+using N2.Edit.Workflow;
 
 namespace N2.Web.Parts
 {
@@ -60,16 +62,33 @@ namespace N2.Web.Parts
 			set { security = value; }
 		}
 
-		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
+        /// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
 		/// <returns>A list of items in the zone.</returns>
-		public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
+        [Obsolete("Use overload with interface parameter")]
+        public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
+        {
+            return new ItemList(GetParts(parentItem, zoneName, Interfaces.Viewing));
+        }
+
+		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
+		/// <param name="belowParentItem">The item whose items to get.</param>
+		/// <param name="inZoneNamed">The zone in which the items should be contained.</param>
+        /// <param name="filteredForInterface">Interface where the parts are displayed.</param>
+		/// <returns>A list of items in the zone.</returns>
+		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
 		{
-			if(parentItem == null)
+			if(belowParentItem == null)
 				return new ItemList();
 
-			return parentItem.GetChildren(zoneName);
+            var items = belowParentItem.Children.FindParts(inZoneNamed)
+                .Where(new AccessFilter(WebContext.User, Security));
+
+            if(filteredForInterface == Interfaces.Viewing)
+                items = items.Where(new PublishedFilter());
+
+            return items;
 		}
 
 		/// <summary>Retrieves allowed item definitions.</summary>

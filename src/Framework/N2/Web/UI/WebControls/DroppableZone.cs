@@ -2,6 +2,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Integrity;
+using N2.Edit.Workflow;
 
 namespace N2.Web.UI.WebControls
 {
@@ -12,7 +13,13 @@ namespace N2.Web.UI.WebControls
 	{
         /// <summary>Set to true if parts that have been added to another page (and are displayed elsewhere) may be moved on other pages.</summary>
         public bool AllowExternalManipulation { get; set; }
-		ControlPanelState state = ControlPanelState.Hidden;
+        ControlPanelState? state;
+
+        protected ControlPanelState State
+        {
+            get { return state ?? (state = ControlPanel.GetState(Page)) ?? ControlPanelState.Hidden; }
+            set { state = value; }
+        }
 
 		public string DropPointBackImageUrl
 		{
@@ -28,8 +35,7 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-            state = ControlPanel.GetState(Page);
-            if (state == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
+            if (State == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
@@ -48,7 +54,7 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddChildItem(Control container, ContentItem item)
 		{
-            if (state == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
+            if (State == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
 				string preview = Page.Request.QueryString["preview"];
 				if (!string.IsNullOrEmpty(preview))
@@ -67,7 +73,7 @@ namespace N2.Web.UI.WebControls
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
-			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
+			else if (State == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 				base.AddChildItem(this, item);
@@ -114,5 +120,10 @@ namespace N2.Web.UI.WebControls
 			container.Controls.Add(p);
 			return p;
 		}
+
+        protected override string GetInterface()
+        {
+            return State.GetInterface();
+        }
 	}
 }

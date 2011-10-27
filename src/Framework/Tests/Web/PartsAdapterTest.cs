@@ -7,6 +7,7 @@ using N2.Tests.Web.Items;
 using N2.Web.Parts;
 using NUnit.Framework;
 using N2.Web;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Web
 {
@@ -69,7 +70,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem);
 
-			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
+            IEnumerable<ContentItem> items = controller.GetParts(customItem, "Zone1", Interfaces.Viewing);
 
 			Assert.That(items.Count(), Is.EqualTo(1));
 		}
@@ -79,7 +80,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
-			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
+            IEnumerable<ContentItem> items = controller.GetParts(pageItem, "ZoneNone", Interfaces.Viewing);
 
 			Assert.That(items.Count(), Is.EqualTo(0));
 		}
@@ -89,7 +90,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
-			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
+			IEnumerable<ContentItem> items = controller.GetParts(pageItem, "ZoneAll", Interfaces.Viewing);
 
 			Assert.That(items.Count(), Is.EqualTo(2));
 		}
@@ -99,7 +100,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
-			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", CreatePrincipal("admin"));
+            IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", CreatePrincipal("admin"));
 
 			Assert.That(items.Count(), Is.GreaterThan(0));
 		}
