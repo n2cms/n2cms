@@ -23,8 +23,11 @@ namespace N2.Engine.Globalization
 		readonly DescendantItemFinder descendantFinder;
         private ILanguageGateway languages;
 
-        protected bool Enabled { get; set; }
-        protected bool LanguagesPerSite { get; set; }
+        /// <summary>True if the language feature is enabled in web.config.</summary>
+        public bool Enabled { get; protected set; }
+
+        /// <summary>True if the language per site feature is enabled in web.config.</summary>
+        public bool LanguagesPerSite { get; protected set; }
 
         public LanguageGatewaySelector(
 			IPersister persister,
@@ -69,5 +72,13 @@ namespace N2.Engine.Globalization
             return GetLanguageGateway(host.CurrentSite);
         }
 
+        /// <summary>
+        /// Gets a language gateway that doesn't filter languages to the current site.
+        /// </summary>
+        /// <returns></returns>
+        public ILanguageGateway GetAllLanguages()
+        {
+            return languages;
+        }
     }
 }

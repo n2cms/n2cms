@@ -18,9 +18,11 @@ namespace N2.Engine.Globalization
 
         public override Control AddTo(Control container, PluginContext context)
         {
-            ILanguageGateway gateway = N2.Context.Current.Resolve<ILanguageGateway>();
-            if (!gateway.Enabled)
+            var selector = context.Engine.Resolve<LanguageGatewaySelector>();
+            if (!selector.Enabled || selector.LanguagesPerSite /*avoid showing options that might not be relevant */)
                 return null;
+
+            ILanguageGateway gateway = selector.GetAllLanguages();
 
             HtmlGenericControl div = new HtmlGenericControl("div");
             div.Attributes["class"] = "languages";
