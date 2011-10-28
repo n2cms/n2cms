@@ -70,7 +70,7 @@ namespace N2.Web
 			{
 				int queryIndex = QueryIndex(url);
 				int hashIndex = url.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
-				int authorityIndex = url.IndexOf("://");
+				int authorityIndex = url.IndexOf(System.Uri.SchemeDelimiter); // jamestharpe
 				if (queryIndex >= 0 && authorityIndex > queryIndex)
 					authorityIndex = -1;
 
@@ -92,6 +92,19 @@ namespace N2.Web
 			fragment = null;
 		}
 
+        void EnsureTrailingSlashOnPath()
+        {
+            // Addition by James Tharpe w/ Rollins, Inc.
+            // --------------------------------------------------------------------------------
+            // If current.Extension is blank, include a trailing slash so that URLs remain 
+            // consistent. Keeping URLs consistent is important for SEO reasons (specifically, 
+            // to avoid the appearance of duplicate content. See discussion at 
+            // http://n2cms.codeplex.com/discussions/277160.
+
+            if (Extension == null && !path.EndsWith("/")) //TODO: Add a forceTralingSlash option?
+                path += "/";
+        }
+
 		void LoadSiteRelativeUrl(string url, int queryIndex, int hashIndex)
 		{
 			scheme = null;
@@ -104,21 +117,25 @@ namespace N2.Web
 				path = url;
 			else
 				path = "";
+
+            EnsureTrailingSlashOnPath(); // jamestharpe
 		}
 
-		void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
+        void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
 		{
-			scheme = url.Substring(0, authorityIndex);
+			scheme = url.Substring(0, authorityIndex); // e.g. "http://"
 			int slashIndex = url.IndexOf('/', authorityIndex + 3);
-			if (slashIndex > 0)
+            if (slashIndex > 0) // http://site.com/ or http://site.com/foo or http://site.com/foo/bar
 			{
-				authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3);
+                authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3); // site.com
 				if (queryIndex >= slashIndex)
-					path = url.Substring(slashIndex, queryIndex - slashIndex);
+                    path = url.Substring(slashIndex, queryIndex - slashIndex); // http://site.com/foo/bar?q=v -> /foo/bar
 				else if (hashIndex >= 0)
-					path = url.Substring(slashIndex, hashIndex - slashIndex);
+                    path = url.Substring(slashIndex, hashIndex - slashIndex); // http://site.com/foo/bar#hash -> /foo/bar
 				else
-					path = url.Substring(slashIndex);
+					path = url.Substring(slashIndex); // http://site.com/foo/bar -> /foo/bar
+
+                EnsureTrailingSlashOnPath(); // jamestharpe
 			}
 			else
 			{
