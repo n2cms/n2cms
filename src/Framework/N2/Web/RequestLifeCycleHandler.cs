@@ -4,6 +4,9 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Plugin;
 using N2.Web.UI;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace N2.Web
 {
@@ -24,7 +27,111 @@ namespace N2.Web
 		protected RewriteMethod rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
 		protected string managementUrl;
 
-		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
+        #region Utlity Functions - Sorry Wasn't sure where these should go! --jamestharpe
+
+        static void RedirectPermanent(HttpResponse response, string destination)
+        {
+            response.Clear();
+            response.Status = "301 Moved Permanently";
+            response.AddHeader("Location", destination);
+            response.Flush();
+            response.End();
+        }
+
+        /// <summary>
+        /// Get's the <see cref="ISitesSource"/> provider for the given <see cref="ContentItem"/>.
+        /// </summary>
+        /// <param name="contentItem"></param>
+        /// <returns></returns>
+        static ISitesSource GetSitesSource(ContentItem contentItem)
+        {
+            if (contentItem == null)
+                return Find.StartPage as ISitesSource;
+
+            N2.ContentItem currentItem = contentItem;
+            do
+            {
+                ISitesSource result = currentItem as ISitesSource;
+                if (result != null)
+                    return result;
+
+                currentItem = currentItem.Parent;
+            } while (currentItem.Parent != null);
+
+            return Find.StartPage as ISitesSource;
+        }
+
+        static string GetPreferredUrl(N2.ContentItem contentItem, Uri requestBaseUri, bool cacheResult = true)
+        {
+            //
+            // Pre-conditions
+
+            if (contentItem == null)
+                return string.Empty;
+            if (!contentItem.IsPage)
+                return contentItem.Url;
+
+            //
+            // Determine base-url/authority from sites source and requested URL.
+
+            HttpContext httpContext = HttpContext.Current;
+            HttpRequest request = httpContext.Request;
+            N2.Web.ISitesSource sitesSource = GetSitesSource(contentItem);
+            IEnumerable<N2.Web.Site> sites = sitesSource.GetSites();
+            N2.Web.Site site = sites // Try to match domain, otherwise default to first-available authority
+                .Where(s =>
+                    s.Authority.Equals(request.Url.Authority, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault()
+                ?? sites.FirstOrDefault();
+
+            Uri siteBaseUrl = (site != null) // "Safe" URLs are fully qualified
+                ? new Uri(string.Format("{0}{1}{2}", request.Url.Scheme, Uri.SchemeDelimiter, site.Authority))
+                : requestBaseUri;
+
+            //
+            // Check cache
+
+            System.Web.Caching.Cache cache = httpContext.Cache;
+            cacheResult = cacheResult && cache != null;
+            string cacheKey = null;
+
+            if (cacheResult)
+            {
+                cacheKey = string.Format(
+                    "RequestLifeCycleHandler.PreferredUrl_{0}{1}{2}{3}",
+                    contentItem.ID,
+                    contentItem.Updated.Ticks,
+                    contentItem.State, // forces re-calc when a page is published
+                    siteBaseUrl);
+                string cachedResult = cache[cacheKey] as string;
+                if (!string.IsNullOrEmpty(cachedResult))
+                    return cachedResult;
+            }
+
+            //
+            // Not in cache, calc result
+
+            string result;
+            if ((contentItem.SafeParent == null) || (contentItem.SafeParent == Find.RootItem))
+                result = siteBaseUrl.ToString(); // contentItem.Url.ToUri(siteBaseUrl).ToString();
+            else
+            {
+                result = new Uri(
+                    siteBaseUrl,
+                    contentItem.Url).ToString();
+            }
+
+            //
+            // Cache result
+
+            if (cacheResult)
+                cache[cacheKey] = result;
+
+            return result;
+        }
+        #endregion
+
+        /// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
 		/// <param name="broker"></param>
 		/// <param name="dispatcher"></param>
@@ -122,8 +229,34 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
-			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
+
+            //TODO: Add ForceConsistentUrls property?
+
+            HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
+            Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
+            string
+                rawUrl = new Uri(requestBaseUrl, httpContext.Request.RawUrl).ToString(),
+                preferredUrl = GetPreferredUrl(webContext.CurrentPage, requestBaseUrl);
+
+            if (!rawUrl.Equals(preferredUrl, StringComparison.InvariantCulture))
+            {
+                int queryStringIndex = rawUrl.IndexOf('?');
+                if (queryStringIndex < 0) // Not equal to SafeUrl - redirect
+                    RedirectPermanent(httpContext.Response, preferredUrl);
+                else if (queryStringIndex != preferredUrl.Length)
+                {
+                    // There was a query string - this could have caused the difference
+                    string
+                        queryString = rawUrl.Substring(queryStringIndex),
+                        destination = preferredUrl + queryString;
+                    RedirectPermanent(httpContext.Response, destination);
+                }
+            }
+            else
+            {
+                var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
+                adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
+            }
 		}
 
 		protected virtual void Application_Error(object sender, EventArgs e)
