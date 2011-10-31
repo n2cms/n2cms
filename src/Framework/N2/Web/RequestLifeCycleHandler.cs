@@ -39,7 +39,8 @@ namespace N2.Web
         }
 
         /// <summary>
-        /// Get's the <see cref="ISitesSource"/> provider for the given <see cref="ContentItem"/>.
+        /// Get's the <see cref="ISitesSource"/> provider for the given <see cref="ContentItem"/>,
+        /// null: no site source found for the item (e.g. Root item).
         /// </summary>
         /// <param name="contentItem"></param>
         /// <returns></returns>
@@ -56,7 +57,7 @@ namespace N2.Web
                     return result;
 
                 currentItem = currentItem.Parent;
-            } while (currentItem.Parent != null);
+            } while ((currentItem != null) && (currentItem.Parent != null)); 
 
             return Find.StartPage as ISitesSource;
         }
@@ -77,16 +78,19 @@ namespace N2.Web
             HttpContext httpContext = HttpContext.Current;
             HttpRequest request = httpContext.Request;
             N2.Web.ISitesSource sitesSource = GetSitesSource(contentItem);
-            IEnumerable<N2.Web.Site> sites = sitesSource.GetSites();
+            IEnumerable<N2.Web.Site> sites = sitesSource != null ? sitesSource.GetSites() : null;
+            if (sites == null)
+              return contentItem.Url; // no site source, e.g. RootPage
             N2.Web.Site site = sites // Try to match domain, otherwise default to first-available authority
                 .Where(s =>
-                    s.Authority.Equals(request.Url.Authority, StringComparison.OrdinalIgnoreCase))
+                    !string.IsNullOrEmpty(s.Authority) && s.Authority.Equals(request.Url.Authority, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault()
                 ?? sites.FirstOrDefault();
 
-            Uri siteBaseUrl = (site != null) // "Safe" URLs are fully qualified
-                ? new Uri(string.Format("{0}{1}{2}", request.Url.Scheme, Uri.SchemeDelimiter, site.Authority))
-                : requestBaseUri;
+            bool siteHttpsRequired = false; // TODO: site != null ? site.HttpsRequired : false;
+            Uri siteBaseUrl = (site != null) && !string.IsNullOrEmpty(site.Authority) // "Safe" URLs are fully qualified
+                ? GetRequestBaseUrl(request.Url.Scheme, site.Authority, siteHttpsRequired)
+                : GetRequestBaseUrl(request, siteHttpsRequired);
 
             //
             // Check cache
@@ -129,6 +133,26 @@ namespace N2.Web
 
             return result;
         }
+        
+        /// <summary>
+        /// Determines the base URL of the current request.
+        /// </summary>
+        private static Uri GetRequestBaseUrl(HttpRequest request, bool httpsRequired)
+        {
+          Uri requestUrl = request.Url;
+          return GetRequestBaseUrl(requestUrl.Scheme, requestUrl.Authority, httpsRequired);
+        }
+
+        /// <summary>
+        /// Determines the base URL of the current request.
+        /// </summary>
+        private static Uri GetRequestBaseUrl(string requestUrlScheme, string requestUrlAuthority, bool httpsRequired)
+        {
+          if (httpsRequired)
+            requestUrlScheme = "https";
+          return new Uri(string.Format("{0}{1}{2}", requestUrlScheme, Uri.SchemeDelimiter, requestUrlAuthority));
+        }
+        
         #endregion
 
         /// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
@@ -225,16 +249,20 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-
             //TODO: Add ForceConsistentUrls property?
 
             HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
-            Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
+            
+            Uri requestBaseUrl = GetRequestBaseUrl(httpContext.Request, false); // new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
+            Uri rawUri = new Uri(requestBaseUrl, httpContext.Request.RawUrl);
             string
-                rawUrl = new Uri(requestBaseUrl, httpContext.Request.RawUrl).ToString(),
+                rawUrl = rawUri.ToString(),
                 preferredUrl = GetPreferredUrl(webContext.CurrentPage, requestBaseUrl);
 
-            if (!rawUrl.Equals(preferredUrl, StringComparison.InvariantCulture))
+            // Don't redirect default.aspx ASP.NET helper
+            bool isMvcHelper = rawUri.AbsolutePath.EndsWith("default.aspx", StringComparison.InvariantCultureIgnoreCase);
+
+            if (!isMvcHelper && !rawUrl.Equals(preferredUrl, StringComparison.InvariantCulture))
             {
                 int queryStringIndex = rawUrl.IndexOf('?');
                 if (queryStringIndex < 0) // Not equal to SafeUrl - redirect
