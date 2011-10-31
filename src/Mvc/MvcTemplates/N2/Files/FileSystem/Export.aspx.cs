@@ -28,6 +28,7 @@ namespace N2.Edit.FileSystem
             var directory = Directory.New(fileSystem.GetDirectory(rootPath), null, fileSystem, Engine.Resolve<ImageSizeCache>());
 
             Response.Clear();
+            Response.BufferOutput = false;
             Response.ContentType = "application/zip";
             Response.AddHeader("content-disposition", "filename=" + zipFileName);
             
