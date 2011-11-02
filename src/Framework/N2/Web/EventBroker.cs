@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Web;
 using N2.Engine;
 
@@ -36,6 +37,7 @@ namespace N2.Web
 			application.PostMapRequestHandler += Application_PostMapRequestHandler;
 
 			application.AcquireRequestState += Application_AcquireRequestState;
+            application.PreRequestHandlerExecute += Application_PreRequestHandlerExecute;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
 
@@ -48,6 +50,7 @@ namespace N2.Web
 		public EventHandler<EventArgs> PostResolveAnyRequestCache;
 		public EventHandler<EventArgs> AcquireRequestState;
 		public EventHandler<EventArgs> PostMapRequestHandler;
+        public EventHandler<EventArgs> PreRequestHandlerExecute;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
@@ -101,6 +104,15 @@ namespace N2.Web
 			}
 		}
 
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            if (PreRequestHandlerExecute != null && !IsStaticResource(sender))
+            {
+                Debug.WriteLine("Application_PreRequestHandlerExecute");
+                PreRequestHandlerExecute(sender, e);
+            }
+        }
+
 		protected void Application_Error(object sender, EventArgs e)
 		{
 			if (Error != null && !IsStaticResource(sender))
@@ -131,7 +143,6 @@ namespace N2.Web
 		/// .jpeg
 		/// .js
 		/// .axd
-		/// .ashx
 		/// </remarks>
 		protected static bool IsStaticResource(object sender)
 		{
@@ -139,10 +150,9 @@ namespace N2.Web
 			if(application != null)
 			{
 				string path = application.Request.Path;
-				string extension = VirtualPathUtility.GetExtension(path);
-				
-				if(extension == null) return false;
 
+				string extension = VirtualPathUtility.GetExtension(path);
+				if(extension == null) return false;
 				switch (extension.ToLower())
 				{
 					case ".gif":
@@ -153,7 +163,7 @@ namespace N2.Web
 					case ".js":
 					case ".css":
 					case ".axd":
-						return true;
+                        return File.Exists(application.Request.PhysicalPath);
 				}
 			}
 			return false;

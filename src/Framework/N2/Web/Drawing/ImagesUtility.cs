@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Hosting;
+using N2.Edit.FileSystem;
 
 namespace N2.Web.Drawing
 {
@@ -54,7 +55,7 @@ namespace N2.Web.Drawing
 			string preferredUrl = ImagesUtility.GetResizedPath(imageUrl, preferredSize);
 			try
 			{
-				if (HostingEnvironment.VirtualPathProvider.FileExists(preferredUrl))
+                if ((Context.Current.Resolve<IFileSystem>()).FileExists(preferredUrl))
 					return preferredUrl;
 			}
 			catch (InvalidOperationException)
