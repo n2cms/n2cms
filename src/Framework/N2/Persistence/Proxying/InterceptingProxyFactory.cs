@@ -94,52 +94,13 @@ namespace N2.Persistence.Proxying
 			}
 		}
 
-        class SpecificMethodsGenerationHook : IProxyGenerationHook
-        {
-            private HashSet<MethodInfo> interceptedMethods;
-            object hashObject = new object(); 
-
-            public SpecificMethodsGenerationHook(IEnumerable<MethodInfo> interceptedMethods)
-            {
-                this.interceptedMethods = new HashSet<MethodInfo>(interceptedMethods);
-            }
-
-            public void MethodsInspected()
-            {
-            }
-
-            public void NonProxyableMemberNotification(Type type, MemberInfo memberInfo)
-            {
-            }
-
-            public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
-            {
-                return interceptedMethods.Contains(methodInfo);
-            }
-
-            #region Equals & GetHashCode
-
-            public override bool Equals(object obj)
-            {
-                return obj.GetHashCode() == GetHashCode();
-            }
-
-            public override int GetHashCode()
-            {
-                return hashObject.GetHashCode();
-            }
-
-            #endregion
-        }
-
 		public override object Create(string typeName, object id)
 		{
 			Tuple tuple;
 			if (!types.TryGetValue(typeName, out tuple))
 				return null;
 
-            var options = new ProxyGenerationOptions(new SpecificMethodsGenerationHook(tuple.Builder.GetInterceptedMethods()));
-			return generator.CreateClassProxy(tuple.Type, additionalInterfacesToProxy, options, tuple.Builder.Interceptor);
+            return generator.CreateClassProxy(tuple.Type, additionalInterfacesToProxy, tuple.Builder.Interceptor);
 		}
 
 		public override bool OnSaving(object instance)
