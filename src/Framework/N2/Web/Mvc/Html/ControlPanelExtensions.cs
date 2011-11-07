@@ -61,23 +61,51 @@ namespace N2.Web.Mvc.Html
 
 		public class ControlPanelHelper
 		{
-			bool refreshNavigation = true;
+            bool refreshNavigation = true;
+
+            public bool includeJQuery = true;
+            public bool includeJQueryPlugins = true;
+            public bool includePartScripts = true;
+            public bool includePartStyles = true;
+
 			public ContentItem currentItem;
 
 			public HtmlHelper Html { get; set; }
 
-			public ControlPanelHelper RefreshNavigation(bool refreshNavigation)
+            /// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
+            /// <param name="jQuery"></param>
+            /// <param name="jQueryPlugins"></param>
+            /// <param name="partScripts"></param>
+            /// <param name="partStyles"></param>
+            /// <returns></returns>
+            public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
+            {
+                includeJQuery = jQuery;
+                includeJQueryPlugins = jQueryPlugins;
+                includePartScripts = partScripts;
+                includePartStyles = partStyles;
+
+                return this;
+            }
+
+            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
+            /// <param name="refreshNavigation"></param>
+            /// <returns></returns>
+            public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
 			{
 				this.refreshNavigation = refreshNavigation;
 				return this;
 			}
 
+            /// <summary>Sets the selected item control panel plugins are bound to.</summary>
+            /// <param name="currentItem"></param>
+            /// <returns></returns>
 			public ControlPanelHelper Selected(ContentItem currentItem)
 			{
 				this.currentItem = currentItem;
 				return this;
 			}
-
+            
 			public override string ToString()
 			{
 				using (var tw = new StringWriter())
@@ -123,11 +151,11 @@ namespace N2.Web.Mvc.Html
 					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item)
 				};
 
-				Html.Resources(writer).JQuery()
-					.Constnats()
-					.JQueryPlugins()
-					.JQueryUi()
-					.JavaScript("{ManagementUrl}/Resources/Js/parts.js").StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
+                var resources = Html.Resources(writer);
+                if(includeJQuery) resources.JQuery();
+                if(includeJQueryPlugins) resources.JQueryPlugins().JQueryUi();
+                if(includePartScripts) resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
+                if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
 				if (refreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));
