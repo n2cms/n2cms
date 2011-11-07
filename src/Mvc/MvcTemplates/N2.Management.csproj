@@ -118,8 +118,8 @@
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
     <Content Include="N2\Resources\Js\EditableTags.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
