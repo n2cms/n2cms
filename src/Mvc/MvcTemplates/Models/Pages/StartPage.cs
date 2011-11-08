@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Start Page",
 		Description = "A start page template. It displays a horizontal meny but no vertical menu.",
 		SortOrder = 440,
-		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
+		InstallerVisibility = InstallerHint.PreferredStartPage,
 		IconUrl = "~/Content/Img/page_world.png")]
 	[RestrictParents(typeof (IRootPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), 
