@@ -8,7 +8,6 @@ namespace N2.Management.Myself
     [PageDefinition("Root Page (fallback)", 
 		Description = "A fallback root page used to organize start pages. This root can be replaced or inherited in a web application project.", 
 		SortOrder = 0,
-		InstallerVisibility = InstallerHint.PreferredRootPage,
 		IconUrl = "{ManagementUrl}/Resources/icons/page_gear.png",
 		TemplateUrl = "{ManagementUrl}/Myself/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
