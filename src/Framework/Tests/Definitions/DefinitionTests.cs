@@ -288,6 +288,7 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
+		[Obsolete]
 		public void ItemAllowedInNamedZones_IsNotAllowedIn_ZoneWithoutName()
 		{
 			var pageDefinition = definitions.GetDefinition(typeof(DefinitionTextPage));
@@ -347,6 +348,7 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
+		[Obsolete]
 		public void ReplacingDefinition_ShowsUp_InAllowedChildDefinitions()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
@@ -405,6 +407,7 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
+		[Obsolete]
 		public void ReplaceDefinitionsAttribute_CanRemove_TheSuppliedDefinitions()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));

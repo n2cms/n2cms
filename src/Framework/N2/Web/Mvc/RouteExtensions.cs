@@ -31,9 +31,9 @@ namespace N2.Web.Mvc
 		/// <param name="key">The key of this particular external content.</param>
 		/// <param name="url">The url on which this external content item is displayed.</param>
 		/// <returns>The external content item itself.</returns>
-		public static ContentItem ApplyExternalContent(this RouteData data, string family, string key, string url)
+		public static ContentItem ApplyExternalContent(this RouteData data, string family, string key, string url, Type contentType = null)
 		{
-			var item = ResolveService<Edit.IExternalContentRepository>(data).GetOrCreate(family, key, url);
+			var item = ResolveService<Edit.IExternalContentRepository>(data).GetOrCreate(family, key, url, contentType);
 			data.ApplyContentItem(ContentRoute.ContentPageKey, item);
 			return item;
 		}

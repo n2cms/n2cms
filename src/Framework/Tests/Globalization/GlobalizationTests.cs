@@ -327,7 +327,7 @@ namespace N2.Tests.Globalization
 		public void LanguageKey_IsSetOnOriginalItem_WhenSavingOtherItem()
 		{
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
-			engine.Persister.Repository.Save(englishSub); // bypass events
+			engine.Persister.Repository.SaveOrUpdate(englishSub); // bypass events
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
             using (new LanguageKeyScope(engine, englishSub.ID))

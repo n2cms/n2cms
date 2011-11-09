@@ -11,7 +11,7 @@ namespace N2.Tests.Persistence.NH
 	[TestFixture, Category("Integration")]
 	public class ItemRepositoryTests : DatabasePreparingBase
 	{
-		NHRepository<int, ContentItem> repository;
+		NHRepository<ContentItem> repository;
 		new ISessionProvider sessionProvider;
 
 		[SetUp]
@@ -115,7 +115,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSaveDetail()
 		{
-			IRepository<int, N2.Details.ContentDetail> detailRepository = new NHRepository<int, N2.Details.ContentDetail>(sessionProvider);
+			IRepository<N2.Details.ContentDetail> detailRepository = new NHRepository<N2.Details.ContentDetail>(sessionProvider);
 
 			using (repository)
 			{
@@ -134,7 +134,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanDeleteDetail()
 		{
-			IRepository<int, ContentDetail> detailRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+			IRepository<ContentDetail> detailRepository = new NHRepository<ContentDetail>(sessionProvider);
 
 			using (repository)
 			{
@@ -156,7 +156,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void DeleteItemCascadesDetails()
 		{
-			IRepository<int, ContentDetail> detailRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+			IRepository<ContentDetail> detailRepository = new NHRepository<ContentDetail>(sessionProvider);
 			int itemID = 0;
 
 			using (repository)

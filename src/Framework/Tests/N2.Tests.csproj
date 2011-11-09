@@ -145,6 +145,7 @@
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\RestrictCardinalityTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\DetailRemoveTests.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Details\Models\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />
     <Compile Include="Details\Models\Multiple.cs" />
+    <Compile Include="Edit\ContainerRepositoryTests.cs" />
     <Compile Include="Edit\EditUrlManagerTests.cs" />
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Engine\ServiceContainerTests.cs" />
     <Compile Include="Engine\Services\Services.cs" />
     <Compile Include="Fakes\FakeDatabaseStatusCache.cs" />
+    <Compile Include="Fakes\FakeDependencyInjector.cs" />
     <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
     <Compile Include="Fakes\FakeEditUrlManager.cs" />
     <Compile Include="Fakes\FakeMappedFileSystem.cs" />
@@ -196,6 +199,7 @@
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
+    <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />

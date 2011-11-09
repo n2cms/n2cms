@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Web;
+using N2.Edit;
 
 namespace N2.Resources
 {
@@ -13,7 +14,7 @@ namespace N2.Resources
 	public static class Register
 	{
 		public static bool Debug { get; set; }
-		public const string JQueryVersion = "1.6.1";
+		public const string JQueryVersion = "1.7";
 
 		#region page StyleSheet
 
@@ -377,5 +378,10 @@ namespace N2.Resources
 			return string.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />", Url.ResolveTokens(resourceUrl));
 		}
 		#endregion
+
+		internal static string SelectedQueryKeyRegistrationScript()
+		{
+			return "n2SelectedQueryKey = '" + SelectionUtility.SelectedQueryKey + "';";
+		}
 	}
 }

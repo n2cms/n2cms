@@ -112,6 +112,11 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
+        public string ToHtmlString()
+        {
+            return ToString();
+        }
+
         internal void Render(TextWriter writer)
         {
             if (!string.IsNullOrEmpty(path))

@@ -14,12 +14,12 @@ namespace N2.Edit
 
 		public EditUrlManager(EditSection config)
 		{
-			ManagementInterfaceUrl = config.ManagementInterfaceUrl.TrimEnd('/');
-			EditTreeUrl = config.EditTreeUrl;
-			EditItemUrl = config.EditItemUrl;
-			EditInterfaceUrl = config.EditInterfaceUrl;
-			NewItemUrl = config.NewItemUrl;
-			DeleteItemUrl = config.DeleteItemUrl;
+			ManagementInterfaceUrl = config.Paths.ManagementInterfaceUrl.TrimEnd('/');
+			EditTreeUrl = config.Paths.EditTreeUrl;
+			EditItemUrl = config.Paths.EditItemUrl;
+			EditInterfaceUrl = config.Paths.EditInterfaceUrl;
+			NewItemUrl = config.Paths.NewItemUrl;
+			DeleteItemUrl = config.Paths.DeleteItemUrl;
 		}
 
 		protected virtual string EditInterfaceUrl { get; set; }
@@ -45,8 +45,8 @@ namespace N2.Edit
 		{
 			if (selectedItem == null)
 				return null;
-
-			return Url.Parse(EditTreeUrl).AppendQuery("selected", selectedItem.Path);
+			
+			return Url.Parse(EditTreeUrl).AppendQuery(SelectionUtility.SelectedQueryKey, selectedItem.Path);
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>
@@ -145,7 +145,7 @@ namespace N2.Edit
 				throw new N2Exception("Cannot insert item before or after the root page.");
 
 			Url url = Url.ResolveTokens(EditItemUrl);
-			url = url.AppendQuery("selected", parent.Path);
+			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
 			url = url.AppendQuery("zoneName", zoneName);
 			if (!string.IsNullOrEmpty(definition.TemplateKey))
@@ -171,14 +171,14 @@ namespace N2.Edit
 				return string.Format("{0}?selectedUrl={1}", editUrl,
 				                     HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
 
-			return Url.Parse(editUrl).AppendQuery("selected", item.Path);
+			return Url.Parse(editUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
 		}
 
 		private static string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
 			Url url = Url.ResolveTokens(path);
 			if (selectedItem != null)
-				url = url.AppendQuery("selected=" + selectedItem.Path);
+				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
 			return url;
 		}
 	}

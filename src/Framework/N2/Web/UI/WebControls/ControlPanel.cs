@@ -231,6 +231,7 @@ jQuery(document).ready(function(){{
 
 		private void RegisterDragDropScripts()
 		{
+			Register.JavaScript(Page, Register.SelectedQueryKeyRegistrationScript(), ScriptPosition.Header, ScriptOptions.ScriptTags | ScriptOptions.Prioritize);
 			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
@@ -244,14 +245,14 @@ jQuery(document).ready(function(){{
 			Controls.Add(pluginPanel);
 
 			ContentItem start = Engine.Resolve<IUrlParser>().StartPage;
-			ContentItem root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
 				var span = new HtmlGenericControl("span");
 				span.Attributes["class"] = "control";
 				pluginPanel.Controls.Add(span);
 
-				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine, new HttpContextWrapper(Context)));
+				plugin.AddTo(span, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 

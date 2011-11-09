@@ -6,8 +6,6 @@
 	<ItemGroup>
 		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
 																		 $(LibFolder)\Castle.Windsor.*;
-																		 $(LibFolder)\Iesi.Collections.dll;
-																		 $(LibFolder)\log4net.dll;
 																		 $(LibFolder)\NHibernate.dll;
 																		 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
 																		 $(RootFolder)\lib\System.Data.SQLite.dll"/>
@@ -24,6 +22,7 @@
 	<!-- Build -->
 
 	<Target Name="Framework-Build" DependsOnTargets="Framework-PrepareDependencies">
+    <Message Text="Configuration=$(Configuration);Platform=$(Platform)"/>
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 

@@ -164,7 +164,8 @@
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -508,17 +509,22 @@
 									<xs:attribute name="externalItemType" type="xs:string" use="optional" default="N2.Management.Externals.ExternalItem, N2.Management" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="paths" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="selectedQueryKey" type="xs:string" use="optional" default="selected" />
+									<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
+									<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />
+									<xs:attribute name="uploadFolderUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editItemUrl" type="xs:string" use="optional" />
+									<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
+									<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
+									<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
-						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />
-						<xs:attribute name="uploadFolderUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editItemUrl" type="xs:string" use="optional" />
-						<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
-						<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
-						<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
-						<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
 					</xs:complexType>
 				</xs:element>
 			</xs:all>

@@ -118,8 +118,8 @@
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
     <Content Include="N2\Resources\Js\EditableTags.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
@@ -311,6 +311,7 @@
     <Compile Include="N2\Files\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FileSystemSource.cs" />
     <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -342,6 +343,8 @@
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
       <DependentUpon>UploadFile.ashx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FolderNodeProvider.cs" />
+    <Compile Include="N2\Files\FolderPair.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />

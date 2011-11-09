@@ -46,7 +46,7 @@ namespace N2.Management.Content.Templates
 				Description = template.GetDetail(TemplateDescription, ""),
 				TemplateUrl = template.Url,
 				Definition = map.GetOrCreateDefinition(template.GetContentType(), template.Name),
-				Template = () =>
+				TemplateFactory = () =>
 				{
 					var clone = template.Clone(true);
 					clone.SetDetail(TemplateDescription, null, typeof(string));
@@ -55,7 +55,7 @@ namespace N2.Management.Content.Templates
 					clone.TemplateKey = template.Name;
 					return clone;
 				},
-				Original = () => template
+				OriginalFactory = () => template
 			};
 			return info;
 		}
@@ -78,7 +78,7 @@ namespace N2.Management.Content.Templates
 			{
 				if (template.Definition.ItemType != contentType)
 					continue;
-				if (!template.Template().IsAuthorized(user))
+				if (!template.TemplateFactory().IsAuthorized(user))
 					continue;
 
 				yield return template;

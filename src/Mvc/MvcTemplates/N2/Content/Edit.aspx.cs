@@ -13,13 +13,13 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
+	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation", 
 		RequiredPermission = Permission.Write)]
-	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
+	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write)]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing, 
 		RequiredPermission = Permission.Write)]
@@ -247,10 +247,10 @@ namespace N2.Edit
 		private void InitPlugins()
 		{
 			var start = Engine.Resolve<IUrlParser>().StartPage;
-			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			var root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (EditToolbarPluginAttribute plugin in EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root,
+				plugin.AddTo(phPluginArea, new PluginContext(Selection, start, root,
 					ControlPanelState.Visible, Engine, new HttpContextWrapper(Context)));
 			}
 		}

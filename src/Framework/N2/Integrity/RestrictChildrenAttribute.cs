@@ -56,7 +56,7 @@ namespace N2.Integrity
 		{
 			if (IsAssignable(context.ChildDefinition.ItemType))
 				if(TemplateNames == null || TemplateNames.Contains(context.ChildDefinition.TemplateKey))
-					return AllowedDefinitionResult.Allow;
+					return AllowedDefinitionResult.DontCare;
 			
 			return AllowedDefinitionResult.Deny;
 		}

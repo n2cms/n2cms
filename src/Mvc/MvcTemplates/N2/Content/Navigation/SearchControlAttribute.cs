@@ -14,7 +14,7 @@ namespace N2.Edit.Navigation
         {
             Literal l = new Literal();
             l.Text = string.Format(@"
-<form target='navigation' method='get' action='Navigation/Search.aspx'>
+<form target='navigation' method='get' action='Content/Navigation/Search.aspx'>
     <input type='text' name='query' class='tb' value='{0}' onfocus='if(this.value==""{0}""){{this.value=""""}}' onblur='if(this.value==""""){{this.value=""{0}"";}}'/>
     <button type='submit' name='submit' class='s'>{0}</button>
 </form>", Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title);

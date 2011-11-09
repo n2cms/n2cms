@@ -5,6 +5,8 @@ using N2.Persistence;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Persistence.Sources;
+using N2.Security;
 
 namespace N2.Tests.Persistence
 {

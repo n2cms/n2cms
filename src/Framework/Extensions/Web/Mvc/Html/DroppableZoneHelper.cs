@@ -64,6 +64,11 @@ namespace N2.Web.Mvc.Html
 				base.Render(writer);
 		}
 
+        protected override string GetInterface()
+        {
+            return state.GetInterface();
+        }
+
 		protected void RenderReplacingPreviewed(TextWriter writer, string preview)
 		{
 			int itemID;
@@ -72,7 +77,7 @@ namespace N2.Web.Mvc.Html
 				ContentItem previewedItem = Html.ResolveService<IPersister>().Get(itemID);
 				if (previewedItem != null && previewedItem.VersionOf != null)
 				{
-					foreach (var child in PartsAdapter.GetItemsInZone(CurrentItem, ZoneName))
+					foreach (var child in PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()))
 					{
 						if (previewedItem.VersionOf == child)
 							RenderTemplate(writer, previewedItem);

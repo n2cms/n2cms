@@ -8,9 +8,9 @@ namespace N2.Management.Installation
 	public class UpdateAlteredPermissionsMigration : AbstractMigration
 	{
 		InstallationManager installer;
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 
-		public UpdateAlteredPermissionsMigration(IRepository<int, ContentItem> repository, InstallationManager installer)
+		public UpdateAlteredPermissionsMigration(IRepository<ContentItem> repository, InstallationManager installer)
 		{
 			this.repository = repository;
 			this.installer = installer;
@@ -32,7 +32,7 @@ namespace N2.Management.Installation
 				foreach (var item in installer.ExecuteQuery(InstallationManager.QueryItemsWithAuthorizedRoles))
 				{
 					item.AlteredPermissions |= Permission.Read;
-					repository.Update(item);
+					repository.SaveOrUpdate(item);
 					updatedItems++;
 				}
 

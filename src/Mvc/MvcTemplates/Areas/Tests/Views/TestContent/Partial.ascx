@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<N2.Definitions.ItemDefinition>>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<N2.Definitions.ItemDefinition>>" %>
 
 <div class="uc">
 	<h4 title="<%= Html.CurrentPage().Title %>/<%= Html.CurrentItem().Title %>">Random Content Creator</h4>

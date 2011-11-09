@@ -23,7 +23,7 @@ namespace N2.Persistence
 		/// <summary>Gets the site's root items.</summary>
 		public static TRoot RootItem
 		{
-			get { return (TRoot)Context.Current.Persister.Repository.Load(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
+			get { return (TRoot)Context.Current.Persister.Repository.Get(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
 		/// <summary>Gets the currently displayed page (based on the query string).</summary>

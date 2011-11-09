@@ -1,1 +1,1 @@
-﻿This is some code that should be in the N2 framework but has been placed here due to .NET 4 dependency.
+﻿Upgrade notice: the code that was previously here has moved to N2.Razor. Please update your references and remove any code left here.

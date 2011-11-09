@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Edit.Globalization
 {
-    [ToolbarPlugin("LANGS", "globalization", "{ManagementUrl}/Content/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/world.png", 150, 
+    [ToolbarPlugin("LANGS", "globalization", "{ManagementUrl}/Content/Globalization/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/world.png", 150, 
 		ToolTip = "view translations",
 		GlobalResourceClassName = "Toolbar",
 		OptionProvider = typeof(GlobalizationOptionProvider))]
@@ -25,7 +25,7 @@ namespace N2.Edit.Globalization
 
         private void Initialize()
         {
-            gateway = Engine.Resolve<ILanguageGateway>();
+            gateway = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(Selection.SelectedItem);
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
             bool isGlobalized = gateway.GetLanguage(Selection.SelectedItem) != null;

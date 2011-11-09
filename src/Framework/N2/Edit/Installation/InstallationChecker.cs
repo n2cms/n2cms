@@ -26,11 +26,15 @@ namespace N2.Edit.Installation
 			if (configuration.Sections.Management.Installer.CheckInstallationStatus)
 			{
 				welcomeUrl = configuration.Sections.Management.Installer.WelcomeUrl;
-				managementUrl = configuration.Sections.Management.ManagementInterfaceUrl;
+				managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;
 				this.webContext = webContext;
 				this.broker = broker;
-				this.broker.BeginRequest += BeginRequest;
 				this.status = installer.GetStatus();
+
+				installer.UpdateStatus(status.Level);
+
+				if(status.Level != SystemStatusLevel.UpAndRunning)
+					this.broker.BeginRequest += BeginRequest;
 			}
 			else
 			{

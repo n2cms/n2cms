@@ -15,7 +15,7 @@ namespace N2.Edit.Globalization
         {
             string languageCode = Request["language"];
 
-            ILanguageGateway gateway = Engine.Resolve<ILanguageGateway>();
+            ILanguageGateway gateway = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(Selection.SelectedItem);
             ILanguage language = gateway.GetLanguage(languageCode);
 
             if (language != null)

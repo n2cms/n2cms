@@ -42,6 +42,11 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js");
 		}
 
+		public static ResourcesHelper Constnats(this ResourcesHelper registrator)
+		{
+			return registrator.JavaScript(Register.SelectedQueryKeyRegistrationScript(), ScriptOptions.ScriptTags);
+		}
+
 		public class ResourcesHelper
 		{
 			internal TextWriter Writer { get; set; }

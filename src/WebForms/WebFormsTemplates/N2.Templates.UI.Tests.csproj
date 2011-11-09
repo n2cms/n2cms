@@ -16,6 +16,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation />
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
+    <Content Include="Addons\UITests\UI\Languages.aspx" />
     <Content Include="Addons\UITests\UI\StaticPage_PostContent.aspx" />
     <Content Include="Addons\UITests\UI\EditableUc1.ascx" />
     <Content Include="Addons\UITests\UI\EditableUc2.ascx" />

@@ -8,9 +8,9 @@ namespace N2.Management.Installation
 	public class UpdateTemplateKeyMigration : AbstractMigration
 	{
 		InstallationManager installer;
-		IRepository<int, ContentDetail> repository;
+		IRepository<ContentDetail> repository;
 
-		public UpdateTemplateKeyMigration(IRepository<int, ContentDetail> repository, InstallationManager installer)
+		public UpdateTemplateKeyMigration(IRepository<ContentDetail> repository, InstallationManager installer)
 		{
 			this.repository = repository;
 			this.installer = installer;

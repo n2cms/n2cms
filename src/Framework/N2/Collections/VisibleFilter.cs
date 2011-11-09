@@ -9,5 +9,10 @@ namespace N2.Collections
 		{
 			return item.Visible;
 		}
+
+		public override string ToString()
+		{
+			return "IsVisible";
+		}
 	}
 }

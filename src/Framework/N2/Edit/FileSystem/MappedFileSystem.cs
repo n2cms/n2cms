@@ -21,12 +21,17 @@ namespace N2.Edit.FileSystem
 				yield break;
 			foreach (var file in new DirectoryInfo(path).GetFiles())
 				if(!file.Name.StartsWith("."))
-					yield return GetFile(N2.Web.Url.Combine(parentVirtualPath, file.Name));
+					yield return GetFile(N2.Web.Url.Combine(parentVirtualPath, file.Name), file);
 		}
 
 		public FileData GetFile(string virtualPath)
 		{
 			FileInfo info = new FileInfo(MapPath(virtualPath));
+			return GetFile(virtualPath, info);
+		}
+
+		private static FileData GetFile(string virtualPath, FileInfo info)
+		{
 
 			if (!info.Exists)
 				return null;
@@ -48,13 +53,17 @@ namespace N2.Edit.FileSystem
 				yield break;
 			foreach (var dir in new DirectoryInfo(path).GetDirectories())
 				if (!dir.Name.StartsWith("."))
-					yield return GetDirectory(N2.Web.Url.Combine(parentVirtualPath, dir.Name));
+					yield return GetDirectory(N2.Web.Url.Combine(parentVirtualPath, dir.Name), dir);
 		}
 
 		public DirectoryData GetDirectory(string virtualPath)
 		{
 			DirectoryInfo info = new DirectoryInfo(MapPath(virtualPath));
+			return GetDirectory(virtualPath, info);
+		}
 
+		private static DirectoryData GetDirectory(string virtualPath, DirectoryInfo info)
+		{
 			if (!info.Exists)
 				return null;
 
@@ -62,8 +71,8 @@ namespace N2.Edit.FileSystem
 			{ 
 				Name = info.Name,
 				Created = GetSafely(info, i => i.CreationTime),
-				Updated = GetSafely(info, i => i.LastWriteTime), 
-				VirtualPath = virtualPath 
+				Updated = GetSafely(info, i => i.LastWriteTime),
+				VirtualPath = virtualPath
 			};
 		}
 
@@ -152,7 +161,12 @@ namespace N2.Edit.FileSystem
 
 		private void CreateFile(string virtualPath, System.IO.Stream inputStream)
 		{
-			using (var s = File.Create(MapPath(virtualPath)))
+			var path = MapPath(virtualPath);
+			var dir = Path.GetDirectoryName(path);
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
+			using (var s = File.Create(path))
+
 			{
 				TransferBetweenStreams(inputStream, s);
 			}

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Diagnostics;
 using N2.Web;
 using N2.Engine;
@@ -32,9 +33,9 @@ namespace N2.Addons.UITests.Items
 	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveZoneAdapter : N2.Web.Parts.PartsAdapter
 	{
-		public override N2.Collections.ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
-		{
-			var items = base.GetItemsInZone(parentItem, zoneName);
+        public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem parentItem, string zoneName, string @interface)
+        {
+			var items = base.GetParts(parentItem, zoneName, @interface).ToList();
 
 			if (zoneName == "AutoZone1")
 			{

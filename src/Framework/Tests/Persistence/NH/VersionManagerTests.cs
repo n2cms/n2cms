@@ -157,7 +157,7 @@ namespace N2.Tests.Persistence.NH
 			persister.Save(item);
 			ContentItem version = versioner.SaveVersion(item);
 			version.Updated = DateTime.Now.AddSeconds(10);
-			engine.Persister.Repository.Save(version);
+			engine.Persister.Repository.SaveOrUpdate(version);
 			engine.Persister.Repository.Flush();
 
 			versioner.TrimVersionCountTo(item, 1);

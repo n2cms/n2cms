@@ -18,9 +18,11 @@ namespace N2.Engine.Globalization
 
         public override Control AddTo(Control container, PluginContext context)
         {
-            ILanguageGateway gateway = N2.Context.Current.Resolve<ILanguageGateway>();
-            if (!gateway.Enabled)
+            var selector = context.Engine.Resolve<LanguageGatewaySelector>();
+            if (!selector.Enabled || selector.LanguagesPerSite /*avoid showing options that might not be relevant */)
                 return null;
+
+            ILanguageGateway gateway = selector.GetAllLanguages();
 
             HtmlGenericControl div = new HtmlGenericControl("div");
             div.Attributes["class"] = "languages";
@@ -32,7 +34,7 @@ namespace N2.Engine.Globalization
             {
 				Url url = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
-                url = url.AppendQuery("selected={selected}");
+                url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "={selected}");
 
                 HyperLink h = new HyperLink();
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using N2.Edit;
 
 namespace N2.Web
 {
@@ -40,7 +41,6 @@ namespace N2.Web
 		static string itemQueryKey = "item";
 		static string pageQueryKey = "page";
 		static string partQueryKey = "part";
-		static string selectedQueryKey = "selected";
 
 		/// <summary>The item query string parameter.</summary>
 		public static string ItemQueryKey
@@ -66,8 +66,8 @@ namespace N2.Web
 		/// <summary>The selection query string parameter.</summary>
 		public static string SelectedQueryKey
 		{
-			get { return PathData.selectedQueryKey; }
-			set { PathData.selectedQueryKey = value; }
+			get { return SelectionUtility.SelectedQueryKey; }
+			set { SelectionUtility.SelectedQueryKey = value; }
 		}
 		#endregion
 
@@ -236,9 +236,9 @@ namespace N2.Web
 			
 			// reload persistent objects and clone non-immutable objects
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
-			data.CurrentItem = persister.Repository.Load(ID);
+			data.CurrentItem = persister.Repository.Get(ID);
 			if (PageID != 0)
-				data.CurrentPage = persister.Repository.Load(PageID);
+				data.CurrentPage = persister.Repository.Get(PageID);
 
 			return data;
 		}

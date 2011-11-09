@@ -13,7 +13,7 @@ using N2.Edit.Workflow;
 
 namespace N2.Management.Content
 {
-	[ToolbarPlugin("SITE", "site", "{ManagementUrl}/Content/EditRecursive.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/database_gear.png", 50, ToolTip = "edit",
+	[ToolbarPlugin("SITE", "site", "{ManagementUrl}/Content/EditRecursive.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/database_gear.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Write)]
 	public partial class EditRecursive : EditPage, IRecursiveContainerInterface

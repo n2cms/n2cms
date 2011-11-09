@@ -64,7 +64,7 @@ namespace N2.Collections
 		public IEnumerable<ILanguage> Translations(ContentItem item)
 		{
 			TryMasterVersion(ref item);
-			var lg = engine.Resolve<ILanguageGateway>();
+			var lg = engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
 			return lg.FindTranslations(item).Select(i => lg.GetLanguage(i));
 		}
 

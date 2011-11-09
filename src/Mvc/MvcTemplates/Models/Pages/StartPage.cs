@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Start Page",
 		Description = "A start page template. It displays a horizontal meny but no vertical menu.",
 		SortOrder = 440,
-		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
+		InstallerVisibility = InstallerHint.PreferredStartPage,
 		IconUrl = "~/Content/Img/page_world.png")]
 	[RestrictParents(typeof (IRootPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), 
@@ -26,13 +26,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		public const string LayoutArea = "layoutArea";
 
 		// site
-
-		[EditableText("Host Name", 72, ContainerName = MiscArea)]
-		public virtual string HostName
-		{
-			get { return (string) (GetDetail("HostName") ?? string.Empty); }
-			set { SetDetail("HostName", value); }
-		}
 
 		[EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea,
 			HelpText = "Display this page when the requested URL isn't found")]
@@ -72,8 +65,24 @@ namespace N2.Templates.Mvc.Models.Pages
 
 			Site s = new Site((Parent ?? this).ID, ID, HostName);
 			s.Wildcards = true;
+			if (SiteUpload)
+				s.UploadFolders.Add("~/Upload/" + HostName);
 
 			return new Site[] {s};
+		}
+
+		[EditableText("Host Name", 72, ContainerName = MiscArea)]
+		public virtual string HostName
+		{
+			get { return (string)(GetDetail("HostName") ?? string.Empty); }
+			set { SetDetail("HostName", value); }
+		}
+
+		[EditableCheckBox("Site Upload", 73, ContainerName = MiscArea)]
+		public virtual bool SiteUpload
+		{
+			get { return GetDetail("SiteUpload", false); }
+			set { SetDetail("SiteUpload", value, false); }
 		}
 
 		// content

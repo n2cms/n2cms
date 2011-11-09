@@ -43,5 +43,10 @@ namespace N2.Collections
 		}
 
 		#endregion
+
+		public override string ToString()
+		{
+			return "Distinct";
+		}
 	}
 }

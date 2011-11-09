@@ -199,8 +199,9 @@ namespace N2.Tests.Definitions
 		public void IsChildTypeAllowedWorksAsExpected()
 		{
 			ItemDefinition parentDefinition = engine.Definitions.GetDefinition(typeof(ItemWithDetails));
-			Assert.That(parentDefinition.GetAllowedChildren(engine.Definitions, null).Contains(engine.Definitions.GetDefinition(typeof(ItemInZone1Or2))));
-			Assert.That(!parentDefinition.GetAllowedChildren(engine.Definitions, null).Contains(engine.Definitions.GetDefinition(typeof(SideshowItem))));
+            var allowedChildren = parentDefinition.GetAllowedChildren(engine.Definitions, new ItemWithDetails());
+			Assert.That(allowedChildren.Contains(engine.Definitions.GetDefinition(typeof(ItemInZone1Or2))));
+            Assert.That(!allowedChildren.Contains(engine.Definitions.GetDefinition(typeof(SideshowItem))));
 		}
 
 		[Test]

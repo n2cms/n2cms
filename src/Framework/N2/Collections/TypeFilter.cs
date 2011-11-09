@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace N2.Collections
@@ -77,6 +78,11 @@ namespace N2.Collections
 		public static TypeFilter Of<T>()
 		{
 			return new TypeFilter(typeof (T));
+		}
+
+		public override string ToString()
+		{
+			return "Type is" + (Inverse ? "n't " : " ") + string.Join(",", AllowedTypes.Select(t => t.Name).ToArray());
 		}
 	}
 }

@@ -103,6 +103,8 @@ namespace N2.Engine
 		/// <param name="instance">The component instance to release.</param>
 		[Obsolete("Use Container.Release")]
 		void Release(object instance);
+
+		ContentHelperBase Content { get; }
 	}
 
 	public enum ComponentLifeStyle

@@ -9,19 +9,21 @@ using N2.Security;
 using N2.Web;
 using N2.Edit.Settings;
 using N2.Definitions;
+using N2.Persistence.Sources;
 
 namespace N2.Edit
 {
 	[Adapts(typeof(ContentItem))]
 	public class NodeAdapter : AbstractContentAdapter
 	{
-		IEditUrlManager editUrlManager;
-		IWebContext webContext;
-		IHost host;
-		IFileSystem fileSystem;
-		VirtualNodeFactory nodeFactory;
-		ISecurityManager security;
-		NavigationSettings settings;
+		private IEditUrlManager editUrlManager;
+		private IWebContext webContext;
+		private IHost host;
+		private IFileSystem fileSystem;
+		private VirtualNodeFactory nodeFactory;
+		private ISecurityManager security;
+		private NavigationSettings settings;
+		private ContentSource sources;
 
 		public NavigationSettings Settings
 		{
@@ -65,6 +67,12 @@ namespace N2.Edit
 			set { editUrlManager = value; }
 		}
 
+		public ContentSource Sources
+		{
+			get { return sources ?? engine.Resolve<ContentSource>(); }
+			set { sources = value; }
+		}
+
 
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
@@ -81,8 +89,7 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			IEnumerable<ContentItem> children;
-			children = GetNodeChildren(parent);
+			IEnumerable<ContentItem> children = GetNodeChildren(parent, userInterface);
 
 			foreach (var child in children)
 				yield return child;
@@ -98,14 +105,18 @@ namespace N2.Edit
 
 		protected virtual IEnumerable<ContentItem> GetNodeChildren(ContentItem parent)
 		{
-			IEnumerable<ContentItem> children;
+			return GetNodeChildren(parent, Interfaces.Viewing);
+		}
+
+		protected virtual IEnumerable<ContentItem> GetNodeChildren(ContentItem parent, string userInterface)
+		{
 			if (parent is IActiveChildren)
-				children = ((IActiveChildren)parent).GetChildren(new AccessFilter(WebContext.User, Security));
-			else if (Settings.DisplayDataItems)
-				children = parent.Children.Where(new AccessFilter(WebContext.User, Security));
-			else
-				children = parent.Children.FindPages().Where(new AccessiblePageFilter(WebContext.User, Security));
-			return children;
+				return ((IActiveChildren)parent).GetChildren(new AccessFilter(WebContext.User, Security));
+
+			var query = new Query { Parent = parent, Interface = userInterface };
+			if (!Settings.DisplayDataItems)
+				query.OnlyPages = true;
+			return Sources.GetChildren(query);
 		}
 
 		/// <summary>Returns true when an item has children.</summary>
@@ -114,7 +125,7 @@ namespace N2.Edit
 		/// <returns>True when there are children.</returns>
 		public virtual bool HasChildren(ContentItem parent, ItemFilter filter)
 		{
-			return parent.GetChildren(filter).Count > 0;
+			return Sources.HasChildren(new Query { Parent = parent, Filter = filter, Interface = Interfaces.Managing });
 		}
 
 		/// <summary>Gets the url used from the management UI when previewing an item.</summary>

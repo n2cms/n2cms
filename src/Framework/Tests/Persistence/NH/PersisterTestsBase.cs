@@ -33,7 +33,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			base.SetUp();
 
-            TestSupport.Setup(out persister, sessionProvider, finder, schemaCreator);
+            TestSupport.Setup(out persister, sessionProvider, schemaCreator);
 		}
 
 		[TearDown]

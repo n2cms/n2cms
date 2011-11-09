@@ -135,27 +135,52 @@ namespace N2.Persistence.Search
 				.FirstOrDefault();
 		}
 
+        public static class Properties
+        {
+            public const string ID = "ID";
+            public const string Title = "Title";
+            public const string Name = "Name";
+            public const string SavedBy = "SavedBy";
+            public const string Created = "Created";
+            public const string Updated = "Updated";
+            public const string Published = "Published";
+            public const string Expires = "Expires";
+            public const string Url = "Url";
+            public const string Path = "Path";
+            public const string AncestralTrail = "AncestralTrail";
+            public const string Trail = "Trail";
+            public const string AlteredPermissions = "AlteredPermissions";
+            public const string State = "State";
+            public const string IsPage = "IsPage";
+            public const string Roles = "Roles";
+            public const string Types = "Types";
+            public const string Language = "Language";
+
+            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language };
+        }
+
 		public virtual Document CreateDocument(ContentItem item)
 		{
 			var doc = new Document();
-			doc.Add(new Field("ID", item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Title", item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Name", item.Name ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("SavedBy", item.SavedBy ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Created", DateTools.DateToString(item.Created.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Updated", DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Published", item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Expires", item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Url", item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Path", item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("AncestralTrail", (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Trail", Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("AlteredPermissions", ((int)item.AlteredPermissions).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("State", ((int)item.State).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("IsPage", item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Roles", GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Types", GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Language", GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.ID, item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Title, item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(Properties.Name, item.Name ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.SavedBy, item.SavedBy ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Created, DateTools.DateToString(item.Created.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Updated, DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Published, item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Expires, item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+			if (item.IsPage)
+                doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Path, item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.AncestralTrail, (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Trail, Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.AlteredPermissions, ((int)item.AlteredPermissions).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.State, ((int)item.State).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.IsPage, item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Roles, GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(Properties.Types, GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)
