@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using N2.Collections;
 
 namespace N2.Security
 {
@@ -37,10 +38,6 @@ namespace N2.Security
 		/// <summary>Gets or sets wether this security manager is enabled in the current scope. In a web application this is equivalent to a request.</summary>
 		bool ScopeEnabled { get; set; }
 
-        /// <summary>Finds out wether a user has one of the given accesses.</summary>
-		[Obsolete("Use PermissionMap.IsInRoles")]
-		bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
-
 		/// <summary>Find out if a principal has a certain permission by default.</summary>
 		/// <param name="user">The principal to check for allowance.</param>
 		/// <param name="permission">The type of permission to map against.</param>
@@ -64,5 +61,10 @@ namespace N2.Security
 		/// <param name="item">The item for which permissions should be retrieved.</param>
 		/// <returns>A permission flag.</returns>
 		Permission GetPermissions(IPrincipal user, ContentItem item);
+
+		/// <summary>Gets a filter that filters for the given permission.</summary>
+		/// <param name="permission">The permission required.</param>
+		/// <returns>An item filter.</returns>
+		ItemFilter GetAuthorizationFilter(Permission permission);
 	}
 }

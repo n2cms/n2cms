@@ -101,9 +101,6 @@
     <Compile Include="Persistence\Search\ContentChangeTracker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Persistence\Search\IRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Persistence\Search\LuceneAccesor.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI;
@@ -8,8 +9,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Security;
-using System;
-using N2.Edit.Workflow;
+using N2.Edit;
 
 namespace N2.Web.Parts
 {

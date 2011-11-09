@@ -65,7 +65,7 @@ namespace N2.Web.Parts
                 Utility.Insert(item, parent, newIndex);
 
                 foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
-                    persister.Repository.Save(sibling);
+                    persister.Repository.SaveOrUpdate(sibling);
 			}
 
             persister.Save(item);

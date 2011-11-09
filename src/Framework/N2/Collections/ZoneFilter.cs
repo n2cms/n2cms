@@ -28,5 +28,10 @@ namespace N2.Collections
 		{
 			ItemFilter.Filter(items, new ZoneFilter(zoneName));
 		}
+
+		public override string ToString()
+		{
+			return "Zone=" + zoneName;
+		}
 	}
 }

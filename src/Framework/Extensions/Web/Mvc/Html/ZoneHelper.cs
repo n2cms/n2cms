@@ -2,7 +2,7 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
-using N2.Edit.Workflow;
+using N2.Edit;
 
 namespace N2.Web.Mvc.Html
 {

@@ -26,7 +26,7 @@ namespace N2.Edit.FileSystem
 
 			DataBind();
 
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+			Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
 		}
 
 		protected override void RegisterToolbarSelection()

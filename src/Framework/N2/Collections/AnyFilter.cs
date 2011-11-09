@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 
 namespace N2.Collections
@@ -49,6 +50,11 @@ namespace N2.Collections
 		public static ItemFilter Wrap(params ItemFilter[] filters)
 		{
 			return Wrap((IList<ItemFilter>)filters);
+		}
+
+		public override string ToString()
+		{
+			return "(" + string.Join("|", filters.Select(f => f.ToString()).ToArray()) + ")";
 		}
 	}
 }

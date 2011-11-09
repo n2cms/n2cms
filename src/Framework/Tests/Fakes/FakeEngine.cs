@@ -127,6 +127,11 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
+		public ContentHelperBase Content
+		{
+			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
+		}
+
 		#endregion
 
 		public class FakeServiceContainer : IServiceContainer

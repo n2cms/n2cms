@@ -239,9 +239,11 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\FindingTextSearcher.cs" />
+    <Compile Include="Engine\IDependencyInjector.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
@@ -269,6 +271,11 @@
     <Compile Include="Persistence\Search\TextExtractor.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
+    <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
+    <Compile Include="Persistence\Sources\SourceBase.cs" />
+    <Compile Include="Persistence\Sources\DatabaseSource.cs" />
+    <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
+    <Compile Include="Persistence\Sources\Query.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
     <Compile Include="Security\ISecurableBase.cs" />
@@ -470,7 +477,6 @@
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
-    <Compile Include="Obsolete\AuthorizedRolesAttribute.cs" />
     <Compile Include="Web\InvalidPathException.cs" />
     <Compile Include="Web\InitializerModule.cs" />
     <Compile Include="Web\IWebContext.cs" />
@@ -644,7 +650,7 @@
     <Compile Include="ContentState.cs" />
     <Compile Include="Edit\Workflow\IContentFormOfT.cs" />
     <Compile Include="Edit\Workflow\ICommandFactory.cs" />
-    <Compile Include="Edit\Workflow\Interfaces.cs" />
+    <Compile Include="Edit\Interfaces.cs" />
     <Compile Include="Edit\Workflow\IValidatorOfT.cs" />
     <Compile Include="Edit\Workflow\StateChangedEventArgs.cs" />
     <Compile Include="Edit\Workflow\StateChanger.cs" />

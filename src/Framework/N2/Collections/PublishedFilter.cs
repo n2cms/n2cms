@@ -18,5 +18,10 @@ namespace N2.Collections
 		{
 			return IsPublished(item);
 		}
+
+		public override string ToString()
+		{
+			return "Published";
+		}
 	}
 }

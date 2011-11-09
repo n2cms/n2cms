@@ -311,6 +311,7 @@
     <Compile Include="N2\Files\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FileSystemSource.cs" />
     <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -342,6 +343,8 @@
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
       <DependentUpon>UploadFile.ashx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FolderNodeProvider.cs" />
+    <Compile Include="N2\Files\FolderPair.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />

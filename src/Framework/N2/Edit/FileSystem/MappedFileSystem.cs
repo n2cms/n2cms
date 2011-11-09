@@ -155,6 +155,7 @@ namespace N2.Edit.FileSystem
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
 			using (var s = File.Create(path))
+
 			{
 				TransferBetweenStreams(inputStream, s);
 			}

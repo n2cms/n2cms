@@ -16,5 +16,10 @@ namespace N2.Collections
 		{
 			return (item.State & requiredState) == requiredState;
 		}
+
+		public override string ToString()
+		{
+			return "State=" + requiredState;
+		}
 	}
 }
