@@ -12,7 +12,7 @@
 	 %>
 	<script type="text/javascript">
 		function onUploadComplete() {
-			<%= GetRefreshScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation) %>;
+			<%= GetRefreshScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation, true) %>;
 		}
 	</script>
 	<object id="flashUploader" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
