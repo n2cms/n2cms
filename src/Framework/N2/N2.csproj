@@ -295,6 +295,7 @@
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
+    <Compile Include="Web\JsonWriter.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />

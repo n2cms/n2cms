@@ -93,6 +93,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\..\lib\Shouldly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -207,6 +210,7 @@
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
+    <Compile Include="Web\JsonWriterTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
