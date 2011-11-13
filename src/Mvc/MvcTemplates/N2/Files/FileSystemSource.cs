@@ -8,6 +8,7 @@ using N2.Persistence.Sources;
 using N2.Web;
 using N2.Persistence;
 using N2.Management.Files;
+using N2.Definitions;
 
 namespace N2.Management.Files
 {
