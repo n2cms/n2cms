@@ -17,50 +17,21 @@ namespace N2.Management.Files.FileSystem
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
-            UploadTheFile(context);
+            ValidateTicket(context.Request["ticket"]);
 
-            //var request = context.Request;
+            SelectionUtility selection = new SelectionUtility(context.Request, N2.Context.Current);
+            var fs = N2.Context.Current.Resolve<IFileSystem>();
 
-            //var ticket = FormsAuthentication.Decrypt(request["ticket"]);
-            //if (ticket.Expired)
-            //    throw new N2.N2Exception("Upload ticket expired");
-            //if(!ticket.Name.StartsWith("SecureUpload-"))
-            //    throw new N2.N2Exception("Unknown ticket");
+            List<FilesStatus> statuses;
 
-            //SelectionUtility selection = new SelectionUtility(request, N2.Context.Current);
-
-            //if (request.Files.Count > 0)
-            //{
-            //    var fs = N2.Context.Current.Resolve<IFileSystem>();
-            //    foreach (string key in request.Files.Keys)
-            //    {
-            //        var file = request.Files[key];
-            //        fs.WriteFile(Url.Combine(selection.SelectedItem.Url, file.FileName), file.InputStream);
-            //    }
-            //}
-		}
-
-		public bool IsReusable
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-        // Upload file to the server
-        private void UploadTheFile(HttpContext context)
-        {
-            var statuses = new List<FilesStatus>();
             var headers = context.Request.Headers;
-
             if (string.IsNullOrEmpty(headers["X-File-Name"]))
             {
-                UploadWholeFile(context, statuses);
+                statuses = UploadWholeFile(context, fs, selection).ToList();
             }
             else
             {
-                UploadPartialFile(headers["X-File-Name"], context, statuses);
+                statuses = UploadPartialFile(headers["X-File-Name"], context, fs, selection).ToList();
             }
 
             WriteJsonIframeSafe(context, statuses);
@@ -68,14 +39,12 @@ namespace N2.Management.Files.FileSystem
 
 
         // Upload partial file
-        private void UploadPartialFile(string fileName, HttpContext context, List<FilesStatus> statuses)
+        private IEnumerable<FilesStatus> UploadPartialFile(string fileName, HttpContext context, IFileSystem fs, SelectionUtility selection)
         {
             if (context.Request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
             var fileUpload = context.Request.Files[0];
             var inputStream = fileUpload.InputStream;
 
-            var selection = new SelectionUtility(context.Request, N2.Context.Current);
-            var fs = N2.Context.Current.Resolve<IFileSystem>();
             var virtualPath = Url.Combine(selection.SelectedItem.Url, fileName);
 
             using (var s = fs.OpenFile(virtualPath))
@@ -91,23 +60,21 @@ namespace N2.Management.Files.FileSystem
                 s.Flush();
                 s.Close();
             }
-            statuses.Add(new FilesStatus(virtualPath, fileUpload.ContentLength));
+            yield return new FilesStatus(virtualPath, fileUpload.ContentLength);
         }
 
         // Upload entire file
-        private void UploadWholeFile(HttpContext context, List<FilesStatus> statuses)
+        private IEnumerable<FilesStatus> UploadWholeFile(HttpContext context, IFileSystem fs, SelectionUtility selection)
         {
-            var fs = N2.Context.Current.Resolve<IFileSystem>();
-
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                var selection = new SelectionUtility(context.Request, N2.Context.Current);
                 var fileName = Path.GetFileName(file.FileName);
                 var virtualPath = Url.Combine(selection.SelectedItem.Url, fileName);
 
                 fs.WriteFile(virtualPath, file.InputStream);
-                statuses.Add(new FilesStatus(virtualPath, file.ContentLength));
+
+                yield return new FilesStatus(virtualPath, file.ContentLength);
             }
         }
 
@@ -130,6 +97,22 @@ namespace N2.Management.Files.FileSystem
             context.Response.Write(json);
         }
 
+        private static void ValidateTicket(string encryptedTicket)
+        {
+            var ticket = FormsAuthentication.Decrypt(encryptedTicket);
+            if (ticket.Expired)
+                throw new N2.N2Exception("Upload ticket expired");
+            if (!ticket.Name.StartsWith("SecureUpload-"))
+                throw new N2.N2Exception("Unknown ticket");
+        }
+
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
 	}
 
 

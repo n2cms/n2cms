@@ -34,15 +34,15 @@ namespace N2.Management.Files.FileSystem
 			}
 		}
 
-        //protected void btnAlternative_Command(object sender, CommandEventArgs args)
-        //{
-        //    if(fuAlternative.PostedFile.ContentLength > 0)
-        //    {
-        //        string filename = System.IO.Path.GetFileName(fuAlternative.PostedFile.FileName);
-        //        string url = Selection.SelectedItem.Url.TrimEnd('/') + "/" + filename;
-        //        Engine.Resolve<IFileSystem>().WriteFile(url, fuAlternative.PostedFile.InputStream);
-        //        Refresh(Selection.SelectedItem);
-        //    }
-        //}
+        protected void btnAlternative_Command(object sender, CommandEventArgs args)
+        {
+            if (fuAlternative.PostedFile.ContentLength > 0)
+            {
+                string filename = System.IO.Path.GetFileName(fuAlternative.PostedFile.FileName);
+                string url = Selection.SelectedItem.Url.TrimEnd('/') + "/" + filename;
+                Engine.Resolve<IFileSystem>().WriteFile(url, fuAlternative.PostedFile.InputStream);
+                Refresh(Selection.SelectedItem);
+            }
+        }
 	}
 }
