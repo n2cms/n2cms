@@ -121,10 +121,7 @@
     <value>Upload</value>
   </data>
   <data name="DropFiles" xml:space="preserve">
-    <value>Or drop files here</value>
-  </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>..or drop files right here</value>
   </data>
   <data name="SelectFiles" xml:space="preserve">
     <value>Select files to upload</value>
