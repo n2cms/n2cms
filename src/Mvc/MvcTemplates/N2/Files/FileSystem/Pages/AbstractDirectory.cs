@@ -27,6 +27,9 @@ namespace N2.Edit.FileSystem.Items
     {
 		public override ContentItem GetChild(string childName)
 		{
+            if (string.IsNullOrEmpty(childName))
+                return this;
+
 			string name = HttpUtility.UrlDecode(childName.Trim('/'));
 			foreach (var file in GetFiles())
 			{
