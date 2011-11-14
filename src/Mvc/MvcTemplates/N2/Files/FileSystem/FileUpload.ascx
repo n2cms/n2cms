@@ -35,6 +35,10 @@
     $(function () {
         'use strict';
 
+        if(typeof FileReader == "undefined"){
+            $("#fileupload em").hide();
+        }
+
         // Initialize the jQuery File Upload widget:
         $('#fileupload').fileupload({ 
             url:"UploadFile.ashx", 
