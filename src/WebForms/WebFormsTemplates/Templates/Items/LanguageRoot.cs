@@ -16,8 +16,10 @@ namespace N2.Templates.Items
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
-	[RecursiveContainer(LanguageRoot.SiteArea, 70,
+    [RecursiveContainer("SiteAreaContainer", 70,
 		RequiredPermission = Permission.Administer)]
+    [TabContainer(LanguageRoot.SiteArea, "Site", 0, 
+        ContainerName = "SiteAreaContainer")]
 	[RestrictParents(typeof(StartPage))]
 	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
 	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
