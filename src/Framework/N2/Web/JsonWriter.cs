@@ -13,9 +13,9 @@ namespace N2.Web
     class JsonWriter
     {
         HashSet<object> visitedObjects = new HashSet<object>();
-        StringWriter writer;
+        TextWriter writer;
 
-        public JsonWriter(StringWriter sw)
+        public JsonWriter(TextWriter sw)
         {
             this.writer = sw;
         }

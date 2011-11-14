@@ -36,5 +36,13 @@ namespace N2.Persistence.Search
 		}
 
 		#endregion
-	}
+
+        static Result()
+        {
+            Empty = new Result() { Count = 0, Total = 0, Hits = new Hit[0] };
+        }
+
+        /// <summary>No results.</summary>
+        public static Result Empty { get; private set; }
+    }
 }

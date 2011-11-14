@@ -258,5 +258,21 @@ namespace N2.Persistence.Search
             this.Details[expression] = value;
             return this;
         }
+
+        public bool IsValid()
+        {
+            bool isInvalid = string.IsNullOrEmpty(this.Text)
+                && this.Ancestor == null
+                && this.Details.Count == 0
+                && this.Exclution == null
+                && this.Intersection == null
+                && string.IsNullOrEmpty(this.LanguageCode)
+                && !this.OnlyPages.HasValue
+                && (this.Roles == null || this.Roles.Length == 0)
+                && (this.Types == null || this.Types.Length == 0)
+                && this.Union == null;
+
+            return !isInvalid;
+        }
     }
 }

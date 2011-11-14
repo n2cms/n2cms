@@ -85,6 +85,7 @@
     <Content Include="N2\Files\Js\FileSelection.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Search\ManageIndex.ascx" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />
     <Content Include="N2\Myself\Analytics\Resources\jquery.flot.js" />
@@ -145,6 +146,7 @@
     <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config" />
     <Content Include="N2\Myself\Analytics\Views\Web.config" />
+    <Content Include="N2\Search\IndexInfo.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -366,6 +368,16 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Search\IndexInfo.ashx.cs">
+      <DependentUpon>IndexInfo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Search\ManageIndex.ascx.cs">
+      <DependentUpon>ManageIndex.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Search\ManageIndex.ascx.designer.cs">
+      <DependentUpon>ManageIndex.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs" />
     <Compile Include="N2\Myself\Analytics\ManagementAreaRegistration.cs" />
     <Compile Include="N2\Myself\Analytics\Models\AnalyticsPartBase.cs" />

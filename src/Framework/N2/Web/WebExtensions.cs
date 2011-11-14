@@ -97,7 +97,7 @@ namespace N2.Web
             }
         }
 
-        public static void ToJson(this object value, StringWriter sw)
+        public static void ToJson(this object value, TextWriter sw)
         {
             new JsonWriter(sw).Write(value);
         }

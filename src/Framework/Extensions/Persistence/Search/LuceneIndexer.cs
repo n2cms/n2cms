@@ -98,7 +98,7 @@ namespace N2.Persistence.Search
 					return;
 
 				var doc = CreateDocument(item);
-				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
+				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
 				iw.Commit();
 				accessor.RecreateSearcher();
 			}
@@ -114,24 +114,22 @@ namespace N2.Persistence.Search
 			{
 				var iw = accessor.GetWriter();
 				var s = accessor.GetSearcher();
-				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
+				string trail = GetTrail(s, new Term(Properties.ID, itemID.ToString()));
 				if (trail == null)
 					return; // not indexed
 
-				var query = new PrefixQuery(new Term("Trail", trail));
+				var query = new PrefixQuery(new Term(Properties.Trail, trail));
 				iw.DeleteDocuments(query);
 				iw.Commit();
 				accessor.RecreateSearcher();
 			}
 		}
 
-
-
 		private string GetTrail(IndexSearcher s, Term t)
 		{
 			return s.Search(new TermQuery(t), 1)
 				.scoreDocs
-				.Select(d => s.Doc(d.doc).Get("Trail"))
+				.Select(d => s.Doc(d.doc).Get(Properties.Trail))
 				.FirstOrDefault();
 		}
 
@@ -241,5 +239,13 @@ namespace N2.Persistence.Search
 				sb.AppendLine(value);
 			return sb.ToString();
 		}
-	}
+
+        public IndexStatistics GetStatistics()
+        {
+            return new IndexStatistics
+            {
+                TotalDocuments = accessor.GetWriter().GetReader().NumDocs()
+            };
+        }
+    }
 }

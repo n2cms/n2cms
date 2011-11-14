@@ -1,4 +1,3 @@
-- lucene search in specific properties (discussions/275767)
 http://dl.dropbox.com/u/18069810/SafeUrlEnforcer.cs
 - Multiple item editor (discussions/273083)
 - Take a look at misc utils (discussions/277160)
@@ -10,7 +9,6 @@ http://dl.dropbox.com/u/18069810/SafeUrlEnforcer.cs
 - DefaultValue on programmatically added editables (discussions/273892)
 - Updated minimal MVC example to MVC3 (discussions/273372)
 - Antipspam on form (discussions/273271)
-- Reindex all admin screen
 - Bulk editing & adding (discussions/272297)
 - Change "selected" query string (discussions/83451)
 - Date time picker time warning missing (discussions/272907)
