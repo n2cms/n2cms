@@ -15,6 +15,7 @@ using N2.Edit.FileSystem;
 using N2.Tests.Fakes;
 using N2.Edit.FileSystem;
 using System;
+using Shouldly;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -220,5 +221,16 @@ namespace N2.Edit.Tests.FileSystem
 			Assert.That(defaultresult.Any(c => c.Name == "siteupload"), Is.False);
 			Assert.That(siteresult.Any(c => c.Name == "siteupload"), Is.True);
 		}
+
+        [Test]
+        public void GetChildren_OfChild()
+        {
+            initializer.Start();
+            vnf.Register(nodeProvider);
+
+            var children = vnf.GetChildren("/upload/Folder1/");
+
+            children.Single().Title.ShouldBe("File1.txt");
+        }
 	}
 }

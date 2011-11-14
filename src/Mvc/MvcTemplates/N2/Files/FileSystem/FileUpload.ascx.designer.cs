@@ -10,16 +10,7 @@
 namespace N2.Management.Files.FileSystem {
     
     
-    public partial class Upload {
-        
-        /// <summary>
-        /// hlCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+    public partial class FileUpload {
         
         /// <summary>
         /// fuAlternative control.
@@ -28,7 +19,7 @@ namespace N2.Management.Files.FileSystem {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuAlternative;
+        protected global::System.Web.UI.HtmlControls.HtmlInputFile fuAlternative;
         
         /// <summary>
         /// btnAlternative control.

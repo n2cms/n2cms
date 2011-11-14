@@ -63,12 +63,17 @@ namespace N2.Management.Files
 					var dir = CreateDirectory(pair);
 					yield return dir;
 				}
-				else if (pair.Path.Equals(path, StringComparison.InvariantCultureIgnoreCase))
+                else if (path.StartsWith(pair.Path, StringComparison.InvariantCultureIgnoreCase))
 				{
 					var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
 					var dir = CreateDirectory(pair);
-					foreach (var child in dir.GetChildren(new NullFilter()))
-						yield return child;
+
+                    var subdir = dir.GetChild(path.Substring(pair.Path.Length));
+                    if (subdir != null)
+                    {
+                        foreach (var child in subdir.GetChildren(new NullFilter()))
+                            yield return child;
+                    }
 				}
 			}
 		}
