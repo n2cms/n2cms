@@ -162,7 +162,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Razor", "Framework\Razor\N2.Razor.csproj", "{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Hosting.Zip", "Framework\N2.Hosting.Zip\N2.Hosting.Zip.csproj", "{8292DB1E-D760-417B-8620-7024DE3505F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Packaging", "Framework\Packaging\N2.Packaging.csproj", "{8292DB1E-D760-417B-8620-7024DE3505F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
