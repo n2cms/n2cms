@@ -122,11 +122,44 @@ namespace N2.Web.Parsing
 				sw.Write(c);
 				c = (char)reader.Read();
 				TokenType tt = (c != '/') ? TokenType.Element : TokenType.EndElement;
+                bool isQuoting = false;
+                bool isEscaping = false;
+                char quoteSymbol = '\0';
 
 				while (c != 0)
 				{
 					sw.Write(c);
 
+                    if (isQuoting)
+                    {
+                        if (isEscaping)
+                        {
+                            isEscaping = false; 
+                            WasEof(reader, out c);
+                            continue;
+                        }
+                        if (c == '\\')
+                        {
+                            isEscaping = true;
+                            WasEof(reader, out c);
+                            continue;
+                        }
+
+                        if (c == quoteSymbol)
+                        {
+                            isQuoting = false;
+                        }
+
+                        WasEof(reader, out c);
+                        continue;
+                    }
+                    if(c == '\'' || c == '"')
+                    {
+                        isQuoting = true;
+                        quoteSymbol = c;
+                        WasEof(reader, out c);
+                        continue;
+                    }
 					if (c == '>')
 					{
 						WasEof(reader, out c);
