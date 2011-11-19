@@ -75,6 +75,7 @@
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
+    <Content Include="N2\Content\Export\Bulk.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
@@ -219,6 +220,14 @@
     <Compile Include="N2\Content\EditRecursive.aspx.designer.cs">
       <DependentUpon>EditRecursive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Content\Export\Bulk.aspx.cs">
+      <DependentUpon>Bulk.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\Bulk.aspx.designer.cs">
+      <DependentUpon>Bulk.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Export\CsvParser.cs" />
     <Compile Include="N2\Content\Export\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
