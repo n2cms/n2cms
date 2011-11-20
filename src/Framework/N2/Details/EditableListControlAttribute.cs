@@ -22,18 +22,16 @@ namespace N2.Details
 		{
 			ListControl ddl = editor as ListControl;
 			string current = GetValue(item);
-			object value = GetValue(ddl);
-			if (!value.Equals(current))
+			string newValue = GetValue(ddl);
+
+			if (!newValue.Equals(current))
 			{
-				if (value != null && value.Equals(item[Name]))
-					item[Name] = null;
-				else
-					item[Name] = value;
+                item[Name] = ConvertToValue(newValue);
 				return true;
 			}
 			else if (current != null && current.Equals(DefaultValue))
 			{
-				item[Name] = value;
+				item[Name] = newValue;
 				return true;
 			}
 			return false;
@@ -42,7 +40,7 @@ namespace N2.Details
         /// <summary>Gets the object to store as content from the drop down list editor.</summary>
         /// <param name="ddl">The editor.</param>
         /// <returns>The value to store.</returns>
-        protected virtual object GetValue(ListControl ddl)
+        protected virtual string GetValue(ListControl ddl)
         {
             return ddl.SelectedValue;
         }
@@ -61,7 +59,20 @@ namespace N2.Details
         /// <returns>A string to use as selected value.</returns>
         protected virtual string GetValue(ContentItem item)
         {
-            return (item[Name] ?? DefaultValue) as string;
+            return ConvertToString(item[Name]) ?? ConvertToString(DefaultValue);
+        }
+
+        protected virtual string ConvertToString(object value)
+        {
+            if (value == null)
+                return null;
+
+            return value.ToString();
+        }
+
+        protected virtual object ConvertToValue(string value)
+        {
+            return value;
         }
 		
 		protected abstract ListControl CreateEditor();
