@@ -147,6 +147,7 @@
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
     <Compile Include="Definitions\IFileSystemDirectory.cs" />
+    <Compile Include="Definitions\IManagementHomePart.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />

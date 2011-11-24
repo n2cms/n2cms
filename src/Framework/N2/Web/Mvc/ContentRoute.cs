@@ -179,6 +179,8 @@ namespace N2.Web.Mvc
 		private RouteData CheckForContentController(HttpContextBase context)
 		{
 			var routeData = innerRoute.GetRouteData(context);
+            routeData.Route = this;
+            routeData.RouteHandler = routeHandler;
 
 			if (routeData == null)
 				return null;

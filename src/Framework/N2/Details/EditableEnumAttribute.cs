@@ -51,38 +51,30 @@ namespace N2.Details
         protected override string GetValue(ContentItem item)
         {
             object value = item[Name];
-            
-            if(value == null)
+
+            return ConvertToString(value) ?? ConvertToString(DefaultValue);
+        }
+
+        protected override string ConvertToString(object value)
+        {
+            if (value == null)
                 return null;
 
             if (value is string)
                 // an enum as string we assume
                 return ((int)Enum.Parse(EnumType, (string)value)).ToString();
-            
+
             if (value is int)
                 // an enum as int we hope
                 return value.ToString();
-            
+
             // hopefully an enum type;
-            return ((int) value).ToString();
+            return ((int)value).ToString();
         }
 
-        protected override object GetValue(ListControl ddl)
+        protected override object ConvertToValue(string value)
         {
-            if (!string.IsNullOrEmpty(ddl.SelectedValue))
-                return GetEnumValue(int.Parse(ddl.SelectedValue));
-            else
-                return null;
-        }
-
-        private object GetEnumValue(int value)
-        {
-            foreach (object e in Enum.GetValues(EnumType))
-            {
-                if ((int)e == value)
-                    return e;
-            }
-            return null;
+            return Enum.ToObject(EnumType, int.Parse(value));
         }
 
 		enum EmptyEnum

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using N2.Edit.Wizard.Items;
 using N2.Engine;
@@ -32,8 +33,10 @@ namespace N2.Edit.Wizard
 			if (container == null)
 				yield break;
 
-			foreach (ContentItem child in container.GetChildren())
+			foreach (var child in container.GetChildren().OfType<MagicLocation>())
 			{
+				if (child.Location == null || child.Location.State == ContentState.Deleted)
+					continue;
 				yield return child as MagicLocation;
 			}
 		}

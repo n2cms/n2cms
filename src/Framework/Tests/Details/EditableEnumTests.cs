@@ -129,5 +129,40 @@ namespace N2.Tests.Details
 
             Assert.That(item.DaysEnum, Is.EqualTo(enumDays.Fri));
         }
+
+        // can set values to same value twice (discussions/278316)
+
+        [Test]
+        public void CanUpdate_IntProperty_WhenAlreadyThatValue()
+        {
+            intEditor.SelectedValue = "5";
+            enumEditable.UpdateItem(item, enumEditor);
+
+            intEditable.UpdateItem(item, intEditor);
+
+            Assert.That(item.DaysInteger, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void CanUpdate_StringProperty_WhenAlreadyThatValue()
+        {
+            stringEditor.SelectedValue = "5";
+            enumEditable.UpdateItem(item, enumEditor);
+
+            stringEditable.UpdateItem(item, stringEditor);
+
+            Assert.That(item.DaysString, Is.EqualTo("Fri"));
+        }
+
+        [Test]
+        public void CanUpdate_EnumProperty_WhenAlreadyThatValue()
+        {
+            enumEditor.SelectedValue = "5";
+            enumEditable.UpdateItem(item, enumEditor);
+
+            enumEditable.UpdateItem(item, enumEditor);
+
+            Assert.That(item.DaysEnum, Is.EqualTo(enumDays.Fri));
+        }
     }
 }
