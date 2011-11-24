@@ -6,12 +6,14 @@ using N2.Engine;
 using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
 using System.Diagnostics;
+using log4net;
 
 namespace N2.Persistence.Search
 {
 	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher), Configuration = "lucene")]
 	public class LuceneSearcher : ITextSearcher
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneSearcher));
 		LuceneAccesor accessor;
 		IPersister persister;
 
@@ -85,7 +87,7 @@ namespace N2.Persistence.Search
                     else
                         q += string.Format(" +Detail.{0}:({1})", kvp.Key, kvp.Value);
                 }
-			Trace.WriteLine("CreateQuery: " + q);
+			logger.Debug("CreateQuery: " + q);
 
 			return accessor.GetQueryParser().Parse(q);
 		}

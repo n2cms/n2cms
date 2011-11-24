@@ -10,6 +10,7 @@ using Lucene.Net.Store;
 using N2.Configuration;
 using N2.Engine;
 using N2.Web;
+using log4net;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
 using System.Diagnostics;
@@ -22,6 +23,7 @@ namespace N2.Persistence.Search
 	[Service(Configuration = "lucene")]
 	public class LuceneAccesor : IDisposable
 	{
+		private ILog logger = LogManager.GetLogger(typeof (LuceneAccesor));
 		string indexPath;
 		public long LockTimeout { get; set; }
 		Directory directory;
@@ -55,7 +57,7 @@ namespace N2.Persistence.Search
 			}
 			catch (Lucene.Net.Store.LockObtainFailedException)
 			{
-				Trace.WriteLine("Failed to obtain lock, deleting it and retrying.");
+				logger.Debug("Failed to obtain lock, deleting it and retrying.");
 				ClearLock();
 				return CreateWriterNoTry(d, a);
 			}

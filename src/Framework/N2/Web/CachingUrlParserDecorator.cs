@@ -4,11 +4,14 @@ using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
 using N2.Web.UI;
+using log4net;
 
 namespace N2.Web
 {
 	public class CachingUrlParserDecorator : IUrlParser
 	{
+        private readonly ILog logger = LogManager.GetLogger(typeof(CachingUrlParserDecorator));
+
 		readonly IUrlParser inner;
 		readonly IPersister persister;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
@@ -72,13 +75,13 @@ namespace N2.Web
 				data = inner.ResolvePath(url);
 				if (!data.IsEmpty() && data.IsCacheable)
 				{
-					Debug.WriteLine("Adding " + url + " to cache");
+					logger.Debug("Adding " + url + " to cache");
 					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
 				}
 			}
 			else
 			{
-				Debug.WriteLine("Retrieving " + url + " from cache");
+				logger.Debug("Retrieving " + url + " from cache");
 				data = data.Attach(persister);
 				data.UpdateParameters(Url.Parse(url).GetQueries());
 			}

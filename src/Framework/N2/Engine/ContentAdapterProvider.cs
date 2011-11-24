@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using N2.Plugin;
 using N2.Web;
+using log4net;
 
 namespace N2.Engine
 {
@@ -13,6 +14,7 @@ namespace N2.Engine
 	[Service(typeof(IContentAdapterProvider))]
 	public class ContentAdapterProvider : IContentAdapterProvider, IAutoStart
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (ContentAdapterProvider));
 		readonly IEngine engine;
 		readonly ITypeFinder finder;
 		AbstractContentAdapter[] adapters = new AbstractContentAdapter[0];
@@ -115,7 +117,7 @@ namespace N2.Engine
 				// TODO: remove this legacy support (collect by [Controls] attributes)
 				foreach (ControlsAttribute controls in adapterType.GetCustomAttributes(typeof(ControlsAttribute), false))
 				{
-					Trace.WriteLine("Adding adapter with [Controls] this is deprecated and may no longer work in the future: " + adapterType);
+					logger.Warn("Adding adapter with [Controls] is deprecated and may no longer work in the future: " + adapterType);
 
 					var adapter = CreateAdapter(adapterType, controls.ItemType);
 					references.Add(adapter);
@@ -130,7 +132,7 @@ namespace N2.Engine
 					if (null == controls.ItemType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(null)] attribute with no ItemType specified. Please specify this property: [assembly: Controls(typeof(MyItem), AdapterType = typeof(MyAdapter)]", assembly);
 					if (null == controls.AdapterType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(typeof({1})] attribute with no AdapterType specified. Please specify this property: [assembly: Controls(typeof({1}), AdapterType = typeof(MyAdapter)]", assembly, controls.ItemType.Name);
 
-					Trace.WriteLine("Adding adapter from [Controls] this is deprecated and may no longer work in the future: " + controls.AdapterType);
+					logger.Warn("Adding adapter from [Controls] this is deprecated and may no longer work in the future: " + controls.AdapterType);
 
 					var adapter = CreateAdapter(controls.AdapterType, controls.ItemType);
 					references.Add(adapter);

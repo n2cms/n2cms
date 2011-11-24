@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Hosting;
 using N2.Engine;
+using log4net;
 
 namespace N2.Web
 {
@@ -13,6 +14,7 @@ namespace N2.Web
     /// </summary>
     public class WebRequestContext : IWebContext, IDisposable
     {
+		private readonly ILog logger = LogManager.GetLogger(typeof(WebRequestContext));
 		IProvider<HttpContextBase> httpContextProvider;
 
 		public WebRequestContext(IProvider<HttpContextBase> httpContextProvider)
@@ -147,7 +149,7 @@ namespace N2.Web
 		[Obsolete("Use HttpContext.RewritePath(path)")]
 		public void RewritePath(string path)
 		{
-			Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+			logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
 			CurrentHttpContext.RewritePath(path, false);
 		}
 
@@ -157,7 +159,7 @@ namespace N2.Web
 		[Obsolete("Use HttpContext.RewritePath(path, \"\", queryString)")]
 		public void RewritePath(string path, string queryString)
 		{
-			Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+			logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
 			CurrentHttpContext.RewritePath(path, "", queryString);
 		}
 

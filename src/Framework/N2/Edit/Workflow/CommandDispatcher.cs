@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using N2.Engine;
 using N2.Persistence;
+using log4net;
 
 namespace N2.Edit.Workflow
 {
@@ -11,6 +12,7 @@ namespace N2.Edit.Workflow
     [Service]
     public class CommandDispatcher
     {
+    	private readonly ILog logger = LogManager.GetLogger(typeof (CommandDispatcher));
 		readonly ICommandFactory commandFactory;
 		readonly IPersister persister;
 
@@ -25,7 +27,7 @@ namespace N2.Edit.Workflow
         /// <param name="context">The context passed to the command</param>
         public virtual void Execute(CommandBase<CommandContext> command, CommandContext context)
         {
-            Trace.Write(command.Name + " processing " + context);
+            logger.Debug(command.Name + " processing " + context);
 			using (var tx = persister.Repository.BeginTransaction())
 			{
 				try
@@ -40,12 +42,12 @@ namespace N2.Edit.Workflow
 				catch (Exception ex)
 				{
 					tx.Rollback();
-					Trace.WriteLine(ex);
+					logger.Error(ex);
 					throw;
 				}
 				finally
 				{
-					Trace.WriteLine(" -> " + context);
+					logger.Debug(" -> " + context);
 				}
 			}
 		}
