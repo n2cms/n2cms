@@ -66,7 +66,7 @@ namespace N2.Persistence.Search
 		private IndexWriter CreateWriterNoTry(Directory d, Analyzer a)
 		{
 			var indexExists = IndexExists();
-			Trace.WriteLine("Creating index writer, index exists: " + indexExists);
+			logger.Debug("Creating index writer, index exists: " + indexExists);
 			var iw = new IndexWriter(d, a, create: !indexExists, mfl: IndexWriter.MaxFieldLength.UNLIMITED);
 			iw.SetWriteLockTimeout(LockTimeout);
 			return iw;

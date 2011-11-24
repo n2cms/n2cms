@@ -27,7 +27,7 @@ namespace N2.Edit.Workflow
         /// <param name="context">The context passed to the command</param>
         public virtual void Execute(CommandBase<CommandContext> command, CommandContext context)
         {
-            logger.Debug(command.Name + " processing " + context);
+            logger.Info(command.Name + " processing " + context);
 			using (var tx = persister.Repository.BeginTransaction())
 			{
 				try
@@ -47,7 +47,7 @@ namespace N2.Edit.Workflow
 				}
 				finally
 				{
-					logger.Debug(" -> " + context);
+					logger.Info(" -> " + context);
 				}
 			}
 		}
