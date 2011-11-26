@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
-    <asp:HyperLink ID="hlBulk" runat="server" NavigateUrl="Bulk.aspx" meta:resourceKey="hlBulk">Bulk import</asp:HyperLink>
+    <asp:HyperLink ID="hlBulk" runat="server" NavigateUrl='<%# "Bulk.aspx?selected=" + Selection.SelectedItem.Path %>' meta:resourceKey="hlBulk">Bulk import</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">

@@ -18,7 +18,7 @@ namespace N2.Persistence
             this.host = host;
         }
 
-        public virtual string GetTemporaryDirectory()
+        protected virtual string GetTemporaryDirectory()
         {
             return Path.GetTempPath();
         }
@@ -47,7 +47,7 @@ namespace N2.Persistence
             return Path.Combine(dir, Path.GetTempFileName() + extension);
         }
 
-        public virtual void ClearTemporaryFile(TimeSpan olderThan)
+        public virtual void ClearTemporaryFiles(TimeSpan olderThan)
         {
             DeleteEmptyDirectoriesRecursive(GetSharedTemporaryDirectory(), olderThan);
         }

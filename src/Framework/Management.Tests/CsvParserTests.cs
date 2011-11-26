@@ -10,10 +10,18 @@ using N2.Management.Content.Export;
 
 namespace N2.Management.Tests
 {
+	public static class CsvParserTestsExtensions
+	{
+        public static IEnumerable<IList<string>> Parse(this CsvParser parser, TextReader reader)
+		{
+			return parser.Parse(';', reader);
+		}
+	}
+
     [TestFixture]
     public class CsvParserTests
     {
-        CsvParser p = new CsvParser(';');
+        CsvParser p = new CsvParser();
 
         [TestCase]
         public void SingleRow()
@@ -98,8 +106,40 @@ no");
         public void SurroundingWhiteSpace_InQuotes_IsRetained()
         {
             var row = p.Parse(new StringReader("\"hello  \";\"world  \"")).Single();
-            row[0].ShouldBe("hello  ");
+            row[0].ShouldBe("hello  ");;
             row[1].ShouldBe("world  ");
         }
+
+		[TestCase]
+		public void GuessBestSeparator_GuessesOn_ExistingSeparator()
+		{
+			var separator = p.GuessBestSeparator(() => new StringReader("hello;world\nworld;hello"), '\t', ',', ';');
+
+			separator.ShouldBe(';');
+		}
+
+		[TestCase]
+		public void GuessBestSeparator_PrefersSeparator_WithMoreThanOneOccurance()
+		{
+			var separator = p.GuessBestSeparator(() => new StringReader("hello;world"), '\t', ',', ';');
+
+			separator.ShouldBe(';');
+		}
+
+		[TestCase]
+		public void GuessBestSeparator_PrefersSeparator_WithSameNumberOfColumns()
+		{
+			var separator = p.GuessBestSeparator(() => new StringReader("hello;world,universe\nworld,universe;hello,howdy"), '\t', ',', ';');
+
+			separator.ShouldBe(';');
+		}
+
+		[TestCase]
+		public void GuessBestSeparator_PrefersSeparator_WithSameNumberOfColumns_OnThe3FirstRows()
+		{
+			var separator = p.GuessBestSeparator(() => new StringReader("hello;world,universe\nworld,universe;hello\nmoi;mukkolat"), '\t', ',', ';');
+
+			separator.ShouldBe(';');
+		}
     }
 }

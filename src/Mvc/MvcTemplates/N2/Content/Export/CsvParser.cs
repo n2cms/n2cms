@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using N2.Web.Parsing;
 using System.IO;
+using N2.Engine;
 
 namespace N2.Management.Content.Export
 {
+	[Service]
     public class CsvParser
     {
-        char separator;
-        char quote = '"';
+        const char quote = '"';
 
-        public CsvParser(char separator)
+        public CsvParser()
         {
-            this.separator = separator;
         }
-
-        public IEnumerable<IList<string>> Parse(TextReader reader)
+		
+        public virtual IEnumerable<CsvRow> Parse(char separator, TextReader reader)
         {
             bool isEscaping = false;
             bool isQuoting = false;
@@ -106,7 +106,7 @@ namespace N2.Management.Content.Export
                 if (c == '\n')
                 {
                     AppendCell(cell, row, trim: true);
-                    yield return row;
+					yield return new CsvRow(row, separator);
                     row = new List<string>();
                     continue;
                 }
@@ -124,7 +124,7 @@ namespace N2.Management.Content.Export
                 AppendCell(cell, row, trim: !isEndingQuote);
 
             if (row.Count > 0)
-                yield return row;
+                yield return new CsvRow(row, separator);
         }
 
         private static void AppendCell(StringBuilder cell, List<string> row, bool trim)
@@ -135,5 +135,40 @@ namespace N2.Management.Content.Export
                 row.Add(cell.ToString());
             cell.Length = 0;
         }
-    }
+
+		public virtual char GuessBestSeparator(Func<TextReader> readerFactory, params char[] possibleSeparators)
+		{
+			var scores = possibleSeparators.ToDictionary(c => c, c => 0);
+			for (int i = 0; i < possibleSeparators.Length; i++)
+			{
+				var c = possibleSeparators[i];
+				using (var reader = readerFactory())
+				{
+					var passes = 5;
+					int previousCount = 0;
+					foreach(var row in Parse(c, reader))
+					{
+						if (--passes < 0)
+							break;
+
+						if (previousCount == 0)
+						{
+							if (row.Columns.Count > 1)
+								scores[c] = 1;
+						}
+						else
+						{
+							if (row.Columns.Count == previousCount)
+								scores[c] = scores[c] + 1;
+							else if (row.Columns.Count > previousCount)
+								scores[c] = scores[c] - 1;
+						}
+
+						previousCount = row.Columns.Count;
+					}
+				}
+			}
+			return scores.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).First();
+		}
+	}
 }

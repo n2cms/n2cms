@@ -228,6 +228,7 @@
       <DependentUpon>Bulk.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Export\CsvParser.cs" />
+    <Compile Include="N2\Content\Export\CsvRow.cs" />
     <Compile Include="N2\Content\Export\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

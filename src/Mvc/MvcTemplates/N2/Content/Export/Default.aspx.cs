@@ -35,6 +35,12 @@ namespace N2.Edit.Export
 
 		#region Page Event Handlers
 
+		protected override void OnInit(EventArgs e)
+		{
+			hlBulk.DataBind();
+			base.OnInit(e);
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);

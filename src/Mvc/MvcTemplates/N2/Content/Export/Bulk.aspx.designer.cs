@@ -58,6 +58,51 @@ namespace N2.Management.Content.Export {
         protected global::System.Web.UI.WebControls.Button btnUpload;
         
         /// <summary>
+        /// lblLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.InfoLabel lblLocation;
+        
+        /// <summary>
+        /// ddlTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTypes;
+        
+        /// <summary>
+        /// chkFirstRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkFirstRow;
+        
+        /// <summary>
+        /// rptPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPreview;
+        
+        /// <summary>
+        /// btnImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnImport;
+        
+        /// <summary>
         /// tpImport control.
         /// </summary>
         /// <remarks>
@@ -65,14 +110,5 @@ namespace N2.Management.Content.Export {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Web.UI.WebControls.TabPanel tpImport;
-        
-        /// <summary>
-        /// dgrTEst control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataGrid dgrTEst;
     }
 }
