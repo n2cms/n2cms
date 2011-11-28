@@ -1,4 +1,4 @@
-﻿@import url("smoothness/jquery-ui-1.8.14.custom.css");
+﻿@import url("smoothness/jquery-ui-1.8.16.custom.css");
 
 /* FRAMED */
 body { background-image:url(../../Resources/Img/lighten10.png); background-repeat:repeat-x; }
@@ -285,32 +285,37 @@ input.dp-applied {
 .directory
 {
 }
-.directory .file
-{
-	display:block;
-	width:80px;
-	height:80px;
-	position:relative;
-	float:left;
-	margin:1px;
-	overflow:hidden;
-}
-.directory .file input, .directory .file img
-{
-	vertical-align:middle;
-}
-.directory .file label
-{
-	display:block;
-	height:60px;
-	background:#ddc none no-repeat 50% 50%;
-	padding:1px;
-}
-.directory .file a
-{
-	display:block;
-	overflow: hidden;
-}
+    .directory .file
+    {
+	    display:block;
+	    width:80px;
+	    height:80px;
+	    position:relative;
+	    float:left;
+	    margin:1px;
+	    overflow:hidden;
+    }
+        .directory .file input, .directory .file img
+        {
+	        vertical-align:middle;
+        }
+        .directory .file label
+        {
+	        display:block;
+	        height:60px;
+	        background:#ddc none no-repeat 50% 50%;
+	        padding:1px;
+        }
+        .directory .file a
+        {
+	        display:block;
+	        overflow: hidden;
+        }
+    #fileupload { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
+    #fileupload:hover { border-style:solid; opacity:1; }
+        #fileupload em { margin-left:10px; display:none; }
+        #fileupload:hover em { display:inline; }
+
 .focused
 {
 	background-color:#eef;

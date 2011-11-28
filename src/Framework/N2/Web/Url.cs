@@ -96,6 +96,9 @@ namespace N2.Web
 		{
 			scheme = null;
 			authority = null;
+            if (url.StartsWith("~"))
+                url = ToAbsolute(url);
+
 			if (queryIndex >= 0)
 				path = url.Substring(0, queryIndex);
 			else if (hashIndex >= 0)

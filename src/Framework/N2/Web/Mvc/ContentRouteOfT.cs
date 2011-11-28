@@ -9,7 +9,7 @@ namespace N2.Web.Mvc
 	/// An ASP.NET MVC route that gets route data for content items of the specified generic type.
 	/// </summary>
 	/// <typeparam name="T">The type of content item to route.</typeparam>
-	public class ContentRoute<T> : ContentRoute, IRouteWithArea where T : ContentItem
+	public class ContentRoute<T> : ContentRoute, IRouteWithArea
 	{
 		IEngine engine;
 
@@ -47,9 +47,8 @@ namespace N2.Web.Mvc
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
-
-			var item = values.CurrentItem<T>(ContentItemKey, engine.Persister)
-				?? requestContext.CurrentItem<T>();
+			var item = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister)
+				?? requestContext.CurrentItem();
 
 			// only supply path to items of the correct type
 			if (!(item is T))

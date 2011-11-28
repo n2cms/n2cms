@@ -21,6 +21,8 @@
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
+        table.openable tbody { display:none; }
+        table.openable:hover tbody { display:block; }
     </style>
 </head>
 <body>
@@ -44,13 +46,14 @@
 					</td></tr>
 				</tbody>
 				<tbody>
-					<tr><th colspan="2"><h2>Assemblies</h2></th></tr>
+					<tr><th colspan="2"><h2>Key assemblies & types</h2></th></tr>
 					<tr><th>N2 version</th><td><asp:Label ID="lblN2Version" runat="server" /></td></tr>
 					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
 <% try { %>
 					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
 					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
 					<tr><th>Url parser type</th><td><%= N2.Context.Current.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
+					<tr><th>File System type</th><td><%= N2.Context.Current.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
 				</tbody>
 				<tbody>
@@ -108,7 +111,7 @@
             <i>These settings are generated at application start from attributes in the project source code.</i>
             <asp:Repeater ID="rptDefinitions" runat="server">
                 <HeaderTemplate>
-					<table class="t">
+					<table class="t openable">
 						<thead>
 							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
 							<tr>
@@ -182,10 +185,10 @@
 				</FooterTemplate>
             </asp:Repeater>
             <asp:Label ID="lblDefinitions" runat="server" />
+
             
-            <h2>Assemblies</h2>
             <asp:Repeater ID="rptAssembly" runat="server">
-                <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
+                <HeaderTemplate><table class="t openable"><thead><tr><th colspan="6"><h2>Assemblies</h2></th></tr><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
                 <asp:Repeater runat="server" DataSource="<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>">
 					<ItemTemplate>
@@ -199,8 +202,21 @@
             </asp:Repeater>
             <asp:Label ID="lblAssemblies" runat="server" />
 
+			
 			<% try { %>
-			<table class="t"><thead><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Services</h2></th></tr><tr><td>Service type</td><td>Implementation type</td></tr></thead>
+			<tbody>
+			<% foreach (N2.Engine.ServiceInfo info in N2.Context.Current.Container.Diagnose()) { %>
+				<tr><td><%= info.ServiceType %></td><td><%= info.ImplementationType %></td></tr>
+			<% } %>
+			</tbody></table>
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
+
+
+			<% try { %>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Cache</h2></th></tr><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
 			<tbody>
 			<% foreach (KeyValuePair<string, NHibernate.Cache.ICache> kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
 				<tr><td><%= kvp.Key%></td><td><%= kvp.Value%></td></tr>

@@ -58,10 +58,10 @@ namespace N2.Tests.Engine
 			Assert.That(container.Resolve<IWebContext>(), Is.Not.Null);
 			Assert.That(container.Resolve<IHost>(), Is.Not.Null);
 
-			Assert.That(container.Resolve<IRepository<int, ContentItem>>(), Is.Not.Null);
-			Assert.That(container.Resolve<IRepository<int, ContentDetail>>(), Is.Not.Null);
-			Assert.That(container.Resolve<IRepository<int, AuthorizedRole>>(), Is.Not.Null);
-			Assert.That(container.Resolve<IRepository<int, DetailCollection>>(), Is.Not.Null);
+			Assert.That(container.Resolve<IRepository<ContentItem>>(), Is.Not.Null);
+			Assert.That(container.Resolve<IRepository<ContentDetail>>(), Is.Not.Null);
+			Assert.That(container.Resolve<IRepository<AuthorizedRole>>(), Is.Not.Null);
+			Assert.That(container.Resolve<IRepository<DetailCollection>>(), Is.Not.Null);
 			Assert.That(container.Resolve<IPersister>(), Is.Not.Null);
 			Assert.That(container.Resolve<IItemFinder>(), Is.Not.Null);
 			Assert.That(container.Resolve<IItemNotifier>(), Is.Not.Null);

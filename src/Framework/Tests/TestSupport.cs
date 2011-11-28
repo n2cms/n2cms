@@ -17,6 +17,7 @@ using N2.Tests.Fakes;
 using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
+using N2.Persistence.Sources;
 
 namespace N2.Tests
 {
@@ -85,36 +86,34 @@ namespace N2.Tests
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<ContentItem> itemRepository, INHRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
-            persister = new ContentPersister(itemRepository, linkRepository, finder);
+            persister = new ContentPersister(itemRepository, linkRepository);
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
 
-        internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, ItemFinder finder, SchemaExport schemaCreator)
+        internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
         {
-            IRepository<int, ContentItem> itemRepository = new ContentItemRepository(sessionProvider);
-            INHRepository<int, ContentDetail> linkRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+            var itemRepository = new ContentItemRepository(sessionProvider);
+            var linkRepository = new NHRepository<ContentDetail>(sessionProvider);
 
-            Setup(out persister, sessionProvider, itemRepository, linkRepository, finder, schemaCreator);
+            Setup(out persister, sessionProvider, itemRepository, linkRepository, schemaCreator);
         }
 
 		public static ContentPersister SetupFakePersister()
 		{
 			FakeRepository<ContentItem> repository;
 			FakeRepository<ContentDetail> linkRepository;
-			IItemFinder finder;
-			return SetupFakePersister(out repository, out linkRepository, out finder);
+			return SetupFakePersister(out repository, out linkRepository);
 		}
 
-		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository, out IItemFinder finder)
+		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository)
 		{
 			repository = new Fakes.FakeRepository<ContentItem>();
 			linkRepository = new Fakes.FakeRepository<ContentDetail>();
-			finder = MockRepository.GenerateStub<N2.Persistence.Finder.IItemFinder>();
 			
-			return new ContentPersister(repository, linkRepository, finder);
+			return new ContentPersister(repository, linkRepository);
 		}
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
@@ -125,6 +124,11 @@ namespace N2.Tests
 		public static EngineSection SetupEngineSection()
 		{
 			return new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } };
+		}
+
+		public static N2.Persistence.Sources.ContentSource SetupContentSource(IWebContext webContext, IHost host, IPersister persister)
+		{
+			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, persister.Repository) });
 		}
 	}
 }

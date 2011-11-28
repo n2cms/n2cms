@@ -9,6 +9,7 @@ using System.Web.Routing;
 using N2.Details;
 using System.IO;
 using System.Web.UI;
+using System.Collections;
 
 namespace N2.Web
 {
@@ -87,5 +88,18 @@ namespace N2.Web
 			return c;
 		}
 
+        public static string ToJson(this object value)
+        {
+            using (var sw = new StringWriter())
+            {
+                value.ToJson(sw);
+                return sw.ToString();
+            }
+        }
+
+        public static void ToJson(this object value, TextWriter sw)
+        {
+            new JsonWriter(sw).Write(value);
+        }
 	}
 }

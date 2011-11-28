@@ -28,10 +28,10 @@ namespace N2.Persistence.NH
 
 			if (zoneName == null)
 				//return Query().Where(i => i.ZoneName == null); 
-				return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").List<T>();
+				return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").SetCacheable(true).List<T>();
 			else
 				//return Query().Where(i => i.ZoneName == zoneName); 
-				return Session.CreateFilter(this, "where ZoneName = :zoneName order by SortOrder").SetParameter("zoneName", zoneName).List<T>();
+                return Session.CreateFilter(this, "where ZoneName = :zoneName order by SortOrder").SetCacheable(true).SetParameter("zoneName", zoneName).List<T>();
 		}
 
 		public IEnumerable<T> FindNavigatablePages()
@@ -47,7 +47,8 @@ namespace N2.Persistence.NH
 			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires) order by SortOrder")
 				.SetParameter("published", Utility.CurrentTime())
 				.SetParameter("expires", Utility.CurrentTime())
-				.List<T>();
+                .SetCacheable(true)
+                .List<T>();
 		}
 
 		public IEnumerable<T> FindPages()
@@ -56,7 +57,7 @@ namespace N2.Persistence.NH
 				return this.Where(i => i.ZoneName == null).OrderBy(i => i.SortOrder);
 
 			//return Query().Where(i => i.ZoneName == null);
-			return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").List<T>();
+            return Session.CreateFilter(this, "where ZoneName is null order by SortOrder").SetCacheable(true).List<T>();
 		}
 
 		public IEnumerable<T> FindParts()
@@ -65,7 +66,7 @@ namespace N2.Persistence.NH
 				return this.Where(i => i.ZoneName != null).OrderBy(i => i.SortOrder);
 
 			//return Query().Where(i => i.ZoneName != null);
-			return Session.CreateFilter(this, "where ZoneName is not null order by SortOrder").List<T>();
+            return Session.CreateFilter(this, "where ZoneName is not null order by SortOrder").SetCacheable(true).List<T>();
 		}
 
 		public IEnumerable<string> FindZoneNames()
@@ -74,7 +75,7 @@ namespace N2.Persistence.NH
 				return this.Select(i => i.ZoneName).Distinct();
 
 			//return Query().Select(i => i.ZoneName).Distinct();
-			return Session.CreateFilter(this, "select distinct ZoneName").List<string>();
+            return Session.CreateFilter(this, "select distinct ZoneName").SetCacheable(true).List<string>();
 		}
 
 		#endregion

@@ -1,26 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using N2.Configuration;
 using N2.Edit.FileSystem;
-using N2.Edit.FileSystem.Items;
-using N2.Persistence;
+using N2.Edit.FileSystem.NH;
+using N2.Persistence.NH;
+using N2.Tests.Fakes;
 using N2.Tests.Persistence;
-using N2.Web;
 using NUnit.Framework;
-using Directory = N2.Edit.FileSystem.Items.Directory;
-using File = N2.Edit.FileSystem.Items.File;
 
 namespace N2.Edit.Tests.FileSystem
 {
-    [TestFixture]
-    public class FileSystemTests : DatabasePreparingBase
+
+	[TestFixture]
+	public class FileSystemTests_DatebaseFileSystem : FileSystemTests
+	{
+		protected override IFileSystem CreateFileSystem()
+		{
+			return new DatabaseFileSystem(engine.Resolve<ISessionProvider>(), new DatabaseSection { Files = new FilesElement { ChunkSize = 100 } });
+		}
+	}
+	
+	[TestFixture]
+	public class FileSystemTests_VirtualFileSystem : FileSystemTests
+	{
+		protected override IFileSystem CreateFileSystem()
+		{
+			return new FakeVppFileSystem { PathProvider = new FakePathProvider(AppDomain.CurrentDomain.BaseDirectory) };
+		}
+	}
+
+	[TestFixture]
+	public class FileSystemTests_MappedFileSystem : FileSystemTests
+	{
+		protected override IFileSystem CreateFileSystem()
+		{
+			return new FakeMappedFileSystem();
+		}
+	}
+
+    public abstract class FileSystemTests : DatabasePreparingBase
 	{
 		#region Set up & tear down
-		string basePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
-		string backupPath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem_backup\";
-		FakeFileSystem fs;
-        RootNode root;
-        RootDirectory upload;
+		protected IFileSystem fs;
         
 		List<string> operations;
 		List<FileEventArgs> arguments;
@@ -29,13 +53,8 @@ namespace N2.Edit.Tests.FileSystem
         public override void TestFixtureSetUp()
         {
 			base.TestFixtureSetUp();
-			N2.Context.Replace(engine);
 
-            Url.DefaultExtension = "/";
-        	Url.ApplicationPath = "/";
-			fs = (FakeFileSystem)engine.Resolve<IFileSystem>();
-			fs.BasePath = basePath;
-			fs.PathProvider = new FakePathProvider(fs.BasePath);
+			fs = CreateFileSystem();
 
 			fs.DirectoryCreated += (s, e) => Triggered("DirectoryCreated", e);
 			fs.DirectoryDeleted += (s, e) => Triggered("DirectoryDeleted", e);
@@ -44,51 +63,45 @@ namespace N2.Edit.Tests.FileSystem
 			fs.FileDeleted += (s, e) => Triggered("FileDeleted", e);
 			fs.FileMoved += (s, e) => Triggered("FileMoved", e);
 			fs.FileWritten += (s, e) => Triggered("FileWritten", e);
-
-			System.IO.Directory.Move(basePath, backupPath);
 		}
+
+		protected abstract IFileSystem CreateFileSystem();
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-			System.IO.Directory.Move(backupPath, basePath);
-			Url.DefaultExtension = ".aspx";
         }
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-			
-			CopyFilesRecursively(new DirectoryInfo(backupPath), new DirectoryInfo(basePath));
 
-			operations = new List<string>();
-			arguments = new List<FileEventArgs>();
-
-			root = engine.Resolve<ContentActivator>().CreateInstance<RootNode>(null);
-			engine.Persister.Save(root);
-			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
-			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
-
-			upload = engine.Resolve<ContentActivator>().CreateInstance<RootDirectory>(root);
-            upload.Title = "Upload";
-            upload.Name = "Upload";
-			engine.Persister.Save(upload);			
+            operations = new List<string>();
+            arguments = new List<FileEventArgs>();
 		}
 
 		[TearDown]
 		public override void TearDown()
 		{
-			System.IO.Directory.Delete(basePath, true);
+            if(fs.DirectoryExists("/upload/"))
+				fs.DeleteDirectory("/upload/");
+
 			base.TearDown();
 		}
 
-		public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+		public static void CopyFilesRecursively(DirectoryInfo source, string targetVirtualPath, IFileSystem fs)
 		{
-			foreach (DirectoryInfo dir in source.GetDirectories())
-				CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
-			foreach (FileInfo file in source.GetFiles())
-				file.CopyTo(Path.Combine(target.FullName, file.Name));
+            foreach (DirectoryInfo dir in source.GetDirectories())
+            {
+                string newDirVirtualPath = Path.Combine(targetVirtualPath, dir.Name);
+                fs.CreateDirectory(newDirVirtualPath);
+                CopyFilesRecursively(dir, newDirVirtualPath, fs);
+            }
+            foreach (FileInfo file in source.GetFiles())
+            {
+                fs.WriteFile(Path.Combine(targetVirtualPath, file.Name), file.OpenRead());
+            }
 		}
 
 		void Triggered(string operation, FileEventArgs args)
@@ -99,296 +112,360 @@ namespace N2.Edit.Tests.FileSystem
 		#endregion
 
         [Test]
-        public void CanListFiles_InRootDirectory()
+        public void GetFiles_RetrievesFiles_BelowRoot()
         {
-            IList<File> files = upload.GetFiles();
-            Assert.That(files.Count, Is.EqualTo(2));
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			var files = fs.GetFiles("/upload/");
+
+            Assert.That(files.Single().Name, Is.EqualTo("hello.txt"));
         }
 
-        [Test]
-        public void CanListDirectories_InRootDirectory()
-        {
-            IList<Directory> directories = upload.GetDirectories();
-            Assert.That(directories.Count, Is.EqualTo(2));
-        }
+		[Test]
+		public void GetFiles_DoesntRetrieve_FilesNotThere()
+		{
+			fs.CreateDirectory("/upload/directory1");
 
-        [Test]
-        public void CanListDirectories_InSubDirectory()
-        {
-            IList<Directory> directories = upload.GetDirectories();
-            IList<Directory> subDirectories = directories[0].GetDirectories();
-            Assert.That(subDirectories.Count, Is.EqualTo(1));
-            Assert.That(subDirectories[0].Name, Is.EqualTo("Folder 3"));
-        }
+			var files = fs.GetFiles("/upload/");
 
-        [Test]
-        public void CanListFiles_InSubDirectory()
-        {
-            IList<Directory> directories = upload.GetDirectories();
-            IList<File> files = directories[0].GetFiles();
-            Assert.That(files.Count, Is.EqualTo(1));
-            Assert.That(files[0].Name, Is.EqualTo("File 2.txt"));
-        }
-
-        [Test]
-        public void CanGetDirectory_ByName()
-        {
-			Directory d = (Directory)upload.GetChild("Folder1");
-            Assert.That(d, Is.Not.Null);
-            Assert.That(d.Name, Is.EqualTo("Folder1"));
-        }
-
-        [Test]
-        public void CanGetFile_ByName()
-        {
-			File f = (File)upload.GetChild("File.txt");
-            Assert.That(f, Is.Not.Null);
-            Assert.That(f.Name, Is.EqualTo("File.txt"));
-        }
-
-        [Test]
-        public void CanGet_FileLength()
-        {
-			File f = (File)upload.GetChild("File.txt");
-            Assert.That(f.Size, Is.EqualTo(13));
-        }
-
-        [Test]
-        public void CanGetDirectory_ByPath()
-        {
-			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-            Assert.That(d, Is.Not.Null);
-            Assert.That(d.Name, Is.EqualTo("Folder 3"));
-        }
-
-        [Test]
-        public void CanGetFile_ByPath()
-        {
-			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
-            Assert.That(f, Is.Not.Null);
-            Assert.That(f.Name, Is.EqualTo("File 3.txt"));
-        }
-
-        [Test]
-        public void CanMoveFile_ToOtherDirectory()
-        {
-			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
-			string sourcePath = MapPath(@"/Upload/Folder 2/Folder 3/File 3.txt");
-			string destinationPath = MapPath(@"/Upload/Folder1/File 3.txt");
-			Directory d = (Directory)upload.GetChild("Folder1");
-            try
-            {
-                f.AddTo(d);
-                Assert.That(System.IO.File.Exists(destinationPath));
-                Assert.That(!System.IO.File.Exists(sourcePath));
-            }
-            finally
-            {
-				if(System.IO.File.Exists(destinationPath))
-					System.IO.File.Move(destinationPath, sourcePath);
-            }
+			Assert.That(files.Any(), Is.False);
 		}
 
 		[Test]
-		public void MovingFile_TriggersEvent()
+		public void GetFiles_RetrievesFiles_BelowSubdirectory()
 		{
-			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
-			string sourcePath = MapPath(@"/Upload/Folder 2/Folder 3/File 3.txt");
-			string destinationPath = MapPath(@"/Upload/Folder1/File 3.txt");
-			Directory d = (Directory)upload.GetChild("Folder1");
-			try
-			{
-				f.AddTo(d);
+			fs.CreateDirectory("/upload/world");
+			fs.WriteFile("/upload/world/hello.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
 
-				Assert.That(arguments[0].SourcePath, Is.EqualTo(@"/Upload/Folder 2/Folder 3/File 3.txt"));
-				Assert.That(arguments[0].VirtualPath, Is.EqualTo(@"/Upload/Folder1/File 3.txt"));
-				Assert.That(operations[0], Is.EqualTo("FileMoved"));
-			}
-			finally
-			{
-				if (System.IO.File.Exists(destinationPath))
-					System.IO.File.Move(destinationPath, sourcePath);
-			}
+			var files = fs.GetFiles("/upload/world/");
+
+			Assert.That(files.Single().Name, Is.EqualTo("hello.txt"));
 		}
 
-        [Test]
-        public void CanMoveFile_ToRootDirectory()
-        {
-			File f = (File)upload.GetChild("Folder 2/File 2.txt");
-			string sourcePath = MapPath(@"/Upload/Folder 2/File 2.txt");
-			string destinationPath = MapPath(@"/Upload/File 2.txt");
-            try
-            {
-                f.AddTo(upload);
-                Assert.That(System.IO.File.Exists(destinationPath));
-                Assert.That(!System.IO.File.Exists(sourcePath));
-            }
-            finally
-            {
-				if (System.IO.File.Exists(destinationPath))
-					System.IO.File.Move(destinationPath, sourcePath);
-            }
-        }
+		[Test]
+		public void GetDirectory_ListsDirectory_BelowRootDirectory()
+		{
+			fs.CreateDirectory("/upload/world");
 
-    	[Test]
-        public void CanMoveDirectory_ToOtherDirectory()
-        {
-			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
-            string destinationPath = MapPath("/Upload/Folder1/Folder 3");
-            try
-            {
-				d.AddTo(upload.GetChild("Folder1"));
-                Assert.That(System.IO.Directory.Exists(destinationPath));
-                Assert.That(!System.IO.Directory.Exists(sourcePath));
-            }
-            finally
-            {
-				if(System.IO.Directory.Exists(destinationPath))
-					System.IO.Directory.Move(destinationPath, sourcePath);
-            }
+			var directories = fs.GetDirectories("/upload");
+
+			Assert.That(directories.Single().Name, Is.EqualTo("world"));
+		}
+
+		[Test]
+		public void GetDirectory_ListsDirectory_BelowSubDirectory()
+		{
+			fs.CreateDirectory("/upload/hello/world");
+
+			var directories = fs.GetDirectories("/upload/hello/");
+
+			Assert.That(directories.Single().Name, Is.EqualTo("world"));
+		}
+
+		[Test]
+		public void GetDirectory_GetsRootDirectory()
+		{
+			fs.CreateDirectory("/upload");
+			var d = fs.GetDirectory("/upload");
+
+			Assert.That(d, Is.Not.Null);
+			Assert.That(d.Name, Is.EqualTo("upload"));
+		}
+
+		[Test]
+		public void GetDirectory_GetsSubDirectory_ByName()
+		{
+			fs.CreateDirectory("/upload/hello");
+			var d = fs.GetDirectory("/upload/hello");
+
+			Assert.That(d, Is.Not.Null);
+			Assert.That(d.Name, Is.EqualTo("hello"));
+		}
+
+		[Test]
+		public void WriteFile_ToRootDirectory_AutoGenerates_RootDirectory()
+		{
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			var d = fs.GetDirectory("/upload");
+
+			Assert.That(d, Is.Not.Null);
+			Assert.That(d.Name, Is.EqualTo("upload"));
+		}
+
+		[Test]
+		public void CreateDirectory_BelowRootDirectory_AutoGenerates_RootDirectory()
+		{
+			fs.CreateDirectory("/upload/hello");
+			var d = fs.GetDirectory("/upload");
+
+			Assert.That(d, Is.Not.Null);
+			Assert.That(d.Name, Is.EqualTo("upload"));
+		}
+
+		[Test]
+		public void GetFile_LoadsFileSize()
+		{
+			var b = Encoding.UTF8.GetBytes("hello world");
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(b));
+
+			var f = fs.GetFile("/upload/hello.txt");
+
+			Assert.That(f.Length, Is.EqualTo(b.Length));
+		}
+
+		[Test]
+		public void ReadFileContents_LoadsFileContents()
+		{
+			var writeBuffer = Encoding.UTF8.GetBytes("hello world");
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(writeBuffer));
+
+			var readBuffer = new byte[writeBuffer.Length];
+			var s = new MemoryStream(readBuffer);
+			fs.ReadFileContents("/upload/hello.txt", s);
+
+			Assert.That(readBuffer, Is.EquivalentTo(writeBuffer));
+		}
+
+		[Test]
+		public void MoveFile_ToOtherDirectory_FileIsInOtherDirectory()
+		{
+			fs.CreateDirectory("/upload/world");
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			fs.MoveFile("/upload/hello.txt", "/upload/world/hello.txt");
+
+			var f = fs.GetFile("/upload/world/hello.txt");
+
+			Assert.That(f, Is.Not.Null);
+			Assert.That(f.VirtualPath, Is.EqualTo("/upload/world/hello.txt"));
+		}
+
+		[Test]
+		public void MoveFile_TriggersEvent()
+		{
+			fs.CreateDirectory("/upload/world");
+			fs.WriteFile("/upload/hello.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			fs.MoveFile("/upload/hello.txt", "/upload/world/hello.txt");
+
+			Assert.That(this.arguments.Last().SourcePath, Is.EqualTo("/upload/hello.txt"));
+			Assert.That(this.arguments.Last().VirtualPath, Is.EqualTo("/upload/world/hello.txt"));
+			Assert.That(this.operations.Last(), Is.EqualTo("FileMoved"));
+		}
+
+		[Test]
+		public void MoveDirectory_ToOtherDirectory_DirectoryIsInOtherDirectory()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.CreateDirectory("/upload/world");
+
+			fs.MoveDirectory("/upload/hello", "/upload/world/hello");
+
+			var from = fs.GetDirectory("/upload/hello");
+			var to = fs.GetDirectory("/upload/world/hello");
+
+			Assert.That(from, Is.Null);
+			Assert.That(to, Is.Not.Null);
+		}
+
+		[Test]
+		public void MoveDirectory_ToOtherDirectory_SubdirectoryIsInOtherDirectory()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.CreateDirectory("/upload/hello/world");
+			fs.CreateDirectory("/upload/destination");
+
+			fs.MoveDirectory("/upload/hello", "/upload/destination/hello");
+
+			var to = fs.GetDirectory("/upload/destination/hello/world");
+
+			Assert.That(to, Is.Not.Null);
+		}
+
+		[Test]
+		public void MoveDirectory_ToOtherDirectory_FileIsInOtherDirectory()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.CreateDirectory("/upload/destination");
+
+			fs.MoveDirectory("/upload/hello", "/upload/destination/hello");
+
+			var from = fs.GetFile("/upload/hello/world.txt");
+			var to = fs.GetFile("/upload/destination/hello/world.txt");
+
+			Assert.That(from, Is.Null);
+			Assert.That(to, Is.Not.Null);
 		}
 
 		[Test]
 		public void MoveDirectory_TriggersEvent()
 		{
-			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
-			string destinationPath = MapPath("/Upload/Folder1/Folder 3");
-			try
-			{
-				d.AddTo(upload.GetChild("Folder1"));
-				Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder 2/Folder 3/"));
-				Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder1/Folder 3"));
-				Assert.That(operations[0], Is.EqualTo("DirectoryMoved"));
-			}
-			finally
-			{
-				if (System.IO.Directory.Exists(destinationPath))
-					System.IO.Directory.Move(destinationPath, sourcePath);
-			}
-		}
+			fs.CreateDirectory("/upload/world");
+			fs.CreateDirectory("/upload/hello");
 
-        [Test]
-        public void CanMoveDirectory_ToRootDirectory()
-        {
-			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
-			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
-            string destinationPath = MapPath("/Upload/Folder 3");
-            try
-            {
-                d.AddTo(upload);
-                Assert.That(System.IO.Directory.Exists(destinationPath));
-                Assert.That(!System.IO.Directory.Exists(sourcePath));
-            }
-            finally
-            {
-				if (System.IO.Directory.Exists(destinationPath))
-					System.IO.Directory.Move(destinationPath, sourcePath);
-            }
-        }
+			fs.MoveDirectory("/upload/world", "/upload/hello/world");
 
-        [Test]
-        public void CanMove_RootDirectory_ToContentItem()
-        {
-            upload.AddTo(root);
-
-            Assert.That(upload.Parent, Is.EqualTo(root));
-            Assert.That(root.Children.Contains(upload));
-        }
-
-        [Test]
-        public void CanMoveFile()
-        {
-            AssertMovement((from, to) => from.MoveTo(to));
-        }
-
-        [Test]
-        public void CanMoveFile_UsingPersister()
-        {
-            AssertMovement((from, to) => engine.Persister.Move(from, to));
-        }
-
-        [Test]
-        public void CanCopyAndDeleteFile()
-        {
-            CopyAndDelete(delegate(File from, Directory to)
-            {
-                return from.CopyTo(to);
-            });
-		}
-
-        [Test]
-        public void CanCopyAndDeleteFile_UsingPersister()
-        {
-            CopyAndDelete(delegate(File from, Directory to)
-            {
-                return engine.Persister.Copy(from, to);
-            });
-        }
-
-		[Test]
-		public void CopyAndDeleteFile_TriggersCopy()
-		{
-			CopyAndDelete(delegate(File from, Directory to)
-			{
-				return from.CopyTo(to);
-			});
-
-			Assert.That(operations[0], Is.EqualTo("FileCopied"));
-			Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder1/File1.txt"));
-			Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder 2/File1.txt"));
+			Assert.That(this.arguments.Last().SourcePath, Is.EqualTo("/upload/world"));
+			Assert.That(this.arguments.Last().VirtualPath, Is.EqualTo("/upload/hello/world"));
+			Assert.That(this.operations.Last(), Is.EqualTo("DirectoryMoved"));
 		}
 
 		[Test]
-		public void CopyAndDeleteFile_TriggersDelete()
+		public void CopyFile_FileIsInBothLocations()
 		{
-			CopyAndDelete(delegate(File from, Directory to)
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.CreateDirectory("/upload/destination");
+
+			fs.CopyFile("/upload/hello/world.txt", "/upload/destination/world.txt");
+
+			var from = fs.GetFile("/upload/hello/world.txt");
+			var to = fs.GetFile("/upload/destination/world.txt");
+
+			Assert.That(from, Is.Not.Null);
+			Assert.That(to, Is.Not.Null);
+		}
+
+		[Test]
+		public void CopyFile_TriggersEvent()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.CreateDirectory("/upload/destination");
+
+			fs.CopyFile("/upload/hello/world.txt", "/upload/destination/world.txt");
+
+			Assert.That(operations.Last(), Is.EqualTo("FileCopied"));
+			Assert.That(arguments.Last().SourcePath, Is.EqualTo("/upload/hello/world.txt"));
+			Assert.That(arguments.Last().VirtualPath, Is.EqualTo("/upload/destination/world.txt"));
+		}
+
+		[Test]
+		public void DeleteFile_RemovesFile()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			fs.DeleteFile("/upload/hello/world.txt");
+
+			var f = fs.GetFile("/upload/hello/world.txt");
+			Assert.That(f, Is.Null);
+		}
+
+		[Test]
+		public void DeleteDirectory_RemovesDirectory()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			fs.DeleteDirectory("/upload/hello/");
+
+			var d = fs.GetDirectory("/upload/hello");
+			Assert.That(d, Is.Null);
+		}
+
+		[Test]
+		public void DeleteDirectory_RemovesContainedFile()
+		{
+			fs.CreateDirectory("/upload/hello");
+
+			fs.DeleteDirectory("/upload/hello/");
+
+			var f = fs.GetFile("/upload/hello/world.txt");
+			Assert.That(f, Is.Null);
+		}
+
+		[TestCase("")]
+		[TestCase("hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		[TestCase("hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world")]
+		public void OpenFile_ReadsFileSizes(string text)
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes(text)));
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
 			{
-				return from.CopyTo(to);
-			});
+				var contents = s.ReadToEnd();
 
-			Assert.That(operations[1], Is.EqualTo("FileDeleted"));
-			Assert.That(arguments[1].SourcePath, Is.EqualTo(null));
-			Assert.That(arguments[1].VirtualPath, Is.EqualTo("/Upload/Folder 2/File1.txt"));
+				Assert.That(contents, Is.EqualTo(text));
+			}
 		}
 
-		private void AssertMovement(Action<File, Directory> moveAction)
+		[Test]
+		public void WriteFile_ModifiesFileContents()
 		{
-			Directory sourceDirectory = (Directory)upload.GetChild("Folder1");
-			Directory destinationDirectory = (Directory)upload.GetChild("Folder 2");
-			File f = (File)sourceDirectory.GetChild("File1.txt");
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("world hello")));
 
-			moveAction(f, destinationDirectory);
-			Assert.That(sourceDirectory.GetChild("File1.txt"), Is.Null);
-			Assert.That(f.Parent, Is.EqualTo(destinationDirectory));
-			Assert.That(destinationDirectory.GetChild("File1.txt"), Is.Not.Null);
+			var buffer = new byte["world".Length];
+			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("world hello"));
+			}
 		}
 
-        private void CopyAndDelete(Func<File, Directory, ContentItem> copyAction)
-        {
-			Directory d1 = (Directory)upload.GetChild("Folder1");
-			Directory d2 = (Directory)upload.GetChild("Folder 2");
-			File f = (File)d1.GetChild("File1.txt");
-            File fCopy = null;
-            try
-            {
-                fCopy = (File)copyAction(f, d2);
-				Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
-                Assert.That(fCopy.Parent, Is.EqualTo(d2));
-				Assert.That(d1.GetChild("File1.txt"), Is.Not.Null);
-                Assert.That(f.Parent, Is.EqualTo(d1));
-            }
-            finally
-            {
-                if (fCopy != null)
-                    fCopy.Delete();
-            }
-		}
-
-		string MapPath(string path)
+		[Test]
+		public void WriteFile_ExpandFileContents()
 		{
-			return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FileSystem" + path.Replace('/', '\\'));
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello")));
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+
+			var buffer = new byte["world".Length];
+			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("hello world"));
+			}
+		}
+
+		[Test]
+		public void WriteFile_ReduceFileContents()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello world")));
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("world")));
+
+			var buffer = new byte["world".Length];
+			var ms = new MemoryStream(buffer);
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("world"));
+			}
+		}
+
+		[Test]
+		public void OpenFile_ToWriteFileContents_ChangesFile()
+		{
+			fs.CreateDirectory("/upload/hello");
+			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes("hello")));
+
+			using (var s = fs.OpenFile("/upload/hello/world.txt"))
+			{
+				var buffer = Encoding.UTF8.GetBytes("world");
+				s.Write(buffer, 0, buffer.Length);
+			}
+
+			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			{
+				var contents = s.ReadToEnd();
+
+				Assert.That(contents, Is.EqualTo("world"));
+			}
 		}
     }
 }

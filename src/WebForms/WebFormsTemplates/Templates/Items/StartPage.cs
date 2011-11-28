@@ -14,7 +14,7 @@ namespace N2.Templates.Items
     [PageDefinition("Start Page", 
 		Description = "A start page template. It displays a horizontal meny but no vertical menu.",
 		SortOrder = 440,
-		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
+		InstallerVisibility = InstallerHint.PreferredStartPage,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
 	[RestrictParents(typeof(IRootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]

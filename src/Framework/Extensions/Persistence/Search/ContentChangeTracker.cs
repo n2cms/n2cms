@@ -15,27 +15,15 @@ namespace N2.Persistence.Search
 	/// <summary>
 	/// Observes changes in the content structure and invokes the <see cref="ILuceneIndexer"/> to perform indexing.
 	/// </summary>
-	[Service]
+	[Service(Configuration = "lucene")]
 	public class ContentChangeTracker : IAutoStart
 	{
-		IIndexer indexer;
-		IPersister persister;
-		IWorker worker;
-		IErrorNotifier errors;
-		bool async;
-		bool handleErrors;
+        IAsyncIndexer indexer;
 
-		public ContentChangeTracker(IIndexer indexer, IPersister persister, IWorker worker, ConnectionMonitor connection, IErrorNotifier errors, DatabaseSection config)
+        public ContentChangeTracker(IAsyncIndexer indexer, IPersister persister, ConnectionMonitor connection, DatabaseSection config)
 		{
 			this.indexer = indexer;
-			this.persister = persister;
-			this.worker = worker;
-			this.errors = errors;
-			this.async = config.Search.AsyncIndexing;
-			this.handleErrors = config.Search.HandleErrors;
 			
-			RetryInterval = TimeSpan.FromMinutes(2);
-
 			if(config.Search.Enabled)
 			{
 				connection.Online += delegate
@@ -57,26 +45,13 @@ namespace N2.Persistence.Search
 			}
 		}
 
-		public TimeSpan RetryInterval { get; set; }
 
 		public void ItemChanged(int itemID, bool affectsChildren)
 		{
 			if (itemID == 0)
 				return;
 
-			DoWork(() =>
-			{
-				var item = persister.Get(itemID);
-				indexer.Update(item);
-
-				if (affectsChildren)
-				{
-					foreach (var descendant in Find.EnumerateChildren(item))
-					{
-						indexer.Update(descendant);
-					}
-				}
-			});
+            indexer.Reindex(itemID, affectsChildren);
 		}
 
 		public void ItemDeleted(int itemID)
@@ -84,80 +59,10 @@ namespace N2.Persistence.Search
 			if (itemID == 0)
 				return;
 
-			DoWork(() =>
-			{
-				indexer.Delete(itemID);
-			});
+            indexer.Delete(itemID);
 		}
 
-		protected void DoWork(Action action)
-		{
-			if (handleErrors)
-				action = WrapActionInErrorHandling(action);
-			
-			if (async)
-				worker.DoWork(() =>
-					{
-						action();
-						persister.Dispose();
-					});
-			else
-				action();
-		}
 
-		Queue<Action> errorQueue = new Queue<Action>();
-		DateTime lastAttempt = DateTime.Now;
-
-		private Action WrapActionInErrorHandling(Action action)
-		{
-			var original = action;
-			return () =>
-			{
-				try
-				{
-					original();
-				}
-				catch (LockObtainFailedException ex)
-				{
-					AppendError(original, ex);
-				}
-				catch (ThreadAbortException ex)
-				{
-					AppendError(original, ex);
-				}
-				catch (SecurityException ex)
-				{
-					AppendError(original, ex);
-				}
-				RetryFailedActions();
-			};
-		}
-
-		private void AppendError(Action original, Exception ex)
-		{
-			errors.Notify(ex);
-			lock (errorQueue)
-			{
-				errorQueue.Enqueue(original);
-			}
-		}
-
-		private void RetryFailedActions()
-		{
-			if (errorQueue.Count == 0)
-				return;
-
-			if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
-			{
-				lock (errorQueue)
-				{
-					indexer.Unlock();
-					lastAttempt = DateTime.Now;
-					while (errorQueue.Count > 0)
-						DoWork(errorQueue.Dequeue());
-				}
-			}
-		}
 
 		#region IAutoStart Members
 

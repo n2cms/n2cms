@@ -5,5 +5,9 @@ namespace N2.Edit.FileSystem
 	/// </summary>
 	public class DirectoryData : AbstractFileSystemItem
 	{
+		public static DirectoryData Virtual(string virtualDir)
+		{
+			return new DirectoryData { Name = virtualDir.Trim('~', '/'), VirtualPath = virtualDir };
+		}
 	}
 }

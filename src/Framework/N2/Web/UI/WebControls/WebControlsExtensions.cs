@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using N2.Edit.Workflow;
+using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {

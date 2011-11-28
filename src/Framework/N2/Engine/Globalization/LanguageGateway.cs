@@ -125,7 +125,7 @@ namespace N2.Engine.Globalization
 				return new ContentItem[0];
 
 			return persister.Repository.Find(TranslationKey, item.TranslationKey)
-				.Where(Content.Is.Accessible(context.User, security))
+				.Where(new AccessFilter(context.User, security))
 				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
 		}
 
@@ -224,7 +224,7 @@ namespace N2.Engine.Globalization
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
-				persister.Repository.Save(item);
+				persister.Repository.SaveOrUpdate(item);
 			}
         }
 

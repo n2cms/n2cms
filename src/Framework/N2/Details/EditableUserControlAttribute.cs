@@ -63,7 +63,7 @@ namespace N2.Details
 				IContentBinder binder = editor as IContentBinder;
 				return binder.UpdateObject(item);
 			}
-			else
+			else if (!string.IsNullOrEmpty(UserControlPropertyName))
 			{
 				var current = item[Name];
 				var updated = Utility.GetProperty(editor, UserControlPropertyName);
@@ -73,6 +73,7 @@ namespace N2.Details
 				item[Name] = updated;
 				return true;
 			}
+            return false;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -82,7 +83,7 @@ namespace N2.Details
 				IContentBinder binder = editor as IContentBinder;
 				binder.UpdateInterface(item);
 			}
-			else
+			else if (!string.IsNullOrEmpty(UserControlPropertyName))
 			{
 				Utility.SetProperty(editor, UserControlPropertyName, item[Name]);
 			}

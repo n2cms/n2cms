@@ -99,12 +99,12 @@ namespace N2.Edit
 			if (security.GetPermissions(User, newItem) != security.GetPermissions(User, Selection.SelectedItem))
 			{
 				security.CopyPermissions(newItem.Parent, newItem);
-				persister.Repository.Save(newItem);
+				persister.Repository.SaveOrUpdate(newItem);
 			}
 			if (newItem.IsPublished() && !security.IsAuthorized(User, newItem, Permission.Publish))
 			{
 				newItem.Published = null;
-				persister.Repository.Save(newItem);
+				persister.Repository.SaveOrUpdate(newItem);
 			}
 
 			Refresh(newItem, ToolbarArea.Both);

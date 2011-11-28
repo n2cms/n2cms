@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using N2.Engine;
+using N2.Collections;
 
 namespace N2.Security
 {
@@ -137,7 +138,7 @@ namespace N2.Security
 
 		#endregion
 
-		#region Methods
+		#region ISecurityManager Members
 		/// <summary>Find out if a princpial has edit access.</summary>
 		/// <param name="user">The princpial to check.</param>
 		/// <returns>A boolean indicating whether the principal has edit access.</returns>
@@ -247,6 +248,20 @@ namespace N2.Security
 		private Permission GetPermiossions(IPrincipal user, ContentItem item, PermissionMap map)
 		{
 			return map.Authorizes(user, item, map.Permissions) ? map.Permissions : Permission.None;
+		}
+
+		
+		/// <summary>Gets a filter that filters for the given permission.</summary>
+		/// <param name="permission">The permission required.</param>
+		/// <returns>An item filter.</returns>
+		public Collections.ItemFilter GetAuthorizationFilter(Permission permission)
+		{
+			if (permission == Permission.Read)
+				return new AccessFilter(webContext.User, this);
+			if (permission == Permission.None)
+				return new NullFilter();
+
+			return new DelegateFilter(ci => IsAuthorized(webContext.User, permission));
 		}
 
 		#endregion

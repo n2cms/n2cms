@@ -8,14 +8,14 @@ using N2.Engine;
 
 namespace N2.Persistence.Search
 {
-	[Service(typeof(AbstractMigration))]
+	[Service(typeof(AbstractMigration), Configuration = "lucene")]
 	public class ReindexTextMigration : AbstractMigration
 	{
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 		IIndexer indexer;
 		LuceneAccesor accessor;
 
-		public ReindexTextMigration(IRepository<int, ContentItem> repository, IIndexer indexer, LuceneAccesor accessor)
+		public ReindexTextMigration(IRepository<ContentItem> repository, IIndexer indexer, LuceneAccesor accessor)
 		{
 			this.repository = repository;
 			this.indexer = indexer;

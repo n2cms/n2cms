@@ -18,8 +18,10 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
-	[RecursiveContainer(Defaults.Containers.Site, 1000,
-		RequiredPermission = Permission.Administer)]
+	[RecursiveContainer("SiteContainer", 1000,
+        RequiredPermission = Permission.Administer)]
+    [TabContainer(Defaults.Containers.Site, "Site", 0,
+        ContainerName = "SiteContainer")]
 	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
 	{

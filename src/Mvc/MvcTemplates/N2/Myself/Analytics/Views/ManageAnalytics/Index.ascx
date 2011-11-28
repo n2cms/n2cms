@@ -1,7 +1,11 @@
-﻿<%@ Import Namespace="N2.Web" %>
+﻿<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Web.Mvc" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="N2.Web" %>
 <%@ Import Namespace="N2.Web.Mvc.Html" %>
 <%@ Import Namespace="N2.Management.Myself.Analytics.Models" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<N2.Management.Myself.Analytics.Models.ManageAnalyticsPart>" %>
+
 <% string containerID = "a" + Html.CurrentItem().ID; %>
 
 <div id="<%= containerID %>" class="uc cf analytics">

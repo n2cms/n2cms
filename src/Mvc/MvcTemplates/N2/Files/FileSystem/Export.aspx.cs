@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ionic.Zip;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.Web;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem
 {
@@ -25,7 +26,7 @@ namespace N2.Edit.FileSystem
 		{
             var zipFileName = System.IO.Path.GetFileName(rootPath) + ".zip";
 
-            var directory = Directory.New(fileSystem.GetDirectory(rootPath), null, fileSystem, Engine.Resolve<ImageSizeCache>());
+            var directory = Directory.New(fileSystem.GetDirectory(rootPath), null, Engine.Resolve<IDependencyInjector>());
 
             Response.Clear();
             Response.BufferOutput = false;

@@ -1,4 +1,7 @@
-﻿<%@ Import Namespace="N2.Management.Myself.Analytics.Models" %>
+﻿<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Web.Mvc" %>
+<%@ Import Namespace="System.Web.Mvc.Html" %>
+<%@ Import Namespace="N2.Management.Myself.Analytics.Models" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<N2.Management.Myself.Analytics.Models.ConfigureAnalyticsViewModel>" %>
 
 <style>

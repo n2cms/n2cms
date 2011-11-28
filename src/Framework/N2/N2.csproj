@@ -74,6 +74,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
@@ -129,6 +132,9 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\PathsElement.cs" />
+    <Compile Include="Configuration\ContentConfigurationSectionBase.cs" />
+    <Compile Include="Configuration\FilesElement.cs" />
+    <Compile Include="Configuration\FileStoreLocation.cs" />
     <Compile Include="Configuration\RootFileSystemFolderCollection.cs" />
     <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
@@ -141,6 +147,7 @@
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
     <Compile Include="Definitions\IFileSystemDirectory.cs" />
+    <Compile Include="Definitions\IManagementHomePart.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
@@ -185,9 +192,20 @@
     <Compile Include="Details\ILiteralDisplayable.cs" />
     <Compile Include="Definitions\AllowedDefinitionQuery.cs" />
     <Compile Include="Definitions\AllowedDefinitionResult.cs" />
+    <Compile Include="Details\WithManageableSearchAttribute.cs" />
     <Compile Include="Edit\EditExtensions.cs" />
+    <Compile Include="Edit\FileSystem\FileSystemExtensions.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemMigrator.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystemStream.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileConfigurationParticipator.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemChunk.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemPath.cs" />
+    <Compile Include="Edit\FileSystem\NH\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Edit\UploadFolderSource.cs" />
     <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
     <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
@@ -197,6 +215,7 @@
     <Compile Include="Engine\Providers\HttpContextProvider.cs" />
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
+    <Compile Include="Engine\ServiceInfo.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
@@ -236,9 +255,12 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
     <Compile Include="Persistence\FindingTextSearcher.cs" />
+    <Compile Include="Engine\IDependencyInjector.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
@@ -266,7 +288,13 @@
     <Compile Include="Persistence\Search\TextExtractor.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
+    <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
+    <Compile Include="Persistence\Sources\SourceBase.cs" />
+    <Compile Include="Persistence\Sources\DatabaseSource.cs" />
+    <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
+    <Compile Include="Persistence\Sources\Query.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
+    <Compile Include="Persistence\TemporaryFileHelper.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
     <Compile Include="Security\ISecurableBase.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
@@ -285,6 +313,7 @@
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
+    <Compile Include="Web\JsonWriter.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
@@ -467,7 +496,6 @@
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
-    <Compile Include="Obsolete\AuthorizedRolesAttribute.cs" />
     <Compile Include="Web\InvalidPathException.cs" />
     <Compile Include="Web\InitializerModule.cs" />
     <Compile Include="Web\IWebContext.cs" />
@@ -641,7 +669,7 @@
     <Compile Include="ContentState.cs" />
     <Compile Include="Edit\Workflow\IContentFormOfT.cs" />
     <Compile Include="Edit\Workflow\ICommandFactory.cs" />
-    <Compile Include="Edit\Workflow\Interfaces.cs" />
+    <Compile Include="Edit\Interfaces.cs" />
     <Compile Include="Edit\Workflow\IValidatorOfT.cs" />
     <Compile Include="Edit\Workflow\StateChangedEventArgs.cs" />
     <Compile Include="Edit\Workflow\StateChanger.cs" />

@@ -37,7 +37,6 @@ namespace N2.Web.Mvc
 		/// <typeparam name="T">The type of content items to route.</typeparam>
 		/// <returns>The added content route instance.</returns>
 		public static ContentRoute MapContentRoute<T>(this RouteCollection routes, string name, IEngine engine)
-			where T : ContentItem
 		{
 			var nonContentRoutesNorGenericRoutes = SelectRoutesWithIndices(routes)
 				.Where(x => !(x.Value is ContentRoute) || !x.Value.GetType().ContainsGenericParameters);

@@ -60,9 +60,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\lib\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="Lucene.Net, Version=2.9.1.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
@@ -101,20 +98,25 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
-    <Compile Include="Persistence\Search\IRepository.cs" />
-    <Compile Include="Persistence\Search\LuceneAccesor.cs" />
-    <Compile Include="Persistence\Search\LuceneExtensions.cs" />
-    <Compile Include="Persistence\Search\LuceneSearcher.cs" />
-    <Compile Include="Persistence\Search\ReindexTextMigration.cs" />
-    <Compile Include="Persistence\Search\ContentChangeTracker.cs" />
-    <Compile Include="Persistence\Search\LuceneIndexer.cs" />
-    <Compile Include="Web\Hosting\Util.cs" />
-    <Compile Include="Web\Hosting\VirtualPathFileHandler.cs" />
-    <Compile Include="Web\Hosting\ZipFileVirtualPathProvider.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualDirectory.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualFile.cs" />
-    <Compile Include="Web\Hosting\ZipVirtualPathCollection.cs" />
-    <Compile Include="Web\Hosting\ZipVppInitializer.cs" />
+    <Compile Include="Persistence\Search\AsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\ContentChangeTracker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Search\LuceneAccesor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Search\LuceneExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Search\LuceneIndexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Search\LuceneSearcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Search\ReindexTextMigration.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\EditableItemRenderer.cs" />

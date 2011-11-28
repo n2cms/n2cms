@@ -282,5 +282,71 @@ namespace N2.Tests.Web.Parsing
 
 			Assert.That(blocks.Last().Fragment, Is.Not.EqualTo(""));
 		}
+
+        [Test]
+        public void Element_WithAttribute_SingleQuote()
+        {
+            string text = "<p onclick='alert(1)'>Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick='alert(1)'>"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
+
+        [Test]
+        public void Element_WithAttribute_DoubleQuote()
+        {
+            string text = "<p onclick=\"alert(1)\">Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick=\"alert(1)\">"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
+
+        [Test]
+        public void Element_WithAttribute_GreaterThan()
+        {
+            string text = "<p onclick='>'>Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick='>'>"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
+
+        [Test]
+        public void Element_WithAttribute_SingleQuote_DoubleQuote()
+        {
+            string text = "<p onclick='alert(\"hello\");'>Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick='alert(\"hello\");'>"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
+
+        [Test]
+        public void Element_WithAttribute_DoubleQuote_SingleQuote()
+        {
+            string text = "<p onclick=\"alert('hello');\">Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick=\"alert('hello');\">"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
+
+        [Test]
+        public void Element_WithAttribute_WithEscapedQuote()
+        {
+            string text = "<p onclick=\"alert('\\\\');\">Hello</p>";
+            var tokens = text.Tokenize().ToList();
+
+            Assert.That(tokens[0].Fragment, Is.EqualTo("<p onclick=\"alert('\\\\');\">"));
+            Assert.That(tokens[0].Index, Is.EqualTo(0));
+            Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
+        }
 	}
 }

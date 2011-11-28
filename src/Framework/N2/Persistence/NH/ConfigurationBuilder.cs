@@ -9,6 +9,7 @@ using System.Xml;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.FileSystem.NH;
 using N2.Engine;
 using N2.Linq;
 using N2.Security;
@@ -30,6 +31,8 @@ namespace N2.Persistence.NH
 	[Service]
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
+		public const int BlobLength = 2147483647;
+
 		private readonly ClassMappingGenerator generator;
 		private readonly IDefinitionProvider[] definitionProviders;
 		private readonly IWebContext webContext;
@@ -265,7 +268,6 @@ namespace N2.Persistence.NH
 			mm.Class<AuthorizedRole>(AuthorizedRoleCustomization);
 
 			var compiledMapping = mm.CompileMappingForAllExplicitlyAddedEntities();
-			var debugXml = compiledMapping.AsString();
 			cfg.AddDeserializedMapping(compiledMapping, "N2");
 		}
 
@@ -353,7 +355,7 @@ namespace N2.Persistence.NH
 			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
 			ca.Property(x => x.StringValue, cm => { cm.Type(NHibernateUtil.StringClob); cm.Length(stringLength); });
-			ca.Property(x => x.ObjectValue, cm => { cm.Column("Value"); cm.Type(NHibernateUtil.Serializable); cm.Length(2147483647); });
+			ca.Property(x => x.ObjectValue, cm => { cm.Column("Value"); cm.Type(NHibernateUtil.Serializable); cm.Length(ConfigurationBuilder.BlobLength); });
 		}
 
 		void DetailCollectionCustomization(IClassMapper<DetailCollection> ca)

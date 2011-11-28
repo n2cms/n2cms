@@ -93,7 +93,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			for (int i = 1; i <= width; i++)
 			{
 				ContentItem item = Create(parent, type, name, depth, i);
-				Engine.Persister.Repository.Save(item);
+				Engine.Persister.Repository.SaveOrUpdate(item);
 				CreateChildren(item, type, name, width, depth - 1);
 			}
 			HttpContext.Response.Write(name + " 0-" + width + " (" + depth + ")" + "<br/>");

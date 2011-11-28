@@ -310,6 +310,18 @@
 									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="files" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="storageLocation" use="optional" default="Disk">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Disk"/>
+												<xs:enumeration value="Database"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />

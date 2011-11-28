@@ -34,6 +34,7 @@ using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
+using N2.Persistence.Sources;
 
 namespace N2
 {
@@ -62,12 +63,12 @@ namespace N2
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
-	public abstract class ContentItem : IComparable, 
-		IComparable<ContentItem>, 
+	public abstract class ContentItem : IComparable,
+		IComparable<ContentItem>,
 		ICloneable,
-		IInjectable<IUrlParser>, 
-		INode, 
-		IUpdatable<ContentItem>, 
+		IInjectable<IUrlParser>,
+		INode,
+		IUpdatable<ContentItem>,
 		IInterceptableType,
 		INameable,
 		IPlaceable
@@ -99,6 +100,7 @@ namespace N2
         private int versionIndex;
         private ContentState state = ContentState.None;
 		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
+		private int? hashCode;
 		#endregion
 
         #region Constructor
@@ -952,7 +954,6 @@ namespace N2
 			//TODO: add id==0 && name+parent
 		}
 
-		int? hashCode;
 		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
 		[DebuggerStepThrough]

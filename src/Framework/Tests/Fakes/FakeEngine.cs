@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Definitions;
 using N2.Edit;
@@ -127,6 +128,11 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
+		public ContentHelperBase Content
+		{
+			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
+		}
+
 		#endregion
 
 		public class FakeServiceContainer : IServiceContainer
@@ -183,6 +189,11 @@ namespace N2.Tests.Fakes
 					return new object[0];
 
 				return new object[] { Resolve(serviceType) };
+			}
+
+			public IEnumerable<ServiceInfo> Diagnose()
+			{
+				yield break;
 			}
 
 			public T[] ResolveAll<T>()

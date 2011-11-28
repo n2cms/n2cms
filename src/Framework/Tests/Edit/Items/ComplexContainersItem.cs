@@ -50,7 +50,9 @@ namespace N2.Tests.Edit.Items
 
 		[Obsolete]
 		[N2.Details.EditableCheckBox("My Property 5", 2001)]
+#pragma warning disable 618
 		[N2.Details.DetailAuthorizedRoles("ÜberEditor")]
+#pragma warning restore 618
 		public virtual bool MyProperty5
 		{
 			get { return (bool)(GetDetail("MyProperty5") ?? false); }
@@ -59,7 +61,9 @@ namespace N2.Tests.Edit.Items
 
 		[Obsolete]
 		[N2.Details.EditableText("My Property 6", 2010)]
+#pragma warning disable 618
 		[N2.Details.DetailAuthorizedRoles("ÜberEditor")]
+#pragma warning restore 618
 		public virtual string MyProperty6
 		{
 			get { return (string)(GetDetail("MyProperty6") ?? false); }

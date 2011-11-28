@@ -14,6 +14,7 @@ using N2.Web.UI;
 using N2.Definitions;
 using System.Diagnostics;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace N2.Templates.Mvc.Services
 {
@@ -55,6 +56,11 @@ namespace N2.Templates.Mvc.Services
 		{
 			IControllerMapper controllerMapper;
 			ContentItem item;
+			static int mvcVersion = new System.Reflection.AssemblyName(typeof(WebFormView).Assembly.FullName).Version.Major;
+			private string controllerName;
+			private Type itemType;
+			RouteCollection routes;
+			private HttpContextWrapper httpContext;
 
 			public ControllerWrapper(ContentItem item, IControllerMapper controllerMapper)
 			{
@@ -62,9 +68,22 @@ namespace N2.Templates.Mvc.Services
 				ViewData = new ViewDataDictionary(item);
 				this.item = item;
 				this.controllerMapper = controllerMapper;
+				itemType = item.GetContentType();
+				controllerName = controllerMapper.GetControllerName(itemType);
+				routes = RouteTable.Routes;
+				httpContext = new HttpContextWrapper(HttpContext.Current);
 			}
 
-			public HtmlHelper<ContentItem> Html { get; set; }
+			protected override void OnInit(EventArgs e)
+			{
+				base.OnInit(e);
+
+				if (Page.Request.Headers["X-Requested-With"] == "XMLHttpRequest" && IsRouteForThisController())
+				{
+					RenderController(httpContext.Response.Output);
+					httpContext.Response.End();
+				}
+			}
 
 			#region IViewDataContainer Members
 
@@ -74,79 +93,55 @@ namespace N2.Templates.Mvc.Services
 
 			protected override void Render(HtmlTextWriter writer)
 			{
-				// fake an mvc context and render an mvc part
-				var rd = CreateRouteData();
-				var vc = CreateViewContext(rd, writer);
-				var html = new HtmlHelper<ContentItem>(vc, this);
-
-				RenderTemplate(item, html);
+				writer.Write("<div id='" + ClientID + "'>");
+				RenderController(writer);
+				writer.Write("</div>");
 			}
 
-			private void RenderTemplate(ContentItem item, HtmlHelper helper)
+			private void RenderController(TextWriter writer)
 			{
-				Type itemType = item.GetContentType();
-				string controllerName = controllerMapper.GetControllerName(itemType);
 				if (string.IsNullOrEmpty(controllerName))
 				{
 					Trace.TraceWarning("Found no controller for type " + itemType);
 					return;
 				}
 
-				RouteValueDictionary values = GetRouteValues(helper, item, controllerName);
+				RouteData data = null;
+				if (IsRouteForThisController())
+					// post to mvc part
+					data = routes.GetRouteData(httpContext);
 
-				helper.ViewContext.Writer.Write("<div id='" + ClientID + "'>");
-				helper.RenderAction("Index", values);
-				helper.ViewContext.Writer.Write("</div>");
+				if (data == null)
+					data = GetRouteData(new RequestContext(httpContext, new RouteData()), item, controllerName);
+
+				var rc = new RequestContext(httpContext, data);
+				var controllerFactory = ControllerBuilder.Current.GetControllerFactory();
+				var c = controllerFactory.CreateController(rc, (string)data.Values[ContentRoute.ControllerKey]);
+				c.Execute(rc);
+				controllerFactory.ReleaseController(c);
 			}
 
-			private static RouteValueDictionary GetRouteValues(HtmlHelper helper, ContentItem item, string controllerName)
+			private bool IsRouteForThisController()
 			{
-				var values = new RouteValueDictionary();
-				values[ContentRoute.ControllerKey] = controllerName;
-				values[ContentRoute.ActionKey] = "Index";
-				values[ContentRoute.ContentItemKey] = item.ID;
+				return httpContext.Request.AppRelativeCurrentExecutionFilePath.StartsWith("~/" + controllerName);
+			}
+
+			private RouteData GetRouteData(RequestContext requestContext, ContentItem item, string controllerName)
+			{
+                var data = new RouteData();
+				data.Values[ContentRoute.ControllerKey] = controllerName;
+				data.Values[ContentRoute.ActionKey] = "Index";
+				data.Values[ContentRoute.ContentItemKey] = item.ID;
 
 				// retrieve the virtual path so we can figure out if this item is routed through an area
-				var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
+				var vpd = routes.GetVirtualPath(requestContext, data.Values);
 				if (vpd == null)
-					throw new InvalidOperationException("Unable to render " + item + " (" + values.ToQueryString() + " did not match any route)");
+					throw new InvalidOperationException("Unable to render " + item + " (" + data.Values.ToQueryString() + " did not match any route)");
 
-				values["area"] = vpd.DataTokens["area"];
-				return values;
-			}
-
-			static int mvcVersion = new System.Reflection.AssemblyName(typeof(WebFormView).Assembly.FullName).Version.Major;
-			private ViewContext CreateViewContext(RouteData rd, HtmlTextWriter writer)
-			{
-				var cc = new ControllerContext(new RequestContext(new HttpContextWrapper(HttpContext.Current), rd), new TempController());
-#if NET4
-				// TODO: avoid activator below
-#endif
-				var wfv = mvcVersion >= 3 
-					? (WebFormView)Activator.CreateInstance(typeof(WebFormView), cc, this.Page.Request.AppRelativeCurrentExecutionFilePath)
-					: (WebFormView)Activator.CreateInstance(typeof(WebFormView), this.Page.Request.AppRelativeCurrentExecutionFilePath);
-				var vc = new ViewContext(cc, wfv, new ViewDataDictionary(), new TempDataDictionary(), writer);
-				return vc;
-			}
-
-			private RouteData CreateRouteData()
-			{
-				ContentItem page = item;
-				var ic = Page as IItemContainer;
-				if (ic != null)
-					page = ic.CurrentItem;
-
-				var rd = new RouteData();
-				RouteExtensions.ApplyCurrentItem(rd, "webform", "Index", page, item);
-				return rd;
-			}
-
-			class TempController : ControllerBase
-			{
-				protected override void ExecuteCore()
-				{
-					throw new NotImplementedException();
-				}
+				data.Values["area"] = vpd.DataTokens["area"];
+                data.Route = vpd.Route;
+                data.ApplyCurrentItem(item.ClosestPage(), item);
+				return data;
 			}
 		}
 	}

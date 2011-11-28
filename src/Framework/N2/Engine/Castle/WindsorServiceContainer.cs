@@ -115,6 +115,14 @@ namespace N2.Engine.Castle
 			return container.ResolveAll(serviceType);
 		}
 
+		/// <summary>Resolves all services.</summary>
+		/// <returns>All registered services.</returns>
+		public override IEnumerable<ServiceInfo> Diagnose()
+		{
+			return container.Kernel.GraphNodes.OfType<ComponentModel>()
+				.Select(cm => new ServiceInfo { Key = cm.Name, ServiceType = cm.Service, ImplementationType = cm.Implementation, Resolve = () => Resolve(cm.Service), ResolveAll = () => ResolveAll(cm.Service) });
+		}
+
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>
@@ -269,6 +277,8 @@ namespace N2.Engine.Castle
 				return typeof(IAutoStart).IsAssignableFrom(model.Implementation);
 			}
 
+
+			#region Start & Stop Concern
 			class StartConcern : ILifecycleConcern, ICommissionConcern
 			{
 				private static readonly StartConcern instance = new StartConcern();
@@ -315,6 +325,7 @@ namespace N2.Engine.Castle
 					}
 				}
 			}
+			#endregion
 		}
 	}
 }

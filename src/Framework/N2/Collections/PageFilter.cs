@@ -16,5 +16,10 @@ namespace N2.Collections
 		{
 			Filter(items, new PageFilter());
 		}
+
+		public override string ToString()
+		{
+			return "IsPage";
+		}
 	}
 }

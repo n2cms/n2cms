@@ -4,9 +4,9 @@ namespace N2.Edit.Workflow.Commands
 {
     public class DeleteCommand : CommandBase<CommandContext>
     {
-        IRepository<int, ContentItem> repository;
+        IRepository<ContentItem> repository;
 
-        public DeleteCommand(IRepository<int, ContentItem> repository)
+        public DeleteCommand(IRepository<ContentItem> repository)
         {
             this.repository = repository;
         }

@@ -7,7 +7,7 @@ using N2.Tests.Web.Items;
 using N2.Web.Parts;
 using NUnit.Framework;
 using N2.Web;
-using N2.Edit.Workflow;
+using N2.Edit;
 
 namespace N2.Tests.Web
 {

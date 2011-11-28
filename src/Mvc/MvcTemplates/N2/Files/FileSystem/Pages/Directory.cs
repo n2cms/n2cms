@@ -2,6 +2,7 @@
 using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -123,7 +124,7 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.CreateDirectory(to);
-			Directory copy = New(FileSystem.GetDirectory(to), d, FileSystem, ImageSizes);
+			Directory copy = New(FileSystem.GetDirectory(to), d, DependencyInjector);
 
 			foreach (File f in GetFiles())
 				f.CopyTo(copy);
@@ -136,11 +137,10 @@ namespace N2.Edit.FileSystem.Items
 
 		#endregion
 
-		internal static Items.Directory New(DirectoryData dir, ContentItem parent, IFileSystem fs, ImageSizeCache sizes)
+		internal static Items.Directory New(DirectoryData dir, ContentItem parent, IDependencyInjector injector)
 		{
 			var node = new Directory(dir, parent);
-			node.Set(fs);
-			node.Set(sizes);
+			injector.FulfilDependencies(node);
 			return node;
 		}
 	}

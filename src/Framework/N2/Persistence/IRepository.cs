@@ -31,13 +31,13 @@ using System.Collections.Generic;
 
 namespace N2.Persistence
 {
+	
     /// <summary>
     /// The repository is a single point for database operations. All 
     /// persistence operations on database should pass through here.
     /// </summary>
-    /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-	public interface IRepository<TKey, TEntity> : IDisposable
+	public interface IRepository<TEntity> : IDisposable
 	{
 		/// <summary>
 		/// Get the entity from the persistance store, or return null
@@ -45,33 +45,31 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		TEntity Get(TKey id);
-
-    	/// <summary>
-    	/// Get the entity from the persistance store, or return null
-    	/// if it doesn't exist.
-    	/// </summary>
-    	/// <param name="id">The entity's id</param>
-    	/// <typeparam name="T">The type of entity to get.</typeparam>
-    	/// <returns>Either the entity that matches the id, or a null</returns>
-    	T Get<T>(TKey id);
+		TEntity Get(object id);
 
 		/// <summary>
-		/// Finds entitities from the persistance store with matching property values.
+		/// Get the entity from the persistance store, or return null
+		/// if it doesn't exist.
+		/// </summary>
+		/// <param name="id">The entity's id</param>
+		/// <typeparam name="T">The type of entity to get.</typeparam>
+		/// <returns>Either the entity that matches the id, or a null</returns>
+		T Get<T>(object id);
+
+		/// <summary>
+		/// Finds entitities from the persistance store with matching property value.
 		/// </summary>
 		/// <param name="propertyName">The name of the property to search for.</param>
 		/// <param name="value">The value to search for.</param>
 		/// <returns>Entities with matching values.</returns>
 		IEnumerable<TEntity> Find(string propertyName, object value);
-		
+
 		/// <summary>
-		/// Load the entity from the persistance store
-		/// Will throw an exception if there isn't an entity that matches
-		/// the id.
+		/// Finds entitities from the persistance store with matching property values.
 		/// </summary>
-		/// <param name="id">The entity's id</param>
-		/// <returns>The entity that matches the id</returns>
-		TEntity Load(TKey id);
+		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <returns>Entities with matching values.</returns>
+		IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll);
 
 		/// <summary>
 		/// Register the entity for deletion when the unit of work
@@ -79,20 +77,6 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="entity">The entity to delete</param>
 		void Delete(TEntity entity);
-
-		/// <summary>
-		/// Register te entity for save in the database when the unit of work
-		/// is completed. (INSERT)
-		/// </summary>
-		/// <param name="entity">the entity to save</param>
-		void Save(TEntity entity);
-
-		/// <summary>
-		/// Register the entity for update in the database when the unit of work
-		/// is completed. (UPDATE)
-		/// </summary>
-		/// <param name="entity"></param>
-		void Update(TEntity entity);
 
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work
@@ -119,5 +103,32 @@ namespace N2.Persistence
 		/// <summary>Begins a transaction.</summary>
 		/// <returns>A disposable transaction wrapper.</returns>
 		ITransaction BeginTransaction();
+	}
+
+    /// <summary>
+    /// The repository is a single point for database operations. All 
+    /// persistence operations on database should pass through here.
+    /// </summary>
+    /// <typeparam name="TKey">The primary key type.</typeparam>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+	[Obsolete("Use IRepository<TEntity>")]
+	public interface IRepository<TKey, TEntity> : IRepository<TEntity>
+	{
+		/// <summary>
+		/// Get the entity from the persistance store, or return null
+		/// if it doesn't exist.
+		/// </summary>
+		/// <param name="id">The entity's id</param>
+		/// <returns>Either the entity that matches the id, or a null</returns>
+		new TEntity Get(TKey id);
+
+    	/// <summary>
+    	/// Get the entity from the persistance store, or return null
+    	/// if it doesn't exist.
+    	/// </summary>
+    	/// <param name="id">The entity's id</param>
+    	/// <typeparam name="T">The type of entity to get.</typeparam>
+    	/// <returns>Either the entity that matches the id, or a null</returns>
+		new T Get<T>(TKey id);
 	}
 }

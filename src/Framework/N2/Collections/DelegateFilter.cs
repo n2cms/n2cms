@@ -20,5 +20,10 @@ namespace N2.Collections
 		{
 			return isPositiveMatch(item);
 		}
+
+		public override string ToString()
+		{
+			return "Delegate";
+		}
 	}
 }

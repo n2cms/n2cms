@@ -25,8 +25,7 @@ namespace N2.Plugin.Scheduling
             timer = new Timer(config.Scheduler.Interval * 1000);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
 			connection.Online += delegate { timer.Start(); };
-			connection.Interrupted += delegate { timer.Stop(); };
-			connection.Resumed += delegate { timer.Start(); };
+			connection.Offline += delegate { timer.Stop(); };
         }
 
 		/// <summary>Occurs when a time unit has elapsed.</summary>

@@ -32,7 +32,7 @@ namespace N2.Persistence.NH
 		}
 
 		/// <summary>Gets the NHibernate session factory</summary>
-		public ISessionFactory NHSessionFactory
+		public ISessionFactory SessionFactory
 		{
 			get { return nhSessionFactory; }
 		}

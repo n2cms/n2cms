@@ -7,6 +7,15 @@ using N2.Tests;
 using N2.Web;
 using NUnit.Framework;
 using N2.Edit.FileSystem.Items;
+using Rhino.Mocks;
+using N2.Persistence;
+using N2.Engine;
+using N2.Tests.Fakes;
+using N2.Edit.FileSystem;
+using N2.Tests.Fakes;
+using N2.Edit.FileSystem;
+using System;
+using Shouldly;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -14,13 +23,15 @@ namespace N2.Edit.Tests.FileSystem
 	public class VirtualFolderInitializerTests : ItemPersistenceMockingBase
 	{
 		Host host;
-		FakeFileSystem fs;
+		FakeMappedFileSystem fs;
 		VirtualNodeFactory vnf;
 		EditSection config;
 		VirtualFolderInitializer initializer;
+		FakeDependencyInjector injector;
 
 		ContentItem root;
 		ContentItem start;
+		FolderNodeProvider nodeProvider;
 
 		[SetUp]
 		public override void SetUp()
@@ -31,13 +42,17 @@ namespace N2.Edit.Tests.FileSystem
 			start = CreateOneItem<RootNode>(2, "start", root);
 			host = new Host(new ThreadContext(), root.ID, start.ID);
 
-			fs = new FakeFileSystem();
-			fs.PathProvider = new FakePathProvider(fs.BasePath);
+			fs = new FakeMappedFileSystem();
+			fs.BasePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
 
 			vnf = new VirtualNodeFactory();
 			config = new EditSection();
 
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new FakeStatus(), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }));
+			injector = new FakeDependencyInjector();
+			injector.injectors.Add(new EntityDependencySetter<IFileSystem>(fs));
+			injector.injectors.Add(new EntityDependencySetter<IDependencyInjector>(injector));
+			nodeProvider = new FolderNodeProvider(fs, persister, injector);
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }), nodeProvider);
 		}
 
 		class FakeStatus : DatabaseStatusCache
@@ -58,6 +73,7 @@ namespace N2.Edit.Tests.FileSystem
 		public void Get_UploadFolder()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.Get("/upload/");
 
@@ -69,6 +85,7 @@ namespace N2.Edit.Tests.FileSystem
 		public void UploadFolder_IsNotAvailable_FromStartPage()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.Get("/start/upload/");
 
@@ -79,6 +96,7 @@ namespace N2.Edit.Tests.FileSystem
 		public void Get_ChildTo_UploadFolder()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.Get("/upload/File.txt");
 
@@ -90,6 +108,7 @@ namespace N2.Edit.Tests.FileSystem
 		public void GetChildren_Includes_UploadFolder()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.GetChildren("/");
 
@@ -101,6 +120,7 @@ namespace N2.Edit.Tests.FileSystem
 		public void GetChildren_OfStartPage_DoesntInclude_UploadFolder()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.GetChildren("/start/");
 
@@ -108,19 +128,21 @@ namespace N2.Edit.Tests.FileSystem
 		}
 
 		[Test]
-		public void GetChildren_OfUploadFolderPath_DoesntReturnChildren()
+		public void GetChildren_OfUploadFolderPath_ReturnsChildren()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var children = vnf.GetChildren("/upload/");
 
-			Assert.That(children.Count(), Is.EqualTo(0));
+			Assert.That(children.Count(), Is.EqualTo(4));
 		}
 
 		[Test]
 		public void GetChildren_OfUploadFolder_ReturnsChildren()
 		{
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.Get("/upload/");
 
@@ -138,6 +160,7 @@ namespace N2.Edit.Tests.FileSystem
 			fs.CreateDirectory("/upload2/");
 			config.UploadFolders.Add("/upload2/");
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.Get("/upload2/");
 
@@ -151,6 +174,7 @@ namespace N2.Edit.Tests.FileSystem
 			fs.CreateDirectory("/upload2/");
 			config.UploadFolders.Add("/upload2/");
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var result = vnf.GetChildren("/");
 
@@ -170,6 +194,7 @@ namespace N2.Edit.Tests.FileSystem
 			site.UploadFolders.Add("/siteupload/");
 			host.AddSites(new[] { site });
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var defaultresult = vnf.Get("/siteupload/");
 			var siteresult = vnf.Get("/start/siteupload/");
@@ -188,6 +213,7 @@ namespace N2.Edit.Tests.FileSystem
 			site.UploadFolders.Add("/siteupload/");
 			host.AddSites(new[] { site });
 			initializer.Start();
+			vnf.Register(nodeProvider);
 
 			var defaultresult = vnf.GetChildren("/");
 			var siteresult = vnf.GetChildren("/start/");
@@ -195,5 +221,16 @@ namespace N2.Edit.Tests.FileSystem
 			Assert.That(defaultresult.Any(c => c.Name == "siteupload"), Is.False);
 			Assert.That(siteresult.Any(c => c.Name == "siteupload"), Is.True);
 		}
+
+        [Test]
+        public void GetChildren_OfChild()
+        {
+            initializer.Start();
+            vnf.Register(nodeProvider);
+
+            var children = vnf.GetChildren("/upload/Folder1/");
+
+            children.Single().Title.ShouldBe("File1.txt");
+        }
 	}
 }

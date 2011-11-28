@@ -306,6 +306,18 @@ namespace N2.Tests.Engine
 			Assert.That(container.ResolveAll<IService>().Count(), Is.EqualTo(1));
 		}
 
+		[Test]
+		public void Services_CanOverride_OtherServices_ByServiceType()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(ReplacedService), typeof(ReplacingReplacedService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FilterServices(registrator.FindServices()));
+
+			Assert.That(container.Resolve<IReplacedInterface>(), Is.InstanceOf<ReplacingReplacedService>());
+			Assert.That(container.ResolveAll<IReplacedInterface>().Count(), Is.EqualTo(1));
+		}
+
 		private void FindAndRegister(params Type[] types)
 		{
 			ITypeFinder finder = new Fakes.FakeTypeFinder(types);

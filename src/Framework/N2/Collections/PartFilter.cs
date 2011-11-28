@@ -16,5 +16,10 @@ namespace N2.Collections
 		{
 			Filter(items, new PartFilter());
 		}
+
+		public override string ToString()
+		{
+			return "IsPart";
+		}
 	}
 }

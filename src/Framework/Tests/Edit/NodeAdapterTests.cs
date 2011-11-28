@@ -12,7 +12,7 @@ namespace N2.Tests.Edit
 	public class NodeAdapterTests : N2.Tests.ItemPersistenceMockingBase
 	{
 		NodeAdapter adapter;
-		FakeFileSystem2 fs;
+		FakeMemoryFileSystem fs;
 
 		ContentItem root;
 		ContentItem start;
@@ -30,12 +30,13 @@ namespace N2.Tests.Edit
 
 			adapter = new NodeAdapter();
 			adapter.ManagementPaths = new EditUrlManager(new N2.Configuration.EditSection());
-			adapter.FileSystem = fs = new FakeFileSystem2();
+			adapter.FileSystem = fs = new FakeMemoryFileSystem();
 			adapter.NodeFactory = new VirtualNodeFactory();
 			adapter.WebContext = new Fakes.FakeWebContextWrapper();
 			adapter.Security = new SecurityManager(adapter.WebContext, new N2.Configuration.EditSection());
 			adapter.Host = new Host(null, root.ID, start.ID);
 			adapter.Settings = new FakeNavigationSettings();
+			adapter.Sources = TestSupport.SetupContentSource(adapter.WebContext, adapter.Host, persister);
 		}
 
 		[Test]

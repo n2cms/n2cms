@@ -63,3 +63,4 @@ stylecop.*
 
 # Git files to ignore
 *.orig
+src/N2.Sources.6.0.ReSharper

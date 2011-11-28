@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using N2.Collections;
 using N2.Engine;
 using N2.Web.Parts;
-using N2.Edit.Workflow;
+using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {

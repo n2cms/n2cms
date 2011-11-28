@@ -37,6 +37,7 @@ namespace N2.Tests.Integrity
 		}
 
 		[Test]
+		[Obsolete]
 		public void ValidateRootDefinition()
 		{
 			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.IntegrityRoot));
