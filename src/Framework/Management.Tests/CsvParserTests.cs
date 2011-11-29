@@ -12,7 +12,7 @@ namespace N2.Management.Tests
 {
 	public static class CsvParserTestsExtensions
 	{
-        public static IEnumerable<IList<string>> Parse(this CsvParser parser, TextReader reader)
+        public static IEnumerable<CsvRow> Parse(this CsvParser parser, TextReader reader)
 		{
 			return parser.Parse(';', reader);
 		}
@@ -27,16 +27,16 @@ namespace N2.Management.Tests
         public void SingleRow()
         {
             var row = p.Parse(new StringReader("hello;world")).Single();
-            row[0].ShouldBe("hello");
-            row[1].ShouldBe("world");
+			row.Columns[0].ShouldBe("hello");
+			row.Columns[1].ShouldBe("world");
         }
 
         [TestCase]
         public void SurroundingWhiteSpace_IsTrimmed()
         {
             var row = p.Parse(new StringReader("hello  ;world  ")).Single();
-            row[0].ShouldBe("hello");
-            row[1].ShouldBe("world");
+			row.Columns[0].ShouldBe("hello");
+			row.Columns[1].ShouldBe("world");
         }
 
         [TestCase]
@@ -44,8 +44,8 @@ namespace N2.Management.Tests
         {
             var rows = p.Parse(new StringReader(@"hello
 world")).ToList();
-            rows[0].Single().ShouldBe("hello");
-            rows[1].Single().ShouldBe("world");
+			rows[0].Columns.Single().ShouldBe("hello");
+			rows[1].Columns.Single().ShouldBe("world");
         }
 
         [TestCase]
@@ -53,22 +53,22 @@ world")).ToList();
         {
             var rows = p.Parse(new StringReader(@"hello;world
 ")).ToList();
-            rows.Single().Count.ShouldBe(2);
+            rows.Single().Columns.Count.ShouldBe(2);
         }
 
         [TestCase]
         public void Quotes_AreOmitted()
         {
             var row = p.Parse(new StringReader("\"hello\";\"world\"")).Single();
-            row[0].ShouldBe("hello");
-            row[1].ShouldBe("world");
+			row.Columns[0].ShouldBe("hello");
+			row.Columns[1].ShouldBe("world");
         }
 
         [TestCase]
         public void Quotes_MayContain_EscapedQuotes()
         {
             var row = p.Parse(new StringReader("\"hell\\\"no\"")).Single();
-            row[0].ShouldBe("hell\"no");
+			row.Columns[0].ShouldBe("hell\"no");
         }
 
         [TestCase]
@@ -76,7 +76,7 @@ world")).ToList();
         {
             var row = p.Parse(new StringReader(@"""hell
 no""")).Single();
-            row[0].ShouldBe(@"hell
+			row.Columns[0].ShouldBe(@"hell
 no");
         }
 
@@ -84,7 +84,7 @@ no");
         public void Quotes_MayContain_EscapedNewline()
         {
             var row = p.Parse(new StringReader("\"hell\\nno\"")).Single();
-            row[0].ShouldBe(@"hell
+			row.Columns[0].ShouldBe(@"hell
 no");
         }
 
@@ -92,22 +92,22 @@ no");
         public void Quotes_MayContain_Separator()
         {
             var row = p.Parse(new StringReader("\"hell;no\"")).Single();
-            row[0].ShouldBe(@"hell;no");
+			row.Columns[0].ShouldBe(@"hell;no");
         }
 
         [TestCase]
         public void DoubleQuote_InQuotes_IsContent()
         {
             var row = p.Parse(new StringReader("\"\"\"\"")).Single();
-            row[0].ShouldBe("\"");
+			row.Columns[0].ShouldBe("\"");
         }
 
         [TestCase]
         public void SurroundingWhiteSpace_InQuotes_IsRetained()
         {
             var row = p.Parse(new StringReader("\"hello  \";\"world  \"")).Single();
-            row[0].ShouldBe("hello  ");;
-            row[1].ShouldBe("world  ");
+			row.Columns[0].ShouldBe("hello  "); ;
+			row.Columns[1].ShouldBe("world  ");
         }
 
 		[TestCase]
