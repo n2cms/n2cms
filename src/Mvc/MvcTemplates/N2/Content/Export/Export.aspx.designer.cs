@@ -10,7 +10,7 @@
 namespace N2.Management.Content.Export {
     
     
-    public partial class Bulk {
+    public partial class Export {
         
         /// <summary>
         /// hlCancel control.
@@ -22,85 +22,13 @@ namespace N2.Management.Content.Export {
         protected global::N2.Edit.Web.UI.Controls.CancelLink hlCancel;
         
         /// <summary>
-        /// tpUpload control.
+        /// popNotSupported control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.TabPanel tpUpload;
-        
-        /// <summary>
-        /// fuImportFile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuImportFile;
-        
-        /// <summary>
-        /// rfvImportFile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvImportFile;
-        
-        /// <summary>
-        /// btnUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpload;
-        
-        /// <summary>
-        /// lblLocation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.InfoLabel lblLocation;
-        
-        /// <summary>
-        /// ddlTypes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTypes;
-        
-        /// <summary>
-        /// chkFirstRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkFirstRow;
-        
-        /// <summary>
-        /// rptPreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPreview;
-        
-        /// <summary>
-        /// btnImport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnImport;
+        protected global::N2.Edit.Web.UI.Controls.PersistentOnlyPanel popNotSupported;
         
         /// <summary>
         /// tpImport control.
@@ -110,5 +38,41 @@ namespace N2.Management.Content.Export {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Web.UI.WebControls.TabPanel tpImport;
+        
+        /// <summary>
+        /// tpExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.TabPanel tpExport;
+        
+        /// <summary>
+        /// btnExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnExport;
+        
+        /// <summary>
+        /// chkDefinedDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkDefinedDetails;
+        
+        /// <summary>
+        /// chkAttachments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkAttachments;
     }
 }

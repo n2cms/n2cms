@@ -4,61 +4,83 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data.OleDb;
-using System.Data;
-using N2.Edit.Web;
-using N2.Persistence;
 using System.IO;
+using N2.Engine;
+using N2.Edit;
 using N2.Definitions;
-using System.Web.Mvc;
+using N2.Edit.Web.UI.Controls;
+using N2.Persistence;
+using N2.Edit.Web;
 
 namespace N2.Management.Content.Export
 {
-    public partial class Bulk : EditPage
-    {
-		private CsvParser Parser { get; set; }
-		
+	public partial class CsvImport : EditUserControl
+	{
+		private CsvParser Parser { get { return Engine.Resolve<CsvParser>(); } }
+	
 		private bool isDirty = false;
 		protected IEnumerable<CsvRow> Rows { get; set; }
 		protected CsvRow FirstRow { get; set; }
 		protected List<EditableReference> Editables { get; set; }
 
-		protected override void OnInit(EventArgs e)
+		protected InfoLabel lblLocation;
+
+		public string UploadedFilePath
 		{
-			Parser = Engine.Resolve<CsvParser>();
-			base.OnInit(e);
+			get { return (string)(ViewState["UploadedFilePath"] ?? ""); }
+			set { ViewState["UploadedFilePath"] = value; }
 		}
-		
-        public void UploadCommand(object sender, CommandEventArgs args)
-        {
-            var tfs = Engine.Resolve<TemporaryFileHelper>();
-            if(string.IsNullOrEmpty(fuImportFile.PostedFile.FileName))
-            {
-				rfvImportFile.IsValid = false;
-                return;
-            }
 
-			var tempFile = Engine.Resolve<TemporaryFileHelper>()
-				.GetTemporaryFileName(System.IO.Path.GetExtension(fuImportFile.PostedFile.FileName));
-			fuImportFile.PostedFile.SaveAs(tempFile);
-			ViewState["file"] = tempFile;
-
-			rfvImportFile.Enabled = false;
-
-			lblLocation.Text = Selection.SelectedItem.Title;
+		public void ContinueWithImport(string tempFile)
+		{
+			UploadedFilePath = tempFile;
 
 			ddlTypes.DataSource = Engine.Definitions.GetAllowedChildren(Selection.SelectedItem)
-				.OrderByDescending(d => d.NumberOfItems / 10)
+				.OrderByDescending(d => typeof(ISystemNode).IsAssignableFrom(d.ItemType) ? 0 : 1)
+				.ThenBy(d => d.IsPage ? 0 : 1)
+				.ThenByDescending(d => d.NumberOfItems / 10)
 				.ThenBy(d => d.SortOrder)
 				.ThenBy(d => d.Title);
 			ddlTypes.DataBind();
 
 			isDirty = true;
-        }
+		}
+
+		//public void UploadCommand(object sender, CommandEventArgs args)
+		//{
+		//    FileUpload fuImportFile = null;
+		//    RequiredFieldValidator rfvImportFile = null;
+
+		//    var tfs = Engine.Resolve<TemporaryFileHelper>();
+		//    if (string.IsNullOrEmpty(fuImportFile.PostedFile.FileName))
+		//    {
+		//        rfvImportFile.IsValid = false;
+		//        return;
+		//    }
+
+		//    var tempFile = Engine.Resolve<TemporaryFileHelper>()
+		//        .GetTemporaryFileName(System.IO.Path.GetExtension(fuImportFile.PostedFile.FileName));
+		//    fuImportFile.PostedFile.SaveAs(tempFile);
+		//    ViewState["file"] = tempFile;
+
+		//    rfvImportFile.Enabled = false;
+
+		//    lblLocation.Text = Selection.SelectedItem.Title;
+
+		//    ddlTypes.DataSource = Engine.Definitions.GetAllowedChildren(Selection.SelectedItem)
+		//        .OrderByDescending(d => d.NumberOfItems / 10)
+		//        .ThenBy(d => d.SortOrder)
+		//        .ThenBy(d => d.Title);
+		//    ddlTypes.DataBind();
+
+		//    isDirty = true;
+		//}
+
+		// click events
 
 		public void ImportCommand(object sender, CommandEventArgs args)
 		{
-			string tempFile = (string)ViewState["file"];
+			string tempFile = UploadedFilePath;
 			char separator;
 			var rows = ParseRows(tempFile, out separator);
 			if (chkFirstRow.Checked)
@@ -82,6 +104,7 @@ namespace N2.Management.Content.Export
 
 			var definition = GetSelectedDefinition();
 			var activator = Engine.Resolve<ContentActivator>();
+
 			foreach (var row in rows)
 			{
 				var importedItem = activator.CreateInstance(definition.ItemType, Selection.SelectedItem, definition.TemplateKey);
@@ -91,31 +114,29 @@ namespace N2.Management.Content.Export
 				}
 				Engine.Persister.Save(importedItem);
 			}
-		}
-
-		private IEnumerable<CsvRow> ParseRows(string tempFile, out char separator)
-		{
-			separator = Parser.GuessBestSeparator(() => File.OpenText(tempFile), ',', '\t', ';');
-			return Parser.Parse(separator, File.OpenText(tempFile)).ToList();
+			Refresh(Selection.SelectedItem);
 		}
 
 		protected void ddlTypes_OnSelectedIndexChanged(object sender, EventArgs args)
 		{
 			isDirty = true;
 		}
-		
+
 		protected void chkFirstRow_OnCheckedChanged(object sender, EventArgs args)
 		{
 			isDirty = true;
 		}
 
+		// page lifecycle
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 
-			if (ViewState["file"] != null)
+			string tempFile = UploadedFilePath;
+
+			if (!string.IsNullOrEmpty(tempFile))
 			{
-				string tempFile = (string)ViewState["file"];
 				char separator;
 				var rows = ParseRows(tempFile, out separator);
 				if (!rows.Any())
@@ -140,6 +161,14 @@ namespace N2.Management.Content.Export
 					}
 				}
 			}
+		}
+
+
+
+		private IEnumerable<CsvRow> ParseRows(string tempFile, out char separator)
+		{
+			separator = Parser.GuessBestSeparator(() => File.OpenText(tempFile), ',', '\t', ';');
+			return Parser.Parse(separator, File.OpenText(tempFile)).ToList();
 		}
 
 		protected class EditableReference
@@ -234,5 +263,6 @@ namespace N2.Management.Content.Export
 			// Step 7
 			return d[n, m];
 		}
-    }
+
+	}
 }

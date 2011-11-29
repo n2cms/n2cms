@@ -75,7 +75,9 @@
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
-    <Content Include="N2\Content\Export\Bulk.aspx" />
+    <Content Include="N2\Content\Export\CsvImport.ascx" />
+    <Content Include="N2\Content\Export\Export.aspx" />
+    <Content Include="N2\Content\Export\ItemXmlImport.ascx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
@@ -220,12 +222,12 @@
     <Compile Include="N2\Content\EditRecursive.aspx.designer.cs">
       <DependentUpon>EditRecursive.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Content\Export\Bulk.aspx.cs">
-      <DependentUpon>Bulk.aspx</DependentUpon>
+    <Compile Include="N2\Content\Export\CsvImport.ascx.cs">
+      <DependentUpon>CsvImport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="N2\Content\Export\Bulk.aspx.designer.cs">
-      <DependentUpon>Bulk.aspx</DependentUpon>
+    <Compile Include="N2\Content\Export\CsvImport.ascx.designer.cs">
+      <DependentUpon>CsvImport.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Export\CsvParser.cs" />
     <Compile Include="N2\Content\Export\CsvRow.cs" />
@@ -237,7 +239,21 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Export\DefinitionNotFoundException.cs" />
+    <Compile Include="N2\Content\Export\Export.aspx.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\Export.aspx.designer.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Export\InvalidXmlException.cs" />
+    <Compile Include="N2\Content\Export\ItemXmlImport.ascx.cs">
+      <DependentUpon>ItemXmlImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\ItemXmlImport.ascx.designer.cs">
+      <DependentUpon>ItemXmlImport.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
@@ -1266,6 +1282,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Files\FileSystem\App_LocalResources\FileUpload.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Export\App_LocalResources\Export.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

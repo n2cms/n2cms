@@ -124,7 +124,7 @@
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Import items</value>
+    <value>Export items</value>
   </data>
   <data name="attachments.Text" xml:space="preserve">
     <value>Attachments</value>
@@ -132,29 +132,11 @@
   <data name="btnExport.Text" xml:space="preserve">
     <value>Export these items</value>
   </data>
-  <data name="btnImportUploaded.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="btnUploadImport.Text" xml:space="preserve">
-    <value>Upload and import here</value>
-  </data>
-  <data name="btnVerify.Text" xml:space="preserve">
-    <value>Upload and verify</value>
-  </data>
-  <data name="chkSkipRoot.Text" xml:space="preserve">
-    <value>Skip imported root item</value>
-  </data>
-  <data name="chkSkipRoot.ToolTip" xml:space="preserve">
-    <value>Checking this options cause the first level item not to be imported, and it's children to be added to the selected item's children</value>
-  </data>
   <data name="exportedItems.Text" xml:space="preserve">
     <value>Exported Items</value>
   </data>
   <data name="h1.Text" xml:space="preserve">
     <value>Export &amp; Import</value>
-  </data>
-  <data name="importedItems.Text" xml:space="preserve">
-    <value>Imported Items</value>
   </data>
   <data name="tpExport.TabText" xml:space="preserve">
     <value>Export</value>
@@ -173,9 +155,6 @@
   </data>
   <data name="chkDefinedDetails.ToolTip" xml:space="preserve">
     <value>Export only data inputted by a user (cleans export file from deprecated information and computer generated data)</value>
-  </data>
-  <data name="popNotSupported.Text" xml:space="preserve">
-    <value>This is not supported for this type of item.</value>
   </data>
   <data name="ppPermitted.Text" xml:space="preserve">
     <value>You do not have sufficient permissions.</value>
