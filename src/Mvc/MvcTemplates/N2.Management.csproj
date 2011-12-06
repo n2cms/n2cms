@@ -51,6 +51,10 @@
       <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,6 +82,7 @@
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
+    <Content Include="N2\Files\FileSystem\Export.aspx" />
     <Content Include="N2\Files\FileSystem\jquery.fileupload-ui.js" />
     <Content Include="N2\Files\FileSystem\jquery.fileupload.js" />
     <Content Include="N2\Files\FileSystem\jquery.iframe-transport.js" />
@@ -316,6 +321,13 @@
     </Compile>
     <Compile Include="N2\Files\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Export.aspx.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Export.aspx.designer.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Files\FileSystemSource.cs" />
     <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
