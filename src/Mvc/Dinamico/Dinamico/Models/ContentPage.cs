@@ -13,6 +13,9 @@ namespace Dinamico.Models
 		[Persistable(Length = 256)] // to minimize select+1
 		public virtual string Image { get; set; }
 
+		[EditableText(ContainerName = Defaults.Containers.Metadata)]
+		public virtual string SeoTitle { get; set; }
+
 		[EditableText]
 		[Persistable(Length = 1024)] // to minimize select+1
 		public virtual string Summary { get; set; }
