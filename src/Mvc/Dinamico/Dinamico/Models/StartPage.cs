@@ -14,6 +14,10 @@ using N2.Security;
 
 namespace Dinamico.Models
 {
+	/// <summary>
+	/// This is the start page on a site. Separate start pages can respond to 
+	/// a domain name and/or form the root of translation.
+	/// </summary>
 	[PageDefinition(
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
