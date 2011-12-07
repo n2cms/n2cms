@@ -19,6 +19,8 @@ using NHibernate.Cfg;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
 using NHibernate.AdoNet;
+using log4net;
+using log4net.Config;
 using Environment = NHibernate.Cfg.Environment;
 using NHibernate.Driver;
 
@@ -33,6 +35,7 @@ namespace N2.Persistence.NH
 	{
 		public const int BlobLength = 2147483647;
 
+		private readonly ILog logger = LogManager.GetLogger(typeof(ConfigurationBuilder));
 		private readonly ClassMappingGenerator generator;
 		private readonly IDefinitionProvider[] definitionProviders;
 		private readonly IWebContext webContext;
@@ -63,6 +66,9 @@ namespace N2.Persistence.NH
 
 			SetupProperties(config, connectionStrings);
 			SetupMappings(config);
+
+			// Config log4net with default configuration
+			XmlConfigurator.Configure();
 		}
 
 		private void SetupMappings(DatabaseSection config)
@@ -475,7 +481,8 @@ namespace N2.Persistence.NH
 		{
 			foreach (Assembly a in Assemblies)
 				cfg.AddAssembly(a);
-			Debug.WriteLine(String.Format("Added {0} assemblies to configuration", Assemblies.Count));
+
+			logger.Debug(String.Format("Added {0} assemblies to configuration", Assemblies.Count));
 		}
 
 		/// <summary>Adds properties to NHibernate configuration.</summary>
@@ -492,7 +499,7 @@ namespace N2.Persistence.NH
 		/// <returns>A new <see cref="NHibernate.ISessionFactory"/>.</returns>
 		public ISessionFactory BuildSessionFactory()
 		{
-			Debug.WriteLine("Building Session Factory " + DateTime.Now);
+			logger.Debug("Building Session Factory " + DateTime.Now);
 			return BuildConfiguration().BuildSessionFactory();
 		}
 

@@ -5,11 +5,13 @@ using System.IO;
 using System.Xml.XPath;
 using N2.Details;
 using N2.Edit.FileSystem;
+using log4net;
 
 namespace N2.Persistence.Serialization
 {
 	public class Importer
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (Importer));
 		private readonly IPersister persister;
 		private readonly ItemXmlReader reader;
 		private IFileSystem fs;
@@ -79,6 +81,7 @@ namespace N2.Persistence.Serialization
 			}
 			else
 			{
+				logger.ErrorFormat("Option {0} isn't supported", options);
 				throw new NotImplementedException("This option isn't implemented, sorry.");
 			}
 			if ((options & ImportOption.Attachments) == ImportOption.Attachments)
@@ -91,7 +94,7 @@ namespace N2.Persistence.Serialization
                     }
                     catch (Exception ex)
                     {
-                        Trace.Write(ex);
+                        logger.Warn(ex);
                         record.FailedAttachments.Add(a);
                     }
 				}

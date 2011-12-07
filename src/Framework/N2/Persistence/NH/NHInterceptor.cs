@@ -1,8 +1,10 @@
 using System.Diagnostics;
 using N2.Engine;
+using N2.Linq;
 using N2.Persistence.Proxying;
 using NHibernate;
 using NHibernate.Type;
+using log4net;
 
 namespace N2.Persistence.NH
 {
@@ -15,6 +17,7 @@ namespace N2.Persistence.NH
 		private readonly IProxyFactory interceptor;
 		private readonly ISessionFactory sessionFactory;
 		private readonly IItemNotifier notifier;
+		private readonly ILog logger = LogManager.GetLogger(typeof(NHInterceptor));
 
 		public NHInterceptor(IProxyFactory interceptor, IConfigurationBuilder builder, IItemNotifier notifier)
 		{
@@ -25,7 +28,7 @@ namespace N2.Persistence.NH
 
 		public override object Instantiate(string clazz, EntityMode entityMode, object id)
 		{
-		    Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
+			logger.Debug("Instantiate: " + clazz + " " + entityMode + " " + id);
 		    object instance = interceptor.Create(clazz, id);
 		    if (instance != null)
 		    {
@@ -61,7 +64,7 @@ namespace N2.Persistence.NH
 			bool wasAltered = interceptor.OnSaving(entity);
 			if (wasHandled || wasAltered)
 			{
-				Debug.WriteLine("OnFlushDirty: " + entity + " " + id);
+				logger.Debug("OnFlushDirty: " + entity + " " + id);
 				return true;
 			}
 			return false;
@@ -85,7 +88,7 @@ namespace N2.Persistence.NH
 			bool wasAltered = interceptor.OnSaving(entity);
 			if (wasHandled || wasAltered)
 			{
-				Debug.WriteLine("OnSave: " + entity + " " + id);
+				logger.Debug("OnSave: " + entity + " " + id);
 				return true;
 			}
 			return false;
