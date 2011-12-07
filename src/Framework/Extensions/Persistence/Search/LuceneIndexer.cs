@@ -15,6 +15,7 @@ using System.Globalization;
 using Lucene.Net.Search;
 using System.Diagnostics;
 using N2.Engine.Globalization;
+using log4net;
 
 namespace N2.Persistence.Search
 {
@@ -24,6 +25,7 @@ namespace N2.Persistence.Search
 	[Service(typeof(IIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneIndexer));
 		LuceneAccesor accessor;
 		TextExtractor extractor;
 
@@ -38,7 +40,7 @@ namespace N2.Persistence.Search
 		/// <summary>Clears the index.</summary>
 		public virtual void Clear()
 		{
-			Trace.WriteLine("Clearing index");
+			logger.Debug("Clearing index");
 
 			if (accessor.IndexExists())
 			{
@@ -57,14 +59,14 @@ namespace N2.Persistence.Search
 		/// <summary>Unlocks the index.</summary>
 		public virtual void Unlock()
 		{
-			Trace.WriteLine("Unlocking index");
+			logger.Debug("Unlocking index");
 			accessor.GetDirectory().ClearLock("write.lock");
 		}
 
 		/// <summary>Optimizes the index.</summary>
 		public virtual void Optimize()
 		{
-			Trace.WriteLine("Optimizing index");
+			logger.Debug("Optimizing index");
 
 			if (accessor.IndexExists())
 			{
@@ -85,7 +87,7 @@ namespace N2.Persistence.Search
 			if(item == null || item.ID == 0)
 				return;
 
-			Trace.WriteLine("Updating item #" + item.ID);
+			logger.Debug("Updating item #" + item.ID);
 
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
@@ -108,7 +110,7 @@ namespace N2.Persistence.Search
 		/// <param name="itemID">The id of the item to delete.</param>
 		public virtual void Delete(int itemID)
 		{
-			Trace.WriteLine("Deleting item #" + itemID);
+			logger.Debug("Deleting item #" + itemID);
 
 			lock (accessor)
 			{

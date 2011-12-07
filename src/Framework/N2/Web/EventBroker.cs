@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Web;
 using N2.Engine;
+using N2.Plugin.Scheduling;
+using log4net;
 
 namespace N2.Web
 {
@@ -13,6 +15,8 @@ namespace N2.Web
 	/// </summary>
 	public class EventBroker
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof(Heart));
+
 		static EventBroker()
 		{
 			Instance = new EventBroker();
@@ -28,7 +32,7 @@ namespace N2.Web
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
-			Trace.WriteLine("EventBroker: Attaching to " + application);
+			logger.Debug("Attaching to " + application);
 
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
@@ -58,7 +62,7 @@ namespace N2.Web
 		{
 			if (BeginRequest != null && !IsStaticResource(sender))
 			{
-				Debug.WriteLine("BeginRequest");
+				logger.Debug("BeginRequest");
 				BeginRequest(sender, e);
 			}
 		}
@@ -67,7 +71,7 @@ namespace N2.Web
 		{
 			if (AuthorizeRequest != null && !IsStaticResource(sender))
 			{
-				Debug.WriteLine("AuthorizeRequest");
+				logger.Debug("AuthorizeRequest");
 				AuthorizeRequest(sender, e);
 			}
 		}
@@ -76,12 +80,12 @@ namespace N2.Web
 		{
 			if (PostResolveRequestCache != null && !IsStaticResource(sender))
 			{
-				Debug.WriteLine("PostResolveRequestCache");
+				logger.Debug("PostResolveRequestCache");
 				PostResolveRequestCache(sender, e);
 			}
 			if (PostResolveAnyRequestCache != null)
 			{
-				Debug.WriteLine("PostResolveAnyRequestCache");
+				logger.Debug("PostResolveAnyRequestCache");
 				PostResolveAnyRequestCache(sender, e);
 			}
 		}
@@ -90,7 +94,7 @@ namespace N2.Web
 		{
 			if (PostMapRequestHandler != null && !IsStaticResource(sender))
 			{
-				Debug.WriteLine("PostMapRequestHandler");
+				logger.Debug("PostMapRequestHandler");
 				PostMapRequestHandler(sender, e);
 			}
 		}
@@ -99,7 +103,7 @@ namespace N2.Web
 		{
 			if (AcquireRequestState != null && !IsStaticResource(sender))
 			{
-				Debug.WriteLine("AcquireRequestState");
+				logger.Debug("AcquireRequestState");
 				AcquireRequestState(sender, e);
 			}
 		}
@@ -108,8 +112,8 @@ namespace N2.Web
         {
             if (PreRequestHandlerExecute != null && !IsStaticResource(sender))
             {
-                Debug.WriteLine("Application_PreRequestHandlerExecute");
-                PreRequestHandlerExecute(sender, e);
+				Debug.WriteLine("Application_PreRequestHandlerExecute");
+				PreRequestHandlerExecute(sender, e);
             }
         }
 
@@ -128,7 +132,7 @@ namespace N2.Web
 		/// <summary>Detaches events from the application instance.</summary>
 		void Application_Disposed(object sender, EventArgs e)
 		{
-			Trace.WriteLine("EventBroker: Disposing " + sender);
+			logger.Debug("Disposing " + sender);
 		}
 
 		/// <summary>Returns true if the requested resource is one of the typical resources that needn't be processed by the cms engine.</summary>
@@ -163,7 +167,7 @@ namespace N2.Web
 					case ".js":
 					case ".css":
 					case ".axd":
-                        return File.Exists(application.Request.PhysicalPath);
+						return File.Exists(application.Request.PhysicalPath);
 				}
 			}
 			return false;
