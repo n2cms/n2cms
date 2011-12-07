@@ -153,6 +153,7 @@
     <Content Include="Web.config" />
     <Content Include="N2\Myself\Analytics\Views\Web.config" />
     <Content Include="N2\Search\IndexInfo.ashx" />
+    <Content Include="N2\log4net.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
