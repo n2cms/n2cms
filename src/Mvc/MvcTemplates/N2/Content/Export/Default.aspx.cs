@@ -9,6 +9,7 @@ using N2.Persistence.Serialization;
 using N2.Security;
 using N2.Web.UI;
 using N2.Xml;
+using N2.Definitions;
 
 namespace N2.Edit.Export
 {
@@ -37,18 +38,10 @@ namespace N2.Edit.Export
         
         protected override void OnLoad(EventArgs e)
         {
-            var path = Request.QueryString[SelectionUtility.SelectedQueryKey];
-
-            if (path != null)
-            {
-                foreach (var uploadFolder in Engine.EditManager.UploadFolders)
-                {
-                    if (path.StartsWith(uploadFolder.TrimStart('~')))
-                    {
-                        Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(path));
-                    }
-                }
-            }
+			if (Selection.SelectedItem is IFileSystemNode)
+			{
+				Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(Selection.SelectedItem.Path));
+			}
 
             base.OnLoad(e);
         }

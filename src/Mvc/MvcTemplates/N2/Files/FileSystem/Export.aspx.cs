@@ -19,7 +19,7 @@ namespace N2.Edit.FileSystem
             fileSystem = Engine.Resolve<IFileSystem>();
             rootPath = Request.QueryString["path"].TrimEnd('/');
 
-            litRootPath.Text = rootPath;
+            litRootPath.Text = Server.HtmlEncode(rootPath);
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
