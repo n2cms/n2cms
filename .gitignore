@@ -60,6 +60,7 @@ stylecop.*
 ~$*
 *.dbmdl
 *.log
+*.log.20*
 
 # Git files to ignore
 *.orig
