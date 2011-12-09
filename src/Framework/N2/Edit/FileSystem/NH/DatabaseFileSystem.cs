@@ -11,6 +11,7 @@ using N2.Web;
 using N2.Engine;
 using System.Diagnostics;
 using NHibernate;
+using log4net;
 
 namespace N2.Edit.FileSystem.NH
 {
@@ -18,10 +19,11 @@ namespace N2.Edit.FileSystem.NH
 	/// A file system implementation that stores files in the database.
 	/// </summary>
 	[Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
-    public class DatabaseFileSystem : IFileSystem
-    {
-        private readonly ISessionProvider _sessionProvider;
-        private const long UploadFileSize = long.MaxValue;
+	public class DatabaseFileSystem : IFileSystem
+	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (DatabaseFileSystem));
+		private readonly ISessionProvider _sessionProvider;
+		private const long UploadFileSize = long.MaxValue;
 		private int chunkSize;
 
 		public DatabaseFileSystem(ISessionProvider sessionProvider, DatabaseSection config)
@@ -141,8 +143,7 @@ namespace N2.Edit.FileSystem.NH
 					.ExecuteUpdate();
 
 				Session.Delete(file);
-
-				Debug.WriteLine("Deleted 1 item and " + deletedChunks + " chunks at " + path);
+				logger.Debug("Deleted 1 item and " + deletedChunks + " chunks at " + path);
 
                 trx.Commit();
             }
@@ -497,8 +498,8 @@ namespace N2.Edit.FileSystem.NH
 			int deletedItems = Session.CreateQuery("delete from " + typeof(FileSystemItem).Name + " fsi where fsi.Path.Parent like :parent")
 				.SetParameter("parent", path + "%")
 				.ExecuteUpdate();
-
-			Debug.WriteLine("Deleted " + deletedItems + " items and " + deletedChunks + " chunks below " + path);
+			
+			logger.Debug("Deleted " + deletedItems + " items and " + deletedChunks + " chunks below " + path);
 		}
 
         public void CreateDirectory(string virtualPath)

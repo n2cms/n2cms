@@ -195,7 +195,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			N2.Web.Url.ApplicationPath = "/N2Mvc/";
 
-			RequestingUrl("/about/");
+			RequestingUrl("~/about/");
 
 			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage" }));
 

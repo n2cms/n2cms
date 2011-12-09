@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
+using log4net;
 
 namespace N2.Web.Mvc
 {
@@ -13,6 +14,8 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ContentRoute : RouteBase
 	{
+	    private readonly ILog logger = LogManager.GetLogger(typeof (ContentRoute));
+
 		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
 		public static string ContentItemKey
 		{
@@ -112,8 +115,8 @@ namespace N2.Web.Mvc
 			// fallback to route to controller/action
 			if(routeData == null)
 				routeData = CheckForContentController(httpContext);
-
-			Debug.WriteLine("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+			
+			logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
 			return routeData;
 		}
 
@@ -179,11 +182,11 @@ namespace N2.Web.Mvc
 		private RouteData CheckForContentController(HttpContextBase context)
 		{
 			var routeData = innerRoute.GetRouteData(context);
-            routeData.Route = this;
-            routeData.RouteHandler = routeHandler;
 
 			if (routeData == null)
 				return null;
+			routeData.Route = this;
+			routeData.RouteHandler = routeHandler;
 
 			var controllerName = Convert.ToString(routeData.Values[ControllerKey]);
 			var actionName = Convert.ToString(routeData.Values[ActionKey]);
@@ -223,8 +226,7 @@ namespace N2.Web.Mvc
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
 			ContentItem item;
-
-			Debug.WriteLine("GetVirtualPath for values: " + values.ToQueryString());
+			logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
 
 			values = new RouteValueDictionary(values);
 

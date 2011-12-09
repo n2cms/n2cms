@@ -4,6 +4,7 @@ using N2.Edit.Web;
 using N2.Integrity;
 using N2.Security;
 using N2.Web;
+using log4net;
 
 namespace N2.Edit
 {
@@ -16,6 +17,8 @@ namespace N2.Edit
 		RequiredPermission = Permission.Publish)]
 	public partial class Move : EditPage
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (Move));
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
             btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
@@ -54,11 +57,12 @@ namespace N2.Edit
                 }
 				catch(NullReferenceException ex)
 				{
-					System.Diagnostics.Trace.WriteLine(ex);
+					logger.Error(ex);
 					SetErrorMessage(cvException, "Nothing to move");
 				}
                 catch (Exception ex)
                 {
+					logger.Error(ex);
                     SetErrorMessage(cvMove, ex);
                 }
 

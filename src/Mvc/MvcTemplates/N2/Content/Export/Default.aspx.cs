@@ -9,6 +9,7 @@ using N2.Persistence.Serialization;
 using N2.Security;
 using N2.Web.UI;
 using N2.Xml;
+using N2.Definitions;
 using N2.Persistence;
 
 namespace N2.Edit.Export
@@ -29,10 +30,19 @@ namespace N2.Edit.Export
 		#endregion
 
 		#region Page Event Handlers
+        
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+			if (Selection.SelectedItem is IFileSystemNode)
+			{
+				Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(Selection.SelectedItem.Path));
+			}
+		}
 
-		protected override void OnInit(EventArgs e)
+		protected override void  OnInit(EventArgs e)
 		{
-			base.OnInit(e);
+ 			base.OnInit(e);
 
 			tpExport.NavigateUrl = "Export.aspx?selected=" + Selection.SelectedItem.Path;
 		}

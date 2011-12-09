@@ -8,6 +8,9 @@ using N2.Web.UI;
 
 namespace Dinamico.Models
 {
+	/// <summary>
+	/// Base implementation of parts on a dinamico site.
+	/// </summary>
 	[SidebarContainer(Defaults.Containers.Metadata, 100, HeadingText = "Metadatda")]
 	public abstract class PartModelBase : ContentItem
 	{

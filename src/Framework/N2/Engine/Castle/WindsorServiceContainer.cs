@@ -12,6 +12,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Naming;
 using Castle.Windsor;
 using N2.Plugin;
+using log4net;
 
 namespace N2.Engine.Castle
 {
@@ -21,6 +22,7 @@ namespace N2.Engine.Castle
 	public class WindsorServiceContainer : ServiceContainerBase
 	{
 		private readonly IWindsorContainer container;
+		private readonly ILog logger = LogManager.GetLogger(typeof (WindsorServiceContainer));
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> 
@@ -142,6 +144,7 @@ namespace N2.Engine.Castle
 		/// </summary>
 		class AutoStartFacility : AbstractFacility
 		{
+			private readonly ILog logger = LogManager.GetLogger(typeof (AutoStartFacility));
 			private readonly ArrayList waitingList = new ArrayList();
 
 			// Don't check the waiting list while this flag is set as this could result in
@@ -159,7 +162,8 @@ namespace N2.Engine.Castle
 			private void StartComponents()
 			{
 				var naming = (INamingSubSystem)Kernel.GetSubSystem(SubSystemConstants.NamingKey);
-				Trace.Write("Starting components: ");
+				logger.Debug("Starting components: ");
+				int started = 0;
 				foreach (GraphNode node in Kernel.GraphNodes)
 				{
 					var model = node as ComponentModel;
@@ -173,10 +177,11 @@ namespace N2.Engine.Castle
 						continue;
 
 					var instance = Kernel.Resolve(model.Name, new Arguments()) as IAutoStart;
-					Trace.Write(instance + ", ");
+					logger.Info("Started " + instance);
 					instance.Start();
+					started++;
 				}
-				Trace.WriteLine(" out of " + Kernel.GraphNodes.Length);
+				logger.DebugFormat("Started {0} of {1} components", started, Kernel.GraphNodes.Length);
 			}
 
 			private void OnComponentRegistered(String key, IHandler handler)
@@ -281,6 +286,7 @@ namespace N2.Engine.Castle
 			#region Start & Stop Concern
 			class StartConcern : ILifecycleConcern, ICommissionConcern
 			{
+				private readonly ILog logger = LogManager.GetLogger(typeof (StartConcern));
 				private static readonly StartConcern instance = new StartConcern();
 
 				private StartConcern()
@@ -297,7 +303,7 @@ namespace N2.Engine.Castle
 					var autoStart = component as IAutoStart;
 					if (autoStart != null && !(component is IStartable))
 					{
-						Trace.WriteLine("Starting " + component);
+						logger.Info("Starting " + component);
 						autoStart.Start();
 					}
 				}

@@ -16,6 +16,7 @@ using N2.Web;
 using N2.Web.UI;
 using System.Net;
 using System.Net.Sockets;
+using log4net;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -23,6 +24,7 @@ namespace N2.Templates.Mvc.Controllers
 	public class RssAggregatorController : TemplatesControllerBase<RssAggregator>
 	{
 		private const int ExpirationTime = 1;
+		private readonly ILog logger = LogManager.GetLogger(typeof (RssAggregatorController));
 
 		public override ActionResult Index()
 		{
@@ -115,7 +117,7 @@ namespace N2.Templates.Mvc.Controllers
 			}
 			catch(Exception ex)
 			{
-				Trace.WriteLine(ex);
+				logger.Error(ex);
 			}
 			return GetCannotLoadItem("");
 		}

@@ -9,6 +9,7 @@ using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.Parts;
+using log4net;
 
 namespace N2.Web.UI.WebControls
 {
@@ -16,6 +17,7 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Fields
 
+		private readonly ILog logger = LogManager.GetLogger(typeof(ItemEditorList));
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
 		private readonly DropDownList types = new DropDownList();
 		private List<string> addedTypes = new List<string>();
@@ -152,8 +154,7 @@ namespace N2.Web.UI.WebControls
 			addedTypes = (List<string>) p.Second;
 			deletedIndexes = (List<int>) p.Third;
 			EnsureChildControls();
-
-			Debug.WriteLine("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
+			logger.Debug("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
 		}
 
 		protected override void CreateChildControls()

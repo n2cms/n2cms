@@ -8,6 +8,7 @@ using N2.Definitions.Static;
 using N2.Engine;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
+using log4net;
 
 namespace N2.Persistence.NH
 {
@@ -17,6 +18,7 @@ namespace N2.Persistence.NH
 	[Service]
     public class ClassMappingGenerator
     {
+    	private readonly ILog logger = LogManager.GetLogger(typeof (ClassMappingGenerator));
 		DefinitionMap map;
 
 		public ClassMappingGenerator(DefinitionMap map)
@@ -37,7 +39,7 @@ namespace N2.Persistence.NH
 			string parentName = GetName(parentType);
             string properties = GetProperties(entityType);
 
-            Trace.WriteLine("Generating mapping for {type = " + entityType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
+            logger.Info("Generating mapping for {type = " + entityType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
             return string.Format(classFormat, typeName, parentName, discriminator, properties);
         }
 

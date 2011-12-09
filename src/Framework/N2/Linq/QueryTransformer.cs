@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using N2.Details;
+using log4net;
 
 namespace N2.Linq
 {
@@ -12,6 +13,8 @@ namespace N2.Linq
 	/// </summary>
 	internal class QueryTransformer
 	{
+        private readonly ILog logger = LogManager.GetLogger(typeof(QueryTransformer));
+
 		static MethodInfo anyMethodInfo = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
 		static MethodInfo ofTypeMethodInfo = typeof(Enumerable).GetMethod("OfType").GetGenericMethodDefinition();
 
@@ -22,14 +25,14 @@ namespace N2.Linq
 			var expressionToReplace = expression as Expression<Func<TElement, bool>>;
 			if (expressionToReplace != null)
 			{
-				Debug.WriteLine("Translating: " + expression);
+				logger.Debug("Translating: " + expression);
 
 				ParameterExpression itemParameter = expressionToReplace.Parameters[0];
 				Expression translation = Translate<TElement>(itemParameter, expressionToReplace.Body);
 				var translationLambda = Expression.Lambda(translation, itemParameter);
 				expression = Expression.Quote(translationLambda);
-
-				Debug.WriteLine("Into:        " + expression);
+			
+				logger.Debug("Into:        " + expression);
 			}
 			return expression;
 		}

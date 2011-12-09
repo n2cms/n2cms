@@ -4,16 +4,19 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using N2.Engine;
 using N2.Web;
+using log4net;
 
 namespace N2.Plugin.Scheduling
 {
     /// <summary>
-    /// Maintains a list of scheduler actions and checks wether it's time to 
+    /// Maintains a list of scheduler actions and checks whether it's time to 
     /// execute them.
     /// </summary>
 	[Service]
     public class Scheduler : IAutoStart
     {
+        private readonly ILog logger = LogManager.GetLogger(typeof (Scheduler));
+
         IList<ScheduledAction> actions;
         IHeart heart;
     	readonly IWorker worker;
@@ -75,7 +78,7 @@ namespace N2.Plugin.Scheduling
                     {
                         try
                         {
-							Debug.WriteLine("Executing " + action.GetType().Name);
+							logger.Debug("Executing " + action.GetType().Name);
 							action.Engine = engine;
                             action.Execute();
                             action.ErrorCount = 0;

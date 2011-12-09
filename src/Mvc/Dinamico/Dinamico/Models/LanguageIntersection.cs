@@ -11,6 +11,9 @@ using N2.Web.UI;
 
 namespace Dinamico.Models
 {
+	/// <summary>
+	/// Redirects to the child start page that matches the user agent's language.
+	/// </summary>
 	[PageDefinition(
 		IconUrl = "{IconsUrl}/world_go.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
