@@ -76,6 +76,8 @@ namespace N2.Edit.FileSystem
             rptImportedFiles.DataBind();
 
             mvwImport.ActiveViewIndex = 1;
+
+			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
         }
 	}
 }

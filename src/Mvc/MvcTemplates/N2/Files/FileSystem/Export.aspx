@@ -10,17 +10,7 @@
 </asp:Content>
 
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <n2:tabpanel ToolTip="Export" runat="server">
-        <p>
-            Exporting upload directory:
-            <b><asp:Literal ID="litRootPath" runat="server" /></b>
-        </p>
-		<div>
-		    <asp:Button CssClass="command" OnClick="btnExport_Click" CausesValidation="false" Text="Export files" runat="server" />
-		</div>
-    </n2:tabpanel>
-
-    <n2:tabpanel ToolTip="Import" runat="server">
+    <n2:tabpanel TabText="Import" runat="server">
     	<asp:MultiView ID="mvwImport" ActiveViewIndex="0" runat="server">
 		    <asp:View runat="server">
 			    <div class="upload">
@@ -44,4 +34,15 @@
             </asp:View>
         </asp:MultiView>
     </n2:tabpanel>
+
+    <n2:tabpanel TabText="Export" runat="server">
+        <p>
+            Exporting upload directory:
+            <b><asp:Literal ID="litRootPath" runat="server" /></b>
+        </p>
+		<div>
+		    <asp:Button ID="Button1" CssClass="command" OnClick="btnExport_Click" CausesValidation="false" Text="Export files" runat="server" />
+		</div>
+    </n2:tabpanel>
+
 </asp:Content>
