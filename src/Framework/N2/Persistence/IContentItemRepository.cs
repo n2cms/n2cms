@@ -8,7 +8,7 @@ namespace N2.Persistence
 	/// <summary>
 	/// Provides content item specific access to data.
 	/// </summary>
-	public interface IContentItemRepository
+	public interface IContentItemRepository : IRepository<ContentItem>
 	{
 		/// <summary>Gets types of items below a certain item.</summary>
 		/// <param name="ancestor">The root level item to include in the search.</param>

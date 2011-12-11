@@ -120,7 +120,7 @@
 				</HeaderTemplate>
                 <ItemTemplate>
                     <tr class="<%# Eval("Enabled", "Enabled{0}") %> <%# Eval("IsDefined", "IsDefined{0}") %>"><td>
-                        <b><%# Eval("Title") %></b><br />
+                        <b title='#items: <%# Eval("NumberOfItems") %>'><%# Eval("Title") %></b><br />
 						<span title='Discriminator: <%# Eval("Discriminator") %>, Type: <%# Eval("ItemType") %>' style="color:gray"><%# ((System.Type)Eval("ItemType")).Name %></span>						
                     </td><td>
 						<%# Eval("TemplateKey") %>

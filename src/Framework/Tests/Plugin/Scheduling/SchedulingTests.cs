@@ -133,15 +133,21 @@ namespace N2.Tests.Plugin.Scheduling
             Assert.That(repeat.executions, Is.EqualTo(1));
         }
 
-        [Test]
-        public void Action_WithIClosableInterface_AreDisposed()
-        {
-            var action = new ClosableAction();
-            scheduler.Actions.Insert(0, action);
-            raiser.Raise(null, new EventArgs());
-            Assert.That(action.wasExecuted);
-            Assert.That(action.wasClosed);
-        }
+		[Test]
+		public void Action_WithIClosableInterface_AreDisposed()
+		{
+			var action = new ClosableAction();
+			scheduler.Actions.Insert(0, action);
+			raiser.Raise(null, new EventArgs());
+			Assert.That(action.wasExecuted);
+			Assert.That(action.wasClosed);
+		}
+
+		[Test, Ignore]
+		public void ScheduledAction_WillBeInjected_WithDependencies()
+		{
+			throw new NotImplementedException("TODO test");
+		}
 
         private T SelectThe<T>() where T: ScheduledAction
         {
