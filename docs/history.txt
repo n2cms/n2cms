@@ -1,7 +1,10 @@
 ﻿2.3
+- More info in the tree (discussions/282375)
+	- start pages
+	- language root
+	- zone
 - Reindex all admin screen
 - Database file system
-- 
 
 2.2.1.2
 - Fixed displayed exception after deleting items via the management ui

@@ -33,7 +33,7 @@ namespace N2.Edit.Web.UI.Controls
 				writer.Write(HtmlTextWriter.TagRightChar);
 				writer.Indent++;
 
-				foreach (TreeNode item in items)
+				foreach (System.Web.UI.WebControls.TreeNode item in items)
 				{
 					BuildItem(item, writer);
 				}
@@ -44,7 +44,7 @@ namespace N2.Edit.Web.UI.Controls
 			}
 		}
 
-		private void BuildItem(TreeNode item, HtmlTextWriter writer)
+		private void BuildItem(System.Web.UI.WebControls.TreeNode item, HtmlTextWriter writer)
 		{
 			TreeView treeView = this;
 			if ((treeView != null) && (item != null) && (writer != null))
@@ -77,7 +77,7 @@ namespace N2.Edit.Web.UI.Controls
 			}
 		}
 
-		private void WriteNodeImage(TreeView treeView, TreeNode item, HtmlTextWriter writer)
+		private void WriteNodeImage(TreeView treeView, System.Web.UI.WebControls.TreeNode item, HtmlTextWriter writer)
 		{
 			string imgSrc = GetImageSrc(treeView, item);
 			if (!string.IsNullOrEmpty(imgSrc))
@@ -89,7 +89,7 @@ namespace N2.Edit.Web.UI.Controls
 			}
 		}
 
-		private void WriteNodeCheckbox(TreeView treeView, TreeNode item, HtmlTextWriter writer)
+		private void WriteNodeCheckbox(TreeView treeView, System.Web.UI.WebControls.TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("input");
 			writer.WriteAttribute("type", "checkbox");
@@ -121,7 +121,7 @@ namespace N2.Edit.Web.UI.Controls
 		}
 
 
-		private void WriteNodeLink(TreeView treeView, TreeNode item, HtmlTextWriter writer)
+		private void WriteNodeLink(TreeView treeView, System.Web.UI.WebControls.TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("a");
 			writer.WriteAttribute("href", ToAbsolute(item));
@@ -154,7 +154,7 @@ namespace N2.Edit.Web.UI.Controls
 			writer.WriteEndTag("a");
 		}
 
-		private string ToAbsolute(TreeNode item)
+		private string ToAbsolute(System.Web.UI.WebControls.TreeNode item)
 		{
 			if(item.NavigateUrl.StartsWith("~"))
 				return VirtualPathUtility.ToAbsolute(item.NavigateUrl);
@@ -162,7 +162,7 @@ namespace N2.Edit.Web.UI.Controls
 				return item.NavigateUrl;
 		}
 
-		private void WriteNodePlain(TreeView treeView, TreeNode item, HtmlTextWriter writer)
+		private void WriteNodePlain(TreeView treeView, System.Web.UI.WebControls.TreeNode item, HtmlTextWriter writer)
 		{
 			writer.WriteBeginTag("span");
 			writer.Write(HtmlTextWriter.TagRightChar);
@@ -174,7 +174,7 @@ namespace N2.Edit.Web.UI.Controls
 			writer.WriteEndTag("span");
 		}
 
-		private string GetImageSrc(TreeView treeView, TreeNode item)
+		private string GetImageSrc(TreeView treeView, System.Web.UI.WebControls.TreeNode item)
 		{
 			string imgSrc = "";
 
@@ -219,12 +219,12 @@ namespace N2.Edit.Web.UI.Controls
 			return imgSrc;
 		}
 
-		private bool HasChildren(TreeNode item)
+		private bool HasChildren(System.Web.UI.WebControls.TreeNode item)
 		{
 			return ((item != null) && ((item.ChildNodes != null) && (item.ChildNodes.Count > 0)));
 		}
 
-		private bool IsExpandable(TreeNode item)
+		private bool IsExpandable(System.Web.UI.WebControls.TreeNode item)
 		{
 			return (HasChildren(item) || ((item != null) && item.PopulateOnDemand));
 		}
@@ -233,7 +233,7 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			if (nodes != null)
 			{
-				foreach (TreeNode node in nodes)
+				foreach (System.Web.UI.WebControls.TreeNode node in nodes)
 				{
 					if (node.Selected || IsChildNodeSelected(node.ChildNodes))
 					{

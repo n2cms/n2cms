@@ -47,29 +47,32 @@ namespace N2.Management.Content.Navigation
 
 		internal static ILinkBuilder BuildLink(NodeAdapter adapter, ContentItem item, bool isSelected, string target, bool isSelectable)
 		{
-			INode node = item;
-			string className = node.ClassNames;
+			var node = adapter.GetTreeNode(item);
+			string className = node.CssClass;
 			if (isSelected)
-				className += "selected ";
+				className += " selected";
 			if (isSelectable)
-				className += "selectable ";
+				className += " selectable";
 			else
-				className += "unselectable ";
+				className += " unselectable";
 
-			ILinkBuilder builder = Link.To(node)
-				.Target(target)
-				.Class(className)
-				.Href(adapter.GetPreviewUrl(item))
-				.Text("<img src='" + adapter.GetIconUrl(item) + "'/>" + node.Contents)
+			StringBuilder text = new StringBuilder();
+			text.AppendFormat("<img src='{0}' alt='icon'/>", node.IconUrl);
+			text.Append(node.Title);
+			foreach(var mi in node.MetaInforation)
+			{
+				text.AppendFormat(" <span class='meta {0}'>{1}</span>", mi.Key, mi.Value);
+			}
+
+			var builder = new Link(text.ToString(), node.ToolTip, node.Target ?? target, node.PreviewUrl, className)
 				.Attribute("id", item.Path.Replace('/', '_'))
-				.Attribute("title", "#" + item.ID + ": " + N2.Context.Current.Definitions.GetDefinition(item).Title)
 				.Attribute("data-id", item.ID.ToString())
 				.Attribute("data-type", item.GetContentType().Name)
 				.Attribute("data-path", item.Path)
 				.Attribute("data-url", item.Url)
 				.Attribute("data-page", item.IsPage.ToString().ToLower())
 				.Attribute("data-zone", item.ZoneName)
-				.Attribute("data-permission", adapter.GetMaximumPermission(item).ToString());
+				.Attribute("data-permission", node.MaximumPermission.ToString());
 
 			if (isSelected)
 				builder.Attribute("data-selected", "true");

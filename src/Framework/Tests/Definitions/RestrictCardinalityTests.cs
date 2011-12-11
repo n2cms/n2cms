@@ -15,8 +15,6 @@ namespace N2.Tests.Definitions
 	[TestFixture]
 	public class RestrictCardinalityTests
 	{
-		ItemDefinition parentDefinition;
-		ItemDefinition childDefinition;
         DefinitionManager definitions;
 
 		[SetUp]
