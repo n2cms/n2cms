@@ -63,16 +63,18 @@ namespace N2
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
-	public abstract class ContentItem : IComparable,
+#pragma warning disable 612, 618
+	public abstract class ContentItem : INode,
+#pragma warning restore 612, 618
+		IComparable, 
 		IComparable<ContentItem>,
 		ICloneable,
 		IInjectable<IUrlParser>,
-		INode,
 		IUpdatable<ContentItem>,
 		IInterceptableType,
 		INameable,
 		IPlaceable
-    {
+	{
         #region Private Fields
         private int id;
         private string title;
@@ -869,11 +871,13 @@ namespace N2
 			}
 		}
 
+		[Obsolete]
 		string INode.PreviewUrl
 		{
 			get { return Url; }
 		}
 
+		[Obsolete]
 		string INode.ClassNames
 		{
 			get

@@ -208,6 +208,7 @@
     <Compile Include="Edit\FileSystem\NH\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Edit\TreeNode.cs" />
     <Compile Include="Edit\UploadFolderSource.cs" />
     <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
     <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />

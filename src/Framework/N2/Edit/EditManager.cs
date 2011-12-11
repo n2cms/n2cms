@@ -505,14 +505,14 @@ namespace N2.Edit
 		[Obsolete("Use EditUrlManager")]
 		public string GetNavigationUrl(INode selectedItem)
 		{
-			return urls.GetNavigationUrl(selectedItem);
+			return urls.GetNavigationUrl((ContentItem)selectedItem);
 		}
 
 		/// <summary>Use EditUrlManager instead.</summary>
 		[Obsolete("Use EditUrlManager")]
 		public string GetPreviewUrl(INode selectedItem)
 		{
-			return urls.GetPreviewUrl(selectedItem);
+			return urls.GetPreviewUrl((ContentItem)selectedItem);
 		}
 
 		/// <summary>Use EditUrlManager instead.</summary>

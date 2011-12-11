@@ -10,14 +10,14 @@ namespace N2.Edit.Globalization
 	public class GlobalizationOptionProvider : IProvider<ToolbarOption>
 	{
 		ILanguageGateway languages;
-		IEditUrlManager editUrlManager;
         IHost host;
+		IContentAdapterProvider adapters;
 
-		public GlobalizationOptionProvider(ILanguageGateway languages, IEditUrlManager editUrlManager, IHost host)
+		public GlobalizationOptionProvider(ILanguageGateway languages, IContentAdapterProvider adapters, IHost host)
 		{
 			this.languages = languages;
-			this.editUrlManager = editUrlManager;
             this.host = host;
+			this.adapters = adapters;
 		}
 
 		#region IProvider<ToolbarOption> Members
@@ -37,7 +37,7 @@ namespace N2.Edit.Globalization
 					Target = Targets.Preview,
 					SortOrder = i,
 					Name = l.LanguageCode,
-					Url = editUrlManager.GetPreviewUrl((ContentItem)l)
+					Url = adapters.ResolveAdapter<NodeAdapter>((ContentItem)l).GetPreviewUrl((ContentItem)l)
 				});
 		}
 

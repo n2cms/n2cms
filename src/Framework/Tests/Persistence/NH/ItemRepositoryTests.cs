@@ -21,7 +21,7 @@ namespace N2.Tests.Persistence.NH
 			CreateDatabaseSchema();
 
 			sessionProvider = engine.Resolve<ISessionProvider>();
-			repository = new NHRepository<int, ContentItem>(sessionProvider);
+			repository = new NHRepository<ContentItem>(sessionProvider);
 		}
 
 		[Test]

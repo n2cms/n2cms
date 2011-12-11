@@ -10,6 +10,8 @@ using N2.Web;
 using N2.Edit.Settings;
 using N2.Definitions;
 using N2.Persistence.Sources;
+using System.Text;
+using N2.Engine.Globalization;
 
 namespace N2.Edit
 {
@@ -24,6 +26,8 @@ namespace N2.Edit
 		private ISecurityManager security;
 		private NavigationSettings settings;
 		private ContentSource sources;
+		private IDefinitionManager definitions;
+		private ILanguageGateway languages;
 
 		public NavigationSettings Settings
 		{
@@ -73,7 +77,70 @@ namespace N2.Edit
 			set { sources = value; }
 		}
 
+		public IDefinitionManager Definitions
+		{
+			get { return definitions ?? engine.Resolve<IDefinitionManager>(); }
+			set { definitions = value; }
+		}
 
+		public ILanguageGateway Languages
+		{
+			get { return languages ?? engine.Resolve<ILanguageGateway>(); }
+			set { languages = value; }
+		}
+
+
+		/// <summary>Gets the node representation used to build the tree hierarchy in the management UI.</summary>
+		/// <param name="item">The item to link to.</param>
+		/// <returns>Tree node data.</returns>
+		public virtual TreeNode GetTreeNode(ContentItem item)
+		{
+			return new TreeNode
+			{
+				IconUrl = GetIconUrl(item),
+				Title = item.Title,
+				MetaInforation = GetMetaInformation(item),
+				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
+				CssClass = GetClassName(item),
+				PreviewUrl = GetPreviewUrl(item),
+				MaximumPermission = GetMaximumPermission(item),
+			};
+		}
+
+		protected virtual IEnumerable<KeyValuePair<string, string>> GetMetaInformation(ContentItem item)
+		{
+			if (Languages.IsLanguageRoot(item))
+				yield return new KeyValuePair<string, string>("language", Languages.GetLanguage(item).LanguageCode);
+			if(!item.IsPage)
+				yield return new KeyValuePair<string, string>("zone", item.ZoneName);
+			if (Host.IsStartPage(item))
+				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(host.GetSite(item).Authority) ? "*" : host.GetSite(item).Authority);
+		}
+
+		private string GetClassName(ContentItem item)
+		{
+			StringBuilder className = new StringBuilder();
+
+			if (!item.Published.HasValue || item.Published > DateTime.Now)
+				className.Append("unpublished ");
+			else if (item.Published > DateTime.Now.AddDays(-1))
+				className.Append("day ");
+			else if (item.Published > DateTime.Now.AddDays(-7))
+				className.Append("week ");
+			else if (item.Published > DateTime.Now.AddMonths(-1))
+				className.Append("month ");
+
+			if (item.Expires.HasValue && item.Expires <= DateTime.Now)
+				className.Append("expired ");
+
+			if (!item.Visible)
+				className.Append("invisible ");
+
+			if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)
+				className.Append("locked ");
+
+			return className.ToString();
+		}
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{

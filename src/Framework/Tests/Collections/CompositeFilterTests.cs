@@ -63,7 +63,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void Wrap_Creates_CompositeFilter_ForTwoParameters()
 		{
-			var filter = AllFilter.Wrap(new CountFilter(0, 1), new TypeFilter(typeof(INode)));
+			var filter = AllFilter.Wrap(new CountFilter(0, 1), new TypeFilter(typeof(INameable)));
 			Assert.That(filter, Is.InstanceOf<AllFilter>());
 			Assert.That((filter as AllFilter).Filters.Length, Is.EqualTo(2));
 		}
@@ -71,7 +71,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void Wrap_Creates_CompositeFilter_ForTwoCountList()
 		{
-			var filter = AllFilter.Wrap(new List<ItemFilter> { new CountFilter(0, 1), new TypeFilter(typeof(INode)) });
+			var filter = AllFilter.Wrap(new List<ItemFilter> { new CountFilter(0, 1), new TypeFilter(typeof(INameable)) });
 			Assert.That(filter, Is.InstanceOf<AllFilter>());
 			Assert.That((filter as AllFilter).Filters.Length, Is.EqualTo(2));
 		}

@@ -10,12 +10,12 @@ namespace N2.Edit
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		string GetNavigationUrl(INode selectedItem);
+		string GetNavigationUrl(ContentItem selectedItem);
 
 		/// <summary>Gets the url for the preview frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		string GetPreviewUrl(INode selectedItem);
+		string GetPreviewUrl(ContentItem selectedItem);
 
 		/// <summary>Gets the url to edit page creating new items.</summary>
 		/// <param name="selected">The selected item.</param>
