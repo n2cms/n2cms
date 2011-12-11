@@ -12,8 +12,6 @@ using N2.Persistence;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Edit.FileSystem;
-using N2.Tests.Fakes;
-using N2.Edit.FileSystem;
 using System;
 using Shouldly;
 

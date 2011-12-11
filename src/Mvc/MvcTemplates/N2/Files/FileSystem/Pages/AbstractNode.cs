@@ -10,11 +10,20 @@ using N2.Persistence;
 
 namespace N2.Edit.FileSystem.Items
 {
+	[Adapts(typeof(AbstractNode))]
+	public class AbstractNodeAdapter : NodeAdapter
+	{
+		public override string GetPreviewUrl(ContentItem item)
+		{
+			return N2.Web.Url.Parse(item.FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path).ResolveTokens();
+		}
+	}
+
     [Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
 	[PermissionRemap(From = Permission.Publish, To = Permission.Write)]
 	[Indexable(IsIndexable = false)]
-	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>, IInjectable<IDependencyInjector>
+	public abstract class AbstractNode : ContentItem, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>, IInjectable<IDependencyInjector>
     {
 		public ImageSizeCache ImageSizes { get; protected set; }
 
@@ -40,11 +49,6 @@ namespace N2.Edit.FileSystem.Items
         public override string Extension
         {
             get { return string.Empty; }
-        }
-
-        string INode.PreviewUrl
-        {
-			get { return N2.Web.Url.Parse(FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, Path).ResolveTokens(); }
         }
 
 		public override PathData FindPath(string remainingUrl)

@@ -6,7 +6,7 @@ namespace N2
 	/// <summary>
 	/// Represents a node in the tree in edit mode.
 	/// </summary>
-	[Obsolete("The role of this interface has been replaced by the node adapter")]
+	[Obsolete("The role of this interface has been replaced by NodeAdapter.GetNode(item)")]
 	public interface INode : N2.Web.ILink
 	{
 		/// <summary>The name of the node.</summary>

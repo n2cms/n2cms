@@ -115,7 +115,7 @@ namespace N2.Web.Mvc.Html
 					{
 						foreach (var kvp in new RouteValueDictionary(htmlAttributes))
 						{
-							if (kvp.Value != null && "" != kvp.Value)
+							if (kvp.Value != null && !"".Equals(kvp.Value))
 							{
 								tw.Write(" " + kvp.Key + "=\"");
 								HttpUtility.HtmlAttributeEncode(kvp.Value.ToString(), tw);
