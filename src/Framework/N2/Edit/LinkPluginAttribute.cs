@@ -56,22 +56,10 @@ namespace N2.Edit
 			set { globalResourceClassName = value; }
 		}
 
-		/// <summary>This string is used by the client to find plugins.</summary>
-		protected abstract string ArrayVariableName { get; }
-
 		public override Control AddTo(Control container, PluginContext context)
 		{
 			HyperLink a = AddAnchor(container, context);
-
-			RegisterToolbarUrl(container, a.ClientID, context.Rebase(UrlFormat));
-
 			return a;
-		}
-
-		protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
-		{
-			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
-			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
 		}
 
 		protected virtual HyperLink AddAnchor(Control container, PluginContext context)
@@ -86,7 +74,8 @@ namespace N2.Edit
 			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;
-			a.Attributes["class"] = Name + " " + RequiredPermission.ToString() + (string.IsNullOrEmpty(IconUrl) ? "" : " iconed");
+			a.Attributes["class"] = "templatedurl " + Name + " " + RequiredPermission.ToString() + (string.IsNullOrEmpty(IconUrl) ? "" : " iconed");
+			a.Attributes["data-url-template"] = context.Rebase(UrlFormat);
 			a.Text = tooltip;
             a.ToolTip = tooltip;
 			a.Text = title;

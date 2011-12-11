@@ -17,9 +17,9 @@ namespace N2.Management.Content.Export
 
 		public IEnumerable<ToolbarOption> GetAll()
 		{
-			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Import.Title") ?? "Import from file", Name = "BulkImort", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Default.aspx", SortOrder = 0 };
-			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Export.Title") ?? "Export to file", Name = "BulkExport", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Export.aspx", SortOrder = 1 };
-			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Editing.Title") ?? "Bulk editing", Name = "BulkEditing", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/BulkEditing.aspx", SortOrder = 2 };
+			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Import.Title") ?? "Import from file", Name = "BulkImort", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Default.aspx?{Selection.SelectedQueryKey}={selected}", SortOrder = 0 };
+			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Export.Title") ?? "Export to file", Name = "BulkExport", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Export.aspx?{Selection.SelectedQueryKey}={selected}", SortOrder = 1 };
+			yield return new ToolbarOption { Title = Utility.GetResourceString("Bulk", "Editing.Title") ?? "Bulk editing", Name = "BulkEditing", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/BulkEditing.aspx?{Selection.SelectedQueryKey}={selected}", SortOrder = 2 };
 		}
 	}
 }

@@ -55,12 +55,6 @@ namespace N2.Edit
 			SortOrder = sortOrder;
 		} 
 
-
-		protected override string ArrayVariableName
-		{
-			get { return "toolbarPlugIns";}
-		}
-
 		public ToolbarArea Area
 		{
 			get { return area; }

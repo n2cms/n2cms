@@ -16,7 +16,7 @@ namespace N2.Edit
 		public virtual Control AddTo(Control container)
 		{
 			var link = new LiteralControl(
-					string.Format("<a href='{0}' target='{1}' class='option'>{2}</a>", N2.Web.Url.ResolveTokens(Url), Target, Title)
+					string.Format("<a href='{0}' data-url-template='{0}' target='{1}' class='option templatedurl'>{2}</a>", N2.Web.Url.ResolveTokens(Url), Target, Title)
 				);
 			container.Controls.Add(link);
 			return link;

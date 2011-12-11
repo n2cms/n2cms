@@ -8,9 +8,5 @@ namespace N2.Edit
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
 	public abstract class NavigationPluginAttribute : LinkPluginAttribute
     {
-        protected override string ArrayVariableName
-        {
-            get { return "navigationPlugIns"; }
-        }
 	}
 }

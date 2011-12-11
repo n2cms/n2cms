@@ -12,11 +12,6 @@ namespace N2.Edit.Navigation
 			GlobalResourceClassName = "Toolbar";
 		}
 
-		protected override string ArrayVariableName
-		{
-			get { return "toolbarPlugIns"; }
-		}
-
 		public override Control AddTo(Control container, PluginContext context)
 		{
 			HtmlGenericControl div = new HtmlGenericControl("div");
@@ -26,12 +21,12 @@ namespace N2.Edit.Navigation
 			HtmlAnchor up = AddSortAnchor(div, context,
 										  context.Format("{ManagementUrl}/Navigation/sortUp.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
 			                              "{ManagementUrl}/Resources/icons/bullet_arrow_up.png", "up");
-			RegisterToolbarUrl(container, up.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortUp.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}"));
+			up.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Navigation/sortUp.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
 
 			HtmlAnchor down = AddSortAnchor(div, context,
 											context.Format("{ManagementUrl}/Navigation/sortDown.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
 			                                "{ManagementUrl}/Resources/icons/bullet_arrow_down.png", "down");
-			RegisterToolbarUrl(container, down.ClientID, context.Rebase("{ManagementUrl}/Content/Navigation/sortDown.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}"));
+			down.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Navigation/sortDown.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
 
 			return div;
 		}
@@ -43,7 +38,7 @@ namespace N2.Edit.Navigation
 			a.HRef = context.Rebase(url);
 
 			a.Target = Target;
-			a.Attributes["class"] = key;
+			a.Attributes["class"] = "templatedurl " + key;
 			a.Title = Utility.GetResourceString(GlobalResourceClassName, key + Name + ".ToolTip") ?? ToolTip;
 			a.Style[HtmlTextWriterStyle.BackgroundImage] = context.Rebase(iconUrl);
 

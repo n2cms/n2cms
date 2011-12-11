@@ -7,11 +7,10 @@ n2nav.setupToolbar = function (options) {
 	var path = encodeURIComponent(options.path);
 	var memory = window.n2ctx.getMemory();
 	var action = window.n2ctx.getAction();
-	for (var i = 0; i < navigationPlugIns.length; i++) {
-		var a = document.getElementById(navigationPlugIns[i].linkId);
-		a.href = navigationPlugIns[i].urlFormat
+	$("a.templatedurl").each(function () {
+		this.href = $(this).attr("data-url-template")
 			.replace("{selected}", path)
 			.replace("{memory}", memory)
 			.replace("{action}", action);
-	}
+	});
 }
