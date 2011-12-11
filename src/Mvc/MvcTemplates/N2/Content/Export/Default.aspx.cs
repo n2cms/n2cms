@@ -11,12 +11,13 @@ using N2.Web.UI;
 using N2.Xml;
 using N2.Definitions;
 using N2.Persistence;
+using N2.Management.Content.Export;
 
 namespace N2.Edit.Export
 {
-	[ToolbarPlugin("IMPORT", "exportimport", "{ManagementUrl}/Content/Export/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", 
+	[ToolbarPlugin("BULK", "bulk", "{ManagementUrl}/Content/Export/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", 
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Administer)]
+		RequiredPermission = Permission.Administer, OptionProvider = typeof(BulkOptionProvider))]
 	public partial class Default : EditPage
 	{
 		protected N2.Web.UI.WebControls.TabPanel tpExport;

@@ -37,8 +37,9 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
+	[Service(typeof(IContentItemRepository), Key = "n2.ContentItemRepository")]
 	[Service(typeof(IRepository<ContentItem>), Key = "n2.repository.ContentItem")]
-	public class ContentItemRepository : NHRepository<ContentItem>
+	public class ContentItemRepository : NHRepository<ContentItem>, IContentItemRepository
 	{
 		public ContentItemRepository(ISessionProvider sessionProvider)
 			: base(sessionProvider)
@@ -58,12 +59,28 @@ namespace N2.Persistence.NH
 			return SessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
-		ICriteria GetContentItemCriteria()
+		ICriteria GetEagerContentItemCriteria()
 		{
-			return SessionProvider.OpenSession.Session.CreateCriteria(typeof (ContentItem), "ci")
+			return GetContentItemCriteria()
 				.SetFetchMode("ci.Children", FetchMode.Eager)
 				.SetFetchMode("ci.Details", FetchMode.Eager)
 				.SetFetchMode("ci.DetailCollections", FetchMode.Eager);
+		}
+
+		private ICriteria GetContentItemCriteria()
+		{
+			return SessionProvider.OpenSession.Session.CreateCriteria(typeof(ContentItem), "ci");
+		}
+
+		public IEnumerable<DiscriminatorCount> FindDiscriminatorsBelow(ContentItem ancestor)
+		{
+			return SessionProvider.OpenSession.Session
+				.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
+				.SetParameter("id", ancestor.ID)
+				.SetParameter("trail", ancestor.GetTrail() + "%")
+				.Enumerable()
+				.OfType<object[]>()
+				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] });
 		}
 	}
 
