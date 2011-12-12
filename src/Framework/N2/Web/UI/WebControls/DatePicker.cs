@@ -75,6 +75,7 @@ namespace N2.Web.UI.WebControls
 		private void RegiserClientScript()
 		{
 			Register.JQuery(Page);
+			Register.JQueryUi(Page);
 			Register.JQueryPlugins(Page);
 			string script = string.Format(DateScriptFormat, 
 				/* {0} */ FirstDayOfWeek,

@@ -106,7 +106,6 @@ namespace N2.Integrity
 			persister.ItemDeleting += ItemDeletingEvenHandler;
 			persister.ItemMoving += ItemMovingEvenHandler;
 			persister.ItemSaving += ItemSavingEvenHandler;
-			activator.ItemCreated += ItemCreatedEventHandler;
 		}
 
 		public virtual void Stop()
@@ -115,7 +114,6 @@ namespace N2.Integrity
 			persister.ItemDeleting -= ItemDeletingEvenHandler;
 			persister.ItemMoving -= ItemMovingEvenHandler;
 			persister.ItemSaving -= ItemSavingEvenHandler;
-			activator.ItemCreated -= ItemCreatedEventHandler;
 		}
 
 		#endregion

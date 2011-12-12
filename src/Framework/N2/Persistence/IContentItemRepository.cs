@@ -13,7 +13,13 @@ namespace N2.Persistence
 		/// <summary>Gets types of items below a certain item.</summary>
 		/// <param name="ancestor">The root level item to include in the search.</param>
 		/// <returns>An enumeration of discriminators and number of items with that discriminator.</returns>
-		IEnumerable<DiscriminatorCount> FindDiscriminatorsBelow(ContentItem ancestor);
+		IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor);
+
+		/// <summary>Finds published items below a certain ancestor of a specific type.</summary>
+		/// <param name="ancestor">The ancestor whose descendants are searched.</param>
+		/// <param name="discriminator">The discriminator the are filtered by.</param>
+		/// <returns>An enumeration of items matching the query.</returns>
+		IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator);
 	}
 
 	/// <summary>

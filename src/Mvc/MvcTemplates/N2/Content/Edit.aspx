@@ -4,7 +4,6 @@
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-    <link rel="stylesheet" href="<%= MapCssUrl("edit.css") %>" type="text/css" />
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
@@ -59,11 +58,6 @@
     				$("#futurePanel").hide();
     		});
 
-    		$(".helpPanel").click(function () {
-    			var $hp = $(this);
-    			$hp.toggleClass("helpVisible");
-    		});
-
     		$(".showZones").toggle(function () {
     			n2toggle.show(this, ".zonesBox");
     		}, function () {
@@ -74,23 +68,6 @@
     			$(".showInfo").click();
     		if ($.cookie(".zonesBox"))
     			$(".showZones").click();
-
-    		// hide mce toolbar to prevent it getting skewed
-    		$(".tabs a").click(function () {
-    			$(".mceExternalToolbar").hide();
-    		});
-    		$("input").focus(function () {
-    			$(".mceExternalToolbar").hide();
-    		});
-
-    		$(".dimmable").n2dimmable();
-
-    		$(".uploader > label").n2revealer();
-
-    		$(".expandable").n2expandable({ visible: ".uncontractable" });
-
-    		$("form").n2expandableBox({ opener: ".rightOpener", opened: "#outside" });
-    		$("#outside .box").n2expandableBox({ opener: "h4", opened: ".box-inner" });
     	});
 
     </script>

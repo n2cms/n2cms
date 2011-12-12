@@ -18,32 +18,5 @@
 
 		<n2:ItemEditor ID="ie" runat="server" />
 		
-
-    <script type="text/javascript">
-    	$(document).ready(function () {
-    		
-    		$(".helpPanel").click(function () {
-    			var $hp = $(this);
-    			$hp.toggleClass("helpVisible");
-    		});
-
-    		// hide mce toolbar to prevent it getting skewed
-    		$(".tabs a").click(function () {
-    			$(".mceExternalToolbar").hide();
-    		});
-    		$("input").focus(function () {
-    			$(".mceExternalToolbar").hide();
-    		});
-
-    		$(".dimmable").n2dimmable();
-
-    		$(".uploader > label").n2revealer();
-
-    		$(".expandable").n2expandable({ visible: ".uncontractable" });
-
-    		$("form").n2expandableBox({ opener: ".rightOpener", opened: "#outside" });
-    		$("#outside .box").n2expandableBox({ opener: "h4", opened: ".box-inner" });
-    	});
-    </script>
 	</edit:PermissionPanel>
 </asp:Content>

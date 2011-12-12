@@ -160,7 +160,7 @@ namespace N2.Edit.Web
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/" + cssFileName);
+			return Url.ResolveTokens("{ManagementUrl}/Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods

@@ -24,7 +24,7 @@ namespace N2.Management.Content
 		public override void Execute()
 		{
 			var root = repository.Get(host.CurrentSite.RootItemID);
-			var discriminators = repository.FindDiscriminatorsBelow(root).ToDictionary(d => d.Discriminator, d => d.Count);
+			var discriminators = repository.FindDescendantDiscriminators(root).ToDictionary(d => d.Discriminator, d => d.Count);
 
 			foreach (var definition in definitions.GetDefinitions())
 			{
