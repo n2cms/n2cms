@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using N2.Persistence.Serialization;
 using N2.Edit.Web;
 using N2.Edit;
+using N2.Definitions;
 
 namespace N2.Management.Content.Export
 {
@@ -19,6 +20,11 @@ namespace N2.Management.Content.Export
 			base.OnInit(e);
 
 			tpImport.NavigateUrl = "Default.aspx?selected=" + Selection.SelectedItem.Path;
+
+			if (Selection.SelectedItem is IFileSystemNode)
+			{
+				Response.Redirect("../../Files/FileSystem/Export.aspx?path=" + Server.UrlEncode(Selection.SelectedItem.Path) + "#ctl00_ctl00_Frame_Content_tpExport");
+			}
 		}
 
 		protected override void OnPreRender(EventArgs e)

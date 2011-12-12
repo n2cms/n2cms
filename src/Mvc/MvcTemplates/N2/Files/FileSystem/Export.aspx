@@ -10,7 +10,7 @@
 </asp:Content>
 
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <n2:tabpanel TabText="Import" runat="server">
+    <n2:tabpanel id="tpImport" TabText="Import" runat="server">
     	<asp:MultiView ID="mvwImport" ActiveViewIndex="0" runat="server">
 		    <asp:View runat="server">
 			    <div class="upload">
@@ -35,7 +35,7 @@
         </asp:MultiView>
     </n2:tabpanel>
 
-    <n2:tabpanel TabText="Export" runat="server">
+    <n2:tabpanel id="tpExport" TabText="Export" runat="server">
         <p>
             Exporting upload directory:
             <b><asp:Literal ID="litRootPath" runat="server" /></b>

@@ -86,7 +86,7 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				var definition = GetDefinition();
+				var definition = Definition;
 				if (definition != null)
 					return definition.ItemType;
 
@@ -169,7 +169,9 @@ namespace N2.Web.UI.WebControls
 
 		public ItemDefinition GetDefinition()
 		{
-			return Definition ?? Engine.Definitions.GetDefinition(Discriminator) ?? Engine.Definitions.GetDefinition(CurrentItemType);
+			return Definition 
+				?? Engine.Definitions.GetDefinition(Discriminator) 
+				?? Engine.Definitions.GetDefinition(CurrentItemType);
 		}
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>

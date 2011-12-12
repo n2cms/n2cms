@@ -51,7 +51,7 @@ namespace N2.Definitions
 		/// <returns>The definition matching a certain item type.</returns>
 		public virtual ItemDefinition GetDefinition(Type itemType)
 		{
-			if (itemType == null) throw new ArgumentNullException("itemType");
+			if (itemType == null) return null;
 
 			return GetDefinitions().FirstOrDefault(d => d.ItemType == itemType);
 		}

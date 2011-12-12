@@ -22,6 +22,15 @@ namespace N2.Edit.FileSystem {
         protected global::N2.Edit.Web.UI.Controls.CancelLink hlCancel;
         
         /// <summary>
+        /// tpImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.TabPanel tpImport;
+        
+        /// <summary>
         /// mvwImport control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace N2.Edit.FileSystem {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptImportedFiles;
+        
+        /// <summary>
+        /// tpExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.TabPanel tpExport;
         
         /// <summary>
         /// litRootPath control.

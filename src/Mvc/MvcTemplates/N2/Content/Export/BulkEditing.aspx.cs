@@ -29,6 +29,7 @@ namespace N2.Management.Content.Export
 				.ThenBy(d => d.SortOrder)
 				.ThenBy(d => d.Title);
 			ddlTypes.DataBind();
+
 		}
 
 		protected void ddlTypes_OnSelectedIndexChanged(object sender, EventArgs args)
