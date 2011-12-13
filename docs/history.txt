@@ -5,6 +5,7 @@
 	- zone
 - Reindex all admin screen
 - Database file system
+- Bulk editing & adding (discussions/272297)
 
 2.2.1.2
 - Fixed displayed exception after deleting items via the management ui

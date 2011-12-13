@@ -13,6 +13,24 @@ namespace N2.Management.Content.Export {
     public partial class BulkEditing {
         
         /// <summary>
+        /// hlCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.CancelLink hlCancel;
+        
+        /// <summary>
+        /// EditableNameFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden EditableNameFilter;
+        
+        /// <summary>
         /// mvWizard control.
         /// </summary>
         /// <remarks>
@@ -20,6 +38,15 @@ namespace N2.Management.Content.Export {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.MultiView mvWizard;
+        
+        /// <summary>
+        /// vNone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vNone;
         
         /// <summary>
         /// vSelection control.
@@ -58,22 +85,31 @@ namespace N2.Management.Content.Export {
         protected global::System.Web.UI.WebControls.View vEditors;
         
         /// <summary>
-        /// rptEditors control.
+        /// lblEditors control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptEditors;
+        protected global::System.Web.UI.WebControls.Label lblEditors;
         
         /// <summary>
-        /// Button1 control.
+        /// cblEditors control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblEditors;
+        
+        /// <summary>
+        /// btnSelectEditors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSelectEditors;
         
         /// <summary>
         /// vEditing control.

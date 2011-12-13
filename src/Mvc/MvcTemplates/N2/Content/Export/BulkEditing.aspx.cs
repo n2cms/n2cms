@@ -25,54 +25,41 @@ namespace N2.Management.Content.Export
 			repository = Engine.Resolve<IContentItemRepository>();
 			activator = Engine.Resolve<ContentActivator>();
 
-			LoadTypes();
-
-			if (Page.IsPostBack)
+			if (!Page.IsPostBack)
 			{
-				LoadEditors();
-				InitEditor();
+				LoadSelectableTypes();
+				LoadSelectableItems();
+				LoadSelectableEditors();
 			}
 			else
 			{
-				LoadType();
-				InitEditor(); 
-			}
-		}
-
-		protected string[] GetSelectedEditors()
-		{
-			return (Request["Editors"] ?? GetSelectedDefinition().Editables.Select(e => e.Name).FirstOrDefault() ?? "").Split(',');
-		}
-
-		private void InitEditor()
-		{
-			if (Request["__EVENTARGUMENT"] == "EditorSelectionChanged")
-			{
-				ie.Clear();
-				ClearChildState();
+				ie.EditableNameFilter = Request[EditableNameFilter.UniqueID].Split(',');
 			}
 
-			var definition = GetSelectedDefinition();
-			ie.EditableNameFilter = GetSelectedEditors();
-			ie.CurrentItem = activator.CreateInstance(definition.ItemType, Selection.SelectedItem);
-		}
-
-		private ItemDefinition GetSelectedDefinition()
-		{
-			var discriminator = Request[ddlTypes.UniqueID] ?? ddlTypes.SelectedValue;
-			var definition = Engine.Definitions.GetDefinition(discriminator);
-			return definition;
+			ie.ParentPath = Selection.SelectedItem.Path;
+			
 		}
 
 		protected void ddlTypes_OnSelectedIndexChanged(object sender, EventArgs args)
 		{
-			LoadType();
+			LoadSelectableItems();
+			LoadSelectableEditors();
 		}
 
 		protected void OnNext(object sender, CommandEventArgs args)
 		{
-			int nextIndex = 1 + int.Parse((string)args.CommandArgument);
-			mvWizard.ActiveViewIndex = nextIndex;
+			mvWizard.ActiveViewIndex++;
+		}
+
+		protected void OnGotoEdit(object sender, CommandEventArgs args)
+		{
+			mvWizard.ActiveViewIndex++;
+
+			EditableNameFilter.Value = string.Join(",", GetSelectedEditors());
+			
+			var definition = GetSelectedDefinition();
+			ie.EditableNameFilter = GetSelectedEditors();
+			ie.Discriminator = definition.Discriminator;
 		}
 
 		protected void OnSave(object sender, CommandEventArgs args)
@@ -84,38 +71,59 @@ namespace N2.Management.Content.Export
 			{
 				var editors = GetSelectedEditors();
 				var items = GetSelectedItems();
-				
-				foreach (var name in editors)
-				{
-					object value = ctx.Content[name];
-					foreach (var item in items)
-					{
-						if (vm.IsVersionable(item))
-							vm.SaveVersion(item);
 
-						item[name] = value;
-					}
-				}
-				
-				rptAffectedItems.DataSource = items;
-				rptAffectedItems.DataBind();
-				
-				foreach (var item in ctx.GetItemsToSave())
+				using (var tx = Engine.Persister.Repository.BeginTransaction())
 				{
-					item.VersionIndex++;
-					using (var tx = Engine.Persister.Repository.BeginTransaction())
+					foreach (var name in editors)
 					{
-						Engine.Persister.Save(item);
+						object value = ctx.Content[name];
+						foreach (var item in items)
+						{
+							if (vm.IsVersionable(item))
+								vm.SaveVersion(item);
+
+							item[name] = value;
+						}
+					}
+				
+					rptAffectedItems.DataSource = items;
+					rptAffectedItems.DataBind();
+
+					try
+					{
+						foreach (var item in ctx.GetItemsToSave())
+						{
+							item.VersionIndex++;
+							Engine.Persister.Save(item);
+						}
+
 						tx.Commit();
+
+						Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+						mvWizard.ActiveViewIndex++;
+					}
+					catch (Exception ex)
+					{
+						cvException.ErrorMessage = Server.HtmlEncode(ex.Message);
+						tx.Rollback();
 					}
 				}
-
-				Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
-				mvWizard.ActiveViewIndex = 3;
 			}
 		}
 
-		private IEnumerable<ContentItem> GetSelectedItems()
+		protected ItemDefinition GetSelectedDefinition()
+		{
+			var discriminator = Request[ddlTypes.UniqueID] ?? ddlTypes.SelectedValue;
+			var definition = Engine.Definitions.GetDefinition(discriminator);
+			return definition;
+		}
+
+		protected string[] GetSelectedEditors()
+		{
+			return cblEditors.Items.OfType<ListItem>().Where(li => li.Selected).Select(li => li.Value).ToArray();
+		}
+
+		protected IEnumerable<ContentItem> GetSelectedItems()
 		{
 			return chkDescendants.Items.OfType<ListItem>()
 				.Where(li => li.Selected)
@@ -123,25 +131,27 @@ namespace N2.Management.Content.Export
 				.Select(id => Engine.Persister.Get(id));
 		}
 
-		private void LoadType()
+		private void LoadSelectableItems()
 		{
-			chkDescendants.DataSource = repository.FindDescendants(Selection.SelectedItem, ddlTypes.SelectedValue);
+			chkDescendants.DataSource = repository.FindDescendants(Selection.SelectedItem, ddlTypes.SelectedValue)
+				.ToList()
+				.Where(i => Engine.SecurityManager.IsAuthorized(User, i, Security.Permission.Publish))
+				.Select(i => new { Title = string.Format("<img src='{0}' /> {1} <a href='{2}'>&raquo;</a>", i.IconUrl, i.Title, i.Url), i.ID });
 			chkDescendants.DataBind();
-
-			LoadEditors();
 		}
 
-		private void LoadEditors()
+		private void LoadSelectableEditors()
 		{
 			var definition = GetSelectedDefinition();
-			var selectedEditors = new HashSet<string>(GetSelectedEditors());
-			rptEditors.DataSource = definition.Editables
+			
+			cblEditors.DataSource = definition.Editables
 				.Where(e => !string.IsNullOrEmpty(e.Title))
-				.Select(e => new { e.Title, e.Name, Checked = selectedEditors.Contains(e.Name) ? " checked='checked'" : "" });
-			rptEditors.DataBind();
+				.Select(e => new { e.Title, e.Name });
+			cblEditors.DataBind();
+			cblEditors.SelectedIndex = 0;
 		}
 
-		private void LoadTypes()
+		private void LoadSelectableTypes()
 		{
 			var discriminators = new HashSet<string>(repository
 				.FindDescendantDiscriminators(Selection.SelectedItem)
