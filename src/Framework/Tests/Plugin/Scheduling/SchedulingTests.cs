@@ -40,6 +40,9 @@ namespace N2.Tests.Plugin.Scheduling
             var ctx = mocks.DynamicMock<IWebContext>();
             mocks.Replay(ctx);
 
+			var engine = new Fakes.FakeEngine();
+			engine.Container.AddComponentInstance("", typeof(IErrorNotifier), MockRepository.GenerateStub<IErrorNotifier>());
+
 			IPluginFinder plugins = new PluginFinder(types, null, TestSupport.SetupEngineSection());
 
 			AsyncWorker worker = new AsyncWorker();
@@ -49,7 +52,7 @@ namespace N2.Tests.Plugin.Scheduling
 				return true;
 			};
 
-            scheduler = new Scheduler(null, plugins, heart, worker, ctx, errorHandler);
+			scheduler = new Scheduler(engine, plugins, heart, worker, ctx, errorHandler);
             scheduler.Start();
         }
 
