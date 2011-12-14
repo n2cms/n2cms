@@ -27,9 +27,11 @@ namespace N2.Edit.Install
 	{
 		protected IHost host;
 		protected string[] recentChanges = new string[0];
+		protected IEngine Engine;
 
 		protected override void OnInit(EventArgs e)
 		{
+			Engine = N2.Context.Current;
 			InstallationUtility.CheckInstallationAllowed(Context);
 			N2.Resources.Register.JQuery(this);
 			base.OnInit(e);
