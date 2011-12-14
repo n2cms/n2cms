@@ -862,7 +862,7 @@
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
-    <Compile Include="Persistence\NH\ContentPersister.cs" />
+    <Compile Include="Persistence\ContentPersister.cs" />
     <Compile Include="Persistence\NH\SessionProvider.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Plugin\IPluginFinder.cs" />

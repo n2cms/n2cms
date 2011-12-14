@@ -1,4 +1,5 @@
 using N2.Engine;
+using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using NHibernate.Tool.hbm2ddl;
