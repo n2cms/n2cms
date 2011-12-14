@@ -155,8 +155,9 @@ namespace N2.Persistence.Search
             public const string Roles = "Roles";
             public const string Types = "Types";
             public const string Language = "Language";
+			public const string Visible = "Visible";
 
-            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language };
+            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
         }
 
 		public virtual Document CreateDocument(ContentItem item)
@@ -180,7 +181,8 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.IsPage, item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Roles, GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(Properties.Types, GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.Visible, item.Visible.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)
