@@ -49,7 +49,7 @@ namespace N2.Edit.Tests.FileSystem
 			injector = new FakeDependencyInjector();
 			injector.injectors.Add(new EntityDependencySetter<IFileSystem>(fs));
 			injector.injectors.Add(new EntityDependencySetter<IDependencyInjector>(injector));
-			nodeProvider = new FolderNodeProvider(fs, persister, injector);
+			nodeProvider = new FolderNodeProvider(fs, persister.Repository, injector);
 			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }), nodeProvider);
 		}
 

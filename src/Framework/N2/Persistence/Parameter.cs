@@ -68,5 +68,10 @@ namespace N2.Persistence
 			this.value = value;
 			this.type = type;
 		}
+
+		public bool IsMatch(object item)
+		{
+			return N2.Utility.GetProperty(item, Name) == Value;
+		}
 	}
 }

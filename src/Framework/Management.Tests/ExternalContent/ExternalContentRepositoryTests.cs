@@ -33,7 +33,7 @@ namespace N2.Management.Tests.ExternalContent
 			itemRepository.Save(root = new ExternalItem { ID = 1, Name = "root" });
 			itemRepository.Save(start = new ExternalItem { ID = 2, Name = "start" });
 
-			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
+			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(itemRepository, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
 		}
 
 		[Test]

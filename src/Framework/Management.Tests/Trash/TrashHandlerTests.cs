@@ -10,6 +10,8 @@ using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Tests;
+using N2.Persistence.Proxying;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -19,20 +21,11 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrownItem_IsMoved_ToTrashcan()
         {
-			var activator = new ContentActivator(null, null, null);
+			TrashHandler th = CreateTrashHandler();
 
-            IPersister persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
-		    
-            mocks.ReplayAll();
-
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
-            th.Throw(item);
+			th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
-
-            mocks.VerifyAll();
         }
 
         [Test]
@@ -131,16 +124,7 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrashHandler_Throw_WillInvokeEvents()
         {
-			var activator = new ContentActivator(null, null, null);
-
-            IPersister persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
-
-            mocks.ReplayAll();
-
-			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+			var th = CreateTrashHandler();
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -150,28 +134,17 @@ namespace N2.Edit.Tests.Trash
 
             Assert.That(throwingWasInvoked);
             Assert.That(throwedWasInvoked);
-
-            mocks.VerifyAll();
         }
 
         [Test]
         public void ThrashHandler_Throw_CanBeCancelled()
         {
-            var definitions = mocks.Stub<IDefinitionManager>();
-
-            IPersister persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            Expect.Call(delegate { persister.Save(item); }).Repeat.Never();
-
-            mocks.ReplayAll();
-
-			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger()) { UseNavigationMode = true };
+			var th = CreateTrashHandler();
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
 
-            mocks.VerifyAll();
+			Assert.That(item.Parent, Is.Not.EqualTo(trash));
         }
 
 		[Test]
@@ -195,32 +168,6 @@ namespace N2.Edit.Tests.Trash
 			Assert.That(item.State, Is.EqualTo(ContentState.Published));
 		}
 
-        #region Helper methods
-
-        private TrashHandler CreateTrashHandler()
-        {
-			ContentActivator activator = new ContentActivator(null, null, null);
-            IPersister persister = MockPersister(root, trash, item);
-            Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
-                .Do(new System.Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
-                                                             {
-                                                                 source.AddTo(destination);
-                                                             })).Repeat.Any();
-			
-            mocks.ReplayAll();
-
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
-        }
-
-        private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
-        {
-            IPersister persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
-            return persister;
-        }
-
-        #endregion
 
     }
 }

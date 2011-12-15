@@ -14,13 +14,13 @@ namespace N2.Management.Content.Templates
 	{
 		public const string TemplateDescription = "TemplateDescription";
 
-		IPersister persister;
-		DefinitionMap map;
-		ContainerRepository<TemplateContainer> container;
+		private IRepository<ContentItem> repository;
+		private DefinitionMap map;
+		private ContainerRepository<TemplateContainer> container;
 
-		public ContentTemplateRepository(IPersister persister, DefinitionMap map, ContainerRepository<TemplateContainer> container)
+		public ContentTemplateRepository(IRepository<ContentItem> repository, DefinitionMap map, ContainerRepository<TemplateContainer> container)
 		{
-			this.persister = persister;
+			this.repository = repository;
 			this.map = map;
 			this.container = container;
 		}
@@ -97,7 +97,7 @@ namespace N2.Management.Content.Templates
 
 			templateItem.Name = null;
 			templateItem.AddTo(templates);
-			persister.Save(templateItem);
+			repository.SaveOrUpdate(templateItem);
 		}
 
 		public void RemoveTemplate(string templateKey)
@@ -110,7 +110,7 @@ namespace N2.Management.Content.Templates
 			if (template == null)
 				return;
 
-			persister.Delete(template);			
+			repository.Delete(template);			
 		}
 
 		#endregion

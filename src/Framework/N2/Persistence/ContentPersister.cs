@@ -17,6 +17,7 @@ using System.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
+using N2.Persistence.Sources;
 
 namespace N2.Persistence
 {
@@ -28,10 +29,12 @@ namespace N2.Persistence
 	{
 		private readonly IRepository<ContentItem> itemRepository;
 		private readonly IRepository<ContentDetail> linkRepository;
+		private readonly ContentSource source;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository)
+		public ContentPersister(ContentSource source, IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository)
 		{
+			this.source = source;
 			this.itemRepository = itemRepository;
 			this.linkRepository = linkRepository;
 		}
@@ -301,7 +304,7 @@ namespace N2.Persistence
 
 		/// <summary>Occurs when an item is loaded</summary>
 		public event EventHandler<ItemEventArgs> ItemLoaded;
-
+		
 		#endregion
 
 		#region IDisposable Members

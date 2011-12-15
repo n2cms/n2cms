@@ -7,6 +7,8 @@ using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using N2.Tests;
+using Shouldly;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -20,58 +22,33 @@ namespace N2.Edit.Tests.Trash
         {
             base.SetUp();
 
-            persister = mocks.StrictMock<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+			persister = TestSupport.SetupFakePersister();
+			persister.Save(root);
         }
 
         [Test]
         public void DeletedItem_IsThrownInTrash()
         {
-            persister.ItemDeleting += null;
-            IEventRaiser invokeDelete = LastCall.IgnoreArguments().GetEventRaiser();
-            persister.ItemCopied += null;
-            LastCall.IgnoreArguments();
-            persister.ItemMoving += null;
-            LastCall.IgnoreArguments();
-
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null), null);
+			var th = CreateTrashHandler();
 			th.UseNavigationMode = true;
-            Expect.Call(delegate { th.Throw(item); });
-
-            mocks.ReplayAll();
 
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-            CancellableItemEventArgs deleteArgs = new CancellableItemEventArgs(item);
-            invokeDelete.Raise(persister, deleteArgs);
+			persister.Delete(item);
 
-        	deleteArgs.FinalAction(deleteArgs.AffectedItem);
-
-            mocks.VerifyAll();
+			item.Parent.ShouldBeTypeOf<TrashContainerItem>();
         }
 
         [Test]
         public void NonThrowableItem_IsNotMovedToTrashcan()
         {
-            IDefinitionManager definitions = mocks.Stub<IDefinitionManager>();
-
-            IPersister persister = mocks.Stub<IPersister>();
-            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-            persister.ItemDeleting += null;
-            IEventRaiser invokeDelete = LastCall.IgnoreArguments().GetEventRaiser();
-
-            mocks.ReplayAll();
-
-			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger()) { UseNavigationMode = true };
+			var th = CreateTrashHandler();
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-            CancellableItemEventArgs deleteArgs = new CancellableItemEventArgs(nonThrowable);
-            invokeDelete.Raise(persister, deleteArgs);
-
-            Assert.That(deleteArgs.Cancel, Is.False);
+			persister.Delete(nonThrowable);
+            
             Assert.That(trash.Children.Count, Is.EqualTo(0));
 		}
 
@@ -79,24 +56,12 @@ namespace N2.Edit.Tests.Trash
 		[Obsolete]
 		public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
 		{
-			IDefinitionManager definitions = mocks.Stub<IDefinitionManager>();
-
-			IPersister persister = mocks.Stub<IPersister>();
-			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
-			persister.ItemDeleting += null;
-			IEventRaiser invokeDelete = LastCall.IgnoreArguments().GetEventRaiser();
-
-			mocks.ReplayAll();
-
-			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger()) { UseNavigationMode = true };
+			var th = CreateTrashHandler();
 			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
 			interceptor.Start();
 
-			CancellableItemEventArgs deleteArgs = new CancellableItemEventArgs(nonThrowable2);
-			invokeDelete.Raise(persister, deleteArgs);
-
-			Assert.That(deleteArgs.Cancel, Is.False);
+			persister.Delete(nonThrowable);
+			
 			Assert.That(trash.Children.Count, Is.EqualTo(0));
 		}
 
@@ -105,26 +70,17 @@ namespace N2.Edit.Tests.Trash
         {
             PutItemInTrash();
 
-            persister.ItemDeleting += null;
-            LastCall.IgnoreArguments();
-            persister.ItemCopied += null;
-            LastCall.IgnoreArguments();
-            persister.ItemMoving += null;
-            IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
-
-			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null), null);
+			var th = CreateTrashHandler();
 			th.UseNavigationMode = true;
             th.RestoreValues(item);
-
-            mocks.ReplayAll();
-
-            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-            // now restore through drag&drop
-            invokeMoved.Raise(persister, new CancellableDestinationEventArgs(item, root));
+			// now restore through drag&drop
+			persister.Move(item, root);
 
-            mocks.VerifyAll();
+			item.Parent.ShouldBe(root);
+			item[TrashHandler.DeletedDate].ShouldBe(null);
         }
 
         [Test]
@@ -132,26 +88,16 @@ namespace N2.Edit.Tests.Trash
         {
             PutItemInTrash();
 
-            persister.ItemDeleting += null;
-            LastCall.IgnoreArguments();
-            persister.ItemCopied += null;
-            IEventRaiser invokeCopied = LastCall.IgnoreArguments().GetEventRaiser();
-            persister.ItemMoving += null;
-            LastCall.IgnoreArguments();
-
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null), null);
+			var th = CreateTrashHandler();
 			th.UseNavigationMode = true;
             th.RestoreValues(item);
-
-            mocks.ReplayAll();
-
-            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-            // now restore through drag&drop
-            invokeCopied.Raise(persister, new DestinationEventArgs(item, root));
+			var copy = persister.Copy(item, root);
 
-            mocks.VerifyAll();
+			copy.Parent.ShouldBe(root);
+			copy[TrashHandler.DeletedDate].ShouldBe(null);
         }
 
         private void PutItemInTrash()
@@ -163,26 +109,15 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void Item_MovedIntoTrash_IsNeutralized()
         {
-            persister.ItemDeleting += null;
-            LastCall.IgnoreArguments();
-            persister.ItemCopied += null;
-            LastCall.IgnoreArguments();
-            persister.ItemMoving += null;
-            IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
-
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null), null);
+			var th = CreateTrashHandler();
 			th.UseNavigationMode = true;
             th.ExpireTrashedItem(item);
-
-            mocks.ReplayAll();
-
-            DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
-            // move item into trashcan
-            invokeMoved.Raise(persister, new CancellableDestinationEventArgs(item, trash));
+			persister.Move(item, trash);
 
-            mocks.VerifyAll();
+			item[TrashHandler.DeletedDate].ShouldNotBe(null);
         }
     }
 }

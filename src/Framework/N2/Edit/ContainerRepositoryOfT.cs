@@ -14,7 +14,7 @@ namespace N2.Edit
 	public class ContainerRepository<T> where T: ContentItem
 	{
 		IItemFinder finder;
-		IPersister persister;
+		IRepository<ContentItem> repository;
 		IHost host;
 		ContentActivator activator;
 
@@ -23,12 +23,12 @@ namespace N2.Edit
 
 		/// <summary>Stores dependencies</summary>
 		/// <param name="finder"></param>
-		/// <param name="persister"></param>
+		/// <param name="repository"></param>
 		/// <param name="activator"></param>
-		public ContainerRepository(IPersister persister, IItemFinder finder, IHost host, ContentActivator activator)
+		public ContainerRepository(IRepository<ContentItem> repository, IItemFinder finder, IHost host, ContentActivator activator)
 		{
 			this.finder = finder;
-			this.persister = persister;
+			this.repository = repository;
 			this.host = host;
 			this.activator = activator;
 		}
@@ -37,14 +37,14 @@ namespace N2.Edit
 		/// <returns></returns>
 		public virtual T GetBelowStart()
 		{
-			return Get(persister.Get(host.CurrentSite.StartPageID));
+			return Get(repository.Get(host.CurrentSite.StartPageID));
 		}
 
 		/// <summary>Gets a container below the root page or null if no container exists.</summary>
 		/// <returns></returns>
 		public virtual T GetBelowRoot()
 		{
-			return Get(persister.Get(host.CurrentSite.RootItemID));
+			return Get(repository.Get(host.CurrentSite.RootItemID));
 		}
 
 		/// <summary>Gets a container below the start page and creates it if no container exists.</summary>
@@ -52,7 +52,7 @@ namespace N2.Edit
 		/// <returns></returns>
 		public virtual T GetOrCreateBelowStart(Action<T> setupCreatedItem)
 		{
-			return GetOrCreate(persister.Get(host.CurrentSite.StartPageID), setupCreatedItem);
+			return GetOrCreate(repository.Get(host.CurrentSite.StartPageID), setupCreatedItem);
 		}
 
 		/// <summary>Gets a container below the root page and creates it if no container exists.</summary>
@@ -60,7 +60,7 @@ namespace N2.Edit
 		/// <returns></returns>
 		public virtual T GetOrCreateBelowRoot(Action<T> setupCreatedItem)
 		{
-			return GetOrCreate(persister.Get(host.CurrentSite.RootItemID), setupCreatedItem);
+			return GetOrCreate(repository.Get(host.CurrentSite.RootItemID), setupCreatedItem);
 		}
 
 		/// <summary>Gets a container or null if no container exists.</summary>
@@ -103,8 +103,10 @@ namespace N2.Edit
 		{
 			var container = activator.CreateInstance<T>(containerContainer);
 			container.Name = name;
+			container.AddTo(containerContainer);
 			setupCreatedItem(container);
-			persister.Save(container);
+			
+			repository.SaveOrUpdate(container);
 			return container;
 		}
 	}

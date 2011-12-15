@@ -51,12 +51,12 @@ namespace N2.Tests.Fakes
 
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			throw new NotImplementedException();
+			return Find(new Parameter(propertyName, value));
 		}
 
 		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
 		{
-			throw new NotImplementedException();
+			return database.Values.Where(item => propertyValuesToMatchAll.All(p => p.IsMatch(item)));
 		}
 
 		public TEntity Load(object id)
