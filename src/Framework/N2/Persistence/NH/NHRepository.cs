@@ -46,6 +46,11 @@ namespace N2.Persistence.NH
 		{
 		}
 
+		private ISession Session
+		{
+			get { return SessionProvider.OpenSession.Session; }
+		}
+
 		object zero = 0;
 		public override ContentItem Get(object id)
 		{
@@ -92,11 +97,20 @@ namespace N2.Persistence.NH
 		/// <returns>An enumeration of items matching the query.</returns>
 		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
 		{
-			return SessionProvider.OpenSession.Session
+			return Session
 				.CreateQuery("select ci from ContentItem ci where (ci.ID=:id or ci.AncestralTrail like :trail) and ci.class=:class")
 				.SetParameter("id", ancestor.ID)
 				.SetParameter("trail", ancestor.GetTrail() + "%")
 				.SetParameter("class", discriminator)
+				.Enumerable<ContentItem>();
+		}
+
+
+		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
+		{
+			return Session
+				.CreateQuery("select ci from ContentItem ci where ci.ID in (select cd.EnclosingItem.ID from ContentDetail cd where cd.LinkedItem=:target)")
+				.SetParameter("target", linkTarget)
 				.Enumerable<ContentItem>();
 		}
 	}

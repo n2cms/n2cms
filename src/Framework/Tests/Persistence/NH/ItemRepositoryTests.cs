@@ -463,6 +463,56 @@ namespace N2.Tests.Persistence.NH
 			discriminators.Count().ShouldBe(1);
 		}
 
+		[Test]
+		public void Find_TypeAndParent_ShouldOnlyInclude_ItemWithSpecified_TypeAndParent()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", root);
+			repository.Save(root);
+
+			var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
+
+			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
+		public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+
+			child1["Link"] = child2;
+			child2["Link"] = child1;
+
+			repository.Save(root);
+			repository.Flush();
+
+			var results = repository.FindReferencing(child2);
+
+			results.Single().ShouldBe(child1);
+		}
+
+
+		[Test]
+		public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget_InDetailCollection()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+
+			child1.GetDetailCollection("Links", true).Add(child2);
+			child2.GetDetailCollection("Links", true).Add(child1);
+
+			repository.Save(root);
+			repository.Flush();
+
+			var results = repository.FindReferencing(child2);
+
+			results.Single().ShouldBe(child1);
+		}
+
 		private int SaveAnItem(string name, ContentItem parent)
 		{
 			using (repository)

@@ -20,6 +20,13 @@ namespace N2.Persistence
 		/// <param name="discriminator">The discriminator the are filtered by.</param>
 		/// <returns>An enumeration of items matching the query.</returns>
 		IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator);
+
+		/// <summary>
+		/// Finds item linking a certain target.
+		/// </summary>
+		/// <param name="linkTarget">The target the items should reference.</param>
+		/// <returns>An enumeration of items that link to the target.</returns>
+		IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget);
 	}
 
 	/// <summary>

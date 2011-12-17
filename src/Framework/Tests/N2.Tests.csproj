@@ -198,6 +198,7 @@
     <Compile Include="Linq\LinqTestsBase.cs" />
     <Compile Include="Linq\VanillaLinqingTests.cs" />
     <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
+    <Compile Include="Persistence\ContentPersister_ContentSourcesTests.cs" />
     <Compile Include="Persistence\Definitions\ActiveContentItem.cs" />
     <Compile Include="Persistence\IActiveContentTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
@@ -393,7 +394,9 @@
     <Compile Include="Workflow\Items\StatefulItem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">
