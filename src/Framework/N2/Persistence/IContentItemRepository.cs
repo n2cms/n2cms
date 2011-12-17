@@ -27,6 +27,13 @@ namespace N2.Persistence
 		/// <param name="linkTarget">The target the items should reference.</param>
 		/// <returns>An enumeration of items that link to the target.</returns>
 		IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget);
+
+		/// <summary>
+		/// Removes references to a target and all it's descendants.
+		/// </summary>
+		/// <param name="target">The target whose references to remove.</param>
+		/// <returns>Number of removed references.</returns>
+		int RemoveReferencesToRecursive(ContentItem target);
 	}
 
 	/// <summary>

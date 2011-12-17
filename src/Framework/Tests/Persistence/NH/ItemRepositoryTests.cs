@@ -494,7 +494,6 @@ namespace N2.Tests.Persistence.NH
 			results.Single().ShouldBe(child1);
 		}
 
-
 		[Test]
 		public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget_InDetailCollection()
 		{
@@ -511,6 +510,94 @@ namespace N2.Tests.Persistence.NH
 			var results = repository.FindReferencing(child2);
 
 			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
+		public void RemoveReferencesTo_ShouldRemove_LinkFromOtherItem()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			child1["Link"] = child2;
+			child2["Link"] = child1;
+			repository.Save(root);
+			repository.Flush();
+
+			repository.RemoveReferencesToRecursive(child2);
+
+			child1["Link"].ShouldBe(null);
+		}
+
+		[Test]
+		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromOtherItem()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			child1["Link"] = grandchild1;
+			grandchild1["Link"] = grandchild1;
+			child2["Link"] = grandchild1;
+			repository.Save(root);
+			repository.Flush();
+
+			repository.RemoveReferencesToRecursive(child1);
+
+			child2["Link"].ShouldBe(null);
+		}
+
+		[Test]
+		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromItself()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			child1["Link"] = grandchild1;
+			grandchild1["Link"] = grandchild1;
+			child2["Link"] = grandchild1;
+			repository.Save(root);
+			repository.Flush();
+
+			repository.RemoveReferencesToRecursive(child1);
+
+			grandchild1["Link"].ShouldBe(null);
+		}
+
+		[Test]
+		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromParent()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			child1["Link"] = grandchild1;
+			grandchild1["Link"] = grandchild1;
+			child2["Link"] = grandchild1;
+			repository.Save(root);
+			repository.Flush();
+
+			repository.RemoveReferencesToRecursive(child1);
+
+			child1["Link"].ShouldBe(null);
+		}
+
+		[Test]
+		public void RemoveReferencesTo_ShouldShouldReturn_NumberOfRemovedReferences()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			child1["Link"] = grandchild1;
+			grandchild1["Link"] = grandchild1;
+			child2["Link"] = grandchild1;
+			repository.Save(root);
+			repository.Flush();
+
+			int count = repository.RemoveReferencesToRecursive(child1);
+
+			count.ShouldBe(3);
 		}
 
 		private int SaveAnItem(string name, ContentItem parent)
