@@ -27,16 +27,14 @@ namespace N2.Persistence
 	[Service(typeof(IPersister))]
 	public class ContentPersister : IPersister
 	{
-		private readonly IRepository<ContentItem> itemRepository;
-		private readonly IRepository<ContentDetail> linkRepository;
+		private readonly IContentItemRepository itemRepository;
 		private readonly ContentSource source;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(ContentSource source, IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository)
+		public ContentPersister(ContentSource source, IContentItemRepository itemRepository)
 		{
 			this.source = source;
 			this.itemRepository = itemRepository;
-			this.linkRepository = linkRepository;
 		}
 
 		#region Load, Save, & Delete Methods
@@ -134,7 +132,7 @@ namespace N2.Persistence
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					DeleteReferencesRecursive(itemNoMore);
+					itemRepository.RemoveReferencesToRecursive(itemNoMore);
 
 					DeleteRecursive(itemNoMore, itemNoMore);
 
@@ -142,24 +140,6 @@ namespace N2.Persistence
 				}
 			}
 			Invoke(ItemDeleted, new ItemEventArgs(itemNoMore));
-		}
-
-		private void DeleteReferencesRecursive(ContentItem itemNoMore)
-		{
-			string itemTrail = Utility.GetTrail(itemNoMore);
-			var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
-				.SelectMany(i => linkRepository.Find(new Parameter("LinkedItem", i), new Parameter("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
-				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
-				.ToList();
-
-			TraceInformation("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
-
-			foreach (ContentDetail link in inboundLinks)
-			{
-				linkRepository.Delete(link);
-				link.AddTo((DetailCollection)null);
-			}
-			linkRepository.Flush();
 		}
 
 		#region Delete Helper Methods

@@ -25,6 +25,30 @@ namespace N2.Tests.Fakes
 	//    }
 	//}
 
+	public class FakeContentItemRepository : FakeRepository<ContentItem>, IContentItemRepository
+	{
+		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int RemoveReferencesToRecursive(ContentItem target)
+		{
+			return 0;
+		}
+	}
+
+
 	public class FakeRepository<TEntity> : INHRepository<TEntity> where TEntity : class
 	{
 		public string lastOperation;

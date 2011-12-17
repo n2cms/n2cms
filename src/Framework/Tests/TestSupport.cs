@@ -86,10 +86,10 @@ namespace N2.Tests
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
 			var source = SetupContentSource(itemRepository);
-			persister = new ContentPersister(source, itemRepository, linkRepository);
+			persister = new ContentPersister(source, itemRepository);
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
@@ -109,18 +109,16 @@ namespace N2.Tests
 
 		public static ContentPersister SetupFakePersister()
 		{
-			FakeRepository<ContentItem> repository;
-			FakeRepository<ContentDetail> linkRepository;
-			return SetupFakePersister(out repository, out linkRepository);
+			IContentItemRepository repository;
+			return SetupFakePersister(out repository);
 		}
 
-		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository)
+		public static ContentPersister SetupFakePersister(out IContentItemRepository repository)
 		{
-			repository = new Fakes.FakeRepository<ContentItem>();
-			linkRepository = new Fakes.FakeRepository<ContentDetail>();
+			repository = new Fakes.FakeContentItemRepository();
 
 			var sources = SetupContentSource(repository);
-			return new ContentPersister(sources, repository, linkRepository);
+			return new ContentPersister(sources, repository);
 		}
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
