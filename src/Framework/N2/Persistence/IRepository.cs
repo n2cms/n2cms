@@ -72,6 +72,13 @@ namespace N2.Persistence
 		IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll);
 
 		/// <summary>
+		/// Finds entities from persistence store with matching parameter expression.
+		/// </summary>
+		/// <param name="parameters">The parameters to match.</param>
+		/// <returns>Entities with matching values.</returns>
+		IEnumerable<TEntity> Find(IParameter parameters);
+
+		/// <summary>
 		/// Register the entity for deletion when the unit of work
 		/// is completed. 
 		/// </summary>

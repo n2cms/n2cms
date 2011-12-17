@@ -301,7 +301,7 @@ namespace N2.Persistence
         {
             itemRepository.Flush();
         }
-        public IRepository<ContentItem> Repository
+		public IContentItemRepository Repository
         {
             get { return this.itemRepository; }
         }

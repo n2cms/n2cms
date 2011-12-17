@@ -4,6 +4,7 @@ using N2.Engine;
 using N2.Web;
 using NHibernate;
 using log4net;
+using N2.Configuration;
 
 namespace N2.Persistence.NH
 {
@@ -21,13 +22,17 @@ namespace N2.Persistence.NH
 		private readonly ISessionFactory nhSessionFactory;
         private FlushMode flushAt = FlushMode.Commit;
 
-		public SessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
+		public SessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext, DatabaseSection config)
 		{
 			nhSessionFactory = builder.BuildSessionFactory();
 			logger.Debug("Built Session Factory " + DateTime.Now);
 			this.webContext = webContext;
 			this.interceptor = interceptor;
+			this.CacheEnabled = config.Caching;
 		}
+
+		/// <summary>Tells whether cache should be enabled by default.</summary>
+		public bool CacheEnabled { get; set; }
 
 		public IInterceptor Interceptor
 		{

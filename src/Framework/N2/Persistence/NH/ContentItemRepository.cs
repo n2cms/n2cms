@@ -33,28 +33,16 @@ namespace N2.Persistence.NH
 			return SessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
-		ICriteria GetEagerContentItemCriteria()
-		{
-			return GetContentItemCriteria()
-				.SetFetchMode("ci.Children", FetchMode.Eager)
-				.SetFetchMode("ci.Details", FetchMode.Eager)
-				.SetFetchMode("ci.DetailCollections", FetchMode.Eager);
-		}
-
-		private ICriteria GetContentItemCriteria()
-		{
-			return SessionProvider.OpenSession.Session.CreateCriteria(typeof(ContentItem), "ci");
-		}
-
 		/// <summary>Gets types of items below a certain item.</summary>
 		/// <param name="ancestor">The root level item to include in the search.</param>
 		/// <returns>An enumeration of discriminators and number of items with that discriminator.</returns>
 		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
 		{
-			return SessionProvider.OpenSession.Session
+			return Session
 				.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
 				.SetParameter("id", ancestor.ID)
 				.SetParameter("trail", ancestor.GetTrail() + "%")
+				.SetCacheable(SessionProvider.CacheEnabled)
 				.Enumerable()
 				.OfType<object[]>()
 				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] });
@@ -71,21 +59,23 @@ namespace N2.Persistence.NH
 				.SetParameter("id", ancestor.ID)
 				.SetParameter("trail", ancestor.GetTrail() + "%")
 				.SetParameter("class", discriminator)
+				.SetCacheable(SessionProvider.CacheEnabled)
 				.Enumerable<ContentItem>();
 		}
-
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
 		{
 			return Session
 				.CreateQuery("select ci from ContentItem ci where ci.ID in (select cd.EnclosingItem.ID from ContentDetail cd where cd.LinkedItem=:target)")
 				.SetParameter("target", linkTarget)
+				.SetCacheable(SessionProvider.CacheEnabled)
 				.Enumerable<ContentItem>();
 		}
 
 		public int RemoveReferencesToRecursive(ContentItem target)
 		{
-			var details = Session.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
+			var s = Session;
+			var details = s.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
 				.SetParameter("ancestor", target)
 				.SetParameter("trail", target.GetTrail())
 				.Enumerable<ContentDetail>();
@@ -93,13 +83,12 @@ namespace N2.Persistence.NH
 			int count = 0;
 			foreach (var cd in details)
 			{
-				cd.RemoveFromEnclosingCollection();
-				cd.RemoveFromEnclosingItem();
-				Session.Delete(cd);
+				cd.AddTo((ContentItem)null);
+				s.Delete(cd);
 				count++;
 			}
+			s.Flush();
 
-			Session.Flush();
 			return count;
 		}
 	}

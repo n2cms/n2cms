@@ -9,7 +9,7 @@ namespace N2.Tests
 	public abstract class ItemPersistenceMockingBase : ItemTestsBase
 	{
 		protected IPersister persister;
-		protected FakeRepository<ContentItem> repository;
+		protected FakeContentItemRepository repository;
 		protected IEventRaiser saving;
 
 		public delegate string ToAppRelativeDelegate(string path);
@@ -26,7 +26,7 @@ namespace N2.Tests
 		protected virtual IPersister CreatePersister()
 		{
 			persister = TestSupport.SetupFakePersister();
-			repository = (FakeRepository<ContentItem>)persister.Repository;
+			repository = (FakeContentItemRepository)persister.Repository;
 			
 			return persister;
 		}

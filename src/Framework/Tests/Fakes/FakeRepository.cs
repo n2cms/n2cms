@@ -286,5 +286,9 @@ namespace N2.Tests.Fakes
 
 		#endregion
 
+		public IEnumerable<TEntity> Find(IParameter parameters)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

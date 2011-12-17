@@ -9,8 +9,8 @@ namespace N2.Tests.Fakes
     {
         FakeRepository<ContentItem> itemRepository;
 
-        public FakeVersionManager(FakeRepository<ContentItem> itemRepository, StateChanger stateChanger)
-			: base(itemRepository, null, stateChanger, new N2.Configuration.EditSection())
+        public FakeVersionManager(FakeContentItemRepository itemRepository, StateChanger stateChanger)
+			: base(itemRepository, stateChanger, new N2.Configuration.EditSection())
 		{
             this.itemRepository = itemRepository;
 		}

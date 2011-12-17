@@ -33,45 +33,111 @@ namespace N2.Persistence
 	/// <summary>
 	/// A repository query parameter.
 	/// </summary>
-	public class Parameter
+	public class Parameter : N2.Persistence.IParameter
 	{
-		string name;
-		object value;
-		IType type;
+		public string Name { get; set; }
 
-		public IType Type
-		{
-			get { return type; }
-		}
+		public object Value { get; set; }
 
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+		public Comparison Comparison { get; set; }
 
-		public object Value
-		{
-			get { return value; }
-			set { this.value = value; }
-		}
+
 
 		public Parameter(string name, object value)
+			: this(name, value, Comparison.Equal)
 		{
-			this.name = name;
-			this.value = value;
 		}
 
-		public Parameter(string name, object value, IType type)
+		public Parameter(string name, object value, Comparison comparisonType)
 		{
-			this.name = name;
-			this.value = value;
-			this.type = type;
+			Name = name;
+			Value = value;
+			Comparison = comparisonType;
+		}
+
+		public static Parameter Equal(string name, object value)
+		{
+			return new Parameter(name, value);
+		}
+
+		public static Parameter NotEqual(string name, object value)
+		{
+			return new Parameter(name, value, Comparison.NotEqual);
+		}
+
+		public static Parameter GreaterThan(string name, object value)
+		{
+			return new Parameter(name, value, Comparison.GreaterThan);
+		}
+
+		public static Parameter GreaterOrEqual(string name, object value)
+		{
+			return new Parameter(name, value, Comparison.GreaterOrEqual);
+		}
+
+		public static Parameter LessThan(string name, object value)
+		{
+			return new Parameter(name, value, Comparison.LessThan);
+		}
+
+		public static Parameter LessOrEqual(string name, object value)
+		{
+			return new Parameter(name, value, Comparison.LessOrEqual);
+		}
+
+		public static Parameter StartsWith(string name, string value)
+		{
+			return new Parameter(name, value + "%", Comparison.Like);
+		}
+
+		public static Parameter Like(string name, string value)
+		{
+			return new Parameter(name, value, Comparison.Like);
+		}
+
+		public static Parameter NotLike(string name, string value)
+		{
+			return new Parameter(name, value, Comparison.NotLike);
+		}
+
+		public static Parameter IsNull(string propertyName)
+		{
+			return new Parameter(propertyName, null, Comparison.Null);
+		}
+
+		public static Parameter IsNotNull(string propertyName)
+		{
+			return new Parameter(propertyName, null, Comparison.NotNull);
 		}
 
 		public bool IsMatch(object item)
 		{
 			return N2.Utility.GetProperty(item, Name) == Value;
 		}
+
+		#region Operators
+		public static ParameterCollection operator &(Parameter q1, IParameter q2)
+		{
+			return new ParameterCollection(Persistence.Operator.And) { { q1 }, { q2 } };
+		}
+		public static ParameterCollection operator |(Parameter q1, IParameter q2)
+		{
+			return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
+		}
+		#endregion
+
+		#region Equals & GetHashCode
+		public override bool Equals(object obj)
+		{
+			var other = obj as Parameter;
+			return other != null && other.Name == Name && other.Value == Value;
+		}
+
+		public override int GetHashCode()
+		{
+			return (Name != null ? Name.GetHashCode() : GetHashCode())
+				+ (Value != null ? Value.GetHashCode() : GetHashCode());
+		}
+		#endregion
 	}
 }

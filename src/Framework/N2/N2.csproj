@@ -261,7 +261,11 @@
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Persistence\IParameter.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
+    <Compile Include="Persistence\Order.cs" />
+    <Compile Include="Persistence\ParameterCollection.cs" />
+    <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
@@ -989,7 +993,7 @@
     <Compile Include="Persistence\NH\Finder\PropertyCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyVersionOfCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\QueryBuilder.cs" />
-    <Compile Include="Persistence\NH\Finder\Operator.cs" />
+    <Compile Include="Persistence\Operator.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertySortDirection.cs" />
     <Compile Include="Persistence\NH\Finder\StringWrapper.cs" />

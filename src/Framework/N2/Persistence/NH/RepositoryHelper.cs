@@ -33,35 +33,17 @@ namespace N2.Persistence.NH
 {
     internal class RepositoryHelper<T>
     {
-//        public static void AddCaching(IQuery query)
-//        {
-//            if (With.Caching.ShouldForceCacheRefresh == false && With.Caching.Enabled)
-//            {
-//                query.SetCacheable(true);
-//                if (With.Caching.CurrentCacheRegion != null)
-//                    query.SetCacheRegion(With.Caching.CurrentCacheRegion);
-//            }
-//            else if (With.Caching.ShouldForceCacheRefresh)
-//            {
-//                query.SetForceCacheRefresh(true);
-//            }
-//        }
-
 		internal static IQuery CreateQuery(ISession session, string namedQuery, Parameter[] parameters)
 		{
 			IQuery query = session.GetNamedQuery(namedQuery);
 			foreach (Parameter parameter in parameters)
 			{
-				if (parameter.Type == null)
-					query.SetParameter(parameter.Name, parameter.Value);
-				else
-					query.SetParameter(parameter.Name, parameter.Value, parameter.Type);
+				query.SetParameter(parameter.Name, parameter.Value);
 			}
-			//AddCaching(query);
 			return query;
 		}
 
-		public static ICriteria GetExecutableCriteria(ISession session, DetachedCriteria criteria, Order[] orders)
+		public static ICriteria GetExecutableCriteria(ISession session, DetachedCriteria criteria, NHibernate.Criterion.Order[] orders)
 		{
 			ICriteria executableCriteria;
 			if (criteria != null)
@@ -73,27 +55,15 @@ namespace N2.Persistence.NH
 				executableCriteria = session.CreateCriteria(typeof(T));
 			}
 
-			//AddCaching(executableCriteria);
 			if (orders != null)
 			{
-				foreach (Order order in orders)
+				foreach (NHibernate.Criterion.Order order in orders)
 				{
 					executableCriteria.AddOrder(order);
 				}
 			}
 			return executableCriteria;
 		}
-
-//        public static void AddCaching(ICriteria crit)
-//        {
-//            if (With.Caching.ShouldForceCacheRefresh == false &&
-//                With.Caching.Enabled)
-//            {
-//                crit.SetCacheable(true);
-//                if (With.Caching.CurrentCacheRegion != null)
-//                    crit.SetCacheRegion(With.Caching.CurrentCacheRegion);
-//            }
-//        }
 
 		public static ICriteria CreateCriteriaFromArray(ISession session, ICriterion[] criteria)
 		{
@@ -106,19 +76,7 @@ namespace N2.Persistence.NH
 					continue;
 				crit.Add(criterion);
 			}
-			//AddCaching(crit);
 			return crit;
 		}
-
-//        public static void CreateDbDataParameters(IDbCommand command, Parameter[] parameters)
-//        {
-//            foreach (Parameter parameter in parameters)
-//            {
-//                IDbDataParameter sp_arg = command.CreateParameter();
-//                sp_arg.ParameterName = parameter.Name;
-//                sp_arg.Value = parameter.Value;
-//                command.Parameters.Add(sp_arg);
-//            }
-//        }
 	}
 }
