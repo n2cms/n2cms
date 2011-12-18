@@ -94,9 +94,9 @@ namespace N2.Tests
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
 
-		public static ContentSource SetupContentSource(IRepository<ContentItem> itemRepository)
+		public static ContentSource SetupContentSource(IContentItemRepository itemRepository)
 		{
-			return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository));
+			return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
 		}
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
@@ -131,7 +131,7 @@ namespace N2.Tests
 			return new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } };
 		}
 
-		public static ContentSource SetupContentSource(IWebContext webContext, IHost host, IRepository<ContentItem> repository)
+		public static ContentSource SetupContentSource(IWebContext webContext, IHost host, IContentItemRepository repository)
 		{
 			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, repository) });
 		}

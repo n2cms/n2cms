@@ -304,6 +304,7 @@
     <Compile Include="Persistence\Sources\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
     <Compile Include="Persistence\Sources\Query.cs" />
+    <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />

@@ -6,25 +6,6 @@ using N2.Persistence.NH;
 
 namespace N2.Tests.Fakes
 {
-	//public class FakeRepository<TEntity> : FakeRepository<int, TEntity> where TEntity : class
-	//{
-	//    public override void Save(TEntity entity)
-	//    {
-	//        base.Save(entity);
-	//        maxID = Math.Max(GetKey(entity), maxID);
-	//    }
-	//    protected override int GetKey(TEntity entity)
-	//    {
-	//        int id = base.GetKey(entity);
-	//        if(id == 0)
-	//        {
-	//            var p = entity.GetType().GetProperty("ID");
-	//            p.SetValue(entity, id = ++maxID, new object[0]);
-	//        }
-	//        return id;
-	//    }
-	//}
-
 	public class FakeContentItemRepository : FakeRepository<ContentItem>, IContentItemRepository
 	{
 		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)

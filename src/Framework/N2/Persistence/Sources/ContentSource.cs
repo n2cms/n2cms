@@ -23,13 +23,10 @@ namespace N2.Persistence.Sources
 
 		public IEnumerable<SourceBase> Sources { get; protected set; }
 		
-		public ContentSource(ISecurityManager security, params SourceBase[] sources)
+		public ContentSource(ISecurityManager security, SourceBase[] sources)
 		{
 			this.security = security;
-			
-			var temp = sources.ToList();
-			temp.Sort();
-			Sources = temp;
+			Sources = sources.OrderBy(s => s.SortOrder).ToList();
 		}
 
 		public virtual PathData ResolvePath(string path)
@@ -80,6 +77,13 @@ namespace N2.Persistence.Sources
 			return Sources.Any(s => s.IsProvidedBy(item));
 		}
 
+
+
+		public ContentItem Get(object id)
+		{
+			return Sources.Select(s => s.Get(id)).FirstOrDefault(ci => ci != null);
+		}
+
 		public virtual void Save(ContentItem item)
 		{
 			var source = GetSourceOrThrow(item);
@@ -92,10 +96,10 @@ namespace N2.Persistence.Sources
 			source.Delete(item);
 		}
 
-		public virtual void Move(ContentItem sourceItem, ContentItem destination)
+		public virtual ContentItem Move(ContentItem sourceItem, ContentItem destination)
 		{
 			var source = GetSourceOrThrow(sourceItem);
-			source.Move(sourceItem, destination);
+			return source.Move(sourceItem, destination);
 		}
 
 		public virtual ContentItem Copy(ContentItem sourceItem, ContentItem destination)
@@ -103,6 +107,8 @@ namespace N2.Persistence.Sources
 			var source = GetSourceOrThrow(sourceItem);
 			return source.Copy(sourceItem, destination);
 		}
+
+
 
 		private SourceBase GetSourceOrThrow(ContentItem item)
 		{
