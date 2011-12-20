@@ -15,7 +15,7 @@
 
 	<!-- Prepare dependencies -->
 	
-	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-VisualBasic-PrepareDependencies;Examples-Mvc-PrepareDependencies;">
+	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-VisualBasic-PrepareDependencies;Examples-Mvc-PrepareDependencies;Examples-RavenMvc-PrepareDependencies">
 	</Target>
 
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
@@ -40,6 +40,15 @@
 		<Message Text="Skipping mklink (folder exists): $(Examples-Mvc-SourceFolder)\wwwroot\N2\" Condition="Exists('$(Examples-Mvc-SourceFolder)\wwwroot\N2\')" />
 		<Exec Command="mklink /D $(Examples-Mvc-SourceFolder)\wwwroot\N2\ $(EditFolder)\" Condition="!Exists('$(Examples-Mvc-SourceFolder)\wwwroot\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Examples-Mvc-SourceFolder)\wwwroot\N2" Condition="!Exists('$(Examples-Mvc-SourceFolder)\wwwroot\N2\')" />
+	</Target>
+	<Target Name="Examples-RavenMvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
+		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
+					DestinationFolder="$(Examples-Mvc-SourceFolder)\RavenTest\bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\RavenTest\bin" />
+
+		<Message Text="Skipping mklink (folder exists): $(Examples-Mvc-SourceFolder)\RavenTest\N2\" Condition="Exists('$(Examples-Mvc-SourceFolder)\RavenTest\N2\')" />
+		<Exec Command="mklink /D $(Examples-Mvc-SourceFolder)\RavenTest\N2\ $(EditFolder)\" Condition="!Exists('$(Examples-Mvc-SourceFolder)\RavenTest\N2\')" ContinueOnError="true" />
+		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Examples-Mvc-SourceFolder)\RavenTest\N2" Condition="!Exists('$(Examples-Mvc-SourceFolder)\RavenTest\N2\')" />
 	</Target>
 
 	<!-- Build -->

@@ -12,6 +12,7 @@ src/Framework/Extensions.Tests/App_Data/
 examples/MinimalCSharp/wwwroot/App_Data/SearchIndex/
 examples/MinimalVisualBasic/wwwroot/App_Data/SearchIndex/
 examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
+examples/Mvc/RavenTest/N2/
 lib/*.pdb
 examples/*/wwwroot/N2/
 

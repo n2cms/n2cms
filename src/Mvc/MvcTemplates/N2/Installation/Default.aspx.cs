@@ -138,22 +138,18 @@ namespace N2.Edit.Install
 
 		protected void btnTest_Click(object sender, EventArgs e)
 		{
-			try
+			InstallationManager im = Installer;
+			var ex = im.GetConnectionException();
+			if (ex == null)
 			{
-				InstallationManager im = Installer;
-
-				using (IDbConnection conn = im.GetConnection())
-				{
-					conn.Open();
-					lblStatus.CssClass = "ok";
-					lblStatus.Text = "Connection OK";
-				}
+				lblStatus.CssClass = "ok";
+				lblStatus.Text = "Connection OK";
 			}
-			catch (Exception ex)
+			else
 			{
 				lblStatus.CssClass = "warning";
 				lblStatus.Text = "Connection problem, hopefully this error message can help you figure out what's wrong: <br/>" +
-				                 ex.Message;
+								 ex.Message;
 				lblStatus.ToolTip = ex.StackTrace;
 			}
 		}

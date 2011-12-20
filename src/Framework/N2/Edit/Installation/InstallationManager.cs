@@ -187,7 +187,7 @@ namespace N2.Edit.Installation
 			}
 		}
 
-		private void UpdateVersion(DatabaseStatus status)
+		protected virtual void UpdateVersion(DatabaseStatus status)
 		{
 			try
 			{
@@ -224,7 +224,7 @@ namespace N2.Edit.Installation
 			}
 		}
 
-		private void UpdateSchema(DatabaseStatus status)
+		protected virtual void UpdateSchema(DatabaseStatus status)
 		{
 			try
 			{
@@ -247,7 +247,7 @@ namespace N2.Edit.Installation
 		}
 
 
-		private void UpdateCount(DatabaseStatus status)
+		protected virtual void UpdateCount(DatabaseStatus status)
 		{
 			try
 			{
@@ -263,7 +263,7 @@ namespace N2.Edit.Installation
 			}
 		}
 
-		private void UpdateConnection(DatabaseStatus status)
+		protected virtual void UpdateConnection(DatabaseStatus status)
 		{
 			try
 			{
@@ -494,6 +494,23 @@ namespace N2.Edit.Installation
 		public void UpdateStatus(SystemStatusLevel currentLevel)
 		{
 			connectionContext.SetConnected(currentLevel);
+		}
+
+		public virtual Exception GetConnectionException()
+		{
+			try
+			{
+
+				using (IDbConnection conn = GetConnection())
+				{
+					conn.Open();
+					return null;
+				}
+			}
+			catch (Exception ex)
+			{
+				return ex;
+			}
 		}
 	}
 }
