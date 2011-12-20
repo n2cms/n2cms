@@ -233,7 +233,7 @@ namespace N2.Engine.Globalization
 		/// <returns>True if the item is the root item of a language branch.</returns>
 		public bool IsLanguageRoot(ContentItem item)
 		{
-			return item is ILanguage;
+			return item is ILanguage && !string.IsNullOrEmpty((item as ILanguage).LanguageCode);
 		}
 
         /// <summary>Throws an exception if any of the items is a language root.</summary>
