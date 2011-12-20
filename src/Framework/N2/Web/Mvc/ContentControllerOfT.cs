@@ -109,7 +109,7 @@ namespace N2.Web.Mvc
 			if (ControllerContext.IsChildAction || CurrentItem == null)
 				return;
 
-			var gateway = Engine.Resolve<ILanguageGateway>();
+			var gateway = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentItem);
 			if (!gateway.Enabled)
 				return;
 

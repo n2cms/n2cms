@@ -8,6 +8,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Web;
 using N2.Web.UI;
+using N2.Security;
 
 namespace Dinamico.Models
 {
@@ -18,7 +19,10 @@ namespace Dinamico.Models
 		IconUrl = "{IconsUrl}/world_go.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage))]
-	[TabContainer(Defaults.Containers.Site, "Site", 1000)]
+	[TabContainer(Defaults.Containers.Site, "Languages", 1000,
+		ContainerName = "LanguagesContainer")]
+	[RecursiveContainer("LanguagesContainer", 1000,
+		RequiredPermission = Permission.Administer)]
 	public class LanguageIntersection : PageModelBase, IThemeable, ISitesSource, IRedirect
 	{
 		#region IThemeable Members
@@ -30,7 +34,9 @@ namespace Dinamico.Models
 
 		#region ISitesSource Members
 
-		[EditableText(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
+		[EditableText(Title = "Site collection host name (DNS)", 
+			ContainerName = Defaults.Containers.Site,
+			HelpTitle = "Sets a shared host name for all languages on a site. The web server must be configured to accept this host name for this to work.")]
 		public virtual string HostName { get; set; }
 
 		public IEnumerable<Site> GetSites()

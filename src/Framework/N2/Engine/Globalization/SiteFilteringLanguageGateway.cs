@@ -38,7 +38,10 @@ namespace N2.Engine.Globalization
 		/// <returns>An enumeration of content itmes that are translations of the given item. The item itself is included.</returns>
 		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
         {
-            return languages.FindTranslations(item);
+			if (item is ILanguage)
+				return GetAvailableLanguages().Select(l => l as ContentItem);
+
+			return languages.FindTranslations(item);
         }
 
 		/// <summary>Gets the language of an item.</summary>

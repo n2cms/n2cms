@@ -12,7 +12,7 @@ namespace N2.Templates.UI.Layouts
         {
             if (CurrentPage != null)
             {
-                languages = N2.Context.Current.Resolve<ILanguageGateway>();
+				languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
 
                 ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
 
