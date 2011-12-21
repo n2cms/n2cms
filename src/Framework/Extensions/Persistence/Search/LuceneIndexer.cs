@@ -100,6 +100,8 @@ namespace N2.Persistence.Search
 					return;
 
 				var doc = CreateDocument(item);
+				if (doc == null)
+					return;
 				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
 				iw.Commit();
 				accessor.RecreateSearcher();
@@ -172,7 +174,17 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.Published, item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Expires, item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
 			if (item.IsPage)
-                doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			{
+				try
+				{
+					doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+				}
+				catch (TemplateNotFoundException ex)
+				{
+					logger.Warn("Failed to retrieve Url on " + item, ex);
+					return null;
+				}
+			}
             doc.Add(new Field(Properties.Path, item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.AncestralTrail, (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Trail, Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
