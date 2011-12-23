@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace N2.Collections
 {
 	/// <summary>
 	/// A list of content items. Provides easier access to filtering and sorting.
 	/// </summary>
+	[DebuggerDisplay("ItemList: Count = {Count}")]
 	public class ItemList : ItemList<ContentItem>
 	{
 		/// <summary>Initializes an empty instance of the ItemList class.</summary>

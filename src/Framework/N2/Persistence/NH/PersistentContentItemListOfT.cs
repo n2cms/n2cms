@@ -4,9 +4,11 @@ using N2.Collections;
 using NHibernate;
 using NHibernate.Engine;
 using NHibernate.Linq;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
+	[DebuggerDisplay("PersistentContentItemList: Count = {Count}")]
 	public class PersistentContentItemList<T> : PersistentContentList<T>, IContentItemList<T> where T : ContentItem
 	{
 		public PersistentContentItemList(ISessionImplementor session)

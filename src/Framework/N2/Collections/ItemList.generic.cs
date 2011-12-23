@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using System.Diagnostics;
 
 namespace N2.Collections
 {
@@ -31,6 +32,7 @@ namespace N2.Collections
 	/// A generic item list.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
+	[DebuggerDisplay("ItemList: Count = {Count}")]
 	public class ItemList<T> : ContentList<T>, IContentItemList<T>, IEnumerable<T>, IHierarchicalEnumerable where T : ContentItem
 	{
         #region Constructors
