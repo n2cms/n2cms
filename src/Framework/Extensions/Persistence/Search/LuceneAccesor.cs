@@ -38,7 +38,13 @@ namespace N2.Persistence.Search
 
 		~LuceneAccesor()
 		{
-			Dispose();
+			try
+			{
+				Dispose();
+			}
+			catch (FileLoadException)
+			{
+			}
 		}
 
 		public IndexWriter GetWriter()
