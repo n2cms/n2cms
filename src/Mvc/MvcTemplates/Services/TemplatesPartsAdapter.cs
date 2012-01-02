@@ -19,9 +19,9 @@ namespace N2.Templates.Mvc.Services
 			if (zoneName.StartsWith("Recursive") && grandParentItem is ContentPageBase && !(grandParentItem is LanguageRoot))
 			{
 				if(parentItem.VersionOf == null)
-					items.Union(GetParts(parentItem.Parent, zoneName, @interface));
+					items = items.Union(GetParts(parentItem.Parent, zoneName, @interface));
 				else
-					items.Union(GetParts(parentItem.VersionOf.Parent, zoneName, @interface));
+					items = items.Union(GetParts(parentItem.VersionOf.Parent, zoneName, @interface));
 			}
 			return items;
 		}
