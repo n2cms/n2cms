@@ -28,12 +28,23 @@ using System.Diagnostics;
 
 namespace N2.Collections
 {
+	public class ContentItemList<T> : ItemList<T>, IContentItemList<T>
+		where T : ContentItem
+	{
+		public ContentItemList(int enclosingItemID)
+		{
+			EnclosingItemID = enclosingItemID;
+		}
+
+		public int EnclosingItemID { get; set; }
+	}
+
 	/// <summary>
 	/// A generic item list.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
 	[DebuggerDisplay("ItemList: Count = {Count}")]
-	public class ItemList<T> : ContentList<T>, IContentItemList<T>, IEnumerable<T>, IHierarchicalEnumerable where T : ContentItem
+	public class ItemList<T> : ContentList<T>, IContentList<T>, IEnumerable<T>, IHierarchicalEnumerable where T : ContentItem
 	{
         #region Constructors
 

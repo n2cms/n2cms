@@ -12,15 +12,16 @@ using N2.Persistence.NH;
 using N2.Plugin;
 using N2.Configuration;
 using N2.Details;
+using N2.Security;
 
-namespace N2.RavenDB
+namespace N2.Raven
 {
 	[Service(typeof(InstallationManager), Replaces = typeof(InstallationManager))]
 	public class RavenInstallationManager : InstallationManager
 	{
 		private RavenConnectionProvider cp;
 
-		public RavenInstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config, N2.RavenDB.RavenConnectionProvider cp)
+		public RavenInstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config, RavenConnectionProvider cp)
 			: base(host, map, activator, importer, persister, sessionProvider, configurationBuilder, webContext, connectionContext, config)
 		{
 			this.cp = cp;
@@ -71,13 +72,12 @@ namespace N2.RavenDB
 				status.Items = cp.Session.Query<ContentItem>().Count();
 				status.Details = cp.Session.Query<ContentDetail>().Count();
 				status.DetailCollections = cp.Session.Query<DetailCollection>().Count();
-				status.AuthorizedRoles = cp.Session.Query<AuthorizedROle>().Count();
+				status.AuthorizedRoles = cp.Session.Query<AuthorizedRole>().Count();
 			}
 			catch (Exception)
 			{
 				throw;
 			}
-
 		}
 	}
 }

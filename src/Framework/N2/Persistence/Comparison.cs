@@ -11,6 +11,7 @@ namespace N2.Persistence
 		Like,
 		NotLike,
 		Null,
-		NotNull
+		NotNull,
+		In
 	}
 }

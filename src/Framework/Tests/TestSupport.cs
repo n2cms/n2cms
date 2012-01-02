@@ -96,7 +96,12 @@ namespace N2.Tests
 
 		public static ContentSource SetupContentSource(IContentItemRepository itemRepository)
 		{
-			return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
+			return new ContentSource(
+				MockRepository.GenerateStub<ISecurityManager>(), 
+				new SourceBase[] { 
+					new ActiveContentSource(), 
+					new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) 
+				});
 		}
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)

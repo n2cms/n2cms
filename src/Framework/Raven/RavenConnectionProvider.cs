@@ -7,28 +7,29 @@ using Raven.Client.Document;
 using N2.Engine;
 using N2.Web;
 using Raven.Client.Embedded;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using Raven.Client.Listeners;
 
-namespace N2.RavenDB
+namespace N2.Raven
 {
 	[Service]
 	public class RavenConnectionProvider
 	{
-		private EmbeddableDocumentStore store;
+		private IDocumentStore store;
 		private IWebContext ctx;
 
-		public RavenConnectionProvider(IWebContext ctx)
+		public RavenConnectionProvider(RavenStoreFactory storeFactory, IWebContext ctx)
 		{
 			this.ctx = ctx;
-			store = new EmbeddableDocumentStore() { ConnectionStringName = "N2CMS" };
-			store.RunInMemory = true;
-			//store.Conventions.JsonContractResolver = new ContentContractResolver();
-			store.Conventions.CustomizeJsonSerializer = js => js.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-			store.Initialize();
+			store = storeFactory.CreateStore(this);
 		}
 
 		public virtual IDocumentSession OpenSession()
 		{
-			return store.OpenSession();
+			var session = store.OpenSession();
+			//session.Advanced.MaxNumberOfRequestsPerSession = 100;
+			return session;
 		}
 
 		public IDocumentSession Session

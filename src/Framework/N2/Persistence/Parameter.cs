@@ -27,6 +27,9 @@
 #endregion
 
 using NHibernate.Type;
+using System.Collections;
+using System.Linq;
+using System;
 
 namespace N2.Persistence
 {
@@ -112,7 +115,42 @@ namespace N2.Persistence
 
 		public bool IsMatch(object item)
 		{
+			switch (Comparison)
+			{
+				case Comparison.Equal:
+					return N2.Utility.GetProperty(item, Name) == Value;
+				case Comparison.GreaterOrEqual:
+				case Comparison.GreaterThan:
+				case Comparison.LessOrEqual:
+				case Comparison.LessThan:
+					throw new NotImplementedException("Not implemented comparison type: " + Comparison);
+				case Comparison.Like:
+					return N2.Utility.GetProperty(item, Name) == Value;
+				case Comparison.NotEqual:
+					return N2.Utility.GetProperty(item, Name) != Value;
+				case Comparison.NotLike:
+					return N2.Utility.GetProperty(item, Name) != Value;
+				case Comparison.NotNull:
+					return N2.Utility.GetProperty(item, Name) != null;
+				case Comparison.Null:
+					return N2.Utility.GetProperty(item, Name) == null;
+				case Comparison.In:
+					{
+						var property = N2.Utility.GetProperty(item, Name);
+						return (Value as IEnumerable).OfType<object>().Any(v => v.Equals(property));
+					}
+			}
 			return N2.Utility.GetProperty(item, Name) == Value;
+		}
+
+		public static ParameterCollection And(params Parameter[] parameters)
+		{
+			return new ParameterCollection(parameters);
+		}
+
+		public static ParameterCollection Or(params Parameter[] parameters)
+		{
+			return new ParameterCollection(parameters) { Operator = Operator.Or };
 		}
 
 		#region Operators

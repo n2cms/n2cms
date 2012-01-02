@@ -37,7 +37,7 @@ namespace N2.Definitions.Static
 				?? CreateDefinition(contentType, templateKey);
 		}
 
-		public ItemDefinition GetOrCreateDefinition(ContentItem item)
+		public ItemDefinition GetOrCreateDefinition(ITemplateable item)
 		{
 			return GetOrCreateDefinition(item.GetContentType(), item.TemplateKey);
 		}

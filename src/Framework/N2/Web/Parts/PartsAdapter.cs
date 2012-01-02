@@ -66,7 +66,7 @@ namespace N2.Web.Parts
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
 		/// <returns>A list of items in the zone.</returns>
-        [Obsolete("Use overload with interface parameter")]
+		[Obsolete("Change the method signature to GetParts(ContentItem, string, string)")]
         public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
         {
             return new ItemList(GetParts(parentItem, zoneName, Interfaces.Viewing));

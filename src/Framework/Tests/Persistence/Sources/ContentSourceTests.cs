@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using N2.Persistence.Sources;
 using N2.Persistence;
+using N2.Persistence.NH;
 
 namespace N2.Tests.Persistence.Sources
 {

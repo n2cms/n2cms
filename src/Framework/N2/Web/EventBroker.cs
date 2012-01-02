@@ -147,6 +147,7 @@ namespace N2.Web
 		/// .jpeg
 		/// .js
 		/// .axd
+		/// .ico
 		/// </remarks>
 		protected static bool IsStaticResource(object sender)
 		{
@@ -167,6 +168,7 @@ namespace N2.Web
 					case ".js":
 					case ".css":
 					case ".axd":
+					case ".ico":
 						return File.Exists(application.Request.PhysicalPath);
 				}
 			}

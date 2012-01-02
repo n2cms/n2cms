@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Persistence.Sources;
 using N2.Persistence;
+using N2.Persistence.Sources;
 
-namespace N2.RavenDB
+namespace N2.Raven
 {
 	[ContentSource]
 	public class RavenSource : SourceBase
 	{
-		private RavenConnectionProvider connection;
 		private IContentItemRepository repository;
 
-		public RavenSource(IContentItemRepository repository, RavenConnectionProvider connection)
+		public RavenSource(IContentItemRepository repository)
 		{
 			this.repository = repository;
-			this.connection = connection;
 		}
 		
 		public override int SortOrder
@@ -29,7 +25,7 @@ namespace N2.RavenDB
 
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
-			throw new NotImplementedException();
+			return AppendContentChildren(previousChildren, query);
 		}
 
 		public override bool IsProvidedBy(ContentItem item)
@@ -39,19 +35,16 @@ namespace N2.RavenDB
 
 		public override ContentItem Get(object id)
 		{
-			return connection.Session.Load<ContentItem>(id.ToString());
+			return repository.Get(id);
 		}
 
 		public override void Save(ContentItem item)
 		{
-			connection.Session.Store(item);
-			connection.Session.SaveChanges();
+			repository.SaveOrUpdate(item);
 		}
-
 		public override void Delete(ContentItem item)
 		{
-			connection.Session.Delete(item);
-			connection.Session.SaveChanges();
+			repository.Delete(item);
 		}
 
 		public override ContentItem Move(ContentItem source, ContentItem destination)

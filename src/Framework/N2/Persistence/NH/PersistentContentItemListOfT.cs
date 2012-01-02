@@ -21,6 +21,11 @@ namespace N2.Persistence.NH
 		{
 		}
 
+		public int EnclosingItemID
+		{
+			get { return (Owner as ContentItem).ID; }
+		}
+
 		#region IZonedList<T> Members
 
 		public IEnumerable<T> FindParts(string zoneName)
@@ -89,8 +94,7 @@ namespace N2.Persistence.NH
 			if (WasInitialized)
 				return this.AsQueryable<T>();
 
-			var parent = Owner as ContentItem;
-			return Session.Query<T>().Where(i => i.Parent == parent);
+			return Session.Query<T>().Where(i => i.Parent.ID == EnclosingItemID);
 		}
 
 		#endregion

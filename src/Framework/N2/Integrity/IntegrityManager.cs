@@ -181,26 +181,11 @@ namespace N2.Integrity
             ContentItem parentItem = item.Parent;
             if (parentItem != null)
             {
-				var similarItems = GetItemsWithSameName(name, parentItem);
-				foreach (var potentiallyClashingItem in similarItems)
-				{
-					if (!potentiallyClashingItem.Equals(item))
-						return false;
-				}
+				var potentiallyClashingItem = parentItem.Children.FindNamed(name);
+				return potentiallyClashingItem == null || potentiallyClashingItem.Equals(item);
             }
             return true;
         }
-
-		private IEnumerable<ContentItem> GetItemsWithSameName(string name, ContentItem parentItem)
-		{
-			var siblings = (parentItem.ID != 0)
-				? finder.Where.Parent.Eq(parentItem).And.Name.Like(name).Select()
-				: parentItem.Children;
-
-			foreach (var sibling in siblings)
-				if(string.Equals(sibling.Name, name, StringComparison.InvariantCultureIgnoreCase))
-					yield return sibling;
-		}
 
 		/// <summary>Check that the source item type is allowed below the destination. Throws an exception if the item isn't allowed.</summary>
 		/// <param name="source">The child item</param>

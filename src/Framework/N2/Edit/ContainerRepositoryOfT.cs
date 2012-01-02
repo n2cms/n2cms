@@ -4,6 +4,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Web;
+using N2.Definitions.Static;
 
 namespace N2.Edit
 {
@@ -13,10 +14,10 @@ namespace N2.Edit
 	[Service]
 	public class ContainerRepository<T> where T: ContentItem
 	{
-		IItemFinder finder;
 		IRepository<ContentItem> repository;
 		IHost host;
 		ContentActivator activator;
+		private DefinitionMap map;
 
 		/// <summary>Instructs this class to navigate the content hierarchy rather than query for items.</summary>
 		public bool Navigate { get; set; }
@@ -25,12 +26,12 @@ namespace N2.Edit
 		/// <param name="finder"></param>
 		/// <param name="repository"></param>
 		/// <param name="activator"></param>
-		public ContainerRepository(IRepository<ContentItem> repository, IItemFinder finder, IHost host, ContentActivator activator)
+		public ContainerRepository(IRepository<ContentItem> repository, IHost host, ContentActivator activator, DefinitionMap map)
 		{
-			this.finder = finder;
 			this.repository = repository;
 			this.host = host;
 			this.activator = activator;
+			this.map = map;
 		}
 
 		/// <summary>Gets a container below the start page or null if no container exists.</summary>
@@ -77,12 +78,15 @@ namespace N2.Edit
 			}
 			else
 			{
-				var q = finder.Where.Parent.Eq(containerContainer)
-					.And.Type.Eq(typeof(T));
+				var pc = Parameter.Equal("Parent", containerContainer)
+					.ToCollection()
+					.Take(1);
 				if (!string.IsNullOrEmpty(name))
-					q = q.And.Name.Like(name);
-				var items = q.MaxResults(1).Select<T>();
-				return items.Count > 0 ? items[0] : null;
+					pc.Add(Parameter.Equal("Name", name));
+				//TODO: FIXME
+				//else
+				//    pc.Add(Parameter.Equal("class", map.GetOrCreateDefinition(typeof(T)).Discriminator));
+				return repository.Find(pc).OfType<T>().FirstOrDefault();
 			}
 		}
 

@@ -170,5 +170,13 @@ namespace N2.Tests.Persistence.NH
 			results.First().ID.ShouldBe(all.Select(i => i.ID).Max());
 			results.Last().ID.ShouldBe(all.Select(i => i.ID).Min());
 		}
+
+		[Test]
+		public void Find_In()
+		{
+			var results = repository.Find(new Parameter("ID", new [] { all[0].ID, all[2].ID, all[4].ID}, Comparison.In));
+
+			results.SequenceEqual(new[] { all[0], all[2], all[4] });
+		}
 	}
 }

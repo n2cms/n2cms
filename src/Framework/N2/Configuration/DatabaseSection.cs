@@ -118,6 +118,13 @@ namespace N2.Configuration
 			set { base["files"] = value; }
 		}
 
+		[ConfigurationProperty("raven")]
+		public RavenElement Raven
+		{
+			get { return (RavenElement)this["raven"]; }
+			set { base["raven"] = value; }
+		}
+
 		public override void ApplyComponentConfigurationKeys(List<string> configurationKeys)
 		{
 			if (Files.StorageLocation == FileStoreLocation.Database)

@@ -43,7 +43,7 @@ namespace N2.Engine
 			foreach (var info in addedServices)
 			{
 				Type serviceType = info.Attribute.ServiceType ?? info.DecoratedType;
-				string key = info.Attribute.Key ?? info.DecoratedType.FullName;
+				string key = info.Attribute.Key ?? CalculateName(info);
 				if(string.IsNullOrEmpty(info.Attribute.StaticAccessor))
 					container.AddComponent(key, serviceType, info.DecoratedType);
 				else
@@ -56,6 +56,13 @@ namespace N2.Engine
 					container.AddComponentInstance(key, serviceType, instance);
 				}
 			}
+		}
+
+		private static string CalculateName(AttributeInfo<ServiceAttribute> info)
+		{
+			return info.Attribute.ServiceType != null && info.DecoratedType != info.Attribute.ServiceType
+				? info.Attribute.ServiceType.FullName + "-" + info.DecoratedType.Name
+				: info.DecoratedType.FullName;
 		}
 
 		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FilterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services, params string[] configurationKeys)

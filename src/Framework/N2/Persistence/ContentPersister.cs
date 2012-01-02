@@ -137,9 +137,6 @@ namespace N2.Persistence
 		/// <summary>Occurs when an item has been copied</summary>
 		public event EventHandler<DestinationEventArgs> ItemCopied;
 
-		/// <summary>Occurs when an item is being loaded</summary>
-		public event EventHandler<ItemEventArgs> ItemLoading;
-
 		/// <summary>Occurs when an item is loaded</summary>
 		public event EventHandler<ItemEventArgs> ItemLoaded;
 

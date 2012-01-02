@@ -34,6 +34,7 @@ using System.Linq;
 using N2.Engine;
 using NHibernate;
 using NHibernate.Criterion;
+using System.Collections;
 
 namespace N2.Persistence.NH
 {
@@ -259,6 +260,8 @@ namespace N2.Persistence.NH
 					return Expression.IsNotNull(propertyName);
 				case Comparison.Null:
 					return Expression.IsNull(propertyName);
+				case Comparison.In:
+					return Expression.In(propertyName, (value as IEnumerable).OfType<object>().ToList());
 			}
 			
 			if (value is string)

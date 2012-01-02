@@ -25,6 +25,12 @@ namespace N2.Persistence
 			this.parameters.AddRange(parameters);
 		}
 
+		public ParameterCollection(params IParameter[] parameters)
+			: this(Operator.And)
+		{
+			this.parameters.AddRange(parameters);
+		}
+
 		List<IParameter> parameters = new List<IParameter>();
 
 		public Operator Operator { get; set; }
@@ -85,6 +91,11 @@ namespace N2.Persistence
 		public static ParameterCollection operator |(ParameterCollection q1, IParameter q2)
 		{
 			return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
+		}
+
+		public static implicit operator ParameterCollection(List<Parameter> parameters)
+		{
+			return new ParameterCollection(parameters.OfType<IParameter>());
 		}
 
 		public bool IsMatch(object item)

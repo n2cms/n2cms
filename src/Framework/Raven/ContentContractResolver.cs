@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Serialization;
 
-namespace N2.RavenDB
+namespace N2.Raven
 {
 	public class ContentContractResolver : DefaultContractResolver
 	{

@@ -151,7 +151,7 @@ namespace N2.Web
 		[Obsolete("Use N2.Web.Url.ToRelative(path)")]
 		public virtual string ToAppRelative(string virtualPath)
         {
-        	return "~" + ToAbsolute(virtualPath);
+        	return "~" + N2.Web.Url.ToAbsolute(virtualPath);
         }
 
 		/// <summary>Doen't do anything.</summary>

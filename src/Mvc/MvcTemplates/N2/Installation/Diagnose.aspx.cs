@@ -14,12 +14,12 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Web;
 using N2.Management.Installation;
+using N2.Persistence;
 
 namespace N2.Edit.Install
 {
@@ -79,7 +79,13 @@ namespace N2.Edit.Install
 
 			try
 			{
-				recentChanges = N2.Find.Items.All.MaxResults(10).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+				recentChanges = Engine.Resolve<IContentItemRepository>().Find(
+					Parameter.And(
+						Parameter.NotEqual("State", ContentState.Unpublished),
+						Parameter.NotEqual("State", ContentState.Draft)
+					).OrderBy("Updated DESC").Take(10))
+					.Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")")
+					.ToArray();
 			}
 			catch (Exception ex)
 			{

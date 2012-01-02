@@ -78,5 +78,14 @@ namespace N2.Templates.Items
             get { return (string)(GetDetail("Theme") ?? string.Empty); }
             set { SetDetail("Theme", value); }
         }
+
+		public override Collections.ItemList GetChildren(Collections.ItemFilter filter)
+		{
+			var il = base.GetChildren(filter);
+			var tp = new TextPage { Name = "Hello", Title = "Howdy", Parent = this };
+			((Engine.IInjectable<IUrlParser>)tp).Set(Context.Current.UrlParser);
+			il.Add(tp);
+			return il;
+		}
     }
 }

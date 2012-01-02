@@ -35,6 +35,7 @@ using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
+using System.ComponentModel;
 
 namespace N2
 {
@@ -73,7 +74,8 @@ namespace N2
 		IUpdatable<ContentItem>,
 		IInterceptableType,
 		INameable,
-		IPlaceable
+		IPlaceable,
+		ITemplateable
 	{
         #region Private Fields
         private int id;
@@ -93,9 +95,9 @@ namespace N2
 		private ContentItem versionOf = null;
 		private string savedBy;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
-		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
-		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
-		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
+		private IContentItemList<ContentItem> children;
+		private IContentList<ContentDetail> details;
+		private IContentList<DetailCollection> detailCollections;
 		[NonSerialized]
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
@@ -130,6 +132,15 @@ namespace N2
 		{
 			get { return parent; }
 			set { parent = value; }
+		}
+
+		/// <summary>
+		/// Used for finding children when using Raven DB.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public virtual int ParentID
+		{
+			get { return Parent != null ? Parent.ID : 0; }
 		}
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
@@ -249,21 +260,21 @@ namespace N2
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
 		public virtual IContentList<ContentDetail> Details
 		{
-			get { return details; }
+			get { return details ?? (details = new ContentList<ContentDetail>()); }
 			set { details = value; }
 		}
 
 		/// <summary>Gets or sets the details collection collection. These are details grouped into a collection.</summary>
 		public virtual IContentList<DetailCollection> DetailCollections
 		{
-			get { return detailCollections; }
+			get { return detailCollections ?? (detailCollections = new ContentList<DetailCollection>()); }
 			set { detailCollections = value; }
 		}
 
 		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildren()"/> instead.</summary>
 		public virtual IContentItemList<ContentItem> Children
 		{
-			get { return children; }
+			get { return children ?? (children = new ContentItemList<ContentItem>(this.ID)); }
 			set { children = value; }
 		}
 
@@ -489,7 +500,7 @@ namespace N2
 			}
 			else if (Details.ContainsKey(detailName))
 			{
-				details.Remove(detailName);
+				Details.Remove(detailName);
 			}
 		}
 
@@ -825,15 +836,15 @@ namespace N2
 		{
 			foreach (Details.ContentDetail detail in source.Details.Values)
 			{
-				if(destination.details.ContainsKey(detail.Name)) 
+				if(destination.Details.ContainsKey(detail.Name)) 
 				{
-					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+					destination.Details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
 				} 
 				else 
 				{
 					ContentDetail clonedDetail = detail.Clone();
 					clonedDetail.EnclosingItem = destination;
-					destination.details[detail.Name] = clonedDetail;
+					destination.Details[detail.Name] = clonedDetail;
 				}
 			}
 

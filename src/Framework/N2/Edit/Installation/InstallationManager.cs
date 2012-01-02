@@ -286,20 +286,12 @@ namespace N2.Edit.Installation
 
 		/// <summary>Method that will checks the database. If something goes wrong an exception is thrown.</summary>
 		/// <returns>A string with diagnostic information about the database.</returns>
-		public string CheckDatabase()
+		public virtual string CheckDatabase()
 		{
-            ISession session = sessionProvider.OpenSession.Session;
-
-			// this is supposed to catch mis-matches between database and code e.g. due to refactorings during development
-			session.CreateQuery("from ContentItem").SetMaxResults(1000).List();
-
-			int itemCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentItem").UniqueResult());
-			int detailCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
-			int allowedRoleCount = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
-			int detailCollectionCount = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
+			var status = GetStatus();
 
 			return string.Format("Database OK, items: {0}, details: {1}, allowed roles: {2}, detail collections: {3}",
-				                    itemCount, detailCount, allowedRoleCount, detailCollectionCount);
+				                    status.Items, status.Details, status.AuthorizedRoles, status.DetailCollections);
 		}
 
 		/// <summary>Checks the root node in the database. Throws an exception if there is something really wrong with it.</summary>

@@ -139,6 +139,7 @@
     <Compile Include="Configuration\ContentConfigurationSectionBase.cs" />
     <Compile Include="Configuration\FilesElement.cs" />
     <Compile Include="Configuration\FileStoreLocation.cs" />
+    <Compile Include="Configuration\RavenElement.cs" />
     <Compile Include="Configuration\RootFileSystemFolderCollection.cs" />
     <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Definitions\IManagementHomePart.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
+    <Compile Include="Definitions\ITemplateable.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\Order.cs" />
     <Compile Include="Persistence\ParameterCollection.cs" />
+    <Compile Include="Persistence\PersistenceExtensions.cs" />
     <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
@@ -301,7 +304,7 @@
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
     <Compile Include="Persistence\Sources\SourceBase.cs" />
-    <Compile Include="Persistence\Sources\DatabaseSource.cs" />
+    <Compile Include="Persistence\NH\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
     <Compile Include="Persistence\Sources\Query.cs" />
     <Compile Include="Persistence\Sources\SourcesExtensions.cs" />

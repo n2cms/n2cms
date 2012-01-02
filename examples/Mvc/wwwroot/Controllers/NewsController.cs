@@ -3,6 +3,7 @@ using MvcTest.Models;
 using N2.Web;
 using N2.Web.Mvc;
 using MvcTest.Views.News;
+using N2.Persistence;
 
 namespace MvcTest.Controllers
 {
@@ -27,7 +28,7 @@ namespace MvcTest.Controllers
 
 		public ActionResult Submit(string title, string text)
 		{
-			CommentItem comment = Engine.Definitions.CreateInstance<CommentItem>(CurrentItem);
+			CommentItem comment = Engine.Resolve<ContentActivator>().CreateInstance<CommentItem>(CurrentItem);
 			comment.Title = Server.HtmlEncode(title);
 			comment.Text = Server.HtmlEncode(text);
 			Engine.Persister.Save(comment);

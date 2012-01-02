@@ -61,6 +61,7 @@
 					<tr><th>IoC Container type</th><td><%= Engine.Container.GetType() %></td></tr>
 					<tr><th>Url parser type</th><td><%= Engine.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
 					<tr><th>File System type</th><td><%= Engine.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
+					<tr><th>ContentItem repository</th><td><%= Engine.Resolve<N2.Persistence.IContentItemRepository>().GetType() %></td></tr>
 					<tr>
 						<th>Sources</th>
 						<td>

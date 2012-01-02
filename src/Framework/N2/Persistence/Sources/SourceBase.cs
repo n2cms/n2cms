@@ -81,6 +81,20 @@ namespace N2.Persistence.Sources
 		public abstract ContentItem Move(ContentItem source, ContentItem destination);
 		public abstract ContentItem Copy(ContentItem source, ContentItem destination);
 
+		protected IEnumerable<ContentItem> AppendContentChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		{
+			IEnumerable<ContentItem> items;
+			if (!query.OnlyPages.HasValue)
+				items = query.Parent.Children;
+			else if (query.OnlyPages.Value)
+				items = query.Parent.Children.FindPages();
+			else
+				items = query.Parent.Children.FindParts();
 
+			if (query.Filter != null)
+				items = items.Where(query.Filter);
+
+			return previousChildren.Union(items);
+		}
 	}
 }

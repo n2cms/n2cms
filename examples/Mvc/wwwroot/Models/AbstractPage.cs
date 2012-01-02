@@ -4,11 +4,7 @@ using N2;
 namespace MvcTest.Models
 {
 	[WithEditableTitle, WithEditableName]
-	public abstract class AbstractPage : ContentItem, INode
+	public abstract class AbstractPage : ContentItem
 	{
-		public string PreviewUrl
-		{
-			get { return Url; }
-		}
 	}
 }

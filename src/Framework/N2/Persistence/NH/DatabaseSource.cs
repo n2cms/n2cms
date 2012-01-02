@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using N2.Web;
 using System.Diagnostics;
+using N2.Persistence.Sources;
 
-namespace N2.Persistence.Sources
+namespace N2.Persistence.NH
 {
 	[ContentSource]
 	public class DatabaseSource : SourceBase
@@ -21,18 +22,7 @@ namespace N2.Persistence.Sources
 
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
-			IEnumerable<ContentItem> items;
-			if (!query.OnlyPages.HasValue)
-				items = query.Parent.Children;
-			else if (query.OnlyPages.Value)
-				items = query.Parent.Children.FindPages();
-			else
-				items = query.Parent.Children.FindParts();
-
-			if (query.Filter != null)
-				items = items.Where(query.Filter);
-
-			return previousChildren.Union(items);
+			return AppendContentChildren(previousChildren, query);
 		}
 
 		public override bool IsProvidedBy(ContentItem item)
