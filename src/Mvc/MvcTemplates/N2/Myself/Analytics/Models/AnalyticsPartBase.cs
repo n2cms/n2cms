@@ -6,7 +6,7 @@ using N2.Definitions;
 
 namespace N2.Management.Myself.Analytics.Models
 {
-	public abstract class AnalyticsPartBase : ContentItem, IWebFormsAddable
+	public abstract class AnalyticsPartBase : ContentItem, IWebFormsAddable, IManagementHomePart
 	{
 		public override bool IsPage
 		{

@@ -124,7 +124,7 @@
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Export &amp; Import items</value>
+    <value>Import items</value>
   </data>
   <data name="attachments.Text" xml:space="preserve">
     <value>Attachments</value>
@@ -156,10 +156,10 @@
   <data name="importedItems.Text" xml:space="preserve">
     <value>Imported Items</value>
   </data>
-  <data name="tpExport.ToolTip" xml:space="preserve">
+  <data name="tpExport.TabText" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="tpImport.ToolTip" xml:space="preserve">
+  <data name="tpImport.TabText" xml:space="preserve">
     <value>Import</value>
   </data>
   <data name="chkDefinedDetails.Text" xml:space="preserve">

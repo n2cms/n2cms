@@ -1,19 +1,21 @@
 ﻿/*
- * n2tabs 0.2 - Copyright (c) 2007 Cristian Libardo
- */
+* n2tabs 0.2 - Copyright (c) 2007 Cristian Libardo
+*/
 
-(function($) {
+(function ($) {
 	// initializes elements in query selection as tabs
-	$.fn.n2tabs = function(tabGroupName, initial, tabContainer) {
+	var n2tabs = {};
+
+	$.fn.n2tabs = function (tabGroupName, initial, tabContainer) {
 		if (this.length > 0) {
 			if (!tabGroupName) tabGroupName = "tab";
-			if (!tabContainer) tabContainer = this.n2tabs_createContainer(this.get(0));
+			if (!tabContainer) tabContainer = n2tabs.createContainer(this.get(0));
 
 			// ensure each tab content has an id
-			this.each(function(i) {
+			this.each(function (i) {
 				if (!this.id) this.id = tabGroupName + i;
-				$("a[href='#" + this.id + "']").click(function() {
-					$.fn.n2tabs_show($(this.hash));
+				$("a[href='#" + this.id + "']").click(function () {
+					n2tabs.show($(this.hash));
 				});
 				this.n2tab = { index: i,
 					group: tabGroupName
@@ -27,7 +29,7 @@
 			if ($current.length == 0) {
 				// try to select enclosing tab when nested tab is selected
 				var $vertical = $(initial).parents(this.selector);
-				$current = this.filter(function() { return $vertical.filter(this).length > 0 });
+				$current = this.filter(function () { return $vertical.filter(this).length > 0 });
 			}
 			if ($current.length == 0)
 				$current = $(this[0]);
@@ -39,12 +41,12 @@
 				current: $current,
 				tabs: new Array()
 			};
-			this.n2tabs_groups[tabGroupName] = tabSettings;
+			n2tabs.groups[tabGroupName] = tabSettings;
 
-			this.n2tabs_buildTabs(tabSettings);
+			n2tabs.buildTabs(tabSettings);
 
 			this.addClass("tabContentHidden");
-			this.n2tabs_show(tabSettings.current);
+			n2tabs.show(tabSettings.current);
 
 			document.documentElement.scrollTop = 0;
 		}
@@ -53,42 +55,55 @@
 	}
 
 	// an array of tab groups (multiple tabs are supported)
-	$.fn.n2tabs_groups = new Array();
+	n2tabs.groups = new Array();
 
 	// creates a tab container element
-	$.fn.n2tabs_createContainer = function(firstContents) {
+	n2tabs.createContainer = function (firstContents) {
 		return $(firstContents).before("<ul class='tabs'></ul>").prev().get(0);
 	}
 
 	// creates a tab element
-	$.fn.n2tabs_createTab = function(containerQuery, tabContents, index) {
+	n2tabs.createTab = function (containerQuery, tabContents, index) {
 		var li = "<li>";
 		if (index == 0)
 			li = "<li class='first'>";
-		containerQuery.append(li + "<a href='#" + tabContents.id + "'>" + tabContents.title + "</a></li>");
+
+		var a = "<a href='"
+			+ (tabContents.getAttribute("data-tab-href") || ("#" + tabContents.id))
+			+ "'>"
+			+ (tabContents.getAttribute("data-tab-text") || tabContents.title)
+			+ "</a>";
+		containerQuery.append(li + a + "</li>");
 		tabContents.title = "";
+
+		if (tabContents.getAttribute("data-tab-selected"))
+			return tabContents;
+		return null;
 	}
 
 	// creates tab elements (ul:s and li:s) above the first tab content element
-	$.fn.n2tabs_buildTabs = function(tabSettings) {
+	n2tabs.buildTabs = function (tabSettings) {
 		var lastIndex = tabSettings.query.length - 1;
-		tabSettings.query.each(function(i) {
+		tabSettings.query.each(function (i) {
 			var className = "tab";
 			if (i == 0) className = className + " first";
 			if (i == lastIndex) className = className + " last";
-			tabSettings.container.n2tabs_createTab(tabSettings.container, this, className);
+			var selectedTab = n2tabs.createTab(tabSettings.container, this, className);
+			if (selectedTab) {
+				tabSettings.current = $(selectedTab);
+			}
 		});
-		$("a", tabSettings.container).each(function(i) {
+		$("a", tabSettings.container).each(function (i) {
 			tabSettings.tabs[i] = $(this);
-		}).click(function() {
-			if (this.hash != location.hash)
-				$.fn.n2tabs_show($(this.hash), $(this));
-			else
-				return false;
+			if (this.hash) {
+				$(this).click(function (e) {
+					n2tabs.show($(this.hash), $(this));
+				});
+			}
 		});
 	}
 
-	$.fn.n2tabs_handlePostBack = function(tabId) {
+	n2tabs.handlePostBack = function (tabId) {
 		if (tabId && document.forms.length > 0) {
 			var f = document.forms[0];
 			var index = f.action.indexOf("#");
@@ -100,19 +115,19 @@
 	}
 
 	// gets the settings for the first tab content in query selection
-	$.fn.n2tab_settings = function() {
+	$.fn.n2tab_settings = function () {
 		var first = this.get(0).n2tab.group;
-		return this.n2tabs_groups[first];
+		return n2tabs.groups[first];
 	}
 
 	// gets the tab for the first tab content in query selection
-	$.fn.n2tab_getTab = function() {
+	$.fn.n2tab_getTab = function () {
 		var t = this.get(0).n2tab;
-		return this.n2tabs_groups[t.group].tabs[t.index];
+		return n2tabs.groups[t.group].tabs[t.index];
 	}
 
 	// show contents defined by the given expression
-	$.fn.n2tabs_show = function(contents, tab) {
+	n2tabs.show = function (contents, tab) {
 		var tabSettings = contents.n2tab_settings();
 
 		// show tab contents    
@@ -128,9 +143,9 @@
 		// this prevents page from scrolling (stolen from jquery.tabs)
 		var toShowId = contents.attr('id');
 		contents.attr('id', '');
-		setTimeout(function() {
+		setTimeout(function () {
 			contents.attr('id', toShowId); // restore id
 		}, 200);
-		this.n2tabs_handlePostBack(toShowId);
+		n2tabs.handlePostBack(toShowId);
 	}
-})(jQuery);  ;
+})(jQuery);           ;

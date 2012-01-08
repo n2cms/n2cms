@@ -99,6 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvParserTests.cs" />
     <Compile Include="ExternalContent\ExternalContentTests.cs" />
     <Compile Include="ExternalContent\ExternalContentRepositoryTests.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />

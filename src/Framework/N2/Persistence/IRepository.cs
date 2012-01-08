@@ -120,7 +120,7 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		new TEntity Get(TKey id);
+		TEntity Get(TKey id);
 
     	/// <summary>
     	/// Get the entity from the persistance store, or return null
@@ -129,6 +129,6 @@ namespace N2.Persistence
     	/// <param name="id">The entity's id</param>
     	/// <typeparam name="T">The type of entity to get.</typeparam>
     	/// <returns>Either the entity that matches the id, or a null</returns>
-		new T Get<T>(TKey id);
+		T Get<T>(TKey id);
 	}
 }

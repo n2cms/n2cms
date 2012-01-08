@@ -45,10 +45,13 @@ namespace N2.Engine.Globalization
         /// <param name="items">The translations to associate with each other.</param>
         void Associate(IEnumerable<ContentItem> items);
 
-        /// <summary>
-        /// Unassociates an item from the relation to other translated pages.
-        /// </summary>
+        /// <summary>Unassociates an item from the relation to other translated pages.</summary>
         /// <param name="item">The item to remove as translation.</param>
 	    void Unassociate(ContentItem item);
+
+		/// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is the root item of a language branch.</returns>
+		bool IsLanguageRoot(ContentItem item);
 	}
 }

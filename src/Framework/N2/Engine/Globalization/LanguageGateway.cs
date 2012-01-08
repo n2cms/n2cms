@@ -228,6 +228,14 @@ namespace N2.Engine.Globalization
 			}
         }
 
+		/// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is the root item of a language branch.</returns>
+		public bool IsLanguageRoot(ContentItem item)
+		{
+			return item is ILanguage && !string.IsNullOrEmpty((item as ILanguage).LanguageCode);
+		}
+
         /// <summary>Throws an exception if any of the items is a language root.</summary>
         /// <param name="items"></param>
         protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)
@@ -296,5 +304,5 @@ namespace N2.Engine.Globalization
 
             return languages.FirstOrDefault(l => languageCode.Equals(l.LanguageCode, StringComparison.InvariantCultureIgnoreCase));
         }
-    }
+	}
 }

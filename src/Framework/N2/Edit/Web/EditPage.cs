@@ -8,6 +8,7 @@ using N2.Engine;
 using N2.Resources;
 using N2.Security;
 using N2.Web;
+using log4net;
 
 namespace N2.Edit.Web
 {
@@ -16,7 +17,9 @@ namespace N2.Edit.Web
 	/// selected item and refresh navigation.
 	/// </summary>
     public class EditPage : Page, IProvider<IEngine>
-    {
+	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (EditPage));
+
 		protected override void OnPreInit(EventArgs e)
 		{
 			base.OnPreInit(e);
@@ -157,7 +160,7 @@ namespace N2.Edit.Web
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/" + cssFileName);
+			return Url.ResolveTokens("{ManagementUrl}/Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods
@@ -237,7 +240,7 @@ namespace N2.Edit.Web
 		#region Error Handling
 		protected virtual void SetErrorMessage(BaseValidator validator, N2.Integrity.NameOccupiedException ex)
 		{
-			Trace.Write(ex.ToString());
+			logger.Debug(ex);
 
 			string message = string.Format(GetLocalResourceString("NameOccupiedExceptionFormat", "An item named \"{0}\" already exists below \"{1}\""),
 				ex.SourceItem.Name,
@@ -247,7 +250,7 @@ namespace N2.Edit.Web
 
 		protected void SetErrorMessage(BaseValidator validator, N2.Integrity.DestinationOnOrBelowItselfException ex)
 		{
-			Trace.Write(ex.ToString());
+			logger.Debug(ex);
 
 			string message = string.Format(GetLocalResourceString("DestinationOnOrBelowItselfExceptionFormat", "Cannot move an item to a destination onto or below itself"),
 				ex.SourceItem.Name,
@@ -256,7 +259,7 @@ namespace N2.Edit.Web
 		}
 		protected void SetErrorMessage(BaseValidator validator, N2.Definitions.NotAllowedParentException ex)
 		{
-			Trace.Write(ex.ToString());
+			logger.Debug(ex);
 
 			string message = string.Format(GetLocalResourceString("NotAllowedParentExceptionFormat", "The item of type \"{0}\" isn't allowed below a destination of type \"{1}\""),
 				ex.ItemDefinition.Title,

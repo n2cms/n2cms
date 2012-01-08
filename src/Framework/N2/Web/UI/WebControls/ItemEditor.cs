@@ -21,6 +21,7 @@ using N2.Edit.Web;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {
@@ -151,6 +152,37 @@ namespace N2.Web.UI.WebControls
 
 		#region Methods
 
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			Register.JavaScript(Page, @"
+    $('.helpPanel').click(function () {
+    	var $hp = $(this);
+    	$hp.toggleClass('helpVisible');
+    });
+
+    // hide mce toolbar to prevent it getting skewed
+    $('.tabs a').click(function () {
+    	$('.mceExternalToolbar').hide();
+    });
+    $('input').focus(function () {
+    	$('.mceExternalToolbar').hide();
+    });
+
+    $('.dimmable').n2dimmable();
+
+    $('.uploader > label').n2revealer();
+
+    $('.expandable').n2expandable({ visible: '.uncontractable' });
+
+    $('form').n2expandableBox({ opener: '.rightOpener', opened: '#outside' });
+    $('#outside .box').n2expandableBox({ opener: 'h4', opened: '.box-inner' });
+", ScriptOptions.DocumentReady);
+
+			Register.StyleSheet(Page, Url.ResolveTokens("{ManagementUrl}/Resources/Css/edit.css"));
+		}
+
 		protected override void CreateChildControls()
 		{
 			var definition = GetDefinition();
@@ -169,7 +201,8 @@ namespace N2.Web.UI.WebControls
 
 		public ItemDefinition GetDefinition()
 		{
-			return Definition ?? Engine.Definitions.GetDefinition(Discriminator) ?? Engine.Definitions.GetDefinition(CurrentItemType);
+			return Definition
+				?? Engine.Definitions.GetDefinition(Discriminator);
 		}
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
@@ -197,6 +230,12 @@ namespace N2.Web.UI.WebControls
 		public void Update()
 		{
 			UpdateObject(CreateCommandContext());
+		}
+
+		public void Reload()
+		{
+			ChildControlsCreated = false;
+			CreateChildControls();
 		}
 
 		#endregion
@@ -301,6 +340,12 @@ namespace N2.Web.UI.WebControls
 				ParentPath = parent.Path;
 			}
 			EnsureChildControls();
+		}
+
+		public void Clear()
+		{
+			ClearChildState();
+			ChildControlsCreated = false;
 		}
 	}
 }

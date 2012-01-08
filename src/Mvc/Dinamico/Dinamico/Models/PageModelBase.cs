@@ -8,6 +8,9 @@ using N2.Web.UI;
 
 namespace Dinamico.Models
 {
+	/// <summary>
+	/// Base implementation for pages on a dinamico site.
+	/// </summary>
 	[WithEditableTitle]
 	[WithEditableName(ContainerName = Defaults.Containers.Metadata)]
 	[WithEditableVisibility(ContainerName = Defaults.Containers.Metadata)]

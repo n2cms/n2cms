@@ -15,6 +15,7 @@ using System.Globalization;
 using Lucene.Net.Search;
 using System.Diagnostics;
 using N2.Engine.Globalization;
+using log4net;
 
 namespace N2.Persistence.Search
 {
@@ -24,6 +25,7 @@ namespace N2.Persistence.Search
 	[Service(typeof(IIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneIndexer));
 		LuceneAccesor accessor;
 		TextExtractor extractor;
 
@@ -38,7 +40,7 @@ namespace N2.Persistence.Search
 		/// <summary>Clears the index.</summary>
 		public virtual void Clear()
 		{
-			Trace.WriteLine("Clearing index");
+			logger.Debug("Clearing index");
 
 			if (accessor.IndexExists())
 			{
@@ -57,14 +59,14 @@ namespace N2.Persistence.Search
 		/// <summary>Unlocks the index.</summary>
 		public virtual void Unlock()
 		{
-			Trace.WriteLine("Unlocking index");
+			logger.Debug("Unlocking index");
 			accessor.GetDirectory().ClearLock("write.lock");
 		}
 
 		/// <summary>Optimizes the index.</summary>
 		public virtual void Optimize()
 		{
-			Trace.WriteLine("Optimizing index");
+			logger.Debug("Optimizing index");
 
 			if (accessor.IndexExists())
 			{
@@ -85,7 +87,7 @@ namespace N2.Persistence.Search
 			if(item == null || item.ID == 0)
 				return;
 
-			Trace.WriteLine("Updating item #" + item.ID);
+			logger.Debug("Updating item #" + item.ID);
 
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
@@ -98,6 +100,8 @@ namespace N2.Persistence.Search
 					return;
 
 				var doc = CreateDocument(item);
+				if (doc == null)
+					return;
 				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
 				iw.Commit();
 				accessor.RecreateSearcher();
@@ -108,7 +112,7 @@ namespace N2.Persistence.Search
 		/// <param name="itemID">The id of the item to delete.</param>
 		public virtual void Delete(int itemID)
 		{
-			Trace.WriteLine("Deleting item #" + itemID);
+			logger.Debug("Deleting item #" + itemID);
 
 			lock (accessor)
 			{
@@ -153,8 +157,9 @@ namespace N2.Persistence.Search
             public const string Roles = "Roles";
             public const string Types = "Types";
             public const string Language = "Language";
+			public const string Visible = "Visible";
 
-            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language };
+            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
         }
 
 		public virtual Document CreateDocument(ContentItem item)
@@ -169,7 +174,17 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.Published, item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Expires, item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
 			if (item.IsPage)
-                doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			{
+				try
+				{
+					doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+				}
+				catch (TemplateNotFoundException ex)
+				{
+					logger.Warn("Failed to retrieve Url on " + item, ex);
+					return null;
+				}
+			}
             doc.Add(new Field(Properties.Path, item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.AncestralTrail, (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Trail, Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -178,7 +193,8 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.IsPage, item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Roles, GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(Properties.Types, GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
-            doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.Visible, item.Visible.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)

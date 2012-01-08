@@ -14,7 +14,6 @@ namespace N2.Edit.FileSystem.NH
 	{
 		private readonly FileSystemItem file;
 		private readonly DatabaseFileSystem fs;
-		private bool changed;
 		private ISession session;
 		private int chunkSize;
 
@@ -46,13 +45,11 @@ namespace N2.Edit.FileSystem.NH
 
 		public override sealed void Write(byte[] buffer, int offset, int count)
 		{
-			changed = true;
 			WriteStream.Write(buffer, offset, count);
 		}
 
 		public override void WriteByte(byte value)
 		{
-			changed = true;
 			WriteStream.WriteByte(value);
 		}
 

@@ -12,20 +12,22 @@ namespace N2.Persistence
     public class TemporaryFileHelper
     {
         private IHost host;
+		private IWebContext webContext;
 
-        public TemporaryFileHelper(IHost host)
+        public TemporaryFileHelper(IHost host, IWebContext webContext)
         {
             this.host = host;
+			this.webContext = webContext;
         }
 
-        public virtual string GetTemporaryDirectory()
+        protected virtual string GetTemporaryDirectory()
         {
-            return Path.GetTempPath();
+			return Path.Combine(webContext.MapPath("~/App_Data/"), "Temp");
         }
 
         public virtual string GetCurrentSiteTemporaryDirectory()
         {
-            string dir = Path.Combine(GetTemporaryDirectory(), "n2cms\\site_" + host.CurrentSite.Authority.Replace('.', '_'));
+            string dir = Path.Combine(GetTemporaryDirectory(), "site_" + host.CurrentSite.Authority.Replace('.', '_'));
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -34,7 +36,7 @@ namespace N2.Persistence
 
         public virtual string GetSharedTemporaryDirectory()
         {
-            string dir = Path.Combine(GetTemporaryDirectory(), "n2cms");
+            string dir = Path.Combine(GetTemporaryDirectory(), "shared");
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -44,10 +46,10 @@ namespace N2.Persistence
         public virtual string GetTemporaryFileName(string extension)
         {
             string dir = GetSharedTemporaryDirectory();
-            return Path.Combine(dir, Path.GetTempFileName() + extension);
+            return Path.Combine(dir, Path.GetFileNameWithoutExtension(Path.GetTempFileName()) + extension);
         }
 
-        public virtual void ClearTemporaryFile(TimeSpan olderThan)
+        public virtual void ClearTemporaryFiles(TimeSpan olderThan)
         {
             DeleteEmptyDirectoriesRecursive(GetSharedTemporaryDirectory(), olderThan);
         }

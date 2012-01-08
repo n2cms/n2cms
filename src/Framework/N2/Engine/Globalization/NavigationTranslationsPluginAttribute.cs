@@ -40,12 +40,11 @@ namespace N2.Engine.Globalization
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');
                 h.Target = Targets.Preview;
 				h.NavigateUrl = context.Rebase(context.Format(url, true));
-                h.CssClass = "language";
+                h.CssClass = "templatedurl language";
                 h.ToolTip = language.LanguageTitle;
                 h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
+				h.Attributes["data-url-template"] = context.Rebase(url);
                 div.Controls.Add(h);
-
-                RegisterToolbarUrl(container, h.ClientID, url);
             }
 
             return div;

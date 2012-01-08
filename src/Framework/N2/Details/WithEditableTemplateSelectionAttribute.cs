@@ -20,7 +20,6 @@ namespace N2.Details
 			: base(title, sortOrder)
 		{
 			Name = "TemplateKey";
-			Required = true;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -29,7 +28,7 @@ namespace N2.Details
 			if (!editor.Page.IsPostBack)
 			{
 				lc.Items.Clear();
-				lc.Items.AddRange(Engine.Definitions.GetTemplates(item.GetContentType()).Select(t => new ListItem(t.Title, t.Name)).ToArray());
+				lc.Items.AddRange(Engine.Definitions.GetTemplates(item.GetContentType()).Select(t => new ListItem(t.Title, t.Name ?? "")).ToArray());
 			}
 
 			base.UpdateEditor(item, editor);

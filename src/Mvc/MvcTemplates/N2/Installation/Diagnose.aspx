@@ -21,9 +21,16 @@
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
-        table.openable tbody { display:none; }
-        table.openable:hover tbody { display:block; }
     </style>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var $tb = $("table.openable").children("tbody").hide().end();
+			$("<tbody><tr><td><a href='javascript:void(0);'>Show</a></td></tr></tbody>").appendTo($tb)
+				.find("a").click(function (e) {
+					$(this).closest("tbody").hide().siblings().show();
+				});
+		});
+	</script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -85,44 +92,23 @@
 					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Abstractions").FullName %></td></tr>
 					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Routing").FullName %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
-<%--<% try {
-	IEnumerable routes = Type.GetType("System.Web.Routing.RouteTable").GetProperty("Routes", System.Reflection.BindingFlags.Static).GetValue(null, null) as IEnumerable;
-	foreach (object route in routes) {%>
-					<tr><th></th><td><%= route %></td></tr>
-<% } } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
---%>				</tbody>
-				<tbody>
-					<tr><th colspan="2"><h2>Operations <span style="font-size:.9em">(prefer the <a href=".">installation wizard</a> before using this)</span></h2></th></tr>
-					<tr><th>Restart web application</th><td><asp:Button ID="btnRestart" runat="server" OnClick="btnRestart_Click" Text="RESTART" OnClientClick="return confirm('restart site?');" /></td></tr>
-					<tr><th>Drop tables clearing all content data in database</th><td>
-				<asp:Button ID="btnClearTables" runat="server" OnClick="btnClearTables_Click" Text="DROP" OnClientClick="return confirm('drop all tables?');" />
-				<asp:Label runat="server" ID="lblClearTablesResult" /></td></tr>
-					<tr><th>Create database schema (this drops any existing tables)</th><td>
-				<asp:Button ID="btnAddSchema" runat="server" OnClick="btnAddSchema_Click" Text="CREATE" OnClientClick="return confirm('drop and recreate all tables?');" />
-				<asp:Label runat="server" ID="lblAddSchemaResult" /></td></tr>
-					<tr><th>Insert root node</th><td>
-				<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Select type..." />
-				<asp:DropDownList ID="ddlTypes" runat="server" AutoPostBack="True" Visible="False">
-				</asp:DropDownList><asp:Button runat="server" ID="btnInsertRootNode" Text="OK" Visible="false" OnClick="btnInsertRootNode_Click" />
-				<asp:Label ID="lblInsert" runat="server"></asp:Label></td></tr>
 				</tbody>
 			</table>
 
-            <i>These settings are generated at application start from attributes in the project source code.</i>
             <asp:Repeater ID="rptDefinitions" runat="server">
                 <HeaderTemplate>
 					<table class="t openable">
 						<thead>
 							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
 							<tr>
-								<td colspan="2">Definition</td>
+								<td colspan="3">Definition</td>
 								<td colspan="2">Zones</td>
 								<td colspan="2">Details</td>
 								<td rowspan="2">Templates</td>
-								<td rowspan="2">Templates (2)</td>
 							</tr>
 							<tr>
 								<td>Type</td>
+								<td>Template</td>
 								<td>Allowed children</td>
 								<td>Available</td>
 								<td>Allowed in</td>
@@ -134,7 +120,10 @@
 				</HeaderTemplate>
                 <ItemTemplate>
                     <tr class="<%# Eval("Enabled", "Enabled{0}") %> <%# Eval("IsDefined", "IsDefined{0}") %>"><td>
-                        <b><%# Eval("Title") %></b><br /><span style="color:gray"><%# Eval("ItemType") %></span><br/><%# Eval("Discriminator") %>
+                        <b title='#items: <%# Eval("NumberOfItems") %>'><%# Eval("Title") %></b><br />
+						<span title='Discriminator: <%# Eval("Discriminator") %>, Type: <%# Eval("ItemType") %>' style="color:gray"><%# ((System.Type)Eval("ItemType")).Name %></span>						
+                    </td><td>
+						<%# Eval("TemplateKey") %>
                     </td><td>
                         <!-- Child definitions -->
                         <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# AllowedChildren(Container.DataItem) %>'>
@@ -169,13 +158,6 @@
                     </td><td>
                         <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
                             <ItemTemplate><%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
-                        </asp:Repeater>&nbsp;
-                    </td><td>
-                        <asp:Repeater ID="Repeater7" runat="server" DataSource='<%# N2.Context.Current.Definitions.GetTemplates((Type)Eval("ItemType")) %>'>
-                            <ItemTemplate>
-								<%# Eval("Title") %>
-							</ItemTemplate>
-							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td></tr>
                 </ItemTemplate>

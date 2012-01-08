@@ -77,6 +77,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
@@ -147,6 +150,7 @@
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
     <Compile Include="Definitions\IFileSystemDirectory.cs" />
+    <Compile Include="Definitions\IManagementHomePart.cs" />
     <Compile Include="Definitions\IRedirect.cs" />
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
@@ -204,6 +208,7 @@
     <Compile Include="Edit\FileSystem\NH\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\Installation\InstallationChecker.cs" />
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
+    <Compile Include="Edit\TreeNode.cs" />
     <Compile Include="Edit\UploadFolderSource.cs" />
     <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
     <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />
@@ -254,6 +259,7 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />

@@ -8,6 +8,7 @@ using System.Web.Security;
 using N2.Templates.Mvc.Areas.Tests.Models;
 using N2.Web;
 using N2.Web.Mvc;
+using log4net;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -22,6 +23,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
     {
         //
         // GET: /Tests/Demo/
+
+		private readonly ILog logger = LogManager.GetLogger(typeof (DemoController));
 
         public override ActionResult Index()
         {
@@ -94,7 +97,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine(subject + Environment.NewLine + body + Environment.NewLine + ex);
+				logger.Error(subject + Environment.NewLine + body + Environment.NewLine + ex);
 			}
 		}
     }

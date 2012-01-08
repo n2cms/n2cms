@@ -69,6 +69,7 @@ namespace N2.Extensions.Tests.Mvc
 			var parser = TestSupport.Setup(persister, webContext, host);
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
+			N2.Web.Url.ApplicationPath = "/";
 
 			engine = mocks.DynamicMock<IEngine>();
 			SetupResult.For(engine.Resolve<ITypeFinder>()).Return(typeFinder);
@@ -90,7 +91,7 @@ namespace N2.Extensions.Tests.Mvc
 		#region RequestingUrl
 		protected RouteData RequestingUrl(Url url)
 		{
-			httpContext.request.appRelativeCurrentExecutionFilePath = "~" + url.Path;
+			httpContext.request.appRelativeCurrentExecutionFilePath = Url.ToRelative(url.Path);
 			httpContext.request.rawUrl = url;
 
 			NameValueCollection nvc = new NameValueCollection();

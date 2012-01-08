@@ -25,9 +25,12 @@ namespace N2.Persistence.Serialization
 					{
 						ew.WriteAttribute("url", url);
 
-						byte[] fileContents = ReadFully(fs.OpenFile(path));
-						string base64representation = Convert.ToBase64String(fileContents);
-						ew.Write(base64representation);
+						using (var s = fs.OpenFile(path))
+						{
+							byte[] fileContents = ReadFully(s);
+							string base64representation = Convert.ToBase64String(fileContents);
+							ew.Write(base64representation);
+						}
 					}
 				}
 			}

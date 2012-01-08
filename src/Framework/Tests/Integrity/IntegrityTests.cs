@@ -419,10 +419,8 @@ namespace N2.Tests.Integrity
 		{
 			var page = new IntegrityPage();
 
-			ExceptionAssert.Throws<NotAllowedParentException>(delegate
-			{
-				var neverReturned = activator.CreateInstance<IntegrityStartPage>(page);
-			});
+			// Doesn't throw
+			activator.CreateInstance<IntegrityStartPage>(page);
 		}
 
 		[Test]
@@ -430,7 +428,8 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.IntegrityAlternativePage>(root));
+			// doesn't throw
+			activator.CreateInstance<Definitions.IntegrityAlternativePage>(root);
 		}
 
 		[Test]
@@ -438,7 +437,8 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "page", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.IntegrityStartPage>(root));
+			// doesn't throw
+			activator.CreateInstance<Definitions.IntegrityStartPage>(root);
 		}
 
 		[Test]
@@ -446,7 +446,8 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.IntegrityStartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance(typeof(Definitions.IntegritySubPage), root));
+			// doesn't throw
+			activator.CreateInstance(typeof(Definitions.IntegritySubPage), root);
 		}
 
 		#endregion

@@ -691,18 +691,46 @@ namespace N2.Tests.Persistence.NH
             Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
         }
 
-        [Test]
-        public void QueryByExpression_ForBaseProperty()
-        {
-            indexer.Update(root);
+		[Test]
+		public void QueryByExpression_ForTitleProperty()
+		{
+			indexer.Update(root);
 
-            var searcher = new LuceneSearcher(accessor, persister);
-            var query = Query.For<PersistableItem1>();
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
 
-            query.Contains(pi => pi.Title, "root");
-            var result = searcher.Search(query);
+			query.Contains(pi => pi.Title, "root");
+			var result = searcher.Search(query);
 
-            Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
-        }
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryByExpression_ForTitleProperty_StartsWith()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
+
+			query.Contains(pi => pi.Title, "ro*");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryByExpression_ForVisibleProperty()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
+
+			query.Contains(pi => pi.Visible, "true");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
 	}
 }

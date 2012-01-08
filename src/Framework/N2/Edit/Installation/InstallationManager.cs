@@ -18,6 +18,7 @@ using NHibernate;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
+using log4net;
 using Environment = NHibernate.Cfg.Environment;
 using N2.Plugin;
 using N2.Configuration;
@@ -33,6 +34,7 @@ namespace N2.Edit.Installation
 	{
 		public const string InstallationAppPath = "Installation.AppPath";
 		public const string installationHost = "Installation.Host";
+    	private readonly ILog logger = LogManager.GetLogger(typeof (InstallationManager));
 		
 		IConfigurationBuilder configurationBuilder;
 		ContentActivator activator;
@@ -137,7 +139,7 @@ namespace N2.Edit.Installation
 
 		public DatabaseStatus GetStatus()
 		{
-			Trace.WriteLine("InstallationManager: checking database status");
+			logger.Debug("InstallationManager: checking database status");
 
 			DatabaseStatus status = new DatabaseStatus();
 
@@ -218,7 +220,7 @@ namespace N2.Edit.Installation
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine(ex);
+				logger.Error(ex);
 			}
 		}
 
@@ -237,7 +239,7 @@ namespace N2.Edit.Installation
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine(ex);
+				logger.Error(ex);
 				status.HasSchema = false;
 				status.SchemaError = ex.Message;
 				status.SchemaException = ex;
@@ -257,7 +259,7 @@ namespace N2.Edit.Installation
 			}
 			catch(Exception ex)
 			{
-				Trace.WriteLine(ex);
+				logger.Error(ex);
 			}
 		}
 

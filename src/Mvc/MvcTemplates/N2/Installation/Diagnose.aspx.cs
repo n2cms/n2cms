@@ -31,6 +31,7 @@ namespace N2.Edit.Install
 		protected override void OnInit(EventArgs e)
 		{
 			InstallationUtility.CheckInstallationAllowed(Context);
+			N2.Resources.Register.JQuery(this);
 			base.OnInit(e);
 		}
 
@@ -95,7 +96,7 @@ namespace N2.Edit.Install
 
 			try
 			{
-				rptDefinitions.DataSource = N2.Context.Definitions.GetDefinitions();
+				rptDefinitions.DataSource = N2.Context.Definitions.GetDefinitions().SelectMany(d => N2.Context.Definitions.GetTemplates(d.ItemType).Select(t => t.Definition));
 				rptDefinitions.DataBind();
 			}
 			catch (Exception ex)
@@ -139,88 +140,6 @@ namespace N2.Edit.Install
 		private void CheckDatabase()
 		{
 			lblDbConnection.Text = CurrentInstallationManager.CheckDatabase();
-		}
-		protected void btnRestart_Click(object sender, EventArgs e)
-		{
-			HttpRuntime.UnloadAppDomain();
-			Response.Redirect(Request.RawUrl);
-		}
-		protected void btnAddSchema_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				CurrentInstallationManager.Install();
-				lblAddSchemaResult.Text = "OK, tables created";
-			}
-			catch (Exception ex)
-			{
-				lblAddSchemaResult.Text = formatException(ex);
-			}
-		}
-
-		protected void btnClearTables_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				CurrentInstallationManager.DropDatabaseTables();
-				lblClearTablesResult.Text = "OK, tables removed";
-			}
-			catch (Exception ex)
-			{
-				lblClearTablesResult.Text = formatException(ex);
-			}
-		}
-
-		protected void btnInsert_Click(object sender, EventArgs e)
-		{
-			ddlTypes.Items.Clear();
-			ddlTypes.Items.Add("[select an item destinationType to insert]");
-			foreach (ItemDefinition d in N2.Context.Definitions.GetDefinitions())
-				ddlTypes.Items.Add(new ListItem(d.Title, d.ItemType.FullName));
-			ddlTypes.Visible = true;
-			btnInsertRootNode.Visible = true;
-		}
-
-		protected void btnInsertRootNode_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				ItemDefinition definition = GetSelectedRootNodeDefinition();
-				int itemID =
-					CurrentInstallationManager.InsertRootNode(definition.ItemType, "root", "Root node inserted by diagnostic page").ID;
-
-				btnInsertRootNode.Visible = false;
-				ddlTypes.Visible = false;
-
-
-				if (itemID == N2.Context.Current.Resolve<IHost>().DefaultSite.RootItemID)
-					lblInsert.Text = string.Format("Inserted root node with id {0} which matches root node in web.config. Great!", itemID);
-				else
-					lblInsert.Text = string.Format(
-							"Inserted root node with id {0}. You should update web.config &lt;appSettings&gt;&lt;add name=\"N2.SiteRoot\" value=\"<b>{0}</b>\" /&gt;&lt;/appSettings&gt;",
-							itemID);
-			}
-			catch (Exception ex)
-			{
-				lblInsert.Text = formatException(ex);
-			}
-		}
-
-		private ItemDefinition GetSelectedRootNodeDefinition()
-		{
-			int i = 1;
-			foreach (ItemDefinition definition in N2.Context.Definitions.GetDefinitions())
-			{
-				if (i++ == ddlTypes.SelectedIndex)
-				{
-					return definition;
-				}
-			}
-			throw new N2Exception("Really bad, couldn't find the item type selected in the drop down list");
-		}
-
-		protected void ddlTypes_SelectedIndexChanged(object sender, EventArgs e)
-		{
 		}
 
 		private string formatException(Exception ex)

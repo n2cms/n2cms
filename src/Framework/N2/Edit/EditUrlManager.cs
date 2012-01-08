@@ -41,7 +41,7 @@ namespace N2.Edit
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		public virtual string GetNavigationUrl(INode selectedItem)
+		public virtual string GetNavigationUrl(ContentItem selectedItem)
 		{
 			if (selectedItem == null)
 				return null;
@@ -52,9 +52,9 @@ namespace N2.Edit
 		/// <summary>Gets the url for the preview frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		public virtual string GetPreviewUrl(INode selectedItem)
+		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return ResolveResourceUrl(selectedItem.PreviewUrl);
+			return ResolveResourceUrl(selectedItem.Url);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>

@@ -1,3 +1,8 @@
+- Document security (discussions/282764)
+- Bulk adding from rss (discussions/272297)
+- restrict page deletion (discussions/282410)
+- .aspx on MVC (discussions/281400)
+- zone writer (prepend, append, wrap, separate)
 discussions/279124
 http://dl.dropbox.com/u/18069810/SafeUrlEnforcer.cs
 - Multiple item editor (discussions/273083)
@@ -10,7 +15,6 @@ http://dl.dropbox.com/u/18069810/SafeUrlEnforcer.cs
 - DefaultValue on programmatically added editables (discussions/273892)
 - Updated minimal MVC example to MVC3 (discussions/273372)
 - Antipspam on form (discussions/273271)
-- Bulk editing & adding (discussions/272297)
 - Change "selected" query string (discussions/83451)
 - Date time picker time warning missing (discussions/272907)
 - database file system chunking

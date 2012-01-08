@@ -31,42 +31,6 @@ namespace N2.Edit.Export {
         protected global::N2.Edit.Web.UI.Controls.PersistentOnlyPanel popNotSupported;
         
         /// <summary>
-        /// btnExport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExport;
-        
-        /// <summary>
-        /// chkDefinedDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkDefinedDetails;
-        
-        /// <summary>
-        /// chkAttachments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAttachments;
-        
-        /// <summary>
-        /// cvImport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvImport;
-        
-        /// <summary>
         /// uploadFlow control.
         /// </summary>
         /// <remarks>
@@ -83,6 +47,15 @@ namespace N2.Edit.Export {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View uploadView;
+        
+        /// <summary>
+        /// cvImport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvImport;
         
         /// <summary>
         /// fuImport control.
@@ -112,15 +85,6 @@ namespace N2.Edit.Export {
         protected global::System.Web.UI.WebControls.Button btnVerify;
         
         /// <summary>
-        /// btnUploadImport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUploadImport;
-        
-        /// <summary>
         /// preView control.
         /// </summary>
         /// <remarks>
@@ -130,21 +94,30 @@ namespace N2.Edit.Export {
         protected global::System.Web.UI.WebControls.View preView;
         
         /// <summary>
-        /// chkSkipRoot control.
+        /// xml control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkSkipRoot;
+        protected global::N2.Management.Content.Export.ItemXmlImport xml;
         
         /// <summary>
-        /// btnImportUploaded control.
+        /// csvView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnImportUploaded;
+        protected global::System.Web.UI.WebControls.View csvView;
+        
+        /// <summary>
+        /// csv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Management.Content.Export.CsvImport csv;
     }
 }

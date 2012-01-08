@@ -43,6 +43,8 @@ namespace N2.Persistence
         /// <returns>A new instance of an item.</returns>
         public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey)
         {
+			if (itemType == null) throw new ArgumentNullException("itemType");
+
             object intercepted = interceptor.Create(itemType.FullName, 0);
             ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
                 as ContentItem;

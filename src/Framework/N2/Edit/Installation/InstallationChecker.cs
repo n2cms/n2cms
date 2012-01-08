@@ -6,12 +6,14 @@ using N2.Plugin;
 using N2.Web;
 using System.Web.Configuration;
 using System.Configuration;
+using log4net;
 
 namespace N2.Edit.Installation
 {
 	[Service]
 	public class InstallationChecker : IAutoStart
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (InstallationChecker));
 		IWebContext webContext;
 		EventBroker broker;
 		protected bool checkInstallation;
@@ -97,7 +99,7 @@ namespace N2.Edit.Installation
 			if (isEditing)
 				return;
 
-			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
+			logger.Debug("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
 			
 			this.status = null;
 			webContext.HttpContext.Response.Redirect(redirectUrl);
