@@ -148,7 +148,7 @@ namespace N2.Edit
 			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
 			url = url.AppendQuery("zoneName", zoneName);
-			if (!string.IsNullOrEmpty(definition.TemplateKey))
+			if (!string.IsNullOrEmpty(definition.TemplateKey) && definition.Discriminator != definition.TemplateKey)
 				url = url.AppendQuery("template", definition.TemplateKey);
 
 			if (position == CreationPosition.Before)
