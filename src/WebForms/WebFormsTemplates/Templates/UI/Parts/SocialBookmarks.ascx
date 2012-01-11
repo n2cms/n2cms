@@ -13,6 +13,33 @@
 			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
 			fjs.parentNode.insertBefore(js, fjs);
 		} (document, 'script', 'facebook-jssdk'));
+
+		$(document).ready(function () {
+			function push(type, targetUrl) {
+				if (typeof _gaq === "undefined" && _gaq.push)
+					_gaq.push(['_trackSocial', 'facebook', type, targetUrl]);
+			};
+			function subscribe() {
+				if (typeof FB !== 'undefined' && FB.Event && FB.Event.subscribe) {
+					FB.Event.subscribe('edge.create', function (targetUrl) {
+						push('like', targetUrl);
+					});
+
+					FB.Event.subscribe('edge.remove', function (targetUrl) {
+						push('unlike', targetUrl);
+					});
+
+					FB.Event.subscribe('message.send', function (targetUrl) {
+						push('send', targetUrl);
+					});
+				}
+			};
+
+			if (typeof _gaq === "undefined" || typeof FB == 'undefined')
+				setTimeout(subscribe, 2500);
+			else
+				subscribe();
+		});
 	</script>
 	<div class="fb-like" data-href="<%= GetUrl() %>" data-send="true" data-layout="button_count" data-show-faces="false" data-font="arial" style="margin:10px 0"></div>
 	<% } %>
