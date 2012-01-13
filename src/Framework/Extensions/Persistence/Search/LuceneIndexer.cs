@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using N2.Plugin;
-using N2.Engine;
-using N2.Plugin.Scheduling;
-using Lucene.Net.Store;
-using System.IO;
-using N2.Web;
-using Lucene.Net.Index;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
-using System.Globalization;
-using Lucene.Net.Search;
-using System.Diagnostics;
-using N2.Engine.Globalization;
 using log4net;
+using Lucene.Net.Documents;
+using Lucene.Net.Index;
+using Lucene.Net.Search;
+using N2.Engine;
+using N2.Engine.Globalization;
+using N2.Web;
 
 namespace N2.Persistence.Search
 {
 	/// <summary>
 	/// Wraps the usage of lucene to index content items.
 	/// </summary>
-	[Service(typeof(IIndexer), Configuration = "lucene")]
+	[Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
 		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneIndexer));
