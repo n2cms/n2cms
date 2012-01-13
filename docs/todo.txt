@@ -1,4 +1,3 @@
-- Break-out-of-iframes on the logon page (discussions/284683)
 - Remove Top (discussions/264798)
 - PdfBox http://pdfbox.apache.org/userguide/dot_net.html (discussions/285609)
 - ContentState after installation (discussions/285006)

@@ -47,6 +47,11 @@
 				<TextBoxStyle CssClass="login-input" />
 			</asp:Login></div>
 		</div>
+		<script type="text/javascript">
+			if (window.top !== window) {
+				window.top.location = window.location;
+			}
+		</script>
     </form>
 </body>
 </html>
