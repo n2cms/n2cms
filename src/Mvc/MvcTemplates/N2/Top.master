@@ -1,8 +1,6 @@
 <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top.master.cs" Inherits="N2.Management.Top" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
-
-<!DOCTYPE HTML>
-
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -20,10 +18,11 @@
 </head>
 	<body id="default" class="edit">
 		<div id="splitter-container" class="frameForm">
-				<div id="permission" class="ui-layout-pane ui-layout-north"><div id="top">
+			<div class="ui-layout-pane ui-layout-north">
+				<div id="permission"><div id="top">
 					<div id="topbar" class="header cf themeBg">
 				        <asp:ContentPlaceHolder ID="Toolbar" runat="server">
-        					<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
+        					hello<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
 						</asp:ContentPlaceHolder>
 					</div>
 
@@ -38,7 +37,7 @@
 					</div>
 
 				</div></div>
-                
+            </div>
 		        <asp:ContentPlaceHolder ID="Content" runat="server">
 				</asp:ContentPlaceHolder>
 
