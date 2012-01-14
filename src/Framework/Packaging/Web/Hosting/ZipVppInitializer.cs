@@ -6,14 +6,17 @@ using System.Web;
 using System.Web.Hosting;
 using N2.Engine;
 using N2.Plugin;
+using log4net;
+using System.Collections.Generic;
 
 namespace N2.Web.Hosting
 {
 	[Service]
 	public class ZipVppInitializer : IAutoStart
 	{
-		Configuration.ConfigurationManagerWrapper configFactory;
-		EventBroker broker;
+		private static readonly ILog logger = LogManager.GetLogger(typeof(VirtualPathFileHandler));
+		private Configuration.ConfigurationManagerWrapper configFactory;
+		private EventBroker broker;
 
 		protected Func<string, string> MapPath = HostingEnvironment.MapPath;
 		protected Action<VirtualPathProvider> Register = HostingEnvironment.RegisterVirtualPathProvider;
@@ -28,7 +31,7 @@ namespace N2.Web.Hosting
 
 		public void Start()
 		{
-			var staticFileExtensions = configFactory.Sections.Web.Vpp.Zips.StaticFileExtensions.OfType<string>().ToList();
+			var staticFileExtensions = new HashSet<string>(configFactory.Sections.Web.Vpp.Zips.StaticFileExtensions.OfType<string>());
 			foreach (var vppElement in configFactory.Sections.Web.Vpp.Zips.AllElements)
 			{
 				string filePath = vppElement.FilePath;
@@ -62,16 +65,31 @@ namespace N2.Web.Hosting
 
 					// There's a problem with RouteTable.Routes keeping storing the default vpp before we register our vpp, in which case
 					// RouteExistingFiles will not handle files in the zip vpp. This is a workaround.
-					if (extension == "" || extension == ".aspx" || extension == ".axd" || extension == ".ashx")
+					switch (extension)
 					{
-						if (vpp.FileExists(requestPath))
-						{
-							var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
-							context.RemapHandler(handler as IHttpHandler);
-						}
+						case "":
+						case ".aspx":
+						case ".axd":
+						case ".ashx":
+							if (vpp.FileExists(requestPath))
+							{
+								logger.DebugFormat("Remapping handler for path {0}", requestPath);
+								var handler = System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(requestPath, typeof(IHttpHandler));
+								context.RemapHandler(handler as IHttpHandler);
+							}
+							else
+								logger.DebugFormat("Not found virtual path path {0}", requestPath);
+							break;
+						case ".config":
+							break;
+						default:
+							if (staticFileExtensions.Contains(extension) && vpp.FileExists(requestPath))
+							{
+								logger.DebugFormat("Remapping to virtual path file handler {0}", requestPath);
+								context.RemapHandler(new VirtualPathFileHandler(vpp) { Modified = lastModified });
+							}
+							break;
 					}
-					else if (staticFileExtensions.Contains(extension) && vpp.FileExists(requestPath))
-						context.RemapHandler(new VirtualPathFileHandler() { Modified = lastModified });
 				};
 			}
 

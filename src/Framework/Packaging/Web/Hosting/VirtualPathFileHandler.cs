@@ -2,11 +2,14 @@
 using System.Web;
 using System;
 using System.Web.Hosting;
+using log4net;
 
 namespace N2.Web.Hosting
 {
 	public class VirtualPathFileHandler : IHttpHandler
 	{
+		private static readonly ILog logger = LogManager.GetLogger(typeof(VirtualPathFileHandler));
+
 		VirtualPathProvider vpp;
 
 		public VirtualPathFileHandler()
@@ -36,18 +39,22 @@ namespace N2.Web.Hosting
 				if(CacheUtility.IsUnmodifiedSince(context.Request, fileModified))
 					CacheUtility.NotModified(context.Response);
 
+				logger.DebugFormat("Transmitting virtual file {0} available on disk {1}", context.Request.AppRelativeCurrentExecutionFilePath, context.Request.PhysicalPath);
 				N2.Web.CacheUtility.SetValidUntilExpires(context.Response, DateTime.UtcNow);
 				context.Response.TransmitFile(context.Request.PhysicalPath);
 			}
 			else if (vpp.FileExists(context.Request.AppRelativeCurrentExecutionFilePath))
 			{
 				if (Modified.HasValue && CacheUtility.IsUnmodifiedSince(context.Request, Modified.Value))
+				{
+					logger.DebugFormat("Not modified: {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 					CacheUtility.NotModified(context.Response);
-
+				}
 
 				byte[] cached = context.Cache["VirtualPathFileHandler:" + context.Request.AppRelativeCurrentExecutionFilePath] as byte[];
 				if (cached != null)
 				{
+					logger.DebugFormat("Transmitting cached file: {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 					context.Response.ContentType = GetContentType(context.Request.AppRelativeCurrentExecutionFilePath);
 					context.Response.OutputStream.Write(cached, 0, cached.Length);
 					return;
@@ -60,18 +67,25 @@ namespace N2.Web.Hosting
 					byte[] buffer = new byte[131072];
 					int readBytes = ReadBlock(s, buffer);
 					if (readBytes <= 0)
+					{
+						logger.DebugFormat("Empty file: {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 						return;
+					}
 
 					N2.Web.CacheUtility.SetValidUntilExpires(context.Response, DateTime.UtcNow);
 					context.Response.ContentType = GetContentType(context.Request.AppRelativeCurrentExecutionFilePath);
+					logger.DebugFormat("Writing file: {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 					context.Response.OutputStream.Write(buffer, 0, readBytes);
 
 					if (readBytes < buffer.Length)
 					{
 						cached = new byte[readBytes];
 						Array.Copy(buffer, cached, readBytes);
+						logger.DebugFormat("Adding to cache: {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 						context.Cache.Add("VirtualPathFileHandler:" + context.Request.AppRelativeCurrentExecutionFilePath, cached, vpp.GetCacheDependency(context.Request.AppRelativeCurrentExecutionFilePath, new[] { context.Request.AppRelativeCurrentExecutionFilePath }, DateTime.UtcNow), DateTime.MaxValue, TimeSpan.FromMinutes(1), System.Web.Caching.CacheItemPriority.BelowNormal, null);
+						return;
 					}
+					logger.DebugFormat("Transmitting rest of file {0}", context.Request.AppRelativeCurrentExecutionFilePath);
 					TransferBetweenStreams(buffer, s, context.Response.OutputStream);
 				}
 			}
