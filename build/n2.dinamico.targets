@@ -72,12 +72,13 @@
 		<RemoveDir Directories="$(Dinamico-NugetFolder)" Condition="Exists('$(Dinamico-NugetFolder)')" ContinueOnError="true" />
 		<ItemGroup>
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
-																	 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
-																						$(Dinamico-SourceFolder)\Global.*;
-																						$(Dinamico-SourceFolder)\web.*;
-																						$(Dinamico-SourceFolder)\Properties\*;
-																						$(Dinamico-SourceFolder)\*.csproj;
-																						$(Dinamico-SourceFolder)\App_Data\*.sdf;" />
+										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
+												  $(Dinamico-SourceFolder)\Global.*;
+												  $(Dinamico-SourceFolder)\web.*;
+												  $(Dinamico-SourceFolder)\Properties\*;
+												  $(Dinamico-SourceFolder)\*.csproj;
+												  $(Dinamico-SourceFolder)\App_Data\*.sdf;" />
+			<dinamicoLibraries Include="$(Dinamico-SourceFolder)\bin\N2.Razor.*" />
 		</ItemGroup>
 		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.ico' or '%(Extension)' == '.png' or '%(Extension)' == '.sdf' or '%(Extension)' == '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.ico' and '%(Extension)' != '.png' and '%(Extension)' != '.sdf' and '%(Extension)' != '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->
@@ -93,7 +94,8 @@
 		<Copy SourceFiles="@(dinamicoNugetIncludes)" DestinationFolder="$(Dinamico-NugetFolder)\%(RecursiveDir)" />
 		<FileUpdate Files="$(Dinamico-NugetFolder)\N2.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
+		<Copy SourceFiles="@(dinamicoLibraries)" DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Dinamico-NugetFolder)\" />
 	</Target>
