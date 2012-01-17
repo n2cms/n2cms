@@ -21,7 +21,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.ContentTab, "Content", 10, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.EmailTab, "Email", 20, CssClass = "tabPanel formTab")]
-	public class Form : PartBase
+	public class Form : PartBase, ISurvey
 	{
 		public const string FieldsTab = "formFieldsTab";
 		public const string ContentTab = "formContentTab";

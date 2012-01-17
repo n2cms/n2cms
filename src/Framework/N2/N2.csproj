@@ -261,6 +261,7 @@
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\IParameter.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\Order.cs" />

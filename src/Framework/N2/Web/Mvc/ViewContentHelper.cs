@@ -40,7 +40,9 @@ namespace N2.Web.Mvc
 
 		public bool HasValue(string detailName)
 		{
-			return Current.Item[detailName] != null && !("".Equals(Current.Item[detailName]));
+			return Current.Item != null 
+				&& Current.Item[detailName] != null 
+				&& !("".Equals(Current.Item[detailName]));
 		}
 	}
 

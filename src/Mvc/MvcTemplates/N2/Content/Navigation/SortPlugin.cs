@@ -19,14 +19,14 @@ namespace N2.Edit.Navigation
 			container.Controls.Add(div);
 
 			HtmlAnchor up = AddSortAnchor(div, context,
-										  context.Format("{ManagementUrl}/Navigation/sortUp.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
-			                              "{ManagementUrl}/Resources/icons/bullet_arrow_up.png", "up");
-			up.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Navigation/sortUp.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
+										  context.Format("{ManagementUrl}/Content/Navigation/sortUp.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
+										  "{ManagementUrl}/Resources/icons/bullet_arrow_up.png", "up");
+			up.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Content/Navigation/sortUp.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
 
 			HtmlAnchor down = AddSortAnchor(div, context,
-											context.Format("{ManagementUrl}/Navigation/sortDown.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
-			                                "{ManagementUrl}/Resources/icons/bullet_arrow_down.png", "down");
-			down.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Navigation/sortDown.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
+											context.Format("{ManagementUrl}/Content/Navigation/sortDown.ashx?{Selection.SelectedQueryKey}={Selected.Path}", true),
+											"{ManagementUrl}/Resources/icons/bullet_arrow_down.png", "down");
+			down.Attributes["data-url-template"] = context.Rebase("{ManagementUrl}/Content/Navigation/sortDown.ashx?" + SelectionUtility.SelectedQueryKey + "={selected}");
 
 			return div;
 		}

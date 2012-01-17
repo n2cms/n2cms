@@ -5,16 +5,17 @@
 
 	<ItemGroup>
 		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
-																		 $(LibFolder)\Castle.Windsor.*;
-																		 $(LibFolder)\NHibernate.dll;
-																		 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
-																		 $(RootFolder)\lib\System.Data.SQLite.dll"/>
+										 $(LibFolder)\Castle.Windsor.*;
+										 $(LibFolder)\System.Web.Mvc.*;
+										 $(LibFolder)\NHibernate.dll;
+										 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
+										 $(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
-												$(DocFolder)\howto_install.txt;
-												$(DocFolder)\howto_develop.txt;
-												$(DocFolder)\license.txt;
-												$(DocFolder)\n2_readme.txt" />
+							$(DocFolder)\howto_install.txt;
+							$(DocFolder)\howto_develop.txt;
+							$(DocFolder)\license.txt;
+							$(DocFolder)\n2_readme.txt" />
 
 		<Snippets Include="$(SnippetsFolder)\*" />
 	</ItemGroup>
@@ -35,49 +36,50 @@
 	<Target Name="Framework-CreateItemGroups-EditFiles">
 		<ItemGroup>
 			<Framework-EditFiles	Include="$(EditFolder)\**\*.resx;
-																		 $(EditFolder)\**\*.as?x;
-																		 $(EditFolder)\**\*.master;
-																		 $(EditFolder)\**\*.config;
-																		 $(EditFolder)\**\*.css;
-																		 $(EditFolder)\**\*.js;
-																		 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-																		 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
-																		 $(EditFolder)\**\*.swf"
-														Exclude="$(EditFolder)\**\*_src.js;" />
+											 $(EditFolder)\**\*.as?x;
+											 $(EditFolder)\**\*.master;
+											 $(EditFolder)\**\*.config;
+											 $(EditFolder)\**\*.css;
+											 $(EditFolder)\**\*.js;
+											 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
+											 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
+											 $(EditFolder)\**\*.swf;
+											 $(EditFolder)\**\*.txt;$(EditFolder)\**\*.sql;"
+									Exclude="$(EditFolder)\**\*_src.js;" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="Framework-DeployResources">
 		<ItemGroup>
 			<Framework-Resources	Include="$(EditFolder)\**\*.resx"
-														Exclude="$(EditFolder)\**\*.da.resx;
-																		 $(EditFolder)\**\*.it.resx;
-																		 $(EditFolder)\**\*.mk.resx;
-																		 $(EditFolder)\**\*.nl.resx;
-																		 $(EditFolder)\**\*.ru.resx;
-																		 $(EditFolder)\**\*.sl.resx;" />
+									Exclude="$(EditFolder)\**\*.da.resx;
+											 $(EditFolder)\**\*.it.resx;
+											 $(EditFolder)\**\*.mk.resx;
+											 $(EditFolder)\**\*.nl.resx;
+											 $(EditFolder)\**\*.ru.resx;
+											 $(EditFolder)\**\*.sl.resx;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(Framework-Resources)" DestinationFolder="$(DeployFolder)\$(DeployPrefix)Resources\N2\%(RecursiveDir)\" />
 	</Target>
 
 	<Target Name="Framework-CreateItemGroups-BinFiles" DependsOnTargets="Framework-Build">
 		<ItemGroup>
-			<Framework-BinFiles		Include="$(ManagementFolder)\bin\*.dll;
-																		 $(ManagementFolder)\bin\N2.xml*;
-																		 $(SrcFolder)\Framework\Security\bin\$(Configuration)\**\*.dll;"
-														Exclude="$(ManagementFolder)\bin\N2.Templates*;
-																		 $(ManagementFolder)\bin\AddonCatalog*;
-																		 $(ManagementFolder)\bin\Demo*;
-																		 $(ManagementFolder)\bin\MyAddon*;
-																		 $(ManagementFolder)\bin\n2markdown*;
-																		 $(ManagementFolder)\bin\Scrum*;
-																		 $(ManagementFolder)\bin\TabPanel*;
-																		 $(ManagementFolder)\bin\Tagging*;
-																		 $(ManagementFolder)\bin\Wiki*;
-																		 $(ManagementFolder)\bin\Microsoft.Web.Mvc*;
-																		 $(ManagementFolder)\bin\MvcContrib*;
-																		 $(ManagementFolder)\bin\N2.Templates.Mvc*;
-																		 $(ManagementFolder)\bin\System*;"/>
+			<Framework-BinFiles	Include="$(ManagementFolder)\bin\*.dll;
+										 $(ManagementFolder)\bin\N2.xml*;
+										 $(SrcFolder)\Framework\Security\bin\$(Configuration)\**\*.dll;"
+								Exclude="$(ManagementFolder)\bin\N2.Templates*;
+										 $(ManagementFolder)\bin\AddonCatalog*;
+										 $(ManagementFolder)\bin\Demo*;
+										 $(ManagementFolder)\bin\MyAddon*;
+										 $(ManagementFolder)\bin\n2markdown*;
+										 $(ManagementFolder)\bin\Scrum*;
+										 $(ManagementFolder)\bin\TabPanel*;
+										 $(ManagementFolder)\bin\Tagging*;
+										 $(ManagementFolder)\bin\Wiki*;
+										 $(ManagementFolder)\bin\Microsoft.Web.Mvc*;
+										 $(ManagementFolder)\bin\MvcContrib*;
+										 $(ManagementFolder)\bin\N2.Templates.Mvc*;
+										 $(ManagementFolder)\bin\System*;"/>
 		</ItemGroup>
 	</Target>
 
@@ -112,10 +114,11 @@
 	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy">
 		<ItemGroup>
 			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
-																			 $(ManagementFolder)\bin\N2.xml*;
-																			 $(LibFolder)\NHibernate.Caches.*.dll;"
-															Exclude="$(ManagementFolder)\bin\N2.Security.*;
-																			 $(ManagementFolder)\bin\N2.Templates.*;" />
+											 $(ManagementFolder)\bin\N2.xml*;
+											 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;
+											 $(LibFolder)\NHibernate.Caches.*.dll;"
+									Exclude="$(ManagementFolder)\bin\N2.Security.*;
+											 $(ManagementFolder)\bin\N2.Templates.*;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
 		

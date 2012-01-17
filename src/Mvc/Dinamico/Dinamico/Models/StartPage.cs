@@ -75,7 +75,9 @@ namespace Dinamico.Models
 
 		#region ISitesSource Members
 
-		[EditableText(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
+		[EditableText(Title = "Site host name (DNS)", 
+			ContainerName = Defaults.Containers.Site,
+			HelpTitle = "Sets a host name for this site/language. The web server must be configured to accept this host name for this to work.")]
 		public virtual string HostName { get; set; }
 
 		public IEnumerable<Site> GetSites()

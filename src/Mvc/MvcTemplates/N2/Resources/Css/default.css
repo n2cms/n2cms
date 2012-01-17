@@ -14,6 +14,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 			.toolbox .item .command a { padding:4px 5px 3px 22px; color:#6F6F6F; display:block; height:18px; line-height:18px; color:#6F6F6F; text-decoration:none; background:transparent none no-repeat 3px 50%; }
 			.toolbox .item .command a:hover { color:#000; }
 
+.ui-layout-north { z-index: 100 !important; }
 .header { background:transparent url(../../Resources/Img/darken10.png) repeat-x 0px bottom; padding-top: 10px;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
         .header .toolbox .item { background:#fff url(../../Resources/Img/lighten10.png) repeat-x 0 50%; }

@@ -20,6 +20,7 @@ namespace N2.Web.UI.WebControls
 		private readonly ILog logger = LogManager.GetLogger(typeof(ItemEditorList));
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
 		private readonly DropDownList types = new DropDownList();
+		private ImageButton addButton = new ImageButton { Enabled = false, CssClass = "disabled" };
 		private List<string> addedTypes = new List<string>();
 		private IDefinitionManager definitions;
 		private List<int> deletedIndexes = new List<int>();
@@ -174,6 +175,8 @@ namespace N2.Web.UI.WebControls
 				var li = new ListItem(definition.Title,
 				                      string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
 				types.Items.Add(li);
+				addButton.Enabled = true;
+				addButton.CssClass = "";
 			}
 
 			base.CreateChildControls();
@@ -210,12 +213,11 @@ namespace N2.Web.UI.WebControls
 		{
 			Controls.Add(types);
 
-			var b = new ImageButton();
-			Controls.Add(b);
-			b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/add.png");
-			b.ToolTip = "Add item";
-			b.CausesValidation = false;
-			b.Click += AddItemClick;
+			Controls.Add(addButton);
+			addButton.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/add.png");
+			addButton.ToolTip = "Add item";
+			addButton.CausesValidation = false;
+			addButton.Click += AddItemClick;
 		}
 
 		private void AddItemClick(object sender, ImageClickEventArgs e)
