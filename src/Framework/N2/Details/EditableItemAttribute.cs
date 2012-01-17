@@ -154,7 +154,10 @@ namespace N2.Details
 			ContentItem child;
 			try
 			{
-				child = Activator.CreateInstance(childItemType, item);
+                child = (ContentItem)System.Activator.CreateInstance(childItemType);
+                child.State = ContentState.New;
+                child.AddTo(item);
+                Activator.NotifyCreated(child);
 			}
 			catch (KeyNotFoundException ex)
 			{

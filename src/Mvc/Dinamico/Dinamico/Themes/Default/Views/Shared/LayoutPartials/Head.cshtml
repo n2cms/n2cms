@@ -1,4 +1,5 @@
-﻿<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+﻿<title>@(Content.Has.SeoTitle ? Content.Data.SeoTitle : Content.Data.Title)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 @Content.Register.Meta("Author").Container("Metadata").Display()
 @Content.Register.Meta("Keywords").Container("Metadata").Display()

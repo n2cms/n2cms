@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using N2.Collections;
 using N2.Engine;
 using N2.Web.Parts;
+using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {
@@ -147,12 +148,17 @@ namespace N2.Web.UI.WebControls
 			OnSelecting(args);
 
 			if (CurrentItem != null && args.Items == null)
-				args.Items = PartsAdapter.GetItemsInZone(CurrentItem, ZoneName);
+				args.Items = new ItemList(PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()));
 
 			OnSelected(args);
 			OnFiltering(args);
 			return args.Items;
 		}
+
+        protected virtual string GetInterface()
+        {
+            return Interfaces.Viewing;
+        }
 
 		protected virtual void OnSelecting(ItemListEventArgs args)
 		{

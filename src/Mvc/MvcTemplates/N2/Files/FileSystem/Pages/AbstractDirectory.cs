@@ -27,6 +27,9 @@ namespace N2.Edit.FileSystem.Items
     {
 		public override ContentItem GetChild(string childName)
 		{
+            if (string.IsNullOrEmpty(childName))
+                return this;
+
 			string name = HttpUtility.UrlDecode(childName.Trim('/'));
 			foreach (var file in GetFiles())
 			{
@@ -108,7 +111,7 @@ namespace N2.Edit.FileSystem.Items
 				List<Directory> directories = new List<Directory>();
 				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
 				{
-					var node = Items.Directory.New(dir, this, FileSystem, ImageSizes);
+					var node = Items.Directory.New(dir, this, DependencyInjector);
 					directories.Add(node);
 				}
 				directories.Sort(new TitleComparer<Directory>());

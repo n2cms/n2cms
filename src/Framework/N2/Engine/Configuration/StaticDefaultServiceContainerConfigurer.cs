@@ -44,8 +44,11 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.itemNotifier", typeof(IItemNotifier), typeof(NHInterceptor));
 			engine.Container.AddComponent("n2.interceptor", typeof(IInterceptor), typeof(NHInterceptor));
 			engine.Container.AddComponent("n2.sessionProvider", typeof(ISessionProvider), typeof(SessionProvider));
-			engine.Container.AddComponent("n2.repository", typeof(IRepository<,>), typeof(NHRepository<,>));
-			engine.Container.AddComponent("n2.repository.nh", typeof(INHRepository<,>), typeof(NHRepository<,>));
+			engine.Container.AddComponent("n2.repository", typeof(IRepository<>), typeof(NHRepository<>));
+#pragma warning disable 612, 618
+			engine.Container.AddComponent("n2.repository", typeof(IRepository<,>), typeof(NHRepository<,>)); // obsolete
+#pragma warning restore 612, 618
+			engine.Container.AddComponent("n2.repository.nh", typeof(INHRepository<>), typeof(NHRepository<>));
 			engine.Container.AddComponent("n2.versioning", typeof(IVersionManager), typeof(VersionManager));
 			engine.Container.AddComponent("n2.persister", typeof(IPersister), typeof(ContentPersister));
 			engine.Container.AddComponent("n2.itemFinder", typeof(IItemFinder), typeof(ItemFinder));

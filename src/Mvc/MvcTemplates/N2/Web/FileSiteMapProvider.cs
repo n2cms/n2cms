@@ -4,11 +4,14 @@ using System.Collections.Specialized;
 using System.Web;
 using N2.Edit.FileSystem;
 using N2.Web;
+using log4net;
 
 namespace N2.Edit.Web
 {
 	public class FileSiteMapProvider : SiteMapProvider
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (FileSiteMapProvider));
+
 		protected IFileSystem FileSystem
 		{
 			get { return Context.Current.Resolve<IFileSystem>(); }
@@ -42,7 +45,7 @@ namespace N2.Edit.Web
 			}
 			catch (Exception ex)
 			{
-				HttpContext.Current.Trace.Write(ex.ToString());
+				logger.Error(ex);
 			}
 
 			return fsmn;

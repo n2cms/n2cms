@@ -1,12 +1,19 @@
 using System.Collections.Generic;
 using System.Xml;
 using N2.Definitions;
+using N2.Edit.FileSystem;
 
 namespace N2.Persistence.Serialization
 {
 	public class AttachmentXmlWriter : IXmlWriter
 	{
 		private readonly AttributeExplorer explorer = new AttributeExplorer();
+		private IFileSystem fs;
+
+		public AttachmentXmlWriter(IFileSystem fs)
+		{
+			this.fs = fs;
+		}
 
 		public void Write(ContentItem item, XmlTextWriter writer)
 		{
@@ -20,7 +27,7 @@ namespace N2.Persistence.Serialization
 						using (ElementWriter attachmentElement = new ElementWriter("attachment", writer))
 						{
 							attachmentElement.WriteAttribute("name", attachment.Name);
-							attachment.Write(item, writer);
+							attachment.Write(fs, item, writer);
 						}
 					}
 				}

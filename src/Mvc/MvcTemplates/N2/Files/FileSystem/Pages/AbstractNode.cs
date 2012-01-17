@@ -6,18 +6,29 @@ using N2.Web;
 using N2.Web.Drawing;
 using N2.Persistence.Search;
 using System.Collections.Generic;
+using N2.Persistence;
 
 namespace N2.Edit.FileSystem.Items
 {
+	[Adapts(typeof(AbstractNode))]
+	public class AbstractNodeAdapter : NodeAdapter
+	{
+		public override string GetPreviewUrl(ContentItem item)
+		{
+			return N2.Web.Url.Parse(item.FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path).ResolveTokens();
+		}
+	}
+
     [Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
 	[PermissionRemap(From = Permission.Publish, To = Permission.Write)]
 	[Indexable(IsIndexable = false)]
-	public abstract class AbstractNode : ContentItem, INode, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>
+	public abstract class AbstractNode : ContentItem, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>, IInjectable<IDependencyInjector>
     {
 		public ImageSizeCache ImageSizes { get; protected set; }
 
 		IFileSystem fileSystem;
+		protected IDependencyInjector DependencyInjector { get; set; }
 
     	protected virtual IFileSystem FileSystem
     	{
@@ -38,11 +49,6 @@ namespace N2.Edit.FileSystem.Items
         public override string Extension
         {
             get { return string.Empty; }
-        }
-
-        string INode.PreviewUrl
-        {
-			get { return N2.Web.Url.Parse(FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, Path).ResolveTokens(); }
         }
 
 		public override PathData FindPath(string remainingUrl)
@@ -97,6 +103,15 @@ namespace N2.Edit.FileSystem.Items
 		public void Set(ImageSizeCache dependency)
 		{
 			ImageSizes = dependency;
+		}
+
+		#endregion
+
+		#region IInjectable<ContentDependencyInjector> Members
+
+		public void Set(IDependencyInjector dependency)
+		{
+			this.DependencyInjector = dependency;
 		}
 
 		#endregion

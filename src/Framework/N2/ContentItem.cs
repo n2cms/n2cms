@@ -34,6 +34,7 @@ using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
+using N2.Persistence.Sources;
 
 namespace N2
 {
@@ -62,16 +63,18 @@ namespace N2
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
-	public abstract class ContentItem : IComparable, 
-		IComparable<ContentItem>, 
+#pragma warning disable 612, 618
+	public abstract class ContentItem : INode,
+#pragma warning restore 612, 618
+		IComparable, 
+		IComparable<ContentItem>,
 		ICloneable,
-		IInjectable<IUrlParser>, 
-		INode, 
-		IUpdatable<ContentItem>, 
+		IInjectable<IUrlParser>,
+		IUpdatable<ContentItem>,
 		IInterceptableType,
 		INameable,
 		IPlaceable
-    {
+	{
         #region Private Fields
         private int id;
         private string title;
@@ -99,6 +102,7 @@ namespace N2
         private int versionIndex;
         private ContentState state = ContentState.None;
 		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
+		private int? hashCode;
 		#endregion
 
         #region Constructor
@@ -867,11 +871,13 @@ namespace N2
 			}
 		}
 
+		[Obsolete]
 		string INode.PreviewUrl
 		{
 			get { return Url; }
 		}
 
+		[Obsolete]
 		string INode.ClassNames
 		{
 			get
@@ -952,7 +958,6 @@ namespace N2
 			//TODO: add id==0 && name+parent
 		}
 
-		int? hashCode;
 		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
 		[DebuggerStepThrough]

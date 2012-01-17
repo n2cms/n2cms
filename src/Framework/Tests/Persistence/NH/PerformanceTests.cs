@@ -54,8 +54,8 @@ namespace N2.Tests.Persistence.NH
 			EnumerableAssert.Contains(items, item3);
 
 			// TODO: check why increase
-			Assert.That(sessionProvider.NHSessionFactory.Statistics.QueryExecutionCount, Is.LessThanOrEqualTo(2));
-			Assert.That(sessionProvider.NHSessionFactory.Statistics.GetEntityStatistics("PersistableItem2").FetchCount, Is.EqualTo(0));
+			Assert.That(sessionProvider.SessionFactory.Statistics.QueryExecutionCount, Is.LessThanOrEqualTo(2));
+			Assert.That(sessionProvider.SessionFactory.Statistics.GetEntityStatistics("PersistableItem2").FetchCount, Is.EqualTo(0));
 		}
 
 		#region Helpers

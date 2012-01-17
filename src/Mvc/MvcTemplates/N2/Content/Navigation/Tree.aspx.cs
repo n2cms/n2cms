@@ -12,6 +12,7 @@ using N2.Web;
 using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Edit.Navigation
 {
@@ -57,9 +58,9 @@ namespace N2.Edit.Navigation
 
 				foreach (string uploadFolder in Engine.EditManager.UploadFolders)
 				{
-					var dd = FS.GetDirectory(uploadFolder);
+					var dd = FS.GetDirectoryOrVirtual(uploadFolder);
 
-					var dir = Directory.New(dd, root.Current, FS, Engine.Resolve<ImageSizeCache>());
+					var dir = Directory.New(dd, root.Current, Engine.Resolve<IDependencyInjector>());
 					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
 					root.Children.Add(node);
 				}
@@ -140,7 +141,9 @@ namespace N2.Edit.Navigation
 			var sizes = Engine.Resolve<ImageSizeCache>();
 
 			HierarchyNode<ContentItem> node = null;
-			foreach(var dir in Engine.GetContentAdapter<NodeAdapter>(startPage).GetChildren(startPage, Interfaces.Managing).OfType<Directory>())
+			foreach(var dir in Engine.GetContentAdapter<NodeAdapter>(startPage)
+				.GetChildren(startPage, Interfaces.Managing)
+				.OfType<Directory>())
 			{
 				if (node == null)
 					node = new HierarchyNode<ContentItem>(startPage);

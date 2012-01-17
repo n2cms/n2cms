@@ -12,7 +12,7 @@ namespace N2.Configuration
 	{
 		public VirtualPathCollection()
 		{
-			AddDefault(new VirtualPathElement("management", "{ManagementUrl}"));
+			AddDefault(new VirtualPathElement("management", "{ManagementUrl}/"));
 		}
 
 		protected override ConfigurationElement CreateNewElement()

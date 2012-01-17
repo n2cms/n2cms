@@ -121,6 +121,20 @@ namespace N2.Tests.Engine.Services
 	{
 	}
 
+	public interface IReplacedInterface
+	{
+	}
+
+	[Service(typeof(IReplacedInterface))]
+	public class ReplacedService : IReplacedInterface
+	{
+	}
+
+	[Service(typeof(IReplacedInterface), Replaces = typeof(IReplacedInterface))]
+	public class ReplacingReplacedService : IReplacedInterface
+	{
+	}
+
 	public class ConcreteService : AbstractService
 	{
 	}

@@ -21,21 +21,21 @@
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
 			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*;
-																	 $(BuildFolder)\deploy\WebFormTemplates\**\*"
-													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
-																		$(Templates-SourceFolder)\**\.git\**\*;
-																		$(Templates-SourceFolder)\**\obj\**\*;
-																		$(Templates-SourceFolder)\**\bin\*.pdb;
-																		$(Templates-SourceFolder)\**\Ankh.Load;
-																		$(Templates-SourceFolder)\**\*.sln.cache;
-																		$(Templates-SourceFolder)\**\*.resharper;
-																		$(Templates-SourceFolder)\**\*.suo;
-																		$(Templates-SourceFolder)\**\*.user;
-																		$(Templates-SourceFolder)\**\*.Publish.xml;
-																		$(Templates-SourceFolder)\**\Thumbs.db;
-																		$(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
-																		$(Templates-SourceFolder)\N2\**\*;
-																		$(Templates-SourceFolder)\N2.Management.*" />
+										 $(BuildFolder)\deploy\WebFormTemplates\**\*"
+								Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
+										 $(Templates-SourceFolder)\**\.git\**\*;
+										 $(Templates-SourceFolder)\**\obj\**\*;
+										 $(Templates-SourceFolder)\**\bin\*.pdb;
+										 $(Templates-SourceFolder)\**\Ankh.Load;
+										 $(Templates-SourceFolder)\**\*.sln.cache;
+										 $(Templates-SourceFolder)\**\*.resharper;
+										 $(Templates-SourceFolder)\**\*.suo;
+										 $(Templates-SourceFolder)\**\*.user;
+										 $(Templates-SourceFolder)\**\*.Publish.xml;
+										 $(Templates-SourceFolder)\**\Thumbs.db;
+										 $(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
+										 $(Templates-SourceFolder)\N2\**\*;
+										 $(Templates-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(templatesTempFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\%(RecursiveDir)" />

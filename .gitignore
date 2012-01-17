@@ -13,6 +13,7 @@ examples/MinimalCSharp/wwwroot/App_Data/SearchIndex/
 examples/MinimalVisualBasic/wwwroot/App_Data/SearchIndex/
 examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
 lib/*.pdb
+examples/*/wwwroot/N2/
 
 # User-specific files
 *.suo
@@ -31,6 +32,7 @@ output/
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
+*.ReSharper
 
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/
@@ -58,6 +60,8 @@ stylecop.*
 ~$*
 *.dbmdl
 *.log
+*.log.20*
 
 # Git files to ignore
 *.orig
+src/N2.Sources.6.0.ReSharper

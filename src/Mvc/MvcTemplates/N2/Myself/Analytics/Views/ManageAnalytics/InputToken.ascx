@@ -1,4 +1,5 @@
 ﻿<%@ Import Namespace="N2.Management.Myself.Analytics.Models" %>
+<%@ Import Namespace="N2.Web.Mvc" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ManageAnalyticsPart>" %>
 
 <div class="uc">

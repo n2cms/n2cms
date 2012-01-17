@@ -6,11 +6,14 @@ using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
 using N2.Web.UI;
+using log4net;
 
 namespace N2.Web
 {
 	public class CachingUrlParserDecorator : IUrlParser
 	{
+        private readonly ILog logger = LogManager.GetLogger(typeof(CachingUrlParserDecorator));
+
 		readonly IUrlParser inner;
 		readonly IPersister persister;
         readonly IWebContext webContext;
@@ -145,13 +148,13 @@ namespace N2.Web
                             {
                                 if (data.IsEmpty())
                                 {
-                                    Debug.WriteLine("Adding " + url + " to no content cache");
+                                    logger.Debug("Adding " + url + " to no content cache");
                                     HttpRuntime.Cache.Add(noContentKey, true, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
                                 }
                                 else
                                 {
                                     // We only global cache the path data if the current url has CMS Content
-                                    Debug.WriteLine("Adding " + url + " to cache");
+                                    logger.Debug("Adding " + url + " to cache");
                                     HttpRuntime.Cache.Add(contentKey, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
                                 }
                             }
@@ -161,7 +164,7 @@ namespace N2.Web
 		    }
 		    else
 		    {
-		        Debug.WriteLine("Retrieving " + url + " from cache");
+		        logger.Debug("Retrieving " + url + " from cache");
 		        data = data.Attach(persister);
 		        data.UpdateParameters(Url.Parse(url).GetQueries());
 		    }
@@ -169,7 +172,7 @@ namespace N2.Web
             return data ?? PathData.Empty;
 		}
 
-	    /// <summary>Finds an item by traversing names from the starting point root.</summary>
+		/// <summary>Finds an item by traversing names from the starting point root.</summary>
 		/// <param name="url">The url that should be traversed.</param>
 		/// <returns>The content item matching the supplied url.</returns>
 		public ContentItem Parse(string url)

@@ -5,6 +5,7 @@ using N2.Configuration;
 using N2.Edit.Web;
 using N2.Engine.Globalization;
 using N2.Web;
+using log4net;
 
 namespace N2.Edit.Globalization
 {
@@ -16,6 +17,7 @@ namespace N2.Edit.Globalization
 	{
 		protected ILanguageGateway gateway;
 		protected IEnumerable<ILanguage> languages;
+    	private readonly ILog logger = LogManager.GetLogger(typeof (_Default));
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -25,7 +27,7 @@ namespace N2.Edit.Globalization
 
         private void Initialize()
         {
-            gateway = Engine.Resolve<ILanguageGateway>();
+            gateway = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(Selection.SelectedItem);
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
             bool isGlobalized = gateway.GetLanguage(Selection.SelectedItem) != null;
@@ -127,7 +129,7 @@ namespace N2.Edit.Globalization
             }
             catch (Exception ex)
             {
-                Trace.Write(ex.ToString());
+                logger.Error(ex);
                 cvEnable.IsValid = false;
             }
         }

@@ -6,12 +6,14 @@ using N2.Plugin;
 using N2.Web;
 using System.Web.Configuration;
 using System.Configuration;
+using log4net;
 
 namespace N2.Edit.Installation
 {
 	[Service]
 	public class InstallationChecker : IAutoStart
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (InstallationChecker));
 		IWebContext webContext;
 		EventBroker broker;
 		protected bool checkInstallation;
@@ -29,8 +31,12 @@ namespace N2.Edit.Installation
 				managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;
 				this.webContext = webContext;
 				this.broker = broker;
-				this.broker.BeginRequest += BeginRequest;
 				this.status = installer.GetStatus();
+
+				installer.UpdateStatus(status.Level);
+
+				if(status.Level != SystemStatusLevel.UpAndRunning)
+					this.broker.BeginRequest += BeginRequest;
 			}
 			else
 			{
@@ -46,9 +52,6 @@ namespace N2.Edit.Installation
 		private void CheckInstallation()
 		{
 			string currentUrl = Url.ToRelative(webContext.Url.LocalUrl);
-			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
-			if (isEditing)
-				return;
 			
 			try 
 			{
@@ -67,6 +70,7 @@ namespace N2.Edit.Installation
 			if (status == null)
 			{
 				Trace.TraceWarning("Null status");
+				installer.UpdateStatus(SystemStatusLevel.Unknown);
 				return;
 			}
 			else if (status.NeedsUpgrade)
@@ -89,8 +93,14 @@ namespace N2.Edit.Installation
 				return;
 			}
 
-			Trace.WriteLine("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
 			installer.UpdateStatus(status.Level);
+
+			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
+			if (isEditing)
+				return;
+
+			logger.Debug("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
+			
 			this.status = null;
 			webContext.HttpContext.Response.Redirect(redirectUrl);
 		}

@@ -31,6 +31,9 @@ namespace N2.Integrity
 
 		public AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery query)
 		{
+            if (query.ParentDefinition == null) return AllowedDefinitionResult.DontCare;
+            if (query.Parent == null) return AllowedDefinitionResult.DontCare;
+
 			var type = ComparableType ?? query.ChildDefinition.ItemType;
 			int childrenOfTypeCount = query.Parent.Children.Count(i => type.IsAssignableFrom(i.GetContentType()));
 			if (childrenOfTypeCount >= MaximumCount)

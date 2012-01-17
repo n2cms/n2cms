@@ -25,7 +25,6 @@ namespace N2.Engine.Globalization
 		readonly IEditUrlManager editUrlManager;
 		readonly IDefinitionManager definitions;
 		readonly IHost host;
-		int recursionDepth = 3;
     	readonly ISecurityManager security;
     	readonly IWebContext context;
 		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
@@ -60,12 +59,6 @@ namespace N2.Engine.Globalization
             set { enabled = value; }
         }
 
-        public int RecursionDepth
-        {
-            get { return recursionDepth; }
-            set { recursionDepth = value; }
-        }
-
 		public ILanguage GetLanguage(ContentItem item)
 		{
 			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
@@ -86,15 +79,7 @@ namespace N2.Engine.Globalization
         /// <returns>The language with the code or null.</returns>
         public ILanguage GetLanguage(string languageCode)
         {
-            if(languageCode == null) throw new ArgumentNullException("languageCode");
-
-            foreach (ILanguage language in GetAvailableLanguages())
-            {
-                if (languageCode.Equals(language.LanguageCode, StringComparison.InvariantCultureIgnoreCase))
-                    return language;
-            }
-
-            return null;
+            return GetLanguageWithCode(GetAvailableLanguages(), languageCode);
         }
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
@@ -110,7 +95,6 @@ namespace N2.Engine.Globalization
 		{
 			List<LanguageInfo> languages = new List<LanguageInfo>();
 			foreach (ILanguage language in descendantFinder.Find<ILanguage>(persister.Get(rootNodeID)))
-				//new RecursiveFinder().Find<ILanguage>(persister.Get(rootNodeID), RecursionDepth, typeof(ITrashCan)))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{
@@ -141,7 +125,7 @@ namespace N2.Engine.Globalization
 				return new ContentItem[0];
 
 			return persister.Repository.Find(TranslationKey, item.TranslationKey)
-				.Where(Content.Is.Accessible(context.User, security))
+				.Where(new AccessFilter(context.User, security))
 				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
 		}
 
@@ -154,6 +138,7 @@ namespace N2.Engine.Globalization
 			IEnumerable<ContentItem> translations = FindTranslations(item);
 			IEnumerable<ILanguage> languages = GetAvailableLanguages();
 
+            var itemSite = host.GetSite(item);
 			foreach (ILanguage language in languages)
 			{
 				if (language != itemlanguage || includeCurrent)
@@ -166,7 +151,7 @@ namespace N2.Engine.Globalization
 					if (translation != null)
 					{
 						string url = editUrlManager.GetEditExistingItemUrl(translation);
-						yield return new TranslateSpecification(url, language, translation, definition, editUrlManager);
+                        yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translation));
 					}
 					else
 					{
@@ -176,7 +161,7 @@ namespace N2.Engine.Globalization
 						{
 							if (generateNonTranslated)
 							{
-								yield return new TranslateSpecification("#", language, translation, definition, editUrlManager)
+                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(language as ContentItem))
 								{
 									IsTranslatable = false
 								};
@@ -187,7 +172,7 @@ namespace N2.Engine.Globalization
 						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
 						url = url.AppendQuery(TranslationKey, item.TranslationKey ?? item.ID);
 
-						yield return new TranslateSpecification(url, language, translation, definition, editUrlManager);
+                        yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translatedParent));
 					}
 				}
 			}
@@ -239,9 +224,17 @@ namespace N2.Engine.Globalization
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
-				persister.Repository.Save(item);
+				persister.Repository.SaveOrUpdate(item);
 			}
         }
+
+		/// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is the root item of a language branch.</returns>
+		public bool IsLanguageRoot(ContentItem item)
+		{
+			return item is ILanguage && !string.IsNullOrEmpty((item as ILanguage).LanguageCode);
+		}
 
         /// <summary>Throws an exception if any of the items is a language root.</summary>
         /// <param name="items"></param>
@@ -300,5 +293,16 @@ namespace N2.Engine.Globalization
                 yield return item;
             }
 		}
+
+        /// <summary>Gets the language with a certain language code.</summary>
+        /// <param name="languages">The languages to select between.</param>
+        /// <param name="languageCode">The language code to find a matching language for.</param>
+        /// <returns>The language with the code or null.</returns>
+        public static ILanguage GetLanguageWithCode(IEnumerable<ILanguage> languages, string languageCode)
+        {
+            if (languageCode == null) throw new ArgumentNullException("languageCode");
+
+            return languages.FirstOrDefault(l => languageCode.Equals(l.LanguageCode, StringComparison.InvariantCultureIgnoreCase));
+        }
 	}
 }

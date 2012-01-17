@@ -36,29 +36,36 @@ namespace N2.Persistence
 			return CreateInstance(itemType, parentItem, null);
 		}
 
-		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
-		/// <param name="itemType">Type of item to create</param>
-		/// <param name="parentItem">Parent of the item to create.</param>
-		/// <param name="templateKey">The type of template the item is associated with.</param>
-		/// <returns>A new instance of an item.</returns>
-		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey)
-		{
-			object intercepted = interceptor.Create(itemType.FullName, 0);
-			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
-				as ContentItem;
-			if (templateKey != null)
-				item.TemplateKey = templateKey;
-			OnItemCreating(item, parentItem);
-			return item;
-		}
+        /// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
+        /// <param name="itemType">Type of item to create</param>
+        /// <param name="parentItem">Parent of the item to create.</param>
+        /// <param name="templateKey">The type of template the item is associated with.</param>
+        /// <returns>A new instance of an item.</returns>
+        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey)
+        {
+			if (itemType == null) throw new ArgumentNullException("itemType");
+
+            object intercepted = interceptor.Create(itemType.FullName, 0);
+            ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
+                as ContentItem;
+            if (templateKey != null)
+                item.TemplateKey = templateKey;
+            OnItemCreating(item, parentItem);
+            return item;
+        }
+
+        public virtual void NotifyCreated(ContentItem item)
+        {
+            notifier.NotifiyCreated(item);
+            if (ItemCreated != null)
+                ItemCreated.Invoke(this, new ItemEventArgs(item));
+        }
 
 		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
 		{
 			stateChanger.ChangeTo(item, ContentState.New);
-			item.Parent = parentItem;
-			notifier.NotifiyCreated(item);
-			if (ItemCreated != null)
-				ItemCreated.Invoke(this, new ItemEventArgs(item));
+            item.Parent = parentItem;
+            NotifyCreated(item);
 		}
 
 		public virtual void Initialize(IEnumerable<Type> contentTypes)

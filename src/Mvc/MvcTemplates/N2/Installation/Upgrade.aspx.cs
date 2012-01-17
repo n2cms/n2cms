@@ -49,6 +49,7 @@ namespace N2.Edit.Install
 					ShowResults(Migrator.UpgradeAndMigrate());
 				});
 			status = null;
+			Installer.UpdateStatus(Status.Level);
 		}
 
 		protected void btnMigrate_Click(object sender, EventArgs e)
@@ -86,6 +87,7 @@ namespace N2.Edit.Install
 		{
 			ExecuteWithErrorHandling(Installer.Upgrade);
 			status = null;
+			Installer.UpdateStatus(Status.Level);
 		}
 
 		protected void btnExportSchema_Click(object sender, EventArgs e)

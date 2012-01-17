@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Timers;
 using N2.Engine;
+using N2.Linq;
+using log4net;
 
 namespace N2.Plugin.Scheduling
 {
@@ -11,6 +13,7 @@ namespace N2.Plugin.Scheduling
 	[Service(typeof(IHeart))]
     public class Heart : IAutoStart, IHeart
     {
+        private readonly ILog logger = LogManager.GetLogger(typeof(Heart));
         Timer timer;
 
         public Heart()
@@ -25,8 +28,7 @@ namespace N2.Plugin.Scheduling
             timer = new Timer(config.Scheduler.Interval * 1000);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
 			connection.Online += delegate { timer.Start(); };
-			connection.Interrupted += delegate { timer.Stop(); };
-			connection.Resumed += delegate { timer.Start(); };
+			connection.Offline += delegate { timer.Stop(); };
         }
 
 		/// <summary>Occurs when a time unit has elapsed.</summary>
@@ -34,7 +36,7 @@ namespace N2.Plugin.Scheduling
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			Debug.WriteLine("Beat: " + DateTime.Now);
+			logger.Debug("Beat: " + DateTime.Now);
 			if (Beat != null)
 				Beat(this, e);
 		}

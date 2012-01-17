@@ -1,4 +1,4 @@
-﻿@import url("smoothness/jquery-ui-1.8.14.custom.css");
+﻿@import url("smoothness/jquery-ui-1.8.16.custom.css");
 
 /* FRAMED */
 body { background-image:url(../../Resources/Img/lighten10.png); background-repeat:repeat-x; }
@@ -193,6 +193,11 @@ body.framed #nav .locked { padding-right:16px; background:transparent url(../../
 body.framed #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/icons/bullet_arrow_down.png) no-repeat 100% 50%; }
 body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/icons/bullet_arrow_top.png) no-repeat 100% 50%; }
 
+body.framed #nav span.meta { margin-left:5px; font-size:.75em; font-weight:normal; }
+body.framed #nav span.language { background-color:#bdb; color:#fff; padding:0 1px;}
+body.framed #nav span.authority { font-style:italic; text-transform:capitalize }
+body.framed #nav a span.zone { display:none }
+body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
 
 /* TABS */
 ul.tabs{
@@ -285,32 +290,37 @@ input.dp-applied {
 .directory
 {
 }
-.directory .file
-{
-	display:block;
-	width:80px;
-	height:80px;
-	position:relative;
-	float:left;
-	margin:1px;
-	overflow:hidden;
-}
-.directory .file input, .directory .file img
-{
-	vertical-align:middle;
-}
-.directory .file label
-{
-	display:block;
-	height:60px;
-	background:#ddc none no-repeat 50% 50%;
-	padding:1px;
-}
-.directory .file a
-{
-	display:block;
-	overflow: hidden;
-}
+    .directory .file
+    {
+	    display:block;
+	    width:80px;
+	    height:80px;
+	    position:relative;
+	    float:left;
+	    margin:1px;
+	    overflow:hidden;
+    }
+        .directory .file input, .directory .file img
+        {
+	        vertical-align:middle;
+        }
+        .directory .file label
+        {
+	        display:block;
+	        height:60px;
+	        background:#ddc none no-repeat 50% 50%;
+	        padding:1px;
+        }
+        .directory .file a
+        {
+	        display:block;
+	        overflow: hidden;
+        }
+    #fileupload { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
+    #fileupload:hover { border-style:solid; opacity:1; }
+        #fileupload em { margin-left:10px; display:none; }
+        #fileupload:hover em { display:inline; }
+
 .focused
 {
 	background-color:#eef;

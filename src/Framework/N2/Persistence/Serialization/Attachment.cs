@@ -1,3 +1,4 @@
+using N2.Edit.FileSystem;
 namespace N2.Persistence.Serialization
 {
     /// <summary>
@@ -38,9 +39,9 @@ namespace N2.Persistence.Serialization
 			get { return fileContents; }
 		}
 
-		public virtual void Import()
+		public virtual void Import(IFileSystem fs)
 		{
-            handler.Import(this);
+            handler.Import(fs, this);
         }
 	}
 }

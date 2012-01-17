@@ -1,30 +1,34 @@
+using System.Linq;
 using System.Diagnostics;
 using N2.Web;
 using N2.Engine;
+using log4net;
 
 namespace N2.Addons.UITests.Items
 {
 	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveRequestAdapter : RequestAdapter
 	{
+	    private readonly ILog logger = LogManager.GetLogger(typeof (AdaptiveRequestAdapter)); 
+
 		public override void AuthorizeRequest(PathData path, System.Security.Principal.IPrincipal user)
 		{
-			Debug.WriteLine("AuthorizeRequest");
+			logger.Debug("AuthorizeRequest");
 			base.AuthorizeRequest(path, user);
 		}
 		protected override string GetHandlerPath(PathData path)
 		{
-			Debug.WriteLine("GetHandlerPath");
+			logger.Debug("GetHandlerPath");
 			return base.GetHandlerPath(path);
 		}
 		public override void InjectCurrentPage(PathData path, System.Web.IHttpHandler handler)
 		{
-			Debug.WriteLine("InjectCurrentPage");
+			logger.Debug("InjectCurrentPage");
 			base.InjectCurrentPage(path, handler);
 		}
 		public override void RewriteRequest(PathData path, N2.Configuration.RewriteMethod rewriteMethod)
 		{
-			Debug.WriteLine("RewriteRequest");
+			logger.Debug("RewriteRequest");
 			base.RewriteRequest(path, rewriteMethod);
 		}
 	}
@@ -32,9 +36,9 @@ namespace N2.Addons.UITests.Items
 	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveZoneAdapter : N2.Web.Parts.PartsAdapter
 	{
-		public override N2.Collections.ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
-		{
-			var items = base.GetItemsInZone(parentItem, zoneName);
+        public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem parentItem, string zoneName, string @interface)
+        {
+			var items = base.GetParts(parentItem, zoneName, @interface).ToList();
 
 			if (zoneName == "AutoZone1")
 			{

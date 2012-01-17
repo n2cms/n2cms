@@ -74,6 +74,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Shouldly, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Shouldly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -95,11 +99,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvParserTests.cs" />
     <Compile Include="ExternalContent\ExternalContentTests.cs" />
     <Compile Include="ExternalContent\ExternalContentRepositoryTests.cs" />
-    <Compile Include="FileSystem\FakeFileSystem.cs" />
-    <Compile Include="FileSystem\FakePathProvider.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />
+    <Compile Include="FileSystem\FakePathProvider.cs" />
+    <Compile Include="FileSystem\FileSystemNodesTests.cs" />
     <Compile Include="FileSystem\RootNode.cs" />
     <Compile Include="FileSystem\VirtualFolderInitializerTests.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />

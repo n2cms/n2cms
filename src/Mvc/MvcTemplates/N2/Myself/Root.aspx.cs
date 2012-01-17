@@ -17,7 +17,7 @@ namespace N2.Management.Myself
 
 			if (CurrentItem == null)
 			{
-				var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+				var root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 				Response.Redirect(root.Url);
 			}
 		}

@@ -18,9 +18,11 @@ namespace N2.Engine.Globalization
 
         public override Control AddTo(Control container, PluginContext context)
         {
-            ILanguageGateway gateway = N2.Context.Current.Resolve<ILanguageGateway>();
-            if (!gateway.Enabled)
+            var selector = context.Engine.Resolve<LanguageGatewaySelector>();
+            if (!selector.Enabled || selector.LanguagesPerSite /*avoid showing options that might not be relevant */)
                 return null;
+
+            ILanguageGateway gateway = selector.GetAllLanguages();
 
             HtmlGenericControl div = new HtmlGenericControl("div");
             div.Attributes["class"] = "languages";
@@ -38,12 +40,11 @@ namespace N2.Engine.Globalization
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');
                 h.Target = Targets.Preview;
 				h.NavigateUrl = context.Rebase(context.Format(url, true));
-                h.CssClass = "language";
+                h.CssClass = "templatedurl language";
                 h.ToolTip = language.LanguageTitle;
                 h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
+				h.Attributes["data-url-template"] = context.Rebase(url);
                 div.Controls.Add(h);
-
-                RegisterToolbarUrl(container, h.ClientID, url);
             }
 
             return div;

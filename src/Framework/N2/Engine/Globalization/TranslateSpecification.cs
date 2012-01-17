@@ -1,5 +1,6 @@
 ﻿using N2.Definitions;
 using N2.Edit;
+using N2.Web;
 
 namespace N2.Engine.Globalization
 {
@@ -8,14 +9,14 @@ namespace N2.Engine.Globalization
 	/// </summary>
 	public class TranslateSpecification
 	{
-		public TranslateSpecification(string editUrl, ILanguage language, ContentItem existingItem, ItemDefinition definition,
-		                              IEditUrlManager editUrlManager)
+		public TranslateSpecification(string editUrl, ILanguage language, ContentItem existingItem, ItemDefinition definition, Site site)
 		{
 			EditUrl = editUrl;
 			Language = language;
 			ExistingItem = existingItem;
 			Definition = definition;
-			FlagUrl = GetFlag(language, editUrlManager);
+			FlagUrl = GetFlag(language);
+            Site = site;
 			IsTranslatable = true;
 		}
 
@@ -36,13 +37,15 @@ namespace N2.Engine.Globalization
 
 		public string FlagUrl { get; set; }
 
-		protected string GetFlag(ILanguage language, IEditUrlManager editUrlManager)
+		protected string GetFlag(ILanguage language)
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(editUrlManager.ResolveResourceUrl("{ManagementUrl}/Resources/Img/Flags/{0}.png"), language.LanguageCode);
+				return string.Format(Url.ResolveTokens("{ManagementUrl}/Resources/Img/Flags/{0}.png"), language.LanguageCode);
 
 			return flagUrl;
 		}
-	}
+
+        public Site Site { get; set; }
+    }
 }

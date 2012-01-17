@@ -11,12 +11,14 @@ using N2.Definitions.Static;
 using N2.Engine;
 using N2.Web.Mvc;
 using N2.Web;
+using log4net;
 
 namespace N2.Definitions.Runtime
 {
 	[Service]
 	public class ViewTemplateAnalyzer
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (ViewTemplateAnalyzer));
 		IProvider<ViewEngineCollection> viewEnginesProvider;
 		DefinitionMap map;
 		DefinitionBuilder builder;
@@ -95,7 +97,7 @@ namespace N2.Definitions.Runtime
 				}
 				catch (Exception ex)
 				{
-					Trace.WriteLine(ex);
+					logger.Error(ex);
 					if (re.IsDefined)
 						throw;
 					return null;

@@ -4,9 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Security.Principal;
 using N2.Engine.Globalization;
+using System.Linq.Expressions;
 
 namespace N2.Persistence.Search
 {
+    /// <summary>
+    /// A query for a specific types. This allows for strongly typed expressions.
+    /// </summary>
+    /// <typeparam name="T">The type of item to query for.</typeparam>
+    public class Query<T> : Query
+    {
+        /// <summary>
+        /// Allows search for property contents via a strongly typed expression, e.g. query.Contains(pi => pi.Title, "Root");
+        /// </summary>
+        /// <typeparam name="TProperty">The return type of the property.</typeparam>
+        /// <param name="propertyExpression">The property expression.</param>
+        /// <param name="value">The property value to search for.</param>
+        /// <returns>The query object itself.</returns>
+        public Query<T> Contains<TProperty>(Expression<Func<T, TProperty>> propertyExpression, string value)
+        {
+            MemberExpression(propertyExpression.Body as MemberExpression, value);
+            return this;
+        }
+
+        private void MemberExpression(MemberExpression body, string value)
+        {
+            if (body == null) return;
+
+            base.Property(body.Member.Name, value);
+        }
+    }
+
 	/// <summary>
 	/// Conveys search settings to the text search feature.
 	/// </summary>
@@ -15,6 +43,7 @@ namespace N2.Persistence.Search
 		public Query()
 		{
 			TakeHits = 10;
+            Details = new Dictionary<string, string>();
 		}
 
 		/// <summary>The ancestor below which the results should be found.</summary>
@@ -41,6 +70,8 @@ namespace N2.Persistence.Search
 		/// <summary>Search for pages belonging to the given language code.</summary>
 		public string LanguageCode { get; set; }
 
+        public IDictionary<string, string> Details { get; set; }
+
 		/// <summary>Query whose hits excludes hits from this query.</summary>
 		public Query Exclution { get; set; }
 
@@ -65,6 +96,17 @@ namespace N2.Persistence.Search
 		{
 			return new Query { Types = types };
 		}
+
+        /// <summary>
+        /// Allows querying for specific 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="comparisons"></param>
+        /// <returns></returns>
+        public static Query<T> For<T>()
+        {
+            return new Query<T> { Types = new[] { typeof(T) } };
+        }
 
 		/// <summary>Restricts the search query to items below the given item.</summary>
 		/// <param name="ancestor">The ancestor below which to find items.</param>
@@ -210,5 +252,27 @@ namespace N2.Persistence.Search
 			
 			return this;
 		}
-	}
+
+        public Query Property(string expression, string value)
+        {
+            this.Details[expression] = value;
+            return this;
+        }
+
+        public bool IsValid()
+        {
+            bool isInvalid = string.IsNullOrEmpty(this.Text)
+                && this.Ancestor == null
+                && this.Details.Count == 0
+                && this.Exclution == null
+                && this.Intersection == null
+                && string.IsNullOrEmpty(this.LanguageCode)
+                && !this.OnlyPages.HasValue
+                && (this.Roles == null || this.Roles.Length == 0)
+                && (this.Types == null || this.Types.Length == 0)
+                && this.Union == null;
+
+            return !isInvalid;
+        }
+    }
 }

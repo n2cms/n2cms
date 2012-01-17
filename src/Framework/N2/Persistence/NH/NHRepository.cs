@@ -29,6 +29,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Engine;
 using NHibernate;
@@ -36,38 +37,97 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
-	[Service(typeof(IRepository<int, ContentItem>), Key = "n2.repository.ContentItem")]
-	public class ContentItemRepository : NHRepository<int, ContentItem>
+	[Service(typeof(IContentItemRepository), Key = "n2.ContentItemRepository")]
+	[Service(typeof(IRepository<ContentItem>), Key = "n2.repository.ContentItem")]
+	public class ContentItemRepository : NHRepository<ContentItem>, IContentItemRepository
 	{
 		public ContentItemRepository(ISessionProvider sessionProvider)
 			: base(sessionProvider)
 		{
 		}
 
-		public override ContentItem Get(int id)
+		object zero = 0;
+		public override ContentItem Get(object id)
 		{
-			if (id == 0) return null;
+			if (id == zero) return null;
 			return SessionProvider.OpenSession.Session.Get<ContentItem>(id);
 		}
 
-		public override T Get<T>(int id)
+		public override T Get<T>(object id)
 		{
-			if (id == 0) return default(T);
+			if (id == zero) return default(T);
 			return SessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
-		ICriteria GetContentItemCriteria()
+		ICriteria GetEagerContentItemCriteria()
 		{
-			return SessionProvider.OpenSession.Session.CreateCriteria(typeof (ContentItem), "ci")
+			return GetContentItemCriteria()
 				.SetFetchMode("ci.Children", FetchMode.Eager)
 				.SetFetchMode("ci.Details", FetchMode.Eager)
 				.SetFetchMode("ci.DetailCollections", FetchMode.Eager);
 		}
+
+		private ICriteria GetContentItemCriteria()
+		{
+			return SessionProvider.OpenSession.Session.CreateCriteria(typeof(ContentItem), "ci");
+		}
+
+		/// <summary>Gets types of items below a certain item.</summary>
+		/// <param name="ancestor">The root level item to include in the search.</param>
+		/// <returns>An enumeration of discriminators and number of items with that discriminator.</returns>
+		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
+		{
+			return SessionProvider.OpenSession.Session
+				.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
+				.SetParameter("id", ancestor.ID)
+				.SetParameter("trail", ancestor.GetTrail() + "%")
+				.Enumerable()
+				.OfType<object[]>()
+				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] });
+		}
+
+		/// <summary>Finds published items below a certain ancestor of a specific type.</summary>
+		/// <param name="ancestor">The ancestor whose descendants are searched.</param>
+		/// <param name="discriminator">The discriminator the are filtered by.</param>
+		/// <returns>An enumeration of items matching the query.</returns>
+		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
+		{
+			return SessionProvider.OpenSession.Session
+				.CreateQuery("select ci from ContentItem ci where (ci.ID=:id or ci.AncestralTrail like :trail) and ci.class=:class")
+				.SetParameter("id", ancestor.ID)
+				.SetParameter("trail", ancestor.GetTrail() + "%")
+				.SetParameter("class", discriminator)
+				.Enumerable<ContentItem>();
+		}
 	}
 
-	[Service(typeof(IRepository<,>), Key = "n2.repository.generic")]
-	[Service(typeof(INHRepository<,>), Key = "n2.nhrepository.generic")]
-	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity : class 
+	[Obsolete("Use NHRepository<TEntity>")]
+	[Service(typeof(IRepository<,>), Key = "n2.repository.generic2")]
+	public class NHRepository<TKey, TEntity> : NHRepository<TEntity>, IRepository<int, TEntity> where TEntity : class
+	{
+		public NHRepository(ISessionProvider sessionProvider)
+			: base(sessionProvider)
+		{
+		}
+
+		#region IRepository<int,TEntity> Members
+
+		public TEntity Get(int id)
+		{
+			return base.Get(id);
+		}
+
+		public T Get<T>(int id)
+		{
+			return base.Get<T>(id);
+		}
+
+		#endregion
+	}
+
+	[Service(typeof(IRepository<>), Key = "n2.repository.generic")]
+	[Service(typeof(INHRepository<>), Key = "n2.nhrepository.generic")]
+	public class NHRepository<TEntity> : INHRepository<TEntity> where TEntity : class 
 	{
 		private ISessionProvider sessionProvider;
 
@@ -96,7 +156,7 @@ namespace N2.Persistence.NH
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		public virtual TEntity Get(TKey id)
+		public virtual TEntity Get(object id)
 		{
 			return sessionProvider.OpenSession.Session.Get<TEntity>(id);
 		}
@@ -108,7 +168,7 @@ namespace N2.Persistence.NH
 		/// <param name="id">The entity's id</param>
 		/// <typeparam name="T">The type of entity to get.</typeparam>
 		/// <returns>Either the entity that matches the id, or a null</returns>
-		public virtual T Get<T>(TKey id)
+		public virtual T Get<T>(object id)
 		{
 			return sessionProvider.OpenSession.Session.Get<T>(id);
 		}
@@ -120,7 +180,7 @@ namespace N2.Persistence.NH
 		/// </summary>
 		/// <param name="id">The entity's id</param>
 		/// <returns>The entity that matches the id</returns>
-		public TEntity Load(TKey id)
+		public TEntity Load(object id)
 		{
 			return sessionProvider.OpenSession.Session.Load<TEntity>(id);
 		}
@@ -173,12 +233,27 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			if (value == null)
-				return FindAll(Expression.IsNull(propertyName));
-			if(value is string)
-				return FindAll(Expression.Like(propertyName, value));
+			return FindAll(CreateExpression(propertyName, value));
+		}
 
-			return FindAll(Expression.Eq(propertyName, value));
+		/// <summary>
+		/// Finds entitities from the persistance store with matching property values.
+		/// </summary>
+		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <returns>Entities with matching values.</returns>
+		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		{
+			return FindAll(propertyValuesToMatchAll.Select(kvp => CreateExpression(kvp.Name, kvp.Value)).ToArray());
+		}
+
+		private static ICriterion CreateExpression(string propertyName, object value)
+		{
+			if (value == null)
+				return Expression.IsNull(propertyName);
+			if (value is string)
+				return Expression.Like(propertyName, value);
+
+			return Expression.Eq(propertyName, value);
 		}
 
 		/// <summary>
@@ -367,5 +442,6 @@ namespace N2.Persistence.NH
 		}
 
 		#endregion
+
 	}
 }

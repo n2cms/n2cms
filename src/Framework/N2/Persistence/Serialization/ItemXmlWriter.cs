@@ -3,6 +3,7 @@ using System.Xml;
 using N2.Definitions;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.FileSystem;
 
 namespace N2.Persistence.Serialization
 {
@@ -14,11 +15,13 @@ namespace N2.Persistence.Serialization
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly IUrlParser parser;
+		private readonly IFileSystem fs;
 
-		public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser)
+		public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser, IFileSystem fs)
 		{
 			this.definitions = definitions;
 			this.parser = parser;
+			this.fs = fs;
 		}
 
         public virtual void Write(ContentItem item, ExportOptions options, XmlTextWriter writer)
@@ -56,7 +59,7 @@ namespace N2.Persistence.Serialization
 			yield return new AuthorizationXmlWriter();
 			yield return new PersistablePropertyXmlWriter(definitions);
             if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
-			    yield return new AttachmentXmlWriter();
+			    yield return new AttachmentXmlWriter(fs);
         }
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)

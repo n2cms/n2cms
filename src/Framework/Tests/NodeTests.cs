@@ -1,8 +1,10 @@
 ﻿using N2.Tests.Content;
 using NUnit.Framework;
+using System;
 
 namespace N2.Tests
 {
+	[Obsolete]
 	[TestFixture]
 	public class NodeTests : ItemTestsBase
 	{
@@ -10,9 +12,9 @@ namespace N2.Tests
 		public void BuildPath()
 		{
 			AnItem root, start;
-			INode rootNode = root = CreateOneItem<AnItem>(1, "root", null);
-			INode startNode = start = CreateOneItem<AnItem>(2, "start", root);
-			INode pageNode = CreateOneItem<AnItem>(3, "page", start);
+			var rootNode = root = CreateOneItem<AnItem>(1, "root", null);
+			var startNode = start = CreateOneItem<AnItem>(2, "start", root);
+			var pageNode = CreateOneItem<AnItem>(3, "page", start);
 
 			Assert.AreEqual("/", rootNode.Path);
 			Assert.AreEqual("/start/", startNode.Path);

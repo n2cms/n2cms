@@ -4,6 +4,7 @@ using System.IO;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
+using log4net;
 
 namespace N2.Web
 {
@@ -13,6 +14,7 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
+        private readonly ILog logger = LogManager.GetLogger(typeof(UrlParser));
         protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
@@ -162,8 +164,7 @@ namespace N2.Web
 		protected virtual ContentItem Parse(ContentItem current, string url)
 		{
 			if (current == null) throw new ArgumentNullException("current");
-
-			Debug.WriteLine("Parsing " + url);
+			logger.Debug("Parsing " + url);
 			url = CleanUrl(url);
 
 			if (url.Length == 0)
@@ -181,8 +182,7 @@ namespace N2.Web
             {
                 return StartPage;
             }
-
-            Debug.WriteLine("No content at: " + url);
+			logger.Debug("No content at: " + url);
 
             PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
             if (PageNotFound != null)

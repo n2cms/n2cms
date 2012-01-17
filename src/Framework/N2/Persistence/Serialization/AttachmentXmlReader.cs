@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Xml.XPath;
 using N2.Definitions;
+using N2.Edit.FileSystem;
 
 namespace N2.Persistence.Serialization
 {
 	public class AttachmentXmlReader : XmlReader, IXmlReader
 	{
 		private readonly AttributeExplorer explorer = new AttributeExplorer();
-
+		
 		public void Read(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
 		{
 			IDictionary<string, IAttachmentHandler> attachments = explorer.Map<IAttachmentHandler>(item.GetContentType());

@@ -88,9 +88,20 @@ namespace N2.Edit.Workflow
                 // has never been published before (remove old version)
 				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save);
             }
-            else if (context.Interface == Interfaces.Viewing && context.Content.VersionOf != null)
+            else if (context.Interface == Interfaces.Viewing)
             {
                 // Viewing
+                if (context.Content.VersionOf == null)
+                {
+                    if (context.Content.ID == 0)
+                        return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
+
+                    if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
+                        return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save);
+
+                    return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
+                }
+                
                 if (context.Content.State == ContentState.Unpublished)
 					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 

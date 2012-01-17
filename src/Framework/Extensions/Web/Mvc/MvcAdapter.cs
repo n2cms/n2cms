@@ -11,7 +11,13 @@ namespace N2.Web.Mvc
 
 		public ITemplateRenderer Renderer
 		{
-			get { return renderer ?? (renderer = Engine.Resolve<ITemplateRenderer>()); }
+			get 
+			{
+				return renderer 
+#pragma warning disable 618
+					?? (renderer = Engine.Resolve<ITemplateRenderer>()); 
+#pragma warning restore 618
+			}
 			set { renderer = value; }
 		}
 

@@ -7,14 +7,14 @@ namespace N2.Tests.Web.Items
 	[Adapts(typeof(PageItem))]
 	public class PageZoneAdapter : PartsAdapter
 	{
-		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
-		{
-			if(zoneName.EndsWith("None"))
+        public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
+        {
+			if(inZoneNamed.EndsWith("None"))
 				return new ItemList();
-			if (zoneName.EndsWith("All"))
-				return parentItem.GetChildren(new DelegateFilter(ci => ci.ZoneName != null));
+			if (inZoneNamed.EndsWith("All"))
+				return belowParentItem.GetChildren(new DelegateFilter(ci => ci.ZoneName != null));
 
-			return parentItem.GetChildren(zoneName);
+			return belowParentItem.GetChildren(inZoneNamed);
 		}
 	}
 }

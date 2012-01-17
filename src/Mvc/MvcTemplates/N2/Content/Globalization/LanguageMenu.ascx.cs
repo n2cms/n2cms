@@ -17,7 +17,7 @@ namespace N2.Edit.Globalization
 		}
 		protected ILanguageGateway Gateway
 		{
-			get { return Engine.Resolve<ILanguageGateway>(); }
+            get { return Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(Selection.SelectedItem); }
 		}
 		protected ILanguage CurrentLanguage
 		{

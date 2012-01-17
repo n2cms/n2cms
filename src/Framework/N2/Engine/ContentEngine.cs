@@ -240,6 +240,11 @@ namespace N2.Engine
 			return instance;
 		}
 
+		public ContentHelperBase Content
+		{
+			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
+		}
+
 		#endregion
 	}
 }

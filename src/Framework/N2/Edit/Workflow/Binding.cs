@@ -3,7 +3,7 @@ using N2.Definitions;
 
 namespace N2.Edit.Workflow
 {
-	internal static class Binding
+	public static class Binding
 	{
 		const string Key = "ItemsToSave";
 		const string UpdatedDetailsKey = "UpdatedDetailsKey";

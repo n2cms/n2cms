@@ -78,8 +78,9 @@ namespace Dinamico.Controllers
 		{
 			StringBuilder sb = new StringBuilder();
 
-			var lg = Engine.Resolve<ILanguageGateway>();
-			var translations = lg.FindTranslations(Engine.Persister.Get(id));
+			var item = Engine.Persister.Get(id);
+			var lg = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
+			var translations = lg.FindTranslations(item);
 			foreach (var language in translations)
 				sb.Append("<li>").Append(Link.To(language).Text(lg.GetLanguage(language).LanguageTitle)).Append("</li>");
 

@@ -51,6 +51,11 @@
       <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -75,11 +80,22 @@
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
+    <Content Include="N2\Content\Export\BulkEditing.aspx" />
+    <Content Include="N2\Content\Export\CsvImport.ascx" />
+    <Content Include="N2\Content\Export\Export.aspx" />
+    <Content Include="N2\Content\Export\ItemXmlImport.ascx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
+    <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
+    <Content Include="N2\Files\FileSystem\Export.aspx" />
+    <Content Include="N2\Files\FileSystem\jquery.fileupload-ui.js" />
+    <Content Include="N2\Files\FileSystem\jquery.fileupload.js" />
+    <Content Include="N2\Files\FileSystem\jquery.iframe-transport.js" />
+    <Content Include="N2\Files\FileSystem\jquery.tmpl.js" />
     <Content Include="N2\Files\Js\FileSelection.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Search\ManageIndex.ascx" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />
     <Content Include="N2\Myself\Analytics\Resources\jquery.flot.js" />
@@ -91,7 +107,6 @@
     <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="N2\Resources\Css\editor.css" />
     <Content Include="N2\Resources\Css\default.css" />
-    <Content Include="N2\Files\Css\filemanager.css" />
     <Content Include="N2\Content\Default.aspx" />
     <Content Include="N2\Content\Delete.aspx" />
     <Content Include="N2\Content\Edit.aspx" />
@@ -111,15 +126,15 @@
     <Content Include="N2\Resources\Css\smoothness\images\ui-icons_454545_256x240.png" />
     <Content Include="N2\Resources\Css\smoothness\images\ui-icons_888888_256x240.png" />
     <Content Include="N2\Resources\Css\smoothness\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.14.custom.css" />
+    <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.16.custom.css" />
     <Content Include="N2\Resources\img\bg_00020.png" />
     <Content Include="N2\Resources\img\bg_00050.png" />
     <Content Include="N2\Resources\img\bg_fff20.png" />
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
     <Content Include="N2\Resources\Js\EditableTags.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.js" />
-    <Content Include="N2\Resources\Js\jquery-1.6.1.min.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.js" />
+    <Content Include="N2\Resources\Js\jquery-1.7.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
@@ -141,6 +156,8 @@
     <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config" />
     <Content Include="N2\Myself\Analytics\Views\Web.config" />
+    <Content Include="N2\Search\IndexInfo.ashx" />
+    <Content Include="N2\log4net.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -213,6 +230,23 @@
     <Compile Include="N2\Content\EditRecursive.aspx.designer.cs">
       <DependentUpon>EditRecursive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Content\Export\BulkEditing.aspx.cs">
+      <DependentUpon>BulkEditing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\BulkEditing.aspx.designer.cs">
+      <DependentUpon>BulkEditing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Export\BulkOptionProvider.cs" />
+    <Compile Include="N2\Content\Export\CsvImport.ascx.cs">
+      <DependentUpon>CsvImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\CsvImport.ascx.designer.cs">
+      <DependentUpon>CsvImport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Export\CsvParser.cs" />
+    <Compile Include="N2\Content\Export\CsvRow.cs" />
     <Compile Include="N2\Content\Export\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -221,7 +255,21 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Export\DefinitionNotFoundException.cs" />
+    <Compile Include="N2\Content\Export\Export.aspx.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\Export.aspx.designer.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Export\InvalidXmlException.cs" />
+    <Compile Include="N2\Content\Export\ItemXmlImport.ascx.cs">
+      <DependentUpon>ItemXmlImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\ItemXmlImport.ascx.designer.cs">
+      <DependentUpon>ItemXmlImport.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
@@ -311,6 +359,14 @@
     <Compile Include="N2\Files\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FileSystem\Export.aspx.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Export.aspx.designer.cs">
+      <DependentUpon>Export.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\FileSystemSource.cs" />
     <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -327,21 +383,23 @@
     <Compile Include="N2\Files\FileSystem\File.aspx.designer.cs">
       <DependentUpon>File.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FileSystem\FileUpload.ascx.cs">
+      <DependentUpon>FileUpload.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\FileUpload.ascx.designer.cs">
+      <DependentUpon>FileUpload.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Files\FileSystem\Pages\AbstractDirectory.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\AbstractNode.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\Directory.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\File.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\RootDirectory.cs" />
-    <Compile Include="N2\Files\FileSystem\Upload.aspx.cs">
-      <DependentUpon>Upload.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Files\FileSystem\Upload.aspx.designer.cs">
-      <DependentUpon>Upload.aspx</DependentUpon>
-    </Compile>
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
       <DependentUpon>UploadFile.ashx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Files\FolderNodeProvider.cs" />
+    <Compile Include="N2\Files\FolderPair.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
@@ -359,6 +417,16 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Search\IndexInfo.ashx.cs">
+      <DependentUpon>IndexInfo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Search\ManageIndex.ascx.cs">
+      <DependentUpon>ManageIndex.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Search\ManageIndex.ascx.designer.cs">
+      <DependentUpon>ManageIndex.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs" />
     <Compile Include="N2\Myself\Analytics\ManagementAreaRegistration.cs" />
     <Compile Include="N2\Myself\Analytics\Models\AnalyticsPartBase.cs" />
@@ -1161,8 +1229,6 @@
     <Content Include="N2\Files\Default.aspx" />
     <Content Include="N2\Files\FileSystem\Directory.aspx" />
     <Content Include="N2\Files\FileSystem\File.aspx" />
-    <Content Include="N2\Files\FileSystem\FlashFileUpload.swf" />
-    <Content Include="N2\Files\FileSystem\Upload.aspx" />
     <Content Include="N2\Installation\Begin\Default.aspx" />
     <Content Include="N2\Installation\Default.aspx" />
     <Content Include="N2\Installation\Diagnose.aspx" />
@@ -1206,11 +1272,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="N2\Files\FileSystem\App_LocalResources\Upload.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="N2\Files\FileSystem\App_LocalResources\Directory.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -1239,6 +1300,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Content\App_LocalResources\EditRecursive.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Files\FileSystem\App_LocalResources\FileUpload.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Export\App_LocalResources\Export.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

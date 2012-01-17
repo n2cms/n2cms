@@ -68,5 +68,10 @@ namespace N2.Collections
 			Filter(items, new AncestorFilter(parentID));
 		}
 		#endregion
+
+		public override string ToString()
+		{
+			return "Ancestor.ID=" + parentID;
+		}
 	}
 }

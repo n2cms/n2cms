@@ -36,7 +36,7 @@
 				<p><asp:Label Text="User Name" AssociatedControlID="lblUserName" runat="server" /><asp:Label Text="admin" ID="lblUserName" runat="server" /></p>
 				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" Text="Password is required" runat="server" /></p>
 				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" Text="Passwords doesn't match" runat="server" /></p>
-				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /></p>
+				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /> <em>(recommended, you can change this later in web.config)</em></p>
 				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
 			<%} else if (action == "install"){%>
 				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation Wizard</h1>

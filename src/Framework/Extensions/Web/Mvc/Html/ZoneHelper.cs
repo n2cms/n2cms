@@ -2,6 +2,7 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using N2.Edit;
 
 namespace N2.Web.Mvc.Html
 {
@@ -45,10 +46,15 @@ namespace N2.Web.Mvc.Html
 			if (N2.Web.Mvc.Html.RegistrationExtensions.GetRegistrationExpression(Html) != null)
 				return;
 
-			foreach (var child in PartsAdapter.GetItemsInZone(CurrentItem, ZoneName))
+            foreach (var child in PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()))
             {
                 RenderTemplate(writer, child);
             }
+        }
+
+        protected virtual string GetInterface()
+        {
+            return Interfaces.Viewing;
         }
 
         protected virtual void RenderTemplate(TextWriter writer, ContentItem model)

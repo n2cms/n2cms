@@ -4,6 +4,7 @@ using N2.Installation;
 using N2.Web;
 using N2.Web.UI;
 using N2.Definitions;
+using N2.Security;
 
 namespace N2.Templates.Items
 {
@@ -20,7 +21,10 @@ namespace N2.Templates.Items
     [AvailableZone("Above", "Above")]
     [AvailableZone("Below", "Below")]
     [N2.Web.UI.TabContainer("smtp", "Smtp settings", 30)]
-	public class RootPage : ContentItem, IRootPage
+    [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
+    [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
+    [WithManageableSearch(ContainerName = "Search")]
+    public class RootPage : ContentItem, IRootPage
     {
         public override string Url
         {

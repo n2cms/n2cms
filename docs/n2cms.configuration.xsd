@@ -164,7 +164,8 @@
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
+                  <xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -307,6 +308,18 @@
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="files" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="storageLocation" use="optional" default="Disk">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Disk"/>
+												<xs:enumeration value="Database"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 						</xs:all>

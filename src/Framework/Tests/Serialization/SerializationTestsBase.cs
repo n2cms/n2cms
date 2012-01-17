@@ -10,6 +10,7 @@ using N2.Tests.Serialization.Items;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Edit.FileSystem;
 
 namespace N2.Tests.Serialization
 {
@@ -66,11 +67,16 @@ namespace N2.Tests.Serialization
 
 		protected ItemXmlWriter CreateWriter()
 		{
-			return new ItemXmlWriter(definitions, parser);
+			return new ItemXmlWriter(definitions, parser, new FakeMemoryFileSystem());
 		}
+
 		protected Exporter CreateExporter()
 		{
-			return new Exporter(new ItemXmlWriter(definitions, parser));
+			return CreateExporter(new FakeMemoryFileSystem());
+		}
+		protected Exporter CreateExporter(IFileSystem fs)
+		{
+			return new Exporter(new ItemXmlWriter(definitions, parser, fs));
 		}
 		protected ItemXmlReader CreateReader()
 		{
@@ -78,7 +84,11 @@ namespace N2.Tests.Serialization
 		}
 		protected Importer CreateImporter()
 		{
-			return new Importer(persister, new ItemXmlReader(definitions, activator));
+			return CreateImporter(new FakeMemoryFileSystem());
+		}
+		protected Importer CreateImporter(IFileSystem fs)
+		{
+			return new Importer(persister, new ItemXmlReader(definitions, activator), fs);
 		}
 	}
 }

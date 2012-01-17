@@ -448,7 +448,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_PendingItem_IsNotSelected()
 		{
 			item.Published = DateTime.Now.AddSeconds(10);
-			engine.Persister.Repository.Save(item);
+			engine.Persister.Repository.SaveOrUpdate(item);
 
 			var query = engine.QueryItems().WherePublished();
 
@@ -461,7 +461,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_ItemWithWaitingState_IsNotSelected()
 		{
 			item.State = ContentState.Waiting;
-			engine.Persister.Repository.Save(item);
+			engine.Persister.Repository.SaveOrUpdate(item);
 
 			var query = engine.QueryItems().WherePublished();
 
@@ -474,7 +474,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_ExpiredItem_IsNotSelected()
 		{
 			item.Expires = DateTime.Now.AddSeconds(-10);
-			engine.Persister.Repository.Save(item);
+			engine.Persister.Repository.SaveOrUpdate(item);
 
 			var query = engine.QueryItems().WherePublished();
 
@@ -487,7 +487,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_ItemWithUnpublishedState_IsNotSelected()
 		{
 			item.State = ContentState.Unpublished;
-			engine.Persister.Repository.Save(item);
+			engine.Persister.Repository.SaveOrUpdate(item);
 
 			var query = engine.QueryItems().WherePublished();
 

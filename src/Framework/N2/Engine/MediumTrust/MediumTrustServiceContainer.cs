@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using N2.Plugin;
+using log4net;
 
 namespace N2.Engine.MediumTrust
 {
@@ -12,6 +13,7 @@ namespace N2.Engine.MediumTrust
 	{
 		bool isInitialized = false;
 
+		private readonly ILog logger = LogManager.GetLogger(typeof (MediumTrustServiceContainer));
 		private readonly IDictionary<Type, Type> waitingList = new Dictionary<Type, Type>();
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Func<Type, object>> resolvers = new Dictionary<Type, Func<Type, object>>();
@@ -47,7 +49,7 @@ namespace N2.Engine.MediumTrust
 
 			if (instance is IAutoStart)
 			{
-				Trace.WriteLine("Starting " + instance);
+				logger.Info("Starting " + instance);
 				(instance as IAutoStart).Start();
 			}
 		}
@@ -94,6 +96,14 @@ namespace N2.Engine.MediumTrust
 			var returnArray = Activator.CreateInstance(serviceType.MakeArrayType(), instances.Length) as Array;
 			Array.Copy(instances, returnArray, instances.Length);
 			return returnArray;
+		}
+
+		/// <summary>Resolves all services.</summary>
+		/// <returns>All registered services.</returns>
+		public override IEnumerable<ServiceInfo> Diagnose()
+		{
+			return resolvers.Keys
+				.Select(t => new ServiceInfo { Key = t.FullName, ServiceType = t, ImplementationType = t, Resolve = () => Resolve(t), ResolveAll = () => ResolveAll(t) });
 		}
 
 		/// <summary>Resolves all services of the given type.</summary>
@@ -152,7 +162,7 @@ namespace N2.Engine.MediumTrust
 				}
 
 				IAutoStart instance = Resolve(serviceType) as IAutoStart;
-				Trace.WriteLine("Starting " + instance);
+				logger.Info("Starting " + instance);
 				instance.Start();
 			}
 		}
@@ -166,7 +176,7 @@ namespace N2.Engine.MediumTrust
 		{
 			if (resolvers.ContainsKey(serviceType))
 			{
-				Trace.WriteLine("Already contains service " + serviceType + ". " + classType + " is now default.");
+				logger.Info("Already contains service " + serviceType + ". " + classType + " is now default.");
 			}
 
 			var instanceResolver = CreateInstanceResolver(key, classType);
@@ -186,7 +196,7 @@ namespace N2.Engine.MediumTrust
 					if (container.TryGetValue(type, out instance))
 						return instance;
 
-					Trace.WriteLine("Creating " + classType);
+					logger.Info("Creating " + classType);
 					object componentInstance = CreateInstance(key, type, classType);
 					container[type] = componentInstance;
 					return componentInstance;

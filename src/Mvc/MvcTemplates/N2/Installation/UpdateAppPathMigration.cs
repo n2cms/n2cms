@@ -7,10 +7,10 @@ namespace N2.Management.Installation
 	[N2.Engine.Service(typeof(AbstractMigration))]
 	public class UpdateAppPathMigration : AbstractMigration
 	{
-		IRepository<int, ContentItem> repository;
+		IRepository<ContentItem> repository;
 		private readonly IWebContext webContext;
 
-		public UpdateAppPathMigration(IRepository<int, ContentItem> repository, IWebContext webContext)
+		public UpdateAppPathMigration(IRepository<ContentItem> repository, IWebContext webContext)
 		{
 			this.repository = repository;
 			this.webContext = webContext;
@@ -27,7 +27,7 @@ namespace N2.Management.Installation
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
 		{
 			preSchemaUpdateStatus.RootItem[InstallationManager.InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
-			repository.Update(preSchemaUpdateStatus.RootItem);
+			repository.SaveOrUpdate(preSchemaUpdateStatus.RootItem);
 			repository.Flush();
 
 			return new MigrationResult(this) { UpdatedItems = 1 };

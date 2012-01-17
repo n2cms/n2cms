@@ -21,7 +21,7 @@ namespace N2.Tests.Fakes
 			get
 			{
 				if(session == null)
-					session = NHSessionFactory.OpenSession(interceptor);
+					session = SessionFactory.OpenSession(interceptor);
 				return CurrentSession ?? (CurrentSession = new SessionContext(this, session));
 			}
 		}

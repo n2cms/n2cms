@@ -29,7 +29,8 @@ namespace N2.Persistence.NH
 				if (this.WasInitialized)
 					return base.Count;
 
-				return Convert.ToInt32(((ISession)Session).CreateFilter(this, "select count(*)").UniqueResult());
+                return Convert.ToInt32(((ISession)Session).CreateFilter(this, "select count(*)")
+                    .SetCacheable(true).UniqueResult());
 			}
 		}
 
@@ -106,7 +107,12 @@ namespace N2.Persistence.NH
 		{
 			if (WasInitialized) return List.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 
-			return ((ISession)Session).CreateFilter(this, "where Name like :name").SetParameter("name", name).UniqueResult<T>();
+            return ((ISession)Session).CreateFilter(this, "where Name like :name")
+				.SetParameter("name", name)
+                .SetCacheable(true)
+				.SetMaxResults(1)
+				.List<T>()
+				.FirstOrDefault();
 		}
 
 		#endregion

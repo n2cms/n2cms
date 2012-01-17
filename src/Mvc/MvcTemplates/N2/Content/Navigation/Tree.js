@@ -69,12 +69,28 @@
 		right: function (e, ctx) {
 			ctx.focused().siblings(".folder-close > .toggler").click();
 		},
-		esc: function () { $("#contextMenu").n2hide(); },
-		del: function () { $("#contextMenu a.delete").n2trigger(); },
-		c: function () { $("#contextMenu a.copy").n2trigger(); },
-		n: function () { $("#contextMenu a.new").n2trigger(); },
-		v: function () { $("#contextMenu a.paste").n2trigger(); },
-		x: function () { $("#contextMenu a.move").n2trigger(); },
-		enter: function () { ctx.focused().click(); }
+		esc: function (e) {
+			if (e.altKey || e.ctrlKey) return;
+			$("#contextMenu").n2hide(); 
+		},
+		del: function (e) {
+			if (e.altKey || e.ctrlKey) return;
+			$("#contextMenu a.delete").n2trigger(); 
+		},
+		c: function () {
+			$("#contextMenu a.copy").n2trigger(); 
+		},
+		n: function () {
+			$("#contextMenu a.new").n2trigger(); 
+		},
+		v: function () {
+			$("#contextMenu a.paste").n2trigger(); 
+		},
+		x: function () {
+			$("#contextMenu a.move").n2trigger(); 
+		},
+		enter: function () {
+			ctx.focused().click(); 
+		}
 	}, ".selected");
 });

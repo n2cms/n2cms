@@ -32,6 +32,10 @@ namespace N2.Edit.FileSystem
 
 		private static FileData GetFile(string virtualPath, FileInfo info)
 		{
+
+			if (!info.Exists)
+				return null;
+
 			return new FileData
 			{
 				Name = info.Name,
@@ -60,8 +64,11 @@ namespace N2.Edit.FileSystem
 
 		private static DirectoryData GetDirectory(string virtualPath, DirectoryInfo info)
 		{
-			return new DirectoryData
-			{
+			if (!info.Exists)
+				return null;
+
+			return new DirectoryData 
+			{ 
 				Name = info.Name,
 				Created = GetSafely(info, i => i.CreationTime),
 				Updated = GetSafely(info, i => i.LastWriteTime),
@@ -120,6 +127,10 @@ namespace N2.Edit.FileSystem
 
 		public void WriteFile(string virtualPath, System.IO.Stream inputStream)
 		{
+			string path = MapPath(virtualPath);
+			if (!Directory.Exists(Path.GetDirectoryName(path)))
+				Directory.CreateDirectory((Path.GetDirectoryName(path)));
+			
 			if (FileExists(virtualPath))
 			{
 				ReplaceFile(virtualPath, inputStream);
@@ -155,6 +166,7 @@ namespace N2.Edit.FileSystem
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
 			using (var s = File.Create(path))
+
 			{
 				TransferBetweenStreams(inputStream, s);
 			}

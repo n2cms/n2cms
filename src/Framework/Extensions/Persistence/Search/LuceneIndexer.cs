@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using N2.Plugin;
-using N2.Engine;
-using N2.Plugin.Scheduling;
-using Lucene.Net.Store;
-using System.IO;
-using N2.Web;
-using Lucene.Net.Index;
-using Lucene.Net.Analysis.Standard;
+using log4net;
 using Lucene.Net.Documents;
-using System.Globalization;
+using Lucene.Net.Index;
 using Lucene.Net.Search;
-using System.Diagnostics;
+using N2.Engine;
 using N2.Engine.Globalization;
+using N2.Web;
 
 namespace N2.Persistence.Search
 {
 	/// <summary>
 	/// Wraps the usage of lucene to index content items.
 	/// </summary>
-	[Service(typeof(IIndexer))]
+	[Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneIndexer));
 		LuceneAccesor accessor;
 		TextExtractor extractor;
 
@@ -38,7 +33,7 @@ namespace N2.Persistence.Search
 		/// <summary>Clears the index.</summary>
 		public virtual void Clear()
 		{
-			Trace.WriteLine("Clearing index");
+			logger.Debug("Clearing index");
 
 			if (accessor.IndexExists())
 			{
@@ -57,14 +52,14 @@ namespace N2.Persistence.Search
 		/// <summary>Unlocks the index.</summary>
 		public virtual void Unlock()
 		{
-			Trace.WriteLine("Unlocking index");
+			logger.Debug("Unlocking index");
 			accessor.GetDirectory().ClearLock("write.lock");
 		}
 
 		/// <summary>Optimizes the index.</summary>
 		public virtual void Optimize()
 		{
-			Trace.WriteLine("Optimizing index");
+			logger.Debug("Optimizing index");
 
 			if (accessor.IndexExists())
 			{
@@ -85,7 +80,7 @@ namespace N2.Persistence.Search
 			if(item == null || item.ID == 0)
 				return;
 
-			Trace.WriteLine("Updating item #" + item.ID);
+			logger.Debug("Updating item #" + item.ID);
 
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
@@ -98,7 +93,9 @@ namespace N2.Persistence.Search
 					return;
 
 				var doc = CreateDocument(item);
-				iw.UpdateDocument(new Term("ID", item.ID.ToString()), doc);
+				if (doc == null)
+					return;
+				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
 				iw.Commit();
 				accessor.RecreateSearcher();
 			}
@@ -108,55 +105,89 @@ namespace N2.Persistence.Search
 		/// <param name="itemID">The id of the item to delete.</param>
 		public virtual void Delete(int itemID)
 		{
-			Trace.WriteLine("Deleting item #" + itemID);
+			logger.Debug("Deleting item #" + itemID);
 
 			lock (accessor)
 			{
 				var iw = accessor.GetWriter();
 				var s = accessor.GetSearcher();
-				string trail = GetTrail(s, new Term("ID", itemID.ToString()));
+				string trail = GetTrail(s, new Term(Properties.ID, itemID.ToString()));
 				if (trail == null)
 					return; // not indexed
 
-				var query = new PrefixQuery(new Term("Trail", trail));
+				var query = new PrefixQuery(new Term(Properties.Trail, trail));
 				iw.DeleteDocuments(query);
 				iw.Commit();
 				accessor.RecreateSearcher();
 			}
 		}
 
-
-
 		private string GetTrail(IndexSearcher s, Term t)
 		{
 			return s.Search(new TermQuery(t), 1)
 				.scoreDocs
-				.Select(d => s.Doc(d.doc).Get("Trail"))
+				.Select(d => s.Doc(d.doc).Get(Properties.Trail))
 				.FirstOrDefault();
 		}
+
+        public static class Properties
+        {
+            public const string ID = "ID";
+            public const string Title = "Title";
+            public const string Name = "Name";
+            public const string SavedBy = "SavedBy";
+            public const string Created = "Created";
+            public const string Updated = "Updated";
+            public const string Published = "Published";
+            public const string Expires = "Expires";
+            public const string Url = "Url";
+            public const string Path = "Path";
+            public const string AncestralTrail = "AncestralTrail";
+            public const string Trail = "Trail";
+            public const string AlteredPermissions = "AlteredPermissions";
+            public const string State = "State";
+            public const string IsPage = "IsPage";
+            public const string Roles = "Roles";
+            public const string Types = "Types";
+            public const string Language = "Language";
+			public const string Visible = "Visible";
+
+            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
+        }
 
 		public virtual Document CreateDocument(ContentItem item)
 		{
 			var doc = new Document();
-			doc.Add(new Field("ID", item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Title", item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Name", item.Name ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("SavedBy", item.SavedBy ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Created", DateTools.DateToString(item.Created.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Updated", DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Published", item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Expires", item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.ID, item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Title, item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(Properties.Name, item.Name ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.SavedBy, item.SavedBy ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Created, DateTools.DateToString(item.Created.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Updated, DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Published, item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Expires, item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
 			if (item.IsPage)
-				doc.Add(new Field("Url", item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Path", item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("AncestralTrail", (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Trail", Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("AlteredPermissions", ((int)item.AlteredPermissions).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("State", ((int)item.State).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("IsPage", item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-			doc.Add(new Field("Roles", GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Types", GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
-			doc.Add(new Field("Language", GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			{
+				try
+				{
+					doc.Add(new Field(Properties.Url, item.Url, Field.Store.YES, Field.Index.NOT_ANALYZED));
+				}
+				catch (TemplateNotFoundException ex)
+				{
+					logger.Warn("Failed to retrieve Url on " + item, ex);
+					return null;
+				}
+			}
+            doc.Add(new Field(Properties.Path, item.Path ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.AncestralTrail, (item.AncestralTrail ?? ""), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Trail, Utility.GetTrail(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.AlteredPermissions, ((int)item.AlteredPermissions).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.State, ((int)item.State).ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.IsPage, item.IsPage.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Properties.Roles, GetRoles(item), Field.Store.YES, Field.Index.ANALYZED));
+            doc.Add(new Field(Properties.Types, GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.Visible, item.Visible.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)
@@ -217,5 +248,13 @@ namespace N2.Persistence.Search
 				sb.AppendLine(value);
 			return sb.ToString();
 		}
-	}
+
+        public IndexStatistics GetStatistics()
+        {
+            return new IndexStatistics
+            {
+                TotalDocuments = accessor.GetWriter().GetReader().NumDocs()
+            };
+        }
+    }
 }

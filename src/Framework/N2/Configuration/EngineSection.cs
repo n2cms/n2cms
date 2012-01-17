@@ -1,5 +1,7 @@
-﻿using System.Configuration;
+﻿using System.Linq;
+using System.Configuration;
 using N2.Engine;
+using System.Collections.Generic;
 
 namespace N2.Configuration
 {
@@ -11,7 +13,7 @@ namespace N2.Configuration
     /// Configuration related to inversion of control and the dynamic aspects 
     /// of n2 definition.
     /// </summary>
-	public class EngineSection : ConfigurationSectionBase
+	public class EngineSection : ContentConfigurationSectionBase
 	{
 		/// <summary>A custom <see cref="IEngine"/> to manage the application instead of the default.</summary>
 		[ConfigurationProperty("engineType")]
@@ -104,6 +106,32 @@ namespace N2.Configuration
 		{
 			get { return (DefinitionCollection)base["definitions"]; }
 			set { base["definitions"] = value; }
+		}
+
+		public override void ApplyComponentConfigurationKeys(List<string> configurationKeys)
+		{
+			configurationKeys.Add(GetTrustLevelComponentConfigurationKey());
+
+			configurationKeys.AddRange(ComponentConfigurations.AddedElements.Select(e => e.Name));
+			configurationKeys.RemoveAll(c => ComponentConfigurations.RemovedElements.Any(e => c == e.Name));
+		}
+
+		private static string GetTrustLevelComponentConfigurationKey()
+		{
+			return (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium)
+							? ConfigurationKeys.FullTrust
+							: ConfigurationKeys.MediumTrust;
+		}
+
+		/// <summary>
+		/// Known configuration keys used to configure services.
+		/// </summary>
+		private static class ConfigurationKeys
+		{
+			/// <summary>Key used to configure services intended for medium trust.</summary>
+			public const string MediumTrust = "MediumTrust";
+			/// <summary>Key used to configure services intended for full trust.</summary>
+			public const string FullTrust = "FullTrust";
 		}
 	}
 }

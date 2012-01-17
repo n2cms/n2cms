@@ -5,10 +5,22 @@ using N2.Integrity;
 using N2.Templates.Services;
 using N2.Web;
 using N2.Definitions;
+using N2.Engine;
+using N2.Edit;
 
 namespace N2.Templates.Items
 {
-    [PageDefinition("Feed", 
+
+	[Adapts(typeof(RssFeed))]
+	public class RssFeedNodeAdapter : NodeAdapter
+	{
+		public override string GetPreviewUrl(ContentItem item)
+		{
+			return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+		}
+	}
+
+	[PageDefinition("Feed", 
 		Description = "An RSS feed that outputs an xml with the latest feeds.",
 		SortOrder = 260,
 		IconUrl = "~/Templates/UI/Img/feed.png")]
@@ -16,7 +28,7 @@ namespace N2.Templates.Items
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
 	[ConventionTemplate("Feed")]
-    public class RssFeed : AbstractContentPage, IFeed, INode
+    public class RssFeed : AbstractContentPage, IFeed
     {
         [EditableLink("Feed root", 90)]
         public virtual ContentItem FeedRoot
@@ -56,11 +68,6 @@ namespace N2.Templates.Items
         public override string Url
         {
             get { return base.Url + "?hungry=yes"; }
-        }
-
-        public string PreviewUrl
-        {
-			get { return base.FindPath(PathData.DefaultAction).RewrittenUrl; }
         }
 
         public virtual IEnumerable<ISyndicatable> GetItems()

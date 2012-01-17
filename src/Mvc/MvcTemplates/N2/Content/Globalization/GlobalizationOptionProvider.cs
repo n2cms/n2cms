@@ -2,6 +2,7 @@
 using System.Linq;
 using N2.Engine;
 using N2.Engine.Globalization;
+using N2.Web;
 
 namespace N2.Edit.Globalization
 {
@@ -9,12 +10,14 @@ namespace N2.Edit.Globalization
 	public class GlobalizationOptionProvider : IProvider<ToolbarOption>
 	{
 		ILanguageGateway languages;
-		IEditUrlManager editUrlManager;
+        IHost host;
+		IContentAdapterProvider adapters;
 
-		public GlobalizationOptionProvider(ILanguageGateway languages, IEditUrlManager editUrlManager)
+		public GlobalizationOptionProvider(ILanguageGateway languages, IContentAdapterProvider adapters, IHost host)
 		{
 			this.languages = languages;
-			this.editUrlManager = editUrlManager;
+            this.host = host;
+			this.adapters = adapters;
 		}
 
 		#region IProvider<ToolbarOption> Members
@@ -28,15 +31,24 @@ namespace N2.Edit.Globalization
 		{
 			return languages.GetAvailableLanguages()
 				.Where(l => l is ContentItem)
-				.Select((l, i) => new ToolbarOption
+                .Select((l, i) => new ToolbarOption
 				{
-					Title = l.LanguageTitle,
+                    Title = GetHostPrefix((ContentItem)l) + l.LanguageTitle,
 					Target = Targets.Preview,
 					SortOrder = i,
 					Name = l.LanguageCode,
-					Url = editUrlManager.GetPreviewUrl((ContentItem)l)
+					Url = adapters.ResolveAdapter<NodeAdapter>((ContentItem)l).GetPreviewUrl((ContentItem)l)
 				});
 		}
+
+        private string GetHostPrefix(ContentItem item)
+        {
+            var site = host.GetSite(item);
+            if (site == null || string.IsNullOrEmpty(site.Authority))
+                return null;
+
+            return site.Authority + " / ";
+        }
 
 		#endregion
 	}

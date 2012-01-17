@@ -90,7 +90,7 @@ namespace N2.Tests.Web.UrlParsing
 
 			var data = parser.ResolvePath("/item1/item1_1");
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Load(3)"), "Should have loaded the parsed item directly.");
+			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 

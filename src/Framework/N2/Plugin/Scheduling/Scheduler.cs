@@ -4,16 +4,19 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using N2.Engine;
 using N2.Web;
+using log4net;
 
 namespace N2.Plugin.Scheduling
 {
     /// <summary>
-    /// Maintains a list of scheduler actions and checks wether it's time to 
+    /// Maintains a list of scheduler actions and checks whether it's time to 
     /// execute them.
     /// </summary>
 	[Service]
     public class Scheduler : IAutoStart
     {
+        private readonly ILog logger = LogManager.GetLogger(typeof (Scheduler));
+
         IList<ScheduledAction> actions;
         IHeart heart;
     	readonly IWorker worker;
@@ -24,12 +27,21 @@ namespace N2.Plugin.Scheduling
         public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler)
         {
 			this.engine = engine;
+			RegisterActionsAsComponents(engine, plugins);
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
             this.heart = heart;
         	this.worker = worker;
         	this.context = context;
             this.errorHandler = errorHandler;
         }
+
+		private void RegisterActionsAsComponents(IEngine engine, IPluginFinder plugins)
+		{
+			foreach (var plugin in plugins.GetPlugins<ScheduleExecutionAttribute>())
+			{
+				engine.Container.AddComponent(plugin.Decorates.FullName, plugin.Decorates, plugin.Decorates);
+			}
+		}
 
         public IList<ScheduledAction> Actions
         {
@@ -55,7 +67,7 @@ namespace N2.Plugin.Scheduling
         {
             foreach (ScheduleExecutionAttribute attr in plugins.GetPlugins<ScheduleExecutionAttribute>())
             {
-                ScheduledAction action = Activator.CreateInstance(attr.Decorates) as ScheduledAction;
+				ScheduledAction action = (ScheduledAction)engine.Resolve(attr.Decorates);
                 action.Interval = CalculateInterval(attr.Interval, attr.Unit);
                 action.Repeat = attr.Repeat;
                 yield return action;
@@ -75,7 +87,7 @@ namespace N2.Plugin.Scheduling
                     {
                         try
                         {
-							Debug.WriteLine("Executing " + action.GetType().Name);
+							logger.Debug("Executing " + action.GetType().Name);
 							action.Engine = engine;
                             action.Execute();
                             action.ErrorCount = 0;

@@ -155,9 +155,6 @@ namespace N2.Edit.Tests.LinkTracker
 		[Test]
 		public void TracksUrl_ToItemsWithoutId()
 		{
-			((FakeFileSystem)Context.Current.Resolve<IFileSystem>()).PathProvider =
-				new FakePathProvider(((FakeFileSystem)Context.Current.Resolve<IFileSystem>()).BasePath);
-
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
 			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
 

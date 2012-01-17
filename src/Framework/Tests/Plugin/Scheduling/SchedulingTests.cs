@@ -40,6 +40,9 @@ namespace N2.Tests.Plugin.Scheduling
             var ctx = mocks.DynamicMock<IWebContext>();
             mocks.Replay(ctx);
 
+			var engine = new Fakes.FakeEngine();
+			engine.Container.AddComponentInstance("", typeof(IErrorNotifier), MockRepository.GenerateStub<IErrorNotifier>());
+
 			IPluginFinder plugins = new PluginFinder(types, null, TestSupport.SetupEngineSection());
 
 			AsyncWorker worker = new AsyncWorker();
@@ -49,7 +52,7 @@ namespace N2.Tests.Plugin.Scheduling
 				return true;
 			};
 
-            scheduler = new Scheduler(null, plugins, heart, worker, ctx, errorHandler);
+			scheduler = new Scheduler(engine, plugins, heart, worker, ctx, errorHandler);
             scheduler.Start();
         }
 
@@ -133,15 +136,21 @@ namespace N2.Tests.Plugin.Scheduling
             Assert.That(repeat.executions, Is.EqualTo(1));
         }
 
-        [Test]
-        public void Action_WithIClosableInterface_AreDisposed()
-        {
-            var action = new ClosableAction();
-            scheduler.Actions.Insert(0, action);
-            raiser.Raise(null, new EventArgs());
-            Assert.That(action.wasExecuted);
-            Assert.That(action.wasClosed);
-        }
+		[Test]
+		public void Action_WithIClosableInterface_AreDisposed()
+		{
+			var action = new ClosableAction();
+			scheduler.Actions.Insert(0, action);
+			raiser.Raise(null, new EventArgs());
+			Assert.That(action.wasExecuted);
+			Assert.That(action.wasClosed);
+		}
+
+		[Test, Ignore]
+		public void ScheduledAction_WillBeInjected_WithDependencies()
+		{
+			throw new NotImplementedException("TODO test");
+		}
 
         private T SelectThe<T>() where T: ScheduledAction
         {

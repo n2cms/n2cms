@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.XPath;
 using N2.Persistence.Serialization;
 using NUnit.Framework;
+using N2.Edit.FileSystem;
 
 namespace N2.Tests.Serialization.Items
 {
@@ -10,7 +11,7 @@ namespace N2.Tests.Serialization.Items
 	{
 		private string name;
 
-		public void Write(ContentItem item, XmlTextWriter writer)
+		public void Write(IFileSystem fs, ContentItem item, XmlTextWriter writer)
 		{
 			writer.WriteStartElement("fake");
 			string x = item[Name] as string;
@@ -32,7 +33,7 @@ namespace N2.Tests.Serialization.Items
 			return null;
 		}
 
-		public void Import(Attachment attachment)
+		public void Import(IFileSystem fs, Attachment attachment)
 		{
 			Assert.IsTrue((bool) attachment.EnclosingItem["wasRead"]);
 		}

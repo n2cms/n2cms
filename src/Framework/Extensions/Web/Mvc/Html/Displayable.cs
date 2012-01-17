@@ -8,11 +8,13 @@ using N2.Definitions.Static;
 using N2.Web.Rendering;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using log4net;
 
 namespace N2.Web.Mvc.Html
 {
 	public class Displayable : ItemHelper
 	{
+        private readonly ILog logger = LogManager.GetLogger(typeof(Displayable));
 		readonly string propertyName;
 		string path;
 		bool swallowExceptions = RenderHelper.DefaultSwallowExceptions;
@@ -112,6 +114,11 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
+        public string ToHtmlString()
+        {
+            return ToString();
+        }
+
         internal void Render(TextWriter writer)
         {
             if (!string.IsNullOrEmpty(path))
@@ -128,7 +135,7 @@ namespace N2.Web.Mvc.Html
 				}
 				catch (Exception ex)
 				{
-					Debug.WriteLine(ex);
+					logger.Debug(ex);
 				}
 			}
 			else

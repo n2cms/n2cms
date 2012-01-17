@@ -6,6 +6,8 @@ using N2.Edit.FileSystem.Items;
 using N2.Edit.Web;
 using N2.Resources;
 using N2.Web.Drawing;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace N2.Edit.FileSystem
 {
@@ -22,19 +24,17 @@ namespace N2.Edit.FileSystem
 		IList<Directory> directories;
 		IList<File> files;
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
 
-			hlNewFile.NavigateUrl = Selection.ActionUrl("upload");
+            ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
-			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
+            Reload();
 
-			Reload();
-
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
-			btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, N2.Security.Permission.Publish);
-		}
+            Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
+            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, N2.Security.Permission.Publish);
+        }
 
 		private void Reload()
 		{

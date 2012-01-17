@@ -24,10 +24,9 @@ namespace N2.Management.Files
 		FileSystemFolderCollection folders;
 		IHost host;
 		IPersister persister;
-		IFileSystem fs;
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
-		DatabaseStatusCache dbStatus;
+		ConnectionMonitor monitor;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
@@ -37,45 +36,37 @@ namespace N2.Management.Files
 		/// <param name="fs">The fs.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
-		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig, ImageSizeCache imageSizes)
+		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, ConnectionMonitor monitor, EditSection editConfig, ImageSizeCache imageSizes, FolderNodeProvider nodeProvider)
 		{
 			this.host = host;
 			this.persister = persister;
-			this.fs = fs;
 			this.virtualNodes = virtualNodes;
-			this.dbStatus = dbStatus;
+			this.monitor = monitor;
 			this.folders = editConfig.UploadFolders;
-
-			nodeProvider = new FolderNodeProvider(fs, persister, imageSizes);
+			this.nodeProvider = nodeProvider;
 		}
 
 		#region IAutoStart Members
 
 		public void Start()
 		{
-			if (dbStatus.GetStatus() >= SystemStatusLevel.UpAndRunning)
-			{
-				nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
-				virtualNodes.Register(nodeProvider);
-				host.SitesChanged += host_SitesChanged;
-			}
-			else
-				dbStatus.DatabaseStatusChanged += dbStatus_DatabaseStatusChanged;
-		}
-
-		void dbStatus_DatabaseStatusChanged(object sender, EventArgs e)
-		{
-			dbStatus.DatabaseStatusChanged -= dbStatus_DatabaseStatusChanged;
-			Start();
+			monitor.Online += monitor_Online;
+			host.SitesChanged += host_SitesChanged;
 		}
 
 		public void Stop()
 		{
+			monitor.Online -= monitor_Online;
 			host.SitesChanged -= host_SitesChanged;
-			virtualNodes.Unregister(nodeProvider);
 		}
 
 		#endregion
+
+		void monitor_Online(object sender, EventArgs e)
+		{
+			nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
+			//virtualNodes.Register(nodeProvider);
+		}
 
 		void host_SitesChanged(object sender, SitesChangedEventArgs e)
 		{
@@ -114,92 +105,6 @@ namespace N2.Management.Files
 			{
 				yield return new FolderPair(item.ID, item.Path, itemPath + path.TrimStart('~', '/'), path);
 			}
-		}
-
-		/// <summary>
-		/// A custom <see cref="INodeProvider" /> that enumerates the FileSystem as special ContentItem instances
-		/// </summary>
-		class FolderNodeProvider : INodeProvider
-		{
-			IFileSystem fs;
-			IPersister persister;
-			ImageSizeCache imageSizes;
-
-			public FolderPair[] UploadFolderPaths { get; set; }
-
-			public FolderNodeProvider(IFileSystem fs, IPersister persister, ImageSizeCache imageSizes)
-			{
-				UploadFolderPaths = new FolderPair[0];
-				this.fs = fs;
-				this.persister = persister;
-				this.imageSizes = imageSizes;
-			}
-
-
-			#region INodeProvider Members
-
-			public ContentItem Get(string path)
-			{
-				foreach (var pair in UploadFolderPaths)
-				{
-					if (path.StartsWith(pair.Path, StringComparison.InvariantCultureIgnoreCase))
-					{
-						var dir = CreateDirectory(pair);
-
-						string remaining = path.Substring(pair.Path.Length);
-						if (string.IsNullOrEmpty(remaining))
-							return dir;
-						return dir.GetChild(remaining);
-					}
-				}
-
-				return null;
-			}
-
-			public IEnumerable<ContentItem> GetChildren(string path)
-			{
-				foreach (var pair in UploadFolderPaths)
-				{
-					if (pair.ParentPath.Equals(path, StringComparison.InvariantCultureIgnoreCase))
-					{
-						var dd = fs.GetDirectory(pair.FolderPath);
-						var dir = CreateDirectory(pair);
-						yield return dir;
-					}
-				}
-			}
-
-			private Directory CreateDirectory(FolderPair pair)
-			{
-				var dd = fs.GetDirectory(pair.FolderPath);
-				var parent = persister.Get(pair.ParentID);
-
-				var dir = Directory.New(dd, parent, fs, imageSizes);
-				dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
-				dir.Name = dir.Title;
-
-				return dir;
-			}
-
-			#endregion
-		}
-
-
-
-		struct FolderPair
-		{
-			public FolderPair(int parentID, string parentPath, string path, string folderPath)
-			{
-				ParentID = parentID;
-				Path = path;
-				ParentPath = parentPath;
-				FolderPath = folderPath;
-			}
-
-			public int ParentID;
-			public string Path;
-			public string ParentPath;
-			public string FolderPath;
 		}
 	}
 }

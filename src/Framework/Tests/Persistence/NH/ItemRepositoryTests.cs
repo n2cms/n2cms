@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using N2.Details;
@@ -5,13 +6,14 @@ using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Persistence.NH
 {
 	[TestFixture, Category("Integration")]
 	public class ItemRepositoryTests : DatabasePreparingBase
 	{
-		NHRepository<int, ContentItem> repository;
+		ContentItemRepository repository;
 		new ISessionProvider sessionProvider;
 
 		[SetUp]
@@ -21,7 +23,7 @@ namespace N2.Tests.Persistence.NH
 			CreateDatabaseSchema();
 
 			sessionProvider = engine.Resolve<ISessionProvider>();
-			repository = new NHRepository<int, ContentItem>(sessionProvider);
+			repository = new ContentItemRepository(sessionProvider);
 		}
 
 		[Test]
@@ -115,7 +117,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSaveDetail()
 		{
-			IRepository<int, N2.Details.ContentDetail> detailRepository = new NHRepository<int, N2.Details.ContentDetail>(sessionProvider);
+			IRepository<N2.Details.ContentDetail> detailRepository = new NHRepository<N2.Details.ContentDetail>(sessionProvider);
 
 			using (repository)
 			{
@@ -134,7 +136,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanDeleteDetail()
 		{
-			IRepository<int, ContentDetail> detailRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+			IRepository<ContentDetail> detailRepository = new NHRepository<ContentDetail>(sessionProvider);
 
 			using (repository)
 			{
@@ -156,7 +158,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void DeleteItemCascadesDetails()
 		{
-			IRepository<int, ContentDetail> detailRepository = new NHRepository<int, ContentDetail>(sessionProvider);
+			IRepository<ContentDetail> detailRepository = new NHRepository<ContentDetail>(sessionProvider);
 			int itemID = 0;
 
 			using (repository)
@@ -360,6 +362,105 @@ namespace N2.Tests.Persistence.NH
 
 				repository.Delete(item);
 			}
+		}
+
+		[Test]
+		public void FindDiscriminatorsBelow_FindsDistinctDiscriminators()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "item", root);
+			repository.Save(root);
+
+			repository.FindDescendantDiscriminators(root).Single().Discriminator
+				.ShouldBe("PersistableItem");
+		}
+
+		[Test]
+		public void FindDiscriminatorsBelow_FindsAncestorDiscriminator()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
+			var discriminator = discriminators.First(d => d.Discriminator == "PersistablePart");
+			discriminator.Count.ShouldBe(1);
+		}
+
+		[Test]
+		public void FindDiscriminatorsBelow_FindsRootDiscriminator()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
+			var discriminator = discriminators.First(d => d.Discriminator == "PersistableItem");
+			discriminator.Count.ShouldBe(1);
+		}
+
+		[Test]
+		public void FindDiscriminator_Count()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
+			discriminators.Single().Count.ShouldBe(3);
+		}
+
+		[Test]
+		public void FindDescendantDiscriminators_OnMultipleLevels()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "item3", child2);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
+			discriminators.Single().Count.ShouldBe(4);
+		}
+
+		[Test]
+		public void FindDescendantDiscriminators_IsSortedByNumberOfItmes()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistablePart1>(0, "item3", child2);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
+			discriminators[0].Discriminator.ShouldBe("PersistablePart");
+			discriminators[1].Discriminator.ShouldBe("PersistableItem");
+		}
+
+		[Test]
+		public void FindDescends_FindsAncestorOfType()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistablePart1>(0, "item3", child2);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendants(root, "PersistablePart");
+			discriminators.Count().ShouldBe(3);
+		}
+
+		[Test]
+		public void FindDescends_FindsDescendantsOfType()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
+			repository.Save(root);
+
+			var discriminators = repository.FindDescendants(root, "PersistableItem");
+			discriminators.Count().ShouldBe(1);
 		}
 
 		private int SaveAnItem(string name, ContentItem parent)

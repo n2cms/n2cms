@@ -44,14 +44,14 @@ namespace N2.Edit.Installation
 						yield return info;
 					}
 					if(changed)
-						persister.Repository.Update(item);
+						persister.Repository.SaveOrUpdate(item);
 				}
 
 				ContentItem root = persister.Get(host.DefaultSite.RootItemID);
 				root[InstallationManager.InstallationAppPath] = toUrl;
-				persister.Repository.Update(root);
+				persister.Repository.SaveOrUpdate(root);
 
-				persister.Flush();
+				persister.Repository.Flush();
 				tx.Commit();
 			}
 		}

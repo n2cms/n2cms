@@ -675,5 +675,62 @@ namespace N2.Tests.Persistence.NH
 
 			Assert.That(result.Hits.Any(), Is.False);
 		}
+
+        [Test]
+        public void QueryByExpression_ForDetail()
+        {
+            root.StringProperty = "This is a very special string";
+            indexer.Update(root);
+
+            var searcher = new LuceneSearcher(accessor, persister);
+            var query = Query.For<PersistableItem1>();
+
+            query.Contains(pi => pi.StringProperty, "special");
+            var result = searcher.Search(query);
+
+            Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+        }
+
+		[Test]
+		public void QueryByExpression_ForTitleProperty()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
+
+			query.Contains(pi => pi.Title, "root");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryByExpression_ForTitleProperty_StartsWith()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
+
+			query.Contains(pi => pi.Title, "ro*");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryByExpression_ForVisibleProperty()
+		{
+			indexer.Update(root);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>();
+
+			query.Contains(pi => pi.Visible, "true");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
 	}
 }

@@ -30,6 +30,9 @@ using NHibernate.Type;
 
 namespace N2.Persistence
 {
+	/// <summary>
+	/// A repository query parameter.
+	/// </summary>
 	public class Parameter
 	{
 		string name;

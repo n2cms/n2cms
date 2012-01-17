@@ -14,12 +14,18 @@ using N2.Security;
 
 namespace Dinamico.Models
 {
+	/// <summary>
+	/// This is the start page on a site. Separate start pages can respond to 
+	/// a domain name and/or form the root of translation.
+	/// </summary>
 	[PageDefinition(
 		IconUrl = "{IconsUrl}/page_world.png",
 		InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage), typeof(LanguageIntersection))]
-	[RecursiveContainer(Defaults.Containers.Site, 1000,
-		RequiredPermission = Permission.Administer)]
+	[RecursiveContainer("SiteContainer", 1000,
+        RequiredPermission = Permission.Administer)]
+    [TabContainer(Defaults.Containers.Site, "Site", 0,
+        ContainerName = "SiteContainer")]
 	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
 	public class StartPage : ContentPage, IStartPage, IStructuralPage, IThemeable, ILanguage, ISitesSource
 	{
@@ -69,7 +75,9 @@ namespace Dinamico.Models
 
 		#region ISitesSource Members
 
-		[EditableText(Title = "Site host name (DNS)", ContainerName = Defaults.Containers.Site)]
+		[EditableText(Title = "Site host name (DNS)", 
+			ContainerName = Defaults.Containers.Site,
+			HelpTitle = "Sets a host name for this site/language. The web server must be configured to accept this host name for this to work.")]
 		public virtual string HostName { get; set; }
 
 		public IEnumerable<Site> GetSites()

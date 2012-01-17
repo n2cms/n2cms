@@ -93,6 +93,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Shouldly">
+      <HintPath>..\..\..\lib\Shouldly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -145,6 +148,7 @@
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\RestrictCardinalityTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\DetailRemoveTests.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
@@ -174,9 +178,11 @@
     <Compile Include="Engine\ServiceContainerTests.cs" />
     <Compile Include="Engine\Services\Services.cs" />
     <Compile Include="Fakes\FakeDatabaseStatusCache.cs" />
+    <Compile Include="Fakes\FakeDependencyInjector.cs" />
     <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
     <Compile Include="Fakes\FakeEditUrlManager.cs" />
-    <Compile Include="Fakes\FakeFileSystem2.cs" />
+    <Compile Include="Fakes\FakeMappedFileSystem.cs" />
+    <Compile Include="Fakes\FakeMemoryFileSystem.cs" />
     <Compile Include="Fakes\FakeHttpContext.cs" />
     <Compile Include="Fakes\FakeHttpRequest.cs" />
     <Compile Include="Fakes\FakeHttpResponse.cs" />
@@ -184,6 +190,7 @@
     <Compile Include="Fakes\FakeHttpSessionState.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Fakes\FakeVppFileSystem.cs" />
     <Compile Include="Installation\AppPathRebaseTests.cs" />
     <Compile Include="Linq\ExpressionBuildingUtils.cs" />
     <Compile Include="Linq\ExpressionQueryableExtensionsTests.cs" />
@@ -195,6 +202,7 @@
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
+    <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
@@ -204,6 +212,7 @@
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
+    <Compile Include="Web\JsonWriterTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />

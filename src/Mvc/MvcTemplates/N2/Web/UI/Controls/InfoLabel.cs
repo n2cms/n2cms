@@ -20,20 +20,30 @@ namespace N2.Edit.Web.UI.Controls
 
 		public override void RenderBeginTag(HtmlTextWriter writer)
 		{
-			if (this.Label.Length > 0 && this.Text.Length > 0)
+			if (HasContent())
 			{
 				writer.Write("<label for='");
 				writer.Write(this.ClientID);
 				writer.Write("'>");
 				writer.Write(this.Label);
 				writer.Write("</label>");
+
+				base.RenderBeginTag(writer);
 			}
-			base.RenderBeginTag(writer);
 		}
+
         public override void RenderEndTag(HtmlTextWriter writer)
         {
-            base.RenderEndTag(writer);
-            writer.Write("<br/>");
+			if (HasContent())
+			{
+				base.RenderEndTag(writer);
+				writer.Write("<br/>");
+			}
         }
+
+		private bool HasContent()
+		{
+			return this.Label.Length > 0 && this.Text.Length > 0;
+		}
 	}
 }

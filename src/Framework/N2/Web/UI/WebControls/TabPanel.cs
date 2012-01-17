@@ -21,11 +21,14 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["RegisterTabCss"] = value; }
 		}
 
-		public string TabText
-		{
-			get { return base.ToolTip; }
-			set { base.ToolTip = value; }
-		}
+		/// <summary>The tab caption.</summary>
+		public string TabText { get; set; }
+
+		/// <summary>Renders a link on the tab.</summary>
+		public string NavigateUrl { get; set; }
+
+		/// <summary>Displays this tab when the page is loaded.</summary>
+		public bool Selected { get; set; }
 
 		protected override void OnPreRender(EventArgs e)
 		{
@@ -34,6 +37,18 @@ namespace N2.Web.UI.WebControls
 			Visible = Controls.Count > 0;
 			if(Visible)
 				Register.TabPanel(Page, "." + CssClass.Replace(' ', '.'), RegisterTabCss);
+		}
+
+		protected override void AddAttributesToRender(System.Web.UI.HtmlTextWriter writer)
+		{
+			if (!string.IsNullOrEmpty(NavigateUrl))
+				writer.AddAttribute("data-tab-href", Page.ResolveClientUrl(NavigateUrl));
+			if (!string.IsNullOrEmpty(TabText))
+				writer.AddAttribute("data-tab-text", TabText);
+			if (Selected)
+				writer.AddAttribute("data-tab-selected", "true");
+
+			base.AddAttributesToRender(writer);
 		}
 	}
 }

@@ -8,9 +8,20 @@ using N2.Web;
 using N2.Web.Mvc;
 using N2.Definitions;
 using System.Web.UI.WebControls;
+using N2.Edit;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
+	[Adapts(typeof(RssFeed))]
+	public class RssFeedNodeAdapter : NodeAdapter
+	{
+		public override string GetPreviewUrl(ContentItem item)
+		{
+			return new Url(base.GetPreviewUrl(item)).AppendSegment("Preview");;
+		}
+	}
+
 	[PageDefinition("Feed",
 		Description = "An RSS feed that outputs an xml with the latest feeds.",
 		SortOrder = 260,
@@ -18,7 +29,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]
-	public class RssFeed : ContentPageBase, IFeed, INode
+	public class RssFeed : ContentPageBase, IFeed
 	{
 		[EditableLink("Feed root", 90, ContainerName = Tabs.Content)]
 		public virtual ContentItem FeedRoot
@@ -53,11 +64,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		{
 			get { return base.Visible; }
 			set { base.Visible = value; }
-		}
-
-		public string PreviewUrl
-		{
-			get { return new Url(Url).AppendSegment("Preview"); }
 		}
 
 		public virtual IEnumerable<ISyndicatable> GetItems()

@@ -6,12 +6,14 @@ using N2.Engine;
 using Lucene.Net.Search;
 using Lucene.Net.QueryParsers;
 using System.Diagnostics;
+using log4net;
 
 namespace N2.Persistence.Search
 {
-	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher))]
+	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher), Configuration = "lucene")]
 	public class LuceneSearcher : ITextSearcher
 	{
+		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneSearcher));
 		LuceneAccesor accessor;
 		IPersister persister;
 
@@ -25,6 +27,9 @@ namespace N2.Persistence.Search
 
 		public Result Search(N2.Persistence.Search.Query query)
 		{
+            if (!query.IsValid())
+                return Result.Empty;
+
 			var s = accessor.GetSearcher();
 			try
 			{
@@ -74,8 +79,15 @@ namespace N2.Persistence.Search
 				q = string.Format("+({0}) +({1})", q, CreateQuery(query.Intersection));
 			if (query.Union != null)
 				q = string.Format("({0}) ({1})", q, CreateQuery(query.Union));
-
-			Trace.WriteLine("CreateQuery: " + q);
+            if (query.Details.Count > 0)
+                foreach (var kvp in query.Details)
+                {
+                    if (LuceneIndexer.Properties.All.Contains(kvp.Key))
+                        q += string.Format(" +{0}:({1})", kvp.Key, kvp.Value);
+                    else
+                        q += string.Format(" +Detail.{0}:({1})", kvp.Key, kvp.Value);
+                }
+			logger.Debug("CreateQuery: " + q);
 
 			return accessor.GetQueryParser().Parse(q);
 		}

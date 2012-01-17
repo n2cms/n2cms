@@ -22,7 +22,9 @@ namespace N2.Tests.Persistence.NH
 		LuceneAccesor accessor;
 		LuceneSearcher searcher;
 		ContentChangeTracker tracker;
-		PersistableItem1 root;
+        AsyncIndexer asyncIndexer;
+        
+        PersistableItem1 root;
 
 		[SetUp]
 		public override void SetUp()
@@ -35,7 +37,8 @@ namespace N2.Tests.Persistence.NH
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
 			searcher = new LuceneSearcher(accessor, persister);
 			var worker = new AsyncWorker();
-			tracker = new ContentChangeTracker(indexer, persister, worker, new N2.Plugin.ConnectionMonitor(), Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
+            asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
+			tracker = new ContentChangeTracker(asyncIndexer, persister, new N2.Plugin.ConnectionMonitor(), new DatabaseSection());
 
 			accessor.LockTimeout = 1L;
 			worker.QueueUserWorkItem = (cb) => { cb.Invoke(null); return true; };
@@ -60,7 +63,7 @@ namespace N2.Tests.Persistence.NH
 			tracker.ItemChanged(world.ID, false);
 
 			indexer.Unlock();
-			tracker.RetryInterval = TimeSpan.FromSeconds(0);
+            asyncIndexer.RetryInterval = TimeSpan.FromSeconds(0);
 			tracker.ItemChanged(universe.ID, false);
 
 			Assert.That(searcher.Search("hello").Hits.Count(), Is.EqualTo(2));

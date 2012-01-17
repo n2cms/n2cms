@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 using N2.Definitions;
 using N2.Engine;
+using N2.Edit.FileSystem;
 
 namespace N2.Persistence.Serialization
 {

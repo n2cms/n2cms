@@ -1,10 +1,13 @@
 using System;
 using N2.Web;
+using log4net;
 
 namespace N2.Templates.UI.Views
 {
     public partial class Error500 : System.Web.UI.Page
     {
+    	private readonly ILog logger = LogManager.GetLogger(typeof (Error500));
+
         protected override void OnInit(EventArgs args)
         {
             Response.Status = "500 Internal Server Error";
@@ -22,7 +25,7 @@ namespace N2.Templates.UI.Views
             }
             catch(Exception ex)
             {
-                Trace.Write(ex.ToString());
+                logger.Error(ex.ToString());
             }
             Response.Write("<html><body><h1>500 Internal Server Error</h1></body></html>");
             Response.End();

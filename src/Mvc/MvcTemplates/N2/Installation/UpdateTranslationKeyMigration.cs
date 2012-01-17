@@ -8,10 +8,10 @@ namespace N2.Management.Installation
 	public class UpdateTranslationKeyMigration : AbstractMigration
 	{
 		InstallationManager installer;
-		IRepository<int, ContentDetail> detailRepository;
-		IRepository<int, ContentItem> itemRepository;
+		IRepository<ContentDetail> detailRepository;
+		IRepository<ContentItem> itemRepository;
 
-		public UpdateTranslationKeyMigration(IRepository<int, ContentDetail> repository, IRepository<int, ContentItem> itemRepository, InstallationManager installer)
+		public UpdateTranslationKeyMigration(IRepository<ContentDetail> repository, IRepository<ContentItem> itemRepository, InstallationManager installer)
 		{
 			this.detailRepository = repository;
 			this.itemRepository = itemRepository;
@@ -35,7 +35,7 @@ namespace N2.Management.Installation
 				{
 					detail.EnclosingItem.TranslationKey = detail.IntValue;
 					detail.EnclosingItem.SetDetail("LanguageKey", null, typeof(int));
-					itemRepository.Update(detail.EnclosingItem);
+					itemRepository.SaveOrUpdate(detail.EnclosingItem);
 					updatedItems++;
 				}
 				itemRepository.Flush();

@@ -1,4 +1,13 @@
-﻿2.2.1.2
+﻿2.2.2
+- More info in the tree (discussions/282375)
+	- start pages
+	- language root
+	- zone
+- Reindex all admin screen
+- Database file system
+- Bulk editing & adding (discussions/272297)
+
+2.2.1.2
 - Fixed displayed exception after deleting items via the management ui
 - Fixed so configurable external content type is honored, 
 - Fixed so external content family key is used to retrieve container (fixed problem with multiple controllers)

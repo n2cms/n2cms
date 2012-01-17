@@ -17,8 +17,6 @@ namespace N2.Plugin
 		public SystemStatusLevel StatusLevel { get; protected set; }
 
 		event EventHandler online;
-		event EventHandler interrupted;
-		event EventHandler resumed;
 
 		/// <summary>Occurs the fist time a connection to the database is made.</summary>
 		public event EventHandler Online
@@ -44,66 +42,18 @@ namespace N2.Plugin
 		/// <summary>Occurs when the web site is shutting down.</summary>
 		public event EventHandler Offline;
 
-		/// <summary>Occurs when the connection to the database is broken.</summary>
-		public event EventHandler Interrupted
-		{
-			add
-			{
-				lock (this)
-				{
-					resumed += value;
-				}
-			}
-			remove
-			{
-				lock (this)
-				{
-					resumed -= value;
-				}
-			}
-		}
-
-		/// <summary>Occurs when the connection to the database is resumed.</summary>
-		public event EventHandler Resumed
-		{
-			add
-			{
-				lock (this)
-				{
-					interrupted += value;
-				}
-			}
-			remove
-			{
-				lock (this)
-				{
-					interrupted -= value;
-				}
-			}
-		}
-
 		public ConnectionMonitor SetConnected(SystemStatusLevel statusLevel)
 		{
 			lock (this)
 			{
-				bool? previous = IsConnected;
+				bool wasConnected = IsConnected ?? false;
 				IsConnected = statusLevel == SystemStatusLevel.UpAndRunning || statusLevel == SystemStatusLevel.Unconfirmed;
 
-				if (previous.HasValue)
-				{
-					if (previous.Value && !IsConnected.Value && resumed != null)
-						// from connected to disconnected
-						resumed(this, new EventArgs());
-					if (!previous.Value && IsConnected.Value && interrupted != null)
-						// from disconnected to connected
-						interrupted(this, new EventArgs());
-				}
-				else
-				{
-					if (IsConnected.Value & online != null)
-						// from unknown to connected
-						online(this, new EventArgs());
-				}
+				if (!wasConnected && IsConnected.Value && online != null)
+					online(this, new EventArgs());
+				else if (wasConnected && !IsConnected.Value && Offline != null)
+					Offline(this, new EventArgs());
+
 			}
 			return this;
 		}

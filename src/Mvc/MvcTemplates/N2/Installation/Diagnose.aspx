@@ -22,6 +22,15 @@
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
     </style>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var $tb = $("table.openable").children("tbody").hide().end();
+			$("<tbody><tr><td><a href='javascript:void(0);'>Show</a></td></tr></tbody>").appendTo($tb)
+				.find("a").click(function (e) {
+					$(this).closest("tbody").hide().siblings().show();
+				});
+		});
+	</script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -44,13 +53,14 @@
 					</td></tr>
 				</tbody>
 				<tbody>
-					<tr><th colspan="2"><h2>Assemblies</h2></th></tr>
+					<tr><th colspan="2"><h2>Key assemblies & types</h2></th></tr>
 					<tr><th>N2 version</th><td><asp:Label ID="lblN2Version" runat="server" /></td></tr>
 					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
 <% try { %>
 					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
 					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
 					<tr><th>Url parser type</th><td><%= N2.Context.Current.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
+					<tr><th>File System type</th><td><%= N2.Context.Current.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
 				</tbody>
 				<tbody>
@@ -82,44 +92,23 @@
 					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Abstractions").FullName %></td></tr>
 					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Routing").FullName %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
-<%--<% try {
-	IEnumerable routes = Type.GetType("System.Web.Routing.RouteTable").GetProperty("Routes", System.Reflection.BindingFlags.Static).GetValue(null, null) as IEnumerable;
-	foreach (object route in routes) {%>
-					<tr><th></th><td><%= route %></td></tr>
-<% } } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
---%>				</tbody>
-				<tbody>
-					<tr><th colspan="2"><h2>Operations <span style="font-size:.9em">(prefer the <a href=".">installation wizard</a> before using this)</span></h2></th></tr>
-					<tr><th>Restart web application</th><td><asp:Button ID="btnRestart" runat="server" OnClick="btnRestart_Click" Text="RESTART" OnClientClick="return confirm('restart site?');" /></td></tr>
-					<tr><th>Drop tables clearing all content data in database</th><td>
-				<asp:Button ID="btnClearTables" runat="server" OnClick="btnClearTables_Click" Text="DROP" OnClientClick="return confirm('drop all tables?');" />
-				<asp:Label runat="server" ID="lblClearTablesResult" /></td></tr>
-					<tr><th>Create database schema (this drops any existing tables)</th><td>
-				<asp:Button ID="btnAddSchema" runat="server" OnClick="btnAddSchema_Click" Text="CREATE" OnClientClick="return confirm('drop and recreate all tables?');" />
-				<asp:Label runat="server" ID="lblAddSchemaResult" /></td></tr>
-					<tr><th>Insert root node</th><td>
-				<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Select type..." />
-				<asp:DropDownList ID="ddlTypes" runat="server" AutoPostBack="True" Visible="False">
-				</asp:DropDownList><asp:Button runat="server" ID="btnInsertRootNode" Text="OK" Visible="false" OnClick="btnInsertRootNode_Click" />
-				<asp:Label ID="lblInsert" runat="server"></asp:Label></td></tr>
 				</tbody>
 			</table>
 
-            <i>These settings are generated at application start from attributes in the project source code.</i>
             <asp:Repeater ID="rptDefinitions" runat="server">
                 <HeaderTemplate>
-					<table class="t">
+					<table class="t openable">
 						<thead>
 							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
 							<tr>
-								<td colspan="2">Definition</td>
+								<td colspan="3">Definition</td>
 								<td colspan="2">Zones</td>
 								<td colspan="2">Details</td>
 								<td rowspan="2">Templates</td>
-								<td rowspan="2">Templates (2)</td>
 							</tr>
 							<tr>
 								<td>Type</td>
+								<td>Template</td>
 								<td>Allowed children</td>
 								<td>Available</td>
 								<td>Allowed in</td>
@@ -131,7 +120,10 @@
 				</HeaderTemplate>
                 <ItemTemplate>
                     <tr class="<%# Eval("Enabled", "Enabled{0}") %> <%# Eval("IsDefined", "IsDefined{0}") %>"><td>
-                        <b><%# Eval("Title") %></b><br /><span style="color:gray"><%# Eval("ItemType") %></span><br/><%# Eval("Discriminator") %>
+                        <b title='#items: <%# Eval("NumberOfItems") %>'><%# Eval("Title") %></b><br />
+						<span title='Discriminator: <%# Eval("Discriminator") %>, Type: <%# Eval("ItemType") %>' style="color:gray"><%# ((System.Type)Eval("ItemType")).Name %></span>						
+                    </td><td>
+						<%# Eval("TemplateKey") %>
                     </td><td>
                         <!-- Child definitions -->
                         <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# AllowedChildren(Container.DataItem) %>'>
@@ -167,13 +159,6 @@
                         <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
                             <ItemTemplate><%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
                         </asp:Repeater>&nbsp;
-                    </td><td>
-                        <asp:Repeater ID="Repeater7" runat="server" DataSource='<%# N2.Context.Current.Definitions.GetTemplates((Type)Eval("ItemType")) %>'>
-                            <ItemTemplate>
-								<%# Eval("Title") %>
-							</ItemTemplate>
-							<SeparatorTemplate>, </SeparatorTemplate>
-                        </asp:Repeater>&nbsp;
                     </td></tr>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -182,10 +167,10 @@
 				</FooterTemplate>
             </asp:Repeater>
             <asp:Label ID="lblDefinitions" runat="server" />
+
             
-            <h2>Assemblies</h2>
             <asp:Repeater ID="rptAssembly" runat="server">
-                <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
+                <HeaderTemplate><table class="t openable"><thead><tr><th colspan="6"><h2>Assemblies</h2></th></tr><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
                 <asp:Repeater runat="server" DataSource="<%# ((System.Reflection.Assembly)Container.DataItem).FullName.Split(',') %>">
 					<ItemTemplate>
@@ -199,8 +184,21 @@
             </asp:Repeater>
             <asp:Label ID="lblAssemblies" runat="server" />
 
+			
 			<% try { %>
-			<table class="t"><thead><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Services</h2></th></tr><tr><td>Service type</td><td>Implementation type</td></tr></thead>
+			<tbody>
+			<% foreach (N2.Engine.ServiceInfo info in N2.Context.Current.Container.Diagnose()) { %>
+				<tr><td><%= info.ServiceType %></td><td><%= info.ImplementationType %></td></tr>
+			<% } %>
+			</tbody></table>
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
+
+
+			<% try { %>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Cache</h2></th></tr><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
 			<tbody>
 			<% foreach (KeyValuePair<string, NHibernate.Cache.ICache> kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
 				<tr><td><%= kvp.Key%></td><td><%= kvp.Value%></td></tr>

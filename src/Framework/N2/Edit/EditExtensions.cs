@@ -7,6 +7,7 @@ using N2.Definitions;
 using N2.Web;
 using N2.Web.Mvc.Html;
 using N2.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace N2.Edit
 {
@@ -39,6 +40,90 @@ namespace N2.Edit
 
 			return items.Union(new[] { new CreatorItem(engine, parent) });
 		}
+
+        public static void RefreshManagementInterface(this Page page, ContentItem item)
+        {
+            string previewUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl(item);
+            string script = string.Format("window.top.location = '{0}';", previewUrl);
+
+            page.ClientScript.RegisterClientScriptBlock(
+                typeof(EditExtensions),
+                "RefreshScript",
+                script, true);
+        }
+
+        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6} }});";
+        private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6} }});";
+        private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6} }});";
+
+        public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
+        {
+            var engine = N2.Context.Current;
+            string script = string.Format(RefreshBothFormat,
+                engine.ManagementPaths.GetEditInterfaceUrl(), // 0
+                engine.ManagementPaths.GetNavigationUrl(item), // 1
+                Url.ToAbsolute(previewUrl), // 2
+                item.ID, // 3
+                item.Path, // 4
+                engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // permission:'{5}',
+                "true" // force:{6}
+            );
+
+            page.ClientScript.RegisterClientScriptBlock(
+                typeof(EditExtensions),
+                "RefreshFramesScript",
+                script, true);
+        }
+
+        /// <summary>Referesh the selected frames after loading the page.</summary>
+        /// <param name="item"></param>
+        /// <param name="area"></param>
+        public static void RefreshFrames(this Page page, ContentItem item, ToolbarArea area, bool force = true)
+        {
+            string script = GetRefreshFramesScript(page, item, area, force);
+
+            page.ClientScript.RegisterClientScriptBlock(
+                typeof(EditExtensions),
+                "RefreshFramesScript",
+                script, true);
+        }
+
+        public static string GetRefreshFramesScript(this Page page, ContentItem item, ToolbarArea area, bool force = true)
+        {
+            var engine = N2.Context.Current;
+
+            string format;
+            if (area == ToolbarArea.Both)
+                format = EditExtensions.RefreshBothFormat;
+            else if (area == ToolbarArea.Preview)
+                format = RefreshPreviewFormat;
+            else
+                format = RefreshNavigationFormat;
+
+            string script = string.Format(format,
+                engine.ManagementPaths.GetEditInterfaceUrl(), // 0
+                engine.ManagementPaths.GetNavigationUrl(item), // 1
+                GetPreviewUrl(page, engine, item), // 2
+                item.ID, // 3
+                item.Path, // 4
+                engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // 5
+                force.ToString().ToLower() // 6
+                );
+            return script;
+        }
+
+        internal static string GetPreviewUrl(this Page page, IEngine engine, ContentItem item)
+        {
+            return page.Request["returnUrl"] ?? engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
+        }
+
+        public static SelectionUtility GetSelection(this Page page)
+        {
+            if (page is Web.EditPage)
+                return (page as Web.EditPage).Selection;
+
+            return new SelectionUtility(page, N2.Context.Current);
+        }
 	}
 
 	internal class CreatorItem : ContentItem, ISystemNode
