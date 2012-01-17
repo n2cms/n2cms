@@ -3,7 +3,7 @@ using System.Web;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class SocialBookmarks : Web.UI.TemplateUserControl<Templates.Items.AbstractPage, N2.Templates.Items.SocialBookmarks>
+    public partial class SocialBookmarks : Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.SocialBookmarks>
     {
 		protected string GetUrl()
 		{
