@@ -22,7 +22,7 @@
 				<div id="permission"><div id="top">
 					<div id="topbar" class="header cf themeBg">
 				        <asp:ContentPlaceHolder ID="Toolbar" runat="server">
-        					hello<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
+        					<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
 						</asp:ContentPlaceHolder>
 					</div>
 
