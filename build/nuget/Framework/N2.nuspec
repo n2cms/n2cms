@@ -22,6 +22,7 @@
 			<dependency id="Castle.Windsor" version="[2.5.3]" />
 			<dependency id="DotNetZip" version="1.9.1.8" />
 			<dependency id="System.Data.SQLite" version="1.0.66.1" />
+			<dependency id="log4net" version="[1.2.10.0]" />
 		</dependencies>
 	</metadata>
 </package>

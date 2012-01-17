@@ -48,7 +48,11 @@
 			</asp:Login></div>
 		</div>
 		<script type="text/javascript">
-			if (window.top !== window) {
+			try {
+				if (window.top.location.pathname !== window.location.pathname) {
+					window.top.location = window.location;
+				}
+			} catch (e) {
 				window.top.location = window.location;
 			}
 		</script>
