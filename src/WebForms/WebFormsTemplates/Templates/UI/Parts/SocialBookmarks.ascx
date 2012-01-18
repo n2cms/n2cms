@@ -16,7 +16,7 @@
 
 		$(document).ready(function () {
 			function push(type, targetUrl) {
-				if (typeof _gaq === "undefined" && _gaq.push)
+				if (typeof _gaq !== "undefined" && _gaq.push)
 					_gaq.push(['_trackSocial', 'facebook', type, targetUrl]);
 			};
 			function subscribe() {
