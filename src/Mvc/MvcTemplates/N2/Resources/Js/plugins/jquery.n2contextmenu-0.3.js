@@ -49,6 +49,7 @@
 				if (e.ctrlKey) return;
 
 				var count = $(e.target).closest(options.target).each(function () {
+					$(this).trigger("click");
 					hideAll();
 					show(e, $m, options);
 				}).length;
@@ -58,6 +59,7 @@
 			return function (e) {
 				if (e.ctrlKey) return;
 
+				$(this).trigger("click");
 				hideAll();
 				show(e, $m, options);
 				return false;
