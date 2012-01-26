@@ -82,7 +82,9 @@ namespace N2.Web.Parts
 			if(belowParentItem == null)
 				return new ItemList();
 
-            var items = belowParentItem.Children.FindParts(inZoneNamed)
+		    var children = belowParentItem.VersionOf == null ? belowParentItem.Children : belowParentItem.VersionOf.Children;
+
+            var items = children.FindParts(inZoneNamed)
                 .Where(new AccessFilter(WebContext.User, Security));
 
             if(filteredForInterface == Interfaces.Viewing)
