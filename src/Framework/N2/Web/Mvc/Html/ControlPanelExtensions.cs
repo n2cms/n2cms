@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -132,12 +132,13 @@ namespace N2.Web.Mvc.Html
 			public virtual void WriteTo(TextWriter writer)
 			{
 				var engine = Html.ContentEngine();
-				var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
 
-				if (!engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
+				if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
 					return;
 				if (RegistrationExtensions.GetRegistrationExpression(Html) != null)
 					return;
+
+                var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
 
 				var state = ControlPanelExtensions.GetControlPanelState(Html);
 				var settings = new

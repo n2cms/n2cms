@@ -5,7 +5,7 @@ namespace N2.Configuration
 {
 	public class FileSystemElement : ConfigurationElement
 	{
-		[ConfigurationProperty("textFileExtensions", DefaultValue = ".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt")]
+		[ConfigurationProperty("textFileExtensions", DefaultValue = ".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt,.css")]
 		public string TextFileExtensions
 		{
 			get { return (string)base["textFileExtensions"]; }

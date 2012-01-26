@@ -52,6 +52,11 @@ namespace N2.Templates.Tests.Wiki
             throw new NotImplementedException();
         }
 
+        public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public ContentItem Parse(string url)
         {
             throw new NotImplementedException();
@@ -61,11 +66,6 @@ namespace N2.Templates.Tests.Wiki
         {
             throw new NotImplementedException();
         }
-
-		public PathData ResolvePath(Url url)
-		{
-			throw new NotImplementedException();
-		}
 
 		public string StripDefaultDocument(string path)
 		{

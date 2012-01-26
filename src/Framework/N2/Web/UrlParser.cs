@@ -35,10 +35,10 @@ namespace N2.Web
 		}
 
 		/// <summary>Parses the current url to retrieve the current page.</summary>
-		public ContentItem CurrentPage
-		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
-		}
+        public ContentItem CurrentPage
+        {
+            get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
+        }
 
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
@@ -53,7 +53,7 @@ namespace N2.Web
 			set { Url.DefaultDocument = value; }
         }
 
-		public PathData ResolvePath(Url url)
+		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
 
@@ -73,11 +73,11 @@ namespace N2.Web
 				return directData;
 			}
 
-			ContentItem startPage = GetStartPage(requestedUrl);
+			ContentItem startPage = startNode ?? GetStartPage(requestedUrl);
 			if (startPage == null)
 				return PathData.Empty;
 			
-			string path = Url.ToRelative(requestedUrl.Path).TrimStart('~');
+			string path = remainingPath ?? Url.ToRelative(requestedUrl.Path).TrimStart('~');
 			PathData data = startPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())
