@@ -72,6 +72,9 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override VirtualFile GetFile(string virtualPath)
 		{
+            if (Previous.FileExists(virtualPath))
+                return Previous.GetFile(virtualPath);
+
 			//virtualPath = ToRelative(virtualPath);
 			if (Exists(virtualPath, true))
 			{
