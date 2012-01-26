@@ -15,7 +15,7 @@
 				<ItemTemplate>
 					<div class="edit">
 						<asp:HyperLink runat="server" Text="<%# GetEditDataItemText(Container.DataItem) %>" 
-							NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
+							NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" CssClass="<%# GetEditDataItemClass(Container.DataItem) %>" />
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"

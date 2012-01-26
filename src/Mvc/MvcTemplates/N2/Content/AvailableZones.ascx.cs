@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Integrity;
+using N2.Security;
 using N2.Web;
 
 namespace N2.Edit
@@ -48,6 +50,36 @@ namespace N2.Edit
 		{
 			ContentItem item = (ContentItem)dataItem;
 			return string.Format("<img src='{0}'>{1}", N2.Web.Url.ToAbsolute(item.IconUrl), string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
+        }
+
+        protected string GetEditDataItemClass(object dataItem)
+        {
+            return GetClassName((ContentItem)dataItem);
+        }
+
+        private string GetClassName(ContentItem item)
+        {
+            StringBuilder className = new StringBuilder();
+
+            if (!item.Published.HasValue || item.Published > DateTime.Now)
+                className.Append("unpublished ");
+            else if (item.Published > DateTime.Now.AddDays(-1))
+                className.Append("day ");
+            else if (item.Published > DateTime.Now.AddDays(-7))
+                className.Append("week ");
+            else if (item.Published > DateTime.Now.AddMonths(-1))
+                className.Append("month ");
+
+            if (item.Expires.HasValue && item.Expires <= DateTime.Now)
+                className.Append("expired ");
+
+            if (!item.Visible)
+                className.Append("invisible ");
+
+            if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)
+                className.Append("locked ");
+
+            return className.ToString();
         }
 
         protected string GetEditDataItemUrl(object dataItem)
