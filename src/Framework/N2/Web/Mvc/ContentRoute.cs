@@ -14,7 +14,7 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ContentRoute : RouteBase
 	{
-	    private readonly ILog logger = LogManager.GetLogger(typeof (ContentRoute));
+		private readonly ILog logger = LogManager.GetLogger(typeof (ContentRoute));
 
 		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
 		public static string ContentItemKey
@@ -125,7 +125,7 @@ namespace N2.Web.Mvc
 			//On a multi-lingual site with separate domains per language,
 			//the full url (with host) should be passed to UrlParser.ResolvePath():
 			string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
-			var url = new Url(request.Url.Scheme, host, request.AppRelativeCurrentExecutionFilePath);
+			var url = new Url(request.Url.Scheme, host, request.RawUrl);
 			PathData td = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
 
 			var page = td.CurrentPage;
@@ -137,10 +137,10 @@ namespace N2.Web.Mvc
 			if (!string.IsNullOrEmpty(request.QueryString[PathData.PageQueryKey]))
 			{
 				int pageId;
-                if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
-                {
-                    td.CurrentPage = page = engine.Persister.Get(pageId);
-                }
+				if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
+				{
+					td.CurrentPage = page = engine.Persister.Get(pageId);
+				}
 			}
 
 			ContentItem part = null;
@@ -291,8 +291,8 @@ namespace N2.Web.Mvc
 
 		private VirtualPathData ResolveContentActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
 		{
-            const string controllerPlaceHolder = "---(CTRL)---";
-            const string areaPlaceHolder = "---(AREA)---";
+			const string controllerPlaceHolder = "---(CTRL)---";
+			const string areaPlaceHolder = "---(AREA)---";
 		
 			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
 			bool useAreas = innerRoute.DataTokens.ContainsKey("area");
