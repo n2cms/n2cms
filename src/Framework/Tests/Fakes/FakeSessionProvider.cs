@@ -11,7 +11,7 @@ namespace N2.Tests.Fakes
 		IInterceptor interceptor;
 
 		public FakeSessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
-			: base(builder, interceptor, webContext)
+			: base(builder, interceptor, webContext, new N2.Configuration.DatabaseSection())
 		{
 			this.interceptor = interceptor;
 		}
