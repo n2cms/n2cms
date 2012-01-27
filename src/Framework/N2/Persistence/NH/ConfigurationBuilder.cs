@@ -23,6 +23,7 @@ using log4net;
 using log4net.Config;
 using Environment = NHibernate.Cfg.Environment;
 using NHibernate.Driver;
+using System.Data;
 
 namespace N2.Persistence.NH
 {
@@ -105,7 +106,8 @@ namespace N2.Persistence.NH
 
 			SetupCacheProperties(config);
 
-			// custom config properties
+			if (config.Isolation.HasValue)
+				Properties[NHibernate.Cfg.Environment.Isolation] = config.Isolation.ToString();
 
 			foreach (string key in config.HibernateProperties.AllKeys)
 			{
