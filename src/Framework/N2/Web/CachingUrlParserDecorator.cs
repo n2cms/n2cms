@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Caching;
@@ -10,16 +11,28 @@ namespace N2.Web
 {
 	public class CachingUrlParserDecorator : IUrlParser
 	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(CachingUrlParserDecorator));
+		private readonly ILog logger = LogManager.GetLogger(typeof(CachingUrlParserDecorator));
 
 		readonly IUrlParser inner;
 		readonly IPersister persister;
+		private readonly IWebContext webContext;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
-				
-		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister)
+
+		private static readonly object ClassLock = new object();
+
+		private static readonly HashSet<string> ContentParameters = new HashSet<string>
+																		{
+																			PathData.ItemQueryKey,
+																			PathData.PageQueryKey,
+																			"action",
+																			"arguments"
+																		};
+
+		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext)
 		{
 			this.inner = inner;
 			this.persister = persister;
+			this.webContext = webContext;
 		}
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound
@@ -35,8 +48,9 @@ namespace N2.Web
 
 		public ContentItem CurrentPage
 		{
-			get { return inner.CurrentPage; }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
 		}
+
 		public TimeSpan SlidingExpiration
 		{
 			get { return slidingExpiration; }
@@ -59,33 +73,101 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-		/// <summary>Finds the content item and the template associated with an url.</summary>
-		/// <param name="url">The url to the template to locate.</param>
-		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
-		public PathData ResolvePath(Url url)
+		/// <summary>
+		/// Returns the string of the current url in invariant culture
+		/// </summary>
+		/// <param name="url">Url to get the string of</param>
+		/// <returns>Lowered invariant string of the url passed in</returns>
+		private string GetUrlLowerInvariantString(Url url)
+		{
+			return url.ToString().ToLowerInvariant();
+		}
+
+		/// <summary>
+		/// Recursively traverse down the url and find the first cached PathData node.  
+		/// </summary>
+		/// <param name="url">The full url</param>
+		/// <param name="cachedPathData">The cached path datas</param>
+		/// <param name="remainingPath">Teh remaining path which is un-cached</param>
+		/// <returns></returns>
+		private PathData GetStartNode(Url url, Dictionary<string, PathData> cachedPathData, ref string remainingPath)
+		{
+			if (string.IsNullOrEmpty(remainingPath))
+				return PathData.Empty;
+
+			var lastSlash = remainingPath.LastIndexOf('/');
+			if (lastSlash == 0)
+				return PathData.Empty;
+
+			remainingPath = remainingPath.Substring(0, lastSlash);
+
+			var urlKey = GetUrlLowerInvariantString(new Url(url.Scheme, url.Authority, remainingPath, url.Query, url.Fragment));
+
+			PathData data;
+			if (!cachedPathData.TryGetValue(urlKey, out data))
+				return GetStartNode(url, cachedPathData, ref remainingPath);
+
+			return data;
+		}
+
+		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null)
 				return PathData.Empty;
 
-			string key = url.ToString().ToLowerInvariant();
-
-			PathData data = HttpRuntime.Cache[key] as PathData;
-			if(data == null)
+			// Normalize the url remove parameters we don't care about
+			foreach (var queryParameter in url.GetQueries())
 			{
-				data = inner.ResolvePath(url);
-				if (!data.IsEmpty() && data.IsCacheable)
-				{
-					logger.Debug("Adding " + url + " to cache");
-					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
-				}
+				if (!ContentParameters.Contains(queryParameter.Key.ToLowerInvariant()))
+					url = url.RemoveQuery(queryParameter.Key);
 			}
-			else
+
+			var urlKey = GetUrlLowerInvariantString(url);
+
+			Dictionary<string, PathData> cachedPathData;
+			if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
 			{
+				cachedPathData = new Dictionary<string, PathData>();
+				HttpRuntime.Cache.Add("N2.PathDataCache", cachedPathData, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+			}
+
+			PathData data;
+			if (cachedPathData.TryGetValue(urlKey, out data))
+			{
+				if (data == null || data.ID == 0)
+				{
+					// Cached path has to CMS content
+					return PathData.Empty;
+				}
+
 				logger.Debug("Retrieving " + url + " from cache");
 				data = data.Attach(persister);
 				data.UpdateParameters(Url.Parse(url).GetQueries());
 			}
-			
+			else
+			{
+				lock (ClassLock)
+				{
+					if (data == null)
+					{
+						remainingPath = remainingPath ?? Url.ToRelative(url.Path).TrimStart('~');
+
+						string path = remainingPath;
+						var pathData = GetStartNode(url, cachedPathData, ref path);
+
+						var contentItem = persister.Get(pathData.ID);
+
+						data = pathData.ID == 0 ? inner.ResolvePath(url) : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
+
+						if (data.IsCacheable)
+						{
+							logger.Debug("Adding " + urlKey + " to cache");
+							cachedPathData.Add(urlKey, data.Detach());
+						}
+					}
+				}
+			}
+
 			return data;
 		}
 

@@ -15,16 +15,16 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			base.SetUp();
 			UrlParser inner = GetInnerUrlParser();
-			parser = new CachingUrlParserDecorator(inner, persister);
+			parser = new CachingUrlParserDecorator(inner, persister, wrapper);
 			CreateDefaultStructure();
 		}
 
 		protected virtual UrlParser GetInnerUrlParser()
 		{
 			sites = new[] { host.DefaultSite,
-			                new Site(1, 2/*item1.ID*/, "www.n2cms.com"), 
-			                new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
-			                new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") };
+							new Site(1, 2/*item1.ID*/, "www.n2cms.com"), 
+							new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
+							new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") };
 
 			new MultipleSitesInitializer(persister, host, new StaticSitesProvider(sites), new N2.Plugin.ConnectionMonitor().SetConnected(N2.Edit.Installation.SystemStatusLevel.UpAndRunning), new HostSection() { MultipleSites = true, DynamicSites = true }, null).Start();
 			return new MultipleSitesParser(persister, wrapper, host, new HostSection() { MultipleSites = true, DynamicSites = true });
