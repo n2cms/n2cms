@@ -281,8 +281,11 @@
 		init: function (selector, startsOpen) {
 			this.selector = selector;
 			var $sc = $(selector);
-			this.recalculate();
 			var self = this;
+
+			$(window).load(function () {
+				self.recalculate();
+			});
 
 			var curtain = {
 				open: function (e) {
