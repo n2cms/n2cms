@@ -88,11 +88,14 @@ namespace N2.Web
 		/// </summary>
 		/// <param name="url">The full url</param>
 		/// <param name="cachedPathData">The cached path datas</param>
-		/// <param name="remainingPath">Teh remaining path which is un-cached</param>
+		/// <param name="remainingPath">The remaining path which is un-cached</param>
+		/// <param name="depth"></param>
 		/// <returns></returns>
-		private PathData GetStartNode(Url url, Dictionary<string, PathData> cachedPathData, ref string remainingPath)
+		private PathData GetStartNode(Url url, Dictionary<string, PathData> cachedPathData, ref string remainingPath, int depth)
 		{
-			if (string.IsNullOrEmpty(remainingPath))
+			const int recursionDepth = 100;
+
+			if (++depth > recursionDepth || string.IsNullOrEmpty(remainingPath))
 				return PathData.Empty;
 
 			var lastSlash = remainingPath.LastIndexOf('/');
@@ -105,7 +108,7 @@ namespace N2.Web
 
 			PathData data;
 			if (!cachedPathData.TryGetValue(urlKey, out data))
-				return GetStartNode(url, cachedPathData, ref remainingPath);
+				return GetStartNode(url, cachedPathData, ref remainingPath, depth);
 
 			return data;
 		}
@@ -153,7 +156,7 @@ namespace N2.Web
 						remainingPath = remainingPath ?? Url.ToRelative(url.Path).TrimStart('~');
 
 						string path = remainingPath;
-						var pathData = GetStartNode(url, cachedPathData, ref path);
+						var pathData = GetStartNode(url, cachedPathData, ref path, 0);
 
 						var contentItem = persister.Get(pathData.ID);
 
