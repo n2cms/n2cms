@@ -290,7 +290,7 @@ namespace N2.Persistence.NH
 		/// <returns>A disposable transaction wrapper.</returns>
 		public ITransaction BeginTransaction()
 		{
-			return new NHTransaction(sessionProvider);
+			return sessionProvider.BeginTransaction();
 		}
 		#endregion
 

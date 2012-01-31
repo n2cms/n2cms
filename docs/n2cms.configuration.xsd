@@ -350,6 +350,19 @@
 						<xs:attribute name="tablePrefix" type="xs:string" use="optional" default="n2" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 						<xs:attribute name="batchSize" type="xs:int" use="optional" default="25" />
+						<xs:attribute name="isolation" use="optional">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Unspecified"/>
+									<xs:enumeration value="Chaos"/>
+									<xs:enumeration value="ReadUncommitted"/>
+									<xs:enumeration value="ReadCommitted"/>
+									<xs:enumeration value="RepeatableRead"/>
+									<xs:enumeration value="Serializable"/>
+									<xs:enumeration value="Snapshot"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="edit">

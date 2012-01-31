@@ -3,6 +3,7 @@ using System.Diagnostics;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Plugin.Scheduling;
+using N2.Security;
 
 namespace N2.Edit.AutoPublish
 {
@@ -11,7 +12,8 @@ namespace N2.Edit.AutoPublish
     {
         IVersionManager Versioner { get { return Engine.Resolve<IVersionManager>(); } }
         IPersister Persister { get { return Engine.Resolve<IPersister>(); } }
-        IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
+		IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
+		ISecurityManager Security { get { return Engine.SecurityManager; } }
 
         public override void Execute()
         {
@@ -28,10 +30,19 @@ namespace N2.Edit.AutoPublish
 				var masterVersion = scheduledVersion.VersionOf;
 				// Removing the DelayPublishingUntil Date so that it won't get picked up again
                 scheduledVersion["FuturePublishDate"] = null;
-				if (masterVersion == null)
-					Persister.Save(scheduledVersion);
-				else
-					Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
+
+				try
+				{
+					Security.ScopeEnabled = false;
+					if (masterVersion == null)
+						Persister.Save(scheduledVersion);
+					else
+						Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
+				}
+				finally
+				{
+					Security.ScopeEnabled = true;
+				}
             }
 
 			var implicitAutoPublish = Finder

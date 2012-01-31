@@ -1,5 +1,6 @@
 using System;
 using NHibernate;
+using System.Data;
 
 namespace N2.Persistence.NH
 {
@@ -8,13 +9,15 @@ namespace N2.Persistence.NH
 		NHibernate.ITransaction transaction;
         bool isOriginator = true;
 
-		public NHTransaction(ISessionProvider sessionProvider)
+		public NHTransaction(IsolationLevel? isolation, ISessionProvider sessionProvider)
 		{
 		    ISession session = sessionProvider.OpenSession.Session;
 			transaction = session.Transaction;
-            if (transaction.IsActive)
-                isOriginator = false; // The method that first opened the transaction should also close it
-            else
+			if (transaction.IsActive)
+				isOriginator = false; // The method that first opened the transaction should also close it
+			else if (isolation.HasValue)
+				transaction.Begin(isolation.Value);
+			else
                 transaction.Begin();
 		}
 
