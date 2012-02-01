@@ -126,18 +126,12 @@ namespace N2.Edit
 			var ctx = ie.CreateCommandContext();
 			Commands.Save(ctx);
 
-			string returnUrl = Request["returnUrl"];
-			if (!string.IsNullOrEmpty(returnUrl))
-			{
-				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
-			}
-
 			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
 			if(ctx.Content.VersionOf != null)
 				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
 
-			HandleResult(ctx, returnUrl, previewUrl);
+			HandleResult(ctx, previewUrl);
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)

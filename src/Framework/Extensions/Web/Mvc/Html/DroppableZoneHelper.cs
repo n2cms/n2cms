@@ -48,21 +48,30 @@ namespace N2.Web.Mvc.Html
 					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName))
 					.Write(">");
 
-				if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))
-				{
-					base.Render(writer);
-				}
-				else
-				{
-					string preview = Html.ViewContext.HttpContext.Request["preview"];
-					RenderReplacingPreviewed(writer, preview);
-				}
+                RenderPreview(writer);
 				
 				writer.Write("</div>");
 			}
-			else
-				base.Render(writer);
+            else if (state == ControlPanelState.Previewing)
+            {
+                RenderPreview(writer);
+            }
+            else
+                base.Render(writer);
 		}
+
+        private void RenderPreview(TextWriter writer)
+        {
+            if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))
+            {
+                base.Render(writer);
+            }
+            else
+            {
+                string preview = Html.ViewContext.HttpContext.Request["preview"];
+                RenderReplacingPreviewed(writer, preview);
+            }
+        }
 
         protected override string GetInterface()
         {
