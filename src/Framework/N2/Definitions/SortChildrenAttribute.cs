@@ -69,7 +69,9 @@ namespace N2.Definitions
 
 		private IEnumerable<ContentItem> ReorderBy(ContentItem item, string sortExpression)
 		{
-			ItemList temp = new ItemList(item.Children);
+			// Possible workaround of issue lazy-loading children 
+			// List<T> takes some shortcuts that might bypass nh bag initialization
+			ItemList temp = new ItemList(item.Children.Select(c => c));
 			temp.Sort(sortExpression);
 			
 			item.Children.Clear();
