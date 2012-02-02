@@ -9,6 +9,26 @@
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+
+		$(document).ready(function(){
+			$("a").not("[href^=#]").not("[href^=mailto]")
+			.hover(function(){
+				_gaq.push(['_trackEvent', 'Link', 'Hover', this.innerText]);
+			}).click(function(e){
+				var href = this.href.toString();
+				if (href.match(/[.](pdf|doc|txt|docx|rtm)$/)) {
+					_gaq.push(['_trackEvent', 'Link', 'Document', this.innerText]);
+				} else if(href.indexOf(location.protocol + "//" + location.host) != 0) {
+					_gaq.push(['_trackEvent', 'Link', 'External', this.innerText]);
+				} else
+					return;
+
+				e.preventDefault();
+				setTimeout(function(){
+					window.location = href;
+				}, 10);
+			});
+		});
 	})();
 </script>
 </asp:PlaceHolder>

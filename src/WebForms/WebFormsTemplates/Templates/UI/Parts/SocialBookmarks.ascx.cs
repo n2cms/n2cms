@@ -5,6 +5,13 @@ namespace N2.Templates.UI.Parts
 {
     public partial class SocialBookmarks : Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.SocialBookmarks>
     {
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			N2.Resources.Register.JQuery(Page);
+		}
+
 		protected string GetUrl()
 		{
 			string url = CurrentItem.LikeSite
