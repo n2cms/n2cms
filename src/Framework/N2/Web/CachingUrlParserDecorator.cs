@@ -18,15 +18,7 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
-		private static readonly object ClassLock = new object();
-
-		private static readonly HashSet<string> ContentParameters = new HashSet<string>
-																		{
-																			PathData.ItemQueryKey,
-																			PathData.PageQueryKey,
-																			"action",
-																			"arguments"
-																		};
+		private static readonly object classLock = new object();
 
 		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext)
 		{
@@ -118,20 +110,22 @@ namespace N2.Web
 			if (url == null)
 				return PathData.Empty;
 
-			// Normalize the url remove parameters we don't care about
-			foreach (var queryParameter in url.GetQueries())
-			{
-				if (!ContentParameters.Contains(queryParameter.Key.ToLowerInvariant()))
-					url = url.RemoveQuery(queryParameter.Key);
-			}
+			url = url.GetNormalizedContentUrl();
 
 			var urlKey = GetUrlLowerInvariantString(url);
 
+			// Make sure the cached path data is initialized thread safely
 			Dictionary<string, PathData> cachedPathData;
 			if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
 			{
-				cachedPathData = new Dictionary<string, PathData>();
-				HttpRuntime.Cache.Add("N2.PathDataCache", cachedPathData, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+				lock (classLock)
+				{
+					if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
+					{
+						cachedPathData = new Dictionary<string, PathData>();
+						HttpRuntime.Cache.Add("N2.PathDataCache", cachedPathData, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+					}
+				}
 			}
 
 			PathData data;
@@ -149,9 +143,10 @@ namespace N2.Web
 			}
 			else
 			{
-				lock (ClassLock)
+				// The requested url doesn't exist in the cached path data
+				lock (classLock)
 				{
-					if (data == null)
+					if (!cachedPathData.TryGetValue(urlKey, out data))
 					{
 						remainingPath = remainingPath ?? Url.ToRelative(url.Path).TrimStart('~');
 
@@ -160,7 +155,9 @@ namespace N2.Web
 
 						var contentItem = persister.Get(pathData.ID);
 
-						data = pathData.ID == 0 ? inner.ResolvePath(url) : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
+						data = pathData.ID == 0
+								   ? inner.ResolvePath(url)
+								   : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
 
 						if (data.IsCacheable)
 						{
