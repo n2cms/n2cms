@@ -17,7 +17,7 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			base.SetUp();
 			UrlParser inner = TestSupport.Setup(persister, wrapper, host);
-			parser = new CachingUrlParserDecorator(inner, persister);
+			parser = new CachingUrlParserDecorator(inner, persister, wrapper);
 			CreateDefaultStructure();
 			repository = (FakeRepository<ContentItem>) persister.Repository;
 		}
@@ -91,6 +91,15 @@ namespace N2.Tests.Web.UrlParsing
 			var data = parser.ResolvePath("/item1/item1_1");
 
 			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
+			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
+		}
+
+		[Test]
+		public void ResolvedTemplateWithStartNode()
+		{
+			var data = parser.ResolvePath("/item1/item1_1", item1);
+
+			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 
