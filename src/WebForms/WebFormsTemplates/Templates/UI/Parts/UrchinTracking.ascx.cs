@@ -14,8 +14,8 @@ namespace N2.Templates.UI.Parts
         protected override void OnInit(System.EventArgs e)
         {
 			DataBind();
-
-            base.OnInit(e);
+			
+			base.OnInit(e);
         }
     }
 }
