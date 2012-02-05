@@ -106,7 +106,9 @@ namespace N2.Edit.Web
         {
             if(!string.IsNullOrEmpty(Request["returnUrl"]))
                 return Request["returnUrl"];
-			var item = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
+			var item = Selection.SelectedItem.VersionOf.HasValue
+				? Selection.SelectedItem.VersionOf.Value
+				: Selection.SelectedItem;
 			return NodeAdapter(item).GetPreviewUrl(item);
         }
 

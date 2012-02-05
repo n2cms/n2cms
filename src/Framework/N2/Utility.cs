@@ -435,7 +435,7 @@ namespace N2
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
 		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> handler, ContentItem item, object sender, Action<ContentItem> finalAction)
 		{
-			if (handler != null && (VersionsTriggersEvents || item.VersionOf == null))
+			if (handler != null && (VersionsTriggersEvents || !item.VersionOf.HasValue))
 			{
 				CancellableItemEventArgs args = new CancellableItemEventArgs(item, finalAction);
 				
@@ -457,7 +457,7 @@ namespace N2
 		/// <returns>The result of the action (if any).</returns>
 		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
 		{
-			if (handler != null && (VersionsTriggersEvents || source.VersionOf == null))
+			if (handler != null && (VersionsTriggersEvents || !source.VersionOf.HasValue))
 			{
 				CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination, finalAction);
 

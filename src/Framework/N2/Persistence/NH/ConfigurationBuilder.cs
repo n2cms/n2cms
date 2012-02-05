@@ -1,29 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using log4net;
+using log4net.Config;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
-using N2.Edit.FileSystem.NH;
 using N2.Engine;
-using N2.Linq;
 using N2.Security;
 using N2.Web;
 using NHibernate;
-using NHibernate.Cfg;
+using NHibernate.AdoNet;
+using NHibernate.Driver;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
-using NHibernate.AdoNet;
-using log4net;
-using log4net.Config;
 using Environment = NHibernate.Cfg.Environment;
-using NHibernate.Driver;
-using System.Data;
 
 namespace N2.Persistence.NH
 {
@@ -302,7 +297,16 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.AncestralTrail, cm => { cm.Length(100); });
 			ca.Property(x => x.VersionIndex, cm => { });
 			ca.Property(x => x.AlteredPermissions, cm => { });
-			ca.ManyToOne(x => x.VersionOf, cm => { cm.Column("VersionOfID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
+			//ca.ManyToOne(x => x.VersionOf, cm => { cm.Column("VersionOfID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
+			//ca.Property(x => x.VersionOf, cm =>
+			//{
+			//    cm.Column("VersionOfID");
+			//    cm.Type<ContentRelationFactory>();
+			//});
+			ca.Component(x => x.VersionOf, cm =>
+			{
+				cm.Property(cr => cr.ID, pm => pm.Column("VersionOfID"));
+			});
 			ca.ManyToOne(x => x.Parent, cm => { cm.Column("ParentID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
 			ca.Bag(x => x.Children, cm =>
 			{
@@ -501,8 +505,12 @@ namespace N2.Persistence.NH
 		/// <returns>A new <see cref="NHibernate.ISessionFactory"/>.</returns>
 		public ISessionFactory BuildSessionFactory()
 		{
-			logger.Debug("Building Session Factory " + DateTime.Now);
-			return BuildConfiguration().BuildSessionFactory();
+			logger.Debug("Building Configuration");
+			var cfg = BuildConfiguration();
+			logger.Debug("Building Session Factory");
+			var sf = cfg.BuildSessionFactory();
+			logger.Debug("Built Session Factory");
+			return sf;
 		}
 
 		/// <summary>Checks whether a type's mapping is added to the NHibernate configuration.</summary>

@@ -25,7 +25,7 @@ namespace N2.Tests
     {
         public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-			var participators = new ConfigurationBuilderParticipator[0];
+			var participators = new ConfigurationBuilderParticipator[] { new RelationConfigurationBuilderParticipator() };
 			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
 			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
 			Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, context, config, participators, itemTypes);
@@ -41,7 +41,7 @@ namespace N2.Tests
 			var configurationBuilder = new ConfigurationBuilder(definitionProviders, new ClassMappingGenerator(map), new ThreadContext(), participators, config, connectionStrings);
 			var configurationSource = new ConfigurationSource(configurationBuilder);
 
-			sessionProvider = new FakeSessionProvider(configurationSource, new NHInterceptor(proxyFactory, configurationSource, notifier), context);
+			sessionProvider = new FakeSessionProvider(configurationSource, new NHInterceptorFactory(proxyFactory, notifier), context);
 			sessionProvider.CurrentSession = null;
 
 			finder = new ItemFinder(sessionProvider, map);

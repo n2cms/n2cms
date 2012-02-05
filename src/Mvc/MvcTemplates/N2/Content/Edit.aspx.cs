@@ -128,7 +128,7 @@ namespace N2.Edit
 
 			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
-			if(ctx.Content.VersionOf != null)
+			if(ctx.Content.VersionOf.HasValue)
 				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
 
 			HandleResult(ctx, previewUrl);
@@ -206,7 +206,7 @@ namespace N2.Edit
 			hlNewerVersion.Visible = false;
 			hlOlderVersion.Visible = false;
 
-			if (item.VersionOf != null)
+			if (item.VersionOf.HasValue)
 			{
 				DisplayThisIsVersionInfo(item.VersionOf);
 			}
@@ -331,7 +331,7 @@ namespace N2.Edit
 			Commands.Save(cc);
 
 			var item = cc.Content;
-			if (item.VersionOf == null)
+			if (!item.VersionOf.HasValue)
 				item.Published = dpFuturePublishDate.SelectedDate;
 			else
 				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;

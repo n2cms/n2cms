@@ -39,7 +39,7 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction IsNull(bool isNull)
 		{
-			query.Criterias.Add(new PropertyIsNullHqlProvider<ContentItem>(op, "VersionOf", !isNull));
+			query.Criterias.Add(new PropertyIsNullHqlProvider<ContentItem>(op, "VersionOf.ID", !isNull));
 
 			return query;
 		}

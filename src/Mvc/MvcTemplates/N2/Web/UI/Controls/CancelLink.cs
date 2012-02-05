@@ -29,7 +29,9 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			if (!string.IsNullOrEmpty(Page.Request["returnUrl"]))
 				return Page.Request["returnUrl"];
-			var item = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
+			var item = Selection.SelectedItem.VersionOf.HasValue 
+				? Selection.SelectedItem.VersionOf.Value 
+				: Selection.SelectedItem;
 			return Engine.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
 		}
 

@@ -2,8 +2,9 @@
 <div class="uc"><div class="box"><div class="inner">
 	<style>div pre { display:none; }</style>
 	<div onclick="document.body.innerHTML=this.innerHTML">NH Queries: <%= Model.Queries().Count%> <a href="#show">(+)</a><br />
-		<pre style="background-color:#fff;padding:5px;"><% foreach (string q in Model.Queries()) { %>
-<% string fq = q.Replace("SELECT", "\r\nSELECT").Replace("FROM", "\r\n\tFROM").Replace("WHERE", "\r\n\tWHERE").Replace("ORDER BY", "\r\n\tORDER BY")
+		<pre style="background-color:#fff;padding:5px;"><% foreach (var q in Model.Queries()) { %>
+		<div><b><%= q.Caller %></b></div>
+<% string fq = q.Sql.Replace("SELECT", "\r\nSELECT").Replace("FROM", "\r\n\tFROM").Replace("WHERE", "\r\n\tWHERE").Replace("ORDER BY", "\r\n\tORDER BY")
 		.Replace("select", "\r\nSELECT").Replace("from", "\r\n\tFROM").Replace("where", "\r\n\tWHERE").Replace("order by", "\r\n\tORDER BY")
 		.Replace(";", ";\r\n\t\t"); %>
 <% string[] colors = new string[] { "#f00", "#0f0", "#00f", "#c11", "#1c1", "#11c", "#a22", "#2a2", "#22a", "#733" }; %>
@@ -16,8 +17,8 @@
 <% } %></pre>
 	</div>
 	<div onclick="document.body.innerHTML=this.innerHTML">NH Events: <%= Model.All().Count%> <a href="#show">(+)</a><br />
-		<pre style="background-color:#fff;padding:5px;"><% foreach (string q in Model.All()) { %>
-<%= q %>
+		<pre style="background-color:#fff;padding:5px;"><% foreach (var q in Model.All()) { %>
+<%= q.Sql %>
 <% } %></pre>
 	</div>
 	<div>Collections: <%= Html.ResolveService<N2.Persistence.NH.ISessionProvider>().OpenSession.Session.Statistics.CollectionCount %></div>

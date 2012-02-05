@@ -59,7 +59,7 @@ namespace N2
     /// you should manually change the discriminator in the database or set the 
     /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
     /// </remarks>
-	[Serializable, DebuggerDisplay("{Name, nq}#{ID} [{TypeName, nq}]")]
+	[Serializable, DebuggerDisplay("{TypeName, nq}: {Name, nq}#{ID}")]
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
@@ -90,7 +90,7 @@ namespace N2
         private int sortOrder;
 		private string url = null;
         private bool visible = true;
-		private ContentItem versionOf = null;
+		private ContentRelation versionOf;
 		private string savedBy;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
@@ -232,10 +232,15 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the published version of this item. If this value is not null then this item is a previous version of the item specified by VersionOf.</summary>
-		public virtual ContentItem VersionOf
+		public virtual ContentRelation VersionOf
 		{
-			get { return versionOf; }
-			set { versionOf = value; }
+			get { return versionOf ?? (versionOf = new ContentRelation()); }
+			set 
+			{
+				//if (versionOf != null && value != null)
+				//    value.ValueAccessor = versionOf.ValueAccessor;
+				versionOf = value;
+			}
 		}
 
 		/// <summary>Gets or sets the name of the identity who saved this item.</summary>
@@ -703,7 +708,7 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual ItemList GetChildren(ItemFilter filter)
 		{
-			IEnumerable<ContentItem> items = VersionOf == null ? Children : VersionOf.Children;
+			IEnumerable<ContentItem> items = !VersionOf.HasValue ? Children : VersionOf.Children;
 			return new ItemList(items, filter);
 		}
 
@@ -714,7 +719,7 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual ItemList GetChildren(int skip, int take, ItemFilter filter)
 		{
-			var items = VersionOf == null ? Children : VersionOf.Children;
+			var items = !VersionOf.HasValue ? Children : VersionOf.Children;
 			if (skip != 0 || take != int.MaxValue)
 				return new ItemList(items.FindRange(skip, take), filter);
 
@@ -856,7 +861,7 @@ namespace N2
 		{
 			get
 			{
-				if (VersionOf != null)
+				if (VersionOf.HasValue)
 					return VersionOf.Path;
 
 				string path = "/";

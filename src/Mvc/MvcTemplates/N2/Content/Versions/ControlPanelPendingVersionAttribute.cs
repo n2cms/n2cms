@@ -23,7 +23,7 @@ namespace N2.Edit.Versions
 		{
 			if(!ActiveFor(container, context.State)) return null;
 			if (context.Selected == null) return null;
-			if (context.Selected.VersionOf != null) return null;
+			if (context.Selected.VersionOf.HasValue) return null;
 
 			IEngine engine = Context.Current;
 			ContentItem latestVersion = engine.Resolve<IVersionManager>().GetVersionsOf(context.Selected, 1)[0];

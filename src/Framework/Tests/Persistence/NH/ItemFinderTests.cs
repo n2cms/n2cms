@@ -153,7 +153,7 @@ namespace N2.Tests.Persistence.NH
                 .And.VersionOf.Eq(rootItem)
                 .PreviousVersions(VersionOption.Include).Select();
             Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(rootItem, items[0].VersionOf);
+            Assert.AreEqual(rootItem, items[0].VersionOf.Value);
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace N2.Tests.Persistence.NH
                 .PreviousVersions(VersionOption.Include).Select();
             Assert.AreEqual(2, items.Count);
             Assert.AreEqual(rootItem, items[0]);
-            Assert.AreEqual(rootItem, items[1].VersionOf);
+            Assert.AreEqual(rootItem, items[1].VersionOf.Value);
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace N2.Tests.Persistence.NH
                 .OrderBy.VersionIndex.Asc
                 .Select();
             Assert.AreEqual(2, items.Count);
-            Assert.AreEqual(rootItem, items[0].VersionOf);
+            Assert.AreEqual(rootItem, items[0].VersionOf.Value);
             Assert.AreEqual(rootItem, items[1]);
         }
 
@@ -197,7 +197,7 @@ namespace N2.Tests.Persistence.NH
                 .Where.State.Eq(ContentState.Unpublished)
                 .PreviousVersions(VersionOption.Include).Select();
             Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(rootItem, items[0].VersionOf);
+            Assert.AreEqual(rootItem, items[0].VersionOf.Value);
         }
 
         [Test]

@@ -79,7 +79,7 @@ namespace N2.Persistence.NH
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					if (item.VersionOf == null)
+					if (!item.VersionOf.HasValue)
 						item.Updated = Utility.CurrentTime();
 					if (string.IsNullOrEmpty(item.Name))
 						item.Name = null;
@@ -187,7 +187,7 @@ namespace N2.Persistence.NH
 
 		private void DeletePreviousVersions(ContentItem itemNoMore)
 		{
-			var previousVersions = itemRepository.Find("VersionOf", itemNoMore);
+			var previousVersions = itemRepository.Find("VersionOf.ID", itemNoMore.ID);
 
 			int count = 0;
 			foreach (ContentItem version in previousVersions)
@@ -327,7 +327,7 @@ namespace N2.Persistence.NH
         protected virtual T Invoke<T>(EventHandler<T> handler, T args)
             where T : ItemEventArgs
         {
-            if (handler != null && args.AffectedItem.VersionOf == null)
+			if (handler != null && !args.AffectedItem.VersionOf.HasValue)
                 handler.Invoke(this, args);
             return args;
         }
