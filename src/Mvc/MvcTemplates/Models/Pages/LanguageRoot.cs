@@ -9,6 +9,7 @@ using N2.Web.UI;
 using N2.Integrity;
 using N2.Definitions;
 using N2.Security;
+using N2.Web.Parts;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -91,8 +92,8 @@ namespace N2.Templates.Mvc.Models.Pages
 		[EditableItem("Header", 100, ContainerName = "Top")]
 		public virtual Top Header
 		{
-			get { return (Top)Children["Header"]; }
-			set { Children["Header"] = value; }
+			get { return this.LoadPartFromDetails<Top>("Header"); }
+			set { this.StorePartOnDetails("Header", value); }
 		}
 	}
 }

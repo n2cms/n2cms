@@ -180,6 +180,7 @@
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Upgrade\MergeTopParts.cs" />
     <Compile Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
