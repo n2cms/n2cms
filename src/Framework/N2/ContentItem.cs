@@ -458,6 +458,38 @@ namespace N2
 				}     
             }
         }
+
+		internal static class KnownProperties
+		{
+			public const string AlteredPermissions = "AlteredPermissions";
+			public const string AncestralTrail = "AncestralTrail";
+			public const string Created = "Created";
+			public const string Expires = "Expires";
+			public const string Extension = "Extension";
+			public const string IconUrl = "IconUrl";
+			public const string ID = "ID";
+			public const string IsPage = "IsPage";
+			public const string Name = "Name";
+			public const string Parent = "Parent";
+			public const string Path = "Path";
+			public const string Published = "Published";
+			public const string SavedBy = "SavedBy";
+			public const string SortOrder = "SortOrder";
+			public const string State = "State";
+			public const string TemplateKey = "TemplateKey";
+			public const string TemplateUrl = "TemplateUrl";
+			public const string TranslationKey = "TranslationKey";
+			public const string Title = "Title";
+			public const string Updated = "Updated";
+			public const string Url = "Url";
+			public const string VersionIndex = "VersionIndex";
+			public const string Visible = "Visible";
+			public const string ZoneName = "ZoneName";
+
+			public static HashSet<string> WritablePartProperties = new HashSet<string>(new[] { AlteredPermissions, Created, Expires, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, Visible, ZoneName });
+			public static HashSet<string> WritableProperties = new HashSet<string>(new[] { AlteredPermissions, AncestralTrail, Created, Expires, ID, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, VersionIndex, Visible, ZoneName });
+			public static HashSet<string> ReadonlyProperties = new HashSet<string>(new [] { Extension, IconUrl, IsPage, Path, TemplateUrl, Url });
+		}
         #endregion
 
 		#region GetDetail & SetDetail<T> Methods

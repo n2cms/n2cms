@@ -97,7 +97,13 @@ namespace N2.Details
 		{
 			ItemEditor itemEditor = editor as ItemEditor;
 			ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
-			return itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem, itemEditor.GetDefinition()));
+			if (itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem, itemEditor.GetDefinition())))
+			{
+				parentItem[Name] = itemEditor.CurrentItem;
+				return true;
+			}
+			
+			return false;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)

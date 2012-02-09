@@ -355,6 +355,7 @@
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
+    <Compile Include="Web\Parts\PartsExtensions.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
