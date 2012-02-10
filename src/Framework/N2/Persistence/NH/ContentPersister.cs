@@ -45,6 +45,8 @@ namespace N2.Persistence.NH
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual ContentItem Get(int id)
 		{
+			if (id == 0) return null;
+
             ContentItem item = itemRepository.Get(id);
             if (ItemLoaded != null)
             {
