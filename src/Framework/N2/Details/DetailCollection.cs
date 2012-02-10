@@ -85,7 +85,7 @@ namespace N2.Details
 		}
 
 		/// <summary>Gets or sets the details collection. To access the objects directly you can use e.g. collection[index].</summary>
-		public IList<ContentDetail> Details
+		public virtual IList<ContentDetail> Details
 		{
 			get { return details; }
 			set { details = value; }
@@ -107,7 +107,7 @@ namespace N2.Details
 		#region Methods
 		/// <summary>Adds the elements of the specified collection to the end of this collection.</summary>
 		/// <param name="values">The values to add.</param>
-		public void AddRange(IEnumerable values)
+		public virtual void AddRange(IEnumerable values)
 		{
 			foreach (object value in values)
 				this.Add(value);
@@ -115,7 +115,7 @@ namespace N2.Details
 
 		/// <summary>Replaces the values in this collection adding those not present in this collection and removing those not present in the supplied collection. This method will not add duplicate elements.</summary>
 		/// <param name="values">The values to replace the this collection with.</param>
-		public void Replace(IEnumerable values)
+		public virtual void Replace(IEnumerable values)
 		{
 			bool[] valuesToKeep = new bool[this.Count];
 			
@@ -143,7 +143,7 @@ namespace N2.Details
 		/// <summary>Gets the index of an object in the collection..</summary>
 		/// <param name="value">The value whose index to get.</param>
 		/// <returns>The index or -1 if the item isn't in the collection.</returns>
-		public int IndexOf(object value)
+		public virtual int IndexOf(object value)
 		{
 			for (int i = 0; i < Details.Count; i++)
 				if (Details[i].Equals(value) || (Details[i].Value != null && Details[i].Value.Equals(value)))
@@ -154,7 +154,7 @@ namespace N2.Details
 		/// <summary>Inserts a value in the collection.</summary>
 		/// <param name="index">The index to insert into.</param>
 		/// <param name="value">The value to insert.</param>
-		public void Insert(int index, object value)
+		public virtual void Insert(int index, object value)
 		{
 			ContentDetail detail = GetDetail(value);
 			Details.Insert(index, detail);
@@ -162,7 +162,7 @@ namespace N2.Details
 
 		/// <summary>Removes a value at the given index.</summary>
 		/// <param name="index">The index of the value to remove.</param>
-		public void RemoveAt(int index)
+		public virtual void RemoveAt(int index)
 		{
 			Details.RemoveAt(index);
 		}
@@ -170,7 +170,7 @@ namespace N2.Details
 		/// <summary>Gets or sets a value at the specified index.</summary>
 		/// <param name="index">The index of the value.</param>
 		/// <returns>The value get or set from the specified index.</returns>
-		public object this[int index]
+		public virtual object this[int index]
 		{
 			get { return Details[index].Value; }
 			set 
@@ -180,7 +180,7 @@ namespace N2.Details
 		}
 
 		/// <summary>Gets false.</summary>
-		public bool IsFixedSize
+		public virtual bool IsFixedSize
 		{
 			get { return false; }
 		}
@@ -192,7 +192,7 @@ namespace N2.Details
 		/// <summary>Adds a value to the collection.</summary>
 		/// <param name="value">The value to add.</param>
 		/// <returns>the index of the added value.</returns>
-		public int Add(object value)
+		public virtual int Add(object value)
 		{
 			ContentDetail detail = GetDetail(value);
 			Details.Add(detail);
@@ -200,7 +200,7 @@ namespace N2.Details
 		}
 
 		/// <summary>Clears the collection.</summary>
-		public void Clear()
+		public virtual void Clear()
 		{
 			Details.Clear();
 		}
@@ -208,7 +208,7 @@ namespace N2.Details
 		/// <summary>Check if the collection contains a value.</summary>
 		/// <param name="value">The value to look for.</param>
 		/// <returns>True if the collection contains the value.</returns>
-		public bool Contains(object value)
+		public virtual bool Contains(object value)
 		{
 			if (value == null)
 				return false;
@@ -222,27 +222,27 @@ namespace N2.Details
 		/// <summary>Copies the collection to an array.</summary>
 		/// <param name="array">The array to copy values to.</param>
 		/// <param name="index">The start index to copy from.</param>
-		public void CopyTo(Array array, int index)
+		public virtual void CopyTo(Array array, int index)
 		{
 			for (int i = index; i < array.Length; i++)
 				array.SetValue(Details[i].Value, i);
 		}
 
 		/// <summary>Gets the number of values in the collection.</summary>
-		public int Count
+		public virtual int Count
 		{
 			get { return Details.Count; }
 		}
 
 		/// <summary>Gets false.</summary>
-		public bool IsReadOnly
+		public virtual bool IsReadOnly
 		{
 			get { return Details.IsReadOnly; }
 		}
 
 		/// <summary>Removes a value from the collection.</summary>
 		/// <param name="value">The value to remove.</param>
-		public void Remove(object value)
+		public virtual void Remove(object value)
 		{
 			int index = IndexOf(value);
 			if (index >= 0)
@@ -250,13 +250,13 @@ namespace N2.Details
 		}
 
 		/// <summary>Gets true.</summary>
-		public bool IsSynchronized
+		public virtual bool IsSynchronized
 		{
 			get { return true; }
 		}
 
 		/// <summary>Gets null.</summary>
-		public object SyncRoot
+		public virtual object SyncRoot
 		{
 			get { return null; }
 		}
@@ -276,7 +276,7 @@ namespace N2.Details
 
 		/// <summary>Clones the collection and </summary>
 		/// <returns></returns>
-		public DetailCollection Clone()
+		public virtual DetailCollection Clone()
 		{
 			DetailCollection collection = new DetailCollection();
 			collection.ID = 0;
@@ -320,7 +320,7 @@ namespace N2.Details
 				return ++enumeratorIndex < collection.Count;
 			}
 
-			public void Reset()
+			public virtual void Reset()
 			{
 				enumeratorIndex = -1;
 			}
@@ -328,7 +328,7 @@ namespace N2.Details
 		} 
 		#endregion
 
-		public IList<T> ToList<T>()
+		public virtual IList<T> ToList<T>()
 		{
 			List<T> list = new List<T>();
 			foreach (ContentDetail cd in this.Details)
@@ -338,7 +338,7 @@ namespace N2.Details
 			return list;
 		}
 
-		public IEnumerable<T> Enumerate<T>()
+		public virtual IEnumerable<T> Enumerate<T>()
 		{
 			foreach (ContentDetail cd in this.Details)
 			{
@@ -346,7 +346,7 @@ namespace N2.Details
 			}
 		}
 
-		public T[] ToArray<T>()
+		public virtual T[] ToArray<T>()
 		{
 			T[] list = new T[Details.Count];
 			for (int i = 0; i < list.Length; i++)
@@ -376,7 +376,7 @@ namespace N2.Details
 
 		#region IEnumerable<object> Members
 
-		public IEnumerator<object> GetEnumerator()
+		public virtual IEnumerator<object> GetEnumerator()
 		{
 			return this.Details.Select(d => d.Value).GetEnumerator();
 		}
