@@ -543,6 +543,8 @@ namespace N2
 			if (string.IsNullOrEmpty(html)) return html;
 
 			html = StripTagsExpression.Replace(html, "");
+			if (string.IsNullOrEmpty(html)) return html;
+
 			int separatorIndex = 0;
 			for (int i = 0; i < html.Length && i < maxLength; i++)
 			{

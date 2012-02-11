@@ -597,6 +597,24 @@ namespace N2.Tests.Utility
 			Assert.That(output, Is.EqualTo(input));
 		}
 
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_NoDelimiter_AndParagraphs()
+		{
+			string input = "<p>Test test test</p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 250);
+
+			Assert.That(output, Is.EqualTo("Test test test"));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_OnlyParagraphs()
+		{
+			string input = "<p></p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 250);
+
+			Assert.That(output, Is.EqualTo(""));
+		}
+
 		[TestCase(typeof(object), 0)]
 		[TestCase(typeof(ContentItem), 2)] // ContentItem(2) : INode(1) : ILink(0)
 		[TestCase(typeof(UtilityItem), 3)] // UtilityItem(3) : ContentItem(2) : INode(1) : ILink(0)
