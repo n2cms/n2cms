@@ -10,11 +10,11 @@ using N2.Engine;
 namespace N2.Templates.Mvc.Upgrade
 {
 	[Service(typeof(AbstractMigration))]
-	public class MergeTopParts : AbstractMigration
+	public class MigrateTopParts : AbstractMigration
 	{
 		private IPersister persister;
 
-		public MergeTopParts(IPersister persister)
+		public MigrateTopParts(IPersister persister)
 		{
 			this.persister = persister;
 			this.Title = "Remove top parts and store data on the containing page";
@@ -22,7 +22,14 @@ namespace N2.Templates.Mvc.Upgrade
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return persister.Repository.Find(new Parameter("class", "Top")).Where(p => p.State != ContentState.Deleted).Any();
+			try
+			{
+				return persister.Repository.Find(new Parameter("class", "Top")).Where(p => p.State != ContentState.Deleted).Any();
+			}
+			catch (Exception)
+			{
+				return true;
+			}
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
