@@ -3,6 +3,7 @@ using System.Linq;
 using N2.Details;
 using N2.Engine;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
@@ -102,6 +103,24 @@ namespace N2.Persistence.NH
 			s.Flush();
 
 			return count;
+		}
+
+		protected override ICriterion CreateCriterion(IParameter parameter)
+		{
+			var p = parameter as Parameter;
+			if (p != null && p.IsDetail)
+			    return CreateDetailExpression(p);
+			
+			return base.CreateCriterion(parameter);
+		}
+
+		private ICriterion CreateDetailExpression(Parameter p)
+		{
+			return Subqueries.PropertyIn("ID",
+				DetachedCriteria.For<ContentDetail>()
+					.SetProjection(Projections.Property("EnclosingItem.ID"))
+					.Add(Expression.Eq("Name", p.Name))
+					.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), p.Value, p.Comparison)));
 		}
 	}
 

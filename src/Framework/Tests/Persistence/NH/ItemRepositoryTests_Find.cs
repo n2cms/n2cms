@@ -21,6 +21,7 @@ namespace N2.Tests.Persistence.NH
 		private PersistableItem1 child2;
 		private PersistablePart1 part1;
 		private PersistablePart1 part2;
+		private PersistableItem1 version;
 		private ContentItem[] all;
 
 		[SetUp]
@@ -40,11 +41,17 @@ namespace N2.Tests.Persistence.NH
 				part1 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
 				part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
 				child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root),
+				version = CreateOneItem<Definitions.PersistableItem1>(0, "page1", null)
 			};
 			part1.ZoneName = "Left";
 			part2.ZoneName = "RecursiveLeft";
+			child1["Hello"] = "World";
+			grandchild1["Age"] = 1.7;
 
 			repository.SaveOrUpdate(root);
+
+			version.VersionOf = child1;
+			repository.SaveOrUpdate(version);
 		}
 
 		[Test]
@@ -169,6 +176,30 @@ namespace N2.Tests.Persistence.NH
 
 			results.First().ID.ShouldBe(all.Select(i => i.ID).Max());
 			results.Last().ID.ShouldBe(all.Select(i => i.ID).Min());
+		}
+
+		[Test]
+		public void Find_ExcludeVersions()
+		{
+			var results = repository.Find(Parameter.IsNull("VersionOf.ID"));
+
+			results.Count().ShouldBe(all.Length - 1);
+		}
+
+		[Test]
+		public void Find_DetailEqual()
+		{
+			var results = repository.Find(Parameter.Equal("Hello", "World").Detail());
+
+			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
+		public void Find_DetailLessThan()
+		{
+			var results = repository.Find(Parameter.LessThan("Age", 2.0).Detail());
+
+			results.Single().ShouldBe(grandchild1);
 		}
 	}
 }

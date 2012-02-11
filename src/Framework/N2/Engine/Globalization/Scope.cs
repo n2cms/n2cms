@@ -6,6 +6,11 @@ namespace N2.Engine.Globalization
 	{
 		Action end;
 
+		public Scope(Action end)
+		{
+			this.end = end;
+		}
+
 		public Scope(Action begin, Action end)
 		{
 			begin();

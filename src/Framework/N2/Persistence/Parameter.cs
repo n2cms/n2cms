@@ -41,7 +41,7 @@ namespace N2.Persistence
 
 		public Comparison Comparison { get; set; }
 
-
+		public bool IsDetail { get; set; }
 
 		public Parameter(string name, object value)
 			: this(name, value, Comparison.Equal)

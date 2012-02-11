@@ -169,17 +169,17 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			return FindAll(CreateExpression(new Parameter(propertyName, value, value is string ? Comparison.Like : Comparison.Equal)));
+			return FindAll(CreateCriterion(new Parameter(propertyName, value, value is string ? Comparison.Like : Comparison.Equal)));
 		}
 
 		/// <summary>
 		/// Finds entitities from the persistance store with matching property values.
 		/// </summary>
-		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <param name="parametersToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
 		/// <returns>Entities with matching values.</returns>
-		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		public IEnumerable<TEntity> Find(params Parameter[] parametersToMatchAll)
 		{
-			return FindAll(propertyValuesToMatchAll.Select(kvp => CreateExpression(kvp.Name, kvp.Value, kvp.Comparison)).ToArray());
+			return FindAll(parametersToMatchAll.Select(p => CreateCriterion(p)).ToArray());
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(IParameter parameters)
 		{
-			var expr = CreateExpression(parameters);
+			var expr = CreateCriterion(parameters);
 			if (parameters is ParameterCollection)
 			{
 				var pc = parameters as ParameterCollection;
@@ -211,7 +211,7 @@ namespace N2.Persistence.NH
 			return FindAll(expr);
 		}
 
-		private ICriterion CreateExpression(IParameter parameter)
+		protected virtual ICriterion CreateCriterion(IParameter parameter)
 		{
 			if (parameter is Parameter)
 			{
@@ -225,14 +225,14 @@ namespace N2.Persistence.NH
 					? (Junction)Expression.Conjunction()
 					: (Junction)Expression.Disjunction();
 				foreach (var p in pc)
-					x.Add(CreateExpression(p));
+					x.Add(CreateCriterion(p));
 
 				return x;
 			}
 			throw new NotImplementedException();
 		}
 
-		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
+		protected static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
 		{
 			if (value == null)
 				return Expression.IsNull(propertyName);
