@@ -9,7 +9,7 @@ namespace N2.Web.Parts
 {
 	public static class PartsExtensions
 	{
-		public static T LoadPartFromDetails<T>(this ContentItem item, string keyPrefix) where T : ContentItem, new()
+		public static T LoadEmbeddedPart<T>(this ContentItem item, string keyPrefix) where T : ContentItem, new()
 		{
 			var part = new T();
 			var collection = item.GetDetailCollection(keyPrefix, false);
@@ -17,22 +17,22 @@ namespace N2.Web.Parts
 			{
 				foreach (var cd in collection.Details)
 				{
-					part[cd.Name] = cd.Value;
+					part[cd.Name.Substring(keyPrefix.Length + 1)] = cd.Value;
 				}
 			}
 			return part;
 		}
 
-		public static void StorePartOnDetails(this ContentItem item, string keyPrefix, ContentItem part)
+		public static void StoreEmbeddedPart(this ContentItem item, string keyPrefix, ContentItem part)
 		{
 			DetailCollection collection = item.GetDetailCollection(keyPrefix, true);
 			foreach (var propertyName in ContentItem.KnownProperties.WritablePartProperties)
 			{
-				SetDetail(item, collection, propertyName, part[propertyName]);
+				SetDetail(item, collection, keyPrefix + "." + propertyName, part[propertyName]);
 			}
 			foreach (var cd in part.Details)
 			{
-				SetDetail(item, collection, cd.Name, cd.Value);
+				SetDetail(item, collection, keyPrefix + "." + cd.Name, cd.Value);
 			}
 		}
 

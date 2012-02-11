@@ -40,7 +40,7 @@ namespace N2.Templates.Mvc.Upgrade
 			{
 				foreach (var part in parts.Where(p => p.State != ContentState.Deleted).Where(p => p.Parent != null))
 				{
-					part.Parent.StorePartOnDetails("Header", part);
+					part.Parent.StoreEmbeddedPart("Header", part);
 					persister.Save(part.Parent);
 					persister.Delete(part);
 					result.UpdatedItems++;

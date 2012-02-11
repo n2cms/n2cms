@@ -92,8 +92,8 @@ namespace N2.Templates.Mvc.Models.Pages
 		[EditableItem("Header", 100, ContainerName = "Top")]
 		public virtual Top Header
 		{
-			get { return this.LoadPartFromDetails<Top>("Header"); }
-			set { this.StorePartOnDetails("Header", value); }
+			get { return this.LoadEmbeddedPart<Top>("Header"); }
+			set { this.StoreEmbeddedPart("Header", value); }
 		}
 	}
 }
