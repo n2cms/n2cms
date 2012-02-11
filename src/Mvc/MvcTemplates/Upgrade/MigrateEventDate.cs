@@ -18,7 +18,7 @@ namespace N2.Templates.Mvc.Upgrade
 		public MigrateEventDate(IPersister persister)
 		{
 			this.persister = persister;
-			this.Title = "Migrade data about event date on events";
+			this.Title = "Migrate data about event date on events";
 		}
 
 		public override bool IsApplicable(DatabaseStatus status)
