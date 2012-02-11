@@ -24,7 +24,7 @@ namespace N2.Edit
 				return null;
 
 			if(!ActiveFor(container, context.State)) return null;
-			if (context.Selected.VersionOf == null) return null;
+			if (!context.Selected.VersionOf.HasValue) return null;
 
 			HyperLink hl = new HyperLink();
 			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);

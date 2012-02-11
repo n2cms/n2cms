@@ -12,6 +12,8 @@ using log4net.Config;
 using log4net;
 using log4net.Appender;
 using N2.Templates.Mvc.Areas.Tests.Models;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -20,8 +22,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
     {
 		static QueryViewerController()
 		{
-			CountToContextItemsAppender.AddLogger("NHibernate", "All");
-			CountToContextItemsAppender.AddLogger("NHibernate.SQL", "Queries");
+			CountToContextItemsAppender.AddLogger("NHibernate", "All", false);
+			CountToContextItemsAppender.AddLogger("NHibernate.SQL", "Queries", true);
 		}
 
         //
@@ -39,11 +41,19 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
         }
     }
 
+	public class Row
+	{
+		public string Sql { get; set; }
+		public string Caller { get; set; }
+	}
+
 	public class CountToContextItemsAppender : IAppender
 	{
-		Func<List<string>> getListToUse;
+		Func<List<Row>> getListToUse;
 
-		public CountToContextItemsAppender(Func<List<string>> getListToUse)
+		public bool AddStack { get; set; }
+
+		public CountToContextItemsAppender(Func<List<Row>> getListToUse)
 		{
 			this.getListToUse = getListToUse;
 		}
@@ -63,8 +73,24 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			if (loggingEvent.MessageObject != null)
 			{
-				getListToUse().Add(loggingEvent.MessageObject.ToString());
+				getListToUse().Add(
+					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString() });
 			}
+		}
+
+		private string GetCaller(StackTrace stackTrace)
+		{
+			return string.Join("", 
+				stackTrace.GetFrames()
+				.Where(f => f.GetMethod().DeclaringType != null)
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("Castle"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("NHibernate"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("log4net"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("System"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("ASP."))
+				.Where(f => f.GetMethod().DeclaringType != typeof(CountToContextItemsAppender))
+				.Select(f => f.GetMethod().DeclaringType.FullName + "." + f.GetMethod().Name + "<br/>")
+				.ToArray());
 		}
 
 		public string Name
@@ -75,29 +101,29 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 		#endregion
 
-		public static void AddLogger(string loggerName, string listName)
+		public static void AddLogger(string loggerName, string listName, bool addStack)
 		{
 			Logger logger = (Logger)LogManager.GetLogger(loggerName).Logger;
 			logger.Level = Level.All;
-			logger.AddAppender(new CountToContextItemsAppender(() => GetOrCreateList(listName)));
+			logger.AddAppender(new CountToContextItemsAppender(() => GetOrCreateList(listName)) { AddStack = addStack });
 			logger.Level = logger.Hierarchy.LevelMap["DEBUG"];
 			BasicConfigurator.Configure(logger.Repository);
 		}
 
 		[ThreadStatic]
-		static List<string> nonWebList = new List<string>();
+		static List<Row> nonWebList = new List<Row>();
 
-		public static List<string> GetOrCreateList(string listName)
+		public static List<Row> GetOrCreateList(string listName)
 		{
 			if (System.Web.HttpContext.Current != null)
 			{
-				var list = System.Web.HttpContext.Current.Items[listName] as List<string>;
+				var list = System.Web.HttpContext.Current.Items[listName] as List<Row>;
 				if (list == null)
-					System.Web.HttpContext.Current.Items[listName] = list = new List<string>();
+					System.Web.HttpContext.Current.Items[listName] = list = new List<Row>();
 				return list;
 			}
 			if (nonWebList == null)
-				nonWebList = new List<string>();
+				nonWebList = new List<Row>();
 			if (nonWebList.Count > 10000)
 				nonWebList.RemoveRange(0, nonWebList.Count / 2);
 			return nonWebList;

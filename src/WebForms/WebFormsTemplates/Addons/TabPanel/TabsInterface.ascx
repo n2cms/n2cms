@@ -20,13 +20,19 @@ jQuery.extend(jQuery.expr[':'], {
 	}
 });
 
-$(document).ready(function(){
-	$("h2", "#tabs").each(function(i){
+$(document).ready(function () {
+	$("h2", "#tabs").each(function (i) {
 		$(this).hide()
 			.nextAll(":until(h2)")
 			.wrapAll("<div class='tabPanel' title='" + this.innerHTML + "'></div>");
 	});
 	$(".tabPanel").n2tabs();
+
+	$(".tabs a").click(function (e) {
+		if (_gaq) {
+			_gaq.push(['_trackEvent', 'Tab', 'Show', this.innerText]);
+		}
+	});
 });
 
 </script>

@@ -22,11 +22,11 @@ namespace N2.Persistence.NH.Finder
 		public void AppendHql(StringBuilder from, StringBuilder where, int index)
 		{
 			if (itemID.HasValue)
-				where.AppendFormat(" {0} VersionOfID = :v{1}",
+				where.AppendFormat(" {0} VersionOf.ID = :v{1}",
 					GetOperator(),
 					index);
 			else
-				where.AppendFormat(" {0} VersionOfID IS NULL",
+				where.AppendFormat(" {0} VersionOf.ID IS NULL",
 					GetOperator());
 		}
 

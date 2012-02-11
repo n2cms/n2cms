@@ -54,7 +54,7 @@ namespace N2.Web
 
 			ContentItem current = item;
 
-			if(item.VersionOf != null)
+			if (item.VersionOf.HasValue)
 			{
 				current = item.VersionOf;
 			}
@@ -90,7 +90,7 @@ namespace N2.Web
 			// no start page found, use rewritten url
 			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 
-			if (item.IsPage && item.VersionOf != null)
+			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string
 				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
 			else if(!item.IsPage)

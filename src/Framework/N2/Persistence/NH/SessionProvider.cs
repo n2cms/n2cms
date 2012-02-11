@@ -17,28 +17,24 @@ namespace N2.Persistence.NH
 		private readonly ILog logger = LogManager.GetLogger(typeof(SessionProvider));
 
 		private static string RequestItemsKey = "SessionProvider.Session";
-		private IInterceptor interceptor;
+		private NHInterceptorFactory interceptorFactory;
 		private readonly IWebContext webContext;
 		private readonly ISessionFactory nhSessionFactory;
         private FlushMode flushAt = FlushMode.Commit;
+		private System.Data.IsolationLevel? isolation;
 
-		public SessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext, DatabaseSection config)
+		public SessionProvider(IConfigurationBuilder builder, NHInterceptorFactory interceptorFactory, IWebContext webContext, DatabaseSection config)
 		{
 			nhSessionFactory = builder.BuildSessionFactory();
 			logger.Debug("Built Session Factory " + DateTime.Now);
 			this.webContext = webContext;
-			this.interceptor = interceptor;
+			this.interceptorFactory = interceptorFactory;
+			this.isolation = config.Isolation;
 			this.CacheEnabled = config.Caching;
 		}
 
 		/// <summary>Tells whether cache should be enabled by default.</summary>
 		public bool CacheEnabled { get; set; }
-
-		public IInterceptor Interceptor
-		{
-			get { return interceptor; }
-		}
-
 		/// <summary>Gets the NHibernate session factory</summary>
 		public ISessionFactory SessionFactory
 		{
@@ -64,7 +60,7 @@ namespace N2.Persistence.NH
                 SessionContext sc = CurrentSession;
                 if(sc == null)
                 {
-                    ISession s = nhSessionFactory.OpenSession(Interceptor);
+					ISession s = interceptorFactory.CreateSession(nhSessionFactory);
 				    s.FlushMode = FlushAt;
                     CurrentSession = sc = new SessionContext(this, s);
                 }
@@ -90,5 +86,10 @@ namespace N2.Persistence.NH
                 CurrentSession = null;
             }
         }
+
+		public ITransaction BeginTransaction()
+		{
+			return new NHTransaction(isolation, this);
+		}
 	}
 }

@@ -40,7 +40,7 @@ namespace N2.Linq
         {
             var q = engine.Query<T>();
             if (versions == N2.Persistence.Finder.VersionOption.Exclude)
-                q = q.Where(i => i.VersionOf == null);
+				q = q.Where(i => i.VersionOf.ID == null);
             return q;
         }
 

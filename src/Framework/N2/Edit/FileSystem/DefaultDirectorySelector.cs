@@ -51,7 +51,7 @@ namespace N2.Edit.FileSystem
 			if (mode == DefaultDirectoryMode.NodeName)
 				return GetFolderRoot() + item.Name + "/";
 
-			if (item.VersionOf != null)
+			if (item.VersionOf.HasValue)
 				item = item.VersionOf;
 
 			string segments = null;

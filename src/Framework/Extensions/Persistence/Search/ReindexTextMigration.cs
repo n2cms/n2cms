@@ -35,7 +35,7 @@ namespace N2.Persistence.Search
 			indexer.Clear();
 
 			int count = 0;
-			foreach (var item in repository.Find("VersionOf", null))
+			foreach (var item in repository.Find("VersionOf.ID", null))
 			{
 				indexer.Update(item);
 				count++;

@@ -7,21 +7,21 @@ namespace N2.Tests.Fakes
 {
 	public class FakeSessionProvider : SessionProvider, IDisposable
 	{
-		ISession session;
-		IInterceptor interceptor;
+		private ISession session;
+		private NHInterceptorFactory factory;
 
-		public FakeSessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
-			: base(builder, interceptor, webContext, new N2.Configuration.DatabaseSection())
+		public FakeSessionProvider(IConfigurationBuilder builder, NHInterceptorFactory factory, IWebContext webContext)
+			: base(builder, factory, webContext, new N2.Configuration.DatabaseSection())
 		{
-			this.interceptor = interceptor;
+			this.factory = factory;
 		}
 
 		public override SessionContext OpenSession
 		{
 			get
 			{
-				if(session == null)
-					session = SessionFactory.OpenSession(interceptor);
+				if (session == null)
+					session = factory.CreateSession(SessionFactory);
 				return CurrentSession ?? (CurrentSession = new SessionContext(this, session));
 			}
 		}

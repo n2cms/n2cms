@@ -122,7 +122,7 @@ namespace N2.Web.UI.WebControls
 				{
 					Definition = Engine.Definitions.GetDefinition(value);
 					Discriminator = Definition.Discriminator;
-					if (value.VersionOf != null && value.ID == 0)
+					if (value.VersionOf.HasValue && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
 					EnsureChildControls();
 					Engine.EditManager.UpdateEditors(Definition, value, AddedEditors, Page.User);

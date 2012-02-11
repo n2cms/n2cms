@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using N2.Details;
 using N2.Engine;
@@ -23,7 +23,7 @@ namespace N2.Persistence.NH
 		object zero = 0;
 		public override ContentItem Get(object id)
 		{
-			if (id == zero) return null;
+			if (zero.Equals(id)) return null;
 			return SessionProvider.OpenSession.Session.Get<ContentItem>(id);
 		}
 
@@ -38,11 +38,17 @@ namespace N2.Persistence.NH
 		/// <returns>An enumeration of discriminators and number of items with that discriminator.</returns>
 		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
 		{
-			return Session
-				.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
-				.SetParameter("id", ancestor.ID)
-				.SetParameter("trail", ancestor.GetTrail() + "%")
-				.SetCacheable(SessionProvider.CacheEnabled)
+			IQuery query;
+			if(ancestor == null)
+				query = SessionProvider.OpenSession.Session
+					.CreateQuery("select ci.class, count(*) from ContentItem ci group by ci.class order by count(*) desc");
+			else
+				query = SessionProvider.OpenSession.Session
+					.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
+					.SetParameter("id", ancestor.ID)
+					.SetParameter("trail", ancestor.GetTrail() + "%");
+
+			return query.SetCacheable(SessionProvider.CacheEnabled)
 				.Enumerable()
 				.OfType<object[]>()
 				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] });
@@ -54,13 +60,19 @@ namespace N2.Persistence.NH
 		/// <returns>An enumeration of items matching the query.</returns>
 		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
 		{
-			return Session
-				.CreateQuery("select ci from ContentItem ci where (ci.ID=:id or ci.AncestralTrail like :trail) and ci.class=:class")
-				.SetParameter("id", ancestor.ID)
-				.SetParameter("trail", ancestor.GetTrail() + "%")
-				.SetParameter("class", discriminator)
-				.SetCacheable(SessionProvider.CacheEnabled)
-				.Enumerable<ContentItem>();
+			if (ancestor == null)
+				return SessionProvider.OpenSession.Session
+					.CreateQuery("select ci from ContentItem ci where ci.class=:class")
+					.SetParameter("class", discriminator)
+					.Enumerable<ContentItem>();
+			else
+				return SessionProvider.OpenSession.Session
+					.CreateQuery("select ci from ContentItem ci where (ci.ID=:id or ci.AncestralTrail like :trail) and ci.class=:class")
+					.SetParameter("id", ancestor.ID)
+					.SetParameter("trail", ancestor.GetTrail() + "%")
+					.SetParameter("class", discriminator)
+					.SetCacheable(SessionProvider.CacheEnabled)
+					.Enumerable<ContentItem>();
 		}
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)

@@ -192,7 +192,7 @@ namespace N2.Web
 							.UpdateQuery(QueryParameters)
 							.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
 
-				if (CurrentItem.VersionOf != null)
+				if (CurrentItem.VersionOf.HasValue)
 					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl
 						.UpdateQuery(QueryParameters)
 						.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);

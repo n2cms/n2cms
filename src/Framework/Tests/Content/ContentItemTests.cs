@@ -545,7 +545,7 @@ namespace N2.Tests.Content
 			Assert.That(destination.Parent, Is.Null, "Parent should not be modified");
 			Assert.That(destination.Published, Is.Not.EqualTo(new DateTime(2005, 1, 1)), "Published should not be modified");
 			Assert.That(destination.SortOrder, Is.EqualTo(0), "Sort order should not be modified");
-			Assert.That(destination.VersionOf, Is.Null, "VersionOf should not be modified");
+			Assert.That(destination.VersionOf.HasValue, Is.False, "VersionOf should not be modified");
 			Assert.That(destination.ZoneName, Is.Null, "ZoneName should not be modified");
 		}
 

@@ -3,12 +3,44 @@ using System.Linq;
 using System.Diagnostics;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Persistence.NH
 {
 	[TestFixture]
 	public class PersisterTests : PersisterTestsBase
 	{
+		[Test]
+		public void VersionOf_MayBeAccessed()
+		{
+			var item = CreateOneItem<Definitions.PersistableItem1>(0, "item1", null);
+			var item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", null);
+			persister.Save(item);
+			item2.VersionOf = item;
+			persister.Save(item2);
+
+			persister.Dispose();
+
+			var loaded = persister.Get(item2.ID);
+			loaded.VersionOf.Value.ID.ShouldBe(item.ID);
+		}
+
+
+		[Test]
+		public void DeletingItem_DeletesVersion()
+		{
+			var item = CreateOneItem<Definitions.PersistableItem1>(0, "item1", null);
+			var item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", null);
+			persister.Save(item);
+			item2.VersionOf = item;
+			persister.Save(item2);
+
+			persister.Delete(item);
+
+			var loaded = persister.Get(item2.ID);
+			loaded.ShouldBe(null);
+		}
+
 		[Test]
 		public void Save_AssignsID()
 		{

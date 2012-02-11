@@ -215,6 +215,7 @@
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
+    <Compile Include="Web\Parts\PartsExtensionsTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Web\JsonWriterTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />

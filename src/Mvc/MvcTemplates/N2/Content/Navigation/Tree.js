@@ -44,6 +44,9 @@
 		handler.call($a[0], e);
 
 		document.body.className = document.body.className.replace(/\w+Selected ?/g, $a.attr("data-type") + "Selected");
+
+		jQuery(".focused").removeClass("focused");
+		$a.addClass("focused").focus();
 	});
 
 	window.onNavigating = function (options) {
@@ -71,26 +74,26 @@
 		},
 		esc: function (e) {
 			if (e.altKey || e.ctrlKey) return;
-			$("#contextMenu").n2hide(); 
+			$("#contextMenu").n2hide();
 		},
 		del: function (e) {
 			if (e.altKey || e.ctrlKey) return;
-			$("#contextMenu a.delete").n2trigger(); 
+			$("#contextMenu a.delete").n2trigger();
 		},
 		c: function () {
-			$("#contextMenu a.copy").n2trigger(); 
+			$("#contextMenu a.copy").n2trigger();
 		},
 		n: function () {
-			$("#contextMenu a.new").n2trigger(); 
+			$("#contextMenu a.new").n2trigger();
 		},
 		v: function () {
-			$("#contextMenu a.paste").n2trigger(); 
+			$("#contextMenu a.paste").n2trigger();
 		},
 		x: function () {
-			$("#contextMenu a.move").n2trigger(); 
+			$("#contextMenu a.move").n2trigger();
 		},
 		enter: function () {
-			ctx.focused().click(); 
+			ctx.focused().click();
 		}
 	}, ".selected");
 });

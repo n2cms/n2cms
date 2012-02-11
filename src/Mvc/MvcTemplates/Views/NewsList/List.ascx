@@ -9,7 +9,7 @@
 		foreach(var item in Model){
 			i++;%>
 		<div class="item news i<%= i %> a<%= i % 2 %>">
-			<a href='<%=item.Url%>' title='<%= item.Published + ", " + item.Introduction %>'><%= item.Title %></a>
+			<a href='<%=item.Url%>' title='<%= item.Published + ", " + item.Summary %>'><%= item.Title %></a>
 		</div>
 	<%} %>
 	</div>

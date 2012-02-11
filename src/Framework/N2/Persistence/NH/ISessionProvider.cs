@@ -22,5 +22,9 @@ namespace N2.Persistence.NH
 
         /// <summary>Persists changes to disk.</summary>
 		void Flush();
+
+		/// <summary>Begins a transaction.</summary>
+		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
+		ITransaction BeginTransaction();
 	}
 }

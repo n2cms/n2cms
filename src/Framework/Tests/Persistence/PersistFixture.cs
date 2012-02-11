@@ -271,7 +271,7 @@ namespace N2.Tests.Persistence
 			{
 				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(root);
 				Assert.AreNotEqual(root, previousVersion);
-				Assert.AreEqual(root, previousVersion.VersionOf);
+				Assert.AreEqual(root, previousVersion.VersionOf.Value);
 			}
 		}
 
@@ -285,7 +285,7 @@ namespace N2.Tests.Persistence
 
 				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(item1);
 				Assert.AreNotEqual(item1, previousVersion);
-				Assert.AreEqual(item1, previousVersion.VersionOf);
+				Assert.AreEqual(item1, previousVersion.VersionOf.Value);
 
 				Assert.AreEqual(root.Children.Count, 1);
 			}

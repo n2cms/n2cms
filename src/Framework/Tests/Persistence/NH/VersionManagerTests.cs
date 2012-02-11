@@ -31,7 +31,7 @@ namespace N2.Tests.Persistence.NH
 			persister.Save(item);
 			ContentItem version = versioner.SaveVersion(item);
 
-			Assert.AreEqual(item, version.VersionOf);
+			Assert.AreEqual(item, version.VersionOf.Value);
 		}
 
 		[Test]

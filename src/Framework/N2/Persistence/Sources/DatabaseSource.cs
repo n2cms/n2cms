@@ -64,7 +64,7 @@ namespace N2.Persistence.Sources
 			using (var tx = repository.BeginTransaction())
 			{
 				// update updated date unless it's a version being saved
-				if (item.VersionOf == null)
+				if (!item.VersionOf.HasValue)
 					item.Updated = Utility.CurrentTime();
 				// empty string names not allowed, null is replaced with item id
 				if (string.IsNullOrEmpty(item.Name))
@@ -127,7 +127,7 @@ namespace N2.Persistence.Sources
 
 		private void DeletePreviousVersions(ContentItem itemNoMore)
 		{
-			var previousVersions = repository.Find("VersionOf", itemNoMore);
+			var previousVersions = repository.Find("VersionOf.ID", itemNoMore.ID);
 
 			int count = 0;
 			foreach (ContentItem version in previousVersions)

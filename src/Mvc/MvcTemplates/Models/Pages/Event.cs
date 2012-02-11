@@ -17,11 +17,8 @@ namespace N2.Templates.Mvc.Models.Pages
 	public class Event : ContentPageBase, ISyndicatable
 	{
 		[EditableDate("Event date", 22, ContainerName = Tabs.Content)]
-		public virtual DateTime? EventDate
-		{
-			get { return (DateTime?) GetDetail("EventDate"); }
-			set { SetDetail("EventDate", value); }
-		}
+		[Persistable]
+		public virtual DateTime? EventDate { get; set; }
 
 		[DefaultValue(false)]
 		public override bool Visible
@@ -42,17 +39,9 @@ namespace N2.Templates.Mvc.Models.Pages
 			}
 		}
 
-		[EditableText("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4, Columns = 80)]
-		public virtual string Introduction
-		{
-			get { return (string) (GetDetail("Introduction") ?? string.Empty); }
-			set { SetDetail("Introduction", value, string.Empty); }
-		}
-
-		string ISyndicatable.Summary
-		{
-			get { return Introduction; }
-		}
+		[Obsolete("Use Summary")]
+		[DisplayableLiteral]
+		public virtual string Introduction { get { return Summary; } }
 
 		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public virtual bool Syndicate { get; set; }

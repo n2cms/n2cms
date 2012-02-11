@@ -22,6 +22,7 @@ namespace N2.Web.Mvc.Html
 			this.controllerMapper = controllerMapper;
 		}
 
+		private static string ItemOverrideKey { get { return "Override." + ContentRoute.ContentPartKey; } }
 
 		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
@@ -35,7 +36,16 @@ namespace N2.Web.Mvc.Html
 
 			RouteValueDictionary values = GetRouteValues(helper, item, controllerName);
 
-			helper.RenderAction("Index", values);
+			try
+			{
+				helper.ViewContext.RouteData.DataTokens[ItemOverrideKey] = item;
+				helper.RenderAction("Index", values);
+			}
+			finally
+			{
+				if (helper.ViewContext.RouteData.DataTokens.ContainsKey(ItemOverrideKey))
+					helper.ViewContext.RouteData.DataTokens.Remove(ItemOverrideKey);
+			}
 		}
 
 		private static RouteValueDictionary GetRouteValues(HtmlHelper helper, ContentItem item, string controllerName)

@@ -303,9 +303,9 @@ namespace N2.Persistence.NH.Finder
 			else
 			{
 				if (Criterias.Count == 0)
-					return new StringWrapper(where, " where VersionOfID Is Null", null);
+					return new StringWrapper(where, " where VersionOf.ID Is Null", null);
 				else
-					return new StringWrapper(where, " where VersionOfID Is Null and (", ")");
+					return new StringWrapper(where, " where VersionOf.ID Is Null and (", ")");
 			}
 		}
 

@@ -14,13 +14,13 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(UrlParser));
-        protected readonly IPersister persister;
+		private readonly ILog logger = LogManager.GetLogger(typeof(UrlParser));
+		protected readonly IPersister persister;
 		protected readonly IHost host;
-        protected readonly IWebContext webContext;
+		protected readonly IWebContext webContext;
 		readonly bool ignoreExistingFiles;
 
-        public event EventHandler<PageNotFoundEventArgs> PageNotFound;
+		public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 
 		public UrlParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
@@ -46,14 +46,14 @@ namespace N2.Web
 			get { return persister.Repository.Get(host.CurrentSite.StartPageID); }
 		}
 
-        /// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
-        public string DefaultDocument
-        {
-            get { return Url.DefaultDocument; }
+		/// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
+		public string DefaultDocument
+		{
+			get { return Url.DefaultDocument; }
 			set { Url.DefaultDocument = value; }
-        }
+		}
 
-		public PathData ResolvePath(Url url)
+		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
 
@@ -73,11 +73,11 @@ namespace N2.Web
 				return directData;
 			}
 
-			ContentItem startPage = GetStartPage(requestedUrl);
+			ContentItem startPage = startNode ?? GetStartPage(requestedUrl);
 			if (startPage == null)
 				return PathData.Empty;
-			
-			string path = Url.ToRelative(requestedUrl.Path).TrimStart('~');
+
+			string path = remainingPath ?? Url.ToRelative(requestedUrl.Path).TrimStart('~');
 			PathData data = startPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())
@@ -148,7 +148,7 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(url)) return null;
 
-            ContentItem startingPoint = GetStartPage(url);
+			ContentItem startingPoint = GetStartPage(url);
 			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) ?? Parse(startingPoint, url);
 		}
 
@@ -173,33 +173,33 @@ namespace N2.Web
 			return current.GetChild(url) ?? NotFoundPage(url);
 		}
 
-        /// <summary>Returns a page when  no page is found. This method will return the start page if the url matches the default content page property.</summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        protected virtual ContentItem NotFoundPage(string url)
-        {
+		/// <summary>Returns a page when  no page is found. This method will return the start page if the url matches the default content page property.</summary>
+		/// <param name="url"></param>
+		/// <returns></returns>
+		protected virtual ContentItem NotFoundPage(string url)
+		{
 			if (IsDefaultDocument(url))
-            {
-                return StartPage;
-            }
+			{
+				return StartPage;
+			}
 			logger.Debug("No content at: " + url);
 
-            PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
-            if (PageNotFound != null)
-                PageNotFound(this, args);
-            return args.AffectedItem;
-        }
+			PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
+			if (PageNotFound != null)
+				PageNotFound(this, args);
+			return args.AffectedItem;
+		}
 
 		private string CleanUrl(string url)
 		{
-            url = Url.PathPart(url);
+			url = Url.PathPart(url);
 			url = Url.ToRelative(url);
 			return url.TrimStart('~', '/');
 		}
 
 		private int? FindQueryStringReference(string url, params string[] parameters)
 		{
-            string queryString = Url.QueryPart(url);
+			string queryString = Url.QueryPart(url);
 			if (!string.IsNullOrEmpty(queryString))
 			{
 				string[] queries = queryString.Split('&');
@@ -233,7 +233,7 @@ namespace N2.Web
 
 			ContentItem current = item;
 
-			if (item.VersionOf != null)
+			if (item.VersionOf.HasValue)
 			{
 				current = item.VersionOf;
 			}
@@ -269,7 +269,7 @@ namespace N2.Web
 			// no start page found, use rewritten url
 			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 
-			if (item.IsPage && item.VersionOf != null)
+			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string
 				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
 			else if (!item.IsPage)

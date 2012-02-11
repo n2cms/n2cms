@@ -376,6 +376,19 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void FindDiscriminators_FindsDistinctDiscriminators_Without()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			repository.Save(root);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+			repository.Save(child);
+
+			var d = repository.FindDescendantDiscriminators(null).Single();
+			d.Discriminator.ShouldBe("PersistableItem");
+			d.Count.ShouldBe(2);
+		}
+
+		[Test]
 		public void FindDiscriminatorsBelow_FindsAncestorDiscriminator()
 		{
 			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
@@ -450,7 +463,7 @@ namespace N2.Tests.Persistence.NH
 			var discriminators = repository.FindDescendants(root, "PersistablePart");
 			discriminators.Count().ShouldBe(3);
 		}
-
+		
 		[Test]
 		public void FindDescends_FindsDescendantsOfType()
 		{
@@ -461,6 +474,18 @@ namespace N2.Tests.Persistence.NH
 
 			var discriminators = repository.FindDescendants(root, "PersistableItem");
 			discriminators.Count().ShouldBe(1);
+		}
+
+		[Test]
+		public void FindDescends_WithNull_FinsAllInDb()
+		{
+			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
+			repository.Save(root);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", null);
+			repository.Save(child1);
+
+			var discriminators = repository.FindDescendants(null, "PersistableItem");
+			discriminators.Count().ShouldBe(2);
 		}
 
 		[Test]

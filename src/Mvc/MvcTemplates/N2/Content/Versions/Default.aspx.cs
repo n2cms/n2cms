@@ -30,7 +30,7 @@ namespace N2.Edit.Versions
 			bool isVersionable = versioner.IsVersionable(Selection.SelectedItem);
             cvVersionable.IsValid = isVersionable;
 
-			publishedItem = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
+			publishedItem = Selection.SelectedItem.VersionOf.Value ?? Selection.SelectedItem;
 
 			base.OnInit(e);
 		}
@@ -92,7 +92,7 @@ namespace N2.Edit.Versions
 
 		protected override string GetPreviewUrl(ContentItem item)
 		{
-			if (item.VersionOf == null)
+			if (!item.VersionOf.HasValue)
 				return item.Url;
 
 			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl)
@@ -117,7 +117,7 @@ namespace N2.Edit.Versions
 			var item = dataItem as ContentItem;
 			if (item["FuturePublishDate"] is DateTime)
 				return true;
-			if (item.VersionOf == null && item.Published.HasValue && item.Published > Utility.CurrentTime())
+			if (!item.VersionOf.HasValue && item.Published.HasValue && item.Published > Utility.CurrentTime())
 				return true;
 			
 			return false;

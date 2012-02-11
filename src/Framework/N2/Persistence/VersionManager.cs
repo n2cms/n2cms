@@ -95,7 +95,7 @@ namespace N2.Persistence
 
                         Replace(currentItem, replacementItem);
 
-						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
 							itemRepository.Delete(replacementItem);
 
@@ -106,7 +106,7 @@ namespace N2.Persistence
                     {
                         Replace(currentItem, replacementItem);
 
-						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
 							itemRepository.Delete(replacementItem);
 
@@ -156,7 +156,7 @@ namespace N2.Persistence
 				return new ItemList { publishedItem };
 
 			return itemRepository.Find(
-				(new Parameter("VersionOf", publishedItem) | new Parameter("ID", publishedItem.ID))
+				(new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
 					.OrderBy("VersionIndex DESC"))
 				.ToList();
 		}
@@ -171,7 +171,7 @@ namespace N2.Persistence
 				return new ItemList { publishedItem };
 
 			return itemRepository.Find(
-				(new Parameter("VersionOf", publishedItem) | new Parameter("ID", publishedItem.ID))
+				(new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
 					.OrderBy("VersionIndex DESC")
 					.Take(count))
 				.ToList();

@@ -19,7 +19,7 @@ namespace N2.Tests.Fakes
 
         public override IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
         {
-            return itemRepository.database.Values.Where(i => i.VersionOf == publishedItem || i == publishedItem).OrderByDescending(i => i.VersionIndex).ToList();
+            return itemRepository.database.Values.Where(i => i.VersionOf.Value == publishedItem || i == publishedItem).OrderByDescending(i => i.VersionIndex).ToList();
         }
 
         public override IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)

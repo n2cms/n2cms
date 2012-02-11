@@ -2,7 +2,7 @@ using N2.Templates.Items;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class UrchinTracking : Web.UI.TemplateUserControl<Templates.Items.AbstractPage, Tracking>
+    public partial class UrchinTracking : Web.UI.TemplateUserControl<ContentItem, Tracking>
     {
         public virtual bool Track
         {
@@ -14,8 +14,8 @@ namespace N2.Templates.UI.Parts
         protected override void OnInit(System.EventArgs e)
         {
 			DataBind();
-
-            base.OnInit(e);
+			
+			base.OnInit(e);
         }
     }
 }

@@ -10,6 +10,10 @@ using System.Collections.Specialized;
 
 namespace N2.Web
 {
+	interface IJsonWriter
+	{
+		void Write(TextWriter writer);
+	}
     class JsonWriter
     {
         HashSet<object> visitedObjects = new HashSet<object>();
@@ -26,16 +30,18 @@ namespace N2.Web
                 writer.Write("null");
             else if (TryWriteKnownType(value))
                 return;
-            else if (TryWriteDictionary(value as IDictionary<string, object>))
-                return;
-            else if (TryWriteDictionary(value as IDictionary))
-                return;
-            else if (TryWriteDictionary(value as NameValueCollection))
-                return;
-            else if (TryWriteArray(value as IEnumerable))
-                return;
-            else if (TryWriteObject(value))
-                return;
+			else if (value is IJsonWriter)
+				(value as IJsonWriter).Write(writer);
+			else if (TryWriteDictionary(value as IDictionary<string, object>))
+				return;
+			else if (TryWriteDictionary(value as IDictionary))
+				return;
+			else if (TryWriteDictionary(value as NameValueCollection))
+				return;
+			else if (TryWriteArray(value as IEnumerable))
+				return;
+			else if (TryWriteObject(value))
+				return;
         }
 
         static DateTime beginningOfTime = new DateTime(1970, 01, 01);

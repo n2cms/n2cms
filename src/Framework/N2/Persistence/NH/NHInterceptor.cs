@@ -11,18 +11,16 @@ namespace N2.Persistence.NH
 	/// <summary>
 	/// This class is used to notify subscribers about loaded items.
 	/// </summary>
-	[Service(typeof(IInterceptor))]
 	public class NHInterceptor : EmptyInterceptor
 	{
 		private readonly IProxyFactory interceptor;
-		private readonly ISessionFactory sessionFactory;
+		public ISession Session { get; set; }
 		private readonly IItemNotifier notifier;
 		private readonly ILog logger = LogManager.GetLogger(typeof(NHInterceptor));
 
-		public NHInterceptor(IProxyFactory interceptor, IConfigurationBuilder builder, IItemNotifier notifier)
+		public NHInterceptor(IProxyFactory interceptor, IItemNotifier notifier)
 		{
 			this.interceptor = interceptor;
-			this.sessionFactory = builder.BuildSessionFactory();
 			this.notifier = notifier;
 		}
 
@@ -32,7 +30,7 @@ namespace N2.Persistence.NH
 		    object instance = interceptor.Create(clazz, id);
 		    if (instance != null)
 		    {
-		        sessionFactory.GetClassMetadata(clazz).SetIdentifier(instance, id, entityMode);
+		        Session.SessionFactory.GetClassMetadata(clazz).SetIdentifier(instance, id, entityMode);
 		    }
 		    return instance;
 		}
@@ -132,7 +130,7 @@ namespace N2.Persistence.NH
 		{
 			if (newlyCreatedItem == null)
 				return false;
-			
+
 			return notifier.NotifiyCreated(newlyCreatedItem); 
 		}
 

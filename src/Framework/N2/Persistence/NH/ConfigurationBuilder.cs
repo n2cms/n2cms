@@ -1,28 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using log4net;
+using log4net.Config;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
-using N2.Edit.FileSystem.NH;
 using N2.Engine;
-using N2.Linq;
 using N2.Security;
 using N2.Web;
 using NHibernate;
-using NHibernate.Cfg;
+using NHibernate.AdoNet;
+using NHibernate.Driver;
 using NHibernate.Mapping;
 using NHibernate.Mapping.ByCode;
-using NHibernate.AdoNet;
-using log4net;
-using log4net.Config;
 using Environment = NHibernate.Cfg.Environment;
-using NHibernate.Driver;
 
 namespace N2.Persistence.NH
 {
@@ -105,7 +101,8 @@ namespace N2.Persistence.NH
 
 			SetupCacheProperties(config);
 
-			// custom config properties
+			if (config.Isolation.HasValue)
+				Properties[NHibernate.Cfg.Environment.Isolation] = config.Isolation.ToString();
 
 			foreach (string key in config.HibernateProperties.AllKeys)
 			{
@@ -300,7 +297,16 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.AncestralTrail, cm => { cm.Length(100); });
 			ca.Property(x => x.VersionIndex, cm => { });
 			ca.Property(x => x.AlteredPermissions, cm => { });
-			ca.ManyToOne(x => x.VersionOf, cm => { cm.Column("VersionOfID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
+			//ca.ManyToOne(x => x.VersionOf, cm => { cm.Column("VersionOfID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
+			//ca.Property(x => x.VersionOf, cm =>
+			//{
+			//    cm.Column("VersionOfID");
+			//    cm.Type<ContentRelationFactory>();
+			//});
+			ca.Component(x => x.VersionOf, cm =>
+			{
+				cm.Property(cr => cr.ID, pm => pm.Column("VersionOfID"));
+			});
 			ca.ManyToOne(x => x.Parent, cm => { cm.Column("ParentID"); cm.Lazy(LazyRelation.Proxy); cm.Fetch(FetchKind.Select); });
 			ca.Bag(x => x.Children, cm =>
 			{
@@ -348,17 +354,17 @@ namespace N2.Persistence.NH
 		void ContentDetailCustomization(IClassMapper<ContentDetail> ca)
 		{
 			ca.Table(tablePrefix + "Detail");
-			ca.Lazy(false);
+			ca.Lazy(true);
 			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
-			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); cm.Fetch(FetchKind.Select); });
+			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.ManyToOne(x => x.EnclosingCollection, cm => { cm.Column("DetailCollectionID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.Property(x => x.ValueTypeKey, cm => { cm.Column("Type"); cm.Length(10); });
 			ca.Property(x => x.Name, cm => { cm.Length(50); });
 			ca.Property(x => x.BoolValue, cm => { });
 			ca.Property(x => x.DateTimeValue, cm => { });
 			ca.Property(x => x.IntValue, cm => { });
-			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
+			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
 			ca.Property(x => x.StringValue, cm => { cm.Type(NHibernateUtil.StringClob); cm.Length(stringLength); });
 			ca.Property(x => x.ObjectValue, cm => { cm.Column("Value"); cm.Type(NHibernateUtil.Serializable); cm.Length(ConfigurationBuilder.BlobLength); });
@@ -367,10 +373,10 @@ namespace N2.Persistence.NH
 		void DetailCollectionCustomization(IClassMapper<DetailCollection> ca)
 		{
 			ca.Table(tablePrefix + "DetailCollection");
-			ca.Lazy(false);
+			ca.Lazy(true);
 			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
-			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); });
+			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.Property(x => x.Name, cm => { cm.Length(50); cm.NotNullable(true); });
 			ca.Bag(x => x.Details, cm =>
 			{
@@ -499,8 +505,12 @@ namespace N2.Persistence.NH
 		/// <returns>A new <see cref="NHibernate.ISessionFactory"/>.</returns>
 		public ISessionFactory BuildSessionFactory()
 		{
-			logger.Debug("Building Session Factory " + DateTime.Now);
-			return BuildConfiguration().BuildSessionFactory();
+			logger.Debug("Building Configuration");
+			var cfg = BuildConfiguration();
+			logger.Debug("Building Session Factory");
+			var sf = cfg.BuildSessionFactory();
+			logger.Debug("Built Session Factory");
+			return sf;
 		}
 
 		/// <summary>Checks whether a type's mapping is added to the NHibernate configuration.</summary>

@@ -336,7 +336,7 @@ namespace N2.Edit
 			bool wasUpdated = UpdateItem(definitions.GetDefinition(item), item, addedEditors, user).Length > 0;
 			if (wasUpdated || IsNew(item))
 			{
-				if (item.VersionOf == null)
+				if (!item.VersionOf.HasValue)
 					stateChanger.ChangeTo(item, ContentState.Published);
 				else if (item.State == ContentState.Unpublished)
 					// TODO: handle changes to previously published
@@ -372,7 +372,7 @@ namespace N2.Edit
 
 				if (wasUpdated || IsNew(item))
 				{
-					if (item.VersionOf == null)
+					if (!item.VersionOf.HasValue)
 						stateChanger.ChangeTo(item, ContentState.Published);
 					item.VersionIndex++;
 					persister.Save(item);
