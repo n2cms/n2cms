@@ -355,12 +355,12 @@ namespace N2.Resources
 
 		public static string JQueryPlugins(IDictionary<string, object> stateCollection)
 		{
-			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion);
 		}
 
 		public static string JQueryUi(IDictionary<string, object> stateCollection)
 		{
-			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion);
 		}
 
 		public static string TinyMCE(IDictionary<string, object> stateCollection)
