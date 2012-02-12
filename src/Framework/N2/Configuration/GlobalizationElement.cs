@@ -11,6 +11,13 @@ namespace N2.Configuration
             set { base["enabled"] = value; }
         }
 
+		[ConfigurationProperty("cache", DefaultValue = false)]
+		public bool Cache
+		{
+			get { return (bool)base["cache"]; }
+			set { base["cache"] = value; }
+		}
+
         [ConfigurationProperty("languagesPerSite", DefaultValue = false)]
         public bool LanguagesPerSite
         {

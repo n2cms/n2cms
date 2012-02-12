@@ -95,12 +95,7 @@ namespace N2.Details
 		public virtual N2.ContentItem EnclosingItem
 		{
 			get { return enclosingItem; }
-			set
-			{
-				enclosingItem = value;
-				foreach (ContentDetail detail in this.Details)
-					detail.EnclosingItem = value;
-			}
+			set { enclosingItem = value; }
 		}
 		#endregion
 

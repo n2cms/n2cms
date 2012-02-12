@@ -180,6 +180,7 @@
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Upgrade\MigrateHomeRedirect.cs" />
     <Compile Include="Upgrade\MigrateIntroduction.cs" />
     <Compile Include="Upgrade\MigrateEventDate.cs" />
     <Compile Include="Upgrade\MigrateTopParts.cs" />
