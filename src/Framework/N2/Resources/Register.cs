@@ -57,7 +57,7 @@ namespace N2.Resources
 				link.Attributes["rel"] = "stylesheet";
 				holder.Controls.Add(link);
 
-				page.Items[resourceUrl] = null;
+				page.Items[resourceUrl] = true;
 			}
 		}
 
