@@ -15,6 +15,7 @@ using N2.Definitions;
 using Shouldly;
 using System.Threading;
 using System.Collections.Generic;
+using System.Text;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -803,6 +804,7 @@ namespace N2.Tests.Persistence.NH
 			var threads = new List<Thread>();
 			var exceptions = new List<Exception>();
 			bool loop = true;
+			var words = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sagittis mi. Donec pharetra vestibulum facilisis. Sed sodales risus vel nulla vulputate volutpat. Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat. Maecenas suscipit tincidunt purus porttitor auctor. Quisque eget elit at justo facilisis malesuada sit amet sit amet eros. Duis convallis porta congue. Nulla commodo faucibus diam in mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur.".Split(' ', '.', ',');
 			var indexFunction = new ThreadStart(() =>
 			{
 				Trace.WriteLine("Index start: " + DateTime.Now);
@@ -810,6 +812,7 @@ namespace N2.Tests.Persistence.NH
 				while (loop)
 				{
 					var item = CreateOneItem<PersistableItem1>(0, "Item " + counter++, null);
+					item["Text"] = words.OrderBy(w => Guid.NewGuid()).Aggregate(new StringBuilder(), (sb, w) => { if (!string.IsNullOrEmpty(w)) sb.Append(w).Append(" "); return sb; }).ToString();
 					try
 					{
 						indexer.Update(item);
@@ -828,6 +831,7 @@ namespace N2.Tests.Persistence.NH
 			});
 			var searcher = new LuceneSearcher(accessor, persister);
 			int searchCounter = 1;
+			var r = new Random();
 			var searchFunction = new ThreadStart(() =>
 			{
 				int searchIndex = searchCounter++;
@@ -837,7 +841,7 @@ namespace N2.Tests.Persistence.NH
 				{
 					try
 					{
-						searcher.Search(Query.For("item"));
+						searcher.Search(Query.For(words[r.Next(words.Length)]));
 						Console.Write('?');
 					}
 					catch (Exception ex)
@@ -859,7 +863,7 @@ namespace N2.Tests.Persistence.NH
 
 			foreach (var t in threads)
 				t.Start();
-			Thread.Sleep(1000);
+			Thread.Sleep(500);
 			loop = false;
 			foreach (var t in threads)
 				t.Join();
