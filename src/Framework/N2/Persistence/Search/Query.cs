@@ -81,6 +81,10 @@ namespace N2.Persistence.Search
 		/// <summary>Query whose hits are added to this query results.</summary>
 		public Query Union { get; set; }
 
+		public string SortField { get; set; }
+
+		public bool SortDescending { get; set; }
+
 		/// <summary>Gets a search query for the given search expression.</summary>
 		/// <param name="textQuery">The text to search for.</param>
 		/// <returns>A <see cref="Query"/> object.</returns>
@@ -259,6 +263,13 @@ namespace N2.Persistence.Search
             return this;
         }
 
+		public Query OrderBy(string field, bool descending = false)
+		{
+			SortField = field;
+			SortDescending = descending;
+			return this;
+		}
+
         public bool IsValid()
         {
             bool isInvalid = string.IsNullOrEmpty(this.Text)
@@ -274,5 +285,5 @@ namespace N2.Persistence.Search
 
             return !isInvalid;
         }
-    }
+	}
 }

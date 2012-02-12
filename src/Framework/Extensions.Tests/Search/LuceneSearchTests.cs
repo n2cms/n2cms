@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Linq;
 using N2.Configuration;
@@ -11,6 +12,9 @@ using N2.Tests.Persistence.Definitions;
 using System.Diagnostics;
 using System.IO;
 using N2.Definitions;
+using Shouldly;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -731,6 +735,168 @@ namespace N2.Tests.Persistence.NH
 			var result = searcher.Search(query);
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[TestCase(LuceneIndexer.Properties.ID)]
+		[TestCase(LuceneIndexer.Properties.Created)]
+		[TestCase(LuceneIndexer.Properties.Published)]
+		[TestCase(LuceneIndexer.Properties.Updated)]
+		[TestCase(LuceneIndexer.Properties.Expires)]
+		[TestCase(LuceneIndexer.Properties.Title)]
+		[TestCase(LuceneIndexer.Properties.Name)]
+		[TestCase(LuceneIndexer.Properties.SortOrder)]
+		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		public void OrderBy(string field)
+		{
+			PersistableItem1 item;
+			PersistableItem1 item2;
+			Create(out item, out item2);
+
+			var hits = Search(field, descending:false);
+
+			hits[0].Title.ShouldBe(item.Title);
+			hits[1].Title.ShouldBe(item2.Title);
+		}
+
+		[TestCase(LuceneIndexer.Properties.ID)]
+		[TestCase(LuceneIndexer.Properties.Created)]
+		[TestCase(LuceneIndexer.Properties.Published)]
+		[TestCase(LuceneIndexer.Properties.Updated)]
+		[TestCase(LuceneIndexer.Properties.Expires)]
+		[TestCase(LuceneIndexer.Properties.Title)]
+		[TestCase(LuceneIndexer.Properties.Name)]
+		[TestCase(LuceneIndexer.Properties.SortOrder)]
+		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		public void OrderBy_Descending(string field)
+		{
+			PersistableItem1 item;
+			PersistableItem1 item2;
+			Create(out item, out item2);
+
+			var hits = Search(field, descending:true);
+
+			hits[0].Title.ShouldBe(item2.Title);
+			hits[1].Title.ShouldBe(item.Title);
+		}
+
+		[TestCase(LuceneIndexer.Properties.ID)]
+		[TestCase(LuceneIndexer.Properties.SortOrder)]
+		public void OrderBy_IsNotAlphabetical_ForCertainFields(string field)
+		{
+			var item = CreateOneItem<PersistableItem1>(99, "Another", null);
+			item.SortOrder = 2;
+			indexer.Update(item);
+
+			var item2 = CreateOneItem<PersistableItem1>(111, "Before", null);
+			item2.SortOrder = 10;
+			indexer.Update(item2);
+
+			var hits = Search("SortOrder", descending: true);
+
+			hits[0].Title.ShouldBe(item2.Title);
+			hits[1].Title.ShouldBe(item.Title);
+		}
+
+		[Test]
+		public void Multithreading()
+		{
+			var threads = new List<Thread>();
+			var exceptions = new List<Exception>();
+			bool loop = true;
+			var indexFunction = new ThreadStart(() =>
+			{
+				Trace.WriteLine("Index start: " + DateTime.Now);
+				int counter = 1;
+				while (loop)
+				{
+					var item = CreateOneItem<PersistableItem1>(0, "Item " + counter++, null);
+					try
+					{
+						indexer.Update(item);
+						Console.Write('!');
+					}
+					catch (Exception ex)
+					{
+						Trace.WriteLine(ex);
+						lock (exceptions)
+						{
+							exceptions.Add(ex);
+						}
+					}
+				}
+				Trace.WriteLine("Index stop: " + DateTime.Now);
+			});
+			var searcher = new LuceneSearcher(accessor, persister);
+			int searchCounter = 1;
+			var searchFunction = new ThreadStart(() =>
+			{
+				int searchIndex = searchCounter++;
+				Trace.WriteLine(searchIndex + " Search start: " + DateTime.Now);
+
+				while (loop)
+				{
+					try
+					{
+						searcher.Search(Query.For("item"));
+						Console.Write('?');
+					}
+					catch (Exception ex)
+					{
+						Trace.WriteLine(ex);
+						lock (exceptions)
+						{
+							exceptions.Add(ex);
+						}
+					}
+				}
+
+				Trace.WriteLine(searchIndex + " Search1 stop: " + DateTime.Now);
+			});
+			threads.Add(new Thread(indexFunction));
+			threads.Add(new Thread(searchFunction));
+			threads.Add(new Thread(searchFunction));
+			threads.Add(new Thread(searchFunction));
+
+			foreach (var t in threads)
+				t.Start();
+			Thread.Sleep(1000);
+			loop = false;
+			foreach (var t in threads)
+				t.Join();
+
+			exceptions.Count.ShouldBe(0);
+		}
+
+		private System.Collections.Generic.List<ContentItem> Search(string field, bool descending)
+		{
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For<PersistableItem1>().OrderBy(field, descending);
+
+			var hits = searcher.Search(query).Hits.Select(h => h.Content).ToList();
+			return hits;
+		}
+
+		private void Create(out PersistableItem1 item, out PersistableItem1 item2)
+		{
+			item = CreateOneItem<PersistableItem1>(1, "Another", null);
+			item.Published = DateTime.Now.AddSeconds(-10);
+			item.Created = DateTime.Now.AddSeconds(-10);
+			item.Updated = DateTime.Now.AddSeconds(-10);
+			item.Expires = DateTime.Now.AddSeconds(10);
+			item.SavedBy = "admin";
+			item.SortOrder = 0;
+			item.State = ContentState.Draft;
+			indexer.Update(item);
+
+			item2 = CreateOneItem<PersistableItem1>(2, "Before", null);
+			item2.Published = DateTime.Now;
+			item2.Created = DateTime.Now;
+			item2.Updated = DateTime.Now;
+			item2.Expires = DateTime.Now.AddSeconds(20);
+			item2.SavedBy = "bob";
+			item2.SortOrder = 1;
+			item2.State = ContentState.Published;
+			indexer.Update(item2);
 		}
 	}
 }
