@@ -151,6 +151,7 @@ namespace N2.Persistence.Search
             public const string Types = "Types";
             public const string Language = "Language";
 			public const string Visible = "Visible";
+			public const string SortOrder = "SortOrder";
 
             public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
         }
@@ -159,7 +160,7 @@ namespace N2.Persistence.Search
 		{
 			var doc = new Document();
 			doc.Add(new Field(Properties.ID, item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            doc.Add(new Field(Properties.Title, item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
+			doc.Add(new Field(Properties.Title, item.Title ?? "", Field.Store.YES, Field.Index.ANALYZED));
             doc.Add(new Field(Properties.Name, item.Name ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.SavedBy, item.SavedBy ?? "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Created, DateTools.DateToString(item.Created.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -188,6 +189,7 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.Types, GetTypes(item), Field.Store.YES, Field.Index.ANALYZED));
 			doc.Add(new Field(Properties.Language, GetLanguage(item), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.Add(new Field(Properties.Visible, item.Visible.ToString().ToLower(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.Add(new Field(Properties.SortOrder, item.SortOrder.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 			var texts = extractor.Extract(item);
 			foreach (var t in texts)
