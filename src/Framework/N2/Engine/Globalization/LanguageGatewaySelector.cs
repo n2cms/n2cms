@@ -22,9 +22,13 @@ namespace N2.Engine.Globalization
 		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
 		readonly DescendantItemFinder descendantFinder;
         private ILanguageGateway languages;
+		private IWebContext webContext;
 
         /// <summary>True if the language feature is enabled in web.config.</summary>
         public bool Enabled { get; protected set; }
+
+		/// <summary>True if languages should be cached.</summary>
+		public bool Cache { get; set; }
 
         /// <summary>True if the language per site feature is enabled in web.config.</summary>
         public bool LanguagesPerSite { get; protected set; }
@@ -34,7 +38,8 @@ namespace N2.Engine.Globalization
 			IHost host,
 			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
 			DescendantItemFinder descendantFinder,
-            ILanguageGateway languages,
+			ILanguageGateway languages,
+			IWebContext webContext,
 			EngineSection config)
 		{
 			this.persister = persister;
@@ -42,7 +47,9 @@ namespace N2.Engine.Globalization
 			this.languagesCache = languagesCache;
 			this.descendantFinder = descendantFinder;
             this.languages = languages;
+			this.webContext = webContext;
 			Enabled = config.Globalization.Enabled;
+			Cache = config.Globalization.Cache;
             LanguagesPerSite = config.Globalization.LanguagesPerSite;
 		}
 
@@ -59,10 +66,13 @@ namespace N2.Engine.Globalization
         /// <returns>A language gateway filtering languages.</returns>
         public ILanguageGateway GetLanguageGateway(Site managingTranslationsOnSite)
         {
+			var gateway = languages;
             if (Enabled && LanguagesPerSite)
-                return new SiteFilteringLanguageGateway(languages, managingTranslationsOnSite, persister, languagesCache, descendantFinder);
+                gateway = new SiteFilteringLanguageGateway(languages, managingTranslationsOnSite, persister, languagesCache, descendantFinder);
 
-            return languages;
+			return Cache
+				? new CachingLanguageGatewayDecorator(gateway, webContext, persister, LanguagesPerSite ? managingTranslationsOnSite.StartPageID.ToString() : "global")
+				: gateway;
         }
 
         /// <summary>Gets the language gateway manaing translations on the current site.</summary>
@@ -80,5 +90,5 @@ namespace N2.Engine.Globalization
         {
             return languages;
         }
-    }
+	}
 }
