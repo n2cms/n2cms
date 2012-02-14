@@ -42,6 +42,7 @@ namespace N2.Management.Files
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			Page.JQuery();
+			Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
 			Page.StyleSheet("{ManagementUrl}/Files/Css/jquery.jCrop.min.css");
 			Page.JavaScript("{ManagementUrl}/Files/Js/jquery.jCrop.min.js");
 

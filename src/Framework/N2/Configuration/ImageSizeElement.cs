@@ -13,6 +13,13 @@ namespace N2.Configuration
 			set { base["width"] = value; }
 		}
 
+		[ConfigurationProperty("description")]
+		public string Description
+		{
+			get { return (string)base["description"]; }
+			set { base["description"] = value; }
+		}
+
 		/// <summary>Maximum height of images resized to this size.</summary>
 		[ConfigurationProperty("height", DefaultValue = 0)]
 		public int Height
@@ -35,6 +42,14 @@ namespace N2.Configuration
 		{
 			get { return (bool)base["replace"]; }
 			set { base["replace"] = value; }
+		}
+
+		/// <summary>Whether this size should be announced in the management interface..</summary>
+		[ConfigurationProperty("announced", DefaultValue = true)]
+		public bool Announced
+		{
+			get { return (bool)base["announced"]; }
+			set { base["announced"] = value; }
 		}
 
 		/// <summary>Replace existing file when creating this image size.</summary>

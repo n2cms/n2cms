@@ -28,6 +28,8 @@ namespace N2.Edit.FileSystem
         {
             base.OnInit(e);
 
+			Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
+
             ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
             Reload();

@@ -2,8 +2,9 @@
 
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnDownload" runat="server" Text="Download" CssClass="command" OnCommand="OnDownloadCommand" meta:resourceKey="btnDownload" />
-    <asp:HyperLink ID="hlCrop" NavigateUrl="Crop.aspx" CssClass="command plain iconed" runat="server" meta:resourceKey="hlCrop">Crop</asp:HyperLink>
+	<asp:LinkButton ID="btnDownload" runat="server" Text="Download" CssClass="command iconed download" OnCommand="OnDownloadCommand" meta:resourceKey="btnDownload" />
+    <n2:OptionsMenu id="omSizes" runat="server"/>
+    <asp:HyperLink ID="hlCrop" NavigateUrl="Crop.aspx" CssClass="command crop iconed" runat="server" meta:resourceKey="hlCrop">Crop</asp:HyperLink>
 	<asp:LinkButton ID="btnSave" runat="server" Text="Save" CssClass="command" OnCommand="OnSaveCommand" Visible="false" meta:resourceKey="btnSave" />
 	<asp:LinkButton ID="btnEdit" runat="server" Text="Edit" CssClass="command" OnCommand="OnEditCommand" Visible="false" meta:resourceKey="btnEdit" />
 	<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CssClass="command cancel" OnCommand="OnCancelCommand" Visible="false" meta:resourceKey="btnCancel" />

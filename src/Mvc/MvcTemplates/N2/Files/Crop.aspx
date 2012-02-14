@@ -39,9 +39,4 @@
 			$(".save").attr("disabled", "disabled");
 		});
 	</script>
-	<style>
-		.resize { position:relative; display:inline-block; }
-		.resize span { color:#fff; position:absolute; left:40%; top:33%; }
-		.resize-warning .jcrop-vline,.resize-warning .jcrop-hline { background-color:orange; }
-	</style>
 </asp:Content>
