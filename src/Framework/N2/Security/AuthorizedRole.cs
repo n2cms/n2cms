@@ -26,7 +26,7 @@ namespace N2.Security
 	/// <summary>
 	/// This class defines roles or users authorized to access a certain item.
 	/// </summary>
-	public class AuthorizedRole: Authorization, ICloneable
+	public class AuthorizedRole: ICloneable
 	{
         /// <summary>The role considered as everyone.</summary>
         public const string Everyone = "Everyone";
@@ -91,7 +91,7 @@ namespace N2.Security
         /// <summary>Determines wether a user is permitted according to this role.</summary>
         /// <param name="user">The user to check.</param>
         /// <returns>True if the user is permitted.</returns>
-		public override bool IsAuthorized(System.Security.Principal.IPrincipal user)
+		public virtual bool IsAuthorized(System.Security.Principal.IPrincipal user)
 		{
 			if (IsEveryone)
 				return true;

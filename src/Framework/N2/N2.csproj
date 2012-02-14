@@ -960,7 +960,6 @@
     <Compile Include="Resources\Media.cs" />
     <Compile Include="Resources\ScriptOptions.cs" />
     <Compile Include="Resources\ScriptPosition.cs" />
-    <Compile Include="Security\Authorization.cs" />
     <Compile Include="Security\ISecurable.cs" />
     <Compile Include="Definitions\RootContainer.cs" />
     <Compile Include="Definitions\EditableHierarchyBuilder.cs" />
