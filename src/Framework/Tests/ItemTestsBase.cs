@@ -37,6 +37,8 @@ namespace N2.Tests
 			item.Title = name;
 			item.AncestralTrail = N2.Utility.GetTrail(parent);
 			item.AddTo(parent);
+			item.Published = N2.Utility.CurrentTime();
+			item.State = ContentState.Published;
 			return item;
 		}
 

@@ -86,6 +86,10 @@
     <Content Include="N2\Content\Export\ItemXmlImport.ascx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
+    <Content Include="N2\Files\Crop.aspx" />
+    <Content Include="N2\Files\Css\Files.css" />
+    <Content Include="N2\Files\Css\Jcrop.gif" />
+    <Content Include="N2\Files\Css\jquery.Jcrop.min.css" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
     <Content Include="N2\Files\FileSystem\Export.aspx" />
     <Content Include="N2\Files\FileSystem\jquery.fileupload-ui.js" />
@@ -93,6 +97,8 @@
     <Content Include="N2\Files\FileSystem\jquery.iframe-transport.js" />
     <Content Include="N2\Files\FileSystem\jquery.tmpl.js" />
     <Content Include="N2\Files\Js\FileSelection.js" />
+    <Content Include="N2\Files\Js\jquery.color.js" />
+    <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
     <Content Include="N2\Search\ManageIndex.ascx" />
@@ -352,6 +358,13 @@
     </Compile>
     <Compile Include="N2\Externals\ExternalContentRepository.cs" />
     <Compile Include="N2\Externals\ExternalItem.cs" />
+    <Compile Include="N2\Files\Crop.aspx.cs">
+      <DependentUpon>Crop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Crop.aspx.designer.cs">
+      <DependentUpon>Crop.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Files\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

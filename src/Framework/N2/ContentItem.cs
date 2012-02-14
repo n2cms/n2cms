@@ -955,7 +955,7 @@ namespace N2
 				return true;
 
 			// Iterate allowed roles to find an allowed role
-			foreach (Security.Authorization auth in AuthorizedRoles)
+			foreach (Security.AuthorizedRole auth in AuthorizedRoles)
 			{
 				if (auth.IsAuthorized(user))
 					return true;
