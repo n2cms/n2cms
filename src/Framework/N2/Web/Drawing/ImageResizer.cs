@@ -29,6 +29,13 @@ namespace N2.Web.Drawing
 		public double MaxWidth { get; set; }
 		public double MaxHeight { get; set; }
 		public int Quality { get; set; }
+
+		public Rectangle? SourceRectangle { get; set; }
+
+		public static ImageResizeParameters Fill(Rectangle sourceRectangle, int maxWidth, int maxHeight)
+		{
+			return new ImageResizeParameters(maxWidth, maxHeight, ImageResizeMode.Fill) { SourceRectangle = sourceRectangle };
+		}
 	}
 
 	/// <summary>
@@ -105,12 +112,13 @@ namespace N2.Web.Drawing
 			var maxWidth = parameters.MaxWidth;
 			var maxHeight = parameters.MaxHeight;
 			var quality = parameters.Quality;
+			var srcRect = parameters.SourceRectangle;
 
 			if (mode == ImageResizeMode.Fit)
 			{
-				double resizeRation = GetResizeRatio(original, maxWidth, maxHeight);
-				int newWidth = (int)Math.Round(original.Width * resizeRation);
-				int newHeight = (int)Math.Round(original.Height * resizeRation);
+				double resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
+				int newWidth = (int)Math.Round(original.Width * resizeRatio);
+				int newHeight = (int)Math.Round(original.Height * resizeRatio);
 				resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
 			}
 			else
@@ -133,10 +141,19 @@ namespace N2.Web.Drawing
     			{
     				attr.SetWrapMode(WrapMode.TileFlipXY);
 
-					Rectangle destinationFrame = mode == ImageResizeMode.Fill
-						? GetFillDestinationRectangle(original.Size, resized.Size)
+					var originalSize = srcRect.HasValue 
+						? srcRect.Value.Size 
+						: original.Size;
+
+					Rectangle dest = (mode == ImageResizeMode.Fill)
+						? GetFillDestinationRectangle(originalSize, resized.Size)
 						: new Rectangle(Point.Empty, resized.Size);
-					g.DrawImage(original, destinationFrame, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
+					
+					var src = new Rectangle(0, 0, original.Width, original.Height);
+					if (srcRect.HasValue)
+						src = srcRect.Value;
+
+					g.DrawImage(original, dest, src.X, src.Y, src.Width, src.Height, GraphicsUnit.Pixel, attr);
 				}
 
                 // Use higher quality compression if the original image is jpg. Default is 75L.

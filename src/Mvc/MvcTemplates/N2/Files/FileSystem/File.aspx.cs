@@ -6,6 +6,7 @@ using N2.Configuration;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.Web;
 using N2.Resources;
+using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem
 {
@@ -17,11 +18,19 @@ namespace N2.Edit.FileSystem
 		{
 			base.OnInit(e);
 
-			if (Engine.Resolve<EditSection>().FileSystem.IsTextFile(SelectedFile.Url))
+			var config = Engine.Resolve<EditSection>();
+			if (config.FileSystem.IsTextFile(SelectedFile.Url))
 			{
 				btnEdit.Visible = true;
 			}
-
+			if (ImagesUtility.IsImagePath(Selection.SelectedItem.Url))
+			{
+				var size = config.Images.GetImageSize(SelectedFile.Url);
+				if (size != null && size.Mode == ImageResizeMode.Fill)
+					hlCrop.NavigateUrl = "../Crop.aspx?selected=" + Selection.SelectedItem.Path;
+				else
+					hlCrop.Visible = false;
+			}
 			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
 			DataBind();

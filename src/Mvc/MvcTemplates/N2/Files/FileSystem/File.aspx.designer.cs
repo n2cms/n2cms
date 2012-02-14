@@ -22,6 +22,15 @@ namespace N2.Edit.FileSystem {
         protected global::System.Web.UI.WebControls.LinkButton btnDownload;
         
         /// <summary>
+        /// hlCrop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCrop;
+        
+        /// <summary>
         /// btnSave control.
         /// </summary>
         /// <remarks>
