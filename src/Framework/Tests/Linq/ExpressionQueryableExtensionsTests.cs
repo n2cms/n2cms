@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using N2.Linq;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Extensions.Tests.Linq
 {
@@ -447,21 +448,10 @@ namespace N2.Extensions.Tests.Linq
 		[Test]
 		public void WherePublished_PendingItem_IsNotSelected()
 		{
+			item.State = ContentState.Waiting;
 			item.Published = DateTime.Now.AddSeconds(10);
 			engine.Persister.Repository.SaveOrUpdate(item);
-
-			var query = engine.QueryItems().WherePublished();
-
-			var items = query.ToList();
-
-			Assert.That(items.Single(), Is.EqualTo(root));
-		}
-
-		[Test]
-		public void WherePublished_ItemWithWaitingState_IsNotSelected()
-		{
-			item.State = ContentState.Waiting;
-			engine.Persister.Repository.SaveOrUpdate(item);
+			engine.Persister.Repository.Flush();
 
 			var query = engine.QueryItems().WherePublished();
 
@@ -474,7 +464,9 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_ExpiredItem_IsNotSelected()
 		{
 			item.Expires = DateTime.Now.AddSeconds(-10);
+			item.State = ContentState.Unpublished;
 			engine.Persister.Repository.SaveOrUpdate(item);
+			engine.Persister.Repository.Flush();
 
 			var query = engine.QueryItems().WherePublished();
 
@@ -483,17 +475,23 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Single(), Is.EqualTo(root));
 		}
 
-		[Test]
-		public void WherePublished_ItemWithUnpublishedState_IsNotSelected()
+		[TestCase(ContentState.Deleted)]
+		[TestCase(ContentState.Draft)]
+		[TestCase(ContentState.New)]
+		[TestCase(ContentState.None)]
+		[TestCase(ContentState.Unpublished)]
+		[TestCase(ContentState.Waiting)]
+		public void WherePublished_ItemWitNonPublishedState_IsNotSelected(ContentState state)
 		{
-			item.State = ContentState.Unpublished;
+			item.State = state;
 			engine.Persister.Repository.SaveOrUpdate(item);
+			engine.Persister.Repository.Flush();
 
 			var query = engine.QueryItems().WherePublished();
 
 			var items = query.ToList();
 
-			Assert.That(items.Single(), Is.EqualTo(root));
+			items.Any(i => i == item).ShouldBe(false);
 		}
 	}
 }
