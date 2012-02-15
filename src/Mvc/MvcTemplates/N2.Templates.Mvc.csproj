@@ -407,6 +407,7 @@
     <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
     <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
+    <Content Include="Views\Shared\TokenTemplates\SyntaxHighlighter.ascx" />
     <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
