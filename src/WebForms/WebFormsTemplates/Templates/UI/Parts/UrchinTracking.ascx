@@ -3,10 +3,10 @@
 <script type="text/javascript">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', '<%# CurrentItem.UACCT %>']);
-	_gaq.push(['_trackPageview']);
 	_gaq.push(['_setCustomVar', 1, "page", <%# CurrentPage.ID %>]);
 	_gaq.push(['_setCustomVar', 1, "published", "<%# CurrentPage.Published.HasValue ? CurrentPage.Published.Value.ToString("yyyy-MM") : "unpublished" %>"]);
 	_gaq.push(['_setCustomVar', 1, "authenticated", "<%# this.Page.User.Identity.IsAuthenticated ? true : false %>"]);
+	_gaq.push(['_trackPageview']);
 	(function () {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
