@@ -15,6 +15,12 @@ namespace N2.Linq
 				&& (ci.Expires == null || ci.Expires > time));
 		}
 
+		public static IQueryable<TSource> WhereAncestorOf<TSource>(this IQueryable<TSource> source, ContentItem descendant) where TSource : ContentItem
+		{
+			var ancestorIDs = descendant.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => int.Parse(id)).ToArray();
+			return source.Where(ci => ancestorIDs.Contains(ci.ID));
+		}
+
 		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
 			var trail = ancestor.GetTrail();
@@ -33,6 +39,16 @@ namespace N2.Linq
 				return source.Where(ci => ci.ZoneName == null);
 			else
 				return source.Where(ci => ci.ZoneName != null);
+		}
+
+		public static IQueryable<TSource> WherePrecedingSiblingOf<TSource>(this IQueryable<TSource> source, ContentItem precedingSibling) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.SortOrder < precedingSibling.SortOrder && ci.Parent == precedingSibling.Parent);
+		}
+
+		public static IQueryable<TSource> WhereSubsequentSiblingOf<TSource>(this IQueryable<TSource> source, ContentItem precedingSibling) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.SortOrder > precedingSibling.SortOrder && ci.Parent == precedingSibling.Parent);
 		}
 
 		static MethodInfo whereMethodInfo = typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters().Length == 2).GetGenericMethodDefinition();

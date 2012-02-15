@@ -493,5 +493,55 @@ namespace N2.Extensions.Tests.Linq
 
 			items.Any(i => i == item).ShouldBe(false);
 		}
+
+		[Test]
+		public void WherePrecedingSibling()
+		{
+			item.AddTo(root);
+			var item0 = CreateOneItem<LinqItem>(0, "item0", root);
+			item0.SortOrder = item.SortOrder - 1;
+			var item2 = CreateOneItem<LinqItem>(0, "item2", root);
+			item2.SortOrder = item.SortOrder + 1;
+			engine.Persister.Save(root);
+
+			var query = engine.QueryItems().WherePrecedingSiblingOf(item);
+
+			var items = query.ToList();
+
+			items.Single().ShouldBe(item0);
+		}
+
+		[Test]
+		public void WhereSubsequentSibling()
+		{
+			item.AddTo(root);
+			var item0 = CreateOneItem<LinqItem>(0, "item0", root);
+			item0.SortOrder = item.SortOrder - 1;
+			var item2 = CreateOneItem<LinqItem>(0, "item2", root);
+			item2.SortOrder = item.SortOrder + 1;
+			engine.Persister.Save(root);
+
+			var query = engine.QueryItems().WhereSubsequentSiblingOf(item);
+
+			var items = query.ToList();
+
+			items.Single().ShouldBe(item2);
+		}
+
+		[Test]
+		public void WhereAncestor()
+		{
+			item.AddTo(root);
+			var item0 = CreateOneItem<LinqItem>(0, "item0", item);
+			var item2 = CreateOneItem<LinqItem>(0, "item0", item0);
+			engine.Persister.Save(root);
+
+			var query = engine.QueryItems().WhereAncestorOf(item2);
+
+			var items = query.ToList();
+
+			items.Count().ShouldBe(3);
+		}
+
 	}
 }
