@@ -1,3 +1,4 @@
+- deadlock when indexing (discussions/285067)
 - dbfs in virtual dir (discussions/287370)
 - Pushstate
 - PdfBox http://pdfbox.apache.org/userguide/dot_net.html (discussions/285609)

@@ -10,19 +10,21 @@ namespace N2.Linq
 		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
 		{
 			var time = Utility.CurrentTime();
-			return source.Where(ci => ci.State == ContentState.Published 
-				&& (ci.Published != null && ci.Published <= time) 
+			return source.Where(ci => ci.State == ContentState.Published
+				&& (ci.Published != null && ci.Published <= time)
 				&& (ci.Expires == null || ci.Expires > time));
 		}
 
 		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
-			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()));
+			var trail = ancestor.GetTrail();
+			return source.Where(ci => ci.AncestralTrail.StartsWith(trail));
 		}
 
 		public static IQueryable<TSource> WhereDescendantOrSelf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
-			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()) || ci == ancestor);
+			var trail = ancestor.GetTrail();
+			return source.Where(ci => ci.AncestralTrail.StartsWith(trail) || ci == ancestor);
 		}
 
 		public static IQueryable<TSource> WherePage<TSource>(this IQueryable<TSource> source, bool isPage = true) where TSource : ContentItem
