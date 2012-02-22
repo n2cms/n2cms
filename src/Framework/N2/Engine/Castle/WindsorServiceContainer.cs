@@ -122,7 +122,10 @@ namespace N2.Engine.Castle
 		public override IEnumerable<ServiceInfo> Diagnose()
 		{
 			return container.Kernel.GraphNodes.OfType<ComponentModel>()
-				.Select(cm => new ServiceInfo { Key = cm.Name, ServiceType = cm.Service, ImplementationType = cm.Implementation, Resolve = () => Resolve(cm.Service), ResolveAll = () => ResolveAll(cm.Service) });
+                .Select(cm => new ServiceInfo
+                                  {
+                                      Key = cm.Name, ServiceType = cm.Services.First(), ImplementationType = cm.Implementation, Resolve = () => Resolve(cm.Services.First()), ResolveAll = () => ResolveAll(cm.Services.First())
+                                  });
 		}
 
 		/// <summary>Resolves all services of the given type.</summary>
@@ -284,7 +287,7 @@ namespace N2.Engine.Castle
 
 
 			#region Start & Stop Concern
-			class StartConcern : ILifecycleConcern, ICommissionConcern
+			class StartConcern : ICommissionConcern
 			{
 				private readonly ILog logger = LogManager.GetLogger(typeof (StartConcern));
 				private static readonly StartConcern instance = new StartConcern();
@@ -309,7 +312,7 @@ namespace N2.Engine.Castle
 				}
 			}
 
-			class StopConcern : ILifecycleConcern, IDecommissionConcern
+			class StopConcern : IDecommissionConcern
 			{
 				private static readonly StopConcern instance = new StopConcern();
 

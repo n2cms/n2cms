@@ -20,5 +20,6 @@ using System.Security;
 
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
+[assembly: SecurityRules(SecurityRuleSet.Level1)]
 
 [assembly: InternalsVisibleTo("N2.Extensions.Tests")]
