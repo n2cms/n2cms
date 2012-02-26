@@ -42,6 +42,7 @@
 												$(Dinamico-SourceFolder)\**\*.suo;
 												$(Dinamico-SourceFolder)\**\*.user;
 												$(Dinamico-SourceFolder)\**\*.Publish.xml;
+												$(Dinamico-SourceFolder)\**\*.log;
 												$(Dinamico-SourceFolder)\**\Thumbs.db;
 												$(Dinamico-SourceFolder)\App_Data\SearchIndex\**\*;
 												$(Dinamico-SourceFolder)\N2\**\*;
