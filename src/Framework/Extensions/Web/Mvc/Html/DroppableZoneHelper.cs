@@ -84,11 +84,11 @@ namespace N2.Web.Mvc.Html
 			if (int.TryParse(preview, out itemID))
 			{
 				ContentItem previewedItem = Html.ResolveService<IPersister>().Get(itemID);
-				if (previewedItem != null && previewedItem.VersionOf != null)
+				if (previewedItem != null && previewedItem.VersionOf.HasValue)
 				{
 					foreach (var child in PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()))
 					{
-						if (previewedItem.VersionOf == child)
+						if (previewedItem.VersionOf.Value == child)
 							RenderTemplate(writer, previewedItem);
 						else
 							RenderTemplate(writer, child);

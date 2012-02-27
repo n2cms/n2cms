@@ -19,7 +19,7 @@ namespace N2.Templates.Services
 			ContentItem grandParentItem = parentItem;
 			if (zoneName.StartsWith("Recursive") && grandParentItem is AbstractContentPage && !(grandParentItem is LanguageRoot))
 			{
-				if(parentItem.VersionOf == null)
+				if(!parentItem.VersionOf.HasValue)
 					items.Union(GetParts(parentItem.Parent, zoneName, @interface));
 				else
                     items.Union(GetParts(parentItem.VersionOf.Parent, zoneName, @interface));

@@ -182,6 +182,10 @@
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Upgrade\MigrateHomeRedirect.cs" />
+    <Compile Include="Upgrade\MigrateIntroduction.cs" />
+    <Compile Include="Upgrade\MigrateEventDate.cs" />
+    <Compile Include="Upgrade\MigrateTopParts.cs" />
     <Compile Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -405,6 +409,7 @@
     <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
     <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
+    <Content Include="Views\Shared\TokenTemplates\SyntaxHighlighter.ascx" />
     <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -131,7 +131,19 @@ namespace N2
 			Type instanceType = instance.GetType();
 			PropertyInfo pi = instanceType.GetProperty(propertyName);
 			if (pi == null)
+			{
+				var dotIndex = propertyName.IndexOf('.');
+				if (dotIndex > 0)
+				{
+					var subObject = GetProperty(instance, propertyName.Substring(0, dotIndex));
+					if (subObject != null)
+					{
+						SetProperty(subObject, propertyName.Substring(dotIndex + 1), value);
+						return;
+					}
+				}
 				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+			}
 			if(!pi.CanWrite)
 				throw new N2Exception("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
 			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
@@ -150,7 +162,19 @@ namespace N2
 
 			Type instanceType = instance.GetType();
 			PropertyInfo pi = instanceType.GetProperty(propertyName);
-			if (pi == null) return false;
+			if (pi == null)
+			{
+				var dotIndex = propertyName.IndexOf('.');
+				if (dotIndex > 0)
+				{
+					var subObject = GetProperty(instance, propertyName.Substring(0, dotIndex));
+					if (subObject != null)
+					{
+						return TrySetProperty(subObject, propertyName.Substring(dotIndex + 1), value);
+					}
+				}
+				return false;
+			}
 			if (!pi.CanWrite) return false;
 
 			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
@@ -435,7 +459,7 @@ namespace N2
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
 		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> handler, ContentItem item, object sender, Action<ContentItem> finalAction)
 		{
-			if (handler != null && (VersionsTriggersEvents || item.VersionOf == null))
+			if (handler != null && (VersionsTriggersEvents || !item.VersionOf.HasValue))
 			{
 				CancellableItemEventArgs args = new CancellableItemEventArgs(item, finalAction);
 				
@@ -457,7 +481,7 @@ namespace N2
 		/// <returns>The result of the action (if any).</returns>
 		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
 		{
-			if (handler != null && (VersionsTriggersEvents || source.VersionOf == null))
+			if (handler != null && (VersionsTriggersEvents || !source.VersionOf.HasValue))
 			{
 				CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination, finalAction);
 
@@ -543,6 +567,8 @@ namespace N2
 			if (string.IsNullOrEmpty(html)) return html;
 
 			html = StripTagsExpression.Replace(html, "");
+			if (string.IsNullOrEmpty(html)) return html;
+
 			int separatorIndex = 0;
 			for (int i = 0; i < html.Length && i < maxLength; i++)
 			{

@@ -82,7 +82,7 @@ namespace N2.Web.Parts
 			if(belowParentItem == null)
 				return new ItemList();
 
-            var children = belowParentItem.VersionOf == null ? belowParentItem.Children : belowParentItem.VersionOf.Children;
+			var children = !belowParentItem.VersionOf.HasValue ? belowParentItem.Children : belowParentItem.VersionOf.Children;
             var items = children.FindParts(inZoneNamed)
                 .Where(new AccessFilter(WebContext.User, Security));
 

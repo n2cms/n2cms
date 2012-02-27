@@ -6,6 +6,7 @@ using N2.Definitions;
 using N2.Integrity;
 using NUnit.Framework;
 using N2.Edit;
+using Shouldly;
 
 namespace N2.Tests.Utility
 {
@@ -306,6 +307,45 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
+		public void SetValue_OnMissingProperty_Throws()
+		{
+			Should.Throw<Exception>(() => N2.Utility.SetProperty(item1, "Name2", "WhooHoo"));
+		}
+
+		[Test]
+		public void TrySetValue_SetsProperty()
+		{
+			var result = N2.Utility.TrySetProperty(item1, "Name", "WhooHoo");
+			result.ShouldBe(true);
+			item1.Name.ShouldBe("WhooHoo");
+		}
+
+
+		[Test]
+		public void TrySetValue_OnMissingProperty_ReturnsFalse()
+		{
+			var result = N2.Utility.TrySetProperty(item1, "Name2", "WhooHoo");
+			result.ShouldBe(false);
+		}
+
+		[Test]
+		public void SetValue_OnNestedItem_SetsTheValue()
+		{
+			item2.Parent = item1;
+			N2.Utility.SetProperty(item2, "Parent.Name", "WhooHoo");
+			Assert.AreEqual("WhooHoo", item2.Parent.Name);
+		}
+
+		[Test]
+		public void TrySetValue_OnNestedItem_SetsTheValue()
+		{
+			item2.Parent = item1;
+			var result = N2.Utility.TrySetProperty(item2, "Parent.Name", "WhooHoo");
+			result.ShouldBe(true);
+			Assert.AreEqual("WhooHoo", item2.Parent.Name);
+		}
+
+		[Test]
 		public void CanSetValueOfWrongType()
 		{
 			N2.Utility.SetProperty(item1, "Name", 123);
@@ -595,6 +635,24 @@ namespace N2.Tests.Utility
 			string output = N2.Utility.ExtractFirstSentences(input, 30);
 
 			Assert.That(output, Is.EqualTo(input));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_NoDelimiter_AndParagraphs()
+		{
+			string input = "<p>Test test test</p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 250);
+
+			Assert.That(output, Is.EqualTo("Test test test"));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_OnlyParagraphs()
+		{
+			string input = "<p></p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 250);
+
+			Assert.That(output, Is.EqualTo(""));
 		}
 
 		[TestCase(typeof(object), 0)]

@@ -3,7 +3,6 @@
 <asp:Content ContentPlaceHolderID="TextContent" runat="server">
 	<%= Html.DisplayContent(m => m.Title) %>
 	<%= Html.DisplayContent("Published").WrapIn("span", new { @class = "date" })%>
-	<%= Html.DisplayContent(m => m.Introduction).WrapIn("p", new { @class = "introduction" }) %>
 	<%= Html.DisplayContent(m => m.Text) %>
 	<% if(Html.HasValue("Tags")) { %>
 		<div class="tags"><label for="tags"><%= GetLocalResourceObject("Tags") %></label><span id="tags"><%= Html.DisplayContent("Tags") %></span></div>

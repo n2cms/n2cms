@@ -80,7 +80,7 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf == item), Is.EqualTo(0));
+            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace N2.Tests.Workflow
 
 			dispatcher.Execute(CreateCommand(context), context);
 
-			Assert.That(repository.database.Values.Count(v => v.VersionOf == item), Is.GreaterThan(0), "Expected version to be created");
+			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.GreaterThan(0), "Expected version to be created");
 		}
 
 		[Test]
@@ -115,7 +115,7 @@ namespace N2.Tests.Workflow
 			dispatcher.Execute(CreateCommand(context), context);
 
 			dispatcher.Execute(CreateCommand(context), context);
-			Assert.That(repository.database.Values.Count(v => v.VersionOf == unversionable), Is.EqualTo(0), "Expected no version to be created");
+			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == unversionable), Is.EqualTo(0), "Expected no version to be created");
 		}
 
         protected ContentItem MakeVersion(ContentItem master)

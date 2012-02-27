@@ -6,11 +6,11 @@ var freeTextArea_settings = {
 	mode: 'exact',
 	//plugins: 'table,advimage,advlink,flash,searchreplace,print,contextmenu,paste,fullscreen,noneditable',
 	theme: 'advanced',
-	plugins: 'style,layer,table,advimage,advlink,iespell,spellchecker,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups',
+	plugins: 'style,layer,table,advimage,advlink,iespell,spellchecker,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,icode',
 	theme_advanced_buttons1_add_before: '',
 	theme_advanced_buttons1_add: 'sup,|,print,fullscreen,|,search,replace,iespell,spellchecker,autosave',
 	theme_advanced_buttons2_add_before: 'cut,copy,paste,pastetext,pasteword,|',
-	theme_advanced_buttons2_add: '|,table,media,insertlayer,inlinepopups',
+	theme_advanced_buttons2_add: '|,table,media,insertlayer,inlinepopups,icode,',
 	theme_advanced_buttons3: '',
 	theme_advanced_buttons3_add_before: '',
 	theme_advanced_buttons3_add: '',
@@ -75,10 +75,10 @@ var settingsSimple = {
 
 	plugins: 'style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
-       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template',
+       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
 
 	theme_advanced_buttons1: 'newdocument,|,undo,redo,|,bold,italic,underline,strikethrough,|,'
-       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,',
+       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,icode,',
 	theme_advanced_disable: 'help,save'
 };
 
@@ -87,10 +87,10 @@ var settingsExtended = {
 
 	plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
-       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template',
+       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
 
 	theme_advanced_buttons1: 'pdw_toggle,|,newdocument,|,undo,redo,|,bold,italic,underline,strikethrough,|,'
-       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,',
+       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,icode,',
 	theme_advanced_buttons2: 'cut,copy,paste,pastetext,pasteword,|,'
        + 'bullist,numlist,|,outdent,indent,blockquote,|,'
        + 'link,unlink,anchor,image,|,forecolor,backcolor,fontselect,fontsizeselect,',

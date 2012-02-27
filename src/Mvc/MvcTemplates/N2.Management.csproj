@@ -89,6 +89,10 @@
     <Content Include="N2\Content\Export\ItemXmlImport.ascx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
+    <Content Include="N2\Files\Crop.aspx" />
+    <Content Include="N2\Files\Css\Files.css" />
+    <Content Include="N2\Files\Css\Jcrop.gif" />
+    <Content Include="N2\Files\Css\jquery.Jcrop.min.css" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
     <Content Include="N2\Files\FileSystem\Export.aspx" />
     <Content Include="N2\Files\FileSystem\jquery.fileupload-ui.js" />
@@ -96,8 +100,56 @@
     <Content Include="N2\Files\FileSystem\jquery.iframe-transport.js" />
     <Content Include="N2\Files\FileSystem\jquery.tmpl.js" />
     <Content Include="N2\Files\Js\FileSelection.js" />
+    <Content Include="N2\Files\Js\jquery.color.js" />
+    <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Resources\syntaxhighlighter\index.html" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shAutoloader.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushAppleScript.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushAS3.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushBash.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushColdFusion.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushCpp.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushCSharp.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushCss.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushDelphi.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushDiff.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushErlang.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushGroovy.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushJava.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushJavaFX.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushJScript.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushPerl.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushPhp.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushPlain.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushPowerShell.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushPython.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushRuby.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushSass.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushScala.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushSql.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushVb.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushXml.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shCore.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\scripts\shLegacy.js" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCore.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreDefault.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreDjango.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreEclipse.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreEmacs.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreFadeToGrey.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreMDUltra.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreMidnight.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreRDark.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeDefault.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeDjango.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeEclipse.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeEmacs.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeFadeToGrey.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeMDUltra.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeMidnight.css" />
+    <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeRDark.css" />
     <Content Include="N2\Search\ManageIndex.ascx" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />
@@ -355,6 +407,13 @@
     </Compile>
     <Compile Include="N2\Externals\ExternalContentRepository.cs" />
     <Compile Include="N2\Externals\ExternalItem.cs" />
+    <Compile Include="N2\Files\Crop.aspx.cs">
+      <DependentUpon>Crop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Crop.aspx.designer.cs">
+      <DependentUpon>Crop.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Files\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

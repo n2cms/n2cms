@@ -28,13 +28,13 @@ namespace N2.Web.Mvc.Html
 		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator)
 		{
 			return registrator.JQuery()
-				.JavaScript("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+				.JavaScript("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + Register.JQueryVersion);
 		}
 
 		public static ResourcesHelper JQueryUi(this ResourcesHelper registrator)
 		{
 			return registrator.JQuery()
-				.JavaScript("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+				.JavaScript("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + Register.JQueryVersion);
 		}
 
 		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)

@@ -77,7 +77,7 @@ namespace N2.Web
 			return new ContentScope(newCurrentItem, this);
 		}
 
-		private void EnsureAuthorized(ContentItem newCurrentItem)
+		protected virtual void EnsureAuthorized(ContentItem newCurrentItem)
 		{
 			if (!IsAuthorized(newCurrentItem))
 				throw new PermissionDeniedException(newCurrentItem);

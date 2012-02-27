@@ -10,19 +10,27 @@ namespace N2.Linq
 		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
 		{
 			var time = Utility.CurrentTime();
-			return source.Where(ci => ci.State == ContentState.Published 
-				&& (ci.Published != null && ci.Published <= time) 
+			return source.Where(ci => ci.State == ContentState.Published
+				&& (ci.Published != null && ci.Published <= time)
 				&& (ci.Expires == null || ci.Expires > time));
+		}
+
+		public static IQueryable<TSource> WhereAncestorOf<TSource>(this IQueryable<TSource> source, ContentItem descendant) where TSource : ContentItem
+		{
+			var ancestorIDs = descendant.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => int.Parse(id)).ToArray();
+			return source.Where(ci => ancestorIDs.Contains(ci.ID));
 		}
 
 		public static IQueryable<TSource> WhereDescendantOf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
-			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()));
+			var trail = ancestor.GetTrail();
+			return source.Where(ci => ci.AncestralTrail.StartsWith(trail));
 		}
 
 		public static IQueryable<TSource> WhereDescendantOrSelf<TSource>(this IQueryable<TSource> source, ContentItem ancestor) where TSource : ContentItem
 		{
-			return source.Where(ci => ci.AncestralTrail.StartsWith(ancestor.GetTrail()) || ci == ancestor);
+			var trail = ancestor.GetTrail();
+			return source.Where(ci => ci.AncestralTrail.StartsWith(trail) || ci == ancestor);
 		}
 
 		public static IQueryable<TSource> WherePage<TSource>(this IQueryable<TSource> source, bool isPage = true) where TSource : ContentItem
@@ -31,6 +39,16 @@ namespace N2.Linq
 				return source.Where(ci => ci.ZoneName == null);
 			else
 				return source.Where(ci => ci.ZoneName != null);
+		}
+
+		public static IQueryable<TSource> WherePrecedingSiblingOf<TSource>(this IQueryable<TSource> source, ContentItem precedingSibling) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.SortOrder < precedingSibling.SortOrder && ci.Parent == precedingSibling.Parent);
+		}
+
+		public static IQueryable<TSource> WhereSubsequentSiblingOf<TSource>(this IQueryable<TSource> source, ContentItem precedingSibling) where TSource : ContentItem
+		{
+			return source.Where(ci => ci.SortOrder > precedingSibling.SortOrder && ci.Parent == precedingSibling.Parent);
 		}
 
 		static MethodInfo whereMethodInfo = typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters().Length == 2).GetGenericMethodDefinition();

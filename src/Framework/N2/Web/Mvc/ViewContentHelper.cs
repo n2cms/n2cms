@@ -23,6 +23,12 @@ namespace N2.Web.Mvc
 			this.html = html;
 		}
 
+		public ViewContentHelper(HtmlHelper html, IEngine engine, Func<PathData> pathGetter)
+			: base (engine, pathGetter)
+		{
+			this.html = html;
+		}
+
 		public HtmlHelper Html
 		{
 			get { return html; }

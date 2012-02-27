@@ -24,7 +24,9 @@ namespace N2.Templates.Mvc.Controllers
             // Top menu for the current language starts at the nearest language root
             ContentItem branchRoot = Find.ClosestLanguageRoot;
 			var selected = Find.AncestorAtLevel(2, Find.EnumerateParents(CurrentPage, branchRoot, true), CurrentPage);
-			var topLevelPages = branchRoot.GetChildren(new NavigationFilter()).TryAppendCreatorNode(Engine, branchRoot);
+			var pages = branchRoot.GetChildren(new NavigationFilter());
+			pages.Insert(0, branchRoot);
+			var topLevelPages = pages.TryAppendCreatorNode(Engine, branchRoot);
 			var model = new TopMenuModel(GetTranslations(), selected ?? branchRoot, topLevelPages);
 
 			return PartialView(model);

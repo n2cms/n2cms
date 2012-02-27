@@ -96,7 +96,7 @@ namespace N2.Persistence
 
                         Replace(currentItem, replacementItem);
 
-						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
 							itemRepository.Delete(replacementItem);
 
@@ -107,7 +107,7 @@ namespace N2.Persistence
                     {
                         Replace(currentItem, replacementItem);
 
-						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
 							itemRepository.Delete(replacementItem);
 

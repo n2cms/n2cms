@@ -211,6 +211,7 @@
     <Compile Include="Edit\IPlaceHolderAccessor.cs" />
     <Compile Include="Edit\TreeNode.cs" />
     <Compile Include="Edit\UploadFolderSource.cs" />
+    <Compile Include="Engine\Globalization\CachingLanguageGatewayDecorator.cs" />
     <Compile Include="Engine\Globalization\LanguageGatewaySelector.cs" />
     <Compile Include="Engine\Globalization\SiteFilteringLanguageGateway.cs" />
     <Compile Include="Engine\Providers\ViewContentHelperProvider.cs" />
@@ -261,6 +262,13 @@
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Persistence\NH\ContentItemRepository.cs" />
+    <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
+    <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
@@ -282,7 +290,6 @@
     <Compile Include="Persistence\Search\ITextSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
-    <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\Finder\DetailNullHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyNullHqlProvider.cs" />
     <Compile Include="Persistence\NH\PersistentContentItemListOfT.cs" />
@@ -351,6 +358,7 @@
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
+    <Compile Include="Web\Parts\PartsExtensions.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
@@ -953,7 +961,6 @@
     <Compile Include="Resources\Media.cs" />
     <Compile Include="Resources\ScriptOptions.cs" />
     <Compile Include="Resources\ScriptPosition.cs" />
-    <Compile Include="Security\Authorization.cs" />
     <Compile Include="Security\ISecurable.cs" />
     <Compile Include="Definitions\RootContainer.cs" />
     <Compile Include="Definitions\EditableHierarchyBuilder.cs" />

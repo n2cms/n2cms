@@ -19,11 +19,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image { get; set; }
 
-		public string Summary
-		{
-			get { return Utility.ExtractFirstSentences(Text, 250); }
-		}
-
 		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public virtual bool Syndicate { get; set; }
 	}

@@ -203,6 +203,7 @@
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
+    <Compile Include="Persistence\SearchHelperTests.cs" />
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
+    <Compile Include="Web\Parts\PartsExtensionsTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Web\JsonWriterTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
@@ -414,6 +416,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\Drawing\copter_icon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Drawing\copter_original.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\Drawing\lav.jpeg">

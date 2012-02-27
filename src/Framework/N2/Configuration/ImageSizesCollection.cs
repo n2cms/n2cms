@@ -1,5 +1,7 @@
 ﻿using System.Configuration;
+using System.Linq;
 using N2.Web.Drawing;
+using System.Collections.Generic;
 
 namespace N2.Configuration
 {
@@ -8,9 +10,14 @@ namespace N2.Configuration
 	{
 		public ImageSizesCollection()
 		{
-			AddDefault(new ImageSizeElement { Name = "", Width = 500, Height = 500, Replace = true });
-			AddDefault(new ImageSizeElement { Name = "icon", Width = 16, Height = 16, Mode = ImageResizeMode.Fill });
-			AddDefault(new ImageSizeElement { Name = "original", Width = 0, Height = 0 });
+			AddDefault(new ImageSizeElement { Name = "", Description = "Default", Width = 500, Height = 500, Replace = true });
+			AddDefault(new ImageSizeElement { Name = "icon", Description = "Icon", Width = 16, Height = 16, Mode = ImageResizeMode.Fill, Announced = false });
+			AddDefault(new ImageSizeElement { Name = "original", Description = "Original", Width = 0, Height = 0 });
+		}
+
+		public IEnumerable<string> GetSizeNames()
+		{
+			return AllElements.Select(e => e.Name);
 		}
 	}
 }

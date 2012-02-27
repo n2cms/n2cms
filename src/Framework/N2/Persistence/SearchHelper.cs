@@ -25,7 +25,7 @@ namespace N2.Persistence
 		/// <remarks>Pending or expired pages may be included in the result.</remarks>
 		public IQueryable<ContentItem> Items
 		{
-			get { return Query<ContentItem>().Where(i => i.VersionOf == null); }
+			get { return Query<ContentItem>().Where(i => i.VersionOf.ID == null); }
 		}
 
 		/// <summary>Query for content pages using LINQ.</summary>

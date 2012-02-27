@@ -14,7 +14,9 @@ namespace N2.Edit.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            var masterVersion = state.Content.VersionOf ?? state.Content;
+            var masterVersion = state.Content.VersionOf.HasValue 
+				? state.Content.VersionOf.Value
+				: state.Content;
             var versions = versionProvider.GetVersionsOf(masterVersion);
             if (versions.Count > 1)
             {

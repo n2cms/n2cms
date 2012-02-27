@@ -167,7 +167,7 @@ namespace N2.Edit
 				return null;
 
 			string editUrl = Url.ResolveTokens(EditItemUrl);
-			if (item.VersionOf != null)
+			if (item.VersionOf.HasValue)
 				return string.Format("{0}?selectedUrl={1}", editUrl,
 				                     HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
 

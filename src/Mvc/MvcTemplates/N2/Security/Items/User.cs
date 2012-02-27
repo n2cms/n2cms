@@ -21,7 +21,7 @@ namespace N2.Security.Items
 			set { base.Title = value; }
 		}
 
-		[EditableText("Title", 20, Required = true)]
+		[EditableText("Username", 20, Required = true)]
 		public override string Name
 		{
 			get { return base.Name; }

@@ -3,6 +3,8 @@ using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 using N2.Web.UI;
+using System.Web.UI.WebControls;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -23,6 +25,10 @@ namespace N2.Templates.Mvc.Models.Pages
 	public abstract class ContentPageBase : PageBase, ICommentable
 	{
 		// editables
+
+		[Persistable]
+		[EditableSummary("Summary", 90, ContainerName = Tabs.Content, Source = "Text")]
+		public virtual string Summary { get; set; }
 
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
 		[DisplayableTokens]

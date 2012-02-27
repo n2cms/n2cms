@@ -3,7 +3,7 @@
     <div class="item i<%= i + Model.Skip %> a<%= i % 2 %>">
         <span class="date"><%= Model.News[i].Published %></span>
         <a href="<%= Model.News[i].Url %>"><%= Model.News[i].Title %></a>
-        <p><%= Model.News[i].Introduction %></p>
+        <p><%= Model.News[i].Summary %></p>
     </div>
 <% } %>
 

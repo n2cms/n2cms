@@ -1,6 +1,8 @@
-﻿using System.Collections.Specialized;
+﻿using System.Linq;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
+using N2.Web.Drawing;
 
 namespace N2.Configuration
 {
@@ -26,6 +28,14 @@ namespace N2.Configuration
 		{
 			get { return (ImageSizesCollection)base["sizes"]; }
 			set { base["sizes"] = value; }
+		}
+
+		public ImageSizeElement GetImageSize(string imageUrl)
+		{
+			string baseImagePath;
+			string imageSize;
+			ImagesUtility.SplitImageAndSize(imageUrl, Sizes.GetSizeNames(), out baseImagePath, out imageSize);
+			return Sizes.FirstOrDefault(s => s.Name == imageSize);
 		}
 	}
 }

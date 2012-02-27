@@ -1,6 +1,6 @@
+- deadlock when indexing (discussions/285067)
 - dbfs in virtual dir (discussions/287370)
 - Pushstate
-- Remove Top (discussions/264798)
 - PdfBox http://pdfbox.apache.org/userguide/dot_net.html (discussions/285609)
 - ContentState after installation (discussions/285006)
 - Document security (discussions/282764)
