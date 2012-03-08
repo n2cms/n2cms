@@ -22,24 +22,24 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(N2.Resources.Register.JQueryPath());
+			return registrator.JavaScript(N2.Resources.Register.JQueryPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator)
 		{
 			return registrator.JQuery()
-				.JavaScript("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + Register.JQueryVersion);
+				.JavaScript(Register.JQueryPluginsPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper JQueryUi(this ResourcesHelper registrator)
 		{
 			return registrator.JQuery()
-				.JavaScript("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + Register.JQueryVersion);
+				.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js");
+			return registrator.JavaScript(Register.TinyMCEPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper Constnats(this ResourcesHelper registrator)

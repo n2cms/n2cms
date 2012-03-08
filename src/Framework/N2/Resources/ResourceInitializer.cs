@@ -18,6 +18,10 @@ namespace N2.Resources
 		public void Start()
 		{
 			Register.Debug = configFactory.Sections.Web.Resources.Debug;
+			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
+			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
+			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
+			Register.TinyMCEPath = configFactory.Sections.Web.Resources.TinyMCEPath;
 		}
 
 		public void Stop()
