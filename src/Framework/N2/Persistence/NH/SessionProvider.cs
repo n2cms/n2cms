@@ -84,9 +84,21 @@ namespace N2.Persistence.NH
             }
         }
 
+		/// <summary>Begins a transaction.</summary>
+		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		public ITransaction BeginTransaction()
 		{
 			return new NHTransaction(isolation, this);
+		}
+
+		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+		/// <returns>A disposable transaction wrapper.</returns>
+		public ITransaction GetTransaction()
+		{
+			if (OpenSession.Session.Transaction != null && OpenSession.Session.Transaction.IsActive)
+				return BeginTransaction();
+
+			return null;
 		}
 	}
 }

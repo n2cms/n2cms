@@ -23,16 +23,28 @@ namespace N2.Persistence.NH
 
 		#region ITransaction Members
 
+		/// <summary>Commits the transaction.</summary>
 		public void Commit()
 		{
-            if(isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
-			    transaction.Commit();
+			if (isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
+			{
+				transaction.Commit();
+
+				if (Committed != null)
+					Committed(this, new EventArgs());
+			}
 		}
 
+		/// <summary>Rollsbacks the transaction</summary>
 		public void Rollback()
 		{
-            if (!transaction.WasCommitted && !transaction.WasRolledBack)
-                transaction.Rollback();
+			if (!transaction.WasCommitted && !transaction.WasRolledBack)
+			{
+				transaction.Rollback();
+
+				if (Rollbacked != null)
+					Rollbacked(this, new EventArgs());
+			}
 		}
 
 		#endregion
@@ -46,9 +58,19 @@ namespace N2.Persistence.NH
 				Rollback();
 				transaction.Dispose();
 			}
-			
+			if (Disposed != null)
+				Disposed(this, new EventArgs());
 		}
 
 		#endregion
+
+		/// <summary>Invoked after the transaction has been committed.</summary>
+		public event EventHandler Committed;
+
+		/// <summary>Invoked after the transaction has been rollbacked.</summary>
+		public event EventHandler Rollbacked;
+
+		/// <summary>Invoked after the transaction has closed and is disposed.</summary>
+		public event EventHandler Disposed;
 	}
 }
