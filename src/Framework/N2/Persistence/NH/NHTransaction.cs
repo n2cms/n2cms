@@ -11,7 +11,9 @@ namespace N2.Persistence.NH
 
 		public NHTransaction(IsolationLevel? isolation, ISessionProvider sessionProvider)
 		{
-		    ISession session = sessionProvider.OpenSession.Session;
+			var context = sessionProvider.OpenSession;
+		    
+			ISession session = context.Session;
 			transaction = session.Transaction;
 			if (transaction.IsActive)
 				isOriginator = false; // The method that first opened the transaction should also close it
@@ -19,6 +21,13 @@ namespace N2.Persistence.NH
 				transaction.Begin(isolation.Value);
 			else
                 transaction.Begin();
+
+			if (context.Transaction != null)
+			{
+				context.Transaction.Committed += (o, s) => OnCommit();
+				context.Transaction.Disposed += (o, s) => OnDispose();
+				context.Transaction.Rollbacked += (o, s) => OnRollback();
+			}
 		}
 
 		#region ITransaction Members
@@ -30,9 +39,14 @@ namespace N2.Persistence.NH
 			{
 				transaction.Commit();
 
-				if (Committed != null)
-					Committed(this, new EventArgs());
+				OnCommit();
 			}
+		}
+
+		private void OnCommit()
+		{
+			if (Committed != null)
+				Committed(this, new EventArgs());
 		}
 
 		/// <summary>Rollsbacks the transaction</summary>
@@ -42,9 +56,14 @@ namespace N2.Persistence.NH
 			{
 				transaction.Rollback();
 
-				if (Rollbacked != null)
-					Rollbacked(this, new EventArgs());
+				OnRollback();
 			}
+		}
+
+		private void OnRollback()
+		{
+			if (Rollbacked != null)
+				Rollbacked(this, new EventArgs());
 		}
 
 		#endregion
@@ -58,6 +77,11 @@ namespace N2.Persistence.NH
 				Rollback();
 				transaction.Dispose();
 			}
+			OnDispose();
+		}
+
+		private void OnDispose()
+		{
 			if (Disposed != null)
 				Disposed(this, new EventArgs());
 		}

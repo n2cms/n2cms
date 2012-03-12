@@ -16,7 +16,7 @@ namespace N2.Persistence.NH
 	{
 		private readonly ILog logger = LogManager.GetLogger(typeof(SessionProvider));
 
-		private static string RequestItemsKey = "SessionProvider.Session";
+		private static string SessionKey = "SessionProvider.Session";
 		private NHInterceptorFactory interceptorFactory;
 		private readonly IWebContext webContext;
 		private readonly ISessionFactory nhSessionFactory;
@@ -38,11 +38,12 @@ namespace N2.Persistence.NH
 			get { return nhSessionFactory; }
 		}
 
+		/// <summary>Gets an existing session context or null if no session is in progress.</summary>
 		public virtual SessionContext CurrentSession
 		{
-			get { return webContext.RequestItems[RequestItemsKey] as SessionContext; }
-			set { webContext.RequestItems[RequestItemsKey] = value; }
-        }
+			get { return webContext.RequestItems[SessionKey] as SessionContext; }
+			set { webContext.RequestItems[SessionKey] = value; }
+		}
 
         public FlushMode FlushAt
         {
@@ -88,17 +89,17 @@ namespace N2.Persistence.NH
 		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		public ITransaction BeginTransaction()
 		{
-			return new NHTransaction(isolation, this);
+			var transaction = new NHTransaction(isolation, this);
+			if (CurrentSession.Transaction == null)
+				CurrentSession.Transaction = transaction;
+			return transaction;
 		}
 
-		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
-		/// <returns>A disposable transaction wrapper.</returns>
+		/// <summary>Gets an existing transaction or null if no transaction has been initiated.</summary>
+		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		public ITransaction GetTransaction()
 		{
-			if (OpenSession.Session.Transaction != null && OpenSession.Session.Transaction.IsActive)
-				return BeginTransaction();
-
-			return null;
+			return CurrentSession != null ? CurrentSession.Transaction : null;
 		}
 	}
 }
