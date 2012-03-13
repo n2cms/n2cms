@@ -19,12 +19,14 @@ namespace N2.Web
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
 		private static readonly object classLock = new object();
+		private CacheWrapper cache;
 
-		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext)
+		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache)
 		{
 			this.inner = inner;
 			this.persister = persister;
 			this.webContext = webContext;
+			this.cache = cache;
 		}
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound
@@ -116,14 +118,14 @@ namespace N2.Web
 
 			// Make sure the cached path data is initialized thread safely
 			Dictionary<string, PathData> cachedPathData;
-			if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
+			if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 			{
 				lock (classLock)
 				{
-					if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
+					if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 					{
 						cachedPathData = new Dictionary<string, PathData>();
-						HttpRuntime.Cache.Add("N2.PathDataCache", cachedPathData, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+						cache.Add("N2.PathDataCache", cachedPathData, new CacheOptions { SlidingExpiration = SlidingExpiration });
 					}
 				}
 			}

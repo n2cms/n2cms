@@ -63,5 +63,10 @@ namespace N2.Tests.Fakes
 			get { return user; }
 			set{ user = value; }
 		}
+
+		public override System.Web.Caching.Cache Cache
+		{
+			get { return HttpRuntime.Cache; }
+		}
 	}
 }
