@@ -80,7 +80,6 @@
 												  $(Dinamico-SourceFolder)\*.csproj;
 												  $(Dinamico-SourceFolder)\App_Data\*.sdf;
 												  $(Dinamico-SourceFolder)\App_Data\*.log;" />
-			<dinamicoLibraries Include="$(Dinamico-SourceFolder)\bin\N2.Razor.*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
 
@@ -89,8 +88,6 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(dinamicoNugetIncludes)" DestinationFolder="$(Dinamico-NugetFolder)\%(RecursiveDir)" />
 		<FileUpdate Files="$(Dinamico-NugetFolder)\N2.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
-
-		<Copy SourceFiles="@(dinamicoLibraries)" DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Dinamico-NugetFolder)\" />
 	</Target>

@@ -233,4 +233,13 @@
 		</ItemGroup>
 		<WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
 	</Target>
+
+	<Target Name="Publish-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet">
+		<ItemGroup>
+			<nugetPackages Include="$(DeployFolder)\*.nupkg" />
+		</ItemGroup>
+		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />
+	</Target>
+
 </Project>

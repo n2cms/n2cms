@@ -1,4 +1,3 @@
-- separate core nuget package
 - update lilnk on moves (discussions/347093)
 - required [EditableMediaUpload] (discussions/346532)
 - windsor 3 - http://n2cms.codeplex.com/discussions/340758
