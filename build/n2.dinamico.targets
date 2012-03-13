@@ -69,7 +69,7 @@
 		<CallTarget Targets="Dinamico-RemoveProjectReferences" />
 	</Target>
 
-	<Target Name="Dinamico-Nuget" DependsOnTargets="Dinamico-CreateItemGroups">
+	<Target Name="Dinamico-Nuget" DependsOnTargets="Dinamico-CreateItemGroups;">
 		<RemoveDir Directories="$(Dinamico-NugetFolder)" Condition="Exists('$(Dinamico-NugetFolder)')" ContinueOnError="true" />
 		<ItemGroup>
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
@@ -78,16 +78,11 @@
 												  $(Dinamico-SourceFolder)\web.*;
 												  $(Dinamico-SourceFolder)\Properties\*;
 												  $(Dinamico-SourceFolder)\*.csproj;
-												  $(Dinamico-SourceFolder)\App_Data\*.sdf;" />
+												  $(Dinamico-SourceFolder)\App_Data\*.sdf;
+												  $(Dinamico-SourceFolder)\App_Data\*.log;" />
 			<dinamicoLibraries Include="$(Dinamico-SourceFolder)\bin\N2.Razor.*" />
 		</ItemGroup>
-		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.ico' or '%(Extension)' == '.png' or '%(Extension)' == '.sdf' or '%(Extension)' == '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
-		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.ico' and '%(Extension)' != '.png' and '%(Extension)' != '.sdf' and '%(Extension)' != '.gz'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->
-		<!--<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' != '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
-		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" Condition="'%(Extension)' == '.cs'" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp" />-->
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />
-		<!--<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="namespace Dinamico" ReplacementText="namespace $rootnamespace$" />
-		<FileUpdate Files="@(dinamicoFilesWithExceptions->'$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension).pp')" Condition="'%(Extension)' == '.cs'" Regex="using Dinamico" ReplacementText="using $rootnamespace$" />-->
 
 		<ItemGroup>
 			<dinamicoNugetIncludes Include="$(BuildFolder)\Nuget\Dinamico\**\*" />
@@ -95,7 +90,6 @@
 		<Copy SourceFiles="@(dinamicoNugetIncludes)" DestinationFolder="$(Dinamico-NugetFolder)\%(RecursiveDir)" />
 		<FileUpdate Files="$(Dinamico-NugetFolder)\N2.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
 		<Copy SourceFiles="@(dinamicoLibraries)" DestinationFolder="$(Dinamico-NugetFolder)\lib\" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Dinamico-NugetFolder)\" />

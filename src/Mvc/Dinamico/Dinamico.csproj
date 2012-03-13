@@ -157,18 +157,6 @@
     <Content Include="Dinamico\Themes\Terracotta\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Terracotta\Content\Site.css" />
     <Content Include="Dinamico\Themes\Dark\Content\Site.css" />
-    <Content Include="Scripts\jquery-1.5-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.5.js" />
-    <Content Include="Scripts\jquery-1.5.min.js" />
-    <Content Include="Scripts\jquery-ui.js" />
-    <Content Include="Scripts\jquery-ui.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -191,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
