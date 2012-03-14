@@ -133,15 +133,16 @@ namespace N2.Web
 			PathData data;
 			if (cachedPathData.TryGetValue(urlKey, out data))
 			{
+				data = data.Attach(persister);
 				if (data == null || data.ID == 0)
 				{
 					// Cached path has to CMS content
-					return PathData.Empty;
+					return data;
 				}
 
 				logger.Debug("Retrieving " + url + " from cache");
-				data = data.Attach(persister);
-				data.UpdateParameters(Url.Parse(url).GetQueries());
+				if (!string.IsNullOrEmpty(url.Query))
+					data.UpdateParameters(Url.Parse(url).GetQueries());
 			}
 			else
 			{
@@ -155,11 +156,9 @@ namespace N2.Web
 						string path = remainingPath;
 						var pathData = GetStartNode(url, cachedPathData, ref path, 0);
 
-						var contentItem = persister.Get(pathData.ID);
-
 						data = pathData.ID == 0
-								   ? inner.ResolvePath(url)
-								   : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
+							? inner.ResolvePath(url)
+							: inner.ResolvePath(url, persister.Get(pathData.ID), remainingPath.Substring(path.Length, remainingPath.Length - path.Length));
 
 						if (data.IsCacheable)
 						{

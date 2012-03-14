@@ -90,6 +90,8 @@ namespace N2.Tests.Web.UrlParsing
 
 			var data = parser.ResolvePath("/item1/item1_1");
 
+			var forcesLazyLoadButOtherwizeIgnored = data.CurrentPage;
+
 			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
