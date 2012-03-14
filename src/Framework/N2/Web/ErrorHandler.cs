@@ -200,12 +200,15 @@ namespace N2.Web
 
 		private void RedirectToFix(WrongClassException wex)
 		{
-			string url = Url.Parse(beginUrl).ResolveTokens()
-				.AppendQuery("action", "fixClass")
-				.AppendQuery("id", wex.Identifier);
-			logger.Warn("Redirecting to '" + url + "' to fix exception: " + wex);
-			context.HttpContext.ClearError();
-			context.HttpContext.Response.Redirect(url);
+			if (context.HttpContext != null)
+			{
+				string url = Url.Parse(beginUrl).ResolveTokens()
+					.AppendQuery("action", "fixClass")
+					.AppendQuery("id", wex.Identifier);
+				logger.Warn("Redirecting to '" + url + "' to fix exception: " + wex);
+				context.HttpContext.ClearError();
+				context.HttpContext.Response.Redirect(url);
+			}
 		}
 
 		private static string FormatError(Exception ex)
