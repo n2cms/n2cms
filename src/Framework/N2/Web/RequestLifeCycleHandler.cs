@@ -78,11 +78,15 @@ namespace N2.Web
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			if (webContext.CurrentPath != null && !webContext.CurrentPath.IsEmpty())
-			{
-				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
-				adapter.AuthorizeRequest(webContext.CurrentPath, webContext.User);
-			}
+			var path = webContext.CurrentPath;
+			if (path == null || path.IsEmpty())
+				return;
+
+			if (path.IsPubliclyAvailable)
+				return;
+
+			var adapter = adapters.ResolveAdapter<RequestAdapter>(path.CurrentPage);
+			adapter.AuthorizeRequest(path, webContext.User);
 		}
 
 		protected virtual void Application_PostResolveRequestCache(object sender, EventArgs e)

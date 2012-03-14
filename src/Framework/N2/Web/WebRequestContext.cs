@@ -16,6 +16,7 @@ namespace N2.Web
     {
 		private readonly ILog logger = LogManager.GetLogger(typeof(WebRequestContext));
 		IProvider<HttpContextBase> httpContextProvider;
+		private const string CurrentPathKey = "N2.CurrentPath";
 
 		public WebRequestContext(IProvider<HttpContextBase> httpContextProvider)
 		{
@@ -52,22 +53,15 @@ namespace N2.Web
         /// <summary>A page instance stored in the request context.</summary>
         public ContentItem CurrentPage
         {
-            get { return RequestItems["CurrentPage"] as ContentItem; }
-            set { RequestItems["CurrentPage"] = value; }
+            get { return CurrentPath.CurrentPage; }
+			set { CurrentPath.CurrentPage = value; }
 		}
 
 		/// <summary>The template used to serve this request.</summary>
 		public PathData CurrentPath
 		{
-			get { return RequestItems["CurrentTemplate"] as PathData ?? PathData.Empty; }
-			set
-			{
-				RequestItems["CurrentTemplate"] = value;
-				if (value != null)
-					CurrentPage = value.CurrentPage;
-				else
-					CurrentPage = null;
-			}
+			get { return RequestItems[CurrentPathKey] as PathData ?? PathData.Empty; }
+			set { RequestItems[CurrentPathKey] = value; }
 		}
 
 		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
