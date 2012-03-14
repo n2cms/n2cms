@@ -142,6 +142,13 @@ namespace N2.Collections
 
 		/// <summary>Pages below the current item suitable for display in a navigation (visible, published, accessible).</summary>
 		/// <returns></returns>
+		public IEnumerable<T> NavigatableChildPages<T>()
+		{
+			return NavigatableChildPages().OfType<T>();
+		}
+
+		/// <summary>Pages below the current item suitable for display in a navigation (visible, published, accessible).</summary>
+		/// <returns></returns>
 		public IEnumerable<ContentItem> NavigatableChildPages()
 		{
 			return NavigatableChildPages(CurrentPage);
@@ -155,11 +162,34 @@ namespace N2.Collections
 			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter());
 		}
 
+		/// <summary>Pages below the given item suitable for display in a navigation (visible, published, accessible).</summary>
+		/// <returns></returns>
+		public IEnumerable<T> NavigatableChildPages<T>(ContentItem parent)
+		{
+			TryMasterVersion(ref parent);
+			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter()).OfType<T>();
+		}
+
 		/// <summary>Parts below the current item.</summary>
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildParts()
 		{
 			return Children(Content.Is.Accessible() & Content.Is.Part());
+		}
+
+		/// <summary>Parts below the current item.</summary>
+		/// <returns></returns>
+		public IEnumerable<T> ChildParts<T>()
+		{
+			return Children(Content.Is.Accessible() & Content.Is.Part()).OfType<T>();
+		}
+
+		/// <summary>Parts in a given zone below the current item.</summary>
+		/// <param name="zoneName"></param>
+		/// <returns></returns>
+		public IEnumerable<T> ChildParts<T>(string zoneName)
+		{
+			return ChildParts(zoneName).OfType<T>();
 		}
 
 		/// <summary>Parts in a given zone below the current item.</summary>

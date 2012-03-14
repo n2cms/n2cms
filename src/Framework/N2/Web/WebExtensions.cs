@@ -101,5 +101,10 @@ namespace N2.Web
         {
             new JsonWriter(sw).Write(value);
         }
+
+		public static string ResolveUrlTokens(this string url)
+		{
+			return Url.ResolveTokens(url);
+		}
 	}
 }

@@ -132,11 +132,11 @@ namespace N2.Persistence.Search
 
 		/// <summary>Restricts the results to items readable to roles returned by the get roles delegate.</summary>
 		/// <param name="user">The user whose roles to restrict search results by.</param>
-		/// <param name="gerRolesForUser">A method that will return an array of roles given a user name.</param>
+		/// <param name="getRolesForUser">A method that will return an array of roles given a user name.</param>
 		/// <returns>The query itself.</returns>
-		public Query ReadableBy(IPrincipal user, Func<string, string[]> gerRolesForUser)
+		public Query ReadableBy(IPrincipal user, Func<string, string[]> getRolesForUser)
 		{
-			return ReadableBy(user.Identity.IsAuthenticated ? gerRolesForUser(user.Identity.Name) : new[] { "Everyone" });
+			return ReadableBy(user.Identity.IsAuthenticated ? getRolesForUser(user.Identity.Name) : new[] { "Everyone" });
 		}
 
 		/// <summary>Skip and take results.</summary>

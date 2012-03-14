@@ -41,7 +41,7 @@ namespace N2.Web.Mvc
 
 		public virtual RenderHelper Render
 		{
-			get { return new RenderHelper { Html = Html, Content = Current.Page }; }
+			get { return new RenderHelper { Html = Html, Content = Current.Item }; }
 		}
 
 		public bool HasValue(string detailName)

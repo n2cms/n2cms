@@ -121,7 +121,7 @@ namespace N2.Web
 			if (item == null)
 				item = Services.Resolve<IUrlParser>().Parse(itemUrlOrId);
 
-			if (!IsAuthorized(item))
+			if (item == null || !IsAuthorized(item))
 				return null;
 
 			return item;
