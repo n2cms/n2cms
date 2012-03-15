@@ -76,11 +76,15 @@ namespace N2.Persistence.NH
 			if (item is IActiveContent)
 			{
 				(item as IActiveContent).Save();
+				Invoke(ItemSaved, new ItemEventArgs(item));
 			}
 			else
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
+					// delay saved event until a previously initiated transcation is completed
+					transaction.Committed += (s,a) => Invoke(ItemSaved, new ItemEventArgs(item));
+
 					if (!item.VersionOf.HasValue)
 						item.Updated = Utility.CurrentTime();
 					if (string.IsNullOrEmpty(item.Name))
@@ -99,7 +103,6 @@ namespace N2.Persistence.NH
 					transaction.Commit();
 				}
 			}
-			Invoke(ItemSaved, new ItemEventArgs(item));
 		}
 
 		private void EnsureSortOrder(ContentItem unsavedItem)

@@ -22,7 +22,7 @@ namespace N2.Engine.Globalization
 		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
 		readonly DescendantItemFinder descendantFinder;
         private ILanguageGateway languages;
-		private IWebContext webContext;
+		private CacheWrapper cacheWrapper;
 
         /// <summary>True if the language feature is enabled in web.config.</summary>
         public bool Enabled { get; protected set; }
@@ -39,7 +39,7 @@ namespace N2.Engine.Globalization
 			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
 			DescendantItemFinder descendantFinder,
 			ILanguageGateway languages,
-			IWebContext webContext,
+			CacheWrapper cacheWrapper,
 			EngineSection config)
 		{
 			this.persister = persister;
@@ -47,7 +47,7 @@ namespace N2.Engine.Globalization
 			this.languagesCache = languagesCache;
 			this.descendantFinder = descendantFinder;
             this.languages = languages;
-			this.webContext = webContext;
+			this.cacheWrapper = cacheWrapper;
 			Enabled = config.Globalization.Enabled;
 			Cache = config.Globalization.Cache;
             LanguagesPerSite = config.Globalization.LanguagesPerSite;
@@ -71,7 +71,7 @@ namespace N2.Engine.Globalization
                 gateway = new SiteFilteringLanguageGateway(languages, managingTranslationsOnSite, persister, languagesCache, descendantFinder);
 
 			return Cache
-				? new CachingLanguageGatewayDecorator(gateway, webContext, persister, LanguagesPerSite ? managingTranslationsOnSite.StartPageID.ToString() : "global")
+				? new CachingLanguageGatewayDecorator(gateway, cacheWrapper, persister, LanguagesPerSite ? managingTranslationsOnSite.StartPageID.ToString() : "global")
 				: gateway;
         }
 

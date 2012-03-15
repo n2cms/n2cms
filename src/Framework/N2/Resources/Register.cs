@@ -13,8 +13,23 @@ namespace N2.Resources
 	/// </summary>
 	public static class Register
 	{
+		/// <summary>Whether javascript resources should be uncompressed.</summary>
 		public static bool Debug { get; set; }
-		public const string JQueryVersion = "1.7";
+		
+		/// <summary>The jQuery version used by N2.</summary>
+		public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
+		
+		/// <summary>Path to jQuery.</summary>
+		public static string JQueryPath { get; set; }
+		
+		/// <summary>The path to jQuery UI javascript bundle.</summary>
+		public static string JQueryUiPath { get; set; }
+		
+		/// <summary>The path to the jquery plugins used by N2.</summary>
+		public static string JQueryPluginsPath { get; set; }
+		
+		/// <summary>The path to the tiny MCE editor script</summary>
+		public static string TinyMCEPath { get; set; }
 
 		#region page StyleSheet
 
@@ -212,14 +227,7 @@ namespace N2.Resources
 
 		public static void JQuery(this Page page)
 		{
-			JavaScript(page, JQueryPath(), ScriptPosition.Header, ScriptOptions.Prioritize | ScriptOptions.Include);
-		}
-
-		public static string JQueryPath()
-		{
-			if (Debug)
-				return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js");
-			return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js");
+			JavaScript(page, Url.ResolveTokens(JQueryPath), ScriptPosition.Header, ScriptOptions.Prioritize | ScriptOptions.Include);
 		}
 
 		private static Script GetScriptHolder(Page page)
@@ -286,18 +294,18 @@ namespace N2.Resources
 		public static void JQueryPlugins(this Page page)
 		{
 			page.JQuery();
-			page.JavaScript(Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion), ScriptPosition.Header, ScriptOptions.Include);
+			page.JavaScript(JQueryPluginsPath.ResolveUrlTokens(), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
 		public static void JQueryUi(this Page page)
 		{
 			page.JQuery();
-			page.JavaScript(Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion), ScriptPosition.Header, ScriptOptions.Include);
+			page.JavaScript(JQueryUiPath.ResolveUrlTokens(), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
 		public static void TinyMCE(this Page page)
 		{
-			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
+			JavaScript(page, TinyMCEPath.ResolveUrlTokens());
 		}
 
 		#endregion
@@ -350,22 +358,22 @@ namespace N2.Resources
 
 		public static string JQuery(IDictionary<string, object> stateCollection)
 		{
-			return JavaScript(stateCollection, JQueryPath());
+			return JavaScript(stateCollection, JQueryPath.ResolveUrlTokens());
 		}
 
 		public static string JQueryPlugins(IDictionary<string, object> stateCollection)
 		{
-			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion);
+			return JQuery(stateCollection) + JavaScript(stateCollection, JQueryPluginsPath.ResolveUrlTokens());
 		}
 
 		public static string JQueryUi(IDictionary<string, object> stateCollection)
 		{
-			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion);
+			return JQuery(stateCollection) + JavaScript(stateCollection, JQueryUiPath.ResolveUrlTokens());
 		}
 
 		public static string TinyMCE(IDictionary<string, object> stateCollection)
 		{
-			return JavaScript(stateCollection, "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js");
+			return JavaScript(stateCollection, Url.ResolveTokens(TinyMCEPath));
 		}
 
 		public static string StyleSheet(IDictionary<string, object> stateCollection, string resourceUrl)

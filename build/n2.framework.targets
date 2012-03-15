@@ -103,6 +103,9 @@
 	<PropertyGroup>
 		<Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
 		<Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
+		<Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
+		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
+		<Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
@@ -111,13 +114,55 @@
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
 	</Target>
 
-	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy">
+	<Target Name="Library-NuGet" DependsOnTargets="Framework-Deploy">
+		<ItemGroup>
+			<nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
+										   $(ManagementFolder)\bin\N2.pdb;
+										   $(ManagementFolder)\bin\N2.xml;"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(nugetLibraryBinFiles)" DestinationFolder="$(Library-NugetFolder)\lib" />
+
+		<ItemGroup>
+			<libraryNugetIncludes Include="$(BuildFolder)\Nuget\Library\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(libraryNugetIncludes)" DestinationFolder="$(Library-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Library-NugetFolder)\N2.Library.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Library-NugetFolder)\Content\N2\" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Library-NugetFolder)\" />
+	</Target>
+
+	<Target Name="SQLite-NuGet">
+		<ItemGroup>
+			<sqliteNugetIncludes Include="$(BuildFolder)\Nuget\SQLite\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(sqliteNugetIncludes)" DestinationFolder="$(SQLite-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(SQLite-NugetFolder)\N2.SQLite.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(SQLite-NugetFolder)\" />
+	</Target>
+
+	<Target Name="Razor-NuGet">
+		<ItemGroup>
+			<razorNugetIncludes Include="$(BuildFolder)\Nuget\Razor\**\*" />
+			<nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\NET40" />
+		<FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
+	</Target>
+	
+	<Target Name="Framework-NuGet" DependsOnTargets="Framework-Deploy;Library-NuGet;SQLite-NuGet;Razor-NuGet">
 		<ItemGroup>
 			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
-											 $(ManagementFolder)\bin\N2.xml*;
+											 $(ManagementFolder)\bin\N2*.pdb;
 											 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;
 											 $(LibFolder)\NHibernate.Caches.*.dll;"
-									Exclude="$(ManagementFolder)\bin\N2.Security.*;
+									Exclude="$(ManagementFolder)\bin\N2.???;
+											 $(ManagementFolder)\bin\N2.Security.*;
 											 $(ManagementFolder)\bin\N2.Templates.*;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Framework-NugetFolder)\lib" />
@@ -131,10 +176,7 @@
 			<frameworkNugetIncludes Include="$(BuildFolder)\Nuget\Framework\**\*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(frameworkNugetIncludes)" DestinationFolder="$(Framework-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Framework-NugetFolder)\N2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
-
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-NugetFolder)\lib\" />
-		<!--<Copy SourceFiles="$(RootFolder)\lib\System.Data.SQLite.dll;" DestinationFolder="$(Framework-NugetFolder)\lib\" />-->
+		<FileUpdate Files="$(Framework-NugetFolder)\N2.Cms.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Framework-NugetFolder)\" />
 	</Target>

@@ -1,0 +1,6 @@
+<configuration>
+	<connectionStrings>
+		<!-- Please not that you need to configure another database and remove \bin\system.data.sqlite.dll for MEDIUM TRUST -->
+		<add name="N2CMS" connectionString="Data Source=|DataDirectory|\n2.sqlite.db;Version=3;New=True;" providerName="System.Data.SQLite" />
+	</connectionStrings>
+</configuration>

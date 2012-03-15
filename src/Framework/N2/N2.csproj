@@ -318,6 +318,7 @@
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Web\CacheWrapper.cs" />
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />

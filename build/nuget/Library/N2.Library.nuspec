@@ -1,27 +1,23 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>N2CMS</id>
+    <id>N2CMS.Library</id>
     <version>{Version}</version>
-    <title>N2 CMS</title>
+    <title>N2 CMS Library</title>
     <authors>Cristian Libardo</authors>
     <owners>Cristian Libardo</owners>
     <licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
     <projectUrl>http://n2cms.com/</projectUrl>
-		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</description>
-    <summary></summary>
+	<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is the library component of N2 CMS. It's a dependency containing only the assembly reference useful in test projects.</description>
+	<summary>N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</summary>
     <language>en-US</language>
     <tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="Castle.Core" version="[2.5.2]" />
 			<dependency id="NHibernate" version="3.2.0.4000" />
-			<dependency id="Lucene.Net" version="[2.9.4.1]" />
-			<!--<dependency id="SqlServerCompact" version="4.0.8482.1"/>-->
 			<dependency id="Castle.Windsor" version="[2.5.3]" />
-			<dependency id="DotNetZip" version="1.9.1.8" />
-			<dependency id="System.Data.SQLite" version="1.0.66.1" />
 			<dependency id="log4net" version="[1.2.10.0]" />
 		</dependencies>
 	</metadata>

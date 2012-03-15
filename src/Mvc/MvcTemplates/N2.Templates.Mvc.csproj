@@ -402,6 +402,7 @@
     <Content Include="Views\Shared\TokenTemplates\Children.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Detail.ascx" />
     <Content Include="Views\Shared\TokenTemplates\FirstChild.ascx" />
+    <Content Include="Views\Shared\TokenTemplates\Link.ascx" />
     <Content Include="Views\Shared\TokenTemplates\NextSibling.ascx" />
     <Content Include="Views\Shared\TokenTemplates\Parent.ascx" />
     <Content Include="Views\Shared\TokenTemplates\PreviousSibling.ascx" />

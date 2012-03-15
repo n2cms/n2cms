@@ -74,6 +74,8 @@ namespace N2.Web
 
 		ContentItem currentPage;
 		ContentItem currentItem;
+		ContentItem stopItem;
+		Persistence.IPersister persister;
 		
 		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
@@ -116,27 +118,23 @@ namespace N2.Web
 		/// <summary>The item behind this path.</summary>
 		public ContentItem CurrentItem 
 		{
-			get { return currentItem; }
-			set
-			{
-				currentItem = value;
-				ID = value != null ? value.ID : 0;
-			}
+			get { return Get(ref currentItem, ID); }
+			set { ID = Set(ref currentItem, value); }
 		}
 
 		/// <summary>The page behind this path (might differ from CurrentItem when the path leads to a part).</summary>
 		public ContentItem CurrentPage
 		{
-			get { return currentPage ?? CurrentItem; }
-			set 
-			{ 
-				currentPage = value;
-				PageID = value != null ? value.ID : 0;
-			}
+			get { return Get(ref currentPage, PageID) ?? CurrentItem; }
+			set { PageID = Set(ref currentPage, value); }
 		}
 
 		/// <summary>The item reporting that the path isn't a match.</summary>
-		public ContentItem StopItem { get; set; }
+		public ContentItem StopItem
+		{
+			get { return Get(ref stopItem, StopID); }
+			set { StopID = Set(ref stopItem, value); }
+		}
 
 		/// <summary>The template handling this path.</summary>
 		public string TemplateUrl { get; set; }
@@ -146,6 +144,9 @@ namespace N2.Web
 
 		/// <summary>The identifier of the content page behind this path.</summary>
 		public int PageID { get; set; }
+
+		/// <summary>The identifier of the content page this path data originates from.</summary>
+		public int StopID { get; set; }
 
 		/// <summary>?</summary>
 		public string Path { get; set; }
@@ -223,7 +224,8 @@ namespace N2.Web
 			// clear persistent objects before caching
 			data.currentItem = null;
 			data.currentPage = null;
-			data.StopItem = null;
+			data.stopItem = null;
+			data.persister = null;
 			return data;
 		}
 
@@ -236,9 +238,7 @@ namespace N2.Web
 			
 			// reload persistent objects and clone non-immutable objects
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
-			data.CurrentItem = persister.Repository.Get(ID);
-			if (PageID != 0)
-				data.CurrentPage = persister.Repository.Get(PageID);
+			data.persister = persister;
 
 			return data;
 		}
@@ -254,6 +254,21 @@ namespace N2.Web
 		public virtual bool IsEmpty()
 		{
 			return CurrentItem == null;
+		}
+
+		private ContentItem Get(ref ContentItem item, int id)
+		{
+			if (item != null)
+				return item;
+			if (persister != null && id != 0)
+				return item = persister.Get(id);
+			return null;
+		}
+
+		private int Set(ref ContentItem currentPage, ContentItem value)
+		{
+			currentPage = value;
+			return value != null ? value.ID : 0;
 		}
 	}
 }

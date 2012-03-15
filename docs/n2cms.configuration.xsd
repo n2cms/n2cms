@@ -117,6 +117,10 @@
 							<xs:element name="resources" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="debug" type="xs:boolean" use="optional" default="false" />
+									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
+									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
+									<xs:attribute name="tinyMCEPath" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="vpp" minOccurs="0">
@@ -493,6 +497,8 @@
 															<xs:attribute name="quality" type="xs:int" use="optional" default="90" />
 															<xs:attribute name="replace" type="xs:boolean"/>
 															<xs:attribute name="resizeOnUpload" type="xs:boolean"/>
+															<xs:attribute name="announced" type="xs:boolean"/>
+															<xs:attribute name="description" type="xs:string"/>
 															<xs:attribute name="mode">
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">

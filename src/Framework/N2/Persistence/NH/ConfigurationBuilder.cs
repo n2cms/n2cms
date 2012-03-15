@@ -117,7 +117,7 @@ namespace N2.Persistence.NH
 			{
 				ConnectionStringSettings css = connectionStrings.ConnectionStrings[config.ConnectionStringName];
 				if (css == null)
-					throw new ConfigurationErrorsException("Could not find the connection string named '" + config.ConnectionStringName + "' that was defined in the n2/database configuration section.");
+					throw new ConfigurationErrorsException("Could not find the connection string named '" + config.ConnectionStringName + "' that was defined in the n2/database configuration section. If you installed using NuGet try installing 'N2 CMS SQLite config' or configuring this connection string manually.");
 				flavour = DetectFlavor(css);
 			}
 
