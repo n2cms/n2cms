@@ -700,11 +700,30 @@ namespace N2.Tests.Persistence.NH
 		public void QueryByExpression_ForTitleProperty()
 		{
 			indexer.Update(root);
-
+			
 			var searcher = new LuceneSearcher(accessor, persister);
 			var query = Query.For<PersistableItem1>();
 
 			query.Contains(pi => pi.Title, "root");
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryForBelowOfTypeReadableByExceptType()
+		{
+			indexer.Update(root);
+			var part = CreateOneItem<PersistableItem2>(0, "some other page", root);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For("page")
+				.OfType(typeof(IPage))
+				.Below(root)
+				.ReadableBy("Everyone") // superfluous (everyone by default)
+				.Except(Query.For<PersistableItem2>());
+			
 			var result = searcher.Search(query);
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
