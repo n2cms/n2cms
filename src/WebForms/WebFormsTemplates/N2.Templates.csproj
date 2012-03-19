@@ -147,9 +147,7 @@
     <Compile Include="Templates\Items\UserRegistration.cs" />
     <Compile Include="Templates\Web\MasterPageConcern.cs" />
     <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
-    <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
     <Compile Include="Templates\Services\TemplatesPartsAdapter.cs" />
-    <Compile Include="Templates\Services\SeoConcern.cs" />
     <Compile Include="Templates\Services\NotFoundHandler.cs" />
     <Compile Include="Templates\Services\PermissionDeniedHandler.cs" />
     <Compile Include="Templates\Tabs.cs" />
