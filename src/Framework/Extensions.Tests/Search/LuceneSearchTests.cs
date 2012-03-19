@@ -730,6 +730,27 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void OrOr_And()
+		{
+			indexer.Update(root);
+			var first = CreateOneItem<PersistableItem2>(0, "some other page", root);
+			indexer.Update(first);
+			var second = CreateOneItem<PersistableItem2>(0, "some other stuff", root);
+			indexer.Update(second);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			// TODO: support this
+			//var query = (Query.For("some") | Query.For("other"))
+			//    .Below(first);
+			var query = new Query { Ancestor = first, Intersection = Query.For("some") | Query.For("other") };
+
+			var result = searcher.Search(query);
+
+			result.Hits.Count().ShouldBe(1);
+			result.Hits.Any(h => h.Content == second).ShouldBe(false);
+		}
+
+		[Test]
 		public void QueryByExpression_ForTitleProperty_StartsWith()
 		{
 			indexer.Update(root);
