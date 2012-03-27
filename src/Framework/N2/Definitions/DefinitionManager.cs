@@ -63,9 +63,20 @@ namespace N2.Definitions
 		{
 			if (discriminator == null) throw new ArgumentNullException("discriminator");
 
-			foreach (ItemDefinition definition in GetDefinitions())
-				if(definition.Discriminator == discriminator)
-					return definition;
+			var definitionTemplatePair = discriminator.Split('/');
+			if (definitionTemplatePair.Length > 1)
+			{
+				foreach (ItemDefinition definition in GetDefinitions())
+					if (definition.Discriminator == definitionTemplatePair[0] && definition.TemplateKey == definitionTemplatePair[1])
+						return definition;
+			}
+			else
+			{
+				foreach (ItemDefinition definition in GetDefinitions())
+					if (definition.Discriminator == discriminator)
+						return definition;
+			}
+
 			return null;
 		}
 

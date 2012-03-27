@@ -62,7 +62,7 @@ namespace N2.Tests.Details
                 .GetMethod("CreateChildControls", BindingFlags.NonPublic | BindingFlags.Instance)
                 .Invoke(editor, null);
             
-            Assert.That(editor.Types.Items.Count, Is.EqualTo(3));
+            Assert.That(editor.AddButtons.Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace N2.Tests.Details
                 .GetMethod("CreateChildControls", BindingFlags.NonPublic | BindingFlags.Instance)
                 .Invoke(editor, null);
 
-            Assert.That(editor.Types.Items.Count, Is.EqualTo(2));
+			Assert.That(editor.AddButtons.Count(), Is.EqualTo(2));
         }
          
          
