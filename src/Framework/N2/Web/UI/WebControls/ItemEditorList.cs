@@ -185,7 +185,6 @@ namespace N2.Web.UI.WebControls
 					ToolTip = definition.ToolTip,
 					CausesValidation = false
 				};
-				var activator = Engine.Resolve<ContentActivator>();
 				var closureDefinition = definition;
 				button.Command += (s, a) =>
 					{
