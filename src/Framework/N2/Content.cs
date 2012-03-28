@@ -16,7 +16,7 @@ namespace N2
 		/// </summary>
 		public static FilterHelper Is
 		{
-			get { return new FilterHelper(Context.Current); }
+			get { return new FilterHelper(() => Context.Current); }
 		}
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace N2
 		/// </summary>
 		public static TraverseHelper Traverse
 		{
-			get { return new TraverseHelper(Context.Current, Is, PathGetter); }
+			get { return new TraverseHelper(() => Context.Current, Is, PathGetter); }
 		}
 
 		/// <summary>
@@ -32,7 +32,7 @@ namespace N2
 		/// </summary>
 		public static SearchHelper Search
 		{
-			get { return new SearchHelper(Context.Current); }
+			get { return new SearchHelper(() => Context.Current); }
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace N2
 		/// </summary>
 		public static ContextHelper Current
 		{
-			get { return new ContextHelper(Context.Current, PathGetter); }
+			get { return new ContextHelper(() => Context.Current, PathGetter); }
 		}
 
 		private static System.Func<PathData> PathGetter

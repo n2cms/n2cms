@@ -68,6 +68,7 @@ namespace N2.Engine
 				PathData.PageQueryKey = config.Web.Web.PageQueryKey;
 				PathData.ItemQueryKey = config.Web.Web.ItemQueryKey;
 				PathData.PartQueryKey = config.Web.Web.PartQueryKey;
+				PathData.PathKey = config.Web.Web.PathDataKey;
 
 
 				if (!config.Web.Web.IsWeb)

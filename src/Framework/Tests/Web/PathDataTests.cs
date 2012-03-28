@@ -28,7 +28,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void SetItem()
 		{
-			var path = new PathData(page, null);
+			var path = new PathData(page);
 
 			path.CurrentItem.ID.ShouldBe(1);
 			path.ID.ShouldBe(1);
@@ -37,7 +37,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void SetItem_ShouldBeFallback_OfPage()
 		{
-			var path = new PathData(page, null);
+			var path = new PathData(page);
 
 			path.CurrentPage.ID.ShouldBe(1);
 		}
@@ -45,7 +45,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void SetItem_ToNull_ShouldGiveNullItem()
 		{
-			var path = new PathData(null, null);
+			var path = new PathData(null);
 
 			path.CurrentItem.ShouldBe(null);
 		}
@@ -279,6 +279,50 @@ namespace N2.Tests.Web
 			var path = new PathData { CurrentItem = item, CurrentPage = new Items.PageItem { State = state } };
 
 			path.IsPubliclyAvailable.ShouldBe(expectedAvailability);
+		}
+
+		[Test]
+		public void Cloned_path_data_has_same_values()
+		{
+			var path = new PathData(page, item) { Action = "hello", Argument = "world", Ignore = true, IsCacheable = false, IsPubliclyAvailable = true, IsRewritable = false, TemplateUrl = "asdf" };
+			var clone = path.Clone();
+
+			path.Action.ShouldBe(clone.Action);
+			path.Argument.ShouldBe(clone.Argument);
+			path.CurrentItem.ShouldBe(clone.CurrentItem);
+			path.CurrentPage.ShouldBe(clone.CurrentPage);
+			path.ID.ShouldBe(clone.ID);
+			path.Ignore.ShouldBe(clone.Ignore);
+			path.IsCacheable.ShouldBe(clone.IsCacheable);
+			path.IsPubliclyAvailable.ShouldBe(clone.IsPubliclyAvailable);
+			path.IsRewritable.ShouldBe(clone.IsRewritable);
+			path.PageID.ShouldBe(clone.PageID);
+			path.Path.ShouldBe(clone.Path);
+			path.QueryParameters.Count.ShouldBe(clone.QueryParameters.Count);
+			path.StopID.ShouldBe(clone.StopID);
+			path.StopItem.ShouldBe(clone.StopItem);
+			path.TemplateUrl.ShouldBe(clone.TemplateUrl);
+		}
+
+		[Test]
+		public void Cloned_path_data_should_not_be_same_item()
+		{
+			var path = new PathData(page, item);
+			var clone = path.Clone();
+
+			clone.ShouldNotBeSameAs(path);
+			clone.QueryParameters.ShouldNotBeSameAs(path.QueryParameters);
+		}
+
+		[Test]
+		public void ToString_should_maintina_page_and_item_info()
+		{
+			var path = new PathData(page, item);
+
+			var reparsed = PathData.Parse(path.ToString(), persister);
+
+			reparsed.CurrentItem.ShouldBe(path.CurrentItem);
+			reparsed.CurrentPage.ShouldBe(path.CurrentPage);
 		}
 	}
 }

@@ -8,46 +8,36 @@ namespace N2.Web.Mvc
 {
 	public static class RequestContextExtensions
 	{
-		public static string ToQueryString<K,V>(this IDictionary<K,V> values)
+		public static T CurrentPart<T>(this RequestContext context) where T : ContentItem
 		{
-			if (values == null)
+			var item = context.RouteData.CurrentPath().CurrentItem;
+			if (item == null || item.IsPage)
 				return null;
-			return string.Join("&", values.Select(kvp => kvp.Key + "=" + kvp.Value).ToArray());
+			return item as T;
 		}
 
 		public static ContentItem CurrentItem(this RequestContext context)
 		{
-			return context.CurrentItem<ContentItem>();
-		}
-		public static T CurrentPart<T>(this RequestContext context) where T : ContentItem
-		{
-			return context.CurrentItem<T>(ContentRoute.ContentPartKey);
+			return context.RouteData.CurrentPath().CurrentItem;
 		}
 		public static T CurrentItem<T>(this RequestContext context) where T : ContentItem
 		{
-			return context.CurrentItem<T>(ContentRoute.ContentItemKey)
-				?? context.CurrentItem<T>(ContentRoute.ContentPartKey)
-				?? context.CurrentItem<T>(ContentRoute.ContentPageKey);
+			return context.RouteData.CurrentPath().CurrentItem as T;
 		}
+
 		public static T CurrentPage<T>(this RequestContext context) where T : ContentItem
 		{
-			return context.CurrentItem<T>(ContentRoute.ContentPageKey);
+			return context.RouteData.CurrentPath().CurrentPage as T;
 		}
 		public static ContentItem CurrentPage(this RequestContext context)
 		{
-			return context.CurrentItem<ContentItem>(ContentRoute.ContentPageKey);
+			return context.RouteData.CurrentPath().CurrentPage;
 		}
+
 		public static ContentItem StartPage(this RequestContext context)
 		{
-			return N2.Find.ClosestOf<IStartPage>(context.CurrentItem<ContentItem>()) ?? N2.Find.StartPage;
-		}
-
-		internal static T CurrentItem<T>(this RequestContext context, string key) where T : ContentItem
-		{
-			if (context == null) throw new ArgumentNullException("context");
-
-			return context.RouteData.DataTokens[key] as T
-				?? context.RouteData.Values.CurrentItem<T>(key, RouteExtensions.GetEngine(context.RouteData).Persister);
+			return Find.ClosestOf<IStartPage>(context.RouteData.CurrentPath().CurrentItem)
+				?? RouteExtensions.GetEngine(context.RouteData).Content.Traverse.StartPage;
 		}
 	}
 }

@@ -81,7 +81,7 @@ namespace N2.Extensions.Tests.Mvc
 			var controller = Create<RegularController>();
 			controller.CurrentItem = page;
 
-			controller.Engine = MockRepository.GenerateStub<IEngine>();
+			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
 			
 			Assert.Throws<InvalidOperationException>(() => controller.ViewParentPage());
 		}
@@ -95,7 +95,7 @@ namespace N2.Extensions.Tests.Mvc
 			{
 				Parent = new TestItem { Parent = page },
 			};
-			controller.Engine = MockRepository.GenerateStub<IEngine>();
+			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
 			var result = controller.ViewParentPage();
 
 			Assert.That(result.Page, Is.EqualTo(page));
@@ -107,7 +107,7 @@ namespace N2.Extensions.Tests.Mvc
 			var page = new RegularPage();
 			var controller = Create<RegularController>();
 			controller.CurrentItem = page;
-			controller.Engine = MockRepository.GenerateStub<IEngine>();
+			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
 
 			Assert.Throws<InvalidOperationException>(() => controller.ViewPage(page));
 		}

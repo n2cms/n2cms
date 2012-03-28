@@ -13,12 +13,12 @@ namespace N2.Collections
 	/// </summary>
 	public class TraverseHelper
 	{
-		IEngine engine;
+		Func<IEngine> engine;
 		FilterHelper filter;
 		Func<PathData> pathGetter;
 		ItemFilter defaultFilter;
 
-		public TraverseHelper(IEngine engine, FilterHelper filter, Func<PathData> pathGetter)
+		public TraverseHelper(Func<IEngine> engine, FilterHelper filter, Func<PathData> pathGetter)
 		{
 			this.engine = engine;
 			this.filter = filter;
@@ -42,7 +42,7 @@ namespace N2.Collections
 
 		public ContentItem RootPage
 		{
-			get { return N2.Find.ClosestOf<IRootPage>(CurrentItem) ?? engine.Persister.Repository.Get(engine.Resolve<IHost>().CurrentSite.RootItemID); }
+			get { return N2.Find.EnumerateParents(CurrentItem, null, true).LastOrDefault() ?? engine().Persister.Get(engine().Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
 		/// <summary>The default filter to apply to all results from this object.</summary>
@@ -64,7 +64,7 @@ namespace N2.Collections
 		public IEnumerable<ILanguage> Translations(ContentItem item)
 		{
 			TryMasterVersion(ref item);
-			var lg = engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
+			var lg = engine().Resolve<LanguageGatewaySelector>().GetLanguageGateway(item);
 			return lg.FindTranslations(item).Select(i => lg.GetLanguage(i));
 		}
 
@@ -137,7 +137,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> ChildPages(ContentItem parent)
 		{
 			TryMasterVersion(ref parent);
-			return (parent ?? CurrentPage).Children.FindPages().Where(new AccessiblePageFilter(engine.Resolve<IWebContext>().User, engine.SecurityManager));
+			return (parent ?? CurrentPage).Children.FindPages().Where(new AccessiblePageFilter(engine().Resolve<IWebContext>().User, engine().SecurityManager));
 		}
 
 		/// <summary>Pages below the current item suitable for display in a navigation (visible, published, accessible).</summary>
@@ -357,7 +357,7 @@ namespace N2.Collections
 
 		public PathData Path(string path, ContentItem startItem = null)
 		{
-			return (startItem ?? engine.UrlParser.StartPage).FindPath(path);
+			return (startItem ?? engine().UrlParser.StartPage).FindPath(path);
 		}
 
 		/// <summary>Gets the item at of the specified type.</summary>
@@ -392,7 +392,7 @@ namespace N2.Collections
 		public ContentItem ClosestStartPage(ContentItem item = null)
 		{
 			TryMasterVersion(ref item);
-			var startPage = ClosestOf<IStartPage>(item ?? CurrentItem) ?? engine.UrlParser.StartPage;
+			var startPage = ClosestOf<IStartPage>(item ?? CurrentItem) ?? engine().UrlParser.StartPage;
 			TryRedirect(ref startPage);
 			return startPage;
 		}
@@ -420,7 +420,7 @@ namespace N2.Collections
 
 		private AccessFilter CreateAccessFilter()
 		{
-			return new AccessFilter(engine.Resolve<IWebContext>().User, engine.SecurityManager);
+			return new AccessFilter(engine().Resolve<IWebContext>().User, engine().SecurityManager);
 		}
 	}
 }
