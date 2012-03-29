@@ -4,6 +4,7 @@ using System.Web.Routing;
 using N2.Engine;
 using N2.Persistence;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace N2.Web.Mvc
 {
@@ -75,7 +76,7 @@ namespace N2.Web.Mvc
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;
 			data.Values[ContentRoute.ActionKey] = actionName;
-			return data.ApplyCurrentItem(page, part);
+			return data.ApplyCurrentPath(new PathData(page, part));
 		}
 
 
@@ -84,6 +85,15 @@ namespace N2.Web.Mvc
 		{
 			if (routeData.DataTokens.ContainsKey(PathData.PathKey))
 				return routeData.DataTokens[PathData.PathKey] as PathData ?? PathData.Empty;
+			
+			if (routeData.DataTokens.ContainsKey("ParentActionViewContext"))
+			{
+				var viewContext = routeData.DataTokens["ParentActionViewContext"] as ControllerContext;
+				if (viewContext != null)
+				{
+					return viewContext.RouteData.CurrentPath();
+				}
+			}
 			return PathData.Empty;
 		}
 

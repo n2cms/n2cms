@@ -39,8 +39,14 @@ namespace N2.Web.Mvc
 		{
 			if (!routeData.DataTokens.ContainsKey(key) && routeData.Values.ContainsKey(key))
 			{
-				int id = Convert.ToInt32(routeData.Values[key]);
-				routeData.DataTokens[key] = engine.Persister.Get(id);
+				object value = routeData.Values[key];
+				var item = value as ContentItem;
+				if (item == null)
+				{
+					int id = Convert.ToInt32(routeData.Values[key]);
+					item = engine.Persister.Get(id);
+				}
+				routeData.DataTokens[key] = item;
 			}
 		}
 

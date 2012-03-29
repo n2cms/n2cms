@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web;
 using N2.Templates.Mvc.Services;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Web;
 
 namespace N2.Templates.Mvc.Views.Shared
 {
@@ -44,7 +45,7 @@ namespace N2.Templates.Mvc.Views.Shared
 			var rd = new RouteData();
 
 			var currentPage = (Page is IItemContainer) ? (Page as IItemContainer).CurrentItem : N2.Context.CurrentPage;
-			RouteExtensions.ApplyCurrentItem(rd, "WebForms", "Index", currentPage, currentPage);
+			RouteExtensions.ApplyCurrentPath(rd, "WebForms", "Index", new PathData(currentPage, currentPage));
 			rd.DataTokens[ContentRoute.ContentEngineKey] = N2.Context.Current;
 
 			var rqctx = new RequestContext(ctx, rd);

@@ -6,70 +6,37 @@ using N2.Extensions.Tests.Mvc.Models;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Extensions.Tests.Mvc
 {
 	[TestFixture]
 	public class ContentControllerTests
 	{
-		//[Test, Ignore("TODO: Reconsider this")]
-		//public void TakesCareOfPartsRenderedWithView()
-		//{
-		//    var controller = Create<TestItemController>();
-		//    controller.CurrentItem = new TestItem();
+		[Test]
+		public void Returns_PartialView_WhenIndexCalled_OnPartController()
+		{
+			var controller = Create<TestItemController>();
+			controller.CurrentItem = new TestItem();
 
-		//    controller.UsingView().AssertResultIs<PartialViewResult>();
-		//}
+			controller.Index().ShouldBeTypeOf<PartialViewResult>();
+		}
 
 		[Test]
-		public void ReturnsViewWhenIndexCalledOnPageController()
+		public void Returns_View_WhenIndexCalled_OnPageController()
 		{
 			var controller = Create<RegularController>();
 			controller.CurrentItem = new RegularPage();
 
-			Assert.That(controller.Index(), Is.InstanceOf<ViewResult>());
+			controller.Index().ShouldBeTypeOf<ViewResult>();
 		}
-
-		//[Test, Ignore("TODO: Reconsider this")]
-		//public void ReturnsPartialWhenIndexCalledOnPartController()
-		//{
-		//    var controller = Create<TestItemController>();
-		//    controller.CurrentItem = new TestItem();
-
-		//    controller.Index().AssertResultIs<PartialViewResult>();
-		//}
-
-		//[Test, Ignore("TODO: Reconsider this")]
-		//public void PartsRenderWithNonContentItemModels()
-		//{
-		//    var controller = new TestItemController();
-		//    controller.CurrentItem = new TestItem();
-
-		//    controller.WithModel().AssertResultIs<PartialViewResult>();
-		//}
 
 		[Test]
 		public void ParentPage()
 		{
-			var page = new RegularPage();
+			var page = new RegularPage { ID = 123 };
 			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem
-			{
-				Parent = page,
-			};
-
-			Assert.That(controller.CurrentPage, Is.EqualTo(page));
-		}
-
-		[Test]
-		public void ParentPage_MultipleLevel()
-		{
-			var page = new RegularPage();
-			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem
-			{
-				Parent = new TestItem{Parent = page},
-			};
+			controller.CurrentPage = page;
 
 			Assert.That(controller.CurrentPage, Is.EqualTo(page));
 		}
@@ -89,12 +56,13 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void ViewParentPage_WithItem()
 		{
-			var page = new RegularPage();
+			var page = new RegularPage { ID = 123 };
 			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem
 			{
 				Parent = new TestItem { Parent = page },
 			};
+			controller.CurrentPage = page;
 			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
 			var result = controller.ViewParentPage();
 

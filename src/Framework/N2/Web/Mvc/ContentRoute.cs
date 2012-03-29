@@ -105,19 +105,21 @@ namespace N2.Web.Mvc
 
 			RouteData routeData = null;
 
-			// part in query string, this is an indicator of a request to a part
 			if(httpContext.Request.QueryString[ContentPartKey] != null)
+				// part in query string, this is an indicator of a request to a part, takes precendence over friendly urls
 				routeData = CheckForContentController(httpContext);
 
-			// this might be a friendly url
 			if(routeData == null)
+				// this might be a friendly url
 				routeData = GetRouteDataForPath(httpContext.Request);
 
-			// fallback to route to controller/action
 			if(routeData == null)
+				// fallback to route to controller/action
 				routeData = CheckForContentController(httpContext);
-			
-			logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+
+			if (logger.IsDebugEnabled)
+				logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+
 			return routeData;
 		}
 
@@ -153,10 +155,31 @@ namespace N2.Web.Mvc
 					path.CurrentItem = part = engine.Persister.Get(partId);
 			}
 
+			if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
+			{
+				// this is a discrepancy between mvc and the legacy
+				// in mvc the item query key doesn't route to the item, it's a marker
+				// the urlparser however parses the item query key and passes the item as current in pathdata
+				// hence this somewhat strange sidestepping
+				int itemId;
+				if (int.TryParse(request.QueryString[PathData.ItemQueryKey], out itemId))
+				{
+					if (itemId == path.ID)
+					{
+						// we have an item id and it matches the path data we found via url parser
+						if (part == null || part.ID != itemId)
+						{
+							// it hasn't been changed by a specific part query string so we reset it
+							path.CurrentItem = path.CurrentPage;
+						}
+					}
+				}
+			}
+
 			if (page == null && part == null)
 				return null;
-			else if (page == null)
-				path.CurrentPage = page = part.ClosestPage();
+			
+			path.CurrentPage = page ?? part.ClosestPage();
 
 			var controllerName = controllerMapper.GetControllerName((part ?? page).GetContentType());
 
@@ -200,7 +223,6 @@ namespace N2.Web.Mvc
 			var page = ResolveContent(context.Request.QueryString, ContentPageKey);
 
 			routeData.ApplyCurrentPath(new PathData(page ?? Find.ClosestPage(part), part));
-
 			routeData.DataTokens[ContentEngineKey] = engine;
 
 			return routeData;
@@ -236,10 +258,12 @@ namespace N2.Web.Mvc
 
 			values = new RouteValueDictionary(values);
 
-			logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
+			if (logger.IsDebugEnabled)
+				logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
 
 			var contextPath = requestContext.RouteData.CurrentPath();
-			var item = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister);
+			var requestedItem = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister);
+			var item = requestedItem;
 
 			if (item == null)
 				// fallback to context item
@@ -248,20 +272,19 @@ namespace N2.Web.Mvc
 				// remove specified item from collection so it doesn't appear in the url
 				values.Remove(ContentItemKey);
 
-			if (item != null && item != contextPath.CurrentItem)
-			{
-				var contextController = (string)requestContext.RouteData.Values["controller"];
-				var requestedController = (string)values["controller"];
-				var itemController = controllerMapper.GetControllerName(item.GetType());
-				if (contextController != requestedController && requestedController != itemController)
-					return null;
-
-				values["controller"] = itemController;
-			}
-
 			if (item == null)
+				// no item requested or in context .> not our bisiness
 				return null;
-			
+
+			var contextController = (string)requestContext.RouteData.Values["controller"];
+			var requestedController = (string)values["controller"];
+			if (requestedItem == null && requestedController != null && !string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
+				// no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
+				return null;
+
+			var itemController = controllerMapper.GetControllerName(item.GetContentType());
+			values["controller"] = itemController;
+
 			if (item.IsPage)
 				return ResolveContentActionUrl(requestContext, values, item);
 

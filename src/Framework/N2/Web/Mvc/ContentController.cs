@@ -37,7 +37,7 @@ namespace N2.Web.Mvc
 		public ContentItem CurrentPage
 		{
 			get { return Content.Current.Page; }
-			set { Content.BeginScope(new PathData(value, value)); }
+			set { Content.BeginScope(new PathData(value, Content.Current.Item)); }
 		}
 
 		/// <summary>The currently displayed part or null if a page is beeing executed.</summary>

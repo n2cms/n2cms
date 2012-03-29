@@ -15,6 +15,7 @@ using N2.Definitions;
 using System.Diagnostics;
 using System.Web.UI.WebControls;
 using System.IO;
+using N2.Web;
 
 namespace N2.Templates.Mvc.Services
 {
@@ -140,7 +141,7 @@ namespace N2.Templates.Mvc.Services
 
 				data.Values["area"] = vpd.DataTokens["area"];
                 data.Route = vpd.Route;
-                data.ApplyCurrentItem(item.ClosestPage(), item);
+				data.ApplyCurrentPath(new PathData(item.ClosestPage(), item));
 				return data;
 			}
 		}
