@@ -194,36 +194,12 @@ namespace N2.Web
 		/// <summary>Read permissions allow everyone to read this path. Not altering read permissions allow the system to make certain optimizations.</summary>
 		public bool IsPubliclyAvailable { get; set; }
 
+		[Obsolete("Use path.GetRewrittenUrl() extension method available when using N2.Web namespace")]
 		public virtual Url RewrittenUrl
 		{
 			get
 			{
-				if (IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
-					return null;
-
-				if (CurrentPage.IsPage)
-				{
-					Url url = Url.Parse(TemplateUrl)
-						.UpdateQuery(QueryParameters)
-						.SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID);
-					if(!string.IsNullOrEmpty(Argument))
-						url = url.SetQueryParameter("argument", Argument);
-
-					return url.ResolveTokens();
-				}
-
-				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
-					if (ancestor.IsPage)
-						return ancestor.FindPath(DefaultAction).RewrittenUrl
-							.UpdateQuery(QueryParameters)
-							.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
-
-				if (CurrentItem.VersionOf.HasValue)
-					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl
-						.UpdateQuery(QueryParameters)
-						.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
-
-				throw new TemplateNotFoundException(CurrentItem);
+				return this.GetRewrittenUrl();
 			}
 		}
 
