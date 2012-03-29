@@ -9,10 +9,7 @@ namespace N2.Linq
 	{
 		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
 		{
-			var time = Utility.CurrentTime();
-			return source.Where(ci => ci.State == ContentState.Published
-				&& (ci.Published != null && ci.Published <= time)
-				&& (ci.Expires == null || ci.Expires > time));
+			return source.Where(ci => ci.State == ContentState.Published);
 		}
 
 		public static IQueryable<TSource> WhereAncestorOf<TSource>(this IQueryable<TSource> source, ContentItem descendant) where TSource : ContentItem
