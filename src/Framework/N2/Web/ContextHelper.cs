@@ -9,13 +9,19 @@ namespace N2.Web
 {
 	public class ContextHelper
 	{
-		IEngine engine;
-		private Func<PathData> PathGetter { get; set; }
-
-		public ContextHelper(IEngine engine, Func<PathData> pathGetter)
+		public ContextHelper(Func<IEngine> engineGetter, Func<PathData> pathGetter)
 		{
-			this.engine = engine;
+			this.EngineGetter = engineGetter;
 			this.PathGetter = pathGetter;
+		}
+
+		public Func<IEngine> EngineGetter { get; set; }
+		public Func<PathData> PathGetter { get; set; }
+
+		public IEngine Engine 
+		{ 
+			get { return EngineGetter(); }
+			set { EngineGetter = () => value; }
 		}
 
 		public PathData Path
@@ -40,7 +46,7 @@ namespace N2.Web
 
 		public ILanguage Language
 		{
-			get { return engine.Resolve<ILanguageGateway>().GetLanguage(Page); }
+			get { return EngineGetter().Resolve<ILanguageGateway>().GetLanguage(Page); }
 		}
 
 		public bool IsPage

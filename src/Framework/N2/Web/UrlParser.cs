@@ -267,7 +267,7 @@ namespace N2.Web
 			}
 
 			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string

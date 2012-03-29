@@ -125,8 +125,8 @@ namespace N2.Extensions.Tests.Mvc
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
 			var r = RequestingUrl("/TestItem/?part=10");
 
-			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
-			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.CurrentPath().ID, Is.EqualTo(part.ID));
+			Assert.That(r.CurrentPath().CurrentItem, Is.EqualTo(part));
 		}
 
 		[Test]
@@ -135,8 +135,8 @@ namespace N2.Extensions.Tests.Mvc
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
 			var r = RequestingUrl("/TestItem/?part=10");
 
-			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
-			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+			Assert.That(r.CurrentPath().PageID, Is.EqualTo(root.ID));
+			Assert.That(r.CurrentPath().CurrentPage, Is.EqualTo(root));
 		}
 
 		[Test]
@@ -164,8 +164,8 @@ namespace N2.Extensions.Tests.Mvc
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
 			var r = RequestingUrl("/TestItem/?part=10&page=" + search.ID);
 
-			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(search.ID));
-			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(search));
+			Assert.That(r.CurrentPath().PageID, Is.EqualTo(search.ID));
+			Assert.That(r.CurrentPath().CurrentPage, Is.EqualTo(search));
 		}
 
 		[Test]
@@ -178,8 +178,8 @@ namespace N2.Extensions.Tests.Mvc
 			RequestingUrl(vpd.VirtualPath);
 
 			var r = routes.GetRouteData(httpContext);
-			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
-			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.CurrentPath().ID, Is.EqualTo(part.ID));
+			Assert.That(r.CurrentPath().CurrentItem, Is.EqualTo(part));
 		}
 
 		[Test, Ignore("TODO (maybe)")]

@@ -13,7 +13,7 @@ namespace N2.Web.Mvc
 		{
 		}
 
-		public DynamicContentHelper(HtmlHelper html, IEngine engine, Func<PathData> pathGetter)
+		public DynamicContentHelper(HtmlHelper html, Func<IEngine> engine, Func<PathData> pathGetter)
 			: base(html, engine, pathGetter)
 		{
 		}
@@ -74,7 +74,7 @@ namespace N2.Web.Mvc
 		{
 			EnsureAuthorized(otherContentItem);
 
-			return new DynamicContentHelper(Html, Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = otherContentItem.IsPage ? otherContentItem : Current.Page });
+			return new DynamicContentHelper(Html, Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = otherContentItem.IsPage ? otherContentItem : Current.Page });
 		}
 	}
 }

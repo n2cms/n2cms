@@ -26,7 +26,7 @@ namespace N2.Management.Myself
     {
         public override string Url
         {
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
     }
 }

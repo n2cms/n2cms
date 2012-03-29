@@ -21,7 +21,7 @@ namespace N2.Edit
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
+            btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			ContentItem toMove = Selection.MemorizedItem;
 			if (toMove == null)

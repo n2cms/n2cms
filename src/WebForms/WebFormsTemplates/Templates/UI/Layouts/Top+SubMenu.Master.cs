@@ -20,6 +20,7 @@ namespace N2.Templates.UI.Layouts
 
                 if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
                 if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool) CurrentPage["ShowTitle"];
+				if (t != null) t.Text = CurrentPage["HeadTitle"] as string ?? CurrentPage.Title;
                 if (dh != null) dh.CurrentItem = language;
 
                 if (zsl != null)

@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc.Html;
 using System.Web.Routing;
 using N2.Extensions.Tests.Mvc.Models;
+using N2.Web.Mvc;
 using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Mvc
@@ -20,14 +21,15 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
-		public void GetVirtualPath_ToPartDefaultAction_ViaPart_IsNotSupported()
+		public void GetVirtualPath_ToPartDefaultAction_ViaPartQuery_IsNotSupported()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", about);
 			RequestingUrl("/about/");
 
 			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { part = part }));
 
-			Assert.That(vpd.VirtualPath, Is.Not.EqualTo("TestItem?page=2&part=10"));
+			var data = RequestingUrl(vpd.VirtualPath);
+			Assert.That(data.CurrentItem(), Is.EqualTo(about));
 		}
 
 		[Test]

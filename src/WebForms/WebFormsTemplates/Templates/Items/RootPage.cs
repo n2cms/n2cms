@@ -28,7 +28,7 @@ namespace N2.Templates.Items
     {
         public override string Url
         {
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
     }
 }

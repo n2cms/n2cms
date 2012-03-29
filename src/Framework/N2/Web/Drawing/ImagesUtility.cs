@@ -54,25 +54,52 @@ namespace N2.Web.Drawing
 		}
 
 		/// <summary>Gets the path of a resized version of the image, if it exists, otherwise the given image url.</summary>
+		/// <param name="url">The base url of an image.</param>
+		/// <param name="resizedSuffix">The size suffix to append before the extension.</param>
+		/// <returns>A resized image url if it exists.</returns>
+		public static string GetExistingImagePath(string imageUrl, string preferredSize, out bool preferredSizeExists)
+		{
+			return Context.Current.Resolve<IFileSystem>().GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists);
+		}
+
+		/// <summary>Gets the path of a resized version of the image, if it exists, otherwise the given image url.</summary>
 		/// <param name="fs">The file system used to check file existence.</param>
 		/// <param name="url">The base url of an image.</param>
 		/// <param name="resizedSuffix">The size suffix to append before the extension.</param>
 		/// <returns>A resized image url if it exists.</returns>
 		public static string GetExistingImagePath(this IFileSystem fs, string imageUrl, string preferredSize)
 		{
+			bool preferredSizeExists;
+			return GetExistingImagePath(fs, imageUrl, preferredSize, out preferredSizeExists);
+		}
+
+		/// <summary>Gets the path of a resized version of the image, if it exists, otherwise the given image url.</summary>
+		/// <param name="fs">The file system used to check file existence.</param>
+		/// <param name="url">The base url of an image.</param>
+		/// <param name="resizedSuffix">The size suffix to append before the extension.</param>
+		/// <returns>A resized image url if it exists.</returns>
+		public static string GetExistingImagePath(this IFileSystem fs, string imageUrl, string preferredSize, out bool preferredSizeExists)
+		{
 			if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(preferredSize))
+			{
+				preferredSizeExists = false;
 				return imageUrl;
+			}
 
 			string preferredUrl = ImagesUtility.GetResizedPath(imageUrl, preferredSize);
 			try
 			{
                 if (fs.FileExists(preferredUrl))
+				{
+					preferredSizeExists = true;
 					return preferredUrl;
+				}
 			}
 			catch (InvalidOperationException)
 			{
 			}
 
+			preferredSizeExists = false;
 			return Url.ToAbsolute(imageUrl);
 		}
 

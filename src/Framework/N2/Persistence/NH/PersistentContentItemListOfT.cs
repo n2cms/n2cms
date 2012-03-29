@@ -44,9 +44,8 @@ namespace N2.Persistence.NH
 			//    .Where(i => i.Visible == true)
 			//    .Where(i => i.Published <= now)
 			//    .Where(i => i.Expires == null || now < i.Expires);
-			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and Published <= :published and (Expires is null or Expires > :expires) order by SortOrder")
-				.SetParameter("published", Utility.CurrentTime())
-				.SetParameter("expires", Utility.CurrentTime())
+			return Session.CreateFilter(this, "where ZoneName is null and Visible = 1 and State = :state order by SortOrder")
+				.SetParameter("state", ContentState.Published)
                 .SetCacheable(true)
                 .List<T>();
 		}

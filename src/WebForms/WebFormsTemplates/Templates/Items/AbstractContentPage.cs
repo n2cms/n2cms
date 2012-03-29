@@ -2,6 +2,7 @@ using N2.Details;
 using N2.Integrity;
 using System;
 using N2.Definitions;
+using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
@@ -18,6 +19,7 @@ namespace N2.Templates.Items
         AvailableZone("Recursive Above", Zones.RecursiveAbove),
     	AvailableZone("Recursive Below", Zones.RecursiveBelow)]
 	[RestrictParents(typeof(IStructuralPage))]
+	[TabContainer(Tabs.Seo, "SEO", Tabs.SeoIndex)]
 	public abstract class AbstractContentPage : AbstractPage, IContentPage
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
@@ -33,6 +35,27 @@ namespace N2.Templates.Items
 		{
 			get { return base.Visible; }
 			set { base.Visible = value; }
+		}
+
+		[EditableText(Title = "Page title", ContainerName = Tabs.Seo, HelpTitle = "Displayed in the browser title area and on external search results")]
+		public virtual string HeadTitle
+		{
+			get { return GetDetail("HeadTitle", Title); }
+			set { SetDetail("HeadTitle", value, ""); }
+		}
+
+		[EditableMetaTag(Title = "Keywords", ContainerName = Tabs.Seo, HelpTitle = "Keywords used to search engine to categorize this page.")]
+		public virtual string Keywords
+		{
+			get { return GetDetail("Keywords", ""); }
+			set { SetDetail("Keywords", value, ""); }
+		}
+
+		[EditableMetaTag(Title = "Description", ContainerName = Tabs.Seo, HelpTitle = "Description used by search engine to describe this page")]
+		public virtual string Description
+		{
+			get { return GetDetail("Description", ""); }
+			set { SetDetail("Description", value, ""); }
 		}
 	}
 }

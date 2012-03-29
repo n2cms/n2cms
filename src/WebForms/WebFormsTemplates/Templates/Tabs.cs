@@ -14,10 +14,14 @@ namespace N2.Templates
 		/// <summary>The default content tab when editing.</summary>
 		public const string Content = "content";
 
+		/// <summary>SEO tab while editing.</summary>
+		public const string Seo = "seo";
+
 		/// <summary>Advanced tab while editing.</summary>
 		public const string Advanced = "advanced";
 
 		public const int ContentIndex = 0;
+		public const int SeoIndex = 50;
 		public const int AdvancedIndex = 100;
 	}
 }

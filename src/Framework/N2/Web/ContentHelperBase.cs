@@ -16,46 +16,40 @@ namespace N2.Web
 	/// </summary>
 	public class ContentHelperBase
 	{
-		public ContentHelperBase(IEngine engine, Func<PathData> pathGetter)
+		public ContentHelperBase(Func<IEngine> engineGetter, Func<PathData> pathGetter)
 		{
-			Engine = engine;
-			PathGetter = pathGetter;
+			Current = new ContextHelper(engineGetter, pathGetter);
 		}
 
 		// accessors
 
-		public IEngine Engine { get; protected set; }
+		public IEngine Engine { get { return Current.EngineGetter(); } }
 
 		public virtual IServiceContainer Services
 		{
-			get { return Engine.Container; }
+			get { return Current.Engine.Container; }
 		}
-
-		protected Func<PathData> PathGetter { get; set; }
 
 		/// <summary>Traverse the content hieararchy.</summary>
 		public virtual TraverseHelper Traverse
 		{
-			get { return new TraverseHelper(Engine, Is, PathGetter); }
+			get { return new TraverseHelper(Current.EngineGetter, Is, Current.PathGetter); }
 		}
 
 		/// <summary>Filter collections of items.</summary>
 		public virtual FilterHelper Is
 		{
-			get { return new FilterHelper(Engine); }
+			get { return new FilterHelper(Current.EngineGetter); }
 		}
 
 		/// <summary>Search for content stored in the system.</summary>
 		public SearchHelper Search
 		{
-			get { return new SearchHelper(Engine); }
+			get { return new SearchHelper(Current.EngineGetter); }
 		}
 
 		/// <summary>Access items in the current context.</summary>
-		public ContextHelper Current
-		{
-			get { return new ContextHelper(Engine, PathGetter); }
-		}
+		public ContextHelper Current { get; protected set; }
 
 		/// <summary>Get a content helper for an alternative scope.</summary>
 		/// <param name="otherContentItem">The current item of the alternative scope.</param>
@@ -64,7 +58,7 @@ namespace N2.Web
 		{
 			EnsureAuthorized(otherContentItem);
 
-			return new ContentHelperBase(Engine, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Current.Page});
+			return new ContentHelperBase(Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = Current.Page });
 		}
 
 		/// <summary>Begins a new scope using the current content helper.</summary>
@@ -77,6 +71,16 @@ namespace N2.Web
 			return new ContentScope(newCurrentItem, this);
 		}
 
+		/// <summary>Begins a new scope using the current content helper.</summary>
+		/// <param name="newCurrentPath">The current path to use in the new scope.</param>
+		/// <returns>An object that restores the scope upon disposal.</returns>
+		public IDisposable BeginScope(PathData newCurrentPath)
+		{
+			if (newCurrentPath == null) return new EmptyDisposable();
+
+			return new ContentScope(newCurrentPath, this);
+		}
+
 		protected virtual void EnsureAuthorized(ContentItem newCurrentItem)
 		{
 			if (!IsAuthorized(newCurrentItem))
@@ -86,7 +90,7 @@ namespace N2.Web
 		private bool IsAuthorized(ContentItem item)
 		{
 			var user = Services.Resolve<IWebContext>().User;
-			return Engine.SecurityManager.IsAuthorized(item, user);
+			return Current.Engine.SecurityManager.IsAuthorized(item, user);
 		}
 
 		/// <summary>Begins a new scope using the current content helper.</summary>
@@ -116,7 +120,7 @@ namespace N2.Web
 			int id;
 			ContentItem item = null;
 			if (int.TryParse(itemUrlOrId, out id))
-				item = Engine.Persister.Get(id);
+				item = Current.Engine.Persister.Get(id);
 
 			if (item == null)
 				item = Services.Resolve<IUrlParser>().Parse(itemUrlOrId);
@@ -145,18 +149,25 @@ namespace N2.Web
 			ContentHelperBase contentHelper;
 			Func<PathData> previousGetter;
 
+			public ContentScope(PathData newCurrentPath, ContentHelperBase contentHelper)
+			{
+				this.contentHelper = contentHelper;
+				previousGetter = contentHelper.Current.PathGetter;
+				contentHelper.Current.PathGetter = () => newCurrentPath;
+			}
+
 			public ContentScope(ContentItem newCurrentItem, ContentHelperBase contentHelper)
 			{
 				this.contentHelper = contentHelper;
-				previousGetter = contentHelper.PathGetter;
-				contentHelper.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = newCurrentItem.IsPage ? newCurrentItem : previousGetter().CurrentPage };
+				previousGetter = contentHelper.Current.PathGetter;
+				contentHelper.Current.PathGetter = () => new PathData { CurrentItem = newCurrentItem, CurrentPage = newCurrentItem.IsPage ? newCurrentItem : previousGetter().CurrentPage };
 			}
 
 			#region IDisposable Members
 
 			public void Dispose()
 			{
-				contentHelper.PathGetter = previousGetter;
+				contentHelper.Current.PathGetter = previousGetter;
 			}
 
 			#endregion

@@ -29,12 +29,14 @@ namespace N2.Edit.Install.Begin
 			installationAllowed = config.AllowInstallation;
 
 			continueUrl = action == "install"
-									? config.InstallUrl
-									: action == "upgrade"
-										? config.UpgradeUrl
-										: action == "rebase"
-											? config.RebaseUrl
-											: config.InstallUrl;
+				? config.InstallUrl
+				: action == "upgrade"
+					? config.UpgradeUrl
+					: action == "rebase"
+						? config.RebaseUrl
+						: action == "fixClass"
+							? config.FixClassUrl.ToUrl().AppendQuery("id", Request["id"]).ToString()
+							: config.InstallUrl;
 
 			continueUrl = N2.Web.Url.ResolveTokens(continueUrl);
 

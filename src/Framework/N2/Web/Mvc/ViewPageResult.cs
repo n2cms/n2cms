@@ -34,8 +34,6 @@ namespace N2.Web.Mvc
 		/// <param name="context"/>
 		public override void ExecuteResult(ControllerContext context)
 		{
-			SetupN2ForNewPageRequest();
-
 			try
 			{
 				context = BuildPageControllerContext(context);
@@ -48,23 +46,12 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		private void SetupN2ForNewPageRequest()
-		{
-			webContext.CurrentPage = thePage;
-		}
-
 		private ControllerContext BuildPageControllerContext(ControllerContext context)
 		{
 			string controllerName = controllerMapper.GetControllerName(thePage.GetContentType());
-			
-			var routeData = context.RouteData;
-			RouteExtensions.ApplyCurrentItem(routeData, controllerName, "Index", thePage, null);
-			if (context.RouteData.DataTokens.ContainsKey(ContentRoute.ContentPartKey))
-			{
-				routeData.ApplyContentItem(ContentRoute.ContentPartKey, context.RouteData.DataTokens[ContentRoute.ContentPartKey] as ContentItem);
-			}
+			RouteExtensions.ApplyCurrentPath(context.RouteData, controllerName, "Index", new PathData(thePage));
 
-			var requestContext = new RequestContext(context.HttpContext, routeData);
+			var requestContext = new RequestContext(context.HttpContext, context.RouteData);
 
 			var controller = (ControllerBase)controllerFactory.CreateController(requestContext, controllerName);
 

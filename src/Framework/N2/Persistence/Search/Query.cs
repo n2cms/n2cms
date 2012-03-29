@@ -263,6 +263,12 @@ namespace N2.Persistence.Search
             return this;
         }
 
+		public Query State(ContentState state)
+		{
+			this.Details["State"] = ((int)state).ToString();
+			return this;
+		}
+
 		public Query OrderBy(string field, bool descending = false)
 		{
 			SortField = field;
