@@ -14,72 +14,47 @@ namespace N2.Web.Mvc
 	public abstract class ContentController : Controller
 	{
 		#region Accessors
-		ContentItem currentPart;
-		ContentItem currentItem;
-		ContentItem currentPage;
-		IEngine engine;
 		ControllerContentHelper content = null;
+		IEngine engine = null;
 
 		/// <summary>
 		/// Used to resolve services.
 		/// </summary>
 		public virtual IEngine Engine
 		{
-			get
-			{
-				return engine
-					?? (engine = RouteExtensions.GetEngine(RouteData));
-			}
+			get { return engine ?? Content.Current.Engine; }
 			set { engine = value; }
 		}
-
-		internal static string ItemOverrideKey { get { return "Override." + ContentRoute.ContentPartKey; } }
 
 		/// <summary>The content item associated with the requested path.</summary>
 		public ContentItem CurrentItem
 		{
-			get
-			{
-				if (currentItem == null 
-					&& ControllerContext.ParentActionViewContext != null 
-					&& ControllerContext.ParentActionViewContext.RouteData.DataTokens.ContainsKey(ItemOverrideKey))
-					//  bypass normal retrieval to handle rendering of auto-generated parts wihtout ID
-					currentItem = ControllerContext.ParentActionViewContext.RouteData.DataTokens[ItemOverrideKey] as ContentItem;
-
-				return currentItem
-					?? (currentItem = ControllerContext.RequestContext.CurrentItem<ContentItem>());
-			}
-			set { currentItem = value; }
+			get { return Content.Current.Item; }
+			set { Content.BeginScope(value); }
 		}
 
 		/// <summary>The page beeing served by this request, or the page a part has been added to.</summary>
 		public ContentItem CurrentPage
 		{
-			get
-			{
-				return currentPage
-				  ?? (currentPage = RouteData.CurrentPage()
-					  ?? CurrentItem.ClosestPage()
-					  ?? Engine.UrlParser.CurrentPage);
-			}
-			set { currentPage = value; }
+			get { return Content.Current.Page; }
+			set { Content.BeginScope(new PathData(value, value)); }
 		}
 
 		/// <summary>The currently displayed part or null if a page is beeing executed.</summary>
 		public ContentItem CurrentPart
 		{
-			get
-			{
-				return currentPart
-					?? (currentPart = ControllerContext.RequestContext.CurrentPart<ContentItem>());
-			}
-			set { currentPart = value; }
+			get { return content.Current.Part; }
+			set { Content.BeginScope(value); }
 		}
 
+		internal static string PathOverrideKey { get { return "Override." + PathData.PathKey; } }
 		/// <summary>Access to commonly used APIs.</summary>
 		public new ControllerContentHelper Content
 		{
-			get { return content ?? (content = new ControllerContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
+			get 
+			{
+				return content ?? (content = new ControllerContentHelper(() => RouteExtensions.GetEngine(RouteData), () => RouteData.CurrentPath()) );
+			}
 			set { content = value; }
 		}
 		#endregion
@@ -101,12 +76,28 @@ namespace N2.Web.Mvc
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			SetPathOverride(filterContext);
 			SetCulture(filterContext);
 			ValidateAuthorization(filterContext);
 
 			MergeModelStateFromEarlierStep(filterContext.HttpContext);
 
 			base.OnActionExecuting(filterContext);
+		}
+
+		protected virtual void SetPathOverride(ActionExecutingContext filterContext)
+		{
+			if (content == null
+			    && ControllerContext != null
+			    && ControllerContext.IsChildAction
+			    && ControllerContext.ParentActionViewContext != null
+			    && ControllerContext.ParentActionViewContext.RouteData.DataTokens.ContainsKey(PathOverrideKey))
+			{
+			    //  bypass normal retrieval to handle rendering of auto-generated parts wihtout ID
+			    var path = ControllerContext.ParentActionViewContext.RouteData.DataTokens[PathOverrideKey] as PathData;
+			    if (path != null)
+			        content = new ControllerContentHelper(() => RouteExtensions.GetEngine(RouteData), () => path);
+			}
 		}
 
 		protected virtual void SetCulture(ActionExecutingContext filterContext)

@@ -1,23 +1,30 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Routing;
 using N2.Engine;
 using N2.Persistence;
+using System.Collections.Generic;
 
 namespace N2.Web.Mvc
 {
 	public static class RouteExtensions
 	{
+		/// <summary>Resolves the current <see cref="IEngine"/> using information stored in context or falling back to the singleton instance.</summary>
+		/// <param name="routeData"></param>
+		/// <returns></returns>
 		public static IEngine GetEngine(RouteData routeData)
 		{
 			return routeData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
 				?? N2.Context.Current;
 		}
 
+		/// <summary>Resolves a service from the current <see cref="IEngine"/> using information stored in context or falling back to the singleton instance.</summary>
 		public static T ResolveService<T>(RouteData routeData) where T : class
 		{
 			return GetEngine(routeData).Resolve<T>();
 		}
 
+		/// <summary>Resolves services from the current <see cref="IEngine"/> using information stored in context or falling back to the singleton instance.</summary>
 		public static T[] ResolveServices<T>(RouteData routeData) where T : class
 		{
 			return GetEngine(routeData).Container.ResolveAll<T>();
@@ -34,18 +41,36 @@ namespace N2.Web.Mvc
 		public static ContentItem ApplyExternalContent(this RouteData data, string family, string key, string url, Type contentType = null)
 		{
 			var item = ResolveService<Edit.IExternalContentRepository>(data).GetOrCreate(family, key, url, contentType);
-			data.ApplyContentItem(ContentRoute.ContentPageKey, item);
+			data.ApplyCurrentPath(new PathData(item));
 			return item;
 		}
 
-		/// <summary>Applies the current content item to the route data.</summary>
-		public static RouteData ApplyCurrentItem(this RouteData data, ContentItem page, ContentItem part)
+		/// <summary>Applies the current path to the route data.</summary>
+		public static RouteData ApplyCurrentPath(this RouteData data, PathData path)
 		{
-			return data.ApplyContentItem(ContentRoute.ContentPageKey, page)
-				.ApplyContentItem(ContentRoute.ContentPartKey, part);
+			data.Values[PathData.PathKey] = path.ToString();
+			data.DataTokens[PathData.PathKey] = path;
+
+			return data;
 		}
 
 		/// <summary>Applies the current content item and controller to the route data.</summary>
+		public static RouteData ApplyCurrentPath(RouteData data, string controllerName, string actionName, PathData path)
+		{
+			data.Values[ContentRoute.ControllerKey] = controllerName;
+			data.Values[ContentRoute.ActionKey] = actionName;
+			return data.ApplyCurrentPath(path);
+		}
+
+		/// <summary>Applies the current content item to the route data.</summary>
+		[Obsolete]
+		public static RouteData ApplyCurrentItem(this RouteData data, ContentItem page, ContentItem part)
+		{
+			return data.ApplyCurrentPath(new PathData(page, part));
+		}
+
+		/// <summary>Applies the current content item and controller to the route data.</summary>
+		[Obsolete]
 		public static RouteData ApplyCurrentItem(RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;
@@ -53,38 +78,23 @@ namespace N2.Web.Mvc
 			return data.ApplyCurrentItem(page, part);
 		}
 
-		internal static RouteData ApplyContentItem(this RouteData data, string key, ContentItem item)
+
+
+		public static PathData CurrentPath(this RouteData routeData)
 		{
-			if (data == null) throw new ArgumentNullException("data");
-			if (key == null) throw new ArgumentNullException("key");
-
-			if (item != null)
-			{
-				data.DataTokens[key] = item;
-				data.Values[key] = item.ID;
-			}
-
-			return data;
+			if (routeData.DataTokens.ContainsKey(PathData.PathKey))
+				return routeData.DataTokens[PathData.PathKey] as PathData ?? PathData.Empty;
+			return PathData.Empty;
 		}
-
-
 
 		public static ContentItem CurrentItem(this RouteData routeData)
 		{
-			return routeData.DataTokens.CurrentItem(ContentRoute.ContentPartKey)
-				?? routeData.DataTokens.CurrentItem(ContentRoute.ContentPageKey);
+			return routeData.CurrentPath().CurrentItem;
 		}
 
 		public static ContentItem CurrentPage(this RouteData routeData)
 		{
-			return routeData.DataTokens.CurrentItem(ContentRoute.ContentPageKey);
-		}
-
-		internal static ContentItem CurrentItem(this RouteValueDictionary data, string key)
-		{
-			if (data.ContainsKey(key))
-				return data[key] as ContentItem;
-			return null;
+			return routeData.CurrentPath().CurrentPage;
 		}
 
 		public static T CurrentItem<T>(this RouteValueDictionary data, string key, IPersister persister)
@@ -109,6 +119,13 @@ namespace N2.Web.Mvc
 			}
 
 			return null;
+		}
+
+		public static string ToQueryString<K, V>(this IDictionary<K, V> values)
+		{
+			if (values == null)
+				return null;
+			return string.Join("&", values.Select(kvp => kvp.Key + "=" + kvp.Value).ToArray());
 		}
 	}
 }

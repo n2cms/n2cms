@@ -41,6 +41,14 @@ namespace N2.Configuration
 			set { base["partQueryKey"] = value; }
 		}
 
+		/// <summary>Key used to access path data from context dictionaries.</summary>
+		[ConfigurationProperty("pathDataKey", DefaultValue = "path")]
+		public string PathDataKey
+		{
+			get { return (string)base["pathDataKey"]; }
+			set { base["pathDataKey"] = value; }
+		}
+
         /// <summary>Look for a content page when the requested resource has no extension.</summary>
         [ConfigurationProperty("observeEmptyExtension", DefaultValue = true)]
         public bool ObserveEmptyExtension
@@ -96,5 +104,5 @@ namespace N2.Configuration
 			get { return (UrlElement)base["urls"]; }
 			set { base["urls"] = value; }
 		}
-    }
+	}
 }

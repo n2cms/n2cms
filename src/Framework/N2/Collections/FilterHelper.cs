@@ -10,9 +10,9 @@ namespace N2.Collections
 {
 	public class FilterHelper
 	{
-		IEngine engine;
+		Func<IEngine> engine;
 
-		public FilterHelper(IEngine engine)
+		public FilterHelper(Func<IEngine> engine)
 		{
 			this.engine = engine;
 		}
@@ -21,7 +21,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter Accessible()
 		{
-			return Accessible(engine.Resolve<IWebContext>().User, engine.SecurityManager);
+			return Accessible(engine().Resolve<IWebContext>().User, engine().SecurityManager);
 		}
 
 		/// <summary>Filters by access.</summary>
@@ -35,7 +35,7 @@ namespace N2.Collections
 		/// <returns>A filter.</returns>
 		public ItemFilter AccessiblePage()
 		{
-			return AccessiblePage(engine.Resolve<IWebContext>().User, engine.SecurityManager);
+			return AccessiblePage(engine().Resolve<IWebContext>().User, engine().SecurityManager);
 		}
 
 		/// <summary>Filters by access and pages.</summary>
@@ -192,7 +192,7 @@ namespace N2.Collections
 
 		private ItemFilter DefinitionOnly(string discriminator)
 		{
-			var d = engine.Definitions.GetDefinition(discriminator);
+			var d = engine().Definitions.GetDefinition(discriminator);
 			if (d == null)
 				return Anything();
 			return Type(d.ItemType);
