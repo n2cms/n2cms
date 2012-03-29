@@ -142,7 +142,7 @@ namespace N2.Web.Mvc
 		/// <param name="filterContext"></param>
 		protected virtual void ProcessOutputCache(ResultExecutingContext filterContext)
 		{
-			new ContentOutputCacheAttribute().OnResultExecuting(filterContext);
+			new ContentOutputCacheAttribute(true).OnResultExecuting(filterContext);
 		}
 
 		private void MergeModelStateFromEarlierStep(HttpContextBase context)
