@@ -32,6 +32,11 @@ namespace N2.Management.Content.Export
 				IImportRecord record = Engine.Resolve<Importer>().Read(UploadedFilePath);
 				importedItems.CurrentItem = record.RootItem;
 				rptAttachments.DataSource = record.Attachments;
+				if (Selection.SelectedItem.Children.FindNamed(record.RootItem.Name) != null)
+				{
+					pnlNewName.Visible = true;
+					txtNewName.Text = record.RootItem.Name;
+				}
 				ShowErrors(record);
 			}
 			catch (WrongVersionException)
@@ -77,6 +82,11 @@ namespace N2.Management.Content.Export
 		{
 			try
 			{
+				if (pnlNewName.Visible)
+				{
+					record.RootItem.Name = txtNewName.Text;
+				}
+
 				if (chkSkipRoot.Checked)
 				{
 					importer.Import(record, Selection.SelectedItem, ImportOption.Children);

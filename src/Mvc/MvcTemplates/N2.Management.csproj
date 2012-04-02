@@ -80,6 +80,10 @@
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
+    <EmbeddedResource Include="N2\Content\Export\App_LocalResources\ItemXmlImport.ascx.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ItemXmlImport.ascx.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <Content Include="N2\Content\Export\BulkEditing.aspx" />
     <Content Include="N2\Content\Export\CsvImport.ascx" />
     <Content Include="N2\Content\Export\Export.aspx" />
