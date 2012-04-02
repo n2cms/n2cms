@@ -40,7 +40,7 @@ namespace N2.Web.UI
 		/// <summary>Access to commonly used APIs.</summary>
 		public FormsContentHelper Content
 		{
-			get { return content ?? (content = new FormsContentHelper(Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
+			get { return content ?? (content = new FormsContentHelper(() => Engine, () => new PathData { CurrentPage = CurrentPage, CurrentItem = CurrentItem })); }
 			set { content = value; }
 		}
 

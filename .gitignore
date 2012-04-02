@@ -4,9 +4,12 @@
 # Links
 src/WebForms/WebFormsTemplates/N2/
 src/WebForms/WebFormsTemplates/App_Data/SearchIndex/
+src/WebForms/WebFormsTemplates/App_Data/Temp/
 src/Mvc/Dinamico/N2/
 src/Mvc/Dinamico/App_Data/SearchIndex/
+src/Mvc/Dinamico/App_Data/Temp/
 src/Mvc/MvcTemplates/App_Data/SearchIndex/
+src/Mvc/MvcTemplates/App_Data/Temp/
 src/Framework/Tests/App_Data/
 src/Framework/Extensions.Tests/App_Data/
 examples/MinimalCSharp/wwwroot/App_Data/SearchIndex/

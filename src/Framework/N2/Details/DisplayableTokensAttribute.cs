@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Web;
 using N2.Web.Mvc;
 using log4net;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -37,7 +38,7 @@ namespace N2.Details
 		{
 			var httpContext = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
-			RouteExtensions.ApplyCurrentItem(routeData, "webforms", "index", item.ClosestPage(), item);
+			RouteExtensions.ApplyCurrentPath(routeData, "WebForms", "Index", new PathData(item.ClosestPage(), item));
 			return new HtmlHelper(
 				new ViewContext(
 					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },

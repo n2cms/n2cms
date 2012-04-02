@@ -316,11 +316,23 @@ input.dp-applied {
 	        display:block;
 	        overflow: hidden;
         }
-    #fileupload { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
-    #fileupload:hover { border-style:solid; opacity:1; }
-        #fileupload em { margin-left:10px; display:none; }
-        #fileupload:hover em { display:inline; }
+    .droparea, .pickarea { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
+    .droparea:hover, .pickarea:hover { border-style:solid; opacity:1; }
+        .droparea em, .pickarea em { margin-left:10px; display:none; }
+        .droparea:hover em, .pickarea:hover em  { display:inline; }
 
+
+.itemListEditor { margin:20px 0 0 0; clear:both; }
+    .itemListEditor .item { padding: 10px 0; position:relative; border-top: dotted 1px silver; }
+		.itemListEditor .item h3 { color:silver; }
+			.itemListEditor .item h3 span { background-color:#fff; position:absolute; top:-10px; left:0; padding:1px 5px 1px 1px; }
+		.itemListEditor .item .delete { background-color:#fff; position:absolute; top:-10px; right:0; padding:1px 1px 1px 5px; }
+    .itemListEditor .addArea { opacity:.5; padding:10px 0; border-top: dotted 1px silver; }
+		.itemListEditor .addArea a { display:inline-block; padding:5px; }
+    .itemListEditor .addArea:hover { opacity:1; }
+        .itemListEditor .addArea em { margin-left:10px; display:none; }
+        .itemListEditor .addArea:hover em  { display:inline; }
+        
 .focused
 {
 	background-color:#eef;

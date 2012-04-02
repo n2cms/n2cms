@@ -12,7 +12,7 @@ namespace N2.Engine.Globalization
 	public class CachingLanguageGatewayDecorator : ILanguageGateway
 	{
 		private ILanguageGateway inner;
-		private IWebContext webContext;
+		private CacheWrapper cacheWrapper;
 		private IPersister persister;
 
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
@@ -45,10 +45,10 @@ namespace N2.Engine.Globalization
 		}
 		#endregion
 
-		public CachingLanguageGatewayDecorator(ILanguageGateway inner, IWebContext webContext, IPersister persister, string masterKey)
+		public CachingLanguageGatewayDecorator(ILanguageGateway inner, CacheWrapper cacheWrapper, IPersister persister, string masterKey)
 		{
 			this.inner = inner;
-			this.webContext = webContext;
+			this.cacheWrapper = cacheWrapper;
 			this.persister = persister;
 			this.masterKey = masterKey;
 		}
@@ -122,7 +122,7 @@ namespace N2.Engine.Globalization
 
 		private LanguageCache GetLanguageCache()
 		{
-			var cache = webContext.HttpContext.Cache["CachingLanguageGatewayDecorator_" + masterKey] as LanguageCache;
+			var cache =  cacheWrapper.Get<LanguageCache>("CachingLanguageGatewayDecorator_" + masterKey);
 			if (cache == null)
 			{
 				cache = new LanguageCache 
@@ -130,7 +130,7 @@ namespace N2.Engine.Globalization
 					LanguageCodes = new Dictionary<string, ILanguage>(), 
 					LanguageItems = new Dictionary<int, ILanguage>() 
 				};
-				webContext.HttpContext.Cache.Add("CachingLanguageGatewayDecorator_" + masterKey, cache, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, slidingExpiration, CacheItemPriority.Normal, null);
+				cacheWrapper.Add("CachingLanguageGatewayDecorator_" + masterKey, cache, new CacheOptions { SlidingExpiration = slidingExpiration });
 			}
 			return cache;
 		}

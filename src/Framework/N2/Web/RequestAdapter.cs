@@ -46,7 +46,7 @@ namespace N2.Web
         /// <returns></returns>
 		protected virtual string GetHandlerPath(PathData path)
 		{
-			return path.RewrittenUrl;
+			return path.GetRewrittenUrl();
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>

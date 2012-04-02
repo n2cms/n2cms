@@ -303,6 +303,13 @@ namespace N2.Persistence.NH
 		{
 			return sessionProvider.BeginTransaction();
 		}
+
+		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+		/// <returns>A disposable transaction wrapper.</returns>
+		public ITransaction GetTransaction()
+		{
+			return sessionProvider.GetTransaction();
+		}
 		#endregion
 
 		#region INHRepository<TKey,TEntity> Members

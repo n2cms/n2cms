@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#code_dlg.title}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/dialog.js"></script>
+    <style type="text/css">
+        #CodeDialog
+        {
+            height: 154px;
+            width: 671px;
+        }
+        #txtCode
+        {
+            width: 98%;
+            height: 189px;
+        }
+    </style>
+</head>
+<body>
+
+<form onsubmit="icodeDialog.insert();return false;" action="#">
+	<p>Code language :  
+        <select id="selctLanguage">
+            <option value="">Selct Language</option>
+            <option value="xml">HTML</option>
+            <option value="csharp" selected="selected">C#</option>
+            <option value="vb">VB</option>
+            <option value="xml">XML</option>
+            <option value="js">JavaScript</option>
+            <option value="AS3">Action Script</option>
+            <option value="Sql">SQL</option>
+            <option value="Css">CSS</option>
+        </select></p>
+	<p>Code :<br /><textarea id="txtCode" name="txtCode" class="text" onchange="icodeDialog.trydDetect(this, document.getElementById('selctLanguage'));"></textarea></p>
+	<div style="text-align:center" class="mceActionPanel">
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="icodeDialog.insert();" />
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+	</div>
+</form>
+
+</body>
+</html>

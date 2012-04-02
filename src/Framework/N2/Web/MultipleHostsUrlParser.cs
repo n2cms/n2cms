@@ -66,7 +66,7 @@ namespace N2.Web
 			}
 
 			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			Url url;
 			if (host.IsStartPage(current))
@@ -88,7 +88,7 @@ namespace N2.Web
 			}
 
 			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string
@@ -111,7 +111,7 @@ namespace N2.Web
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {
         	if (string.IsNullOrEmpty(site.Authority))
-				return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
         	
 			return Url.Parse(url).SetAuthority(site.Authority);
         }

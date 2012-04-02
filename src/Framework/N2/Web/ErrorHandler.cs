@@ -73,24 +73,22 @@ namespace N2.Web
 		private readonly IMailSender mailSender;
 		private readonly string mailTo;
 
-		private string fixClassUrl;
+		private string beginUrl;
 		private readonly int maxErrorReportsPerHour = -1;
-		private readonly ISecurityManager security;
 		private readonly object syncLock = new object();
 		private long errorCount;
 		private long errorsThisHour;
 		private int hour = DateTime.Now.Hour;
 
-		public ErrorHandler(IErrorNotifier notifier, IWebContext context, ISecurityManager security, InstallationManager installer, IMailSender mailSender, 
+		public ErrorHandler(IErrorNotifier notifier, IWebContext context, InstallationManager installer, IMailSender mailSender, 
 			ConfigurationManagerWrapper configuration)
 		{
 			this.notifier = notifier;
 			this.context = context;
-			this.security = security;
 			this.installer = installer;
 			this.mailSender = mailSender;
 
-			fixClassUrl = configuration.Sections.Management.Installer.FixClassUrl;
+			beginUrl = configuration.Sections.Management.Installer.WelcomeUrl;
 			action = configuration.Sections.Engine.Errors.Action;
 			mailTo = configuration.Sections.Engine.Errors.MailTo;
 			mailFrom = configuration.Sections.Engine.Errors.MailFrom;
@@ -174,9 +172,6 @@ namespace N2.Web
 			if (ex == null)
 				return;
 
-			if (!security.IsAdmin(context.User))
-				return;
-
 			if (ex is WrongClassException)
 			{
 				var wex = ex as WrongClassException;
@@ -205,10 +200,15 @@ namespace N2.Web
 
 		private void RedirectToFix(WrongClassException wex)
 		{
-			string url = Url.Parse(fixClassUrl).ResolveTokens().AppendQuery("id", wex.Identifier);
-			logger.Warn("Redirecting to '" + url + "' to fix exception: " + wex);
-			context.HttpContext.ClearError();
-			context.HttpContext.Response.Redirect(url);
+			if (context.HttpContext != null)
+			{
+				string url = Url.Parse(beginUrl).ResolveTokens()
+					.AppendQuery("action", "fixClass")
+					.AppendQuery("id", wex.Identifier);
+				logger.Warn("Redirecting to '" + url + "' to fix exception: " + wex);
+				context.HttpContext.ClearError();
+				context.HttpContext.Response.Redirect(url);
+			}
 		}
 
 		private static string FormatError(Exception ex)

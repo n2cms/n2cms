@@ -1,5 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using N2.Engine;
+using System;
 
 namespace N2.Web.Mvc
 {
@@ -8,6 +10,11 @@ namespace N2.Web.Mvc
 	{
 		public DynamicContentHelper(HtmlHelper html)
 			: base(html)
+		{
+		}
+
+		public DynamicContentHelper(HtmlHelper html, Func<IEngine> engine, Func<PathData> pathGetter)
+			: base(html, engine, pathGetter)
 		{
 		}
 
@@ -60,52 +67,14 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		//// obsolete stuff from 2.2 remains here for a while (uncomment to use)
+		/// <summary>Gives a content helper that with the given item in scope. The scope of the surrouding page is not changed.</summary>
+		/// <param name="otherContentItem">The content item to operate on.</param>
+		/// <returns>A content helper with a different scope than the surrounding page.</returns>
+		public new virtual DynamicContentHelper At(ContentItem otherContentItem)
+		{
+			EnsureAuthorized(otherContentItem);
 
-		//[Obsolete("Use Html.UniqueID")]
-		//public string UniqueID(string prefix = null)
-		//{
-		//    if (string.IsNullOrEmpty(prefix))
-		//        return "_" + Current.Page.ID;
-
-		//    return prefix + Current.Page.ID;
-		//}
-
-		//[Obsolete("Use Html.Tree")]
-		//public Tree TreeFrom(int skipLevels = 0, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
-		//{
-		//    return TreeFrom(Traverse.AncestorAtLevel(skipLevels), takeLevels, rootless, cssGetter, filter);
-		//}
-
-		//[Obsolete("Use Html.Tree")]
-		//public Tree TreeFrom(ContentItem item, int takeLevels = 3, bool rootless = false, Func<ContentItem, string> cssGetter = null, ItemFilter filter = null)
-		//{
-		//    if (item == null)
-		//        return Tree.Using(new NoHierarchyBuilder());
-
-		//    if (cssGetter == null)
-		//        cssGetter = GetNavigationClass;
-
-		//    return Tree.Using(new TreeHierarchyBuilder(item, takeLevels))
-		//        .ExcludeRoot(rootless)
-		//        .LinkWriter((n, w) => LinkTo(n.Current).Class(cssGetter(n.Current)).WriteTo(w))
-		//        .Filters(filter ?? N2.Content.Is.Navigatable());
-		//}
-
-		//[Obsolete]
-		//public string GetNavigationClass(ContentItem item)
-		//{
-		//    return Current.Page == item ? "current" : Traverse.Ancestors().Contains(item) ? "trail" : "";
-		//}
-
-		//[Obsolete("Use Html.Link")]
-		//public ILinkBuilder LinkTo(ContentItem item)
-		//{
-		//    if (item == null) return Link.To(item);
-
-		//    var lb = Link.To(item);
-		//    lb.Class(GetNavigationClass(item));
-		//    return lb;
-		//}
+			return new DynamicContentHelper(Html, Current.EngineGetter, () => new PathData { CurrentItem = otherContentItem, CurrentPage = otherContentItem.IsPage ? otherContentItem : Current.Page });
+		}
 	}
 }

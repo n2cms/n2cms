@@ -26,5 +26,9 @@ namespace N2.Persistence.NH
 		/// <summary>Begins a transaction.</summary>
 		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		ITransaction BeginTransaction();
+
+		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+		/// <returns>A disposable transaction wrapper.</returns>
+		ITransaction GetTransaction();
 	}
 }

@@ -130,7 +130,7 @@ namespace N2.Tests.Fakes
 
 		public ContentHelperBase Content
 		{
-			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
+			get { return new ContentHelperBase(() => this, () => RequestContext.CurrentPath); }
 		}
 
 		#endregion
@@ -217,5 +217,9 @@ namespace N2.Tests.Fakes
 			#endregion
 		}
 
+		public void AddComponentInstance<T>(T instance)
+		{
+			Container.AddComponentInstance(instance.GetType().FullName, typeof(T), instance);
+		}
 	}
 }

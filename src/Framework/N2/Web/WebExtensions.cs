@@ -101,5 +101,44 @@ namespace N2.Web
         {
             new JsonWriter(sw).Write(value);
         }
+
+		public static string ResolveUrlTokens(this string url)
+		{
+			return Url.ResolveTokens(url);
+		}
+
+		/// <summary>Creates the url used for rewriting friendly urls to the url of a template.</summary>
+		/// <param name="path">The path containing item information to route.</param>
+		/// <returns>The path to a template.</returns>
+		/// <remarks>This method may throw <see cref="TemplateNotFoundException"/> if the template cannot be computed.</remarks>
+		public static Url GetRewrittenUrl(this PathData path)
+		{
+			if (path.IsEmpty() || string.IsNullOrEmpty(path.TemplateUrl))
+				return null;
+
+			if (path.CurrentPage.IsPage)
+			{
+				Url url = Url.Parse(path.TemplateUrl)
+					.UpdateQuery(path.QueryParameters)
+					.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
+				if (!string.IsNullOrEmpty(path.Argument))
+					url = url.SetQueryParameter("argument", path.Argument);
+
+				return url.ResolveTokens();
+			}
+
+			for (ContentItem ancestor = path.CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
+				if (ancestor.IsPage)
+					return ancestor.FindPath(PathData.DefaultAction).GetRewrittenUrl()
+						.UpdateQuery(path.QueryParameters)
+						.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
+
+			if (path.CurrentItem.VersionOf.HasValue)
+				return path.CurrentItem.VersionOf.FindPath(PathData.DefaultAction).GetRewrittenUrl()
+					.UpdateQuery(path.QueryParameters)
+					.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
+
+			throw new TemplateNotFoundException(path.CurrentItem);
+		}
 	}
 }

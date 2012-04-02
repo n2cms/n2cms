@@ -10,16 +10,6 @@ namespace N2.Web.Mvc
         where TModel : class
         where TItem : ContentItem
     {
-        #region IItemContainer<TItem> Members
-
-        public TItem CurrentItem
-        {
-            get { return Content; }
-            set { Content = value; }
-        }
-
-        #endregion
-
         public override void RenderView(ViewContext viewContext)
         {
             ViewContext = viewContext;

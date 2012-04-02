@@ -360,6 +360,14 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
+		public void CanGetProperty_OfNestedProperty()
+		{
+			item2.Parent = item1;
+			object value = N2.Utility.GetProperty(item2, "Parent.Name");
+			Assert.AreEqual(item1.Name, value);
+		}
+
+		[Test]
 		public void Insert_FirstItem()
 		{
 			ContentItem root = CreateOneItem<UtilityItem>(10, "10", null);

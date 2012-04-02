@@ -1,5 +1,5 @@
 ﻿/**
-* n2name 0.1
+* n2name 0.2
 */
 
 (function($) {
@@ -26,8 +26,12 @@
 
     function checkboxHandler(){
         var checked = $(this).find('input').attr('checked');
-        if (checked) $(this).removeClass('unchecked').siblings('input').removeAttr('disabled');
-        else         $(this).addClass('unchecked').siblings('input').attr('disabled', true);
+        if (checked)
+			$(this).removeClass('unchecked')
+				.siblings('input').removeClass('disabled').removeAttr('readonly');
+        else
+			$(this).addClass('unchecked')
+				.siblings('input').addClass('disabled').attr('readonly', true);
     };
     
     function toggleChecked($cb){

@@ -19,12 +19,14 @@ namespace N2.Web
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
 		private static readonly object classLock = new object();
+		private CacheWrapper cache;
 
-		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext)
+		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache)
 		{
 			this.inner = inner;
 			this.persister = persister;
 			this.webContext = webContext;
+			this.cache = cache;
 		}
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound
@@ -116,14 +118,14 @@ namespace N2.Web
 
 			// Make sure the cached path data is initialized thread safely
 			Dictionary<string, PathData> cachedPathData;
-			if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
+			if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 			{
 				lock (classLock)
 				{
-					if ((cachedPathData = HttpRuntime.Cache["N2.PathDataCache"] as Dictionary<string, PathData>) == null)
+					if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 					{
 						cachedPathData = new Dictionary<string, PathData>();
-						HttpRuntime.Cache.Add("N2.PathDataCache", cachedPathData, new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+						cache.Add("N2.PathDataCache", cachedPathData, new CacheOptions { SlidingExpiration = SlidingExpiration });
 					}
 				}
 			}
@@ -131,15 +133,16 @@ namespace N2.Web
 			PathData data;
 			if (cachedPathData.TryGetValue(urlKey, out data))
 			{
+				data = data.Attach(persister);
 				if (data == null || data.ID == 0)
 				{
 					// Cached path has to CMS content
-					return PathData.Empty;
+					return data;
 				}
 
 				logger.Debug("Retrieving " + url + " from cache");
-				data = data.Attach(persister);
-				data.UpdateParameters(Url.Parse(url).GetQueries());
+				if (!string.IsNullOrEmpty(url.Query))
+					data.UpdateParameters(Url.Parse(url).GetQueries());
 			}
 			else
 			{
@@ -153,11 +156,9 @@ namespace N2.Web
 						string path = remainingPath;
 						var pathData = GetStartNode(url, cachedPathData, ref path, 0);
 
-						var contentItem = persister.Get(pathData.ID);
-
 						data = pathData.ID == 0
-								   ? inner.ResolvePath(url)
-								   : inner.ResolvePath(url, contentItem, remainingPath.Replace(path, ""));
+							? inner.ResolvePath(url)
+							: inner.ResolvePath(url, persister.Get(pathData.ID), remainingPath.Substring(path.Length, remainingPath.Length - path.Length));
 
 						if (data.IsCacheable)
 						{

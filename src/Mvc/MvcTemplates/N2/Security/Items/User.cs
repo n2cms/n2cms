@@ -5,15 +5,18 @@ using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 using N2.Security.Details;
+using N2.Engine;
 
 namespace N2.Security.Items
 {
-	[PartDefinition("User")]
+	[PartDefinition("User", IconUrl = "{IconsUrl}/user.png")]
 	[RestrictParents(typeof (UserList))]
     [Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
-    public class User : N2.ContentItem
+	public class User : N2.ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
+		private ISecurityManager security;
+
 		[EditableText("Title", 10, Required = true)]
 		public override string Title
 		{
@@ -21,14 +24,14 @@ namespace N2.Security.Items
 			set { base.Title = value; }
 		}
 
-		[EditableText("Title", 20, Required = true)]
+		[EditableText("Username", 20, Required = true)]
 		public override string Name
 		{
 			get { return base.Name; }
 			set { base.Name = value; }
 		}
 
-		[EditableText("Password", 30)]
+		[EditableText("Password", 30, IsIndexable = false)]
 		public virtual string Password
 		{
 			get { return GetDetail("Password", string.Empty); }
@@ -55,7 +58,7 @@ namespace N2.Security.Items
 			set { SetDetail("PasswordQuestion", value, string.Empty); }
 		}
 
-		[EditableText("PasswordAnswer", 130)]
+		[EditableText("PasswordAnswer", 130, IsIndexable = false)]
 		public virtual string PasswordAnswer
 		{
 			get { return (string) (GetDetail("PasswordAnswer") ?? string.Empty); }
@@ -123,11 +126,6 @@ namespace N2.Security.Items
 			get { return false; }
 		}
 
-		public override string IconUrl
-		{
-			get { return "{ManagementUrl}/Resources/icons/user.png"; }
-		}
-
 		public virtual MembershipUser GetMembershipUser(string providerName)
 		{
 			return
@@ -164,7 +162,12 @@ namespace N2.Security.Items
 
 		public override bool IsAuthorized(IPrincipal user)
 		{
-			return base.IsAuthorized(user) && Context.SecurityManager.IsAdmin(user);
+			return base.IsAuthorized(user) && (security ?? Context.SecurityManager).IsAdmin(user);
+		}
+
+		void IInjectable<ISecurityManager>.Set(ISecurityManager dependency)
+		{
+			this.security = dependency;
 		}
 	}
 }

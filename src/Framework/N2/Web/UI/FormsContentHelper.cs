@@ -8,8 +8,8 @@ namespace N2.Web.UI
 {
 	public class FormsContentHelper : ContentHelperBase
 	{
-		public FormsContentHelper(IEngine engine, Func<PathData> pathGetter)
-			: base(engine, pathGetter)
+		public FormsContentHelper(Func<IEngine> engineGetter, Func<PathData> pathGetter)
+			: base(engineGetter, pathGetter)
 		{
 		}
 	}

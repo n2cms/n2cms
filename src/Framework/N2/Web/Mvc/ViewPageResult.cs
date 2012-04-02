@@ -8,22 +8,24 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ViewPageResult : ActionResult
 	{
-		private readonly ContentItem _thePage;
-		private readonly IControllerMapper _controllerMapper;
-		private readonly IWebContext _webContext;
-		private readonly IActionInvoker _actionInvoker;
+		private readonly ContentItem thePage;
+		private readonly IControllerMapper controllerMapper;
+		private readonly IWebContext webContext;
+		private readonly IActionInvoker actionInvoker;
+		private readonly IControllerFactory controllerFactory;
 
 		public ViewPageResult(ContentItem thePage, IControllerMapper controllerMapper, IWebContext webContext, IActionInvoker actionInvoker)
 		{
-			_thePage = thePage;
-			_controllerMapper = controllerMapper;
-			_webContext = webContext;
-			_actionInvoker = actionInvoker;
+			this.controllerFactory = ControllerBuilder.Current.GetControllerFactory();
+			this.thePage = thePage;
+			this.controllerMapper = controllerMapper;
+			this.webContext = webContext;
+			this.actionInvoker = actionInvoker;
 		}
 
 		public ContentItem Page
 		{
-			get { return _thePage; }
+			get { return thePage; }
 		}
 
 		/// <summary>
@@ -32,33 +34,26 @@ namespace N2.Web.Mvc
 		/// <param name="context"/>
 		public override void ExecuteResult(ControllerContext context)
 		{
-			SetupN2ForNewPageRequest();
-
-			context = BuildPageControllerContext(context);
-
-			_actionInvoker.InvokeAction(context, "Index");
-		}
-
-		private void SetupN2ForNewPageRequest()
-		{
-			_webContext.CurrentPage = _thePage;
+			try
+			{
+				context = BuildPageControllerContext(context);
+				actionInvoker.InvokeAction(context, "Index");
+			}
+			finally
+			{
+				if (context.Controller != null)
+					controllerFactory.ReleaseController(context.Controller);
+			}
 		}
 
 		private ControllerContext BuildPageControllerContext(ControllerContext context)
 		{
-			string controllerName = _controllerMapper.GetControllerName(_thePage.GetContentType());
-			
-			var routeData = context.RouteData;
-			RouteExtensions.ApplyCurrentItem(routeData, controllerName, "Index", _thePage, null);
-			if (context.RouteData.DataTokens.ContainsKey(ContentRoute.ContentPartKey))
-			{
-				routeData.ApplyContentItem(ContentRoute.ContentPartKey, context.RouteData.DataTokens[ContentRoute.ContentPartKey] as ContentItem);
-			}
+			string controllerName = controllerMapper.GetControllerName(thePage.GetContentType());
+			RouteExtensions.ApplyCurrentPath(context.RouteData, controllerName, "Index", new PathData(thePage));
 
-			var requestContext = new RequestContext(context.HttpContext, routeData);
+			var requestContext = new RequestContext(context.HttpContext, context.RouteData);
 
-			var controller = (ControllerBase)ControllerBuilder.Current.GetControllerFactory()
-			                                 	.CreateController(requestContext, controllerName);
+			var controller = (ControllerBase)controllerFactory.CreateController(requestContext, controllerName);
 
 			controller.ControllerContext = new ControllerContext(requestContext, controller);
 			controller.ViewData.ModelState.Merge(context.Controller.ViewData.ModelState);

@@ -143,10 +143,12 @@ namespace N2.Tests.Fakes
 
 			public void Commit()
 			{
+				Committed(this, new EventArgs());
 			}
 
 			public void Rollback()
 			{
+				Rollbacked(this, new EventArgs());
 			}
 
 			#endregion
@@ -155,12 +157,30 @@ namespace N2.Tests.Fakes
 
 			public void Dispose()
 			{
+				Disposed(this, new EventArgs());
 			}
 
 			#endregion
+
+
+			/// <summary>Invoked after the transaction has been committed.</summary>
+			public event EventHandler Committed = delegate { };
+
+			/// <summary>Invoked after the transaction has been rollbacked.</summary>
+			public event EventHandler Rollbacked = delegate { };
+
+			/// <summary>Invoked after the transaction has closed and is disposed.</summary>
+			public event EventHandler Disposed = delegate { };
 		}
 
 		public ITransaction BeginTransaction()
+		{
+			lastOperation = "BeginTransaction()";
+
+			return new FakeTransaction();
+		}
+
+		public ITransaction GetTransaction()
 		{
 			lastOperation = "BeginTransaction()";
 

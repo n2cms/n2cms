@@ -28,14 +28,14 @@ namespace N2.Tests.Persistence
 
 			engine.Persister.Save(root);
 
-			new SearchHelper(engine).Find.All.Count().ShouldBe(7);
-
-			new SearchHelper(engine).Items.Count().ShouldBe(7);
-			new SearchHelper(engine).Pages.Count().ShouldBe(7);
-			new SearchHelper(engine).Pages.Where(p => p.State == ContentState.Published).Count().ShouldBe(3);
-			new SearchHelper(engine).PublishedPages.Count().ShouldBe(3);
-			new SearchHelper(engine).PublishedPagesBelow(root).Count().ShouldBe(3);
-			new SearchHelper(engine).PublishedPagesBelow(root).OfType<Definitions.PersistableItem1>().ToList().Count().ShouldBe(2);
+			new SearchHelper(() => engine).Find.All.Count().ShouldBe(7);
+							 
+			new SearchHelper(() => engine).Items.Count().ShouldBe(7);
+			new SearchHelper(() => engine).Pages.Count().ShouldBe(7);
+			new SearchHelper(() => engine).Pages.Where(p => p.State == ContentState.Published).Count().ShouldBe(3);
+			new SearchHelper(() => engine).PublishedPages.Count().ShouldBe(3);
+			new SearchHelper(() => engine).PublishedPagesBelow(root).Count().ShouldBe(3);
+			new SearchHelper(() => engine).PublishedPagesBelow(root).OfType<Definitions.PersistableItem1>().ToList().Count().ShouldBe(2);
 		}
 	}
 }

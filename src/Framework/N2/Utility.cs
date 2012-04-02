@@ -160,25 +160,14 @@ namespace N2
 			if (instance == null) return false;
 			if (propertyName == null) return false;
 
-			Type instanceType = instance.GetType();
-			PropertyInfo pi = instanceType.GetProperty(propertyName);
-			if (pi == null)
-			{
-				var dotIndex = propertyName.IndexOf('.');
-				if (dotIndex > 0)
-				{
-					var subObject = GetProperty(instance, propertyName.Substring(0, dotIndex));
-					if (subObject != null)
-					{
-						return TrySetProperty(subObject, propertyName.Substring(dotIndex + 1), value);
-					}
-				}
-				return false;
-			}
+			PropertyInfo pi = GetPropertyInfo(ref instance, propertyName);
+			
+			if (pi == null) return false;
 			if (!pi.CanWrite) return false;
 
 			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
 				value = Convert(value, pi.PropertyType);
+
 			try
 			{
 				pi.SetValue(instance, value, new object[0]);
@@ -190,6 +179,26 @@ namespace N2
 			}
 		}
 
+		private static PropertyInfo GetPropertyInfo(ref object instance, string propertyName)
+		{
+			Type instanceType = instance.GetType();
+
+			PropertyInfo pi = instanceType.GetProperty(propertyName);
+			if (pi == null)
+			{
+				var dotIndex = propertyName.IndexOf('.');
+				if (dotIndex > 0)
+				{
+					instance = GetProperty(instance, propertyName.Substring(0, dotIndex));
+					if (instance == null)
+						return null;
+
+					return GetPropertyInfo(ref instance, propertyName.Substring(dotIndex + 1));
+				}
+			}
+			return pi;
+		}
+
 		/// <summary>Gets a value from a property.</summary>
 		/// <param name="instance">The object whose property to get.</param>
 		/// <param name="propertyName">The name of the property to get.</param>
@@ -199,11 +208,11 @@ namespace N2
 			if (instance == null) throw new ArgumentNullException("instance");
 			if (propertyName == null) throw new ArgumentNullException("propertyName");
 
-			Type instanceType = instance.GetType();
-			PropertyInfo pi = instanceType.GetProperty(propertyName);
+			var originalInstance = instance;
+			var pi = GetPropertyInfo(ref instance, propertyName);
 
 			if (pi == null)
-				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
 
 			return pi.GetValue(instance, null);
 		}
