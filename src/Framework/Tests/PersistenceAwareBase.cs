@@ -45,6 +45,7 @@ namespace N2.Tests
 
 		protected virtual void CreateDatabaseSchema()
 		{
+			sessionProvider.CurrentSession = null;
 			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
 		}
 

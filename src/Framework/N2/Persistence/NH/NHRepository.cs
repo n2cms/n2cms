@@ -34,6 +34,7 @@ using System.Linq;
 using N2.Engine;
 using NHibernate;
 using NHibernate.Criterion;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
@@ -158,6 +159,7 @@ namespace N2.Persistence.NH
 		/// <param name="entity">the entity to save</param>
 		public void SaveOrUpdate(TEntity entity)
 		{
+			Debug.WriteLine("Saving or updating " + entity + " " + entity.GetHashCode());
 			sessionProvider.OpenSession.Session.SaveOrUpdate(entity);
 		}
 

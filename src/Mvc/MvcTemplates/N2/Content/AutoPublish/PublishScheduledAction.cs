@@ -37,22 +37,16 @@ namespace N2.Edit.AutoPublish
 
         public override void Execute()
         {
-            if (Debugger.IsAttached)
-                return;
+			//if (Debugger.IsAttached)
+			//    return;
 			
-			try
+			using (security.Disable())
 			{
-				security.ScopeEnabled = false;
-
 				PublishPendingVersions();
 
 				ChangeStateToItemsBecomePublished();
 
 				ChangeStateToExpiredItems();
-			}
-			finally
-			{
-				security.ScopeEnabled = true;
 			}
         }
 

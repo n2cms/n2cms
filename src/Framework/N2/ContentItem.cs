@@ -1015,7 +1015,7 @@ namespace N2
 		[DebuggerStepThrough]
 		public override string ToString()
 		{
-			return Name + "#" + ID;
+			return GetContentType().Name + " {" + Name + "#" + ID + "}";
 		}
 
 		/// <summary>Compares two content items for equality.</summary>

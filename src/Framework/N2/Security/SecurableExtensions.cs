@@ -4,6 +4,7 @@ using N2.Plugin;
 using System.Collections;
 using System;
 using N2.Engine.Globalization;
+using System.Diagnostics;
 
 namespace N2.Security
 {
@@ -28,7 +29,14 @@ namespace N2.Security
 		{
 			bool previous = security.ScopeEnabled;
 			security.ScopeEnabled = !isDisabled;
-			return new Scope(() => security.ScopeEnabled = previous);
+			Debug.WriteLine("Disabling security " + isDisabled + " {");
+			Debug.Indent();
+			return new Scope(() => 
+			{
+				security.ScopeEnabled = previous;
+				Debug.Unindent();
+				Debug.WriteLine("} Reenabling security " + previous);
+			});
 		}
 
 		private static bool IsPermitted(ISecurityManager security, object possiblyPermittable, IPrincipal user, ContentItem item)

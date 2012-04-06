@@ -92,7 +92,7 @@ namespace N2.Tests.Web.UrlParsing
 
 			var forcesLazyLoadButOtherwizeIgnored = data.CurrentPage;
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 
@@ -101,7 +101,7 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			var data = parser.ResolvePath("/item1/item1_1", item1);
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have loaded the parsed item directly.");
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(1)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 
@@ -113,7 +113,7 @@ namespace N2.Tests.Web.UrlParsing
 
 			var data = parser.ResolvePath("/item1/item1_1");
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have re-resolve template from start page.");
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(1)"), "Should have re-resolve template from start page.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
 		}
 	}

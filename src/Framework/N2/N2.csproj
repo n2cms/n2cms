@@ -268,6 +268,7 @@
     </Compile>
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\NH\SubTransaction.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />

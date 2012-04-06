@@ -21,6 +21,7 @@ using N2.Persistence;
 using N2.Plugin;
 using N2.Security;
 using N2.Web;
+using System.Diagnostics;
 
 namespace N2.Engine
 {
@@ -154,6 +155,7 @@ namespace N2.Engine
 		#region Container Methods
 
 		/// <summary>Resolves a service configured in the factory.</summary>
+		[DebuggerStepThrough]
 		public T Resolve<T>() where T : class
 		{
 			return (T) Container.Resolve(typeof (T));

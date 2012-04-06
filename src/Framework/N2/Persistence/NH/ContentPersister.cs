@@ -65,7 +65,15 @@ namespace N2.Persistence
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, ItemSaved);
+			var transaction = repository.GetTransaction();
+			if (transaction != null)
+			{
+				transaction.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, null);
+			}
+			else
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, ItemSaved);
+
 		}
 
 		/// <summary>Deletes an item an all sub-items</summary>
