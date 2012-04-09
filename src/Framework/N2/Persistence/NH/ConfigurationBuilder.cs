@@ -179,6 +179,9 @@ namespace N2.Persistence.NH
 					break;
 				case DatabaseFlavour.Oracle:
 				case DatabaseFlavour.Oracle10g:
+					// if you have OracleOdpDriver installed
+					// use the following line instead of the the later one (NOTICE both apply to the same property)
+					// Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleDataClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle10gDialect).AssemblyQualifiedName;
 					break;
@@ -366,6 +369,10 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.IntValue, cm => { });
 			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
+			// if you are using Oracle10g and get 
+			// ORA-01461: can bind a LONG value only for insert into a LONG column
+			// use the following line instead of the the later one (NOTICE both apply to the same property)
+			// ca.Property(x => x.StringValue, cm => { cm.Type(NHibernateUtil.AnsiString); cm.Length(stringLength); });
 			ca.Property(x => x.StringValue, cm => { cm.Type(NHibernateUtil.StringClob); cm.Length(stringLength); });
 			ca.Property(x => x.ObjectValue, cm => { cm.Column("Value"); cm.Type(NHibernateUtil.Serializable); cm.Length(ConfigurationBuilder.BlobLength); });
 		}
