@@ -12,7 +12,8 @@ namespace N2.Web.Mvc
 		/// <typeparam name="T">The type of view engine to use as base.</typeparam>
 		/// <param name="viewEngines">Placeholder.</param>
 		/// <returns>The theme view engine that was inserted.</returns>
-		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath, string[] fileExtensions, string[] masterExtensions) where T : VirtualPathProviderViewEngine, new()
+		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath, string[] fileExtensions, string[] masterExtensions) 
+			where T : VirtualPathProviderViewEngine, new()
 		{
 			Url.SetToken(Url.ThemesUrlToken, themeFolderPath);
 			
@@ -25,7 +26,8 @@ namespace N2.Web.Mvc
 		/// <typeparam name="T">The type of view engine to use as base.</typeparam>
 		/// <param name="viewEngines">Placeholder.</param>
 		/// <returns>The theme view engine that was inserted.</returns>
-		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath = "~/Themes/") where T : VirtualPathProviderViewEngine, new()
+		public static ThemeViewEngine<T> RegisterThemeViewEngine<T>(this ViewEngineCollection viewEngines, string themeFolderPath = "~/Themes/") 
+			where T : VirtualPathProviderViewEngine, new()
 		{
 			Url.SetToken(Url.ThemesUrlToken, themeFolderPath);
 
@@ -49,17 +51,19 @@ namespace N2.Web.Mvc
 		/// <param name="viewEngines">The view engines to append.</param>
 		public static void RegisterTokenViewEngine(this ViewEngineCollection viewEngines)
 		{
-			var none = new string[0];
-			viewEngines.Add(new WebFormViewEngine 
-			{ 
-				AreaMasterLocationFormats = none,
-				AreaPartialViewLocationFormats= none,
-				AreaViewLocationFormats= none,
-				MasterLocationFormats= none,
-				PartialViewLocationFormats = new [] { Url.ResolveTokens("{ManagementUrl}/Tokens/{0}.ascx") },
-				ViewLocationFormats= none,
+			var noLocations = new string[0];
+			var tokenLocations = new[] { Url.ResolveTokens("{ManagementUrl}/Tokens/{0}.ascx") };
+			var ve = new WebFormViewEngine
+			{
+				AreaMasterLocationFormats = noLocations,
+				AreaPartialViewLocationFormats = noLocations,
+				AreaViewLocationFormats = noLocations,
+				MasterLocationFormats = noLocations,
+				PartialViewLocationFormats = tokenLocations,
+				ViewLocationFormats = tokenLocations,
 				ViewLocationCache = new DefaultViewLocationCache()
-			});
+			};
+			viewEngines.Add(ve);
 		}
 	}
 }

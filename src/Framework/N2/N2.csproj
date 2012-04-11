@@ -364,6 +364,7 @@
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
