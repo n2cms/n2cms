@@ -11,8 +11,8 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ControllerContentHelper : ContentHelperBase
 	{
-		public ControllerContentHelper(IEngine engine, Func<PathData> pathGetter)
-			: base(engine, pathGetter)
+		public ControllerContentHelper(Func<IEngine> engineGetter, Func<PathData> pathGetter)
+			: base(engineGetter, pathGetter)
 		{
 		}
 	}

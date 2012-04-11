@@ -17,7 +17,7 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			base.SetUp();
 			UrlParser inner = TestSupport.Setup(persister, wrapper, host);
-			parser = new CachingUrlParserDecorator(inner, persister, wrapper);
+			parser = new CachingUrlParserDecorator(inner, persister, wrapper, new CacheWrapper(persister, wrapper, new DatabaseSection()));
 			CreateDefaultStructure();
 			repository = (FakeRepository<ContentItem>) persister.Repository;
 		}
@@ -89,6 +89,8 @@ namespace N2.Tests.Web.UrlParsing
 			parser.ResolvePath("/item1/item1_1"); // find and cache
 
 			var data = parser.ResolvePath("/item1/item1_1");
+
+			var forcesLazyLoadButOtherwizeIgnored = data.CurrentPage;
 
 			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));

@@ -6,15 +6,16 @@ namespace N2.Web.Mvc.Html
 {
 	public static class EngineExnteions
 	{
+		/// <summary>Resolves the current <see cref="IEngine"/> using information stored in context or falling back to the singleton instance.</summary>
 		public static IEngine ContentEngine(this HtmlHelper html)
 		{
-			return html.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
+			return RouteExtensions.GetEngine(html.ViewContext.RouteData)
 				?? N2.Context.Current;
 		}
 
 		public static ItemDefinition Definition(this HtmlHelper html, ContentItem item)
 		{
-			return html.ContentEngine().Definitions.GetDefinition(item);
+			return ContentEngine(html).Definitions.GetDefinition(item);
 		}
 
 		public static T ResolveService<T>(this HtmlHelper helper) where T : class

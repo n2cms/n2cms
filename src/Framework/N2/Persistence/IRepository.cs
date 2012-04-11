@@ -103,6 +103,10 @@ namespace N2.Persistence
 		/// <summary>Begins a transaction.</summary>
 		/// <returns>A disposable transaction wrapper.</returns>
 		ITransaction BeginTransaction();
+
+		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+		/// <returns>A disposable transaction wrapper.</returns>
+		ITransaction GetTransaction();
 	}
 
     /// <summary>

@@ -75,7 +75,7 @@ namespace N2.Details
 					}
 				}
 			}
-			return updated || listEditor.DeletedIndexes.Count > 0 || listEditor.AddedTypes.Count > 0;
+			return updated || listEditor.DeletedIndexes.Count > 0 || listEditor.AddedDefinitions.Count > 0;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -110,6 +110,7 @@ namespace N2.Details
 			ItemEditorList listEditor = new ItemEditorList();
 			listEditor.ID = Name;
 			listEditor.ParentItem = ItemUtility.FindInParents<IItemEditor>(container).CurrentItem;
+			listEditor.Label = Title;
 			container.Controls.Add(listEditor);
 			return listEditor;
 		}

@@ -44,6 +44,7 @@ body.rightExpanded #content { margin-right:265px; }
 
 /* Edit details */
 .framed .content fieldset { clear:left; padding:10px; }
+.framed table.editDetail td { margin:0; padding:0; }
 
 .framed .titleEditor { width:580px; }
 .framed textarea.textEditor { width:580px; }

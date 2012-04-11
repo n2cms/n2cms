@@ -12,6 +12,7 @@ namespace N2.Management.Content.Templates
 	[AllowedChildren(typeof(ContentItem))]
 	[Throwable(AllowInTrash.No)]
 	[Indexable(IsIndexable = false)]
+	[RestrictParents(typeof(IRootPage))]
 	public class TemplateContainer : ContentItem, ISystemNode
 	{
 	}

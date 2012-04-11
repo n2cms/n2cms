@@ -16,7 +16,7 @@ namespace N2.Templates.Items
 	{
 		public override string GetPreviewUrl(ContentItem item)
 		{
-			return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 		}
 	}
 

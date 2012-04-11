@@ -39,6 +39,15 @@ namespace N2.Configuration
 			set { base["cacheProviderClass"] = value; }
 		}
 
+		/// <summary>The name of the sql dependency to use for cache invalidation.</summary>
+		/// <remarks>This setting must be enabled in SQL Server using aspnet_regsql.exe.</remarks>
+		[ConfigurationProperty("sqlCacheDependency")]
+		public string SqlCacheDependency
+		{
+			get { return (string)base["sqlCacheDependency"]; }
+			set { base["sqlCacheDependency"] = value; }
+		}
+
 		/// <summary>The connection string to pick among the connection strings in the connectionStrings section.</summary>
 		[ConfigurationProperty("connectionStringName", DefaultValue = "N2CMS")]
 		public string ConnectionStringName

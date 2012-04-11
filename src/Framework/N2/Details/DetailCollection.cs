@@ -55,7 +55,8 @@ namespace N2.Details
 				detail = (ContentDetail)val;
 			else
 				detail = ContentDetail.New(EnclosingItem, null, val);
-			detail.Name = this.Name;
+			if(detail.Name == null || !detail.Name.StartsWith(this.Name))
+				detail.Name = this.Name;
 			detail.EnclosingItem = this.EnclosingItem;
 			detail.EnclosingCollection = this;
 			return detail;

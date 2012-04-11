@@ -12,11 +12,15 @@ namespace N2.Persistence.NH
         private ISession session;
         private ISessionProvider provider;
 
+		/// <summary>Gets an existing session or null if no session has been started.</summary>
         public ISession Session
         {
             get { return session; }
             set { session = value; }
         }
+
+		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+		public virtual ITransaction Transaction { get; set; }
 
         public SessionContext(ISessionProvider provider, ISession session)
         {

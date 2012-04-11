@@ -13,7 +13,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div id="content">
+	<ul class="tabs">
+		<li class="tab selected"><a href="#">Invalid class fixing tool</a></li>
+	</ul>
+    <div class="tabPanel">
         <asp:Label CssClass="msg" runat="server" ID="lblResult" />
         <h1>Invalid item(s) in database (class namechange or missing dll?)</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
@@ -34,8 +37,7 @@ public class MyPage...</code></pre>
             </li>
             <li><b>UFO landing.</b> Someone did nasty experiments to your database...</li>
         </ul>
-        <p>
-            To fix it you can either </p>
+        <h2>To fix it you can either </h2>
             <ul>
             <li>Act intelligently upon the this information.</li>
             <li>Try <asp:Button OnClientClick="return confirm('The nodes and all their CHILD nodes will be DELETED completly and irrecoverably. You can't get them back afterwards. Please note that child nodes of other types that could otherwise work also will be deleted. Delete?')" runat="server" Text="deleting" OnClick="btnDelete_Click" /> the offending nodes (use at own risk).</li>
@@ -45,7 +47,7 @@ public class MyPage...</code></pre>
             </li>
         </ul>
         <p>These are are the problematic classes in the database. Their type/discriminator doesn't match any content class definition (class name or attribute name/discriminator) in the application:</p>
-        <asp:DataGrid ID="dgrItems" runat="server"></asp:DataGrid>
+        <asp:DataGrid ID="dgrItems" runat="server" CssClass="gv"></asp:DataGrid>
 
     </div>
     </form>

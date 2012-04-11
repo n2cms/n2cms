@@ -22,6 +22,33 @@ namespace N2.Management.Content.Export {
         protected global::System.Web.UI.WebControls.CustomValidator cvImport;
         
         /// <summary>
+        /// pnlNewName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNewName;
+        
+        /// <summary>
+        /// lblNewName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNewName;
+        
+        /// <summary>
+        /// txtNewName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNewName;
+        
+        /// <summary>
         /// chkSkipRoot control.
         /// </summary>
         /// <remarks>

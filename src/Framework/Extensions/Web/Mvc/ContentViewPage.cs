@@ -21,19 +21,19 @@ namespace N2.Web.Mvc
 
 		ContentItem IItemContainer.CurrentItem
 		{
-			get { return Content; }
+			get { return CurrentItem; }
 		}
 
 		#endregion
 
 		public HtmlHelper<TItem> ContentHtml { get; set; }
-		public TItem Content { get; set; }
+		public TItem CurrentItem { get; set; }
 
 		public override void InitHelpers()
 		{
 			base.InitHelpers();
 
-			Content = ViewContext.CurrentItem<TItem>();
+			CurrentItem = ViewContext.RouteData.CurrentItem() as TItem;
 			ContentHtml = ViewContext.CreateContentItemHelper<TItem>();
 		}
 	}

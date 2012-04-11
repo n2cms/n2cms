@@ -95,7 +95,7 @@ namespace N2.Edit.Versions
 			if (!item.VersionOf.HasValue)
 				return item.Url;
 
-			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl)
+			return Url.Parse(item.FindPath(PathData.DefaultAction).GetRewrittenUrl())
 				.AppendQuery("preview", item.ID)
 				.AppendQuery("original", item.VersionOf.ID);
 		}

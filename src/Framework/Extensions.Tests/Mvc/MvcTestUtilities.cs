@@ -20,7 +20,7 @@ namespace N2.Extensions.Tests.Mvc
             page.ViewData = new ViewDataDictionary<T>(model);
 			var ctx = new FakeHttpContext();
 			page.ViewContext = new ViewContext(new ControllerContext { HttpContext = ctx }, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
-			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
+			page.ViewContext.RouteData.ApplyCurrentPath(new Web.PathData(model));
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
 			return page;
         }
@@ -39,7 +39,7 @@ namespace N2.Extensions.Tests.Mvc
                 Controller = new StubController(),
 				HttpContext = new FakeHttpContext("/")
             };
-			controllerContext.RequestContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
+			controllerContext.RequestContext.RouteData.ApplyCurrentPath(new Web.PathData(item));
             controllerContext.Controller.ControllerContext = controllerContext;
 
 			page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
@@ -51,16 +51,10 @@ namespace N2.Extensions.Tests.Mvc
 
 		private static IEngine StubEngine()
 		{
-			var engine = MockRepository.GenerateStub<IEngine>();
-			engine.Expect(e => e.Resolve<ITemplateRenderer>())
-				.Return(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()))
-				.Repeat.Any();
-			engine.Expect(e => e.Resolve<DisplayableRendererSelector>())
-				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }))
-				.Repeat.Any();
-			engine.Expect(e => e.SecurityManager)
-				.Return(MockRepository.GenerateStub<ISecurityManager>())
-				.Repeat.Any();
+			var engine = new FakeEngine();
+			engine.AddComponentInstance<ITemplateRenderer>(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()));
+			engine.AddComponentInstance<DisplayableRendererSelector>(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }));
+			engine.AddComponentInstance<ISecurityManager>(MockRepository.GenerateStub<ISecurityManager>());
 			return engine;
 		}
 

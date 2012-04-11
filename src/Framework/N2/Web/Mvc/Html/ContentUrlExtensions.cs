@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace N2.Web.Mvc.Html
 {
@@ -6,7 +7,14 @@ namespace N2.Web.Mvc.Html
 	{
 		public static string Action(this UrlHelper url, ContentItem item)
 		{
-			return url.Action("Index", new { item = item.ID });
+			return Action(url, item, "Index");
+		}
+
+		public static string Action(this UrlHelper url, ContentItem item, string action)
+		{
+			var values = new RouteValueDictionary();
+			values[ContentRoute.ContentItemKey] = item.ID;
+			return url.Action(action, values);
 		}
 	}
 }

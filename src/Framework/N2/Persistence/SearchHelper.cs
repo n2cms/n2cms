@@ -14,9 +14,9 @@ namespace N2.Persistence
 	/// </summary>
 	public class SearchHelper
 	{
-		IEngine engine;
+		Func<IEngine> engine;
 
-		public SearchHelper(IEngine engine)
+		public SearchHelper(Func<IEngine> engine)
 		{
 			this.engine = engine;
 		}
@@ -51,13 +51,13 @@ namespace N2.Persistence
 		/// <remarks>This API is comparable to using LINQ but not as comperhensive.</remarks>
 		public IItemFinder Find
 		{
-			get { return engine.Resolve<IItemFinder>(); }
+			get { return engine().Resolve<IItemFinder>(); }
 		}
 
 		/// <summary>Performs text search for content items.</summary>
 		public ITextSearcher Text
 		{
-			get { return engine.Resolve<ITextSearcher>(); }
+			get { return engine().Resolve<ITextSearcher>(); }
 		}
 
 		/// <summary>Queries a persisted entity using LINQ.</summary>
@@ -65,7 +65,7 @@ namespace N2.Persistence
 		/// <returns>A queryable expression.</returns>
 		public virtual IQueryable<T> Query<T>()
 		{
-			return engine.Query<T>();
+			return engine().Query<T>();
 		}
 	}
 }
