@@ -46,14 +46,18 @@ namespace N2.Plugin
 		{
 			lock (this)
 			{
-				bool wasConnected = IsConnected ?? false;
+				var wasConnected = IsConnected;
 				IsConnected = statusLevel == SystemStatusLevel.UpAndRunning || statusLevel == SystemStatusLevel.Unconfirmed;
+				StatusLevel = statusLevel;
 
-				if (!wasConnected && IsConnected.Value && online != null)
+				if ((!wasConnected.HasValue || !wasConnected.Value) && IsConnected.Value && online != null)
+					// unknown -> connected
+					// disconnected -> connected
 					online(this, new EventArgs());
-				else if (wasConnected && !IsConnected.Value && Offline != null)
+				else if ((!wasConnected.HasValue || wasConnected.Value) && !IsConnected.Value && Offline != null)
+					// unknown -> disconnected 
+					// connected-> disconnected 
 					Offline(this, new EventArgs());
-
 			}
 			return this;
 		}

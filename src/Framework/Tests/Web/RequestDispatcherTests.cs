@@ -52,7 +52,7 @@ namespace N2.Tests.Web
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
-			parser = new UrlParser(persister, webContext, new Host(webContext, startItem.ID, startItem.ID), hostSection);
+			parser = new UrlParser(persister, webContext, new Host(webContext, startItem.ID, startItem.ID), new N2.Plugin.ConnectionMonitor(), hostSection);
 		}
 
 		//[Test]

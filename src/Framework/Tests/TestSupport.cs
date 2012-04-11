@@ -118,7 +118,7 @@ namespace N2.Tests
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
 		{
-			return new UrlParser(persister, wrapper, host, new HostSection());
+			return new UrlParser(persister, wrapper, host, new N2.Plugin.ConnectionMonitor(), new HostSection());
 		}
 
 		public static EngineSection SetupEngineSection()
