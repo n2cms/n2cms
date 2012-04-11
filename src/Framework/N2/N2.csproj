@@ -355,6 +355,7 @@
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Collections\TraverseHelper.cs" />
+    <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
