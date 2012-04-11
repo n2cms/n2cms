@@ -143,6 +143,11 @@
 									</xs:all>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="tokens" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="builtInEnabled" type="xs:boolean" use="optional" default="true" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="rootID" type="xs:integer" use="optional" default="1" />
 						<xs:attribute name="startPageID" type="xs:integer" use="optional" default="1" />

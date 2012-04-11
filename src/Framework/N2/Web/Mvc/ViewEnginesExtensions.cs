@@ -44,5 +44,22 @@ namespace N2.Web.Mvc
 				viewEngines[i] = new RegisteringViewEngineDecorator(viewEngines[i]);
 			}
 		}
+
+		/// <summary>Adds a view engine that resolves tokens from N2's management path.</summary>
+		/// <param name="viewEngines">The view engines to append.</param>
+		public static void RegisterTokenViewEngine(this ViewEngineCollection viewEngines)
+		{
+			var none = new string[0];
+			viewEngines.Add(new WebFormViewEngine 
+			{ 
+				AreaMasterLocationFormats = none,
+				AreaPartialViewLocationFormats= none,
+				AreaViewLocationFormats= none,
+				MasterLocationFormats= none,
+				PartialViewLocationFormats = new [] { Url.ResolveTokens("{ManagementUrl}/Tokens/{0}.ascx") },
+				ViewLocationFormats= none,
+				ViewLocationCache = new DefaultViewLocationCache()
+			});
+		}
 	}
 }
