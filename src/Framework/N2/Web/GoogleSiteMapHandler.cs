@@ -5,6 +5,9 @@ using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Xml;
+using N2.Engine.Globalization;
+using N2.Engine;
+using System.Security.Principal;
 
 namespace N2.Web
 {
@@ -44,16 +47,21 @@ namespace N2.Web
 			context.Response.Write(GetSiteMap(context));
 		}
 
+		public IEngine Engine { get { return Context.Current; } }
+
 		public string GetSiteMap(HttpContext context)
 		{
+			ContentItem rootItem = Engine.RequestContext.CurrentPath.StopItem;
+			ILanguageGateway lg = Engine.Resolve<ILanguageGateway>();
+			string cacheKey = "Googlesitemap:" + rootItem.ToString();
+
 			// As this is a heavy operation, use the cache
-			if (context.Cache["Googlesitemap"] != null)
-				return context.Cache["Googlesitemap"].ToString();
+			if (context.Cache[cacheKey] != null)
+				return context.Cache[cacheKey].ToString();
 
 			string baseUrl = GetBaseUrl(context);
 			IList<ContentItem> list = new List<ContentItem>();
-			ContentItem rootItem = N2.Find.RootItem;
-			RecurseTree(list, rootItem);
+			RecurseTree(list, rootItem, lg.GetLanguage(rootItem).LanguageCode);
 
 			StringBuilder builder = new StringBuilder();
 			StringWriter stringWriter = new StringWriter(builder);
@@ -93,8 +101,8 @@ namespace N2.Web
 
 			stringWriter.Flush();
 
-			// Add to the cache for 3 days.
-			context.Cache.Add("Googlesitemap", builder.ToString(), null, DateTime.Today.AddDays(3), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+			// Add to the cache for 30 minutes.
+			context.Cache.Add(cacheKey, builder.ToString(), null, DateTime.Today.AddMinutes(30), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
 
 			return builder.ToString();
 		}
@@ -112,16 +120,14 @@ namespace N2.Web
 		/// </summary>
 		/// <param name="list">This should be an empty list</param>
 		/// <param name="parent">This should be called using the root item</param>
-		private void RecurseTree(IList<ContentItem> list, ContentItem parent)
+		private void RecurseTree(IList<ContentItem> list, ContentItem parent, string language)
 		{
-			// TODO: add caching?
-			foreach (var item in parent.GetChildren())
+			foreach (var item in parent.Children.FindNavigatablePages())
 			{
-				if (item.Visible && item.IsPage) // TODO make this a setting
-				{
-					list.Add(item);
-					RecurseTree(list, item);
-				}
+				if (!item.IsAuthorized(new GenericPrincipal(new GenericIdentity(""), null))) continue;
+				if (item is ILanguage && ((ILanguage)item).LanguageCode != language) continue;
+				if (item.Visible && item.IsPage) list.Add(item);
+				if (item.IsPage) RecurseTree(list, item, language);
 			}
 		}
 	}
