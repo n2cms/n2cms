@@ -662,29 +662,36 @@ namespace N2
 			if (string.IsNullOrEmpty(childName))
 				return null;
 
-			// Start with this node
-    		ContentItem currentItem = this;
-
 			// Walk all segments, if any (note that double slashes are ignored)
-			foreach (var segment in childName.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries))
-			{
-				// Unscape the segment and find a child node with a matching name
-				var nameSegment = HttpUtility.UrlDecode(segment);
-				var childItem = currentItem.Children.FindNamed(nameSegment);
+    		var segments = childName.Split(new[] {'/'}, 2, StringSplitOptions.RemoveEmptyEntries);
+			if (segments.Length == 0) return this;
 
-				// If no child node was found, try the segment name without extension
-				if (childItem == null && string.IsNullOrEmpty(Extension) == false)
-				{
-					childItem = currentItem.Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
-				}
+			// Unscape the segment and find a child node with a matching name
+			var nameSegment = HttpUtility.UrlDecode(segments[0]);
+			var childItem = FindNamedChild(nameSegment);
 
-				// If no child with the specified name was found, there's no match
-				if ((currentItem = childItem) == null) break;
-			}
-			return currentItem;
+    		// Recurse into children if there are more segments
+    		return childItem != null && segments.Length == 2
+    		       	? childItem.GetChild(segments[1])
+    		       	: childItem;
 		}
 
 		/// <summary>
+		/// Find a direct child by its name
+		/// </summary>
+		/// <param name="nameSegment">Child name. Cannot contain slashes.</param>
+		/// <returns></returns>
+    	protected virtual ContentItem FindNamedChild(string nameSegment)
+    	{
+    		var childItem = Children.FindNamed(nameSegment);
+    		if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+    		{
+    			childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
+    		}
+    		return childItem;
+    	}
+
+    	/// <summary>
 		/// Compares the item's name ignoring case and extension.
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
