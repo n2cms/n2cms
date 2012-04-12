@@ -662,36 +662,26 @@ namespace N2
 			if (string.IsNullOrEmpty(childName))
 				return null;
 
-			int slashIndex = childName.IndexOf('/');
-			if (slashIndex == 0) // starts with slash
-			{
-				if (childName.Length == 1)
-					return this;
-				else
-					return GetChild(childName.Substring(1));
-			}
-			if (slashIndex > 0) // contains a slash further down
-			{
-				string nameSegment = HttpUtility.UrlDecode(childName.Substring(0, slashIndex));
-				foreach (ContentItem child in GetChildren(new NullFilter()))
-				{
-					if (child.IsNamed(nameSegment))
-					{
-						return child.GetChild(childName.Substring(slashIndex));
-					}
-				}
-				return null;
-			}
+			// Start with this node
+    		ContentItem currentItem = this;
 
-			// no slash, only a name
-			foreach (ContentItem child in GetChildren(new NullFilter()))
+			// Walk all segments, if any (note that double slashes are ignored)
+			foreach (var segment in childName.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries))
 			{
-				if (child.IsNamed(childName))
+				// Unscape the segment and find a child node with a matching name
+				var nameSegment = HttpUtility.UrlDecode(segment);
+				var childItem = currentItem.Children.FindNamed(nameSegment);
+
+				// If no child node was found, try the segment name without extension
+				if (childItem == null && string.IsNullOrEmpty(Extension) == false)
 				{
-					return child;
+					childItem = currentItem.Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
 				}
+
+				// If no child with the specified name was found, there's no match
+				if ((currentItem = childItem) == null) break;
 			}
-			return null;
+			return currentItem;
 		}
 
 		/// <summary>
