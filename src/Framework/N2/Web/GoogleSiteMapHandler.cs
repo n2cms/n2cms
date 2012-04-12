@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,6 +9,8 @@ using System.Xml;
 using N2.Engine.Globalization;
 using N2.Engine;
 using System.Security.Principal;
+using N2.Definitions;
+using N2.Web.UI;
 
 namespace N2.Web
 {
@@ -44,67 +47,64 @@ namespace N2.Web
 			context.Response.ContentType = "text/xml";
 
 			context.Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-			context.Response.Write(GetSiteMap(context));
+			WriteSiteMap(context);
+
+			SetOutputCache(context);
+		}
+
+		protected virtual void SetOutputCache(HttpContext context)
+		{
+			context.TrySetCompressionFilter();
+			context.Response.SetOutputCache(DateTime.Now.AddDays(1));
+			context.Response.AddCacheDependency(new ContentCacheDependency(Engine.Persister));
 		}
 
 		public IEngine Engine { get { return Context.Current; } }
 
-		public string GetSiteMap(HttpContext context)
+		public void WriteSiteMap(HttpContext context)
 		{
-			ContentItem rootItem = Engine.RequestContext.CurrentPath.StopItem;
-			ILanguageGateway lg = Engine.Resolve<ILanguageGateway>();
-			string cacheKey = "Googlesitemap:" + rootItem.ToString();
-
-			// As this is a heavy operation, use the cache
-			if (context.Cache[cacheKey] != null)
-				return context.Cache[cacheKey].ToString();
-
-			string baseUrl = GetBaseUrl(context);
-			IList<ContentItem> list = new List<ContentItem>();
-			RecurseTree(list, rootItem, lg.GetLanguage(rootItem).LanguageCode);
-
-			StringBuilder builder = new StringBuilder();
-			StringWriter stringWriter = new StringWriter(builder);
-
-			XmlWriterSettings settings = new XmlWriterSettings();
-			settings.OmitXmlDeclaration = true;
-			settings.Indent = true;
-			settings.Encoding = Encoding.UTF8;
-
-			using (XmlWriter writer = XmlWriter.Create(stringWriter, settings))
+			using (XmlWriter writer = CreateXmlWriter(context))
 			{
 				writer.WriteStartDocument();
 
 				// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 				writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-				foreach (var item in list)
+				string baseUrl = GetBaseUrl(context);
+				var root = Engine.UrlParser.ResolvePath(context.Request.Url).StopItem;
+				WriteItem(writer, baseUrl, root);
+				var descendants = GetDescendants(root);
+				foreach (var item in descendants)
 				{
-					// <url>
-					if (!item.Url.StartsWith("http"))
-					{
-						writer.WriteStartElement("url");
-
-						writer.WriteElementString("loc", baseUrl + item.Url);
-						writer.WriteElementString("lastmod", item.Published.GetValueOrDefault().ToString("yyyy-MM-dd")); // Google doesn't like IS0 8601/W3C 
-						writer.WriteElementString("changefreq", "weekly"); // TODO make this a setting
-						writer.WriteElementString("priority", "0"); // TODO make this a setting
-
-						// </url>
-						writer.WriteEndElement();
-					}
+					WriteItem(writer, baseUrl, item);
 				}
 
 				// <urlset>
 				writer.WriteEndElement();
 			}
+		}
 
-			stringWriter.Flush();
+		protected virtual XmlWriter CreateXmlWriter(HttpContext context)
+		{
+			XmlWriterSettings settings = new XmlWriterSettings { OmitXmlDeclaration = true, Encoding = Encoding.UTF8 };
+			return XmlWriter.Create(context.Response.Output, settings);
+		}
 
-			// Add to the cache for 30 minutes.
-			context.Cache.Add(cacheKey, builder.ToString(), null, DateTime.Today.AddMinutes(30), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+		protected virtual void WriteItem(XmlWriter writer, string baseUrl, ContentItem item)
+		{
+			// <url>
+			if (!item.Url.StartsWith("http"))
+			{
+				writer.WriteStartElement("url");
 
-			return builder.ToString();
+				writer.WriteElementString("loc", baseUrl + item.Url);
+				writer.WriteElementString("lastmod", item.Published.GetValueOrDefault().ToString("yyyy-MM-dd")); // Google doesn't like IS0 8601/W3C 
+				writer.WriteElementString("changefreq", "weekly"); // TODO make this a setting
+				writer.WriteElementString("priority", "0"); // TODO make this a setting
+
+				// </url>
+				writer.WriteEndElement();
+			}
 		}
 
 		/// <summary>
@@ -115,19 +115,23 @@ namespace N2.Web
 			return "http://" + context.Request.Url.Authority;
 		}
 
-		/// <summary>
-		/// Builds up the entire site tree recursively, adding items to the list
-		/// </summary>
-		/// <param name="list">This should be an empty list</param>
-		/// <param name="parent">This should be called using the root item</param>
-		private void RecurseTree(IList<ContentItem> list, ContentItem parent, string language)
+		public IEnumerable<ContentItem> GetDescendants(ContentItem parent)
 		{
-			foreach (var item in parent.Children.FindNavigatablePages())
+			var children = parent.Children.FindPages();
+			foreach (var child in children)
 			{
-				if (!item.IsAuthorized(new GenericPrincipal(new GenericIdentity(""), null))) continue;
-				if (item is ILanguage && ((ILanguage)item).LanguageCode != language) continue;
-				if (item.Visible && item.IsPage) list.Add(item);
-				if (item.IsPage) RecurseTree(list, item, language);
+				if (child is ILanguage) continue;
+				if (child is IRedirect) continue;
+				if (child is ISystemNode) continue;
+				if (!child.Visible) continue;
+				if (!child.IsAuthorized(new GenericPrincipal(new GenericIdentity(""), null))) continue;
+				
+				yield return child;
+
+				foreach (var descendant in GetDescendants(child))
+				{
+					yield return descendant;
+				}
 			}
 		}
 	}
