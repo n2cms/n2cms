@@ -199,7 +199,7 @@ namespace N2.Web.Drawing
 					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 				case "image/png":
 				default:
-					return GetResizedBitmap(ref resized, original.PixelFormat);
+					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 			}
 		}
 
