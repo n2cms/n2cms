@@ -50,7 +50,7 @@ namespace N2.Web
 			if (context.Cache["Googlesitemap"] != null)
 				return context.Cache["Googlesitemap"].ToString();
 
-			string domain = "http://" + context.Request.Url.Authority;
+			string baseUrl = GetBaseUrl(context);
 			IList<ContentItem> list = new List<ContentItem>();
 			ContentItem rootItem = N2.Find.RootItem;
 			RecurseTree(list, rootItem);
@@ -77,7 +77,7 @@ namespace N2.Web
 					{
 						writer.WriteStartElement("url");
 
-						writer.WriteElementString("loc", domain + item.Url);
+						writer.WriteElementString("loc", baseUrl + item.Url);
 						writer.WriteElementString("lastmod", item.Published.GetValueOrDefault().ToString("yyyy-MM-dd")); // Google doesn't like IS0 8601/W3C 
 						writer.WriteElementString("changefreq", "weekly"); // TODO make this a setting
 						writer.WriteElementString("priority", "0"); // TODO make this a setting
@@ -97,6 +97,14 @@ namespace N2.Web
 			context.Cache.Add("Googlesitemap", builder.ToString(), null, DateTime.Today.AddDays(3), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
 
 			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Get base URL to publish for items in the sitemap.
+		/// </summary>
+		public virtual string GetBaseUrl(HttpContext context)
+		{
+			return "http://" + context.Request.Url.Authority;
 		}
 
 		/// <summary>
