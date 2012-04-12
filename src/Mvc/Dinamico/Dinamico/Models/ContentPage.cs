@@ -12,7 +12,7 @@ namespace Dinamico.Models
 	/// </summary>
 	[PageDefinition]
 	[WithEditableTemplateSelection(ContainerName = Defaults.Containers.Metadata)]
-	public class ContentPage : PageModelBase
+	public class ContentPage : PageModelBase, IContentPage, IStructuralPage
 	{
 		/// <summary>
 		/// Image used on the page and on listings.

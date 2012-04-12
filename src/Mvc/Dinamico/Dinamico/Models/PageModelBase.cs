@@ -5,6 +5,8 @@ using System.Web;
 using N2;
 using N2.Details;
 using N2.Web.UI;
+using N2.Integrity;
+using N2.Definitions;
 
 namespace Dinamico.Models
 {
@@ -16,7 +18,8 @@ namespace Dinamico.Models
 	[WithEditableVisibility(ContainerName = Defaults.Containers.Metadata)]
 	[SidebarContainer(Defaults.Containers.Metadata, 100, HeadingText = "Metadatda")]
 	[TabContainer(Defaults.Containers.Content, "Content", 1000)]
-	public abstract class PageModelBase : ContentItem
+	[RestrictParents(typeof(IPage))]
+	public abstract class PageModelBase : ContentItem, IPage
 	{
 	}
 }
