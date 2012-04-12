@@ -25,25 +25,11 @@ namespace N2.Edit.FileSystem.Items
 
     public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory
     {
-		public override ContentItem GetChild(string childName)
-		{
-            if (string.IsNullOrEmpty(childName))
-                return this;
-
-			string name = HttpUtility.UrlDecode(childName.Trim('/'));
-			foreach (var file in GetFiles())
-			{
-				if (file.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-					return file;
-
-				foreach(var file2 in file.Children)
-				{
-					if (file2.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-						return file2;
-				}
-			}
-			return base.GetChild(childName);
-		}
+    	protected override ContentItem FindNamedChild(string nameSegment)
+    	{
+    		return GetFiles().FirstOrDefault(f => f.Name == nameSegment) ??
+    		       (ContentItem) GetDirectories().FirstOrDefault(d => d.Name == nameSegment);
+    	}
 
 		public virtual IList<File> GetFiles()
         {

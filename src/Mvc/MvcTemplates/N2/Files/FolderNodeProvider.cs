@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using N2.Edit.FileSystem.Items;
@@ -59,20 +60,24 @@ namespace N2.Management.Files
 			{
 				if (pair.ParentPath.Equals(path, StringComparison.InvariantCultureIgnoreCase))
 				{
-					var dd = fs.GetDirectory(pair.FolderPath);
-					var dir = CreateDirectory(pair);
-					yield return dir;
+					yield return CreateDirectory(pair);
 				}
                 else if (path.StartsWith(pair.Path, StringComparison.InvariantCultureIgnoreCase))
 				{
-					var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
-					var dir = CreateDirectory(pair);
+					ContentItem dir = CreateDirectory(pair);
 
-                    var subdir = dir.GetChild(path.Substring(pair.Path.Length));
-                    if (subdir != null)
+					var subdirPath = path.Substring(pair.Path.Length);
+					if (subdirPath != "")
+					{
+						dir = dir.GetChild(subdirPath);
+					}
+
+                    if (dir != null)
                     {
-                        foreach (var child in subdir.GetChildren(new NullFilter()))
-                            yield return child;
+						foreach (var child in dir.GetChildren(new NullFilter()))
+						{
+							yield return child;
+						}
                     }
 				}
 			}
