@@ -75,7 +75,7 @@ namespace N2.Tests.Web
 
 			webContext = new FakeWebContextWrapper();
 			var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod } };
-			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
+			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), new N2.Plugin.ConnectionMonitor(), hostSection);
 			errorHandler = new FakeErrorHandler();
 			engine = new FakeEngine();
 			engine.Container.AddComponentInstance(null, typeof(IWebContext), webContext);

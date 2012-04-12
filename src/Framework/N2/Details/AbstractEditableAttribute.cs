@@ -203,7 +203,7 @@ namespace N2.Details
 			{
 				HtmlGenericControl helpPanel = new HtmlGenericControl("span");
 				helpPanel.ID = "hp_" + Name;
-				helpPanel.Attributes["class"] = "helpPanel";
+				helpPanel.Attributes["class"] = "helpPanel revealer";
 				container.Controls.Add(helpPanel);
 
 				AddHelpButton(helpPanel, title);
@@ -234,7 +234,7 @@ namespace N2.Details
 		{
 			HtmlImage img = new HtmlImage();
 			img.ID = "hi_" + Name;
-			img.Attributes["class"] = "help";
+			img.Attributes["class"] = "help revealer";
 			img.Attributes["title"] = tooltip;
 			img.Src = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/help.png");
 			container.Controls.Add(img);

@@ -8,7 +8,6 @@
 		<%using(Html.BeginForm("Submit", "Form", FormMethod.Post, new {enctype="multipart/form-data"})){%>
 			<%=ContentHtml.DisplayContent(m => m.Title)%>
 			<%=ContentHtml.DisplayContent(m => m.IntroText)%>
-
 			<div class="inputForm">
 				<%foreach(var formElement in Model.Elements){%>
 					<div class="row cf">

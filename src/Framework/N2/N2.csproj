@@ -143,6 +143,7 @@
     <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
+    <Compile Include="Configuration\TokensElement.cs" />
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Collections\TraverseHelper.cs" />
+    <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
@@ -362,6 +364,7 @@
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
