@@ -662,39 +662,36 @@ namespace N2
 			if (string.IsNullOrEmpty(childName))
 				return null;
 
-			int slashIndex = childName.IndexOf('/');
-			if (slashIndex == 0) // starts with slash
-			{
-				if (childName.Length == 1)
-					return this;
-				else
-					return GetChild(childName.Substring(1));
-			}
-			if (slashIndex > 0) // contains a slash further down
-			{
-				string nameSegment = HttpUtility.UrlDecode(childName.Substring(0, slashIndex));
-				foreach (ContentItem child in GetChildren(new NullFilter()))
-				{
-					if (child.IsNamed(nameSegment))
-					{
-						return child.GetChild(childName.Substring(slashIndex));
-					}
-				}
-				return null;
-			}
+			// Walk all segments, if any (note that double slashes are ignored)
+    		var segments = childName.Split(new[] {'/'}, 2, StringSplitOptions.RemoveEmptyEntries);
+			if (segments.Length == 0) return this;
 
-			// no slash, only a name
-			foreach (ContentItem child in GetChildren(new NullFilter()))
-			{
-				if (child.IsNamed(childName))
-				{
-					return child;
-				}
-			}
-			return null;
+			// Unscape the segment and find a child node with a matching name
+			var nameSegment = HttpUtility.UrlDecode(segments[0]);
+			var childItem = FindNamedChild(nameSegment);
+
+    		// Recurse into children if there are more segments
+    		return childItem != null && segments.Length == 2
+    		       	? childItem.GetChild(segments[1])
+    		       	: childItem;
 		}
 
 		/// <summary>
+		/// Find a direct child by its name
+		/// </summary>
+		/// <param name="nameSegment">Child name. Cannot contain slashes.</param>
+		/// <returns></returns>
+    	protected virtual ContentItem FindNamedChild(string nameSegment)
+    	{
+    		var childItem = Children.FindNamed(nameSegment);
+    		if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+    		{
+    			childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
+    		}
+    		return childItem;
+    	}
+
+    	/// <summary>
 		/// Compares the item's name ignoring case and extension.
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
