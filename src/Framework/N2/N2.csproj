@@ -163,6 +163,7 @@
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
     <Compile Include="Definitions\SortBy.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
+    <Compile Include="Details\EditableDetailCollectionAttribute.cs" />
     <Compile Include="Details\EditableImageUploadAttribute.cs" />
     <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
     <Compile Include="Details\EditableMediaUploadAttribute.cs" />
@@ -372,6 +373,7 @@
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
     <Compile Include="Web\WebExtensions.cs" />

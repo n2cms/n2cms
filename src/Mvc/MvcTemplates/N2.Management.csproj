@@ -119,7 +119,11 @@
     <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Resources\Css\jquery.multiselect.css" />
+    <Content Include="N2\Resources\Css\jquery.multiselect.filter.css" />
     <Content Include="N2\Resources\Js\jquery-1.7.2.min.js" />
+    <Content Include="N2\Resources\Js\jquery.multiselect.filter.js" />
+    <Content Include="N2\Resources\Js\jquery.multiselect.js" />
     <Content Include="N2\Resources\syntaxhighlighter\index.html" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shAutoloader.js" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushAppleScript.js" />
