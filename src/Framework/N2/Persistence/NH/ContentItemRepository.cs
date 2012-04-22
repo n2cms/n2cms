@@ -19,13 +19,13 @@ namespace N2.Persistence.NH
 		object zero = 0;
 		public override ContentItem Get(object id)
 		{
-			if (id == zero) return null;
+			if (zero.Equals(id)) return null;
 			return SessionProvider.OpenSession.Session.Get<ContentItem>(id);
 		}
 
 		public override T Get<T>(object id)
 		{
-			if (id == zero) return default(T);
+			if (zero.Equals(id)) return default(T);
 			return SessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
