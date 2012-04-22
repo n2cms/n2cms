@@ -4,7 +4,7 @@ namespace N2.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
 	{
-		public const string JQueryVersion = "1.7";
+		public const string JQueryVersion = "1.7.2";
 
 		/// <summary>Whether to make registered web resources debuggable.</summary>
 		[ConfigurationProperty("debug", DefaultValue = false)]
@@ -15,7 +15,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The path to the included jQuery javascript resource.</summary>
-		[ConfigurationProperty("jQueryPath", DefaultValue = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js")]
+		[ConfigurationProperty("jQueryPath", DefaultValue = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js")]
 		public string JQueryPath
 		{
 			get { return (string)base["jQueryPath"]; }

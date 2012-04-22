@@ -118,6 +118,7 @@
     <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Resources\Js\jquery-1.7.2.min.js" />
     <Content Include="N2\Resources\syntaxhighlighter\index.html" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shAutoloader.js" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushAppleScript.js" />
@@ -202,8 +203,6 @@
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
     <Content Include="N2\Resources\Js\EditableTags.js" />
-    <Content Include="N2\Resources\Js\jquery-1.7.js" />
-    <Content Include="N2\Resources\Js\jquery-1.7.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
