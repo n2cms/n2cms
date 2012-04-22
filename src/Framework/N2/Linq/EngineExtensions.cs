@@ -17,8 +17,8 @@ namespace N2.Linq
 		public static IQueryable<T> Query<T>(this IEngine engine)
 		{
             var q = engine.Resolve<ISessionProvider>().OpenSession.Session.Query<T>();
-			//if(typeof(ContentItem).IsAssignableFrom(typeof(T)))
-			//    return new ContentQueryable<T>(q);
+			//q = q.CacheMode(NHibernate.CacheMode.Normal);
+			q = q.Cacheable();
             return q;
 		}
 
@@ -60,16 +60,6 @@ namespace N2.Linq
         {
             return engine.QueryItems<ContentItem>(versions);
         }
-
-		[Obsolete("Use QueryDetails without generic type parameter")]
-		/// <summary>Creates a query for details in the N2 database.</summary>
-		/// <typeparam name="T">The type of detail to retrieve.</typeparam>
-		/// <param name="engine">The engine onto which the extension method is attached.</param>
-		/// <returns>A query that can be extended.</returns>
-		public static IQueryable<T> QueryDetails<T>(this IEngine engine) where T : ContentDetail
-		{
-			return engine.Query<T>();
-		}
 
 		/// <summary>Creates a query for details in the N2 database.</summary>
 		/// <param name="engine">The engine onto which the extension method is attached.</param>
