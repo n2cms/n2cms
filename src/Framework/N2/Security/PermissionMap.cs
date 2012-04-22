@@ -52,6 +52,9 @@ namespace N2.Security
 
 		protected bool IsInUsers(string userName)
 		{
+			if (userName == null)
+				return false;
+
 			foreach (string name in Users)
 				if (userName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
 					return true;
