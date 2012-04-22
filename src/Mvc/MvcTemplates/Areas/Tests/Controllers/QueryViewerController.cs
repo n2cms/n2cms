@@ -87,7 +87,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("NHibernate"))
 				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("log4net"))
 				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("System"))
-				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("ASP."))
+				//.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("ASP."))
 				.Where(f => f.GetMethod().DeclaringType != typeof(CountToContextItemsAppender))
 				.Select(f => f.GetMethod().DeclaringType.FullName + "." + f.GetMethod().Name + "<br/>")
 				.ToArray());
