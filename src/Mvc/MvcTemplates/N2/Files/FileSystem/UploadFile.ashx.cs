@@ -135,7 +135,7 @@ namespace N2.Management.Files.FileSystem
             size = fileLength;
             progress = "1.0";
             url = "File.aspx?selected=" + fileName;
-            thumbnail_url = "../Resize.ashx?w=32&h=32&img=" + fileName;
+			thumbnail_url = "../Resize.ashx?w=48&h=48&img=" + fileName;
         }
     }
 }

@@ -61,14 +61,14 @@ namespace N2.Web.Mvc.Html
 
 		public class ControlPanelHelper
 		{
-            bool refreshNavigation = true;
+            private bool refreshNavigation = true;
 
-            public bool includeJQuery = true;
-            public bool includeJQueryPlugins = true;
-            public bool includePartScripts = true;
-            public bool includePartStyles = true;
-
-			public ContentItem currentItem;
+            private bool includeJQuery = true;
+            private bool includeJQueryPlugins = true;
+            private bool includePartScripts = true;
+            private bool includePartStyles = true;
+			 
+			private ContentItem currentItem;
 
 			public HtmlHelper Html { get; set; }
 
