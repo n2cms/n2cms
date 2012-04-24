@@ -6,6 +6,7 @@ using N2.Definitions.Static;
 using N2.Details;
 using N2.Tests.Definitions.Items;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Definitions
 {
@@ -31,6 +32,24 @@ namespace N2.Tests.Definitions
 			Assert.That(parent.Children[0].SortOrder, Is.EqualTo(1));
 			Assert.That(parent.Children[1].SortOrder, Is.EqualTo(2));
 			Assert.That(parent.Children[2].SortOrder, Is.EqualTo(3));
+		}
+
+		[Test]
+		public void SortBy_CurrentOrder_MinimallyReorders_FromLast()
+		{
+			var reorderedItems = new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			reorderedItems.Single().Title.ShouldBe("C");
+		}
+
+		[Test]
+		public void SortBy_CurrentOrder_MinimallyReorders_FromBeginning()
+		{
+			parent.Children[1].SortOrder = -1;
+
+			var reorderedItems = new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			reorderedItems.Single().Title.ShouldBe("b");
 		}
 
 		[Test]
