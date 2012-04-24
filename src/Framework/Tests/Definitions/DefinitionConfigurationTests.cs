@@ -29,9 +29,41 @@ namespace N2.Tests.Definitions
 		{
 			new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
 
-			Assert.That(parent.Children[0].SortOrder, Is.EqualTo(1));
-			Assert.That(parent.Children[1].SortOrder, Is.EqualTo(2));
-			Assert.That(parent.Children[2].SortOrder, Is.EqualTo(3));
+			parent.Children[0].SortOrder.ShouldBe(1);
+			parent.Children[1].SortOrder.ShouldBe(2);
+			parent.Children[2].SortOrder.ShouldBeGreaterThan(8);
+		}
+
+		[Test]
+		public void SortBy_CurrentOrder_EqualStartingGround()
+		{
+			parent.Children[0].SortOrder = 0;
+			parent.Children[1].SortOrder = 0;
+			parent.Children[2].SortOrder = 0;
+			new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			parent.Children[0].SortOrder.ShouldBeLessThan(-9);
+			parent.Children[1].SortOrder.ShouldBeLessThan(-4);
+			parent.Children[2].SortOrder.ShouldBe(0);
+		}
+
+		[Test]
+		public void SortBy_CurrentOrder_EqualStartingGround_MuchosItemos()
+		{
+			parent.Children[0].SortOrder = 0;
+			parent.Children[1].SortOrder = 0;
+			parent.Children[2].SortOrder = 0;
+			for (int i = parent.Children.Count; i <= 15; i++)
+			{
+				new DefinitionOne { SortOrder = 0, Name = "x" + i }.AddTo(parent);
+			}
+
+			new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			for (int i = 1; i < parent.Children.Count; i++)
+			{
+				parent.Children[i].SortOrder.ShouldBeGreaterThan(parent.Children[i - 1].SortOrder);
+			}
 		}
 
 		[Test]
@@ -43,6 +75,14 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
+		public void SortBy_AddsPaddingBetweenSortOrders()
+		{
+			var reorderedItems = new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			reorderedItems.Single().SortOrder.ShouldBeGreaterThanOrEqualTo(parent.Children[1].SortOrder + 10);
+		}
+
+		[Test]
 		public void SortBy_CurrentOrder_MinimallyReorders_FromBeginning()
 		{
 			parent.Children[1].SortOrder = -1;
@@ -50,6 +90,16 @@ namespace N2.Tests.Definitions
 			var reorderedItems = new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
 
 			reorderedItems.Single().Title.ShouldBe("b");
+		}
+
+		[Test]
+		public void SortBy_AddsPadding_BeforeNextItem_WhenAddingToBeginning()
+		{
+			parent.Children[1].SortOrder = -1;
+
+			new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
+
+			parent.Children[0].SortOrder.ShouldBeLessThan(parent.Children[1].SortOrder - 9);
 		}
 
 		[Test]
