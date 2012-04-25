@@ -13,13 +13,16 @@ namespace N2.Management.Installation
 		{
 			this.repository = repository;
 
-			Title = "Fix state on items with New state";
+			Title = "Fix state on items with no or new state";
 			Description = "Changes the stat to either Waiting, Published or Expired on items with the New state.";
 		}
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return status.DatabaseVersion < DatabaseStatus.RequiredDatabaseVersion || !status.HasSchema || repository.Find("State", ContentState.New).Any();
+			return status.DatabaseVersion < DatabaseStatus.RequiredDatabaseVersion 
+				|| !status.HasSchema 
+				|| repository.Find("State", ContentState.None).Any()
+				|| repository.Find("State", ContentState.New).Any();
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
@@ -29,21 +32,30 @@ namespace N2.Management.Installation
 			{
 				foreach (var item in repository.Find("State", ContentState.New))
 				{
-					if (item.IsExpired())
-						item.State = ContentState.Unpublished;
-					else if (item.IsPublished())
-						item.State = ContentState.Waiting;
-					else
-						item.State = ContentState.Published;
-
-					repository.SaveOrUpdate(item);
-					updatedItems++;
+					Fixit(ref updatedItems, item);
+				}
+				foreach (var item in repository.Find("State", ContentState.None))
+				{
+					Fixit(ref updatedItems, item);
 				}
 
 				transaction.Commit();
 			}
 
 			return new MigrationResult(this) { UpdatedItems = updatedItems };
+		}
+
+		private void Fixit(ref int updatedItems, ContentItem item)
+		{
+			if (item.IsExpired())
+				item.State = ContentState.Unpublished;
+			else if (item.IsPublished())
+				item.State = ContentState.Waiting;
+			else
+				item.State = ContentState.Published;
+
+			repository.SaveOrUpdate(item);
+			updatedItems++;
 		}
 	}
 }
