@@ -2,6 +2,7 @@
 using N2.Details;
 using N2.Security;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Content
 {
@@ -920,6 +921,36 @@ namespace N2.Tests.Content
 			Assert.That(detail.Value, Is.EqualTo("World"));
 			Assert.That(detail.ValueType, Is.EqualTo(typeof(string)));
 			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
+		}
+
+		[Test]
+		public void DetailCollection_String()
+		{
+			var dc = new DetailCollection();
+			dc.Add("hello");
+
+			dc.Details[0].ValueTypeKey.ShouldBe(ContentDetail.TypeKeys.StringType);
+			dc[0].ShouldBe("hello");
+		}
+
+		[Test]
+		public void DetailCollection_Int()
+		{
+			var dc = new DetailCollection();
+			dc.Add(123);
+
+			dc.Details[0].ValueTypeKey.ShouldBe(ContentDetail.TypeKeys.IntType);
+			dc[0].ShouldBe(123);
+		}
+
+		[Test]
+		public void DetailCollection_ContenItem()
+		{
+			var dc = new DetailCollection();
+			dc.Add(new AnItem { ID = 123 });
+
+			dc.Details[0].ValueTypeKey.ShouldBe(ContentDetail.TypeKeys.LinkType);
+			((ContentItem)dc[0]).ID.ShouldBe(123);
 		}
 	}
 }
