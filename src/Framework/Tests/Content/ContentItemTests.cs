@@ -443,54 +443,14 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
-		public void AddTo_IsInsertedBefore_ItemWithHighSortOrder()
+		public void AddTo_IsNoLongerInsertedBefore_ItemWithHighSortOrder()
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem child1 = CreateOneItem<AnItem>(2, "child1", root);
 			child1.SortOrder = 1000000;
 
 			ContentItem child2 = CreateOneItem<AnItem>(3, "child2", root);
-			Assert.That(root.Children[0], Is.EqualTo(child2), "Should be first because of child1's high sort order");
-		}
-
-		[Test]
-		public void AddTo_IsInsertedBetween_ItemsWithHighSortOrderDiff()
-		{
-			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
-			ContentItem child1 = CreateOneItem<AnItem>(0, "child1", root);
-			ContentItem child2 = CreateOneItem<AnItem>(0, "child2", root);
-			child2.SortOrder = 1000000;
-
-			ContentItem child3 = CreateOneItem<AnItem>(0, "child3", root);
-			Assert.That(root.Children[1], Is.EqualTo(child3), "Should be between because of child2's high sort order");
-		}
-
-		[Test]
-		public void AddTo_IsInsertedBefore_SeveralItems_WithHighSortOrder()
-		{
-			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
-			ContentItem child1 = CreateOneItem<AnItem>(0, "child1", root);
-			ContentItem child2 = CreateOneItem<AnItem>(0, "child2", root);
-			child1.SortOrder = 1000000;
-			child2.SortOrder = 1000001;
-
-			ContentItem child3 = CreateOneItem<AnItem>(0, "child3", root);
-			Assert.That(root.Children[0], Is.EqualTo(child3), "Should be first because of child1 and child2's high sort orders");
-		}
-
-		[Test]
-		public void AddTo_IsInsertedBetween_SeveralItems_WithHighSortOrderDiffs()
-		{
-			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
-			ContentItem child1 = CreateOneItem<AnItem>(0, "child1", root);
-			ContentItem child2 = CreateOneItem<AnItem>(0, "child2", root);
-			ContentItem child3 = CreateOneItem<AnItem>(0, "child3", root);
-			ContentItem child4 = CreateOneItem<AnItem>(0, "child4", root);
-			child3.SortOrder = 1000000;
-			child4.SortOrder = 1000001;
-
-			ContentItem child5 = CreateOneItem<AnItem>(0, "child5", root);
-			Assert.That(root.Children[2], Is.EqualTo(child5), "Should be between because of child3 and child4's high sort orders");
+			Assert.That(root.Children[1], Is.EqualTo(child2), "Should no longer be first because of child1's high sort order");
 		}
 
 		[Test]
