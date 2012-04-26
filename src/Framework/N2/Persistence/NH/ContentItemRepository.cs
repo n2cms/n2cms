@@ -50,16 +50,17 @@ namespace N2.Persistence.NH
 			IQuery query;
 			if (ancestor == null)
 				query = SessionProvider.OpenSession.Session
-					.CreateQuery("select ci.class, count(*) from ContentItem ci group by ci.class order by count(*) desc");
+					.CreateQuery("select ci.class, count(*) from ContentItem ci group by ci.class");
 			else
 				query = SessionProvider.OpenSession.Session
-					.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class order by count(*) desc")
+					.CreateQuery("select ci.class, count(*) from ContentItem ci where ci.ID=:id or ci.AncestralTrail like :trail group by ci.class")
 					.SetParameter("id", ancestor.ID)
 					.SetParameter("trail", ancestor.GetTrail() + "%");
 
 			return query.Enumerable()
 				.OfType<object[]>()
-				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] });
+				.Select(row => new DiscriminatorCount { Discriminator = (string)row[0], Count = (int)(long)row[1] })
+				.OrderByDescending(dc => dc.Count);
 		}
 
 		/// <summary>Finds published items below a certain ancestor of a specific type.</summary>

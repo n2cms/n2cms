@@ -40,9 +40,6 @@ namespace N2.Definitions.Static
 
 		public TemplateDefinition GetTemplate(ContentItem item)
 		{
-			if (item["TemplatName"] != null)
-				return null;
-
 			var template = CreateTemplate(map.GetOrCreateDefinition(item));
 			template.OriginalFactory = () => item;
 			template.TemplateFactory = () => item.Clone(false);

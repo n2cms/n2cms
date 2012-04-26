@@ -41,6 +41,9 @@ namespace N2.Security
 				if(!MapsTo(permissionLevel))
 					continue;
 
+				if ((item.AlteredPermissions & permissionLevel) == Permission.None)
+					continue;
+
 				if(permissionLevel == Permission.Read)
 				{
 					if(!item.IsAuthorized(user))

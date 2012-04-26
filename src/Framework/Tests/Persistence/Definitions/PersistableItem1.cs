@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using N2.Persistence;
 using N2.Persistence.Search;
 using N2.Details;
 using N2.Definitions;
@@ -48,7 +50,11 @@ namespace N2.Tests.Persistence.Definitions
 			get { return (ContentItem)GetDetail("LinkProperty"); }
 			set { SetDetail<ContentItem>("LinkProperty", value); }
 		}
-		public virtual object ObjectProperty
+
+        [Editable(Name = "ContentLinks", PersistAs = PropertyPersistenceLocation.DetailCollection)]
+	    public virtual IEnumerable<ContentItem> ContentLinks { get; set; }
+
+        public virtual object ObjectProperty
 		{
 			get { return (object)GetDetail("ObjectProperty"); }
 			set { SetDetail<object>("ObjectProperty", value); }

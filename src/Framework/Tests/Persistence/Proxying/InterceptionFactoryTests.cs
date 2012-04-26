@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Persistence.Proxying;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Shouldly;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -21,6 +22,9 @@ namespace N2.Tests.Persistence.Proxying
 
 		[EditableFreeTextArea("My String", 100, PersistAs = PropertyPersistenceLocation.DetailCollection, DefaultValue = new string[0])]
 		public virtual IEnumerable<string> StringCollectionProperty { get; set; }
+
+		[EditableFreeTextArea("My String", 100, PersistAs = PropertyPersistenceLocation.DetailCollection)]
+		public virtual IEnumerable<ContentItem> LinkCollectionProperty { get; set; }
 
 		[EditableFreeTextArea("My Numbers", 100, PersistAs = PropertyPersistenceLocation.DetailCollection)]
 		public virtual int[] IntCollectionProperty { get; set; }
@@ -273,6 +277,24 @@ namespace N2.Tests.Persistence.Proxying
 			item.LinkProperty = null;
 
 			Assert.That(item.GetDetail("LinkProperty"), Is.Null);
+		}
+
+		// LINK COLLECTION
+
+		[Test]
+		public void Setting_LinkCollectionProperty_AssignesTo_DetailCollection()
+		{
+			var values = new ContentItem[] { new InterceptableItem { ID = 1 }, new InterceptableItem { ID = 2 } };
+			item.LinkCollectionProperty = values;
+			Assert.That(item.GetDetailCollection("LinkCollectionProperty", false), Is.EquivalentTo(values));
+		}
+
+		[Test]
+		public void Getting_LinkCollectionProperty_ReadsFrom_DetailCollection()
+		{
+			var values = new ContentItem[] { new InterceptableItem { ID = 1 }, new InterceptableItem { ID = 2 } };
+			item.GetDetailCollection("LinkCollectionProperty", true).AddRange(values);
+			item.LinkCollectionProperty.ShouldBe(values);
 		}
 
 		// STANDARD
