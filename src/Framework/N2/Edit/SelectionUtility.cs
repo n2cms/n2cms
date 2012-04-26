@@ -10,7 +10,7 @@ namespace N2.Edit
     /// </summary>
     public class SelectionUtility
     {
-        HttpRequest request;
+        HttpRequestBase request;
 		IEngine engine;
         ContentItem selectedItem;
         ContentItem memorizedItem;
@@ -23,11 +23,17 @@ namespace N2.Edit
 
         public SelectionUtility(Control container, IEngine engine)
         {
-			this.request = container.Page.Request;
+			this.request = new HttpRequestWrapper(container.Page.Request);
             this.Engine = engine;
 		}
 
 		public SelectionUtility(HttpRequest request, IEngine engine)
+		{
+			this.request = new HttpRequestWrapper(request);
+			this.Engine = engine;
+		}
+
+		public SelectionUtility(HttpRequestBase request, IEngine engine)
 		{
 			this.request = request;
 			this.Engine = engine;
