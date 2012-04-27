@@ -78,7 +78,8 @@ namespace N2.Edit
 			EnsureAuthorization(toMove, toMove.IsPublished() ? Permission.Publish : Permission.Write);
 
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
-			Refresh(toMove, ToolbarArea.Both);
+
+			Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove));
 		}
 
 		private void LoadDefaultsAndInfo(ContentItem moved, ContentItem destination)

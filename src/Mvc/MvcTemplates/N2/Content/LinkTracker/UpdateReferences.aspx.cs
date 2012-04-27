@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Persistence;
+using N2.Linq;
 
 namespace N2.Edit.LinkTracker
 {
@@ -19,16 +21,51 @@ namespace N2.Edit.LinkTracker
 		{
 			base.OnLoad(e);
 
+			Title = "Update links leading to " + Selection.SelectedItem.Title;
+
 			if (!IsPostBack)
 			{
-				rptReferencingItems.DataSource = tracker.FindReferrers(Selection.SelectedItem);
-				DataBind();
+				var referrers = tracker.FindReferrers(Selection.SelectedItem).ToList();
+				bool showReferences = referrers.Count > 0;
+				if (showReferences)
+				{
+					rptReferencingItems.DataSource = referrers;
+					DataBind();
+				}
+				else
+					fsReferences.Visible = false;
+
+				bool showChildren = Selection.SelectedItem.Children.Count > 0;
+				if (showChildren)
+				{
+					targetsToUpdate.CurrentItem = Selection.SelectedItem;
+					targetsToUpdate.DataBind();
+				}
+				else
+					fsChildren.Visible = false;
+
+				if (!showReferences && !showChildren)
+				{
+					Refresh(Selection.SelectedItem, ToolbarArea.Both);
+				}
 			}
 		}
 
 		protected void OnUpdateCommand(object sender, CommandEventArgs args)
 		{
-			tracker.UpdateReferencesTo(Selection.SelectedItem);
+			if (chkChildren.Checked)
+			{
+				mvPhase.ActiveViewIndex = 1;
+				rptDescendants.DataSource = Content.Search.Items.WhereDescendantOrSelf(Selection.SelectedItem)
+					.ToList()
+					.Where(Content.Is.Accessible());
+				rptDescendants.DataBind();
+			}
+			else
+			{
+				tracker.UpdateReferencesTo(Selection.SelectedItem);
+				Refresh(Selection.SelectedItem, ToolbarArea.Both);
+			}
 		}
 	}
 }

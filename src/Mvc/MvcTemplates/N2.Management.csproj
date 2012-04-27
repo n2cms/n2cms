@@ -241,6 +241,7 @@
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
     <Content Include="N2\Installation\system.diagnostics.trace.config" />
+    <Content Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx" />
     <None Include="N2\Installation\mysql.upgrade.2.sql" />
     <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />
@@ -374,6 +375,9 @@
     </Compile>
     <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.designer.cs">
       <DependentUpon>UpdateReferences.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx.cs">
+      <DependentUpon>UpdateReferencesTo.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
     <Compile Include="N2\Content\Navigation\TreeUtility.cs" />

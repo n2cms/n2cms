@@ -106,6 +106,11 @@ namespace N2.Edit
 			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery(SelectedQueryKey, SelectedItem.Path).ResolveTokens();
 		}
 
+		public string SelectedUrl(Url baseUrl, ContentItem selected = null)
+		{
+			return baseUrl.AppendQuery(SelectedQueryKey, (selected ?? SelectedItem).Path).ResolveTokens();
+		}
+
 
 		static SelectionUtility()
 		{
