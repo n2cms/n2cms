@@ -237,9 +237,9 @@ namespace N2.Edit.LinkTracker
 
 					UpdateLinks(referrer);
 					repository.SaveOrUpdate(referrer);
-
-					tx.Commit();
 				}
+
+				tx.Commit();
 			}
 		}
 	}
