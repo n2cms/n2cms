@@ -69,6 +69,9 @@ namespace N2.Edit.LinkTracker
 			// replace existing items
 			for (int i = 0; i < referencedItems.Count && i < links.Count; i++)
 			{
+				if (links.Details[i].StringValue == referencedItems[i].StringValue)
+					// this prevents clearing item references to children when moving hierarchies
+					continue;
 				links.Details[i].Extract(referencedItems[i]);
 			}
 			// add any new items
@@ -206,40 +209,65 @@ namespace N2.Edit.LinkTracker
 			var repository = persister.Repository;
 			using (var tx = repository.BeginTransaction())
 			{
-				foreach (var referrer in FindReferrers(targetItem))
+				var itemsWithReferencesToTarget = FindReferrers(targetItem);
+				foreach (var referrer in itemsWithReferencesToTarget)
 				{
-					var trackerDetails = referrer.GetDetailCollection(Tracker.LinkDetailName, false);
-					if (trackerDetails == null || trackerDetails.Details.Count == 0)
+					var trackerCollecetion = referrer.GetDetailCollection(Tracker.LinkDetailName, false);
+					if (trackerCollecetion == null || trackerCollecetion.Details.Count == 0)
 						continue;
 
-					foreach (var detail in trackerDetails.Details
+					var trackerDetails = trackerCollecetion.Details
 						.Where(d => d.IntValue.HasValue)
-						.OrderByDescending(d => d.IntValue.Value))
+						.OrderBy(d => d.IntValue.Value)
+						.ToList();
+
+					for (int i = 0; i < trackerDetails.Count; i++)
 					{
+						var detail = trackerDetails[i];
+
 						var name = detail.ObjectValue as string;
 						if (name == null || detail.StringValue == null)
 							// don't update legacy links
 							continue;
 
-						if (detail.LinkedItem == null || detail.LinkedItem.ID != targetItem.ID)
+						if (detail.LinkedItem == null)
+							continue;
+						if (detail.LinkedItem.ID != targetItem.ID)
+						{
 							// don't update other links
 							continue;
+						}
 
-						var startIndex = detail.IntValue.Value;
-						var value = referrer[name] as string;
-						if (value == null || value.Length < (startIndex + detail.StringValue.Length) || value.Substring(startIndex, detail.StringValue.Length) != detail.StringValue)
-							continue;
-
-						referrer[name] = value.Substring(0, startIndex)
-							+ newUrl
-							+ value.Substring(startIndex + detail.StringValue.Length);
+						Update(referrer, detail, name, newUrl, trackerDetails.Skip(i + 1).ToList());
 					}
 
-					UpdateLinks(referrer);
 					repository.SaveOrUpdate(referrer);
 				}
 
 				tx.Commit();
+			}
+		}
+
+		private void Update(ContentItem referrer, ContentDetail detail, string name, string newUrl, IEnumerable<ContentDetail> subsequentReferences)
+		{
+			int startIndex = detail.IntValue.Value;
+			string oldUrl = detail.StringValue;
+			string html = referrer[name] as string;
+			if (html == null || html.Length < (startIndex + oldUrl.Length) || html.Substring(startIndex, oldUrl.Length) != oldUrl)
+				return;
+
+			// change the html
+			referrer[name] = html.Substring(0, startIndex)
+				+ newUrl
+				+ html.Substring(startIndex + detail.StringValue.Length);
+
+			// and update the reference
+			detail.StringValue = newUrl;
+
+			// adapt other reference indexes to the new string length
+			foreach (var subsequent in subsequentReferences.Where(d => name.Equals(d.ObjectValue)))
+			{
+				subsequent.IntValue = subsequent.IntValue.Value - oldUrl.Length + newUrl.Length;
 			}
 		}
 	}

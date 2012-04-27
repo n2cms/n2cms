@@ -90,6 +90,7 @@ namespace N2.Edit.Tests.LinkTracker
 			details.Details[2].StringValue.ShouldBe("/item1.aspx");
 			details.Details[2].ObjectValue.ShouldBe("TestDetail2");
 		}
+
 		[Test]
 		public void RemoveLink()
 		{
@@ -184,6 +185,33 @@ namespace N2.Edit.Tests.LinkTracker
 
 			root["TestDetail"].ShouldBe("<a href='/item2/item1.aspx'>first item</a>");
 			item2["TestDetail"].ShouldBe("<a href='/item2/item1.aspx'>first item</a>");
+		}
+
+		[Test]
+		public void UpdateReferencesTo_ChangesContent_OnChildItems()
+		{
+			var fi = typeof(ContentItem).GetField("url", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+			var item3 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(4, "item3", root);
+			
+			item1["TestDetail"] = "<a href='/item2.aspx'>2</a><a href='/item3.aspx'>3</a>";
+			item2["TestDetail"] = "<a href='/item1.aspx'>1</a><a href='/item3.aspx'>3</a>";
+			item3["TestDetail"] = "<a href='/item1.aspx'>1</a><a href='/item2.aspx'>2</a>";
+			SaveWithBenefits(item1);
+			SaveWithBenefits(item2);
+			SaveWithBenefits(item3);
+
+			persister.Move(item3, item2);
+			tracker.UpdateReferencesTo(item3);
+
+			persister.Move(item2, item1);
+
+			fi.SetValue(item3, null);
+			tracker.UpdateReferencesTo(item2);
+			tracker.UpdateReferencesTo(item3);
+
+			item1["TestDetail"].ShouldBe("<a href='/item1/item2.aspx'>2</a><a href='/item1/item2/item3.aspx'>3</a>");
+			item2["TestDetail"].ShouldBe("<a href='/item1.aspx'>1</a><a href='/item1/item2/item3.aspx'>3</a>");
+			item3["TestDetail"].ShouldBe("<a href='/item1.aspx'>1</a><a href='/item1/item2.aspx'>2</a>");
 		}
 
 		[Test]
