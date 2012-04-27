@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using N2.Edit.LinkTracker;
 using NUnit.Framework;
+using System.Linq;
 
 namespace N2.Edit.Tests.LinkTracker
 {
@@ -29,61 +30,62 @@ namespace N2.Edit.Tests.LinkTracker
 		public void FindSingleLinkInHtml()
 		{
 			string html = LinkToStartPage;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(1, results.Count);
-			Assert.AreEqual("/", results[0]);
+			Assert.AreEqual("/", results[0].StringValue);
+			Assert.AreEqual(LinkToStartPage.IndexOf('/'), results[0].IntValue);
 		}
 
 		[Test]
 		public void FindLinkWithSingleQuotes()
 		{
 			string html = LinkToStartPageWithSingleQuotes;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(1, results.Count);
-			Assert.AreEqual("/", results[0]);
+			Assert.AreEqual("/", results[0].StringValue);
 		}
 
 		[Test]
 		public void FindLinkWithTitle()
 		{
 			string html = LinkWithTitle;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(1, results.Count);
-			Assert.AreEqual("/test.aspx", results[0]);
+			Assert.AreEqual("/test.aspx", results[0].StringValue);
 		}
 
 		[Test]
 		public void FindRelativeLink()
 		{
 			string html = LinkRelativeToCurrentDirectory;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(1, results.Count);
-			Assert.AreEqual("right_here.aspx", results[0]);
+			Assert.AreEqual("right_here.aspx", results[0].StringValue);
 		}
 
 		[Test]
 		public void FindLinkWithSpaces()
 		{
 			string html = LinkWithSpacesInUrl;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(1, results.Count);
-			Assert.AreEqual("/my pages/right there.aspx", results[0]);
+			Assert.AreEqual("/my pages/right there.aspx", results[0].StringValue);
 		}
 
 		[Test]
 		public void FindMultipleLinks()
 		{
 			string html = LinkWithABunchOfOtherLinks;
-			IList<string> results = linkFactory.FindLinks(html);
+			var results = linkFactory.FindLinks(html);
 			Assert.AreEqual(5, results.Count);
 		}
 
 		[Test]
 		public void FindLinkWithEscapedWhitespaceAndHash()
 		{
-			IList<string> results = linkFactory.FindLinks(LinkWithStrangeCharacters);
+			var results = linkFactory.FindLinks(LinkWithStrangeCharacters);
 			string expected = "/Documentation/Content-enabling%20an%20existing%20site.aspx#two";
-			Assert.AreEqual(expected, results[0]);
+			Assert.AreEqual(expected, results[0].StringValue);
 		}
 	}
 }

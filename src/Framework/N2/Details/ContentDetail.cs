@@ -520,5 +520,21 @@ namespace N2.Details
 			if (EnclosingCollection != null)
 				EnclosingCollection.Remove(this);
 		}
+
+		/// <summary>
+		/// Copies values from the other detail onto itself.
+		/// </summary>
+		/// <param name="other"></param>
+		public virtual void Extract(ContentDetail other)
+		{
+			ValueTypeKey = other.ValueTypeKey;
+			BoolValue = other.BoolValue;
+			IntValue = other.intValue;
+			DoubleValue = other.DoubleValue;
+			DateTimeValue = other.DateTimeValue;
+			LinkedItem = other.LinkedItem;
+			ObjectValue = other.ObjectValue;
+			StringValue = other.StringValue;
+		}
 	}
 }
