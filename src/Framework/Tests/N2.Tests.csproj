@@ -148,10 +148,12 @@
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\SiblingInsertionTests.cs" />
     <Compile Include="Definitions\RestrictCardinalityTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\DetailRemoveTests.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
+    <Compile Include="Definitions\SortChildrenTests.cs" />
     <Compile Include="Definitions\Static\DescribablePage.cs" />
     <Compile Include="Definitions\Static\DescribablePart.cs" />
     <Compile Include="Definitions\Static\DefinitionTableTests.cs" />

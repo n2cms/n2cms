@@ -161,6 +161,7 @@
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
+    <Compile Include="Definitions\SortBy.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
     <Compile Include="Details\EditableImageUploadAttribute.cs" />
     <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
@@ -222,7 +223,9 @@
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
     <Compile Include="Engine\ServiceInfo.cs" />
+    <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
+    <Compile Include="Definitions\Behaviors\BehaviorInvoker.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
@@ -261,7 +264,9 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Definitions\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Definitions\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>

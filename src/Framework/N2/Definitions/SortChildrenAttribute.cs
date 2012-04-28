@@ -2,37 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using N2.Collections;
+using N2.Definitions.Behaviors;
 
 namespace N2.Definitions
 {
 	/// <summary>
-	/// The order children are sorted.
-	/// </summary>
-	public enum SortBy
-	{
-		/// <summary>Children are re-ordered by title in alphabetical ascending order.</summary>
-		Title,
-		/// <summary>Children are re-ordered by published date in ascending order.</summary>
-		Published,
-		/// <summary>Children are re-ordered by changed date in ascending order.</summary>
-		Updated,
-		/// <summary>Children are re-ordered by published date in descending order.</summary>
-		PublishedDescending,
-		/// <summary>Children are re-ordered by changed date in descending order.</summary>
-		UpdatedDescending,
-		/// <summary>Children are re-ordered by an expression, e.g. "Title DESC".</summary>
-		Expression,
-		/// <summary>Children are given an ascending sort index in the order they appear in the children collection. This typically means new children are appended last.</summary>
-		CurrentOrder,
-		/// <summary>Do not reorder children, children appears in sort order but this order is not altered. This can improve performance with large numbers of children.</summary>
-		Unordered
-	}
-
-	/// <summary>
 	/// Controls the order of children added to items decorated with this attribute.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public class SortChildrenAttribute : Attribute
+	public class SortChildrenAttribute : Attribute, ISavingBehavior
 	{
 		public SortChildrenAttribute(SortBy orderBy)
 		{
@@ -86,5 +64,20 @@ namespace N2.Definitions
 
 		/// <summary>An expression used to sort children when order by <see cref="SortBy.Expression" /> is defined.</summary>
 		public string SortExpression { get; set; }
+
+		void ISavingBehavior.OnSaving(BehaviorContext context)
+		{
+		}
+
+		public void OnSavingChild(BehaviorContext context)
+		{
+			if (context.AffectedItem.Parent == null)
+				return;
+
+			foreach (ContentItem updatedItem in ReorderChildren(context.AffectedItem.Parent))
+			{
+				context.UnsavedItems.Add(updatedItem);
+			}
+		}
 	}
 }

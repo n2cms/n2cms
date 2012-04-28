@@ -90,9 +90,6 @@ namespace N2.Persistence.NH
 					if (string.IsNullOrEmpty(item.Name))
 						item.Name = null;
 
-					item.AddTo(item.Parent);
-					EnsureSortOrder(item);
-
 					itemRepository.SaveOrUpdate(item);
 					if (string.IsNullOrEmpty(item.Name))
 					{
@@ -101,21 +98,6 @@ namespace N2.Persistence.NH
 					}
 
 					transaction.Commit();
-				}
-			}
-		}
-
-		private void EnsureSortOrder(ContentItem unsavedItem)
-		{
-			var parent = unsavedItem.Parent;
-			if (parent != null)
-			{
-				foreach (SortChildrenAttribute attribute in parent.GetContentType().GetCustomAttributes(typeof(SortChildrenAttribute), true))
-				{
-					foreach (ContentItem updatedItem in attribute.ReorderChildren(parent))
-					{
-						itemRepository.SaveOrUpdate(updatedItem);
-					}
 				}
 			}
 		}

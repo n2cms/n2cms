@@ -35,6 +35,7 @@ using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
+using N2.Definitions.Behaviors;
 
 namespace N2
 {
@@ -61,6 +62,7 @@ namespace N2
     /// </remarks>
 	[Serializable, DebuggerDisplay("{TypeName, nq}: {Name, nq}#{ID}")]
 	[DynamicTemplate]
+	[SiblingInsertion(SortBy.CurrentOrder)]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
 #pragma warning disable 612, 618
