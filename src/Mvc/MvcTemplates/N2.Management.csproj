@@ -215,6 +215,7 @@
     <Content Include="N2\Tokens\TokenTemplates\Breadcrumb.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Changes.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\Children.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\ChildPages.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FormSubmit.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FormFile.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\FormTextarea.ascx" />

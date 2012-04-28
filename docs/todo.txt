@@ -1,3 +1,4 @@
+- restrict upload folders
 - placeholder
 - update lilnk on moves (discussions/347093)
 - required [EditableMediaUpload] (discussions/346532)
