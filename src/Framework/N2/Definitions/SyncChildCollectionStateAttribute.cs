@@ -36,15 +36,32 @@ namespace N2.Definitions
 			var initialState = parent.ChildState;
 			var childInducedState = GetCollectionState(child);
 
-			if (childInducedState != initialState)
+			if (parent.ChildState == CollectionState.IsEmpty)
 			{
-				if (parent.ChildState == CollectionState.IsEmpty)
-					parent.ChildState = childInducedState;
-				else
-					parent.ChildState |= childInducedState;
-
+				// no previous child state
+				parent.ChildState = childInducedState;
 				context.UnsavedItems.Add(parent);
+				return;
 			}
+			
+			var reducedState = ReduceExistingStates(null, parent, initialState);
+			if (reducedState == None)
+			{
+				if (Is(initialState, childInducedState))
+					// unchanged child state
+					return;
+
+				// added child state
+				parent.ChildState |= childInducedState;
+			}
+			else
+			{
+				// changed child state
+				parent.ChildState |= childInducedState;
+				parent.ChildState ^= reducedState;
+			}
+				
+			context.UnsavedItems.Add(parent);
 		}
 
 		public void OnAdding(BehaviorContext context)
@@ -68,11 +85,11 @@ namespace N2.Definitions
 		{
 			var item = context.AffectedItem;
 			var parent = item.Parent;
-			if (Is(parent, CollectionState.Unknown) || Is(parent, CollectionState.IsEmpty))
+			if (Is(parent.ChildState, CollectionState.Unknown) || Is(parent.ChildState, CollectionState.IsEmpty))
 				return;
 
 			bool isParentAdded = false;
-			if (Is(parent, CollectionState.IsLarge) && parent.Children.Count <= LargeCollecetionThreshold)
+			if (Is(parent.ChildState, CollectionState.IsLarge) && parent.Children.Count <= LargeCollecetionThreshold)
 			{
 				parent.ChildState ^= CollectionState.IsLarge;
 				context.UnsavedItems.Add(parent);
@@ -81,13 +98,8 @@ namespace N2.Definitions
 
 			var itemState = GetCollectionState(item);
 
-			foreach (var sibling in parent.Children)
-			{
-				if (sibling != item && GetCollectionState(sibling) == itemState)
-				{
-					return;
-				}
-			}
+			if (ReduceExistingStates(item, parent, itemState) == CollectionState.Unknown)
+				return;
 
 			parent.ChildState ^= itemState;
 			if (parent.ChildState == CollectionState.Unknown)
@@ -97,19 +109,39 @@ namespace N2.Definitions
 				context.UnsavedItems.Add(parent);
 		}
 
+		static CollectionState None = (CollectionState)0;
+
+		private static CollectionState ReduceExistingStates(ContentItem child, ContentItem parent, CollectionState requiredState)
+		{
+			var remainingState = requiredState;
+			foreach (var sibling in parent.Children)
+			{
+				if (sibling == child)
+					continue;
+
+				// hoops indented to avoid looping over the whole collection if not necessary
+				remainingState ^= GetCollectionState(sibling) & remainingState;
+
+				if (remainingState == None)
+					break;
+			}
+
+			return remainingState;
+		}
+
 		// helpers
 
-		private bool Is(ContentItem item, CollectionState expectedState)
+		private bool Is(CollectionState actualState, CollectionState expectedState)
 		{
-			if (expectedState == CollectionState.Unknown && item.ChildState != CollectionState.Unknown)
+			if (expectedState == CollectionState.Unknown && actualState != CollectionState.Unknown)
 				return false;
 
-			return (item.ChildState & expectedState) == expectedState;
+			return (actualState & expectedState) == expectedState;
 		}
 
 		private static CollectionState GetCollectionState(ContentItem child)
 		{
-			var childInducedState = CollectionState.Unknown;
+			var childInducedState = None;
 
 			if (child.IsPage)
 			{

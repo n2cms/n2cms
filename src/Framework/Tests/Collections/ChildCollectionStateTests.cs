@@ -154,6 +154,29 @@ namespace N2.Tests.Collections
 			root.ChildState.ShouldBe(CollectionState.ContainsVisiblePublicPages | CollectionState.ContainsVisibleSecuredPages | CollectionState.ContainsHiddenPublicPages | CollectionState.ContainsHiddenSecuredPages | CollectionState.ContainsPublicParts | CollectionState.ContainsSecuredParts);
 		}
 
+		[Test]
+		public void ChangingItemState_AffectsCollectionState()
+		{
+			persister.Save(child1);
+
+			child1.Visible = false;
+			persister.Save(child1);
+
+			root.ChildState.ShouldBe(CollectionState.ContainsHiddenPublicPages);
+		}
+
+		[Test]
+		public void ChangingItemState_AffectsCollectionState_WithoutRemoving_StateInducedByOtherSiblings()
+		{
+			persister.Save(child1);
+			persister.Save(CreateOneItem<FirstItem>(0, "child2", root));
+
+			child1.Visible = false;
+			persister.Save(child1);
+
+			root.ChildState.ShouldBe(CollectionState.ContainsHiddenPublicPages | CollectionState.ContainsVisiblePublicPages);
+		}
+
 		// removing
 
 		[Test]
