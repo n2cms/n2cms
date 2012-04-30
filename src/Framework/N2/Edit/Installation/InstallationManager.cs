@@ -207,11 +207,15 @@ namespace N2.Edit.Installation
 				sessionProvider.OpenSession.Session.CreateQuery("select ci.TemplateKey from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 4;
 
+				// checking persistable properties added in application
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.ChildState from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
+				status.DatabaseVersion = 5;
+
 				if (isDatabaseFileSystemEnbled)
 				{
 					// checking file system table (if enabled)
-					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name +  " ci").SetMaxResults(1).List();
-					status.DatabaseVersion = 5;
+					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name + " ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 6;
 				}
 
 				// checking persistable properties added in application

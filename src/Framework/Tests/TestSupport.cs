@@ -18,7 +18,7 @@ using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using N2.Persistence.Sources;
-using N2.Definitions.Behaviors;
+using N2.Persistence.Behaviors;
 
 namespace N2.Tests
 {

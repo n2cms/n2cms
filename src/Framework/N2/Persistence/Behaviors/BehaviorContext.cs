@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2.Definitions.Behaviors
+namespace N2.Persistence.Behaviors
 {
 	public class BehaviorContext
 	{
@@ -17,5 +17,7 @@ namespace N2.Definitions.Behaviors
 
 		/// <summary>Items to be saved in conjunction with the affected item.</summary>
 		public ICollection<ContentItem> UnsavedItems { get; set; }
+
+		public string Action { get; set; }
 	}
 }

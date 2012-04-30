@@ -8,7 +8,7 @@ using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Definitions.Behaviors;
+using N2.Persistence.Behaviors;
 
 namespace N2.Management.Tests.ExternalContent
 {

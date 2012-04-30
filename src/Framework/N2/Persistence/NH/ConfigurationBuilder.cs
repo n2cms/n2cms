@@ -297,6 +297,7 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.Visible, cm => { });
 			ca.Property(x => x.SavedBy, cm => { cm.Length(50); });
 			ca.Property(x => x.State, cm => { });
+			ca.Property(x => x.ChildState, cm => { });
 			ca.Property(x => x.AncestralTrail, cm => { cm.Length(100); });
 			ca.Property(x => x.VersionIndex, cm => { });
 			ca.Property(x => x.AlteredPermissions, cm => { });

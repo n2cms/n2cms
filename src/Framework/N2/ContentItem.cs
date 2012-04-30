@@ -35,7 +35,7 @@ using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
-using N2.Definitions.Behaviors;
+using N2.Persistence.Behaviors;
 
 namespace N2
 {
@@ -65,6 +65,7 @@ namespace N2
 	[SiblingInsertion(SortBy.CurrentOrder)]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
+	[SyncChildCollectionState(syncEnabled: true)]
 #pragma warning disable 612, 618
 	public abstract class ContentItem : INode,
 #pragma warning restore 612, 618
@@ -102,7 +103,8 @@ namespace N2
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
         private int versionIndex;
-        private ContentState state = ContentState.None;
+		private ContentState state = ContentState.None;
+		private CollectionState childState = CollectionState.Unknown;
 		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
 		private int? hashCode;
 		#endregion
@@ -295,6 +297,13 @@ namespace N2
             get { return state; }
             set { state = value; }
         }
+		
+		[DisplayableLiteral]
+		public CollectionState ChildState
+		{
+			get { return childState; }
+			set { childState = value; }
+		}
 
         [DisplayableLiteral]
 		public virtual N2.Security.Permission AlteredPermissions

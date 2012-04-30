@@ -6,7 +6,7 @@ using NUnit.Framework;
 using N2.Tests.Definitions.Items;
 using N2.Definitions;
 using Shouldly;
-using N2.Definitions.Behaviors;
+using N2.Persistence.Behaviors;
 
 namespace N2.Tests.Definitions
 {

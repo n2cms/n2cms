@@ -29,7 +29,7 @@ namespace N2.Management.Content.LinkTracker
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return repository.Find(new Parameter("Name", Tracker.LinkDetailName)).Any();
+			return status.DatabaseVersion < 7 || repository.Find(new Parameter("Name", Tracker.LinkDetailName)).Any();
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)

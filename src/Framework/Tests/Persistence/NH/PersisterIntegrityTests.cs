@@ -4,7 +4,7 @@ using N2.Integrity;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
-using N2.Definitions.Behaviors;
+using N2.Persistence.Behaviors;
 
 namespace N2.Tests.Persistence.NH
 {
