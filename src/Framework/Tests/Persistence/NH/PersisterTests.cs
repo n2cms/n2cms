@@ -97,6 +97,8 @@ namespace N2.Tests.Persistence.NH
 				return new DateTime(2010, 06, 16);
 			else if (propertyType == typeof(bool))
 				return true;
+			else if (propertyType == typeof(N2.Collections.CollectionState))
+				return N2.Collections.CollectionState.IsEmpty;
 			else if (propertyType.IsEnum)
 				return Enum.Parse(propertyType, Enum.GetNames(propertyType).First());
 			

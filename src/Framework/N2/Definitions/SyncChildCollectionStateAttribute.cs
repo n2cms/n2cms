@@ -31,7 +31,7 @@ namespace N2.Definitions
 		public void OnSavingChild(BehaviorContext context)
 		{
 			var child = context.AffectedItem;
-			var parent = child.Parent;
+			var parent = context.Parent;
 			
 			var initialState = parent.ChildState;
 			var childInducedState = GetCollectionState(child);
@@ -70,9 +70,9 @@ namespace N2.Definitions
 
 		public void OnAddingChild(BehaviorContext context)
 		{
-			if (context.AffectedItem.Parent.Children.Count >= LargeCollecetionThreshold)
+			if (context.Parent.Children.Count >= LargeCollecetionThreshold)
 			{
-				context.AffectedItem.Parent.ChildState |= CollectionState.IsLarge;
+				context.Parent.ChildState |= CollectionState.IsLarge;
 				context.UnsavedItems.Add(context.AffectedItem.Parent);
 			}
 		}
@@ -84,7 +84,7 @@ namespace N2.Definitions
 		public void OnRemovingChild(BehaviorContext context)
 		{
 			var item = context.AffectedItem;
-			var parent = item.Parent;
+			var parent = context.Parent;
 			if (Is(parent.ChildState, CollectionState.Unknown) || Is(parent.ChildState, CollectionState.IsEmpty))
 				return;
 

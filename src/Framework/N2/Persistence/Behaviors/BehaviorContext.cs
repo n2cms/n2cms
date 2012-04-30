@@ -19,5 +19,7 @@ namespace N2.Persistence.Behaviors
 		public ICollection<ContentItem> UnsavedItems { get; set; }
 
 		public string Action { get; set; }
+
+		public ContentItem Parent { get; set; }
 	}
 }

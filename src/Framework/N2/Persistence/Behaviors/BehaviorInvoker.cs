@@ -104,7 +104,7 @@ namespace N2.Persistence.Behaviors
 		private void InvokeBehaviors<T>(ContentItem affectedItem, ContentItem parent, string action, Action<T, BehaviorContext> childBehaviorIvoker, Action<T, BehaviorContext> itemBehaviorInvoker)
 			where T : class
 		{
-			var ctx = new BehaviorContext { AffectedItem = affectedItem, Action = action };
+			var ctx = new BehaviorContext { AffectedItem = affectedItem, Parent = parent, Action = action };
 
 			foreach (var behavior in GetBehviors<T>(parent))
 				childBehaviorIvoker(behavior, ctx);
