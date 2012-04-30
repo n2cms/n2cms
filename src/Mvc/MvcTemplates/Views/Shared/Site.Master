@@ -38,7 +38,6 @@
 					</div>
 				</asp:ContentPlaceHolder>
 				<div id="content" class="">
-					<h1><%= Html.CurrentItem().ChildState %></h1>
 					<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 						<div id="main">
 							<asp:ContentPlaceHolder ID="PreContent" runat="server">
