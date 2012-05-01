@@ -4,6 +4,7 @@ using System.Linq;
 using N2.Configuration;
 using N2.Engine;
 using System.Configuration;
+using N2.Edit;
 
 namespace N2.Web
 {
@@ -157,24 +158,13 @@ namespace N2.Web
 				{
 					if (string.IsNullOrEmpty(folder.Path))
 						throw new ConfigurationErrorsException("Upload path configured for site '" + configElement.Name + "' cannot be empty.");
-					s.UploadFolders.Add(FixPath(folder.Path));
+					s.UploadFolders.Add(new UploadFolderRoot(folder, s));
 				}
 				foreach (string key in configElement.Settings.AllKeys)
 					s.Settings[key] = configElement.Settings[key].Value;
 				sites.Add(s);
 			}
 			return sites;
-		}
-
-		private static string FixPath(string path)
-		{
-			if (!path.EndsWith("/"))
-				path = path + "/";
-			if (path.StartsWith("/"))
-				path = "~" + path;
-			else if (!path.StartsWith("~"))
-				path = "~/" + path;
-			return path;
 		}
 
 		/// <summary>Is triggered when the sites collection changes.</summary>

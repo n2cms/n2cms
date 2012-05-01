@@ -52,7 +52,7 @@ namespace N2.Edit.Tests.FileSystem
 			var sizeCache = new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) });
 			injector.injectors.Add(new EntityDependencySetter<ImageSizeCache>(sizeCache));
 			nodeProvider = new FolderNodeProvider(fs, persister, injector);
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), config, sizeCache, nodeProvider);
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), new UploadFolderSource(host, config), nodeProvider);
 		}
 
 		class FakeStatus : DatabaseStatusCache

@@ -1,3 +1,4 @@
+- fix update link om moves for medium trust
 - non-persistent items searchable
 - tags searchable
 - restrict upload folders

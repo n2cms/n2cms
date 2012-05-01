@@ -10,6 +10,7 @@ using N2.Edit.FileSystem;
 using N2.Edit;
 using N2.Persistence;
 using N2.Collections;
+using N2.Security;
 
 namespace N2.Management.Files
 {
@@ -85,14 +86,25 @@ namespace N2.Management.Files
 
 		private Directory CreateDirectory(FolderPair pair)
 		{
-			var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
+			var dd = fs.GetDirectoryOrVirtual(pair.Folder.Path);
 			var parent = persister.Get(pair.ParentID);
 
 			var dir = Directory.New(dd, parent, dependencyInjector);
-			dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
-			dir.Name = dir.Title;
+			dir.Name = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
+			dir.Title = pair.Folder.Title ?? dir.Name;
 
+			Apply(pair.Folder.Readers, dir);
+			Apply(pair.Folder.Writers, dir);
+			
 			return dir;
+		}
+
+		private static void Apply(PermissionMap map, Directory dir)
+		{
+			if (map.IsAltered)
+				DynamicPermissionMap.SetRoles(dir, map.Permissions, map.Roles);
+			else
+				DynamicPermissionMap.SetAllRoles(dir, map.Permissions);
 		}
 
 		#endregion

@@ -35,7 +35,7 @@ namespace N2.Edit.FileSystem
             Reload();
 
             Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
-            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, N2.Security.Permission.Publish);
+            btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Publish);
         }
 
 		private void Reload()

@@ -37,6 +37,8 @@
 		    </asp:Repeater>
 	    </div>
 
-        <edit:FileUpload runat="server" />
+		<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
+			<edit:FileUpload runat="server" />
+		</edit:PermissionPanel>
     </div>
 </asp:Content>

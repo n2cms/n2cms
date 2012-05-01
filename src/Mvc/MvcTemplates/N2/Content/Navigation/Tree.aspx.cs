@@ -125,10 +125,9 @@ namespace N2.Edit.Navigation
 			if (string.IsNullOrEmpty(uploadFolder))
 				return false;
 			uploadFolder = Url.ToRelative(uploadFolder);
-			foreach (string availableFolder in Engine.EditManager.UploadFolders
-				.Union(Engine.Host.Sites.SelectMany(s => s.UploadFolders)))
+			foreach (var availableFolder in Engine.Resolve<UploadFolderSource>().GetUploadFoldersForAllSites())
 			{
-				if (uploadFolder.StartsWith(Url.ToRelative(availableFolder), StringComparison.InvariantCultureIgnoreCase))
+				if (uploadFolder.StartsWith(Url.ToRelative(availableFolder.Path), StringComparison.InvariantCultureIgnoreCase))
 					return true;
 			}
 

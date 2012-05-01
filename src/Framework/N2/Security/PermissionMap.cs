@@ -12,6 +12,7 @@ namespace N2.Security
 		public Permission Permissions { get; set; }
 		public string[] Roles { get; set; }
 		public string[] Users { get; set; }
+		public bool IsAltered { get; set; }
 
 		public PermissionMap()
 		{

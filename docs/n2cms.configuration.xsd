@@ -46,8 +46,18 @@
 														<xs:complexType>
 															<xs:sequence>
 																<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+																<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="path" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
 																<xs:element name="add" maxOccurs="unbounded">
 																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+																			<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+																		</xs:all>
+																		<xs:attribute name="title" type="xs:string" />
 																		<xs:attribute name="path" type="xs:string" use="required" />
 																	</xs:complexType>
 																</xs:element>
@@ -398,6 +408,11 @@
 										</xs:element>
 										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
+												<xs:all>
+													<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+													<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+												</xs:all>
+												<xs:attribute name="title" type="xs:string" />
 												<xs:attribute name="path" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>

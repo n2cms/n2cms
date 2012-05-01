@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using N2.Edit;
 
 namespace N2.Web
 {
@@ -14,7 +15,7 @@ namespace N2.Web
 		private string authority;
         private bool wildcards;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
-	    private IList<string> uploadFolders = new List<string>();
+		private IList<UploadFolderRoot> uploadFolders = new List<UploadFolderRoot>();
 
 	    public Site(int rootItemID) : this(rootItemID, rootItemID)
 		{
@@ -71,7 +72,7 @@ namespace N2.Web
             set { authority = value; }
         }
 
-        public IList<string> UploadFolders
+        public IList<UploadFolderRoot> UploadFolders
         {
             get { return uploadFolders; }
         }

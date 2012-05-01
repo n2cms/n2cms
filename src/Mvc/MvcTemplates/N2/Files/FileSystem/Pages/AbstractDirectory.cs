@@ -9,6 +9,7 @@ using N2.Web.Drawing;
 using N2.Definitions;
 using N2.Configuration;
 using N2.Engine;
+using N2.Security;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -115,6 +116,10 @@ namespace N2.Edit.FileSystem.Items
 				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
 				{
 					var node = Items.Directory.New(dir, this, DependencyInjector);
+					if (!DynamicPermissionMap.IsAllRoles(this, Permission.Read))
+						DynamicPermissionMap.SetRoles(node, Permission.Read, DynamicPermissionMap.GetRoles(this, Permission.Read).ToArray());
+					if (!DynamicPermissionMap.IsAllRoles(this, Permission.Write))
+						DynamicPermissionMap.SetRoles(node, Permission.Write, DynamicPermissionMap.GetRoles(this, Permission.Write).ToArray());
 					directories.Add(node);
 				}
 				directories.Sort(new TitleComparer<Directory>());
