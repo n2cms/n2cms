@@ -309,6 +309,26 @@
     <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
+    <Content Include="Content\Galleria\galleria-1.2.7.js" />
+    <Content Include="Content\Galleria\galleria-1.2.7.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\loader.gif" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.js" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.min.js" />
+    <Content Include="Content\Galleria\plugins\history\history-demo.html" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.js" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.min.js" />
+    <Content Include="Content\Galleria\plugins\picasa\loader.gif" />
+    <Content Include="Content\Galleria\plugins\picasa\picasa-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
+    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.min.js" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />
@@ -467,6 +487,7 @@
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
     <Content Include="App_Themes\Web.config" />
+    <None Include="Content\Galleria\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
@@ -613,30 +634,6 @@
     <Content Include="Views\Shared\PartTemplates\Top.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
-    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
-    <Content Include="Content\Galleria\themes\dots\dot.png" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.css" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.js" />
-    <Content Include="Content\Galleria\themes\dots\l.png" />
-    <Content Include="Content\Galleria\themes\dots\loader.gif" />
-    <Content Include="Content\Galleria\themes\dots\nav.png" />
-    <Content Include="Content\Galleria\themes\dots\r.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\b.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\down.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\fix.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.css" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.js" />
-    <Content Include="Content\Galleria\themes\fullscreen\i.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\l.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\loader.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\n.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\p.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\r.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\up.gif" />
-    <Content Include="Content\Galleria\jquery.galleria.js" />
     <Content Include="Views\NewsContainer\Index.aspx" />
     <Content Include="Views\NewsContainer\Range.ascx" />
     <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />

@@ -40,7 +40,6 @@
 				<div id="content" class="">
 					<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 						<div id="main">
-							<h1><%= Html.CurrentItem().ChildState %></h1>
 							<asp:ContentPlaceHolder ID="PreContent" runat="server">
 								<% Html.DroppableZone(Zones.RecursiveAbove).Render();%>
 							</asp:ContentPlaceHolder>

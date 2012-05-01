@@ -67,7 +67,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the zone name to list.</summary>
 		public string ZoneName
 		{
-			get { return (string) (ViewState["ZoneName"] ?? ""); }
+			get { return (string)ViewState["ZoneName"]; }
 			set { ViewState["ZoneName"] = value; }
 		}
 
@@ -208,7 +208,9 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ParentItem != null)
 			{
-				IList<ContentItem> items = ParentItem.GetChildren(ZoneName);
+				IList<ContentItem> items = string.IsNullOrEmpty(ZoneName)
+					? ParentItem.GetChildren()
+					: ParentItem.GetChildren(ZoneName);
 				foreach (string discriminator in AddedDefinitions)
 				{
 					ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));
