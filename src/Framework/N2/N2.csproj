@@ -348,6 +348,7 @@
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
