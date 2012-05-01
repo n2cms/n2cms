@@ -454,22 +454,4 @@ namespace N2.Definitions
 			return Attributes.OfType<T>();
 		}
 	}
-
-	public static class CollectionExtensions
-	{
-		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) where T : IUniquelyNamed
-		{
-			return CollectionExtensions.AddOrReplace(collection, item, false);
-		}
-		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item, bool replaceIfComparedBefore) where T : IUniquelyNamed
-		{
-			var existing = collection.FirstOrDefault(i => i.Name == item.Name);
-			if (existing != null)
-				collection.Remove(existing);
-
-			collection.Add(item);
-
-			return collection;
-		}
-	}
 }

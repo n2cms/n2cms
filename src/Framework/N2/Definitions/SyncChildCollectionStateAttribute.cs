@@ -34,7 +34,7 @@ namespace N2.Definitions
 			var parent = context.Parent;
 			
 			var initialState = parent.ChildState;
-			var childInducedState = GetCollectionState(child);
+			var childInducedState = child.GetCollectionState();
 
 			if (parent.ChildState == CollectionState.IsEmpty)
 			{
@@ -45,7 +45,7 @@ namespace N2.Definitions
 			}
 			
 			var reducedState = ReduceExistingStates(null, parent, initialState);
-			if (reducedState == None)
+			if (reducedState == CollectionExtensions.None)
 			{
 				if (Is(initialState, childInducedState))
 					// unchanged child state
@@ -96,7 +96,7 @@ namespace N2.Definitions
 				isParentAdded = true;
 			}
 
-			var itemState = GetCollectionState(item);
+			var itemState = item.GetCollectionState();
 
 			if (ReduceExistingStates(item, parent, itemState) == CollectionState.Unknown)
 				return;
@@ -109,7 +109,6 @@ namespace N2.Definitions
 				context.UnsavedItems.Add(parent);
 		}
 
-		static CollectionState None = (CollectionState)0;
 
 		private static CollectionState ReduceExistingStates(ContentItem child, ContentItem parent, CollectionState requiredState)
 		{
@@ -120,9 +119,9 @@ namespace N2.Definitions
 					continue;
 
 				// hoops indented to avoid looping over the whole collection if not necessary
-				remainingState ^= GetCollectionState(sibling) & remainingState;
+				remainingState ^= sibling.GetCollectionState() & remainingState;
 
-				if (remainingState == None)
+				if (remainingState == CollectionExtensions.None)
 					break;
 			}
 
@@ -137,41 +136,6 @@ namespace N2.Definitions
 				return false;
 
 			return (actualState & expectedState) == expectedState;
-		}
-
-		private static CollectionState GetCollectionState(ContentItem child)
-		{
-			var childInducedState = None;
-
-			if (child.IsPage)
-			{
-				if (child.State == ContentState.Published && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
-				{
-					if (child.Visible)
-						childInducedState |= CollectionState.ContainsVisiblePublicPages;
-					else
-						childInducedState |= CollectionState.ContainsHiddenPublicPages;
-				}
-				else
-				{
-					if (child.Visible)
-						childInducedState |= CollectionState.ContainsVisibleSecuredPages;
-					else
-						childInducedState |= CollectionState.ContainsHiddenSecuredPages;
-				}
-			}
-			else
-			{
-				if (child.State == ContentState.Published && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
-				{
-					childInducedState |= CollectionState.ContainsPublicParts;
-				}
-				else
-				{
-					childInducedState |= CollectionState.ContainsSecuredParts;
-				}
-			}
-			return childInducedState;
 		}
 	}
 }

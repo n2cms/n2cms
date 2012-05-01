@@ -32,6 +32,6 @@ namespace N2.Collections
 		/// <summary>Has child parts which are accessible to everyone.</summary>
 		ContainsPublicParts = 128,
 		/// <summary>Has child parts which requires special read permissions.</summary>
-		ContainsSecuredParts = 256,
+		ContainsSecuredParts = 256
 	}
 }
