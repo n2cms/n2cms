@@ -78,7 +78,7 @@ namespace N2.Web.Mvc
 				engine.MasterLocationFormats = GetLocations(themePath, fallbackPath, masterExtensions);
 				engine.ViewLocationFormats = GetLocations(themePath, fallbackPath, viewExtensions);
 				engine.PartialViewLocationFormats = engine.ViewLocationFormats;
-				engine.ViewLocationCache = new DefaultViewLocationCache();
+				engine.ViewLocationCache = new ThemeViewLocationCache();
 				Utility.TrySetProperty(engine, "FileExtensions", viewExtensions);
 
 				var temp = new Dictionary<string, T>(engines);
