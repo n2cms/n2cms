@@ -10,10 +10,9 @@ using N2.Security;
 
 namespace N2.Edit
 {
-
-	public class UploadFolderRoot
+	public class FileSystemRoot
 	{
-		public UploadFolderRoot(string path, Site site)
+		public FileSystemRoot(string path, Site site)
 		{
 			Path = path;
 			Readers = new PermissionMap(Permission.Read, new[] { "Administrators", "Editors", "Writers" }, new[] { "admin" });
@@ -21,7 +20,7 @@ namespace N2.Edit
 			Site = site;
 		}
 
-		public UploadFolderRoot(FolderElement folder, Site site)
+		public FileSystemRoot(FolderElement folder, Site site)
 		{
 			Path = FixPath(folder.Path);
 			if (!string.IsNullOrEmpty(folder.Title))
@@ -49,9 +48,19 @@ namespace N2.Edit
 			return path;
 		}
 
-		public static implicit operator UploadFolderRoot(string path)
+		public static implicit operator FileSystemRoot(string path)
 		{
-			return new UploadFolderRoot(path, new Site(0));
+			return new FileSystemRoot(path, new Site(0));
+		}
+
+		public int GetParentID()
+		{
+			return IsGlobal ? Site.RootItemID : Site.StartPageID;
+		}
+
+		public string GetName()
+		{
+			return Path.Trim('~', '/');
 		}
 	}
 
@@ -62,21 +71,21 @@ namespace N2.Edit
 	public class UploadFolderSource
 	{
 		private IHost host;
-		private UploadFolderRoot[] globalFolders;
+		private FileSystemRoot[] globalFolders;
 
 		public UploadFolderSource(IHost host, EditSection config)
 		{
 			this.host = host;
 			this.globalFolders = config.UploadFolders
-				.AllElements.Select(u => new UploadFolderRoot(u, host.DefaultSite) { IsGlobal = true }).ToArray();
+				.AllElements.Select(u => new FileSystemRoot(u, host.DefaultSite) { IsGlobal = true }).ToArray();
 		}
 
-		public IEnumerable<UploadFolderRoot> GetUploadFoldersForCurrentSite()
+		public IEnumerable<FileSystemRoot> GetUploadFoldersForCurrentSite()
 		{
 			return GetUploadFolders(host.CurrentSite);
 		}
 
-		public IEnumerable<UploadFolderRoot> GetUploadFoldersForAllSites()
+		public IEnumerable<FileSystemRoot> GetUploadFoldersForAllSites()
 		{
 			foreach (var folder in globalFolders)
 				yield return folder;
@@ -86,7 +95,7 @@ namespace N2.Edit
 				yield return folder;
 		}
 
-		public virtual IEnumerable<UploadFolderRoot> GetUploadFolders(Site site)
+		public virtual IEnumerable<FileSystemRoot> GetUploadFolders(Site site)
 		{
 			foreach (var folder in globalFolders)
 				yield return folder;

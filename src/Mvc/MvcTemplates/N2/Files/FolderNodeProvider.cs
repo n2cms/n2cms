@@ -86,16 +86,21 @@ namespace N2.Management.Files
 
 		private Directory CreateDirectory(FolderPair pair)
 		{
-			var dd = fs.GetDirectoryOrVirtual(pair.Folder.Path);
-			var parent = persister.Get(pair.ParentID);
+			return CreateDirectory(pair.Folder, fs, persister, dependencyInjector);
+		}
+
+		internal static Directory CreateDirectory(FileSystemRoot folder, IFileSystem fs, IPersister persister, IDependencyInjector dependencyInjector)
+		{
+			var dd = fs.GetDirectoryOrVirtual(folder.Path);
+			var parent = persister.Get(folder.GetParentID());
 
 			var dir = Directory.New(dd, parent, dependencyInjector);
-			dir.Name = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
-			dir.Title = pair.Folder.Title ?? dir.Name;
+			dir.Name = folder.GetName();
+			dir.Title = folder.Title ?? dir.Name;
 
-			Apply(pair.Folder.Readers, dir);
-			Apply(pair.Folder.Writers, dir);
-			
+			Apply(folder.Readers, dir);
+			Apply(folder.Writers, dir);
+
 			return dir;
 		}
 

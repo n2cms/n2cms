@@ -80,8 +80,8 @@ namespace N2.Management.Files
 			// configured folders to the root node
 			foreach (var folder in folderSource.GetUploadFoldersForAllSites())
 			{
-				var parent = persister.Get(folder.IsGlobal ? folder.Site.RootItemID : folder.Site.StartPageID);
-				var pair = new FolderPair(parent.ID, parent.Path, parent.Path + folder.Path.TrimStart('~', '/'), folder);
+				var parent = persister.Get(folder.GetParentID());
+				var pair = new FolderPair(parent.ID, parent.Path, parent.Path + folder.GetName() + "/", folder);
 				paths.Add(pair);
 			}
 

@@ -56,22 +56,16 @@ namespace N2.Edit.Navigation
 					TrySelectingPrevious(ref selected, ref selectionTrail);
 				}
 
-				foreach (string uploadFolder in Engine.EditManager.UploadFolders)
+				foreach (var upload in Engine.Resolve<UploadFolderSource>().GetUploadFoldersForAllSites())
 				{
-					var dd = FS.GetDirectoryOrVirtual(uploadFolder);
+					var dir = N2.Management.Files.FolderNodeProvider.CreateDirectory(upload, FS, Engine.Persister, Engine.Resolve<IDependencyInjector>());
 
-					var dir = Directory.New(dd, root.Current, Engine.Resolve<IDependencyInjector>());
-					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
-					root.Children.Add(node);
-				}
-
-				AddSiteFilesNodes(root, host.DefaultSite, selectionTrail);
-				foreach (var site in host.Sites)
-				{
-					if (site.StartPageID == host.DefaultSite.StartPageID)
+					if (!Engine.SecurityManager.IsAuthorized(dir, User))
 						continue;
 
-					AddSiteFilesNodes(root, site, selectionTrail);
+					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
+
+					root.Children.Add(node);
 				}
 
 				siteTreeView.Nodes = root;

@@ -15,7 +15,7 @@ namespace N2.Web
 		private string authority;
         private bool wildcards;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
-		private IList<UploadFolderRoot> uploadFolders = new List<UploadFolderRoot>();
+		private IList<FileSystemRoot> uploadFolders = new List<FileSystemRoot>();
 
 	    public Site(int rootItemID) : this(rootItemID, rootItemID)
 		{
@@ -72,7 +72,7 @@ namespace N2.Web
             set { authority = value; }
         }
 
-        public IList<UploadFolderRoot> UploadFolders
+        public IList<FileSystemRoot> UploadFolders
         {
             get { return uploadFolders; }
         }

@@ -8,7 +8,7 @@ namespace N2.Management.Files
 {
 	internal struct FolderPair
 	{
-		public FolderPair(int parentID, string parentPath, string path, UploadFolderRoot folder)
+		public FolderPair(int parentID, string parentPath, string path, FileSystemRoot folder)
 		{
 			ParentID = parentID;
 			Path = path;
@@ -19,6 +19,6 @@ namespace N2.Management.Files
 		public int ParentID;
 		public string Path;
 		public string ParentPath;
-		public UploadFolderRoot Folder;
+		public FileSystemRoot Folder;
 	}
 }
