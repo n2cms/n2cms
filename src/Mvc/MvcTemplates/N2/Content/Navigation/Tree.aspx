@@ -14,19 +14,21 @@
 		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
 		<script src="Tree.js" type="text/javascript"></script>
 		<style>
-			.nodeOption { display:none; padding:5px; }
-			.filesselectionLocation .DirectorySelected .onDirectorySelected
+			.FileUpload
 			{
-				display:block;
+				display:none;
+				padding:4px 7px;
+				border-bottom:solid 1px silver;
+				box-shadow:0 0 10px #ccc;
 			}
 		</style>
     </head>
-<body class="framed noneSelected">
+<body class="framed noneSelected noPermission">
     <form id="form1" runat="server">
-		<div class="onDirectorySelected nodeOption">
+		<div class="FileUpload">
+			<asp:Image ImageUrl="../../Resources/Icons/page_white_get.png" runat="server" style="vertical-align:middle" />
 			<input id="inputLocation" type="hidden" runat="server" class="uploadDirectoryLocation" />
 			<input id="inputFile" type="file" runat="server" onchange="this.form.submit();" />
-			<asp:Image ImageUrl="../../Resources/Icons/page_white_get.png" runat="server" style="vertical-align:middle" />
 		</div>
         <div id="nav" class="tree nav focusGroup">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
@@ -48,6 +50,7 @@
         
         <% if (isSelection) { %>
         <script type="text/javascript">
+			// selection
         	var updateOpenerWithUrlAndClose = function(relativeUrl) {
         		function selectIn(opener) {
         			if (opener.onFileSelected && opener.srcField)
@@ -75,6 +78,7 @@
 		
         <script type="text/javascript">
 		<% if (isFilesSelection) { %>
+			// file selection
         	n2nav.handlers["fallback"] = function(e) {
         		e.preventDefault();
         		if ($(this).attr("data-selectable") == "true")
@@ -85,6 +89,7 @@
     	<% } %>
 		
 		<% if (isContentSelection) { %>
+			// content selection
 			n2nav.handlers["fallback"] = function(e) {
 				e.preventDefault();
 				if ($(this).attr("data-id") != "0")
@@ -93,6 +98,7 @@
     	<% } %>
 		
 		<% if (isFilesNavigation) { %>
+			// file navigation
         	var fallback = n2nav.handlers["fallback"];
         	n2nav.handlers["fallback"] = function(e) {
         		var type = $(this).attr("data-type");

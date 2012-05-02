@@ -64,7 +64,6 @@ namespace N2.Edit.Navigation
 						continue;
 
 					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
-
 					root.Children.Add(node);
 				}
 
