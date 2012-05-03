@@ -17,9 +17,7 @@ namespace N2.Linq
 		public static IQueryable<T> Query<T>(this IEngine engine)
 		{
             var q = engine.Resolve<ISessionProvider>().OpenSession.Session.Query<T>();
-			//q = q.CacheMode(NHibernate.CacheMode.Normal);
-			q = q.Cacheable();
-            return q;
+			return q;
 		}
 
         /// <summary>Creates a query for published content items.</summary>

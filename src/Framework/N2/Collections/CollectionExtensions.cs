@@ -64,6 +64,16 @@ namespace N2.Collections
 			}
 		}
 
+		public static bool IsAny(this CollectionState state, CollectionState anyOf)
+		{
+			return (state & anyOf) > 0;
+		}
+
+		public static bool IsAll(this CollectionState state, CollectionState allOf)
+		{
+			return (state & allOf) == allOf;
+		}
+
 		internal static CollectionState All = CollectionState.ContainsVisiblePublicPages | CollectionState.ContainsHiddenPublicPages | CollectionState.ContainsVisibleSecuredPages | CollectionState.ContainsHiddenSecuredPages | CollectionState.ContainsPublicParts | CollectionState.ContainsSecuredParts;
 		internal static CollectionState None = (CollectionState)0;
 
