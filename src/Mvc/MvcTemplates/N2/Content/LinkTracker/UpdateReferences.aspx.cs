@@ -56,8 +56,7 @@ namespace N2.Edit.LinkTracker
 			if (chkChildren.Checked)
 			{
 				mvPhase.ActiveViewIndex = 1;
-				rptDescendants.DataSource = Content.Search.Items.WhereDescendantOrSelf(Selection.SelectedItem)
-					.ToList()
+				rptDescendants.DataSource = Content.Search.Find.Where.AncestralTrail.Like(Selection.SelectedItem.GetTrail() + "%").Select()
 					.Where(Content.Is.Accessible());
 				rptDescendants.DataBind();
 			}
