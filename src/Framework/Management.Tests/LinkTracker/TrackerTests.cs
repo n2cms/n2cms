@@ -82,13 +82,13 @@ namespace N2.Edit.Tests.LinkTracker
 			details.Count.ShouldBe(3);
 			details.Details[0].IntValue.Value.ShouldBe(9);
 			details.Details[0].StringValue.ShouldBe("/item1.aspx");
-			details.Details[0].ObjectValue.ShouldBe("TestDetail");
+			details.Details[0].Meta.ShouldBe("TestDetail");
 			details.Details[1].IntValue.Value.ShouldBe(45);
 			details.Details[1].StringValue.ShouldBe("/item1.aspx");
-			details.Details[1].ObjectValue.ShouldBe("TestDetail");
+			details.Details[1].Meta.ShouldBe("TestDetail");
 			details.Details[2].IntValue.Value.ShouldBe(9);
 			details.Details[2].StringValue.ShouldBe("/item1.aspx");
-			details.Details[2].ObjectValue.ShouldBe("TestDetail2");
+			details.Details[2].Meta.ShouldBe("TestDetail2");
 		}
 
 		[Test]

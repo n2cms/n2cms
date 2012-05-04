@@ -23,7 +23,7 @@ namespace N2.Management.Content.LinkTracker
 			this.itemRepository = itemRepository;
 			this.linkTracker = linkTracker;
 
-			Title = "Update tracked links to v2 model";
+			Title = "Update tracked links to v2.3 model";
 			Description = "In order to support updating links on moves more information is stored about references on the site.";
 		}
 

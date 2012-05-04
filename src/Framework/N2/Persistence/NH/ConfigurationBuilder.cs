@@ -365,6 +365,7 @@ namespace N2.Persistence.NH
 			ca.ManyToOne(x => x.EnclosingCollection, cm => { cm.Column("DetailCollectionID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.Property(x => x.ValueTypeKey, cm => { cm.Column("Type"); cm.Length(10); });
 			ca.Property(x => x.Name, cm => { cm.Length(50); });
+			ca.Property(x => x.Meta, cm => { cm.Type(NHibernateUtil.StringClob); cm.Length(stringLength); });
 			ca.Property(x => x.BoolValue, cm => { });
 			ca.Property(x => x.DateTimeValue, cm => { });
 			ca.Property(x => x.IntValue, cm => { });

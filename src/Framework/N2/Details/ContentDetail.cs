@@ -68,6 +68,8 @@ namespace N2.Details
 		private int id;
         private ContentItem enclosingItem; 
 		private string name;
+		private string meta;
+
 		private DetailCollection collection;
 		private string valueTypeKey;
 
@@ -96,6 +98,13 @@ namespace N2.Details
 		{
 			get { return name; }
 			set	{ name = value; }
+		}
+
+		/// <summary>Meta-data used by N2 to store information about the data stored in the content detail.</summary>
+		public virtual string Meta
+		{
+			get { return meta; }
+			set { meta = value; }
 		}
 
         /// <summary>Gets or sets this details' value.</summary>
@@ -467,6 +476,7 @@ namespace N2.Details
 			ContentDetail cloned = new ContentDetail();
             cloned.ID = 0;
             cloned.Name = this.Name;
+			cloned.Meta = this.Meta;
 			cloned.BoolValue = this.BoolValue;
 			cloned.DateTimeValue = this.DateTimeValue;
 			cloned.DoubleValue = this.DoubleValue;
@@ -528,6 +538,7 @@ namespace N2.Details
 		public virtual void Extract(ContentDetail other)
 		{
 			ValueTypeKey = other.ValueTypeKey;
+			Meta = meta;
 			BoolValue = other.BoolValue;
 			IntValue = other.intValue;
 			DoubleValue = other.DoubleValue;

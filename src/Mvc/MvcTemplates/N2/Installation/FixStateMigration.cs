@@ -50,9 +50,9 @@ namespace N2.Management.Installation
 			if (item.IsExpired())
 				item.State = ContentState.Unpublished;
 			else if (item.IsPublished())
-				item.State = ContentState.Waiting;
-			else
 				item.State = ContentState.Published;
+			else
+				item.State = ContentState.Waiting;
 
 			repository.SaveOrUpdate(item);
 			updatedItems++;
