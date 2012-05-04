@@ -50,7 +50,7 @@ namespace N2.Edit
 
 		public static implicit operator FileSystemRoot(string path)
 		{
-			return new FileSystemRoot(path, new Site(0));
+			return new FileSystemRoot(path, null);
 		}
 
 		public int GetParentID()
@@ -91,7 +91,12 @@ namespace N2.Edit
 				yield return folder;
 			foreach (var folder in host.DefaultSite.UploadFolders)
 				yield return folder;
-			foreach (var folder in host.Sites.SelectMany(s => s.UploadFolders))
+			foreach (var folder in host.Sites.SelectMany(s => s.UploadFolders.Select(f => 
+			{
+				if (f.Site == null)
+					f.Site = s;
+				return f;
+			})))
 				yield return folder;
 		}
 
