@@ -32,9 +32,10 @@ namespace N2.Management.Installation
 			int updatedItems = 0;
 			using (var transaction = repository.BeginTransaction())
 			{
-				foreach (var item in repository.Find("State", ContentState.New))
+				foreach (var item in repository.Find("ChildState", Collections.CollectionState.Unknown))
 				{
 					item.ChildState = item.Children.CalculateState();
+					repository.SaveOrUpdate(item);
 					updatedItems++;
 				}
 

@@ -14,8 +14,7 @@ namespace N2.Edit.Web.UI.Controls
     {
         public ToolbarArea Area { get; set; }
         public IEngine Engine { get { return N2.Context.Current; } }
-        public SelectionUtility Selection { get { return new SelectionUtility(this, Engine); } }
-
+        
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -62,7 +61,7 @@ namespace N2.Edit.Web.UI.Controls
 
 		private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
 		{
-			plugin.AddTo(command, new PluginContext(Selection, start, root,
+			plugin.AddTo(command, new PluginContext(Page.GetSelection(), start, root,
 			                                        ControlPanelState.Visible,
 			                                        Engine, new HttpContextWrapper(Context)));
 		}
