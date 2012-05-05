@@ -85,10 +85,10 @@ namespace N2.Edit
             bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 
-            btnSavePublish.Enabled = isPublicableByUser;
-            btnPreview.Enabled = isVersionable && isWritableByUser;
-            btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-			hlFuturePublish.Enabled = isVersionable && isPublicableByUser;
+            btnSavePublish.Visible = isPublicableByUser;
+            btnPreview.Visible = isVersionable && isWritableByUser;
+            btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
+			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
