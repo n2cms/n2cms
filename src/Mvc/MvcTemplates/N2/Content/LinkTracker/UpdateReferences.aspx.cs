@@ -53,6 +53,7 @@ namespace N2.Edit.LinkTracker
 
 		protected void OnUpdateCommand(object sender, CommandEventArgs args)
 		{
+			tracker.UpdateReferencesTo(Selection.SelectedItem);
 			if (chkChildren.Checked)
 			{
 				mvPhase.ActiveViewIndex = 1;
@@ -62,7 +63,6 @@ namespace N2.Edit.LinkTracker
 			}
 			else
 			{
-				tracker.UpdateReferencesTo(Selection.SelectedItem);
 				Refresh(Selection.SelectedItem, ToolbarArea.Both);
 			}
 		}
