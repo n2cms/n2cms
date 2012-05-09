@@ -250,5 +250,33 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(loadedVersioin["Reference"], Is.Null);
 			}
 		}
+
+		[Test]
+		public void DetailCollection_MovesToNextVersion_WhenReplacing()
+		{
+			// Create item to link in original version
+			PersistableItem1 link1 = CreateOneItem<Definitions.PersistableItem1>(0, "link1", null);
+			persister.Save(link1);
+
+			// Create item to link in new version
+			PersistableItem1 link2 = CreateOneItem<Definitions.PersistableItem1>(0, "link2", null);
+			persister.Save(link2);
+
+			PersistableItem1 item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			item.ContentLinks = new[] {link1};
+			persister.Save(item);
+			PersistableItem1 version = (PersistableItem1) versioner.SaveVersion(item);
+			item.ContentLinks = new[] { link2 };
+			persister.Save(item);
+
+			versioner.ReplaceVersion(item, version);
+
+			PersistableItem1 restoredItem = (PersistableItem1) persister.Get(item.ID);
+			CollectionAssert.AreEqual(new[] { link1 }, restoredItem.ContentLinks);
+
+			PersistableItem1 versionItem = (PersistableItem1) persister.Get(version.ID);
+			CollectionAssert.AreEqual(new[] { link2 }, versionItem.ContentLinks);
+
+		}
 	}
 }
