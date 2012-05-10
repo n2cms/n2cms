@@ -113,7 +113,7 @@ namespace N2.Edit.LinkTracker
                         if (!(link.StartsWith("/") || link.StartsWith("~") || link.Contains("://")))
                             continue;
 
-						d.ObjectValue = detail.Name;
+						d.Meta = detail.Name;
 
 						try
 						{
@@ -225,7 +225,7 @@ namespace N2.Edit.LinkTracker
 					{
 						var detail = trackerDetails[i];
 
-						var name = detail.ObjectValue as string;
+						var name = detail.Meta;
 						if (name == null || detail.StringValue == null)
 							// don't update legacy links
 							continue;
@@ -265,7 +265,7 @@ namespace N2.Edit.LinkTracker
 			detail.StringValue = newUrl;
 
 			// adapt other reference indexes to the new string length
-			foreach (var subsequent in subsequentReferences.Where(d => name.Equals(d.ObjectValue)))
+			foreach (var subsequent in subsequentReferences.Where(d => name.Equals(d.Meta)))
 			{
 				subsequent.IntValue = subsequent.IntValue.Value - oldUrl.Length + newUrl.Length;
 			}

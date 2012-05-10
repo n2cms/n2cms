@@ -53,17 +53,16 @@ namespace N2.Edit.LinkTracker
 
 		protected void OnUpdateCommand(object sender, CommandEventArgs args)
 		{
+			tracker.UpdateReferencesTo(Selection.SelectedItem);
 			if (chkChildren.Checked)
 			{
 				mvPhase.ActiveViewIndex = 1;
-				rptDescendants.DataSource = Content.Search.Items.WhereDescendantOrSelf(Selection.SelectedItem)
-					.ToList()
+				rptDescendants.DataSource = Content.Search.Find.Where.AncestralTrail.Like(Selection.SelectedItem.GetTrail() + "%").Select()
 					.Where(Content.Is.Accessible());
 				rptDescendants.DataBind();
 			}
 			else
 			{
-				tracker.UpdateReferencesTo(Selection.SelectedItem);
 				Refresh(Selection.SelectedItem, ToolbarArea.Both);
 			}
 		}

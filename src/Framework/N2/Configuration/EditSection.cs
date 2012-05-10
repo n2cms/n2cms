@@ -11,7 +11,7 @@ namespace N2.Configuration
 		public InstallerElement Installer
 		{
 			get { return (InstallerElement)base["installer"]; }
-			set { base["editTreeUrl"] = value; }
+			set { base["installer"] = value; }
 		}
 
 		/// <summary>Users and roles considered editors.</summary>

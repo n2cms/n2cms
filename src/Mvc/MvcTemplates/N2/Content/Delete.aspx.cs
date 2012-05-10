@@ -21,7 +21,10 @@ namespace N2.Edit
             itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
 
-			var q = Engine.Resolve<IItemFinder>().Where.Detail(LinkTracker.Tracker.LinkDetailName).Like(Selection.SelectedItem.Url);
+			var q = Engine.Resolve<IItemFinder>()
+				.Where.Detail(LinkTracker.Tracker.LinkDetailName)
+				.Like(Selection.SelectedItem.Url)
+				.And.State.NotEq(ContentState.Deleted);
 			if (Selection.SelectedItem.ID != 0)
 				q = q.Or.Detail().Eq(Selection.SelectedItem);
 
