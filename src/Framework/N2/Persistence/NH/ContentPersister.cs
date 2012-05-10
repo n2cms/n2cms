@@ -91,11 +91,7 @@ namespace N2.Persistence.NH
 						item.Name = null;
 
 					itemRepository.SaveOrUpdate(item);
-					if (string.IsNullOrEmpty(item.Name))
-					{
-						item.Name = item.ID.ToString();
-						itemRepository.SaveOrUpdate(item);
-					}
+					EnsureName(item);
 
 					transaction.Commit();
 				}
@@ -250,9 +246,10 @@ namespace N2.Persistence.NH
 				ContentItem cloned = copiedItem.Clone(includeChildren);
 				if(cloned.Name == source.ID.ToString())
 					cloned.Name = null;
-				cloned.Parent = destinationItem;
+				cloned.AddTo(destination);
 
-				Save(cloned);
+				Repository.SaveOrUpdateRecursive(cloned);
+				EnsureName(cloned);
 
 				Invoke(ItemCopied, new DestinationEventArgs(cloned, destinationItem));
 
@@ -322,6 +319,15 @@ namespace N2.Persistence.NH
 		private void TraceInformation(string logMessage)
 		{
 			Trace.TraceInformation(logMessage);
+		}
+
+		private void EnsureName(ContentItem item)
+		{
+			if (string.IsNullOrEmpty(item.Name))
+			{
+				item.Name = item.ID.ToString();
+				itemRepository.SaveOrUpdate(item);
+			}
 		}
     }
 }

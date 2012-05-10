@@ -70,6 +70,7 @@ namespace N2.Definitions
 
 		public void OnAddingChild(BehaviorContext context)
 		{
+			OnSavingChild(context);
 			if (context.Parent.Children.Count >= LargeCollecetionThreshold)
 			{
 				context.Parent.ChildState |= CollectionState.IsLarge;

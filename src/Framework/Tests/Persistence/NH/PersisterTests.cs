@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Diagnostics;
 using N2.Tests.Persistence.Definitions;
+using N2.Persistence;
 using NUnit.Framework;
 using Shouldly;
 
@@ -252,7 +253,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (persister)
 			{
-				persister.Save(root);
+				persister.Repository.SaveOrUpdate(root, item1, item2, item3, item4);
 			}
 
 			using (persister)
@@ -287,7 +288,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (persister)
 			{
-				persister.Save(root);
+				persister.Repository.SaveOrUpdate(root, item1, item2);
 			}
 
 			using (persister)
@@ -550,7 +551,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
 			}
 
 			using (persister)
@@ -595,7 +596,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
 			}
 
 			using (persister)
@@ -633,7 +634,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
 			}
 
 			using (persister)
@@ -663,7 +664,7 @@ namespace N2.Tests.Persistence.NH
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2);
 			}
 
 			using (persister)
@@ -691,7 +692,7 @@ namespace N2.Tests.Persistence.NH
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2);
 			}
 
 			using (persister)
@@ -718,7 +719,7 @@ namespace N2.Tests.Persistence.NH
 			child1.Visible = false;
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2);
 			}
 
 			using (persister)
@@ -746,7 +747,7 @@ namespace N2.Tests.Persistence.NH
 			child2.State = ContentState.Unpublished;
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2);
 			}
 
 			using (persister)
@@ -773,7 +774,7 @@ namespace N2.Tests.Persistence.NH
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2);
 			}
 
 			using (persister)
@@ -801,7 +802,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
 			}
 
 			using (persister)
@@ -839,7 +840,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
 			using (persister)
 			{
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
 			}
 
 			using (persister)

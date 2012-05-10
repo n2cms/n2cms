@@ -70,6 +70,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item1);
 
 				ContentItem item2 = persister.Copy(item1, root);
+
 				Assert.AreNotSame(item1, item2);
 				Assert.AreNotEqual(item1.Name, item2.Name);
 				Assert.AreEqual(2, root.Children.Count);
