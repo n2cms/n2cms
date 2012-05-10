@@ -13,7 +13,7 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			return View(new CommentInputModel(CurrentItem));
+			return View(new CommentInputModel(CurrentItem) { Trap = "Fall" });
 		}
 
 		public ActionResult Submit(CommentInputModel model)
