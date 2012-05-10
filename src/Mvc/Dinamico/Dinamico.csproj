@@ -129,6 +129,8 @@
     <Content Include="Dinamico\Themes\Concrete\Thumbnail.jpg" />
     <Content Include="Dinamico\Themes\Dark\Thumbnail.jpg" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.jpg" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\Selection.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentPages\Selection.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\FacebookLike.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\Google+1.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
@@ -176,7 +178,9 @@
     <Content Include="Dinamico\Themes\Default\Views\Shared\Error.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\LayoutPartials\LogOn.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Shared\_Layout.cshtml" />
-    <Content Include="Dinamico\Themes\Default\Views\Web.config" />
+    <Content Include="Dinamico\Themes\Default\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Dinamico\N2\readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +398,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Default\Views\LanguageIntersection\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
+      <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
+      <Name>N2.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Razor\N2.Razor.csproj">
+      <Project>{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}</Project>
+      <Name>N2.Razor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcTemplates\N2.Management.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Management</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
