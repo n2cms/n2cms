@@ -26,7 +26,8 @@ namespace N2.Tests.Persistence
 			var itemWaiting = CreateOneItem<Definitions.PersistableItem1>(0, "itemWaiting", root);
 			itemWaiting.State = ContentState.Waiting;
 
-			engine.Persister.Save(root);
+			engine.Persister.Repository.SaveOrUpdate(root);
+			engine.Persister.Repository.SaveOrUpdate(root.Children.ToArray());
 
 			new SearchHelper(() => engine).Find.All.Count().ShouldBe(7);
 							 

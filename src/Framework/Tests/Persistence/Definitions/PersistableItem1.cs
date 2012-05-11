@@ -51,8 +51,23 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<ContentItem>("LinkProperty", value); }
 		}
 
-        [Editable(Name = "ContentLinks", PersistAs = PropertyPersistenceLocation.DetailCollection)]
-	    public virtual IEnumerable<ContentItem> ContentLinks { get; set; }
+		[Editable(Name = "ContentLinks", PersistAs = PropertyPersistenceLocation.DetailCollection)]
+		public virtual IEnumerable<ContentItem> ContentLinks
+		{
+			get
+			{
+				var dc = GetDetailCollection("ContentLinks", false);
+				if (dc == null)
+					return new ContentItem[0];
+
+				return dc.Enumerate<ContentItem>();
+			}
+			set
+			{
+				var dc = GetDetailCollection("ContentLinks", true);
+				dc.Replace(value);
+			}
+		}
 
         public virtual object ObjectProperty
 		{

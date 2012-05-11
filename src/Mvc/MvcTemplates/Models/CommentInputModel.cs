@@ -3,6 +3,7 @@ using System.ComponentModel;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web.Mvc;
 using N2.Web.UI;
+using System.ComponentModel.DataAnnotations;
 
 namespace N2.Templates.Mvc.Models
 {
@@ -26,6 +27,9 @@ namespace N2.Templates.Mvc.Models
 		public string Name { get; set; }
 
 		public string Title { get; set; }
+
+		[RegularExpression("^$", ErrorMessage = "Clear this must be empty")]
+		public string Trap { get; set; }
 
 		#region IDataErrorInfo Members
 

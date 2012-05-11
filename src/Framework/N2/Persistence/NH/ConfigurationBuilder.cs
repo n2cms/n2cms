@@ -43,6 +43,7 @@ namespace N2.Persistence.NH
 		string tablePrefix = "n2";
 		int? batchSize = 25;
 		CollectionLazy childrenLaziness = CollectionLazy.Extra;
+		Cascade childrenCascade = Cascade.None;
 		int stringLength = 1073741823;
 		bool tryLocatingHbmResources = false;
 		
@@ -58,7 +59,8 @@ namespace N2.Persistence.NH
 			TryLocatingHbmResources = config.TryLocatingHbmResources;
 			tablePrefix = config.TablePrefix;
 			batchSize = config.BatchSize;
-			childrenLaziness = config.ChildrenLaziness;
+			childrenLaziness = config.Children.Laziness;
+			childrenCascade = config.Children.Cascade;
 
 			SetupProperties(config, connectionStrings);
 			SetupMappings(config);
@@ -317,7 +319,7 @@ namespace N2.Persistence.NH
 				cm.Key(k => k.Column("ParentID"));
 				cm.Inverse(true);
 				cm.Type<ContentItemListFactory<ContentItem>>();
-				cm.Cascade(Cascade.All);
+				cm.Cascade(childrenCascade);
 				cm.OrderBy(ci => ci.SortOrder);
 				cm.Lazy(childrenLaziness);
 				cm.BatchSize(batchSize ?? 25);

@@ -262,19 +262,21 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 link2 = CreateOneItem<Definitions.PersistableItem1>(0, "link2", null);
 			persister.Save(link2);
 
-			PersistableItem1 item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			item.ContentLinks = new[] {link1};
-			persister.Save(item);
-			PersistableItem1 version = (PersistableItem1) versioner.SaveVersion(item);
-			item.ContentLinks = new[] { link2 };
-			persister.Save(item);
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			master.ContentLinks = new[] { link1 };
+			persister.Save(master);
 
-			versioner.ReplaceVersion(item, version);
+			PersistableItem1 version1 = (PersistableItem1) versioner.SaveVersion(master);
+			
+			master.ContentLinks = new[] { link2 };
+			persister.Save(master);
 
-			PersistableItem1 restoredItem = (PersistableItem1) persister.Get(item.ID);
+			var version2 = versioner.ReplaceVersion(master, version1);
+
+			PersistableItem1 restoredItem = (PersistableItem1) persister.Get(master.ID);
 			CollectionAssert.AreEqual(new[] { link1 }, restoredItem.ContentLinks);
 
-			PersistableItem1 versionItem = (PersistableItem1) persister.Get(version.ID);
+			PersistableItem1 versionItem = (PersistableItem1)persister.Get(version2.ID);
 			CollectionAssert.AreEqual(new[] { link2 }, versionItem.ContentLinks);
 
 		}
