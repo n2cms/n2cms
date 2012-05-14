@@ -5,10 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
+    <title id="t" runat="server" />
     <asp:ContentPlaceHolder ID="Head" runat="server">
 		<link rel="canonical" href="<%= CurrentPage != null ? CurrentPage.Url : Request.RawUrl %>" />
     </asp:ContentPlaceHolder>
+	<n2:Display PropertyName="Keywords" runat="server" />
+	<n2:Display PropertyName="Description" runat="server" />
 </head>
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">

@@ -129,6 +129,8 @@
     <Content Include="Dinamico\Themes\Concrete\Thumbnail.jpg" />
     <Content Include="Dinamico\Themes\Dark\Thumbnail.jpg" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.jpg" />
+    <None Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\FacebookLike.cshtml" />
+    <None Include="Dinamico\Themes\Default\Views\Shared\TokenTemplates\Google+1.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />

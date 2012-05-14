@@ -25,7 +25,11 @@ namespace N2.Templates.Mvc.Controllers
 				|| FormsAuthentication.Authenticate(userName, password))
 			{
 				FormsAuthentication.SetAuthCookie(userName, remember ?? false);
-				return RedirectToParentPage();
+
+				if (string.IsNullOrEmpty(Request["returnUrl"]))
+					return RedirectToParentPage();
+				else
+					return Redirect(Request["returnUrl"]);
 			}
 			else
 			{

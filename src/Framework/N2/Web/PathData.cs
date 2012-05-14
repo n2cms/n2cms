@@ -80,11 +80,7 @@ namespace N2.Web
 		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
 		{
-			if(item != null)
-			{
-				CurrentItem = item;
-				ID = item.ID;
-			}
+			CurrentItem = item;
 			TemplateUrl = templateUrl;
 			Action = action;
 			Argument = arguments;
@@ -169,6 +165,9 @@ namespace N2.Web
 		/// <summary>Indicates that this path may be cached.</summary>
 		public bool IsCacheable { get; set; }
 
+		/// <summary>Read permissions allow everyone to read this path. Not altering read permissions allow the system to make certain optimizations.</summary>
+		public bool IsPubliclyAvailable { get; set; }
+
 		public virtual Url RewrittenUrl
 		{
 			get
@@ -226,6 +225,7 @@ namespace N2.Web
 			data.currentPage = null;
 			data.stopItem = null;
 			data.persister = null;
+			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			return data;
 		}
 
@@ -253,7 +253,8 @@ namespace N2.Web
 		/// <returns>True if the path is empty.</returns>
 		public virtual bool IsEmpty()
 		{
-			return CurrentItem == null;
+			return currentItem == null 
+				&& (persister == null || ID == 0);
 		}
 
 		private ContentItem Get(ref ContentItem item, int id)
@@ -265,10 +266,29 @@ namespace N2.Web
 			return null;
 		}
 
-		private int Set(ref ContentItem currentPage, ContentItem value)
+		private int Set(ref ContentItem current, ContentItem value)
 		{
-			currentPage = value;
+			current = value;
+			OnItemChange(current, value);
 			return value != null ? value.ID : 0;
+		}
+
+		protected virtual void OnItemChange(ContentItem current, ContentItem value)
+		{
+			var newPermission = Security.Permission.None;
+			if (currentItem != null)
+				newPermission |= currentItem.AlteredPermissions;
+			if (currentPage != null)
+				newPermission |= currentPage.AlteredPermissions;
+
+			IsPubliclyAvailable = IsPubliclyAvailableOrEmpty(currentItem) && IsPubliclyAvailableOrEmpty(currentPage);
+		}
+
+		private bool IsPubliclyAvailableOrEmpty(ContentItem item)
+		{
+			return item == null
+				|| ((item.State == ContentState.Published || item.State == ContentState.New || item.State == ContentState.None)
+				&& (item.AlteredPermissions & Security.Permission.Read) == Security.Permission.None);
 		}
 	}
 }

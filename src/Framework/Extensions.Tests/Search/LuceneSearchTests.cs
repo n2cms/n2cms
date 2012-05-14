@@ -700,7 +700,7 @@ namespace N2.Tests.Persistence.NH
 		public void QueryByExpression_ForTitleProperty()
 		{
 			indexer.Update(root);
-
+			
 			var searcher = new LuceneSearcher(accessor, persister);
 			var query = Query.For<PersistableItem1>();
 
@@ -708,6 +708,46 @@ namespace N2.Tests.Persistence.NH
 			var result = searcher.Search(query);
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void QueryForBelowOfTypeReadableByExceptType()
+		{
+			indexer.Update(root);
+			var part = CreateOneItem<PersistableItem2>(0, "some other page", root);
+			indexer.Update(part);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var query = Query.For("page")
+				.OfType(typeof(IPage))
+				.Below(root)
+				.ReadableBy("Everyone") // superfluous (everyone by default)
+				.Except(Query.For<PersistableItem2>());
+			
+			var result = searcher.Search(query);
+
+			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void OrOr_And()
+		{
+			indexer.Update(root);
+			var first = CreateOneItem<PersistableItem2>(0, "some other page", root);
+			indexer.Update(first);
+			var second = CreateOneItem<PersistableItem2>(0, "some other stuff", root);
+			indexer.Update(second);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			// TODO: support this
+			//var query = (Query.For("some") | Query.For("other"))
+			//    .Below(first);
+			var query = new Query { Ancestor = first, Intersection = Query.For("some") | Query.For("other") };
+
+			var result = searcher.Search(query);
+
+			result.Hits.Count().ShouldBe(1);
+			result.Hits.Any(h => h.Content == second).ShouldBe(false);
 		}
 
 		[Test]
