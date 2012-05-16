@@ -29,10 +29,18 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Content item types that may be selected using this selector.</summary>
-		public string SelectableTypes { get; set; }
+		public string SelectableTypes
+		{
+			get { return ViewState["SelectableTypes"] as string; }
+			set { ViewState["SelectableTypes"] = value; }
+		}
 
 		/// <summary>File extensions that may be selected using this selector.</summary>
-		public string SelectableExtensions { get; set; }
+		public string SelectableExtensions
+		{
+			get { return ViewState["SelectableExtensions"] as string; }
+			set { ViewState["SelectableExtensions"] = value; }
+		}
 
 		private IEngine engine;
 		protected IEngine Engine

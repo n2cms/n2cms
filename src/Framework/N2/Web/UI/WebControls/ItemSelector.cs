@@ -1,5 +1,6 @@
 using System.Web.UI;
 using N2.Resources;
+using System;
 
 namespace N2.Web.UI.WebControls
 {
@@ -34,7 +35,11 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>The type the select item should conform to.</summary>
-		public System.Type RequiredType { get; set; }
+		public System.Type RequiredType
+		{
+			get { return Type.GetType(ViewState["RequiredType"] as string) ?? typeof(N2.ContentItem); }
+			set { ViewState["RequiredType"] = value.AssemblyQualifiedName; }
+		}
 
 		protected override void OnInit(System.EventArgs e)
 		{
