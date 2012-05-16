@@ -23,6 +23,7 @@ using Environment = NHibernate.Cfg.Environment;
 using N2.Plugin;
 using N2.Configuration;
 using N2.Details;
+using System.Web;
 
 namespace N2.Edit.Installation
 {
@@ -407,7 +408,15 @@ namespace N2.Edit.Installation
 		{
 			IImportRecord record = importer.Read(stream, filename);
 			record.RootItem["Installation.AppPath"] = N2.Web.Url.ToAbsolute("~/");
-			record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString();
+			try
+			{
+				record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString();
+			}
+			catch (HttpException)
+			{
+				// silently ignore "Request is not available in this context" when calling this from init
+			}
+
 			importer.Import(record, null, ImportOption.All);
 
 			return record.RootItem;

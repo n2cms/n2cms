@@ -79,7 +79,7 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-			ContentItem rootPage = engine.Persister.Get<ContentItem>(engine.Host.CurrentSite.RootItemID);
+			ContentItem rootPage = engine.Persister.Get<ContentItem>(engine.Host.DefaultSite.RootItemID);
 
 			engine.SecurityManager.ScopeEnabled = false;
 			try
@@ -97,7 +97,7 @@ namespace Demo
 
 			foreach(ContentItem item in rootPage.Children)
 				if (item is StartPage)
-					engine.Resolve<N2.Web.IHost>().DefaultSite.StartPageID = item.ID;
+					engine.Host.DefaultSite.StartPageID = item.ID;
 
 			engine.Persister.Save(rootPage);
 
