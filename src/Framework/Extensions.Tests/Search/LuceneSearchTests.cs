@@ -839,6 +839,33 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void OrderBy_MultipleFields()
+		{
+			var apple1 = CreateOneItem<PersistableItem1>(1, "Apple", null);
+			apple1.SortOrder = 4;
+			indexer.Update(apple1);
+
+			var bear = CreateOneItem<PersistableItem1>(2, "Bear", null);
+			bear.SortOrder = 2;
+			indexer.Update(bear);
+
+			var cake = CreateOneItem<PersistableItem1>(3, "Cake", null);
+			cake.SortOrder = 3;
+			indexer.Update(cake);
+
+			var apple2 = CreateOneItem<PersistableItem1>(4, "Apple", null);
+			apple2.SortOrder = 1;
+			indexer.Update(apple2);
+
+			var hits = Search(new SortFieldData("Name", false), new SortFieldData("SortOrder"));
+
+			hits[0].Title.ShouldBe(apple2.Title);
+			hits[1].Title.ShouldBe(apple1.Title);
+			hits[2].Title.ShouldBe(bear.Title);
+			hits[3].Title.ShouldBe(cake.Title);
+		}
+
+		[Test]
 		public void Multithreading()
 		{
 			var threads = new List<Thread>();
@@ -913,8 +940,14 @@ namespace N2.Tests.Persistence.NH
 
 		private System.Collections.Generic.List<ContentItem> Search(string field, bool descending)
 		{
+			return Search(new SortFieldData(field, descending));
+		}
+
+		private System.Collections.Generic.List<ContentItem> Search(params SortFieldData[] sortFields)
+		{
 			var searcher = new LuceneSearcher(accessor, persister);
-			var query = Query.For<PersistableItem1>().OrderBy(field, descending);
+			var query = Query.For<PersistableItem1>();
+			Array.ForEach(sortFields, sortField => query.OrderBy(sortField.SortField, sortField.SortDescending));
 
 			var hits = searcher.Search(query).Hits.Select(h => h.Content).ToList();
 			return hits;

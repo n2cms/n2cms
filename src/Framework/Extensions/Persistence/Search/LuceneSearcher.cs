@@ -43,7 +43,9 @@ namespace N2.Persistence.Search
 						query: q,
 						filter: null,
 						n: query.SkipHits + query.TakeHits,
-						sort: new Sort(new SortField(query.SortField, GetSortFieldType(query.SortField), query.SortDescending)));
+						sort: new Sort(
+							query.SortFields.Select(
+								field => new SortField(field.SortField, GetSortFieldType(field.SortField), field.SortDescending)).ToArray()));
 
 				var result = new Result();
 				result.Total = hits.totalHits;
