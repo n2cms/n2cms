@@ -778,6 +778,42 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
 		}
 
+		[Test]
+		public void Tags_are_searchable()
+		{
+			var page = CreateOneItem<PersistableItem1>(1, "page", null);
+			page.Tags = new[] { "Hello", "World" };
+			indexer.Update(page);
+
+			var page2 = CreateOneItem<PersistableItem1>(2, "page2", null);
+			page2.Tags = new[] { "Howdy", "Universe" };
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("world"));
+
+			result.Single().ShouldBe(page);
+		}
+
+		[Test]
+		public void Tags_are_searchable_by_property()
+		{
+			var page = CreateOneItem<PersistableItem1>(1, "page", null);
+			page.Tags = new[] { "Hello", "World" };
+			indexer.Update(page);
+
+			var page2 = CreateOneItem<PersistableItem1>(2, "page2", null);
+			page2.Tags = new[] { "Howdy", "Universe" };
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For<PersistableItem1>().Property("Tags", "Hello"));
+
+			result.Single().ShouldBe(page);
+		}
+
+		// sorting
+
 		[TestCase(LuceneIndexer.Properties.ID)]
 		[TestCase(LuceneIndexer.Properties.Created)]
 		[TestCase(LuceneIndexer.Properties.Published)]
@@ -864,6 +900,8 @@ namespace N2.Tests.Persistence.NH
 			hits[2].Title.ShouldBe(bear.Title);
 			hits[3].Title.ShouldBe(cake.Title);
 		}
+
+		// concurrency
 
 		[Test]
 		public void Multithreading()

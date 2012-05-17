@@ -385,6 +385,20 @@ namespace N2.Details
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Gets the detail values of the given generic type.
+		/// </summary>
+		/// <typeparam name="T">The type of value to retrieve.</typeparam>
+		/// <returns>An enumeration of values with matching type.</returns>
+		public virtual IEnumerable<T> OfType<T>()
+		{
+			foreach (ContentDetail cd in this.Details)
+			{
+				if (cd.Value is T)
+					yield return (T)cd.Value;
+			}
+		}
 	}
 }
 

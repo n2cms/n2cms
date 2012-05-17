@@ -113,6 +113,13 @@ namespace N2.Tests.Persistence.Definitions
 
 		[Indexable]
 		public virtual string NonDetailOnlyGetterProperty { get { return "Lorem ipsum"; } }
+
+		[EditableTags]
+		public virtual IEnumerable<string> Tags
+		{
+			get { return GetDetailCollection("Tags", true).OfType<string>(); }
+			set { GetDetailCollection("Tags", true).Replace(value); }
+		}
 	}
 
 
