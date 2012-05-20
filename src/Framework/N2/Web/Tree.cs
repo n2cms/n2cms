@@ -106,7 +106,7 @@ namespace N2.Web
 		/// <summary>Do not render the root element and surrounding list element.</summary>
 		/// <param name="exclude">True to exclude the root.</param>
 		/// <returns>The same <see cref="Tree"/> instance.</returns>
-		public Tree ExcludeRoot(bool exclude)
+		public Tree ExcludeRoot(bool exclude = true)
 		{
 			this.excludeRoot = exclude;
 			return this;

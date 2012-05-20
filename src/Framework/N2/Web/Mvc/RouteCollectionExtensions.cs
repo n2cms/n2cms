@@ -16,16 +16,23 @@ namespace N2.Web.Mvc
 		/// <param name="routes">The route collection to extend.</param>
 		/// <param name="name">The name of this route.</param>
 		/// <param name="engine">The N2 Engine instance used by the content route.</param>
-		/// <returns>The added content route instance.</returns>
-		public static ContentRoute MapContentRoute(this RouteCollection routes, string name, IEngine engine)
+        /// <param name="append">Append is useful in scenarios where you want to override the routing of specific urls also considered by N2.</param>
+        /// <returns>The added content route instance.</returns>
+		public static ContentRoute MapContentRoute(this RouteCollection routes, string name, IEngine engine, bool append = false)
 		{
+            var cr = new ContentRoute(engine);
+            if (append)
+            {
+                routes.Add(cr);
+                return cr;
+            }
+
 			var nonContentRoutes = SelectRoutesWithIndices(routes)
 				.Where(x => !(x.Value is ContentRoute));
 			int indexOfFirstNonContentRoute = nonContentRoutes.Any() 
 				? nonContentRoutes.Select(i => i.Key).FirstOrDefault() 
 				: routes.Count;
 
-			var cr = new ContentRoute(engine);
 			routes.Insert(indexOfFirstNonContentRoute, cr);
 			return cr;
 		}
@@ -34,17 +41,24 @@ namespace N2.Web.Mvc
 		/// <param name="routes">The route collection to extend.</param>
 		/// <param name="name">The name of this route.</param>
 		/// <param name="engine">The N2 Engine instance used by the content route.</param>
+        /// <param name="append">Append is useful in scenarios where you want to override the routing of specific urls also considered by N2.</param>
 		/// <typeparam name="T">The type of content items to route.</typeparam>
 		/// <returns>The added content route instance.</returns>
-		public static ContentRoute MapContentRoute<T>(this RouteCollection routes, string name, IEngine engine)
+		public static ContentRoute MapContentRoute<T>(this RouteCollection routes, string name, IEngine engine, bool append = false)
 		{
-			var nonContentRoutesNorGenericRoutes = SelectRoutesWithIndices(routes)
+            var cr = new ContentRoute<T>(engine);
+            if (append)
+            {
+                routes.Add(cr);
+                return cr;
+            }
+
+            var nonContentRoutesNorGenericRoutes = SelectRoutesWithIndices(routes)
 				.Where(x => !(x.Value is ContentRoute) || !x.Value.GetType().ContainsGenericParameters);
 			int indexOfFirstNonContentRoute = nonContentRoutesNorGenericRoutes.Any() 
 				? nonContentRoutesNorGenericRoutes.Select(i => i.Key).FirstOrDefault() 
 				: routes.Count;
 
-			var cr = new ContentRoute<T>(engine);
 			routes.Insert(indexOfFirstNonContentRoute, cr);
 			return cr;
 		}
