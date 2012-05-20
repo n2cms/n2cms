@@ -278,9 +278,16 @@ namespace N2.Web.Mvc
 
 			var contextController = (string)requestContext.RouteData.Values["controller"];
 			var requestedController = (string)values["controller"];
-			if (requestedItem == null && requestedController != null && !string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
-				// no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
-				return null;
+            if (requestedItem == null && requestedController != null)
+            {
+                if (!string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
+                    // no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
+                    return null;
+
+                if (!controllerMapper.IsContentController(requestedController))
+                    // same controller not content controller -> let it be
+                    return null;
+            }
 
 			var itemController = controllerMapper.GetControllerName(item.GetContentType());
 			values["controller"] = itemController;
