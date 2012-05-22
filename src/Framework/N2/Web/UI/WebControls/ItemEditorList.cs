@@ -180,7 +180,7 @@ namespace N2.Web.UI.WebControls
 
 				var button = new LinkButton
 				{
-					ID = "iel" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
+					ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
 					Text = string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
 					ToolTip = definition.ToolTip,
 					CausesValidation = false
