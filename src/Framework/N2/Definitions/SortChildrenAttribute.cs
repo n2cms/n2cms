@@ -71,10 +71,18 @@ namespace N2.Definitions
 
 		public void OnSavingChild(BehaviorContext context)
 		{
-			if (context.AffectedItem.Parent == null)
-				return;
+            if (OrderBy == SortBy.Unordered)
+                return;
 
-			foreach (ContentItem updatedItem in ReorderChildren(context.AffectedItem.Parent))
+            var item = context.AffectedItem;
+
+            if (item.Parent == null)
+				return;
+            
+            if (item.ID == 0)
+                item.AddTo(item.Parent);
+
+			foreach (ContentItem updatedItem in ReorderChildren(item.Parent))
 			{
 				context.UnsavedItems.Add(updatedItem);
 			}
