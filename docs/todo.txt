@@ -1,8 +1,6 @@
 - Translate close (discussions/356447)
-- Skip persister.save on reorder discussions/355167
 - security exception discussions/354170
 - non-persistent items searchable
-- tags searchable
 - placeholder
 - required [EditableMediaUpload] (discussions/346532)
 - windsor 3 - http://n2cms.codeplex.com/discussions/340758
