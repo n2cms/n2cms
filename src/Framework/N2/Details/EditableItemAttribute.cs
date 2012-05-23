@@ -144,7 +144,7 @@ namespace N2.Details
 				if (pi == null)
 					throw new N2Exception("The item should have had a property named '{0}'", Name);
 				if (!typeof(ContentItem).IsAssignableFrom(pi.PropertyType))
-					throw new N2Exception("The property type '" + pi.PropertyType + "' is not assignable to N2.ContentItem");
+					throw new N2Exception("The property type '" + pi.PropertyType + "' is not assignable to N2.ContentItem which is required by the [EditableItem] attribute.");
 				if (pi.PropertyType.IsAbstract)
 					throw new N2Exception("The property type '" + pi.PropertyType + "' is abstract");
 

@@ -303,6 +303,7 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Tests\Uc.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
     <Content Include="Areas\Tests\Views\External\Index.aspx" />

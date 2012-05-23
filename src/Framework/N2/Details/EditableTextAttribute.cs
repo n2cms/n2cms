@@ -23,6 +23,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Persistence.Search;
 using System.IO;
+using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -139,6 +140,7 @@ namespace N2.Details
 		protected override Control AddEditor(Control container)
 		{
 			TextBox tb = CreateEditor();
+            tb.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
             tb.ID = Name;
             tb.CssClass += " textEditor";
 			ModifyEditor(tb);

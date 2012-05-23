@@ -275,8 +275,8 @@ a.dp-choose-date.dp-disabled {
 input.dp-applied {
 }
 
-.datePicker { width:75px; }
-.timePicker { width:75px; }
+.datePicker { width:95px; }
+.timePicker { width:80px; }
 
 .fileContents
 {

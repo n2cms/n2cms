@@ -133,10 +133,10 @@ namespace N2.Web.UI.WebControls
 		{
 			HtmlGenericControl span = new HtmlGenericControl("span");
 			Controls.Add(span);
-			HtmlInputButton pb = new HtmlInputButton();
-			span.Controls.Add(pb);
 			HtmlInputButton cb = new HtmlInputButton();
-			span.Controls.Add(cb);
+            span.Controls.Add(cb);
+            HtmlInputButton pb = new HtmlInputButton();
+            span.Controls.Add(pb);
 
 			span.Attributes["class"] = "selectorButtons";
 

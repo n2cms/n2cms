@@ -39,6 +39,9 @@ namespace N2.Details
 
 		#region Properties
 
+        /// <summary>Gets or sets placeholder text displayed inside the editor.</summary>
+        public string Placeholder { get; set; }
+
 		/// <summary>Gets or sets whether a required field validator should be appended.</summary>
 		public bool Required
 		{
