@@ -43,7 +43,13 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			DatePicker picker = (DatePicker)editor;
-			if ((DateTime?)item[Name] != picker.SelectedDate)
+			var value = item[Name];
+			if (value == null)
+			{
+				item[Name] = picker.SelectedDate;
+				return true;
+			}
+			if (!(value is DateTime) || (DateTime?)value != picker.SelectedDate)
 			{
 				item[Name] = picker.SelectedDate;
 				return true;

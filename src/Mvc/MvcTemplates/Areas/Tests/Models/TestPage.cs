@@ -26,7 +26,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
         [EditableDefinition]
         public virtual string EditableDefinition { get; set; }
 
-        [EditableEnum]
+        [EditableEnum(EnumType = typeof(Base64FormattingOptions))]
         public virtual Base64FormattingOptions EditableEnum { get; set; }
 
         [EditableFileUpload(Placeholder = "File upload")]
