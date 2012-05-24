@@ -155,8 +155,14 @@ namespace N2.Edit.Workflow
 
 		protected virtual CompositeCommand Compose(string title, params CommandBase<CommandContext>[] commands)
         {
-            return new CompositeCommand(title, commands);
+			var args = new CommandCreatedEventArgs { Command = new CompositeCommand(title, commands) };
+			if (CreatedCommand != null)
+				CreatedCommand.Invoke(this, args);
+			return args.Command;
         }
-    }
+
+		/// <summary>Invoked before returning a command to be executed.</summary>
+		public event EventHandler<CommandCreatedEventArgs> CreatedCommand;
+	}
    
 }

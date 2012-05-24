@@ -27,13 +27,20 @@ namespace N2.Edit.Workflow
         /// <param name="context">The context passed to the command</param>
         public virtual void Execute(CommandBase<CommandContext> command, CommandContext context)
         {
-            logger.Info(command.Name + " processing " + context);
+			var args = new CommandProcessEventArgs { Command = command, Context = context };
+			if (CommandExecuting != null)
+				CommandExecuting.Invoke(this, args);
+
+			logger.Info(args.Command.Name + " processing " + args.Context);
 			using (var tx = persister.Repository.BeginTransaction())
 			{
 				try
 				{
-					command.Process(context);
+					args.Command.Process(args.Context);
 					tx.Commit();
+
+					if (CommandExecuted != null)
+						CommandExecuted.Invoke(this, args);
 				}
 				catch (StopExecutionException)
 				{
@@ -47,7 +54,7 @@ namespace N2.Edit.Workflow
 				}
 				finally
 				{
-					logger.Info(" -> " + context);
+					logger.Info(" -> " + args.Context);
 				}
 			}
 		}
@@ -65,5 +72,11 @@ namespace N2.Edit.Workflow
         {
             Execute(commandFactory.GetSaveCommand(context), context);
         }
+
+		/// <summary>Invoked before a command is executed.</summary>
+		public EventHandler<CommandProcessEventArgs> CommandExecuting;
+
+		/// <summary>Invoked after a command was executed.</summary>
+		public EventHandler<CommandProcessEventArgs> CommandExecuted;
     }
 }
