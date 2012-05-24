@@ -7,35 +7,32 @@ using N2.Tests.Edit.Items;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Tests.Fakes;
+using N2.Persistence.NH;
+using N2.Details;
 
 namespace N2.Tests.Edit
 {
 	[TestFixture]
 	public class WhileSortingTreeOfPagesAndItems : ItemTestsBase
 	{
-		List<ContentItem> savedItems = new List<ContentItem>();
 		TreeSorter sorter;
 		NormalPage root, page1, page3, page5;
 		NormalItem item2, item4;
+		ContentPersister persister;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			IPersister persister = mocks.Stub<IPersister>();
-			Expect.Call(delegate { persister.Save(null); })
-				.IgnoreArguments()
-				.Do(new Action<ContentItem>(savedItems.Add))
-				.Repeat.Any();
+			persister = TestSupport.SetupFakePersister();
+			var webContext = new ThreadContext();
 
 			IEditManager editManager = mocks.Stub<IEditManager>();
 			Expect.Call(editManager.GetEditorFilter(null))
 				.IgnoreArguments()
 				.Return(new PageFilter());
-
-			IWebContext webContext = mocks.Stub<IWebContext>();
-			
 			mocks.ReplayAll();
 
 			root = CreateOneItem<NormalPage>(1, "root", null);
