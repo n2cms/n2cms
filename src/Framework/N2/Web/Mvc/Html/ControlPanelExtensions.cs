@@ -154,7 +154,7 @@ namespace N2.Web.Mvc.Html
 
                 var resources = Html.Resources(writer);
                 if(includeJQuery) resources.JQuery();
-                if(includeJQueryPlugins) resources.JQueryPlugins().JQueryUi();
+				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery).JQueryUi(includeJQuery);
                 if(includePartScripts) resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
                 if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
