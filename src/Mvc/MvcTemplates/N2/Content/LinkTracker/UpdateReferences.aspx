@@ -11,15 +11,17 @@
 
 		<asp:MultiView ID="mvPhase" runat="server" ActiveViewIndex="0">
 			<asp:View runat="server">
+				<p>
+					<asp:CheckBox runat="server" Text="Add permanent redirect at previous URL" ID="chkPermanentRedirect" meta:resourceKey="chkPermanentRedirect" />
+				</p>
 				<fieldset runat="server" id="fsReferences">
-					<legend>These items linking to the moved page will be updateds</legend>
+					<legend><asp:Literal Text="These items linking to the moved page will be updateds" runat="server" meta:resourceKey="ltUpdatedLinks"></asp:Literal></legend>
 		
 					<div style="margin:5px;">
 					<asp:Repeater runat="server" ID="rptReferencingItems">
 						<HeaderTemplate><div style="max-height:200px; overflow:auto;"></HeaderTemplate>
 						<ItemTemplate>
 							<div>
-								<%--<input type="checkbox" class="UpdateableLink" name="LinksToUpdate" value="<%# Eval("ID") %>" checked="checked" id="chkReferences" />--%>
 								<a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a>
 							</div>
 						</ItemTemplate>
@@ -29,7 +31,7 @@
 				</fieldset>
 		
 				<fieldset runat="server" id="fsChildren" style="margin-top:10px;">
-					<legend><asp:CheckBox Text="Also update links leading to the following children" Checked="true" runat="server" ID="chkChildren" CssClass="DimChildren"/></legend>
+					<legend><asp:CheckBox Text="Also update links leading to the following children" Checked="true" runat="server" ID="chkChildren" CssClass="DimChildren" meta:resourceKey="chkChildren"/></legend>
 		
 					<uc1:AffectedItems id="targetsToUpdate" runat="server" />
 				</fieldset>

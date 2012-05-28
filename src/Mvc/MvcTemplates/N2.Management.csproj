@@ -238,6 +238,7 @@
     <Content Include="N2\Tokens\TokenTemplates\SyntaxHighlighter.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\TOC.ascx" />
     <Content Include="N2\Web.config" />
+    <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -255,6 +256,7 @@
     <Content Include="N2\Search\IndexInfo.ashx" />
     <Content Include="N2\log4net.config" />
     <Content Include="N2\Tokens\TokenTemplates\Web.config" />
+    <Content Include="N2\Resources\RedirectHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -369,6 +371,7 @@
     </Compile>
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
+    <Compile Include="N2\Content\LinkTracker\PermanentRedirect.cs" />
     <Compile Include="N2\Content\LinkTracker\UpdateLinksMigration.cs" />
     <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.cs">
       <DependentUpon>UpdateReferences.aspx</DependentUpon>
@@ -535,6 +538,9 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Resources\RedirectHandler.ashx.cs">
+      <DependentUpon>RedirectHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Search\IndexInfo.ashx.cs">
       <DependentUpon>IndexInfo.ashx</DependentUpon>
     </Compile>
