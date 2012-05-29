@@ -209,7 +209,6 @@ namespace N2.Persistence.NH
 				{
 					TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
 					source.AddTo(destination);
-					//source.AncestralTrail = null;
 					Save(source);
 					transaction.Commit();
 				}

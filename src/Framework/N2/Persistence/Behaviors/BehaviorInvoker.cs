@@ -112,8 +112,13 @@ namespace N2.Persistence.Behaviors
 			foreach (var behavior in GetBehviors<T>(affectedItem))
 				itemBehaviorInvoker(behavior, ctx);
 
-			foreach (var unsavedItem in ctx.UnsavedItems)
-				persister.Repository.SaveOrUpdate(unsavedItem);
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (var unsavedItem in ctx.UnsavedItems)
+					persister.Repository.SaveOrUpdate(unsavedItem);
+				tx.Commit();
+				persister.Repository.Flush();
+			}
 		}
 
 		public void Start()

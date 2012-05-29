@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using N2;
 using N2.Definitions;
+using N2.Details;
 
 namespace N2.Management.Content.LinkTracker
 {
@@ -22,6 +23,7 @@ namespace N2.Management.Content.LinkTracker
 			set { SetDetail("RedirectUrl", value); }
 		}
 
+		[EditableLink]
 		public ContentItem RedirectTo
 		{
 			get { return GetDetail<ContentItem>("RedirectTo", null); }
