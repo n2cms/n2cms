@@ -19,21 +19,24 @@ namespace N2.Edit.LinkTracker
 		N2.Web.IUrlParser urlParser;
         N2.Web.IErrorNotifier errorHandler;
 
-        public Tracker(Persistence.IPersister persister, IRepository<ContentDetail> detailRepository, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler)
+        public Tracker(Persistence.IPersister persister, IRepository<ContentDetail> detailRepository, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler, Configuration.EditSection config)
 		{
 			this.persister = persister;
 			this.detailRepository = detailRepository;
 			this.urlParser = urlParser;
             this.errorHandler = errorHandler;
 
-			connections.Online += delegate
+			if (config.LinkTracker.Enabled)
 			{
-				persister.ItemSaving += persister_ItemSaving;
-			};
-			connections.Offline += delegate
-			{
-				persister.ItemSaving -= persister_ItemSaving;
-			};
+				connections.Online += delegate
+				{
+					persister.ItemSaving += persister_ItemSaving;
+				};
+				connections.Offline += delegate
+				{
+					persister.ItemSaving -= persister_ItemSaving;
+				};
+			}
 		}
 
 		void persister_ItemSaving(object sender, CancellableItemEventArgs e)

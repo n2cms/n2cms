@@ -23,7 +23,7 @@ namespace N2.Edit.Tests.LinkTracker
 		[SetUp]
 		public void SetUp()
 		{
-			linkFactory = new Tracker(null, null, null, new N2.Plugin.ConnectionMonitor(), null);
+			linkFactory = new Tracker(null, null, null, new N2.Plugin.ConnectionMonitor(), null, new Configuration.EditSection());
 		}
 
 		[Test]

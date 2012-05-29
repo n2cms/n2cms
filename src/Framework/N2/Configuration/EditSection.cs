@@ -131,5 +131,13 @@ namespace N2.Configuration
 			get { return (ExternalsElement)base["externals"]; }
 			set { base["externals"] = value; }
 		}
+
+		/// <summary>Configuration about permanent redirect items.</summary>
+		[ConfigurationProperty("linkTracker")]
+		public LinkTrackerElement LinkTracker
+		{
+			get { return (LinkTrackerElement)base["linkTracker"]; }
+			set { base["linkTracker"] = value; }
+		}
 	}
 }

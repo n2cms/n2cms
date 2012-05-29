@@ -42,7 +42,7 @@ namespace N2.Edit.Tests.LinkTracker
 
 			var errorHandler = new FakeErrorHandler();
 			var monitor = new N2.Plugin.ConnectionMonitor();
-			tracker = new Tracker(persister, detailRepository = new FakeRepository<ContentDetail>(), parser, monitor, errorHandler);
+			tracker = new Tracker(persister, detailRepository = new FakeRepository<ContentDetail>(), parser, monitor, errorHandler, new EditSection());
 			monitor.SetConnected(Installation.SystemStatusLevel.UpAndRunning);
 		}
 

@@ -50,7 +50,7 @@ namespace N2.Edit.LinkTracker
 				else
 					fsChildren.Visible = false;
 
-				chkPermanentRedirect.Visible = previousParent != null;
+				chkPermanentRedirect.Visible = previousParent != null && Engine.Resolve<Configuration.EditSection>().LinkTracker.PermanentRedirectEnabled;
 
 				if (!showReferences && !showChildren && previousParent == null)
 				{
