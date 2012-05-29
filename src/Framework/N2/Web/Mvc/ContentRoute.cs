@@ -131,6 +131,9 @@ namespace N2.Web.Mvc
 			var url = new Url(request.Url.Scheme, host, request.RawUrl);
 			PathData path = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
 
+			if (path.IsRewritable && StopRewritableItems)
+				return new RouteData(this, new StopRoutingHandler());
+
 			var page = path.CurrentPage;
 
 			var actionName = path.Action;
@@ -354,5 +357,8 @@ namespace N2.Web.Mvc
 			vpd.VirtualPath = actionUrl.PathAndQuery.TrimStart('/');
 			return vpd;
 		}
+
+		/// <summary>Make the route table stop at items that match an item that can be rewritten to (probably webforms).</summary>
+		public bool StopRewritableItems { get; set; }
 	}
 }
