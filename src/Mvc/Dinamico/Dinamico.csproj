@@ -239,7 +239,6 @@
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\TopNavigation.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Web.config" />
     <Content Include="Dinamico\Themes\Terracotta\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
@@ -264,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Responsive\Views\ContentParts\ThreeColumns.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dinamico\Themes\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
