@@ -16,7 +16,7 @@
     <tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="System.Data.SQLite" version="1.0.66.1" />
-			<dependency id="N2CMS" version="{Version}" />
+			<dependency id="N2CMS.Library" version="{Version}" />
 		</dependencies>
 	</metadata>
 </package>

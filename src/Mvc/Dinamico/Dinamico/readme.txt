@@ -1,4 +1,6 @@
-﻿== Controllers ==
+﻿ATTENTION MVC3 USERS: You can replace the config file in /dinamico/themes/ to enable support for MVC3. 
+
+== Controllers ==
 
 Controllers controlling content items that are routed through via the content route.
 

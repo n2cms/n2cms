@@ -10,7 +10,7 @@
     <projectUrl>http://n2cms.com/</projectUrl>
 		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Dinamico is a template pack for N2 CMS using MVC3/razor. This is immediately usable templates built upon the N2 CMS framework. N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</description>
+	    <description>Dinamico is a template pack for N2 CMS that uses MVC4/Razor. This is immediately usable templates built upon the N2 CMS framework. ATTENTION MVC3 USERS: You can replace the config file in /dinamico/themes/ to enable support for MVC3. N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</description>
     <summary></summary>
     <language>en-US</language>
     <tags>N2 CMS</tags>
