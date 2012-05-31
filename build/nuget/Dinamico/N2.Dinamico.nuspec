@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>N2CMS.Dinamico</id>
-    <version>{Version}</version>
+    <version>{Version}-rc-1</version>
     <title>Dinamico Templates for N2 CMS</title>
     <authors>Cristian Libardo</authors>
     <owners>Cristian Libardo</owners>
@@ -16,7 +16,7 @@
     <tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS" version="{Version}" />
-			<dependency id="N2CMS.Razor" version="{Version}" />
+			<dependency id="N2CMS.Razor" version="{Version}-rc-1" />
 		</dependencies>
 	</metadata>
 </package>
