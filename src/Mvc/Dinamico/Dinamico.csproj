@@ -122,13 +122,6 @@
     <Content Include="Dinamico\Themes\Default\Scripts\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Responsive\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Responsive\css\bootstrap.css" />
-    <Content Include="Dinamico\Themes\Responsive\css\bootstrap.min.css" />
-    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings-white.png" />
-    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings.png" />
-    <Content Include="Dinamico\Themes\Responsive\js\bootstrap.js" />
-    <Content Include="Dinamico\Themes\Responsive\js\bootstrap.min.js" />
     <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
@@ -229,10 +222,6 @@
     <Content Include="Dinamico\Themes\Default\Views\Test\Index.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Web.config" />
     <Content Include="Dinamico\Themes\Default\Views\_ViewStart.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Shared\LayoutPartials\Navbar.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Shared\_Layout.cshtml" />
-    <Content Include="Dinamico\Themes\Responsive\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Responsive\Views\_ViewStart.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Footer.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Logotype.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
@@ -260,9 +249,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ThreeColumns.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Dinamico\Themes\Responsive\Views\ContentParts\ThreeColumns.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dinamico\Themes\Web.config" />
