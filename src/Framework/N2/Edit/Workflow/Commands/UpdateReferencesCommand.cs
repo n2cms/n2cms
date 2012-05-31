@@ -10,7 +10,9 @@ namespace N2.Edit.Workflow.Commands
 	{
 		public override void Process(CommandContext state)
 		{
-			if (state.Original.State != ContentState.New && state.Original.Name != state.Content.Name)
+			if (state.Content.IsPage 
+				&& state.Original.State != ContentState.New 
+				&& state.Original.Name != state.Content.Name)
 			{
 				var url = new SelectionUtility(state.Content, null).SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx").ToUrl().AppendQuery("previousName", state.Original.Name);
 				if (state.Content.Parent != null)
