@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>N2CMS.Razor</id>
-    <version>{Version}-rc-1</version>
+    <version>{Version}</version>
     <title>N2 CMS Razor Support</title>
     <authors>Cristian Libardo</authors>
     <owners>Cristian Libardo</owners>
