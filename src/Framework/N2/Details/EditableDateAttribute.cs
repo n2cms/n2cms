@@ -61,7 +61,9 @@ namespace N2.Details
 		{
 			DatePicker picker = (DatePicker) editor;
             object value = item[Name];
-            if (value is DateTime?)
+            if (value == null)
+                picker.SelectedDate = null;
+            else if (value is DateTime?)
                 picker.SelectedDate = (DateTime?)value;
             else if (value is DateTime)
                 picker.SelectedDate = (DateTime?)value;
