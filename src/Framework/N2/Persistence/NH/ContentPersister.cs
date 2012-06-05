@@ -68,7 +68,15 @@ namespace N2.Persistence.NH
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
+			using (ITransaction transaction = itemRepository.BeginTransaction())
+			{
+				// delay saved event until a previously initiated transcation is completed
+				transaction.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
+
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
+
+				transaction.Commit();
+			}
 		}
 
 		private void SaveAction(ContentItem item)
@@ -76,25 +84,16 @@ namespace N2.Persistence.NH
 			if (item is IActiveContent)
 			{
 				(item as IActiveContent).Save();
-				Invoke(ItemSaved, new ItemEventArgs(item));
 			}
 			else
 			{
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					// delay saved event until a previously initiated transcation is completed
-					transaction.Committed += (s,a) => Invoke(ItemSaved, new ItemEventArgs(item));
+				if (!item.VersionOf.HasValue)
+					item.Updated = Utility.CurrentTime();
+				if (string.IsNullOrEmpty(item.Name))
+					item.Name = null;
 
-					if (!item.VersionOf.HasValue)
-						item.Updated = Utility.CurrentTime();
-					if (string.IsNullOrEmpty(item.Name))
-						item.Name = null;
-
-					itemRepository.SaveOrUpdate(item);
-					EnsureName(item);
-
-					transaction.Commit();
-				}
+				itemRepository.SaveOrUpdate(item);
+				EnsureName(item);
 			}
 		}
 

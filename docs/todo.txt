@@ -1,3 +1,4 @@
+- Weird discriminator (discussions/358438)
 - Translate close (discussions/356447)
 - security exception discussions/354170
 - non-persistent items searchable
