@@ -113,6 +113,11 @@ namespace N2.Tests.Serialization
 			var item = definitions.CreateInstance<XmlableItem2>(null);
 			item.AutoPropertyString = "Hello World!";
 
+			// simulate saving proxied items - this is most likely the case in normal operation
+			var pf = new N2.Persistence.Proxying.InterceptingProxyFactory();
+			pf.Initialize(new [] { typeof(XmlableItem2) });
+			pf.OnSaving(item);
+
 			var readItem = ExportAndImport(item, ExportOptions.Default);
 
 			Assert.That(readItem.AutoPropertyString, Is.EqualTo(item.AutoPropertyString));

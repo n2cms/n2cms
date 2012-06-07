@@ -133,6 +133,11 @@ namespace N2.Persistence.Proxying
 
 		public override bool OnSaving(object instance)
 		{
+			return ApplyToDetailsOnUnproxiedInstance(instance);
+		}
+
+		private bool ApplyToDetailsOnUnproxiedInstance(object instance)
+		{
 			if (instance is IInterceptedType)
 				return false;
 

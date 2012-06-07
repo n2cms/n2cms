@@ -45,7 +45,7 @@ namespace N2.Persistence
         {
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
-            object intercepted = interceptor.Create(itemType.FullName, 0);
+			object intercepted = null;// interceptor.Create(itemType.FullName, 0);
             ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
                 as ContentItem;
             if (templateKey != null)

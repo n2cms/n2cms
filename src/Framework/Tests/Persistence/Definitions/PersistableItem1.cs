@@ -21,7 +21,7 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<bool>("BoolProperty", value); }
 		}
 
-		[EditableNumber]
+		[EditableNumber(DefaultValue = 666)]
 		public virtual int IntProperty
 		{
 			get { return (int)(GetDetail("IntProperty") ?? 0); }

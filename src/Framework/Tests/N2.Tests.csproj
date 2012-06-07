@@ -177,6 +177,7 @@
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
     <Compile Include="Edit\WhileNavigatingToTheManagementInterface.cs" />
+    <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
     <Compile Include="Engine\Items\ItemAC.cs" />
     <Compile Include="Engine\ServiceContainerTests.cs" />

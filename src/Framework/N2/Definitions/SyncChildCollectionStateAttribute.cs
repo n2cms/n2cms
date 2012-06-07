@@ -74,7 +74,7 @@ namespace N2.Definitions
 			if (context.Parent.Children.Count >= LargeCollecetionThreshold)
 			{
 				context.Parent.ChildState |= CollectionState.IsLarge;
-				context.UnsavedItems.Add(context.AffectedItem.Parent);
+				context.UnsavedItems.Add(context.Parent);
 			}
 		}
 
