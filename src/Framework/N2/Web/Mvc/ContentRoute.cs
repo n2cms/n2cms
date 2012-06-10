@@ -131,7 +131,7 @@ namespace N2.Web.Mvc
 			var url = new Url(request.Url.Scheme, host, request.RawUrl);
 			PathData path = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
 
-			if (path.IsRewritable && StopRewritableItems)
+			if (!path.IsEmpty() && path.IsRewritable && StopRewritableItems)
 				return new RouteData(this, new StopRoutingHandler());
 
 			var page = path.CurrentPage;
