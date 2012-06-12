@@ -28,7 +28,7 @@ namespace Dinamico.Controllers
 			var urlText = Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/').Replace('/', ' ');
 			var similarPages = GetSearchResults(startPage, urlText, 10).ToList();
 
-			ControllerContext.RouteData.ApplyCurrentItem(new ContentPage { Parent = startPage }, null);
+			ControllerContext.RouteData.ApplyCurrentPath(new PathData(new ContentPage { Parent = startPage }));
 			Response.TrySkipIisCustomErrors = true;
 			Response.Status = "404 Not Found";
 

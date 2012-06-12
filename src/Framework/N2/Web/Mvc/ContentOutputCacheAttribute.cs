@@ -15,6 +15,17 @@ namespace N2.Web.Mvc
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
 	public class ContentOutputCacheAttribute : ActionFilterAttribute
 	{
+		private bool adhereToConfig;
+
+		public ContentOutputCacheAttribute()
+		{
+		}
+
+		public ContentOutputCacheAttribute(bool adhereToConfig)
+		{
+			this.adhereToConfig = adhereToConfig;
+		}
+
 		public override void OnResultExecuting(ResultExecutingContext filterContext)
 		{
 			if (filterContext == null)
@@ -26,7 +37,7 @@ namespace N2.Web.Mvc
 			ProcessOutputCache(filterContext.RequestContext);
 		}
 
-		private static void ProcessOutputCache(RequestContext requestContext)
+		private void ProcessOutputCache(RequestContext requestContext)
 		{
 			if (HttpContext.Current == null)
 				return;
@@ -36,7 +47,7 @@ namespace N2.Web.Mvc
 				return;
 
 			ICacheManager cacheManager = RouteExtensions.ResolveService<ICacheManager>(requestContext.RouteData);
-			if (!cacheManager.Enabled)
+			if (adhereToConfig && !cacheManager.Enabled)
 				return;
 
 			var page = new OutputCachedPage(cacheManager.GetOutputCacheParameters());

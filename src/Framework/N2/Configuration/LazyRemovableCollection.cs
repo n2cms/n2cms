@@ -37,7 +37,9 @@ namespace N2.Configuration
 		{
 			get
 			{
-				object[] removedKeys = RemovedElements.Select(e => e.ElementKey).ToArray();
+				object[] removedKeys = RemovedElements.Select(e => e.ElementKey)
+					.Except(Defaults.Select(d => d.ElementKey)) // except removed defaults
+					.ToArray();
 				foreach (object key in base.BaseGetAllKeys())
 				{
 					if (!removedKeys.Contains(key))
@@ -123,7 +125,7 @@ namespace N2.Configuration
 			if (elementName == "remove")
 			{
 				T element = new T();
-				element.ElementKey = reader.GetAttribute("name");
+				element.ElementKey = reader.GetAttribute(ElementKeyAttributeName);
 
 				OnDeserializeRemoveElement(element, reader);
 
@@ -136,6 +138,11 @@ namespace N2.Configuration
 				return true;
 			}
 			return base.OnDeserializeUnrecognizedElement(elementName, reader);
+		}
+
+		protected virtual string ElementKeyAttributeName
+		{
+			get { return "name"; }
 		}
 
 		protected virtual void OnDeserializeRemoveElement(T element, XmlReader reader)

@@ -588,24 +588,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\UI\Views\WideText.aspx" />
-    <Content Include="Views\Shared\TokenTemplates\Author.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Changes.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Children.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Google+1.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Detail.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FirstChild.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Link.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\NextSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Parent.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\PreviousSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Published.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FacebookLike.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\SyntaxHighlighter.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
     <Content Include="Web.config" />
     <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
@@ -642,7 +624,6 @@
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
     <Content Include="App_Themes\n2cms\Menu.skin" />
     <Content Include="App_Themes\Corporate\Menu.skin" />
-    <Content Include="Views\Web.config" />
     <Content Include="App_Themes\Web.config" />
   </ItemGroup>
   <ItemGroup>

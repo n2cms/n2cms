@@ -22,10 +22,16 @@ namespace N2.Web
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
+		/// <summary>Is set to the current database connection status.</summary>
+		protected bool IsOnline { get; set; }
 
-		public UrlParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
+		public UrlParser(IPersister persister, IWebContext webContext, IHost host, N2.Plugin.ConnectionMonitor connections, HostSection config)
 		{
 			if (host == null) throw new ArgumentNullException("host");
+
+			IsOnline = connections.IsConnected ?? true;
+			connections.Online += (s, a) => IsOnline = true;
+			connections.Offline += (s, a) => IsOnline = false;
 
 			this.persister = persister;
 			this.webContext = webContext;
@@ -43,7 +49,7 @@ namespace N2.Web
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
-			get { return persister.Repository.Get(host.CurrentSite.StartPageID); }
+			get { return IsOnline ? persister.Repository.Get(host.CurrentSite.StartPageID) : null; }
 		}
 
 		/// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
@@ -56,6 +62,7 @@ namespace N2.Web
 		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
+			if (!IsOnline) return PathData.Empty;
 
 			Url requestedUrl = url;
 			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.ItemQueryKey);
@@ -267,7 +274,7 @@ namespace N2.Web
 			}
 
 			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string

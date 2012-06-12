@@ -7,13 +7,5 @@ namespace N2.Web.Mvc
         where TModel : class, IItemContainer<TItem>
         where TItem : ContentItem
     {
-        #region IItemContainer<TItem> Members
-
-        public TItem CurrentItem
-        {
-            get { return Content; }
-        }
-
-        #endregion
     }
 }

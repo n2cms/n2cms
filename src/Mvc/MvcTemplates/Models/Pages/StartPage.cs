@@ -6,6 +6,7 @@ using N2.Edit.FileSystem;
 using N2.Templates.Details;
 using N2.Web;
 using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -66,7 +67,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			Site s = new Site((Parent ?? this).ID, ID, HostName);
 			s.Wildcards = true;
 			if (SiteUpload)
-				s.UploadFolders.Add("~/Upload/" + HostName);
+				s.UploadFolders.Add(new FileSystemRoot("~/Upload/" + HostName, s) { Title = "Upload (" + HostName + ")" });
 
 			return new Site[] {s};
 		}

@@ -28,9 +28,10 @@ namespace N2.Templates.UI.Views
         protected void btnSearch_Click(object sender, EventArgs e)
         {
 			var query = Query.For(txtQuery.Text)
-				.Below(CurrentItem.SearchRoot)
+				.Below(CurrentItem.SearchRoot ?? Content.Traverse.StartPage)
 				.Range(0, 100)
 				.Pages(true)
+				.State(ContentState.Published)
 				.ReadableBy(User, Roles.GetRolesForUser)
 				.Except(Query.For(typeof(ISystemNode)));
 			var result = Engine.Resolve<ITextSearcher>().Search(query);

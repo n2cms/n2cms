@@ -7,6 +7,7 @@ using N2.Engine.Globalization;
 using N2.Templates.Mvc.Models;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Edit;
+using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -19,6 +20,7 @@ namespace N2.Templates.Mvc.Controllers
 			_languageGateway = languageGatewaySelector.GetLanguageGateway();
 		}
 
+		[ContentOutputCache]
 		public PartialViewResult TopMenu()
 		{
             // Top menu for the current language starts at the nearest language root
@@ -47,6 +49,7 @@ namespace N2.Templates.Mvc.Controllers
 			}
 		}
 
+		[ContentOutputCache]
 		public PartialViewResult SubMenu()
 		{
 			ContentItem startPage = Find.ClosestLanguageRoot;
@@ -70,6 +73,7 @@ namespace N2.Templates.Mvc.Controllers
 			return PartialView(model);
 		}
 
+		[ContentOutputCache]
 		public PartialViewResult Breadcrumb()
 		{
 			var items = Find.EnumerateParents(CurrentPage, Find.Closest<LanguageRoot>(CurrentPage) ?? Find.ClosestLanguageRoot, true).Reverse().ToArray();

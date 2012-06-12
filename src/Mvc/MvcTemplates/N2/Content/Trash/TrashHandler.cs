@@ -64,7 +64,7 @@ namespace N2.Edit.Trash
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "admin"));
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Administrators"));
-				trashContainer.SortOrder = int.MaxValue - 1000000;
+				trashContainer.SortOrder = 1000000;
 			});
 		}
 

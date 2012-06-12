@@ -77,7 +77,7 @@ namespace N2.Edit.Web.UI.Controls
 
 			if (Nodes == null)
 				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
-					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing))
+					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(Filter))
 					.Build();
 
 			TreeUtility.Write(Nodes, SelectedItem, adapters, Filter, SelectableTypes, SelectableExtensions, excludeRoot: false, target: Target, writer: writer);

@@ -64,7 +64,7 @@ namespace N2.Definitions.Runtime
 
 			var rd = new RouteData();
 			bool isPage = model.IsPage;
-			RouteExtensions.ApplyCurrentItem(rd, controllerName, Path.GetFileNameWithoutExtension(file.Name), isPage ? model : new StubItem(), isPage ? null : model);
+			RouteExtensions.ApplyCurrentPath(rd, controllerName, Path.GetFileNameWithoutExtension(file.Name), new PathData(isPage ? model : new StubItem(), isPage ? null : model));
 
 			var cctx = new ControllerContext(httpContext, rd, new StubController());
 

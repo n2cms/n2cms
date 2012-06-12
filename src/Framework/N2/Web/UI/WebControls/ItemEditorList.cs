@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,15 +14,14 @@ using log4net;
 
 namespace N2.Web.UI.WebControls
 {
-	public class ItemEditorList : WebControl
+	public class ItemEditorList : Panel
 	{
 		#region Fields
 
 		private readonly ILog logger = LogManager.GetLogger(typeof(ItemEditorList));
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
-		private readonly DropDownList types = new DropDownList();
-		private ImageButton addButton = new ImageButton { Enabled = false, CssClass = "disabled" };
-		private List<string> addedTypes = new List<string>();
+		private readonly Panel addPanel = new Panel { CssClass = "addArea" };
+		private List<string> addedDefinitions = new List<string>();
 		private IDefinitionManager definitions;
 		private List<int> deletedIndexes = new List<int>();
 		private int itemEditorIndex;
@@ -42,6 +42,8 @@ namespace N2.Web.UI.WebControls
 		#endregion
 
 		#region Properties
+
+		public string Label { get; set; }
 
 		public List<ItemEditor> ItemEditors
 		{
@@ -65,7 +67,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the zone name to list.</summary>
 		public string ZoneName
 		{
-			get { return (string) (ViewState["ZoneName"] ?? ""); }
+			get { return (string)ViewState["ZoneName"]; }
 			set { ViewState["ZoneName"] = value; }
 		}
 
@@ -76,9 +78,9 @@ namespace N2.Web.UI.WebControls
 			set { minimumType = value; }
 		}
 
-		public IList<string> AddedTypes
+		public IList<string> AddedDefinitions
 		{
-			get { return addedTypes; }
+			get { return addedDefinitions; }
 		}
 
 		public IList<int> DeletedIndexes
@@ -112,10 +114,9 @@ namespace N2.Web.UI.WebControls
 			get { return Definitions.GetDefinition(Type.GetType(ParentItemType)); }
 		}
 
-		[NotifyParentProperty(true)]
-		public DropDownList Types
+		public IEnumerable<LinkButton> AddButtons
 		{
-			get { return types; }
+			get { return addPanel.Controls.OfType<LinkButton>(); }
 		}
 
 		#endregion
@@ -145,17 +146,17 @@ namespace N2.Web.UI.WebControls
 			itemEditorsContainer = new PlaceHolder();
 			Controls.Add(itemEditorsContainer);
 
-			InitNewItemDropDown();
+			Controls.Add(addPanel);
 		}
 
 		protected override void LoadViewState(object savedState)
 		{
 			var p = (Triplet) savedState;
 			base.LoadViewState(p.First);
-			addedTypes = (List<string>) p.Second;
+			addedDefinitions = (List<string>) p.Second;
 			deletedIndexes = (List<int>) p.Third;
 			EnsureChildControls();
-			logger.Debug("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
+			logger.Debug("addedTypes: " + addedDefinitions.Count + ", deletedIndexes: " + deletedIndexes.Count);
 		}
 
 		protected override void CreateChildControls()
@@ -165,6 +166,11 @@ namespace N2.Web.UI.WebControls
 				CreateItemEditor(item);
 			}
 
+			if (!string.IsNullOrEmpty(Label))
+			{
+				addPanel.Controls.Add(new Label { Text = Label, CssClass = "editorLabel" });
+			}
+
 			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{
 				if (!minimumType.IsAssignableFrom(definition.ItemType))
@@ -172,11 +178,22 @@ namespace N2.Web.UI.WebControls
 					continue;
 				}
 
-				var li = new ListItem(definition.Title,
-				                      string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
-				types.Items.Add(li);
-				addButton.Enabled = true;
-				addButton.CssClass = "";
+				var button = new LinkButton
+				{
+					ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
+					Text = string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
+					ToolTip = definition.ToolTip,
+					CausesValidation = false
+				};
+				var closureDefinition = definition;
+				button.Command += (s, a) =>
+					{
+						ContentItem item = CreateItem(closureDefinition);
+						item.ZoneName = ZoneName;
+						AddedDefinitions.Add(closureDefinition.GetDiscriminatorWithTemplateKey());
+						CreateItemEditor(item);
+					};
+				addPanel.Controls.Add(button);
 			}
 
 			base.CreateChildControls();
@@ -184,17 +201,19 @@ namespace N2.Web.UI.WebControls
 
 		protected override object SaveViewState()
 		{
-			return new Triplet(base.SaveViewState(), addedTypes, deletedIndexes);
+			return new Triplet(base.SaveViewState(), addedDefinitions, deletedIndexes);
 		}
 
 		public virtual IList<ContentItem> GetItems()
 		{
 			if (ParentItem != null)
 			{
-				IList<ContentItem> items = ParentItem.GetChildren(ZoneName);
-				foreach (string itemTypeName in AddedTypes)
+				IList<ContentItem> items = string.IsNullOrEmpty(ZoneName)
+					? ParentItem.GetChildren()
+					: ParentItem.GetChildren(ZoneName);
+				foreach (string discriminator in AddedDefinitions)
 				{
-					ContentItem item = CreateItem(Utility.TypeFromName(itemTypeName));
+					ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));
 					items.Add(item);
 				}
 				return items;
@@ -202,44 +221,28 @@ namespace N2.Web.UI.WebControls
 			return new ContentItem[0];
 		}
 
-		private ContentItem CreateItem(Type itemType)
+		private ContentItem CreateItem(ItemDefinition definition)
 		{
-			ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(itemType, ParentItem);
+			ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, ParentItem, definition.TemplateKey);
 			item.ZoneName = ZoneName;
 			return item;
 		}
 
-		private void InitNewItemDropDown()
-		{
-			Controls.Add(types);
-
-			Controls.Add(addButton);
-			addButton.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/add.png");
-			addButton.ToolTip = "Add item";
-			addButton.CausesValidation = false;
-			addButton.Click += AddItemClick;
-		}
-
-		private void AddItemClick(object sender, ImageClickEventArgs e)
-		{
-			AddedTypes.Add(types.SelectedValue);
-
-			ContentItem item = CreateItem(Utility.TypeFromName(types.SelectedValue));
-
-			CreateItemEditor(item);
-		}
-
 		protected virtual ItemEditor CreateItemEditor(ContentItem item)
 		{
-			var container = new Panel {CssClass = "delete"};
+			var itemPanel = new Panel { CssClass = "item" };
+			itemPanel.Controls.Add(new Hn { Level = 3, Text = "<span>" + Engine.Definitions.GetDefinition(item).Title + "</span>" });
+			itemEditorsContainer.Controls.Add(itemPanel);
+			
+			var container = new Panel { CssClass = "delete" };
 
 			container.Controls.Add(CreateMoveUpButton());
 			container.Controls.Add(CreateMoveDownButton());
 			container.Controls.Add(CreateDeleteButton());
 
-			itemEditorsContainer.Controls.Add(container);
+			itemPanel.Controls.Add(container);
 
-			ItemEditor itemEditor = AddItemEditor(item);
+			ItemEditor itemEditor = AddItemEditor(item, itemPanel);
 			++itemEditorIndex;
 			return itemEditor;
 		}
@@ -336,23 +339,15 @@ namespace N2.Web.UI.WebControls
 			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
 		}
 
-		private ItemEditor AddItemEditor(ContentItem item)
+		private ItemEditor AddItemEditor(ContentItem item, Control container)
 		{
 			var itemEditor = new ItemEditor();
 			itemEditor.ID = ID + "_ie_" + itemEditorIndex;
-			AddToContainer(itemEditorsContainer, itemEditor, item);
+			container.Controls.Add(itemEditor);
 			itemEditor.ZoneName = ZoneName;
 			itemEditors.Add(itemEditor);
 			itemEditor.CurrentItem = item;
 			return itemEditor;
-		}
-
-		protected virtual void AddToContainer(Control container, ItemEditor itemEditor, ContentItem item)
-		{
-			var fs = new FieldSet();
-			fs.Legend = Engine.Definitions.GetDefinition(item).Title;
-			container.Controls.Add(fs);
-			fs.Controls.Add(itemEditor);
 		}
 	}
 }

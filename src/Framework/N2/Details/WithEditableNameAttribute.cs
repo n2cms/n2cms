@@ -138,6 +138,7 @@ namespace N2.Details
 			ne.ShowKeepUpdated = ShowKeepUpdated;
 			ne.KeepUpdated.Text = KeepUpdatedText;
 			ne.KeepUpdated.ToolTip = KeepUpdatedToolTip;
+            ne.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
 			container.Controls.Add(ne);
 			if (Focus) ne.Focus();
 			return ne;

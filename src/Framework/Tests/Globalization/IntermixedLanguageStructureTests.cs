@@ -29,7 +29,7 @@ namespace N2.Tests.Globalization
 			italian.Name = italian.Title = "italian";
             italian.AddTo(root);
 
-            engine.Persister.Save(root);
+            engine.Persister.Repository.SaveOrUpdate(root, english, swedish, italian);
 
 			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
 			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;

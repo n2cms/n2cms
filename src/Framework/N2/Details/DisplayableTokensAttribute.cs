@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Web;
 using N2.Web.Mvc;
 using log4net;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -37,7 +38,7 @@ namespace N2.Details
 		{
 			var httpContext = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
-			RouteExtensions.ApplyCurrentItem(routeData, "webforms", "index", item.ClosestPage(), item);
+			RouteExtensions.ApplyCurrentPath(routeData, "WebForms", "Index", new PathData(item.ClosestPage(), item));
 			return new HtmlHelper(
 				new ViewContext(
 					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },
@@ -116,17 +117,17 @@ namespace N2.Details
 
 				foreach (var detail in tokens.Details)
 				{
-					if (lastFragmentEnd < detail.IntValue)
-						writer.Write(text.Substring(lastFragmentEnd, detail.IntValue.Value - lastFragmentEnd));
+					var token = detail.ExtractToken();
 
-					string tokenTemplate = detail.StringValue.TextUntil(2, '|', '}');
+					if (lastFragmentEnd < token.Index)
+						writer.Write(text.Substring(lastFragmentEnd, token.Index - lastFragmentEnd));
 
 					ViewEngineResult vr = null;
 					if (context.Html.ViewContext.HttpContext.IsCustomErrorEnabled)
 					{
 						try
 						{
-							vr = ViewEngines.Engines.FindPartialView(context.Html.ViewContext, "TokenTemplates/" + tokenTemplate);
+							vr = ViewEngines.Engines.FindPartialView(context.Html.ViewContext, "TokenTemplates/" + token.Name);
 						}
 						catch (System.Exception ex)
 						{
@@ -135,20 +136,21 @@ namespace N2.Details
 					}
 					else
 					{
-						vr = ViewEngines.Engines.FindPartialView(context.Html.ViewContext, "TokenTemplates/" + tokenTemplate); // duplicated to preserve stack trace
+						vr = ViewEngines.Engines.FindPartialView(context.Html.ViewContext, "TokenTemplates/" + token.Name); // duplicated to preserve stack trace
 					}
+
 					if (vr != null && vr.View != null)
 					{
-						var model = detail.StringValue[tokenTemplate.Length + 2] == '|'
-							? detail.StringValue.Substring(tokenTemplate.Length + 3, detail.StringValue.Length - tokenTemplate.Length - 5)
-							: null;
-						var vc = new ViewContext(context.Html.ViewContext, vr.View, new ViewDataDictionary(model) { { "ParentViewContext", context.Html.ViewContext } }, context.Html.ViewContext.TempData, writer);
+						var viewData = new ViewDataDictionary(token.Value) { { "ParentViewContext", context.Html.ViewContext } };
+						viewData[RenderingExtensions.ContextKey] = context;
+						viewData[RenderingExtensions.TokenKey] = token;
+						var vc = new ViewContext(context.Html.ViewContext, vr.View, viewData, context.Html.ViewContext.TempData, writer);
 						vr.View.Render(vc, writer);
 					}
 					else
 						writer.Write(detail.StringValue);
 
-					lastFragmentEnd = detail.IntValue.Value + detail.StringValue.Length;
+					lastFragmentEnd = token.Index + detail.StringValue.Length;
 				}
 
 				if (lastFragmentEnd < text.Length)

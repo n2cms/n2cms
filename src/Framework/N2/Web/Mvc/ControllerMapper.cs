@@ -7,11 +7,14 @@ using N2.Engine;
 
 namespace N2.Web.Mvc
 {
+    /// <summary>
+    /// Maps content types to controllers.
+    /// </summary>
 	[Service(typeof(IControllerMapper))]
 	public class ControllerMapper : IControllerMapper
 	{
 		private readonly IDictionary<Type, string> _controllerMap = new Dictionary<Type, string>();
-		private readonly IDictionary<string, string[]> _controllerActionMap = new Dictionary<string, string[]>();
+		private readonly IDictionary<string, string[]> _controllerActionMap = new Dictionary<string, string[]>(StringComparer.InvariantCultureIgnoreCase);
 
 		public ControllerMapper(ITypeFinder typeFinder, IDefinitionManager definitionManager)
 		{
@@ -42,6 +45,9 @@ namespace N2.Web.Mvc
 			}
 		}
 
+        /// <summary>Gets the controller associated with a given content type.</summary>
+        /// <param name="contentType">The type of content item whose controller to get.</param>
+        /// <returns>A controller name if a controller was found.</returns>
 		public string GetControllerName(Type type)
 		{
 			string name;
@@ -49,7 +55,11 @@ namespace N2.Web.Mvc
 			return name;
 		}
 
-		public bool ControllerHasAction(string controllerName, string actionName)
+        /// <summary>Returns true if the given controller has the given action.</summary>
+        /// <param name="controllerName">The controller to check.</param>
+        /// <param name="actionName">The action to verify.</param>
+        /// <returns>True if the controller has the action.</returns>
+        public bool ControllerHasAction(string controllerName, string actionName)
 		{
 			if(!_controllerActionMap.ContainsKey(controllerName))
 				return false;
@@ -102,5 +112,13 @@ namespace N2.Web.Mvc
 
 			return controllerDefinitions;
 		}
-	}
+
+        /// <summary>Returns true if the given controller is a controller handling content items.</summary>
+        /// <param name="controllerName">The controller to check.</param>
+        /// <returns>True if it is a content controller (has [Controls] attribute), otherwise false.</returns>
+        public bool IsContentController(string controllerName)
+        {
+            return _controllerActionMap.ContainsKey(controllerName);
+        }
+    }
 }

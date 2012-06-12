@@ -120,6 +120,7 @@
     <Compile Include="Persistence\Search\ReindexTextMigration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\EditableItemRenderer.cs" />

@@ -5,6 +5,7 @@ using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Web.Drawing;
 using N2.Web.UI;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -12,8 +13,16 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/photo.png")]
 	[RestrictParents(typeof (ImageGallery))]
 	[TabContainer("advanced", "Advanced", 100)]
-	public class GalleryItem : ContentPageBase
+	public class GalleryItem : ContentPageBase, IInjectable<IFileSystem>
 	{
+		private IFileSystem fs;
+
+		public IFileSystem Fs
+		{
+			get { return fs ?? (fs = Context.Current.Resolve<IFileSystem>()); }
+			set { fs = value; }
+		}
+
 		public GalleryItem()
 		{
 			Visible = false;
@@ -26,22 +35,14 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { base.SetDetail("ImageUrl", value); }
 		}
 
-		public virtual string GetResizedImageUrl(IFileSystem fs)
+		public virtual string GetResizedImageUrl()
 		{
-			return GetReizedUrl(fs, Gallery.PreferredImageSize);
+			return ImagesUtility.GetExistingImagePath(Fs, ImageUrl, "wide");
 		}
 
-		public virtual string GetThumbnailImageUrl(IFileSystem fs)
+		public virtual string GetThumbnailImageUrl()
 		{
-			return GetReizedUrl(fs, Gallery.PreferredThumbnailSize);
-		}
-
-		private string GetReizedUrl(IFileSystem fs, string imageSize)
-		{
-			string resizedUrl = ImagesUtility.GetResizedPath(ImageUrl, imageSize);
-			if (fs.FileExists(resizedUrl))
-				return resizedUrl;
-			return ImageUrl;
+			return ImagesUtility.GetExistingImagePath(Fs, ImageUrl, "thumb");
 		}
 
 		public virtual ImageGallery Gallery
@@ -52,6 +53,12 @@ namespace N2.Templates.Mvc.Models.Pages
 		public override string Url
 		{
 			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery(PathData.ItemQueryKey, ID).SetFragment("#t" + ID); }
+		}
+
+
+		public void Set(IFileSystem dependency)
+		{
+			fs = dependency;
 		}
 	}
 }

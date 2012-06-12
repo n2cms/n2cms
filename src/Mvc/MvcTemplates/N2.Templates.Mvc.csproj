@@ -142,6 +142,7 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\FreeFormController.cs" />
     <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
       <DependentUpon>UserRegistration.resx</DependentUpon>
@@ -170,6 +171,7 @@
     <Compile Include="Models\ContentModelBase.cs" />
     <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Models\Parts\ABTestingContainer.cs" />
+    <Compile Include="Models\Parts\FreeForm.cs" />
     <Compile Include="Models\Parts\TagCloud.cs" />
     <Compile Include="Models\Parts\Questions\FileAttachmentQuestion.cs" />
     <Compile Include="Models\Parts\Questions\MultipleSelect.cs" />
@@ -303,12 +305,33 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Tests\Uc.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
     <Content Include="Areas\Tests\Views\External\Index.aspx" />
     <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
+    <Content Include="Content\Galleria\galleria-1.2.7.js" />
+    <Content Include="Content\Galleria\galleria-1.2.7.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
+    <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
+    <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.min.js" />
+    <Content Include="Content\Galleria\plugins\flickr\loader.gif" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.js" />
+    <Content Include="Content\Galleria\plugins\history\galleria.history.min.js" />
+    <Content Include="Content\Galleria\plugins\history\history-demo.html" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.js" />
+    <Content Include="Content\Galleria\plugins\picasa\galleria.picasa.min.js" />
+    <Content Include="Content\Galleria\plugins\picasa\loader.gif" />
+    <Content Include="Content\Galleria\plugins\picasa\picasa-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-demo.html" />
+    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
+    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.min.js" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />
@@ -382,13 +405,12 @@
     <Content Include="Content\Img\user_add.png" />
     <Content Include="Content\Img\yahoomyweb.png" />
     <Content Include="Content\Img\zoom.png" />
-    <Content Include="Content\Scripts\jquery-1.3.2-vsdoc.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.min-vsdoc.js" />
-    <Content Include="Content\Scripts\jquery-1.3.2.min.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Views\ABTesting\Index.ascx" />
+    <Content Include="Views\FreeForm\Submitted.ascx" />
+    <Content Include="Views\FreeForm\Form.ascx" />
+    <Content Include="Views\FreeForm\Index.ascx" />
     <Content Include="Views\RssAggregator\Index.ascx" />
     <EmbeddedResource Include="Views\Shared\PageTemplates\App_LocalResources\News.aspx.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -396,24 +418,6 @@
     </EmbeddedResource>
     <Content Include="Views\Shared\Empty.ascx" />
     <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Author.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Changes.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Children.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Detail.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FacebookLike.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FirstChild.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Google+1.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Link.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\NextSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Parent.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\PreviousSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Published.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\SyntaxHighlighter.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -486,6 +490,7 @@
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
     <Content Include="App_Themes\Web.config" />
+    <None Include="Content\Galleria\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
@@ -632,30 +637,6 @@
     <Content Include="Views\Shared\PartTemplates\Top.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
-    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
-    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
-    <Content Include="Content\Galleria\themes\dots\dot.png" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.css" />
-    <Content Include="Content\Galleria\themes\dots\galleria.dots.js" />
-    <Content Include="Content\Galleria\themes\dots\l.png" />
-    <Content Include="Content\Galleria\themes\dots\loader.gif" />
-    <Content Include="Content\Galleria\themes\dots\nav.png" />
-    <Content Include="Content\Galleria\themes\dots\r.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\b.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\down.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\fix.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.css" />
-    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.js" />
-    <Content Include="Content\Galleria\themes\fullscreen\i.png" />
-    <Content Include="Content\Galleria\themes\fullscreen\l.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\loader.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\n.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\p.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\r.gif" />
-    <Content Include="Content\Galleria\themes\fullscreen\up.gif" />
-    <Content Include="Content\Galleria\jquery.galleria.js" />
     <Content Include="Views\NewsContainer\Index.aspx" />
     <Content Include="Views\NewsContainer\Range.ascx" />
     <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />

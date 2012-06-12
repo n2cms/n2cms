@@ -87,23 +87,21 @@ namespace N2.Persistence.Serialization
 
 		private string PrepareStringDetail(ContentItem item, string name, string value, bool encoded)
 		{
-			if (value.StartsWith("~"))
-			{
-				var pi = item.GetContentType().GetProperty(name);
-				if (pi != null)
-				{
-					var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
-					foreach (IRelativityTransformer transformer in transformers)
-					{
-						if (transformer.RelativeWhen == RelativityMode.Always || transformer.RelativeWhen == RelativityMode.ImportingOrExporting)
-							value = transformer.Rebase(value, "~/", applicationPath);
-					}
-				}
-			}
-			else if (encoded)
+			if (encoded)
 			{
 				value = HttpUtility.HtmlDecode(value);
 			}
+			var pi = item.GetContentType().GetProperty(name);
+			if (pi != null)
+			{
+				var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
+				foreach (IRelativityTransformer transformer in transformers)
+				{
+					if (transformer.RelativeWhen == RelativityMode.Always || transformer.RelativeWhen == RelativityMode.ImportingOrExporting)
+						value = transformer.Rebase(value, "~/", applicationPath);
+				}
+			}
+			
 			return value;
 		}
 	}

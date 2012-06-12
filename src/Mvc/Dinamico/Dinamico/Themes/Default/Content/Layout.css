@@ -27,5 +27,7 @@ html,body { min-height:100%; }
 
 /* layout parts */
 	#content .part { margin-bottom:20px; }
-	.columns .column { width:50%; margin-left:20px; width:450px; float:left; }
+	.columns .column { margin-left:20px; width:450px; float:left; }
 		.columns .column .part { margin-left:0; margin-right:0; }
+	.threecolumns .column { width:290px; }
+		.threecolumns .column .half { width:100%; }

@@ -4,6 +4,7 @@ using N2.Integrity;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
+using N2.Persistence.Behaviors;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -26,6 +27,8 @@ namespace N2.Tests.Persistence.NH
 			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, activator);
 			enforcer.Start();
+
+			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 		}
 
 		[Test]
@@ -67,6 +70,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item1);
 
 				ContentItem item2 = persister.Copy(item1, root);
+
 				Assert.AreNotSame(item1, item2);
 				Assert.AreNotEqual(item1.Name, item2.Name);
 				Assert.AreEqual(2, root.Children.Count);

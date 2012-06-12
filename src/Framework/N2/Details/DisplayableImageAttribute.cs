@@ -36,9 +36,13 @@ namespace N2.Details
 			if (!string.IsNullOrEmpty(imageUrl))
 			{
 				Image image = new Image();
-				image.ImageUrl = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize);
+				bool preferredSizeExists;
+				image.ImageUrl = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists);
 				image.AlternateText = item.GetDetail(detailName + "_AlternateText", altText);
 				image.CssClass = item.GetDetail(detailName + "_CssClass", cssClass);
+				if (preferredSizeExists)
+					image.CssClass += " " + preferredSize;
+
 				container.Controls.Add(image);
 				return image;
 			}
@@ -56,9 +60,18 @@ namespace N2.Details
 				return;
 
 			TagBuilder tb = new TagBuilder("img");
-			tb.Attributes["src"] = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize);
+			bool preferredSizeExists;
+			tb.Attributes["src"] = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists);
 			tb.Attributes["alt"] = item.GetDetail(detailName + "_AlternateText", alt);
 			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
+			if (preferredSizeExists)
+			{
+				if(string.IsNullOrEmpty(cssClass))
+					cssClass = preferredSize;
+				else
+					cssClass += " " + preferredSize;
+			}
+
 			if (!string.IsNullOrEmpty(cssClass))
 				tb.AddCssClass(cssClass);
 

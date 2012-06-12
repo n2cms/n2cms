@@ -9,45 +9,44 @@ namespace N2.Web.Mvc.Html
 	{
 		public static PathData CurrentPath(this HtmlHelper helper)
 		{
-			return new PathData { CurrentItem = helper.CurrentItem<ContentItem>(), CurrentPage = helper.CurrentPage<ContentItem>() };
+            if (helper == null) throw new ArgumentNullException("helper");
+
+			return helper.ViewContext.RouteData.CurrentPath();
 		}
 
         public static ContentItem CurrentPage(this HtmlHelper helper)
         {
-            return helper.CurrentPage<ContentItem>();
+			return CurrentPath(helper).CurrentPage;
         }
         public static T CurrentPage<T>(this HtmlHelper helper) where T : ContentItem
         {
-            if (helper == null) throw new ArgumentNullException("helper");
-
-            return helper.ViewContext.CurrentPage<T>();
+			return CurrentPath(helper).CurrentPage as T;
         }
 
         public static ContentItem CurrentItem(this HtmlHelper helper)
-        {
-            return helper.CurrentItem<ContentItem>();
+		{
+			return CurrentPath(helper).CurrentItem;
         }
         public static T CurrentItem<T>(this HtmlHelper helper) where T : ContentItem
         {
-            if (helper == null) throw new ArgumentNullException("helper");
-
-            return helper.ViewContext.CurrentItem<T>();
+			return CurrentPath(helper).CurrentItem as T;
         }
 
 
-
+		[Obsolete]
         public static ContentItem CurrentItem(this ViewContext context)
         {
             return context.CurrentItem<ContentItem>();
         }
-        public static T CurrentItem<T>(this ViewContext context) where T : ContentItem
+		[Obsolete]
+		public static T CurrentItem<T>(this ViewContext context) where T : ContentItem
         {
             if (context == null) throw new ArgumentNullException("context");
             
             return context.ViewData.CurrentItem<T>()
                 ?? context.RequestContext.CurrentItem<T>();
         }
-
+		[Obsolete]
 		public static T CurrentPage<T>(this ViewContext context) where T : ContentItem
 		{
 			if (context == null) throw new ArgumentNullException("context");
@@ -55,7 +54,7 @@ namespace N2.Web.Mvc.Html
 			return context.ViewData.CurrentPage<T>()
 				?? context.RequestContext.CurrentPage<T>();
 		}
-
+		[Obsolete]
 		private static T CurrentItem<T>(this ViewDataDictionary viewData) where T : ContentItem
 		{
 			if (viewData == null) throw new ArgumentNullException("viewData");
@@ -63,6 +62,7 @@ namespace N2.Web.Mvc.Html
 			return viewData[ContentRoute.ContentItemKey] as T
 				?? viewData.Model as T;
 		}
+		[Obsolete]
 		private static T CurrentPage<T>(this ViewDataDictionary viewData) where T : ContentItem
 		{
 			if (viewData == null) throw new ArgumentNullException("viewData");
@@ -74,19 +74,19 @@ namespace N2.Web.Mvc.Html
 
 		public static ContentItem StartPage(this HtmlHelper html)
 		{
-			return Find.EnumerateParents(html.CurrentItem(), null, true).FirstOrDefault(i => i is IStartPage)
-				?? N2.Find.StartPage;
+			return html.ViewContext.RequestContext.StartPage();
 		}
 
 		public static T StartPage<T>(this HtmlHelper html) where T : ContentItem
 		{
-			return Find.Closest<T>(html.CurrentItem())
-				?? N2.Find.StartPage as T;
+			return Find.Closest<T>(CurrentPath(html).CurrentItem)
+				?? EngineExnteions.ContentEngine(html).Content.Traverse.StartPage as T;
 		}
 
 		public static ContentItem RootPage(this HtmlHelper html)
 		{
-			return Find.EnumerateParents(html.CurrentItem(), null, true).LastOrDefault();
+			return Find.EnumerateParents(CurrentPath(html).CurrentItem, null, true).LastOrDefault()
+				?? EngineExnteions.ContentEngine(html).Content.Traverse.RootPage;
 		}
     }
 }

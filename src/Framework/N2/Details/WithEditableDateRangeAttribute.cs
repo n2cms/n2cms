@@ -39,10 +39,30 @@ namespace N2.Details
             set { betweenText = value; }
         }
 
+        /// <summary>From date placehodlder text. This is equivalent to <see cref="Placeholder"/>.</summary>
+        public string FromDatePlaceholder
+        {
+            get { return Placeholder; }
+            set { Placeholder = value; }
+        }
+        
+        /// <summary>From time placeholder text.</summary>
+        public string FromTimePlaceholder { get; set; }
+        
+        /// <summary>To date placeholder text.</summary>
+        public string ToDatePlaceholder { get; set; }
+        
+        /// <summary>To time placehodler text.</summary>
+        public string ToTimePlaceholder { get; set; }
+
         protected override Control AddEditor(Control container)
         {
             DateRange range = new DateRange();
             range.ID = Name + NameEndRange;
+            range.FromDatePicker.DatePickerBox.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? GetLocalizedText("Placeholder") ?? FromDatePlaceholder);
+            range.FromDatePicker.TimePickerBox.Placeholder(GetLocalizedText("FromTimePlaceholder") ?? FromTimePlaceholder);
+            range.ToDatePicker.DatePickerBox.Placeholder(GetLocalizedText("ToDatePlaceholder") ?? ToDatePlaceholder);
+            range.ToDatePicker.TimePickerBox.Placeholder(GetLocalizedText("ToTimePlaceholder") ?? ToTimePlaceholder);
             container.Controls.Add(range);
             range.BetweenText = GetLocalizedText("BetweenText") ?? BetweenText;
             return range;

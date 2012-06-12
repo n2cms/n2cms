@@ -18,13 +18,13 @@ namespace N2.Web.Mvc
 		HtmlHelper html;
 
 		public ViewContentHelper(HtmlHelper html)
-			: base(html.ContentEngine(), () => html.CurrentPath())
+			: base(() => html.ContentEngine(), () => html.CurrentPath())
 		{
 			this.html = html;
 		}
 
-		public ViewContentHelper(HtmlHelper html, IEngine engine, Func<PathData> pathGetter)
-			: base (engine, pathGetter)
+		public ViewContentHelper(HtmlHelper html, Func<IEngine> engineGetter, Func<PathData> pathGetter)
+			: base (engineGetter, pathGetter)
 		{
 			this.html = html;
 		}

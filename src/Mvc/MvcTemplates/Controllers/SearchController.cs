@@ -31,10 +31,11 @@ namespace N2.Templates.Mvc.Controllers
 			int skip = (p ?? 0) * PAGE_SIZE;
 			int take = PAGE_SIZE;
 			var query = Query.For(q)
-				.Below(CurrentItem.SearchRoot)
+				.Below(CurrentItem.SearchRoot ?? Content.Traverse.StartPage)
 				.Range(skip, take)
 				.Pages(true)
 				.ReadableBy(User, Roles.GetRolesForUser)
+				.State(ContentState.Published)
 				.Except(Query.For(typeof(ISystemNode)));
 			var result = Engine.Resolve<ITextSearcher>().Search(query);
 

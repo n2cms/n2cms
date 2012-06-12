@@ -75,6 +75,7 @@ namespace N2.Definitions
 			EditableModifiers = new List<EditorModifierAttribute>();
 			Displayables = new ContentList<IDisplayable>();
 			NamedOperators = new List<IUniquelyNamed>();
+			Attributes = new List<object>();
 			IsPage = true;
 			Enabled = true;
 			AllowedIn = AllowedZones.None;
@@ -177,6 +178,9 @@ namespace N2.Definitions
 
 		/// <summary>Filters allowed definitions above this definition.</summary>
 		public IList<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
+
+		/// <summary>Attributes defined on the content type and it's base types.</summary>
+		public IList<object> Attributes { get; private set; }
 
 		#endregion
 
@@ -340,7 +344,10 @@ namespace N2.Definitions
 				return this;
 
 			AddRange(explorer.Find<IUniquelyNamed>(type));
-			foreach (ISimpleDefinitionRefiner refiner in type.GetCustomAttributes(typeof(ISimpleDefinitionRefiner), true))
+			foreach (object attribute in type.GetCustomAttributes(true))
+				Attributes.Add(attribute);
+
+			foreach (var refiner in GetCustomAttributes<ISimpleDefinitionRefiner>())
 				refiner.Refine(this);
 
 			initializedTypes.Add(type);
@@ -399,6 +406,7 @@ namespace N2.Definitions
 			id.AllowedChildFilters = AllowedChildFilters.ToList();
 			id.AllowedIn = AllowedIn;
 			id.AllowedParentFilters = AllowedParentFilters.ToList();
+			id.Attributes = Attributes.ToList();
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
@@ -437,23 +445,13 @@ namespace N2.Definitions
 				&& IsAllowedInZone(zoneName)
 				&& IsAuthorized(user);
 		}
-	}
 
-	public static class CollectionExtensions
-	{
-		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) where T : IUniquelyNamed
+		/// <summary>Gets attributes of the specified generic type.</summary>
+		/// <typeparam name="T">The type of attribute to retrieve.</typeparam>
+		/// <returns>An enumeration of attributes.</returns>
+		public IEnumerable<T> GetCustomAttributes<T>()
 		{
-			return CollectionExtensions.AddOrReplace(collection, item, false);
-		}
-		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item, bool replaceIfComparedBefore) where T : IUniquelyNamed
-		{
-			var existing = collection.FirstOrDefault(i => i.Name == item.Name);
-			if (existing != null)
-				collection.Remove(existing);
-
-			collection.Add(item);
-
-			return collection;
+			return Attributes.OfType<T>();
 		}
 	}
 }

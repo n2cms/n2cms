@@ -1,6 +1,9 @@
 ﻿2.2.3
 - Fixed issue with multiple resources (discussions/288992)
 - Removed top part from mvc templates (discussions/264798)
+- restrict upload folders
+- update lilnk on moves (discussions/347093)
+- deadlock when indexing (discussions/285067)
 
 2.2.2
 - More info in the tree (discussions/282375)

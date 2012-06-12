@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
     {
         public override string Url
         {
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
         }
     }
 }

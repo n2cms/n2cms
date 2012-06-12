@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\ChildFactoryDelegate.cs" />
+    <Compile Include="Collections\CollectionState.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
@@ -135,6 +136,8 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\LinkTrackerElement.cs" />
     <Compile Include="Configuration\PathsElement.cs" />
     <Compile Include="Configuration\ContentConfigurationSectionBase.cs" />
     <Compile Include="Configuration\FilesElement.cs" />
@@ -144,9 +147,17 @@
     <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
+    <Compile Include="Configuration\TokensElement.cs" />
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
+    <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
+    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
@@ -161,6 +172,8 @@
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
+    <Compile Include="Definitions\SortBy.cs" />
+    <Compile Include="Definitions\SyncChildCollectionStateAttribute.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
     <Compile Include="Details\EditableImageUploadAttribute.cs" />
     <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
@@ -222,7 +235,9 @@
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
     <Compile Include="Engine\ServiceInfo.cs" />
+    <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
@@ -261,16 +276,20 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\PersistenceExtensions.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
@@ -337,6 +356,7 @@
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
@@ -356,6 +376,7 @@
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Collections\TraverseHelper.cs" />
+    <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
@@ -363,6 +384,7 @@
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
@@ -894,7 +916,6 @@
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
     <Compile Include="Web\PathDictionary.cs" />
-    <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
     <Compile Include="Web\RequestAdapter.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />

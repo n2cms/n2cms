@@ -11,9 +11,77 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	[PageDefinition(SortOrder = int.MaxValue, Description = "Release compile the project to remove this test")]
 	[RestrictParents(typeof(StartPage))]
-	[WithEditableTitle, WithEditableName]
+    [WithEditableTitle(Placeholder = "Title"), WithEditableName(Placeholder = "Name"), WithEditableDateRange(FromDatePlaceholder = "From date", FromTimePlaceholder = "From time", ToDatePlaceholder = "To date", ToTimePlaceholder = "To time"), WithEditablePublishedRange(FromDatePlaceholder = "From date", FromTimePlaceholder = "From time", ToDatePlaceholder = "To date", ToTimePlaceholder = "To time"), WithEditableTemplateSelection, WithEditableVisibility]
 	public class TestPage : TestItemBase
 	{
+        [EditableCheckBox]
+        public virtual bool EditableCheckBox { get; set; }
+
+        [EditableChildren]
+        public virtual string EditableChildren { get; set; }
+
+        [EditableDate(Placeholder = "Date", TimePlaceholder = "Time")]
+        public virtual string EditableDate { get; set; }
+
+        [EditableDefinition]
+        public virtual string EditableDefinition { get; set; }
+
+        [EditableEnum(EnumType = typeof(Base64FormattingOptions))]
+        public virtual Base64FormattingOptions EditableEnum { get; set; }
+
+        [EditableFileUpload(Placeholder = "File upload")]
+        public virtual string EditableFileUpload { get; set; }
+
+        [EditableFolderSelection(Placeholder = "Folder")]
+        public virtual string EditableFolderSelection { get; set; }
+
+        [EditableFreeTextArea]
+        public virtual string EditableFreeTextArea { get; set; }
+
+        [EditableImage(Placeholder = "Image")]
+        public virtual string EditableImage { get; set; }
+
+        [EditableImageSize]
+        public virtual string EditableImageSize { get; set; }
+
+        [EditableImageUpload(Placeholder = "Image upload")]
+        public virtual string EditableImageUpload { get; set; }
+
+        [EditableItem]
+        public virtual TestPart EditableItem { get; set; }
+
+        [EditableLanguagesDropDown]
+        public virtual string EditableLanguagesDropDown { get; set; }
+
+        [EditableLink(Placeholder = "Link to item")]
+        public virtual string EditableLink { get; set; }
+
+        [EditableMediaUpload(Placeholder = "Media file")]
+        public virtual string EditableMediaUpload { get; set; }
+
+        [EditableMetaTag(Placeholder = "Meta text")]
+        public virtual string EditableMetaTag { get; set; }
+
+        [EditableNumber(Placeholder = "Number")]
+        public virtual string EditableNumber { get; set; }
+
+        [EditableSummary(Placeholder = "Summary text")]
+        public virtual string EditableSummary { get; set; }
+
+        [EditableTags(Placeholder = "Tags")]
+        public virtual string EditableTags { get; set; }
+
+        [EditableText(Placeholder = "Text")]
+        public virtual string EditableText { get; set; }
+
+        [EditableThemeSelection]
+        public virtual string EditableThemeSelection { get; set; }
+
+        [EditableUrl(Placeholder = "Url")]
+        public virtual string EditableUrl { get; set; }
+
+        [EditableUserControl(UserControlPath = "~/Areas/Tests/Uc.ascx")]
+        public virtual string EditableUserControl { get; set; }
 	}
 }
 #endif

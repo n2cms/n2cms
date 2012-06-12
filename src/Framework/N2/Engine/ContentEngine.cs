@@ -242,7 +242,7 @@ namespace N2.Engine
 
 		public ContentHelperBase Content
 		{
-			get { return new ContentHelperBase(this, () => RequestContext.CurrentPath); }
+			get { return new ContentHelperBase(() => this, () => RequestContext.CurrentPath); }
 		}
 
 		#endregion

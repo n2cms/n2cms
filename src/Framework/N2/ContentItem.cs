@@ -35,6 +35,7 @@ using N2.Persistence.Proxying;
 using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
+using N2.Persistence.Behaviors;
 
 namespace N2
 {
@@ -61,8 +62,10 @@ namespace N2
     /// </remarks>
 	[Serializable, DebuggerDisplay("{TypeName, nq}: {Name, nq}#{ID}")]
 	[DynamicTemplate]
+	[SiblingInsertion(SortBy.CurrentOrder)]
 	[SortChildren(SortBy.CurrentOrder)]
 	[SearchableType]
+	[SyncChildCollectionState(syncEnabled: true)]
 #pragma warning disable 612, 618
 	public abstract class ContentItem : INode,
 #pragma warning restore 612, 618
@@ -100,7 +103,8 @@ namespace N2
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
         private int versionIndex;
-        private ContentState state = ContentState.None;
+		private ContentState state = ContentState.None;
+		private CollectionState childState = CollectionState.Unknown;
 		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
 		private int? hashCode;
 		#endregion
@@ -293,6 +297,13 @@ namespace N2
             get { return state; }
             set { state = value; }
         }
+		
+		[DisplayableLiteral]
+		public CollectionState ChildState
+		{
+			get { return childState; }
+			set { childState = value; }
+		}
 
         [DisplayableLiteral]
 		public virtual N2.Security.Permission AlteredPermissions
@@ -326,7 +337,7 @@ namespace N2
 					if (urlParser != null)
 						url = urlParser.BuildUrl(this);
 					else
-						url = FindPath(PathData.DefaultAction).RewrittenUrl;
+						url = FindPath(PathData.DefaultAction).GetRewrittenUrl();
 				}
 				return url;
 			}
@@ -346,10 +357,10 @@ namespace N2
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
-		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).RewrittenUrl")]
+		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()")]
 		public virtual string RewrittenUrl
 		{
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
 		}
 
 		#endregion
@@ -587,8 +598,6 @@ namespace N2
 
 		#region AddTo & GetChild & GetChildren
 
-		private const int SortOrderThreshold = 9999;
-
 		/// <summary>Adds an item to the children of this item updating its parent refernce.</summary>
 		/// <param name="newParent">The new parent of the item. If this parameter is null the item is detached from the hierarchical structure.</param>
 		public virtual void AddTo(ContentItem newParent)
@@ -601,29 +610,7 @@ namespace N2
 			
 			if (newParent != null && !newParent.Children.Contains(this))
 			{
-				IList<ContentItem> siblings = newParent.Children;
-				if (siblings.Count > 0)
-				{
-					int lastOrder = siblings[siblings.Count - 1].SortOrder;
-
-					for (int i = siblings.Count - 2; i >= 0; i--)
-					{
-						if (siblings[i].SortOrder < lastOrder - SortOrderThreshold)
-						{
-							siblings.Insert(i + 1, this);
-							return;
-						}
-						lastOrder = siblings[i].SortOrder;
-					}
-
-					if (lastOrder > SortOrderThreshold)
-					{
-						siblings.Insert(0, this);
-						return;
-					}
-				}
-
-				siblings.Add(this);
+				newParent.Children.Add(this);
 			}
 		}
 
@@ -662,39 +649,36 @@ namespace N2
 			if (string.IsNullOrEmpty(childName))
 				return null;
 
-			int slashIndex = childName.IndexOf('/');
-			if (slashIndex == 0) // starts with slash
-			{
-				if (childName.Length == 1)
-					return this;
-				else
-					return GetChild(childName.Substring(1));
-			}
-			if (slashIndex > 0) // contains a slash further down
-			{
-				string nameSegment = HttpUtility.UrlDecode(childName.Substring(0, slashIndex));
-				foreach (ContentItem child in GetChildren(new NullFilter()))
-				{
-					if (child.IsNamed(nameSegment))
-					{
-						return child.GetChild(childName.Substring(slashIndex));
-					}
-				}
-				return null;
-			}
+			// Walk all segments, if any (note that double slashes are ignored)
+    		var segments = childName.Split(new[] {'/'}, 2, StringSplitOptions.RemoveEmptyEntries);
+			if (segments.Length == 0) return this;
 
-			// no slash, only a name
-			foreach (ContentItem child in GetChildren(new NullFilter()))
-			{
-				if (child.IsNamed(childName))
-				{
-					return child;
-				}
-			}
-			return null;
+			// Unscape the segment and find a child node with a matching name
+			var nameSegment = HttpUtility.UrlDecode(segments[0]);
+			var childItem = FindNamedChild(nameSegment);
+
+    		// Recurse into children if there are more segments
+    		return childItem != null && segments.Length == 2
+    		       	? childItem.GetChild(segments[1])
+    		       	: childItem;
 		}
 
 		/// <summary>
+		/// Find a direct child by its name
+		/// </summary>
+		/// <param name="nameSegment">Child name. Cannot contain slashes.</param>
+		/// <returns></returns>
+    	protected virtual ContentItem FindNamedChild(string nameSegment)
+    	{
+    		var childItem = Children.FindNamed(nameSegment);
+    		if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+    		{
+    			childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
+    		}
+    		return childItem;
+    	}
+
+    	/// <summary>
 		/// Compares the item's name ignoring case and extension.
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>

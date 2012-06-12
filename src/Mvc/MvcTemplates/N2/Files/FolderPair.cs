@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Edit;
 
 namespace N2.Management.Files
 {
 	internal struct FolderPair
 	{
-		public FolderPair(int parentID, string parentPath, string path, string folderPath)
+		public FolderPair(int parentID, string parentPath, string path, FileSystemRoot folder)
 		{
 			ParentID = parentID;
 			Path = path;
 			ParentPath = parentPath;
-			FolderPath = folderPath;
+			Folder = folder;
 		}
 
 		public int ParentID;
 		public string Path;
 		public string ParentPath;
-		public string FolderPath;
+		public FileSystemRoot Folder;
 	}
 }

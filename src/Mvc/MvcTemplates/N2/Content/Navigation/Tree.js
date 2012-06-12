@@ -32,21 +32,37 @@
 		}
 	});
 
-	jQuery("#nav").click(function (e) {
-		var $a = $(e.target);
-		if (!$a.is("a"))
-			$a = $a.closest("a");
+	jQuery("#nav").on("focus", "a", function (e) {
+		var $a = $(this);
 
-		if (!$a.is("a") || $a.is(".toggler"))
+
+		var type = $a.attr("data-type");
+		var permission = $a.attr("data-permission");
+
+		if ($(document.documentElement).is(".filesselectionLocation")) {
+			if (type == "Directory" && (permission == "Write" || permission == "Add" || permission == "Publish")) {
+				$(".FileUpload:not(:visible)").slideDown();
+			} else {
+				$(".FileUpload:visible").slideUp();
+			}
+		}
+
+		document.body.className = document.body.className.replace(/\w+Selected?/g, type + "Selected");
+		document.body.className = document.body.className.replace(/\w+Permission?/g, permission + "Permission");
+
+		jQuery(".focused").removeClass("focused");
+		$a.addClass("focused");
+	});
+
+	jQuery("#nav").on("click", "a", function (e) {
+		var $a = $(this);
+		if ($a.is(".toggler"))
 			return;
 
 		var handler = n2nav.handlers[$a.attr("data-type")] || n2nav.handlers["fallback"];
 		handler.call($a[0], e);
 
-		document.body.className = document.body.className.replace(/\w+Selected ?/g, $a.attr("data-type") + "Selected");
-
-		jQuery(".focused").removeClass("focused");
-		$a.addClass("focused").focus();
+		$a.focus();
 	});
 
 	window.onNavigating = function (options) {

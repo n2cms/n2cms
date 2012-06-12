@@ -2,17 +2,25 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using NHibernate.Linq;
 
 namespace N2.Linq
 {
 	public static class QueryableExtensions
 	{
+		public static IQueryable<T> Cached<T>(IQueryable<T> query, NHibernate.CacheMode mode = NHibernate.CacheMode.Normal, string cacheRegion = null)
+		{
+			query = query.Cacheable();
+			if (mode != NHibernate.CacheMode.Normal)
+				query = query.CacheMode(mode);
+			if (cacheRegion != null)
+				query = query.CacheRegion(cacheRegion);
+			return query;
+		}
+
 		public static IQueryable<TSource> WherePublished<TSource>(this IQueryable<TSource> source) where TSource : ContentItem
 		{
-			var time = Utility.CurrentTime();
-			return source.Where(ci => ci.State == ContentState.Published
-				&& (ci.Published != null && ci.Published <= time)
-				&& (ci.Expires == null || ci.Expires > time));
+			return source.Where(ci => ci.State == ContentState.Published);
 		}
 
 		public static IQueryable<TSource> WhereAncestorOf<TSource>(this IQueryable<TSource> source, ContentItem descendant) where TSource : ContentItem

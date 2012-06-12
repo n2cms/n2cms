@@ -10,7 +10,7 @@
     <projectUrl>http://n2cms.com/</projectUrl>
 	<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This package contains the management interface and web config transformations required by N2 CMS. This package doesn't contain templates. N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</description>
+    <description>This package contains the management interface and web config transformations required by N2 CMS. This package doesn't contain templates. N2 CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2-4, Razor or WebForms.</description>
     <summary></summary>
     <language>en-US</language>
     <tags>N2 CMS</tags>

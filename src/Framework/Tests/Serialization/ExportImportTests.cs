@@ -12,6 +12,7 @@ using N2.Tests.Serialization.Items;
 using N2.Web;
 using NUnit.Framework;
 using N2.Tests.Fakes;
+using Shouldly;
 
 namespace N2.Tests.Serialization
 {
@@ -111,6 +112,11 @@ namespace N2.Tests.Serialization
 		{
 			var item = definitions.CreateInstance<XmlableItem2>(null);
 			item.AutoPropertyString = "Hello World!";
+
+			// simulate saving proxied items - this is most likely the case in normal operation
+			var pf = new N2.Persistence.Proxying.InterceptingProxyFactory();
+			pf.Initialize(new [] { typeof(XmlableItem2) });
+			pf.OnSaving(item);
 
 			var readItem = ExportAndImport(item, ExportOptions.Default);
 
@@ -437,6 +443,24 @@ namespace N2.Tests.Serialization
 			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
 
 			Assert.That(readItem.TextFile, Is.EqualTo(item.TextFile));
+		}
+
+		[Test]
+		public void EmbeddedParts_AreTransferred()
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			var embeddable = CreateOneItem<XmlableItem>(1, "embedded", null);
+			embeddable["World"] = "Greeting?";
+			N2.Web.Parts.PartsExtensions.StoreEmbeddedPart(item, "Hello", embeddable);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			var embedded = N2.Web.Parts.PartsExtensions.LoadEmbeddedPart<XmlableItem>(readItem, "Hello");
+
+			embedded.Title.ShouldBe(embeddable.Title);
+			embedded.Name.ShouldBe(embeddable.Name);
+			embedded["World"].ShouldBe(embeddable["World"]);
 		}
 
         private void AssertEquals(DateTime? expected, DateTime? actual)

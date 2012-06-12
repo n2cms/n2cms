@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using N2.Edit;
+using N2.Persistence;
 
 namespace N2.Web
 {
@@ -10,7 +11,7 @@ namespace N2.Web
 	/// it's template from the content item to the url rewriter.
 	/// </summary>
 	[Serializable, DebuggerDisplay("PathData ({CurrentItem})")]
-	public class PathData
+	public class PathData : ICloneable
 	{
 		#region Static
 		public const string DefaultAction = "";
@@ -18,7 +19,7 @@ namespace N2.Web
 		/// <summary>An empty path. This probably indicates that the path didn't correspond to an item in the hierarchy.</summary>
 		public static PathData Empty
 		{
-			get { return new PathData(); }
+			get { return new PathData { IsRewritable = false }; }
 		}
 
 		/// <summary>The path didn't correspond to a content item. The caller may use the last found item and remaining url to take action.</summary>
@@ -27,7 +28,7 @@ namespace N2.Web
 		/// <returns>A an empty path data with additional information.</returns>
 		public static PathData None(ContentItem reportedBy, string remainingUrl)
 		{
-			return new PathData { StopItem = reportedBy, Argument = remainingUrl };
+			return new PathData { StopItem = reportedBy, Argument = remainingUrl, IsRewritable = false };
 		}
 
 		/// <summary>Creates a path that isn't rewritten to it's template.</summary>
@@ -35,12 +36,13 @@ namespace N2.Web
 		/// <returns>A path data that is not rewritten.</returns>
 		public static PathData NonRewritable(ContentItem item)
 		{
-			return new PathData(item, null) { IsRewritable = false };
+			return new PathData(item) { IsRewritable = false };
 		}
 
 		static string itemQueryKey = "item";
 		static string pageQueryKey = "page";
 		static string partQueryKey = "part";
+		static string pathDataKey = "path";
 
 		/// <summary>The item query string parameter.</summary>
 		public static string ItemQueryKey
@@ -62,7 +64,17 @@ namespace N2.Web
 			get { return partQueryKey; }
 			set { partQueryKey = value; }
 		}
-		
+
+		/// <summary>A key used to override the path when rendering sub-actions.</summary>
+		public static string PathOverrideKey { get { return "Override." + PathKey; } }
+
+		/// <summary>Key used to access path data from context dictionaries.</summary>
+		public static string PathKey
+		{
+			get { return pathDataKey; }
+			set { pathDataKey = value; }
+		}
+
 		/// <summary>The selection query string parameter.</summary>
 		public static string SelectedQueryKey
 		{
@@ -84,6 +96,20 @@ namespace N2.Web
 			TemplateUrl = templateUrl;
 			Action = action;
 			Argument = arguments;
+		}
+
+		public PathData(ContentItem item)
+			: this(item, null, DefaultAction, string.Empty)
+		{
+		}
+
+		public PathData(ContentItem page, ContentItem part)
+			: this(part ?? page, null, DefaultAction, string.Empty)
+		{
+			if (part != null)
+			{
+				CurrentPage = page;
+			}
 		}
 
 		public PathData(ContentItem item, string templateUrl)
@@ -168,36 +194,12 @@ namespace N2.Web
 		/// <summary>Read permissions allow everyone to read this path. Not altering read permissions allow the system to make certain optimizations.</summary>
 		public bool IsPubliclyAvailable { get; set; }
 
+		[Obsolete("Use path.GetRewrittenUrl() extension method available when using N2.Web namespace")]
 		public virtual Url RewrittenUrl
 		{
 			get
 			{
-				if (IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
-					return null;
-
-				if (CurrentPage.IsPage)
-				{
-					Url url = Url.Parse(TemplateUrl)
-						.UpdateQuery(QueryParameters)
-						.SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID);
-					if(!string.IsNullOrEmpty(Argument))
-						url = url.SetQueryParameter("argument", Argument);
-
-					return url.ResolveTokens();
-				}
-
-				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
-					if (ancestor.IsPage)
-						return ancestor.FindPath(DefaultAction).RewrittenUrl
-							.UpdateQuery(QueryParameters)
-							.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
-
-				if (CurrentItem.VersionOf.HasValue)
-					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl
-						.UpdateQuery(QueryParameters)
-						.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
-
-				throw new TemplateNotFoundException(CurrentItem);
+				return this.GetRewrittenUrl();
 			}
 		}
 
@@ -218,14 +220,13 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Detach()
 		{
-			PathData data = MemberwiseClone() as PathData;
+			PathData data = Clone();
 
 			// clear persistent objects before caching
 			data.currentItem = null;
 			data.currentPage = null;
 			data.stopItem = null;
 			data.persister = null;
-			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			return data;
 		}
 
@@ -234,10 +235,9 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
-			PathData data = MemberwiseClone() as PathData;
-			
-			// reload persistent objects and clone non-immutable objects
-			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
+			PathData data = Clone();
+
+			// the persister is used to lazily load persistent CurrentItem/CurrentPage/StopItem
 			data.persister = persister;
 
 			return data;
@@ -289,6 +289,75 @@ namespace N2.Web
 			return item == null
 				|| ((item.State == ContentState.Published || item.State == ContentState.New || item.State == ContentState.None)
 				&& (item.AlteredPermissions & Security.Permission.Read) == Security.Permission.None);
+		}
+
+		/// <summary>Clones the path data instance so that modifications doesn't affect the caller.</summary>
+		/// <returns>A clone of the path data object.</returns>
+		public virtual PathData Clone()
+		{
+			var clone = MemberwiseClone() as PathData;
+			clone.QueryParameters = new Dictionary<string, string>(this.QueryParameters);
+			return clone;
+		}
+
+		/// <summary>Clones the path data instance so that modifications doesn't affect the caller.</summary>
+		/// <returns>A clone of the path data object.</returns>
+		public virtual PathData Clone(ContentItem page, ContentItem item)
+		{
+			var clone = Clone();
+			clone.CurrentItem = item;
+			clone.CurrentPage = page;
+			return clone;
+		}
+
+		object ICloneable.Clone()
+		{
+			return Clone();
+		}
+
+		public override string ToString()
+		{
+			if (PageID != 0 && PageID != ID)
+				return PageID + "/" + ID;
+			else if (ID != 0)
+				return ID.ToString();
+			else
+				return "";
+		}
+
+		/// <summary>Parses a string representation of this pathdata giving a detached path data object.</summary>
+		/// <param name="pathString">A string created via <see cref="ToString"/>.</param>
+		/// <returns>A path with the given values or an empty path data.</returns>
+		public static PathData Parse(string pathString)
+		{
+			if (string.IsNullOrEmpty(pathString))
+				return PathData.Empty;
+
+			var parts = pathString.Split('/');
+			if (parts.Length > 1)
+			{
+				int id, pageId;
+				if (int.TryParse(parts[0], out pageId) && int.TryParse(parts[1], out id))
+					return new PathData { ID = id, PageID = pageId };
+			}
+			else
+			{
+				int id;
+				if (int.TryParse(pathString, out id))
+					return new PathData { ID = id };
+			}
+
+			return PathData.Empty;
+		}
+
+		/// <summary>Parses a string representation of this pathdata and reconnects the items to the session.</summary>
+		/// <param name="pathString">A string created via <see cref="ToString"/>.</param>
+		/// <param name="persister">A persister that will be used to get the items referenced by the path string.</param>
+		/// <returns>A path with the given values or an empty path data.</returns>
+		public static PathData Parse(string pathString, IPersister persister)
+		{
+			var path = Parse(pathString);
+			return path.Attach(persister);
 		}
 	}
 }

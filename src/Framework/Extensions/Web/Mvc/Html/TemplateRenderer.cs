@@ -22,43 +22,46 @@ namespace N2.Web.Mvc.Html
 			this.controllerMapper = controllerMapper;
 		}
 
-		private static string ItemOverrideKey { get { return "Override." + ContentRoute.ContentPartKey; } }
 
 		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
-			Type itemType = item.GetContentType();
-			string controllerName = controllerMapper.GetControllerName(itemType);
-			if(string.IsNullOrEmpty(controllerName))
-			{
-				Trace.TraceWarning("Found no controller for type " + itemType);
+			RouteValueDictionary values = GetRouteValues(helper, item);
+
+			if (values == null)
 				return;
-			}
 
-			RouteValueDictionary values = GetRouteValues(helper, item, controllerName);
-
+			var currentPath = helper.ViewContext.RouteData.CurrentPath();
 			try
 			{
-				helper.ViewContext.RouteData.DataTokens[ItemOverrideKey] = item;
+				var newPath = currentPath.Clone(currentPath.CurrentPage, item);
+				helper.ViewContext.RouteData.ApplyCurrentPath(newPath);
 				helper.RenderAction("Index", values);
 			}
 			finally
 			{
-				if (helper.ViewContext.RouteData.DataTokens.ContainsKey(ItemOverrideKey))
-					helper.ViewContext.RouteData.DataTokens.Remove(ItemOverrideKey);
+				helper.ViewContext.RouteData.ApplyCurrentPath(currentPath);
 			}
 		}
 
-		private static RouteValueDictionary GetRouteValues(HtmlHelper helper, ContentItem item, string controllerName)
+		private RouteValueDictionary GetRouteValues(HtmlHelper helper, ContentItem item)
 		{
+			Type itemType = item.GetContentType();
+			string controllerName = controllerMapper.GetControllerName(itemType);
+			if (string.IsNullOrEmpty(controllerName))
+			{
+				Trace.TraceWarning("Found no controller for type " + itemType);
+				return null;
+			}
+
 			var values = new RouteValueDictionary();
-			values[ContentRoute.ControllerKey] = controllerName;
 			values[ContentRoute.ActionKey] = "Index";
-			values[ContentRoute.ContentItemKey] = item.ID;
+			values[ContentRoute.ControllerKey] = controllerName;
+			values[ContentRoute.ContentItemKey] = item;
 
 			// retrieve the virtual path so we can figure out if this item is routed through an area
 			var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
 			if (vpd == null)
-				throw new InvalidOperationException("Unable to render " + item + " (" + values.ToQueryString() + " did not match any route)");
+				throw new InvalidOperationException("Unable to render " + item + " (" + controllerName + " did not match any route)");
 
 			values["area"] = vpd.DataTokens["area"];
 			return values;

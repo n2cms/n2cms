@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using N2.Persistence;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -37,7 +38,7 @@ namespace N2.Tests.Persistence.NH
 			{
 				parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
 				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
-				persister.Save(parent);
+				persister.Repository.SaveOrUpdate(parent, to);
 				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
 				from["Reference"] = to;
 				persister.Save(from);
@@ -150,7 +151,7 @@ namespace N2.Tests.Persistence.NH
 			{
 				parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
 				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
-				persister.Save(parent);
+				persister.Repository.SaveOrUpdate(parent, to);
 				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
 				from.GetDetailCollection("References", true).Add(to);
 				persister.Save(from);
@@ -166,5 +167,20 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(from.GetDetailCollection("References", true).Count, Is.EqualTo(0));
 			}
 		}
+
+		[Test]
+        public void SaveItem_WithReferences_DoesNotThrowSerializationException()
+		{
+            Definitions.PersistableItem1 parent, to, from;
+            using (persister)
+            {
+                parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
+                to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
+                persister.Save(parent);
+				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+                from.ContentLinks = new[] {to};
+                persister.Save(from);
+            }
+        }
 	}
 }
