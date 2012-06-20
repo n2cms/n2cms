@@ -353,6 +353,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\Html\ControlPanelSettings.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />

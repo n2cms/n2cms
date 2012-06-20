@@ -14,7 +14,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Web.Mvc.Html
 {
-	public static class ControlPanelExtensions
+    public static class ControlPanelExtensions
 	{
 		public static Func<HtmlHelper, ControlPanelHelper> ControlPanelFactory { get; set; }
 
@@ -61,12 +61,7 @@ namespace N2.Web.Mvc.Html
 
 		public class ControlPanelHelper
 		{
-            private bool refreshNavigation = true;
-
-            private bool includeJQuery = true;
-            private bool includeJQueryPlugins = true;
-            private bool includePartScripts = true;
-            private bool includePartStyles = true;
+		    private ControlPanelSettings controlPanelSettings = new ControlPanelSettings();
 			 
 			private ContentItem currentItem;
 
@@ -78,22 +73,37 @@ namespace N2.Web.Mvc.Html
             /// <param name="partScripts"></param>
             /// <param name="partStyles"></param>
             /// <returns></returns>
+            [Obsolete("Use Configure(ControlPanelSettings controlPanelSettings)")]
             public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
             {
-                includeJQuery = jQuery;
-                includeJQueryPlugins = jQueryPlugins;
-                includePartScripts = partScripts;
-                includePartStyles = partStyles;
+                controlPanelSettings.IncludeJQuery = jQuery;
+                controlPanelSettings.IncludeJQueryPlugins = jQueryPlugins;
+                controlPanelSettings.IncludePartScripts = partScripts;
+                controlPanelSettings.IncludePartStyles = partStyles;
 
                 return this;
             }
 
+            /// <summary>
+            /// Is used to configure the control panel
+            /// </summary>
+            /// <param name="settings">The settings for control panel</param>
+            /// <returns></returns>
+            public ControlPanelHelper Configure(ControlPanelSettings settings)
+            {
+                controlPanelSettings = settings;
+
+                return this;
+            }
+
+
             /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
             /// <param name="refreshNavigation"></param>
             /// <returns></returns>
+            [Obsolete("Use Configure(ControlPanelSettings controlPanelSettings)")]
             public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
 			{
-				this.refreshNavigation = refreshNavigation;
+                controlPanelSettings.RefreshNavigation = refreshNavigation;
 				return this;
 			}
 
@@ -153,12 +163,23 @@ namespace N2.Web.Mvc.Html
 				};
 
                 var resources = Html.Resources(writer);
-                if(includeJQuery) resources.JQuery();
-				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery).JQueryUi(includeJQuery);
-                if(includePartScripts) resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
-                if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
-				if (refreshNavigation)
+                if (controlPanelSettings.IncludeJQuery) 
+                    resources.JQuery();
+
+                if (controlPanelSettings.IncludeJQueryPlugins)
+                    resources.JQueryPlugins(controlPanelSettings.IncludeJQuery);
+
+                if (controlPanelSettings.IncludeJQueryUI)
+                    resources.JQueryUi(controlPanelSettings.IncludeJQuery);
+
+                if (controlPanelSettings.IncludePartScripts) 
+                    resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
+
+                if (controlPanelSettings.IncludePartStyles) 
+                    resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
+
+                if (controlPanelSettings.RefreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));
 				else
 					writer.Write(formatWithoutRefresh.Replace(settings));
