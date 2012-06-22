@@ -13,7 +13,8 @@ namespace N2.Web
 	{
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
-			return new PathData(item) { IsRewritable = false };
+			if (item.Name == remainingUrl || string.IsNullOrEmpty(remainingUrl))
+				return new PathData(item) { IsRewritable = false };
 		}
 	}
 }
