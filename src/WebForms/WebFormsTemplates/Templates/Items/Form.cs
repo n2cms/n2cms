@@ -19,7 +19,7 @@ namespace N2.Templates.Items
 	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.ContentTab, "Content", 10, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.EmailTab, "Email", 20, CssClass = "tabPanel formTab")]
-	public class Form : AbstractItem
+	public class Form : AbstractItem, ISurvey
     {
 		public const string FieldsTab = "formFieldsTab";
 		public const string ContentTab = "formContentTab";
