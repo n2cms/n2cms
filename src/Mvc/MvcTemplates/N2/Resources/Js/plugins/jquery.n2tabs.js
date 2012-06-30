@@ -148,4 +148,4 @@
 		}, 200);
 		n2tabs.handlePostBack(toShowId);
 	}
-})(jQuery);           ;
+})(jQuery);

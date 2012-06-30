@@ -33,7 +33,7 @@ namespace N2.Web.UI
 	{
 		string tabText;
 		bool registerTabCss;
-		string cssClass = "tabPanel primaryTabs";
+		string cssClass;
 
 		public TabContainerAttribute(string name, string tabText, int sortOrder)
 			: base(name, sortOrder)
@@ -74,7 +74,18 @@ namespace N2.Web.UI
 			p.ID = Name;
 			p.TabText = GetLocalizedText("TabText") ?? TabText;
 			p.RegisterTabCss = registerTabCss;
-			p.CssClass = CssClass ?? p.CssClass;
+			if (string.IsNullOrEmpty(CssClass))
+			{
+				p.CssClass = "tabPanel primaryTabs";
+
+				var parentTab = container.Closest(c => c is TabPanel || c is ItemEditor);
+				if (parentTab != null)
+				{
+					p.CssClass = "tabPanel " + parentTab.ClientID + "Tabs";
+				}
+			}
+			else
+				p.CssClass = CssClass;
 			container.Controls.Add(p);
 			return p;
 		}

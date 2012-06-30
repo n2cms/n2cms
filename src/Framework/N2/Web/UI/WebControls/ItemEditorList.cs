@@ -161,15 +161,17 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
+			if (!string.IsNullOrEmpty(Label))
+			{
+				Controls.AddAt(0, new Label { Text = Label, CssClass = "editorLabel" });
+			}
+
 			foreach (ContentItem item in GetItems())
 			{
 				CreateItemEditor(item);
 			}
 
-			if (!string.IsNullOrEmpty(Label))
-			{
-				addPanel.Controls.Add(new Label { Text = Label, CssClass = "editorLabel" });
-			}
+			addPanel.Controls.Add(new Label { Text = Utility.GetLocalResourceString("Add") ?? "Add", CssClass = "addLabel" });
 
 			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{

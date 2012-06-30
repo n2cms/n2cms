@@ -99,11 +99,11 @@
                 <HeaderTemplate>
 					<table class="t openable">
 						<thead>
-							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
+							<tr><th colspan="9"><h2>Definitions</h2></th></tr>
 							<tr>
 								<td colspan="3">Definition</td>
 								<td colspan="2">Zones</td>
-								<td colspan="2">Details</td>
+								<td colspan="3">Details</td>
 								<td rowspan="2">Templates</td>
 							</tr>
 							<tr>
@@ -113,6 +113,7 @@
 								<td>Available</td>
 								<td>Allowed in</td>
 								<td>Editables</td>
+								<td>Containers</td>
 								<td>Displayables</td>
 							</tr>
 						</thead>
@@ -146,13 +147,19 @@
                     </td><td>
                         <!-- Editable attributes -->
                         <asp:Repeater ID="Repeater4" runat="server" DataSource='<%# Eval("Editables") %>'>
-                            <ItemTemplate><%# Eval("Title")%>&nbsp;(<%# Eval("Name")%>)</ItemTemplate>
+                            <ItemTemplate><span title="Title: <%# Eval("Title")%>, Type: <%# Container.DataItem.GetType() %>"><%# Eval("Name")%></span></ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
+                        </asp:Repeater>&nbsp;
+                    </td><td>
+                        <!-- Container attributes -->
+                        <asp:Repeater ID="Repeater7" runat="server" DataSource='<%# Eval("Containers") %>'>
+                            <ItemTemplate><span title="<%# Container.DataItem.GetType() %>"><%# Eval("Name")%></span></ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Displayable attributes -->
                         <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
-                            <ItemTemplate><%# ((N2.Details.IDisplayable)Container.DataItem).Name %></ItemTemplate>
+                            <ItemTemplate><span title="<%# Container.DataItem.GetType() %>"><%# ((N2.Details.IDisplayable)Container.DataItem).Name %></span></ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>

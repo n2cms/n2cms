@@ -864,5 +864,22 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(containso.Contains(child2), Is.True);
 			}
 		}
+		
+		[Test]
+		public void AddSingleChild()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+
+			new N2.Definitions.SortChildrenAttribute(N2.Definitions.SortBy.CurrentOrder).OnSavingChild(new N2.Persistence.Behaviors.BehaviorContext { Action = "Saving", AffectedItem = child1, Parent = item });
+
+			persister.Save(child1);
+
+			persister.Dispose();
+
+			persister.Get(child1.ID);
+		}
 	}
 }

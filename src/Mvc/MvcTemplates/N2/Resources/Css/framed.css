@@ -242,13 +242,18 @@ ul.tabs{
 	top:-10000px;
 	left:-10000px;
 }
-    .tabPanel .tabPanel{
-        margin-left:10px;
-	    background-position: 0 -3px;
+    .tabPanel .tabs {
+	    border-left:solid 1px #DDC;
     }
-    .tabPanel .tabs li{
-    	height:32px;
-    	background-position:100% 0;
+		.tabPanel .tabs li{
+    		background-position:100% 0;
+			border-top:solid 1px #DDC;
+			border-left:none;
+		}
+    .tabPanel .tabPanel{
+	    padding: 30px 15px 15px 15px;
+	    border: solid 1px #DDC;
+	    z-index:10;
     }
 
 
@@ -323,15 +328,16 @@ input.dp-applied {
 
 
 .itemListEditor { margin:20px 0 0 0; clear:both; }
-    .itemListEditor .item { padding: 10px 0; position:relative; border-top: dotted 1px silver; }
-		.itemListEditor .item h3 { color:silver; }
-			.itemListEditor .item h3 span { background-color:#fff; position:absolute; top:-10px; left:0; padding:1px 5px 1px 1px; }
-		.itemListEditor .item .delete { background-color:#fff; position:absolute; top:-10px; right:0; padding:1px 1px 1px 5px; }
-    .itemListEditor .addArea { opacity:.5; padding:10px 0; border-top: dotted 1px silver; }
-		.itemListEditor .addArea a { display:inline-block; padding:5px; }
-    .itemListEditor .addArea:hover { opacity:1; }
-        .itemListEditor .addArea em { margin-left:10px; display:none; }
-        .itemListEditor .addArea:hover em  { display:inline; }
+	.itemListEditor .item { position:relative; margin-left:115px; border: dotted 1px #DDC; border-style:none dotted; }
+		.itemListEditor .item h3 { font-weight:normal; color:#999; margin:0; padding:10px 10px 0 10px; border-top: dotted 1px #DDC; }
+		.itemListEditor .item .delete { position:absolute; top:2px; right:5px; padding:1px 1px 1px 5px; }
+		.itemListEditor .itemEditor { padding:10px; }
+
+    .itemListEditor .addArea { background:#EED; margin-left:115px; }
+		.itemListEditor .addArea .addLabel { padding:10px; display:inline-block; width:115px; }
+		.itemListEditor .addArea a { display:inline-block; padding:10px; border-left:dotted 1px #DDC; }
+		.itemListEditor .addArea a:hover { background:#F0F0DF; outline: dotted 1px #DDC; border-left:none; padding-left:11px; }
+    /*.itemListEditor .disabled { opacity:.5; }*/
         
 .focused
 {

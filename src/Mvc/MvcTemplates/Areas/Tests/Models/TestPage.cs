@@ -6,15 +6,19 @@ using System.Web;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	[PageDefinition(SortOrder = int.MaxValue, Description = "Release compile the project to remove this test")]
 	[RestrictParents(typeof(StartPage))]
     [WithEditableTitle(Placeholder = "Title"), WithEditableName(Placeholder = "Name"), WithEditableDateRange(FromDatePlaceholder = "From date", FromTimePlaceholder = "From time", ToDatePlaceholder = "To date", ToTimePlaceholder = "To time"), WithEditablePublishedRange(FromDatePlaceholder = "From date", FromTimePlaceholder = "From time", ToDatePlaceholder = "To date", ToTimePlaceholder = "To time"), WithEditableTemplateSelection, WithEditableVisibility]
+	[TabContainer("content", "Test", 1000)] // container named content automatically receives all editors without container set
+	[TabContainer("SubTestContainer", "SubTest", -1, ContainerName = "content")]
+	[TabContainer("SubTestContainer2", "SubTest 2", -1, ContainerName = "content")]
 	public class TestPage : TestItemBase
 	{
-        [EditableCheckBox]
+		[EditableCheckBox(ContainerName = "SubTestContainer")]
         public virtual bool EditableCheckBox { get; set; }
 
         [EditableChildren]
@@ -41,7 +45,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
         [EditableImage(Placeholder = "Image")]
         public virtual string EditableImage { get; set; }
 
-        [EditableImageSize]
+		[EditableImageSize(ContainerName = "SubTestContainer2")]
         public virtual string EditableImageSize { get; set; }
 
         [EditableImageUpload(Placeholder = "Image upload")]
@@ -72,7 +76,10 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
         public virtual string EditableTags { get; set; }
 
         [EditableText(Placeholder = "Text")]
-        public virtual string EditableText { get; set; }
+		public virtual string EditableText { get; set; }
+
+		[EditableText(DefaultValue = "Default Value")]
+		public virtual string DefaultValue { get; set; }
 
         [EditableThemeSelection]
         public virtual string EditableThemeSelection { get; set; }
