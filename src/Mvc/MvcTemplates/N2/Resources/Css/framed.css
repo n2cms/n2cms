@@ -329,12 +329,12 @@ input.dp-applied {
 
 .itemListEditor { margin:20px 0 0 0; clear:both; }
 	.itemListEditor .item { position:relative; margin-left:115px; border: dotted 1px #DDC; border-style:none dotted; }
-		.itemListEditor .item h3 { font-weight:normal; color:#999; margin:0; padding:10px 10px 0 10px; border-top: dotted 1px #DDC; }
+		.itemListEditor .item h3 { font-weight:normal; color:#999; margin:0; padding:10px; border-top: dotted 1px #DDC; }
 		.itemListEditor .item .delete { position:absolute; top:2px; right:5px; padding:1px 1px 1px 5px; }
 		.itemListEditor .itemEditor { padding:10px; }
 
     .itemListEditor .addArea { background:#EED; margin-left:115px; }
-		.itemListEditor .addArea .addLabel { padding:10px; display:inline-block; width:115px; }
+		.itemListEditor .addArea .addLabel { padding:10px; display:inline-block; width:105px; }
 		.itemListEditor .addArea a { display:inline-block; padding:10px; border-left:dotted 1px #DDC; }
 		.itemListEditor .addArea a:hover { background:#F0F0DF; outline: dotted 1px #DDC; border-left:none; padding-left:11px; }
     /*.itemListEditor .disabled { opacity:.5; }*/
