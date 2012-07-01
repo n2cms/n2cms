@@ -22,7 +22,7 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 	            .header .toolbox .item .command a { padding:18px 4px 4px 4px; min-width:32px; height:12px; overflow:hidden; position:relative; background-position:50% 3px; }
 
 #top .logo{ position:absolute; right:10px; top:5px; height:30px; }
-#top .logout { position: absolute; right:60px; top:18px; color:#fff; }
+#top .logout { color:#fff; display:block; float:left; padding:8px; }
 
 .subbar { border: solid 1px #999; border-left:none; border-right:none; background:transparent url(../../Resources/Img/lighten10.png) repeat-x 0px bottom; position:relative; }
     .subbar .operations { float:left; }

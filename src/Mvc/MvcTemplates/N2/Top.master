@@ -23,8 +23,8 @@
 				<asp:ContentPlaceHolder ID="Toolbar" runat="server">
 					<edit:toolbarplugindisplay id="NavigationPlugins" area="Navigation" runat="server" />
 				</asp:ContentPlaceHolder>
+				<asp:HyperLink ID="logout" runat="server" CssClass="logout" NavigateUrl="Login.aspx?logout=true" Text="Log out" />
 			</div>
-			<asp:HyperLink ID="logout" runat="server" CssClass="logout" NavigateUrl="Login.aspx?logout=true" Text="Log out" />
 			<asp:HyperLink ID="hlLogo" runat="server" SkinID="Logo" CssClass="logo" NavigateUrl="http://n2cms.com" Text="To the home of N2 CMS" ImageUrl="Resources/Img/n2.png" />
 			<div class="subbar cf">
 				<asp:ContentPlaceHolder ID="Subbar" runat="server">
