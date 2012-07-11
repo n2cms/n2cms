@@ -69,6 +69,16 @@
 		each(previewStyles.split(' '), function(name) {
 			var value = dom.getStyle(previewElm, name, true);
 
+			// If background is transparent then check if the body has a background color we can use
+			if (name == 'background-color' && /transparent|rgba\s*\([^)]+,\s*0\)/.test(value)) {
+				value = dom.getStyle(ed.getBody(), name, true);
+
+				// Ignore white since it's the default color, not the nicest fix
+				if (dom.toHex(value).toLowerCase() == '#ffffff') {
+					return;
+				}
+			}
+
 			// Old IE won't calculate the font size so we need to do that manually
 			if (name == 'font-size') {
 				if (/em|%$/.test(value)) {
@@ -144,19 +154,27 @@
 			t.editor = ed;
 			t.url = url;
 			t.onResolveName = new tinymce.util.Dispatcher(this);
+			s = ed.settings;
 
 			ed.forcedHighContrastMode = ed.settings.detect_highcontrast && t._isHighContrast();
 			ed.settings.skin = ed.forcedHighContrastMode ? 'highcontrast' : ed.settings.skin;
 
+			// Setup default buttons
+			if (!s.theme_advanced_buttons1) {
+				s = extend({
+					theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
+					theme_advanced_buttons2 : "bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
+					theme_advanced_buttons3 : "hr,removeformat,visualaid,|,sub,sup,|,charmap"
+				}, s);
+			}
+	
 			// Default settings
 			t.settings = s = extend({
 				theme_advanced_path : true,
-				theme_advanced_toolbar_location : 'bottom',
-				theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
-				theme_advanced_buttons2 : "bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
-				theme_advanced_buttons3 : "hr,removeformat,visualaid,|,sub,sup,|,charmap",
+				theme_advanced_toolbar_location : 'top',
 				theme_advanced_blockformats : "p,address,pre,h1,h2,h3,h4,h5,h6",
-				theme_advanced_toolbar_align : "center",
+				theme_advanced_toolbar_align : "left",
+				theme_advanced_statusbar_location : "bottom",
 				theme_advanced_fonts : "Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
 				theme_advanced_more_colors : 1,
 				theme_advanced_row_height : 23,
@@ -166,7 +184,7 @@
 				theme_advanced_font_selector : "span",
 				theme_advanced_show_current_color: 0,
 				readonly : ed.settings.readonly
-			}, ed.settings);
+			}, s);
 
 			// Setup default font_size_style_values
 			if (!s.font_size_style_values)
@@ -608,7 +626,7 @@
 
 			// TODO: ACC Should have an aria-describedby attribute which is user-configurable to describe what this field is actually for.
 			// Maybe actually inherit it from the original textara?
-			n = p = DOM.create('span', {role : 'application', 'aria-labelledby' : ed.id + '_voice', id : ed.id + '_parent', 'class' : 'mceEditor ' + ed.settings.skin + 'Skin' + (s.skin_variant ? ' ' + ed.settings.skin + 'Skin' + t._ufirst(s.skin_variant) : '')});
+			n = p = DOM.create('span', {role : 'application', 'aria-labelledby' : ed.id + '_voice', id : ed.id + '_parent', 'class' : 'mceEditor ' + ed.settings.skin + 'Skin' + (s.skin_variant ? ' ' + ed.settings.skin + 'Skin' + t._ufirst(s.skin_variant) : '') + (ed.settings.directionality == "rtl" ? ' mceRtl' : '')});
 			DOM.add(n, 'span', {'class': 'mceVoiceLabel', 'style': 'display:none;', id: ed.id + '_voice'}, s.aria_label);
 
 			if (!DOM.boxModel)
@@ -925,7 +943,7 @@
 		},
 
 		_addToolbars : function(c, o) {
-			var t = this, i, tb, ed = t.editor, s = t.settings, v, cf = ed.controlManager, di, n, h = [], a, toolbarGroup;
+			var t = this, i, tb, ed = t.editor, s = t.settings, v, cf = ed.controlManager, di, n, h = [], a, toolbarGroup, toolbarsExist = false;
 
 			toolbarGroup = cf.createToolbarGroup('toolbargroup', {
 				'name': ed.getLang('advanced.toolbar'),
@@ -941,6 +959,7 @@
 
 			// Create toolbar and add the controls
 			for (i=1; (v = s['theme_advanced_buttons' + i]); i++) {
+				toolbarsExist = true;
 				tb = cf.createToolbar("toolbar" + i, {'class' : 'mceToolbarRow' + i});
 
 				if (s['theme_advanced_buttons' + i + '_add'])
@@ -954,6 +973,9 @@
 
 				o.deltaHeight -= s.theme_advanced_row_height;
 			}
+			// Handle case when there are no toolbar buttons and ensure editor height is adjusted accordingly
+			if (!toolbarsExist)
+				o.deltaHeight -= s.theme_advanced_row_height;
 			h.push(toolbarGroup.renderHTML());
 			h.push(DOM.createHTML('a', {href : '#', accesskey : 'z', title : ed.getLang("advanced.toolbar_focus"), onfocus : 'tinyMCE.getInstanceById(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
 			DOM.setHTML(n, h.join(''));
@@ -1075,19 +1097,17 @@
 
 			p = getParent('A');
 			if (c = cm.get('link')) {
-				if (!p || !p.name) {
-					c.setDisabled(!p && co);
-					c.setActive(!!p);
-				}
+				c.setDisabled((!p && co) || (p && !p.href));
+				c.setActive(!!p && (!p.name && !p.id));
 			}
 
 			if (c = cm.get('unlink')) {
 				c.setDisabled(!p && co);
-				c.setActive(!!p && !p.name);
+				c.setActive(!!p && !p.name && !p.id);
 			}
 
 			if (c = cm.get('anchor')) {
-				c.setActive(!co && !!p && p.name);
+				c.setActive(!co && !!p && (p.name || (p.id && !p.href)));
 			}
 
 			p = getParent('IMG');
