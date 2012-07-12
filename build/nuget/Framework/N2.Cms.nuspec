@@ -17,9 +17,9 @@
 		<dependencies>
 			<dependency id="Castle.Core" version="[2.5.2]" />
 			<dependency id="NHibernate" version="3.2.0.4000" />
-			<dependency id="Lucene" version="[2.9.2.2]" />
+			<dependency id="Lucene.Net" version="[2.9.4.1]" />
 			<!--<dependency id="SqlServerCompact" version="4.0.8482.1"/>-->
-			<dependency id="Castle.Windsor" version="[2.5.3]" />
+			<dependency id="Castle.Windsor" version="[2.5.4]" />
 			<dependency id="DotNetZip" version="1.9.1.8" />
 			<dependency id="log4net" version="[1.2.10.0]" />
 			<dependency id="N2CMS.Library" version="{Version}" />
