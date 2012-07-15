@@ -44,6 +44,7 @@ namespace N2.Persistence.Search
 		{
 			TakeHits = 10;
             Details = new Dictionary<string, string>();
+			SortFields = new List<SortFieldData>();
 		}
 
 		/// <summary>The ancestor below which the results should be found.</summary>
@@ -81,9 +82,25 @@ namespace N2.Persistence.Search
 		/// <summary>Query whose hits are added to this query results.</summary>
 		public Query Union { get; set; }
 
-		public string SortField { get; set; }
+		public string SortField
+		{
+			get { return SortFields.FirstOrDefault().SortField; }
+			set { var sortFields = SortFields.FirstOrDefault();
+				sortFields.SortField = value;
+			}
+		}
 
-		public bool SortDescending { get; set; }
+		public bool SortDescending
+		{
+			get { return SortFields.FirstOrDefault().SortDescending; }
+			set
+			{
+				var sortFields = SortFields.FirstOrDefault();
+				sortFields.SortDescending = value;
+			}
+		}
+
+		public List<SortFieldData> SortFields { get; private set; }
 
 		/// <summary>Gets a search query for the given search expression.</summary>
 		/// <param name="textQuery">The text to search for.</param>
@@ -271,8 +288,7 @@ namespace N2.Persistence.Search
 
 		public Query OrderBy(string field, bool descending = false)
 		{
-			SortField = field;
-			SortDescending = descending;
+			SortFields.Add(new SortFieldData(field, descending));
 			return this;
 		}
 

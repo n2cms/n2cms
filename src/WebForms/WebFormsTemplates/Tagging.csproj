@@ -17,6 +17,7 @@
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,21 +74,18 @@
     </Compile>
     <Compile Include="Addons\Tagging\UI\Tag.aspx.cs">
       <DependentUpon>Tag.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\Tag.aspx.designer.cs">
       <DependentUpon>Tag.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagBox.ascx.cs">
       <DependentUpon>TagBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagBox.ascx.designer.cs">
       <DependentUpon>TagBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagContainer.aspx.cs">
       <DependentUpon>TagContainer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagContainer.aspx.designer.cs">
       <DependentUpon>TagContainer.aspx</DependentUpon>

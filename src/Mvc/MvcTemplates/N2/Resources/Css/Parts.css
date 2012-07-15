@@ -41,7 +41,7 @@
 .droppable-active { background:url(../../Resources/Img/shading_green.png); padding:0; }
 .droppable-hover { background-color:#8e8; outline:solid 2px #393; }
 
-.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:990; border:none 1px #ccb; border-style:none solid solid none;
+.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:1990; border:none 1px #ccb; border-style:none solid solid none;
     background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px; 
 }
     .sc .scContent { }

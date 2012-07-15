@@ -80,7 +80,7 @@ namespace N2.Integrity
 			if (IsDestinationBelowSource(source, destination))
 				return new DestinationOnOrBelowItselfException(source, destination);
 
-			if (IsNameOccupiedOnDestination(source, destination))
+			if (IsNameOccupiedOnDestination(source, destination, allowSelf: true))
 				return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
@@ -94,6 +94,7 @@ namespace N2.Integrity
 		/// <exception cref="Exception"></exception>
 		public virtual Exception GetCopyException(ContentItem source, ContentItem destination)
         {
+			//if (IsNameOccupiedOnDestination(source, destination, excludeMyself: false))
 			if (IsNameOccupiedOnDestination(source, destination, allowSelf:false))
                 return new NameOccupiedException(source, destination);
 
@@ -143,21 +144,21 @@ namespace N2.Integrity
 		}
 
 		/// <summary>Checks that destination have no child item with the same name.</summary>
-		public virtual bool IsNameOccupiedOnDestination(ContentItem source, ContentItem destination)
-		{
-			return IsNameOccupiedOnDestination(source, destination, allowSelf: true);
-		}
-
-		private bool IsNameOccupiedOnDestination(ContentItem source, ContentItem destination, bool allowSelf)
+		public virtual bool IsNameOccupiedOnDestination(ContentItem source, ContentItem destination, bool allowSelf = true)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 			if (destination == null) throw new ArgumentNullException("destination");
 
 			ContentItem existingItem = destination.GetChild(source.Name);
-			return 
-				existingItem != null // there is an item with that name
-				&& (!allowSelf || existingItem != source) // and it's not the item itself, or we ignore any same item
-				&& source.Name != source.ID.ToString(); // and auto-named items are acceptable when copying (what if we just save?)
+
+			if (existingItem == null)
+				return false;
+			if (allowSelf && existingItem == source)
+				return false;
+			if (!allowSelf && source.Name == source.ID.ToString())
+				return false;
+
+			return true;
 		}
 
 		/// <summary>Checks that the destination isn't below the source.</summary>

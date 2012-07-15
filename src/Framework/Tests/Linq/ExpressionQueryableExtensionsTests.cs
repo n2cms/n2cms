@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using N2.Linq;
+using N2.Persistence;
 using NUnit.Framework;
 using Shouldly;
 
@@ -498,13 +499,22 @@ namespace N2.Extensions.Tests.Linq
 		[Test]
 		public void WherePrecedingSibling()
 		{
+//<<<<<<< HEAD
+//            item.AddTo(root);
+//            var item0 = CreateOneItem<LinqItem>(0, "item0", root);
+//            item0.SortOrder = item.SortOrder - 1;
+//            var item2 = CreateOneItem<LinqItem>(0, "item2", root);
+//            item2.SortOrder = item.SortOrder + 1;
+//            engine.Persister.Save(root);
+//            engine.Persister.Repository.Flush();
+//=======
 			item.AddTo(root);
 			var item0 = CreateOneItem<LinqItem>(0, "item0", root);
 			item0.SortOrder = item.SortOrder - 1;
 			var item2 = CreateOneItem<LinqItem>(0, "item2", root);
 			item2.SortOrder = item.SortOrder + 1;
-			engine.Persister.Save(root);
-			engine.Persister.Repository.Flush();
+			engine.Persister.Repository.SaveOrUpdate(root, item, item0, item2);
+//>>>>>>> master
 
 			var query = engine.QueryItems().WherePrecedingSiblingOf(item);
 
@@ -521,7 +531,7 @@ namespace N2.Extensions.Tests.Linq
 			item0.SortOrder = item.SortOrder - 1;
 			var item2 = CreateOneItem<LinqItem>(0, "item2", root);
 			item2.SortOrder = item.SortOrder + 1;
-			engine.Persister.Save(root);
+			engine.Persister.Repository.SaveOrUpdate(root, item, item0, item2);
 
 			var query = engine.QueryItems().WhereSubsequentSiblingOf(item);
 
@@ -536,7 +546,7 @@ namespace N2.Extensions.Tests.Linq
 			item.AddTo(root);
 			var item0 = CreateOneItem<LinqItem>(0, "item0", item);
 			var item2 = CreateOneItem<LinqItem>(0, "item0", item0);
-			engine.Persister.Save(root);
+			engine.Persister.Repository.SaveOrUpdate(root, item, item0, item2);
 
 			var query = engine.QueryItems().WhereAncestorOf(item2);
 

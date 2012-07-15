@@ -56,7 +56,7 @@ namespace N2.Edit.Installation
 			try 
 			{
 				AuthenticationSection authentication = ConfigurationManager.GetSection("system.web/authentication") as AuthenticationSection;
-				if (currentUrl.StartsWith(Url.ToAbsolute(authentication.Forms.LoginUrl), StringComparison.InvariantCultureIgnoreCase))
+				if (currentUrl.Trim('~', '/').StartsWith(Url.ToAbsolute(authentication.Forms.LoginUrl.Trim('~', '/')), StringComparison.InvariantCultureIgnoreCase))
 					// don't redirect from login page
 					return;
 			}
@@ -64,7 +64,11 @@ namespace N2.Edit.Installation
 			{
 				Trace.TraceWarning(ex.ToString());
 			}
-			var status = this.status;
+
+			if (status == null)
+			{
+				status = installer.GetStatus();
+			}
 
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
 			if (status == null)
@@ -87,9 +91,9 @@ namespace N2.Edit.Installation
 			}
 			else
 			{
-				this.status = null;
-				installer.UpdateStatus(status.Level);
 				this.broker.BeginRequest -= BeginRequest;
+				installer.UpdateStatus(status.Level);
+				this.status = null;
 				return;
 			}
 

@@ -13,7 +13,9 @@ namespace N2.Management.Myself.Analytics
 	{
 		public virtual void RegisterArea(RouteCollection routes, ViewEngineCollection viewEngines, IEngine engine)
 		{
-            var route = routes.MapContentRoute<IManagementHomePart>("Management", engine);
+			var route = new ContentRoute<IManagementHomePart>(engine);
+			routes.Insert(0, route);
+
 			var viewLocationFormats = new[] { Url.ResolveTokens("{ManagementUrl}/Myself/Analytics/Views/{1}/{0}.ascx"), Url.ResolveTokens("{ManagementUrl}/Myself/Analytics/Views/Shared/{0}.ascx") };
 			viewEngines.Insert(0, new PrivateViewEngineDecorator(new WebFormViewEngine { AreaViewLocationFormats = viewLocationFormats, PartialViewLocationFormats = viewLocationFormats }, route));
 		}

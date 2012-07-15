@@ -32,6 +32,7 @@ Release/
 TestResult.xml
 output/
 *.vshost.exe
+*.Publish.xml
 
 # ReSharper is a .NET coding add-in
 _ReSharper*

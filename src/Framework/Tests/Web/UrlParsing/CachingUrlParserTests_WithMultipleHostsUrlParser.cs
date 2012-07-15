@@ -27,7 +27,7 @@ namespace N2.Tests.Web.UrlParsing
 							new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") };
 
 			new MultipleSitesInitializer(persister, host, new StaticSitesProvider(sites), new N2.Plugin.ConnectionMonitor().SetConnected(N2.Edit.Installation.SystemStatusLevel.UpAndRunning), new HostSection() { MultipleSites = true, DynamicSites = true }, null).Start();
-			return new MultipleSitesParser(persister, wrapper, host, new HostSection() { MultipleSites = true, DynamicSites = true });
+			return new MultipleSitesParser(persister, wrapper, host, new N2.Plugin.ConnectionMonitor(), new HostSection() { MultipleSites = true, DynamicSites = true });
 		}
 
 		[Test]

@@ -1,4 +1,5 @@
 ﻿using N2.Tests.Persistence.Proxying;
+using N2.Persistence;
 using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
@@ -77,11 +78,11 @@ namespace N2.Tests.Persistence.NH
 				item2["Hello"] = "World";
 				item2.AddTo(item1);
 
-				persister.Save(item1);
+				persister.Repository.SaveOrUpdate(item1, item2);
 
 				clone = (InterceptableInheritorItem)item1.Clone(true);
 				clonedChild = (InterceptableInheritorItem)clone.Children[0];
-				persister.Save(clone);
+				persister.Repository.SaveOrUpdate(clone, clonedChild);
 			}
 			using (persister)
 			{

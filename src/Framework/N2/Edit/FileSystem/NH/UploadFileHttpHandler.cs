@@ -74,7 +74,7 @@ namespace N2.Edit.FileSystem.NH
 
 
 			var uploadFolders = folderSource.GetUploadFoldersForCurrentSite();
-            if (!uploadFolders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
+            if (!uploadFolders.Any(x => app.Request.Path.StartsWith(x.Path.TrimStart('~'), StringComparison.OrdinalIgnoreCase))) 
                 return;
 
 			if (!fileSystem.FileExists(app.Request.Path))

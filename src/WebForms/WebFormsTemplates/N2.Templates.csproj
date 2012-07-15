@@ -154,42 +154,36 @@
     <Compile Include="Templates\UI\Layouts\Translation.cs" />
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.designer.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Columns.ascx.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Columns.ascx.designer.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentInput.ascx.cs">
       <DependentUpon>CommentInput.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentInput.ascx.designer.cs">
       <DependentUpon>CommentInput.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
@@ -203,70 +197,60 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.designer.cs">
       <DependentUpon>Login.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\SubMenu.ascx.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\SubMenu.ascx.designer.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\RandomImage.ascx.cs">
       <DependentUpon>RandomImage.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\RandomImage.ascx.designer.cs">
       <DependentUpon>RandomImage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Register.ascx.cs">
       <DependentUpon>Register.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
       <DependentUpon>RssAggregator.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
       <DependentUpon>RssAggregator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Teaser.ascx.cs">
       <DependentUpon>Teaser.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Teaser.ascx.designer.cs">
       <DependentUpon>Teaser.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Text.ascx.cs">
       <DependentUpon>Text.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Text.ascx.designer.cs">
       <DependentUpon>Text.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Top.ascx.cs">
       <DependentUpon>Top.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Top.ascx.designer.cs">
       <DependentUpon>Top.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\TopMenu.ascx.cs">
       <DependentUpon>TopMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\TopMenu.ascx.designer.cs">
       <DependentUpon>TopMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
@@ -282,168 +266,144 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Bubble.ascx.cs">
       <DependentUpon>Bubble.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Bubble.ascx.designer.cs">
       <DependentUpon>Bubble.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarItem.aspx.cs">
       <DependentUpon>CalendarItem.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarItem.aspx.designer.cs">
       <DependentUpon>CalendarItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarList.aspx.cs">
       <DependentUpon>CalendarList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarList.aspx.designer.cs">
       <DependentUpon>CalendarList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.cs">
       <DependentUpon>CalendarTeaser.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.designer.cs">
       <DependentUpon>CalendarTeaser.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Faq.ascx.cs">
       <DependentUpon>Faq.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Faq.ascx.designer.cs">
       <DependentUpon>Faq.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Form.aspx.cs">
       <DependentUpon>Form.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Form.aspx.designer.cs">
       <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\FaqList.aspx.cs">
       <DependentUpon>FaqList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\FaqList.aspx.designer.cs">
       <DependentUpon>FaqList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Feed.aspx.cs">
       <DependentUpon>Feed.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Feed.aspx.designer.cs">
       <DependentUpon>Feed.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Form.ascx.cs">
       <DependentUpon>Form.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Form.ascx.designer.cs">
       <DependentUpon>Form.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\ImageGallery.aspx.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\ImageGallery.aspx.designer.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsBox.ascx.cs">
       <DependentUpon>NewsBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsBox.ascx.designer.cs">
       <DependentUpon>NewsBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsItem.aspx.cs">
       <DependentUpon>NewsItem.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsItem.aspx.designer.cs">
       <DependentUpon>NewsItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsList.ascx.cs">
       <DependentUpon>NewsList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsList.ascx.designer.cs">
       <DependentUpon>NewsList.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsList.aspx.cs">
       <DependentUpon>NewsList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsList.aspx.designer.cs">
       <DependentUpon>NewsList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Poll.ascx.cs">
       <DependentUpon>Poll.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Poll.ascx.designer.cs">
       <DependentUpon>Poll.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Redirect.aspx.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Redirect.aspx.designer.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Result.ascx.cs">
       <DependentUpon>Result.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Result.ascx.designer.cs">
       <DependentUpon>Result.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\SiteMap.aspx.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\SiteMap.aspx.designer.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.cs">
       <DependentUpon>SocialBookmarks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.designer.cs">
       <DependentUpon>SocialBookmarks.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Subscribe.ascx.cs">
       <DependentUpon>Subscribe.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Subscribe.ascx.designer.cs">
       <DependentUpon>Subscribe.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Start.aspx.cs">
       <DependentUpon>Start.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Start.aspx.designer.cs">
       <DependentUpon>Start.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Text.aspx.cs">
       <DependentUpon>Text.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Text.aspx.designer.cs">
       <DependentUpon>Text.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
@@ -457,18 +417,10 @@
     <Compile Include="Templates\Web\Adapters\UserControlWrapperAdapter.cs" />
     <Compile Include="Templates\Web\LanguageConcern.cs" />
     <Compile Include="Templates\Web\ThemeConcern.cs" />
-    <Compile Include="Templates\Web\UI\TemplateMasterPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Web\UI\TemplatePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Web\UI\TemplateUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Web\UI\TemplateUserControl2.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Templates\Web\UI\TemplateMasterPage.cs" />
+    <Compile Include="Templates\Web\UI\TemplatePage.cs" />
+    <Compile Include="Templates\Web\UI\TemplateUserControl.cs" />
+    <Compile Include="Templates\Web\UI\TemplateUserControl2.cs" />
     <Compile Include="Templates\Web\UI\WebControls\IBreadcrumbAppearance.cs" />
     <Compile Include="Templates\Web\UI\WebControls\Menu.cs" />
     <Compile Include="Templates\Web\UI\WebControls\Path.cs" />
@@ -584,24 +536,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\UI\Views\WideText.aspx" />
-    <Content Include="Views\Shared\TokenTemplates\Author.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Breadcrumb.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Changes.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Children.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Google+1.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Detail.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FirstChild.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Link.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\NextSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Parent.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\PreviousSibling.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Published.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Search.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\Siblings.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\FacebookLike.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\StartPage.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\SyntaxHighlighter.ascx" />
-    <Content Include="Views\Shared\TokenTemplates\TOC.ascx" />
     <Content Include="Web.config" />
     <Content Include="App_Data\n2_host.config" />
   </ItemGroup>
@@ -638,7 +572,6 @@
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
     <Content Include="App_Themes\n2cms\Menu.skin" />
     <Content Include="App_Themes\Corporate\Menu.skin" />
-    <Content Include="Views\Web.config" />
     <Content Include="App_Themes\Web.config" />
   </ItemGroup>
   <ItemGroup>

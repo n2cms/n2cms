@@ -77,8 +77,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 			var installer = factory.Resolve<N2.Edit.Installation.InstallationManager>();
 			installer.Install();
 			var root = installer.InsertExportFile(File.OpenRead(HttpContext.Current.Server.MapPath("~/App_Data/Demo.n2.xml.gz")), "Concrete_SampleData.gz");
-			if (root.ID != factory.Host.CurrentSite.RootItemID)
-				factory.Host.CurrentSite.RootItemID = root.ID;
+			if (root.ID != factory.Host.DefaultSite.RootItemID)
+				factory.Host.DefaultSite.RootItemID = root.ID;
 			foreach (ContentItem item in root.Children)
 			{
 				if (item.ID == factory.Host.DefaultSite.StartPageID && item is StartPage)

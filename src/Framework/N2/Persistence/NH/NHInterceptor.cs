@@ -110,13 +110,6 @@ namespace N2.Persistence.NH
 						wasAltered = true;
 					}
 				}
-				if (propertyNames[i] == "AlteredPermissions" 
-					&& item.AlteredPermissions == N2.Security.Permission.None 
-					&& item.AuthorizedRoles.Count > 0)
-				{
-					state[i] = N2.Security.Permission.Read;
-					wasAltered = true;
-				}
 			}
 			return wasAltered;
 		}

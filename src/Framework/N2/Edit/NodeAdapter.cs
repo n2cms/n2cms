@@ -144,9 +144,9 @@ namespace N2.Edit
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{
-			foreach (string uploadFolder in site.UploadFolders)
+			foreach (var uploadFolder in site.UploadFolders.Where(uf => uf.Readers.Authorizes(WebContext.User, null, Permission.Read)))
 			{
-				yield return FileSystem.GetDirectoryOrVirtual(uploadFolder);
+				yield return FileSystem.GetDirectoryOrVirtual(uploadFolder.Path);
 			}
 		}
 

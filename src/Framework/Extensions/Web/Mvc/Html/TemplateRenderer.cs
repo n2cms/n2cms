@@ -61,7 +61,7 @@ namespace N2.Web.Mvc.Html
 			// retrieve the virtual path so we can figure out if this item is routed through an area
 			var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
 			if (vpd == null)
-				throw new InvalidOperationException("Unable to render " + item + " (" + values.ToQueryString() + " did not match any route)");
+				throw new InvalidOperationException("Unable to render " + item + " (" + controllerName + " did not match any route)");
 
 			values["area"] = vpd.DataTokens["area"];
 			return values;

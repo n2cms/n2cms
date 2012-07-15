@@ -38,9 +38,13 @@ namespace N2.Definitions
 			var ctx = new AllowedDefinitionQuery { Parent = parentItem, ParentDefinition = parentDefinition, ChildDefinition = definition, Definitions = definitions };
 			var filters = parentDefinition.AllowedChildFilters.Union(definition.AllowedParentFilters).ToList();
 			if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
+				// filter specificly allows -> allow
 				return true;
 			else if (!filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
+				// no filter denies -> allow
 				return true;
+
+			// no filter allowed, but some filter denied -> deny
 			return false;
 		}
 	}

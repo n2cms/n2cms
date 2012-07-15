@@ -37,6 +37,7 @@ namespace N2.Edit.FileSystem.NH
 			return Session.CreateCriteria<FileSystemItem>()
                 .Add(Restrictions.Eq("Path.Parent", path.ToString()))
                 .Add(criterion)
+				.AddOrder(Order.Asc("Path.Name"))
                 .List<FileSystemItem>();
         }
 

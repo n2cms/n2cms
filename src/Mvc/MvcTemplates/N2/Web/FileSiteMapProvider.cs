@@ -57,10 +57,10 @@ namespace N2.Edit.Web
 
 			if (node.Key == "/" || node is RootNode)
 			{
-				foreach (string folderUrl in N2.Context.Current.Resolve<IHost>().CurrentSite.UploadFolders)
+				foreach (var folder in N2.Context.Current.Resolve<IHost>().CurrentSite.UploadFolders)
 				{
-					if (!folderPaths.Contains(folderUrl))
-						folderPaths.Add(folderUrl);
+					if (!folderPaths.Contains(folder.Path))
+						folderPaths.Add(folder.Path);
 				}
 				foreach (string folderUrl in N2.Context.Current.EditManager.UploadFolders)
 				{

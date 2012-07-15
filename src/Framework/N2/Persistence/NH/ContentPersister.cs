@@ -183,5 +183,14 @@ namespace N2.Persistence
 		{
 			Trace.TraceInformation(logMessage);
 		}
+
+		private void EnsureName(ContentItem item)
+		{
+			if (string.IsNullOrEmpty(item.Name))
+			{
+				item.Name = item.ID.ToString();
+				repository.SaveOrUpdate(item);
+			}
+		}
     }
 }

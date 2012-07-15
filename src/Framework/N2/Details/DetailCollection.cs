@@ -23,10 +23,12 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using N2.Collections;
+using System.Diagnostics;
 
 namespace N2.Details
 {
 	/// <summary>A named collection of details. This is used by content items to group related details together.</summary>
+	[DebuggerDisplay("DetailCollection: Count = {Details.Count}")]
 	public class DetailCollection : IList, ICloneable, INameable, IEnumerable<object>
 	{
 		#region Constructors
@@ -96,7 +98,12 @@ namespace N2.Details
 		public virtual N2.ContentItem EnclosingItem
 		{
 			get { return enclosingItem; }
-			set { enclosingItem = value; }
+			set 
+			{ 
+				enclosingItem = value;
+				foreach (var detail in Details)
+					detail.EnclosingItem = value;
+			}
 		}
 		#endregion
 
@@ -378,6 +385,20 @@ namespace N2.Details
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Gets the detail values of the given generic type.
+		/// </summary>
+		/// <typeparam name="T">The type of value to retrieve.</typeparam>
+		/// <returns>An enumeration of values with matching type.</returns>
+		public virtual IEnumerable<T> OfType<T>()
+		{
+			foreach (ContentDetail cd in this.Details)
+			{
+				if (cd.Value is T)
+					yield return (T)cd.Value;
+			}
+		}
 	}
 }
 

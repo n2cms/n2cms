@@ -71,6 +71,7 @@ namespace N2.Details
 			tb.ID = Name;
 			tb.MaxLength = 250;
 			tb.CssClass = "titleEditor";
+            tb.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
 			container.Controls.Add(tb);
 			return tb;
 		}

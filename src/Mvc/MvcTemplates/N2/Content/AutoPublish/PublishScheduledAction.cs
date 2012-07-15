@@ -16,6 +16,7 @@ namespace N2.Edit.AutoPublish
 		private IPersister persister;
 		private ISecurityManager security;
 		private StateChanger changer;
+		IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
 		
 		public PublishScheduledAction(IVersionManager versioner, IPersister persister, ISecurityManager security, StateChanger changer)
 		{
@@ -97,9 +98,27 @@ namespace N2.Edit.AutoPublish
 					persister.Save(scheduledVersion);
 				else
 					versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
+			}
 
-				persister.Delete(scheduledVersion);
+			var implicitAutoPublish = Finder
+				.Where.Published.Le(Utility.CurrentTime())
+				.And.State.Eq(ContentState.Waiting)
+				.Select();
+			for (int i = 0; i < implicitAutoPublish.Count; i++)
+			{
+				try
+				{
+					security.ScopeEnabled = false;
+					// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
+					var item = implicitAutoPublish[i];
+					item.State = ContentState.Published;
+					persister.Save(item);
+				}
+				finally
+				{
+					security.ScopeEnabled = true;
+				}
 			}
 		}
-    }
+	}
 }

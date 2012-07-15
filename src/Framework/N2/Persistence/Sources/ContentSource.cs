@@ -55,7 +55,7 @@ namespace N2.Persistence.Sources
 
 		public virtual bool HasChildren(Query query)
 		{
-			return GetChildren(query).Any();
+			return Sources.Any(s => s.HasChildren(query));
 		}
 
 		public virtual SourceBase GetSource(ContentItem item)

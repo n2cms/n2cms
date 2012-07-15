@@ -11,8 +11,7 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{
-			var galleryItems = CurrentItem.GetChildren(new AccessFilter(), new TypeFilter(typeof (GalleryItem)))
-				.Cast<GalleryItem>();
+			var galleryItems = CurrentItem.GalleryItems;
 
 			return View(new ImageGalleryModel(CurrentItem, galleryItems));
 		}

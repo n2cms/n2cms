@@ -12,8 +12,8 @@ namespace N2.Management.Files
 		{
 			base.OnInit(e);
 
-			Resources.Register.JQueryUi(Page);
-			Resources.Register.JQueryPlugins(Page);
+			N2.Resources.Register.JQueryUi(Page);
+			N2.Resources.Register.JQueryPlugins(Page);
 		}
 	}
 }

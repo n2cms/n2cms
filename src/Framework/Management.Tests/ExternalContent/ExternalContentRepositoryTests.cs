@@ -8,6 +8,7 @@ using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Persistence.Behaviors;
 
 namespace N2.Management.Tests.ExternalContent
 {
@@ -32,6 +33,9 @@ namespace N2.Management.Tests.ExternalContent
 			itemRepository.SaveOrUpdate(root = new ExternalItem { ID = 1, Name = "root" });
 			itemRepository.SaveOrUpdate(start = new ExternalItem { ID = 2, Name = "start" });
 
+			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
+
+			//return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
 			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(itemRepository, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
 		}
 

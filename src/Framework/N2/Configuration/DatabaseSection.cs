@@ -65,11 +65,11 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The type of nhibernate laziness to use. Supported values are "true", "false", and "extra".</summary>
-		[ConfigurationProperty("childrenLaziness", DefaultValue = CollectionLazy.Extra)]
-		public CollectionLazy ChildrenLaziness
+		[ConfigurationProperty("children")]
+		public ChildrenElement Children
 		{
-			get { return (CollectionLazy)base["childrenLaziness"]; }
-			set { base["childrenLaziness"] = value; }
+			get { return (ChildrenElement)base["children"]; }
+			set { base["children"] = value; }
 		}
 
 		/// <summary>NHibernate option for database query batching.</summary>

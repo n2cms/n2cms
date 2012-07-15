@@ -33,6 +33,7 @@ namespace N2.Details
 		{
 			ItemSelector selector = new ItemSelector();
 			selector.ID = Name;
+            selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(selector);
 			return selector;
 		}

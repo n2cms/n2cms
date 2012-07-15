@@ -82,5 +82,10 @@ namespace N2.Persistence.Sources
 		public abstract ContentItem Copy(ContentItem source, ContentItem destination);
 
 
+
+		public virtual bool HasChildren(Query query)
+		{
+			return AppendChildren(Enumerable.Empty<ContentItem>(), query).Any();
+		}
 	}
 }

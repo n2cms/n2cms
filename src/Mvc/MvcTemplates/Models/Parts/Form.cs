@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Form",
 		Description = "A form that can be sumitted and sent to an email address.",
-		SortOrder = 250,
+		SortOrder = 251,
 		IconUrl = "~/Content/Img/report.png")]
 	[RestrictParents(typeof (ContentPageBase))]
 	[RestrictChildren(typeof(IQuestion))]

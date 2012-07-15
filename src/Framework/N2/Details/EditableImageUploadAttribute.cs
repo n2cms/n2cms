@@ -31,6 +31,7 @@ namespace N2.Details
 			SelectingUploadCompositeControl control = (SelectingUploadCompositeControl)base.AddEditor(container);
 			control.SelectorControl.SelectableExtensions = FileSelector.ImageExtensions;
 			control.SelectorControl.SelectableTypes = typeof(N2.Definitions.IFileSystemFile).Name;
+            control.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			return control;
 		}
 	}

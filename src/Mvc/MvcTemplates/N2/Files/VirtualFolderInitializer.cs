@@ -21,12 +21,12 @@ namespace N2.Management.Files
 	[Service]
 	public class VirtualFolderInitializer : IAutoStart
 	{
-		FileSystemFolderCollection folders;
 		IHost host;
 		IPersister persister;
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
 		ConnectionMonitor monitor;
+		UploadFolderSource folderSource;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
@@ -36,13 +36,13 @@ namespace N2.Management.Files
 		/// <param name="fs">The fs.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
-		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, ConnectionMonitor monitor, EditSection editConfig, ImageSizeCache imageSizes, FolderNodeProvider nodeProvider)
+		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, ConnectionMonitor monitor, UploadFolderSource folderSource, FolderNodeProvider nodeProvider)
 		{
 			this.host = host;
 			this.persister = persister;
 			this.virtualNodes = virtualNodes;
 			this.monitor = monitor;
-			this.folders = editConfig.UploadFolders;
+			this.folderSource = folderSource;
 			this.nodeProvider = nodeProvider;
 		}
 
@@ -78,33 +78,14 @@ namespace N2.Management.Files
 			var paths = new List<FolderPair>();
 
 			// configured folders to the root node
-			foreach (FolderElement folder in folders)
+			foreach (var folder in folderSource.GetUploadFoldersForAllSites())
 			{
-				var root = persister.Get(host.DefaultSite.RootItemID);
-				var pair = new FolderPair(root.ID, root.Path, folder.Path.TrimStart('~'), folder.Path);
+				var parent = persister.Get(folder.GetParentID());
+				var pair = new FolderPair(parent.ID, parent.Path, parent.Path + folder.GetName() + "/", folder);
 				paths.Add(pair);
-			}
-			// site-upload folders to their respective nodes
-			paths.AddRange(UploadFoldersForSite(host.DefaultSite));
-			foreach (var site in host.Sites)
-			{
-				paths.AddRange(UploadFoldersForSite(site));
 			}
 
 			return paths.ToArray();
-		}
-
-		private IEnumerable<FolderPair> UploadFoldersForSite(Site site)
-		{
-			ContentItem item = persister.Get(site.StartPageID);
-			if (item == null)
-				yield break;
-
-			string itemPath = item.Path;
-			foreach (string path in site.UploadFolders)
-			{
-				yield return new FolderPair(item.ID, item.Path, itemPath + path.TrimStart('~', '/'), path);
-			}
 		}
 	}
 }

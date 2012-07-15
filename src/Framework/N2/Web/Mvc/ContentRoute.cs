@@ -131,6 +131,9 @@ namespace N2.Web.Mvc
 			var url = new Url(request.Url.Scheme, host, request.RawUrl);
 			PathData path = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
 
+			if (!path.IsEmpty() && path.IsRewritable && StopRewritableItems)
+				return new RouteData(this, new StopRoutingHandler());
+
 			var page = path.CurrentPage;
 
 			var actionName = path.Action;
@@ -278,9 +281,16 @@ namespace N2.Web.Mvc
 
 			var contextController = (string)requestContext.RouteData.Values["controller"];
 			var requestedController = (string)values["controller"];
-			if (requestedItem == null && requestedController != null && !string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
-				// no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
-				return null;
+            if (requestedItem == null && requestedController != null)
+            {
+                if (!string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
+                    // no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
+                    return null;
+
+                if (!controllerMapper.IsContentController(requestedController))
+                    // same controller not content controller -> let it be
+                    return null;
+            }
 
 			var itemController = controllerMapper.GetControllerName(item.GetContentType());
 			values["controller"] = itemController;
@@ -347,5 +357,8 @@ namespace N2.Web.Mvc
 			vpd.VirtualPath = actionUrl.PathAndQuery.TrimStart('/');
 			return vpd;
 		}
+
+		/// <summary>Make the route table stop at items that match an item that can be rewritten to (probably webforms).</summary>
+		public bool StopRewritableItems { get; set; }
 	}
 }

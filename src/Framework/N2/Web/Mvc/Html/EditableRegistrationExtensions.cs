@@ -2,6 +2,7 @@
 using N2.Definitions.Runtime;
 using N2.Details;
 using N2.Integrity;
+using N2.Definitions;
 
 namespace N2.Web.Mvc.Html
 {
@@ -173,9 +174,44 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterRefiner<RestrictChildrenAttribute>(new RestrictChildrenAttribute(AllowedTypes.All) { TemplateNames = allowedChildTemplateKeys });
 		}
 
+		public static Builder<IDefinitionRefiner> Sort(this IContentRegistration registration, SortBy sortingOrder, string expression = null)
+		{
+			return registration.RegisterRefiner<IDefinitionRefiner>(new AppendAttributeRefiner(new SiblingInsertionAttribute(sortingOrder) { SortExpression = expression }));
+		}
+
+		public static Builder<IDefinitionRefiner> SortChildren(this IContentRegistration registration, SortBy sortingOrder, string expression = null)
+		{
+			return registration.RegisterRefiner<IDefinitionRefiner>(new AppendAttributeRefiner(new SortChildrenAttribute(sortingOrder) { SortExpression = expression }));
+		}
+
 		public static EditableBuilder<EditableTagsAttribute> Tags(this IContentRegistration registration, string name)
 		{
 			return registration.RegisterEditable<EditableTagsAttribute>(name, name);
+		}
+
+		class AppendAttributeRefiner : IDefinitionRefiner
+		{
+			private object attribute;
+
+			public AppendAttributeRefiner(object attribute)
+			{
+				this.attribute = attribute;
+			}
+
+			public int RefinementOrder
+			{
+				get { return 0; }
+			}
+
+			public void Refine(ItemDefinition currentDefinition, System.Collections.Generic.IList<ItemDefinition> allDefinitions)
+			{
+				currentDefinition.Attributes.Add(attribute);
+			}
+
+			public int CompareTo(ISortableRefiner other)
+			{
+				return RefinementOrder - other.RefinementOrder;
+			}
 		}
 	}
 

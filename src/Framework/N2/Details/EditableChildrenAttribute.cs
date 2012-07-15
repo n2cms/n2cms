@@ -16,7 +16,7 @@ namespace N2.Details
 		private string zoneName;
 
 		public EditableChildrenAttribute()
-			: base(null, 200)
+			: this(null, null, 200)
 		{
 		}
 

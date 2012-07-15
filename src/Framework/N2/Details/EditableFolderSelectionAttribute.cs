@@ -58,6 +58,7 @@ namespace N2.Details
 			FileSelector selector = new FileSelector();
 			selector.SelectableTypes = typeof(IFileSystemDirectory).Name;
 			selector.ID = Name;
+            selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(selector);
 			return selector;
 		}

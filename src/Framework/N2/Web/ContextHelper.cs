@@ -49,6 +49,17 @@ namespace N2.Web
 			get { return EngineGetter().Resolve<ILanguageGateway>().GetLanguage(Page); }
 		}
 
+		public string LanguageCode
+		{
+			get
+			{
+				var lang = Language;
+				if (lang == null)
+					return null;
+				return lang.LanguageCode;
+			}
+		}
+
 		public bool IsPage
 		{
 			get { return Item != null && Item.IsPage; }

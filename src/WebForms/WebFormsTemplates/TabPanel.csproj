@@ -17,6 +17,7 @@
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
     <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Addons\TabPanel\TabsInterface.ascx.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\TabPanel\TabsInterface.ascx.designer.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>

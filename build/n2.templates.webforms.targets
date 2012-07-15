@@ -34,6 +34,7 @@
 										 $(Templates-SourceFolder)\**\*.Publish.xml;
 										 $(Templates-SourceFolder)\**\Thumbs.db;
 										 $(Templates-SourceFolder)\App_Data\SearchIndex\**\*;
+										 $(Templates-SourceFolder)\App_Data\Temp\**\*;
 										 $(Templates-SourceFolder)\N2\**\*;
 										 $(Templates-SourceFolder)\N2.Management.*;
 										 $(Templates-SourceFolder)\bin\Demo.*;

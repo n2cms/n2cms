@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Web;
 using System.Diagnostics;
+using N2.Collections;
 
 namespace N2.Persistence.Sources
 {
@@ -33,6 +34,25 @@ namespace N2.Persistence.Sources
 				items = items.Where(query.Filter);
 
 			return previousChildren.Union(items);
+		}
+
+		public override bool HasChildren(Query query)
+		{
+			if (query.Parent.ChildState == CollectionState.IsEmpty)
+				return false;
+
+			bool onlyPages = query.OnlyPages ?? false;
+
+			if (query.Parent.ChildState.IsAny(CollectionState.ContainsVisiblePublicPages | CollectionState.ContainsHiddenPublicPages))
+				return true;
+			if (!onlyPages && query.Parent.ChildState.IsAny(CollectionState.ContainsPublicParts))
+				return true;
+			if (query.Filter != null && query.Parent.ChildState.IsAny(CollectionState.ContainsHiddenSecuredPages | CollectionState.ContainsVisibleSecuredPages))
+				return true;
+			if (!onlyPages && query.Filter != null && query.Parent.ChildState.IsAny(CollectionState.ContainsSecuredParts))
+				return true;
+
+			return base.HasChildren(query);
 		}
 
 		public override bool IsProvidedBy(ContentItem item)

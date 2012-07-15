@@ -91,7 +91,7 @@
 				};
 				$(this).dblclick(openDialog).each(function () {
 					if ($(this).closest("a").length > 0)
-						$(this).click(function (e) { console.log(this); e.preventDefault(); e.stopPropagation(); });
+						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
 				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
 			});

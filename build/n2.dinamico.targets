@@ -45,6 +45,7 @@
 												$(Dinamico-SourceFolder)\**\*.log;
 												$(Dinamico-SourceFolder)\**\Thumbs.db;
 												$(Dinamico-SourceFolder)\App_Data\SearchIndex\**\*;
+												$(Dinamico-SourceFolder)\App_Data\Temp\**\*;
 												$(Dinamico-SourceFolder)\N2\**\*;
 												$(Dinamico-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
