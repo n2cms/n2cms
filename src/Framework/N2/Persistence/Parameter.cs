@@ -112,7 +112,11 @@ namespace N2.Persistence
 
 		public bool IsMatch(object item)
 		{
-			return N2.Utility.GetProperty(item, Name) == Value;
+			var itemValue = N2.Utility.GetProperty(item, Name);
+			if (Value == null)
+				return itemValue == null;
+
+			return Value.Equals(itemValue);
 		}
 
 		#region Operators

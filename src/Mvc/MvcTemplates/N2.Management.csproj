@@ -362,6 +362,7 @@
     <Compile Include="N2\Content\LinkTracker\UpdateLinksMigration.cs" />
     <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.cs">
       <DependentUpon>UpdateReferences.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.designer.cs">
       <DependentUpon>UpdateReferences.aspx</DependentUpon>
