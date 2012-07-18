@@ -96,7 +96,7 @@ namespace N2.Edit.FileSystem.Items
             }
             catch (DirectoryNotFoundException ex)
             {
-                Trace.TraceWarning(ex.ToString());
+				Engine.Logger.Warn(ex);
                 return new List<File>();
             }
 		}
@@ -127,7 +127,7 @@ namespace N2.Edit.FileSystem.Items
             }
             catch (DirectoryNotFoundException ex)
             {
-                Trace.TraceWarning(ex.ToString());
+				Engine.Logger.Warn(ex);
                 return new List<Directory>();
             }
 		}

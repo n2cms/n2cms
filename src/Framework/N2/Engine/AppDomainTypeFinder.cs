@@ -95,7 +95,7 @@ namespace N2.Engine
 					string loaderErrors = string.Empty;
 					foreach (Exception loaderEx in ex.LoaderExceptions)
 					{
-						Trace.TraceError(loaderEx.ToString());
+						Engine.Logger.Error(loaderEx);
 						loaderErrors += ", " + loaderEx.Message;
 					}
 
@@ -196,7 +196,7 @@ namespace N2.Engine
 				}
 				catch (BadImageFormatException ex)
 				{
-					Trace.TraceError(ex.ToString());
+					Engine.Logger.Error(ex);
 				}
 			}
 		}

@@ -48,7 +48,7 @@ namespace N2.Edit.KeepAlive
             }
 			catch(SecurityException ex)
 			{
-				Trace.TraceWarning("Stopping keep-alive after exception (probably medium trust environemtn): " + ex);
+				N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environemtn): ", ex);
 				Repeat = Repeat.Once;
 			}
         }

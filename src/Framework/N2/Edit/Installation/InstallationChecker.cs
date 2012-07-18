@@ -61,7 +61,7 @@ namespace N2.Edit.Installation
 			}
 			catch (Exception ex)
 			{
-				Trace.TraceWarning(ex.ToString());
+				Engine.Logger.Warn(ex);
 			}
 
 			if (status == null)
@@ -72,7 +72,7 @@ namespace N2.Edit.Installation
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
 			if (status == null)
 			{
-				Trace.TraceWarning("Null status");
+				Engine.Logger.Warn("Null status");
 				installer.UpdateStatus(SystemStatusLevel.Unknown);
 				return;
 			}

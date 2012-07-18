@@ -49,7 +49,7 @@ namespace N2.Web.Mvc.Html
 			string controllerName = controllerMapper.GetControllerName(itemType);
 			if (string.IsNullOrEmpty(controllerName))
 			{
-				Trace.TraceWarning("Found no controller for type " + itemType);
+				Engine.Logger.WarnFormat("Found no controller for type {0}", itemType);
 				return null;
 			}
 

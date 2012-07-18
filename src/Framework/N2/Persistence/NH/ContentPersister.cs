@@ -108,7 +108,7 @@ namespace N2.Persistence.NH
 		{
 			if (itemNoMore is IActiveContent)
 			{
-				TraceInformation("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
+				Engine.Logger.Info("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
 				(itemNoMore as IActiveContent).Delete();
 			}
 			else
@@ -133,7 +133,7 @@ namespace N2.Persistence.NH
 				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
 				.ToList();
 
-			TraceInformation("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
+			Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
 
 			foreach (ContentDetail link in inboundLinks)
 			{
@@ -163,7 +163,7 @@ namespace N2.Persistence.NH
 
 			itemToDelete.AddTo(null);
 
-			TraceInformation("ContentPersister.DeleteRecursive " + itemToDelete);
+			Engine.Logger.Info("ContentPersister.DeleteRecursive " + itemToDelete);
 			itemRepository.Delete(itemToDelete);
 		}
 
@@ -178,7 +178,7 @@ namespace N2.Persistence.NH
 				count++;
 			}
 
-			TraceInformation("ContentPersister.DeletePreviousVersions " + count + " of " + itemNoMore);
+			Engine.Logger.Info("ContentPersister.DeletePreviousVersions " + count + " of " + itemNoMore);
 		}
 
 		#endregion
@@ -199,14 +199,14 @@ namespace N2.Persistence.NH
 		{
 			if (source is IActiveContent)
 			{
-				TraceInformation("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
+				Engine.Logger.Info("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
 				(source as IActiveContent).MoveTo(destination);
 			}
 			else
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
+					Engine.Logger.Info("ContentPersister.MoveAction " + source + " to " + destination);
 					source.AddTo(destination);
 					Save(source);
 					transaction.Commit();
@@ -236,11 +236,11 @@ namespace N2.Persistence.NH
 			{
 				if (copiedItem is IActiveContent)
 				{
-					TraceInformation("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
+					Engine.Logger.Info("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
 					return (copiedItem as IActiveContent).CopyTo(destinationItem);
 				}
 
-				TraceInformation("ContentPersister.Copy " + source + " to " + destination);
+				Engine.Logger.Info("ContentPersister.Copy " + source + " to " + destination);
 				ContentItem cloned = copiedItem.Clone(includeChildren);
 				if(cloned.Name == source.ID.ToString())
 					cloned.Name = null;
@@ -313,11 +313,6 @@ namespace N2.Persistence.NH
                 handler.Invoke(this, args);
             return args;
         }
-
-		private void TraceInformation(string logMessage)
-		{
-			Trace.TraceInformation(logMessage);
-		}
 
 		private void EnsureName(ContentItem item)
 		{

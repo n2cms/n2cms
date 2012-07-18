@@ -68,7 +68,7 @@ namespace N2
             }
             catch (Exception ex)
             {
-                Trace.TraceWarning("Error reading configuration. This has happened when running a web site project in a virtual directory (reason unknown). " + ex);
+                Engine.Logger.Warn("Error reading configuration. This has happened when running a web site project in a virtual directory (reason unknown). " + ex);
                 return null;
             }
         }
@@ -94,7 +94,7 @@ namespace N2
 			}
 			catch (SecurityException ex)
 			{
-				Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
+				Engine.Logger.Info("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
 				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			}
 			catch (Exception ex)
@@ -102,7 +102,7 @@ namespace N2
 				if (ex.GetType().Name != "ComponentActivatorException")
 					throw;
 
-				Trace.TraceInformation("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
+				Engine.Logger.Info("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
 				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			}
 		}

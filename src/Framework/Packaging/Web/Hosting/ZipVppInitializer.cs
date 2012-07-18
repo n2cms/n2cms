@@ -38,13 +38,13 @@ namespace N2.Web.Hosting
 				string path = MapPath(filePath);
 				if (!File.Exists(path))
 				{
-					Trace.TraceWarning("Did not find configured (" + vppElement.Name + ") zip vpp on disk: " + path);
+					N2.Engine.Logger.Warn("Did not find configured (" + vppElement.Name + ") zip vpp on disk: " + path);
 					continue;
 				}
 				DateTime lastModified = File.GetLastWriteTimeUtc(path);
 
 				var vpp = new Ionic.Zip.Web.VirtualPathProvider.ZipFileVirtualPathProvider(path);
-				Trace.WriteLine("Registering VPP: " + vpp);
+				N2.Engine.Logger.Info("Registering VPP: " + vpp);
 				Register(vpp);
 
 				broker.PostResolveAnyRequestCache += (s, a) =>

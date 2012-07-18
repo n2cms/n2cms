@@ -111,7 +111,7 @@ namespace N2.Web
 			Exception ex = e.Error;
 			if (ex != null)
 			{
-				Trace.TraceError("ErrorHandler.Notify: " + FormatError(ex));
+				Engine.Logger.Error("ErrorHandler.Notify: " + FormatError(ex));
 
 				UpdateErrorCount();
 				if (action == ErrorAction.Email)
@@ -161,7 +161,7 @@ namespace N2.Web
 				}
 				catch (Exception ex2)
 				{
-					Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
+					Engine.Logger.Error("ErrorHandler.Handle: exception handling exception", ex2);
 				}
 			}
 		}

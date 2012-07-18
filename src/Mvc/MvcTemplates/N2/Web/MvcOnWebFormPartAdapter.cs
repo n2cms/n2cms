@@ -103,7 +103,7 @@ namespace N2.Templates.Mvc.Services
 			{
 				if (string.IsNullOrEmpty(controllerName))
 				{
-					Trace.TraceWarning("Found no controller for type " + itemType);
+					N2.Engine.Logger.WarnFormat("Found no controller for type {0}", itemType);
 					return;
 				}
 
