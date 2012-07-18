@@ -24,6 +24,8 @@ namespace N2.Engine
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList<string> assemblyNames = new List<string>();
 
+		Logger<AppDomainTypeFinder> logger;
+
 		#endregion
 
 		#region Constructors
@@ -103,6 +105,8 @@ namespace N2.Engine
 				}
 			}
 
+			logger.DebugFormat("Loading requested types {0}, found {1}", requestedType, types.Count);
+
 			return types;
 		}
 
@@ -113,8 +117,15 @@ namespace N2.Engine
 			List<string> addedAssemblyNames = new List<string>();
 			List<Assembly> assemblies = new List<Assembly>();
 
+			logger.Info("Getting assemblies");
+
 			if (LoadAppDomainAssemblies)
+			{
 				AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
+				
+				logger.InfoFormat("Added {0} assemblies in app domain", assemblies.Count);
+			}
+
 			AddConfiguredAssemblies(addedAssemblyNames, assemblies);
 
 			return assemblies;
@@ -150,6 +161,8 @@ namespace N2.Engine
 					addedAssemblyNames.Add(assembly.FullName);
 				}
 			}
+
+			logger.InfoFormat("Added {0} configured assemblies", AssemblyNames.Count);
 		}
 
 		/// <summary>Check if a dll is one of the shipped dlls that we know don't need to be investigated.</summary>
@@ -196,7 +209,7 @@ namespace N2.Engine
 				}
 				catch (BadImageFormatException ex)
 				{
-					Engine.Logger.Error(ex);
+					logger.Error(ex);
 				}
 			}
 		}

@@ -13,6 +13,8 @@ namespace N2.Web.Mvc
 	/// <typeparam name="T"></typeparam>
 	public class ThemeViewEngine<T> : IViewEngine where T : VirtualPathProviderViewEngine, new()
 	{
+		Engine.Logger<ThemeViewEngine<T>> logger;
+
 		Dictionary<string, T> engines = new Dictionary<string, T>();
 		string themeFolderPath;
 		private string[] viewExtensions;
@@ -70,6 +72,8 @@ namespace N2.Web.Mvc
 			{
 				string fallbackPath = themeFolderPath + "Default/";
 				string themePath = themeFolderPath + theme + "/";
+
+				logger.InfoFormat("Creating themed view engine for theme {0} below path {1}", theme, themePath);
 
 				engine = new T();
 				engine.AreaMasterLocationFormats = GetAreaLocations(themePath, fallbackPath, masterExtensions);

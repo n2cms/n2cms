@@ -31,7 +31,7 @@ namespace N2.Web
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
-			logger.Debug("Attaching to " + application);
+			logger.InfoFormat("Attaching to {0}", application);
 
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
