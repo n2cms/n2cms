@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
-using log4net;
 
 namespace N2.Web.Mvc
 {
@@ -14,7 +13,7 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ContentRoute : RouteBase
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ContentRoute));
+		private readonly Engine.Logger<ContentRoute> logger;
 
 		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
 		public static string ContentItemKey
@@ -117,8 +116,7 @@ namespace N2.Web.Mvc
 				// fallback to route to controller/action
 				routeData = CheckForContentController(httpContext);
 
-			if (logger.IsDebugEnabled)
-				logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+			logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
 
 			return routeData;
 		}
@@ -261,8 +259,7 @@ namespace N2.Web.Mvc
 
 			values = new RouteValueDictionary(values);
 
-			if (logger.IsDebugEnabled)
-				logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
+			logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
 
 			var contextPath = requestContext.RouteData.CurrentPath();
 			var requestedItem = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister);

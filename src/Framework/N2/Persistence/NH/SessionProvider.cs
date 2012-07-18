@@ -3,7 +3,6 @@ using System.Diagnostics;
 using N2.Engine;
 using N2.Web;
 using NHibernate;
-using log4net;
 using N2.Configuration;
 
 namespace N2.Persistence.NH
@@ -14,7 +13,7 @@ namespace N2.Persistence.NH
 	[Service(typeof(ISessionProvider))]
 	public class SessionProvider : ISessionProvider
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(SessionProvider));
+		private readonly Engine.Logger<SessionProvider> logger;
 
 		private static string SessionKey = "SessionProvider.Session";
 		private NHInterceptorFactory interceptorFactory;

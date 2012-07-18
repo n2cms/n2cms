@@ -18,7 +18,6 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Web;
-using log4net;
 
 namespace N2
 {
@@ -27,7 +26,7 @@ namespace N2
 	/// </summary>
     public class Context
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Context));
+		private static readonly Engine.Logger<Context> Logger;
 
 		#region Initialization Methods
     	/// <summary>Initializes a static instance of the N2 factory.</summary>

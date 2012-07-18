@@ -8,7 +8,6 @@ using System.Web.Security;
 using N2.Templates.Mvc.Areas.Tests.Models;
 using N2.Web;
 using N2.Web.Mvc;
-using log4net;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -24,7 +23,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
         //
         // GET: /Tests/Demo/
 
-		private readonly ILog logger = LogManager.GetLogger(typeof (DemoController));
+		private readonly Engine.Logger<DemoController> logger;
 
         public override ActionResult Index()
         {

@@ -7,14 +7,13 @@ using System.Net;
 using N2.Web;
 using N2.Configuration;
 using System.Security;
-using log4net;
 
 namespace N2.Edit.KeepAlive
 {
     [ScheduleExecution(1, TimeUnit.Minutes)]
     public class Pinger : ScheduledAction
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof (Pinger));
+		private readonly Engine.Logger<Pinger> logger;
 
         IEngine engine = null;
         EngineSection config = null;

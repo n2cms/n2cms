@@ -10,7 +10,6 @@ using Lucene.Net.Store;
 using N2.Configuration;
 using N2.Engine;
 using N2.Web;
-using log4net;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
 using System.Diagnostics;
@@ -23,7 +22,7 @@ namespace N2.Persistence.Search
 	[Service(Configuration = "lucene")]
 	public class LuceneAccesor : IDisposable
 	{
-		private ILog logger = LogManager.GetLogger(typeof (LuceneAccesor));
+		private Engine.Logger<LuceneAccesor> logger;
 		string indexPath;
 		public long LockTimeout { get; set; }
 		Directory directory;

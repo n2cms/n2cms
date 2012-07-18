@@ -4,7 +4,6 @@ using System.IO;
 using System.Web;
 using N2.Engine;
 using N2.Plugin.Scheduling;
-using log4net;
 
 namespace N2.Web
 {
@@ -15,7 +14,7 @@ namespace N2.Web
 	/// </summary>
 	public class EventBroker
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(Heart));
+		private readonly Engine.Logger<EventBroker> logger;
 
 		static EventBroker()
 		{

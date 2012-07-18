@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using log4net;
-using log4net.Config;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
@@ -31,7 +29,7 @@ namespace N2.Persistence.NH
 	{
 		public const int BlobLength = 2147483647;
 
-		private readonly ILog logger = LogManager.GetLogger(typeof(ConfigurationBuilder));
+		private readonly Engine.Logger<ConfigurationBuilder> logger;
 		private readonly ClassMappingGenerator generator;
 		private readonly IDefinitionProvider[] definitionProviders;
 		private readonly IWebContext webContext;
@@ -64,9 +62,6 @@ namespace N2.Persistence.NH
 
 			SetupProperties(config, connectionStrings);
 			SetupMappings(config);
-
-			// Config log4net with default configuration
-			XmlConfigurator.Configure();
 		}
 
 		private void SetupMappings(DatabaseSection config)

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using N2.Engine;
 using N2.Web;
-using log4net;
 
 namespace N2.Plugin.Scheduling
 {
@@ -15,7 +14,7 @@ namespace N2.Plugin.Scheduling
 	[Service]
     public class Scheduler : IAutoStart
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof (Scheduler));
+		private readonly Engine.Logger<Scheduler> logger;
 
         IList<ScheduledAction> actions;
         IHeart heart;

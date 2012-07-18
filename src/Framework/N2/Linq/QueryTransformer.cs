@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using N2.Details;
-using log4net;
 
 namespace N2.Linq
 {
@@ -13,7 +12,7 @@ namespace N2.Linq
 	/// </summary>
 	internal class QueryTransformer
 	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(QueryTransformer));
+		private readonly Engine.Logger<QueryTransformer> logger;
 
 		static MethodInfo anyMethodInfo = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition();
 		static MethodInfo ofTypeMethodInfo = typeof(Enumerable).GetMethod("OfType").GetGenericMethodDefinition();

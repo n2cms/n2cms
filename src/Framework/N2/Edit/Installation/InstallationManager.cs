@@ -18,7 +18,6 @@ using NHibernate;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
-using log4net;
 using Environment = NHibernate.Cfg.Environment;
 using N2.Plugin;
 using N2.Configuration;
@@ -36,7 +35,7 @@ namespace N2.Edit.Installation
 	{
 		public const string InstallationAppPath = "Installation.AppPath";
 		public const string installationHost = "Installation.Host";
-		private readonly ILog logger = LogManager.GetLogger(typeof(InstallationManager));
+		private readonly Engine.Logger<InstallationManager> logger;
 
 		IConfigurationBuilder configurationBuilder;
 		ContentActivator activator;

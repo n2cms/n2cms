@@ -4,7 +4,6 @@ using N2.Linq;
 using N2.Persistence.Proxying;
 using NHibernate;
 using NHibernate.Type;
-using log4net;
 
 namespace N2.Persistence.NH
 {
@@ -16,7 +15,7 @@ namespace N2.Persistence.NH
 		private readonly IProxyFactory interceptor;
 		public ISession Session { get; set; }
 		private readonly IItemNotifier notifier;
-		private readonly ILog logger = LogManager.GetLogger(typeof(NHInterceptor));
+		private readonly Engine.Logger<NHInterceptor> logger;
 
 		public NHInterceptor(IProxyFactory interceptor, IItemNotifier notifier)
 		{

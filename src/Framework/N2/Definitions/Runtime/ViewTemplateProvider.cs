@@ -8,14 +8,13 @@ using System.Web.Hosting;
 using N2.Definitions.Static;
 using N2.Engine;
 using N2.Persistence;
-using log4net;
 
 namespace N2.Definitions.Runtime
 {
 	[Service(typeof(ITemplateProvider))]
 	public class ViewTemplateProvider : ITemplateProvider
 	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(ViewTemplateProvider));
+        private readonly Logger<ViewTemplateProvider> logger;
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<VirtualPathProvider> vppProvider;
 		ContentActivator activator;

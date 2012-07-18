@@ -10,7 +10,6 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web.Mail;
 using NHibernate;
-using log4net;
 
 namespace N2.Web
 {
@@ -63,7 +62,7 @@ namespace N2.Web
 	[Service]
 	public class ErrorHandler : IAutoStart
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ErrorHandler));
+		private readonly Engine.Logger<ErrorHandler> logger;
 		private readonly IErrorNotifier notifier;
 		private readonly ErrorAction action = ErrorAction.None;
 		private readonly IWebContext context;

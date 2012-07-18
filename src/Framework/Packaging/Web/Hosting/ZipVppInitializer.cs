@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Hosting;
 using N2.Engine;
 using N2.Plugin;
-using log4net;
 using System.Collections.Generic;
 
 namespace N2.Web.Hosting
@@ -14,7 +13,7 @@ namespace N2.Web.Hosting
 	[Service]
 	public class ZipVppInitializer : IAutoStart
 	{
-		private static readonly ILog logger = LogManager.GetLogger(typeof(VirtualPathFileHandler));
+		private static readonly Engine.Logger<ZipVppInitializer> logger;
 		private Configuration.ConfigurationManagerWrapper configFactory;
 		private EventBroker broker;
 

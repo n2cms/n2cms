@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using N2.Engine;
 using N2.Persistence;
-using log4net;
 
 namespace N2.Edit.Workflow
 {
@@ -12,7 +11,7 @@ namespace N2.Edit.Workflow
     [Service]
     public class CommandDispatcher
     {
-    	private readonly ILog logger = LogManager.GetLogger(typeof (CommandDispatcher));
+		private readonly Engine.Logger<CommandDispatcher> logger;
 		readonly ICommandFactory commandFactory;
 		readonly IPersister persister;
 

@@ -8,7 +8,6 @@ using N2.Definitions.Static;
 using N2.Engine;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Mapping.ByCode;
-using log4net;
 
 namespace N2.Persistence.NH
 {
@@ -18,7 +17,7 @@ namespace N2.Persistence.NH
 	[Service]
     public class ClassMappingGenerator
     {
-    	private readonly ILog logger = LogManager.GetLogger(typeof (ClassMappingGenerator));
+		private readonly Engine.Logger<ClassMappingGenerator> logger;
 		DefinitionMap map;
 
 		public ClassMappingGenerator(DefinitionMap map)

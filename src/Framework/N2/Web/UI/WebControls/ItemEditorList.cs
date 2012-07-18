@@ -10,7 +10,6 @@ using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.Parts;
-using log4net;
 
 namespace N2.Web.UI.WebControls
 {
@@ -18,7 +17,7 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Fields
 
-		private readonly ILog logger = LogManager.GetLogger(typeof(ItemEditorList));
+		private readonly Engine.Logger<ItemEditorList> logger;
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
 		private readonly Panel addPanel = new Panel { CssClass = "addArea" };
 		private List<string> addedDefinitions = new List<string>();

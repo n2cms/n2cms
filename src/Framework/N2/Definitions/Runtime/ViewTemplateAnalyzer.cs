@@ -11,14 +11,13 @@ using N2.Definitions.Static;
 using N2.Engine;
 using N2.Web.Mvc;
 using N2.Web;
-using log4net;
 
 namespace N2.Definitions.Runtime
 {
 	[Service]
 	public class ViewTemplateAnalyzer
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ViewTemplateAnalyzer));
+		private readonly Logger<ViewTemplateAnalyzer> logger;
 		IProvider<ViewEngineCollection> viewEnginesProvider;
 		DefinitionMap map;
 		DefinitionBuilder builder;

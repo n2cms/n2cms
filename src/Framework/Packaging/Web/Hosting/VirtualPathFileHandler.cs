@@ -2,13 +2,12 @@
 using System.Web;
 using System;
 using System.Web.Hosting;
-using log4net;
 
 namespace N2.Web.Hosting
 {
 	public class VirtualPathFileHandler : IHttpHandler
 	{
-		private static readonly ILog logger = LogManager.GetLogger(typeof(VirtualPathFileHandler));
+		private static readonly Engine.Logger<VirtualPathFileHandler> logger;
 
 		VirtualPathProvider vpp;
 

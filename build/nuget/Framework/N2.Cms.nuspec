@@ -21,7 +21,6 @@
 			<!--<dependency id="SqlServerCompact" version="4.0.8482.1"/>-->
 			<dependency id="Castle.Windsor" version="[2.5.3]" />
 			<dependency id="DotNetZip" version="1.9.1.8" />
-			<dependency id="log4net" version="[1.2.10.0]" />
 			<dependency id="N2CMS.Library" version="{Version}" />
 		</dependencies>
 	</metadata>

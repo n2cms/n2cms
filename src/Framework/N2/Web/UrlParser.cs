@@ -4,7 +4,6 @@ using System.IO;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
-using log4net;
 
 namespace N2.Web
 {
@@ -14,7 +13,7 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(UrlParser));
+		private readonly Engine.Logger<UrlParser> logger;
 		protected readonly IPersister persister;
 		protected readonly IHost host;
 		protected readonly IWebContext webContext;

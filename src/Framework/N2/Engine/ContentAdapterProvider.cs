@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Reflection;
 using N2.Plugin;
 using N2.Web;
-using log4net;
 
 namespace N2.Engine
 {
@@ -14,7 +13,7 @@ namespace N2.Engine
 	[Service(typeof(IContentAdapterProvider))]
 	public class ContentAdapterProvider : IContentAdapterProvider, IAutoStart
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ContentAdapterProvider));
+		private readonly Engine.Logger<ContentAdapterProvider> logger;
 		readonly IEngine engine;
 		readonly ITypeFinder finder;
 		AbstractContentAdapter[] adapters = new AbstractContentAdapter[0];

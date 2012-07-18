@@ -6,14 +6,13 @@ using N2.Plugin;
 using N2.Web;
 using System.Web.Configuration;
 using System.Configuration;
-using log4net;
 
 namespace N2.Edit.Installation
 {
 	[Service]
 	public class InstallationChecker : IAutoStart
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (InstallationChecker));
+		private readonly Engine.Logger<InstallationChecker> logger;
 		IWebContext webContext;
 		EventBroker broker;
 		protected bool checkInstallation;

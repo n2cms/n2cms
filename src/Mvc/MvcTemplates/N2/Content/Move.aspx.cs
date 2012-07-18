@@ -4,7 +4,6 @@ using N2.Edit.Web;
 using N2.Integrity;
 using N2.Security;
 using N2.Web;
-using log4net;
 
 namespace N2.Edit
 {
@@ -17,7 +16,7 @@ namespace N2.Edit
 		RequiredPermission = Permission.Publish)]
 	public partial class Move : EditPage
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (Move));
+		private readonly Engine.Logger<Move> logger;
 
 		protected void Page_Load(object sender, EventArgs e)
 		{

@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.Web;
 using N2.Edit.FileSystem;
 using N2.Web;
-using log4net;
 
 namespace N2.Edit.Web
 {
 	public class FileSiteMapProvider : SiteMapProvider
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (FileSiteMapProvider));
+		private readonly Engine.Logger<FileSiteMapProvider> logger;
 
 		protected IFileSystem FileSystem
 		{
