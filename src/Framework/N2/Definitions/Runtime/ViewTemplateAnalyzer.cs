@@ -97,7 +97,7 @@ namespace N2.Definitions.Runtime
 				{
 					logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
 					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
-					logger.InfoFormat("Rendered view {0} and got {1} registrations and defined = {2}", file.VirtualPath, re.Containables.Count, re.IsDefined);
+					logger.DebugFormat("Rendered view {0}, registrations = {1}, defined = {2}", file.VirtualPath, re.Containables.Count, re.IsDefined);
 				}
 				catch (Exception ex)
 				{

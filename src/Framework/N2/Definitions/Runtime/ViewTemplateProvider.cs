@@ -26,6 +26,8 @@ namespace N2.Definitions.Runtime
 
 		public ViewTemplateProvider(ViewTemplateRegistrator registrator, ViewTemplateAnalyzer analyzer, ContentActivator activator, DefinitionBuilder builder, IProvider<HttpContextBase> httpContextProvider, IProvider<VirtualPathProvider> vppProvider)
 		{
+			SortOrder = -1000;
+
 			this.registrator = registrator;
 			this.analyzer = analyzer;
 			this.activator = activator;
@@ -75,7 +77,7 @@ namespace N2.Definitions.Runtime
 
 					var vpp = vppProvider.Get();
 					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
-					logger.DebugFormat("Got {0} descriptions", descriptions);
+					logger.DebugFormat("Got {0} descriptions", descriptions.Count);
 					definitions = BuildDefinitions(descriptions);
 					logger.Debug("Built definitions");
 
@@ -139,5 +141,8 @@ namespace N2.Definitions.Runtime
 		}
 
 		#endregion
+
+		/// <summary>The order this template provider should be invoked, default 0.</summary>
+		public int SortOrder { get; set; }
 	}
 }

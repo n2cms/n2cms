@@ -45,5 +45,8 @@ namespace N2.Management.Content.Templates
 		}
 
 		#endregion
+
+		/// <summary>The order this template provider should be invoked, default 0.</summary>
+		public int SortOrder { get; set; }
 	}
 }

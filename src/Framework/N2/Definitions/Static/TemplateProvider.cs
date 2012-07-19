@@ -16,6 +16,7 @@ namespace N2.Definitions.Static
 		{
 			this.activator = activator;
 			this.map = map;
+			SortOrder = 1000;
 		}
 
 		#region ITemplateProvider Members
@@ -58,5 +59,8 @@ namespace N2.Definitions.Static
 		}
 
 		#endregion
+
+		/// <summary>The order this template provider should be invoked, default 0.</summary>
+		public int SortOrder { get; set; }
 	}
 }
