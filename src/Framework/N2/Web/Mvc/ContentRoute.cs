@@ -116,7 +116,7 @@ namespace N2.Web.Mvc
 				// fallback to route to controller/action
 				routeData = CheckForContentController(httpContext);
 
-			logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+			logger.DebugFormat("GetRouteData for '{0}' got values: {1}", path, new RouteExtensions.QueryStringOutput(routeData));
 
 			return routeData;
 		}
@@ -259,7 +259,7 @@ namespace N2.Web.Mvc
 
 			values = new RouteValueDictionary(values);
 
-			logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
+			logger.DebugFormat("GetVirtualPath for values: {0}", new RouteExtensions.QueryStringOutput(values));
 
 			var contextPath = requestContext.RouteData.CurrentPath();
 			var requestedItem = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister);

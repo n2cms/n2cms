@@ -13,66 +13,66 @@ namespace N2.Engine
 	{
 		public void Error(string message)
 		{
-			Trace.TraceError(message);
+			Trace.TraceError(Logger.PrependInfo<T>(message));
 		}
 
 		public void Error(Exception ex)
 		{
-			Trace.TraceError(ex.ToString());
+			Trace.TraceError(Logger.PrependInfo<T>(ex.ToString()));
 		}
 
 		public void Error(string message, Exception ex)
 		{
-			Trace.TraceError(message + Environment.NewLine + ex.ToString());
+			Trace.TraceError(Logger.PrependInfo<T>(message + Environment.NewLine + ex));
 		}
 
 		public void ErrorFormat(string format, params object[] args)
 		{
-			Trace.TraceError(format, args);
+			Trace.TraceError(Logger.PrependInfo<T>(format), args);
 		}
 
 
 
 		public void Warn(string message)
 		{
-			Trace.TraceWarning(message);
+			Trace.TraceWarning(Logger.PrependInfo<T>(message));
 		}
 
 		public void Warn(Exception ex)
 		{
-			Trace.TraceWarning(ex.ToString());
+			Trace.TraceWarning(Logger.PrependInfo<T>(ex.ToString()));
 		}
 
 		public void Warn(string message, Exception ex)
 		{
-			Trace.TraceWarning(message + Environment.NewLine + ex.ToString());
+			Trace.TraceWarning(Logger.PrependInfo<T>(message + Environment.NewLine + ex));
 		}
 
 		public void WarnFormat(string format, params object[] args)
 		{
-			Trace.TraceWarning(format, args);
+			Trace.TraceWarning(Logger.PrependInfo<T>(format), args);
 		}
 
 
 
 		public void Info(string message)
 		{
-			Trace.TraceInformation(message);
+			Trace.TraceInformation(Logger.PrependInfo<T>(message));
 		}
 
 		public void Info(Exception ex)
 		{
-			Trace.TraceInformation(ex.ToString());
+			Trace.TraceInformation(Logger.PrependInfo<T>(ex.ToString()));
 		}
 
 		public void Info(string message, Exception ex)
 		{
-			Trace.TraceInformation(message);
+			Trace.TraceInformation(Logger.PrependInfo<T>(message));
 		}
 
 		public void InfoFormat(string format, params object[] args)
 		{
-			Trace.TraceInformation(format, args);
+			Trace.TraceInformation(Logger.PrependInfo<T>(format), args);
 		}
 
 
@@ -80,25 +80,25 @@ namespace N2.Engine
 		[Conditional("DEBUG")]
 		public void Debug(string message)
 		{
-			System.Diagnostics.Debug.WriteLine(message);
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(message));
 		}
 
 		[Conditional("DEBUG")]
 		public void Debug(Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(ex.ToString());
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(ex.ToString()));
 		}
 
 		[Conditional("DEBUG")]
 		public void Debug(string message, Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(message);
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(message));
 		}
 
 		[Conditional("DEBUG")]
 		public void DebugFormat(string format, params object[] args)
 		{
-			System.Diagnostics.Debug.WriteLine(string.Format(format, args));
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(string.Format(format, args)));
 		}
 	}
 
@@ -109,66 +109,66 @@ namespace N2.Engine
 	{
 		public static void Error(string message)
 		{
-			Trace.TraceError(message);
+			Trace.TraceError(Logger.PrependInfo(message));
 		}
 
 		public static void Error(Exception ex)
 		{
-			Trace.TraceError(ex.ToString());
+			Trace.TraceError(Logger.PrependInfo(ex.ToString()));
 		}
 
 		public static void Error(string message, Exception ex)
 		{
-			Trace.TraceError(message + Environment.NewLine + ex.ToString());
+			Trace.TraceError(Logger.PrependInfo(message + Environment.NewLine + ex));
 		}
 
 		public static void ErrorFormat(string format, params object[] args)
 		{
-			Trace.TraceError(format, args);
+			Trace.TraceError(Logger.PrependInfo(format), args);
 		}
 
 
 
 		public static void Warn(string message)
 		{
-			Trace.TraceWarning(message);
+			Trace.TraceWarning(Logger.PrependInfo(message));
 		}
 
 		public static void Warn(Exception ex)
 		{
-			Trace.TraceWarning(ex.ToString());
+			Trace.TraceWarning(Logger.PrependInfo(ex.ToString()));
 		}
 
 		public static void Warn(string message, Exception ex)
 		{
-			Trace.TraceWarning(message + Environment.NewLine + ex.ToString());
+			Trace.TraceWarning(Logger.PrependInfo(message + Environment.NewLine + ex));
 		}
 
 		public static void WarnFormat(string format, params object[] args)
 		{
-			Trace.TraceWarning(format, args);
+			Trace.TraceWarning(Logger.PrependInfo(format), args);
 		}
 
 
 
 		public static void Info(string message)
 		{
-			Trace.TraceInformation(message);
+			Trace.TraceInformation(Logger.PrependInfo(message));
 		}
 
 		public static void Info(Exception ex)
 		{
-			Trace.TraceInformation(ex.ToString());
+			Trace.TraceInformation(Logger.PrependInfo(ex.ToString()));
 		}
 
 		public static void Info(string message, Exception ex)
 		{
-			Trace.TraceInformation(message);
+			Trace.TraceInformation(Logger.PrependInfo(message + Environment.NewLine + ex));
 		}
 
 		public static void InfoFormat(string format, params object[] args)
 		{
-			Trace.TraceInformation(format, args);
+			Trace.TraceInformation(Logger.PrependInfo(format), args);
 		}
 
 
@@ -176,25 +176,45 @@ namespace N2.Engine
 		[Conditional("DEBUG")]
 		public static void Debug(string message)
 		{
-			System.Diagnostics.Debug.WriteLine(message);
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(message));
 		}
 
 		[Conditional("DEBUG")]
 		public static void Debug(Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(ex.ToString());
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(ex.ToString()));
 		}
 
 		[Conditional("DEBUG")]
 		public static void Debug(string message, Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(message);
+			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(message));
 		}
 
 		[Conditional("DEBUG")]
 		public static void DebugFormat(string format, params object[] args)
 		{
-			System.Diagnostics.Debug.WriteLine(string.Format(format, args));
+			System.Diagnostics.Debug.WriteLine(string.Format(Logger.PrependInfo(format), args));
+		}
+
+		internal static string PrependInfo(string message)
+		{
+			return DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff")
+				+ ": "
+				+ message;
+		}
+
+		internal static string PrependInfo(string category, string message)
+		{
+			return DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff ")
+				+ category
+				+ ": "
+				+ message;
+		}
+
+		internal static string PrependInfo<T>(string message)
+		{
+			return PrependInfo("<" + typeof(T).Name + ">", message);
 		}
 	}
 }

@@ -9,6 +9,7 @@ namespace N2.Definitions.Static
 	public class DefinitionMap
 	{
 		// static
+		Logger<DefinitionMap> logger;
 
 		static DefinitionMap()
 		{
@@ -56,9 +57,15 @@ namespace N2.Definitions.Static
 		{
 			ItemDefinition definition = GetDefinition(contentType, null);
 			if (definition != null)
+			{
+				logger.DebugFormat("Cloning definition for type {0} with template {1}", contentType, templateKey);
 				definition = definition.Clone();
+			}
 			else
+			{
+				logger.DebugFormat("Creating definition for type {0} with template {1}", contentType, templateKey);
 				definition = new ItemDefinition(contentType);
+			}
 
 			definition.TemplateKey = templateKey;
 			definition.Initialize(contentType);
@@ -80,6 +87,8 @@ namespace N2.Definitions.Static
 			string key = contentType.FullName + templateKey;
 
 			var temp = new Dictionary<string, ItemDefinition>(definitions);
+			logger.DebugFormat("Adding definition key {0} to {1} existing", key, temp.Count);
+
 			if (definition != null)
 				temp[key] = definition;
 			else if (definitions.ContainsKey(key))

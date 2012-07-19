@@ -31,9 +31,13 @@ namespace N2.Definitions.Runtime
 
 		public virtual IEnumerable<ViewTemplateDescription> AnalyzeViews(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
 		{
+			var descriptions = new List<ViewTemplateDescription>();
 			foreach (var source in sources)
 			{
 				string virtualDir = Url.ResolveTokens(Url.ThemesUrlToken) + "Default/Views/" + source.ControllerName;
+
+				logger.DebugFormat("Analyzing directory {0}", virtualDir);
+
 				if (!vpp.DirectoryExists(virtualDir))
 				{
 					virtualDir = "~/Views/" + source.ControllerName;
@@ -41,17 +45,16 @@ namespace N2.Definitions.Runtime
 						continue;
 				}
 
-				List<ViewTemplateDescription> descriptions = new List<ViewTemplateDescription>();
 				foreach (var file in vpp.GetDirectory(virtualDir).Files.OfType<VirtualFile>().Where(f => f.Name.EndsWith(source.ViewFileExtension)))
 				{
+					logger.DebugFormat("Analyzing file {0}", file.VirtualPath);
+
 					var description = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
 					if (description != null)
 						descriptions.Add(description);
 				}
-
-				foreach (var description in descriptions)
-					yield return description;
 			}
+			return descriptions;
 		}
 
 		private ViewTemplateDescription AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
@@ -92,11 +95,13 @@ namespace N2.Definitions.Runtime
 
 				try
 				{
+					logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
 					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
+					logger.InfoFormat("Rendered view {0} and got {1} registrations and defined = {2}", file.VirtualPath, re.Containables.Count, re.IsDefined);
 				}
 				catch (Exception ex)
 				{
-					logger.Error(ex);
+					logger.Error(file.VirtualPath, ex);
 					if (re.IsDefined)
 						throw;
 					return null;

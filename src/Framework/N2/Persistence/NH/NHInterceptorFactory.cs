@@ -23,7 +23,7 @@ namespace N2.Persistence.NH
 
 		public virtual ISession CreateSession(ISessionFactory sessionFactory)
 		{
-			logger.Debug("Create NH session");
+			logger.Debug("Creating NH session");
 
 			var nhi = new NHInterceptor(interceptor, notifier);
 			var s = sessionFactory.OpenSession(nhi);

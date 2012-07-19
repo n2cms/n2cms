@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Configuration;
@@ -38,15 +39,20 @@ namespace N2.Engine
 		#endregion
 
 		#region Methods
+
+		Assembly[] assemblyCache;
 		public override IList<Assembly> GetAssemblies()
 		{
+			if (assemblyCache != null)
+				return assemblyCache;
+
 			if (EnsureBinFolderAssembliesLoaded && !binFolderAssembliesLoaded)
 			{
 				binFolderAssembliesLoaded = true;
 				LoadMatchingAssemblies(webContext.MapPath("~/bin"));
 			}
 
-			return base.GetAssemblies();
+			return assemblyCache = base.GetAssemblies().ToArray();
 		} 
 		#endregion
 	}

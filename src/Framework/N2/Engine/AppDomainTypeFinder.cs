@@ -154,12 +154,16 @@ namespace N2.Engine
 		{
 			foreach (string assemblyName in AssemblyNames)
 			{
+				if (addedAssemblyNames.Contains(assemblyName))
+					continue;
+
+				logger.Debug("Loading " + assemblyName);
 				Assembly assembly = Assembly.Load(assemblyName);
-				if (!addedAssemblyNames.Contains(assembly.FullName))
-				{
-					assemblies.Add(assembly);
-					addedAssemblyNames.Add(assembly.FullName);
-				}
+				if (addedAssemblyNames.Contains(assembly.FullName))
+					continue;
+				
+				assemblies.Add(assembly);
+				addedAssemblyNames.Add(assembly.FullName);
 			}
 
 			logger.InfoFormat("Added {0} configured assemblies", AssemblyNames.Count);
@@ -204,8 +208,11 @@ namespace N2.Engine
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
 					if (Matches(assumedAssemblyName) && !loadedAssemblyNames.Contains(assumedAssemblyName))
 					{
+						logger.Debug("Loading " + assumedAssemblyName);
 						App.Load(assumedAssemblyName);
 					}
+					else
+						logger.Debug("Skipping " + assumedAssemblyName);
 				}
 				catch (BadImageFormatException ex)
 				{

@@ -511,11 +511,11 @@ namespace N2.Persistence.NH
 		/// <returns>A new <see cref="NHibernate.ISessionFactory"/>.</returns>
 		public ISessionFactory BuildSessionFactory()
 		{
-			logger.Debug("Building Configuration");
+			logger.Info("Building Configuration");
 			var cfg = BuildConfiguration();
-			logger.Debug("Building Session Factory");
+			logger.Info("Building Session Factory");
 			var sf = cfg.BuildSessionFactory();
-			logger.Debug("Built Session Factory");
+			logger.Info("Built Session Factory");
 			return sf;
 		}
 

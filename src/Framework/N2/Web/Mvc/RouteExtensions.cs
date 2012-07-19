@@ -131,11 +131,39 @@ namespace N2.Web.Mvc
 			return null;
 		}
 
+		internal class QueryStringOutput : QueryStringOutput<string, object>
+		{
+			public QueryStringOutput(RouteData data)
+				: base (data != null ? data.Values : null)
+			{
+			}
+
+			public QueryStringOutput(IDictionary<string, object> values)
+				: base(values)
+			{
+			}
+
+		}
+		internal class QueryStringOutput<K, V>
+		{
+			private IDictionary<K, V> values;
+
+			public QueryStringOutput(IDictionary<K, V> values)
+			{
+				this.values = values;
+			}
+
+			public override string ToString()
+			{
+				if (values == null)
+					return null;
+				return string.Join("&", values.Select(kvp => kvp.Key + "=" + kvp.Value).ToArray());
+			}
+		}
+
 		public static string ToQueryString<K, V>(this IDictionary<K, V> values)
 		{
-			if (values == null)
-				return null;
-			return string.Join("&", values.Select(kvp => kvp.Key + "=" + kvp.Value).ToArray());
+			return new QueryStringOutput<K, V>(values).ToString();
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace N2.Definitions.Runtime
 
 		private void DequeueRegistrations()
 		{
+
 			while (registrator.QueuedRegistrations.Count > 0)
 			{
 				var source = registrator.QueuedRegistrations.Dequeue();
@@ -68,13 +69,18 @@ namespace N2.Definitions.Runtime
 			{
 				if (definitions == null || rebuild)
 				{
+					logger.DebugFormat("Dequeuing {0} registrations", registrator.QueuedRegistrations.Count);
+					
 					DequeueRegistrations();
 
 					var vpp = vppProvider.Get();
 					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
+					logger.DebugFormat("Got {0} descriptions", descriptions);
 					definitions = BuildDefinitions(descriptions);
+					logger.Debug("Built definitions");
 
 					var files = descriptions.SelectMany(p => p.TouchedPaths).Distinct().ToList();
+					logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
 					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
 					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
