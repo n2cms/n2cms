@@ -54,14 +54,18 @@ namespace N2.Definitions.Runtime
 		{
 			var httpContext = httpContextProvider.Get();
 			if (httpContext == null)
+			{
+				logger.Warn("Trying to get tempaltes with no context");
 				return new TemplateDefinition[0];
+			}
 
 			try
 			{
 				httpContext.Request.GetType();
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				logger.Warn("Trying to get tempaltes with invalid context", ex);
 				return new TemplateDefinition[0];
 			}
 			
