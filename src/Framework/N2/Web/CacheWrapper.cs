@@ -55,7 +55,7 @@ namespace N2.Web
 			if(string.IsNullOrEmpty(sqlCacheDependency))
 				return new ContentCacheDependency(persister);
 
-			return new SqlCacheDependency(sqlCacheDependency, tablePrefix + "item");
+			return new SqlCacheDependency(sqlCacheDependency, tablePrefix + "Item");
 		}
 
 		public virtual void Add(string cacheKey, object value, CacheOptions options = null)
