@@ -51,7 +51,7 @@ namespace N2.Web.Mvc
 		{
 		}
 
-		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute)
+		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute, string[] namespaces = null)
 		{
 			managementPath = Url.ToRelative(Url.ResolveTokens(Url.ManagementUrlToken + "/"));
 			this.engine = engine;
@@ -59,8 +59,8 @@ namespace N2.Web.Mvc
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
 			this.innerRoute = innerRoute ?? new Route("{controller}/{action}", 
 				new RouteValueDictionary(new { action = "Index" }), 
-				new RouteValueDictionary(), 
-				new RouteValueDictionary(new { this.engine }), 
+				new RouteValueDictionary(),
+				new RouteValueDictionary(new { this.engine, namespaces }), 
 				this.routeHandler);
 		}
 
