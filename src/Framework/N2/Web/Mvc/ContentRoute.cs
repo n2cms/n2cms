@@ -223,6 +223,9 @@ namespace N2.Web.Mvc
 				?? ResolveContent(context.Request.QueryString, ContentItemKey);
 			var page = ResolveContent(context.Request.QueryString, ContentPageKey);
 
+			if (part == null && page == null)
+				return null;
+
 			routeData.ApplyCurrentPath(new PathData(page ?? Find.ClosestPage(part), part));
 			routeData.DataTokens[ContentEngineKey] = engine;
 
