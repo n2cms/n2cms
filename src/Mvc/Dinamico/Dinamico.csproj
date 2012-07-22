@@ -256,6 +256,27 @@
   <ItemGroup>
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
+      <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
+      <Name>N2.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Razor\N2.Razor.csproj">
+      <Project>{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}</Project>
+      <Name>N2.Razor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcTemplates\N2.Management.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Management</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
