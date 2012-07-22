@@ -90,8 +90,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 		[EditableUserControl(UserControlPath = "~/Areas/Tests/Uc.ascx")]
 		public virtual string EditableUserControl { get; set; }
 
-		[N2.Details.EditableDetailCollection]
-		public virtual IEnumerable<ContentItem> EditableDetailCollection { get; set; }
+		[N2.Details.EditableMultipleItemSelection]
+		public virtual IEnumerable<ContentItem> EditableMultipleItemSelection { get; set; }
+
+		[N2.Details.EditableItemSelection]
+		public virtual ContentItem EditableItemSelection { get; set; }
 	}
 }
 #endif

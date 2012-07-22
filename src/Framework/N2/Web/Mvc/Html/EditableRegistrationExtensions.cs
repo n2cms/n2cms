@@ -69,13 +69,13 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-		public static EditableBuilder<EditableDetailCollectionAttribute> ListBox(this IContentRegistration registration, string name, Func<IEnumerable<ContentItem>> getContentItems)
+		public static EditableBuilder<EditableMultipleItemSelectionAttribute> ListBox(this IContentRegistration registration, string name, Func<IEnumerable<ContentItem>> getContentItems)
 		{
-			return registration.RegisterEditable<EditableDetailCollectionAttribute>(new CustomListBoxAttribute(name) { Title = name })
+			return registration.RegisterEditable<EditableMultipleItemSelectionAttribute>(new CustomListBoxAttribute(name) { Title = name })
 			  .Configure(e => ((CustomListBoxAttribute)e).ContentItemsGetter = getContentItems);
 		}
 
-		class CustomListBoxAttribute : EditableDetailCollectionAttribute
+		class CustomListBoxAttribute : EditableMultipleItemSelectionAttribute
 		{
 			public CustomListBoxAttribute(string detailCollection)
 			{
@@ -89,7 +89,7 @@ namespace N2.Web.Mvc.Html
 				return ContentItemsGetter().Select(i => new ListItem(i.Title, i.ID.ToString())).ToArray();
 			}
 
-			protected override IList<ContentItem> GetDataItemsByIds(params int[] ids)
+			protected override IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
 			{
 				var items = ContentItemsGetter().ToList();
 				return items.Where(i => ids.Contains(i.ID)).ToList();
