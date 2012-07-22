@@ -69,33 +69,36 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-		public static EditableBuilder<EditableMultipleItemSelectionAttribute> ListBox(this IContentRegistration registration, string name, Func<IEnumerable<ContentItem>> getContentItems)
+		public static EditableBuilder<EditableMultipleItemSelectionAttribute> MultipleItemSelection(this IContentRegistration registration, string name, Type linkedType, Type excludedType = null)
 		{
-			return registration.RegisterEditable<EditableMultipleItemSelectionAttribute>(new CustomListBoxAttribute(name) { Title = name })
-			  .Configure(e => ((CustomListBoxAttribute)e).ContentItemsGetter = getContentItems);
+			return registration.RegisterEditable<EditableMultipleItemSelectionAttribute>(new EditableMultipleItemSelectionAttribute
+			{
+				LinkedType = linkedType,
+				ExcludedType = excludedType ?? typeof(ISystemNode),
+				Title = name,
+				Name = name
+			});
 		}
 
-		class CustomListBoxAttribute : EditableMultipleItemSelectionAttribute
+		public static EditableBuilder<EditableMultipleItemSelectionAttribute> MultipleItemSelection(this IContentRegistration registration, string name, Func<IEnumerable<ContentItem>> getContentItems)
 		{
-			public CustomListBoxAttribute(string detailCollection)
+			return registration.RegisterEditable<EditableMultipleItemSelectionAttribute>(new CustomMultipleItemSelection
 			{
-				Name = detailCollection;
-			}
+				Title = name,
+				Name = name,
+				CustomItemsGetter = () => getContentItems().Select(ci => new ListItem(ci.Title, ci.ID.ToString()))
+			});
+		}
 
-			public Func<IEnumerable<ContentItem>> ContentItemsGetter { get; set; }
-
+		class CustomMultipleItemSelection : EditableMultipleItemSelectionAttribute
+		{
 			protected override ListItem[] GetListItems()
 			{
-				return ContentItemsGetter().Select(i => new ListItem(i.Title, i.ID.ToString())).ToArray();
+				return CustomItemsGetter().ToArray();
 			}
 
-			protected override IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
-			{
-				var items = ContentItemsGetter().ToList();
-				return items.Where(i => ids.Contains(i.ID)).ToList();
-			}
+			public Func<IEnumerable<ListItem>> CustomItemsGetter { get; set; }
 		}
-
 
 		public static EditableBuilder<EditableFileUploadAttribute> FileUpload(this IContentRegistration registration, string name, string title = null)
 		{

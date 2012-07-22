@@ -13,18 +13,17 @@ namespace N2.Details
 {
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{
-		public Type LinkedType { get; protected set; }
+		public Type LinkedType { get; set; }
 		public Type ExcludedType { get; set; }
 		public int SearchTreshold { get; set; }
-		public bool IncludePages { get; set; }
-		public bool IncludeParts { get; set; }
-		
+		public EditableItemSelectionFilter Include { get; set; }
+
 		public EditableItemSelectionAttribute()
 		{
 			LinkedType = typeof(ContentItem);
 			ExcludedType = typeof(ISystemNode);
 			SearchTreshold = 20;
-			IncludePages = true;
+			Include = EditableItemSelectionFilter.Pages;
 		}
 
 		public EditableItemSelectionAttribute(Type linkedType)
@@ -66,15 +65,20 @@ namespace N2.Details
 			if (ExcludedType != null)
 				query = query.And.Type.NotEq(ExcludedType);
 
-			if (IncludePages && !IncludeParts)
+			if (!Is(EditableItemSelectionFilter.Pages))
 				query = query.And.ZoneName.IsNull();
-			else if (!IncludePages && IncludeParts)
+			if (!Is(EditableItemSelectionFilter.Parts))
 				query = query.And.ZoneName.IsNull(false);
 
 			var items = query.Select("ID", "Title");
 
 			return items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString()))
 				.ToArray();
+		}
+
+		private bool Is(EditableItemSelectionFilter filter)
+		{
+			return (filter & Include) == filter;
 		}
 
 		protected virtual IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
