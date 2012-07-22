@@ -281,6 +281,7 @@
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />

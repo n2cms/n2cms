@@ -29,7 +29,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
     [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
     [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
-    public class RootPage : ContentItem, IRootPage
+    public class RootPage : ContentItem, IRootPage, ISystemNode
     {
         public override string Url
         {

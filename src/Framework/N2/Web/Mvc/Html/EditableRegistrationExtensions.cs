@@ -76,9 +76,10 @@ namespace N2.Web.Mvc.Html
 
     class CustomListBoxAttribute : EditableDetailCollectionAttribute
 		{
-    	public CustomListBoxAttribute(string detailCollection) : base(detailCollection)
-    	{
-    	}
+    		public CustomListBoxAttribute(string detailCollection)
+    		{
+				Name = detailCollection;
+    		}
 
 			public Func<IEnumerable<ContentItem>> ContentItemsGetter { get; set; }
 			protected override Func<IEnumerable<ContentItem>> GetContentItemsGetter()

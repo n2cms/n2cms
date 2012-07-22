@@ -7,45 +7,40 @@ using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Web.UI.WebControls;
 using NHibernate.Linq;
+using N2.Definitions;
 
 namespace N2.Details
 {
 	public class EditableDetailCollectionAttribute : EditableDropDownAttribute
 	{
 		public Type LinkedType { get; private set; }
-		public string DetailCollection { get; private set; }
+		public Type ExcludedType { get; set; }
 		public int SearchTreshold { get; set; }
 		public bool EvictAfterLoad { get; set; }
+		public bool IncludePages { get; set; }
+		public bool IncludeParts { get; set; }
 
-		public EditableDetailCollectionAttribute(string detailCollection)
+		public EditableDetailCollectionAttribute()
 		{
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
 			LinkedType = typeof(ContentItem);
-			DetailCollection = detailCollection;
-			Name = detailCollection;
+			ExcludedType = typeof(ContentItem);
 			SearchTreshold = 20;
-			EvictAfterLoad = true;
+			EvictAfterLoad = false;
+			IncludePages = true;
 		}
 
-		public EditableDetailCollectionAttribute(Type linkedType, string detailCollection)
+		public EditableDetailCollectionAttribute(Type linkedType)
+			: this()
 		{
-			PersistAs = PropertyPersistenceLocation.DetailCollection;
 			LinkedType = linkedType;
-			DetailCollection = detailCollection;
-			Name = detailCollection;
-			SearchTreshold = 20;
-			EvictAfterLoad = true;
 		}
 
-		public EditableDetailCollectionAttribute(Type linkedType, string detailCollection, string title, int sortOrder)
+		public EditableDetailCollectionAttribute(Type linkedType, string title, int sortOrder)
 			: base(title, sortOrder)
 		{
-			PersistAs = PropertyPersistenceLocation.DetailCollection;
-			LinkedType = linkedType;
-			DetailCollection = detailCollection;
-			Name = detailCollection;
-			SearchTreshold = 20;
-			EvictAfterLoad = true;
+			Title = title;
+			SortOrder = sortOrder;
 		}
 
 		protected override System.Web.UI.Control AddEditor(System.Web.UI.Control container)
@@ -88,7 +83,6 @@ namespace N2.Details
 
 			return items
 				.Select(item =>
-
 								new ListItem(
 									item.Title,
 									item.ID.ToString(CultureInfo.InvariantCulture)))
@@ -108,17 +102,23 @@ namespace N2.Details
 
 		protected virtual IList<ContentItem> GetDataItems()
 		{
-			var items = Find.Items.Where
-				.Type.Eq(LinkedType)
-				.And
-				.State.Eq(ContentState.Published)
-				.Select();
+			var query = Find.Items
+				.Where.Type.Eq(LinkedType)
+				.And.Type.NotEq(typeof(ISystemNode))
+				.And.State.Eq(ContentState.Published);
+
+			if (IncludePages && !IncludeParts)
+				query = query.And.ZoneName.IsNull();
+			else if (!IncludePages && IncludeParts)
+				query = query.And.ZoneName.IsNull(false);
+
+			var items = query.Select();
 
 			// Terrible hack to make sure large collections are not persisted after
 			// they have been loaded, killing your save performance
 			if (EvictAfterLoad)
 			{
-				var session = Context.Current.Resolve<ISessionProvider>().OpenSession.Session;
+				var session = Engine.Resolve<ISessionProvider>().OpenSession.Session;
 				items.ForEach(session.Evict);
 			}
 
@@ -135,7 +135,7 @@ namespace N2.Details
 			// they have been loaded, killing your save performance
 			if (EvictAfterLoad)
 			{
-				var session = Context.Current.Resolve<ISessionProvider>().OpenSession.Session;
+				var session = Engine.Resolve<ISessionProvider>().OpenSession.Session;
 				items.ForEach(session.Evict);
 			}
 
@@ -175,9 +175,9 @@ namespace N2.Details
 																 select (int)ConvertToValue(checkboxItem.Value)).ToList();
 
 			// Check whether there were any changes
-			var hasChanges =
-				linkedItems.Keys.Any(selectedLinkedItems.Contains) == false ||
-				selectedLinkedItems.Any(linkedItems.ContainsKey) == false;
+			var hasChanges = linkedItems.Keys.Any(selectedLinkedItems.Contains) == false 
+				|| selectedLinkedItems.Any(linkedItems.ContainsKey) == false 
+				|| linkedItems.Count != selectedLinkedItems.Count;
 
 			// Only hook up items when there were changes
 			if (hasChanges)
@@ -186,7 +186,7 @@ namespace N2.Details
 				var linksToAdd = GetDataItemsByIds(selectedLinkedItems.ToArray());
 
 				// Replace DetailCollection
-				item.GetDetailCollection(DetailCollection, true).Replace(linksToAdd);
+				item.GetDetailCollection(Name, true).Replace(linksToAdd);
 			}
 
 			return hasChanges;
@@ -194,7 +194,7 @@ namespace N2.Details
 
 		protected virtual Dictionary<int, ContentItem> GetCurrentDetailLinks(ContentItem item)
 		{
-			var detailLinks = item.GetDetailCollection(DetailCollection, false);
+			var detailLinks = item.GetDetailCollection(Name, false);
 
 			var childrenDictionary = new Dictionary<int, ContentItem>();
 			if (detailLinks != null)

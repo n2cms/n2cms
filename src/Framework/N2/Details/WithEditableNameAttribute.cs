@@ -25,7 +25,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableNameAttribute()
-			: this("URI Name", 10)
+			: this("URI Name", -10)
 		{
 		}
 		/// <summary>

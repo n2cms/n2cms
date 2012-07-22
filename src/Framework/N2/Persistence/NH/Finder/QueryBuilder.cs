@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using N2.Collections;
@@ -239,9 +240,14 @@ namespace N2.Persistence.NH.Finder
 			if (value == null) throw new ArgumentNullException("value");
 
 			ItemDefinition definition = map.GetOrCreateDefinition(value);
-			if(definition == null)
+			if (definition == null)
 				throw new ArgumentException("Could not find the definition associated with the type '" + value.FullName + "'. Please ensure this is a non-abstract class deriving from N2.ContentItem and that it is decorated by the [Definition] attribute.");
 			return definition.Discriminator;
+		}
+
+		public IEnumerable<string> GetDiscriminators(Type value)
+		{
+			return map.GetDefinitions().Where(d => value.IsAssignableFrom(d.ItemType)).Select(d => d.Discriminator).Distinct();
 		}
 
 		const string selectHql = "select ci from ContentItem ci";

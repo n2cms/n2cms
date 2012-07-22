@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using N2.Persistence.Finder;
 
 namespace N2.Persistence.NH.Finder
@@ -21,13 +22,25 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Eq(Type value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.Equal, query.GetDiscriminator(value)));
+			if (value == null)
+				throw new ArgumentNullException("value", "Class cannot be null or undefined");
+
+			if (value == typeof(ContentItem) || value.IsAbstract || value.IsInterface)
+				query.Criterias.Add(new PropertyInHqlProvider<string>(op, "class", query.GetDiscriminators(value).ToArray()));
+			else
+				query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.Equal, query.GetDiscriminator(value)));
 			return query;
 		}
 
 		public IQueryAction NotEq(Type value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.NotEqual, query.GetDiscriminator(value)));
+			if (value == null)
+				throw new ArgumentNullException("value", "Class cannot be null or undefined");
+
+			if (value == typeof(ContentItem) || value.IsAbstract || value.IsInterface)
+				query.Criterias.Add(new PropertyNotInHqlProvider<string>(op, "class", query.GetDiscriminators(value).ToArray()));
+			else
+				query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.NotEqual, query.GetDiscriminator(value)));
 			return query;
 		}
 
