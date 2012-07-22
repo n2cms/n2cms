@@ -5,6 +5,7 @@ using N2.Definitions.Runtime;
 using N2.Details;
 using N2.Integrity;
 using N2.Definitions;
+using System.Web.UI.WebControls;
 
 namespace N2.Web.Mvc.Html
 {
@@ -69,27 +70,29 @@ namespace N2.Web.Mvc.Html
 		}
 
 		public static EditableBuilder<EditableDetailCollectionAttribute> ListBox(this IContentRegistration registration, string name, Func<IEnumerable<ContentItem>> getContentItems)
-    {
-      return registration.RegisterEditable<EditableDetailCollectionAttribute>(new CustomListBoxAttribute(name) { Title = name })
-        .Configure(e => ((CustomListBoxAttribute)e).ContentItemsGetter = getContentItems);
-    }
-
-    class CustomListBoxAttribute : EditableDetailCollectionAttribute
 		{
-    		public CustomListBoxAttribute(string detailCollection)
-    		{
-				Name = detailCollection;
-    		}
+			return registration.RegisterEditable<EditableDetailCollectionAttribute>(new CustomListBoxAttribute(name) { Title = name })
+			  .Configure(e => ((CustomListBoxAttribute)e).ContentItemsGetter = getContentItems);
+		}
 
-			public Func<IEnumerable<ContentItem>> ContentItemsGetter { get; set; }
-			protected override Func<IEnumerable<ContentItem>> GetContentItemsGetter()
+		class CustomListBoxAttribute : EditableDetailCollectionAttribute
+		{
+			public CustomListBoxAttribute(string detailCollection)
 			{
-        return ContentItemsGetter;
+				Name = detailCollection;
 			}
 
-			protected override Func<int[], IEnumerable<ContentItem>> GetContentItemsByIdGetter()
+			public Func<IEnumerable<ContentItem>> ContentItemsGetter { get; set; }
+
+			protected override ListItem[] GetListItems()
 			{
-				return ids => ContentItemsGetter.Invoke().Where(i => ids.Contains(i.ID));
+				return ContentItemsGetter().Select(i => new ListItem(i.Title, i.ID.ToString())).ToArray();
+			}
+
+			protected override IList<ContentItem> GetDataItemsByIds(params int[] ids)
+			{
+				var items = ContentItemsGetter().ToList();
+				return items.Where(i => ids.Contains(i.ID)).ToList();
 			}
 		}
 
@@ -168,7 +171,7 @@ namespace N2.Web.Mvc.Html
 		public static EditableBuilder<EditableSummaryAttribute> Summary(this IContentRegistration registration, string name, string title = null, string source = null)
 		{
 			return registration.RegisterEditable<EditableSummaryAttribute>(name, title)
-				.Configure(e => e.Source = source );
+				.Configure(e => e.Source = source);
 		}
 
 		public static Builder<RestrictParentsAttribute> RestrictParents(this IContentRegistration registration, AllowedTypes allowedTypes)

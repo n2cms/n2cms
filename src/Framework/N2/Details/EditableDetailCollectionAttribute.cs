@@ -8,6 +8,7 @@ using N2.Persistence.NH;
 using N2.Web.UI.WebControls;
 using NHibernate.Linq;
 using N2.Definitions;
+using N2.Persistence.Finder;
 
 namespace N2.Details
 {
@@ -19,12 +20,12 @@ namespace N2.Details
 		public bool EvictAfterLoad { get; set; }
 		public bool IncludePages { get; set; }
 		public bool IncludeParts { get; set; }
-
+		
 		public EditableDetailCollectionAttribute()
 		{
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
 			LinkedType = typeof(ContentItem);
-			ExcludedType = typeof(ContentItem);
+			ExcludedType = typeof(ISystemNode);
 			SearchTreshold = 20;
 			EvictAfterLoad = false;
 			IncludePages = true;
@@ -77,57 +78,28 @@ namespace N2.Details
 
 		protected override ListItem[] GetListItems()
 		{
-			var items = LinkedType == null
-											? new ContentItem[0]
-											: GetContentItemsGetter().Invoke();
+			var query = Engine.Content.Search.Find.Where.State.Eq(ContentState.Published);
 
-			return items
-				.Select(item =>
-								new ListItem(
-									item.Title,
-									item.ID.ToString(CultureInfo.InvariantCulture)))
+			if (LinkedType != null && LinkedType != typeof(ContentItem))
+				query = query.And.Type.Eq(LinkedType);
 
-				.ToArray();
-		}
-
-		protected virtual Func<IEnumerable<ContentItem>> GetContentItemsGetter()
-		{
-			return GetDataItems;
-		}
-
-		protected virtual Func<int[], IEnumerable<ContentItem>> GetContentItemsByIdGetter()
-		{
-			return GetDataItemsByIds;
-		}
-
-		protected virtual IList<ContentItem> GetDataItems()
-		{
-			var query = Find.Items
-				.Where.Type.Eq(LinkedType)
-				.And.Type.NotEq(typeof(ISystemNode))
-				.And.State.Eq(ContentState.Published);
+			if (ExcludedType != null)
+				query = query.And.Type.NotEq(ExcludedType);
 
 			if (IncludePages && !IncludeParts)
 				query = query.And.ZoneName.IsNull();
 			else if (!IncludePages && IncludeParts)
 				query = query.And.ZoneName.IsNull(false);
 
-			var items = query.Select();
+			var items = query.Select("ID", "Title");
 
-			// Terrible hack to make sure large collections are not persisted after
-			// they have been loaded, killing your save performance
-			if (EvictAfterLoad)
-			{
-				var session = Engine.Resolve<ISessionProvider>().OpenSession.Session;
-				items.ForEach(session.Evict);
-			}
-
-			return items;
+			return items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString()))
+				.ToArray();
 		}
 
 		protected virtual IList<ContentItem> GetDataItemsByIds(params int[] ids)
 		{
-			var items = Find.Items.Where
+			var items = Engine.Content.Search.Find.Where
 				.Property("ID").In(ids)
 				.Select();
 
@@ -172,18 +144,18 @@ namespace N2.Details
 			// Get a map of all selected items from UI
 			var selectedLinkedItems = (from ListItem checkboxItem in checkboxList.Items
 																 where checkboxItem.Selected
-																 select (int)ConvertToValue(checkboxItem.Value)).ToList();
+																 select (int)ConvertToValue(checkboxItem.Value)).ToArray();
 
 			// Check whether there were any changes
 			var hasChanges = linkedItems.Keys.Any(selectedLinkedItems.Contains) == false 
 				|| selectedLinkedItems.Any(linkedItems.ContainsKey) == false 
-				|| linkedItems.Count != selectedLinkedItems.Count;
+				|| linkedItems.Count != selectedLinkedItems.Length;
 
 			// Only hook up items when there were changes
 			if (hasChanges)
 			{
 				// Convert id array to ContentItems
-				var linksToAdd = GetDataItemsByIds(selectedLinkedItems.ToArray());
+				var linksToAdd = GetDataItemsByIds(selectedLinkedItems);
 
 				// Replace DetailCollection
 				item.GetDetailCollection(Name, true).Replace(linksToAdd);

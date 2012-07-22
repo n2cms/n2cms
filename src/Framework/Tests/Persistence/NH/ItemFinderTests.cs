@@ -815,7 +815,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void FindWithSelector()
+		public void FindCertainProperties()
 		{
 			var items = finder
 				.Where.Type.Eq(typeof(PersistableItem2))
@@ -825,6 +825,18 @@ namespace N2.Tests.Persistence.NH
 			items.Single()["Title"].ShouldBe("item1");
 			items.Single()["Name"].ShouldBe("item1");
 		}
+
+		//[Test]
+		//public void FindCertainPropertiesWithSelector()
+		//{
+		//    var items = finder
+		//        .Where.Type.Eq(typeof(PersistableItem2))
+		//        .And.Name.Eq("item1")
+		//        .Select(row => new { Title = row["Title"], Name = row["Name"] });
+
+		//    items.Single().Title.ShouldBe("item1");
+		//    items.Single().Name.ShouldBe("item1");
+		//}
 
 		[Test]
 		public void FindAllItemsIncludingVersions()

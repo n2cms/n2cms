@@ -24,4 +24,15 @@ namespace N2.Persistence.Finder
 		/// <returns>A number of items.</returns>
 		int Count();
 	}
+
+	//public static class QueryEndExtensions
+	//{
+	//    public static IEnumerable<TOut> Select<TOut>(this IQueryEnd ending, Expression<Func<IDictionary<string, object>, TOut>> selector)
+	//    {
+	//        LambdaExpression l = (LambdaExpression)selector;
+	//        //((NewExpression)l.Body)
+	//        //((ConstantExpression)((MethodCallExpression)((NewExpression)l.Body).Arguments[0]).Arguments[0]).Value
+	//        yield break;
+	//    }
+	//}
 }
