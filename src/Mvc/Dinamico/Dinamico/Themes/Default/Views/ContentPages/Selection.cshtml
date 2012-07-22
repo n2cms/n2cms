@@ -1,11 +1,12 @@
 ﻿@using N2
+@using N2.Linq
 @model Dinamico.Models.ContentPage
 
 @{
 	Content.Define(re => 
 	{
 		re.Title = "Selection";
-        re.ListBox("SelectFrom", () => Find.Items.Where.State.Eq(ContentState.Published).Select());
+		re.MultipleItemSelection("SelectFrom", typeof(Dinamico.Models.ContentPage));
 	});
 }
 
