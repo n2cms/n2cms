@@ -14,8 +14,6 @@ namespace N2.Details
 {
 	public class EditableMultipleItemSelectionAttribute : EditableItemSelectionAttribute
 	{
-		public bool EvictAfterLoad { get; set; }
-
 		public EditableMultipleItemSelectionAttribute()
 		{
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
@@ -42,21 +40,6 @@ namespace N2.Details
 			Configure(multiSelect);
 			container.Controls.Add(multiSelect);
 			return multiSelect;
-		}
-
-		protected override IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
-		{
-			var items = base.GetDataItemsByIds(ids);
-
-			// Terrible hack to make sure large collections are not persisted after
-			// they have been loaded, killing your save performance
-			if (EvictAfterLoad)
-			{
-				var session = Engine.Resolve<ISessionProvider>().OpenSession.Session;
-				items.ForEach(session.Evict);
-			}
-
-			return items;
 		}
 
 		protected override HashSet<int> GetStoredSelection(ContentItem item)
