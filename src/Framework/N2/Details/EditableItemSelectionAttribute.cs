@@ -83,6 +83,9 @@ namespace N2.Details
 
 		protected virtual IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
 		{
+			if (ids == null || ids.Length == 0)
+				return Enumerable.Empty<ContentItem>();
+
 			var items = Engine.Content.Search.Find.Where
 				.Property("ID").In(ids)
 				.Select();
