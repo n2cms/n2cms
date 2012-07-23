@@ -25,7 +25,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableNameAttribute()
-			: this("URI Name", 10)
+			: this("URI Name", -10)
 		{
 		}
 		/// <summary>
@@ -138,6 +138,7 @@ namespace N2.Details
 			ne.ShowKeepUpdated = ShowKeepUpdated;
 			ne.KeepUpdated.Text = KeepUpdatedText;
 			ne.KeepUpdated.ToolTip = KeepUpdatedToolTip;
+            ne.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
 			container.Controls.Add(ne);
 			if (Focus) ne.Focus();
 			return ne;

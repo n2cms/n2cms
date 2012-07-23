@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,12 @@ using N2.Engine;
 
 namespace N2.Persistence.Proxying
 {
+	public class AttributedProperty
+	{
+		public PropertyInfo Property { get; set; }
+		public IInterceptableProperty Attribute { get; set; }
+	}
+
 	/// <summary>
 	/// Creates a proxy that rewires auto-generated properties to detail get/set.
 	/// </summary>
@@ -45,32 +52,53 @@ namespace N2.Persistence.Proxying
 			}
 		}
 
-		private IEnumerable<Func<IInterceptableType, bool>> GetSaveSetters(IEnumerable<PropertyInfo> interceptableProperties)
+		private IEnumerable<Func<IInterceptableType, bool>> GetSaveSetters(IEnumerable<AttributedProperty> interceptableProperties)
 		{
-			foreach (var pi in interceptableProperties)
+			foreach (var property in interceptableProperties)
 			{
+				var pi = property.Property;
 				Type propertyType = pi.PropertyType;
 				string propertyName = pi.Name;
 				MethodInfo getter = pi.GetGetMethod();
 				MethodInfo setter = pi.GetSetMethod();
 
-				yield return (interceptable) =>
-					{
-						object propertyValue = getter.Invoke(interceptable, null);
-						object detailValue = interceptable.GetValue(propertyName);
+				if (property.Attribute.PersistAs == PropertyPersistenceLocation.DetailCollection)
+				{
+					if (!typeof(IEnumerable).IsAssignableFrom(propertyType))
+						throw new InvalidOperationException("The property type of '" + propertyName + "' on '" + pi.DeclaringType + "' does not implement IEnumerable which is required for properties stored in a detail collection");
 
-						if (propertyValue == null && detailValue == null)
-							return false;
-						if (propertyValue != null && propertyValue.Equals(detailValue))
-							return false;
-						
-						interceptable.SetValue(propertyName, propertyValue, propertyType);
-						return true;
-					};
+					yield return (interceptable) =>
+						{
+							IEnumerable propertyValue = (IEnumerable)getter.Invoke(interceptable, null);
+							var collectionValues = interceptable.GetValues(propertyName);
+
+							if (propertyValue == null && collectionValues == null)
+								return false;
+
+							interceptable.SetValues(propertyName, collectionValues);
+							return true;
+						};
+				}
+				else
+				{
+					yield return (interceptable) =>
+						{
+							object propertyValue = getter.Invoke(interceptable, null);
+							object detailValue = interceptable.GetValue(propertyName);
+
+							if (propertyValue == null && detailValue == null)
+								return false;
+							if (propertyValue != null && propertyValue.Equals(detailValue))
+								return false;
+
+							interceptable.SetValue(propertyName, propertyValue, propertyType);
+							return true;
+						};
+				}
 			}
 		}
 
-		private IEnumerable<PropertyInfo> GetInterceptableProperties(Type type)
+		private IEnumerable<AttributedProperty> GetInterceptableProperties(Type type)
 		{
 			for (Type t = type; t != null; t = t.BaseType)
 			{
@@ -89,7 +117,7 @@ namespace N2.Persistence.Proxying
 					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
 						continue;
 
-					yield return property;
+					yield return new AttributedProperty { Property = property, Attribute = attributes.First() };
 				}
 			}
 		}
@@ -104,6 +132,11 @@ namespace N2.Persistence.Proxying
 		}
 
 		public override bool OnSaving(object instance)
+		{
+			return ApplyToDetailsOnUnproxiedInstance(instance);
+		}
+
+		private bool ApplyToDetailsOnUnproxiedInstance(object instance)
 		{
 			if (instance is IInterceptedType)
 				return false;

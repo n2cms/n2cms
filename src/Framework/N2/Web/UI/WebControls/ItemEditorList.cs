@@ -10,7 +10,6 @@ using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.Parts;
-using log4net;
 
 namespace N2.Web.UI.WebControls
 {
@@ -18,7 +17,7 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Fields
 
-		private readonly ILog logger = LogManager.GetLogger(typeof(ItemEditorList));
+		private readonly Engine.Logger<ItemEditorList> logger;
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
 		private readonly Panel addPanel = new Panel { CssClass = "addArea" };
 		private List<string> addedDefinitions = new List<string>();
@@ -67,7 +66,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the zone name to list.</summary>
 		public string ZoneName
 		{
-			get { return (string) (ViewState["ZoneName"] ?? ""); }
+			get { return (string)ViewState["ZoneName"]; }
 			set { ViewState["ZoneName"] = value; }
 		}
 
@@ -161,15 +160,17 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
+			if (!string.IsNullOrEmpty(Label))
+			{
+				Controls.AddAt(0, new Label { Text = Label, CssClass = "editorLabel" });
+			}
+
 			foreach (ContentItem item in GetItems())
 			{
 				CreateItemEditor(item);
 			}
 
-			if (!string.IsNullOrEmpty(Label))
-			{
-				addPanel.Controls.Add(new Label { Text = Label, CssClass = "editorLabel" });
-			}
+			addPanel.Controls.Add(new Label { Text = Utility.GetLocalResourceString("Add") ?? "Add", CssClass = "addLabel" });
 
 			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{
@@ -180,7 +181,7 @@ namespace N2.Web.UI.WebControls
 
 				var button = new LinkButton
 				{
-					ID = definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
+					ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
 					Text = string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
 					ToolTip = definition.ToolTip,
 					CausesValidation = false
@@ -208,7 +209,9 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ParentItem != null)
 			{
-				IList<ContentItem> items = ParentItem.GetChildren(ZoneName);
+				IList<ContentItem> items = string.IsNullOrEmpty(ZoneName)
+					? ParentItem.GetChildren()
+					: ParentItem.GetChildren(ZoneName);
 				foreach (string discriminator in AddedDefinitions)
 				{
 					ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));

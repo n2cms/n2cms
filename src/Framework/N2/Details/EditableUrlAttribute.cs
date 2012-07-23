@@ -68,6 +68,7 @@ namespace N2.Details
 			selector.ID = this.Name;
 			selector.AvailableModes = AvailableModes;
 			selector.DefaultMode = OpeningMode;
+            selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 
 			container.Controls.Add(selector);
 

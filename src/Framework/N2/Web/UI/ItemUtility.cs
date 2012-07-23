@@ -12,6 +12,24 @@ namespace N2.Web.UI
 	/// </summary>
     public static class ItemUtility
     {
+		public static Control Closest(this Control control, Func<Control, bool> predicate)
+		{
+			return Closest<Control>(control, predicate);
+		}
+
+		public static T Closest<T>(this Control control, Func<T, bool> predicate) where T: Control
+		{
+			if (control == null)
+				return null;
+
+			if (control is T && predicate((T)control))
+			{
+				return (T)control;
+			}
+
+			return Closest<T>(control.Parent, predicate);
+		}
+
 		public static T FindInParents<T>(Control parentControl) where T:class
 		{
 			if (parentControl == null || parentControl is T)

@@ -154,6 +154,7 @@
 											$(Examples-Folder)\**\bin\Debug\*.*;
 											$(Examples-Folder)\**\bin\Debug\*.*;
 											$(Examples-Folder)\**\App_Data\SearchIndex\**\*;
+											$(Examples-Folder)\**\App_Data\Temp\**\*;
 											$(Examples-Folder)\**\*.pdb;
 											$(Examples-Folder)\**\*WithProjectReferences.*" />
 		</ItemGroup>

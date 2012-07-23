@@ -73,11 +73,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
     </Reference>
@@ -122,10 +117,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilterTests.cs" />
+    <Compile Include="Collections\ChildCollectionStateTests.cs" />
     <Compile Include="Collections\CompositeFilterTests.cs" />
     <Compile Include="Collections\FilterCompositionTests.cs" />
     <Compile Include="Collections\FilterTests.cs" />
     <Compile Include="Collections\ItemListTests.cs" />
+    <Compile Include="Collections\Items\FirstPart.cs" />
     <Compile Include="Collections\PublishedFilterTests.cs" />
     <Compile Include="Collections\NavigationFilterTests.cs" />
     <Compile Include="Collections\VisibleFilterTests.cs" />
@@ -148,10 +145,12 @@
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\SiblingInsertionTests.cs" />
     <Compile Include="Definitions\RestrictCardinalityTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\DetailRemoveTests.cs" />
     <Compile Include="Definitions\Runtime\ContentRegistrationTests.cs" />
+    <Compile Include="Definitions\SortChildrenTests.cs" />
     <Compile Include="Definitions\Static\DescribablePage.cs" />
     <Compile Include="Definitions\Static\DescribablePart.cs" />
     <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
@@ -173,6 +172,7 @@
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
     <Compile Include="Edit\WhileNavigatingToTheManagementInterface.cs" />
+    <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
     <Compile Include="Engine\Items\ItemAC.cs" />
     <Compile Include="Engine\ServiceContainerTests.cs" />

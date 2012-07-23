@@ -18,6 +18,7 @@ using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using N2.Persistence.Sources;
+using N2.Persistence.Behaviors;
 
 namespace N2.Tests
 {
@@ -89,6 +90,7 @@ namespace N2.Tests
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<ContentItem> itemRepository, INHRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
             persister = new ContentPersister(itemRepository, linkRepository);
+			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
@@ -118,7 +120,7 @@ namespace N2.Tests
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
 		{
-			return new UrlParser(persister, wrapper, host, new HostSection());
+			return new UrlParser(persister, wrapper, host, new N2.Plugin.ConnectionMonitor(), new HostSection());
 		}
 
 		public static EngineSection SetupEngineSection()

@@ -43,6 +43,7 @@ namespace N2.Details
 			SelectingUploadCompositeControl control = (SelectingUploadCompositeControl)base.AddEditor(container);
 			control.SelectorControl.SelectableExtensions = FileSelector.AudioExtensions + "," + FileSelector.ImageExtensions + "," + FileSelector.MovieExtensions;
 			control.SelectorControl.SelectableTypes = typeof(N2.Definitions.IFileSystemFile).Name;
+            control.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			return control;
 		}
 

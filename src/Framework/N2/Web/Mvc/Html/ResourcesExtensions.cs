@@ -25,16 +25,18 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(N2.Resources.Register.JQueryPath.ResolveUrlTokens());
 		}
 
-		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator)
+		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator, bool includeJQuery = true)
 		{
-			return registrator.JQuery()
-				.JavaScript(Register.JQueryPluginsPath.ResolveUrlTokens());
+			if(includeJQuery)
+				registrator = registrator.JQuery();
+			return registrator.JavaScript(Register.JQueryPluginsPath.ResolveUrlTokens());
 		}
 
-		public static ResourcesHelper JQueryUi(this ResourcesHelper registrator)
+		public static ResourcesHelper JQueryUi(this ResourcesHelper registrator, bool includeJQuery = true)
 		{
-			return registrator.JQuery()
-				.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
+			if (includeJQuery)
+				registrator = registrator.JQuery();
+			return registrator.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)

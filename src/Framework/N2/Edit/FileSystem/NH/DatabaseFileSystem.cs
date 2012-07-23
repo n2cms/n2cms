@@ -11,7 +11,6 @@ using N2.Web;
 using N2.Engine;
 using System.Diagnostics;
 using NHibernate;
-using log4net;
 
 namespace N2.Edit.FileSystem.NH
 {
@@ -21,7 +20,7 @@ namespace N2.Edit.FileSystem.NH
 	[Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
 	public class DatabaseFileSystem : IFileSystem
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (DatabaseFileSystem));
+		private readonly Engine.Logger<DatabaseFileSystem> logger;
 		private readonly ISessionProvider _sessionProvider;
 		private const long UploadFileSize = long.MaxValue;
 		private int chunkSize;
@@ -37,6 +36,7 @@ namespace N2.Edit.FileSystem.NH
 			return Session.CreateCriteria<FileSystemItem>()
                 .Add(Restrictions.Eq("Path.Parent", path.ToString()))
                 .Add(criterion)
+				.AddOrder(Order.Asc("Path.Name"))
                 .List<FileSystemItem>();
         }
 

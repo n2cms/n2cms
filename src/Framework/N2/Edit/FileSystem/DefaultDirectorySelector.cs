@@ -72,8 +72,8 @@ namespace N2.Edit.FileSystem
 			if (!string.IsNullOrEmpty(defaultFolderPath))
 				return defaultFolderPath;
 
-			foreach (string folder in host.CurrentSite.UploadFolders)
-				return folder;
+			foreach (var folder in host.CurrentSite.UploadFolders)
+				return folder.Path;
 			foreach (string folder in uploadFolders)
 				return folder;
 

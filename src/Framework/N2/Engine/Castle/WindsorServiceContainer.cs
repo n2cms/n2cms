@@ -12,7 +12,6 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Naming;
 using Castle.Windsor;
 using N2.Plugin;
-using log4net;
 
 namespace N2.Engine.Castle
 {
@@ -22,7 +21,7 @@ namespace N2.Engine.Castle
 	public class WindsorServiceContainer : ServiceContainerBase
 	{
 		private readonly IWindsorContainer container;
-		private readonly ILog logger = LogManager.GetLogger(typeof (WindsorServiceContainer));
+		private readonly Engine.Logger<WindsorServiceContainer> logger;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> 
@@ -64,6 +63,8 @@ namespace N2.Engine.Castle
 
 		public override void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
 		{
+			logger.Info("Add component " + classType);
+
 			var registration = Component.For(serviceType)
 				.ImplementedBy(classType);
 
@@ -77,11 +78,15 @@ namespace N2.Engine.Castle
 
 		public override void AddComponentInstance(string key, Type serviceType, object instance)
 		{
+			logger.Info("Add component instance " + instance);
+			
 			container.Register(Component.For(serviceType).Instance(instance).Named(key));
 		}
 
 		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
+			logger.Info("Add component " + classType);
+
 			var registration = Component.For(serviceType).ImplementedBy(classType).Named(key);
 			var constructorParams = classType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).Take(1).SelectMany(c => c.GetParameters()).ToArray();
 			if (constructorParams.Any(p => p.ParameterType.IsArray))
@@ -135,6 +140,8 @@ namespace N2.Engine.Castle
 
 		public override void StartComponents()
 		{
+			logger.Info("Start startable components");
+
 			container.AddFacility<StartableFacility>();
 			container.AddFacility<AutoStartFacility>();
 		}
@@ -144,7 +151,7 @@ namespace N2.Engine.Castle
 		/// </summary>
 		class AutoStartFacility : AbstractFacility
 		{
-			private readonly ILog logger = LogManager.GetLogger(typeof (AutoStartFacility));
+			private readonly Engine.Logger<AutoStartFacility> logger;
 			private readonly ArrayList waitingList = new ArrayList();
 
 			// Don't check the waiting list while this flag is set as this could result in
@@ -206,6 +213,8 @@ namespace N2.Engine.Castle
 			private void OnComponentModelCreated(ComponentModel model)
 			{
 				bool startable = CheckIfComponentImplementsIStartable(model);
+
+				logger.DebugFormat("Created component ot type {0}, startable = {1}", model.Service, startable);
 
 				model.ExtendedProperties["startable"] = startable;
 
@@ -286,7 +295,7 @@ namespace N2.Engine.Castle
 			#region Start & Stop Concern
 			class StartConcern : ILifecycleConcern, ICommissionConcern
 			{
-				private readonly ILog logger = LogManager.GetLogger(typeof (StartConcern));
+				private readonly Engine.Logger<StartConcern> logger;
 				private static readonly StartConcern instance = new StartConcern();
 
 				private StartConcern()

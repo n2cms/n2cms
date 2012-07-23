@@ -15,7 +15,7 @@ namespace N2.Security
 
         public override int DeleteInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
         {
-            Trace.TraceWarning("ContentProfileProvider.DeleteInactiveProfiles Not Implemented");
+			Engine.Logger.Warn("ContentProfileProvider.DeleteInactiveProfiles Not Implemented");
             return 0;
         }
 
@@ -47,7 +47,7 @@ namespace N2.Security
 
         public override ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
-            Trace.TraceWarning("ContentProfileProvider.FindInactiveProfilesByUserName Not Implemented");
+			Engine.Logger.Warn("ContentProfileProvider.FindInactiveProfilesByUserName Not Implemented");
             totalRecords = 0;
             return new ProfileInfoCollection();
         }
@@ -73,7 +73,7 @@ namespace N2.Security
 
         public override ProfileInfoCollection GetAllInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
-            Trace.TraceWarning("ContentProfileProvider.GetAllInactiveProfiles Not Implemented");
+			Engine.Logger.Warn("ContentProfileProvider.GetAllInactiveProfiles Not Implemented");
             totalRecords = 0;
             return new ProfileInfoCollection();
         }
@@ -94,7 +94,7 @@ namespace N2.Security
 
         public override int GetNumberOfInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
         {
-            Trace.TraceWarning("ContentProfileProvider.GetNumberOfInactiveProfiles Not Implemented");
+			Engine.Logger.Warn("ContentProfileProvider.GetNumberOfInactiveProfiles Not Implemented");
             return 0;
         }
 

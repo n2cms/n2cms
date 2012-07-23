@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using N2.Plugin;
-using log4net;
 
 namespace N2.Engine.MediumTrust
 {
@@ -13,7 +12,7 @@ namespace N2.Engine.MediumTrust
 	{
 		bool isInitialized = false;
 
-		private readonly ILog logger = LogManager.GetLogger(typeof (MediumTrustServiceContainer));
+		private readonly Engine.Logger<MediumTrustServiceContainer> logger;
 		private readonly IDictionary<Type, Type> waitingList = new Dictionary<Type, Type>();
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Func<Type, object>> resolvers = new Dictionary<Type, Func<Type, object>>();

@@ -11,8 +11,8 @@ namespace N2.Web
 	/// </summary>
 	public class MultipleSitesParser : UrlParser
 	{
-		public MultipleSitesParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
-			: base(persister, webContext, host, config)
+		public MultipleSitesParser(IPersister persister, IWebContext webContext, IHost host, N2.Plugin.ConnectionMonitor connections, HostSection config)
+			: base(persister, webContext, host, connections, config)
 		{
 		}
 
@@ -39,6 +39,8 @@ namespace N2.Web
 		/// <returns>The configured start page.</returns>
 		protected override ContentItem GetStartPage(Url url)
 		{
+			if (!IsOnline) return null;
+
 			if (!url.IsAbsolute)
 				return StartPage;
 			Site site = host.GetSite(url) ?? host.CurrentSite;

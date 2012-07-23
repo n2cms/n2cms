@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using N2.Persistence;
 using N2.Persistence.Search;
 using N2.Details;
 using N2.Definitions;
@@ -19,7 +21,7 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<bool>("BoolProperty", value); }
 		}
 
-		[EditableNumber]
+		[EditableNumber(DefaultValue = 666)]
 		public virtual int IntProperty
 		{
 			get { return (int)(GetDetail("IntProperty") ?? 0); }
@@ -48,7 +50,26 @@ namespace N2.Tests.Persistence.Definitions
 			get { return (ContentItem)GetDetail("LinkProperty"); }
 			set { SetDetail<ContentItem>("LinkProperty", value); }
 		}
-		public virtual object ObjectProperty
+
+		[Editable(Name = "ContentLinks", PersistAs = PropertyPersistenceLocation.DetailCollection)]
+		public virtual IEnumerable<ContentItem> ContentLinks
+		{
+			get
+			{
+				var dc = GetDetailCollection("ContentLinks", false);
+				if (dc == null)
+					return new ContentItem[0];
+
+				return dc.Enumerate<ContentItem>();
+			}
+			set
+			{
+				var dc = GetDetailCollection("ContentLinks", true);
+				dc.Replace(value);
+			}
+		}
+
+        public virtual object ObjectProperty
 		{
 			get { return (object)GetDetail("ObjectProperty"); }
 			set { SetDetail<object>("ObjectProperty", value); }
@@ -92,6 +113,13 @@ namespace N2.Tests.Persistence.Definitions
 
 		[Indexable]
 		public virtual string NonDetailOnlyGetterProperty { get { return "Lorem ipsum"; } }
+
+		[EditableTags]
+		public virtual IEnumerable<string> Tags
+		{
+			get { return GetDetailCollection("Tags", true).OfType<string>(); }
+			set { GetDetailCollection("Tags", true).Replace(value); }
+		}
 	}
 
 

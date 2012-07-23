@@ -2,6 +2,7 @@
 using System.Linq;
 using N2.Linq;
 using NUnit.Framework;
+using N2.Details;
 
 namespace N2.Extensions.Tests.Linq
 {
@@ -207,6 +208,43 @@ namespace N2.Extensions.Tests.Linq
 				.Where(i => i.DetailCollections
 					.Any(dc => dc.Details
 						.Any(d => d.StringValue == "hello")));
+
+			var root = query.Single();
+
+			Assert.That(root, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void Projection_ViaContentDetail()
+		{
+			var query = engine.Query<ContentDetail>()
+				.Where(cd => cd.StringValue == "hello")
+				.Select(cd => cd.EnclosingItem);
+
+			var root = query.Single();
+
+			Assert.That(root, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void Projection_ViaContentDetail_InArray()
+		{
+			var options = new string[] { "hello", "hello2", "hello2"};
+			var query = engine.Query<ContentDetail>()
+				.Where(cd => options.Contains(cd.StringValue))
+				.Select(cd => cd.EnclosingItem);
+
+			var root = query.Single();
+
+			Assert.That(root, Is.EqualTo(root));
+		}
+
+		[Test]
+		public void Projection_ViaContentDetail_CollectionProperty()
+		{
+			var query = engine.Query<ContentDetail>().Where(d => d.Name == "CollectionProperty")
+				.Select(d => d.EnclosingItem)
+				.Distinct();
 
 			var root = query.Single();
 

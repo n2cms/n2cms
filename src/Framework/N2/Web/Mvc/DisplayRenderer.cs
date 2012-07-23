@@ -9,7 +9,6 @@ using N2.Definitions.Runtime;
 using N2.Details;
 using N2.Web.UI.WebControls;
 using System.Diagnostics;
-using log4net;
 
 namespace N2.Web.Mvc
 {
@@ -19,7 +18,7 @@ namespace N2.Web.Mvc
 #endif
 		IDisplayRenderer where T : IDisplayable
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (DisplayRenderer<T>));
+		private readonly Engine.Logger<DisplayRenderer<T>> logger;
 		private bool isEditable = RenderHelper.DefaultEditable;
 		private bool isOptional = RenderHelper.DefaultOptional;
 		private bool swallowExceptions = RenderHelper.DefaultSwallowExceptions;

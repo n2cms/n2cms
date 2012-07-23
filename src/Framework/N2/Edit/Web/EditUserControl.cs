@@ -21,7 +21,7 @@ namespace N2.Edit.Web
         /// <summary>Helps to select items from query string.</summary>
         protected SelectionUtility Selection
         {
-            get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
+            get { return selection ?? (selection = (Page is EditPage) ? (Page as EditPage).Selection : new SelectionUtility(this, Engine)); }
             set { selection = value; }
         }
 

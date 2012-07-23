@@ -2,14 +2,13 @@ using System.Linq;
 using System.Diagnostics;
 using N2.Web;
 using N2.Engine;
-using log4net;
 
 namespace N2.Addons.UITests.Items
 {
 	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveRequestAdapter : RequestAdapter
 	{
-	    private readonly ILog logger = LogManager.GetLogger(typeof (AdaptiveRequestAdapter)); 
+		private readonly Engine.Logger<AdaptiveRequestAdapter> logger;
 
 		public override void AuthorizeRequest(PathData path, System.Security.Principal.IPrincipal user)
 		{

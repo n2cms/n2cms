@@ -18,54 +18,55 @@ using NHibernate;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
-using log4net;
 using Environment = NHibernate.Cfg.Environment;
 using N2.Plugin;
 using N2.Configuration;
+using N2.Details;
+using System.Web;
 
 namespace N2.Edit.Installation
 {
-    /// <summary>
-    /// Wraps functionality to request database status and generate n2's 
-    /// database schema on multiple database flavours.
-    /// </summary>
+	/// <summary>
+	/// Wraps functionality to request database status and generate n2's 
+	/// database schema on multiple database flavours.
+	/// </summary>
 	[Service]
 	public class InstallationManager
 	{
 		public const string InstallationAppPath = "Installation.AppPath";
 		public const string installationHost = "Installation.Host";
-    	private readonly ILog logger = LogManager.GetLogger(typeof (InstallationManager));
-		
+		private readonly Engine.Logger<InstallationManager> logger;
+
 		IConfigurationBuilder configurationBuilder;
 		ContentActivator activator;
-        Importer importer;
-        IPersister persister;
-        ISessionProvider sessionProvider;
-        IHost host;
-    	IWebContext webContext;
+		Importer importer;
+		IPersister persister;
+		ISessionProvider sessionProvider;
+		IHost host;
+		IWebContext webContext;
 		DefinitionMap map;
 		ConnectionMonitor connectionContext;
 		bool isDatabaseFileSystemEnbled = false;
 
 		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config)
 		{
-            this.host = host;
+			this.host = host;
 			this.map = map;
 			this.activator = activator;
-            this.importer = importer;
-            this.persister = persister;
-            this.sessionProvider = sessionProvider;
-            this.configurationBuilder = configurationBuilder;
-        	this.webContext = webContext;
+			this.importer = importer;
+			this.persister = persister;
+			this.sessionProvider = sessionProvider;
+			this.configurationBuilder = configurationBuilder;
+			this.webContext = webContext;
 			this.connectionContext = connectionContext;
 			this.isDatabaseFileSystemEnbled = config.Files.StorageLocation == FileStoreLocation.Database;
 		}
-        
+
 		NHibernate.Cfg.Configuration cfg;
-        protected NHibernate.Cfg.Configuration Cfg
-        {
-            get { return cfg ?? (cfg = configurationBuilder.BuildConfiguration()); }
-        }
+		protected NHibernate.Cfg.Configuration Cfg
+		{
+			get { return cfg ?? (cfg = configurationBuilder.BuildConfiguration()); }
+		}
 
 		public static string GetResourceString(string resourceKey)
 		{
@@ -77,7 +78,7 @@ namespace N2.Edit.Installation
 		const bool ConsoleOutput = false;
 		const bool DatabaseExport = true;
 		const bool NoDatabaseExport = false;
-			
+
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
 		{
@@ -101,7 +102,7 @@ namespace N2.Edit.Installation
 		public string ExportSchema()
 		{
 			StringBuilder sql = new StringBuilder();
-			using(StringWriter sw = new StringWriter(sql))
+			using (StringWriter sw = new StringWriter(sql))
 			{
 				ExportSchema(sw);
 			}
@@ -143,12 +144,12 @@ namespace N2.Edit.Installation
 
 			DatabaseStatus status = new DatabaseStatus();
 
-			UpdateConnection(status);
-			UpdateVersion(status);
-			UpdateSchema(status);
-			UpdateCount(status);
-			UpdateItems(status);
-			UpdateAppPath(status);
+			if (UpdateConnection(status))
+				if (UpdateVersion(status))
+					if (UpdateSchema(status))
+						if (UpdateCount(status))
+							if (UpdateItems(status))
+								UpdateAppPath(status);
 			return status;
 		}
 
@@ -170,24 +171,26 @@ namespace N2.Edit.Installation
 			}
 		}
 
-		private void UpdateItems(DatabaseStatus status)
+		private bool UpdateItems(DatabaseStatus status)
 		{
 			try
 			{
 				status.StartPageID = host.DefaultSite.StartPageID;
-                status.RootItemID = host.DefaultSite.RootItemID;
+				status.RootItemID = host.DefaultSite.RootItemID;
 				status.StartPage = persister.Get(status.StartPageID);
 				status.RootItem = persister.Get(status.RootItemID);
 				status.IsInstalled = status.RootItem != null && status.StartPage != null;
-			} 
+				return true;
+			}
 			catch (Exception ex)
 			{
 				status.IsInstalled = false;
 				status.ItemsError = ex.Message;
+				return false;
 			}
 		}
 
-		private void UpdateVersion(DatabaseStatus status)
+		private bool UpdateVersion(DatabaseStatus status)
 		{
 			try
 			{
@@ -207,24 +210,34 @@ namespace N2.Edit.Installation
 				sessionProvider.OpenSession.Session.CreateQuery("select ci.TemplateKey from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 4;
 
+				// checking persistable properties added in application
+				sessionProvider.OpenSession.Session.CreateQuery("select ci.ChildState from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
+				status.DatabaseVersion = 5;
+
+				// checking persistable properties added in application
+				sessionProvider.OpenSession.Session.CreateQuery("select cd.Meta from " + typeof(ContentDetail).Name + " cd").SetMaxResults(1).List();
+				status.DatabaseVersion = 6;
+
 				if (isDatabaseFileSystemEnbled)
 				{
 					// checking file system table (if enabled)
-					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name +  " ci").SetMaxResults(1).List();
-					status.DatabaseVersion = 5;
+					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name + " ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 7;
 				}
 
 				// checking persistable properties added in application
 				sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = DatabaseStatus.RequiredDatabaseVersion;
+				return true;
 			}
 			catch (Exception ex)
 			{
 				logger.Error(ex);
+				return false;
 			}
 		}
 
-		private void UpdateSchema(DatabaseStatus status)
+		private bool UpdateSchema(DatabaseStatus status)
 		{
 			try
 			{
@@ -236,6 +249,8 @@ namespace N2.Edit.Installation
 				session.CreateQuery("from DetailCollection").SetMaxResults(1).List();
 
 				status.HasSchema = true;
+
+				return true;
 			}
 			catch (Exception ex)
 			{
@@ -243,27 +258,32 @@ namespace N2.Edit.Installation
 				status.HasSchema = false;
 				status.SchemaError = ex.Message;
 				status.SchemaException = ex;
+
+				return false;
 			}
 		}
 
 
-		private void UpdateCount(DatabaseStatus status)
+		private bool UpdateCount(DatabaseStatus status)
 		{
 			try
 			{
-                ISession session = sessionProvider.OpenSession.Session;
+				ISession session = sessionProvider.OpenSession.Session;
 				status.Items = Convert.ToInt32(session.CreateQuery("select count(*) from ContentItem").UniqueResult());
 				status.Details = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
 				status.DetailCollections = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
 				status.AuthorizedRoles = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
+
+				return true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				logger.Error(ex);
+				return false;
 			}
 		}
 
-		private void UpdateConnection(DatabaseStatus status)
+		private bool UpdateConnection(DatabaseStatus status)
 		{
 			try
 			{
@@ -275,12 +295,14 @@ namespace N2.Edit.Installation
 				}
 				status.IsConnected = true;
 				status.ConnectionError = null;
+				return true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				status.IsConnected = false;
 				status.ConnectionError = ex.Message;
 				status.ConnectionException = ex;
+				return false;
 			}
 		}
 
@@ -288,7 +310,7 @@ namespace N2.Edit.Installation
 		/// <returns>A string with diagnostic information about the database.</returns>
 		public string CheckDatabase()
 		{
-            ISession session = sessionProvider.OpenSession.Session;
+			ISession session = sessionProvider.OpenSession.Session;
 
 			// this is supposed to catch mis-matches between database and code e.g. due to refactorings during development
 			session.CreateQuery("from ContentItem").SetMaxResults(1000).List();
@@ -299,7 +321,7 @@ namespace N2.Edit.Installation
 			int detailCollectionCount = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
 
 			return string.Format("Database OK, items: {0}, details: {1}, allowed roles: {2}, detail collections: {3}",
-				                    itemCount, detailCount, allowedRoleCount, detailCollectionCount);
+									itemCount, detailCount, allowedRoleCount, detailCollectionCount);
 		}
 
 		/// <summary>Checks the root node in the database. Throws an exception if there is something really wrong with it.</summary>
@@ -322,7 +344,7 @@ namespace N2.Edit.Installation
 		{
 			int startID = host.DefaultSite.StartPageID;
 			ContentItem startPage = persister.Get(startID);
-			if(startPage != null)
+			if (startPage != null)
 				return String.Format("Start page OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 startPage.ID, startPage.Name, startPage.GetContentType(),
 									 map.GetOrCreateDefinition(startPage), startPage.Published, startPage.Expires);
@@ -354,7 +376,7 @@ namespace N2.Edit.Installation
 
 		public IDbConnection GetConnection()
 		{
-            IDriver driver = GetDriver();
+			IDriver driver = GetDriver();
 
 			IDbConnection conn = driver.CreateConnection();
 			if (Cfg.Properties.ContainsKey(Environment.ConnectionString))
@@ -366,18 +388,18 @@ namespace N2.Edit.Installation
 			return conn;
 		}
 
-        public IDbCommand GenerateCommand(CommandType type, string sqlString)
-        {
-            IDriver driver = GetDriver();
-            return driver.GenerateCommand(type, new NHibernate.SqlCommand.SqlString(sqlString), new SqlType[0]);
-        }
+		public IDbCommand GenerateCommand(CommandType type, string sqlString)
+		{
+			IDriver driver = GetDriver();
+			return driver.GenerateCommand(type, new NHibernate.SqlCommand.SqlString(sqlString), new SqlType[0]);
+		}
 
-        private IDriver GetDriver()
-        {
-            string driverName = (string)Cfg.Properties[Environment.ConnectionDriver];
-            Type driverType = NHibernate.Util.ReflectHelper.ClassForName(driverName);
-            return (IDriver)Activator.CreateInstance(driverType);
-        }
+		private IDriver GetDriver()
+		{
+			string driverName = (string)Cfg.Properties[Environment.ConnectionDriver];
+			Type driverType = NHibernate.Util.ReflectHelper.ClassForName(driverName);
+			return (IDriver)Activator.CreateInstance(driverType);
+		}
 
 		#endregion
 
@@ -385,7 +407,15 @@ namespace N2.Edit.Installation
 		{
 			IImportRecord record = importer.Read(stream, filename);
 			record.RootItem["Installation.AppPath"] = N2.Web.Url.ToAbsolute("~/");
-			record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString(); 
+			try
+			{
+				record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString();
+			}
+			catch (HttpException)
+			{
+				// silently ignore "Request is not available in this context" when calling this from init
+			}
+
 			importer.Import(record, null, ImportOption.All);
 
 			return record.RootItem;
@@ -443,7 +473,7 @@ namespace N2.Edit.Installation
 		{
 			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
 			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
-			
+
 			foreach (ItemDefinition d in allDefinitions)
 			{
 				InstallerHint hint = d.Installer;

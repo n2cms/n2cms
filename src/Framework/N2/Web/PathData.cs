@@ -19,7 +19,7 @@ namespace N2.Web
 		/// <summary>An empty path. This probably indicates that the path didn't correspond to an item in the hierarchy.</summary>
 		public static PathData Empty
 		{
-			get { return new PathData(); }
+			get { return new PathData { IsRewritable = false }; }
 		}
 
 		/// <summary>The path didn't correspond to a content item. The caller may use the last found item and remaining url to take action.</summary>
@@ -28,7 +28,7 @@ namespace N2.Web
 		/// <returns>A an empty path data with additional information.</returns>
 		public static PathData None(ContentItem reportedBy, string remainingUrl)
 		{
-			return new PathData { StopItem = reportedBy, Argument = remainingUrl };
+			return new PathData { StopItem = reportedBy, Argument = remainingUrl, IsRewritable = false };
 		}
 
 		/// <summary>Creates a path that isn't rewritten to it's template.</summary>

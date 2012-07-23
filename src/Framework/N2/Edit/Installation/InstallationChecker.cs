@@ -6,14 +6,13 @@ using N2.Plugin;
 using N2.Web;
 using System.Web.Configuration;
 using System.Configuration;
-using log4net;
 
 namespace N2.Edit.Installation
 {
 	[Service]
 	public class InstallationChecker : IAutoStart
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (InstallationChecker));
+		private readonly Engine.Logger<InstallationChecker> logger;
 		IWebContext webContext;
 		EventBroker broker;
 		protected bool checkInstallation;
@@ -56,20 +55,24 @@ namespace N2.Edit.Installation
 			try 
 			{
 				AuthenticationSection authentication = ConfigurationManager.GetSection("system.web/authentication") as AuthenticationSection;
-				if (currentUrl.StartsWith(Url.ToAbsolute(authentication.Forms.LoginUrl), StringComparison.InvariantCultureIgnoreCase))
+				if (currentUrl.Trim('~', '/').StartsWith(Url.ToAbsolute(authentication.Forms.LoginUrl.Trim('~', '/')), StringComparison.InvariantCultureIgnoreCase))
 					// don't redirect from login page
 					return;
 			}
 			catch (Exception ex)
 			{
-				Trace.TraceWarning(ex.ToString());
+				Engine.Logger.Warn(ex);
 			}
-			var status = this.status;
+
+			if (status == null)
+			{
+				status = installer.GetStatus();
+			}
 
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
 			if (status == null)
 			{
-				Trace.TraceWarning("Null status");
+				Engine.Logger.Warn("Null status");
 				installer.UpdateStatus(SystemStatusLevel.Unknown);
 				return;
 			}
@@ -87,9 +90,9 @@ namespace N2.Edit.Installation
 			}
 			else
 			{
-				this.status = null;
-				installer.UpdateStatus(status.Level);
 				this.broker.BeginRequest -= BeginRequest;
+				installer.UpdateStatus(status.Level);
+				this.status = null;
 				return;
 			}
 

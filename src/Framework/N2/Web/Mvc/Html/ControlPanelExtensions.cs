@@ -61,14 +61,14 @@ namespace N2.Web.Mvc.Html
 
 		public class ControlPanelHelper
 		{
-            bool refreshNavigation = true;
+            private bool refreshNavigation = true;
 
-            public bool includeJQuery = true;
-            public bool includeJQueryPlugins = true;
-            public bool includePartScripts = true;
-            public bool includePartStyles = true;
-
-			public ContentItem currentItem;
+            private bool includeJQuery = true;
+            private bool includeJQueryPlugins = true;
+            private bool includePartScripts = true;
+            private bool includePartStyles = true;
+			 
+			private ContentItem currentItem;
 
 			public HtmlHelper Html { get; set; }
 
@@ -154,7 +154,7 @@ namespace N2.Web.Mvc.Html
 
                 var resources = Html.Resources(writer);
                 if(includeJQuery) resources.JQuery();
-                if(includeJQueryPlugins) resources.JQueryPlugins().JQueryUi();
+				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery).JQueryUi(includeJQuery);
                 if(includePartScripts) resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
                 if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 

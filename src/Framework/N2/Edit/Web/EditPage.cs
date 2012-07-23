@@ -8,7 +8,6 @@ using N2.Engine;
 using N2.Resources;
 using N2.Security;
 using N2.Web;
-using log4net;
 
 namespace N2.Edit.Web
 {
@@ -18,7 +17,7 @@ namespace N2.Edit.Web
 	/// </summary>
     public class EditPage : Page, IProvider<IEngine>
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (EditPage));
+		private readonly Engine.Logger<EditPage> logger;
 
 		protected override void OnPreInit(EventArgs e)
 		{

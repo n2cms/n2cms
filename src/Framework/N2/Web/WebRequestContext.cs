@@ -5,7 +5,6 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Hosting;
 using N2.Engine;
-using log4net;
 
 namespace N2.Web
 {
@@ -14,7 +13,7 @@ namespace N2.Web
     /// </summary>
     public class WebRequestContext : IWebContext, IDisposable
     {
-		private readonly ILog logger = LogManager.GetLogger(typeof(WebRequestContext));
+		private readonly Engine.Logger<WebRequestContext> logger;
 		IProvider<HttpContextBase> httpContextProvider;
 		private const string CurrentPathKey = "N2.CurrentPath";
 

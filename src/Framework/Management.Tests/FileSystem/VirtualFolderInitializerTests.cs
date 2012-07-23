@@ -30,6 +30,7 @@ namespace N2.Edit.Tests.FileSystem
 		ContentItem root;
 		ContentItem start;
 		FolderNodeProvider nodeProvider;
+		private Plugin.ConnectionMonitor monitor;
 
 		[SetUp]
 		public override void SetUp()
@@ -49,8 +50,10 @@ namespace N2.Edit.Tests.FileSystem
 			injector = new FakeDependencyInjector();
 			injector.injectors.Add(new EntityDependencySetter<IFileSystem>(fs));
 			injector.injectors.Add(new EntityDependencySetter<IDependencyInjector>(injector));
+			var sizeCache = new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) });
+			injector.injectors.Add(new EntityDependencySetter<ImageSizeCache>(sizeCache));
 			nodeProvider = new FolderNodeProvider(fs, persister, injector);
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), config, new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, config) }), nodeProvider);
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, monitor = new Plugin.ConnectionMonitor().SetConnected(SystemStatusLevel.UpAndRunning), new UploadFolderSource(host, config), nodeProvider);
 		}
 
 		class FakeStatus : DatabaseStatusCache
@@ -157,6 +160,8 @@ namespace N2.Edit.Tests.FileSystem
 		{
 			fs.CreateDirectory("/upload2/");
 			config.UploadFolders.Add("/upload2/");
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, monitor, new UploadFolderSource(host, config), nodeProvider);
+
 			initializer.Start();
 			vnf.Register(nodeProvider);
 
@@ -171,6 +176,8 @@ namespace N2.Edit.Tests.FileSystem
 		{
 			fs.CreateDirectory("/upload2/");
 			config.UploadFolders.Add("/upload2/");
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, monitor, new UploadFolderSource(host, config), nodeProvider);
+
 			initializer.Start();
 			vnf.Register(nodeProvider);
 

@@ -217,6 +217,8 @@ namespace N2
 			int lastSortOrder = int.MinValue;
 			int sortOrderBeforeLast = int.MinValue;
 			ContentItem last = null;
+			bool lastSortOrderChanged = false;
+			int index = 0;
 			foreach (ContentItem current in siblings)
 			{
 				if (current.SortOrder <= lastSortOrder)
@@ -225,11 +227,17 @@ namespace N2
 					int gapBeforeCurrent = (int)Math.Min((long)current.SortOrder - sortOrderBeforeLast, int.MaxValue);
 					if (gapBeforeLast > 1 && gapBeforeCurrent > 2)
 					{
-						if (current.SortOrder > sortOrderBeforeLast)
+						if (index == 1)
+						{
+							// we added something first with a higher sortorder than the next
+							last.SortOrder = lastSortOrder = current.SortOrder - 10;
+							updatedItems.Add(last);
+						}
+						else if (current.SortOrder > sortOrderBeforeLast)
 						{
 							// 0
 							// -1b
-							last.SortOrder = lastSortOrder = current.SortOrder - 1;
+							last.SortOrder = lastSortOrder = current.SortOrder - (current.SortOrder - sortOrderBeforeLast) / 2;
 							updatedItems.Add(last);
 						}
 						else
@@ -240,18 +248,27 @@ namespace N2
 							updatedItems.Add(last);
 							current.SortOrder = sortOrderBeforeLast + 2;
 							updatedItems.Add(current);
+							lastSortOrderChanged = true;
 						}
 					}
 					else
 					{
 						current.SortOrder = lastSortOrder + 1;
 						updatedItems.Add(current);
+						lastSortOrderChanged = true;
 					}
 				}
+				else
+					lastSortOrderChanged = false;
+
 				sortOrderBeforeLast = lastSortOrder;
 				lastSortOrder = current.SortOrder;
 				last = current;
+				index++;
 			}
+			if (lastSortOrderChanged)
+				last.SortOrder += 9;
+
 			return updatedItems;
 		}
 

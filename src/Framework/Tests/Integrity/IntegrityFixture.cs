@@ -51,7 +51,7 @@ namespace N2.Tests.Integrity
 			Assert.AreEqual(0, rootDefinition.Containers.Count);
 			Assert.IsEmpty(rootDefinition.Description);
 			Assert.AreEqual(typeof(Definitions.IntegrityRoot).Name, rootDefinition.Discriminator);
-			Assert.That(rootDefinition.Displayables.Count, Is.EqualTo(18));
+			Assert.That(rootDefinition.Displayables.Count, Is.EqualTo(19));
 			Assert.AreEqual(0, rootDefinition.Editables.Count);
 			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(new Definitions.IntegrityRoot(), null, null), startPageDefinition);
 			Assert.AreEqual(0, rootDefinition.Editables.Count);

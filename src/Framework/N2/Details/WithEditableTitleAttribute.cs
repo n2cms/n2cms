@@ -21,7 +21,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableTitleAttribute()
-			: this("Title", 0)
+			: this("Title", -20)
 		{
 		}
 
@@ -71,6 +71,7 @@ namespace N2.Details
 			tb.ID = Name;
 			tb.MaxLength = 250;
 			tb.CssClass = "titleEditor";
+            tb.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
 			container.Controls.Add(tb);
 			return tb;
 		}

@@ -13,6 +13,7 @@ namespace N2.Persistence.NH
 		readonly ConfigurationBuilder builder;
 		ISessionFactory factory;
 		NHibernate.Cfg.Configuration cfg;
+		Logger<ConfigurationSource> logger;
 
 		public ConfigurationSource(ConfigurationBuilder builder)
 		{
@@ -24,7 +25,11 @@ namespace N2.Persistence.NH
 			lock (this)
 			{
 				if (cfg == null)
+				{
+					logger.Info("Building Configuration");
 					cfg = builder.BuildConfiguration();
+					logger.Info("Built Configuration");
+				}
 
 				return cfg;
 			}
@@ -35,7 +40,12 @@ namespace N2.Persistence.NH
 			lock(this)
 			{
 				if (factory == null)
-					factory = BuildConfiguration().BuildSessionFactory();
+				{
+					var cfg = BuildConfiguration();
+					logger.Info("Building Session Factory");
+					factory = cfg.BuildSessionFactory();
+					logger.Info("Built Session Factory");
+				}
 				
 				return factory;
 			}

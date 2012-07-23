@@ -175,3 +175,8 @@ table.calendar
 
 /* editing */
 .editable.DisplayableHeadingAttribute { display:block; }
+
+.freeform table tr td { padding-right:10px; padding-bottom:10px; vertical-align:top; }
+.freeform .formfield { margin:2px; }
+.freeform .formradio, .freeform .formcheckbox { padding-right:5px; white-space:nowrap; display:block; }
+.freeform .formtextarea textarea { min-height:100px; width:100% }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -85,10 +86,10 @@ namespace N2.Edit
             bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 
-            btnSavePublish.Enabled = isPublicableByUser;
-            btnPreview.Enabled = isVersionable && isWritableByUser;
-            btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-			hlFuturePublish.Enabled = isVersionable && isPublicableByUser;
+            btnSavePublish.Visible = isPublicableByUser;
+            btnPreview.Visible = isVersionable && isWritableByUser;
+            btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
+			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -174,14 +175,12 @@ namespace N2.Edit
             }
 			else if(ctx.ValidationErrors.Count == 0)
 			{
-				foreach (string redirectUrl in redirectSequence)
-				{
-					if (!string.IsNullOrEmpty(redirectUrl))
-					{
-						Refresh(ctx.Content, redirectUrl);
-						return;
-					}
-				}
+				string redirectUrl = redirectSequence.FirstOrDefault(u => !string.IsNullOrEmpty(u));
+
+				if (ctx.RedirectUrl != null)
+					Response.Redirect(ctx.RedirectUrl.ToUrl().AppendQuery("returnUrl", redirectUrl, unlessNull: true));
+
+				Refresh(ctx.Content, redirectUrl ?? Engine.ManagementPaths.GetPreviewUrl(ctx.Content));
 			}
         }
 

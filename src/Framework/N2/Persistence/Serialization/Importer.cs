@@ -5,13 +5,12 @@ using System.IO;
 using System.Xml.XPath;
 using N2.Details;
 using N2.Edit.FileSystem;
-using log4net;
 
 namespace N2.Persistence.Serialization
 {
 	public class Importer
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (Importer));
+		private readonly Engine.Logger<Importer> logger;
 		private readonly IPersister persister;
 		private readonly ItemXmlReader reader;
 		private IFileSystem fs;

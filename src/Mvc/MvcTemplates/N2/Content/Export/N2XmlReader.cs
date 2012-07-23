@@ -9,7 +9,6 @@ using N2.Details;
 using N2.Engine;
 using N2.Persistence;
 using N2.Security;
-using log4net;
 
 namespace N2.Xml
 {
@@ -26,7 +25,7 @@ namespace N2.Xml
 
 		#region Fields
 
-		private readonly ILog logger = LogManager.GetLogger(typeof (N2XmlReader));
+		private readonly Engine.Logger<N2XmlReader> logger;
 		private IEngine engine;
 		private bool keepItemID = false;
 		private bool useDiscriminator = true;

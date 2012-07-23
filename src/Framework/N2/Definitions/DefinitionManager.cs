@@ -23,7 +23,7 @@ namespace N2.Definitions
 		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] providers, ContentActivator activator, StateChanger changer)
 		{
 			this.definitionProviders = definitionProviders;
-			this.providers = providers;
+			this.providers = providers.OrderBy(tp => tp.SortOrder).ToArray();
 			this.activator = activator;
 			this.stateChanger = changer;
 

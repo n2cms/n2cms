@@ -39,6 +39,14 @@ namespace N2.Configuration
 			set { base["cacheProviderClass"] = value; }
 		}
 
+		/// <summary>The cache region name to use.</summary>
+		[ConfigurationProperty("cacheRegion", DefaultValue = "N2CMS")]
+		public string CacheRegion
+		{
+			get { return (string)base["cacheRegion"]; }
+			set { base["cacheRegion"] = value; }
+		}
+
 		/// <summary>The name of the sql dependency to use for cache invalidation.</summary>
 		/// <remarks>This setting must be enabled in SQL Server using aspnet_regsql.exe.</remarks>
 		[ConfigurationProperty("sqlCacheDependency")]
@@ -65,11 +73,11 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The type of nhibernate laziness to use. Supported values are "true", "false", and "extra".</summary>
-		[ConfigurationProperty("childrenLaziness", DefaultValue = CollectionLazy.Extra)]
-		public CollectionLazy ChildrenLaziness
+		[ConfigurationProperty("children")]
+		public ChildrenElement Children
 		{
-			get { return (CollectionLazy)base["childrenLaziness"]; }
-			set { base["childrenLaziness"] = value; }
+			get { return (ChildrenElement)base["children"]; }
+			set { base["children"] = value; }
 		}
 
 		/// <summary>NHibernate option for database query batching.</summary>

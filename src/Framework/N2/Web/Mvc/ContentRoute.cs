@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
-using log4net;
 
 namespace N2.Web.Mvc
 {
@@ -14,7 +13,7 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ContentRoute : RouteBase
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ContentRoute));
+		private readonly Engine.Logger<ContentRoute> logger;
 
 		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
 		public static string ContentItemKey
@@ -52,7 +51,7 @@ namespace N2.Web.Mvc
 		{
 		}
 
-		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute)
+		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute, string[] namespaces = null)
 		{
 			managementPath = Url.ToRelative(Url.ResolveTokens(Url.ManagementUrlToken + "/"));
 			this.engine = engine;
@@ -60,8 +59,8 @@ namespace N2.Web.Mvc
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
 			this.innerRoute = innerRoute ?? new Route("{controller}/{action}", 
 				new RouteValueDictionary(new { action = "Index" }), 
-				new RouteValueDictionary(), 
-				new RouteValueDictionary(new { this.engine }), 
+				new RouteValueDictionary(),
+				new RouteValueDictionary(new { this.engine, namespaces }), 
 				this.routeHandler);
 		}
 
@@ -117,8 +116,7 @@ namespace N2.Web.Mvc
 				// fallback to route to controller/action
 				routeData = CheckForContentController(httpContext);
 
-			if (logger.IsDebugEnabled)
-				logger.Debug("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
+			logger.DebugFormat("GetRouteData for '{0}' got values: {1}", path, new RouteExtensions.QueryStringOutput(routeData));
 
 			return routeData;
 		}
@@ -130,6 +128,9 @@ namespace N2.Web.Mvc
 			string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
 			var url = new Url(request.Url.Scheme, host, request.RawUrl);
 			PathData path = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
+
+			if (!path.IsEmpty() && path.IsRewritable && StopRewritableItems)
+				return new RouteData(this, new StopRoutingHandler());
 
 			var page = path.CurrentPage;
 
@@ -222,6 +223,9 @@ namespace N2.Web.Mvc
 				?? ResolveContent(context.Request.QueryString, ContentItemKey);
 			var page = ResolveContent(context.Request.QueryString, ContentPageKey);
 
+			if (part == null && page == null)
+				return null;
+
 			routeData.ApplyCurrentPath(new PathData(page ?? Find.ClosestPage(part), part));
 			routeData.DataTokens[ContentEngineKey] = engine;
 
@@ -258,8 +262,7 @@ namespace N2.Web.Mvc
 
 			values = new RouteValueDictionary(values);
 
-			if (logger.IsDebugEnabled)
-				logger.Debug("GetVirtualPath for values: " + values.ToQueryString());
+			logger.DebugFormat("GetVirtualPath for values: {0}", new RouteExtensions.QueryStringOutput(values));
 
 			var contextPath = requestContext.RouteData.CurrentPath();
 			var requestedItem = values.CurrentItem<ContentItem>(ContentItemKey, engine.Persister);
@@ -278,9 +281,16 @@ namespace N2.Web.Mvc
 
 			var contextController = (string)requestContext.RouteData.Values["controller"];
 			var requestedController = (string)values["controller"];
-			if (requestedItem == null && requestedController != null && !string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
-				// no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
-				return null;
+            if (requestedItem == null && requestedController != null)
+            {
+                if (!string.Equals(requestedController, contextController, StringComparison.InvariantCultureIgnoreCase))
+                    // no item was specificlly requested, and the controller differs from context's -> we let some other route handle this
+                    return null;
+
+                if (!controllerMapper.IsContentController(requestedController))
+                    // same controller not content controller -> let it be
+                    return null;
+            }
 
 			var itemController = controllerMapper.GetControllerName(item.GetContentType());
 			values["controller"] = itemController;
@@ -347,5 +357,8 @@ namespace N2.Web.Mvc
 			vpd.VirtualPath = actionUrl.PathAndQuery.TrimStart('/');
 			return vpd;
 		}
+
+		/// <summary>Make the route table stop at items that match an item that can be rewritten to (probably webforms).</summary>
+		public bool StopRewritableItems { get; set; }
 	}
 }

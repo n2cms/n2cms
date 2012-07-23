@@ -49,7 +49,7 @@ namespace N2.Web.Mvc.Html
 			string controllerName = controllerMapper.GetControllerName(itemType);
 			if (string.IsNullOrEmpty(controllerName))
 			{
-				Trace.TraceWarning("Found no controller for type " + itemType);
+				Engine.Logger.WarnFormat("Found no controller for type {0}", itemType);
 				return null;
 			}
 
@@ -61,7 +61,7 @@ namespace N2.Web.Mvc.Html
 			// retrieve the virtual path so we can figure out if this item is routed through an area
 			var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
 			if (vpd == null)
-				throw new InvalidOperationException("Unable to render " + item + " (" + values.ToQueryString() + " did not match any route)");
+				throw new InvalidOperationException("Unable to render " + item + " (" + controllerName + " did not match any route)");
 
 			values["area"] = vpd.DataTokens["area"];
 			return values;

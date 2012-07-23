@@ -12,6 +12,7 @@ namespace N2.Security
 		public Permission Permissions { get; set; }
 		public string[] Roles { get; set; }
 		public string[] Users { get; set; }
+		public bool IsAltered { get; set; }
 
 		public PermissionMap()
 		{
@@ -42,9 +43,7 @@ namespace N2.Security
 
 		public virtual bool Authorizes(IPrincipal user, ContentItem item, Permission permission)
 		{
-			if (item == null) throw new ArgumentNullException("item");
-
-			if(permission == Permission.Read && !item.IsAuthorized(user))
+			if(item != null && permission == Permission.Read && !item.IsAuthorized(user))
 				return false;
 
 			return MapsTo(permission) && Contains(user);
@@ -52,6 +51,9 @@ namespace N2.Security
 
 		protected bool IsInUsers(string userName)
 		{
+			if (userName == null)
+				return false;
+
 			foreach (string name in Users)
 				if (userName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
 					return true;

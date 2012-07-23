@@ -62,7 +62,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", root);
 
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, item);
 
 			Assert.That(item.AncestralTrail, Is.EqualTo("/" + root.ID + "/"));
 		}
@@ -73,7 +73,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, one, two);
 
 			ContentItem copiedItem = persister.Copy(two, one);
 
@@ -86,7 +86,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, one, two);
 
 			persister.Move(two, one);
 
@@ -104,7 +104,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
 			PersistableItem1 three = CreateOneItem<PersistableItem1>(0, "three", two);
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, one, two, three);
 
 			//	root
 			//		one
@@ -128,7 +128,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
 			PersistableItem1 three = CreateOneItem<PersistableItem1>(0, "three", two);
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, one, two, three);
 
 			//	root
 			//		one
@@ -144,7 +144,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
-			persister.Save(root);
+			persister.Repository.SaveOrUpdate(root, one);
 
 			N2.Persistence.VersionManager vm = new VersionManager(persister.Repository, finder, new N2.Edit.Workflow.StateChanger(), new N2.Configuration.EditSection());
 			var version = vm.SaveVersion(one);

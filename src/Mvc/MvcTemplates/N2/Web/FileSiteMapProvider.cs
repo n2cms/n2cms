@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.Web;
 using N2.Edit.FileSystem;
 using N2.Web;
-using log4net;
 
 namespace N2.Edit.Web
 {
 	public class FileSiteMapProvider : SiteMapProvider
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (FileSiteMapProvider));
+		private readonly Engine.Logger<FileSiteMapProvider> logger;
 
 		protected IFileSystem FileSystem
 		{
@@ -57,10 +56,10 @@ namespace N2.Edit.Web
 
 			if (node.Key == "/" || node is RootNode)
 			{
-				foreach (string folderUrl in N2.Context.Current.Resolve<IHost>().CurrentSite.UploadFolders)
+				foreach (var folder in N2.Context.Current.Resolve<IHost>().CurrentSite.UploadFolders)
 				{
-					if (!folderPaths.Contains(folderUrl))
-						folderPaths.Add(folderUrl);
+					if (!folderPaths.Contains(folder.Path))
+						folderPaths.Add(folder.Path);
 				}
 				foreach (string folderUrl in N2.Context.Current.EditManager.UploadFolders)
 				{

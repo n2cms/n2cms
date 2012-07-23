@@ -37,10 +37,19 @@ namespace N2.Details
 			set { showDate = value; }
 		}
 
+        /// <summary>Gets or sets the placeholder text for the time box.</summary>
+        public string TimePlaceholder { get; set; }
+
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			DatePicker picker = (DatePicker)editor;
-			if ((DateTime?)item[Name] != picker.SelectedDate)
+			var value = item[Name];
+			if (value == null)
+			{
+				item[Name] = picker.SelectedDate;
+				return true;
+			}
+			if (!(value is DateTime) || (DateTime?)value != picker.SelectedDate)
 			{
 				item[Name] = picker.SelectedDate;
 				return true;
@@ -51,7 +60,15 @@ namespace N2.Details
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			DatePicker picker = (DatePicker) editor;
-			picker.SelectedDate = (DateTime?)item[Name];
+            object value = item[Name];
+            if (value == null)
+                picker.SelectedDate = null;
+            else if (value is DateTime?)
+                picker.SelectedDate = (DateTime?)value;
+            else if (value is DateTime)
+                picker.SelectedDate = (DateTime?)value;
+            else
+                picker.SelectedDate = Utility.Convert<DateTime>(value);
 		}
 
 		protected override Control AddEditor(Control container)
@@ -60,6 +77,8 @@ namespace N2.Details
 			picker.TimePickerBox.Visible = ShowTime;
 			picker.DatePickerBox.Visible = ShowDate;
 			picker.ID = Name;
+            picker.DatePickerBox.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
+            picker.TimePickerBox.Placeholder(GetLocalizedText("TimePlaceholder") ?? TimePlaceholder);
 			container.Controls.Add(picker);
 			return picker;
 		}
@@ -89,5 +108,5 @@ namespace N2.Details
 		}
 
 		#endregion
-	}
+    }
 }

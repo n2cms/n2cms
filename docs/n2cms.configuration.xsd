@@ -46,8 +46,18 @@
 														<xs:complexType>
 															<xs:sequence>
 																<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+																<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="path" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
 																<xs:element name="add" maxOccurs="unbounded">
 																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+																			<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+																		</xs:all>
+																		<xs:attribute name="title" type="xs:string" />
 																		<xs:attribute name="path" type="xs:string" use="required" />
 																	</xs:complexType>
 																</xs:element>
@@ -141,6 +151,11 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="tokens" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="builtInEnabled" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
@@ -326,10 +341,40 @@
 									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="children" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="laziness" use="optional" default="Extra">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Lazy"/>
+												<xs:enumeration value="NoLazy"/>
+												<xs:enumeration value="Extra"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="cascade" use="optional" default="None">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="None"/>
+												<xs:enumeration value="Persist"/>
+												<xs:enumeration value="Refresh"/>
+												<xs:enumeration value="Merge"/>
+												<xs:enumeration value="Remove"/>
+												<xs:enumeration value="Detach"/>
+												<xs:enumeration value="ReAttach"/>
+												<xs:enumeration value="DeleteOrphans"/>
+												<xs:enumeration value="All"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
 						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
+						<xs:attribute name="sqlCacheDependency" type="xs:string" use="optional" />
+						<xs:attribute name="cacheRegion" type="xs:string" use="optional" />
 						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />
 						<xs:attribute name="flavour" use="optional">
 							<xs:simpleType>
@@ -393,6 +438,11 @@
 										</xs:element>
 										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
+												<xs:all>
+													<xs:element name="readers" minOccurs="0" type="tns:permissionElement" />
+													<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+												</xs:all>
+												<xs:attribute name="title" type="xs:string" />
 												<xs:attribute name="path" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>

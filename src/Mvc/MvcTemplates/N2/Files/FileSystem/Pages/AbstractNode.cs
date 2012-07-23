@@ -25,11 +25,10 @@ namespace N2.Edit.FileSystem.Items
 	[Indexable(IsIndexable = false)]
 	public abstract class AbstractNode : ContentItem, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>, IInjectable<IDependencyInjector>
     {
-		public ImageSizeCache ImageSizes { get; protected set; }
-
 		IFileSystem fileSystem;
-		protected IDependencyInjector DependencyInjector { get; set; }
 
+		protected ImageSizeCache ImageSizes { get; set; }
+		protected IDependencyInjector DependencyInjector { get; set; }
     	protected virtual IFileSystem FileSystem
     	{
 			get { return fileSystem ?? (fileSystem = N2.Context.Current.Resolve<IFileSystem>()); }

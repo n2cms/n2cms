@@ -17,5 +17,8 @@ namespace N2.Definitions
 		/// <param name="item">The item whose template definition to get.</param>
 		/// <returns>The corresponding template definition or null if the item doesn't derive from this provider.</returns>
 		TemplateDefinition GetTemplate(ContentItem item);
+
+		/// <summary>The order this template provider should be invoked, default 0.</summary>
+		int SortOrder { get; }
 	}
 }

@@ -25,7 +25,7 @@ namespace N2.Web.Mvc
 		/// <param name="name">The name of this route.</param>
 		/// <param name="engine">The N2 Engine instance used by the content route.</param>
 		/// <returns>The added content route instance.</returns>
-		public static ContentRoute MapContentRoute<T>(this AreaRegistrationContext arc)
+		public static ContentRoute MapContentRoute<T>(this AreaRegistrationContext arc, string[] namespaces = null)
 			where T: ContentItem
 		{
 			var state = arc.State as AreaRegistrationState;
@@ -37,7 +37,7 @@ namespace N2.Web.Mvc
 			var innerRoute = new Route("{area}/{controller}/{action}",
 				new RouteValueDictionary(new { action = "Index" }),
 				new RouteValueDictionary(),
-				new RouteValueDictionary(new { engine = state.Engine, area = arc.AreaName }),
+				new RouteValueDictionary(new { engine = state.Engine, area = arc.AreaName, namespaces }),
 				routeHandler);
 
 			var cr = new ContentRoute<T>(state.Engine, routeHandler, controllerMapper, innerRoute);

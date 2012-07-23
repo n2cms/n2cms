@@ -59,19 +59,21 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .nameEditor { width:142px; }
 .framed .prefix { color:silver; vertical-align:middle; font-size:.9em; }
 .framed .selector  { width:426px; }
-.framed .textEditor { width:284px; }
+.framed .textEditor { width:426px; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 .framed .selectorButtons { }
 	.framed .selectorButtons input { vertical-align:middle; width:22px; height:22px; text-align:center; text-indent:-50px; border:solid 1px #bbb; background:#f8f8f8 none no-repeat 50% 50%; margin-left:-1px; }
 	.framed .selectorButtons input:hover { border-color:#999; background-color:#f0f0f0; }
-	.framed .selectorButtons .clearButton { background-image:url(../icons/cross.png); }
+	.framed .selectorButtons .clearButton { background-image:url(../img/smallico/close_2.png); border:none; margin-left:-20px; height:20px; width:20px; }
 	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }
 	.framed .editDetail .selectorButtons,
-	.framed .editDetail .revealer { visibility:hidden; }
+	.framed .editDetail .revealer { opacity:.15; }
 	.framed .editDetail:hover .selectorButtons,
-	.framed .editDetail:hover .revealer { visibility:visible; }
-	.framed .editDetail .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
+	.framed .editDetail:hover .revealer { opacity:1; transition: opacity .5s ease-in-out; -moz-transition: opacity .5s ease-in-out; -webkit-transition: opacity .5s ease-in-out; }
+	.framed .editDetail .uploader .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
+	.framed .editDetail button.ui-datepicker-trigger { vertical-align:middle; margin-right:5px; border:solid 1px #BBB; background:#F8F8F8; height:22px; width:22px; padding:2px 0 0 0; margin-left:-1px; }
+	.framed .editDetail button.ui-datepicker-trigger:hover {border-color:#999; background-color:#f0f0f0; }
 	
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *, .framed a[disabled=disabled] img, input[disabled=disabled]
     { opacity:.50; filter: alpha(opacity=50); }
@@ -190,11 +192,6 @@ hr
 .editDetail .help
 {
 	margin-left:5px;
-	visibility:hidden;
-}
-.editDetail:hover .help
-{
-	visibility:visible;
 }
 
 .themeThumbnail { position:relative; }

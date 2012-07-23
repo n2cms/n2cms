@@ -147,7 +147,8 @@ namespace N2.Edit
 			Url url = Url.ResolveTokens(EditItemUrl);
 			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
-			url = url.AppendQuery("zoneName", zoneName);
+      if (!string.IsNullOrEmpty(zoneName))
+        url = url.AppendQuery("zoneName", zoneName);
 			if (!string.IsNullOrEmpty(definition.TemplateKey))
 				url = url.AppendQuery("template", definition.TemplateKey);
 

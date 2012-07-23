@@ -46,7 +46,7 @@ namespace N2.Edit
 			}
 			catch (Exception ex)
 			{
-				Trace.Warn(ex.ToString());
+				Engine.Logger.Warn(ex);
 				e.Authenticated = false;
 			}
 		}

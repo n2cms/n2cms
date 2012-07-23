@@ -11,7 +11,7 @@ namespace N2.Configuration
 		public InstallerElement Installer
 		{
 			get { return (InstallerElement)base["installer"]; }
-			set { base["editTreeUrl"] = value; }
+			set { base["installer"] = value; }
 		}
 
 		/// <summary>Users and roles considered editors.</summary>
@@ -130,6 +130,14 @@ namespace N2.Configuration
 		{
 			get { return (ExternalsElement)base["externals"]; }
 			set { base["externals"] = value; }
+		}
+
+		/// <summary>Configuration about permanent redirect items.</summary>
+		[ConfigurationProperty("linkTracker")]
+		public LinkTrackerElement LinkTracker
+		{
+			get { return (LinkTrackerElement)base["linkTracker"]; }
+			set { base["linkTracker"] = value; }
 		}
 	}
 }

@@ -29,5 +29,13 @@ namespace N2.Configuration
     			}
     		}
     	}
+
+		protected override string ElementKeyAttributeName
+		{
+			get
+			{
+				return "path";
+			}
+		}
     }
 }

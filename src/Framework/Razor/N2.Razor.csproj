@@ -78,6 +78,7 @@
     <Compile Include="Web\Mvc\Html\ListTemplateOfT.cs" />
     <Compile Include="Web\Mvc\Html\RenderExtensions.cs" />
     <Compile Include="Web\Mvc\Html\TemplateOfT.cs" />
+    <Compile Include="Web\Mvc\IContentView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Extensions\N2.Extensions.csproj">

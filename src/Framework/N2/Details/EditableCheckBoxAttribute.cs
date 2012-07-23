@@ -25,7 +25,7 @@ namespace N2.Details
 		/// <summary>Gets or sets the text on the checkbox. This differs from the title property since the text is after the checkbox.</summary>
 		public string CheckBoxText
 		{
-			get { return checkBoxText; }
+			get { return checkBoxText ?? Name; }
 			set { checkBoxText = value; }
 		}
 

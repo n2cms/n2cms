@@ -34,6 +34,7 @@ namespace N2.Configuration
 			map.Permissions = permission;
 			map.Roles = ToArray(Roles, defaultRoles);
 			map.Users = ToArray(Users, defaultUsers);
+			map.IsAltered = Roles != null || Users != null;
 			return map;
 		}
 

@@ -19,10 +19,12 @@ namespace N2.Engine
 
 		private bool loadAppDomainAssemblies = true;
 
-		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver";
+		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql";
 
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList<string> assemblyNames = new List<string>();
+
+		Logger<AppDomainTypeFinder> logger;
 
 		#endregion
 
@@ -95,13 +97,15 @@ namespace N2.Engine
 					string loaderErrors = string.Empty;
 					foreach (Exception loaderEx in ex.LoaderExceptions)
 					{
-						Trace.TraceError(loaderEx.ToString());
+						Engine.Logger.Error(loaderEx);
 						loaderErrors += ", " + loaderEx.Message;
 					}
 
 					throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
 				}
 			}
+
+			logger.DebugFormat("Loading requested types {0}, found {1}", requestedType, types.Count);
 
 			return types;
 		}
@@ -113,8 +117,15 @@ namespace N2.Engine
 			List<string> addedAssemblyNames = new List<string>();
 			List<Assembly> assemblies = new List<Assembly>();
 
+			logger.Info("Getting assemblies");
+
 			if (LoadAppDomainAssemblies)
+			{
 				AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
+				
+				logger.InfoFormat("Added {0} assemblies in app domain", assemblies.Count);
+			}
+
 			AddConfiguredAssemblies(addedAssemblyNames, assemblies);
 
 			return assemblies;
@@ -143,13 +154,19 @@ namespace N2.Engine
 		{
 			foreach (string assemblyName in AssemblyNames)
 			{
+				if (addedAssemblyNames.Contains(assemblyName))
+					continue;
+
+				logger.Debug("Loading " + assemblyName);
 				Assembly assembly = Assembly.Load(assemblyName);
-				if (!addedAssemblyNames.Contains(assembly.FullName))
-				{
-					assemblies.Add(assembly);
-					addedAssemblyNames.Add(assembly.FullName);
-				}
+				if (addedAssemblyNames.Contains(assembly.FullName))
+					continue;
+				
+				assemblies.Add(assembly);
+				addedAssemblyNames.Add(assembly.FullName);
 			}
+
+			logger.InfoFormat("Added {0} configured assemblies", AssemblyNames.Count);
 		}
 
 		/// <summary>Check if a dll is one of the shipped dlls that we know don't need to be investigated.</summary>
@@ -191,12 +208,15 @@ namespace N2.Engine
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
 					if (Matches(assumedAssemblyName) && !loadedAssemblyNames.Contains(assumedAssemblyName))
 					{
+						logger.Debug("Loading " + assumedAssemblyName);
 						App.Load(assumedAssemblyName);
 					}
+					else
+						logger.Debug("Skipping " + assumedAssemblyName);
 				}
 				catch (BadImageFormatException ex)
 				{
-					Trace.TraceError(ex.ToString());
+					logger.Error(ex);
 				}
 			}
 		}

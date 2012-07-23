@@ -55,7 +55,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -80,10 +79,15 @@
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
+    <EmbeddedResource Include="N2\Content\Export\App_LocalResources\ItemXmlImport.ascx.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ItemXmlImport.ascx.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <Content Include="N2\Content\Export\BulkEditing.aspx" />
     <Content Include="N2\Content\Export\CsvImport.ascx" />
     <Content Include="N2\Content\Export\Export.aspx" />
     <Content Include="N2\Content\Export\ItemXmlImport.ascx" />
+    <Content Include="N2\Content\LinkTracker\UpdateReferences.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
     <Content Include="N2\Externals\External.ascx" />
     <Content Include="N2\Files\Crop.aspx" />
@@ -92,15 +96,33 @@
     <Content Include="N2\Files\Css\jquery.Jcrop.min.css" />
     <Content Include="N2\Files\FileSystem\FileUpload.ascx" />
     <Content Include="N2\Files\FileSystem\Export.aspx" />
-    <Content Include="N2\Files\FileSystem\jquery.fileupload-ui.js" />
-    <Content Include="N2\Files\FileSystem\jquery.fileupload.js" />
-    <Content Include="N2\Files\FileSystem\jquery.iframe-transport.js" />
-    <Content Include="N2\Files\FileSystem\jquery.tmpl.js" />
+    <Content Include="N2\Files\FileSystem\FileUpload.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\canvas-to-blob.min.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\css\jquery.fileupload-ui.css" />
+    <Content Include="N2\Files\FileSystem\fileupload\css\style.css" />
+    <Content Include="N2\Files\FileSystem\fileupload\img\loading.gif" />
+    <Content Include="N2\Files\FileSystem\fileupload\img\progressbar.gif" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\cors\jquery.postmessage-transport.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\cors\jquery.xdr-transport.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\jquery.fileupload-ip.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\jquery.fileupload-ui.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\jquery.fileupload.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\jquery.iframe-transport.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\locale.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\main.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\js\vendor\jquery.ui.widget.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\load-image.min.js" />
+    <Content Include="N2\Files\FileSystem\fileupload\tmpl.min.js" />
     <Content Include="N2\Files\Js\FileSelection.js" />
     <Content Include="N2\Files\Js\jquery.color.js" />
     <Content Include="N2\Files\Js\jquery.Jcrop.min.js" />
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\Resources\Css\jquery.multiselect.css" />
+    <Content Include="N2\Resources\Css\jquery.multiselect.filter.css" />
+    <Content Include="N2\Resources\Js\jquery-1.7.2.min.js" />
+    <Content Include="N2\Resources\Js\jquery.multiselect.filter.js" />
+    <Content Include="N2\Resources\Js\jquery.multiselect.js" />
     <Content Include="N2\Resources\syntaxhighlighter\index.html" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shAutoloader.js" />
     <Content Include="N2\Resources\syntaxhighlighter\scripts\shBrushAppleScript.js" />
@@ -185,8 +207,6 @@
     <Content Include="N2\Resources\img\bg_fff50.png" />
     <Content Include="N2\Resources\img\ui\sprite.png" />
     <Content Include="N2\Resources\Js\EditableTags.js" />
-    <Content Include="N2\Resources\Js\jquery-1.7.js" />
-    <Content Include="N2\Resources\Js\jquery-1.7.min.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2revealer.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2datepicker.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.layout-latest.js" />
@@ -194,11 +214,39 @@
     <Content Include="N2\Resources\Js\plugins\jquery.n2autocomplete.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="N2\Resources\tiny_mce\license.txt" />
+    <Content Include="N2\Tokens\TokenTemplates\Author.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Breadcrumb.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Changes.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Children.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\ChildPages.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormSubmit.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormFile.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormTextarea.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormCheckbox.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormRadio.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormSelect.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FormInput.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Detail.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FacebookLike.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\FirstChild.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Google+1.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Link.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\NextSibling.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Parent.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\PreviousSibling.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Published.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Search.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\Siblings.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\StartPage.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\SyntaxHighlighter.ascx" />
+    <Content Include="N2\Tokens\TokenTemplates\TOC.ascx" />
     <Content Include="N2\Web.config" />
+    <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
     <Content Include="N2\Installation\system.diagnostics.trace.config" />
+    <Content Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx" />
     <None Include="N2\Installation\mysql.upgrade.2.sql" />
     <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />
@@ -210,6 +258,8 @@
     <Content Include="N2\Myself\Analytics\Views\Web.config" />
     <Content Include="N2\Search\IndexInfo.ashx" />
     <Content Include="N2\log4net.config" />
+    <Content Include="N2\Tokens\TokenTemplates\Web.config" />
+    <Content Include="N2\Resources\RedirectHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -324,9 +374,22 @@
     </Compile>
     <Compile Include="N2\Content\Export\N2XmlReader.cs" />
     <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
+    <Compile Include="N2\Content\LinkTracker\PermanentRedirect.cs" />
+    <Compile Include="N2\Content\LinkTracker\UpdateLinksMigration.cs" />
+    <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.cs">
+      <DependentUpon>UpdateReferences.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\LinkTracker\UpdateReferences.aspx.designer.cs">
+      <DependentUpon>UpdateReferences.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\LinkTracker\UpdateReferencesTo.ashx.cs">
+      <DependentUpon>UpdateReferencesTo.ashx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Content\Navigation\ChildrenAjaxService.cs" />
     <Compile Include="N2\Content\Navigation\TreeUtility.cs" />
     <Compile Include="N2\Content\NumberOfItemsScheduledAction.cs" />
+    <Compile Include="N2\Content\Tags\TagsAjaxService.cs" />
     <Compile Include="N2\Content\Templates\ContentTemplateProvider.cs" />
     <Compile Include="N2\Content\Templates\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -462,7 +525,9 @@
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
+    <Compile Include="N2\Installation\FixStateMigration.cs" />
     <Compile Include="N2\Installation\InstallationUtility.cs" />
+    <Compile Include="N2\Installation\UpdateChildStateMigration.cs" />
     <Compile Include="N2\Installation\UpdateTranslationKeyMigration.cs" />
     <Compile Include="N2\Installation\UpdateTemplateKeyMigration.cs" />
     <Compile Include="N2\Installation\Rebase.aspx.cs">
@@ -476,6 +541,9 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Resources\RedirectHandler.ashx.cs">
+      <DependentUpon>RedirectHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Search\IndexInfo.ashx.cs">
       <DependentUpon>IndexInfo.ashx</DependentUpon>
     </Compile>
@@ -623,6 +691,7 @@
     <Compile Include="N2\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Tokens\TokenInitializer.cs" />
     <Compile Include="N2\Top.master.cs">
       <DependentUpon>Top.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
