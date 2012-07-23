@@ -6,6 +6,14 @@ using N2.Collections;
 
 namespace N2.Definitions.Runtime
 {
+	public class ContentRegistration<T> : ContentRegistration
+	{
+		public ContentRegistration()
+		{
+			ContentType = typeof(T);
+		}
+	}
+
 	public class ContentRegistration : IContentRegistration, IRegistration
 	{
 		public ContentRegistration()
@@ -84,6 +92,8 @@ namespace N2.Definitions.Runtime
 
 		public ItemDefinition AppendToDefinition(ItemDefinition definition)
 		{
+			if (IsDefined)
+				definition.IsDefined = true;
 			definition.Title = Title;
 			definition.TemplateKey = TemplateKey;
 

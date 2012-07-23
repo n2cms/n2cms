@@ -147,6 +147,7 @@
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\Runtime\Registrator.cs" />
     <Compile Include="Details\EditableItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableItemSelectionFilter.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
