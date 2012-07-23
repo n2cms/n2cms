@@ -135,13 +135,12 @@ namespace N2.Definitions.Runtime
 				}).FirstOrDefault();
 		}
 
-		private IEnumerable<ItemDefinition> BuildDefinitions(List<ViewTemplateDescription> registrations)
+		private IEnumerable<ItemDefinition> BuildDefinitions(List<ContentRegistration> registrations)
 		{
 			var definitions = registrations.Select(r => r.Definition).ToList();
 			builder.ExecuteRefiners(definitions);
 			foreach (var registration in registrations)
-				registration.Registration.AppendToDefinition(registration.Definition);
-			return definitions;
+				yield return registration.Finalize();
 		}
 
 		#endregion

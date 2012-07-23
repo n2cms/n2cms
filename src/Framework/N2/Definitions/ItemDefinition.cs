@@ -70,8 +70,8 @@ namespace N2.Definitions
 			ContentTransformers = new List<IContentTransformer>();
 			AvailableZones = new List<AvailableZoneAttribute>();
 			AllowedZoneNames = new List<string>();
-			Editables = new List<IEditable>();
-			Containers = new List<IEditableContainer>();
+			Editables = new ContentList<IEditable>();
+			Containers = new ContentList<IEditableContainer>();
 			EditableModifiers = new List<EditorModifierAttribute>();
 			Displayables = new ContentList<IDisplayable>();
 			NamedOperators = new List<IUniquelyNamed>();
@@ -147,10 +147,10 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets or sets editables defined for the item.</summary>
-		public IList<IEditable> Editables { get; private set; }
+		public IContentList<IEditable> Editables { get; private set; }
 
 		/// <summary>Gets or sets containers defined for the item.</summary>
-		public IList<IEditableContainer> Containers { get; private set; }
+		public IContentList<IEditableContainer> Containers { get; private set; }
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
 		public IList<EditorModifierAttribute> EditableModifiers { get; private set; }
@@ -410,11 +410,11 @@ namespace N2.Definitions
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
-			id.Containers = Containers.ToList();
+			id.Containers = Containers.Clone();
 			id.Description = Description;
 			id.Discriminator = Discriminator;
 			id.Displayables = new ContentList<IDisplayable>(Displayables);
-			id.Editables = Editables.ToList();
+			id.Editables = Editables.Clone();
 			id.Enabled = Enabled;
 			id.IconUrl = IconUrl;
 			id.Installer = Installer;

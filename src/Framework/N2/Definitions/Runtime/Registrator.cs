@@ -32,11 +32,10 @@ namespace N2.Definitions.Runtime
 
 		public virtual IEnumerable<ItemDefinition> Register(DefinitionMap map)
 		{
-			var registration = new ContentRegistration<T>();
+			var registration = new ContentRegistration<T>(map.GetOrCreateDefinition(ContentType));
 			registration.IsDefined = true;
 			RegisterDefinition(registration);
-			var definition = map.GetOrCreateDefinition(ContentType);
-			yield return registration.AppendToDefinition(definition);
+			yield return registration.Finalize();
 		}
 	}
 

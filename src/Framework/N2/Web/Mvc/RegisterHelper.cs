@@ -68,7 +68,7 @@ namespace N2.Web.Mvc
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);
 			if (re != null)
-				re.ContentModifiers.Add(modifier);
+				re.Definition.ContentTransformers.Add(modifier);
 		}
 
 		public Builder<T> RegisterRefiner<T>(T refiner) where T : ISortableRefiner

@@ -4,16 +4,20 @@
 	Content.Define(re => 
 	{
 		re.Title = "Container";
-		re.CheckBox("ShowDescendants", "Show all descendants");
-		re.Add(new N2.Details.EditableDefinitionAttribute { Name = "ListingType", Title = "Listed type", TemplateSelection = true, RemovedTypes = new[] { typeof(N2.Definitions.ISystemNode) }, DefaultValue = "ContentPage/News" });
+		re.Tab("Container", "Container", tr =>
+		{
+			re.Add(new N2.Details.EditableDefinitionAttribute { Name = "ListingType", Title = "Listed type", TemplateSelection = true, RemovedTypes = new[] { typeof(N2.Definitions.ISystemNode) }, DefaultValue = "ContentPage/News" });
+			re.CheckBox("ShowDescendants", "Show all descendants");
+			tr.FreeText("NewsFooter", "News item footer").Help("Text displayed as footer for each news item");
+		});
+
 	});
+}
+@{
+	Content.Register.RegisterDisplayable<N2.Details.DisplayableTokensAttribute>("NewsFooter");
 }
 
 @Html.Partial("LayoutPartials/Content")
-@{ 
-	Content.Register.FreeText("NewsFooter", "News item footer").Help("Text displayed as footer for each news item");
-	Content.Register.RegisterDisplayable<N2.Details.DisplayableTokensAttribute>("NewsFooter");
-}
 
 @{
 	var items = Content.Data.ShowDescendants ?? false

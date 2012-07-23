@@ -29,9 +29,9 @@ namespace N2.Definitions.Runtime
 			this.builder = builder;
 		}
 
-		public virtual IEnumerable<ViewTemplateDescription> AnalyzeViews(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
+		public virtual IEnumerable<ContentRegistration> AnalyzeViews(VirtualPathProvider vpp, HttpContextBase httpContext, IEnumerable<ViewTemplateSource> sources)
 		{
-			var descriptions = new List<ViewTemplateDescription>();
+			var registrations = new List<ContentRegistration>();
 			foreach (var source in sources)
 			{
 				string virtualDir = Url.ResolveTokens(Url.ThemesUrlToken) + "Default/Views/" + source.ControllerName;
@@ -49,15 +49,15 @@ namespace N2.Definitions.Runtime
 				{
 					logger.DebugFormat("Analyzing file {0}", file.VirtualPath);
 
-					var description = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
-					if (description != null)
-						descriptions.Add(description);
+					var registration = AnalyzeView(httpContext, file, source.ControllerName, source.ModelType);
+					if (registration != null)
+						registrations.Add(registration);
 				}
 			}
-			return descriptions;
+			return registrations;
 		}
 
-		private ViewTemplateDescription AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
+		private ContentRegistration AnalyzeView(HttpContextBase httpContext, VirtualFile file, string controllerName, Type modelType)
 		{
 			if (modelType == null || !typeof(ContentItem).IsAssignableFrom(modelType) || modelType.IsAbstract)
 				return null;
@@ -81,12 +81,12 @@ namespace N2.Definitions.Runtime
 			return RenderViewForRegistration(file, modelType, cctx, result);
 		}
 
-		private ViewTemplateDescription RenderViewForRegistration(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
+		private ContentRegistration RenderViewForRegistration(VirtualFile file, Type modelType, ControllerContext cctx, ViewEngineResult result)
 		{
-			var re = new ContentRegistration();
-			re.ContentType = modelType;
-			re.TemplateKey = N2.Web.Url.RemoveAnyExtension(file.Name);
+			var re = new ContentRegistration(map.CreateDefinition(modelType, N2.Web.Url.RemoveAnyExtension(file.Name)));
 			re.IsDefined = false;
+			re.TouchedPaths.Add(file.VirtualPath);
+
 			using (StringWriter sw = new StringWriter())
 			{
 				var vdd = new ViewDataDictionary();
@@ -97,7 +97,7 @@ namespace N2.Definitions.Runtime
 				{
 					logger.DebugFormat("Rendering view {0} for registrations", file.VirtualPath);
 					result.View.Render(new ViewContext(cctx, result.View, vdd, new TempDataDictionary(), sw), sw);
-					logger.DebugFormat("Rendered view {0}, registrations = {1}, defined = {2}", file.VirtualPath, re.Containables.Count, re.IsDefined);
+					logger.DebugFormat("Rendered view {0}, editables = {1}, defined = {2}", file.VirtualPath, re.Definition.Editables.Count, re.IsDefined);
 				}
 				catch (Exception ex)
 				{
@@ -113,21 +113,10 @@ namespace N2.Definitions.Runtime
 
 				if (re.IsDefined)
 				{
-					return new ViewTemplateDescription
-					{
-						Registration = re,
-						Definition = GetOrCreateDefinition(re),
-						TouchedPaths = new[] { file.VirtualPath }.Union(re.TouchedPaths)
-					};
+					return re;
 				}
 				return null;
 			}
-		}
-
-		private ItemDefinition GetOrCreateDefinition(ContentRegistration re)
-		{
-			var definition = map.CreateDefinition(re.ContentType, re.TemplateKey);
-			return definition;
 		}
 
 		class StubController : Controller

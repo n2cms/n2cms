@@ -8,41 +8,56 @@ namespace N2.Definitions.Runtime
 {
 	public class ContentRegistration<T> : ContentRegistration
 	{
-		public ContentRegistration()
+		public ContentRegistration(ItemDefinition definition)
+			: base(definition)
 		{
-			ContentType = typeof(T);
 		}
 	}
 
 	public class ContentRegistration : IContentRegistration, IRegistration
 	{
-		public ContentRegistration()
+		public const int DefaultSortIncrement = 10;
+
+		public ContentRegistration(ItemDefinition definition)
 		{
-			Containables = new ContentList<IUniquelyNamed>();
 			TouchedPaths = new List<string>();
-			ContentModifiers = new List<IContentTransformer>();
 			Refiners = new List<ISortableRefiner>();
-			DefaultSortIncrement = 10;
+			Definition = definition;
+			ContentType = Definition.ItemType;
 		}
 
 
 
 		public Type ContentType { get; set; }
-		public ContentList<IUniquelyNamed> Containables { get; private set; }
-		public ICollection<IContentTransformer> ContentModifiers { get; set; }
-		public ICollection<ISortableRefiner> Refiners { get; set; }
-		public ICollection<string> TouchedPaths { get; private set; }
-		public string ContainerName { get; set; }
-		public int CurrentSortOrder { get; set; }
-		public int GlobalSortOffset { get; set; }
-		public int DefaultSortIncrement { get; set; }
-		public bool Ignore { get; set; }
-		public string Discriminator { get; set; }
-		public string TemplateKey { get; set; }
-		public string Title { get; set; }
-		public bool IsDefined { get; set; }
-		public bool ReplaceDefault { get; set; }
 
+		public ItemDefinition Definition { get; set; }
+
+		public ICollection<ISortableRefiner> Refiners { get; set; }
+		
+		/// <summary>The touched paths are used for setting up cache invalidation of this registratin.</summary>
+		public ICollection<string> TouchedPaths { get; private set; }
+		
+		/// <summary>Container name is used while contents of an editor container.</summary>
+		public string ContainerName { get; set; }
+		/// <summary>The current sorter is maintained o add editors in a sequence.</summary>
+		public int CurrentSortOrder { get; set; }
+		/// <summary>The global sort offset is used when registering sub-components.</summary>
+		public int GlobalSortOffset { get; set; }
+
+		/// <summary>Immediately maps to the definition title.</summary>
+		public string Title 
+		{
+			get { return Definition.Title; }
+			set { Definition.Title = value; }
+		}
+		
+		/// <summary>This property is set to true when the view start registering.</summary>
+		public bool IsDefined { get; set; }
+
+		//public IContentList<IUniquelyNamed> Containables 
+		//{
+		//    get { return new ContentList<IUniquelyNamed>(Definition.NamedOperators); }
+		//}
 
 
 		public ContentRegistration Add(ISortableRefiner refiner)
@@ -54,14 +69,14 @@ namespace N2.Definitions.Runtime
 
 		public ContentRegistration Add(IUniquelyNamed named)
 		{
-			Containables.Add(named);
+			Definition.Add(named);
 
 			return this;
 		}
 
 		public ContentRegistration Add(IContainable containable)
 		{
-			Containables.Add(containable);
+			Definition.Add(containable);
 			containable.ContainerName = ContainerName;
 
 			return this;
@@ -90,28 +105,20 @@ namespace N2.Definitions.Runtime
 			return CurrentSortOrder;
 		}
 
-		public ItemDefinition AppendToDefinition(ItemDefinition definition)
+		public ItemDefinition Finalize()
 		{
 			if (IsDefined)
-				definition.IsDefined = true;
-			definition.Title = Title;
-			definition.TemplateKey = TemplateKey;
-
-			foreach (var c in Containables)
-				definition.Add(c);
-
-			foreach (var dv in ContentModifiers)
-				definition.ContentTransformers.Add(dv);
+				Definition.IsDefined = true;
 
 			foreach (var refiner in Refiners.OrderBy(r => r.RefinementOrder))
-				refiner.Refine(definition, new[] { definition });
+				refiner.Refine(Definition, new[] { Definition });
 
-			return definition;
+			return Definition;
 		}
 
 		public void Configure<T>(string propertyName, Action<T> configurationExpression)
 		{
-			configurationExpression((T)Containables[propertyName]);
+			configurationExpression(Definition.NamedOperators.Where(no => no.Name == propertyName).OfType<T>().First());
 		}
 
 		#region IContentRegistration Members
@@ -138,7 +145,7 @@ namespace N2.Definitions.Runtime
 		}
 		public void RegisterModifier(IContentTransformer modifier)
 		{
-			ContentModifiers.Add(modifier);
+			Definition.ContentTransformers.Add(modifier);
 		}
 
 		public Builder<T> RegisterRefiner<T>(T refiner) where T : ISortableRefiner

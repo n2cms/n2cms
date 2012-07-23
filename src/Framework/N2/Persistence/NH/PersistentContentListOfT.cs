@@ -154,5 +154,10 @@ namespace N2.Persistence.NH
 			if (value.Name != key)
 				throw new InvalidOperationException("Cannot add value with differnet name (" + key + " != " + value.Name + ")");
 		}
+
+		public IContentList<T> Clone()
+		{
+			return new ContentList<T>(this.ToList());
+		}
 	}
 }

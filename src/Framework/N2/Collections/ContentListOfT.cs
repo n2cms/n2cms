@@ -276,5 +276,10 @@ namespace N2.Collections
 		}
 
 		#endregion
+
+		public IContentList<T> Clone()
+		{
+			return new ContentList<T>(inner.ToList());
+		}
 	}
 }
