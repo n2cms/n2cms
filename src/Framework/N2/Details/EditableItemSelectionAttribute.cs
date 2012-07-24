@@ -66,9 +66,9 @@ namespace N2.Details
 				query = query.And.Type.NotEq(ExcludedType);
 
 			if (!Is(EditableItemSelectionFilter.Pages))
-				query = query.And.ZoneName.IsNull();
-			if (!Is(EditableItemSelectionFilter.Parts))
 				query = query.And.ZoneName.IsNull(false);
+			if (!Is(EditableItemSelectionFilter.Parts))
+				query = query.And.ZoneName.IsNull();
 
 			var items = query.Select("ID", "Title");
 
