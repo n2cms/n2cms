@@ -115,6 +115,11 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableFolderSelectionAttribute>(name, title);
 		}
 
+		public static EditableBuilder<EditableFreeTextAreaAttribute> FreeText(this IPropertyRegistration<string> registration, string title = null)
+		{
+			return registration.Registration.RegisterEditable<EditableFreeTextAreaAttribute>(registration.PropertyName, title);
+		}
+
 		public static EditableBuilder<EditableFreeTextAreaAttribute> FreeText(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableFreeTextAreaAttribute>(name, title);
@@ -143,6 +148,11 @@ namespace N2.Web.Mvc.Html
 		public static EditableBuilder<EditableLinkAttribute> Link(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableLinkAttribute>(name, title);
+		}
+
+		public static EditableBuilder<EditableTextAttribute> Text(this IPropertyRegistration<string> registration, string title = null)
+		{
+			return registration.Registration.RegisterEditable<EditableTextAttribute>(registration.PropertyName, title);
 		}
 
 		public static EditableBuilder<EditableTextAttribute> Text(this IContentRegistration registration, string name, string title = null)

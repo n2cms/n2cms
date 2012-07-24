@@ -23,7 +23,7 @@ namespace N2.Definitions.Runtime
 
 	public abstract class FluentRegistrator<T> : IFluentRegistrator where T : ContentItem
 	{
-		public abstract void RegisterDefinition(ContentRegistration<T> registration);
+		public abstract void RegisterDefinition(ContentRegistration<T> re);
 
 		public Type ContentType
 		{
@@ -35,30 +35,27 @@ namespace N2.Definitions.Runtime
 			var registration = new ContentRegistration<T>(map.GetOrCreateDefinition(ContentType));
 			registration.IsDefined = true;
 			RegisterDefinition(registration);
-			yield return registration.Finalize();
+			return new [] { registration.Finalize() };
 		}
 	}
 
 	[Service(typeof(IDefinitionProvider))]
 	public class FluentDefinitionProvider : IDefinitionProvider
 	{
-		private DefinitionMap map;
-		private IEnumerable<IFluentRegistrator> registrators;
 		public ItemDefinition[] definitionsCache;
 
 		public FluentDefinitionProvider(DefinitionMap map, IFluentRegistrator[] registrators)
 		{
-			this.map = map;
-			this.registrators = registrators;
+			var definitions = registrators.SelectMany(r => r.Register(map));
+			definitionsCache = definitions.ToArray();
 		}
 
 		public IEnumerable<ItemDefinition> GetDefinitions()
 		{
-			if (definitionsCache != null)
-				return definitionsCache;
-
-			var definitions = registrators.SelectMany(r => r.Register(map));
-			return definitionsCache = definitions.ToArray();
+			return definitionsCache;
 		}
+
+		/// <summary>The order this definition provider should be invoked, default 0.</summary>
+		public int SortOrder { get { return -10; } }
 	}
 }

@@ -20,10 +20,10 @@ namespace N2.Definitions
 		private readonly ContentActivator activator;
 		private readonly StateChanger stateChanger;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] providers, ContentActivator activator, StateChanger changer)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] templateProviders, ContentActivator activator, StateChanger changer)
 		{
-			this.definitionProviders = definitionProviders;
-			this.providers = providers.OrderBy(tp => tp.SortOrder).ToArray();
+			this.definitionProviders = definitionProviders.OrderBy(dp => dp.SortOrder).ToArray();
+			this.providers = templateProviders.OrderBy(tp => tp.SortOrder).ToArray();
 			this.activator = activator;
 			this.stateChanger = changer;
 

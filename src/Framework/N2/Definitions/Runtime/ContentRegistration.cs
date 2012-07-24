@@ -3,14 +3,65 @@ using System.Linq;
 using System.Collections.Generic;
 using N2.Details;
 using N2.Collections;
+using System.Linq.Expressions;
 
 namespace N2.Definitions.Runtime
 {
-	public class ContentRegistration<T> : ContentRegistration
+	public class PropertyRegistration<TModel, TProperty> : IPropertyRegistration<TProperty>
+	{
+		private ContentRegistration<TModel> registration;
+
+		public string PropertyName { get; set; }
+		public IContentRegistration Registration { get { return registration; } }
+
+		public PropertyRegistration(ContentRegistration<TModel> registration, string expressionText)
+		{
+			this.registration = registration;
+			this.PropertyName = expressionText;
+		}
+
+
+		public PropertyRegistration<TModel, TProperty> Add(IUniquelyNamed named)
+		{
+			named.Name = PropertyName;
+			registration.Add(named);
+
+			return this;
+		}
+
+		public PropertyRegistration<TModel, TProperty> Add(IContainable named)
+		{
+			named.Name = PropertyName;
+			registration.Add(named);
+
+			return this;
+		}
+
+		public PropertyRegistration<TModel, TProperty> Add(IEditable editable, string title)
+		{
+			editable.Name = PropertyName;
+			registration.Add(editable, title);
+
+			return this;
+		}
+	}
+
+	public class ContentRegistration<TModel> : ContentRegistration
 	{
 		public ContentRegistration(ItemDefinition definition)
 			: base(definition)
 		{
+		}
+
+		public PropertyRegistration<TModel, TProperty> On<TProperty>(Expression<Func<TModel, TProperty>> expression)
+		{
+			string expressionText = System.Web.Mvc.ExpressionHelper.GetExpressionText(expression);
+			return new PropertyRegistration<TModel, TProperty>(this, expressionText);
+		}
+
+		public PropertyRegistration<TModel, TProperty> On<TProperty>(string detailName)
+		{
+			return new PropertyRegistration<TModel, TProperty>(this, detailName);
 		}
 	}
 
