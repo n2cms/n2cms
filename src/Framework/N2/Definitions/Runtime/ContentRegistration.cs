@@ -46,7 +46,7 @@ namespace N2.Definitions.Runtime
 		}
 	}
 
-	public class ContentRegistration<TModel> : ContentRegistration
+	public class ContentRegistration<TModel> : ContentRegistration, IContentRegistration<TModel>
 	{
 		public ContentRegistration(ItemDefinition definition)
 			: base(definition)

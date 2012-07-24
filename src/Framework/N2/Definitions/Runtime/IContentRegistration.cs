@@ -3,6 +3,10 @@ using N2.Web.Mvc;
 
 namespace N2.Definitions.Runtime
 {
+	public interface IContentRegistration<TModel> : IContentRegistration
+	{
+	}
+
 	public interface IContentRegistration
 	{
 		EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new();

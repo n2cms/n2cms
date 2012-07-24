@@ -149,6 +149,7 @@
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\Runtime\FluentRegistrator.cs" />
     <Compile Include="Definitions\Runtime\IPropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistrationExtensions.cs" />
     <Compile Include="Details\EditableItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableItemSelectionFilter.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
