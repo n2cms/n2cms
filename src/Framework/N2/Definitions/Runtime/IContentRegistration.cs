@@ -5,6 +5,8 @@ namespace N2.Definitions.Runtime
 {
 	public interface IContentRegistration<TModel> : IContentRegistration
 	{
+		ItemDefinition Definition { get; }
+		PropertyRegistration<TModel, TProperty> On<TProperty>(string detailName);
 	}
 
 	public interface IContentRegistration

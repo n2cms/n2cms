@@ -173,6 +173,9 @@ namespace N2.Web
 		/// <summary>?</summary>
 		public string Path { get; set; }
 
+		/// <summary>An optional controller info used by MVC routing.</summary>
+		public string Controller { get; set; }
+
 		/// <summary>An optional action to separate templates handling an item.</summary>
 		public string Action { get; set; }
 

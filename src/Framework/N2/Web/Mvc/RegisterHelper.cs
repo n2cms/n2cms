@@ -64,6 +64,18 @@ namespace N2.Web.Mvc
 			return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, editable.Name), re);
 		}
 
+
+		public Builder<T> Register<T>(T editable) where T : IUniquelyNamed
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+			{
+				re.Add(editable);
+			}
+
+			return new Builder<T>(editable.Name, re);
+		}
+
 		public void RegisterModifier(Details.IContentTransformer modifier)
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);

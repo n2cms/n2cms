@@ -7,7 +7,9 @@ using N2.Web.Mvc.Html;
 using NUnit.Framework;
 using Shouldly;
 using N2.Details;
+using N2.Web.Mvc;
 using System.Web.UI.WebControls;
+using System.Web.Mvc;
 
 namespace N2.Tests.Definitions.Runtime
 {
@@ -28,10 +30,10 @@ namespace N2.Tests.Definitions.Runtime
 			public virtual bool Choice { get; set; }
 		}
 
-		class FluentItemRegistration : FluentRegistrator<FluentItem>
+		class FluentItemRegistration : FluentRegisterer<FluentItem>
 		{
-			public Action<ContentRegistration<FluentItem>> registerAction = delegate { };
-			public override void RegisterDefinition(ContentRegistration<FluentItem> re)
+			public Action<IContentRegistration<FluentItem>> registerAction = delegate { };
+			public override void RegisterDefinition(IContentRegistration<FluentItem> re)
 			{
 				registerAction(re);
 			}
@@ -338,6 +340,25 @@ namespace N2.Tests.Definitions.Runtime
 			var editable = (EditableEnumAttribute)definitions.Single().Editables.Single();
 			editable.Name.ShouldBe("Enum");
 			editable.EnumType.ShouldBe(typeof(TestStatus));
+		}
+
+		class FluentItemController : Controller
+		{
+			public ActionResult Hello()
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		[Test]
+		public void Register_Controller()
+		{
+			registration.registerAction = (re) => re.ControlledBy<FluentItemController>();
+
+			var definitions = registration.Register(map);
+
+			var pathFinder = (ActionResolver)N2.Web.PathDictionary.GetFinders(typeof(FluentItem)).First();
+			pathFinder.Methods.Single().ShouldBe("Hello");
 		}
 	}
 }

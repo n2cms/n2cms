@@ -7,23 +7,9 @@ using N2.Definitions.Static;
 
 namespace N2.Definitions.Runtime
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public class FluentRegistrationAttribute : ServiceAttribute
+	public abstract class FluentRegisterer<T> : IFluentRegisterer where T : ContentItem
 	{
-		public FluentRegistrationAttribute()
-			: base(typeof(IFluentRegistrator))
-		{
-		}
-	}
-
-	public interface IFluentRegistrator
-	{
-		IEnumerable<ItemDefinition> Register(DefinitionMap map);
-	}
-
-	public abstract class FluentRegistrator<T> : IFluentRegistrator where T : ContentItem
-	{
-		public abstract void RegisterDefinition(ContentRegistration<T> re);
+		public abstract void RegisterDefinition(IContentRegistration<T> re);
 
 		public Type ContentType
 		{
@@ -44,7 +30,7 @@ namespace N2.Definitions.Runtime
 	{
 		public ItemDefinition[] definitionsCache;
 
-		public FluentDefinitionProvider(DefinitionMap map, IFluentRegistrator[] registrators)
+		public FluentDefinitionProvider(DefinitionMap map, IFluentRegisterer[] registrators)
 		{
 			var definitions = registrators.SelectMany(r => r.Register(map));
 			definitionsCache = definitions.ToArray();

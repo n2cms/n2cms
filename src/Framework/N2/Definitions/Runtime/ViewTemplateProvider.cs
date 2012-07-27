@@ -14,7 +14,7 @@ namespace N2.Definitions.Runtime
 	[Service(typeof(ITemplateProvider))]
 	public class ViewTemplateProvider : ITemplateProvider
 	{
-        private readonly Logger<ViewTemplateProvider> logger;
+		private readonly Logger<ViewTemplateProvider> logger;
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<VirtualPathProvider> vppProvider;
 		ContentActivator activator;
@@ -85,9 +85,8 @@ namespace N2.Definitions.Runtime
 					definitions = BuildDefinitions(descriptions);
 					logger.Debug("Built definitions");
 
-					var files = descriptions.SelectMany(p => p.TouchedPaths).Distinct().ToList();
+					var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();
 					logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
-					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
 					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
 					httpContext.Cache.Remove(cacheKey);

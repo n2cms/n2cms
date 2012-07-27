@@ -25,7 +25,7 @@ namespace N2.Web.Mvc.Html
 			{
 				FakeModel(content, re);
 
-				re.GlobalSortOffset = 0;
+				re.Context.GlobalSortOffset = 0;
 				if (content.Html.GetType().IsGenericType)
 				{
 					var contentType = content.Html.GetType().GetGenericArguments().First();
@@ -71,7 +71,7 @@ namespace N2.Web.Mvc.Html
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
 			{
-				re.GlobalSortOffset = 0;
+				re.Context.GlobalSortOffset = 0;
 				registration(re);
 			}
 			return re;
@@ -87,7 +87,7 @@ namespace N2.Web.Mvc.Html
 			var re = RegistrationExtensions.GetRegistrationExpression(content.Html);
 			if (re != null)
 			{
-				re.GlobalSortOffset = -1000;
+				re.Context.GlobalSortOffset = -1000;
 				registration(re);
 			}
 			return re;
@@ -99,14 +99,14 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			re.Add(new N2.Web.UI.TabContainerAttribute(containerName, tabText, re.NextSortOrder(sortOrder)));
+			re.Add(new N2.Web.UI.TabContainerAttribute(containerName, tabText, re.Context.NextSortOrder(sortOrder)));
 
-			string previousContainerName = re.ContainerName;
-			re.ContainerName = containerName;
+			string previousContainerName = re.Context.ContainerName;
+			re.Context.ContainerName = containerName;
 			if (registration != null)
 			{
 				registration(re);
-				re.ContainerName = previousContainerName;
+				re.Context.ContainerName = previousContainerName;
 			}
 
 			return re;
@@ -116,14 +116,14 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			re.Add(new N2.Web.UI.FieldSetContainerAttribute(containerName, legend, re.NextSortOrder(sortOrder)));
-
-			string previousContainerName = re.ContainerName;
-			re.ContainerName = containerName;
+			re.Add(new N2.Web.UI.FieldSetContainerAttribute(containerName, legend, re.Context.NextSortOrder(sortOrder)));
+			
 			if (registration != null)
 			{
-				registration(re);
-				re.ContainerName = previousContainerName;
+				using (re.Context.BeginContainer(containerName))
+				{
+					registration(re);
+				}
 			}
 
 			return re;
@@ -133,12 +133,12 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			string previousContainerName = re.ContainerName;
-			re.ContainerName = name;
+			string previousContainerName = re.Context.ContainerName;
+			re.Context.ContainerName = name;
 			if (registration != null)
 			{
 				registration(re);
-				re.ContainerName = previousContainerName;
+				re.Context.ContainerName = previousContainerName;
 			}
 
 			return re;
@@ -148,7 +148,7 @@ namespace N2.Web.Mvc.Html
 		{
 			if (re == null) return re;
 
-			re.ContainerName = null;
+			re.Context.ContainerName = null;
 			return re;
 		}
 

@@ -85,7 +85,7 @@ namespace N2.Definitions.Runtime
 		{
 			var re = new ContentRegistration(map.CreateDefinition(modelType, N2.Web.Url.RemoveAnyExtension(file.Name)));
 			re.IsDefined = false;
-			re.TouchedPaths.Add(file.VirtualPath);
+			re.Context.TouchedPaths.Add(file.VirtualPath);
 
 			using (StringWriter sw = new StringWriter())
 			{

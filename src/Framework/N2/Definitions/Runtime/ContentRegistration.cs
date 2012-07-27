@@ -7,45 +7,10 @@ using System.Linq.Expressions;
 
 namespace N2.Definitions.Runtime
 {
-	public class PropertyRegistration<TModel, TProperty> : IPropertyRegistration<TProperty>
-	{
-		private ContentRegistration<TModel> registration;
-
-		public string PropertyName { get; set; }
-		public IContentRegistration Registration { get { return registration; } }
-
-		public PropertyRegistration(ContentRegistration<TModel> registration, string expressionText)
-		{
-			this.registration = registration;
-			this.PropertyName = expressionText;
-		}
-
-
-		public PropertyRegistration<TModel, TProperty> Add(IUniquelyNamed named)
-		{
-			named.Name = PropertyName;
-			registration.Add(named);
-
-			return this;
-		}
-
-		public PropertyRegistration<TModel, TProperty> Add(IContainable named)
-		{
-			named.Name = PropertyName;
-			registration.Add(named);
-
-			return this;
-		}
-
-		public PropertyRegistration<TModel, TProperty> Add(IEditable editable, string title)
-		{
-			editable.Name = PropertyName;
-			registration.Add(editable, title);
-
-			return this;
-		}
-	}
-
+	/// <summary>
+	/// Used to register editors and other information about content of the specified generic type.
+	/// </summary>
+	/// <typeparam name="TModel">The type of content to define.</typeparam>
 	public class ContentRegistration<TModel> : ContentRegistration, IContentRegistration<TModel>
 	{
 		public ContentRegistration(ItemDefinition definition)
@@ -53,31 +18,70 @@ namespace N2.Definitions.Runtime
 		{
 		}
 
-		public PropertyRegistration<TModel, TProperty> On<TProperty>(Expression<Func<TModel, TProperty>> expression)
-		{
-			string expressionText = System.Web.Mvc.ExpressionHelper.GetExpressionText(expression);
-			return new PropertyRegistration<TModel, TProperty>(this, expressionText);
-		}
-
+		/// <summary>Begins registration of a property on the content type.</summary>
+		/// <typeparam name="TProperty">The property type of the property.</typeparam>
+		/// <param name="detailName">An the name of the detail to define.</param>
+		/// <returns>A property registration object.</returns>
 		public PropertyRegistration<TModel, TProperty> On<TProperty>(string detailName)
 		{
 			return new PropertyRegistration<TModel, TProperty>(this, detailName);
 		}
 	}
 
+	/// <summary>
+	/// Used to register editors and other information about a content type.
+	/// </summary>
 	public class ContentRegistration : IContentRegistration, IRegistration
 	{
+		public class ContentRegistrationContext
+		{
+			public ContentRegistrationContext()
+			{
+				TouchedPaths = new List<string>();
+			}
+
+			/// <summary>The touched paths are used for setting up cache invalidation of this registratin.</summary>
+			public ICollection<string> TouchedPaths { get; private set; }
+
+			/// <summary>Container name is used while contents of an editor container.</summary>
+			public string ContainerName { get; set; }
+			/// <summary>The current sorter is maintained o add editors in a sequence.</summary>
+			public int CurrentSortOrder { get; set; }
+			/// <summary>The global sort offset is used when registering sub-components.</summary>
+			public int GlobalSortOffset { get; set; }
+
+			/// <summary>Gets an incremental sort order for editables.</summary>
+			/// <param name="proposedSortOrder">A sort order override parameter that overwrites the existing current sort order.</param>
+			/// <returns>The previous sort order plus a default sort increment.</returns>
+			public int NextSortOrder(int? proposedSortOrder)
+			{
+				CurrentSortOrder = proposedSortOrder ?? (CurrentSortOrder + DefaultSortIncrement);
+				return CurrentSortOrder;
+			}
+
+			/// <summary>Sets the current container and resets it upon return value disposal.</summary>
+			/// <param name="containerName">The container to use within the using statement.</param>
+			/// <returns>Resets the container upon disposal.</returns>
+			public IDisposable BeginContainer(string containerName)
+			{
+				var previous = ContainerName;
+				ContainerName = containerName;
+
+				return new Engine.Globalization.Scope(() => ContainerName = previous);
+			}
+		}
+
 		public const int DefaultSortIncrement = 10;
 
 		public ContentRegistration(ItemDefinition definition)
 		{
-			TouchedPaths = new List<string>();
 			Refiners = new List<ISortableRefiner>();
 			Definition = definition;
 			ContentType = Definition.ItemType;
+			Context = new ContentRegistrationContext();
 		}
 
-
+		public ContentRegistrationContext Context { get; set; }
 
 		public Type ContentType { get; set; }
 
@@ -85,16 +89,6 @@ namespace N2.Definitions.Runtime
 
 		public ICollection<ISortableRefiner> Refiners { get; set; }
 		
-		/// <summary>The touched paths are used for setting up cache invalidation of this registratin.</summary>
-		public ICollection<string> TouchedPaths { get; private set; }
-		
-		/// <summary>Container name is used while contents of an editor container.</summary>
-		public string ContainerName { get; set; }
-		/// <summary>The current sorter is maintained o add editors in a sequence.</summary>
-		public int CurrentSortOrder { get; set; }
-		/// <summary>The global sort offset is used when registering sub-components.</summary>
-		public int GlobalSortOffset { get; set; }
-
 		/// <summary>Immediately maps to the definition title.</summary>
 		public string Title 
 		{
@@ -104,11 +98,6 @@ namespace N2.Definitions.Runtime
 		
 		/// <summary>This property is set to true when the view start registering.</summary>
 		public bool IsDefined { get; set; }
-
-		//public IContentList<IUniquelyNamed> Containables 
-		//{
-		//    get { return new ContentList<IUniquelyNamed>(Definition.NamedOperators); }
-		//}
 
 
 		public ContentRegistration Add(ISortableRefiner refiner)
@@ -128,7 +117,7 @@ namespace N2.Definitions.Runtime
 		public ContentRegistration Add(IContainable containable)
 		{
 			Definition.Add(containable);
-			containable.ContainerName = ContainerName;
+			containable.ContainerName = Context.ContainerName;
 
 			return this;
 		}
@@ -136,7 +125,7 @@ namespace N2.Definitions.Runtime
 		public ContentRegistration Add(IEditable editable, string title)
 		{
 			editable.Title = title;
-			editable.SortOrder = NextSortOrder(null);
+			editable.SortOrder = Context.NextSortOrder(null);
 			Add(editable);
 
 			return this;
@@ -150,19 +139,15 @@ namespace N2.Definitions.Runtime
 			return this;
 		}
 
-		public int NextSortOrder(int? proposedSortOrder)
-		{
-			CurrentSortOrder = proposedSortOrder ?? (CurrentSortOrder + DefaultSortIncrement);
-			return CurrentSortOrder;
-		}
-
 		public ItemDefinition Finalize()
 		{
 			if (IsDefined)
+			{
 				Definition.IsDefined = true;
 
-			foreach (var refiner in Refiners.OrderBy(r => r.RefinementOrder))
-				refiner.Refine(Definition, new[] { Definition });
+				foreach (var refiner in Refiners.OrderBy(r => r.RefinementOrder))
+					refiner.Refine(Definition, new[] { Definition });
+			}
 
 			return Definition;
 		}
@@ -187,7 +172,7 @@ namespace N2.Definitions.Runtime
 
 		#endregion
 
-		#region IContainerRegistration Members
+		#region IRegistration Members
 
 		Builder<T> IRegistration.Register<T>(T container)
 		{

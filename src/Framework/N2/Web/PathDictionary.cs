@@ -11,6 +11,8 @@ namespace N2.Web
 	/// </summary>
 	public class PathDictionary : SingletonDictionary<Type, IPathFinder[]>
 	{
+		static Logger<PathDictionary> logger;
+
 		/// <summary>Looks up path finders from a static cache.</summary>
 		/// <param name="itemType">The type of item whose path finders to get.</param>
 		/// <returns>A list of path finders.</returns>
@@ -32,6 +34,8 @@ namespace N2.Web
 		{
 			lock(Instance)
 			{
+				logger.DebugFormat("Prepending finder {0} for type {1}", finder, itemType);
+
 				List<IPathFinder> newFinders = new List<IPathFinder>(GetFinders(itemType));
 				newFinders.Insert(0, finder);
 				Instance[itemType] = newFinders.ToArray();
@@ -45,6 +49,8 @@ namespace N2.Web
 		{
 			lock (Instance)
 			{
+				logger.DebugFormat("Appending finder {0} for type {1}", finder, itemType);
+
 				List<IPathFinder> newFinders = new List<IPathFinder>(GetFinders(itemType));
 				newFinders.Add(finder);
 				Instance[itemType] = newFinders.ToArray();
@@ -58,6 +64,8 @@ namespace N2.Web
 		{
 			lock(Instance)
 			{
+				logger.DebugFormat("Removing finder {0} for type {1}", finder, itemType);
+
 				List<IPathFinder> newFinders = new List<IPathFinder>(GetFinders(itemType));
 				newFinders.Remove(finder);
 				Instance[itemType] = newFinders.ToArray();

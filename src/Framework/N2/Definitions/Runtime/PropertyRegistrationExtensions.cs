@@ -10,6 +10,16 @@ namespace N2.Definitions.Runtime
 {
 	public static class PropertyRegistrationExtensions
 	{
+		/// <summary>Begins registration of a property on the content type.</summary>
+		/// <typeparam name="TProperty">The property type of the property.</typeparam>
+		/// <param name="expression">An expression defining the property, e.g. item =&gt; item.Text</param>
+		/// <returns>A property registration object.</returns>
+		public static PropertyRegistration<TModel, TProperty> On<TModel, TProperty>(this IContentRegistration<TModel> registration, Expression<Func<TModel, TProperty>> expression)
+		{
+			string expressionText = System.Web.Mvc.ExpressionHelper.GetExpressionText(expression);
+			return new PropertyRegistration<TModel, TProperty>(registration, expressionText);
+		}
+
 		public static EditableBuilder<WithEditableTitleAttribute> Title<T>(this IContentRegistration<T> registration, string title = "Title")
 		{
 			return registration.RegisterEditable<WithEditableTitleAttribute>("Title", title);
@@ -20,7 +30,7 @@ namespace N2.Definitions.Runtime
 			return registration.RegisterEditable<WithEditableNameAttribute>("Name", title);
 		}
 
-		public static EditableBuilder<WithEditablePublishedRangeAttribute> PublishedRange(this IContentRegistration registration, string title = "Published between")
+		public static EditableBuilder<WithEditablePublishedRangeAttribute> PublishedRange<T>(this IContentRegistration<T> registration, string title = "Published between")
 		{
 			return registration.RegisterEditable<WithEditablePublishedRangeAttribute>("Published", title);
 		}
