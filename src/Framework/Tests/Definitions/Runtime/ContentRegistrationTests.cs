@@ -123,6 +123,7 @@ namespace N2.Tests.Definitions
 		public void Restrictions_CanBeRegistered()
 		{
 			registration.RestrictChildren("Hello");
+			registration.IsDefined = true;
 
 			var definition = registration.Finalize();
 
@@ -133,6 +134,7 @@ namespace N2.Tests.Definitions
 		public void Restrictions_CanBeRegistered_AndConfigured()
 		{
 			registration.RestrictChildren(typeof(Definitions.SideshowItem)).Configure(rc => rc.TemplateNames = new [] { "World" });
+			registration.IsDefined = true;
 
 			var definition = registration.Finalize();
 
