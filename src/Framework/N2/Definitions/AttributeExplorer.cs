@@ -67,17 +67,6 @@ namespace N2.Definitions
 				{
 					editableOnProperty.Name = propertyOnItem.Name;
 					
-					if (editableOnProperty is ISecurable)
-					{
-#pragma warning disable 618
-						foreach (DetailAuthorizedRolesAttribute rolesAttribute in propertyOnItem.GetCustomAttributes(typeof (DetailAuthorizedRolesAttribute), false))
-#pragma warning restore 618
-						{
-							ISecurable s = editableOnProperty as ISecurable;
-							s.AuthorizedRoles = rolesAttribute.Roles;
-						}
-					}
-
 					if (attributes.Contains(editableOnProperty))
 						continue;
 					

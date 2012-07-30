@@ -40,16 +40,15 @@ namespace N2.Definitions
 	/// </summary>
 	public class ItemDefinition : IComparable<ItemDefinition>, ICloneable, IPermittable, ISecurable
 	{
-		private AttributeExplorer explorer = new AttributeExplorer();
 		private string iconUrl;
 
 		#region Constructors
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
+		[Obsolete("Attribute explorer can no longer be passed in", true)]
 		public ItemDefinition(Type itemType, AttributeExplorer explorer)
 			: this(itemType)
 		{
-			this.explorer = explorer;
 		}
 
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
@@ -64,23 +63,9 @@ namespace N2.Definitions
 			Discriminator = itemType.Name;
 			Description = "";
 			ToolTip = itemType.FullName;
-			SortOrder = 1000;
-			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
-			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
-			ContentTransformers = new List<IContentTransformer>();
-			AvailableZones = new List<AvailableZoneAttribute>();
-			AllowedZoneNames = new List<string>();
-			Editables = new ContentList<IEditable>();
-			Containers = new ContentList<IEditableContainer>();
-			EditableModifiers = new List<EditorModifierAttribute>();
-			Displayables = new ContentList<IDisplayable>();
-			NamedOperators = new List<IUniquelyNamed>();
-			Attributes = new List<object>();
-			var propertiesByName = itemType.GetProperties().GroupBy(p => p.Name);
-			Properties = propertiesByName.ToDictionary(g => g.Key, g => new PropertyDefinition(g.OrderByDescending(p => Utility.InheritanceDepth(p.DeclaringType)).First()));
-			IsPage = true;
-			Enabled = true;
-			AllowedIn = AllowedZones.None;
+			
+			Clear();
+			Initialize(itemType);
 		}
 
 		#endregion
@@ -296,24 +281,39 @@ namespace N2.Definitions
 			{
 				var property = Properties.GetOrCreate(containable.Name);
 				property.Attributes = property.Attributes.Union(new[] { containable }).ToArray();
-
 				if (containable is IEditable)
-				{
-					Editables.AddOrReplace(containable as IEditable);
 					property.Editable = containable as IEditable;
-				}
+				if (containable is IDisplayable)
+					property.Displayable = containable as IDisplayable;
+			}
+			AddRangeInternal(containables);
+		}
+
+		private void AddRangeInternal(IEnumerable<IUniquelyNamed> containables)
+		{
+			var list = new List<IUniquelyNamed>(containables);
+			list.Sort((f, s) =>
+				{
+					if (f is IComparable<IUniquelyNamed>)
+						return (f as IComparable<IUniquelyNamed>).CompareTo(s);
+					if (s is IComparable<IUniquelyNamed>)
+						return -(s as IComparable<IUniquelyNamed>).CompareTo(f);
+					return 0;
+				});
+			
+			foreach (var containable in list)
+			{
+				if (containable is IEditable)
+					Editables.AddOrReplace(containable as IEditable);
 				if (containable is IEditableContainer)
 					Containers.AddOrReplace(containable as IEditableContainer);
 				if (containable is EditorModifierAttribute)
 					EditableModifiers.Add(containable as EditorModifierAttribute);
 				if (containable is IDisplayable)
-				{
 					Displayables.AddOrReplace(containable as IDisplayable);
-					property.Displayable = containable as IDisplayable;
-				}
 				if (containable is IContentTransformer)
 					ContentTransformers.Add(containable as IContentTransformer);
-				
+
 				NamedOperators.Add(containable);
 			}
 		}
@@ -357,10 +357,19 @@ namespace N2.Definitions
 			if (initializedTypes.Contains(type))
 				return this;
 
-			AddRange(explorer.Find<IUniquelyNamed>(type));
+			// Define properties, editables, displayables, etc.
+			var properties = type.GetProperties().GroupBy(p => p.Name)
+				.ToDictionary(g => g.Key, g => new PropertyDefinition(g.OrderByDescending(p => Utility.InheritanceDepth(p.DeclaringType)).First()));
+			foreach (var p in properties)
+				Properties[p.Key] = p.Value;
+			AddRangeInternal(Properties.Values.SelectMany(p => p.Attributes).OfType<IUniquelyNamed>());
+
+			// Define attributes on class, including editables defined there
 			foreach (object attribute in type.GetCustomAttributes(true))
 				Attributes.Add(attribute);
+			AddRange(GetCustomAttributes<IUniquelyNamed>().Where(un => !string.IsNullOrEmpty(un.Name)));
 
+			// Execute refiners which modify the definition
 			foreach (var refiner in GetCustomAttributes<ISimpleDefinitionRefiner>())
 				refiner.Refine(this);
 
@@ -425,17 +434,18 @@ namespace N2.Definitions
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
 			id.Containers = Containers.Clone();
+			id.ContentTransformers = ContentTransformers.ToList();
 			id.Description = Description;
 			id.Discriminator = Discriminator;
 			id.Displayables = new ContentList<IDisplayable>(Displayables);
 			id.Editables = Editables.Clone();
 			id.Enabled = Enabled;
+			id.EditableModifiers = EditableModifiers.ToList();
 			id.IconUrl = IconUrl;
 			id.Installer = Installer;
 			id.IsDefined = IsDefined;
-			id.EditableModifiers = EditableModifiers.ToList();
-			id.ContentTransformers = ContentTransformers.ToList();
 			id.NumberOfItems = 0;
+			id.Properties = Properties.ToDictionary(p => p.Key, p => p.Value.Clone());
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
 			id.TemplateKey = TemplateKey;
@@ -479,6 +489,27 @@ namespace N2.Definitions
 				return property.Attributes.OfType<T>();
 			}
 			return new T[0];
+		}
+
+		/// <summary>Clears cumulative settings.</summary>
+		public void Clear()
+		{
+			SortOrder = 1000;
+			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
+			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
+			ContentTransformers = new List<IContentTransformer>();
+			AvailableZones = new List<AvailableZoneAttribute>();
+			AllowedZoneNames = new List<string>();
+			Editables = new ContentList<IEditable>();
+			Containers = new ContentList<IEditableContainer>();
+			EditableModifiers = new List<EditorModifierAttribute>();
+			Displayables = new ContentList<IDisplayable>();
+			NamedOperators = new List<IUniquelyNamed>();
+			IsPage = true;
+			Enabled = true;
+			AllowedIn = AllowedZones.None;
+			Attributes = new List<object>();
+			Properties = new Dictionary<string, PropertyDefinition>();
 		}
 	}
 }

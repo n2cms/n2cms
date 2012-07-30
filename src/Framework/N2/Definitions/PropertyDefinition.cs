@@ -7,13 +7,21 @@ using N2.Details;
 
 namespace N2.Definitions
 {
-	public class PropertyDefinition
+	/// <summary>
+	/// Stores metadata about a property on a content item.
+	/// </summary>
+	public class PropertyDefinition : ICloneable
 	{
 		public PropertyDefinition(PropertyInfo property)
 		{
 			Info = property;
 			Name = property.Name;
 			Attributes = property.GetCustomAttributes(true);
+			foreach (var a in Attributes)
+			{
+				if (a is IUniquelyNamed)
+					(a as IUniquelyNamed).Name = Name;
+			}
 			Getter = (instance) => Info.GetValue(instance, null);
 			Setter = (instance, value) => Info.SetValue(instance, value, null);
 			Editable = Attributes.OfType<IEditable>().FirstOrDefault();
@@ -37,5 +45,17 @@ namespace N2.Definitions
 
 		public IEditable Editable { get; set; }
 		public IDisplayable Displayable { get; set; }
+
+		object ICloneable.Clone()
+		{
+			return Clone();
+		}
+
+		public PropertyDefinition Clone()
+		{
+			var pd = (PropertyDefinition)MemberwiseClone();
+			pd.Attributes = pd.Attributes.ToArray();
+			return pd;
+		}
 	}
 }
