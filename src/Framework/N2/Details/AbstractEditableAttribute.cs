@@ -347,7 +347,7 @@ namespace N2.Details
 				return hashCode.Value;
 
 			if (Name != null)
-				hashCode = Name.GetHashCode();
+				hashCode = (GetType().FullName + Name).GetHashCode();
 			else
 				hashCode = base.GetHashCode();
 
