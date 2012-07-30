@@ -258,6 +258,12 @@ namespace N2.Definitions.Runtime
 			return registration.RegisterRefiner<IDefinitionRefiner>(new AppendAttributeRefiner(new SortChildrenAttribute(sortingOrder) { SortExpression = expression }));
 		}
 
+		public static IContentRegistration<TModel> Icon<TModel>(this IContentRegistration<TModel> registration, string iconUrl)
+		{
+			registration.Definition.IconUrl = N2.Web.Url.ResolveTokens(iconUrl);
+			return registration;
+		}
+
 		class AppendAttributeRefiner : IDefinitionRefiner
 		{
 			private object attribute;
