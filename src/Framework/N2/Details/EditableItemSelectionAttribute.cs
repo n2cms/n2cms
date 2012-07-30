@@ -121,6 +121,7 @@ namespace N2.Details
 			// Get a map of all selected items from UI
 			var selectedLinkedItems = (from ListItem checkboxItem in checkboxList.Items
 																 where checkboxItem.Selected
+																 where !string.IsNullOrEmpty(checkboxItem.Value)
 																 select (int)ConvertToValue(checkboxItem.Value)).ToArray();
 
 			// Check whether there were any changes

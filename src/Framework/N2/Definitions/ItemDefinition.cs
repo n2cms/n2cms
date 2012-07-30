@@ -294,14 +294,23 @@ namespace N2.Definitions
 		{
 			foreach (var containable in containables)
 			{
+				var property = Properties.GetOrCreate(containable.Name);
+				property.Attributes = property.Attributes.Union(new[] { containable }).ToArray();
+
 				if (containable is IEditable)
+				{
 					Editables.AddOrReplace(containable as IEditable);
+					property.Editable = containable as IEditable;
+				}
 				if (containable is IEditableContainer)
 					Containers.AddOrReplace(containable as IEditableContainer);
 				if (containable is EditorModifierAttribute)
 					EditableModifiers.Add(containable as EditorModifierAttribute);
 				if (containable is IDisplayable)
+				{
 					Displayables.AddOrReplace(containable as IDisplayable);
+					property.Displayable = containable as IDisplayable;
+				}
 				if (containable is IContentTransformer)
 					ContentTransformers.Add(containable as IContentTransformer);
 				
