@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence.Proxying;
+using N2.Definitions;
 
 namespace N2.Persistence
 {
@@ -68,7 +69,7 @@ namespace N2.Persistence
             NotifyCreated(item);
 		}
 
-		public virtual void Initialize(IEnumerable<Type> contentTypes)
+		public virtual void Initialize(IEnumerable<ItemDefinition> contentTypes)
 		{
 			interceptor.Initialize(contentTypes);
 		}

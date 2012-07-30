@@ -1,10 +1,12 @@
 ﻿using System.Web.UI.WebControls;
+using System.Linq;
 using N2.Details;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using NUnit.Framework;
 using System.Collections.Generic;
 using Shouldly;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -65,7 +67,8 @@ namespace N2.Tests.Persistence.Proxying
 		public void TestFixtureSetUp()
 		{
 			factory = new InterceptingProxyFactory();
-			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem), typeof(IgnoringItem) });
+			var map = new DefinitionMap();
+			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem), typeof(IgnoringItem) }.Select(t => map.GetOrCreateDefinition(t)));
 		}
 
 		[SetUp]
@@ -436,6 +439,12 @@ namespace N2.Tests.Persistence.Proxying
 			bool wasChanged = factory.OnSaving(interceptable);
 
 			Assert.That(wasChanged, Is.False);
+		}
+
+		[Test]
+		public void Attributes_are_retieved_via_definition()
+		{
+
 		}
 
 		//// Copy

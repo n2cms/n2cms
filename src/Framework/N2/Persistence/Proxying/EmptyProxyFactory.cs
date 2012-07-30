@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using N2.Definitions;
 
 namespace N2.Persistence.Proxying
 {
@@ -10,7 +11,7 @@ namespace N2.Persistence.Proxying
 	{
 		#region IInterceptionFactory Members
 
-		public virtual void Initialize(IEnumerable<Type> interceptedTypes)
+		public virtual void Initialize(IEnumerable<ItemDefinition> interceptedTypes)
 		{
 		}
 

@@ -76,6 +76,8 @@ namespace N2.Definitions
 			Displayables = new ContentList<IDisplayable>();
 			NamedOperators = new List<IUniquelyNamed>();
 			Attributes = new List<object>();
+			var propertiesByName = itemType.GetProperties().GroupBy(p => p.Name);
+			Properties = propertiesByName.ToDictionary(g => g.Key, g => new PropertyDefinition(g.OrderByDescending(p => Utility.InheritanceDepth(p.DeclaringType)).First()));
 			IsPage = true;
 			Enabled = true;
 			AllowedIn = AllowedZones.None;
@@ -181,6 +183,9 @@ namespace N2.Definitions
 
 		/// <summary>Attributes defined on the content type and it's base types.</summary>
 		public IList<object> Attributes { get; private set; }
+		
+		/// <summary>Attributes defined on the content type and it's base types.</summary>
+		public IDictionary<string, PropertyDefinition> Properties { get; private set; }
 
 		#endregion
 
@@ -452,6 +457,19 @@ namespace N2.Definitions
 		public IEnumerable<T> GetCustomAttributes<T>()
 		{
 			return Attributes.OfType<T>();
+		}
+
+		/// <summary>Gets attributes of the specified generic type.</summary>
+		/// <typeparam name="T">The type of attribute to retrieve.</typeparam>
+		/// <returns>An enumeration of attributes.</returns>
+		public IEnumerable<T> GetCustomAttributes<T>(string propertyName)
+		{
+			PropertyDefinition property;
+			if (Properties.TryGetValue(propertyName, out property))
+			{
+				return property.Attributes.OfType<T>();
+			}
+			return new T[0];
 		}
 	}
 }
