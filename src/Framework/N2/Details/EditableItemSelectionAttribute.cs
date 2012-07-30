@@ -156,5 +156,15 @@ namespace N2.Details
 
 			return storedSelection;
 		}
+
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var referencedItem = item[propertyName] as ContentItem;
+
+			if (referencedItem != null)
+			{
+				DisplayableAnchorAttribute.GetLinkBuilder(item, referencedItem, propertyName, null, null).WriteTo(writer);
+			}
+		}
 	}
 }

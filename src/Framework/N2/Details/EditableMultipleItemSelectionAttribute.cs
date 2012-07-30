@@ -63,5 +63,17 @@ namespace N2.Details
 			ddl.SelectedList = byte.MaxValue;
 		}
 
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var items = item.GetDetailCollection(Name, false);
+
+			if (items != null)
+			{
+				foreach (var referencedItem in items.OfType<ContentItem>())
+				{
+					DisplayableAnchorAttribute.GetLinkBuilder(item, referencedItem, propertyName, null, null).WriteTo(writer);
+				}
+			}
+		}
 	}
 }
