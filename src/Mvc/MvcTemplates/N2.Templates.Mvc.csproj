@@ -126,6 +126,7 @@
     <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
     <Compile Include="Areas\Tests\Models\DemoPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
+    <Compile Include="Areas\Tests\Models\FluentPage.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
