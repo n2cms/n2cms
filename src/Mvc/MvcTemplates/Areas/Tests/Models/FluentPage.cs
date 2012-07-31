@@ -12,8 +12,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 	public class FluentPage : TestItemBase
 	{
 		public virtual bool EditableCheckBox { get; set; }
-		public virtual string EditableChildren { get; set; }
-		public virtual string EditableDate { get; set; }
+		public virtual IEnumerable<ContentItem> EditableChildren { get; set; }
+		public virtual DateTime EditableDate { get; set; }
 		public virtual string EditableDefinition { get; set; }
 		public virtual Base64FormattingOptions EditableEnum { get; set; }
 		public virtual string EditableFileUpload { get; set; }
@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 		public virtual string EditableImageUpload { get; set; }
 		public virtual TestPart EditableItem { get; set; }
 		public virtual string EditableLanguagesDropDown { get; set; }
-		public virtual string EditableLink { get; set; }
+		public virtual ContentItem EditableLink { get; set; }
 		public virtual string EditableMediaUpload { get; set; }
 		public virtual string EditableMetaTag { get; set; }
 		public virtual int EditableNumber { get; set; }
@@ -60,6 +60,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 				register.On(tp => tp.EditableFreeTextArea).FreeText();
 				register.On(tp => tp.EditableNumber).Number();
 			}
+
+			register.UsingConventions();
 
 			using (register.Sidebar("Settings").Begin())
 			{

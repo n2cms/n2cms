@@ -32,7 +32,7 @@
 		<thead><tr><td colspan="4"><h2>Properties metadata</h2></td></tr><tr><td>Property</td><td>Editable</td><td>Displayable</td><td>Attributes</td></tr></thead>
 			<tbody>
 		<% foreach(var p in N2.Context.Current.Definitions.GetDefinition(Html.CurrentItem()).Properties.OrderBy(p => p.Key)) { %>
-		<tr><td rowspan="<%=p.Value.Attributes.Length %>"><%= p.Key %><%= p.Value.Info == null ? "*" : "" %></td>
+		<tr><td rowspan="<%=p.Value.Attributes.Length %>" title="<%= p.Value.PropertyType.Name %>"><%= p.Key %><%= p.Value.Info == null ? "*" : "" %></td>
 		<td rowspan="<%=p.Value.Attributes.Length %>"><%= p.Value.Editable != null ? p.Value.Editable.GetType().Name : "" %></td>
 		<td rowspan="<%=p.Value.Attributes.Length %>"><%= p.Value.Displayable != null ? p.Value.Displayable.GetType().Name : "" %></td>
 		<% foreach(var a in p.Value.Attributes) { %>
