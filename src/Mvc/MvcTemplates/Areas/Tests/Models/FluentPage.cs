@@ -40,29 +40,37 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 	}
 
 	[Registration]
-	public class FluentPageRegistration : N2.Definitions.Runtime.FluentRegisterer<FluentPage>
+	public class FluentPageRegistration : FluentRegisterer<FluentPage>
 	{
 		public override void RegisterDefinition(Definitions.Runtime.IContentRegistration<FluentPage> register)
 		{
+			// using N2.Web.Mvc namespace you can define a controller for the item
 			register.ControlledBy<TestContentController>();
 
+			// some metadata used when creating new items
 			register.Definition.Title = "Fluently registered page";
 			register.Definition.Description = "Release compile template project to remove this item";
-
-			register.RestrictParents(typeof(StartPage));
-
 			register.Icon("{IconsUrl}/star.png");
 
+			// restrictions specifies what can be created where
+			register.RestrictParents(typeof(StartPage));
+
+			// beginning containers will create a scope during which you can add editors to that container
 			using (register.Tab("Content").Begin())
 			{
+				// some editors are specified without the on sytax
 				register.Title();
 
+				// the on syntax specifies what property to register an editor for
 				register.On(tp => tp.EditableFreeTextArea).FreeText();
 				register.On(tp => tp.EditableNumber).Number();
 			}
 
+			// register using conventions creates editors for public properties using conventions
+			// the conventions can be tweaked on register.DefaultConventions or via parameters to UsingConventions
 			register.UsingConventions();
 
+			// Sidebars appear beside the main editing region
 			using (register.Sidebar("Settings").Begin())
 			{
 				register.PublishedRange();
@@ -71,6 +79,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 
 			using (register.Tab("Advanced").Begin())
 			{
+				// editors can also be defined without a matching property
 				register.On<string>("NonExistant").Text();
 			}
 		}

@@ -124,9 +124,11 @@
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
     <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
     <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
     <Compile Include="Areas\Tests\Models\FluentPage.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPage.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
@@ -304,6 +306,8 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
     <Content Include="Areas\Tests\Uc.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
