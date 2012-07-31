@@ -228,31 +228,42 @@ namespace N2.Definitions.Runtime
 		}
 
 		/// <summary>Registers editors based on the passed conventions, or the defualt conventions</summary>
-		public static void UsingConventions<TModel>(this IContentRegistration<TModel> registration, Action<RegistrationConventions> alterConventions = null)
+		/// <param name="registration"></param>
+		/// <param name="interceptEditable">An intereption point for editables before they are registered. Another editable or null can be returned.</param>
+		/// <param name="configureConventions">Configures conventions before they are used.</param>
+		public static void UsingConventions<TModel>(this IContentRegistration<TModel> registration, Func<PropertyDefinition, IEditable, IEditable> interceptEditable = null, Action<RegistrationConventions> configureConventions = null)
 		{
-			if (alterConventions != null)
-				alterConventions(registration.DefaultConventions);
+			var conventions = registration.DefaultConventions;
+			var definition = registration.Definition;
 
-			foreach (var container in registration.DefaultConventions.Containers(registration.Definition))
+			if (configureConventions != null)
+				configureConventions(conventions);
+
+			foreach (var container in conventions.Containers(definition))
 			{
 				registration.Register(container);
 			}
 
-			foreach (var pd in registration.Definition.Properties.Values)
+			foreach (var pd in definition.Properties.Values)
 			{
 				if (pd.Editable != null)
 					continue;
 
-				var editable = registration.DefaultConventions.Editable(pd);
+				var editable = conventions.Editable(pd);
 				if (editable != null)
 				{
 					editable.Name = pd.Name;
-					editable.ContainerName = registration.DefaultConventions.EditableContainer(pd) ?? editable.ContainerName;
-					registration.RegisterEditable(editable);
+					editable.ContainerName = conventions.EditableContainer(pd) ?? editable.ContainerName;
+
+					if (interceptEditable != null)
+						editable = interceptEditable(pd, editable);
+					
+					if (editable != null)
+						registration.RegisterEditable(editable);
 				}
 			}
 
-			registration.DefaultConventions.Finalize(registration.Definition);
+			conventions.Finalize(definition);
 		}
 	}
 }
