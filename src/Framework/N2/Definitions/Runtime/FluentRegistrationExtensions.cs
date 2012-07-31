@@ -6,6 +6,7 @@ using N2.Integrity;
 using N2.Details;
 using N2.Web.UI;
 using System.Linq.Expressions;
+using N2.Web;
 
 namespace N2.Definitions.Runtime
 {
@@ -20,6 +21,59 @@ namespace N2.Definitions.Runtime
 			string expressionText = System.Web.Mvc.ExpressionHelper.GetExpressionText(expression);
 			return new PropertyRegistration<TModel, TProperty>(registration, expressionText);
 		}
+
+		// definition
+
+		public static PageDefinitionAttribute Page<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null)
+		{
+			var pda = new PageDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".aspx") };
+			registration.RegisterRefiner(new DelayRefinement(pda));
+			return pda;
+		}
+
+		public static PartDefinitionAttribute Part<TModel>(this IContentRegistration<TModel> registration, string templateUrl = null, string title = null, string description = null)
+		{
+			var pda = new PartDefinitionAttribute(title ?? registration.Definition.ItemType.Name) { Description = description, TemplateUrl = templateUrl ?? CalculateUrl(registration.Definition.ItemType, ".ascx") };
+			registration.RegisterRefiner(new DelayRefinement(pda));
+			return pda;
+		}
+
+		private static string CalculateUrl(Type type, string extension)
+		{
+			string typeName = type.FullName;
+			string assemblyName = type.Assembly.GetName().Name;
+			if (type.FullName.StartsWith(assemblyName))
+				typeName = type.FullName.Substring(assemblyName.Length + 1);
+
+			return "~/" + typeName.Replace('.', '/') + extension;
+		}
+
+		class DelayRefinement : ISortableRefiner
+		{
+			private ISimpleDefinitionRefiner inner;
+
+			public DelayRefinement(ISimpleDefinitionRefiner inner)
+			{
+				this.inner = inner;
+			}
+			public int RefinementOrder
+			{
+				get { return int.MaxValue; }
+			}
+
+			public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+			{
+				inner.Refine(currentDefinition);
+				if (inner is IPathFinder)
+					PathDictionary.PrependFinder(currentDefinition.ItemType, inner as IPathFinder);
+			}
+
+			public int CompareTo(ISortableRefiner other)
+			{
+				return RefinementOrder - other.RefinementOrder;
+			}
+		}
+
 
 		// containers
 
