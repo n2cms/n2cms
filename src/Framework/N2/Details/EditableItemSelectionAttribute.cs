@@ -11,6 +11,9 @@ using N2.Definitions;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting zero or more items of a specific type from an exapandable check box list.
+	/// </summary>
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{
 		public Type LinkedType { get; set; }

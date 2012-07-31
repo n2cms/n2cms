@@ -12,6 +12,9 @@ using N2.Persistence.Finder;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting zero or more items of a specific type from a drop down list.
+	/// </summary>
 	public class EditableMultipleItemSelectionAttribute : EditableItemSelectionAttribute
 	{
 		public EditableMultipleItemSelectionAttribute()

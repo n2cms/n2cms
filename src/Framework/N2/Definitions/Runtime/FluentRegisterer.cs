@@ -9,7 +9,7 @@ namespace N2.Definitions.Runtime
 {
 	public abstract class FluentRegisterer<T> : IFluentRegisterer where T : ContentItem
 	{
-		public abstract void RegisterDefinition(IContentRegistration<T> re);
+		public abstract void RegisterDefinition(IContentRegistration<T> register);
 
 		public Type ContentType
 		{

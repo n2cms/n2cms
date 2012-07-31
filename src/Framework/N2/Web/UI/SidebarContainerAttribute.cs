@@ -3,6 +3,9 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
+	/// <summary>
+	/// Places a container in the right-hand side of the editing UI.
+	/// </summary>
 	public class SidebarContainerAttribute : EditorContainerAttribute
 	{
 		public SidebarContainerAttribute(string name, int sortOrder)

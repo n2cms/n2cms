@@ -7,6 +7,7 @@ namespace N2.Definitions.Runtime
 	{
 		ItemDefinition Definition { get; }
 		PropertyRegistration<TModel, TProperty> On<TProperty>(string detailName);
+		ContainerBuilder<TModel, T> Register<T>(T named) where T : IEditableContainer;
 	}
 
 	public interface IContentRegistration

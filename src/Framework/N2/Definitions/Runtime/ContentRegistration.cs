@@ -26,6 +26,12 @@ namespace N2.Definitions.Runtime
 		{
 			return new PropertyRegistration<TModel, TProperty>(this, detailName);
 		}
+
+		ContainerBuilder<TModel, T> IContentRegistration<TModel>.Register<T>(T container)
+		{
+			Add(container);
+			return new ContainerBuilder<TModel, T>(container.Name, this);
+		}
 	}
 
 	/// <summary>
@@ -154,7 +160,8 @@ namespace N2.Definitions.Runtime
 
 		public void Configure<T>(string propertyName, Action<T> configurationExpression)
 		{
-			configurationExpression(Definition.NamedOperators.Where(no => no.Name == propertyName).OfType<T>().First());
+			foreach (var a in Definition.GetCustomAttributes<T>(propertyName))
+				configurationExpression(a);
 		}
 
 		#region IContentRegistration Members

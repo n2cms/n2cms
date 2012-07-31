@@ -4,6 +4,9 @@ using N2.Configuration;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting between configured image sizes from a drop down list.
+	/// </summary>
 	public class EditableImageSizeAttribute : EditableDropDownAttribute
 	{
 		public EditableImageSizeAttribute()

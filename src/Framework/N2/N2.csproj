@@ -148,6 +148,7 @@
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
+    <Compile Include="Definitions\Runtime\ContainerBuilder.cs" />
     <Compile Include="Definitions\Runtime\IFluentRegisterer.cs" />
     <Compile Include="Definitions\Runtime\Registration.cs" />
     <Compile Include="Definitions\Runtime\FluentRegisterer.cs" />
