@@ -149,12 +149,14 @@
     <Compile Include="Configuration\ZipVppCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\Runtime\ContainerBuilder.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistrationExtensions.cs" />
     <Compile Include="Definitions\Runtime\IFluentRegisterer.cs" />
     <Compile Include="Definitions\Runtime\Registration.cs" />
     <Compile Include="Definitions\Runtime\FluentRegisterer.cs" />
     <Compile Include="Definitions\Runtime\IPropertyRegistration.cs" />
     <Compile Include="Definitions\Runtime\PropertyRegistration.cs" />
     <Compile Include="Definitions\Runtime\PropertyRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\RegistrationConventions.cs" />
     <Compile Include="Details\EditableItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableItemSelectionFilter.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />

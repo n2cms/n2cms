@@ -16,7 +16,10 @@ namespace N2.Definitions.Runtime
 		public ContentRegistration(ItemDefinition definition)
 			: base(definition)
 		{
+			DefaultConventions = new RegistrationConventions();
 		}
+
+		public RegistrationConventions DefaultConventions { get; set; }
 
 		/// <summary>Begins registration of a property on the content type.</summary>
 		/// <typeparam name="TProperty">The property type of the property.</typeparam>

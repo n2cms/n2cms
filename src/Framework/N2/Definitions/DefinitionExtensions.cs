@@ -48,11 +48,11 @@ namespace N2.Definitions
 			return false;
 		}
 
-		public static PropertyDefinition GetOrCreate(this IDictionary<string, PropertyDefinition> properties, string name)
+		public static PropertyDefinition GetOrCreate(this IDictionary<string, PropertyDefinition> properties, string name, Type propertyType)
 		{
 			PropertyDefinition property;
 			if (!properties.TryGetValue(name, out property))
-				properties[name] = property = new PropertyDefinition(name);
+				properties[name] = property = new PropertyDefinition(name, propertyType);
 			return property;
 		}
 	}

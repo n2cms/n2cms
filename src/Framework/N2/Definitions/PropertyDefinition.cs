@@ -16,6 +16,7 @@ namespace N2.Definitions
 		{
 			Info = property;
 			Name = property.Name;
+			PropertyType = property.PropertyType;
 			Attributes = property.GetCustomAttributes(true);
 			foreach (var a in Attributes)
 			{
@@ -28,9 +29,10 @@ namespace N2.Definitions
 			Displayable = Attributes.OfType<IDisplayable>().FirstOrDefault();
 		}
 
-		public PropertyDefinition(string name)
+		public PropertyDefinition(string name, Type propertyType)
 		{
 			Name = name;
+			PropertyType = propertyType;
 			Attributes = new object[0];
 			Getter = (instance) => Utility.GetProperty(instance, name);
 			Setter = (instance, value) => Utility.SetProperty(instance, name, value);
@@ -38,6 +40,7 @@ namespace N2.Definitions
 		
 		public string Name { get; private set; }
 		public PropertyInfo Info { get; private set; }
+		public Type PropertyType { get; set; }
 		
 		public object[] Attributes { get; set; }
 		public Func<object, object> Getter { get; set; }

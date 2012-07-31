@@ -279,7 +279,7 @@ namespace N2.Definitions
 		{
 			foreach (var containable in containables)
 			{
-				var property = Properties.GetOrCreate(containable.Name);
+				var property = Properties.GetOrCreate(containable.Name, typeof(object));
 				property.Attributes = property.Attributes.Union(new[] { containable }).ToArray();
 				if (containable is IEditable)
 					property.Editable = containable as IEditable;
