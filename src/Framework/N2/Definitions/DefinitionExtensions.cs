@@ -47,5 +47,13 @@ namespace N2.Definitions
 			// no filter allowed, but some filter denied -> deny
 			return false;
 		}
+
+		public static PropertyDefinition GetOrCreate(this IDictionary<string, PropertyDefinition> properties, string name, Type propertyType)
+		{
+			PropertyDefinition property;
+			if (!properties.TryGetValue(name, out property))
+				properties[name] = property = new PropertyDefinition(name, propertyType);
+			return property;
+		}
 	}
 }

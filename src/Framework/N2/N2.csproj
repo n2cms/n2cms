@@ -147,6 +147,16 @@
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\PropertyDefinition.cs" />
+    <Compile Include="Definitions\Runtime\ContainerBuilder.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\IFluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\Registration.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\IPropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\RegistrationConventions.cs" />
     <Compile Include="Details\EditableItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableItemSelectionFilter.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
@@ -167,7 +177,6 @@
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
@@ -357,6 +366,7 @@
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
+    <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />

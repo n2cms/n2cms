@@ -45,12 +45,22 @@ namespace N2.Definitions.Static
 
 		private ItemDefinition GetDefinition(Type contentType, string templateKey)
 		{
-			string key = contentType.FullName + templateKey;
+			string key = CreateKey(contentType, templateKey);
 			ItemDefinition definition;
 			if (definitions.TryGetValue(key, out definition))
 				return definition;
 
 			return null;
+		}
+
+		private static string CreateKey(Type contentType, string templateKey)
+		{
+			return contentType.FullName + templateKey;
+		}
+
+		public void ReplaceDefinition(ItemDefinition definition)
+		{
+			definitions[CreateKey(definition.ItemType, definition.TemplateKey)] = definition;
 		}
 
 		public ItemDefinition CreateDefinition(Type contentType, string templateKey)
@@ -68,7 +78,6 @@ namespace N2.Definitions.Static
 			}
 
 			definition.TemplateKey = templateKey;
-			definition.Initialize(contentType);
 
 			SetDefinition(contentType, templateKey, definition);
 

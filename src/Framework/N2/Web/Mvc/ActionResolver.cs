@@ -9,6 +9,13 @@ namespace N2.Web.Mvc
 	{
 		private readonly IControllerMapper controllerMapper;
 		private readonly string[] methods;
+		private readonly string controllerName;
+
+		public ActionResolver(string controllerName, string[] methods)
+		{
+			this.controllerName = controllerName;
+			this.methods = methods;
+		}
 
 		public ActionResolver(IControllerMapper controllerMapper, string[] methods)
 		{
@@ -33,7 +40,7 @@ namespace N2.Web.Mvc
 				arguments = remainingUrl.Substring(slashIndex + 1);
 			}
 
-			var controllerName = controllerMapper.GetControllerName(item.GetContentType());
+			var controllerName = this.controllerName ?? controllerMapper.GetControllerName(item.GetContentType());
 			if (string.IsNullOrEmpty(action) || string.Equals(action, "Default.aspx", StringComparison.InvariantCultureIgnoreCase))
 				action = "Index";
 
@@ -41,11 +48,15 @@ namespace N2.Web.Mvc
 			{
 				if (string.Equals(method, action, StringComparison.InvariantCultureIgnoreCase))
 				{
-					return new PathData(item, null, action, arguments) 
+					var pd = new PathData(item) 
 					{ 
 						IsRewritable = false, 
+						Controller = controllerName,
+						Action = action,
+						Argument = arguments,
 						TemplateUrl = string.Format("~/{0}/{1}", controllerName, method, item.ID) // workaround for start pages
 					};
+					return pd;
 				}
 			}
 

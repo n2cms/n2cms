@@ -338,11 +338,20 @@ namespace N2.Details
 			return (Name == other.Name);
 		}
 
+		int? hashCode;
 		/// <summary>Gets a hash code based on the attribute's name.</summary>
 		/// <returns>A hash code.</returns>
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			if (hashCode.HasValue)
+				return hashCode.Value;
+
+			if (Name != null)
+				hashCode = (GetType().FullName + Name).GetHashCode();
+			else
+				hashCode = base.GetHashCode();
+
+			return hashCode.Value;
 		}
 
 		private string TypeName

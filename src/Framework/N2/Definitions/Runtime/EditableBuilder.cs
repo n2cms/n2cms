@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace N2.Definitions.Runtime
 {
@@ -15,6 +16,11 @@ namespace N2.Definitions.Runtime
 
 
 
+		private T Current
+		{
+			get { return Registration.Definition.NamedOperators.OfType<T>().First(no => no.Name == PropertyName); }
+		}
+
 		new public EditableBuilder<T> Configure(Action<T> configurationExpression)
 		{
 			if (Registration != null && configurationExpression != null)
@@ -26,7 +32,7 @@ namespace N2.Definitions.Runtime
 		public EditableBuilder<T> Container(string containerName)
 		{
 			if (Registration != null && containerName != null)
-				((T)Registration.Containables[PropertyName]).ContainerName = containerName;
+				Current.ContainerName = containerName;
 
 			return this;
 		}
@@ -34,7 +40,7 @@ namespace N2.Definitions.Runtime
 		public EditableBuilder<T> Title(string title)
 		{
 			if (Registration != null && title != null)
-				((T)Registration.Containables[PropertyName]).Title = title;
+				Current.Title = title;
 
 			return this;
 		}
@@ -42,7 +48,7 @@ namespace N2.Definitions.Runtime
 		public EditableBuilder<T> SortOrder(int sortOrder)
 		{
 			if (Registration != null)
-				((T)Registration.Containables[PropertyName]).SortOrder = sortOrder;
+				Current.SortOrder = sortOrder;
 
 			return this;
 		}
@@ -50,7 +56,7 @@ namespace N2.Definitions.Runtime
 		public EditableBuilder<T> SortOffset(string name, int offset)
 		{
 			if (Registration != null)
-				((T)Registration.Containables[PropertyName]).SortOrder = ((IContainable)Registration.Containables[PropertyName]).SortOrder + offset;
+				Current.SortOrder = Current.SortOrder + offset;
 
 			return this;
 		}

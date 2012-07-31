@@ -22,11 +22,7 @@ namespace N2.Web.UI
 	///     public class MyPage : N2.ContentItem
 	///     {
 	///         [N2.Details.EditableFreeTextArea("Text", 110, ContainerName="default")]
-	///         public virtual string Text
-	///         {
-	///             get { return (string)GetDetail("Text"); }
-	///             set { SetDetail("Text", value); }
-	///         }
+	///         public virtual string Text { get; set; }
 	///     }
 	/// </example>
 	public class TabContainerAttribute : EditorContainerAttribute

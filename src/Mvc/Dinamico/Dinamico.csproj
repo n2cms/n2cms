@@ -254,6 +254,12 @@
     <Content Include="Dinamico\Themes\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dinamico\Themes\Default\Views\ContentPages\Selection.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\Selection.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
   <ItemGroup>

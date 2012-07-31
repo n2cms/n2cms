@@ -153,7 +153,10 @@ namespace N2.Web.Mvc
 				// part in query string is used to render a part
 				int partId;
 				if (int.TryParse(request.QueryString[PathData.PartQueryKey], out partId))
+				{
 					path.CurrentItem = part = engine.Persister.Get(partId);
+					path.Controller = null;
+				}
 			}
 
 			if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
@@ -172,6 +175,7 @@ namespace N2.Web.Mvc
 						{
 							// it hasn't been changed by a specific part query string so we reset it
 							path.CurrentItem = path.CurrentPage;
+							path.Controller = null;
 						}
 					}
 				}
@@ -182,7 +186,8 @@ namespace N2.Web.Mvc
 			
 			path.CurrentPage = page ?? part.ClosestPage();
 
-			var controllerName = controllerMapper.GetControllerName((part ?? page).GetContentType());
+			var controllerName = path.Controller 
+				?? controllerMapper.GetControllerName((part ?? page).GetContentType());
 
 			if (controllerName == null)
 				return null;

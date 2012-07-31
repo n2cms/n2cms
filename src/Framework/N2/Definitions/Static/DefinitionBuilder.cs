@@ -118,7 +118,6 @@ namespace N2.Definitions.Static
 				Type itemType = EnsureType<ContentItem>(element.Type);
 				definition.Discriminator = element.Name;
 				definition = new ItemDefinition(itemType);
-				definition.Initialize(definition.ItemType);
 
 				definitions.Add(definition);
 			}
@@ -128,6 +127,7 @@ namespace N2.Definitions.Static
 				if (changedType != null && changedType != definition.ItemType)
 				{
 					definition.ItemType = changedType;
+					definition.Clear();
 					definition.Initialize(definition.ItemType);
 				}
 			}

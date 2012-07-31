@@ -2,10 +2,14 @@
 
 namespace N2.Definitions.Runtime
 {
+	/// <summary>
+	/// Helps building a previously defined editor or container.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class Builder<T>
 	{
 		string PropertyName { get; set; }
-		protected ContentRegistration Registration { get; set; }
+		public ContentRegistration Registration { get; set; }
 
 
 		public Builder(ContentRegistration re)

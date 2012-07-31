@@ -21,11 +21,7 @@ namespace N2.Details
 	///		public class ParentItem : N2.ContentItem
 	///		{
 	/// 		[N2.Details.EditableItem]
-	/// 		public virtual ChildItem News
-	/// 		{
-	/// 			get { return (ChildItem)(GetDetail("ChildItem")); }
-	/// 			set { SetDetail("ChildItem", value); }
-	/// 		}
+	/// 		public virtual ChildItem News { get; set; }
 	///		}
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
