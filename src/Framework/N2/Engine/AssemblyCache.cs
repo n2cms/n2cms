@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace N2.Engine
 {
+	/// <summary>
+	/// Caches information about assemblies to increase startup performance.
+	/// </summary>
 	public class AssemblyCache
 	{
 		Logger<AssemblyCache> logger;
@@ -21,6 +24,11 @@ namespace N2.Engine
 			this.temp = temp;
 		}
 
+		/// <summary>
+		/// Gets assemblies from cached location. If files in the probing paths have changed assemblies are re-read.
+		/// </summary>
+		/// <param name="factory"></param>
+		/// <returns></returns>
 		public IEnumerable<Assembly> GetAssemblies(Func<IEnumerable<Assembly>> factory)
 		{
 			if (cache != null)

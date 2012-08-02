@@ -8,6 +8,9 @@ using N2.Web;
 
 namespace N2.Persistence
 {
+	/// <summary>
+	/// Helps creating temporary files which are shared between sites.
+	/// </summary>
 	public class BasicTemporaryFileHelper
 	{
 		private IWebContext webContext;
@@ -65,6 +68,9 @@ namespace N2.Persistence
 		}
 	}
 
+	/// <summary>
+	/// Extends <see cref="BasicTemporaryFileHelper"/> with functionality for accessing temporary folder for the curren site.
+	/// </summary>
     [Service]
     public class TemporaryFileHelper : BasicTemporaryFileHelper
     {
