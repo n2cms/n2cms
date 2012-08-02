@@ -12,7 +12,7 @@ namespace N2.Web
     /// Reads the configuration to build and maintains knowledge of 
     /// <see cref="Site"/>s in the application
     /// </summary>
-	[Service(typeof(IHost))]
+	//[Service(typeof(IHost))]
 	public class Host : IHost
 	{
 		private readonly IWebContext context;

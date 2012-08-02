@@ -26,12 +26,20 @@ namespace N2.Tests.Fakes
 			this.Assemblies = assemblies;
 		}
 
-		public IList<Type> Find(Type requestedType)
+		public IEnumerable<Type> Find(Type requestedType)
 		{
 			return Types.Where(t => requestedType.IsAssignableFrom(requestedType)).ToList();
 		}
 
-		public IList<Assembly> GetAssemblies()
+		public IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = true) where TAttribute : class
+		{
+			return Find(requestedType)
+				.SelectMany(t => t.GetCustomAttributes(typeof(TAttribute), inherit)
+					.OfType<TAttribute>()
+					.Select(a => new AttributedType<TAttribute> { Type = t, Attribute = a }));
+		}
+
+		public IEnumerable<Assembly> GetAssemblies()
 		{
 			return Assemblies.ToList();
 		}

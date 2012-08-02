@@ -4,6 +4,7 @@ using System.Linq;
 using N2.Configuration;
 using N2.Web;
 using N2.Edit;
+using N2.Persistence;
 
 namespace N2.Engine
 {
@@ -32,6 +33,8 @@ namespace N2.Engine
 
 			AddComponentInstance(engine.Container, broker);
 
+			engine.Container.AddComponent("n2.temporaryFileHelper", typeof(BasicTemporaryFileHelper), typeof(BasicTemporaryFileHelper));
+			engine.Container.AddComponent("n2.assemblyCache", typeof(AssemblyCache), typeof(AssemblyCache));
 			engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
 			engine.Container.AddComponent("n2.webContext", typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext));
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));

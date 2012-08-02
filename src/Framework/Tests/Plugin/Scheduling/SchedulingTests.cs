@@ -25,10 +25,8 @@ namespace N2.Tests.Plugin.Scheduling
         {
             base.SetUp();
 
-            ITypeFinder types = mocks.Stub<ITypeFinder>();
-            Expect.Call(types.GetAssemblies()).Return(new Assembly[] { GetType().Assembly }).Repeat.Any();
-            mocks.Replay(types);
-
+			var types = new Fakes.FakeTypeFinder(GetType().Assembly, GetType().Assembly.GetTypes());
+            
             IHeart heart = mocks.Stub<IHeart>();
             heart.Beat += null;
             raiser = LastCall.IgnoreArguments().GetEventRaiser();

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -79,7 +80,7 @@ namespace N2.Engine
 		/// <summary>Finds types assignable from of a certain type in the app domain.</summary>
 		/// <param name="requestedType">The type to find.</param>
 		/// <returns>A list of types found in the app domain.</returns>
-		public virtual IList<Type> Find(Type requestedType)
+		public virtual IEnumerable<Type> Find(Type requestedType)
 		{
 			List<Type> types = new List<Type>();
 			foreach (Assembly a in GetAssemblies())
@@ -110,9 +111,17 @@ namespace N2.Engine
 			return types;
 		}
 
+		public IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = true) where TAttribute : class
+		{
+			return Find(requestedType)
+				.SelectMany(t => t.GetCustomAttributes(typeof(TAttribute), inherit)
+					.OfType<TAttribute>()
+					.Select(a => new AttributedType<TAttribute> { Type = t, Attribute = a }));
+		}
+
 		/// <summary>Gets tne assemblies related to the current implementation.</summary>
 		/// <returns>A list of assemblies that should be loaded by the N2 factory.</returns>
-		public virtual IList<Assembly> GetAssemblies()
+		public virtual IEnumerable<Assembly> GetAssemblies()
 		{
 			List<string> addedAssemblyNames = new List<string>();
 			List<Assembly> assemblies = new List<Assembly>();
@@ -142,6 +151,8 @@ namespace N2.Engine
 				{
 					if (!addedAssemblyNames.Contains(assembly.FullName))
 					{
+						logger.InfoFormat("Adding {0}", assembly.FullName);
+
 						assemblies.Add(assembly);
 						addedAssemblyNames.Add(assembly.FullName);
 					}
