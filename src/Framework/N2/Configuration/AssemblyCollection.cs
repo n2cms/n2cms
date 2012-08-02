@@ -18,5 +18,19 @@ namespace N2.Configuration
 			element.Assembly = reader.GetAttribute("assembly");
 			base.OnDeserializeRemoveElement(element, reader);
 		}
+
+		[ConfigurationProperty("restrictToLoadingPattern")]
+		public string RestrictToLoadingPattern
+		{
+			get { return (string)base["restrictToLoadingPattern"]; }
+			set { base["restrictToLoadingPattern"] = value; }
+		}
+
+		[ConfigurationProperty("skipLoadingPattern")]
+		public string SkipLoadingPattern
+		{
+			get { return (string)base["skipLoadingPattern"]; }
+			set { base["skipLoadingPattern"] = value; }
+		}
 	}
 }

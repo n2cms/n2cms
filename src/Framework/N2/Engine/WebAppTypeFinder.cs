@@ -11,29 +11,35 @@ namespace N2.Engine
 	/// </summary>
 	public class WebAppTypeFinder : AppDomainTypeFinder
 	{
-		private bool ensureBinFolderAssembliesLoaded = true;
-		private bool binFolderAssembliesLoaded = false;
+		private bool dynamicDiscovery = true;
 		private AssemblyCache assemblyCache;
 		
 		public WebAppTypeFinder(AssemblyCache assemblyCache, EngineSection engineConfiguration)
 		{
 			this.assemblyCache = assemblyCache;
-			this.ensureBinFolderAssembliesLoaded = engineConfiguration.DynamicDiscovery;
+			this.dynamicDiscovery = engineConfiguration.DynamicDiscovery;
+			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.SkipLoadingPattern))
+				this.AssemblySkipLoadingPattern = engineConfiguration.Assemblies.SkipLoadingPattern;
+			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern)) 
+				this.AssemblyRestrictToLoadingPattern = engineConfiguration.Assemblies.RestrictToLoadingPattern;
 			foreach (var assembly in engineConfiguration.Assemblies.AllElements)
 				AssemblyNames.Add(assembly.Assembly);
 		}
 
-		#region Properties
-		/// <summary>Gets or sets wether assemblies in the bin folder of the web application should be specificly checked for beeing loaded on application load. This is need in situations where plugins need to be loaded in the AppDomain after the application been reloaded.</summary>
-		public bool EnsureBinFolderAssembliesLoaded
-		{
-			get { return ensureBinFolderAssembliesLoaded; }
-			set { ensureBinFolderAssembliesLoaded = value; }
-		}
-	
-		#endregion
-
 		#region Methods
+
+		public override IEnumerable<System.Type> Find(System.Type requestedType)
+		{
+			return assemblyCache.GetTypes(requestedType.FullName, () => base.Find(requestedType));
+		}
+
+		public override IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(System.Type requestedType, bool inherit = true)
+		{
+			return assemblyCache.GetTypes(
+				requestedType.FullName + "[" + typeof(TAttribute).FullName + "]",
+				() => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
+				.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+		}
 
 		public override IEnumerable<Assembly> GetAssemblies()
 		{
@@ -42,11 +48,15 @@ namespace N2.Engine
 
 		private IEnumerable<Assembly> GetAssembliesInternal()
 		{
-			if (EnsureBinFolderAssembliesLoaded && !binFolderAssembliesLoaded)
+			if (dynamicDiscovery)
 			{
-				binFolderAssembliesLoaded = true;
-				foreach (var probingPath in assemblyCache.GetProbingPaths())
-					LoadMatchingAssemblies(probingPath);
+				var assemblies = assemblyCache.GetProbingPaths()
+					.SelectMany(pp => LoadMatchingAssemblies(pp))
+					.ToList();
+
+				var addedAssemblyNames = new HashSet<string>(assemblies.Select(a => a.GetName().Name));
+				assemblies.AddRange(GetConfiguredAssemblies(addedAssemblyNames));
+				return assemblies;
 			}
 
 			return base.GetAssemblies();

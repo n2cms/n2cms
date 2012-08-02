@@ -179,6 +179,8 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+									<xs:attribute name="restrictToLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="skipLoadingPattern" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">

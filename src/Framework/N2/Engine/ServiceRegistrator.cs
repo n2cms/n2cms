@@ -21,14 +21,13 @@ namespace N2.Engine
 
 		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FindServices()
 		{
-			foreach (Type type in finder.Find(typeof(object)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface).Where(t => !t.IsEnum).Where(t => !t.IsValueType).Where(t => t.IsPublic))
-			{
-				var attributes = type.GetCustomAttributes(typeof(ServiceAttribute), false);
-				foreach (ServiceAttribute attribute in attributes)
-				{
-					yield return new AttributeInfo<ServiceAttribute> { Attribute = attribute, DecoratedType = type };
-				}
-			}
+			return finder.Find<ServiceAttribute>(typeof(object), false)
+				.Where(t => !t.Type.IsAbstract)
+				.Where(t => !t.Type.IsInterface)
+				.Where(t => !t.Type.IsEnum)
+				.Where(t => !t.Type.IsValueType)
+				.Where(t => t.Type.IsPublic)
+				.Select(ai => new AttributeInfo<ServiceAttribute> { Attribute = ai.Attribute, DecoratedType = ai.Type });
 		}
 
 		public virtual void RegisterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services)
