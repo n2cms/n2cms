@@ -207,13 +207,13 @@
 							<xs:element name="scheduler" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="clear" maxOccurs="1" />
-										<xs:element name="remove" maxOccurs="unbounded">
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 												<xs:attribute name="repeat" type="xs:boolean" use="optional" />
