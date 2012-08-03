@@ -15,6 +15,10 @@ namespace N2.Details
 	/// <summary>
 	/// Allows selecting zero or more items of a specific type from a drop down list.
 	/// </summary>
+	/// <example>
+	/// 	[EditableMultipleItemSelection]
+	/// 	public virtual IEnumerable<ContentItem> Links { get; set; }
+	/// </example>
 	public class EditableMultipleItemSelectionAttribute : EditableItemSelectionAttribute
 	{
 		public EditableMultipleItemSelectionAttribute()
