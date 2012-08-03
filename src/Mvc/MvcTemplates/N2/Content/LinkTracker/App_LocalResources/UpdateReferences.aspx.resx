@@ -129,4 +129,7 @@
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Update References</value>
   </data>
+  <data name="hlCancel.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
