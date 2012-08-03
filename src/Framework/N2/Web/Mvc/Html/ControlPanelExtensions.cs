@@ -61,16 +61,50 @@ namespace N2.Web.Mvc.Html
 
 		public class ControlPanelHelper
 		{
-            private bool refreshNavigation = true;
-
-            private bool includeJQuery = true;
-            private bool includeJQueryPlugins = true;
-            private bool includePartScripts = true;
-            private bool includePartStyles = true;
-			 
+			private bool refreshNavigation = true;
+			private bool includeJQuery = true;
+			private bool includeJQueryPlugins = true;
+			private bool includePartScripts = true;
+			private bool includePartStyles = true;
 			private ContentItem currentItem;
 
 			public HtmlHelper Html { get; set; }
+
+			public ContentItem CurrentItem
+			{
+				get { return currentItem; }
+				set { currentItem = value; }
+			}
+
+			public bool RefreshNavigationOnLoad
+			{
+				get { return refreshNavigation; }
+				set { refreshNavigation = value; }
+			}
+
+			public bool IncludeJQuery
+			{
+				get { return includeJQuery; }
+				set { includeJQuery = value; }
+			}
+
+			public bool IncludeJQueryPlugins
+			{
+				get { return includeJQueryPlugins; }
+				set { includeJQueryPlugins = value; }
+			}
+
+			public bool IncludePartScripts
+			{
+				get { return includePartScripts; }
+				set { includePartScripts = value; }
+			}
+
+			public bool IncludePartStyles
+			{
+				get { return includePartStyles; }
+				set { includePartStyles = value; }
+			}
 
             /// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
             /// <param name="jQuery"></param>
@@ -87,6 +121,15 @@ namespace N2.Web.Mvc.Html
 
                 return this;
             }
+
+			/// <summary>Configures the control panel calling the given lambda expression.</summary>
+			/// <param name="config">The configuration expression.</param>
+			/// <returns>The same instance.</returns>
+			public ControlPanelHelper Configure(Action<ControlPanelHelper> config)
+			{
+				config(this);
+				return this;
+			}
 
             /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
             /// <param name="refreshNavigation"></param>
