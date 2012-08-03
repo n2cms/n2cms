@@ -19,7 +19,7 @@ namespace N2.Engine
 		/// <param name="requestedType">The type to find.</param>
 		/// <typeparam name="TAttribute">The type of attribute the type should be decorated with.</typeparam>
 		/// <returns>A list of types found in the app domain.</returns>
-		IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = true) where TAttribute : class;
+		IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class;
 
         /// <summary>Gets tne assemblies related to the current implementation.</summary>
         /// <returns>A list of assemblies that should be loaded by the N2 factory.</returns>

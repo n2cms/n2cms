@@ -12,12 +12,14 @@ namespace N2.Engine
 	public class WebAppTypeFinder : AppDomainTypeFinder
 	{
 		private bool dynamicDiscovery = true;
+		private bool enableTypeCache = true;
 		private AssemblyCache assemblyCache;
 		
 		public WebAppTypeFinder(AssemblyCache assemblyCache, EngineSection engineConfiguration)
 		{
 			this.assemblyCache = assemblyCache;
 			this.dynamicDiscovery = engineConfiguration.DynamicDiscovery;
+			this.enableTypeCache = engineConfiguration.Assemblies.EnableTypeCache;
 			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.SkipLoadingPattern))
 				this.AssemblySkipLoadingPattern = engineConfiguration.Assemblies.SkipLoadingPattern;
 			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern)) 
@@ -30,20 +32,29 @@ namespace N2.Engine
 
 		public override IEnumerable<System.Type> Find(System.Type requestedType)
 		{
-			return assemblyCache.GetTypes(requestedType.FullName, () => base.Find(requestedType));
+			if (enableTypeCache)
+				return assemblyCache.GetTypes(requestedType.FullName, () => base.Find(requestedType));
+			else
+				return base.Find(requestedType);
 		}
 
-		public override IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(System.Type requestedType, bool inherit = true)
+		public override IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(System.Type requestedType, bool inherit = false)
 		{
-			return assemblyCache.GetTypes(
-				requestedType.FullName + "[" + typeof(TAttribute).FullName + "]",
-				() => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
-				.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+			if (enableTypeCache)
+				return assemblyCache.GetTypes(
+					requestedType.FullName + "[" + typeof(TAttribute).FullName + "]",
+					() => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
+					.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+			else
+				return base.Find<TAttribute>(requestedType, inherit);
 		}
 
 		public override IEnumerable<Assembly> GetAssemblies()
 		{
-			return assemblyCache.GetAssemblies(GetAssembliesInternal);
+			if (enableTypeCache)
+				return assemblyCache.GetAssemblies(GetAssembliesInternal);
+			else
+				return GetAssembliesInternal();
 		}
 
 		private IEnumerable<Assembly> GetAssembliesInternal()

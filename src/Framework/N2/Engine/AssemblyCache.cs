@@ -37,13 +37,20 @@ namespace N2.Engine
 			if (!settings.ContainsKey(key))
 				return ReReadTypes(key, factory, "no cached types");
 
-			var types = settings[key]
-				.Select(name => Type.GetType(name))
-				.Where(t => t != null)
-				.ToList();
-
-			logger.DebugFormat("Reading {0} types for key {1} from cached settings with timestamp {2}", types.Count, key, timestamp);
-			return types;
+			try
+			{
+				var types = settings[key]
+					.Select(name => Type.GetType(name))
+					.Where(t => t != null)
+					.ToList();
+				logger.DebugFormat("Reading {0} types for key {1} from cached settings with timestamp {2}", types.Count, key, timestamp);
+				return types;
+			}
+			catch (Exception ex)
+			{
+				logger.Warn(ex);
+				return ReReadTypes(key, factory, ex.Message);
+			}
 		}
 
 		private IEnumerable<Type> ReReadTypes(string key, Func<IEnumerable<Type>> factory, string reason)

@@ -96,7 +96,7 @@ namespace N2.Engine
 			return types;
 		}
 
-		public virtual IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = true) where TAttribute : class
+		public virtual IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class
 		{
 			return Find(requestedType)
 				.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));

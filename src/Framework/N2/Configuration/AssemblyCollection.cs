@@ -32,5 +32,12 @@ namespace N2.Configuration
 			get { return (string)base["skipLoadingPattern"]; }
 			set { base["skipLoadingPattern"] = value; }
 		}
+
+		[ConfigurationProperty("enableTypeCache", DefaultValue = false)]
+		public bool EnableTypeCache
+		{
+			get { return (bool)base["enableTypeCache"]; }
+			set { base["enableTypeCache"] = value; }
+		}
 	}
 }
