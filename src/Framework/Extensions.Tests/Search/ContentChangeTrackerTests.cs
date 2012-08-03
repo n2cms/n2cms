@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using N2.Engine;
 using System;
+using Shouldly;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -83,6 +84,24 @@ namespace N2.Tests.Persistence.NH
 			indexer.Clear();
 
 			Assert.That(searcher.Search("root").Hits.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Tracker_IsMonitoring_OnMachineWithName()
+		{
+			var monitor = new N2.Plugin.ConnectionMonitor();
+			monitor.SetConnected(N2.Edit.Installation.SystemStatusLevel.UpAndRunning);
+			tracker = new ContentChangeTracker(asyncIndexer, persister, monitor, new DatabaseSection { Search = new SearchElement { IndexOnMachineNamed = Environment.MachineName } });
+			tracker.IsMonitoring.ShouldBe(true);
+		}
+
+		[Test]
+		public void Tracker_IsNotMonitoring_OnMachineWithOtherName()
+		{
+			var monitor = new N2.Plugin.ConnectionMonitor();
+			monitor.SetConnected(N2.Edit.Installation.SystemStatusLevel.UpAndRunning);
+			tracker = new ContentChangeTracker(asyncIndexer, persister, monitor, new DatabaseSection { Search = new SearchElement { IndexOnMachineNamed = "SomeOtherMachine" } });
+			tracker.IsMonitoring.ShouldBe(false);
 		}
 	}
 }
