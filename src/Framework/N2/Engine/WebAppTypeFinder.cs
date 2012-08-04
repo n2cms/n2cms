@@ -41,10 +41,11 @@ namespace N2.Engine
 		public override IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(System.Type requestedType, bool inherit = false)
 		{
 			if (enableTypeCache)
-				return assemblyCache.GetTypes(
-					requestedType.FullName + "[" + typeof(TAttribute).FullName + "]",
-					() => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
+			{
+				string key = requestedType.FullName + "[" + typeof(TAttribute).FullName + "]";
+				return assemblyCache.GetTypes(key, () => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
 					.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+			}
 			else
 				return base.Find<TAttribute>(requestedType, inherit);
 		}
@@ -65,7 +66,7 @@ namespace N2.Engine
 					.SelectMany(pp => LoadMatchingAssemblies(pp))
 					.ToList();
 
-				var addedAssemblyNames = new HashSet<string>(assemblies.Select(a => a.GetName().Name));
+				var addedAssemblyNames = new HashSet<string>(assemblies.Select(a => a.FullName));
 				assemblies.AddRange(GetConfiguredAssemblies(addedAssemblyNames));
 				return assemblies;
 			}

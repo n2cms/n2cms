@@ -324,11 +324,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void InternalServices_AreFound()
 		{
-			var config = new EngineSection();
-			config.Assemblies.Clear();
-			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
-			var finder = new WebAppTypeFinder(new ThreadContext(), config);
-			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+			var finder = TestSupport.TypeFinder();
 
 			var registrator = new ServiceRegistrator(finder, container);
 			registrator.RegisterServices(registrator.FindServices());
@@ -339,11 +335,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void NestedServices_AreFound()
 		{
-			var config = new EngineSection();
-			config.Assemblies.Clear();
-			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
-			var finder = new WebAppTypeFinder(new ThreadContext(), config);
-			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+			var finder = TestSupport.TypeFinder();
 
 			var registrator = new ServiceRegistrator(finder, container);
 			registrator.RegisterServices(registrator.FindServices());
@@ -354,11 +346,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void NestedNewServices_AreFound()
 		{
-			var config = new EngineSection();
-			config.Assemblies.Clear();
-			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
-			var finder = new WebAppTypeFinder(new ThreadContext(), config);
-			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+			var finder = TestSupport.TypeFinder();
 
 			var registrator = new ServiceRegistrator(finder, container);
 			registrator.RegisterServices(registrator.FindServices());
