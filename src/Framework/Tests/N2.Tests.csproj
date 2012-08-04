@@ -105,6 +105,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
@@ -211,6 +212,8 @@
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />
+    <Compile Include="Fakes\FakeWorker.cs" />
+    <Compile Include="Web\Messaging\MessagingTests.cs" />
     <Compile Include="Web\Mvc\ContentHelperTests.cs" />
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
