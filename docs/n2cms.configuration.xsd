@@ -208,10 +208,27 @@
 							</xs:element>
 							<xs:element name="scheduler" minOccurs="0">
 								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="repeat" type="xs:boolean" use="optional" />
+												<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
+												<xs:attribute name="interval" type="xs:time" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
 									<xs:attribute name="keepAlivePath" type="xs:string" use="optional" />
+									<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="components" minOccurs="0">
@@ -328,7 +345,16 @@
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="type" use="optional" default="Lucene">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Database"/>
+												<xs:enumeration value="Lucene"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="indexOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="files" minOccurs="0">

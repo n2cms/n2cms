@@ -26,7 +26,6 @@ namespace N2.Engine
 				.Where(t => !t.Type.IsInterface)
 				.Where(t => !t.Type.IsEnum)
 				.Where(t => !t.Type.IsValueType)
-				.Where(t => t.Type.IsPublic)
 				.Select(ai => new AttributeInfo<ServiceAttribute> { Attribute = ai.Attribute, DecoratedType = ai.Type });
 		}
 

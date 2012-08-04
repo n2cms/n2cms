@@ -14,6 +14,10 @@ namespace N2.Details
 	/// <summary>
 	/// Allows selecting zero or more items of a specific type from an exapandable check box list.
 	/// </summary>
+	/// <example>
+	/// 	[EditableItemSelection]
+	/// 	public virtual IEnumerable<ContentItem> Links { get; set; }
+	/// </example>
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{
 		public Type LinkedType { get; set; }

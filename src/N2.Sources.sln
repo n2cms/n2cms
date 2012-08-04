@@ -146,16 +146,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dinamico", "Dinamico", "{18
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{957E14F3-B354-43BB-8C30-AFFC2901D227}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{D4F398AB-0B6C-4123-A89C-2F3649A5272D}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
@@ -182,6 +172,21 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Razor", "Razor", "{97670B82-7B2E-4EE4-8527-8342877AD08C}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Management\N2.Management.nuspec = ..\build\nuget\Management\N2.Management.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{A4646281-64FB-4CE0-A3D7-9167070FF19A}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B3835F3D-C170-49C8-A4FC-CA52F0714B83}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
 	EndProjectSection
 EndProject
 Global
@@ -835,10 +840,11 @@ Global
 		{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{541230E3-044D-4B21-90EB-B93B491C6AFE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{97670B82-7B2E-4EE4-8527-8342877AD08C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{957E14F3-B354-43BB-8C30-AFFC2901D227} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
+		{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{B3835F3D-C170-49C8-A4FC-CA52F0714B83} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
 		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
-		{D4F398AB-0B6C-4123-A89C-2F3649A5272D} = {957E14F3-B354-43BB-8C30-AFFC2901D227}
 		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}
 		{9C9945AF-7DE6-459D-A783-C026E5B7F596} = {541230E3-044D-4B21-90EB-B93B491C6AFE}
+		{A4646281-64FB-4CE0-A3D7-9167070FF19A} = {B3835F3D-C170-49C8-A4FC-CA52F0714B83}
 	EndGlobalSection
 EndGlobal

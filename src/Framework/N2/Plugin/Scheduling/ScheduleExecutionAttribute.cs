@@ -1,11 +1,12 @@
 ﻿using System;
+using N2.Engine;
 
 namespace N2.Plugin.Scheduling
 {
     /// <summary>
     /// Defines how often a scheduled action should execute.
     /// </summary>
-    public class ScheduleExecutionAttribute : Attribute, IPlugin
+    public class ScheduleExecutionAttribute : ServiceAttribute
     {
         private string name = null;
         private int sortOrder = int.MaxValue;
@@ -15,21 +16,25 @@ namespace N2.Plugin.Scheduling
         private Repeat repeat = Repeat.Indefinitely;
 
         protected ScheduleExecutionAttribute()
+			: base (typeof(ScheduledAction))
         {
         }
 
         public ScheduleExecutionAttribute(Repeat repeat)
+			: this()
         {
             this.repeat = repeat;
         }
 
         public ScheduleExecutionAttribute(int seconds)
-        {
+			: this()
+		{
             interval = seconds;
         }
 
         public ScheduleExecutionAttribute(int interval, TimeUnit unit)
-        {
+			: this()
+		{
             this.interval = interval;
             this.unit = unit;
         }
@@ -75,32 +80,19 @@ namespace N2.Plugin.Scheduling
             return true;
         }
 
-        #region IComparable<IPlugin> Members
-
-        public int CompareTo(IPlugin other)
-        {
-			if (other == null)
-				return 1;
-			int result = SortOrder.CompareTo(other.SortOrder) * 2 + Name.CompareTo(other.Name);
-			return result;
+		public TimeSpan CalculateInterval()
+		{
+			switch (unit)
+			{
+				case TimeUnit.Seconds:
+					return new TimeSpan(0, 0, interval);
+				case TimeUnit.Minutes:
+					return new TimeSpan(0, interval, 0);
+				case TimeUnit.Hours:
+					return new TimeSpan(interval, 0, 0);
+				default:
+					throw new NotImplementedException("Unknown time unit: " + unit);
+			}
 		}
-
-        #region Equals & GetHashCode Methods
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || !obj.GetType().IsAssignableFrom(GetType()))
-                return false;
-            return Name == ((ScheduleExecutionAttribute)obj).Name;
-        }
-
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
-
-        #endregion
-
-        #endregion
     }
 }

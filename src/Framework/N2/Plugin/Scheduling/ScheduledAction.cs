@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using N2.Engine;
 using N2.Web;
 
@@ -14,11 +15,18 @@ namespace N2.Plugin.Scheduling
 		/// <summary>The method that executes the action. Implement in a subclass.</summary>
         public abstract void Execute();
 
-        private TimeSpan interval = new TimeSpan(0, 1, 0);
         private DateTime? lastExecuted;
-        private Repeat repeat = Repeat.Once;
         private bool isExecuting = false;
-        private int errorCount = 0;
+		private int errorCount = 0;
+		private ScheduleExecutionAttribute setting;
+
+		public ScheduledAction()
+		{
+			Enabled = true;
+		}
+
+		/// <summary>When this setting is false the action is not executed.</summary>
+		public bool Enabled { get; set; }
 
 		/// <summary>The engine ivoking this action.</summary>
 		public IEngine Engine { get; set; }
@@ -40,8 +48,12 @@ namespace N2.Plugin.Scheduling
 		/// <summary>The interval before next execution.</summary>
 		public TimeSpan Interval
         {
-            get { return interval; }
-            set { interval = value; }
+			get { return Setting.CalculateInterval(); }
+            set 
+			{
+				Setting.Interval = (int)value.TotalSeconds;
+				Setting.Unit = TimeUnit.Seconds;
+			}
         }
 
 		/// <summary>When the action was last executed.</summary>
@@ -54,14 +66,24 @@ namespace N2.Plugin.Scheduling
 		/// <summary>Wheter the action should run again.</summary>
 		public Repeat Repeat
         {
-            get { return repeat; }
-            set { repeat = value; }
+            get { return Setting.Repeat; }
+			set { Setting.Repeat = value; }
         }
+
+		public ScheduleExecutionAttribute Setting
+		{
+			get 
+			{ return setting 
+				?? (setting = GetType().GetCustomAttributes(typeof(ScheduleExecutionAttribute), false).OfType<ScheduleExecutionAttribute>().FirstOrDefault() 
+					?? new ScheduleExecutionAttribute(3600)); 
+			}
+			set { setting = value; }
+		}
 
 		/// <summary>Examines the properties to determine whether the action should run.</summary>
 		public virtual bool ShouldExecute()
         {
-            return !IsExecuting && (!LastExecuted.HasValue || LastExecuted.Value.Add(Interval) < Utility.CurrentTime());
+            return Enabled && !IsExecuting && (!LastExecuted.HasValue || LastExecuted.Value.Add(Interval) < Utility.CurrentTime());
         }
 
         /// <summary>
@@ -75,5 +97,5 @@ namespace N2.Plugin.Scheduling
             if(Engine != null)
                 Engine.Resolve<IErrorNotifier>().Notify(ex);
         }
-    }
+	}
 }

@@ -206,6 +206,7 @@
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
     <Compile Include="Persistence\SearchHelperTests.cs" />
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
+    <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
@@ -290,8 +291,6 @@
     <Compile Include="Plugin\PlugIn3.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
     <Compile Include="Plugin\PluginFinderTests.cs" />
-    <Compile Include="Plugin\Scheduling\OnceAction.cs" />
-    <Compile Include="Plugin\Scheduling\RepeatAction.cs" />
     <Compile Include="Plugin\Scheduling\SchedulingTests.cs" />
     <Compile Include="Plugin\SomeException.cs" />
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
