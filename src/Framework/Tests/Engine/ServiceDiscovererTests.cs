@@ -351,6 +351,21 @@ namespace N2.Tests.Engine
 			container.Resolve<OuterService.InnerService>().ShouldNotBe(null);
 		}
 
+		[Test]
+		public void NestedNewServices_AreFound()
+		{
+			var config = new EngineSection();
+			config.Assemblies.Clear();
+			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
+			var finder = new WebAppTypeFinder(new ThreadContext(), config);
+			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+
+			var registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			container.Resolve<OuterService2.InnerService>().ShouldNotBe(null);
+		}
+
 		private void FindAndRegister(params Type[] types)
 		{
 			ITypeFinder finder = new Fakes.FakeTypeFinder(types);
