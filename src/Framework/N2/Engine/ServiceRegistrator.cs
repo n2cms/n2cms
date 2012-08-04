@@ -21,7 +21,7 @@ namespace N2.Engine
 
 		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FindServices()
 		{
-			foreach (Type type in finder.Find(typeof(object)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface).Where(t => !t.IsEnum).Where(t => !t.IsValueType).Where(t => t.IsPublic))
+			foreach (Type type in finder.Find(typeof(object)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface).Where(t => !t.IsEnum).Where(t => !t.IsValueType))
 			{
 				var attributes = type.GetCustomAttributes(typeof(ServiceAttribute), false);
 				foreach (ServiceAttribute attribute in attributes)

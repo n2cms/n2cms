@@ -5,6 +5,9 @@ using N2.Engine.MediumTrust;
 using N2.Tests.Engine.Services;
 using NUnit.Framework;
 using System;
+using N2.Web;
+using N2.Configuration;
+using Shouldly;
 
 namespace N2.Tests.Engine
 {
@@ -316,6 +319,36 @@ namespace N2.Tests.Engine
 
 			Assert.That(container.Resolve<IReplacedInterface>(), Is.InstanceOf<ReplacingReplacedService>());
 			Assert.That(container.ResolveAll<IReplacedInterface>().Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void InternalServices_AreFound()
+		{
+			var config = new EngineSection();
+			config.Assemblies.Clear();
+			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
+			var finder = new WebAppTypeFinder(new ThreadContext(), config);
+			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+
+			var registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			container.Resolve<IInternalService>().ShouldBeTypeOf<InternalService>();
+		}
+
+		[Test]
+		public void NestedServices_AreFound()
+		{
+			var config = new EngineSection();
+			config.Assemblies.Clear();
+			config.Assemblies.Add(new AssemblyElement { Assembly = GetType().Assembly.FullName });
+			var finder = new WebAppTypeFinder(new ThreadContext(), config);
+			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+
+			var registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			container.Resolve<OuterService.InnerService>().ShouldNotBe(null);
 		}
 
 		private void FindAndRegister(params Type[] types)

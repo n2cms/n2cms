@@ -154,6 +154,24 @@ namespace N2.Tests.Engine.Services
 		}
 	}
 
+
+	public class OuterService
+	{
+		[Service]
+		public class InnerService
+		{
+		}
+	}
+
+	public interface IInternalService
+	{
+	}
+
+	[Service(typeof(IInternalService))]	
+	internal class InternalService : IInternalService
+	{
+	}
+
 	public interface IGenericService<T>
 	{
 	}
