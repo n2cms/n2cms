@@ -71,7 +71,7 @@ namespace N2.Tests
   <ItemGroup>
     <Reference Include=""NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include=""System"" />
     <Reference Include=""System.ComponentModel.DataAnnotations"">

@@ -74,16 +74,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.Caches.SysCache2, Version=3.0.0.3000, Culture=neutral, PublicKeyToken=6876f2ea66c9f443, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
+      <HintPath>..\..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -306,6 +302,24 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheDependenciesElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ConfigConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\GlobalSuppressions.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ICacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\IConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\NullableTimeSpanValidator.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlCommandCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlTableCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\StaticConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheRegion.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheSection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyElement.cs" />
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
@@ -1101,6 +1115,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Persistence\NH\SysCache2\NHibernate.Caches.SysCache2.csproj" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1123,8 +1138,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Edit\Activity\Management\" />
+    <Folder Include="Persistence\NH\SysCache2\Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Persistence\NH\SysCache2\NHibernate.Caches.snk" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
