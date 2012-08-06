@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebForms", "WebForms", "{D037EABD-718B-468A-A23D-4439AF936DCD}"
 	ProjectSection(SolutionItems) = preProject
 		readme.txt = readme.txt
@@ -65,9 +65,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}
 		{1A6297F1-B181-473D-936B-BFE8D27B79ED} = {D037EABD-718B-468A-A23D-4439AF936DCD}
 		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D} = {D037EABD-718B-468A-A23D-4439AF936DCD}
-		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
