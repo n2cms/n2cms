@@ -212,9 +212,11 @@ div.tagsinput div { display:block; float: left; }
 	.EditSingle .editDetail .editDetail { margin-left:0; }
 		.EditSingle .editDetail .editDetail .editorLabel { display:block; }
 
+
 .framed .outside .versionBox .inner { padding:0; }
-	.versionBox tbody td { color: #666 }
-	.versionBox tbody tr.current td { color: #000 }
+	.versionBox table { margin:0 }
+		.versionBox tr td { color: #666 }
+		.versionBox tr.current td { color: #000 }
 		.versionBox td.State { padding-left:24px; background:transparent none no-repeat 2px 1px; }
 		.versionBox td.New { background-image:url(../icons/user_edit.png); }
 		.versionBox td.Draft { background-image:url(../icons/user_edit.png); }
@@ -224,3 +226,5 @@ div.tagsinput div { display:block; float: left; }
 		.versionBox td.Deleted { background-image:url(../icons/bin.png); }
 	.versionBox .moreVersions { display:block; padding:0 10px 5px 10px; }
 
+.framed .outside .activityBox .inner { padding:0; }
+	.activityBox table { margin:0 }

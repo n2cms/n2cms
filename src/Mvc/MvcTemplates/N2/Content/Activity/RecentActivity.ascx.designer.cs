@@ -7,27 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Management.Content.Versions {
+namespace N2.Management.Content.Activity {
     
     
-    public partial class RecentVersions {
+    public partial class RecentActivity {
         
         /// <summary>
-        /// boxVersions control.
+        /// boxActivity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Box boxVersions;
-        
-        /// <summary>
-        /// hlMoreVersions control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlMoreVersions;
+        protected global::N2.Web.UI.WebControls.Box boxActivity;
     }
 }

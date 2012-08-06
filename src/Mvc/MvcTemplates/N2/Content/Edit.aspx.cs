@@ -99,6 +99,7 @@ namespace N2.Edit
 		{
 			LoadZones();
 			LoadInfo();
+			LoadActivity();
 			LoadVersions();
 
 			if (!IsPostBack)
@@ -330,6 +331,12 @@ namespace N2.Edit
 		{
 			ucInfo.CurrentItem = ie.CurrentItem;
 			ucInfo.DataBind();
+		}
+
+		private void LoadActivity()
+		{
+			ucActivity.CurrentItem = ie.CurrentItem;
+			ucActivity.DataBind();
 		}
 
 		private void LoadVersions()

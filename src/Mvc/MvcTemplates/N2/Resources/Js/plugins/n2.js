@@ -125,14 +125,15 @@ var initn2context = function (w) {
 
 		// selection memory
 		update: function (options) {
-			if (!this.hasTop()) return;
-
 			options.previewUrl = options.previewUrl || this.selectedUrl;
-			var memory = this.getMemory();
-			var action = this.getAction();
 			this.selectedPath = options.path;
 			this.selectedUrl = options.previewUrl;
 
+			if (!this.hasTop()) return;
+
+			var memory = this.getMemory();
+			var action = this.getAction();
+			
 			var formats = { url: options.previewUrl, selected: options.path, memory: memory, action: action };
 			$("a.templatedurl").each(function () {
 				var href = $(this).attr("data-url-template") || a.href;

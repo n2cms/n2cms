@@ -75,10 +75,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\EditSingle.aspx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\EditRecursive.aspx" />
+    <Content Include="N2\Content\Activity\App_LocalResources\RecentActivity.ascx.resx" />
     <EmbeddedResource Include="N2\Content\Export\App_LocalResources\ItemXmlImport.ascx.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ItemXmlImport.ascx.Designer.cs</LastGenOutput>
@@ -244,8 +246,6 @@
     <Content Include="N2\Users\Activity.aspx" />
     <Content Include="N2\Web.config" />
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
-    <Content Include="N2\Activity\View.ashx" />
-    <Content Include="N2\Activity\Notify.ashx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
@@ -271,13 +271,15 @@
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="N2\Activity\ActivityNotificationAttribute.cs" />
-    <Compile Include="N2\Activity\ManagementActivity.cs" />
-    <Compile Include="N2\Activity\Notify.ashx.cs">
-      <DependentUpon>Notify.ashx</DependentUpon>
+    <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
+    <Compile Include="N2\Content\Activity\EditingAjaxService.cs" />
+    <Compile Include="N2\Content\Activity\ManagementActivity.cs" />
+    <Compile Include="N2\Content\Activity\RecentActivity.ascx.cs">
+      <DependentUpon>RecentActivity.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="N2\Activity\View.ashx.cs">
-      <DependentUpon>View.ashx</DependentUpon>
+    <Compile Include="N2\Content\Activity\RecentActivity.ascx.designer.cs">
+      <DependentUpon>RecentActivity.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\AffectedItems.ascx.cs">
       <DependentUpon>AffectedItems.ascx</DependentUpon>

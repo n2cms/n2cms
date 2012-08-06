@@ -34,16 +34,6 @@ namespace N2.Management.Content.Versions
 				.AppendQuery(SelectionUtility.SelectedQueryKey, CurrentItem.Path)
 				.AppendQuery("returnUrl", Request.RawUrl);
 
-
-			var activities = Engine.Resolve<ActivityRepository<ManagementActivity>>().GetActivities(since: Utility.CurrentTime().AddHours(-1));
-			Activities = activities.Where(a => a.Path == CurrentItem.Path)
-				.GroupBy(a => new { a.PerformedBy, a.Operation })
-				.Select(ag => ag.OrderByDescending(a => a.AddedDate).FirstOrDefault())
-				.OrderByDescending(a => a.AddedDate)
-				.Take(5)
-				.ToList();
-			ShowActivities = Activities.Count > 0;
-
 			base.OnDataBinding(e);
 		}
 
@@ -66,9 +56,5 @@ namespace N2.Management.Content.Versions
 		public ContentItem CurrentItem { get; set; }
 
 		public string VersionsUrl { get; set; }
-
-		public List<ManagementActivity> Activities { get; set; }
-
-		public bool ShowActivities { get; set; }
 	}
 }
