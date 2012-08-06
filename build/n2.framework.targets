@@ -7,8 +7,8 @@
 		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
 										 $(LibFolder)\Castle.Windsor.*;
 										 $(LibFolder)\System.Web.Mvc.*;
-										 $(LibFolder)\NHibernate.dll;
-										 $(LibFolder)\NHibernate.Caches.SysCache2.dll;
+										 $(SrcFolder)\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll;
+										 $(SrcFolder)\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll;
 										 $(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
