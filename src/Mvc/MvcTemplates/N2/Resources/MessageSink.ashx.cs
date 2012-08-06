@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using N2.Web.Messaging;
 using System.IO;
+using N2.Web.Messaging;
 
 namespace N2.Management.Resources
 {
 	/// <summary>
-	/// Summary description for MessageSink
+	/// The messag sink is the default handler on the receiving side for messages sent through <see cref="ISender"/>.
 	/// </summary>
 	public class MessageSink : IHttpHandler
 	{

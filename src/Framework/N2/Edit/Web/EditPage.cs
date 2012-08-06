@@ -8,6 +8,7 @@ using N2.Engine;
 using N2.Resources;
 using N2.Security;
 using N2.Web;
+using N2.Web.UI;
 
 namespace N2.Edit.Web
 {
@@ -23,7 +24,17 @@ namespace N2.Edit.Web
 		{
 			base.OnPreInit(e);
 			SetupAspNetTheming();
+			ApplyConcerns();
 			Authorize(User);
+		}
+
+		protected virtual void ApplyConcerns()
+		{
+			if (HttpContext.Current == null)
+				return;
+
+			foreach (IContentPageConcern concern in GetType().GetCustomAttributes(typeof(IContentPageConcern), true))
+				concern.OnPreInit(this, Selection.SelectedItem);
 		}
 
 		protected virtual void SetupClientConstants()
@@ -42,7 +53,7 @@ namespace N2.Edit.Web
 			else
 				Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
 		}
-	
+
 		protected override void OnInit(EventArgs e)
 		{
 			EnsureAuthorization(Permission.Read);

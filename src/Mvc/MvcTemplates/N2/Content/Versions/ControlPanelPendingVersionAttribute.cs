@@ -15,7 +15,7 @@ namespace N2.Edit.Versions
 	public class ControlPanelPendingVersionAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPendingVersionAttribute(string toolTip, int sortOrder)
-			: base("cpPendingVersion", "{ManagementUrl}/Resources/icons/book_next.png", null, toolTip, sortOrder, ControlPanelState.Visible)
+			: base("cpPendingVersion", "{IconsUrl}/book_next.png", null, toolTip, sortOrder, ControlPanelState.Visible)
 		{
 		}
 
@@ -36,7 +36,7 @@ namespace N2.Edit.Versions
 
 			HyperLink hl = new HyperLink();
 			hl.NavigateUrl = versionPreviewUrl;
-			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
+			hl.Text = GetInnerHtml(context, latestVersion.State == ContentState.Waiting ? "{IconsUrl}/clock_play.png".ResolveUrlTokens() : IconUrl, ToolTip, Title);
 			hl.CssClass = "preview";
 			hl.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			container.Controls.Add(hl);

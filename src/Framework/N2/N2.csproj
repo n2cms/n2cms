@@ -165,6 +165,10 @@
     <Compile Include="Definitions\Runtime\RegistrationConventions.cs" />
     <Compile Include="Details\EditableItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableItemSelectionFilter.cs" />
+    <Compile Include="Edit\Activity\ActivityBase.cs" />
+    <Compile Include="Edit\Activity\ActivityExtensions.cs" />
+    <Compile Include="Edit\Activity\ActivityRepository.cs" />
+    <Compile Include="Edit\Activity\ActivityUser.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
@@ -418,6 +422,7 @@
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
+    <Compile Include="Web\UI\IContentPageConcern.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
@@ -1117,7 +1122,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Edit\Activity\Management\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

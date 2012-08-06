@@ -15,6 +15,11 @@ namespace N2.Web.UI
 			return N2.Context.Current;
 		}
 
+		/// <summary>
+		/// Gets the engine from the page or falls back to static context.
+		/// </summary>
+		/// <param name="page"></param>
+		/// <returns></returns>
 		public static IEngine GetEngine(this Page page)
 		{
 			var engine = page.Items["N2.Engine"] as IEngine;

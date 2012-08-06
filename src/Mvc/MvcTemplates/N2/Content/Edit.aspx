@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
+<%@ Register Src="Versions/RecentVersions.ascx" TagName="RecentVersions" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
@@ -20,6 +21,7 @@
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
 	<uc1:ItemInfo id="ucInfo" runat="server" />
+	<uc1:RecentVersions id="ucVersions" runat="server" />
 	<asp:PlaceHolder runat="server" ID="phSidebar" />
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
@@ -58,16 +60,20 @@
     				$("#futurePanel").hide();
     		});
 
+			// zones
     		$(".showZones").toggle(function () {
     			n2toggle.show(this, ".zonesBox");
     		}, function () {
     			n2toggle.hide(this, ".zonesBox");
     		});
 
+			// info
     		if ($.cookie(".infoBox"))
     			$(".showInfo").click();
     		if ($.cookie(".zonesBox"))
     			$(".showZones").click();
+
+			// 
     	});
 
     </script>
