@@ -66,6 +66,8 @@ namespace N2.Web.Mvc.Html
 			private bool includeJQueryPlugins = true;
 			private bool includePartScripts = true;
 			private bool includePartStyles = true;
+		    private bool includeJQueryUI = true;
+
 			private ContentItem currentItem;
 
 			public HtmlHelper Html { get; set; }
@@ -87,6 +89,12 @@ namespace N2.Web.Mvc.Html
 				get { return includeJQuery; }
 				set { includeJQuery = value; }
 			}
+
+            public bool IncludeJQueryUI
+            {
+                get { return includeJQueryUI; }
+                set { includeJQueryUI = value; }
+            }
 
 			public bool IncludeJQueryPlugins
 			{
@@ -197,7 +205,8 @@ namespace N2.Web.Mvc.Html
 
                 var resources = Html.Resources(writer);
                 if(includeJQuery) resources.JQuery();
-				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery).JQueryUi(includeJQuery);
+				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
+                if (includeJQueryUI) resources.JQueryUi(includeJQuery);
                 if(includePartScripts) resources.Constnats().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
                 if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
