@@ -1,45 +1,48 @@
-﻿#if DEBUG
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Web;
-using N2.Web.Mvc;
 using N2.Templates.Mvc.Areas.Tests.Models;
-using N2.Templates.Mvc.Models.Pages;
 using N2.Definitions;
 using N2.Persistence;
+using N2.Web.Mvc;
+using N2.Templates.Mvc.Models.Pages;
+using N2.Security;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
-	[Controls(typeof(TestPage))]
 	[Controls(typeof(TestPart))]
-	public class TestContentController : ContentController<ContentItem>
+    public class TestPartController : ContentController
     {
 		IDefinitionManager definitions;
 		ContentActivator activator;
+		private ISecurityManager security;
 
-		public TestContentController(IDefinitionManager definitions, ContentActivator activator)
+		public TestPartController(IDefinitionManager definitions, ContentActivator activator, ISecurityManager security)
 		{
 			this.definitions = definitions;
 			this.activator = activator;
+			this.security = security;
 		}
 
-		public override ActionResult Index()
+        public override ActionResult Index()
 		{
 			if ("Tests" != (string)RouteData.DataTokens["area"])
 				throw new Exception("Incorrect area: " + RouteData.Values["area"]);
 
-			if (CurrentItem.IsPage)
-				return View();
-			else
-				return PartialView("Partial", definitions.GetAllowedChildren(CurrentPage, null).WhereAuthorized(Engine.SecurityManager, User, CurrentPage));
-		}
+			return PartialView(definitions.GetAllowedChildren(CurrentPage, null).WhereAuthorized(security, User, CurrentPage));
+        }
 
 		public ActionResult Test()
 		{
 			return View();
+		}
+
+		public ActionResult TheAction()
+		{
+			return Content("TheAction");
 		}
 
 		[HttpPost]
@@ -64,7 +67,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		public ActionResult Random(string name, int amount, string discriminator)
 		{
 			var definition = definitions.GetDefinition(discriminator);
-			
+
 			List<ContentItem> created = new List<ContentItem> { CurrentPage };
 
 			Random r = new Random();
@@ -109,12 +112,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;
-			if (item is PageBase)
-				(item as ContentPageBase).Text = @"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sagittis mi. Donec pharetra vestibulum facilisis. Sed sodales risus vel nulla vulputate volutpat. Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat. Maecenas suscipit tincidunt purus porttitor auctor. Quisque eget elit at justo facilisis malesuada sit amet sit amet eros. Duis convallis porta congue. Nulla commodo faucibus diam in mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur.</p>
+			if (item is IContentPage)
+				(item as IContentPage).Text = @"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sagittis mi. Donec pharetra vestibulum facilisis. Sed sodales risus vel nulla vulputate volutpat. Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat. Maecenas suscipit tincidunt purus porttitor auctor. Quisque eget elit at justo facilisis malesuada sit amet sit amet eros. Duis convallis porta congue. Nulla commodo faucibus diam in mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur.</p>
 <p>Aliquam id massa nec mi pellentesque rhoncus id vel neque. Pellentesque malesuada venenatis sollicitudin. Maecenas at nisl urna, vel feugiat ipsum. Integer imperdiet rhoncus libero sit amet ullamcorper. Vestibulum et purus et ipsum dignissim molestie id sed urna. Nulla vitae neque neque, tempor fermentum lectus. Proin pellentesque blandit diam, in vehicula ipsum suscipit vel. Pellentesque elementum feugiat egestas. Duis scelerisque metus suscipit massa mattis tempor. Vestibulum sed dolor sed felis pharetra semper eu sed quam. Nam vitae lectus nunc, in placerat dui. Vivamus massa lorem, faucibus in semper ac, tincidunt non massa.</p>";
 			item.AddTo(parent);
 			return item;
 		}
     }
 }
-#endif

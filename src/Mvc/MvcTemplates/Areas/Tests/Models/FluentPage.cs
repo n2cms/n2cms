@@ -46,7 +46,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 		public override void RegisterDefinition(Definitions.Runtime.IContentRegistration<FluentPage> register)
 		{
 			// using N2.Web.Mvc namespace you can define a controller for the item
-			register.ControlledBy<TestContentController>();
+			register.ControlledBy<TestPageController>();
 
 			// some metadata used when creating new items
 			register.Definition.Title = "Fluently registered page";
