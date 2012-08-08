@@ -47,7 +47,7 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper PartsCss(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(Register.PartsCssPath.ResolveUrlTokens());
+			return registrator.StyleSheet(Register.PartsCssPath.ResolveUrlTokens());
 		}
 
 		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)
