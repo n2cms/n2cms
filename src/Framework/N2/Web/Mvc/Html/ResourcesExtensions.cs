@@ -2,6 +2,7 @@
 using System.IO;
 using System.Web.Mvc;
 using N2.Resources;
+using System;
 
 namespace N2.Web.Mvc.Html
 {
@@ -44,7 +45,13 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.TinyMCEPath.ResolveUrlTokens());
 		}
 
+		[Obsolete("Renamed to Constants")]
 		public static ResourcesHelper Constnats(this ResourcesHelper registrator)
+		{
+			return Constants(registrator);
+		}
+
+		public static ResourcesHelper Constants(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(Register.SelectedQueryKeyRegistrationScript(), ScriptOptions.ScriptTags);
 		}
