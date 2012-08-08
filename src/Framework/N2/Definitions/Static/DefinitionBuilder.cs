@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Reflection;
 using N2.Configuration;
 using N2.Engine;
+using System.Linq;
 
 namespace N2.Definitions.Static
 {
@@ -39,8 +40,10 @@ namespace N2.Definitions.Static
 			ExecuteRefiners(definitions);
 			ExecuteTransformers(definitions);
 
-
-			return definitionsCache = definitions.ToArray();
+			return definitionsCache = definitions.Where(d => d.IsDefined)
+				// check for attribute since a definition may have been defined by another source
+				.Where(d => config.Definitions.DefineUnattributedTypes || d.GetCustomAttributes<AbstractDefinition>().Any() )
+				.ToArray();
 		}
 
 		private void ExecuteTransformers(List<ItemDefinition> definitions)
@@ -69,8 +72,9 @@ namespace N2.Definitions.Static
 			{
 				var definition = staticDefinitions.GetOrCreateDefinition(itemType);
 				definition.DefaultContainerName = config.Definitions.DefaultContainerName;
-				if(definition.IsDefined || config.Definitions.DefineUnattributedTypes)
-					definitions.Add(definition);
+				if (config.Definitions.DefineUnattributedTypes)
+					definition.IsDefined = true;
+				definitions.Add(definition);
 			}
 
 			foreach (DefinitionElement element in config.Definitions.RemovedElements)
@@ -116,9 +120,9 @@ namespace N2.Definitions.Static
 			if (definition == null)
 			{
 				Type itemType = EnsureType<ContentItem>(element.Type);
-				definition.Discriminator = element.Name;
-				definition = new ItemDefinition(itemType);
 
+				definition = staticDefinitions.GetOrCreateDefinition(itemType);
+				definition.Discriminator = element.Name;
 				definitions.Add(definition);
 			}
 			else
@@ -132,6 +136,7 @@ namespace N2.Definitions.Static
 				}
 			}
 
+			definition.IsDefined = true;
 			UpdateDefinitionFromConfiguration(element, definition);
 		}
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using N2.Details;
+using N2.Persistence;
 
 namespace N2.Definitions
 {
@@ -27,6 +28,7 @@ namespace N2.Definitions
 			Setter = (instance, value) => Info.SetValue(instance, value, null);
 			Editable = Attributes.OfType<IEditable>().FirstOrDefault();
 			Displayable = Attributes.OfType<IDisplayable>().FirstOrDefault();
+			Persistable = Attributes.OfType<IPersistableProperty>().FirstOrDefault();
 		}
 
 		public PropertyDefinition(string name, Type propertyType)
@@ -60,5 +62,7 @@ namespace N2.Definitions
 			pd.Attributes = pd.Attributes.ToArray();
 			return pd;
 		}
+
+		public IPersistableProperty Persistable { get; set; }
 	}
 }

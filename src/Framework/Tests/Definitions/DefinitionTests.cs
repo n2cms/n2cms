@@ -14,6 +14,7 @@ using N2.Tests.Definitions.Items;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Tests.Definitions
 {
@@ -25,6 +26,7 @@ namespace N2.Tests.Definitions
 		private IPrincipal user;
 		private DefinitionManager definitions;
 		private ContentActivator activator;
+		private DefinitionMap map;
 
 		protected override Type[] GetTypes()
 		{
@@ -52,7 +54,8 @@ namespace N2.Tests.Definitions
 				typeof (DefinitionFreeItem),
 				typeof (DefinitionControllingParent),
 				typeof (DefinitionOppressedChild),
-				typeof (DefinitionPartDefinedItem)
+				typeof (DefinitionPartDefinedItem),
+				typeof (DefinitionWithPersistable)
 			};
 		}
 
@@ -63,7 +66,8 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
+			map = new DefinitionMap();
+			DefinitionBuilder builder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -425,7 +429,7 @@ namespace N2.Tests.Definitions
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionUndefined));
 
-			Assert.That(definition.IsDefined, Is.False);
+			definition.ShouldBe(null);
 		}
 
 		[Test]
@@ -530,6 +534,17 @@ namespace N2.Tests.Definitions
 
 			var displayable = definition.Displayables.Single(d => d.Name == "Text");
 			Assert.That(displayable, Is.InstanceOf<DisplayableLiteralAttribute>());
+		}
+
+		[Test]
+		public void DefinitionProperties_AreGenerated()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionWithPersistable));
+			var pd = definition.Properties["Hello"];
+			pd.Name.ShouldBe("Hello");
+			pd.Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Column);
+			pd.Info.DeclaringType.ShouldBe(typeof(DefinitionWithPersistable));
+			pd.PropertyType.ShouldBe(typeof(string));
 		}
 	}
 }

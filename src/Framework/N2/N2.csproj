@@ -297,6 +297,7 @@
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
+    <Compile Include="Persistence\IPersistableProperty.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>

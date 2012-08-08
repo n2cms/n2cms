@@ -29,6 +29,10 @@
 		<a href="<%= Url.Action(page) %>">
 			<%= Html.Encode(Url.Action(page))%>
 		</a>
+	</td><td>
+		<a href="<%= Url.Action(page, "TheAction") %>">
+			<%= Html.Encode(Url.Action(page, "TheAction"))%>
+		</a>
 	</td></tr>
 
 	<tr><th>
@@ -36,6 +40,10 @@
 	</th></tr><tr><td>
 		<a href="<%= Url.Action(item) %>">
 			<%= Html.Encode(Url.Action(item))%>
+		</a>
+	</td><td>
+		<a href="<%= Url.Action(item, "TheAction") %>">
+			<%= Html.Encode(Url.Action(item, "TheAction"))%>
 		</a>
 	</td></tr>
 

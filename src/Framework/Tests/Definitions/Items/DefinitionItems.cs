@@ -2,6 +2,7 @@ using N2.Definitions;
 using N2.Integrity;
 using N2.Details;
 using N2.Web.UI;
+using N2.Persistence;
 
 [assembly: RemoveEditable("Text", typeof(N2.Tests.Definitions.Items.DefinitionRemovable))]
 
@@ -199,4 +200,12 @@ namespace N2.Tests.Definitions.Items
 	public interface ILeftColumnlPage
 	{
 	}
+
+	[PageDefinition]
+	public class DefinitionWithPersistable : N2.ContentItem
+	{
+		[Persistable]
+		public virtual string Hello { get; set; }
+	}
+
 }
