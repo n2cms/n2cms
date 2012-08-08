@@ -31,7 +31,7 @@
 		$(document).keyup(function () {
 			isDirty = true;
 		});
-		if (tinymce){
+		if (window.tinymce){
 			tinymce.onAddEditor.add(function(mce, ed){
 				ed.onKeyUp.add(function() {
 					isDirty = true;
