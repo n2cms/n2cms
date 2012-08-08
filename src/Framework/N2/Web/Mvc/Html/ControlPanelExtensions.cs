@@ -64,6 +64,7 @@ namespace N2.Web.Mvc.Html
 			private bool refreshNavigation = true;
 			private bool includeJQuery = true;
 			private bool includeJQueryPlugins = true;
+			private bool includeJQueryUi = true;
 			private bool includePartScripts = true;
 			private bool includePartStyles = true;
 			private ContentItem currentItem;
@@ -86,6 +87,12 @@ namespace N2.Web.Mvc.Html
 			{
 				get { return includeJQuery; }
 				set { includeJQuery = value; }
+			}
+
+			public bool IncludeJQueryUi
+			{
+				get { return includeJQueryUi; }
+				set { includeJQueryUi = value; }
 			}
 
 			public bool IncludeJQueryPlugins
@@ -112,10 +119,12 @@ namespace N2.Web.Mvc.Html
             /// <param name="partScripts"></param>
             /// <param name="partStyles"></param>
             /// <returns></returns>
+			[Obsolete("Use Configure(c => c.IncludeJQuery = true)")]
             public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
             {
                 includeJQuery = jQuery;
                 includeJQueryPlugins = jQueryPlugins;
+				includeJQueryUi = jQueryPlugins;
                 includePartScripts = partScripts;
                 includePartStyles = partStyles;
 
@@ -196,10 +205,11 @@ namespace N2.Web.Mvc.Html
 				};
 
                 var resources = Html.Resources(writer);
-                if(includeJQuery) resources.JQuery();
-				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery).JQueryUi(includeJQuery);
-                if(includePartScripts) resources.Constants().JavaScript("{ManagementUrl}/Resources/Js/parts.js");
-                if(includePartStyles) resources.StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
+                if (includeJQuery) resources.JQuery();
+				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
+				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
+                if (includePartScripts) resources.PartsJs();
+                if (includePartStyles) resources.PartsCss();
 
 				if (refreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));

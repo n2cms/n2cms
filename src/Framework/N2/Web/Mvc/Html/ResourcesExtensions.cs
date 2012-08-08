@@ -40,6 +40,16 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
 		}
 
+		public static ResourcesHelper PartsJs(this ResourcesHelper registrator)
+		{
+			return registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens());
+		}
+
+		public static ResourcesHelper PartsCss(this ResourcesHelper registrator)
+		{
+			return registrator.JavaScript(Register.PartsCssPath.ResolveUrlTokens());
+		}
+
 		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(Register.TinyMCEPath.ResolveUrlTokens());
