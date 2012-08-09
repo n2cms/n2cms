@@ -16,6 +16,7 @@ using Shouldly;
 using System.Threading;
 using System.Collections.Generic;
 using System.Text;
+using N2.Engine;
 
 namespace N2.Tests.Persistence.NH
 {
