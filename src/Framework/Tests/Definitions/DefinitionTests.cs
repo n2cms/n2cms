@@ -15,6 +15,7 @@ using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
+using N2.Web.UI;
 
 namespace N2.Tests.Definitions
 {
@@ -545,6 +546,21 @@ namespace N2.Tests.Definitions
 			pd.Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Column);
 			pd.Info.DeclaringType.ShouldBe(typeof(DefinitionWithPersistable));
 			pd.PropertyType.ShouldBe(typeof(string));
+		}
+
+		[TabContainer("tab1")]
+		public class ParentContentItem : ContentItem
+		{
+		}
+		[TabContainer("tab2")]
+		public class ChildContentItem : ParentContentItem
+		{
+		}
+		[Test]
+		public void Containerns_AreInherited()
+		{
+			var d = map.GetOrCreateDefinition(typeof(ChildContentItem));
+			d.Containers.Count.ShouldBe(2);
 		}
 	}
 }

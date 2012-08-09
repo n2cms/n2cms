@@ -365,7 +365,7 @@ namespace N2.Definitions
 			AddRangeInternal(Properties.Values.SelectMany(p => p.Attributes).OfType<IUniquelyNamed>());
 
 			// Define attributes on class, including editables defined there
-			foreach (object attribute in type.GetCustomAttributes(true))
+			foreach (object attribute in Utility.GetBaseTypesAndSelf(type).SelectMany(t => t.GetCustomAttributes(false)))
 				Attributes.Add(attribute);
 			AddRange(GetCustomAttributes<IUniquelyNamed>().Where(un => !string.IsNullOrEmpty(un.Name)));
 
