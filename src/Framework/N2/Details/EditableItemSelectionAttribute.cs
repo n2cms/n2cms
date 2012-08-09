@@ -16,7 +16,7 @@ namespace N2.Details
 	/// </summary>
 	/// <example>
 	/// 	[EditableItemSelection]
-	/// 	public virtual IEnumerable<ContentItem> Links { get; set; }
+	/// 	public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
 	/// </example>
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{

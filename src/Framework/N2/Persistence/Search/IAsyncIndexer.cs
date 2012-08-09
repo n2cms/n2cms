@@ -30,6 +30,7 @@ namespace N2.Persistence.Search
 
         /// <summary>Reindexes an item and it's descendants.</summary>
         /// <param name="root"></param>
+		/// <param name="clearBeforeReindex"></param>
         void ReindexDescendants(N2.ContentItem root, bool clearBeforeReindex);
     }
 }

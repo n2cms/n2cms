@@ -40,7 +40,7 @@ namespace N2.Collections
 		}
 
 		/// <summary>Builds the hierachy using the specified child factory method.</summary>
-		/// <param name="filters">The filters.</param>
+		/// <param name="childFactory">The method resolving children.</param>
 		/// <returns></returns>
 		public HierarchyBuilder Children(ChildFactoryDelegate childFactory)
 		{

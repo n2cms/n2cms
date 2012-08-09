@@ -11,6 +11,7 @@ namespace N2.Persistence
 		/// Register te entity for save or update in the database when the unit of work
 		/// is completed. (INSERT or UPDATE)
 		/// </summary>
+		/// <param name="repository"></param>
 		/// <param name="entities">the entities to save</param>
 		public static void SaveOrUpdate<TEntity>(this IRepository<TEntity> repository, params TEntity[] entities)
 		{
@@ -23,6 +24,7 @@ namespace N2.Persistence
 		/// Register te entity for save or update in the database when the unit of work
 		/// is completed. (INSERT or UPDATE)
 		/// </summary>
+		/// <param name="repository"></param>
 		/// <param name="entities">the entities to save</param>
 		public static void SaveOrUpdateRecursive(this IRepository<ContentItem> repository, params ContentItem[] entities)
 		{
@@ -49,6 +51,7 @@ namespace N2.Persistence
 		/// Register the entity for deletion when the unit of work
 		/// is completed. 
 		/// </summary>
+		/// <param name="repository"></param>
 		/// <param name="entities">The entities to delete</param>
 		/// <remarks>Does not cascade delete children.</remarks>
 		public static void Delete<TEntity>(this IRepository<TEntity> repository, TEntity[] entities)
@@ -62,6 +65,7 @@ namespace N2.Persistence
 		/// Register the entity for deletion when the unit of work
 		/// is completed. 
 		/// </summary>
+		/// <param name="repository"></param>
 		/// <param name="entities">The entities to delete</param>
 		/// <remarks>Cascade deletes children.</remarks>
 		public static void DeleteRecursive(this IRepository<ContentItem> repository, params ContentItem[] entities)

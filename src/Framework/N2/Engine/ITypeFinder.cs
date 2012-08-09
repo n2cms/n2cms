@@ -17,6 +17,7 @@ namespace N2.Engine
 
 		/// <summary>Finds types assignable from of a certain type and with a certain attribute in the app domain.</summary>
 		/// <param name="requestedType">The type to find.</param>
+		/// <param name="inherit"></param>
 		/// <typeparam name="TAttribute">The type of attribute the type should be decorated with.</typeparam>
 		/// <returns>A list of types found in the app domain.</returns>
 		IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class;

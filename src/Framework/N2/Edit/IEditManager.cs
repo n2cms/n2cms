@@ -25,7 +25,6 @@ namespace N2.Edit
 		/// <summary>Gets edit mode plugins found in the environment sorted and filtered by the given user.</summary>
 		/// <typeparam name="T">The type of plugin to get.</typeparam>
 		/// <param name="user">The user that should be authorized for the plugin.</param>
-		/// <param name="item">The item to filter item-specific permissions for.</param>
 		/// <returns>An enumeration of plugins.</returns>
 		IEnumerable<T> GetPlugins<T>(IPrincipal user)
 			where T : AdministrativePluginAttribute;
@@ -43,18 +42,20 @@ namespace N2.Edit
 		/// <param name="item">The content item whose editors to add.</param>
 		/// <param name="container">The container onto which add the editors.</param>
 		/// <param name="user">The user whose permissions to use when adding editors.</param>
-		/// <param name="containerNameFilter">Only add editors with these names.</param>
+		/// <param name="editableNameFilter">Only add editors with these names.</param>
 		/// <param name="containerTypeFilter">Only add editors within this container type.</param>
 		/// <returns>A list of added editors.</returns>
 		IDictionary<string, Control> AddEditors(ItemDefinition definition, ContentItem item, Control container, IPrincipal user, Type containerTypeFilter, IEnumerable<string> editableNameFilter);
 
 		/// <summary>Sets initial editor values.</summary>
 		/// <param name="addedEditors">Previously added editor controls.</param>
+		/// <param name="definitions"></param>
 		/// <param name="item">The content item to use for update.</param>
 		/// <param name="user">The current user.</param>
 		void UpdateEditors(ItemDefinition definitions, ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user);
 
 		/// <summary>Updates the item with the values from the editors.</summary>
+		/// <param name="definitions"></param>
 		/// <param name="item">The item to update.</param>
 		/// <param name="addedEditors">The previously added editors.</param>
 		/// <param name="user">The user for filtering updatable editors.</param>
