@@ -12,8 +12,10 @@ using N2.Persistence.Proxying;
 using N2.Security;
 using N2.Tests.Definitions.Items;
 using N2.Web;
+using N2.Web.UI;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Tests.Definitions
 {
@@ -25,6 +27,7 @@ namespace N2.Tests.Definitions
 		private IPrincipal user;
 		private DefinitionManager definitions;
 		private ContentActivator activator;
+		private DefinitionMap map;
 
 		protected override Type[] GetTypes()
 		{
@@ -63,7 +66,8 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
+			map = new DefinitionMap();
+			DefinitionBuilder builder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -530,6 +534,21 @@ namespace N2.Tests.Definitions
 
 			var displayable = definition.Displayables.Single(d => d.Name == "Text");
 			Assert.That(displayable, Is.InstanceOf<DisplayableLiteralAttribute>());
+		}
+
+		[TabContainer("tab1")]
+		public class ParentContentItem : ContentItem
+		{
+		}
+		[TabContainer("tab2")]
+		public class ChildContentItem : ParentContentItem
+		{
+		}
+		[Test]
+		public void Containerns_AreInherited()
+		{
+			var d = map.GetOrCreateDefinition(typeof(ChildContentItem));
+			d.Containers.Count.ShouldBe(2);
 		}
 	}
 }

@@ -31,6 +31,12 @@ namespace N2.Web.UI
 		bool registerTabCss;
 		string cssClass;
 
+		public TabContainerAttribute(string name)
+			: base(name, 0)
+		{
+			TabText = name;
+		}
+
 		public TabContainerAttribute(string name, string tabText, int sortOrder)
 			: base(name, sortOrder)
 		{
