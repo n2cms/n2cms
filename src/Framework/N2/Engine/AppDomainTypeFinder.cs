@@ -20,7 +20,7 @@ namespace N2.Engine
 
 		private bool loadAppDomainAssemblies = true;
 
-		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql|^App_GlobalResources|^App_global|^App_Web_";
+		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql|^App_GlobalResources|^App_global|^App_Web_|^EntityFramework|^WebGrease|^App_global.asax";
 
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList<string> assemblyNames = new List<string>();
