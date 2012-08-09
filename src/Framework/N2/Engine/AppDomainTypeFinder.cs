@@ -196,7 +196,9 @@ namespace N2.Engine
 		/// <param name="directoryPath">The physical path to a directory containing dlls to load in the app domain.</param>
 		protected virtual IEnumerable<Assembly> LoadMatchingAssemblies(string directoryPath)
 		{
-			if (!Directory.Exists(directoryPath)) {
+			if (!Directory.Exists(directoryPath)) 
+			{
+				logger.InfoFormat("Probing path doesn't exist: {0}", directoryPath);
 				return new Assembly[0];
 			}
 
