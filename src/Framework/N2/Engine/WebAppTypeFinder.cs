@@ -11,6 +11,7 @@ namespace N2.Engine
 	/// </summary>
 	public class WebAppTypeFinder : AppDomainTypeFinder
 	{
+		Logger<WebAppTypeFinder> logger;
 		private bool dynamicDiscovery = true;
 		private bool enableTypeCache = true;
 		private AssemblyCache assemblyCache;
@@ -22,10 +23,14 @@ namespace N2.Engine
 			this.enableTypeCache = engineConfiguration.Assemblies.EnableTypeCache;
 			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.SkipLoadingPattern))
 				this.AssemblySkipLoadingPattern = engineConfiguration.Assemblies.SkipLoadingPattern;
-			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern)) 
+			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern))
 				this.AssemblyRestrictToLoadingPattern = engineConfiguration.Assemblies.RestrictToLoadingPattern;
+			logger.DebugFormat("EnableTypeCache: {0}, DynamicDiscovery: {1}, AssemblySkipLoadingPattern:{2}, AssemblyRestrictToLoadingPattern: {3}", enableTypeCache, dynamicDiscovery, AssemblySkipLoadingPattern, AssemblyRestrictToLoadingPattern);
 			foreach (var assembly in engineConfiguration.Assemblies.AllElements)
+			{
+				logger.DebugFormat("Adding configured assembly {0}", assembly.Assembly);
 				AssemblyNames.Add(assembly.Assembly);
+			}
 		}
 
 		#region Methods
@@ -65,7 +70,7 @@ namespace N2.Engine
 				var assemblies = assemblyCache.GetProbingPaths()
 					.SelectMany(pp => LoadMatchingAssemblies(pp))
 					.ToList();
-
+				
 				var addedAssemblyNames = new HashSet<string>(assemblies.Select(a => a.FullName));
 				assemblies.AddRange(GetConfiguredAssemblies(addedAssemblyNames));
 				return assemblies;

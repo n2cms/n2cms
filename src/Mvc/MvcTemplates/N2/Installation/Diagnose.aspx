@@ -67,6 +67,12 @@
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
 					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>
 					<tr><th>Application Path</th><td><%= Request.ApplicationPath %></td></tr>
+					<tr><th>CurrentDirectory</th><td><%= Environment.CurrentDirectory %></td></tr>
+					<tr><th>ApplicationPath</th><td><%= Request.ApplicationPath %></td></tr>
+					<tr><th>MapPath</th><td><%= Server.MapPath("~/") %></td></tr>
+					<tr><th>PhysicalApplicationPath</th><td><%= Request.PhysicalApplicationPath %></td></tr>
+					<tr><th>Path</th><td><%= Request.Path %></td></tr>
+					<tr><th>PhysicalPath</th><td><%= Request.PhysicalPath %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>

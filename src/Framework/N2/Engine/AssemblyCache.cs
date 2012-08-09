@@ -217,7 +217,9 @@ namespace N2.Engine
 
 		public virtual IEnumerable<string> GetProbingPaths()
 		{
-			return new [] { webContext.MapPath("~/bin") };
+			return new [] { 
+				webContext.IsWeb ? webContext.MapPath("~/bin") : Environment.CurrentDirectory
+			};
 		}
 	}
 }

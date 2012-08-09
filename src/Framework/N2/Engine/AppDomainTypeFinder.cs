@@ -205,6 +205,7 @@ namespace N2.Engine
 			var assemblies = new List<Assembly>();
 			foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
 			{
+				logger.DebugFormat("Analyzing {0} dlls in path {1}", dllPath.Length, directoryPath);
 				try
 				{
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);

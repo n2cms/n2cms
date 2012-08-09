@@ -77,7 +77,7 @@ namespace N2.Edit.Install
 
 			try
 			{
-				recentChanges = N2.Find.Items.All.MaxResults(10).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+				recentChanges = N2.Find.Items.All.MaxResults(5).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
 			}
 			catch (Exception ex)
 			{
