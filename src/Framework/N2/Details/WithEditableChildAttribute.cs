@@ -12,7 +12,7 @@ namespace N2.Details
 	///		{
 	///		}
 	/// </example>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class WithEditableChildAttribute : EditableItemAttribute
 	{
 		private Type childType;

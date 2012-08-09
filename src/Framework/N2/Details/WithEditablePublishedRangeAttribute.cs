@@ -6,7 +6,7 @@ namespace N2.Details
 	/// Class applicable editable attribute that adds text boxes for selecting 
 	/// published date range.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WithEditablePublishedRangeAttribute : WithEditableDateRangeAttribute
 	{
 		public WithEditablePublishedRangeAttribute()

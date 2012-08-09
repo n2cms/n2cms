@@ -9,6 +9,7 @@ namespace N2.Integrity
 	/// <summary>
 	/// Restricts the number of siblings an item may have.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class RestrictCardinalityAttribute : AbstractDefinitionRefiner, IAllowedDefinitionFilter, IInheritableDefinitionRefiner
 	{
 		public RestrictCardinalityAttribute()

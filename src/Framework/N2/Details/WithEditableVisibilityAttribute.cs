@@ -9,7 +9,7 @@ namespace N2.Details
     /// {
     ///	}
     /// </example>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class WithEditableVisibilityAttribute : EditableCheckBoxAttribute
     {
 		/// <summary>

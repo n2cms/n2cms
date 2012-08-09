@@ -17,6 +17,7 @@ namespace N2.Web.UI
 	/// <summary>
 	/// Defines a fieldset that can contain editors when editing an item.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class FieldSetContainerAttribute : EditorContainerAttribute
 	{
 		private string legend;

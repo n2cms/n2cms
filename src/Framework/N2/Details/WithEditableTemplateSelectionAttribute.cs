@@ -8,7 +8,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows the selection of themes.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class WithEditableTemplateSelectionAttribute : EditableListControlAttribute
 	{
 		public WithEditableTemplateSelectionAttribute()

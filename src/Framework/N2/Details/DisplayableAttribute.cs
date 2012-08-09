@@ -4,7 +4,8 @@ using System.Web.UI;
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a control used for presentation.</summary>
-    public class DisplayableAttribute : AbstractDisplayableAttribute
+	[AttributeUsage(AttributeTargets.Property)]
+	public class DisplayableAttribute : AbstractDisplayableAttribute
 	{
 		public DisplayableAttribute(Type controlType, string controlPropertyName)
 		{

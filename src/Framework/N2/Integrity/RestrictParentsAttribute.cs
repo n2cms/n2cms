@@ -22,7 +22,7 @@ namespace N2.Integrity
 	/// which. When this attribute intersects with 
 	/// <see cref="AllowedChildrenAttribute"/>, the union of these two are 
 	/// considered to be allowed.</summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class RestrictParentsAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner
 	{
 		/// <summary>

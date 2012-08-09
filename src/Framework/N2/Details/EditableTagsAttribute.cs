@@ -31,6 +31,7 @@ namespace N2.Details
 	/// // find tagged items
 	/// var tags = repository.FindTagged(Find.StartPage, "Tags", "CMS");
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableTagsAttribute : EditableTextAttribute
 	{
 		public EditableTagsAttribute()

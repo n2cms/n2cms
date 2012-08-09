@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Details
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class WithManageableSearchAttribute : EditableUserControlAttribute
     {
         public WithManageableSearchAttribute()

@@ -7,7 +7,7 @@ namespace N2.Details
     /// <summary>
     /// Decorates the content item with a date range editable that will update two date fields.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class WithEditableDateRangeAttribute : AbstractEditableAttribute, IWritingDisplayable, IDisplayable
     {
         private string betweenText = " - ";
