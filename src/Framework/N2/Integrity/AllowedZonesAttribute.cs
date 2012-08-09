@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Definitions;
+using System.Linq;
 
 namespace N2.Integrity
 {
@@ -46,7 +47,7 @@ namespace N2.Integrity
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			currentDefinition.AllowedIn = allowedIn;
-			currentDefinition.AllowedZoneNames = ZoneNames;
+			currentDefinition.AllowedZoneNames = ZoneNames != null ? ZoneNames.ToList() : new List<string>();
 		}
 	}
 }
