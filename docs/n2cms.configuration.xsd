@@ -197,6 +197,12 @@
 							<xs:element name="assemblies" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
 										<xs:element name="add" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="assembly" type="xs:string" use="required" />
