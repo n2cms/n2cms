@@ -7,6 +7,7 @@ using N2.Persistence.Behaviors;
 
 namespace N2.Definitions
 {
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class SyncChildCollectionStateAttribute : Attribute, ISavingBehavior, IRemovingBehavior, IAddingBehavior
 	{
 		private bool syncEnabled;

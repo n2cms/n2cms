@@ -146,7 +146,6 @@
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
-    <Compile Include="Definitions\AttributeTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
     <Compile Include="Definitions\Runtime\FluentRegistratorTests.cs" />
     <Compile Include="Definitions\SiblingInsertionTests.cs" />

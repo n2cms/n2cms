@@ -8,6 +8,7 @@ namespace N2.Web
 	/// "~/UI/Views/" or the location defined by any [ConventionTemplateDirectory]
 	/// attribute in the same assembly.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class ConventionTemplateAttribute : Attribute, IPathFinder
 	{
 		readonly string otherTemplateName;
