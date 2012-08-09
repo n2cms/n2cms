@@ -15,7 +15,9 @@
 							$(DocFolder)\howto_install.txt;
 							$(DocFolder)\howto_develop.txt;
 							$(DocFolder)\license.txt;
-							$(DocFolder)\n2_readme.txt" />
+							$(DocFolder)\n2_readme.txt;
+							$(DocFolder)\upgrade.txt;
+							$(DocFolder)\n2cms.configuration.xsd" />
 
 		<Snippets Include="$(SnippetsFolder)\*" />
 	</ItemGroup>
