@@ -18,6 +18,7 @@ namespace N2.Details
 	/// 	[EditableItemSelection]
 	/// 	public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{
 		public Type LinkedType { get; set; }

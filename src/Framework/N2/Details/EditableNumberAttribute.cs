@@ -7,6 +7,7 @@ namespace N2.Details
 	/// <summary>
 	/// Adds editing of a number.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableNumberAttribute : EditableTextAttribute
 	{
 		string invalidRangeMessage;

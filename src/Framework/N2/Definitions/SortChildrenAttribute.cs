@@ -9,7 +9,7 @@ namespace N2.Definitions
 	/// <summary>
 	/// Controls the order of children added to items decorated with this attribute.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class SortChildrenAttribute : Attribute, ISavingBehavior
 	{
 		public SortChildrenAttribute(SortBy orderBy)

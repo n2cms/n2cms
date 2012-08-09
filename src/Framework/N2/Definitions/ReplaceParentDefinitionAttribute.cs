@@ -8,7 +8,7 @@ namespace N2.Definitions
 	/// attribute. This can be used to disable and replace items in external
 	/// class libraries.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class ReplacesParentDefinitionAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
 		DefinitionReplacementMode replacementMode = DefinitionReplacementMode.Remove;

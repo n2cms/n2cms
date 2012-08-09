@@ -9,7 +9,7 @@ namespace N2.Details
 	/// {
 	///	}
 	/// </example>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class WithEditableAttribute : EditableAttribute
     {
         /// <summary>

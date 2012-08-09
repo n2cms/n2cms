@@ -14,7 +14,7 @@ namespace N2.Web
 	/// [Template("details", "~/Templates/MyContentDetails.aspx")]
 	/// public class MyContent : ContentItem { }
 	/// </example>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TemplateAttribute : Attribute, IPathFinder
 	{
 		readonly string action;

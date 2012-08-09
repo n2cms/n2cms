@@ -10,7 +10,7 @@ namespace N2.Definitions
 	/// <summary>
 	/// Setting Enabled to false on this attribute prevents it from being added to it's parent's child collection.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class SiblingInsertionAttribute : Attribute, ISavingBehavior
 	{
 		public SiblingInsertionAttribute(SortBy accordingTo)

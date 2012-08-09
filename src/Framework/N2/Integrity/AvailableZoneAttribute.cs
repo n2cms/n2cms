@@ -9,7 +9,7 @@ namespace N2.Integrity
 	/// Class decoration that lets N2 know that a class has zones where to 
 	/// which data items can be bound (ZoneName).
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class AvailableZoneAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner, IUniquelyNamed
 	{
 		public AvailableZoneAttribute(string title, string zoneName)

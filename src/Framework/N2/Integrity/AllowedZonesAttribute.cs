@@ -11,7 +11,7 @@ namespace N2.Integrity
     /// merly means assigning the child item's ZoneName property a meaningful 
     /// string.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class AllowedZonesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
 		readonly AllowedZones allowedIn = AllowedZones.SpecifiedZones;

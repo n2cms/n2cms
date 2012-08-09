@@ -19,6 +19,7 @@ namespace N2.Details
 	/// 	[EditableMultipleItemSelection]
 	/// 	public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableMultipleItemSelectionAttribute : EditableItemSelectionAttribute
 	{
 		public EditableMultipleItemSelectionAttribute()

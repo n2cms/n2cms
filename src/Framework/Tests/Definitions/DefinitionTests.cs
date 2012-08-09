@@ -12,10 +12,10 @@ using N2.Persistence.Proxying;
 using N2.Security;
 using N2.Tests.Definitions.Items;
 using N2.Web;
+using N2.Web.UI;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
-using N2.Web.UI;
 
 namespace N2.Tests.Definitions
 {

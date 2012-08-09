@@ -25,6 +25,7 @@ namespace N2.Web.UI
 	///         public virtual string Text { get; set; }
 	///     }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class TabContainerAttribute : EditorContainerAttribute
 	{
 		string tabText;

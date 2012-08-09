@@ -9,7 +9,7 @@ namespace N2.Integrity
 	/// is useful in scenarios where you can't change the item definitions, 
 	/// e.g. if they are defined in an external assembly.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Assembly)]
+	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 	public class IntegrityMappingAttribute : TypeIntegrityAttribute, IDefinitionRefiner, IAllowedDefinitionFilter
 	{
 		private readonly Type parentType = typeof(ContentItem);

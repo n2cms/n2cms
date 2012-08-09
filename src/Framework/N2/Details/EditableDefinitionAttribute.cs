@@ -10,6 +10,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows selection of a template
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableDefinitionAttribute : EditableListControlAttribute
 	{
 		public EditableDefinitionAttribute()

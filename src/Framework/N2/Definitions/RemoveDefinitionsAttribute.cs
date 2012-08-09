@@ -11,7 +11,7 @@ namespace N2.Definitions
 	/// This attribute now may remove definitions or just disable them 
 	/// depending on the ReplacementMode property.
 	/// </remarks>
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
 	public class RemoveDefinitionsAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
 		Type[] replacedDefinitions;

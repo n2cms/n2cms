@@ -15,7 +15,7 @@ namespace N2.Definitions
 	/// When used to decorate a content class this attribute can tell the edit 
 	/// manager not to store versions of items of that class.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class VersionableAttribute : Attribute
 	{
 		public VersionableAttribute(AllowVersions versionable)

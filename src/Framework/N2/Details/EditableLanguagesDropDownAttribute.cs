@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI.WebControls;
+using System;
 
 namespace N2.Details
 {
 	/// <summary>
 	/// An editable drop down with cultures/languages.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableLanguagesDropDownAttribute : EditableDropDownAttribute
 	{
 		public EditableLanguagesDropDownAttribute()
