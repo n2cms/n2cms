@@ -8,7 +8,7 @@ namespace N2.Web.UI
 	/// <summary>
 	/// Defines a horizontal ruler on the edit interface.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class DividerAttribute : EditorContainerAttribute
 	{
 		public DividerAttribute(string name, int sortOrder)
