@@ -200,7 +200,7 @@ namespace N2.Edit.FileSystem.NH
 			get { return _sessionProvider.OpenSession.Session; }
 		}
 
-        public Stream OpenFile(string virtualPath)
+		public Stream OpenFile(string virtualPath, bool readOnly = false)
         {
             var path = FileSystemPath.File(virtualPath);
 

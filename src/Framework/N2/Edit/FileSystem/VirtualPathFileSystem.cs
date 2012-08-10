@@ -181,14 +181,18 @@ namespace N2.Edit.FileSystem
 				DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
-		public virtual Stream OpenFile(string virtualPath)
+		public virtual Stream OpenFile(string virtualPath, bool readOnly = false)
 		{
 			if(FileExists(virtualPath))
 			{
 				VirtualFile file = PathProvider.GetFile(virtualPath);
 				return file.Open();
 			}
-			return File.Open(MapPath(virtualPath), FileMode.OpenOrCreate);
+
+			FileAccess access = readOnly ? FileAccess.Read : FileAccess.ReadWrite;
+			FileShare share = readOnly ? FileShare.Read : FileShare.None;
+
+			return File.Open(MapPath(virtualPath), FileMode.OpenOrCreate, access, share);
 		}
 
 		/// <summary>Creates or overwrites a file at the given path.</summary>
