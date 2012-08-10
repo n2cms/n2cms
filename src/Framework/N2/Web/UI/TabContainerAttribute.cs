@@ -6,6 +6,7 @@ using N2.Web.UI.WebControls;
 namespace N2.Web.UI
 {
 	[Obsolete("The [TabPanel] is now renamed to [TabContainer] attribute to avoid confusion with a web control with a similar name.", true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TabPanelAttribute : TabContainerAttribute
 	{
 		public TabPanelAttribute(string name, string tabText, int sortOrder)
@@ -25,7 +26,7 @@ namespace N2.Web.UI
 	///         public virtual string Text { get; set; }
 	///     }
 	/// </example>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TabContainerAttribute : EditorContainerAttribute
 	{
 		string tabText;
