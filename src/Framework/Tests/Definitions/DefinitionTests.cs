@@ -556,11 +556,75 @@ namespace N2.Tests.Definitions
 		public class ChildContentItem : ParentContentItem
 		{
 		}
+
 		[Test]
 		public void Containerns_AreInherited()
 		{
 			var d = map.GetOrCreateDefinition(typeof(ChildContentItem));
 			d.Containers.Count.ShouldBe(2);
+		}
+
+
+
+		[SidebarContainer("Metadata", 10, HeadingText = "Metadata")]
+		[SidebarContainer("Navigation", 20, HeadingText = "Navigation")]
+		[TabContainer("CurrentSetting", "Current page setting", 30)]
+		[TabContainer("Content", "Content", 0)]
+		[TabContainer("PageSettings", "Page settings", 30)]
+		[TabContainer("SiteResources", "Site resources", 20)]
+		public abstract class BasePage : ContentItem
+		{
+			[EditableText(ContainerName = "Metadata")]
+			public override string Title
+			{
+				get { return base.Title; }
+				set { base.Title = value; }
+			}
+
+			[EditableText(ContainerName = "Content")]
+			public virtual string Heading { set; get; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string SEOTitle { get; set; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string MetaDescription { set; get; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string MetaKeywords { set; get; }
+
+			[EditableUrl(ContainerName = "CurrentSetting")]
+			public virtual string RedirectURL { set; get; }
+
+			[EditableCheckBox(ContainerName = "Navigation")]
+			public virtual bool IsSubNavigationRoot { set; get; }
+
+			[EditableText(ContainerName = "Navigation")]
+			public virtual string NavigationName { set; get; }
+		}
+
+		[SidebarContainer("CategoryInfo", 0)]
+		public abstract partial class SpecificPage : BasePage
+		{
+			[EditableNumber(ContainerName = "CategoryInfo")]
+			public virtual int CategoryItemId { get; set; }
+		}
+
+		[Test]
+		public void Editors_CanBeAddedTo_ContainerInBaseType()
+		{
+			var d = map.GetOrCreateDefinition(typeof(SpecificPage));
+			d.Containers.Count.ShouldBe(7);
+			d.Editables.Count.ShouldBe(9);
+			d.Editables["Title"].ContainerName.ShouldBe("Metadata");
+			d.Editables["Heading"].ContainerName.ShouldBe("Content");
+			d.Editables["SEOTitle"].ContainerName.ShouldBe("Metadata");
+			d.Editables["MetaDescription"].ContainerName.ShouldBe("Metadata");
+			d.Editables["MetaKeywords"].ContainerName.ShouldBe("Metadata");
+			d.Editables["RedirectURL"].ContainerName.ShouldBe("CurrentSetting");
+			d.Editables["IsSubNavigationRoot"].ContainerName.ShouldBe("Navigation");
+			d.Editables["NavigationName"].ContainerName.ShouldBe("Navigation");
+			d.Editables["CategoryItemId"].ContainerName.ShouldBe("CategoryInfo");
 		}
 	}
 }
