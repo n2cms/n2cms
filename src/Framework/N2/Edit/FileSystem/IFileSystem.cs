@@ -50,8 +50,9 @@ namespace N2.Edit.FileSystem
 
 		/// <summary>Opens a read-write file stream to a file.</summary>
 		/// <param name="virtualPath">The path where the file is located.</param>
+		/// <param name="readOnly">Return a read-only stream if the underlying implementation supports it.</param>
 		/// <returns>A file stream.</returns>
-		Stream OpenFile(string virtualPath); // option 1: work against a file stream
+		Stream OpenFile(string virtualPath, bool readOnly = false); // option 1: work against a file stream
 
 		/// <summary>Creates or overwrites a file at the given path.</summary>
 		/// <param name="virtualPath">The path of the file to create.</param>

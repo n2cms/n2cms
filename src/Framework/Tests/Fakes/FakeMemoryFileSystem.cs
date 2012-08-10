@@ -53,7 +53,7 @@ namespace N2.Tests.Fakes
 			files[destinationVirtualPath] = files[fromVirtualPath];
 		}
 
-		public System.IO.Stream OpenFile(string virtualPath)
+		public System.IO.Stream OpenFile(string virtualPath, bool readOnly = false)
 		{
 			return new MemoryStream(contents[virtualPath]);
 		}

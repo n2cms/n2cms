@@ -120,9 +120,12 @@ namespace N2.Edit.FileSystem
 			File.Copy(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
 		}
 
-		public System.IO.Stream OpenFile(string virtualPath)
+		public System.IO.Stream OpenFile(string virtualPath, bool readOnly = false)
 		{
-			return File.Open(MapPath(virtualPath), FileMode.OpenOrCreate);
+			FileAccess access = readOnly ? FileAccess.Read : FileAccess.ReadWrite;
+			FileShare share = readOnly ? FileShare.Read : FileShare.None;
+
+			return File.Open(MapPath(virtualPath), FileMode.OpenOrCreate, access, share);
 		}
 
 		public void WriteFile(string virtualPath, System.IO.Stream inputStream)
