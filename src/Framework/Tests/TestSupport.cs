@@ -145,7 +145,7 @@ namespace N2.Tests
 		public static WebAppTypeFinder TypeFinder(EngineSection config)
 		{
 			var context = new ThreadContext();
-			var finder = new WebAppTypeFinder(new AssemblyCache(context, new N2.Persistence.BasicTemporaryFileHelper(context)), config);
+			var finder = new WebAppTypeFinder(new TypeCache(context, new N2.Persistence.BasicTemporaryFileHelper(context)), config);
 			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
 			return finder;
 		}

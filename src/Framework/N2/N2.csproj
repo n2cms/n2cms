@@ -168,7 +168,7 @@
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
-    <Compile Include="Engine\AssemblyCache.cs" />
+    <Compile Include="Engine\TypeCache.cs" />
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
     <Compile Include="Linq\FindExtensions.cs" />

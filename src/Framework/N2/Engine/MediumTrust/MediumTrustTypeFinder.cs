@@ -9,7 +9,7 @@ namespace N2.Engine.MediumTrust
 	{
 		private readonly EngineSection engineConfiguration;
 
-		public MediumTrustTypeFinder(AssemblyCache assemblyCache, EngineSection engineConfiguration)
+		public MediumTrustTypeFinder(TypeCache assemblyCache, EngineSection engineConfiguration)
 			: base(assemblyCache, engineConfiguration)
 		{
 			this.engineConfiguration = engineConfiguration;

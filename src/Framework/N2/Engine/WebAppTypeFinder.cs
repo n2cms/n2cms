@@ -14,9 +14,9 @@ namespace N2.Engine
 		Logger<WebAppTypeFinder> logger;
 		private bool dynamicDiscovery = true;
 		private bool enableTypeCache = true;
-		private AssemblyCache assemblyCache;
+		private TypeCache assemblyCache;
 		
-		public WebAppTypeFinder(AssemblyCache assemblyCache, EngineSection engineConfiguration)
+		public WebAppTypeFinder(TypeCache assemblyCache, EngineSection engineConfiguration)
 		{
 			this.assemblyCache = assemblyCache;
 			this.dynamicDiscovery = engineConfiguration.DynamicDiscovery;
