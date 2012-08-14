@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using N2.Configuration;
 using System;
+using System.Text.RegularExpressions;
 
 namespace N2.Engine
 {
@@ -23,9 +24,9 @@ namespace N2.Engine
 			this.dynamicDiscovery = engineConfiguration.DynamicDiscovery;
 			this.enableTypeCache = engineConfiguration.Assemblies.EnableTypeCache;
 			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.SkipLoadingPattern))
-				this.AssemblySkipLoadingPattern = engineConfiguration.Assemblies.SkipLoadingPattern;
+				this.AssemblySkipLoadingPattern = new Regex(engineConfiguration.Assemblies.SkipLoadingPattern);
 			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern))
-				this.AssemblyRestrictToLoadingPattern = engineConfiguration.Assemblies.RestrictToLoadingPattern;
+				this.AssemblyRestrictToLoadingPattern = new Regex(engineConfiguration.Assemblies.RestrictToLoadingPattern);
 			logger.DebugFormat("EnableTypeCache: {0}, DynamicDiscovery: {1}, AssemblySkipLoadingPattern:{2}, AssemblyRestrictToLoadingPattern: {3}", enableTypeCache, dynamicDiscovery, AssemblySkipLoadingPattern, AssemblyRestrictToLoadingPattern);
 			foreach (var assembly in engineConfiguration.Assemblies.AllElements)
 			{
