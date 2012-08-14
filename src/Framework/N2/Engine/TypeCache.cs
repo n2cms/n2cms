@@ -118,11 +118,16 @@ namespace N2.Engine
 									assemblies = CreateCachedAssemblies(factory, "invalid entry in cache file");
 									break;
 								}
-								Guid moduleId = new Guid(value.Substring(0, semicolonIndex));
 								var assembly = Assembly.Load(value.Substring(semicolonIndex + 1));
-								if (assembly.ManifestModule.ModuleVersionId != moduleId)
-									logger.DebugFormat("Assembly {0} module version changed {1} -> {2}", assembly, moduleId, assembly.ManifestModule.ModuleVersionId);
-								assemblies.Add(new CachedAssembly { Assembly = assembly, ModuleId = assembly.ManifestModule.ModuleVersionId });
+								if (assembly == null)
+								{
+									assemblies = CreateCachedAssemblies(factory, "unable to load " + value);
+									break;
+								}
+
+								var moduleVersionId = assembly.ManifestModule.ModuleVersionId;
+								logger.DebugFormat("Adding assembly {0} with module version id {1}", assembly, moduleVersionId);
+								assemblies.Add(new CachedAssembly { Assembly = assembly, ModuleId = moduleVersionId });
 							}
 						}
 					}
@@ -152,6 +157,7 @@ namespace N2.Engine
 								assemblyWithQueries.Queries[query].Add(type);
 							}
 						}
+						logger.DebugFormat("Added {0} queries to assembly {1}", assemblyWithQueries.Queries.Count, assemblyWithQueries.Assembly);
 					}
 				}
 			}
