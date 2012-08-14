@@ -20,29 +20,35 @@ namespace N2.Persistence.Search
 	{
         IAsyncIndexer indexer;
 
+		public bool IsMonitoring { get; private set; }
+
         public ContentChangeTracker(IAsyncIndexer indexer, IPersister persister, ConnectionMonitor connection, DatabaseSection config)
 		{
 			this.indexer = indexer;
-			
-			if(config.Search.Enabled)
+
+			if (!config.Search.Enabled)
+				return;
+			if (!string.IsNullOrEmpty(config.Search.IndexOnMachineNamed) && config.Search.IndexOnMachineNamed != Environment.MachineName)
+				return;
+
+			connection.Online += delegate
 			{
-				connection.Online += delegate
-				{
-					persister.ItemSaved += persister_ItemSaved;
-					persister.ItemMoving += persister_ItemMoving;
-					persister.ItemMoved += persister_ItemMoved;
-					persister.ItemCopied += persister_ItemCopied;
-					persister.ItemDeleted += persister_ItemDeleted;
-				};
-				connection.Offline += delegate
-				{
-					persister.ItemSaved -= persister_ItemSaved;
-					persister.ItemMoving -= persister_ItemMoving;
-					persister.ItemMoved -= persister_ItemMoved;
-					persister.ItemCopied -= persister_ItemCopied;
-					persister.ItemDeleted -= persister_ItemDeleted;
-				};
-			}
+				IsMonitoring = true;
+				persister.ItemSaved += persister_ItemSaved;
+				persister.ItemMoving += persister_ItemMoving;
+				persister.ItemMoved += persister_ItemMoved;
+				persister.ItemCopied += persister_ItemCopied;
+				persister.ItemDeleted += persister_ItemDeleted;
+			};
+			connection.Offline += delegate
+			{
+				IsMonitoring = false;
+				persister.ItemSaved -= persister_ItemSaved;
+				persister.ItemMoving -= persister_ItemMoving;
+				persister.ItemMoved -= persister_ItemMoved;
+				persister.ItemCopied -= persister_ItemCopied;
+				persister.ItemDeleted -= persister_ItemDeleted;
+			};
 		}
 
 

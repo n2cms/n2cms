@@ -21,12 +21,14 @@ namespace N2.Definitions
 		/// <typeparam name="T">The type of attribute to find.</typeparam>
 		/// <param name="typeToExplore">The type to explore</param>
 		/// <returns>A list of attributes defined on the class or it's properties.</returns>
-		public IList<T> Find<T>(Type typeToExplore) where T : IUniquelyNamed
+		public IList<T> Find<T>(Type typeToExplore, bool onClass = true, bool onProperties = true) where T : IUniquelyNamed
 		{
 			List<T> attributes = new List<T>();
 
-			AddEditablesDefinedOnProperties(typeToExplore, attributes);
-			AddEditablesDefinedOnClass(typeToExplore, attributes);
+			if (onProperties)
+				AddEditablesDefinedOnProperties(typeToExplore, attributes);
+			if (onClass)
+				AddEditablesDefinedOnClass(typeToExplore, attributes);
 
 			attributes.Sort(
 				(f, s) =>
@@ -67,17 +69,6 @@ namespace N2.Definitions
 				{
 					editableOnProperty.Name = propertyOnItem.Name;
 					
-					if (editableOnProperty is ISecurable)
-					{
-#pragma warning disable 618
-						foreach (DetailAuthorizedRolesAttribute rolesAttribute in propertyOnItem.GetCustomAttributes(typeof (DetailAuthorizedRolesAttribute), false))
-#pragma warning restore 618
-						{
-							ISecurable s = editableOnProperty as ISecurable;
-							s.AuthorizedRoles = rolesAttribute.Roles;
-						}
-					}
-
 					if (attributes.Contains(editableOnProperty))
 						continue;
 					

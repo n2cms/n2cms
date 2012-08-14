@@ -6,7 +6,7 @@ using N2.Definitions;
 namespace N2.Web.UI
 {
 	/// <summary>Attribute used to modify a detail's editor.</summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true)]	
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]	
     public class EditorModifierAttribute : Attribute, IUniquelyNamed
     {
 		#region Constructor

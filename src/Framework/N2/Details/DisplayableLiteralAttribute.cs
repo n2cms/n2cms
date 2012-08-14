@@ -1,9 +1,11 @@
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System;
 
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a literal used for presentation.</summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class DisplayableLiteralAttribute : AbstractDisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
 		public DisplayableLiteralAttribute()

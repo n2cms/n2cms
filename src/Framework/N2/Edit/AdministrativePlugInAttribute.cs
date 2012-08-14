@@ -56,6 +56,7 @@ namespace N2.Edit
 
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
 		/// <param name="user">The user to check.</param>
+		/// <param name="security">The security manager used to check authorization.</param>
 		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
 		public bool IsAuthorized(IPrincipal user, ISecurityManager security)
 		{

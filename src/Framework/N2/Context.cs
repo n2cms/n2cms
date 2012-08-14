@@ -18,7 +18,6 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Web;
-using log4net;
 
 namespace N2
 {
@@ -27,7 +26,7 @@ namespace N2
 	/// </summary>
     public class Context
     {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(Context));
+		private static readonly Engine.Logger<Context> Logger;
 
 		#region Initialization Methods
     	/// <summary>Initializes a static instance of the N2 factory.</summary>
@@ -69,7 +68,7 @@ namespace N2
             }
             catch (Exception ex)
             {
-                Trace.TraceWarning("Error reading configuration. This has happened when running a web site project in a virtual directory (reason unknown). " + ex);
+                Engine.Logger.Warn("Error reading configuration. This has happened when running a web site project in a virtual directory (reason unknown). " + ex);
                 return null;
             }
         }
@@ -95,7 +94,7 @@ namespace N2
 			}
 			catch (SecurityException ex)
 			{
-				Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
+				Engine.Logger.Info("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
 				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			}
 			catch (Exception ex)
@@ -103,7 +102,7 @@ namespace N2
 				if (ex.GetType().Name != "ComponentActivatorException")
 					throw;
 
-				Trace.TraceInformation("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
+				Engine.Logger.Info("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
 				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			}
 		}

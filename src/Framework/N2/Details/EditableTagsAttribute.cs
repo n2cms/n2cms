@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using N2.Persistence;
 using N2.Resources;
 using N2.Persistence.Search;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -30,12 +31,16 @@ namespace N2.Details
 	/// // find tagged items
 	/// var tags = repository.FindTagged(Find.StartPage, "Tags", "CMS");
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableTagsAttribute : EditableTextAttribute
 	{
 		public EditableTagsAttribute()
 		{
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
+			AutocompleteUrl = "{ManagementUrl}/tags.n2.ashx";
 		}
+
+		public string AutocompleteUrl { get; set; }
 
 		protected override TextBox CreateEditor()
 		{
@@ -52,8 +57,16 @@ namespace N2.Details
 
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
-			var tb = (ITextControl)editor;
+			var tb = (TextBox)editor;
 			tb.Text = GetTagsText(item);
+
+
+			tb.Attributes["data-autocomplete-url"] = AutocompleteUrl.ToUrl()
+				.AppendQuery("tagName", Name)
+				.AppendQuery("action=tags")
+				.AppendQuery("selected", item.Path)
+				.ResolveTokens();
+			tb.Attributes["data-selected"] = item.Path;
 		}
 
 		public override bool UpdateItem(ContentItem item, Control editor)
@@ -76,7 +89,7 @@ namespace N2.Details
 
 		private string GetTagsText(ContentItem item)
 		{
-			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
+			var tags = TagsRepository.GetTagsFromValues(item, Name);
 			return string.Join(", ", tags.ToArray());
 		}
 	}

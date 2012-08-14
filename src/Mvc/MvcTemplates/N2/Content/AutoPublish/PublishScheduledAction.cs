@@ -51,11 +51,19 @@ namespace N2.Edit.AutoPublish
 				.Select();
 			for (int i = 0; i < implicitAutoPublish.Count; i++)
 			{
+				try
+				{
+					Security.ScopeEnabled = false;
 				// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
 				var item = implicitAutoPublish[i];
 				item.State = ContentState.Published;
 				Persister.Save(item);
-			}
+        }
+        finally
+        {
+          Security.ScopeEnabled = true;
+        }
+      }
         }
     }
 }

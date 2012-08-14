@@ -3,7 +3,6 @@ using N2.Configuration;
 using N2.Security;
 using N2.Web.UI.WebControls;
 using System.Web.Security;
-using log4net;
 
 namespace N2.Edit
 {
@@ -19,7 +18,7 @@ namespace N2.Edit
 		Target = Targets.Top)]
 	public partial class Default : Web.EditPage
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (Default));
+		private readonly Engine.Logger<Default> logger;
 		string selectedPath;
 		string selectedUrl;
 

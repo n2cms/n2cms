@@ -74,19 +74,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\..\lib\Iesi.Collections.dll</HintPath>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.Caches.SysCache2, Version=3.0.0.3000, Culture=neutral, PublicKeyToken=6876f2ea66c9f443, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
+      <HintPath>..\..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -97,6 +90,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
@@ -108,6 +102,7 @@
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
     <Compile Include="Collections\ChildFactoryDelegate.cs" />
+    <Compile Include="Collections\CollectionState.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
@@ -134,6 +129,10 @@
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\LinkTrackerElement.cs" />
+    <Compile Include="Configuration\MessageTargetElement.cs" />
+    <Compile Include="Configuration\MessagingElement.cs" />
     <Compile Include="Configuration\PathsElement.cs" />
     <Compile Include="Configuration\ContentConfigurationSectionBase.cs" />
     <Compile Include="Configuration\FilesElement.cs" />
@@ -142,10 +141,41 @@
     <Compile Include="Configuration\ExternalsElement.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
     <Compile Include="Configuration\ResourcesElement.cs" />
+    <Compile Include="Configuration\ScheduledActionElement.cs" />
     <Compile Include="Configuration\SearchElement.cs" />
+    <Compile Include="Configuration\SearchIndexType.cs" />
+    <Compile Include="Configuration\MessageTargetsCollection.cs" />
+    <Compile Include="Configuration\TokensElement.cs" />
     <Compile Include="Configuration\VppElement.cs" />
     <Compile Include="Configuration\ZipVppElement.cs" />
     <Compile Include="Configuration\ZipVppCollection.cs" />
+    <Compile Include="Definitions\PropertyDefinition.cs" />
+    <Compile Include="Definitions\Runtime\ContainerBuilder.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\IFluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\Registration.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegisterer.cs" />
+    <Compile Include="Definitions\Runtime\IPropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistration.cs" />
+    <Compile Include="Definitions\Runtime\PropertyRegistrationExtensions.cs" />
+    <Compile Include="Definitions\Runtime\RegistrationConventions.cs" />
+    <Compile Include="Details\EditableItemSelectionAttribute.cs" />
+    <Compile Include="Details\EditableItemSelectionFilter.cs" />
+    <Compile Include="Edit\Activity\ActivityBase.cs" />
+    <Compile Include="Edit\Activity\ActivityExtensions.cs" />
+    <Compile Include="Edit\Activity\ActivityRepository.cs" />
+    <Compile Include="Edit\Activity\ActivityUser.cs" />
+    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
+    <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
+    <Compile Include="Engine\TypeCache.cs" />
+    <Compile Include="Engine\AttributedType.cs" />
+    <Compile Include="Engine\Logger.cs" />
+    <Compile Include="Linq\FindExtensions.cs" />
+    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
@@ -155,12 +185,14 @@
     <Compile Include="Definitions\ISystemNode.cs" />
     <Compile Include="Definitions\IWebFormsAddable.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateAnalyzer.cs" />
-    <Compile Include="Definitions\Runtime\ViewTemplateDescription.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateProvider.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateRegistrator.cs" />
     <Compile Include="Definitions\Runtime\ViewTemplateSource.cs" />
     <Compile Include="Definitions\AttributeTransformerBaseOfTIn.cs" />
+    <Compile Include="Definitions\SortBy.cs" />
+    <Compile Include="Definitions\SyncChildCollectionStateAttribute.cs" />
     <Compile Include="Definitions\TransformerBaseOfTOut.cs" />
+    <Compile Include="Details\EditableMultipleItemSelectionAttribute.cs" />
     <Compile Include="Details\EditableImageUploadAttribute.cs" />
     <Compile Include="Details\EditableFolderSelectionAttribute.cs" />
     <Compile Include="Details\EditableMediaUploadAttribute.cs" />
@@ -221,7 +253,9 @@
     <Compile Include="Engine\Providers\ViewEngineCollectionProvider.cs" />
     <Compile Include="Engine\Providers\VirtualPathProviderProvider.cs" />
     <Compile Include="Engine\ServiceInfo.cs" />
+    <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
     <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
@@ -260,16 +294,40 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
+    <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
+    <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
+    <Compile Include="Persistence\IPersistableProperty.cs" />
     <Compile Include="Persistence\NH\ContentItemRepository.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheDependenciesElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CacheRegionElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\CommandCacheDependencyElement.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ConfigConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\GlobalSuppressions.cs" />
+    <Compile Include="Persistence\NH\SysCache2\ICacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\IConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\NullableTimeSpanValidator.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlCommandCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SqlTableCacheDependencyEnlister.cs" />
+    <Compile Include="Persistence\NH\SysCache2\StaticConnectionStringProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheProvider.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheRegion.cs" />
+    <Compile Include="Persistence\NH\SysCache2\SysCacheSection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyCollection.cs" />
+    <Compile Include="Persistence\NH\SysCache2\TableCacheDependencyElement.cs" />
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
+    <Compile Include="Persistence\PersistenceExtensions.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
@@ -328,6 +386,18 @@
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Web\JsonWriter.cs" />
+    <Compile Include="Web\Messaging\Envelope.cs" />
+    <Compile Include="Web\Messaging\IChannel.cs" />
+    <Compile Include="Web\Messaging\ISender.cs" />
+    <Compile Include="Web\Messaging\IReceiver.cs" />
+    <Compile Include="Web\Messaging\MessageBroker.cs" />
+    <Compile Include="Web\Messaging\MessageTarget.cs" />
+    <Compile Include="Web\Messaging\MessagingExtensions.cs" />
+    <Compile Include="Web\Messaging\ReceivedEventArgs.cs" />
+    <Compile Include="Web\Messaging\ReceiverAttribute.cs" />
+    <Compile Include="Web\Messaging\ReceiverBase.cs" />
+    <Compile Include="Web\Messaging\Sender.cs" />
+    <Compile Include="Web\Messaging\HttpRequestChannel.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
@@ -335,7 +405,9 @@
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
+    <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
@@ -355,6 +427,7 @@
     <Compile Include="Web\Mvc\RenderHelper.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />
     <Compile Include="Collections\TraverseHelper.cs" />
+    <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
@@ -362,8 +435,11 @@
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
+    <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
+    <Compile Include="Web\UI\IContentPageConcern.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
     <Compile Include="Web\WebExtensions.cs" />
@@ -893,7 +969,6 @@
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
     <Compile Include="Web\PathDictionary.cs" />
-    <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
     <Compile Include="Web\RequestAdapter.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
@@ -1041,6 +1116,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Persistence\NH\SysCache2\NHibernate.Caches.SysCache2.csproj" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1061,6 +1137,13 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Persistence\NH\SysCache2\Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Persistence\NH\SysCache2\NHibernate.Caches.snk" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

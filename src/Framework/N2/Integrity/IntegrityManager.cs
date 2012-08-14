@@ -23,6 +23,7 @@ namespace N2.Integrity
 		#region Constructor
 		/// <summary>Creates a new instance of the <see cref="IntegrityManager"/>.</summary>
 		/// <param name="definitions">The definition manager.</param>
+		/// <param name="finder"></param>
 		/// <param name="urlParser"></param>
 		public IntegrityManager(Definitions.IDefinitionManager definitions, IItemFinder finder, Web.IUrlParser urlParser)
 		{
@@ -80,7 +81,7 @@ namespace N2.Integrity
 			if (IsDestinationBelowSource(source, destination))
 				return new DestinationOnOrBelowItselfException(source, destination);
 
-			if (IsNameOccupiedOnDestination(source, destination))
+			if (IsNameOccupiedOnDestination(source, destination, excludeMyself: true))
 				return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
@@ -94,7 +95,7 @@ namespace N2.Integrity
 		/// <exception cref="Exception"></exception>
 		public virtual Exception GetCopyException(ContentItem source, ContentItem destination)
         {
-			if (IsNameOccupiedOnDestination(source, destination))
+			if (IsNameOccupiedOnDestination(source, destination, excludeMyself: false))
                 return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
@@ -143,13 +144,21 @@ namespace N2.Integrity
 		}
 
 		/// <summary>Checks that destination have no child item with the same name.</summary>
-		public virtual bool IsNameOccupiedOnDestination(ContentItem source, ContentItem destination)
+		public virtual bool IsNameOccupiedOnDestination(ContentItem source, ContentItem destination, bool excludeMyself = true)
 		{
 			if (source == null) throw new ArgumentNullException("source");
 			if (destination == null) throw new ArgumentNullException("destination");
 
 			ContentItem existingItem = destination.GetChild(source.Name);
-			return existingItem != null && existingItem != source;
+
+			if (existingItem == null)
+				return false;
+			if (excludeMyself && existingItem == source)
+				return false;
+			if (!excludeMyself && source.Name == source.ID.ToString())
+				return false;
+
+			return true;
 		}
 
 		/// <summary>Checks that the destination isn't below the source.</summary>

@@ -52,6 +52,11 @@ namespace N2.Definitions
 			return Definition.GetHashCode();
 		}
 
+		public override string ToString()
+		{
+			return Definition.ToString();
+		}
+
 		#endregion
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using N2.Engine;
 using N2.Web;
-using log4net;
 
 namespace N2.Plugin.Scheduling
 {
@@ -15,31 +15,32 @@ namespace N2.Plugin.Scheduling
 	[Service]
     public class Scheduler : IAutoStart
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof (Scheduler));
+		private readonly Engine.Logger<Scheduler> logger;
 
-        IList<ScheduledAction> actions;
-        IHeart heart;
-    	readonly IWorker worker;
-    	Web.IWebContext context;
-        IErrorNotifier errorHandler;
+		IList<ScheduledAction> actions = new List<ScheduledAction>();
+		IHeart heart;
+		readonly IWorker worker;
+		Web.IWebContext context;
+		IErrorNotifier errorHandler;
 		IEngine engine;
+		private bool enabled;
 
-        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler)
+		public Scheduler(IEngine engine, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler, ScheduledAction[] registeredActions, Configuration.EngineSection config)
         {
 			this.engine = engine;
-			RegisterActionsAsComponents(engine, plugins);
-            actions = new List<ScheduledAction>(InstantiateActions(plugins));
-            this.heart = heart;
-        	this.worker = worker;
-        	this.context = context;
-            this.errorHandler = errorHandler;
-        }
+			this.heart = heart;
+			this.worker = worker;
+			this.context = context;
+			this.errorHandler = errorHandler;
 
-		private void RegisterActionsAsComponents(IEngine engine, IPluginFinder plugins)
-		{
-			foreach (var plugin in plugins.GetPlugins<ScheduleExecutionAttribute>())
+			this.enabled = config.Scheduler.Enabled;
+			if (!string.IsNullOrEmpty(config.Scheduler.ExecuteOnMachineNamed))
+				if (config.Scheduler.ExecuteOnMachineNamed != Environment.MachineName)
+					this.enabled = false;
+
+			if (enabled)
 			{
-				engine.Container.AddComponent(plugin.Decorates.FullName, plugin.Decorates, plugin.Decorates);
+				actions = new List<ScheduledAction>(InstantiateActions(registeredActions, config.Scheduler));
 			}
 		}
 
@@ -48,35 +49,50 @@ namespace N2.Plugin.Scheduling
             get { return actions; }
         }
 
-        protected TimeSpan CalculateInterval(int interval, TimeUnit unit)
+		private IEnumerable<ScheduledAction> InstantiateActions(IEnumerable<ScheduledAction> registeredActions, Configuration.SchedulerElement schedulerElement)
         {
-            switch (unit)
+			var isClear = schedulerElement.IsCleared;
+			var removedNames = new HashSet<string>(schedulerElement.RemovedElements.Select(re => re.Name));
+			var added = schedulerElement.AddedElements.ToDictionary(ae => ae.Name);
+			foreach (var action in registeredActions)
             {
-                case TimeUnit.Seconds:
-                    return new TimeSpan(0, 0, interval);
-                case TimeUnit.Minutes:
-                    return new TimeSpan(0, interval, 0);
-                case TimeUnit.Hours:
-                    return new TimeSpan(interval, 0, 0);
-                default:
-                    throw new NotImplementedException("Unknown time unit: " + unit);
-            }
-        }
+				string name = action.GetType().Name;
+				if (removedNames.Contains(name) && !added.ContainsKey(name))
+					continue;
+				if (isClear && !added.ContainsKey(name))
+					continue;
+				if (added.ContainsKey(name))
+				{
+					var actionConfig = added[name];
+					if (!string.IsNullOrEmpty(actionConfig.ExecuteOnMachineNamed) && actionConfig.ExecuteOnMachineNamed != Environment.MachineName)
+						continue;
+				}
 
-        private IEnumerable<ScheduledAction> InstantiateActions(IPluginFinder plugins)
-        {
-            foreach (ScheduleExecutionAttribute attr in plugins.GetPlugins<ScheduleExecutionAttribute>())
-            {
-				ScheduledAction action = (ScheduledAction)engine.Resolve(attr.Decorates);
-                action.Interval = CalculateInterval(attr.Interval, attr.Unit);
-                action.Repeat = attr.Repeat;
+				if (added.ContainsKey(name))
+				{
+					var actionConfig = added[name];
+					if (actionConfig.Interval.HasValue)
+						action.Interval = actionConfig.Interval.Value;
+					if (actionConfig.Repeat.HasValue)
+						action.Repeat = actionConfig.Repeat.Value ? Repeat.Indefinitely : Repeat.Once;
+				}
+
                 yield return action;
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         void heart_Beat(object sender, EventArgs e)
+		{
+			ExecutActions();
+		}
+
+		/// <summary>Executes the scheduled actions that are scheduled for executions.</summary>
+		public void ExecutActions()
         {
+			if (!enabled)
+				return;
+
             for (int i = 0; i < actions.Count; i++)
             {
                 ScheduledAction action = actions[i];

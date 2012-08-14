@@ -3,6 +3,8 @@ using N2.Persistence.Finder;
 using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Edit.Activity;
+using N2.Management.Activity;
 
 namespace N2.Edit
 {
@@ -21,7 +23,10 @@ namespace N2.Edit
             itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
 
-			var q = Engine.Resolve<IItemFinder>().Where.Detail(LinkTracker.Tracker.LinkDetailName).Like(Selection.SelectedItem.Url);
+			var q = Engine.Resolve<IItemFinder>()
+				.Where.Detail(LinkTracker.Tracker.LinkDetailName)
+				.Like(Selection.SelectedItem.Url)
+				.And.State.NotEq(ContentState.Deleted);
 			if (Selection.SelectedItem.ID != 0)
 				q = q.Or.Detail().Eq(Selection.SelectedItem);
 
@@ -102,6 +107,8 @@ namespace N2.Edit
                     Refresh(N2.Context.UrlParser.StartPage, ToolbarArea.Both);
 
 				ppPermitted.Visible = false;
+
+				Engine.AddActivity(new ManagementActivity { Operation = "Delete", PerformedBy = User.Identity.Name, Path = Selection.SelectedItem.Path, ID = Selection.SelectedItem.ID });
             }
             catch (Exception ex)
             {

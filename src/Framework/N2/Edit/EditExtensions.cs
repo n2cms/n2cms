@@ -122,7 +122,11 @@ namespace N2.Edit
             if (page is Web.EditPage)
                 return (page as Web.EditPage).Selection;
 
-            return new SelectionUtility(page, N2.Context.Current);
+			var selection = page.Items["SelectionUtility"] as SelectionUtility;
+			if(selection == null)
+				page.Items["SelectionUtility"] = selection = new SelectionUtility(page, N2.Context.Current);
+
+			return selection;
         }
 	}
 

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using log4net;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
@@ -18,7 +17,7 @@ namespace N2.Persistence.Search
 	[Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "lucene")]
 	public class LuceneIndexer : IIndexer
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (LuceneIndexer));
+		private readonly Engine.Logger<LuceneIndexer> logger;
 		LuceneAccesor accessor;
 		TextExtractor extractor;
 

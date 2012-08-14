@@ -66,7 +66,7 @@ namespace N2.Web.Mvc
 			if (viewPath == null)
 				return;
 
-			re.TouchedPaths.Add(viewPath);
+			re.Context.TouchedPaths.Add(viewPath);
 		}
 	}
 }

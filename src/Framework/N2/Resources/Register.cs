@@ -13,6 +13,16 @@ namespace N2.Resources
 	/// </summary>
 	public static class Register
 	{
+		static Register()
+		{
+			JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
+			JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
+			JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
+			TinyMCEPath = "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js?v=" + JQueryVersion;
+			PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
+			PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
+		}
+
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
 		public static bool Debug { get; set; }
 		
@@ -30,6 +40,12 @@ namespace N2.Resources
 		
 		/// <summary>The path to the tiny MCE editor script</summary>
 		public static string TinyMCEPath { get; set; }
+
+		/// <summary>The path to the parts script.</summary>
+		public static string PartsJsPath { get; set; }
+
+		/// <summary>The path to the parts css.</summary>
+		public static string PartsCssPath { get; set; }
 
 		#region page StyleSheet
 

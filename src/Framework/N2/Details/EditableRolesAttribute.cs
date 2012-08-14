@@ -3,9 +3,11 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
+using System;
 
 namespace N2.Security.Details
 {
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableRolesAttribute : AbstractEditableAttribute
 	{
 		public override bool UpdateItem(ContentItem item, Control editor)

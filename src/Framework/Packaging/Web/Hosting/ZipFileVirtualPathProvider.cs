@@ -59,7 +59,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 		{
 			//virtualPath = ToRelative(virtualPath);
 			bool exists = Exists(virtualPath, true) || Previous.FileExists(virtualPath);
-			Trace.WriteLine("ZipVPP: " + exists + " " + virtualPath);
+			N2.Engine.Logger.Debug("ZipVPP: " + exists + " " + virtualPath);
 			return exists;
 		}
 

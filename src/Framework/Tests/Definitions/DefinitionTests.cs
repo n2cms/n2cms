@@ -12,8 +12,10 @@ using N2.Persistence.Proxying;
 using N2.Security;
 using N2.Tests.Definitions.Items;
 using N2.Web;
+using N2.Web.UI;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Tests.Definitions
 {
@@ -25,6 +27,7 @@ namespace N2.Tests.Definitions
 		private IPrincipal user;
 		private DefinitionManager definitions;
 		private ContentActivator activator;
+		private DefinitionMap map;
 
 		protected override Type[] GetTypes()
 		{
@@ -52,7 +55,8 @@ namespace N2.Tests.Definitions
 				typeof (DefinitionFreeItem),
 				typeof (DefinitionControllingParent),
 				typeof (DefinitionOppressedChild),
-				typeof (DefinitionPartDefinedItem)
+				typeof (DefinitionPartDefinedItem),
+				typeof (DefinitionWithPersistable)
 			};
 		}
 
@@ -63,7 +67,8 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
+			map = new DefinitionMap();
+			DefinitionBuilder builder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -425,7 +430,7 @@ namespace N2.Tests.Definitions
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionUndefined));
 
-			Assert.That(definition.IsDefined, Is.False);
+			definition.ShouldBe(null);
 		}
 
 		[Test]
@@ -530,6 +535,96 @@ namespace N2.Tests.Definitions
 
 			var displayable = definition.Displayables.Single(d => d.Name == "Text");
 			Assert.That(displayable, Is.InstanceOf<DisplayableLiteralAttribute>());
+		}
+
+		[Test]
+		public void DefinitionProperties_AreGenerated()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionWithPersistable));
+			var pd = definition.Properties["Hello"];
+			pd.Name.ShouldBe("Hello");
+			pd.Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Column);
+			pd.Info.DeclaringType.ShouldBe(typeof(DefinitionWithPersistable));
+			pd.PropertyType.ShouldBe(typeof(string));
+		}
+
+		[TabContainer("tab1")]
+		public class ParentContentItem : ContentItem
+		{
+		}
+		[TabContainer("tab2")]
+		public class ChildContentItem : ParentContentItem
+		{
+		}
+
+		[Test]
+		public void Containerns_AreInherited()
+		{
+			var d = map.GetOrCreateDefinition(typeof(ChildContentItem));
+			d.Containers.Count.ShouldBe(2);
+		}
+
+
+
+		[SidebarContainer("Metadata", 10, HeadingText = "Metadata")]
+		[SidebarContainer("Navigation", 20, HeadingText = "Navigation")]
+		[TabContainer("CurrentSetting", "Current page setting", 30)]
+		[TabContainer("Content", "Content", 0)]
+		[TabContainer("PageSettings", "Page settings", 30)]
+		[TabContainer("SiteResources", "Site resources", 20)]
+		public abstract class BasePage : ContentItem
+		{
+			[EditableText(ContainerName = "Metadata")]
+			public override string Title
+			{
+				get { return base.Title; }
+				set { base.Title = value; }
+			}
+
+			[EditableText(ContainerName = "Content")]
+			public virtual string Heading { set; get; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string SEOTitle { get; set; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string MetaDescription { set; get; }
+
+			[EditableText(ContainerName = "Metadata")]
+			public virtual string MetaKeywords { set; get; }
+
+			[EditableUrl(ContainerName = "CurrentSetting")]
+			public virtual string RedirectURL { set; get; }
+
+			[EditableCheckBox(ContainerName = "Navigation")]
+			public virtual bool IsSubNavigationRoot { set; get; }
+
+			[EditableText(ContainerName = "Navigation")]
+			public virtual string NavigationName { set; get; }
+		}
+
+		[SidebarContainer("CategoryInfo", 0)]
+		public abstract partial class SpecificPage : BasePage
+		{
+			[EditableNumber(ContainerName = "CategoryInfo")]
+			public virtual int CategoryItemId { get; set; }
+		}
+
+		[Test]
+		public void Editors_CanBeAddedTo_ContainerInBaseType()
+		{
+			var d = map.GetOrCreateDefinition(typeof(SpecificPage));
+			d.Containers.Count.ShouldBe(7);
+			d.Editables.Count.ShouldBe(9);
+			d.Editables["Title"].ContainerName.ShouldBe("Metadata");
+			d.Editables["Heading"].ContainerName.ShouldBe("Content");
+			d.Editables["SEOTitle"].ContainerName.ShouldBe("Metadata");
+			d.Editables["MetaDescription"].ContainerName.ShouldBe("Metadata");
+			d.Editables["MetaKeywords"].ContainerName.ShouldBe("Metadata");
+			d.Editables["RedirectURL"].ContainerName.ShouldBe("CurrentSetting");
+			d.Editables["IsSubNavigationRoot"].ContainerName.ShouldBe("Navigation");
+			d.Editables["NavigationName"].ContainerName.ShouldBe("Navigation");
+			d.Editables["CategoryItemId"].ContainerName.ShouldBe("CategoryInfo");
 		}
 	}
 }

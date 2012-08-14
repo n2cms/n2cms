@@ -27,7 +27,7 @@ namespace N2.Persistence.Proxying
 		private static readonly Action<IInvocation> proceedAction = (invocation) => invocation.Proceed();
 		private static MethodInfo getEntityNameMethod = typeof(IInterceptedType).GetMethod("GetTypeName");
 		
-		public DetailPropertyInterceptor(Type interceptedType, IEnumerable<PropertyInfo> interceptedProperties)
+		public DetailPropertyInterceptor(Type interceptedType, IEnumerable<AttributedProperty> interceptedProperties)
 		{
 			string typeName = interceptedType.FullName;
 			methods[getEntityNameMethod] = invocation => invocation.ReturnValue = typeName;
@@ -40,14 +40,10 @@ namespace N2.Persistence.Proxying
 					methods[method] = getContentTypeAction;
 			}
 
-			foreach (var property in interceptedProperties)
+			foreach (var intercepted in interceptedProperties)
 			{
-				var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
-				var attribute = attributes.FirstOrDefault();
-				if (attribute == null || attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
-				    continue;
-
-				var location = attributes.Where(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection).Select(a => a.PersistAs).FirstOrDefault();
+				var property = intercepted.Property;
+				var location = intercepted.Attribute.PersistAs;
 
 				var getMethod = property.GetGetMethod();
 				if (getMethod == null)
@@ -55,7 +51,7 @@ namespace N2.Persistence.Proxying
 				if (!getMethod.IsCompilerGenerated())
 					continue; // only intercept auto-implemented properties
 
-				object defaultValue = GetDefaultValue(property.PropertyType, attribute.DefaultValue);
+				object defaultValue = GetDefaultValue(property.PropertyType, intercepted.Attribute.DefaultValue);
 
 				var setMethod = property.GetSetMethod();
 				if (location == PropertyPersistenceLocation.Detail)

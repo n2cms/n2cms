@@ -58,10 +58,14 @@ namespace N2.Edit
 		{
 			IList<ContentItem> siblings = item.Parent.Children;
 			Utility.MoveToIndex(siblings, item, index);
-			foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
-			{
-				persister.Save(updatedItem);
-			}
+            using (var tx = persister.Repository.BeginTransaction())
+            {
+                foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
+                {
+                    persister.Repository.SaveOrUpdate(updatedItem);
+                }
+                tx.Commit();
+            }
 		}
 
 		public void MoveTo(ContentItem item, NodePosition position, ContentItem relativeTo)

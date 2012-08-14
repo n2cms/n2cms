@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Timers;
 using N2.Engine;
 using N2.Linq;
-using log4net;
 
 namespace N2.Plugin.Scheduling
 {
@@ -13,7 +12,7 @@ namespace N2.Plugin.Scheduling
 	[Service(typeof(IHeart))]
     public class Heart : IAutoStart, IHeart
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof(Heart));
+		private readonly Engine.Logger<Heart> logger;
         Timer timer;
 
         public Heart()

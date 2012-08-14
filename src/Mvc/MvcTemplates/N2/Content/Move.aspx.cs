@@ -4,7 +4,8 @@ using N2.Edit.Web;
 using N2.Integrity;
 using N2.Security;
 using N2.Web;
-using log4net;
+using N2.Edit.Activity;
+using N2.Management.Activity;
 
 namespace N2.Edit
 {
@@ -17,7 +18,7 @@ namespace N2.Edit
 		RequiredPermission = Permission.Publish)]
 	public partial class Move : EditPage
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (Move));
+		private readonly Engine.Logger<Move> logger;
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -77,8 +78,15 @@ namespace N2.Edit
 			EnsureAuthorization(Permission.Write);
 			EnsureAuthorization(toMove, toMove.IsPublished() ? Permission.Publish : Permission.Write);
 
+			var previousParent = toMove.Parent;
+
+			Engine.AddActivity(new ManagementActivity { Operation = "Move", PerformedBy = User.Identity.Name, Path = toMove.Path, ID = toMove.ID });
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
-			Refresh(toMove, ToolbarArea.Both);
+
+			if (toMove.IsPage)
+				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
+			else
+				Refresh(toMove);
 		}
 
 		private void LoadDefaultsAndInfo(ContentItem moved, ContentItem destination)

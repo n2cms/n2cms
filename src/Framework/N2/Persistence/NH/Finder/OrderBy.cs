@@ -84,6 +84,11 @@ namespace N2.Persistence.NH.Finder
 			get { return new PropertySortDirection("SavedBy", query); }
 		}
 
+		public N2.Persistence.Finder.ISortDirection Property(string name)
+		{
+			return new PropertySortDirection(name, query);
+		}
+
 		public N2.Persistence.Finder.ISortDirection Detail(string name)
 		{
 			return new DetailSortDirection(name, query);

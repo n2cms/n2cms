@@ -4,7 +4,6 @@ using N2.Linq;
 using N2.Persistence.Proxying;
 using NHibernate;
 using NHibernate.Type;
-using log4net;
 
 namespace N2.Persistence.NH
 {
@@ -16,7 +15,7 @@ namespace N2.Persistence.NH
 		private readonly IProxyFactory interceptor;
 		public ISession Session { get; set; }
 		private readonly IItemNotifier notifier;
-		private readonly ILog logger = LogManager.GetLogger(typeof(NHInterceptor));
+		private readonly Engine.Logger<NHInterceptor> logger;
 
 		public NHInterceptor(IProxyFactory interceptor, IItemNotifier notifier)
 		{
@@ -109,13 +108,6 @@ namespace N2.Persistence.NH
 						state[i] = trail;
 						wasAltered = true;
 					}
-				}
-				if (propertyNames[i] == "AlteredPermissions" 
-					&& item.AlteredPermissions == N2.Security.Permission.None 
-					&& item.AuthorizedRoles.Count > 0)
-				{
-					state[i] = N2.Security.Permission.Read;
-					wasAltered = true;
 				}
 			}
 			return wasAltered;

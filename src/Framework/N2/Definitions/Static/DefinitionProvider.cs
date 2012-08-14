@@ -17,5 +17,8 @@ namespace N2.Definitions.Static
 		{
 			return definitionBuilder.GetDefinitions();
 		}
+
+		/// <summary>The order this definition provider should be invoked, default 0.</summary>
+		public int SortOrder { get { return -100; } }
 	}
 }

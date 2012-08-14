@@ -47,7 +47,7 @@ namespace N2.Web
 			this.sqlCacheDependency = config.SqlCacheDependency;
 		}
 
-		protected virtual CacheDependency GetCacheDependency(CacheOptions options)
+		public virtual CacheDependency GetCacheDependency(CacheOptions options)
 		{
 			if (!options.ContentDependency)
 				return null;
@@ -55,7 +55,7 @@ namespace N2.Web
 			if(string.IsNullOrEmpty(sqlCacheDependency))
 				return new ContentCacheDependency(persister);
 
-			return new SqlCacheDependency(sqlCacheDependency, tablePrefix + "item");
+			return new SqlCacheDependency(sqlCacheDependency, tablePrefix + "Item");
 		}
 
 		public virtual void Add(string cacheKey, object value, CacheOptions options = null)
@@ -79,6 +79,17 @@ namespace N2.Web
 		public virtual T Get<T>(string cacheKey) where T: class
 		{
 			return context.HttpContext.Cache.Get(tablePrefix + cacheKey) as T;
+		}
+
+		public virtual T GetOrCreate<T>(string cacheKey, Func<T> factory, CacheOptions options = null) where T : class
+		{
+			var value = Get<T>(cacheKey);
+			if (value != null)
+				return value;
+
+			value = factory();
+			Add(cacheKey, value, options);
+			return value;
 		}
 	}
 }

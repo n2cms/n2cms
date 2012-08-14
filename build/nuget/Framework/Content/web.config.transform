@@ -21,8 +21,7 @@
 			<!-- Globalization requires you to create additional start pages with a language -->
 			<globalization enabled="true" />
 		</engine>
-		<database connectionStringName="N2CMS" flavour="AutoDetect" 
-							caching="true" cacheProviderClass="NHibernate.Caches.SysCache2.SysCacheProvider, NHibernate.Caches.SysCache2">
+		<database connectionStringName="N2CMS" flavour="AutoDetect" caching="true">
 		</database>
 		<edit>
 			<!-- Set checkInstallationStatus to false to disable redirect to install page -->

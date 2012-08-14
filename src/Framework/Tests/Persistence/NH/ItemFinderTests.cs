@@ -10,6 +10,7 @@ using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -812,6 +813,30 @@ namespace N2.Tests.Persistence.NH
 			Assert.AreEqual(1, items.Count);
 			EnumerableAssert.Contains(items, item1);
 		}
+
+		[Test]
+		public void FindCertainProperties()
+		{
+			var items = finder
+				.Where.Type.Eq(typeof(PersistableItem2))
+				.And.Name.Eq("item1")
+				.Select("Title", "Name");
+
+			items.Single()["Title"].ShouldBe("item1");
+			items.Single()["Name"].ShouldBe("item1");
+		}
+
+		//[Test]
+		//public void FindCertainPropertiesWithSelector()
+		//{
+		//    var items = finder
+		//        .Where.Type.Eq(typeof(PersistableItem2))
+		//        .And.Name.Eq("item1")
+		//        .Select(row => new { Title = row["Title"], Name = row["Name"] });
+
+		//    items.Single().Title.ShouldBe("item1");
+		//    items.Single().Name.ShouldBe("item1");
+		//}
 
 		[Test]
 		public void FindAllItemsIncludingVersions()

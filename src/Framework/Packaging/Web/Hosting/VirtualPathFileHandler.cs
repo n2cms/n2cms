@@ -2,13 +2,12 @@
 using System.Web;
 using System;
 using System.Web.Hosting;
-using log4net;
 
 namespace N2.Web.Hosting
 {
 	public class VirtualPathFileHandler : IHttpHandler
 	{
-		private static readonly ILog logger = LogManager.GetLogger(typeof(VirtualPathFileHandler));
+		private static readonly Engine.Logger<VirtualPathFileHandler> logger;
 
 		VirtualPathProvider vpp;
 
@@ -41,6 +40,7 @@ namespace N2.Web.Hosting
 
 				logger.DebugFormat("Transmitting virtual file {0} available on disk {1}", context.Request.AppRelativeCurrentExecutionFilePath, context.Request.PhysicalPath);
 				N2.Web.CacheUtility.SetValidUntilExpires(context.Response, DateTime.UtcNow);
+				context.Response.ContentType = GetContentType(context.Request.PhysicalPath);
 				context.Response.TransmitFile(context.Request.PhysicalPath);
 			}
 			else if (vpp.FileExists(context.Request.AppRelativeCurrentExecutionFilePath))

@@ -9,7 +9,7 @@ namespace N2
 	/// mode and for data integrity.
 	/// </summary>
 	/// <remarks>This attribute may be deprecated in the future. Use <see cref="PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/> instead.</remarks>
-	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
 	public class DefinitionAttribute : AbstractDefinition, ISimpleDefinitionRefiner
 
 	{

@@ -16,6 +16,7 @@ using Shouldly;
 using System.Threading;
 using System.Collections.Generic;
 using System.Text;
+using N2.Engine;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -778,6 +779,42 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
 		}
 
+		[Test]
+		public void Tags_are_searchable()
+		{
+			var page = CreateOneItem<PersistableItem1>(1, "page", null);
+			page.Tags = new[] { "Hello", "World" };
+			indexer.Update(page);
+
+			var page2 = CreateOneItem<PersistableItem1>(2, "page2", null);
+			page2.Tags = new[] { "Howdy", "Universe" };
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For("world"));
+
+			result.Single().ShouldBe(page);
+		}
+
+		[Test]
+		public void Tags_are_searchable_by_property()
+		{
+			var page = CreateOneItem<PersistableItem1>(1, "page", null);
+			page.Tags = new[] { "Hello", "World" };
+			indexer.Update(page);
+
+			var page2 = CreateOneItem<PersistableItem1>(2, "page2", null);
+			page2.Tags = new[] { "Howdy", "Universe" };
+			indexer.Update(page2);
+
+			var searcher = new LuceneSearcher(accessor, persister);
+			var result = searcher.Search(Query.For<PersistableItem1>().Property("Tags", "Hello"));
+
+			result.Single().ShouldBe(page);
+		}
+
+		// sorting
+
 		[TestCase(LuceneIndexer.Properties.ID)]
 		[TestCase(LuceneIndexer.Properties.Created)]
 		[TestCase(LuceneIndexer.Properties.Published)]
@@ -837,6 +874,35 @@ namespace N2.Tests.Persistence.NH
 			hits[0].Title.ShouldBe(item2.Title);
 			hits[1].Title.ShouldBe(item.Title);
 		}
+
+		[Test]
+		public void OrderBy_MultipleFields()
+		{
+			var apple1 = CreateOneItem<PersistableItem1>(1, "Apple", null);
+			apple1.SortOrder = 4;
+			indexer.Update(apple1);
+
+			var bear = CreateOneItem<PersistableItem1>(2, "Bear", null);
+			bear.SortOrder = 2;
+			indexer.Update(bear);
+
+			var cake = CreateOneItem<PersistableItem1>(3, "Cake", null);
+			cake.SortOrder = 3;
+			indexer.Update(cake);
+
+			var apple2 = CreateOneItem<PersistableItem1>(4, "Apple", null);
+			apple2.SortOrder = 1;
+			indexer.Update(apple2);
+
+			var hits = Search(new SortFieldData("Name", false), new SortFieldData("SortOrder"));
+
+			hits[0].Title.ShouldBe(apple2.Title);
+			hits[1].Title.ShouldBe(apple1.Title);
+			hits[2].Title.ShouldBe(bear.Title);
+			hits[3].Title.ShouldBe(cake.Title);
+		}
+
+		// concurrency
 
 		[Test]
 		public void Multithreading()
@@ -913,8 +979,14 @@ namespace N2.Tests.Persistence.NH
 
 		private System.Collections.Generic.List<ContentItem> Search(string field, bool descending)
 		{
+			return Search(new SortFieldData(field, descending));
+		}
+
+		private System.Collections.Generic.List<ContentItem> Search(params SortFieldData[] sortFields)
+		{
 			var searcher = new LuceneSearcher(accessor, persister);
-			var query = Query.For<PersistableItem1>().OrderBy(field, descending);
+			var query = Query.For<PersistableItem1>();
+			Array.ForEach(sortFields, sortField => query.OrderBy(sortField.SortField, sortField.SortDescending));
 
 			var hits = searcher.Search(query).Hits.Select(h => h.Content).ToList();
 			return hits;

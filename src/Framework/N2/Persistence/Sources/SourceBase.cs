@@ -57,5 +57,10 @@ namespace N2.Persistence.Sources
 		public abstract void Delete(ContentItem item);
 		public abstract void Move(ContentItem source, ContentItem destination);
 		public abstract ContentItem Copy(ContentItem source, ContentItem destination);
+
+		public virtual bool HasChildren(Query query)
+		{
+			return AppendChildren(Enumerable.Empty<ContentItem>(), query).Any();
+		}
 	}
 }

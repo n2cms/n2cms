@@ -14,7 +14,11 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.Mvc.Areas.Tests
 {
-	[Adapts(typeof(Models.TestWebFormPart))]
+	public interface IWebFormPart
+	{
+	}
+
+	[Adapts(typeof(IWebFormPart))]
 	public class WebFormOnMvcPartAdapter : MvcAdapter
 	{
 		public override void RenderTemplate(HtmlHelper html, ContentItem item)

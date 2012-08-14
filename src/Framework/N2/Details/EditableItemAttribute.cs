@@ -21,11 +21,7 @@ namespace N2.Details
 	///		public class ParentItem : N2.ContentItem
 	///		{
 	/// 		[N2.Details.EditableItem]
-	/// 		public virtual ChildItem News
-	/// 		{
-	/// 			get { return (ChildItem)(GetDetail("ChildItem")); }
-	/// 			set { SetDetail("ChildItem", value); }
-	/// 		}
+	/// 		public virtual ChildItem News { get; set; }
 	///		}
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
@@ -144,7 +140,7 @@ namespace N2.Details
 				if (pi == null)
 					throw new N2Exception("The item should have had a property named '{0}'", Name);
 				if (!typeof(ContentItem).IsAssignableFrom(pi.PropertyType))
-					throw new N2Exception("The property type '" + pi.PropertyType + "' is not assignable to N2.ContentItem");
+					throw new N2Exception("The property type '" + pi.PropertyType + "' is not assignable to N2.ContentItem which is required by the [EditableItem] attribute.");
 				if (pi.PropertyType.IsAbstract)
 					throw new N2Exception("The property type '" + pi.PropertyType + "' is abstract");
 
@@ -167,8 +163,7 @@ namespace N2.Details
 			}
 			catch (KeyNotFoundException ex)
 			{
-				Trace.TraceWarning(
-					"EditableItemAttribute.CreateChild: No item of the type {0} was found among the item definitions.", childItemType);
+				N2.Engine.Logger.WarnFormat("EditableItemAttribute.CreateChild: No item of the type {0} was found among the item definitions: {0}", childItemType);
 				throw new N2Exception(
 					string.Format(
 						"No item of the type {0} was found among item definitions. This could happen if the referenced item type an abstract class or a class that doesn't inherit from N2.ContentItem.",

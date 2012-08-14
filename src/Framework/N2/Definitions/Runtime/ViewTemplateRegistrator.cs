@@ -40,6 +40,8 @@ namespace N2.Definitions.Runtime
 			QueuedRegistrations = new Queue<ViewTemplateSource>();
 		}
 
+		Engine.Logger<ViewTemplateRegistrator> logger;
+
 		public event EventHandler RegistrationAdded;
 
 		public Queue<ViewTemplateSource> QueuedRegistrations { get; set; }
@@ -67,6 +69,8 @@ namespace N2.Definitions.Runtime
 			if (contentControllerType != null)
 				modelType = contentControllerType.GetGenericArguments().First();
 			var source = new ViewTemplateSource { ControllerName = controllerName, ModelType = modelType, ViewFileExtension = viewFileExtension };
+
+			logger.DebugFormat("Enqueuing view template for controller {0} with model {1} looking for extension {2}", controllerName, modelType, viewFileExtension);
 
 			QueuedRegistrations.Enqueue(source);
 

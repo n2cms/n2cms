@@ -6,114 +6,11 @@ using N2.Definitions.Static;
 using N2.Details;
 using N2.Tests.Definitions.Items;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Definitions
 {
 	[TestFixture]
-	public class SortByTests
-	{
-		ContentItem parent;
-
-		[SetUp]
-		public void SetUp()
-		{
-			parent = new DefinitionOne();
-			new DefinitionOne { SortOrder = 1, Name = "c", Published = new DateTime(2010, 11, 10), Title = "b", Updated = new DateTime(2011, 01, 10) }.AddTo(parent);
-			new DefinitionOne { SortOrder = 2, Name = "a", Published = new DateTime(2010, 10, 10), Title = "A", Updated = new DateTime(2010, 10, 10) }.AddTo(parent);
-			new DefinitionOne { SortOrder = 0, Name = "b", Published = new DateTime(2010, 12, 10), Title = "C", Updated = new DateTime(2010, 12, 10) }.AddTo(parent);
-		}
-
-		[Test]
-		public void SortBy_CurrentOrder()
-		{
-			new SortChildrenAttribute(SortBy.CurrentOrder).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].SortOrder, Is.EqualTo(1));
-			Assert.That(parent.Children[1].SortOrder, Is.EqualTo(2));
-			Assert.That(parent.Children[2].SortOrder, Is.EqualTo(3));
-		}
-
-		[Test]
-		public void SortBy_Expression()
-		{
-			new SortChildrenAttribute(SortBy.Expression) { SortExpression = "Name" }.ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Name, Is.EqualTo("a"));
-			Assert.That(parent.Children[1].Name, Is.EqualTo("b"));
-			Assert.That(parent.Children[2].Name, Is.EqualTo("c"));
-		}
-
-		[Test]
-		public void SortBy_Expression_DESC()
-		{
-			new SortChildrenAttribute(SortBy.Expression) { SortExpression = "Name DESC" }.ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Name, Is.EqualTo("c"));
-			Assert.That(parent.Children[1].Name, Is.EqualTo("b"));
-			Assert.That(parent.Children[2].Name, Is.EqualTo("a"));
-		}
-
-		[Test]
-		public void SortBy_Published()
-		{
-			new SortChildrenAttribute(SortBy.Published).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Published, Is.EqualTo(new DateTime(2010, 10, 10)));
-			Assert.That(parent.Children[1].Published, Is.EqualTo(new DateTime(2010, 11, 10)));
-			Assert.That(parent.Children[2].Published, Is.EqualTo(new DateTime(2010, 12, 10)));
-		}
-
-		[Test]
-		public void SortBy_PublishedDescending()
-		{
-			new SortChildrenAttribute(SortBy.PublishedDescending).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Published, Is.EqualTo(new DateTime(2010, 12, 10)));
-			Assert.That(parent.Children[1].Published, Is.EqualTo(new DateTime(2010, 11, 10)));
-			Assert.That(parent.Children[2].Published, Is.EqualTo(new DateTime(2010, 10, 10)));
-		}
-
-		[Test]
-		public void SortBy_Title()
-		{
-			new SortChildrenAttribute(SortBy.Title).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Title, Is.EqualTo("A"));
-			Assert.That(parent.Children[1].Title, Is.EqualTo("b"));
-			Assert.That(parent.Children[2].Title, Is.EqualTo("C"));
-		}
-
-		[Test]
-		public void SortBy_Unordered()
-		{
-			new SortChildrenAttribute(SortBy.Unordered).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Name, Is.EqualTo("c"));
-			Assert.That(parent.Children[1].Name, Is.EqualTo("a"));
-			Assert.That(parent.Children[2].Name, Is.EqualTo("b"));
-		}
-
-		[Test]
-		public void SortBy_Updated()
-		{
-			new SortChildrenAttribute(SortBy.Updated).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Updated, Is.EqualTo(new DateTime(2010, 10, 10)));
-			Assert.That(parent.Children[1].Updated, Is.EqualTo(new DateTime(2010, 12, 10)));
-			Assert.That(parent.Children[2].Updated, Is.EqualTo(new DateTime(2011, 01, 10)));
-		}
-
-		[Test]
-		public void SortBy_UpdatedDescending()
-		{
-			new SortChildrenAttribute(SortBy.UpdatedDescending).ReorderChildren(parent);
-
-			Assert.That(parent.Children[0].Updated, Is.EqualTo(new DateTime(2011, 01, 10)));
-			Assert.That(parent.Children[1].Updated, Is.EqualTo(new DateTime(2010, 12, 10)));
-			Assert.That(parent.Children[2].Updated, Is.EqualTo(new DateTime(2010, 10, 10)));
-		}
-	}
-
 	public class DefinitionConfigurationTests : TypeFindingBase
 	{
 		protected override Type[] GetTypes()

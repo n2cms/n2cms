@@ -24,7 +24,7 @@ namespace N2.Details
 {
 	/// <summary>This class is used to restrict access to certain details in edit mode. Only users in the specified roles can edit details decorated with this attribute.</summary>
 	[AttributeUsage(AttributeTargets.Property)]
-	[Obsolete("Use AuthorizedRoles/RequiredPermission property on Editable instead.")]	
+	[Obsolete("Use AuthorizedRoles/RequiredPermission property on Editable instead.", true)]	
 	public class DetailAuthorizedRolesAttribute : Attribute
 	{
 		public string[] Roles { get; set; }

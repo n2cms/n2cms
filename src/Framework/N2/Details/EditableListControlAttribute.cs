@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace N2.Details
 {
@@ -95,28 +96,20 @@ namespace N2.Details
 
 		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
 		{
-			string value = item[Name] as string;
-			if (!string.IsNullOrEmpty(value))
+			using (var sw = new StringWriter())
 			{
-				foreach (ListItem li in GetListItems())
-				{
-					if (li.Value == value)
-					{
-						Literal l = new Literal();
-						l.Text = li.Text;
-						container.Controls.Add(l);
-						return l;
-					}
-				}
+				Write(item, detailName, sw);
+				var lc = new LiteralControl(sw.ToString());
+				container.Controls.Add(lc);
+				return lc;
 			}
-			return null;
 		}
 
 		#endregion
 
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		public virtual void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
 			var selected = item[propertyName] as string;
 			if (selected != null)

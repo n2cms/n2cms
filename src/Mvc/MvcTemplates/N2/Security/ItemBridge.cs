@@ -8,7 +8,6 @@ using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Security.Items;
 using N2.Web;
-using log4net;
 
 namespace N2.Security
 {
@@ -24,7 +23,7 @@ namespace N2.Security
 		readonly private IPersister persister;
 		readonly private ISecurityManager security;
 	    private readonly IHost host;
-		private readonly ILog logger = LogManager.GetLogger(typeof (ItemBridge));
+		private readonly Engine.Logger<ItemBridge> logger;
 		private string userContainerName = "TemplateUsers";
 		private string[] defaultRoles = new string[] { "Everyone", "Members", "Writers", "Editors", "Administrators" };
 		string[] editorUsernames = new string[] {"admin"};

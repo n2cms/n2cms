@@ -44,7 +44,7 @@ namespace N2.Web
             }
             catch (Exception ex)
             {
-                Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
+				Engine.Logger.Warn("DynamicSitesProvider.GetSites:", ex);
             }
 
 		    return foundSites;

@@ -83,5 +83,19 @@ namespace N2.Configuration
 			get { return (VppElement)base["vpp"]; }
 			set { base["vpp"] = value; }
 		}
+
+		[ConfigurationProperty("tokens")]
+		public TokensElement Tokens
+		{
+			get { return (TokensElement)base["tokens"]; }
+			set { base["tokens"] = value; }
+		}
+
+		[ConfigurationProperty("messaging")]
+		public MessagingElement Messaging
+		{
+			get { return (MessagingElement)base["messaging"]; }
+			set { base["messaging"] = value; }
+		}
 	}
 }

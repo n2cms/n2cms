@@ -124,7 +124,7 @@ namespace N2.Edit.Install.Begin
 			catch (Exception ex)
 			{
 				configuration = null;
-				System.Diagnostics.Trace.TraceWarning(ex.ToString());
+				Engine.Logger.Warn(ex);
 				return false;
 			}
 		}

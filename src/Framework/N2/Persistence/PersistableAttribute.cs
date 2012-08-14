@@ -21,7 +21,7 @@ namespace N2.Persistence
     /// }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-	public class PersistableAttribute : Attribute, IInterceptableProperty, IUniquelyNamed
+	public class PersistableAttribute : Attribute, IInterceptableProperty, IUniquelyNamed, IPersistableProperty
     {
 		public PersistableAttribute()
 		{

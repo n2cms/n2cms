@@ -22,6 +22,8 @@ namespace N2.Resources
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
 			Register.TinyMCEPath = configFactory.Sections.Web.Resources.TinyMCEPath;
+			Register.PartsJsPath = configFactory.Sections.Web.Resources.PartsJsPath;
+			Register.PartsCssPath = configFactory.Sections.Web.Resources.PartsCssPath;
 		}
 
 		public void Stop()

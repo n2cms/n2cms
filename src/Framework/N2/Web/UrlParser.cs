@@ -4,7 +4,6 @@ using System.IO;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
-using log4net;
 
 namespace N2.Web
 {
@@ -14,7 +13,7 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(UrlParser));
+		private readonly Engine.Logger<UrlParser> logger;
 		protected readonly IPersister persister;
 		protected readonly IHost host;
 		protected readonly IWebContext webContext;
@@ -22,10 +21,16 @@ namespace N2.Web
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
+		/// <summary>Is set to the current database connection status.</summary>
+		protected bool IsOnline { get; set; }
 
-		public UrlParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
+		public UrlParser(IPersister persister, IWebContext webContext, IHost host, N2.Plugin.ConnectionMonitor connections, HostSection config)
 		{
 			if (host == null) throw new ArgumentNullException("host");
+
+			IsOnline = connections.IsConnected ?? true;
+			connections.Online += (s, a) => IsOnline = true;
+			connections.Offline += (s, a) => IsOnline = false;
 
 			this.persister = persister;
 			this.webContext = webContext;
@@ -43,7 +48,7 @@ namespace N2.Web
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
-			get { return persister.Repository.Get(host.CurrentSite.StartPageID); }
+			get { return IsOnline ? persister.Repository.Get(host.CurrentSite.StartPageID) : null; }
 		}
 
 		/// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
@@ -56,6 +61,7 @@ namespace N2.Web
 		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
+			if (!IsOnline) return PathData.Empty;
 
 			Url requestedUrl = url;
 			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.ItemQueryKey);

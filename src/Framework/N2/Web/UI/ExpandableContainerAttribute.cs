@@ -1,12 +1,14 @@
 ﻿using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
+using System;
 
 namespace N2.Web.UI
 {
 	/// <summary>
 	/// Organizes editors in a field set that can be expanded to show all details.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class ExpandableContainerAttribute : EditorContainerAttribute
 	{
 		private string legend;

@@ -25,7 +25,7 @@ namespace N2.Persistence.Serialization
 					{
 						ew.WriteAttribute("url", url);
 
-						using (var s = fs.OpenFile(path))
+						using (var s = fs.OpenFile(path, readOnly: true))
 						{
 							byte[] fileContents = ReadFully(s);
 							string base64representation = Convert.ToBase64String(fileContents);

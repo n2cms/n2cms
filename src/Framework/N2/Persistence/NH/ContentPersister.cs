@@ -68,7 +68,15 @@ namespace N2.Persistence.NH
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
+			using (ITransaction transaction = itemRepository.BeginTransaction())
+			{
+				// delay saved event until a previously initiated transcation is completed
+				transaction.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
+
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
+
+				transaction.Commit();
+			}
 		}
 
 		private void SaveAction(ContentItem item)
@@ -76,47 +84,16 @@ namespace N2.Persistence.NH
 			if (item is IActiveContent)
 			{
 				(item as IActiveContent).Save();
-				Invoke(ItemSaved, new ItemEventArgs(item));
 			}
 			else
 			{
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					// delay saved event until a previously initiated transcation is completed
-					transaction.Committed += (s,a) => Invoke(ItemSaved, new ItemEventArgs(item));
+				if (!item.VersionOf.HasValue)
+					item.Updated = Utility.CurrentTime();
+				if (string.IsNullOrEmpty(item.Name))
+					item.Name = null;
 
-					if (!item.VersionOf.HasValue)
-						item.Updated = Utility.CurrentTime();
-					if (string.IsNullOrEmpty(item.Name))
-						item.Name = null;
-
-					item.AddTo(item.Parent);
-					EnsureSortOrder(item);
-
-					itemRepository.SaveOrUpdate(item);
-					if (string.IsNullOrEmpty(item.Name))
-					{
-						item.Name = item.ID.ToString();
-						itemRepository.SaveOrUpdate(item);
-					}
-
-					transaction.Commit();
-				}
-			}
-		}
-
-		private void EnsureSortOrder(ContentItem unsavedItem)
-		{
-			var parent = unsavedItem.Parent;
-			if (parent != null)
-			{
-				foreach (SortChildrenAttribute attribute in parent.GetContentType().GetCustomAttributes(typeof(SortChildrenAttribute), true))
-				{
-					foreach (ContentItem updatedItem in attribute.ReorderChildren(parent))
-					{
-						itemRepository.SaveOrUpdate(updatedItem);
-					}
-				}
+				itemRepository.SaveOrUpdate(item);
+				EnsureName(item);
 			}
 		}
 
@@ -131,7 +108,7 @@ namespace N2.Persistence.NH
 		{
 			if (itemNoMore is IActiveContent)
 			{
-				TraceInformation("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
+				Engine.Logger.Info("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
 				(itemNoMore as IActiveContent).Delete();
 			}
 			else
@@ -156,7 +133,7 @@ namespace N2.Persistence.NH
 				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
 				.ToList();
 
-			TraceInformation("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
+			Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
 
 			foreach (ContentDetail link in inboundLinks)
 			{
@@ -186,7 +163,7 @@ namespace N2.Persistence.NH
 
 			itemToDelete.AddTo(null);
 
-			TraceInformation("ContentPersister.DeleteRecursive " + itemToDelete);
+			Engine.Logger.Info("ContentPersister.DeleteRecursive " + itemToDelete);
 			itemRepository.Delete(itemToDelete);
 		}
 
@@ -201,7 +178,7 @@ namespace N2.Persistence.NH
 				count++;
 			}
 
-			TraceInformation("ContentPersister.DeletePreviousVersions " + count + " of " + itemNoMore);
+			Engine.Logger.Info("ContentPersister.DeletePreviousVersions " + count + " of " + itemNoMore);
 		}
 
 		#endregion
@@ -222,16 +199,15 @@ namespace N2.Persistence.NH
 		{
 			if (source is IActiveContent)
 			{
-				TraceInformation("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
+				Engine.Logger.Info("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
 				(source as IActiveContent).MoveTo(destination);
 			}
 			else
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
+					Engine.Logger.Info("ContentPersister.MoveAction " + source + " to " + destination);
 					source.AddTo(destination);
-					//source.AncestralTrail = null;
 					Save(source);
 					transaction.Commit();
 				}
@@ -260,17 +236,18 @@ namespace N2.Persistence.NH
 			{
 				if (copiedItem is IActiveContent)
 				{
-					TraceInformation("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
+					Engine.Logger.Info("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
 					return (copiedItem as IActiveContent).CopyTo(destinationItem);
 				}
 
-				TraceInformation("ContentPersister.Copy " + source + " to " + destination);
+				Engine.Logger.Info("ContentPersister.Copy " + source + " to " + destination);
 				ContentItem cloned = copiedItem.Clone(includeChildren);
 				if(cloned.Name == source.ID.ToString())
 					cloned.Name = null;
-				cloned.Parent = destinationItem;
+				cloned.AddTo(destination);
 
-				Save(cloned);
+				Repository.SaveOrUpdateRecursive(cloned);
+				EnsureName(cloned);
 
 				Invoke(ItemCopied, new DestinationEventArgs(cloned, destinationItem));
 
@@ -337,9 +314,13 @@ namespace N2.Persistence.NH
             return args;
         }
 
-		private void TraceInformation(string logMessage)
+		private void EnsureName(ContentItem item)
 		{
-			Trace.TraceInformation(logMessage);
+			if (string.IsNullOrEmpty(item.Name))
+			{
+				item.Name = item.ID.ToString();
+				itemRepository.SaveOrUpdate(item);
+			}
 		}
     }
 }

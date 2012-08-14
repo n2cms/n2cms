@@ -24,6 +24,7 @@ namespace N2.Collections
 
 		/// <summary>Creates a new instance of the hierarchy node.</summary>
 		/// <param name="current">The current node.</param>
+		/// <param name="children"></param>
 		public HierarchyNode(T current, IEnumerable<HierarchyNode<T>> children)
 		{
 			Current = current;

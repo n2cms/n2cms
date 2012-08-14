@@ -7,6 +7,7 @@ using N2.Edit.FileSystem.Items;
 using N2.Edit.Web;
 using N2.Resources;
 using N2.Web.Drawing;
+using System.Web;
 
 namespace N2.Edit.FileSystem
 {
@@ -51,15 +52,21 @@ namespace N2.Edit.FileSystem
 			{
 				var hl = new HyperLink();
 				hl.ID = size.Name + "Size";
-				var path = ImagesUtility.GetExistingImagePath(Engine.Resolve<IFileSystem>(), baseImagePath, size.Name);
-				hl.NavigateUrl = "File.aspx?selected=" + path;
-				hl.Text = Utility.GetResourceString("ImageSizes", size.Name + ".Text") ?? (string.IsNullOrEmpty(size.Description) ? size.Name : size.Description);
-				hl.Text += GetSizeText(size.Width, size.Height);
-				hl.CssClass = "command";
-				if (path == Selection.SelectedItem.Url)
-					omSizes.Controls.AddAt(0, hl);
-				else
-					omSizes.Controls.Add(hl);
+				bool exists;
+				var path = ImagesUtility.GetExistingImagePath(Engine.Resolve<IFileSystem>(), baseImagePath, size.Name, out exists);
+				if (exists)
+				{
+					var file = (SelectedFile.Parent as File) ?? SelectedFile;
+
+					hl.NavigateUrl = "File.aspx?selected=" + file.GetChild(VirtualPathUtility.GetFileName(path)).Path;
+					hl.Text = Utility.GetResourceString("ImageSizes", size.Name + ".Text") ?? (string.IsNullOrEmpty(size.Description) ? size.Name : size.Description);
+					hl.Text += GetSizeText(size.Width, size.Height);
+					hl.CssClass = "command";
+					if (path == Selection.SelectedItem.Url)
+						omSizes.Controls.AddAt(0, hl);
+					else
+						omSizes.Controls.Add(hl);
+				}
 			}
 			omSizes.Visible = omSizes.Controls.Count > 1;
 		}

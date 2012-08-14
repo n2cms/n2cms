@@ -4,7 +4,6 @@ using System.IO;
 using System.Web;
 using N2.Engine;
 using N2.Plugin.Scheduling;
-using log4net;
 
 namespace N2.Web
 {
@@ -15,7 +14,7 @@ namespace N2.Web
 	/// </summary>
 	public class EventBroker
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(Heart));
+		private readonly Engine.Logger<EventBroker> logger;
 
 		static EventBroker()
 		{
@@ -32,7 +31,7 @@ namespace N2.Web
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
-			logger.Debug("Attaching to " + application);
+			logger.InfoFormat("Attaching to {0} ({1})", application, application.GetHashCode());
 
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
@@ -62,7 +61,7 @@ namespace N2.Web
 		{
 			if (BeginRequest != null && !IsStaticResource(sender))
 			{
-				logger.Debug("BeginRequest");
+				logger.DebugFormat("BeginRequest ({0})", sender.GetHashCode());
 				BeginRequest(sender, e);
 			}
 		}
@@ -71,7 +70,7 @@ namespace N2.Web
 		{
 			if (AuthorizeRequest != null && !IsStaticResource(sender))
 			{
-				logger.Debug("AuthorizeRequest");
+				logger.DebugFormat("AuthorizeRequest ({0})", sender.GetHashCode());
 				AuthorizeRequest(sender, e);
 			}
 		}
@@ -80,12 +79,12 @@ namespace N2.Web
 		{
 			if (PostResolveRequestCache != null && !IsStaticResource(sender))
 			{
-				logger.Debug("PostResolveRequestCache");
+				logger.DebugFormat("PostResolveRequestCache ({0})", sender.GetHashCode());
 				PostResolveRequestCache(sender, e);
 			}
 			if (PostResolveAnyRequestCache != null)
 			{
-				logger.Debug("PostResolveAnyRequestCache");
+				logger.DebugFormat("PostResolveAnyRequestCache ({0})", sender.GetHashCode());
 				PostResolveAnyRequestCache(sender, e);
 			}
 		}
@@ -94,7 +93,7 @@ namespace N2.Web
 		{
 			if (PostMapRequestHandler != null && !IsStaticResource(sender))
 			{
-				logger.Debug("PostMapRequestHandler");
+				logger.DebugFormat("PostMapRequestHandler ({0})", sender.GetHashCode());
 				PostMapRequestHandler(sender, e);
 			}
 		}
@@ -103,7 +102,7 @@ namespace N2.Web
 		{
 			if (AcquireRequestState != null && !IsStaticResource(sender))
 			{
-				logger.Debug("AcquireRequestState");
+				logger.DebugFormat("AcquireRequestState ({0})", sender.GetHashCode());
 				AcquireRequestState(sender, e);
 			}
 		}
@@ -112,7 +111,7 @@ namespace N2.Web
         {
             if (PreRequestHandlerExecute != null && !IsStaticResource(sender))
             {
-				Debug.WriteLine("Application_PreRequestHandlerExecute");
+				logger.DebugFormat("PreRequestHandlerExecute ({0})", sender.GetHashCode());
 				PreRequestHandlerExecute(sender, e);
             }
         }
@@ -120,19 +119,25 @@ namespace N2.Web
 		protected void Application_Error(object sender, EventArgs e)
 		{
 			if (Error != null && !IsStaticResource(sender))
+			{
+				logger.DebugFormat("Error ({0})", sender.GetHashCode());
 				Error(sender, e);
+			}
 		}
 
 		protected void Application_EndRequest(object sender, EventArgs e)
 		{
 			if (EndRequest != null && !IsStaticResource(sender))
+			{
+				logger.DebugFormat("EndRequest ({0})", sender.GetHashCode());
 				EndRequest(sender, e);
+			}
 		}
 
 		/// <summary>Detaches events from the application instance.</summary>
 		void Application_Disposed(object sender, EventArgs e)
 		{
-			logger.Debug("Disposing " + sender);
+			logger.DebugFormat("Disposing ({0})", sender.GetHashCode());
 		}
 
 		/// <summary>Returns true if the requested resource is one of the typical resources that needn't be processed by the cms engine.</summary>

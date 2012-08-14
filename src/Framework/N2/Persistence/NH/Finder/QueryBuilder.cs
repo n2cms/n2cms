@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using N2.Collections;
@@ -6,6 +7,7 @@ using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Persistence.Finder;
 using NHibernate;
+using System.Linq.Expressions;
 
 namespace N2.Persistence.NH.Finder
 {
@@ -239,9 +241,14 @@ namespace N2.Persistence.NH.Finder
 			if (value == null) throw new ArgumentNullException("value");
 
 			ItemDefinition definition = map.GetOrCreateDefinition(value);
-			if(definition == null)
+			if (definition == null)
 				throw new ArgumentException("Could not find the definition associated with the type '" + value.FullName + "'. Please ensure this is a non-abstract class deriving from N2.ContentItem and that it is decorated by the [Definition] attribute.");
 			return definition.Discriminator;
+		}
+
+		public IEnumerable<string> GetDiscriminators(Type value)
+		{
+			return map.GetDefinitions().Where(d => value.IsAssignableFrom(d.ItemType)).Select(d => d.Discriminator).Distinct();
 		}
 
 		const string selectHql = "select ci from ContentItem ci";
@@ -418,6 +425,26 @@ namespace N2.Persistence.NH.Finder
 				items.Sort(SortExpression);
 
 			return items;
+		}
+
+		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="selector">An object defining which properties on the item to retrieve.</param>
+		public virtual IEnumerable<IDictionary<string, object>> Select(params string[] properties)
+		{
+			if (Filters != null && Filters.Count > 0)
+				throw new NotSupportedException("Filters not supported when using selector");
+
+			var props = properties.ToList();
+			string selectStatement = "select "
+				+ string.Join(", ", props.Select(p => "ci." + p).ToArray())
+				+ " from ContentItem ci";
+
+			var results = CreateQuery(selectStatement).Enumerable();
+			foreach (object[] row in results)
+			{
+				var result = props.Select((p, i) => new { p, v = row[i] }).ToDictionary(x => x.p, x => x.v);
+				yield return result;
+			}
 		}
 
 		private ItemList<T> ToListWithFillup<T>(IList<T> retrievedItems, ItemFilter filter, int maxRequeries) where T : ContentItem

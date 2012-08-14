@@ -52,7 +52,7 @@ namespace N2.Web.Drawing
 				ImageResizer ir = N2.Context.Current.Resolve<ImageResizer>();
 
 				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
-				using (var s = fs.OpenFile(imageUrl))
+				using (var s = fs.OpenFile(imageUrl, readOnly: true))
 				{
 					var resized = ir.GetResizedBytes(s, new ImageResizeParameters(width, height, mode));
 					context.Response.BinaryWrite(resized);

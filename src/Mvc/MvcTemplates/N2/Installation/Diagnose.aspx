@@ -21,6 +21,11 @@
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
+        .expandable { padding:1px; }
+			.expandable .opened { display:none; }
+			.expandable .opener { display:block; }
+			.expandable:hover .opened { display:block; }
+			.expandable:hover .opener { display:none; }
     </style>
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -67,6 +72,12 @@
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
 					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>
 					<tr><th>Application Path</th><td><%= Request.ApplicationPath %></td></tr>
+					<tr><th>CurrentDirectory</th><td><%= Environment.CurrentDirectory %></td></tr>
+					<tr><th>ApplicationPath</th><td><%= Request.ApplicationPath %></td></tr>
+					<tr><th>MapPath</th><td><%= Server.MapPath("~/") %></td></tr>
+					<tr><th>PhysicalApplicationPath</th><td><%= Request.PhysicalApplicationPath %></td></tr>
+					<tr><th>Path</th><td><%= Request.Path %></td></tr>
+					<tr><th>PhysicalPath</th><td><%= Request.PhysicalPath %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>
@@ -99,11 +110,11 @@
                 <HeaderTemplate>
 					<table class="t openable">
 						<thead>
-							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
+							<tr><th colspan="9"><h2>Definitions</h2></th></tr>
 							<tr>
 								<td colspan="3">Definition</td>
 								<td colspan="2">Zones</td>
-								<td colspan="2">Details</td>
+								<td colspan="3">Details</td>
 								<td rowspan="2">Templates</td>
 							</tr>
 							<tr>
@@ -113,6 +124,7 @@
 								<td>Available</td>
 								<td>Allowed in</td>
 								<td>Editables</td>
+								<td>Containers</td>
 								<td>Displayables</td>
 							</tr>
 						</thead>
@@ -126,39 +138,65 @@
 						<%# Eval("TemplateKey") %>
                     </td><td>
                         <!-- Child definitions -->
-                        <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# AllowedChildren(Container.DataItem) %>'>
-                            <ItemTemplate><%# Eval("Title")%></ItemTemplate>
-							<SeparatorTemplate>, </SeparatorTemplate>
-                        </asp:Repeater>&nbsp;
+                        <div class="expandable">
+							<strong class="opener"><%# AllowedChildren(Container.DataItem).Count %></strong>
+							<div class="opened">
+							<asp:Repeater ID="Repeater1" runat="server" DataSource='<%# AllowedChildren(Container.DataItem) %>'>
+								<ItemTemplate><%# Eval("Title")%></ItemTemplate>
+								<SeparatorTemplate>, </SeparatorTemplate>
+							</asp:Repeater></div>
+						</div>
                     </td><td>
                         <!-- Available zones -->
+                        <div class="expandable">
+							<strong class="opener"><%# Eval("AvailableZones.Count") %></strong>
+							<div class="opened">
                         <asp:Repeater ID="Repeater2" runat="server" DataSource='<%# Eval("AvailableZones") %>'>
                             <ItemTemplate><%# Eval("ZoneName") %>&nbsp;(<%# Eval("Title") %>)</ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
-                        </asp:Repeater>&nbsp;
+                        </asp:Repeater>&nbsp;</div>
                     </td><td>
-						<b><%# Eval("AllowedIn")%>: </b><br />
+						<b><%# Eval("AllowedIn")%>: </b>
+                        <span class="expandable">
+							<strong class="opener"><%# Eval("AllowedZoneNames.Count") %></strong>
+							<div class="opened">
                         <!-- Allowed in zone -->
                         <asp:Repeater ID="Repeater3" runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
                             <ItemTemplate><%# Container.DataItem %></ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
-                        </asp:Repeater>&nbsp;
+                        </asp:Repeater>&nbsp;</span>
                     </td><td>
                         <!-- Editable attributes -->
+                        <div class="expandable">
+							<strong class="opener"><%# Eval("Editables.Count") %></strong>
+							<div class="opened">
                         <asp:Repeater ID="Repeater4" runat="server" DataSource='<%# Eval("Editables") %>'>
-                            <ItemTemplate><%# Eval("Title")%>&nbsp;(<%# Eval("Name")%>)</ItemTemplate>
+                            <ItemTemplate><span title="Title: <%# Eval("Title")%>, Type: <%# Container.DataItem.GetType() %>, Container: <%# Eval("ContainerName") %>"><%# Eval("Name")%></span></ItemTemplate>
+							<SeparatorTemplate>, </SeparatorTemplate>
+                        </asp:Repeater>&nbsp;
+							</div>
+                    </td><td>
+                        <!-- Container attributes -->
+                        <asp:Repeater ID="Repeater7" runat="server" DataSource='<%# Eval("Containers") %>'>
+                            <ItemTemplate><span title="<%# Container.DataItem.GetType() %>"><%# Eval("Name")%></span></ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
                         </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Displayable attributes -->
+                        <div class="expandable">
+							<strong class="opener"><%# Eval("Displayables.Count") %></strong>
+							<div class="opened">
                         <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
-                            <ItemTemplate><%# ((N2.Details.IDisplayable)Container.DataItem).Name %></ItemTemplate>
+                            <ItemTemplate><span title="<%# Container.DataItem.GetType() %>"><%# ((N2.Details.IDisplayable)Container.DataItem).Name %></span></ItemTemplate>
 							<SeparatorTemplate>, </SeparatorTemplate>
-                        </asp:Repeater>&nbsp;
+                        </asp:Repeater>&nbsp;</div>
                     </td><td>
+                        <div class="expandable">
+							<strong class="opener"><%# PathDictionary.GetFinders((Type)Eval("ItemType")).Length %></strong>
+							<div class="opened">
                         <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
                             <ItemTemplate><%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
-                        </asp:Repeater>&nbsp;
+                        </asp:Repeater>&nbsp;</div>
                     </td></tr>
                 </ItemTemplate>
                 <FooterTemplate>

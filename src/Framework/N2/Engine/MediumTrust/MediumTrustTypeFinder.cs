@@ -9,13 +9,13 @@ namespace N2.Engine.MediumTrust
 	{
 		private readonly EngineSection engineConfiguration;
 
-		public MediumTrustTypeFinder(IWebContext webContext, EngineSection engineConfiguration)
-			: base(webContext)
+		public MediumTrustTypeFinder(TypeCache assemblyCache, EngineSection engineConfiguration)
+			: base(assemblyCache, engineConfiguration)
 		{
 			this.engineConfiguration = engineConfiguration;
 		}
 
-		public override IList<Assembly> GetAssemblies()
+		public override IEnumerable<Assembly> GetAssemblies()
 		{
 			List<Assembly> assemblies = new List<Assembly>();
 			foreach(var element in engineConfiguration.Assemblies.AllElements)

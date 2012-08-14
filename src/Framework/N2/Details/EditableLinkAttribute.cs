@@ -14,6 +14,7 @@ namespace N2.Details
 	///		[EditableLink("Feed root", 90)]
 	///		public virtual ContentItem FeedRoot { get; set; }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		public EditableLinkAttribute()
@@ -33,6 +34,7 @@ namespace N2.Details
 		{
 			ItemSelector selector = new ItemSelector();
 			selector.ID = Name;
+            selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(selector);
 			return selector;
 		}

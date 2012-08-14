@@ -1,4 +1,5 @@
 using System.Web.UI;
+using System;
 
 namespace N2.Definitions
 {
@@ -6,6 +7,7 @@ namespace N2.Definitions
 	/// Used as root container when retrieving editable attributes and editor
 	/// containers.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]	
 	internal class RootContainer : EditorContainerAttribute
 	{
 		public RootContainer()

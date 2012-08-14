@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -10,6 +11,8 @@ using N2.Persistence.Finder;
 using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Edit.Activity;
+using N2.Management.Activity;
 
 namespace N2.Edit
 {
@@ -31,6 +34,7 @@ namespace N2.Edit
 		RequiredPermission = Permission.Write)]
     [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
 		UrlEncode = false)]
+	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{
 		protected PlaceHolder phPluginArea;
@@ -85,16 +89,18 @@ namespace N2.Edit
             bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 
-            btnSavePublish.Enabled = isPublicableByUser;
-            btnPreview.Enabled = isVersionable && isWritableByUser;
-            btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-			hlFuturePublish.Enabled = isVersionable && isPublicableByUser;
+            btnSavePublish.Visible = isPublicableByUser;
+            btnPreview.Visible = isVersionable && isWritableByUser;
+            btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
+			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
 		{
 			LoadZones();
 			LoadInfo();
+			LoadActivity();
+			LoadVersions();
 
 			if (!IsPostBack)
                 RegisterSetupToolbarScript(Selection.SelectedItem);
@@ -118,6 +124,8 @@ namespace N2.Edit
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			Commands.Publish(ctx);
 
+			Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
 			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 		}
 
@@ -130,6 +138,8 @@ namespace N2.Edit
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
 			if(ctx.Content.VersionOf.HasValue)
 				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
+
+			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
 			HandleResult(ctx, previewUrl);
 		}
@@ -152,6 +162,9 @@ namespace N2.Edit
             if (IsValid)
             {
                 ContentItem savedVersion = SaveVersionForFuturePublishing();
+
+				Engine.AddActivity(new ManagementActivity { Operation = "FuturePublish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
+
 				Url redirectUrl = ManagementPaths.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
@@ -174,14 +187,12 @@ namespace N2.Edit
             }
 			else if(ctx.ValidationErrors.Count == 0)
 			{
-				foreach (string redirectUrl in redirectSequence)
-				{
-					if (!string.IsNullOrEmpty(redirectUrl))
-					{
-						Refresh(ctx.Content, redirectUrl);
-						return;
-					}
-				}
+				string redirectUrl = redirectSequence.FirstOrDefault(u => !string.IsNullOrEmpty(u));
+
+				if (ctx.RedirectUrl != null)
+					Response.Redirect(ctx.RedirectUrl.ToUrl().AppendQuery("returnUrl", redirectUrl, unlessNull: true));
+
+				Refresh(ctx.Content, redirectUrl ?? Engine.ManagementPaths.GetPreviewUrl(ctx.Content));
 			}
         }
 
@@ -320,6 +331,18 @@ namespace N2.Edit
 		{
 			ucInfo.CurrentItem = ie.CurrentItem;
 			ucInfo.DataBind();
+		}
+
+		private void LoadActivity()
+		{
+			ucActivity.CurrentItem = ie.CurrentItem;
+			ucActivity.DataBind();
+		}
+
+		private void LoadVersions()
+		{
+			ucVersions.CurrentItem = ie.CurrentItem;
+			ucVersions.DataBind();
 		}
 
         private ContentItem SaveVersionForFuturePublishing()

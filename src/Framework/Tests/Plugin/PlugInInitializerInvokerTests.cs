@@ -4,7 +4,7 @@ using N2.Plugin;
 using N2.Tests.Plugin;
 using NUnit.Framework;
 
-namespace N2.Tests.PlugIn
+namespace N2.Tests.Plugin
 {
 	[TestFixture]
 	public class PlugInInitializerInvokerTests : ItemTestsBase

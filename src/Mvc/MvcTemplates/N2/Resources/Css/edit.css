@@ -59,19 +59,21 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .nameEditor { width:142px; }
 .framed .prefix { color:silver; vertical-align:middle; font-size:.9em; }
 .framed .selector  { width:426px; }
-.framed .textEditor { width:284px; }
+.framed .textEditor { width:426px; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 .framed .selectorButtons { }
 	.framed .selectorButtons input { vertical-align:middle; width:22px; height:22px; text-align:center; text-indent:-50px; border:solid 1px #bbb; background:#f8f8f8 none no-repeat 50% 50%; margin-left:-1px; }
 	.framed .selectorButtons input:hover { border-color:#999; background-color:#f0f0f0; }
-	.framed .selectorButtons .clearButton { background-image:url(../icons/cross.png); }
+	.framed .selectorButtons .clearButton { background-image:url(../img/smallico/close_2.png); border:none; margin-left:-20px; height:20px; width:20px; }
 	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }
 	.framed .editDetail .selectorButtons,
-	.framed .editDetail .revealer { visibility:hidden; }
+	.framed .editDetail .revealer { opacity:.15; }
 	.framed .editDetail:hover .selectorButtons,
-	.framed .editDetail:hover .revealer { visibility:visible; }
-	.framed .editDetail .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
+	.framed .editDetail:hover .revealer { opacity:1; transition: opacity .5s ease-in-out; -moz-transition: opacity .5s ease-in-out; -webkit-transition: opacity .5s ease-in-out; }
+	.framed .editDetail .uploader .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
+	.framed .editDetail button.ui-datepicker-trigger { vertical-align:middle; margin-right:5px; border:solid 1px #BBB; background:#F8F8F8; height:22px; width:22px; padding:2px 0 0 0; margin-left:-1px; }
+	.framed .editDetail button.ui-datepicker-trigger:hover {border-color:#999; background-color:#f0f0f0; }
 	
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *, .framed a[disabled=disabled] img, input[disabled=disabled]
     { opacity:.50; filter: alpha(opacity=50); }
@@ -120,9 +122,9 @@ table.editDetail { border-collapse:collapse; }
 #content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border-color:#AAA; }
 
 .framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
+.framed .preview.iconed { background-image:url(../../Resources/icons/magnifier.png); }
 .framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
-.framed .preview.iconed { background-image:url(../../Resources/icons/zoom.png); }
-.framed .future.iconed { background-image:url(../../Resources/icons/clock.png); }
+.framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
 
 .popup
 {
@@ -190,11 +192,6 @@ hr
 .editDetail .help
 {
 	margin-left:5px;
-	visibility:hidden;
-}
-.editDetail:hover .help
-{
-	visibility:visible;
 }
 
 .themeThumbnail { position:relative; }
@@ -214,3 +211,20 @@ div.tagsinput div { display:block; float: left; }
 	.EditSingle .editDetail .editorLabel { display:none; }
 	.EditSingle .editDetail .editDetail { margin-left:0; }
 		.EditSingle .editDetail .editDetail .editorLabel { display:block; }
+
+
+.framed .outside .versionBox .inner { padding:0; }
+	.versionBox table { margin:0 }
+		.versionBox tr td { color: #666 }
+		.versionBox tr.current td { color: #000 }
+		.versionBox td.State { padding-left:24px; background:transparent none no-repeat 2px 1px; }
+		.versionBox td.New { background-image:url(../icons/user_edit.png); }
+		.versionBox td.Draft { background-image:url(../icons/user_edit.png); }
+		.versionBox td.Waiting { background-image:url(../icons/clock_play.png); }
+		.versionBox td.Published { background-image:url(../icons/star.png); }
+		.versionBox td.Unpublished { background-image:url(../icons/clock_stop.png); }
+		.versionBox td.Deleted { background-image:url(../icons/bin.png); }
+	.versionBox .moreVersions { display:block; padding:0 10px 5px 10px; }
+
+.framed .outside .activityBox .inner { padding:0; }
+	.activityBox table { margin:0 }

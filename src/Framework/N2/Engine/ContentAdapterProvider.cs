@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Reflection;
 using N2.Plugin;
 using N2.Web;
-using log4net;
 
 namespace N2.Engine
 {
@@ -14,7 +13,7 @@ namespace N2.Engine
 	[Service(typeof(IContentAdapterProvider))]
 	public class ContentAdapterProvider : IContentAdapterProvider, IAutoStart
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof (ContentAdapterProvider));
+		private readonly Engine.Logger<ContentAdapterProvider> logger;
 		readonly IEngine engine;
 		readonly ITypeFinder finder;
 		AbstractContentAdapter[] adapters = new AbstractContentAdapter[0];
@@ -60,6 +59,8 @@ namespace N2.Engine
 		{
 			lock (this)
 			{
+				logger.DebugFormat("Registering {0} adapters", adapterToAdd);
+
 				List<AbstractContentAdapter> references = new List<AbstractContentAdapter>(adapters);
 				references.AddRange(adapterToAdd);
 				references.Sort();
@@ -73,6 +74,8 @@ namespace N2.Engine
 		{
 			lock (this)
 			{
+				logger.DebugFormat("Unregistering {0} adapters", adaptersToRemove);
+
 				List<AbstractContentAdapter> references = new List<AbstractContentAdapter>(adapters);
 				foreach (var adapterToRemove in adaptersToRemove)
 					references.Remove(adapterToRemove);
@@ -103,42 +106,17 @@ namespace N2.Engine
 		public void Start()
 		{
 			List<AbstractContentAdapter> references = new List<AbstractContentAdapter>();
-			foreach (Type adapterType in finder.Find(typeof(AbstractContentAdapter)))
+			foreach (var at in finder.Find<AdaptsAttribute>(typeof(AbstractContentAdapter), inherit: false))
 			{
-				if (adapterType.IsAbstract)
+				if (at.Type.IsAbstract)
 					continue;
 
-				foreach (AdaptsAttribute adapts in adapterType.GetCustomAttributes(typeof(AdaptsAttribute), false))
-				{
-					var adapter = CreateAdapter(adapterType, adapts.ContentType);
-					references.Add(adapter);
-				}
+				logger.DebugFormat("Found adapter {0} adapting {1}", at.Type.Name, at.Attribute.ContentType);
 
-				// TODO: remove this legacy support (collect by [Controls] attributes)
-				foreach (ControlsAttribute controls in adapterType.GetCustomAttributes(typeof(ControlsAttribute), false))
-				{
-					logger.Warn("Adding adapter with [Controls] is deprecated and may no longer work in the future: " + adapterType);
-
-					var adapter = CreateAdapter(adapterType, controls.ItemType);
-					references.Add(adapter);
-				}
+				var adapter = CreateAdapter(at.Type, at.Attribute.ContentType);
+				references.Add(adapter);
 			}
 
-			// TODO: remove this legacy support (collect [assembly: Controls(..)] attributes)
-			foreach(ICustomAttributeProvider assembly in finder.GetAssemblies()) 
-			{
-				foreach (ControlsAttribute controls in assembly.GetCustomAttributes(typeof(ControlsAttribute), false))
-				{
-					if (null == controls.ItemType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(null)] attribute with no ItemType specified. Please specify this property: [assembly: Controls(typeof(MyItem), AdapterType = typeof(MyAdapter)]", assembly);
-					if (null == controls.AdapterType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(typeof({1})] attribute with no AdapterType specified. Please specify this property: [assembly: Controls(typeof({1}), AdapterType = typeof(MyAdapter)]", assembly, controls.ItemType.Name);
-
-					logger.Warn("Adding adapter from [Controls] this is deprecated and may no longer work in the future: " + controls.AdapterType);
-
-					var adapter = CreateAdapter(controls.AdapterType, controls.ItemType);
-					references.Add(adapter);
-				}
-			}
-			
 			RegisterAdapter(references.ToArray());
 		}
 

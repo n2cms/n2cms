@@ -34,12 +34,14 @@ function fileBrowserCallBack(field_name, url, destinationType, win) {
 	srcField = win.document.forms[0].elements[field_name];
 	var modes = "All";
 	var location = "selection";
+	var types = "";
 	if (destinationType == "image") {
 		modes = "Files";
 		location = "filesselection";
+		types = "IFileSystemFile";
 	}
 	tinymce.activeEditor.windowManager.open({
-		file: fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url),
+		file: fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url) + '&selectableTypes=' + types,
 		height: 500,
 		width: 400,
 		close_previous: false,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using N2.Edit.FileSystem.Items;
@@ -9,6 +10,7 @@ using N2.Edit.FileSystem;
 using N2.Edit;
 using N2.Persistence;
 using N2.Collections;
+using N2.Security;
 
 namespace N2.Management.Files
 {
@@ -59,20 +61,24 @@ namespace N2.Management.Files
 			{
 				if (pair.ParentPath.Equals(path, StringComparison.InvariantCultureIgnoreCase))
 				{
-					var dd = fs.GetDirectory(pair.FolderPath);
-					var dir = CreateDirectory(pair);
-					yield return dir;
+					yield return CreateDirectory(pair);
 				}
                 else if (path.StartsWith(pair.Path, StringComparison.InvariantCultureIgnoreCase))
 				{
-					var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
-					var dir = CreateDirectory(pair);
+					ContentItem dir = CreateDirectory(pair);
 
-                    var subdir = dir.GetChild(path.Substring(pair.Path.Length));
-                    if (subdir != null)
+					var subdirPath = path.Substring(pair.Path.Length);
+					if (subdirPath != "")
+					{
+						dir = dir.GetChild(subdirPath);
+					}
+
+                    if (dir != null)
                     {
-                        foreach (var child in subdir.GetChildren(new NullFilter()))
-                            yield return child;
+						foreach (var child in dir.GetChildren(new NullFilter()))
+						{
+							yield return child;
+						}
                     }
 				}
 			}
@@ -80,14 +86,30 @@ namespace N2.Management.Files
 
 		private Directory CreateDirectory(FolderPair pair)
 		{
-			var dd = fs.GetDirectoryOrVirtual(pair.FolderPath);
-			var parent = persister.Get(pair.ParentID);
+			return CreateDirectory(pair.Folder, fs, persister, dependencyInjector);
+		}
+
+		internal static Directory CreateDirectory(FileSystemRoot folder, IFileSystem fs, IPersister persister, IDependencyInjector dependencyInjector)
+		{
+			var dd = fs.GetDirectoryOrVirtual(folder.Path);
+			var parent = persister.Get(folder.GetParentID());
 
 			var dir = Directory.New(dd, parent, dependencyInjector);
-			dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
-			dir.Name = dir.Title;
+			dir.Name = folder.GetName();
+			dir.Title = folder.Title ?? dir.Name;
+
+			Apply(folder.Readers, dir);
+			Apply(folder.Writers, dir);
 
 			return dir;
+		}
+
+		private static void Apply(PermissionMap map, Directory dir)
+		{
+			if (map.IsAltered)
+				DynamicPermissionMap.SetRoles(dir, map.Permissions, map.Roles);
+			else
+				DynamicPermissionMap.SetAllRoles(dir, map.Permissions);
 		}
 
 		#endregion

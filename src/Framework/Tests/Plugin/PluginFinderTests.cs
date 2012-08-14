@@ -22,8 +22,6 @@ namespace N2.Tests.Plugin
         {
             base.SetUp();
 
-			//new[] { typeof(SeveralPlugins), typeof(PermittablePlugins) }
-
 			var edit = new EditSection();// { Editors = new PermissionElement(), Administrators  };
 			finder = new PluginFinder(typeFinder, new SecurityManager(new ThreadContext(), edit), TestSupport.SetupEngineSection());
         }
@@ -33,7 +31,14 @@ namespace N2.Tests.Plugin
             return new Type[]{
 				typeof(ComplexContainersItem),
 				typeof(ItemWithRequiredProperty),
-				typeof(ItemWithModification)
+				typeof(ItemWithModification),
+				typeof(PlugIn1),
+				typeof(PlugIn2),
+				typeof(PlugIn3),
+				typeof(ThrowingPlugin1),
+				typeof(ThrowingPlugin2),
+				typeof(SeveralPlugins),
+				typeof(PermittablePlugins)
 			};
         }
 

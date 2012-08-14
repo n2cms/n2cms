@@ -15,6 +15,7 @@ namespace N2.Details
 	/// 		public virtual string FolderUrl { get; set; }
 	///		}
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableFolderSelectionAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
 	{
 		private string alt = string.Empty;
@@ -58,6 +59,7 @@ namespace N2.Details
 			FileSelector selector = new FileSelector();
 			selector.SelectableTypes = typeof(IFileSystemDirectory).Name;
 			selector.ID = Name;
+            selector.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(selector);
 			return selector;
 		}

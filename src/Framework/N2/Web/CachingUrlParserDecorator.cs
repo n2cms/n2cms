@@ -5,13 +5,12 @@ using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
 using N2.Web.UI;
-using log4net;
 
 namespace N2.Web
 {
 	public class CachingUrlParserDecorator : IUrlParser
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(CachingUrlParserDecorator));
+		private readonly Engine.Logger<CachingUrlParserDecorator> logger;
 
 		readonly IUrlParser inner;
 		readonly IPersister persister;

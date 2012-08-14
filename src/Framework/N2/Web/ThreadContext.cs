@@ -102,7 +102,9 @@ namespace N2.Web
 
         public virtual string MapPath(string path)
         {
-            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+			path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+			if (path.StartsWith("bin"))
+				path = "bin\\Debug" + path.Substring(3);
             return Path.Combine(baseDirectory, path);
         }
 

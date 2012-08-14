@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using N2.Collections;
 using N2.Details;
-using log4net;
 using System.Web.Routing;
 
 namespace N2.Web.Parts
 {
 	public static class PartsExtensions
 	{
-		static ILog logger = LogManager.GetLogger(typeof(PartsExtensions));
+		static Engine.Logger<object> logger;
 
 		public static T LoadEmbeddedPart<T>(this ContentItem item, string keyPrefix) where T : ContentItem, new()
 		{

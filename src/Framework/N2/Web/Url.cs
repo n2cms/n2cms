@@ -276,6 +276,18 @@ namespace N2.Web
 			return Parse(url);
 		}
 
+		public static explicit operator Uri(Url u)
+		{
+			if (u == null)
+				return null;
+			return new Uri(u.ToString(), UriKind.RelativeOrAbsolute);
+		}
+
+		public static implicit operator Url(Uri uri)
+		{
+			return Parse(uri.ToString());
+		}
+
 		/// <summary>Retrieves the path part of an url, e.g. /path/to/page.aspx.</summary>
 		public static string PathPart(string url)
 		{

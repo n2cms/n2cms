@@ -8,14 +8,13 @@ using System.Web.Hosting;
 using N2.Definitions.Static;
 using N2.Engine;
 using N2.Persistence;
-using log4net;
 
 namespace N2.Definitions.Runtime
 {
 	[Service(typeof(ITemplateProvider))]
 	public class ViewTemplateProvider : ITemplateProvider
 	{
-        private readonly ILog logger = LogManager.GetLogger(typeof(ViewTemplateProvider));
+		private readonly Logger<ViewTemplateProvider> logger;
 		IProvider<HttpContextBase> httpContextProvider;
 		IProvider<VirtualPathProvider> vppProvider;
 		ContentActivator activator;
@@ -27,6 +26,8 @@ namespace N2.Definitions.Runtime
 
 		public ViewTemplateProvider(ViewTemplateRegistrator registrator, ViewTemplateAnalyzer analyzer, ContentActivator activator, DefinitionBuilder builder, IProvider<HttpContextBase> httpContextProvider, IProvider<VirtualPathProvider> vppProvider)
 		{
+			SortOrder = -1000;
+
 			this.registrator = registrator;
 			this.analyzer = analyzer;
 			this.activator = activator;
@@ -39,6 +40,7 @@ namespace N2.Definitions.Runtime
 
 		private void DequeueRegistrations()
 		{
+
 			while (registrator.QueuedRegistrations.Count > 0)
 			{
 				var source = registrator.QueuedRegistrations.Dequeue();
@@ -52,14 +54,18 @@ namespace N2.Definitions.Runtime
 		{
 			var httpContext = httpContextProvider.Get();
 			if (httpContext == null)
+			{
+				logger.Warn("Trying to get tempaltes with no context");
 				return new TemplateDefinition[0];
+			}
 
 			try
 			{
 				httpContext.Request.GetType();
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				logger.Warn("Trying to get tempaltes with invalid context", ex);
 				return new TemplateDefinition[0];
 			}
 			
@@ -69,14 +75,18 @@ namespace N2.Definitions.Runtime
 			{
 				if (definitions == null || rebuild)
 				{
+					logger.DebugFormat("Dequeuing {0} registrations", registrator.QueuedRegistrations.Count);
+					
 					DequeueRegistrations();
 
 					var vpp = vppProvider.Get();
 					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
+					logger.DebugFormat("Got {0} descriptions", descriptions.Count);
 					definitions = BuildDefinitions(descriptions);
+					logger.Debug("Built definitions");
 
-					var files = descriptions.SelectMany(p => p.TouchedPaths).Distinct().ToList();
-					//var dirs = files.Select(f => f.Substring(0, f.LastIndexOf('/'))).Distinct();
+					var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();
+					logger.DebugFormat("Setting up cache dependency on {0} files", files.Count);
 					var cacheDependency = vpp.GetCacheDependency(files.FirstOrDefault(), files, DateTime.UtcNow);
 
 					httpContext.Cache.Remove(cacheKey);
@@ -124,15 +134,17 @@ namespace N2.Definitions.Runtime
 				}).FirstOrDefault();
 		}
 
-		private IEnumerable<ItemDefinition> BuildDefinitions(List<ViewTemplateDescription> registrations)
+		private IEnumerable<ItemDefinition> BuildDefinitions(List<ContentRegistration> registrations)
 		{
 			var definitions = registrations.Select(r => r.Definition).ToList();
 			builder.ExecuteRefiners(definitions);
 			foreach (var registration in registrations)
-				registration.Registration.AppendToDefinition(registration.Definition);
-			return definitions;
+				yield return registration.Finalize();
 		}
 
 		#endregion
+
+		/// <summary>The order this template provider should be invoked, default 0.</summary>
+		public int SortOrder { get; set; }
 	}
 }

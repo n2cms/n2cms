@@ -6,6 +6,7 @@ using N2.Web.UI.WebControls;
 namespace N2.Web.UI
 {
 	[Obsolete("The [TabPanel] is now renamed to [TabContainer] attribute to avoid confusion with a web control with a similar name.", true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TabPanelAttribute : TabContainerAttribute
 	{
 		public TabPanelAttribute(string name, string tabText, int sortOrder)
@@ -22,18 +23,21 @@ namespace N2.Web.UI
 	///     public class MyPage : N2.ContentItem
 	///     {
 	///         [N2.Details.EditableFreeTextArea("Text", 110, ContainerName="default")]
-	///         public virtual string Text
-	///         {
-	///             get { return (string)GetDetail("Text"); }
-	///             set { SetDetail("Text", value); }
-	///         }
+	///         public virtual string Text { get; set; }
 	///     }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class TabContainerAttribute : EditorContainerAttribute
 	{
 		string tabText;
 		bool registerTabCss;
-		string cssClass = "tabPanel primaryTabs";
+		string cssClass;
+
+		public TabContainerAttribute(string name)
+			: base(name, 0)
+		{
+			TabText = name;
+		}
 
 		public TabContainerAttribute(string name, string tabText, int sortOrder)
 			: base(name, sortOrder)
@@ -74,7 +78,18 @@ namespace N2.Web.UI
 			p.ID = Name;
 			p.TabText = GetLocalizedText("TabText") ?? TabText;
 			p.RegisterTabCss = registerTabCss;
-			p.CssClass = CssClass ?? p.CssClass;
+			if (string.IsNullOrEmpty(CssClass))
+			{
+				p.CssClass = "tabPanel primaryTabs";
+
+				var parentTab = container.Closest(c => c is TabPanel || c is ItemEditor);
+				if (parentTab != null)
+				{
+					p.CssClass = "tabPanel " + parentTab.ClientID + "Tabs";
+				}
+			}
+			else
+				p.CssClass = CssClass;
 			container.Controls.Add(p);
 			return p;
 		}

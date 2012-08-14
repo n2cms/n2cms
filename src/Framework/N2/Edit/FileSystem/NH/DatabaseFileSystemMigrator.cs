@@ -33,7 +33,7 @@ namespace N2.Edit.FileSystem.NH
             var uploadFolders = folderSource.GetUploadFoldersForAllSites();
             foreach (var uploadFolder in uploadFolders)
             {
-                CopyFilesInDirectoryRecursively(webContext.MapPath(uploadFolder));
+                CopyFilesInDirectoryRecursively(webContext.MapPath(uploadFolder.Path));
             }
 
             return returnValue;

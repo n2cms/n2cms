@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,29 +20,16 @@ namespace N2.Engine
 
 		private bool loadAppDomainAssemblies = true;
 
-		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver";
+		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql|^App_GlobalResources|^App_global|^App_Web_|^EntityFramework|^WebGrease|^App_global.asax";
 
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList<string> assemblyNames = new List<string>();
 
-		#endregion
-
-		#region Constructors
-
-		/// <summary>Creates a new instance of the AppDomainTypeFinder.</summary>
-		public AppDomainTypeFinder()
-		{
-		}
+		Logger<AppDomainTypeFinder> logger;
 
 		#endregion
 
 		#region Properties
-
-		/// <summary>The app domain to look for types in.</summary>
-		public virtual AppDomain App
-		{
-			get { return AppDomain.CurrentDomain; }
-		}
 
 		/// <summary>Gets or sets wether N2 should iterate assemblies in the app domain when loading N2 types. Loading patterns are applied when loading these assemblies.</summary>
 		public bool LoadAppDomainAssemblies
@@ -77,7 +65,7 @@ namespace N2.Engine
 		/// <summary>Finds types assignable from of a certain type in the app domain.</summary>
 		/// <param name="requestedType">The type to find.</param>
 		/// <returns>A list of types found in the app domain.</returns>
-		public virtual IList<Type> Find(Type requestedType)
+		public virtual IEnumerable<Type> Find(Type requestedType)
 		{
 			List<Type> types = new List<Type>();
 			foreach (Assembly a in GetAssemblies())
@@ -95,7 +83,7 @@ namespace N2.Engine
 					string loaderErrors = string.Empty;
 					foreach (Exception loaderEx in ex.LoaderExceptions)
 					{
-						Trace.TraceError(loaderEx.ToString());
+						Engine.Logger.Error(loaderEx);
 						loaderErrors += ", " + loaderEx.Message;
 					}
 
@@ -103,53 +91,87 @@ namespace N2.Engine
 				}
 			}
 
+			logger.DebugFormat("Loading requested types {0}, found {1}", requestedType, types.Count);
+
 			return types;
+		}
+
+		public virtual IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class
+		{
+			return Find(requestedType)
+				.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+		}
+
+		protected static IEnumerable<AttributedType<TAttribute>> SelectAttributedTypes<TAttribute>(Type type, bool inherit) where TAttribute : class
+		{
+			return type.GetCustomAttributes(typeof(TAttribute), inherit)
+				.OfType<TAttribute>()
+				.Select(a => new AttributedType<TAttribute> { Type = type, Attribute = a });
 		}
 
 		/// <summary>Gets tne assemblies related to the current implementation.</summary>
 		/// <returns>A list of assemblies that should be loaded by the N2 factory.</returns>
-		public virtual IList<Assembly> GetAssemblies()
+		public virtual IEnumerable<Assembly> GetAssemblies()
 		{
-			List<string> addedAssemblyNames = new List<string>();
+			var addedAssemblyNames = new HashSet<string>();
 			List<Assembly> assemblies = new List<Assembly>();
 
+			logger.Info("Getting assemblies");
+
 			if (LoadAppDomainAssemblies)
-				AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
-			AddConfiguredAssemblies(addedAssemblyNames, assemblies);
+			{
+				assemblies.AddRange(GetAssembliesInAppDomain(addedAssemblyNames));
+			}
+
+			assemblies.AddRange(GetConfiguredAssemblies(addedAssemblyNames));
 
 			return assemblies;
 		}
 
 		/// <summary>Iterates all assemblies in the AppDomain and if it's name matches the configured patterns add it to our list.</summary>
-		/// <param name="addedAssemblyNames"></param>
+		/// <param name="previouslyAddedAssemblyNames"></param>
 		/// <param name="assemblies"></param>
-		private void AddAssembliesInAppDomain(List<string> addedAssemblyNames, List<Assembly> assemblies)
+		protected IEnumerable<Assembly> GetAssembliesInAppDomain(HashSet<string> previouslyAddedAssemblyNames)
 		{
-			foreach (Assembly assembly in App.GetAssemblies())
+			var assemblies = new List<Assembly>();
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
 				if (Matches(assembly.FullName))
 				{
-					if (!addedAssemblyNames.Contains(assembly.FullName))
+					if (!previouslyAddedAssemblyNames.Contains(assembly.FullName))
 					{
+						logger.InfoFormat("Adding {0}", assembly.FullName);
+
 						assemblies.Add(assembly);
-						addedAssemblyNames.Add(assembly.FullName);
+						previouslyAddedAssemblyNames.Add(assembly.FullName);
 					}
 				}
 			}
+
+			logger.InfoFormat("Added {0} assemblies in app domain", assemblies.Count);
+			return assemblies;
 		}
 
 		/// <summary>Adds specificly configured assemblies.</summary>
-		protected virtual void AddConfiguredAssemblies(List<string> addedAssemblyNames, List<Assembly> assemblies)
+		protected virtual IEnumerable<Assembly> GetConfiguredAssemblies(HashSet<string> previouslyAddedAssemblyNames)
 		{
+			var assemblies = new List<Assembly>();
 			foreach (string assemblyName in AssemblyNames)
 			{
+				if (previouslyAddedAssemblyNames.Contains(assemblyName))
+					continue;
+
+				logger.Debug("Loading " + assemblyName);
 				Assembly assembly = Assembly.Load(assemblyName);
-				if (!addedAssemblyNames.Contains(assembly.FullName))
-				{
-					assemblies.Add(assembly);
-					addedAssemblyNames.Add(assembly.FullName);
-				}
+				if (previouslyAddedAssemblyNames.Contains(assembly.FullName))
+					continue;
+				
+				assemblies.Add(assembly);
+				previouslyAddedAssemblyNames.Add(assembly.FullName);
 			}
+
+			logger.InfoFormat("Added {0} configured assemblies", assemblies.Count);
+			return assemblies;
 		}
 
 		/// <summary>Check if a dll is one of the shipped dlls that we know don't need to be investigated.</summary>
@@ -172,33 +194,37 @@ namespace N2.Engine
 
 		/// <summary>Makes sure matching assemblies in the supplied folder are loaded in the app domain.</summary>
 		/// <param name="directoryPath">The physical path to a directory containing dlls to load in the app domain.</param>
-		protected virtual void LoadMatchingAssemblies(string directoryPath)
+		protected virtual IEnumerable<Assembly> LoadMatchingAssemblies(string directoryPath)
 		{
-			List<string> loadedAssemblyNames = new List<string>();
-			foreach (Assembly a in GetAssemblies())
+			if (!Directory.Exists(directoryPath)) 
 			{
-				loadedAssemblyNames.Add(a.FullName);
+				logger.InfoFormat("Probing path doesn't exist: {0}", directoryPath);
+				return new Assembly[0];
 			}
-			
-			if(!Directory.Exists(directoryPath)) {
-				return;
-			}
-			
+
+			var assemblies = new List<Assembly>();
 			foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
 			{
+				logger.DebugFormat("Analyzing {0} dlls in path {1}", dllPath.Length, directoryPath);
 				try
 				{
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
-					if (Matches(assumedAssemblyName) && !loadedAssemblyNames.Contains(assumedAssemblyName))
+					if (Matches(assumedAssemblyName))
 					{
-						App.Load(assumedAssemblyName);
+						logger.Debug("Loading " + assumedAssemblyName);
+						var assembly = AppDomain.CurrentDomain.Load(assumedAssemblyName);
+						if (assembly != null)
+							assemblies.Add(assembly);
 					}
+					else
+						logger.Debug("Skipping " + assumedAssemblyName);
 				}
 				catch (BadImageFormatException ex)
 				{
-					Trace.TraceError(ex.ToString());
+					logger.Error(ex);
 				}
 			}
+			return assemblies;
 		}
 	}
 }

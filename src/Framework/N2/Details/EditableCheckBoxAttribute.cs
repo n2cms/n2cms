@@ -1,9 +1,11 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System;
 
 namespace N2.Details
 {
 	/// <summary>An editable checkbox attribute. Besides creating a checkbox it also uses the checkbox's text property to display text.</summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableCheckBoxAttribute : EditableAttribute, IWritingDisplayable, IDisplayable
 	{
 		private string checkBoxText;
@@ -25,7 +27,7 @@ namespace N2.Details
 		/// <summary>Gets or sets the text on the checkbox. This differs from the title property since the text is after the checkbox.</summary>
 		public string CheckBoxText
 		{
-			get { return checkBoxText; }
+			get { return checkBoxText ?? Name; }
 			set { checkBoxText = value; }
 		}
 

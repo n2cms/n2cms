@@ -1,0 +1,34 @@
+﻿@model Dinamico.Models.ContentPart
+@using N2
+@using N2.Linq
+@using N2.Web.Mvc.Html
+		   
+@{ Content.Define(re =>
+   {
+	   re.Title = "Selection";
+	   re.MultipleItemSelection("SelectFrom", typeof(Dinamico.Models.ContentPage));
+	   re.CheckBox("Tease", "Tease first item");
+	   re.ImageSize("ImageSize", "Teaser image size").Configure(e => e.DefaultValue = "");
+   }); }
+
+@using (Html.BeginEditableWrapper(Content.Current.Item, "ForwardsTo"))
+{
+<div class="part listing">
+	@{
+	bool tease = Content.Data.Tease ?? false;
+	IEnumerable<ContentItem> children = Content.Current.Item.GetDetailCollection("SelectFrom", true).ToList<ContentItem>();
+	}
+	@if (tease)
+ {
+	 var first = children.FirstOrDefault();
+	 if (first != null)
+	 {
+		<div class="list-item">@Html.Partial("Partials/ContentLink", first, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Current.Item.ZoneName) } })</div>
+	 }
+	 children = children.Skip(1);
+ }
+	@Html.Loop(children,
+		template: @<div class="list-item">@Html.Partial("Partials/ContentLink", item.Data, new ViewDataDictionary { { "preferredSize", "thumb" } })</div>,
+		wrapper: @<div class="list">@item.RenderContents()</div>)
+</div>
+}

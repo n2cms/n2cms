@@ -1,9 +1,14 @@
 ﻿using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Configuration;
+using System;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting between configured image sizes from a drop down list.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableImageSizeAttribute : EditableDropDownAttribute
 	{
 		public EditableImageSizeAttribute()
