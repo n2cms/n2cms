@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Configuration;
+using System;
 
 namespace N2.Engine
 {
@@ -38,7 +39,7 @@ namespace N2.Engine
 		public override IEnumerable<System.Type> Find(System.Type requestedType)
 		{
 			if (enableTypeCache)
-				return assemblyCache.GetTypes(requestedType.FullName, () => base.Find(requestedType));
+				return assemblyCache.GetTypes(requestedType.FullName, GetAssemblies, (a) => GetTypesInAssembly(requestedType, a));
 			else
 				return base.Find(requestedType);
 		}
@@ -48,11 +49,20 @@ namespace N2.Engine
 			if (enableTypeCache)
 			{
 				string key = requestedType.FullName + "[" + typeof(TAttribute).FullName + "]";
-				return assemblyCache.GetTypes(key, () => base.Find<TAttribute>(requestedType, inherit).Select(at => at.Type).Distinct())
+				return assemblyCache.GetTypes(key, GetAssemblies, (a) =>
+					GetTypesInAssembly(requestedType, a).SelectMany(t => GetTypesWithAttribute<TAttribute>(t, inherit)))
 					.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
 			}
 			else
 				return base.Find<TAttribute>(requestedType, inherit);
+		}
+
+		protected static IEnumerable<Type> GetTypesWithAttribute<TAttribute>(Type type, bool inherit)
+		{
+			if (type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().Any())
+				yield return type;
+			else
+				yield break;
 		}
 
 		public override IEnumerable<Assembly> GetAssemblies()

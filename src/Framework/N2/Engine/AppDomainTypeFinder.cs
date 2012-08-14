@@ -70,30 +70,38 @@ namespace N2.Engine
 			List<Type> types = new List<Type>();
 			foreach (Assembly a in GetAssemblies())
 			{
-				try
-				{
-					foreach (Type t in a.GetTypes())
-					{
-						if (requestedType.IsAssignableFrom(t))
-							types.Add(t);
-					}
-				}
-				catch (ReflectionTypeLoadException ex)
-				{
-					string loaderErrors = string.Empty;
-					foreach (Exception loaderEx in ex.LoaderExceptions)
-					{
-						Engine.Logger.Error(loaderEx);
-						loaderErrors += ", " + loaderEx.Message;
-					}
-
-					throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
-				}
+				types.AddRange(GetTypesInAssembly(requestedType, a));
 			}
 
 			logger.DebugFormat("Loading requested types {0}, found {1}", requestedType, types.Count);
 
 			return types;
+		}
+
+		protected static IEnumerable<Type> GetTypesInAssembly(Type requestedType, Assembly a)
+		{
+			Type[] allTypes;
+			try
+			{
+				allTypes = a.GetTypes();
+			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				string loaderErrors = string.Empty;
+				foreach (Exception loaderEx in ex.LoaderExceptions)
+				{
+					Engine.Logger.Error(loaderEx);
+					loaderErrors += ", " + loaderEx.Message;
+				}
+
+				throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
+			}
+
+			foreach (Type t in allTypes)
+			{
+				if (requestedType.IsAssignableFrom(t))
+					yield return t;
+			}
 		}
 
 		public virtual IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class
@@ -201,11 +209,12 @@ namespace N2.Engine
 				logger.InfoFormat("Probing path doesn't exist: {0}", directoryPath);
 				return new Assembly[0];
 			}
+			var dlls = Directory.GetFiles(directoryPath, "*.dll");
+			logger.DebugFormat("Analyzing {0} dlls in path {1}", dlls, directoryPath);
 
 			var assemblies = new List<Assembly>();
-			foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
+			foreach (string dllPath in dlls)
 			{
-				logger.DebugFormat("Analyzing {0} dlls in path {1}", dllPath.Length, directoryPath);
 				try
 				{
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
