@@ -13,5 +13,10 @@ namespace N2.Engine
 
 		/// <summary>The particular type the attribute was describing.</summary>
 		public Type DecoratedType { get; set; }
+
+		public override string ToString()
+		{
+			return "[" + typeof(T).Name + "] " + DecoratedType != null ? DecoratedType.Name : "(null)";
+		}
 	}
 }

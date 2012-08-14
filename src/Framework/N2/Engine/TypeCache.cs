@@ -81,7 +81,7 @@ namespace N2.Engine
 
 			var path = GetAssemblyCachePath();
 
-			var assemblies = new List<CachedAssembly>();
+			var assemblies = factory().Select(a => new CachedAssembly { Assembly = a, ModuleId = a.ManifestModule.ModuleVersionId }).ToList();
 			if (File.Exists(path))
 			{
 				lock (this)
@@ -96,41 +96,6 @@ namespace N2.Engine
 						.Select(line => new { Key = line.Line.Substring(0, line.Index), Value = line.Line.Substring(line.Index + 1) })
 						.GroupBy(setting => setting.Key)
 						.ToDictionary(setting => setting.Key, setting => setting.Select(s => s.Value));
-
-					if (!settings.ContainsKey("assembly") || !settings.ContainsKey("timestamp"))
-					{
-						assemblies = CreateCachedAssemblies(factory, "no assembly/timestamp settings in file");
-					}
-					else
-					{
-						var timestamp = DateTime.Parse(settings["timestamp"].FirstOrDefault());
-						if (GetProbingPaths().SelectMany(pp => new DirectoryInfo(pp).GetFiles("*.dll")).Any(fi => timestamp < fi.LastWriteTimeUtc))
-						{
-							assemblies = CreateCachedAssemblies(factory, "assemblies newer than timestamp " + timestamp);
-						}
-						else
-						{
-							foreach (var value in settings["assembly"])
-							{
-								var semicolonIndex = value.IndexOf(';');
-								if (semicolonIndex < 0)
-								{
-									assemblies = CreateCachedAssemblies(factory, "invalid entry in cache file");
-									break;
-								}
-								var assembly = Assembly.Load(value.Substring(semicolonIndex + 1));
-								if (assembly == null)
-								{
-									assemblies = CreateCachedAssemblies(factory, "unable to load " + value);
-									break;
-								}
-
-								var moduleVersionId = assembly.ManifestModule.ModuleVersionId;
-								logger.DebugFormat("Adding assembly {0} with module version id {1}", assembly, moduleVersionId);
-								assemblies.Add(new CachedAssembly { Assembly = assembly, ModuleId = moduleVersionId });
-							}
-						}
-					}
 
 					foreach (var assemblyWithQueries in assemblies)
 					{
@@ -161,21 +126,17 @@ namespace N2.Engine
 					}
 				}
 			}
-			else
-			{
-				assemblies = CreateCachedAssemblies(factory, "no cache on disk");
-			} 
 				
 			return cache = assemblies;
 		}
 
-		private List<CachedAssembly> CreateCachedAssemblies(Func<IEnumerable<Assembly>> factory, string reason)
-		{
-			logger.InfoFormat("Retrieving assemblies from factory due to {0}", reason);
-			var assemblies = factory().Select(a => new CachedAssembly { Assembly = a, ModuleId = a.ManifestModule.ModuleVersionId }).ToList();
-			logger.DebugFormat("Got {0} assemblies", assemblies.Count);
-			return assemblies;
-		}
+		//private List<CachedAssembly> CreateCachedAssemblies(Func<IEnumerable<Assembly>> factory, string reason)
+		//{
+		//    logger.InfoFormat("Retrieving assemblies from factory due to {0}", reason);
+		//    var assemblies = factory().Select(a => new CachedAssembly { Assembly = a, ModuleId = a.ManifestModule.ModuleVersionId }).ToList();
+		//    logger.DebugFormat("Got {0} assemblies", assemblies.Count);
+		//    return assemblies;
+		//}
 
 		private void SaveCache()
 		{
