@@ -23,7 +23,7 @@ namespace N2.Web.Parts
 		IWebContext webContext;
 		IPersister persister;
 		IDefinitionManager definitions;
-		ITemplateProvider[] templates;
+		IEnumerable<ITemplateProvider> templates;
 		ISecurityManager security;
 
 		public IPersister Persister
@@ -50,7 +50,7 @@ namespace N2.Web.Parts
 			set { definitions = value; }
 		}
 
-		public ITemplateProvider[] Templates
+		public IEnumerable<ITemplateProvider> Templates
 		{
 			get { return templates ?? engine.Container.ResolveAll<ITemplateProvider>(); }
 			set { templates = value; }

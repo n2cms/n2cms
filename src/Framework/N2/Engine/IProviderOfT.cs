@@ -6,7 +6,7 @@ namespace N2.Engine
 	/// Provides something. What this is depends on the circumstance.
 	/// </summary>
 	/// <typeparam name="T">The type of instance that is provided.</typeparam>
-	public interface IProvider<T>
+	public interface IProvider<T> where T : class
 	{
 		/// <summary>Gets the default provided object.</summary>
 		/// <returns>An object or null if no object can be provided.</returns>

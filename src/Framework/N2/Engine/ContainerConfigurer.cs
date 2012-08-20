@@ -15,7 +15,6 @@ namespace N2.Engine
 	{
 		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
-			configuration.Start();
 			engine.Container.AddComponentInstance("n2.configuration", typeof(ConfigurationManagerWrapper), configuration);
 			engine.Container.AddComponentInstance("n2.engine", typeof(IEngine), engine);
 			engine.Container.AddComponentInstance("n2.container", typeof(IServiceContainer), engine.Container);
@@ -23,39 +22,34 @@ namespace N2.Engine
 
 			AddComponentInstance(engine.Container, configuration.GetConnectionStringsSection());
 			AddComponentInstance(engine.Container, configuration.Sections.Engine);
-			if (configuration.Sections.Engine != null)
-				RegisterConfiguredComponents(engine.Container, configuration.Sections.Engine);
+			RegisterConfiguredComponents(engine.Container, configuration.Sections.Engine);
 			AddComponentInstance(engine.Container, configuration.Sections.Web);
-			if (configuration.Sections.Web != null)
-				InitializeEnvironment(engine.Container, configuration.Sections);
+			InitializeEnvironment(engine.Container, configuration.Sections);
 			AddComponentInstance(engine.Container, configuration.Sections.Database);
 			AddComponentInstance(engine.Container, configuration.Sections.Management);
 
 			AddComponentInstance(engine.Container, broker);
 
-			engine.Container.AddComponent("n2.tempHelper", typeof(BasicTemporaryFileHelper), typeof(BasicTemporaryFileHelper));
-			engine.Container.AddComponent("n2.typeCache", typeof(TypeCache), typeof(TypeCache));
-			engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
-			engine.Container.AddComponent("n2.webContext", typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext));
-			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
+			var skipTypes = configuration.Sections.Engine.Components.GetConfiguredServiceTypes();
+			AddComponentUnlessConfigured(engine.Container, typeof(BasicTemporaryFileHelper), typeof(BasicTemporaryFileHelper), skipTypes);
+			AddComponentUnlessConfigured(engine.Container, typeof(TypeCache), typeof(TypeCache), skipTypes);
+			AddComponentUnlessConfigured(engine.Container, typeof(ITypeFinder), typeof(WebAppTypeFinder), skipTypes);
+			AddComponentUnlessConfigured(engine.Container, typeof(ServiceRegistrator), typeof(ServiceRegistrator), skipTypes);
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
 			var services = registrator.FindServices();
-			var configurationKeys = GetComponentConfigurationKeys(configuration);
+			var configurationKeys = configuration.GetComponentConfigurationKeys();
 			services = registrator.FilterServices(services, configurationKeys);
+			services = registrator.FilterServices(services, skipTypes);
 			registrator.RegisterServices(services);
 		}
 
-		protected virtual string[] GetComponentConfigurationKeys(ConfigurationManagerWrapper configuration)
+		private void AddComponentUnlessConfigured(IServiceContainer container, Type serviceType, Type instanceType, IEnumerable<Type> skipList)
 		{
-			List<string> configurationKeys = new List<string>();
+			if (skipList.Contains(serviceType))
+				return;
 
-			configuration.Sections.Database.ApplyComponentConfigurationKeys(configurationKeys);
-			configuration.Sections.Management.ApplyComponentConfigurationKeys(configurationKeys);
-			configuration.Sections.Web.ApplyComponentConfigurationKeys(configurationKeys);
-			configuration.Sections.Engine.ApplyComponentConfigurationKeys(configurationKeys);
-			
-			return configurationKeys.ToArray();
+			container.AddComponent(serviceType.FullName + "->" + instanceType.FullName, serviceType, instanceType);
 		}
 
 		private void AddComponentInstance(IServiceContainer container, object instance)
@@ -73,9 +67,11 @@ namespace N2.Engine
 				PathData.PartQueryKey = config.Web.Web.PartQueryKey;
 				PathData.PathKey = config.Web.Web.PathDataKey;
 
-
-				if (!config.Web.Web.IsWeb)
-					container.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
+				var skipList = config.Engine.Components.GetConfiguredServiceTypes();
+				if (config.Web.Web.IsWeb)
+					AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext), skipList);
+				else
+					AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.ThreadContext), skipList);
 
 				if (config.Web.Web.Urls.EnableCaching)
 					container.AddComponent("n2.web.cachingUrlParser", typeof(IUrlParser), typeof(CachingUrlParserDecorator));

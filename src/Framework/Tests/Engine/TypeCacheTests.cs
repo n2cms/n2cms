@@ -25,7 +25,7 @@ namespace N2.Tests.Engine
 		private static TypeCache CreateTypeCache()
 		{
 			var tc = new ThreadContext();
-			return new TypeCache(tc, new N2.Persistence.BasicTemporaryFileHelper(tc));
+			return new TypeCache(new N2.Persistence.BasicTemporaryFileHelper(tc));
 		}
 
 		[Test]

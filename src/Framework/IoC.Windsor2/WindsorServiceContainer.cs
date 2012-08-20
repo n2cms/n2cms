@@ -117,9 +117,9 @@ namespace N2.Engine.Castle
 		/// <summary>Resolves all services serving the given interface.</summary>
 		/// <param name="serviceType">The type of service to resolve.</param>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		public override Array ResolveAll(Type serviceType)
+		public override IEnumerable<object> ResolveAll(Type serviceType)
 		{
-			return container.ResolveAll(serviceType);
+			return container.ResolveAll(serviceType).Cast<object>();
 		}
 
 		/// <summary>Resolves all services.</summary>
@@ -127,13 +127,13 @@ namespace N2.Engine.Castle
 		public override IEnumerable<ServiceInfo> Diagnose()
 		{
 			return container.Kernel.GraphNodes.OfType<ComponentModel>()
-				.Select(cm => new ServiceInfo { Key = cm.Name, ServiceType = cm.Service, ImplementationType = cm.Implementation, Resolve = () => Resolve(cm.Service), ResolveAll = () => ResolveAll(cm.Service) });
+				.Select(cm => new ServiceInfo { Key = cm.Name, ServiceTypes = new [] { cm.Service }, ServiceType = cm.Service, ImplementationType = cm.Implementation, Resolve = () => Resolve(cm.Service), ResolveAll = () => ResolveAll(cm.Service) });
 		}
 
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		public override T[] ResolveAll<T>()
+		public override IEnumerable<T> ResolveAll<T>()
 		{
 			return container.ResolveAll<T>();
 		}

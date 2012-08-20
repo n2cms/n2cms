@@ -161,7 +161,7 @@ namespace N2.Tests.Fakes
 				throw new NotImplementedException();
 			}
 
-			public T Resolve<T>()
+			public T Resolve<T>() where T: class
 			{
 				if(services.ContainsKey(typeof(T)) == false)
 					throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
@@ -169,7 +169,7 @@ namespace N2.Tests.Fakes
 				return (T)services[typeof(T)];
 			}
 
-			public T Resolve<T>(string key)
+			public T Resolve<T>(string key) where T : class
 			{
 				return (T)services[typeof(T)];
 			}
@@ -183,7 +183,7 @@ namespace N2.Tests.Fakes
 			{
 			}
 
-			public Array ResolveAll(Type serviceType)
+			public IEnumerable<object> ResolveAll(Type serviceType)
 			{
 				if (!this.services.ContainsKey(serviceType))
 					return new object[0];
@@ -196,7 +196,7 @@ namespace N2.Tests.Fakes
 				yield break;
 			}
 
-			public T[] ResolveAll<T>()
+			public IEnumerable<T> ResolveAll<T>() where T: class
 			{
 				if (!this.services.ContainsKey(typeof(T)))
 					return new T[0];

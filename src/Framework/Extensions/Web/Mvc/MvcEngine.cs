@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Web.Mvc;
 using N2.Engine;
+using System.Linq;
 
 namespace N2.Web.Mvc
 {
@@ -63,7 +64,7 @@ namespace N2.Web.Mvc
 		/// <param name="engine"></param>
 		public static void RegisterAllControllers(this IEngine engine)
 		{
-			foreach (Type type in engine.Resolve<ITypeFinder>().Find(typeof(IController)))
+			foreach (Type type in engine.Resolve<ITypeFinder>().Find(typeof(IController)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface))
 				engine.Container.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
 		}
 

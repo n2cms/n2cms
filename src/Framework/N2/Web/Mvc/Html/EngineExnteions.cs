@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using N2.Definitions;
 using N2.Engine;
+using System.Collections.Generic;
 
 namespace N2.Web.Mvc.Html
 {
@@ -23,7 +24,7 @@ namespace N2.Web.Mvc.Html
 			return RouteExtensions.ResolveService<T>(helper.ViewContext.RouteData);
 		}
 
-		public static T[] ResolveServices<T>(this HtmlHelper helper) where T : class
+		public static IEnumerable<T> ResolveServices<T>(this HtmlHelper helper) where T : class
 		{
 			return RouteExtensions.ResolveServices<T>(helper.ViewContext.RouteData);
 		}

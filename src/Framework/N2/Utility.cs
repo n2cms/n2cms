@@ -551,24 +551,29 @@ namespace N2
             }
         }
 
+		private static AspNetHostingPermissionLevel? trustLevel;
 		/// <summary>
 		/// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
 		/// </summary>
 		/// <returns>The current trust level.</returns>
 		internal static AspNetHostingPermissionLevel GetTrustLevel()
 		{
-			foreach (AspNetHostingPermissionLevel trustLevel in new[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium })
+			if (trustLevel.HasValue)
+				return trustLevel.Value;
+
+			foreach (AspNetHostingPermissionLevel level in new[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium })
 			{
 				try
 				{
-					new AspNetHostingPermission(trustLevel).Demand();
+					new AspNetHostingPermission(level).Demand();
 				}
 				catch (System.Security.SecurityException)
 				{
 					continue;
 				}
 
-				return trustLevel;
+				trustLevel = level;
+				return level;
 			}
 
 			return AspNetHostingPermissionLevel.None;
@@ -633,7 +638,7 @@ namespace N2
 		/// <typeparam name="T">The type of object to retrieve.</typeparam>
 		/// <param name="engine">Used to resolve the provider.</param>
 		/// <returns>The the provided value.</returns>
-		internal static T GetProviderInstance<T>(this IEngine engine)
+		internal static T GetProviderInstance<T>(this IEngine engine) where T : class
 		{
 			return engine.Resolve<IProvider<T>>().Get();
 		}

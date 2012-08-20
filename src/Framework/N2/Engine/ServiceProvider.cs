@@ -7,7 +7,7 @@ namespace N2.Engine
 	/// </summary>
 	/// <typeparam name="T">The type of service that is provided.</typeparam>
 	[Service(typeof(IProvider<>))]
-	public class ServiceProvider<T> : IProvider<T>
+	public class ServiceProvider<T> : IProvider<T> where T : class
 	{
 		IServiceContainer container;
 		public ServiceProvider(IServiceContainer container)

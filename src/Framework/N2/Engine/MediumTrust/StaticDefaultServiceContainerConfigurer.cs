@@ -6,7 +6,6 @@ using N2.Edit.FileSystem;
 using N2.Edit.Installation;
 using N2.Edit.Settings;
 using N2.Edit.Workflow;
-using N2.Engine.MediumTrust;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Persistence.Finder;
@@ -20,6 +19,7 @@ using N2.Web;
 using N2.Web.UI;
 using NHibernate;
 using NHibernate.Cfg;
+using N2.Engine.MediumTrust;
 
 namespace N2.Engine.Configuration
 {

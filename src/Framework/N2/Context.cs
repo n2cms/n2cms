@@ -16,7 +16,6 @@ using System.Security;
 using System.Web.Configuration;
 using N2.Configuration;
 using N2.Engine;
-using N2.Engine.MediumTrust;
 using N2.Web;
 
 namespace N2
@@ -77,8 +76,8 @@ namespace N2
 		/// <returns>A new factory.</returns>
 		public static IEngine CreateEngineInstance()
 		{
-            try
-            {
+			//try
+			//{
 				var config = ConfigurationManager.GetSection("n2/engine") as EngineSection;
 				if (config != null && !string.IsNullOrEmpty(config.EngineType))
 				{
@@ -91,20 +90,20 @@ namespace N2
 				}
 
 				return new ContentEngine();
-			}
-			catch (SecurityException ex)
-			{
-				Engine.Logger.Info("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
-				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
-			}
-			catch (Exception ex)
-			{
-				if (ex.GetType().Name != "ComponentActivatorException")
-					throw;
+			//}
+			//catch (SecurityException ex)
+			//{
+			//    Engine.Logger.Info("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
+			//    return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			//}
+			//catch (Exception ex)
+			//{
+			//    if (ex.GetType().Name != "ComponentActivatorException")
+			//        throw;
 
-				Engine.Logger.Info("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
-				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
-			}
+			//    Engine.Logger.Info("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
+			//    return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			//}
 		}
 
 		#endregion
