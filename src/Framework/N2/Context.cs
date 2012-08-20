@@ -76,34 +76,27 @@ namespace N2
 		/// <returns>A new factory.</returns>
 		public static IEngine CreateEngineInstance()
 		{
-			//try
-			//{
-				var config = ConfigurationManager.GetSection("n2/engine") as EngineSection;
-				if (config != null && !string.IsNullOrEmpty(config.EngineType))
-				{
-					Type engineType = Type.GetType(config.EngineType);
-					if(engineType == null)
-						throw new ConfigurationErrorsException("The type '" + engineType + "' could not be found. Please check the configuration at /configuration/n2/engine[@engineType] or check for missing assemblies.");
-					if(!typeof(IEngine).IsAssignableFrom(engineType))
-						throw new ConfigurationErrorsException("The type '" + engineType + "' doesn't implement 'N2.Engines.IEngine' and cannot be configured in /configuration/n2/engine[@engineType] for that purpose.");
-					return Activator.CreateInstance(engineType) as IEngine;
-				}
-
-				return new ContentEngine();
-			//}
-			//catch (SecurityException ex)
-			//{
-			//    Engine.Logger.Info("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
-			//    return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
-			//}
-			//catch (Exception ex)
-			//{
-			//    if (ex.GetType().Name != "ComponentActivatorException")
-			//        throw;
-
-			//    Engine.Logger.Info("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
-			//    return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
-			//}
+			var config = ConfigurationManager.GetSection("n2/engine") as EngineSection;
+			if (config != null && !string.IsNullOrEmpty(config.EngineType))
+			{
+				Type engineType = Type.GetType(config.EngineType);
+				if(engineType == null)
+					throw new ConfigurationErrorsException("The type '" + config.EngineType + "' could not be found. Please check the configuration at /configuration/n2/engine[@engineType] or check for missing assemblies.");
+				if(!typeof(IEngine).IsAssignableFrom(engineType))
+					throw new ConfigurationErrorsException("The type '" + config.EngineType + "' doesn't implement 'N2.Engine.IEngine' and cannot be configured in /configuration/n2/engine[@engineType] for that purpose.");
+				return Activator.CreateInstance(engineType) as IEngine;
+			}
+			if (config != null && !string.IsNullOrEmpty(config.ContainerType))
+			{
+				Type containerType = Type.GetType(config.ContainerType);
+				if (containerType == null)
+					throw new ConfigurationErrorsException("The type '" + config.ContainerType + "' could not be found. Please check the configuration at /configuration/n2/engine[@containerType] or check for missing assemblies.");
+				if (!typeof(IServiceContainer).IsAssignableFrom(containerType))
+					throw new ConfigurationErrorsException("The type '" + config.ContainerType + "' doesn't implement 'N2.Engine.IServiceContainer' and cannot be configured in /configuration/n2/engine[@containerType] for that purpose.");
+				var container = Activator.CreateInstance(containerType) as IServiceContainer;
+				return new ContentEngine(container);
+			}
+			return new ContentEngine();
 		}
 
 		#endregion

@@ -38,6 +38,14 @@ namespace N2.Engine
 		{
 		}
 
+		/// <summary>
+		/// Creates an instance of the content engine using default settings and configuration.
+		/// </summary>
+		public ContentEngine(IServiceContainer container)
+			: this(container, EventBroker.Instance, new ContainerConfigurer())
+		{
+		}
+
 		/// <summary>Sets the current container to the given container.</summary>
 		/// <param name="container">An previously prepared service container.</param>
 		/// <param name="broker"></param>
