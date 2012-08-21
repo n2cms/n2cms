@@ -42,6 +42,8 @@ namespace N2.Engine
 			services = registrator.FilterServices(services, configurationKeys);
 			services = registrator.FilterServices(services, skipTypes);
 			registrator.RegisterServices(services);
+
+			InitializeUrlParser(engine.Container);
 		}
 
 		private void AddComponentUnlessConfigured(IServiceContainer container, Type serviceType, Type instanceType, IEnumerable<Type> skipList)
@@ -72,20 +74,27 @@ namespace N2.Engine
 					AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext), skipList);
 				else
 					AddComponentUnlessConfigured(container, typeof(N2.Web.IWebContext), typeof(N2.Web.ThreadContext), skipList);
-
-				if (config.Web.Web.Urls.EnableCaching)
-					container.AddComponent("n2.web.cachingUrlParser", typeof(IUrlParser), typeof(CachingUrlParserDecorator));
-
-				if (config.Web.MultipleSites)
-					container.AddComponent("n2.multipleSitesParser", typeof(IUrlParser), typeof(MultipleSitesParser));
-				else
-					container.AddComponent("n2.urlParser", typeof(IUrlParser), typeof(UrlParser));
 			}
 			if (config.Management != null)
 			{
 				SelectionUtility.SelectedQueryKey = config.Management.Paths.SelectedQueryKey;
 				Url.SetToken("{Selection.SelectedQueryKey}", SelectionUtility.SelectedQueryKey);
 			}
+		}
+
+		private void InitializeUrlParser(IServiceContainer container)
+		{
+			var config = container.Resolve<HostSection>();
+			IUrlParser parser;
+			if (config.MultipleSites)
+				parser = new MultipleSitesParser(container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<IHost>(), container.Resolve<Plugin.ConnectionMonitor>(), config);
+			else
+				parser = new UrlParser(container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<IHost>(), container.Resolve<Plugin.ConnectionMonitor>(), config);
+
+			if (config.Web.Urls.EnableCaching)
+				parser = new CachingUrlParserDecorator(parser, container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<CacheWrapper>());
+
+			container.AddComponentInstance("n2.urlParser", typeof(IUrlParser), parser);
 		}
 
 		protected virtual void RegisterConfiguredComponents(IServiceContainer container, EngineSection engineConfig)
