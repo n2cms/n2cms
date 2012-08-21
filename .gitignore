@@ -66,6 +66,7 @@ stylecop.*
 *.log
 *.log.20*
 AssemblyCache.config
+src/Framework/Management.Tests/App_Data/Temp/shared/AssemblyCache.config
 
 # Git files to ignore
 *.orig
