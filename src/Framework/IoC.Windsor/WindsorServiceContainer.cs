@@ -1,15 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Castle.Core;
-using Castle.Core.Internal;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel;
-using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Naming;
 using Castle.Windsor;
 using N2.Plugin;
 
@@ -40,6 +35,15 @@ namespace N2.Engine.Castle
 		public WindsorServiceContainer(IWindsorContainer container)
 		{
 			this.container = container;
+			container.Kernel.ComponentModelCreated += new ComponentModelDelegate(Kernel_ComponentModelCreated);
+		}
+
+		void Kernel_ComponentModelCreated(ComponentModel model)
+		{
+			if (typeof(IAutoStart).IsAssignableFrom(model.Implementation))
+			{
+				model.AddService(typeof(IAutoStart));
+			}
 		}
 
 		public IWindsorContainer Container
@@ -143,204 +147,17 @@ namespace N2.Engine.Castle
 			logger.Info("Start startable components");
 
 			container.AddFacility<StartableFacility>();
-			//container.AddFacility<AutoStartFacility>();
+
+			foreach (var startable in container.ResolveAll<IAutoStart>())
+				startable.Start();
+
+			container.Kernel.ComponentCreated += new ComponentInstanceDelegate(Kernel_ComponentCreated);
 		}
 
-		///// <summary>
-		///// This class is derived from the Castle Startable facility, with appropriate modifications
-		///// </summary>
-		//class AutoStartFacility : AbstractFacility
-		//{
-		//    private readonly Engine.Logger<AutoStartFacility> logger;
-		//    private readonly ArrayList waitingList = new ArrayList();
-
-		//    // Don't check the waiting list while this flag is set as this could result in
-		//    // duplicate singletons.
-		//    private bool inStart;
-
-		//    protected override void Init()
-		//    {
-		//        Kernel.ComponentModelCreated += OnComponentModelCreated;
-		//        Kernel.ComponentRegistered += OnComponentRegistered;
-
-		//        StartComponents();
-		//    }
-
-		//    private void StartComponents()
-		//    {
-		//        var naming = (INamingSubSystem)Kernel.GetSubSystem(SubSystemConstants.NamingKey);
-		//        logger.Debug("Starting components: ");
-		//        int started = 0;
-		//        foreach (GraphNode node in Kernel.GraphNodes)
-		//        {
-		//            var model = node as ComponentModel;
-		//            if (model == null)
-		//                continue;
-		//            if (!typeof(IAutoStart).IsAssignableFrom(model.Implementation))
-		//                continue;
-
-		//            IHandler h = naming.GetHandler(model.Name);
-		//            if (h.CurrentState != HandlerState.Valid)
-		//                continue;
-
-		//            var instance = Kernel.Resolve(model.Name, new Arguments()) as IAutoStart;
-		//            logger.Info("Started " + instance);
-		//            instance.Start();
-		//            started++;
-		//        }
-		//        logger.DebugFormat("Started {0} of {1} components", started, Kernel.GraphNodes.Length);
-		//    }
-
-		//    private void OnComponentRegistered(String key, IHandler handler)
-		//    {
-		//        bool startable = (bool?)handler.ComponentModel.ExtendedProperties["startable"] ?? false;
-
-		//        if (startable)
-		//        {
-		//            if (handler.CurrentState == HandlerState.WaitingDependency)
-		//            {
-		//                AddHandlerToWaitingList(handler);
-		//            }
-		//            else
-		//            {
-		//                Start(key);
-		//            }
-		//        }
-
-		//        CheckWaitingList();
-		//    }
-
-		//    private void OnComponentModelCreated(ComponentModel model)
-		//    {
-		//        bool startable = CheckIfComponentImplementsIStartable(model);
-
-		//        logger.DebugFormat("Created component ot type {0}, startable = {1}", model.Service, startable);
-
-		//        model.ExtendedProperties["startable"] = startable;
-
-		//        if (!startable)
-		//            return;
-
-		//        model.Lifecycle.Add(StartConcern.Instance);
-		//        model.Lifecycle.AddFirst(StopConcern.Instance);
-		//    }
-
-		//    private void OnHandlerStateChanged(object source, EventArgs args)
-		//    {
-		//        CheckWaitingList();
-		//    }
-
-		//    private void AddHandlerToWaitingList(IHandler handler)
-		//    {
-		//        waitingList.Add(handler);
-
-		//        handler.OnHandlerStateChanged += OnHandlerStateChanged;
-		//    }
-
-		//    /// <summary>
-		//    /// For each new component registered,
-		//    /// some components in the WaitingDependency
-		//    /// state may have became valid, so we check them
-		//    /// </summary>
-		//    private void CheckWaitingList()
-		//    {
-		//        if (inStart)
-		//            return;
-
-		//        var handlers = (IHandler[])waitingList.ToArray(typeof(IHandler));
-
-		//        IList validList = new ArrayList();
-
-		//        foreach (IHandler handler in handlers)
-		//        {
-		//            if (handler.CurrentState != HandlerState.Valid)
-		//                continue;
-
-		//            validList.Add(handler);
-		//            waitingList.Remove(handler);
-
-		//            handler.OnHandlerStateChanged -= OnHandlerStateChanged;
-		//        }
-
-		//        foreach (IHandler handler in validList)
-		//        {
-		//            Start(handler.ComponentModel.Name);
-		//        }
-		//    }
-
-		//    /// <summary>
-		//    /// Request the component instance
-		//    /// </summary>
-		//    /// <param name="key"></param>
-		//    private void Start(String key)
-		//    {
-		//        try
-		//        {
-		//            inStart = true;
-
-		//            object instance = Kernel.Resolve(key, new Arguments());
-		//        }
-		//        finally
-		//        {
-		//            inStart = false;
-		//        }
-		//    }
-
-		//    private static bool CheckIfComponentImplementsIStartable(ComponentModel model)
-		//    {
-		//        return typeof(IAutoStart).IsAssignableFrom(model.Implementation);
-		//    }
-
-
-		//    #region Start & Stop Concern
-		//    class StartConcern : ILifecycleConcern, ICommissionConcern
-		//    {
-		//        private readonly Engine.Logger<StartConcern> logger;
-		//        private static readonly StartConcern instance = new StartConcern();
-
-		//        private StartConcern()
-		//        {
-		//        }
-
-		//        public static StartConcern Instance
-		//        {
-		//            get { return instance; }
-		//        }
-
-		//        public void Apply(ComponentModel model, object component)
-		//        {
-		//            var autoStart = component as IAutoStart;
-		//            if (autoStart != null && !(component is IStartable))
-		//            {
-		//                logger.Info("Starting " + component);
-		//                autoStart.Start();
-		//            }
-		//        }
-		//    }
-
-		//    class StopConcern : ILifecycleConcern, IDecommissionConcern
-		//    {
-		//        private static readonly StopConcern instance = new StopConcern();
-
-		//        private StopConcern()
-		//        {
-		//        }
-
-		//        public static StopConcern Instance
-		//        {
-		//            get { return instance; }
-		//        }
-
-		//        public void Apply(ComponentModel model, object component)
-		//        {
-		//            var autoStart = component as IAutoStart;
-		//            if (autoStart != null)
-		//            {
-		//                autoStart.Stop();
-		//            }
-		//        }
-		//    }
-		//    #endregion
-		//}
+		void Kernel_ComponentCreated(ComponentModel model, object instance)
+		{
+			if (instance is IAutoStart)
+				(instance as IAutoStart).Start();
+		}
 	}
 }
