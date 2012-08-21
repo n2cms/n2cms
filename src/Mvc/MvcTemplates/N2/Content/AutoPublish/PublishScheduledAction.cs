@@ -26,8 +26,8 @@ namespace N2.Edit.AutoPublish
 			for (int i = 0; i < scheduledForAutoPublish.Count; i++)
 			{
                 // Get the relevant versions
-				var scheduledVersion = scheduledForAutoPublish[i];
-				var masterVersion = scheduledVersion.VersionOf;
+				ContentItem scheduledVersion = scheduledForAutoPublish[i];
+				ContentItem masterVersion = scheduledVersion.VersionOf;
 				// Removing the DelayPublishingUntil Date so that it won't get picked up again
                 scheduledVersion["FuturePublishDate"] = null;
 
