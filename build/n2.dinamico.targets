@@ -7,7 +7,7 @@
 		<Dinamico-SourceFolder>$(SrcFolder)\Mvc\Dinamico</Dinamico-SourceFolder>
 		<Dinamico-DeployFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Mvc</Dinamico-DeployFolder>
 		<Dinamico-DeployFolder-Path>$(Dinamico-DeployFolder)\N2CMS</Dinamico-DeployFolder-Path>
-		<Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Nugetc</Dinamico-NugetFolder>
+		<Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Nuget</Dinamico-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Dinamico-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
