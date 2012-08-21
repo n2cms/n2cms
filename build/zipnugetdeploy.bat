@@ -1,1 +1,1 @@
-build /t:zipdeploy;framework-nuget;dinamico-nuget & pause
+build /t:zipdeploy;build-nuget & pause
