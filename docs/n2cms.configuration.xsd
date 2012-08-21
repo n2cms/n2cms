@@ -203,7 +203,7 @@
 												<xs:attribute name="assembly" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="assembly" type="xs:string" use="required" />
 											</xs:complexType>
@@ -211,6 +211,7 @@
 									</xs:sequence>
 									<xs:attribute name="restrictToLoadingPattern" type="xs:string" use="optional" />
 									<xs:attribute name="skipLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="enableTypeCache" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
@@ -264,7 +265,7 @@
 							<xs:element name="components" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="service" type="xs:string" use="required" />
 												<xs:attribute name="implementation" type="xs:string" use="required" />
@@ -350,7 +351,7 @@
 							<xs:element name="hibernateProperties" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 												<xs:attribute name="value" type="xs:string" use="required" />
@@ -362,7 +363,7 @@
 							<xs:element name="mappings" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 											</xs:complexType>

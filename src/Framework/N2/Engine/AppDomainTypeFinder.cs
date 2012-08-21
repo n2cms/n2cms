@@ -20,9 +20,9 @@ namespace N2.Engine
 
 		private bool loadAppDomainAssemblies = true;
 
-		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql|^App_GlobalResources|^App_global|^App_Web_|^EntityFramework|^WebGrease|^App_global.asax";
+		private Regex assemblySkipLoadingPattern = new Regex("^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt|^MvcContrib|^AjaxControlToolkit|^Antlr3|^Remotion|^Recaptcha|^Lucene|^Ionic|^HibernatingRhinos|^Spark|^SharpArch|^CommonServiceLocator|^Newtonsoft|^SMDiagnostics|^App_LocalResources|^AntiXSSLibrary|^dotless|^HtmlSanitizationLibrary|^sqlce|^WindowsBase|^Pandora|^PegBase|^DynamicProxyGenAssembly|^Anonymously Hosted DynamicMethods Assembly|^WebActivator|^Deleporter|^Elmah|^Markdown|^SimpleHttpClient|^StructureMap|^WebDriver|^MySql|^App_GlobalResources|^App_global|^App_Web_|^EntityFramework|^WebGrease|^App_global.asax");
 
-		private string assemblyRestrictToLoadingPattern = ".*";
+		private Regex assemblyRestrictToLoadingPattern = new Regex(".*");
 		private IList<string> assemblyNames = new List<string>();
 
 		Logger<AppDomainTypeFinder> logger;
@@ -46,7 +46,7 @@ namespace N2.Engine
 		}
 
 		/// <summary>Gets the pattern for dlls that we know don't need to be investigated for content items.</summary>
-		public string AssemblySkipLoadingPattern
+		public Regex AssemblySkipLoadingPattern
 		{
 			get { return assemblySkipLoadingPattern; }
 			set { assemblySkipLoadingPattern = value; }
@@ -54,7 +54,7 @@ namespace N2.Engine
 
 		/// <summary>Gets or sets the pattern for dll that will be investigated. For ease of use this defaults to match all but to increase performance you might want to configure a pattern that includes N2 assemblies and your own.</summary>
 		/// <remarks>If you change this so that N2 assemblies arn't investigated (e.g. by not including something like "^N2|..." you may break core functionality.</remarks>
-		public string AssemblyRestrictToLoadingPattern
+		public Regex AssemblyRestrictToLoadingPattern
 		{
 			get { return assemblyRestrictToLoadingPattern; }
 			set { assemblyRestrictToLoadingPattern = value; }
@@ -70,30 +70,38 @@ namespace N2.Engine
 			List<Type> types = new List<Type>();
 			foreach (Assembly a in GetAssemblies())
 			{
-				try
-				{
-					foreach (Type t in a.GetTypes())
-					{
-						if (requestedType.IsAssignableFrom(t))
-							types.Add(t);
-					}
-				}
-				catch (ReflectionTypeLoadException ex)
-				{
-					string loaderErrors = string.Empty;
-					foreach (Exception loaderEx in ex.LoaderExceptions)
-					{
-						Engine.Logger.Error(loaderEx);
-						loaderErrors += ", " + loaderEx.Message;
-					}
-
-					throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
-				}
+				types.AddRange(GetTypesInAssembly(requestedType, a));
 			}
 
 			logger.DebugFormat("Loading requested types {0}, found {1}", requestedType, types.Count);
 
 			return types;
+		}
+
+		protected static IEnumerable<Type> GetTypesInAssembly(Type requestedType, Assembly a)
+		{
+			Type[] allTypes;
+			try
+			{
+				allTypes = a.GetTypes();
+			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				string loaderErrors = string.Empty;
+				foreach (Exception loaderEx in ex.LoaderExceptions)
+				{
+					Engine.Logger.Error(loaderEx);
+					loaderErrors += ", " + loaderEx.Message;
+				}
+
+				throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
+			}
+
+			foreach (Type t in allTypes)
+			{
+				if (requestedType.IsAssignableFrom(t))
+					yield return t;
+			}
 		}
 
 		public virtual IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(Type requestedType, bool inherit = false) where TAttribute : class
@@ -179,17 +187,8 @@ namespace N2.Engine
 		/// <returns>True if the assembly should be loaded into N2.</returns>
 		public virtual bool Matches(string assemblyFullName)
 		{
-			return !Matches(assemblyFullName, AssemblySkipLoadingPattern)
-			       && Matches(assemblyFullName, AssemblyRestrictToLoadingPattern);
-		}
-
-		/// <summary>Check if a dll is one of the shipped dlls that we know don't need to be investigated.</summary>
-		/// <param name="assemblyFullName">The assembly name to match.</param>
-		/// <param name="pattern">The regular expression pattern to match against the assembly name.</param>
-		/// <returns>True if the pattern matches the assembly name.</returns>
-		protected virtual bool Matches(string assemblyFullName, string pattern)
-		{
-			return Regex.IsMatch(assemblyFullName, pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+			return !AssemblySkipLoadingPattern.IsMatch(assemblyFullName)
+				&& AssemblyRestrictToLoadingPattern.IsMatch(assemblyFullName);
 		}
 
 		/// <summary>Makes sure matching assemblies in the supplied folder are loaded in the app domain.</summary>
@@ -201,14 +200,16 @@ namespace N2.Engine
 				logger.InfoFormat("Probing path doesn't exist: {0}", directoryPath);
 				return new Assembly[0];
 			}
+			var dlls = Directory.GetFiles(directoryPath, "*.dll");
+			logger.DebugFormat("Analyzing {0} dlls in path {1}", dlls.Length, directoryPath);
 
 			var assemblies = new List<Assembly>();
-			foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
+			foreach (string dllPath in dlls)
 			{
-				logger.DebugFormat("Analyzing {0} dlls in path {1}", dllPath.Length, directoryPath);
 				try
 				{
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
+					logger.DebugFormat("Matching {0}", assumedAssemblyName);
 					if (Matches(assumedAssemblyName))
 					{
 						logger.Debug("Loading " + assumedAssemblyName);

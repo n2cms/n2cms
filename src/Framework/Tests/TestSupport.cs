@@ -146,7 +146,7 @@ namespace N2.Tests
 		{
 			var context = new ThreadContext();
 			var finder = new WebAppTypeFinder(new TypeCache(context, new N2.Persistence.BasicTemporaryFileHelper(context)), config);
-			finder.AssemblyRestrictToLoadingPattern = "N2.Tests";
+			finder.AssemblyRestrictToLoadingPattern = new System.Text.RegularExpressions.Regex("N2.Tests");
 			return finder;
 		}
 	}

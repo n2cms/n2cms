@@ -33,7 +33,7 @@ namespace N2.Configuration
 			set { base["skipLoadingPattern"] = value; }
 		}
 
-		[ConfigurationProperty("enableTypeCache", DefaultValue = false)]
+		[ConfigurationProperty("enableTypeCache", DefaultValue = true)]
 		public bool EnableTypeCache
 		{
 			get { return (bool)base["enableTypeCache"]; }

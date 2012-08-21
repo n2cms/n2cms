@@ -13,10 +13,37 @@ namespace N2.Engine
 	/// </summary>
 	public class TypeCache
 	{
+		#region CachedAssembly
+		class CachedAssembly
+		{
+			Logger<TypeCache> logger;
+			public Assembly Assembly { get; set; }
+			public Guid ModuleId;
+			public Dictionary<string, List<Type>> Queries = new Dictionary<string, List<Type>>();
+
+			public IEnumerable<Type> GetOrCreateCache(string key, Func<Assembly, IEnumerable<Type>> factory, ref bool factoryInvoked)
+			{
+				lock (this)
+				{
+					if (!Queries.ContainsKey(key))
+					{
+						factoryInvoked = true;
+						var types = factory(Assembly).ToList();
+						logger.DebugFormat("Recreating cache for key {0}, found {1} types in assembly {2}/{3}", key, types.Count, Assembly, ModuleId);
+						Queries[key] = types;
+						return types;
+					}
+					else
+						return Queries[key];
+				}
+			}
+		}
+		#endregion
+
 		Logger<TypeCache> logger;
 		private Web.IWebContext webContext;
 		private BasicTemporaryFileHelper temp;
-		Assembly[] cache;
+		private List<CachedAssembly> cache;
 
 		public TypeCache(Web.IWebContext webContext, BasicTemporaryFileHelper temp)
 		{
@@ -24,69 +51,17 @@ namespace N2.Engine
 			this.temp = temp;
 		}
 
-		public IEnumerable<Type> GetTypes(string key, Func<IEnumerable<Type>> factory)
+		public IEnumerable<Type> GetTypes(string key, Func<IEnumerable<Assembly>> assemblyFactory, Func<Assembly, IEnumerable<Type>> factory)
 		{
-			var settings = GetSettings();
-			if (!settings.ContainsKey("timestamp"))
-				return ReReadTypes(key, factory, "no timestamp");
-
-			//if (string.IsNullOrEmpty(timestamp) || IsModifiedAfter(timestamp))
-			//    return ReReadTypes(key, factory, "changes after " + timestamp);
-
-			var timestamp = settings["timestamp"].FirstOrDefault();
-			if (!settings.ContainsKey(key) && IsModifiedAfter(timestamp))
-				return ReReadTypes(key, factory, "no cached types");
-
-			try
+			bool changesMade = false;
+			foreach (var cachedAssembly in GetCache(assemblyFactory))
 			{
-				var types = new List<Type>();
-				foreach(var typeAndModule in settings[key])
-				{
-					var split = typeAndModule.Split(';');
-					var type = Type.GetType(split[0]);
-					if (type == null || split.Length < 2 || type.Module.ModuleVersionId != new Guid(split[1]))
-						return ReReadTypes(key, factory, "Cached type + " + typeAndModule + " doesn't match cached module id");
-					types.Add(type);
-				}
-				logger.DebugFormat("Reading {0} types for key {1} from cached settings with timestamp {2}", types.Count, key, timestamp);
-				return types;
+				foreach (var type in cachedAssembly.GetOrCreateCache(key, factory, ref changesMade))
+					yield return type;
 			}
-			catch (Exception ex)
-			{
-				logger.Error(ex);
-				return ReReadTypes(key, factory, ex.Message);
-			}
-		}
 
-		private IEnumerable<Type> ReReadTypes(string key, Func<IEnumerable<Type>> factory, string reason)
-		{
-			var types = factory().ToList();
-			logger.InfoFormat("Reading {0} types for key {1}, reason: {2}", types.Count, key, reason);
-
-			SaveSettings(key, types);
-			return types;
-		}
-
-		private void SaveSettings(string key, IEnumerable<Type> types)
-		{
-			lock (this)
-			{
-				var settings = GetSettings();
-				using (var sw = OverwriteAssemblyCache())
-				{
-					foreach (var existingKey in settings.Keys.Where(k => k != key))
-						foreach (var setting in settings[existingKey])
-							sw.WriteLine(existingKey + "=" + setting);
-
-					foreach (var type in types)
-					{
-						sw.WriteLine(key + "=" + type.AssemblyQualifiedName + ";" + type.Module.ModuleVersionId);
-					}
-					fileCache = null;
-					sw.Flush();
-					sw.Close();
-				}
-			}
+			if (changesMade)
+				SaveCache();
 		}
 
 		/// <summary>
@@ -94,98 +69,103 @@ namespace N2.Engine
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <returns></returns>
-		public IEnumerable<Assembly> GetAssemblies(Func<IEnumerable<Assembly>> factory)
+		public virtual IEnumerable<Assembly> GetAssemblies(Func<IEnumerable<Assembly>> factory)
+		{
+			return GetCache(factory).Select(a => a.Assembly);
+		}
+
+		private IEnumerable<CachedAssembly> GetCache(Func<IEnumerable<Assembly>> factory)
 		{
 			if (cache != null)
 				return cache;
 
-			var settings = GetSettings();
-			if (!settings.ContainsKey("timestamp"))
-				return ReReadAssemblies(factory, "no timestamp");
-
-			var timestamp = settings["timestamp"].FirstOrDefault();
-			if (string.IsNullOrEmpty(timestamp) || IsModifiedAfter(timestamp))
-				return ReReadAssemblies(factory, "changes after " + timestamp);
-
-			if (!settings.ContainsKey("assembly"))
-				return ReReadAssemblies(factory, "no cached assemblies");
-
-			var assemblies = settings["assembly"].ToArray();
-			logger.DebugFormat("Reading assemblies from cache with timestamp {0}, assemblies: {1}", timestamp, string.Join("; ", assemblies));
-
-			try
-			{
-				return cache = assemblies.Select(name => AppDomain.CurrentDomain.Load(name)).ToArray();
-			}
-			catch (Exception ex)
-			{
-				logger.Warn(ex);
-				return ReReadAssemblies(factory, ex.Message);
-			}
-		}
-
-		private IEnumerable<Assembly> ReReadAssemblies(Func<IEnumerable<Assembly>> factory, string reason)
-		{
-			var assemblies = factory();
-			logger.DebugFormat("Re-reading assemblies due to {0}", reason);
-			SaveSettings(assemblies);
-			return cache = assemblies.ToArray();
-		}
-
-		private void SaveSettings(IEnumerable<Assembly> assemblies)
-		{
-			var files = GetAssemblyFiles().ToDictionary(fi => Path.GetFileNameWithoutExtension(fi.Name), StringComparer.InvariantCultureIgnoreCase);
-			var timestamp = files.Values.Max(fi => fi.LastWriteTimeUtc);
-			
-			logger.InfoFormat("Caching {0} assemblies with timestamp {1}", assemblies.Count(), timestamp);
-			
-			lock (this)
-			{
-				using (var sw = OverwriteAssemblyCache())
-				{
-					sw.WriteLine("timestamp=" + timestamp);
-					foreach (var assembly in assemblies)
-					{
-						sw.WriteLine("assembly=" + assembly.FullName);
-
-						DateTime assemblyWriteTime = timestamp;
-						FileInfo assemblyFile;
-						if (files.TryGetValue(assembly.FullName.Split(',')[0], out assemblyFile))
-							assemblyWriteTime = assemblyFile.LastWriteTimeUtc;
-						foreach (var module in assembly.GetModules(false))
-							sw.WriteLine("module=" + module.ModuleVersionId + ";" + assemblyWriteTime + ";" + assembly.FullName);
-					}
-					fileCache = null;
-					sw.Flush();
-					sw.Close();
-				}
-			}
-		}
-
-		IDictionary<string, IEnumerable<string>> fileCache;
-		private IDictionary<string, IEnumerable<string>> GetSettings()
-		{
-			if (fileCache != null)
-				return fileCache;
-			
 			var path = GetAssemblyCachePath();
+
+			var assemblies = factory().Select(a => new CachedAssembly { Assembly = a, ModuleId = a.ManifestModule.ModuleVersionId }).ToList();
 			if (File.Exists(path))
 			{
 				lock (this)
 				{
+					if (cache != null)
+						return cache;
+
 					var lines = File.ReadAllLines(path)
 						.Select(line => new { Index = line.IndexOf('='), Line = line })
 						.Where(line => line.Index >= 0);
 					var settings = lines
 						.Select(line => new { Key = line.Line.Substring(0, line.Index), Value = line.Line.Substring(line.Index + 1) })
-						.GroupBy(line => line.Key, line => line.Value);
-					fileCache = settings.ToDictionary(group => group.Key, group => (IEnumerable<string>)group.ToList());
+						.GroupBy(setting => setting.Key)
+						.ToDictionary(setting => setting.Key, setting => setting.Select(s => s.Value));
+
+					foreach (var assemblyWithQueries in assemblies)
+					{
+						if (settings.ContainsKey(assemblyWithQueries.ModuleId.ToString()))
+						{
+							foreach (var value in settings[assemblyWithQueries.ModuleId.ToString()])
+							{
+								var semicolonIndex = value.IndexOf(';');
+								if (semicolonIndex < 0)
+									continue;
+
+								string query = value.Substring(0, semicolonIndex);
+								if (!assemblyWithQueries.Queries.ContainsKey(query))
+									assemblyWithQueries.Queries[query] = new List<Type>();
+
+								string typeName = value.Substring(semicolonIndex + 1);
+								if (typeName == "none")
+									continue;
+
+								var type = assemblyWithQueries.Assembly.GetType(typeName);
+								if (type == null)
+									continue;
+
+								assemblyWithQueries.Queries[query].Add(type);
+							}
+						}
+						logger.DebugFormat("Added {0} queries to assembly {1}", assemblyWithQueries.Queries.Count, assemblyWithQueries.Assembly);
+					}
 				}
 			}
-			else
-				fileCache = new Dictionary<string, IEnumerable<string>>();
+				
+			return cache = assemblies;
+		}
 
-			return fileCache;
+		//private List<CachedAssembly> CreateCachedAssemblies(Func<IEnumerable<Assembly>> factory, string reason)
+		//{
+		//    logger.InfoFormat("Retrieving assemblies from factory due to {0}", reason);
+		//    var assemblies = factory().Select(a => new CachedAssembly { Assembly = a, ModuleId = a.ManifestModule.ModuleVersionId }).ToList();
+		//    logger.DebugFormat("Got {0} assemblies", assemblies.Count);
+		//    return assemblies;
+		//}
+
+		private void SaveCache()
+		{
+			logger.InfoFormat("Storing {0} assemblies to disk", cache.Count);
+			
+			lock (this)
+			{
+				using (var sw = OverwriteAssemblyCache())
+				{
+					sw.AppendSetting("timestamp", DateTime.UtcNow.ToString());
+					sw.AppendSetting("version", "1");
+
+					foreach (var assembly in cache)
+					{
+						logger.DebugFormat("Caching assembly {0} with {1} queries", assembly.Assembly, assembly.Queries.Count);
+						sw.AppendSetting("assembly", assembly.ModuleId + ";" + assembly.Assembly.FullName);
+						foreach (var query in assembly.Queries)
+						{
+							if (query.Value.Count == 0)
+								sw.AppendSetting(assembly.ModuleId.ToString(), query.Key + ";none");
+
+							foreach (var type in query.Value)
+								sw.AppendSetting(assembly.ModuleId.ToString(), query.Key + ";" + type.FullName);
+						}
+					}
+					sw.Flush();
+					sw.Close();
+				}
+			}
 		}
 
 		private string GetAssemblyCachePath()
@@ -193,42 +173,23 @@ namespace N2.Engine
 			return Path.Combine(temp.GetSharedTemporaryDirectory(), "AssemblyCache.config");
 		}
 
-		private bool IsModifiedAfter(string timestampString)
+		public void Clear()
 		{
-			DateTime timestamp;
-			if (!DateTime.TryParse(timestampString, out timestamp))
-				return true;
-
-			var mostRecentAssembly = GetMostRecentModifiedDate();
-			if (timestamp < mostRecentAssembly)
-				return true;
-
-			return false;
-		}
-
-		public DateTime GetMostRecentModifiedDate()
-		{
-			var max = GetAssemblyFiles().Max(fi => fi.LastWriteTimeUtc);
-			return new DateTime(max.Year, max.Month, max.Day, max.Hour, max.Minute, max.Second);
-		}
-
-		private IEnumerable<FileInfo> GetAssemblyFiles()
-		{
-			return GetProbingPaths().SelectMany(pp => new DirectoryInfo(pp).GetFiles("*.dll"));
-		}
-
-		private StreamWriter AppendAssemblyCache()
-		{
+			cache = null;
 			var path = GetAssemblyCachePath();
-			return File.AppendText(path);
+			if (File.Exists(path))
+				File.Delete(path);
 		}
 
 		private StreamWriter OverwriteAssemblyCache()
 		{
 			var path = GetAssemblyCachePath();
-			if (File.Exists(path))
-				File.Delete(path);
-			return File.CreateText(path);
+			lock (this)
+			{
+				if (File.Exists(path))
+					File.Delete(path);
+				return File.CreateText(path);
+			}
 		}
 
 		public virtual IEnumerable<string> GetProbingPaths()
@@ -236,6 +197,17 @@ namespace N2.Engine
 			return new [] { 
 				webContext.IsWeb ? webContext.MapPath("~/bin") : Environment.CurrentDirectory
 			};
+		}
+	}
+
+	internal static class TypeCacheExtensions
+	{
+		public static TextWriter AppendSetting(this TextWriter writer, string key, string value)
+		{
+			writer.Write(key);
+			writer.Write("=");
+			writer.WriteLine(value);
+			return writer;
 		}
 	}
 }
