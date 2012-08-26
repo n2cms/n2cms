@@ -10,6 +10,7 @@ namespace N2.Engine
 	{
 		public string Key { get; set; }
 		public Type ServiceType { get; set; }
+		public IEnumerable<Type> ServiceTypes { get; set; }
 		public Type ImplementationType { get; set; }
 		public Func<object> Resolve { get; set; }
 		public Func<IEnumerable> ResolveAll { get; set; }

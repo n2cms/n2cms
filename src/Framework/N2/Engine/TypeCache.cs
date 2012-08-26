@@ -41,13 +41,11 @@ namespace N2.Engine
 		#endregion
 
 		Logger<TypeCache> logger;
-		private Web.IWebContext webContext;
 		private BasicTemporaryFileHelper temp;
 		private List<CachedAssembly> cache;
 
-		public TypeCache(Web.IWebContext webContext, BasicTemporaryFileHelper temp)
+		public TypeCache(BasicTemporaryFileHelper temp)
 		{
-			this.webContext = webContext;
 			this.temp = temp;
 		}
 
@@ -194,9 +192,10 @@ namespace N2.Engine
 
 		public virtual IEnumerable<string> GetProbingPaths()
 		{
-			return new [] { 
-				webContext.IsWeb ? webContext.MapPath("~/bin") : Environment.CurrentDirectory
-			};
+			if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "bin\\"))
+				return new[] { AppDomain.CurrentDomain.BaseDirectory + "bin\\" };
+			else
+				return new[] { AppDomain.CurrentDomain.BaseDirectory };
 		}
 	}
 

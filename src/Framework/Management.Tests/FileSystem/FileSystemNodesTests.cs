@@ -13,8 +13,25 @@ using N2.Tests.Fakes;
 
 namespace N2.Edit.Tests.FileSystem
 {
-    [TestFixture]
-    public class FileSystemNodeTests : DatabasePreparingBase
+	[TestFixture]
+	public class MediumTrustFileSystemNodeTests : FileSystemNodeTests
+	{
+		protected override Engine.ContentEngine CreateEngine()
+		{
+			return new Engine.ContentEngine(new N2.Engine.MediumTrust.MediumTrustServiceContainer(), new EventBroker(), new Engine.ContainerConfigurer());
+		}
+	}
+
+	[TestFixture]
+	public class TinyIoCFileSystemNodeTests : FileSystemNodeTests
+	{
+		protected override Engine.ContentEngine CreateEngine()
+		{
+			return new Engine.ContentEngine(new N2.Engine.TinyIoC.TinyIoCServiceContainer(), new EventBroker(), new Engine.ContainerConfigurer());
+		}
+	}
+
+    public abstract class FileSystemNodeTests : DatabasePreparingBase
 	{
 		#region Set up & tear down
 		string basePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";

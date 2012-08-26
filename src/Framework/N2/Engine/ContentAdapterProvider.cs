@@ -140,7 +140,7 @@ namespace N2.Engine
 			return adapter;
 		}
 		 
-		private bool ContainsServiceOfType(Array services, Type adapterType)
+		private bool ContainsServiceOfType(IEnumerable<object> services, Type adapterType)
 		{
 			foreach (var service in services)
 			{

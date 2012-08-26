@@ -33,13 +33,13 @@ namespace N2.Engine
 		public abstract void Release(object instance);
 
 		/// <summary>Returns the service registered for the given key.</summary>
-		public virtual T Resolve<T>()
+		public virtual T Resolve<T>() where T : class
 		{
 			return (T)Resolve(typeof(T));
 		}
 
 		/// <summary>Returns the first registered service of the given type.</summary>
-		public virtual T Resolve<T>(string key)
+		public virtual T Resolve<T>(string key) where T : class
 		{
 			return (T)Resolve(key);
 		}
@@ -50,7 +50,7 @@ namespace N2.Engine
 		/// <summary>Resolves all services serving the given interface.</summary>
 		/// <param name="serviceType">The type of service to resolve.</param>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		public abstract Array ResolveAll(Type serviceType);
+		public abstract IEnumerable<object> ResolveAll(Type serviceType);
 
 		/// <summary>Retrieves registered types.</summary>
 		/// <returns>All registered services.</returns>
@@ -59,7 +59,7 @@ namespace N2.Engine
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		public abstract T[] ResolveAll<T>();
+		public abstract IEnumerable<T> ResolveAll<T>() where T : class;
 
 		#endregion
 	}
