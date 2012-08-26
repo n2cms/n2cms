@@ -40,11 +40,11 @@ namespace N2.Management.Content.Versions
 		private string GetVersionInfo(ContentItem v)
 		{
 			if (v.Expires.HasValue)
-				return GetLocalResourceObject("tdExpired.Label").ToString() + v.Expires.Value;
+				return GetLocalResourceString("tdExpired.Label", "Expired") + v.Expires.Value;
 			if (v.State == ContentState.Waiting)
-				return GetLocalResourceObject("tdFuturePublish.Label").ToString() + v["FuturePublishDate"];
+				return GetLocalResourceString("tdFuturePublish.Label", "Pending publish") + v["FuturePublishDate"];
 			if (v.State == ContentState.Draft)
-				return GetLocalResourceObject("tdActivity.Label").ToString() + v["FuturePublishDate"];
+				return GetLocalResourceString("tdActivity.Label", "Activity") + v["FuturePublishDate"];
 
 			return "";
 		}

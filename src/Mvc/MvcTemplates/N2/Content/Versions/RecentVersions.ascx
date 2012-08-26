@@ -3,7 +3,7 @@
 <n2:Box ID="boxVersions" HeadingText="Recenet Versions" CssClass="box versionBox" runat="server" meta:resourceKey="boxVersions">
 	<table class="gv">
 		<thead>
-			<tr><td><%= GetLocalResourceObject("bfVersion.HeaderText") %></td><td><%= GetLocalResourceObject("bfSavedBy.HeaderText") %></td><td></td></tr>
+			<tr><td><%= GetLocalResourceString("bfVersion.HeaderText", "Version")%></td><td><%= GetLocalResourceString("bfSavedBy.HeaderText", "Saved by")%></td><td></td></tr>
 		</thead>
 		<tbody>
 		<% foreach(var version in Versions){ %>

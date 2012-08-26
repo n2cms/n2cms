@@ -49,5 +49,16 @@ namespace N2.Edit.Web
 			Page.RefreshFrames(item, area, force);
 		}
 
+		protected virtual string GetLocalResourceString(string resourceKey, string defaultText)
+		{
+			try
+			{
+				return GetLocalResourceObject(resourceKey) as string ?? defaultText;
+			}
+			catch (Exception)
+			{
+				return defaultText;
+			}
+		}
     }
 }

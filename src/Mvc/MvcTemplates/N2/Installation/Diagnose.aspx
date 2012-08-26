@@ -72,7 +72,8 @@
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
 					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>
 					<tr><th>Application Path</th><td><%= Request.ApplicationPath %></td></tr>
-					<tr><th>CurrentDirectory</th><td><%= Environment.CurrentDirectory %></td></tr>
+					<tr><th>CurrentDirectory</th><td><% try { Response.Write(Environment.CurrentDirectory); } catch(Exception ex) { Response.Write(ex.Message); } %></td></tr>
+					<tr><th>BaseDirectory</th><td><% try { Response.Write(AppDomain.CurrentDomain.BaseDirectory); } catch(Exception ex) { Response.Write(ex.Message); } %></td></tr>
 					<tr><th>ApplicationPath</th><td><%= Request.ApplicationPath %></td></tr>
 					<tr><th>MapPath</th><td><%= Server.MapPath("~/") %></td></tr>
 					<tr><th>PhysicalApplicationPath</th><td><%= Request.PhysicalApplicationPath %></td></tr>
