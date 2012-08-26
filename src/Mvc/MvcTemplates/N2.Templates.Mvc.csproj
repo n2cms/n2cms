@@ -309,6 +309,8 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Default\Style.css" />
+    <Content Include="App_Themes\Default\Thumbnail.jpg" />
     <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
     <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
     <Content Include="Areas\Tests\Uc.ascx" />

@@ -91,8 +91,8 @@ namespace N2.Templates.Mvc.Models.Pages
 		[EditableThemeSelection("Theme", 74, ContainerName = LayoutArea)]
 		public string Theme
 		{
-			get { return (string)(GetDetail("Theme") ?? string.Empty); }
-			set { SetDetail("Theme", value); }
+			get { return GetDetail("Theme", "Default"); }
+			set { SetDetail("Theme", value, "Default"); }
 		}
 	}
 }
