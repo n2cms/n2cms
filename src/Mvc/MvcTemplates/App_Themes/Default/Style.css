@@ -31,13 +31,13 @@ body { margin:0; background-color:lightslategray; }
 				#menu { float:left; }
 				#extras { float:right; }
 				#main { width:500px; float:left; padding-bottom:15px; }
-		#footer {margin-top:10px;color:#ECAC00;}
+		#footer {margin-top:10px;color:lightsteelblue;}
 			#footer .n2{color:lightsteelblue;float:right;padding:0 15px;font-size:.8em;}
 
 
 /*box*/
 .boxTitle,
-.secondary h4 { background:#ecac00; margin:0; padding:5px 10px; color:#fff; }
+.secondary h4 { background:lightsteelblue; margin:0; padding:5px 10px; color:#fff; }
 .secondary h4 a,
 .secondary h4 a:visited {color:#fff;}
 .secondary .box { background:#f0f0f0; _height:1px; padding-bottom:10px; }
