@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using N2.Engine;
 using N2.Web;
+using System.Threading;
+using System.Globalization;
 
 namespace N2.Plugin.Scheduling
 {
@@ -92,6 +94,17 @@ namespace N2.Plugin.Scheduling
         {
 			if (!enabled)
 				return;
+
+			try
+			{
+				var config = ((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization"));
+				Thread.CurrentThread.CurrentCulture = new CultureInfo(config.Culture);
+				Thread.CurrentThread.CurrentUICulture = new CultureInfo(config.UICulture);
+			}
+			catch (Exception ex)
+			{
+				logger.Warn(ex);
+			}
 
             for (int i = 0; i < actions.Count; i++)
             {
