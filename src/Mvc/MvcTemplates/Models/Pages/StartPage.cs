@@ -88,11 +88,7 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		// content
 
-		[EditableThemeSelection("Theme", 74, ContainerName = LayoutArea)]
-		public string Theme
-		{
-			get { return GetDetail("Theme", "Default"); }
-			set { SetDetail("Theme", value, "Default"); }
-		}
+		[EditableThemeSelection("Theme", 74, ContainerName = LayoutArea, DefaultValue = "Default")]
+		public virtual string Theme { get; set; }
 	}
 }
