@@ -324,9 +324,16 @@ namespace N2.Collections
 		/// <summary>The item at a given level from the start page.</summary>
 		/// <param name="levelIndex"></param>
 		/// <returns></returns>
-		public ContentItem AncestorAtLevel(int levelIndex)
+		public ContentItem AncestorAtLevel(int levelIndex, bool fallbackToClosest = false)
 		{
-			return Ancestors().Reverse().Skip(levelIndex).FirstOrDefault();
+			var ancestor = Ancestors().Reverse().Skip(levelIndex).FirstOrDefault();
+			if (ancestor != null)
+				return ancestor;
+
+			if (!fallbackToClosest)
+				return null;
+
+			return Ancestors().Reverse().Take(levelIndex).Reverse().FirstOrDefault();
 		}
 		
 		/// <summary>The parent of the current item (page or part).</summary>
