@@ -548,6 +548,16 @@ namespace N2.Tests.Definitions
 			pd.PropertyType.ShouldBe(typeof(string));
 		}
 
+		[Test]
+		public void DefinitionProperties_Converys_StorageLocation()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionWithPersistable));
+			definition.Properties["Title"].Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Column);
+			definition.Properties["Hello"].Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Column);
+			definition.Properties["Other"].Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Ignore);
+			definition.Properties["Detail"].Persistable.PersistAs.ShouldBe(PropertyPersistenceLocation.Detail);
+		}
+
 		[TabContainer("tab1")]
 		public class ParentContentItem : ContentItem
 		{

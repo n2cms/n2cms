@@ -20,8 +20,8 @@ namespace N2.Tests.Persistence.NH
 		#region SetUp
 
 		IItemFinder finder;
-		ContentItem rootItem;
-		ContentItem startPage;
+		PersistableItem1 rootItem;
+		PersistableItem1 startPage;
 		ContentItem item1;
 		ContentItem item2;
 		ContentItem item3;
@@ -815,7 +815,18 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void FindCertainProperties()
+		public void Find_Select_SingleProperty()
+		{
+			var items = finder
+				.Where.Type.Eq(typeof(PersistableItem2))
+				.And.Name.Eq("item1")
+				.Select("Title");
+
+			items.Single().ShouldBe("item1");
+		}
+
+		[Test]
+		public void Find_Select_MultipleProperties()
 		{
 			var items = finder
 				.Where.Type.Eq(typeof(PersistableItem2))
@@ -824,6 +835,38 @@ namespace N2.Tests.Persistence.NH
 
 			items.Single()["Title"].ShouldBe("item1");
 			items.Single()["Name"].ShouldBe("item1");
+		}
+
+		[Test]
+		public void Find_Select_SingleDetail()
+		{
+			var items = finder
+				.Where.ID.Eq(startPage.ID)
+				.Select<PersistableItem1>("IntProperty");
+
+			items.Single().ShouldBe(33);
+		}
+
+		[Test]
+		public void Find_Select_MultipleDetails()
+		{
+			var items = finder
+				.Where.ID.Eq(startPage.ID)
+				.Select<PersistableItem1>("IntProperty", "DateTimeProperty");
+
+			items.Single()["IntProperty"].ShouldBe(33);
+			items.Single()["DateTimeProperty"].ShouldBe(new DateTime(2013, 04, 07));
+		}
+
+		[Test]
+		public void Find_Select_DetailAndProperty()
+		{
+			var items = finder
+				.Where.ID.Eq(startPage.ID)
+				.Select<PersistableItem1>("Title", "IntProperty");
+
+			items.Single()["Title"].ShouldBe("start page");
+			items.Single()["IntProperty"].ShouldBe(33);
 		}
 
 		//[Test]
@@ -1256,7 +1299,9 @@ namespace N2.Tests.Persistence.NH
 			startPage.SortOrder = 34;
 			startPage.Visible = true;
             startPage.State = ContentState.Published;
-            startPage["IntDetail"] = 45;
+			startPage.IntProperty = 33;
+			startPage.DateTimeProperty = new DateTime(2013, 04, 07);
+			startPage["IntDetail"] = 45;
 			startPage["DoubleDetail"] = 56.66;
 			startPage["BoolDetail"] = true;
 			startPage["DateDetail"] = new DateTime(2000, 01, 01);
@@ -1278,6 +1323,7 @@ namespace N2.Tests.Persistence.NH
 			rootItem.ZoneName = "TheZone";
 			rootItem.SortOrder = 23;
 			rootItem.Visible = false;
+            rootItem["IntDetail"] = 43;
             rootItem["IntDetail"] = 43;
 			rootItem["DoubleDetail"] = 43.33;
 			rootItem["BoolDetail"] = false;

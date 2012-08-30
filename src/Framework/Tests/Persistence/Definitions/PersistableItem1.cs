@@ -27,7 +27,7 @@ namespace N2.Tests.Persistence.Definitions
 			get { return (int)(GetDetail("IntProperty") ?? 0); }
 			set { SetDetail<int>("IntProperty", value); }
 		}
-
+		[EditableDate]
 		public virtual DateTime DateTimeProperty
 		{
 			get { return (DateTime)(GetDetail("DateTimeProperty") ?? DateTime.MinValue); }
