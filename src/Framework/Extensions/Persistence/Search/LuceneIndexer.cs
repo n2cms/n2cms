@@ -124,8 +124,8 @@ namespace N2.Persistence.Search
 		private string GetTrail(IndexSearcher s, Term t)
 		{
 			return s.Search(new TermQuery(t), 1)
-				.scoreDocs
-				.Select(d => s.Doc(d.doc).Get(Properties.Trail))
+				.ScoreDocs
+				.Select(d => s.Doc(d.Doc).Get(Properties.Trail))
 				.FirstOrDefault();
 		}
 
