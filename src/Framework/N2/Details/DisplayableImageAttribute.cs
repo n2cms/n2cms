@@ -2,9 +2,11 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.Drawing;
+using System;
 
 namespace N2.Details
 {
+	[AttributeUsage(AttributeTargets.Property)]
 	public class DisplayableImageAttribute : AbstractDisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
 		private string alt = string.Empty;

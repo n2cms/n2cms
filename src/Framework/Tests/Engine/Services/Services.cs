@@ -82,8 +82,13 @@ namespace N2.Tests.Engine.Services
 		}
 	}
 
+	public interface IGenericSelfService<T>
+	{
+	}
+
 	[Service]
-	public class GenericSelfService<T>
+	[Service(typeof(IGenericSelfService<>))]
+	public class GenericSelfService<T> : IGenericSelfService<T>
 	{
 	}
 
@@ -104,6 +109,18 @@ namespace N2.Tests.Engine.Services
 		public GenericDependingService(GenericSelfService<int> service)
 		{
 			this.service = service;
+		}
+	}
+
+	[Service]
+	public class GenericDependingOnInterfaceService
+	{
+		public IGenericSelfService<int> service;
+		public IGenericSelfService<string> service2;
+		public GenericDependingOnInterfaceService(IGenericSelfService<int> service, IGenericSelfService<string> service2)
+		{
+			this.service = service;
+			this.service2 = service2;
 		}
 	}
 
@@ -154,6 +171,32 @@ namespace N2.Tests.Engine.Services
 		}
 	}
 
+
+	public class OuterService
+	{
+		[Service]
+		public class InnerService
+		{
+		}
+	}
+
+	public class OuterService2 : OuterService
+	{
+		[Service]
+		public new class InnerService
+		{
+		}
+	}
+
+	public interface IInternalService
+	{
+	}
+
+	[Service(typeof(IInternalService))]	
+	internal class InternalService : IInternalService
+	{
+	}
+
 	public interface IGenericService<T>
 	{
 	}
@@ -172,7 +215,7 @@ namespace N2.Tests.Engine.Services
 			this.service = service;
 		}
 	}
-
+	
 	public class NonAttributed
 	{
 	}

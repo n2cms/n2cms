@@ -26,7 +26,7 @@ namespace N2.Web.Mvc
 		}
 
 		/// <summary>Resolves services from the current <see cref="IEngine"/> using information stored in context or falling back to the singleton instance.</summary>
-		public static T[] ResolveServices<T>(RouteData routeData) where T : class
+		public static IEnumerable<T> ResolveServices<T>(RouteData routeData) where T : class
 		{
 			return GetEngine(routeData).Container.ResolveAll<T>();
 		}

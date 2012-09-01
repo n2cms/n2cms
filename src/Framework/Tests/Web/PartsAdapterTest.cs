@@ -8,16 +8,28 @@ using N2.Web.Parts;
 using NUnit.Framework;
 using N2.Web;
 using N2.Edit;
+using N2.Engine.Castle;
 
 namespace N2.Tests.Web
 {
+	[TestFixture]
+	public class TinyIoCPartsAdapterTest : PartsAdapterTest
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			engine = new ContentEngine();
+			base.SetUp();
+		}
+	}
+
 	[TestFixture]
 	public class WindsorPartsAdapterTest : PartsAdapterTest
 	{
 		[SetUp]
 		public override void SetUp()
 		{
-			engine = new ContentEngine();
+			engine = new ContentEngine(new WindsorServiceContainer(), new EventBroker(), new ContainerConfigurer());
 			base.SetUp();
 		}
 	}

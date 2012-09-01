@@ -73,6 +73,9 @@ namespace N2.Web.UI
 
 			foreach (var concern in Engine.Container.ResolveAll<ContentPageConcern>())
 				concern.OnPreInit(this, item);
+
+			foreach (IContentPageConcern concern in GetType().GetCustomAttributes(typeof(IContentPageConcern), true))
+				concern.OnPreInit(this, item);
 		}
 
 		/// <summary>Applies configured cache parameters to this page.</summary>

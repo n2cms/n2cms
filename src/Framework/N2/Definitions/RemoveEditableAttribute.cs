@@ -17,7 +17,7 @@ namespace N2.Definitions
 	/// {
 	/// }
 	/// </example>
-	[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class RemoveEditableAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
 		public RemoveEditableAttribute(string editableOrContainerName)

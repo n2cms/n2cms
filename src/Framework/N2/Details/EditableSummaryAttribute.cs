@@ -2,12 +2,14 @@
 using System.Text;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System;
 
 namespace N2.Details
 {
 	/// <summary>
 	/// Extracts a summary text from another detail and stores
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableSummaryAttribute : EditableTextBoxAttribute, IContentTransformer
 	{
 		public EditableSummaryAttribute()

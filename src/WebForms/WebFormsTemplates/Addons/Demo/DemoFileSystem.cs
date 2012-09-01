@@ -30,12 +30,12 @@ namespace Demo
 			base.MoveFile(fromVirtualPath, destinationVirtualPath);
 		}
 
-		public override System.IO.Stream OpenFile(string virtualPath)
+		public override System.IO.Stream OpenFile(string virtualPath, bool openRead = false)
 		{
 			if (!VirtualPathUtility.ToAbsolute(virtualPath).StartsWith("/upload", StringComparison.InvariantCultureIgnoreCase))
 				throw new Exception("Cannot open outside of the upload folder");
 
-			return base.OpenFile(virtualPath);
+			return base.OpenFile(virtualPath, openRead);
 		}
 
 		public override void CopyFile(string fromVirtualPath, string destinationVirtualPath)

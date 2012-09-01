@@ -1,9 +1,9 @@
-﻿@import url("smoothness/jquery-ui-1.8.16.custom.css");
+﻿@import url("smoothness/jquery-ui-1.8.22.dialog.css");
 
 .sc, .sc a, .titleBar, .dragShadow {font-family:Arial, Sans-Serif; font-size:12px; color:#333; text-align:left;}
 
 .zoneItem   { position:relative;}
-.dropZone .zoneItem:hover { outline:dotted 1px #88ccff; }
+.dropZone .zoneItem:hover { outline:dotted 1px #44ff88; }
 .titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 1px; 
               font-size:.8em; position:relative; border:solid 1px #e3e5e4;
               height:20px; box-shadow: #666 4px 4px 10px -2px; overflow:hidden; white-space:nowrap;}
@@ -16,7 +16,7 @@
     .titleBar .edit { background-image:url(../icons/page_white_edit.png); }
     .titleBar .title { background:transparent none no-repeat 5px 33%; color:#333; padding-left:24px; padding-right:10px; font-size:11px; height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; line-height:16px; vertical-align:middle; }
 .dropZone .titleBar { opacity:.9; }
-.dropZone .titleBar * { display:none; }
+.dropZone .titleBar * { display:none; vertical-align:top; }
 .dropZone .titleBar:hover { background-color:#fafafa; border:solid 1px #d1d4d3; opacity:1; }
 	.dropZone .titleBar:hover .title { display:inline-block;}
 	.dropZone .titleBar:hover .command { display:inline-block;}
@@ -91,7 +91,7 @@ a .creator-add { background: url(../../Resources/icons/add.png) no-repeat 50% 50
 
 .editable { display:inline-block; position:relative; }
 	.editable .editor { position:absolute; top:0; right:0; background:transparent url(../../Resources/icons/pencil.png) no-repeat 50% 50%; text-indent:-9999px; width:16px; height:16px; padding:1px; overflow:hidden; opacity:.5;}
-.editable:hover { outline:dotted 2px #4488ff; }
+.editable:hover { outline:dotted 1px #4488ff; }
 	.editable:hover .editor { opacity:1;}
 
 #editorDialog { overflow:hidden; }

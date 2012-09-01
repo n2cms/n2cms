@@ -41,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\build.bat = ..\build\build.bat
+		..\build\n2.deploy.targets = ..\build\n2.deploy.targets
 		..\build\n2.dinamico.targets = ..\build\n2.dinamico.targets
 		..\build\n2.examples.targets = ..\build\n2.examples.targets
 		..\build\n2.framework.targets = ..\build\n2.framework.targets
@@ -68,7 +69,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
 	ProjectSection(SolutionItems) = preProject
-		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
 		..\lib\log4net.dll = ..\lib\log4net.dll
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
 		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
@@ -146,16 +146,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dinamico", "Dinamico", "{18
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{957E14F3-B354-43BB-8C30-AFFC2901D227}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{D4F398AB-0B6C-4123-A89C-2F3649A5272D}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
@@ -182,6 +172,35 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Razor", "Razor", "{97670B82-7B2E-4EE4-8527-8342877AD08C}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Management\N2.Management.nuspec = ..\build\nuget\Management\N2.Management.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{A4646281-64FB-4CE0-A3D7-9167070FF19A}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B3835F3D-C170-49C8-A4FC-CA52F0714B83}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.IoC.Windsor3", "Framework\IoC.Windsor\N2.IoC.Windsor3.csproj", "{7A9C0479-64AF-4DF1-818C-118866DB8A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.IoC.Windsor2", "Framework\IoC.Windsor2\N2.IoC.Windsor2.csproj", "{234CD990-8B72-407D-AD6D-B3FBB78DBB39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC.Windsor2", "IoC.Windsor2", "{B6189255-B554-4AE8-9F31-13E693BD7F67}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\IoC.Windsor2\N2.Windsor2.nuspec = ..\build\nuget\IoC.Windsor2\N2.Windsor2.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC.Windsor3", "IoC.Windsor3", "{9D0BACB7-1032-4E80-94FE-22515CE821B3}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
 	EndProjectSection
 EndProject
 Global
@@ -798,6 +817,76 @@ Global
 		{8292DB1E-D760-417B-8620-7024DE3505F2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8292DB1E-D760-417B-8620-7024DE3505F2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8292DB1E-D760-417B-8620-7024DE3505F2}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugDinamico|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugDinamico|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugDinamico|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugDinamico|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugDinamico|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugFramework|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugFramework|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugFramework|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugFramework|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugFramework|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugMvc|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugMvc|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugMvc|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugMvc|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugMvc|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugWebForms|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugWebForms|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugWebForms|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugWebForms|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.DebugWebForms|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Demo|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Demo|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Demo|x86.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugDinamico|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugDinamico|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugDinamico|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugDinamico|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugDinamico|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugFramework|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugFramework|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugFramework|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugFramework|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugFramework|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugMvc|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugMvc|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugMvc|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugMvc|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugMvc|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugWebForms|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugWebForms|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugWebForms|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugWebForms|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.DebugWebForms|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Demo|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Demo|Mixed Platforms.Build.0 = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Demo|x86.ActiveCfg = Debug|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -816,6 +905,8 @@ Global
 		{10F7C179-B92D-4FCA-B78C-011E428D0CA3} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{8292DB1E-D760-417B-8620-7024DE3505F2} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{234CD990-8B72-407D-AD6D-B3FBB78DBB39} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{AA0C3414-F509-44A2-A677-409DE6B49B1C} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{D42D096E-399D-4618-AEB4-9B023BA1316D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{CEE6525F-F502-4890-AA36-7B8755A5E47D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
@@ -835,10 +926,13 @@ Global
 		{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{541230E3-044D-4B21-90EB-B93B491C6AFE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{97670B82-7B2E-4EE4-8527-8342877AD08C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{957E14F3-B354-43BB-8C30-AFFC2901D227} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
+		{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{B6189255-B554-4AE8-9F31-13E693BD7F67} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{9D0BACB7-1032-4E80-94FE-22515CE821B3} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{B3835F3D-C170-49C8-A4FC-CA52F0714B83} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
 		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
-		{D4F398AB-0B6C-4123-A89C-2F3649A5272D} = {957E14F3-B354-43BB-8C30-AFFC2901D227}
 		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}
 		{9C9945AF-7DE6-459D-A783-C026E5B7F596} = {541230E3-044D-4B21-90EB-B93B491C6AFE}
+		{A4646281-64FB-4CE0-A3D7-9167070FF19A} = {B3835F3D-C170-49C8-A4FC-CA52F0714B83}
 	EndGlobalSection
 EndGlobal

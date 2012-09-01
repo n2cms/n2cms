@@ -11,6 +11,7 @@ namespace N2.Details
 	/// Defines a deletedChild item editor. Renders a drop down list where you can 
 	/// select what item to add and edit forms of added items.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableChildrenAttribute : AbstractEditableAttribute
 	{
 		private string zoneName;

@@ -23,6 +23,14 @@ namespace N2.Configuration
 			set { base["engineType"] = value; }
 		}
 
+		/// <summary>A custom <see cref="IServiceContainer"/> to manage the application instead of the default.</summary>
+		[ConfigurationProperty("containerType")]
+		public string ContainerType
+		{
+			get { return (string)base["containerType"]; }
+			set { base["containerType"] = value; }
+		}
+
 		[ConfigurationProperty("castleConfiguration", DefaultValue = "assembly://N2/Configuration/castle.config")]
 		public string CastleConfiguration
 		{

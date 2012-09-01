@@ -65,6 +65,7 @@ stylecop.*
 *.dbmdl
 *.log
 *.log.20*
+AssemblyCache.config
 
 # Git files to ignore
 *.orig

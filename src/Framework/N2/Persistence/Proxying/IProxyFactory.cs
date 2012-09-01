@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using N2.Definitions;
 
 namespace N2.Persistence.Proxying
 {
@@ -10,7 +11,7 @@ namespace N2.Persistence.Proxying
 	{
 		/// <summary>Initializes the proxy factory with the given types.</summary>
 		/// <param name="interceptedTypes"></param>
-		void Initialize(IEnumerable<Type> interceptedTypes);
+		void Initialize(IEnumerable<ItemDefinition> interceptedTypes);
 		
 		/// <summary>Creates a proxied instance.</summary>
 		/// <param name="typeName">The name of the type to create.</param>

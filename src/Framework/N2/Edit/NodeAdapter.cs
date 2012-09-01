@@ -114,7 +114,7 @@ namespace N2.Edit
 			if(!item.IsPage)
 				yield return new KeyValuePair<string, string>("zone", item.ZoneName);
 			if (Host.IsStartPage(item))
-				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(host.GetSite(item).Authority) ? "*" : host.GetSite(item).Authority);
+				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority);
 		}
 
 		private string GetClassName(ContentItem item)

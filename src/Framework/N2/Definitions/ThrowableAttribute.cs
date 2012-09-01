@@ -15,6 +15,7 @@ namespace N2.Definitions
 	/// When used on an item definition this attribute can prevent it from beeing 
 	/// moved to trash upon deletion.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class ThrowableAttribute : Attribute
 	{
 		public ThrowableAttribute(AllowInTrash throwable)

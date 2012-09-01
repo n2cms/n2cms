@@ -338,11 +338,20 @@ namespace N2.Details
 			return (Name == other.Name);
 		}
 
+		int? hashCode;
 		/// <summary>Gets a hash code based on the attribute's name.</summary>
 		/// <returns>A hash code.</returns>
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			if (hashCode.HasValue)
+				return hashCode.Value;
+
+			if (Name != null)
+				hashCode = (GetType().FullName + Name).GetHashCode();
+			else
+				hashCode = base.GetHashCode();
+
+			return hashCode.Value;
 		}
 
 		private string TypeName
@@ -423,10 +432,10 @@ namespace N2.Details
 			return rfv;
 		}
 
-		/// <summary>Adds the editor control to the edit panel. This method is invoked by <see cref="AddTo"/> and the editor is prepended a label and wrapped in a panel. To remove these controls also override the <see cref="AddTo"/> method.</summary>
+		/// <summary>Adds the editor control to the edit panel. This method is invoked by <see cref="N2.Details.AbstractEditableAttribute.AddTo(N2.ContentItem, string, System.Web.UI.Control)"/> and the editor is prepended a label and wrapped in a panel. To remove these controls also override the <see cref="N2.Details.AbstractEditableAttribute.AddTo(N2.ContentItem, string, System.Web.UI.Control)"/> method.</summary>
 		/// <param name="container">The container onto which to add the editor.</param>
 		/// <returns>A reference to the addeed editor.</returns>
-		/// <remarks>Please note that this is a breaking change. This method was added after version 1.3.1 to reduce duplicated code induced by having <see cref="AddTo"/> abstract.</remarks>
+		/// <remarks>Please note that this is a breaking change. This method was added after version 1.3.1 to reduce duplicated code induced by having <see cref="N2.Details.AbstractEditableAttribute.AddTo(N2.ContentItem, string, System.Web.UI.Control)"/> abstract.</remarks>
 		protected abstract Control AddEditor(Control container);
 
 		#region IInterceptableProperty Members

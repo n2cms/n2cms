@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>N2CMS.IoC.Windsor3</id>
+		<version>{Version}</version>
+		<title>N2 CMS - Castle Windsor 3 IoC Container support (for .NET 4+)</title>
+		<authors>Cristian Libardo</authors>
+		<owners>Cristian Libardo</owners>
+		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+		<projectUrl>http://n2cms.com/</projectUrl>
+		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>This package enables usage of Castle.Windsor 3 as IoC container to be used by N2 CMS internally.</description>
+		<summary></summary>
+		<language>en-US</language>
+		<tags>N2 CMS</tags>
+		<dependencies>
+			<dependency id="N2CMS.Library" version="{Version}" />
+			<dependency id="Castle.Windsor" version="3.1.0" />
+		</dependencies>
+	</metadata>
+</package>

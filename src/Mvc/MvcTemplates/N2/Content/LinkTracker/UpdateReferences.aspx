@@ -4,7 +4,7 @@
 
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="command"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
-	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
+	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

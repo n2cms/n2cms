@@ -5,6 +5,7 @@ using N2.Engine.MediumTrust;
 using N2.Plugin;
 using N2.Tests.Engine.Services;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Engine
 {
@@ -25,6 +26,16 @@ namespace N2.Tests.Engine
 		public void SetUp()
 		{
 			container = new MediumTrustServiceContainer();
+		}
+	}
+
+	[TestFixture]
+	public class TinyIoCServiceContainerTests : ServiceContainerTests
+	{
+		[SetUp]
+		public void SetUp()
+		{
+			container = new N2.Engine.TinyIoC.TinyIoCServiceContainer();
 		}
 	}
 
@@ -155,6 +166,16 @@ namespace N2.Tests.Engine
 		{
 		}
 
+		public class ServiceABC
+		{
+			public Startable[] dependencies;
+
+			public ServiceABC(Startable[] dependencies)
+			{
+				this.dependencies = dependencies;
+			}
+		}
+
 		[Test]
 		public void AutoStartServices_AreStarted()
 		{
@@ -197,6 +218,18 @@ namespace N2.Tests.Engine
 			var s = (Startable)container.Resolve<IAutoStart>();
 
 			Assert.That(s.timesStarted, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void CanDepend_OnArrayOfServices()
+		{
+			container.AddComponent("key1", typeof(Startable), typeof(ServiceA));
+			container.AddComponent("key2", typeof(Startable), typeof(ServiceB));
+			container.AddComponent("key3", typeof(Startable), typeof(ServiceC));
+			container.AddComponent("key4", typeof(ServiceABC), typeof(ServiceABC));
+
+			var service = container.Resolve<ServiceABC>();
+			service.dependencies.Count().ShouldBe(3);
 		}
 	}
 }

@@ -122,9 +122,9 @@ table.editDetail { border-collapse:collapse; }
 #content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border-color:#AAA; }
 
 .framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
+.framed .preview.iconed { background-image:url(../../Resources/icons/magnifier.png); }
 .framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
-.framed .preview.iconed { background-image:url(../../Resources/icons/zoom.png); }
-.framed .future.iconed { background-image:url(../../Resources/icons/clock.png); }
+.framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
 
 .popup
 {
@@ -211,3 +211,20 @@ div.tagsinput div { display:block; float: left; }
 	.EditSingle .editDetail .editorLabel { display:none; }
 	.EditSingle .editDetail .editDetail { margin-left:0; }
 		.EditSingle .editDetail .editDetail .editorLabel { display:block; }
+
+
+.framed .outside .versionBox .inner { padding:0; }
+	.versionBox table { margin:0 }
+		.versionBox tr td { color: #666 }
+		.versionBox tr.current td { color: #000 }
+		.versionBox td.State { padding-left:24px; background:transparent none no-repeat 2px 1px; }
+		.versionBox td.New { background-image:url(../icons/user_edit.png); }
+		.versionBox td.Draft { background-image:url(../icons/user_edit.png); }
+		.versionBox td.Waiting { background-image:url(../icons/clock_play.png); }
+		.versionBox td.Published { background-image:url(../icons/star.png); }
+		.versionBox td.Unpublished { background-image:url(../icons/clock_stop.png); }
+		.versionBox td.Deleted { background-image:url(../icons/bin.png); }
+	.versionBox .moreVersions { display:block; padding:0 10px 5px 10px; }
+
+.framed .outside .activityBox .inner { padding:0; }
+	.activityBox table { margin:0 }

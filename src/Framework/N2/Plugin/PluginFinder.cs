@@ -63,20 +63,31 @@ namespace N2.Plugin
             List<IPlugin> foundPlugins = new List<IPlugin>();
             foreach (Assembly assembly in typeFinder.GetAssemblies())
             {
-                foreach (IPlugin plugin in FindPluginsIn(assembly))
-                {
-                    if (plugin.Name == null)
-                        throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
-                	if (foundPlugins.Contains(plugin))
-                		throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
-
-					if(!IsRemoved(plugin))
-                		foundPlugins.Add(plugin);
-                }
-            }
+				foreach (IPlugin plugin in assembly.GetCustomAttributes(typeof(IPlugin), false))
+				{
+					AddPlugin(foundPlugins, assembly, plugin);
+				}
+			}
+			foreach (var at in typeFinder.Find<IPlugin>(typeof(object), inherit: false))
+			{
+				at.Attribute.Decorates = at.Type;
+				at.Attribute.Name = at.Attribute.Name ?? at.Type.Name;
+				AddPlugin(foundPlugins, at.Type.Assembly, at.Attribute);
+			}
             foundPlugins.Sort();
             return foundPlugins;
         }
+
+		private void AddPlugin(List<IPlugin> foundPlugins, Assembly assembly, IPlugin plugin)
+		{
+			if (plugin.Name == null)
+				throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
+			if (foundPlugins.Contains(plugin))
+				throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
+
+			if (!IsRemoved(plugin))
+				foundPlugins.Add(plugin);
+		}
 
 		private bool IsRemoved(IPlugin plugin)
 		{
@@ -87,24 +98,5 @@ namespace N2.Plugin
 			}
 			return false;
 		}
-
-        private IEnumerable<IPlugin> FindPluginsIn(Assembly a)
-        {
-            foreach (IPlugin attribute in a.GetCustomAttributes(typeof(IPlugin), false))
-            {
-                yield return attribute;
-            }
-            foreach (Type t in a.GetTypes())
-            {
-                foreach (IPlugin attribute in t.GetCustomAttributes(typeof(IPlugin), false))
-                {
-                    if (attribute.Name == null)
-                        attribute.Name = t.Name;
-                    attribute.Decorates = t;
-
-                    yield return attribute;
-                }
-            }
-        }
     }
 }

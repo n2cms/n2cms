@@ -40,6 +40,8 @@ namespace N2.Web
 				return;
 			else if (TryWriteArray(value as IEnumerable))
 				return;
+			else if (TryWriteType(value as Type))
+				return;
 			else if (TryWriteObject(value))
 				return;
         }
@@ -201,6 +203,15 @@ namespace N2.Web
 
             return true;
         }
+
+		private bool TryWriteType(Type type)
+		{
+			if (type == null)
+				return false;
+			
+			writer.Write("'" + type.AssemblyQualifiedName + "'");
+			return true;
+		}
 
         private bool TryWriteObject(object value)
         {

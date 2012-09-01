@@ -11,6 +11,14 @@ using N2.Definitions;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting zero or more items of a specific type from an exapandable check box list.
+	/// </summary>
+	/// <example>
+	/// 	[EditableItemSelection]
+	/// 	public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
+	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableItemSelectionAttribute : EditableDropDownAttribute
 	{
 		public Type LinkedType { get; set; }
@@ -66,9 +74,9 @@ namespace N2.Details
 				query = query.And.Type.NotEq(ExcludedType);
 
 			if (!Is(EditableItemSelectionFilter.Pages))
-				query = query.And.ZoneName.IsNull();
-			if (!Is(EditableItemSelectionFilter.Parts))
 				query = query.And.ZoneName.IsNull(false);
+			if (!Is(EditableItemSelectionFilter.Parts))
+				query = query.And.ZoneName.IsNull();
 
 			var items = query.Select("ID", "Title");
 
@@ -83,6 +91,9 @@ namespace N2.Details
 
 		protected virtual IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
 		{
+			if (ids == null || ids.Length == 0)
+				return Enumerable.Empty<ContentItem>();
+
 			var items = Engine.Content.Search.Find.Where
 				.Property("ID").In(ids)
 				.Select();
@@ -118,6 +129,7 @@ namespace N2.Details
 			// Get a map of all selected items from UI
 			var selectedLinkedItems = (from ListItem checkboxItem in checkboxList.Items
 																 where checkboxItem.Selected
+																 where !string.IsNullOrEmpty(checkboxItem.Value)
 																 select (int)ConvertToValue(checkboxItem.Value)).ToArray();
 
 			// Check whether there were any changes
@@ -151,6 +163,16 @@ namespace N2.Details
 				storedSelection.Add(referencedItem.ID);
 
 			return storedSelection;
+		}
+
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var referencedItem = item[propertyName] as ContentItem;
+
+			if (referencedItem != null)
+			{
+				DisplayableAnchorAttribute.GetLinkBuilder(item, referencedItem, propertyName, null, null).WriteTo(writer);
+			}
 		}
 	}
 }

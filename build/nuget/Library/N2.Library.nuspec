@@ -15,10 +15,7 @@
     <language>en-US</language>
     <tags>N2 CMS</tags>
 		<dependencies>
-			<dependency id="Castle.Core" version="[2.5.2]" />
-			<dependency id="NHibernate" version="3.3.0.4000" />
-			<dependency id="Castle.Windsor" version="[2.5.3]" />
-			<dependency id="log4net" version="[1.2.10.0]" />
+			<dependency id="NHibernate" version="3.3.1.4000" />
 		</dependencies>
 	</metadata>
 </package>

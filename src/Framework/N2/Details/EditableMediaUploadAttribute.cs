@@ -8,12 +8,14 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using N2.Web.Drawing;
+using System;
 
 namespace N2.Details
 {
 	/// <summary>
 	/// Allows to upload or select a media file to use.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableMediaUploadAttribute : EditableFileUploadAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		public EditableMediaUploadAttribute()

@@ -13,10 +13,10 @@ namespace N2.Collections
 		/// <returns>The item with the given name or null if no item was found.</returns>
 		T FindNamed(string name);
 
-		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the keys of the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
+		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the keys of the System.Collections.Generic.IDictionary&gt;TKey,TValue&lt;.</summary>
 		ICollection<string> Keys { get; }
 
-		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the values in the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
+		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the values in the System.Collections.Generic.IDictionary&gt;TKey,TValue&lt;.</summary>
 		ICollection<T> Values { get; }
 
 		/// <summary>Gets or sets the element with the specified key.</summary>
@@ -31,10 +31,10 @@ namespace N2.Collections
 
 		/// <summary>Determines whether the list contains an element with the specified key.</summary>
 		/// <param name="key">The key to locate in the list.</param>
-		/// <returns>true if the System.Collections.Generic.IDictionary<TKey,TValue> contains an element with the key; otherwise, false.</returns>
+		/// <returns>true if the System.Collections.Generic.IDictionary&gt;TKey,TValue&lt; contains an element with the key; otherwise, false.</returns>
 		bool ContainsKey(string key);
 
-		/// <summary>Removes the element with the specified key from the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
+		/// <summary>Removes the element with the specified key from the System.Collections.Generic.IDictionary&gt;TKey,TValue&lt;.</summary>
 		/// <param name="key">The key of the element to remove.</param>
 		/// <returns>true if the element is successfully removed; otherwise, false. This method also returns false if key was not found in the original list.</returns>
 		bool Remove(string key);

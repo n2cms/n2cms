@@ -1,5 +1,7 @@
 using System;
 using N2.Security;
+using N2.Edit.Activity;
+using N2.Management.Activity;
 
 namespace N2.Edit
 {
@@ -106,6 +108,7 @@ namespace N2.Edit
 				newItem.Published = null;
 				persister.Repository.SaveOrUpdate(newItem);
 			}
+			Engine.AddActivity(new ManagementActivity { Operation = "Copy", PerformedBy = User.Identity.Name, Path = newItem.Path, ID = newItem.ID });
 
 			Refresh(newItem, ToolbarArea.Both);
 		}

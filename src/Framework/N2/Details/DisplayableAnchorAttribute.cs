@@ -1,8 +1,10 @@
 using System.Web.UI;
 using N2.Web;
+using System;
 
 namespace N2.Details
 {
+	[AttributeUsage(AttributeTargets.Property)]
 	public class DisplayableAnchorAttribute : AbstractDisplayableAttribute, IDisplayable, IWritingDisplayable
 	{
 		private string target = null;

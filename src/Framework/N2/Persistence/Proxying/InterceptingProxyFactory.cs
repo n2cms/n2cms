@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 using N2.Engine;
+using N2.Definitions;
 
 namespace N2.Persistence.Proxying
 {
@@ -34,11 +35,12 @@ namespace N2.Persistence.Proxying
             //, typeof(IInterceptableType)
 		};
 
-		public override void Initialize(IEnumerable<Type> interceptedTypes)
+		public override void Initialize(IEnumerable<ItemDefinition> interceptedTypes)
 		{
-			foreach (var type in interceptedTypes)
+			foreach (var definition in interceptedTypes)
 			{
-				var interceptableProperties = GetInterceptableProperties(type).ToList();
+				var type = definition.ItemType;
+				var interceptableProperties = GetInterceptableProperties(definition).ToList();
 				if (interceptableProperties.Count == 0)
 					continue;
 
@@ -98,9 +100,11 @@ namespace N2.Persistence.Proxying
 			}
 		}
 
-		private IEnumerable<AttributedProperty> GetInterceptableProperties(Type type)
+		private IEnumerable<AttributedProperty> GetInterceptableProperties(ItemDefinition definition)
 		{
-			for (Type t = type; t != null; t = t.BaseType)
+			// Also include properties on base classes since properties are matched by reference and
+			// and we want to intercept calls to properties on base classes with the same name
+			for (Type t = definition.ItemType; t != null; t = t.BaseType)
 			{
 				foreach (var property in t.GetProperties())
 				{
@@ -111,10 +115,12 @@ namespace N2.Persistence.Proxying
 					if (!property.IsCompilerGenerated())
 						continue;
 
-					var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
+					var attributes = definition.GetCustomAttributes<IInterceptableProperty>(property.Name);
 					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
+						// some property is persisted as something other than detail or detail collection
 						continue;
 					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
+						// no property is persisted as detail or detail collection
 						continue;
 
 					yield return new AttributedProperty { Property = property, Attribute = attributes.First() };

@@ -32,7 +32,7 @@ namespace N2.Configuration
 		/// NHibernate.Cache.NoCacheProvider, NHibernate
 		/// NHibernate.Caches.SysCache2.SysCacheProvider,NHibernate.Caches.SysCache2
 		/// </remarks>
-		[ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Cache.NoCacheProvider, NHibernate")]
+		[ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Caches.SysCache2.SysCacheProvider, N2")]
 		public string CacheProviderClass
 		{
 			get { return (string)base["cacheProviderClass"]; }
@@ -148,7 +148,8 @@ namespace N2.Configuration
 		{
 			if (Files.StorageLocation == FileStoreLocation.Database)
 				configurationKeys.Add("dbfs");
-			if (Search.Enabled)
+
+			if (Search.Type == SearchIndexType.Lucene)
 				configurationKeys.Add("lucene");
 		}
 	}

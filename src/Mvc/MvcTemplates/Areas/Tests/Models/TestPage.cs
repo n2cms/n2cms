@@ -7,6 +7,8 @@ using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Web.UI;
+using N2.Web.Mvc;
+using N2.Definitions.Runtime;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {

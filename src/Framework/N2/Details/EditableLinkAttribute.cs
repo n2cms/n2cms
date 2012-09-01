@@ -14,6 +14,7 @@ namespace N2.Details
 	///		[EditableLink("Feed root", 90)]
 	///		public virtual ContentItem FeedRoot { get; set; }
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable, IDisplayable
 	{
 		public EditableLinkAttribute()

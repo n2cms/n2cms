@@ -15,6 +15,7 @@ namespace N2.Details
 	/// 		public virtual string FolderUrl { get; set; }
 	///		}
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableFolderSelectionAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
 	{
 		private string alt = string.Empty;

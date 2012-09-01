@@ -8,6 +8,7 @@ namespace N2.Integrity
 	/// <summary>
 	/// This attribute replace the children allowed with the types 
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class RestrictChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner, IAllowedDefinitionFilter
 	{
 		/// <summary>

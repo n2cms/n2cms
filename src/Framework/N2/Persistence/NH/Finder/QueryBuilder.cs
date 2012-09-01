@@ -427,16 +427,48 @@ namespace N2.Persistence.NH.Finder
 			return items;
 		}
 
+		/// <summary>Selects items values defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="properties">An object defining which properties on the item to retrieve.</param>
+		public virtual IEnumerable<IDictionary<string, object>> Select(params string[] properties)
+		{
+			return Select<ContentItem>(properties);
+		}
+
+		/// <summary>Selects items value defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="property">An object defining which properties on the item to retrieve.</param>
+		public virtual IEnumerable<object> Select(string property)
+		{
+			return Select<ContentItem>(property);
+		}
+
 		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
 		/// <param name="selector">An object defining which properties on the item to retrieve.</param>
-		public virtual IEnumerable<IDictionary<string, object>> Select(params string[] properties)
+		public virtual IEnumerable<object> Select<T>(string propertyOrDetail) where T : ContentItem
 		{
 			if (Filters != null && Filters.Count > 0)
 				throw new NotSupportedException("Filters not supported when using selector");
 
-			var props = properties.ToList();
 			string selectStatement = "select "
-				+ string.Join(", ", props.Select(p => "ci." + p).ToArray())
+				+ GetPropertySelectItem<T>(propertyOrDetail)
+				+ " from ContentItem ci";
+
+			var results = CreateQuery(selectStatement).Enumerable();
+			foreach (object row in results)
+			{
+				yield return row;
+			}
+		}
+
+		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="selector">An object defining which properties on the item to retrieve.</param>
+		public virtual IEnumerable<IDictionary<string, object>> Select<T>(params string[] propertiesOrDetails) where T : ContentItem
+		{
+			if (Filters != null && Filters.Count > 0)
+				throw new NotSupportedException("Filters not supported when using selector");
+
+			var props = propertiesOrDetails.ToList();
+			string selectStatement = "select "
+				+ string.Join(", ", props.Select(GetPropertySelectItem<T>).ToArray())
 				+ " from ContentItem ci";
 
 			var results = CreateQuery(selectStatement).Enumerable();
@@ -445,6 +477,26 @@ namespace N2.Persistence.NH.Finder
 				var result = props.Select((p, i) => new { p, v = row[i] }).ToDictionary(x => x.p, x => x.v);
 				yield return result;
 			}
+		}
+
+		public string GetPropertySelectItem<T>(string propertyName) where T : ContentItem
+		{
+			if (typeof(T) == typeof(ContentItem))
+				return "ci." + propertyName;
+
+			var definition = map.GetOrCreateDefinition(typeof(T));
+
+			PropertyDefinition pd;
+			if (!definition.Properties.TryGetValue(propertyName, out pd))
+				return "ci." + propertyName;
+
+			if (pd.Persistable.PersistAs == PropertyPersistenceLocation.Column)
+				return "ci." + propertyName;
+			
+			if (pd.Persistable.PersistAs == PropertyPersistenceLocation.Detail)
+				return "(select cd." + N2.Details.ContentDetail.GetAssociatedPropertyName(pd.PropertyType) + " from ci.Details cd where cd.Name = '" + propertyName + "')";
+
+			throw new NotSupportedException("Property " + typeof(T) + "." + propertyName + " with PersistAs=" + pd.Persistable.PersistAs + " not supported");
 		}
 
 		private ItemList<T> ToListWithFillup<T>(IList<T> retrievedItems, ItemFilter filter, int maxRequeries) where T : ContentItem

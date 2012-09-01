@@ -6,10 +6,7 @@ namespace N2.Tests.Integrity.Definitions
 	public class IntegrityPage : N2.ContentItem
 	{
 		[Obsolete]
-		[N2.Details.Editable("My Property", typeof(System.Web.UI.WebControls.TextBox), "Text", 100)]
-#pragma warning disable 618
-		[N2.Details.DetailAuthorizedRoles("ACertainGroup")]
-#pragma warning restore 618
+		[N2.Details.Editable("My Property", typeof(System.Web.UI.WebControls.TextBox), "Text", 100, AuthorizedRoles = new [] { "ACertainGroup" })]
 		public virtual string MyProperty
 		{
 			get { return (string)(GetDetail("MyProperty") ?? ""); }

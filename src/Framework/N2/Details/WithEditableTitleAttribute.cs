@@ -12,7 +12,7 @@ namespace N2.Details
     /// {
     ///	}
     /// </example>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class WithEditableTitleAttribute : AbstractEditableAttribute, IWritingDisplayable, IDisplayable
     {
 		private bool focus = true;

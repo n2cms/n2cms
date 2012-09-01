@@ -2,6 +2,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Configuration;
+using System;
+using System.Text.RegularExpressions;
 
 namespace N2.Engine
 {
@@ -11,48 +13,81 @@ namespace N2.Engine
 	/// </summary>
 	public class WebAppTypeFinder : AppDomainTypeFinder
 	{
-		private Web.IWebContext webContext;
-		private bool ensureBinFolderAssembliesLoaded = true;
-		private bool binFolderAssembliesLoaded = false; 
-
-		public WebAppTypeFinder(Web.IWebContext webContext)
+		Logger<WebAppTypeFinder> logger;
+		private bool dynamicDiscovery = true;
+		private bool enableTypeCache = true;
+		private TypeCache assemblyCache;
+		
+		public WebAppTypeFinder(TypeCache assemblyCache, EngineSection engineConfiguration)
 		{
-			this.webContext = webContext;
-		}
-
-		public WebAppTypeFinder(Web.IWebContext webContext, EngineSection engineConfiguration)
-		{
-			this.webContext = webContext;
-			this.ensureBinFolderAssembliesLoaded = engineConfiguration.DynamicDiscovery;
+			this.assemblyCache = assemblyCache;
+			this.dynamicDiscovery = engineConfiguration.DynamicDiscovery;
+			this.enableTypeCache = engineConfiguration.Assemblies.EnableTypeCache;
+			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.SkipLoadingPattern))
+				this.AssemblySkipLoadingPattern = new Regex(engineConfiguration.Assemblies.SkipLoadingPattern);
+			if (!string.IsNullOrEmpty(engineConfiguration.Assemblies.RestrictToLoadingPattern))
+				this.AssemblyRestrictToLoadingPattern = new Regex(engineConfiguration.Assemblies.RestrictToLoadingPattern);
+			logger.DebugFormat("EnableTypeCache: {0}, DynamicDiscovery: {1}, AssemblySkipLoadingPattern:{2}, AssemblyRestrictToLoadingPattern: {3}", enableTypeCache, dynamicDiscovery, AssemblySkipLoadingPattern, AssemblyRestrictToLoadingPattern);
 			foreach (var assembly in engineConfiguration.Assemblies.AllElements)
+			{
+				logger.DebugFormat("Adding configured assembly {0}", assembly.Assembly);
 				AssemblyNames.Add(assembly.Assembly);
+			}
 		}
-
-		#region Properties
-		/// <summary>Gets or sets wether assemblies in the bin folder of the web application should be specificly checked for beeing loaded on application load. This is need in situations where plugins need to be loaded in the AppDomain after the application been reloaded.</summary>
-		public bool EnsureBinFolderAssembliesLoaded
-		{
-			get { return ensureBinFolderAssembliesLoaded; }
-			set { ensureBinFolderAssembliesLoaded = value; }
-		}
-	
-		#endregion
 
 		#region Methods
 
-		Assembly[] assemblyCache;
-		public override IList<Assembly> GetAssemblies()
+		public override IEnumerable<System.Type> Find(System.Type requestedType)
 		{
-			if (assemblyCache != null)
-				return assemblyCache;
+			if (enableTypeCache)
+				return assemblyCache.GetTypes(requestedType.FullName, GetAssemblies, (a) => GetTypesInAssembly(requestedType, a));
+			else
+				return base.Find(requestedType);
+		}
 
-			if (EnsureBinFolderAssembliesLoaded && !binFolderAssembliesLoaded)
+		public override IEnumerable<AttributedType<TAttribute>> Find<TAttribute>(System.Type requestedType, bool inherit = false)
+		{
+			if (enableTypeCache)
 			{
-				binFolderAssembliesLoaded = true;
-				LoadMatchingAssemblies(webContext.MapPath("~/bin"));
+				string key = requestedType.FullName + "[" + typeof(TAttribute).FullName + "]";
+				return assemblyCache.GetTypes(key, GetAssemblies, (a) =>
+					GetTypesInAssembly(requestedType, a).SelectMany(t => GetTypesWithAttribute<TAttribute>(t, inherit)))
+					.SelectMany(t => SelectAttributedTypes<TAttribute>(t, inherit));
+			}
+			else
+				return base.Find<TAttribute>(requestedType, inherit);
+		}
+
+		protected static IEnumerable<Type> GetTypesWithAttribute<TAttribute>(Type type, bool inherit)
+		{
+			if (type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>().Any())
+				yield return type;
+			else
+				yield break;
+		}
+
+		public override IEnumerable<Assembly> GetAssemblies()
+		{
+			if (enableTypeCache)
+				return assemblyCache.GetAssemblies(GetAssembliesInternal);
+			else
+				return GetAssembliesInternal();
+		}
+
+		private IEnumerable<Assembly> GetAssembliesInternal()
+		{
+			if (dynamicDiscovery)
+			{
+				var assemblies = assemblyCache.GetProbingPaths()
+					.SelectMany(pp => LoadMatchingAssemblies(pp))
+					.ToList();
+				
+				var addedAssemblyNames = new HashSet<string>(assemblies.Select(a => a.FullName));
+				assemblies.AddRange(GetConfiguredAssemblies(addedAssemblyNames));
+				return assemblies;
 			}
 
-			return assemblyCache = base.GetAssemblies().ToArray();
+			return base.GetAssemblies();
 		} 
 		#endregion
 	}

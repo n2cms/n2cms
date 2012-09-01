@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
+using Shouldly;
+using System.Linq;
 
 namespace N2.Tests.Definitions
 {
@@ -128,6 +130,68 @@ namespace N2.Tests.Definitions
 			int offVolvoNonInherit = typeof(Volvo).GetCustomAttributes(typeof(OffRoadAttribute), false).Length;
 			Assert.That(offCarNonInherit, Is.EqualTo(1));
 			Assert.That(offVolvoNonInherit, Is.EqualTo(0));
+		}
+
+		[Inherited, Uninherited, AllowMultiple, DisallowMultiple, Default]
+		public class A { }
+
+		public class B : A { }
+
+		[Inherited, Uninherited, AllowMultiple, DisallowMultiple, Default]
+		public class C : B { }
+
+		public class Default : Attribute { }
+
+		[AttributeUsage(AttributeTargets.Class, Inherited = true)]
+		public class Inherited : Attribute { }
+
+		[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+		public class Uninherited : Attribute { }
+
+		[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+		public class AllowMultiple : Attribute { }
+
+		[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+		public class DisallowMultiple : Attribute { }
+
+		Type at = typeof(A);
+		Type bt = typeof(B);
+		Type ct = typeof(C);
+		
+		[Test]
+		public void AttributesOnInheritedClasses()
+		{
+			at.GetCustomAttributes(true).Length.ShouldBe(5);
+			at.GetCustomAttributes(false).Length.ShouldBe(5);
+
+			bt.GetCustomAttributes(true).Length.ShouldBe(4);
+			bt.GetCustomAttributes(true).OfType<Uninherited>().ShouldBeEmpty();
+			bt.GetCustomAttributes(false).Length.ShouldBe(0);
+
+			ct.GetCustomAttributes(true).Length.ShouldBe(6);
+			ct.GetCustomAttributes(true).OfType<AllowMultiple>().Count().ShouldBe(2);
+			ct.GetCustomAttributes(false).Length.ShouldBe(5);
+		}
+
+		[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+		public class BaseA : Attribute { }
+		public class SuperA : BaseA { }
+
+		[SuperA, BaseA]
+		public class X { }
+		[SuperA, BaseA]
+		public class Y : X { }
+
+		Type xt = typeof(X);
+		Type yt = typeof(Y);
+
+		[Test]
+		public void AttributesInheritingOtherAttributes()
+		{
+			xt.GetCustomAttributes(true).Length.ShouldBe(2);
+			yt.GetCustomAttributes(true).Length.ShouldBe(3);
+			yt.GetCustomAttributes(true).OfType<SuperA>().Count().ShouldBe(1);
+
 		}
 	}
 }

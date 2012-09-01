@@ -158,6 +158,30 @@
 									<xs:attribute name="builtInEnabled" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="messaging" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="targets" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="address" type="xs:string" use="required" />
+															<xs:attribute name="exceptFromMachineNamed" type="xs:string" use="optional" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="onlyFromMachineNamed" type="xs:string" use="optional" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="senderName" type="xs:string" use="optional" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="async" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="rootID" type="xs:integer" use="optional" default="1" />
 						<xs:attribute name="startPageID" type="xs:integer" use="optional" default="1" />
@@ -173,12 +197,21 @@
 							<xs:element name="assemblies" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="assembly" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="assembly" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+									<xs:attribute name="restrictToLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="skipLoadingPattern" type="xs:string" use="optional" />
+									<xs:attribute name="enableTypeCache" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
@@ -206,16 +239,33 @@
 							</xs:element>
 							<xs:element name="scheduler" minOccurs="0">
 								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1" />
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="repeat" type="xs:boolean" use="optional" />
+												<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
+												<xs:attribute name="interval" type="xs:time" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
 									<xs:attribute name="keepAlivePath" type="xs:string" use="optional" />
+									<xs:attribute name="executeOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="components" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="service" type="xs:string" use="required" />
 												<xs:attribute name="implementation" type="xs:string" use="required" />
@@ -278,6 +328,7 @@
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
 												<xs:attribute name="engineType" type="xs:string" />
+												<xs:attribute name="containerType" type="xs:string" />
 												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
@@ -301,7 +352,7 @@
 							<xs:element name="hibernateProperties" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 												<xs:attribute name="value" type="xs:string" use="required" />
@@ -313,7 +364,7 @@
 							<xs:element name="mappings" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="add" maxOccurs="unbounded">
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="name" type="xs:string" use="required" />
 											</xs:complexType>
@@ -326,7 +377,16 @@
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="type" use="optional" default="Lucene">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Database"/>
+												<xs:enumeration value="Lucene"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 									<xs:attribute name="handleErrors" type="xs:boolean" use="optional" default="true" />
+									<xs:attribute name="indexOnMachineNamed" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="files" minOccurs="0">

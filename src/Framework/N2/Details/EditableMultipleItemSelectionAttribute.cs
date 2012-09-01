@@ -12,10 +12,16 @@ using N2.Persistence.Finder;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Allows selecting zero or more items of a specific type from a drop down list.
+	/// </summary>
+	/// <example>
+	/// 	[EditableMultipleItemSelection]
+	/// 	public virtual IEnumerable&gt;ContentItem&lt; Links { get; set; }
+	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableMultipleItemSelectionAttribute : EditableItemSelectionAttribute
 	{
-		public bool EvictAfterLoad { get; set; }
-
 		public EditableMultipleItemSelectionAttribute()
 		{
 			PersistAs = PropertyPersistenceLocation.DetailCollection;
@@ -44,21 +50,6 @@ namespace N2.Details
 			return multiSelect;
 		}
 
-		protected override IEnumerable<ContentItem> GetDataItemsByIds(params int[] ids)
-		{
-			var items = base.GetDataItemsByIds(ids);
-
-			// Terrible hack to make sure large collections are not persisted after
-			// they have been loaded, killing your save performance
-			if (EvictAfterLoad)
-			{
-				var session = Engine.Resolve<ISessionProvider>().OpenSession.Session;
-				items.ForEach(session.Evict);
-			}
-
-			return items;
-		}
-
 		protected override HashSet<int> GetStoredSelection(ContentItem item)
 		{
 			var detailLinks = item.GetDetailCollection(Name, false);
@@ -80,5 +71,17 @@ namespace N2.Details
 			ddl.SelectedList = byte.MaxValue;
 		}
 
+		public override void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var items = item.GetDetailCollection(Name, false);
+
+			if (items != null)
+			{
+				foreach (var referencedItem in items.OfType<ContentItem>())
+				{
+					DisplayableAnchorAttribute.GetLinkBuilder(item, referencedItem, propertyName, null, null).WriteTo(writer);
+				}
+			}
+		}
 	}
 }

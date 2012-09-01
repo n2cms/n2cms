@@ -333,7 +333,7 @@ jQuery(document).ready(function(){{
 		public static ControlPanelState GetState(Control control)
 		{
 			if (HttpContext.Current != null)
-				return GetState(control.Page.GetEngine().SecurityManager, control.Page.User, control.Page.Request.QueryString);
+				return GetState(HttpContext.Current.GetEngine().SecurityManager, HttpContext.Current.User, HttpContext.Current.Request.QueryString);
 
 			return ControlPanelState.Unknown;
 		}

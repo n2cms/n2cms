@@ -22,10 +22,10 @@ namespace N2.Engine
 		void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties);
 
 		/// <summary>Returns the first registered service of the given type.</summary>
-		T Resolve<T>();
+		T Resolve<T>() where T : class;
 
 		/// <summary>Returns the service registered for the given key.</summary>
-		T Resolve<T>(string key);
+		T Resolve<T>(string key) where T : class;
 
 		/// <summary>Returns the first registered service of the given type.</summary>
 		object Resolve(Type type);
@@ -36,7 +36,7 @@ namespace N2.Engine
 		/// <summary>Resolves all services serving the given interface.</summary>
 		/// <param name="serviceType">The type of service to resolve.</param>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		Array ResolveAll(Type serviceType);
+		IEnumerable<object> ResolveAll(Type serviceType);
 
 		/// <summary>Retrieves registered types.</summary>
 		/// <returns>All registered services.</returns>
@@ -45,7 +45,7 @@ namespace N2.Engine
 		/// <summary>Resolves all services of the given type.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>All services registered to serve the provided interface.</returns>
-		T[] ResolveAll<T>();
+		IEnumerable<T> ResolveAll<T>() where T : class;
 
 		/// <summary>Starts any <see cref="IAutoStart"/> components in the container.</summary>
 		void StartComponents();

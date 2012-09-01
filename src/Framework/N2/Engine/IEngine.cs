@@ -60,12 +60,6 @@ namespace N2.Engine
 		/// <returns>An instance of the resolved service.</returns>
 		object Resolve(Type serviceType);
 
-		/// <summary>Resolves a named service configured for the factory.</summary>
-		/// <param name="key">The name of the service to resolve.</param>
-		/// <returns>An instance of the resolved service.</returns>
-		[Obsolete("No longer supported.  Use another method on the Container property", true)]
-		object Resolve(string key);
-
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">The name of the component.</param>
 		/// <param name="classType">The type of component.</param>
@@ -92,12 +86,6 @@ namespace N2.Engine
 		/// <param name="lifeStyle">The lifestyle that the component will be instantiated with.</param>
 		[Obsolete("Use Container.AddComponentLifeStyle")]
 		void AddComponentLifeStyle(string key, Type classType, ComponentLifeStyle lifeStyle);
-
-		/// <summary>Adds a "facility" to the IoC container. Unless this has been changed it's assumed that tihs is a <see cref="Castle.MicroKernel.IFacility"/>.</summary>
-		/// <param name="key">The name of the facility.</param>
-		/// <param name="facility">The facility instance.</param>
-		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation", true)]
-		void AddFacility(string key, object facility);
 
 		/// <summary>Releases a component from the IoC container.</summary>
 		/// <param name="instance">The component instance to release.</param>

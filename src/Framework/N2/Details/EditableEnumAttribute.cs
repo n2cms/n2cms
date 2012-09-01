@@ -9,7 +9,8 @@ namespace N2.Details
     /// <remarks>
     /// Depending on the property type the values will be stored as enum, integer or string.
     /// </remarks>
-    public class EditableEnumAttribute : EditableDropDownAttribute
+	[AttributeUsage(AttributeTargets.Property)]
+	public class EditableEnumAttribute : EditableDropDownAttribute
     {
 		public EditableEnumAttribute()
 			: this("", 10, typeof(EmptyEnum))

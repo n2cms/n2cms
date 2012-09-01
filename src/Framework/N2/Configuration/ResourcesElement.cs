@@ -45,5 +45,19 @@ namespace N2.Configuration
 			get { return (string)base["tinyMCEPath"]; }
 			set { base["tinyMCEPath"] = value; }
 		}
+
+		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion)]
+		public string PartsJsPath
+		{
+			get { return (string)base["partsJsPath"]; }
+			set { base["partsJsPath"] = value; }
+		}
+
+		[ConfigurationProperty("partsCssPath", DefaultValue = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion)]
+		public string PartsCssPath
+		{
+			get { return (string)base["partsCssPath"]; }
+			set { base["partsCssPath"] = value; }
+		}
 	}
 }

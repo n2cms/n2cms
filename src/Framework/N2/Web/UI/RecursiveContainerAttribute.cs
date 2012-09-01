@@ -21,6 +21,7 @@ namespace N2.Web.UI
 	/// interface. Any recursive containers in the selected page and it's ancestors are displayed.
 	/// </summary>
 	/// <remarks>These editors are accessed via the site toolbar button.</remarks>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class RecursiveContainerAttribute : EditorContainerAttribute
 	{
 		public string HeadingFormat { get; set; }

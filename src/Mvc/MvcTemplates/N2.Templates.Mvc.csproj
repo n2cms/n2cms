@@ -115,17 +115,23 @@
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestContentGeneratorController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalTypedController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
     <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
     <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
     <Compile Include="Areas\Tests\Controllers\StaticController.cs" />
-    <Compile Include="Areas\Tests\Controllers\TestContentController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPageController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestPartController.cs" />
     <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
     <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
+    <Compile Include="Areas\Tests\Models\TestContentGenerator.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoPart.cs" />
     <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
+    <Compile Include="Areas\Tests\Models\FluentPage.cs" />
+    <Compile Include="Areas\Tests\Models\FluentWebFormPage.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
@@ -303,11 +309,17 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Default\Style.css" />
+    <Content Include="App_Themes\Default\Thumbnail.jpg" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
     <Content Include="Areas\Tests\Uc.ascx" />
+    <Content Include="Areas\Tests\Views\TestContentGenerator\Index.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />
     <Content Include="Areas\Tests\Views\External\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
+    <Content Include="Areas\Tests\Views\TestPage\Test.aspx" />
+    <Content Include="Areas\Tests\Views\TestPart\Test.ascx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
     <Content Include="Content\Galleria\galleria-1.2.7.js" />
@@ -602,10 +614,10 @@
     <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
     <Content Include="Areas\Tests\Views\QueryViewer\Index.ascx" />
     <Content Include="Areas\Tests\Views\Static\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />
-    <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
-    <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />
-    <Content Include="Areas\Tests\Views\TestContent\Urls.ascx" />
+    <Content Include="Areas\Tests\Views\Shared\Dictionary.ascx" />
+    <Content Include="Areas\Tests\Views\TestPart\Index.ascx" />
+    <Content Include="Areas\Tests\Views\TestPage\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Shared\Urls.ascx" />
     <Content Include="Content\Css\Application.css" />
     <Content Include="favicon.ico" />
     <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
@@ -640,7 +652,6 @@
     <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>

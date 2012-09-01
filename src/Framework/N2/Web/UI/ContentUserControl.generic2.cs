@@ -2,7 +2,7 @@ namespace N2.Web.UI
 {
 	/// <summary>A user control that can be dynamically created, bound to non-page items and added to a page.</summary>
 	/// <typeparam name="TPage">The type of page item this user control will have to deal with.</typeparam>
-    /// <typeparam name="TItem">The type of non-page (data) item this user control will be bound to.</typeparam>
+    /// <typeparam name="TPart">The type of non-page (data) item this user control will be bound to.</typeparam>
 	public abstract class ContentUserControl<TPage, TPart> : ContentUserControl<TPage>, IItemContainer, IContentTemplate
 		where TPage : N2.ContentItem
 		where TPart : N2.ContentItem

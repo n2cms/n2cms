@@ -39,6 +39,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,7 @@
     <DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -58,7 +59,7 @@
     <DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
@@ -73,12 +74,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -105,6 +112,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\System.Web.Mvc.dll</HintPath>
@@ -145,6 +153,7 @@
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AllowedDefinitionFilterTests.cs" />
     <Compile Include="Definitions\AttributeTransformerTests.cs" />
+    <Compile Include="Definitions\Runtime\FluentRegistratorTests.cs" />
     <Compile Include="Definitions\SiblingInsertionTests.cs" />
     <Compile Include="Definitions\RestrictCardinalityTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
@@ -172,6 +181,8 @@
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
     <Compile Include="Edit\WhileNavigatingToTheManagementInterface.cs" />
+    <Compile Include="Engine\TypeCacheTests.cs" />
+    <Compile Include="Engine\TypeFinderTests.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
     <Compile Include="Engine\Items\ItemAC.cs" />
@@ -204,10 +215,13 @@
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
     <Compile Include="Persistence\SearchHelperTests.cs" />
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
+    <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />
+    <Compile Include="Fakes\FakeWorker.cs" />
+    <Compile Include="Web\Messaging\MessagingTests.cs" />
     <Compile Include="Web\Mvc\ContentHelperTests.cs" />
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
@@ -288,8 +302,6 @@
     <Compile Include="Plugin\PlugIn3.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
     <Compile Include="Plugin\PluginFinderTests.cs" />
-    <Compile Include="Plugin\Scheduling\OnceAction.cs" />
-    <Compile Include="Plugin\Scheduling\RepeatAction.cs" />
     <Compile Include="Plugin\Scheduling\SchedulingTests.cs" />
     <Compile Include="Plugin\SomeException.cs" />
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
@@ -395,8 +407,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IoC.Windsor2\N2.IoC.Windsor2.csproj">
+      <Project>{234CD990-8B72-407D-AD6D-B3FBB78DBB39}</Project>
+      <Name>N2.IoC.Windsor2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

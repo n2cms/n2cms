@@ -25,40 +25,12 @@ namespace N2.Persistence.NH
 			this.map = map;
 		}
 
-        private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false"">{3}</subclass>";
-
-        /// <summary>Gets the mapping xml for a type</summary>
-        /// <param name="definition">The type to generate mapping for</param>
-        /// <param name="allDefinitions">All definitions in the system.</param>
-        /// <returns>An xml string</returns>
-		[Obsolete]
-        public virtual string GetMapping(Type entityType, Type parentType, string discriminator)
-        {
-			string typeName = GetName(entityType);
-			string parentName = GetName(parentType);
-            string properties = GetProperties(entityType);
-
-            logger.Info("Generating mapping for {type = " + entityType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
-            return string.Format(classFormat, typeName, parentName, discriminator, properties);
-        }
-
-		[Obsolete]
-        private string GetProperties(Type attributedType)
-        {
-			StringBuilder properties = new StringBuilder();
-            foreach (var p in GetPersistables(attributedType))
-            {
-				properties.Append(p.Attribute.GenerateMapping(p.DeclaringProperty));
-            }
-            return properties.ToString();
-        }
-
 		private IEnumerable<Pair> GetPersistables(Type attributedType)
 		{
 			return attributedType.GetProperties()
 				.Where(pi => pi.DeclaringType == attributedType)
-				.SelectMany(pi => pi.GetCustomAttributes(typeof(PersistableAttribute), false)
-					.OfType<PersistableAttribute>()
+				.SelectMany(pi => pi.GetCustomAttributes(typeof(IPersistableProperty), false)
+					.OfType<IPersistableProperty>()
 					.Where(a => a.PersistAs == PropertyPersistenceLocation.Column)
 					.Select(a => new Pair { Attribute = a, DeclaringProperty = pi }));
 		}
@@ -72,7 +44,7 @@ namespace N2.Persistence.NH
 
 		class Pair
 		{
-			public PersistableAttribute Attribute { get; set; }
+			public IPersistableProperty Attribute { get; set; }
 			public PropertyInfo DeclaringProperty { get; set; }
 		}
 		
@@ -98,7 +70,7 @@ namespace N2.Persistence.NH
 						else
 							sc.Items = sc.Items.Union(propertyMappings).ToArray();
 					}
-
+					logger.DebugFormat("Generating subclass {0} with discriminator {1} extending {2} with {3} items ({4} property mappings)", sc.name, sc.discriminatorvalue, sc.extends, sc.Items != null ? sc.Items.Length.ToString() : "(null)", propertyMappings.Count);
 					return sc;
 				}).ToArray();
 			if (Debugger.IsAttached)

@@ -132,5 +132,22 @@ namespace N2.Tests
 		{
 			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, persister.Repository) });
 		}
+
+		public static WebAppTypeFinder TypeFinder()
+		{
+			var config = new EngineSection();
+			config.Assemblies.Clear();
+			config.Assemblies.Add(new AssemblyElement { Assembly = typeof(TestSupport).Assembly.FullName });
+
+			return TypeFinder(config);
+		}
+
+		public static WebAppTypeFinder TypeFinder(EngineSection config)
+		{
+			var context = new ThreadContext();
+			var finder = new WebAppTypeFinder(new TypeCache(new N2.Persistence.BasicTemporaryFileHelper(context)), config);
+			finder.AssemblyRestrictToLoadingPattern = new System.Text.RegularExpressions.Regex("N2.Tests");
+			return finder;
+		}
 	}
 }

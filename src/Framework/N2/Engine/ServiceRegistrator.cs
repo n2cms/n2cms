@@ -21,14 +21,12 @@ namespace N2.Engine
 
 		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FindServices()
 		{
-			foreach (Type type in finder.Find(typeof(object)))
-			{
-				var attributes = type.GetCustomAttributes(typeof(ServiceAttribute), false);
-				foreach (ServiceAttribute attribute in attributes)
-				{
-					yield return new AttributeInfo<ServiceAttribute> { Attribute = attribute, DecoratedType = type };
-				}
-			}
+			return finder.Find<ServiceAttribute>(typeof(object), false)
+				.Where(t => !t.Type.IsAbstract)
+				.Where(t => !t.Type.IsInterface)
+				.Where(t => !t.Type.IsEnum)
+				.Where(t => !t.Type.IsValueType)
+				.Select(ai => new AttributeInfo<ServiceAttribute> { Attribute = ai.Attribute, DecoratedType = ai.Type });
 		}
 
 		public virtual void RegisterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services)
@@ -43,7 +41,7 @@ namespace N2.Engine
 			foreach (var info in addedServices)
 			{
 				Type serviceType = info.Attribute.ServiceType ?? info.DecoratedType;
-				string key = info.Attribute.Key ?? info.DecoratedType.FullName;
+				string key = info.Attribute.Key ?? (info.Attribute.ServiceType ?? info.DecoratedType).FullName + "->" + info.DecoratedType.FullName;
 				if(string.IsNullOrEmpty(info.Attribute.StaticAccessor))
 					container.AddComponent(key, serviceType, info.DecoratedType);
 				else
@@ -61,6 +59,11 @@ namespace N2.Engine
 		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FilterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services, params string[] configurationKeys)
 		{
 			return services.Where(s => s.Attribute.Configuration == null || configurationKeys.Contains(s.Attribute.Configuration));
+		}
+
+		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FilterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services, IEnumerable<Type> skipTypes)
+		{
+			return services.Where(s => !skipTypes.Contains(s.Attribute.ServiceType ?? s.DecoratedType));
 		}
 	}
 }

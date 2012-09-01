@@ -1,6 +1,6 @@
 using N2.Plugin;
 
-namespace N2.Tests.PlugIn
+namespace N2.Tests.Plugin
 {
 	[AutoInitialize]
 	public class PlugIn2 : IPluginInitializer

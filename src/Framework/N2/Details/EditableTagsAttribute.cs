@@ -31,6 +31,7 @@ namespace N2.Details
 	/// // find tagged items
 	/// var tags = repository.FindTagged(Find.StartPage, "Tags", "CMS");
 	/// </example>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableTagsAttribute : EditableTextAttribute
 	{
 		public EditableTagsAttribute()
@@ -88,7 +89,7 @@ namespace N2.Details
 
 		private string GetTagsText(ContentItem item)
 		{
-			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
+			var tags = TagsRepository.GetTagsFromValues(item, Name);
 			return string.Join(", ", tags.ToArray());
 		}
 	}

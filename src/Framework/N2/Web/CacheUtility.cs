@@ -68,7 +68,7 @@ namespace N2.Web
 
 		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
 		/// <param name="response">The response whose cache to modify.</param>
-		/// <param name="lastModified">The time the resource was modified.</param>
+		/// <param name="utcLastModified">The time the resource was modified.</param>
 		public static void SetValidUntilExpires(this HttpResponse response, DateTime utcLastModified)
 		{
 			response.Cache.SetExpires(DateTime.UtcNow.AddMonths(1));
@@ -88,7 +88,7 @@ namespace N2.Web
 
 		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
 		/// <param name="response">The response whose cache to modify.</param>
-		/// <param name="lastModified">The time the resource was modified.</param>
+		/// <param name="expires">The time the resource expires.</param>
 		public static HttpResponse SetOutputCache(this HttpResponse response, DateTime expires)
 		{
 			response.Cache.SetExpires(expires);
@@ -99,7 +99,7 @@ namespace N2.Web
 
 		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
 		/// <param name="response">The response whose cache to modify.</param>
-		/// <param name="lastModified">The time the resource was modified.</param>
+		/// <param name="expires">The time the resource expires.</param>
 		public static HttpResponseBase SetOutputCache(this HttpResponseBase response, DateTime expires)
 		{
 			response.Cache.SetExpires(expires);

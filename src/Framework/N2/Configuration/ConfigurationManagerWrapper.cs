@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Collections.Generic;
 
 namespace N2.Configuration
 {
@@ -8,6 +9,7 @@ namespace N2.Configuration
 	public class ConfigurationManagerWrapper
 	{
 		readonly string sectionGroup;
+		private ContentSectionTable sections;
 
 		public ConfigurationManagerWrapper()
 			: this("n2")
@@ -18,7 +20,20 @@ namespace N2.Configuration
 			this.sectionGroup = sectionGroup;
 		}
 
-		public ContentSectionTable Sections { get; set; }
+		public ContentSectionTable Sections
+		{
+			get { return sections ?? (sections = GetOrCreateSections()); }
+			set { sections = value; }
+		}
+
+		private ContentSectionTable GetOrCreateSections()
+		{
+			return new ContentSectionTable(
+				GetContentSection<HostSection>("host") ?? new HostSection(),
+				GetContentSection<EngineSection>("engine") ?? new EngineSection(),
+				GetContentSection<DatabaseSection>("database") ?? new DatabaseSection(),
+				GetContentSection<EditSection>("edit") ?? new EditSection());
+		}
 
 		public virtual T GetSection<T>(string sectionName) where T : ConfigurationSection
 		{
@@ -69,11 +84,7 @@ namespace N2.Configuration
 
 		public void Start()
 		{
-			Sections = new ContentSectionTable(
-				GetContentSection<HostSection>("host"),
-				GetContentSection<EngineSection>("engine"),
-				GetContentSection<DatabaseSection>("database"),
-				GetContentSection<EditSection>("edit"));
+			Sections = GetOrCreateSections();
 		}
 
 		public void Stop()
@@ -82,5 +93,17 @@ namespace N2.Configuration
 		}
 
 		#endregion
+
+		public virtual string[] GetComponentConfigurationKeys()
+		{
+			List<string> configurationKeys = new List<string>();
+
+			Sections.Database.ApplyComponentConfigurationKeys(configurationKeys);
+			Sections.Management.ApplyComponentConfigurationKeys(configurationKeys);
+			Sections.Web.ApplyComponentConfigurationKeys(configurationKeys);
+			Sections.Engine.ApplyComponentConfigurationKeys(configurationKeys);
+			
+			return configurationKeys.ToArray();
+		}
 	}
 }

@@ -16,11 +16,9 @@ namespace N2.Web
     {
         private static string baseDirectory;
 
-    	[ThreadStatic] ContentItem currentPage;
     	[ThreadStatic] PathData currentPath;
 		[ThreadStatic] static IDictionary items;
-    	[ThreadStatic] Url localUrl = new Url("/");
-    	[ThreadStatic] Url url = new Url("http://localhost");
+    	[ThreadStatic] Url url = new Url("http://localhost/");
 
         static ThreadContext()
 		{
@@ -32,6 +30,12 @@ namespace N2.Web
 				baseDirectory = baseDirectory.Substring(0, baseDirectory.Length - 4);
         }
 
+		public ThreadContext()
+		{
+    		currentPath = PathData.Empty;
+			items = new Hashtable();
+    		url = "http://localhost/";
+		}
 
 		public virtual IDictionary RequestItems
 		{
@@ -55,8 +59,8 @@ namespace N2.Web
 
         public ContentItem CurrentPage
         {
-            get { return currentPage; }
-            set { currentPage = value; }
+            get { return CurrentPath.CurrentPage; }
+			set { CurrentPath.CurrentPage = value; }
 		}
 
 		/// <summary>The template used to serve this request.</summary>
@@ -102,7 +106,9 @@ namespace N2.Web
 
         public virtual string MapPath(string path)
         {
-            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+			path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+			if (path.StartsWith("bin"))
+				path = "bin\\Debug" + path.Substring(3);
             return Path.Combine(baseDirectory, path);
         }
 

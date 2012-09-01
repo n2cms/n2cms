@@ -90,5 +90,12 @@ namespace N2.Configuration
 			get { return (TokensElement)base["tokens"]; }
 			set { base["tokens"] = value; }
 		}
+
+		[ConfigurationProperty("messaging")]
+		public MessagingElement Messaging
+		{
+			get { return (MessagingElement)base["messaging"]; }
+			set { base["messaging"] = value; }
+		}
 	}
 }

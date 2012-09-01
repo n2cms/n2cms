@@ -1,8 +1,13 @@
 ﻿using System.IO;
 using System.Web.UI;
+using System;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Specifies a text box which renders as a html meta tag element when rendered on a web page.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableMetaTagAttribute : EditableTextAttribute
 	{
 		public override System.Web.UI.Control AddTo(ContentItem item, string detailName, System.Web.UI.Control container)

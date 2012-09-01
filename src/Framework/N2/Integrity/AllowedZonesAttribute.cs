@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Definitions;
+using System.Linq;
 
 namespace N2.Integrity
 {
@@ -10,7 +11,7 @@ namespace N2.Integrity
     /// merly means assigning the child item's ZoneName property a meaningful 
     /// string.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class AllowedZonesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
 		readonly AllowedZones allowedIn = AllowedZones.SpecifiedZones;
@@ -46,7 +47,7 @@ namespace N2.Integrity
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			currentDefinition.AllowedIn = allowedIn;
-			currentDefinition.AllowedZoneNames = ZoneNames;
+			currentDefinition.AllowedZoneNames = ZoneNames != null ? ZoneNames.ToList() : new List<string>();
 		}
 	}
 }

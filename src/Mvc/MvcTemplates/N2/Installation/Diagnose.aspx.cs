@@ -77,7 +77,7 @@ namespace N2.Edit.Install
 
 			try
 			{
-				recentChanges = N2.Find.Items.All.MaxResults(10).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
+				recentChanges = N2.Find.Items.All.MaxResults(5).OrderBy.Updated.Desc.Select().Select(i => i.SavedBy + ": #" + i.ID + " " + i.Title + " (" + i.Updated + ")").ToArray();
 			}
 			catch (Exception ex)
 			{
@@ -171,11 +171,11 @@ namespace N2.Edit.Install
 			return AspNetHostingPermissionLevel.None;
 		}
 
-		protected IEnumerable<ItemDefinition> AllowedChildren(object dataItem)
+		protected IList<ItemDefinition> AllowedChildren(object dataItem)
 		{
 			ItemDefinition d = dataItem as ItemDefinition;
 
-			return d.GetAllowedChildren(N2.Context.Current.Definitions, Activator.CreateInstance(d.ItemType) as ContentItem);
+			return d.GetAllowedChildren(N2.Context.Current.Definitions, Activator.CreateInstance(d.ItemType) as ContentItem).ToList();
 		}
 
 		protected string GetDefinitions(Assembly a)

@@ -6,6 +6,7 @@ using N2.Web.UI.WebControls;
 namespace N2.Web.UI
 {
 	[Obsolete("The [FieldSet] attribute is renamed to [FieldSetContainer] attribute to conform with a redefined nomenclature.", true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class FieldSetAttribute : FieldSetContainerAttribute
 	{
 		public FieldSetAttribute(string name, string legend, int sortOrder)
@@ -17,6 +18,7 @@ namespace N2.Web.UI
 	/// <summary>
 	/// Defines a fieldset that can contain editors when editing an item.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class FieldSetContainerAttribute : EditorContainerAttribute
 	{
 		private string legend;

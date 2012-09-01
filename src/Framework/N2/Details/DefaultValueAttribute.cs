@@ -3,6 +3,7 @@ using N2.Definitions;
 
 namespace N2.Details
 {
+	[AttributeUsage(AttributeTargets.Property)]
 	public class DefaultValueAttribute : Attribute, IContentTransformer, IUniquelyNamed
 	{
 		public DefaultValueAttribute()
