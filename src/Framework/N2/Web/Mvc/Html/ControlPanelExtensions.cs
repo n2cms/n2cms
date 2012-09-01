@@ -26,7 +26,7 @@ namespace N2.Web.Mvc.Html
 		/// <summary>Gets the curent state of the control panel.</summary>
 		/// <param name="html"></param>
 		/// <returns></returns>
-		public static ControlPanelState GetControlPanelState(HtmlHelper html)
+		public static ControlPanelState GetControlPanelState(this HtmlHelper html)
 		{
 			return UI.WebControls.ControlPanel.GetState(html.ContentEngine().SecurityManager, html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
 		}
