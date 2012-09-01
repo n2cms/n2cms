@@ -73,6 +73,7 @@
     <Compile Include="Dinamico\Controllers\ContentPagesController.cs" />
     <Compile Include="Dinamico\Controllers\ContentPartsController.cs" />
     <Compile Include="Dinamico\Controllers\FallbackController.cs" />
+    <Compile Include="Dinamico\Controllers\FreeFormController.cs" />
     <Compile Include="Dinamico\Controllers\LanguageIntersectionController.cs" />
     <Compile Include="Dinamico\Controllers\MembershipController.cs" />
     <Compile Include="Dinamico\Controllers\StartPageController.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Dinamico\Models\AccountModels.cs" />
     <Compile Include="Dinamico\Models\ContentPage.cs" />
     <Compile Include="Dinamico\Models\ContentPart.cs" />
+    <Compile Include="Dinamico\Models\FreeForm.cs" />
     <Compile Include="Dinamico\Models\LanguageIntersection.cs" />
     <Compile Include="Dinamico\Models\PageModelBase.cs" />
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
@@ -122,6 +124,9 @@
     <Content Include="Dinamico\Themes\Default\Scripts\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
+    <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
+    <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
+    <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
