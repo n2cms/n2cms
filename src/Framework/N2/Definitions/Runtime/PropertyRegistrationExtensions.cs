@@ -274,5 +274,28 @@ namespace N2.Definitions.Runtime
 		{
 			return registration.Registration.RegisterEditable<EditableNumberAttribute>(registration.PropertyName, title);
 		}
+
+		/// <summary>Adds a placeholder text to an editable.</summary>
+		public static EditableBuilder<TEditable> Placeholder<TEditable>(this EditableBuilder<TEditable> editable, string placeholderText) where TEditable : AbstractEditableAttribute
+		{
+			editable.Configure(e => e.Placeholder = placeholderText);
+			return editable;
+		}
+
+		// displayable
+
+		/// <summary>Specifies the usage of a displayable tokens for rendering this property.</summary>
+		public static Builder<DisplayableTokensAttribute> Tokens<TContent>(this IPropertyRegistration<TContent, string> registration) where TContent : ContentItem
+		{
+			return registration.Registration.RegisterDisplayable<DisplayableTokensAttribute>(registration.PropertyName);
+		}
+
+		/// <summary>Specifies the usage of a displayable tokens for rendering this property.</summary>
+		public static Builder<DisplayableTokensAttribute> WithTokens(this EditableBuilder<EditableFreeTextAreaAttribute> builder)
+		{
+			var displayable = new DisplayableTokensAttribute { Name = builder.PropertyName };
+			builder.Registration.Add(displayable);
+			return new Builder<DisplayableTokensAttribute>(builder.PropertyName, builder.Registration);
+		}
 	}
 }

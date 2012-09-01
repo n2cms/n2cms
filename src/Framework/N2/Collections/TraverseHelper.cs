@@ -14,14 +14,14 @@ namespace N2.Collections
 	public class TraverseHelper
 	{
 		Func<IEngine> engine;
-		FilterHelper filter;
+		FilterHelper filterIs;
 		Func<PathData> pathGetter;
 		ItemFilter defaultFilter;
 
 		public TraverseHelper(Func<IEngine> engine, FilterHelper filter, Func<PathData> pathGetter)
 		{
 			this.engine = engine;
-			this.filter = filter;
+			this.filterIs = filter;
 			this.pathGetter = pathGetter;
 		}
 
@@ -48,7 +48,7 @@ namespace N2.Collections
 		/// <summary>The default filter to apply to all results from this object.</summary>
 		public ItemFilter DefaultFilter
 		{
-			get { return defaultFilter ?? (defaultFilter = filter.Accessible()); }
+			get { return defaultFilter ?? (defaultFilter = filterIs.Accessible()); }
 			set { defaultFilter = value; }
 		}
 
@@ -125,19 +125,15 @@ namespace N2.Collections
 			return parent.GetChildren(filter ?? DefaultFilter);
 		}
 
-		/// <summary>Pages below the current item.</summary>
-		/// <returns></returns>
-		public IEnumerable<ContentItem> ChildPages()
-		{
-			return ChildPages(CurrentPage);
-		}
-
 		/// <summary>Pages below a given item.</summary>
 		/// <returns></returns>
-		public IEnumerable<ContentItem> ChildPages(ContentItem parent)
+		public IEnumerable<ContentItem> ChildPages(ContentItem parent = null, ItemFilter filter = null)
 		{
+			if (parent == null) parent = CurrentPage;
+			if (filter == null) filter = this.filterIs.AccessiblePage();
+
 			TryMasterVersion(ref parent);
-			return (parent ?? CurrentPage).Children.FindPages().Where(new AccessiblePageFilter(engine().Resolve<IWebContext>().User, engine().SecurityManager));
+			return (parent).Children.FindPages().Where(filter);
 		}
 
 		/// <summary>Pages below the current item suitable for display in a navigation (visible, published, accessible).</summary>
@@ -159,7 +155,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> NavigatableChildPages(ContentItem parent)
 		{
 			TryMasterVersion(ref parent);
-			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter());
+			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(filterIs.Accessible());
 		}
 
 		/// <summary>Pages below the given item suitable for display in a navigation (visible, published, accessible).</summary>
@@ -167,21 +163,21 @@ namespace N2.Collections
 		public IEnumerable<T> NavigatableChildPages<T>(ContentItem parent)
 		{
 			TryMasterVersion(ref parent);
-			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(CreateAccessFilter()).OfType<T>();
+			return (parent ?? CurrentPage).Children.FindNavigatablePages().Where(filterIs.Accessible()).OfType<T>();
 		}
 
 		/// <summary>Parts below the current item.</summary>
 		/// <returns></returns>
 		public IEnumerable<ContentItem> ChildParts()
 		{
-			return Children(Content.Is.Accessible() & Content.Is.Part());
+			return Children(filterIs.Accessible() & filterIs.Part());
 		}
 
 		/// <summary>Parts below the current item.</summary>
 		/// <returns></returns>
 		public IEnumerable<T> ChildParts<T>()
 		{
-			return Children(Content.Is.Accessible() & Content.Is.Part()).OfType<T>();
+			return Children(filterIs.Accessible() & filterIs.Part()).OfType<T>();
 		}
 
 		/// <summary>Parts in a given zone below the current item.</summary>
@@ -206,7 +202,7 @@ namespace N2.Collections
 		public IEnumerable<ContentItem> ChildParts(ContentItem parent, string zoneName)
 		{
 			TryMasterVersion(ref parent);
-			return (parent ?? CurrentItem).Children.FindParts(zoneName).Where(CreateAccessFilter());
+			return (parent ?? CurrentItem).Children.FindParts(zoneName).Where(filterIs.Accessible());
 		}
 
 		/// <summary>Descendants of the current item.</summary>
@@ -230,10 +226,12 @@ namespace N2.Collections
 		/// <param name="ancestor"></param>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		public IEnumerable<ContentItem> DescendantPages(ContentItem ancestor, ItemFilter filter = null)
+		public IEnumerable<ContentItem> DescendantPages(ContentItem ancestor = null, ItemFilter filter = null)
 		{
+			if (!TryCurrentPage(ref ancestor))
+				return Enumerable.Empty<ContentItem>();
 			TryMasterVersion(ref ancestor);
-			return N2.Find.EnumerateChildren(ancestor).Where(Content.Is.Page()).Where(filter ?? DefaultFilter);
+			return N2.Find.EnumerateChildren(ancestor).Where(this.filterIs.Page()).Where(filter ?? DefaultFilter);
 		}
 
 		/// <summary>Siblings of the current item.</summary>
@@ -267,8 +265,8 @@ namespace N2.Collections
 		/// <returns></returns>
 		public IEnumerable<ContentItem> Siblings(ContentItem item, ItemFilter filter)
 		{
-			if (item == null) item = CurrentItem;
-			if (item == null) return Enumerable.Empty<ContentItem>();
+			if (!TryCurrentItem(ref item))
+				return Enumerable.Empty<ContentItem>();
 			if (item.Parent == null) return Enumerable.Empty<ContentItem>();
 			TryMasterVersion(ref item);
 
@@ -415,6 +413,31 @@ namespace N2.Collections
 			return false;
 		}
 
+
+		private bool TryCurrentItem(ref ContentItem item)
+		{
+			if (item != null)
+				return true;
+
+			item = CurrentItem;
+			if (item != null)
+				return true;
+
+			return false;
+		}
+
+		private bool TryCurrentPage(ref ContentItem page)
+		{
+			if (page != null)
+				return true;
+
+			page = CurrentPage;
+			if (page != null)
+				return true;
+
+			return false;
+		}
+
 		private static bool TryMasterVersion(ref ContentItem item)
 		{
 			if (item != null && item.VersionOf.HasValue)
@@ -423,11 +446,6 @@ namespace N2.Collections
 				return true;
 			}
 			return false;
-		}
-
-		private AccessFilter CreateAccessFilter()
-		{
-			return new AccessFilter(engine().Resolve<IWebContext>().User, engine().SecurityManager);
 		}
 	}
 }

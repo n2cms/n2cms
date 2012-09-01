@@ -26,8 +26,12 @@ namespace N2
 		public PartDefinitionAttribute()
 		{
 			IsPage = false;
-			IconUrl = "{ManagementUrl}/Resources/icons/page_white.png";
 			AllowedIn = AllowedZones.AllNamed;
+		}
+
+		protected override string DefaultIconUrl
+		{
+			get { return "{ManagementUrl}/Resources/icons/page_white.png"; }
 		}
 
 		public override void Refine(ItemDefinition currentDefinition)

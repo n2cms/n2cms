@@ -13,6 +13,8 @@ namespace N2.Definitions.Runtime
 
 	public interface IContentRegistration
 	{
+		Builder<T> RegisterDisplayable<T>(string name) where T : IDisplayable, new();
+		Builder<T> RegisterDisplayable<T>(T displayable) where T : IDisplayable;
 		EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new();
 		EditableBuilder<T> RegisterEditable<T>(T editable) where T : IEditable;
 		void RegisterModifier(IContentTransformer modifier);
