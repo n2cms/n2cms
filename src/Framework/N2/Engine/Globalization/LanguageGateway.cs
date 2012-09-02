@@ -61,14 +61,14 @@ namespace N2.Engine.Globalization
 
 		public ILanguage GetLanguage(ContentItem item)
 		{
-			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
+			var infos = GetLanguageInfos();
+			foreach (ContentItem ancestor in Find.EnumerateParents(item, lastAncestor: null, includeSelf: true))
 			{
 				if (ancestor is ILanguage)
 				{
-					ILanguage language = ancestor as ILanguage;
-					if (string.IsNullOrEmpty(language.LanguageCode))
-                        continue;
-                    return language;
+					var info = infos.FirstOrDefault(li => li.ID == ancestor.ID);
+					if (info != null)
+						return info;
 				}
 			}
 			return null;
@@ -84,11 +84,16 @@ namespace N2.Engine.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			var languages = languagesCache.GetValue(host.CurrentSite.RootItemID, FindLanguagesRecursive);
+			var languages = GetLanguageInfos();
 			foreach(var language in languages)
 			{
-				yield return persister.Get(language.ID) as ILanguage;
+				yield return language;
 			}
+		}
+
+		private LanguageInfo[] GetLanguageInfos()
+		{
+			return languagesCache.GetValue(host.CurrentSite.RootItemID, FindLanguagesRecursive);
 		}
 
 		private LanguageInfo[] FindLanguagesRecursive(int rootNodeID)
@@ -99,8 +104,9 @@ namespace N2.Engine.Globalization
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{
 					var languageItem = language as ContentItem;
+					int languageID = languageItem.ID;
 					if (languageItem != null && languageItem.ID > 0)
-						languages.Add(new LanguageInfo { ID = languageItem.ID, LanguageCode = language.LanguageCode });
+						languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, FlagUrl = language.FlagUrl, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
 				}
 			}
 			return languages.ToArray();
@@ -116,7 +122,7 @@ namespace N2.Engine.Globalization
 				List<ContentItem> languages = new List<ContentItem>();
 				foreach (ILanguage language in GetAvailableLanguages())
 				{
-					languages.Add(language as ContentItem);
+					languages.Add(GetTranslation(language));
 				}
 				return languages;
 			}
@@ -126,7 +132,8 @@ namespace N2.Engine.Globalization
 
 			return persister.Repository.Find(TranslationKey, item.TranslationKey)
 				.Where(new AccessFilter(context.User, security))
-				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()));
+				.Where(Content.Is.Not(Content.Is.DescendantOf<ITrashCan>()))
+				;//.Where(i => i.TranslationKey == item.TranslationKey); // filtering again since translation key might have been cleared in the same transaction
 		}
 
 		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)
@@ -161,7 +168,7 @@ namespace N2.Engine.Globalization
 						{
 							if (generateNonTranslated)
 							{
-                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(language as ContentItem))
+                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(GetTranslation(language)))
 								{
 									IsTranslatable = false
 								};
@@ -176,6 +183,16 @@ namespace N2.Engine.Globalization
 					}
 				}
 			}
+		}
+
+		private ContentItem GetTranslation(ILanguage language)
+		{
+			if (language is LanguageInfo)
+				return (language as LanguageInfo).Translation();
+			else if (language is ContentItem)
+				return language as ContentItem;
+			else
+				throw new InvalidOperationException("Can't get translation of " + language);
 		}
 
 		private ContentItem GetTranslatedParent(ContentItem item, ILanguage language)
@@ -209,10 +226,14 @@ namespace N2.Engine.Globalization
             EnsureNoLanguageRoots(items);
 
             ContentItem appointedMaster = AppointMaster(items);
-            foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
-            {
-                persister.Save(itemToSave);
-            }
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
+				{
+					persister.Repository.SaveOrUpdate(itemToSave);
+				}
+				tx.Commit();
+			}
         }
 
         /// <summary>
@@ -224,7 +245,11 @@ namespace N2.Engine.Globalization
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
-				persister.Repository.SaveOrUpdate(item);
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					persister.Repository.SaveOrUpdate(item);
+					tx.Commit();
+				}
 			}
         }
 

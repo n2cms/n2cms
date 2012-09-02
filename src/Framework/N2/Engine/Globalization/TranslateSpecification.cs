@@ -41,9 +41,9 @@ namespace N2.Engine.Globalization
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(Url.ResolveTokens("{ManagementUrl}/Resources/Img/Flags/{0}.png"), language.LanguageCode);
+				flagUrl = "{ManagementUrl}" + string.Format("/Resources/Img/Flags/{0}.png", language.LanguageCode);
 
-			return flagUrl;
+			return Url.ResolveTokens(flagUrl);
 		}
 
         public Site Site { get; set; }
