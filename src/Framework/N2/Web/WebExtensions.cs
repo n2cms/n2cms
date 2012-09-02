@@ -10,6 +10,7 @@ using N2.Details;
 using System.IO;
 using System.Web.UI;
 using System.Collections;
+using N2.Definitions;
 
 namespace N2.Web
 {
@@ -60,9 +61,10 @@ namespace N2.Web
 
 		internal static IDisposable GetEditableWrapper(ContentItem item, bool isEditable, string propertyName, IDisplayable displayable, TextWriter writer)
 		{
+			
 			var viewEditable = displayable as IViewEditable;
 			if (isEditable && (viewEditable == null || viewEditable.IsViewEditable) && item != null && displayable != null)
-				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName } });
+				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
 			else
 				return new EmptyDisposable();
 		}

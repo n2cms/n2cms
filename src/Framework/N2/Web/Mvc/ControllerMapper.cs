@@ -21,7 +21,7 @@ namespace N2.Web.Mvc
 			IList<ControlsAttribute> controllerDefinitions = FindControllers(typeFinder);
 			foreach (ItemDefinition id in definitionManager.GetDefinitions())
 			{
-				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
+				IAdapterDescriptor controllerDefinition = GetControllerFor(id, controllerDefinitions);
 				if(controllerDefinition != null)
 				{
 					ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
@@ -77,8 +77,12 @@ namespace N2.Web.Mvc
 			get { return _controllerMap; }
 		}
 
-		private static IAdapterDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
+		private static IAdapterDescriptor GetControllerFor(ItemDefinition definition, IList<ControlsAttribute> controllerDefinitions)
 		{
+			if (definition.Metadata.ContainsKey("ControlledBy"))
+				return new ControlsAttribute(definition.ItemType) { AdapterType = (Type)definition.Metadata["ControlledBy"] };
+
+			Type itemType = definition.ItemType;
 			foreach (ControlsAttribute controllerDefinition in controllerDefinitions)
 			{
 				if (controllerDefinition.ItemType.IsAssignableFrom(itemType))

@@ -3,11 +3,15 @@ using N2.Web.Mvc;
 
 namespace N2.Definitions.Runtime
 {
-	public interface IContentRegistration<TModel> : IContentRegistration
+	public interface IContentRegistration<TModel> : IContentRegistration, IDefinitionRegistration
 	{
-		ItemDefinition Definition { get; }
 		PropertyRegistration<TModel, TProperty> On<TProperty>(string detailName);
 		ContainerBuilder<TModel, T> Register<T>(T named) where T : IEditableContainer;
+	}
+
+	public interface IDefinitionRegistration
+	{
+		ItemDefinition Definition { get; }
 		RegistrationConventions DefaultConventions { get; }
 	}
 

@@ -10,38 +10,38 @@ namespace N2.Web.Mvc
 {
 	public static class RegisterExtensions
 	{
-		public static void ControlledBy<TController>(this IContentRegistration re) where TController : IController
+		public static void ControlledBy<TController>(this IDefinitionRegistration re) where TController : IController
 		{
-			re.RegisterRefiner(new RegisterControllerRefinder(typeof(TController)));
+			re.Definition.Metadata["ControlledBy"] = typeof(TController);
 		}
 
-		class RegisterControllerRefinder : ISortableRefiner
-		{
-			private Type controllerType;
+		//class RegisterControllerRefinder : ISortableRefiner
+		//{
+		//    private Type controllerType;
 
-			public RegisterControllerRefinder(Type controllerType)
-			{
-				this.controllerType = controllerType;
-			}
+		//    public RegisterControllerRefinder(Type controllerType)
+		//    {
+		//        this.controllerType = controllerType;
+		//    }
 
-			public int RefinementOrder
-			{
-				get { return 0; }
-			}
+		//    public int RefinementOrder
+		//    {
+		//        get { return 0; }
+		//    }
 
-			public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
-			{
-				var descriptor = new ReflectedControllerDescriptor(controllerType);
-				var methods = descriptor.GetCanonicalActions()
-					.Select(m => m.ActionName).ToArray();
+		//    public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		//    {
+		//        var descriptor = new ReflectedControllerDescriptor(controllerType);
+		//        var methods = descriptor.GetCanonicalActions()
+		//            .Select(m => m.ActionName).ToArray();
 
-				PathDictionary.PrependFinder(currentDefinition.ItemType, new ActionResolver(descriptor.ControllerName, methods));
-			}
+		//        PathDictionary.PrependFinder(currentDefinition.ItemType, new ActionResolver(descriptor.ControllerName, methods));
+		//    }
 
-			public int CompareTo(ISortableRefiner other)
-			{
-				return RefinementOrder - other.RefinementOrder;
-			}
-		}
+		//    public int CompareTo(ISortableRefiner other)
+		//    {
+		//        return RefinementOrder - other.RefinementOrder;
+		//    }
+		//}
 	}
 }
