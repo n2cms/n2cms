@@ -357,8 +357,7 @@ namespace N2.Tests.Definitions.Runtime
 
 			var definitions = registration.Register(map);
 
-			var pathFinder = (ActionResolver)N2.Web.PathDictionary.GetFinders(typeof(FluentItem)).First();
-			pathFinder.Methods.Single().ShouldBe("Hello");
+			definitions.Single().Metadata["ControlledBy"].ShouldBe(typeof(FluentItemController));
 		}
 	}
 }
