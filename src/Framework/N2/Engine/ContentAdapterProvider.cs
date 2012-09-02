@@ -136,7 +136,7 @@ namespace N2.Engine
 				throw new ArgumentException("Cannot create adapter of type " + adapterType + " for content type " + contentType);
 
 			adapter.AdaptedType = contentType;
-			adapter.engine = engine;
+			adapter.Engine = engine;
 			return adapter;
 		}
 		 

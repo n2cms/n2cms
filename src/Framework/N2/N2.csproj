@@ -644,7 +644,11 @@
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Parts\PartsExtensions.cs" />
+    <Compile Include="Web\Rendering\ContentRendererAttribute.cs" />
+    <Compile Include="Web\Rendering\ContentRendererSelector.cs" />
+    <Compile Include="Web\Rendering\ContentRendererBaseOfTModel.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
+    <Compile Include="Web\Rendering\IContentRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
