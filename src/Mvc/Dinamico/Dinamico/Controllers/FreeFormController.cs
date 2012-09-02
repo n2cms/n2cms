@@ -14,7 +14,6 @@ using Dinamico.Models;
 
 namespace Dinamico.Controllers
 {
-	[Controls(typeof(Models.FreeForm))]
 	public class FreeFormController : ContentController<FreeForm>
 	{
 		private readonly IMailSender mailSender;

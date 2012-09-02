@@ -18,7 +18,6 @@ namespace Dinamico.Models
 		{
 			register.Part(title: "Free form", description: "A form that can be sumitted and sent to an email address or viewed online.");
 
-			//TODO
 			register.ControlledBy<Controllers.FreeFormController>();
 			
 			register.Definition.SortOrder = 250;
