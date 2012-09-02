@@ -106,7 +106,7 @@ namespace N2.Tests.Definitions.Runtime
 					.DefaultValue("hello")
 					.Help("help title", "help body")
 					.Required("This value is required")
-					.RequiredPermission(N2.Security.Permission.Administer)
+					.Require(N2.Security.Permission.Administer)
 					.Container("ExtrasContainer")
 					.Configure(ee => ee.Placeholder = "Some text in the box");
 			};

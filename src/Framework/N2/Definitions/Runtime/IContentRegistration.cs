@@ -12,6 +12,7 @@ namespace N2.Definitions.Runtime
 	public interface IDefinitionRegistration
 	{
 		ItemDefinition Definition { get; }
+		N2.Definitions.Runtime.ContentRegistration.ContentRegistrationContext Context { get; }
 		RegistrationConventions DefaultConventions { get; }
 	}
 

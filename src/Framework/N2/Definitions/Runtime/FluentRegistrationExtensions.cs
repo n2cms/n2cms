@@ -7,6 +7,7 @@ using N2.Details;
 using N2.Web.UI;
 using System.Linq.Expressions;
 using N2.Web;
+using N2.Security;
 
 namespace N2.Definitions.Runtime
 {
@@ -80,7 +81,7 @@ namespace N2.Definitions.Runtime
 		/// <summary>
 		/// Defines a tab panel that can be used to contain editor controls.
 		/// </summary>
-		public static ContainerBuilder<TModel, TabContainerAttribute> Tab<TModel>(this IContentRegistration<TModel> registration, string containerName, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, TabContainerAttribute> TabContainer<TModel>(this IContentRegistration<TModel> registration, string containerName, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return registration.Register(new TabContainerAttribute(containerName, containerName, 0))
 				.Do(containerRegistration);
@@ -89,7 +90,7 @@ namespace N2.Definitions.Runtime
 		/// <summary>
 		/// Defines a tab panel that can be used to contain editor controls.
 		/// </summary>
-		public static ContainerBuilder<TModel, TabContainerAttribute> Tab<TModel>(this IContentRegistration<TModel> registration, string containerName, string tabText, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, TabContainerAttribute> TabContainer<TModel>(this IContentRegistration<TModel> registration, string containerName, string tabText, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return registration.Register(new TabContainerAttribute(containerName, tabText ?? containerName, 0))
 				.Do(containerRegistration);
@@ -98,7 +99,7 @@ namespace N2.Definitions.Runtime
 		/// <summary>
 		/// Defines a fieldset that can contain editors when editing an item.
 		/// </summary>
-		public static ContainerBuilder<TModel, FieldSetContainerAttribute> FieldSet<TModel>(this IContentRegistration<TModel> display, string containerName, string legend, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, FieldSetContainerAttribute> FieldSetContainer<TModel>(this IContentRegistration<TModel> display, string containerName, string legend, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return display.Register(new FieldSetContainerAttribute(containerName, legend ?? containerName, 0))
 				.Do(containerRegistration);
@@ -116,7 +117,7 @@ namespace N2.Definitions.Runtime
 		/// <summary>
 		/// Places a container in the right-hand side of the editing UI.
 		/// </summary>
-		public static ContainerBuilder<TModel, SidebarContainerAttribute> Sidebar<TModel>(this IContentRegistration<TModel> display, string containerName, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, SidebarContainerAttribute> SidebarContainer<TModel>(this IContentRegistration<TModel> display, string containerName, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return display.Register(new SidebarContainerAttribute(containerName, 0) { HeadingText = containerName })
 				.Do(containerRegistration);
@@ -125,7 +126,7 @@ namespace N2.Definitions.Runtime
 		/// <summary>
 		/// Places a container in the right-hand side of the editing UI.
 		/// </summary>
-		public static ContainerBuilder<TModel, SidebarContainerAttribute> Sidebar<TModel>(this IContentRegistration<TModel> display, string containerName, string headingText, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, SidebarContainerAttribute> SidebarContainer<TModel>(this IContentRegistration<TModel> display, string containerName, string headingText, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return display.Register(new SidebarContainerAttribute(containerName, 0) { HeadingText = headingText })
 				.Do(containerRegistration);
@@ -135,7 +136,7 @@ namespace N2.Definitions.Runtime
 		/// Places contained controls in the site editor interface instead of the regular editor 
 		/// interface. Any recursive containers in the selected page and it's ancestors are displayed.
 		/// </summary>
-		public static ContainerBuilder<TModel, RecursiveContainerAttribute> Recursive<TModel>(this IContentRegistration<TModel> display, string containerName, string headingFormat, Action<IContentRegistration<TModel>> containerRegistration = null)
+		public static ContainerBuilder<TModel, RecursiveContainerAttribute> RecursiveContainer<TModel>(this IContentRegistration<TModel> display, string containerName, string headingFormat, Action<IContentRegistration<TModel>> containerRegistration = null)
 		{
 			return display.Register(new RecursiveContainerAttribute(containerName, 0) { HeadingFormat = headingFormat })
 				.Do(containerRegistration);
@@ -152,6 +153,23 @@ namespace N2.Definitions.Runtime
 				}
 			}
 			return container;
+		}
+
+		public static ContainerBuilder<TContainer> Allow<TContainer>(this ContainerBuilder<TContainer> builder, Permission requiredPermission) where TContainer : EditorContainerAttribute
+		{
+			builder.Configure(c => c.RequiredPermission = requiredPermission);
+			return builder;
+		}
+
+		public static ContainerBuilder<TContainer> Allow<TContainer>(this ContainerBuilder<TContainer> builder, params string[] requiredRoles) where TContainer : EditorContainerAttribute
+		{
+			builder.Configure(c => c.AuthorizedRoles = requiredRoles);
+			return builder;
+		}
+
+		public static IDisposable WithinContainer(this IDefinitionRegistration registration, string containerName)
+		{
+			return registration.Context.BeginContainer(containerName);
 		}
 
 		// editables

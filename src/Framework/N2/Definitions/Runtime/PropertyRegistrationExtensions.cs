@@ -6,6 +6,7 @@ using N2.Details;
 using System.Linq.Expressions;
 using N2.Integrity;
 using N2.Web.UI;
+using N2.Security;
 
 namespace N2.Definitions.Runtime
 {
@@ -178,6 +179,14 @@ namespace N2.Definitions.Runtime
 		}
 
 		/// <summary>
+		/// Defines an editable image this allows to select an image with the file picker.
+		/// </summary>
+		public static EditableBuilder<EditableImageUploadAttribute> ImageUpload(this IPropertyRegistration<string> registration, string title = null)
+		{
+			return registration.Registration.RegisterEditable<EditableImageUploadAttribute>(registration.PropertyName, title);
+		}
+
+		/// <summary>
 		/// Allows selecting between configured image sizes from a drop down list.
 		/// </summary>
 		public static EditableBuilder<EditableImageSizeAttribute> ImageSize(this IPropertyRegistration<string> registration, string title = null)
@@ -280,6 +289,42 @@ namespace N2.Definitions.Runtime
 		{
 			editable.Configure(e => e.Placeholder = placeholderText);
 			return editable;
+		}
+
+		public static EditableBuilder<T> DefaultValue<T>(this EditableBuilder<T> builder, object value) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => e.DefaultValue = value);
+			return builder;
+		}
+
+		public static EditableBuilder<T> Required<T>(this EditableBuilder<T> builder, string requiredMessage = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.Required = true; e.RequiredMessage = requiredMessage; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> Validation<T>(this EditableBuilder<T> builder, string validationExpression, string validationMessage = null, string validationText = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.Validate = true; e.ValidationExpression = validationExpression; e.ValidationMessage = validationMessage; e.ValidationText = validationText; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> Require<T>(this EditableBuilder<T> builder, Permission requiredPermission) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.RequiredPermission = requiredPermission; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> RequireRole<T>(this EditableBuilder<T> builder, params string[] anyOfTheseRoles) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.AuthorizedRoles = anyOfTheseRoles; });
+			return builder;
+		}
+
+		public static EditableBuilder<T> Help<T>(this EditableBuilder<T> builder, string title, string text = null) where T : AbstractEditableAttribute
+		{
+			builder.Configure(e => { e.HelpTitle = title; e.HelpText = text; });
+			return builder;
 		}
 
 		// displayable
