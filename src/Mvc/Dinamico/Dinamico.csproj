@@ -88,6 +88,8 @@
     <Compile Include="Dinamico\Models\PageModelBase.cs" />
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
     <Compile Include="Dinamico\Models\StartPage.cs" />
+    <Compile Include="Dinamico\Registrations\FreeFormRegistration.cs" />
+    <Compile Include="Dinamico\Registrations\StartPageRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

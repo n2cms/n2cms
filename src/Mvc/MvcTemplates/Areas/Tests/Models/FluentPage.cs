@@ -57,7 +57,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 			register.RestrictParents(typeof(StartPage));
 
 			// beginning containers will create a scope during which you can add editors to that container
-			using (register.Tab("Content").Begin())
+			using (register.TabContainer("Content").Begin())
 			{
 				// some editors are specified without the on sytax
 				register.Title();
@@ -72,13 +72,13 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 			register.UsingConventions();
 
 			// Sidebars appear beside the main editing region
-			using (register.Sidebar("Settings").Begin())
+			using (register.SidebarContainer("Settings").Begin())
 			{
 				register.PublishedRange();
 				register.Name();
 			}
 
-			using (register.Tab("Advanced").Begin())
+			using (register.TabContainer("Advanced").Begin())
 			{
 				// editors can also be defined without a matching property
 				register.On<string>("NonExistant").Text();

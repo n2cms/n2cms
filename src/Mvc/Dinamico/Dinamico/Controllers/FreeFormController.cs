@@ -1,19 +1,19 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Text;
-using System.Web.Mvc;
-using N2.Web;
-using N2.Web.Mail;
-using N2.Details;
-using N2.Web.Rendering;
 using System.IO;
-using N2.Web.Mvc;
+using System.Linq;
+using System.Net.Mail;
+using System.Web.Mvc;
 using Dinamico.Models;
+using N2.Web.Mail;
+using N2.Web.Mvc;
+using N2.Web.Rendering;
 
 namespace Dinamico.Controllers
 {
+	/// <summary>
+	/// This controller is connected to it's content <see cref="FreeForm"/> via a 
+	/// fluent registration at <see cref="Registrations.FreeFormRegistration"/>.
+	/// </summary>
 	public class FreeFormController : ContentController<FreeForm>
 	{
 		private readonly IMailSender mailSender;
