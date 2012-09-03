@@ -21,13 +21,13 @@ namespace N2.Edit
 
 		public IDefaultDirectory DefaultDirectory
 		{
-			get { return defaultDirectory ?? engine.Resolve<IDefaultDirectory>(); }
+			get { return defaultDirectory ?? Engine.Resolve<IDefaultDirectory>(); }
 			set { defaultDirectory = value; }
 		}
 
 		public IEditManager EditManager
 		{
-			get { return editManager ?? engine.Resolve<IEditManager>(); }
+			get { return editManager ?? Engine.Resolve<IEditManager>(); }
 			set { editManager = value; }
 		}
 

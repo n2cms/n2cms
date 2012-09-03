@@ -8,6 +8,11 @@ Controllers controlling content items that are routed through via the content ro
 
 Models used by to dinamico controllers and views.
 
+== Registrations ==
+
+Registrations define what is editable in the management UI. These extend any declarations 
+on the models themselves.
+
 == Themes ==
 
 This is the themes root folder. When no theme is selected or if a theme doesn't

@@ -21,13 +21,13 @@ namespace N2.Web
 
 		public ISecurityEnforcer SecurityEnforcer
 		{
-			get { return securityEnforcer ?? engine.Resolve<ISecurityEnforcer>(); }
+			get { return securityEnforcer ?? Engine.Resolve<ISecurityEnforcer>(); }
 			set { securityEnforcer = value; }
 		}
 
 		public IWebContext WebContext
 		{
-			get { return webContext ?? engine.Resolve<IWebContext>(); }
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
 			set { webContext = value; }
 		}
 

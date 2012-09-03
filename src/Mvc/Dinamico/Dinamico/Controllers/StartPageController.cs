@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Security;
+using Dinamico.Models;
+using N2;
+using N2.Definitions;
+using N2.Engine.Globalization;
+using N2.Persistence.Search;
 using N2.Web;
 using N2.Web.Mvc;
-using Dinamico.Models;
-using N2.Collections;
-using System.Text;
-using N2;
-using System.Text.RegularExpressions;
-using System.Web.Security;
-using N2.Engine.Globalization;
-using N2.Definitions;
-using N2.Persistence.Search;
 
 namespace Dinamico.Controllers
 {
-	[Controls(typeof(StartPage))]
+	/// <summary>
+	/// The registration <see cref="Registrations.StartPageRegistration"/> is responsible for
+	/// connecting this controller to the start page model.
+	/// </summary>
 	public class StartPageController : ContentController<StartPage>
     {
 		public ActionResult NotFound()

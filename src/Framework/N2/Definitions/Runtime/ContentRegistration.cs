@@ -104,6 +104,13 @@ namespace N2.Definitions.Runtime
 			get { return Definition.Title; }
 			set { Definition.Title = value; }
 		}
+
+		/// <summary>Immediately maps to the definition icon url.</summary>
+		public string IconUrl
+		{
+			get { return Definition.IconUrl; }
+			set { Definition.IconUrl = value; }
+		}
 		
 		/// <summary>This property is set to true when the view start registering.</summary>
 		public bool IsDefined { get; set; }
@@ -219,5 +226,18 @@ namespace N2.Definitions.Runtime
 		}
 		#endregion
 		#endregion
+
+		Builder<T> IContentRegistration.RegisterDisplayable<T>(string name)
+		{
+			var displayable = new T { Name = name };
+			Add(displayable);
+			return new Builder<T>(name, this);
+		}
+
+		Builder<T> IContentRegistration.RegisterDisplayable<T>(T displayable)
+		{
+			Add(displayable);
+			return new Builder<T>(displayable.Name, this);
+		}
 	}
 }

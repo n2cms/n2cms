@@ -3,13 +3,24 @@ using System.Linq;
 using N2.Details;
 using N2.Web.Mvc.Html;
 using N2.Definitions;
+using System.Web.UI;
 
 namespace N2.Web.Rendering
 {
-	public class RenderingContext
+	public class ContentRenderingContext
 	{
-		public HtmlHelper Html { get; set; }
+		/// <summary>The content beeing rendered.</summary>
 		public ContentItem Content { get; set; }
+
+		/// <summary>The container control where the content is beeing rendered. This property may be null.</summary>
+		public Control Container { get; set; }
+		
+		/// <summary>The html helper. This property may be null.</summary>
+		public HtmlHelper Html { get; set; }
+	}
+
+	public class RenderingContext : ContentRenderingContext
+	{
 		public string PropertyName { get; set; }
 		public IDisplayable Displayable { get; set; }
 		public bool IsEditable { get; set; }

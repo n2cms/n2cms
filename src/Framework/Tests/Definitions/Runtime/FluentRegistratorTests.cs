@@ -106,7 +106,7 @@ namespace N2.Tests.Definitions.Runtime
 					.DefaultValue("hello")
 					.Help("help title", "help body")
 					.Required("This value is required")
-					.RequiredPermission(N2.Security.Permission.Administer)
+					.Require(N2.Security.Permission.Administer)
 					.Container("ExtrasContainer")
 					.Configure(ee => ee.Placeholder = "Some text in the box");
 			};
@@ -357,8 +357,7 @@ namespace N2.Tests.Definitions.Runtime
 
 			var definitions = registration.Register(map);
 
-			var pathFinder = (ActionResolver)N2.Web.PathDictionary.GetFinders(typeof(FluentItem)).First();
-			pathFinder.Methods.Single().ShouldBe("Hello");
+			definitions.Single().Metadata["ControlledBy"].ShouldBe(typeof(FluentItemController));
 		}
 	}
 }

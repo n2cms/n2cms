@@ -65,7 +65,7 @@ namespace N2.Web.Mvc.Html
 			var adapter = Adapters.ResolveAdapter<MvcAdapter>(model);
 			adapter.RenderTemplate(Html, model);
 
-            if (Wrapper != null)
+			if (Wrapper != null)
                 writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));
         }
 	}

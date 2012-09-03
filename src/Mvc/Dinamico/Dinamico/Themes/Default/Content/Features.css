@@ -73,3 +73,8 @@ div.column2 div.gmap > div
 {
 	height:300px;
 }
+
+.freeform table td
+{
+	padding: 0 10px 10px 0;
+}

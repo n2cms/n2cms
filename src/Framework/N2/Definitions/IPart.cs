@@ -9,5 +9,6 @@ namespace N2.Definitions
 	[SearchableType]
 	public interface IPart
 	{
+		string ZoneName { get; }
 	}
 }

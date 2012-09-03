@@ -11,14 +11,14 @@ namespace N2.Definitions.Runtime
 	{
 		public abstract void RegisterDefinition(IContentRegistration<T> register);
 
-		public Type ContentType
+		public Type RegisteredType
 		{
 			get { return typeof(T); }
 		}
 
 		public virtual IEnumerable<ItemDefinition> Register(DefinitionMap map)
 		{
-			var registration = new ContentRegistration<T>(map.GetOrCreateDefinition(ContentType));
+			var registration = new ContentRegistration<T>(map.GetOrCreateDefinition(RegisteredType));
 			registration.IsDefined = true;
 			RegisterDefinition(registration);
 			return new [] { registration.Finalize() };
@@ -30,9 +30,11 @@ namespace N2.Definitions.Runtime
 	{
 		public ItemDefinition[] definitionsCache;
 
-		public FluentDefinitionProvider(DefinitionMap map, IFluentRegisterer[] registrators)
+		public FluentDefinitionProvider(DefinitionMap map, IFluentRegisterer[] registerers)
 		{
-			var definitions = registrators.SelectMany(r => r.Register(map));
+			var definitions = registerers
+				.OrderBy(r => Utility.InheritanceDepth(r.RegisteredType))
+				.SelectMany(r => r.Register(map));
 			definitionsCache = definitions.ToArray();
 		}
 

@@ -26,7 +26,7 @@ a.opener { text-decoration:none }
 	.pager .previous { float:left; }
 	.pager .next { float:right; }
 	
-.part { margin-bottom:20px; }
+.part { margin:20px; }
 
 .highlight { background:yellow; }
 

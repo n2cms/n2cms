@@ -2,6 +2,9 @@
 	var isDragging = false;
 	var dialog = null;
 
+	if (!window.n2SelectedQueryKey)
+		window.n2SelectedQueryKey = "path";
+
 	window.n2DragDrop = function (urls, messages) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',

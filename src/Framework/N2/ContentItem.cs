@@ -420,8 +420,7 @@ namespace N2
 					case "ZoneName":			return ZoneName;
                     default:
 						return Utility.Evaluate(this, detailName)
-							?? GetDetail(detailName)
-							?? GetDetailCollection(detailName, false);
+							?? GetDetail(detailName);
                 }
             }
             set 
