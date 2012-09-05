@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
@@ -67,7 +68,7 @@ namespace N2.Persistence.Search
 			var indexExists = IndexExists();
 			logger.Debug("Creating index writer, index exists: " + indexExists);
 			var iw = new IndexWriter(d, a, create: !indexExists, mfl: IndexWriter.MaxFieldLength.UNLIMITED);
-			iw.SetWriteLockTimeout(LockTimeout);
+			iw.WriteLockTimeout = LockTimeout;
 			return iw;
 		}
 
@@ -75,13 +76,13 @@ namespace N2.Persistence.Search
 		{
 			return new PerFieldAnalyzerWrapper(
 				new StandardAnalyzer(Version.LUCENE_29),
-				new Hashtable
+                new List<KeyValuePair<string, Analyzer>>
 				{
-					{ "ID", new WhitespaceAnalyzer() },
-					{ "AlteredPermissions", new WhitespaceAnalyzer() },
-					{ "Roles", new WhitespaceAnalyzer() },
-					{ "State", new WhitespaceAnalyzer() },
-					{ "IsPage", new WhitespaceAnalyzer() },
+					new KeyValuePair<string, Analyzer>("ID", new WhitespaceAnalyzer()),
+					new KeyValuePair<string, Analyzer>("AlteredPermissions", new WhitespaceAnalyzer()),
+					new KeyValuePair<string, Analyzer>("Roles", new WhitespaceAnalyzer()),
+					new KeyValuePair<string, Analyzer>("State", new WhitespaceAnalyzer()),
+					new KeyValuePair<string, Analyzer>("IsPage", new WhitespaceAnalyzer()),
 				});
 		}
 

@@ -47,13 +47,13 @@ namespace N2.Persistence.Search
 								field => new SortField(field.SortField, GetSortFieldType(field.SortField), field.SortDescending)).ToArray()));
 
 				var result = new Result();
-				result.Total = hits.totalHits;
-				var resultHits = hits.scoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
+				result.Total = hits.TotalHits;
+				var resultHits = hits.ScoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
 				{
-					var doc = s.Doc(hit.doc);
+					var doc = s.Doc(hit.Doc);
 					int id = int.Parse(doc.Get("ID"));
 					ContentItem item = persister.Get(id);
-					return new Hit { Content = item, Score = hit.score };
+					return new Hit { Content = item, Score = hit.Score };
 				}).Where(h => h.Content != null).ToList();
 				result.Hits = resultHits;
 				result.Count = resultHits.Count;
