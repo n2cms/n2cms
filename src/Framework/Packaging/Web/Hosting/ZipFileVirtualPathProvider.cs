@@ -34,8 +34,9 @@ using System.Web.Caching;
 using System.Collections;
 using System.Diagnostics;
 using N2.Web;
+using ICSharpCode.SharpZipLib.Zip;
 
-namespace Ionic.Zip.Web.VirtualPathProvider
+namespace SharpZipLib.Web.VirtualPathProvider
 {
 	public class ZipFileVirtualPathProvider : System.Web.Hosting.VirtualPathProvider
 	{
@@ -47,12 +48,12 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 			: base()
 		{
 			this.zipFilePath = zipFilename;
-			zipFile = ZipFile.Read(zipFilename);
+			zipFile = new ZipFile(zipFilename);
 		}
 
 		~ZipFileVirtualPathProvider()
 		{
-			zipFile.Dispose();
+			((IDisposable)zipFile).Dispose();
 		}
 
 		public override bool FileExists(string virtualPath)
@@ -117,7 +118,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 		private ZipEntry GetEntry(string virtualPath, bool isFile)
 		{
 			string zipPath = Util.ConvertVirtualPathToZipPath(virtualPath, isFile);
-			return zipFile[zipPath];
+			return zipFile.GetEntry(zipPath);
 		}
 
 		private bool Exists(string virtualPath, bool isFile)
@@ -144,7 +145,7 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 				var temp = new Dictionary<string, bool>(StringComparer.InvariantCultureIgnoreCase);
 
 				var r = new Regex("^.*/");
-				foreach (var entryFileName in zipFile.EntryFileNames)
+				foreach (var entryFileName in zipFile.OfType<ZipEntry>().Select(ze => ze.Name))
 				{
 					temp[entryFileName] = false;
 					temp[r.Match(entryFileName).Value] = true;

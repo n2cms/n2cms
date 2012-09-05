@@ -26,7 +26,7 @@ You're free to use this VPP under the same license as DotNetZip.
 using System;
 using System.Web;
 
-namespace Ionic.Zip.Web.VirtualPathProvider
+namespace SharpZipLib.Web.VirtualPathProvider
 {
 	internal static class Util
 	{

@@ -25,8 +25,9 @@ You're free to use this VPP under the same license as DotNetZip.
 
 using System;
 using System.Web.Hosting;
+using ICSharpCode.SharpZipLib.Zip;
 
-namespace Ionic.Zip.Web.VirtualPathProvider
+namespace SharpZipLib.Web.VirtualPathProvider
 {
 	class ZipVirtualDirectory : VirtualDirectory
 	{
