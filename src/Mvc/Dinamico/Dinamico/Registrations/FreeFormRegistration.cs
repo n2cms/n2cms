@@ -21,7 +21,7 @@ namespace Dinamico.Registrations
 			register.On(ff => ff.Form).FreeText("Form (with tokens)").Configure(eft =>
 			{
 				eft.HelpTitle = "This text supports tokens";
-				eft.HelpText = "{{FormCheckbox}}, {{FormFile}}, {{FormCheckbox}}, {{FormInput}}, {{FormRadio}}, {{FormSelect}}, {{FormSubmit}}, {{FormTextarea}}";
+				eft.HelpText = "{{FormCheckbox}}, {{FormFile}}, {{FormInput}}, {{FormRadio}}, {{FormSelect}}, {{FormSubmit}}, {{FormTextarea}}";
 			}).WithTokens();
 			register.On(ff => ff.SubmitText).FreeText("Thank you text");
 
