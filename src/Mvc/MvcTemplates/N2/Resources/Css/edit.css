@@ -60,6 +60,7 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .prefix { color:silver; vertical-align:middle; font-size:.9em; }
 .framed .selector  { width:426px; }
 .framed .textEditor { width:426px; }
+.framed .textEditorReadOnly { width:426px; opacity:.5; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 .framed .selectorButtons { }
