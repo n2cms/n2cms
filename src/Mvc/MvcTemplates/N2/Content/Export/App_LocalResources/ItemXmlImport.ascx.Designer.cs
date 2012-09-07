@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Templates.Mvc.Controllers.Resources {
+namespace Management.N2.Content.Export.App_LocalResources {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace N2.Templates.Mvc.Controllers.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RssAggregator {
+    internal class ItemXmlImport_ascx {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RssAggregator() {
+        internal ItemXmlImport_ascx() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("N2.Templates.Mvc.Controllers.Resources.RssAggregator", typeof(RssAggregator).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Management.N2.Content.Export.App_LocalResources.ItemXmlImport.ascx", typeof(ItemXmlImport_ascx).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace N2.Templates.Mvc.Controllers.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,20 +61,11 @@ namespace N2.Templates.Mvc.Controllers.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load RSS feed because security settings would not allow it.
+        ///   Looks up a localized string similar to New name.
         /// </summary>
-        public static string CannotLoadCauseSecurity {
+        internal static string lblNewName_Text {
             get {
-                return ResourceManager.GetString("CannotLoadCauseSecurity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot load RSS Feed.
-        /// </summary>
-        public static string CannotLoadRss {
-            get {
-                return ResourceManager.GetString("CannotLoadRss", resourceCulture);
+                return ResourceManager.GetString("lblNewName.Text", resourceCulture);
             }
         }
     }
