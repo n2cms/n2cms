@@ -36,6 +36,7 @@ using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
+using Castle.DynamicProxy;
 
 namespace N2
 {
@@ -1102,6 +1103,7 @@ namespace N2
 			return GetDetailCollection(detailCollectionName, false);
 		}
 
+        [Interceptable]
 		public virtual Type GetContentType()
 		{
 			return base.GetType();

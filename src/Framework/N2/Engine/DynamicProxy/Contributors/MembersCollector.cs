@@ -34,7 +34,12 @@ namespace Castle.DynamicProxy.Contributors
 		private readonly IDictionary<EventInfo, MetaEvent> events = new Dictionary<EventInfo, MetaEvent>();
 		private readonly IDictionary<MethodInfo, MetaMethod> methods = new Dictionary<MethodInfo, MetaMethod>();
 
-		protected readonly Type type;
+        private readonly Type type;
+
+        public Type Type
+        {
+            get { return type; }
+        } 
 
 		protected MembersCollector(Type type)
 		{
@@ -132,9 +137,7 @@ namespace Castle.DynamicProxy.Contributors
 			var nonInheritableAttributes = property.GetNonInheritableAttributes();
 			var arguments = property.GetIndexParameters();
 
-			properties[property] = new MetaProperty(property.Name,
-			                                        property.PropertyType,
-			                                        property.DeclaringType,
+			properties[property] = new MetaProperty(property,
 			                                        getter,
 			                                        setter,
 			                                        nonInheritableAttributes,
@@ -163,8 +166,7 @@ namespace Castle.DynamicProxy.Contributors
 				return;
 			}
 
-			events[@event] = new MetaEvent(@event.Name,
-			                               @event.DeclaringType, @event.EventHandlerType, adder, remover, EventAttributes.None);
+			events[@event] = new MetaEvent(@event, adder, remover, EventAttributes.None);
 		}
 
 		private MetaMethod AddMethod(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)

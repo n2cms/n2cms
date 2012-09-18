@@ -72,7 +72,7 @@ namespace Castle.DynamicProxy.Contributors
 
 		private void CollectFields(IProxyGenerationHook hook)
 		{
-			var fields = type.GetAllFields();
+			var fields = Type.GetAllFields();
 			foreach (var field in fields)
 			{
 				if (IsOKToBeOnProxy(field))
@@ -80,7 +80,7 @@ namespace Castle.DynamicProxy.Contributors
 					continue;
 				}
 
-				hook.NonProxyableMemberNotification(type, field);
+				hook.NonProxyableMemberNotification(Type, field);
 			}
 		}
 	}

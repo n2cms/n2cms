@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
+using Castle.DynamicProxy;
 
 namespace N2.Persistence.Proxying
 {
 	/// <summary>
 	/// Marks a type available for interception.
 	/// </summary>
-	public interface IInterceptableType
+    public interface IInterceptableType : IInterceptable
 	{
 		/// <summary>The actual content type the proxied object represents.</summary>
 		/// <returns>The actual type.</returns>

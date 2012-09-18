@@ -536,6 +536,9 @@
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptable.cs" />
+    <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
+    <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
