@@ -164,7 +164,7 @@ namespace N2.Security
 			try
 			{
 				security.ScopeEnabled = false;
-				persister.Save(item);
+				persister.Repository.SaveOrUpdate(item);
 			}
 			finally
 			{
