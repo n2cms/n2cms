@@ -907,8 +907,8 @@ namespace N2.Extensions.Tests.Search
 
         [TestCase(4, 1, 1000, 100, 50, .5)]
         //[TestCase(8, 2, 5000, 1000, 500, .5)]
-        //[TestCase(16, 4, 50000, 10000, 1000, .5)]
-        //[TestCase(8, 4, 300 * 1000, 20000, 2000, .33)]
+        //[TestCase(16, 4, 30 * 1000, 10000, 1000, .5)]
+        //[TestCase(8, 2, 300 * 1000, 20000, 2000, .5)]
 		public void Multithreading(int readerCount, int indexerCount, int workMilliseconds, int dictionaryCount, int indexedWordsCount, double updateFrequency)
 		{
 			var threads = new List<Thread>();
@@ -918,15 +918,13 @@ namespace N2.Extensions.Tests.Search
             var generator = new SCG.General.MarkovNameGenerator(Words.Thousand, 3, 2);
             var words = Enumerable.Range(0, dictionaryCount).Select(i => generator.NextName).ToArray();
 
-            int indexCounter = 0;
             int idCounter = 1;
             int creates = 0;
             int updates = 0;
 			var indexFunction = new ThreadStart(() =>
 			{
-                int indexIndex = Interlocked.Increment(ref indexCounter);
                 var r = new Random();
-				Trace.WriteLine(indexIndex + " Index start: " + DateTime.Now);
+                Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + " Index start: " + DateTime.Now);
 				while (loop)
 				{
                     bool isUpdate = r.NextDouble() < updateFrequency && idCounter > 2;
@@ -952,15 +950,13 @@ namespace N2.Extensions.Tests.Search
 						}
 					}
 				}
-				Trace.WriteLine(indexIndex + " Index stop: " + DateTime.Now);
+				Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + " Index stop: " + DateTime.Now);
 			});
 			var searcher = new LuceneSearcher(accessor, persister);
-			int searchCounter = 1;
             int searches = 0;
 			var searchFunction = new ThreadStart(() =>
 			{
-				int searchIndex = Interlocked.Increment(ref searchCounter);
-				Trace.WriteLine(searchIndex + " Search start: " + DateTime.Now);
+                Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + " Search start: " + DateTime.Now);
                 var r = new Random();
 
 				while (loop)
@@ -981,7 +977,7 @@ namespace N2.Extensions.Tests.Search
 					}
 				}
 
-				Trace.WriteLine(searchIndex + " Search stop: " + DateTime.Now);
+                Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + " Search stop: " + DateTime.Now);
 			});
             for (int i = 0; i < indexerCount; i++)
             {
