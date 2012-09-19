@@ -67,6 +67,10 @@
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
 					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>
 					<tr><th>Application Path</th><td><%= Request.ApplicationPath %></td></tr>
+					<tr><th>Culture</th><td><%= Culture %></td></tr>
+					<tr><th>UI Culture</th><td><%= UICulture %></td></tr>
+					<tr><th>Config culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).Culture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
+					<tr><th>Config UI culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).UICulture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>
