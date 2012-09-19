@@ -28,7 +28,15 @@ namespace N2.Definitions
 			Setter = (instance, value) => Info.SetValue(instance, value, null);
 			Editable = Attributes.OfType<IEditable>().FirstOrDefault();
 			Displayable = Attributes.OfType<IDisplayable>().FirstOrDefault();
-			Persistable = Attributes.OfType<IPersistableProperty>().FirstOrDefault();
+			Persistable = Attributes.OfType<IPersistableProperty>().FirstOrDefault()
+				?? new PersistableAttribute 
+				{ 
+					PersistAs = property.DeclaringType == typeof(ContentItem)
+						? PropertyPersistenceLocation.Column
+						: Editable != null
+							? PropertyPersistenceLocation.Detail
+							: PropertyPersistenceLocation.Ignore
+				};
 		}
 
 		public PropertyDefinition(string name, Type propertyType)

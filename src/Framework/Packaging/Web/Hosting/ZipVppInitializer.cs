@@ -43,7 +43,7 @@ namespace N2.Web.Hosting
 				}
 				DateTime lastModified = File.GetLastWriteTimeUtc(path);
 
-				var vpp = new Ionic.Zip.Web.VirtualPathProvider.ZipFileVirtualPathProvider(path);
+				var vpp = new SharpZipLib.Web.VirtualPathProvider.ZipFileVirtualPathProvider(path);
 				N2.Engine.Logger.Info("Registering VPP: " + vpp);
 				Register(vpp);
 

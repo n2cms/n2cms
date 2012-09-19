@@ -11,11 +11,9 @@
 #endregion
 
 using System;
-using Castle.MicroKernel;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;
-using N2.Engine.Castle;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Plugin;
@@ -36,7 +34,15 @@ namespace N2.Engine
 		/// Creates an instance of the content engine using default settings and configuration.
 		/// </summary>
 		public ContentEngine()
-			: this(new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer())
+			: this(new TinyIoC.TinyIoCServiceContainer(), EventBroker.Instance, new ContainerConfigurer())
+		{
+		}
+
+		/// <summary>
+		/// Creates an instance of the content engine using default settings and configuration.
+		/// </summary>
+		public ContentEngine(IServiceContainer container)
+			: this(container, EventBroker.Instance, new ContainerConfigurer())
 		{
 		}
 
@@ -164,20 +170,6 @@ namespace N2.Engine
 			return Container.Resolve(serviceType);
 		}
 
-		/// <summary>Resolves a named service configured in the factory.</summary>
-		/// <param name="key">The name of the service to resolve.</param>
-		/// <returns>An instance of the resolved service.</returns>
-		[Obsolete("No longer supported.  Use another method on the Container property")]
-		public object Resolve(string key)
-		{
-			var windsorServiceContainer = container as WindsorServiceContainer;
-
-			if (windsorServiceContainer == null)
-				throw new InvalidOperationException("Only supported for a Windsor Service Container.");
-
-			return windsorServiceContainer.Resolve(key);
-		}
-
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of component to register.</param>
@@ -211,17 +203,6 @@ namespace N2.Engine
 		public void AddComponentLifeStyle(string key, Type classType, ComponentLifeStyle lifeStyle)
 		{
 			Container.AddComponentLifeStyle(key, classType, lifeStyle);
-		}
-
-		[Obsolete("Not supportable by all service containers. Use the IServiceContainer implementation of this", true)]
-		public void AddFacility(string key, object facility)
-		{
-			var windsorServiceContainer = container as WindsorServiceContainer;
-
-			if(windsorServiceContainer == null)
-				throw new InvalidOperationException("Only supported for a Windsor Service Container.");
-
-			windsorServiceContainer.Container.AddFacility(key, (IFacility) facility);
 		}
 
 		[Obsolete("Use Container.Release")]

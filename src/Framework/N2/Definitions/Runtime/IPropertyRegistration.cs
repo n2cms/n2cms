@@ -5,7 +5,12 @@ using System.Text;
 
 namespace N2.Definitions.Runtime
 {
-	public interface IPropertyRegistration<T> : IPropertyRegistration
+	public interface IPropertyRegistration<TContent, TProperty> : IPropertyRegistration<TProperty>
+	{
+		new IContentRegistration<TContent> Registration { get; }
+	}
+
+	public interface IPropertyRegistration<TProperty> : IPropertyRegistration
 	{
 	}
 

@@ -31,61 +31,61 @@ namespace N2.Edit
 
 		public NavigationSettings Settings
 		{
-			get { return settings ?? engine.Resolve<NavigationSettings>(); }
+			get { return settings ?? Engine.Resolve<NavigationSettings>(); }
 			set { settings = value; }
 		}
 
 		public ISecurityManager Security
 		{
-			get { return security ?? engine.Resolve<ISecurityManager>(); }
+			get { return security ?? Engine.Resolve<ISecurityManager>(); }
 			set { security = value; }
 		}
 
 		public IWebContext WebContext
 		{
-			get { return webContext ?? engine.Resolve<IWebContext>(); }
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
 			set { webContext = value; }
 		}
 
 		public VirtualNodeFactory NodeFactory
 		{
-			get { return nodeFactory ?? engine.Resolve<VirtualNodeFactory>(); }
+			get { return nodeFactory ?? Engine.Resolve<VirtualNodeFactory>(); }
 			set { nodeFactory = value; }
 		}
 
 		public IFileSystem FileSystem
 		{
-			get { return fileSystem ?? engine.Resolve<IFileSystem>(); }
+			get { return fileSystem ?? Engine.Resolve<IFileSystem>(); }
 			set { fileSystem = value; }
 		}
 
 		public IHost Host
 		{
-			get { return host ?? engine.Resolve<IHost>(); }
+			get { return host ?? Engine.Resolve<IHost>(); }
 			set { host = value; }
 		}
 
 		public IEditUrlManager ManagementPaths
 		{
-			get { return editUrlManager ?? engine.ManagementPaths; }
+			get { return editUrlManager ?? Engine.ManagementPaths; }
 			set { editUrlManager = value; }
 		}
 
 		public ContentSource Sources
 		{
-			get { return sources ?? engine.Resolve<ContentSource>(); }
+			get { return sources ?? Engine.Resolve<ContentSource>(); }
 			set { sources = value; }
 		}
 
 		public IDefinitionManager Definitions
 		{
-			get { return definitions ?? engine.Resolve<IDefinitionManager>(); }
+			get { return definitions ?? Engine.Resolve<IDefinitionManager>(); }
 			set { definitions = value; }
 		}
 
 		public ILanguageGateway Languages
 		{
-			get { return languages ?? engine.Resolve<ILanguageGateway>(); }
+			get { return languages ?? Engine.Resolve<ILanguageGateway>(); }
 			set { languages = value; }
 		}
 
@@ -114,7 +114,7 @@ namespace N2.Edit
 			if(!item.IsPage)
 				yield return new KeyValuePair<string, string>("zone", item.ZoneName);
 			if (Host.IsStartPage(item))
-				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(host.GetSite(item).Authority) ? "*" : host.GetSite(item).Authority);
+				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority);
 		}
 
 		private string GetClassName(ContentItem item)

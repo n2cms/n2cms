@@ -18,7 +18,19 @@ namespace N2.Persistence.Finder
 
 		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
 		/// <param name="properties">An object defining which properties on the item to retrieve.</param>
+		IEnumerable<object> Select(string property);
+
+		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="properties">An object defining which properties on the item to retrieve.</param>
+		IEnumerable<object> Select<T>(string propertyOrDetail) where T : ContentItem;
+
+		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="properties">An object defining which properties on the item to retrieve.</param>
 		IEnumerable<IDictionary<string, object>> Select(params string[] properties);
+
+		/// <summary>Selects items defined by the given criterias and selects only the properties specified by the selector.</summary>
+		/// <param name="properties">An object defining which properties on the item to retrieve.</param>
+		IEnumerable<IDictionary<string, object>> Select<T>(params string[] propertiesOrDetails) where T : ContentItem;
 
 		/// <summary>Selects the number of items matching the query.</summary>
 		/// <returns>A number of items.</returns>

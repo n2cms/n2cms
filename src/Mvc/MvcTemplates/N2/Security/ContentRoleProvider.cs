@@ -2,15 +2,46 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Security;
+using System.Linq;
 
 namespace N2.Security
 {
 	public class ContentRoleProvider : RoleProvider
-	{
-		protected ItemBridge Bridge
+    {
+        private string applicationName = "N2.Templates.Roles";
+        private ItemBridge bridge;
+        private N2.Engine.StructureBoundDictionaryCache<string, CachedRoles> cache;
+        
+		public ContentRoleProvider()
 		{
-			get { return Context.Current.Resolve<ItemBridge>(); }
 		}
+
+        public ContentRoleProvider(ItemBridge bridge, Engine.StructureBoundDictionaryCache<string, CachedRoles> cache)
+			: this()
+		{
+			this.bridge = bridge;
+            this.cache = cache;
+		}
+
+        protected virtual Engine.IEngine Engine
+        {
+            get { return Context.Current; }
+        }
+
+        protected virtual ItemBridge Bridge
+        {
+            get { return bridge ?? (bridge = Engine.Resolve<ItemBridge>()); }
+        }
+
+        public class CachedRoles
+        {
+            public string[] Roles { get; set; }
+        }
+
+        protected Engine.StructureBoundDictionaryCache<string, CachedRoles> Cache
+        {
+            get { return cache ?? (cache = Engine.Resolve<Engine.StructureBoundDictionaryCache<string, CachedRoles>>()); }
+        }
 
 		public override void AddUsersToRoles(string[] usernames, string[] roleNames)
 		{
@@ -27,8 +58,6 @@ namespace N2.Security
 				}
 			}
 		}
-
-		private string applicationName = "N2.Templates.Roles";
 
 		public override string ApplicationName
 		{
@@ -73,10 +102,13 @@ namespace N2.Security
 
 		public override string[] GetRolesForUser(string username)
 		{
-			Items.User u = Bridge.GetUser(username);
-			if (u != null)
-				return u.GetRoles();
-			return new string[0];
+            return Cache.GetValue(username, (un) =>
+                {
+                    Items.User u = Bridge.GetUser(username);
+                    if (u != null)
+                        return new CachedRoles { Roles = u.GetRoles() ?? new string[0] };
+                    return new CachedRoles { Roles = new string[0] };
+                }).Roles;
 		}
 
 		public override string[] GetUsersInRole(string roleName)
@@ -89,15 +121,8 @@ namespace N2.Security
 
 		public override bool IsUserInRole(string username, string roleName)
 		{
-			Items.User u = Bridge.GetUser(username);
-			foreach(string userRole in u.Roles)
-			{
-				if (userRole.Equals(roleName))
-				{
-					return true;
-				}
-			}
-			return false;
+            return GetRolesForUser(username)
+                .Any(r => r.Equals(roleName, StringComparison.OrdinalIgnoreCase));
 		}
 
 		public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)

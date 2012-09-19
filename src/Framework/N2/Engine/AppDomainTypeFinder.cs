@@ -209,7 +209,6 @@ namespace N2.Engine
 				try
 				{
 					string assumedAssemblyName = Path.GetFileNameWithoutExtension(dllPath);
-					logger.DebugFormat("Matching {0}", assumedAssemblyName);
 					if (Matches(assumedAssemblyName))
 					{
 						logger.Debug("Loading " + assumedAssemblyName);

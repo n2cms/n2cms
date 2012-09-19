@@ -14,7 +14,6 @@ namespace N2.Web.Mvc.Html
 {
 	public static class HtmlExtensions
 	{
-
 		/// <summary>Creates a navigation using unordered list elements.</summary>
 		public static N2.Web.Tree Tree(this HtmlHelper html,
 			ContentItem startsFrom = null,

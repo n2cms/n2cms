@@ -6,6 +6,7 @@ using N2.Details;
 using N2.Engine;
 using N2.Plugin;
 using N2.Persistence;
+using N2.Definitions;
 
 namespace N2.Edit.LinkTracker
 {
@@ -56,6 +57,8 @@ namespace N2.Edit.LinkTracker
 		/// <param name="item">The item that is beeing saved.</param>
 		protected virtual void OnTrackingLinks(ContentItem item)
 		{
+            if (item is ISystemNode)
+                return;
 			UpdateLinks(item);
 		}
 

@@ -30,34 +30,18 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		[EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea,
 			HelpText = "Display this page when the requested URL isn't found")]
-		public virtual ContentItem NotFoundPage
-		{
-			get { return (ContentItem) GetDetail("NotFoundPage"); }
-			set { SetDetail("NotFoundPage", value); }
-		}
+		public virtual ContentItem NotFoundPage { get; set; }
 
 		[EditableLink("Error Page (500)", 78, ContainerName = MiscArea,
 			HelpText = "Display this page when an unhandled exception occurs.")]
-		public virtual ContentItem ErrorPage
-		{
-			get { return (ContentItem) GetDetail("ErrorPage"); }
-			set { SetDetail("ErrorPage", value); }
-		}
+		public virtual ContentItem ErrorPage { get; set; }
 
 		[EditableLink("Login Page", 79, ContainerName = MiscArea,
 			HelpText = "Page to display when authorization to a page fails.")]
-		public virtual ContentItem LoginPage
-		{
-			get { return (ContentItem) GetDetail("LoginPage"); }
-			set { SetDetail("LoginPage", value); }
-		}
+		public virtual ContentItem LoginPage { get; set; }
 
-		[EditableCheckBox("Show Breadcrumb", 110, ContainerName = LayoutArea)]
-		public virtual bool ShowBreadcrumb
-		{
-			get { return (bool) (GetDetail("ShowBreadcrumb") ?? true); }
-			set { SetDetail("ShowBreadcrumb", value, true); }
-		}
+		[EditableCheckBox("Show Breadcrumb", 110, ContainerName = LayoutArea, DefaultValue = true)]
+		public virtual bool ShowBreadcrumb { get; set; }
 
 		public IEnumerable<Site> GetSites()
 		{
@@ -73,26 +57,14 @@ namespace N2.Templates.Mvc.Models.Pages
 		}
 
 		[EditableText("Host Name", 72, ContainerName = MiscArea)]
-		public virtual string HostName
-		{
-			get { return (string)(GetDetail("HostName") ?? string.Empty); }
-			set { SetDetail("HostName", value); }
-		}
+		public virtual string HostName { get; set; }
 
 		[EditableCheckBox("Site Upload", 73, ContainerName = MiscArea)]
-		public virtual bool SiteUpload
-		{
-			get { return GetDetail("SiteUpload", false); }
-			set { SetDetail("SiteUpload", value, false); }
-		}
+		public virtual bool SiteUpload { get; set; }
 
 		// content
 
-		[EditableThemeSelection("Theme", 74, ContainerName = LayoutArea)]
-		public string Theme
-		{
-			get { return (string)(GetDetail("Theme") ?? string.Empty); }
-			set { SetDetail("Theme", value); }
-		}
+		[EditableThemeSelection("Theme", 74, ContainerName = LayoutArea, DefaultValue = "Default")]
+		public virtual string Theme { get; set; }
 	}
 }

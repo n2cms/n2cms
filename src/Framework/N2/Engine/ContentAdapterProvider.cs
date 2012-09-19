@@ -136,11 +136,11 @@ namespace N2.Engine
 				throw new ArgumentException("Cannot create adapter of type " + adapterType + " for content type " + contentType);
 
 			adapter.AdaptedType = contentType;
-			adapter.engine = engine;
+			adapter.Engine = engine;
 			return adapter;
 		}
 		 
-		private bool ContainsServiceOfType(Array services, Type adapterType)
+		private bool ContainsServiceOfType(IEnumerable<object> services, Type adapterType)
 		{
 			foreach (var service in services)
 			{

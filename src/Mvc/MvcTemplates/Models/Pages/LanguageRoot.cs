@@ -69,25 +69,13 @@ namespace N2.Templates.Mvc.Models.Pages
 		#endregion
 
 		[FileAttachment, EditableImageUpload("Top Image", 88, ContainerName = Tabs.Content, CssClass = "top")]
-		public virtual string TopImage
-		{
-			get { return GetDetail("TopImage", string.Empty); }
-			set { SetDetail("TopImage", value, string.Empty); }
-		}
+		public virtual string TopImage { get; set; }
 
 		[FileAttachment, EditableImageUpload("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
-		public virtual string Image
-		{
-			get { return GetDetail("Image", string.Empty); }
-			set { SetDetail("Image", value, string.Empty); }
-		}
+		public virtual string Image { get; set; }
 
 		[EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
-		public virtual string FooterText
-		{
-			get { return GetDetail("FooterText", string.Empty); }
-			set { SetDetail("FooterText", value, string.Empty); }
-		}
+		public virtual string FooterText { get; set; }
 
 		[EditableItem("Header", 100, ContainerName = "Top")]
 		public virtual Top Header

@@ -206,6 +206,11 @@ namespace N2.Tests.Definitions.Items
 	{
 		[Persistable]
 		public virtual string Hello { get; set; }
+
+		public virtual string Other { get; set; }
+
+		[EditableText]
+		public virtual string Detail { get; set; }
 	}
 
 }

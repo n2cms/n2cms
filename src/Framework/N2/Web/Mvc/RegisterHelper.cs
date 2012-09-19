@@ -39,6 +39,13 @@ namespace N2.Web.Mvc
 
 			return new Builder<T>(name, re);
 		}
+		public Builder<T> RegisterDisplayable<T>(T displayable) where T : IDisplayable
+		{
+			var re = RegistrationExtensions.GetRegistrationExpression(Html);
+			if (re != null)
+				re.Add(displayable);
+			return new Builder<T>(displayable.Name, re);
+		}
 
 		#region IContentRegistration Members
 

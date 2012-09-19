@@ -5,7 +5,7 @@ namespace N2.Definitions.Runtime
 {
 	public class EditableBuilder<T> : Builder<T> where T : IEditable
 	{
-		string PropertyName { get; set; }
+		public string PropertyName { get; private set; }
 		
 		public EditableBuilder(string propertyName, ContentRegistration re)
 			: base(propertyName, re)

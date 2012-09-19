@@ -18,7 +18,7 @@ namespace N2.Tests.Engine
 		[SetUp]
 		public void SetUp()
 		{
-			assemblyCache = new TypeCache(new ThreadContext(), new N2.Persistence.BasicTemporaryFileHelper(new ThreadContext()));
+			assemblyCache = new TypeCache(new N2.Persistence.BasicTemporaryFileHelper(new ThreadContext()));
 			var config = new N2.Configuration.EngineSection();
 			config.Assemblies.SkipLoadingPattern = "nothing";
 			config.Assemblies.Remove(new N2.Configuration.AssemblyElement("N2.Management"));

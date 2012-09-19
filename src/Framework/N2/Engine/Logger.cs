@@ -11,68 +11,85 @@ namespace N2.Engine
 	/// </summary>
 	public struct Logger<T>
 	{
+		private LogWriterBase Writer
+		{
+			get { return Logger.GetWriter<T>(); }
+		}
+
+		[Conditional("TRACE")]
 		public void Error(string message)
 		{
-			Trace.TraceError(Logger.PrependInfo<T>(message));
+			Writer.Error(message);
 		}
 
+		[Conditional("TRACE")]
 		public void Error(Exception ex)
 		{
-			Trace.TraceError(Logger.PrependInfo<T>(ex.ToString()));
+			Writer.Error(ex.ToString());
 		}
 
+		[Conditional("TRACE")]
 		public void Error(string message, Exception ex)
 		{
-			Trace.TraceError(Logger.PrependInfo<T>(message + Environment.NewLine + ex));
+			Writer.Error(message + Environment.NewLine + ex);
 		}
 
+		[Conditional("TRACE")]
 		public void ErrorFormat(string format, params object[] args)
 		{
-			Trace.TraceError(Logger.PrependInfo<T>(format), args);
+			Writer.Error(format, args);
 		}
 
 
 
+		[Conditional("TRACE")]
 		public void Warn(string message)
 		{
-			Trace.TraceWarning(Logger.PrependInfo<T>(message));
+			Writer.Warning(message);
 		}
 
+		[Conditional("TRACE")]
 		public void Warn(Exception ex)
 		{
-			Trace.TraceWarning(Logger.PrependInfo<T>(ex.ToString()));
+			Writer.Warning(ex.ToString());
 		}
 
+		[Conditional("TRACE")]
 		public void Warn(string message, Exception ex)
 		{
-			Trace.TraceWarning(Logger.PrependInfo<T>(message + Environment.NewLine + ex));
+			Writer.Warning(message + Environment.NewLine + ex);
 		}
 
+		[Conditional("TRACE")]
 		public void WarnFormat(string format, params object[] args)
 		{
-			Trace.TraceWarning(Logger.PrependInfo<T>(format), args);
+			Writer.Warning(format, args);
 		}
 
 
 
+		[Conditional("TRACE")]
 		public void Info(string message)
 		{
-			Trace.TraceInformation(Logger.PrependInfo<T>(message));
+			Writer.Information(message);
 		}
 
+		[Conditional("TRACE")]
 		public void Info(Exception ex)
 		{
-			Trace.TraceInformation(Logger.PrependInfo<T>(ex.ToString()));
+			Writer.Information(ex.ToString());
 		}
 
+		[Conditional("TRACE")]
 		public void Info(string message, Exception ex)
 		{
-			Trace.TraceInformation(Logger.PrependInfo<T>(message));
+			Writer.Information(message);
 		}
 
+		[Conditional("TRACE")]
 		public void InfoFormat(string format, params object[] args)
 		{
-			Trace.TraceInformation(Logger.PrependInfo<T>(format), args);
+			Writer.Information(format, args);
 		}
 
 
@@ -80,25 +97,25 @@ namespace N2.Engine
 		[Conditional("DEBUG")]
 		public void Debug(string message)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(message));
+			Writer.Debug(message);
 		}
 
 		[Conditional("DEBUG")]
 		public void Debug(Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(ex.ToString()));
+			Writer.Debug(ex.ToString());
 		}
 
 		[Conditional("DEBUG")]
 		public void Debug(string message, Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(message));
+			Writer.Debug(message);
 		}
 
 		[Conditional("DEBUG")]
 		public void DebugFormat(string format, params object[] args)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo<T>(string.Format(format, args)));
+			Writer.Debug(format, args);
 		}
 	}
 
@@ -109,66 +126,66 @@ namespace N2.Engine
 	{
 		public static void Error(string message)
 		{
-			Trace.TraceError(Logger.PrependInfo(message));
+			Writer.Error(message);
 		}
 
 		public static void Error(Exception ex)
 		{
-			Trace.TraceError(Logger.PrependInfo(ex.ToString()));
+			Writer.Error(ex.ToString());
 		}
 
 		public static void Error(string message, Exception ex)
 		{
-			Trace.TraceError(Logger.PrependInfo(message + Environment.NewLine + ex));
+			Writer.Error(message + Environment.NewLine + ex);
 		}
 
 		public static void ErrorFormat(string format, params object[] args)
 		{
-			Trace.TraceError(Logger.PrependInfo(format), args);
+			Writer.Error(format, args);
 		}
 
 
 
 		public static void Warn(string message)
 		{
-			Trace.TraceWarning(Logger.PrependInfo(message));
+			Writer.Warning(message);
 		}
 
 		public static void Warn(Exception ex)
 		{
-			Trace.TraceWarning(Logger.PrependInfo(ex.ToString()));
+			Writer.Warning(ex.ToString());
 		}
 
 		public static void Warn(string message, Exception ex)
 		{
-			Trace.TraceWarning(Logger.PrependInfo(message + Environment.NewLine + ex));
+			Writer.Warning(message + Environment.NewLine + ex);
 		}
 
 		public static void WarnFormat(string format, params object[] args)
 		{
-			Trace.TraceWarning(Logger.PrependInfo(format), args);
+			Writer.Warning(format, args);
 		}
 
 
 
 		public static void Info(string message)
 		{
-			Trace.TraceInformation(Logger.PrependInfo(message));
+			Writer.Information(message);
 		}
 
 		public static void Info(Exception ex)
 		{
-			Trace.TraceInformation(Logger.PrependInfo(ex.ToString()));
+			Writer.Information(ex.ToString());
 		}
 
 		public static void Info(string message, Exception ex)
 		{
-			Trace.TraceInformation(Logger.PrependInfo(message + Environment.NewLine + ex));
+			Writer.Information(message + Environment.NewLine + ex);
 		}
 
 		public static void InfoFormat(string format, params object[] args)
 		{
-			Trace.TraceInformation(Logger.PrependInfo(format), args);
+			Writer.Information(format, args);
 		}
 
 
@@ -176,45 +193,124 @@ namespace N2.Engine
 		[Conditional("DEBUG")]
 		public static void Debug(string message)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(message));
+			Writer.Debug(message);
 		}
 
 		[Conditional("DEBUG")]
 		public static void Debug(Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(ex.ToString()));
+			Writer.Debug(ex.ToString());
 		}
 
 		[Conditional("DEBUG")]
 		public static void Debug(string message, Exception ex)
 		{
-			System.Diagnostics.Debug.WriteLine(Logger.PrependInfo(message));
+			Writer.Debug(message);
 		}
 
 		[Conditional("DEBUG")]
 		public static void DebugFormat(string format, params object[] args)
 		{
-			System.Diagnostics.Debug.WriteLine(string.Format(Logger.PrependInfo(format), args));
+			Writer.Debug(format, args);
 		}
 
-		internal static string PrependInfo(string message)
+		public static LogWriterBase GetWriter<T>()
 		{
-			return DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff")
-				+ ": "
-				+ message;
+			if (WriterFactory != null)
+				return WriterFactory(typeof(T));
+			return new TraceLogWriter(DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff ") + typeof(T).Name + ": ");
 		}
 
-		internal static string PrependInfo(string category, string message)
+		public static LogWriterBase Writer
 		{
-			return DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff ")
-				+ category
-				+ ": "
-				+ message;
+			get 
+			{
+				if (WriterFactory != null)
+					return WriterFactory(null);
+				return new TraceLogWriter(DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff: ")); 
+			}
 		}
 
-		internal static string PrependInfo<T>(string message)
+		public static Func<Type, LogWriterBase> WriterFactory { get; set; }
+	}
+
+	public class LogWriterBase
+	{
+		public virtual void Error(string message)
 		{
-			return PrependInfo("<" + typeof(T).Name + ">", message);
+		}
+
+		public virtual void Error(string format, object[] args)
+		{
+		}
+
+		public virtual void Warning(string message)
+		{
+		}
+		public virtual void Warning(string format, object[] args)
+		{
+		}
+
+		public virtual void Information(string message)
+		{
+		}
+		public virtual void Information(string format, object[] args)
+		{
+		}
+
+		public virtual void Debug(string message)
+		{
+		}
+		public virtual void Debug(string format, object[] args)
+		{
+		}
+	}
+
+	public class TraceLogWriter : LogWriterBase
+	{
+		public TraceLogWriter(string prefix)
+		{
+			Prefix = prefix;
+		}
+
+		public string Prefix { get; set; }
+
+		public override void Error(string message)
+		{
+			Trace.TraceError(Prefix + message);
+		}
+
+		public override void Error(string format, object[] args)
+		{
+			Trace.TraceError(Prefix + format, args);
+		}
+
+		public override void Warning(string message)
+		{
+			Trace.TraceWarning(Prefix + message);
+		}
+		public override void Warning(string format, object[] args)
+		{
+			Trace.TraceWarning(Prefix + format, args);
+		}
+
+		public override void Information(string message)
+		{
+			Trace.TraceInformation(Prefix + message);
+		}
+		public override void Information(string format, object[] args)
+		{
+			Trace.TraceInformation(Prefix + format, args);
+		}
+
+		public override void Debug(string message)
+		{
+			System.Diagnostics.Debug.WriteLine(Prefix + message);
+		}
+
+		public override void Debug(string format, object[] args)
+		{
+			System.Diagnostics.Debug.WriteLine(Prefix + string.Format(format, args));
 		}
 	}
 }

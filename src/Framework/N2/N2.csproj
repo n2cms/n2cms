@@ -46,7 +46,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DOTNET35;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
@@ -58,7 +58,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
+    <DefineConstants>TRACE;DOTNET35;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\N2.XML</DocumentationFile>
@@ -66,17 +66,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
@@ -168,6 +157,229 @@
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
+    <Compile Include="Engine\DynamicProxy\AbstractInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\AllMethodsHook.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ClassProxyWithTargetTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\CompositeTypeContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\DelegateProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\Delegates.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\DelegateTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ForwardingMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceMembersOnClassCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithOptionalTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithoutTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InterfaceProxyWithTargetInterfaceTargetContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InvocationWithDelegateContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\InvocationWithGenericDelegateContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ITypeContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MinimialisticMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\MixinContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\OptionallyForwardingMethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\ProxyInstanceContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Contributors\WrappedClassMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\AttributesUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\CollectionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\ILockHolder.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\InterfaceAttributeUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\IUpgradeableLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\Lock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\NoOpLock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\PermissionUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimReadLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimReadWriteLock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimUpgradeableReadLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Internal\SlimWriteLockHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractExtendedLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ConsoleFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ConsoleLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\DiagnosticsLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\DiagnosticsLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ILoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\LevelFilteredLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerException.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerLevel.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\StreamLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\StreamLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLogger.cs" />
+    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLoggerFactory.cs" />
+    <Compile Include="Engine\DynamicProxy\DefaultProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\AttributeDisassembler.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\AttributesToAvoidReplicating.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\BaseProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\CacheKey.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\ClassProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\ClassProxyWithTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\CompositionInvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateMembersCollector.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateProxyGenerationHook.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\DelegateProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\AbstractTypeEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ArgumentsUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ClassEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\AbstractCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\ConstructorCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\CodeBuilders\MethodCodeBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ConstructorCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\ConstructorEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\EventCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\EventEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\GenericUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\IMemberEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\LdcOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\LdindOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\MethodCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\MethodEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\NestedClassCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\NestedClassEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\OpCodeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\PropertiesCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\PropertyEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AddressOfReferenceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ArgumentReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignArgumentStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignArrayStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AssignStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\AsTypeReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\BindDelegateExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ByRefReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConstReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConstructorInvocationStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ConvertExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\DefaultValueExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\EndExceptionBlockStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Expression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ExpressionStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\FieldReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\FinallyStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IfNullExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IILEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\IndirectReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LiteralIntExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LoadArrayElementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LoadRefArrayElementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\LocalReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MethodInvocationExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MethodTokenExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\MultiStatementExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NewArrayExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NewInstanceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NopStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NullCoalescingOperatorExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\NullExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Reference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReferenceExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReferencesToObjectArrayExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ReturnStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\SelfReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\Statement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\ThrowStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TryStatement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TypeReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\SimpleAST\TypeTokenExpression.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\StindOpCodesDictionary.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\StrongNameUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\TypeConstructorEmitter.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\Emitters\TypeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\GeneratorException.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\GeneratorUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\IGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\IInvocationCreationContributor.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\INamingScope.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InheritanceInvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithoutTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithTargetGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InterfaceProxyWithTargetInterfaceGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\InvocationTypeGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaEvent.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaMethod.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaProperty.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaType.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MetaTypeElement.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodFinder.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodSignatureComparer.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\MethodWithInvocationGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\NamingScope.cs" />
+    <Compile Include="Engine\DynamicProxy\Generators\TypeElementCollection.cs" />
+    <Compile Include="Engine\DynamicProxy\IAttributeDisassembler.cs" />
+    <Compile Include="Engine\DynamicProxy\IChangeProxyTarget.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptor.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptorSelector.cs" />
+    <Compile Include="Engine\DynamicProxy\IInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\AttributeUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\CompositionInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InheritanceInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InternalsUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Internal\InvocationHelper.cs" />
+    <Compile Include="Engine\DynamicProxy\InvalidMixinConfigurationException.cs" />
+    <Compile Include="Engine\DynamicProxy\InvalidProxyConstructorArgumentsException.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyGenerationHook.cs" />
+    <Compile Include="Engine\DynamicProxy\IProxyTargetAccessor.cs" />
+    <Compile Include="Engine\DynamicProxy\MixinData.cs" />
+    <Compile Include="Engine\DynamicProxy\ModuleScope.cs" />
+    <Compile Include="Engine\DynamicProxy\PersistentProxyBuilder.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerationException.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerationOptions.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyGenerator.cs" />
+    <Compile Include="Engine\DynamicProxy\ProxyUtil.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\CacheMappingsAttribute.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\ProxyObjectReference.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\ProxyTypeConstants.cs" />
+    <Compile Include="Engine\DynamicProxy\Serialization\RemotableInvocation.cs" />
+    <Compile Include="Engine\DynamicProxy\StandardInterceptor.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\DelegateMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\FormatterServicesMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\InvocationMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\MethodBaseMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\SerializationInfoMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeBuilderMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeMethods.cs" />
+    <Compile Include="Engine\DynamicProxy\Tokens\TypeUtilMethods.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
+    <Compile Include="Engine\MediumTrust\StaticDefaultServiceContainerConfigurer.cs" />
+    <Compile Include="Engine\TinyIoC\EventArgs.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoC.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoCAspNetExtensions.cs" />
+    <Compile Include="Engine\TinyIoC\TinyIoCServiceContainer.cs" />
     <Compile Include="Engine\TypeCache.cs" />
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
@@ -324,6 +536,9 @@
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptable.cs" />
+    <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
+    <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
@@ -432,7 +647,11 @@
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Parts\PartsExtensions.cs" />
+    <Compile Include="Web\Rendering\ContentRendererAttribute.cs" />
+    <Compile Include="Web\Rendering\ContentRendererSelector.cs" />
+    <Compile Include="Web\Rendering\ContentRendererBaseOfTModel.cs" />
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
+    <Compile Include="Web\Rendering\IContentRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
@@ -767,7 +986,6 @@
     <Compile Include="Edit\Workflow\StopExecutionException.cs" />
     <Compile Include="Edit\Workflow\ValidationError.cs" />
     <Compile Include="Engine\AdaptsAttribute.cs" />
-    <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Engine\ContainerConfigurer.cs" />
     <Compile Include="Engine\ServiceProvider.cs" />
     <Compile Include="Persistence\EntityDependencySetter.cs" />
@@ -843,9 +1061,6 @@
     <Compile Include="Engine\Globalization\LanguageInfo.cs" />
     <Compile Include="Engine\IServiceContainer.cs" />
     <Compile Include="Engine\IWorker.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
-    <Compile Include="Engine\Configuration\StaticDefaultServiceContainerConfigurer.cs" />
     <Compile Include="Engine\ServiceAttribute.cs" />
     <Compile Include="Engine\ServiceContainerBase.cs" />
     <Compile Include="Engine\ServiceRegistrator.cs" />
@@ -873,7 +1088,6 @@
     <Compile Include="Engine\Globalization\Scope.cs" />
     <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
     <Compile Include="Engine\IContentAdapterProvider.cs" />
-    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
     <Compile Include="Engine\Singleton.cs" />
     <Compile Include="Obsolete\DragDropControlPanel.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
@@ -1116,6 +1330,8 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Engine\DynamicProxy\License.txt" />
+    <Content Include="Engine\TinyIoC\licence.txt" />
     <Content Include="Persistence\NH\SysCache2\NHibernate.Caches.SysCache2.csproj" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1142,6 +1358,7 @@
     <Folder Include="Persistence\NH\SysCache2\Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\DynamicProxy\DynProxy.snk" />
     <None Include="packages.config" />
     <None Include="Persistence\NH\SysCache2\NHibernate.Caches.snk" />
   </ItemGroup>

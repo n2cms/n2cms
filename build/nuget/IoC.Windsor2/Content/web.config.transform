@@ -1,0 +1,5 @@
+<configuration>
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<engine containerType="N2.Engine.Castle.WindsorServiceContainer, N2.IoC.Windsor2"/>
+	</n2>
+</configuration>

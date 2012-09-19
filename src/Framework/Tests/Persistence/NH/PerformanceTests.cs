@@ -6,6 +6,16 @@ using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using NUnit.Framework;
+using log4net.Appender;
+using System.Collections.Generic;
+using log4net.Repository.Hierarchy;
+using log4net.Config;
+using log4net;
+using log4net.Core;
+using System.Diagnostics;
+using System.Linq;
+using Shouldly;
+using System.Web;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -46,6 +56,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void TypeFiltering_DoesNotSelectNPlus1()
 		{
+			var initialCount = sessionProvider.SessionFactory.Statistics.QueryExecutionCount;
+
 			var items = finder.Where.Type.Eq(typeof(PersistableItem2))
 				.Select<PersistableItem2>();
 			Assert.AreEqual(3, items.Count);
@@ -53,9 +65,8 @@ namespace N2.Tests.Persistence.NH
 			EnumerableAssert.Contains(items, item2);
 			EnumerableAssert.Contains(items, item3);
 
-			// TODO: check why increase
-			Assert.That(sessionProvider.SessionFactory.Statistics.QueryExecutionCount, Is.LessThanOrEqualTo(2));
-			Assert.That(sessionProvider.SessionFactory.Statistics.GetEntityStatistics("PersistableItem2").FetchCount, Is.EqualTo(0));
+			sessionProvider.SessionFactory.Statistics.QueryExecutionCount.ShouldBe(initialCount + 1);
+			sessionProvider.SessionFactory.Statistics.GetEntityStatistics("PersistableItem2").FetchCount.ShouldBe(0);
 		}
 
 		#region Helpers
@@ -137,4 +148,97 @@ namespace N2.Tests.Persistence.NH
 
 		#endregion
 	}
+
+	public class ToSelfAppender : IAppender, IDisposable
+	{
+		public bool AddStack { get; set; }
+		public string Name { get; set; }
+		public string LoggerName { get; set; }
+
+		public ToSelfAppender()
+		{
+		}
+
+		#region IAppender Members
+
+		public void Close()
+		{
+		}
+
+		public void DoAppend(LoggingEvent loggingEvent)
+		{
+			if (string.Empty.Equals(loggingEvent.MessageObject))
+				return;//can happen for batch queries, this is a noise issue, basically.
+
+			if (loggingEvent.MessageObject != null)
+			{
+				GetList().Add(
+					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString(), Time = DateTime.Now });
+			}
+		}
+
+		public List<Row> GetList()
+		{
+			if (HttpContext.Current != null)
+			{
+				if (!HttpContext.Current.Items.Contains("CountToContextItemsAppender"))
+					HttpContext.Current.Items["CountToContextItemsAppender"] = new List<Row>();
+
+				return HttpContext.Current.Items["CountToContextItemsAppender"] as List<Row>;
+			}
+
+			return nonWebList;
+		}
+
+		private string GetCaller(StackTrace stackTrace)
+		{
+			return string.Join("",
+				stackTrace.GetFrames()
+				.Where(f => f.GetMethod().DeclaringType != null)
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("Castle"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("NHibernate"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("log4net"))
+				.Where(f => !f.GetMethod().DeclaringType.FullName.StartsWith("System"))
+				.Where(f => f.GetMethod().DeclaringType != typeof(ToSelfAppender))
+				.Select(f => f.GetMethod().DeclaringType.FullName + "." + f.GetMethod().Name + "<br/>")
+				.ToArray());
+		}
+
+		#endregion
+
+		List<Row> nonWebList = new List<Row>();
+
+		public void Dispose()
+		{
+			StopAppending(this);
+		}
+
+		public static ToSelfAppender StartAppending(string loggerName = "NHibernate.SQL", bool addStack = true)
+		{
+			var appender = new ToSelfAppender() { AddStack = addStack, LoggerName = loggerName };
+
+			Logger logger = (Logger)LogManager.GetLogger(loggerName).Logger;
+			logger.Level = Level.All;
+			logger.AddAppender(appender);
+
+			logger.Level = logger.Hierarchy.LevelMap["DEBUG"];
+			BasicConfigurator.Configure(logger.Repository);
+
+			return appender;
+		}
+
+		private void StopAppending(ToSelfAppender appender)
+		{
+			Logger logger = (Logger)LogManager.GetLogger(appender.LoggerName).Logger;
+			logger.RemoveAppender(appender);
+		}
+
+		public class Row
+		{
+			public string Sql { get; set; }
+			public string Caller { get; set; }
+			public DateTime Time { get; set; }
+		}
+	}
+
 }

@@ -152,34 +152,10 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		public static EditableBuilder<T> DefaultValue<T>(this EditableBuilder<T> builder, object value) where T : AbstractEditableAttribute
-		{
-			builder.Configure(e => e.DefaultValue = value);
-			return builder;
-		}
-
-		public static EditableBuilder<T> Required<T>(this EditableBuilder<T> builder, string requiredMessage = null) where T : AbstractEditableAttribute
-		{
-			builder.Configure(e => { e.Required = true; e.RequiredMessage = requiredMessage; });
-			return builder;
-		}
-
-		public static EditableBuilder<T> Validation<T>(this EditableBuilder<T> builder, string validationExpression, string validationMessage = null, string validationText = null) where T : AbstractEditableAttribute
-		{
-			builder.Configure(e => { e.Validate = true; e.ValidationExpression = validationExpression; e.ValidationMessage = validationMessage; e.ValidationText = validationText; });
-			return builder;
-		}
-
+		[Obsolete("Use Require(Permission)")]
 		public static EditableBuilder<T> RequiredPermission<T>(this EditableBuilder<T> builder, Permission requiredPermission) where T : AbstractEditableAttribute
 		{
-			builder.Configure(e => { e.RequiredPermission = requiredPermission; });
-			return builder;
-		}
-
-		public static EditableBuilder<T> Help<T>(this EditableBuilder<T> builder, string title = null, string text = null) where T : AbstractEditableAttribute
-		{
-			builder.Configure(e => { e.HelpTitle = title; e.HelpText = text ; });
-			return builder;
+			return builder.Require(requiredPermission);
 		}
 
 		public static IDisplayRenderer Display<T>(this EditableBuilder<T> builder) where T : IEditable

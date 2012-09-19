@@ -26,8 +26,9 @@ You're free to use this VPP under the same license as DotNetZip.
 using System;
 using System.Web.Hosting;
 using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
 
-namespace Ionic.Zip.Web.VirtualPathProvider
+namespace SharpZipLib.Web.VirtualPathProvider
 {
 	class ZipVirtualFile : VirtualFile
 	{
@@ -43,11 +44,12 @@ namespace Ionic.Zip.Web.VirtualPathProvider
 
 		public override System.IO.Stream Open()
 		{
-			ZipEntry entry = _zipFile[Util.ConvertVirtualPathToZipPath(base.VirtualPath, true)];
-			var buffer = new byte[entry.UncompressedSize];
+			ZipEntry entry = _zipFile.GetEntry(Util.ConvertVirtualPathToZipPath(base.VirtualPath, true));
+			var buffer = new byte[entry.Size];
 			lock (lockObject)
 			{
-				entry.OpenReader().Read(buffer, 0, buffer.Length);
+				_zipFile.GetInputStream(entry).Read(buffer, 0, buffer.Length);
+				//entry.ZipFileIndex.OpenReader().Read(buffer, 0, buffer.Length);
 			}
 			var ms = new MemoryStream(buffer);
 			return ms;

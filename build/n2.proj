@@ -21,7 +21,7 @@
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<Version Condition="'$(Version)' == ''">2.4</Version>
+		<Version Condition="'$(Version)' == ''">2.4-beta2</Version>
 		<DeployPrefix>n2cms_$(Version)_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
@@ -42,6 +42,7 @@
 	<Import Project="n2.dinamico.targets"/>
 	<Import Project="n2.examples.targets"/>
 	<Import Project="n2.sources.targets"/>
+	<Import Project="n2.deploy.targets"/>
 
 	<Target Name="Build">
 		<Message Text="Building Everything"/>
@@ -191,55 +192,4 @@
 						 >
 		</MSBuild>
 	</Target>-->
-
-	<Target Name="Deploy-OpenAll">
-		<ItemGroup>
-			<openLine Include="$(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_CS\CSharp_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="$(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
-			<openLine Include="pause" />
-			<openLine Include="cd /d $(DeployPrefix)Source\build" />
-			<openLine Include="cmd /c build.bat /target:PrepareDependencies" />
-			<openLine Include="cd ..\.." />
-			<openLine Include="$(DeployPrefix)Source\N2.Everything.sln" />
-			<openLine Include="pause" />
-			<openLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
-			<openLine Include="$(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
-			<openLine Include="pause" />
-			<openLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
-			<openLine Include="$(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
-		</ItemGroup>
-		<WriteLinesToFile Lines="@(openLine)" File="$(DeployFolder)\OpenAll.bat" Overwrite="true" />
-	</Target>
-
-	<Target Name="Deploy-BuildAll">
-		<ItemGroup>
-			<buildLine Include="msbuild $(DeployPrefix)Dinamico_Mvc\N2CMS\Dinamico.csproj" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_CS\CSharp_Example.sln" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_Mvc\Mvc_Example.sln" />
-			<buildLine Include="msbuild $(DeployPrefix)Example_VB\VisualBasic_Example.sln" />
-			<buildLine Include="cd /d $(DeployPrefix)Source\build" />
-			<buildLine Include="cmd /c build.bat /target:PrepareDependencies" />
-			<buildLine Include="cd ..\.." />
-			<buildLine Include="msbuild $(DeployPrefix)Source\N2.Everything.sln" />
-			<buildLine Include="copy $(DeployPrefix)Templates_Mvc\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_Mvc\N2CMS\bin\" />
-			<buildLine Include="msbuild $(DeployPrefix)Templates_Mvc\N2CMS\N2.Templates.Mvc.sln" />
-			<buildLine Include="copy $(DeployPrefix)Templates_WebForms\Libraries\System.Data.SQLite.dll $(DeployPrefix)Templates_WebForms\N2CMS\bin\" />
-			<buildLine Include="msbuild $(DeployPrefix)Templates_WebForms\N2CMS\N2.Templates.sln" />
-		</ItemGroup>
-		<WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
-	</Target>
-
-	<Target Name="Publish-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet">
-		<ItemGroup>
-			<nugetPackages Include="$(DeployFolder)\*.nupkg" />
-		</ItemGroup>
-		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />
-	</Target>
-
 </Project>

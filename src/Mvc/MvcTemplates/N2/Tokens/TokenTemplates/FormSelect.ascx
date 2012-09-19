@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<string>" %>
 <%@ Import Namespace="N2.Web.Rendering" %>
+<%@ Import Namespace="N2.Web.Mvc.Html" %>
 <%
 	DisplayableToken token = Html.DisplayableToken();
 	string[] components = token.GetComponents();

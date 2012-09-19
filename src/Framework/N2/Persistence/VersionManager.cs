@@ -34,34 +34,37 @@ namespace N2.Persistence
 		/// <returns>The old version.</returns>
 		public virtual ContentItem SaveVersion(ContentItem item)
 		{
+			if (item == null) 
+				throw new ArgumentNullException("item");
+
 			CancellableItemEventArgs args = new CancellableItemEventArgs(item);
 			if (ItemSavingVersion != null)
 				ItemSavingVersion.Invoke(this, args);
-			if (!args.Cancel)
-			{
-				item = args.AffectedItem;
+
+			if (args.Cancel)
+				return null;
+
+			item = args.AffectedItem;
                 
-				ContentItem oldVersion = item.Clone(false);
-                if(item.State == ContentState.Published)
-                    stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
-                else
-                    stateChanger.ChangeTo(oldVersion, ContentState.Draft);
-				oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
-				oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
-				oldVersion.Parent = null;
-				oldVersion.VersionOf = item;
-				if (item.Parent != null)
-					oldVersion["ParentID"] = item.Parent.ID;
-                itemRepository.SaveOrUpdate(oldVersion);
+			ContentItem oldVersion = item.Clone(false);
+			if(item.State == ContentState.Published)
+				stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
+			else
+				stateChanger.ChangeTo(oldVersion, ContentState.Draft);
+			oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
+			oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
+			oldVersion.Parent = null;
+			oldVersion.VersionOf = item;
+			if (item.Parent != null)
+				oldVersion["ParentID"] = item.Parent.ID;
+			itemRepository.SaveOrUpdate(oldVersion);
 
-				if (ItemSavedVersion != null)
-					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+			if (ItemSavedVersion != null)
+				ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
 
-				TrimVersionCountTo(item, maximumVersionsPerItem);
+			TrimVersionCountTo(item, maximumVersionsPerItem);
 
-				return oldVersion;
-			}
-			return null;
+			return oldVersion;
 		}
 
         /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
@@ -80,6 +83,11 @@ namespace N2.Persistence
         /// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
 		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion)
 		{
+			if (currentItem == null) 
+				throw new ArgumentNullException("currentItem");
+			if (replacementItem == null) 
+				throw new ArgumentNullException("replacementItem");
+
 			CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(currentItem, replacementItem);
 			if (ItemReplacingVersion != null)
 				ItemReplacingVersion.Invoke(this, args);

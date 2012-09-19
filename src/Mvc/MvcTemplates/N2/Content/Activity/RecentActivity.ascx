@@ -6,7 +6,7 @@
 <script type="text/template" id="activityTemplate">
 	<table class="gv">
 		<thead>
-			<tr><td><%= GetLocalResourceObject("bfOperation.HeaderText") %></td><td><%= GetLocalResourceObject("bfBy.HeaderText") %></td><td></td></tr>
+			<tr><td><%= GetLocalResourceString("bfOperation.HeaderText", "Operation") %></td><td><%= GetLocalResourceString("bfBy.HeaderText", "By") %></td><td></td></tr>
 		</thead>
 		<tbody>
 		{{#Activities}}

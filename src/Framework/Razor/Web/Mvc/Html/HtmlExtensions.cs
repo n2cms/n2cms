@@ -7,6 +7,7 @@ using System.Web.WebPages;
 using System.Web.Mvc;
 using N2.Collections;
 using System.Web.Routing;
+using N2.Web.UI;
 
 namespace N2.Web.Mvc.Html
 {
@@ -129,6 +130,75 @@ namespace N2.Web.Mvc.Html
 				}),
 				separator: null,
 				empty: empty);
+		}
+
+		public static HelperResult OutputCache(this HtmlHelper html, 
+			Func<string, HelperResult> template, 
+			string cacheKey = null, 
+			bool? perPage = null, 
+			int? perAncestorAtLevel = null,
+			DateTime? absoluteExpiration = null,
+			TimeSpan? slidingExpiration = null)
+		{
+			if (html.ViewContext.RequestContext.HttpContext.Request.QueryString["edit"] != null)
+				return template("");
+
+			string composedKey = CreateCacheKey(html, template, cacheKey, perPage, perAncestorAtLevel);
+
+			var cache = html.ContentEngine().Resolve<N2.Web.CacheWrapper>();
+
+			var cachedResults = cache.Get<string>(composedKey);
+			if (cachedResults != null)
+			{
+				return new HelperResult(tw => tw.Write(cachedResults));
+			}
+
+			return new HelperResult(tw =>
+				{
+					using (var sw = new StringWriter())
+					{
+						var originalWriter = html.ViewContext.Writer;
+						try
+						{
+							html.ViewContext.Writer = sw; // in case something renders directly to the stream
+
+							template(composedKey).WriteTo(sw);
+							var results = sw.ToString();
+
+							cache.Add(composedKey, results, new CacheOptions { AbsoluteExpiration = absoluteExpiration ?? System.Web.Caching.Cache.NoAbsoluteExpiration, SlidingExpiration = slidingExpiration ?? System.Web.Caching.Cache.NoSlidingExpiration });
+
+							tw.Write(results);
+						}
+						finally
+						{
+							html.ViewContext.Writer = originalWriter;
+						}
+					}
+				});
+		}
+
+		private static string CreateCacheKey(HtmlHelper html, Func<string, HelperResult> template, string cacheKey, bool? perPage, int? perAncestorAtLevel)
+		{
+			int perPageComponent = 0;
+			if (perPage ?? !perAncestorAtLevel.HasValue)
+			{
+				var page = html.CurrentPage();
+				if (page != null)
+					perPageComponent = page.ID;
+			}
+			int perAncestorComponent = 0;
+			if (perAncestorAtLevel.HasValue)
+			{
+				var ancestor = html.Content().Traverse.AncestorAtLevel(perAncestorAtLevel.Value, fallbackToClosest: true);
+				if (ancestor != null)
+					perAncestorComponent = ancestor.ID;
+			}
+			string composedKey = "Html.OutputCache"
+				+ cacheKey
+				+ template.Method.ToString()
+				+ perPageComponent
+				+ perAncestorComponent;
+			return composedKey;
 		}
 	}
 }

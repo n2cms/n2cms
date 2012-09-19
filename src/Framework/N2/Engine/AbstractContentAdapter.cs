@@ -9,7 +9,7 @@ namespace N2.Engine
 	/// </summary>
 	public abstract class AbstractContentAdapter : IComparable<AbstractContentAdapter>
 	{
-		internal IEngine engine;
+		private IEngine engine;
 		
 		public AbstractContentAdapter()
 		{
@@ -29,10 +29,9 @@ namespace N2.Engine
 		public Type AdaptedType { get; set; }
 
 		/// <summary>The content engine requesting external control.</summary>
-		[Obsolete("Create constructor or public properties to get adapter dependencies.")]
 		public IEngine Engine
 		{
-			get { return engine; }
+			get { return engine ?? Context.Current; }
 			set { engine = value; }
 		}
 

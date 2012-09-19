@@ -23,42 +23,49 @@ namespace N2.Web.Parts
 		IWebContext webContext;
 		IPersister persister;
 		IDefinitionManager definitions;
-		ITemplateProvider[] templates;
+		IEnumerable<ITemplateProvider> templates;
 		ISecurityManager security;
+		Rendering.ContentRendererSelector rendererSelector;
+
+		public Rendering.ContentRendererSelector RendererSelector
+		{
+			get { return rendererSelector ?? Engine.Resolve<Rendering.ContentRendererSelector>(); }
+			set { rendererSelector = value; }
+		}
 
 		public IPersister Persister
 		{
-			get { return persister ?? engine.Resolve<IPersister>(); }
+			get { return persister ?? Engine.Resolve<IPersister>(); }
 			set { persister = value; }
 		}
 
 		public IWebContext WebContext
 		{
-			get { return webContext ?? engine.Resolve<IWebContext>(); }
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
 			set { webContext = value; }
 		}
 
 		public IContentAdapterProvider Adapters
 		{
-			get { return adapters ?? engine.Resolve<IContentAdapterProvider>(); }
+			get { return adapters ?? Engine.Resolve<IContentAdapterProvider>(); }
 			set { adapters = value; }
 		}
 
 		public IDefinitionManager Definitions
 		{
-			get { return definitions ?? engine.Definitions; }
+			get { return definitions ?? Engine.Definitions; }
 			set { definitions = value; }
 		}
 
-		public ITemplateProvider[] Templates
+		public IEnumerable<ITemplateProvider> Templates
 		{
-			get { return templates ?? engine.Container.ResolveAll<ITemplateProvider>(); }
+			get { return templates ?? Engine.Container.ResolveAll<ITemplateProvider>(); }
 			set { templates = value; }
 		}
 
 		public ISecurityManager Security
 		{
-			get { return security ?? engine.Container.Resolve<ISecurityManager>(); }
+			get { return security ?? Engine.Container.Resolve<ISecurityManager>(); }
 			set { security = value; }
 		}
 
@@ -123,6 +130,23 @@ namespace N2.Web.Parts
 			return adapter.AddTo(item, container);
 		}
 
+		class ContentRendererControl : Control
+		{
+			private Rendering.IContentRenderer renderer;
+			private Rendering.ContentRenderingContext context;
+
+			public ContentRendererControl(Rendering.IContentRenderer renderer, Rendering.ContentRenderingContext context)
+			{
+				this.renderer = renderer;
+				this.context = context;
+			}
+
+			protected override void Render(HtmlTextWriter writer)
+			{
+				renderer.Render(context, writer);
+			}
+		}
+
 		/// <summary>Adds a content part to a containing control. Override this method to adapt how a part is added to a parent.</summary>
 		/// <param name="item"></param>
 		/// <param name="container"></param>
@@ -133,6 +157,15 @@ namespace N2.Web.Parts
 			if (addablePart != null)
 			{
 				return addablePart.AddTo(container);
+			}
+
+			var renderer = item as Rendering.IContentRenderer
+				?? RendererSelector.ResolveRenderer(item.GetContentType());
+			if (renderer != null)
+			{
+				var rendererControl = new ContentRendererControl(renderer, new Rendering.ContentRenderingContext { Content = item, Container = container });
+				container.Controls.Add(rendererControl);
+				return rendererControl;
 			}
 
 			string templateUrl = GetTemplateUrl(item);

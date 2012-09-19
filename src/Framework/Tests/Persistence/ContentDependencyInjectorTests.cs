@@ -28,6 +28,15 @@ namespace N2.Tests.Persistence
 		}
 	}
 
+	[TestFixture]
+	public class TinyIoCContentDependencyInjectorTests : ContentDependencyInjectorTests
+	{
+		public override IServiceContainer GetContainer()
+		{
+			return new N2.Engine.TinyIoC.TinyIoCServiceContainer();
+		}
+	}
+
 	public class InjectableItem : ContentItem,
 		IInjectable<IItemNotifier>,
 		IInjectable<IServiceContainer>

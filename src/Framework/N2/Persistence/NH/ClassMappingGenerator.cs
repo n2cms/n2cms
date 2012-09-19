@@ -70,7 +70,7 @@ namespace N2.Persistence.NH
 						else
 							sc.Items = sc.Items.Union(propertyMappings).ToArray();
 					}
-					logger.InfoFormat("Generating subclass {0} with discriminator {1} extending {2} with {3} items ({4} property mappings)", sc.name, sc.discriminatorvalue, sc.extends, sc.Items != null ? sc.Items.Length.ToString() : "(null)", propertyMappings.Count);
+					logger.DebugFormat("Generating subclass {0} with discriminator {1} extending {2} with {3} items ({4} property mappings)", sc.name, sc.discriminatorvalue, sc.extends, sc.Items != null ? sc.Items.Length.ToString() : "(null)", propertyMappings.Count);
 					return sc;
 				}).ToArray();
 			if (Debugger.IsAttached)

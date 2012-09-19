@@ -100,7 +100,8 @@ table.editDetail { border-collapse:collapse; }
 
 .framed .helpPanel { cursor:pointer; padding:5px; }
 	.framed .helpText { display:none; }
-		.framed .helpText b { }
+		.framed .helpText b { margin-right:10px; }
+		.framed .helpText span { line-height:2em; }
 .framed .helpVisible { background-color:#ffa; }
 	.framed .helpVisible img { visibility:visible; }
 	.framed .helpVisible .helpText { display:inline; margin-left:5px; }

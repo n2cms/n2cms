@@ -1,9 +1,11 @@
-﻿namespace N2.Persistence.Proxying
+﻿using Castle.DynamicProxy;
+
+namespace N2.Persistence.Proxying
 {
 	/// <summary>
 	/// When added to an attribute this interface instructs the proxying system on how to deal with a property.
 	/// </summary>
-	public interface IInterceptableProperty
+	public interface IInterceptableProperty : IInterceptable
 	{
 		/// <summary>Describes how the property is stored.</summary>
 		PropertyPersistenceLocation PersistAs { get; }

@@ -912,5 +912,47 @@ namespace N2.Tests.Content
 			dc.Details[0].ValueTypeKey.ShouldBe(ContentDetail.TypeKeys.LinkType);
 			((ContentItem)dc[0]).ID.ShouldBe(123);
 		}
+
+		[Test]
+		public void NoVersionOf_ComparedToNull()
+		{
+			var item = new AnItem();
+			var version = new AnItem { ID = 2 };
+
+			(item.VersionOf == null).ShouldBe(true);
+			(item.VersionOf == version).ShouldBe(false);
+		}
+
+		[Test]
+		public void NoVersionOf_InverseComparedToNull()
+		{
+			var item = new AnItem();
+			var version = new AnItem { ID = 2 };
+
+			(item.VersionOf != null).ShouldBe(false);
+			(item.VersionOf != version).ShouldBe(true);
+		}
+
+		[Test]
+		public void OneVersionOf_ComparedToNull()
+		{
+			var item = new AnItem();
+			var version = new AnItem { ID = 2 };
+			item.VersionOf = version;
+
+			(item.VersionOf == null).ShouldBe(false);
+			(item.VersionOf == version).ShouldBe(true);
+		}
+
+		[Test]
+		public void OneVersionOf_InverseComparedToNull()
+		{
+			var item = new AnItem();
+			var version = new AnItem { ID = 2 };
+			item.VersionOf = version;
+
+			(item.VersionOf != null).ShouldBe(true);
+			(item.VersionOf != version).ShouldBe(false);
+		}
 	}
 }

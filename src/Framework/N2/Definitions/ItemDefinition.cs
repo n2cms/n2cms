@@ -172,6 +172,9 @@ namespace N2.Definitions
 		/// <summary>Attributes defined on the content type and it's base types.</summary>
 		public IDictionary<string, PropertyDefinition> Properties { get; private set; }
 
+		/// <summary>Information kept on the definition</summary>
+		public IDictionary<string, object> Metadata { get; set; }
+
 		#endregion
 
 		#region Methods
@@ -445,6 +448,7 @@ namespace N2.Definitions
 			id.Installer = Installer;
 			id.IsDefined = IsDefined;
 			id.NumberOfItems = 0;
+			id.Metadata = Metadata.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 			id.Properties = Properties.ToDictionary(p => p.Key, p => p.Value.Clone());
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
@@ -510,6 +514,7 @@ namespace N2.Definitions
 			AllowedIn = AllowedZones.None;
 			Attributes = new List<object>();
 			Properties = new Dictionary<string, PropertyDefinition>();
+			Metadata = new Dictionary<string, object>();
 		}
 	}
 }

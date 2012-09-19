@@ -58,6 +58,11 @@ namespace N2.Definitions
 
 		#region ISimpleDefinitionRefiner Members
 
+		protected virtual string DefaultIconUrl
+		{
+			get { return "{ManagementUrl}/Resources/icons/page.png"; }
+		}
+
 		public virtual void Refine(ItemDefinition currentDefinition)
 		{
 			currentDefinition.Title = Title ?? currentDefinition.ItemType.Name;
@@ -65,7 +70,7 @@ namespace N2.Definitions
 			currentDefinition.SortOrder = SortOrder;
 			currentDefinition.Description = Description ?? "";
 			currentDefinition.Discriminator = Name ?? currentDefinition.ItemType.Name;
-			currentDefinition.IconUrl = IconUrl;
+			currentDefinition.IconUrl = IconUrl ?? currentDefinition.IconUrl ?? DefaultIconUrl;
 			currentDefinition.IsPage = IsPage;
 
 			currentDefinition.IsDefined = true;

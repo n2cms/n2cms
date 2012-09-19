@@ -73,12 +73,55 @@ namespace N2.Persistence
 				return relation.Value;
 			return null;
 		}
-		
+
 		public static implicit operator ContentRelation(ContentItem item)
 		{
 			if (item == null)
 				return new ContentRelation();
 			return new ContentRelation { ValueAccessor = (id) => item.ID.Equals(id) ? item : DefaultAccessor(id), ID = item.ID };
+		}
+
+		public static bool operator ==(ContentRelation first, ContentRelation second)
+		{
+			if (first is ContentRelation)
+				return first.Equals(second);
+			return false;
+		}
+
+		public static bool operator !=(ContentRelation first, ContentRelation second)
+		{
+			if (first is ContentRelation)
+				return !first.Equals(second);
+			return false;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return !HasValue;
+
+			var otherRealation = obj as Relation<ContentItem>;
+			if (otherRealation != null)
+			{
+				if (!HasValue && !otherRealation.HasValue)
+					return true;
+				if (HasValue && otherRealation.HasValue)
+					return Value == otherRealation.Value;
+				return false;
+			}
+			var otherValue = obj as ContentItem;
+			if (otherValue != null)
+			{
+				if (HasValue)
+					return Value == otherValue;
+				return false;
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
 		}
 	}
 

@@ -1,7 +1,8 @@
 
+using N2.Edit.Web;
 namespace N2.Edit
 {
-	public partial class ItemInfo : System.Web.UI.UserControl
+	public partial class ItemInfo : EditUserControl
 	{
 		protected Definitions.ItemDefinition CurrentDefinition
 		{
@@ -18,14 +19,7 @@ namespace N2.Edit
 		protected string GetStateText(ContentItem item)
 		{
 			string fallback = item.State.ToString();
-			try
-			{
-				return (string)GetLocalResourceObject(fallback) ?? fallback;
-			}
-			catch
-			{
-				return fallback;
-			}
+			return GetLocalResourceString(fallback, fallback);
 		}
 	}
 }
