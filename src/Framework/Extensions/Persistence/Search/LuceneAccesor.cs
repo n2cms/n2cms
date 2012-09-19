@@ -13,6 +13,7 @@ using N2.Web;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace N2.Persistence.Search
 {
@@ -67,15 +68,15 @@ namespace N2.Persistence.Search
 			var indexExists = IndexExists();
 			logger.Debug("Creating index writer, index exists: " + indexExists);
 			var iw = new IndexWriter(d, a, create: !indexExists, mfl: IndexWriter.MaxFieldLength.UNLIMITED);
-			iw.SetWriteLockTimeout(LockTimeout);
+			iw.WriteLockTimeout = LockTimeout;
 			return iw;
 		}
 
 		public virtual Analyzer GetAnalyzer()
 		{
 			return new PerFieldAnalyzerWrapper(
-				new StandardAnalyzer(Version.LUCENE_29),
-				new Hashtable
+				new StandardAnalyzer(Version.LUCENE_30),
+				new Dictionary<string, Analyzer>
 				{
 					{ "ID", new WhitespaceAnalyzer() },
 					{ "AlteredPermissions", new WhitespaceAnalyzer() },
