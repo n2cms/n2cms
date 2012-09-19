@@ -62,7 +62,6 @@
     </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Lucene.Net.3.0.3-RC2\lib\net35\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.8258, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -143,6 +142,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search\ContentChangeTrackerTests.cs" />
     <Compile Include="Search\LuceneSearchTests.cs" />
+    <Compile Include="Search\MarkovNameGenerator.cs" />
+    <Compile Include="Search\Words.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Extensions\N2.Extensions.csproj">

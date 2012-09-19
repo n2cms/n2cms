@@ -14,6 +14,7 @@ using N2.Web;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace N2.Persistence.Search
 {
@@ -75,14 +76,14 @@ namespace N2.Persistence.Search
 		public virtual Analyzer GetAnalyzer()
 		{
 			return new PerFieldAnalyzerWrapper(
-				new StandardAnalyzer(Version.LUCENE_29),
-                new List<KeyValuePair<string, Analyzer>>
+				new StandardAnalyzer(Version.LUCENE_30),
+				new Dictionary<string, Analyzer>
 				{
-					new KeyValuePair<string, Analyzer>("ID", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("AlteredPermissions", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("Roles", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("State", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("IsPage", new WhitespaceAnalyzer()),
+					{ "ID", new WhitespaceAnalyzer() },
+					{ "AlteredPermissions", new WhitespaceAnalyzer() },
+					{ "Roles", new WhitespaceAnalyzer() },
+					{ "State", new WhitespaceAnalyzer() },
+					{ "IsPage", new WhitespaceAnalyzer() },
 				});
 		}
 
@@ -122,7 +123,7 @@ namespace N2.Persistence.Search
 			lock (this)
 			{
 				if (writer != null)
-					writer.Close(waitForMerges: true);
+					writer.Dispose(waitForMerges: true);
 				writer = null;
 				searcher = null;
 				directory = null;
