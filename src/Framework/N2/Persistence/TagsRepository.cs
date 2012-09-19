@@ -79,6 +79,15 @@ namespace N2.Persistence
 		/// <returns></returns>
 		public virtual IEnumerable<string> GetTags(ContentItem item, string tagGroup)
 		{
+			return GetTagsFromValues(item, tagGroup);
+		}
+
+		/// <summary>Gets tags on a given item.</summary>
+		/// <param name="item"></param>
+		/// <param name="tagGroup"></param>
+		/// <returns></returns>
+		public static IEnumerable<string> GetTagsFromValues(IInterceptableType item, string tagGroup)
+		{
 			return ((item as IInterceptableType).GetValues(tagGroup) ?? new string[0]).OfType<string>();
 		}
 

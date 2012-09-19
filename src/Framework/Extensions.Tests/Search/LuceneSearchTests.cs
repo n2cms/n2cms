@@ -17,6 +17,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 using N2.Tests;
+using N2.Engine;
 
 namespace N2.Extensions.Tests.Search
 {
@@ -968,7 +969,7 @@ namespace N2.Extensions.Tests.Search
 					{
 						var result = searcher.Search(Query.For(words[r.Next(words.Length)]));
                         Interlocked.Increment(ref searches);
-                        Console.Write('?');
+						Console.Write('?');
 					}
 					catch (Exception ex)
 					{
@@ -984,11 +985,11 @@ namespace N2.Extensions.Tests.Search
 			});
             for (int i = 0; i < indexerCount; i++)
             {
-                threads.Add(new Thread(indexFunction));
+			threads.Add(new Thread(indexFunction));
             }
             for (int i = 0; i < readerCount; i++)
             {
-			    threads.Add(new Thread(searchFunction));
+			threads.Add(new Thread(searchFunction));
             }
 
 			foreach (var t in threads)

@@ -89,7 +89,7 @@ namespace N2.Details
 
 		private string GetTagsText(ContentItem item)
 		{
-			var tags = Engine.Resolve<TagsRepository>().GetTags(item, Name);
+			var tags = TagsRepository.GetTagsFromValues(item, Name);
 			return string.Join(", ", tags.ToArray());
 		}
 	}
