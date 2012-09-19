@@ -16,9 +16,10 @@ using Shouldly;
 using System.Threading;
 using System.Collections.Generic;
 using System.Text;
+using N2.Tests;
 using N2.Engine;
 
-namespace N2.Tests.Persistence.NH
+namespace N2.Extensions.Tests.Search
 {
 	[TestFixture]
 	public class LuceneSearchTests : ItemPersistenceMockingBase
@@ -119,7 +120,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void IndexableProperty()
 		{
-			var item = CreateOneItem<Definitions.PersistableItem1>(2, "Hello world", root);
+			var item = CreateOneItem<PersistableItem1>(2, "Hello world", root);
 			item.StringProperty = "Hej Världen";
 			indexer.Update(item);
 
@@ -132,7 +133,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void EditableProperty()
 		{
-			var item = CreateOneItem<Definitions.PersistableItem1>(2, "Hello world", root);
+			var item = CreateOneItem<PersistableItem1>(2, "Hello world", root);
 			item.IntProperty = 444;
 			indexer.Update(item);
 
@@ -904,25 +905,43 @@ namespace N2.Tests.Persistence.NH
 
 		// concurrency
 
-		[Test]
-		public void Multithreading()
+        [TestCase(4, 1, 1000, 100, 50, .5)]
+        //[TestCase(8, 2, 5000, 1000, 500, .5)]
+        //[TestCase(16, 4, 50000, 10000, 1000, .5)]
+        //[TestCase(8, 4, 300 * 1000, 20000, 2000, .33)]
+		public void Multithreading(int readerCount, int indexerCount, int workMilliseconds, int dictionaryCount, int indexedWordsCount, double updateFrequency)
 		{
 			var threads = new List<Thread>();
 			var exceptions = new List<Exception>();
 			bool loop = true;
-			var words = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sagittis mi. Donec pharetra vestibulum facilisis. Sed sodales risus vel nulla vulputate volutpat. Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat. Maecenas suscipit tincidunt purus porttitor auctor. Quisque eget elit at justo facilisis malesuada sit amet sit amet eros. Duis convallis porta congue. Nulla commodo faucibus diam in mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur.".Split(' ', '.', ',');
+			
+            var generator = new SCG.General.MarkovNameGenerator(Words.Thousand, 3, 2);
+            var words = Enumerable.Range(0, dictionaryCount).Select(i => generator.NextName).ToArray();
+
+            int indexCounter = 0;
+            int idCounter = 1;
+            int creates = 0;
+            int updates = 0;
 			var indexFunction = new ThreadStart(() =>
 			{
-				Trace.WriteLine("Index start: " + DateTime.Now);
-				int counter = 1;
+                int indexIndex = Interlocked.Increment(ref indexCounter);
+                var r = new Random();
+				Trace.WriteLine(indexIndex + " Index start: " + DateTime.Now);
 				while (loop)
 				{
-					var item = CreateOneItem<PersistableItem1>(0, "Item " + counter++, null);
-					item["Text"] = words.OrderBy(w => Guid.NewGuid()).Aggregate(new StringBuilder(), (sb, w) => { if (!string.IsNullOrEmpty(w)) sb.Append(w).Append(" "); return sb; }).ToString();
+                    bool isUpdate = r.NextDouble() < updateFrequency && idCounter > 2;
+                    int id = (isUpdate) ? r.Next(0, idCounter) : Interlocked.Increment(ref idCounter);
+
+					var item = CreateOneItem<PersistableItem1>(id, "Item " + id, null);
+					item["Text"] = Enumerable.Range(0, indexedWordsCount).Select(i => words[r.Next(0, words.Length)]).Aggregate(new StringBuilder(), (sb, w) => sb.Append(w).Append(" ")).ToString();
 					try
 					{
 						indexer.Update(item);
-						Console.Write('!');
+						Console.Write(isUpdate ? 'U' : 'C');
+                        if (isUpdate)
+                            Interlocked.Increment(ref updates);
+                        else
+                            Interlocked.Increment(ref creates);
 					}
 					catch (Exception ex)
 					{
@@ -933,21 +952,23 @@ namespace N2.Tests.Persistence.NH
 						}
 					}
 				}
-				Trace.WriteLine("Index stop: " + DateTime.Now);
+				Trace.WriteLine(indexIndex + " Index stop: " + DateTime.Now);
 			});
 			var searcher = new LuceneSearcher(accessor, persister);
 			int searchCounter = 1;
-			var r = new Random();
+            int searches = 0;
 			var searchFunction = new ThreadStart(() =>
 			{
-				int searchIndex = searchCounter++;
+				int searchIndex = Interlocked.Increment(ref searchCounter);
 				Trace.WriteLine(searchIndex + " Search start: " + DateTime.Now);
+                var r = new Random();
 
 				while (loop)
 				{
 					try
 					{
-						searcher.Search(Query.For(words[r.Next(words.Length)]));
+						var result = searcher.Search(Query.For(words[r.Next(words.Length)]));
+                        Interlocked.Increment(ref searches);
 						Console.Write('?');
 					}
 					catch (Exception ex)
@@ -960,19 +981,28 @@ namespace N2.Tests.Persistence.NH
 					}
 				}
 
-				Trace.WriteLine(searchIndex + " Search1 stop: " + DateTime.Now);
+				Trace.WriteLine(searchIndex + " Search stop: " + DateTime.Now);
 			});
+            for (int i = 0; i < indexerCount; i++)
+            {
 			threads.Add(new Thread(indexFunction));
+            }
+            for (int i = 0; i < readerCount; i++)
+            {
 			threads.Add(new Thread(searchFunction));
-			threads.Add(new Thread(searchFunction));
-			threads.Add(new Thread(searchFunction));
+            }
 
 			foreach (var t in threads)
 				t.Start();
-			Thread.Sleep(500);
+			Thread.Sleep(workMilliseconds);
 			loop = false;
 			foreach (var t in threads)
 				t.Join();
+
+            Trace.WriteLine("Creates: " + creates + ", Updates: " + updates + ", Searches: " + searches + " Exceptions: " + exceptions.Count);
+
+            foreach (var ex in exceptions)
+                Trace.WriteLine(ex.Message);
 
 			exceptions.Count.ShouldBe(0);
 		}
