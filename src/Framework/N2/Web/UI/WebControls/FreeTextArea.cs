@@ -87,10 +87,9 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 
-        // TODO: Hämta riktiga
         private IEnumerable<string> GetTokens()
         {
-            return "brantmo, libardo, magnus".Split(',');
+            return "test1, test2, test3".Split(',');
         }
 
 		protected virtual string GetOverridesJson()

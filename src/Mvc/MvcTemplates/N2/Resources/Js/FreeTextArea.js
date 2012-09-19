@@ -6,7 +6,7 @@ var freeTextArea_settings = {
 	mode: 'exact',
 	//plugins: 'table,advimage,advlink,flash,searchreplace,print,contextmenu,paste,fullscreen,noneditable',
 	theme: 'advanced',
-	plugins: 'tokencomplete,style,layer,table,advimage,advlink,iespell,spellchecker,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,icode',
+	plugins: 'style,layer,table,advimage,advlink,iespell,spellchecker,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,icode',
 	theme_advanced_buttons1_add_before: '',
 	theme_advanced_buttons1_add: 'sup,|,print,fullscreen,|,search,replace,iespell,spellchecker,autosave',
 	theme_advanced_buttons2_add_before: 'cut,copy,paste,pastetext,pasteword,|',
@@ -74,7 +74,7 @@ var settingsClr = {
 // Settings: toolbars
 var settingsSimple = {
 	theme: 'advanced',
-	plugins: 'tokencomplete,style,layer,table,advimage,advlink,advhr,media,'
+	plugins: 'style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
 
@@ -85,7 +85,7 @@ var settingsSimple = {
 
 var settingsExtended = {
     theme: 'advanced',
-	plugins: 'tokencomplete,pdw,style,layer,table,advimage,advlink,advhr,media,'
+	plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
 
