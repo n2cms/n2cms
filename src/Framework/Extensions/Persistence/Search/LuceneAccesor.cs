@@ -122,7 +122,7 @@ namespace N2.Persistence.Search
 			lock (this)
 			{
 				if (writer != null)
-					writer.Close(waitForMerges: true);
+					writer.Dispose(waitForMerges: true);
 				writer = null;
 				searcher = null;
 				directory = null;
