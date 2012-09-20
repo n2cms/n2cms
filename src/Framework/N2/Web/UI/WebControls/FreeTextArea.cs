@@ -5,6 +5,9 @@ using System.Configuration;
 using System.Text;
 using System.Web.Hosting;
 using System.Web.UI.WebControls;
+
+using System.Linq;
+
 using N2.Configuration;
 using N2.Resources;
 
@@ -77,18 +80,32 @@ namespace N2.Web.UI.WebControls
 				Register.TinyMCE(Page);
 				Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
-				string script = string.Format("freeTextArea_init('{0}', {1});",
+				string freeTextAreaInitScript = string.Format("freeTextArea_init('{0}', {1});",
 					Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl),
 					GetOverridesJson());
-				Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, freeTextAreaInitScript, true);
 			}
 		}
+
+        private IEnumerable<string> GetTokens()
+        {
+            return "test1, test2, test3".Split(',');
+        }
 
 		protected virtual string GetOverridesJson()
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
 			overrides["content_css"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
+
+            string displayableTokens = string.Format("{0}",
+                String.Join(",",
+                    GetTokens().Select(t => t.Trim())
+                    .ToArray()
+                )
+            );
+
+            overrides["autocomplete_options"] = displayableTokens;
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))

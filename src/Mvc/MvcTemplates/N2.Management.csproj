@@ -168,6 +168,8 @@
     <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeMDUltra.css" />
     <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeMidnight.css" />
     <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeRDark.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\tokencomplete\css\tokencomplete.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\tokencomplete\editor_plugin.js" />
     <Content Include="N2\Search\ManageIndex.ascx" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
     <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />

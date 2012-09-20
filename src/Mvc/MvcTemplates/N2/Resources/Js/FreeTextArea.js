@@ -74,7 +74,6 @@ var settingsClr = {
 // Settings: toolbars
 var settingsSimple = {
 	theme: 'advanced',
-
 	plugins: 'style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
@@ -85,8 +84,7 @@ var settingsSimple = {
 };
 
 var settingsExtended = {
-	theme: 'advanced',
-
+    theme: 'advanced',
 	plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
@@ -126,6 +124,8 @@ function freeTextArea_init(fileBrowser, overrides) {
 	// Default settings:
 	var settings = {};  // keep freeTextArea_settings unmodified
 	jQuery.extend(settings, freeTextArea_settings);
+
+	settings.displayableTokens = ['lol', 'lala'];
 
 	// JH: nonstandard setting value selects a set of pre-prepared overrides: 
 	var settings_set = (overrides != null ? overrides["settings_set"] : null);
