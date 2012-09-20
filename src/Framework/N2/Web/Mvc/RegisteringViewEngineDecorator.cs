@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Web.Mvc.Html;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
-	public class RegisteringViewEngineDecorator : IViewEngine
+	public class RegisteringViewEngineDecorator : IViewEngine, IDecorator<IViewEngine>
 	{
 		IViewEngine inner;
 
@@ -68,5 +69,10 @@ namespace N2.Web.Mvc
 
 			re.Context.TouchedPaths.Add(viewPath);
 		}
-	}
+
+        public IViewEngine Component
+        {
+            get { return inner; }
+        }
+    }
 }

@@ -372,6 +372,7 @@
     <Compile Include="Engine\DynamicProxy\Tokens\TypeBuilderMethods.cs" />
     <Compile Include="Engine\DynamicProxy\Tokens\TypeMethods.cs" />
     <Compile Include="Engine\DynamicProxy\Tokens\TypeUtilMethods.cs" />
+    <Compile Include="Engine\IDecorator.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
@@ -655,6 +656,10 @@
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
+    <Compile Include="Web\Tokens\TokenDefinition.cs" />
+    <Compile Include="Web\Tokens\TokenDefinitionFinder.cs" />
+    <Compile Include="Web\Tokens\TokenOption.cs" />
+    <Compile Include="Web\Tokens\TokenParser.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\IContentPageConcern.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />

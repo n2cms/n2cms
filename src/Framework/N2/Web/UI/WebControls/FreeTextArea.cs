@@ -10,6 +10,7 @@ using System.Linq;
 
 using N2.Configuration;
 using N2.Resources;
+using N2.Web.Tokens;
 
 namespace N2.Web.UI.WebControls
 {
@@ -87,9 +88,9 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 
-        private IEnumerable<string> GetTokens()
+        private IEnumerable<TokenDefinition> GetTokens()
         {
-            return "test1, test2, test3".Split(',');
+            return Context.GetEngine().Resolve<TokenDefinitionFinder>().FindTokens();
         }
 
 		protected virtual string GetOverridesJson()
@@ -98,14 +99,7 @@ namespace N2.Web.UI.WebControls
 			overrides["elements"] = ClientID;
 			overrides["content_css"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
 
-            string displayableTokens = string.Format("{0}",
-                String.Join(",",
-                    GetTokens().Select(t => t.Trim())
-                    .ToArray()
-                )
-            );
-
-            overrides["autocomplete_options"] = displayableTokens;
+            overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))

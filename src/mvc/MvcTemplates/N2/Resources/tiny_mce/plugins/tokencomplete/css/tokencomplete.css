@@ -19,6 +19,7 @@ ul.auto-list{
 	z-index: 1000000;
 }
 
+ul.auto-list > li.selected,
 ul.auto-list > li:hover,
 ul.auto-list > li[data-selected=true]{
 	background: #3875d7;

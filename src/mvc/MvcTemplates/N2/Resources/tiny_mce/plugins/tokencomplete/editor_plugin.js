@@ -1,8 +1,10 @@
 ﻿(function () {
-    var downKey = 40;
-    var upKey = 38;
-    var escKey = 27;
-    var enterKey = 13;
+    var key = {
+        down: 40,
+        up: 38,
+        esc: 27,
+        enter: 13
+    };
     var lastPressedKeys = [];
     var trigger = ['{', '{'];
 
@@ -10,17 +12,18 @@
 
     tinymce.create('tinymce.plugins.TokenCompletePlugin', {
         init: function (ed, url) {
-            var json = ed.getParam('tokens');
+            var options = ed.getParam('tokencomplete_settings');
 
             list = $('<ul />').addClass('auto-list');
 
-            $(json.tokens).each(function (i, e) {
-                var elem = $('<li>' + e.name + '</li>')
+            $(options.tokens).each(function (i, token) {
+                var elem = $('<li>' + (token.Description ? token.Name + " " + token.Description : token.Name) + '</li>')
+                    .attr("data-name", token.Name)
+                    .data("options", token.Options)
             		.click(function () {
-            		    insertFromDropdown($(this).text(), e.options);
+            		    insertFromDropdown(this);
             		});
 
-                console.log(e);
                 $(list).prepend(elem);
             });
 
@@ -29,22 +32,17 @@
             tinymce.DOM.loadCSS(url + '/css/tokencomplete.css');
 
             /* propagerar inte till editorn, körs i dropdownen */
-            function keyDownEvent(ed, e) {
+
+            function isVisible() {
+                return list.is(":visible");
             }
 
             function keyPressEvent(ed, e) {
                 lastPressedKeys.reverse();
                 lastPressedKeys[1] = String.fromCharCode(e.charCode);
-
                 if (!(lastPressedKeys < trigger || trigger < lastPressedKeys)) {
                     showDropdown(ed);
                 }
-                else {
-                    hideDropdown();
-                }
-            }
-
-            function keyUpEvent(ed, e) {
             }
 
             function clickEvent(ed, e) {
@@ -52,7 +50,27 @@
                 lastPressedKeys = [];
             }
 
-            ed.onKeyUp.addToTop(keyUpEvent);
+            function keyDownEvent(ed, e) {
+                if (isVisible()) {
+                    if (e.keyCode == key.enter) {
+                        list.children("li.selected").each(function () {
+                            insertFromDropdown(this);
+                        });
+                    } else if (e.keyCode == key.up) {
+                        list.children("li.selected:not(:first)").removeClass("selected").prev().addClass("selected");
+                    } else if (e.keyCode == key.down) {
+                        list.children("li.selected:not(:last)").removeClass("selected").next().addClass("selected");
+                    } else if (e.keyCode == key.esc) {
+                        hideDropdown();
+                    } else {
+                        hideDropdown();
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }
+            //            ed.onKeyUp.addToTop(keyUpEvent);
             ed.onKeyDown.addToTop(keyDownEvent);
             ed.onKeyPress.addToTop(keyPressEvent);
             ed.onClick.add(clickEvent);
@@ -77,21 +95,24 @@
                 $(list).css("display", "block");
 
                 list.show();
+                list.children("li.selected").removeClass("selected");
+                list.children("li:first").addClass("selected");
             }
 
             function hideDropdown() {
                 list.hide();
             }
 
-            function insertFromDropdown(text, options) {
+            function insertFromDropdown(el) {
+                var text = $(el).attr("data-name");
+                var options = $(el).data("options");
                 hideDropdown();
                 lastPressedKeys = [];
-
+                console.log(text, options);
                 ed.selection.setContent(text);
-
-                if (options != null && options.length > 0) {
+                if (options && options.length > 0) {
                     $(options).each(function (i, o) {
-                        ed.selection.setContent('|' + o.name);
+                        ed.selection.setContent('|' + o.Name);
                     });
                 }
 
@@ -111,6 +132,5 @@
             };
         }
     });
-
     tinymce.PluginManager.add('tokencomplete', tinymce.plugins.TokenCompletePlugin);
 })();
