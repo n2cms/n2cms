@@ -114,6 +114,7 @@
     <Compile Include="LinkTracker\TrackerTests.cs" />
     <Compile Include="Security\ItemBridgeTests.cs" />
     <Compile Include="Security\Items\UserOverride.cs" />
+    <Compile Include="Tokens\TokenFinderTests.cs" />
     <Compile Include="Trash\DeleteInterceptorTests.cs" />
     <Compile Include="Trash\NonThrowableItem.cs" />
     <Compile Include="Trash\ThrowableItem.cs" />
@@ -156,6 +157,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="FileSystem\Upload\Image.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="N2\Tokens\TokenTemplates\Hello.ascx">
+      <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Upload\File.txt">
