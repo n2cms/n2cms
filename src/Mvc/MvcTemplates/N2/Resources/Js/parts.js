@@ -2,9 +2,6 @@
 	var isDragging = false;
 	var dialog = null;
 
-	if (!window.n2SelectedQueryKey)
-		window.n2SelectedQueryKey = "path";
-
 	window.n2DragDrop = function (urls, messages) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
@@ -84,7 +81,7 @@
 			$(".editable").each(function () {
 				var $t = $(this);
 				var url = self.urls.editsingle
-					+ "?" + n2SelectedQueryKey + "=" + $t.attr("data-path")
+					+ "?" + (n2SelectedQueryKey || "selected") + "=" + $t.attr("data-path")
 					+ "&property=" + $t.attr("data-property")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {

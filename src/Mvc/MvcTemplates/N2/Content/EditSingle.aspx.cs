@@ -29,6 +29,7 @@ namespace N2.Management.Content
 
 			ie.EditableNameFilter = new [] { Request["property"] };
 			ie.CurrentItem = Selection.SelectedItem;
+            EnsureChildControls();
 		}
 
 		protected void OnPublishCommand(object sender, CommandEventArgs args)

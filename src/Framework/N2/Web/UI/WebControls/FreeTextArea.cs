@@ -25,6 +25,7 @@ namespace N2.Web.UI.WebControls
 		static bool configEnabled = true;
 		static bool isInitalized = false;
 		private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
+        private bool configTokensEnabled;
 
 		public FreeTextArea()
 		{
@@ -63,6 +64,7 @@ namespace N2.Web.UI.WebControls
 					configCssUrl = Url.ResolveTokens(config.TinyMCE.CssUrl);
 					configScriptUrl = Url.ResolveTokens(config.TinyMCE.ScriptUrl);
 					configEnabled = config.TinyMCE.Enabled;
+                    configTokensEnabled = config.TinyMCE.EnableTokenDropdown;
 					foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
 					{
 						configSettings[element.Key] = element.Value;
@@ -99,7 +101,11 @@ namespace N2.Web.UI.WebControls
 			overrides["elements"] = ClientID;
 			overrides["content_css"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
 
-            overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
+            if (configTokensEnabled)
+            {
+                overrides["tokencomplete_enabled"] = "true";
+                overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
+            }
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))

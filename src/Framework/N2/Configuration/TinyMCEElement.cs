@@ -38,5 +38,13 @@ namespace N2.Configuration
 			get { return (string)base["scriptUrl"]; }
 			set { base["scriptUrl"] = value; }
 		}
+
+        /// <summary>Url to the free text area editor configuration script file.</summary>
+        [ConfigurationProperty("enableTokenDropdown", DefaultValue = true)]
+        public bool EnableTokenDropdown
+        {
+            get { return (bool)base["enableTokenDropdown"]; }
+            set { base["enableTokenDropdown"] = value; }
+        }
 	}
 }

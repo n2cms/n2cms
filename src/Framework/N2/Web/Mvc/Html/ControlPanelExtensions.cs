@@ -204,7 +204,7 @@ namespace N2.Web.Mvc.Html
 					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item)
 				};
 
-                var resources = Html.Resources(writer);
+                var resources = Html.Resources(writer).Constants();
                 if (includeJQuery) resources.JQuery();
 				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
 				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
