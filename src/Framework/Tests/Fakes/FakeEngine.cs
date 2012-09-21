@@ -133,6 +133,11 @@ namespace N2.Tests.Fakes
 			get { return new ContentHelperBase(() => this, () => RequestContext.CurrentPath); }
 		}
 
+        public N2.Configuration.ConfigurationManagerWrapper Config
+        {
+            get { return Resolve<N2.Configuration.ConfigurationManagerWrapper>(); }
+        }
+
 		#endregion
 
 		public class FakeServiceContainer : IServiceContainer
@@ -221,5 +226,5 @@ namespace N2.Tests.Fakes
 		{
 			Container.AddComponentInstance(instance.GetType().FullName, typeof(T), instance);
 		}
-	}
+    }
 }

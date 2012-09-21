@@ -227,5 +227,10 @@ namespace N2.Engine
 		}
 
 		#endregion
-	}
+
+        public ConfigurationManagerWrapper Config
+        {
+            get { return Resolve<ConfigurationManagerWrapper>(); }
+        }
+    }
 }

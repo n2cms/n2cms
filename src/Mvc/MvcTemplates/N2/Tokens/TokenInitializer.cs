@@ -10,8 +10,11 @@ namespace N2.Management.Tokens
 	{
 		public void Initialize(Engine.IEngine engine)
 		{
-			var viewEngines = engine.Resolve<IProvider<ViewEngineCollection>>().Get();
-			viewEngines.RegisterTokenViewEngine();
+            if (engine.Config.Sections.Web.Tokens.BuiltInEnabled)
+            {
+                var viewEngines = engine.Resolve<IProvider<ViewEngineCollection>>().Get();
+                viewEngines.RegisterTokenViewEngine();
+            }
 		}
 	}
 }
