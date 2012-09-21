@@ -95,25 +95,27 @@ namespace N2.Plugin.Scheduling
 			if (!enabled)
 				return;
 
-			try
-			{
-				var config = ((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization"));
-				Thread.CurrentThread.CurrentCulture = new CultureInfo(config.Culture);
-				Thread.CurrentThread.CurrentUICulture = new CultureInfo(config.UICulture);
-			}
-			catch (Exception ex)
-			{
-				logger.Warn(ex);
-			}
-
             for (int i = 0; i < actions.Count; i++)
             {
                 ScheduledAction action = actions[i];
                 if (action.ShouldExecute())
                 {
                     action.IsExecuting = true;
-					worker.DoWork(delegate  
+					worker.DoWork(delegate
                     {
+                        try
+                        {
+                            var config = ((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization"));
+                            if (!string.IsNullOrEmpty(config.Culture))
+                                Thread.CurrentThread.CurrentCulture = new CultureInfo(config.Culture);
+                            if (!string.IsNullOrEmpty(config.UICulture))
+                                Thread.CurrentThread.CurrentUICulture = new CultureInfo(config.UICulture);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Warn(ex);
+                        }
+
                         try
                         {
 							logger.Debug("Executing " + action.GetType().Name);
