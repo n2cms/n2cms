@@ -21,11 +21,11 @@ namespace N2.Web.UI.WebControls
 	{
 		static string configCssUrl;
 		static string configScriptUrl;
-		static NameValueCollection configSettings = new NameValueCollection();
 		static bool configEnabled = true;
 		static bool isInitalized = false;
-		private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
-        private bool configTokensEnabled;
+        static bool configTokensEnabled = true;
+        static NameValueCollection configSettings = new NameValueCollection();
+        private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
 
 		public FreeTextArea()
 		{
