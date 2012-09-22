@@ -17,7 +17,7 @@ namespace N2.Tests.Fakes
 
         #region IVersionManager Members
 
-        public override IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
+        public IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
         {
             return itemRepository.database.Values.Where(i => i.VersionOf.Value == publishedItem || i == publishedItem).OrderByDescending(i => i.VersionIndex).ToList();
         }

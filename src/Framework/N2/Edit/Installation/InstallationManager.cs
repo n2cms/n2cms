@@ -2,27 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Web;
+using N2.Configuration;
 using N2.Definitions;
 using N2.Definitions.Static;
+using N2.Details;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Installation;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Persistence.Serialization;
+using N2.Plugin;
 using N2.Web;
 using NHibernate;
 using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
-using N2.Plugin;
-using N2.Configuration;
-using N2.Details;
-using System.Web;
 
 namespace N2.Edit.Installation
 {
@@ -210,19 +210,23 @@ namespace N2.Edit.Installation
 				sessionProvider.OpenSession.Session.CreateQuery("select ci.TemplateKey from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 4;
 
-				// checking persistable properties added in application
+				// checking for properties added between 4 and 5
 				sessionProvider.OpenSession.Session.CreateQuery("select ci.ChildState from " + typeof(ContentItem).Name + " ci").SetMaxResults(1).List();
 				status.DatabaseVersion = 5;
 
-				// checking persistable properties added in application
+                // checking for properties added between 5 and 6
 				sessionProvider.OpenSession.Session.CreateQuery("select cd.Meta from " + typeof(ContentDetail).Name + " cd").SetMaxResults(1).List();
 				status.DatabaseVersion = 6;
+
+                // checking for properties added between 6 and 7
+                sessionProvider.OpenSession.Session.CreateQuery("select cv.ID from " + typeof(ContentVersion).Name + " cd").SetMaxResults(1).List();
+                status.DatabaseVersion = 7;
 
 				if (isDatabaseFileSystemEnbled)
 				{
 					// checking file system table (if enabled)
 					sessionProvider.OpenSession.Session.CreateQuery("select ci from " + typeof(N2.Edit.FileSystem.NH.FileSystemItem).Name + " ci").SetMaxResults(1).List();
-					status.DatabaseVersion = 7;
+					status.DatabaseVersion = 8;
 				}
 
 				// checking persistable properties added in application
@@ -246,7 +250,8 @@ namespace N2.Edit.Installation
 				session.CreateQuery("from ContentItem").SetMaxResults(1).List();
 				session.CreateQuery("from ContentDetail").SetMaxResults(1).List();
 				session.CreateQuery("from AuthorizedRole").SetMaxResults(1).List();
-				session.CreateQuery("from DetailCollection").SetMaxResults(1).List();
+                session.CreateQuery("from DetailCollection").SetMaxResults(1).List();
+                session.CreateQuery("from ContentVersion").SetMaxResults(1).List();
 
 				status.HasSchema = true;
 

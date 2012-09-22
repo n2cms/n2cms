@@ -8,6 +8,7 @@ using System.Xml;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Security;
 using N2.Web;
@@ -271,6 +272,7 @@ namespace N2.Persistence.NH
 			mm.Class<ContentDetail>(ContentDetailCustomization);
 			mm.Class<DetailCollection>(DetailCollectionCustomization);
 			mm.Class<AuthorizedRole>(AuthorizedRoleCustomization);
+            mm.Class<ContentVersion>(ContentVersionCustomization);
 
 			var compiledMapping = mm.CompileMappingForAllExplicitlyAddedEntities();
 			cfg.AddDeserializedMapping(compiledMapping, "N2");
@@ -406,6 +408,25 @@ namespace N2.Persistence.NH
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); });
 			ca.Property(x => x.Role, cm => { cm.Length(50); cm.NotNullable(true); });
 		}
+
+        void ContentVersionCustomization(IClassMapper<ContentVersion> ca)
+        {
+            ca.Table(tablePrefix + "Version");
+            ca.Lazy(false);
+            ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
+            ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
+            ca.ManyToOne(x => x.MainItem, cm => { cm.Column("ItemID"); });
+            ca.Property(x => x.ComponentsJson, cm => { cm.Length(stringLength); });
+            ca.Property(x => x.DeltaJson, cm => { cm.Length(stringLength); });
+            ca.Property(x => x.Published, cm => { });
+            ca.Property(x => x.VersionIndex, cm => { });
+            ca.Property(x => x.Saved, cm => { });
+            ca.Property(x => x.State, cm => { });
+            ca.Property(x => x.IsLatestVersion, cm => { });
+            ca.Property(x => x.IsPublishedVersion, cm => { });
+            ca.Property(x => x.SavedBy, cm => { });
+            ca.Property(x => x.PublishedBy, cm => { });
+        }
 
 		private string FormatMapping(string mappingXml)
 		{

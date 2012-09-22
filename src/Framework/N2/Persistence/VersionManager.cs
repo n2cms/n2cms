@@ -67,21 +67,12 @@ namespace N2.Persistence
 			return oldVersion;
 		}
 
-        /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
-        /// <param name="currentItem">The item that will be stored as a previous version.</param>
-        /// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
-        /// <returns>A version of the previously published item.</returns>
-        public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem)
-        {
-            return ReplaceVersion(currentItem, replacementItem, true);
-        }
-
 		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
 		/// <param name="currentItem">The item that will be stored as a previous version.</param>
 		/// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
         /// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
         /// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
-		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion)
+		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion = true)
 		{
 			if (currentItem == null) 
 				throw new ArgumentNullException("currentItem");
@@ -158,21 +149,9 @@ namespace N2.Persistence
 
 		/// <summary>Retrieves all versions of an item including the master version.</summary>
 		/// <param name="publishedItem">The item whose versions to get.</param>
-		/// <returns>A list of versions of the item.</returns>
-		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
-		{
-			if (publishedItem.ID == 0)
-				return new ItemList { publishedItem };
-
-			return GetVersionsQuery(publishedItem)
-				.Select();
-		}
-
-		/// <summary>Retrieves all versions of an item including the master version.</summary>
-		/// <param name="publishedItem">The item whose versions to get.</param>
 		/// <param name="count">The number of versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
-		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
+		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count = 1000)
 		{
 			if (publishedItem.ID == 0)
 				return new ItemList { publishedItem };

@@ -154,6 +154,9 @@
     <Compile Include="Edit\Activity\ActivityExtensions.cs" />
     <Compile Include="Edit\Activity\ActivityRepository.cs" />
     <Compile Include="Edit\Activity\ActivityUser.cs" />
+    <Compile Include="Edit\Versioning\VersioningActivityRepository.cs" />
+    <Compile Include="Edit\Versioning\VersioningActivity.cs" />
+    <Compile Include="Edit\Versioning\Delta.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
