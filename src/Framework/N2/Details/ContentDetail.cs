@@ -150,6 +150,31 @@ namespace N2.Details
 			public object ObjectValue { get; set; }
 			public string StringValue { get; set; }
 			#endregion
+
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is bool)
+                    return ((bool)obj).Equals(BoolValue);
+                if (obj is DateTime)
+                    return ((DateTime)obj).Equals(DateTimeValue);
+                if (obj is double)
+                    return ((double)obj).Equals(DoubleValue);
+                if (obj is int)
+                    return ((int)obj).Equals(IntValue);
+                if (obj is ContentItem)
+                    return (obj as ContentItem).Equals(LinkedItem);
+                if (obj is string)
+                    return (obj as string).Equals(StringValue);
+                if (obj != null)
+                    return obj.Equals(ObjectValue);
+
+                return false;
+            }
 		}
 		#endregion
 

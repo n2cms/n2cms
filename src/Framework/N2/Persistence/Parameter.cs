@@ -27,6 +27,8 @@
 #endregion
 
 using NHibernate.Type;
+using System.Linq;
+using System;
 
 namespace N2.Persistence
 {
@@ -112,13 +114,55 @@ namespace N2.Persistence
 
 		public bool IsMatch(object item)
 		{
-			var itemValue = N2.Utility.GetProperty(item, Name);
-			if (Value == null)
-				return itemValue == null;
-
-			return Value.Equals(itemValue);
+            object itemValue = null;
+            if (IsDetail && item is ContentItem)
+            {
+                itemValue = (item as ContentItem)[Name];
+                if (itemValue == null)
+                {
+                    var collection = (item as ContentItem).GetDetailCollection(Name, false);
+                    if (collection != null)
+                    {
+                        return collection.Any(v => Compare(v));
+                    }
+                }
+            }
+            else
+                itemValue = N2.Utility.GetProperty(item, Name);
+            
+            return Compare(itemValue);
 		}
 
+        private bool Compare(object itemValue)
+        {
+            switch (this.Comparison)
+            {
+                case Persistence.Comparison.Equal:
+                    if (Value == null)
+                        return itemValue == null;
+                    if (itemValue is Details.IMultipleValue)
+                    {
+                        return (itemValue as Details.IMultipleValue).Equals(Value);
+                    }
+                    return Value.Equals(itemValue);
+                case Persistence.Comparison.NotEqual:
+                    if (Value == null)
+                        return itemValue != null;
+                    if (itemValue is Details.IMultipleValue)
+                    {
+                        return !(itemValue as Details.IMultipleValue).Equals(Value);
+                    }
+                    return !Value.Equals(itemValue);
+                case Persistence.Comparison.Null:
+                    return itemValue == null;
+                case Persistence.Comparison.NotNull:
+                    return itemValue != null;
+                default:
+                    throw new NotSupportedException("Operator " + Comparison + " not supported for IsMatch " + Name);
+            }
+        }
+
+    
 		#region Operators
 		public static ParameterCollection operator &(Parameter q1, IParameter q2)
 		{

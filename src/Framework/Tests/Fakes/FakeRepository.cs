@@ -296,7 +296,7 @@ namespace N2.Tests.Fakes
 
 		public IEnumerable<TEntity> Find(IParameter parameters)
 		{
-			throw new NotImplementedException();
+            return database.Values.Where(item => parameters.IsMatch(item));
 		}
 	}
 }
