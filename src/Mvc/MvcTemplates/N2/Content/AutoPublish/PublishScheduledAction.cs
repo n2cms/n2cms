@@ -16,7 +16,6 @@ namespace N2.Edit.AutoPublish
 		private IPersister persister;
 		private ISecurityManager security;
 		private StateChanger changer;
-		IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
 		
 		public PublishScheduledAction(IVersionManager versioner, IPersister persister, ISecurityManager security, StateChanger changer)
 		{
@@ -100,25 +99,28 @@ namespace N2.Edit.AutoPublish
 					versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
 			}
 
-			var implicitAutoPublish = Finder
-				.Where.Published.Le(Utility.CurrentTime())
-				.And.State.Eq(ContentState.Waiting)
-				.Select();
+            //var implicitAutoPublish = Finder
+            //    .Where.Published.Le(Utility.CurrentTime())
+            //    .And.State.Eq(ContentState.Waiting)
+            //    .Select();
+            var implicitAutoPublish = persister.Repository
+                .Find(Parameter.LessOrEqual("Published", Utility.CurrentTime()) & Parameter.Equal("State", ContentState.Waiting))
+                .ToList();
 			for (int i = 0; i < implicitAutoPublish.Count; i++)
 			{
 				try
 				{
-					Security.ScopeEnabled = false;
-				// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
-				var item = implicitAutoPublish[i];
-				item.State = ContentState.Published;
-				Persister.Save(item);
-        }
-        finally
-        {
-          Security.ScopeEnabled = true;
-        }
-      }
+					security.ScopeEnabled = false;
+				    // saving the master version for auto-publish will be eventually become published without this, but we want to update the state
+				    var item = implicitAutoPublish[i];
+				    item.State = ContentState.Published;
+				    persister.Save(item);
+            }
+            finally
+            {
+                security.ScopeEnabled = true;
+            }
+          }
 		}
 	}
 }

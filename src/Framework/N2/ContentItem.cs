@@ -662,6 +662,21 @@ namespace N2
     		       	? childItem.GetChild(segments[1])
     		       	: childItem;
 		}
+        
+        /// <summary>
+        /// Find a direct child by its name
+        /// </summary>
+        /// <param name="nameSegment">Child name. Cannot contain slashes.</param>
+        /// <returns></returns>
+        protected virtual ContentItem FindNamedChild(string nameSegment)
+        {
+            var childItem = Children.FindNamed(nameSegment);
+            if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+            {
+    	        childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
+            }
+            return childItem;
+        }
 
 		/// <summary>
 		/// Compares the item's name ignoring case and extension.

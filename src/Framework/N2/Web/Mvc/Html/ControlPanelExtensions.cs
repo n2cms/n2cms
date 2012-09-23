@@ -101,8 +101,6 @@ namespace N2.Web.Mvc.Html
 				set { includeJQueryPlugins = value; }
 			}
 
-			public ContentItem currentItem;
-
 			public bool IncludePartScripts
 			{
 				get { return includePartScripts; }

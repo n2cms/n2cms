@@ -88,24 +88,28 @@
     <Compile Include="Addons\Wiki\Tabs.cs" />
     <Compile Include="Addons\Wiki\UI\Parts\EditArticle.ascx.cs">
       <DependentUpon>EditArticle.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Parts\EditArticle.ascx.designer.cs">
       <DependentUpon>EditArticle.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Parts\WikiPart.ascx.cs">
       <DependentUpon>WikiPart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Parts\WikiPart.ascx.designer.cs">
       <DependentUpon>WikiPart.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Article.aspx.cs">
       <DependentUpon>Article.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Article.aspx.designer.cs">
       <DependentUpon>Article.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
@@ -119,61 +123,73 @@
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\History.aspx.cs">
       <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\NoHits.aspx.cs">
       <DependentUpon>NoHits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\NoHits.aspx.designer.cs">
       <DependentUpon>NoHits.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Submit.aspx.cs">
       <DependentUpon>Submit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Submit.aspx.designer.cs">
       <DependentUpon>Submit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Upload.aspx.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Upload.aspx.designer.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Version.aspx.cs">
       <DependentUpon>Version.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Version.aspx.designer.cs">
       <DependentUpon>Version.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Wiki.aspx.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\Views\Wiki.aspx.designer.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Addons\Wiki\UI\Views\WikiTemplatePage.cs" />
+    <Compile Include="Addons\Wiki\UI\Views\WikiTemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\ActionParameter.ascx.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\ActionParameter.ascx.designer.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\AllArticles.ascx.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\AllArticles.ascx.designer.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\Create.ascx.cs">
       <DependentUpon>Create.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\Create.ascx.designer.cs">
       <DependentUpon>Create.ascx</DependentUpon>
@@ -181,32 +197,40 @@
     <Compile Include="Addons\Wiki\UI\WikiTemplates\DefaultWikiTemplateAttribute.cs" />
     <Compile Include="Addons\Wiki\UI\WikiTemplates\LatestArticles.ascx.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\LatestArticles.ascx.designer.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.cs">
       <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.designer.cs">
       <DependentUpon>LinkFromParameter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\PageName.ascx.cs">
       <DependentUpon>PageName.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\PageName.ascx.designer.cs">
       <DependentUpon>PageName.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\Search.ascx.cs">
       <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Wiki\UI\WikiTemplates\Search.ascx.designer.cs">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Addons\Wiki\UI\WikiTemplates\WikiTemplate.cs" />
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\WikiTemplate.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Addons\Wiki\Utility.cs" />
     <Compile Include="Addons\Wiki\ViewContext.cs" />
-    <Compile Include="Addons\Wiki\Web\WikiUserControl.cs" />
+    <Compile Include="Addons\Wiki\Web\WikiUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Addons\Wiki\WikiRenderer.cs" />
     <Compile Include="Addons\Wiki\WikiTemplateAttribute.cs" />
     <Compile Include="Addons\Wiki\WikiTextAttribute.cs" />

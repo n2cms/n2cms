@@ -301,6 +301,7 @@
     <Compile Include="Services\WebForms\ThemeConcern.cs" />
     <Compile Include="Views\Shared\Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Shared\Site.master.designer.cs">
       <DependentUpon>Site.master</DependentUpon>

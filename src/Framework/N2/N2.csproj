@@ -157,7 +157,6 @@
     <Compile Include="Edit\Versioning\VersioningActivityRepository.cs" />
     <Compile Include="Edit\Versioning\VersioningActivity.cs" />
     <Compile Include="Edit\Versioning\Delta.cs" />
-    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
     <Compile Include="Engine\DynamicProxy\AbstractInvocation.cs" />
@@ -388,17 +387,11 @@
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
     <Compile Include="Linq\FindExtensions.cs" />
-    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
     <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
-    <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
-    <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
     <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
-    <Compile Include="Persistence\Behaviors\IBehavior.cs" />
-    <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
-    <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />

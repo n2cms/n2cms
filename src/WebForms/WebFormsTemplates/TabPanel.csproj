@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Addons\TabPanel\TabsInterface.ascx.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\TabPanel\TabsInterface.ascx.designer.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>

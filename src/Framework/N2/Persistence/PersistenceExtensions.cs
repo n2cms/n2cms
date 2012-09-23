@@ -6,7 +6,13 @@ using System.Text;
 namespace N2.Persistence
 {
 	public static class PersistenceExtensions
-	{
+    {
+        public static Parameter Detail(this Parameter parameter, bool isDetail = true)
+        {
+            parameter.IsDetail = isDetail;
+            return parameter;
+        }
+
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work
 		/// is completed. (INSERT or UPDATE)
