@@ -20,15 +20,14 @@ namespace N2.Tests.Edit
 		TreeSorter sorter;
 		NormalPage root, page1, page2, page3;
 		ContentPersister persister;
-		FakeRepository<ContentItem> repository;
+		FakeContentItemRepository repository;
 		
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			FakeRepository<ContentDetail> linkRepository;
-			persister = TestSupport.SetupFakePersister(out repository, out linkRepository);
+			persister = TestSupport.SetupFakePersister(out repository);
 			var webContext = new ThreadContext();
 
 			IEditManager editManager = mocks.Stub<IEditManager>();

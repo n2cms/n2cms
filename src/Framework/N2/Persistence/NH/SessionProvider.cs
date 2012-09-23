@@ -20,14 +20,23 @@ namespace N2.Persistence.NH
         private FlushMode flushAt = FlushMode.Commit;
 		private System.Data.IsolationLevel? isolation;
 
+		public System.Data.IsolationLevel? Isolation
+		{
+			get { return isolation; }
+			set { isolation = value; }
+		}
+
 		public SessionProvider(IConfigurationBuilder builder, NHInterceptorFactory interceptorFactory, IWebContext webContext, DatabaseSection config)
 		{
 			nhSessionFactory = builder.BuildSessionFactory();
 			this.webContext = webContext;
 			this.interceptorFactory = interceptorFactory;
 			this.isolation = config.Isolation;
+			this.CacheEnabled = config.Caching;
 		}
 
+		/// <summary>Tells whether cache should be enabled by default.</summary>
+		public bool CacheEnabled { get; set; }
 		/// <summary>Gets the NHibernate session factory</summary>
 		public ISessionFactory SessionFactory
 		{
@@ -52,12 +61,17 @@ namespace N2.Persistence.NH
             get
             {
                 SessionContext sc = CurrentSession;
-                if(sc == null)
-                {
+				if (sc == null)
+				{
 					ISession s = interceptorFactory.CreateSession(nhSessionFactory);
-				    s.FlushMode = FlushAt;
-                    CurrentSession = sc = new SessionContext(this, s);
-                }
+					s.FlushMode = FlushAt;
+					CurrentSession = sc = new SessionContext(this, s);
+					Debug.WriteLine("Session create " + sc.GetHashCode());
+				}
+				else
+				{
+					Debug.WriteLine("Session reuse " + sc.GetHashCode());
+				}
                 return sc;
             }
 		}
@@ -85,7 +99,13 @@ namespace N2.Persistence.NH
 		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		public ITransaction BeginTransaction()
 		{
-			var transaction = new NHTransaction(isolation, this);
+			var transaction = new NHTransaction(this);
+			if (transaction.IsCommitted || transaction.IsRollbacked)
+			{
+				Debug.WriteLine("Ending previous transaction");
+				transaction.Dispose();
+				CurrentSession.Transaction = null;
+			}
 			if (CurrentSession.Transaction == null)
 				CurrentSession.Transaction = transaction;
 			return transaction;
@@ -95,7 +115,12 @@ namespace N2.Persistence.NH
 		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
 		public ITransaction GetTransaction()
 		{
-			return CurrentSession != null ? CurrentSession.Transaction : null;
+			if (CurrentSession == null)
+				return null;
+			if (CurrentSession.Transaction == null)
+				return null;
+
+			return new SubTransaction(CurrentSession.Transaction);
 		}
 	}
 }

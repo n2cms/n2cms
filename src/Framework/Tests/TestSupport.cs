@@ -83,17 +83,23 @@ namespace N2.Tests
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {
             var changer = new N2.Edit.Workflow.StateChanger();
-			versions = new VersionManager(persister.Repository, finder, changer, new N2.Configuration.EditSection());
+			versions = new VersionManager(persister.Repository, changer, new N2.Configuration.EditSection());
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<ContentItem> itemRepository, INHRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
-            persister = new ContentPersister(itemRepository, linkRepository);
+			var source = SetupContentSource(itemRepository);
+			persister = new ContentPersister(source, itemRepository);
 			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
+
+		public static ContentSource SetupContentSource(IContentItemRepository itemRepository)
+		{
+			return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
+		}
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
         {
@@ -105,17 +111,24 @@ namespace N2.Tests
 
 		public static ContentPersister SetupFakePersister()
 		{
-			FakeRepository<ContentItem> repository;
-			FakeRepository<ContentDetail> linkRepository;
-			return SetupFakePersister(out repository, out linkRepository);
+			IContentItemRepository repository;
+			return SetupFakePersister(out repository);
 		}
 
-		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository)
+		public static ContentPersister SetupFakePersister(out FakeContentItemRepository repository)
 		{
-			repository = new Fakes.FakeRepository<ContentItem>();
-			linkRepository = new Fakes.FakeRepository<ContentDetail>();
-			
-			return new ContentPersister(repository, linkRepository);
+			repository = new Fakes.FakeContentItemRepository();
+
+			var sources = SetupContentSource(repository);
+			return new ContentPersister(sources, repository);
+		}
+
+		public static ContentPersister SetupFakePersister(out IContentItemRepository repository)
+		{
+			repository = new Fakes.FakeContentItemRepository();
+
+			var sources = SetupContentSource(repository);
+			return new ContentPersister(sources, repository);
 		}
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
@@ -128,9 +141,9 @@ namespace N2.Tests
 			return new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } };
 		}
 
-		public static N2.Persistence.Sources.ContentSource SetupContentSource(IWebContext webContext, IHost host, IPersister persister)
+		public static ContentSource SetupContentSource(IWebContext webContext, IHost host, IContentItemRepository repository)
 		{
-			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, persister.Repository) });
+			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, repository) });
 		}
 
 		public static WebAppTypeFinder TypeFinder()

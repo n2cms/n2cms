@@ -2,6 +2,9 @@
 using N2.Definitions;
 using N2.Plugin;
 using System.Collections;
+using System;
+using N2.Engine.Globalization;
+using System.Diagnostics;
 
 namespace N2.Security
 {
@@ -16,6 +19,24 @@ namespace N2.Security
 		public static bool IsAuthorized(this ISecurityManager security, ISecurableBase permittableOrSecurable, IPrincipal user, ContentItem item)
 		{
 			return user != null && IsAuthorized(permittableOrSecurable, user, item) && IsPermitted(security, permittableOrSecurable, user, item);
+		}
+
+		/// <summary>Disables security checks until the returned object is disposed or the request ends.</summary>
+		/// <param name="security">The security manager to disable.</param>
+		/// <param name="isDisabled">True disables the security manager.</param>
+		/// <returns>An object that resets the enabled state when disposed.</returns>
+		public static IDisposable Disable(this ISecurityManager security, bool isDisabled = true)
+		{
+			bool previous = security.ScopeEnabled;
+			security.ScopeEnabled = !isDisabled;
+			Debug.WriteLine("Disabling security " + isDisabled + " {");
+			Debug.Indent();
+			return new Scope(() => 
+			{
+				security.ScopeEnabled = previous;
+				Debug.Unindent();
+				Debug.WriteLine("} Reenabling security " + previous);
+			});
 		}
 
 		private static bool IsPermitted(ISecurityManager security, object possiblyPermittable, IPrincipal user, ContentItem item)

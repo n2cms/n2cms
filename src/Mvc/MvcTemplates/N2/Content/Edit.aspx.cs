@@ -13,6 +13,7 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Edit.AutoPublish;
 
 namespace N2.Edit
 {
@@ -353,14 +354,12 @@ namespace N2.Edit
 			var cc = ie.CreateCommandContext();
 			Commands.Save(cc);
 
-			var item = cc.Content;
-			if (!item.VersionOf.HasValue)
-				item.Published = dpFuturePublishDate.SelectedDate;
-			else
-				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
-			Engine.Resolve<StateChanger>().ChangeTo(item, ContentState.Waiting);
-			Engine.Persister.Save(item);
-			return item;
+			if (dpFuturePublishDate.SelectedDate.HasValue)
+			{
+				Engine.Resolve<PublishScheduledAction>().MarkForFuturePublishing(cc.Content, dpFuturePublishDate.SelectedDate.Value);
+				Engine.Persister.Save(cc.Content);
+			}
+			return cc.Content;
         }
 
 		#region IItemEditor Members

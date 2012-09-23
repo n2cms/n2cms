@@ -25,7 +25,7 @@ namespace N2.Persistence.NH
 
 		public override object Instantiate(string clazz, EntityMode entityMode, object id)
 		{
-			logger.Debug("Instantiate: " + clazz + " " + entityMode + " " + id);
+			Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
 		    object instance = interceptor.Create(clazz, id);
 		    if (instance != null)
 		    {
@@ -61,7 +61,7 @@ namespace N2.Persistence.NH
 			bool wasAltered = interceptor.OnSaving(entity);
 			if (wasHandled || wasAltered)
 			{
-				logger.Debug("OnFlushDirty: " + entity + " " + id);
+				Debug.WriteLine("OnFlushDirty: " + entity + " " + id);
 				return true;
 			}
 			return false;
@@ -85,7 +85,7 @@ namespace N2.Persistence.NH
 			bool wasAltered = interceptor.OnSaving(entity);
 			if (wasHandled || wasAltered)
 			{
-				logger.Debug("OnSave: " + entity + " " + id);
+				Debug.WriteLine("OnSave: " + entity + " " + id);
 				return true;
 			}
 			return false;

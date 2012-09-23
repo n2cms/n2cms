@@ -23,6 +23,8 @@ using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
+using N2.Details;
+using System.Web;
 
 namespace N2.Edit.Installation
 {

@@ -6,36 +6,48 @@ using N2.Persistence.NH;
 
 namespace N2.Tests.Fakes
 {
-	//public class FakeRepository<TEntity> : FakeRepository<int, TEntity> where TEntity : class
-	//{
-	//    public override void Save(TEntity entity)
-	//    {
-	//        base.Save(entity);
-	//        maxID = Math.Max(GetKey(entity), maxID);
-	//    }
-	//    protected override int GetKey(TEntity entity)
-	//    {
-	//        int id = base.GetKey(entity);
-	//        if(id == 0)
-	//        {
-	//            var p = entity.GetType().GetProperty("ID");
-	//            p.SetValue(entity, id = ++maxID, new object[0]);
-	//        }
-	//        return id;
-	//    }
-	//}
+	public class FakeContentItemRepository : FakeRepository<ContentItem>, IContentItemRepository
+	{
+		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int RemoveReferencesToRecursive(ContentItem target)
+		{
+			return 0;
+		}
+	}
+
 
 	public class FakeRepository<TEntity> : INHRepository<TEntity> where TEntity : class
 	{
-		public string lastOperation;
+		private string lastOperation;
 		public int maxID;
 		public Dictionary<object, TEntity> database = new Dictionary<object, TEntity>();
+		private FakeTransaction transaction;
+
+		public string LastOperation
+		{
+			get { return lastOperation; }
+			set { lastOperation = value; }
+		}
 
 		#region IRepository<TKey,TEntity> Members
 
 		public TEntity Get(object id)
 		{
-			lastOperation = "Get(" + id + ")";
+			LastOperation = "Get(" + id + ")";
 
 			if (database.ContainsKey(id))
 				return database[id];
@@ -44,39 +56,38 @@ namespace N2.Tests.Fakes
 
 		public T Get<T>(object id)
 		{
-			lastOperation = "Get<" + typeof(T).Name + ">(" + id + ")";
+			LastOperation = "Get<" + typeof(T).Name + ">(" + id + ")";
 
 			throw new NotImplementedException();
 		}
 
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			return Enumerable.Empty<TEntity>();
+			return Find(new Parameter(propertyName, value));
 		}
 
 		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
 		{
-			lastOperation = "Find(" + propertyValuesToMatchAll.Length + ")";
-			return database.Values.Where(d => propertyValuesToMatchAll.All(p => p.Value.Equals(N2.Utility.Evaluate(d, p.Name))));
+			return database.Values.Where(item => propertyValuesToMatchAll.All(p => p.IsMatch(item)));
 		}
 
 		public TEntity Load(object id)
 		{
-			lastOperation = "Load(" + id + ")";
+			LastOperation = "Load(" + id + ")";
 
 			return database[id];
 		}
 
 		public void Delete(TEntity entity)
 		{
-			lastOperation = "Delete(" + entity + ")";
+			LastOperation = "Delete(" + entity + ")";
 
 			database.Remove(GetKey(entity));
 		}
 
 		public virtual void Save(TEntity entity)
 		{
-			lastOperation = "Save(" + entity + ")";
+			LastOperation = "Save(" + entity + ")";
 
 			object key = GetKey(entity);
 			database[key] = entity;
@@ -101,35 +112,35 @@ namespace N2.Tests.Fakes
 
 		public void Update(TEntity entity)
 		{
-			lastOperation = "Update(" + entity + ")";
+			LastOperation = "Update(" + entity + ")";
 
 			database[GetKey(entity)] = entity;
 		}
 
 		public void SaveOrUpdate(TEntity entity)
 		{
-			lastOperation = "SaveOrUpdate(" + entity + ")";
+			LastOperation = "SaveOrUpdate(" + entity + ")";
 
 			Save(entity);
 		}
 
 		public bool Exists()
 		{
-			lastOperation = "Exists()";
+			LastOperation = "Exists()";
 
 			return true;
 		}
 
 		public long Count()
 		{
-			lastOperation = "Count()";
+			LastOperation = "Count()";
 
 			return database.Count;
 		}
 
 		public void Flush()
 		{
-			lastOperation = "Flush()";
+			LastOperation = "Flush()";
 		}
 
 		private class FakeTransaction : ITransaction
@@ -171,16 +182,16 @@ namespace N2.Tests.Fakes
 
 		public ITransaction BeginTransaction()
 		{
-			lastOperation = "BeginTransaction()";
+			LastOperation = "BeginTransaction()";
 
-			return new FakeTransaction();
+			return transaction = new FakeTransaction();
 		}
 
 		public ITransaction GetTransaction()
 		{
-			lastOperation = "BeginTransaction()";
+			LastOperation = "GetTransaction()";
 
-			return new FakeTransaction();
+			return transaction;
 		}
 
 		#endregion
@@ -189,7 +200,7 @@ namespace N2.Tests.Fakes
 
 		public void Dispose()
 		{
-			lastOperation = "Dispose()";
+			LastOperation = "Dispose()";
 		}
 
 		#endregion
@@ -283,5 +294,9 @@ namespace N2.Tests.Fakes
 
 		#endregion
 
+		public IEnumerable<TEntity> Find(IParameter parameters)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

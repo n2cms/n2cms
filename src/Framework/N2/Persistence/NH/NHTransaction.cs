@@ -1,24 +1,32 @@
 using System;
 using NHibernate;
 using System.Data;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
 	public class NHTransaction : ITransaction
 	{
 		NHibernate.ITransaction transaction;
-        bool isOriginator = true;
+		private SessionContext context;
+		bool isOriginator = true;
 
-		public NHTransaction(IsolationLevel? isolation, ISessionProvider sessionProvider)
+		public bool IsCommitted { get; set; }
+		public bool IsRollbacked { get; set; }
+
+		public NHTransaction(ISessionProvider sessionProvider)
 		{
-			var context = sessionProvider.OpenSession;
+			Debug.WriteLine("Transaction {");
+			Debug.Indent();
+
+			context = sessionProvider.OpenSession;
 		    
 			ISession session = context.Session;
 			transaction = session.Transaction;
 			if (transaction.IsActive)
 				isOriginator = false; // The method that first opened the transaction should also close it
-			else if (isolation.HasValue)
-				transaction.Begin(isolation.Value);
+			else if (sessionProvider.Isolation.HasValue)
+				transaction.Begin(sessionProvider.Isolation.Value);
 			else
                 transaction.Begin();
 
@@ -37,7 +45,10 @@ namespace N2.Persistence.NH
 		{
 			if (isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
 			{
+				Debug.WriteLine("Commit");
 				transaction.Commit();
+				IsCommitted = true;
+				RemoveFromContext();
 
 				OnCommit();
 			}
@@ -54,7 +65,10 @@ namespace N2.Persistence.NH
 		{
 			if (!transaction.WasCommitted && !transaction.WasRolledBack)
 			{
+				Debug.WriteLine("Rollback");
 				transaction.Rollback();
+				IsRollbacked = true;
+				RemoveFromContext();
 
 				OnRollback();
 			}
@@ -70,12 +84,15 @@ namespace N2.Persistence.NH
 
 		#region IDisposable Members
 
-        void IDisposable.Dispose()
+        public void Dispose()
 		{
-			if(isOriginator)
+			Debug.Unindent();
+			Debug.WriteLine("}");
+			if (isOriginator)
 			{
 				Rollback();
 				transaction.Dispose();
+				RemoveFromContext();
 			}
 			OnDispose();
 		}
@@ -87,6 +104,12 @@ namespace N2.Persistence.NH
 		}
 
 		#endregion
+
+		private void RemoveFromContext()
+		{
+			if (object.ReferenceEquals(context.Transaction, this))
+				context.Transaction = null;
+		}
 
 		/// <summary>Invoked after the transaction has been committed.</summary>
 		public event EventHandler Committed;

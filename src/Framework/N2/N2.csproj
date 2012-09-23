@@ -392,6 +392,13 @@
     <Compile Include="Persistence\Behaviors\IBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
+    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
+    <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
+    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
+    <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
@@ -543,8 +550,13 @@
     <Compile Include="Engine\DynamicProxy\IInterceptable.cs" />
     <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
     <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
+    <Compile Include="Persistence\NH\SubTransaction.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
+    <Compile Include="Persistence\IParameter.cs" />
+    <Compile Include="Persistence\Order.cs" />
+    <Compile Include="Persistence\ParameterCollection.cs" />
+    <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
@@ -583,6 +595,7 @@
     <Compile Include="Persistence\Sources\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
     <Compile Include="Persistence\Sources\Query.cs" />
+    <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
@@ -1293,7 +1306,7 @@
     <Compile Include="Persistence\NH\Finder\PropertyCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyVersionOfCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\QueryBuilder.cs" />
-    <Compile Include="Persistence\NH\Finder\Operator.cs" />
+    <Compile Include="Persistence\Operator.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertySortDirection.cs" />
     <Compile Include="Persistence\NH\Finder\StringWrapper.cs" />

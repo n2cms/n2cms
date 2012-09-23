@@ -2,6 +2,10 @@ using N2.Edit.Trash;
 using N2.Web;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Persistence;
+using N2.Tests;
+using N2.Edit.Workflow;
+using N2.Persistence.Proxying;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -47,5 +51,15 @@ namespace N2.Edit.Tests.Trash
             i.AddTo(parent);
             return i;
         }
+
+		protected TrashHandler CreateTrashHandler()
+		{
+			var activator = new ContentActivator(new StateChanger(), new ItemNotifier(), new EmptyProxyFactory());
+			var persister = TestSupport.SetupFakePersister();
+			persister.Save(root);
+
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister.Repository, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+		}
+
     }
 }

@@ -17,11 +17,12 @@ namespace N2.Tests.Web.WebControls
 		
 		protected PageItem page;
 		protected DataItem data;
+		private ContentEngine engine;
 
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None),
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None),
 				"n2nodb",
 				new WindsorServiceContainer(),
 				new EventBroker(),
@@ -31,7 +32,7 @@ namespace N2.Tests.Web.WebControls
 			engine.Host.CurrentSite.RootItemID = 1;
 			engine.Host.CurrentSite.StartPageID = 1;
 		}
-
+		
 		[SetUp]
 		public override void SetUp()
 		{
@@ -41,7 +42,7 @@ namespace N2.Tests.Web.WebControls
 			data = CreateOneItem<DataItem>(2, "data", page);
 			data.ZoneName = ZoneName;
 		}
-
+		
 		protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
 		{
 			var item = base.CreateOneItem<T>(id, name, parent);

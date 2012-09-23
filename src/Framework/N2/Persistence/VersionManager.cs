@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Configuration;
@@ -15,15 +16,13 @@ namespace N2.Persistence
 	[Service(typeof(IVersionManager))]
 	public class VersionManager : IVersionManager
 	{
-        readonly IRepository<ContentItem> itemRepository;
-		readonly IItemFinder finder;
+		readonly IContentItemRepository itemRepository;
         readonly StateChanger stateChanger;
 		int maximumVersionsPerItem = 100;
 
-		public VersionManager(IRepository<ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger, EditSection config)
+		public VersionManager(IContentItemRepository itemRepository, StateChanger stateChanger, EditSection config)
 		{
 			this.itemRepository = itemRepository;
-			this.finder = finder;
             this.stateChanger = stateChanger;
 			maximumVersionsPerItem = config.Versions.MaximumPerItem;
 		}
@@ -156,16 +155,11 @@ namespace N2.Persistence
 			if (publishedItem.ID == 0)
 				return new ItemList { publishedItem };
 
-			return GetVersionsQuery(publishedItem)
-				.MaxResults(count)
-				.Select();
-		}
-
-		private IQueryEnding GetVersionsQuery(ContentItem publishedItem)
-		{
-			return finder.Where.VersionOf.Eq(publishedItem)
-				.Or.ID.Eq(publishedItem.ID)
-				.OrderBy.VersionIndex.Desc;
+			return itemRepository.Find(
+				(new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
+					.OrderBy("VersionIndex DESC")
+					.Take(count))
+				.ToList();
 		}
 
 		/// <summary>Removes exessive versions.</summary>

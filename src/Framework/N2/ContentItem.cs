@@ -664,21 +664,6 @@ namespace N2
 		}
 
 		/// <summary>
-		/// Find a direct child by its name
-		/// </summary>
-		/// <param name="nameSegment">Child name. Cannot contain slashes.</param>
-		/// <returns></returns>
-    	protected virtual ContentItem FindNamedChild(string nameSegment)
-    	{
-    		var childItem = Children.FindNamed(nameSegment);
-    		if (childItem == null && string.IsNullOrEmpty(Extension) == false)
-    		{
-    			childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
-    		}
-    		return childItem;
-    	}
-
-    	/// <summary>
 		/// Compares the item's name ignoring case and extension.
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
@@ -999,7 +984,7 @@ namespace N2
 		[DebuggerStepThrough]
 		public override string ToString()
 		{
-			return Name + "#" + ID;
+			return GetContentType().Name + " {" + Name + "#" + ID + "}";
 		}
 
 		/// <summary>Compares two content items for equality.</summary>

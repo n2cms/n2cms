@@ -22,7 +22,7 @@ namespace N2.Tests.Edit
 			
 			webContext = new ThreadContext();
 			host = new Host(webContext, 1, 1);
-			source = TestSupport.SetupContentSource(webContext, host, persister);
+			source = TestSupport.SetupContentSource(webContext, host, persister.Repository);
 		}
 
 		[Test]

@@ -27,16 +27,16 @@ namespace N2.Management.Tests.ExternalContent
 
 		public static Externals.ExternalContentRepository SetupRepository(out ContentItem root, out ContentItem start)
 		{
-			FakeRepository<ContentItem> itemRepository;
-			FakeRepository<ContentDetail> linkRepository;
-			var persister = TestSupport.SetupFakePersister(out itemRepository, out linkRepository);
+			IContentItemRepository itemRepository;
+			var persister = TestSupport.SetupFakePersister(out itemRepository);
 			var activator = new Persistence.ContentActivator(new Edit.Workflow.StateChanger(), MockRepository.GenerateStub<IItemNotifier>(), new Persistence.Proxying.EmptyProxyFactory());
-			itemRepository.Save(root = new ExternalItem { ID = 1, Name = "root" });
-			itemRepository.Save(start = new ExternalItem { ID = 2, Name = "start" });
+			itemRepository.SaveOrUpdate(root = new ExternalItem { ID = 1, Name = "root" });
+			itemRepository.SaveOrUpdate(start = new ExternalItem { ID = 2, Name = "start" });
 
 			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
-			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
+			//return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
+			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(itemRepository, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
 		}
 
 		[Test]

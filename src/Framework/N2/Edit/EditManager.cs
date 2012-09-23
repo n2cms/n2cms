@@ -27,6 +27,7 @@ namespace N2.Edit
 	{
 		protected static readonly object addedEditorKey = new object();
 		protected static readonly object savingVersionKey = new object();
+		protected static readonly object savedVersionKey = new object();
 
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
@@ -426,17 +427,25 @@ namespace N2.Edit
 			remove { Events.RemoveHandler(savingVersionKey, value); }
 		}
 
+		/// <summary>Occurs when a version has been saved.</summary>
+		public event EventHandler<ItemEventArgs> SavedVersion
+		{
+			add { Events.AddHandler(savedVersionKey, value); }
+			remove { Events.RemoveHandler(savedVersionKey, value); }
+		}
+
 		#region Helper Methods
 
 		private ContentItem SaveVersion(ContentItem current)
 		{
 			ContentItem savedVersion = null;
-			var handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
-			Utility.InvokeEvent(handler, current, this, delegate(ContentItem item)
+			var savingHandler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
+			var savedHandler = Events[savedVersionKey] as EventHandler<ItemEventArgs>;
+			Utility.InvokeEvent(savingHandler, current, this, delegate(ContentItem item)
 			                                            	{
 			                                            		savedVersion = versioner.SaveVersion(item);
 			                                            		versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
-			                                            	});
+															}, savedHandler);
 			return savedVersion;
 		}
 

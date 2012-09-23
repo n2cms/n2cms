@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using N2.Web;
 using Shouldly;
-using N2.Persistence.NH;
+using N2.Persistence;
 using N2.Details;
 
 namespace N2.Tests.Web
@@ -20,7 +20,7 @@ namespace N2.Tests.Web
 		[SetUp]
 		public void SetUp()
 		{
-			persister = new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<ContentDetail>());
+			persister = TestSupport.SetupFakePersister();
 			persister.Save(page = new Items.PageItem { ID = 1 });
 			persister.Save(item = new Items.DataItem { ID = 2 });
 		}

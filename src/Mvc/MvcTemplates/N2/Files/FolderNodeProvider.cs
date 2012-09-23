@@ -21,16 +21,16 @@ namespace N2.Management.Files
 	public class FolderNodeProvider : INodeProvider
 	{
 		private IFileSystem fs;
-		private IPersister persister;
+		private IRepository<ContentItem> repository;
 		private IDependencyInjector dependencyInjector;
 
 		internal FolderPair[] UploadFolderPaths { get; set; }
 
-		public FolderNodeProvider(IFileSystem fs, IPersister persister, IDependencyInjector dependencyInjector)
+		public FolderNodeProvider(IFileSystem fs, IRepository<ContentItem> repository, IDependencyInjector dependencyInjector)
 		{
 			UploadFolderPaths = new FolderPair[0];
 			this.fs = fs;
-			this.persister = persister;
+			this.repository = repository;
 			this.dependencyInjector = dependencyInjector;
 		}
 

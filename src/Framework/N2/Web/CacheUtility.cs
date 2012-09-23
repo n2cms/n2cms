@@ -107,5 +107,24 @@ namespace N2.Web
 			response.Cache.SetValidUntilExpires(true);
 			return response;
 		}
+		/// <param name="lastModified">The time the resource was modified.</param>
+		public static HttpResponse SetOutputCache(this HttpResponse response, DateTime expires)
+		{
+			response.Cache.SetExpires(expires);
+			response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
+			response.Cache.SetValidUntilExpires(true);
+			return response;
+		}
+
+		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
+		/// <param name="response">The response whose cache to modify.</param>
+		/// <param name="lastModified">The time the resource was modified.</param>
+		public static HttpResponseBase SetOutputCache(this HttpResponseBase response, DateTime expires)
+		{
+			response.Cache.SetExpires(expires);
+			response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
+			response.Cache.SetValidUntilExpires(true);
+			return response;
+		}
 	}
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 
 namespace N2
 {
@@ -27,16 +28,13 @@ namespace N2
     /// </summary>
     public class CancellableItemEventArgs : ItemEventArgs
     {
-        private bool cancel;
-		private Action<ContentItem> finalAction;
-
 		/// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
 		/// <param name="item">The content item to reference with these arguements.</param>
 		/// <param name="finalAction">The action to perform unless the Cancel is set to true.</param>
 		public CancellableItemEventArgs(ContentItem item, Action<ContentItem> finalAction)
 			: base(item)
 		{
-			this.finalAction = finalAction;
+			FinalAction = finalAction;
 		}
 
         /// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
@@ -47,17 +45,9 @@ namespace N2
         }
 
         /// <summary>Gets or sets whether the event with this argument should be cancelled.</summary>
-        public bool Cancel
-        {
-            get { return cancel; }
-            set { cancel = value; }
-        }
+        public bool Cancel { get; set; }
 
 		/// <summary>The action to execute unless the event is cancelled. This action can be exchanged by observers to alter the default behaviour.</summary>
-		public Action<ContentItem> FinalAction
-    	{
-    		get { return finalAction; }
-    		set { finalAction = value; }
-    	}
+		public Action<ContentItem> FinalAction { get; set; }
     }
 }

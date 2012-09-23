@@ -9,6 +9,12 @@ namespace N2.Persistence.NH
     /// </summary>
 	public interface ISessionProvider: IDisposable
 	{
+		/// <summary>Tells whether cache should be enabled by default.</summary>
+		bool CacheEnabled { get; }
+
+		/// <summary>The isolation level to use for connections.</summary>
+		System.Data.IsolationLevel? Isolation { get; }
+
         /// <summary>Returns an already opened session or creates and opens a new one and puts it in the current request.</summary>
         /// <returns>A NHibernate session.</returns>
 		SessionContext OpenSession { get; }

@@ -29,11 +29,12 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using N2.Engine;
 using NHibernate;
 using NHibernate.Criterion;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
@@ -158,6 +159,7 @@ namespace N2.Persistence.NH
 		/// <param name="entity">the entity to save</param>
 		public void SaveOrUpdate(TEntity entity)
 		{
+			Debug.WriteLine("Saving or updating " + entity + " " + entity.GetHashCode());
 			sessionProvider.OpenSession.Session.SaveOrUpdate(entity);
 		}
 
@@ -169,23 +171,98 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			return FindAll(CreateExpression(propertyName, value));
+			return FindAll(CreateCriterion(new Parameter(propertyName, value, value is string ? Comparison.Like : Comparison.Equal)));
 		}
 
 		/// <summary>
 		/// Finds entitities from the persistance store with matching property values.
 		/// </summary>
-		/// <param name="propertyValuesToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <param name="parametersToMatchAll">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
 		/// <returns>Entities with matching values.</returns>
-		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
+		public IEnumerable<TEntity> Find(params Parameter[] parametersToMatchAll)
 		{
-			return FindAll(propertyValuesToMatchAll.Select(kvp => CreateExpression(kvp.Name, kvp.Value)).ToArray());
+			return FindAll(parametersToMatchAll.Select(p => CreateCriterion(p)).ToArray());
 		}
 
-		private static ICriterion CreateExpression(string propertyName, object value)
+		/// <summary>
+		/// Finds entitities from the persistance store with matching property values.
+		/// </summary>
+		/// <param name="parameters">The property-value combinations to match. All these combinations must be equal for a result to be returned.</param>
+		/// <returns>Entities with matching values.</returns>
+		public IEnumerable<TEntity> Find(IParameter parameters)
+		{
+			var expr = CreateCriterion(parameters);
+			if (parameters is ParameterCollection)
+			{
+				var pc = parameters as ParameterCollection;
+				ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(SessionProvider.OpenSession.Session, new[] { expr });
+				if (pc.Order != null)
+				{
+					crit.AddOrder(new NHibernate.Criterion.Order(pc.Order.Property, !pc.Order.Descending));
+				}
+				if (pc.Range != null)
+				{
+					if (pc.Range.Skip > 0)
+						crit.SetFirstResult(pc.Range.Skip);
+					if (pc.Range.Take > 0)
+						crit.SetMaxResults(pc.Range.Take);
+				}
+				return crit.List<TEntity>();
+			}
+			
+			return FindAll(expr);
+		}
+
+		protected virtual ICriterion CreateCriterion(IParameter parameter)
+		{
+			if (parameter is Parameter)
+			{
+				var p = parameter as Parameter;
+				return CreateExpression(p.Name, p.Value, p.Comparison);
+			}
+			else if (parameter is ParameterCollection)
+			{
+				var pc = parameter as ParameterCollection;
+				var x = pc.Operator == Operator.And
+					? (Junction)Expression.Conjunction()
+					: (Junction)Expression.Disjunction();
+				foreach (var p in pc)
+					x.Add(CreateCriterion(p));
+
+				return x;
+			}
+			throw new NotImplementedException();
+		}
+
+		protected static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
 		{
 			if (value == null)
 				return Expression.IsNull(propertyName);
+
+			switch (comparisonType)
+			{
+				case Comparison.Equal:
+					return Expression.Eq(propertyName, value);
+				case Comparison.GreaterOrEqual:
+					return Expression.Ge(propertyName, value);
+				case Comparison.GreaterThan:
+					return Expression.Gt(propertyName, value);
+				case Comparison.LessOrEqual:
+					return Expression.Le(propertyName, value);
+				case Comparison.LessThan:
+					return Expression.Lt(propertyName, value);
+				case Comparison.Like:
+					return Expression.Like(propertyName, value);
+				case Comparison.NotEqual:
+					return Expression.Not(Expression.Eq(propertyName, value));
+				case Comparison.NotLike:
+					return Expression.Not(Expression.Like(propertyName, value));
+				case Comparison.NotNull:
+					return Expression.IsNotNull(propertyName);
+				case Comparison.Null:
+					return Expression.IsNull(propertyName);
+			}
+			
 			if (value is string)
 				return Expression.Like(propertyName, value);
 
@@ -239,17 +316,17 @@ namespace N2.Persistence.NH
 
 		#region INHRepository<TKey,TEntity> Members
 
-		public ICollection<TEntity> FindAll(Order order, params ICriterion[] criteria)
+		public ICollection<TEntity> FindAll(NHibernate.Criterion.Order order, params ICriterion[] criteria)
 		{
 			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.AddOrder(order);
 			return crit.List<TEntity>();
 		}
 
-		public ICollection<TEntity> FindAll(Order[] orders, params ICriterion[] criteria)
+		public ICollection<TEntity> FindAll(NHibernate.Criterion.Order[] orders, params ICriterion[] criteria)
 		{
 			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
-			foreach (Order order in orders)
+			foreach (NHibernate.Criterion.Order order in orders)
 			{
 				crit.AddOrder(order);
 			}
@@ -271,7 +348,7 @@ namespace N2.Persistence.NH
 		}
 
 		public ICollection<TEntity> FindAll(
-			int firstResult, int numberOfResults, Order selectionOrder, params ICriterion[] criteria)
+			int firstResult, int numberOfResults, NHibernate.Criterion.Order selectionOrder, params ICriterion[] criteria)
 		{
 			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.SetFirstResult(firstResult)
@@ -281,12 +358,12 @@ namespace N2.Persistence.NH
 		}
 
 		public ICollection<TEntity> FindAll(
-			int firstResult, int numberOfResults, Order[] selectionOrder, params ICriterion[] criteria)
+			int firstResult, int numberOfResults, NHibernate.Criterion.Order[] selectionOrder, params ICriterion[] criteria)
 		{
 			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.SetFirstResult(firstResult)
 				.SetMaxResults(numberOfResults);
-			foreach (Order order in selectionOrder)
+			foreach (NHibernate.Criterion.Order order in selectionOrder)
 			{
 				crit.AddOrder(order);
 			}
@@ -320,14 +397,14 @@ namespace N2.Persistence.NH
 			return (TEntity)query.UniqueResult();
 		}
 
-		public ICollection<TEntity> FindAll(DetachedCriteria criteria, params Order[] orders)
+		public ICollection<TEntity> FindAll(DetachedCriteria criteria, params NHibernate.Criterion.Order[] orders)
 		{
 			ICriteria executableCriteria =
 				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
 			return executableCriteria.List<TEntity>();
 		}
 
-		public ICollection<TEntity> FindAll(DetachedCriteria criteria, int firstResult, int maxResults, params Order[] orders)
+		public ICollection<TEntity> FindAll(DetachedCriteria criteria, int firstResult, int maxResults, params NHibernate.Criterion.Order[] orders)
 		{
 			ICriteria executableCriteria =
 				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
@@ -343,7 +420,7 @@ namespace N2.Persistence.NH
 			return (TEntity)executableCriteria.UniqueResult();
 		}
 
-		public TEntity FindFirst(DetachedCriteria criteria, params Order[] orders)
+		public TEntity FindFirst(DetachedCriteria criteria, params NHibernate.Criterion.Order[] orders)
 		{
 			ICriteria executableCriteria =
 				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
@@ -357,7 +434,7 @@ namespace N2.Persistence.NH
 		/// </summary>
 		/// <param name="orders">Optional orderring</param>
 		/// <returns>The entity or null</returns>
-		public TEntity FindFirst(params Order[] orders)
+		public TEntity FindFirst(params NHibernate.Criterion.Order[] orders)
 		{
 			return FindFirst(null, orders);
 		}

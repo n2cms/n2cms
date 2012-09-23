@@ -17,10 +17,9 @@ using System.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
-using N2.Persistence.Finder;
-using NHibernate.Criterion;
+using N2.Persistence.Sources;
 
-namespace N2.Persistence.NH
+namespace N2.Persistence
 {
 	/// <summary>
 	/// A wrapper for NHibernate persistence functionality.
@@ -28,14 +27,14 @@ namespace N2.Persistence.NH
 	[Service(typeof(IPersister))]
 	public class ContentPersister : IPersister
 	{
-		private readonly IRepository<ContentItem> itemRepository;
-		private readonly IRepository<ContentDetail> linkRepository;
+		private readonly IContentItemRepository repository;
+		private readonly ContentSource source;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(IRepository<ContentItem> itemRepository, IRepository<ContentDetail> linkRepository)
+		public ContentPersister(ContentSource source, IContentItemRepository itemRepository)
 		{
-			this.itemRepository = itemRepository;
-			this.linkRepository = linkRepository;
+			this.source = source;
+			this.repository = itemRepository;
 		}
 
 		#region Load, Save, & Delete Methods
@@ -45,9 +44,7 @@ namespace N2.Persistence.NH
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual ContentItem Get(int id)
 		{
-			if (id == 0) return null;
-
-            ContentItem item = itemRepository.Get(id);
+            ContentItem item = source.Get(id);
             if (ItemLoaded != null)
             {
                 return Invoke(ItemLoaded, new ItemEventArgs(item)).AffectedItem; 
@@ -68,120 +65,23 @@ namespace N2.Persistence.NH
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			using (ITransaction transaction = itemRepository.BeginTransaction())
+			var transaction = repository.GetTransaction();
+			if (transaction != null)
 			{
-				// delay saved event until a previously initiated transcation is completed
 				transaction.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
-
-				Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
-
-				transaction.Commit();
-			}
-		}
-
-		private void SaveAction(ContentItem item)
-		{
-			if (item is IActiveContent)
-			{
-				(item as IActiveContent).Save();
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, null);
 			}
 			else
-			{
-				if (!item.VersionOf.HasValue)
-					item.Updated = Utility.CurrentTime();
-				if (string.IsNullOrEmpty(item.Name))
-					item.Name = null;
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, ItemSaved);
 
-				itemRepository.SaveOrUpdate(item);
-				EnsureName(item);
-			}
 		}
 
 		/// <summary>Deletes an item an all sub-items</summary>
 		/// <param name="itemNoMore">The item to delete</param>
 		public void Delete(ContentItem itemNoMore)
 		{
-			Utility.InvokeEvent(ItemDeleting, itemNoMore, this, DeleteAction);
+			Utility.InvokeEvent(ItemDeleting, itemNoMore, this, source.Delete, ItemDeleted);
 		}
-
-		void DeleteAction(ContentItem itemNoMore)
-		{
-			if (itemNoMore is IActiveContent)
-			{
-				Engine.Logger.Info("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
-				(itemNoMore as IActiveContent).Delete();
-			}
-			else
-			{
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					DeleteReferencesRecursive(itemNoMore);
-
-					DeleteRecursive(itemNoMore, itemNoMore);
-
-					transaction.Commit();
-				}
-			}
-			Invoke(ItemDeleted, new ItemEventArgs(itemNoMore));
-		}
-
-		private void DeleteReferencesRecursive(ContentItem itemNoMore)
-		{
-			string itemTrail = Utility.GetTrail(itemNoMore);
-			var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
-				.SelectMany(i => linkRepository.Find(new Parameter("LinkedItem", i), new Parameter("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
-				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
-				.ToList();
-
-			Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
-
-			foreach (ContentDetail link in inboundLinks)
-			{
-				linkRepository.Delete(link);
-				link.AddTo((DetailCollection)null);
-			}
-			linkRepository.Flush();
-		}
-
-		#region Delete Helper Methods
-
-		private void DeleteRecursive(ContentItem topItem, ContentItem itemToDelete)
-		{
-			DeletePreviousVersions(itemToDelete);
-
-			try
-			{
-				Trace.Indent();
-				List<ContentItem> children = new List<ContentItem>(itemToDelete.Children);
-				foreach (ContentItem child in children)
-					DeleteRecursive(topItem, child);
-			}
-			finally
-			{
-				Trace.Unindent();
-			}
-
-			itemToDelete.AddTo(null);
-
-			Engine.Logger.Info("ContentPersister.DeleteRecursive " + itemToDelete);
-			itemRepository.Delete(itemToDelete);
-		}
-
-		private void DeletePreviousVersions(ContentItem itemNoMore)
-		{
-			var previousVersions = itemRepository.Find("VersionOf.ID", itemNoMore.ID);
-
-			int count = 0;
-			foreach (ContentItem version in previousVersions)
-			{
-				itemRepository.Delete(version);
-				count++;
-			}
-
-			Engine.Logger.Info("ContentPersister.DeletePreviousVersions " + count + " of " + itemNoMore);
-		}
-
-		#endregion
 
 		#endregion
 
@@ -192,28 +92,7 @@ namespace N2.Persistence.NH
 		/// <param name="destination">The destination below which to place the item</param>
 		public virtual void Move(ContentItem source, ContentItem destination)
 		{
-			Utility.InvokeEvent(ItemMoving, this, source, destination, MoveAction);
-		}
-
-		private ContentItem MoveAction(ContentItem source, ContentItem destination)
-		{
-			if (source is IActiveContent)
-			{
-				Engine.Logger.Info("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
-				(source as IActiveContent).MoveTo(destination);
-			}
-			else
-			{
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					Engine.Logger.Info("ContentPersister.MoveAction " + source + " to " + destination);
-					source.AddTo(destination);
-					Save(source);
-					transaction.Commit();
-				}
-			}
-			Invoke(ItemMoved, new DestinationEventArgs(source, destination));
-			return null;
+			Utility.InvokeEvent(ItemMoving, this, source, destination, this.source.Move, ItemMoved);
 		}
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
@@ -222,7 +101,7 @@ namespace N2.Persistence.NH
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination)
 		{
-			return Copy(source, destination, true);
+			return Utility.InvokeEvent(ItemCopying, this, source, destination, this.source.Copy, ItemCopied);
 		}
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
@@ -232,27 +111,10 @@ namespace N2.Persistence.NH
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination, bool includeChildren)
 		{
-			return Utility.InvokeEvent(ItemCopying, this, source, destination, delegate(ContentItem copiedItem, ContentItem destinationItem)
-			{
-				if (copiedItem is IActiveContent)
-				{
-					Engine.Logger.Info("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
-					return (copiedItem as IActiveContent).CopyTo(destinationItem);
-				}
-
-				Engine.Logger.Info("ContentPersister.Copy " + source + " to " + destination);
-				ContentItem cloned = copiedItem.Clone(includeChildren);
-				if(cloned.Name == source.ID.ToString())
-					cloned.Name = null;
-				cloned.AddTo(destination);
-
-				Repository.SaveOrUpdateRecursive(cloned);
-				EnsureName(cloned);
-
-				Invoke(ItemCopied, new DestinationEventArgs(cloned, destinationItem));
-
-				return cloned;
-			});
+			if (includeChildren)
+				return Copy(source, destination);
+			else
+				return Copy(source.Clone(false), destination);
 		}
 
 		#endregion
@@ -283,6 +145,9 @@ namespace N2.Persistence.NH
 		/// <summary>Occurs when an item has been copied</summary>
 		public event EventHandler<DestinationEventArgs> ItemCopied;
 
+		/// <summary>Occurs when an item is being loaded</summary>
+		public event EventHandler<ItemEventArgs> ItemLoading;
+
 		/// <summary>Occurs when an item is loaded</summary>
 		public event EventHandler<ItemEventArgs> ItemLoaded;
 
@@ -292,7 +157,7 @@ namespace N2.Persistence.NH
 
 		public void Dispose()
 		{
-			itemRepository.Dispose();
+			repository.Dispose();
 		}
 
 		#endregion
@@ -300,11 +165,11 @@ namespace N2.Persistence.NH
         /// <summary>Persists changes.</summary>
         public void Flush()
         {
-            itemRepository.Flush();
+            repository.Flush();
         }
-        public IRepository<ContentItem> Repository
+		public IContentItemRepository Repository
         {
-            get { return this.itemRepository; }
+            get { return this.repository; }
         }
         protected virtual T Invoke<T>(EventHandler<T> handler, T args)
             where T : ItemEventArgs
@@ -319,7 +184,7 @@ namespace N2.Persistence.NH
 			if (string.IsNullOrEmpty(item.Name))
 			{
 				item.Name = item.ID.ToString();
-				itemRepository.SaveOrUpdate(item);
+				repository.SaveOrUpdate(item);
 			}
 		}
     }
