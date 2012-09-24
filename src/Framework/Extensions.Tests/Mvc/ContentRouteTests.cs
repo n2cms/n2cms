@@ -5,6 +5,7 @@ using System.Web.Routing;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Definitions.Static;
+using N2.Edit.Versioning;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Extensions.Tests.Fakes;
@@ -76,7 +77,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.Definitions).Return(definitions);
 			SetupResult.For(engine.UrlParser).Return(parser);
 			SetupResult.For(engine.Persister).Return(persister);
-			SetupResult.For(engine.Resolve<RequestPathProvider>()).Return(new RequestPathProvider(webContext, parser, new ErrorNotifier(), new HostSection()));
+			SetupResult.For(engine.Resolve<RequestPathProvider>()).Return(new RequestPathProvider(webContext, parser, new ErrorNotifier(), new HostSection(), new ContentVersionRepository(new FakeRepository<ContentVersion>())));
 			var editUrlManager = new FakeEditUrlManager();
 			SetupResult.For(engine.ManagementPaths).Return(editUrlManager);
 			engine.Replay();

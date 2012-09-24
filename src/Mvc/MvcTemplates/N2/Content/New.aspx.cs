@@ -34,7 +34,7 @@ namespace N2.Edit
 	[NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Write)]
-	[ToolbarPlugin("NEW", "new", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
+	[ToolbarPlugin("", "new_tool", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,

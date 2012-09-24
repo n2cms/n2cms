@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -7,9 +8,11 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Engine;
 using N2.Persistence;
+using N2.Web.Mvc.Html;
 using N2.Web.UI;
 using N2.Security;
 using N2.Edit;
+using N2.Web.UI.WebControls;
 
 namespace N2.Web.Parts
 {
@@ -78,13 +81,32 @@ namespace N2.Web.Parts
         {
             return new ItemList(GetParts(parentItem, zoneName, Interfaces.Viewing));
         }
-
+		
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="belowParentItem">The item whose items to get.</param>
 		/// <param name="inZoneNamed">The zone in which the items should be contained.</param>
         /// <param name="filteredForInterface">Interface where the parts are displayed.</param>
 		/// <returns>A list of items in the zone.</returns>
 		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
+		{
+			var state = WebContext.HttpContext == null ?
+				ControlPanelState.Unknown :
+				ControlPanel.GetState(
+					Security,
+					WebContext.User,
+					WebContext.Url.GetQueries().ToNameValueCollection()
+				);
+
+			return GetParts(belowParentItem, inZoneNamed, filteredForInterface, state);
+		}
+
+		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
+		/// <param name="belowParentItem">The item whose items to get.</param>
+		/// <param name="inZoneNamed">The zone in which the items should be contained.</param>
+        /// <param name="filteredForInterface">Interface where the parts are displayed.</param>
+		/// <param name="state">The control panel state to consider.</param>
+		/// <returns>A list of items in the zone.</returns>
+		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface, ControlPanelState state)
 		{
 			if(belowParentItem == null)
 				return new ItemList();
@@ -93,7 +115,7 @@ namespace N2.Web.Parts
             var items = children.FindParts(inZoneNamed)
                 .Where(new AccessFilter(WebContext.User, Security));
 
-            if(filteredForInterface == Interfaces.Viewing)
+            if(filteredForInterface == Interfaces.Viewing && !state.IsFlagSet(ControlPanelState.Draft))
                 items = items.Where(new PublishedFilter());
 
             return items;

@@ -6,6 +6,7 @@ using System.Text;
 using NUnit.Framework;
 
 using N2.Web;
+using Shouldly;
 
 namespace N2.Tests.Web
 {
@@ -56,9 +57,9 @@ namespace N2.Tests.Web
         {
             var testEnum = TestEnumWithFlags.I | TestEnumWithFlags.Have;
 
-            Assert.IsTrue(testEnum.IsFlagSet(TestEnumWithFlags.I));
-            Assert.IsTrue(testEnum.IsFlagSet(TestEnumWithFlags.Have));
-            Assert.IsFalse(testEnum.IsFlagSet(TestEnumWithFlags.Flags));
+            testEnum.IsFlagSet(TestEnumWithFlags.I).ShouldBe(true);
+            testEnum.IsFlagSet(TestEnumWithFlags.Have).ShouldBe(true);
+            testEnum.IsFlagSet(TestEnumWithFlags.Flags).ShouldBe(false);
         }
     }
 }

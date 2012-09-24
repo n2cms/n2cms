@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -174,6 +175,16 @@ namespace N2.Web
 				return url;
 			else
 				return url.AppendQuery(ViewPreferenceQueryString, preference.ToString().ToLower());
+		}
+		public static NameValueCollection ToNameValueCollection(this IDictionary<string, string> queryString)
+		{
+			var nvc = new NameValueCollection();
+			foreach (var kvp in queryString)
+			{
+				nvc[kvp.Key] = kvp.Value;
+			}
+
+			return nvc;
 		}
 	}
 }

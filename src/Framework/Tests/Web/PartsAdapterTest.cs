@@ -5,6 +5,7 @@ using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Tests.Web.Items;
 using N2.Web.Parts;
+using N2.Web.UI.WebControls;
 using NUnit.Framework;
 using N2.Web;
 using N2.Edit;
@@ -73,7 +74,7 @@ namespace N2.Tests.Web
 		public void CanResolve_ZoneAdapter()
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
-
+			
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
 		}
 
@@ -82,7 +83,7 @@ namespace N2.Tests.Web
 		{
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem);
 
-            IEnumerable<ContentItem> items = controller.GetParts(customItem, "Zone1", Interfaces.Viewing);
+            IEnumerable<ContentItem> items = controller.GetParts(customItem, "Zone1", Interfaces.Viewing, ControlPanelState.Unknown);
 
 			Assert.That(items.Count(), Is.EqualTo(1));
 		}

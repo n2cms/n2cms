@@ -1,4 +1,5 @@
 using N2.Configuration;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Tests.Fakes;
@@ -16,9 +17,9 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
+			var provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection, versionRepository);
 		}
 	}
 
@@ -32,7 +33,7 @@ namespace N2.Tests.Web
 
 			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection, versionRepository);
 		}
 	}
 	
@@ -44,6 +45,7 @@ namespace N2.Tests.Web
 		protected UrlParser parser;
 		protected FakeWebContextWrapper webContext;
 		protected RequestPathProvider dispatcher;
+		protected ContentVersionRepository versionRepository;
 
 		public override void SetUp()
 		{
@@ -53,6 +55,7 @@ namespace N2.Tests.Web
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
 			parser = new UrlParser(persister, webContext, new Host(webContext, startItem.ID, startItem.ID), new N2.Plugin.ConnectionMonitor(), hostSection);
+			versionRepository = new ContentVersionRepository(new FakeRepository<ContentVersion>());
 		}
 
 		//[Test]
