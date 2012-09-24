@@ -202,7 +202,7 @@ namespace N2.Edit.Web
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
-			return Engine.ManagementPaths.GetNavigationUrl(selectedItem);
+			return Page.GetNavigationUrl(Engine, selectedItem);
 		}
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)

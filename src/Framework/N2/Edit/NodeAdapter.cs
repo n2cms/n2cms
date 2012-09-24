@@ -202,7 +202,18 @@ namespace N2.Edit
 		{
 			string url = ManagementPaths.GetPreviewUrl(item);
 			url = String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
+			if (WebContext.HttpContext.IsDraftRequest(defaultViewMode: Engine.Config.Sections.Management.Versions.DefaultViewMode))
+				url = url.ToUrl().AppendQuery("draft", true);
 			return url;
+		}
+
+		/// <summary>Gets the url used from the management UI when displaying the navigation tree.</summary>
+		/// <param name="item">The item to preview.</param>
+		/// <returns>An url to preview the item.</returns>
+		public virtual string GetNavigationUrl(ContentItem item)
+		{
+			return ManagementPaths.GetNavigationUrl(item)
+				.ToUrl().AppendQuery("draft", WebContext.HttpContext.IsDraftRequest(defaultViewMode: Engine.Config.Sections.Management.Versions.DefaultViewMode));
 		}
 
 		/// <summary>Gets the url to the icon representing this item.</summary>

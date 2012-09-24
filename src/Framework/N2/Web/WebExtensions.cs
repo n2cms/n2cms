@@ -11,6 +11,7 @@ using System.IO;
 using System.Web.UI;
 using System.Collections;
 using N2.Definitions;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -152,5 +153,13 @@ namespace N2.Web
 
             return (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0;
         }
+
+		public static bool IsDraftRequest(this HttpContextBase context, ViewMode defaultViewMode = ViewMode.Published)
+		{
+			bool isDraft;
+			if (bool.TryParse(context.Request["draft"], out isDraft))
+				return isDraft;
+			return defaultViewMode == ViewMode.Draft;
+		}
 	}
 }

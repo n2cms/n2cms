@@ -117,6 +117,11 @@ namespace N2.Edit
             return page.Request["returnUrl"] ?? engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
 
+		internal static string GetNavigationUrl(this Page page, IEngine engine, ContentItem item)
+		{
+			return engine.ResolveAdapter<NodeAdapter>(item).GetNavigationUrl(item);
+		}
+
         public static SelectionUtility GetSelection(this Page page)
         {
             if (page is Web.EditPage)
