@@ -202,8 +202,7 @@ namespace N2.Edit
 		{
 			string url = ManagementPaths.GetPreviewUrl(item);
 			url = String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
-			if (WebContext.HttpContext.IsDraftRequest(defaultViewMode: Engine.Config.Sections.Management.Versions.DefaultViewMode))
-				url = url.ToUrl().AppendQuery("draft", true);
+			url = url.ToUrl().AppendViewPreference(WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode), Engine.Config.Sections.Management.Versions.DefaultViewMode);
 			return url;
 		}
 
@@ -213,7 +212,7 @@ namespace N2.Edit
 		public virtual string GetNavigationUrl(ContentItem item)
 		{
 			return ManagementPaths.GetNavigationUrl(item)
-				.ToUrl().AppendQuery("draft", WebContext.HttpContext.IsDraftRequest(defaultViewMode: Engine.Config.Sections.Management.Versions.DefaultViewMode));
+				.ToUrl().AppendViewPreference(WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode), Engine.Config.Sections.Management.Versions.DefaultViewMode);
 		}
 
 		/// <summary>Gets the url to the icon representing this item.</summary>

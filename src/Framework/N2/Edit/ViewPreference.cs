@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2.Configuration
+namespace N2.Edit
 {
-	public enum ViewMode
+	public enum ViewPreference
 	{
 		Draft,
 		Published

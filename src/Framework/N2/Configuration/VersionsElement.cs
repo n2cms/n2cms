@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using N2.Edit;
 
 namespace N2.Configuration
 {
@@ -24,10 +25,10 @@ namespace N2.Configuration
 		}
 
 		/// <summary>Whether versions are stored when saving items using the editor interface.</summary>
-		[ConfigurationProperty("defaultViewMode", DefaultValue = ViewMode.Draft)]
-		public ViewMode DefaultViewMode
+		[ConfigurationProperty("defaultViewMode", DefaultValue = ViewPreference.Draft)]
+		public ViewPreference DefaultViewMode
 		{
-			get { return (ViewMode)base["defaultViewMode"]; }
+			get { return (ViewPreference)base["defaultViewMode"]; }
 			set { base["defaultViewMode"] = value; }
 		}
 	}

@@ -12,6 +12,7 @@ using System.Web.UI;
 using System.Collections;
 using N2.Definitions;
 using N2.Configuration;
+using N2.Edit;
 
 namespace N2.Web
 {
@@ -154,12 +155,25 @@ namespace N2.Web
             return (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0;
         }
 
-		public static bool IsDraftRequest(this HttpContextBase context, ViewMode defaultViewMode = ViewMode.Published)
+		static string ViewPreferenceQueryString = "view";
+		static string draft = ViewPreference.Draft.ToString().ToLower();
+		static string published = ViewPreference.Published.ToString().ToLower();
+		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
 		{
-			bool isDraft;
-			if (bool.TryParse(context.Request["draft"], out isDraft))
-				return isDraft;
-			return defaultViewMode == ViewMode.Draft;
+			if (context.Request[ViewPreferenceQueryString] == draft)
+				return ViewPreference.Draft;
+			else if (context.Request[ViewPreferenceQueryString] == published)
+				return ViewPreference.Published;
+			else
+				return defaultPreference;
+		}
+
+		public static Url AppendViewPreference(this Url url, ViewPreference preference, ViewPreference? defaultPreference = null)
+		{
+			if (preference == defaultPreference)
+				return url;
+			else
+				return url.AppendQuery(ViewPreferenceQueryString, preference.ToString().ToLower());
 		}
 	}
 }

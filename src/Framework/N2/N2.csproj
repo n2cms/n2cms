@@ -119,7 +119,7 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
-    <Compile Include="Configuration\ViewMode.cs" />
+    <Compile Include="Edit\ViewPreference.cs" />
     <Compile Include="Configuration\LinkTrackerElement.cs" />
     <Compile Include="Configuration\MessageTargetElement.cs" />
     <Compile Include="Configuration\MessagingElement.cs" />
