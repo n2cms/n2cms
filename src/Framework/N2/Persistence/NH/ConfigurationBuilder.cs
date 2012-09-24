@@ -415,7 +415,8 @@ namespace N2.Persistence.NH
             ca.Lazy(false);
             ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
             ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
-            ca.ManyToOne(x => x.MainItem, cm => { cm.Column("ItemID"); });
+            ca.ManyToOne(x => x.MasterVersion, cm => { cm.Column("MasterID"); });
+            ca.ManyToOne(x => x.CurrentVersion, cm => { cm.Column("CurrentID"); });
             ca.Property(x => x.ComponentsJson, cm => { cm.Length(stringLength); });
             ca.Property(x => x.DeltaJson, cm => { cm.Length(stringLength); });
             ca.Property(x => x.Published, cm => { });

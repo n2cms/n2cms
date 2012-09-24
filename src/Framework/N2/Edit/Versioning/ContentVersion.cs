@@ -14,7 +14,8 @@ namespace N2.Edit.Versioning
         public virtual DateTime? Published { get; set; }
         public virtual DateTime Saved { get; set; }
         public virtual ContentState State { get; set; }
-        public virtual ContentItem MainItem { get; set; }
+        public virtual ContentItem MasterVersion { get; set; }
+        public virtual ContentItem CurrentVersion { get; set; }
         public virtual string ComponentsJson { get; set; }
         public virtual string SavedBy { get; set; }
         public virtual string PublishedBy { get; set; }

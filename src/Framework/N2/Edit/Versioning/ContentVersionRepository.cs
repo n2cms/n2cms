@@ -9,11 +9,11 @@ using N2.Persistence;
 namespace N2.Edit.Versioning
 {
     [Service]
-    public class VersioningActivityRepository
+    public class ContentVersionRepository
     {
         private IRepository<ContentVersion> repository;
 
-        public VersioningActivityRepository(IRepository<ContentVersion> repository)
+        public ContentVersionRepository(IRepository<ContentVersion> repository)
         {
             this.repository = repository;
         }

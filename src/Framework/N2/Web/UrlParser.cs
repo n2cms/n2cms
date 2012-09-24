@@ -155,7 +155,11 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(url)) return null;
 
 			ContentItem startingPoint = GetStartPage(url);
-			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) ?? Parse(startingPoint, url);
+            if (startingPoint == null)
+                return null;
+
+            return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
+                ?? Parse(startingPoint, url);
 		}
 
 		#region Parse Helper Methods
