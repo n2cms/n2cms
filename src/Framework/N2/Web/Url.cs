@@ -626,7 +626,7 @@ namespace N2.Web
 		/// <returns>An url with it's extension removed.</returns>
 		public Url RemoveExtension(params string[] validExtensions)
 		{
-			var pathExtension = Array.Find(validExtensions, x => path.EndsWith(x, StringComparison.InvariantCultureIgnoreCase));
+			var pathExtension = Array.Find(validExtensions, x => string.IsNullOrEmpty(x) == false && path.EndsWith(x, StringComparison.InvariantCultureIgnoreCase));
 			if (pathExtension == null)
 				return this;
 			return new Url(scheme, authority, path.Substring(0, path.Length - pathExtension.Length), query, fragment);

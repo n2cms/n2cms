@@ -1074,12 +1074,58 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void RemoveExtension_DesontRemove_InvalidExtension()
+		public void RemoveExtension_DoesntRemove_InvalidExtension()
 		{
 			Url url = "/hello.gif";
 			string result = url.RemoveExtension(".aspx");
 
 			Assert.That(result, Is.EqualTo("/hello.gif"));
 		}
-    }
+
+		[Test]
+		public void RemoveExtension_DoesntRemove_WhenNoExtension()
+		{
+			Url url = "/hello.gif";
+			string result = url.RemoveExtension("");
+
+			Assert.That(result, Is.EqualTo("/hello.gif"));
+		}
+
+		[Test]
+		public void RemoveExtension_RemovesValidExtension_WhenDefinedAsFirst()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension(".aspx", ".html");
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void RemoveExtension_RemovesValidExtension_WhenDefinedAsSecond()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension(".html", ".aspx");
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void RemoveExtension_RemovesValidExtension_WhenDefinedBeforeEmpty()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension(".aspx", "");
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void RemoveExtension_RemovesValidExtension_WhenDefinedAfterEmpty()
+		{
+			Url url = "/hello.aspx";
+			string result = url.RemoveExtension("", ".aspx");
+
+			Assert.That(result, Is.EqualTo("/hello"));
+		}
+
+	}
 }
