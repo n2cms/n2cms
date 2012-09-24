@@ -5,6 +5,8 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI;
+
+using N2;
 using N2.Edit;
 using N2.Engine;
 using N2.Plugin;
@@ -216,7 +218,7 @@ namespace N2.Web.Mvc.Html
 				else
 					writer.Write(formatWithoutRefresh.Replace(settings));
 
-				if (state == ControlPanelState.DragDrop)
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
 					Html.Resources().JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(), ScriptOptions.DocumentReady);
 			}
 
@@ -246,7 +248,7 @@ namespace N2.Web.Mvc.Html
 
 			private static string Definitions(HtmlHelper html, IEngine engine, ContentItem item, ControlPanelState state)
 			{
-				if (state == ControlPanelState.DragDrop)
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
 				{
 					StringBuilder sb = new StringBuilder();
 

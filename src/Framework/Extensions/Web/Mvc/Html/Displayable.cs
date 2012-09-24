@@ -162,7 +162,7 @@ namespace N2.Web.Mvc.Html
 				Displayable = displayable, 
 				Html = Html, 
 				PropertyName = propertyName, 
-				IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(Html) == ControlPanelState.DragDrop 
+				IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(Html).IsFlagSet(ControlPanelState.DragDrop) 
 			};
 			Html.ResolveService<DisplayableRendererSelector>()
 				.Render(ctx, writer);
