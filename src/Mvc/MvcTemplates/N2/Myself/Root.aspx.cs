@@ -35,7 +35,7 @@ namespace N2.Management.Myself
 		{
 			base.OnPreRender(e);
 
-			if (ControlPanel.GetState(this) != ControlPanelState.DragDrop)
+			if (!ControlPanel.GetState(this).IsFlagSet(ControlPanelState.DragDrop))
 			{
 				HideIfEmpty(c1, Zone2.DataSource);
 				HideIfEmpty(c2, Zone3.DataSource);

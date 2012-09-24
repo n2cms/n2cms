@@ -157,7 +157,7 @@ namespace N2.Web.UI.WebControls
 
         protected virtual string GetInterface()
         {
-            return Interfaces.Viewing;
+            return System.Web.HttpContext.Current.Request.QueryString["draft"] == "true" ? "Draft" : Interfaces.Viewing;
         }
 
 		protected virtual void OnSelecting(ItemListEventArgs args)

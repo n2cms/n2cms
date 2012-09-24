@@ -124,17 +124,17 @@ jQuery(document).ready(function(){{
 		{
 			ControlPanelState state = GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
 
-			if (state == ControlPanelState.Hidden)
+			if (state.IsFlagSet(ControlPanelState.Hidden))
 			{
 				AppendDefinedTemplate(HiddenTemplate, this);
 			}
-			else if (state == ControlPanelState.Visible)
+			else if (state.IsFlagSet(ControlPanelState.Visible))
 			{
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
 				AddPlugins(state);
 				AppendDefinedTemplate(VisibleFooterTemplate, this);
 			}
-			else if (state == ControlPanelState.DragDrop)
+			else if (state.IsFlagSet(ControlPanelState.DragDrop))
 			{
 				AppendDefinedTemplate(DragDropHeaderTemplate, this);
 				AddPlugins(state);
@@ -145,7 +145,7 @@ jQuery(document).ready(function(){{
 
 				//Page.Response.CacheControl = "no-cache";
 			}
-			else if (state == ControlPanelState.Editing)
+			else if (state.IsFlagSet(ControlPanelState.Editing))
 			{
 				AppendDefinedTemplate(EditingHeaderTemplate, this);
 				AddPlugins(state);
@@ -153,7 +153,7 @@ jQuery(document).ready(function(){{
 				Register.StyleSheet(Page, Url.ToAbsolute(StyleSheetUrl), Media.All);
 				AppendDefinedTemplate(EditingFooterTemplate, this);
 			}
-			else if (state == ControlPanelState.Previewing)
+			else if (state.IsFlagSet(ControlPanelState.Previewing))
 			{
 				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
 				AddPlugins(state);
@@ -348,15 +348,27 @@ jQuery(document).ready(function(){{
 		{
 			if (security.IsEditor(user))
 			{
-				if (queryString["edit"] == "true")
-					return ControlPanelState.Editing;
-				if (queryString["edit"] == "drag")
-					return ControlPanelState.DragDrop;
-				if (!string.IsNullOrEmpty(queryString["preview"]))
-					return ControlPanelState.Previewing;
+                var state = ControlPanelState.Unknown;
+
+                if (queryString["draft"] == "true")
+                    state = ControlPanelState.Draft;
+
+                if (queryString["edit"] == "true")
+                {
+                    return state | ControlPanelState.Editing;
+                }
+                if (queryString["edit"] == "drag")
+                {
+                    return state | ControlPanelState.DragDrop;
+                }
+                if (!string.IsNullOrEmpty(queryString["preview"]))
+                {
+                    return state | ControlPanelState.Previewing;
+                }
 
 				return ControlPanelState.Visible;
 			}
+
 			return ControlPanelState.Hidden;
 		}
 

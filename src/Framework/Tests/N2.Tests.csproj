@@ -235,6 +235,7 @@
     <Compile Include="Web\PathDataTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Web\JsonWriterTests.cs" />
+    <Compile Include="Web\WebExtensionsTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />

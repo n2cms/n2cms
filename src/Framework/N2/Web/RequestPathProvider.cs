@@ -52,8 +52,14 @@ namespace N2.Web
 		{
 			try
 			{
-				if (IsRewritable(url) && IsObservable(url))
-					return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+                // mannu
+                // if glor på draft
+                // returnera draft-PathData
+
+                if (IsRewritable(url) && IsObservable(url))
+                {
+                    return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+                }
 			}
 			catch (Exception ex)
 			{

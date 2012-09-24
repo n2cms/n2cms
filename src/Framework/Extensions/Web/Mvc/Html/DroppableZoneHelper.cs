@@ -37,7 +37,7 @@ namespace N2.Web.Mvc.Html
 
         public override void Render(TextWriter writer)
         {
-			if (state == ControlPanelState.DragDrop)
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
 			{
 				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
@@ -52,7 +52,7 @@ namespace N2.Web.Mvc.Html
 				
 				writer.Write("</div>");
 			}
-            else if (state == ControlPanelState.Previewing)
+            else if (state.IsFlagSet(ControlPanelState.Previewing))
             {
                 RenderPreview(writer);
             }
@@ -99,7 +99,7 @@ namespace N2.Web.Mvc.Html
 
         protected override void RenderTemplate(TextWriter writer, ContentItem model)
         {			
-            if (state == ControlPanelState.DragDrop)
+            if (state.IsFlagSet(ControlPanelState.DragDrop))
             {
 				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
 
