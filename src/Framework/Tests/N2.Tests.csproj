@@ -177,6 +177,7 @@
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
     <Compile Include="Edit\Items\NotVersionableItem.cs" />
     <Compile Include="Edit\NodeAdapterTests.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionRepositoryTests.cs" />
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
