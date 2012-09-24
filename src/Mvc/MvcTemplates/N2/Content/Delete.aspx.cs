@@ -11,7 +11,7 @@ namespace N2.Edit
 	[NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Publish)]
-	[ToolbarPlugin("DEL", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, ToolTip = "delete",
+	[ToolbarPlugin("", "delete_tool", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, ToolTip = "delete",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelLink("cpDelete", "{ManagementUrl}/Resources/icons/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible,

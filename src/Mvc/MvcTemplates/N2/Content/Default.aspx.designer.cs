@@ -31,15 +31,6 @@ namespace N2.Edit {
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay PreviewPlugins;
         
         /// <summary>
-        /// OperationsPlugins control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OperationsPlugins;
-        
-        /// <summary>
         /// OptionsPlugins control.
         /// </summary>
         /// <remarks>

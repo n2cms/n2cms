@@ -120,8 +120,14 @@
   <data name="copy.Title" xml:space="preserve">
     <value>Copy</value>
   </data>
+  <data name="copy_tool.ToolTip" xml:space="preserve">
+    <value>Copy the selected item</value>
+  </data>
   <data name="delete.Title" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="delete_tool.ToolTip" xml:space="preserve">
+    <value>Delete the selected item, including sub-items</value>
   </data>
   <data name="edit.Title" xml:space="preserve">
     <value>Edit</value>
@@ -129,11 +135,20 @@
   <data name="move.Title" xml:space="preserve">
     <value>Cut</value>
   </data>
+  <data name="move_tool.ToolTip" xml:space="preserve">
+    <value>Cut the selected item</value>
+  </data>
   <data name="new.Title" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="new_tool.ToolTip" xml:space="preserve">
+    <value>Create new item below the selected item</value>
+  </data>
   <data name="paste.Title" xml:space="preserve">
     <value>Paste</value>
+  </data>
+  <data name="paste_tool.ToolTip" xml:space="preserve">
+    <value>Paste the selected item from memory</value>
   </data>
   <data name="treePage.Title" xml:space="preserve">
     <value>Tree Navigation</value>
