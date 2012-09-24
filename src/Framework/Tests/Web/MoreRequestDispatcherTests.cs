@@ -1,5 +1,6 @@
 using System.Configuration;
 using N2.Configuration;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
@@ -220,7 +221,7 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config);
+			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config, new ContentVersionRepository(new FakeRepository<ContentVersion>()));
 
 			handler = new FakeRequestLifeCycleHandler(webContext, dispatcher, adapterProvider, errorHandler,
 				new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(config, null, null, new EditSection()) });

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using N2.Configuration;
+using N2.Edit.Versioning;
 using N2.Engine;
+using N2.Web.UI.WebControls;
 
 namespace N2.Web
 {
@@ -16,16 +18,19 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		private readonly IUrlParser parser;
 		private readonly IErrorNotifier errorHandler;
+		private readonly ContentVersionRepository versionRepository;
 		private readonly bool rewriteEmptyExtension = true;
 		private readonly bool observeAllExtensions = true;
 		private readonly string[] observedExtensions = new[] {".aspx"};
 		private readonly string[] nonRewritablePaths;
 
-		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config)
+		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config, ContentVersionRepository versionRepository)
 		{
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
+			this.versionRepository = versionRepository;
+
 			observeAllExtensions = config.Web.ObserveAllExtensions;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
 			StringCollection additionalExtensions = config.Web.ObservedExtensions;
@@ -52,14 +57,22 @@ namespace N2.Web
 		{
 			try
 			{
-                // mannu
-                // if glor på draft
-                // returnera draft-PathData
+				// mannu
+				// if glor på draft
+				// returnera draft-PathData
 
                 if (IsRewritable(url) && IsObservable(url))
-                {
-                    return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
-                }
+				{
+					var pathData = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+
+					if (versionRepository.HasDraft(pathData.CurrentItem))
+					{
+						var draft = versionRepository.GetDraft(pathData.CurrentItem);
+
+					}
+
+					return pathData;
+				}
 			}
 			catch (Exception ex)
 			{
