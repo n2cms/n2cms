@@ -415,15 +415,15 @@ namespace N2.Persistence.NH
             ca.Lazy(false);
             ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
             ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
-            ca.ManyToOne(x => x.MasterVersion, cm => { cm.Column("MasterID"); });
-            ca.ManyToOne(x => x.CurrentVersion, cm => { cm.Column("CurrentID"); });
-            ca.Property(x => x.ComponentsJson, cm => { cm.Length(stringLength); });
-            ca.Property(x => x.DeltaJson, cm => { cm.Length(stringLength); });
+
+            ca.Component(x => x.MasterVersion, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
+            ca.Component(x => x.AssociatedVersion, cm => { cm.Property(cr => cr.ID, pm => pm.Column("ItemID")); });
+            ca.Property(x => x.ChangesJson, cm => { cm.Length(stringLength); });
             ca.Property(x => x.Published, cm => { });
             ca.Property(x => x.VersionIndex, cm => { });
             ca.Property(x => x.Saved, cm => { });
             ca.Property(x => x.State, cm => { });
-            ca.Property(x => x.IsLatestVersion, cm => { });
+            ca.Property(x => x.IsDraft, cm => { });
             ca.Property(x => x.IsPublishedVersion, cm => { });
             ca.Property(x => x.SavedBy, cm => { });
             ca.Property(x => x.PublishedBy, cm => { });

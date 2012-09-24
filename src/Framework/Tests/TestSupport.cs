@@ -24,6 +24,25 @@ namespace N2.Tests
 {
     public static class TestSupport
     {
+        public static void ShouldBe(this DateTime actual, DateTime expected, TimeSpan tolerance)
+        {
+            if (Math.Abs(actual.Subtract(expected).TotalMilliseconds) > tolerance.TotalMilliseconds)
+                throw new Exception(actual + " != " + expected + " (tolerance: " + tolerance + ")");
+        }
+
+        public static void ShouldBe(this DateTime? actual, DateTime? expected, TimeSpan tolerance)
+        {
+            if (!actual.HasValue && !expected.HasValue)
+                return;
+            else if (actual.HasValue && expected.HasValue)
+            {
+                if (Math.Abs(actual.Value.Subtract(expected.Value).TotalMilliseconds) > tolerance.TotalMilliseconds)
+                    throw new Exception(actual + " != " + expected + " (tolerance: " + tolerance + ")");
+            }
+            else
+                throw new Exception(actual + " != " + expected);
+        }
+
         public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
 			var participators = new ConfigurationBuilderParticipator[] { new RelationConfigurationBuilderParticipator() };

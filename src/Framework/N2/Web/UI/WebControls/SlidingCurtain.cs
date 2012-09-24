@@ -8,7 +8,7 @@ namespace N2.Web.UI.WebControls
 		protected override void OnInit(System.EventArgs e)
 		{
 			ControlPanelState state = ControlPanel.GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
-			Visible = state != ControlPanelState.Hidden;
+			Visible = !state.IsFlagSet(ControlPanelState.Hidden);
 			
 			base.OnInit(e);
 		}
@@ -43,7 +43,7 @@ namespace N2.Web.UI.WebControls
 			Register.JavaScript(Page, ScriptUrl);
 			Register.StyleSheet(Page, StyleSheetUrl);
 
-			bool isOpen = (ControlPanel.GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString) == ControlPanelState.Previewing);
+			bool isOpen = (ControlPanel.GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString).IsFlagSet(ControlPanelState.Previewing));
 			string startupScript = string.Format(scriptFormat, ClientID, isOpen.ToString().ToLower());
 			Register.JavaScript(Page, startupScript, ScriptOptions.DocumentReady);
 

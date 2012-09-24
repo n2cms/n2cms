@@ -35,7 +35,7 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-            if (State == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
+            if (State.IsFlagSet(ControlPanelState.DragDrop) && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
@@ -54,7 +54,7 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddChildItem(Control container, ContentItem item)
 		{
-            if (State == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
+            if (State.IsFlagSet(ControlPanelState.DragDrop) && IsMovableOnThisPage(item))
 			{
 				string preview = Page.Request.QueryString["preview"];
 				if (!string.IsNullOrEmpty(preview))
@@ -73,7 +73,7 @@ namespace N2.Web.UI.WebControls
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
-			else if (State == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
+			else if (State.IsFlagSet(ControlPanelState.Previewing) && item.ID.ToString() == Page.Request["original"])
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 				base.AddChildItem(this, item);

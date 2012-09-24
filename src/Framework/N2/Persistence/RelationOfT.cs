@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Collections;
 using N2.Web;
+using System.Diagnostics;
 
 namespace N2.Persistence
 {
@@ -48,6 +49,7 @@ namespace N2.Persistence
 		}
 	}
 
+    [DebuggerDisplay("ContentRelation: {ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
 		public string Path 

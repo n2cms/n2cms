@@ -142,5 +142,15 @@ namespace N2.Web
 
 			throw new TemplateNotFoundException(path.CurrentItem);
 		}
+
+        public static bool IsFlagSet<T>(this T value, T flag) where T : struct
+        {
+            if (!typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            {
+                throw new ArgumentException(string.Format("'{0}' is no Enum or it doesn't have the 'Flags' attribute", typeof(T).FullName));
+            }
+
+            return (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0;
+        }
 	}
 }
