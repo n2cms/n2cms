@@ -1,6 +1,6 @@
 ﻿html { overflow:hidden; height:100% }
 body { background:#F8F8E8; height:100%; }
-body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:hidden; }
+body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:hidden; }
 
 /* Toolbar */
 #top{ position:relative; }
@@ -22,7 +22,7 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 	            .header .toolbox .item .command a { padding:18px 4px 4px 4px; min-width:32px; height:12px; overflow:hidden; position:relative; background-position:50% 3px; }
 
 #top .logo{ position:absolute; right:10px; top:5px; height:30px; }
-#top .logout { color:#fff; display:block; float:left; padding:8px; }
+#top .logout { color: #FFFFFF;display: block;float: right;margin-right: 60px;padding: 8px; }
 
 .subbar { border: solid 1px #999; border-left:none; border-right:none; background:transparent url(../../Resources/Img/lighten10.png) repeat-x 0px bottom; position:relative; }
     .subbar .operations { float:left; }
@@ -33,9 +33,9 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
         #sort a { display:block; height:10px; padding:0 5px; border-top:solid 1px #fff; background-position:50% 50%; }
         #sort .up { border-bottom:solid 1px #d8d8d8; }
 
-#search{ background:transparent; padding:0; margin-left:1px; }
+#search{ background:transparent; padding:0; margin-left:10px;position: absolute;right: 130px; }
 	#search form { background-color:transparent; padding:0; margin:0; }
-    	#search input { padding:3px; float:left; margin:0; height:19px; width:80px; color:#999; background-color:#fff; background-repeat:repeat-x; border-style:none; border-right:solid 1px #D8D8D8; }
+    	#search input { padding:3px; float:left; margin:0; height:19px; width:130px; color:#999; background-color:#fff; background-repeat:repeat-x; border-style:none; border-right:solid 1px #D8D8D8; }
     	#search input:focus { background-image:none; }
     	#search button { padding:3px; float:left; margin:0; height:25px; text-indent:-100px; border:solid 1px #fff; width:26px; background:#fff url(../../Resources/icons/find.png) no-repeat 50% 50%}
     	#search button:hover { border:solid 1px #ccf; }

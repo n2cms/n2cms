@@ -13,7 +13,7 @@ namespace N2.Edit
     [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "{ManagementUrl}/Resources/icons/cut.png", 42,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Publish)]
-    [ToolbarPlugin("CUT", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/cut.png", 30, ToolTip = "move",
+    [ToolbarPlugin("", "move_tool", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/cut.png", 30, ToolTip = "move",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
 	public partial class Move : EditPage

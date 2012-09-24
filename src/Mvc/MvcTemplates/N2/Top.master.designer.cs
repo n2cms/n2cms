@@ -37,7 +37,7 @@ namespace N2.Management {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay NavigationPlugins;
+		protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay NavigationPlugins;
         
         /// <summary>
         /// logout control.
