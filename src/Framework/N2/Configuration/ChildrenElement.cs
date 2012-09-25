@@ -24,5 +24,13 @@ namespace N2.Configuration
 			get { return (Cascade)base["cascade"]; }
 			set { base["cascade"] = value; }
 		}
+
+		/// <summary>Whether children are batched. This makes multiple children to be retrieved when any children is retrieved.</summary>
+		[ConfigurationProperty("batch", DefaultValue = false)]
+		public bool Batch
+		{
+			get { return (bool)base["batch"]; }
+			set { base["batch"] = value; }
+		}
 	}
 }
