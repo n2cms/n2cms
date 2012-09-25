@@ -22,7 +22,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	 AvailableZone("Recursive Below", Zones.RecursiveBelow)]
 	[RestrictParents(typeof (IStructuralPage))]
 	[Separator("TitleSeparator", 15, ContainerName = Tabs.Details)]
-	public abstract class ContentPageBase : PageBase, ICommentable
+	public abstract class ContentPageBase : PageBase, ICommentable, IContentPage
 	{
 		// editables
 
