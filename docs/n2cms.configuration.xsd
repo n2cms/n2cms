@@ -393,6 +393,7 @@
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
+									<xs:attribute name="batch" use="optional" default="false" type="xs:boolean"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
