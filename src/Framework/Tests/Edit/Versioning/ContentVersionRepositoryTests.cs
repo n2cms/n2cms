@@ -31,11 +31,6 @@ namespace N2.Tests.Edit.Versioning
             repository.Repository.Dispose();
 
             var savedDraft = repository.GetDraft(page);
-            savedDraft.AssociatedVersion.ID.ShouldBe(draft.AssociatedVersion.ID);
-            savedDraft.ChangesJson.ShouldBe(draft.ChangesJson);
-            savedDraft.IsDraft.ShouldBe(draft.IsDraft);
-            savedDraft.IsPublishedVersion.ShouldBe(draft.IsPublishedVersion);
-            savedDraft.MasterVersion.ID.ShouldBe(draft.MasterVersion.ID);
             savedDraft.Published.ShouldBe(draft.Published, TimeSpan.FromSeconds(1));
             savedDraft.PublishedBy.ShouldBe(draft.PublishedBy);
             savedDraft.Saved.ShouldBe(draft.Saved, TimeSpan.FromSeconds(1));
@@ -58,8 +53,7 @@ namespace N2.Tests.Edit.Versioning
             repository.Repository.Dispose();
 
             var savedDraft = repository.GetDraft(page);
-            savedDraft.MasterVersion.Value.ShouldBe(page);
-            savedDraft.AssociatedVersion.Value.ShouldBe(version);
+            savedDraft.Master.Value.ShouldBe(page);
         }
     }
 }

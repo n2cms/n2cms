@@ -77,7 +77,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.Definitions).Return(definitions);
 			SetupResult.For(engine.UrlParser).Return(parser);
 			SetupResult.For(engine.Persister).Return(persister);
-			SetupResult.For(engine.Resolve<RequestPathProvider>()).Return(new RequestPathProvider(webContext, parser, new ErrorNotifier(), new HostSection(), new ContentVersionRepository(new FakeRepository<ContentVersion>())));
+			SetupResult.For(engine.Resolve<RequestPathProvider>()).Return(new RequestPathProvider(webContext, parser, new ErrorNotifier(), new HostSection(), TestSupport.CreateVersionRepository()));
 			var editUrlManager = new FakeEditUrlManager();
 			SetupResult.For(engine.ManagementPaths).Return(editUrlManager);
 			engine.Replay();

@@ -68,7 +68,7 @@ namespace N2.Web
 					if (versionRepository.HasDraft(pathData.CurrentItem))
 					{
 						var draft = versionRepository.GetDraft(pathData.CurrentItem);
-
+						// fixa deserialiseringsgrejs
 					}
 
 					return pathData;

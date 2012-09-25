@@ -23,8 +23,7 @@ namespace N2.Persistence.NH
             {
                 if (version == null)
                     return;
-                version.AssociatedVersion.ValueAccessor = session.Get<ContentItem>;
-                version.MasterVersion.ValueAccessor = session.Get<ContentItem>;
+                version.Master.ValueAccessor = session.Get<ContentItem>;
             }
 
 			private void InitialializeRelations(ContentItem item, IEventSource session)
