@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -69,14 +70,21 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			List<ContentItem> created = new List<ContentItem> { CurrentPage };
 
-			Random r = new Random();
-			for (int i = 0; i < amount; i++)
+			var start = DateTime.Now;
+
+			using (var tx = Engine.Persister.Repository.BeginTransaction())
 			{
-				var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i);
-				Engine.Persister.Save(child);
-				created.Add(child);
-				HttpContext.Response.Write(name + " " + i + "<br/>");
-				HttpContext.Response.Flush();
+				for (int i = 0; i < amount; i++)
+				{
+					var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i, created);
+					Engine.Persister.Save(child);
+					created.Add(child);
+					HttpContext.Response.Write(name + " " + i + "<br/>");
+					HttpContext.Response.Flush();
+				}
+				HttpContext.Response.Write("Committing " + DateTime.Now.Subtract(start) + "<br/>");
+				tx.Commit();
+				HttpContext.Response.Write("Committed " + DateTime.Now.Subtract(start) + "<br/>");
 			}
 			return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
 		}
@@ -105,17 +113,76 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			HttpContext.Response.Flush();
 		}
 
-		private ContentItem Create(ContentItem parent, Type type, string name, int depth, int i)
+		Random r = new Random();
+		private ContentItem Create(ContentItem parent, Type type, string name, int depth, int i, List<ContentItem> linkSource = null)
 		{
 			ContentItem item = activator.CreateInstance(type, parent);
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;
 			if (item is IContentPage)
-				(item as IContentPage).Text = @"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sagittis mi. Donec pharetra vestibulum facilisis. Sed sodales risus vel nulla vulputate volutpat. Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat. Maecenas suscipit tincidunt purus porttitor auctor. Quisque eget elit at justo facilisis malesuada sit amet sit amet eros. Duis convallis porta congue. Nulla commodo faucibus diam in mollis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur.</p>
-<p>Aliquam id massa nec mi pellentesque rhoncus id vel neque. Pellentesque malesuada venenatis sollicitudin. Maecenas at nisl urna, vel feugiat ipsum. Integer imperdiet rhoncus libero sit amet ullamcorper. Vestibulum et purus et ipsum dignissim molestie id sed urna. Nulla vitae neque neque, tempor fermentum lectus. Proin pellentesque blandit diam, in vehicula ipsum suscipit vel. Pellentesque elementum feugiat egestas. Duis scelerisque metus suscipit massa mattis tempor. Vestibulum sed dolor sed felis pharetra semper eu sed quam. Nam vitae lectus nunc, in placerat dui. Vivamus massa lorem, faucibus in semper ac, tincidunt non massa.</p>";
-			item.AddTo(parent);
+			{
+				(item as IContentPage).Text += string.Join("", Enumerable.Range(0, r.Next(1, 10)).Select(pi =>
+					"<p>" + string.Join(" ", Enumerable.Range(0, r.Next(8) + 2).Select(si =>
+						{
+							if (r.Next(100) < 10 && linkSource != null && linkSource.Count > 0)
+								return "<a href='" + linkSource[r.Next(linkSource.Count)].Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
+							else
+								return sentences[r.Next(sentences.Length)];
+						}).ToArray()) + "</p>").ToArray());
+			}
+			parent.ChildState |= Collections.CollectionState.ContainsVisiblePublicPages;
+			item.Parent = parent;
 			return item;
 		}
+
+		static string[] sentences = CreateSentences(1000, 10);
+
+		private static string[] CreateSentences(int sentenceCount, int sentenceLength)
+		{
+			var generator = new Services.MarkovNameGenerator(Services.Words.Thousand, 3, 2);
+			var words = Enumerable.Range(0, sentenceCount * sentenceLength / 5).Select(i => generator.NextName).ToList();
+
+			var r = new Random();
+			var sentences = Enumerable.Range(0, sentenceCount)
+				.Select(i => CreateSentence(sentenceLength, words, r))
+				.ToArray();
+			return sentences;
+		}
+
+		private static string CreateSentence(int sentenceLength, List<string> words, Random r)
+		{
+			return Capitalize(words[r.Next(0, words.Count)]) + " " + string.Concat(Enumerable.Range(0, sentenceLength / 2 + r.Next(sentenceLength - 1)).Select(i2 => " " + words[r.Next(0, words.Count)]).ToArray()) + ".";
+		}
+
+		private static string Capitalize(string word)
+		{
+			return word.Substring(0, 1).ToUpper() + word.Substring(1);
+		}
+
+		//    new[] {
+		//"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+		//"Fusce nec sagittis mi. Donec pharetra vestibulum facilisis.",
+		//"Sed sodales risus vel nulla vulputate volutpat.",
+		//"Mauris vel arcu in purus porta dapibus. Aliquam erat volutpat.",
+		//"Maecenas suscipit tincidunt purus porttitor auctor.",
+		//"Quisque eget elit at justo facilisis malesuada sit amet sit amet eros.", 
+		//"Duis convallis porta congue.",
+		//"Nulla commodo faucibus diam in mollis.", "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ut nibh eu sapien ornare consectetur", 
+		//"Aliquam id massa nec mi pellentesque rhoncus id vel neque.", 
+		//"Pellentesque malesuada venenatis sollicitudin.", 
+		//"Maecenas at nisl urna, vel feugiat ipsum.", 
+		//"Integer imperdiet rhoncus libero sit amet ullamcorper.", 
+		//"Vestibulum et purus et ipsum dignissim molestie id sed urna.", 
+		//"Nulla vitae neque neque, tempor fermentum lectus.", 
+		//"Proin pellentesque blandit diam, in vehicula ipsum suscipit vel.", 
+		//"Pellentesque elementum feugiat egestas.", 
+		//"Duis scelerisque metus suscipit massa mattis tempor.", 
+		//"Vestibulum sed dolor sed felis pharetra semper eu sed quam.", 
+		//"Nam vitae lectus nunc, in placerat dui.", 
+		//"Vivamus massa lorem, faucibus in semper ac, tincidunt non massa."
+		//};
+
     }
 }
+#endif
