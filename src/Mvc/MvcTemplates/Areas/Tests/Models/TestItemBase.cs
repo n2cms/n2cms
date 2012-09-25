@@ -10,4 +10,4 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 	{
 	}
 }
-#if DEBUG
+#endif
