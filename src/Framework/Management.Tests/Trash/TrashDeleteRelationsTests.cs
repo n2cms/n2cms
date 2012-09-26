@@ -194,6 +194,18 @@ namespace N2.Management.Tests.Trash
 			db2.GetDetailCollection("Links", false).Contains(db2).ShouldBe(true);
 		}
 
+		[Test]
+		public void Relations_InMultiValues_AreDeleted()
+		{
+			N2.Details.ContentDetail.Multi("Relation", true, 1, 1.1, DateTime.Now, "hello", item, null).AddTo(item2);
+			engine.Persister.Save(item2);
+
+			trash.Throw(item);
+			trash.PurgeAll();
+
+			item2.Details["Relation"].ShouldBe(null);
+		}
+
 		private void Relate(ThrowableItem item, params ThrowableItem[] to)
 		{
 			for (int i = 0; i < to.Length; i++)
