@@ -15,7 +15,7 @@ using N2.Management.Content.Export;
 
 namespace N2.Edit.Export
 {
-	[ToolbarPlugin("BULK", "bulk", "{ManagementUrl}/Content/Export/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", 
+	[ToolbarPlugin("BULK", "bulk", "{ManagementUrl}/Content/Export/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", 
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Administer, 
 		OptionProvider = typeof(BulkOptionProvider))]

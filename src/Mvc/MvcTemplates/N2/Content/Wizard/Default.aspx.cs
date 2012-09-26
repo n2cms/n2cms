@@ -6,7 +6,7 @@ using N2.Edit.Wizard.Items;
 
 namespace N2.Edit.Wizard
 {
-	[ToolbarPlugin("WIZARD", "wizard", "{ManagementUrl}/Content/Wizard/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/wand.png", 55, 
+	[ToolbarPlugin("WIZARD", "wizard", "{ManagementUrl}/Content/Wizard/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/wand.png", 55, 
         ToolTip = "create items in default locations", 
         GlobalResourceClassName = "Toolbar",
 		OptionProvider = typeof(WizardOptionProvider))]

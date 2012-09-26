@@ -11,6 +11,7 @@ namespace N2.Edit
 	public class EditUrlManager : IEditUrlManager
 	{
 		private string editTreeUrl;
+		private ViewPreference defaultViewPreference;
 
 		public EditUrlManager(EditSection config)
 		{
@@ -20,6 +21,7 @@ namespace N2.Edit
 			EditInterfaceUrl = config.Paths.EditInterfaceUrl;
 			NewItemUrl = config.Paths.NewItemUrl;
 			DeleteItemUrl = config.Paths.DeleteItemUrl;
+			defaultViewPreference = config.Versions.DefaultViewMode;
 		}
 
 		protected virtual string EditInterfaceUrl { get; set; }
@@ -59,9 +61,9 @@ namespace N2.Edit
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
-		public virtual string GetEditInterfaceUrl()
+		public virtual string GetEditInterfaceUrl(ViewPreference preference = ViewPreference.Published)
 		{
-			return Url.ResolveTokens(EditInterfaceUrl);
+			return Url.ResolveTokens(EditInterfaceUrl).ToUrl().AppendViewPreference(preference, defaultViewPreference);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>

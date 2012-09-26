@@ -9,6 +9,7 @@ namespace N2.Edit
 		public string Title { get; set; }
 		public string Url { get; set; }
 		public string Target { get; set; }
+		public bool Selected { get; set; }
 
 
 		#region IContainable Members
@@ -16,7 +17,7 @@ namespace N2.Edit
 		public virtual Control AddTo(Control container)
 		{
 			var link = new LiteralControl(
-					string.Format("<a href='{0}' data-url-template='{0}' target='{1}' class='option templatedurl'>{2}</a>", N2.Web.Url.ResolveTokens(Url), Target, Title)
+					string.Format("<a href='{0}' data-url-template='{0}' target='{1}' class='option templatedurl {2}'>{3}</a>", N2.Web.Url.ResolveTokens(Url), Target, Selected ? "selected" : "", Title)
 				);
 			container.Controls.Add(link);
 			return link;
