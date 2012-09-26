@@ -117,22 +117,21 @@ namespace N2.Persistence.Sources
 				// delete inbound references, these would cuase fk violation in the database
 				repository.RemoveReferencesToRecursive(item);
 
-				DeleteRecursive(item, item);
+				DeleteRecursive(item);
 
 				tx.Commit();
 			}
 		}
 
-		private void DeleteRecursive(ContentItem topItem, ContentItem itemToDelete)
+		private void DeleteRecursive(ContentItem itemToDelete)
 		{
 			DeletePreviousVersions(itemToDelete);
 
 			try
 			{
 				Trace.Indent();
-				List<ContentItem> children = new List<ContentItem>(itemToDelete.Children);
-				foreach (ContentItem child in children)
-					DeleteRecursive(topItem, child);
+				foreach (ContentItem child in itemToDelete.Children.ToList())
+					DeleteRecursive(child);
 			}
 			finally
 			{
