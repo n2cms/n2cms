@@ -7,6 +7,9 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Security;
+using System.Security.Principal;
+using N2.Web;
+using N2.Collections;
 
 namespace N2.Edit.Trash
 {
@@ -28,6 +31,8 @@ namespace N2.Edit.Trash
 		private readonly ISecurityManager security;
 		private readonly ContainerRepository<TrashContainerItem> container;
 		private readonly StateChanger stateChanger;
+		private readonly IWebContext webContext;
+		Logger<TrashHandler> logger;
 
 		/// <summary>Instructs this class to navigate rather than query for items.</summary>
 		public bool UseNavigationMode
@@ -36,13 +41,14 @@ namespace N2.Edit.Trash
 			set { container.Navigate = value; }
 		}
 
-		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger)
+		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger, IWebContext webContext)
 		{
 			this.finder = finder;
 			this.persister = persister;
 			this.security = security;
 			this.container = container;
 			this.stateChanger = stateChanger;
+			this.webContext = webContext;
 		}
 
         /// <summary>The container of thrown items.</summary>
@@ -203,10 +209,24 @@ namespace N2.Edit.Trash
 			}
 		}
 
+		public void PurgeAll()
+		{
+			logger.InfoFormat("Purging all trash");
+			var container = GetTrashContainer(create: false);
+			if (container != null)
+			{
+				foreach (ContentItem child in container.GetChildren(new AccessFilter(webContext.User, security)))
+				{
+					logger.InfoFormat("Purging {0}", child);
+					persister.Delete(child);
+				}
+			}
+		}
+
         /// <summary>Occurs before an item is thrown.</summary>
         public event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         public event EventHandler<ItemEventArgs> ItemThrowed;
 
-    }
+	}
 }
