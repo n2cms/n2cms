@@ -221,7 +221,7 @@ namespace N2.Edit.Installation
 				status.DatabaseVersion = 6;
 
                 // checking for properties added between 6 and 7
-                sessionProvider.OpenSession.Session.CreateQuery("select cv.ID from " + typeof(ContentVersion).Name + " cv").SetMaxResults(1).List();
+                sessionProvider.OpenSession.Session.CreateQuery("select cv.Id from " + typeof(ContentVersion).Name + " cv").SetMaxResults(1).List();
                 status.DatabaseVersion = 7;
 
 				if (isDatabaseFileSystemEnbled)
@@ -280,7 +280,7 @@ namespace N2.Edit.Installation
 				status.Details = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
 				status.DetailCollections = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
 				status.AuthorizedRoles = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
-
+				
 				return true;
 			}
 			catch (Exception ex)

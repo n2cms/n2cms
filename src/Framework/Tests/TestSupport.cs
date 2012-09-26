@@ -5,6 +5,7 @@ using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Details;
 using N2.Edit;
+using N2.Edit.Versioning;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
@@ -12,8 +13,11 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Persistence.Proxying;
+using N2.Persistence.Serialization;
+using N2.Plugin;
 using N2.Security;
 using N2.Tests.Fakes;
+using N2.Tests.Workflow.Items;
 using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
@@ -180,6 +184,21 @@ namespace N2.Tests
 			var finder = new WebAppTypeFinder(new TypeCache(new N2.Persistence.BasicTemporaryFileHelper(context)), config);
 			finder.AssemblyRestrictToLoadingPattern = new System.Text.RegularExpressions.Regex("N2.Tests");
 			return finder;
+		}
+
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository()
+		{
+			return new ContentVersionRepository(
+				new FakeRepository<ContentVersion>(),
+				new Exporter(
+					new ItemXmlWriter(
+						SetupDefinitions(typeof(StatefulItem)),
+						new UrlParser(SetupFakePersister(),
+						              new ThreadContext(),
+						              new Host(new ThreadContext(), new HostSection()),
+						              new ConnectionMonitor(),
+						              new HostSection()),
+						new FakeMemoryFileSystem())));
 		}
 	}
 }

@@ -221,7 +221,7 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config, new ContentVersionRepository(new FakeRepository<ContentVersion>()));
+			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config, TestSupport.CreateVersionRepository());
 
 			handler = new FakeRequestLifeCycleHandler(webContext, dispatcher, adapterProvider, errorHandler,
 				new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(config, null, null, new EditSection()) });
