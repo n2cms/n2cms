@@ -169,6 +169,10 @@ body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:
 			font-family:Arial,Sans-Serif;
 			font-size:10px;
         }
+        #top .toolbox .commandOptions .optionGroup .option.selected,
+        #pageTools .toolbox .commandOptions .optionGroup .option.selected {
+        	font-weight: bold;
+        }
     #top .toolbox .commandOptions .opener:hover,
     #pageTools .toolbox .commandOptions .opener:hover {
     }

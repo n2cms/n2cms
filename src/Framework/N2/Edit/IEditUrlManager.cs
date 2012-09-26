@@ -37,7 +37,7 @@ namespace N2.Edit
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
-		string GetEditInterfaceUrl();
+		string GetEditInterfaceUrl(ViewPreference preference = ViewPreference.Published);
 
 		/// <summary>Gets the url to the management interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
