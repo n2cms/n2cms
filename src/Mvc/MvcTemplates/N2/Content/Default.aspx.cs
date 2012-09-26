@@ -8,7 +8,8 @@ namespace N2.Edit
 {
 	[ToolbarPlugin("PAGES", "tree", "{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Navigation, Targets.Top, "{ManagementUrl}/Resources/icons/sitemap_color.png", -30,
 		ToolTip = "show navigation",
-		GlobalResourceClassName = "Toolbar", SortOrder = -1)]
+		GlobalResourceClassName = "Toolbar", SortOrder = -1,
+		OptionProvider = typeof(ViewOptionProvider))]
 	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview", 
 		GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Manage content", -50, ControlPanelState.Visible,

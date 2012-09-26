@@ -22,7 +22,8 @@ namespace N2.Edit
 		RequiredPermission = Permission.Write)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		OptionProvider = typeof(EditOptionProvider))]
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing, 

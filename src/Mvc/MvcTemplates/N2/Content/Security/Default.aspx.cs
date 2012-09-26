@@ -8,7 +8,7 @@ using N2.Security;
 
 namespace N2.Edit.Security
 {
-	[ToolbarPlugin("PERM", "security", "{ManagementUrl}/Content/Security/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/key.png", 100, 
+	[ToolbarPlugin("PERM", "security", "{ManagementUrl}/Content/Security/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/key.png", 100, 
 		ToolTip = "allowed roles for selected item",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
