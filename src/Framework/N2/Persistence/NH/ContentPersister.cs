@@ -128,19 +128,22 @@ namespace N2.Persistence.NH
 		private void DeleteReferencesRecursive(ContentItem itemNoMore)
 		{
 			string itemTrail = Utility.GetTrail(itemNoMore);
-			var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
-				.SelectMany(i => linkRepository.Find(new Parameter("LinkedItem", i), new Parameter("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
-				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
-				.ToList();
-
-			Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
-
-			foreach (ContentDetail link in inboundLinks)
+			var descendants = Find.EnumerateChildren(itemNoMore, true, false);
+			foreach (var descendant in descendants)
 			{
-				linkRepository.Delete(link);
-				link.AddTo((DetailCollection)null);
+				var inboundLinks = linkRepository.Find(new Parameter("LinkedItem.ID", descendant.ID))
+					.ToList();
+
+				Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + descendant + ": link count=" + inboundLinks.Count);
+
+				foreach (ContentDetail link in inboundLinks)
+				{
+					link.AddTo((ContentItem)null);
+					link.AddTo((DetailCollection)null);
+					linkRepository.Delete(link);
+				}
+				linkRepository.Flush();
 			}
-			linkRepository.Flush();
 		}
 
 		#region Delete Helper Methods

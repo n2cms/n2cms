@@ -10,6 +10,7 @@ using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Tests.Fakes;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -27,7 +28,7 @@ namespace N2.Edit.Tests.Trash
 		    
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
             th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
@@ -140,7 +141,7 @@ namespace N2.Edit.Tests.Trash
             mocks.ReplayAll();
 
 			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -166,7 +167,7 @@ namespace N2.Edit.Tests.Trash
             mocks.ReplayAll();
 
 			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger()) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
@@ -209,7 +210,7 @@ namespace N2.Edit.Tests.Trash
 			
             mocks.ReplayAll();
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, new FakeSecurityManager(), new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
