@@ -175,6 +175,7 @@ namespace N2.Edit.Tests.Trash
         {
 			ContentActivator activator = new ContentActivator(null, null, null);
             IPersister persister = MockPersister(root, trash, item);
+			Expect.Call(persister.Repository).Return(repository).Repeat.Any();
             Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
                 .Do(new System.Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
                                                              {
@@ -183,7 +184,7 @@ namespace N2.Edit.Tests.Trash
 			
             mocks.ReplayAll();
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator), new StateChanger()) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister.Repository, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)

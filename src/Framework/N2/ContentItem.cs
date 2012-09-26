@@ -608,7 +608,7 @@ namespace N2
 			url = null;
 			Parent = newParent;
 			
-			if (newParent != null && !newParent.Children.Contains(this))
+			if (newParent != null && newParent.Children.WasInitialized && !newParent.Children.Contains(this))
 			{
 				newParent.Children.Add(this);
 			}
