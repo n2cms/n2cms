@@ -42,7 +42,10 @@ namespace N2.Edit.Tests.Trash
 
         [Test]
         public void NonThrowableItem_IsNotMovedToTrashcan()
-        {
+		{
+			var nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
+			var nonThrowable2 = CreateItem<LegacyNonThrowableItem>(5, "neverInTrash2", root);
+
 			var th = CreateTrashHandler();
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
@@ -56,6 +59,8 @@ namespace N2.Edit.Tests.Trash
 		[Obsolete]
 		public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
 		{
+			var nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
+
 			var th = CreateTrashHandler();
 			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
 			interceptor.Start();

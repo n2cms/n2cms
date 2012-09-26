@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit.Versioning;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
 using N2.Persistence;
@@ -52,6 +53,7 @@ namespace N2.Edit
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
 		protected IEditUrlManager ManagementPaths;
+		protected ContentVersionRepository VersionRepository;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -62,6 +64,7 @@ namespace N2.Edit
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
 			ManagementPaths = Engine.ManagementPaths;
+			VersionRepository = Engine.Resolve<ContentVersionRepository>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -134,7 +137,8 @@ namespace N2.Edit
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			Commands.Save(ctx);
+
+    		this.SaveVersionAndDraft(ctx);
 
 			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
@@ -149,7 +153,8 @@ namespace N2.Edit
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-            Commands.Save(ctx);
+
+			this.SaveVersionAndDraft(ctx);
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
@@ -157,6 +162,14 @@ namespace N2.Edit
 			
 			HandleResult(ctx, redirectTo);
         }
+
+		private void SaveVersionAndDraft(CommandContext ctx)
+		{
+			Commands.Save(ctx);
+
+			// mannu: lägg någon annanstans
+			this.VersionRepository.CreateDraft(ctx.Content, User);
+		}
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
         {

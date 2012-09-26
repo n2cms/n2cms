@@ -2,6 +2,7 @@ using N2.Configuration;
 using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.MediumTrust;
+using N2.Persistence.Serialization;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
 using N2.Web;
@@ -50,12 +51,12 @@ namespace N2.Tests.Web
 		public override void SetUp()
 		{
 			base.SetUp();
-
+			
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
 			parser = new UrlParser(persister, webContext, new Host(webContext, startItem.ID, startItem.ID), new N2.Plugin.ConnectionMonitor(), hostSection);
-			versionRepository = new ContentVersionRepository(new FakeRepository<ContentVersion>());
+			versionRepository = TestSupport.CreateVersionRepository();
 		}
 
 		//[Test]

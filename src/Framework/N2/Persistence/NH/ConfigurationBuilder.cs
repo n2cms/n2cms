@@ -46,6 +46,7 @@ namespace N2.Persistence.NH
 		int stringLength = 1073741823;
 		bool tryLocatingHbmResources = false;
 		private string cacheRegion;
+		private bool childrenBatch;
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
 		public ConfigurationBuilder(IDefinitionProvider[] definitionProviders, ClassMappingGenerator generator, IWebContext webContext, ConfigurationBuilderParticipator[] participators, DatabaseSection config, ConnectionStringsSection connectionStrings)
@@ -61,6 +62,7 @@ namespace N2.Persistence.NH
 			batchSize = config.BatchSize;
 			childrenLaziness = config.Children.Laziness;
 			childrenCascade = config.Children.Cascade;
+			childrenBatch = config.Children.Batch;
 			cacheRegion = config.CacheRegion;
 
 			SetupProperties(config, connectionStrings);
@@ -321,7 +323,8 @@ namespace N2.Persistence.NH
 				cm.Cascade(childrenCascade);
 				cm.OrderBy(ci => ci.SortOrder);
 				cm.Lazy(childrenLaziness);
-				cm.BatchSize(batchSize ?? 25);
+				if (childrenBatch)
+					cm.BatchSize(batchSize ?? 10);
 				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 			ca.Bag(x => x.Details, cm =>
@@ -332,6 +335,7 @@ namespace N2.Persistence.NH
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
+				cm.BatchSize(batchSize ?? 10);
 				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 				cm.Where("DetailCollectionID IS NULL");
 			}, cr => cr.OneToMany());
@@ -343,6 +347,7 @@ namespace N2.Persistence.NH
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
+				cm.BatchSize(batchSize ?? 10);
 				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 			ca.Bag(x => x.AuthorizedRoles, cm =>
@@ -352,6 +357,7 @@ namespace N2.Persistence.NH
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
+				cm.BatchSize(batchSize ?? 25);
 				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 		}
@@ -370,7 +376,7 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.BoolValue, cm => { });
 			ca.Property(x => x.DateTimeValue, cm => { });
 			ca.Property(x => x.IntValue, cm => { });
-			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
+			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.NotFound(NotFoundMode.Ignore); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
 			// if you are using Oracle10g and get 
 			// ORA-01461: can bind a LONG value only for insert into a LONG column
@@ -414,19 +420,17 @@ namespace N2.Persistence.NH
             ca.Table(tablePrefix + "Version");
             ca.Lazy(false);
             ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
-            ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
+            ca.Id(x => x.Id, cm => { cm.Generator(Generators.Native); });
 
-            ca.Component(x => x.MasterVersion, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
-            ca.Component(x => x.AssociatedVersion, cm => { cm.Property(cr => cr.ID, pm => pm.Column("ItemID")); });
-            ca.Property(x => x.ChangesJson, cm => { cm.Length(stringLength); });
+            ca.Component(x => x.Master, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
+			ca.Property(x => x.Title, xm => { });
             ca.Property(x => x.Published, cm => { });
             ca.Property(x => x.VersionIndex, cm => { });
             ca.Property(x => x.Saved, cm => { });
             ca.Property(x => x.State, cm => { });
-            ca.Property(x => x.IsDraft, cm => { });
-            ca.Property(x => x.IsPublishedVersion, cm => { });
             ca.Property(x => x.SavedBy, cm => { });
             ca.Property(x => x.PublishedBy, cm => { });
+			ca.Property(x => x.VersionDataXml, cm => { });
         }
 
 		private string FormatMapping(string mappingXml)

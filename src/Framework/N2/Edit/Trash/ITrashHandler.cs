@@ -43,5 +43,7 @@ namespace N2.Edit.Trash
 
 		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
 		void PurgeOldItems();
+
+		void PurgeAll();
 	}
 }

@@ -86,17 +86,36 @@ namespace N2.Persistence.NH
 				.Enumerable<ContentItem>();
 		}
 
+		//private void DeleteReferencesRecursive(ContentItem itemNoMore)
+		//{
+		//    string itemTrail = Utility.GetTrail(itemNoMore);
+		//    var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
+		//        .SelectMany(i => linkRepository.Find(new Parameter("LinkedItem", i), new Parameter("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
+		//        .Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
+		//        .ToList();
+
+		//    Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
+
+		//    foreach (ContentDetail link in inboundLinks)
+		//    {
+		//        linkRepository.Delete(link);
+		//        link.AddTo((DetailCollection)null);
+		//    }
+		//    linkRepository.Flush();
+		//}
+
 		public int RemoveReferencesToRecursive(ContentItem target)
 		{
 			var s = Session;
 			var details = s.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
 				.SetParameter("ancestor", target)
-				.SetParameter("trail", target.GetTrail())
+				.SetParameter("trail", target.GetTrail() + "%")
 				.Enumerable<ContentDetail>();
 
 			int count = 0;
 			foreach (var cd in details)
 			{
+				cd.AddTo((DetailCollection)null);
 				cd.AddTo((ContentItem)null);
 				s.Delete(cd);
 				count++;

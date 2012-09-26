@@ -50,6 +50,12 @@ namespace N2.Persistence.Serialization
 
         private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
         {
+			if(options.IsFlagSet(ExportOptions.IncludePartsOnly))
+			{
+				// mannu
+				// TODO: Skriv writer för att returnera bara parts-children
+			}
+
             if((options & ExportOptions.OnlyDefinedDetails) == ExportOptions.OnlyDefinedDetails)
                 yield return new DefinedDetailXmlWriter(definitions);
             else
