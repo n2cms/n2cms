@@ -115,6 +115,7 @@
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Tests\Services\MarkovNameGenerator.cs" />
     <Compile Include="Areas\Tests\Controllers\TestContentGeneratorController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalTypedController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalController.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Areas\Tests\Controllers\TestPageController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestPartController.cs" />
+    <Compile Include="Areas\Tests\Services\Words.cs" />
     <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
     <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
     <Compile Include="Areas\Tests\Models\TestContentGenerator.cs" />

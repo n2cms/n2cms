@@ -144,13 +144,15 @@ namespace N2.Edit.LinkTracker
 			}
 		}
 
+		Regex linkExpression = new Regex("<a.*?href=[\"']*(?<link>[^\"'>]*).*?</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
 		/// <summary>Finds links in a html string using regular expressions.</summary>
 		/// <param name="html">The html to search for links.</param>
 		/// <returns>A list of link (a) href attributes in the supplied html string.</returns>
 		public virtual IList<ContentDetail> FindLinks(string html)
 		{
 			List<ContentDetail> links = new List<ContentDetail>();
-			MatchCollection matches = Regex.Matches(html, "<a.*?href=[\"']*(?<link>[^\"'>]*).*?</a>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+			MatchCollection matches = linkExpression.Matches(html);
 			foreach (Match m in matches)
 			{
 				var g = m.Groups["link"];

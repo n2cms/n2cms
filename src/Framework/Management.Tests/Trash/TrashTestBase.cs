@@ -17,8 +17,6 @@ namespace N2.Edit.Tests.Trash
         protected MockRepository mocks;
         protected ThrowableItem root;
         protected ThrowableItem item;
-		protected NonThrowableItem nonThrowable;
-		protected LegacyNonThrowableItem nonThrowable2;
 		protected TrashContainerItem trash;
 
         [SetUp]
@@ -29,8 +27,6 @@ namespace N2.Edit.Tests.Trash
             root = CreateItem<ThrowableItem>(1, "root", null);
             item = CreateItem<ThrowableItem>(2, "item", root);
             trash = CreateItem<TrashContainerItem>(3, "Trash", root);
-			nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
-			nonThrowable2 = CreateItem<LegacyNonThrowableItem>(5, "neverInTrash2", root);
 
             webContext = new ThreadContext();
             host = new Host(webContext, 1, 1);
