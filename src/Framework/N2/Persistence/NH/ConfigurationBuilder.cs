@@ -420,7 +420,7 @@ namespace N2.Persistence.NH
             ca.Table(tablePrefix + "Version");
             ca.Lazy(false);
             ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
-            ca.Id(x => x.Id, cm => { cm.Generator(Generators.Native); });
+            ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 
             ca.Component(x => x.Master, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
 			ca.Property(x => x.Title, xm => { });

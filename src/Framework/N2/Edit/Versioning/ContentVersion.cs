@@ -1,11 +1,49 @@
 ﻿using System;
 using N2.Persistence;
+using N2.Persistence.Serialization;
+using N2.Engine;
+using System.IO;
 
 namespace N2.Edit.Versioning
 {
     public class ContentVersion
-    {
-        public virtual int Id { get; set; }
+	{
+		private Func<string, ContentItem> deserializer;
+		private Func<ContentItem, string> serializer;
+		private string versionDataXml;
+		private ContentItem version;
+
+		public ContentVersion()
+		{
+		}
+
+		public ContentVersion(Importer importer, Exporter exporter)
+		{
+			Deserializer = (xml) => Deserialize(importer, xml);
+			Serializer = (item) => Serialize(exporter, item);
+		}
+
+		public virtual Func<string, ContentItem> Deserializer
+		{
+			get
+			{
+				return deserializer 
+					?? (deserializer = (xml) => Deserialize(N2.Context.Current.Resolve<Importer>(), xml));
+			}
+			set { deserializer = value; }
+		}
+
+		public virtual Func<ContentItem, string> Serializer
+		{
+			get 
+			{ 
+				return serializer 
+					?? (serializer = (item) => Serialize(N2.Context.Current.Resolve<Exporter>(), item));
+			}
+			set { serializer = value; }
+		}
+
+        public virtual int ID { get; set; }
         public virtual int VersionIndex { get; set; }
 		public virtual string Title { get; set; }
 		public virtual ContentRelation Master { get; set; }
@@ -14,6 +52,63 @@ namespace N2.Edit.Versioning
 		public virtual string PublishedBy { get; set; }
         public virtual DateTime Saved { get; set; }
         public virtual string SavedBy { get; set; }
-		public virtual string VersionDataXml { get; set; }
-    }
+
+		public virtual string VersionDataXml
+		{
+			get { return versionDataXml; }
+			set { versionDataXml = value; version = null; }
+		}
+
+		public virtual ContentItem Version
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(VersionDataXml))
+					return null;
+				
+				return version ?? (version = Deserializer(VersionDataXml));
+			}
+			set
+			{
+				version = value;
+
+				if (value == null)
+				{
+					VersionDataXml = null;
+					VersionIndex = 0;
+					Title = null;
+					State = ContentState.None;
+					PublishedBy = null;
+					return;
+				}
+
+				VersionDataXml = Serializer(value);
+				VersionIndex = value.VersionIndex;
+				Title = value.Title;
+				State = value.State;
+				PublishedBy = value.IsPublished() ? value.SavedBy : null;
+			}
+		}
+
+		internal static ContentItem Deserialize(Importer importer, string xml)
+		{
+			var journal = importer.Read(new StringReader(xml));
+			foreach (var link in journal.UnresolvedLinks)
+			{
+				var item = importer.Persister.Get(link.ReferencedItemID);
+				if (item != null)
+					link.Setter(item);
+			}
+			return journal.RootItem;
+		}
+
+		internal static string Serialize(Exporter exporter, ContentItem item)
+		{
+			using (var sw = new StringWriter())
+			{
+				exporter.Export(item, ExportOptions.ExcludePages | ExportOptions.ExcludeAttachments, sw);
+				return sw.ToString();
+			}
+		}
+	}
 }

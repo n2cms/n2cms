@@ -4,6 +4,9 @@ using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
+using N2.Tests.Fakes;
+using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -146,7 +149,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			persister.Repository.SaveOrUpdate(root, one);
 
-			N2.Persistence.VersionManager vm = new VersionManager(persister.Repository, new N2.Edit.Workflow.StateChanger(), new N2.Configuration.EditSection());
+			N2.Persistence.VersionManager vm = new VersionManager(TestSupport.CreateVersionRepository(typeof(PersistableItem1)), persister.Repository, new N2.Edit.Workflow.StateChanger(), new ThreadContext(), new N2.Configuration.EditSection());
 			var version = vm.SaveVersion(one);
 			
 			one.Name += "2";

@@ -134,7 +134,7 @@ namespace N2.Edit.Workflow
 
 			if (context.Content.State == ContentState.Unpublished)
 				// previously published
-				return Compose("Save changes", Authorize(Permission.Write), validate, clone, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
+				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
 
 			// has never been published before
 			return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);

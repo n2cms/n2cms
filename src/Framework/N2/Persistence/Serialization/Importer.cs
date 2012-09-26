@@ -22,6 +22,11 @@ namespace N2.Persistence.Serialization
 			this.fs = fs;
 		}
 
+		public IPersister Persister
+		{
+			get { return persister; }
+		} 
+
 		public virtual IImportRecord Read(string path)
 		{
 			using (Stream input = File.OpenRead(path))

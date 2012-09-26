@@ -46,16 +46,13 @@ namespace N2.Persistence.Serialization
 				}
 				else
 				{
-					journal.ItemAdded += delegate(object sender, ItemEventArgs e)
-									{
-										if (e.AffectedItem.ID == referencedItemID)
-										{
-											collection.Add(ContentDetail.New(
-												collection.EnclosingItem,
-												attributes["name"],
-												e.AffectedItem));
-										}
-									};
+					journal.Register(referencedItemID, (item) => 
+						{
+							collection.Add(ContentDetail.New(
+								collection.EnclosingItem,
+								attributes["name"],
+								item));
+						});
 				}
 			}
 			else if (type == typeof(IMultipleValue))

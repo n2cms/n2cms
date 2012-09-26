@@ -10,5 +10,6 @@ namespace N2.Persistence.Serialization
         IList<Attachment> Attachments { get; }
         IList<Attachment> FailedAttachments { get; }
 		IList<Exception> Errors { get; }
-    }
+		IList<UnresolvedLink> UnresolvedLinks { get; }
+	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
 using N2.Web.UI;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Myself
 {
@@ -32,7 +33,8 @@ namespace N2.Management.Myself
 			PageFilter.FilterPages(items);
 			lblPages.Text = items.Count.ToString();
 
-			int totalCount = Find.Items.All.PreviousVersions(N2.Persistence.Finder.VersionOption.Include).Select().Count;
+			long totalCount = itemsCount + Engine.Resolve<ContentVersionRepository>().Repository.Count();
+				//Find.Items.All.PreviousVersions(N2.Persistence.Finder.VersionOption.Include).Select().Count;
 			lblVersionsRatio.Text = string.Format("{0:F2}", (double)totalCount / (double)itemsCount);
 
 			lblServed.Text = "unknown";

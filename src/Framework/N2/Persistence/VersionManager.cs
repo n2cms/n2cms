@@ -7,6 +7,8 @@ using N2.Definitions;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence.Finder;
+using N2.Edit.Versioning;
+using N2.Web;
 
 namespace N2.Persistence
 {
@@ -16,14 +18,18 @@ namespace N2.Persistence
 	[Service(typeof(IVersionManager))]
 	public class VersionManager : IVersionManager
 	{
+		public ContentVersionRepository Repository { get; private set; }
 		readonly IContentItemRepository itemRepository;
         readonly StateChanger stateChanger;
+		readonly IWebContext webContext;
 		int maximumVersionsPerItem = 100;
 
-		public VersionManager(IContentItemRepository itemRepository, StateChanger stateChanger, EditSection config)
+		public VersionManager(ContentVersionRepository versionRepository, IContentItemRepository itemRepository, StateChanger stateChanger, IWebContext webContext, EditSection config)
 		{
+			this.Repository = versionRepository;
 			this.itemRepository = itemRepository;
             this.stateChanger = stateChanger;
+			this.webContext = webContext;
 			maximumVersionsPerItem = config.Versions.MaximumPerItem;
 		}
 
@@ -53,10 +59,15 @@ namespace N2.Persistence
 			oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
 			oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
 			oldVersion.Parent = null;
+			oldVersion.AncestralTrail = "/";
 			oldVersion.VersionOf = item;
 			if (item.Parent != null)
 				oldVersion["ParentID"] = item.Parent.ID;
-			itemRepository.SaveOrUpdate(oldVersion);
+			//itemRepository.SaveOrUpdate(oldVersion);
+			Repository.Save(oldVersion, webContext.User.Identity.Name);
+
+			item.VersionIndex += 1;
+			itemRepository.SaveOrUpdate(item);
 
 			if (ItemSavedVersion != null)
 				ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
@@ -96,7 +107,8 @@ namespace N2.Persistence
 
 						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
-							itemRepository.Delete(replacementItem);
+							//itemRepository.Delete(replacementItem);
+							Repository.Delete(replacementItem);
 
                         transaction.Commit();
                         return versionOfCurrentItem;
@@ -107,7 +119,8 @@ namespace N2.Persistence
 
 						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
 							// drafts can be removed once they have been published
-							itemRepository.Delete(replacementItem);
+							//itemRepository.Delete(replacementItem);
+							Repository.Delete(replacementItem);
 
                         transaction.Commit();
                         return currentItem;
@@ -146,20 +159,42 @@ namespace N2.Persistence
 		}
 		#endregion
 
+		/// <summary>Retrieves the version with a given version index.</summary>
+		/// <param name="publishedItem">The published item whose version to get.</param>
+		/// <param name="versionIndex">The index of the version to get.</param>
+		/// <returns>The version with the given index, or null if no item is found.</returns>
+		public virtual ContentItem GetVersion(ContentItem publishedItem, int versionIndex)
+		{
+			if (versionIndex == publishedItem.VersionIndex)
+				return publishedItem;
+			var version = Repository.GetVersion(publishedItem, versionIndex);
+			if (version == null)
+				return null;
+			return version.Version;
+		}
+
 		/// <summary>Retrieves all versions of an item including the master version.</summary>
 		/// <param name="publishedItem">The item whose versions to get.</param>
 		/// <param name="count">The number of versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
-		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count = 1000)
+		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 100)
 		{
 			if (publishedItem.ID == 0)
 				return new ItemList { publishedItem };
 
-			return itemRepository.Find(
-				(new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
-					.OrderBy("VersionIndex DESC")
-					.Take(count))
+			var versions = Repository.GetVersions(publishedItem).Select(v => v.Version)
+				.Concat(new[] { publishedItem })
+				.OrderByDescending(i => i.VersionIndex)
+				.Skip(skip).Take(take)
 				.ToList();
+			return versions;
+
+			//return itemRepository.Find(
+			//    (new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
+			//        .OrderBy("VersionIndex DESC")
+			//        .Skip(skip)
+			//        .Take(take))
+			//    .ToList();
 		}
 
 		/// <summary>Removes exessive versions.</summary>
@@ -170,21 +205,29 @@ namespace N2.Persistence
 			if (maximumNumberOfVersions < 0) throw new ArgumentOutOfRangeException("maximumNumberOfVersions");
 			if (maximumNumberOfVersions == 0) return;
 
-			IList<ContentItem> versions = GetVersionsOf(publishedItem);
-			versions.Remove(publishedItem);
-			int max = maximumNumberOfVersions - 1;
 
-			if (versions.Count <= max) return;
-
-			using (ITransaction transaction = itemRepository.BeginTransaction())
+			using (ITransaction transaction = Repository.Repository.BeginTransaction())
 			{
-				for (int i = max; i < versions.Count; i++)
-				{
-					this.itemRepository.Delete(versions[i]);
-				}
-				itemRepository.Flush();
+				Repository.Repository.Delete(Repository.GetVersions(publishedItem).Skip(maximumNumberOfVersions - 1).ToArray());
+				Repository.Repository.Flush();
 				transaction.Commit();
 			}
+
+			//IList<ContentItem> versions = GetVersionsOf(publishedItem);
+			//versions.Remove(publishedItem);
+			//int max = maximumNumberOfVersions - 1;
+
+			//if (versions.Count <= max) return;
+
+			//using (ITransaction transaction = itemRepository.BeginTransaction())
+			//{
+			//    for (int i = max; i < versions.Count; i++)
+			//    {
+			//        this.itemRepository.Delete(versions[i]);
+			//    }
+			//    itemRepository.Flush();
+			//    transaction.Commit();
+			//}
 		}
 
 		/// <summary>Checks whether an item  may have versions.</summary>

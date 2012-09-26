@@ -15,52 +15,93 @@ namespace N2.Edit.Versioning
     public class ContentVersionRepository
     {
         public IRepository<ContentVersion> Repository { get; private set; }
-	    public Exporter Exporter { get; set; }
+	    Exporter exporter;
+		Importer importer;
 
-        public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter)
+        public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter, Importer importer)
         {
             this.Repository = repository;
-	        this.Exporter = exporter;
+	        this.exporter = exporter;
+			this.importer = importer;
         }
 
-        public bool HasDraft(ContentItem item)
+        public ContentVersion GetVersion(ContentItem item, int versionIndex = -1)
         {
-            return Repository.Find(Parameter.Equal("Master.ID", item.ID)).Any();
-        }
-
-        public ContentVersion GetDraft(ContentItem item, int versionIndex = 0)
-        {
-	        var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID));
-
-			if(versionIndex > 0)
+			if (versionIndex >= 0)
 			{
-				return versions.FirstOrDefault(v => v.VersionIndex == versionIndex);
+				return Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", versionIndex))
+					.Select(v => Inject(v))
+					.FirstOrDefault();
 			}
 
-	        return versions.OrderByDescending(v => v.Saved).FirstOrDefault();
+			return GetVersions(item)
+				.Select(v => Inject(v))
+				.FirstOrDefault();
         }
 
-        public ContentVersion CreateDraft(ContentItem item, IPrincipal user)
+		private ContentVersion Inject(ContentVersion v)
+		{
+			v.Serializer = Serialize;
+			v.Deserializer = Deserialize;
+			return v;
+		}
+
+		public string Serialize(ContentItem item)
+		{
+			return ContentVersion.Serialize(exporter, item);
+		}
+
+		public ContentItem Deserialize(string xml)
+		{
+			return ContentVersion.Deserialize(importer, xml);
+		}
+
+
+		public IEnumerable<ContentVersion> GetVersions(ContentItem item)
+		{
+			var versions = Repository.Find(Parameter.Equal("Master.ID", item.ID));
+			return versions
+				.Select(v => Inject(v))
+				.OrderByDescending(v => v.VersionIndex);
+		}
+
+		public bool HasDraft(ContentItem item)
+		{
+			return GetDraft(item) != null;
+		}
+
+		public ContentVersion GetDraft(ContentItem item)
+		{
+			return Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("State", ContentState.Draft))
+				.OrderByDescending(v => v.VersionIndex)
+				.Select(v => Inject(v))
+				.FirstOrDefault();
+		}
+
+        public ContentVersion Save(ContentItem item, string username)
         {
-	        var sw = new StringWriter();
-			this.Exporter.Export(item, ExportOptions.IncludePartsOnly, sw);
-			
-            var version = new ContentVersion
+            var version = new ContentVersion(importer, exporter)
             {
-                VersionIndex = item.VersionIndex,
-				Title = item.Title,
-				Master = item,
-				State = item.State,
-                Published = Utility.CurrentTime(),
-                PublishedBy = item.IsPublished() ? item.SavedBy : null,
+				Master = GetMaster(item),
+				Published = Utility.CurrentTime(),
                 Saved = Utility.CurrentTime(),
-                SavedBy = user.Identity.Name,
-				VersionDataXml = sw.ToString()
+				SavedBy = username,
+				Version = item
             };
 
             Repository.SaveOrUpdate(version);
 
             return version;
         }
-    }
+
+		private static ContentItem GetMaster(ContentItem item)
+		{
+			return item.VersionOf.Value ?? item;
+		}
+
+		public void Delete(ContentItem item)
+		{
+			Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
+		}
+	}
 }

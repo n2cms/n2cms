@@ -57,18 +57,31 @@ namespace N2.Web
 		{
 			try
 			{
-				// mannu
-				// if glor på draft
-				// returnera draft-PathData
-
                 if (IsRewritable(url) && IsObservable(url))
 				{
 					var pathData = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 
-					if (versionRepository.HasDraft(pathData.CurrentItem))
+					string viParameter = url.GetQuery("vi");
+					if (!string.IsNullOrEmpty(viParameter))
 					{
-						var draft = versionRepository.GetDraft(pathData.CurrentItem);
-						// fixa deserialiseringsgrejs
+						int versionIndex = int.Parse(viParameter);
+						var version = versionRepository.GetVersion(pathData.CurrentItem, versionIndex);
+						if (version != null)
+						{
+							pathData.CurrentPage = pathData.CurrentItem = version.Version;
+							return pathData;
+						}
+					}
+
+					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
+					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && versionRepository.HasDraft(pathData.CurrentItem))
+					{
+						var draft = versionRepository.GetVersion(pathData.CurrentItem);
+						if (draft != null)
+						{
+							pathData.CurrentItem = pathData.CurrentPage = draft.Version;
+							return pathData;
+						}
 					}
 
 					return pathData;

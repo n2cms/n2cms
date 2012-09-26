@@ -23,8 +23,6 @@ using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
-using N2.Details;
-using System.Web;
 
 namespace N2.Edit.Installation
 {
@@ -221,7 +219,7 @@ namespace N2.Edit.Installation
 				status.DatabaseVersion = 6;
 
                 // checking for properties added between 6 and 7
-                sessionProvider.OpenSession.Session.CreateQuery("select cv.Id from " + typeof(ContentVersion).Name + " cv").SetMaxResults(1).List();
+                sessionProvider.OpenSession.Session.CreateQuery("select cv.ID from " + typeof(ContentVersion).Name + " cv").SetMaxResults(1).List();
                 status.DatabaseVersion = 7;
 
 				if (isDatabaseFileSystemEnbled)

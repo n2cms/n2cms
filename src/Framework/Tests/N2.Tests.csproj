@@ -411,6 +411,7 @@
     <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
     <Compile Include="Web\PartsAdapterTest.cs" />
     <Compile Include="Workflow\Items\StatefulItem.cs" />
+    <Compile Include="Workflow\SHould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

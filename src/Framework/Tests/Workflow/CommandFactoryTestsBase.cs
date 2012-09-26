@@ -8,6 +8,7 @@ using N2.Tests.Fakes;
 using N2.Tests.Workflow.Items;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Tests.Workflow
 {
@@ -27,7 +28,7 @@ namespace N2.Tests.Workflow
             base.SetUp();
 			var changer = new StateChanger();
             definitions = TestSupport.SetupDefinitions(typeof(StatefulItem));
-			versions = new FakeVersionManager(repository, changer);
+			versions = new FakeVersionManager(repository, changer, typeof(StatefulItem));
 			var editManager = new EditUrlManager(new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, null, changer);
@@ -80,7 +81,8 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
+			versions.Repository.Repository.Count().ShouldBe(0);
+            //Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
         }
 
         [Test]
@@ -104,7 +106,7 @@ namespace N2.Tests.Workflow
 
 			dispatcher.Execute(CreateCommand(context), context);
 
-			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.GreaterThan(0), "Expected version to be created");
+			versions.Repository.Repository.Count().ShouldBeGreaterThan(0);
 		}
 
 		[Test]
@@ -115,14 +117,12 @@ namespace N2.Tests.Workflow
 			dispatcher.Execute(CreateCommand(context), context);
 
 			dispatcher.Execute(CreateCommand(context), context);
-			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == unversionable), Is.EqualTo(0), "Expected no version to be created");
+			versions.Repository.Repository.Count().ShouldBe(0);
 		}
 
         protected ContentItem MakeVersion(ContentItem master)
         {
-            var version = CreateOneItem<StatefulItem>(2, "version", null);
-            version.VersionOf = master;
-            return version;
+			return versions.SaveVersion(master);
         }
     }
 }

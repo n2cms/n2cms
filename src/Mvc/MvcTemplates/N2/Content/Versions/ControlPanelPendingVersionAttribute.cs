@@ -26,7 +26,7 @@ namespace N2.Edit.Versions
 			if (context.Selected.VersionOf.HasValue) return null;
 
 			IEngine engine = Context.Current;
-			ContentItem latestVersion = engine.Resolve<IVersionManager>().GetVersionsOf(context.Selected, 1)[0];
+			ContentItem latestVersion = engine.Resolve<IVersionManager>().GetVersionsOf(context.Selected, 0, 1)[0];
 			if (latestVersion == context.Selected) return null;
 
 			Url versionPreviewUrl = engine.GetContentAdapter<NodeAdapter>(latestVersion).GetPreviewUrl(latestVersion);

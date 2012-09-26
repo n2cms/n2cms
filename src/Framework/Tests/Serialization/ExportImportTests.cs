@@ -204,7 +204,7 @@ namespace N2.Tests.Serialization
 			Assert.That(!destinationFs.FileExists(path));
 
 			CreateImporter(destinationFs).Import(record, destination, ImportOption.All);
-			Assert.AreEqual(0, readItem.ID);
+			
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
 			Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
@@ -225,6 +225,7 @@ namespace N2.Tests.Serialization
             
             var item = CreateOneItem<XmlableItem>(0, "item", null);
             var item2 = item.Clone(false);
+			item2.AncestralTrail = "/";
 
             try
             {

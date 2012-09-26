@@ -23,6 +23,8 @@ using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
+using System.Linq;
+using System.Reflection;
 
 namespace N2.Tests
 {
@@ -86,7 +88,7 @@ namespace N2.Tests
 
 		public static void Setup(out IDefinitionProvider[] definitionProviders, out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
+            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes.Select(t => t.Assembly).FirstOrDefault() ?? Assembly.GetExecutingAssembly(), itemTypes);
 
 			DefinitionBuilder definitionBuilder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
 			notifier = new ItemNotifier();
@@ -106,7 +108,7 @@ namespace N2.Tests
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {
             var changer = new N2.Edit.Workflow.StateChanger();
-			versions = new VersionManager(persister.Repository, changer, new N2.Configuration.EditSection());
+			versions = new VersionManager(TestSupport.CreateVersionRepository(), persister.Repository, changer, new ThreadContext(), new N2.Configuration.EditSection());
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
@@ -186,19 +188,33 @@ namespace N2.Tests
 			return finder;
 		}
 
-		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository()
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(params Type[] definedTypes)
 		{
+			IPersister persister = null;
+			return CreateVersionRepository(ref persister, definedTypes);
+		}
+
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, params Type[] definedTypes)
+		{
+			if (persister == null)
+				persister = SetupFakePersister();
+			var definitions = SetupDefinitions(definedTypes);
 			return new ContentVersionRepository(
 				new FakeRepository<ContentVersion>(),
 				new Exporter(
 					new ItemXmlWriter(
-						SetupDefinitions(typeof(StatefulItem)),
-						new UrlParser(SetupFakePersister(),
-						              new ThreadContext(),
-						              new Host(new ThreadContext(), new HostSection()),
-						              new ConnectionMonitor(),
-						              new HostSection()),
-						new FakeMemoryFileSystem())));
+						definitions,
+						new UrlParser(persister,
+									  new ThreadContext(),
+									  new Host(new ThreadContext(), new HostSection()),
+									  new ConnectionMonitor(),
+									  new HostSection()),
+						new FakeMemoryFileSystem())),
+						new Importer(persister, 
+							new ItemXmlReader(definitions, 
+								new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()), 
+								persister.Repository), 
+							new Fakes.FakeMemoryFileSystem()));
 		}
 	}
 }

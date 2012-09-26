@@ -59,10 +59,7 @@ namespace N2.Tests.Serialization
 				.Repeat.Any();
 			mocks.Replay(parser);
 
-			persister = mocks.StrictMock<IPersister>();
-			persister.Save(null);
-			LastCall.IgnoreArguments().Repeat.Any();
-			mocks.Replay(persister);
+			persister = TestSupport.SetupFakePersister();
 		}
 
 		protected ItemXmlWriter CreateWriter()
@@ -80,7 +77,7 @@ namespace N2.Tests.Serialization
 		}
 		protected ItemXmlReader CreateReader()
 		{
-			return new ItemXmlReader(definitions, activator);
+			return new ItemXmlReader(definitions, activator, persister.Repository);
 		}
 		protected Importer CreateImporter()
 		{
@@ -88,7 +85,7 @@ namespace N2.Tests.Serialization
 		}
 		protected Importer CreateImporter(IFileSystem fs)
 		{
-			return new Importer(persister, new ItemXmlReader(definitions, activator), fs);
+			return new Importer(persister, new ItemXmlReader(definitions, activator, persister.Repository), fs);
 		}
 	}
 }

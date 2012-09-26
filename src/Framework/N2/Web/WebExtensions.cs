@@ -124,8 +124,13 @@ namespace N2.Web
 			if (path.CurrentPage.IsPage)
 			{
 				Url url = Url.Parse(path.TemplateUrl)
-					.UpdateQuery(path.QueryParameters)
-					.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
+					.UpdateQuery(path.QueryParameters);
+				if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
+					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.VersionOf.ID.Value)
+						.SetQueryParameter(PathData.VersionQueryKey, path.CurrentPage.VersionIndex);
+				else 
+					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
+				
 				if (!string.IsNullOrEmpty(path.Argument))
 					url = url.SetQueryParameter("argument", path.Argument);
 
@@ -156,14 +161,14 @@ namespace N2.Web
             return (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0;
         }
 
-		static string ViewPreferenceQueryString = "view";
-		static string draft = ViewPreference.Draft.ToString().ToLower();
-		static string published = ViewPreference.Published.ToString().ToLower();
+		internal static string ViewPreferenceQueryString = "view";
+		internal static string DraftQueryValue = ViewPreference.Draft.ToString().ToLower();
+		internal static string PublishedQueryValue = ViewPreference.Published.ToString().ToLower();
 		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
 		{
-			if (context.Request[ViewPreferenceQueryString] == draft)
+			if (context.Request[ViewPreferenceQueryString] == DraftQueryValue)
 				return ViewPreference.Draft;
-			else if (context.Request[ViewPreferenceQueryString] == published)
+			else if (context.Request[ViewPreferenceQueryString] == PublishedQueryValue)
 				return ViewPreference.Published;
 			else
 				return defaultPreference;

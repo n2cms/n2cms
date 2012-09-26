@@ -4,6 +4,7 @@ using N2.Definitions;
 using N2.Engine;
 using N2.Web;
 using N2.Edit.FileSystem;
+using System.Linq;
 
 namespace N2.Persistence.Serialization
 {
@@ -28,11 +29,22 @@ namespace N2.Persistence.Serialization
 		{
 			WriteSingleItem(item, options, writer);
 
-			foreach(ContentItem child in item.Children)
+			foreach (ContentItem child in GetChildren(item, options))
 			{
 				if (child.ID != 0)
 					Write(child, options, writer);
 			}
+		}
+
+		internal static IEnumerable<ContentItem> GetChildren(ContentItem item, ExportOptions options)
+		{
+			if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children;
+			else if (options.IsFlagSet(ExportOptions.ExcludePages))
+				return item.Children.FindParts();
+			else if (options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children.FindPages();
+			return Enumerable.Empty<ContentItem>();
 		}
 
 		public virtual void WriteSingleItem(ContentItem item, ExportOptions options, XmlTextWriter writer)
@@ -50,18 +62,12 @@ namespace N2.Persistence.Serialization
 
         private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
         {
-			if(options.IsFlagSet(ExportOptions.IncludePartsOnly))
-			{
-				// mannu
-				// TODO: Skriv writer för att returnera bara parts-children
-			}
-
             if((options & ExportOptions.OnlyDefinedDetails) == ExportOptions.OnlyDefinedDetails)
                 yield return new DefinedDetailXmlWriter(definitions);
             else
                 yield return new DetailXmlWriter();
 			yield return new DetailCollectionXmlWriter();
-			yield return new ChildXmlWriter();
+			yield return new ChildXmlWriter(options);
 			yield return new AuthorizationXmlWriter();
 			yield return new PersistablePropertyXmlWriter(definitions);
             if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
@@ -89,6 +95,12 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("savedBy", item.SavedBy);
 			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
 			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item).Discriminator);
+			itemElement.WriteAttribute("versionIndex", item.VersionIndex);
+			itemElement.WriteAttribute("ancestralTrail", item.AncestralTrail);
+			itemElement.WriteAttribute("alteredPermissions", (int)item.AlteredPermissions);
+			itemElement.WriteAttribute("childState", (int)item.ChildState);
+			if(item.VersionOf.HasValue)
+				itemElement.WriteAttribute("versionOf", item.VersionOf.ID.Value);
 		}
 	}
 }

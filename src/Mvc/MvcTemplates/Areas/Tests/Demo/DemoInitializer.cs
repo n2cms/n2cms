@@ -9,6 +9,8 @@ using N2.Plugin;
 using N2.Persistence.Serialization;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Persistence;
+using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Templates.Mvc.Areas.Tests.Demo
 {
@@ -128,10 +130,13 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 			factory.Persister.Save(startPage);
 		}
 
-		private static void ClearPreviousVersions(N2.Engine.IEngine factory, ContentItem rootPage)
+		private static void ClearPreviousVersions(N2.Engine.IEngine engine, ContentItem rootPage)
 		{
-			foreach (ContentItem version in factory.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
-				factory.Persister.Delete(version);
+			var repo = engine.Resolve<ContentVersionRepository>();
+			foreach (var version in repo.Repository.Find().ToList())
+				repo.Repository.Delete(version);
+			//foreach (ContentItem version in factory.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
+			//    factory.Persister.Delete(version);
 		}
 	}
 }

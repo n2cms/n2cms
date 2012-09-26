@@ -1,4 +1,5 @@
 ﻿using System;
+using N2.Persistence;
 
 namespace N2.Addons.Wiki.UI.Views
 {
@@ -6,9 +7,10 @@ namespace N2.Addons.Wiki.UI.Views
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			rptArticles.DataSource = N2.Find.Items
-				.Where.VersionOf.Eq(CurrentPage)
-				.Select();
+			rptArticles.DataSource = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentPage);
+				//N2.Find.Items
+				//.Where.VersionOf.Eq(CurrentPage)
+				//.Select();
 			DataBind();
 			base.OnInit(e);
 		}

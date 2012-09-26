@@ -4,6 +4,7 @@ using N2.Tests.Workflow.Items;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Edit;
+using Shouldly;
 
 namespace N2.Tests.Workflow
 {
@@ -40,19 +41,22 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(1));
+			versions.Repository.Repository.Count().ShouldBe(1);
         }
 
         [Test]
         public void Version_MakesVersion_OfCurrentMaster()
         {
             var version = MakeVersion(item);
+			version.State = ContentState.Draft;
+			version.Title = "version";
+
 			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(1));
+			versions.Repository.GetVersions(item).Count().ShouldBe(1);
             Assert.That(item.Title, Is.EqualTo("version"));
         }
 
@@ -74,7 +78,6 @@ namespace N2.Tests.Workflow
         public void PreviouslyPublishedVersion_CausesNewVersion_FromView()
         {
             var version = MakeVersion(item);
-            version.State = ContentState.Unpublished;
 
 			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, nullValidator);
 

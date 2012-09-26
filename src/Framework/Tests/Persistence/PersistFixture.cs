@@ -347,7 +347,8 @@ namespace N2.Tests.Persistence
 			using (engine.Persister)
 			{
 				root = engine.Persister.Get(root.ID);
-				previousVersion = engine.Persister.Get(previousVersion.ID);
+				previousVersion = engine.Resolve<IVersionManager>().GetVersion(root, previousVersion.VersionIndex);
+				// engine.Persister.Get(previousVersion.ID);
 
 				engine.Resolve<IVersionManager>().ReplaceVersion(root, previousVersion, true);
 			}

@@ -4,11 +4,18 @@ namespace N2.Persistence.Serialization
 {
 	public class ChildXmlWriter : IXmlWriter
 	{
+		private ExportOptions options;
+
+		public ChildXmlWriter(ExportOptions options)
+		{
+			this.options = options;
+		}
+
 		public virtual void Write(ContentItem item, XmlTextWriter writer)
 		{
 			using (new ElementWriter("children", writer))
 			{
-				foreach (ContentItem child in item.Children)
+				foreach (ContentItem child in ItemXmlWriter.GetChildren(item, options))
 				{
 					WriteChild(writer, child);
 				}
@@ -20,6 +27,7 @@ namespace N2.Persistence.Serialization
 			using (ElementWriter childElement = new ElementWriter("child", writer))
 			{
 				childElement.WriteAttribute("id", child.ID);
+				childElement.WriteAttribute("name", child.Name);
 			}
 		}
 	}

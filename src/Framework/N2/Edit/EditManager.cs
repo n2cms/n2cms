@@ -374,7 +374,7 @@ namespace N2.Edit
 				{
 					if (!item.VersionOf.HasValue)
 						stateChanger.ChangeTo(item, ContentState.Published);
-					item.VersionIndex++;
+					//item.VersionIndex++;
 					persister.Save(item);
 				}
 
@@ -397,7 +397,7 @@ namespace N2.Edit
 				{
 					item.Published = null;
 					stateChanger.ChangeTo(item, ContentState.Draft);
-					item.VersionIndex++;
+					//item.VersionIndex++;
 					persister.Save(item);
 				}
 

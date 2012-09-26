@@ -2,6 +2,9 @@
 using System.Linq;
 using N2.Edit.Workflow;
 using N2.Persistence;
+using N2.Edit.Versioning;
+using N2.Web;
+using System;
 
 namespace N2.Tests.Fakes
 {
@@ -9,23 +12,13 @@ namespace N2.Tests.Fakes
     {
         FakeRepository<ContentItem> itemRepository;
 
-        public FakeVersionManager(FakeContentItemRepository itemRepository, StateChanger stateChanger)
-			: base(itemRepository, stateChanger, new N2.Configuration.EditSection())
+        public FakeVersionManager(FakeContentItemRepository itemRepository, StateChanger stateChanger, params Type[] definitionTypes)
+			: base(TestSupport.CreateVersionRepository(definitionTypes), itemRepository, stateChanger, new ThreadContext(), new N2.Configuration.EditSection())
 		{
             this.itemRepository = itemRepository;
 		}
 
         #region IVersionManager Members
-
-        public IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
-        {
-            return itemRepository.database.Values.Where(i => i.VersionOf.Value == publishedItem || i == publishedItem).OrderByDescending(i => i.VersionIndex).ToList();
-        }
-
-        public override IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
-        {
-            return GetVersionsOf(publishedItem).Take(count).ToList();
-        }
 
         public override void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
         {

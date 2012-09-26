@@ -150,42 +150,42 @@ namespace N2.Tests.Workflow
             Assert.That(item.State, Is.EqualTo(ContentState.Published));
         }
 
-		[Test]
-		[Obsolete]
-        public void VersionOnly_DoesntAffect_MasterVersionIndex()
-        {
-			var item = activator.CreateInstance<StatefulItem>(null);
-            editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
-            int initialIndex = item.VersionIndex;
-            var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
+		//[Test]
+		//[Obsolete]
+		//public void VersionOnly_DoesntAffect_MasterVersionIndex()
+		//{
+		//    var item = activator.CreateInstance<StatefulItem>(null);
+		//    editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
+		//    int initialIndex = item.VersionIndex;
+		//    var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
 
-            Assert.That(item.VersionIndex, Is.EqualTo(initialIndex));
-        }
+		//    Assert.That(item.VersionIndex, Is.EqualTo(initialIndex));
+		//}
 
-		[Test]
-		[Obsolete]
-        public void VersionOnly_SavedItem_IncrementsVersionIndex()
-        {
-			var item = activator.CreateInstance<StatefulItem>(null);
-            editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
-            editors["Title"] = new TextBox { Text = "New title 2" };
-            var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
+		//[Test]
+		//[Obsolete]
+		//public void VersionOnly_SavedItem_IncrementsVersionIndex()
+		//{
+		//    var item = activator.CreateInstance<StatefulItem>(null);
+		//    editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
+		//    editors["Title"] = new TextBox { Text = "New title 2" };
+		//    var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
 
-            Assert.That(version.VersionIndex, Is.EqualTo(item.VersionIndex + 1));
-        }
+		//    Assert.That(version.VersionIndex, Is.EqualTo(item.VersionIndex + 1));
+		//}
 
-		[Test]
-		[Obsolete]
-        public void Publish_DoesntAffect_OldVersionsIndex()
-        {
-			var item = activator.CreateInstance<StatefulItem>(null);
-            editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
-            int initialIndex = item.VersionIndex;
-            editors["Title"] = new TextBox { Text = "New title 2" };
-            var nextVersion = editManager.Save(item, editors, ItemEditorVersioningMode.VersionAndSave, admin);
+		//[Test]
+		//[Obsolete]
+		//public void Publish_DoesntAffect_OldVersionsIndex()
+		//{
+		//    var item = activator.CreateInstance<StatefulItem>(null);
+		//    editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
+		//    int initialIndex = item.VersionIndex;
+		//    editors["Title"] = new TextBox { Text = "New title 2" };
+		//    var nextVersion = editManager.Save(item, editors, ItemEditorVersioningMode.VersionAndSave, admin);
 
-            Assert.That(nextVersion.VersionIndex, Is.EqualTo(initialIndex + 1));
-        }
+		//    Assert.That(nextVersion.VersionIndex, Is.EqualTo(initialIndex + 1));
+		//}
 
     }
 }

@@ -23,7 +23,7 @@ namespace N2.Management.Content.Versions
 
 		protected override void  OnDataBinding(EventArgs e)
 		{
-			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 4);
+			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 0, 4);
 
 			ShowMoreVersions = allVersions.Count > 3
 				&& Engine.SecurityManager.IsAuthorized(Page.User, CurrentItem, Security.Permission.Publish);

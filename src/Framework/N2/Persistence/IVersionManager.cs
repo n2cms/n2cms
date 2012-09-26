@@ -21,11 +21,17 @@ namespace N2.Persistence
 		/// <returns>The old version.</returns>
 		ContentItem SaveVersion(ContentItem item);
 
+		/// <summary>Retrieves the version with a given version index.</summary>
+		/// <param name="publishedItem">The published item whose version to get.</param>
+		/// <param name="versionIndex">The index of the version to get.</param>
+		/// <returns>The version with the given index, or null if no item is found.</returns>
+		ContentItem GetVersion(ContentItem publishedItem, int versionIndex);
+
 		/// <summary>Retrieves all versions of an item including the master version.</summary>
 		/// <param name="publishedItem">The item whose versions to get.</param>
 		/// <param name="count">The number of versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
-		IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count = 1000);
+		IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int skip = 0, int take = 100);
 
 		/// <summary>Removes exessive versions.</summary>
 		/// <param name="publishedItem">The item whose versions to trim.</param>

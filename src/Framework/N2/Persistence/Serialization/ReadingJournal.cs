@@ -11,6 +11,11 @@ namespace N2.Persistence.Serialization
 		readonly IList<Exception> errors = new List<Exception>();
 		public event EventHandler<ItemEventArgs> ItemAdded;
 
+		public ReadingJournal()
+		{
+			UnresolvedLinks = new List<UnresolvedLink>();
+		}
+
 		public IList<ContentItem> ReadItems
 		{
 			get { return readItems; }
@@ -78,6 +83,26 @@ namespace N2.Persistence.Serialization
 		public void Error(Exception ex)
 		{
 			Errors.Add(ex);
+		}
+
+		public IList<UnresolvedLink> UnresolvedLinks { get; set; }
+
+		public void Register(int referencedItemID, Action<ContentItem> action)
+		{
+			var resolver = new UnresolvedLink(referencedItemID, action);
+			UnresolvedLinks.Add(resolver);
+			EventHandler<ItemEventArgs> handler = null;
+			handler = delegate(object sender, ItemEventArgs e)
+				{
+					if (e.AffectedItem.ID == referencedItemID)
+					{
+						resolver.Setter(e.AffectedItem);
+						UnresolvedLinks.Remove(resolver);
+						ItemAdded -= handler;
+					}
+				};
+
+			ItemAdded += handler;
 		}
 	}
 }

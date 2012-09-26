@@ -790,6 +790,7 @@ namespace N2
 			destination.zoneName = source.zoneName;
 			destination.published = source.published;
 			destination.expires = source.expires;
+			destination.versionIndex = source.versionIndex;
 		}
 
 		static void CloneFields(ContentItem source, ContentItem destination)
@@ -801,7 +802,6 @@ namespace N2
 			destination.created = source.created;
 			destination.updated = source.updated;
 			destination.templateKey = source.templateKey;
-			destination.versionIndex = source.versionIndex;
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
@@ -975,8 +975,15 @@ namespace N2
 		{
 			if (object.ReferenceEquals(this, obj)) return true;
 			ContentItem other = obj as ContentItem;
-			return other != null && id != 0 && id == other.id;
-			//TODO: add id==0 && name+parent
+			if (other == null)
+				return false;
+			if (id != 0 && id == other.id)
+				return true;
+			if (id != 0 || other.id != 0)
+				return false;
+			if (other.VersionOf.HasValue && VersionOf.HasValue && other.VersionOf.ID.Value == VersionOf.ID.Value)
+				return other.VersionIndex == VersionIndex;
+			return false;
 		}
 
 		/// <summary>Gets a hash code based on the ID.</summary>

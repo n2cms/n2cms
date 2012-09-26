@@ -4,6 +4,7 @@ using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -114,7 +115,7 @@ namespace N2.Tests.Persistence.NH
             item.VersionIndex++;
             persister.Save(item);
 
-			var versions = versioner.GetVersionsOf(item, 1);
+			var versions = versioner.GetVersionsOf(item, 0, 1);
 
 			Assert.That(versions.Count, Is.EqualTo(1));
             Assert.That(versions[0], Is.EqualTo(item));
@@ -179,7 +180,7 @@ namespace N2.Tests.Persistence.NH
         }
 
         [Test]
-        public void SaveVersion_DoesntAffect_CurrentVersionIndex()
+        public void SaveVersion_Updates_CurrentVersionIndex()
         {
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
@@ -187,22 +188,21 @@ namespace N2.Tests.Persistence.NH
             var version = versioner.SaveVersion(item);
 
             Assert.That(version.VersionIndex, Is.EqualTo(0));
-            Assert.That(item.VersionIndex, Is.EqualTo(0));
+            Assert.That(item.VersionIndex, Is.EqualTo(1));
         }
 
         [Test]
-        public void VersionIndex_IsCarriedOn_WhenReplacingVersion()
+        public void VersionIndex_IsNotCarriedOn_WhenReplacingVersion()
         {
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
 
             var version = versioner.SaveVersion(item);
-            item.VersionIndex++;
             persister.Save(item);
 
             versioner.ReplaceVersion(item, CreateOneItem<Definitions.PersistableItem1>(0, "root2", null));
 
-            Assert.That(item.VersionIndex, Is.EqualTo(0));
+            Assert.That(item.VersionIndex, Is.EqualTo(2));
 		}
 
 		[Test]
@@ -246,7 +246,8 @@ namespace N2.Tests.Persistence.NH
 				referenced = persister.Get(referenced.ID);
 				persister.Delete(referenced);
 
-				var loadedVersioin = persister.Get(version.ID);
+				var loadedVersioin = versioner.Repository.GetVersion(item, version.VersionIndex).Version;
+				//persister.Get(version.ID);
 				Assert.That(loadedVersioin["Reference"], Is.Null);
 			}
 		}
@@ -276,9 +277,37 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 restoredItem = (PersistableItem1) persister.Get(master.ID);
 			CollectionAssert.AreEqual(new[] { link1 }, restoredItem.ContentLinks);
 
-			PersistableItem1 versionItem = (PersistableItem1)persister.Get(version2.ID);
+			PersistableItem1 versionItem = (PersistableItem1)versioner.GetVersion(master, version2.VersionIndex);
+			// persister.Get(version2.ID);
 			CollectionAssert.AreEqual(new[] { link2 }, versionItem.ContentLinks);
 
+		}
+
+		[Test]
+		public void CreatingVersion_IncreasesVersionIndex()
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(master);
+
+			var version1 = versioner.SaveVersion(master);
+
+			master.VersionIndex.ShouldBe(1);
+			version1.VersionIndex.ShouldBe(0);
+		}
+
+		[Test]
+		public void ReplacingVersions_IncreasesVersionIndex()
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(master);
+
+			var version1 = versioner.SaveVersion(master);
+
+			var version2 = versioner.ReplaceVersion(master, version1, storeCurrentVersion: true);
+
+			version1.VersionIndex.ShouldBe(0);
+			version2.VersionIndex.ShouldBe(1);
+			master.VersionIndex.ShouldBe(2);
 		}
 	}
 }

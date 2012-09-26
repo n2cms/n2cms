@@ -4,6 +4,7 @@ using System.Xml.XPath;
 using N2.Definitions;
 using N2.Engine;
 using N2.Edit.FileSystem;
+using N2.Security;
 
 namespace N2.Persistence.Serialization
 {
@@ -14,17 +15,14 @@ namespace N2.Persistence.Serialization
 		private readonly ContentActivator activator;
 		private readonly IDictionary<string, IXmlReader> readers;
 		bool ignoreMissingTypes = true;
+		private IRepository<ContentItem> repository;
 
-		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator)
-			: this(definitions, activator, DefaultReaders())
-		{
-		}
-
-		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IDictionary<string, IXmlReader> readers)
+		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IRepository<ContentItem> repository)
 		{
 			this.definitions = definitions;
 			this.activator = activator;
-			this.readers = readers;
+			this.readers = DefaultReaders();
+			this.repository = repository;
 		}
 
 		public bool IgnoreMissingTypes
@@ -106,6 +104,17 @@ namespace N2.Persistence.Serialization
 			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
 				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
 			HandleParentRelation(item, attributes["parent"], journal);
+
+			item.AncestralTrail = attributes["ancestralTrail"];
+			item.AlteredPermissions = (Permission)Convert.ToInt32(attributes["alteredPermissions"]);
+			item.ChildState = (Collections.CollectionState)Convert.ToInt32(attributes["childState"]);
+			item.VersionIndex = Convert.ToInt32(attributes["versionIndex"]);
+			if (attributes.ContainsKey("versionOf"))
+			{
+				item.VersionOf.ID = Convert.ToInt32(attributes["versionOf"]);
+				item.VersionOf.ValueAccessor = repository.Get;
+			}
+
 		}
 
 		protected virtual void HandleParentRelation(ContentItem item, string parent, ReadingJournal journal)

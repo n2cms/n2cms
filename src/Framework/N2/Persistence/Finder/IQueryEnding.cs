@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using N2.Collections;
+using System;
 
 namespace N2.Persistence.Finder
 {
@@ -12,6 +13,7 @@ namespace N2.Persistence.Finder
 		/// <summary>Orders result by the given expression.</summary>
 		IOrderBy OrderBy { get; }
 
+		[Obsolete("Querying previous versions is no longer supported", true)]
 		/// <summary>Defines wether previous versions are included in the query. By default previous versions are excluded.</summary>
 		IQueryEnding PreviousVersions(VersionOption option);
 

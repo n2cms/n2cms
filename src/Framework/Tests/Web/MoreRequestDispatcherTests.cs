@@ -6,6 +6,7 @@ using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
+using N2.Persistence;
 
 namespace N2.Tests.Web
 {
@@ -221,7 +222,8 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config, TestSupport.CreateVersionRepository());
+			IPersister persister = null;
+			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config, TestSupport.CreateVersionRepository(ref persister));
 
 			handler = new FakeRequestLifeCycleHandler(webContext, dispatcher, adapterProvider, errorHandler,
 				new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(config, null, null, new EditSection()) });

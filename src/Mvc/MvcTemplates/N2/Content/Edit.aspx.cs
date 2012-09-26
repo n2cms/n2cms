@@ -52,7 +52,7 @@ namespace N2.Edit
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
 		protected IEditUrlManager ManagementPaths;
-		protected ContentVersionRepository VersionRepository;
+		protected ContentVersionRepository Repository;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -63,7 +63,7 @@ namespace N2.Edit
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
 			ManagementPaths = Engine.ManagementPaths;
-			VersionRepository = Engine.Resolve<ContentVersionRepository>();
+			Repository = Engine.Resolve<ContentVersionRepository>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -166,8 +166,8 @@ namespace N2.Edit
 		{
 			Commands.Save(ctx);
 
-			// mannu: lägg någon annanstans
-			this.VersionRepository.CreateDraft(ctx.Content, User);
+			//// mannu: lägg någon annanstans
+			//this.VersionRepository.CreateDraft(ctx.Content, "admin");
 		}
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
@@ -237,14 +237,16 @@ namespace N2.Edit
 			}
 			else
 			{
-				IList<ContentItem> unpublishedVersions = Engine.Resolve<IItemFinder>()
-					.Where.VersionOf.Eq(item)
-					.And.Updated.Gt(item.Updated)
-					.OrderBy.Updated.Desc.MaxResults(1).Select();
+				var version = Engine.Resolve<N2.Edit.Versioning.ContentVersionRepository>().GetDraft(item);
+				//IList<ContentItem> unpublishedVersions = Engine.Resolve<IItemFinder>()
+				//    .Where.VersionOf.Eq(item)
+				//    .And.Updated.Gt(item.Updated)
+				//    .OrderBy.Updated.Desc.MaxResults(1).Select();
 
-				if(unpublishedVersions.Count > 0 && unpublishedVersions[0].Updated > item.Updated)
+				//if (unpublishedVersions.Count > 0 && unpublishedVersions[0].Updated > item.Updated)
+				if (version != null && version.Saved > item.Updated)
 				{
-					DisplayThisHasNewerVersionInfo(unpublishedVersions[0]);
+					DisplayThisHasNewerVersionInfo(version.Version);
 				}
 			}
 		}
