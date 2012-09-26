@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 using N2.Edit.Workflow;
 using N2.Security;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Edit.Versions
 {
@@ -37,23 +38,25 @@ namespace N2.Edit.Versions
 
 		protected void gvHistory_RowCommand(object sender, GridViewCommandEventArgs e)
 		{
+			var stateChanger = Engine.Resolve<StateChanger>();
+
             ContentItem currentVersion = Selection.SelectedItem;
-			int id = Convert.ToInt32(e.CommandArgument);
+			int versionIndex = Convert.ToInt32(e.CommandArgument);
 			if (e.CommandName == "Publish")
 			{
-				if (currentVersion.ID == id)
+				if (currentVersion.VersionIndex == versionIndex)
 				{
 					currentVersion.SavedBy = User.Identity.Name;
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
 						currentVersion.Published = DateTime.Now;
-					Engine.Resolve<StateChanger>().ChangeTo(currentVersion, ContentState.Published);
+					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);
 
 				}
 				else
 				{
-					N2.ContentItem versionToRestore = Engine.Persister.Get(id);
+					N2.ContentItem versionToRestore = versioner.GetVersion(currentVersion, versionIndex);
 					bool storeCurrent = versionToRestore.State == ContentState.Unpublished;
 					ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, storeCurrent);
 
@@ -61,17 +64,15 @@ namespace N2.Edit.Versions
 					
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
 						currentVersion.Published = DateTime.Now;
-					if (storeCurrent)
-						currentVersion.VersionIndex = versioner.GetVersionsOf(currentVersion).Max(v => v.VersionIndex) + 1;
-					Engine.Resolve<StateChanger>().ChangeTo(currentVersion, ContentState.Published);
+					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);
 				}
 			}
-			else if (currentVersion.ID != id && e.CommandName == "Delete")
+			else if (currentVersion.VersionIndex != versionIndex && e.CommandName == "Delete")
 			{
-				ContentItem item = Engine.Persister.Get(id);
-				persister.Delete(item);
+				ContentItem item = versioner.GetVersion(currentVersion, versionIndex);
+				versioner.DeleteVersion(item);
 			}
 		}
 

@@ -241,6 +241,12 @@ namespace N2.Persistence
 			return isVersionable;
 		}
 
+		/// <summary>Deletes a version from the version history.</summary>
+		/// <param name="version">The version to delete.</param>
+		public virtual void DeleteVersion(ContentItem version)
+		{
+			Repository.Delete(version);
+		}
 		#endregion
 
 

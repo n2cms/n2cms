@@ -42,5 +42,9 @@ namespace N2.Persistence
 		/// <param name="item">The item to check.</param>
 		/// <returns>True if the item is allowed to have versions.</returns>
 		bool IsVersionable(ContentItem item);
+
+		/// <summary>Deletes a version from the version history.</summary>
+		/// <param name="version">The version to delete.</param>
+		void DeleteVersion(ContentItem version);
 	}
 }
