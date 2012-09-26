@@ -79,9 +79,6 @@ namespace N2.Definitions
             if (item.Parent == null)
 				return;
             
-            if (item.ID == 0)
-                item.AddTo(item.Parent);
-
 			foreach (ContentItem updatedItem in ReorderChildren(item.Parent))
 			{
 				context.UnsavedItems.Add(updatedItem);

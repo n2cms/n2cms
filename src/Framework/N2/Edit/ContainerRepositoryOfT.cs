@@ -105,6 +105,7 @@ namespace N2.Edit
 			container.Name = name;
 			setupCreatedItem(container);
 			persister.Save(container);
+			persister.Repository.Flush();
 			return container;
 		}
 	}

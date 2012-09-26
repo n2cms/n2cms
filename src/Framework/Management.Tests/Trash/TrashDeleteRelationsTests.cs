@@ -50,6 +50,7 @@ namespace N2.Management.Tests.Trash
 		{
 			trash.Throw(item);
 			trash.PurgeAll();
+			persister.Dispose();
 
 			engine.Persister.Get(item.ID).ShouldBe(null);
 		}
@@ -59,10 +60,16 @@ namespace N2.Management.Tests.Trash
 		{
 			item2["Relation"] = item;
 			engine.Persister.Save(item2);
-
+			
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			
 			item2["Relation"].ShouldBe(null);
 		}
 
@@ -73,9 +80,15 @@ namespace N2.Management.Tests.Trash
 			engine.Resolve<IVersionManager>().SaveVersion(item2);
 			engine.Persister.Save(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			
 			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(item2).ToList();
 			versions[0]["Relation"].ShouldBe(null);
 			versions[1]["Relation"].ShouldBe(null);
@@ -89,10 +102,17 @@ namespace N2.Management.Tests.Trash
 
 			item2["Relation"] = item;
 			item2["Relation2"] = item1_1;
+			persister.Save(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			
 			item2["Relation"].ShouldBe(null);
 			item2["Relation2"].ShouldBe(null);
 		}
@@ -108,9 +128,16 @@ namespace N2.Management.Tests.Trash
 			collection.Add(item1_1);
 			engine.Persister.Save(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
+			persister.Dispose();
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			
 			item2.GetDetailCollection("Links", true).Count.ShouldBe(0);
 		}
 
@@ -127,9 +154,16 @@ namespace N2.Management.Tests.Trash
 
 			var version = versions.SaveVersion(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			version = persister.Get<ThrowableItem>(version.ID);
+			
 			item2.GetDetailCollection("Links", false).Count.ShouldBe(0);
 			version.GetDetailCollection("Links", false).Count.ShouldBe(0);
 		}
@@ -146,6 +180,9 @@ namespace N2.Management.Tests.Trash
 			item.GetDetailCollection("Links", true).Add(item1_1);
 			engine.Persister.Save(item);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
@@ -166,6 +203,9 @@ namespace N2.Management.Tests.Trash
 			
 			var version = versions.SaveVersion(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
@@ -200,9 +240,15 @@ namespace N2.Management.Tests.Trash
 			N2.Details.ContentDetail.Multi("Relation", true, 1, 1.1, DateTime.Now, "hello", item, null).AddTo(item2);
 			engine.Persister.Save(item2);
 
+			persister.Dispose();
+			item = persister.Get<ThrowableItem>(item.ID);
+			
 			trash.Throw(item);
 			trash.PurgeAll();
 
+			persister.Dispose();
+			item2 = persister.Get<ThrowableItem>(item2.ID);
+			
 			item2.Details["Relation"].ShouldBe(null);
 		}
 

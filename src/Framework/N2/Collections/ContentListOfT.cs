@@ -281,5 +281,10 @@ namespace N2.Collections
 		{
 			return new ContentList<T>(inner.ToList());
 		}
+
+		public bool WasInitialized
+		{
+			get { return true; }
+		}
 	}
 }
