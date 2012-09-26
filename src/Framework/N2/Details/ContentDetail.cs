@@ -513,7 +513,7 @@ namespace N2.Details
 
 		protected internal virtual void RemoveFromEnclosingItem()
 		{
-			if (EnclosingItem != null)
+			if (EnclosingItem != null && EnclosingItem.Details.WasInitialized)
 				EnclosingItem.Details.Remove(Name);
 		}
 
