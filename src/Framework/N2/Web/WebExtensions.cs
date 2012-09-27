@@ -14,6 +14,7 @@ using System.Collections;
 using N2.Definitions;
 using N2.Configuration;
 using N2.Edit;
+using N2.Edit.Versioning;
 
 namespace N2.Web
 {
@@ -190,6 +191,35 @@ namespace N2.Web
 			}
 
 			return nvc;
+		}
+
+		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string viParameter, ContentItem masterVersion)
+		{
+			var path = new PathData(masterVersion);
+			if (TryParseVersion(versionRepository, viParameter, path))
+				return path.CurrentItem;
+			return null;
+		}
+
+		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string viParameter, PathData pathData)
+		{
+			if (!string.IsNullOrEmpty(viParameter))
+			{
+				int versionIndex = int.Parse(viParameter);
+				var version = versionRepository.GetVersion(pathData.CurrentItem, versionIndex);
+				if (version != null)
+				{
+					if (pathData.CurrentItem.IsPage && version.Version.IsPage)
+						pathData.CurrentPage = pathData.CurrentItem = version.Version;
+					else if (version.Version.IsPage)
+						pathData.CurrentPage = version.Version;
+					else
+						pathData.CurrentItem = version.Version;
+
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

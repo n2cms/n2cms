@@ -169,12 +169,14 @@ namespace N2.Edit
 			if (item == null)
 				return null;
 
-			string editUrl = Url.ResolveTokens(EditItemUrl);
-			if (item.VersionOf.HasValue)
-				return string.Format("{0}?selectedUrl={1}", editUrl,
-									 HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).GetRewrittenUrl()));
+			var editUrl = EditItemUrl.ToUrl()
+				.ResolveTokens()
+				.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
 
-			return Url.Parse(editUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+			if (item.VersionOf.HasValue)
+				editUrl = editUrl.AppendQuery(PathData.VersionQueryKey, item.VersionIndex);
+
+			return editUrl;
 		}
 
 		private static string FormatSelectedUrl(ContentItem selectedItem, string path)

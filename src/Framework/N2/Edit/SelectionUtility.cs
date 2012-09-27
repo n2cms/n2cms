@@ -70,20 +70,22 @@ namespace N2.Edit
         {
 			if (request == null) return null; // explicitly passed selection
 
+			ContentItem selectedItem = null;
 			string selected = request[SelectedQueryKey];
             if (!string.IsNullOrEmpty(selected))
-                return Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
+                selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
             string selectedUrl = request["selectedUrl"];
 			if (!string.IsNullOrEmpty(selectedUrl))
-				return Engine.UrlParser.Parse(selectedUrl)
+				selectedItem = Engine.UrlParser.Parse(selectedUrl)
 					?? SelectFile(selectedUrl);
 
             string itemId = request[PathData.ItemQueryKey];
             if (!string.IsNullOrEmpty(itemId))
-                return Engine.Persister.Get(int.Parse(itemId));
+				selectedItem = Engine.Persister.Get(int.Parse(itemId));
 
-            return null;
+			return Engine.Resolve<Edit.Versioning.ContentVersionRepository>().ParseVersion(request[PathData.VersionQueryKey], selectedItem)
+				?? selectedItem;
         }
 
 		private ContentItem SelectFile(string selectedUrl)

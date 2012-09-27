@@ -61,17 +61,8 @@ namespace N2.Web
 				{
 					var pathData = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 
-					string viParameter = url.GetQuery("vi");
-					if (!string.IsNullOrEmpty(viParameter))
-					{
-						int versionIndex = int.Parse(viParameter);
-						var version = versionRepository.GetVersion(pathData.CurrentItem, versionIndex);
-						if (version != null)
-						{
-							pathData.CurrentPage = pathData.CurrentItem = version.Version;
-							return pathData;
-						}
-					}
+					if (versionRepository.TryParseVersion(url.GetQuery("vi"), pathData))
+						return pathData;
 
 					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
 					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && versionRepository.HasDraft(pathData.CurrentItem))

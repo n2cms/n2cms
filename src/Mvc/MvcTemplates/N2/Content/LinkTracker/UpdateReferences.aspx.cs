@@ -24,6 +24,8 @@ namespace N2.Edit.LinkTracker
 		{
 			base.OnLoad(e);
 
+			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+
 			Title = "Update links leading to " + Selection.SelectedItem.Title;
 
 			previousParent = Engine.Resolve<Navigator>().Navigate(Request["previousParent"]);
