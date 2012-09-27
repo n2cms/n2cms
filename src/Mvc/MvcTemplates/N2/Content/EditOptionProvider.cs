@@ -35,7 +35,7 @@ namespace N2.Edit
 					Target = Targets.Preview,
 					SortOrder = 1,
 					Name = "Organize",
-					Url = "{Selected.Url}?edit=drag"//editUrlManager.GetEditExistingItemUrl(
+					Url = "{url}&edit=drag"//editUrlManager.GetEditExistingItemUrl(
 				}
 			};
 		}

@@ -56,7 +56,7 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return ResolveResourceUrl(selectedItem.Url);
+			return ResolveResourceUrl(selectedItem.Url).ToUrl().AppendQuery("src", Interfaces.Managing);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
