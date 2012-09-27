@@ -119,9 +119,11 @@ body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:
     #pageTools .toolbox .commandOptions .opener
     {
     	height: 30px;
+	    width:18px;
     }
     #top #topbar .toolbox .commandOptions .opener {
 	    height:34px;
+	    width:18px;
     }
     #top .toolbox .closed .opener,
     #pageTools .toolbox .closed .opener {
