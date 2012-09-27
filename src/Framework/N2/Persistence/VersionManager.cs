@@ -37,7 +37,7 @@ namespace N2.Persistence
 		/// <summary>Creates a version of the item. This must be called before the item item is modified to save a version before modifications.</summary>
 		/// <param name="item">The item to create a old version of.</param>
 		/// <returns>The old version.</returns>
-		public virtual ContentItem SaveVersion(ContentItem item)
+		public virtual ContentItem SaveVersion(ContentItem item, bool createPreviousVersion = true)
 		{
 			if (item == null) 
 				throw new ArgumentNullException("item");
@@ -63,11 +63,18 @@ namespace N2.Persistence
 			oldVersion.VersionOf = item;
 			if (item.Parent != null)
 				oldVersion["ParentID"] = item.Parent.ID;
-			//itemRepository.SaveOrUpdate(oldVersion);
-			Repository.Save(oldVersion, webContext.User.Identity.Name);
 
-			item.VersionIndex += 1;
-			itemRepository.SaveOrUpdate(item);
+			if (createPreviousVersion)
+			{
+				Repository.Save(oldVersion, webContext.User.Identity.Name);
+				item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
+				itemRepository.SaveOrUpdate(item);
+			}
+			else
+			{
+				oldVersion.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
+				Repository.Save(oldVersion, webContext.User.Identity.Name);
+			}
 
 			if (ItemSavedVersion != null)
 				ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
@@ -106,9 +113,14 @@ namespace N2.Persistence
                         Replace(currentItem, replacementItem);
 
 						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
+						{
 							// drafts can be removed once they have been published
 							//itemRepository.Delete(replacementItem);
+							currentItem.VersionIndex = replacementItem.VersionIndex;
+							itemRepository.SaveOrUpdate(currentItem);
+
 							Repository.Delete(replacementItem);
+						}
 
                         transaction.Commit();
                         return versionOfCurrentItem;
@@ -136,6 +148,10 @@ namespace N2.Persistence
 
             ((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
 
+			var latestVersion = Repository.GetLatestVersion(currentItem);
+			if (currentItem != latestVersion)
+				// do not increment when latest is current
+				currentItem.VersionIndex = latestVersion.VersionIndex + 1;
             currentItem.Updated = Utility.CurrentTime();
             itemRepository.SaveOrUpdate(currentItem);
 

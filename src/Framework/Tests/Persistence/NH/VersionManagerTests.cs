@@ -309,5 +309,40 @@ namespace N2.Tests.Persistence.NH
 			version2.VersionIndex.ShouldBe(1);
 			master.VersionIndex.ShouldBe(2);
 		}
+
+		[Test]
+		public void SavingVersion_CanGiveNewVersion_GreaterIndex()
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(master);
+
+			var version1 = versioner.SaveVersion(master, createPreviousVersion: false);
+
+			version1.VersionIndex.ShouldBe(1);
+			master.VersionIndex.ShouldBe(0);
+		}
+
+		[Test]
+		public void ReplacingVersion_SwitchesVersionIndex()
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(master);
+
+			var version1 = versioner.SaveVersion(master, createPreviousVersion: false);
+			var version2 = versioner.ReplaceVersion(master, version1, storeCurrentVersion: true);
+
+			version1.VersionIndex.ShouldBe(1);
+			version2.VersionIndex.ShouldBe(0);
+			master.VersionIndex.ShouldBe(2);
+		}
+
+		[Test]
+		public void GetGreatestVersionIndex_WhenNoVersions()
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(master);
+
+			versioner.Repository.GetGreatestVersionIndex(master).ShouldBe(0);
+		}
 	}
 }

@@ -12,7 +12,7 @@ namespace N2.Edit.Workflow.Commands
         public override void Process(CommandContext state)
         {
 			if(versionMaker.IsVersionable(state.Content))
-				state.Content = versionMaker.SaveVersion(state.Content);
+				state.Content = versionMaker.SaveVersion(state.Content, createPreviousVersion: false);
         }
     }
 }

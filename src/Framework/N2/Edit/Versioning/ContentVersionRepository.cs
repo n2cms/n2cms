@@ -103,5 +103,16 @@ namespace N2.Edit.Versioning
 		{
 			Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
 		}
+
+		public virtual ContentItem GetLatestVersion(ContentItem item)
+		{
+			var latestVersion = GetVersions(item).FirstOrDefault();
+			return (latestVersion != null && latestVersion.VersionIndex > item.VersionIndex) ? latestVersion.Version : item;
+		}
+
+		public virtual int GetGreatestVersionIndex(ContentItem item)
+		{
+			return GetVersions(item).Select(v => v.VersionIndex).Concat(new[] { item.VersionIndex }).Max();
+		}
 	}
 }
