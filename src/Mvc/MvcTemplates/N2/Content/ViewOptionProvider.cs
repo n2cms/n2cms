@@ -34,7 +34,7 @@ namespace N2.Edit
 					Target = Targets.Top,
 					SortOrder = 0,
 					Name = "Published",
-					Url = editUrlManager.GetEditInterfaceUrl(ViewPreference.Published),
+					Url = editUrlManager.GetEditInterfaceUrl(ViewPreference.Published).ToUrl().AppendQuery(PathData.SelectedQueryKey + "={selected}"),
 					Selected = webContext.HttpContext.GetViewPreference(defaultViewPreference) == ViewPreference.Published
 				},
 				new ToolbarOption{
@@ -42,7 +42,7 @@ namespace N2.Edit
 					Target = Targets.Top,
 					SortOrder = 1,
 					Name = "Draft",
-					Url = editUrlManager.GetEditInterfaceUrl(ViewPreference.Draft),
+					Url = editUrlManager.GetEditInterfaceUrl(ViewPreference.Draft).ToUrl().AppendQuery(PathData.SelectedQueryKey + "={selected}"),
 					Selected = webContext.HttpContext.GetViewPreference(defaultViewPreference) == ViewPreference.Draft
 				}
 			};
