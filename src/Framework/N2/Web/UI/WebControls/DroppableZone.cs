@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Integrity;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Web.UI.WebControls
 {
@@ -59,11 +60,11 @@ namespace N2.Web.UI.WebControls
 				string preview = Page.Request.QueryString["preview"];
 				if (!string.IsNullOrEmpty(preview))
 				{
-					int previewdItemID;
+					int previewIndex;
 					int publishedItemID;
-					if (int.TryParse(preview, out previewdItemID) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
+					if (int.TryParse(preview, out previewIndex) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
 						if (publishedItemID == item.ID)
-							item = Engine.Persister.Get(previewdItemID);
+							item = Engine.Resolve<IVersionManager>().GetVersion(item, previewIndex);
 				}
 
 				ItemDefinition definition = GetDefinition(item);

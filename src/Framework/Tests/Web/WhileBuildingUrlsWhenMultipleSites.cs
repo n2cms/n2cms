@@ -1,6 +1,7 @@
 using System.Linq;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Web
 {
@@ -69,5 +70,18 @@ namespace N2.Tests.Web
 
             Assert.That(count, Is.EqualTo(1));
         }
+
+		[Test]
+		public void Url_ToItem_ThatIsVersion_IsTheUrl_OfTheMasterVersion_PlusVersionIndex()
+		{
+			CreateDefaultStructure();
+			var version = new PageItem { VersionIndex = 1, VersionOf = item1_1 };
+
+			var itemUrl = parser.BuildUrl(item1_1);
+			var url = parser.BuildUrl(version);
+
+			itemUrl.ShouldBe("/item1_1.aspx");
+			url.ShouldBe("/item1_1.aspx?vi=1");
+		}
     }
 }

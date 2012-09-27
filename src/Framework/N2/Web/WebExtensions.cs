@@ -180,7 +180,7 @@ namespace N2.Web
 			if (preference == defaultPreference)
 				return url;
 			else
-				return url.AppendQuery(ViewPreferenceQueryString, preference.ToString().ToLower());
+				return url.SetQueryParameter(ViewPreferenceQueryString, preference.ToString().ToLower());
 		}
 		public static NameValueCollection ToNameValueCollection(this IDictionary<string, string> queryString)
 		{

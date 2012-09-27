@@ -585,6 +585,7 @@
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
+    <Compile Include="Persistence\Sources\VersionSource.cs" />
     <Compile Include="Persistence\Sources\SourceBase.cs" />
     <Compile Include="Persistence\Sources\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />

@@ -39,7 +39,7 @@ namespace N2.Persistence.Sources
 		public virtual int SortOrder 
 		{ 
 			get 
-			{ 
+			{
 				return 200
 					- (BaseContentType.IsInterface ? 100 : 0)
 					- 10 * Utility.InheritanceDepth(GetType()) 

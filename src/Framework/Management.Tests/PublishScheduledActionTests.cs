@@ -11,6 +11,7 @@ using N2.Web;
 using N2.Tests.Persistence;
 using N2.Management.Externals;
 using Shouldly;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Tests
 {
@@ -71,7 +72,9 @@ namespace N2.Management.Tests
 
 			var all = engine.Persister.Repository.Find().ToList();
 			var published = all.Single(i => i.State == ContentState.Published && !i.VersionOf.HasValue);
-			var unpublished = all.Single(i => i.State == ContentState.Unpublished && i.VersionOf.HasValue);
+			//var unpublished = all.Single(i => i.State == ContentState.Unpublished && i.VersionOf.HasValue);
+			var versions = engine.Resolve<IRepository<ContentVersion>>().Find();
+			var unpublished = versions.Where(i => i.State == ContentState.Unpublished).Select(v => v.Version).Single();
 
 			published.Title.ShouldBe("ToBePublished");
 			unpublished.Title.ShouldBe("Original");

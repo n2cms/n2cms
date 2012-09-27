@@ -2,6 +2,7 @@ using N2.Configuration;
 using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Web
 {
@@ -44,9 +45,11 @@ namespace N2.Tests.Web
 		{
 			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
 			data4.VersionOf = data1;
+			data4.VersionIndex = 66;
 
 			string url = parser.BuildUrl(data4);
-			Assert.That(url, Is.EqualTo("/?item=123"));
+			url.ShouldBe("/?item=6&vi=66");
+			//Assert.That(url, Is.EqualTo("/?item=123"));
 		}
 
 		[Test]
@@ -54,9 +57,10 @@ namespace N2.Tests.Web
 		{
 			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
 			data4.VersionOf = data3;
+			data4.VersionIndex = 77;
 
 			string url = parser.BuildUrl(data4);
-			Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?item=123"));
+			Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?item=8&vi=77"));
 		}
 
 		[Test]

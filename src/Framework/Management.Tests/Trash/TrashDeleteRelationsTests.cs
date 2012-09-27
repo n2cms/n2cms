@@ -8,6 +8,7 @@ using N2.Edit.Tests.Trash;
 using System.Security.Principal;
 using Shouldly;
 using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Tests.Trash
 {
@@ -162,7 +163,8 @@ namespace N2.Management.Tests.Trash
 
 			persister.Dispose();
 			item2 = persister.Get<ThrowableItem>(item2.ID);
-			version = persister.Get<ThrowableItem>(version.ID);
+			version = engine.Resolve<ContentVersionRepository>().GetVersion(item2, version.VersionIndex).Version; 
+			// persister.Get<ThrowableItem>(version.ID);
 			
 			item2.GetDetailCollection("Links", false).Count.ShouldBe(0);
 			version.GetDetailCollection("Links", false).Count.ShouldBe(0);

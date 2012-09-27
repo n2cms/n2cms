@@ -5,6 +5,7 @@ using System.Text;
 
 namespace N2.Persistence.Sources
 {
+	[ContentSource]
 	public class ActiveContentSource : SourceBase<IActiveContent>
 	{
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)

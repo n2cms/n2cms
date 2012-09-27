@@ -71,16 +71,17 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void GetEditUrl_OfUnpublishedVersion_RevertsToIdentity()
+		public void GetEditUrl_OfUnpublishedVersion_AppendsVersionIndex_ToMasterVersionPath()
 		{
 			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
 			ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
 			ContentItem versionOfItem = CreateOneItem<ComplexContainersItem>(3, "child", null);
 			versionOfItem.VersionOf = item;
+			versionOfItem.VersionIndex = 33;
 
 			string editUrl = editUrlManager.GetEditExistingItemUrl(versionOfItem);
 
-			Assert.That(editUrl, Is.EqualTo("/N2/Content/Edit.aspx?selectedUrl=" + HttpUtility.UrlEncode("/Default.aspx?page=3")));
+			Assert.That(editUrl, Is.EqualTo("/N2/Content/Edit.aspx?selected=" + HttpUtility.UrlEncode(item.Path) + "&vi=33"));
 		}
 	}
 }

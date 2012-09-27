@@ -103,14 +103,15 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void AppendsVersionID_WhenBuildingUrl_OfVersion()
+		public void AppendsVersionIndex_ToMasterVersion_WhenBuildingUrl_OfVersion()
 		{
 			PageItem version = CreateOneItem<PageItem>(11, "offsideitem", null);
 			version.VersionOf = startItem;
+			version.VersionIndex = 22;
 
 			string url = parser.BuildUrl(version);
 
-			Assert.AreEqual("/?page=11", url);
+			Assert.AreEqual("/?vi=22", url);
 		}
 	}
 }

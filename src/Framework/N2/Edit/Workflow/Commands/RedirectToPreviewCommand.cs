@@ -17,7 +17,7 @@ namespace N2.Edit.Workflow.Commands
             string redirectTo = adapters.ResolveAdapter<NodeAdapter>(state.Content).GetPreviewUrl(state.Content);
 			if (state.Content.VersionOf.HasValue)
                 redirectTo = Url.Parse(redirectTo)
-                    .AppendQuery("preview", state.Content.ID)
+                    .AppendQuery("preview", state.Content.VersionIndex)
                     .AppendQuery("original", state.Content.VersionOf.ID);
 			state["RedirectTo"] = redirectTo;
         }

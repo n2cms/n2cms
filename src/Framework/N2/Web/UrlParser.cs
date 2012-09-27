@@ -245,7 +245,8 @@ namespace N2.Web
 
 			if (item.VersionOf.HasValue)
 			{
-				current = item.VersionOf;
+				return BuildUrl(item.VersionOf).ToUrl()
+					.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
 			}
 
 			// move up until first real page

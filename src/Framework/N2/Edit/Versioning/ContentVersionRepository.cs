@@ -80,14 +80,14 @@ namespace N2.Edit.Versioning
 
         public ContentVersion Save(ContentItem item, string username)
         {
-            var version = new ContentVersion(importer, exporter)
-            {
-				Master = GetMaster(item),
-				Published = Utility.CurrentTime(),
-                Saved = Utility.CurrentTime(),
-				SavedBy = username,
-				Version = item
-            };
+			var version = GetVersion(GetMaster(item), item.VersionIndex)
+				?? new ContentVersion(importer, exporter);
+
+			version.Master = GetMaster(item);
+			version.Published = Utility.CurrentTime();
+            version.Saved = Utility.CurrentTime();
+			version.SavedBy = username;
+			version.Version = item;
 
             Repository.SaveOrUpdate(version);
 

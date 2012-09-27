@@ -6,19 +6,22 @@ using N2.Persistence.Finder;
 using N2.Plugin.Scheduling;
 using N2.Security;
 using N2.Edit.Workflow;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.AutoPublish
 {
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
+		private ContentVersionRepository versionRepository;
 		private IVersionManager versioner;
 		private IPersister persister;
 		private ISecurityManager security;
 		private StateChanger changer;
 		
-		public PublishScheduledAction(IVersionManager versioner, IPersister persister, ISecurityManager security, StateChanger changer)
+		public PublishScheduledAction(ContentVersionRepository versionRepository, IVersionManager versioner, IPersister persister, ISecurityManager security, StateChanger changer)
 		{
+			this.versionRepository = versionRepository;
 			this.versioner = versioner;
 			this.persister = persister;
 			this.security = security;
