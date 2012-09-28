@@ -74,17 +74,6 @@ namespace N2.Persistence.Serialization
 			else
 			{
 				journal.Register(referencedItemID, setter);
-				//EventHandler<ItemEventArgs> handler = null;
-				//handler = delegate(object sender, ItemEventArgs e)
-				//{
-				//    if (e.AffectedItem.ID == referencedItemID)
-				//    {
-				//        setter(e.AffectedItem);
-				//        journal.ItemAdded -= handler;
-				//    }
-				//};
-
-				//journal.ItemAdded += handler;
 			}
 		}
 	}

@@ -25,7 +25,6 @@ namespace N2.Edit.Workflow
         CloneCommand clone;
         ValidateCommand validate;
         SaveCommand save;
-        IncrementVersionIndexCommand incrementVersionIndex;
         UpdateContentStateCommand draftState;
         UpdateContentStateCommand publishedState;
         ActiveContentSaveCommand saveActiveContent;
@@ -51,7 +50,6 @@ namespace N2.Edit.Workflow
             validate = new ValidateCommand();
             this.security = security;
             save = new SaveCommand(persister);
-            incrementVersionIndex = new IncrementVersionIndexCommand(versionMaker);
             draftState = new UpdateContentStateCommand(changer, ContentState.Draft);
             publishedState = new UpdateContentStateCommand(changer, ContentState.Published);
             saveActiveContent = new ActiveContentSaveCommand();
@@ -75,17 +73,17 @@ namespace N2.Edit.Workflow
 				if (!context.Content.VersionOf.HasValue)
 				{
 					if(context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
 
 					if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
-						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, publishedDate, save, updateReferences);
 
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
 				}
 
 				// has been published before
 				if (context.Content.State == ContentState.Unpublished)
-					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
 
                 // has never been published before (remove old version)
 				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
@@ -96,19 +94,19 @@ namespace N2.Edit.Workflow
                 if (!context.Content.VersionOf.HasValue)
                 {
                     if (context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
+						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, publishedState, moveToPosition/*, publishedDate*/, save);
 
                     if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
-						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, publishedDate, save, updateReferences);
 
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
                 }
                 
                 if (context.Content.State == ContentState.Unpublished)
-					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
 
 				if (context.Content.State == ContentState.Draft)
-					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, publishedState, moveToPosition, publishedDate, save, updateReferences);
 
 				return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
             }
@@ -130,11 +128,11 @@ namespace N2.Edit.Workflow
 
 			if (context.Content.ID != 0 && !context.Content.VersionOf.HasValue)
 				// update a master version
-				return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
+				return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, draftState, unpublishedDate, save);
 
 			if (context.Content.State == ContentState.Unpublished)
 				// previously published
-				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
+				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, draftState, unpublishedDate, save);
 
 			// has never been published before
 			return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);

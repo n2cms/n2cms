@@ -51,22 +51,8 @@ namespace N2.Persistence
 
 			item = args.AffectedItem;
 
-			ContentItem oldVersion = item.Clone(false);
-
-			item.Children
-				.Where(c => c is IPart)
-				.ToList()
-				.ForEach(part => oldVersion.Children.Add(SaveVersion(part, false)));
-
-			if (item.State == ContentState.Published)
-				stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
-			else
-				stateChanger.ChangeTo(oldVersion, ContentState.Draft);
-			oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
-			oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
-			oldVersion.Parent = null;
-			oldVersion.AncestralTrail = "/";
-			oldVersion.VersionOf = item;
+			ContentItem oldVersion = item.CloneForVersioningRecursive(stateChanger);
+			
 			if (item.Parent != null)
 				oldVersion["ParentID"] = item.Parent.ID;
 

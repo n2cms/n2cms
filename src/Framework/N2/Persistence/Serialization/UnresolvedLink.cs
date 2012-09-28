@@ -15,5 +15,7 @@ namespace N2.Persistence.Serialization
 			this.ReferencedItemID = referencedItemID;
 			this.Setter = setter;
 		}
+
+		public bool IsChild { get; set; }
 	}
 }

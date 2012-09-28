@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Index;
@@ -13,8 +14,6 @@ using N2.Engine;
 using N2.Web;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace N2.Persistence.Search
 {

@@ -39,6 +39,7 @@ namespace N2.Persistence.Serialization
 			readers["authorizations"] = new AuthorizationXmlReader();
 			readers["properties"] = new PersistablePropertyXmlReader();
 			readers["attachments"] = new AttachmentXmlReader();
+			// do via parent relation instead: readers["children"] = new ChildXmlReader();
 			return readers;
 		}
 
@@ -103,8 +104,6 @@ namespace N2.Persistence.Serialization
 				item.TranslationKey = Convert.ToInt32(attributes["translationKey"]);
 			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
 				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
-			HandleParentRelation(item, attributes["parent"], journal);
-
 			item.AncestralTrail = attributes["ancestralTrail"];
 			item.AlteredPermissions = (Permission)Convert.ToInt32(attributes["alteredPermissions"]);
 			item.ChildState = (Collections.CollectionState)Convert.ToInt32(attributes["childState"]);
@@ -115,6 +114,8 @@ namespace N2.Persistence.Serialization
 				item.VersionOf.ValueAccessor = repository.Get;
 			}
 
+			if (attributes.ContainsKey("parent"))
+				HandleParentRelation(item, attributes["parent"], journal);
 		}
 
 		protected virtual void HandleParentRelation(ContentItem item, string parent, ReadingJournal journal)
@@ -123,7 +124,10 @@ namespace N2.Persistence.Serialization
 			{
 				int parentID = int.Parse(parent);
 				ContentItem parentItem = journal.Find(parentID);
-				item.AddTo(parentItem);
+				if (parentItem != null)
+					item.AddTo(parentItem);
+				else
+					journal.Register(parentID, (laterParent) => item.AddTo(laterParent), isChild: true);
 			}
 		}
 

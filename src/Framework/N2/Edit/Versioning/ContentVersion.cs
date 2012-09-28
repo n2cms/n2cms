@@ -3,6 +3,7 @@ using N2.Persistence;
 using N2.Persistence.Serialization;
 using N2.Engine;
 using System.IO;
+using System.Linq;
 
 namespace N2.Edit.Versioning
 {
@@ -93,7 +94,7 @@ namespace N2.Edit.Versioning
 		internal static ContentItem Deserialize(Importer importer, string xml)
 		{
 			var journal = importer.Read(new StringReader(xml));
-			foreach (var link in journal.UnresolvedLinks)
+			foreach (var link in journal.UnresolvedLinks.Where(ul => ul.IsChild == false))
 			{
 				var item = importer.Persister.Get(link.ReferencedItemID);
 				if (item != null)

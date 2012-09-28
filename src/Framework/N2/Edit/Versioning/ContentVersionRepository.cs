@@ -8,6 +8,7 @@ using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Persistence;
 using System.Security.Principal;
+using N2.Persistence.Proxying;
 
 namespace N2.Edit.Versioning
 {
@@ -17,12 +18,14 @@ namespace N2.Edit.Versioning
         public IRepository<ContentVersion> Repository { get; private set; }
 	    Exporter exporter;
 		Importer importer;
+		private IProxyFactory proxyFactory;
 
-        public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter, Importer importer)
+        public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter, Importer importer, IProxyFactory proxyFactory)
         {
             this.Repository = repository;
 	        this.exporter = exporter;
 			this.importer = importer;
+			this.proxyFactory = proxyFactory;
         }
 
         public ContentVersion GetVersion(ContentItem item, int versionIndex = -1)
@@ -48,6 +51,7 @@ namespace N2.Edit.Versioning
 
 		public string Serialize(ContentItem item)
 		{
+			proxyFactory.OnSaving(item);
 			return ContentVersion.Serialize(exporter, item);
 		}
 

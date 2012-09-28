@@ -5,6 +5,7 @@ using N2.Tests.Fakes;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using Shouldly;
+using System.Linq;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -343,6 +344,22 @@ namespace N2.Tests.Persistence.NH
 			persister.Save(master);
 
 			versioner.Repository.GetGreatestVersionIndex(master).ShouldBe(0);
+		}
+
+		[Test]
+		public void SavingVersion_IncludesParts()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			var version1 = versioner.SaveVersion(root, createPreviousVersion: false);
+
+			var versionPart = version1.Children.Single();
+			versionPart.Title.ShouldBe("part");
+			versionPart.VersionOf.ID.ShouldBe(part.ID);
 		}
 	}
 }

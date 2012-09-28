@@ -214,7 +214,7 @@ namespace N2.Tests
 							new ItemXmlReader(definitions, 
 								new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()), 
 								persister.Repository), 
-							new Fakes.FakeMemoryFileSystem()));
+							new Fakes.FakeMemoryFileSystem()), new EmptyProxyFactory());
 		}
 	}
 }

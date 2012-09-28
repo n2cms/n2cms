@@ -98,13 +98,10 @@ namespace N2.Web.Parts
 		/// <returns>A list of items in the zone.</returns>
 		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
 		{
-			var state = WebContext.HttpContext == null ?
-				ControlPanelState.Unknown :
-				ControlPanel.GetState(
-					Security,
-					WebContext.User,
-					WebContext.Url.GetQueries().ToNameValueCollection()
-				);
+			var querystring = WebContext.Url.GetQueries().ToNameValueCollection();
+			var state = WebContext.HttpContext == null 
+				? ControlPanelState.Unknown 
+				: ControlPanel.GetState(Security, WebContext.User, querystring);
 
 			return GetParts(belowParentItem, inZoneNamed, filteredForInterface, state);
 		}
@@ -120,28 +117,10 @@ namespace N2.Web.Parts
 			if(belowParentItem == null)
 				return new ItemList();
 
-			var children = !belowParentItem.VersionOf.HasValue ? belowParentItem.Children : belowParentItem.VersionOf.Children;
-
-			// TODO: SKA FLYTTAS NÅGONSTANS OCH GÖRAS FINT.
-			// ... och läggas till stöd för versionsindex.
-			if (WebContext.HttpContext != null)
-			{
-				if (WebContext.Url.GetQuery("view") == "draft")
-				{
-					var drafts = new List<ContentItem>();
-					foreach (var item in children.FindParts(inZoneNamed))
-					{
-						drafts.Add(VersionRepository.GetDraft(item).Version);
-					}
-
-					return drafts;
-				}
-			}
-
-			var items = children.FindParts(inZoneNamed)
+			var items = belowParentItem.Children.FindParts(inZoneNamed)
 				.Where(new AccessFilter(WebContext.User, Security));
 
-            if(filteredForInterface == Interfaces.Viewing && !state.IsFlagSet(ControlPanelState.Draft))
+            if(filteredForInterface == Interfaces.Viewing && !state.IsFlagSet(ControlPanelState.Draft) && !belowParentItem.VersionOf.HasValue)
                 items = items.Where(new PublishedFilter());
 
             return items;

@@ -72,7 +72,7 @@ namespace N2.Persistence.Serialization
 		{
 			foreach (ContentItem previousItem in readItems)
 			{
-				if (previousItem.ID == itemiD)
+				if (previousItem.ID == itemiD || previousItem.VersionOf.ID == itemiD)
 				{
 					return previousItem;
 				}
@@ -87,14 +87,14 @@ namespace N2.Persistence.Serialization
 
 		public IList<UnresolvedLink> UnresolvedLinks { get; set; }
 
-		public void Register(int referencedItemID, Action<ContentItem> action)
+		public void Register(int referencedItemID, Action<ContentItem> action, bool isChild = false)
 		{
-			var resolver = new UnresolvedLink(referencedItemID, action);
+			var resolver = new UnresolvedLink(referencedItemID, action) { IsChild = isChild };
 			UnresolvedLinks.Add(resolver);
 			EventHandler<ItemEventArgs> handler = null;
 			handler = delegate(object sender, ItemEventArgs e)
 				{
-					if (e.AffectedItem.ID == referencedItemID)
+					if (e.AffectedItem.ID == referencedItemID || e.AffectedItem.VersionOf.ID == referencedItemID)
 					{
 						resolver.Setter(e.AffectedItem);
 						UnresolvedLinks.Remove(resolver);

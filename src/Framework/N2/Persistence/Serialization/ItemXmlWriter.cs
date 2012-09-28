@@ -31,8 +31,7 @@ namespace N2.Persistence.Serialization
 
 			foreach (ContentItem child in GetChildren(item, options))
 			{
-				if (child.ID != 0)
-					Write(child, options, writer);
+				Write(child, options, writer);
 			}
 		}
 
@@ -78,7 +77,13 @@ namespace N2.Persistence.Serialization
 		{
 			itemElement.WriteAttribute("id", item.ID);
 			itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
-			itemElement.WriteAttribute("parent", item.Parent != null ? item.Parent.ID.ToString() : string.Empty);
+			if (item.Parent != null)
+			{
+				if (item.Parent.ID != 0)
+					itemElement.WriteAttribute("parent", item.Parent.ID.ToString());
+				else
+					itemElement.WriteAttribute("parent", item.Parent.VersionOf.ID.ToString());
+			}
 			itemElement.WriteAttribute("title", item.Title);
 			itemElement.WriteAttribute("zoneName", item.ZoneName);
 			itemElement.WriteAttribute("templateKey", item.TemplateKey);

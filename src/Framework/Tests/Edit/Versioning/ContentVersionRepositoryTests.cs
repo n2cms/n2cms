@@ -24,25 +24,26 @@ namespace N2.Tests.Edit.Versioning
         }
 
         [Test]
-        public void AddPublishedVersion_ASDraft()
+        public void MasterVersion_CanBeSavedAsVersion_AndRetrieved()
         {
-            var page = CreateOneItem<Items.NormalPage>(0, "page", null);
-            persister.Save(page);
+            var master = CreateOneItem<Items.NormalPage>(0, "pageX", null);
+            persister.Save(master);
 
-            var draft = repository.Save(page, "Hello");
+            var draft = repository.Save(master, "Hello");
             repository.Repository.Dispose();
 
-            var savedDraft = repository.GetVersion(page);
-            savedDraft.Published.ShouldBe(page.Published, TimeSpan.FromSeconds(1));
-            savedDraft.PublishedBy.ShouldBe(page.SavedBy);
+            var savedDraft = repository.GetVersion(master);
+            savedDraft.Published.ShouldBe(master.Published, TimeSpan.FromSeconds(1));
+            savedDraft.PublishedBy.ShouldBe(master.SavedBy);
             savedDraft.Saved.ShouldBe(DateTime.Now, TimeSpan.FromSeconds(1));
             savedDraft.SavedBy.ShouldBe(draft.SavedBy);
-            savedDraft.State.ShouldBe(page.State);
-            savedDraft.VersionIndex.ShouldBe(page.VersionIndex);
+            savedDraft.State.ShouldBe(master.State);
+			savedDraft.VersionIndex.ShouldBe(master.VersionIndex);
+			savedDraft.VersionDataXml.ShouldContain("pageX");
         }
 
         [Test]
-        public void AddDraftVersion_AsDraft()
+        public void Version_CanBeSavedAsVersioin_AndRetrieved()
         {
             var page = CreateOneItem<Items.NormalPage>(0, "page", null);
             persister.Save(page);
@@ -58,7 +59,7 @@ namespace N2.Tests.Edit.Versioning
         }
 
 		[Test]
-		public void DraftState_IsConsideredDraft()
+		public void VersionWithDraftStatus_CanBeRetrievedAsDraft()
 		{
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
@@ -79,7 +80,7 @@ namespace N2.Tests.Edit.Versioning
 		[TestCase(ContentState.Published)]
 		[TestCase(ContentState.Unpublished)]
 		[TestCase(ContentState.Waiting)]
-		public void OtherStates_IsNotDraft(ContentState state)
+		public void OtherStates_ArntDrafts(ContentState state)
 		{
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
@@ -133,6 +134,79 @@ namespace N2.Tests.Edit.Versioning
 
 			savedVersion.VersionIndex.ShouldBe(versionItem.VersionIndex);
 			savedVersion.Version.VersionIndex.ShouldBe(versionItem.VersionIndex);
+		}
+
+		[Test]
+		public void Parts_AreSerialized()
+		{
+			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
+			persister.Save(page);
+			var part = CreateOneItem<Items.NormalPage>(0, "part", page);
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			var version = page.CloneForVersioningRecursive(new N2.Edit.Workflow.StateChanger());
+			version.VersionIndex = page.VersionIndex + 1;
+			version.VersionOf = page;
+
+			repository.Save(version, "Hello");
+
+			repository.Repository.Dispose();
+			var savedVersion = repository.GetVersion(page, version.VersionIndex);
+
+			var deserializedPage = savedVersion.Version;
+			var deserializedPart = deserializedPage.Children.Single();
+
+			deserializedPart.Title.ShouldBe("part");
+			deserializedPart.VersionOf.ID.ShouldBe(part.ID);
+			deserializedPart.ZoneName.ShouldBe(part.ZoneName);
+		}
+
+		[Test]
+		public void Details_AreSerialized()
+		{
+			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
+			page["Hello"] = "world";
+			page.GetDetailCollection("Stuffs", true).Add("Hello");
+			persister.Save(page);
+
+			var version = page.Clone(true);
+			version.VersionIndex = page.VersionIndex + 1;
+			version.VersionOf = page;
+
+			repository.Save(version, "Hello");
+
+			repository.Repository.Dispose();
+			var savedVersion = repository.GetVersion(page, version.VersionIndex);
+
+			var deserializedPage = savedVersion.Version;
+			deserializedPage["Hello"].ShouldBe("world");
+			deserializedPage.GetDetailCollection("Stuffs", false)[0].ShouldBe("Hello");
+		}
+
+		[Test]
+		public void Details_OnParts_AreSerialized()
+		{
+			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
+			persister.Save(page);
+			var part = CreateOneItem<Items.NormalPage>(0, "part", page);
+			part["Hello"] = "world";
+			part.GetDetailCollection("Stuffs", true).Add("Hello");
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			var version = page.CloneForVersioningRecursive(new N2.Edit.Workflow.StateChanger());
+			version.VersionIndex = page.VersionIndex + 1;
+
+			repository.Save(version, "Hello");
+
+			repository.Repository.Dispose();
+			var savedVersion = repository.GetVersion(page, version.VersionIndex);
+
+			var deserializedPage = savedVersion.Version;
+			var deserializedPart = deserializedPage.Children.Single();
+			deserializedPart["Hello"].ShouldBe("world");
+			deserializedPart.GetDetailCollection("Stuffs", false)[0].ShouldBe("Hello");
 		}
     }
 }
