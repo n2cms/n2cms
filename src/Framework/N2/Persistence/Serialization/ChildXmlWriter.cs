@@ -28,6 +28,10 @@ namespace N2.Persistence.Serialization
 			{
 				childElement.WriteAttribute("id", child.ID);
 				childElement.WriteAttribute("name", child.Name);
+				childElement.WriteAttribute("versionIndex", child.VersionIndex);
+				
+				if(child.VersionOf.HasValue)
+					childElement.WriteAttribute("versionOf", child.VersionOf.Value.ID);
 			}
 		}
 	}

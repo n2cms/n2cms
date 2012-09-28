@@ -3,9 +3,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Web;
 using System.Web.UI;
 using N2.Collections;
 using N2.Definitions;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.Mvc.Html;
@@ -28,12 +30,19 @@ namespace N2.Web.Parts
 		IDefinitionManager definitions;
 		IEnumerable<ITemplateProvider> templates;
 		ISecurityManager security;
+		ContentVersionRepository versionRepository;
 		Rendering.ContentRendererSelector rendererSelector;
 
 		public Rendering.ContentRendererSelector RendererSelector
 		{
 			get { return rendererSelector ?? Engine.Resolve<Rendering.ContentRendererSelector>(); }
 			set { rendererSelector = value; }
+		}
+
+		public ContentVersionRepository VersionRepository
+		{
+			get { return versionRepository ?? Engine.Resolve<ContentVersionRepository>(); }
+			set { versionRepository = value; }
 		}
 
 		public IPersister Persister
@@ -112,8 +121,25 @@ namespace N2.Web.Parts
 				return new ItemList();
 
 			var children = !belowParentItem.VersionOf.HasValue ? belowParentItem.Children : belowParentItem.VersionOf.Children;
-            var items = children.FindParts(inZoneNamed)
-                .Where(new AccessFilter(WebContext.User, Security));
+
+			// TODO: SKA FLYTTAS NÅGONSTANS OCH GÖRAS FINT.
+			// ... och läggas till stöd för versionsindex.
+			if (WebContext.HttpContext != null)
+			{
+				if (WebContext.Url.GetQuery("view") == "draft")
+				{
+					var drafts = new List<ContentItem>();
+					foreach (var item in children.FindParts(inZoneNamed))
+					{
+						drafts.Add(VersionRepository.GetDraft(item).Version);
+					}
+
+					return drafts;
+				}
+			}
+
+			var items = children.FindParts(inZoneNamed)
+				.Where(new AccessFilter(WebContext.User, Security));
 
             if(filteredForInterface == Interfaces.Viewing && !state.IsFlagSet(ControlPanelState.Draft))
                 items = items.Where(new PublishedFilter());
