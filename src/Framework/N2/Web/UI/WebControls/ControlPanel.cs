@@ -23,14 +23,7 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-	[ControlPanelLink("cpOrganize", "{ManagementUrl}/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10
-		, ControlPanelState.Visible,
-		UrlEncode = false,
-		NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "{ManagementUrl}/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10,
-		ControlPanelState.DragDrop,
-		UrlEncode = false,
-		Title = "Done")]
+	[OrganizeSwitch]
 	public class ControlPanel : Control, IItemContainer
 	{
 		private const string ArrayKey = "ControlPanel.arrays";
@@ -122,7 +115,7 @@ jQuery(document).ready(function(){{
 
 		protected override void CreateChildControls()
 		{
-			ControlPanelState state = GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
+			ControlPanelState state = GetState(Page.GetEngine());
 
 			if (state.IsFlagSet(ControlPanelState.Hidden))
 			{
@@ -333,43 +326,38 @@ jQuery(document).ready(function(){{
 		public static ControlPanelState GetState(Control control)
 		{
 			if (HttpContext.Current != null)
-				return GetState(HttpContext.Current.GetEngine().SecurityManager, HttpContext.Current.User, HttpContext.Current.Request.QueryString);
+				return GetState(HttpContext.Current.GetEngine());
 
 			return ControlPanelState.Unknown;
 		}
-		
-		[Obsolete("Use overload with security parameter")]
-		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
-		{
-			return GetState(N2.Context.Current.SecurityManager, user, queryString);
-		}
 
+		[Obsolete("Use overload with IWebContext parameter")]
 		public static ControlPanelState GetState(ISecurityManager security, IPrincipal user, NameValueCollection queryString)
 		{
-			if (security.IsEditor(user))
-			{
-                var state = ControlPanelState.Unknown;
+			return GetState(security, HttpContext.Current.GetEngine().RequestContext);
+		}
 
-                if (queryString["draft"] == "true")
-                    state = ControlPanelState.Draft;
+		public static ControlPanelState GetState(IEngine engine)
+		{
+			return GetState(engine.SecurityManager, engine.RequestContext);
+		}
+		public static ControlPanelState GetState(ISecurityManager security, IWebContext request)
+		{
+			if (!security.IsEditor(request.User))
+				return ControlPanelState.Hidden;
 
-                if (queryString["edit"] == "true")
-                {
-                    return state | ControlPanelState.Editing;
-                }
-                if (queryString["edit"] == "drag")
-                {
-                    return state | ControlPanelState.DragDrop;
-                }
-                if (!string.IsNullOrEmpty(queryString["preview"]))
-                {
-                    return state | ControlPanelState.Previewing;
-                }
+            var state = ControlPanelState.Visible;
 
-				return ControlPanelState.Visible;
-			}
+			var queryString = request.Url.GetQueries().ToNameValueCollection();
+            if (queryString["edit"] == "true")
+                state |= ControlPanelState.Editing;
+            if (queryString["edit"] == "drag")
+                state |= ControlPanelState.DragDrop;
+            if (request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue)
+				state |= ControlPanelState.Previewing;
 
-			return ControlPanelState.Hidden;
+			return state;
+
 		}
 
 		public static string FormatImageAndText(string iconUrl, string text)

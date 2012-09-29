@@ -325,7 +325,7 @@
       <DependentUpon>AvailableZones.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\ControlPanelEditingSaveAttribute.cs" />
-    <Compile Include="N2\Content\ControlPanelPreviewDiscardAttribute.cs" />
+    <Compile Include="N2\Content\ControlPanelDiscardPreviewOrDeleteAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="N2\Content\ViewOptionProvider.cs" />
     <Compile Include="N2\Content\EditOptionProvider.cs" />

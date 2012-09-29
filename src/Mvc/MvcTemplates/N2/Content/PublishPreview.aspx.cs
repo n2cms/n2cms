@@ -1,6 +1,7 @@
 ﻿using System;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -15,10 +16,23 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-            var context = new CommandContext(Engine.Definitions.GetDefinition(previewedItem), previewedItem, Interfaces.Viewing, Page.User);
-            Engine.Resolve<CommandDispatcher>().Publish(context);
+			if (previewedItem.VersionOf.HasValue)
+			{
+				previewedItem = Engine.Resolve<IVersionManager>().MakeMasterVersion(previewedItem);
+			}
+			if (previewedItem.State != ContentState.Published)
+			{
+				previewedItem.State = ContentState.Published;
+				if (!previewedItem.Published.HasValue)
+					previewedItem.Published = Utility.CurrentTime();
 
-			Response.Redirect(context.Content.Url);
+				Engine.Persister.Save(previewedItem);
+			}
+
+			//var context = new CommandContext(Engine.Definitions.GetDefinition(previewedItem), previewedItem, Interfaces.Viewing, Page.User);
+			//Engine.Resolve<CommandDispatcher>().Publish(context);
+
+			Response.Redirect(previewedItem.Url);
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace N2.Web.Mvc.Html
         public DroppableZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
             : base(helper, zoneName, currentItem)
 		{
-            state = helper.ViewContext.HttpContext.ControlPanelState();
+            state = helper.GetControlPanelState();
         }
 
 		public ZoneHelper Title(string title)

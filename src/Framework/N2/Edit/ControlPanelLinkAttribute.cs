@@ -50,6 +50,9 @@ namespace N2.Edit
 		/// <summary>Used for translating the plugin's texts from a global resource.</summary>
 		public string GlobalResourceClassName { get; set; }
 
+		/// <summary>A class to add to the link on the control panel.</summary>
+		public string CssClass { get; set; }
+
 		public override Control AddTo(Control container, PluginContext context)
 		{
 			if(RequireCurrentItem && context.Selected == null)
@@ -66,7 +69,7 @@ namespace N2.Edit
 				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
-			link.CssClass = Name + " authorized" + context.Engine.SecurityManager.IsAuthorized(this, context.HttpContext.User, context.Selected);
+			link.CssClass = Name + " authorized" + context.Engine.SecurityManager.IsAuthorized(this, context.HttpContext.User, context.Selected) + " " + CssClass;
 			
 			AddTargetAttribute(link);
 
@@ -94,7 +97,7 @@ namespace N2.Edit
 
 		protected virtual bool ActiveFor(Control container, ControlPanelState state)
 		{
-			return (ShowDuring & state) == state;
+			return state.IsFlagSet(ShowDuring);
 		}
 	}
 }

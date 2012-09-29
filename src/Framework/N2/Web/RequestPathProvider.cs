@@ -59,23 +59,21 @@ namespace N2.Web
 			{
                 if (IsRewritable(url) && IsObservable(url))
 				{
-					var pathData = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+					var path = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+					
+					path.CurrentItem = path.CurrentPage;
 
-					if (versionRepository.TryParseVersion(url.GetQuery("vi"), pathData))
-						return pathData;
+					if (versionRepository.TryParseVersion(url.GetQuery("vi"), path))
+						return path;
 
 					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
-					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && versionRepository.HasDraft(pathData.CurrentItem))
+					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && versionRepository.HasDraft(path.CurrentItem))
 					{
-						var draft = versionRepository.GetVersion(pathData.CurrentItem);
-						if (draft != null)
-						{
-							pathData.CurrentItem = pathData.CurrentPage = draft.Version;
-							return pathData;
-						}
+						var draft = versionRepository.GetVersion(path.CurrentPage);
+						path.TryApplyVersion(draft);
 					}
 
-					return pathData;
+					return path;
 				}
 			}
 			catch (Exception ex)

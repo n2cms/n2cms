@@ -18,13 +18,15 @@ namespace N2.Edit.Versioning
         public IRepository<ContentVersion> Repository { get; private set; }
 	    Exporter exporter;
 		Importer importer;
+		private IUrlParser parser;
 		private IProxyFactory proxyFactory;
 
-        public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter, Importer importer, IProxyFactory proxyFactory)
+		public ContentVersionRepository(IRepository<ContentVersion> repository, Exporter exporter, Importer importer, IUrlParser parser, IProxyFactory proxyFactory)
         {
             this.Repository = repository;
 	        this.exporter = exporter;
 			this.importer = importer;
+			this.parser = parser;
 			this.proxyFactory = proxyFactory;
         }
 
@@ -57,7 +59,7 @@ namespace N2.Edit.Versioning
 
 		public ContentItem Deserialize(string xml)
 		{
-			return ContentVersion.Deserialize(importer, xml);
+			return ContentVersion.Deserialize(importer, parser, xml);
 		}
 
 
@@ -84,8 +86,11 @@ namespace N2.Edit.Versioning
 
         public ContentVersion Save(ContentItem item, string username)
         {
+			item = Find.ClosestPage(item);
 			var version = GetVersion(GetMaster(item), item.VersionIndex)
-				?? new ContentVersion(importer, exporter);
+				?? new ContentVersion(importer, exporter, parser);
+
+			ApplyCommonValuesRecursive(item);
 
 			version.Master = GetMaster(item);
 			version.Published = Utility.CurrentTime();
@@ -97,6 +102,16 @@ namespace N2.Edit.Versioning
 
             return version;
         }
+
+		private void ApplyCommonValuesRecursive(ContentItem parent)
+		{
+			foreach (var child in parent.Children)
+			{
+				child.State = parent.State;
+				child.VersionIndex = parent.VersionIndex;
+				ApplyCommonValuesRecursive(child);
+			}
+		}
 
 		private static ContentItem GetMaster(ContentItem item)
 		{

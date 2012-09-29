@@ -20,8 +20,7 @@ namespace N2.Edit
 		/// <returns></returns>
 		public static IEnumerable<ContentItem> TryAppendCreatorNode(this IEnumerable<ContentItem> items, IEngine engine, ContentItem parent)
 		{
-			var context = engine.Resolve<IWebContext>().HttpContext;
-			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine.SecurityManager, context.User, context.Request.QueryString);
+			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine);
 			if (state != ControlPanelState.DragDrop)
 				return items;
 

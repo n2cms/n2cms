@@ -19,7 +19,6 @@ namespace N2.Edit.Workflow
         UseNewVersionCommand useNewVersion;
         UpdateObjectCommand updateObject;
         DeleteCommand delete;
-        RedirectToPreviewCommand showPreview;
         RedirectToEditCommand showEdit;
         UseMasterCommand useMaster;
         CloneCommand clone;
@@ -43,7 +42,6 @@ namespace N2.Edit.Workflow
             useNewVersion = new UseNewVersionCommand(versionMaker);
             updateObject = new UpdateObjectCommand();
             delete = new DeleteCommand(persister.Repository);
-            showPreview = new RedirectToPreviewCommand(adapters);
             showEdit = new RedirectToEditCommand(editUrlManager);
             useMaster = new UseMasterCommand();
             clone = new CloneCommand();
@@ -133,7 +131,6 @@ namespace N2.Edit.Workflow
 			if (context.Content.State == ContentState.Unpublished)
 				// previously published
 				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, draftState, unpublishedDate, save);
-
 			// has never been published before
 			return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);
 		}

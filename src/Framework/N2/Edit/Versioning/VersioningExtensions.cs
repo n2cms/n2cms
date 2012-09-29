@@ -13,7 +13,7 @@ namespace N2.Edit.Versioning
 			ContentItem clone = item.Clone(false);
 			if (item.State == ContentState.Published)
 				stateChanger.ChangeTo(clone, ContentState.Unpublished);
-			else
+			else if (item.State != ContentState.Unpublished)
 				stateChanger.ChangeTo(clone, ContentState.Draft);
 			clone.Expires = Utility.CurrentTime().AddSeconds(-1);
 			clone.Updated = Utility.CurrentTime().AddSeconds(-1);

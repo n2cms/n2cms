@@ -139,11 +139,18 @@ namespace N2.Web
 			}
 
 			for (ContentItem ancestor = path.CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
+			{
 				if (ancestor.IsPage)
-					return ancestor.FindPath(PathData.DefaultAction).GetRewrittenUrl()
-						.UpdateQuery(path.QueryParameters)
-						.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
-
+				{
+					var url = ancestor.FindPath(PathData.DefaultAction).GetRewrittenUrl()
+						.UpdateQuery(path.QueryParameters);
+					if (path.CurrentItem.VersionOf.HasValue)
+						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.VersionOf.ID.Value)
+							.SetQueryParameter(PathData.VersionQueryKey, ancestor.VersionIndex);
+					else
+						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
+				}
+			}
 			if (path.CurrentItem.VersionOf.HasValue)
 				return path.CurrentItem.VersionOf.FindPath(PathData.DefaultAction).GetRewrittenUrl()
 					.UpdateQuery(path.QueryParameters)
@@ -154,12 +161,13 @@ namespace N2.Web
 
         public static bool IsFlagSet<T>(this T value, T flag) where T : struct
         {
-            if (!typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            if (!typeof(T).IsEnum)
             {
-                throw new ArgumentException(string.Format("'{0}' is no Enum or it doesn't have the 'Flags' attribute", typeof(T).FullName));
+                throw new ArgumentException(string.Format("'{0}' is not Enum type", typeof(T).FullName));
             }
 
-            return (Convert.ToInt64(value) & Convert.ToInt64(flag)) != 0;
+			var flagValue = Convert.ToInt64(flag);
+            return flagValue == 0 || (Convert.ToInt64(value) & flagValue) != 0;
         }
 
 		internal static string ViewPreferenceQueryString = "view";
@@ -182,6 +190,7 @@ namespace N2.Web
 			else
 				return url.SetQueryParameter(ViewPreferenceQueryString, preference.ToString().ToLower());
 		}
+
 		public static NameValueCollection ToNameValueCollection(this IDictionary<string, string> queryString)
 		{
 			var nvc = new NameValueCollection();
@@ -193,33 +202,57 @@ namespace N2.Web
 			return nvc;
 		}
 
-		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string viParameter, ContentItem masterVersion)
+		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, ContentItem masterVersion)
 		{
-			var path = new PathData(masterVersion);
-			if (TryParseVersion(versionRepository, viParameter, path))
+			var path = new PathData(Find.ClosestPage(masterVersion), masterVersion);
+			if (TryParseVersion(versionRepository, versionIndexParameterValue, path))
 				return path.CurrentItem;
 			return null;
 		}
 
-		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string viParameter, PathData pathData)
+		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, PathData path)
 		{
-			if (!string.IsNullOrEmpty(viParameter))
+			if (!string.IsNullOrEmpty(versionIndexParameterValue))
 			{
-				int versionIndex = int.Parse(viParameter);
-				var version = versionRepository.GetVersion(pathData.CurrentItem, versionIndex);
-				if (version != null)
-				{
-					if (pathData.CurrentItem.IsPage && version.Version.IsPage)
-						pathData.CurrentPage = pathData.CurrentItem = version.Version;
-					else if (version.Version.IsPage)
-						pathData.CurrentPage = version.Version;
-					else
-						pathData.CurrentItem = version.Version;
-
-					return true;
-				}
+				int versionIndex = int.Parse(versionIndexParameterValue);
+				var version = versionRepository.GetVersion(path.CurrentPage, versionIndex);
+				return path.TryApplyVersion(version);
 			}
 			return false;
+		}
+
+		public static bool TryApplyVersion(this PathData path, ContentVersion version)
+		{
+			if (version != null)
+			{
+				if (path.CurrentItem.IsPage)
+				{
+					path.CurrentPage = null;
+					path.CurrentItem = version.Version;
+				}
+				else
+				{
+					path.CurrentPage = version.Version;
+					path.CurrentItem = version.Version.FindPartVersion(path.CurrentItem);
+				}
+
+				return true;
+			}
+			return false;
+		}
+
+		public static ContentItem FindPartVersion(this ContentItem parent, ContentItem part)
+		{
+			foreach (var child in parent.Children)
+			{
+				if (child.VersionOf.ID == part.ID)
+					return child;
+
+				var grandChild = child.FindPartVersion(part);
+				if (grandChild != null)
+					return grandChild;
+			}
+			return null;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using N2.Persistence.Serialization;
 using N2.Engine;
 using System.IO;
 using System.Linq;
+using N2.Web;
 
 namespace N2.Edit.Versioning
 {
@@ -18,9 +19,9 @@ namespace N2.Edit.Versioning
 		{
 		}
 
-		public ContentVersion(Importer importer, Exporter exporter)
+		public ContentVersion(Importer importer, Exporter exporter, IUrlParser parser)
 		{
-			Deserializer = (xml) => Deserialize(importer, xml);
+			Deserializer = (xml) => Deserialize(importer, parser, xml);
 			Serializer = (item) => Serialize(exporter, item);
 		}
 
@@ -29,7 +30,7 @@ namespace N2.Edit.Versioning
 			get
 			{
 				return deserializer 
-					?? (deserializer = (xml) => Deserialize(N2.Context.Current.Resolve<Importer>(), xml));
+					?? (deserializer = (xml) => Deserialize(N2.Context.Current.Resolve<Importer>(), N2.Context.Current.UrlParser, xml));
 			}
 			set { deserializer = value; }
 		}
@@ -91,7 +92,7 @@ namespace N2.Edit.Versioning
 			}
 		}
 
-		internal static ContentItem Deserialize(Importer importer, string xml)
+		internal static ContentItem Deserialize(Importer importer, IUrlParser parser, string xml)
 		{
 			var journal = importer.Read(new StringReader(xml));
 			foreach (var link in journal.UnresolvedLinks.Where(ul => ul.IsChild == false))
@@ -100,6 +101,8 @@ namespace N2.Edit.Versioning
 				if (item != null)
 					link.Setter(item);
 			}
+			foreach (var item in journal.ReadItems)
+				(item as IInjectable<IUrlParser>).Set(parser);
 			return journal.RootItem;
 		}
 

@@ -98,10 +98,9 @@ namespace N2.Web.Parts
 		/// <returns>A list of items in the zone.</returns>
 		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
 		{
-			var querystring = WebContext.Url.GetQueries().ToNameValueCollection();
 			var state = WebContext.HttpContext == null 
 				? ControlPanelState.Unknown 
-				: ControlPanel.GetState(Security, WebContext.User, querystring);
+				: ControlPanel.GetState(Security, WebContext);
 
 			return GetParts(belowParentItem, inZoneNamed, filteredForInterface, state);
 		}
@@ -120,7 +119,9 @@ namespace N2.Web.Parts
 			var items = belowParentItem.Children.FindParts(inZoneNamed)
 				.Where(new AccessFilter(WebContext.User, Security));
 
-            if(filteredForInterface == Interfaces.Viewing && !state.IsFlagSet(ControlPanelState.Draft) && !belowParentItem.VersionOf.HasValue)
+            if(filteredForInterface == Interfaces.Viewing 
+				&& !state.IsFlagSet(ControlPanelState.Previewing) 
+				&& !belowParentItem.VersionOf.HasValue)
                 items = items.Where(new PublishedFilter());
 
             return items;

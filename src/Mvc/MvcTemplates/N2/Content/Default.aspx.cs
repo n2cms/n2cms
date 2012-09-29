@@ -16,6 +16,7 @@ namespace N2.Edit
 		Target = Targets.Top,
 		RequiredPermission = Permission.Read)]
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
+		CssClass = "toggled",
 		Target = Targets.Top)]
 	public partial class Default : Web.EditPage
 	{

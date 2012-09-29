@@ -158,8 +158,7 @@ namespace N2.Web.Mvc
 					path.Controller = null;
 				}
 			}
-
-			if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
+			else if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
 			{
 				// this is a discrepancy between mvc and the legacy
 				// in mvc the item query key doesn't route to the item, it's a marker
@@ -168,15 +167,12 @@ namespace N2.Web.Mvc
 				int itemId;
 				if (int.TryParse(request.QueryString[PathData.ItemQueryKey], out itemId))
 				{
-					if (itemId == path.ID)
+					if (itemId == path.ID || (path.ID == 0 && path.CurrentItem != null && itemId == path.CurrentItem.VersionOf.ID))
 					{
 						// we have an item id and it matches the path data we found via url parser
-						if (part == null || part.ID != itemId)
-						{
-							// it hasn't been changed by a specific part query string so we reset it
-							path.CurrentItem = path.CurrentPage;
-							path.Controller = null;
-						}
+						// it hasn't been changed by a specific part query string so we reset it
+						path.CurrentItem = path.CurrentPage;
+						path.Controller = null;
 					}
 				}
 			}

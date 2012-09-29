@@ -56,7 +56,8 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return ResolveResourceUrl(selectedItem.Url).ToUrl().AppendQuery("src", Interfaces.Managing);
+			Url url = ResolveResourceUrl(selectedItem.Url);
+			return url.AppendQuery("src", Interfaces.Managing);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -171,10 +172,15 @@ namespace N2.Edit
 
 			var editUrl = EditItemUrl.ToUrl()
 				.ResolveTokens()
-				.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+				.SetQueryParameter(SelectionUtility.SelectedQueryKey, item.Path);
 
 			if (item.VersionOf.HasValue)
-				editUrl = editUrl.AppendQuery(PathData.VersionQueryKey, item.VersionIndex);
+			{
+				if (item.IsPage)
+					editUrl = editUrl.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
+				else
+					editUrl = editUrl.SetQueryParameter(PathData.VersionQueryKey, Find.ClosestPage(item).VersionIndex);
+			}
 
 			return editUrl;
 		}

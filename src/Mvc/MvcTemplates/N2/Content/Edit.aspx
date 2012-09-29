@@ -28,7 +28,25 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <%= Server.UrlDecode(Request.RawUrl) %>
+    <table>
+	<tbody>
+		<tr><th rowspan="4">Selected</th><th>Item</th><td><%= Selection.SelectedItem %></td></tr>
+		<tr><th>State</th><td><%= Selection.SelectedItem.State %></td></tr>
+		<tr><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td></tr>
+		<tr><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
+	</tbody>
+	<tbody>
+		<tr><th rowspan="4">Edited</th><th>Item</th><td><%= ie.CurrentItem %></td></tr>
+		<tr><th>State</th><td><%= ie.CurrentItem.State %></td></tr>
+		<tr><th>VersionOf</th><td><%= ie.CurrentItem.VersionOf.ID %></td></tr>
+		<tr><th>Parent</th><td><%= ie.CurrentItem.Parent %></td></tr>
+	</tbody>
+	</table>
+	<ul>
+	<% foreach(var kvp in Request.Url.Query.Split('&')) { %>
+	<li><%= kvp %></li>
+	<%} %>
+	</ul>
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
 	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
 	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>

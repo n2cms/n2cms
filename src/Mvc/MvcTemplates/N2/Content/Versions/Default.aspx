@@ -22,7 +22,6 @@
 				<ItemTemplate>
 				<a href="<%# GetPreviewUrl((N2.ContentItem)Eval("Content")) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
 			</asp:TemplateField>
-			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>
 					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State"), Eval("State").ToString()) %>' />

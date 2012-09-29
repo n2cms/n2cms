@@ -361,5 +361,21 @@ namespace N2.Tests.Persistence.NH
 			versionPart.Title.ShouldBe("part");
 			versionPart.VersionOf.ID.ShouldBe(part.ID);
 		}
+
+		[Test]
+		public void IncludedParts_InheritStateFromPage()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			root.State = ContentState.Draft;
+			var version1 = versioner.SaveVersion(root, createPreviousVersion: false);
+
+			var versionPart = version1.Children.Single();
+			versionPart.State.ShouldBe(ContentState.Draft);
+		}
 	}
 }

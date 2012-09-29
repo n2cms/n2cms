@@ -2,6 +2,7 @@
 using System.Web.UI;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -84,7 +85,7 @@ namespace N2.Edit
             if (!string.IsNullOrEmpty(itemId))
 				selectedItem = Engine.Persister.Get(int.Parse(itemId));
 
-			return Engine.Resolve<Edit.Versioning.ContentVersionRepository>().ParseVersion(request[PathData.VersionQueryKey], selectedItem)
+			return Engine.Resolve<ContentVersionRepository>().ParseVersion(request[PathData.VersionQueryKey], selectedItem)
 				?? selectedItem;
         }
 
