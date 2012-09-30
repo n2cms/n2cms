@@ -13,7 +13,9 @@ namespace N2.Edit.Workflow
     public class CommandFactory : ICommandFactory
     {
         IPersister persister;
-        CommandBase<CommandContext> makeVersionOfMaster;
+		ISecurityManager security;
+		
+		CommandBase<CommandContext> makeVersionOfMaster;
         ReplaceMasterCommand replaceMaster;
         MakeVersionCommand makeVersion;
         UseNewVersionCommand useNewVersion;
@@ -31,7 +33,7 @@ namespace N2.Edit.Workflow
 		EnsureNotPublishedCommand unpublishedDate;
 		EnsurePublishedCommand publishedDate;
 		UpdateReferencesCommand updateReferences;
-		ISecurityManager security;
+		SaveOnPageVersionCommand saveOnPageVersion;
 
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditUrlManager editUrlManager, IContentAdapterProvider adapters, StateChanger changer)
         {
@@ -55,6 +57,7 @@ namespace N2.Edit.Workflow
 			unpublishedDate = new EnsureNotPublishedCommand();
 			publishedDate = new EnsurePublishedCommand();
 			updateReferences = new UpdateReferencesCommand();
+			saveOnPageVersion = new SaveOnPageVersionCommand(versionMaker);
         }
 
         /// <summary>Gets the command used to publish an item.</summary>
@@ -128,9 +131,14 @@ namespace N2.Edit.Workflow
 				// update a master version
 				return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, draftState, unpublishedDate, save);
 
+			if (context.Content.ID == 0 && !context.Content.IsPage)
+				// parts are saved as a version to their page
+				return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, saveOnPageVersion);
+
 			if (context.Content.State == ContentState.Unpublished)
 				// previously published
 				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, draftState, unpublishedDate, save);
+			
 			// has never been published before
 			return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);
 		}

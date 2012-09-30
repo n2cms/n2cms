@@ -4,6 +4,7 @@ using N2.Definitions;
 using N2.Integrity;
 using N2.Edit.Workflow;
 using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Web.UI.WebControls
 {
@@ -44,6 +45,9 @@ namespace N2.Web.UI.WebControls
                 zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
                 zoneContainer.Attributes[PartUtilities.ZoneAttribute] = ZoneName;
                 zoneContainer.Attributes[PartUtilities.AllowedAttribute] = PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
+				zoneContainer.Attributes["data-versionKey"] = CurrentItem.GetVersionKey();
+				zoneContainer.Attributes["data-versionIndex"] = CurrentItem.VersionIndex.ToString();
+
                 zoneContainer.ToolTip = GetToolTip(GetDefinition(CurrentItem), ZoneName);
                 base.CreateItems(zoneContainer);
 			}
@@ -70,7 +74,11 @@ namespace N2.Web.UI.WebControls
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
                 itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
-                itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
+				itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
+				itemContainer.Attributes["data-sortOrder"] = item.SortOrder.ToString();
+				itemContainer.Attributes["data-versionKey"] = item.GetVersionKey();
+				itemContainer.Attributes["data-versionIndex"] = item.VersionIndex.ToString();
+
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}

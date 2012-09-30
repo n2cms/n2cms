@@ -27,14 +27,14 @@ namespace N2.Tests.Workflow
         {
             base.SetUp();
 			var changer = new StateChanger();
-            definitions = TestSupport.SetupDefinitions(typeof(StatefulItem));
-			versions = new FakeVersionManager(repository, changer, typeof(StatefulItem));
+            definitions = TestSupport.SetupDefinitions(typeof(StatefulPage), typeof(StatefulPart));
+			versions = new FakeVersionManager(repository, changer, typeof(StatefulPage), typeof(StatefulPart));
 			var editManager = new EditUrlManager(new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, null, changer);
 			dispatcher = new CommandDispatcher(commands, persister);
-			item = CreateOneItem<StatefulItem>(1, "first", null);
-			child = CreateOneItem<StatefulItem>(2, "child", item);
+			item = CreateOneItem<StatefulPage>(1, "first", null);
+			child = CreateOneItem<StatefulPage>(2, "child", item);
 		}
 
         protected abstract CommandBase<CommandContext> CreateCommand(CommandContext context);
@@ -76,7 +76,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void DoesntMakeVersion_OfUnsavedItem()
         {
-			var context = new CommandContext(definitions.GetDefinition(typeof(StatefulItem)), new StatefulItem(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(typeof(StatefulPage)), new StatefulPage(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -122,7 +122,7 @@ namespace N2.Tests.Workflow
 
         protected ContentItem MakeVersion(ContentItem master)
         {
-			return versions.SaveVersion(master);
+			return versions.AddVersion(master);
         }
     }
 }

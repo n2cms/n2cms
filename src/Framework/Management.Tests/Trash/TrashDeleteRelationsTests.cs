@@ -78,7 +78,7 @@ namespace N2.Management.Tests.Trash
 		public void RelationTo_TrashedItem_IsRemoved_FromVersions()
 		{
 			item2["Relation"] = item;
-			engine.Resolve<IVersionManager>().SaveVersion(item2);
+			engine.Resolve<IVersionManager>().AddVersion(item2);
 			engine.Persister.Save(item2);
 
 			persister.Dispose();
@@ -153,7 +153,7 @@ namespace N2.Management.Tests.Trash
 			collection.Add(item1_1);
 			engine.Persister.Save(item2);
 
-			var version = versions.SaveVersion(item2);
+			var version = versions.AddVersion(item2);
 
 			persister.Dispose();
 			item = persister.Get<ThrowableItem>(item.ID);
@@ -203,7 +203,7 @@ namespace N2.Management.Tests.Trash
 			Relate(item1_1, item, item1_1, item2, item2_1);
 			Relate(item2_1, item, item1_1, item2, item2_1);
 			
-			var version = versions.SaveVersion(item2);
+			var version = versions.AddVersion(item2);
 
 			persister.Dispose();
 			item = persister.Get<ThrowableItem>(item.ID);

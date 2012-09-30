@@ -37,7 +37,7 @@ namespace N2.Persistence
 		/// <summary>Creates a version of the item. This must be called before the item item is modified to save a version before modifications.</summary>
 		/// <param name="item">The item to create a old version of.</param>
 		/// <returns>The old version.</returns>
-		public virtual ContentItem SaveVersion(ContentItem item, bool createPreviousVersion = true)
+		public virtual ContentItem AddVersion(ContentItem item, bool asPreviousVersion = true)
 		{
 			if (item == null)
 				throw new ArgumentNullException("item");
@@ -51,29 +51,39 @@ namespace N2.Persistence
 
 			item = args.AffectedItem;
 
-			ContentItem oldVersion = item.CloneForVersioningRecursive(stateChanger);
+			ContentItem version = item.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
 			
 			if (item.Parent != null)
-				oldVersion["ParentID"] = item.Parent.ID;
+				version["ParentID"] = item.Parent.ID;
 
-			if (createPreviousVersion)
+			if (asPreviousVersion)
 			{
-				Repository.Save(oldVersion, webContext.User.Identity.Name);
+				Repository.Save(version, webContext.User.Identity.Name);
 				item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
 				itemRepository.SaveOrUpdate(item);
 			}
 			else
 			{
-				oldVersion.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-				Repository.Save(oldVersion, webContext.User.Identity.Name);
+				version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
+				Repository.Save(version, webContext.User.Identity.Name);
 			}
 
 			if (ItemSavedVersion != null)
-				ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+				ItemSavedVersion.Invoke(this, new ItemEventArgs(version));
 
 			TrimVersionCountTo(item, maximumVersionsPerItem);
 
-			return oldVersion;
+			return version;
+		}
+
+		/// <summary>Updates a version.</summary>
+		/// <param name="item">The item to update.</param>
+		public void UpdateVersion(ContentItem item)
+		{
+			if (item.VersionOf.HasValue)
+				Repository.Save(item, webContext.User.Identity.Name);
+			else
+				itemRepository.SaveOrUpdate(item);
 		}
 
 		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
@@ -100,7 +110,7 @@ namespace N2.Persistence
 				{
 					if (storeCurrentVersion)
 					{
-						ContentItem versionOfCurrentItem = SaveVersion(currentItem); //TODO: remove?
+						ContentItem versionOfCurrentItem = AddVersion(currentItem); //TODO: remove?
 
 						Replace(currentItem, replacementItem);
 

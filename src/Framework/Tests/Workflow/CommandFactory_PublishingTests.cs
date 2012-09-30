@@ -90,7 +90,7 @@ namespace N2.Tests.Workflow
 		[Test]
 		public void CanMoveItem_ToBefore_Item()
 		{
-			var child2 = CreateOneItem<StatefulItem>(0, "child2", item);
+			var child2 = CreateOneItem<StatefulPage>(0, "child2", item);
 			var context = new CommandContext(definitions.GetDefinition(child2.GetContentType()), child2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 			context.Parameters["MoveBefore"] = child.Path;
 			var command = CreateCommand(context);

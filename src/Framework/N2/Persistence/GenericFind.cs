@@ -236,24 +236,24 @@ namespace N2.Persistence
 
 		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
-		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
+		/// <param name="includeSelf">Enumerate the item itself and it's descendants.</param>
 		/// <returns>An enumeration of all children of an item.</returns>
-		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef)
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSelf)
 		{
-			return EnumerateChildren(item, includeSlef, true);
+			return EnumerateChildren(item, includeSelf, true);
 		}
 
 		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
-		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
+		/// <param name="includeSelf">Enumerate the item itself and it's descendants.</param>
 		/// <param name="useMasterVersion">Enumerate descendants of the master version if the passed item is a version.</param>
 		/// <returns>An enumeration of all children of an item.</returns>
-		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef, bool useMasterVersion)
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSelf, bool useMasterVersion)
 		{
 			if (item == null) yield break;
 			if (useMasterVersion && item.VersionOf.HasValue) item = item.VersionOf;
 
-			if(includeSlef)
+			if(includeSelf)
 				yield return item;
 
 			foreach (ContentItem child in item.Children)

@@ -3,6 +3,8 @@ using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
+using N2.Edit.Versioning;
+using System;
 
 namespace N2.Web.Parts
 {
@@ -14,14 +16,16 @@ namespace N2.Web.Parts
 		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
+		private IVersionManager versions;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator, IVersionManager versions)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
 			this.definitions = definitions;
 			this.activator = activator;
             this.navigator = navigator;
+			this.versions = versions;
 		}
 
 		public override string Name
@@ -51,21 +55,30 @@ namespace N2.Web.Parts
 
 		private void CreateItem(TemplateDefinition template, NameValueCollection request)
         {
-            ContentItem parent = navigator.Navigate(request["below"]);
-			
+			ContentItem parent = navigator.Navigate(request["below"]);
+			//WebExtensions.TryParseVersion(N2.Context.Current.Resolve<ContentVersionRepository>()
+
 			ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
             item.ZoneName = request["zone"];
 			item.TemplateKey = template.Name;
-            
+
+			string beforeVersionIndex = request["beforeVersionIndex"];
+			string beforeVersionKey = request["beforeVersionKey"];
+			string beforeSortOrder = request["beforeSortOrder"];
             string before = request["before"];
-            if (!string.IsNullOrEmpty(before))
+			if (!string.IsNullOrEmpty(before))
 			{
 				ContentItem beforeItem = navigator.Navigate(before);
-                int newIndex = parent.Children.IndexOf(beforeItem);
-                Utility.Insert(item, parent, newIndex);
+				if (beforeItem != null)
+				{
+					int newIndex = parent.Children.IndexOf(beforeItem);
+					Utility.Insert(item, parent, newIndex);
 
-                foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
-                    persister.Repository.SaveOrUpdate(sibling);
+					foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
+						persister.Repository.SaveOrUpdate(sibling);
+				}
+				else
+					item.SortOrder = Convert.ToInt32(beforeSortOrder) - 1;
 			}
 
             persister.Save(item);
@@ -78,17 +91,25 @@ namespace N2.Web.Parts
 			string before = request["before"];
 			string below = request["below"];
 
-			Url url;
+			Url url = null;
 			if (!string.IsNullOrEmpty(before))
 			{
                 ContentItem beforeItem = navigator.Navigate(before);
-				url = managementPaths.GetEditNewPageUrl(beforeItem, template.Definition, zone, CreationPosition.Before);
+				if (beforeItem != null)
+					url = managementPaths.GetEditNewPageUrl(beforeItem, template.Definition, zone, CreationPosition.Before);
 			}
-			else
+			if (url == null)
 			{
                 ContentItem parent = navigator.Navigate(below);
 				url = managementPaths.GetEditNewPageUrl(parent, template.Definition, zone, CreationPosition.Below);
 			}
+			string beforeSortOrder = request["beforeSortOrder"];
+			url = url.AppendQuery("beforeSortOrder", beforeSortOrder);
+
+			if (!string.IsNullOrEmpty(request["versionIndex"]))
+				url = url.AppendQuery("vi", request["versionIndex"]);
+			if (!string.IsNullOrEmpty(request["versionKey"]))
+				url = url.AppendQuery("versionKey", request["versionKey"]);
 
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
 				url = url.AppendQuery("returnUrl", request["returnUrl"]);

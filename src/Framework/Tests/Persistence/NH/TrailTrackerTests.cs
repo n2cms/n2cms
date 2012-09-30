@@ -150,7 +150,7 @@ namespace N2.Tests.Persistence.NH
 			persister.Repository.SaveOrUpdate(root, one);
 
 			N2.Persistence.VersionManager vm = new VersionManager(TestSupport.CreateVersionRepository(typeof(PersistableItem1)), persister.Repository, new N2.Edit.Workflow.StateChanger(), new ThreadContext(), new N2.Configuration.EditSection());
-			var version = vm.SaveVersion(one);
+			var version = vm.AddVersion(one);
 			
 			one.Name += "2";
 			persister.Save(one);

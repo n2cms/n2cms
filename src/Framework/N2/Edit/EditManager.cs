@@ -443,7 +443,7 @@ namespace N2.Edit
 			var savedHandler = Events[savedVersionKey] as EventHandler<ItemEventArgs>;
 			Utility.InvokeEvent(savingHandler, current, this, delegate(ContentItem item)
 			                                            	{
-			                                            		savedVersion = versioner.SaveVersion(item);
+			                                            		savedVersion = versioner.AddVersion(item);
 			                                            		versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
 															}, savedHandler);
 			return savedVersion;

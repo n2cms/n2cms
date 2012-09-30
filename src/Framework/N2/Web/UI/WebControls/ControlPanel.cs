@@ -228,7 +228,7 @@ jQuery(document).ready(function(){{
 			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
-			Register.JavaScript(Page, DragDropScriptInitialization(), ScriptOptions.DocumentReady);
+			Register.JavaScript(Page, DragDropScriptInitialization(CurrentItem), ScriptOptions.DocumentReady);
 		}
 
 		protected virtual void AddPlugins(ControlPanelState state)
@@ -431,9 +431,9 @@ jQuery(document).ready(function(){{
 		public virtual ITemplate DragDropFooterTemplate { get; set; }
 		#endregion
 
-		public static string DragDropScriptInitialization()
+		public static string DragDropScriptInitialization(ContentItem item)
 		{
-			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx' }});", Url.ResolveTokens("{ManagementUrl}"));
+			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx'}}, {{}},{{versionIndex:{1}, isMasterVersion:{2}}});", Url.ResolveTokens("{ManagementUrl}"), item.VersionIndex, !item.VersionOf.HasValue ? "true" : "false");
 		}
 	}
 }

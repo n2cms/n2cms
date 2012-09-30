@@ -202,29 +202,40 @@ namespace N2.Web
 			return nvc;
 		}
 
-		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, ContentItem masterVersion)
+		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, string versionKey, ContentItem masterVersion)
 		{
 			var path = new PathData(Find.ClosestPage(masterVersion), masterVersion);
-			if (TryParseVersion(versionRepository, versionIndexParameterValue, path))
+			if (TryParseVersion(versionRepository, versionIndexParameterValue, versionKey, path))
 				return path.CurrentItem;
 			return null;
 		}
 
-		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, PathData path)
+		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, string versionKey, PathData path)
 		{
 			if (!string.IsNullOrEmpty(versionIndexParameterValue))
 			{
 				int versionIndex = int.Parse(versionIndexParameterValue);
 				var version = versionRepository.GetVersion(path.CurrentPage, versionIndex);
-				return path.TryApplyVersion(version);
+				return path.TryApplyVersion(version, versionKey);
 			}
 			return false;
 		}
 
-		public static bool TryApplyVersion(this PathData path, ContentVersion version)
+		public static bool TryApplyVersion(this PathData path, ContentVersion version, string versionKey)
 		{
 			if (version != null)
 			{
+				if (!string.IsNullOrEmpty(versionKey))
+				{
+					var item = version.Version.FindDescendantByVersionKey(versionKey);
+					if (item != null)
+					{
+						path.CurrentPage = version.Version;
+						path.CurrentItem = item;
+						return true;
+					}
+				}
+
 				if (path.CurrentItem.IsPage)
 				{
 					path.CurrentPage = null;
@@ -233,26 +244,13 @@ namespace N2.Web
 				else
 				{
 					path.CurrentPage = version.Version;
-					path.CurrentItem = version.Version.FindPartVersion(path.CurrentItem);
+					path.CurrentItem = version.Version.FindDescendantByVersionKey(versionKey)
+						?? version.Version.FindPartVersion(path.CurrentItem);
 				}
 
 				return true;
 			}
 			return false;
-		}
-
-		public static ContentItem FindPartVersion(this ContentItem parent, ContentItem part)
-		{
-			foreach (var child in parent.Children)
-			{
-				if (child.VersionOf.ID == part.ID)
-					return child;
-
-				var grandChild = child.FindPartVersion(part);
-				if (grandChild != null)
-					return grandChild;
-			}
-			return null;
 		}
 	}
 }

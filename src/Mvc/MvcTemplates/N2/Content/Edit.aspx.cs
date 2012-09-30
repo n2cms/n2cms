@@ -25,7 +25,7 @@ namespace N2.Edit
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write,
 		OptionProvider = typeof(EditOptionProvider))]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&vi={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
 		RequiredPermission = Permission.Write)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
 		RequiredPermission = Permission.Publish)]
@@ -136,8 +136,9 @@ namespace N2.Edit
 			var ctx = ie.CreateCommandContext();
 			Commands.Save(ctx);
 
-			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content)
-				.GetPreviewUrl(ctx.Content);
+			var page = Find.ClosestPage(ctx.Content);
+			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page)
+				.GetPreviewUrl(page);
 			if (Request["edit"] == "drag")
 				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
 			//preview is now implicit when viewing draft of page

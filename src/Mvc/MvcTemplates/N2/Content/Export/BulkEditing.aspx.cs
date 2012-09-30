@@ -80,7 +80,7 @@ namespace N2.Management.Content.Export
 						foreach (var item in items)
 						{
 							if (vm.IsVersionable(item))
-								vm.SaveVersion(item);
+								vm.AddVersion(item);
 
 							item[name] = value;
 						}

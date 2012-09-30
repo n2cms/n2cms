@@ -42,7 +42,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void CreateInstance_Generic_SetsItemState_New()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
 
             Assert.That(item.State, Is.EqualTo(ContentState.New));
         }
@@ -50,7 +50,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void CreateInstance_TypeParameter_SetsItemState_New()
         {
-			var item = activator.CreateInstance(typeof(StatefulItem), null);
+			var item = activator.CreateInstance(typeof(StatefulPage), null);
 
             Assert.That(item.State, Is.EqualTo(ContentState.New));
         }
@@ -61,7 +61,7 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void VersionAndSave_SetsItemStateTo_Published()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             
             editManager.Save(item, editors, ItemEditorVersioningMode.VersionAndSave, admin);
 
@@ -72,7 +72,7 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void SaveOnly_SetsItemStateTo_Published()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
 
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
 
@@ -83,9 +83,9 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void SaveOnly_OnVersion_SetsItemStateTo_Draft()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             persister.Save(item);
-            var version = versionManager.SaveVersion(item);
+            var version = versionManager.AddVersion(item);
 
             var result = editManager.Save(version, editors, ItemEditorVersioningMode.SaveOnly, admin);
 
@@ -96,9 +96,9 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void SaveVersion_OnPublishedItem_SetsVersionedItemStateTo_Unpublished()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
-            var version = versionManager.SaveVersion(item);
+            var version = versionManager.AddVersion(item);
 
             Assert.That(version.State, Is.EqualTo(ContentState.Unpublished));
         }
@@ -107,9 +107,9 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void SaveVersion_OnDraft_SetsVersionedItemStateTo_Unpublished()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             persister.Save(item);
-            var version = versionManager.SaveVersion(item);
+            var version = versionManager.AddVersion(item);
 
             Assert.That(version.State, Is.EqualTo(ContentState.Draft));
         }
@@ -118,9 +118,9 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void SaveAsMaster_SetsItemState_Published()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             persister.Save(item);
-            var version = versionManager.SaveVersion(item);
+            var version = versionManager.AddVersion(item);
 
             var result = editManager.Save(version, editors, ItemEditorVersioningMode.SaveAsMaster, admin);
 
@@ -131,7 +131,7 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void VersionOnly_SetsVersionedItemStateTo_Draft()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             persister.Save(item);
             
             var result = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
@@ -143,7 +143,7 @@ namespace N2.Tests.Workflow
 		[Obsolete]
         public void VersionOnly_DoesntAffect_MasterVersionState()
         {
-			var item = activator.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulPage>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
 

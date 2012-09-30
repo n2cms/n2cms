@@ -2,7 +2,8 @@
 	var isDragging = false;
 	var dialog = null;
 
-	window.n2DragDrop = function (urls, messages) {
+	window.n2DragDrop = function (urls, messages, context) {
+		console.log(context);
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
@@ -14,6 +15,7 @@
 			deleting: 'Do you really want to delete?',
 			helper: "Drop on a highlighted area"
 		}, messages);
+		this.context = context;
 		this.init();
 	}
 
@@ -76,12 +78,17 @@
 			$draggables.data("handler", this);
 		},
 
+		appendSelection: function (url, path) {
+			return url
+				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + path
+				+ (this.context.isMasterVersion ? "" : "&vi=" + this.context.versionIndex);
+		},
+
 		makeEditable: function () {
 			var self = this;
 			$(".editable").each(function () {
 				var $t = $(this);
-				var url = self.urls.editsingle
-					+ "?" + (n2SelectedQueryKey || "selected") + "=" + $t.attr("data-path")
+				var url = self.appendSelection(self.urls.editsingle, $t.attr("data-path"))
 					+ "&property=" + $t.attr("data-property")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {
@@ -172,17 +179,27 @@
 				$draggable.html("");
 				$droppable.append("<div class='dropping'/>");
 
+				var $next = $droppable.filter(".before").next();
 				var data = {
 					ctrlKey: e.ctrlKey,
 					item: $draggable.attr("data-item"),
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
-					before: $droppable.filter(".before").next().attr("data-item") || "",
+					before: $next.attr("data-item") || "",
+					beforeSortOrder: $next.attr("data-sortOrder") || "",
 					below: $droppable.closest(".dropZone").attr("data-item"),
 					zone: $droppable.closest(".dropZone").attr("data-zone"),
 					returnUrl: window.location.href,
 					dropped: true
 				};
+				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
+					data.versionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.versionKey = $droppable.closest(".dropZone").attr("data-versionKey");
+				}
+				if ($next.attr("data-versionKey")) {
+					data.beforeVersionKey = $next.attr("data-versionKey");
+					data.beforeVersionIndex = $next.attr("data-versionIndex");
+				}
 
 				handler.process(data);
 			}
@@ -232,6 +249,7 @@
 			command.random = Math.random();
 
 			var url = self.urls[command.action];
+			url = self.appendSelection(url, command.below);
 
 			var reloaded = false;
 			$.post(url, command, function (data) {

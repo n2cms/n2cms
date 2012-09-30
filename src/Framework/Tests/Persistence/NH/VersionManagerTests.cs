@@ -31,7 +31,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(item);
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
 
 			Assert.AreEqual(item, version.VersionOf.Value);
 		}
@@ -44,7 +44,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			item[key] = 1;
 			persister.Save(item);
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
 			item[key] = 2;
 			persister.Save(item);
 
@@ -62,7 +62,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
 			item[key] = 1;
 			persister.Save(item);
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
 			item[key] = 2;
 			persister.Save(item);
 
@@ -81,7 +81,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item);
 			}
 
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
             item.VersionIndex++;
             persister.Save(item);
 
@@ -112,7 +112,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item);
 			}
 
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
             item.VersionIndex++;
             persister.Save(item);
 
@@ -127,8 +127,8 @@ namespace N2.Tests.Persistence.NH
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(item);
-			versioner.SaveVersion(item);
-			versioner.SaveVersion(item);
+			versioner.AddVersion(item);
+			versioner.AddVersion(item);
 
 			versioner.TrimVersionCountTo(item, 2);
 
@@ -143,7 +143,7 @@ namespace N2.Tests.Persistence.NH
 			persister.Save(item);
 			for (int i = 0; i < 25; i++)
 			{
-				versioner.SaveVersion(item);
+				versioner.AddVersion(item);
 			}
 
 			versioner.TrimVersionCountTo(item, 2);
@@ -157,7 +157,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(item);
-			ContentItem version = versioner.SaveVersion(item);
+			ContentItem version = versioner.AddVersion(item);
 			version.Updated = DateTime.Now.AddSeconds(10);
 			engine.Persister.Repository.SaveOrUpdate(version);
 			engine.Persister.Repository.Flush();
@@ -186,7 +186,7 @@ namespace N2.Tests.Persistence.NH
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
 
-            var version = versioner.SaveVersion(item);
+            var version = versioner.AddVersion(item);
 
             Assert.That(version.VersionIndex, Is.EqualTo(0));
             Assert.That(item.VersionIndex, Is.EqualTo(1));
@@ -198,7 +198,7 @@ namespace N2.Tests.Persistence.NH
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
 
-            var version = versioner.SaveVersion(item);
+            var version = versioner.AddVersion(item);
             persister.Save(item);
 
             versioner.ReplaceVersion(item, CreateOneItem<Definitions.PersistableItem1>(0, "root2", null));
@@ -215,7 +215,7 @@ namespace N2.Tests.Persistence.NH
 				item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 				persister.Save(item);
 
-				version = versioner.SaveVersion(item);
+				version = versioner.AddVersion(item);
 			}
 			using (persister)
 			{
@@ -240,7 +240,7 @@ namespace N2.Tests.Persistence.NH
 				item["Reference"] = referenced;
 				persister.Save(item);
 
-				version = versioner.SaveVersion(item);
+				version = versioner.AddVersion(item);
 			}
 			using (persister)
 			{
@@ -268,7 +268,7 @@ namespace N2.Tests.Persistence.NH
 			master.ContentLinks = new[] { link1 };
 			persister.Save(master);
 
-			PersistableItem1 version1 = (PersistableItem1) versioner.SaveVersion(master);
+			PersistableItem1 version1 = (PersistableItem1) versioner.AddVersion(master);
 			
 			master.ContentLinks = new[] { link2 };
 			persister.Save(master);
@@ -290,7 +290,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(master);
 
-			var version1 = versioner.SaveVersion(master);
+			var version1 = versioner.AddVersion(master);
 
 			master.VersionIndex.ShouldBe(1);
 			version1.VersionIndex.ShouldBe(0);
@@ -302,7 +302,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(master);
 
-			var version1 = versioner.SaveVersion(master);
+			var version1 = versioner.AddVersion(master);
 
 			var version2 = versioner.ReplaceVersion(master, version1, storeCurrentVersion: true);
 
@@ -317,7 +317,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(master);
 
-			var version1 = versioner.SaveVersion(master, createPreviousVersion: false);
+			var version1 = versioner.AddVersion(master, asPreviousVersion: false);
 
 			version1.VersionIndex.ShouldBe(1);
 			master.VersionIndex.ShouldBe(0);
@@ -329,7 +329,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			persister.Save(master);
 
-			var version1 = versioner.SaveVersion(master, createPreviousVersion: false);
+			var version1 = versioner.AddVersion(master, asPreviousVersion: false);
 			var version2 = versioner.ReplaceVersion(master, version1, storeCurrentVersion: true);
 
 			version1.VersionIndex.ShouldBe(1);
@@ -355,7 +355,7 @@ namespace N2.Tests.Persistence.NH
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
-			var version1 = versioner.SaveVersion(root, createPreviousVersion: false);
+			var version1 = versioner.AddVersion(root, asPreviousVersion: false);
 
 			var versionPart = version1.Children.Single();
 			versionPart.Title.ShouldBe("part");
@@ -372,7 +372,7 @@ namespace N2.Tests.Persistence.NH
 			persister.Save(part);
 
 			root.State = ContentState.Draft;
-			var version1 = versioner.SaveVersion(root, createPreviousVersion: false);
+			var version1 = versioner.AddVersion(root, asPreviousVersion: false);
 
 			var versionPart = version1.Children.Single();
 			versionPart.State.ShouldBe(ContentState.Draft);

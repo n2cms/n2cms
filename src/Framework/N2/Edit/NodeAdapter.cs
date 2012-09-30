@@ -202,7 +202,8 @@ namespace N2.Edit
 		{
 			string url = ManagementPaths.GetPreviewUrl(item);
 			url = String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
-			url = url.ToUrl().AppendViewPreference(WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode), ViewPreference.Published);
+			var viewPrefrence = WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode);
+			url = url.ToUrl().AppendViewPreference(viewPrefrence, ViewPreference.Published);
 			return url;
 		}
 

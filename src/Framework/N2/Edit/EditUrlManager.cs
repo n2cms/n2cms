@@ -4,6 +4,7 @@ using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -57,7 +58,7 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
 			Url url = ResolveResourceUrl(selectedItem.Url);
-			return url.AppendQuery("src", Interfaces.Managing);
+			return url;//.AppendQuery("src", Interfaces.Managing);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -177,11 +178,23 @@ namespace N2.Edit
 			if (item.VersionOf.HasValue)
 			{
 				if (item.IsPage)
-					editUrl = editUrl.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
+					editUrl = editUrl
+						.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
 				else
-					editUrl = editUrl.SetQueryParameter(PathData.VersionQueryKey, Find.ClosestPage(item).VersionIndex);
+					editUrl = editUrl
+						.SetQueryParameter(PathData.VersionQueryKey, Find.ClosestPage(item).VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
 			}
-
+			else if (item.ID == 0)
+			{
+				var page = Find.ClosestPage(item);
+				if (page!= null && page.VersionOf.HasValue)
+					editUrl = editUrl
+						.SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
+						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
+			}
 			return editUrl;
 		}
 

@@ -4,6 +4,7 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Web.Mvc.Html
 {
@@ -45,8 +46,11 @@ namespace N2.Web.Mvc.Html
 				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
 					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName))
-					.Write(">");
+					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName));
+				if (CurrentItem.VersionOf.HasValue)
+					writer.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey())
+						.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
+				writer.Write(">");
 
                 RenderPreview(writer);
 				
@@ -105,8 +109,13 @@ namespace N2.Web.Mvc.Html
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
                 writer.WriteAttribute(PartUtilities.PathAttribute, model.Path)
-                    .WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator)
-                    .Write(">");
+					.WriteAttribute("data-sortOrder", model.SortOrder.ToString())
+					.WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator);
+				if (model.VersionOf.HasValue)
+					writer.WriteAttribute("data-versionKey", model.GetVersionKey())
+						.WriteAttribute("data-versionIndex", model.VersionIndex.ToString());
+
+				writer.Write(">");
 
 				Html.ResolveService<PartUtilities>().WriteTitleBar(writer, model, Html.ViewContext.HttpContext.Request.RawUrl);
                 

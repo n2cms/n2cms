@@ -3,6 +3,7 @@ using System.Diagnostics;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
+using N2.Edit.Versioning;
 
 namespace N2.Web
 {
@@ -61,6 +62,16 @@ namespace N2.Web
 				return BuildUrl(item.VersionOf).ToUrl()
 					.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
 			}
+			else if (item.ID == 0)
+			{
+				var page = Find.ClosestPage(item);
+				if (page != null)
+				{
+					return BuildUrl(page).ToUrl()
+						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
+				}
+			}
 
 			// move up until first real page
 			while(current != null && !current.IsPage)
@@ -91,7 +102,8 @@ namespace N2.Web
 			}
 
 			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+			if (current == null)
+				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			if (item.IsPage && item.VersionOf.HasValue)
 				// the item was a version, add this information as a query string

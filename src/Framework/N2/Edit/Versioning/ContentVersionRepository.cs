@@ -105,6 +105,8 @@ namespace N2.Edit.Versioning
 
 		private void ApplyCommonValuesRecursive(ContentItem parent)
 		{
+			if (string.IsNullOrEmpty(parent.GetVersionKey()))
+				parent.SetVersionKey(Guid.NewGuid().ToString());
 			foreach (var child in parent.Children)
 			{
 				child.State = parent.State;

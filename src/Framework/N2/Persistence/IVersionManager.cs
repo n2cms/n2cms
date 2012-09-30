@@ -19,7 +19,11 @@ namespace N2.Persistence
 		/// <summary>Creates a "previous" version of an item. This must be called before the item item is modified.</summary>
 		/// <param name="item">The item to create a old version of.</param>
 		/// <returns>The old version.</returns>
-		ContentItem SaveVersion(ContentItem item, bool createPreviousVersion = true);
+		ContentItem AddVersion(ContentItem item, bool asPreviousVersion = true);
+
+		/// <summary>Updates a version.</summary>
+		/// <param name="item">The item to update.</param>
+		void UpdateVersion(ContentItem item);
 
 		/// <summary>Retrieves the version with a given version index.</summary>
 		/// <param name="publishedItem">The published item whose version to get.</param>

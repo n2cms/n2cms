@@ -4,8 +4,17 @@ using N2.Details;
 namespace N2.Tests.Workflow.Items
 {
 	[WithEditableTitle]
-	public class StatefulItem : ContentItem
+	public class StatefulPage : ContentItem
 	{
+	}
+
+	[WithEditableTitle]
+	public class StatefulPart : ContentItem
+	{
+		public override bool IsPage
+		{
+			get { return false; }
+		}
 	}
 
 	[WithEditableTitle]
