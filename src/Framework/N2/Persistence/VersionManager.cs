@@ -203,7 +203,7 @@ namespace N2.Persistence
 				{
 					var clone = replacingChild.Clone(true);
 					clone.State = ContentState.Published;
-					clone.Updated = Utility.CurrentTime();
+					clone.Published = Utility.CurrentTime();
 					clone.AddTo(currentItem);
 					yield return clone;
 				}

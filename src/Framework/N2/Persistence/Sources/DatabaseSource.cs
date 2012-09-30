@@ -146,16 +146,17 @@ namespace N2.Persistence.Sources
 
 		private void DeletePreviousVersions(ContentItem itemNoMore)
 		{
-			var previousVersions = repository.Find("VersionOf.ID", itemNoMore.ID);
+			// TODO
+			//var previousVersions = repository.Find("VersionOf.ID", itemNoMore.ID);
 
-			int count = 0;
-			foreach (ContentItem version in previousVersions)
-			{
-				repository.Delete(version);
-				count++;
-			}
+			//int count = 0;
+			//foreach (ContentItem version in previousVersions)
+			//{
+			//    repository.Delete(version);
+			//    count++;
+			//}
 
-			Trace.TraceInformation("DatabaseSource.DeletePreviousVersions " + count + " of " + itemNoMore);
+			//Trace.TraceInformation("DatabaseSource.DeletePreviousVersions " + count + " of " + itemNoMore);
 		}
 
 		public override ContentItem Move(ContentItem source, ContentItem destination)
