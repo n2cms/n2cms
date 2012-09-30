@@ -6,6 +6,7 @@ using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using Shouldly;
 using System.Linq;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -324,17 +325,60 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ReplacingVersion_SwitchesVersionIndex()
+		public void Replacing_MasterVersion_WithDraft_RemovesDraftVersion()
 		{
 			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			master.State = ContentState.Published;
 			persister.Save(master);
 
 			var version1 = versioner.AddVersion(master, asPreviousVersion: false);
+			version1.Title += " changes";
 			var version2 = versioner.ReplaceVersion(master, version1, storeCurrentVersion: true);
 
-			version1.VersionIndex.ShouldBe(1);
 			version2.VersionIndex.ShouldBe(0);
-			master.VersionIndex.ShouldBe(2);
+			version2.Title.ShouldBe("root");
+			master.VersionIndex.ShouldBe(1);
+			master.Title.ShouldBe("root changes");
+			versioner.GetVersionsOf(master).Count().ShouldBe(2);
+		}
+
+		[TestCase(true, ContentState.Unpublished)]
+		[TestCase(false, ContentState.Draft)]
+		public void AddingVersion_OfPublishedItem_SetsStateOfVersion_AccordingTo_PreviousOrNot(bool isPrevious, ContentState expectedState)
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			master.State = ContentState.Published;
+			persister.Save(master);
+
+			var version1 = versioner.AddVersion(master, asPreviousVersion: isPrevious);
+
+			version1.State.ShouldBe(expectedState);
+		}
+
+		[TestCase(true, ContentState.Unpublished)]
+		[TestCase(false, ContentState.Draft)]
+		public void AddingVersion_OfUnpublishedItem_SetsStateOfVersion_AccordingTo_PreviousOrNot(bool isPrevious, ContentState expectedState)
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			master.State = ContentState.Unpublished;
+			persister.Save(master);
+
+			var version1 = versioner.AddVersion(master, asPreviousVersion: isPrevious);
+
+			version1.State.ShouldBe(expectedState);
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddingVersion_OfDraftItem_SetsStateToDraft(bool isPrevious)
+		{
+			PersistableItem1 master = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			master.State = ContentState.Draft;
+			persister.Save(master);
+
+			var version1 = versioner.AddVersion(master, asPreviousVersion: isPrevious);
+
+			version1.State.ShouldBe(ContentState.Draft);
 		}
 
 		[Test]
@@ -376,6 +420,250 @@ namespace N2.Tests.Persistence.NH
 
 			var versionPart = version1.Children.Single();
 			versionPart.State.ShouldBe(ContentState.Draft);
+		}
+
+		[Test]
+		public void PublishingDraft_CreatesNewPart()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			var part = new PersistablePart1 { Title = "part", Name = "part" };
+			part.ZoneName = "TheZone";
+			part.AddTo(draft);
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			var addedChild = master.Children.Single();
+			addedChild.State.ShouldBe(ContentState.Published);
+			DateTime.Now.ShouldBeGreaterThanOrEqualTo(addedChild.Published.Value);
+			addedChild.ID.ShouldNotBe(0);
+			addedChild.VersionOf.HasValue.ShouldBe(false);
+			addedChild.Title.ShouldBe("part");
+		}
+
+		[Test]
+		public void PublishingDraft_CreatesNewParts_WithHierarchy()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", draft);
+			part.ZoneName = "TheZone";
+			part.AddTo(draft);
+			var part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", part);
+			part2.ZoneName = "TheZone";
+			part2.AddTo(part);
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			var addedGrandChild = master.Children.Single().Children.Single();
+			addedGrandChild.State.ShouldBe(ContentState.Published);
+			addedGrandChild.ID.ShouldNotBe(0);
+			addedGrandChild.VersionOf.HasValue.ShouldBe(false);
+			addedGrandChild.Title.ShouldBe("part2");
+		}
+
+		[Test]
+		public void PublishingDraft_CreatesNewParts_BelowExistingParts()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			var draftPart = CreateOneItem<Definitions.PersistablePart1>(0, "new part", null);
+			draftPart.ZoneName = "TheZone";
+			draftPart.AddTo(draft.Children.Single());
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			var addedChild = master.Children.Single().Children.Single();
+			addedChild.State.ShouldBe(ContentState.Published);
+			addedChild.ID.ShouldNotBe(0);
+			addedChild.VersionOf.HasValue.ShouldBe(false);
+			addedChild.Title.ShouldBe("new part");
+		}
+
+		[Test]
+		public void PublishingDraft_RemovesRemovedParts()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+			
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.Clear();
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			master.Children.Count.ShouldBe(0);
+			persister.Get(part.ID).ShouldBe(null);
+		}
+
+		[Test]
+		public void PublishingDraft_RemovesRemovedParts_InHierarchy()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+			var part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part", part);
+			part2.ZoneName = "TheZone";
+			part2.AddTo(part);
+			persister.Save(part2);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.Clear();
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			master.Children.Count.ShouldBe(0);
+			persister.Get(part.ID).ShouldBe(null);
+			persister.Get(part2.ID).ShouldBe(null);
+		}
+
+		[Test]
+		public void PublishingDraft_UpdatesParts()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.Single().Title += " modified";
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			master.Children.Single().Title.ShouldBe("part modified");
+		}
+
+		[Test]
+		public void PublishingDraft_Updates_DescendantParts()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+			var part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", part);
+			part2.ZoneName = "TheZone";
+			part2.AddTo(part);
+			persister.Save(part2);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.Single().Children.Single().Title += " modified";
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			master.Children.Single().Children.Single().Title.ShouldBe("part2 modified");
+		}
+
+		[Test]
+		public void PublishingDraft_ZoneName_And_SortOrder_IsUpdatedFromDraft()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.SortOrder = 333;
+			part.AddTo(root);
+			persister.Save(part);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			var draftChild = draft.Children.Single();
+			draftChild.ZoneName = "TheOtherZone";
+			draftChild.SortOrder = 666;
+
+			var master = versioner.MakeMasterVersion(draft);
+
+			var updatedPart = master.Children.Single();
+			updatedPart.ZoneName.ShouldBe("TheOtherZone");
+			updatedPart.SortOrder.ShouldBe(666);
+		}
+
+		[Test]
+		public void PublishingDraft_PuttingItAllTogether()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part1 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", root);
+			part1.ZoneName = "TheZone";
+			part1.SortOrder = 333;
+			part1.AddTo(root);
+			persister.Save(part1);
+			var part1_1 = CreateOneItem<Definitions.PersistablePart1>(0, "part1_1", part1);
+			part1_1.ZoneName = "TheZone";
+			part1_1.SortOrder = 333;
+			part1_1.AddTo(part1);
+			persister.Save(part1_1);
+			var part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", root);
+			part2.ZoneName = "TheZone";
+			part2.SortOrder = 333;
+			part2.AddTo(root);
+			persister.Save(part2);
+			//	root
+			//		part1
+			//			part1_1
+			//		part2
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+			// remove part1 and part1_1
+			draft.Children.Remove(draft.Children["part1"]);
+			// modify part2
+			var versionOfPart2 = draft.Children["part2"];
+			versionOfPart2.Title += " changed";
+			versionOfPart2.SortOrder = 666;
+			versionOfPart2.ZoneName = "TheOtherZone";
+			// add new1
+			var new1 = CreateOneItem<Definitions.PersistablePart1>(0, "new1", null);
+			new1.ZoneName = "TheZone";
+			new1.AddTo(draft);
+			// add new2 below new1
+			var new1_1 = CreateOneItem<Definitions.PersistablePart1>(0, "new1_1", null);
+			new1_1.ZoneName = "TheZone";
+			new1_1.AddTo(draft.Children.Single(c => c.Name == "new1"));
+			// add new2 below part2
+			var new2 = CreateOneItem<Definitions.PersistablePart1>(0, "new2", null);
+			new2.ZoneName = "TheZone";
+			new2.AddTo(draft.Children["part2"]);
+			//	root
+			//		part1 - (deleted)
+			//			part1_1 - (cascade deleted)
+			//		part2 - modfied
+			//			new2
+			//		new1
+			//			new1_1
+
+			var master = versioner.MakeMasterVersion(draft);
+			master.Children["part1"].ShouldBe(null);
+			persister.Get(part1.ID).ShouldBe(null);
+			persister.Get(part1_1.ID).ShouldBe(null);
+			var updatedPart2 = master.Children["part2"];
+			updatedPart2.Title.ShouldBe("part2 changed");
+			updatedPart2.ZoneName.ShouldBe("TheOtherZone");
+			updatedPart2.SortOrder.ShouldBe(666);
+			updatedPart2.Children.Single().Title.ShouldBe("new2");
+			var publishedNew1 = master.Children["new1"];
+			publishedNew1.Title.ShouldBe("new1");
+			publishedNew1.ID.ShouldBeGreaterThan(0);
+			var publishedNew1_1 = publishedNew1.Children.Single();
+			publishedNew1_1.Title.ShouldBe("new1_1");
+			publishedNew1_1.ID.ShouldBeGreaterThan(0);
 		}
 	}
 }

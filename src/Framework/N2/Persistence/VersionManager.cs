@@ -146,6 +146,26 @@ namespace N2.Persistence
 
 		private void Replace(ContentItem currentItem, ContentItem replacementItem)
 		{
+			UpdateValues(currentItem, replacementItem);
+			itemRepository.SaveOrUpdate(currentItem);
+
+			foreach (var removedItem in RemoveRemovedPartsRecursive(currentItem, replacementItem))
+				itemRepository.Delete(removedItem);
+
+			foreach (var modifiedItem in UpdateModifiedPartsRecursive(currentItem, replacementItem))
+				itemRepository.SaveOrUpdate(modifiedItem);
+
+			foreach (var addedItem in AddAddedPartsRecursive(currentItem, replacementItem))
+				itemRepository.SaveOrUpdate(addedItem);
+
+			if (ItemReplacedVersion != null)
+				ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
+
+			itemRepository.Flush();
+		}
+
+		private void UpdateValues(ContentItem currentItem, ContentItem replacementItem)
+		{
 			ClearAllDetails(currentItem);
 
 			((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
@@ -155,12 +175,58 @@ namespace N2.Persistence
 				// do not increment when latest is current
 				currentItem.VersionIndex = latestVersion.VersionIndex + 1;
 			currentItem.Updated = Utility.CurrentTime();
-			itemRepository.SaveOrUpdate(currentItem);
+		}
 
-			if (ItemReplacedVersion != null)
-				ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
+		private IEnumerable<ContentItem> RemoveRemovedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
+		{
+			var versionedChildren = replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID);
+			foreach (var existingChild in currentItem.Children.FindParts().ToList())
+			{
+				if (versionedChildren.ContainsKey(existingChild.ID))
+				{
+					foreach (var removedChild in RemoveRemovedPartsRecursive(existingChild, versionedChildren[existingChild.ID]))
+						yield return removedChild;
+				}
+				else
+				{
+					existingChild.AddTo(null);
+					yield return existingChild;
+				}
+			}
+		}
 
-			itemRepository.Flush();
+		private IEnumerable<ContentItem> AddAddedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
+		{
+			foreach (var replacingChild in replacementItem.Children)
+			{
+				if (!replacingChild.VersionOf.HasValue)
+				{
+					var clone = replacingChild.Clone(true);
+					clone.State = ContentState.Published;
+					clone.Updated = Utility.CurrentTime();
+					clone.AddTo(currentItem);
+					yield return clone;
+				}
+				foreach (var addedPart in AddAddedPartsRecursive(replacingChild.VersionOf.Value, replacingChild))
+					yield return addedPart;
+			}
+		}
+
+		private IEnumerable<ContentItem> UpdateModifiedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
+		{
+			var versionedChildren = replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID);
+			foreach (var existingChild in currentItem.Children.FindParts().ToList())
+			{
+				ContentItem versionedCounterpart;
+				if (!versionedChildren.TryGetValue(existingChild.ID, out versionedCounterpart))
+					continue;
+
+				UpdateValues(existingChild, versionedCounterpart);
+				yield return currentItem;
+
+				foreach (var modifiedItem in UpdateModifiedPartsRecursive(existingChild, versionedCounterpart))
+					yield return modifiedItem;
+			}
 		}
 
 		#region ReplaceVersion Helper Methods

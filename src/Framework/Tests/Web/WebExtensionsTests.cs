@@ -44,15 +44,6 @@ namespace N2.Tests.Web
         }
 
         [Test]
-        public void ShouldThrowExceptionIfEnumDoesNotHaveFlags()
-        {
-            var testEnum = TestEnumWithoutFlags.I;
-            var testEnum2 = TestEnumWithoutFlags.Have;
-
-            Assert.Throws<ArgumentException>(() => testEnum.IsFlagSet(testEnum2));
-        }
-
-        [Test]
         public void ShouldReturnTrueIfFlagIsSet()
         {
             var testEnum = TestEnumWithFlags.I | TestEnumWithFlags.Have;

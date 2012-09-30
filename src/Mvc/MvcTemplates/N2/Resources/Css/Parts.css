@@ -67,9 +67,8 @@
             text-align:center;
             height:16px;
         }
-        .controlPanel .plugins a.toggled 
-        {
-            background-image:url(../../Resources/Img/darken25.png);
+        .controlPanel .plugins a.toggled {
+            background-image:none;
         }
     .controlPanel .plugins .authorizedFalse { opacity:.33 }
     .controlPanel .plugins a:hover { background-image:url(../../Resources/Img/toolbar_button_bg_hover.png); background-position:50% 10px; }

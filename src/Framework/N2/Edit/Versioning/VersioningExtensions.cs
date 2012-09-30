@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Edit.Versioning
 {
@@ -13,7 +14,7 @@ namespace N2.Edit.Versioning
 			ContentItem clone = item.Clone(false);
 			if (item.State == ContentState.Published && asPreviousVersion)
 				stateChanger.ChangeTo(clone, ContentState.Unpublished);
-			else if (item.State != ContentState.Unpublished)
+			else if (item.State != ContentState.Unpublished || asPreviousVersion == false)
 				stateChanger.ChangeTo(clone, ContentState.Draft);
 			clone.Expires = Utility.CurrentTime().AddSeconds(-1);
 			clone.Updated = Utility.CurrentTime().AddSeconds(-1);
@@ -62,6 +63,19 @@ namespace N2.Edit.Versioning
 				return null;
 
 			return Find.EnumerateChildren(parent, includeSelf: true, useMasterVersion: false).FirstOrDefault(d => key.Equals(d["VersionKey"]));
+		}
+
+		/// <summary>Publishes the given version.</summary>
+		/// <param name="version">The version to publish.</param>
+		/// <returns>The published (master) version.</returns>
+		public static ContentItem MakeMasterVersion(this IVersionManager versionManager, ContentItem versionToPublish)
+		{
+			if (!versionToPublish.VersionOf.HasValue)
+				return versionToPublish;
+
+			var master = versionToPublish.VersionOf;
+			versionManager.ReplaceVersion(master, versionToPublish, versionToPublish.VersionOf.Value.State == ContentState.Published);
+			return master;
 		}
 	}
 }

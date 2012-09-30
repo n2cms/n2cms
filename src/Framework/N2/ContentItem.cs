@@ -787,7 +787,6 @@ namespace N2
 		#region Clone Helper Methods
 		static void CloneUnversionableFields(ContentItem source, ContentItem destination)
 		{
-			destination.zoneName = source.zoneName;
 			destination.published = source.published;
 			destination.expires = source.expires;
 			destination.versionIndex = source.versionIndex;
@@ -804,9 +803,11 @@ namespace N2
 			destination.templateKey = source.templateKey;
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
+			destination.sortOrder = source.sortOrder;
 			destination.urlParser = source.urlParser;
 			destination.state = source.state;
 			destination.url = null;
+			destination.zoneName = source.zoneName;
 		}
 
 		static void CloneAutoProperties(ContentItem source, ContentItem destination)

@@ -94,18 +94,5 @@ namespace N2.Persistence
 			}
 			repository.Delete(parent);
 		}
-
-		/// <summary>Publishes the given version.</summary>
-		/// <param name="version">The version to publish.</param>
-		/// <returns>The version that is published.</returns>
-		public static ContentItem MakeMasterVersion(this IVersionManager versionManager, ContentItem versionToPublish)
-		{
-			if (!versionToPublish.VersionOf.HasValue)
-				return versionToPublish;
-
-			var master = versionToPublish.VersionOf;
-			versionManager.ReplaceVersion(master, versionToPublish, versionToPublish.VersionOf.Value.State == ContentState.Published);
-			return master;
-		}
 	}
 }
