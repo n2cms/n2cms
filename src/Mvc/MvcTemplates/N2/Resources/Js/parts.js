@@ -206,6 +206,7 @@
 		},
 
 		stopDragging: function (e, ui) {
+			n2SlidingCurtain.fadeIn();
 			$(this).html($(this).data("html")); // restore html removed by jquery ui
 			$(this).removeClass("dragged");
 			$(".dropPoint").remove();
@@ -214,6 +215,7 @@
 		},
 
 		startDragging: function (e, ui) {
+			n2SlidingCurtain.fadeOut();
 			$(this).data("html", $(this).html());
 			var dragged = this;
 			var handler = $(dragged).data("handler");
@@ -305,37 +307,41 @@
 				self.recalculate();
 			});
 
-			var curtain = {
-				open: function (e) {
-					if (e) {
-						$sc.animate(self.openPos);
-					} else {
-						$sc.css(self.openPos);
-					}
-					$sc.addClass("opened");
-					$.cookie("sc_open", "true", { expires: 1 });
-				},
-				close: function (e) {
-					if (e) {
-						$sc.animate(self.closedPos);
-					} else {
-						$sc.css(self.closedPos);
-					}
-					$sc.removeClass("opened");
-					$.cookie("sc_open", null);
+			self.open = function (e) {
+				if (e) {
+					$sc.animate(self.openPos);
+				} else {
+					$sc.css(self.openPos);
 				}
+				$sc.addClass("opened");
+				$.cookie("sc_open", "true", { expires: 1 });
+			};
+			self.close = function (e) {
+				if (e) {
+					$sc.animate(self.closedPos);
+				} else {
+					$sc.css(self.closedPos);
+				}
+				$sc.removeClass("opened");
+				$.cookie("sc_open", null);
+			};
+			self.fadeIn = function (e) {
+				$sc.fadeIn();
+			};
+			self.fadeOut = function (e) {
+				$sc.fadeOut();
 			};
 
 			if (startsOpen) {
 				$sc.animate(self.openPos).addClass("opened");
 			} else if (this.isOpen()) {
-				curtain.open();
+				self.open();
 			} else {
-				curtain.close();
+				self.close();
 			}
 
-			$sc.find(".close").click(curtain.close);
-			$sc.find(".open").click(curtain.open);
+			$sc.find(".close").click(self.close);
+			$sc.find(".open").click(self.open);
 		}
 	};
 })(jQuery);
