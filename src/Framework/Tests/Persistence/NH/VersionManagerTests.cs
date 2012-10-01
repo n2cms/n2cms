@@ -665,5 +665,23 @@ namespace N2.Tests.Persistence.NH
 			publishedNew1_1.Title.ShouldBe("new1_1");
 			publishedNew1_1.ID.ShouldBeGreaterThan(0);
 		}
+
+		[Test]
+		public void AddingVersionOfPart_AddsVersionOfPage_AndReturnsPart()
+		{
+			PersistableItem1 root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			persister.Save(part);
+
+			var draft = versioner.AddVersion(part, asPreviousVersion: false);
+
+			draft.Name.ShouldBe("part");
+			draft.ID.ShouldBe(0);
+			part.Parent.Name.ShouldBe("root");
+			draft.Parent.ID.ShouldBe(0);
+		}
 	}
 }

@@ -51,6 +51,18 @@ namespace N2.Persistence
 
 			item = args.AffectedItem;
 
+			if (!item.IsPage)
+			{
+				var page = Find.ClosestPage(item);
+				if (page == null)
+					throw new InvalidOperationException("Cannot create version of part which isn't on a page: " + item);
+
+				var pageVersion = AddVersion(page);
+				var partVersion = pageVersion.FindPartVersion(item);
+				return partVersion;
+			}
+			
+
 			ContentItem version = item.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
 			
 			if (item.Parent != null)
