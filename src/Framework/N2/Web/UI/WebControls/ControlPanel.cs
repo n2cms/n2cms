@@ -353,7 +353,7 @@ jQuery(document).ready(function(){{
                 state |= ControlPanelState.Editing;
             if (queryString["edit"] == "drag")
                 state |= ControlPanelState.DragDrop;
-            if (request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue)
+			if (!request.CurrentPath.IsEmpty() && request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue)
 				state |= ControlPanelState.Previewing;
 
 			return state;

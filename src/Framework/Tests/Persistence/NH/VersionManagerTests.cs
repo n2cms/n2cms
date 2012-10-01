@@ -683,5 +683,67 @@ namespace N2.Tests.Persistence.NH
 			part.Parent.Name.ShouldBe("root");
 			draft.Parent.ID.ShouldBe(0);
 		}
+
+		[Test]
+		public void PersistableProperties_AreCarriedAlong_WhenReplacingVersions()
+		{
+			var root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			root.PersistableProperty = "Hello world";
+			persister.Save(root);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+
+			var restoredMaster = (PersistableItem1)versioner.ReplaceVersion(root, draft);
+			restoredMaster.PersistableProperty.ShouldBe("Hello world");
+		}
+
+		[Test]
+		public void ChangesTo_PersistableProperties_AreCarriedOn_FromVersion()
+		{
+			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			root.PersistableProperty = "Hello world";
+			persister.Save(root);
+
+			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
+			draft.PersistableProperty = "Herro!";
+
+			versioner.ReplaceVersion(root, draft);
+			root.PersistableProperty.ShouldBe("Herro!");
+		}
+
+		[Test]
+		public void PersistableProperties_OnParts_AreCarriedAlong_WhenReplacingVersions()
+		{
+			var root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			part.PersistableProperty = "Hello world";
+			persister.Save(part);
+
+			var draft = versioner.AddVersion(root, asPreviousVersion: false);
+
+			versioner.ReplaceVersion(root, draft);
+			part["PersistableProperty"].ShouldBe("Hello world");
+		}
+
+		[Test]
+		public void ChangesTo_PersistableProperties_OnParts_AreCarriedOn_FromVersion()
+		{
+			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			part.PersistableProperty = "Hello world";
+			persister.Save(part);
+
+			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.OfType<PersistablePart1>().Single().PersistableProperty = "Herro!";
+
+			versioner.ReplaceVersion(root, draft);
+			part["PersistableProperty"].ShouldBe("Herro!");
+		}
 	}
 }

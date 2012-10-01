@@ -108,19 +108,8 @@ namespace N2.Persistence.Proxying
 			{
 				foreach (var property in t.GetProperties())
 				{
-					if (!property.CanRead)
-						continue;
-					if (!property.GetGetMethod().IsVirtual)
-						continue;
-					if (!property.IsCompilerGenerated())
-						continue;
-
-					var attributes = definition.GetCustomAttributes<IInterceptableProperty>(property.Name);
-					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
-						// some property is persisted as something other than detail or detail collection
-						continue;
-					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
-						// no property is persisted as detail or detail collection
+					IEnumerable<IInterceptableProperty> attributes;
+					if (!definition.IsInterceptable(property, out attributes))
 						continue;
 
 					yield return new AttributedProperty { Property = property, Attribute = attributes.First() };

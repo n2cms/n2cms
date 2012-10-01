@@ -41,6 +41,7 @@ namespace N2.Tests.Web.WebControls
 			page = CreateOneItem<PageItem>(1, "page", null);
 			data = CreateOneItem<DataItem>(2, "data", page);
 			data.ZoneName = ZoneName;
+			engine.RequestContext.CurrentPath = new PathData(page);
 		}
 		
 		protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
@@ -63,6 +64,9 @@ namespace N2.Tests.Web.WebControls
 				ApplicationInstance = new HttpApplication(), 
 				User = SecurityUtilities.CreatePrincipal("admin")
 			};
+			HttpContext.Current.Items["N2.Engine"] = engine;
+			System.Threading.Thread.CurrentPrincipal = HttpContext.Current.User;
+			((ThreadContext)engine.RequestContext).Url = request.RawUrl;
 		}
 	}
 }

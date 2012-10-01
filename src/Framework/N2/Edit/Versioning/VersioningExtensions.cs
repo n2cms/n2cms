@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using N2.Edit.Workflow;
 using N2.Persistence;
+using N2.Definitions;
+using N2.Definitions.Static;
 
 namespace N2.Edit.Versioning
 {

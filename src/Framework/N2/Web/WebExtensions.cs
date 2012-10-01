@@ -212,7 +212,7 @@ namespace N2.Web
 
 		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, string versionKey, PathData path)
 		{
-			if (!string.IsNullOrEmpty(versionIndexParameterValue))
+			if (!path.IsEmpty() && !string.IsNullOrEmpty(versionIndexParameterValue))
 			{
 				int versionIndex = int.Parse(versionIndexParameterValue);
 				var version = versionRepository.GetVersion(path.CurrentPage, versionIndex);

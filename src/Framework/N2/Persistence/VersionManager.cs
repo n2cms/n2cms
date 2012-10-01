@@ -9,6 +9,7 @@ using N2.Engine;
 using N2.Persistence.Finder;
 using N2.Edit.Versioning;
 using N2.Web;
+using N2.Definitions.Static;
 
 namespace N2.Persistence
 {
@@ -61,7 +62,6 @@ namespace N2.Persistence
 				var partVersion = pageVersion.FindPartVersion(item);
 				return partVersion;
 			}
-			
 
 			ContentItem version = item.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
 			

@@ -1047,6 +1047,7 @@ namespace N2
 			CloneFields(source, this);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
+			CloneAutoProperties(source, this);
 		}
 
 		private void ClearMissingDetails(ContentItem source, ContentItem destination)

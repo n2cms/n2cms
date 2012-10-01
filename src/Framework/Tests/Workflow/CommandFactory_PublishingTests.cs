@@ -18,22 +18,6 @@ namespace N2.Tests.Workflow
         }
 
         [Test]
-        public void IsNotValidated_WhenInterface_IsViewing()
-        {
-            item = MakeVersion(item);
-
-			var validator = MockRepository.GenerateStub<IValidator<CommandContext>>();
-            mocks.ReplayAll();
-
-			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, validator);
-
-            var command = CreateCommand(context);
-            dispatcher.Execute(command, context);
-
-            validator.AssertWasNotCalled(b => b.Validate(context));
-        }
-
-        [Test]
         public void MakesVersion_OfCurrent()
         {
 			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);

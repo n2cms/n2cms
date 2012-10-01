@@ -7,6 +7,8 @@ using NUnit.Framework;
 using N2.Edit.Versioning;
 using Shouldly;
 using N2.Persistence;
+using N2.Definitions.Static;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Edit.Versioning
 {
@@ -145,7 +147,7 @@ namespace N2.Tests.Edit.Versioning
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
-			var version = page.CloneForVersioningRecursive(new N2.Edit.Workflow.StateChanger());
+			var version = page.CloneForVersioningRecursive(engine.Resolve<StateChanger>());
 			version.VersionIndex = page.VersionIndex + 1;
 			version.VersionOf = page;
 
@@ -195,7 +197,7 @@ namespace N2.Tests.Edit.Versioning
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
-			var version = page.CloneForVersioningRecursive(new N2.Edit.Workflow.StateChanger());
+			var version = page.CloneForVersioningRecursive(engine.Resolve<StateChanger>());
 			version.VersionIndex = page.VersionIndex + 1;
 
 			repository.Save(version, "Hello");
