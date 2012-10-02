@@ -8,6 +8,7 @@ using N2.Web;
 using N2.Web.Mvc.Html;
 using N2.Web.UI.WebControls;
 using System.Web.UI;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -51,9 +52,9 @@ namespace N2.Edit
                 script, true);
         }
 
-        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6} }});";
-        private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6} }});";
-        private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6} }});";
+        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
+		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
+		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
 
         public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
         {
@@ -65,9 +66,11 @@ namespace N2.Edit
                 item.ID, // 3
                 item.Path, // 4
                 engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // permission:'{5}',
-                "true" // force:{6}
+                "true", // force:{6}
+				item.VersionIndex,
+				item.GetVersionKey()
             );
-
+			
             page.ClientScript.RegisterClientScriptBlock(
                 typeof(EditExtensions),
                 "RefreshFramesScript",
@@ -106,7 +109,9 @@ namespace N2.Edit
                 item.ID, // 3
                 item.Path, // 4
                 engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // 5
-                force.ToString().ToLower() // 6
+                force.ToString().ToLower(), // 6
+				item.VersionIndex,
+				item.GetVersionKey()
                 );
             return script;
         }

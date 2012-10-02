@@ -3,7 +3,6 @@
 	var dialog = null;
 
 	window.n2DragDrop = function (urls, messages, context) {
-		console.log(context);
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',

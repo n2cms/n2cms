@@ -31,7 +31,7 @@ namespace N2.Tests.Edit.Versioning
             var master = CreateOneItem<Items.NormalPage>(0, "pageX", null);
             persister.Save(master);
 
-            var draft = repository.Save(master, "Hello");
+            var draft = repository.Save(master);
             repository.Repository.Dispose();
 
             var savedDraft = repository.GetVersion(master);
@@ -53,7 +53,7 @@ namespace N2.Tests.Edit.Versioning
 			var version = page.Clone(true);
 			version.VersionOf = page;
 
-            var draft = repository.Save(version, "Hello");
+            var draft = repository.Save(version);
             repository.Repository.Dispose();
 
             var savedDraft = repository.GetVersion(page);
@@ -70,7 +70,7 @@ namespace N2.Tests.Edit.Versioning
 			version.State = ContentState.Draft;
 			version.VersionOf = page;
 
-			var draft = repository.Save(version, "Hello");
+			var draft = repository.Save(version);
 
 			repository.HasDraft(page).ShouldBe(true);
 			repository.GetDraft(page).ID.ShouldBe(draft.ID);
@@ -91,7 +91,7 @@ namespace N2.Tests.Edit.Versioning
 			version.State = state;
 			version.VersionOf = page;
 
-			var draft = repository.Save(version, "Hello");
+			var draft = repository.Save(version);
 
 			repository.HasDraft(page).ShouldBe(false);
 			repository.GetDraft(page).ShouldBe(null);
@@ -107,13 +107,13 @@ namespace N2.Tests.Edit.Versioning
 			version.VersionIndex = page.VersionIndex + 1;
 			version.State = ContentState.Draft;
 			version.VersionOf = page;
-			var draft1 = repository.Save(version, "Hello");
+			var draft1 = repository.Save(version);
 
 			var version2 = page.Clone(true);
 			version2.VersionIndex = page.VersionIndex + 2;
 			version2.State = ContentState.Draft;
 			version2.VersionOf = page;
-			var draft2 = repository.Save(version2, "Hello");
+			var draft2 = repository.Save(version2);
 
 			repository.GetDraft(page).ID.ShouldBe(draft2.ID);
 		}
@@ -129,7 +129,7 @@ namespace N2.Tests.Edit.Versioning
 			versionItem.State = ContentState.Draft;
 			versionItem.VersionOf = page;
 			
-			var version = repository.Save(versionItem, "Hello");
+			var version = repository.Save(versionItem);
 
 			repository.Repository.Dispose();
 			var savedVersion = repository.GetVersion(page, versionItem.VersionIndex);
@@ -151,7 +151,7 @@ namespace N2.Tests.Edit.Versioning
 			version.VersionIndex = page.VersionIndex + 1;
 			version.VersionOf = page;
 
-			repository.Save(version, "Hello");
+			repository.Save(version);
 
 			repository.Repository.Dispose();
 			var savedVersion = repository.GetVersion(page, version.VersionIndex);
@@ -176,7 +176,7 @@ namespace N2.Tests.Edit.Versioning
 			version.VersionIndex = page.VersionIndex + 1;
 			version.VersionOf = page;
 
-			repository.Save(version, "Hello");
+			repository.Save(version);
 
 			repository.Repository.Dispose();
 			var savedVersion = repository.GetVersion(page, version.VersionIndex);
@@ -200,7 +200,7 @@ namespace N2.Tests.Edit.Versioning
 			var version = page.CloneForVersioningRecursive(engine.Resolve<StateChanger>());
 			version.VersionIndex = page.VersionIndex + 1;
 
-			repository.Save(version, "Hello");
+			repository.Save(version);
 
 			repository.Repository.Dispose();
 			var savedVersion = repository.GetVersion(page, version.VersionIndex);

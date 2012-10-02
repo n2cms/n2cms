@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace N2.Tests.Edit
 {
 	[TestFixture]
-	public class WhileNavigatingToTheEditPage : EditUrlManagerTests
+	public class EditUrlManagerTests_Editing : EditUrlManagerTests
 	{
 		[Test]
 		public void GetEditNewPageUrl_After()

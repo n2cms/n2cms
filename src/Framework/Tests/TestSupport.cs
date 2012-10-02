@@ -108,7 +108,7 @@ namespace N2.Tests
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {
             var changer = new N2.Edit.Workflow.StateChanger();
-			versions = new VersionManager(TestSupport.CreateVersionRepository(), persister.Repository, changer, new ThreadContext(), new N2.Configuration.EditSection());
+			versions = new VersionManager(TestSupport.CreateVersionRepository(), persister.Repository, changer, new N2.Configuration.EditSection());
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 

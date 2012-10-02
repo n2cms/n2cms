@@ -84,7 +84,7 @@ namespace N2.Edit.Versioning
 				.FirstOrDefault();
 		}
 
-        public ContentVersion Save(ContentItem item, string username)
+        public ContentVersion Save(ContentItem item)
         {
 			item = Find.ClosestPage(item);
 			var version = GetVersion(GetMaster(item), item.VersionIndex)
@@ -95,11 +95,14 @@ namespace N2.Edit.Versioning
 			version.Master = GetMaster(item);
 			version.Published = Utility.CurrentTime();
             version.Saved = Utility.CurrentTime();
-			version.SavedBy = username;
+			version.SavedBy = item.SavedBy;
 			version.Version = item;
 
-            Repository.SaveOrUpdate(version);
-
+			using (var tx = Repository.BeginTransaction())
+			{
+				Repository.SaveOrUpdate(version);
+				tx.Commit();
+			}
             return version;
         }
 
@@ -122,7 +125,29 @@ namespace N2.Edit.Versioning
 
 		public void Delete(ContentItem item)
 		{
-			Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
+			using (var tx = Repository.BeginTransaction())
+			{
+				if (item.IsPage)
+				{
+					Repository.Delete(Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("VersionIndex", item.VersionIndex)).ToArray());
+					tx.Commit();
+				}
+				else
+				{
+					var page = Find.ClosestPage(item);
+					if (page == null)
+						return;
+					var version = GetVersion(page, page.VersionIndex);
+					if (version == null)
+						return;
+					var versionedItem = version.Version.FindPartVersion(item);
+					if (versionedItem == null)
+						return;
+					versionedItem.AddTo(null);
+					Save(version.Version);
+				}
+				tx.Commit();
+			}
 		}
 
 		public virtual ContentItem GetLatestVersion(ContentItem item)

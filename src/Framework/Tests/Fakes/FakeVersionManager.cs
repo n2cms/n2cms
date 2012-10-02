@@ -13,7 +13,7 @@ namespace N2.Tests.Fakes
         FakeRepository<ContentItem> itemRepository;
 
         public FakeVersionManager(FakeContentItemRepository itemRepository, StateChanger stateChanger, params Type[] definitionTypes)
-			: base(TestSupport.CreateVersionRepository(definitionTypes), itemRepository, stateChanger, new ThreadContext(), new N2.Configuration.EditSection())
+			: base(TestSupport.CreateVersionRepository(definitionTypes), itemRepository, stateChanger, new N2.Configuration.EditSection())
 		{
             this.itemRepository = itemRepository;
 		}

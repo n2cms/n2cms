@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
+using Shouldly;
+using N2.Web;
 
 namespace N2.Tests.Edit
 {
 	[TestFixture]
-	public class WhileNavigatingToTheManagementInterface : EditUrlManagerTests
+	public class EditUrlManagerTests_Managing : EditUrlManagerTests
 	{
 		[Test]
 		public void CanGetManagementInterfaceUrl()
@@ -64,6 +66,20 @@ namespace N2.Tests.Edit
 			var result = editUrlManager.ResolveResourceUrl(input);
 
 			Assert.That(result, Is.EqualTo(input), type + " failed");
+		}
+
+		[Test]
+		public void GetDeleteUrl_SelectsItem()
+		{
+			var url = editUrlManager.GetDeleteUrl(item);
+			url.ShouldBe("/N2/Content/delete.aspx?selected=/item/");
+		}
+
+		[Test]
+		public void GetDeleteUrl_OfVersion_SelectsMasterItem_AndAppends_VersionIndex()
+		{
+			var url = editUrlManager.GetDeleteUrl(version);
+			url.ShouldBe("/N2/Content/delete.aspx?selected=/item/&vi=2&versionKey=VERSKEY");
 		}
 	}
 }

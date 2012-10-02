@@ -22,15 +22,13 @@ namespace N2.Persistence
 		public ContentVersionRepository Repository { get; private set; }
 		readonly IContentItemRepository itemRepository;
 		readonly StateChanger stateChanger;
-		readonly IWebContext webContext;
 		int maximumVersionsPerItem = 100;
 
-		public VersionManager(ContentVersionRepository versionRepository, IContentItemRepository itemRepository, StateChanger stateChanger, IWebContext webContext, EditSection config)
+		public VersionManager(ContentVersionRepository versionRepository, IContentItemRepository itemRepository, StateChanger stateChanger, EditSection config)
 		{
 			this.Repository = versionRepository;
 			this.itemRepository = itemRepository;
 			this.stateChanger = stateChanger;
-			this.webContext = webContext;
 			maximumVersionsPerItem = config.Versions.MaximumPerItem;
 		}
 
@@ -70,14 +68,14 @@ namespace N2.Persistence
 
 			if (asPreviousVersion)
 			{
-				Repository.Save(version, webContext.User.Identity.Name);
+				Repository.Save(version);
 				item.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
 				itemRepository.SaveOrUpdate(item);
 			}
 			else
 			{
 				version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
-				Repository.Save(version, webContext.User.Identity.Name);
+				Repository.Save(version);
 			}
 
 			if (ItemSavedVersion != null)
@@ -93,7 +91,7 @@ namespace N2.Persistence
 		public void UpdateVersion(ContentItem item)
 		{
 			if (item.VersionOf.HasValue)
-				Repository.Save(item, webContext.User.Identity.Name);
+				Repository.Save(item);
 			else
 				itemRepository.SaveOrUpdate(item);
 		}

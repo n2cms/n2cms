@@ -117,10 +117,10 @@ namespace N2.Persistence
 		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
 		/// <param name="includeSelf">Include the initial item in the enumeration.</param>
 		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
-		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
+		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf, bool useMasterVersion = true)
 		{
 			if (initialItem == null) yield break;
-			if (initialItem.VersionOf.HasValue) initialItem = initialItem.VersionOf;
+			if (useMasterVersion && initialItem.VersionOf.HasValue) initialItem = initialItem.VersionOf;
 
 			ContentItem item;
 			if(includeSelf)

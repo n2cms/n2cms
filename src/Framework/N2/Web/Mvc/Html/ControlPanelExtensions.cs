@@ -13,6 +13,7 @@ using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Web.Mvc.Html
 {
@@ -203,7 +204,9 @@ namespace N2.Web.Mvc.Html
 					Plugins = Plugins(Html, item, state),
 					Definitions = Definitions(Html, engine, item, state),
 					Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
-					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item)
+					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
+					VersionIndex = item.VersionIndex,
+					VersionKey = item.GetVersionKey()
 				};
 
                 var resources = Html.Resources(writer).Constants();
@@ -283,7 +286,7 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
 			static string format3 = @"
 		if (n2ctx.hasTop()) $('.cpAdminister').hide();
 		else $('.cpView').hide();

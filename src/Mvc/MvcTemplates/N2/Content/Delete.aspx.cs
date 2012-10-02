@@ -5,6 +5,8 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -96,10 +98,30 @@ namespace N2.Edit
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-            ContentItem parent = Selection.SelectedItem.Parent;
-            try
+			var item = Selection.SelectedItem;
+            var parent = item.Parent;
+			try
             {
-                N2.Context.Persister.Delete(Selection.SelectedItem);
+				if (!item.IsPage && !item.VersionOf.HasValue)
+				{
+					// it's a published part, create a version of it's page and remove the part from it.
+					var page = Find.ClosestPage(item);
+					if (page != null)
+					{
+						var versions = Engine.Resolve<IVersionManager>();
+
+						var pageVersion = versions.AddVersion(page, asPreviousVersion: false);
+						var partVersion = pageVersion.FindPartVersion(item);
+						partVersion.AddTo(null);
+						
+						versions.UpdateVersion(pageVersion);
+						parent = pageVersion;
+					}
+				}
+				else
+				{
+					Engine.Persister.Delete(Selection.SelectedItem);
+				}
 
                 if (parent != null)
                     Refresh(parent, ToolbarArea.Both);

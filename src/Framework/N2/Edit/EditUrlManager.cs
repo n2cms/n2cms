@@ -202,7 +202,13 @@ namespace N2.Edit
 		{
 			Url url = Url.ResolveTokens(path);
 			if (selectedItem != null)
+			{
 				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
+				if (selectedItem.VersionOf != null)
+					url = url.AppendQuery(PathData.VersionQueryKey + "=" + selectedItem.VersionIndex)
+						.AppendQuery("versionKey", selectedItem.GetVersionKey());
+
+			}
 			return url;
 		}
 	}

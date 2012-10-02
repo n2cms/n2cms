@@ -18,9 +18,8 @@ namespace N2.Collections
 		/// <param name="lastAncestor">The last ancestor.</param>
 		/// <param name="appendAdditionalLevel">if set to <c>true</c> [append additional level].</param>
 		public BranchHierarchyBuilder(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel)
+			: this(initialItem, lastAncestor)
 		{
-			this.initialItem = initialItem;
-			this.lastAncestor = lastAncestor;
 			this.appendAdditionalLevel = appendAdditionalLevel;
 		}
 
@@ -33,6 +32,7 @@ namespace N2.Collections
 		{
 			this.initialItem = initialItem;
 			this.lastAncestor = lastAncestor;
+			UseMasterVersion = true;
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace N2.Collections
 			}
 
 			HierarchyNode<ContentItem> previousNode = null;
-			foreach (ContentItem currentItem in Find.EnumerateParents(initialItem, lastAncestor, appendAdditionalLevel))
+			foreach (ContentItem currentItem in Find.EnumerateParents(initialItem, lastAncestor, appendAdditionalLevel, UseMasterVersion))
 			{
 				HierarchyNode<ContentItem> currentNode = new HierarchyNode<ContentItem>(currentItem);
 				if (previousNode != null)
@@ -72,5 +72,7 @@ namespace N2.Collections
 			}
 			return previousNode;
 		}
+
+		public bool UseMasterVersion { get; set; }
 	}
 }

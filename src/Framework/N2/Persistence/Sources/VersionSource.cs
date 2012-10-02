@@ -25,12 +25,6 @@ namespace N2.Persistence.Sources
 			set { repository = value; }
 		}
 
-		public IWebContext WebContext
-		{
-			get { return webContext ?? (webContext = Engine.RequestContext); }
-			set { webContext = value; }
-		}
-
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
 			return previousChildren;
@@ -45,7 +39,7 @@ namespace N2.Persistence.Sources
 		{
 			if (!item.VersionOf.HasValue)
 				return;
-			Repository.Save(item, WebContext.User.Identity.Name);
+			Repository.Save(item);
 		}
 
 		public override void Delete(ContentItem item)
