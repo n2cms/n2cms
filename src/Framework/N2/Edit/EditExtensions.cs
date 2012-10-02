@@ -118,7 +118,10 @@ namespace N2.Edit
 
         internal static string GetPreviewUrl(this Page page, IEngine engine, ContentItem item)
         {
-            return page.Request["returnUrl"] ?? engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
+			string returnUrl = page.Request["returnUrl"];
+			if (!string.IsNullOrEmpty(returnUrl))
+				return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
+            return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
 
 		internal static string GetNavigationUrl(this Page page, IEngine engine, ContentItem item)
