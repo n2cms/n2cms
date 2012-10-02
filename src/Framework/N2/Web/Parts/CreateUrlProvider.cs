@@ -104,15 +104,17 @@ namespace N2.Web.Parts
 				url = managementPaths.GetEditNewPageUrl(parent, template.Definition, zone, CreationPosition.Below);
 			}
 			string beforeSortOrder = request["beforeSortOrder"];
-			url = url.AppendQuery("beforeSortOrder", beforeSortOrder);
+			url = url.SetQueryParameter("beforeSortOrder", beforeSortOrder);
 
 			if (!string.IsNullOrEmpty(request["versionIndex"]))
-				url = url.AppendQuery("vi", request["versionIndex"]);
+				url = url.SetQueryParameter("vi", request["versionIndex"]);
 			if (!string.IsNullOrEmpty(request["versionKey"]))
-				url = url.AppendQuery("versionKey", request["versionKey"]);
+				url = url.SetQueryParameter("versionKey", request["versionKey"]);
 
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
-				url = url.AppendQuery("returnUrl", request["returnUrl"]);
+				url = url.SetQueryParameter("returnUrl", request["returnUrl"]);
+
+			url = url.SetQueryParameter("edit", "drag");
 			return url;
 		}
 
