@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using N2.Details;
 using N2.Persistence;
+using N2.Persistence.Proxying;
 
 namespace N2.Definitions
 {
@@ -37,6 +38,7 @@ namespace N2.Definitions
 							? PropertyPersistenceLocation.Detail
 							: PropertyPersistenceLocation.Ignore
 				};
+			DefaultValue = Attributes.OfType<IInterceptableProperty>().Select(ip => ip.DefaultValue).Where(v => v != null).FirstOrDefault();
 		}
 
 		public PropertyDefinition(string name, Type propertyType)
@@ -72,5 +74,7 @@ namespace N2.Definitions
 		}
 
 		public IPersistableProperty Persistable { get; set; }
+
+		public object DefaultValue { get; set; }
 	}
 }

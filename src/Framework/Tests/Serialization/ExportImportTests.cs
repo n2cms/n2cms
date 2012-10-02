@@ -466,6 +466,20 @@ namespace N2.Tests.Serialization
 			embedded["World"].ShouldBe(embeddable["World"]);
 		}
 
+		[Test]
+		public void AutoImplementedProperties_GetsTheirDefaultValues()
+		{
+			var item = activator.CreateInstance<XmlableItem>(null);
+			
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem.PersistableNumber.ShouldBe(666);
+			readItem.PersistableText.ShouldBe("hello");
+			readItem.PersistableEnum.ShouldBe(ContentState.Published);
+			readItem.PersistableObject.ShouldBe(new[] { "one", "two" });
+		}
+
         private void AssertEquals(DateTime? expected, DateTime? actual)
         {
             Assert.That(expected.HasValue, Is.EqualTo(actual.HasValue));

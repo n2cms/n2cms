@@ -229,12 +229,16 @@ namespace N2.Definitions
 
 		/// <summary>Instantiates a new object of the defined content item class.</summary>
 		/// <returns>A new instance of the defined content item type.</returns>
-		[Obsolete("Use N2.Factory.Definitions.CreateInstance instead.")]
 		public ContentItem CreateInstance(ContentItem parent)
 		{
 			var item = (ContentItem) Activator.CreateInstance(ItemType);
-
 			item.Parent = parent;
+
+			foreach (var property in Properties.Values.Where(p => p.DefaultValue != null))
+			{
+				item[property.Name] = property.DefaultValue;
+			}
+
 			return item;
 		}
 
