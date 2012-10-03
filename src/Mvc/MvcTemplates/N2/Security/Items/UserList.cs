@@ -67,7 +67,7 @@ namespace N2.Security.Items
 		public virtual MembershipUserCollection GetMembershipUsers(string providerName)
 		{
 			MembershipUserCollection muc = new MembershipUserCollection();
-			foreach (User u in Children)
+			foreach (User u in Children.FindRange(0, 100000))
 			{
 				muc.Add(u.GetMembershipUser(providerName));
 			}
@@ -77,15 +77,12 @@ namespace N2.Security.Items
 		public virtual MembershipUserCollection GetMembershipUsers(string providerName, int startIndex, int maxResults,
 		                                                           out int totalRecords)
 		{
-			totalRecords = 0;
-			CountFilter cf = new CountFilter(startIndex, maxResults);
 			MembershipUserCollection muc = new MembershipUserCollection();
-			foreach (User u in Children)
+			foreach (User u in Children.FindRange(startIndex, maxResults))
 			{
-				if (cf.Match(u))
 					muc.Add(u.GetMembershipUser(providerName));
-				totalRecords++;
 			}
+			totalRecords = Children.Count;
 			return muc;
 		}
 

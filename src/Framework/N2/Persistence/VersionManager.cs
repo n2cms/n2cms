@@ -44,28 +44,29 @@ namespace N2.Persistence
 			if (args.Cancel)
 				return null;
 
-			item = args.AffectedItem;
+				item = args.AffectedItem;
                 
-			ContentItem oldVersion = item.Clone(false);
-			if(item.State == ContentState.Published)
-				stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
-			else
-				stateChanger.ChangeTo(oldVersion, ContentState.Draft);
-			oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
-			oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
-			oldVersion.Parent = null;
-			oldVersion.VersionOf = item;
-			if (item.Parent != null)
-				oldVersion["ParentID"] = item.Parent.ID;
-			itemRepository.SaveOrUpdate(oldVersion);
+				ContentItem oldVersion = item.Clone(false);
+                if(item.State == ContentState.Published)
+                    stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
+                else
+                    stateChanger.ChangeTo(oldVersion, ContentState.Draft);
+				oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
+				oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
+				oldVersion.Parent = null;
+				oldVersion.VersionOf = item;
+				if (item.Parent != null)
+					oldVersion["ParentID"] = item.Parent.ID;
+                itemRepository.SaveOrUpdate(oldVersion);
+				itemRepository.Flush();
 
-			if (ItemSavedVersion != null)
-				ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+				if (ItemSavedVersion != null)
+					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
 
-			TrimVersionCountTo(item, maximumVersionsPerItem);
+				TrimVersionCountTo(item, maximumVersionsPerItem);
 
-			return oldVersion;
-		}
+				return oldVersion;
+			}
 
         /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
         /// <param name="currentItem">The item that will be stored as a previous version.</param>

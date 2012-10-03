@@ -140,6 +140,7 @@
     <Compile Include="Mvc\N2ViewEngineTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\AsyncIndexerTests.cs" />
     <Compile Include="Search\ContentChangeTrackerTests.cs" />
     <Compile Include="Search\LuceneSearchTests.cs" />
     <Compile Include="Search\MarkovNameGenerator.cs" />

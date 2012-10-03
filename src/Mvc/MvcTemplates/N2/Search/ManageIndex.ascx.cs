@@ -29,11 +29,11 @@ namespace N2.Management.Search
         }
         protected void OnIndex(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage, false);
+            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, false);
         }
         protected void OnReindex(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage, true);
+			Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, true);
         }
 
         protected void OnSearch(object sender, CommandEventArgs args)
