@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Plugin.Scheduling;
 using N2.Security;
+using N2.Engine;
 
 namespace N2.Edit.AutoPublish
 {
@@ -15,6 +16,8 @@ namespace N2.Edit.AutoPublish
 		IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
 		ISecurityManager Security { get { return Engine.SecurityManager; } }
 
+		Logger<PublishScheduledAction> logger;
+
         public override void Execute()
         {
             if (Debugger.IsAttached)
@@ -25,8 +28,10 @@ namespace N2.Edit.AutoPublish
 				.PreviousVersions(VersionOption.Include).Select();
 			for (int i = 0; i < scheduledForAutoPublish.Count; i++)
 			{
-                // Get the relevant versions
+				// Get the relevant versions
 				var scheduledVersion = scheduledForAutoPublish[i];
+				logger.InfoFormat("Publishing scheduled item {0}", scheduledVersion);
+                
 				var masterVersion = scheduledVersion.VersionOf;
 				// Removing the DelayPublishingUntil Date so that it won't get picked up again
                 scheduledVersion["FuturePublishDate"] = null;
@@ -54,16 +59,17 @@ namespace N2.Edit.AutoPublish
 				try
 				{
 					Security.ScopeEnabled = false;
-				// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
-				var item = implicitAutoPublish[i];
-				item.State = ContentState.Published;
-				Persister.Save(item);
-        }
-        finally
-        {
-          Security.ScopeEnabled = true;
-        }
-      }
+					// saving the master version for auto-publish will be eventually become published without this, but we want to update the state
+					var item = implicitAutoPublish[i];
+					logger.InfoFormat("Implicitly publishing item {0}", item);
+					item.State = ContentState.Published;
+					Persister.Save(item);
+				}
+				finally
+				{
+					Security.ScopeEnabled = true;
+				}
+			}
         }
     }
 }
