@@ -84,23 +84,25 @@ namespace N2.Persistence.Search
 					{
 						while (true)
 						{
-							// work while there is remaining work
-							Work work = null;
-							lock (workQueue)
-							{
-								if (workQueue.Count <= 0)
-									// all done, we can end
-									return;
-
-								// next thing to do
-								work = workQueue.Dequeue();
-								logger.Debug("Dequeuing " + work.Name + ", remaining: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
-							}
-
-							logger.Debug("Executing " + work.Name);
-							work.Action();
 							// we want a new session on the thread after each action avoid creating big NH sessions
-							persister.Dispose();
+							using (persister)
+							{
+								// work while there is remaining work
+								Work work = null;
+								lock (workQueue)
+								{
+									if (workQueue.Count <= 0)
+										// all done, we can end
+										return;
+
+									// next thing to do
+									work = workQueue.Dequeue();
+									logger.Debug("Dequeuing " + work.Name + ", remaining: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
+								}
+
+								logger.Debug("Executing " + work.Name);
+								work.Action();
+							}
 						}
 					}
 					finally
@@ -176,9 +178,8 @@ namespace N2.Persistence.Search
 			}
 		}
 
-        public virtual void ReindexDescendants(ContentItem root, bool clearBeforeReindex)
+		public virtual void ReindexDescendants(int rootID, bool clearBeforeReindex)
         {
-			int rootID = root.ID;
 			Execute(new Work
 			{
 				Name = "Reindex descendants of #" + rootID,
@@ -187,33 +188,9 @@ namespace N2.Persistence.Search
 					if (clearBeforeReindex)
 						indexer.Delete(rootID);
 
-					root = persister.Get(rootID);
-					indexer.Update(root);
-					ReindexChildren(rootID);
+					Reindex(rootID, true);
 				}
 			});
-        }
-
-        private void ReindexChildren(int parentID)
-        {
-            var childrenIds = new List<int>();
-            
-            using (persister)
-            {
-                foreach (var child in persister.Repository.Find("Parent.ID", parentID))
-                {
-                    if(child.AlteredPermissions == Security.Permission.None)
-                        currentWork = "Indexing " + child.Title + " #" + child.ID;
-                    else
-                        currentWork = "Indexing item #" + child.ID;
-                    
-                    indexer.Update(child);
-                    childrenIds.Add(child.ID);
-                }
-            }
-
-            foreach (var id in childrenIds)
-                ReindexChildren(id);
         }
 
         public virtual void Reindex(int itemID, bool affectsChildren)
@@ -223,19 +200,31 @@ namespace N2.Persistence.Search
 					Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
 					Action = () =>
 					{
-						var item = persister.Get(itemID);
-						if (item == null)
-							return;
-
-						currentWork = "Indexing " + item.Title + " #" + itemID;
-						indexer.Update(item);
-
-						if (affectsChildren)
+						var childrenIdsToReindex = new List<int>();
+						using (persister)
 						{
-							foreach (var descendant in Find.EnumerateChildren(item))
+							// get the item to update using a session on this thread
+							var item = persister.Get(itemID);
+							if (item == null)
+								return;
+
+							// update the index
+							currentWork = "Indexing " + item.Title + " #" + itemID;
+							indexer.Update(item);
+
+							if (affectsChildren)
 							{
-								indexer.Update(descendant);
+								// get a list of child ids to update, and wait until session is closed to schedule reindexing
+								foreach (var child in item.Children)
+								{
+									childrenIdsToReindex.Add(child.ID);
+								}
 							}
+						}
+
+						foreach (var childId in childrenIdsToReindex)
+						{
+							Reindex(childId, affectsChildren);
 						}
 					}
 				});

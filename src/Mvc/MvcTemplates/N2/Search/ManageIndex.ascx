@@ -46,7 +46,7 @@
                 $("#TotalDocuments").text(data.Statistics.TotalDocuments);
                 $("#WorkerCount").text(data.Status.WorkerCount);
                 $("#CurrentWork").text(data.Status.CurrentWork);
-                $("#ErrorQueueCount").text(data.Status.ErrorQueueCount);
+                $("#ErrorQueueCount").text(data.Status.QueueSize);
             });
         }, <%= IsPostBack ? 1000 : 10000 %>);
     });
