@@ -49,12 +49,12 @@ namespace N2.Persistence.Search
 			}
 		}
 
-		public IndexWriter RecreateWriter()
+		public LuceneAccesor RecreateWriter()
 		{
 			lock (this)
 			{
 				writer = null;
-				return GetWriter();
+				return this;
 			}
 		}
 
@@ -138,11 +138,12 @@ namespace N2.Persistence.Search
 			}
 		}
 
-		public void RecreateSearcher()
+		public LuceneAccesor RecreateSearcher()
 		{
 			lock (this)
 			{
 				searcher = null;
+				return this;
 			}
 		}
 
