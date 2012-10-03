@@ -8,6 +8,7 @@ using Lucene.Net.Search;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Web;
+using System;
 
 namespace N2.Persistence.Search
 {
@@ -87,15 +88,27 @@ namespace N2.Persistence.Search
 			lock (accessor)
 			{
 				var iw = accessor.GetWriter();
+				try
+				{
+					if (!extractor.IsIndexable(item))
+						return;
 
-				if (!extractor.IsIndexable(item))
-					return;
+					var doc = CreateDocument(item);
+					if (doc == null)
+						return;
+					iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
+					iw.Commit();
+				}
+				catch (Exception ex)
+				{
+					logger.Error(ex);
+					iw.Dispose();
+					accessor.ClearLock();
+				}
+				finally
+				{
 
-				var doc = CreateDocument(item);
-				if (doc == null)
-					return;
-				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
-				iw.Commit();
+				}
 				accessor.RecreateSearcher();
 			}
 		}

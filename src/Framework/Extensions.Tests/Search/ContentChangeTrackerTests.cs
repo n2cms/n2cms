@@ -1,17 +1,11 @@
-using System.Configuration;
+using System;
 using System.Linq;
 using N2.Configuration;
-using N2.Persistence.NH;
-using N2.Tests.Fakes;
-using NUnit.Framework;
-using N2.Web;
-using N2.Persistence.Search;
-using N2.Persistence;
-using N2.Tests.Persistence.Definitions;
-using System.Diagnostics;
-using System.IO;
 using N2.Engine;
-using System;
+using N2.Persistence.Search;
+using N2.Tests.Persistence.Definitions;
+using N2.Web;
+using NUnit.Framework;
 using Shouldly;
 
 namespace N2.Tests.Persistence.NH
@@ -24,6 +18,7 @@ namespace N2.Tests.Persistence.NH
 		LuceneSearcher searcher;
 		ContentChangeTracker tracker;
         AsyncIndexer asyncIndexer;
+		AsyncWorker worker;
         
         PersistableItem1 root;
 
@@ -37,7 +32,7 @@ namespace N2.Tests.Persistence.NH
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
 			searcher = new LuceneSearcher(accessor, persister);
-			var worker = new AsyncWorker();
+			worker = new AsyncWorker();
             asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
 			tracker = new ContentChangeTracker(asyncIndexer, persister, new N2.Plugin.ConnectionMonitor(), new DatabaseSection());
 

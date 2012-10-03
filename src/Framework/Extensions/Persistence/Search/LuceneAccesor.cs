@@ -49,6 +49,15 @@ namespace N2.Persistence.Search
 			}
 		}
 
+		public IndexWriter RecreateWriter()
+		{
+			lock (this)
+			{
+				writer = null;
+				return GetWriter();
+			}
+		}
+
 		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
 			try

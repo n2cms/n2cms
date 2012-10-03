@@ -9,7 +9,7 @@
         </tr><tr>
             <th><asp:Label runat="server" Text="Current work" /></th><td id="CurrentWork"><%= Status.CurrentWork %></td>
         </tr><tr>
-            <th><asp:Label runat="server" Text="Error queue count" /></th><td id="ErrorQueueCount"><%= Status.ErrorQueueCount %></td>
+            <th><asp:Label runat="server" Text="Queue size" /></th><td id="ErrorQueueCount"><%= Status.QueueSize %></td>
         </tr>
     </table>
 </fieldset>

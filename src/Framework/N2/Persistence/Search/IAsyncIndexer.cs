@@ -7,7 +7,7 @@ namespace N2.Persistence.Search
 
         public int WorkerCount { get; set; }
 
-        public int ErrorQueueCount { get; set; }
+        public int QueueSize { get; set; }
     }
 
     /// <summary>
