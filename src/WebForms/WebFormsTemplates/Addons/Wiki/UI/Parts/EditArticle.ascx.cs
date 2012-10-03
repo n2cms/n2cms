@@ -55,7 +55,7 @@ namespace N2.Addons.Wiki.UI.Parts
             }
             else
             {
-                Engine.Resolve<IVersionManager>().SaveVersion(article);
+                Engine.Resolve<IVersionManager>().AddVersion(article);
             }
             article["SavedDate"] = DateTime.Now;
             article["SavedByAddress"] = Request.UserHostAddress;
