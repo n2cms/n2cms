@@ -259,6 +259,7 @@ namespace N2.Security
 			u = Bridge.CreateUser(username, ToStoredPassword(password), // JH
 								  email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
 
+			Cache.Expire();
 			MembershipUser m = u.GetMembershipUser(this.Name);
 			return m;
 		}
@@ -269,6 +270,7 @@ namespace N2.Security
 			if (u == null)
 				return false;
 			Bridge.Delete(u);
+			Cache.Expire();
 			return true;
 		}
 
@@ -432,6 +434,7 @@ namespace N2.Security
 				return false;
 			u.IsLockedOut = false;
 			Bridge.Save(u);
+			Cache.Expire();
 			return true;
 		}
 
@@ -444,6 +447,7 @@ namespace N2.Security
 			{
 				u.UpdateFromMembershipUser(user); // JH: note that password remains unaffected
 				Bridge.Save(u);
+				Cache.Expire();
 			}
 			else
 				throw new N2Exception("User '" + user.UserName + "' not found.");

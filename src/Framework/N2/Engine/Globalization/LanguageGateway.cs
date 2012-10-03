@@ -224,7 +224,11 @@ namespace N2.Engine.Globalization
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
-				persister.Repository.SaveOrUpdate(item);
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					persister.Repository.SaveOrUpdate(item);
+					tx.Commit();
+				}
 			}
         }
 

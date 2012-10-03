@@ -53,6 +53,7 @@ namespace N2.Persistence
 				if (item.Parent != null)
 					oldVersion["ParentID"] = item.Parent.ID;
                 itemRepository.SaveOrUpdate(oldVersion);
+				itemRepository.Flush();
 
 				if (ItemSavedVersion != null)
 					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
