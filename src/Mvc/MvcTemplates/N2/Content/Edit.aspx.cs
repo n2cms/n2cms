@@ -122,8 +122,7 @@ namespace N2.Edit
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			ctx.Parameters["MoveBefore"] = Request["before"];
-			ctx.Parameters["MoveAfter"] = Request["after"];
+			ApplySortInfo(ctx);
 			Commands.Publish(ctx);
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
@@ -131,9 +130,17 @@ namespace N2.Edit
 			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 		}
 
+		private void ApplySortInfo(CommandContext ctx)
+		{
+			ctx.Parameters["MoveBefore"] = Request["before"];
+			ctx.Parameters["MoveAfter"] = Request["after"];
+			ctx.Parameters["MoveBeforeSortOrder"] = Request["beforeSortOrder"];
+		}
+
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
+			ApplySortInfo(ctx);
 			Commands.Save(ctx);
 
 			var page = Find.ClosestPage(ctx.Content);

@@ -23,7 +23,33 @@ namespace N2.Edit.Workflow.Commands
 				? page
 				: versionMaker.AddVersion(page, asPreviousVersion: false);
 			var parentVersion = pageVersion.FindPartVersion(part.Parent);
-			part.AddTo(parentVersion);
+
+			if (state.Parameters.ContainsKey("MoveBeforeSortOrder"))
+			{
+				int beforeSortOrder = Convert.ToInt32(state.Parameters["MoveBeforeSortOrder"]);
+				bool wasAdded = false;
+				for (int i = 0; i < parentVersion.Children.Count; i++)
+				{
+					var sibling = parentVersion.Children[i];
+					if (sibling.SortOrder >= beforeSortOrder)
+					{
+						parentVersion.Children.Insert(i, part);
+						Utility.UpdateSortOrder(parentVersion.Children);
+						wasAdded = true;
+						break;
+					}
+				}
+				if (!wasAdded)
+				{
+					part.AddTo(parentVersion);
+					Utility.UpdateSortOrder(parentVersion.Children);
+				}
+			}
+			else
+			{
+				part.AddTo(parentVersion);
+				Utility.UpdateSortOrder(parentVersion.Children);
+			}
 
 			versionMaker.UpdateVersion(pageVersion);
 		}
