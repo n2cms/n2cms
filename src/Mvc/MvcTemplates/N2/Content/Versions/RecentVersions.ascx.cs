@@ -10,6 +10,7 @@ using N2.Management.Activity;
 using N2.Edit.Activity;
 using N2.Edit;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Content.Versions
 {

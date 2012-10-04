@@ -11,6 +11,7 @@ using N2.Tests.Persistence.Definitions;
 using N2.Web;
 using NUnit.Framework;
 using Shouldly;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence.NH
 {

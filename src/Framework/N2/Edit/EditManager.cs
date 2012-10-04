@@ -15,6 +15,7 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {

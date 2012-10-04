@@ -10,6 +10,7 @@ using N2.Persistence.NH;
 using N2.Persistence;
 using N2.Edit.Workflow;
 using N2.Edit;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Content.Export
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace N2.Persistence
+namespace N2.Edit.Versioning
 {
 	/// <summary>
 	/// Classes implementing this interface can store and restore versions of 

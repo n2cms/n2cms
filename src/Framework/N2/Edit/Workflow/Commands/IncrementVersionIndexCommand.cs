@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using N2.Persistence;
-using System;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow.Commands
 {

@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Resources;
 using N2.Web;
 using N2.Web.Wiki;
+using N2.Edit.Versioning;
 
 namespace N2.Addons.Wiki.UI.Parts
 {

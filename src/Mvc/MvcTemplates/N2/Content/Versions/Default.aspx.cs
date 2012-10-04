@@ -6,6 +6,7 @@ using N2.Edit.Workflow;
 using N2.Security;
 using N2.Web;
 using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Versions
 {
@@ -18,15 +19,15 @@ namespace N2.Edit.Versions
 	{
 		ContentItem publishedItem;
 
-		Persistence.IPersister persister;
-		Persistence.IVersionManager versioner;
+		IPersister persister;
+		IVersionManager versioner;
 
 		protected override void OnInit(EventArgs e)
 		{
             Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
 
 			persister = Engine.Persister;
-			versioner = Engine.Resolve<Persistence.IVersionManager>();
+			versioner = Engine.Resolve<IVersionManager>();
 
 			bool isVersionable = versioner.IsVersionable(Selection.SelectedItem);
             cvVersionable.IsValid = isVersionable;

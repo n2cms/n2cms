@@ -5,6 +5,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Versions
 {

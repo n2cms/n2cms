@@ -10,8 +10,9 @@ using N2.Persistence.Finder;
 using N2.Edit.Versioning;
 using N2.Web;
 using N2.Definitions.Static;
+using N2.Persistence;
 
-namespace N2.Persistence
+namespace N2.Edit.Versioning
 {
 	/// <summary>
 	/// Handles saving and restoring versions of items.

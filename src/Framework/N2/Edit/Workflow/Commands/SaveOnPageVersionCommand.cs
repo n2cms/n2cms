@@ -8,9 +8,9 @@ namespace N2.Edit.Workflow.Commands
 {
 	public class SaveOnPageVersionCommand : CommandBase<CommandContext>
 	{
-		private Persistence.IVersionManager versionMaker;
+		private IVersionManager versionMaker;
 
-		public SaveOnPageVersionCommand(Persistence.IVersionManager versionMaker)
+		public SaveOnPageVersionCommand(IVersionManager versionMaker)
 		{
 			this.versionMaker = versionMaker;
 		}

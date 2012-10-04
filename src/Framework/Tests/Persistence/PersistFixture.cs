@@ -1,6 +1,7 @@
 using System;
 using N2.Persistence;
 using NUnit.Framework;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence
 {

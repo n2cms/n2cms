@@ -1260,11 +1260,11 @@
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
     <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />
-    <Compile Include="Persistence\IVersionManager.cs" />
+    <Compile Include="Edit\Versioning\IVersionManager.cs" />
     <Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\DetailInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyInHqlProvider.cs" />
-    <Compile Include="Persistence\VersionManager.cs" />
+    <Compile Include="Edit\Versioning\VersionManager.cs" />
     <Compile Include="Plugin\AutoInitializeAttribute.cs" />
     <Compile Include="Plugin\InitializerCreatingAttribute.cs" />
     <Compile Include="Plugin\IPluginDefinition.cs" />

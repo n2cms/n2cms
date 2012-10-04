@@ -20,6 +20,7 @@ using N2.Web.UI;
 using NHibernate;
 using NHibernate.Cfg;
 using N2.Engine.MediumTrust;
+using N2.Edit.Versioning;
 
 namespace N2.Engine.Configuration
 {

@@ -8,6 +8,7 @@ using N2.Persistence;
 using N2.Tests.Workflow.Items;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Workflow
 {

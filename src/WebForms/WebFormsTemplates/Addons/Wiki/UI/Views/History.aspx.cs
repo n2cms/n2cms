@@ -1,5 +1,6 @@
 ﻿using System;
 using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Addons.Wiki.UI.Views
 {

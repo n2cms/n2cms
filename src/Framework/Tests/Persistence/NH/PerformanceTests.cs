@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Linq;
 using Shouldly;
 using System.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence.NH
 {

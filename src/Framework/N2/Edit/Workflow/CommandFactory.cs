@@ -4,6 +4,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Security;
 using System.Linq;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow
 {
