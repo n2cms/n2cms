@@ -68,7 +68,7 @@ namespace N2.Web
 			
 			var viewEditable = displayable as IViewEditable;
 			if (isEditable && (viewEditable == null || viewEditable.IsViewEditable) && item != null && displayable != null)
-				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
+				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "data-versionIndex", item.VersionIndex }, { "data-versionKey", item.GetVersionKey() }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
 			else
 				return new EmptyDisposable();
 		}

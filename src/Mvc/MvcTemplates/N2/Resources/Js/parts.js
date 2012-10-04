@@ -89,6 +89,7 @@
 				var $t = $(this);
 				var url = self.appendSelection(self.urls.editsingle, $t.attr("data-path"))
 					+ "&property=" + $t.attr("data-property")
+					+ "&versionKey=" + $t.attr("data-versionKey")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {
 					e.preventDefault();

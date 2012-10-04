@@ -141,10 +141,6 @@ namespace N2.Edit
 				.GetPreviewUrl(page);
 			if (Request["edit"] == "drag")
 				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
-			//preview is now implicit when viewing draft of page
-			//previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
-			//if(ctx.Content.VersionOf.HasValue)
-			//    previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
