@@ -43,13 +43,17 @@ namespace N2.Web.Mvc.Html
 				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
 				writer.Write("<div class='" + ZoneName + " dropZone'");
-				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
-					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
+				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+					writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path);
+				else
+				{
+					writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(CurrentItem).Path)
+						.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey())
+						.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
+				}
+				writer.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
 					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName));
-				if (CurrentItem.VersionOf.HasValue)
-					writer.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey())
-						.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
 				writer.Write(">");
 
                 RenderPreview(writer);
@@ -108,12 +112,16 @@ namespace N2.Web.Mvc.Html
 				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
-                writer.WriteAttribute(PartUtilities.PathAttribute, model.Path)
-					.WriteAttribute("data-sortOrder", model.SortOrder.ToString())
-					.WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator);
-				if (model.VersionOf.HasValue)
+				if (model.ID != 0 && !model.VersionOf.HasValue)
+					writer.WriteAttribute(PartUtilities.PathAttribute, model.Path);
+				else
+				{
+					writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(model).Path);
 					writer.WriteAttribute("data-versionKey", model.GetVersionKey())
 						.WriteAttribute("data-versionIndex", model.VersionIndex.ToString());
+				}
+				writer.WriteAttribute("data-sortOrder", model.SortOrder.ToString())
+					.WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator);
 
 				writer.Write(">");
 

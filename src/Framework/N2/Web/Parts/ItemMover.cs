@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
+using N2.Integrity;
 
 namespace N2.Web.Parts
 {
@@ -11,11 +12,13 @@ namespace N2.Web.Parts
     {
         private readonly Navigator navigator;
         private readonly IPersister persister;
+		private IIntegrityManager integrity;
 
-        public ItemMover(IPersister persister, Navigator navigator)
+        public ItemMover(IPersister persister, Navigator navigator, IIntegrityManager integrity)
         {
             this.persister = persister;
             this.navigator = navigator;
+			this.integrity = integrity;
         }
 
         public override string Name
@@ -43,12 +46,14 @@ namespace N2.Web.Parts
                 ContentItem beforeItem = navigator.Navigate(before);
                 parent = beforeItem.Parent;
                 int newIndex = parent.Children.IndexOf(beforeItem);
-                Utility.Insert(item, parent, newIndex);
+				ValidateLocation(item, parent);
+				Utility.Insert(item, parent, newIndex);
             }
             else
             {
                 parent = navigator.Navigate(below);
-                Utility.Insert(item, parent, parent.Children.Count);
+				ValidateLocation(item, parent);
+				Utility.Insert(item, parent, parent.Children.Count);
             }
 
             IEnumerable<ContentItem> changedItems = Utility.UpdateSortOrder(parent.Children);
@@ -56,5 +61,12 @@ namespace N2.Web.Parts
                 persister.Save(changedItem);
             persister.Save(item);
         }
+
+		private void ValidateLocation(ContentItem item, ContentItem parent)
+		{
+			var ex = integrity.GetMoveException(item, parent);
+			if (ex != null)
+				throw ex;
+		}
     }
 }

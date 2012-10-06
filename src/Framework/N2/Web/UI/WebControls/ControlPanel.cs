@@ -433,7 +433,7 @@ jQuery(document).ready(function(){{
 
 		public static string DragDropScriptInitialization(ContentItem item)
 		{
-			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx'}}, {{}},{{versionIndex:{1}, isMasterVersion:{2}}});", Url.ResolveTokens("{ManagementUrl}"), item.VersionIndex, !item.VersionOf.HasValue ? "true" : "false");
+			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx'}}, {{}},{{versionIndex:{1}, isMasterVersion:{2}, pagePath: '{3}'}});", Url.ResolveTokens("{ManagementUrl}"), item.VersionIndex, !item.VersionOf.HasValue ? "true" : "false", Find.ClosestPage(item).Path);
 		}
 	}
 }

@@ -193,7 +193,7 @@
 					dropped: true
 				};
 				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
-					data.versionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.vi = $droppable.closest(".dropZone").attr("data-versionIndex");
 					data.versionKey = $droppable.closest(".dropZone").attr("data-versionKey");
 				}
 				if ($next.attr("data-versionKey")) {
