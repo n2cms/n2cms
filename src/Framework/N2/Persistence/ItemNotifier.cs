@@ -40,12 +40,27 @@ namespace N2.Persistence
 			ItemSaving(this, args);
 			return args.WasModified;
 		}
+		
+		/// <summary>Notify subscribers that an item is to be deleted.</summary>
+		/// <param name="itemToBeDeleted">The item that is to be deleted.</param>
+		/// <returns>True if the item was modified.</returns>
+		public void NotifyDeleting(ContentItem itemToBeDeleted)
+		{
+			if (ItemDeleting == null)
+				return;
+
+			var args = new ItemEventArgs(itemToBeDeleted);
+			ItemDeleting(this, args);
+		}
 
 		/// <summary>Is triggered when an item was created or loaded from the database.</summary>
 		public event EventHandler<NotifiableItemEventArgs> ItemCreated;
 
 		/// <summary>Is triggered when an item is to be saved the database.</summary>
 		public event EventHandler<NotifiableItemEventArgs> ItemSaving;
+	
+		/// <summary>Is triggered when an item is to be deleted from the database.</summary>
+		public event EventHandler<ItemEventArgs> ItemDeleting;
 		#endregion
 	}
 }

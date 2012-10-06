@@ -20,7 +20,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# GetPreviewUrl((N2.ContentItem)Eval("Content")) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
+				<a href="<%# Eval("Content.Url") %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>

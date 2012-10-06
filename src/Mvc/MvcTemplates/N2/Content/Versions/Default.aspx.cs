@@ -92,16 +92,6 @@ namespace N2.Edit.Versions
 			gvHistory.DataBind();
 		}
 
-		protected override string GetPreviewUrl(ContentItem item)
-		{
-			if (!item.VersionOf.HasValue)
-				return item.Url;
-
-			return Url.Parse(item.FindPath(PathData.DefaultAction).GetRewrittenUrl())
-				.AppendQuery("preview", item.ID)
-				.AppendQuery("original", item.VersionOf.ID);
-		}
-
 		protected bool IsVisible(object dataItem)
 		{
 			return Engine.SecurityManager.IsAuthorized(User, dataItem as ContentItem, Permission.Publish)

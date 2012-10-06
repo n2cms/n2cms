@@ -210,11 +210,12 @@ namespace N2.Edit.Versioning
 		{
 			foreach (var replacingChild in replacementItem.Children)
 			{
-				if (!replacingChild.VersionOf.HasValue)
+				if (replacingChild.VersionOf.Value == null)
 				{
 					var clone = replacingChild.Clone(true);
 					clone.State = ContentState.Published;
 					clone.Published = Utility.CurrentTime();
+					clone.Expires = null;
 					clone.AddTo(currentItem);
 					yield return clone;
 				}

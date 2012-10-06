@@ -21,10 +21,17 @@ namespace N2.Persistence
 		/// <returns>True if the item was modified.</returns>
 		bool NotifySaving(ContentItem itemToBeSaved);
 
+		/// <summary>Notify subscribers that an item is to be deleted.</summary>
+		/// <param name="itemToBeDeleted">The item that is to be deleted.</param>
+		void NotifyDeleting(ContentItem itemToBeDeleted);
+
 		/// <summary>Is triggered when an item was created or loaded from the database.</summary>
 		event EventHandler<NotifiableItemEventArgs> ItemCreated;
 
 		/// <summary>Is triggered when an item is to be saved the database.</summary>
 		event EventHandler<NotifiableItemEventArgs> ItemSaving;
+
+		/// <summary>Is triggered when an item is to be deleted from the database.</summary>
+		event EventHandler<ItemEventArgs> ItemDeleting;
 	}
 }

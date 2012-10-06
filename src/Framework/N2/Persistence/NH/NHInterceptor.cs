@@ -127,5 +127,12 @@ namespace N2.Persistence.NH
 		}
 
 		#endregion
+
+		public override void OnDelete(object entity, object id, object[] state, string[] propertyNames, IType[] types)
+		{
+			var item = entity as ContentItem;
+			if (item != null)
+				notifier.NotifyDeleting(item);
+		}
 	}
 }
