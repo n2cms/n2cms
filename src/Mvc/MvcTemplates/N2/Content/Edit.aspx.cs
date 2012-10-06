@@ -25,7 +25,7 @@ namespace N2.Edit
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write,
 		OptionProvider = typeof(EditOptionProvider))]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&vi={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
 		RequiredPermission = Permission.Write)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
 		RequiredPermission = Permission.Publish)]

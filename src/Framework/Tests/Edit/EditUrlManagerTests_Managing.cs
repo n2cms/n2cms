@@ -79,7 +79,7 @@ namespace N2.Tests.Edit
 		public void GetDeleteUrl_OfVersion_SelectsMasterItem_AndAppends_VersionIndex()
 		{
 			var url = editUrlManager.GetDeleteUrl(version);
-			url.ShouldBe("/N2/Content/delete.aspx?selected=/item/&vi=2&versionKey=VERSKEY");
+			url.ShouldBe("/N2/Content/delete.aspx?selected=/item/&versionIndex=2&versionKey=VERSKEY");
 		}
 	}
 }

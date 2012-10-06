@@ -48,7 +48,7 @@ namespace N2.Edit
 		{
 			if (selectedItem == null)
 				return null;
-			
+
 			return Url.Parse(EditTreeUrl).AppendQuery(SelectionUtility.SelectedQueryKey, selectedItem.Path);
 		}
 
@@ -88,9 +88,9 @@ namespace N2.Edit
 			if (finalUrl.StartsWith("~") == false
 				&& finalUrl.StartsWith("/") == false
 				&& finalUrl.StartsWith("{") == false
-				&& finalUrl.StartsWith("javascript:") == false 
+				&& finalUrl.StartsWith("javascript:") == false
 				&& finalUrl.Contains(":") == false
-			    && finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
+				&& finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = managementUrl + "/" + resourceUrl.TrimStart('/');
 
 			return Url.ToAbsolute(finalUrl);
@@ -136,14 +136,14 @@ namespace N2.Edit
 		/// <param name="position">The position relative to the selected item to add the item.</param>
 		/// <returns>The url to the edit page.</returns>
 		public virtual string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName,
-		                                        CreationPosition position)
+												CreationPosition position)
 		{
 			if (selected == null) throw new ArgumentNullException("selected");
 			if (definition == null) throw new ArgumentNullException("definition");
 
 			ContentItem parent = (position != CreationPosition.Below)
-			                     	? selected.Parent
-			                     	: selected;
+									? selected.Parent
+									: selected;
 
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
@@ -151,8 +151,8 @@ namespace N2.Edit
 			Url url = Url.ResolveTokens(EditItemUrl);
 			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
-      if (!string.IsNullOrEmpty(zoneName))
-        url = url.AppendQuery("zoneName", zoneName);
+			if (!string.IsNullOrEmpty(zoneName))
+				url = url.AppendQuery("zoneName", zoneName);
 			if (!string.IsNullOrEmpty(definition.TemplateKey))
 				url = url.AppendQuery("template", definition.TemplateKey);
 
@@ -189,7 +189,7 @@ namespace N2.Edit
 			else if (item.ID == 0)
 			{
 				var page = Find.ClosestPage(item);
-				if (page!= null && page.VersionOf.HasValue)
+				if (page != null && page.VersionOf.HasValue)
 					editUrl = editUrl
 						.SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
 						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)

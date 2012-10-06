@@ -81,7 +81,7 @@ namespace N2.Tests.Web
 			var url = parser.BuildUrl(version);
 
 			itemUrl.ShouldBe("/item1_1.aspx");
-			url.ShouldBe("/item1_1.aspx?vi=1");
+			url.ShouldBe("/item1_1.aspx?versionIndex=1");
 		}
     }
 }

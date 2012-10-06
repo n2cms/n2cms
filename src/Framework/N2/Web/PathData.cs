@@ -43,7 +43,7 @@ namespace N2.Web
 		static string pageQueryKey = "page";
 		static string partQueryKey = "part";
 		static string pathDataKey = "path";
-		static string versionQueryKey = "vi";
+		static string versionQueryKey = "versionIndex";
 
 		/// <summary>The version index query key.</summary>
 		public static string VersionQueryKey

@@ -28,25 +28,16 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+
     <table>
-	<tbody>
-		<tr><th rowspan="4">Selected</th><th>Item</th><td><%= Selection.SelectedItem %></td></tr>
-		<tr><th>State</th><td><%= Selection.SelectedItem.State %></td></tr>
-		<tr><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td></tr>
-		<tr><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
-	</tbody>
-	<tbody>
-		<tr><th rowspan="4">Edited</th><th>Item</th><td><%= ie.CurrentItem %></td></tr>
-		<tr><th>State</th><td><%= ie.CurrentItem.State %></td></tr>
-		<tr><th>VersionOf</th><td><%= ie.CurrentItem.VersionOf.ID %></td></tr>
-		<tr><th>Parent</th><td><%= ie.CurrentItem.Parent %></td></tr>
-	</tbody>
+		<tr><th>Selected</th><td><%= Selection.SelectedItem %> (<%= Selection.SelectedItem.State %>)</td><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
+		<tr><th>Edited</th><td><%= ie.CurrentItem %> (<%= ie.CurrentItem.State %>)</td><th>VersionOf</th><td><%= ie.CurrentItem.VersionOf.ID %></td><th>Parent</th><td><%= ie.CurrentItem.Parent %></td></tr>
+		<tr><th colspan="5"><hr /></th></tr>
+		<% foreach(var key in Request.QueryString.AllKeys) { %>
+		<tr><th colspan="2"><%= key %></th><td colspan="3"><%= Request[key] %></td></tr>
+		<%} %>
 	</table>
-	<ul>
-	<% foreach(var kvp in Request.Url.Query.Split('&')) { %>
-	<li><%= kvp %></li>
-	<%} %>
-	</ul>
+
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
 	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
 	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>

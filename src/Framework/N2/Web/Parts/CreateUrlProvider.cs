@@ -104,8 +104,8 @@ namespace N2.Web.Parts
 			string beforeSortOrder = request["beforeSortOrder"];
 			url = url.SetQueryParameter("beforeSortOrder", beforeSortOrder);
 
-			if (!string.IsNullOrEmpty(request["versionIndex"]))
-				url = url.SetQueryParameter("vi", request["versionIndex"]);
+			if (!string.IsNullOrEmpty(request[PathData.VersionQueryKey]))
+				url = url.SetQueryParameter(PathData.VersionQueryKey, request[PathData.VersionQueryKey]);
 			if (!string.IsNullOrEmpty(request["versionKey"]))
 				url = url.SetQueryParameter("versionKey", request["versionKey"]);
 

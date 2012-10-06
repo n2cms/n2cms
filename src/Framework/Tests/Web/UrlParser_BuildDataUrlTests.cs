@@ -48,7 +48,7 @@ namespace N2.Tests.Web
 			data4.VersionIndex = 66;
 
 			string url = parser.BuildUrl(data4);
-			url.ShouldBe("/?item=6&vi=66");
+			url.ShouldBe("/?item=6&versionIndex=66");
 			//Assert.That(url, Is.EqualTo("/?item=123"));
 		}
 
@@ -60,7 +60,7 @@ namespace N2.Tests.Web
 			data4.VersionIndex = 77;
 
 			string url = parser.BuildUrl(data4);
-			Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?item=8&vi=77"));
+			Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?item=8&versionIndex=77"));
 		}
 
 		[Test]

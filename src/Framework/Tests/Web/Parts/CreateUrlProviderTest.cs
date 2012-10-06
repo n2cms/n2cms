@@ -59,7 +59,7 @@ namespace N2.Tests.Web.Parts
 			var response = creator.HandleRequest(request);
 			
 			response["dialog"].ShouldBe("no");
-			response["redirect"].ShouldBe("/back/to/here?edit=drag&vi=1");
+			response["redirect"].ShouldBe("/back/to/here?edit=drag&versionIndex=1");
 			persister.Repository.Count().ShouldBe(initialCount);
 			versionRepository.Repository.Count().ShouldBe(1);
 			versionRepository.GetVersion(root).Version.Children.Single().ShouldBeTypeOf<Items.DataItem>();

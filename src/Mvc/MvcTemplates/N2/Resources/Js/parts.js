@@ -77,17 +77,18 @@
 			$draggables.data("handler", this);
 		},
 
-		appendSelection: function (url, path) {
+		appendSelection: function (url, command) {
 			return url
-				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + path
-				+ (this.context.isMasterVersion ? "" : "&vi=" + this.context.versionIndex);
+				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + command.below
+				+ (this.context.isMasterVersion ? "" : "&versionIndex=" + this.context.versionIndex)
+				+ (!command.versionKey ? "" : "&versionKey=" + command.versionKey);
 		},
 
 		makeEditable: function () {
 			var self = this;
 			$(".editable").each(function () {
 				var $t = $(this);
-				var url = self.appendSelection(self.urls.editsingle, $t.attr("data-path"))
+				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
 					+ "&versionKey=" + $t.attr("data-versionKey")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
@@ -185,7 +186,7 @@
 					item: $draggable.attr("data-item"),
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
-					before: $next.attr("data-item") || "",
+					before: ($next.attr("data-versionKey") ? "" : $next.attr("data-item")) || "", // data-item may be page+index+key when new part
 					beforeSortOrder: $next.attr("data-sortOrder") || "",
 					below: $droppable.closest(".dropZone").attr("data-item"),
 					zone: $droppable.closest(".dropZone").attr("data-zone"),
@@ -193,7 +194,7 @@
 					dropped: true
 				};
 				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
-					data.vi = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.versionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
 					data.versionKey = $droppable.closest(".dropZone").attr("data-versionKey");
 				}
 				if ($next.attr("data-versionKey")) {
@@ -251,7 +252,7 @@
 			command.random = Math.random();
 
 			var url = self.urls[command.action];
-			url = self.appendSelection(url, command.below);
+			url = self.appendSelection(url, command);
 
 			var reloaded = false;
 			$.post(url, command, function (data) {

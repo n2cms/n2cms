@@ -102,7 +102,7 @@ namespace N2.Edit
             var parent = item.Parent;
 			try
             {
-				if (!item.IsPage && !item.VersionOf.HasValue)
+				if (!item.IsPage)
 				{
 					// it's a published part, create a version of it's page and remove the part from it.
 					var page = Find.ClosestPage(item);
@@ -110,12 +110,16 @@ namespace N2.Edit
 					{
 						var versions = Engine.Resolve<IVersionManager>();
 
-						var pageVersion = versions.AddVersion(page, asPreviousVersion: false);
-						var partVersion = pageVersion.FindPartVersion(item);
+						if (!page.VersionOf.HasValue)
+						{
+							page = versions.AddVersion(page, asPreviousVersion: false);
+						}
+
+						var partVersion = page.FindPartVersion(item);
 						partVersion.AddTo(null);
 						
-						versions.UpdateVersion(pageVersion);
-						parent = pageVersion;
+						versions.UpdateVersion(page);
+						parent = page;
 					}
 				}
 				else

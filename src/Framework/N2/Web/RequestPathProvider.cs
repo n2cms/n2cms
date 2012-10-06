@@ -63,7 +63,7 @@ namespace N2.Web
 					
 					path.CurrentItem = path.CurrentPage;
 
-					if (versionRepository.TryParseVersion(url["vi"], url["versionKey"], path))
+					if (versionRepository.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
 						return path;
 
 					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);

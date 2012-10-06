@@ -111,7 +111,7 @@ namespace N2.Tests.Web
 
 			string url = parser.BuildUrl(version);
 
-			Assert.AreEqual("/?vi=22", url);
+			Assert.AreEqual("/?versionIndex=22", url);
 		}
 	}
 }
