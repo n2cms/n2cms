@@ -17,21 +17,7 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-			if (previewedItem.VersionOf.HasValue)
-			{
-				previewedItem = Engine.Resolve<IVersionManager>().MakeMasterVersion(previewedItem);
-			}
-			if (previewedItem.State != ContentState.Published)
-			{
-				previewedItem.State = ContentState.Published;
-				if (!previewedItem.Published.HasValue)
-					previewedItem.Published = Utility.CurrentTime();
-
-				Engine.Persister.Save(previewedItem);
-			}
-
-			//var context = new CommandContext(Engine.Definitions.GetDefinition(previewedItem), previewedItem, Interfaces.Viewing, Page.User);
-			//Engine.Resolve<CommandDispatcher>().Publish(context);
+			previewedItem = VersioningExtensions.Publish(Engine.Resolve<IVersionManager>(), Engine.Persister, previewedItem);
 
 			Response.Redirect(previewedItem.Url);
 		}

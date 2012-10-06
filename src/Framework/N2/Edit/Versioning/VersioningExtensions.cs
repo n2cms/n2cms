@@ -79,5 +79,22 @@ namespace N2.Edit.Versioning
 			versionManager.ReplaceVersion(master, versionToPublish, versionToPublish.VersionOf.Value.State == ContentState.Published);
 			return master;
 		}
+
+		public static ContentItem Publish(IVersionManager versionManager, IPersister persister, ContentItem previewedItem)
+		{
+			if (previewedItem.VersionOf.HasValue)
+			{
+				previewedItem = versionManager.MakeMasterVersion(previewedItem);
+			}
+			if (previewedItem.State != ContentState.Published)
+			{
+				previewedItem.State = ContentState.Published;
+				if (!previewedItem.Published.HasValue)
+					previewedItem.Published = Utility.CurrentTime();
+
+				persister.Save(previewedItem);
+			}
+			return previewedItem;
+		}
 	}
 }
