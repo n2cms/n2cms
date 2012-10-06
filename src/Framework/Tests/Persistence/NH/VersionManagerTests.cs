@@ -745,5 +745,45 @@ namespace N2.Tests.Persistence.NH
 			versioner.ReplaceVersion(root, draft);
 			part["PersistableProperty"].ShouldBe("Herro!");
 		}
+
+		[Test]
+		public void DeleteVersion()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			versioner.AddVersion(item);
+
+			versioner.Repository.GetVersions(item).Single().Version.VersionOf.Value.ShouldBe(item);
+			versioner.Repository.DeleteVersionsOf(item);
+			versioner.Repository.GetVersions(item).ShouldBeEmpty();
+		}
+
+		[Test]
+		public void DeleteVersions()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			versioner.AddVersion(item);
+			versioner.AddVersion(item);
+			versioner.AddVersion(item);
+
+			versioner.Repository.GetVersions(item).Count().ShouldBe(3);
+			versioner.Repository.DeleteVersionsOf(item);
+			versioner.Repository.GetVersions(item).ShouldBeEmpty();
+		}
+
+		[Test]
+		public void DeleteVersions_ViaPersister()
+		{
+			engine.Resolve<ContentVersionCleanup>().Start();
+
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			versioner.AddVersion(item);
+			versioner.Repository.GetVersions(item).Count().ShouldBe(1);
+
+			persister.Delete(item);
+			versioner.Repository.GetVersions(item).ShouldBeEmpty();
+		}
 	}
 }

@@ -160,5 +160,10 @@ namespace N2.Edit.Versioning
 		{
 			return GetVersions(item).Select(v => v.VersionIndex).Concat(new[] { item.VersionIndex }).Max();
 		}
+
+		public virtual void DeleteVersionsOf(ContentItem item)
+		{
+			Repository.Delete(GetVersions(item).ToArray());
+		}
 	}
 }

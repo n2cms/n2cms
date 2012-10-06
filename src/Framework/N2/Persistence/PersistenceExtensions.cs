@@ -24,9 +24,12 @@ namespace N2.Persistence
 		/// <param name="entities">the entities to save</param>
 		public static void SaveOrUpdate<TEntity>(this IRepository<TEntity> repository, params TEntity[] entities)
 		{
-			foreach (var entity in entities)
-				repository.SaveOrUpdate(entity);
-			repository.Flush();
+			using (var tx = repository.BeginTransaction())
+			{
+				foreach (var entity in entities)
+					repository.SaveOrUpdate(entity);
+				tx.Commit();
+			}
 		}
 
 		/// <summary>
@@ -37,22 +40,29 @@ namespace N2.Persistence
 		/// <param name="entities">the entities to save</param>
 		public static void SaveOrUpdateRecursive(this IRepository<ContentItem> repository, params ContentItem[] entities)
 		{
-			foreach (var entity in entities)
+			using (var tx = repository.BeginTransaction())
 			{
-				SaveOrUpdateChildrenRecursive(repository, entity);
+				foreach (var entity in entities)
+				{
+					SaveOrUpdateChildrenRecursive(repository, entity);
+				}
+				tx.Commit();
 			}
-			repository.Flush();
 		}
 
 		private static void SaveOrUpdateChildrenRecursive(IRepository<ContentItem> repository, ContentItem parent)
 		{
-			repository.SaveOrUpdate(parent);
-			if (parent.ChildState == Collections.CollectionState.IsEmpty)
-				return;
-		
-			foreach (var child in parent.Children)
+			using (var tx = repository.BeginTransaction())
 			{
-				SaveOrUpdateChildrenRecursive(repository, child);
+				repository.SaveOrUpdate(parent);
+				if (parent.ChildState == Collections.CollectionState.IsEmpty)
+					return;
+
+				foreach (var child in parent.Children)
+				{
+					SaveOrUpdateChildrenRecursive(repository, child);
+				}
+				tx.Commit();
 			}
 		}
 
@@ -65,9 +75,12 @@ namespace N2.Persistence
 		/// <remarks>Does not cascade delete children.</remarks>
 		public static void Delete<TEntity>(this IRepository<TEntity> repository, TEntity[] entities)
 		{
-			foreach (var entity in entities)
-				repository.Delete(entity);
-			repository.Flush();
+			using (var tx = repository.BeginTransaction())
+			{
+				foreach (var entity in entities)
+					repository.Delete(entity);
+				tx.Commit();
+			}
 		}
 
 		/// <summary>
@@ -79,11 +92,14 @@ namespace N2.Persistence
 		/// <remarks>Cascade deletes children.</remarks>
 		public static void DeleteRecursive(this IRepository<ContentItem> repository, params ContentItem[] entities)
 		{
-			foreach (var entity in entities)
+			using (var tx = repository.BeginTransaction())
 			{
-				DeleteChildrenRecursive(repository, entity);
+				foreach (var entity in entities)
+				{
+					DeleteChildrenRecursive(repository, entity);
+				}
+				tx.Commit();
 			}
-			repository.Flush();
 		}
 
 		private static void DeleteChildrenRecursive(IRepository<ContentItem> repository, ContentItem parent)
