@@ -17,8 +17,9 @@ namespace N2.Web.Parts
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
 		private IVersionManager versions;
+		private ContentVersionRepository versionRepository;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator, IVersionManager versions)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator, IVersionManager versions, ContentVersionRepository versionRepository)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
@@ -26,6 +27,7 @@ namespace N2.Web.Parts
 			this.activator = activator;
             this.navigator = navigator;
 			this.versions = versions;
+			this.versionRepository = versionRepository;
 		}
 
 		public override string Name
@@ -45,43 +47,39 @@ namespace N2.Web.Parts
 			}
 			else
 			{
-				response["redirect"] = request["returnUrl"];
 				response["dialog"] = "no";
-				CreateItem(template, request);
+				response["redirect"] = CreateItem(template, request);
 			}
 
 			return response;
 		}
 
-		private void CreateItem(TemplateDefinition template, NameValueCollection request)
+		private string CreateItem(TemplateDefinition template, NameValueCollection request)
         {
-			ContentItem parent = navigator.Navigate(request["below"]);
-			//WebExtensions.TryParseVersion(N2.Context.Current.Resolve<ContentVersionRepository>()
+			var path = new PathData(navigator.Navigate(request["below"]));
+			if (!versionRepository.TryParseVersion(request[PathData.VersionQueryKey], request["versionKey"], path))
+				path.CurrentItem = versions.AddVersion(path.CurrentItem, asPreviousVersion: false);
+			var parent = path.CurrentItem;
 
 			ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
             item.ZoneName = request["zone"];
 			item.TemplateKey = template.Name;
 
-			string beforeVersionIndex = request["beforeVersionIndex"];
 			string beforeVersionKey = request["beforeVersionKey"];
 			string beforeSortOrder = request["beforeSortOrder"];
             string before = request["before"];
-			if (!string.IsNullOrEmpty(before))
+			if (string.IsNullOrEmpty(beforeSortOrder))
 			{
-				ContentItem beforeItem = navigator.Navigate(before);
-				if (beforeItem != null)
-				{
-					int newIndex = parent.Children.IndexOf(beforeItem);
-					Utility.Insert(item, parent, newIndex);
-
-					foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
-						persister.Repository.SaveOrUpdate(sibling);
-				}
-				else
-					item.SortOrder = Convert.ToInt32(beforeSortOrder) - 1;
+				item.AddTo(parent);
+			}
+			else
+			{
+				int index = int.Parse(beforeSortOrder);
+				parent.InsertChildBefore(item, index);
 			}
 
-            persister.Save(item);
+			versionRepository.Save(parent);
+			return request["returnUrl"].ToUrl().SetQueryParameter(PathData.VersionQueryKey, parent.VersionIndex);
         }
 
 		private string GetRedirectUrl(TemplateDefinition template, NameValueCollection request)

@@ -203,6 +203,14 @@ namespace N2.Edit
 			Url url = Url.ResolveTokens(path);
 			if (selectedItem != null)
 			{
+				if (selectedItem.ID == 0 && !selectedItem.VersionOf.HasValue && !selectedItem.IsPage)
+				{
+					var page = Find.ClosestPage(selectedItem);
+					return url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + page.Path)
+						.AppendQuery(PathData.VersionQueryKey + "=" + page.VersionIndex)
+						.AppendQuery("versionKey", selectedItem.GetVersionKey());
+				}
+
 				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
 				if (selectedItem.VersionOf != null)
 					url = url.AppendQuery(PathData.VersionQueryKey + "=" + selectedItem.VersionIndex)

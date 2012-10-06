@@ -140,6 +140,27 @@ namespace N2.Edit
 
 			return selection;
         }
+
+		public static void InsertChildBefore(this ContentItem parent, ContentItem child, int beforeSortOrder)
+		{
+			bool wasAdded = false;
+			for (int i = 0; i < parent.Children.Count; i++)
+			{
+				var sibling = parent.Children[i];
+				if (sibling.SortOrder >= beforeSortOrder)
+				{
+					parent.Children.Insert(i, child);
+					Utility.UpdateSortOrder(parent.Children);
+					wasAdded = true;
+					break;
+				}
+			}
+			if (!wasAdded)
+			{
+				child.AddTo(parent);
+				Utility.UpdateSortOrder(parent.Children);
+			}
+		}
 	}
 
 	internal class CreatorItem : ContentItem, ISystemNode

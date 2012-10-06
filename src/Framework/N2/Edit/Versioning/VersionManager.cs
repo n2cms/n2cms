@@ -263,10 +263,20 @@ namespace N2.Edit.Versioning
 		{
 			if (versionIndex == publishedItem.VersionIndex)
 				return publishedItem;
-			var version = Repository.GetVersion(publishedItem, versionIndex);
-			if (version == null)
-				return null;
-			return version.Version;
+			if (publishedItem.IsPage)
+			{
+				var version = Repository.GetVersion(publishedItem, versionIndex);
+				if (version == null)
+					return null;
+				return version.Version;
+			}
+			else
+			{
+				var version = Repository.GetVersion(Find.ClosestPage(publishedItem), versionIndex);
+				if (version == null)
+					return null;
+				return version.Version.FindPartVersion(publishedItem);
+			}
 		}
 
 		/// <summary>Retrieves all versions of an item including the master version.</summary>

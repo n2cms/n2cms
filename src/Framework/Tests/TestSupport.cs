@@ -90,12 +90,13 @@ namespace N2.Tests
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes.Select(t => t.Assembly).FirstOrDefault() ?? Assembly.GetExecutingAssembly(), itemTypes);
 
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
+			var map = new DefinitionMap();
+			var definitionBuilder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
 			definitionProviders = new IDefinitionProvider[] { new DefinitionProvider(definitionBuilder) };
-			definitions = new DefinitionManager(definitionProviders, new ITemplateProvider[0], activator, new StateChanger());
+			definitions = new DefinitionManager(definitionProviders, new [] { new TemplateProvider(activator, map) }, activator, new StateChanger());
 			((DefinitionManager)definitions).Start();
 		}
 
@@ -217,6 +218,26 @@ namespace N2.Tests
 							new Fakes.FakeMemoryFileSystem()), 
 				new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection()),
 				new EmptyProxyFactory());
+		}
+
+		public static ContentActivator SetupContentActivator()
+		{
+			return new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), new N2.Persistence.Proxying.EmptyProxyFactory());
+		}
+
+		public static Host SetupHost()
+		{
+			return new Host(new ThreadContext(), new HostSection());
+		}
+
+		public static ContentSource SetupContentSource(params SourceBase[] sources)
+		{
+			return new ContentSource(new SecurityManager(new ThreadContext(), new EditSection()), sources);
+		}
+
+		public static VersionManager SetupVersionManager(IPersister persister, ContentVersionRepository versionRepository)
+		{
+			return new VersionManager(versionRepository, persister.Repository, new N2.Edit.Workflow.StateChanger(), new EditSection());
 		}
 	}
 }

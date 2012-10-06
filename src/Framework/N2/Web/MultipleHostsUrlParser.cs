@@ -65,7 +65,7 @@ namespace N2.Web
 			else if (item.ID == 0)
 			{
 				var page = Find.ClosestPage(item);
-				if (page != null)
+				if (page != null && page != item)
 				{
 					return BuildUrl(page).ToUrl()
 						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
