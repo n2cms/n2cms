@@ -20,7 +20,7 @@ using N2.Tests.Fakes;
 namespace N2.Tests.Web.Parts
 {
 	[TestFixture]
-	public class ItemMoverTest : ItemPersistenceMockingBase
+	public class ItemMoverTests : ItemPersistenceMockingBase
 	{
 		private NameValueCollection request;
 		private Items.PageItem root;
@@ -198,7 +198,7 @@ namespace N2.Tests.Web.Parts
 
 			var response = mover.HandleRequest(request);
 
-			response["redirect"].ShouldStartWith("/?hej");
+			response["redirect"].ShouldStartWith("/root.aspx?versionIndex=1&edit=drag");
 		}
 
 	}

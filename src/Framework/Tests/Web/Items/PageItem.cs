@@ -1,5 +1,6 @@
 using System;
 using N2.Collections;
+using N2.Web;
 
 namespace N2.Tests.Web.Items
 {
@@ -8,7 +9,7 @@ namespace N2.Tests.Web.Items
 	{
 		public override string Url
 		{
-			get { return "/" + Name + Extension; }
+			get { return N2.Web.Url.Parse("/" + Name + Extension).AppendQuery(PathData.VersionQueryKey, VersionOf.HasValue ? VersionIndex.ToString() : null, unlessNull: true); }
 		}
 
 		[Obsolete]

@@ -18,7 +18,7 @@ using N2.Details;
 namespace N2.Tests.Web.Parts
 {
 	[TestFixture]
-	public class CreateUrlProviderTest : ItemPersistenceMockingBase
+	public class CreateUrlProviderTests : ItemPersistenceMockingBase
 	{
 		private CreateUrlProvider creator;
 		private NameValueCollection request;

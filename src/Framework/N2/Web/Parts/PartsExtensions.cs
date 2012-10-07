@@ -5,6 +5,8 @@ using System.Text;
 using N2.Collections;
 using N2.Details;
 using System.Web.Routing;
+using N2.Edit.Versioning;
+using System.Collections.Specialized;
 
 namespace N2.Web.Parts
 {
@@ -88,6 +90,56 @@ namespace N2.Web.Parts
 				else
 					SetDetail(item, collection, keyPrefix + "." + kvp.Key, kvp.Value);
 			}
+		}
+
+		public static ContentItem GetBeforeItem(Edit.Navigator navigator, System.Collections.Specialized.NameValueCollection request, ContentItem page)
+		{
+			string before = request["before"];
+			string beforeVersionKey = request["beforeVersionKey"];
+			
+			if (!string.IsNullOrEmpty(before))
+			{
+				ContentItem beforeItem = navigator.Navigate(before);
+				return page.FindPartVersion(beforeItem);
+			}
+			else if (!string.IsNullOrEmpty(beforeVersionKey))
+			{
+				return page.FindDescendantByVersionKey(beforeVersionKey);
+			}
+			return null;
+		}
+
+		public static ContentItem GetBelowItem(Edit.Navigator navigator, System.Collections.Specialized.NameValueCollection request, ContentItem page)
+		{
+			string below = request["below"];
+			string belowVersionKey = request["belowVersionKey"];
+
+			if (!string.IsNullOrEmpty(belowVersionKey))
+			{
+				return page.FindDescendantByVersionKey(belowVersionKey);
+			}
+			else
+			{
+				var parent = navigator.Navigate(below);
+				return page.FindPartVersion(parent);
+			}
+		}
+
+
+		public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, Edit.Navigator navigator, NameValueCollection request)
+		{
+			var item = navigator.Navigate(request["item"]);
+			item = versionRepository.ParseVersion(request[PathData.VersionQueryKey], request["versionKey"], item)
+				?? item;
+
+			var page = Find.ClosestPage(item);
+			if (!page.VersionOf.HasValue)
+			{
+				page = versions.AddVersion(page, asPreviousVersion: false);
+				item = page.FindPartVersion(item);
+			}
+
+			return new PathData(page, item);
 		}
 	}
 }
