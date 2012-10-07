@@ -234,7 +234,7 @@ namespace N2.Edit.Versioning
 					continue;
 
 				UpdateValues(existingChild, versionedCounterpart);
-				yield return currentItem;
+				yield return existingChild;
 
 				foreach (var modifiedItem in UpdateModifiedPartsRecursive(existingChild, versionedCounterpart))
 					yield return modifiedItem;

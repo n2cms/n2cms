@@ -44,9 +44,9 @@ namespace N2.Edit.Versioning
 			return draft;
 		}
 
-		public IEnumerable<ContentVersion> FindDrafts()
+		public IEnumerable<ContentVersion> FindDrafts(int skip = 0, int take = 100)
 		{
-			return Versions.Repository.Find(Parameter.Equal("State", ContentState.Draft))
+			return Versions.Repository.Find(new ParameterCollection(Parameter.Equal("State", ContentState.Draft)).Skip(skip).Take(take).OrderBy("Saved DESC"))
 				.Select(v => Versions.Inject(v));
 		}
 

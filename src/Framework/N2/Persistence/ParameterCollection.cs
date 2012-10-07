@@ -18,6 +18,13 @@ namespace N2.Persistence
 			Operator = op;
 		}
 
+		public ParameterCollection(params IParameter[] parameters)
+			: this(Operator.And)
+		{
+			Operator = Persistence.Operator.And;
+			this.parameters.AddRange(parameters);
+		}
+
 		public ParameterCollection(IEnumerable<IParameter> parameters)
 			: this(Operator.And)
 		{

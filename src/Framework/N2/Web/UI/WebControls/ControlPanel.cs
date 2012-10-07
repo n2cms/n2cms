@@ -120,40 +120,39 @@ jQuery(document).ready(function(){{
 			if (state.IsFlagSet(ControlPanelState.Hidden))
 			{
 				AppendDefinedTemplate(HiddenTemplate, this);
+				return;
 			}
-			else if (state.IsFlagSet(ControlPanelState.Visible))
-			{
+			if (state.IsFlagSet(ControlPanelState.Visible))
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
-				AddPlugins(state);
-				AppendDefinedTemplate(VisibleFooterTemplate, this);
-			}
-			else if (state.IsFlagSet(ControlPanelState.DragDrop))
-			{
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
 				AppendDefinedTemplate(DragDropHeaderTemplate, this);
-				AddPlugins(state);
+			if (state.IsFlagSet(ControlPanelState.Editing))
+				AppendDefinedTemplate(EditingHeaderTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.Previewing))
+				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
+
+			AddPlugins(state);
+
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
+			{
 				AddDefinitions(this);
-				AppendDefinedTemplate(DragDropFooterTemplate, this);
 				RegisterDragDropStyles();
 				RegisterDragDropScripts();
-
-				//Page.Response.CacheControl = "no-cache";
 			}
-			else if (state.IsFlagSet(ControlPanelState.Editing))
+			if (state.IsFlagSet(ControlPanelState.Editing))
 			{
-				AppendDefinedTemplate(EditingHeaderTemplate, this);
-				AddPlugins(state);
 				Register.JQuery(Page);
 				Register.StyleSheet(Page, Url.ToAbsolute(StyleSheetUrl), Media.All);
-				AppendDefinedTemplate(EditingFooterTemplate, this);
 			}
-			else if (state.IsFlagSet(ControlPanelState.Previewing))
-			{
-				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
-				AddPlugins(state);
+
+			if (state.IsFlagSet(ControlPanelState.Previewing))
 				AppendDefinedTemplate(PreviewingFooterTemplate, this);
-			}
-			else
-				throw new N2Exception("Unknown control panel state: " + state);
+			if (state.IsFlagSet(ControlPanelState.Editing))
+				AppendDefinedTemplate(EditingFooterTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
+				AppendDefinedTemplate(DragDropFooterTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.Visible))
+				AppendDefinedTemplate(VisibleFooterTemplate, this);
 
 			base.CreateChildControls();
 		}
@@ -353,7 +352,7 @@ jQuery(document).ready(function(){{
                 state |= ControlPanelState.Editing;
             if (queryString["edit"] == "drag")
                 state |= ControlPanelState.DragDrop;
-			if (!request.CurrentPath.IsEmpty() && request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue)
+			if (!request.CurrentPath.IsEmpty() && (request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue))
 				state |= ControlPanelState.Previewing;
 
 			return state;

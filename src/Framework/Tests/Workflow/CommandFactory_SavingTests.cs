@@ -80,7 +80,7 @@ namespace N2.Tests.Workflow
 			part2.Parent = page;
 			part2.ZoneName = "TheZone";
 			var context = new CommandContext(definitions.GetDefinition(page.GetContentType()), part2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
-			context.Parameters["MoveBeforeSortOrder"] = 0;
+			context.Parameters["MoveBeforeSortOrder"] = "0";
 			var command = CreateCommand(context);
 			dispatcher.Execute(command, context);
 
@@ -104,7 +104,6 @@ namespace N2.Tests.Workflow
 			persister.Save(part);
 			return page;
 		}
-					//ctx.Parameters["MoveBeforeSortOrder"] = Request["beforeSortOrder"];
 
 		private CommandContext ExecuteSave(StatefulPage page, StatefulPart part)
 		{
