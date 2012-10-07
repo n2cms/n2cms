@@ -232,6 +232,7 @@
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
+    <Compile Include="Web\Parts\ItemMoverTest.cs" />
     <Compile Include="Web\Parts\CreateUrlProviderTest.cs" />
     <Compile Include="Web\Parts\PartsExtensionsTests.cs" />
     <Compile Include="Web\PathDataTests.cs" />

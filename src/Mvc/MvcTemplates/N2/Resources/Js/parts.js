@@ -184,6 +184,8 @@
 				var data = {
 					ctrlKey: e.ctrlKey,
 					item: $draggable.attr("data-item"),
+					versionKey: $draggable.attr("data-versionKey"),
+					versionIndex: $draggable.attr("data-versionIndex") || n2ddcp.context.versionIndex,
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
 					before: ($next.attr("data-versionKey") ? "" : $next.attr("data-item")) || "", // data-item may be page+index+key when new part
@@ -194,8 +196,8 @@
 					dropped: true
 				};
 				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
-					data.versionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
-					data.versionKey = $droppable.closest(".dropZone").attr("data-versionKey");
+					data.belowVersionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.belowVersionKey = $droppable.closest(".dropZone").attr("data-versionKey");
 				}
 				if ($next.attr("data-versionKey")) {
 					data.beforeVersionKey = $next.attr("data-versionKey");

@@ -37,6 +37,10 @@ namespace N2.Tests.Fakes
 		public Dictionary<object, TEntity> database = new Dictionary<object, TEntity>();
 		private FakeTransaction transaction;
 
+		public FakeRepository()
+		{
+		}
+
 		public string LastOperation
 		{
 			get { return lastOperation; }
