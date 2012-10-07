@@ -33,11 +33,12 @@ namespace N2.Web.Parts
 
         public override NameValueCollection HandleRequest(NameValueCollection request)
         {
-            MoveItem(request);
-            return new NameValueCollection();
+			var response = new NameValueCollection();
+			response["redirect"] = MoveItem(request);
+			return response;
         }
 
-        private void MoveItem(NameValueCollection request)
+        private string MoveItem(NameValueCollection request)
         {
             ContentItem item = navigator.Navigate(request["item"]);
 			item = versionRepository.ParseVersion(request[PathData.VersionQueryKey], request["versionKey"], item)
@@ -85,6 +86,8 @@ namespace N2.Web.Parts
 
 			Utility.UpdateSortOrder(parent.Children);
 			versionRepository.Save(page);
+
+			return page.Url.ToUrl().SetQueryParameter("edit", "drag");
         }
 
 		private ContentItem MoveBefore(ContentItem item, ContentItem beforeItem)

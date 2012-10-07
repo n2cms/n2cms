@@ -185,5 +185,21 @@ namespace N2.Tests.Web.Parts
 			draft.Version.Children[0].Name.ShouldBe("part2");
 			draft.Version.Children[1].Name.ShouldBe("part");
 		}
+
+		[Test]
+		public void MovingPublishedItem_BetweenZones_RedirectsToDraft()
+		{
+			var part = CreateOneItem<Items.DataItem>(0, "part", root);
+			part.ZoneName = "ZoneOne";
+
+			request["item"] = part.Path;
+			request["below"] = root.Path;
+			request["zone"] = "ZoneTwo";
+
+			var response = mover.HandleRequest(request);
+
+			response["redirect"].ShouldStartWith("/?hej");
+		}
+
 	}
 }
