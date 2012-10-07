@@ -424,13 +424,14 @@ namespace N2.Persistence.NH
 
             ca.Component(x => x.Master, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
 			ca.Property(x => x.Title, xm => { });
-            ca.Property(x => x.Published, cm => { });
+			ca.Property(x => x.Published, cm => { });
+			ca.Property(x => x.Expired, cm => { });
             ca.Property(x => x.VersionIndex, cm => { });
             ca.Property(x => x.Saved, cm => { });
             ca.Property(x => x.State, cm => { });
-            ca.Property(x => x.SavedBy, cm => { });
-            ca.Property(x => x.PublishedBy, cm => { });
-			ca.Property(x => x.VersionDataXml, cm => { });
+			ca.Property(x => x.SavedBy, cm => { });
+			ca.Property(x => x.ItemCount, cm => { });
+            ca.Property(x => x.VersionDataXml, cm => { });
         }
 
 		private string FormatMapping(string mappingXml)

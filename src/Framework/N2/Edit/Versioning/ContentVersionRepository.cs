@@ -93,10 +93,10 @@ namespace N2.Edit.Versioning
 			ApplyCommonValuesRecursive(item);
 
 			version.Master = GetMaster(item);
-			version.Published = Utility.CurrentTime();
-            version.Saved = Utility.CurrentTime();
-			version.SavedBy = item.SavedBy;
+			version.Saved = Utility.CurrentTime();
 			version.Version = item;
+			version.ItemCount = N2.Find.EnumerateChildren(item, includeSelf: true, useMasterVersion: false).Count();
+
 
 			using (var tx = Repository.BeginTransaction())
 			{
