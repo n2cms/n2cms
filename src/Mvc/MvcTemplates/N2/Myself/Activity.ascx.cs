@@ -22,6 +22,12 @@ namespace N2.Management.Myself
 			get { return (int)(GetDetail("LatestChangesMaxCount") ?? 5); }
 			set { SetDetail("LatestChangesMaxCount", value); }
 		}
+		[EditableNumber("Drafts max count", 100)]
+		public virtual int DraftsMaxCount
+		{
+			get { return (int)(GetDetail("DraftsMaxCount") ?? 5); }
+			set { SetDetail("DraftsMaxCount", value); }
+		}
 	}
 
 	public partial class Activity : ContentUserControl<ContentItem, ActivityPart>
@@ -31,7 +37,14 @@ namespace N2.Management.Myself
 			base.OnInit(e);
 
 			rptLatestChanges.DataSource = Find.Items.All.MaxResults(CurrentItem.LatestChangesMaxCount).OrderBy.Updated.Desc.Select();
+			rptDrafts.DataSource = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(0, CurrentItem.DraftsMaxCount);
+			rptDrafts.ItemCommand += new System.Web.UI.WebControls.RepeaterCommandEventHandler(rptDrafts_ItemCommand);
 			DataBind();
+		}
+
+		void rptDrafts_ItemCommand(object source, System.Web.UI.WebControls.RepeaterCommandEventArgs e)
+		{
+			
 		}
 	}
 }
