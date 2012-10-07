@@ -195,6 +195,11 @@ namespace N2.Tests
 			return CreateVersionRepository(ref persister, definedTypes);
 		}
 
+		public static N2.Edit.Versioning.DraftRepository CreateDraftRepository(ref IPersister persister, params Type[] definedTypes)
+		{
+			return new DraftRepository(CreateVersionRepository(ref persister, definedTypes), new CacheWrapper(persister, new ThreadContext(), new DatabaseSection()));
+		}
+
 		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, params Type[] definedTypes)
 		{
 			if (persister == null)

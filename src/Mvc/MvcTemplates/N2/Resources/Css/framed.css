@@ -225,6 +225,7 @@ body.framed #nav span.language { background-color:#bdb; color:#fff; padding:0 1p
 body.framed #nav span.authority { font-style:italic; text-transform:capitalize }
 body.framed #nav a span.zone { display:none }
 body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
+body.framed #nav span.draft { vertical-align:middle; height:16px; width:16px; background:transparent url(../../Resources/icons/bullet_orange.png) no-repeat 50% 0; display:inline-block; }
 
 /* TABS */
 ul.tabs{

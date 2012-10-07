@@ -18,6 +18,6 @@ namespace N2.Edit
 
 		public Security.Permission MaximumPermission { get; set; }
 
-		public IEnumerable<KeyValuePair<string, string>> MetaInforation { get; set; }
+		public IEnumerable<MetaInfo> MetaInforation { get; set; }
 	}
 }

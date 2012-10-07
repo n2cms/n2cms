@@ -12,7 +12,6 @@ namespace N2.Persistence.Sources
 	public class VersionSource : SourceBase<IActiveContent>
 	{
 		private ContentVersionRepository repository;
-		private IWebContext webContext;
 
 		public VersionSource(IEngine engine)
 		{

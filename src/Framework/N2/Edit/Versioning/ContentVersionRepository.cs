@@ -16,6 +16,9 @@ namespace N2.Edit.Versioning
     public class ContentVersionRepository
     {
         public IRepository<ContentVersion> Repository { get; private set; }
+		public event EventHandler<VersionsChangedEventArgs> VersionsChanged;
+		public event EventHandler<ItemEventArgs> VersionsDeleted;
+
 	    Exporter exporter;
 		Importer importer;
 		private IUrlParser parser;
@@ -44,7 +47,7 @@ namespace N2.Edit.Versioning
 				.FirstOrDefault();
         }
 
-		private ContentVersion Inject(ContentVersion v)
+		internal ContentVersion Inject(ContentVersion v)
 		{
 			v.Serializer = Serialize;
 			v.Deserializer = Deserialize;
@@ -71,19 +74,6 @@ namespace N2.Edit.Versioning
 				.OrderByDescending(v => v.VersionIndex);
 		}
 
-		public bool HasDraft(ContentItem item)
-		{
-			return GetDraft(item) != null;
-		}
-
-		public ContentVersion GetDraft(ContentItem item)
-		{
-			return Repository.Find(Parameter.Equal("Master.ID", GetMaster(item).ID) & Parameter.Equal("State", ContentState.Draft))
-				.OrderByDescending(v => v.VersionIndex)
-				.Select(v => Inject(v))
-				.FirstOrDefault();
-		}
-
         public ContentVersion Save(ContentItem item)
         {
 			item = Find.ClosestPage(item);
@@ -103,6 +93,10 @@ namespace N2.Edit.Versioning
 				Repository.SaveOrUpdate(version);
 				tx.Commit();
 			}
+
+			if (VersionsChanged != null)
+				VersionsChanged(this, new VersionsChangedEventArgs { Version = version });
+
             return version;
         }
 
@@ -148,6 +142,10 @@ namespace N2.Edit.Versioning
 				}
 				tx.Commit();
 			}
+
+			if (VersionsDeleted != null)
+				VersionsDeleted(this, new ItemEventArgs(item));
+
 		}
 
 		public virtual ContentItem GetLatestVersion(ContentItem item)
@@ -164,6 +162,9 @@ namespace N2.Edit.Versioning
 		public virtual void DeleteVersionsOf(ContentItem item)
 		{
 			Repository.Delete(GetVersions(item).ToArray());
+
+			if (VersionsDeleted != null)
+				VersionsDeleted(this, new ItemEventArgs(item));
 		}
 	}
 }

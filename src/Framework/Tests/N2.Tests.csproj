@@ -184,6 +184,7 @@
     <Compile Include="Edit\EditUrlManagerTests_Managing.cs" />
     <Compile Include="Engine\TypeCacheTests.cs" />
     <Compile Include="Engine\TypeFinderTests.cs" />
+    <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />

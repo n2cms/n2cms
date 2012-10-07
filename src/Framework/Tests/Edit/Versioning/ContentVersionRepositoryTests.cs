@@ -9,6 +9,8 @@ using Shouldly;
 using N2.Persistence;
 using N2.Definitions.Static;
 using N2.Edit.Workflow;
+using N2.Web;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Edit.Versioning
 {
@@ -17,12 +19,14 @@ namespace N2.Tests.Edit.Versioning
     {
         ContentVersionRepository repository;
 		IPersister persister;
+		private DraftRepository drafts;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 			repository = TestSupport.CreateVersionRepository(ref persister, typeof(Items.NormalPage));
+			drafts = new DraftRepository(repository, new FakeCacheWrapper());
         }
 
         [Test]
@@ -69,11 +73,11 @@ namespace N2.Tests.Edit.Versioning
 			var version = page.Clone(true);
 			version.State = ContentState.Draft;
 			version.VersionOf = page;
+			version.VersionIndex++;
 
 			var draft = repository.Save(version);
 
-			repository.HasDraft(page).ShouldBe(true);
-			repository.GetDraft(page).ID.ShouldBe(draft.ID);
+			drafts.FindDrafts(page).Single().ID.ShouldBe(draft.ID);
 		}
 
 		[TestCase(ContentState.Deleted)]
@@ -93,12 +97,12 @@ namespace N2.Tests.Edit.Versioning
 
 			var draft = repository.Save(version);
 
-			repository.HasDraft(page).ShouldBe(false);
-			repository.GetDraft(page).ShouldBe(null);
+			drafts.HasDraft(page).ShouldBe(false);
+			drafts.FindDrafts(page).ShouldBeEmpty();
 		}
 
 		[Test]
-		public void MultipleDrafts_GreatestVersionIndexIsUsed()
+		public void MultipleDrafts_GreatestVersionIndex_IsFirst()
 		{
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
@@ -115,7 +119,7 @@ namespace N2.Tests.Edit.Versioning
 			version2.VersionOf = page;
 			var draft2 = repository.Save(version2);
 
-			repository.GetDraft(page).ID.ShouldBe(draft2.ID);
+			drafts.FindDrafts(page).First().ID.ShouldBe(draft2.ID);
 		}
 
 		[Test]
@@ -209,6 +213,42 @@ namespace N2.Tests.Edit.Versioning
 			var deserializedPart = deserializedPage.Children.Single();
 			deserializedPart["Hello"].ShouldBe("world");
 			deserializedPart.GetDetailCollection("Stuffs", false)[0].ShouldBe("Hello");
+		}
+
+		[Test]
+		public void NotSavedAsPrevious_IsFoundAsDraft()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "pageX", null);
+			persister.Save(master);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			manager.AddVersion(master, asPreviousVersion: false);
+
+			drafts.FindDrafts().Single().Master.ID.ShouldBe(master.ID);
+		}
+
+		[Test]
+		public void SavedAsPrevious_IsNotFoundAsDraft()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "pageX", null);
+			persister.Save(master);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			manager.AddVersion(master, asPreviousVersion: true);
+
+			drafts.FindDrafts().Any().ShouldBe(false);
+		}
+
+		[Test]
+		public void DraftsCanBeFound_ForSingleItem()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "pageX", null);
+			persister.Save(master);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			manager.AddVersion(master, asPreviousVersion: false);
+
+			drafts.FindDrafts().Single().Master.ID.ShouldBe(master.ID);
 		}
     }
 }

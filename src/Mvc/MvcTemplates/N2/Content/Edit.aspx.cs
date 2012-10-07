@@ -234,7 +234,7 @@ namespace N2.Edit
 			else
 			{
 				var page = Find.ClosestPage(item);
-				var version = Engine.Resolve<N2.Edit.Versioning.ContentVersionRepository>().GetDraft(page);
+				var version = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(page).FirstOrDefault();
 				if (version != null && version.Saved > item.Updated)
 				{
 					DisplayThisHasNewerVersionInfo(version.Version.FindPartVersion(item));

@@ -18,18 +18,18 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		private readonly IUrlParser parser;
 		private readonly IErrorNotifier errorHandler;
-		private readonly ContentVersionRepository versionRepository;
+		private readonly DraftRepository draftRepository;
 		private readonly bool rewriteEmptyExtension = true;
 		private readonly bool observeAllExtensions = true;
 		private readonly string[] observedExtensions = new[] {".aspx"};
 		private readonly string[] nonRewritablePaths;
 
-		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config, ContentVersionRepository versionRepository)
+		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config, DraftRepository draftRepository)
 		{
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
-			this.versionRepository = versionRepository;
+			this.draftRepository = draftRepository;
 
 			observeAllExtensions = config.Web.ObserveAllExtensions;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
@@ -63,13 +63,13 @@ namespace N2.Web
 					
 					path.CurrentItem = path.CurrentPage;
 
-					if (versionRepository.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
+					if (draftRepository.Versions.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
 						return path;
 
 					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
-					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && versionRepository.HasDraft(path.CurrentItem))
+					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
 					{
-						var draft = versionRepository.GetVersion(path.CurrentPage);
+						var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
 						path.TryApplyVersion(draft, url["versionKey"]);
 					}
 

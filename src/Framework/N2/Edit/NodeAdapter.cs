@@ -12,6 +12,7 @@ using N2.Definitions;
 using N2.Persistence.Sources;
 using System.Text;
 using N2.Engine.Globalization;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -28,6 +29,7 @@ namespace N2.Edit
 		private ContentSource sources;
 		private IDefinitionManager definitions;
 		private ILanguageGateway languages;
+		private DraftRepository drafts;
 
 		public NavigationSettings Settings
 		{
@@ -89,6 +91,12 @@ namespace N2.Edit
 			set { languages = value; }
 		}
 
+		public DraftRepository Drafts
+		{
+			get { return drafts ?? Engine.Resolve<DraftRepository>(); }
+			set { drafts = value; }
+		}
+
 
 		/// <summary>Gets the node representation used to build the tree hierarchy in the management UI.</summary>
 		/// <param name="item">The item to link to.</param>
@@ -107,14 +115,17 @@ namespace N2.Edit
 			};
 		}
 
-		protected virtual IEnumerable<KeyValuePair<string, string>> GetMetaInformation(ContentItem item)
+		protected virtual IEnumerable<MetaInfo> GetMetaInformation(ContentItem item)
 		{
 			if (Languages.IsLanguageRoot(item))
-				yield return new KeyValuePair<string, string>("language", Languages.GetLanguage(item).LanguageCode);
+				yield return new MetaInfo { Name = "language", Text = Languages.GetLanguage(item).LanguageCode };
 			if(!item.IsPage)
-				yield return new KeyValuePair<string, string>("zone", item.ZoneName);
+				yield return new MetaInfo { Name = "zone", Text = item.ZoneName };
 			if (Host.IsStartPage(item))
-				yield return new KeyValuePair<string, string>("authority", string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority);
+				yield return new MetaInfo { Name = "authority", Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
+			var draftInfo = Drafts.GetDraftInfo(item);
+			if (draftInfo != null)
+				yield return new MetaInfo { Name = "draft", Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
 		}
 
 		private string GetClassName(ContentItem item)

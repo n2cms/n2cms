@@ -156,11 +156,31 @@ namespace N2.Persistence
                 case Persistence.Comparison.Null:
                     return itemValue == null;
                 case Persistence.Comparison.NotNull:
-                    return itemValue != null;
+					return itemValue != null;
                 default:
+					bool? result = TryCompare(itemValue as IComparable);
+					if (result.HasValue)
+						return result.Value;
                     throw new NotSupportedException("Operator " + Comparison + " not supported for IsMatch " + Name);
             }
         }
+
+		private bool? TryCompare(IComparable comparable)
+		{
+			if (comparable == null)
+				return null;
+
+			if (this.Comparison == Persistence.Comparison.GreaterOrEqual)
+				return comparable.CompareTo(Value) >= 0;
+			if (this.Comparison == Persistence.Comparison.GreaterThan)
+				return comparable.CompareTo(Value) > 0;
+			if (this.Comparison == Persistence.Comparison.LessOrEqual)
+				return comparable.CompareTo(Value) <= 0;
+			if (this.Comparison == Persistence.Comparison.LessThan)
+				return comparable.CompareTo(Value) < 0;
+
+			return null;
+		}
 
     
 		#region Operators
