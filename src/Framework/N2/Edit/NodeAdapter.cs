@@ -121,7 +121,7 @@ namespace N2.Edit
 		{
 			StringBuilder className = new StringBuilder();
 
-			if (!item.Published.HasValue || item.Published > DateTime.Now)
+			if (!item.IsPublished())
 				className.Append("unpublished ");
 			else if (item.Published > DateTime.Now.AddDays(-1))
 				className.Append("day ");
@@ -130,7 +130,7 @@ namespace N2.Edit
 			else if (item.Published > DateTime.Now.AddMonths(-1))
 				className.Append("month ");
 
-			if (item.Expires.HasValue && item.Expires <= DateTime.Now)
+			if (item.IsExpired())
 				className.Append("expired ");
 
 			if (!item.Visible)

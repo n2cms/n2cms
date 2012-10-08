@@ -25,6 +25,11 @@ namespace N2.Edit.FileSystem.Items
 	[Indexable(IsIndexable = false)]
 	public abstract class AbstractNode : ContentItem, IFileSystemNode, IActiveChildren, IInjectable<IFileSystem>, IInjectable<ImageSizeCache>, IInjectable<IDependencyInjector>
     {
+		public AbstractNode()
+		{
+			State = ContentState.Published;
+		}
+
 		IFileSystem fileSystem;
 
 		protected ImageSizeCache ImageSizes { get; set; }
