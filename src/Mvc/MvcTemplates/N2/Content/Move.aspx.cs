@@ -4,6 +4,7 @@ using N2.Edit.Web;
 using N2.Integrity;
 using N2.Security;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -80,7 +81,7 @@ namespace N2.Edit
 
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
 
-			if (toMove.IsPage)
+			if (toMove.IsPage && !(toMove.Parent is IActiveContent))
 				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
 			else
 				Refresh(toMove);
