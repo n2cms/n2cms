@@ -27,6 +27,8 @@ namespace N2.Management.Tests.Trash
 			persister = engine.Persister;
 			versions = engine.Resolve<IVersionManager>();
 
+			persister.Dispose();
+
 			CreateDatabaseSchema();
 
 			root = CreateOneItem<ThrowableItem>(0, "root", null);

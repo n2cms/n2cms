@@ -13,7 +13,7 @@
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
+					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_green.png' alt='published' />" : string.Empty%>
 					<%# IsFuturePublished(Eval("Content")) ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
 					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%></span>
 				</ItemTemplate>

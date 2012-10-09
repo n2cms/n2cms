@@ -127,6 +127,9 @@ namespace N2.Edit.Tests.Trash
             Assert.That(root.Children.Count, Is.EqualTo(1));
             Assert.That(root.Children[0], Is.TypeOf(typeof(TrashContainerItem)));
             Assert.That(root.Children[0].Children[0], Is.EqualTo(item));
+
+			engine.Resolve<ISessionProvider>().Dispose();
+			conn.Close();
         }
 
         [Test]

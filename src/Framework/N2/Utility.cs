@@ -681,11 +681,11 @@ namespace N2
 
 		public static bool IsPublished(this ContentItem item)
 		{
-			return item.Published.HasValue && item.Published <= Utility.CurrentTime();
+			return item.State == ContentState.Published && item.Published.HasValue && item.Published <= Utility.CurrentTime();
 		}
 		public static bool IsExpired(this ContentItem item)
 		{
-			return item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime();
+			return item.State == ContentState.Unpublished || (item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime());
 		}
 
 		public static bool SetPropertyOrDetail(ContentItem item, string detailName, object value)

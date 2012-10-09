@@ -93,6 +93,7 @@ namespace N2.Edit
             btnPreview.Visible = isVersionable && isWritableByUser;
             btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
+			btnUnpublish.Visible = ie.CurrentItem.IsPublished();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -155,6 +156,14 @@ namespace N2.Edit
 			
 			HandleResult(ctx, redirectTo);
         }
+		
+		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
+		{
+			var item = ie.CurrentItem;
+			item.State = ContentState.Unpublished;
+			Engine.Persister.Save(item);
+			Refresh(item, ToolbarArea.Both);
+		}
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
         {
