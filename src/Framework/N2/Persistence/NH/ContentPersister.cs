@@ -138,9 +138,11 @@ namespace N2.Persistence.NH
 
 				foreach (ContentDetail link in inboundLinks)
 				{
+					var enclosing = link.EnclosingItem;
 					link.AddTo((ContentItem)null);
 					link.AddTo((DetailCollection)null);
 					linkRepository.Delete(link);
+					Repository.SaveOrUpdate(enclosing);
 				}
 				linkRepository.Flush();
 			}
