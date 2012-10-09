@@ -120,6 +120,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;
+			item.State = ContentState.Published;
 			if (item is IContentPage)
 			{
 				(item as IContentPage).Text += string.Join("", Enumerable.Range(0, r.Next(1, 10)).Select(pi =>
