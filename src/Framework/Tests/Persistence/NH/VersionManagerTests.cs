@@ -785,5 +785,63 @@ namespace N2.Tests.Persistence.NH
 			persister.Delete(item);
 			versioner.Repository.GetVersions(item).ShouldBeEmpty();
 		}
+
+		[Test]
+		public void SelfLinks_AreStraightened()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+
+			var version = versioner.AddVersion(item);
+			version["Hello"] = version;
+
+			versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
+
+			item["Hello"].ShouldBe(item);
+		}
+
+		[Test]
+		public void SelfLinks_InCollections_AreStraightened()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+
+			var version = versioner.AddVersion(item);
+			version.GetDetailCollection("Hello", true).Add(version);
+
+			versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
+
+			item.GetDetailCollection("Hello", false)[0].ShouldBe(item);
+		}
+
+		[Test, Ignore("TODO")]
+		public void ExistingDetails_MaintainTheirIdentity()
+		{
+		}
+
+		[Test, Ignore("TODO")]
+		public void NewDetails_AreAdded()
+		{
+		}
+
+		[Test, Ignore("TODO")]
+		public void RemovedDetails_AreDeleted()
+		{
+		}
+
+		[Test, Ignore("TODO")]
+		public void RemovedDetailCollections_AreDeleted()
+		{
+		}
+
+		[Test, Ignore("TODO")]
+		public void ExistingDetailCollections_MaintainTheirIdentity()
+		{
+		}
+
+		[Test, Ignore("TODO")]
+		public void NewDetailCollections_AreAdded()
+		{
+		}
 	}
 }

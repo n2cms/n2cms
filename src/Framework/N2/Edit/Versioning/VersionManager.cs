@@ -181,11 +181,34 @@ namespace N2.Edit.Versioning
 
 			((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
 
+			RelinkMasterVersion(currentItem);
+
 			var latestVersion = Repository.GetLatestVersion(currentItem);
 			if (currentItem != latestVersion)
 				// do not increment when latest is current
 				currentItem.VersionIndex = latestVersion.VersionIndex + 1;
 			currentItem.Updated = Utility.CurrentTime();
+		}
+
+		private void RelinkMasterVersion(ContentItem currentItem)
+		{
+			foreach (var detail in currentItem.Details)
+			{
+				if (detail.LinkedItem != null && detail.LinkedItem.VersionOf.HasValue)
+				{
+					detail.LinkedItem = detail.LinkedItem.VersionOf;
+				}
+			}
+			foreach (var dc in currentItem.DetailCollections)
+			{
+				foreach (var detail in dc.Details)
+				{
+					if (detail.LinkedItem != null && detail.LinkedItem.VersionOf.HasValue)
+					{
+						detail.LinkedItem = detail.LinkedItem.VersionOf;
+					}
+				}
+			}
 		}
 
 		private IEnumerable<ContentItem> RemoveRemovedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
