@@ -46,7 +46,7 @@ namespace N2.Web
 		public virtual PathData GetCurrentPath()
 		{
 			Url url = webContext.Url;
-			if (!IsRewritable(url))
+			if (!IsRewritable(url) || !IsObservable(url))
 				return PathData.Empty;
 
 			PathData data = ResolveUrl(url);
@@ -57,24 +57,21 @@ namespace N2.Web
 		{
 			try
 			{
-                if (IsRewritable(url) && IsObservable(url))
-				{
-					var path = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+				var path = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 					
-					path.CurrentItem = path.CurrentPage;
+				path.CurrentItem = path.CurrentPage;
 
-					if (draftRepository.Versions.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
-						return path;
-
-					string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
-					if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
-					{
-						var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
-						path.TryApplyVersion(draft, url["versionKey"]);
-					}
-
+				if (draftRepository.Versions.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
 					return path;
+
+				string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
+				if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
+				{
+					var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
+					path.TryApplyVersion(draft, url["versionKey"]);
 				}
+
+				return path;
 			}
 			catch (Exception ex)
 			{
@@ -83,7 +80,7 @@ namespace N2.Web
 			return PathData.Empty;
 		}
 
-		private bool IsRewritable(Url url)
+		public virtual bool IsRewritable(Url url)
 		{
 			string path = url.Path;
 			foreach (string nonRewritablePath in nonRewritablePaths)
@@ -100,7 +97,7 @@ namespace N2.Web
 			return ResolveUrl(new Url(url));
 		}
 
-		private bool IsObservable(Url url)
+		public virtual bool IsObservable(Url url)
 		{
 			if (observeAllExtensions)
 				return true;

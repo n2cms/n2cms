@@ -27,14 +27,14 @@
 	<asp:Repeater ID="rptDrafts" runat="server">
 		<HeaderTemplate>
 	<table class="data">
-		<thead><tr><th>Version</th><th>Draft</th><th>Saved by</th><th>Last updated</th><th></th></tr></thead>
+		<thead><tr><th>Draft</th><th>Version</th><th>Saved by</th><th>Last updated</th><th></th></tr></thead>
 		<tbody>
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<%# Eval("VersionIndex") %>
+				<asp:HyperLink NavigateUrl='<%# ResolveUrl(Eval("Version.Url")) %>' runat="server"><asp:Image ImageUrl='<%# ResolveUrl(Eval("Version.IconUrl")) %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
 			</td><td>
-				<asp:HyperLink NavigateUrl='<%# ResolveUrl(Eval("Master.Value.Url")) %>' runat="server"><asp:Image ImageUrl='<%# ResolveUrl(Eval("Master.Value.IconUrl")) %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
+				<%# Eval("VersionIndex") %>
 			</td><td>
 				<%# Eval("SavedBy") %>
 			</td><td>

@@ -127,7 +127,12 @@ namespace N2.Web.Mvc
 			//the full url (with host) should be passed to UrlParser.ResolvePath():
 			string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
 			var url = new Url(request.Url.Scheme, host, request.RawUrl);
-			PathData path = engine.Resolve<RequestPathProvider>().ResolveUrl(url);
+			PathData path;
+			var rpp = engine.Resolve<RequestPathProvider>();
+			if (rpp.IsRewritable(url) && rpp.IsObservable(url))
+				path = rpp.ResolveUrl(url);
+			else
+				path = PathData.Empty;
 
 			if (!path.IsEmpty() && path.IsRewritable && StopRewritableItems)
 				return new RouteData(this, new StopRoutingHandler());

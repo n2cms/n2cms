@@ -17,7 +17,7 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-			previewedItem = VersioningExtensions.Publish(Engine.Resolve<IVersionManager>(), Engine.Persister, previewedItem);
+			previewedItem = Engine.Resolve<IVersionManager>().Publish(Engine.Persister, previewedItem);
 
 			Response.Redirect(previewedItem.Url);
 		}

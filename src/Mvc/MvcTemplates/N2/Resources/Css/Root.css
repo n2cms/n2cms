@@ -1,6 +1,10 @@
 ﻿#toolbar { display:none; }
 
-#home .cpView, #home .cpNew, #home .cpEdit, #home .cpDelete, #home .cpAdminister
+#home .cpView, 
+#home .cpNew, 
+#home .cpEdit, 
+#home .cpDelete, 
+#home .cpAdminister
 { display:none; }
 
 table.columns { margin:0 auto; width:99%; }

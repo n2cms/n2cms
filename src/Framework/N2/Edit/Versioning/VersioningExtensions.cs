@@ -80,7 +80,15 @@ namespace N2.Edit.Versioning
 			return master;
 		}
 
-		public static ContentItem Publish(IVersionManager versionManager, IPersister persister, ContentItem previewedItem)
+		public static bool IsVersionable(this ContentItem item)
+		{
+			return !item.GetContentType()
+				.GetCustomAttributes(typeof(VersionableAttribute), true)
+				.OfType<VersionableAttribute>()
+				.Any(va => va.Versionable == AllowVersions.No);
+		}
+
+		public static ContentItem Publish(this IVersionManager versionManager, IPersister persister, ContentItem previewedItem)
 		{
 			if (previewedItem.VersionOf.HasValue)
 			{
