@@ -24,7 +24,7 @@
 		</FooterTemplate>
 	</asp:Repeater>
 
-	<asp:Repeater ID="rptDrafts" runat="server">
+	<n2:Repeater ID="rptDrafts" runat="server">
 		<HeaderTemplate>
 	<table class="data">
 		<thead><tr><th>Draft</th><th>Version</th><th>Saved by</th><th>Last updated</th><th></th></tr></thead>
@@ -47,6 +47,9 @@
 		</tbody>
 	</table>
 		</FooterTemplate>
-	</asp:Repeater>
+		<EmptyTemplate>
+			<tr><td colspan="5">No drafts</td></tr>
+		</EmptyTemplate>
+	</n2:Repeater>
 	</div>
 </div>

@@ -28,6 +28,6 @@ namespace N2.Management.Myself {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptDrafts;
+        protected global::N2.Web.UI.WebControls.Repeater rptDrafts;
     }
 }
