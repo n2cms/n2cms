@@ -104,10 +104,14 @@ namespace N2.Persistence.Serialization
 				item.TranslationKey = Convert.ToInt32(attributes["translationKey"]);
 			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
 				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
-			item.AncestralTrail = attributes["ancestralTrail"];
-			item.AlteredPermissions = (Permission)Convert.ToInt32(attributes["alteredPermissions"]);
-			item.ChildState = (Collections.CollectionState)Convert.ToInt32(attributes["childState"]);
-			item.VersionIndex = Convert.ToInt32(attributes["versionIndex"]);
+			if (attributes.ContainsKey("ancestralTrail"))
+				item.AncestralTrail = attributes["ancestralTrail"];
+			if (attributes.ContainsKey("alteredPermissions"))
+				item.AlteredPermissions = (Permission)Convert.ToInt32(attributes["alteredPermissions"]);
+			if (attributes.ContainsKey("childState"))
+				item.ChildState = (Collections.CollectionState)Convert.ToInt32(attributes["childState"]);
+			if (attributes.ContainsKey("versionIndex"))
+				item.VersionIndex = Convert.ToInt32(attributes["versionIndex"]);
 			if (attributes.ContainsKey("versionOf"))
 			{
 				item.VersionOf.ID = Convert.ToInt32(attributes["versionOf"]);
