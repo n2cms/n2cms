@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Caching;
 
 namespace N2.Web
 {
@@ -87,5 +88,8 @@ namespace N2.Web
 		/// <summary>Calls into HttpContext.ClearError().</summary>
 		[Obsolete("Use HttpContext.ClearError()")]
 		void ClearError();
+
+		/// <summary>Retrieves the http context cache.</summary>
+		Cache Cache { get; }
 	}
 }

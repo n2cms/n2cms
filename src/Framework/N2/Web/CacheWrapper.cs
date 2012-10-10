@@ -62,41 +62,27 @@ namespace N2.Web
 		{
 			if (options == null)
 				options = new CacheOptions();
-			if (!context.IsWeb)
-				return;
-
-			context.HttpContext.Cache.Add(tablePrefix + cacheKey, value, GetCacheDependency(options), options.AbsoluteExpiration, options.SlidingExpiration, options.Priority, options.RemoveCallback);
+			
+			context.Cache.Add(tablePrefix + cacheKey, value, GetCacheDependency(options), options.AbsoluteExpiration, options.SlidingExpiration, options.Priority, options.RemoveCallback);
 		}
 
 		public virtual void Remove(string cacheKey)
 		{
-			if (!context.IsWeb)
-				return;
-
-			context.HttpContext.Cache.Remove(tablePrefix + cacheKey);
+			context.Cache.Remove(tablePrefix + cacheKey);
 		}
 
 		public virtual object Get(string cacheKey)
 		{
-			if (!context.IsWeb)
-				return null;
-
-			return context.HttpContext.Cache.Get(tablePrefix + cacheKey);
+			return context.Cache.Get(tablePrefix + cacheKey);
 		}
 
 		public virtual T Get<T>(string cacheKey) where T: class
 		{
-			if (!context.IsWeb)
-				return null;
-
-			return context.HttpContext.Cache.Get(tablePrefix + cacheKey) as T;
+			return context.Cache.Get(tablePrefix + cacheKey) as T;
 		}
 
 		public virtual T GetOrCreate<T>(string cacheKey, Func<T> factory, CacheOptions options = null) where T : class
 		{
-			if (!context.IsWeb)
-				return factory();
-
 			var value = Get<T>(cacheKey);
 			if (value != null)
 				return value;
