@@ -109,8 +109,7 @@ namespace N2.Security
 		/// <returns>A boolean indicating whether the item is published.</returns>
 		public virtual bool IsPublished(ContentItem item)
 		{
-			return (item.Published.HasValue && DateTime.Now >= item.Published)
-				&& (!item.Expires.HasValue || DateTime.Now < item.Expires.Value);
+			return item.IsPublished();
 		}
 
 		/// <summary>Gets or sets whether the security manager is enabled.</summary>

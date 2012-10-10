@@ -676,7 +676,16 @@ namespace N2
 
 		public static bool IsPublished(this ContentItem item)
 		{
-			return item.State == ContentState.Published && item.Published.HasValue && item.Published <= Utility.CurrentTime();
+			switch (item.State)
+			{
+				case ContentState.New:
+				case ContentState.None:
+				case ContentState.Published:
+					return item.Published.HasValue && item.Published <= Utility.CurrentTime()
+						&& (!item.Expires.HasValue || Utility.CurrentTime() < item.Expires.Value);
+				default:
+					return false;
+			}
 		}
 		public static bool IsExpired(this ContentItem item)
 		{
