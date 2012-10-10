@@ -27,7 +27,7 @@ namespace N2.Edit
 
 		public IEditManager EditManager
 		{
-			get { return editManager ?? engine.Resolve<IEditManager>(); }
+			get { return editManager ?? engine.EditManager; }
 			set { editManager = value; }
 		}
 

@@ -159,6 +159,7 @@
     <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
     <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
     <Compile Include="Definitions\Items\TitleTransformer.cs" />
+    <Compile Include="Details\EditableItemTest.cs" />
     <Compile Include="Details\DisplayableTokensTest.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EditableChildrenTest.cs" />

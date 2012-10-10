@@ -19,6 +19,13 @@ using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
+using System.Web.UI;
+using System.Reflection;
+using System.Web;
+using System.Collections;
+using System.IO;
+using N2.Engine.Globalization;
+using System.Text;
 
 namespace N2.Tests
 {
@@ -131,6 +138,28 @@ namespace N2.Tests
 		public static N2.Persistence.Sources.ContentSource SetupContentSource(IWebContext webContext, IHost host, IPersister persister)
 		{
 			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, persister.Repository) });
+		}
+
+		public static void InitRecursive(this Page page)
+		{
+			typeof(Page).GetMethod("InitRecursive", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(page, new[] { page });
+		}
+
+		public static IDisposable InitializeHttpContext(string appRelativeExecutionFilePath, string queryString)
+		{
+			var request = new HttpRequest("/Default.aspx", "http://localhost/", queryString);
+			request.Browser = new HttpBrowserCapabilities();
+			request.Browser.Capabilities = new Hashtable();
+			request.Browser.Capabilities["ecmascriptversion"] = "1.7";
+			request.Browser.Capabilities["w3cdomversion"] = "2.0";
+			var response = new HttpResponse(new StringWriter(new StringBuilder()));
+			HttpContext.Current = new HttpContext(request, response)
+			{
+				ApplicationInstance = new HttpApplication(),
+				User = SecurityUtilities.CreatePrincipal("admin")
+			};
+
+			return new Scope(() => HttpContext.Current = null);
 		}
 	}
 }

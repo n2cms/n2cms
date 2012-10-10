@@ -7,6 +7,8 @@ using N2.Collections;
 
 namespace N2.Tests.Details.Models
 {
+	[WithEditableTitle]
+	[WithEditableName]
 	public class DecoratedItem : ContentItem
 	{
 		[EditableChildren("Children", "Children", 100)]
@@ -21,12 +23,17 @@ namespace N2.Tests.Details.Models
 			get { return null; }
 		}
 
+		[EditableItem]
+		public virtual OtherItem TheItem { get; set; }
+
 		public override ItemList GetChildren(string childZoneName)
 		{
 			return base.GetChildren(new ZoneFilter(childZoneName));
 		}
 	}
 
+	[WithEditableTitle]
+	[WithEditableName]
 	public class OtherItem : ContentItem
 	{
 	}

@@ -255,7 +255,7 @@ namespace N2.Tests.Edit
 
 			editManager.AddEditors(definitions.GetDefinition(typeof(ItemWithRequiredProperty)), new ItemWithRequiredProperty(), p, CreatePrincipal("someone"));
 
-            typeof (Page).GetMethod("InitRecursive", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(p, new[] {p});
+			p.InitRecursive();
 
             Assert.AreEqual(2, p.Validators.Count);
         }
