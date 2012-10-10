@@ -14,6 +14,7 @@ namespace N2.Tests.Web.WebControls
 		[TestFixtureSetUp]
 		public override void TestFixtureSetUp()
 		{
+			base.TestFixtureSetUp();
 			Initialize("");
 		}
 
