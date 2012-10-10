@@ -57,6 +57,28 @@ namespace N2.Management.Tests.Trash
 		}
 
 		[Test]
+		public void AncestralTrail_IsChangedTo_Trashcan()
+		{
+			trash.Throw(item);
+			persister.Dispose();
+
+			engine.Persister.Get(item.ID).AncestralTrail.ShouldBe((trash.TrashContainer as ContentItem).GetTrail());
+		}
+
+		[Test]
+		public void AncestralTrail_OfDescendants_IsChanged()
+		{
+			var child = CreateOneItem<ThrowableItem>(0, "child", item);
+			engine.Persister.Save(child);
+
+			trash.Throw(item);
+
+			persister.Dispose();
+
+			engine.Persister.Get(child.ID).AncestralTrail.ShouldStartWith((trash.TrashContainer as ContentItem).GetTrail());
+		}
+
+		[Test]
 		public void RelationTo_TrashedItem_IsRemoved()
 		{
 			item2["Relation"] = item;
@@ -121,6 +143,11 @@ namespace N2.Management.Tests.Trash
 		[Test]
 		public void Relation_InDetailCollection_IsRemoved()
 		{
+			// root
+			//	item1 <- deleted
+			//		item1_1
+			//	item2 <- references item1 & item1_1
+
 			var item1_1 = CreateOneItem<ThrowableItem>(0, "child", item);
 			engine.Persister.Save(item1_1);
 

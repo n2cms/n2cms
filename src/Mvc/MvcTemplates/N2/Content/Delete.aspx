@@ -9,17 +9,6 @@
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-
-
-    <table>
-		<tr><th rowspan="4">Selected</th><th>Item</th><td><%= Selection.SelectedItem %> (<%= Selection.SelectedItem.State %>)</td><th>State</th><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
-	</table>
-	<ul>
-	<% foreach(var kvp in Request.Url.Query.Split('&')) { %>
-	<li><%= kvp %></li>
-	<%} %>
-	</ul>
-
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Publish" runat="server" meta:resourceKey="ppPermitted">
     <asp:CustomValidator ID="cvDelete" runat="server" CssClass="validator info" meta:resourceKey="cvDelete" Display="Dynamic" />
     <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />

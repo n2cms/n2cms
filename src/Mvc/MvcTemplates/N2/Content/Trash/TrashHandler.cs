@@ -98,11 +98,10 @@ namespace N2.Edit.Trash
                 item = args.AffectedItem;
 
                 ExpireTrashedItem(item);
-                item.AddTo(GetTrashContainer(true));
 
                 try
                 {
-                    persister.Save(item);
+					persister.Move(item, GetTrashContainer(true));
                 }
                 catch (PermissionDeniedException ex)
                 {

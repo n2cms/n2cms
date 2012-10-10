@@ -165,10 +165,25 @@ namespace N2.Persistence.Sources
 			{
 				Trace.TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
 				source.AddTo(destination);
+				foreach (var descendant in UpdateAncestralTrailRecursive(source, destination))
+				{
+					repository.SaveOrUpdate(descendant);
+				}
 				Save(source);
 				tx.Commit();
 			}
 			return source;
+		}
+
+		private IEnumerable<ContentItem> UpdateAncestralTrailRecursive(ContentItem source, ContentItem destination)
+		{
+			source.AncestralTrail = destination.GetTrail();
+			foreach (var child in source.Children)
+			{
+				yield return child;
+				foreach (var descendant in UpdateAncestralTrailRecursive(child, source))
+					yield return descendant;
+			}
 		}
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)

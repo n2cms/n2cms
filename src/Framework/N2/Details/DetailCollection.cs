@@ -148,6 +148,9 @@ namespace N2.Details
 		/// <returns>The index or -1 if the item isn't in the collection.</returns>
 		public virtual int IndexOf(object value)
 		{
+			if (value is ContentDetail)
+				return Details.IndexOf(value as ContentDetail);
+
 			for (int i = 0; i < Details.Count; i++)
 				if (Details[i].Equals(value) || (Details[i].Value != null && Details[i].Value.Equals(value)))
 					return i;
@@ -216,9 +219,18 @@ namespace N2.Details
 			if (value == null)
 				return false;
 
-			foreach (ContentDetail detail in this.Details)
-				if (value.Equals(detail.Value))
-					return true;
+			if (value is ContentDetail)
+			{
+				foreach (ContentDetail detail in this.Details)
+					if (detail.Equals(value))
+						return true;
+			}
+			else
+			{
+				foreach (ContentDetail detail in this.Details)
+					if (value.Equals(detail.Value))
+						return true;
+			}
 			return false;
 		}
 

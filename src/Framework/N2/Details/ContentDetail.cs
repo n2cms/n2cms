@@ -538,7 +538,7 @@ namespace N2.Details
 
 		protected internal virtual void RemoveFromEnclosingItem()
 		{
-			if (EnclosingItem != null)
+			if (EnclosingItem != null && EnclosingItem.Details.Contains(this))
 				EnclosingItem.Details.Remove(this);
 		}
 
@@ -552,7 +552,7 @@ namespace N2.Details
 
 		protected internal virtual void RemoveFromEnclosingCollection()
 		{
-			if (EnclosingCollection != null)
+			if (EnclosingCollection != null && EnclosingCollection.Contains(this))
 				EnclosingCollection.Remove(this);
 		}
 

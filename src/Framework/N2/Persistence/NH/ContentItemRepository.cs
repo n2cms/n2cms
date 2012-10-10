@@ -110,16 +110,19 @@ namespace N2.Persistence.NH
 			var details = s.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
 				.SetParameter("ancestor", target)
 				.SetParameter("trail", target.GetTrail() + "%")
-				.Enumerable<ContentDetail>();
+				.List<ContentDetail>();
 
+			HashSet<ContentItem> toUpdate = new HashSet<ContentItem>();
 			int count = 0;
 			foreach (var cd in details)
 			{
-				cd.AddTo((DetailCollection)null);
+				toUpdate.Add(cd.EnclosingItem);
 				cd.AddTo((ContentItem)null);
-				s.Delete(cd);
 				count++;
 			}
+			foreach (var item in toUpdate)
+				s.Update(item);
+
 			s.Flush();
 
 			return count;
