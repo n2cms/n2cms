@@ -51,6 +51,7 @@ namespace N2.Edit.Versioning
 		public virtual ContentRelation Master { get; set; }
 		public virtual ContentState State { get; set; }
 		public virtual DateTime? Published { get; set; }
+		public virtual DateTime? FuturePublish { get; set; }
 		public virtual DateTime? Expired { get; set; }
 		public virtual string PublishedBy { get; set; }
         public virtual DateTime Saved { get; set; }
@@ -78,6 +79,7 @@ namespace N2.Edit.Versioning
 				if (value == null)
 				{
 					Published = null;
+					FuturePublish = null;
 					Expired = null;
 					VersionDataXml = null;
 					VersionIndex = 0;
@@ -88,14 +90,17 @@ namespace N2.Edit.Versioning
 					return;
 				}
 
-				VersionDataXml = Serializer(value);
 				VersionIndex = value.VersionIndex;
 				Published = value.Published;
+				FuturePublish = value["FuturePublishDate"] as DateTime?;
+				if (FuturePublish.HasValue)
+					value["FuturePublishDate"] = null;
 				Expired = value.Expires;
 				SavedBy = value.SavedBy;
 				Title = value.Title;
 				State = value.State;
 				PublishedBy = value.IsPublished() ? value.SavedBy : null;
+				VersionDataXml = Serializer(value);
 			}
 		}
 

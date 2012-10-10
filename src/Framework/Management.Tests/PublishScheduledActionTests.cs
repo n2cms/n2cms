@@ -19,6 +19,7 @@ namespace N2.Management.Tests
 	public class PublishScheduledActionTests : DatabasePreparingBase
 	{
 		private PublishScheduledAction action;
+		private IVersionManager versionManager;
 
 		[SetUp]
 		public override void SetUp()
@@ -26,6 +27,7 @@ namespace N2.Management.Tests
 			base.SetUp();
 			action = engine.Resolve<PublishScheduledAction>();
 			engine.SecurityManager.ScopeEnabled = false;
+			versionManager = engine.Resolve<IVersionManager>();
 		}
 
 		[Test]
@@ -58,24 +60,24 @@ namespace N2.Management.Tests
 		[Test]
 		public void ItemMarkedForFuturePublishing_IsPublished_WhenPublishingTimeIsReached()
 		{
+			var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10) };
 			using (engine.SecurityManager.Disable())
 			{
-				var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10) };
 				engine.Persister.Save(item);
 
-				var version = new ExternalItem { Title = "ToBePublished", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10), VersionOf = item };
+				var version = versionManager.AddVersion(item, asPreviousVersion: false);
+				version.Title = "ToBePublished";
 				action.MarkForFuturePublishing(version, DateTime.Now.AddSeconds(-5));
-				engine.Persister.Save(version);
+				versionManager.UpdateVersion(version);
 			}
 
 			action.Execute();
 
-			var all = engine.Persister.Repository.Find().ToList();
-			var published = all.Single(i => i.State == ContentState.Published && !i.VersionOf.HasValue);
-			//var unpublished = all.Single(i => i.State == ContentState.Unpublished && i.VersionOf.HasValue);
-			var versions = engine.Resolve<IRepository<ContentVersion>>().Find();
-			var unpublished = versions.Where(i => i.State == ContentState.Unpublished).Select(v => v.Version).Single();
+			var published = engine.Persister.Get(item.ID);
+			var allVersions = versionManager.GetVersionsOf(published);
+			var unpublished = allVersions.Single(v => v.State == ContentState.Unpublished);
 
+			allVersions.Count.ShouldBe(2);
 			published.Title.ShouldBe("ToBePublished");
 			unpublished.Title.ShouldBe("Original");
 		}

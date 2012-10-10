@@ -425,6 +425,7 @@ namespace N2.Persistence.NH
             ca.Component(x => x.Master, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });
 			ca.Property(x => x.Title, xm => { });
 			ca.Property(x => x.Published, cm => { });
+			ca.Property(x => x.FuturePublish, cm => { });
 			ca.Property(x => x.Expired, cm => { });
             ca.Property(x => x.VersionIndex, cm => { });
             ca.Property(x => x.Saved, cm => { });

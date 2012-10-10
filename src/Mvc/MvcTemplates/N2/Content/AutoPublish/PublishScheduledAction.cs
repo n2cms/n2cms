@@ -85,45 +85,13 @@ namespace N2.Edit.AutoPublish
 
 		private void PublishPendingVersions()
 		{
-			var scheduledForAutoPublish = persister.Repository
-				.Find(Parameter.LessOrEqual("FuturePublishDate", Utility.CurrentTime()).Detail())
-				.ToList();
-			for (int i = 0; i < scheduledForAutoPublish.Count; i++)
+			var scheduledForAutoPublish = versionRepository.GetVersionsScheduledForPublish(Utility.CurrentTime()).ToList();
+			foreach (var version in scheduledForAutoPublish)
 			{
-				// Get the relevant versions
-				ContentItem scheduledVersion = scheduledForAutoPublish[i];
-				ContentItem masterVersion = scheduledVersion.VersionOf;
-				// Removing the DelayPublishingUntil Date so that it won't get picked up again
+				var scheduledVersion = version.Version;
 				scheduledVersion["FuturePublishDate"] = null;
-
-				if (masterVersion == null)
-					persister.Save(scheduledVersion);
-				else
-					versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
+				versioner.Publish(persister, scheduledVersion);
 			}
-
-            //var implicitAutoPublish = Finder
-            //    .Where.Published.Le(Utility.CurrentTime())
-            //    .And.State.Eq(ContentState.Waiting)
-            //    .Select();
-            var implicitAutoPublish = persister.Repository
-                .Find(Parameter.LessOrEqual("Published", Utility.CurrentTime()) & Parameter.Equal("State", ContentState.Waiting))
-                .ToList();
-			for (int i = 0; i < implicitAutoPublish.Count; i++)
-			{
-				try
-				{
-					security.ScopeEnabled = false;
-				    // saving the master version for auto-publish will be eventually become published without this, but we want to update the state
-				    var item = implicitAutoPublish[i];
-				    item.State = ContentState.Published;
-				    persister.Save(item);
-            }
-            finally
-            {
-                security.ScopeEnabled = true;
-            }
           }
-		}
 	}
 }

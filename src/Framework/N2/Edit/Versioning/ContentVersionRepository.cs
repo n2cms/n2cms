@@ -166,5 +166,12 @@ namespace N2.Edit.Versioning
 			if (VersionsDeleted != null)
 				VersionsDeleted(this, new ItemEventArgs(item));
 		}
+
+		public virtual IEnumerable<ContentVersion> GetVersionsScheduledForPublish(DateTime publishVersionsScheduledBefore)
+		{
+			return Repository.Find(
+				Parameter.Equal("State", ContentState.Waiting)
+				& Parameter.LessOrEqual("FuturePublish", publishVersionsScheduledBefore));
+		}
 	}
 }

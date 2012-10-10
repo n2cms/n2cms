@@ -125,10 +125,9 @@ namespace N2.Edit.Versioning
 
 						Replace(currentItem, replacementItem);
 
-						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf.Value == currentItem)
+						if ((replacementItem.State == ContentState.Draft || replacementItem.State == ContentState.Waiting) && replacementItem.VersionOf.Value == currentItem)
 						{
 							// drafts can be removed once they have been published
-							//itemRepository.Delete(replacementItem);
 							currentItem.VersionIndex = replacementItem.VersionIndex;
 							itemRepository.SaveOrUpdate(currentItem);
 
