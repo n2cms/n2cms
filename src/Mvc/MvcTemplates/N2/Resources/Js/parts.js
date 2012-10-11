@@ -58,7 +58,7 @@
 			dialog.dialog($.extend({
 				modal: true,
 				width: Math.min(1000, $(window).width() - 50),
-				height: Math.min(800, $(window).height() - 50),
+				height: Math.min(800, $(window).height() - 100),
 				closeOnEscape: true,
 				resizable: true
 			}, dialogOptions));
