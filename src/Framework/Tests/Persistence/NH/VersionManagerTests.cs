@@ -20,6 +20,13 @@ namespace N2.Tests.Persistence.NH
 
 			persister = (ContentPersister) engine.Resolve<IPersister>();
 			versioner = (VersionManager) engine.Resolve<IVersionManager>();
+			engine.SecurityManager.ScopeEnabled = false;
+		}
+
+		[TestFixtureTearDown]
+		public void TestFixtureTearDown()
+		{
+			engine.SecurityManager.ScopeEnabled = true;
 		}
 
         // versioning
