@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if ("Tests" != (string)RouteData.DataTokens["area"])
 				throw new Exception("Incorrect area: " + RouteData.Values["area"]);
 
-			if (CurrentItem.ShowEveryone)
+			if (CurrentItem.ShowEveryone || security.IsEditor(User))
 				return PartialView(definitions.GetAllowedChildren(CurrentPage, null).WhereAuthorized(security, User, CurrentPage));
 			else
 				return Content("");

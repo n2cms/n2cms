@@ -250,5 +250,11 @@ namespace N2.Tests.Edit.Versioning
 
 			drafts.FindDrafts().Single().Master.ID.ShouldBe(master.ID);
 		}
+
+		[Test]
+		public void DefaultValues_AreMaintained()
+		{
+			
+		}
     }
 }

@@ -10,6 +10,9 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 	[PartDefinition("Test Content Creator", SortOrder = 21000)]
 	public class TestContentGenerator : TestItemBase
 	{
+		public TestContentGenerator()
+		{
+		}
 		[EditableCheckBox]
 		public virtual bool ShowEveryone { get; set; }
 	}

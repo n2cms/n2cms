@@ -49,9 +49,9 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 			register.ControlledBy<TestPageController>();
 
 			// some metadata used when creating new items
-			register.Definition.Title = "Fluently registered page";
-			register.Definition.Description = "Release compile template project to remove this item";
+			register.Page(title: "Fluently registered page", description: "Release compile template project to remove this item");
 			register.Icon("{IconsUrl}/star.png");
+			register.Definition.SortOrder = 1000;
 
 			// restrictions specifies what can be created where
 			register.RestrictParents(typeof(StartPage));

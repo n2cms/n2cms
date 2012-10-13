@@ -227,6 +227,9 @@ namespace N2.Edit
 			hlNewerVersion.Visible = false;
 			hlOlderVersion.Visible = false;
 
+			if (!item.IsPage)
+				return;
+
 			if (item.VersionOf.HasValue)
 			{
 				DisplayThisIsVersionInfo(item.VersionOf);
