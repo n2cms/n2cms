@@ -60,7 +60,10 @@ namespace N2.Details
 					{
 						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem, childEditor.GetDefinition());
 						if (subContext.Binder.UpdateObject(subContext))
+						{
+							parentEditor.BinderContext.RegisterItemToSave(childEditor.CurrentItem);
 							updated = true;
+						}
 					}
 					else
 					{
