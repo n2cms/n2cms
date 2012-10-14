@@ -11,6 +11,7 @@ using N2.Web;
 using N2.Plugin;
 using N2.Persistence.NH;
 using N2.Details;
+using N2.Persistence.Sources;
 
 namespace N2.Tests.Fakes
 {
@@ -28,8 +29,19 @@ namespace N2.Tests.Fakes
 			AddComponentInstance<IDefinitionManager>(TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray()));
 			var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
 			AddComponentInstance<IContentAdapterProvider>(adapterProvider);
-			AddComponentInstance<IPersister>(new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<ContentDetail>()));
-			AddComponentInstance<IWebContext>(new ThreadContext());
+			var itemRepository = new FakeContentItemRepository();
+			AddComponentInstance<IRepository<ContentItem>>(itemRepository);
+			AddComponentInstance<IContentItemRepository>(itemRepository);
+			var webContext = new ThreadContext();
+			AddComponentInstance<IWebContext>(webContext);
+			var host = new Host(webContext, 1, 1);
+			AddComponentInstance<IHost>(host);
+			var security = new FakeSecurityManager();
+			AddComponentInstance<ISecurityManager>(security);
+			var source = new ContentSource(security, new [] { new DatabaseSource(host, itemRepository) });
+			AddComponentInstance(source);
+			AddComponentInstance<IPersister>(new ContentPersister(source, itemRepository));
+			AddComponentInstance<IWebContext>(webContext);
 		}
 
 		#region IEngine Members

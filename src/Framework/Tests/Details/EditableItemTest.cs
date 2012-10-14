@@ -26,6 +26,7 @@ using Rhino.Mocks;
 using N2.Plugin;
 using N2.Edit.Settings;
 using N2.Edit.Workflow;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Details
 {
