@@ -9,7 +9,7 @@ namespace N2.Templates.UI.Parts
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-			if (N2.Web.UI.WebControls.ControlPanel.GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString) == ControlPanelState.Editing)
+			if (N2.Web.UI.WebControls.ControlPanel.GetState(Page.GetEngine()) == ControlPanelState.Editing)
 				hl.NavigateUrl = "";
 		}
 	}

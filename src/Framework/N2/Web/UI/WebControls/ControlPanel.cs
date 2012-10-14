@@ -336,23 +336,36 @@ jQuery(document).ready(function(){{
 			return GetState(security, HttpContext.Current.GetEngine().RequestContext);
 		}
 
-		public static ControlPanelState GetState(IEngine engine)
+		[Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
+		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
 		{
-			return GetState(engine.SecurityManager, engine.RequestContext);
+			return GetState(HttpContext.Current.GetEngine());
 		}
+
+		[Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
 		public static ControlPanelState GetState(ISecurityManager security, IWebContext request)
 		{
-			if (!security.IsEditor(request.User))
+			return GetState(security, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+		}
+
+		public static ControlPanelState GetState(IEngine engine)
+		{
+			var request = engine.RequestContext;
+			return GetState(engine.SecurityManager, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+		}
+
+		public static ControlPanelState GetState(ISecurityManager security, NameValueCollection queryString, ContentItem item, IPrincipal user)
+		{
+			if (!security.IsEditor(user))
 				return ControlPanelState.Hidden;
 
             var state = ControlPanelState.Visible;
 
-			var queryString = request.Url.GetQueries().ToNameValueCollection();
-            if (queryString["edit"] == "true")
+			if (queryString["edit"] == "true")
                 state |= ControlPanelState.Editing;
             if (queryString["edit"] == "drag")
                 state |= ControlPanelState.DragDrop;
-			if (!request.CurrentPath.IsEmpty() && (request.CurrentPath.CurrentItem.State == ContentState.Draft || request.CurrentPath.CurrentItem.VersionOf.HasValue))
+			if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
 				state |= ControlPanelState.Previewing;
 
 			return state;

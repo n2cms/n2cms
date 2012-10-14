@@ -100,7 +100,7 @@ namespace N2.Web.Parts
 		{
 			var state = WebContext.HttpContext == null 
 				? ControlPanelState.Unknown 
-				: ControlPanel.GetState(Security, WebContext);
+				: ControlPanel.GetState(Engine);
 
 			return GetParts(belowParentItem, inZoneNamed, filteredForInterface, state);
 		}
