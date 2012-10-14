@@ -85,7 +85,7 @@ namespace N2.Edit.Versioning
 				return versionToPublish;
 
 			var master = versionToPublish.VersionOf;
-			versionManager.ReplaceVersion(master, versionToPublish, versionToPublish.VersionOf.Value.State == ContentState.Published);
+			versionManager.ReplaceVersion(master, versionToPublish, storeCurrentVersion: versionToPublish.VersionOf.Value.State == ContentState.Published);
 			return master;
 		}
 

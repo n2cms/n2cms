@@ -121,7 +121,7 @@ namespace N2.Edit.Versioning
 				{
 					if (storeCurrentVersion)
 					{
-						ContentItem versionOfCurrentItem = AddVersion(currentItem); //TODO: remove?
+						ContentItem versionOfCurrentItem = AddVersion(currentItem);
 
 						Replace(currentItem, replacementItem);
 

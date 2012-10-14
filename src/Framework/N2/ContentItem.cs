@@ -790,6 +790,7 @@ namespace N2
 			destination.published = source.published;
 			destination.expires = source.expires;
 			destination.versionIndex = source.versionIndex;
+			destination.state = source.state;
 		}
 
 		static void CloneFields(ContentItem source, ContentItem destination)
@@ -805,7 +806,6 @@ namespace N2
 			destination.savedBy = source.savedBy;
 			destination.sortOrder = source.sortOrder;
 			destination.urlParser = source.urlParser;
-			destination.state = source.state;
 			destination.url = null;
 			destination.zoneName = source.zoneName;
 		}

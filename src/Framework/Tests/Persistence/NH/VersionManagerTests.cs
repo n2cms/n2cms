@@ -754,6 +754,24 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void ReplaceVersion_MaintainsPartState()
+		{
+			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			persister.Save(root);
+			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			part.ZoneName = "TheZone";
+			part.AddTo(root);
+			part["Greeting"] = "Hello";
+			persister.Save(part);
+
+			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.OfType<PersistablePart1>().Single()["Greeting"] = "Herro!";
+
+			versioner.ReplaceVersion(root, draft);
+			part.State.ShouldBe(ContentState.Published);
+		}
+
+		[Test]
 		public void DeleteVersion()
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
