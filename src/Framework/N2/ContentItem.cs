@@ -581,7 +581,7 @@ namespace N2
 		/// <param name="collectionName">The name of the detail collection to get.</param>
 		/// <param name="createWhenEmpty">Wether a new collection should be created if none exists. Setting this to false means null will be returned if no collection exists.</param>
 		/// <returns>A new or existing detail collection or null if the createWhenEmpty parameter is false and no collection with the given name exists..</returns>
-		public virtual Details.DetailCollection GetDetailCollection(string collectionName, bool createWhenEmpty)
+		public virtual Details.DetailCollection GetDetailCollection(string collectionName, bool createWhenEmpty = true)
 		{
 			if (DetailCollections.ContainsKey(collectionName))
 				return DetailCollections[collectionName];

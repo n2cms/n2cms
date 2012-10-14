@@ -109,6 +109,7 @@
     <Compile Include="FileSystem\FileSystemNodesTests.cs" />
     <Compile Include="FileSystem\RootNode.cs" />
     <Compile Include="FileSystem\VirtualFolderInitializerTests.cs" />
+    <Compile Include="Installation\VersionMigrationTests.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />
     <Compile Include="LinkTracker\Items\TrackableItem.cs" />
     <Compile Include="LinkTracker\TrackerTests.cs" />

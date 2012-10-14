@@ -77,6 +77,11 @@ namespace N2.Edit.Install
 					errorText.AppendFormat("{0} error: {1}<br/>", result.Migration.Title, error);
 				}
 				lblResult.Text += string.Format("<li class='{0}'>{1}</li>", result.Errors.Count > 0 ? "warning" : "ok", message);
+
+				if (!string.IsNullOrEmpty(result.RedirectTo))
+				{
+					ClientScript.RegisterStartupScript(GetType(), "Redirect", string.Format("if (confirm('Continue with upgrade {0} on separate page?')) window.open('{1}');", result.Migration.Title, result.RedirectTo), addScriptTags: true);
+				}
 			}
 			lblResult.Text += "</ul>";
 

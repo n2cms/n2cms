@@ -11,13 +11,16 @@ namespace N2.Edit.Versioning
 {
 	public static class VersioningExtensions
 	{
-		public static ContentItem CloneForVersioningRecursive(this ContentItem item, StateChanger stateChanger, bool asPreviousVersion = true)
+		public static ContentItem CloneForVersioningRecursive(this ContentItem item, StateChanger stateChanger = null, bool asPreviousVersion = true)
 		{
 			ContentItem clone = item.Clone(false);
-			if (item.State == ContentState.Published && asPreviousVersion)
-				stateChanger.ChangeTo(clone, ContentState.Unpublished);
-			else if (item.State != ContentState.Unpublished || asPreviousVersion == false)
-				stateChanger.ChangeTo(clone, ContentState.Draft);
+			if (stateChanger != null)
+			{
+				if (item.State == ContentState.Published && asPreviousVersion)
+					stateChanger.ChangeTo(clone, ContentState.Unpublished);
+				else if (item.State != ContentState.Unpublished || asPreviousVersion == false)
+					stateChanger.ChangeTo(clone, ContentState.Draft);
+			}
 			clone.Expires = Utility.CurrentTime().AddSeconds(-1);
 			clone.Updated = Utility.CurrentTime().AddSeconds(-1);
 			clone.Parent = null;
@@ -26,7 +29,7 @@ namespace N2.Edit.Versioning
 
 			foreach (var child in item.Children.FindParts())
 			{
-				var childClone = child.CloneForVersioningRecursive(stateChanger);
+				var childClone = child.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
 				childClone.AddTo(clone);
 			}
 
