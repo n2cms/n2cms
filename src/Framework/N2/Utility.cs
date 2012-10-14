@@ -11,6 +11,7 @@ using N2.Engine;
 using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
+using N2.Web;
 
 namespace N2
 {
@@ -443,7 +444,10 @@ namespace N2
 			{
 				if (resourceKey != null && HttpContext.Current != null)
 				{
-					return HttpContext.GetLocalResourceObject(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath, resourceKey) as string;
+					var path = HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath;
+					if (path.EndsWith("/"))
+						path += Url.DefaultDocument;
+					return HttpContext.GetLocalResourceObject(path, resourceKey) as string;
 				}
 			}
 			catch (InvalidOperationException)

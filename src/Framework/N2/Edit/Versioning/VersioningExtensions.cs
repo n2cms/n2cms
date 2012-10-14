@@ -67,7 +67,13 @@ namespace N2.Edit.Versioning
 			if (string.IsNullOrEmpty(key))
 				return null;
 
-			return Find.EnumerateChildren(parent, includeSelf: true, useMasterVersion: false).FirstOrDefault(d => key.Equals(d["VersionKey"]));
+			var match = Find.EnumerateChildren(parent, includeSelf: true, useMasterVersion: false)
+				.Where(d =>
+				{
+					var versionKey = d.GetVersionKey();
+					return key.Equals(versionKey);
+				}).FirstOrDefault();
+			return match;
 		}
 
 		/// <summary>Publishes the given version.</summary>

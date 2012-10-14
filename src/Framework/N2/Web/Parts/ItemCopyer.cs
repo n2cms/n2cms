@@ -48,7 +48,8 @@ namespace N2.Web.Parts
 			item = item.Clone(true);
             item.Name = null;
 			item.ZoneName = request["zone"];
-			item.SetVersionKey(Guid.NewGuid().ToString());
+			foreach(var child in Find.EnumerateChildren(item, true, false))
+				child.SetVersionKey(Guid.NewGuid().ToString());
 
 			var beforeItem = PartsExtensions.GetBeforeItem(navigator, request, page);
 			ContentItem parent;
@@ -70,28 +71,6 @@ namespace N2.Web.Parts
 			versionRepository.Save(page);
 
 			return page.Url.ToUrl().SetQueryParameter("edit", "drag");
-
-			//string before = request["before"];
-			//string below = request["below"];
-
-			//if (!string.IsNullOrEmpty(before))
-			//{
-			//    ContentItem beforeItem = navigator.Navigate(before);
-			//    parent = beforeItem.Parent;
-			//    int newIndex = parent.Children.IndexOf(beforeItem);
-			//    Utility.Insert(item, parent, newIndex);
-			//}
-			//else
-			//{
-			//    parent = navigator.Navigate(below);
-			//    Utility.Insert(item, parent, parent.Children.Count);
-			//}
-
-			//persister.Save(item);
-
-			//IEnumerable<ContentItem> changedItems = Utility.UpdateSortOrder(parent.Children);
-			//foreach (ContentItem changedItem in changedItems)
-			//    persister.Save(changedItem);
 		}
 
 		private void ValidateLocation(ContentItem item, ContentItem parent)

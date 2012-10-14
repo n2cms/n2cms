@@ -259,7 +259,7 @@ namespace N2.Persistence
 			foreach (ContentItem child in item.Children)
 			{
 				yield return child;
-				foreach (ContentItem descendant in EnumerateChildren(child, false))
+				foreach (ContentItem descendant in EnumerateChildren(child, false, useMasterVersion))
 					yield return descendant;
 			}
 		}
