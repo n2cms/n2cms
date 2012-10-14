@@ -49,6 +49,15 @@ namespace N2.Persistence.Search
 			}
 		}
 
+		public LuceneAccesor RecreateWriter()
+		{
+			lock (this)
+			{
+				writer = null;
+				return this;
+			}
+		}
+
 		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
 			try
@@ -129,11 +138,12 @@ namespace N2.Persistence.Search
 			}
 		}
 
-		public void RecreateSearcher()
+		public LuceneAccesor RecreateSearcher()
 		{
 			lock (this)
 			{
 				searcher = null;
+				return this;
 			}
 		}
 

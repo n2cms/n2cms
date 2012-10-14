@@ -7,6 +7,7 @@ using N2.Plugin.Scheduling;
 using N2.Security;
 using N2.Edit.Workflow;
 using N2.Edit.Versioning;
+using N2.Engine;
 
 namespace N2.Edit.AutoPublish
 {
@@ -37,7 +38,6 @@ namespace N2.Edit.AutoPublish
 			changer.ChangeTo(item, ContentState.Waiting);
 
 		}
-
         public override void Execute()
         {
 			//if (Debugger.IsAttached)

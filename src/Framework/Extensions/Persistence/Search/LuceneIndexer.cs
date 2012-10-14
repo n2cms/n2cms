@@ -8,6 +8,8 @@ using Lucene.Net.Search;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Web;
+using System;
+using Lucene.Net.Store;
 
 namespace N2.Persistence.Search
 {
@@ -84,19 +86,42 @@ namespace N2.Persistence.Search
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
 
+			if (!extractor.IsIndexable(item))
+				return;
+
 			lock (accessor)
 			{
 				var iw = accessor.GetWriter();
+				try
+				{
+					WriteToIndex(item, iw);
+				}
+				catch (AlreadyClosedException ex)
+				{
+					logger.Error(ex);
+					iw = accessor.RecreateWriter().GetWriter();
+					WriteToIndex(item, iw);
+				}
+				catch (Exception ex)
+				{
+					logger.Error(ex);
+					iw.Dispose();
+					accessor.ClearLock();
+				}
+				finally
+				{
+					accessor.RecreateSearcher();
+				}
+			}
+		}
 
-				if (!extractor.IsIndexable(item))
-					return;
-
-				var doc = CreateDocument(item);
-				if (doc == null)
-					return;
+		private void WriteToIndex(ContentItem item, IndexWriter iw)
+		{
+			var doc = CreateDocument(item);
+			if (doc != null)
+			{
 				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
 				iw.Commit();
-				accessor.RecreateSearcher();
 			}
 		}
 

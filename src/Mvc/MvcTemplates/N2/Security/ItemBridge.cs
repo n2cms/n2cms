@@ -164,7 +164,11 @@ namespace N2.Security
 			try
 			{
 				security.ScopeEnabled = false;
-				persister.Repository.SaveOrUpdate(item);
+				using (var tx = persister.Repository.BeginTransaction())
+				{
+					persister.Repository.SaveOrUpdate(item);
+					tx.Commit();
+				}
 			}
 			finally
 			{

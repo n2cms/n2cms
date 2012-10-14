@@ -107,7 +107,6 @@
     </Compile>
     <Compile Include="UI\Page.aspx.vb">
       <DependentUpon>Page.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Models\MyItemBase.vb" />
     <Compile Include="Models\PageItem.vb" />
@@ -116,7 +115,6 @@
     </Compile>
     <Compile Include="UI\Site.Master.vb">
       <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

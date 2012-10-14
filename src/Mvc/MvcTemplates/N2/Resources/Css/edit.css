@@ -123,9 +123,14 @@ table.editDetail { border-collapse:collapse; }
 #content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border-color:#AAA; }
 
 .framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
+.framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
+.framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
 .framed .preview.iconed { background-image:url(../../Resources/icons/magnifier.png); }
 .framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
+.framed .publish.iconed { background-image:url(../../Resources/icons/disk_green.png); }
+.framed .save.iconed { background-image:url(../../Resources/icons/disk_orange.png); }
 .framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
+.framed .unpublish.iconed { background-image:url(../../Resources/icons/clock_stop.png); }
 
 .popup
 {

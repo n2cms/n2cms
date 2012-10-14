@@ -931,7 +931,7 @@ namespace N2.Extensions.Tests.Search
                     int id = (isUpdate) ? r.Next(0, idCounter) : Interlocked.Increment(ref idCounter);
 
 					var item = CreateOneItem<PersistableItem1>(id, "Item " + id, null);
-					item["Text"] = Enumerable.Range(0, indexedWordsCount).Select(i => words[r.Next(0, words.Length)]).Aggregate(new StringBuilder(), (sb, w) => sb.Append(w).Append(" ")).ToString();
+					item.StringProperty = Enumerable.Range(0, indexedWordsCount).Select(i => words[r.Next(0, words.Length)]).Aggregate(new StringBuilder(), (sb, w) => sb.Append(w).Append(" ")).ToString();
 					try
 					{
 						indexer.Update(item);

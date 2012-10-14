@@ -8,12 +8,29 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
+using N2.Plugin;
+using N2.Persistence.NH;
+using N2.Details;
 
 namespace N2.Tests.Fakes
 {
 	public class FakeEngine : IEngine
 	{
 		public FakeServiceContainer container = new FakeServiceContainer();
+
+		public FakeEngine()
+		{
+		}
+
+		public FakeEngine(params Type[] types)
+		{
+			AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
+			AddComponentInstance<IDefinitionManager>(TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray()));
+			var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
+			AddComponentInstance<IContentAdapterProvider>(adapterProvider);
+			AddComponentInstance<IPersister>(new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<ContentDetail>()));
+			AddComponentInstance<IWebContext>(new ThreadContext());
+		}
 
 		#region IEngine Members
 
@@ -69,7 +86,7 @@ namespace N2.Tests.Fakes
 
 		public void Initialize()
 		{
-			throw new NotImplementedException();
+			container.StartComponents();
 		}
 
 		public void Attach(EventBroker application)
@@ -216,7 +233,8 @@ namespace N2.Tests.Fakes
 
 			public void StartComponents()
 			{
-				throw new NotImplementedException();
+				foreach (var component in this.services.Values.OfType<IAutoStart>().ToList())
+					component.Start();
 			}
 
 			#endregion

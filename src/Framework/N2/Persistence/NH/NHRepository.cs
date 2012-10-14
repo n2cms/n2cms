@@ -139,6 +139,11 @@ namespace N2.Persistence.NH
 		/// <param name="entity">the entity to save</param>
 		public void Save(TEntity entity)
 		{
+			if (entity is IActiveContent)
+			{
+				(entity as IActiveContent).Save();
+				return;
+			}
 			sessionProvider.OpenSession.Session.Save(entity);
 		}
 
@@ -149,6 +154,11 @@ namespace N2.Persistence.NH
 		/// <param name="entity"></param>
 		public void Update(TEntity entity)
 		{
+			if (entity is IActiveContent)
+			{
+				(entity as IActiveContent).Save();
+				return;
+			}
 			sessionProvider.OpenSession.Session.Update(entity);
 		}
 
@@ -160,6 +170,11 @@ namespace N2.Persistence.NH
 		public void SaveOrUpdate(TEntity entity)
 		{
 			Debug.WriteLine("Saving or updating " + entity + " " + entity.GetHashCode());
+			if (entity is IActiveContent)
+			{
+				(entity as IActiveContent).Save();
+				return;
+			}
 			sessionProvider.OpenSession.Session.SaveOrUpdate(entity);
 		}
 
