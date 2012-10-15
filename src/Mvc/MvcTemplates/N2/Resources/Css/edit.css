@@ -224,11 +224,11 @@ div.tagsinput div { display:block; float: left; }
 		.versionBox tr td { color: #666 }
 		.versionBox tr.current td { color: #000 }
 		.versionBox td.State { padding-left:24px; background:transparent none no-repeat 2px 1px; }
-		.versionBox td.New { background-image:url(../icons/user_edit.png); }
-		.versionBox td.Draft { background-image:url(../icons/user_edit.png); }
+		.versionBox td.New { background-image:url(../icons/bullet_orange.png); }
+		.versionBox td.Draft { background-image:url(../icons/bullet_orange.png); }
 		.versionBox td.Waiting { background-image:url(../icons/clock_play.png); }
-		.versionBox td.Published { background-image:url(../icons/star.png); }
-		.versionBox td.Unpublished { background-image:url(../icons/clock_stop.png); }
+		.versionBox td.Published { background-image:url(../icons/bullet_green.png); }
+		.versionBox td.Unpublished { background-image:url(../icons/bullet_red.png); }
 		.versionBox td.Deleted { background-image:url(../icons/bin.png); }
 	.versionBox .moreVersions { display:block; padding:0 10px 5px 10px; }
 
