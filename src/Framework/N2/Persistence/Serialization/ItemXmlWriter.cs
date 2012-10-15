@@ -5,6 +5,7 @@ using N2.Engine;
 using N2.Web;
 using N2.Edit.FileSystem;
 using System.Linq;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
@@ -82,7 +83,11 @@ namespace N2.Persistence.Serialization
 				if (item.Parent.ID != 0)
 					itemElement.WriteAttribute("parent", item.Parent.ID.ToString());
 				else
+				{
 					itemElement.WriteAttribute("parent", item.Parent.VersionOf.ID.ToString());
+					if (item.Parent.GetVersionKey() != null)
+						itemElement.WriteAttribute("parentVersionKey", item.Parent.GetVersionKey());
+				}
 			}
 			itemElement.WriteAttribute("title", item.Title);
 			itemElement.WriteAttribute("zoneName", item.ZoneName);

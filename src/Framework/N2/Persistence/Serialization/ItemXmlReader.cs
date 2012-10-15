@@ -119,19 +119,30 @@ namespace N2.Persistence.Serialization
 			}
 
 			if (attributes.ContainsKey("parent"))
-				HandleParentRelation(item, attributes["parent"], journal);
+			{
+				var parentVersionKey = attributes.ContainsKey("parentVersionKey") ? attributes["parentVersionKey"] : null;
+				HandleParentRelation(item, attributes["parent"], parentVersionKey, journal);
+			}
 		}
 
-		protected virtual void HandleParentRelation(ContentItem item, string parent, ReadingJournal journal)
+		protected virtual void HandleParentRelation(ContentItem item, string parent, string parentVersionKey, ReadingJournal journal)
 		{
-			if (!string.IsNullOrEmpty(parent))
+			int parentID = 0;
+			if (int.TryParse(parent, out parentID) && parentID != 0)
 			{
-				int parentID = int.Parse(parent);
 				ContentItem parentItem = journal.Find(parentID);
 				if (parentItem != null)
 					item.AddTo(parentItem);
 				else
 					journal.Register(parentID, (laterParent) => item.AddTo(laterParent), isChild: true);
+			}
+			if (!string.IsNullOrEmpty(parentVersionKey))
+			{
+				ContentItem parentItem = journal.Find(parentVersionKey);
+				if (parentItem != null)
+					item.AddTo(parentItem);
+				else
+					journal.Register(parentVersionKey, (laterParent) => item.AddTo(laterParent), isChild: true);
 			}
 		}
 

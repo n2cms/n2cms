@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Persistence.Serialization
 {
@@ -103,6 +105,31 @@ namespace N2.Persistence.Serialization
 				};
 
 			ItemAdded += handler;
+		}
+
+		public void Register(string versionKey, Action<ContentItem> action, bool isChild = false)
+		{
+			var resolver = new UnresolvedLink(versionKey, action) { IsChild = isChild };
+			UnresolvedLinks.Add(resolver);
+			EventHandler<ItemEventArgs> handler = null;
+			handler = delegate(object sender, ItemEventArgs e)
+			{
+				if (e.AffectedItem.GetVersionKey() == versionKey)
+				{
+					resolver.Setter(e.AffectedItem);
+					UnresolvedLinks.Remove(resolver);
+					ItemAdded -= handler;
+				}
+			};
+
+			ItemAdded += handler;
+		}
+
+		public ContentItem Find(string versionKey)
+		{
+			if (versionKey == null)
+				return null;
+			return ReadItems.FirstOrDefault(i => i.GetVersionKey() == versionKey);
 		}
 	}
 }

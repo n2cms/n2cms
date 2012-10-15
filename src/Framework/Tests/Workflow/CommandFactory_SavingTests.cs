@@ -90,6 +90,27 @@ namespace N2.Tests.Workflow
 			part2Version.SortOrder.ShouldBeLessThan(partVersion.SortOrder);
 		}
 
+		[Test]
+		public void UnsavedPart_CanBeInserted_BeforeVersionKey()
+		{
+			var page = CreatePageWithPart();
+
+			var part2 = new StatefulPart();
+			part2.Title = "New part";
+			part2.Name = "NewPart";
+			part2.Parent = page;
+			part2.ZoneName = "TheZone";
+			var context = new CommandContext(definitions.GetDefinition(page.GetContentType()), part2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			context.Parameters["MoveBeforeSortOrder"] = "0";
+			var command = CreateCommand(context);
+			dispatcher.Execute(command, context);
+
+			var pageVersion = versions.GetVersion(page, context.Content.VersionIndex);
+			var partVersion = pageVersion.Children["ThePart"];
+			var part2Version = pageVersion.Children["NewPart"];
+			part2Version.SortOrder.ShouldBeLessThan(partVersion.SortOrder);
+		}
+
 		private StatefulPage CreatePageWithPart()
 		{
 			var page = new StatefulPage();

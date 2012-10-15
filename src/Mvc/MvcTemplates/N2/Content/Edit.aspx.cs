@@ -134,6 +134,8 @@ namespace N2.Edit
 		private void ApplySortInfo(CommandContext ctx)
 		{
 			ctx.Parameters["MoveBefore"] = Request["before"];
+			ctx.Parameters["MoveBeforeVersionKey"] = Request["beforeVersionKey"];
+			ctx.Parameters["BelowVersionKey"] = Request["belowVersionKey"];
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			ctx.Parameters["MoveBeforeSortOrder"] = Request["beforeSortOrder"];
 		}

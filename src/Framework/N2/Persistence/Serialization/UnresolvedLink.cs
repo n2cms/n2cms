@@ -8,7 +8,9 @@ namespace N2.Persistence.Serialization
 	public class UnresolvedLink
 	{
 		public int ReferencedItemID { get; set; }
-		public Action<ContentItem> Setter;
+		private string VersionKey { get; set; }
+		public Action<ContentItem> Setter { get; set; }
+		public bool IsChild { get; set; }
 
 		public UnresolvedLink(int referencedItemID, Action<ContentItem> setter)
 		{
@@ -16,6 +18,10 @@ namespace N2.Persistence.Serialization
 			this.Setter = setter;
 		}
 
-		public bool IsChild { get; set; }
+		public UnresolvedLink(string versionKey, Action<ContentItem> setter)
+		{
+			this.VersionKey = versionKey;
+			this.Setter = setter;
+		}
 	}
 }

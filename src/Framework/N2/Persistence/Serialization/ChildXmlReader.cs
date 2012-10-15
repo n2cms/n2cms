@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.XPath;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
@@ -22,7 +23,20 @@ namespace N2.Persistence.Serialization
 				{
 					Handle(item, journal, id);
 				}
+				else if (attributes.ContainsKey("versionKey"))
+				{
+					Handle(item, journal, attributes["versionKey"]);
+				}
 			}
+		}
+
+		private void Handle(ContentItem item, ReadingJournal journal, string versionKey)
+		{
+			var child = journal.Find(versionKey);
+			if (child != null)
+				child.AddTo(item);
+			else
+				journal.Register(versionKey, (ci) => ci.AddTo(item), isChild: true);
 		}
 
 		private static void Handle(ContentItem item, ReadingJournal journal, int id)

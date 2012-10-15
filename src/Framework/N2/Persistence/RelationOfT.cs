@@ -53,11 +53,11 @@ namespace N2.Persistence
 	public class ContentRelation : Relation<ContentItem>
 	{
 		public string Path 
-		{ 
-			get { return HasValue ? Value.Path : null; } 
+		{
+			get { return HasValue && Value != null ? Value.Path : null; } 
 		}
 		public ContentRelation Parent 
-		{ 
+		{
 			get { return HasValue ? Value.Parent : null; } 
 		}
 		public PathData FindPath(string remainingUrl) 

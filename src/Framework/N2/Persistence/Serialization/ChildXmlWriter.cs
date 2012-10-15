@@ -1,4 +1,5 @@
 using System.Xml;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
@@ -29,9 +30,11 @@ namespace N2.Persistence.Serialization
 				childElement.WriteAttribute("id", child.ID);
 				childElement.WriteAttribute("name", child.Name);
 				childElement.WriteAttribute("versionIndex", child.VersionIndex);
-				
-				if(child.VersionOf.HasValue)
+
+				if (child.VersionOf.HasValue)
 					childElement.WriteAttribute("versionOf", child.VersionOf.Value.ID);
+				if (child.GetVersionKey() != null)
+					childElement.WriteAttribute("versionKey", child.GetVersionKey());
 			}
 		}
 	}

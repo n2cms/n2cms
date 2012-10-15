@@ -347,8 +347,9 @@ namespace N2.Web.UI.WebControls
 			{
 				Discriminator = definition.Discriminator;
 				ParentPath = parent.Path;
-				if (parent.VersionOf.HasValue)
+				if (parent.ID == 0)
 				{
+					ParentPath = Find.ClosestPage(parent).Path;
 					ParentVersionIndex = parent.VersionIndex;
 					ParentVersionKey = parent.GetVersionKey();
 				}

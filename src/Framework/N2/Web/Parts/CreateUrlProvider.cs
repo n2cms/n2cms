@@ -106,9 +106,16 @@ namespace N2.Web.Parts
 
 			if (!string.IsNullOrEmpty(request[PathData.VersionQueryKey]))
 				url = url.SetQueryParameter(PathData.VersionQueryKey, request[PathData.VersionQueryKey]);
-			if (!string.IsNullOrEmpty(request["versionKey"]))
-				url = url.SetQueryParameter("versionKey", request["versionKey"]);
-
+			
+			//if (!string.IsNullOrEmpty(request["versionKey"]))
+			//    url = url.SetQueryParameter("versionKey", request["versionKey"]);
+			if (!string.IsNullOrEmpty(request["belowVersionKey"]))
+				url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+			if (!string.IsNullOrEmpty(request["belowVersionKey"]))
+				url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+			if (!string.IsNullOrEmpty(request["beforeVersionKey"]))
+				url = url.SetQueryParameter("beforeVersionKey", request["beforeVersionKey"]);
+	
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
 				url = url.SetQueryParameter("returnUrl", request["returnUrl"]);
 

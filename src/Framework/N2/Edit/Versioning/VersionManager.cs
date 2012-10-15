@@ -233,17 +233,19 @@ namespace N2.Edit.Versioning
 		{
 			foreach (var replacingChild in replacementItem.Children)
 			{
+				var masterChild = replacingChild.VersionOf.Value;
 				if (replacingChild.VersionOf.Value == null)
 				{
-					var clone = replacingChild.Clone(true);
+					var clone = replacingChild.Clone(false);
 					clone.State = ContentState.Published;
 					clone.Published = Utility.CurrentTime();
 					clone.Expires = null;
 					clone.AddTo(currentItem);
 					RelinkMasterVersion(clone);
 					yield return clone;
+					masterChild = clone;
 				}
-				foreach (var addedPart in AddAddedPartsRecursive(replacingChild.VersionOf.Value, replacingChild))
+				foreach (var addedPart in AddAddedPartsRecursive(masterChild, replacingChild))
 					yield return addedPart;
 			}
 		}

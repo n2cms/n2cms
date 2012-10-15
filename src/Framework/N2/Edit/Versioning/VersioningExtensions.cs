@@ -52,6 +52,8 @@ namespace N2.Edit.Versioning
 				return parent;
 			if (part.VersionOf.HasValue && part.VersionOf.ID == parent.VersionOf.ID)
 				return parent;
+			if (parent.ID == 0 && parent.GetVersionKey() == part.GetVersionKey())
+				return parent;
 
 			foreach (var child in parent.Children)
 			{

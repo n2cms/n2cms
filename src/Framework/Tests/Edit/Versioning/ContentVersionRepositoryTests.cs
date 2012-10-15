@@ -344,5 +344,29 @@ namespace N2.Tests.Edit.Versioning
 			version.Children.OfType<Items.NormalItem>().Single().WidthType.ShouldBe(Items.WidthType.Pixels);
 			version.Children.OfType<Items.NormalItem>().Single().Width.ShouldBe(123);
 		}
+
+		[Test]
+		public void Unpresisted_ChildParts_AreMainteinedWhenRestoringVersions()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "master", null);
+			persister.Save(master);
+
+			var part = CreateOneItem<Items.NormalItem>(0, "part", master);
+			part.ZoneName = "TheZone";
+
+			var part2 = CreateOneItem<Items.NormalItem>(0, "part2", part);
+			part2.ZoneName = "TheZone";
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var version = manager.AddVersion(master, asPreviousVersion: false);
+
+			persister.Dispose();
+
+			master = (Items.NormalPage)persister.Get(master.ID);
+			version = manager.GetVersion(master, version.VersionIndex);
+
+			version.Children.Single().Name.ShouldBe("part");
+			version.Children.Single().Children.Single().Name.ShouldBe("part2");
+		}
     }
 }

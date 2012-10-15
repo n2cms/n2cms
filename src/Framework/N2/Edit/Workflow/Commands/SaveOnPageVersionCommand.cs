@@ -24,7 +24,13 @@ namespace N2.Edit.Workflow.Commands
 				: versionMaker.AddVersion(page, asPreviousVersion: false);
 			var parentVersion = pageVersion.FindPartVersion(part.Parent);
 
-			if (state.Parameters.ContainsKey("MoveBeforeSortOrder") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeSortOrder"] as string))
+			if (state.Parameters.ContainsKey("MoveBeforeVersionKey") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeVersionKey"] as string))
+			{
+				var beforeKey = (string)state.Parameters["MoveBeforeVersionKey"];
+				var beforeItem = pageVersion.FindDescendantByVersionKey(beforeKey);
+				beforeItem.Parent.InsertChildBefore(part, beforeItem.SortOrder);
+			}
+			else if (state.Parameters.ContainsKey("MoveBeforeSortOrder") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeSortOrder"] as string))
 			{
 				int beforeSortOrder = Convert.ToInt32(state.Parameters["MoveBeforeSortOrder"]);
 				parentVersion.InsertChildBefore(part, beforeSortOrder);
