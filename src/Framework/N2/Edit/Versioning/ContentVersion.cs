@@ -53,7 +53,7 @@ namespace N2.Edit.Versioning
 		public virtual DateTime? Published { get; set; }
 		public virtual DateTime? FuturePublish { get; set; }
 		public virtual DateTime? Expired { get; set; }
-		public virtual string PublishedBy { get; set; }
+		//public virtual string PublishedBy { get; set; }
         public virtual DateTime Saved { get; set; }
         public virtual string SavedBy { get; set; }
 
@@ -85,7 +85,7 @@ namespace N2.Edit.Versioning
 					VersionIndex = 0;
 					Title = null;
 					State = ContentState.None;
-					PublishedBy = null;
+					//PublishedBy = null;
 					ItemCount = 0;
 					return;
 				}
@@ -99,7 +99,7 @@ namespace N2.Edit.Versioning
 				SavedBy = value.SavedBy;
 				Title = value.Title;
 				State = value.State;
-				PublishedBy = value.IsPublished() ? value.SavedBy : null;
+				//PublishedBy = value.IsPublished() ? value.SavedBy : null;
 				VersionDataXml = Serializer(value);
 			}
 		}

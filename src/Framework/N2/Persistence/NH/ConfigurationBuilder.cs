@@ -432,7 +432,7 @@ namespace N2.Persistence.NH
             ca.Property(x => x.State, cm => { });
 			ca.Property(x => x.SavedBy, cm => { });
 			ca.Property(x => x.ItemCount, cm => { });
-            ca.Property(x => x.VersionDataXml, cm => { });
+			ca.Property(x => x.VersionDataXml, cm => { cm.Type(NHibernateUtil.StringClob); cm.Length(stringLength); });
         }
 
 		private string FormatMapping(string mappingXml)

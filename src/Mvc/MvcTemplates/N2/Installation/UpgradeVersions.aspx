@@ -48,11 +48,14 @@
 				});
 			}
 			else {
-				if (!error) {
-					$("#MigrationRun").slideUp();
-				}
 				$("#MigrationComplete").slideDown();
 				$(".migration-control").hide();
+				if (error) {
+					$("#MigrationComplete p.error").show();
+				} else {
+					$("#MigrationComplete h1").addClass("ok");
+					$("#MigrationRun").slideUp();
+				}				
 			}
 		}
 		function StopMigration() {
@@ -68,8 +71,9 @@
     <div>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade Versions" runat="server">
 			<div id="MigrationComplete" style="display:none">
-				<h1 class="ok">Complete</h1>
+				<h1>Finished</h1>
 				<p>Versions have been migrated.</p>
+				<p class="error" style="display:none">Errors occurred while migrating versions. Hover over the remaining items for some information and configure logging for full stack trace.</p>
 				<input type="button" onclick="CloseMigration();" value="Close" />
 			</div>
 

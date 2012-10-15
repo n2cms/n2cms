@@ -41,7 +41,8 @@ namespace N2.Management.Installation
 			}
 			catch (Exception ex)
 			{
-				context.Response.Write(new { success = false, message = ex.Message }.ToJson());
+				new Logger<UpgradeVersionHandler>().Error("Error migrating #" + context.Request["item"], ex);
+				context.Response.Write(new { success = false, message = ex.Message, stacktrace = ex.ToString() }.ToJson());
 			}
 		}
 
