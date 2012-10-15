@@ -44,6 +44,9 @@ namespace N2.Persistence.Serialization
 			using (ElementWriter detailElement = new ElementWriter("property", writer))
 			{
 				detailElement.WriteAttribute("name", name);
+
+				if (value == null)
+					return;
 				Type type = value.GetType();
 
 				if (type == typeof(string))

@@ -21,9 +21,16 @@ namespace N2.Persistence.Serialization
 		private void ReadProperty(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
 		{
 			Dictionary<string, string> attributes = GetAttributes(navigator);
-			Type type = Utility.TypeFromName(attributes["typeName"]);
 
 			string name = attributes["name"];
+
+			if (!attributes.ContainsKey("typeName"))
+			{
+				item[name] = null;
+				return;
+			}
+
+			Type type = Utility.TypeFromName(attributes["typeName"]);
 			if(type == typeof(ContentItem))
 				SetLinkedItem(navigator.Value, journal, (referencedItem) => item[name] = referencedItem);				
 			else
