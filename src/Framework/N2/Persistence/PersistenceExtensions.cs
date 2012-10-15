@@ -154,7 +154,30 @@ namespace N2.Persistence
 			return true;
 		}
 
-		private static bool IsSuitableForInterceptionOrPersistence(PropertyInfo property)
+		public static bool IsInterceptable(this PropertyInfo property)
+		{
+			if (!IsSuitableForInterceptionOrPersistence(property))
+			{
+				return false;
+			}
+
+			var attributes = property.GetCustomAttributes<IInterceptableProperty>();
+			if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
+				// some property is persisted as something other than detail or detail collection
+				return false;
+			if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
+				// no property is persisted as detail or detail collection
+				return false;
+
+			return true;
+		}
+
+		internal static IEnumerable<T> GetCustomAttributes<T>(this PropertyInfo property)
+		{
+			return property.GetCustomAttributes(typeof(T), true).OfType<T>();
+		}
+
+		internal static bool IsSuitableForInterceptionOrPersistence(this PropertyInfo property)
 		{
 			if (property == null)
 				return false;

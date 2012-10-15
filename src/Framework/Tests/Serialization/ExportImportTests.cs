@@ -480,6 +480,24 @@ namespace N2.Tests.Serialization
 			readItem.PersistableObject.ShouldBe(new[] { "one", "two" });
 		}
 
+		[Test]
+		public void AutoImplementedProperties_AreTransferred()
+		{
+			var item = activator.CreateInstance<XmlableItem>(null);
+			item.PersistableNumber = 123;
+			item.PersistableText = "world";
+			item.PersistableEnum = ContentState.Unpublished;
+			item.PersistableObject = new[] { "x", "y" };
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem.PersistableNumber.ShouldBe(123);
+			readItem.PersistableText.ShouldBe("world");
+			readItem.PersistableEnum.ShouldBe(ContentState.Unpublished);
+			readItem.PersistableObject.ShouldBe(new[] { "x", "y" });
+		}
+
         private void AssertEquals(DateTime? expected, DateTime? actual)
         {
             Assert.That(expected.HasValue, Is.EqualTo(actual.HasValue));

@@ -27,6 +27,8 @@ namespace N2.Edit.Versioning
 			clone.AncestralTrail = "/";
 			clone.VersionOf = item;
 
+			CopyAutoImplementedProperties(item, clone);
+
 			foreach (var child in item.Children.FindParts())
 			{
 				var childClone = child.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
@@ -34,6 +36,14 @@ namespace N2.Edit.Versioning
 			}
 
 			return clone;
+		}
+
+		private static void CopyAutoImplementedProperties(ContentItem source, ContentItem destination)
+		{
+			foreach (var property in source.GetContentType().GetProperties().Where(pi => pi.IsInterceptable()))
+			{
+				destination[property.Name] = source[property.Name];
+			}
 		}
 
 		public static ContentItem FindPartVersion(this ContentItem parent, ContentItem part)

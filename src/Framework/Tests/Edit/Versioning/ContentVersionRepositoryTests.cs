@@ -25,7 +25,7 @@ namespace N2.Tests.Edit.Versioning
         public override void SetUp()
         {
             base.SetUp();
-			repository = TestSupport.CreateVersionRepository(ref persister, typeof(Items.NormalPage));
+			repository = TestSupport.CreateVersionRepository(ref persister, typeof(Items.NormalPage), typeof(Items.NormalItem));
 			drafts = new DraftRepository(repository, new FakeCacheWrapper());
         }
 
@@ -252,9 +252,97 @@ namespace N2.Tests.Edit.Versioning
 		}
 
 		[Test]
-		public void DefaultValues_AreMaintained()
+		public void AutoImplementedProperties_AreMaintained()
 		{
-			
+			var master = CreateOneItem<Items.NormalPage>(0, "master", null);
+			master.WidthType = Items.WidthType.Pixels;
+			master.Width = 123;
+			persister.Save(master);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var version = (Items.NormalPage)manager.AddVersion(master, asPreviousVersion: false);
+
+			persister.Dispose();
+
+			master = (Items.NormalPage)persister.Get(master.ID);
+			version = (Items.NormalPage)manager.GetVersion(master, version.VersionIndex);
+
+			version.WidthType.ShouldBe(Items.WidthType.Pixels);
+			version.Width.ShouldBe(123);
+		}
+
+		[Test]
+		public void AutoImplementedProperties_AreMaintained_OnPersistedItems()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "master", null);
+			master.WidthType = Items.WidthType.Pixels;
+			master.Width = 123;
+			persister.Save(master);
+
+			persister.Dispose();
+			master = (Items.NormalPage)persister.Get(master.ID);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var version = (Items.NormalPage)manager.AddVersion(master, asPreviousVersion: false);
+
+			persister.Dispose();
+
+			master = (Items.NormalPage)persister.Get(master.ID);
+			version = (Items.NormalPage)manager.GetVersion(master, version.VersionIndex);
+
+			version.WidthType.ShouldBe(Items.WidthType.Pixels);
+			version.Width.ShouldBe(123);
+		}
+
+		[Test]
+		public void AutoImplementedProperties_AreMaintained_OnParts()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "master", null);
+			persister.Save(master);
+
+			var part = CreateOneItem<Items.NormalItem>(0, "part", master);
+			part.WidthType = Items.WidthType.Pixels;
+			part.Width = 123;
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var version = (Items.NormalPage)manager.AddVersion(master, asPreviousVersion: false);
+
+			persister.Dispose();
+
+			master = (Items.NormalPage)persister.Get(master.ID);
+			version = (Items.NormalPage)manager.GetVersion(master, version.VersionIndex);
+
+			version.Children.OfType<Items.NormalItem>().Single().WidthType.ShouldBe(Items.WidthType.Pixels);
+			version.Children.OfType<Items.NormalItem>().Single().Width.ShouldBe(123);
+		}
+
+		[Test]
+		public void AutoImplementedProperties_AreMaintained_OnPeristedParts()
+		{
+			var master = CreateOneItem<Items.NormalPage>(0, "master", null);
+			persister.Save(master);
+
+			var part = CreateOneItem<Items.NormalItem>(0, "part", master);
+			part.WidthType = Items.WidthType.Pixels;
+			part.Width = 123;
+			part.ZoneName = "TheZone";
+			persister.Save(part);
+
+			persister.Dispose();
+			master = (Items.NormalPage)persister.Get(master.ID);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var version = (Items.NormalPage)manager.AddVersion(master, asPreviousVersion: false);
+
+			persister.Dispose();
+
+			master = (Items.NormalPage)persister.Get(master.ID);
+			version = (Items.NormalPage)manager.GetVersion(master, version.VersionIndex);
+
+			version.Children.OfType<Items.NormalItem>().Single().WidthType.ShouldBe(Items.WidthType.Pixels);
+			version.Children.OfType<Items.NormalItem>().Single().Width.ShouldBe(123);
 		}
     }
 }
