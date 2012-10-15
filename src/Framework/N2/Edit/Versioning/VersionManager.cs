@@ -223,6 +223,7 @@ namespace N2.Edit.Versioning
 				else
 				{
 					existingChild.AddTo(null);
+					RelinkMasterVersion(existingChild); // transient links may cause trouble even for items being deleted
 					yield return existingChild;
 				}
 			}
@@ -239,6 +240,7 @@ namespace N2.Edit.Versioning
 					clone.Published = Utility.CurrentTime();
 					clone.Expires = null;
 					clone.AddTo(currentItem);
+					RelinkMasterVersion(clone);
 					yield return clone;
 				}
 				foreach (var addedPart in AddAddedPartsRecursive(replacingChild.VersionOf.Value, replacingChild))

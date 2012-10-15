@@ -752,5 +752,28 @@ namespace N2
 		{
 			return Regex.Replace(format, "{([\\w\\.]+)}", m => (string)Utility.Evaluate(values, m.Groups[1].Value), RegexOptions.Compiled);
 		}
+
+		internal static List<object> FindEmpty(ContentItem item)
+		{
+			var list = new List<object>();
+			if (item.Parent.ID == 0)
+				list.Add(item);
+			foreach (var detail in item.Details)
+				if (detail.EnclosingItem.ID == 0)
+					list.Add(detail);
+				else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+					list.Add(detail);
+			foreach (var dc in item.DetailCollections)
+				foreach (var detail in dc.Details)
+					if (detail.EnclosingItem.ID == 0)
+						list.Add(detail);
+					else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+						list.Add(detail);
+
+			foreach (var child in item.Children.FindParts())
+				list.AddRange(FindEmpty(child));
+
+			return list;
+		}
 	}
 }
