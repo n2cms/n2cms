@@ -5,29 +5,28 @@ using System.Text;
 using System.Web.UI.WebControls;
 using N2.Edit.Installation;
 using N2.Management.Installation;
+using N2.Engine;
 
 namespace N2.Edit.Install
 {
 	public partial class Upgrade : System.Web.UI.Page
 	{
+		protected IEngine Engine
+		{
+			get { return N2.Context.Current; }
+		}
+
 		protected InstallationManager Installer
 		{
-			get { return N2.Context.Current.Resolve<InstallationManager>(); }
+			get { return Engine.Resolve<InstallationManager>(); }
 		}
 		protected MigrationEngine Migrator
 		{
-			get { return N2.Context.Current.Resolve<MigrationEngine>(); }
+			get { return Engine.Resolve<MigrationEngine>(); }
 		}
-
-		private DatabaseStatus status;
-		protected DatabaseStatus Status
+		protected InstallationChecker Checker
 		{
-			get
-			{
-				if (status == null)
-					status = Installer.GetStatus();
-				return status;
-			}
+			get { return Engine.Resolve<InstallationChecker>(); }
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -38,7 +37,7 @@ namespace N2.Edit.Install
 
 			foreach(var m in Migrator.GetAllMigrations())
 			{
-				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.IsApplicable(Status) });
+				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.IsApplicable(Checker.Status) });
 			}
 		}
 
@@ -48,8 +47,8 @@ namespace N2.Edit.Install
 				{
 					ShowResults(Migrator.UpgradeAndMigrate());
 				});
-			status = null;
-			Installer.UpdateStatus(Status.Level);
+			Checker.Status = null;
+			Installer.UpdateStatus(Checker.Status.Level);
 		}
 
 		protected void btnMigrate_Click(object sender, EventArgs e)
@@ -58,11 +57,11 @@ namespace N2.Edit.Install
 				{
 					var results = Migrator.GetAllMigrations()
 						.Where(m => cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
-						.Select(m => m.Migrate(Status))
+						.Select(m => m.Migrate(Checker.Status))
 						.ToList();
 					ShowResults(results);
 				});
-			status = null;
+			Checker.Status = null;
 		}
 
 		private void ShowResults(IEnumerable<MigrationResult> results)
@@ -91,8 +90,8 @@ namespace N2.Edit.Install
 		protected void btnInstall_Click(object sender, EventArgs e)
 		{
 			ExecuteWithErrorHandling(Installer.Upgrade);
-			status = null;
-			Installer.UpdateStatus(Status.Level);
+			Checker.Status = null;
+			Installer.UpdateStatus(Checker.Status.Level);
 		}
 
 		protected void btnExportSchema_Click(object sender, EventArgs e)
