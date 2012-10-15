@@ -5,13 +5,13 @@ using System.Web;
 using N2.Integrity;
 using N2.Definitions;
 using N2.Details;
-using Reimers.Google.Analytics;
 
 namespace N2.Management.Myself.Analytics.Models
 {
 	[PartDefinition("Analytics",
 		IconUrl = "{ManagementUrl}/Resources/icons/chart_pie.png")]
 	[RestrictParents(typeof(IRootPage))]
+	[Disable]
 	public class ManageAnalyticsPart : AnalyticsPartBase
 	{
 		[EditableText("Token", 100)]
@@ -49,17 +49,17 @@ namespace N2.Management.Myself.Analytics.Models
 			set { SetDetail("ChartPeriod", value, 31); }
 		}
 
-		public virtual IEnumerable<Dimension> Dimensions
-		{
-			get { return GetDetailCollection("Dimensions", true).OfType<int>().Select(i => (Dimension)i); }
-			set { GetDetailCollection("Dimensions", true).Replace(value.Select(d => (int)d)); }
-		}
+		//public virtual IEnumerable<Dimension> Dimensions
+		//{
+		//    get { return GetDetailCollection("Dimensions", true).OfType<int>().Select(i => (Dimension)i); }
+		//    set { GetDetailCollection("Dimensions", true).Replace(value.Select(d => (int)d)); }
+		//}
 
-		public virtual IEnumerable<Metric> Metrics
-		{
-			get { return GetDetailCollection("Metrics", true).OfType<int>().Select(i => (Metric)i); }
-			set { GetDetailCollection("Metrics", true).Replace(value.Select(d => (int)d)); }
-		}
+		//public virtual IEnumerable<Metric> Metrics
+		//{
+		//    get { return GetDetailCollection("Metrics", true).OfType<int>().Select(i => (Metric)i); }
+		//    set { GetDetailCollection("Metrics", true).Replace(value.Select(d => (int)d)); }
+		//}
 
 	}
 }

@@ -202,15 +202,6 @@
     <Content Include="N2\Resources\tiny_mce\plugins\tokencomplete\css\tokencomplete.css" />
     <Content Include="N2\Resources\tiny_mce\plugins\tokencomplete\editor_plugin.js" />
     <Content Include="N2\Search\ManageIndex.ascx" />
-    <Content Include="N2\Myself\Analytics\Resources\excanvas.js" />
-    <Content Include="N2\Myself\Analytics\Resources\excanvas.min.js" />
-    <Content Include="N2\Myself\Analytics\Resources\jquery.flot.js" />
-    <Content Include="N2\Myself\Analytics\Resources\jquery.flot.min.js" />
-    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\ConfigureStatistics.ascx" />
-    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\Index.ascx" />
-    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\InputToken.ascx" />
-    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\SelectAccount.ascx" />
-    <Content Include="N2\Myself\Analytics\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="N2\Resources\Css\editor.css" />
     <Content Include="N2\Resources\Css\default.css" />
     <Content Include="N2\Content\Default.aspx" />
@@ -288,7 +279,6 @@
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
     <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config" />
-    <Content Include="N2\Myself\Analytics\Views\Web.config" />
     <Content Include="N2\Search\IndexInfo.ashx" />
     <Content Include="N2\log4net.config" />
     <Content Include="N2\Tokens\TokenTemplates\Web.config" />
@@ -609,6 +599,15 @@
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersionWorker.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Myself\Analytics\Models\AnalyticsPartBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="N2\Resources\MessageSink.ashx.cs">
       <DependentUpon>MessageSink.ashx</DependentUpon>
     </Compile>
@@ -625,21 +624,6 @@
     <Compile Include="N2\Search\ManageIndex.ascx.designer.cs">
       <DependentUpon>ManageIndex.ascx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs" />
-    <Compile Include="N2\Myself\Analytics\ManagementAreaRegistration.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\AnalyticsPartBase.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\AnalyticsViewModel.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ConfigureAnalyticsViewModel.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\Extensions.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\AnalyticsAccountInfo.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\CityReport.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\Dimension.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\GenericEntry.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\Metric.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\ReportRequestor.cs" />
-    <Compile Include="N2\Myself\Analytics\Models\ReimersGoogle\TokenRequestor.cs" />
-    <Compile Include="N2\Myself\Analytics\PrivateViewEngineDecorator.cs" />
     <Compile Include="N2\Security\ContentMembershipProvider.cs" />
     <Compile Include="N2\Security\ContentProfileProvider.cs" />
     <Compile Include="N2\Security\ContentRoleProvider.cs" />
@@ -1497,7 +1481,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
-    <Folder Include="N2\Myself\Analytics\Views\Shared\" />
     <Folder Include="N2\Resources\icons\" />
     <Folder Include="Properties\" />
   </ItemGroup>
