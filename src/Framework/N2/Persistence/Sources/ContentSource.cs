@@ -69,6 +69,10 @@ namespace N2.Persistence.Sources
 			{
 				previousChildren = source.AppendChildren(previousChildren, query);
 			}
+			foreach (var source in Sources)
+			{
+				previousChildren = source.FilterChildren(previousChildren, query);
+			}
 			return previousChildren;
 		}
 

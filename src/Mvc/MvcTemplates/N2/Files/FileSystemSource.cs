@@ -29,7 +29,12 @@ namespace N2.Management.Files
 
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
-			if(query.Interface != Interfaces.Managing)
+			return previousChildren;
+		}
+
+		public override IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		{
+			if (query.Interface != Interfaces.Managing)
 				return previousChildren;
 
 			return previousChildren.Union(nodes.GetChildren(query.Parent.Path));

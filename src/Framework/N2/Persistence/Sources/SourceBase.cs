@@ -54,6 +54,16 @@ namespace N2.Persistence.Sources
 
 		public abstract IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query);
 
+		public virtual bool HasChildren(Query query)
+		{
+			return FilterChildren(AppendChildren(Enumerable.Empty<ContentItem>(), query), query).Any();
+		}
+
+		public virtual IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		{
+			return previousChildren;
+		}
+
 		public abstract bool IsProvidedBy(ContentItem item);
 
 		public virtual PathData ResolvePath(string path)
@@ -80,12 +90,5 @@ namespace N2.Persistence.Sources
 		public abstract void Delete(ContentItem item);
 		public abstract ContentItem Move(ContentItem source, ContentItem destination);
 		public abstract ContentItem Copy(ContentItem source, ContentItem destination);
-
-
-
-		public virtual bool HasChildren(Query query)
-		{
-			return AppendChildren(Enumerable.Empty<ContentItem>(), query).Any();
-		}
 	}
 }
