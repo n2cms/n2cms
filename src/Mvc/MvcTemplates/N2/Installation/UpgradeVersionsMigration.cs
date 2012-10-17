@@ -20,7 +20,7 @@ namespace N2.Management.Installation
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return itemRepository.Find(new ParameterCollection(Parameter.IsNotNull("VersionOf.ID")).Take(1)).Any();
+			return status.NeedsUpgrade || itemRepository.Find(new ParameterCollection(Parameter.IsNotNull("VersionOf.ID")).Take(1)).Any();
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)

@@ -69,7 +69,7 @@
 					<tr>
 						<th>Sources</th>
 						<td>
-							<% foreach(var cs in Engine.Resolve<N2.Persistence.Sources.ContentSource>().Sources) { %>
+							<% foreach(object cs in Engine.Resolve<N2.Persistence.Sources.ContentSource>().Sources) { %>
 							<%= cs %><br />
 							<% } %>
 						</td>
