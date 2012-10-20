@@ -40,7 +40,7 @@ namespace N2.Collections
 		{
 			if (child.IsPage)
 			{
-				if (child.State == ContentState.Published && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
+				if (child.IsPublished() && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
 				{
 					if (child.Visible)
 						return CollectionState.ContainsVisiblePublicPages;
@@ -57,7 +57,7 @@ namespace N2.Collections
 			}
 			else
 			{
-				if (child.State == ContentState.Published && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
+				if (child.IsPublished() && (child.AlteredPermissions & Security.Permission.Read) == Security.Permission.None)
 					return CollectionState.ContainsPublicParts;
 				else
 					return CollectionState.ContainsSecuredParts;
