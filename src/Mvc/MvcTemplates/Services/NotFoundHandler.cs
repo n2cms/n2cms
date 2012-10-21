@@ -22,6 +22,8 @@ namespace N2.Templates.Mvc.Services
 
 		void parser_PageNotFound(object sender, PageNotFoundEventArgs e)
 		{
+			if (e.AffectedItem != null)
+				return;
 			StartPage startPage = parser.StartPage as StartPage;
 			if (startPage != null && startPage.NotFoundPage != null && !e.Url.StartsWith("edit/", StringComparison.InvariantCultureIgnoreCase))
 			{

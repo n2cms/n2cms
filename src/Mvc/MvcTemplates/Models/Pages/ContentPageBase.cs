@@ -21,8 +21,8 @@ namespace N2.Templates.Mvc.Models.Pages
 	 AvailableZone("Recursive Above", Zones.RecursiveAbove),
 	 AvailableZone("Recursive Below", Zones.RecursiveBelow)]
 	[RestrictParents(typeof (IStructuralPage))]
-	[Separator("TitleSeparator", 15, ContainerName = Tabs.Details)]
-	public abstract class ContentPageBase : PageBase, ICommentable, IContentPage
+	[Separator("TitleSeparator", 16, ContainerName = Tabs.Details)]
+	public abstract class ContentPageBase : PageBase, ICommentable, IContentPage, IUrlSource
 	{
 		// editables
 
@@ -40,6 +40,9 @@ namespace N2.Templates.Mvc.Models.Pages
 			get { return base.Visible; }
 			set { base.Visible = value; }
 		}
+
+		[EditableDirectUrl("Direct URL", 15, Placeholder = "e.g. /news", ContainerName = Tabs.Details)]
+		public virtual string DirectUrl { get; set; }
 	}
 
 	[Obsolete("Use ContentPageBase and [PageDefinition]")]

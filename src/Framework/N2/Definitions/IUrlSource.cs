@@ -13,6 +13,7 @@ namespace N2.Definitions
 	/// </summary>
 	public interface IUrlSource
 	{
+		/// <summary>The direct url to the content item.</summary>
 		string DirectUrl { get; }
 	}
 }

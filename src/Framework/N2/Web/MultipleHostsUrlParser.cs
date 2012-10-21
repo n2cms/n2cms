@@ -78,29 +78,31 @@ namespace N2.Web
 			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
 
 			Url url = BuildPageUrl(current, ref current);
-			current = FindStartPage(current);
 
+			var startPage = FindStartPage(current);
 			// no start page found, use rewritten url
-			if (current == null)
+			if (startPage == null)
 				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 			if (!item.IsPage)
 				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
-			if (current.ID == host.CurrentSite.StartPageID)
+			if (startPage.ID == host.CurrentSite.StartPageID)
             {
                 // the start page belongs to the current site, use relative url
             	return Url.ToAbsolute("~" + url.PathAndQuery);
             }
 
-            var site = host.GetSite(current.ID) ?? host.DefaultSite;
+			var site = host.GetSite(startPage.ID) ?? host.DefaultSite;
 
             return GetHostedUrl(item, url, site);
         }
 
 		private ContentItem FindStartPage(ContentItem current)
 		{
+			if (current == null)
+				return null;
 			if (IsRootOrStartPage(current))
 				return current;
 			return FindStartPage(current.Parent);

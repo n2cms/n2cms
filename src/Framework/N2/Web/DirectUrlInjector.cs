@@ -96,7 +96,7 @@ namespace N2.Web
 			if (!string.IsNullOrEmpty(url.Authority))
 			{
 				var site = host.GetSite(item);
-				if (!site.Is(url.Authority))
+				if (!string.IsNullOrEmpty(site.Authority) && !site.Is(url.Authority))
 					return false;
 			}
 
