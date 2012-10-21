@@ -526,6 +526,7 @@
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\NH\Finder\FinderExtensions.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
     <Compile Include="Persistence\NH\SysCache2\CacheDependenciesElement.cs" />
     <Compile Include="Persistence\NH\SysCache2\CacheRegionCollection.cs" />
