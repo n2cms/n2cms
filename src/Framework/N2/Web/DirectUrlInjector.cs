@@ -14,50 +14,36 @@ namespace N2.Web
 	public class DirectUrlInjector : IAutoStart
 	{
 		private IHost host;
-		private IContentItemRepository repository;
-		private CacheWrapper cache;
 		private IUrlParser parser;
+		private IContentItemRepository repository;
+		private IDefinitionManager definitions;
+		private StructureBoundDictionaryCache<int, CachedDirectUrl> outboundCache;
 
-		public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, CacheWrapper cache)
+		public class CachedDirectUrl
+		{
+			public string Url { get; set; }
+		}
+
+		public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, IDefinitionManager definitions, StructureBoundDictionaryCache<int, CachedDirectUrl> outboundCache)
 		{
 			this.host = host;
 			this.parser = parser;
 			this.repository = repository;
-			this.cache = cache;
+			this.definitions = definitions;
+			this.outboundCache = outboundCache;
 		}
-
-		//public virtual ContentItem Find(string url)
-		//{
-		//    url = ToKey(url);
-
-		//    var segments = url.Split('/');
-		//    for (int i = segments.Length - 1; i >= 0; i--)
-		//    {
-		//        var partialurl = string.Join("/", segments, 0, i);
-		//        var item = repository.Find(Parameter.Like("AppRelativeUrl", "~/" + partialurl).Detail().Take(1)).FirstOrDefault();
-
-		//        if (item != null)
-		//        {
-		//            string remainingPath = string.Join("/", segments, i, segments.Length - i - 1);
-		//            if (!string.IsNullOrEmpty(remainingPath))
-		//                item = item.GetChild(remainingPath);
-		//        }
-		//    }
-		//    return null;
-		//}
-
-		//public IDictionary<string, int> GetAll()
-		//{
-		//    return cache.GetOrCreate("UrlSources", CreateAll);
-		//}
 
 		void parser_BuildingUrl(object sender, UrlEventArgs e)
 		{
 			var source = e.AffectedItem as IUrlSource;
-			if (source == null || string.IsNullOrEmpty(source.DirectUrl))
+			if (source == null || e.AffectedItem.ID == 0)
 				return;
 
-			e.Url = source.DirectUrl;
+			var direct = outboundCache.GetValue(e.AffectedItem.ID, (id) => new CachedDirectUrl { Url = source.DirectUrl });
+			if (string.IsNullOrEmpty(direct.Url))
+				return;
+
+			e.Url = direct.Url;
 		}
 
 		void parser_PageNotFound(object sender, PageNotFoundEventArgs e)
@@ -113,14 +99,25 @@ namespace N2.Web
 
 		public void Start()
 		{
-			parser.PageNotFound += parser_PageNotFound;
-			parser.BuildingUrl += parser_BuildingUrl;
+			if (DefinitionsContainsUrlSources())
+			{
+				parser.PageNotFound += parser_PageNotFound;
+				parser.BuildingUrl += parser_BuildingUrl;
+			}
 		}
 
 		public void Stop()
 		{
-			parser.PageNotFound -= parser_PageNotFound;
-			parser.BuildingUrl -= parser_BuildingUrl;
+			if (DefinitionsContainsUrlSources())
+			{
+				parser.PageNotFound -= parser_PageNotFound;
+				parser.BuildingUrl -= parser_BuildingUrl;
+			}
+		}
+
+		private bool DefinitionsContainsUrlSources()
+		{
+			return definitions.GetDefinitions().Any(d => typeof(IUrlSource).IsAssignableFrom(d.ItemType));
 		}
 	}
 }

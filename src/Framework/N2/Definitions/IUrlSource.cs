@@ -13,7 +13,7 @@ namespace N2.Definitions
 	/// </summary>
 	public interface IUrlSource
 	{
-		/// <summary>The direct url to the content item.</summary>
+		/// <summary>The direct url to the content item. This value is cached by the system after first read.</summary>
 		string DirectUrl { get; }
 	}
 }

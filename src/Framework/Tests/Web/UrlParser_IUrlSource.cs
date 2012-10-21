@@ -3,6 +3,7 @@ using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
 using Shouldly;
+using N2.Engine;
 
 namespace N2.Tests.Web
 {
@@ -17,7 +18,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 			base.parser = parser = TestSupport.Setup(persister, wrapper, host);
-			injector = new DirectUrlInjector(host, parser, repository, new Fakes.FakeCacheWrapper());
+			injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)), new StructureBoundDictionaryCache<int, DirectUrlInjector.CachedDirectUrl>(persister));
 			injector.Start();
 			CreateDefaultStructure();
 			Url.DefaultExtension = "/";
