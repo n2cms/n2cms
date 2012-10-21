@@ -52,6 +52,7 @@ namespace N2.Details
 		public EditableDirectUrlAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			Validate = true;
 			ValidationExpression = "^/[^?]*$";
 			ValidationMessage = "The direct url must start with slash (/), e.g. /direct";
 		}
