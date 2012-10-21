@@ -227,6 +227,11 @@
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_VirtualDirectory.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_MultipleSites.cs" />
+    <Compile Include="Web\Items\UrlSourcePage.cs" />
+    <Compile Include="Web\UrlParser_Events.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />

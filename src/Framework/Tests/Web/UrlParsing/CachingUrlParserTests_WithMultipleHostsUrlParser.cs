@@ -33,10 +33,10 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void DoesntCacheSameStartPage_ForMultipleDomains()
 		{
-			var data1 = parser.ResolvePath("http://www.n2cms.com/");
+			var data1 = parser.FindPath("http://www.n2cms.com/");
 			Assert.That(data1.CurrentItem, Is.EqualTo(repository.Get(2)));
 			
-			var data2 = parser.ResolvePath("http://n2.libardo.com/");
+			var data2 = parser.FindPath("http://n2.libardo.com/");
 			Assert.That(data2.CurrentItem, Is.EqualTo(repository.Get(4)));
 
 		}

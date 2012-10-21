@@ -9,12 +9,22 @@ using N2.Persistence.Proxying;
 namespace N2.Persistence
 {
 	public static class PersistenceExtensions
-    {
-        public static Parameter Detail(this Parameter parameter, bool isDetail = true)
-        {
-            parameter.IsDetail = isDetail;
-            return parameter;
-        }
+	{
+		public static Parameter Detail(this Parameter parameter, bool isDetail = true)
+		{
+			parameter.IsDetail = isDetail;
+			return parameter;
+		}
+
+		public static ParameterCollection Skip(this Parameter parameter, int skip)
+		{
+			return new ParameterCollection(parameter).Skip(skip);
+		}
+
+		public static ParameterCollection Take(this Parameter parameter, int take)
+		{
+			return new ParameterCollection(parameter).Take(take);
+		}
 
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work

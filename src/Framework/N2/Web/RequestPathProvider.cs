@@ -57,7 +57,7 @@ namespace N2.Web
 		{
 			try
 			{
-				var path = parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+				var path = parser.FindPath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
 					
 				path.CurrentItem = path.CurrentPage;
 

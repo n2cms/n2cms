@@ -30,7 +30,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("www.n2cms.com", "/");
 
-            Assert.AreSame(item1, parser.Parse("/"));
+            Assert.AreSame(page1, parser.Parse("/"));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("www.n2cms.com", "/item1_1.aspx");
 
-            Assert.AreSame(item1_1, parser.Parse("/item1_1.aspx"));
+            Assert.AreSame(page1_1, parser.Parse("/item1_1.aspx"));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("www.n2cms.com:8080", "/");
 
-            Assert.AreSame(item2_1, parser.Parse("/"));
+            Assert.AreSame(page2_1, parser.Parse("/"));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("www.n2cms.com:8080", "/");
 
-            Assert.AreSame(item1, parser.Parse("http://www.n2cms.com/"));
+            Assert.AreSame(page1, parser.Parse("http://www.n2cms.com/"));
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("www.n2cms.com:8080", "/item1_1.aspx");
 
-            Assert.AreSame(item1_1, parser.Parse("http://www.n2cms.com/item1_1.aspx"));
+            Assert.AreSame(page1_1, parser.Parse("http://www.n2cms.com/item1_1.aspx"));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace N2.Tests.Web
         {
             CreateItemsAndBuildExpectations("n2.libardo.com", "/item2_1.aspx?item=7");
 
-            Assert.AreSame(data2, parser.Parse("/item2_1.aspx?item=7"));
+            Assert.AreSame(part2, parser.Parse("/item2_1.aspx?item=7"));
         }
 
         [Test]

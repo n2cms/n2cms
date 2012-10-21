@@ -211,23 +211,22 @@ namespace N2.Tests
 			if (persister == null)
 				persister = SetupFakePersister();
 			var definitions = SetupDefinitions(definedTypes);
+			var parser = new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection());
+			var importer = new Importer(persister,
+				new ItemXmlReader(definitions,
+					new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()),
+					persister.Repository),
+				new Fakes.FakeMemoryFileSystem());
+			var exporter = new Exporter(
+				new ItemXmlWriter(
+					definitions,
+					parser,
+					new FakeMemoryFileSystem()));
 			return new ContentVersionRepository(
 				new FakeRepository<ContentVersion>(),
-				new Exporter(
-					new ItemXmlWriter(
-						definitions,
-						new UrlParser(persister,
-									  new ThreadContext(),
-									  new Host(new ThreadContext(), new HostSection()),
-									  new ConnectionMonitor(),
-									  new HostSection()),
-						new FakeMemoryFileSystem())),
-						new Importer(persister, 
-							new ItemXmlReader(definitions, 
-								new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()), 
-								persister.Repository), 
-							new Fakes.FakeMemoryFileSystem()), 
-				new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection()),
+				exporter,
+				importer,
+				parser,
 				new EmptyProxyFactory());
 		}
 

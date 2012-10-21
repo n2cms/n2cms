@@ -22,21 +22,21 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreate_DataItemUrl_OnStartPage()
 		{
-			string url = parser.BuildUrl(data1);
+			string url = parser.BuildUrl(part1);
 			Assert.AreEqual("/?item=6", url);
 		}
 
 		[Test]
 		public void CanCreate_DataItemUrl_OnPage_OneLevelDown()
 		{
-			string url = parser.BuildUrl(data2);
+			string url = parser.BuildUrl(part2);
 			Assert.AreEqual("/item2.aspx?item=7", url);
 		}
 
 		[Test]
 		public void CanCreate_DataItemUrl_OnPage_TwoLevelsDown()
 		{
-			string url = parser.BuildUrl(data3);
+			string url = parser.BuildUrl(part3);
 			Assert.AreEqual("/item2/item2_1.aspx?item=8", url);
 		}
 
@@ -44,7 +44,7 @@ namespace N2.Tests.Web
 		public void DataItemUrl_OfVersionedItem__OnStartPage_IsStartPageUrl_AndVersionID()
 		{
 			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
-			data4.VersionOf = data1;
+			data4.VersionOf = part1;
 			data4.VersionIndex = 66;
 
 			string url = parser.BuildUrl(data4);
@@ -56,7 +56,7 @@ namespace N2.Tests.Web
 		public void DataItemUrl_OfVersionedItem_IsPageUrl_AndVersionID()
 		{
 			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
-			data4.VersionOf = data3;
+			data4.VersionOf = part3;
 			data4.VersionIndex = 77;
 
 			string url = parser.BuildUrl(data4);

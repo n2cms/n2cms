@@ -4,6 +4,7 @@ using System.IO;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
+using N2.Edit.Versioning;
 
 namespace N2.Web
 {
@@ -20,6 +21,8 @@ namespace N2.Web
 		readonly bool ignoreExistingFiles;
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound;
+		public event EventHandler<UrlEventArgs> BuildingUrl;
+		public event EventHandler<UrlEventArgs> BuiltUrl;
 
 		/// <summary>Is set to the current database connection status.</summary>
 		protected bool IsOnline { get; set; }
@@ -42,7 +45,7 @@ namespace N2.Web
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = FindPath(webContext.Url).CurrentPage); }
 		}
 
 		/// <summary>Gets the current start page.</summary>
@@ -58,7 +61,23 @@ namespace N2.Web
 			set { Url.DefaultDocument = value; }
 		}
 
+		[Obsolete("Use FindPath")]
+		/// <summary>Finds the path associated with an url.</summary>
+		/// <param name="url">The url to the template to locate.</param>
+		/// <param name="startNode">The node to start finding path from if none supplied will start from StartNode</param>
+		/// <param name="remainingPath">The remaining path to search</param>
+		/// <returns>A PathData object. If no template was found the object will have empty properties.</returns>
 		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
+		{
+			return FindPath(url, startNode, remainingPath);
+		}
+
+		/// <summary>Finds the path associated with an url.</summary>
+		/// <param name="url">The url to the template to locate.</param>
+		/// <param name="startNode">The node to start finding path from if none supplied will start from StartNode</param>
+		/// <param name="remainingPath">The remaining path to search</param>
+		/// <returns>A PathData object. If no template was found the object will have empty properties.</returns>
+		public PathData FindPath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null) return PathData.Empty;
 			if (!IsOnline) return PathData.Empty;
@@ -88,7 +107,7 @@ namespace N2.Web
 
 			if (data.IsEmpty())
 			{
-				if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
+				if (!string.IsNullOrEmpty(DefaultDocument) && path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
 				{
 					// Try to find path without default document.
 					data = StartPage
@@ -96,7 +115,7 @@ namespace N2.Web
 						.UpdateParameters(requestedUrl.GetQueries());
 				}
 
-				if(data.IsEmpty())
+				if (data.IsEmpty())
 				{
 					// Allow user code to set path through event
 					if (PageNotFound != null)
@@ -110,7 +129,8 @@ namespace N2.Web
 			}
 
 			data.Ignore = !IgnoreExisting(webContext.HttpContext.Request.PhysicalPath);
-			return UseItemIfAvailable(item, data);
+			data = UseItemIfAvailable(item, data);
+			return data;
 		}
 
 		private static PathData UseItemIfAvailable(ContentItem item, PathData data)
@@ -171,16 +191,17 @@ namespace N2.Web
 			return null;
 		}
 
-		protected virtual ContentItem Parse(ContentItem current, string url)
+		protected virtual ContentItem Parse(ContentItem current, Url url)
 		{
 			if (current == null) throw new ArgumentNullException("current");
 			logger.Debug("Parsing " + url);
-			url = CleanUrl(url);
+			var path = CleanUrl(url.PathAndQuery);
 
-			if (url.Length == 0)
+			if (path.Length == 0)
 				return current;
 			
-			return current.GetChild(url) ?? NotFoundPage(url);
+			return current.GetChild(path) 
+				?? NotFoundPage(url);
 		}
 
 		/// <summary>Returns a page when  no page is found. This method will return the start page if the url matches the default content page property.</summary>
@@ -204,7 +225,10 @@ namespace N2.Web
 		{
 			url = Url.PathPart(url);
 			url = Url.ToRelative(url);
-			return url.TrimStart('~', '/');
+			url = url.TrimStart('~', '/');
+			if (url.EndsWith(DefaultDocument))
+				url = url.Substring(0, url.Length - DefaultDocument.Length);
+			return url;
 		}
 
 		private int? FindQueryStringReference(string url, params string[] parameters)
@@ -237,57 +261,86 @@ namespace N2.Web
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
 		/// <param name="item">The item whose url to compute.</param>
 		/// <returns>A friendly url to the supplied item.</returns>
-		public virtual string BuildUrl(ContentItem item)
+		public virtual Url BuildUrl(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 
-			ContentItem current = item;
-
 			if (item.VersionOf.HasValue)
 			{
-				return BuildUrl(item.VersionOf).ToUrl()
-					.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
+				ContentItem version = item.VersionOf;
+				if (version != null)
+					return BuildUrl(version)
+						.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
 			}
-
-			// move up until first real page
-			while (current != null && !current.IsPage)
+			else if (item.ID == 0)
 			{
-				current = current.Parent;
-			}
-
-			// no page found, use rewritten url
-			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
-
-			Url url;
-			if (host.IsStartPage(current))
-			{
-				// we move right up to the start page
-				url = "/";
-			}
-			else
-			{
-				// at least one node before the start page
-				url = new Url("/" + current.Name + current.Extension);
-				current = current.Parent;
-				// build path until a start page
-				while (current != null && !host.IsStartPage(current))
+				var page = Find.ClosestPage(item);
+				if (page != null && page != item)
 				{
-					url = url.PrependSegment(current.Name);
-					current = current.Parent;
+					return BuildUrl(page)
+						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
 				}
 			}
 
-			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+			var current = Find.ClosestPage(item);
 
-			if (item.IsPage && item.VersionOf.HasValue)
-				// the item was a version, add this information as a query string
-				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
-			else if (!item.IsPage)
+			// no page found, throw
+			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
+
+			Url url = BuildPageUrl(current, ref current);
+
+			if (current == null)
+				// no start page found, use rewritten url
+				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+
+			if (!item.IsPage)
 				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
-			return Url.ToAbsolute("~" + url);
+			var absoluteUrl = Url.ToAbsolute("~" + url);
+			if (BuiltUrl != null)
+			{
+				var args = new UrlEventArgs(item) { Url = absoluteUrl };
+				BuiltUrl(this, args);
+				return args.Url;
+			}
+			else
+				return absoluteUrl;
+		}
+
+		protected Url BuildPageUrl(ContentItem page, ref ContentItem current)
+		{
+			Url url = "/";
+			if (!host.IsStartPage(current))
+			{
+				if (BuildingUrl != null)
+				{
+					// build path until a start page
+					while (current != null && !host.IsStartPage(current))
+					{
+						var args = new UrlEventArgs(current);
+						BuildingUrl(this, args);
+						if (!string.IsNullOrEmpty(args.Url))
+						{
+							url = url.PrependSegment(Url.ToRelative(args.Url).TrimStart('~'));
+							break;
+						}
+						url = url.PrependSegment(current.Name);
+						current = current.Parent;
+					}
+				}
+				else
+				{
+					while (current != null && !host.IsStartPage(current))
+					{
+						url = url.PrependSegment(current.Name);
+						current = current.Parent;
+					}
+				}
+				url = url.SetExtension(page.Extension);
+			}
+			return url;
 		}
 
 		/// <summary>Checks if an item is startpage or root page</summary>

@@ -14,7 +14,7 @@ namespace N2.Tests.Web
             CreateDefaultStructure();
             mocks.ReplayAll();
 
-            string url = parser.BuildUrl(item1);
+            string url = parser.BuildUrl(page1);
             Assert.AreEqual("/", url);
         }
 
@@ -25,7 +25,7 @@ namespace N2.Tests.Web
 			wrapper.Url = "http://www.n2cms.com/";
             mocks.ReplayAll();
 
-            string url = parser.BuildUrl(item1_1);
+            string url = parser.BuildUrl(page1_1);
             Assert.AreEqual("/item1_1.aspx", url);
         }
 
@@ -36,7 +36,7 @@ namespace N2.Tests.Web
 			wrapper.Url = "http://www.n2cms.com&";
             mocks.ReplayAll();
 
-            string url = parser.BuildUrl(item2);
+            string url = parser.BuildUrl(page2);
             Assert.AreEqual("http://n2.libardo.com/", url);
         }
 
@@ -47,7 +47,7 @@ namespace N2.Tests.Web
 			wrapper.Url = "http://n2.libardo.com&";
             mocks.ReplayAll();
 
-            string url = parser.BuildUrl(item1_1);
+            string url = parser.BuildUrl(page1_1);
             Assert.AreEqual("http://www.n2cms.com/item1_1.aspx", url);
         }
 
@@ -75,10 +75,10 @@ namespace N2.Tests.Web
 		public void Url_ToItem_ThatIsVersion_IsTheUrl_OfTheMasterVersion_PlusVersionIndex()
 		{
 			CreateDefaultStructure();
-			var version = new PageItem { VersionIndex = 1, VersionOf = item1_1 };
+			var version = new PageItem { VersionIndex = 1, VersionOf = page1_1 };
 
-			var itemUrl = parser.BuildUrl(item1_1);
-			var url = parser.BuildUrl(version);
+			string itemUrl = parser.BuildUrl(page1_1);
+			string url = parser.BuildUrl(version);
 
 			itemUrl.ShouldBe("/item1_1.aspx");
 			url.ShouldBe("/item1_1.aspx?versionIndex=1");

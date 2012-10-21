@@ -26,22 +26,22 @@ namespace N2.Tests.Web
 		void AppendRegexPages()
 		{
 			regex = CreateOneItem<RegexPage>(++greatestID, "regex", startItem);
-			regex1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1", item1);
-			regex1_1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1_1", item1_1);
+			regex1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1", page1);
+			regex1_1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1_1", page1_1);
 		}
 
 		void AppendMasterPages()
 		{
 			master = CreateOneItem<MasterDetailsPage>(++greatestID, "master", startItem);
-			master1_1 = CreateOneItem<MasterDetailsPage>(++greatestID, "master1_1", item1);
-			master1_1_1 = CreateOneItem<MasterDetailsPage>(++greatestID, "master1_1_1", item1_1);
+			master1_1 = CreateOneItem<MasterDetailsPage>(++greatestID, "master1_1", page1);
+			master1_1_1 = CreateOneItem<MasterDetailsPage>(++greatestID, "master1_1_1", page1_1);
 		}
 
 		void AppendListPages()
 		{
 			list = CreateOneItem<ListDetailsPage>(++greatestID, "list", startItem);
-			list1_1 = CreateOneItem<ListDetailsPage>(++greatestID, "list1_1", item1);
-			list1_1_1 = CreateOneItem<ListDetailsPage>(++greatestID, "list1_1_1", item1_1);
+			list1_1 = CreateOneItem<ListDetailsPage>(++greatestID, "list1_1", page1);
+			list1_1_1 = CreateOneItem<ListDetailsPage>(++greatestID, "list1_1_1", page1_1);
 		}
 
 		[Test]

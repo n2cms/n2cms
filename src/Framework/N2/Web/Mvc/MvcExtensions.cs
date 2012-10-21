@@ -30,8 +30,8 @@ namespace N2.Web.Mvc
 		public static void InitTheme(this ControllerContext context)
 		{
 			var page = context.RequestContext.CurrentPage<ContentItem>()
-				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).ResolvePath(context.HttpContext.Request["returnUrl"]).StopItem
-				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).ResolvePath(context.HttpContext.Request.AppRelativeCurrentExecutionFilePath).StopItem
+				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).FindPath(context.HttpContext.Request["returnUrl"]).StopItem
+				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).FindPath(context.HttpContext.Request.AppRelativeCurrentExecutionFilePath).StopItem
 				?? context.RequestContext.StartPage();
 
 			InitTheme(context, page);

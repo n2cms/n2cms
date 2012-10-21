@@ -16,7 +16,7 @@ namespace N2.Tests.Serialization
 {
 	public abstract class SerializationTestsBase : ItemTestsBase
 	{
-		private delegate string BuildUrl(ContentItem item);
+		private delegate Url BuildUrl(ContentItem item);
 		protected DefinitionManager definitions;
 		protected ContentActivator activator;
 		protected IUrlParser parser;
@@ -54,7 +54,7 @@ namespace N2.Tests.Serialization
 											if (parent.Parent != null)
 												url = "/" + parent.Name + url;
 										}
-										return url;
+										return url.ToUrl();
 									}))
 				.Repeat.Any();
 			mocks.Replay(parser);

@@ -30,7 +30,7 @@ namespace N2.Web
 			Site site = host.GetSite(url);
 			if (site != null)
 				return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
-					?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+					?? Parse(persister.Get(site.StartPageID), url);
 
 			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey);
 		}
@@ -51,15 +51,13 @@ namespace N2.Web
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
 		/// <param name="item">The item whose url to compute.</param>
 		/// <returns>A friendly url to the supplied item.</returns>
-		public override string BuildUrl(ContentItem item)
+		public override Url BuildUrl(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 
-			ContentItem current = item;
-
 			if (item.VersionOf.HasValue)
 			{
-				return BuildUrl(item.VersionOf).ToUrl()
+				return BuildUrl(item.VersionOf)
 					.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
 			}
 			else if (item.ID == 0)
@@ -67,48 +65,26 @@ namespace N2.Web
 				var page = Find.ClosestPage(item);
 				if (page != null && page != item)
 				{
-					return BuildUrl(page).ToUrl()
+					return BuildUrl(page)
 						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
 						.SetQueryParameter("versionKey", item.GetVersionKey());
 				}
 			}
 
 			// move up until first real page
-			while(current != null && !current.IsPage)
-			{
-				current = current.Parent;
-			}
+			var current = Find.ClosestPage(item);
 
-			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+			// no page found, throw
+			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
 
-			Url url;
-			if (host.IsStartPage(current))
-			{
-				// we move right up to the start page
-				url = "/";
-			}
-			else
-			{
-				// at least one node before the start page
-				url = new Url("/" + current.Name + current.Extension);
-				current = current.Parent;
-				// build path until a start page
-				while (current != null && !host.IsStartPage(current))
-				{
-					url = url.PrependSegment(current.Name);
-					current = current.Parent;
-				}
-			}
+			Url url = BuildPageUrl(current, ref current);
+			current = FindStartPage(current);
 
 			// no start page found, use rewritten url
 			if (current == null)
 				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
-			if (item.IsPage && item.VersionOf.HasValue)
-				// the item was a version, add this information as a query string
-				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
-			else if(!item.IsPage)
+			if (!item.IsPage)
 				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
@@ -122,6 +98,13 @@ namespace N2.Web
 
             return GetHostedUrl(item, url, site);
         }
+
+		private ContentItem FindStartPage(ContentItem current)
+		{
+			if (IsRootOrStartPage(current))
+				return current;
+			return FindStartPage(current.Parent);
+		}
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {

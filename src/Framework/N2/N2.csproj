@@ -620,6 +620,7 @@
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
+    <Compile Include="Definitions\IUrlSource.cs" />
     <Compile Include="Web\JsonWriter.cs" />
     <Compile Include="Web\Messaging\Envelope.cs" />
     <Compile Include="Web\Messaging\IChannel.cs" />
@@ -687,6 +688,8 @@
     <Compile Include="Web\UI\WebControls\OrganizeSwitchAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
+    <Compile Include="Web\UrlEventArgs.cs" />
+    <Compile Include="Web\DirectUrlInjector.cs" />
     <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />

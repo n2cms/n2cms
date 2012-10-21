@@ -157,13 +157,22 @@ namespace N2.Persistence
                     return itemValue == null;
                 case Persistence.Comparison.NotNull:
 					return itemValue != null;
-                default:
+				case Persistence.Comparison.Like:
+					return CompareInvariant(itemValue);
+				case Persistence.Comparison.NotLike:
+					return !CompareInvariant(itemValue);
+				default:
 					bool? result = TryCompare(itemValue as IComparable);
 					if (result.HasValue)
 						return result.Value;
                     throw new NotSupportedException("Operator " + Comparison + " not supported for IsMatch " + Name);
             }
         }
+
+		private bool CompareInvariant(object itemValue)
+		{
+			return string.Equals(itemValue != null ? itemValue.ToString() : null, Value != null ? Value.ToString() : null, StringComparison.InvariantCultureIgnoreCase);
+		}
 
 		private bool? TryCompare(IComparable comparable)
 		{
