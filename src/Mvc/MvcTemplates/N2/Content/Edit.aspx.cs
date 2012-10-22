@@ -95,7 +95,7 @@ namespace N2.Edit
             btnPreview.Visible = isVersionable && isWritableByUser;
             btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
-			btnUnpublish.Visible = ie.CurrentItem.IsPublished();
+			btnUnpublish.Visible = isExisting && ie.CurrentItem.IsPublished();
 		}
 
 		protected override void OnLoad(EventArgs e)
