@@ -133,8 +133,13 @@ var initn2context = function (w) {
 
 			var memory = this.getMemory();
 			var action = this.getAction();
-			
-			var formats = { url: options.previewUrl, selected: options.path, memory: memory, action: action };
+
+			var formats = {
+				url: options.previewUrl,
+				selected: options.path,
+				memory: memory,
+				action: action 
+			};
 			$("a.templatedurl").each(function () {
 				var href = $(this).attr("data-url-template") || a.href;
 				for (var key in formats) {
@@ -148,6 +153,7 @@ var initn2context = function (w) {
 
 					href = href.replace(format, formats[key]);
 				}
+				href = href.replace("{query}", href.indexOf('?') >= 0 ? "&" : "?");
 				//console.log(a, a.href, " -> ", href);
 				this.href = href;
 			});
