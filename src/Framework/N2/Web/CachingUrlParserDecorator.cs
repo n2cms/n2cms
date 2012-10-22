@@ -17,7 +17,8 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
-		private static readonly object classLock = new object();
+		private static readonly object pathLock = new object();
+		private static readonly object urlLock = new object();
 		private CacheWrapper cache;
 
 		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache)
@@ -67,7 +68,42 @@ namespace N2.Web
 		/// <returns>A friendly url to the supplied item.</returns>
 		public Url BuildUrl(ContentItem item)
 		{
-			return inner.BuildUrl(item);
+			if (item.ID == 0)
+				return inner.BuildUrl(item);
+
+
+			var cacheKey = "N2.UrlCache" + webContext.Url.Authority.ToLower();
+			Dictionary<int, string> itemToUrlCache = cache.Get<Dictionary<int, string>>(cacheKey);
+			if (itemToUrlCache == null)
+			{
+				lock (urlLock)
+				{
+					itemToUrlCache = cache.Get<Dictionary<int, string>>(cacheKey);
+					if (itemToUrlCache == null)
+					{
+						itemToUrlCache = new Dictionary<int, string>();
+						cache.Add(cacheKey, itemToUrlCache, new CacheOptions { SlidingExpiration = SlidingExpiration });
+					}
+				}
+			}
+
+			bool exists;
+			string url;
+			lock (urlLock)
+			{
+				exists = itemToUrlCache.TryGetValue(item.ID, out url);
+			}
+
+			if (!exists)
+			{
+				url = inner.BuildUrl(item);
+				lock (urlLock)
+				{
+					itemToUrlCache[item.ID] = url;
+				}
+			}
+
+			return url;
 		}
 
 		/// <summary>Checks if an item is start or root page</summary>
@@ -147,7 +183,7 @@ namespace N2.Web
 			Dictionary<string, PathData> cachedPathData;
 			if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 			{
-				lock (classLock)
+				lock (pathLock)
 				{
 					if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 					{
@@ -174,7 +210,7 @@ namespace N2.Web
 			else
 			{
 				// The requested url doesn't exist in the cached path data
-				lock (classLock)
+				lock (pathLock)
 				{
 					if (!cachedPathData.TryGetValue(urlKey, out data))
 					{

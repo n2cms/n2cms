@@ -456,7 +456,7 @@ namespace N2.Tests.Definitions
 		[Test, Obsolete]
 		public void Item_Inherits_AllowedReaders_FromParent()
 		{
-			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext(), new WebElement());
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext(), new HostSection());
 			enforcer.Start();
 			
 			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
@@ -479,7 +479,7 @@ namespace N2.Tests.Definitions
 		[Test, Obsolete]
 		public void Item_Inherits_AllowedEditors_FromParent()
 		{
-			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext(), new WebElement());
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext(), new HostSection());
 			enforcer.Start();
 
 			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);

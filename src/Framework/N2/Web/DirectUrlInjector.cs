@@ -17,20 +17,13 @@ namespace N2.Web
 		private IUrlParser parser;
 		private IContentItemRepository repository;
 		private IDefinitionManager definitions;
-		private StructureBoundDictionaryCache<int, CachedDirectUrl> outboundCache;
 
-		public class CachedDirectUrl
-		{
-			public string Url { get; set; }
-		}
-
-		public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, IDefinitionManager definitions, StructureBoundDictionaryCache<int, CachedDirectUrl> outboundCache)
+		public DirectUrlInjector(IHost host, IUrlParser parser, IContentItemRepository repository, IDefinitionManager definitions)
 		{
 			this.host = host;
 			this.parser = parser;
 			this.repository = repository;
 			this.definitions = definitions;
-			this.outboundCache = outboundCache;
 		}
 
 		void parser_BuildingUrl(object sender, UrlEventArgs e)
@@ -39,11 +32,10 @@ namespace N2.Web
 			if (source == null || e.AffectedItem.ID == 0)
 				return;
 
-			var direct = outboundCache.GetValue(e.AffectedItem.ID, (id) => new CachedDirectUrl { Url = source.DirectUrl });
-			if (string.IsNullOrEmpty(direct.Url))
+			if (string.IsNullOrEmpty(source.DirectUrl))
 				return;
 
-			e.Url = direct.Url;
+			e.Url = source.DirectUrl;
 		}
 
 		void parser_PageNotFound(object sender, PageNotFoundEventArgs e)

@@ -26,14 +26,14 @@ namespace N2.Security
 		private readonly Web.IWebContext webContext;
 		private int permissionDeniedHttpCode;
 
-		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, ContentActivator activator, Web.IUrlParser urlParser, Web.IWebContext webContext, Configuration.WebElement config)
+		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, ContentActivator activator, Web.IUrlParser urlParser, Web.IWebContext webContext, Configuration.HostSection config)
 		{
 			this.webContext = webContext;
 			this.persister = persister;
 			this.security = security;
 			this.activator = activator;
 			this.urlParser = urlParser;
-			this.permissionDeniedHttpCode = config.PermissionDeniedHttpCode;
+			this.permissionDeniedHttpCode = config.Web.PermissionDeniedHttpCode;
 		}
 
 		#region Event Handlers

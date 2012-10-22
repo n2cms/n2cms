@@ -18,7 +18,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 			base.parser = parser = TestSupport.Setup(persister, wrapper, host);
-			injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)), new StructureBoundDictionaryCache<int, DirectUrlInjector.CachedDirectUrl>(persister));
+			injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)));
 			injector.Start();
 			
 			CreateDefaultStructure();

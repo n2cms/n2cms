@@ -23,7 +23,7 @@ namespace N2.Tests.Web
 			host.ReplaceSites(host.DefaultSite, new Site[] { host.DefaultSite, new Site(1, 2, "n2cms.com"), new Site(1, 4, "libardo.com") });
 
 			base.parser = parser = new MultipleSitesParser(persister, wrapper, host, new N2.Plugin.ConnectionMonitor(), new HostSection());
-			injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)), new StructureBoundDictionaryCache<int,DirectUrlInjector.CachedDirectUrl>(persister));
+			injector = new DirectUrlInjector(host, parser, repository, TestSupport.SetupDefinitions(typeof(UrlSourcePage), typeof(DataItem)));
 			injector.Start();
 			Url.DefaultExtension = "/";
 		}
