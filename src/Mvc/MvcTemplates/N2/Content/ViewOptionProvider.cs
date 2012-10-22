@@ -30,7 +30,7 @@ namespace N2.Edit
 		{
 			return new ToolbarOption[]{
 				new ToolbarOption{
-					Title = "Published",
+					Title = "View published",
 					Target = Targets.Top,
 					SortOrder = 0,
 					Name = "Published",
@@ -38,7 +38,7 @@ namespace N2.Edit
 					Selected = webContext.HttpContext.GetViewPreference(defaultViewPreference) == ViewPreference.Published
 				},
 				new ToolbarOption{
-					Title = "Draft",
+					Title = "Preview drafts",
 					Target = Targets.Top,
 					SortOrder = 1,
 					Name = "Draft",

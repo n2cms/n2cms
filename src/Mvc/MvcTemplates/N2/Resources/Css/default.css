@@ -170,11 +170,12 @@ body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:
 			background-color:#fff;
 			font-family:Arial,Sans-Serif;
 			font-size:10px;
+        	padding-left:16px;
         }
         #top .toolbox .commandOptions .optionGroup .option.selected,
         #pageTools .toolbox .commandOptions .optionGroup .option.selected {
+			background: #f4f4f4 url(../icons/bullet_yellow.png) no-repeat 0% 50%;
         	font-weight: bold;
-        	background-color: #f8f8f8;
         }
     #top .toolbox .commandOptions .opener:hover,
     #pageTools .toolbox .commandOptions .opener:hover {
