@@ -107,7 +107,9 @@ body.framed .formField label{
 body.framed .info,
 body.framed .validator{
 	display:block;
-	background:#D6D9D8 none no-repeat 5px 50%;
+	background-color:#D6D9D8;
+	background-repeat: no-repeat;
+	background-position: 5px 50%;
 	margin:10px 0;
 	padding:10px;
 	border:solid 1px #cecac7;
