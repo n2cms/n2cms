@@ -123,10 +123,16 @@ namespace N2.Edit.Trash
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
-			stateChanger.ChangeTo(item, ContentState.Deleted);
+			
+			ExpireTrashedItemsRecursive(item);
+		}
 
-            foreach (ContentItem child in item.Children)
-                ExpireTrashedItem(child);
+		private void ExpireTrashedItemsRecursive(ContentItem item)
+		{
+			if (item.State == ContentState.Published)
+				stateChanger.ChangeTo(item, ContentState.Deleted);
+			foreach (ContentItem child in item.Children)
+				ExpireTrashedItemsRecursive(child);
 		}
 
 		/// <summary>Restores an item to the original location.</summary>
@@ -143,8 +149,10 @@ namespace N2.Edit.Trash
 		/// <param name="item">The item to reset.</param>
 		public virtual void RestoreValues(ContentItem item)
 		{
-			item.Name = (string)item["FormerName"];
-			item.Expires = (DateTime?)item["FormerExpires"];
+			if (item[FormerName] != null)
+				item.Name = (string)item["FormerName"];
+			if (item[FormerExpires] != null)
+				item.Expires = (DateTime?)item["FormerExpires"];
 			if (item[FormerState] != null)
 				stateChanger.ChangeTo(item, (ContentState)item[FormerState]);
 			item[FormerName] = null;
@@ -153,8 +161,15 @@ namespace N2.Edit.Trash
 			item[FormerState] = null;
 			item[DeletedDate] = null;
 
-            foreach (ContentItem child in item.Children)
-                RestoreValues(child);
+			RestoreValuesRecursive(item);
+		}
+
+		private void RestoreValuesRecursive(ContentItem item)
+		{
+			if (item.State == ContentState.Deleted)
+				stateChanger.ChangeTo(item, ContentState.Published);
+			foreach (ContentItem child in item.Children)
+				RestoreValuesRecursive(child);
 		}
 
         /// <summary>Determines wether an item has been thrown away.</summary>

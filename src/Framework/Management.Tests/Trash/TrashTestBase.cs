@@ -47,6 +47,7 @@ namespace N2.Edit.Tests.Trash
             T i = new T();
             i.Name = name;
             i.ID = id;
+			i.State = ContentState.Published;
             i.AddTo(parent);
 			repository.SaveOrUpdate(i);
             return i;

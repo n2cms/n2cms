@@ -13,6 +13,7 @@ using Rhino.Mocks;
 using N2.Tests;
 using N2.Persistence.Proxying;
 using N2.Tests.Fakes;
+using Shouldly;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -39,7 +40,7 @@ namespace N2.Edit.Tests.Trash
         }
 
         [Test]
-        public void ChildrenOf_ThrownItem_AreExpired()
+        public void ChildrenOf_ThrownItem_AreNoLongerPublished()
         {
             TrashHandler th = CreateTrashHandler();
 
@@ -48,10 +49,8 @@ namespace N2.Edit.Tests.Trash
 
             th.Throw(item);
 
-            Assert.That(child1.Expires, Is.Not.Null);
-            Assert.That(child2.Expires, Is.Not.Null);
-            Assert.That(child1.Expires, Is.GreaterThan(DateTime.Now.AddSeconds(-10)));
-            Assert.That(child2.Expires, Is.GreaterThan(DateTime.Now.AddSeconds(-10)));
+			child1.State.ShouldBe(ContentState.Deleted);
+			child2.State.ShouldBe(ContentState.Deleted);
         }
 
         [Test]
@@ -66,9 +65,38 @@ namespace N2.Edit.Tests.Trash
 
             th.Restore(item);
 
-            Assert.That(child1.Expires, Is.Null);
-            Assert.That(child2.Expires, Is.Null);
+			child1.State.ShouldBe(ContentState.Published);
+			child2.State.ShouldBe(ContentState.Published);
         }
+
+		[Test]
+		public void Drafts_AreNotPublished_WhenRestored()
+		{
+			TrashHandler th = CreateTrashHandler();
+
+			item.State = ContentState.Draft;
+			
+			th.Throw(item);
+
+			th.Restore(item);
+
+			item.State.ShouldBe(ContentState.Draft);
+		}
+
+		[Test]
+		public void DraftChildren_AreNotPublished_WhenRestored()
+		{
+			TrashHandler th = CreateTrashHandler();
+
+			var child1 = CreateItem<ThrowableItem>(5, "child1", item);
+			child1.State = ContentState.Draft;
+
+			th.Throw(item);
+
+			th.Restore(item);
+
+			child1.State.ShouldBe(ContentState.Draft);
+		}
 
         [Test]
         public void ThrownItem_NameIsCleared()
