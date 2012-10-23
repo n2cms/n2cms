@@ -67,7 +67,6 @@ body.rightExpanded #content { margin-right:265px; }
 	.framed .selectorButtons input:hover { border-color:#999; background-color:#f0f0f0; }
 	.framed .selectorButtons .clearButton { background-image:url(../img/smallico/close_2.png); border:none; margin-left:-20px; height:20px; width:20px; }
 	.framed .selectorButtons .selectorButton { background-image:url(../icons/link.png); }
-	.framed .editDetail .selectorButtons,
 	.framed .editDetail .revealer { opacity:.15; }
 	.framed .editDetail:hover .selectorButtons,
 	.framed .editDetail:hover .revealer { opacity:1; transition: opacity .5s ease-in-out; -moz-transition: opacity .5s ease-in-out; -webkit-transition: opacity .5s ease-in-out; }

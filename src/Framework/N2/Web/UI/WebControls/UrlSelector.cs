@@ -154,7 +154,7 @@ namespace N2.Web.UI.WebControls
 													  );
 			cb.Value = "x";
 			cb.Attributes["title"] = Utility.GetGlobalResourceString("UrlSelector", "Clear") ?? "Clear";
-			cb.Attributes["class"] = "clearButton";
+			cb.Attributes["class"] = "clearButton revealer";
 			cb.Attributes["onclick"] = "document.getElementById('" + ClientID + "').value = '';";
 
 			span.RenderControl(writer);
