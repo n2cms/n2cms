@@ -3,10 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using N2.Definitions;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	[PartDefinition("Query viewer", TemplateUrl = "~/Addons/UITests/UI/QueryViewer.ascx", SortOrder = 20000)]
+	[Versionable(AllowVersions.No)]
+	[Throwable(AllowInTrash.No)]
 	public class QueryViewerPart : TestItemBase
 	{
 
