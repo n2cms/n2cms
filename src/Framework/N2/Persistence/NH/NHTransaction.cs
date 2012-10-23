@@ -2,11 +2,13 @@ using System;
 using NHibernate;
 using System.Data;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
 	public class NHTransaction : ITransaction
 	{
+		Logger<NHTransaction> logger;
 		NHibernate.ITransaction transaction;
 		private SessionContext context;
 		bool isOriginator = true;
@@ -16,9 +18,6 @@ namespace N2.Persistence.NH
 
 		public NHTransaction(ISessionProvider sessionProvider)
 		{
-			Debug.WriteLine("Transaction {");
-			Debug.Indent();
-
 			context = sessionProvider.OpenSession;
 		    
 			ISession session = context.Session;
@@ -29,6 +28,9 @@ namespace N2.Persistence.NH
 				transaction.Begin(sessionProvider.Isolation.Value);
 			else
                 transaction.Begin();
+
+			logger.InfoFormat("Begin {0}, transaction:{1}, isOriginator:{2}, isolation:{3} [", GetHashCode(), transaction.GetHashCode(), isOriginator, sessionProvider.Isolation);
+			logger.Indent();
 
 			if (context.Transaction != null)
 			{
@@ -45,12 +47,16 @@ namespace N2.Persistence.NH
 		{
 			if (isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
 			{
-				Debug.WriteLine("Commit");
+				logger.InfoFormat("Committing {0}", transaction.GetHashCode());
 				transaction.Commit();
 				IsCommitted = true;
 				RemoveFromContext();
 
 				OnCommit();
+			}
+			else
+			{
+				logger.InfoFormat("Not commiting {0}, isOriginator:{1}, wasCommitted:{2}, wasRolledBack:{3}", transaction.GetHashCode(), isOriginator, transaction.WasCommitted, transaction.WasRolledBack);
 			}
 		}
 
@@ -65,12 +71,16 @@ namespace N2.Persistence.NH
 		{
 			if (!transaction.WasCommitted && !transaction.WasRolledBack)
 			{
-				Debug.WriteLine("Rollback");
+				logger.WarnFormat("Rollback {0}", transaction.GetHashCode());
 				transaction.Rollback();
 				IsRollbacked = true;
 				RemoveFromContext();
 
 				OnRollback();
+			}
+			else if (!transaction.WasCommitted)
+			{
+				logger.WarnFormat("Not rollbacking {0}, wasCommitted:{1}, wasRolledBack:{2}", transaction.GetHashCode(), transaction.WasCommitted, transaction.WasRolledBack);
 			}
 		}
 
@@ -86,14 +96,15 @@ namespace N2.Persistence.NH
 
         public void Dispose()
 		{
-			Debug.Unindent();
-			Debug.WriteLine("}");
+			logger.Unindent();
 			if (isOriginator)
 			{
 				Rollback();
 				transaction.Dispose();
 				RemoveFromContext();
 			}
+			logger.Info("]");
+
 			OnDispose();
 		}
 
@@ -108,7 +119,10 @@ namespace N2.Persistence.NH
 		private void RemoveFromContext()
 		{
 			if (object.ReferenceEquals(context.Transaction, this))
+			{
+				logger.DebugFormat("Removing context transaction {0}", this.GetHashCode());
 				context.Transaction = null;
+			}
 		}
 
 		/// <summary>Invoked after the transaction has been committed.</summary>
