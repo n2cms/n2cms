@@ -408,7 +408,7 @@ namespace N2.Engine
 		public override void Debug(string format, object[] args)
 		{
 			if (logger.IsDebugEnabled)
-				logger.DebugFormat(Prefix + format, format, args);
+				logger.DebugFormat(Prefix + format, args);
 		}
 
 		public override void Indent()
