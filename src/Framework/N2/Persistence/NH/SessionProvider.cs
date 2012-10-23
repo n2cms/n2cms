@@ -19,6 +19,7 @@ namespace N2.Persistence.NH
 		private readonly ISessionFactory nhSessionFactory;
         private FlushMode flushAt = FlushMode.Commit;
 		private System.Data.IsolationLevel? isolation;
+		private bool autoStartTransaction;
 
 		public System.Data.IsolationLevel? Isolation
 		{
@@ -32,6 +33,7 @@ namespace N2.Persistence.NH
 			this.webContext = webContext;
 			this.interceptorFactory = interceptorFactory;
 			this.isolation = config.Isolation;
+			this.autoStartTransaction = config.AutoStartTransaction;
 			this.CacheEnabled = config.Caching;
 		}
 
@@ -67,6 +69,8 @@ namespace N2.Persistence.NH
 					s.FlushMode = FlushAt;
 					CurrentSession = sc = new SessionContext(this, s);
 					Debug.WriteLine("Session create " + sc.GetHashCode());
+					if (autoStartTransaction)
+						sc.Transaction = BeginTransaction();
 				}
 				else
 				{
@@ -90,6 +94,9 @@ namespace N2.Persistence.NH
 
             if (sc != null)
             {
+				if (autoStartTransaction && sc.Transaction != null)
+					sc.Transaction.Commit();
+
                 sc.Session.Dispose();
                 CurrentSession = null;
             }
