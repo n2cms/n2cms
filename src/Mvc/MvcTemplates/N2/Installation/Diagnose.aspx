@@ -75,6 +75,9 @@
 						</td>
 					</tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
+					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
+					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
+					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
