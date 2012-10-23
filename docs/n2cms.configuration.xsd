@@ -589,6 +589,14 @@
 								<xs:complexType>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="maximumPerItem" type="xs:int" default="100" />
+									<xs:attribute name="defaultViewMode">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Draft"/>
+												<xs:enumeration value="Published"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="fileSystem" minOccurs="0">
