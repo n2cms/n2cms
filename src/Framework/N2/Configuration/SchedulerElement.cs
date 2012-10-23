@@ -11,6 +11,14 @@ namespace N2.Configuration
             set { base["enabled"] = value; }
         }
 
+		/// <summary>Run scheduled actions in parallel.</summary>
+		[ConfigurationProperty("asyncActions", DefaultValue = true)]
+		public bool AsyncActions
+		{
+			get { return (bool)base["asyncActions"]; }
+			set { base["asyncActions"] = value; }
+		}
+
         [ConfigurationProperty("interval", DefaultValue = 60)]
         public int Interval
         {

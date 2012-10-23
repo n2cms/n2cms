@@ -117,7 +117,7 @@ namespace N2.Edit
 
 		protected virtual IEnumerable<MetaInfo> GetMetaInformation(ContentItem item)
 		{
-			if (Languages.IsLanguageRoot(item))
+			if (Languages.IsLanguageRoot(item) && Languages.GetLanguage(item) != null)
 				yield return new MetaInfo { Name = "language", Text = Languages.GetLanguage(item).LanguageCode };
 			if(!item.IsPage)
 				yield return new MetaInfo { Name = "zone", Text = item.ZoneName };

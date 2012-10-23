@@ -26,6 +26,7 @@ namespace N2.Plugin.Scheduling
 		IErrorNotifier errorHandler;
 		IEngine engine;
 		private bool enabled;
+		private bool asyncActions;
 
 		public Scheduler(IEngine engine, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler, ScheduledAction[] registeredActions, Configuration.EngineSection config)
         {
@@ -36,6 +37,7 @@ namespace N2.Plugin.Scheduling
 			this.errorHandler = errorHandler;
 
 			this.enabled = config.Scheduler.Enabled;
+			this.asyncActions = config.Scheduler.AsyncActions;
 			if (!string.IsNullOrEmpty(config.Scheduler.ExecuteOnMachineNamed))
 				if (config.Scheduler.ExecuteOnMachineNamed != Environment.MachineName)
 					this.enabled = false;
@@ -100,8 +102,7 @@ namespace N2.Plugin.Scheduling
                 ScheduledAction action = actions[i];
                 if (action.ShouldExecute())
                 {
-                    action.IsExecuting = true;
-					worker.DoWork(delegate
+					Action work = delegate
                     {
                         try
                         {
@@ -152,7 +153,13 @@ namespace N2.Plugin.Scheduling
                         {
                             errorHandler.Notify(ex);
                         }
-                    });
+                    };
+
+					action.IsExecuting = true;
+					if (asyncActions)
+						worker.DoWork(work);
+					else
+						work();
 
                     if (action.Repeat == Repeat.Once)
                     {
