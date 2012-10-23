@@ -85,8 +85,8 @@ namespace N2.Edit
             else
                 hlCancel.NavigateUrl = CancelUrl();
 
-            bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish)
-				&& ie.CurrentItem.IsPage;
+            bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+			bool isPubliccableItem = ie.CurrentItem.IsPage || Find.ClosestPage(ie.CurrentItem) == null;
 			bool isVersionable = Versions.IsVersionable(ie.CurrentItem);
             bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
