@@ -141,9 +141,13 @@ namespace N2.Persistence.Search
 				}
 				catch (Exception ex)
 				{
-					errors.Notify(ex);
+					AppendError(action, ex);
 				}
-				RetryFailedActions();
+
+				if (async)
+					RetryFailedActions();
+				else if (action.ErrorCount < maxErrorsPerWorkItem)
+					original();
 			};
         }
 
@@ -200,25 +204,22 @@ namespace N2.Persistence.Search
 					Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
 					Action = () =>
 					{
+						// get the item to update using a session on this thread
+						var item = persister.Get(itemID);
+						if (item == null)
+							return;
+
+						// update the index
+						currentWork = "Indexing " + item.Title + " #" + itemID;
+						indexer.Update(item);
+
 						var childrenIdsToReindex = new List<int>();
-						using (persister)
+						if (affectsChildren)
 						{
-							// get the item to update using a session on this thread
-							var item = persister.Get(itemID);
-							if (item == null)
-								return;
-
-							// update the index
-							currentWork = "Indexing " + item.Title + " #" + itemID;
-							indexer.Update(item);
-
-							if (affectsChildren)
+							// get a list of child ids to update, and wait until session is closed to schedule reindexing
+							foreach (var child in item.Children)
 							{
-								// get a list of child ids to update, and wait until session is closed to schedule reindexing
-								foreach (var child in item.Children)
-								{
-									childrenIdsToReindex.Add(child.ID);
-								}
+								childrenIdsToReindex.Add(child.ID);
 							}
 						}
 
