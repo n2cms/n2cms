@@ -86,11 +86,11 @@
 		<ItemGroup>
 			<nugetFrameworkBinFiles Include="$(ManagementFolder)\bin\N2*.dll;
 											 $(ManagementFolder)\bin\N2*.pdb;
-											 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;
-											 $(LibFolder)\NHibernate.Caches.*.dll;"
+											 $(SrcFolder)\Framework\Packaging\bin\$(Configuration)\N2.Packaging.dll;"
 									Exclude="$(ManagementFolder)\bin\N2.???;
 											 $(ManagementFolder)\bin\N2.Security.*;
 											 $(ManagementFolder)\bin\N2.Templates.*;" />
+      <luceneBinFiles Include="$(SrcFolder)\packages\Lucene.Net.3.0.3-RC2\lib\**\Lucene.*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(nugetFrameworkBinFiles)" DestinationFolder="$(Management-NugetFolder)\lib" />
 
@@ -98,8 +98,10 @@
 		<Delete Files="$(Management-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolder)\content\N2\N2.zip')" />
 		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolder)\content\N2\" />
 		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolder)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
+    <!-- Include lucene since people have problems with pre-release packages TODO: remove once rtm-->
+    <Copy SourceFiles="@(luceneBinFiles)" DestinationFolder="$(Management-NugetFolder)\lib\%(RecursiveDir)" />
 
-		<ItemGroup>
+    <ItemGroup>
 			<managementNugetIncludes Include="$(BuildFolder)\Nuget\Management\**\*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(managementNugetIncludes)" DestinationFolder="$(Management-NugetFolder)\%(RecursiveDir)" />
