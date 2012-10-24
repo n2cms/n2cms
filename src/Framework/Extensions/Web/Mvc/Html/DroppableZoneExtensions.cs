@@ -1,14 +1,16 @@
 using System.Web;
 using System.Web.Mvc;
 using N2.Web.UI.WebControls;
+using System;
 
 namespace N2.Web.Mvc.Html
 {
 	public static class DroppableZoneExtensions
 	{
+		[Obsolete("Use e.g. html.ControlPanelState()")]
         public static ControlPanelState ControlPanelState(this HttpContextBase context)
         {
-            return N2.Web.UI.WebControls.ControlPanel.GetState(N2.Context.Current.SecurityManager, context.User, context.Request.QueryString);
+            return N2.Web.UI.WebControls.ControlPanel.GetState(Context.Current);
         }
 
         /// <summary>

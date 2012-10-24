@@ -66,13 +66,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\packages\Castle.Windsor.2.5.4\lib\net35\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
@@ -165,6 +165,7 @@
     <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
     <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
     <Compile Include="Definitions\Items\TitleTransformer.cs" />
+    <Compile Include="Details\EditableItemTest.cs" />
     <Compile Include="Details\DisplayableTokensTest.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EditableChildrenTest.cs" />
@@ -176,13 +177,18 @@
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
     <Compile Include="Edit\Items\NotVersionableItem.cs" />
+    <Compile Include="Edit\Items\WidthType.cs" />
     <Compile Include="Edit\NodeAdapterTests.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionRepositoryTests.cs" />
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
-    <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
-    <Compile Include="Edit\WhileNavigatingToTheManagementInterface.cs" />
+    <Compile Include="Edit\EditUrlManagerTests_Editing.cs" />
+    <Compile Include="Edit\EditUrlManagerTests_Managing.cs" />
     <Compile Include="Engine\TypeCacheTests.cs" />
     <Compile Include="Engine\TypeFinderTests.cs" />
+    <Compile Include="Fakes\FakeCacheWrapper.cs" />
+    <Compile Include="Fakes\FakeProvider.cs" />
+    <Compile Include="Persistence\ChildrenTests.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
     <Compile Include="Engine\Items\ItemAC.cs" />
@@ -209,7 +215,11 @@
     <Compile Include="Linq\LinqTestsBase.cs" />
     <Compile Include="Linq\VanillaLinqingTests.cs" />
     <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
+    <Compile Include="Persistence\ContentPersister_ContentSourcesTests.cs" />
+    <Compile Include="Persistence\Definitions\ActiveContentItem.cs" />
+    <Compile Include="Persistence\IActiveContentTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
+    <Compile Include="Persistence\NH\ItemRepositoryTests_Find.cs" />
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Persistence\NH\TagsRepositoryTests.cs" />
@@ -217,6 +227,11 @@
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_VirtualDirectory.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource_MultipleSites.cs" />
+    <Compile Include="Web\Items\UrlSourcePage.cs" />
+    <Compile Include="Web\UrlParser_Events.cs" />
+    <Compile Include="Web\UrlParser_IUrlSource.cs" />
     <Compile Include="Web\Drawing\ImageResizerTests.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />
@@ -226,10 +241,14 @@
     <Compile Include="Web\Parsing\Extensions.cs" />
     <Compile Include="Web\Parsing\WikiParserTests.cs" />
     <Compile Include="Web\Parsing\TokenizerTests.cs" />
+    <Compile Include="Web\Parts\ItemCopyerTests.cs" />
+    <Compile Include="Web\Parts\ItemMoverTests.cs" />
+    <Compile Include="Web\Parts\CreateUrlProviderTests.cs" />
     <Compile Include="Web\Parts\PartsExtensionsTests.cs" />
     <Compile Include="Web\PathDataTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Web\JsonWriterTests.cs" />
+    <Compile Include="Web\WebExtensionsTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
@@ -298,7 +317,7 @@
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
     <Compile Include="Persistence\NH\TrailTrackerTests.cs" />
-    <Compile Include="Persistence\NH\VersionManagerTests.cs" />
+    <Compile Include="Edit\Versioning\VersionManagerTests.cs" />
     <Compile Include="Plugin\PlugIn3.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
     <Compile Include="Plugin\PluginFinderTests.cs" />
@@ -404,6 +423,7 @@
     <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
     <Compile Include="Web\PartsAdapterTest.cs" />
     <Compile Include="Workflow\Items\StatefulItem.cs" />
+    <Compile Include="Workflow\SHould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

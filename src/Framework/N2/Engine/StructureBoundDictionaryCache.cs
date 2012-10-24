@@ -26,17 +26,14 @@ namespace N2.Engine
 			var dictionary = base.GetValue(() => new Dictionary<K, V>());
 
 			V value = default(V);
-			if (!dictionary.TryGetValue(key, out value))
+			lock (this)
 			{
-				lock (this)
+				if (!dictionary.TryGetValue(key, out value))
 				{
-					if (!dictionary.TryGetValue(key, out value))
-					{
-						value = valueFactoryMethod(key);
-						dictionary[key] = value;
-						if (DictionaryValueCreated != null)
-							DictionaryValueCreated.Invoke(this, new ValueEventArgs<V> { Value = value });
-					}
+					value = valueFactoryMethod(key);
+					dictionary[key] = value;
+					if (DictionaryValueCreated != null)
+						DictionaryValueCreated.Invoke(this, new ValueEventArgs<V> { Value = value });
 				}
 			}
 

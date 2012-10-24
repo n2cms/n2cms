@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
 	/// <summary>
 	/// A view engine that only forwards to the inner view engine when the route is the the allowed route.
 	/// </summary>
-	public class PrivateViewEngineDecorator : IViewEngine
+	public class PrivateViewEngineDecorator : IViewEngine, IDecorator<IViewEngine>
 	{
 		IViewEngine inner;
 		RouteBase allwedRoute;
@@ -51,5 +52,10 @@ namespace N2.Web.Mvc
 		}
 
 		#endregion
-	}
+
+        public IViewEngine Component
+        {
+            get { return inner; }
+        }
+    }
 }

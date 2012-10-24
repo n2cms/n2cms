@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web;
 using N2.Engine;
 using N2.Engine.Providers;
+using System.Web.Caching;
 
 namespace N2.Web
 {
@@ -161,6 +162,12 @@ namespace N2.Web
 		public void Close()
 		{
 			CurrentContext.Close();
+		}
+
+		/// <summary>Retrieves the http context cache.</summary>
+		public Cache Cache
+		{
+			get { return CurrentContext.Cache; }
 		}
 
 		#region IDisposable Members

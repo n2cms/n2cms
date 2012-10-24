@@ -3,6 +3,8 @@ using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
+using N2.Edit.Versioning;
+using System;
 
 namespace N2.Web.Parts
 {
@@ -14,14 +16,18 @@ namespace N2.Web.Parts
 		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
+		private IVersionManager versions;
+		private ContentVersionRepository versionRepository;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator, IVersionManager versions, ContentVersionRepository versionRepository)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
 			this.definitions = definitions;
 			this.activator = activator;
             this.navigator = navigator;
+			this.versions = versions;
+			this.versionRepository = versionRepository;
 		}
 
 		public override string Name
@@ -41,34 +47,39 @@ namespace N2.Web.Parts
 			}
 			else
 			{
-				response["redirect"] = request["returnUrl"];
 				response["dialog"] = "no";
-				CreateItem(template, request);
+				response["redirect"] = CreateItem(template, request);
 			}
 
 			return response;
 		}
 
-		private void CreateItem(TemplateDefinition template, NameValueCollection request)
+		private string CreateItem(TemplateDefinition template, NameValueCollection request)
         {
-            ContentItem parent = navigator.Navigate(request["below"]);
-			
+			var path = new PathData(navigator.Navigate(request["below"]));
+			if (!versionRepository.TryParseVersion(request[PathData.VersionQueryKey], request["versionKey"], path))
+				path.CurrentItem = versions.AddVersion(path.CurrentItem, asPreviousVersion: false);
+			var parent = path.CurrentItem;
+
 			ContentItem item = activator.CreateInstance(template.Definition.ItemType, parent);
             item.ZoneName = request["zone"];
 			item.TemplateKey = template.Name;
-            
-            string before = request["before"];
-            if (!string.IsNullOrEmpty(before))
-			{
-				ContentItem beforeItem = navigator.Navigate(before);
-                int newIndex = parent.Children.IndexOf(beforeItem);
-                Utility.Insert(item, parent, newIndex);
 
-                foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
-                    persister.Repository.SaveOrUpdate(sibling);
+			string beforeVersionKey = request["beforeVersionKey"];
+			string beforeSortOrder = request["beforeSortOrder"];
+            string before = request["before"];
+			if (string.IsNullOrEmpty(beforeSortOrder))
+			{
+				item.AddTo(parent);
+			}
+			else
+			{
+				int index = int.Parse(beforeSortOrder);
+				parent.InsertChildBefore(item, index);
 			}
 
-            persister.Save(item);
+			versionRepository.Save(parent);
+			return request["returnUrl"].ToUrl().SetQueryParameter(PathData.VersionQueryKey, parent.VersionIndex);
         }
 
 		private string GetRedirectUrl(TemplateDefinition template, NameValueCollection request)
@@ -78,20 +89,37 @@ namespace N2.Web.Parts
 			string before = request["before"];
 			string below = request["below"];
 
-			Url url;
+			Url url = null;
 			if (!string.IsNullOrEmpty(before))
 			{
                 ContentItem beforeItem = navigator.Navigate(before);
-				url = managementPaths.GetEditNewPageUrl(beforeItem, template.Definition, zone, CreationPosition.Before);
+				if (beforeItem != null)
+					url = managementPaths.GetEditNewPageUrl(beforeItem, template.Definition, zone, CreationPosition.Before);
 			}
-			else
+			if (url == null)
 			{
                 ContentItem parent = navigator.Navigate(below);
 				url = managementPaths.GetEditNewPageUrl(parent, template.Definition, zone, CreationPosition.Below);
 			}
+			string beforeSortOrder = request["beforeSortOrder"];
+			url = url.SetQueryParameter("beforeSortOrder", beforeSortOrder);
 
+			if (!string.IsNullOrEmpty(request[PathData.VersionQueryKey]))
+				url = url.SetQueryParameter(PathData.VersionQueryKey, request[PathData.VersionQueryKey]);
+			
+			//if (!string.IsNullOrEmpty(request["versionKey"]))
+			//    url = url.SetQueryParameter("versionKey", request["versionKey"]);
+			if (!string.IsNullOrEmpty(request["belowVersionKey"]))
+				url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+			if (!string.IsNullOrEmpty(request["belowVersionKey"]))
+				url = url.SetQueryParameter("versionKey", request["belowVersionKey"]);
+			if (!string.IsNullOrEmpty(request["beforeVersionKey"]))
+				url = url.SetQueryParameter("beforeVersionKey", request["beforeVersionKey"]);
+	
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
-				url = url.AppendQuery("returnUrl", request["returnUrl"]);
+				url = url.SetQueryParameter("returnUrl", request["returnUrl"]);
+
+			url = url.SetQueryParameter("edit", "drag");
 			return url;
 		}
 

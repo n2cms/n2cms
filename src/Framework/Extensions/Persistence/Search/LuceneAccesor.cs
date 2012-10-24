@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Index;
@@ -13,7 +14,6 @@ using N2.Engine;
 using N2.Web;
 using Directory = Lucene.Net.Store.Directory;
 using Version = Lucene.Net.Util.Version;
-using System.Diagnostics;
 
 namespace N2.Persistence.Search
 {
@@ -49,6 +49,15 @@ namespace N2.Persistence.Search
 			}
 		}
 
+		public LuceneAccesor RecreateWriter()
+		{
+			lock (this)
+			{
+				writer = null;
+				return this;
+			}
+		}
+
 		protected virtual IndexWriter CreateWriter(Directory d, Analyzer a)
 		{
 			try
@@ -75,14 +84,14 @@ namespace N2.Persistence.Search
 		public virtual Analyzer GetAnalyzer()
 		{
 			return new PerFieldAnalyzerWrapper(
-				new StandardAnalyzer(Version.LUCENE_29),
-                new List<KeyValuePair<string, Analyzer>>
+				new StandardAnalyzer(Version.LUCENE_30),
+				new Dictionary<string, Analyzer>
 				{
-					new KeyValuePair<string, Analyzer>("ID", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("AlteredPermissions", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("Roles", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("State", new WhitespaceAnalyzer()),
-					new KeyValuePair<string, Analyzer>("IsPage", new WhitespaceAnalyzer()),
+					{ "ID", new WhitespaceAnalyzer() },
+					{ "AlteredPermissions", new WhitespaceAnalyzer() },
+					{ "Roles", new WhitespaceAnalyzer() },
+					{ "State", new WhitespaceAnalyzer() },
+					{ "IsPage", new WhitespaceAnalyzer() },
 				});
 		}
 
@@ -122,18 +131,19 @@ namespace N2.Persistence.Search
 			lock (this)
 			{
 				if (writer != null)
-					writer.Close(waitForMerges: true);
+					writer.Dispose(waitForMerges: true);
 				writer = null;
 				searcher = null;
 				directory = null;
 			}
 		}
 
-		public void RecreateSearcher()
+		public LuceneAccesor RecreateSearcher()
 		{
 			lock (this)
 			{
 				searcher = null;
+				return this;
 			}
 		}
 

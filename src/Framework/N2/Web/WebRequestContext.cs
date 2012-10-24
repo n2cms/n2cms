@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Hosting;
 using N2.Engine;
+using System.Web.Caching;
 
 namespace N2.Web
 {
@@ -178,6 +179,12 @@ namespace N2.Web
                 }
             }
         }
+
+		/// <summary>Retrieves the http context cache.</summary>
+		public Cache Cache
+		{
+			get { return HttpRuntime.Cache; }
+		}
 
 		#region IDisposable Members
 

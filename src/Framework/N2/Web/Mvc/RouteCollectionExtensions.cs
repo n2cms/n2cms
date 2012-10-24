@@ -17,6 +17,7 @@ namespace N2.Web.Mvc
 		/// <param name="name">The name of this route.</param>
 		/// <param name="engine">The N2 Engine instance used by the content route.</param>
 		/// <param name="append">Append is useful in scenarios where you want to override the routing of specific urls also considered by N2.</param>
+        /// <param name="append">Append is useful in scenarios where you want to override the routing of specific urls also considered by N2.</param>
 		/// <param name="stopRewritableItems">Make the route table stop at items that match an item that can be rewritten to (probably webforms).</param>
 		/// <param name="namespaces">The namespaces the routing engine will look for the controller in</param>
 		/// <returns>The added content route instance.</returns>

@@ -28,14 +28,14 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrl_ItemOneLevelDown()
 		{
-			string url = parser.BuildUrl(item1);
+			string url = parser.BuildUrl(page1);
 			Assert.AreEqual("/item1.aspx", url);
 		}
 
 		[Test]
 		public void CanBuildUrl_ItemOneStep_TwoLevelsDown()
 		{
-			string url = parser.BuildUrl(item2_1);
+			string url = parser.BuildUrl(page2_1);
 			Assert.AreEqual("/item2/item2_1.aspx", url);
 		}
 
@@ -63,7 +63,7 @@ namespace N2.Tests.Web
 			Url.ApplicationPath = "/HelloWorld/";
 			try
 			{
-				string url = parser.BuildUrl(item2_1);
+				string url = parser.BuildUrl(page2_1);
 
 				Assert.AreEqual("/HelloWorld/item2/item2_1.aspx", url);
 			}
@@ -103,14 +103,15 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void AppendsVersionID_WhenBuildingUrl_OfVersion()
+		public void AppendsVersionIndex_ToMasterVersion_WhenBuildingUrl_OfVersion()
 		{
 			PageItem version = CreateOneItem<PageItem>(11, "offsideitem", null);
 			version.VersionOf = startItem;
+			version.VersionIndex = 22;
 
 			string url = parser.BuildUrl(version);
 
-			Assert.AreEqual("/?page=11", url);
+			Assert.AreEqual("/?versionIndex=22", url);
 		}
 	}
 }

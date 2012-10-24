@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -11,6 +12,9 @@ using System.IO;
 using System.Web.UI;
 using System.Collections;
 using N2.Definitions;
+using N2.Configuration;
+using N2.Edit;
+using N2.Edit.Versioning;
 
 namespace N2.Web
 {
@@ -64,7 +68,7 @@ namespace N2.Web
 			
 			var viewEditable = displayable as IViewEditable;
 			if (isEditable && (viewEditable == null || viewEditable.IsViewEditable) && item != null && displayable != null)
-				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
+				return TagWrapper.Begin("div", writer, htmlAttributes: new RouteValueDictionary { { "data-id", item.ID }, { "data-path", item.Path }, { "data-property", propertyName }, { "data-displayable", displayable.GetType().Name }, { "data-versionIndex", item.VersionIndex }, { "data-versionKey", item.GetVersionKey() }, { "class", "editable " + displayable.GetType().Name + " Editable" + propertyName }, { "title", (displayable is IEditable) ? (displayable as IEditable).Title : displayable.Name } });
 			else
 				return new EmptyDisposable();
 		}
@@ -121,8 +125,13 @@ namespace N2.Web
 			if (path.CurrentPage.IsPage)
 			{
 				Url url = Url.Parse(path.TemplateUrl)
-					.UpdateQuery(path.QueryParameters)
-					.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
+					.UpdateQuery(path.QueryParameters);
+				if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
+					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.VersionOf.ID.Value)
+						.SetQueryParameter(PathData.VersionQueryKey, path.CurrentPage.VersionIndex);
+				else 
+					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
+				
 				if (!string.IsNullOrEmpty(path.Argument))
 					url = url.SetQueryParameter("argument", path.Argument);
 
@@ -130,17 +139,118 @@ namespace N2.Web
 			}
 
 			for (ContentItem ancestor = path.CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
+			{
 				if (ancestor.IsPage)
-					return ancestor.FindPath(PathData.DefaultAction).GetRewrittenUrl()
-						.UpdateQuery(path.QueryParameters)
-						.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
-
+				{
+					var url = ancestor.FindPath(PathData.DefaultAction).GetRewrittenUrl()
+						.UpdateQuery(path.QueryParameters);
+					if (path.CurrentItem.VersionOf.HasValue)
+						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.VersionOf.ID.Value)
+							.SetQueryParameter(PathData.VersionQueryKey, ancestor.VersionIndex);
+					else
+						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
+				}
+			}
 			if (path.CurrentItem.VersionOf.HasValue)
 				return path.CurrentItem.VersionOf.FindPath(PathData.DefaultAction).GetRewrittenUrl()
 					.UpdateQuery(path.QueryParameters)
 					.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
 
 			throw new TemplateNotFoundException(path.CurrentItem);
+		}
+
+        public static bool IsFlagSet<T>(this T value, T flag) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException(string.Format("'{0}' is not Enum type", typeof(T).FullName));
+            }
+
+			var flagValue = Convert.ToInt64(flag);
+            return flagValue == 0 || (Convert.ToInt64(value) & flagValue) != 0;
+        }
+
+		internal static string ViewPreferenceQueryString = "view";
+		internal static string DraftQueryValue = ViewPreference.Draft.ToString().ToLower();
+		internal static string PublishedQueryValue = ViewPreference.Published.ToString().ToLower();
+		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
+		{
+			if (context.Request[ViewPreferenceQueryString] == DraftQueryValue)
+				return ViewPreference.Draft;
+			else if (context.Request[ViewPreferenceQueryString] == PublishedQueryValue)
+				return ViewPreference.Published;
+			else
+				return defaultPreference;
+		}
+
+		public static Url AppendViewPreference(this Url url, ViewPreference preference, ViewPreference? defaultPreference = null)
+		{
+			if (preference == defaultPreference)
+				return url;
+			else
+				return url.SetQueryParameter(ViewPreferenceQueryString, preference.ToString().ToLower());
+		}
+
+		public static NameValueCollection ToNameValueCollection(this IDictionary<string, string> queryString)
+		{
+			var nvc = new NameValueCollection();
+			foreach (var kvp in queryString)
+			{
+				nvc[kvp.Key] = kvp.Value;
+			}
+
+			return nvc;
+		}
+
+		public static ContentItem ParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, string versionKey, ContentItem masterVersion)
+		{
+			var path = new PathData(Find.ClosestPage(masterVersion), masterVersion);
+			if (TryParseVersion(versionRepository, versionIndexParameterValue, versionKey, path))
+				return path.CurrentItem;
+			return null;
+		}
+
+		public static bool TryParseVersion(this ContentVersionRepository versionRepository, string versionIndexParameterValue, string versionKey, PathData path)
+		{
+			if (!path.IsEmpty() && !string.IsNullOrEmpty(versionIndexParameterValue))
+			{
+				int versionIndex = int.Parse(versionIndexParameterValue);
+				var version = versionRepository.GetVersion(path.CurrentPage, versionIndex);
+				return path.TryApplyVersion(version, versionKey);
+			}
+			return false;
+		}
+
+		public static bool TryApplyVersion(this PathData path, ContentVersion version, string versionKey)
+		{
+			if (version != null)
+			{
+				if (!string.IsNullOrEmpty(versionKey))
+				{
+					var item = version.Version.FindDescendantByVersionKey(versionKey);
+					if (item != null)
+					{
+						path.CurrentPage = version.Version;
+						path.CurrentItem = item;
+						return true;
+					}
+				}
+
+				if (path.CurrentItem.IsPage)
+				{
+					path.CurrentPage = null;
+					path.CurrentItem = version.Version;
+				}
+				else
+				{
+					path.CurrentPage = version.Version;
+					path.CurrentItem = version.Version.FindDescendantByVersionKey(versionKey)
+						?? version.Version.FindPartVersion(path.CurrentItem);
+				}
+
+				return true;
+			}
+			return false;
 		}
 	}
 }

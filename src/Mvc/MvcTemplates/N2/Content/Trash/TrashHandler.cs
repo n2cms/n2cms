@@ -7,6 +7,9 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Security;
+using System.Security.Principal;
+using N2.Web;
+using N2.Collections;
 
 namespace N2.Edit.Trash
 {
@@ -28,6 +31,8 @@ namespace N2.Edit.Trash
 		private readonly ISecurityManager security;
 		private readonly ContainerRepository<TrashContainerItem> container;
 		private readonly StateChanger stateChanger;
+		private readonly IWebContext webContext;
+		Logger<TrashHandler> logger;
 
 		/// <summary>Instructs this class to navigate rather than query for items.</summary>
 		public bool UseNavigationMode
@@ -36,13 +41,14 @@ namespace N2.Edit.Trash
 			set { container.Navigate = value; }
 		}
 
-		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger)
+		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger, IWebContext webContext)
 		{
 			this.finder = finder;
 			this.persister = persister;
 			this.security = security;
 			this.container = container;
 			this.stateChanger = stateChanger;
+			this.webContext = webContext;
 		}
 
         /// <summary>The container of thrown items.</summary>
@@ -92,11 +98,10 @@ namespace N2.Edit.Trash
                 item = args.AffectedItem;
 
                 ExpireTrashedItem(item);
-                item.AddTo(GetTrashContainer(true));
 
                 try
                 {
-                    persister.Save(item);
+					persister.Move(item, GetTrashContainer(true));
                 }
                 catch (PermissionDeniedException ex)
                 {
@@ -118,10 +123,16 @@ namespace N2.Edit.Trash
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
-			stateChanger.ChangeTo(item, ContentState.Deleted);
+			
+			ExpireTrashedItemsRecursive(item);
+		}
 
-            foreach (ContentItem child in item.Children)
-                ExpireTrashedItem(child);
+		private void ExpireTrashedItemsRecursive(ContentItem item)
+		{
+			if (item.State == ContentState.Published)
+				stateChanger.ChangeTo(item, ContentState.Deleted);
+			foreach (ContentItem child in item.Children)
+				ExpireTrashedItemsRecursive(child);
 		}
 
 		/// <summary>Restores an item to the original location.</summary>
@@ -138,8 +149,10 @@ namespace N2.Edit.Trash
 		/// <param name="item">The item to reset.</param>
 		public virtual void RestoreValues(ContentItem item)
 		{
-			item.Name = (string)item["FormerName"];
-			item.Expires = (DateTime?)item["FormerExpires"];
+			if (item[FormerName] != null)
+				item.Name = (string)item["FormerName"];
+			if (item[FormerExpires] != null)
+				item.Expires = (DateTime?)item["FormerExpires"];
 			if (item[FormerState] != null)
 				stateChanger.ChangeTo(item, (ContentState)item[FormerState]);
 			item[FormerName] = null;
@@ -148,8 +161,15 @@ namespace N2.Edit.Trash
 			item[FormerState] = null;
 			item[DeletedDate] = null;
 
-            foreach (ContentItem child in item.Children)
-                RestoreValues(child);
+			RestoreValuesRecursive(item);
+		}
+
+		private void RestoreValuesRecursive(ContentItem item)
+		{
+			if (item.State == ContentState.Deleted)
+				stateChanger.ChangeTo(item, ContentState.Published);
+			foreach (ContentItem child in item.Children)
+				RestoreValuesRecursive(child);
 		}
 
         /// <summary>Determines wether an item has been thrown away.</summary>
@@ -203,10 +223,24 @@ namespace N2.Edit.Trash
 			}
 		}
 
+		public void PurgeAll()
+		{
+			logger.InfoFormat("Purging all trash");
+			var container = GetTrashContainer(create: false);
+			if (container != null)
+			{
+				foreach (ContentItem child in container.GetChildren(new AccessFilter(webContext.User, security)))
+				{
+					logger.InfoFormat("Purging {0}", child);
+					persister.Delete(child);
+				}
+			}
+		}
+
         /// <summary>Occurs before an item is thrown.</summary>
         public event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         public event EventHandler<ItemEventArgs> ItemThrowed;
 
-    }
+	}
 }

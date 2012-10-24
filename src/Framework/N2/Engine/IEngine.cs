@@ -5,6 +5,7 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
+using N2.Configuration;
 
 namespace N2.Engine
 {
@@ -44,6 +45,9 @@ namespace N2.Engine
 
 		/// <summary>The inversion of control container supporting this application.</summary>
 		IServiceContainer Container { get; }
+
+        /// <summary>The configuration used by N2 dring setup.</summary>
+        ConfigurationManagerWrapper Config { get; }
 
 		/// <summary>
 		/// Initialize components and plugins in the N2 CMS environment.
@@ -92,6 +96,7 @@ namespace N2.Engine
 		[Obsolete("Use Container.Release")]
 		void Release(object instance);
 
+        /// <summary>Content helper used to find and manipulate data.</summary>
 		ContentHelperBase Content { get; }
 	}
 

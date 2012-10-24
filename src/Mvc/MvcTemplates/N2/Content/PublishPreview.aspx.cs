@@ -1,6 +1,8 @@
 ﻿using System;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
+using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -15,10 +17,9 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-            var context = new CommandContext(Engine.Definitions.GetDefinition(previewedItem), previewedItem, Interfaces.Viewing, Page.User);
-            Engine.Resolve<CommandDispatcher>().Publish(context);
+			previewedItem = Engine.Resolve<IVersionManager>().Publish(Engine.Persister, previewedItem);
 
-			Response.Redirect(context.Content.Url);
+			Response.Redirect(previewedItem.Url);
 		}
 	}
 }

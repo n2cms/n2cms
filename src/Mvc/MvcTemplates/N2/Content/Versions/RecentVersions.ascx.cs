@@ -10,6 +10,7 @@ using N2.Management.Activity;
 using N2.Edit.Activity;
 using N2.Edit;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Content.Versions
 {
@@ -23,7 +24,7 @@ namespace N2.Management.Content.Versions
 
 		protected override void  OnDataBinding(EventArgs e)
 		{
-			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 4);
+			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 0, 4);
 
 			ShowMoreVersions = allVersions.Count > 3
 				&& Engine.SecurityManager.IsAuthorized(Page.User, CurrentItem, Security.Permission.Publish);

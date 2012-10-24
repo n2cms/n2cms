@@ -1,4 +1,5 @@
 ﻿using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow.Commands
 {
@@ -12,7 +13,7 @@ namespace N2.Edit.Workflow.Commands
         public override void Process(CommandContext state)
         {
             if (versionMaker.IsVersionable(state.Content))
-                versionMaker.SaveVersion(state.Content);
+                versionMaker.AddVersion(state.Content);
         }
     }
 

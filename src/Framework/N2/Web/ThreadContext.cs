@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Principal;
 using System.Threading;
 using System.Web;
+using System.Web.Caching;
 
 namespace N2.Web
 {
@@ -164,6 +165,12 @@ namespace N2.Web
 		[Obsolete("Use HttpContext.ClearError()")]
 		public void ClearError()
 		{
+		}
+
+		/// <summary>Retrieves the http context cache.</summary>
+		public Cache Cache
+		{
+			get { return HttpRuntime.Cache; }
 		}
 
 

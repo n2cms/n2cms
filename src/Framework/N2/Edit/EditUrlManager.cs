@@ -4,6 +4,7 @@ using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -11,6 +12,7 @@ namespace N2.Edit
 	public class EditUrlManager : IEditUrlManager
 	{
 		private string editTreeUrl;
+		private ViewPreference defaultViewPreference;
 
 		public EditUrlManager(EditSection config)
 		{
@@ -20,6 +22,7 @@ namespace N2.Edit
 			EditInterfaceUrl = config.Paths.EditInterfaceUrl;
 			NewItemUrl = config.Paths.NewItemUrl;
 			DeleteItemUrl = config.Paths.DeleteItemUrl;
+			defaultViewPreference = config.Versions.DefaultViewMode;
 		}
 
 		protected virtual string EditInterfaceUrl { get; set; }
@@ -45,7 +48,7 @@ namespace N2.Edit
 		{
 			if (selectedItem == null)
 				return null;
-			
+
 			return Url.Parse(EditTreeUrl).AppendQuery(SelectionUtility.SelectedQueryKey, selectedItem.Path);
 		}
 
@@ -54,14 +57,15 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return ResolveResourceUrl(selectedItem.Url);
+			Url url = ResolveResourceUrl(selectedItem.Url);
+			return url;//.AppendQuery("src", Interfaces.Managing);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
-		public virtual string GetEditInterfaceUrl()
+		public virtual string GetEditInterfaceUrl(ViewPreference preference = ViewPreference.Published)
 		{
-			return Url.ResolveTokens(EditInterfaceUrl);
+			return Url.ResolveTokens(EditInterfaceUrl).ToUrl().AppendViewPreference(preference, defaultViewPreference);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -84,9 +88,9 @@ namespace N2.Edit
 			if (finalUrl.StartsWith("~") == false
 				&& finalUrl.StartsWith("/") == false
 				&& finalUrl.StartsWith("{") == false
-				&& finalUrl.StartsWith("javascript:") == false 
+				&& finalUrl.StartsWith("javascript:") == false
 				&& finalUrl.Contains(":") == false
-			    && finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
+				&& finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = managementUrl + "/" + resourceUrl.TrimStart('/');
 
 			return Url.ToAbsolute(finalUrl);
@@ -132,14 +136,14 @@ namespace N2.Edit
 		/// <param name="position">The position relative to the selected item to add the item.</param>
 		/// <returns>The url to the edit page.</returns>
 		public virtual string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName,
-		                                        CreationPosition position)
+												CreationPosition position)
 		{
 			if (selected == null) throw new ArgumentNullException("selected");
 			if (definition == null) throw new ArgumentNullException("definition");
 
 			ContentItem parent = (position != CreationPosition.Below)
-			                     	? selected.Parent
-			                     	: selected;
+									? selected.Parent
+									: selected;
 
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
@@ -147,8 +151,8 @@ namespace N2.Edit
 			Url url = Url.ResolveTokens(EditItemUrl);
 			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
-      if (!string.IsNullOrEmpty(zoneName))
-        url = url.AppendQuery("zoneName", zoneName);
+			if (!string.IsNullOrEmpty(zoneName))
+				url = url.AppendQuery("zoneName", zoneName);
 			if (!string.IsNullOrEmpty(definition.TemplateKey))
 				url = url.AppendQuery("template", definition.TemplateKey);
 
@@ -167,19 +171,52 @@ namespace N2.Edit
 			if (item == null)
 				return null;
 
-			string editUrl = Url.ResolveTokens(EditItemUrl);
-			if (item.VersionOf.HasValue)
-				return string.Format("{0}?selectedUrl={1}", editUrl,
-									 HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).GetRewrittenUrl()));
+			var editUrl = EditItemUrl.ToUrl()
+				.ResolveTokens()
+				.SetQueryParameter(SelectionUtility.SelectedQueryKey, item.Path);
 
-			return Url.Parse(editUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+			if (item.VersionOf.HasValue)
+			{
+				if (item.IsPage)
+					editUrl = editUrl
+						.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
+				else
+					editUrl = editUrl
+						.SetQueryParameter(PathData.VersionQueryKey, Find.ClosestPage(item).VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
+			}
+			else if (item.ID == 0)
+			{
+				var page = Find.ClosestPage(item);
+				if (page != null && page.VersionOf.HasValue)
+					editUrl = editUrl
+						.SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
+						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
+			}
+			return editUrl;
 		}
 
 		private static string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
 			Url url = Url.ResolveTokens(path);
 			if (selectedItem != null)
+			{
+				if (selectedItem.ID == 0 && !selectedItem.VersionOf.HasValue && !selectedItem.IsPage)
+				{
+					var page = Find.ClosestPage(selectedItem);
+					return url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + page.Path)
+						.AppendQuery(PathData.VersionQueryKey + "=" + page.VersionIndex)
+						.AppendQuery("versionKey", selectedItem.GetVersionKey());
+				}
+
 				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
+				if (selectedItem.VersionOf != null)
+					url = url.AppendQuery(PathData.VersionQueryKey + "=" + selectedItem.VersionIndex)
+						.AppendQuery("versionKey", selectedItem.GetVersionKey());
+
+			}
 			return url;
 		}
 	}

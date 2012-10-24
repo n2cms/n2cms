@@ -72,8 +72,8 @@ namespace N2.Tests.Web
 
             mocks.ReplayAll();
 
-			Assert.AreEqual(parser.BuildUrl(root), root.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
-			Assert.AreEqual(parser.BuildUrl(outside1), outside1.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
+			Assert.AreEqual(parser.BuildUrl(root).ToString(), root.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
+			Assert.AreEqual(parser.BuildUrl(outside1).ToString(), outside1.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
         }
     }
 }

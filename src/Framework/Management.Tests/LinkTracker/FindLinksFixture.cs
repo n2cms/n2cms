@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using N2.Edit.LinkTracker;
 using NUnit.Framework;
 using System.Linq;
+using N2.Persistence;
 
 namespace N2.Edit.Tests.LinkTracker
 {
@@ -23,7 +24,7 @@ namespace N2.Edit.Tests.LinkTracker
 		[SetUp]
 		public void SetUp()
 		{
-			linkFactory = new Tracker(null, null, null, new N2.Plugin.ConnectionMonitor(), null, new Configuration.EditSection());
+			linkFactory = new Tracker(new ContentPersister(null, null), null, new N2.Plugin.ConnectionMonitor(), null, new Configuration.EditSection());
 		}
 
 		[Test]

@@ -2,6 +2,7 @@
 using System.Web.UI;
 using N2.Engine;
 using N2.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -70,20 +71,23 @@ namespace N2.Edit
         {
 			if (request == null) return null; // explicitly passed selection
 
+			ContentItem selectedItem = null;
 			string selected = request[SelectedQueryKey];
             if (!string.IsNullOrEmpty(selected))
-                return Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
+                selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
             string selectedUrl = request["selectedUrl"];
 			if (!string.IsNullOrEmpty(selectedUrl))
-				return Engine.UrlParser.Parse(selectedUrl)
+				selectedItem = Engine.UrlParser.Parse(selectedUrl)
 					?? SelectFile(selectedUrl);
 
             string itemId = request[PathData.ItemQueryKey];
             if (!string.IsNullOrEmpty(itemId))
-                return Engine.Persister.Get(int.Parse(itemId));
-
-            return null;
+				selectedItem = Engine.Persister.Get(int.Parse(itemId));
+			
+			var cvr = Engine.Resolve<ContentVersionRepository>();
+			return cvr.ParseVersion(request[PathData.VersionQueryKey], request["versionKey"], selectedItem)
+				?? selectedItem;
         }
 
 		private ContentItem SelectFile(string selectedUrl)

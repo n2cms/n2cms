@@ -10,6 +10,7 @@ using N2.Persistence.NH;
 using N2.Persistence;
 using N2.Edit.Workflow;
 using N2.Edit;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Content.Export
 {
@@ -80,7 +81,7 @@ namespace N2.Management.Content.Export
 						foreach (var item in items)
 						{
 							if (vm.IsVersionable(item))
-								vm.SaveVersion(item);
+								vm.AddVersion(item);
 
 							item[name] = value;
 						}

@@ -6,6 +6,7 @@ using N2.Security;
 using N2.Web;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -13,7 +14,7 @@ namespace N2.Edit
     [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "{ManagementUrl}/Resources/icons/cut.png", 42,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Publish)]
-    [ToolbarPlugin("CUT", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/cut.png", 30, ToolTip = "move",
+    [ToolbarPlugin("", "move_tool", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/cut.png", 30, ToolTip = "move",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
 	public partial class Move : EditPage
@@ -83,7 +84,7 @@ namespace N2.Edit
 			Engine.AddActivity(new ManagementActivity { Operation = "Move", PerformedBy = User.Identity.Name, Path = toMove.Path, ID = toMove.ID });
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
 
-			if (toMove.IsPage)
+			if (toMove.IsPage && !(toMove.Parent is IActiveContent))
 				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
 			else
 				Refresh(toMove);

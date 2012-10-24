@@ -13,6 +13,10 @@ namespace N2.Persistence.Serialization
         /// <summary>Don't export details which have no definition.</summary>
         OnlyDefinedDetails = 1,
         /// <summary>Don't export attachments.</summary>
-        ExcludeAttachments = 2
+        ExcludeAttachments = 2,
+		/// <summary>Don't export children that are not parts.</summary>
+		ExcludeParts = 4,
+		/// <summary>Don't export children that are not parts.</summary>
+		ExcludePages = 8
     }
 }

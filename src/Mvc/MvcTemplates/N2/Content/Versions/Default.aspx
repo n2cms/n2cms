@@ -9,20 +9,19 @@
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />
 	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
-	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="ID" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
+	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="VersionIndex" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
+					<%# IsPublished(Eval("Content")) ? "<img src='../../Resources/icons/bullet_green.png' alt='published' />" : string.Empty%>
 					<%# IsFuturePublished(Eval("Content")) ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Eval("Content"))["FuturePublishDate"] + "'/>" : ""%>
 					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Eval("Content")).VersionIndex + 1%></span>
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# GetPreviewUrl((N2.ContentItem)Eval("Content")) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
+				<a href="<%# Eval("Content.Url") %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
 			</asp:TemplateField>
-			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>
 					<asp:Literal runat="server" Text='<%# GetLocalResourceString("ContentState." + Eval("State"), Eval("State").ToString()) %>' />
@@ -38,12 +37,12 @@
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) || IsFuturePublished(Eval("Content")) %>' />
+					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("VersionIndex") %>' Visible='<%# IsVisible(Eval("Content")) || IsFuturePublished(Eval("Content")) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Visible='<%# IsVisible(Eval("Content")) %>'
+					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("VersionIndex") %>' Visible='<%# IsVisible(Eval("Content")) %>'
 						OnClientClick="return confirm('Are you sure you want to Delete this version?');" />
 				</ItemTemplate>
 			</asp:TemplateField>

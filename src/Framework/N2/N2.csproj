@@ -119,6 +119,13 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Details\EditableDirectUrlAttribute.cs" />
+    <Compile Include="Edit\MetaInfo.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionCleanup.cs" />
+    <Compile Include="Edit\Versioning\VersioningExtensions.cs" />
+    <Compile Include="Edit\Versioning\DraftRepository.cs" />
+    <Compile Include="Edit\Versioning\VersionsChangedEventArgs.cs" />
+    <Compile Include="Edit\ViewPreference.cs" />
     <Compile Include="Configuration\LinkTrackerElement.cs" />
     <Compile Include="Configuration\MessageTargetElement.cs" />
     <Compile Include="Configuration\MessagingElement.cs" />
@@ -154,8 +161,10 @@
     <Compile Include="Edit\Activity\ActivityExtensions.cs" />
     <Compile Include="Edit\Activity\ActivityRepository.cs" />
     <Compile Include="Edit\Activity\ActivityUser.cs" />
-    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Edit\Versioning\ContentVersionRepository.cs" />
+    <Compile Include="Edit\Versioning\ContentVersion.cs" />
     <Compile Include="Edit\Workflow\CommandProcessEventArgs.cs" />
+    <Compile Include="Edit\Workflow\Commands\SaveOnPageVersionCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateReferencesCommand.cs" />
     <Compile Include="Engine\DynamicProxy\AbstractInvocation.cs" />
     <Compile Include="Engine\DynamicProxy\AllMethodsHook.cs" />
@@ -372,6 +381,7 @@
     <Compile Include="Engine\DynamicProxy\Tokens\TypeBuilderMethods.cs" />
     <Compile Include="Engine\DynamicProxy\Tokens\TypeMethods.cs" />
     <Compile Include="Engine\DynamicProxy\Tokens\TypeUtilMethods.cs" />
+    <Compile Include="Engine\IDecorator.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
@@ -384,10 +394,11 @@
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
     <Compile Include="Linq\FindExtensions.cs" />
-    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IRemovingBehavior.cs" />
+    <Compile Include="Edit\Workflow\CommandCreatedEventArgs.cs" />
+    <Compile Include="Persistence\Behaviors\IAddingBehavior.cs" />
     <Compile Include="Definitions\DefinitionExtensions.cs" />
     <Compile Include="Definitions\IActiveChildren.cs" />
     <Compile Include="Definitions\IFileSystemFile.cs" />
@@ -507,6 +518,7 @@
     <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
+    <Compile Include="Persistence\ContentBuilder.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\IPersistableProperty.cs" />
@@ -514,6 +526,7 @@
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\NH\Finder\FinderExtensions.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyNotInHqlProvider.cs" />
     <Compile Include="Persistence\NH\SysCache2\CacheDependenciesElement.cs" />
     <Compile Include="Persistence\NH\SysCache2\CacheRegionCollection.cs" />
@@ -536,10 +549,20 @@
     <Compile Include="Persistence\NH\NHInterceptorFactory.cs" />
     <Compile Include="Persistence\NH\RelationConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\PersistenceExtensions.cs" />
+    <Compile Include="Engine\DynamicProxy\IInterceptable.cs" />
+    <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
+    <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
+    <Compile Include="Persistence\NH\SubTransaction.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
+    <Compile Include="Persistence\IParameter.cs" />
+    <Compile Include="Persistence\Order.cs" />
+    <Compile Include="Persistence\ParameterCollection.cs" />
+    <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
+    <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
+    <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
@@ -572,10 +595,12 @@
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlReader.cs" />
     <Compile Include="Persistence\Serialization\PersistablePropertyXmlWriter.cs" />
     <Compile Include="Persistence\Sources\ContentSourceAttribute.cs" />
+    <Compile Include="Persistence\Sources\VersionSource.cs" />
     <Compile Include="Persistence\Sources\SourceBase.cs" />
     <Compile Include="Persistence\Sources\DatabaseSource.cs" />
     <Compile Include="Persistence\Sources\ActiveContentSource.cs" />
     <Compile Include="Persistence\Sources\Query.cs" />
+    <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
@@ -597,6 +622,7 @@
     <Compile Include="Web\CurrentPageProvider.cs" />
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
+    <Compile Include="Definitions\IUrlSource.cs" />
     <Compile Include="Web\JsonWriter.cs" />
     <Compile Include="Web\Messaging\Envelope.cs" />
     <Compile Include="Web\Messaging\IChannel.cs" />
@@ -643,6 +669,7 @@
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
+    <Compile Include="Web\Parts\IIntegerityManager.cs" />
     <Compile Include="Web\Parts\PartsExtensions.cs" />
     <Compile Include="Web\Rendering\ContentRendererAttribute.cs" />
     <Compile Include="Web\Rendering\ContentRendererSelector.cs" />
@@ -652,12 +679,19 @@
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
+    <Compile Include="Web\Tokens\TokenDefinition.cs" />
+    <Compile Include="Web\Tokens\TokenDefinitionFinder.cs" />
+    <Compile Include="Web\Tokens\TokenOption.cs" />
+    <Compile Include="Web\Tokens\TokenParser.cs" />
     <Compile Include="Web\UI\FormsContentHelper.cs" />
     <Compile Include="Web\UI\IContentPageConcern.cs" />
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
+    <Compile Include="Web\UI\WebControls\OrganizeSwitchAttribute.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
+    <Compile Include="Web\UrlEventArgs.cs" />
+    <Compile Include="Web\DirectUrlInjector.cs" />
     <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldAnalyzer.cs" />
     <Compile Include="Web\Wiki\Analyzers\BoldItalicsAnalyzer.cs" />
@@ -1236,11 +1270,11 @@
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
     <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />
-    <Compile Include="Persistence\IVersionManager.cs" />
+    <Compile Include="Edit\Versioning\IVersionManager.cs" />
     <Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\DetailInHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyInHqlProvider.cs" />
-    <Compile Include="Persistence\VersionManager.cs" />
+    <Compile Include="Edit\Versioning\VersionManager.cs" />
     <Compile Include="Plugin\AutoInitializeAttribute.cs" />
     <Compile Include="Plugin\InitializerCreatingAttribute.cs" />
     <Compile Include="Plugin\IPluginDefinition.cs" />
@@ -1282,7 +1316,7 @@
     <Compile Include="Persistence\NH\Finder\PropertyCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyVersionOfCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\QueryBuilder.cs" />
-    <Compile Include="Persistence\NH\Finder\Operator.cs" />
+    <Compile Include="Persistence\Operator.cs" />
     <Compile Include="Persistence\NH\Finder\PropertyHqlProvider.cs" />
     <Compile Include="Persistence\NH\Finder\PropertySortDirection.cs" />
     <Compile Include="Persistence\NH\Finder\StringWrapper.cs" />

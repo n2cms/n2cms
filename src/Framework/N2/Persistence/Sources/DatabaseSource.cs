@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Web;
+using System.Diagnostics;
 using N2.Collections;
 
 namespace N2.Persistence.Sources
@@ -11,9 +12,9 @@ namespace N2.Persistence.Sources
 	public class DatabaseSource : SourceBase
 	{
 		private IHost host;
-		private IRepository<ContentItem> repository;
+		private IContentItemRepository repository;
 
-		public DatabaseSource(IHost host, IRepository<ContentItem> repository)
+		public DatabaseSource(IHost host, IContentItemRepository repository)
 		{
 			this.host = host;
 			this.repository = repository;
@@ -72,24 +73,130 @@ namespace N2.Persistence.Sources
 
 
 
+
+		public override ContentItem Get(object id)
+		{
+			return repository.Get(id);
+		}
+
 		public override void Save(ContentItem item)
 		{
-			throw new NotImplementedException();
+			using (var tx = repository.BeginTransaction())
+			{
+				// update updated date unless it's a version being saved
+				if (!item.VersionOf.HasValue)
+					item.Updated = Utility.CurrentTime();
+				// empty string names not allowed, null is replaced with item id
+				if (string.IsNullOrEmpty(item.Name))
+					item.Name = null;
+
+				item.AddTo(item.Parent);
+				
+				// make sure the ordering is the same next time these siblings are loaded
+				var unsavedItems = item.Parent.EnsureChildrenSortOrder();
+				foreach (var itemToSave in unsavedItems.Union(new [] { item }))
+				{
+					repository.SaveOrUpdate(itemToSave);
+				}
+
+				// ensure a name, fallback to id
+				if (string.IsNullOrEmpty(item.Name))
+				{
+					item.Name = item.ID.ToString();
+					repository.SaveOrUpdate(item);
+				}
+
+				tx.Commit();
+			}
 		}
 
 		public override void Delete(ContentItem item)
 		{
-			throw new NotImplementedException();
+			using (var tx = repository.BeginTransaction())
+			{
+				// delete inbound references, these would cuase fk violation in the database
+				repository.RemoveReferencesToRecursive(item);
+
+				DeleteRecursive(item);
+
+				tx.Commit();
+			}
 		}
 
-		public override void Move(ContentItem source, ContentItem destination)
+		private void DeleteRecursive(ContentItem itemToDelete)
 		{
-			throw new NotImplementedException();
+			DeletePreviousVersions(itemToDelete);
+
+			try
+			{
+				Trace.Indent();
+				foreach (ContentItem child in itemToDelete.Children.ToList())
+					DeleteRecursive(child);
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
+
+			itemToDelete.AddTo(null);
+
+			Trace.TraceInformation("DatabaseSource.DeleteRecursive " + itemToDelete);
+			repository.Delete(itemToDelete);
+		}
+
+		private void DeletePreviousVersions(ContentItem itemNoMore)
+		{
+			// TODO
+			//var previousVersions = repository.Find("VersionOf.ID", itemNoMore.ID);
+
+			//int count = 0;
+			//foreach (ContentItem version in previousVersions)
+			//{
+			//    repository.Delete(version);
+			//    count++;
+			//}
+
+			//Trace.TraceInformation("DatabaseSource.DeletePreviousVersions " + count + " of " + itemNoMore);
+		}
+
+		public override ContentItem Move(ContentItem source, ContentItem destination)
+		{
+			using (var tx = repository.BeginTransaction())
+			{
+				Trace.TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
+				source.AddTo(destination);
+				foreach (var descendant in UpdateAncestralTrailRecursive(source, destination))
+				{
+					repository.SaveOrUpdate(descendant);
+				}
+				Save(source);
+				tx.Commit();
+			}
+			return source;
+		}
+
+		private IEnumerable<ContentItem> UpdateAncestralTrailRecursive(ContentItem source, ContentItem destination)
+		{
+			source.AncestralTrail = destination.GetTrail();
+			foreach (var child in source.Children)
+			{
+				yield return child;
+				foreach (var descendant in UpdateAncestralTrailRecursive(child, source))
+					yield return descendant;
+			}
 		}
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)
 		{
-			throw new NotImplementedException();
+			Trace.TraceInformation("ContentPersister.Copy " + source + " to " + destination);
+			ContentItem cloned = source.Clone(includeChildren:true);
+			if (cloned.Name == source.ID.ToString())
+				cloned.Name = null;
+			cloned.Parent = destination;
+
+			Save(cloned);
+
+			return cloned;
 		}
 	}
 }

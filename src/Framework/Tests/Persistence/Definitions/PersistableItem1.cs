@@ -10,6 +10,8 @@ namespace N2.Tests.Persistence.Definitions
 	[PartDefinition("Default persistable part", Name = "PersistablePart")]
 	public class PersistablePart1 : ContentItem, IPart
 	{
+		[Persistable]
+		public virtual string PersistableProperty { get; set; }
 	}
 
 	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
@@ -120,6 +122,9 @@ namespace N2.Tests.Persistence.Definitions
 			get { return GetDetailCollection("Tags", true).OfType<string>(); }
 			set { GetDetailCollection("Tags", true).Replace(value); }
 		}
+
+		[Persistable]
+		public virtual string PersistableProperty { get; set; }
 	}
 
 

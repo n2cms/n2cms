@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using N2.Configuration;
+using N2.Edit.Versioning;
 using N2.Engine;
+using N2.Web.UI.WebControls;
 
 namespace N2.Web
 {
@@ -16,16 +18,19 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		private readonly IUrlParser parser;
 		private readonly IErrorNotifier errorHandler;
+		private readonly DraftRepository draftRepository;
 		private readonly bool rewriteEmptyExtension = true;
 		private readonly bool observeAllExtensions = true;
 		private readonly string[] observedExtensions = new[] {".aspx"};
 		private readonly string[] nonRewritablePaths;
 
-		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config)
+		public RequestPathProvider(IWebContext webContext, IUrlParser parser, IErrorNotifier errorHandler, HostSection config, DraftRepository draftRepository)
 		{
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
+			this.draftRepository = draftRepository;
+
 			observeAllExtensions = config.Web.ObserveAllExtensions;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
 			StringCollection additionalExtensions = config.Web.ObservedExtensions;
@@ -41,7 +46,7 @@ namespace N2.Web
 		public virtual PathData GetCurrentPath()
 		{
 			Url url = webContext.Url;
-			if (!IsRewritable(url))
+			if (!IsRewritable(url) || !IsObservable(url))
 				return PathData.Empty;
 
 			PathData data = ResolveUrl(url);
@@ -52,8 +57,21 @@ namespace N2.Web
 		{
 			try
 			{
-				if (IsRewritable(url) && IsObservable(url))
-					return parser.ResolvePath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+				var path = parser.FindPath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
+					
+				path.CurrentItem = path.CurrentPage;
+
+				if (draftRepository.Versions.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))
+					return path;
+
+				string viewPreferenceParameter = url.GetQuery(WebExtensions.ViewPreferenceQueryString);
+				if (viewPreferenceParameter == WebExtensions.DraftQueryValue && draftRepository.HasDraft(path.CurrentItem))
+				{
+					var draft = draftRepository.Versions.GetVersion(path.CurrentPage);
+					path.TryApplyVersion(draft, url["versionKey"]);
+				}
+
+				return path;
 			}
 			catch (Exception ex)
 			{
@@ -62,7 +80,7 @@ namespace N2.Web
 			return PathData.Empty;
 		}
 
-		private bool IsRewritable(Url url)
+		public virtual bool IsRewritable(Url url)
 		{
 			string path = url.Path;
 			foreach (string nonRewritablePath in nonRewritablePaths)
@@ -79,7 +97,7 @@ namespace N2.Web
 			return ResolveUrl(new Url(url));
 		}
 
-		private bool IsObservable(Url url)
+		public virtual bool IsObservable(Url url)
 		{
 			if (observeAllExtensions)
 				return true;

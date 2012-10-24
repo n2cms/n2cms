@@ -118,6 +118,7 @@ namespace N2.Definitions
 		public virtual IEnumerable<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName)
 		{
 			return GetAllowedChildren(parentItem)
+				.OrderBy(d => d.SortOrder)
 				.Where(d => d.IsAllowedInZone(zoneName));
 		}
 
@@ -130,7 +131,9 @@ namespace N2.Definitions
 		public virtual IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
 			return GetAllowedChildren(parentItem, zoneName)
-				.Where(d => d.IsAuthorized(user)).ToList();
+				.Where(d => d.IsAuthorized(user))
+				.OrderBy(d => d.SortOrder)
+				.ToList();
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>

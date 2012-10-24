@@ -36,6 +36,7 @@ using N2.Web;
 using N2.Persistence.Search;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
+using Castle.DynamicProxy;
 
 namespace N2
 {
@@ -580,7 +581,7 @@ namespace N2
 		/// <param name="collectionName">The name of the detail collection to get.</param>
 		/// <param name="createWhenEmpty">Wether a new collection should be created if none exists. Setting this to false means null will be returned if no collection exists.</param>
 		/// <returns>A new or existing detail collection or null if the createWhenEmpty parameter is false and no collection with the given name exists..</returns>
-		public virtual Details.DetailCollection GetDetailCollection(string collectionName, bool createWhenEmpty)
+		public virtual Details.DetailCollection GetDetailCollection(string collectionName, bool createWhenEmpty = true)
 		{
 			if (DetailCollections.ContainsKey(collectionName))
 				return DetailCollections[collectionName];
@@ -661,23 +662,23 @@ namespace N2
     		       	? childItem.GetChild(segments[1])
     		       	: childItem;
 		}
+        
+        /// <summary>
+        /// Find a direct child by its name
+        /// </summary>
+        /// <param name="nameSegment">Child name. Cannot contain slashes.</param>
+        /// <returns></returns>
+        protected virtual ContentItem FindNamedChild(string nameSegment)
+        {
+            var childItem = Children.FindNamed(nameSegment);
+            if (childItem == null && string.IsNullOrEmpty(Extension) == false)
+            {
+    	        childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
+            }
+            return childItem;
+        }
 
 		/// <summary>
-		/// Find a direct child by its name
-		/// </summary>
-		/// <param name="nameSegment">Child name. Cannot contain slashes.</param>
-		/// <returns></returns>
-    	protected virtual ContentItem FindNamedChild(string nameSegment)
-    	{
-    		var childItem = Children.FindNamed(nameSegment);
-    		if (childItem == null && string.IsNullOrEmpty(Extension) == false)
-    		{
-    			childItem = Children.FindNamed(Web.Url.RemoveAnyExtension(nameSegment));
-    		}
-    		return childItem;
-    	}
-
-    	/// <summary>
 		/// Compares the item's name ignoring case and extension.
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
@@ -786,9 +787,10 @@ namespace N2
 		#region Clone Helper Methods
 		static void CloneUnversionableFields(ContentItem source, ContentItem destination)
 		{
-			destination.zoneName = source.zoneName;
 			destination.published = source.published;
 			destination.expires = source.expires;
+			destination.versionIndex = source.versionIndex;
+			destination.state = source.state;
 		}
 
 		static void CloneFields(ContentItem source, ContentItem destination)
@@ -800,12 +802,12 @@ namespace N2
 			destination.created = source.created;
 			destination.updated = source.updated;
 			destination.templateKey = source.templateKey;
-			destination.versionIndex = source.versionIndex;
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
+			destination.sortOrder = source.sortOrder;
 			destination.urlParser = source.urlParser;
-			destination.state = source.state;
 			destination.url = null;
+			destination.zoneName = source.zoneName;
 		}
 
 		static void CloneAutoProperties(ContentItem source, ContentItem destination)
@@ -974,8 +976,15 @@ namespace N2
 		{
 			if (object.ReferenceEquals(this, obj)) return true;
 			ContentItem other = obj as ContentItem;
-			return other != null && id != 0 && id == other.id;
-			//TODO: add id==0 && name+parent
+			if (other == null)
+				return false;
+			if (id != 0 && id == other.id)
+				return true;
+			if (id != 0 || other.id != 0)
+				return false;
+			if (other.VersionOf.HasValue && VersionOf.HasValue && other.VersionOf.ID.Value == VersionOf.ID.Value)
+				return other.VersionIndex == VersionIndex;
+			return false;
 		}
 
 		/// <summary>Gets a hash code based on the ID.</summary>
@@ -998,7 +1007,7 @@ namespace N2
 		[DebuggerStepThrough]
 		public override string ToString()
 		{
-			return Name + "#" + ID;
+			return GetContentType().Name + " {" + Name + "#" + ID + "}";
 		}
 
 		/// <summary>Compares two content items for equality.</summary>
@@ -1038,6 +1047,7 @@ namespace N2
 			CloneFields(source, this);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
+			CloneAutoProperties(source, this);
 		}
 
 		private void ClearMissingDetails(ContentItem source, ContentItem destination)
@@ -1102,6 +1112,7 @@ namespace N2
 			return GetDetailCollection(detailCollectionName, false);
 		}
 
+        [Interceptable]
 		public virtual Type GetContentType()
 		{
 			return base.GetType();

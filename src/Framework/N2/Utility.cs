@@ -11,6 +11,7 @@ using N2.Engine;
 using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
+using N2.Web;
 
 namespace N2
 {
@@ -160,25 +161,14 @@ namespace N2
 			if (instance == null) return false;
 			if (propertyName == null) return false;
 
-			Type instanceType = instance.GetType();
-			PropertyInfo pi = instanceType.GetProperty(propertyName);
-			if (pi == null)
-			{
-				var dotIndex = propertyName.IndexOf('.');
-				if (dotIndex > 0)
-				{
-					var subObject = GetProperty(instance, propertyName.Substring(0, dotIndex));
-					if (subObject != null)
-					{
-						return TrySetProperty(subObject, propertyName.Substring(dotIndex + 1), value);
-					}
-				}
-				return false;
-			}
+			PropertyInfo pi = GetPropertyInfo(ref instance, propertyName);
+			
+			if (pi == null) return false;
 			if (!pi.CanWrite) return false;
 
 			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
 				value = Convert(value, pi.PropertyType);
+
 			try
 			{
 				pi.SetValue(instance, value, new object[0]);
@@ -190,6 +180,26 @@ namespace N2
 			}
 		}
 
+		private static PropertyInfo GetPropertyInfo(ref object instance, string propertyName)
+		{
+			Type instanceType = instance.GetType();
+
+			PropertyInfo pi = instanceType.GetProperty(propertyName);
+			if (pi == null)
+			{
+				var dotIndex = propertyName.IndexOf('.');
+				if (dotIndex > 0)
+				{
+					instance = GetProperty(instance, propertyName.Substring(0, dotIndex));
+					if (instance == null)
+						return null;
+
+					return GetPropertyInfo(ref instance, propertyName.Substring(dotIndex + 1));
+				}
+			}
+			return pi;
+		}
+
 		/// <summary>Gets a value from a property.</summary>
 		/// <param name="instance">The object whose property to get.</param>
 		/// <param name="propertyName">The name of the property to get.</param>
@@ -199,11 +209,11 @@ namespace N2
 			if (instance == null) throw new ArgumentNullException("instance");
 			if (propertyName == null) throw new ArgumentNullException("propertyName");
 
-			Type instanceType = instance.GetType();
-			PropertyInfo pi = instanceType.GetProperty(propertyName);
+			var originalInstance = instance;
+			var pi = GetPropertyInfo(ref instance, propertyName);
 
 			if (pi == null)
-				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
 
 			return pi.GetValue(instance, null);
 		}
@@ -434,7 +444,10 @@ namespace N2
 			{
 				if (resourceKey != null && HttpContext.Current != null)
 				{
-					return HttpContext.GetLocalResourceObject(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath, resourceKey) as string;
+					var path = HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath;
+					if (path.EndsWith("/"))
+						path += Url.DefaultDocument;
+					return HttpContext.GetLocalResourceObject(path, resourceKey) as string;
 				}
 			}
 			catch (InvalidOperationException)
@@ -470,23 +483,32 @@ namespace N2
         }
 
 		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
-		/// <param name="handler">The event handler to signal.</param>
+		/// <param name="preHandlers">The event handler to signal.</param>
 		/// <param name="item">The item affected by this operation.</param>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
-		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> handler, ContentItem item, object sender, Action<ContentItem> finalAction)
+		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> preHandlers, ContentItem item, object sender, Action<ContentItem> finalAction, EventHandler<ItemEventArgs> postHandlers)
 		{
-			if (handler != null && (VersionsTriggersEvents || !item.VersionOf.HasValue))
+			if (preHandlers != null && (VersionsTriggersEvents || !item.VersionOf.HasValue))
 			{
 				CancellableItemEventArgs args = new CancellableItemEventArgs(item, finalAction);
-				
-				handler.Invoke(sender, args);
+
+				preHandlers.Invoke(sender, args);
 
 				if (!args.Cancel)
+				{
 					args.FinalAction(args.AffectedItem);
+					if (postHandlers != null)
+						postHandlers(sender, args);
+				}
 			}
 			else
+			{
 				finalAction(item);
+
+				if (postHandlers != null)
+					postHandlers(sender, new ItemEventArgs(item));
+			}
 		}
 
 		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
@@ -496,7 +518,7 @@ namespace N2
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
 		/// <returns>The result of the action (if any).</returns>
-		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
+		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction, EventHandler<DestinationEventArgs> postHandler)
 		{
 			if (handler != null && (VersionsTriggersEvents || !source.VersionOf.HasValue))
 			{
@@ -507,10 +529,16 @@ namespace N2
 				if (args.Cancel)
 					return null;
 
-				return args.FinalAction(args.AffectedItem, args.Destination);
+				args.AffectedItem = args.FinalAction(args.AffectedItem, args.Destination);
+				if (postHandler != null)
+					postHandler(sender, args);
+				return args.AffectedItem;
 			}
 			
-			return finalAction(source, destination);
+			var result2 = finalAction(source, destination);
+			if (postHandler != null)
+				postHandler(sender, new DestinationEventArgs(result2, destination));
+			return result2;
 		}
 
 		/// <summary>Gets the trail to a certain item. A trail is a slash-separated sequence of IDs, e.g. "/1/6/12/".</summary>
@@ -681,11 +709,20 @@ namespace N2
 
 		public static bool IsPublished(this ContentItem item)
 		{
-			return item.Published.HasValue && item.Published <= Utility.CurrentTime();
+			switch (item.State)
+			{
+				case ContentState.New:
+				case ContentState.None:
+				case ContentState.Published:
+					return item.Published.HasValue && item.Published <= Utility.CurrentTime()
+						&& (!item.Expires.HasValue || Utility.CurrentTime() < item.Expires.Value);
+				default:
+					return false;
+			}
 		}
 		public static bool IsExpired(this ContentItem item)
 		{
-			return item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime();
+			return item.State == ContentState.Unpublished || (item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime());
 		}
 
 		public static bool SetPropertyOrDetail(ContentItem item, string detailName, object value)
@@ -714,6 +751,29 @@ namespace N2
 		public static string Format(string format, object values)
 		{
 			return Regex.Replace(format, "{([\\w\\.]+)}", m => (string)Utility.Evaluate(values, m.Groups[1].Value), RegexOptions.Compiled);
+		}
+
+		internal static List<object> FindEmpty(ContentItem item)
+		{
+			var list = new List<object>();
+			if (item.Parent.ID == 0)
+				list.Add(item);
+			foreach (var detail in item.Details)
+				if (detail.EnclosingItem.ID == 0)
+					list.Add(detail);
+				else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+					list.Add(detail);
+			foreach (var dc in item.DetailCollections)
+				foreach (var detail in dc.Details)
+					if (detail.EnclosingItem.ID == 0)
+						list.Add(detail);
+					else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+						list.Add(detail);
+
+			foreach (var child in item.Children.FindParts())
+				list.AddRange(FindEmpty(child));
+
+			return list;
 		}
 	}
 }

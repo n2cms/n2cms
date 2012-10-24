@@ -204,7 +204,7 @@ namespace N2.Tests.Serialization
 			Assert.That(!destinationFs.FileExists(path));
 
 			CreateImporter(destinationFs).Import(record, destination, ImportOption.All);
-			Assert.AreEqual(0, readItem.ID);
+			
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
 			Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
@@ -225,6 +225,7 @@ namespace N2.Tests.Serialization
             
             var item = CreateOneItem<XmlableItem>(0, "item", null);
             var item2 = item.Clone(false);
+			item2.AncestralTrail = "/";
 
             try
             {
@@ -463,6 +464,38 @@ namespace N2.Tests.Serialization
 			embedded.Title.ShouldBe(embeddable.Title);
 			embedded.Name.ShouldBe(embeddable.Name);
 			embedded["World"].ShouldBe(embeddable["World"]);
+		}
+
+		[Test]
+		public void AutoImplementedProperties_GetsTheirDefaultValues()
+		{
+			var item = activator.CreateInstance<XmlableItem>(null);
+			
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem.PersistableNumber.ShouldBe(666);
+			readItem.PersistableText.ShouldBe("hello");
+			readItem.PersistableEnum.ShouldBe(ContentState.Published);
+			readItem.PersistableObject.ShouldBe(new[] { "one", "two" });
+		}
+
+		[Test]
+		public void AutoImplementedProperties_AreTransferred()
+		{
+			var item = activator.CreateInstance<XmlableItem>(null);
+			item.PersistableNumber = 123;
+			item.PersistableText = "world";
+			item.PersistableEnum = ContentState.Unpublished;
+			item.PersistableObject = new[] { "x", "y" };
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem.PersistableNumber.ShouldBe(123);
+			readItem.PersistableText.ShouldBe("world");
+			readItem.PersistableEnum.ShouldBe(ContentState.Unpublished);
+			readItem.PersistableObject.ShouldBe(new[] { "x", "y" });
 		}
 
         private void AssertEquals(DateTime? expected, DateTime? actual)

@@ -76,7 +76,7 @@ namespace N2.Edit.Web.UI.Controls
 			IContentAdapterProvider adapters = Engine.Resolve<IContentAdapterProvider>();
 
 			if (Nodes == null)
-				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
+				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true) { UseMasterVersion = false }
 					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(Filter))
 					.Build();
 

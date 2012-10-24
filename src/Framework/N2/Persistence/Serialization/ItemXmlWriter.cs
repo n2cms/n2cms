@@ -4,6 +4,8 @@ using N2.Definitions;
 using N2.Engine;
 using N2.Web;
 using N2.Edit.FileSystem;
+using System.Linq;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
@@ -28,11 +30,21 @@ namespace N2.Persistence.Serialization
 		{
 			WriteSingleItem(item, options, writer);
 
-			foreach(ContentItem child in item.Children)
+			foreach (ContentItem child in GetChildren(item, options))
 			{
-				if (child.ID != 0)
-					Write(child, options, writer);
+				Write(child, options, writer);
 			}
+		}
+
+		internal static IEnumerable<ContentItem> GetChildren(ContentItem item, ExportOptions options)
+		{
+			if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children;
+			else if (options.IsFlagSet(ExportOptions.ExcludePages))
+				return item.Children.FindParts();
+			else if (options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children.FindPages();
+			return Enumerable.Empty<ContentItem>();
 		}
 
 		public virtual void WriteSingleItem(ContentItem item, ExportOptions options, XmlTextWriter writer)
@@ -55,7 +67,7 @@ namespace N2.Persistence.Serialization
             else
                 yield return new DetailXmlWriter();
 			yield return new DetailCollectionXmlWriter();
-			yield return new ChildXmlWriter();
+			yield return new ChildXmlWriter(options);
 			yield return new AuthorizationXmlWriter();
 			yield return new PersistablePropertyXmlWriter(definitions);
             if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
@@ -66,7 +78,17 @@ namespace N2.Persistence.Serialization
 		{
 			itemElement.WriteAttribute("id", item.ID);
 			itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
-			itemElement.WriteAttribute("parent", item.Parent != null ? item.Parent.ID.ToString() : string.Empty);
+			if (item.Parent != null)
+			{
+				if (item.Parent.ID != 0)
+					itemElement.WriteAttribute("parent", item.Parent.ID.ToString());
+				else
+				{
+					itemElement.WriteAttribute("parent", item.Parent.VersionOf.ID.ToString());
+					if (item.Parent.GetVersionKey() != null)
+						itemElement.WriteAttribute("parentVersionKey", item.Parent.GetVersionKey());
+				}
+			}
 			itemElement.WriteAttribute("title", item.Title);
 			itemElement.WriteAttribute("zoneName", item.ZoneName);
 			itemElement.WriteAttribute("templateKey", item.TemplateKey);
@@ -83,6 +105,12 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("savedBy", item.SavedBy);
 			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
 			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item).Discriminator);
+			itemElement.WriteAttribute("versionIndex", item.VersionIndex);
+			itemElement.WriteAttribute("ancestralTrail", item.AncestralTrail);
+			itemElement.WriteAttribute("alteredPermissions", (int)item.AlteredPermissions);
+			itemElement.WriteAttribute("childState", (int)item.ChildState);
+			if(item.VersionOf.HasValue)
+				itemElement.WriteAttribute("versionOf", item.VersionOf.ID.Value);
 		}
 	}
 }

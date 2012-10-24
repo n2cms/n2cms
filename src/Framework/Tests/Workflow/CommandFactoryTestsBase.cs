@@ -8,6 +8,7 @@ using N2.Tests.Fakes;
 using N2.Tests.Workflow.Items;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Shouldly;
 
 namespace N2.Tests.Workflow
 {
@@ -26,14 +27,14 @@ namespace N2.Tests.Workflow
         {
             base.SetUp();
 			var changer = new StateChanger();
-            definitions = TestSupport.SetupDefinitions(typeof(StatefulItem));
-			versions = new FakeVersionManager(repository, changer);
+            definitions = TestSupport.SetupDefinitions(typeof(StatefulPage), typeof(StatefulPart));
+			versions = new FakeVersionManager(repository, changer, typeof(StatefulPage), typeof(StatefulPart));
 			var editManager = new EditUrlManager(new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, null, changer);
 			dispatcher = new CommandDispatcher(commands, persister);
-			item = CreateOneItem<StatefulItem>(1, "first", null);
-			child = CreateOneItem<StatefulItem>(2, "child", item);
+			item = CreateOneItem<StatefulPage>(1, "first", null);
+			child = CreateOneItem<StatefulPage>(2, "child", item);
 		}
 
         protected abstract CommandBase<CommandContext> CreateCommand(CommandContext context);
@@ -75,12 +76,13 @@ namespace N2.Tests.Workflow
         [Test]
         public void DoesntMakeVersion_OfUnsavedItem()
         {
-			var context = new CommandContext(definitions.GetDefinition(typeof(StatefulItem)), new StatefulItem(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(typeof(StatefulPage)), new StatefulPage(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
+			versions.Repository.Repository.Count().ShouldBe(0);
+            //Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
         }
 
         [Test]
@@ -104,7 +106,7 @@ namespace N2.Tests.Workflow
 
 			dispatcher.Execute(CreateCommand(context), context);
 
-			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.GreaterThan(0), "Expected version to be created");
+			versions.Repository.Repository.Count().ShouldBeGreaterThan(0);
 		}
 
 		[Test]
@@ -115,14 +117,12 @@ namespace N2.Tests.Workflow
 			dispatcher.Execute(CreateCommand(context), context);
 
 			dispatcher.Execute(CreateCommand(context), context);
-			Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == unversionable), Is.EqualTo(0), "Expected no version to be created");
+			versions.Repository.Repository.Count().ShouldBe(0);
 		}
 
         protected ContentItem MakeVersion(ContentItem master)
         {
-            var version = CreateOneItem<StatefulItem>(2, "version", null);
-            version.VersionOf = master;
-            return version;
+			return versions.AddVersion(master);
         }
     }
 }

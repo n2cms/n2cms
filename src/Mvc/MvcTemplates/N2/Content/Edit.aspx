@@ -17,6 +17,7 @@
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
         <asp:HyperLink ID="hlFuturePublish" NavigateUrl="#futurePanel" CssClass="command plain iconed future" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
+		<asp:LinkButton ID="btnUnpublish" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
     </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
@@ -28,9 +29,19 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+<%--  	
+<table>
+	<tr><th>Selected</th><td><%= Selection.SelectedItem %> (<%= Selection.SelectedItem.State %>)</td><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
+	<tr><th>Edited</th><td><%= ie.CurrentItem %> (<%= ie.CurrentItem.State %>)</td><th>VersionOf</th><td><%= ie.CurrentItem.VersionOf.ID %></td><th>Parent</th><td><%= ie.CurrentItem.Parent %></td></tr>
+	<tr><th colspan="5"><hr /></th></tr>
+	<% foreach(var key in Request.QueryString.AllKeys) { %>
+	<tr><th colspan="2"><%= key %></th><td colspan="3"><%= Request[key] %></td></tr>
+	<%} %>
+</table>
+--%>
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
-	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
-	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
+	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info draftExists" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
+	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info isVersion" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
     <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
     <asp:CustomValidator ID="cvException" runat="server" Display="None" />
 

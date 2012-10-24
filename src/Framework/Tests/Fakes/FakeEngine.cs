@@ -8,12 +8,41 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
+using N2.Plugin;
+using N2.Persistence.NH;
+using N2.Details;
+using N2.Persistence.Sources;
 
 namespace N2.Tests.Fakes
 {
 	public class FakeEngine : IEngine
 	{
 		public FakeServiceContainer container = new FakeServiceContainer();
+
+		public FakeEngine()
+		{
+		}
+
+		public FakeEngine(params Type[] types)
+		{
+			AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
+			AddComponentInstance<IDefinitionManager>(TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray()));
+			var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
+			AddComponentInstance<IContentAdapterProvider>(adapterProvider);
+			var itemRepository = new FakeContentItemRepository();
+			AddComponentInstance<IRepository<ContentItem>>(itemRepository);
+			AddComponentInstance<IContentItemRepository>(itemRepository);
+			var webContext = new ThreadContext();
+			AddComponentInstance<IWebContext>(webContext);
+			var host = new Host(webContext, 1, 1);
+			AddComponentInstance<IHost>(host);
+			var security = new FakeSecurityManager();
+			AddComponentInstance<ISecurityManager>(security);
+			var source = new ContentSource(security, new [] { new DatabaseSource(host, itemRepository) });
+			AddComponentInstance(source);
+			AddComponentInstance<IPersister>(new ContentPersister(source, itemRepository));
+			AddComponentInstance<IWebContext>(webContext);
+		}
 
 		#region IEngine Members
 
@@ -69,7 +98,7 @@ namespace N2.Tests.Fakes
 
 		public void Initialize()
 		{
-			throw new NotImplementedException();
+			container.StartComponents();
 		}
 
 		public void Attach(EventBroker application)
@@ -132,6 +161,11 @@ namespace N2.Tests.Fakes
 		{
 			get { return new ContentHelperBase(() => this, () => RequestContext.CurrentPath); }
 		}
+
+        public N2.Configuration.ConfigurationManagerWrapper Config
+        {
+            get { return Resolve<N2.Configuration.ConfigurationManagerWrapper>(); }
+        }
 
 		#endregion
 
@@ -211,7 +245,8 @@ namespace N2.Tests.Fakes
 
 			public void StartComponents()
 			{
-				throw new NotImplementedException();
+				foreach (var component in this.services.Values.OfType<IAutoStart>().ToList())
+					component.Start();
 			}
 
 			#endregion
@@ -221,5 +256,5 @@ namespace N2.Tests.Fakes
 		{
 			Container.AddComponentInstance(instance.GetType().FullName, typeof(T), instance);
 		}
-	}
+    }
 }

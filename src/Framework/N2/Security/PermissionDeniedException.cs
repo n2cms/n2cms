@@ -20,7 +20,12 @@ namespace N2.Security
 		}
 
 		public PermissionDeniedException(ContentItem item, IPrincipal user)
-			: base(401, "Permission denied")
+			: this(401, "Permission denied", item, user)
+		{
+        }
+
+		public PermissionDeniedException(int httpCode, string message, ContentItem item, IPrincipal user)
+			: base (httpCode, message)
 		{
 			this.user = user;
 			this.item = item;

@@ -24,14 +24,16 @@ namespace N2.Security
 		private readonly ContentActivator activator;
 		private readonly Web.IUrlParser urlParser;
 		private readonly Web.IWebContext webContext;
+		private int permissionDeniedHttpCode;
 
-		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, ContentActivator activator, Web.IUrlParser urlParser, Web.IWebContext webContext)
+		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, ContentActivator activator, Web.IUrlParser urlParser, Web.IWebContext webContext, Configuration.HostSection config)
 		{
 			this.webContext = webContext;
 			this.persister = persister;
 			this.security = security;
 			this.activator = activator;
 			this.urlParser = urlParser;
+			this.permissionDeniedHttpCode = config.Web.PermissionDeniedHttpCode;
 		}
 
 		#region Event Handlers
@@ -84,7 +86,7 @@ namespace N2.Security
 						AuthorizationFailed.Invoke(this, args);
 
 					if (!args.Cancel)
-						throw new PermissionDeniedException(page, user);
+						throw new PermissionDeniedException(permissionDeniedHttpCode, permissionDeniedHttpCode == 401 ? "Unauthorized" : "Not Found", page, user);
 				}
 			}
 		}

@@ -36,7 +36,7 @@ namespace N2.Tests.Edit
 			adapter.Security = new SecurityManager(adapter.WebContext, new N2.Configuration.EditSection());
 			adapter.Host = new Host(null, root.ID, start.ID);
 			adapter.Settings = new FakeNavigationSettings();
-			adapter.Sources = TestSupport.SetupContentSource(adapter.WebContext, adapter.Host, persister);
+			adapter.Sources = TestSupport.SetupContentSource(adapter.WebContext, adapter.Host, persister.Repository);
 		}
 
 		[Test]

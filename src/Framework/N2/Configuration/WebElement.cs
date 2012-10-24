@@ -104,5 +104,13 @@ namespace N2.Configuration
 			get { return (UrlElement)base["urls"]; }
 			set { base["urls"] = value; }
 		}
+
+		/// <summary>Tells the rewriter whether it should rewrite when the url matches an existing file. By default N2 doesn't rewrite when the file exists.</summary>
+		[ConfigurationProperty("permissionDeniedHttpCode", DefaultValue = 401)]
+		public int PermissionDeniedHttpCode
+		{
+			get { return (int)base["permissionDeniedHttpCode"]; }
+			set { base["permissionDeniedHttpCode"] = value; }
+		}
 	}
 }

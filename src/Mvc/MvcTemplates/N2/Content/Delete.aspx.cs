@@ -5,17 +5,19 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
 	[NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Publish)]
-	[ToolbarPlugin("DEL", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, ToolTip = "delete",
+	[ToolbarPlugin("", "delete_tool", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, 
+		ToolTip = "delete",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]
-	[ControlPanelLink("cpDelete", "{ManagementUrl}/Resources/icons/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible,
-		RequiredPermission = Permission.Publish)]
+	[ControlPanelDiscardPreviewOrDelete]
 	public partial class Delete : Web.EditPage
     {
         protected override void OnInit(EventArgs e)
@@ -96,10 +98,34 @@ namespace N2.Edit
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-            ContentItem parent = Selection.SelectedItem.Parent;
-            try
+			var item = Selection.SelectedItem;
+            var parent = item.Parent;
+			try
             {
-                N2.Context.Persister.Delete(Selection.SelectedItem);
+				if (!item.IsPage)
+				{
+					// it's a published part, create a version of it's page and remove the part from it.
+					var page = Find.ClosestPage(item);
+					if (page != null)
+					{
+						var versions = Engine.Resolve<IVersionManager>();
+
+						if (!page.VersionOf.HasValue)
+						{
+							page = versions.AddVersion(page, asPreviousVersion: false);
+						}
+
+						var partVersion = page.FindPartVersion(item);
+						partVersion.AddTo(null);
+						
+						versions.UpdateVersion(page);
+						parent = page;
+					}
+				}
+				else
+				{
+					Engine.Persister.Delete(Selection.SelectedItem);
+				}
 
                 if (parent != null)
                     Refresh(parent, ToolbarArea.Both);

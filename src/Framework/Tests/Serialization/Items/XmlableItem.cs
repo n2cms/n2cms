@@ -24,7 +24,7 @@ namespace N2.Tests.Serialization.Items
 		}
 
 		[Persistable]
-		[EditableNumber]
+		[EditableNumber(DefaultValue = 666)]
 		public virtual int PersistableNumber { get; set; }
 
 		[Persistable]
@@ -32,7 +32,7 @@ namespace N2.Tests.Serialization.Items
 		public virtual DateTime PersistableDate { get; set; }
 
 		[Persistable]
-		[EditableText]
+		[EditableText(DefaultValue = "hello")]
 		public virtual string PersistableText { get; set; }
 
 		[Persistable]
@@ -40,11 +40,11 @@ namespace N2.Tests.Serialization.Items
 		public virtual XmlableItem PersistableLink { get; set; }
 
 		[Persistable]
-		[EditableEnum]
+		[EditableEnum(DefaultValue = ContentState.Published)]
 		public virtual ContentState PersistableEnum { get; set; }
 
 		[Persistable]
-		[EditableEnum]
+		[EditableEnum(DefaultValue = new [] { "one", "two" })]
 		public virtual string[] PersistableObject { get; set; }
 
 		public Version Version

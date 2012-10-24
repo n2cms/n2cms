@@ -2,6 +2,7 @@
 using N2.Persistence;
 using N2.Plugin;
 using N2.Web;
+using System.Web;
 
 namespace N2.Engine.Globalization
 {
@@ -132,11 +133,19 @@ namespace N2.Engine.Globalization
 
 		void persister_ItemSaved(object sender, ItemEventArgs e)
 		{
-			ContentItem item = e.AffectedItem;
-			ILanguage language = gateway.GetLanguage(item);
-			if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
+			try
 			{
-				UpdateLanguageKey(item);
+				ContentItem item = e.AffectedItem;
+				ILanguage language = gateway.GetLanguage(item);
+				if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
+				{
+					UpdateLanguageKey(item);
+				}
+			}
+			catch (System.Exception)
+			{
+				
+				throw;
 			}
 		}
 

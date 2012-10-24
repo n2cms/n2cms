@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Collections;
 using N2.Web;
+using System.Diagnostics;
 
 namespace N2.Persistence
 {
@@ -48,14 +49,15 @@ namespace N2.Persistence
 		}
 	}
 
+    [DebuggerDisplay("ContentRelation: {ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
 		public string Path 
-		{ 
-			get { return HasValue ? Value.Path : null; } 
+		{
+			get { return HasValue && Value != null ? Value.Path : null; } 
 		}
 		public ContentRelation Parent 
-		{ 
+		{
 			get { return HasValue ? Value.Parent : null; } 
 		}
 		public PathData FindPath(string remainingUrl) 

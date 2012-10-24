@@ -74,7 +74,6 @@ var settingsClr = {
 // Settings: toolbars
 var settingsSimple = {
 	theme: 'advanced',
-
 	plugins: 'style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
@@ -85,9 +84,8 @@ var settingsSimple = {
 };
 
 var settingsExtended = {
-	theme: 'advanced',
-
-	plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
+    theme: 'advanced',
+    plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
        + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
        + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
 
@@ -146,5 +144,10 @@ function freeTextArea_init(fileBrowser, overrides) {
 
 	// Explicit overrides:
 	jQuery.extend(settings, overrides);
+
+	if (settings.tokencomplete_enabled) {
+	    settings.plugins += ",tokencomplete"
+	}
+
 	tinyMCE.init(settings);
 }

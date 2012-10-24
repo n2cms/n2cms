@@ -5,21 +5,17 @@ using System.Text;
 
 namespace N2.Persistence.Sources
 {
-	public class ActiveContentSource : SourceBase
+	[ContentSource]
+	public class ActiveContentSource : SourceBase<IActiveContent>
 	{
-		public ActiveContentSource()
-		{
-			BaseContentType = typeof(IActiveContent);
-		}
-
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
 			return previousChildren;
 		}
 
-		public override bool IsProvidedBy(ContentItem item)
+		public override ContentItem Get(object id)
 		{
-			return item is IActiveContent;
+			return null;
 		}
 
 		public override void Save(ContentItem item)
@@ -32,9 +28,10 @@ namespace N2.Persistence.Sources
 			Active(item).Delete();
 		}
 
-		public override void Move(ContentItem source, ContentItem destination)
+		public override ContentItem Move(ContentItem source, ContentItem destination)
 		{
 			Active(source).MoveTo(destination);
+			return source;
 		}
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)

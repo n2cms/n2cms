@@ -4,6 +4,7 @@ using N2.Tests.Workflow.Items;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Edit;
+using Shouldly;
 
 namespace N2.Tests.Workflow
 {
@@ -17,22 +18,6 @@ namespace N2.Tests.Workflow
         }
 
         [Test]
-        public void IsNotValidated_WhenInterface_IsViewing()
-        {
-            item = MakeVersion(item);
-
-			var validator = MockRepository.GenerateStub<IValidator<CommandContext>>();
-            mocks.ReplayAll();
-
-			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, validator);
-
-            var command = CreateCommand(context);
-            dispatcher.Execute(command, context);
-
-            validator.AssertWasNotCalled(b => b.Validate(context));
-        }
-
-        [Test]
         public void MakesVersion_OfCurrent()
         {
 			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
@@ -40,19 +25,22 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(1));
+			versions.Repository.Repository.Count().ShouldBe(1);
         }
 
         [Test]
         public void Version_MakesVersion_OfCurrentMaster()
         {
             var version = MakeVersion(item);
+			version.State = ContentState.Draft;
+			version.Title = "version";
+
 			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(1));
+			versions.Repository.GetVersions(item).Count().ShouldBe(1);
             Assert.That(item.Title, Is.EqualTo("version"));
         }
 
@@ -74,7 +62,6 @@ namespace N2.Tests.Workflow
         public void PreviouslyPublishedVersion_CausesNewVersion_FromView()
         {
             var version = MakeVersion(item);
-            version.State = ContentState.Unpublished;
 
 			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
@@ -87,7 +74,7 @@ namespace N2.Tests.Workflow
 		[Test]
 		public void CanMoveItem_ToBefore_Item()
 		{
-			var child2 = CreateOneItem<StatefulItem>(0, "child2", item);
+			var child2 = CreateOneItem<StatefulPage>(0, "child2", item);
 			var context = new CommandContext(definitions.GetDefinition(child2.GetContentType()), child2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 			context.Parameters["MoveBefore"] = child.Path;
 			var command = CreateCommand(context);

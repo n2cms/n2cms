@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using N2.Edit;
 
 namespace N2.Configuration
 {
@@ -21,6 +22,14 @@ namespace N2.Configuration
 		{
 			get { return (int)base["maximumPerItem"]; }
 			set { base["maximumPerItem"] = value; }
+		}
+
+		/// <summary>Whether versions are stored when saving items using the editor interface.</summary>
+		[ConfigurationProperty("defaultViewMode", DefaultValue = ViewPreference.Draft)]
+		public ViewPreference DefaultViewMode
+		{
+			get { return (ViewPreference)base["defaultViewMode"]; }
+			set { base["defaultViewMode"] = value; }
 		}
 	}
 }

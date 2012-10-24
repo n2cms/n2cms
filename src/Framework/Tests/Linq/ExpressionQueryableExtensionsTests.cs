@@ -485,6 +485,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_ItemWitNonPublishedState_IsNotSelected(ContentState state)
 		{
 			item.State = state;
+			item.State = ContentState.Unpublished;
 			engine.Persister.Repository.SaveOrUpdate(item);
 			engine.Persister.Repository.Flush();
 
@@ -498,12 +499,22 @@ namespace N2.Extensions.Tests.Linq
 		[Test]
 		public void WherePrecedingSibling()
 		{
+//<<<<<<< HEAD
+//            item.AddTo(root);
+//            var item0 = CreateOneItem<LinqItem>(0, "item0", root);
+//            item0.SortOrder = item.SortOrder - 1;
+//            var item2 = CreateOneItem<LinqItem>(0, "item2", root);
+//            item2.SortOrder = item.SortOrder + 1;
+//            engine.Persister.Save(root);
+//            engine.Persister.Repository.Flush();
+//=======
 			item.AddTo(root);
 			var item0 = CreateOneItem<LinqItem>(0, "item0", root);
 			item0.SortOrder = item.SortOrder - 1;
 			var item2 = CreateOneItem<LinqItem>(0, "item2", root);
 			item2.SortOrder = item.SortOrder + 1;
 			engine.Persister.Repository.SaveOrUpdate(root, item, item0, item2);
+//>>>>>>> master
 
 			var query = engine.QueryItems().WherePrecedingSiblingOf(item);
 

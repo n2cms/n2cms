@@ -18,8 +18,14 @@ namespace N2.Edit.Installation
 		protected bool checkInstallation;
 		protected string welcomeUrl;
 		protected string managementUrl;
-		DatabaseStatus status;
 		InstallationManager installer;
+
+		private DatabaseStatus status;
+		public DatabaseStatus Status
+		{
+			get { return status ?? (status = installer.GetStatus()); }
+			set { status = value; }
+		}
 
 		public InstallationChecker(IWebContext webContext, EventBroker broker, ConfigurationManagerWrapper configuration, InstallationManager installer)
 		{
@@ -30,11 +36,11 @@ namespace N2.Edit.Installation
 				managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;
 				this.webContext = webContext;
 				this.broker = broker;
-				this.status = installer.GetStatus();
+				this.Status = installer.GetStatus();
 
-				installer.UpdateStatus(status.Level);
+				installer.UpdateStatus(Status.Level);
 
-				if(status.Level != SystemStatusLevel.UpAndRunning)
+				if(Status.Level != SystemStatusLevel.UpAndRunning)
 					this.broker.BeginRequest += BeginRequest;
 			}
 			else
@@ -64,47 +70,47 @@ namespace N2.Edit.Installation
 				Engine.Logger.Warn(ex);
 			}
 
-			if (status == null)
+			if (Status == null)
 			{
-				status = installer.GetStatus();
+				Status = installer.GetStatus();
 			}
 
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
-			if (status == null)
+			if (Status == null)
 			{
 				Engine.Logger.Warn("Null status");
 				installer.UpdateStatus(SystemStatusLevel.Unknown);
 				return;
 			}
-			else if (status.NeedsUpgrade)
+			else if (Status.NeedsUpgrade)
 			{
 				redirectUrl = redirectUrl.AppendQuery("action", "upgrade");
 			}
-			else if (!status.IsInstalled)
+			else if (!Status.IsInstalled)
 			{
 				redirectUrl = redirectUrl.AppendQuery("action", "install");
 			}
-			else if (status.NeedsRebase)
+			else if (Status.NeedsRebase)
 			{
 				redirectUrl = redirectUrl.AppendQuery("action", "rebase");
 			}
 			else
 			{
 				this.broker.BeginRequest -= BeginRequest;
-				installer.UpdateStatus(status.Level);
-				this.status = null;
+				installer.UpdateStatus(Status.Level);
+				this.Status = null;
 				return;
 			}
 
-			installer.UpdateStatus(status.Level);
+			installer.UpdateStatus(Status.Level);
 
 			bool isEditing = currentUrl.StartsWith(N2.Web.Url.ToRelative(managementUrl), StringComparison.InvariantCultureIgnoreCase);
 			if (isEditing)
 				return;
 
-			logger.Debug("Redirecting to '" + redirectUrl + "' to handle status: " + status.ToStatusString());
+			logger.Debug("Redirecting to '" + redirectUrl + "' to handle status: " + Status.ToStatusString());
 			
-			this.status = null;
+			this.Status = null;
 			webContext.HttpContext.Response.Redirect(redirectUrl);
 		}
 

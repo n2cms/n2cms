@@ -14,5 +14,6 @@ namespace N2.Details
 		ContentItem LinkedItem { get; set; }
 		object ObjectValue { get; set; }
 		string StringValue { get; set; }
+        bool Equals(object value);
 	}
 }

@@ -117,10 +117,10 @@ namespace N2.Persistence
 		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
 		/// <param name="includeSelf">Include the initial item in the enumeration.</param>
 		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
-		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
+		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf, bool useMasterVersion = true)
 		{
 			if (initialItem == null) yield break;
-			if (initialItem.VersionOf.HasValue) initialItem = initialItem.VersionOf;
+			if (useMasterVersion && initialItem.VersionOf.HasValue) initialItem = initialItem.VersionOf;
 
 			ContentItem item;
 			if(includeSelf)
@@ -236,30 +236,30 @@ namespace N2.Persistence
 
 		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
-		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
+		/// <param name="includeSelf">Enumerate the item itself and it's descendants.</param>
 		/// <returns>An enumeration of all children of an item.</returns>
-		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef)
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSelf)
 		{
-			return EnumerateChildren(item, includeSlef, true);
+			return EnumerateChildren(item, includeSelf, true);
 		}
 
 		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
-		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
+		/// <param name="includeSelf">Enumerate the item itself and it's descendants.</param>
 		/// <param name="useMasterVersion">Enumerate descendants of the master version if the passed item is a version.</param>
 		/// <returns>An enumeration of all children of an item.</returns>
-		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef, bool useMasterVersion)
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSelf, bool useMasterVersion)
 		{
 			if (item == null) yield break;
 			if (useMasterVersion && item.VersionOf.HasValue) item = item.VersionOf;
 
-			if(includeSlef)
+			if(includeSelf)
 				yield return item;
 
 			foreach (ContentItem child in item.Children)
 			{
 				yield return child;
-				foreach (ContentItem descendant in EnumerateChildren(child, false))
+				foreach (ContentItem descendant in EnumerateChildren(child, false, useMasterVersion))
 					yield return descendant;
 			}
 		}

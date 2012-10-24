@@ -58,9 +58,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
@@ -109,15 +109,19 @@
     <Compile Include="FileSystem\FileSystemNodesTests.cs" />
     <Compile Include="FileSystem\RootNode.cs" />
     <Compile Include="FileSystem\VirtualFolderInitializerTests.cs" />
+    <Compile Include="Installation\VersionMigrationTests.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />
     <Compile Include="LinkTracker\Items\TrackableItem.cs" />
     <Compile Include="LinkTracker\TrackerTests.cs" />
+    <Compile Include="PublishScheduledActionTests.cs" />
     <Compile Include="Security\ItemBridgeTests.cs" />
     <Compile Include="Security\Items\UserOverride.cs" />
+    <Compile Include="Tokens\TokenFinderTests.cs" />
     <Compile Include="Trash\DeleteInterceptorTests.cs" />
     <Compile Include="Trash\NonThrowableItem.cs" />
     <Compile Include="Trash\ThrowableItem.cs" />
     <Compile Include="Trash\TrashCleanupAgentTests.cs" />
+    <Compile Include="Trash\TrashDeleteRelationsTests.cs" />
     <Compile Include="Trash\TrashHandlerTests.cs" />
     <Compile Include="Trash\TrashTestBase.cs" />
     <Compile Include="Xml\N2XmlWriterFixture.cs" />
@@ -158,6 +162,10 @@
     <Content Include="FileSystem\Upload\Image.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="N2\Tokens\TokenTemplates\Hello.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Upload\File.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -190,6 +198,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

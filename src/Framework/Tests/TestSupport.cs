@@ -5,6 +5,7 @@ using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Details;
 using N2.Edit;
+using N2.Edit.Versioning;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
@@ -12,18 +13,48 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Persistence.Proxying;
+using N2.Persistence.Serialization;
+using N2.Plugin;
 using N2.Security;
 using N2.Tests.Fakes;
+using N2.Tests.Workflow.Items;
 using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
+using System.Linq;
+using System.Web.UI;
+using System.Reflection;
+using System.Web;
+using System.Collections;
+using System.IO;
+using N2.Engine.Globalization;
+using System.Text;
 
 namespace N2.Tests
 {
     public static class TestSupport
     {
+        public static void ShouldBe(this DateTime actual, DateTime expected, TimeSpan tolerance)
+        {
+            if (Math.Abs(actual.Subtract(expected).TotalMilliseconds) > tolerance.TotalMilliseconds)
+                throw new Exception(actual + " != " + expected + " (tolerance: " + tolerance + ")");
+        }
+
+        public static void ShouldBe(this DateTime? actual, DateTime? expected, TimeSpan tolerance)
+        {
+            if (!actual.HasValue && !expected.HasValue)
+                return;
+            else if (actual.HasValue && expected.HasValue)
+            {
+                if (Math.Abs(actual.Value.Subtract(expected.Value).TotalMilliseconds) > tolerance.TotalMilliseconds)
+                    throw new Exception(actual + " != " + expected + " (tolerance: " + tolerance + ")");
+            }
+            else
+                throw new Exception(actual + " != " + expected);
+        }
+
         public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
 			var participators = new ConfigurationBuilderParticipator[] { new RelationConfigurationBuilderParticipator() };
@@ -63,14 +94,15 @@ namespace N2.Tests
 
 		public static void Setup(out IDefinitionProvider[] definitionProviders, out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
+            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes.Select(t => t.Assembly).FirstOrDefault() ?? Assembly.GetExecutingAssembly(), itemTypes);
 
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
+			var map = new DefinitionMap();
+			var definitionBuilder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
 			definitionProviders = new IDefinitionProvider[] { new DefinitionProvider(definitionBuilder) };
-			definitions = new DefinitionManager(definitionProviders, new ITemplateProvider[0], activator, new StateChanger());
+			definitions = new DefinitionManager(definitionProviders, new [] { new TemplateProvider(activator, map) }, activator, new StateChanger());
 			((DefinitionManager)definitions).Start();
 		}
 
@@ -83,17 +115,23 @@ namespace N2.Tests
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {
             var changer = new N2.Edit.Workflow.StateChanger();
-			versions = new VersionManager(persister.Repository, finder, changer, new N2.Configuration.EditSection());
+			versions = new VersionManager(TestSupport.CreateVersionRepository(), persister.Repository, changer, new N2.Configuration.EditSection());
 			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<ContentItem> itemRepository, INHRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
         {
-            persister = new ContentPersister(itemRepository, linkRepository);
+			var source = SetupContentSource(itemRepository);
+			persister = new ContentPersister(source, itemRepository);
 			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
             schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
         }
+
+		public static ContentSource SetupContentSource(IContentItemRepository itemRepository)
+		{
+			return new ContentSource(MockRepository.GenerateStub<ISecurityManager>(), new SourceBase[] { new ActiveContentSource(), new DatabaseSource(MockRepository.GenerateStub<IHost>(), itemRepository) });
+		}
 
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, SchemaExport schemaCreator)
         {
@@ -105,17 +143,24 @@ namespace N2.Tests
 
 		public static ContentPersister SetupFakePersister()
 		{
-			FakeRepository<ContentItem> repository;
-			FakeRepository<ContentDetail> linkRepository;
-			return SetupFakePersister(out repository, out linkRepository);
+			IContentItemRepository repository;
+			return SetupFakePersister(out repository);
 		}
 
-		public static ContentPersister SetupFakePersister(out FakeRepository<ContentItem> repository, out FakeRepository<ContentDetail> linkRepository)
+		public static ContentPersister SetupFakePersister(out FakeContentItemRepository repository)
 		{
-			repository = new Fakes.FakeRepository<ContentItem>();
-			linkRepository = new Fakes.FakeRepository<ContentDetail>();
-			
-			return new ContentPersister(repository, linkRepository);
+			repository = new Fakes.FakeContentItemRepository();
+
+			var sources = SetupContentSource(repository);
+			return new ContentPersister(sources, repository);
+		}
+
+		public static ContentPersister SetupFakePersister(out IContentItemRepository repository)
+		{
+			repository = new Fakes.FakeContentItemRepository();
+
+			var sources = SetupContentSource(repository);
+			return new ContentPersister(sources, repository);
 		}
 
 		public static UrlParser Setup(IPersister persister, FakeWebContextWrapper wrapper, IHost host)
@@ -128,9 +173,9 @@ namespace N2.Tests
 			return new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } };
 		}
 
-		public static N2.Persistence.Sources.ContentSource SetupContentSource(IWebContext webContext, IHost host, IPersister persister)
+		public static ContentSource SetupContentSource(IWebContext webContext, IHost host, IContentItemRepository repository)
 		{
-			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, persister.Repository) });
+			return new ContentSource(new SecurityManager(webContext, new N2.Configuration.EditSection()), new[] { new DatabaseSource(host, repository) });
 		}
 
 		public static WebAppTypeFinder TypeFinder()
@@ -148,6 +193,82 @@ namespace N2.Tests
 			var finder = new WebAppTypeFinder(new TypeCache(new N2.Persistence.BasicTemporaryFileHelper(context)), config);
 			finder.AssemblyRestrictToLoadingPattern = new System.Text.RegularExpressions.Regex("N2.Tests");
 			return finder;
+		}
+
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(params Type[] definedTypes)
+		{
+			IPersister persister = null;
+			return CreateVersionRepository(ref persister, definedTypes);
+		}
+
+		public static N2.Edit.Versioning.DraftRepository CreateDraftRepository(ref IPersister persister, params Type[] definedTypes)
+		{
+			return new DraftRepository(CreateVersionRepository(ref persister, definedTypes), new CacheWrapper(persister, new ThreadContext(), new DatabaseSection()));
+		}
+
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, params Type[] definedTypes)
+		{
+			if (persister == null)
+				persister = SetupFakePersister();
+			var definitions = SetupDefinitions(definedTypes);
+			var parser = new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection());
+			var importer = new Importer(persister,
+				new ItemXmlReader(definitions,
+					new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()),
+					persister.Repository),
+				new Fakes.FakeMemoryFileSystem());
+			var exporter = new Exporter(
+				new ItemXmlWriter(
+					definitions,
+					parser,
+					new FakeMemoryFileSystem()));
+			return new ContentVersionRepository(
+				new FakeRepository<ContentVersion>(),
+				exporter,
+				importer,
+				parser,
+				new EmptyProxyFactory());
+		}
+
+		public static ContentActivator SetupContentActivator()
+		{
+			return new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), new N2.Persistence.Proxying.EmptyProxyFactory());
+		}
+
+		public static Host SetupHost()
+		{
+			return new Host(new ThreadContext(), new HostSection());
+		}
+
+		public static ContentSource SetupContentSource(params SourceBase[] sources)
+		{
+			return new ContentSource(new SecurityManager(new ThreadContext(), new EditSection()), sources);
+		}
+
+		public static VersionManager SetupVersionManager(IPersister persister, ContentVersionRepository versionRepository)
+		{
+			return new VersionManager(versionRepository, persister.Repository, new N2.Edit.Workflow.StateChanger(), new EditSection());
+		}
+		public static void InitRecursive(this Page page)
+		{
+			typeof(Page).GetMethod("InitRecursive", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(page, new[] { page });
+		}
+
+		public static IDisposable InitializeHttpContext(string appRelativeExecutionFilePath, string queryString)
+		{
+			var request = new HttpRequest("/Default.aspx", "http://localhost/", queryString);
+			request.Browser = new HttpBrowserCapabilities();
+			request.Browser.Capabilities = new Hashtable();
+			request.Browser.Capabilities["ecmascriptversion"] = "1.7";
+			request.Browser.Capabilities["w3cdomversion"] = "2.0";
+			var response = new HttpResponse(new StringWriter(new StringBuilder()));
+			HttpContext.Current = new HttpContext(request, response)
+			{
+				ApplicationInstance = new HttpApplication(),
+				User = SecurityUtilities.CreatePrincipal("admin")
+			};
+
+			return new Scope(() => HttpContext.Current = null);
 		}
 	}
 }

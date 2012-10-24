@@ -71,7 +71,7 @@ namespace N2.Web
 				writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
 				string baseUrl = GetBaseUrl(context);
-				var root = Engine.UrlParser.ResolvePath(context.Request.Url).StopItem;
+				var root = Engine.UrlParser.FindPath(context.Request.Url).StopItem;
 				WriteItem(writer, baseUrl, root);
 				var descendants = GetDescendants(root);
 				foreach (var item in descendants)

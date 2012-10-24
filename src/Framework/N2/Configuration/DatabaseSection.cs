@@ -144,6 +144,14 @@ namespace N2.Configuration
 			set { base["isolation"] = value; }
 		}
 
+		/// <summary>Starts a transaction every as a connection is opened.</summary>
+		[ConfigurationProperty("autoStartTransaction", DefaultValue = false)]
+		public bool AutoStartTransaction
+		{
+			get { return (bool)this["autoStartTransaction"]; }
+			set { base["autoStartTransaction"] = value; }
+		}
+
 		public override void ApplyComponentConfigurationKeys(List<string> configurationKeys)
 		{
 			if (Files.StorageLocation == FileStoreLocation.Database)

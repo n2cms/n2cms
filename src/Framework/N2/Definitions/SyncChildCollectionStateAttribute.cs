@@ -25,12 +25,18 @@ namespace N2.Definitions
 
 		public void OnSaving(BehaviorContext context)
 		{
+            if (!syncEnabled)
+                return;
+
 			if (context.AffectedItem.Children.Count == 0)
 				context.AffectedItem.ChildState = CollectionState.IsEmpty;
 		}
 
 		public void OnSavingChild(BehaviorContext context)
-		{
+        {
+            if (!syncEnabled)
+                return;
+
 			var child = context.AffectedItem;
 			var parent = context.Parent;
 			
@@ -70,7 +76,10 @@ namespace N2.Definitions
 		}
 
 		public void OnAddingChild(BehaviorContext context)
-		{
+        {
+            if (!syncEnabled)
+                return;
+
 			OnSavingChild(context);
 			if (context.Parent.Children.Count >= LargeCollecetionThreshold)
 			{
@@ -84,7 +93,10 @@ namespace N2.Definitions
 		}
 
 		public void OnRemovingChild(BehaviorContext context)
-		{
+        {
+            if (!syncEnabled)
+                return;
+
 			var item = context.AffectedItem;
 			var parent = context.Parent;
 			if (Is(parent.ChildState, CollectionState.Unknown) || Is(parent.ChildState, CollectionState.IsEmpty))

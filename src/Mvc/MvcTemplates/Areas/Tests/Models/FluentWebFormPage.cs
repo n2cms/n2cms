@@ -21,6 +21,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 		{
 			register.Page();
 			register.UsingConventions();
+			register.Definition.SortOrder = 1000;
 		}
 	}
 }

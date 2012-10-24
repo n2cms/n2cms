@@ -3,6 +3,8 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Integrity;
 using N2.Edit.Workflow;
+using N2.Persistence;
+using N2.Edit.Versioning;
 
 namespace N2.Web.UI.WebControls
 {
@@ -35,14 +37,22 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-            if (State == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
+            if (State.IsFlagSet(ControlPanelState.DragDrop) && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
                 Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
-                zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
+				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+					zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
+				else
+				{
+					zoneContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(CurrentItem).Path;
+					zoneContainer.Attributes["data-versionKey"] = CurrentItem.GetVersionKey();
+					zoneContainer.Attributes["data-versionIndex"] = CurrentItem.VersionIndex.ToString();
+				}
                 zoneContainer.Attributes[PartUtilities.ZoneAttribute] = ZoneName;
                 zoneContainer.Attributes[PartUtilities.AllowedAttribute] = PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
+				
                 zoneContainer.ToolTip = GetToolTip(GetDefinition(CurrentItem), ZoneName);
                 base.CreateItems(zoneContainer);
 			}
@@ -54,26 +64,35 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddChildItem(Control container, ContentItem item)
 		{
-            if (State == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
+            if (State.IsFlagSet(ControlPanelState.DragDrop) && IsMovableOnThisPage(item))
 			{
 				string preview = Page.Request.QueryString["preview"];
 				if (!string.IsNullOrEmpty(preview))
 				{
-					int previewdItemID;
+					int previewIndex;
 					int publishedItemID;
-					if (int.TryParse(preview, out previewdItemID) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
+					if (int.TryParse(preview, out previewIndex) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
 						if (publishedItemID == item.ID)
-							item = Engine.Persister.Get(previewdItemID);
+							item = Engine.Resolve<IVersionManager>().GetVersion(item, previewIndex);
 				}
 
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
-                itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
-                itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
+				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+					itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
+				else
+				{
+					itemContainer.Attributes[PartUtilities.PathAttribute] = Find.ClosestPage(item).Path;
+					itemContainer.Attributes["data-versionKey"] = item.GetVersionKey();
+					itemContainer.Attributes["data-versionIndex"] = item.VersionIndex.ToString();
+				}
+				itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
+				itemContainer.Attributes["data-sortOrder"] = item.SortOrder.ToString();
+				
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
-			else if (State == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
+			else if (State.IsFlagSet(ControlPanelState.Previewing) && item.ID.ToString() == Page.Request["original"])
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 				base.AddChildItem(this, item);

@@ -7,6 +7,8 @@ using N2.Details;
 using N2.Plugin;
 using N2.Persistence.Serialization;
 using N2.Templates.Items;
+using N2.Edit.Versioning;
+using System.Linq;
 
 namespace Demo
 {
@@ -151,8 +153,11 @@ namespace Demo
 
 		private static void ClearPreviousVersions(N2.Engine.IEngine engine, ContentItem rootPage)
 		{
-			foreach (ContentItem version in engine.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
-				engine.Persister.Delete(version);
+			var repo = engine.Resolve<ContentVersionRepository>();
+			foreach(var version in repo.Repository.Find().ToList())
+				repo.Repository.Delete(version);
+			//foreach (ContentItem version in engine.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
+			//    engine.Persister.Delete(version);
 		}
 	}
 }

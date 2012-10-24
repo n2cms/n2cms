@@ -7,6 +7,19 @@ using N2.Web;
 
 namespace N2.Persistence.Sources
 {
+	public abstract class SourceBase<T> : SourceBase
+	{
+		public SourceBase()
+		{
+			BaseContentType = typeof(T);
+		}
+
+		public override bool IsProvidedBy(ContentItem item)
+		{
+			return item is T;
+		}
+	}
+
 	public abstract class SourceBase : IComparable<SourceBase>
 	{
 		private IEngine engine;
@@ -23,6 +36,16 @@ namespace N2.Persistence.Sources
 		}
 
 		public Type BaseContentType { get; set; }
+		public virtual int SortOrder 
+		{ 
+			get 
+			{
+				return 200
+					- (BaseContentType.IsInterface ? 100 : 0)
+					- 10 * Utility.InheritanceDepth(GetType()) 
+					- Utility.InheritanceDepth(BaseContentType); 
+			}
+		}
 
 		public virtual bool ProvidesChildrenFor(ContentItem parent)
 		{
@@ -30,6 +53,16 @@ namespace N2.Persistence.Sources
 		}
 
 		public abstract IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query);
+
+		public virtual bool HasChildren(Query query)
+		{
+			return FilterChildren(AppendChildren(Enumerable.Empty<ContentItem>(), query), query).Any();
+		}
+
+		public virtual IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		{
+			return previousChildren;
+		}
 
 		public abstract bool IsProvidedBy(ContentItem item);
 
@@ -47,20 +80,15 @@ namespace N2.Persistence.Sources
 
 		public virtual int CompareTo(SourceBase other)
 		{
-			return (10 * Utility.InheritanceDepth(GetType()) + Utility.InheritanceDepth(BaseContentType))
-				- (10 * Utility.InheritanceDepth(other.GetType()) + Utility.InheritanceDepth(other.BaseContentType));
+			return this.SortOrder - other.SortOrder;
 		}
 
 		#endregion
 
+		public abstract ContentItem Get(object id);
 		public abstract void Save(ContentItem item);
 		public abstract void Delete(ContentItem item);
-		public abstract void Move(ContentItem source, ContentItem destination);
+		public abstract ContentItem Move(ContentItem source, ContentItem destination);
 		public abstract ContentItem Copy(ContentItem source, ContentItem destination);
-
-		public virtual bool HasChildren(Query query)
-		{
-			return AppendChildren(Enumerable.Empty<ContentItem>(), query).Any();
-		}
 	}
 }

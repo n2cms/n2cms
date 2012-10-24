@@ -37,7 +37,7 @@ namespace N2.Tests.Security
 
 			EditSection editSection = new EditSection();
 			security = new SecurityManager(context, editSection);
-			enforcer = new SecurityEnforcer(persister, security, new ContentActivator(null, null, null), parser, context);
+			enforcer = new SecurityEnforcer(persister, security, new ContentActivator(null, null, null), parser, context, new HostSection());
 			enforcer.Start();
 		}
 

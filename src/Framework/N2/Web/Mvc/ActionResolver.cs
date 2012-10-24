@@ -48,13 +48,16 @@ namespace N2.Web.Mvc
 			{
 				if (string.Equals(method, action, StringComparison.InvariantCultureIgnoreCase))
 				{
+					string templateUrl = item.VersionOf.HasValue
+						? string.Format("~/{0}/{1}", controllerName, method, item.VersionOf.ID)
+						: string.Format("~/{0}/{1}", controllerName, method, item.ID); // workaround for start pages
 					var pd = new PathData(item) 
 					{ 
 						IsRewritable = false, 
 						Controller = controllerName,
 						Action = action,
 						Argument = arguments,
-						TemplateUrl = string.Format("~/{0}/{1}", controllerName, method, item.ID) // workaround for start pages
+						TemplateUrl = templateUrl
 					};
 					return pd;
 				}

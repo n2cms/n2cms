@@ -22,6 +22,9 @@ namespace Castle.DynamicProxy.Contributors
 	using Castle.DynamicProxy.Generators;
 	using Castle.DynamicProxy.Generators.Emitters;
 	using Castle.DynamicProxy.Internal;
+    using N2.Persistence.Proxying;
+    using System.Linq;
+    using System.Reflection;
 
 	public abstract class CompositeTypeContributor : ITypeContributor
 	{
@@ -51,21 +54,42 @@ namespace Castle.DynamicProxy.Contributors
 			{
 				foreach (var method in collector.Methods)
 				{
+                    if (!IsInterceptable(collector, method.Method))
+                        continue;
+
 					model.AddMethod(method);
 					methods.Add(method);
 				}
 				foreach (var @event in collector.Events)
-				{
+                {
+                    if (!IsInterceptable(collector, @event.Event))
+                        continue;
+
 					model.AddEvent(@event);
 					events.Add(@event);
 				}
 				foreach (var property in collector.Properties)
-				{
+                {
+                    if (!IsInterceptable(collector, property.Property))
+                        continue;
+
 					model.AddProperty(property);
 					properties.Add(property);
+
+                    foreach (var method in collector.Methods
+                        .Where(m => (property.CanRead && m.Method == property.GetMethod) || (property.CanWrite && m.Method == property.SetMethod)))
+                    {
+                        model.AddMethod(method);
+                        methods.Add(method);
+                    }
 				}
 			}
 		}
+
+        private bool IsInterceptable(MembersCollector collector, MemberInfo member)
+        {
+            return collector.Type.IsInterface || member.HasAttribute(typeof(IInterceptable));
+        }
 
 		protected abstract IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook);
 

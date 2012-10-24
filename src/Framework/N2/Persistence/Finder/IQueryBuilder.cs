@@ -50,6 +50,7 @@ namespace N2.Persistence.Finder
 		/// <summary>Find items with a certain visibility.</summary>
 		ICriteria<bool> Visible { get; }
 
+		[Obsolete("Querying version is no longer supported", true)]
 		/// <summary>Find previous versions of an item.</summary>
 		ICriteria<ContentItem> VersionOf { get; }
 

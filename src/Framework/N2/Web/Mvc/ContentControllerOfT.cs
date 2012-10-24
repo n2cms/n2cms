@@ -19,7 +19,7 @@ namespace N2.Web.Mvc
 		/// <summary>The content item associated with the requested path.</summary>
 		public new virtual T CurrentItem
 		{
-			get { return (T)base.CurrentItem; }
+			get { return base.CurrentItem as T ?? base.CurrentPage as T; }
 			set { base.CurrentItem = value; }
 		}
 

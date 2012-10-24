@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web.Security;
+using System.Linq;
 
 namespace N2.Security
 {
@@ -37,20 +38,32 @@ namespace N2.Security
 		private string passwordStrengthRegularExpression = ".*";
 		private bool requiresQuestionAndAnswer = false; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false.
 		private bool requiresUniqueEmail = true; // default value is true (MSDN), Breaking change: N2 version 2.2 and older default value was false. Note: still unused by the provider.
+        private Engine.StructureBoundDictionaryCache<string, MembershipUser> cache;
 
 		public ContentMembershipProvider()
 		{
 		}
 
-		public ContentMembershipProvider(ItemBridge bridge)
+        public ContentMembershipProvider(ItemBridge bridge, Engine.StructureBoundDictionaryCache<string, MembershipUser> cache)
 			: this()
 		{
 			this.bridge = bridge;
+            this.cache = cache;
 		}
+
+        protected virtual Engine.IEngine Engine
+        {
+            get { return Context.Current; }
+        }
+
+        protected Engine.StructureBoundDictionaryCache<string, MembershipUser> Cache
+        {
+            get { return cache ?? (cache = Engine.Resolve<Engine.StructureBoundDictionaryCache<string, MembershipUser>>()); }
+        }
 
 		protected virtual ItemBridge Bridge
 		{
-			get { return bridge ?? (bridge = Context.Current.Resolve<ItemBridge>()); }
+			get { return bridge ?? (bridge = Engine.Resolve<ItemBridge>()); }
 		}
 
 		#region provider properties
@@ -246,6 +259,7 @@ namespace N2.Security
 			u = Bridge.CreateUser(username, ToStoredPassword(password), // JH
 								  email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
 
+			Cache.Expire();
 			MembershipUser m = u.GetMembershipUser(this.Name);
 			return m;
 		}
@@ -256,6 +270,7 @@ namespace N2.Security
 			if (u == null)
 				return false;
 			Bridge.Delete(u);
+			Cache.Expire();
 			return true;
 		}
 
@@ -309,12 +324,9 @@ namespace N2.Security
 			N2.Security.Items.UserList users = Bridge.GetUserContainer(false);
 			if (users == null)
 				return 0;
-			int online = 0;
-			int userIsOnlineTimeWindow = (Membership.UserIsOnlineTimeWindow > 0 ? Membership.UserIsOnlineTimeWindow : 20);
-			foreach (N2.Security.Items.User u in users.Children)
-				if (u.LastActivityDate < DateTime.Now.AddMinutes(-userIsOnlineTimeWindow)) // JH
-					online++;
-			return online;
+
+            int userIsOnlineTimeWindow = (Membership.UserIsOnlineTimeWindow > 0 ? Membership.UserIsOnlineTimeWindow : 20);
+            return Bridge.Finder.Where.Parent.Eq(users).And.Detail("LastActivityDate").Ge(DateTime.Now.AddMinutes(-userIsOnlineTimeWindow)).Count();
 		}
 
 		public override string GetPassword(string username, string answer)
@@ -334,17 +346,15 @@ namespace N2.Security
 
 		public override MembershipUser GetUser(string username, bool userIsOnline)
 		{
-			N2.Security.Items.User u = Bridge.GetUser(username);
-			if (u != null)
-			{
-				if (userIsOnline)
-				{
-					u.LastActivityDate = DateTime.Now;
-					Bridge.Save(u); // JH
-				}
-				return u.GetMembershipUser(this.Name);
-			}
-			return null;
+            return Cache.GetValue(username, (un) =>
+                {
+                    N2.Security.Items.User u = Bridge.GetUser(username);
+                    if (u != null)
+                    {
+                        return u.GetMembershipUser(this.Name);
+                    }
+                    return null;
+                });
 		}
 
 		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
@@ -368,22 +378,14 @@ namespace N2.Security
 				_userId = ((int)_bytes[0]) | ((int)_bytes[1] << 8) | ((int)_bytes[2] << 16) | ((int)_bytes[3] << 24);
 			}
 
-			IList<ContentItem> users = Bridge.Finder
+			var users = Bridge.Finder
 			  .Where.ID.Eq(_userId)
 			  .And.Type.Eq(typeof(N2.Security.Items.User))
 			  .And.Parent.Eq(userContainer)
-			  .Select();
+              .MaxResults(1)
+              .Select<Items.User>();
 
-			foreach (N2.Security.Items.User u in users)
-			{
-				if (userIsOnline)
-				{
-					u.LastActivityDate = DateTime.Now; // JH
-					Bridge.Save(u);
-				}
-				return u.GetMembershipUser(Name);
-			}
-			return null;
+            return users.Select(u => u.GetMembershipUser(Name)).FirstOrDefault();
 		}
 
 		public override string GetUserNameByEmail(string email)
@@ -391,14 +393,13 @@ namespace N2.Security
 			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			IList<ContentItem> users = Bridge.Finder
+			var userNames = Bridge.Finder
 			  .Where.Detail("Email").Eq(email)
 			  .And.Type.Eq(typeof(N2.Security.Items.User))
 			  .And.Parent.Eq(userContainer)
-			  .Select();
-			foreach (N2.Security.Items.User u in users)
-				return u.Name;
-			return null;
+              .MaxResults(1)
+              .Select("Name");
+            return userNames.OfType<string>().FirstOrDefault();
 		}
 
 		public override string ResetPassword(string username, string answer)
@@ -433,6 +434,7 @@ namespace N2.Security
 				return false;
 			u.IsLockedOut = false;
 			Bridge.Save(u);
+			Cache.Expire();
 			return true;
 		}
 
@@ -445,6 +447,7 @@ namespace N2.Security
 			{
 				u.UpdateFromMembershipUser(user); // JH: note that password remains unaffected
 				Bridge.Save(u);
+				Cache.Expire();
 			}
 			else
 				throw new N2Exception("User '" + user.UserName + "' not found.");

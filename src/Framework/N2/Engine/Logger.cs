@@ -117,6 +117,16 @@ namespace N2.Engine
 		{
 			Writer.Debug(format, args);
 		}
+
+		internal void Indent()
+		{
+			Writer.Indent();
+		}
+
+		internal void Unindent()
+		{
+			Writer.Unindent();
+		}
 	}
 
 	/// <summary>
@@ -264,8 +274,18 @@ namespace N2.Engine
 		public virtual void Debug(string format, object[] args)
 		{
 		}
+
+		public virtual void Indent()
+		{
+		}
+		public virtual void Unindent()
+		{
+		}
 	}
 
+	/// <summary>
+	/// The default logger. Writes to System.Diagnostic trace and debug logging infrastructure.
+	/// </summary>
 	public class TraceLogWriter : LogWriterBase
 	{
 		public TraceLogWriter(string prefix)
@@ -311,6 +331,92 @@ namespace N2.Engine
 		public override void Debug(string format, object[] args)
 		{
 			System.Diagnostics.Debug.WriteLine(Prefix + string.Format(format, args));
+		}
+
+		public override void Indent()
+		{
+			System.Diagnostics.Debug.Indent();
+		}
+
+		public override void Unindent()
+		{
+			System.Diagnostics.Debug.Unindent();
+		}
+	}
+
+	/// <summary>
+	/// Redirects log information to NHibernate's default logger.
+	/// </summary>
+	public class NhLoggerProviderWriter : LogWriterBase
+	{
+		private NHibernate.IInternalLogger logger;
+
+		public NhLoggerProviderWriter(Type type, string prefix)
+		{
+			logger = NHibernate.LoggerProvider.LoggerFor(type);
+			Prefix = prefix;
+		}
+
+		public NhLoggerProviderWriter(string keyName, string prefix)
+		{
+			logger = NHibernate.LoggerProvider.LoggerFor(keyName);
+			Prefix = prefix;
+		}
+
+		public string Prefix { get; set; }
+
+		public override void Error(string message)
+		{
+			if (logger.IsErrorEnabled)
+				logger.Error(Prefix + message);
+		}
+
+		public override void Error(string format, object[] args)
+		{
+			if (logger.IsErrorEnabled)
+				logger.ErrorFormat(Prefix + format, args);
+		}
+
+		public override void Warning(string message)
+		{
+			if (logger.IsWarnEnabled)
+				logger.Warn(Prefix + message);
+		}
+		public override void Warning(string format, object[] args)
+		{
+			if (logger.IsWarnEnabled)
+				logger.WarnFormat(Prefix + format, args);
+		}
+
+		public override void Information(string message)
+		{
+			if (logger.IsInfoEnabled)
+				logger.Info(Prefix + message);
+		}
+		public override void Information(string format, object[] args)
+		{
+			if (logger.IsInfoEnabled)
+				logger.InfoFormat(Prefix + format, args);
+		}
+
+		public override void Debug(string message)
+		{
+			if (logger.IsDebugEnabled)
+				logger.Debug(Prefix + message);
+		}
+
+		public override void Debug(string format, object[] args)
+		{
+			if (logger.IsDebugEnabled)
+				logger.DebugFormat(Prefix + format, args);
+		}
+
+		public override void Indent()
+		{
+		}
+
+		public override void Unindent()
+		{
 		}
 	}
 }

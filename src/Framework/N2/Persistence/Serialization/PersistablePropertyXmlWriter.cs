@@ -29,25 +29,38 @@ namespace N2.Persistence.Serialization
 					if(value == null)
 						continue;
 
-					using (ElementWriter detailElement = new ElementWriter("property", writer))
-					{
-						detailElement.WriteAttribute("name", name);
-						Type type = value.GetType();
-						
-						if (type == typeof(string))
-							Write(detailElement, type, (string)value, true);
-						else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal))
-							Write(detailElement, type, value.ToString(), false);
-						else if (type == typeof(DateTime))
-							Write(detailElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);
-						else if (type.IsEnum)
-							Write(detailElement, type, ((int)value).ToString(), false);
-						else if (typeof(ContentItem).IsAssignableFrom(type))
-							Write(detailElement, typeof(ContentItem), (((ContentItem)value).ID).ToString(), false);
-						else
-							Write(detailElement, typeof(object), SerializationUtility.ToBase64String(value), false);
-					}
+					WriteProperty(writer, name, value);
 				}
+
+				foreach (var property in item.GetContentType().GetProperties().Where(pi => pi.IsInterceptable()))
+				{
+					WriteProperty(writer, property.Name, item[property.Name]);
+				}
+			}
+		}
+
+		private void WriteProperty(System.Xml.XmlTextWriter writer, string name, object value)
+		{
+			using (ElementWriter detailElement = new ElementWriter("property", writer))
+			{
+				detailElement.WriteAttribute("name", name);
+
+				if (value == null)
+					return;
+				Type type = value.GetType();
+
+				if (type == typeof(string))
+					Write(detailElement, type, (string)value, true);
+				else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal))
+					Write(detailElement, type, value.ToString(), false);
+				else if (type == typeof(DateTime))
+					Write(detailElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);
+				else if (type.IsEnum)
+					Write(detailElement, type, ((int)value).ToString(), false);
+				else if (typeof(ContentItem).IsAssignableFrom(type))
+					Write(detailElement, typeof(ContentItem), (((ContentItem)value).ID).ToString(), false);
+				else
+					Write(detailElement, typeof(object), SerializationUtility.ToBase64String(value), false);
 			}
 		}
 

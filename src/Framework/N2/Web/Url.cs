@@ -512,7 +512,7 @@ namespace N2.Web
 
 		public Url SetExtension(string extension)
 		{
-			return new Url(scheme, authority, PathWithoutExtension + extension, query, fragment);
+			return new Url(scheme, authority, PathWithoutExtension.TrimEnd('/') + extension, query, fragment);
 		}
 
 
@@ -544,11 +544,23 @@ namespace N2.Web
 					newPath = path + "/" + segment + extension;
 			}
 			else if (path.EndsWith("/"))
+			{
+				if (segment.StartsWith("/"))
+					newPath = path + segment.TrimStart('/');
+				else
+					newPath = path + segment;
+			}
+			else if (segment.StartsWith("/"))
 				newPath = path + segment;
 			else
 				newPath = path + "/" + segment;
 
 			return new Url(scheme, authority, newPath, query, fragment);
+		}
+
+		public Url Append(Url url)
+		{
+			return AppendSegment(url.PathWithoutExtension, url.Extension);
 		}
 
 		public Url AppendSegment(string segment)
@@ -568,14 +580,14 @@ namespace N2.Web
 		{
 			string newPath;
 			if (string.IsNullOrEmpty(path) || path == "/")
-				newPath = "/" + segment + extension;
+				newPath = "/" + segment.TrimStart('/') + extension;
 			else if (extension != Extension)
 			{
 				newPath = "/" + segment + PathWithoutExtension + extension;
 			}
 			else
 			{
-				newPath = "/" + segment + path;
+				newPath = "/" + segment.Trim('/') + "/" + path.TrimStart('/');
 			}
 
 			return new Url(scheme, authority, newPath, query, fragment);

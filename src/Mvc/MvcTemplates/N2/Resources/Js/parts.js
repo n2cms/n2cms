@@ -2,10 +2,7 @@
 	var isDragging = false;
 	var dialog = null;
 
-	if (!window.n2SelectedQueryKey)
-		window.n2SelectedQueryKey = "path";
-
-	window.n2DragDrop = function (urls, messages) {
+	window.n2DragDrop = function (urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
@@ -17,6 +14,7 @@
 			deleting: 'Do you really want to delete?',
 			helper: "Drop on a highlighted area"
 		}, messages);
+		this.context = context;
 		this.init();
 	}
 
@@ -60,7 +58,7 @@
 			dialog.dialog($.extend({
 				modal: true,
 				width: Math.min(1000, $(window).width() - 50),
-				height: Math.min(800, $(window).height() - 50),
+				height: Math.min(800, $(window).height() - 100),
 				closeOnEscape: true,
 				resizable: true
 			}, dialogOptions));
@@ -79,13 +77,20 @@
 			$draggables.data("handler", this);
 		},
 
+		appendSelection: function (url, command) {
+			return url
+				+ (url.indexOf("?") >= 0 ? "&" : "?") + (n2SelectedQueryKey || "selected") + "=" + command.below
+				+ (this.context.isMasterVersion ? "" : "&versionIndex=" + this.context.versionIndex)
+				+ (!command.versionKey ? "" : "&versionKey=" + command.versionKey);
+		},
+
 		makeEditable: function () {
 			var self = this;
 			$(".editable").each(function () {
 				var $t = $(this);
-				var url = self.urls.editsingle
-					+ "?" + n2SelectedQueryKey + "=" + $t.attr("data-path")
+				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
+					+ "&versionKey=" + $t.attr("data-versionKey")
 					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
 				var openDialog = function (e) {
 					e.preventDefault();
@@ -175,23 +180,36 @@
 				$draggable.html("");
 				$droppable.append("<div class='dropping'/>");
 
+				var $next = $droppable.filter(".before").next();
 				var data = {
 					ctrlKey: e.ctrlKey,
 					item: $draggable.attr("data-item"),
+					versionKey: $draggable.attr("data-versionKey"),
+					versionIndex: $draggable.attr("data-versionIndex") || n2ddcp.context.versionIndex,
 					discriminator: $draggable.attr("data-type"),
 					template: $draggable.attr("data-template"),
-					before: $droppable.filter(".before").next().attr("data-item") || "",
+					before: ($next.attr("data-versionKey") ? "" : $next.attr("data-item")) || "", // data-item may be page+index+key when new part
+					beforeSortOrder: $next.attr("data-sortOrder") || "",
 					below: $droppable.closest(".dropZone").attr("data-item"),
 					zone: $droppable.closest(".dropZone").attr("data-zone"),
 					returnUrl: window.location.href,
 					dropped: true
 				};
+				if ($droppable.closest(".dropZone").attr("data-versionIndex")) {
+					data.belowVersionIndex = $droppable.closest(".dropZone").attr("data-versionIndex");
+					data.belowVersionKey = $droppable.closest(".dropZone").attr("data-versionKey");
+				}
+				if ($next.attr("data-versionKey")) {
+					data.beforeVersionKey = $next.attr("data-versionKey");
+					data.beforeVersionIndex = $next.attr("data-versionIndex");
+				}
 
 				handler.process(data);
 			}
 		},
 
 		stopDragging: function (e, ui) {
+			n2SlidingCurtain.fadeIn();
 			$(this).html($(this).data("html")); // restore html removed by jquery ui
 			$(this).removeClass("dragged");
 			$(".dropPoint").remove();
@@ -200,6 +218,7 @@
 		},
 
 		startDragging: function (e, ui) {
+			n2SlidingCurtain.fadeOut();
 			$(this).data("html", $(this).html());
 			var dragged = this;
 			var handler = $(dragged).data("handler");
@@ -235,6 +254,7 @@
 			command.random = Math.random();
 
 			var url = self.urls[command.action];
+			url = self.appendSelection(url, command);
 
 			var reloaded = false;
 			$.post(url, command, function (data) {
@@ -290,37 +310,41 @@
 				self.recalculate();
 			});
 
-			var curtain = {
-				open: function (e) {
-					if (e) {
-						$sc.animate(self.openPos);
-					} else {
-						$sc.css(self.openPos);
-					}
-					$sc.addClass("opened");
-					$.cookie("sc_open", "true", { expires: 1 });
-				},
-				close: function (e) {
-					if (e) {
-						$sc.animate(self.closedPos);
-					} else {
-						$sc.css(self.closedPos);
-					}
-					$sc.removeClass("opened");
-					$.cookie("sc_open", null);
+			self.open = function (e) {
+				if (e) {
+					$sc.animate(self.openPos);
+				} else {
+					$sc.css(self.openPos);
 				}
+				$sc.addClass("opened");
+				$.cookie("sc_open", "true", { expires: 1 });
+			};
+			self.close = function (e) {
+				if (e) {
+					$sc.animate(self.closedPos);
+				} else {
+					$sc.css(self.closedPos);
+				}
+				$sc.removeClass("opened");
+				$.cookie("sc_open", null);
+			};
+			self.fadeIn = function (e) {
+				$sc.fadeIn();
+			};
+			self.fadeOut = function (e) {
+				$sc.fadeOut();
 			};
 
 			if (startsOpen) {
 				$sc.animate(self.openPos).addClass("opened");
 			} else if (this.isOpen()) {
-				curtain.open();
+				self.open();
 			} else {
-				curtain.close();
+				self.close();
 			}
 
-			$sc.find(".close").click(curtain.close);
-			$sc.find(".open").click(curtain.open);
+			$sc.find(".close").click(self.close);
+			$sc.find(".open").click(self.open);
 		}
 	};
 })(jQuery);

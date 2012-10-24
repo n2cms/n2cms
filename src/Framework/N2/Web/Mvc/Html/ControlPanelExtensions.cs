@@ -5,12 +5,15 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI;
+
+using N2;
 using N2.Edit;
 using N2.Engine;
 using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Web.Mvc.Html
 {
@@ -28,7 +31,7 @@ namespace N2.Web.Mvc.Html
 		/// <returns></returns>
 		public static ControlPanelState GetControlPanelState(this HtmlHelper html)
 		{
-			return UI.WebControls.ControlPanel.GetState(html.ContentEngine().SecurityManager, html.ViewContext.HttpContext.User, html.ViewContext.HttpContext.Request.QueryString);
+			return UI.WebControls.ControlPanel.GetState(html.ContentEngine());
 		}
 
 		/// <summary>Renders the openable control panel displayed in the upper left corner on N2 sites.</summary>
@@ -201,10 +204,12 @@ namespace N2.Web.Mvc.Html
 					Plugins = Plugins(Html, item, state),
 					Definitions = Definitions(Html, engine, item, state),
 					Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
-					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item)
+					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
+					VersionIndex = item.VersionIndex,
+					VersionKey = item.GetVersionKey()
 				};
 
-                var resources = Html.Resources(writer);
+                var resources = Html.Resources(writer).Constants();
                 if (includeJQuery) resources.JQuery();
 				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
 				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
@@ -216,8 +221,8 @@ namespace N2.Web.Mvc.Html
 				else
 					writer.Write(formatWithoutRefresh.Replace(settings));
 
-				if (state == ControlPanelState.DragDrop)
-					Html.Resources().JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(), ScriptOptions.DocumentReady);
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
+					Html.Resources().JavaScript(UI.WebControls.ControlPanel.DragDropScriptInitialization(item), ScriptOptions.DocumentReady);
 			}
 
 			private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
@@ -246,7 +251,7 @@ namespace N2.Web.Mvc.Html
 
 			private static string Definitions(HtmlHelper html, IEngine engine, ContentItem item, ControlPanelState state)
 			{
-				if (state == ControlPanelState.DragDrop)
+				if (state.IsFlagSet(ControlPanelState.DragDrop))
 				{
 					StringBuilder sb = new StringBuilder();
 
@@ -281,7 +286,7 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
 			static string format3 = @"
 		if (n2ctx.hasTop()) $('.cpAdminister').hide();
 		else $('.cpView').hide();

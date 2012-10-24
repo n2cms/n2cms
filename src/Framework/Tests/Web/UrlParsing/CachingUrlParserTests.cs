@@ -36,7 +36,7 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void WillForward_BuildUrl()
 		{
-			var url = parser.BuildUrl(item1);
+			string url = parser.BuildUrl(page1);
 
 			Assert.That(url, Is.EqualTo("/item1.aspx"));
 		}
@@ -44,10 +44,10 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void WillForward_CurrentPage()
 		{
-			wrapper.CurrentPage = item1_1;
+			wrapper.CurrentPage = page1_1;
 			var currentPage = parser.CurrentPage;
 
-			Assert.That(currentPage, Is.EqualTo(item1_1));
+			Assert.That(currentPage, Is.EqualTo(page1_1));
 		}
 
 		[Test]
@@ -63,15 +63,15 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			var page = parser.Parse("/item1");
 
-			Assert.That(page, Is.EqualTo(item1));
+			Assert.That(page, Is.EqualTo(page1));
 		}
 
 		[Test]
 		public void WillForward_ResolveTemplate()
 		{
-			var data = parser.ResolvePath("/item1");
+			var data = parser.FindPath("/item1");
 
-			Assert.That(data.CurrentItem, Is.EqualTo(item1));
+			Assert.That(data.CurrentItem, Is.EqualTo(page1));
 		}
 
 		[Test]
@@ -86,35 +86,35 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void CanCache_ResolvedTemplate()
 		{
-			parser.ResolvePath("/item1/item1_1"); // find and cache
+			parser.FindPath("/item1/item1_1"); // find and cache
 
-			var data = parser.ResolvePath("/item1/item1_1");
+			var data = parser.FindPath("/item1/item1_1");
 
 			var forcesLazyLoadButOtherwizeIgnored = data.CurrentPage;
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
-			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(3)"), "Should have loaded the parsed item directly.");
+			Assert.That(data.CurrentItem, Is.EqualTo(page1_1));
 		}
 
 		[Test]
 		public void ResolvedTemplateWithStartNode()
 		{
-			var data = parser.ResolvePath("/item1/item1_1", item1);
+			var data = parser.FindPath("/item1/item1_1", page1);
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have loaded the parsed item directly.");
-			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(1)"), "Should have loaded the parsed item directly.");
+			Assert.That(data.CurrentItem, Is.EqualTo(page1_1));
 		}
 
 		[Test]
 		public void WillExpire_ResolvedTemplate_OnChanges()
 		{
-			parser.ResolvePath("/item1/item1_1"); // find and cache
+			parser.FindPath("/item1/item1_1"); // find and cache
 			persister.Save(startItem); // incur changes
 
-			var data = parser.ResolvePath("/item1/item1_1");
+			var data = parser.FindPath("/item1/item1_1");
 
-			Assert.That(repository.lastOperation, Is.EqualTo("Get(1)"), "Should have re-resolve template from start page.");
-			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
+			Assert.That(repository.LastOperation, Is.EqualTo("Get(1)"), "Should have re-resolve template from start page.");
+			Assert.That(data.CurrentItem, Is.EqualTo(page1_1));
 		}
 	}
 }

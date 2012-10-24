@@ -3,6 +3,7 @@ using System.Diagnostics;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Plugin;
+using N2.Edit.Versioning;
 
 namespace N2.Web
 {
@@ -29,7 +30,7 @@ namespace N2.Web
 			Site site = host.GetSite(url);
 			if (site != null)
 				return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
-					?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+					?? Parse(persister.Get(site.StartPageID), url);
 
 			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey);
 		}
@@ -50,65 +51,62 @@ namespace N2.Web
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
 		/// <param name="item">The item whose url to compute.</param>
 		/// <returns>A friendly url to the supplied item.</returns>
-		public override string BuildUrl(ContentItem item)
+		public override Url BuildUrl(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 
-			ContentItem current = item;
-
 			if (item.VersionOf.HasValue)
 			{
-				current = item.VersionOf;
+				return BuildUrl(item.VersionOf)
+					.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
 			}
-
-			// move up until first real page
-			while(current != null && !current.IsPage)
+			else if (item.ID == 0)
 			{
-				current = current.Parent;
-			}
-
-			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
-
-			Url url;
-			if (host.IsStartPage(current))
-			{
-				// we move right up to the start page
-				url = "/";
-			}
-			else
-			{
-				// at least one node before the start page
-				url = new Url("/" + current.Name + current.Extension);
-				current = current.Parent;
-				// build path until a start page
-				while (current != null && !host.IsStartPage(current))
+				var page = Find.ClosestPage(item);
+				if (page != null && page != item)
 				{
-					url = url.PrependSegment(current.Name);
-					current = current.Parent;
+					return BuildUrl(page)
+						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter("versionKey", item.GetVersionKey());
 				}
 			}
 
-			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+			// move up until first real page
+			var current = Find.ClosestPage(item);
 
-			if (item.IsPage && item.VersionOf.HasValue)
-				// the item was a version, add this information as a query string
-				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
-			else if(!item.IsPage)
+			// no page found, throw
+			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
+
+			Url url = BuildPageUrl(current, ref current);
+
+			var startPage = FindStartPage(current);
+			// no start page found, use rewritten url
+			if (startPage == null)
+				return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+
+			if (!item.IsPage)
 				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
-			if (current.ID == host.CurrentSite.StartPageID)
+			if (startPage.ID == host.CurrentSite.StartPageID)
             {
                 // the start page belongs to the current site, use relative url
             	return Url.ToAbsolute("~" + url.PathAndQuery);
             }
 
-            var site = host.GetSite(current.ID) ?? host.DefaultSite;
+			var site = host.GetSite(startPage.ID) ?? host.DefaultSite;
 
             return GetHostedUrl(item, url, site);
         }
+
+		private ContentItem FindStartPage(ContentItem current)
+		{
+			if (current == null)
+				return null;
+			if (IsRootOrStartPage(current))
+				return current;
+			return FindStartPage(current.Parent);
+		}
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {

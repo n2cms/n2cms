@@ -1,6 +1,6 @@
 ﻿html { overflow:hidden; height:100% }
 body { background:#F8F8E8; height:100%; }
-body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:hidden; }
+body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:hidden; }
 
 /* Toolbar */
 #top{ position:relative; }
@@ -13,6 +13,8 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
         .toolbox .item.selected .command:hover { background-image:none; }
 			.toolbox .item .command a { padding:4px 5px 3px 22px; color:#6F6F6F; display:block; height:18px; line-height:18px; color:#6F6F6F; text-decoration:none; background:transparent none no-repeat 3px 50%; }
 			.toolbox .item .command a:hover { color:#000; }
+	#pageTools .toolbox .item {height: 30px;}
+		#pageTools .toolbox .item .command a {min-width: 0;position: relative;top: 3px;}
 
 .ui-layout-north { z-index: 100 !important; }
 .header { background:transparent url(../../Resources/Img/darken10.png) repeat-x 0px bottom; padding-top: 10px;}
@@ -22,7 +24,7 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 	            .header .toolbox .item .command a { padding:18px 4px 4px 4px; min-width:32px; height:12px; overflow:hidden; position:relative; background-position:50% 3px; }
 
 #top .logo{ position:absolute; right:10px; top:5px; height:30px; }
-#top .logout { color:#fff; display:block; float:left; padding:8px; }
+#top .logout { color: #FFFFFF;display: block;float: right;margin-right: 60px;padding: 8px; }
 
 .subbar { border: solid 1px #999; border-left:none; border-right:none; background:transparent url(../../Resources/Img/lighten10.png) repeat-x 0px bottom; position:relative; }
     .subbar .operations { float:left; }
@@ -33,9 +35,9 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
         #sort a { display:block; height:10px; padding:0 5px; border-top:solid 1px #fff; background-position:50% 50%; }
         #sort .up { border-bottom:solid 1px #d8d8d8; }
 
-#search{ background:transparent; padding:0; margin-left:1px; }
+#search{ background:transparent; padding:0; margin-left:10px;position: absolute;right: 130px; }
 	#search form { background-color:transparent; padding:0; margin:0; }
-    	#search input { padding:3px; float:left; margin:0; height:19px; width:80px; color:#999; background-color:#fff; background-repeat:repeat-x; border-style:none; border-right:solid 1px #D8D8D8; }
+    	#search input { padding:3px; float:left; margin:0; height:19px; width:130px; color:#999; background-color:#fff; background-repeat:repeat-x; border-style:none; border-right:solid 1px #D8D8D8; }
     	#search input:focus { background-image:none; }
     	#search button { padding:3px; float:left; margin:0; height:25px; text-indent:-100px; border:solid 1px #fff; width:26px; background:#fff url(../../Resources/icons/find.png) no-repeat 50% 50%}
     	#search button:hover { border:solid 1px #ccf; }
@@ -88,17 +90,22 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
     background-image:none;
 }
 
+#pageTools {border-bottom: 1px solid #D8D8D8;height: 30px;}
+
 
 
 
 /* button/option drop down */
-#top .toolbox .commandOptions {
+#top .toolbox .commandOptions,
+#pageTools .toolbox .commandOptions {
 	position:relative;
 }
-    #top .toolbox .commandOptions a {
+    #top .toolbox .commandOptions a,
+    #pageTools .toolbox .commandOptions a {
     	float:left;
     }
-    #top .toolbox .commandOptions .opener {
+    #top .toolbox .commandOptions .opener,
+    #pageTools .toolbox .commandOptions .opener {
 		text-indent:-10000px;
 		width:13px;
 	    float:left;
@@ -109,28 +116,43 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 		background:transparent url(../icons/bullet_arrow_up.png) no-repeat 50% 50%;
 	    height:25px;
     }
+    #pageTools .toolbox .commandOptions .opener
+    {
+    	height: 30px;
+	    width:18px;
+    }
     #top #topbar .toolbox .commandOptions .opener {
 	    height:34px;
+	    width:18px;
     }
-    #top .toolbox .closed .opener {
+    #top .toolbox .closed .opener,
+    #pageTools .toolbox .closed .opener {
 		background:transparent url(../icons/bullet_arrow_down.png) no-repeat 50% 50%;
     }
-    #top .toolbox .optionGroup {
+    #top .toolbox .optionGroup,
+    #pageTools .toolbox .optionGroup {
 	    padding:0 1px;
 	    position:absolute;
 	    top:0;
 	    left:-2px;
 	    z-index:9009;
     }
-    #top .toolbox .closed .optionGroup {
+    #pageTools .toolbox .optionGroup
+    {
+    	top: 2px;
+    }
+    #top .toolbox .closed .optionGroup,
+    #pageTools .toolbox .closed .optionGroup {
 	    top:-9999px;
 	    left:-9999px;
     }
 
-        #top .toolbox .commandOptions .option {
+        #top .toolbox .commandOptions .option,
+        #pageTools .toolbox .commandOptions .option {
         	display:none;
         }
-        #top .toolbox .commandOptions .optionGroup a {
+        #top .toolbox .commandOptions .optionGroup a,
+        #pageTools .toolbox .commandOptions .optionGroup a {
 	        float:none;
 	        display:block;
 	        width:280px;
@@ -138,7 +160,8 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 			text-align:left;
 			visibility:hidden;
         }
-        #top .toolbox .commandOptions .optionGroup .option {
+        #top .toolbox .commandOptions .optionGroup .option,
+        #pageTools .toolbox .commandOptions .optionGroup .option {
         	visibility:visible;
         	height:auto;
         	padding:1px 4px;
@@ -147,8 +170,15 @@ body .frameForm { position:absolute; top:71px; bottom:0px; width:100%; overflow:
 			background-color:#fff;
 			font-family:Arial,Sans-Serif;
 			font-size:10px;
+        	padding-left:16px;
         }
-    #top .toolbox .commandOptions .opener:hover {
+        #top .toolbox .commandOptions .optionGroup .option.selected,
+        #pageTools .toolbox .commandOptions .optionGroup .option.selected {
+			background: #f4f4f4 url(../icons/bullet_yellow.png) no-repeat 0% 50%;
+        	font-weight: bold;
+        }
+    #top .toolbox .commandOptions .opener:hover,
+    #pageTools .toolbox .commandOptions .opener:hover {
     }
 
 /* custom */

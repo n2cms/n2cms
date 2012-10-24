@@ -20,6 +20,12 @@ namespace N2.Management.Myself
 				var root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 				Response.Redirect(root.Url);
 			}
+			else
+			{
+				var path = Engine.Resolve<RequestPathProvider>().ResolveUrl(Engine.RequestContext.Url);
+				CurrentItem = path.CurrentItem;
+				Engine.RequestContext.CurrentPath = path;
+			}
 		}
 
 		protected override void OnInit(System.EventArgs e)
@@ -35,7 +41,7 @@ namespace N2.Management.Myself
 		{
 			base.OnPreRender(e);
 
-			if (ControlPanel.GetState(this) != ControlPanelState.DragDrop)
+			if (!ControlPanel.GetState(this).IsFlagSet(ControlPanelState.DragDrop))
 			{
 				HideIfEmpty(c1, Zone2.DataSource);
 				HideIfEmpty(c2, Zone3.DataSource);

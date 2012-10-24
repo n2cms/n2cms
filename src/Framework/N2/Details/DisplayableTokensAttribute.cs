@@ -11,6 +11,7 @@ using System.Web;
 using N2.Web.Mvc;
 using N2.Web;
 using System;
+using N2.Web.Tokens;
 
 namespace N2.Details
 {
@@ -67,7 +68,7 @@ namespace N2.Details
 			{
 				string collectionName = Name + CollectionSuffix;
 				int i = 0;
-				var p = new Parser(new TemplateAnalyzer());
+                var p = new TokenParser();
 				foreach (var c in p.Parse(text).Where(c => c.Command != Parser.TextCommand))
 				{
 					var dc = item.GetDetailCollection(collectionName, true);

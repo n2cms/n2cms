@@ -23,14 +23,7 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-	[ControlPanelLink("cpOrganize", "{ManagementUrl}/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10
-		, ControlPanelState.Visible,
-		UrlEncode = false,
-		NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "{ManagementUrl}/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10,
-		ControlPanelState.DragDrop,
-		UrlEncode = false,
-		Title = "Done")]
+	[OrganizeSwitch]
 	public class ControlPanel : Control, IItemContainer
 	{
 		private const string ArrayKey = "ControlPanel.arrays";
@@ -122,45 +115,44 @@ jQuery(document).ready(function(){{
 
 		protected override void CreateChildControls()
 		{
-			ControlPanelState state = GetState(Page.GetEngine().SecurityManager, Page.User, Page.Request.QueryString);
+			ControlPanelState state = GetState(Page.GetEngine());
 
-			if (state == ControlPanelState.Hidden)
+			if (state.IsFlagSet(ControlPanelState.Hidden))
 			{
 				AppendDefinedTemplate(HiddenTemplate, this);
+				return;
 			}
-			else if (state == ControlPanelState.Visible)
-			{
+			if (state.IsFlagSet(ControlPanelState.Visible))
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
-				AddPlugins(state);
-				AppendDefinedTemplate(VisibleFooterTemplate, this);
-			}
-			else if (state == ControlPanelState.DragDrop)
-			{
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
 				AppendDefinedTemplate(DragDropHeaderTemplate, this);
-				AddPlugins(state);
+			if (state.IsFlagSet(ControlPanelState.Editing))
+				AppendDefinedTemplate(EditingHeaderTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.Previewing))
+				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
+
+			AddPlugins(state);
+
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
+			{
 				AddDefinitions(this);
-				AppendDefinedTemplate(DragDropFooterTemplate, this);
 				RegisterDragDropStyles();
 				RegisterDragDropScripts();
-
-				//Page.Response.CacheControl = "no-cache";
 			}
-			else if (state == ControlPanelState.Editing)
+			if (state.IsFlagSet(ControlPanelState.Editing))
 			{
-				AppendDefinedTemplate(EditingHeaderTemplate, this);
-				AddPlugins(state);
 				Register.JQuery(Page);
 				Register.StyleSheet(Page, Url.ToAbsolute(StyleSheetUrl), Media.All);
-				AppendDefinedTemplate(EditingFooterTemplate, this);
 			}
-			else if (state == ControlPanelState.Previewing)
-			{
-				AppendDefinedTemplate(PreviewingHeaderTemplate, this);
-				AddPlugins(state);
+
+			if (state.IsFlagSet(ControlPanelState.Previewing))
 				AppendDefinedTemplate(PreviewingFooterTemplate, this);
-			}
-			else
-				throw new N2Exception("Unknown control panel state: " + state);
+			if (state.IsFlagSet(ControlPanelState.Editing))
+				AppendDefinedTemplate(EditingFooterTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.DragDrop))
+				AppendDefinedTemplate(DragDropFooterTemplate, this);
+			if (state.IsFlagSet(ControlPanelState.Visible))
+				AppendDefinedTemplate(VisibleFooterTemplate, this);
 
 			base.CreateChildControls();
 		}
@@ -235,7 +227,7 @@ jQuery(document).ready(function(){{
 			Register.JQueryUi(Page);
 			Register.JavaScript(Page, DragDropScriptUrl);
 
-			Register.JavaScript(Page, DragDropScriptInitialization(), ScriptOptions.DocumentReady);
+			Register.JavaScript(Page, DragDropScriptInitialization(CurrentItem), ScriptOptions.DocumentReady);
 		}
 
 		protected virtual void AddPlugins(ControlPanelState state)
@@ -333,31 +325,51 @@ jQuery(document).ready(function(){{
 		public static ControlPanelState GetState(Control control)
 		{
 			if (HttpContext.Current != null)
-				return GetState(HttpContext.Current.GetEngine().SecurityManager, HttpContext.Current.User, HttpContext.Current.Request.QueryString);
+				return GetState(HttpContext.Current.GetEngine());
 
 			return ControlPanelState.Unknown;
 		}
-		
-		[Obsolete("Use overload with security parameter")]
-		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
-		{
-			return GetState(N2.Context.Current.SecurityManager, user, queryString);
-		}
 
+		[Obsolete("Use overload with IWebContext parameter")]
 		public static ControlPanelState GetState(ISecurityManager security, IPrincipal user, NameValueCollection queryString)
 		{
-			if (security.IsEditor(user))
-			{
-				if (queryString["edit"] == "true")
-					return ControlPanelState.Editing;
-				if (queryString["edit"] == "drag")
-					return ControlPanelState.DragDrop;
-				if (!string.IsNullOrEmpty(queryString["preview"]))
-					return ControlPanelState.Previewing;
+			return GetState(security, HttpContext.Current.GetEngine().RequestContext);
+		}
 
-				return ControlPanelState.Visible;
-			}
-			return ControlPanelState.Hidden;
+		[Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
+		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
+		{
+			return GetState(HttpContext.Current.GetEngine());
+		}
+
+		[Obsolete("Use overload with ISecurityManager, IWebContext, ContentItem and IPrincipal parameters")]
+		public static ControlPanelState GetState(ISecurityManager security, IWebContext request)
+		{
+			return GetState(security, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+		}
+
+		public static ControlPanelState GetState(IEngine engine)
+		{
+			var request = engine.RequestContext;
+			return GetState(engine.SecurityManager, request.Url.GetQueries().ToNameValueCollection(), request.CurrentPath.CurrentItem, request.User);
+		}
+
+		public static ControlPanelState GetState(ISecurityManager security, NameValueCollection queryString, ContentItem item, IPrincipal user)
+		{
+			if (!security.IsEditor(user))
+				return ControlPanelState.Hidden;
+
+            var state = ControlPanelState.Visible;
+
+			if (queryString["edit"] == "true")
+                state |= ControlPanelState.Editing;
+            if (queryString["edit"] == "drag")
+                state |= ControlPanelState.DragDrop;
+			if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
+				state |= ControlPanelState.Previewing;
+
+			return state;
+
 		}
 
 		public static string FormatImageAndText(string iconUrl, string text)
@@ -431,9 +443,9 @@ jQuery(document).ready(function(){{
 		public virtual ITemplate DragDropFooterTemplate { get; set; }
 		#endregion
 
-		public static string DragDropScriptInitialization()
+		public static string DragDropScriptInitialization(ContentItem item)
 		{
-			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx' }});", Url.ResolveTokens("{ManagementUrl}"));
+			return string.Format(@"window.n2ddcp = new n2DragDrop({{ copy:'{0}/Resources/Js/copy.n2.ashx', move:'{0}/Resources/Js/move.n2.ashx', remove:'{0}/Resources/Js/remove.n2.ashx', create:'{0}/Resources/Js/create.n2.ashx', editsingle:'{0}/Content/EditSingle.aspx'}}, {{}},{{versionIndex:{1}, isMasterVersion:{2}, pagePath: '{3}'}});", Url.ResolveTokens("{ManagementUrl}"), item.VersionIndex, !item.VersionOf.HasValue ? "true" : "false", Find.ClosestPage(item).Path);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit.Versioning;
 using N2.Edit.Web;
 using N2.Edit.Workflow;
 using N2.Persistence;
@@ -13,6 +14,7 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Activity;
 using N2.Management.Activity;
+using N2.Edit.AutoPublish;
 
 namespace N2.Edit
 {
@@ -21,14 +23,11 @@ namespace N2.Edit
 		RequiredPermission = Permission.Write)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
+		RequiredPermission = Permission.Write,
+		OptionProvider = typeof(EditOptionProvider))]
+	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
 		RequiredPermission = Permission.Write)]
-	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Edit page", 50, ControlPanelState.Visible, 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing, 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
-		RequiredPermission = Permission.Publish)]
-	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30,
+	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
@@ -50,6 +49,7 @@ namespace N2.Edit
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
 		protected IEditUrlManager ManagementPaths;
+		protected ContentVersionRepository Repository;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -60,12 +60,13 @@ namespace N2.Edit
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
 			ManagementPaths = Engine.ManagementPaths;
+			Repository = Engine.Resolve<ContentVersionRepository>();
 		}
 
 		protected override void OnInit(EventArgs e)
 		{
 			N2.Resources.Register.JQueryUi(this);
-
+			
 			if(Request["refresh"] == "true")
                 Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 
@@ -85,14 +86,16 @@ namespace N2.Edit
                 hlCancel.NavigateUrl = CancelUrl();
 
             bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+			bool isPublicableItem = ie.CurrentItem.IsPage || !ie.CurrentItem.IsVersionable();
 			bool isVersionable = Versions.IsVersionable(ie.CurrentItem);
             bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 
-            btnSavePublish.Visible = isPublicableByUser;
+			btnSavePublish.Visible = isPublicableItem && isPublicableByUser;
             btnPreview.Visible = isVersionable && isWritableByUser;
             btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
+			btnUnpublish.Visible = isExisting && ie.CurrentItem.IsPublished();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -120,8 +123,7 @@ namespace N2.Edit
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-			ctx.Parameters["MoveBefore"] = Request["before"];
-			ctx.Parameters["MoveAfter"] = Request["after"];
+			ApplySortInfo(ctx);
 			Commands.Publish(ctx);
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Publish", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
@@ -129,15 +131,26 @@ namespace N2.Edit
 			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 		}
 
+		private void ApplySortInfo(CommandContext ctx)
+		{
+			ctx.Parameters["MoveBefore"] = Request["before"];
+			ctx.Parameters["MoveBeforeVersionKey"] = Request["beforeVersionKey"];
+			ctx.Parameters["BelowVersionKey"] = Request["belowVersionKey"];
+			ctx.Parameters["MoveAfter"] = Request["after"];
+			ctx.Parameters["MoveBeforeSortOrder"] = Request["beforeSortOrder"];
+		}
+
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
+			ApplySortInfo(ctx);
 			Commands.Save(ctx);
 
-			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
-			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
-			if(ctx.Content.VersionOf.HasValue)
-				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
+			var page = Find.ClosestPage(ctx.Content);
+			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(page)
+				.GetPreviewUrl(page);
+			if (Request["edit"] == "drag")
+				previewUrl = previewUrl.SetQueryParameter("edit", "drag");
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Preview", PerformedBy = User.Identity.Name, Path = ie.CurrentItem.Path, ID = ie.CurrentItem.ID });
 
@@ -147,7 +160,7 @@ namespace N2.Edit
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = ie.CreateCommandContext();
-            Commands.Save(ctx);
+			Commands.Save(ctx);
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
@@ -155,6 +168,14 @@ namespace N2.Edit
 			
 			HandleResult(ctx, redirectTo);
         }
+		
+		protected void OnUnpublishCommand(object sender, CommandEventArgs e)
+		{
+			var item = ie.CurrentItem;
+			item.State = ContentState.Unpublished;
+			Engine.Persister.Save(item);
+			Refresh(item, ToolbarArea.Both);
+		}
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
         {
@@ -217,20 +238,20 @@ namespace N2.Edit
 			hlNewerVersion.Visible = false;
 			hlOlderVersion.Visible = false;
 
+			if (!item.IsPage)
+				return;
+
 			if (item.VersionOf.HasValue)
 			{
 				DisplayThisIsVersionInfo(item.VersionOf);
 			}
 			else
 			{
-				IList<ContentItem> unpublishedVersions = Engine.Resolve<IItemFinder>()
-					.Where.VersionOf.Eq(item)
-					.And.Updated.Gt(item.Updated)
-					.OrderBy.Updated.Desc.MaxResults(1).Select();
-
-				if(unpublishedVersions.Count > 0 && unpublishedVersions[0].Updated > item.Updated)
+				var page = Find.ClosestPage(item);
+				var version = Engine.Resolve<N2.Edit.Versioning.DraftRepository>().FindDrafts(page).FirstOrDefault();
+				if (version != null && version.Saved > item.Updated)
 				{
-					DisplayThisHasNewerVersionInfo(unpublishedVersions[0]);
+					DisplayThisHasNewerVersionInfo(version.Version.FindPartVersion(item));
 				}
 			}
 		}
@@ -353,14 +374,12 @@ namespace N2.Edit
 			var cc = ie.CreateCommandContext();
 			Commands.Save(cc);
 
-			var item = cc.Content;
-			if (!item.VersionOf.HasValue)
-				item.Published = dpFuturePublishDate.SelectedDate;
-			else
-				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
-			Engine.Resolve<StateChanger>().ChangeTo(item, ContentState.Waiting);
-			Engine.Persister.Save(item);
-			return item;
+			if (dpFuturePublishDate.SelectedDate.HasValue)
+			{
+				Engine.Resolve<PublishScheduledAction>().MarkForFuturePublishing(cc.Content, dpFuturePublishDate.SelectedDate.Value);
+				Engine.Persister.Save(cc.Content);
+			}
+			return cc.Content;
         }
 
 		#region IItemEditor Members

@@ -4,6 +4,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence.Proxying;
 using N2.Definitions;
+using N2.Definitions.Static;
 
 namespace N2.Persistence
 {
@@ -13,12 +14,14 @@ namespace N2.Persistence
 		private readonly IItemNotifier notifier;
 		private readonly StateChanger stateChanger;
 		private readonly IProxyFactory interceptor;
+		private readonly IDictionary<Type, ItemDefinition> contentBuilders;
 
 		public ContentActivator(StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
 		{
 			this.stateChanger = changer;
 			this.notifier = notifier;
 			this.interceptor = interceptor;
+			this.contentBuilders = new Dictionary<Type, ItemDefinition>();
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
@@ -46,9 +49,12 @@ namespace N2.Persistence
         {
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
-			object intercepted = null;// interceptor.Create(itemType.FullName, 0);
-            ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
-                as ContentItem;
+			ContentItem item;
+			ItemDefinition definition;
+			if (contentBuilders.TryGetValue(itemType, out definition))
+				item = definition.CreateInstance(parentItem);
+			else
+				item = Activator.CreateInstance(itemType, true) as ContentItem;
             if (templateKey != null)
                 item.TemplateKey = templateKey;
             OnItemCreating(item, parentItem);
@@ -71,6 +77,9 @@ namespace N2.Persistence
 
 		public virtual void Initialize(IEnumerable<ItemDefinition> contentTypes)
 		{
+			foreach (var definition in contentTypes)
+				contentBuilders[definition.ItemType] = definition;
+
 			interceptor.Initialize(contentTypes);
 		}
 

@@ -3,6 +3,8 @@ using N2.Edit.Workflow.Commands;
 using N2.Engine;
 using N2.Persistence;
 using N2.Security;
+using System.Linq;
+using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow
 {
@@ -13,27 +15,27 @@ namespace N2.Edit.Workflow
     public class CommandFactory : ICommandFactory
     {
         IPersister persister;
-        CommandBase<CommandContext> makeVersionOfMaster;
+		ISecurityManager security;
+		
+		CommandBase<CommandContext> makeVersionOfMaster;
         ReplaceMasterCommand replaceMaster;
         MakeVersionCommand makeVersion;
         UseNewVersionCommand useNewVersion;
         UpdateObjectCommand updateObject;
         DeleteCommand delete;
-        RedirectToPreviewCommand showPreview;
         RedirectToEditCommand showEdit;
         UseMasterCommand useMaster;
         CloneCommand clone;
         ValidateCommand validate;
         SaveCommand save;
-        IncrementVersionIndexCommand incrementVersionIndex;
         UpdateContentStateCommand draftState;
         UpdateContentStateCommand publishedState;
         ActiveContentSaveCommand saveActiveContent;
 		MoveToPositionCommand moveToPosition;
 		EnsureNotPublishedCommand unpublishedDate;
-		EnsurePublishedCommand publishedDate;
+		EnsurePublishedCommand ensurePublishedDate;
 		UpdateReferencesCommand updateReferences;
-		ISecurityManager security;
+		SaveOnPageVersionCommand saveOnPageVersion;
 
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditUrlManager editUrlManager, IContentAdapterProvider adapters, StateChanger changer)
         {
@@ -44,21 +46,20 @@ namespace N2.Edit.Workflow
             useNewVersion = new UseNewVersionCommand(versionMaker);
             updateObject = new UpdateObjectCommand();
             delete = new DeleteCommand(persister.Repository);
-            showPreview = new RedirectToPreviewCommand(adapters);
             showEdit = new RedirectToEditCommand(editUrlManager);
             useMaster = new UseMasterCommand();
             clone = new CloneCommand();
             validate = new ValidateCommand();
             this.security = security;
             save = new SaveCommand(persister);
-            incrementVersionIndex = new IncrementVersionIndexCommand(versionMaker);
             draftState = new UpdateContentStateCommand(changer, ContentState.Draft);
             publishedState = new UpdateContentStateCommand(changer, ContentState.Published);
             saveActiveContent = new ActiveContentSaveCommand();
 			moveToPosition = new MoveToPositionCommand();
 			unpublishedDate = new EnsureNotPublishedCommand();
-			publishedDate = new EnsurePublishedCommand();
+			ensurePublishedDate = new EnsurePublishedCommand();
 			updateReferences = new UpdateReferencesCommand();
+			saveOnPageVersion = new SaveOnPageVersionCommand(versionMaker);
         }
 
         /// <summary>Gets the command used to publish an item.</summary>
@@ -66,54 +67,72 @@ namespace N2.Edit.Workflow
         /// <returns>A command that when executed will publish an item.</returns>
 		public virtual CompositeCommand GetPublishCommand(CommandContext context)
         {
-            if (context.Interface == Interfaces.Editing)
-            {
-                if (context.Content is IActiveContent)
+			var item = context.Content;
+
+			//if (context.Interface == Interfaces.Editing)
+			//{
+                if (item is IActiveContent)
 					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, moveToPosition, saveActiveContent, updateReferences);
                 
                 // Editing
-				if (!context.Content.VersionOf.HasValue)
+				if (!item.VersionOf.HasValue)
 				{
-					if(context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					if(item.ID == 0)
+						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, publishedState, moveToPosition, save, updateReferences);
+						//return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, publishedState, moveToPosition, save);
 
-					if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
-						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+					// Seems unecessary
+					//if (item.State == ContentState.Draft && item.Published.HasValue == false)
+					//    return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, publishedDate, save, updateReferences);
+					//    //return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, publishedDate, save, updateReferences);
 
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+					return Compose("Publish", Authorize(Permission.Publish), validate, MakeVersionIfPublished(item), updateObject, publishedState, moveToPosition, ensurePublishedDate, save, updateReferences);
+					//return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, save, updateReferences);
 				}
 
 				// has been published before
-				if (context.Content.State == ContentState.Unpublished)
-					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+				if (item.State == ContentState.Unpublished)
+					//return Compose("Re-Publish", Authorize(Permission.Publish), validate, updateObject, replaceMaster, useMaster, publishedState, moveToPosition, save, updateReferences);
+					return Compose("Re-Publish", Authorize(Permission.Publish), validate, replaceMaster, useMaster, publishedState, moveToPosition, ensurePublishedDate, save, updateReferences);
 
-                // has never been published before (remove old version)
-				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
-            }
-            else if (context.Interface == Interfaces.Viewing)
-            {
-                // Viewing
-                if (!context.Content.VersionOf.HasValue)
-                {
-                    if (context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
+				//if (item.State == ContentState.Draft)
+				//    return Compose("Publish", Authorize(Permission.Publish), replaceMaster, useMaster, publishedState, moveToPosition, save, updateReferences);
 
-                    if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
-						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+				// has never been published before (remove old version)
+				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, replaceMaster, delete, useMaster, publishedState, moveToPosition, ensurePublishedDate, save, updateReferences);
+				//return Compose("Publish", Authorize(Permission.Publish), replaceMaster, delete, useMaster, publishedState, moveToPosition, save, updateReferences);
+			//}
+			//else if (context.Interface == Interfaces.Viewing)
+			//{
+			//    // Viewing
+			//    if (!item.VersionOf.HasValue)
+			//    {
+			//        if (item.ID == 0)
+			//            return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, publishedState, moveToPosition, save);
 
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
-                }
+			//        if (item.State == ContentState.Draft && item.Published.HasValue == false)
+			//            return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, publishedDate, save, updateReferences);
+
+			//        return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, publishedState, moveToPosition, save, updateReferences);
+			//    }
                 
-                if (context.Content.State == ContentState.Unpublished)
-					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
+			//    if (item.State == ContentState.Unpublished)
+			//        return Compose("Re-Publish", Authorize(Permission.Publish), replaceMaster, useMaster, publishedState, moveToPosition, save, updateReferences);
 
-				if (context.Content.State == ContentState.Draft)
-					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, incrementVersionIndex, publishedState, moveToPosition, publishedDate, save, updateReferences);
+			//    if (item.State == ContentState.Draft)
+			//        return Compose("Re-Publish", Authorize(Permission.Publish), replaceMaster, useMaster, publishedState, moveToPosition, publishedDate, save, updateReferences);
 
-				return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save, updateReferences);
-            }
+			//    return Compose("Publish", Authorize(Permission.Publish), replaceMaster, delete, useMaster, publishedState, moveToPosition, save, updateReferences);
+			//}
 
             throw new NotSupportedException();
+		}
+
+		private CommandBase<CommandContext> MakeVersionIfPublished(ContentItem item)
+		{
+			if (item.State == ContentState.Published || item.State == ContentState.Unpublished)
+				return makeVersion;
+			return null;
 		}
 
 		/// <summary>Gets the command to save changes to an item without leaving the editing interface.</summary>
@@ -130,12 +149,16 @@ namespace N2.Edit.Workflow
 
 			if (context.Content.ID != 0 && !context.Content.VersionOf.HasValue)
 				// update a master version
-				return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
+				return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, draftState, unpublishedDate, save);
+
+			if (context.Content.ID == 0 && !context.Content.IsPage)
+				// parts are saved as a version to their page
+				return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, saveOnPageVersion);
 
 			if (context.Content.State == ContentState.Unpublished)
 				// previously published
-				return Compose("Save changes", Authorize(Permission.Write), validate, clone, updateObject, incrementVersionIndex, draftState, unpublishedDate, save);
-
+				return Compose("Save changes", Authorize(Permission.Write), validate, makeVersionOfMaster, updateObject, draftState, unpublishedDate, save);
+			
 			// has never been published before
 			return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);
 		}
@@ -155,7 +178,7 @@ namespace N2.Edit.Workflow
 
 		protected virtual CompositeCommand Compose(string title, params CommandBase<CommandContext>[] commands)
         {
-			var args = new CommandCreatedEventArgs { Command = new CompositeCommand(title, commands) };
+			var args = new CommandCreatedEventArgs { Command = new CompositeCommand(title, commands.Where(c => c != null).ToArray()) };
 			if (CreatedCommand != null)
 				CreatedCommand.Invoke(this, args);
 			return args.Command;

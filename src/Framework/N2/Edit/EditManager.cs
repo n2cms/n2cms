@@ -15,6 +15,7 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -27,6 +28,7 @@ namespace N2.Edit
 	{
 		protected static readonly object addedEditorKey = new object();
 		protected static readonly object savingVersionKey = new object();
+		protected static readonly object savedVersionKey = new object();
 
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
@@ -373,7 +375,7 @@ namespace N2.Edit
 				{
 					if (!item.VersionOf.HasValue)
 						stateChanger.ChangeTo(item, ContentState.Published);
-					item.VersionIndex++;
+					//item.VersionIndex++;
 					persister.Save(item);
 				}
 
@@ -396,7 +398,7 @@ namespace N2.Edit
 				{
 					item.Published = null;
 					stateChanger.ChangeTo(item, ContentState.Draft);
-					item.VersionIndex++;
+					//item.VersionIndex++;
 					persister.Save(item);
 				}
 
@@ -426,17 +428,25 @@ namespace N2.Edit
 			remove { Events.RemoveHandler(savingVersionKey, value); }
 		}
 
+		/// <summary>Occurs when a version has been saved.</summary>
+		public event EventHandler<ItemEventArgs> SavedVersion
+		{
+			add { Events.AddHandler(savedVersionKey, value); }
+			remove { Events.RemoveHandler(savedVersionKey, value); }
+		}
+
 		#region Helper Methods
 
 		private ContentItem SaveVersion(ContentItem current)
 		{
 			ContentItem savedVersion = null;
-			var handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
-			Utility.InvokeEvent(handler, current, this, delegate(ContentItem item)
+			var savingHandler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
+			var savedHandler = Events[savedVersionKey] as EventHandler<ItemEventArgs>;
+			Utility.InvokeEvent(savingHandler, current, this, delegate(ContentItem item)
 			                                            	{
-			                                            		savedVersion = versioner.SaveVersion(item);
+			                                            		savedVersion = versioner.AddVersion(item);
 			                                            		versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
-			                                            	});
+															}, savedHandler);
 			return savedVersion;
 		}
 

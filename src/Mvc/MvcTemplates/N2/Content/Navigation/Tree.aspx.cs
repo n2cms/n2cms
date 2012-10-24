@@ -58,7 +58,7 @@ namespace N2.Edit.Navigation
 
 				foreach (var upload in Engine.Resolve<UploadFolderSource>().GetUploadFoldersForAllSites())
 				{
-					var dir = N2.Management.Files.FolderNodeProvider.CreateDirectory(upload, FS, Engine.Persister, Engine.Resolve<IDependencyInjector>());
+					var dir = N2.Management.Files.FolderNodeProvider.CreateDirectory(upload, FS, Engine.Persister.Repository, Engine.Resolve<IDependencyInjector>());
 
 					if (!Engine.SecurityManager.IsAuthorized(dir, User))
 						continue;

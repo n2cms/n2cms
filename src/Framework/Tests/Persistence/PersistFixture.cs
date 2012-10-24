@@ -1,6 +1,7 @@
 using System;
 using N2.Persistence;
 using NUnit.Framework;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence
 {
@@ -269,7 +270,7 @@ namespace N2.Tests.Persistence
 			ContentItem root = CreateRoot("root", "root item");
 			using (engine.Persister)
 			{
-				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(root);
+				ContentItem previousVersion = engine.Resolve<IVersionManager>().AddVersion(root);
 				Assert.AreNotEqual(root, previousVersion);
 				Assert.AreEqual(root, previousVersion.VersionOf.Value);
 			}
@@ -283,7 +284,7 @@ namespace N2.Tests.Persistence
 			{
 				ContentItem item1 = CreateAndSaveItem("item1", "item one", root);
 
-				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(item1);
+				ContentItem previousVersion = engine.Resolve<IVersionManager>().AddVersion(item1);
 				Assert.AreNotEqual(item1, previousVersion);
 				Assert.AreEqual(item1, previousVersion.VersionOf.Value);
 
@@ -306,7 +307,7 @@ namespace N2.Tests.Persistence
 				engine.Persister.Save(item1);
 
 				// Store a version of that item
-				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(item1);
+				ContentItem previousVersion = engine.Resolve<IVersionManager>().AddVersion(item1);
 
 				// Change the initial item
 				item1.Name = "item1.2";
@@ -340,14 +341,15 @@ namespace N2.Tests.Persistence
 			using (engine.Persister)
 			{
 				root["VersionIndex"] = 1;
-				previousVersion = engine.Resolve<IVersionManager>().SaveVersion(root);
+				previousVersion = engine.Resolve<IVersionManager>().AddVersion(root);
 				root["VersionIndex"] = 2;
 				engine.Persister.Save(root);
 			}
 			using (engine.Persister)
 			{
 				root = engine.Persister.Get(root.ID);
-				previousVersion = engine.Persister.Get(previousVersion.ID);
+				previousVersion = engine.Resolve<IVersionManager>().GetVersion(root, previousVersion.VersionIndex);
+				// engine.Persister.Get(previousVersion.ID);
 
 				engine.Resolve<IVersionManager>().ReplaceVersion(root, previousVersion, true);
 			}
@@ -429,7 +431,7 @@ namespace N2.Tests.Persistence
 			using (engine.Persister)
 			{
 				item = engine.Persister.Get(item.ID);
-				previousVersion = engine.Resolve<IVersionManager>().SaveVersion(item);
+				previousVersion = engine.Resolve<IVersionManager>().AddVersion(item);
 				item.Name = "item2";
 				engine.Persister.Save(item);
 			}
@@ -445,7 +447,7 @@ namespace N2.Tests.Persistence
 			{
 				item = engine.Persister.Get(item.ID);
 				root = engine.Persister.Get(root.ID);
-				previousVersion = engine.Persister.Get(previousVersion.ID);
+				previousVersion = engine.Resolve<IVersionManager>().GetVersion(item, previousVersion.VersionIndex);
 
 				engine.Resolve<IVersionManager>().ReplaceVersion(item, previousVersion, true);
 			}

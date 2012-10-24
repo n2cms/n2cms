@@ -8,6 +8,7 @@ using N2.Web.Mvc.Html;
 using N2.Web.Rendering;
 using Rhino.Mocks;
 using N2.Security;
+using N2.Web;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -54,7 +55,8 @@ namespace N2.Extensions.Tests.Mvc
 			var engine = new FakeEngine();
 			engine.AddComponentInstance<ITemplateRenderer>(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()));
 			engine.AddComponentInstance<DisplayableRendererSelector>(new DisplayableRendererSelector(new IDisplayableRenderer[] { new WritingDisplayableRenderer(), new FallbackDisplayableRenderer() }));
-			engine.AddComponentInstance<ISecurityManager>(MockRepository.GenerateStub<ISecurityManager>());
+			engine.AddComponentInstance<ISecurityManager>(new FakeSecurityManager());
+			engine.AddComponentInstance<IWebContext>(new ThreadContext());
 			return engine;
 		}
 

@@ -11,11 +11,24 @@ namespace N2.Persistence.NH.Finder
 
 		public override void AppendHql(StringBuilder from, StringBuilder where, int index)
 		{
-			where.AppendFormat(" {0} ci.{1} {2} :{3}",
-				GetOperator(),
-				Name,
-				GetComparison(),
-				GetValueParameterName(index));
+			if (Value != null)
+				where.AppendFormat(" {0} ci.{1} {2} :{3}",
+					GetOperator(),
+					Name,
+					GetComparison(),
+					GetValueParameterName(index));
+			else
+				where.AppendFormat(" {0} ci.{1} is null",
+					GetOperator(),
+					Name,
+					GetComparison(),
+					GetValueParameterName(index));
+		}
+
+		public override void SetParameters(NHibernate.IQuery query, int index)
+		{
+			if(Value != null)
+				base.SetParameters(query, index);
 		}
 	}
 }

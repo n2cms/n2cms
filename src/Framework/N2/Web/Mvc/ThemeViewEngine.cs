@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Web.Mvc.Html;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
@@ -11,7 +12,8 @@ namespace N2.Web.Mvc
 	/// A view engine that tries to retrieve resources from a theme folder before fallback to the default location.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ThemeViewEngine<T> : IViewEngine where T : VirtualPathProviderViewEngine, new()
+	public class ThemeViewEngine<T> : IViewEngine, IDecorator<IViewEngine>
+        where T : VirtualPathProviderViewEngine, new()
 	{
 		Engine.Logger<ThemeViewEngine<T>> logger;
 
@@ -90,7 +92,8 @@ namespace N2.Web.Mvc
 				engines = temp;
 			}
 
-			controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
+            if (controllerContext != null)
+			    controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
 
 			return engine;
 		}
@@ -114,5 +117,10 @@ namespace N2.Web.Mvc
 		}
 
 		#endregion
-	}
+
+        public IViewEngine Component
+        {
+            get { return GetOrCreateViewEngine(null, null); }
+        }
+    }
 }

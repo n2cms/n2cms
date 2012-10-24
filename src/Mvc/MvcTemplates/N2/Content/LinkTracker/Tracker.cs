@@ -6,6 +6,7 @@ using N2.Details;
 using N2.Engine;
 using N2.Plugin;
 using N2.Persistence;
+using N2.Definitions;
 
 namespace N2.Edit.LinkTracker
 {
@@ -14,15 +15,13 @@ namespace N2.Edit.LinkTracker
 	public class Tracker : IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";
-		Persistence.IPersister persister;
-		IRepository<ContentDetail> detailRepository;
+        IRepository<ContentItem> repository;
 		N2.Web.IUrlParser urlParser;
         N2.Web.IErrorNotifier errorHandler;
 
-        public Tracker(Persistence.IPersister persister, IRepository<ContentDetail> detailRepository, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler, Configuration.EditSection config)
+        public Tracker(Persistence.IPersister persister, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler, Configuration.EditSection config)
 		{
-			this.persister = persister;
-			this.detailRepository = detailRepository;
+			this.repository = persister.Repository;
 			this.urlParser = urlParser;
             this.errorHandler = errorHandler;
 
@@ -56,6 +55,8 @@ namespace N2.Edit.LinkTracker
 		/// <param name="item">The item that is beeing saved.</param>
 		protected virtual void OnTrackingLinks(ContentItem item)
 		{
+            if (item is ISystemNode)
+                return;
 			UpdateLinks(item);
 		}
 
@@ -143,13 +144,15 @@ namespace N2.Edit.LinkTracker
 			}
 		}
 
+		Regex linkExpression = new Regex("<a.*?href=[\"']*(?<link>[^\"'>]*).*?</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
 		/// <summary>Finds links in a html string using regular expressions.</summary>
 		/// <param name="html">The html to search for links.</param>
 		/// <returns>A list of link (a) href attributes in the supplied html string.</returns>
 		public virtual IList<ContentDetail> FindLinks(string html)
 		{
 			List<ContentDetail> links = new List<ContentDetail>();
-			MatchCollection matches = Regex.Matches(html, "<a.*?href=[\"']*(?<link>[^\"'>]*).*?</a>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+			MatchCollection matches = linkExpression.Matches(html);
 			foreach (Match m in matches)
 			{
 				var g = m.Groups["link"];
@@ -172,9 +175,14 @@ namespace N2.Edit.LinkTracker
 			}
 			else
 			{
-				return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("LinkedItem.ID", item.ID))
-					.Select(d => d.EnclosingItem)
-					.Distinct();
+                //return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("LinkedItem.ID", item.ID))
+                //    .Select(d => d.EnclosingItem)
+                //    .Where(i => !i.VersionOf.HasValue)
+                //    .Distinct();
+                return repository.Find(
+                    (Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
+                    & Parameter.IsNull("VersionOf.ID"))
+                    .Distinct();
 			}
 			//if (item.ID != 0)
 			//    return find.Where.Detail(LinkDetailName).Eq(item)
@@ -188,10 +196,14 @@ namespace N2.Edit.LinkTracker
 
 		private IEnumerable<ContentItem> FindReferrers(string url)
 		{
-			return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("StringValue", url))
-				.Select(d => d.EnclosingItem)
-				.Distinct();
-		}
+            //return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("StringValue", url))
+            //    .Select(d => d.EnclosingItem)
+            //    .Distinct();
+            return repository.Find(
+                Parameter.Equal(Tracker.LinkDetailName, url).Detail()
+                & Parameter.IsNull("VersionOf.ID"))
+                .Distinct();
+        }
 		#endregion
 
 		#region IStartable Members
@@ -209,10 +221,9 @@ namespace N2.Edit.LinkTracker
 		public virtual void UpdateReferencesTo(ContentItem targetItem)
 		{
 			var newUrl = targetItem.Url;
-			var repository = persister.Repository;
 			using (var tx = repository.BeginTransaction())
 			{
-				var itemsWithReferencesToTarget = FindReferrers(targetItem);
+				var itemsWithReferencesToTarget = FindReferrers(targetItem).ToList();
 				foreach (var referrer in itemsWithReferencesToTarget)
 				{
 					var trackerCollecetion = referrer.GetDetailCollection(Tracker.LinkDetailName, false);

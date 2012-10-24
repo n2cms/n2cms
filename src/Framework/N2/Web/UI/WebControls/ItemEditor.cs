@@ -22,6 +22,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
 using N2.Resources;
+using N2.Edit.Versioning;
 
 namespace N2.Web.UI.WebControls
 {
@@ -110,6 +111,14 @@ namespace N2.Web.UI.WebControls
 				if (currentItem == null && !string.IsNullOrEmpty(Discriminator))
 				{
 					ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(ParentPath));
+					if (ParentVersionIndex.HasValue)
+					{
+						parentItem = Engine.Resolve<IVersionManager>().GetVersion(parentItem, ParentVersionIndex.Value);
+					}
+					if (!string.IsNullOrEmpty(ParentVersionKey))
+					{
+						parentItem = parentItem.FindDescendantByVersionKey(ParentVersionKey);
+					}
 					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}
@@ -338,6 +347,12 @@ namespace N2.Web.UI.WebControls
 			{
 				Discriminator = definition.Discriminator;
 				ParentPath = parent.Path;
+				if (parent.ID == 0)
+				{
+					ParentPath = Find.ClosestPage(parent).Path;
+					ParentVersionIndex = parent.VersionIndex;
+					ParentVersionKey = parent.GetVersionKey();
+				}
 			}
 			EnsureChildControls();
 		}
@@ -346,6 +361,18 @@ namespace N2.Web.UI.WebControls
 		{
 			ClearChildState();
 			ChildControlsCreated = false;
+		}
+
+		public int? ParentVersionIndex
+		{
+			get { return (int?)ViewState["ParentVersionIndex"]; }
+			set { ViewState["ParentVersionIndex"] = value; }
+		}
+
+		public string ParentVersionKey
+		{
+			get { return (string)ViewState["ParentVersionKey"]; }
+			set { ViewState["ParentVersionKey"] = value; }
 		}
 	}
 }

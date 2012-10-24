@@ -23,14 +23,14 @@
     <form id="form1" runat="server">
     <div>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
-			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
+			<h1>Upgrade database from <%= Checker.Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			
-			<% if (Status.NeedsUpgrade){ %>
+			<% if (Checker.Status.NeedsUpgrade){ %>
 			<p class="warning">The database needs to be upgraded.</p>
-				<% if(Status.ConnectionType == "MySqlConnection") {%>
+				<% if(Checker.Status.ConnectionType == "MySqlConnection") {%>
 			<p class="warning">MySQL database might not be upgradeable from this interface. Execute <a href="mysql.upgrade.2.sql">mysql.upgrade.2.sql</a> with an SQL admin tool and manually execute migrations from advanced optins.</p>
 				<% } %>
-			<% } else if (!Status.IsInstalled){ %>
+			<% } else if (!Checker.Status.IsInstalled){ %>
 			<p class="error">No database to be upgraded. Please <a href="Default.aspx">install using the installation wizard</a>.</p>
 			<hr />
 			<% } else {%>
@@ -39,13 +39,13 @@
 			
 			<p>Please review the following upgrade script carefully before continuing to update the database below.</p>
 			<textarea readonly="readonly"><%= Installer.ExportUpgradeSchema() %></textarea>
-			<p>In addition to updating the database schema, the following migrations will be executed on the <%= Status.Items %> items in your database: </p>
+			<p>In addition to updating the database schema, the following migrations will be executed on the <%= Checker.Status.Items %> items in your database: </p>
 			<ul style="background-color:#FFB;">
-				<% foreach (N2.Edit.Installation.AbstractMigration migration in Migrator.GetMigrations(Status)) { %>
+				<% foreach (N2.Edit.Installation.AbstractMigration migration in Migrator.GetMigrations(Checker.Status)) { %>
 				<li><strong><%= migration.Title %></strong> <%= migration.Description %></li>
 				<%} %>
 			</ul>
-			<% if (Status.Items > 1000) { %>
+			<% if (Checker.Status.Items > 1000) { %>
 			<p class="warning">The database contains a large number of items, the migration may take a while. It's recommended to increase the request execution timeout and the database connection timeout.</p>
 			<% } %>
             <p>
@@ -70,7 +70,7 @@
 				</p>
 				<p>
 					<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate update database script" CausesValidation="false" />
-					for the connection type <strong><%= Status.ConnectionType %></strong> and manually update tables.
+					for the connection type <strong><%= Checker.Status.ConnectionType %></strong> and manually update tables.
 				</p>
 				<p>
 					Manually select 

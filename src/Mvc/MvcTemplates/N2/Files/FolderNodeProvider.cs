@@ -21,16 +21,16 @@ namespace N2.Management.Files
 	public class FolderNodeProvider : INodeProvider
 	{
 		private IFileSystem fs;
-		private IPersister persister;
+		private IRepository<ContentItem> repository;
 		private IDependencyInjector dependencyInjector;
 
 		internal FolderPair[] UploadFolderPaths { get; set; }
 
-		public FolderNodeProvider(IFileSystem fs, IPersister persister, IDependencyInjector dependencyInjector)
+		public FolderNodeProvider(IFileSystem fs, IRepository<ContentItem> repository, IDependencyInjector dependencyInjector)
 		{
 			UploadFolderPaths = new FolderPair[0];
 			this.fs = fs;
-			this.persister = persister;
+			this.repository = repository;
 			this.dependencyInjector = dependencyInjector;
 		}
 
@@ -86,10 +86,10 @@ namespace N2.Management.Files
 
 		private Directory CreateDirectory(FolderPair pair)
 		{
-			return CreateDirectory(pair.Folder, fs, persister, dependencyInjector);
+			return CreateDirectory(pair.Folder, fs, repository, dependencyInjector);
 		}
 
-		internal static Directory CreateDirectory(FileSystemRoot folder, IFileSystem fs, IPersister persister, IDependencyInjector dependencyInjector)
+		internal static Directory CreateDirectory(FileSystemRoot folder, IFileSystem fs, IRepository<ContentItem> persister, IDependencyInjector dependencyInjector)
 		{
 			var dd = fs.GetDirectoryOrVirtual(folder.Path);
 			var parent = persister.Get(folder.GetParentID());

@@ -17,7 +17,7 @@ namespace N2.Tests.Web
 
             CreateDefaultStructure();
 
-            ext2_2 = CreateOneItem<CustomExtensionPage>(9, "ext2_2", item2);
+            ext2_2 = CreateOneItem<CustomExtensionPage>(9, "ext2_2", page2);
             ext3 = CreateOneItem<CustomExtensionPage>(10, "ext3", startItem);
             ext3_1 = CreateOneItem<CustomExtensionPage>(11, "ext3_1", ext3);
             item3_2 = CreateOneItem<PageItem>(12, "item3_2", ext3);

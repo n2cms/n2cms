@@ -5,8 +5,12 @@ using System.Configuration;
 using System.Text;
 using System.Web.Hosting;
 using System.Web.UI.WebControls;
+
+using System.Linq;
+
 using N2.Configuration;
 using N2.Resources;
+using N2.Web.Tokens;
 
 namespace N2.Web.UI.WebControls
 {
@@ -17,10 +21,11 @@ namespace N2.Web.UI.WebControls
 	{
 		static string configCssUrl;
 		static string configScriptUrl;
-		static NameValueCollection configSettings = new NameValueCollection();
 		static bool configEnabled = true;
 		static bool isInitalized = false;
-		private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
+        static bool configTokensEnabled = true;
+        static NameValueCollection configSettings = new NameValueCollection();
+        private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
 
 		public FreeTextArea()
 		{
@@ -59,6 +64,7 @@ namespace N2.Web.UI.WebControls
 					configCssUrl = Url.ResolveTokens(config.TinyMCE.CssUrl);
 					configScriptUrl = Url.ResolveTokens(config.TinyMCE.ScriptUrl);
 					configEnabled = config.TinyMCE.Enabled;
+                    configTokensEnabled = config.TinyMCE.EnableTokenDropdown;
 					foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
 					{
 						configSettings[element.Key] = element.Value;
@@ -77,18 +83,29 @@ namespace N2.Web.UI.WebControls
 				Register.TinyMCE(Page);
 				Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
-				string script = string.Format("freeTextArea_init('{0}', {1});",
+				string freeTextAreaInitScript = string.Format("freeTextArea_init('{0}', {1});",
 					Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl),
 					GetOverridesJson());
-				Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, freeTextAreaInitScript, true);
 			}
 		}
+
+        private IEnumerable<TokenDefinition> GetTokens()
+        {
+            return Context.GetEngine().Resolve<TokenDefinitionFinder>().FindTokens();
+        }
 
 		protected virtual string GetOverridesJson()
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
 			overrides["content_css"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
+
+            if (configTokensEnabled)
+            {
+                overrides["tokencomplete_enabled"] = "true";
+                overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
+            }
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))

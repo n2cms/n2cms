@@ -192,7 +192,7 @@ namespace N2.Details
 				string before = me.Value.Substring(0, urlIndex);
 				string after = me.Value.Substring(urlIndex + fromAppPath.Length);
 				return before + toAppPath + after;
-			}, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+			}, RegexOptions.Singleline | RegexOptions.IgnoreCase);
 			return rebased;
 		}
 

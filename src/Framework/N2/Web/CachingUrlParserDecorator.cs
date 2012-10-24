@@ -17,7 +17,8 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		TimeSpan slidingExpiration = TimeSpan.FromHours(1);
 
-		private static readonly object classLock = new object();
+		private static readonly object pathLock = new object();
+		private static readonly object urlLock = new object();
 		private CacheWrapper cache;
 
 		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache)
@@ -34,6 +35,18 @@ namespace N2.Web
 			remove { inner.PageNotFound -= value; }
 		}
 
+		public event EventHandler<UrlEventArgs> BuiltUrl
+		{
+			add { inner.BuiltUrl += value; }
+			remove { inner.BuiltUrl -= value; }
+		}
+
+		public event EventHandler<UrlEventArgs> BuildingUrl
+		{
+			add { inner.BuildingUrl += value; }
+			remove { inner.BuildingUrl -= value; }
+		}
+
 		public ContentItem StartPage
 		{
 			get { return inner.StartPage; }
@@ -41,7 +54,7 @@ namespace N2.Web
 
 		public ContentItem CurrentPage
 		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = FindPath(webContext.Url).CurrentPage); }
 		}
 
 		public TimeSpan SlidingExpiration
@@ -53,9 +66,44 @@ namespace N2.Web
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
 		/// <param name="item">The item whose url to compute.</param>
 		/// <returns>A friendly url to the supplied item.</returns>
-		public string BuildUrl(ContentItem item)
+		public Url BuildUrl(ContentItem item)
 		{
-			return inner.BuildUrl(item);
+			if (item.ID == 0)
+				return inner.BuildUrl(item);
+
+
+			var cacheKey = "N2.UrlCache" + webContext.Url.Authority.ToLower();
+			Dictionary<int, string> itemToUrlCache = cache.Get<Dictionary<int, string>>(cacheKey);
+			if (itemToUrlCache == null)
+			{
+				lock (urlLock)
+				{
+					itemToUrlCache = cache.Get<Dictionary<int, string>>(cacheKey);
+					if (itemToUrlCache == null)
+					{
+						itemToUrlCache = new Dictionary<int, string>();
+						cache.Add(cacheKey, itemToUrlCache, new CacheOptions { SlidingExpiration = SlidingExpiration });
+					}
+				}
+			}
+
+			bool exists;
+			string url;
+			lock (urlLock)
+			{
+				exists = itemToUrlCache.TryGetValue(item.ID, out url);
+			}
+
+			if (!exists)
+			{
+				url = inner.BuildUrl(item);
+				lock (urlLock)
+				{
+					itemToUrlCache[item.ID] = url;
+				}
+			}
+
+			return url;
 		}
 
 		/// <summary>Checks if an item is start or root page</summary>
@@ -106,7 +154,23 @@ namespace N2.Web
 			return data;
 		}
 
+		[Obsolete("Use FindPath")]
+		/// <summary>Finds the path associated with an url.</summary>
+		/// <param name="url">The url to the template to locate.</param>
+		/// <param name="startNode">The node to start finding path from if none supplied will start from StartNode</param>
+		/// <param name="remainingPath">The remaining path to search</param>
+		/// <returns>A PathData object. If no template was found the object will have empty properties.</returns>
 		public PathData ResolvePath(Url url, ContentItem startNode = null, string remainingPath = null)
+		{
+			return FindPath(url, startNode, remainingPath);
+		}
+
+		/// <summary>Finds the path associated with an url.</summary>
+		/// <param name="url">The url to the template to locate.</param>
+		/// <param name="startNode">The node to start finding path from if none supplied will start from StartNode</param>
+		/// <param name="remainingPath">The remaining path to search</param>
+		/// <returns>A PathData object. If no template was found the object will have empty properties.</returns>
+		public PathData FindPath(Url url, ContentItem startNode = null, string remainingPath = null)
 		{
 			if (url == null)
 				return PathData.Empty;
@@ -119,7 +183,7 @@ namespace N2.Web
 			Dictionary<string, PathData> cachedPathData;
 			if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 			{
-				lock (classLock)
+				lock (pathLock)
 				{
 					if ((cachedPathData = cache.Get<Dictionary<string, PathData>>("N2.PathDataCache")) == null)
 					{
@@ -146,7 +210,7 @@ namespace N2.Web
 			else
 			{
 				// The requested url doesn't exist in the cached path data
-				lock (classLock)
+				lock (pathLock)
 				{
 					if (!cachedPathData.TryGetValue(urlKey, out data))
 					{
@@ -156,8 +220,8 @@ namespace N2.Web
 						var pathData = GetStartNode(url, cachedPathData, ref path, 0);
 
 						data = pathData.ID == 0
-							? inner.ResolvePath(url)
-							: inner.ResolvePath(url, persister.Get(pathData.ID), remainingPath.Substring(path.Length, remainingPath.Length - path.Length));
+							? inner.FindPath(url)
+							: inner.FindPath(url, persister.Get(pathData.ID), remainingPath.Substring(path.Length, remainingPath.Length - path.Length));
 
 						if (data.IsCacheable)
 						{

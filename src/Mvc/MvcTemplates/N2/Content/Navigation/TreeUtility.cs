@@ -61,7 +61,7 @@ namespace N2.Management.Content.Navigation
 			text.Append(node.Title);
 			foreach(var mi in node.MetaInforation)
 			{
-				text.AppendFormat(" <span class='meta {0}'>{1}</span>", mi.Key, mi.Value);
+				text.AppendFormat(" <span class='meta {0}' title='{1}'>{2}</span>", mi.Name, mi.ToolTip, mi.Text);
 			}
 
 			var builder = new Link(text.ToString(), node.ToolTip, node.Target ?? target, node.PreviewUrl, className)

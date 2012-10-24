@@ -14,6 +14,7 @@ using N2.Tests.Fakes;
 using N2.Web;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Tests.Security
 {
@@ -36,7 +37,9 @@ namespace N2.Tests.Security
 		public virtual void TestFixtureSetUp()
 		{
 			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
-			persister = new ContentPersister(new NHRepository<ContentItem>(sessionProvider), new NHRepository<ContentDetail>(sessionProvider));
+			var repository = new ContentItemRepository(sessionProvider);
+			var sources = TestSupport.SetupContentSource(repository);
+			persister = new ContentPersister(sources, repository);
 		}
 
 		[SetUp]

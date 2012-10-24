@@ -8,7 +8,7 @@ namespace N2.Edit
 	[NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "{ManagementUrl}/Resources/icons/page_copy.png", 50,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Read)]
-	[ToolbarPlugin("COPY", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/page_copy.png", 40,
+	[ToolbarPlugin("", "copy_tool", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/page_copy.png", 40,
 		ToolTip = "copy",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish)]

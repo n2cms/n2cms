@@ -3,12 +3,7 @@
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
-    <edit:ToolbarPluginDisplay ID="PreviewPlugins" Area="Preview" runat="server" />
-</asp:Content>
-
-<asp:Content ID="cs" ContentPlaceHolderID="Subbar" runat="server">
-    <edit:ToolbarPluginDisplay ID="OperationsPlugins" Area="Operations" runat="server" />
-    <edit:ToolbarPluginDisplay ID="OptionsPlugins" Area="Options" runat="server" />
+	<edit:ToolbarPluginDisplay ID="OptionsPlugins" Area="Options" runat="server" />
 </asp:Content>
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
@@ -17,6 +12,7 @@
 	</div>
 
 	<div id="rightPane" class="ui-layout-pane ui-layout-center">
+		<div id="pageTools" class="toolbox"><edit:ToolbarPluginDisplay ID="PagePlugins" Area="Preview" runat="server" /></div>
 		<iframe id="previewFrame" src="<%= GetPreviewUrl(Selection.SelectedItem) %>" frameborder="0" name="preview" class="frame"></iframe>
 	</div>
 

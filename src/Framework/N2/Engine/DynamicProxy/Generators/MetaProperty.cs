@@ -31,19 +31,26 @@ namespace Castle.DynamicProxy.Generators
 		private readonly Type type;
 		private PropertyEmitter emitter;
 		private string name;
+        private PropertyInfo property;
 
-		public MetaProperty(string name, Type propertyType, Type declaringType, MetaMethod getter, MetaMethod setter,
+		public MetaProperty(PropertyInfo property, MetaMethod getter, MetaMethod setter,
 		                    IEnumerable<CustomAttributeBuilder> customAttributes, Type[] arguments)
-			: base(declaringType)
+			: base(property.DeclaringType)
 		{
-			this.name = name;
-			type = propertyType;
+            this.property = property;
+			this.name = property.Name;
+			type = property.PropertyType;
 			this.getter = getter;
 			this.setter = setter;
 			attributes = PropertyAttributes.None;
 			this.customAttributes = customAttributes;
 			this.arguments = arguments ?? Type.EmptyTypes;
 		}
+
+        public PropertyInfo Property
+        {
+            get { return property; }
+        }
 
 		public Type[] Arguments
 		{

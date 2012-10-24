@@ -13,6 +13,15 @@ namespace N2.Edit.Navigation {
     public partial class Tree {
         
         /// <summary>
+        /// OperationsPlugins control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OperationsPlugins;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>

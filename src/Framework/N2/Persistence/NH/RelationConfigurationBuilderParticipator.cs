@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Engine;
 using NHibernate.Event;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.NH
 {
@@ -14,8 +15,16 @@ namespace N2.Persistence.NH
 		{
 			public void OnPostLoad(PostLoadEvent @event)
 			{
-				InitialializeRelations(@event.Entity as ContentItem, @event.Session);
+                InitialializeRelations(@event.Entity as ContentItem, @event.Session);
+                InitialializeRelations(@event.Entity as ContentVersion, @event.Session);
 			}
+
+            private void InitialializeRelations(ContentVersion version, IEventSource session)
+            {
+                if (version == null)
+                    return;
+                version.Master.ValueAccessor = session.Get<ContentItem>;
+            }
 
 			private void InitialializeRelations(ContentItem item, IEventSource session)
 			{

@@ -1,4 +1,5 @@
 using N2.Engine;
+using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using NHibernate.Tool.hbm2ddl;
@@ -44,6 +45,7 @@ namespace N2.Tests
 
 		protected virtual void CreateDatabaseSchema()
 		{
+			sessionProvider.CurrentSession = null;
 			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
 		}
 

@@ -35,7 +35,7 @@ namespace N2.Persistence.NH
 		/// <param name="criteria">the criteria to look for</param>
 		/// <param name="order"></param>
 		/// <returns>All the entities that match the criteria</returns>
-		ICollection<TEntity> FindAll(Order order, params ICriterion[] criteria);
+		ICollection<TEntity> FindAll(NHibernate.Criterion.Order order, params ICriterion[] criteria);
 
 		/// <summary>
 		/// Loads all the entities that match the criteria
@@ -44,7 +44,7 @@ namespace N2.Persistence.NH
 		/// <param name="criteria">the criteria to look for</param>
 		/// <param name="orders"> the order to load the entities</param>
 		/// <returns>All the entities that match the criteria</returns>
-		ICollection<TEntity> FindAll(DetachedCriteria criteria, params Order[] orders);
+		ICollection<TEntity> FindAll(DetachedCriteria criteria, params NHibernate.Criterion.Order[] orders);
 
 		/// <summary>
 		/// Loads all the entities that match the criteria
@@ -57,7 +57,7 @@ namespace N2.Persistence.NH
 		/// <returns>All the entities that match the criteria</returns>
 		ICollection<TEntity> FindAll(DetachedCriteria criteria,
 							   int firstResult, int maxResults,
-							   params Order[] orders);
+							   params NHibernate.Criterion.Order[] orders);
 
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace N2.Persistence.NH
 		/// <param name="orders"></param>
 		/// <param name="criteria">the criteria to look for</param>
 		/// <returns>All the entities that match the criteria</returns>
-		ICollection<TEntity> FindAll(Order[] orders, params ICriterion[] criteria);
+		ICollection<TEntity> FindAll(NHibernate.Criterion.Order[] orders, params ICriterion[] criteria);
 
 		/// <summary>
 		/// Loads all the entities that match the criteria
@@ -96,7 +96,7 @@ namespace N2.Persistence.NH
 		/// <param name="selectionOrder">The field the repository should order by</param>
 		/// <returns>number of Results of entities that match the criteria</returns>
 		ICollection<TEntity> FindAll(int firstResult, int numberOfResults,
-							   Order selectionOrder,
+							   NHibernate.Criterion.Order selectionOrder,
 							   params ICriterion[] criteria);
 
 		/// <summary>
@@ -109,7 +109,7 @@ namespace N2.Persistence.NH
 		/// <returns>number of Results of entities that match the criteria</returns>
 		/// <param name="selectionOrder">The fields the repository should order by</param>
 		ICollection<TEntity> FindAll(int firstResult, int numberOfResults,
-							   Order[] selectionOrder,
+							   NHibernate.Criterion.Order[] selectionOrder,
 							   params ICriterion[] criteria);
 
 		/// <summary>
@@ -162,14 +162,14 @@ namespace N2.Persistence.NH
 		/// <param name="criteria">The criteria to look for</param>
 		/// <param name="orders">Optional orderring</param>
 		/// <returns>The entity or null</returns>
-		TEntity FindFirst(DetachedCriteria criteria, params Order[] orders);
+		TEntity FindFirst(DetachedCriteria criteria, params NHibernate.Criterion.Order[] orders);
 
 		/// <summary>
 		/// Find the first entity of type
 		/// </summary>
 		/// <param name="orders">Optional orderring</param>
 		/// <returns>The entity or null</returns>
-		TEntity FindFirst(params Order[] orders);
+		TEntity FindFirst(params NHibernate.Criterion.Order[] orders);
 
 		/// <summary>
 		/// Check if any instance matches the criteria.

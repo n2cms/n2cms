@@ -8,6 +8,7 @@ using N2.Web;
 using N2.Web.Mvc.Html;
 using N2.Web.UI.WebControls;
 using System.Web.UI;
+using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
@@ -20,8 +21,7 @@ namespace N2.Edit
 		/// <returns></returns>
 		public static IEnumerable<ContentItem> TryAppendCreatorNode(this IEnumerable<ContentItem> items, IEngine engine, ContentItem parent)
 		{
-			var context = engine.Resolve<IWebContext>().HttpContext;
-			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine.SecurityManager, context.User, context.Request.QueryString);
+			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine);
 			if (state != ControlPanelState.DragDrop)
 				return items;
 
@@ -52,9 +52,9 @@ namespace N2.Edit
                 script, true);
         }
 
-        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6} }});";
-        private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6} }});";
-        private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6} }});";
+        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
+		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
+		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
 
         public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
         {
@@ -66,9 +66,11 @@ namespace N2.Edit
                 item.ID, // 3
                 item.Path, // 4
                 engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // permission:'{5}',
-                "true" // force:{6}
+                "true", // force:{6}
+				item.VersionIndex,
+				item.GetVersionKey()
             );
-
+			
             page.ClientScript.RegisterClientScriptBlock(
                 typeof(EditExtensions),
                 "RefreshFramesScript",
@@ -107,15 +109,25 @@ namespace N2.Edit
                 item.ID, // 3
                 item.Path, // 4
                 engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // 5
-                force.ToString().ToLower() // 6
+                force.ToString().ToLower(), // 6
+				item.VersionIndex,
+				item.GetVersionKey()
                 );
             return script;
         }
 
         internal static string GetPreviewUrl(this Page page, IEngine engine, ContentItem item)
         {
-            return page.Request["returnUrl"] ?? engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
+			string returnUrl = page.Request["returnUrl"];
+			if (!string.IsNullOrEmpty(returnUrl))
+				return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
+            return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
+
+		internal static string GetNavigationUrl(this Page page, IEngine engine, ContentItem item)
+		{
+			return engine.ResolveAdapter<NodeAdapter>(item).GetNavigationUrl(item);
+		}
 
         public static SelectionUtility GetSelection(this Page page)
         {
@@ -128,6 +140,27 @@ namespace N2.Edit
 
 			return selection;
         }
+
+		public static void InsertChildBefore(this ContentItem parent, ContentItem child, int beforeSortOrder)
+		{
+			bool wasAdded = false;
+			for (int i = 0; i < parent.Children.Count; i++)
+			{
+				var sibling = parent.Children[i];
+				if (sibling.SortOrder >= beforeSortOrder)
+				{
+					parent.Children.Insert(i, child);
+					Utility.UpdateSortOrder(parent.Children);
+					wasAdded = true;
+					break;
+				}
+			}
+			if (!wasAdded)
+			{
+				child.AddTo(parent);
+				Utility.UpdateSortOrder(parent.Children);
+			}
+		}
 	}
 
 	internal class CreatorItem : ContentItem, ISystemNode

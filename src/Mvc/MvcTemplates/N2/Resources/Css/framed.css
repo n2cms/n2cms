@@ -20,6 +20,33 @@ a img,
 	.toolbar .plain,
 	.toolbar .cancel { font-size:1em; font-weight:normal; }
 	.toolbar .iconed { background:transparent none no-repeat 2px 8px; padding-left:20px; }
+	
+	/* Toolbox */
+#top{ position:relative; }
+
+#sort {
+    background-image: none;
+    height: 30px;
+    padding: 0;
+    width: 28px;
+}
+
+#sort a {
+    background-position: 50% 50%;
+    border-top: 1px solid #FFFFFF;
+    display: block;
+    height: 13px;
+    padding: 0 5px;
+}
+
+.toolbox { font-size: 10px; font-family: 'Lucida Console', Monaco, monospace;height: 30px;background-color: #F8F8E8;border-bottom: 1px solid #D8D8D8; }
+    .toolbox .item { float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff;height: 30px; }
+        .toolbox .item .command { text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; }
+        .toolbox .item .command:hover { background-image:url(../../Resources/Img/toolbar_button_bg_hover.png); }
+        .toolbox .item.selected .command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
+        .toolbox .item.selected .command:hover { background-image:none; }
+			.toolbox .item .command a { padding:4px 5px 3px 22px; color:#6F6F6F; display:block; height:23px; line-height:18px; color:#6F6F6F; text-decoration:none; background:transparent none no-repeat 3px 50%;background-position: center center; }
+			.toolbox .item .command a:hover { color:#000; }
 
 
 
@@ -80,7 +107,9 @@ body.framed .formField label{
 body.framed .info,
 body.framed .validator{
 	display:block;
-	background:#D6D9D8 none no-repeat 5px 50%;
+	background-color:#D6D9D8;
+	background-repeat: no-repeat;
+	background-position: 5px 50%;
 	margin:10px 0;
 	padding:10px;
 	border:solid 1px #cecac7;
@@ -190,14 +219,15 @@ body.framed #nav .leaf .unselectable img, body.framed #nav .leaf-last .unselecta
 body.framed #nav .selectable:hover { outline: solid 1px #ccf; background-color:#eef; }
 
 body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/icons/bullet_key.png) no-repeat 100% 50%; }
-body.framed #nav .unpublished { padding-right:20px; background:transparent url(../../Resources/icons/clock_play.png) no-repeat 100% 50%; }
-body.framed #nav .expired { padding-right:20px; background:transparent url(../../Resources/icons/clock_stop.png) no-repeat 100% 50%; }
+body.framed #nav .unpublished { padding-right:18px; background:transparent url(../../Resources/icons/bullet_red.png) no-repeat 100% 50%; }
+body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/icons/bullet_red.png) no-repeat 100% 50%; }
 
 body.framed #nav span.meta { margin-left:5px; font-size:.75em; font-weight:normal; }
 body.framed #nav span.language { background-color:#bdb; color:#fff; padding:0 1px;}
 body.framed #nav span.authority { font-style:italic; text-transform:capitalize }
 body.framed #nav a span.zone { display:none }
 body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
+body.framed #nav span.draft { vertical-align:middle; height:16px; width:16px; background:transparent url(../../Resources/icons/bullet_orange.png) no-repeat 50% 0; display:inline-block; }
 
 /* TABS */
 ul.tabs{

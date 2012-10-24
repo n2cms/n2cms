@@ -25,13 +25,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Eq(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.Equal, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.Equal, value.EnsureMasterVersion()));
 			return query;
 		}
 
 		public IQueryAction NotEq(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.NotEqual, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.NotEqual, value.EnsureMasterVersion()));
 			return query;
 		}
 
@@ -39,7 +39,7 @@ namespace N2.Persistence.NH.Finder
 		{
 			if (typeof (T).IsAssignableFrom(typeof (ContentItem)))
 			{
-				query.Criterias.Add(new PropertyInHqlProvider<int>(op, name, anyOf.Select(t => (t as ContentItem).ID).ToArray()));
+				query.Criterias.Add(new PropertyInHqlProvider<int>(op, name, anyOf.OfType<ContentItem>().Select(t => t.VersionOf.ID ?? t.ID).ToArray()));
 				return query;
 			}
 			throw new NotImplementedException();

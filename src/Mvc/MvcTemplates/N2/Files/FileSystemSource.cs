@@ -13,27 +13,31 @@ using N2.Definitions;
 namespace N2.Management.Files
 {
 	[Service(typeof(SourceBase))]
-	public class FileSystemSource : SourceBase
+	public class FileSystemSource : SourceBase<IFileSystemNode>
 	{
 		private FolderNodeProvider nodes;
 		
 		public FileSystemSource(FolderNodeProvider nodes)
 		{
 			this.nodes = nodes;
-			BaseContentType = typeof(AbstractNode);
+		}
+
+		public override bool IsProvidedBy(N2.ContentItem item)
+		{
+			return base.IsProvidedBy(item) && !(item is RootDirectory);
 		}
 
 		public override IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
-			if(query.Interface != Interfaces.Managing)
+			return previousChildren;
+		}
+
+		public override IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query)
+		{
+			if (query.Interface != Interfaces.Managing)
 				return previousChildren;
 
 			return previousChildren.Union(nodes.GetChildren(query.Parent.Path));
-		}
-
-		public override bool IsProvidedBy(ContentItem item)
-		{
-			return item is AbstractNode;
 		}
 
 		public override PathData ResolvePath(ContentItem startingPoint, string path)
@@ -50,6 +54,16 @@ namespace N2.Management.Files
 			return item.FindPath(PathData.DefaultAction);
 		}
 
+
+
+		public override ContentItem Get(object id)
+		{
+			var path = id as string;
+			if (path == null) return null;
+
+			return nodes.Get(path);
+		}
+
 		public override void Save(ContentItem item)
 		{
 			Active(item).Save();
@@ -60,9 +74,10 @@ namespace N2.Management.Files
 			Active(item).Delete();
 		}
 
-		public override void Move(ContentItem source, ContentItem destination)
+		public override ContentItem Move(ContentItem source, ContentItem destination)
 		{
 			Active(source).MoveTo(destination);
+			return source;
 		}
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)

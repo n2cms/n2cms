@@ -46,7 +46,7 @@
 				<tbody>
 					<tr><th colspan="2"><h2>Database</h2></th></tr>
 <% try { %>
-					<tr><th>Connection provider</th><td><%= System.Configuration.ConfigurationManager.ConnectionStrings[N2.Context.Current.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName].ProviderName %></td></tr>
+					<tr><th>Connection provider</th><td><%= System.Configuration.ConfigurationManager.ConnectionStrings[Engine.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName].ProviderName %></td></tr>
 <% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
 					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
@@ -62,11 +62,22 @@
 					<tr><th>N2 version</th><td><asp:Label ID="lblN2Version" runat="server" /></td></tr>
 					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
 <% try { %>
-					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
-					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
-					<tr><th>Url parser type</th><td><%= N2.Context.Current.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
-					<tr><th>File System type</th><td><%= N2.Context.Current.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
+					<tr><th>Engine type</th><td><%= Engine.GetType() %></td></tr>
+					<tr><th>IoC Container type</th><td><%= Engine.Container.GetType() %></td></tr>
+					<tr><th>Url parser type</th><td><%= Engine.Resolve<N2.Web.IUrlParser>().GetType() %></td></tr>
+					<tr><th>File System type</th><td><%= Engine.Resolve<N2.Edit.FileSystem.IFileSystem>().GetType() %></td></tr>
+					<tr>
+						<th>Sources</th>
+						<td>
+							<% foreach(object cs in Engine.Resolve<N2.Persistence.Sources.ContentSource>().Sources) { %>
+							<%= cs %><br />
+							<% } %>
+						</td>
+					</tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
+					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
+					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
+					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
@@ -231,7 +242,7 @@
 			<% try { %>
 			<table class="t openable"><thead><tr><th colspan="2"><h2>Services</h2></th></tr><tr><td>Service type</td><td>Implementation type</td></tr></thead>
 			<tbody>
-			<% foreach (N2.Engine.ServiceInfo info in N2.Context.Current.Container.Diagnose()) { %>
+			<% foreach (N2.Engine.ServiceInfo info in Engine.Container.Diagnose()) { %>
 				<tr><td><%= info.ServiceType %></td><td><%= info.ImplementationType %></td></tr>
 			<% } %>
 			</tbody></table>
@@ -243,7 +254,7 @@
 			<% try { %>
 			<table class="t openable"><thead><tr><th colspan="2"><h2>Cache</h2></th></tr><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>
 			<tbody>
-			<% foreach (KeyValuePair<string, NHibernate.Cache.ICache> kvp in ((NHibernate.Impl.SessionFactoryImpl)N2.Context.Current.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
+			<% foreach (KeyValuePair<string, NHibernate.Cache.ICache> kvp in ((NHibernate.Impl.SessionFactoryImpl)Engine.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildSessionFactory()).GetAllSecondLevelCacheRegions()) { %>
 				<tr><td><%= kvp.Key%></td><td><%= kvp.Value%></td></tr>
 			<% } %>
 			</tbody></table>

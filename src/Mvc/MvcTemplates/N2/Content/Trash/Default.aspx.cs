@@ -49,10 +49,7 @@ namespace N2.Edit.Trash
 
 		protected void btnClear_Click(object sender, EventArgs e)
 		{
-			foreach (ContentItem child in this.CurrentItem.GetChildren())
-			{
-				Engine.Persister.Delete(child);
-			}
+			Trash.PurgeAll();
 			this.DataBind();
 			RegisterRefreshNavigationScript(this.CurrentItem);
 		}

@@ -13,6 +13,7 @@ namespace N2.Edit.Installation
 		public AbstractMigration Migration { get; set; }
 		public IList<string> Errors { get; set; }
 		public int UpdatedItems { get; set; }
+		public string RedirectTo { get; set; }
 	}
 
 	public abstract class AbstractMigration

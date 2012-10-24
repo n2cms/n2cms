@@ -11,6 +11,7 @@ using N2.Edit.Activity;
 using N2.Edit;
 using N2.Web;
 using N2.Engine;
+using N2.Edit.Versioning;
 
 namespace N2.Management.Content.Activity
 {
@@ -24,7 +25,7 @@ namespace N2.Management.Content.Activity
 
 		protected override void  OnDataBinding(EventArgs e)
 		{
-			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, 4);
+			var allVersions = Engine.Resolve<IVersionManager>().GetVersionsOf(CurrentItem.VersionOf.Value ?? CurrentItem, skip: 0, take: 4);
 			
 			var activities = ManagementActivity.GetActivity(Engine, CurrentItem);
 			ActivitiesJson = ManagementActivity.ToJson(activities);

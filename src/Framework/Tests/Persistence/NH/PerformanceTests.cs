@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Linq;
 using Shouldly;
 using System.Web;
+using N2.Edit.Versioning;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -107,7 +108,7 @@ namespace N2.Tests.Persistence.NH
 
 		private void SaveVersionAndUpdateRootItem()
 		{
-			engine.Resolve<IVersionManager>().SaveVersion(rootItem);
+			engine.Resolve<IVersionManager>().AddVersion(rootItem);
 
 			rootItem.Created = DateTime.Today;
 			rootItem.Published = new DateTime(2007, 06, 03);
