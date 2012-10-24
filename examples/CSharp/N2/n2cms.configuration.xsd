@@ -114,6 +114,14 @@
 									<xs:attribute name="observedExtensions" type="xs:string" use="optional" />
 									<xs:attribute name="observeEmptyExtension" type="xs:boolean" use="optional" />
 									<xs:attribute name="ignoreExistingFiles" type="xs:boolean" use="optional" />
+									<xs:attribute name="permissionDeniedHttpCode" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:enumeration value="401"/>
+												<xs:enumeration value="404"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="outputCache" minOccurs="0">
@@ -256,6 +264,7 @@
 										</xs:element>
 									</xs:sequence>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="asyncActions" type="xs:boolean" use="optional" />
 									<xs:attribute name="interval" type="xs:integer" use="optional" />
 									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
 									<xs:attribute name="keepAlivePath" type="xs:string" use="optional" />
@@ -427,6 +436,7 @@
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
+									<xs:attribute name="batch" use="optional" default="false" type="xs:boolean"/>
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
@@ -472,6 +482,7 @@
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
+						<xs:attribute name="autoStartTransaction" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="edit">
@@ -580,6 +591,14 @@
 								<xs:complexType>
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
 									<xs:attribute name="maximumPerItem" type="xs:int" default="100" />
+									<xs:attribute name="defaultViewMode">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Draft"/>
+												<xs:enumeration value="Published"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="fileSystem" minOccurs="0">

@@ -1,0 +1,26 @@
+﻿
+HOW TO DEVELOP WITH N2
+
+Developing a feature with N2 usually involves a few steps. You can use the 
+included item templates or code snippets to reduce the amount of text you 
+need to write.
+
+* The model (WebForms or MVC)
+  * Create a model class deriving from N2.ContentItem, e.g. public class MyItemModel : ContentItem
+  * Att properties and attributes to define content and editors
+    * [PageDefinition] to the class
+      * [Editable...] to each editable property
+      * Get/SetDetail from the property getters and setters
+* The WebForm user interface
+  * Reference a template [PageDefinition(TemplateUrl = "/path/to/template.aspx")]
+  * Add the template
+    * Inherit code-behind from ContentPage<MyItemModel> (optional)
+    * Read values from CurrentPage property or use the web controls or expressions
+* The ASP.NET MVC user interface
+  * Create a controller
+    * Add an attribute: [Controls(typeof(MyItemModel)]
+    * Derive from a base class: MyController : ContentController<MyItemModel> (optional)
+  * Add a view
+    * Use data directly or use Html.DisplayContent to show data
+* Compile (Ctrl+F5)
+* Log into the management interface to add instances of the created template
