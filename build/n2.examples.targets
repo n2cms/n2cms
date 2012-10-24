@@ -15,7 +15,8 @@
 
 	<!-- Prepare dependencies -->
 	
-	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-VisualBasic-PrepareDependencies;Examples-Mvc-PrepareDependencies;">
+	<Target Name="Examples-PrepareDependencies">
+    <!--DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-VisualBasic-PrepareDependencies;Examples-Mvc-PrepareDependencies;"-->
 	</Target>
 
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
