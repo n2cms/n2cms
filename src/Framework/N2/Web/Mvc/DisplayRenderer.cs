@@ -106,7 +106,7 @@ namespace N2.Web.Mvc
 			if (Context.Displayable == null || Context.Content == null)
 				return;
 
-			Context.IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(Context.Html) == ControlPanelState.DragDrop;
+			Context.IsEditable = isEditable && ControlPanelExtensions.GetControlPanelState(Context.Html).IsFlagSet(ControlPanelState.DragDrop);
 
 			var renderer = Context.Html.ResolveService<DisplayableRendererSelector>();
 			if (swallowExceptions)

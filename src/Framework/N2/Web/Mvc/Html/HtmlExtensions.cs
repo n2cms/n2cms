@@ -32,7 +32,7 @@ namespace N2.Web.Mvc.Html
 				? (HierarchyBuilder)new ParallelRootHierarchyBuilder(startsFrom, takeLevels)
 				: (HierarchyBuilder)new TreeHierarchyBuilder(startsFrom, takeLevels);
 
-			if (appendCreatorNode && ControlPanelExtensions.GetControlPanelState(html) == ControlPanelState.DragDrop)
+			if (appendCreatorNode && ControlPanelExtensions.GetControlPanelState(html).IsFlagSet(ControlPanelState.DragDrop))
 				builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter).AppendCreatorNode(html.ContentEngine(), i);
 			else
 				builder.GetChildren = (i) => i.Children.FindNavigatablePages().Where(filter);

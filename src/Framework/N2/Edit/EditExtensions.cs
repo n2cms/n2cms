@@ -22,7 +22,7 @@ namespace N2.Edit
 		public static IEnumerable<ContentItem> TryAppendCreatorNode(this IEnumerable<ContentItem> items, IEngine engine, ContentItem parent)
 		{
 			var state = N2.Web.UI.WebControls.ControlPanel.GetState(engine);
-			if (state != ControlPanelState.DragDrop)
+			if (!state.IsFlagSet(ControlPanelState.DragDrop))
 				return items;
 
 			return items.AppendCreatorNode(engine, parent);
@@ -167,9 +167,11 @@ namespace N2.Edit
 	{
 		public CreatorItem()
 		{
+            State = ContentState.Published;
 		}
 
 		public CreatorItem(IEngine engine, ContentItem parent)
+            : this()
 		{
 			this.url = engine.ManagementPaths.GetSelectNewItemUrl(parent).ToUrl().AppendQuery("returnUrl", engine.Resolve<IWebContext>().HttpContext.Request.RawUrl);
 			this.Title = "<span class='creator-add'>&nbsp;</span>" + (Utility.GetGlobalResourceString("Management", "Add") ?? "Add...");

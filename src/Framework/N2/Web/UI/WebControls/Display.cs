@@ -173,7 +173,7 @@ namespace N2.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-			using (WebExtensions.GetEditableWrapper(CurrentItem, Editable && ControlPanel.GetState(this) == ControlPanelState.DragDrop, PropertyName, Displayable, writer))
+			using (WebExtensions.GetEditableWrapper(CurrentItem, Editable && ControlPanel.GetState(this).IsFlagSet(ControlPanelState.DragDrop), PropertyName, Displayable, writer))
 			{
 				string format = Format;
 				if (!string.IsNullOrEmpty(format))
