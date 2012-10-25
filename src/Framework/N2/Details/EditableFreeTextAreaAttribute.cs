@@ -8,6 +8,7 @@ using N2.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using N2.Web;
 using NHibernate.Criterion;
+using System.Web;
 
 namespace N2.Details
 {
@@ -174,6 +175,11 @@ namespace N2.Details
 		{
 			return cssFiles;
 		}
+
+        public override string GetIndexableText(ContentItem item)
+        {
+            return HttpUtility.HtmlDecode(base.GetIndexableText(item) ?? "");
+        }
 
 		#region IRelativityTransformer Members
 
