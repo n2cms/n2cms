@@ -62,7 +62,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		public ActionResult Remove()
 		{
 			Engine.Persister.Delete(CurrentItem);
-			return RedirectToParentPage();
+			return ViewParentPage();
 		}
 
 		public ActionResult Random(string name, int amount, string discriminator)
