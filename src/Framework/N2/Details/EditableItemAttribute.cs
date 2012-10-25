@@ -37,6 +37,7 @@ namespace N2.Details
 		#region Constructors
 
 		public EditableItemAttribute()
+            : this(null, null, 200)
 		{
 		}
 
@@ -55,6 +56,7 @@ namespace N2.Details
 			DefaultChildName = defaultChildName;
 			DefaultChildZoneName = defaultChildZoneName;
 			SortOrder = sortOrder;
+            PersistAs = PropertyPersistenceLocation.Child;
 		}
 
 		#endregion

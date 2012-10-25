@@ -3,21 +3,21 @@
 	/// <summary>
 	/// Instructs the system on where to store a property.
 	/// </summary>
-	public enum PropertyPersistenceLocation
-	{
-		/// <summary>Auto-implemented virtual properties will be intercepted and stored as details. Other properties are ignored.</summary>
-		Detail,
+    public enum PropertyPersistenceLocation
+    {
+        /// <summary>Auto-implemented virtual properties will be intercepted and stored as details. Other properties are ignored.</summary>
+        Detail,
 
-		/// <summary>Auto-implemented virtual properties will be intercepted and stored as detail collection values. Other properties are ignored.</summary>
-		DetailCollection,
+        /// <summary>Auto-implemented virtual properties will be intercepted and stored as detail collection values. Other properties are ignored.</summary>
+        DetailCollection,
 
-		///// <summary>Detail values are retrieved on load and restored before save.</summary>
-		//AssignedDetail,
-		
-		/// <summary>The property is stored in the item table. This option requires the database schema to be updated.</summary>
-		Column,
-		
-		/// <summary>The property is untouched. The getter and setter implementations can choose to store as details.</summary>
-		Ignore
-	}
+        /// <summary>The property is stored in the item table. This option requires the database schema to be updated.</summary>
+        Column,
+
+        /// <summary>The property is stored as a child to the content item. Only <see cref="ContentItem"/> is allowed for this persistence location.</summary>
+        Child,
+
+        /// <summary>The property is untouched. The getter and setter implementations can choose to store as details.</summary>
+        Ignore
+    }
 }

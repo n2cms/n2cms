@@ -31,10 +31,12 @@ namespace N2.Persistence.Serialization
 			}
 
 			Type type = Utility.TypeFromName(attributes["typeName"]);
-			if(type == typeof(ContentItem))
-				SetLinkedItem(navigator.Value, journal, (referencedItem) => item[name] = referencedItem);				
-			else
-				item[name] = Parse(navigator.Value, type);
+            if (type == typeof(ContentItem))
+            {
+                SetLinkedItem(navigator.Value, journal, (referencedItem) => item[name] = referencedItem, attributes.GetValueOrDefault("versionKey"));
+            }
+            else
+                item[name] = Parse(navigator.Value, type);
 		}
 
 		#endregion

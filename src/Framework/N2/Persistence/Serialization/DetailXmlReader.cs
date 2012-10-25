@@ -30,7 +30,7 @@ namespace N2.Persistence.Serialization
 
 			if (type == typeof(ContentItem))
 			{
-				SetLinkedItem(navigator.Value, journal, (referencedItem) => item[name] = referencedItem);
+				SetLinkedItem(navigator.Value, journal, (referencedItem) => item[name] = referencedItem, attributes.GetValueOrDefault("versionKey"));
 			}
 			else if(type == typeof(IMultipleValue))
 			{
@@ -68,7 +68,7 @@ namespace N2.Persistence.Serialization
 						multiDetail.IntValue = (int)Parse(valueElement.Value, typeof(int));
 						break;
 					case ContentDetail.TypeKeys.LinkType:
-						SetLinkedItem(valueElement.Value, journal, (referencedItem) => multiDetail.LinkedItem = referencedItem);
+						SetLinkedItem(valueElement.Value, journal, (referencedItem) => multiDetail.LinkedItem = referencedItem, valueElement.GetAttribute("versionKey", ""));
 						break;
 					case ContentDetail.TypeKeys.MultiType:
 						journal.Error(new InvalidOperationException("Nested multi types not supported"));

@@ -61,7 +61,10 @@ namespace N2.Tests.Serialization.Items
 	}
 
 	public class XmlableItem2 : XmlableItem
-	{
+    {
+        [EditableItem]
+        public virtual XmlableItem EditableItem { get; set; }
+
 		[EditableFreeTextArea]
 		public virtual string AutoPropertyString { get; set; }
 	}

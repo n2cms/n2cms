@@ -30,10 +30,7 @@ namespace N2.Persistence.Proxying
 
 		private readonly Dictionary<string, Tuple> types = new Dictionary<string, Tuple>();
 		private readonly ProxyGenerator generator = new ProxyGenerator();
-		private readonly Type[] additionalInterfacesToProxy = new Type[] { 
-            typeof(IInterceptedType)
-            //, typeof(IInterceptableType)
-		};
+		private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(IInterceptedType) };
 
 		public override void Initialize(IEnumerable<ItemDefinition> interceptedTypes)
 		{
@@ -69,36 +66,58 @@ namespace N2.Persistence.Proxying
 					if (!typeof(IEnumerable).IsAssignableFrom(propertyType))
 						throw new InvalidOperationException("The property type of '" + propertyName + "' on '" + pi.DeclaringType + "' does not implement IEnumerable which is required for properties stored in a detail collection");
 
-					yield return (interceptable) =>
-						{
-							IEnumerable propertyValue = (IEnumerable)getter.Invoke(interceptable, null);
-							var collectionValues = interceptable.GetValues(propertyName);
-
-							if (propertyValue == null && collectionValues == null)
-								return false;
-
-							interceptable.SetValues(propertyName, collectionValues);
-							return true;
-						};
+					yield return (interceptable) => StoreDetailCollectionValues(propertyName, getter, interceptable);
 				}
-				else
-				{
-					yield return (interceptable) =>
-						{
-							object propertyValue = getter.Invoke(interceptable, null);
-							object detailValue = interceptable.GetValue(propertyName);
+                else if (property.Attribute.PersistAs == PropertyPersistenceLocation.Child)
+                {
+                    if (!typeof(ContentItem).IsAssignableFrom(propertyType))
+                        if (!propertyType.IsGenericType && !typeof(ContentItem).IsAssignableFrom(propertyType.GetGenericArguments().FirstOrDefault()))
+                                throw new NotSupportedException(propertyType + " " + propertyName + " is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.");
 
-							if (propertyValue == null && detailValue == null)
-								return false;
-							if (propertyValue != null && propertyValue.Equals(detailValue))
-								return false;
-
-							interceptable.SetValue(propertyName, propertyValue, propertyType);
-							return true;
-						};
-				}
+                    yield return (interceptable) => StoreChildValue(propertyName, getter, interceptable);
+                }
+                else
+                {
+                    yield return (interceptable) => StoreDetailValue(propertyType, propertyName, getter, interceptable);
+                }
 			}
 		}
+
+        private static bool StoreChildValue(string propertyName, MethodInfo getter, IInterceptableType interceptable)
+        {
+            var newChild = getter.Invoke(interceptable, null);
+            var existingChild = interceptable.GetChild(propertyName);
+
+            interceptable.SetChild(propertyName, newChild);
+
+            return newChild != existingChild;
+        }
+
+        private static bool StoreDetailValue(Type propertyType, string propertyName, MethodInfo getter, IInterceptableType interceptable)
+        {
+            object propertyValue = getter.Invoke(interceptable, null);
+            object detailValue = interceptable.GetValue(propertyName);
+
+            if (propertyValue == null && detailValue == null)
+                return false;
+            if (propertyValue != null && propertyValue.Equals(detailValue))
+                return false;
+
+            interceptable.SetValue(propertyName, propertyValue, propertyType);
+            return true;
+        }
+
+        private static bool StoreDetailCollectionValues(string propertyName, MethodInfo getter, IInterceptableType interceptable)
+        {
+            IEnumerable propertyValue = (IEnumerable)getter.Invoke(interceptable, null);
+            var collectionValues = interceptable.GetValues(propertyName);
+
+            if (propertyValue == null && collectionValues == null)
+                return false;
+
+            interceptable.SetValues(propertyName, collectionValues);
+            return true;
+        }
 
 		private IEnumerable<AttributedProperty> GetInterceptableProperties(ItemDefinition definition)
 		{

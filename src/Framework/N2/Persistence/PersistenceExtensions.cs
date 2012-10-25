@@ -154,15 +154,20 @@ namespace N2.Persistence
 			}
 
 			attributes = definition.GetCustomAttributes<IInterceptableProperty>(property.Name);
-			if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
-				// some property is persisted as something other than detail or detail collection
-				return false;
-			if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
-				// no property is persisted as detail or detail collection
-				return false;
-
-			return true;
+            return ContainsInterceptableDeclaration(attributes);
 		}
+
+        private static bool ContainsInterceptableDeclaration(IEnumerable<IInterceptableProperty> attributes)
+        {
+            if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection && a.PersistAs != PropertyPersistenceLocation.Child))
+                // some property is persisted as something other than detail or detail collection
+                return false;
+            if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection || a.PersistAs == PropertyPersistenceLocation.Child))
+                // no property is persisted as detail or detail collection
+                return false;
+
+            return true;
+        }
 
 		public static bool IsInterceptable(this PropertyInfo property)
 		{
@@ -172,15 +177,8 @@ namespace N2.Persistence
 			}
 
 			var attributes = property.GetCustomAttributes<IInterceptableProperty>();
-			if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection))
-				// some property is persisted as something other than detail or detail collection
-				return false;
-			if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection))
-				// no property is persisted as detail or detail collection
-				return false;
-
-			return true;
-		}
+            return ContainsInterceptableDeclaration(attributes);
+        }
 
 		internal static IEnumerable<T> GetCustomAttributes<T>(this PropertyInfo property)
 		{

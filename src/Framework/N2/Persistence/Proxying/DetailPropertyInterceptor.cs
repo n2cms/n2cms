@@ -43,6 +43,8 @@ namespace N2.Persistence.Proxying
 			foreach (var intercepted in interceptedProperties)
 			{
 				var property = intercepted.Property;
+                string propertyName = property.Name;
+                Type propertyType = property.PropertyType;
 				var location = intercepted.Attribute.PersistAs;
 
 				var getMethod = property.GetGetMethod();
@@ -51,32 +53,62 @@ namespace N2.Persistence.Proxying
 				if (!getMethod.IsCompilerGenerated())
 					continue; // only intercept auto-implemented properties
 
-				object defaultValue = GetDefaultValue(property.PropertyType, intercepted.Attribute.DefaultValue);
+				object defaultValue = GetDefaultValue(propertyType, intercepted.Attribute.DefaultValue);
 
 				var setMethod = property.GetSetMethod();
 				if (location == PropertyPersistenceLocation.Detail)
 				{
-					methods[getMethod] = GetGetDetail(property.Name, defaultValue);
+					methods[getMethod] = GetGetDetail(propertyName, defaultValue);
 
 					if (setMethod == null)
 						continue; // no public setter? that's okay
-					methods[setMethod] = GetSetDetail(property.Name, defaultValue, property.PropertyType);
+					methods[setMethod] = GetSetDetail(propertyName, defaultValue, propertyType);
 				}
 				else if (location == PropertyPersistenceLocation.DetailCollection)
 				{
-					if (!typeof(IEnumerable).IsAssignableFrom(property.PropertyType))
-						throw new InvalidCastException("The property " + property.Name + " has the property type " + property.PropertyType + " but a type assignable from IEnumerable is required for usage of PropertyPersistenceLocation.DetailCollection");
+					if (!typeof(IEnumerable).IsAssignableFrom(propertyType))
+						throw new InvalidCastException("The property " + propertyName + " has the property type " + propertyType + " but a type assignable from IEnumerable is required for usage of PropertyPersistenceLocation.DetailCollection");
 					if (defaultValue != null && !typeof(IEnumerable).IsAssignableFrom(defaultValue.GetType()))
-						throw new InvalidCastException("The property " + property.Name + " has a default value type " + property.PropertyType + " but a type assignable from IEnumerable is required for usage of PropertyPersistenceLocation.DetailCollection");
+						throw new InvalidCastException("The property " + propertyName + " has a default value type " + propertyType + " but a type assignable from IEnumerable is required for usage of PropertyPersistenceLocation.DetailCollection");
 
-					methods[getMethod] = GetGetDetailCollection(property.Name, property.PropertyType, defaultValue);
+					methods[getMethod] = GetGetDetailCollection(propertyName, propertyType, defaultValue);
 
 					if (setMethod == null)
 						continue; // no public setter? that's okay
-					methods[setMethod] = GetSetDetailCollection(property.Name, defaultValue as IEnumerable, property.PropertyType);
+					methods[setMethod] = GetSetDetailCollection(propertyName, defaultValue as IEnumerable, propertyType);
 				}
+                else if (location == PropertyPersistenceLocation.Child)
+                {
+                    if (!typeof(ContentItem).IsAssignableFrom(propertyType))
+                        if (!propertyType.IsGenericType && !typeof(ContentItem).IsAssignableFrom(propertyType.GetGenericArguments().FirstOrDefault()))
+                            throw new NotSupportedException(propertyType + " " + propertyName + " is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.");
+
+                    methods[getMethod] = GetGetChild(propertyName);
+                    if (setMethod == null)
+                        continue; // no public setter? that's okay
+                    methods[setMethod] = GetSetChild(propertyName);
+                }
 			}
 		}
+
+        private Action<IInvocation> GetGetChild(string propertyName)
+        {
+            return invocation =>
+            {
+                var instance = invocation.Proxy as IInterceptableType;
+                invocation.ReturnValue = instance.GetChild(propertyName);
+            };
+        }
+
+        private Action<IInvocation> GetSetChild(string propertyName)
+        {
+            return invocation =>
+            {
+                var value = invocation.Arguments[0];
+                var instance = invocation.Proxy as IInterceptableType;
+                instance.SetChild(propertyName, value);
+            };
+        }
 
 		public void Intercept(IInvocation invocation)
 		{

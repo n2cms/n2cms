@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
@@ -58,19 +59,27 @@ namespace N2.Persistence.Serialization
 				else if (type.IsEnum)
 					Write(detailElement, type, ((int)value).ToString(), false);
 				else if (typeof(ContentItem).IsAssignableFrom(type))
-					Write(detailElement, typeof(ContentItem), (((ContentItem)value).ID).ToString(), false);
+                    WriteItem(detailElement, (ContentItem)value
+                        );
 				else
 					Write(detailElement, typeof(object), SerializationUtility.ToBase64String(value), false);
 			}
 		}
 
-		private void Write(ElementWriter detailElement, Type type, string contents, bool cdata)
+        private void WriteItem(ElementWriter propertyElement, ContentItem item)
+        {
+            propertyElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(typeof(ContentItem)));
+            propertyElement.WriteAttribute("versionKey", item.GetVersionKey());
+            propertyElement.Write(item.ID.ToString());
+        }
+
+		private void Write(ElementWriter propertyElement, Type type, string contents, bool cdata)
 		{
-			detailElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(type));
+			propertyElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(type));
 			if(cdata)
-				detailElement.WriteCData(contents);
+				propertyElement.WriteCData(contents);
 			else
-				detailElement.Write(contents);
+				propertyElement.Write(contents);
 		}
 
 		#endregion

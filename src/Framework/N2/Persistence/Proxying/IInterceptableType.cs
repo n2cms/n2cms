@@ -32,6 +32,10 @@ namespace N2.Persistence.Proxying
 		/// <summary>Gets values from the underlying detail store.</summary>
 		/// <param name="detailCollectionName">The name of the detail.</param>
 		/// <returns>The value of the given detial name or null.</returns>
-		IEnumerable GetValues(string detailCollectionName);
+        IEnumerable GetValues(string detailCollectionName);
+
+        object GetChild(string childName);
+        
+        void SetChild(string childName, object child);
 	}
 }

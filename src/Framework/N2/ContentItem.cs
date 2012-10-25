@@ -1110,7 +1110,36 @@ namespace N2
 		System.Collections.IEnumerable IInterceptableType.GetValues(string detailCollectionName)
 		{
 			return GetDetailCollection(detailCollectionName, false);
-		}
+        }
+
+        object IInterceptableType.GetChild(string childName)
+        {
+            return GetChild(childName);
+        }
+
+        void IInterceptableType.SetChild(string childName, object child)
+        {
+            var existingChild = GetChild(childName);
+            var newChild = child as ContentItem;
+            if (child == null)
+            {
+                if (existingChild != null)
+                    existingChild.AddTo(null);
+            }
+            else if (newChild != null)
+            {
+                if (existingChild == newChild)
+                    return;
+
+                if (existingChild != null && existingChild != newChild)
+                    throw new InvalidOperationException(this + " already contains " + existingChild + " which has the requested child name.");
+
+                newChild.Name = childName;
+                newChild.AddTo(this);
+            }
+            else
+                throw new NotSupportedException(child.GetType() + " isn't a supported child type.");
+        }
 
         [Interceptable]
 		public virtual Type GetContentType()
@@ -1128,5 +1157,5 @@ namespace N2
 		}
 
 		#endregion
-	}
+    }
 }

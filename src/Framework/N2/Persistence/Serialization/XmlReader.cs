@@ -63,18 +63,35 @@ namespace N2.Persistence.Serialization
 				: default(DateTime?);
 		}
 
-		protected static void SetLinkedItem(string value, ReadingJournal journal, Action<ContentItem> setter)
+		protected static void SetLinkedItem(string value, ReadingJournal journal, Action<ContentItem> setter, string versionKey = null)
 		{
 			int referencedItemID = int.Parse(value);
-			ContentItem referencedItem = journal.Find(referencedItemID);
-			if (referencedItem != null)
-			{
-				setter(referencedItem);
-			}
-			else
-			{
-				journal.Register(referencedItemID, setter);
-			}
+
+            if (referencedItemID != 0)
+            {
+                ContentItem referencedItem = journal.Find(referencedItemID);
+                if (referencedItem != null)
+                {
+                    setter(referencedItem);
+                }
+                else
+                {
+                    journal.Register(referencedItemID, setter);
+                }
+            }
+            else if (!string.IsNullOrEmpty(versionKey))
+            {
+
+                ContentItem referencedItem = journal.Find(versionKey);
+                if (referencedItem != null)
+                {
+                    setter(referencedItem);
+                }
+                else
+                {
+                    journal.Register(versionKey, setter);
+                }
+            }
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace N2.Tests.Persistence.Proxying
 		[EditableFreeTextArea("My Numbers", 100, PersistAs = PropertyPersistenceLocation.DetailCollection)]
 		public virtual int[] IntCollectionProperty { get; set; }
 
-		[EditableItem("My Property", 100)]
+		[EditableLink("My Property", 100)]
 		public virtual ContentItem LinkProperty { get; set; }
 
 		public bool StandardBoolProperty_get = false;
@@ -45,6 +45,9 @@ namespace N2.Tests.Persistence.Proxying
 			get { StandardBoolProperty_get = true; return GetDetail("StandardBoolProperty", false); }
 			set { StandardBoolProperty_set = true; SetDetail("StandardBoolProperty", value, false); }
 		}
+
+        [EditableItem]
+        public virtual ContentItem ChildProperty { get; set; }
 	}
 	public class InterceptableInheritorItem : InterceptableItem
 	{
@@ -283,7 +286,33 @@ namespace N2.Tests.Persistence.Proxying
 			item.LinkProperty = null;
 
 			Assert.That(item.GetDetail("LinkProperty"), Is.Null);
-		}
+        }
+
+        // CHILD
+
+        [Test]
+        public void Get_ChildProperty()
+        {
+            new InterceptableItem { Name = "ChildProperty", ID = 222 }.AddTo(item);
+
+            item.ChildProperty.ID.ShouldBe(222);
+        }
+
+        [Test]
+        public void Set_ChildProperty()
+        {
+            item.ChildProperty = new InterceptableItem { ID = 666 };
+
+            item.Children.Single().ID.ShouldBe(666);
+        }
+
+        [Test]
+        public void Set_Get_ChildProperty()
+        {
+            item.ChildProperty = new InterceptableItem { ID = 666 };
+
+            item.ChildProperty.ID.ShouldBe(666);
+        }
 
 		// LINK COLLECTION
 
