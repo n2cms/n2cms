@@ -37,6 +37,8 @@ using N2.Persistence.Search;
 using N2.Persistence.Sources;
 using N2.Persistence.Behaviors;
 using Castle.DynamicProxy;
+using System.Linq;
+using System.Collections;
 
 namespace N2
 {
@@ -1134,11 +1136,42 @@ namespace N2
                 if (existingChild != null && existingChild != newChild)
                     throw new InvalidOperationException(this + " already contains " + existingChild + " which has the requested child name.");
 
-                newChild.Name = childName;
+                if (string.IsNullOrEmpty(newChild.Name) || newChild.Name == newChild.ID.ToString())
+                    newChild.Name = childName;
                 newChild.AddTo(this);
             }
             else
                 throw new NotSupportedException(child.GetType() + " isn't a supported child type.");
+        }
+
+        IEnumerable IInterceptableType.GetChildren(string zoneName)
+        {
+            return Children.FindParts(zoneName);
+        }
+
+        void IInterceptableType.SetChildren(string zoneName, IEnumerable children)
+        {
+            var existing = Children.FindParts(zoneName).ToList();
+            if (children == null)
+            {
+                foreach (var removed in existing)
+                {
+                    removed.AddTo(null);
+                }
+                return;
+            }
+
+            var newChildren = children.Cast<ContentItem>();
+            foreach (var removed in existing.Except(newChildren))
+            {
+                removed.AddTo(null);
+            }
+            foreach(var added in newChildren.Except(existing))
+            {
+                if (added.ZoneName == null)
+                    added.ZoneName = zoneName;
+                added.AddTo(this);
+            }
         }
 
         [Interceptable]

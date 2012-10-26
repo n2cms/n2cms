@@ -5,6 +5,7 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using System.Collections;
 using N2.Details;
+using N2.Engine;
 
 namespace N2.Persistence.Proxying
 {
@@ -13,6 +14,8 @@ namespace N2.Persistence.Proxying
 	/// </summary>
 	public class DetailPropertyInterceptor : IInterceptor, N2.Persistence.Proxying.IInterceptorBuilder
     {
+        Logger<DetailPropertyInterceptor> logger;
+
         public IInterceptor Interceptor
         {
             get { return this; }
@@ -80,34 +83,55 @@ namespace N2.Persistence.Proxying
                 else if (location == PropertyPersistenceLocation.Child)
                 {
                     if (!typeof(ContentItem).IsAssignableFrom(propertyType))
-                        if (!propertyType.IsGenericType && !typeof(ContentItem).IsAssignableFrom(propertyType.GetGenericArguments().FirstOrDefault()))
-                            throw new NotSupportedException(propertyType + " " + propertyName + " is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.");
+                    {
+                        if (!propertyType.IsContentItemEnumeration())
+                        {
+                            logger.WarnFormat("{0} on {1}.{2} is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.", propertyType, interceptedType.Name, propertyName);
+                            continue;
+                        }
+                    }
 
-                    methods[getMethod] = GetGetChild(propertyName);
+                    methods[getMethod] = GetGetChild(propertyName, propertyType);
                     if (setMethod == null)
                         continue; // no public setter? that's okay
-                    methods[setMethod] = GetSetChild(propertyName);
+                    methods[setMethod] = GetSetChild(propertyName, propertyType);
                 }
 			}
 		}
 
-        private Action<IInvocation> GetGetChild(string propertyName)
+        private Action<IInvocation> GetGetChild(string propertyName, Type propertyType)
         {
-            return invocation =>
-            {
-                var instance = invocation.Proxy as IInterceptableType;
-                invocation.ReturnValue = instance.GetChild(propertyName);
-            };
+            if (typeof(ContentItem).IsAssignableFrom(propertyType))
+                return invocation =>
+                {
+                    var instance = invocation.Proxy as IInterceptableType;
+                    invocation.ReturnValue = instance.GetChild(propertyName);
+                };
+            else
+                return invocation =>
+                {
+                    var instance = invocation.Proxy as IInterceptableType;
+                    var values = instance.GetChildren(propertyName);
+                    invocation.ReturnValue = values.ConvertTo(propertyType, propertyName);
+                };
         }
 
-        private Action<IInvocation> GetSetChild(string propertyName)
+        private Action<IInvocation> GetSetChild(string propertyName, Type propertyType)
         {
-            return invocation =>
-            {
-                var value = invocation.Arguments[0];
-                var instance = invocation.Proxy as IInterceptableType;
-                instance.SetChild(propertyName, value);
-            };
+            if (typeof(ContentItem).IsAssignableFrom(propertyType))
+                return invocation =>
+                {
+                    var value = invocation.Arguments[0];
+                    var instance = invocation.Proxy as IInterceptableType;
+                    instance.SetChild(propertyName, value);
+                };
+            else
+                return invocation =>
+                {
+                    var value = invocation.Arguments[0] as IEnumerable;
+                    var instance = invocation.Proxy as IInterceptableType;
+                    instance.SetChildren(propertyName, value);
+                };
         }
 
 		public void Intercept(IInvocation invocation)
@@ -177,35 +201,9 @@ namespace N2.Persistence.Proxying
 					var instance = invocation.Proxy as IInterceptableType;
 					var collection = instance.GetValues(propertyName);
 					if (collection != null)
-						collection = ConvertTo(collection, propertyType, propertyName);
+						collection = collection.ConvertTo(propertyType, propertyName);
 					invocation.ReturnValue = collection ?? defaultValue;
 				};
-		}
-
-		private IEnumerable ConvertTo(IEnumerable collection, Type propertyType, string propertyName)
-		{
-			if (propertyType.IsArray)
-			{
-				return CreateReturnArrayOfType(collection, propertyType.GetElementType());
-			}
-			if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-			{
-				return CreateReturnArrayOfType(collection, propertyType.GetGenericArguments()[0]);
-			}
-
-			throw new NotSupportedException("The property type " + propertyType + " on the property " + propertyName + " is not supported for an auto-implemented detail collection property. Only IEnumerable<T> and T[] are supported.");
-		}
-
-		private static IEnumerable CreateReturnArrayOfType(IEnumerable collection, Type elementType)
-		{
-			List<object> items = new List<object>();
-			foreach (var item in collection)
-				items.Add(item);
-
-			var returnArray = Array.CreateInstance(elementType, items.Count);
-			for (int i = 0; i < items.Count; i++)
-				returnArray.SetValue(items[i], i);
-			return returnArray;
 		}
 
 		private Action<IInvocation> GetSetDetailCollection(string propertyName, IEnumerable defaultValue, Type type)

@@ -21,6 +21,8 @@ namespace N2.Persistence.Proxying
 	[Service(typeof(IProxyFactory))]
 	public class InterceptingProxyFactory : EmptyProxyFactory
 	{
+        Logger<InterceptingProxyFactory> logger;
+
 		class Tuple
 		{
 			public Type Type;
@@ -70,11 +72,12 @@ namespace N2.Persistence.Proxying
 				}
                 else if (property.Attribute.PersistAs == PropertyPersistenceLocation.Child)
                 {
-                    if (!typeof(ContentItem).IsAssignableFrom(propertyType))
-                        if (!propertyType.IsGenericType && !typeof(ContentItem).IsAssignableFrom(propertyType.GetGenericArguments().FirstOrDefault()))
-                                throw new NotSupportedException(propertyType + " " + propertyName + " is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.");
-
-                    yield return (interceptable) => StoreChildValue(propertyName, getter, interceptable);
+                    if (typeof(ContentItem).IsAssignableFrom(propertyType))
+                        yield return (interceptable) => StoreChildValue(propertyName, getter, interceptable);
+                    else if (propertyType.IsContentItemEnumeration())
+                        yield return (interceptable) => StoreChildrenValue(propertyName, getter, interceptable);
+                    else
+                        logger.WarnFormat("{0} on {1}.{2} is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.", propertyType, pi.DeclaringType.Name, propertyName);
                 }
                 else
                 {
@@ -82,6 +85,19 @@ namespace N2.Persistence.Proxying
                 }
 			}
 		}
+
+        private static bool StoreChildrenValue(string propertyName, MethodInfo getter, IInterceptableType interceptable)
+        {
+            var newChildren = getter.Invoke(interceptable, null) as IEnumerable;
+            var existingChildren = interceptable.GetChildren(propertyName);
+
+            interceptable.SetChildren(propertyName, newChildren);
+
+            return (newChildren == null && existingChildren == null)
+                && !(newChildren == null && existingChildren != null)
+                && !(newChildren != null && existingChildren == null)
+                && Enumerable.SequenceEqual(newChildren.OfType<object>(), existingChildren.OfType<object>());
+        }
 
         private static bool StoreChildValue(string propertyName, MethodInfo getter, IInterceptableType interceptable)
         {

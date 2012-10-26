@@ -3,6 +3,8 @@ using System.Xml.Linq;
 using N2.Details;
 using N2.Persistence.Serialization;
 using N2.Persistence;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace N2.Tests.Serialization.Items
 {
@@ -64,6 +66,9 @@ namespace N2.Tests.Serialization.Items
     {
         [EditableItem]
         public virtual XmlableItem EditableItem { get; set; }
+
+        [EditableChildren]
+        public virtual IEnumerable<XmlableItem> EditableChildren { get; set; }
 
 		[EditableFreeTextArea]
 		public virtual string AutoPropertyString { get; set; }

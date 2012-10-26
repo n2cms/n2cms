@@ -5,6 +5,7 @@ using System.Text;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Versioning;
+using System.Collections;
 
 namespace N2.Persistence.Serialization
 {
@@ -42,29 +43,43 @@ namespace N2.Persistence.Serialization
 
 		private void WriteProperty(System.Xml.XmlTextWriter writer, string name, object value)
 		{
-			using (ElementWriter detailElement = new ElementWriter("property", writer))
+			using (ElementWriter propertyElement = new ElementWriter("property", writer))
 			{
-				detailElement.WriteAttribute("name", name);
+				propertyElement.WriteAttribute("name", name);
 
 				if (value == null)
 					return;
 				Type type = value.GetType();
 
 				if (type == typeof(string))
-					Write(detailElement, type, (string)value, true);
+					Write(propertyElement, type, (string)value, true);
 				else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal))
-					Write(detailElement, type, value.ToString(), false);
+					Write(propertyElement, type, value.ToString(), false);
 				else if (type == typeof(DateTime))
-					Write(detailElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);
+					Write(propertyElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);
 				else if (type.IsEnum)
-					Write(detailElement, type, ((int)value).ToString(), false);
+					Write(propertyElement, type, ((int)value).ToString(), false);
 				else if (typeof(ContentItem).IsAssignableFrom(type))
-                    WriteItem(detailElement, (ContentItem)value
-                        );
+                    WriteItem(propertyElement, (ContentItem)value);
+                else if (type.IsContentItemEnumeration())
+                    WriteItems(propertyElement, (IEnumerable)value);
 				else
-					Write(detailElement, typeof(object), SerializationUtility.ToBase64String(value), false);
+					Write(propertyElement, typeof(object), SerializationUtility.ToBase64String(value), false);
 			}
 		}
+
+        private void WriteItems(ElementWriter propertyElement, IEnumerable enumerable)
+        {
+            propertyElement.WriteAttribute("typeName", "System.Collections.Generic.IEnumerable`1[[N2.ContentItem, N2]]");
+            foreach (ContentItem item in enumerable)
+            {
+                using (ElementWriter itemElement = new ElementWriter("item", propertyElement.Writer))
+                {
+                    itemElement.WriteAttribute("versionKey", item.GetVersionKey());
+                    itemElement.Write(item.ID.ToString());
+                }
+            }
+        }
 
         private void WriteItem(ElementWriter propertyElement, ContentItem item)
         {

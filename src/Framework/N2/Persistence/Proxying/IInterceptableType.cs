@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Castle.DynamicProxy;
+using System.Collections.Generic;
 
 namespace N2.Persistence.Proxying
 {
@@ -35,7 +36,11 @@ namespace N2.Persistence.Proxying
         IEnumerable GetValues(string detailCollectionName);
 
         object GetChild(string childName);
-        
+
         void SetChild(string childName, object child);
+
+        IEnumerable GetChildren(string zoneName);
+
+        void SetChildren(string zoneName, IEnumerable children);
 	}
 }

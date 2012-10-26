@@ -17,6 +17,7 @@ using N2.Definitions.Static;
 using N2.Persistence.Proxying;
 using N2.Definitions;
 using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Tests.Serialization
 {
@@ -517,6 +518,24 @@ namespace N2.Tests.Serialization
             readItem.Children.Count.ShouldBe(1);
             readItem.EditableItem.ShouldNotBe(null);
             readItem.EditableItem.Name.ShouldBe("EditableItem");
+        }
+
+        [Test]
+        public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
+        {
+            var item = activator.CreateInstance<XmlableItem2>(null);
+            item.SetVersionKey("item");
+
+            var child = CreateOneItem<XmlableItem>(0, "EditableItem", item);
+            child.SetVersionKey("child");
+            item.EditableChildren = new [] { child };
+
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+            var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+            
+            readItem.Children.Count.ShouldBe(1);
+            readItem.EditableChildren.ShouldNotBe(null);
+            readItem.EditableChildren.Single().Name.ShouldBe("EditableItem");
         }
 
         private void AssertEquals(DateTime? expected, DateTime? actual)

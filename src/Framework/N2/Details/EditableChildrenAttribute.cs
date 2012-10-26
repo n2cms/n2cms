@@ -30,6 +30,7 @@ namespace N2.Details
 			: base(title, name, sortOrder)
 		{
 			this.zoneName = zoneName;
+            PersistAs = Persistence.PropertyPersistenceLocation.Child;
 		}
 
 		public string ZoneName

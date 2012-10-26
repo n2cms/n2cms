@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using N2.Definitions;
 using N2.Persistence.Proxying;
+using System.Collections;
 
 namespace N2.Persistence
 {
@@ -198,5 +199,38 @@ namespace N2.Persistence
 
 			return true;
 		}
-	}
+
+        public static bool IsContentItemEnumeration(this Type type)
+        {
+            return (type.IsGenericType && typeof(ContentItem).IsAssignableFrom(type.GetGenericArguments().FirstOrDefault()))
+                || type.IsArray && typeof(ContentItem).IsAssignableFrom(type.GetElementType());
+        }
+
+        public static IEnumerable ConvertTo(this IEnumerable collection, Type propertyType, string propertyName = "unknown")
+        {
+            if (propertyType.IsArray)
+            {
+                return CreateReturnArrayOfType(collection, propertyType.GetElementType());
+            }
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                return CreateReturnArrayOfType(collection, propertyType.GetGenericArguments()[0]);
+            }
+
+            throw new NotSupportedException("The property type " + propertyType + " on the property " + propertyName + " is not supported for an auto-implemented detail collection property. Only IEnumerable<T> and T[] are supported.");
+        }
+
+        private static IEnumerable CreateReturnArrayOfType(IEnumerable collection, Type elementType)
+        {
+            List<object> items = new List<object>();
+            foreach (var item in collection)
+                items.Add(item);
+
+            var returnArray = Array.CreateInstance(elementType, items.Count);
+            for (int i = 0; i < items.Count; i++)
+                returnArray.SetValue(items[i], i);
+            return returnArray;
+        }
+
+    }
 }
