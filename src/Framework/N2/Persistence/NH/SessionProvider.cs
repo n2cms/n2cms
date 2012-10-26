@@ -75,7 +75,7 @@ namespace N2.Persistence.NH
 				}
 				else
 				{
-                    logger.DebugFormat("Reusing session {0}");
+                    logger.DebugFormat("Reusing session {0}", sc.GetHashCode());
 				}
                 return sc;
             }
