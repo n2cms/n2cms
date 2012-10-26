@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 		public virtual bool EditableCheckBox { get; set; }
 
 		[EditableChildren]
-		public virtual string EditableChildren { get; set; }
+		public virtual IEnumerable<ContentItem> EditableChildren { get; set; }
 
 		[EditableDate(Placeholder = "Date", TimePlaceholder = "Time")]
 		public virtual string EditableDate { get; set; }
