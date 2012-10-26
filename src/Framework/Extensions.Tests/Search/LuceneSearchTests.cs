@@ -27,13 +27,18 @@ namespace N2.Extensions.Tests.Search
 		LuceneIndexer indexer;
 		LuceneAccesor accessor;
 		PersistableItem1 root;
+        IDefinitionManager definitions;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
+        }
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
-
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));

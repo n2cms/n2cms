@@ -13,6 +13,7 @@ namespace N2.Persistence.NH
 	[Service(typeof(ISessionProvider))]
 	public class SessionProvider : ISessionProvider
 	{
+        Logger<SessionProvider> logger;
 		private static string SessionKey = "SessionProvider.Session";
 		private NHInterceptorFactory interceptorFactory;
 		private readonly IWebContext webContext;
@@ -68,13 +69,13 @@ namespace N2.Persistence.NH
 					ISession s = interceptorFactory.CreateSession(nhSessionFactory);
 					s.FlushMode = FlushAt;
 					CurrentSession = sc = new SessionContext(this, s);
-					Debug.WriteLine("Session create " + sc.GetHashCode());
+                    logger.DebugFormat("Creating session {0}", sc.GetHashCode());
 					if (autoStartTransaction)
 						sc.Transaction = BeginTransaction();
 				}
 				else
 				{
-					Debug.WriteLine("Session reuse " + sc.GetHashCode());
+                    logger.DebugFormat("Reusing session {0}");
 				}
                 return sc;
             }
@@ -97,6 +98,7 @@ namespace N2.Persistence.NH
 				if (autoStartTransaction && sc.Transaction != null)
 					sc.Transaction.Commit();
 
+                logger.DebugFormat("Closing session {0}", sc.GetHashCode());
                 sc.Session.Dispose();
                 CurrentSession = null;
             }
