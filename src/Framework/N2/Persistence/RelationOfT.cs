@@ -49,7 +49,7 @@ namespace N2.Persistence
 		}
 	}
 
-    [DebuggerDisplay("ContentRelation: {ID}")]
+    [DebuggerDisplay("ContentRelation #{ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
 		public string Path 

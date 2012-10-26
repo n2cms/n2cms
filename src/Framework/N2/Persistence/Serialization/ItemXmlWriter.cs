@@ -38,12 +38,12 @@ namespace N2.Persistence.Serialization
 
 		internal static IEnumerable<ContentItem> GetChildren(ContentItem item, ExportOptions options)
 		{
-			if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
-				return item.Children;
-			else if (options.IsFlagSet(ExportOptions.ExcludePages))
-				return item.Children.FindParts();
-			else if (options.IsFlagSet(ExportOptions.ExcludeParts))
-				return item.Children.FindPages();
+            if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
+                return item.Children;
+            else if (options.IsFlagSet(ExportOptions.ExcludePages))
+                return item.Children.Where(c => !c.IsPage);
+            else if (options.IsFlagSet(ExportOptions.ExcludeParts))
+                return item.Children.Where(c => c.IsPage);
 			return Enumerable.Empty<ContentItem>();
 		}
 

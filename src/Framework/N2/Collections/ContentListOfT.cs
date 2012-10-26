@@ -1,15 +1,41 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace N2.Collections
 {
+    internal sealed class CollectionDebugView<T>
+    {
+        private ICollection<T> collection;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public T[] Items
+        {
+            get
+            {
+                T[] array = new T[this.collection.Count];
+                this.collection.CopyTo(array, 0);
+                return array;
+            }
+        }
+
+        public CollectionDebugView(ICollection<T> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException("collection");
+            this.collection = collection;
+        }
+    }
+
 	/// <summary>
 	/// A list of items that have a name with dictionary-like semantics.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
-	public class ContentList<T> : IContentList<T>, IList where T : class, INameable
+    [DebuggerDisplay("ContentList, Count = {inner.Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    public class ContentList<T> : IContentList<T>, IList where T : class, INameable
 	{
 		public ContentList()
 		{

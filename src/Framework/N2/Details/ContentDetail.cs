@@ -20,6 +20,7 @@
 
 using System;
 using N2.Collections;
+using System.Diagnostics;
 
 namespace N2.Details
 {
@@ -28,6 +29,7 @@ namespace N2.Details
     /// </summary>
     /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
 	[Serializable]
+    [DebuggerDisplay("ContentDetail, {Name}: {Value}")]
 	public class ContentDetail: ICloneable, INameable, IMultipleValue
 	{
 		#region TypeKeys

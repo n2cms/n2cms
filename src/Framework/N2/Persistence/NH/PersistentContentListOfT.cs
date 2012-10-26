@@ -5,9 +5,12 @@ using N2.Collections;
 using NHibernate;
 using NHibernate.Collection.Generic;
 using NHibernate.Engine;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
+    [DebuggerDisplay("PersistentContentList, Count = {Count}")]
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 	public class PersistentContentList<T> : PersistentGenericBag<T>, IContentList<T> where T : class, INameable
 	{
 		public PersistentContentList(ISessionImplementor session)
