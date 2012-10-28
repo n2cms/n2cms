@@ -39,6 +39,7 @@ using N2.Persistence.Behaviors;
 using Castle.DynamicProxy;
 using System.Linq;
 using System.Collections;
+using N2.Edit.Versioning;
 
 namespace N2
 {
@@ -1133,8 +1134,17 @@ namespace N2
                 if (existingChild == newChild)
                     return;
 
+                if (newChild.Parent != null)
+                    return;
+
                 if (existingChild != null && existingChild != newChild)
-                    throw new InvalidOperationException(this + " already contains " + existingChild + " which has the requested child name.");
+                {
+                    if (existingChild.GetVersionKey() == newChild.GetVersionKey())
+                        // it's really the same item, but due to cloning going on during versioning they are not the same instance
+                        return;
+                    else
+                        throw new InvalidOperationException(this + " already contains " + existingChild + " which has the child name '" + childName + " requested for " + child);
+                }
 
                 if (string.IsNullOrEmpty(newChild.Name) || newChild.Name == newChild.ID.ToString())
                     newChild.Name = childName;

@@ -578,6 +578,9 @@ namespace N2.Web
 
 		public Url PrependSegment(string segment, string extension)
 		{
+            if (string.IsNullOrEmpty(segment))
+                return this;
+
 			string newPath;
 			if (string.IsNullOrEmpty(path) || path == "/")
 				newPath = "/" + segment.TrimStart('/') + extension;

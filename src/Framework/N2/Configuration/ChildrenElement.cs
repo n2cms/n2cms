@@ -18,7 +18,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The type of nhibernate cascade to use. Supported values are "None", "All", and the other cascade options provided by nhibernate.</summary>
-		[ConfigurationProperty("cascade", DefaultValue = Cascade.All)]
+		[ConfigurationProperty("cascade", DefaultValue = Cascade.None)]
 		public Cascade Cascade
 		{
 			get { return (Cascade)base["cascade"]; }
