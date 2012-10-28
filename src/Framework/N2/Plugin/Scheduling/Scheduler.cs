@@ -27,6 +27,7 @@ namespace N2.Plugin.Scheduling
 		IEngine engine;
 		private bool enabled;
 		private bool asyncActions;
+        private bool runWhileDebuggerAttached;
 
 		public Scheduler(IEngine engine, IHeart heart, IWorker worker, IWebContext context, IErrorNotifier errorHandler, ScheduledAction[] registeredActions, Configuration.EngineSection config)
         {
@@ -38,6 +39,7 @@ namespace N2.Plugin.Scheduling
 
 			this.enabled = config.Scheduler.Enabled;
 			this.asyncActions = config.Scheduler.AsyncActions;
+            this.runWhileDebuggerAttached = config.Scheduler.RunWhileDebuggerAttached;
 			if (!string.IsNullOrEmpty(config.Scheduler.ExecuteOnMachineNamed))
 				if (config.Scheduler.ExecuteOnMachineNamed != Environment.MachineName)
 					this.enabled = false;
@@ -96,6 +98,9 @@ namespace N2.Plugin.Scheduling
         {
 			if (!enabled)
 				return;
+
+            if (Debugger.IsAttached && !runWhileDebuggerAttached)
+                return;
 
             for (int i = 0; i < actions.Count; i++)
             {

@@ -11,6 +11,13 @@ namespace N2.Configuration
             set { base["enabled"] = value; }
         }
 
+        [ConfigurationProperty("runWhileDebuggerAttached", DefaultValue = false)]
+        public bool RunWhileDebuggerAttached
+        {
+            get { return (bool)base["runWhileDebuggerAttached"]; }
+            set { base["runWhileDebuggerAttached"] = value; }
+        }
+
 		/// <summary>Run scheduled actions in parallel.</summary>
 		[ConfigurationProperty("asyncActions", DefaultValue = true)]
 		public bool AsyncActions

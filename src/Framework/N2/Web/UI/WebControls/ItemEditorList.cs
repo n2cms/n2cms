@@ -72,9 +72,9 @@ namespace N2.Web.UI.WebControls
 
 		/// <summary>The minimum type to filter children by.</summary>
 		public Type MinimumType
-		{
-			get { return minimumType; }
-			set { minimumType = value; }
+        {
+            get { return Type.GetType((string)ViewState["MinimumType"]) ?? typeof(object); }
+            set { ViewState["MinimumType"] = value.AssemblyQualifiedName; }
 		}
 
 		public IList<string> AddedDefinitions
@@ -174,7 +174,7 @@ namespace N2.Web.UI.WebControls
 
 			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{
-				if (!minimumType.IsAssignableFrom(definition.ItemType))
+				if (!MinimumType.IsAssignableFrom(definition.ItemType))
 				{
 					continue;
 				}

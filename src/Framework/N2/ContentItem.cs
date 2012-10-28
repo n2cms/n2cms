@@ -1163,24 +1163,16 @@ namespace N2
         {
             var existing = Children.FindParts(zoneName).ToList();
             if (children == null)
-            {
-                foreach (var removed in existing)
-                {
-                    removed.AddTo(null);
-                }
+                // while this might indicate someone wants to remove children, this isn't supported in this way
                 return;
-            }
 
             var newChildren = children.Cast<ContentItem>();
-            foreach (var removed in existing.Except(newChildren))
-            {
-                removed.AddTo(null);
-            }
             foreach(var added in newChildren.Except(existing))
             {
                 if (added.ZoneName == null)
                     added.ZoneName = zoneName;
-                added.AddTo(this);
+                if (added.Parent == null)
+                    added.AddTo(this);
             }
         }
 
