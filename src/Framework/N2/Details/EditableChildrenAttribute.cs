@@ -4,6 +4,7 @@ using System.Web.UI;
 using N2.Edit.Workflow;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Details
 {
@@ -45,25 +46,30 @@ namespace N2.Details
 			ItemEditorList listEditor = (ItemEditorList)editor;
 			for (int i = 0; i < listEditor.ItemEditors.Count; i++)
 			{
-				if (listEditor.DeletedIndexes.Contains(i))
+                ItemEditor childEditor = listEditor.ItemEditors[i];
+                ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
+
+                var childItem = childEditor.CurrentItem;
+                if (childItem.ID != 0 && item.ID == 0)
+                    // we may have initialized the editor with the published version but we want to use the draft here
+                    childItem = item.FindPartVersion(childItem);
+
+                if (listEditor.DeletedIndexes.Contains(i))
 				{
-					var deletedChild = listEditor.ItemEditors[i].CurrentItem;
-					if (deletedChild.ID == 0)
-						deletedChild.AddTo(null);
+                    if (childItem.ID == 0)
+                        childItem.AddTo(null);
 					else
-						Engine.Persister.Delete(deletedChild);
+                        Engine.Persister.Delete(childItem);
 				}
 				else
 				{
-					ItemEditor childEditor = listEditor.ItemEditors[i];
-					ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
-					if (parentEditor != null)
+                    if (parentEditor != null)
 					{
-						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem, childEditor.GetDefinition());
+						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childItem, childEditor.GetDefinition());
 						if (subContext.Binder.UpdateObject(subContext))
 						{
-                            childEditor.CurrentItem.AddTo(childEditor.CurrentItem.Parent); // make sure it's on parent's child collection
-							parentEditor.BinderContext.RegisterItemToSave(childEditor.CurrentItem);
+                            childItem.AddTo(childItem.Parent); // make sure it's on parent's child collection
+							parentEditor.BinderContext.RegisterItemToSave(childItem);
 							updated = true;
 						}
 					}

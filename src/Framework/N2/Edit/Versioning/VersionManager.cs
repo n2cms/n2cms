@@ -57,7 +57,7 @@ namespace N2.Edit.Versioning
 				if (page == null)
 					throw new InvalidOperationException("Cannot create version of part which isn't on a page: " + item);
 
-				var pageVersion = AddVersion(page);
+                var pageVersion = AddVersion(page, asPreviousVersion: asPreviousVersion);
 				var partVersion = pageVersion.FindPartVersion(item);
 				return partVersion;
 			}
@@ -213,7 +213,7 @@ namespace N2.Edit.Versioning
 		private IEnumerable<ContentItem> RemoveRemovedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
 		{
 			var versionedChildren = replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID);
-			foreach (var existingChild in currentItem.Children.FindParts().ToList())
+            foreach (var existingChild in currentItem.Children.Where(c => !c.IsPage).ToList())
 			{
 				if (versionedChildren.ContainsKey(existingChild.ID))
 				{
@@ -253,7 +253,7 @@ namespace N2.Edit.Versioning
 		private IEnumerable<ContentItem> UpdateModifiedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
 		{
 			var versionedChildren = replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID);
-			foreach (var existingChild in currentItem.Children.FindParts().ToList())
+			foreach (var existingChild in currentItem.Children.Where(c => !c.IsPage).ToList())
 			{
 				ContentItem versionedCounterpart;
 				if (!versionedChildren.TryGetValue(existingChild.ID, out versionedCounterpart))

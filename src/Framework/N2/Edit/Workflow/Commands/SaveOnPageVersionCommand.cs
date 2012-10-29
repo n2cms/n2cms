@@ -17,31 +17,35 @@ namespace N2.Edit.Workflow.Commands
 
 		public override void Process(CommandContext state)
 		{
-			var part = state.Content;
-			var page = Find.ClosestPage(part);
-			var pageVersion = page.VersionOf.HasValue
-				? page
-				: versionMaker.AddVersion(page, asPreviousVersion: false);
-			var parentVersion = pageVersion.FindPartVersion(part.Parent);
+			var item = state.Content;
+            var page = Find.ClosestPage(item);
+            var pageVersion = page.VersionOf.HasValue
+                ? page
+                : versionMaker.AddVersion(page, asPreviousVersion: false);
 
-			if (state.Parameters.ContainsKey("MoveBeforeVersionKey") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeVersionKey"] as string))
-			{
-				var beforeKey = (string)state.Parameters["MoveBeforeVersionKey"];
-				var beforeItem = pageVersion.FindDescendantByVersionKey(beforeKey);
-				beforeItem.Parent.InsertChildBefore(part, beforeItem.SortOrder);
-			}
-			else if (state.Parameters.ContainsKey("MoveBeforeSortOrder") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeSortOrder"] as string))
-			{
-				int beforeSortOrder = Convert.ToInt32(state.Parameters["MoveBeforeSortOrder"]);
-				parentVersion.InsertChildBefore(part, beforeSortOrder);
-			}
-			else
-			{
-				part.AddTo(parentVersion);
-				Utility.UpdateSortOrder(parentVersion.Children);
-			}
+            if (!item.IsPage)
+            {
+                var parentVersion = pageVersion.FindPartVersion(item.Parent);
 
-			versionMaker.UpdateVersion(pageVersion);
+                if (state.Parameters.ContainsKey("MoveBeforeVersionKey") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeVersionKey"] as string))
+                {
+                    var beforeKey = (string)state.Parameters["MoveBeforeVersionKey"];
+                    var beforeItem = pageVersion.FindDescendantByVersionKey(beforeKey);
+                    beforeItem.Parent.InsertChildBefore(item, beforeItem.SortOrder);
+                }
+                else if (state.Parameters.ContainsKey("MoveBeforeSortOrder") && !string.IsNullOrEmpty(state.Parameters["MoveBeforeSortOrder"] as string))
+                {
+                    int beforeSortOrder = Convert.ToInt32(state.Parameters["MoveBeforeSortOrder"]);
+                    parentVersion.InsertChildBefore(item, beforeSortOrder);
+                }
+                else
+                {
+                    item.AddTo(parentVersion);
+                    Utility.UpdateSortOrder(parentVersion.Children);
+                }
+            }
+            
+            versionMaker.UpdateVersion(pageVersion);
 		}
 	}
 }

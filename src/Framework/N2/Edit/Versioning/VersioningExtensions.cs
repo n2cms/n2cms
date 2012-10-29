@@ -29,7 +29,7 @@ namespace N2.Edit.Versioning
 
 			CopyAutoImplementedProperties(item, clone);
 
-			foreach (var child in item.Children.FindParts())
+			foreach (var child in item.Children.Where(c => !c.IsPage))
 			{
 				var childClone = child.CloneForVersioningRecursive(stateChanger, asPreviousVersion);
 				childClone.AddTo(clone);

@@ -9,6 +9,7 @@ using N2.Persistence;
 using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Edit.Versioning;
 
 namespace N2.Details
 {
@@ -93,11 +94,17 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem parentItem, Control editor)
 		{
-			ItemEditor itemEditor = editor as ItemEditor;
+			ItemEditor childEditor = editor as ItemEditor;
 			ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
-			if (itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem, itemEditor.GetDefinition())))
+
+            var childItem = childEditor.CurrentItem;
+            if (childItem.ID != 0 && parentItem.ID == 0)
+                // we may have initialized the editor with the published version but we want to use the draft here
+                childItem = parentItem.FindPartVersion(childItem);
+
+			if (childEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(childEditor, childItem, childEditor.GetDefinition())))
 			{
-				parentItem[Name] = itemEditor.CurrentItem;
+				parentItem[Name] = childItem;
 				return true;
 			}
 			
