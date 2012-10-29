@@ -10,6 +10,7 @@ using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Web.Parts;
+using N2.Collections;
 
 namespace N2.Web.UI.WebControls
 {
@@ -209,10 +210,10 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ParentItem != null)
 			{
-				IList<ContentItem> items = string.IsNullOrEmpty(ZoneName)
-					? ParentItem.GetChildren()
-					: ParentItem.GetChildren(ZoneName);
-				foreach (string discriminator in AddedDefinitions)
+                var filter = new Collections.CompositeFilter(GetFilters());
+                var items = ParentItem.Children.Where(filter).ToList();
+			
+                foreach (string discriminator in AddedDefinitions)
 				{
 					ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));
 					items.Add(item);
@@ -221,6 +222,17 @@ namespace N2.Web.UI.WebControls
 			}
 			return new ContentItem[0];
 		}
+
+        private IEnumerable<ItemFilter> GetFilters()
+        {
+            yield return new AccessFilter(Page.User, Engine.SecurityManager);
+
+            if (MinimumType != null)
+                yield return new TypeFilter(MinimumType);
+
+            if (!string.IsNullOrEmpty(ZoneName))
+                yield return new ZoneFilter(ZoneName);
+        }
 
 		private ContentItem CreateItem(ItemDefinition definition)
 		{

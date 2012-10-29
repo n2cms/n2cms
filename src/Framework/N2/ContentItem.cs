@@ -1122,36 +1122,21 @@ namespace N2
 
         void IInterceptableType.SetChild(string childName, object child)
         {
-            var existingChild = GetChild(childName);
-            var newChild = child as ContentItem;
             if (child == null)
-            {
-                if (existingChild != null)
-                    existingChild.AddTo(null);
-            }
-            else if (newChild != null)
-            {
-                if (existingChild == newChild)
-                    return;
+                return;
 
-                if (newChild.Parent != null)
-                    return;
+            var existingChild = GetChild(childName);
+            if (existingChild != null)
+                return;
 
-                if (existingChild != null && existingChild != newChild)
-                {
-                    if (existingChild.GetVersionKey() == newChild.GetVersionKey())
-                        // it's really the same item, but due to cloning going on during versioning they are not the same instance
-                        return;
-                    else
-                        throw new InvalidOperationException(this + " already contains " + existingChild + " which has the child name '" + childName + " requested for " + child);
-                }
-
-                if (string.IsNullOrEmpty(newChild.Name) || newChild.Name == newChild.ID.ToString())
-                    newChild.Name = childName;
-                newChild.AddTo(this);
-            }
-            else
+            var newChild = child as ContentItem;
+            if (newChild == null)
                 throw new NotSupportedException(child.GetType() + " isn't a supported child type.");
+
+            if (string.IsNullOrEmpty(newChild.Name) || newChild.Name == newChild.ID.ToString())
+                newChild.Name = childName;
+            if (newChild.parent == null)
+                newChild.AddTo(this);
         }
 
         IEnumerable IInterceptableType.GetChildren(string zoneName)

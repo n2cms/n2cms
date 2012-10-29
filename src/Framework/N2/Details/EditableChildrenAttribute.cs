@@ -68,7 +68,7 @@ namespace N2.Details
 						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childItem, childEditor.GetDefinition());
 						if (subContext.Binder.UpdateObject(subContext))
 						{
-                            childItem.AddTo(childItem.Parent); // make sure it's on parent's child collection
+                            childItem.AddTo(item); // make sure it's on parent's child collection
 							parentEditor.BinderContext.RegisterItemToSave(childItem);
 							updated = true;
 						}
