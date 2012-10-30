@@ -28,9 +28,6 @@ namespace N2.Edit.KeepAlive
                 return;
             }
 
-            if (Debugger.IsAttached)
-                return;
-            
             try
             {
                 Url url = Url.ServerUrl;

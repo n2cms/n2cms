@@ -40,9 +40,6 @@ namespace N2.Edit.AutoPublish
 		}
         public override void Execute()
         {
-			//if (Debugger.IsAttached)
-			//    return;
-			
 			using (security.Disable())
 			{
 				PublishPendingVersions();

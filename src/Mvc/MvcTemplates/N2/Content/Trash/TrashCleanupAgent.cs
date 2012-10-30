@@ -11,9 +11,6 @@ namespace N2.Edit.Trash
 	{
 		public override void Execute()
 		{
-            if (Debugger.IsAttached)
-                return;
-
 			ITrashHandler handler = Engine.Resolve<ITrashHandler>();
 			handler.PurgeOldItems();
 		}
