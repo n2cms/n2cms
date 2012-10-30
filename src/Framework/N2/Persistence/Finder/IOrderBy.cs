@@ -18,6 +18,7 @@ namespace N2.Persistence.Finder
         ISortDirection Visible { get; }
 		ISortDirection SavedBy { get; }
 
-		ISortDirection Detail(string name);
+        ISortDirection Property(string name);
+        ISortDirection Detail(string name);
 	}
 }
