@@ -502,7 +502,6 @@ namespace N2.Definitions
 		/// <summary>Clears cumulative settings.</summary>
 		public void Clear()
 		{
-			SortOrder = 1000;
 			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
 			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
 			ContentTransformers = new List<IContentTransformer>();
