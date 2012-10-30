@@ -20,6 +20,12 @@ namespace N2.Tests.Details
     [TestFixture]
     public class EditableChildrenTest
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Context.Replace(new Fakes.FakeEngine(new [] { typeof(DecoratedItem) }));
+        }
+
         [Test]
         public void CreatedEditor_Is_ItemEditorList()
         {
