@@ -16,6 +16,13 @@ namespace N2.Tests.Persistence.NH
 		ContentItemRepository repository;
 		new ISessionProvider sessionProvider;
 
+        protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
+        {
+            var item = base.CreateOneItem<T>(id, name, parent);
+            repository.Save(item);
+            return item;
+        }
+
 		[SetUp]
 		public override void SetUp()
 		{
@@ -490,9 +497,8 @@ namespace N2.Tests.Persistence.NH
 		public void Find_TypeAndParent_ShouldOnlyInclude_ItemWithSpecified_TypeAndParent()
 		{
 			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
+            ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
 			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", root);
-			repository.Save(root);
 
 			var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
 
