@@ -346,13 +346,14 @@ namespace N2.Tests.Persistence.Proxying
         }
 
         [Test]
-        public void Set_Remove_Get_ChildrenProperty()
+        public void Reset_ChildrenProperty_OnlyAdds()
         {
             item.ChildrenProperty = new[] { new InterceptableItem { ID = 666 }, new InterceptableItem { ID = 777 } };
-            item.ChildrenProperty = new[] { new InterceptableItem { ID = 777 } };
+            item.ChildrenProperty = new[] { new InterceptableItem { ID = 888 } };
 
-            item.ChildrenProperty.Single().ID.ShouldBe(777);
-            item.ChildrenProperty.Single().ZoneName.ShouldBe("ChildrenProperty");
+            item.ChildrenProperty.Count().ShouldBe(3);
+            item.ChildrenProperty.Last().ID.ShouldBe(888);
+            item.ChildrenProperty.Last().ZoneName.ShouldBe("ChildrenProperty");
         }
 
 		// LINK COLLECTION
