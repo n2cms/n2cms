@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>N2.Templates.Tests</RootNamespace>
     <AssemblyName>N2.Templates.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -31,6 +31,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,7 +100,7 @@
       <Name>N2</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFormsTemplates\N2.Templates.csproj">
-      <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>
+      <Project>{d42d096e-399d-4618-aeb4-9b023ba1316d}</Project>
       <Name>N2.Templates</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebFormsTemplates\Wiki.csproj">
