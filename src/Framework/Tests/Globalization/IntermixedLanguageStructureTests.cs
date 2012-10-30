@@ -39,9 +39,11 @@ namespace N2.Tests.Globalization
         public void DoesntFind_LanguageRoot_InTrashcan()
         {
 			TrashCan trash = engine.Resolve<ContentActivator>().CreateInstance<TrashCan>(root);
-            italian.AddTo(trash);
-            swedish.AddTo(trash);
             engine.Persister.Save(trash);
+            italian.AddTo(trash);
+            engine.Persister.Save(italian);
+            swedish.AddTo(trash);
+            engine.Persister.Save(swedish);
 
             ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
             IList<ILanguage> languageRoot = new List<ILanguage>(gateway.GetAvailableLanguages());
