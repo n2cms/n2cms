@@ -147,7 +147,7 @@ namespace N2.Tests.Edit.Versioning
 		{
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
-			var part = CreateOneItem<Items.NormalPage>(0, "part", page);
+			var part = CreateOneItem<Items.NormalItem>(0, "part", page);
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
@@ -195,7 +195,7 @@ namespace N2.Tests.Edit.Versioning
 		{
 			var page = CreateOneItem<Items.NormalPage>(0, "page", null);
 			persister.Save(page);
-			var part = CreateOneItem<Items.NormalPage>(0, "part", page);
+			var part = CreateOneItem<Items.NormalItem>(0, "part", page);
 			part["Hello"] = "world";
 			part.GetDetailCollection("Stuffs", true).Add("Hello");
 			part.ZoneName = "TheZone";

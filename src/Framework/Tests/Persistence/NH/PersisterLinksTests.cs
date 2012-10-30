@@ -175,9 +175,10 @@ namespace N2.Tests.Persistence.NH
             using (persister)
             {
                 parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
-                to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
                 persister.Save(parent);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+                to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
+                persister.Save(to);
+                from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
                 from.ContentLinks = new[] {to};
                 persister.Save(from);
             }
