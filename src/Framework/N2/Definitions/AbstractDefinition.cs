@@ -41,6 +41,7 @@ namespace N2.Definitions
 
 		protected AbstractDefinition()
 		{
+            SortOrder = int.MinValue;
 		}
 
 		#region IPathFinder Members
@@ -65,10 +66,13 @@ namespace N2.Definitions
 
 		public virtual void Refine(ItemDefinition currentDefinition)
 		{
-			currentDefinition.Title = Title ?? currentDefinition.ItemType.Name;
-			currentDefinition.ToolTip = ToolTip ?? "";
-			currentDefinition.SortOrder = SortOrder;
-			currentDefinition.Description = Description ?? "";
+            currentDefinition.Title = Title ?? currentDefinition.Title ?? currentDefinition.ItemType.Name;
+            if (!string.IsNullOrEmpty(ToolTip))
+			    currentDefinition.ToolTip = ToolTip ?? "";
+            if (SortOrder > int.MinValue)
+			    currentDefinition.SortOrder = SortOrder;
+            if (!string.IsNullOrEmpty(Description))
+			    currentDefinition.Description = Description;
 			currentDefinition.Discriminator = Name ?? currentDefinition.ItemType.Name;
 			currentDefinition.IconUrl = IconUrl ?? currentDefinition.IconUrl ?? DefaultIconUrl;
 			currentDefinition.IsPage = IsPage;
