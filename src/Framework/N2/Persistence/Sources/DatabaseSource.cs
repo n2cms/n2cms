@@ -194,7 +194,9 @@ namespace N2.Persistence.Sources
 				cloned.Name = null;
 			cloned.Parent = destination;
 
-			Save(cloned);
+            Save(cloned);
+            foreach (var descendant in Find.EnumerateChildren(cloned).ToArray())
+                Save(descendant);
 
 			return cloned;
 		}
