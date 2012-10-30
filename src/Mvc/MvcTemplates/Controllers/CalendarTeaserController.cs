@@ -6,6 +6,7 @@ using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Linq;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -14,12 +15,16 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			var container = CurrentItem.Container;
-			var hits = container != null
-				? container.GetEvents().Where(e => e.EventDate > DateTime.Today)
-				: new Event[0];
+            var query = Content.Search.Find.Where.Type.Eq(typeof(Event))
+                .And.Property("EventDate").Ge(DateTime.Now);
 
-			return PartialView(new CalendarTeaserModel(CurrentItem, hits.Take(5).ToList()));
+            if (CurrentItem.Container != null)
+                query = query.And.IsDescendantOrSelf(CurrentItem.Container);
+
+            var hits = query.OrderBy.Property("EventDate").Asc
+                .MaxResults(5).Select<Event>();
+
+			return PartialView(new CalendarTeaserModel(CurrentItem, hits));
 		}
 	}
 }

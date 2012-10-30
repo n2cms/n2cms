@@ -7,7 +7,12 @@
 			<%if (Model.Events.Count > 0){%>
 				<ul class="sidelist">
 				<%foreach (var @event in Model.Events){%>
-					<li class="item"><a href="<%=@event.Url%>"><%=@event.Title%></a></li>
+					<li class="item">
+                        <a href="<%=@event.Url%>">
+                            <span class="date"><%= @event.EventDateString %></span>
+                            <%=@event.Title%>
+                        </a>
+					</li>
 				<%} %>
 				</ul>
 			<%}else{%>

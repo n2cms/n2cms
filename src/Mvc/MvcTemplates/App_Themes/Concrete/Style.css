@@ -53,7 +53,7 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 /* lists */
 .list { background-position:50% 100%; }
 .list .item { border-top: solid 1px #E5D7C4; padding-top:10px; margin:10px 0;}
-.sidelist .item { margin-bottom:5px; }
+.sidelist .item { margin-bottom:5px; list-style-type:none; }
 
 /*sitemap*/
 #main ul { list-style:disc; margin-left:20px; }

@@ -19,7 +19,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public ActionResult Index(DateTime? date)
 		{
-			var hits = CurrentItem.GetEvents();
+			var hits = CurrentItem.GetEvents().Where(e => e.EventDate > DateTime.Today);
 			
 			if (date != null)
 				hits = CurrentItem.GetEvents(date.Value);
