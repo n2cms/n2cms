@@ -3,18 +3,18 @@ using N2.Edit.Versioning;
 
 namespace N2.Edit.Workflow.Commands
 {
-    public class UseNewVersionCommand : CommandBase<CommandContext>
+    public class UseDraftCommand : CommandBase<CommandContext>
     {
         IVersionManager versionMaker;
         
-        public UseNewVersionCommand(IVersionManager versionMaker)
+        public UseDraftCommand(IVersionManager versionMaker)
         {
             this.versionMaker = versionMaker;
         }
 
         public override void Process(CommandContext state)
         {
-            if (versionMaker.IsVersionable(state.Content) && state.Content.ID != 0)
+            if (versionMaker.IsVersionable(state.Content) && (state.Content.State == ContentState.Published || state.Content.State == ContentState.Unpublished))
             {
                 state.Content = versionMaker.AddVersion(state.Content, asPreviousVersion: false);
             }

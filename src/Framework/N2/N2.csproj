@@ -1005,7 +1005,7 @@
     <Compile Include="Edit\Workflow\Commands\UpdateContentStateCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UpdateObjectCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\UseMasterCommand.cs" />
-    <Compile Include="Edit\Workflow\Commands\UseNewVersionCommand.cs" />
+    <Compile Include="Edit\Workflow\Commands\UseDraftCommand.cs" />
     <Compile Include="Edit\Workflow\Commands\ValidateCommand.cs" />
     <Compile Include="ContentState.cs" />
     <Compile Include="Edit\Workflow\IContentFormOfT.cs" />

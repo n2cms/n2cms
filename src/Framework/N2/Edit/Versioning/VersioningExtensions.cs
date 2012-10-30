@@ -25,7 +25,7 @@ namespace N2.Edit.Versioning
 			clone.Updated = Utility.CurrentTime().AddSeconds(-1);
 			clone.Parent = null;
 			clone.AncestralTrail = "/";
-			clone.VersionOf = item;
+			clone.VersionOf = item.VersionOf.Value ?? item;
 
 			CopyAutoImplementedProperties(item, clone);
 

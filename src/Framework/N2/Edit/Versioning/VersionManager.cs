@@ -75,7 +75,7 @@ namespace N2.Edit.Versioning
 			}
 			else
 			{
-				version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
+                version.VersionIndex = Repository.GetGreatestVersionIndex(item) + 1;
 				Repository.Save(version);
 			}
 

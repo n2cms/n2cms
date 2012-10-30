@@ -20,7 +20,7 @@ namespace N2.Edit.Workflow
 		CommandBase<CommandContext> makeVersionOfMaster;
         ReplaceMasterCommand replaceMaster;
         MakeVersionCommand makeVersion;
-        UseNewVersionCommand useNewVersion;
+        UseDraftCommand useNewVersion;
         UpdateObjectCommand updateObject;
         DeleteCommand delete;
         RedirectToEditCommand showEdit;
@@ -43,7 +43,7 @@ namespace N2.Edit.Workflow
             makeVersionOfMaster = On.Master(new MakeVersionCommand(versionMaker));
             replaceMaster = new ReplaceMasterCommand(versionMaker);
             makeVersion = new MakeVersionCommand(versionMaker);
-            useNewVersion = new UseNewVersionCommand(versionMaker);
+            useNewVersion = new UseDraftCommand(versionMaker);
             updateObject = new UpdateObjectCommand();
             delete = new DeleteCommand(persister.Repository);
             showEdit = new RedirectToEditCommand(editUrlManager);
@@ -121,8 +121,10 @@ namespace N2.Edit.Workflow
                     else
                         return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);
                 }
+                else if (context.Content.State == ContentState.Published || context.Content.State == ContentState.Unpublished)
+                    return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, draftState, unpublishedDate, saveOnPageVersion);
                 else
-                    return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, saveOnPageVersion);
+                    return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, draftState, unpublishedDate, save);
             }
             else
             {

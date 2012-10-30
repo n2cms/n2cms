@@ -82,7 +82,6 @@ namespace N2.Tests.Workflow
             dispatcher.Execute(command, context);
 
 			versions.Repository.Repository.Count().ShouldBe(0);
-            //Assert.That(repository.database.Values.Count(v => v.VersionOf.Value == item), Is.EqualTo(0));
         }
 
         [Test]
@@ -122,7 +121,7 @@ namespace N2.Tests.Workflow
 
         protected ContentItem MakeVersion(ContentItem master)
         {
-			return versions.AddVersion(master);
+			return versions.AddVersion(master, asPreviousVersion : true);
         }
     }
 }
