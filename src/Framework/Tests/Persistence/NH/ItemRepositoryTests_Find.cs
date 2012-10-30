@@ -48,10 +48,9 @@ namespace N2.Tests.Persistence.NH
 			child1["Hello"] = "World";
 			grandchild1["Age"] = 1.7;
 
-			repository.SaveOrUpdate(root);
-
 			version.VersionOf = child1;
-			repository.SaveOrUpdate(version);
+            foreach (var item in all)
+                repository.SaveOrUpdate(all);
 		}
 
 		[Test]
