@@ -42,6 +42,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		{
 			return Content("TheAction");
 		}
+
+        public ActionResult Json()
+        {
+            return Json(new { hello = "world", where = CurrentItem.Title }, JsonRequestBehavior.AllowGet); ;
+        }
     }
 }
 #endif

@@ -119,6 +119,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			item.AddTo(parent);
 			return item;
 		}
+
+        public ActionResult Json()
+        {
+            return Json(new { hello = "world", where = CurrentItem.Title }, JsonRequestBehavior.AllowGet); ;
+        }
     }
 }
 #endif

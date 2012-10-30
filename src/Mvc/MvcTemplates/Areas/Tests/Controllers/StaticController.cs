@@ -22,6 +22,10 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
             return View();
         }
 
+        public ActionResult Json()
+        {
+            return Json(new { hello = "world" }, JsonRequestBehavior.AllowGet); ;
+        }
     }
 }
 #endif
