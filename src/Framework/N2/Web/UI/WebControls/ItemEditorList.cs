@@ -74,7 +74,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The minimum type to filter children by.</summary>
 		public Type MinimumType
         {
-            get { return Type.GetType((string)ViewState["MinimumType"]) ?? typeof(object); }
+            get { return Type.GetType((string)ViewState["MinimumType"] ?? typeof(object).FullName); }
             set { ViewState["MinimumType"] = value.AssemblyQualifiedName; }
 		}
 
