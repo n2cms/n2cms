@@ -3,13 +3,14 @@ using N2.Collections;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Web;
 using N2.Web.Parts;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Services
 {
 	/// <summary>
 	/// Implements "Recusive" zones functionality.
 	/// </summary>
-	[Controls(typeof(PageBase))]
+	[Adapts(typeof(PageBase))]
 	public class TemplatesPartsAdapter : PartsAdapter
 	{
         public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem parentItem, string zoneName, string @interface)
