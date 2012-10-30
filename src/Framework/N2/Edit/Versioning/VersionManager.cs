@@ -212,7 +212,9 @@ namespace N2.Edit.Versioning
 
 		private IEnumerable<ContentItem> RemoveRemovedPartsRecursive(ContentItem currentItem, ContentItem replacementItem)
 		{
-			var versionedChildren = replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID);
+			var versionedChildren = replacementItem != null
+                ? replacementItem.Children.Where(c => c.VersionOf.HasValue).ToDictionary(c => c.VersionOf.ID.Value)
+                : new Dictionary<int, ContentItem>();
             foreach (var existingChild in currentItem.Children.Where(c => !c.IsPage).ToList())
 			{
 				if (versionedChildren.ContainsKey(existingChild.ID))
@@ -222,6 +224,9 @@ namespace N2.Edit.Versioning
 				}
 				else
 				{
+                    foreach (var removedChild in RemoveRemovedPartsRecursive(existingChild, null))
+                        yield return removedChild;
+
 					existingChild.AddTo(null);
 					RelinkMasterVersion(existingChild); // transient links may cause trouble even for items being deleted
 					yield return existingChild;
