@@ -121,11 +121,4 @@
 			<add name="n2.initializer" type="N2.Web.InitializerModule, N2" />
 		</modules>
 	</system.webServer>
-
-	<location path="N2">
-		<system.web>
-			<!-- This settings is required for saving xml in the management UI when using ASP.NET 4.0 -->
-			<httpRuntime requestValidationMode="2.0" />
-		</system.web>
-	</location>
 </configuration>
