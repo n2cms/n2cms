@@ -41,10 +41,11 @@ namespace N2.Details
 			var httpContext = new HttpContextWrapper(HttpContext.Current);
 			var routeData = new RouteData();
 			RouteExtensions.ApplyCurrentPath(routeData, "WebForms", "Index", new PathData(item.ClosestPage(), item));
+            var cc = new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData };
 			return new HtmlHelper(
 				new ViewContext(
-					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },
-					new WebFormView(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath),
+					cc,
+					new WebFormView(cc, HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath),
 					new ViewDataDictionary(),
 					new TempDataDictionary(),
 					writer),

@@ -29,10 +29,11 @@ namespace N2.Engine.Providers
 				return null;
 
 			var routeData = GetRouteData();
+            var cc = new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData };
 			return new HtmlHelper(
 				new ViewContext(
-					new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData },
-					new WebFormView(httpContext.Request.AppRelativeCurrentExecutionFilePath),
+					cc,
+					new WebFormView(cc, httpContext.Request.AppRelativeCurrentExecutionFilePath),
 					new ViewDataDictionary(),
 					new TempDataDictionary(),
 					httpContext.Response.Output),

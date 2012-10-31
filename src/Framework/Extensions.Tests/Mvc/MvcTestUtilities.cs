@@ -20,7 +20,8 @@ namespace N2.Extensions.Tests.Mvc
             var page = new ViewPage<T>();
             page.ViewData = new ViewDataDictionary<T>(model);
 			var ctx = new FakeHttpContext();
-			page.ViewContext = new ViewContext(new ControllerContext { HttpContext = ctx }, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
+            var cc = new ControllerContext { HttpContext = ctx };
+			page.ViewContext = new ViewContext(cc, new WebFormView(cc, "~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter()) { HttpContext = ctx };
 			page.ViewContext.RouteData.ApplyCurrentPath(new Web.PathData(model));
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
 			return page;
@@ -43,7 +44,7 @@ namespace N2.Extensions.Tests.Mvc
 			controllerContext.RequestContext.RouteData.ApplyCurrentPath(new Web.PathData(item));
             controllerContext.Controller.ControllerContext = controllerContext;
 
-			page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
+			page.ViewContext = new ViewContext(controllerContext, new WebFormView(controllerContext, "~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
 			{
 				HttpContext = controllerContext.HttpContext
 			};

@@ -50,7 +50,7 @@ namespace N2.Templates.Mvc.Views.Shared
 
 			var rqctx = new RequestContext(ctx, rd);
 			var ctrlctx = new ControllerContext { HttpContext = ctx, RequestContext = rqctx, RouteData = rqctx.RouteData };
-			var wfv = new WebFormView(Request.CurrentExecutionFilePath);
+			var wfv = new WebFormView(ctrlctx, Request.CurrentExecutionFilePath);
 
 			var vctx = new ViewContext(ctrlctx, wfv, new ViewDataDictionary(), new TempDataDictionary(), Response.Output) { RouteData = rd };
 

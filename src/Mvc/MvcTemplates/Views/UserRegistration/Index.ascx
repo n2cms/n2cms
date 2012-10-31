@@ -4,7 +4,7 @@
 	<%=Html.ValidationSummary()%>
 
 	<%using(Html.BeginForm("Submit", "UserRegistration", FormMethod.Post)){%>
-		<%=Html.AntiForgeryToken("register") %>
+		<%=Html.AntiForgeryToken() %>
 		
 		<div class="inputForm">
 			<div class="row cf"><label class="label" for="RegisterUserName">User Name:</label><%= Html.TextBoxFor(m => m.RegisterUserName) %><%= Html.ValidationMessageFor(m => m.RegisterUserName) %></div>

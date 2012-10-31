@@ -20,7 +20,7 @@
 				<input id="remember" name="remember" class="tb" type="checkbox" />
 			</div>
 			<div class="bf">
-				<%=Html.AntiForgeryToken("login")%>
+				<%=Html.AntiForgeryToken()%>
 				<input value="Login" type="submit" />
 				<%=Html.ValidationMessage("Login.Failed")%>
 				<a href="<%=CurrentItem.RegisterPage.Url%>"><%=CurrentItem.RegisterPage.Title%></a>

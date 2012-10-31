@@ -48,7 +48,7 @@ namespace N2.Templates.Mvc.Controllers
 			return View(new UserRegistrationModel(CurrentItem));
 		}
 
-		[ValidateAntiForgeryToken(Salt = "register")]
+		[ValidateAntiForgeryToken]
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Submit(UserRegistrationModel model)
 		{
