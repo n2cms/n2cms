@@ -12,9 +12,7 @@ namespace N2.Web
 	/// A link representation that can be conver to text or an anchor control.
 	/// </summary>
 	public class Link : 
-#if NET4
 		System.Web.IHtmlString, 
-#endif
 		ILinkBuilder
 	{
 		#region Static

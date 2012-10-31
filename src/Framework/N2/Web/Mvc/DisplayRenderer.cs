@@ -13,9 +13,7 @@ using System.Diagnostics;
 namespace N2.Web.Mvc
 {
 	public class DisplayRenderer<T> : 
-#if NET4
 		IHtmlString, 
-#endif
 		IDisplayRenderer where T : IDisplayable
 	{
 		private readonly Engine.Logger<DisplayRenderer<T>> logger;

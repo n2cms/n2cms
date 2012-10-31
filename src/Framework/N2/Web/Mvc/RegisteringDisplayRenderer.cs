@@ -13,9 +13,7 @@ using System.Web.Mvc;
 namespace N2.Web.Mvc
 {
 	public class RegisteringDisplayRenderer<T> : EditableBuilder<T>,
-#if NET4
 		IHtmlString, 
-#endif
 		IDisplayRenderer where T : IEditable
 	{
 		public RenderingContext Context { get; set; }

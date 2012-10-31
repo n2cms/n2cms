@@ -73,7 +73,6 @@
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
     <Compile Include="Web\Mvc\DynamicContentHelper.cs" />
     <Compile Include="Web\Mvc\HasValueHelper.cs" />
-    <Compile Include="Web\Mvc\HtmlBuildersInitializer.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ListTemplateOfT.cs" />
     <Compile Include="Web\Mvc\Html\RenderExtensions.cs" />

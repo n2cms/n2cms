@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.UI;
@@ -62,7 +63,7 @@ namespace N2.Web.Mvc.Html
 			return format.Replace(new RouteValueDictionary(replacements));
 		}
 
-		public class ControlPanelHelper
+        public class ControlPanelHelper : IHtmlString
 		{
 			private bool refreshNavigation = true;
 			private bool includeJQuery = true;

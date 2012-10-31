@@ -8,10 +8,11 @@ using N2.Definitions.Static;
 using N2.Web.Rendering;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using System.Web;
 
 namespace N2.Web.Mvc.Html
 {
-	public class Displayable : ItemHelper
+    public class Displayable : ItemHelper, IHtmlString
 	{
 		private readonly Engine.Logger<Displayable> logger;
 		readonly string propertyName;
