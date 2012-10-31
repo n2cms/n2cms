@@ -60,8 +60,15 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));
-			return url;
+            try
+            {
+			    Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));
+			    return url;
+            }
+            catch (N2Exception)
+            {
+                return Url.ResolveTokens("{ManagementUrl}/Empty.aspx?item=" + selectedItem.ID);
+            }
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>

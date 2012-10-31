@@ -156,7 +156,7 @@ namespace N2.Web
 					.UpdateQuery(path.QueryParameters)
 					.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
 
-			throw new TemplateNotFoundException(path.CurrentItem);
+            return null;
 		}
 
         public static bool IsFlagSet<T>(this T value, T flag) where T : struct
