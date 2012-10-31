@@ -75,10 +75,10 @@ namespace N2.Tests.Persistence
 			notifier = new ItemNotifier();
 
 			var container = GetContainer();
-			container.AddComponent("", typeof(EntityDependencySetter<>), typeof(EntityDependencySetter<>));
-			container.AddComponentInstance("", typeof(IUrlParser), MockRepository.GenerateStub<IUrlParser>());
-			container.AddComponentInstance("", typeof(IServiceContainer), container);
-			container.AddComponentInstance("", typeof(IItemNotifier), notifier);
+			container.AddComponent("a", typeof(EntityDependencySetter<>), typeof(EntityDependencySetter<>));
+			container.AddComponentInstance("b", typeof(IUrlParser), MockRepository.GenerateStub<IUrlParser>());
+			container.AddComponentInstance("c", typeof(IServiceContainer), container);
+			container.AddComponentInstance("d", typeof(IItemNotifier), notifier);
 
 			injector = new ContentDependencyInjector(container, TestSupport.SetupDefinitions(typeof(InjectableItem)), notifier);
 			injector.Start();

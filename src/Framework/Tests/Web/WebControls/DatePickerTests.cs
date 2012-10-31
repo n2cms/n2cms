@@ -37,7 +37,7 @@ namespace N2.Tests.Web.WebControls
             DatePicker picker = new DatePicker();
             picker.SelectedDate = new DateTime(2010, 08, 29, 13, 12, 33);
 
-            Assert.That(picker.DatePickerBox.Text, Is.EqualTo("29. 8. 2010"));
+            Assert.That(picker.DatePickerBox.Text, Is.EqualTo("29.8.2010"));
             Assert.That(picker.TimePickerBox.Text, Is.EqualTo("13:12:33"));
         }
 

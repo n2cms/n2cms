@@ -16,8 +16,7 @@
 		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
-			<!--<dependency id="Lucene.Net" version="3.0" />-->
-			<!--<dependency id="SqlServerCompact" version="4.0.8482.1"/>-->
+			<dependency id="Lucene.Net" version="3.0" />
 			<dependency id="DotNetZip" version="1.9.1.8" />
 		</dependencies>
 	</metadata>

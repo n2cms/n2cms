@@ -9,7 +9,6 @@
 		<Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
 		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
 		<Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
-		<Windsor2-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor2_Nuget</Windsor2-NugetFolder>
 		<Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
 	</PropertyGroup>
 
@@ -44,18 +43,6 @@
 		<FileUpdate Files="$(SQLite-NugetFolder)\N2.SQLite.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(SQLite-NugetFolder)\" />
-	</Target>
-
-	<Target Name="Windsor2-NuGet">
-		<ItemGroup>
-			<windsor2NugetBinaries Include="$(SrcFolder)\Framework\IoC.Windsor2\bin\$(Configuration)\N2.IoC.Windsor2.dll;"/>
-			<windsor2NugetIncludes Include="$(BuildFolder)\Nuget\IoC.Windsor2\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(windsor2NugetBinaries)" DestinationFolder="$(Windsor2-NugetFolder)\lib" />
-		<Copy SourceFiles="@(windsor2NugetIncludes)" DestinationFolder="$(Windsor2-NugetFolder)\%(RecursiveDir)" />
-		<FileUpdate Files="$(Windsor2-NugetFolder)\N2.Windsor2.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
-
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Windsor2-NugetFolder)\" />
 	</Target>
 
 	<Target Name="Windsor3-NuGet">
@@ -98,8 +85,6 @@
 		<Delete Files="$(Management-NugetFolder)\content\N2\N2.zip" Condition="Exists('$(Management-NugetFolder)\content\N2\N2.zip')" />
 		<Copy SourceFiles="$(Framework-DeployFolder)\N2\web.config"	DestinationFolder="$(Management-NugetFolder)\content\N2\" />
 		<Exec Command="$(BuildFolder)\lib\BuildSupport.exe ZipDirectory &quot;$(Management-NugetFolder)\content\N2\N2.zip&quot; &quot;$(Framework-DeployFolder)\N2&quot; &quot;N2&quot;" />
-    <!-- Include lucene since people have problems with pre-release packages TODO: remove once rtm-->
-    <Copy SourceFiles="@(luceneBinFiles)" DestinationFolder="$(Management-NugetFolder)\lib\%(RecursiveDir)" />
 
     <ItemGroup>
 			<managementNugetIncludes Include="$(BuildFolder)\Nuget\Management\**\*" />
@@ -176,7 +161,7 @@
 		<WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
 	</Target>
 
-	<Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor2-NuGet;Windsor3-NuGet">
+	<Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet">
 	</Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">
