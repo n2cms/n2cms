@@ -26,8 +26,9 @@ namespace N2.Management.Installation
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
 		{
-			preSchemaUpdateStatus.RootItem[InstallationManager.InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
-			repository.SaveOrUpdate(preSchemaUpdateStatus.RootItem);
+            var root = repository.Get(preSchemaUpdateStatus.RootItemID);
+			root[InstallationManager.InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
+			repository.SaveOrUpdate(root);
 			repository.Flush();
 
 			return new MigrationResult(this) { UpdatedItems = 1 };
