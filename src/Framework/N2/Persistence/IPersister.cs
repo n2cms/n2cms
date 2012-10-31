@@ -8,7 +8,7 @@ namespace N2.Persistence
 	/// </summary>
 	public interface IPersister: IDisposable
 	{
-        /// <summary>Gets the repository implementation used by this persister. Please note that using the using the repository circumvent events exposed by the persister and is not run in a transaction. Do net expect the behaviour to be exactly the same.</summary>
+        /// <summary>Gets the repository implementation used by this persister. Please note that using the using the repository circumvent events exposed by the persister and is not run in a transaction. Don't expect the behaviour to be exactly the same.</summary>
         IContentItemRepository Repository { get; }
 
 		/// <summary>Loads the content item with the supplied id or returns null if no items matches that identifier.</summary>
