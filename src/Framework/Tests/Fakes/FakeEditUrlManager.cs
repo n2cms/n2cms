@@ -6,7 +6,7 @@ namespace N2.Tests.Fakes
 	public class FakeEditUrlManager : EditUrlManager
 	{
 		public FakeEditUrlManager()
-			: base(new EditSection())
+			: base(null, new EditSection())
 		{
 		}
 	}

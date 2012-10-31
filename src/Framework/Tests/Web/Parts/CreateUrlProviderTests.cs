@@ -36,7 +36,7 @@ namespace N2.Tests.Web.Parts
 			var versions = TestSupport.SetupVersionManager(persister, versionRepository);
 			creator = new CreateUrlProvider(
 				persister,
-				new EditUrlManager(new EditSection()),
+                new EditUrlManager(null, new EditSection()),
 				definitions = TestSupport.SetupDefinitions(types),
 				TestSupport.SetupContentActivator(),
 				new Navigator(persister, TestSupport.SetupHost(), new VirtualNodeFactory(), TestSupport.SetupContentSource()),

@@ -31,7 +31,7 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			editUrlManager = new EditUrlManager(new EditSection());
+            editUrlManager = new EditUrlManager(null, new EditSection());
 			root = CreateOneItem<ComplexContainersItem>(0, "root", null);
 			item = CreateOneItem<ComplexContainersItem>(0, "item", root);
 			version = new ComplexContainersItem { Name = "version", Title = "version", VersionOf = item, VersionIndex = 2 };

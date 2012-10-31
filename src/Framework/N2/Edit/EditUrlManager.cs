@@ -13,9 +13,12 @@ namespace N2.Edit
 	{
 		private string editTreeUrl;
 		private ViewPreference defaultViewPreference;
+        private IUrlParser parser;
 
-		public EditUrlManager(EditSection config)
+		public EditUrlManager(IUrlParser parser, EditSection config)
 		{
+            this.parser = parser;
+
 			ManagementInterfaceUrl = config.Paths.ManagementInterfaceUrl.TrimEnd('/');
 			EditTreeUrl = config.Paths.EditTreeUrl;
 			EditItemUrl = config.Paths.EditItemUrl;
@@ -57,8 +60,8 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			Url url = ResolveResourceUrl(selectedItem.Url);
-			return url;//.AppendQuery("src", Interfaces.Managing);
+			Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));
+			return url;
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>

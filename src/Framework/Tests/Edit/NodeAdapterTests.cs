@@ -29,7 +29,7 @@ namespace N2.Tests.Edit
 			part.ZoneName = "Zone";
 
 			adapter = new NodeAdapter();
-			adapter.ManagementPaths = new EditUrlManager(new N2.Configuration.EditSection());
+            adapter.ManagementPaths = new EditUrlManager(null, new N2.Configuration.EditSection());
 			adapter.FileSystem = fs = new FakeMemoryFileSystem();
 			adapter.NodeFactory = new VirtualNodeFactory();
 			adapter.WebContext = new Fakes.FakeWebContextWrapper();
