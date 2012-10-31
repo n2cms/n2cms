@@ -25,6 +25,7 @@ using N2.Persistence.Search;
 using System.IO;
 using N2.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Details
 {
@@ -46,12 +47,20 @@ namespace N2.Details
 		{
 		}
 
+
+        public string UniqueUrlText { get; set; }
+
+        public string UniqueUrlMessage { get; set; }
+
 		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public EditableDirectUrlAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
-		{
+        {
+            UniqueUrlText = "*";
+            UniqueUrlMessage = "{0} must be unique, but is already used by {1} (#{2})";
+
 			Validate = true;
 			ValidationExpression = "^/[^?]*$";
 			ValidationMessage = "The direct url must start with slash (/), e.g. /direct";
@@ -87,5 +96,30 @@ namespace N2.Details
 				tb.ReadOnly = true;
 			}
 		}
-	}
+
+        protected override void AddValidation(Control container, Control editor)
+        {
+            base.AddValidation(container, editor);
+
+            var cv = new CustomValidator();
+            cv.ID = Name + "_cv";
+            cv.ControlToValidate = editor.ID;
+            cv.Display = ValidatorDisplay.Dynamic;
+            cv.Text = GetLocalizedText("UniqueUrlText") ?? UniqueUrlText;
+            cv.ServerValidate += (object source, ServerValidateEventArgs args) =>
+            {
+                var url = ((TextBox)editor).Text.Trim('/');
+                url = Engine.RequestContext.Url.HostUrl.Append(url);
+                var existing = Engine.UrlParser.FindPath(url);
+                if (!existing.IsEmpty() && existing.CurrentItem != new SelectionUtility(container, Engine).SelectedItem)
+                {
+                    args.IsValid = false;
+                    cv.ErrorMessage = string.Format(GetLocalizedText("UniqueUrlMessage") ?? UniqueUrlMessage, GetLocalizedText("Title") ?? Title, existing.CurrentItem.Title, existing.CurrentItem.ID);
+                }
+            };
+            container.Controls.Add(cv);
+        }
+
+        
+    }
 }
