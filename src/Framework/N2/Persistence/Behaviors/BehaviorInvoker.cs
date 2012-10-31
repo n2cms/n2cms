@@ -117,7 +117,6 @@ namespace N2.Persistence.Behaviors
 				foreach (var unsavedItem in ctx.UnsavedItems)
 					persister.Repository.SaveOrUpdate(unsavedItem);
 				tx.Commit();
-				persister.Repository.Flush();
 			}
 		}
 

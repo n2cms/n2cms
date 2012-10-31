@@ -71,7 +71,7 @@ namespace N2.Persistence.Serialization
 			if ((options & ImportOption.AllItems) == ImportOption.AllItems)
 			{
 				record.RootItem.AddTo(destination);
-				persister.Save(record.RootItem);
+				persister.SaveRecursive(record.RootItem);
 			}
 			else if ((options & ImportOption.Children) == ImportOption.Children)
 			{
@@ -80,7 +80,7 @@ namespace N2.Persistence.Serialization
 				{
 					ContentItem child = record.RootItem.Children[0];
 					child.AddTo(destination);
-					persister.Save(child);
+                    persister.SaveRecursive(child);
 				}
 			}
 			else

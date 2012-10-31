@@ -232,5 +232,15 @@ namespace N2.Persistence
             return returnArray;
         }
 
+        public static void SaveRecursive(this IPersister persister, ContentItem item)
+        {
+            using (var tx = persister.Repository.BeginTransaction())
+            {
+                persister.Save(item);
+                foreach (var descendant in Find.EnumerateChildren(item).ToList())
+                    persister.Save(descendant);
+                tx.Commit();
+            }
+        }
     }
 }
