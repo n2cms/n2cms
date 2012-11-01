@@ -80,14 +80,17 @@ namespace N2.Details
 		public override Control AddTo(Control container)
 		{
 			HtmlTableCell labelCell = new HtmlTableCell();
+			labelCell.Attributes["class"] = "ftaLabel";
 			Label label = AddLabel(labelCell);
 
 			HtmlTableCell editorCell = new HtmlTableCell();
+			editorCell.Attributes["class"] = "ftaEditor";
 			Control editor = AddEditor(editorCell);
 			if (label != null && editor != null && !string.IsNullOrEmpty(editor.ID))
 				label.AssociatedControlID = editor.ID;
 
 			HtmlTableCell extraCell = new HtmlTableCell();
+			extraCell.Attributes["class"] = "ftaExtra";
 			if (Required)
 				AddRequiredFieldValidator(extraCell, editor);
 			if (Validate)
