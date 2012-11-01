@@ -50,7 +50,7 @@ namespace N2.Details
                 ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
 
                 var childItem = childEditor.CurrentItem;
-                if (childItem.ID != 0 && item.ID == 0)
+				if (childItem.ID != 0 && item.ID == 0 && !childItem.IsPage)
                     // we may have initialized the editor with the published version but we want to use the draft here
                     childItem = item.FindPartVersion(childItem);
 
