@@ -115,6 +115,10 @@ namespace N2.Edit.Versioning
 			}
 			foreach (var item in journal.ReadItems)
 				(item as IInjectable<IUrlParser>).Set(parser);
+
+			if (journal.RootItem.VersionOf.HasValue && journal.RootItem.VersionOf.Value != null)
+				journal.RootItem.Parent = journal.RootItem.VersionOf.Parent;
+
 			return journal.RootItem;
 		}
 

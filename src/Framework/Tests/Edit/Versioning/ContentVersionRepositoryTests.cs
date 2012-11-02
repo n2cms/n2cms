@@ -368,5 +368,24 @@ namespace N2.Tests.Edit.Versioning
 			version.Children.Single().Name.ShouldBe("part");
 			version.Children.Single().Children.Single().Name.ShouldBe("part2");
 		}
+
+		[Test]
+		public void Version_GetsParent_FromMasterVersion()
+		{
+			var parent = CreateOneItem<Items.NormalPage>(0, "parent", null);
+			persister.Save(parent);
+
+			var master = CreateOneItem<Items.NormalPage>(0, "master", parent);
+			persister.Save(master);
+
+			var manager = new VersionManager(repository, persister.Repository, new StateChanger(), new N2.Configuration.EditSection());
+			var versionIndex = manager.AddVersion(master, asPreviousVersion: false).VersionIndex;
+
+			persister.Dispose();
+			
+			var version = repository.GetVersion(master, versionIndex).Version;
+
+			version.Parent.ShouldBe(parent);
+		}
     }
 }
