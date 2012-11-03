@@ -756,16 +756,16 @@ namespace N2
 		internal static List<object> FindEmpty(ContentItem item)
 		{
 			var list = new List<object>();
-			if (item.Parent.ID == 0)
+			if (item.Parent != null && item.Parent.ID == 0)
 				list.Add(item);
 			foreach (var detail in item.Details)
-				if (detail.EnclosingItem.ID == 0)
+				if (detail.EnclosingItem.ID == 0 && !object.ReferenceEquals(detail.EnclosingItem, item))
 					list.Add(detail);
 				else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
 					list.Add(detail);
 			foreach (var dc in item.DetailCollections)
 				foreach (var detail in dc.Details)
-					if (detail.EnclosingItem.ID == 0)
+					if (detail.EnclosingItem.ID == 0 && !object.ReferenceEquals(detail.EnclosingItem, item))
 						list.Add(detail);
 					else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
 						list.Add(detail);
