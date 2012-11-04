@@ -30,6 +30,9 @@ namespace N2.Edit.Versioning
 
 		public bool HasDraft(ContentItem item)
 		{
+			if (item == null)
+				return false;
+
 			var drafts = GetPagesWithDrafts();
 			return drafts.ContainsKey(item.ID);
 		}
