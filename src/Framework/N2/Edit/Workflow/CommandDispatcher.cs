@@ -36,6 +36,7 @@ namespace N2.Edit.Workflow
 				try
 				{
 					args.Command.Process(args.Context);
+					Utility.FindEmpty(args.Context.Content);
 					tx.Commit();
 
 					if (CommandExecuted != null)

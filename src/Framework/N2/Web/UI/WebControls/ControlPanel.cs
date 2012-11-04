@@ -95,7 +95,7 @@ namespace N2.Web.UI.WebControls
 			@"
 jQuery(document).ready(function(){{
     if(window.n2ctx){{
-		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:false }});
+		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4} }});
 		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
 		else jQuery('.cpView').hide();
 	}}
@@ -285,7 +285,12 @@ jQuery(document).ready(function(){{
 					var adapter = Engine.GetContentAdapter<NodeAdapter>(CurrentItem);
 					string navigationUrl = Engine.ManagementPaths.GetNavigationUrl(CurrentItem);
 					string previewUrl = adapter.GetPreviewUrl(CurrentItem);
-					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl, adapter.GetMaximumPermission(CurrentItem));
+					string script = string.Format(switchScriptFormat, 
+						CurrentItem.Path, // 0
+						previewUrl, // 1
+						navigationUrl, // 2
+						adapter.GetMaximumPermission(CurrentItem), // 3
+						(Page.Request["refresh"] == "true").ToString().ToLower());
 					writer.WriteLineNoTabs(script);
 				}
 				writer.WriteLineNoTabs("}");

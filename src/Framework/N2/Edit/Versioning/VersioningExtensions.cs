@@ -114,6 +114,7 @@ namespace N2.Edit.Versioning
 			if (previewedItem.VersionOf.HasValue)
 			{
 				previewedItem = versionManager.MakeMasterVersion(previewedItem);
+				persister.Save(previewedItem);
 			}
 			if (previewedItem.State != ContentState.Published)
 			{

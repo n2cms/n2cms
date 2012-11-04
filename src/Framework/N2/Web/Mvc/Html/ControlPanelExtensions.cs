@@ -39,14 +39,17 @@ namespace N2.Web.Mvc.Html
 		/// <param name="html"></param>
 		public static ControlPanelHelper ControlPanel(this HtmlHelper html)
 		{
-			return ControlPanelFactory(html);
+			var cp = ControlPanelFactory(html);
+			if (html.ViewContext.HttpContext.Request["refresh"] == "true")
+				cp = cp.RefreshNavigation();
+			return cp;
 		}
 
 		/// <summary>Renders the openable control panel displayed in the upper left corner on N2 sites.</summary>
 		/// <param name="html"></param>
 		public static void RenderControlPanel(this HtmlHelper html)
 		{
-			ControlPanelFactory(html).WriteTo(html.ViewContext.Writer);
+			html.ControlPanel().WriteTo(html.ViewContext.Writer);
 		}
 
 		public static string Replace(this string format, IDictionary<string, object> replacements)
@@ -65,7 +68,7 @@ namespace N2.Web.Mvc.Html
 
         public class ControlPanelHelper : IHtmlString
 		{
-			private bool refreshNavigation = true;
+			private bool refreshNavigation = false;
 			private bool includeJQuery = true;
 			private bool includeJQueryPlugins = true;
 			private bool includeJQueryUi = true;
@@ -287,7 +290,7 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: false, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: true, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
 			static string format3 = @"
 		if (n2ctx.hasTop()) $('.cpAdminister').hide();
 		else $('.cpView').hide();
