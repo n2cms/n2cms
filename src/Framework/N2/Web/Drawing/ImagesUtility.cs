@@ -242,6 +242,14 @@ namespace N2.Web.Drawing
 		}
 		#endregion
 
+		public static string GetSize(string imageUrl, IEnumerable<string> possibleSizes)
+		{
+			string path;
+			string size;
+			SplitImageAndSize(imageUrl, possibleSizes, out path, out size);
+			return size;
+		}
+
 		public static void SplitImageAndSize(string imageUrl, IEnumerable<string> possibleSizes, out string baseImagePath, out string imageSize)
 		{
 			var extension = Url.Parse(imageUrl).Extension;

@@ -61,14 +61,21 @@ namespace N2.Details
 			if (string.IsNullOrEmpty(imageUrl))
 				return;
 
+			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
+			string altText = item.GetDetail(detailName + "_AlternateText", alt);
+
+			cssClass = WriteImage(imageUrl, writer, preferredSize, cssClass, altText);
+		}
+
+		public static string WriteImage(string imageUrl, System.IO.TextWriter writer, string preferredSize = null, string cssClass = null, string alt = null)
+		{
 			TagBuilder tb = new TagBuilder("img");
 			bool preferredSizeExists;
 			tb.Attributes["src"] = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists);
-			tb.Attributes["alt"] = item.GetDetail(detailName + "_AlternateText", alt);
-			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
+			tb.Attributes["alt"] = alt;
 			if (preferredSizeExists)
 			{
-				if(string.IsNullOrEmpty(cssClass))
+				if (string.IsNullOrEmpty(cssClass))
 					cssClass = preferredSize;
 				else
 					cssClass += " " + preferredSize;
@@ -78,6 +85,7 @@ namespace N2.Details
 				tb.AddCssClass(cssClass);
 
 			writer.Write(tb.ToString(TagRenderMode.SelfClosing));
+			return cssClass;
 		}
 
 		#region IWritingDisplayable Members

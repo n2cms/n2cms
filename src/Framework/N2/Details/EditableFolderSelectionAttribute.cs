@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit.FileSystem;
 
 namespace N2.Details
 {
@@ -86,12 +87,6 @@ namespace N2.Details
 		{
 			return DisplayableImageAttribute.AddImage(container, item, detailName, PreferredSize, CssClass, Alt);
 		}
-
-		[Obsolete("Use DisplayableImageAttribute.AddImage")]
-		public static Control AddImage(Control container, ContentItem item, string detailName, string cssClass, string altText)
-		{
-			return DisplayableImageAttribute.AddImage(container, item, detailName, null, cssClass, altText);
-		}
 		#endregion
 
 		#region IRelativityTransformer Members
@@ -109,7 +104,23 @@ namespace N2.Details
 
 		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
+			var folder = item[propertyName] as string;
+			if (string.IsNullOrEmpty(folder))
+				return;
+
+			foreach (var potentialImage in Engine.Resolve<IFileSystem>().GetFiles(folder))
+			{
+				if (!N2.Web.Drawing.ImagesUtility.IsImagePath(potentialImage.VirtualPath))
+					continue;
+
+				if (string.IsNullOrEmpty(PreferredSize))
+					DisplayableImageAttribute.WriteImage(potentialImage.VirtualPath, writer);
+				else
+				{
+					if (N2.Web.Drawing.ImagesUtility.GetSize(potentialImage.VirtualPath, new[] { PreferredSize }) == PreferredSize)
+						DisplayableImageAttribute.WriteImage(potentialImage.VirtualPath, writer, PreferredSize);
+				}
+			}
 		}
 
 		#endregion
