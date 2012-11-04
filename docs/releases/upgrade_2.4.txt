@@ -1,0 +1,30 @@
+Upgrade N2 CMS Framework TO 2.2
+* Make a complete backup (including database)
+* Delete /n2, and /bin
+* Change to .NET 4 from project settings
+* Install the following NuGet packages:
+** N2 CMS Management
+** N2 CMS - Castle Windsor 3
+* Recompile your solution
+* Browse to the site (you are redirected to /n2/installation/upgrade.aspx)
+* Log in as an administrator
+* Click "update tables and run migrations"
+* That's it!
+
+SIGNIFICATNT CHANGES
+* .NET 4 required
+* New versioning scheme calls for migration from upgrade page
+
+UPGRADE N2.Templates.Mvc to 2.4
+* Upgrade N2 CMS Framework to 2.4 (above)
+* If you have made modifications you should stop here and reconsider.
+  Read "Modifying vs. Extending" in the Developer Documentation.
+  If you go on all your changes may be overwritten.
+* Copy new files (found in n2cms_2.4_Templates_Mvc.zip) and overwrite existing except for web.config
+* That's it!
+
+
+TODO
+* 404 http://localhost:53164/N2/Installation/Begin/Default.aspx?action=upgrade
+* MVC4 changes to templates
+* .NET 4

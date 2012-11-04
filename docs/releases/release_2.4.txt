@@ -1,0 +1,17 @@
+{"*"} _Web platform installer support available_
+{"**"} _Nuget support available_
+
+! What's new
+* Part composition versioning
+
+*Framwork improvements*
+[url:To the complete list...|https://github.com/n2cms/n2cms/tree/2.4.6]
+
+! First time with N2?
+* Try the [url:demo site|http://demo.n2cms.com/]
+* Download one of the template packs (above) and open the project in Visual Studio
+* Read any readme.txt you come across to get started
+* Look at the developer documentation available for download above
+
+! Upgrading?
+Read [url:upgrade_2.4.txt|https://raw.github.com/n2cms/n2cms/master/docs/releases/upgrade_2.4.txt]
