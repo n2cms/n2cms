@@ -12,15 +12,18 @@ using N2.Edit;
 using N2.Web;
 using N2.Engine;
 using N2.Edit.Versioning;
+using N2.Web.UI.WebControls;
 
 namespace N2.Management.Content.Activity
 {
+	[KeepAliveControlPanel]
 	public partial class RecentActivity : EditUserControl
 	{
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 			CurrentItem = Selection.SelectedItem;
+			Visible = Engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled;
 		}
 
 		protected override void  OnDataBinding(EventArgs e)

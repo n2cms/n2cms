@@ -43,9 +43,9 @@
 				return;
 			$.ajax({
 				method: "POST",
-				url: "editing.n2.ashx",
+				url: "<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Content/Activity/Notify.ashx") %>",
 				dataType: 'json',
-				data: { selected: n2ctx.selectedPath, action: "editing", activity: isDirty },
+				data: { selected: n2ctx.selectedPath, activity: "Edit", dirty: isDirty },
 				success: function (data) {
 					if (data.LastChange !== activities.LastChange)
 						$(activityContainer).html(template.render(data));

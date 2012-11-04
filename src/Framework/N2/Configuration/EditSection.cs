@@ -139,5 +139,13 @@ namespace N2.Configuration
 			get { return (LinkTrackerElement)base["linkTracker"]; }
 			set { base["linkTracker"] = value; }
 		}
+
+		/// <summary>Configuration about editor collaboration features.</summary>
+		[ConfigurationProperty("collaboration")]
+		public CollaborationElement Collaboration
+		{
+			get { return (CollaborationElement)base["collaboration"]; }
+			set { base["collaboration"] = value; }
+		}
 	}
 }
