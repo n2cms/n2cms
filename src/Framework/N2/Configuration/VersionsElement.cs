@@ -31,5 +31,13 @@ namespace N2.Configuration
 			get { return (ViewPreference)base["defaultViewMode"]; }
 			set { base["defaultViewMode"] = value; }
 		}
+
+		/// <summary>Show recent versions while editing.</summary>
+		[ConfigurationProperty("showRecentVersions", DefaultValue = true)]
+		public bool ShowRecentVersions
+		{
+			get { return (bool)base["showRecentVersions"]; }
+			set { base["showRecentVersions"] = value; }
+		}
 	}
 }

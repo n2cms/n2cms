@@ -20,6 +20,7 @@ namespace N2.Management.Content.Versions
 		{
 			base.OnInit(e);
 			CurrentItem = Selection.SelectedItem;
+			Visible = Engine.Config.Sections.Management.Versions.ShowRecentVersions;
 		}
 
 		protected override void  OnDataBinding(EventArgs e)

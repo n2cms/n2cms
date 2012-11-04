@@ -20,7 +20,8 @@ namespace N2.Management.Activity
 		public void OnPreInit(System.Web.UI.Page page, ContentItem item)
 		{
 			var engine = page.GetEngine();
-			engine.AddActivity(new ManagementActivity { Operation = Operation, PerformedBy = page.User.Identity.Name, Path = item.Path, ID = item.ID });
+			if (item != null && engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled)
+				engine.AddActivity(new ManagementActivity { Operation = Operation, PerformedBy = page.User.Identity.Name, Path = item.Path, ID = item.ID });
 		}
 	}
 }
