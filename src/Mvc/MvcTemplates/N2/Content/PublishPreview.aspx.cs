@@ -17,9 +17,10 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-			previewedItem = Engine.Resolve<IVersionManager>().Publish(Engine.Persister, previewedItem);
+			previewedItem = Engine.Resolve<IVersionManager>()
+				.Publish(Engine.Persister, previewedItem);
 
-			Response.Redirect(previewedItem.Url);
+			Response.Redirect(Engine.UrlParser.BuildUrl(previewedItem).AppendQuery("refresh", true));
 		}
 	}
 }

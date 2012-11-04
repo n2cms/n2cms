@@ -23,7 +23,7 @@
 			}
 		</style>
     </head>
-<body class="framed noneSelected noPermission">
+<body class="tree framed noneSelected noPermission">
 	<edit:ToolbarPluginDisplay ID="OperationsPlugins" Area="Operations" runat="server" />
     <form id="form1" runat="server">
 		<div class="FileUpload">
