@@ -170,6 +170,13 @@ namespace N2.Edit
 				url = url.AppendQuery("before", selected.Path);
 			else if (position == CreationPosition.After)
 				url = url.AppendQuery("after", selected.Path);
+
+			if (selected.VersionOf.HasValue)
+			{
+				url = url.AppendQuery(PathData.VersionQueryKey, selected.VersionIndex)
+					.AppendQuery("VersionKey", selected.GetVersionKey());
+			}
+
 			return url;
 		}
 

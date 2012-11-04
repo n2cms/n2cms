@@ -16,7 +16,7 @@ namespace N2.Edit
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-			this.Visible = this.CurrentItem != null && this.CurrentItem.ID>0 && this.rptZones.Items.Count > 0;
+			this.Visible = this.CurrentItem != null && this.rptZones.Items.Count > 0;
         }
 
         public object DataSource
@@ -98,7 +98,9 @@ namespace N2.Edit
         protected IList<ContentItem> GetItemsInZone(object dataItem)
         {
             N2.Integrity.AvailableZoneAttribute a = (N2.Integrity.AvailableZoneAttribute)dataItem;
-            return CurrentItem.GetChildren(a.ZoneName);
+            return CurrentItem.Children.FindParts(a.ZoneName)
+				.Where(p => Engine.SecurityManager.IsAuthorized(p, Page.User))
+				.ToList();
         }
 
 		protected string GetZoneString(string key)

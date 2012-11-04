@@ -14,7 +14,7 @@ namespace N2.Edit
 	public class ControlPanelPreviewPublishAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewPublishAttribute(string toolTip, int sortOrder)
-            : base("cpPreviewPublish", "{ManagementUrl}/Resources/icons/disk.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
+            : base("cpPreviewPublish", "{ManagementUrl}/Resources/icons/disk_green.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 
