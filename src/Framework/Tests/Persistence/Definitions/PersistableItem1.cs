@@ -125,6 +125,26 @@ namespace N2.Tests.Persistence.Definitions
 
 		[Persistable]
 		public virtual string PersistableProperty { get; set; }
+
+		[NonEditable]
+		public virtual List<string> StringList { get; set; }
+	}
+
+	public class NonEditableAttribute : AbstractEditableAttribute
+	{
+		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
+		{
+			return true;
+		}
+
+		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
+		{
+		}
+
+		protected override System.Web.UI.Control AddEditor(System.Web.UI.Control container)
+		{
+			return null;
+		}
 	}
 
 

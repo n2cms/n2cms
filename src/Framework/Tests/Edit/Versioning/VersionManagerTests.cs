@@ -8,6 +8,9 @@ using Shouldly;
 using System.Linq;
 using N2.Edit.Versioning;
 using N2.Tests.Persistence;
+using N2.Persistence.Proxying;
+using N2.Definitions;
+using System.Collections.Generic;
 
 namespace N2.Tests.Edit.Versioning
 {
@@ -858,6 +861,38 @@ namespace N2.Tests.Edit.Versioning
 			versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
 
 			item.GetDetailCollection("Hello", false)[0].ShouldBe(item);
+		}
+
+		[Test]
+		public void ProxiedDetails_AreRestored_WhenRetrieving()
+		{
+			var item = CreateOneItem<PersistableItem1>(0, "root", null);
+			item.StringList = new List<string> { "one", "two" };
+			persister.Save(item);
+
+			persister.Dispose();
+
+			item = persister.Get<PersistableItem1>(item.ID);
+			item.StringList.Count.ShouldBe(2);
+
+			var version = (PersistableItem1)versioner.AddVersion(item);
+			
+			version.StringList.Add("three");
+			versioner.UpdateVersion(version);
+
+			persister.Dispose();
+
+			item = persister.Get<PersistableItem1>(item.ID);
+			version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+			versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
+
+			item.StringList.Count.ShouldBe(3);
+			persister.Save(item);
+
+			persister.Dispose();
+
+			item = persister.Get<PersistableItem1>(item.ID);
+			item.StringList.Count.ShouldBe(3);
 		}
 
 		[Test, Ignore("TODO")]
