@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
 using N2.Web.UI;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -21,12 +22,13 @@ namespace N2.Web
 		private static readonly object urlLock = new object();
 		private CacheWrapper cache;
 
-		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache)
+		public CachingUrlParserDecorator(IUrlParser inner, IPersister persister, IWebContext webContext, CacheWrapper cache, HostSection config)
 		{
 			this.inner = inner;
 			this.persister = persister;
 			this.webContext = webContext;
 			this.cache = cache;
+			SlidingExpiration = config.OutputCache.SlidingExpiration ?? TimeSpan.FromMinutes(15);
 		}
 
 		public event EventHandler<PageNotFoundEventArgs> PageNotFound
@@ -70,7 +72,7 @@ namespace N2.Web
 		{
 			if (item.ID == 0)
 				return inner.BuildUrl(item);
-
+			
 
 			var cacheKey = "N2.UrlCache" + webContext.Url.Authority.ToLower();
 			Dictionary<int, string> itemToUrlCache = cache.Get<Dictionary<int, string>>(cacheKey);
@@ -194,8 +196,16 @@ namespace N2.Web
 			}
 
 			PathData data;
-			if (cachedPathData.TryGetValue(urlKey, out data))
+			bool pathDataFound;
+			lock (pathLock)
 			{
+				pathDataFound = cachedPathData.TryGetValue(urlKey, out data);
+			}
+			
+			if (pathDataFound)
+			{
+				logger.DebugFormat("Retrieving path {0} from cache for key {1} ({2})", data, urlKey, data.GetHashCode());
+
 				data = data.Attach(persister);
 				if (data == null || data.ID == 0)
 				{
@@ -203,7 +213,6 @@ namespace N2.Web
 					return data;
 				}
 
-				logger.Debug("Retrieving " + url + " from cache");
 				if (!string.IsNullOrEmpty(url.Query))
 					data.UpdateParameters(Url.Parse(url).GetQueries());
 			}
@@ -212,21 +221,44 @@ namespace N2.Web
 				// The requested url doesn't exist in the cached path data
 				lock (pathLock)
 				{
-					if (!cachedPathData.TryGetValue(urlKey, out data))
+					if (cachedPathData.TryGetValue(urlKey, out data))
+					{
+						logger.DebugFormat("Retrieving path {0} from cache (second chance) for key {1} ({2})", data, urlKey, data.GetHashCode());
+
+						data = data.Attach(persister);
+						if (data == null || data.ID == 0)
+						{
+							// Cached path has to CMS content
+							return data;
+						}
+
+						if (!string.IsNullOrEmpty(url.Query))
+							data.UpdateParameters(Url.Parse(url).GetQueries());
+					}
+					else
 					{
 						remainingPath = remainingPath ?? Url.ToRelative(url.Path).TrimStart('~');
 
 						string path = remainingPath;
-						var pathData = GetStartNode(url, cachedPathData, ref path, 0);
+						PathData partialPath = GetStartNode(url, cachedPathData, ref path, 0);
 
-						data = pathData.ID == 0
-							? inner.FindPath(url)
-							: inner.FindPath(url, persister.Get(pathData.ID), remainingPath.Substring(path.Length, remainingPath.Length - path.Length));
+						if (partialPath.ID == 0)
+						{
+							data = inner.FindPath(url);
+							logger.DebugFormat("Found path {0} for url {1}", data, url);
+						}
+						else
+						{
+							string subpath = remainingPath.Substring(path.Length, remainingPath.Length - path.Length);
+							data = inner.FindPath(url, persister.Get(partialPath.ID), subpath);
+							logger.DebugFormat("Found path {0} for subpath {1} below {2}", data, subpath, partialPath.ID);
+						}
 
 						if (data.IsCacheable)
 						{
-							logger.Debug("Adding " + urlKey + " to cache");
-							cachedPathData.Add(urlKey, data.Detach());
+							var detached = data.Detach();
+							logger.DebugFormat("Adding {0} to cache for key {1} ({2})", detached, urlKey, detached.GetHashCode());
+							cachedPathData.Add(urlKey, detached);
 						}
 					}
 				}

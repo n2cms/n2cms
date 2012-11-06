@@ -92,7 +92,7 @@ namespace N2.Engine
 				parser = new UrlParser(container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<IHost>(), container.Resolve<Plugin.ConnectionMonitor>(), config);
 
 			if (config.Web.Urls.EnableCaching)
-				parser = new CachingUrlParserDecorator(parser, container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<CacheWrapper>());
+				parser = new CachingUrlParserDecorator(parser, container.Resolve<IPersister>(), container.Resolve<IWebContext>(), container.Resolve<CacheWrapper>(), new HostSection());
 
 			container.AddComponentInstance("n2.urlParser", typeof(IUrlParser), parser);
 		}

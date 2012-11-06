@@ -58,7 +58,7 @@ namespace N2.Web
 			try
 			{
 				var path = parser.FindPath(url.RemoveDefaultDocument(Url.DefaultDocument).RemoveExtension(observedExtensions));
-					
+
 				path.CurrentItem = path.CurrentPage;
 
 				if (draftRepository.Versions.TryParseVersion(url[PathData.VersionQueryKey], url["versionKey"], path))

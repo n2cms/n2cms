@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Threading;
 
 namespace N2.Engine
 {
@@ -228,7 +229,7 @@ namespace N2.Engine
 		{
 			if (WriterFactory != null)
 				return WriterFactory(typeof(T));
-			return new TraceLogWriter(DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff ") + typeof(T).Name + ": ");
+			return new TraceLogWriter(DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff [") + Thread.CurrentThread.ManagedThreadId + "] " + typeof(T).Name + ": ");
 		}
 
 		public static LogWriterBase Writer
