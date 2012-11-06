@@ -56,7 +56,8 @@ namespace N2.Edit.Versioning
 
 		public string Serialize(ContentItem item)
 		{
-			proxyFactory.OnSaving(item);
+			foreach(var descendant in Find.EnumerateChildren(item, true, false))
+				proxyFactory.OnSaving(descendant);
 			return ContentVersion.Serialize(exporter, item);
 		}
 
@@ -104,6 +105,9 @@ namespace N2.Edit.Versioning
 		{
 			if (string.IsNullOrEmpty(parent.GetVersionKey()))
 				parent.SetVersionKey(Guid.NewGuid().ToString());
+
+
+
 			foreach (var child in parent.Children)
 			{
 				child.State = parent.State;

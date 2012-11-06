@@ -12,6 +12,9 @@ namespace N2.Tests.Persistence.Definitions
 	{
 		[Persistable]
 		public virtual string PersistableProperty { get; set; }
+
+		[EditableDummy]
+		public virtual List<string> StringList { get; set; }
 	}
 
 	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
@@ -126,11 +129,11 @@ namespace N2.Tests.Persistence.Definitions
 		[Persistable]
 		public virtual string PersistableProperty { get; set; }
 
-		[NonEditable]
+		[EditableDummy]
 		public virtual List<string> StringList { get; set; }
 	}
 
-	public class NonEditableAttribute : AbstractEditableAttribute
+	public class EditableDummyAttribute : AbstractEditableAttribute
 	{
 		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
 		{

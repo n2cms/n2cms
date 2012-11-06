@@ -864,35 +864,104 @@ namespace N2.Tests.Edit.Versioning
 		}
 
 		[Test]
-		public void ProxiedDetails_AreRestored_WhenRetrieving()
+		public void ProxiedDetail_IsCarriedOn_ToMasterVersion_WhenPublishinig()
 		{
 			var item = CreateOneItem<PersistableItem1>(0, "root", null);
-			item.StringList = new List<string> { "one", "two" };
-			persister.Save(item);
 
-			persister.Dispose();
+			using (persister)
+			{
+				item.StringList = new List<string> { "one", "two" };
+				persister.Save(item);
+			}
+
+			PersistableItem1 version;
+			using (persister)
+			{
+				item = persister.Get<PersistableItem1>(item.ID);
+				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
+
+				version.StringList.Add("three");
+				versioner.UpdateVersion(version);
+
+				item.StringList.Count.ShouldBe(2);
+			}
+
+			using (persister)
+			{
+				item = persister.Get<PersistableItem1>(item.ID);
+				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
+
+				item.StringList.Count.ShouldBe(3);
+				persister.Save(item);
+			}
 
 			item = persister.Get<PersistableItem1>(item.ID);
-			item.StringList.Count.ShouldBe(2);
-
-			var version = (PersistableItem1)versioner.AddVersion(item);
-			
-			version.StringList.Add("three");
-			versioner.UpdateVersion(version);
-
-			persister.Dispose();
-
-			item = persister.Get<PersistableItem1>(item.ID);
-			version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
-			versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
-
 			item.StringList.Count.ShouldBe(3);
-			persister.Save(item);
+		}
 
-			persister.Dispose();
+		[Test]
+		public void ProxiedDetail_OnPart_IsCarriedOn_ToMasterVersion_WhenPublishinig()
+		{
+			var page = CreateOneItem<PersistableItem1>(0, "root", null);
+			var part = CreateOneItem<PersistablePart1>(0, "part", page);
 
-			item = persister.Get<PersistableItem1>(item.ID);
-			item.StringList.Count.ShouldBe(3);
+			// create initial state
+			using (persister)
+			{
+				persister.Save(page);
+
+				part.StringList = new List<string> { "one", "two" };
+				persister.Repository.SaveOrUpdate(part);
+			}
+
+			// creae and modify a version
+			PersistableItem1 version;
+			PersistablePart1 partVersion;
+			using (persister)
+			{
+				page = persister.Get<PersistableItem1>(page.ID);
+				part = (PersistablePart1)page.Children[0];
+				part.StringList.Count.ShouldBe(2);
+				((List<string>)part.Details["StringList"].Value).Count.ShouldBe(2);
+				
+				version = (PersistableItem1)versioner.AddVersion(page);
+				partVersion = (PersistablePart1)version.Children[0];
+
+				partVersion.StringList.Add("three");
+				versioner.UpdateVersion(version);
+
+				part.StringList.Count.ShouldBe(2);
+				partVersion.StringList.Count.ShouldBe(3);
+				((List<string>)partVersion.Details["StringList"].Value).Count.ShouldBe(3);
+			}
+
+			// publish the version
+			using (persister)
+			{
+				page = persister.Get<PersistableItem1>(page.ID);
+				part = (PersistablePart1)page.Children[0];
+
+				version = (PersistableItem1)versioner.GetVersion(page, version.VersionIndex);
+				partVersion = (PersistablePart1)version.Children[0];
+				versioner.ReplaceVersion(page, version, storeCurrentVersion: true);
+
+				part.StringList.Count.ShouldBe(3);
+			}
+
+			page = persister.Get<PersistableItem1>(page.ID);
+			part = (PersistablePart1)page.Children[0];
+			part.StringList.Count.ShouldBe(3);
+		}
+
+		[Test]
+		public void CloneForVersioningRecursive_AlsoClones_CertainReferenceTypes()
+		{
+			var page = CreateOneItem<PersistableItem1>(0, "root", null);
+			page.StringList = new List<string> { "1", "2" };
+
+			var clone = (PersistableItem1)page.CloneForVersioningRecursive();
+			object.ReferenceEquals(clone.StringList, page.StringList).ShouldBe(false);
 		}
 
 		[Test, Ignore("TODO")]

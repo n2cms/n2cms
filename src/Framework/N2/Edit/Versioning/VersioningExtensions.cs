@@ -42,8 +42,38 @@ namespace N2.Edit.Versioning
 		{
 			foreach (var property in source.GetContentType().GetProperties().Where(pi => pi.IsInterceptable()))
 			{
-				destination[property.Name] = source[property.Name];
+				destination[property.Name] = TryClone(source[property.Name]);
 			}
+		}
+
+		private static object TryClone(object value)
+		{
+			if (value == null)
+				// pass on null
+				return null;
+
+			var type = value.GetType();
+			if (!type.IsClass)
+				// pass on value types
+				return value;
+
+			if (value is ICloneable)
+				// clone clonable
+				return (value as ICloneable).Clone();
+
+			if (type.IsGenericType)
+			{
+				if (type.GetGenericTypeDefinition() == typeof(List<>))
+				{
+					// create new generic lists
+					var ctor = type.GetConstructor(new [] { typeof(IEnumerable<>).MakeGenericType(type.GetGenericArguments()[0]) });
+					if (ctor != null)
+						return ctor.Invoke(new [] { value });
+				}
+			}
+
+			// accept the rest
+			return value;
 		}
 
 		public static ContentItem FindPartVersion(this ContentItem parent, ContentItem part)
