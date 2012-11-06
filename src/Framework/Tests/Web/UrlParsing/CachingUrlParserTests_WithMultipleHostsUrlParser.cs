@@ -16,7 +16,7 @@ namespace N2.Tests.Web.UrlParsing
 		{
 			base.SetUp();
 			UrlParser inner = GetInnerUrlParser();
-			parser = new CachingUrlParserDecorator(inner, persister, wrapper, new CacheWrapper(persister, wrapper, new DatabaseSection()));
+			parser = new CachingUrlParserDecorator(inner, persister, wrapper, new CacheWrapper(persister, wrapper, new DatabaseSection()), new HostSection());
 			CreateDefaultStructure();
 		}
 
