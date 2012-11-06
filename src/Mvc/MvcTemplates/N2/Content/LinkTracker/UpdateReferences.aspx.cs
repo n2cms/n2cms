@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using N2.Persistence;
 using N2.Linq;
 using N2.Management.Content.LinkTracker;
+using N2.Web;
 
 namespace N2.Edit.LinkTracker
 {
@@ -16,6 +17,8 @@ namespace N2.Edit.LinkTracker
 		protected override void OnInit(EventArgs e)
 		{
 			tracker = Engine.Resolve<Tracker>();
+
+			btnUpdate.Enabled = Selection.SelectedItem.ID != 0;
 
 			base.OnInit(e);
 		}
@@ -33,7 +36,10 @@ namespace N2.Edit.LinkTracker
 				
 			if (!IsPostBack)
 			{
-				var referrers = tracker.FindReferrers(Selection.SelectedItem).ToList();
+				var item = Selection.SelectedItem;
+				var referrers = Selection.SelectedItem.ID == 0
+					? tracker.FindReferrers(previousParent.Url.ToUrl().AppendSegment(previousName).SetExtension(item.Extension)).ToList()
+					: tracker.FindReferrers(Selection.SelectedItem).ToList();
 				bool showReferences = referrers.Count > 0;
 				if (showReferences)
 				{
@@ -52,7 +58,9 @@ namespace N2.Edit.LinkTracker
 				else
 					fsChildren.Visible = false;
 
-				chkPermanentRedirect.Visible = previousParent != null && Engine.Resolve<Configuration.EditSection>().LinkTracker.PermanentRedirectEnabled;
+				chkPermanentRedirect.Visible = previousParent != null 
+					&& Selection.SelectedItem.ID != 0
+					&& Engine.Resolve<Configuration.EditSection>().LinkTracker.PermanentRedirectEnabled;
 
 				if (!showReferences && !showChildren && previousParent == null)
 				{
@@ -76,6 +84,7 @@ namespace N2.Edit.LinkTracker
 			}
 
 			tracker.UpdateReferencesTo(Selection.SelectedItem);
+
 			if (chkChildren.Checked)
 			{
 				mvPhase.ActiveViewIndex = 1;

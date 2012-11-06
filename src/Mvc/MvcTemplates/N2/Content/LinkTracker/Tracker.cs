@@ -175,32 +175,17 @@ namespace N2.Edit.LinkTracker
 			}
 			else
 			{
-                //return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("LinkedItem.ID", item.ID))
-                //    .Select(d => d.EnclosingItem)
-                //    .Where(i => !i.VersionOf.HasValue)
-                //    .Distinct();
                 return repository.Find(
                     (Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
                     & Parameter.IsNull("VersionOf.ID"))
                     .Distinct();
 			}
-			//if (item.ID != 0)
-			//    return find.Where.Detail(LinkDetailName).Eq(item)
-			//        .Filters(new Collections.DuplicateFilter())
-			//        .Select();
-			//else
-			//    return find.Where.Detail(LinkDetailName).Like(item.Url)
-			//        .Filters(new Collections.DuplicateFilter())
-			//        .Select();
 		}
 
-		private IEnumerable<ContentItem> FindReferrers(string url)
+		public virtual IEnumerable<ContentItem> FindReferrers(string url)
 		{
-            //return detailRepository.Find(new Parameter("Name", Tracker.LinkDetailName), new Parameter("StringValue", url))
-            //    .Select(d => d.EnclosingItem)
-            //    .Distinct();
             return repository.Find(
-                Parameter.Equal(Tracker.LinkDetailName, url).Detail()
+                Parameter.Like(Tracker.LinkDetailName, url + "%").Detail()
                 & Parameter.IsNull("VersionOf.ID"))
                 .Distinct();
         }
