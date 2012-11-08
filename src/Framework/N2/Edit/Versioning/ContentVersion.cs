@@ -119,7 +119,19 @@ namespace N2.Edit.Versioning
 			if (journal.RootItem.VersionOf.HasValue && journal.RootItem.VersionOf.Value != null)
 				journal.RootItem.Parent = journal.RootItem.VersionOf.Parent;
 
+			ReorderBySortOrderRecursive(journal.RootItem);
+
 			return journal.RootItem;
+		}
+
+		private static void ReorderBySortOrderRecursive(ContentItem item)
+		{
+			if (item.Children.Count > 0)
+			{
+				item.Children = new Collections.ItemList(item.Children.OrderBy(i => i.SortOrder));
+				foreach (var child in item.Children)
+					ReorderBySortOrderRecursive(child);
+			}
 		}
 
 		internal static string Serialize(Exporter exporter, ContentItem item)
