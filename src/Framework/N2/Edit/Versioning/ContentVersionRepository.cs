@@ -79,7 +79,7 @@ namespace N2.Edit.Versioning
         {
 			item = Find.ClosestPage(item);
 			var version = GetVersion(GetMaster(item), item.VersionIndex)
-				?? new ContentVersion(importer, exporter, parser);
+				?? Inject(new ContentVersion());
 
 			ApplyCommonValuesRecursive(item);
 

@@ -45,16 +45,22 @@ namespace N2.Persistence
         /// <param name="parentItem">Parent of the item to create.</param>
         /// <param name="templateKey">The type of template the item is associated with.</param>
         /// <returns>A new instance of an item.</returns>
-        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey)
+        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey, bool asProxy = false)
         {
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
-			ContentItem item;
+			ContentItem item = null;
 			ItemDefinition definition;
-			if (contentBuilders.TryGetValue(itemType, out definition))
-				item = definition.CreateInstance(parentItem);
-			else
-				item = Activator.CreateInstance(itemType, true) as ContentItem;
+			if (asProxy)
+				item = (ContentItem)interceptor.Create(itemType.FullName, 0);
+
+			if (item == null)
+			{
+				if (contentBuilders.TryGetValue(itemType, out definition))
+					item = definition.CreateInstance(parentItem);
+				else
+					item = Activator.CreateInstance(itemType, true) as ContentItem;
+			}
             if (templateKey != null)
                 item.TemplateKey = templateKey;
             OnItemCreating(item, parentItem);

@@ -195,26 +195,34 @@ namespace N2.Tests
 			return finder;
 		}
 
+		public static N2.Edit.Versioning.DraftRepository CreateDraftRepository(ref IPersister persister, params Type[] definedTypes)
+		{
+			ContentActivator activator = null;
+			return new DraftRepository(CreateVersionRepository(ref persister, ref activator, definedTypes), new CacheWrapper(persister, new ThreadContext(), new DatabaseSection()));
+		}
+
 		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(params Type[] definedTypes)
 		{
 			IPersister persister = null;
-			return CreateVersionRepository(ref persister, definedTypes);
+			ContentActivator activator = null;
+			return CreateVersionRepository(ref persister, ref activator, definedTypes);
 		}
 
-		public static N2.Edit.Versioning.DraftRepository CreateDraftRepository(ref IPersister persister, params Type[] definedTypes)
-		{
-			return new DraftRepository(CreateVersionRepository(ref persister, definedTypes), new CacheWrapper(persister, new ThreadContext(), new DatabaseSection()));
-		}
-
-		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, params Type[] definedTypes)
+		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, ref ContentActivator activator, params Type[] definedTypes)
 		{
 			if (persister == null)
 				persister = SetupFakePersister();
 			var definitions = SetupDefinitions(definedTypes);
 			var parser = new UrlParser(persister, new ThreadContext(), new Host(new ThreadContext(), new HostSection()), new ConnectionMonitor(), new HostSection());
+			var proxyFactory = new InterceptingProxyFactory();
+			if (activator == null)
+			{
+				activator = new ContentActivator(new StateChanger(), new ItemNotifier(), proxyFactory);
+				activator.Initialize(definitions.GetDefinitions());
+			}
 			var importer = new Importer(persister,
 				new ItemXmlReader(definitions,
-					new ContentActivator(new StateChanger(), null, new EmptyProxyFactory()),
+					activator,
 					persister.Repository),
 				new Fakes.FakeMemoryFileSystem());
 			var exporter = new Exporter(
@@ -227,7 +235,7 @@ namespace N2.Tests
 				exporter,
 				importer,
 				parser,
-				new EmptyProxyFactory());
+				proxyFactory);
 		}
 
 		public static ContentActivator SetupContentActivator()

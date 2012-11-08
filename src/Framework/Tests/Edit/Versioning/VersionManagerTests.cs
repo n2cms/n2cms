@@ -964,6 +964,65 @@ namespace N2.Tests.Edit.Versioning
 			object.ReferenceEquals(clone.StringList, page.StringList).ShouldBe(false);
 		}
 
+		[Test]
+		public void Links_AreMaintained_WhenCreatinVersions()
+		{
+			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var item = CreateOneItem<PersistableItem1>(0, "item", root);
+			item.EditableLink = root;
+			using (persister)
+			{
+				persister.Save(root);
+				persister.Save(item);
+			}
+
+			PersistableItem1 version;
+			using (persister)
+			{
+				item = persister.Get<PersistableItem1>(item.ID);
+				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
+				version.EditableLink.ShouldBe(root);
+			}
+
+			using (persister)
+			{
+				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				version.EditableLink.ShouldBe(root);
+			}
+		}
+
+		[Test]
+		public void Links_AreMaintained_OnParts_WhenCreatingVersions()
+		{
+			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var item = CreateOneItem<PersistableItem1>(0, "item", root);
+			var part = CreateOneItem<PersistablePart1>(0, "part", item);
+			part.EditableLink = root;
+			
+			using (persister)
+			{
+				persister.Save(root);
+				persister.Save(item);
+				persister.Save(part);
+			}
+
+			PersistableItem1 version;
+			using (persister)
+			{
+				item = persister.Get<PersistableItem1>(item.ID);
+				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
+				((PersistablePart1)version.Children[0]).EditableLink.ShouldBe(root);
+			}
+
+			using (persister)
+			{
+				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				versioner.Publish(persister, version);
+
+				((PersistablePart1)persister.Get(part.ID)).EditableLink.ShouldBe(root);
+			}
+		}
+
 		[Test, Ignore("TODO")]
 		public void ExistingDetails_MaintainTheirIdentity()
 		{

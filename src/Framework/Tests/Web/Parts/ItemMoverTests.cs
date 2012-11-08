@@ -27,6 +27,7 @@ namespace N2.Tests.Web.Parts
 		private ContentVersionRepository versionRepository;
 		private ItemMover mover;
 		private VersionManager versions;
+		ContentActivator activator;
 
 		[SetUp]
 		public override void SetUp()
@@ -34,7 +35,7 @@ namespace N2.Tests.Web.Parts
 			base.SetUp();
 
 			var types = new[] { typeof(Items.PageItem), typeof(Items.DataItem) };
-			versionRepository = TestSupport.CreateVersionRepository(ref persister, types);
+			versionRepository = TestSupport.CreateVersionRepository(ref persister, ref activator, types);
 			versions = TestSupport.SetupVersionManager(persister, versionRepository);
 			mover = new ItemMover(
 				persister,

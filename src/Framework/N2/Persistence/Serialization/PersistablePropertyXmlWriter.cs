@@ -34,10 +34,10 @@ namespace N2.Persistence.Serialization
 					WriteProperty(writer, name, value);
 				}
 
-				foreach (var property in item.GetContentType().GetProperties().Where(pi => pi.IsInterceptable()))
-				{
-					WriteProperty(writer, property.Name, item[property.Name]);
-				}
+				//foreach (var property in item.GetContentType().GetProperties().Where(pi => pi.IsInterceptable()))
+				//{
+				//	WriteProperty(writer, property.Name, item[property.Name]);
+				//}
 			}
 		}
 

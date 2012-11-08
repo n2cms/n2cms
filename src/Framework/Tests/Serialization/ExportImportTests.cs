@@ -520,7 +520,7 @@ namespace N2.Tests.Serialization
             readItem.EditableItem.Name.ShouldBe("EditableItem");
         }
 
-        [Test]
+        [Test, Ignore("Probably enough that this is done when saving")]
         public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
         {
             var item = activator.CreateInstance<XmlableItem2>(null);

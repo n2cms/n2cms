@@ -18,6 +18,7 @@ namespace N2.Management.Tests.Installation
 	{
 		ContentVersionRepository repository;
 		IPersister persister;
+		ContentActivator activator;
 		private ContentItem master;
 		private ContentItem version;
 		private UpgradeVersionWorker worker;
@@ -26,7 +27,7 @@ namespace N2.Management.Tests.Installation
 		public override void SetUp()
 		{
 			base.SetUp();
-			repository = TestSupport.CreateVersionRepository(ref persister, typeof(NormalPage), typeof(NormalItem));
+			repository = TestSupport.CreateVersionRepository(ref persister, ref activator, typeof(NormalPage), typeof(NormalItem));
 			master = CreateOneItem<NormalPage>(0, "root", null);
 			persister.Save(master);
 

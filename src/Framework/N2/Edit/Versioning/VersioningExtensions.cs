@@ -52,6 +52,9 @@ namespace N2.Edit.Versioning
 				// pass on null
 				return null;
 
+			if (value is ContentItem)
+				return value;
+
 			var type = value.GetType();
 			if (!type.IsClass)
 				// pass on value types

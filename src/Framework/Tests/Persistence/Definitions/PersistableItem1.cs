@@ -15,6 +15,9 @@ namespace N2.Tests.Persistence.Definitions
 
 		[EditableDummy]
 		public virtual List<string> StringList { get; set; }
+
+		[EditableLink]
+		public virtual ContentItem EditableLink { get; set; }
 	}
 
 	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
@@ -131,6 +134,9 @@ namespace N2.Tests.Persistence.Definitions
 
 		[EditableDummy]
 		public virtual List<string> StringList { get; set; }
+
+		[EditableLink]
+		public virtual ContentItem EditableLink { get; set; }
 	}
 
 	public class EditableDummyAttribute : AbstractEditableAttribute

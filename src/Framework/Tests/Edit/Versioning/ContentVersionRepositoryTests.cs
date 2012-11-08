@@ -15,17 +15,20 @@ using N2.Tests.Fakes;
 namespace N2.Tests.Edit.Versioning
 {
     [TestFixture]
-    public class ContentVersionRepositoryTests : DatabasePreparingBase
+	public class ContentVersionRepositoryTests : ItemTestsBase
     {
         ContentVersionRepository repository;
 		IPersister persister;
+		ContentActivator activator;
 		private DraftRepository drafts;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-			repository = TestSupport.CreateVersionRepository(ref persister, typeof(Items.NormalPage), typeof(Items.NormalItem));
+			persister = null;
+			activator = null;
+			repository = TestSupport.CreateVersionRepository(ref persister, ref activator, typeof(Items.NormalPage), typeof(Items.NormalItem));
 			drafts = new DraftRepository(repository, new FakeCacheWrapper());
         }
 
@@ -151,7 +154,7 @@ namespace N2.Tests.Edit.Versioning
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
-			var version = page.CloneForVersioningRecursive(engine.Resolve<StateChanger>());
+			var version = page.CloneForVersioningRecursive(new StateChanger());
 			version.VersionIndex = page.VersionIndex + 1;
 			version.VersionOf = page;
 
@@ -201,7 +204,7 @@ namespace N2.Tests.Edit.Versioning
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
-			var version = page.CloneForVersioningRecursive(engine.Resolve<StateChanger>());
+			var version = page.CloneForVersioningRecursive(new StateChanger());
 			version.VersionIndex = page.VersionIndex + 1;
 
 			repository.Save(version);
@@ -386,6 +389,56 @@ namespace N2.Tests.Edit.Versioning
 			var version = repository.GetVersion(master, versionIndex).Version;
 
 			version.Parent.ShouldBe(parent);
+		}
+
+		[Test]
+		public void DefaultValues_AreApplied()
+		{
+			var master = activator.CreateInstance(typeof(Items.NormalPage), null, null, asProxy: true);
+			persister.Save(master);
+
+			var draft = repository.Save(master);
+			repository.Repository.Dispose();
+
+			var savedDraft = (Items.NormalPage)repository.GetVersion(master).Version;
+			savedDraft.Width.ShouldBe(2);
+		}
+
+		[Test]
+		public void References_OnAutoImplementedProperties_AreMaintained()
+		{
+			var root = activator.CreateInstance(typeof(Items.NormalPage), null, null, asProxy : true);
+			persister.Save(root);
+
+			var page = (Items.NormalPage)activator.CreateInstance(typeof(Items.NormalPage), root, null, asProxy: true);
+			page.EditableLink = root;
+			persister.Save(page);
+
+			var draft = repository.Save(page);
+			repository.Repository.Dispose();
+
+			var savedDraft = (Items.NormalPage)repository.GetVersion(page).Version;
+			savedDraft.EditableLink.ShouldBe(persister.Get(root.ID));
+		}
+
+		[Test]
+		public void References_OnAutoImplementedProperties_OnParts_AreMaintained()
+		{
+			var root = activator.CreateInstance(typeof(Items.NormalPage), null, null, asProxy: true);
+			persister.Save(root);
+
+			var page = (Items.NormalPage)activator.CreateInstance(typeof(Items.NormalPage), root, null, asProxy: true);
+			persister.Save(page);
+
+			var part = (Items.NormalItem)activator.CreateInstance(typeof(Items.NormalItem), page, null, asProxy: true);
+			part.EditableLink = root;
+			persister.Save(part);
+
+			var draft = repository.Save(page);
+			repository.Repository.Dispose();
+
+			var savedDraft = (Items.NormalPage)repository.GetVersion(page).Version;
+			((Items.NormalItem)savedDraft.Children[0]).EditableLink.ShouldBe(persister.Get(root.ID));
 		}
     }
 }

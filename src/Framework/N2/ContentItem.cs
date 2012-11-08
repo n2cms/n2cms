@@ -1047,10 +1047,10 @@ namespace N2
 
 		void IUpdatable<ContentItem>.UpdateFrom(ContentItem source)
 		{
-			CloneAutoProperties(source, this);
 			CloneFields(source, this);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
+			CloneAutoProperties(source, this);
 		}
 
 		private void ClearMissingDetails(ContentItem source, ContentItem destination)

@@ -10,6 +10,9 @@ namespace N2.Tests.Edit.Items
 		[EditableNumber]
 		public virtual int Width { get; set; }
 
+		[EditableLink]
+		public virtual ContentItem EditableLink { get; set; }
+
 		public override bool IsPage
 		{
 			get

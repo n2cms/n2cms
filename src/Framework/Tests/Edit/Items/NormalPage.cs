@@ -7,7 +7,10 @@ namespace N2.Tests.Edit.Items
 		[EditableEnum(typeof(WidthType))]
 		public virtual WidthType WidthType { get; set; }
 		
-		[EditableNumber]
+		[EditableNumber(DefaultValue = 2)]
 		public virtual int Width { get; set; }
+
+		[EditableLink]
+		public virtual ContentItem EditableLink { get; set; }
 	}
 }
