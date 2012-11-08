@@ -107,7 +107,7 @@ namespace N2.Web.Mvc.Html
 
         protected override void RenderTemplate(TextWriter writer, ContentItem model)
         {			
-            if (state.IsFlagSet(ControlPanelState.DragDrop))
+            if (state.IsFlagSet(ControlPanelState.DragDrop) && model.Parent == CurrentItem)
             {
 				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
 
