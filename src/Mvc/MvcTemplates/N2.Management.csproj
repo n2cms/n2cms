@@ -608,10 +608,11 @@
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\EditableItemMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersion.ashx.cs">
       <DependentUpon>UpgradeVersion.ashx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Installation\UpgradeVersionsMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpgradeVersionsMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersions.aspx.cs">
       <DependentUpon>UpgradeVersions.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -619,11 +620,11 @@
     <Compile Include="N2\Installation\UpgradeVersions.aspx.designer.cs">
       <DependentUpon>UpgradeVersions.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Installation\FixStateMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\FixStateMigration.cs" />
     <Compile Include="N2\Installation\InstallationUtility.cs" />
-    <Compile Include="N2\Installation\UpdateChildStateMigration.cs" />
-    <Compile Include="N2\Installation\UpdateTranslationKeyMigration.cs" />
-    <Compile Include="N2\Installation\UpdateTemplateKeyMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpdateChildStateMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpdateTranslationKeyMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpdateTemplateKeyMigration.cs" />
     <Compile Include="N2\Installation\Rebase.aspx.cs">
       <DependentUpon>Rebase.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -631,9 +632,9 @@
     <Compile Include="N2\Installation\Rebase.aspx.designer.cs">
       <DependentUpon>Rebase.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />
-    <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
-    <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpdateAlteredPermissionsMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\InsertAncestralTrailMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\UpdateAppPathMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersionWorker.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
     <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs">

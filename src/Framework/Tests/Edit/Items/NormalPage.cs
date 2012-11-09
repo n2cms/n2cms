@@ -12,5 +12,8 @@ namespace N2.Tests.Edit.Items
 
 		[EditableLink]
 		public virtual ContentItem EditableLink { get; set; }
+
+		[EditableItem]
+		public virtual NormalItem EditableItem { get; set; }
 	}
 }

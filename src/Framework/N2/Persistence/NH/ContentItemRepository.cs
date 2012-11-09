@@ -139,6 +139,17 @@ namespace N2.Persistence.NH
 
 		private ICriterion CreateDetailExpression(Parameter p)
 		{
+			if (p.Comparison == Comparison.NotNull)
+				return Subqueries.PropertyIn("ID",
+					DetachedCriteria.For<ContentDetail>()
+						.SetProjection(Projections.Property("EnclosingItem.ID"))
+						.Add(Expression.Eq("Name", p.Name)));
+			if (p.Comparison == Comparison.Null)
+				return Subqueries.PropertyNotIn("ID",
+					DetachedCriteria.For<ContentDetail>()
+						.SetProjection(Projections.Property("EnclosingItem.ID"))
+						.Add(Expression.Eq("Name", p.Name)));
+
 			return Subqueries.PropertyIn("ID",
 				DetachedCriteria.For<ContentDetail>()
 					.SetProjection(Projections.Property("EnclosingItem.ID"))

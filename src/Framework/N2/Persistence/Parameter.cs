@@ -127,9 +127,15 @@ namespace N2.Persistence
                     }
                 }
             }
-            else
-                itemValue = N2.Utility.GetProperty(item, Name);
-            
+			else if (Name == "class")
+			{
+				if (item is Proxying.IInterceptableType)
+					itemValue = (item as Proxying.IInterceptableType).GetContentType().Name;
+				else
+					itemValue = item.GetType().Name;
+			}
+			else
+				itemValue = N2.Utility.GetProperty(item, Name);
             return Compare(itemValue);
 		}
 

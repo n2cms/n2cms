@@ -150,6 +150,7 @@
     <Compile Include="Trash\TrashDeleteRelationsTests.cs" />
     <Compile Include="Trash\TrashHandlerTests.cs" />
     <Compile Include="Trash\TrashTestBase.cs" />
+    <Compile Include="Installation\EditableItemMigrationTest.cs" />
     <Compile Include="Xml\N2XmlWriterFixture.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
