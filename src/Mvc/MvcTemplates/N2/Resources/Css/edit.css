@@ -122,13 +122,9 @@ table.editDetail { border-collapse:collapse; }
 #content .mceButtonDisabled:hover { border-color:#DDD; }
 #content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border-color:#AAA; }
 
-.framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
-.framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
-.framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
-.framed .preview.iconed { background-image:url(../../Resources/icons/magnifier.png); }
-.framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
 .framed .publish.iconed { background-image:url(../../Resources/icons/disk_green.png); }
 .framed .save.iconed { background-image:url(../../Resources/icons/disk_orange.png); }
+.framed .preview.iconed { background-image:url(../../Resources/icons/magnifier.png); }
 .framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
 .framed .unpublish.iconed { background-image:url(../../Resources/icons/clock_stop.png); }
 
@@ -228,7 +224,7 @@ div.tagsinput div { display:block; float: left; }
 		.versionBox td.Draft { background-image:url(../icons/bullet_orange.png); }
 		.versionBox td.Waiting { background-image:url(../icons/clock_play.png); }
 		.versionBox td.Published { background-image:url(../icons/bullet_green.png); }
-		.versionBox td.Unpublished { background-image:url(../icons/bullet_red.png); }
+		.versionBox td.Unpublished { background-image:url(../icons/bullet_stop.png); }
 		.versionBox td.Deleted { background-image:url(../icons/bin.png); }
 	.versionBox .moreVersions { display:block; padding:0 10px 5px 10px; }
 

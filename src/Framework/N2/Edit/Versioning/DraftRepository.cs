@@ -34,7 +34,8 @@ namespace N2.Edit.Versioning
 				return false;
 
 			var drafts = GetPagesWithDrafts();
-			return drafts.ContainsKey(item.ID);
+			return drafts.ContainsKey(item.ID) 
+				&& drafts[item.ID].Saved > item.Updated;
 		}
 
 		public DraftInfo GetDraftInfo(ContentItem item)
@@ -42,9 +43,13 @@ namespace N2.Edit.Versioning
 			if (item.ID == 0)
 				return null;
 
+			var drafts = GetPagesWithDrafts();
 			DraftInfo draft;
-			GetPagesWithDrafts().TryGetValue(item.ID, out draft);
-			return draft;
+			if (drafts.TryGetValue(item.ID, out draft))
+				if (draft.Saved > item.Updated)
+					return draft;
+
+			return null;
 		}
 
 		public IEnumerable<ContentVersion> FindDrafts(int skip = 0, int take = 100)

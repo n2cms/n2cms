@@ -222,8 +222,8 @@ body.framed #nav .leaf .unselectable img, body.framed #nav .leaf-last .unselecta
 body.framed #nav .selectable:hover { outline: solid 1px #ccf; background-color:#eef; }
 
 body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/icons/bullet_key.png) no-repeat 100% 50%; }
-body.framed #nav .unpublished { padding-right:18px; background:transparent url(../../Resources/icons/bullet_red.png) no-repeat 100% 50%; }
-body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/icons/bullet_red.png) no-repeat 100% 50%; }
+body.framed #nav .unpublished { padding-right:18px; background:transparent url(../../Resources/icons/bullet_stop.png) no-repeat 100% 50%; }
+body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/icons/bullet_stop.png) no-repeat 100% 50%; }
 
 body.framed #nav span.meta { margin-left:5px; font-size:.75em; font-weight:normal; }
 body.framed #nav span.language { background-color:#bdb; color:#fff; padding:0 1px;}

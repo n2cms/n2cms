@@ -124,7 +124,7 @@ namespace N2.Edit
 			if (Host.IsStartPage(item))
 				yield return new MetaInfo { Name = "authority", Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
 			var draftInfo = Drafts.GetDraftInfo(item);
-			if (draftInfo != null)
+			if (draftInfo != null && draftInfo.Saved > item.Updated)
 				yield return new MetaInfo { Name = "draft", Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
 		}
 
