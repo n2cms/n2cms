@@ -93,4 +93,12 @@
 	</fieldset>
 	</div>
 	</div>
+
+	<button id="refresh">refresh</button>
+	<script>
+		$("#refresh").click(function () {
+			
+		});
+
+	</script>
 </asp:Content>
