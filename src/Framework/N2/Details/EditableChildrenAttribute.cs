@@ -5,6 +5,8 @@ using N2.Edit.Workflow;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
+using N2.Persistence.Proxying;
+using System.Collections;
 
 namespace N2.Details
 {
@@ -13,7 +15,7 @@ namespace N2.Details
 	/// select what item to add and edit forms of added items.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableChildrenAttribute : AbstractEditableAttribute
+	public class EditableChildrenAttribute : AbstractEditableAttribute, IValueAccessor
 	{
 		private string zoneName;
 
@@ -31,7 +33,7 @@ namespace N2.Details
 			: base(title, name, sortOrder)
 		{
 			this.zoneName = zoneName;
-            PersistAs = Persistence.PropertyPersistenceLocation.Child;
+            PersistAs = Persistence.PropertyPersistenceLocation.ValueAccessor;
 		}
 
 		public string ZoneName
@@ -125,6 +127,18 @@ namespace N2.Details
 			listEditor.Label = Title;
 			container.Controls.Add(listEditor);
 			return listEditor;
+		}
+
+		public object GetValue(object instance, PropertyInfo property, Func<object> backingPropertyGetter)
+		{
+			var interceptable = instance as IInterceptableType;
+			return interceptable.GetChildren(ZoneName ?? Name ?? property.Name);
+		}
+
+		public void SetValue(object instance, PropertyInfo property, Action<object> backingPropertySetter, object value)
+		{
+			var interceptable = instance as IInterceptableType;
+			interceptable.SetChildren(ZoneName ?? Name ?? property.Name, value as IEnumerable);
 		}
 	}
 }

@@ -14,16 +14,20 @@ using N2.Web.Parts;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
 using N2.Tests.Details.Models;
+using N2.Persistence.Proxying;
+using Shouldly;
 
 namespace N2.Tests.Details
 {
     [TestFixture]
     public class EditableChildrenTest
     {
+		private Fakes.FakeEngine engine;
+
         [SetUp]
         public void SetUp()
         {
-            Context.Replace(new Fakes.FakeEngine(new [] { typeof(DecoratedItem) }));
+			Context.Replace(engine = new Fakes.FakeEngine(new[] { typeof(DecoratedItem), typeof(DecoratedItem2) }));
         }
 
         [Test]
@@ -90,10 +94,47 @@ namespace N2.Tests.Details
 
 			Assert.That(editor.AddButtons.Count(), Is.EqualTo(2));
         }
-         
-         
-         
-         
+
+		[Test]
+		public void AssignedChildren_AreAddedToChildCollection_WithPropertyName_AsZoneName()
+		{
+			var attribute = typeof(DecoratedItem).GetProperty("GenericChildren").GetCustomAttributes(typeof(IEditable), false).First() as IEditable;
+			attribute.Name = "GenericChildren";
+
+			var proxyFactory = engine.Resolve<IProxyFactory>();
+			var item = (DecoratedItem)proxyFactory.Create(typeof(DecoratedItem).FullName, 0);
+
+			item.GenericChildren = new[] { new BaseItem(), new SuperficialItem() };
+
+			item.Children.Count.ShouldBe(2);
+			item.Children.All(i => i.ZoneName == "GenericChildren").ShouldBe(true);
+		}
+
+		[Test]
+		public void AssignedChildren_AreAddedToChildCollection_WithCustomZoneName_AsZoneName()
+		{
+			var proxyFactory = engine.Resolve<IProxyFactory>();
+			var item = (DecoratedItem)proxyFactory.Create(typeof(DecoratedItem).FullName, 0);
+
+			item.EditableChildren = new ItemList { new BaseItem(), new SuperficialItem() };
+
+			item.Children.Count.ShouldBe(2);
+			item.Children.All(i => i.ZoneName == "Children").ShouldBe(true);
+		}
+
+		[Test]
+		public void AssignedChildren_AreAddedAsChildren_BeforeSaving_UnproxiedInstance()
+		{
+			var item = new DecoratedItem();
+
+			item.GenericChildren = new [] { new BaseItem(), new SuperficialItem() };
+
+			var proxyFactory = engine.Resolve<IProxyFactory>();
+			proxyFactory.OnSaving(item);
+
+			item.Children.Count.ShouldBe(2);
+			item.Children.All(c => c.ZoneName == "GenericChildren").ShouldBe(true);
+		}
          
         private class FakePartsAdapter : PartsAdapter
         {

@@ -22,16 +22,10 @@ namespace N2.Tests.Details.Models
 	public class DecoratedItem : ContentItem
 	{
 		[EditableChildren("Children", "Children", 100)]
-		public ItemList EditableChildren
-		{
-			get { return null; }
-		}
+		public virtual ItemList EditableChildren { get; set; }
 
-		[EditableChildren("GenericChildren", "GenericChildren", 100)]
-		public IList<BaseItem> GenericChildren
-		{
-			get { return null; }
-		}
+		[EditableChildren]
+		public virtual IList<BaseItem> GenericChildren { get; set; }
 
 		[EditableItem]
 		public virtual OtherItem TheItem { get; set; }
