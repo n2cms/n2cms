@@ -110,12 +110,29 @@ namespace N2.Persistence.Proxying
 
 		private static Action<IInvocation> GetValueAccessorGet(PropertyInfo property, IValueAccessor accessor)
 		{
-			return (invocation) => invocation.ReturnValue = accessor.GetValue(invocation.InvocationTarget, property, () => { invocation.Proceed(); return invocation.ReturnValue; });
+			return (invocation) => invocation.ReturnValue = accessor.GetValue(
+				new ValueAccessorContext 
+				{ 
+					Instance = invocation.InvocationTarget as IInterceptableType, 
+					Property = property, 
+					BackingPropertyGetter = () => { invocation.Proceed(); return invocation.ReturnValue; },
+					BackingPropertySetter = (value) => { throw new NotSupportedException("Setting property not supported while getting"); },
+				}, 
+				property.Name);
 		}
 
 		private static Action<IInvocation> GetInvokeValueAccessorSet(PropertyInfo property, IValueAccessor accessor)
 		{
-			return (invocation) => accessor.SetValue(invocation.InvocationTarget, property, (value) => { invocation.Arguments[0] = value; invocation.Proceed(); }, invocation.Arguments[0]);
+			return (invocation) => accessor.SetValue(
+				new ValueAccessorContext 
+				{ 
+					Instance = invocation.InvocationTarget as IInterceptableType, 
+					Property = property, 
+					BackingPropertyGetter = () => { throw new NotSupportedException("Getting property not supported while setting"); },
+					BackingPropertySetter = (value) => { invocation.Arguments[0] = value; invocation.Proceed(); } 
+				}, 
+				property.Name, 
+				invocation.Arguments[0]);
 		}
 
         private Action<IInvocation> GetGetChild(string propertyName, Type propertyType)

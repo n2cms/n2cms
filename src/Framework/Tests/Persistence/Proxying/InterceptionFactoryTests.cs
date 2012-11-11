@@ -58,18 +58,22 @@ namespace N2.Tests.Persistence.Proxying
 
 		[DetailAccessor]
 		public virtual object DetailAccessor { get; set; }
+
+		[EditableChildren]
+		public virtual IEnumerable<InterceptableItem> EditableChildrenProperty { get; set; }
 	}
 
 	public class BackingPropertyAccessorAttribute : Attribute, IValueAccessor, IInterceptableProperty
 	{
-		public object GetValue(object instance, System.Reflection.PropertyInfo property, Func<object> backingPropertyGetter)
+		public object GetValue(ValueAccessorContext context, string propertyName)
 		{
-			return backingPropertyGetter() ?? DefaultValue;
+			return context.BackingPropertyGetter() ?? DefaultValue;
 		}
 
-		public void SetValue(object instance, System.Reflection.PropertyInfo property, Action<object> backingPropertySetter, object value)
+		public bool SetValue(ValueAccessorContext context, string propertyName, object value)
 		{
-			backingPropertySetter(value);
+			context.BackingPropertySetter(value);
+			return value != null;
 		}
 
 		public PropertyPersistenceLocation PersistAs
@@ -82,16 +86,18 @@ namespace N2.Tests.Persistence.Proxying
 
 	public class DetailAccessorAttribute : Attribute, IValueAccessor, IInterceptableProperty
 	{
-		public object GetValue(object instance, System.Reflection.PropertyInfo property, Func<object> backingPropertyGetter)
+		public object GetValue(ValueAccessorContext context, string propertyName)
 		{
-			ContentItem item = (ContentItem)instance;
-			return item.GetDetail(property.Name);
+			ContentItem item = (ContentItem)context.Instance;
+			return item.GetDetail(propertyName);
 		}
 
-		public void SetValue(object instance, System.Reflection.PropertyInfo property, Action<object> backingPropertySetter, object value)
+		public bool SetValue(ValueAccessorContext context, string propertyName, object value)
 		{
-			ContentItem item = (ContentItem)instance;
-			item.SetDetail(property.Name, value, value.GetType());
+			ContentItem item = (ContentItem)context.Instance;
+			if (value != null)
+				item.SetDetail(propertyName, value, value.GetType());
+			return value != null;
 		}
 
 		public PropertyPersistenceLocation PersistAs
@@ -581,12 +587,37 @@ namespace N2.Tests.Persistence.Proxying
 		}
 
 		[Test]
-		public void BackingProperty_CanBeUsedForStorage()
+		public void BackingProperty_IsUsableForStorage()
 		{
 			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
 			item.BackingPropertyAccessor = "Hello World";
 
 			item.BackingPropertyAccessor.ShouldBe("Hello World");
+		}
+
+		[Test]
+		public void EditableChildren_IsCast_ToTheProperty_CollectionType_WhenEmpty()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			item.EditableChildrenProperty.ShouldBeEmpty();
+		}
+
+		[Test]
+		public void EditableChildren_IsCast_ToTheProperty_CollectionType_WhenChildrenExists()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			new InterceptableItem { ZoneName = "EditableChildrenProperty" }.AddTo(item);
+
+			item.EditableChildrenProperty.Single().ShouldBe(item.Children.Single());
+		}
+
+		[Test]
+		public void EditableChildren_IsCast_ToTheProperty_CollectionType_AfterAssignment()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			item.EditableChildrenProperty = new[] { new InterceptableItem() };
+
+			item.EditableChildrenProperty.Single().ShouldBe(item.Children.Single());
 		}
 
 		[Test, Ignore]

@@ -97,14 +97,14 @@ namespace N2.Persistence.Proxying
 		private bool StoreValueAccessorValue(PropertyInfo property, MethodInfo getter, MethodInfo setter, IValueAccessor accessor, IInterceptableType interceptable)
 		{
 			var value = getter.Invoke(interceptable, null);
-			var existingValue = accessor.GetValue(interceptable, property, () => getter.Invoke(interceptable, null));
-			if (value == null && existingValue == null)
-				return false;
-			else if (value != null && existingValue != null && value == existingValue)
-				return false;
-
-			accessor.SetValue(interceptable, property, (v) => setter.Invoke(interceptable, new[] { v }), value);
-			return true;
+			var context = new ValueAccessorContext
+			{
+				Instance = interceptable,
+				Property = property,
+				BackingPropertyGetter = () => { throw new NotSupportedException("Getting property not supported while setting"); },
+				BackingPropertySetter = (v) => setter.Invoke(interceptable, new[] { v })
+			};
+			return accessor.SetValue(context, property.Name, value);
 		}
 
         private static bool StoreChildrenValue(string propertyName, MethodInfo getter, IInterceptableType interceptable)

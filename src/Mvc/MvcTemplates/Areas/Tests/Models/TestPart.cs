@@ -38,14 +38,20 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 	[PartDefinition(Title = "TestPart [multiple]", SortOrder = 21005)]
 	public class TestPartWithMultipleEditables : TestPart
 	{
-		[EditableMultipleItemSelection(LinkedType = typeof(N2.Templates.Mvc.Models.Pages.Event))]
-		public virtual IEnumerable<N2.Templates.Mvc.Models.Pages.Event> Events { get; set; }
-
 		[EditableMultipleItemSelection(LinkedType = typeof(N2.Templates.Mvc.Models.Pages.ContentPageBase))]
 		public virtual IEnumerable<N2.Templates.Mvc.Models.Pages.ContentPageBase> Pages { get; set; }
 
 		[EditableCheckBoxList]
 		public virtual List<string> EditableCheckBoxList { get; set; }
+
+		[EditableChildren(ZoneName = "EditableChildrenZone")]
+		public virtual IEnumerable<TestPartWithEditableChild> EditableChildren { get; set; }
+
+		[EditableLink]
+		public virtual ContentItem EditableLink { get; set; }
+
+		[EditableItem("EditableItem", 100)]
+		public virtual TestPartWithEditableChild EditableItem { get; set; }
 	}
 
 	[PartDefinition(SortOrder = 21001)]

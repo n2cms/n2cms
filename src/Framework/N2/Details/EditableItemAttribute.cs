@@ -218,22 +218,23 @@ namespace N2.Details
 
 		#endregion
 
-		public object GetValue(object instance, PropertyInfo property, Func<object> backingPropertyGetter)
+		public object GetValue(ValueAccessorContext context, string propertyName)
 		{
-			var item = ((IInterceptableType)instance);
-			return item.GetChild(DefaultChildName ?? property.Name);
+			return context.Instance.GetChild(DefaultChildName ?? propertyName);
 		}
 
-		public void SetValue(object instance, PropertyInfo property, Action<object> backingPropertySetter, object value)
+		public bool SetValue(ValueAccessorContext context, string propertyName, object value)
 		{
-			var item = ((IInterceptableType)instance);
-			var existing = item.GetChild(DefaultChildName ?? property.Name);
+			var item = context.Instance;
+			var existing = item.GetChild(DefaultChildName ?? propertyName);
 			if (existing == null && value != null)
 			{
-				item.SetChild(DefaultChildName ?? property.Name, value);
+				item.SetChild(DefaultChildName ?? propertyName, value);
 				if (!string.IsNullOrEmpty(DefaultChildZoneName))
 					((ContentItem)value).ZoneName = DefaultChildZoneName;
+				return true;
 			}
+			return false;
 		}
 	}
 }

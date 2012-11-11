@@ -7,6 +7,8 @@ using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
 using N2.Persistence.Proxying;
 using System.Collections;
+using System.Linq;
+using N2.Persistence;
 
 namespace N2.Details
 {
@@ -129,16 +131,16 @@ namespace N2.Details
 			return listEditor;
 		}
 
-		public object GetValue(object instance, PropertyInfo property, Func<object> backingPropertyGetter)
+		public object GetValue(ValueAccessorContext context, string propertyName)
 		{
-			var interceptable = instance as IInterceptableType;
-			return interceptable.GetChildren(ZoneName ?? Name ?? property.Name);
+			return context.Instance.GetChildren(ZoneName ?? Name ?? propertyName)
+				.ConvertTo(context.Property.PropertyType, propertyName);
 		}
 
-		public void SetValue(object instance, PropertyInfo property, Action<object> backingPropertySetter, object value)
+		public bool SetValue(ValueAccessorContext context, string propertyName, object value)
 		{
-			var interceptable = instance as IInterceptableType;
-			interceptable.SetChildren(ZoneName ?? Name ?? property.Name, value as IEnumerable);
+			context.Instance.SetChildren(ZoneName ?? Name ?? propertyName, value as IEnumerable);
+			return value != null;
 		}
 	}
 }
