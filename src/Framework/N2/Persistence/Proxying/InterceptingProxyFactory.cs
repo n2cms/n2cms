@@ -79,11 +79,32 @@ namespace N2.Persistence.Proxying
                     else
                         logger.WarnFormat("{0} on {1}.{2} is not an allowed type for Child persistence location. Only property types deriving from ContentItem or IEnmerable<ContentItem> are allowed.", propertyType, pi.DeclaringType.Name, propertyName);
                 }
-                else
-                {
-                    yield return (interceptable) => StoreDetailValue(propertyType, propertyName, getter, interceptable);
-                }
+				else if (property.Attribute.PersistAs == PropertyPersistenceLocation.ValueAccessor)
+				{
+					var accessor = property.Attribute as IValueAccessor;
+					if (accessor == null)
+						throw new InvalidOperationException("The property '" + propertyName + "' has an attribute '" + property.Attribute.GetType() + "' which specifices PropertyPersistenceLocation.ValueAccessor but the attribute doesn't implement IValueAccessor");
+
+					yield return (interceptable) => StoreValueAccessorValue(pi, getter, setter, accessor, interceptable);
+				}
+				else
+				{
+					yield return (interceptable) => StoreDetailValue(propertyType, propertyName, getter, interceptable);
+				}
 			}
+		}
+
+		private bool StoreValueAccessorValue(PropertyInfo property, MethodInfo getter, MethodInfo setter, IValueAccessor accessor, IInterceptableType interceptable)
+		{
+			var value = getter.Invoke(interceptable, null);
+			var existingValue = accessor.GetValue(interceptable, property, () => getter.Invoke(interceptable, null));
+			if (value == null && existingValue == null)
+				return false;
+			else if (value != null && existingValue != null && value == existingValue)
+				return false;
+
+			accessor.SetValue(interceptable, property, (v) => setter.Invoke(interceptable, new[] { v }), value);
+			return true;
 		}
 
         private static bool StoreChildrenValue(string propertyName, MethodInfo getter, IInterceptableType interceptable)

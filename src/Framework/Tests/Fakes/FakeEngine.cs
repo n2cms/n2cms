@@ -12,6 +12,7 @@ using N2.Plugin;
 using N2.Persistence.NH;
 using N2.Details;
 using N2.Persistence.Sources;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Fakes
 {
@@ -26,7 +27,8 @@ namespace N2.Tests.Fakes
 		public FakeEngine(params Type[] types)
 		{
 			AddComponentInstance<ITypeFinder>(new FakeTypeFinder(types));
-			AddComponentInstance<IDefinitionManager>(TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray()));
+			var definitionManager = TestSupport.SetupDefinitions(types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray());
+			AddComponentInstance<IDefinitionManager>(definitionManager);
 			var adapterProvider = new ContentAdapterProvider(this, Resolve<ITypeFinder>());
 			AddComponentInstance<IContentAdapterProvider>(adapterProvider);
 			var itemRepository = new FakeContentItemRepository();
@@ -42,6 +44,11 @@ namespace N2.Tests.Fakes
 			AddComponentInstance(source);
 			AddComponentInstance<IPersister>(new ContentPersister(source, itemRepository));
 			AddComponentInstance<IWebContext>(webContext);
+			var proxyFactory = new InterceptingProxyFactory();
+			AddComponentInstance<IProxyFactory>(proxyFactory);
+			var activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), proxyFactory);
+			AddComponentInstance<ContentActivator>(activator);
+			activator.Initialize(definitionManager.GetDefinitions());
 		}
 
 		#region IEngine Members

@@ -561,6 +561,7 @@
     <Compile Include="Engine\DynamicProxy\InterceptableAttribute.cs" />
     <Compile Include="Persistence\Proxying\InterceptablePropertyAttribute.cs" />
     <Compile Include="Persistence\NH\SubTransaction.cs" />
+    <Compile Include="Persistence\Proxying\IValueAccessor.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\IParameter.cs" />

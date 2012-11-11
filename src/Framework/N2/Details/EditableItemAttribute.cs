@@ -10,6 +10,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
+using N2.Persistence.Proxying;
 
 namespace N2.Details
 {
@@ -26,7 +27,7 @@ namespace N2.Details
 	///		}
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableItemAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
+	public class EditableItemAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable, IValueAccessor
 	{
 		#region Fields
 
@@ -57,7 +58,7 @@ namespace N2.Details
 			DefaultChildName = defaultChildName;
 			DefaultChildZoneName = defaultChildZoneName;
 			SortOrder = sortOrder;
-            PersistAs = PropertyPersistenceLocation.Child;
+            PersistAs = PropertyPersistenceLocation.ValueAccessor;
 		}
 
 		#endregion
@@ -216,5 +217,23 @@ namespace N2.Details
 		}
 
 		#endregion
+
+		public object GetValue(object instance, PropertyInfo property, Func<object> backingPropertyGetter)
+		{
+			var item = ((IInterceptableType)instance);
+			return item.GetChild(DefaultChildName ?? property.Name);
+		}
+
+		public void SetValue(object instance, PropertyInfo property, Action<object> backingPropertySetter, object value)
+		{
+			var item = ((IInterceptableType)instance);
+			var existing = item.GetChild(DefaultChildName ?? property.Name);
+			if (existing == null && value != null)
+			{
+				item.SetChild(DefaultChildName ?? property.Name, value);
+				if (!string.IsNullOrEmpty(DefaultChildZoneName))
+					((ContentItem)value).ZoneName = DefaultChildZoneName;
+			}
+		}
 	}
 }

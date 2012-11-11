@@ -106,6 +106,7 @@ namespace N2.Details
 		public AbstractEditableAttribute()
 		{
 			IsViewEditable = true;
+			PersistAs = PropertyPersistenceLocation.Detail;
 		}
 
 		/// <summary>Initializes a new instance of the AbstractEditableAttribute.</summary>

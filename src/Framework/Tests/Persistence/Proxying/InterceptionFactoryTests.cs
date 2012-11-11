@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Shouldly;
 using N2.Definitions.Static;
+using System;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -51,7 +52,56 @@ namespace N2.Tests.Persistence.Proxying
 
         [EditableChildren]
         public virtual IEnumerable<ContentItem> ChildrenProperty { get; set; }
+
+		[BackingPropertyAccessor]
+		public virtual object BackingPropertyAccessor { get; set; }
+
+		[DetailAccessor]
+		public virtual object DetailAccessor { get; set; }
 	}
+
+	public class BackingPropertyAccessorAttribute : Attribute, IValueAccessor, IInterceptableProperty
+	{
+		public object GetValue(object instance, System.Reflection.PropertyInfo property, Func<object> backingPropertyGetter)
+		{
+			return backingPropertyGetter() ?? DefaultValue;
+		}
+
+		public void SetValue(object instance, System.Reflection.PropertyInfo property, Action<object> backingPropertySetter, object value)
+		{
+			backingPropertySetter(value);
+		}
+
+		public PropertyPersistenceLocation PersistAs
+		{
+			get { return PropertyPersistenceLocation.ValueAccessor; }
+		}
+
+		public object DefaultValue { get; set; }
+	}
+
+	public class DetailAccessorAttribute : Attribute, IValueAccessor, IInterceptableProperty
+	{
+		public object GetValue(object instance, System.Reflection.PropertyInfo property, Func<object> backingPropertyGetter)
+		{
+			ContentItem item = (ContentItem)instance;
+			return item.GetDetail(property.Name);
+		}
+
+		public void SetValue(object instance, System.Reflection.PropertyInfo property, Action<object> backingPropertySetter, object value)
+		{
+			ContentItem item = (ContentItem)instance;
+			item.SetDetail(property.Name, value, value.GetType());
+		}
+
+		public PropertyPersistenceLocation PersistAs
+		{
+			get { return PropertyPersistenceLocation.ValueAccessor; }
+		}
+
+		public object DefaultValue { get; set; }
+	}
+
 	public class InterceptableInheritorItem : InterceptableItem
 	{
 	}
@@ -510,6 +560,33 @@ namespace N2.Tests.Persistence.Proxying
 			bool wasChanged = factory.OnSaving(interceptable);
 
 			Assert.That(wasChanged, Is.False);
+		}
+
+		[Test]
+		public void ValueAccessorAttribute_IsUsed_ToGetValue()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			item.SetDetail("DetailAccessor", "Hello World", typeof(string));
+			
+			item.DetailAccessor.ShouldBe("Hello World");
+		}
+
+		[Test]
+		public void ValueAccessorAttribute_IsUsed_ToSetValue()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			item.DetailAccessor = "Banana";
+
+			item.Details["DetailAccessor"].StringValue.ShouldBe("Banana");
+		}
+
+		[Test]
+		public void BackingProperty_CanBeUsedForStorage()
+		{
+			var item = (InterceptableItem)factory.Create(typeof(InterceptableItem).FullName, 0);
+			item.BackingPropertyAccessor = "Hello World";
+
+			item.BackingPropertyAccessor.ShouldBe("Hello World");
 		}
 
 		[Test, Ignore]

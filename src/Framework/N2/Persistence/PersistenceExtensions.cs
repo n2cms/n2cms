@@ -160,11 +160,11 @@ namespace N2.Persistence
 
         private static bool ContainsInterceptableDeclaration(IEnumerable<IInterceptableProperty> attributes)
         {
-            if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail && a.PersistAs != PropertyPersistenceLocation.DetailCollection && a.PersistAs != PropertyPersistenceLocation.Child))
-                // some property is persisted as something other than detail or detail collection
+			if (attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Ignore || a.PersistAs == PropertyPersistenceLocation.Column))
+                // some property is persisted as ignore, leave this be
                 return false;
-            if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection || a.PersistAs == PropertyPersistenceLocation.Child))
-                // no property is persisted as detail or detail collection
+			if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail || a.PersistAs == PropertyPersistenceLocation.DetailCollection || a.PersistAs == PropertyPersistenceLocation.Child || a.PersistAs == PropertyPersistenceLocation.ValueAccessor))
+                // no property is persisted as detail, detail collection, child or custom, leave this be
                 return false;
 
             return true;
@@ -242,5 +242,5 @@ namespace N2.Persistence
                 tx.Commit();
             }
         }
-    }
+	}
 }

@@ -57,9 +57,18 @@ namespace N2.Persistence.Proxying
 					continue; // only intercept auto-implemented properties
 
 				object defaultValue = GetDefaultValue(propertyType, intercepted.Attribute.DefaultValue);
-
 				var setMethod = property.GetSetMethod();
-				if (location == PropertyPersistenceLocation.Detail)
+
+				if (location == PropertyPersistenceLocation.ValueAccessor)
+				{
+					var accessor = intercepted.Attribute as IValueAccessor;
+					if (accessor == null)
+						throw new InvalidOperationException("The property '" + propertyName + "' has an attribute '" + intercepted.Attribute.GetType() + "' which specifices PropertyPersistenceLocation.ValueAccessor but the attribute doesn't implement IValueAccessor");
+					methods[getMethod] = GetValueAccessorGet(property, accessor);
+					if (setMethod != null)
+						methods[setMethod] = GetInvokeValueAccessorSet(property, accessor);
+				}
+				else if (location == PropertyPersistenceLocation.Detail)
 				{
 					methods[getMethod] = GetGetDetail(propertyName, defaultValue);
 
@@ -97,6 +106,16 @@ namespace N2.Persistence.Proxying
                     methods[setMethod] = GetSetChild(propertyName, propertyType);
                 }
 			}
+		}
+
+		private static Action<IInvocation> GetValueAccessorGet(PropertyInfo property, IValueAccessor accessor)
+		{
+			return (invocation) => invocation.ReturnValue = accessor.GetValue(invocation.InvocationTarget, property, () => { invocation.Proceed(); return invocation.ReturnValue; });
+		}
+
+		private static Action<IInvocation> GetInvokeValueAccessorSet(PropertyInfo property, IValueAccessor accessor)
+		{
+			return (invocation) => accessor.SetValue(invocation.InvocationTarget, property, (value) => { invocation.Arguments[0] = value; invocation.Proceed(); }, invocation.Arguments[0]);
 		}
 
         private Action<IInvocation> GetGetChild(string propertyName, Type propertyType)

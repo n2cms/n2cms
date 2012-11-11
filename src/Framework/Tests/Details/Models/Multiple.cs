@@ -7,6 +7,16 @@ using N2.Collections;
 
 namespace N2.Tests.Details.Models
 {
+
+	public class DecoratedItem2 : DecoratedItem
+	{
+		[EditableItem(DefaultChildName = "OtherChildName")]
+		public virtual OtherItem EditableItemWithDefaultChildName { get; set; }
+
+		[EditableItem(DefaultChildZoneName = "OtherZone")]
+		public virtual OtherItem EditableItemWithDefaultChildZoneName { get; set; }
+	}
+
 	[WithEditableTitle]
 	[WithEditableName]
 	public class DecoratedItem : ContentItem
