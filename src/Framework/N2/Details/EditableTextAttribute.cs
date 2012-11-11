@@ -44,6 +44,7 @@ namespace N2.Details
 		private int columns = 0;
 		private int rows = 0;
 		private TextBoxMode textMode = TextBoxMode.SingleLine;
+        private bool readOnly = false;
 
 		public EditableTextAttribute()
 			: base(null, 50)
@@ -89,6 +90,13 @@ namespace N2.Details
 			get { return maxLength; }
 			set { maxLength = value; }
 		}
+
+        /// <summary>Gets or sets the readonly property of the text box.</summary>
+        public bool ReadOnly
+        {
+            get { return readOnly; }
+            set { readOnly = value; }
+        }
 
 	    #endregion
 
@@ -161,6 +169,7 @@ namespace N2.Details
 			if (MaxLength > 0) tb.MaxLength = MaxLength;
 			if (Columns > 0) tb.Columns = Columns;
 			if (Rows > 0) tb.Rows = Rows;
+            if (readOnly == true) { tb.ReadOnly = true; tb.CssClass = "textEditorReadOnly"; }  
 			tb.TextMode = TextMode;
 		}
 
