@@ -115,11 +115,12 @@ namespace N2
 
         #region Constructor
         /// <summary>Creates a new instance of the ContentItem.</summary>
-		public ContentItem()
+		protected ContentItem()
         {
-            created = DateTime.Now;
-            updated = DateTime.Now;
-            published = DateTime.Now;
+            var currentTime = Utility.CurrentTime();
+            created = currentTime;
+            updated = currentTime;
+            published = currentTime;
         }
         #endregion
 
