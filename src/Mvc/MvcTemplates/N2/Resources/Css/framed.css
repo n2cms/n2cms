@@ -166,7 +166,8 @@ body.framed .nav .selected { font-weight:bold; margin:1px;}
 
 /* tree */
 
-.nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
+.nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px; line-height: 14px; display:inline-block; }
+.nav a img { vertical-align:middle; }
 
 .nav li, .nav ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
 
@@ -184,7 +185,8 @@ body.framed .toggler { left:0; position:absolute; height:16px; width:16px; backg
 body.framed ul.ajax { background: transparent url(../../Resources/Img/treeview/spinner.gif) no-repeat 0 0; height: 16px; display:none; }
 	body.framed ul.ajax li { display:none; }
 
-body.framed .droppable-hover { background-color:#eee; }
+body.framed .ui-draggable-dragging { background-color:#eee; z-index:1000; }
+body.framed .droppable-hover { background-color:#d5d9e4; outline:dotted 1px #3b5383; }
 
 /* NEW */
 body.framed .type { clear:both; position:relative; width:99%; border-top:solid 1px #EED; }
