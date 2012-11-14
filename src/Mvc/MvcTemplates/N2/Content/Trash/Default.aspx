@@ -11,7 +11,7 @@
 		<Columns>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="colTitle">
 				<ItemTemplate>
-					<asp:HyperLink ID="hlDeletedItem" runat="server" NavigateUrl='<%# Eval("Url") %>'>
+					<asp:HyperLink ID="hlDeletedItem" runat="server" NavigateUrl='<%# Eval("Url") %>' data-id='<%# Eval("ID") %>'>
 						<asp:Image runat="server" ImageUrl='<%# Eval("IconUrl") %>' />
 						<%# Eval("Title") %>
 					</asp:HyperLink>
@@ -31,7 +31,7 @@
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:ButtonField Text="Restore" CommandName="Restore" meta:resourceKey="colRestore" />
-			<asp:ButtonField Text="Delete" CommandName="Delete" meta:resourceKey="colDelete" />
+			<asp:ButtonField Text="Delete" CommandName="Purge" meta:resourceKey="colDelete" />
 		</Columns>
 	</asp:GridView>
 </asp:Content>

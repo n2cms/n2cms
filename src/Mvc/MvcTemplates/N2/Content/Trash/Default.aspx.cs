@@ -41,6 +41,10 @@ namespace N2.Edit.Trash
 				}
 				RegisterRefreshNavigationScript(item);
 			}
+			else if (e.CommandName == "Purge")
+			{
+				Engine.Persister.Delete(item);
+			}
 			else
 			{
 				RegisterRefreshNavigationScript(CurrentItem);
