@@ -9,9 +9,6 @@ a img,
 
 /* toolbar */
 
-body.tree { padding-top: 30px; }
-.tree .toolbox { left:0; top:0; position:fixed; width:100%; z-index:100; }
-
 .toolbar { position:fixed; top:0; width:100%; height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; }
 	.toolbar .inner { margin:0 10px;}
 	.toolbar a,
@@ -161,7 +158,7 @@ body.framed a.title { white-space:nowrap; }
 /* navigation */
 
 html.navigation,html.navigation body { height:100%;}
-body.framed .nav .selected { font-weight:bold; margin:1px;}
+body.framed .nav .selected { font-weight:bold; }
 .tree { padding:5px; }
 
 /* tree */

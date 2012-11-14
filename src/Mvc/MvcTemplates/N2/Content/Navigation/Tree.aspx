@@ -24,8 +24,7 @@
 		</style>
     </head>
 <body class="tree framed noneSelected noPermission">
-	<edit:ToolbarPluginDisplay ID="OperationsPlugins" Area="Operations" runat="server" />
-    <form id="form1" runat="server">
+	<form id="form1" runat="server">
 		<div class="FileUpload">
 			<asp:Image ImageUrl="../../Resources/Icons/page_white_get.png" runat="server" style="vertical-align:middle" />
 			<input id="inputLocation" type="hidden" runat="server" class="uploadDirectoryLocation" />
