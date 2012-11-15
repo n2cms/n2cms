@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using N2.Collections;
 using N2.Persistence.Behaviors;
+using N2.Persistence;
+using N2.Security;
 
 namespace N2.Definitions
 {
@@ -50,7 +52,32 @@ namespace N2.Definitions
 				context.UnsavedItems.Add(parent);
 				return;
 			}
-			
+
+			if (Is(initialState, CollectionState.IsLarge))
+			{
+				CollectionState newState = CollectionState.Unknown;
+				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", true) & Parameter.Equal("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsVisiblePublicPages;
+				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", false) & Parameter.Equal("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsHiddenPublicPages;
+				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", true) & Parameter.NotEqual("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsVisibleSecuredPages;
+				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", false) & Parameter.NotEqual("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsHiddenSecuredPages;
+
+				if (parent.Children.FindCount(Parameter.IsNotNull("ZoneName") & Parameter.Equal("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsPublicParts;
+				if (parent.Children.FindCount(Parameter.IsNotNull("ZoneName") & Parameter.NotEqual("AlteredPermissions", Permission.None)) > 0)
+					newState |= CollectionState.ContainsSecuredParts;
+
+				if (newState != initialState)
+				{
+					parent.ChildState = newState;
+					context.UnsavedItems.Add(parent);
+				}
+				return;
+			}
+
 			var reducedState = ReduceExistingStates(null, parent, initialState);
 			if (reducedState == CollectionExtensions.None)
 			{

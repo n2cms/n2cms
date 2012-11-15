@@ -5,6 +5,7 @@ using NHibernate;
 using NHibernate.Engine;
 using NHibernate.Linq;
 using System.Diagnostics;
+using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
@@ -81,6 +82,21 @@ namespace N2.Persistence.NH
 
 			var parent = Owner as ContentItem;
 			return Session.Query<T>().Where(i => i.Parent == parent);
+		}
+
+		public virtual IEnumerable<T> Find(IParameter parameters)
+		{
+			return Session.CreateCriteria<T>(parameters)
+				.Add(Expression.Eq("Parent", Owner))
+				.List<T>();
+		}
+
+		public virtual int FindCount(IParameter parameters)
+		{
+			return (int)Session.CreateCriteria<T>(parameters)
+				.Add(Expression.Eq("Parent", Owner))
+				.SetProjection(Projections.RowCountInt64())
+				.UniqueResult<long>();
 		}
 
 		#endregion

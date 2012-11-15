@@ -17,7 +17,6 @@ namespace N2.Tests.Collections
 		private N2.Definitions.Static.DefinitionMap map;
 
 		private FirstItem root;
-		private FirstItem child1;
 		
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
@@ -31,7 +30,6 @@ namespace N2.Tests.Collections
 			base.SetUp();
 
 			root = CreateOneItem<FirstItem>(0, "root", null);
-			child1 = CreateOneItem<FirstItem>(0, "child1", root);
 
 			invoker = new BehaviorInvoker(persister, map);
 			invoker.Start();
@@ -42,6 +40,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ContainsNavigatablePages_IsSet_ForPublicVisiblePages()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			root.ChildState.ShouldBe(CollectionState.ContainsVisiblePublicPages);
@@ -50,6 +49,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ContainsHiddenPublicPages_IsSet_ForPublicInvisiblePages()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			child1.Visible = false;
 
 			persister.Save(child1);
@@ -60,6 +60,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ContainsSecuredPages_IsSet_ForPagesWithAlteredPermission()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			child1.AlteredPermissions = N2.Security.Permission.Read;
 
 			persister.Save(child1);
@@ -70,6 +71,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ContainsSecuredPages_IsSet_ForInvisiblePagesWithAlteredPermission()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			child1.Visible = false;
 			child1.AlteredPermissions = N2.Security.Permission.Read;
 
@@ -81,6 +83,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void IsEmpty_IsSet_WhenNoChildren()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			child1.ChildState.ShouldBe(CollectionState.IsEmpty);
@@ -89,6 +92,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void Combination_OfChildrenStates_Pages()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -111,6 +115,7 @@ namespace N2.Tests.Collections
 		public void ContainsPublicParts_IsSet_ForNonAuthorized_Parts()
 		{
 			var child2 = CreateOneItem<Items.FirstPart>(0, "child2", root);
+			child2.ZoneName = "TheZone";
 			persister.Save(child2);
 
 			root.ChildState.ShouldBe(CollectionState.ContainsPublicParts);
@@ -120,6 +125,7 @@ namespace N2.Tests.Collections
 		public void ContainsSecuredParts_IsSet_ForAuthorized_Parts()
 		{
 			var child2 = CreateOneItem<Items.FirstPart>(0, "child2", root);
+			child2.ZoneName = "TheZone";
 			child2.AlteredPermissions = N2.Security.Permission.Read;
 			persister.Save(child2);
 
@@ -129,6 +135,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void Combination_OfChildrenStates_PagesAndParts()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -145,9 +152,11 @@ namespace N2.Tests.Collections
 			persister.Save(child4);
 
 			var child5 = CreateOneItem<Items.FirstPart>(0, "child5", root);
+			child5.ZoneName = "TheZone";
 			persister.Save(child5);
 
 			var child6 = CreateOneItem<Items.FirstPart>(0, "child6", root);
+			child6.ZoneName = "TheZone";
 			child6.AlteredPermissions = N2.Security.Permission.Read;
 			persister.Save(child6);
 
@@ -157,6 +166,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ChangingItemState_AffectsCollectionState()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			child1.Visible = false;
@@ -168,6 +178,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void ChangingItemState_AffectsCollectionState_WithoutRemoving_StateInducedByOtherSiblings()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 			persister.Save(CreateOneItem<FirstItem>(0, "child2", root));
 
@@ -182,6 +193,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void RemovingItem_ReduceToLeafNode()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 			persister.Delete(child1);
 
@@ -191,6 +203,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void RemovingItem_ReduceToHiddenState()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -205,6 +218,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void RemovingItem_ReduceToCombinedState()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -221,9 +235,11 @@ namespace N2.Tests.Collections
 			persister.Save(child4);
 
 			var child5 = CreateOneItem<Items.FirstPart>(0, "child5", root);
+			child5.ZoneName = "TheZone";
 			persister.Save(child5);
 
 			var child6 = CreateOneItem<Items.FirstPart>(0, "child6", root);
+			child6.ZoneName = "TheZone";
 			child6.AlteredPermissions = N2.Security.Permission.Read;
 			persister.Save(child6);
 
@@ -237,6 +253,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void RemovingItem_MaiainState_IfEnforcedByOtherItem()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -250,6 +267,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void MovingItem_AddsStateToDestination()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -263,6 +281,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void MovingItem_RemovesState_FromSource()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			child1.Visible = false;
 			persister.Save(child1);
 
@@ -278,6 +297,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void CopyingItem_AddsState_ToDestination()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			persister.Save(child1);
 
 			var child2 = CreateOneItem<FirstItem>(0, "child2", root);
@@ -291,6 +311,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void IsLarge_IsNotAdded_ForSmallChildCollections()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			try
 			{
 				SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;
@@ -311,6 +332,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void IsLarge_IsAdded_ForChildCollections_WithCound_ReachesTreshold()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			try
 			{
 				SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;
@@ -330,6 +352,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void IsLarge_IsRemoved_ForChildCollections_WhenCount_DecreasesBelowTreshold()
 		{
+			var child1 = CreateOneItem<FirstItem>(0, "child1", root);
 			try
 			{
 				SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 3;

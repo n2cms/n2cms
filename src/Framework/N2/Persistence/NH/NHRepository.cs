@@ -206,119 +206,19 @@ namespace N2.Persistence.NH
 		/// <returns>Entities with matching values.</returns>
 		public IEnumerable<TEntity> Find(IParameter parameters)
 		{
-			var expr = CreateCriterion(parameters);
-			if (parameters is ParameterCollection)
-			{
-				ICriteria crit = CreateCollectionCriteria(expr, parameters as ParameterCollection);
-				return crit.List<TEntity>();
-			}
-			
-			return FindAll(expr);
+			var crit = sessionProvider.OpenSession.Session.CreateCriteria<TEntity>(parameters);
+			return crit.List<TEntity>();
 		}
 
 		public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
 		{
-			var expr = CreateCriterion(parameters);
-			ICriteria crit = (parameters is ParameterCollection)
-				? CreateCollectionCriteria(expr, parameters as ParameterCollection)
-				: CreateCriteria(expr);
-
-			var projection = Projections.ProjectionList();
-			foreach(var property in properties)
-				projection.Add(Projections.Property(property));
-
-			if (properties.Length == 1)
-				return crit.SetProjection(projection)
-					.List<object>()
-					.Select(col => new Dictionary<string, object>() { { properties[0], col } });
-			
-			return crit.SetProjection(projection)
-				.List<System.Collections.IList>()
-				.Select(l =>
-					{
-						var row = new Dictionary<string, object>();
-						for (int i = 0; i < properties.Length; i++)
-							row[properties[i]] = l[i];
-						return row;
-					});
-		}
-
-		private ICriteria CreateCriteria(ICriterion expr)
-		{
-			return RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, new[] { expr });
-		}
-
-		private ICriteria CreateCollectionCriteria(ICriterion expr, ParameterCollection pc)
-		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(SessionProvider.OpenSession.Session, new[] { expr });
-			if (pc.Order != null)
-			{
-				crit.AddOrder(new NHibernate.Criterion.Order(pc.Order.Property, !pc.Order.Descending));
-			}
-			if (pc.Range != null)
-			{
-				if (pc.Range.Skip > 0)
-					crit.SetFirstResult(pc.Range.Skip);
-				if (pc.Range.Take > 0)
-					crit.SetMaxResults(pc.Range.Take);
-			}
-			return crit;
+			var crit = sessionProvider.OpenSession.Session.CreateCriteria<TEntity>(parameters);
+			return crit.SelectProperties(properties);
 		}
 
 		protected virtual ICriterion CreateCriterion(IParameter parameter)
 		{
-			if (parameter is Parameter)
-			{
-				var p = parameter as Parameter;
-				return CreateExpression(p.Name, p.Value, p.Comparison);
-			}
-			else if (parameter is ParameterCollection)
-			{
-				var pc = parameter as ParameterCollection;
-				var x = pc.Operator == Operator.And
-					? (Junction)Expression.Conjunction()
-					: (Junction)Expression.Disjunction();
-				foreach (var p in pc)
-					x.Add(CreateCriterion(p));
-
-				return x;
-			}
-			throw new NotImplementedException();
-		}
-
-		protected static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
-		{
-			if (value == null)
-				return Expression.IsNull(propertyName);
-
-			switch (comparisonType)
-			{
-				case Comparison.Equal:
-					return Expression.Eq(propertyName, value);
-				case Comparison.GreaterOrEqual:
-					return Expression.Ge(propertyName, value);
-				case Comparison.GreaterThan:
-					return Expression.Gt(propertyName, value);
-				case Comparison.LessOrEqual:
-					return Expression.Le(propertyName, value);
-				case Comparison.LessThan:
-					return Expression.Lt(propertyName, value);
-				case Comparison.Like:
-					return Expression.Like(propertyName, value);
-				case Comparison.NotEqual:
-					return Expression.Not(Expression.Eq(propertyName, value));
-				case Comparison.NotLike:
-					return Expression.Not(Expression.Like(propertyName, value));
-				case Comparison.NotNull:
-					return Expression.IsNotNull(propertyName);
-				case Comparison.Null:
-					return Expression.IsNull(propertyName);
-			}
-			
-			if (value is string)
-				return Expression.Like(propertyName, value);
-
-			return Expression.Eq(propertyName, value);
+			return parameter.CreateCriterion();
 		}
 
 		/// <summary>
@@ -345,13 +245,9 @@ namespace N2.Persistence.NH
 		/// <returns></returns>
 		public long Count(IParameter parameters)
 		{
-			var expr = CreateCriterion(parameters);
-			ICriteria crit = (parameters is ParameterCollection)
-				? CreateCollectionCriteria(expr, parameters as ParameterCollection)
-				: CreateCriteria(expr);
-
-			return crit.SetProjection(Projections.Count("ID"))
-				.UniqueResult<int>();
+			var crit = SessionProvider.OpenSession.Session.CreateCriteria<TEntity>(parameters);
+			return crit.SetProjection(Projections.RowCountInt64())
+				.UniqueResult<long>();
 		}
 
 		/// <summary>Closes the database session.</summary>

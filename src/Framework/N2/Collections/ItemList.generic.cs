@@ -227,5 +227,16 @@ namespace N2.Collections
 		}
 
 		#endregion
+
+		#region IContentItemList<T> Members
+		public IEnumerable<T> Find(Persistence.IParameter parameters)
+		{
+			return this.Where(parameters.IsMatch);
+		}
+		public int FindCount(Persistence.IParameter parameters)
+		{
+			return this.Where(parameters.IsMatch).Count();
+		}
+		#endregion
 	}
 }

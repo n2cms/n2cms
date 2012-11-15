@@ -25,6 +25,11 @@ namespace N2.Persistence.NH
 
 		#region IList overrides
 
+		new protected ISession Session
+		{
+			get { return (ISession)base.Session; }
+		}
+
 		new public int Count
 		{
 			get
@@ -32,7 +37,7 @@ namespace N2.Persistence.NH
 				if (this.WasInitialized)
 					return base.Count;
 
-                return Convert.ToInt32(((ISession)Session).CreateFilter(this, "select count(*)")
+                return Convert.ToInt32(Session.CreateFilter(this, "select count(*)")
                     .SetCacheable(true).UniqueResult());
 			}
 		}
@@ -110,7 +115,7 @@ namespace N2.Persistence.NH
 		{
 			if (WasInitialized) return List.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 
-            return ((ISession)Session).CreateFilter(this, "where Name like :name")
+            return Session.CreateFilter(this, "where Name like :name")
 				.SetParameter("name", name)
                 .SetCacheable(true)
 				.SetMaxResults(1)
@@ -130,7 +135,7 @@ namespace N2.Persistence.NH
 					.AsQueryable();
 
 			//return Query().Skip(skip).Take(take);
-			return ((ISession)Session)
+			return Session
 				.CreateFilter(this, "")
 				.SetFirstResult(skip)
 				.SetMaxResults(take)

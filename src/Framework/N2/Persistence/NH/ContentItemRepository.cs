@@ -86,25 +86,7 @@ namespace N2.Persistence.NH
 				.Enumerable<ContentItem>();
 		}
 
-		//private void DeleteReferencesRecursive(ContentItem itemNoMore)
-		//{
-		//    string itemTrail = Utility.GetTrail(itemNoMore);
-		//    var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
-		//        .SelectMany(i => linkRepository.Find(new Parameter("LinkedItem", i), new Parameter("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
-		//        .Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
-		//        .ToList();
-
-		//    Engine.Logger.Info("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
-
-		//    foreach (ContentDetail link in inboundLinks)
-		//    {
-		//        linkRepository.Delete(link);
-		//        link.AddTo((DetailCollection)null);
-		//    }
-		//    linkRepository.Flush();
-		//}
-
-		public int RemoveReferencesToRecursive(ContentItem target)
+		public virtual int RemoveReferencesToRecursive(ContentItem target)
 		{
 			var s = Session;
 			var details = s.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
@@ -126,35 +108,6 @@ namespace N2.Persistence.NH
 			s.Flush();
 
 			return count;
-		}
-
-		protected override ICriterion CreateCriterion(IParameter parameter)
-		{
-			var p = parameter as Parameter;
-			if (p != null && p.IsDetail)
-			    return CreateDetailExpression(p);
-			
-			return base.CreateCriterion(parameter);
-		}
-
-		private ICriterion CreateDetailExpression(Parameter p)
-		{
-			if (p.Comparison == Comparison.NotNull)
-				return Subqueries.PropertyIn("ID",
-					DetachedCriteria.For<ContentDetail>()
-						.SetProjection(Projections.Property("EnclosingItem.ID"))
-						.Add(Expression.Eq("Name", p.Name)));
-			if (p.Comparison == Comparison.Null)
-				return Subqueries.PropertyNotIn("ID",
-					DetachedCriteria.For<ContentDetail>()
-						.SetProjection(Projections.Property("EnclosingItem.ID"))
-						.Add(Expression.Eq("Name", p.Name)));
-
-			return Subqueries.PropertyIn("ID",
-				DetachedCriteria.For<ContentDetail>()
-					.SetProjection(Projections.Property("EnclosingItem.ID"))
-					.Add(Expression.Eq("Name", p.Name))
-					.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), p.Value, p.Comparison)));
 		}
 	}
 
