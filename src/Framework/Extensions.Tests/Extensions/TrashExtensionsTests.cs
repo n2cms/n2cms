@@ -55,6 +55,10 @@ namespace N2.Extensions.Tests.Extensions
 				get { throw new NotImplementedException(); }
 			}
 
+			public bool AsyncTrashPurging
+			{
+				get { throw new NotImplementedException(); }
+			}
 			#endregion
 		}
 	}

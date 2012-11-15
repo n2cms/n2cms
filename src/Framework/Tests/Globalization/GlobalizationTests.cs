@@ -538,6 +538,10 @@ namespace N2.Tests.Globalization
 				get { return TrashPurgeInterval.Monthly; }
 			}
 
+			public bool AsyncTrashPurging
+			{
+				get { throw new NotImplementedException(); }
+			}
 			#endregion
 		}
 

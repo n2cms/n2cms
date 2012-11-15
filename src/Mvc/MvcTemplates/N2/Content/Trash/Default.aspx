@@ -6,6 +6,9 @@
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<n2:ItemDataSource id="idsTrash" runat="server" />
 	<h1>Trash</h1>
+	
+	<asp:HyperLink ID="hlRunning" runat="server" Text="A delete task is in progress" CssClass="info" Visible="False" meta:resourcekey="hlRunning"/>
+
 	<asp:CustomValidator ID="cvRestore" CssClass="validator" ErrorMessage="An item with the same name already exists at the previous location." runat="server" Display="Dynamic" />
 	<asp:GridView ID="gvTrash" DataKeyNames="ID" runat="server" DataSourceID="idsTrash" AutoGenerateColumns="false" OnRowCommand="gvTrash_RowCommand" EmptyDataText="No items in trash" CssClass="gv" AlternatingRowStyle-CssClass="alt">
 		<Columns>

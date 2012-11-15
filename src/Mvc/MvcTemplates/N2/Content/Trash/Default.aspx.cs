@@ -1,6 +1,8 @@
 using System;
 using System.Web.UI.WebControls;
 using N2.Web.UI;
+using N2.Management.Content.Trash;
+using N2.Web;
 
 namespace N2.Edit.Trash
 {
@@ -19,7 +21,20 @@ namespace N2.Edit.Trash
 
 			this.hlCancel.NavigateUrl = Engine.UrlParser.StartPage.Url;
 			this.cvRestore.IsValid = true;
-			this.btnClear.Enabled = CurrentItem.Children.Count > 0;
+
+			if (Convert.ToBoolean(Request["showStatus"]))
+			{
+				btnClear.Enabled = false;
+				var status = Engine.Resolve<AsyncTrashPurger>().Status;
+				hlRunning.NavigateUrl = Request.RawUrl;
+				hlRunning.Visible = status.IsRunning;
+				if (status.IsRunning)
+					hlRunning.Text = string.Format(GetLocalResourceString("hlRunning", "A delete task is in progress. Deleted {0} out of {1} items below '{2}'. Click to refresh."), status.Progress.Deleted, status.Progress.Total, status.Title);
+				else
+					RegisterRefreshNavigationScript(CurrentItem);
+			}
+			else
+				this.btnClear.Enabled = CurrentItem.Children.Count > 0;
 		}
 
 		protected void gvTrash_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -43,7 +58,14 @@ namespace N2.Edit.Trash
 			}
 			else if (e.CommandName == "Purge")
 			{
-				Engine.Persister.Delete(item);
+				if (Trash.TrashContainer != null && Trash.TrashContainer.AsyncTrashPurging)
+				{
+					Engine.Resolve<AsyncTrashPurger>().BeginPurge(item.ID);
+					Response.Redirect(Request.RawUrl.ToUrl().SetQueryParameter("showStatus", "true"));
+				}
+				else
+					Engine.Persister.Delete(item);
+
 			}
 			else
 			{
@@ -53,9 +75,17 @@ namespace N2.Edit.Trash
 
 		protected void btnClear_Click(object sender, EventArgs e)
 		{
-			Trash.PurgeAll();
-			this.DataBind();
-			RegisterRefreshNavigationScript(this.CurrentItem);
+			if (Trash.TrashContainer != null && Trash.TrashContainer.AsyncTrashPurging)
+			{
+				Engine.Resolve<AsyncTrashPurger>().BeginPurgeAll();
+				Response.Redirect(Request.RawUrl.ToUrl().SetQueryParameter("showStatus", "true"));
+			}
+			else
+			{
+				Trash.PurgeAll();
+				this.DataBind();
+				RegisterRefreshNavigationScript(this.CurrentItem);
+			}
 		}
 
 		#region RegisterRefreshNavigationScript

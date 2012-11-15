@@ -209,23 +209,60 @@ namespace N2.Persistence.NH
 			var expr = CreateCriterion(parameters);
 			if (parameters is ParameterCollection)
 			{
-				var pc = parameters as ParameterCollection;
-				ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(SessionProvider.OpenSession.Session, new[] { expr });
-				if (pc.Order != null)
-				{
-					crit.AddOrder(new NHibernate.Criterion.Order(pc.Order.Property, !pc.Order.Descending));
-				}
-				if (pc.Range != null)
-				{
-					if (pc.Range.Skip > 0)
-						crit.SetFirstResult(pc.Range.Skip);
-					if (pc.Range.Take > 0)
-						crit.SetMaxResults(pc.Range.Take);
-				}
+				ICriteria crit = CreateCollectionCriteria(expr, parameters as ParameterCollection);
 				return crit.List<TEntity>();
 			}
 			
 			return FindAll(expr);
+		}
+
+		public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
+		{
+			var expr = CreateCriterion(parameters);
+			ICriteria crit = (parameters is ParameterCollection)
+				? CreateCollectionCriteria(expr, parameters as ParameterCollection)
+				: CreateCriteria(expr);
+
+			var projection = Projections.ProjectionList();
+			foreach(var property in properties)
+				projection.Add(Projections.Property(property));
+
+			if (properties.Length == 1)
+				return crit.SetProjection(projection)
+					.List<object>()
+					.Select(col => new Dictionary<string, object>() { { properties[0], col } });
+			
+			return crit.SetProjection(projection)
+				.List<System.Collections.IList>()
+				.Select(l =>
+					{
+						var row = new Dictionary<string, object>();
+						for (int i = 0; i < properties.Length; i++)
+							row[properties[i]] = l[i];
+						return row;
+					});
+		}
+
+		private ICriteria CreateCriteria(ICriterion expr)
+		{
+			return RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, new[] { expr });
+		}
+
+		private ICriteria CreateCollectionCriteria(ICriterion expr, ParameterCollection pc)
+		{
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(SessionProvider.OpenSession.Session, new[] { expr });
+			if (pc.Order != null)
+			{
+				crit.AddOrder(new NHibernate.Criterion.Order(pc.Order.Property, !pc.Order.Descending));
+			}
+			if (pc.Range != null)
+			{
+				if (pc.Range.Skip > 0)
+					crit.SetFirstResult(pc.Range.Skip);
+				if (pc.Range.Take > 0)
+					crit.SetMaxResults(pc.Range.Take);
+			}
+			return crit;
 		}
 
 		protected virtual ICriterion CreateCriterion(IParameter parameter)
@@ -299,7 +336,22 @@ namespace N2.Persistence.NH
 		/// <returns></returns>
 		public long Count()
 		{
-			return Count(null);
+			return Count((DetachedCriteria)null);
+		}
+
+		/// <summary>
+		/// Counts the overall number of instances.
+		/// </summary>
+		/// <returns></returns>
+		public long Count(IParameter parameters)
+		{
+			var expr = CreateCriterion(parameters);
+			ICriteria crit = (parameters is ParameterCollection)
+				? CreateCollectionCriteria(expr, parameters as ParameterCollection)
+				: CreateCriteria(expr);
+
+			return crit.SetProjection(Projections.Count("ID"))
+				.UniqueResult<int>();
 		}
 
 		/// <summary>Closes the database session.</summary>

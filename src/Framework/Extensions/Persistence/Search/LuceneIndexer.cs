@@ -191,7 +191,7 @@ namespace N2.Persistence.Search
             doc.Add(new Field(Properties.Updated, DateTools.DateToString(item.Updated.ToUniversalTime(), DateTools.Resolution.SECOND), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Published, item.Published.HasValue ? DateTools.DateToString(item.Published.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new Field(Properties.Expires, item.Expires.HasValue ? DateTools.DateToString(item.Expires.Value.ToUniversalTime(), DateTools.Resolution.SECOND) : "", Field.Store.YES, Field.Index.NOT_ANALYZED));
-			if (item.IsPage)
+			if (item.IsPage && item.State != ContentState.Deleted)
 			{
 				try
 				{

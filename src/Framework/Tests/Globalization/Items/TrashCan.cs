@@ -16,6 +16,11 @@ namespace N2.Tests.Globalization.Items
 			get { throw new NotImplementedException(); }
 		}
 
+		public bool AsyncTrashPurging
+		{
+			get { throw new NotImplementedException(); }
+		}
+
 		#endregion
 	}
 }

@@ -79,6 +79,13 @@ namespace N2.Persistence
 		IEnumerable<TEntity> Find(IParameter parameters);
 
 		/// <summary>
+		/// Finds entities from persistence store with matching parameter expression.
+		/// </summary>
+		/// <param name="parameters">The parameters to match.</param>
+		/// <returns>Entities with matching values.</returns>
+		IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties);
+
+		/// <summary>
 		/// Register the entity for deletion when the unit of work
 		/// is completed. 
 		/// </summary>
@@ -103,6 +110,13 @@ namespace N2.Persistence
 		/// </summary>
 		/// <returns></returns>
 		long Count();
+
+		/// <summary>
+		/// Counts the overall number of instances.
+		/// </summary>
+		/// <param name="parameters">The parameters to match.</param>
+		/// <returns></returns>
+		long Count(IParameter parameters);
 
 		/// <summary>Flushes changes made to items in this repository.</summary>
 		void Flush();

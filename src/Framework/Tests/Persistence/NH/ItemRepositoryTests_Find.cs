@@ -200,5 +200,59 @@ namespace N2.Tests.Persistence.NH
 
 			results.Single().ShouldBe(grandchild1);
 		}
+
+		[Test]
+		public void Select_SingleProperty()
+		{
+			var results = repository.Select(Parameter.LessThan("Age", 2.0).Detail(), "ID");
+
+			results.Single()["ID"].ShouldBe(grandchild1.ID);
+		}
+
+		[Test]
+		public void Select_MultipleProperties()
+		{
+			var result = repository.Select(Parameter.LessThan("Age", 2.0).Detail(), "ID", "Title").Single();
+
+			result["ID"].ShouldBe(grandchild1.ID);
+			result["Title"].ShouldBe(grandchild1.Title);
+		}
+
+		[Test]
+		public void Select_SingleProperty_MultipleResults()
+		{
+			var results = repository.Select(Parameter.Equal("ID", grandchild1.ID) | Parameter.Equal("ID", child1.ID), "ID");
+
+			results.Count().ShouldBe(2);
+			results.Any(r => (int)r["ID"] == grandchild1.ID).ShouldBe(true);
+			results.Any(r => (int)r["ID"] == child1.ID).ShouldBe(true);
+		}
+
+		[Test]
+		public void Select_MultipleProperties_MultipleResults()
+		{
+			var results = repository.Select(Parameter.Equal("ID", grandchild1.ID) | Parameter.Equal("ID", child1.ID), "ID", "Title");
+
+			results.Count().ShouldBe(2);
+			var gc = results.Single(r => (int)r["ID"] == grandchild1.ID);
+			gc["ID"].ShouldBe(grandchild1.ID);
+			gc["Title"].ShouldBe(grandchild1.Title);
+
+			var c = results.Single(r => (int)r["ID"] == child1.ID);
+			c["ID"].ShouldBe(child1.ID);
+			c["Title"].ShouldBe(child1.Title);
+		}
+
+		[Test]
+		public void Count_SingleResult()
+		{
+			repository.Count(Parameter.LessThan("Age", 2.0).Detail()).ShouldBe(1);
+		}
+
+		[Test]
+		public void Count_MultipleResults()
+		{
+			repository.Count(Parameter.Equal("ID", grandchild1.ID) | Parameter.Equal("ID", child1.ID)).ShouldBe(2);
+		}
 	}
 }

@@ -36,6 +36,13 @@ namespace N2.Edit.Trash
 			set { SetDetail("PurgeInterval", value, TrashPurgeInterval.Monthly); }
 		}
 
+		[EditableCheckBox("Empty trash asynchrnously", 100)]
+		public virtual bool AsyncTrashPurging
+		{
+			get { return GetDetail("AsyncTrashPurging", true); }
+			set { SetDetail("AsyncTrashPurging", value, true); }
+		}
+
 		public override string IconUrl
 		{
 			get

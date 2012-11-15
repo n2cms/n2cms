@@ -302,5 +302,22 @@ namespace N2.Tests.Fakes
 		{
             return database.Values.Where(item => parameters.IsMatch(item));
 		}
+		
+		public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
+		{
+			return Find(parameters)
+				.Select(r =>
+				{
+					var row = new Dictionary<string, object>();
+					for (int i = 0; i < properties.Length; i++)
+						row[properties[i]] = N2.Utility.GetProperty(r, properties[i]);
+					return row;
+				});
+		}
+
+		public long Count(IParameter parameters)
+		{
+			return Find(parameters).Count();
+		}
 	}
 }

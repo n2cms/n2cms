@@ -2,6 +2,17 @@ using System;
 
 namespace N2.Edit.Trash
 {
+	public class PurgingStatus
+	{
+		public int Deleted { get; set; }
+		public int Remaining { get; set; }
+		
+		public int Total
+		{
+			get { return Deleted + Remaining; }
+		}
+	}
+
     /// <summary>
     /// Service interface implemented by the trash handler implementation.
     /// </summary>
@@ -44,6 +55,8 @@ namespace N2.Edit.Trash
 		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
 		void PurgeOldItems();
 
-		void PurgeAll();
+		void PurgeAll(Action<PurgingStatus> onProgress = null);
+
+		void Purge(ContentItem itemToPurge, Action<PurgingStatus> onProgress = null);
 	}
 }

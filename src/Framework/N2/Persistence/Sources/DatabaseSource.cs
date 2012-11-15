@@ -5,6 +5,7 @@ using System.Text;
 using N2.Web;
 using System.Diagnostics;
 using N2.Collections;
+using N2.Engine;
 
 namespace N2.Persistence.Sources
 {
@@ -13,6 +14,7 @@ namespace N2.Persistence.Sources
 	{
 		private IHost host;
 		private IContentItemRepository repository;
+		Logger<DatabaseSource> logger;
 
 		public DatabaseSource(IHost host, IContentItemRepository repository)
 		{
@@ -125,45 +127,23 @@ namespace N2.Persistence.Sources
 
 		private void DeleteRecursive(ContentItem itemToDelete)
 		{
-			DeletePreviousVersions(itemToDelete);
-
-			try
+			using (logger.Indent())
 			{
-				Trace.Indent();
 				foreach (ContentItem child in itemToDelete.Children.ToList())
 					DeleteRecursive(child);
-			}
-			finally
-			{
-				Trace.Unindent();
 			}
 
 			itemToDelete.AddTo(null);
 
-			Trace.TraceInformation("DatabaseSource.DeleteRecursive " + itemToDelete);
+			logger.InfoFormat("Deleting {0}", itemToDelete);
 			repository.Delete(itemToDelete);
-		}
-
-		private void DeletePreviousVersions(ContentItem itemNoMore)
-		{
-			// TODO
-			//var previousVersions = repository.Find("VersionOf.ID", itemNoMore.ID);
-
-			//int count = 0;
-			//foreach (ContentItem version in previousVersions)
-			//{
-			//    repository.Delete(version);
-			//    count++;
-			//}
-
-			//Trace.TraceInformation("DatabaseSource.DeletePreviousVersions " + count + " of " + itemNoMore);
 		}
 
 		public override ContentItem Move(ContentItem source, ContentItem destination)
 		{
 			using (var tx = repository.BeginTransaction())
 			{
-				Trace.TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
+				logger.Info("ContentPersister.MoveAction " + source + " to " + destination);
 				source.AddTo(destination);
 				foreach (var descendant in UpdateAncestralTrailRecursive(source, destination))
 				{
@@ -188,7 +168,7 @@ namespace N2.Persistence.Sources
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)
 		{
-			Trace.TraceInformation("ContentPersister.Copy " + source + " to " + destination);
+			logger.Info("ContentPersister.Copy " + source + " to " + destination);
 			ContentItem cloned = source.Clone(includeChildren:true);
 			if (cloned.Name == source.ID.ToString())
 				cloned.Name = null;

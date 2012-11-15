@@ -27,6 +27,11 @@ namespace N2.Persistence
 			return new ParameterCollection(parameter).Take(take);
 		}
 
+		public static ParameterCollection OrderBy(this Parameter parameter, string expression)
+		{
+			return new ParameterCollection(parameter).OrderBy(expression);
+		}
+
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work
 		/// is completed. (INSERT or UPDATE)

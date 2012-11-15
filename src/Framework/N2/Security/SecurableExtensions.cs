@@ -5,6 +5,7 @@ using System.Collections;
 using System;
 using N2.Engine.Globalization;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Security
 {
@@ -29,13 +30,13 @@ namespace N2.Security
 		{
 			bool previous = security.ScopeEnabled;
 			security.ScopeEnabled = !isDisabled;
-			Debug.WriteLine("Disabling security " + isDisabled + " {");
-			Debug.Indent();
+			Logger.Debug("Disabling security " + isDisabled + " [");
+			Logger.Indent();
 			return new Scope(() => 
 			{
 				security.ScopeEnabled = previous;
-				Debug.Unindent();
-				Debug.WriteLine("} Reenabling security " + previous);
+				Logger.Unindent();
+				Logger.Debug("] Reenabling security " + previous);
 			});
 		}
 

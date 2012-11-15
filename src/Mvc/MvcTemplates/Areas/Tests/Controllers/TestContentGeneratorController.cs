@@ -11,6 +11,9 @@ using N2.Persistence;
 using N2.Web.Mvc;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Security;
+using N2.Edit.Versioning;
+using N2.Engine;
+using System.Threading;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -55,6 +58,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			Engine.Persister.Save(part);
 
+			ViewData["RemainingItems"] = remainingItems;
 			return View("Index");
 		}
 
@@ -64,59 +68,154 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			return RedirectToParentPage();
 		}
 
-		public ActionResult Random(string name, int amount, string discriminator)
+		public ActionResult AddVersions()
 		{
-			var definition = definitions.GetDefinition(discriminator);
+			foreach (var item in Content.Traverse.DescendantPages())
+			{
+				var clone = item.Clone(false);
+				clone.State = ContentState.Draft;
+				var text = clone as IContentPage;
+				if (text != null)
+					text.Text += ".";
 
-			List<ContentItem> created = new List<ContentItem> { CurrentPage };
+				Engine.Resolve<IVersionManager>().ReplaceVersion(item, clone, true);
+
+				HttpContext.Response.Write(item + "<br/>");
+				HttpContext.Response.Flush();
+			}
+
+			return base.Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
+		}
+
+		static int remainingItems;
+		public ActionResult Random(string name, int amount, string discriminator, string relate, string background)
+		{
+			var rootID = CurrentPage.ID;
+			if (background == "on")
+			{
+				Engine.Resolve<IWorker>().DoWork(() =>
+				{
+					Interlocked.Add(ref remainingItems, amount);
+					RandomCreator(rootID, name, amount, discriminator, relate == "on", true, (n) =>
+					{
+						Interlocked.Decrement(ref remainingItems);
+					});
+				});
+				return RedirectToParentPage();
+			}
+			else
+			{
+				int i = 0;
+				RandomCreator(rootID, name, amount, discriminator, relate == "on", false, (n) => 
+				{
+					i++;
+					HttpContext.Response.Write(n + " " + i + ", ");
+					if (i % 10 == 0)
+						HttpContext.Response.Write("<br/>");
+					HttpContext.Response.Flush();
+				});
+				return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
+			}
+		}
+
+		public static void RandomCreator(int containerID, string name, int amount, string discriminator, bool relate, bool background, Action<string> callback)
+		{
+			var definition = Context.Current.Definitions.GetDefinition(discriminator);
+
+			List<int> created = new List<int> { containerID };
 
 			var start = DateTime.Now;
 
-			using (var tx = Engine.Persister.Repository.BeginTransaction())
+			for (int i = 0; i < amount; i++)
 			{
-				for (int i = 0; i < amount; i++)
+				var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i, created);
+
+				if (relate)
 				{
-					var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i, created);
-					Engine.Persister.Save(child);
-					created.Add(child);
-					HttpContext.Response.Write(name + " " + i + "<br/>");
-					HttpContext.Response.Flush();
+					var sibling = child.Parent.Children.FirstOrDefault(s => s != child);
+
+					child["ParentRelation"] = child.Parent;
+					child.Parent["ChildRelation"] = child;
+					child["Random"] = created[r.Next(created.Count)];
+
+					var collection = child.GetDetailCollection("Relations", true);
+					collection.Add(child.Parent);
+					collection.Add(created[r.Next(created.Count)]);
+
+					child.Parent.GetDetailCollection("Relations", true).Add(child);
+
+					if (sibling != null)
+					{
+						collection.Add(sibling);
+						child["Sibling"] = sibling;
+					}
+
+					using (var tx = N2.Context.Current.Persister.Repository.BeginTransaction())
+					{
+						N2.Context.Current.Persister.Repository.SaveOrUpdate(child.Parent);
+						N2.Context.Current.Persister.Save(child);
+						tx.Commit();
+					}
 				}
-				HttpContext.Response.Write("Committing " + DateTime.Now.Subtract(start) + "<br/>");
-				tx.Commit();
-				HttpContext.Response.Write("Committed " + DateTime.Now.Subtract(start) + "<br/>");
+				else
+					N2.Context.Current.Persister.Save(child);
+				
+				created.Add(child.ID);
+
+				callback(name);
+
+				if (background)
+					N2.Context.Current.Persister.Dispose();
 			}
-			return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
 		}
 
-		public ActionResult Create(string name, int width, int depth, string discriminator)
+		public ActionResult Create(string name, int width, int depth, string discriminator, string background)
 		{
 			var definition = definitions.GetDefinition(discriminator);
-			CreateChildren(CurrentPage, definition.ItemType, name, width, depth);
-			return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
+
+			if (background == "on")
+			{
+				Interlocked.Add(ref remainingItems, Enumerable.Range(0, depth).Select(d => (int)Math.Pow(width, d)).Sum());
+				CreateChildren(CurrentPage, definition.ItemType, name, width, depth, true, (n) =>
+				{
+					Interlocked.Decrement(ref remainingItems);
+				});
+				return RedirectToParentPage();
+			}
+			else
+			{
+				CreateChildren(CurrentPage, definition.ItemType, name, width, depth, true, (n) =>
+				{
+					HttpContext.Response.Write(n + " 0-" + width + " (" + depth + ")" + "<br/>");
+					HttpContext.Response.Flush();
+				});
+
+				return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
+			}
 		}
 
-		private void CreateChildren(ContentItem parent, Type type, string name, int width, int depth)
+		private static void CreateChildren(ContentItem parent, Type type, string name, int width, int depth, bool background, Action<string> callback)
 		{
 			if (depth == 0) return;
 
 			for (int i = 1; i <= width; i++)
 			{
-				ContentItem item = Create(parent, type, name, depth, i);
-				Engine.Persister.Repository.SaveOrUpdate(item);
-				CreateChildren(item, type, name, width, depth - 1);
+				ContentItem item = Create(parent.ID, type, name, depth, i);
+				if (depth > 1)
+					item.ChildState |= Collections.CollectionState.ContainsVisiblePublicPages;
+				
+				Context.Current.Persister.Save(item);
+				CreateChildren(item, type, name, width, depth - 1, background, callback);
 			}
-			parent.ChildState |= Collections.CollectionState.ContainsVisiblePublicPages;
-			Engine.Persister.Repository.SaveOrUpdate(parent);
-
-			HttpContext.Response.Write(name + " 0-" + width + " (" + depth + ")" + "<br/>");
-			HttpContext.Response.Flush();
+			
+			callback(name);
 		}
 
-		Random r = new Random();
-		private ContentItem Create(ContentItem parent, Type type, string name, int depth, int i, List<ContentItem> linkSource = null)
+		static Random r = new Random();
+		private static ContentItem Create(int parentID, Type type, string name, int depth, int i, List<int> linkSource = null)
 		{
-			ContentItem item = activator.CreateInstance(type, parent);
+			var parent = Context.Current.Persister.Get(parentID);
+			ContentItem item = Context.Current.Resolve<ContentActivator>().CreateInstance(type, parent);
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;
@@ -127,13 +226,13 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 					"<p>" + string.Join(" ", Enumerable.Range(0, r.Next(8) + 2).Select(si =>
 						{
 							if (r.Next(100) < 10 && linkSource != null && linkSource.Count > 0)
-								return "<a href='" + linkSource[r.Next(linkSource.Count)].Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
+								return "<a href='" + Context.Current.Persister.Get(linkSource[r.Next(linkSource.Count)]).Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
 							else
 								return sentences[r.Next(sentences.Length)];
 						}).ToArray()) + "</p>").ToArray());
 			}
 			parent.ChildState |= Collections.CollectionState.ContainsVisiblePublicPages;
-			item.Parent = parent;
+			item.AddTo(parent);
 			return item;
 		}
 

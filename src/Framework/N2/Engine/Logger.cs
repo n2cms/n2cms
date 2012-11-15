@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading;
+using N2.Engine.Globalization;
 
 namespace N2.Engine
 {
@@ -119,9 +120,10 @@ namespace N2.Engine
 			Writer.Debug(format, args);
 		}
 
-		internal void Indent()
+		internal IDisposable Indent()
 		{
 			Writer.Indent();
+			return new Scope(Writer.Unindent);
 		}
 
 		internal void Unindent()
@@ -240,6 +242,17 @@ namespace N2.Engine
 					return WriterFactory(null);
 				return new TraceLogWriter(DateTime.UtcNow.ToString("yyy-MM-dd HH:mm:ss.fff: ")); 
 			}
+		}
+
+		internal static IDisposable Indent()
+		{
+			Writer.Indent();
+			return new Scope(Writer.Unindent);
+		}
+
+		internal static void Unindent()
+		{
+			Writer.Unindent();
 		}
 
 		public static Func<Type, LogWriterBase> WriterFactory { get; set; }

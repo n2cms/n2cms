@@ -227,7 +227,8 @@ namespace N2.Edit.Web
 		{
 			try
 			{
-				return (string)GetLocalResourceObject(resourceKey);
+				return (string)GetLocalResourceObject(resourceKey)
+					?? defaultText;
 			}
 			catch (InvalidOperationException)
 			{
