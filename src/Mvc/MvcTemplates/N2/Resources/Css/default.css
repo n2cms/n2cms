@@ -6,12 +6,14 @@ body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:
 #top{ position:relative; }
 
 .toolbox { font-size: 10px; font-family: 'Lucida Console', Monaco, monospace; }
-    .toolbox .item { float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff; }
-        .toolbox .item .command { text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; }
+    .toolbox .item { float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background:#fff url(../../Resources/Img/lighten10.png) repeat-x 0 -15px; }
+        .toolbox .item .command { text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; height:34px; }
         .toolbox .item.selected .command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
         .toolbox .item.selected .command:hover { background-image:none; }
 			.toolbox .item .command a { padding:10px 5px 4px 22px; color:#6F6F6F; display:block; height:16px; color:#6F6F6F; text-decoration:none; background:transparent none no-repeat 3px 50%; display:block; }
 			.toolbox .item .command a:hover { background-color: #DDD; color:#000; }
+
+.contentTools .toolbox .item .command { height:30px; }
 
 .ui-layout-north { z-index: 100 !important; }
 .header { padding-top: 10px;}
@@ -31,7 +33,7 @@ body .frameForm { position:absolute; top:46px; bottom:0px; width:100%; overflow:
         #sort a { display:block; height:14px; padding:0 5px; border-top:solid 1px #fff; background-position:50% 50%; }
         #sort .up { border-bottom:solid 1px #d8d8d8; }
 
-#search{ background:transparent; padding:0; margin-left:10px;position: absolute;right: 130px; }
+#search{ background:transparent; padding:0; margin-left:10px;position: absolute;right: 130px; border:none; }
 	#search form { background-color:transparent; padding:0; margin:0; }
     	#search input { padding:3px; float:left; margin:0; height:19px; width:130px; color:#999; background-color:#fff; background-repeat:repeat-x; border-style:none; border-right:solid 1px #D8D8D8; }
     	#search input:focus { background-image:none; }

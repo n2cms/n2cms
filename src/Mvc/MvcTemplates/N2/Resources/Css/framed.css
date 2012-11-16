@@ -157,7 +157,7 @@ body.framed a.title { white-space:nowrap; }
 
 /* navigation */
 
-html.navigation,html.navigation body { height:100%;}
+html.navigation,html.navigation body { height:100%; padding:0 }
 body.framed .nav .selected { font-weight:bold; }
 .tree { padding:5px; }
 

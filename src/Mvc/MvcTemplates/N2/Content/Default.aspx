@@ -26,6 +26,12 @@
 			n2ctx.initToolbar();
 			n2ctx.update({ path: '<%= SelectedPath %>', previewUrl: '<%= ResolveClientUrl(SelectedUrl) %>' });
 			n2.layout.init();
+
+			function resizeFrames() {
+				$("iframe").css("height", ($(window).height() - $("#permission").height() - $("#pageTools").height() - 1) + "px");
+			}
+			resizeFrames();
+			$(window).resize(resizeFrames);
 		});
     </script>
 </asp:Content>

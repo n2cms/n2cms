@@ -22,15 +22,6 @@ namespace N2.Management.Files {
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay NavigationPlugins;
         
         /// <summary>
-        /// FilesPlugins control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay FilesPlugins;
-        
-        /// <summary>
         /// OperationsPlugins control.
         /// </summary>
         /// <remarks>
@@ -38,5 +29,14 @@ namespace N2.Management.Files {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OperationsPlugins;
+        
+        /// <summary>
+        /// FilesPlugins control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay FilesPlugins;
     }
 }
