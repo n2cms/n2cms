@@ -36,6 +36,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if ("Tests" != (string)RouteData.DataTokens["area"])
 				throw new Exception("Incorrect area: " + RouteData.Values["area"]);
 
+			ViewData["RemainingItems"] = remainingItems;
+
 			if (CurrentItem.ShowEveryone || security.IsEditor(User))
 				return PartialView(definitions.GetAllowedChildren(CurrentPage, null).WhereAuthorized(security, User, CurrentPage));
 			else
@@ -58,7 +60,6 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			Engine.Persister.Save(part);
 
-			ViewData["RemainingItems"] = remainingItems;
 			return View("Index");
 		}
 
@@ -176,9 +177,13 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if (background == "on")
 			{
 				Interlocked.Add(ref remainingItems, Enumerable.Range(0, depth).Select(d => (int)Math.Pow(width, d)).Sum());
-				CreateChildren(CurrentPage, definition.ItemType, name, width, depth, true, (n) =>
+
+				Engine.Resolve<IWorker>().DoWork(() =>
 				{
-					Interlocked.Decrement(ref remainingItems);
+					CreateChildren(CurrentPage, definition.ItemType, name, width, depth, true, (n) =>
+					{
+						Interlocked.Decrement(ref remainingItems);
+					});
 				});
 				return RedirectToParentPage();
 			}

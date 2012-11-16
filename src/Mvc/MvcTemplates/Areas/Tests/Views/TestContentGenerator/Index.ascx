@@ -17,8 +17,8 @@
 		<input name="name" value="Page" title="name" />
 		<input name="width" value="10" title="width" />
 		<input name="depth" value="3" title="depth" />
-		<input type="submit" value="Create" />
 		<div><label><input name="background" type="checkbox" />run in background</label></div>
+		<input type="submit" value="Create" />
 	<% } %>
 	<h5>Versions</h5>
 	<% using (Html.BeginForm("AddVersions", null)){ %>
