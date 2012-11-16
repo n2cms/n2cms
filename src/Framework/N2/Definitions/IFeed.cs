@@ -8,7 +8,6 @@ namespace N2.Definitions
 	/// Items implementing this interface provide feed meta data and syndicated 
 	/// items.
 	/// </summary>
-	[SearchableType]
 	public interface IFeed
 	{
 		string Title { get; set; }

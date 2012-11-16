@@ -496,11 +496,11 @@ namespace N2.Tests.Persistence.NH
 			ContentItem parent = CreateOneItem<Definitions.NonVirtualItem>(0, "parent", null);
 			persister.Save(parent);
 
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			ContentItem child1 = CreateOneItem<Definitions.NonVirtualItem>(0, "child1", parent);
 			persister.Save(child1);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			ContentItem child2 = CreateOneItem<Definitions.NonVirtualItem>(0, "child2", parent);
 			persister.Save(child2);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			ContentItem child3 = CreateOneItem<Definitions.NonVirtualItem>(0, "child3", parent);
 			persister.Save(child3);
 
 			Assert.That(child1.SortOrder, Is.EqualTo(0));

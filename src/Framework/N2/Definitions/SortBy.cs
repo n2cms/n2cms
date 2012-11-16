@@ -25,6 +25,8 @@ namespace N2.Definitions
 		/// <summary>Children are re-ordered by an expression, e.g. "Title DESC".</summary>
 		Expression = 6,
 		/// <summary>Children are given an ascending sort index in the order they appear in the children collection. This typically means new children are appended last.</summary>
-		CurrentOrder = 7
+		CurrentOrder = 7,
+		/// <summary>Children are appended last and are given an incrementing sort order.</summary>
+		Append = 8
 	}
 }

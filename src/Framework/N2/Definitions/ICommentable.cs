@@ -4,7 +4,6 @@ namespace N2.Definitions
 	/// <summary>
 	/// Marks an item that can be commented.
 	/// </summary>
-	[SearchableType]
 	public interface ICommentable
 	{
 		/// <summary>The title of the commented item.</summary>

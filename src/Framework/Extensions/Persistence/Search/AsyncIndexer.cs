@@ -199,33 +199,32 @@ namespace N2.Persistence.Search
 
         public virtual void Reindex(int itemID, bool affectsChildren)
         {
+			var itemX = persister.Get(itemID);
+			if (itemX == null)
+				return;
+
+			string title = itemX.Title;
+			var document = indexer.CreateDocument(itemX);
+
 			Execute(new Work
 				{
 					Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
 					Action = () =>
 					{
-						// get the item to update using a session on this thread
-						var item = persister.Get(itemID);
-						if (item == null)
-							return;
-
 						// update the index
-						currentWork = "Indexing " + item.Title + " #" + itemID;
-						indexer.Update(item);
+						currentWork = "Indexing " + title + " #" + itemID;
+						indexer.Update(document);
 
-						var childrenIdsToReindex = new List<int>();
 						if (affectsChildren)
 						{
-							// get a list of child ids to update, and wait until session is closed to schedule reindexing
-							foreach (var child in item.Children)
-							{
-								childrenIdsToReindex.Add(child.ID);
-							}
-						}
+							var reindexIds = persister.Repository
+								.Select(Parameter.Equal("Parent.ID", itemID), "ID")
+								.Select(d => d["ID"]).Cast<int>().ToList();
 
-						foreach (var childId in childrenIdsToReindex)
-						{
-							Reindex(childId, affectsChildren);
+							foreach (var childId in reindexIds)
+							{
+								Reindex(childId, affectsChildren);
+							}
 						}
 					}
 				});

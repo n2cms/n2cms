@@ -6,7 +6,6 @@ namespace N2.Definitions
 	/// <summary>
 	/// Marks an item that is available for syndication.
 	/// </summary>
-	[SearchableType]
 	public interface ISyndicatable
 	{
 		/// <summary>The title of the syndicated item.</summary>

@@ -78,7 +78,7 @@ namespace N2.Persistence.Search
 		/// <param name="item">The item containing content to be indexed.</param>
 		public virtual void Update(ContentItem item)
 		{
-			if(item == null || item.ID == 0)
+			if (!IsIndexable(item))
 				return;
 
 			logger.Debug("Updating item #" + item.ID);
@@ -86,42 +86,56 @@ namespace N2.Persistence.Search
 			if (!item.IsPage)
 			    Update(Find.ClosestPage(item));
 
-			if (!extractor.IsIndexable(item))
-				return;
-
-			lock (accessor)
-			{
-				var iw = accessor.GetWriter();
-				try
-				{
-					WriteToIndex(item, iw);
-				}
-				catch (AlreadyClosedException ex)
-				{
-					logger.Error(ex);
-					iw = accessor.RecreateWriter().GetWriter();
-					WriteToIndex(item, iw);
-				}
-				catch (Exception ex)
-				{
-					logger.Error(ex);
-					iw.Dispose();
-					accessor.ClearLock();
-				}
-				finally
-				{
-					accessor.RecreateSearcher();
-				}
-			}
+			var doc = CreateLuceneDocument(item);
+			WriteToIndex(item.ID, doc);
 		}
 
-		private void WriteToIndex(ContentItem item, IndexWriter iw)
+		public virtual bool IsIndexable(ContentItem item)
 		{
-			var doc = CreateDocument(item);
+			if (item == null || item.ID == 0)
+				return false;
+			return extractor.IsIndexable(item);
+		}
+
+		private void WriteToIndex(int itemID, Document doc)
+		{
 			if (doc != null)
 			{
-				iw.UpdateDocument(new Term(Properties.ID, item.ID.ToString()), doc);
-				iw.Commit();
+				lock (accessor)
+				{
+					var iw = accessor.GetWriter();
+					try
+					{
+						iw.UpdateDocument(new Term(Properties.ID, itemID.ToString()), doc);
+						iw.Commit();
+					}
+					catch (AlreadyClosedException ex)
+					{
+						logger.Error(ex);
+						try
+						{
+							iw = accessor.RecreateWriter().GetWriter();
+							iw.UpdateDocument(new Term(Properties.ID, itemID.ToString()), doc);
+							iw.Commit();
+						}
+						catch (Exception ex2)
+						{
+							logger.Error(ex2);
+							iw.Dispose();
+							accessor.ClearLock();
+						}
+					}
+					catch (Exception ex)
+					{
+						logger.Error(ex);
+						iw.Dispose();
+						accessor.ClearLock();
+					}
+					finally
+					{
+						accessor.RecreateSearcher();
+					}
+				}
 			}
 		}
 
@@ -154,33 +168,24 @@ namespace N2.Persistence.Search
 				.FirstOrDefault();
 		}
 
-        public static class Properties
-        {
-            public const string ID = "ID";
-            public const string Title = "Title";
-            public const string Name = "Name";
-            public const string SavedBy = "SavedBy";
-            public const string Created = "Created";
-            public const string Updated = "Updated";
-            public const string Published = "Published";
-            public const string Expires = "Expires";
-            public const string Url = "Url";
-            public const string Path = "Path";
-            public const string AncestralTrail = "AncestralTrail";
-            public const string Trail = "Trail";
-            public const string AlteredPermissions = "AlteredPermissions";
-            public const string State = "State";
-            public const string IsPage = "IsPage";
-            public const string Roles = "Roles";
-            public const string Types = "Types";
-            public const string Language = "Language";
-			public const string Visible = "Visible";
-			public const string SortOrder = "SortOrder";
+		public IndexDocument CreateDocument(ContentItem item)
+		{
+			var d = new IndexDocument();
+			d.ID = item.ID;
+			d.Tokens["LuceneDocument"] = CreateLuceneDocument(item);
+			return d;
+		}
 
-            public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
-        }
+		public void Update(IndexDocument document)
+		{
+			var doc = (Document)document.Tokens["LuceneDocument"];
+			foreach (var field in document.Values)
+				doc.Add(new Field(field.Name, field.Value, field.Stored ? Field.Store.YES : Field.Store.NO, field.Analyzed ? Field.Index.ANALYZED : Field.Index.NO));
 
-		public virtual Document CreateDocument(ContentItem item)
+			WriteToIndex(document.ID, doc);
+		}
+
+		public virtual Document CreateLuceneDocument(ContentItem item)
 		{
 			var doc = new Document();
 			doc.Add(new Field(Properties.ID, item.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
@@ -242,8 +247,7 @@ namespace N2.Persistence.Search
 		{
 			string types = string.Join(" ",
 				Utility.GetBaseTypesAndSelf(item.GetContentType())
-				.Union(item.GetContentType().GetInterfaces()
-					.Where(t => t.GetCustomAttributes(typeof(SearchableTypeAttribute), false).Any())).Select(t => t.Name).ToArray());
+				.Union(item.GetContentType().GetInterfaces()).Select(t => t.Name).ToArray());
 			return types;
 		}
 
@@ -282,5 +286,31 @@ namespace N2.Persistence.Search
                 TotalDocuments = accessor.GetWriter().GetReader().NumDocs()
             };
         }
-    }
+
+		public static class Properties
+		{
+			public const string ID = "ID";
+			public const string Title = "Title";
+			public const string Name = "Name";
+			public const string SavedBy = "SavedBy";
+			public const string Created = "Created";
+			public const string Updated = "Updated";
+			public const string Published = "Published";
+			public const string Expires = "Expires";
+			public const string Url = "Url";
+			public const string Path = "Path";
+			public const string AncestralTrail = "AncestralTrail";
+			public const string Trail = "Trail";
+			public const string AlteredPermissions = "AlteredPermissions";
+			public const string State = "State";
+			public const string IsPage = "IsPage";
+			public const string Roles = "Roles";
+			public const string Types = "Types";
+			public const string Language = "Language";
+			public const string Visible = "Visible";
+			public const string SortOrder = "SortOrder";
+
+			public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
+		}
+	}
 }

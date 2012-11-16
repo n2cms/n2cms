@@ -908,6 +908,16 @@ namespace N2.Extensions.Tests.Search
 			hits[3].Title.ShouldBe(cake.Title);
 		}
 
+		[Test]
+		public void Update_PassingCustomText()
+		{
+			var apple1 = CreateOneItem<PersistableItem1>(1, "Apple", null);
+			apple1.SortOrder = 4;
+			indexer.Update(apple1);
+
+			var hits = Search(new SortFieldData("Name", false), new SortFieldData("SortOrder"));
+		}
+
 		// concurrency
 
         [TestCase(4, 1, 1000, 100, 50, .5)]

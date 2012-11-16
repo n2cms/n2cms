@@ -6,7 +6,6 @@ namespace N2.Definitions
 	/// Marker interface used to denote pages. This interface allows collaboration
 	/// between modules that doesn't know about each other.
 	/// </summary>
-	[SearchableType]
 	public interface IPage
 	{
 	}

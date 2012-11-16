@@ -39,6 +39,7 @@ namespace N2.Definitions
 				case SortBy.Title:
 					return ReorderBy(item, "Title");
 				case SortBy.Unordered:
+				case SortBy.Append:
 					return Enumerable.Empty<ContentItem>();
 				default:
 					throw new ArgumentException("Unknown sort order: " + OrderBy);

@@ -6,7 +6,6 @@ namespace N2.Engine.Globalization
 	/// implementation this interface is implemented by the start node of a 
 	/// language branch.
 	/// </summary>
-	[SearchableType]
 	public interface ILanguage
 	{
 		/// <summary>The path of the image representing this language. It's used to represent the language in the editor interface.</summary>

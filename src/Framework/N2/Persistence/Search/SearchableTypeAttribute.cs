@@ -10,6 +10,7 @@ namespace N2.Persistence.Search
 	/// this attribute will be stored in the index.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+	[Obsolete("All types and interfaces are not indexed by default")]
 	public sealed class SearchableTypeAttribute : Attribute
 	{
 	}

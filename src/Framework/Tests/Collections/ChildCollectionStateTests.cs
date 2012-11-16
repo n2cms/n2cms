@@ -7,6 +7,7 @@ using N2.Persistence.Behaviors;
 using Shouldly;
 using N2.Collections;
 using N2.Definitions;
+using N2.Engine.Globalization;
 
 namespace N2.Tests.Collections
 {
@@ -161,6 +162,44 @@ namespace N2.Tests.Collections
 			persister.Save(child6);
 
 			root.ChildState.ShouldBe(CollectionState.ContainsVisiblePublicPages | CollectionState.ContainsVisibleSecuredPages | CollectionState.ContainsHiddenPublicPages | CollectionState.ContainsHiddenSecuredPages | CollectionState.ContainsPublicParts | CollectionState.ContainsSecuredParts);
+		}
+
+		[Test]
+		public void Combination_OfChildrenStates_PagesAndParts_ForLargeCollection()
+		{
+			using (new Scope(() => SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 100))
+			{
+				SyncChildCollectionStateAttribute.LargeCollecetionThreshold = 1;
+
+				persister.Save(new FirstItem { Name = "child0", Parent = root }); // persist first to invoke added
+
+				var child1 = CreateOneItem<FirstItem>(0, "child1", root);
+				persister.Save(child1);
+
+				var child2 = CreateOneItem<FirstItem>(0, "child2", root);
+				child2.Visible = false;
+				persister.Save(child2);
+
+				var child3 = CreateOneItem<FirstItem>(0, "child3", root);
+				child3.AlteredPermissions = N2.Security.Permission.Read;
+				persister.Save(child3);
+
+				var child4 = CreateOneItem<FirstItem>(0, "child4", root);
+				child4.AlteredPermissions = N2.Security.Permission.Read;
+				child4.Visible = false;
+				persister.Save(child4);
+
+				var child5 = CreateOneItem<Items.FirstPart>(0, "child5", root);
+				child5.ZoneName = "TheZone";
+				persister.Save(child5);
+
+				var child6 = CreateOneItem<Items.FirstPart>(0, "child6", root);
+				child6.ZoneName = "TheZone";
+				child6.AlteredPermissions = N2.Security.Permission.Read;
+				persister.Save(child6);
+
+				root.ChildState.ShouldBe(CollectionState.IsLarge | CollectionState.ContainsVisiblePublicPages | CollectionState.ContainsVisibleSecuredPages | CollectionState.ContainsHiddenPublicPages | CollectionState.ContainsHiddenSecuredPages | CollectionState.ContainsPublicParts | CollectionState.ContainsSecuredParts);
+			}
 		}
 
 		[Test]

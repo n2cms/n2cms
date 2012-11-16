@@ -21,7 +21,10 @@ namespace N2.Persistence.Search
 		public virtual void Optimize()
 		{
 		}
-
+		public bool IsIndexable(ContentItem item)
+		{
+			return item.ID != 0;
+		}
 		public virtual void Delete(int itemID)
 		{
 		}
@@ -31,6 +34,15 @@ namespace N2.Persistence.Search
 		}
 
 		public virtual void Unlock()
+		{
+		}
+
+		public IndexDocument CreateDocument(ContentItem item)
+		{
+			return new IndexDocument();
+		}
+
+		public void Update(IndexDocument document)
 		{
 		}
 	}

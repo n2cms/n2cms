@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using N2.Collections;
 using N2.Persistence.Behaviors;
+using N2.Persistence;
 
 namespace N2.Definitions
 {
@@ -52,7 +53,16 @@ namespace N2.Definitions
 					Insert(item, parent, "Updated DESC");
 					break;
 				case SortBy.Unordered:
-					// don't add to parnet collection
+					// don't add to parent collection
+					break;
+				case SortBy.Append:
+					if (context.AffectedItem.ID == 0 && context.AffectedItem.SortOrder == 0 && context.AffectedItem.Parent != null)
+					{
+						var siblingWithGreatestOrder = context.AffectedItem.Parent
+							.Children.Find(new ParameterCollection().OrderBy("SortOrder DESC").Take(1)).FirstOrDefault();
+						if (siblingWithGreatestOrder != null)
+							context.AffectedItem.SortOrder = siblingWithGreatestOrder.SortOrder + 10;
+					}
 					break;
 				default:
 					context.AffectedItem.AddTo(context.AffectedItem.Parent);

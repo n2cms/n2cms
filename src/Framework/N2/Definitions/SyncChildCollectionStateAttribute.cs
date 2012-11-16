@@ -55,7 +55,7 @@ namespace N2.Definitions
 
 			if (Is(initialState, CollectionState.IsLarge))
 			{
-				CollectionState newState = CollectionState.Unknown;
+				CollectionState newState = CollectionState.IsLarge;
 				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", true) & Parameter.Equal("AlteredPermissions", Permission.None)) > 0)
 					newState |= CollectionState.ContainsVisiblePublicPages;
 				if (parent.Children.FindCount(Parameter.IsNull("ZoneName") & Parameter.Equal("Visible", false) & Parameter.Equal("AlteredPermissions", Permission.None)) > 0)
@@ -91,8 +91,8 @@ namespace N2.Definitions
 			else
 			{
 				// changed child state
-				parent.ChildState |= childInducedState;
 				parent.ChildState ^= reducedState;
+				parent.ChildState |= childInducedState;
 			}
 				
 			context.UnsavedItems.Add(parent);

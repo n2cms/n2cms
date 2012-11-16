@@ -68,7 +68,6 @@ namespace N2
 	[DynamicTemplate]
 	[SiblingInsertion(SortBy.CurrentOrder)]
 	[SortChildren(SortBy.CurrentOrder)]
-	[SearchableType]
 	[SyncChildCollectionState(syncEnabled: true)]
 #pragma warning disable 612, 618
 	public abstract class ContentItem : INode,

@@ -4,6 +4,7 @@ using N2.Definitions;
 namespace N2.Tests.Persistence.Definitions
 {
 	[PageDefinition]
+	[SiblingInsertion(SortBy.Unordered)]
 	[SortChildren(SortBy.Unordered)]
 	public class NonVirtualItem : ContentItem
 	{

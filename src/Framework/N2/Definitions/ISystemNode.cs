@@ -6,7 +6,6 @@ namespace N2.Definitions
 	/// for public consumption. This interface is used for filtering system pages in
 	/// selection interfaces.
 	/// </summary>
-	[SearchableType]
 	public interface ISystemNode
 	{
 	}
