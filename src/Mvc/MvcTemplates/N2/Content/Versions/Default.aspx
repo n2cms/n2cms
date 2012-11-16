@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="../../Resources/Css/Versions.css" type="text/css" />
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">cancel</edit:CancelLink>
+	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />

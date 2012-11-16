@@ -4,11 +4,11 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnSave" runat="server" OnClick="btnSave_Click" 
-		CssClass="command" meta:resourcekey="btnSaveResource1">save</asp:LinkButton>
+		CssClass="command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
     <asp:LinkButton ID="btnUnlock" runat="server" OnClick="btnUnlock_Click" 
-		CssClass="command" meta:resourcekey="btnUnlockResource1">unlock</asp:LinkButton>
+		CssClass="command" meta:resourcekey="btnUnlockResource1">Unlock</asp:LinkButton>
     <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
-		CssClass="command" meta:resourcekey="hlBackResource1">cancel</asp:HyperLink>
+		CssClass="command" meta:resourcekey="hlBackResource1">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<div class="tabPanel">

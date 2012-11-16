@@ -20,31 +20,38 @@ namespace N2.Edit
 	[ControlPanelDiscardPreviewOrDelete]
 	public partial class Delete : Web.EditPage
     {
+		protected ContentItem selectedItem;
+
         protected override void OnInit(EventArgs e)
         {
-            itemsToDelete.CurrentItem = Selection.SelectedItem;
-            itemsToDelete.DataBind();
+			selectedItem = Selection.ParseSelectionFromRequest();
 
-			var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
-
-			q = q.And.OpenBracket()
-				.Detail(LinkTracker.Tracker.LinkDetailName).Like(Selection.SelectedItem.Url);
-			if (Selection.SelectedItem.ID != 0)
-				q = q.Or.Detail().Eq(Selection.SelectedItem);
-			q = q.CloseBracket();
-
-			int count = q.Count();
-			if (count > 0)
+			if (selectedItem != null)
 			{
-				chkAllow.Text += " (" + count + ")";
-				rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
-				rptReferencing.DataBind();
-				hlReferencingItems.Visible = (count > 10);
-			}
-			else
-				referencingItems.Visible = false;
+				itemsToDelete.CurrentItem = selectedItem;
+				itemsToDelete.DataBind();
 
-			this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?" + SelectionUtility.SelectedQueryKey + "=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
+				var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
+
+				q = q.And.OpenBracket()
+					.Detail(LinkTracker.Tracker.LinkDetailName).Like(selectedItem.Url);
+				if (selectedItem.ID != 0)
+					q = q.Or.Detail().Eq(selectedItem);
+				q = q.CloseBracket();
+
+				int count = q.Count();
+				if (count > 0)
+				{
+					chkAllow.Text += " (" + count + ")";
+					rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
+					rptReferencing.DataBind();
+					hlReferencingItems.Visible = (count > 10);
+				}
+				else
+					referencingItems.Visible = false;
+
+				this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?" + SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
+			}
 
             base.OnInit(e);
         }
@@ -56,11 +63,27 @@ namespace N2.Edit
 
         protected override void OnLoad(EventArgs e)
         {
-            if (Engine.UrlParser.IsRootOrStartPage(Selection.SelectedItem))
+			if (selectedItem == null)
+			{
+				this.Title = GetLocalResourceString("DeletePage.NotFound", "Delete \"Not Found\"");
+
+				cvRemoved.IsValid = false;
+				this.btnDelete.Enabled = false;
+				hlCancel.Focus();
+
+				referencingItems.Visible = false;
+				affectedItems.Visible = false;
+			}
+            else if (Engine.UrlParser.IsRootOrStartPage(selectedItem))
             {
                 cvDelete.IsValid = false;
                 this.btnDelete.Enabled = false;
                 hlCancel.Focus();
+
+				this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat", "Delete \"{0}\""), selectedItem.Title);
+
+				referencingItems.Visible = false;
+				affectedItems.Visible = false;
             }
             else
             {
@@ -76,17 +99,17 @@ namespace N2.Edit
 					return;
 				}
 
+				this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat", "Delete \"{0}\""), selectedItem.Title);
+
                 btnDelete.Focus();
             }
-            this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat", "Delete \"{0}\""),
-                Selection.SelectedItem.Title);
 
             base.OnLoad(e);
         }
 
 		private void RegisterConfirmAlert()
 		{
-            string message = string.Format(GetLocalResourceString("confirm.message", "Delete {0} ({1})?"), Selection.SelectedItem.Title, Selection.SelectedItem.Url);
+            string message = string.Format(GetLocalResourceString("confirm.message", "Delete {0} ({1})?"), selectedItem.Title, selectedItem.Url);
 			ClientScript.RegisterClientScriptBlock(typeof(Delete), "confirm",
                 string.Format(@"jQuery(document).ready( function() {{
 	if(confirm('{0}')){{
@@ -94,12 +117,12 @@ namespace N2.Edit
 	}}else{{
 		window.location='{2}';
 	}}
-}});", message, ClientScript.GetPostBackClientHyperlink(btnDelete, string.Empty), Selection.SelectedItem.Url), true);
+}});", message, ClientScript.GetPostBackClientHyperlink(btnDelete, string.Empty), selectedItem.Url), true);
 		}
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-			var item = Selection.SelectedItem;
+			var item = selectedItem;
             var parent = item.Parent;
 			try
             {
@@ -125,7 +148,7 @@ namespace N2.Edit
 				}
 				else
 				{
-					Engine.Persister.Delete(Selection.SelectedItem);
+					Engine.Persister.Delete(selectedItem);
 				}
 
                 if (parent != null)
@@ -135,7 +158,7 @@ namespace N2.Edit
 
 				ppPermitted.Visible = false;
 
-				Engine.AddActivity(new ManagementActivity { Operation = "Delete", PerformedBy = User.Identity.Name, Path = Selection.SelectedItem.Path, ID = Selection.SelectedItem.ID });
+				Engine.AddActivity(new ManagementActivity { Operation = "Delete", PerformedBy = User.Identity.Name, Path = selectedItem.Path, ID = selectedItem.ID });
             }
             catch (Exception ex)
             {
