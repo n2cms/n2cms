@@ -49,7 +49,7 @@ namespace N2.Edit
         /// <summary>The selected item.</summary>
         public ContentItem SelectedItem
         {
-            get { return selectedItem ?? (selectedItem = GetSelectionFromUrl() ?? Engine.UrlParser.StartPage); }
+            get { return selectedItem ?? (selectedItem = ParseSelectionFromRequest() ?? Engine.UrlParser.StartPage); }
             set { selectedItem = value; }
         }
 
@@ -67,7 +67,7 @@ namespace N2.Edit
             return Engine.Resolve<Navigator>().Navigate(request["memory"]);
         }
 
-        private ContentItem GetSelectionFromUrl()
+        public virtual ContentItem ParseSelectionFromRequest()
         {
 			if (request == null) return null; // explicitly passed selection
 
