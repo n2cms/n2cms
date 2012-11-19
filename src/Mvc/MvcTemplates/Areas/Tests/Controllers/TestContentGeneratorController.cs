@@ -137,11 +137,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 					child["ParentRelation"] = child.Parent;
 					child.Parent["ChildRelation"] = child;
-					child["Random"] = created[r.Next(created.Count)];
+					child["Random"] = N2.Context.Current.Persister.Get(created[r.Next(created.Count)]);
 
 					var collection = child.GetDetailCollection("Relations", true);
 					collection.Add(child.Parent);
-					collection.Add(created[r.Next(created.Count)]);
+					collection.Add(N2.Context.Current.Persister.Get(created[r.Next(created.Count)]));
 
 					child.Parent.GetDetailCollection("Relations", true).Add(child);
 
