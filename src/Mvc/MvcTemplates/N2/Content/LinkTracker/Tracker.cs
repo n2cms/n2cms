@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using N2.Details;
@@ -15,6 +16,8 @@ namespace N2.Edit.LinkTracker
 	public class Tracker : IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";
+		public const string ImageUrlMetaName = "ImageUrl";
+
         IRepository<ContentItem> repository;
 		N2.Web.IUrlParser urlParser;
         N2.Web.IErrorNotifier errorHandler;
@@ -144,7 +147,7 @@ namespace N2.Edit.LinkTracker
 			}
 		}
 
-		Regex linkExpression = new Regex("<a.*?href=[\"']*(?<link>[^\"'>]*).*?</a>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		static Regex linkExpression = new Regex(@"<(?<tagname>(a)|img)\b[^>]*?\b(?<urltype>(?(1)href|src))\s*=\s*(?:""(?<link>(?:\\""|[^""])*)""|'(?<link>(?:\\'|[^'])*)')", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		/// <summary>Finds links in a html string using regular expressions.</summary>
 		/// <param name="html">The html to search for links.</param>
@@ -170,25 +173,22 @@ namespace N2.Edit.LinkTracker
 		public virtual IEnumerable<ContentItem> FindReferrers(ContentItem item)
 		{
 			if (item.ID == 0)
-			{
 				return FindReferrers(item.Url);
-			}
-			else
-			{
-                return repository.Find(
-                    (Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
-                    & Parameter.IsNull("VersionOf.ID"))
-                    .Distinct();
-			}
+
+            return repository.Find(
+                (Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
+                & Parameter.IsNull("VersionOf.ID"))
+                .Distinct();
 		}
 
 		public virtual IEnumerable<ContentItem> FindReferrers(string url)
 		{
-            return repository.Find(
-                Parameter.Like(Tracker.LinkDetailName, url + "%").Detail()
-                & Parameter.IsNull("VersionOf.ID"))
-                .Distinct();
-        }
+			return repository.Find(
+				Parameter.Like(Tracker.LinkDetailName, url + "%").Detail()
+				& Parameter.IsNull("VersionOf.ID"))
+				.Distinct();
+		}
+
 		#endregion
 
 		#region IStartable Members
@@ -203,12 +203,15 @@ namespace N2.Edit.LinkTracker
 
 		#endregion
 
-		public virtual void UpdateReferencesTo(ContentItem targetItem)
+		public virtual void UpdateReferencesTo(ContentItem targetItem, string oldUrl = null, bool isRenamingDirectory = false)
 		{
 			var newUrl = targetItem.Url;
 			using (var tx = repository.BeginTransaction())
 			{
-				var itemsWithReferencesToTarget = FindReferrers(targetItem).ToList();
+				var itemsWithReferencesToTarget = oldUrl == null ? 
+					FindReferrers(targetItem).ToList() : 
+					FindReferrers(oldUrl).ToList();
+
 				foreach (var referrer in itemsWithReferencesToTarget)
 				{
 					var trackerCollecetion = referrer.GetDetailCollection(Tracker.LinkDetailName, false);
@@ -225,16 +228,25 @@ namespace N2.Edit.LinkTracker
 						var detail = trackerDetails[i];
 
 						var name = detail.Meta;
+
 						if (name == null || detail.StringValue == null)
 							// don't update legacy links
 							continue;
 
-						if (detail.LinkedItem == null)
-							continue;
-						if (detail.LinkedItem.ID != targetItem.ID)
+						if (name != Tracker.ImageUrlMetaName)
 						{
-							// don't update other links
-							continue;
+							if (detail.LinkedItem == null)
+								continue;
+							if (detail.LinkedItem.ID != targetItem.ID)
+							{
+								// don't update other links
+								continue;
+							}
+						}
+
+						if (isRenamingDirectory)
+						{
+							newUrl = string.Format("{0}/{1}", targetItem.Url, Path.GetFileName(detail.StringValue));
 						}
 
 						Update(referrer, detail, name, newUrl, trackerDetails.Skip(i + 1).ToList());

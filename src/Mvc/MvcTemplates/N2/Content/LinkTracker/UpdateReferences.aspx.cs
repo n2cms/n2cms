@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Web.UI.WebControls;
+using N2.Definitions;
 using N2.Persistence;
 using N2.Linq;
 using N2.Management.Content.LinkTracker;
@@ -12,13 +13,13 @@ namespace N2.Edit.LinkTracker
 	{
 		private Tracker tracker;
 		private string previousName;
+		private string previousUrl;
+		private bool isRenamingDirectory;
 		private ContentItem previousParent;
 
 		protected override void OnInit(EventArgs e)
 		{
 			tracker = Engine.Resolve<Tracker>();
-
-			btnUpdate.Enabled = Selection.SelectedItem.ID != 0;
 
 			base.OnInit(e);
 		}
@@ -33,7 +34,14 @@ namespace N2.Edit.LinkTracker
 
 			previousParent = Engine.Resolve<Navigator>().Navigate(Request["previousParent"]);
 			previousName = Request["previousName"];
-				
+
+			if (Selection.SelectedItem is IFileSystemNode)
+			{
+				previousUrl = Request["previousParent"] + Request["previousName"];
+			}
+
+			isRenamingDirectory = Selection.SelectedItem is IFileSystemDirectory;
+
 			if (!IsPostBack)
 			{
 				var item = Selection.SelectedItem;
@@ -83,7 +91,11 @@ namespace N2.Edit.LinkTracker
 				Engine.Persister.Save(redirect);
 			}
 
-			tracker.UpdateReferencesTo(Selection.SelectedItem);
+			tracker.UpdateReferencesTo(
+				Selection.SelectedItem,
+				previousUrl,
+				isRenamingDirectory
+				);
 
 			if (chkChildren.Checked)
 			{

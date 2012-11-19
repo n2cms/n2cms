@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using N2.Definitions;
+using N2.Edit.LinkTracker;
 using N2.Edit.Web;
 using N2.Integrity;
 using N2.Security;
@@ -20,6 +22,12 @@ namespace N2.Edit
 	public partial class Move : EditPage
 	{
 		private readonly Engine.Logger<Move> logger;
+		private Tracker tracker;
+
+		public Move()
+		{
+			tracker = Engine.Resolve<Tracker>();
+		}
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -84,7 +92,11 @@ namespace N2.Edit
 			Engine.AddActivity(new ManagementActivity { Operation = "Move", PerformedBy = User.Identity.Name, Path = toMove.Path, ID = toMove.ID });
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
 
-			if (toMove.IsPage && !(toMove.Parent is IActiveContent))
+			if(tracker.FindReferrers(Request["memory"].TrimEnd('/')).Any())
+			{
+				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
+			}
+			else if (toMove.IsPage && !(toMove.Parent is IActiveContent))
 				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
 			else
 				Refresh(toMove);

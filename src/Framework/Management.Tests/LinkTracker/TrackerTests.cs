@@ -286,6 +286,36 @@ namespace N2.Edit.Tests.LinkTracker
 		}
 
 		[Test]
+		public void StoresImageLink_AsString()
+		{
+			mocks.ReplayAll();
+
+			root["TestDetail"] = @"<img src=""/upload/test/test.jpg"" />";
+			persister.Save(root);
+
+			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+			Assert.That(links, Is.Not.Null);
+			
+			Assert.That(links.Details[0].StringValue, Is.EqualTo("/upload/test/test.jpg"));
+		}
+
+		[Test]
+		public void StoresImageLinks_AsString()
+		{
+			mocks.ReplayAll();
+
+			root["TestDetail"] = @"<img src=""/upload/test/test.jpg"" /> Some content <img src=""/upload/test/test2.jpg"" />";
+			persister.Save(root);
+
+			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+			Assert.That(links, Is.Not.Null);
+			Assert.That(links.Count, Is.EqualTo(2));
+			
+			Assert.That(links.Details[0].StringValue, Is.EqualTo("/upload/test/test.jpg"));
+			Assert.That(links.Details[1].StringValue, Is.EqualTo("/upload/test/test2.jpg"));
+		}
+
+		[Test]
 		public void TracksUrl_ToItemsWithoutId()
 		{
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);

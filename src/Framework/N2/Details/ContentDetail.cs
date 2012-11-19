@@ -565,7 +565,7 @@ namespace N2.Details
 		public virtual void Extract(ContentDetail other)
 		{
 			ValueTypeKey = other.ValueTypeKey;
-			Meta = meta;
+			Meta =  other.Meta;
 			BoolValue = other.BoolValue;
 			IntValue = other.intValue;
 			DoubleValue = other.DoubleValue;
