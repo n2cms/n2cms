@@ -229,57 +229,38 @@ namespace N2.Edit.Trash
 			var container = GetTrashContainer(create: false);
 			if (container != null)
 			{
-				int total = (int)persister.Repository.Count(Parameter.Like("AncestralTrail", container.GetTrail() + "%"));
-				var children = container.GetChildren(new AccessFilter(webContext.User, security)).ToList();
-				int deletedCount = 0;
-				foreach (ContentItem child in children)
-				{
-					var childrenToDelete = GetChildrenToDelete(child);
-					logger.InfoFormat("Purging {0} and {1} descendants", child, childrenToDelete.Count);
+				var children = container.GetChildren(new AccessFilter(webContext.User, security)).ToList()
+					.Select(c => new { Item = c, DescendantCount = persister.Repository.CountDescendants(c) }).ToList();
 
-					DeleteAll(child, childrenToDelete, (s) =>
-					{
-						if (onProgress == null)
-							return;
-						deletedCount++;
+				int deletedCount = 0;
+				int total = children.Sum(c => c.DescendantCount);
+				foreach (var child in children)
+				{
+					logger.InfoFormat("Purging {0} and {1} descendants", child, child.DescendantCount);
+					if (onProgress != null)
 						onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
-					});
+
+					persister.Delete(child.Item);
+					deletedCount += child.DescendantCount;
+
+					if (onProgress != null)
+						onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
 				}
 			}
 		}
 
 		public void Purge(ContentItem itemToDelete, Action<PurgingStatus> onProgress = null)
 		{
-			var childrenToDelete = GetChildrenToDelete(itemToDelete);
+			var count = persister.Repository.CountDescendants(itemToDelete);
 
-			logger.InfoFormat("Purging {0} and {1} descendants", itemToDelete, childrenToDelete.Count);
+			if (onProgress != null)
+				onProgress(new PurgingStatus { Deleted = 0, Remaining = count });
 
-			DeleteAll(itemToDelete, childrenToDelete, onProgress ?? new Action<PurgingStatus>(delegate { }));
-		}
-
-		private void DeleteAll(ContentItem itemToDelete, List<int> childrenToDelete, Action<PurgingStatus> onProgress)
-		{
-			for (int i = 0; i < childrenToDelete.Count; i++)
-			{
-				var child = persister.Get(childrenToDelete[i]);
-				if (child == null)
-					persister.Delete(child);
-
-				onProgress(new PurgingStatus { Deleted = i + 1, Remaining = childrenToDelete.Count - i });
-			}
+			logger.InfoFormat("Purging {0} and {1} descendants", itemToDelete, count);
 
 			persister.Delete(itemToDelete);
-			onProgress(new PurgingStatus { Deleted = childrenToDelete.Count + 1, Remaining = 0 });
-		}
-
-		private List<int> GetChildrenToDelete(ContentItem itemToDelete)
-		{
-			var childrenToDelete = persister.Repository
-				.Select(Parameter.Like("AncestralTrail", itemToDelete.GetTrail() + "%"), "ID", "AncestralTrail")
-				.OrderByDescending(r => r["AncestralTrail"].ToString().Length)
-				.Select(r => r["ID"])
-				.Cast<int>().ToList();
-			return childrenToDelete;
+			if (onProgress != null)
+				onProgress(new PurgingStatus { Deleted = count, Remaining = 0 });
 		}
 
         /// <summary>Occurs before an item is thrown.</summary>

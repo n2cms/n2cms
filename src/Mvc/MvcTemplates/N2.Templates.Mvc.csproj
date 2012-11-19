@@ -135,6 +135,8 @@
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Tests\Controllers\PageInfoViewerController.cs" />
+    <Compile Include="Areas\Tests\Models\PageInfoViewerPart.cs" />
     <Compile Include="Areas\Tests\Services\MarkovNameGenerator.cs" />
     <Compile Include="Areas\Tests\Controllers\TestContentGeneratorController.cs" />
     <Compile Include="Areas\Tests\Controllers\ExternalTypedController.cs" />
@@ -336,6 +338,7 @@
     <Content Include="Areas\Tests\Models\FluentWebFormPart.ascx" />
     <Content Include="Areas\Tests\Models\FluentWebFormPage.aspx" />
     <Content Include="Areas\Tests\Uc.ascx" />
+    <Content Include="Areas\Tests\Views\PageInfoViewer\Index.ascx" />
     <Content Include="Areas\Tests\Views\TestContentGenerator\Index.ascx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\About.aspx" />
     <Content Include="Areas\Tests\Views\ExternalTyped\Index.aspx" />

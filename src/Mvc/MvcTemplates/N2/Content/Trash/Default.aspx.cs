@@ -22,17 +22,17 @@ namespace N2.Edit.Trash
 			this.hlCancel.NavigateUrl = Engine.UrlParser.StartPage.Url;
 			this.cvRestore.IsValid = true;
 
-			if (Convert.ToBoolean(Request["showStatus"]))
+			var status = Engine.Resolve<AsyncTrashPurger>().Status;
+
+			if (status.IsRunning)
 			{
 				btnClear.Enabled = false;
-				var status = Engine.Resolve<AsyncTrashPurger>().Status;
 				hlRunning.NavigateUrl = Request.RawUrl;
 				hlRunning.Visible = status.IsRunning;
-				if (status.IsRunning)
-					hlRunning.Text = string.Format(GetLocalResourceString("hlRunning", "A delete task is in progress. Deleted {0} out of {1} items below '{2}'. Click to refresh."), status.Progress.Deleted, status.Progress.Total, status.Title);
-				else
-					RegisterRefreshNavigationScript(CurrentItem);
+				hlRunning.Text = string.Format(GetLocalResourceString("hlRunning", "A delete task is in progress. Deleted {0} out of {1} items below '{2}'. Click to refresh."), status.Progress.Deleted, status.Progress.Total, status.Title);
 			}
+			else if (Convert.ToBoolean(Request["showStatus"]))
+				RegisterRefreshNavigationScript(CurrentItem);
 			else
 				this.btnClear.Enabled = CurrentItem.Children.Count > 0;
 		}
