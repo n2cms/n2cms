@@ -247,5 +247,10 @@ namespace N2.Persistence
                 tx.Commit();
             }
         }
+
+		public static int CountDescendants(this IRepository<ContentItem> repository, ContentItem ancestor)
+		{
+			return (int)repository.Count(Parameter.Like("AncestralTrail", ancestor.GetTrail() + "%"));
+		}
 	}
 }
