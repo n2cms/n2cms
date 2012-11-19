@@ -127,6 +127,7 @@
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
+    <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Edit\Versioning\ContentVersionCleanup.cs" />

@@ -10,6 +10,7 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web.Mail;
 using NHibernate;
+using System.Data.SqlClient;
 
 namespace N2.Web
 {
@@ -78,6 +79,7 @@ namespace N2.Web
 		private long errorCount;
 		private long errorsThisHour;
 		private int hour = DateTime.Now.Hour;
+		private bool handleSqlException;
 
 		public ErrorHandler(IErrorNotifier notifier, IWebContext context, InstallationManager installer, IMailSender mailSender, 
 			ConfigurationManagerWrapper configuration)
@@ -93,6 +95,7 @@ namespace N2.Web
 			mailFrom = configuration.Sections.Engine.Errors.MailFrom;
 			maxErrorReportsPerHour = configuration.Sections.Engine.Errors.MaxErrorReportsPerHour;
 			handleWrongClassException = configuration.Sections.Engine.Errors.HandleWrongClassException;
+			handleSqlException = configuration.Sections.Engine.Errors.SqlExceptionHandling == ExceptionResolutionMode.RefreshGet;
 			mailSender = new SmtpMailSender();
 		}
 
@@ -128,6 +131,15 @@ namespace N2.Web
 						ex = ex.InnerException;
 
 					TryHandleWrongClassException(ex);
+				}
+				if (handleSqlException)
+				{
+					var sex = ex as SqlException;
+					if (sex != null)
+					{
+						// this is a way to recover when lots of writes are going on
+						TryHandleSqlException(sex);
+					}
 				}
 			}
 		}
@@ -195,6 +207,21 @@ namespace N2.Web
 
 			// recusively check inner exception to handle exceptions within child requests
 			TryHandleWrongClassException(ex.InnerException);
+		}
+
+		private void TryHandleSqlException(SqlException sex)
+		{
+			if (context.HttpContext.Request.HttpMethod != "GET")
+				return;
+
+			if (sex.Number == 1205 && string.IsNullOrEmpty(context.HttpContext.Request["dex"]))
+			{
+				context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("dex", 1));
+			}
+			if (sex.Number == -2 && string.IsNullOrEmpty(context.HttpContext.Request["tex"]))
+			{
+				context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("tex", 1));
+			}
 		}
 
 		private void RedirectToFix(WrongClassException wex)

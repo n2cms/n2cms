@@ -43,5 +43,12 @@ namespace N2.Configuration
             get { return (string)base["mailFrom"]; }
             set { base["mailFrom"] = value; }
         }
-    }
+
+		[ConfigurationProperty("sqlExceptionHandling", DefaultValue = ExceptionResolutionMode.RefreshGet)]
+		public ExceptionResolutionMode SqlExceptionHandling
+		{
+			get { return (ExceptionResolutionMode)base["sqlExceptionHandling"]; }
+			set { base["sqlExceptionHandling"] = value; }
+		}
+	}
 }
