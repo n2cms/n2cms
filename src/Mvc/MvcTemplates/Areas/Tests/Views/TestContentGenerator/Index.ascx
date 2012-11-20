@@ -9,6 +9,7 @@
 		<input name="amount" value="100" title="amount" />
 		<div><label><input name="relate" type="checkbox" />incredibly relate</label></div>
 		<div><label><input name="background" type="checkbox" />run in background</label></div>
+		<div><label><input name="images" type="checkbox" />add images</label></div>
 		<input type="submit" value="Create" />
 	<% } %>
 	<h5 title="<%= Html.CurrentPage().Title %>/<%= Html.CurrentItem().Title %>">Content Creator</h5>

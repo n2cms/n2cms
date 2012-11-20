@@ -14,6 +14,7 @@ using N2.Security;
 using N2.Edit.Versioning;
 using N2.Engine;
 using System.Threading;
+using N2.Edit.FileSystem;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -89,7 +90,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		}
 
 		static int remainingItems;
-		public ActionResult Random(string name, int amount, string discriminator, string relate, string background)
+		public ActionResult Random(string name, int amount, string discriminator, string relate, string background, string images)
 		{
 			var rootID = CurrentPage.ID;
 			if (background == "on")
@@ -97,7 +98,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 				Engine.Resolve<IWorker>().DoWork(() =>
 				{
 					Interlocked.Add(ref remainingItems, amount);
-					RandomCreator(rootID, name, amount, discriminator, relate == "on", true, (n) =>
+					RandomCreator(rootID, name, amount, discriminator, relate == "on", images == "on", true, (n) =>
 					{
 						Interlocked.Decrement(ref remainingItems);
 					});
@@ -107,7 +108,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			else
 			{
 				int i = 0;
-				RandomCreator(rootID, name, amount, discriminator, relate == "on", false, (n) => 
+				RandomCreator(rootID, name, amount, discriminator, relate == "on", images == "on", false, (n) => 
 				{
 					i++;
 					HttpContext.Response.Write(n + " " + i + ", ");
@@ -119,7 +120,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			}
 		}
 
-		public static void RandomCreator(int containerID, string name, int amount, string discriminator, bool relate, bool background, Action<string> callback)
+		public static void RandomCreator(int containerID, string name, int amount, string discriminator, bool relate, bool images, bool background, Action<string> callback)
 		{
 			var definition = Context.Current.Definitions.GetDefinition(discriminator);
 
@@ -127,9 +128,10 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			var start = DateTime.Now;
 
+			var sentences = CreateSentences(1000, 10);
 			for (int i = 0; i < amount; i++)
 			{
-				var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i, created);
+				var child = Create(created[r.Next(created.Count)], definition.ItemType, name, 1, i, sentences, created, images);
 
 				if (relate)
 				{
@@ -205,7 +207,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			for (int i = 1; i <= width; i++)
 			{
-				ContentItem item = Create(parent.ID, type, name, depth, i);
+				ContentItem item = Create(parent.ID, type, name, depth, i, CreateSentences(width + 100, 10));
 				if (depth > 1)
 					item.ChildState |= Collections.CollectionState.ContainsVisiblePublicPages;
 				
@@ -217,7 +219,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		}
 
 		static Random r = new Random();
-		private static ContentItem Create(int parentID, Type type, string name, int depth, int i, List<int> linkSource = null)
+		private static ContentItem Create(int parentID, Type type, string name, int depth, int i, string[] sentences, List<int> linkSource = null, bool images = false)
 		{
 			var parent = Context.Current.Persister.Get(parentID);
 			ContentItem item = Context.Current.Resolve<ContentActivator>().CreateInstance(type, parent);
@@ -225,13 +227,21 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;
 			item.State = ContentState.Published;
+			var fs = Context.Current.Resolve<IFileSystem>();
+			var persister = Context.Current.Persister;
+			var imageHtmls = images
+				? fs.GetFilesRecursive("~/Upload/").Where(f => f.Name.EndsWith("jpg")).Select(f => "<img src='" + f.VirtualPath + "' alt=''/>").ToList()
+				: new List<string>();
+
 			if (item is IContentPage)
 			{
 				(item as IContentPage).Text += string.Join("", Enumerable.Range(0, r.Next(1, 10)).Select(pi =>
 					"<p>" + string.Join(" ", Enumerable.Range(0, r.Next(8) + 2).Select(si =>
 						{
+							if (imageHtmls.Count > 0 && r.Next(100) < 5)
+								return imageHtmls[r.Next(imageHtmls.Count)];
 							if (r.Next(100) < 10 && linkSource != null && linkSource.Count > 0)
-								return "<a href='" + Context.Current.Persister.Get(linkSource[r.Next(linkSource.Count)]).Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
+								return "<a href='" + persister.Get(linkSource[r.Next(linkSource.Count)]).Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
 							else
 								return sentences[r.Next(sentences.Length)];
 						}).ToArray()) + "</p>").ToArray());
@@ -241,12 +251,10 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			return item;
 		}
 
-		static string[] sentences = CreateSentences(1000, 10);
-
 		private static string[] CreateSentences(int sentenceCount, int sentenceLength)
 		{
 			var generator = new Services.MarkovNameGenerator(Services.Words.Thousand, 3, 2);
-			var words = Enumerable.Range(0, sentenceCount * sentenceLength / 5).Select(i => generator.NextName).ToList();
+			var words = Enumerable.Range(0, sentenceCount * sentenceLength / 5).Select(i => generator.NextName.ToLower()).ToList();
 
 			var r = new Random();
 			var sentences = Enumerable.Range(0, sentenceCount)
