@@ -24,7 +24,6 @@ namespace N2.Edit.Trash
 		public const string FormerName = "FormerName";
 		public const string FormerState = "FormerState";
 		public const string FormerParent = "FormerParent";
-		public const string FormerExpires = "FormerExpires";
 		public const string DeletedDate = "DeletedDate";
 		private readonly IPersister persister;
 		private readonly IItemFinder finder;
@@ -118,10 +117,8 @@ namespace N2.Edit.Trash
 		{
 			item[FormerName] = item.Name;
 			item[FormerParent] = item.Parent;
-			item[FormerExpires] = item.Expires;
 			item[FormerState] = (int)item.State;
 			item[DeletedDate] = DateTime.Now;
-			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
 			
 			ExpireTrashedItemsRecursive(item);
@@ -151,13 +148,10 @@ namespace N2.Edit.Trash
 		{
 			if (item[FormerName] != null)
 				item.Name = (string)item["FormerName"];
-			if (item[FormerExpires] != null)
-				item.Expires = (DateTime?)item["FormerExpires"];
 			if (item[FormerState] != null)
 				stateChanger.ChangeTo(item, (ContentState)item[FormerState]);
 			item[FormerName] = null;
 			item[FormerParent] = null;
-			item[FormerExpires] = null;
 			item[FormerState] = null;
 			item[DeletedDate] = null;
 
