@@ -6,6 +6,8 @@ using N2.Persistence;
 using N2.Linq;
 using N2.Management.Content.LinkTracker;
 using N2.Web;
+using N2.Edit.FileSystem.Items;
+using N2.Web.Drawing;
 
 namespace N2.Edit.LinkTracker
 {
@@ -96,6 +98,23 @@ namespace N2.Edit.LinkTracker
 				previousUrl,
 				isRenamingDirectory
 				);
+
+			if (Selection.SelectedItem is IFileSystemFile)
+			{
+				this.Engine.Resolve<ImageSizeCache>().ImageSizes
+					// Original size is returned as empty string
+					.Where(size => !string.IsNullOrEmpty(size)).ToList()
+					.ForEach(size =>
+					{
+						string previousSizeUrl = ImagesUtility.GetResizedPath(previousUrl, size);
+						string filename = System.IO.Path.GetFileName(previousSizeUrl.Replace("/", "\\"));
+						tracker.UpdateReferencesTo(
+							Selection.SelectedItem.Children.First(c => c.Name == filename),
+							previousSizeUrl,
+							isRenamingDirectory: false
+						);
+					});
+			}
 
 			if (chkChildren.Checked)
 			{

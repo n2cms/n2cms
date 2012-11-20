@@ -333,5 +333,69 @@ namespace N2.Edit.Tests.LinkTracker
 			Assert.That(links.Details[0].LinkedItem, Is.Null);
 			Assert.That(links.Details[0].StringValue, Is.EqualTo("/FileSystem/upload/File.txt"));
 		}
+
+		[Test]
+		public void TracksUrl_ToImages()
+		{
+			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
+			var fs = new FakeMemoryFileSystem();
+			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
+			rootDir.Set(fs);
+			rootDir.Set(new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, new EditSection()) }));
+
+			string propertyName = "TestDetail";
+
+			root[propertyName] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+			persister.Save(root);
+
+			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+
+			Assert.That(links, Is.Not.Null);
+			Assert.That(links.Details[0].LinkedItem, Is.Null);
+			Assert.That(links.Details[0].IntValue, Is.EqualTo(10));
+			Assert.That(links.Details[0].Meta, Is.EqualTo(propertyName));
+			Assert.That(links.Details[0].StringValue, Is.EqualTo("/FileSystem/upload/Image.jpg"));
+		}
+
+		[Test]
+		public void CanUpdateUrlToImage()
+		{
+			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
+			var fs = new FakeMemoryFileSystem();
+			fs.directories["/FileSystem/upload/"] = new DirectoryData { Name = "upload" };
+			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
+			rootDir.Set(fs);
+			rootDir.Set(new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, new EditSection()) }));
+			
+			var injector = new FakeDependencyInjector();
+			injector.injectors.Add(new EntityDependencySetter<IFileSystem>(fs));
+			injector.injectors.Add(new EntityDependencySetter<ImageSizeCache>(new ImageSizeCache(new ConfigurationManagerWrapper())));
+			rootDir.Set(injector);
+
+			string propertyName1 = "TestDetail";
+			string propertyName2 = "SuperDetail";
+			string propertyName3 = "SuperestDetail";
+
+			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+			item1[propertyName2] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+			item2[propertyName3] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+
+			persister.Save(root);
+			persister.Save(item1);
+			persister.Save(item2);
+			
+			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
+			file.Name = "Image2.jpg";
+
+			tracker.UpdateReferencesTo(file, "/FileSystem/upload/Image.jpg", isRenamingDirectory: false);
+
+			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+			item1[propertyName2].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+			item2[propertyName3].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+
+			//rootDir.GetChild("upload/Image.jpg").ShouldNotBe(null);
+		}
 	}
 }

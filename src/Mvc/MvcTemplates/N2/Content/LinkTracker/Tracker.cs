@@ -16,7 +16,6 @@ namespace N2.Edit.LinkTracker
 	public class Tracker : IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";
-		public const string ImageUrlMetaName = "ImageUrl";
 
         IRepository<ContentItem> repository;
 		N2.Web.IUrlParser urlParser;
@@ -233,15 +232,12 @@ namespace N2.Edit.LinkTracker
 							// don't update legacy links
 							continue;
 
-						if (name != Tracker.ImageUrlMetaName)
+						if (detail.LinkedItem == null && targetItem.ID != 0)
+							continue;
+						if (detail.LinkedItem != null && detail.LinkedItem.ID != targetItem.ID)
 						{
-							if (detail.LinkedItem == null)
-								continue;
-							if (detail.LinkedItem.ID != targetItem.ID)
-							{
-								// don't update other links
-								continue;
-							}
+							// don't update other links
+							continue;
 						}
 
 						if (isRenamingDirectory)

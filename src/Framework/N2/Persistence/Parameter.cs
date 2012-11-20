@@ -177,6 +177,18 @@ namespace N2.Persistence
 
 		private bool CompareInvariant(object itemValue)
 		{
+			if (Value == null)
+				return itemValue == null;
+
+			var value = Value.ToString();
+			if (value.EndsWith("%"))
+			{
+				if (itemValue is Details.IMultipleValue)
+					return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.StartsWith(value.Substring(0, value.Length - 1));
+				
+				return itemValue != null && itemValue.ToString().StartsWith(value.Substring(0, value.Length - 1));
+			}
+
 			return string.Equals(itemValue != null ? itemValue.ToString() : null, Value != null ? Value.ToString() : null, StringComparison.InvariantCultureIgnoreCase);
 		}
 
