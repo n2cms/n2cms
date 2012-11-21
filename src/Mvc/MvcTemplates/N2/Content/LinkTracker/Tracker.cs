@@ -242,7 +242,15 @@ namespace N2.Edit.LinkTracker
 
 						if (isRenamingDirectory)
 						{
-							newUrl = string.Format("{0}/{1}", targetItem.Url, Path.GetFileName(detail.StringValue));
+							var currentFragments = detail.StringValue.Split('/');
+							var changedFragments = targetItem.Url.Split('/');
+
+							for (int j = 0; j < changedFragments.Length; j++)
+							{
+								currentFragments[j] = changedFragments[j];
+							}
+
+							newUrl = String.Join("/", currentFragments);
 						}
 
 						Update(referrer, detail, name, newUrl, trackerDetails.Skip(i + 1).ToList());
