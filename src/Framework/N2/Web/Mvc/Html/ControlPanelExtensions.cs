@@ -41,7 +41,7 @@ namespace N2.Web.Mvc.Html
 		{
 			var cp = ControlPanelFactory(html);
 			if (html.ViewContext.HttpContext.Request["refresh"] == "true")
-				cp = cp.RefreshNavigation();
+				cp = cp.ForceRefreshNavigation();
 			return cp;
 		}
 
@@ -68,7 +68,8 @@ namespace N2.Web.Mvc.Html
 
         public class ControlPanelHelper : IHtmlString
 		{
-			private bool refreshNavigation = false;
+			private bool refreshNavigation = true;
+			private bool forceRefreshNavigation = false;
 			private bool includeJQuery = true;
 			private bool includeJQueryPlugins = true;
 			private bool includeJQueryUi = true;
@@ -88,6 +89,12 @@ namespace N2.Web.Mvc.Html
 			{
 				get { return refreshNavigation; }
 				set { refreshNavigation = value; }
+			}
+
+			public bool ForceRefreshNavigationOnLoad
+			{
+				get { return forceRefreshNavigation; }
+				set { forceRefreshNavigation = value; }
 			}
 
 			public bool IncludeJQuery
@@ -156,6 +163,15 @@ namespace N2.Web.Mvc.Html
 				return this;
 			}
 
+			/// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
+			/// <param name="refreshNavigation"></param>
+			/// <returns></returns>
+			public ControlPanelHelper ForceRefreshNavigation(bool forceRefreshNavigation = true)
+			{
+				this.forceRefreshNavigation = forceRefreshNavigation;
+				return this;
+			}
+
             /// <summary>Sets the selected item control panel plugins are bound to.</summary>
             /// <param name="currentItem"></param>
             /// <returns></returns>
@@ -210,7 +226,8 @@ namespace N2.Web.Mvc.Html
 					Version = typeof(ContentItem).Assembly.GetName().Version.ToString(),
 					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
 					VersionIndex = item.VersionIndex,
-					VersionKey = item.GetVersionKey()
+					VersionKey = item.GetVersionKey(),
+					Force = ForceRefreshNavigationOnLoad ? "true" : "false"
 				};
 
                 var resources = Html.Resources(writer).Constants();
@@ -290,7 +307,7 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: true, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
 			static string format3 = @"
 		if (n2ctx.hasTop()) $('.cpAdminister').hide();
 		else $('.cpView').hide();

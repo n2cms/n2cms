@@ -184,7 +184,7 @@ namespace N2.Edit.Web
 
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
-            Page.RefreshPreviewFrame(item, previewUrl);
+			Response.Redirect(item.Url.ToUrl().SetQueryParameter("refresh", "true"));
         }
 
         /// <summary>Referesh the selected frames after loading the page.</summary>
