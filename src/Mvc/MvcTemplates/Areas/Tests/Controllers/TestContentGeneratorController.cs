@@ -230,7 +230,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			var fs = Context.Current.Resolve<IFileSystem>();
 			var persister = Context.Current.Persister;
 			var imageHtmls = images
-				? fs.GetFilesRecursive("~/Upload/").Where(f => f.Name.EndsWith("jpg")).Select(f => "<img src='" + f.VirtualPath + "' alt=''/>").ToList()
+				? fs.GetFilesRecursive("~/Upload/").Where(f => f.Name.EndsWith("jpg")).Select(f => "<img src='" + f.VirtualPath + "' alt='" + f.Name + "'/>").ToList()
 				: new List<string>();
 
 			if (item is IContentPage)
