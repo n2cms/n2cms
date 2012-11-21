@@ -101,19 +101,14 @@ namespace N2.Edit.LinkTracker
 
 			if (Selection.SelectedItem is IFileSystemFile)
 			{
-				this.Engine.Resolve<ImageSizeCache>().ImageSizes
-					// Original size is returned as empty string
-					.Where(size => !string.IsNullOrEmpty(size)).ToList()
-					.ForEach(size =>
-					{
-						string previousSizeUrl = ImagesUtility.GetResizedPath(previousUrl, size);
-						string filename = System.IO.Path.GetFileName(previousSizeUrl.Replace("/", "\\"));
-						tracker.UpdateReferencesTo(
-							Selection.SelectedItem.Children.First(c => c.Name == filename),
-							previousSizeUrl,
-							isRenamingDirectory: false
-						);
-					});
+				var sizes = this.Engine.Resolve<ImageSizeCache>().ImageSizes;
+				foreach (var sizedImage in Selection.SelectedItem.Children)
+				{
+					var size = ImagesUtility.GetSize(sizedImage.Url, sizes);
+					var previousSizeUrl = ImagesUtility.GetResizedPath(previousUrl, size);
+
+					tracker.UpdateReferencesTo(sizedImage, previousSizeUrl, isRenamingDirectory: false);
+				}
 			}
 
 			if (chkChildren.Checked)
