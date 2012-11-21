@@ -240,8 +240,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 						{
 							if (imageHtmls.Count > 0 && r.Next(100) < 5)
 								return imageHtmls[r.Next(imageHtmls.Count)];
-							if (r.Next(100) < 10 && linkSource != null && linkSource.Count > 0)
-								return "<a href='" + persister.Get(linkSource[r.Next(linkSource.Count)]).Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
+							if (r.Next(100) < 10 && linkSource != null && linkSource.Count > 1)
+								return "<a href='" + persister.Get(linkSource[r.Next(1, linkSource.Count)]).Url + "'>" + sentences[r.Next(sentences.Length)] + "</a>";
 							else
 								return sentences[r.Next(sentences.Length)];
 						}).ToArray()) + "</p>").ToArray());

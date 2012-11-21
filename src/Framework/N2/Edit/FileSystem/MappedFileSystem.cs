@@ -243,7 +243,7 @@ namespace N2.Edit.FileSystem
 
 		protected virtual string MapPath(string virtualPath)
 		{
-			return HttpContext.Current.Server.MapPath(virtualPath);
+			return System.Web.Hosting.HostingEnvironment.MapPath(virtualPath);
 		}
 
 		private static T GetSafely<K, T>(K value, Func<K, T> getter)
