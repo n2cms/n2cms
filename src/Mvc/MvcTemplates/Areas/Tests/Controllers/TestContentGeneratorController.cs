@@ -222,7 +222,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		private static ContentItem Create(int parentID, Type type, string name, int depth, int i, string[] sentences, List<int> linkSource = null, bool images = false)
 		{
 			var parent = Context.Current.Persister.Get(parentID);
-			ContentItem item = Context.Current.Resolve<ContentActivator>().CreateInstance(type, parent);
+			ContentItem item = Context.Current.Resolve<ContentActivator>().CreateInstance(type, parent, null, asProxy: true);
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			item.ChildState = Collections.CollectionState.IsEmpty;

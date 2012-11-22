@@ -83,6 +83,7 @@ namespace N2.Edit.LinkTracker
 		{
 			if (chkPermanentRedirect.Checked && previousParent != null)
 			{
+				
 				var redirect = Engine.Resolve<ContentActivator>().CreateInstance<PermanentRedirect>(previousParent);
 				redirect.Title = previousName + GetLocalResourceString("PermanentRedirect", " (permanent redirect)");
 				redirect.Name = previousName;
@@ -93,11 +94,7 @@ namespace N2.Edit.LinkTracker
 				Engine.Persister.Save(redirect);
 			}
 
-			tracker.UpdateReferencesTo(
-				Selection.SelectedItem,
-				previousUrl,
-				isRenamingDirectory
-				);
+			tracker.UpdateReferencesTo(Selection.SelectedItem, previousUrl, isRenamingDirectory);
 
 			if (Selection.SelectedItem is IFileSystemFile)
 			{

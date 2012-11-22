@@ -20,6 +20,7 @@ namespace N2.Edit.LinkTracker
         IRepository<ContentItem> repository;
 		N2.Web.IUrlParser urlParser;
         N2.Web.IErrorNotifier errorHandler;
+		Logger<Tracker> logger;
 
         public Tracker(Persistence.IPersister persister, N2.Web.IUrlParser urlParser, ConnectionMonitor connections, N2.Web.IErrorNotifier errorHandler, Configuration.EditSection config)
 		{
@@ -57,20 +58,30 @@ namespace N2.Edit.LinkTracker
 		/// <param name="item">The item that is beeing saved.</param>
 		protected virtual void OnTrackingLinks(ContentItem item)
 		{
-            if (item is ISystemNode)
-                return;
+			if (item is ISystemNode)
+			{
+				logger.DebugFormat("Not updating {0} due to ISystemNode", item);
+				return;
+			}
 			UpdateLinks(item);
 		}
 
 		public virtual void UpdateLinks(ContentItem item)
 		{
+			logger.DebugFormat("Updating link: {0}", item);
+
 			var referencedItems = FindLinkedObjects(item).ToList();
 			DetailCollection links = item.GetDetailCollection(LinkDetailName, false);
 			if (links == null && referencedItems.Count == 0)
+			{
+				logger.Debug("Exiting due to no links and none to update");
 				return;
+			}
 
 			if (links == null)
 				links = item.GetDetailCollection(LinkDetailName, true);
+
+			logger.DebugFormat("Updating {0} links to {1} existing", referencedItems.Count, links.Count);
 
 			// replace existing items
 			for (int i = 0; i < referencedItems.Count && i < links.Count; i++)
@@ -204,6 +215,8 @@ namespace N2.Edit.LinkTracker
 
 		public virtual void UpdateReferencesTo(ContentItem targetItem, string oldUrl = null, bool isRenamingDirectory = false)
 		{
+			logger.DebugFormat("Updating references to {0} from old url '{1}'. directory = {2}", targetItem, oldUrl, isRenamingDirectory);
+
 			var newUrl = targetItem.Url;
 			using (var tx = repository.BeginTransaction())
 			{
@@ -221,6 +234,8 @@ namespace N2.Edit.LinkTracker
 						.Where(d => d.IntValue.HasValue)
 						.OrderBy(d => d.IntValue.Value)
 						.ToList();
+
+					logger.DebugFormat("Updating links on {0}. Details = {2}", referrer, trackerDetails.Count);
 
 					for (int i = 0; i < trackerDetails.Count; i++)
 					{
@@ -278,6 +293,8 @@ namespace N2.Edit.LinkTracker
 
 			// and update the reference
 			detail.StringValue = newUrl;
+
+			logger.DebugFormat("Updating links on {0}. Detail = {1}, Start index = {2}, old url = '{3}', new url = '{4}'", referrer, name, startIndex, oldUrl, newUrl);
 
 			// adapt other reference indexes to the new string length
 			foreach (var subsequent in subsequentReferences.Where(d => name.Equals(d.Meta)))
