@@ -254,6 +254,11 @@ namespace N2.Edit.LinkTracker
 							// don't update other links
 							continue;
 						}
+						else if (oldUrl != null && detail.StringValue != oldUrl)
+						{
+							// don't update other links
+							continue;
+						}
 
 						if (isRenamingDirectory)
 						{

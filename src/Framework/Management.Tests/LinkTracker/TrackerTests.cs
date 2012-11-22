@@ -337,12 +337,11 @@ namespace N2.Edit.Tests.LinkTracker
 		[Test]
 		public void TracksUrl_ToImages()
 		{
-			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
-			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
-			var fs = new FakeMemoryFileSystem();
+			RootDirectory rootDir;
+			FakeMemoryFileSystem fs;
+			SetupFileSystem(out rootDir, out fs);
 			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
-			rootDir.Set(fs);
-			rootDir.Set(new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, new EditSection()) }));
+			fs.files["/FileSystem/upload/OtherImage.jpg"] = new FileData { Name = "OtherImage.jpg" };
 
 			string propertyName = "TestDetail";
 
@@ -359,15 +358,57 @@ namespace N2.Edit.Tests.LinkTracker
 		}
 
 		[Test]
-		public void CanUpdateUrlToImage()
+		public void UpdateUrl_ToImage()
 		{
-			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
-			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
-			var fs = new FakeMemoryFileSystem();
-			fs.directories["/FileSystem/upload/"] = new DirectoryData { Name = "upload" };
+			RootDirectory rootDir;
+			FakeMemoryFileSystem fs;
+			SetupFileSystem(out rootDir, out fs);
+			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
+			string propertyName1 = "TestDetail";
+			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+			persister.Save(root);
+
+			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
+			file.Name = "Image2.jpg";
+			tracker.UpdateReferencesTo(file, "/FileSystem/upload/Image.jpg", isRenamingDirectory: false);
+
+			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+		}
+
+		[Test]
+		public void CanUpdateUrl_ToMultipleImage()
+		{
+			RootDirectory rootDir;
+			FakeMemoryFileSystem fs;
+			SetupFileSystem(out rootDir, out fs);
 			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
 			fs.files["/FileSystem/upload/OtherImage.jpg"] = new FileData { Name = "OtherImage.jpg" };
 
+			string propertyName1 = "TestDetail";
+			string propertyName2 = "SuperDetail";
+
+			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" /><img src=""/FileSystem/upload/OtherImage.jpg"" />";
+			item1[propertyName2] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+
+			persister.Save(root);
+			persister.Save(item1);
+			
+			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
+			file.Name = "Image2.jpg";
+
+			tracker.UpdateReferencesTo(file, "/FileSystem/upload/Image.jpg", isRenamingDirectory: false);
+
+			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" /><img src=""/FileSystem/upload/OtherImage.jpg"" />");
+			item1[propertyName2].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+		}
+
+		private void SetupFileSystem(out RootDirectory rootDir, out FakeMemoryFileSystem fs)
+		{
+			rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+			((IInjectable<IUrlParser>)rootDir).Set(TestSupport.Setup(persister, new FakeWebContextWrapper(), new Host(null, 1, 1)));
+			fs = new FakeMemoryFileSystem();
+			fs.directories["/FileSystem/upload/"] = new DirectoryData { Name = "upload" };
+		
 			rootDir.Set(fs);
 			rootDir.Set(new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, new EditSection()) }));
 			
@@ -375,32 +416,6 @@ namespace N2.Edit.Tests.LinkTracker
 			injector.injectors.Add(new EntityDependencySetter<IFileSystem>(fs));
 			injector.injectors.Add(new EntityDependencySetter<ImageSizeCache>(new ImageSizeCache(new ConfigurationManagerWrapper())));
 			rootDir.Set(injector);
-
-			string propertyName1 = "TestDetail";
-			string propertyName2 = "SuperDetail";
-			string propertyName3 = "SuperestDetail";
-
-			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" /><img src=""/FileSystem/upload/OtherImage.jpg"" />";
-			item1[propertyName2] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
-			item2[propertyName3] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
-
-			persister.Save(root);
-			persister.Save(item1);
-			persister.Save(item2);
-			
-			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
-			file.Name = "Image2.jpg";
-
-			var file2 = new File(fs.GetFile("/FileSystem/upload/OtherImage.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
-			file2.Name = "OtherImage2.jpg";
-
-			tracker.UpdateReferencesTo(file, "/FileSystem/upload/Image.jpg", isRenamingDirectory: false);
-
-			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" /><img src=""/FileSystem/upload/OtherImage2.jpg"" />");
-			item1[propertyName2].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
-			item2[propertyName3].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
-
-			//rootDir.GetChild("upload/Image.jpg").ShouldNotBe(null);
 		}
 	}
 }
