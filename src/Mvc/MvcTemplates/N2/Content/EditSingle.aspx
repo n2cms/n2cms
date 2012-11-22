@@ -19,4 +19,5 @@
 		<n2:ItemEditor ID="ie" runat="server" />
 		
 	</edit:PermissionPanel>
+
 </asp:Content>

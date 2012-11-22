@@ -41,7 +41,7 @@
 		},
 
 		showDialog: function (href, dialogOptions) {
-			window.scrollTop = 0;
+			href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
 			if (dialog) dialog.remove();
 			dialog = $('<div id="editorDialog" />').hide();
 			$(document).append(dialog);
@@ -62,6 +62,13 @@
 				closeOnEscape: true,
 				resizable: true
 			}, dialogOptions));
+
+			window.n2ScrollBack = (function (x, y) {
+				return function () {
+					// workaround to maintain scroll position
+					setTimeout(function () { window.scrollTo(x, y); }, 10);
+				}
+			})(window.pageXOffset, window.pageYOffset);
 		},
 
 		makeDraggable: function () {

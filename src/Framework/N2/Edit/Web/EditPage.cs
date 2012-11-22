@@ -63,8 +63,15 @@ namespace N2.Edit.Web
 			Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
 			SetupClientConstants();
+			RegisterModalScrollFix();
 
             base.OnInit(e);
+		}
+
+		private void RegisterModalScrollFix()
+		{
+			if (Request["modal"] == "true")
+				Page.JavaScript("if (window.top.n2ScrollBack) window.top.n2ScrollBack();", ScriptOptions.DocumentReady);
 		}
 
         private void RegisterThemeCss()
@@ -184,7 +191,10 @@ namespace N2.Edit.Web
 
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
-			Response.Redirect(item.Url.ToUrl().SetQueryParameter("refresh", "true"));
+			if (Request["modal"] != "true")
+				Response.Redirect(item.Url.ToUrl().SetQueryParameter("refresh", "true"));
+			else
+				Page.RefreshPreviewFrame(item, previewUrl);
         }
 
         /// <summary>Referesh the selected frames after loading the page.</summary>
