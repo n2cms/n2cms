@@ -235,7 +235,7 @@ namespace N2.Edit.LinkTracker
 						.OrderBy(d => d.IntValue.Value)
 						.ToList();
 
-					logger.DebugFormat("Updating links on {0}. Details = {2}", referrer, trackerDetails.Count);
+					logger.DebugFormat("Updating links on {0}. Details = {1}", referrer, trackerDetails.Count);
 
 					for (int i = 0; i < trackerDetails.Count; i++)
 					{
