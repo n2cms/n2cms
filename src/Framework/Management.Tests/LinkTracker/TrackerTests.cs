@@ -366,6 +366,8 @@ namespace N2.Edit.Tests.LinkTracker
 			var fs = new FakeMemoryFileSystem();
 			fs.directories["/FileSystem/upload/"] = new DirectoryData { Name = "upload" };
 			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
+			fs.files["/FileSystem/upload/OtherImage.jpg"] = new FileData { Name = "OtherImage.jpg" };
+
 			rootDir.Set(fs);
 			rootDir.Set(new ImageSizeCache(new ConfigurationManagerWrapper { Sections = new ConfigurationManagerWrapper.ContentSectionTable(null, null, null, new EditSection()) }));
 			
@@ -378,7 +380,7 @@ namespace N2.Edit.Tests.LinkTracker
 			string propertyName2 = "SuperDetail";
 			string propertyName3 = "SuperestDetail";
 
-			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
+			root[propertyName1] = @"<img src=""/FileSystem/upload/Image.jpg"" /><img src=""/FileSystem/upload/OtherImage.jpg"" />";
 			item1[propertyName2] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
 			item2[propertyName3] = @"<img src=""/FileSystem/upload/Image.jpg"" />";
 
@@ -389,9 +391,12 @@ namespace N2.Edit.Tests.LinkTracker
 			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
 			file.Name = "Image2.jpg";
 
+			var file2 = new File(fs.GetFile("/FileSystem/upload/OtherImage.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
+			file2.Name = "OtherImage2.jpg";
+
 			tracker.UpdateReferencesTo(file, "/FileSystem/upload/Image.jpg", isRenamingDirectory: false);
 
-			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" /><img src=""/FileSystem/upload/OtherImage2.jpg"" />");
 			item1[propertyName2].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
 			item2[propertyName3].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
 
