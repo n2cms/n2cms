@@ -31,12 +31,12 @@ namespace N2.Edit.Tests.Trash
         }
 
         [Test]
-        public void ThrownItem_IsExpired()
+        public void ThrownItem_IsNotExpired()
         {
             TrashHandler th = CreateTrashHandler();
             th.Throw(item);
 
-            Assert.Less(DateTime.Now.AddSeconds(-10), item.Expires);
+			item.Expires.ShouldBe(null);
         }
 
         [Test]
