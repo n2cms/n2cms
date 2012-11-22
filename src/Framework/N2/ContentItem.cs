@@ -817,7 +817,8 @@ namespace N2
 		{
 			foreach (var pi in source.GetContentType().GetProperties())
 				if (pi.CanRead && pi.CanWrite && pi.GetGetMethod().GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length > 0)
-					pi.SetValue(destination, pi.GetValue(source, null), null);
+					//pi.SetValue(destination, pi.GetValue(source, null), null);
+					destination[pi.Name] = source[pi.Name];
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
