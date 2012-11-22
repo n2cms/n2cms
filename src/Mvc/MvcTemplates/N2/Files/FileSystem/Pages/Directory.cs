@@ -113,6 +113,9 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.MoveDirectory(Url, to);
+
+			Parent = d;
+			ClearUrl();
 		}
 
 		public ContentItem CopyTo(ContentItem destination)
