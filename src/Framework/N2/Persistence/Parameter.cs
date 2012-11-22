@@ -184,7 +184,7 @@ namespace N2.Persistence
 			if (value.EndsWith("%"))
 			{
 				if (itemValue is Details.IMultipleValue)
-					return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.StartsWith(value.Substring(0, value.Length - 1));
+					return itemValue != null && (itemValue as Details.IMultipleValue).StringValue.StartsWith(value.Substring(0, value.Length - 1), StringComparison.InvariantCultureIgnoreCase);
 				
 				return itemValue != null && itemValue.ToString().StartsWith(value.Substring(0, value.Length - 1));
 			}
