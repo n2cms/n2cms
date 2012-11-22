@@ -185,17 +185,13 @@ namespace N2.Edit.LinkTracker
 			if (item.ID == 0)
 				return FindReferrers(item.Url);
 
-            return repository.Find(
-                (Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
-                & Parameter.IsNull("VersionOf.ID"))
+            return repository.Find(Parameter.Equal(Tracker.LinkDetailName, item).Detail() | Parameter.Equal(Tracker.LinkDetailName, item.Url).Detail())
                 .Distinct();
 		}
 
 		public virtual IEnumerable<ContentItem> FindReferrers(string url)
 		{
-			return repository.Find(
-				Parameter.Like(Tracker.LinkDetailName, url + "%").Detail()
-				& Parameter.IsNull("VersionOf.ID"))
+			return repository.Find(Parameter.Like(Tracker.LinkDetailName, url + "%").Detail())
 				.Distinct();
 		}
 
@@ -215,7 +211,7 @@ namespace N2.Edit.LinkTracker
 
 		public virtual void UpdateReferencesTo(ContentItem targetItem, string oldUrl = null, bool isRenamingDirectory = false)
 		{
-			logger.DebugFormat("Updating references to {0} from old url '{1}'. directory = {2}", targetItem, oldUrl, isRenamingDirectory);
+			logger.InfoFormat("Updating references to {0} from old url '{1}'. directory = {2}", targetItem, oldUrl, isRenamingDirectory);
 
 			var newUrl = targetItem.Url;
 			using (var tx = repository.BeginTransaction())
@@ -246,17 +242,25 @@ namespace N2.Edit.LinkTracker
 						if (name == null || detail.StringValue == null)
 							// don't update legacy links
 							continue;
-
 						if (detail.LinkedItem == null && targetItem.ID != 0)
-							continue;
-						if (detail.LinkedItem != null && detail.LinkedItem.ID != targetItem.ID)
 						{
-							// don't update other links
+							logger.DebugFormat("Skipping due to null linked item and nonempty target {0}", targetItem);
 							continue;
 						}
-						else if (oldUrl != null && detail.StringValue != oldUrl)
+						else if (detail.LinkedItem != null && detail.LinkedItem.ID != targetItem.ID)
 						{
 							// don't update other links
+							logger.DebugFormat("Skipping due to other linked item: {0} != {1}", detail.LinkedItem, targetItem);
+							continue;
+						}
+						// case 1: directory rename
+						// oldUrl:		/upl/x/y/
+						// StringVal:	/upl/x/y/hej.jpg
+						// item.Url		/upl/x/y2/
+						else if (oldUrl != null && !detail.StringValue.StartsWith(oldUrl, StringComparison.InvariantCultureIgnoreCase))
+						{
+							// don't update other images
+							logger.DebugFormat("Skipping due to other url: '{0}' != '{1}'", detail.StringValue, oldUrl);
 							continue;
 						}
 

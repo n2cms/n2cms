@@ -376,6 +376,24 @@ namespace N2.Edit.Tests.LinkTracker
 		}
 
 		[Test]
+		public void UpdateUrl_ToImage_IgnoresCasing()
+		{
+			RootDirectory rootDir;
+			FakeMemoryFileSystem fs;
+			SetupFileSystem(out rootDir, out fs);
+			fs.files["/FileSystem/upload/Image.jpg"] = new FileData { Name = "Image.jpg" };
+			string propertyName1 = "TestDetail";
+			root[propertyName1] = @"<img src=""/FileSystem/Upload/Image.jpg"" />";
+			persister.Save(root);
+
+			var file = new File(fs.GetFile("/FileSystem/upload/Image.jpg"), new Directory(fs.GetDirectory("/FileSystem/upload/"), rootDir));
+			file.Name = "Image2.jpg";
+			tracker.UpdateReferencesTo(file, "/filesystem/upload/image.jpg", isRenamingDirectory: false);
+
+			root[propertyName1].ShouldBe(@"<img src=""/FileSystem/upload/Image2.jpg"" />");
+		}
+
+		[Test]
 		public void CanUpdateUrl_ToMultipleImage()
 		{
 			RootDirectory rootDir;

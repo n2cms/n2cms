@@ -192,7 +192,7 @@ namespace N2.Edit.Web
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
 			if (Request["modal"] != "true")
-				Response.Redirect(item.Url.ToUrl().SetQueryParameter("refresh", "true"));
+				Response.Redirect(previewUrl.ToUrl().SetQueryParameter("refresh", "true"));
 			else
 				Page.RefreshPreviewFrame(item, previewUrl);
         }

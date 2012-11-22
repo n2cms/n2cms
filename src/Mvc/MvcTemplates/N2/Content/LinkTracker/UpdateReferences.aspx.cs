@@ -16,7 +16,6 @@ namespace N2.Edit.LinkTracker
 		private Tracker tracker;
 		private string previousName;
 		private string previousUrl;
-		private bool isRenamingDirectory;
 		private ContentItem previousParent;
 
 		protected override void OnInit(EventArgs e)
@@ -41,8 +40,6 @@ namespace N2.Edit.LinkTracker
 			{
 				previousUrl = Request["previousParent"] + Request["previousName"];
 			}
-
-			isRenamingDirectory = Selection.SelectedItem is IFileSystemDirectory;
 
 			if (!IsPostBack)
 			{
@@ -94,7 +91,7 @@ namespace N2.Edit.LinkTracker
 				Engine.Persister.Save(redirect);
 			}
 
-			tracker.UpdateReferencesTo(Selection.SelectedItem, previousUrl, isRenamingDirectory);
+			tracker.UpdateReferencesTo(Selection.SelectedItem, previousUrl, isRenamingDirectory: Selection.SelectedItem is IFileSystemDirectory);
 
 			if (Selection.SelectedItem is IFileSystemFile)
 			{
