@@ -86,10 +86,12 @@ namespace N2.Edit.LinkTracker
 			// replace existing items
 			for (int i = 0; i < referencedItems.Count && i < links.Count; i++)
 			{
-				if (links.Details[i].StringValue == referencedItems[i].StringValue)
+				var extracted = referencedItems[i];
+				var stored = links.Details[i];
+				if (stored.StringValue == extracted.StringValue && stored.Meta == extracted.Meta && stored.IntValue == extracted.IntValue && stored.BoolValue == extracted.BoolValue)
 					// this prevents clearing item references to children when moving hierarchies
 					continue;
-				links.Details[i].Extract(referencedItems[i]);
+				stored.Extract(extracted);
 			}
 			// add any new items
 			for (int i = links.Details.Count; i < referencedItems.Count; i++)
