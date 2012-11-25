@@ -16,6 +16,7 @@ using N2.Web;
 using N2.Web.UI;
 using System.Net;
 using System.Net.Sockets;
+using N2.Edit.Versioning;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -53,13 +54,16 @@ namespace N2.Templates.Mvc.Controllers
 					.Take(CurrentItem.MaxCount)
 					.ToArray();
 
-				HttpContext.Cache.Add(CacheKey,
-					items,
-					new ContentCacheDependency(Engine.Persister),
-					DateTime.Now.AddSeconds(60),
-					TimeSpan.Zero,
-					CacheItemPriority.Normal,
-					null);
+				if (CurrentItem.ID != 0)
+				{
+					HttpContext.Cache.Add(CacheKey,
+						items,
+						new ContentCacheDependency(Engine.Persister),
+						DateTime.Now.AddSeconds(60),
+						TimeSpan.Zero,
+						CacheItemPriority.Normal,
+						null);
+				}
 			}
 			return items;
 		}
