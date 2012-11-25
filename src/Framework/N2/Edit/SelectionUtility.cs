@@ -86,7 +86,7 @@ namespace N2.Edit
 				selectedItem = Engine.Persister.Get(int.Parse(itemId));
 			
 			var cvr = Engine.Resolve<ContentVersionRepository>();
-			return cvr.ParseVersion(request[PathData.VersionQueryKey], request["versionKey"], selectedItem)
+			return cvr.ParseVersion(request[PathData.VersionIndexQueryKey], request["versionKey"], selectedItem)
 				?? selectedItem;
         }
 

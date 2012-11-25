@@ -129,7 +129,7 @@ namespace N2.Web.Parts
 		public static PathData EnsureDraft(IVersionManager versions, ContentVersionRepository versionRepository, Edit.Navigator navigator, NameValueCollection request)
 		{
 			var item = navigator.Navigate(request["item"]);
-			item = versionRepository.ParseVersion(request[PathData.VersionQueryKey], request["versionKey"], item)
+			item = versionRepository.ParseVersion(request[PathData.VersionIndexQueryKey], request["versionKey"], item)
 				?? item;
 
 			var page = Find.ClosestPage(item);

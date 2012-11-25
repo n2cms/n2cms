@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Engine;
+using N2.Edit.Versioning;
 
 namespace N2.Web.Mvc
 {
@@ -225,10 +226,10 @@ namespace N2.Web.Mvc
 			if (!controllerMapper.ControllerHasAction(controllerName, actionName))
 				return null;
 
-			var part = ResolveContent(context.Request.QueryString, ContentPartKey)
-				?? ResolveContent(context.Request.QueryString, ContentItemKey);
-			var page = ResolveContent(context.Request.QueryString, ContentPageKey);
-
+			var page = ResolvePageContent(context.Request.QueryString, ContentPageKey);
+			var part = ResolvePartContent(context.Request.QueryString, ContentPartKey, page)
+				?? ResolvePartContent(context.Request.QueryString, ContentItemKey, page);
+			
 			if (part == null && page == null)
 				return null;
 
@@ -237,14 +238,34 @@ namespace N2.Web.Mvc
 
 			return routeData;
 		}
-
-		private ContentItem ResolveContent(NameValueCollection query, string key)
+		
+		private ContentItem ResolvePageContent(NameValueCollection query, string key)
 		{
 			int id;
 			if (int.TryParse(query[key], out id))
 			{
-				var item = engine.Persister.Get(id);
-				return item;
+				var page = engine.Persister.Get(id);
+				if (page != null && !string.IsNullOrEmpty(query[PathData.VersionIndexQueryKey]))
+				{
+					int versionIndex;
+					if (int.TryParse(query[PathData.VersionIndexQueryKey], out versionIndex))
+						page = engine.Resolve<IVersionManager>().GetVersion(page, versionIndex) ?? page;
+				}
+				return page;
+			}
+			return null;
+		}
+
+		private ContentItem ResolvePartContent(NameValueCollection query, string key, ContentItem page)
+		{
+			int id;
+			if (int.TryParse(query[key], out id))
+			{
+				var part = engine.Persister.Get(id);
+				if (page != null && !string.IsNullOrEmpty(query[PathData.VersionKeyQueryKey]))
+					// previewing part version
+					part = page.FindDescendantByVersionKey(query[PathData.VersionKeyQueryKey]) ?? part;
+				return part;
 			}
 			return null;
 		}
@@ -318,8 +339,25 @@ namespace N2.Web.Mvc
 
 		private VirtualPathData ResolvePartActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem page, ContentItem item)
 		{
-			values[ContentPageKey] = page.ID;
+			if (page.ID == 0)
+			{
+				if (page.VersionOf.Value == null)
+					return null;
+
+				values[ContentPageKey] = page.VersionOf.ID;
+				values[PathData.VersionIndexQueryKey] = page.VersionIndex;
+			}
+			else
+				values[ContentPageKey] = page.ID;
+
 			values[ContentPartKey] = item.ID;
+			if (item.ID == 0)
+			{
+				if (item.VersionOf.Value != null)
+					values[ContentPartKey] = item.VersionOf.ID;
+				values[PathData.VersionKeyQueryKey] = item.GetVersionKey();
+			}
+
 			var vpd = innerRoute.GetVirtualPath(requestContext, values);
 			if (vpd == null)
 				return null;

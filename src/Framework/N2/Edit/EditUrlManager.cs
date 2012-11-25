@@ -173,7 +173,7 @@ namespace N2.Edit
 
 			if (selected.VersionOf.HasValue)
 			{
-				url = url.AppendQuery(PathData.VersionQueryKey, selected.VersionIndex)
+				url = url.AppendQuery(PathData.VersionIndexQueryKey, selected.VersionIndex)
 					.AppendQuery("VersionKey", selected.GetVersionKey());
 			}
 
@@ -196,11 +196,11 @@ namespace N2.Edit
 			{
 				if (item.IsPage)
 					editUrl = editUrl
-						.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex)
+						.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex)
 						.SetQueryParameter("versionKey", item.GetVersionKey());
 				else
 					editUrl = editUrl
-						.SetQueryParameter(PathData.VersionQueryKey, Find.ClosestPage(item).VersionIndex)
+						.SetQueryParameter(PathData.VersionIndexQueryKey, Find.ClosestPage(item).VersionIndex)
 						.SetQueryParameter("versionKey", item.GetVersionKey());
 			}
 			else if (item.ID == 0)
@@ -209,7 +209,7 @@ namespace N2.Edit
 				if (page != null && page.VersionOf.HasValue)
 					editUrl = editUrl
 						.SetQueryParameter(SelectionUtility.SelectedQueryKey, page.VersionOf.Path)
-						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
 						.SetQueryParameter("versionKey", item.GetVersionKey());
 			}
 			return editUrl;
@@ -224,13 +224,13 @@ namespace N2.Edit
 				{
 					var page = Find.ClosestPage(selectedItem);
 					return url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + page.Path)
-						.AppendQuery(PathData.VersionQueryKey + "=" + page.VersionIndex)
+						.AppendQuery(PathData.VersionIndexQueryKey + "=" + page.VersionIndex)
 						.AppendQuery("versionKey", selectedItem.GetVersionKey());
 				}
 
 				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
 				if (selectedItem.VersionOf != null)
-					url = url.AppendQuery(PathData.VersionQueryKey + "=" + selectedItem.VersionIndex)
+					url = url.AppendQuery(PathData.VersionIndexQueryKey + "=" + selectedItem.VersionIndex)
 						.AppendQuery("versionKey", selectedItem.GetVersionKey());
 
 			}

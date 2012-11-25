@@ -43,13 +43,21 @@ namespace N2.Web
 		static string pageQueryKey = "page";
 		static string partQueryKey = "part";
 		static string pathDataKey = "path";
-		static string versionQueryKey = "versionIndex";
+		static string versionIndexQueryKey = "versionIndex";
+		static string versionKeyQueryKey = "versionKey";
+
+		/// <summary>The version key query key.</summary>
+		public static string VersionKeyQueryKey
+		{
+			get { return PathData.versionKeyQueryKey; }
+			set { PathData.versionKeyQueryKey = value; }
+		}
 
 		/// <summary>The version index query key.</summary>
-		public static string VersionQueryKey
+		public static string VersionIndexQueryKey
 		{
-			get { return versionQueryKey; }
-			set { versionQueryKey = value; }
+			get { return versionIndexQueryKey; }
+			set { versionIndexQueryKey = value; }
 		}
 
 		/// <summary>The item query string parameter.</summary>

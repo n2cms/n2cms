@@ -128,7 +128,7 @@ namespace N2.Web
 					.UpdateQuery(path.QueryParameters);
 				if (path.CurrentPage.ID == 0 && path.CurrentPage.VersionOf.HasValue)
 					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.VersionOf.ID.Value)
-						.SetQueryParameter(PathData.VersionQueryKey, path.CurrentPage.VersionIndex);
+						.SetQueryParameter(PathData.VersionIndexQueryKey, path.CurrentPage.VersionIndex);
 				else 
 					url = url.SetQueryParameter(PathData.PageQueryKey, path.CurrentPage.ID);
 				
@@ -146,7 +146,7 @@ namespace N2.Web
 						.UpdateQuery(path.QueryParameters);
 					if (path.CurrentItem.VersionOf.HasValue)
 						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.VersionOf.ID.Value)
-							.SetQueryParameter(PathData.VersionQueryKey, ancestor.VersionIndex);
+							.SetQueryParameter(PathData.VersionIndexQueryKey, ancestor.VersionIndex);
 					else
 						return url.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
 				}

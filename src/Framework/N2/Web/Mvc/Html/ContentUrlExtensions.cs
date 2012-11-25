@@ -13,7 +13,7 @@ namespace N2.Web.Mvc.Html
 		public static string Action(this UrlHelper url, ContentItem item, string action)
 		{
 			var values = new RouteValueDictionary();
-			values[ContentRoute.ContentItemKey] = item.ID;
+			values[ContentRoute.ContentItemKey] = item.ID != 0 ? (object)item.ID : item;
 			return url.Action(action, values);
 		}
 	}

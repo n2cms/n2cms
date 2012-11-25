@@ -120,7 +120,7 @@ namespace N2.Edit
         {
 			string returnUrl = page.Request["returnUrl"];
 			if (!string.IsNullOrEmpty(returnUrl))
-				return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
+				return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
             return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
 

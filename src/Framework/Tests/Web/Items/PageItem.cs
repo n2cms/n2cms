@@ -9,7 +9,7 @@ namespace N2.Tests.Web.Items
 	{
 		public override string Url
 		{
-			get { return N2.Web.Url.Parse("/" + Name + Extension).AppendQuery(PathData.VersionQueryKey, VersionOf.HasValue ? VersionIndex.ToString() : null, unlessNull: true); }
+			get { return N2.Web.Url.Parse("/" + Name + Extension).AppendQuery(PathData.VersionIndexQueryKey, VersionOf.HasValue ? VersionIndex.ToString() : null, unlessNull: true); }
 		}
 
 		[Obsolete]

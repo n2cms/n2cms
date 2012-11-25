@@ -270,7 +270,7 @@ namespace N2.Web
 				ContentItem version = item.VersionOf;
 				if (version != null)
 					return BuildUrl(version)
-						.SetQueryParameter(PathData.VersionQueryKey, item.VersionIndex);
+						.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
 			}
 			else if (item.ID == 0)
 			{
@@ -278,7 +278,7 @@ namespace N2.Web
 				if (page != null && page != item)
 				{
 					return BuildUrl(page)
-						.SetQueryParameter(PathData.VersionQueryKey, page.VersionIndex)
+						.SetQueryParameter(PathData.VersionIndexQueryKey, page.VersionIndex)
 						.SetQueryParameter("versionKey", item.GetVersionKey());
 				}
 			}
