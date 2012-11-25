@@ -39,7 +39,7 @@ namespace N2.Management.Content
 			var ctx = ie.CreateCommandContext();
 			Engine.Resolve<CommandDispatcher>().Save(ctx);
 			var returnUrl = ctx.Content.Url.ToUrl()
-				.SetQueryParameter(PathData.VersionQueryKey, ctx.Content.VersionIndex)
+				.SetQueryParameter(PathData.VersionIndexQueryKey, ctx.Content.VersionIndex)
 				.SetQueryParameter("edit", "drag");
 
 			Refresh(Selection.SelectedItem, returnUrl);

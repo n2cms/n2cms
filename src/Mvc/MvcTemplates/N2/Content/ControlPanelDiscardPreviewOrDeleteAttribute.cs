@@ -35,7 +35,7 @@ namespace N2.Edit
 			hl.NavigateUrl = Url.Parse("{ManagementUrl}/Content/DiscardPreview.aspx").ResolveTokens()
 				.AppendQuery("selectedUrl", context.Selected.Url)
 				.AppendQuery(PathData.ItemQueryKey, context.Selected.VersionOf.ID)
-				.AppendQuery(PathData.VersionQueryKey, context.Selected.VersionIndex);
+				.AppendQuery(PathData.VersionIndexQueryKey, context.Selected.VersionIndex);
 			hl.CssClass = "cancel";
 			hl.Attributes["onclick"] = "return confirm('Are you certain?');";
 
