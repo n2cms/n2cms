@@ -126,6 +126,7 @@ namespace N2.Web.UI.WebControls
 			}
 			set
 			{
+				var previous = currentItem;
 				currentItem = value;
 				if (value != null)
 				{
@@ -133,8 +134,11 @@ namespace N2.Web.UI.WebControls
 					Discriminator = Definition.Discriminator;
 					if (value.VersionOf.HasValue && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
+					
+					if (previous != null && previous != currentItem)
+						Controls.Clear();
+
 					EnsureChildControls();
-					Engine.EditManager.UpdateEditors(Definition, value, AddedEditors, Page.User);
 				}
 				else
 				{

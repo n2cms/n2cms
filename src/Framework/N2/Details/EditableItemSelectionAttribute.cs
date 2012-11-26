@@ -133,8 +133,8 @@ namespace N2.Details
 																 select (int)ConvertToValue(checkboxItem.Value)).ToArray();
 
 			// Check whether there were any changes
-			var hasChanges = storedItems.Any(selectedLinkedItems.Contains) == false 
-				|| selectedLinkedItems.Any(storedItems.Contains) == false 
+			var hasChanges = storedItems.All(selectedLinkedItems.Contains) == false
+				|| selectedLinkedItems.All(storedItems.Contains) == false 
 				|| storedItems.Count != selectedLinkedItems.Length;
 
 			// Only hook up items when there were changes
