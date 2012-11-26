@@ -134,12 +134,7 @@ namespace N2.Web
 				}
 				if (handleSqlException)
 				{
-					var sex = ex as SqlException;
-					if (sex != null)
-					{
-						// this is a way to recover when lots of writes are going on
-						TryHandleSqlException(sex);
-					}
+					TryHandleSqlException(ex);
 				}
 			}
 		}
@@ -209,19 +204,32 @@ namespace N2.Web
 			TryHandleWrongClassException(ex.InnerException);
 		}
 
-		private void TryHandleSqlException(SqlException sex)
+		private bool TryHandleSqlException(Exception ex)
 		{
-			if (context.HttpContext.Request.HttpMethod != "GET")
-				return;
+			var sex = ex as SqlException;
+			if (sex != null)
+			{
+				if (context.HttpContext.Request.HttpMethod != "GET")
+					return false;
 
-			if (sex.Number == 1205 && string.IsNullOrEmpty(context.HttpContext.Request["dex"]))
-			{
-				context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("dex", 1));
+				// this is a way we try to recover when lots of writes are going on
+				if (sex.Number == 1205 && string.IsNullOrEmpty(context.HttpContext.Request["dex"]))
+					context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("dex", 1));
+				if (sex.Number == -2 && string.IsNullOrEmpty(context.HttpContext.Request["tex"]))
+					context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("tex", 1));
+				return true;
 			}
-			if (sex.Number == -2 && string.IsNullOrEmpty(context.HttpContext.Request["tex"]))
-			{
-				context.HttpContext.Response.Redirect(context.HttpContext.Request.RawUrl.ToUrl().SetQueryParameter("tex", 1));
-			}
+
+			if (ex is HttpUnhandledException)
+				return TryHandleSqlException(ex.InnerException);
+			if (ex is HttpException)
+				return TryHandleSqlException(ex.InnerException);
+			if (ex is TargetInvocationException)
+				return TryHandleSqlException(ex.InnerException);
+			if (ex is ADOException)
+				return TryHandleSqlException(ex.InnerException);
+
+			return false;
 		}
 
 		private void RedirectToFix(WrongClassException wex)
