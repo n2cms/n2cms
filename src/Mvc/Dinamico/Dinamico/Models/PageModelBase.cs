@@ -16,7 +16,7 @@ namespace Dinamico.Models
 	[WithEditableTitle]
 	[WithEditableName(ContainerName = Defaults.Containers.Metadata)]
 	[WithEditableVisibility(ContainerName = Defaults.Containers.Metadata)]
-	[SidebarContainer(Defaults.Containers.Metadata, 100, HeadingText = "Metadatda")]
+	[SidebarContainer(Defaults.Containers.Metadata, 100, HeadingText = "Metadata")]
 	[TabContainer(Defaults.Containers.Content, "Content", 1000)]
 	[RestrictParents(typeof(IPage))]
 	public abstract class PageModelBase : ContentItem, IPage

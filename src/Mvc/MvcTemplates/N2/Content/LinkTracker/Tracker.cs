@@ -268,15 +268,7 @@ namespace N2.Edit.LinkTracker
 
 						if (isRenamingDirectory)
 						{
-							var currentFragments = detail.StringValue.Split('/');
-							var changedFragments = targetItem.Url.Split('/');
-
-							for (int j = 0; j < changedFragments.Length; j++)
-							{
-								currentFragments[j] = changedFragments[j];
-							}
-
-							newUrl = String.Join("/", currentFragments);
+							newUrl = targetItem.Url + detail.StringValue.Substring(oldUrl.Length);
 						}
 
 						Update(referrer, detail, name, newUrl, trackerDetails.Skip(i + 1).ToList());
