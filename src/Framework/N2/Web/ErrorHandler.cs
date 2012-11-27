@@ -69,6 +69,7 @@ namespace N2.Web
 		private readonly IWebContext context;
 		private readonly bool handleWrongClassException = true;
 		private readonly InstallationManager installer;
+		private readonly IExceptionFilter exceptionFilter;
 		private readonly string mailFrom;
 		private readonly IMailSender mailSender;
 		private readonly string mailTo;
@@ -81,12 +82,13 @@ namespace N2.Web
 		private int hour = DateTime.Now.Hour;
 		private bool handleSqlException;
 
-		public ErrorHandler(IErrorNotifier notifier, IWebContext context, InstallationManager installer, IMailSender mailSender, 
+		public ErrorHandler(IErrorNotifier notifier, IWebContext context, InstallationManager installer, IExceptionFilter exceptionFilter, IMailSender mailSender, 
 			ConfigurationManagerWrapper configuration)
 		{
 			this.notifier = notifier;
 			this.context = context;
 			this.installer = installer;
+			this.exceptionFilter = exceptionFilter;
 			this.mailSender = mailSender;
 
 			beginUrl = configuration.Sections.Management.Installer.WelcomeUrl;
@@ -119,7 +121,10 @@ namespace N2.Web
 				UpdateErrorCount();
 				if (action == ErrorAction.Email)
 				{
-					TryNotifyingByEmail(ex);
+					if (exceptionFilter.IsMessageworthy(ex))
+					{
+						TryNotifyingByEmail(ex);
+					}
 				}
 				if (handleWrongClassException)
 				{
