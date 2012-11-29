@@ -44,13 +44,7 @@ namespace N2.Web.Drawing
 	[Service]
     public class ImageResizer
     {
-		[Obsolete("Use overload with parameters")]
-		private void Resize(string imagePath, double maxWidth, double maxHeight, Stream output)
-		{
-			Resize(imagePath, maxWidth, maxHeight, ImageResizeMode.Fit, output);
-		}
-
-		[Obsolete("Use overload with parameters")]
+	    [Obsolete("Use overload with parameters")]
 		public virtual void Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, Stream outputStream)
 		{
 			Resize(inputStream, new ImageResizeParameters(maxWidth, maxHeight, ImageResizeMode.Fit), outputStream);
@@ -68,10 +62,10 @@ namespace N2.Web.Drawing
 			return GetResizedBytes(imageStream, new ImageResizeParameters(maxWidth, maxHeight, mode));
 		}
 
-
-
 		public virtual bool Resize(Stream inputStream, ImageResizeParameters parameters, Stream outputStream)
 		{
+            if (inputStream == null) throw new ArgumentNullException("inputStream");
+
 			using (Bitmap original = new Bitmap(inputStream))
 			{
 				Resize(original, parameters, outputStream);
@@ -81,6 +75,8 @@ namespace N2.Web.Drawing
 
 		public virtual byte[] GetResizedBytes(Stream imageStream, ImageResizeParameters parameters)
 		{
+            if (imageStream == null) throw new ArgumentNullException("imageStream");
+
 			using (Bitmap original = new Bitmap(imageStream))
 			{
 				var ms = new MemoryStream();
@@ -89,23 +85,7 @@ namespace N2.Web.Drawing
 			}
 		}
 
-
-
-		private bool Resize(string physicalImagePath, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
-		{
-			if (physicalImagePath == null) throw new ArgumentNullException("imagePath");
-
-			if (!File.Exists(physicalImagePath))
-				return false;
-
-			using (Bitmap original = new Bitmap(physicalImagePath))
-			{
-				Resize(original, new ImageResizeParameters(maxWidth, maxHeight, mode), outputStream);
-				return true;
-			}
-		}
-
-		private void Resize(Bitmap original, ImageResizeParameters parameters, Stream output)
+	    private void Resize(Bitmap original, ImageResizeParameters parameters, Stream output)
     	{
     		Bitmap resized;
 			var mode = parameters.Mode;
