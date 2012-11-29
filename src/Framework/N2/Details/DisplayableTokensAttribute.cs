@@ -59,7 +59,7 @@ namespace N2.Details
 
 		public ContentState ChangingTo
 		{
-			get { return ContentState.Published; }
+			get { return ContentState.Published | ContentState.Draft; }
 		}
 
 		public bool Transform(ContentItem item)
