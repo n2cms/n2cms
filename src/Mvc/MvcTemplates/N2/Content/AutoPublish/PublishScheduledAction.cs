@@ -11,6 +11,7 @@ using N2.Engine;
 
 namespace N2.Edit.AutoPublish
 {
+	[Service]
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
