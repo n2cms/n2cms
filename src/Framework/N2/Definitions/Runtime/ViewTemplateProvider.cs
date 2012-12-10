@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -8,6 +7,7 @@ using System.Web.Hosting;
 using N2.Definitions.Static;
 using N2.Engine;
 using N2.Persistence;
+using N2.Web.Mvc.Html;
 
 namespace N2.Definitions.Runtime
 {
@@ -55,8 +55,8 @@ namespace N2.Definitions.Runtime
 			var httpContext = httpContextProvider.Get();
 			if (httpContext == null)
 			{
-				logger.Warn("Trying to get tempaltes with no context");
-				return new TemplateDefinition[0];
+				logger.Warn("Trying to get templates with no context");
+			    return Enumerable.Empty<TemplateDefinition>();
 			}
 
 			try
@@ -65,8 +65,8 @@ namespace N2.Definitions.Runtime
 			}
 			catch (Exception ex)
 			{
-				logger.Warn("Trying to get tempaltes with invalid context", ex);
-				return new TemplateDefinition[0];
+				logger.Warn("Trying to get templates with invalid context", ex);
+                return Enumerable.Empty<TemplateDefinition>();
 			}
 			
 			const string cacheKey = "RazorDefinitions";
@@ -115,11 +115,11 @@ namespace N2.Definitions.Runtime
 			return templates;
 		}
 
-		public TemplateDefinition GetTemplate(N2.ContentItem item)
+		public TemplateDefinition GetTemplate(ContentItem item)
 		{
 			var httpContext = httpContextProvider.Get();
 			if (httpContext != null)
-				if (N2.Web.Mvc.Html.RegistrationExtensions.GetRegistrationExpression(httpContext) != null)
+				if (RegistrationExtensions.GetRegistrationExpression(httpContext) != null)
 					return null;
 
 			string templateKey = item.TemplateKey;
