@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Web;
@@ -7,7 +6,6 @@ using N2.Configuration;
 using N2.Edit.Installation;
 using N2.Engine;
 using N2.Plugin;
-using N2.Security;
 using N2.Web.Mail;
 using NHibernate;
 using System.Data.SqlClient;
@@ -63,7 +61,7 @@ namespace N2.Web
 	[Service]
 	public class ErrorHandler : IAutoStart
 	{
-		private readonly Engine.Logger<ErrorHandler> logger;
+		private readonly Logger<ErrorHandler> logger;
 		private readonly IErrorNotifier notifier;
 		private readonly ErrorAction action = ErrorAction.None;
 		private readonly IWebContext context;
@@ -98,7 +96,6 @@ namespace N2.Web
 			maxErrorReportsPerHour = configuration.Sections.Engine.Errors.MaxErrorReportsPerHour;
 			handleWrongClassException = configuration.Sections.Engine.Errors.HandleWrongClassException;
 			handleSqlException = configuration.Sections.Engine.Errors.SqlExceptionHandling == ExceptionResolutionMode.RefreshGet;
-			mailSender = new SmtpMailSender();
 		}
 
 		/// <summary>Total number of errors since startup.</summary>
@@ -116,7 +113,7 @@ namespace N2.Web
 			Exception ex = e.Error;
 			if (ex != null)
 			{
-				Engine.Logger.Error("ErrorHandler.Notify: " + FormatError(ex));
+				Logger.Error("ErrorHandler.Notify: " + FormatError(ex));
 
 				UpdateErrorCount();
 				if (action == ErrorAction.Email)
@@ -173,7 +170,7 @@ namespace N2.Web
 				}
 				catch (Exception ex2)
 				{
-					Engine.Logger.Error("ErrorHandler.Handle: exception handling exception", ex2);
+					Logger.Error("ErrorHandler.Handle: exception handling exception", ex2);
 				}
 			}
 		}
@@ -268,7 +265,7 @@ namespace N2.Web
 					body.Append("User: ").AppendLine(ctx.User.Identity.Name);
 				}
 			}
-			body.Append(ex.ToString());
+			body.Append(ex);
 			return body.ToString();
 		}
 

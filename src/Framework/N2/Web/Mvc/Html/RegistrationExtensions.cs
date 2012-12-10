@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using N2.Definitions.Runtime;
-using System.Collections;
+﻿using N2.Definitions.Runtime;
+using N2.Details;
 using System.Web;
+using System.Web.Mvc;
 
 namespace N2.Web.Mvc.Html
 {
@@ -28,7 +27,7 @@ namespace N2.Web.Mvc.Html
 		{
 			if (registration == null) return null;
 
-			registration.RegisterModifier(new N2.Details.DefaultValueAttribute { Name = name, Value = value });
+			registration.RegisterModifier(new DefaultValueAttribute { Name = name, Value = value });
 			return registration;
 		}
 	}
