@@ -34,6 +34,10 @@ namespace N2.Tests.Fakes
 			return returnBoolean;
 		}
 
+        public bool IsLocallyUniqueAllowDrafts(string name, ContentItem item)
+        {
+            return returnBoolean;
+        }
 		public Exception GetMoveException(ContentItem source, ContentItem destination)
 		{
 			return returnException;
@@ -60,5 +64,5 @@ namespace N2.Tests.Fakes
 		}
 
 		#endregion
-	}
+    }
 }
