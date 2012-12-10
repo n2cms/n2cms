@@ -479,7 +479,7 @@ namespace N2
         [Obsolete("Moved to N2.Web.Url.ToAbsolute")]
         public static string ToAbsolute(string relativePath)
         {
-            return N2.Web.Url.ToAbsolute(relativePath);
+            return Url.ToAbsolute(relativePath);
         }
 
 		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
@@ -680,7 +680,7 @@ namespace N2
 			if (accessor != null)
 				return accessor.Get();
 			else
-				return N2.Context.Current;
+				return Context.Current;
 		}
 
 		// NH Extensions

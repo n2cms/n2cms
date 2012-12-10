@@ -10,13 +10,11 @@
 
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Web.Configuration;
 using N2.Configuration;
 using N2.Engine;
-using N2.Web;
 
 namespace N2
 {
@@ -25,7 +23,7 @@ namespace N2
 	/// </summary>
     public class Context
     {
-		private static readonly Engine.Logger<Context> Logger;
+		private static readonly Logger<Context> Logger;
 
 		#region Initialization Methods
     	/// <summary>Initializes a static instance of the N2 factory.</summary>
@@ -41,7 +39,7 @@ namespace N2
 				}
 				catch (SecurityException)
 				{
-					Engine.Logger.WriterFactory = (t) => new Engine.LogWriterBase();
+					Engine.Logger.WriterFactory = t => new LogWriterBase();
 				}
 				var engine = CreateEngineInstance();
 				Logger.InfoFormat("Initializing engine {0}", engine);
