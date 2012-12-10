@@ -64,7 +64,5 @@ namespace N2.Integrity
 		/// <param name="parent"></param>
 		/// <returns>The exception that would be thrown if the item was created.</returns>
 		Exception GetCreateException(ContentItem item, ContentItem parent);
-
-        bool IsLocallyUniqueAllowDrafts(string name, ContentItem item);
     }
 }
