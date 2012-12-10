@@ -43,6 +43,7 @@ namespace N2.Edit.Web.UI.Controls
 					if (options.Count > 0)
 					{
 						OptionsMenu menu = new OptionsMenu();
+						menu.ID = ID + "_" + plugin.Name;
 						command.Controls.Add(menu);
 
 						AddPlugin(start, root, plugin, menu);
