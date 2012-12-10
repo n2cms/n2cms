@@ -226,7 +226,7 @@ namespace N2.Web.UI.WebControls
 				if (!string.IsNullOrEmpty(Text))
 				{
 					// Ensure that the chosen name is locally unique
-					if (!N2.Context.IntegrityManager.IsLocallyUnique(Text, currentItem))
+					if (!N2.Context.IntegrityManager.IsLocallyUniqueAllowDrafts(Text, currentItem))
 					{
 						//Another item with the same parent and the same name was found 
 						ErrorMessage = string.Format(UniqueNameErrorFormat, Text);

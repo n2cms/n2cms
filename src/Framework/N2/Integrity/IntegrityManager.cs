@@ -170,11 +170,25 @@ namespace N2.Integrity
 			return false;
 		}
 
-		/// <summary>Find out if an item name is occupied.</summary>
-		/// <param name="name">The name to check.</param>
-		/// <param name="item">The item whose siblings (other items with the same parent) might be have a clashing name.</param>
-		/// <returns>True if the name is unique.</returns>
+        /// <summary>Find out if an item name is occupied.</summary>
+        /// <param name="name">The name to check.</param>
+        /// <param name="item">The item whose siblings (other items with the same parent) might be have a clashing name.</param>
+        /// <returns>True if the name is unique.</returns>
         public virtual bool IsLocallyUnique(string name, ContentItem item)
+        {
+            return IsLocallyUniqueExecutor(name, item, (a, b) => a.Equals(b));
+        }
+
+        /// <summary>Find out if an item name is occupied.</summary>
+        /// <param name="name">The name to check.</param>
+        /// <param name="item">The item whose siblings (other items with the same parent) might be have a clashing name.</param>
+        /// <returns>True if the name is unique allowing other versions with different VersionIndex.</returns>
+        public bool IsLocallyUniqueAllowDrafts(string name, ContentItem item)
+        {
+            return IsLocallyUniqueExecutor(name, item, (a, b) => a.Equals(b) || AreDifferentlyVersionedUnsavedDrafts(a, b));
+        }
+
+        protected virtual bool IsLocallyUniqueExecutor(string name, ContentItem item, Func<ContentItem, ContentItem, bool> comparator)
         {
             if (name == null)
                 return true;
@@ -182,14 +196,21 @@ namespace N2.Integrity
             ContentItem parentItem = item.Parent;
             if (parentItem != null)
             {
-				var similarItems = GetItemsWithSameName(name, parentItem);
-				foreach (var potentiallyClashingItem in similarItems)
-				{
-					if (!potentiallyClashingItem.Equals(item))
-						return false;
-				}
+                var similarItems = GetItemsWithSameName(name, parentItem);
+                foreach (var potentiallyClashingItem in similarItems)
+                {
+                    if (!comparator(item, potentiallyClashingItem))
+                        return false;
+                }
             }
             return true;
+        }
+
+        private bool AreDifferentlyVersionedUnsavedDrafts(ContentItem a, ContentItem b)
+        {
+            return a.ID == b.ID
+                || (a.ID == 0 ^ b.ID == 0)
+                && a.VersionIndex != b.VersionIndex;
         }
 
 		private IEnumerable<ContentItem> GetItemsWithSameName(string name, ContentItem parentItem)
@@ -218,5 +239,6 @@ namespace N2.Integrity
 			return true;
 		}
         #endregion
-	}
+
+    }
 }
