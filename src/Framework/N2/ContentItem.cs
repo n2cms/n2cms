@@ -33,13 +33,9 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Web;
-using N2.Persistence.Search;
-using N2.Persistence.Sources;
-using N2.Persistence.Behaviors;
 using Castle.DynamicProxy;
 using System.Linq;
 using System.Collections;
-using N2.Edit.Versioning;
 
 namespace N2
 {
@@ -103,7 +99,7 @@ namespace N2
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
 		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
 		[NonSerialized]
-		private Web.IUrlParser urlParser;
+		private IUrlParser urlParser;
     	private string ancestralTrail;
         private int versionIndex;
 		private ContentState state = ContentState.None;
@@ -430,7 +426,7 @@ namespace N2
             set 
             {
                 if (string.IsNullOrEmpty(detailName))
-					throw new ArgumentNullException("Parameter 'detailName' cannot be null or empty.", "detailName");
+					throw new ArgumentNullException("detailName", "Parameter 'detailName' cannot be null or empty.");
 
 				switch (detailName)
 				{
@@ -461,7 +457,7 @@ namespace N2
 									value = Utility.Convert(value, info.PropertyType);
 								info.SetValue(this, value, null);
 							}
-							else if (value is Details.DetailCollection)
+							else if (value is DetailCollection)
 								throw new N2Exception("Cannot set a detail collection this way, add it to the DetailCollections collection instead.");
 							else
 							{
@@ -536,7 +532,7 @@ namespace N2
 		{
 			if (value == null || !value.Equals(defaultValue))
 			{
-				SetDetail<T>(detailName, value);
+				SetDetail(detailName, value);
 			}
 			else if (Details.ContainsKey(detailName))
 			{
@@ -590,7 +586,7 @@ namespace N2
 				return DetailCollections[collectionName];
 			else if (createWhenEmpty)
 			{
-				Details.DetailCollection collection = new Details.DetailCollection(this, collectionName);
+				DetailCollection collection = new DetailCollection(this, collectionName);
 				DetailCollections.Add(collectionName, collection);
 				return collection;
 			}
@@ -849,7 +845,7 @@ namespace N2
 
 		static void CloneDetails(ContentItem source, ContentItem destination)
 		{
-			foreach (Details.ContentDetail detail in source.Details.Values)
+			foreach (ContentDetail detail in source.Details.Values)
 			{
 				if(destination.details.ContainsKey(detail.Name)) 
 				{
@@ -863,9 +859,9 @@ namespace N2
 				}
 			}
 
-			foreach (Details.DetailCollection collection in source.DetailCollections.Values)
+			foreach (DetailCollection collection in source.DetailCollections.Values)
 			{
-				Details.DetailCollection clonedCollection = collection.Clone();
+				DetailCollection clonedCollection = collection.Clone();
 				clonedCollection.EnclosingItem = destination;
 				destination.DetailCollections[collection.Name] = clonedCollection;
 			}
@@ -955,17 +951,17 @@ namespace N2
 
 		#region ILink Members
 
-		string Web.ILink.Contents
+		string ILink.Contents
 		{
 			get { return Title; }
 		}
 
-		string Web.ILink.ToolTip
+		string ILink.ToolTip
 		{
 			get { return string.Empty; }
 		}
 
-		string Web.ILink.Target
+		string ILink.Target
 		{
 			get { return string.Empty; }
 		}
@@ -1099,7 +1095,7 @@ namespace N2
 			return GetDetail(detailName);
 		}
 
-		void IInterceptableType.SetValues(string detailCollectionName, System.Collections.IEnumerable values)
+		void IInterceptableType.SetValues(string detailCollectionName, IEnumerable values)
 		{
 			if (values == null)
 			{
@@ -1111,7 +1107,7 @@ namespace N2
 			collection.Replace(values);
 		}
 
-		System.Collections.IEnumerable IInterceptableType.GetValues(string detailCollectionName)
+		IEnumerable IInterceptableType.GetValues(string detailCollectionName)
 		{
 			return GetDetailCollection(detailCollectionName, false);
         }
