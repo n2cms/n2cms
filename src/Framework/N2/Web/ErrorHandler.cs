@@ -211,6 +211,8 @@ namespace N2.Web
 			var sex = ex as SqlException;
 			if (sex != null)
 			{
+				if (!context.IsWeb || context.HttpContext == null || context.HttpContext.Request == null)
+					return false;
 				if (context.HttpContext.Request.HttpMethod != "GET")
 					return false;
 
