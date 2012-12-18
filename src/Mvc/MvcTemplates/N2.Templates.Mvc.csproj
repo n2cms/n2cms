@@ -664,7 +664,6 @@
     <Content Include="Views\Shared\PartTemplates\Comment.ascx" />
     <Content Include="Views\Shared\PartTemplates\CommentList.ascx" />
     <Content Include="Views\Shared\PartTemplates\Faq.ascx" />
-    <Content Include="Views\Shared\PartTemplates\Login.ascx" />
     <Content Include="Views\Shared\PartTemplates\RandomImage.ascx" />
     <Content Include="Views\Shared\PartTemplates\Subscribe.ascx" />
     <Content Include="Views\Shared\PartTemplates\Teaser.ascx" />
@@ -678,6 +677,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
+    <Folder Include="Views\Shared\PartTemplates\App_LocalResources\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controllers\Resources\UserRegistration.resx">
@@ -700,12 +700,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Search\App_LocalResources\Index.aspx.resx" />
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.fr.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
