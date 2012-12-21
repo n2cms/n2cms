@@ -19,7 +19,7 @@ namespace N2.Security
         public ContentRoleProvider(ItemBridge bridge, Engine.StructureBoundDictionaryCache<string, CachedRoles> cache)
 			: this()
 		{
-			this.bridge = bridge;
+			Set(bridge);
             this.cache = cache;
 		}
 
@@ -30,8 +30,15 @@ namespace N2.Security
 
         protected virtual ItemBridge Bridge
         {
-            get { return bridge ?? (bridge = Engine.Resolve<ItemBridge>()); }
+			get { return bridge ?? Set(Engine.Resolve<ItemBridge>()); }
         }
+
+		private ItemBridge Set(ItemBridge bridge)
+		{
+			this.bridge = bridge;
+			bridge.UserSaved += (s, ea) => Cache.Expire();
+			return bridge;
+		}
 
         public class CachedRoles
         {

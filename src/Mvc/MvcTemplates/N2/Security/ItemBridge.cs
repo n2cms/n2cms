@@ -30,6 +30,9 @@ namespace N2.Security
 		string[] administratorUsernames = new string[] { "admin" };
 		Type userType = typeof(User);
 
+		public event EventHandler<ItemEventArgs> UserDeleted;
+		public event EventHandler<ItemEventArgs> UserSaved;
+
 		public ItemBridge(ContentActivator activator, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
 			this.security = security;
@@ -148,20 +151,19 @@ namespace N2.Security
 
 		public virtual void Delete(ContentItem item)
 		{
-			try
+			using (security.Disable())
 			{
 				security.ScopeEnabled = false;
 				persister.Delete(item);
-			}
-			finally
-			{
-				security.ScopeEnabled = true;
+
+				if (UserDeleted != null)
+					UserDeleted(this, new ItemEventArgs(item));
 			}
 		}
 
 		public virtual void Save(ContentItem item)
 		{
-			try
+			using (security.Disable())
 			{
 				security.ScopeEnabled = false;
 				using (var tx = persister.Repository.BeginTransaction())
@@ -169,10 +171,8 @@ namespace N2.Security
 					persister.Repository.SaveOrUpdate(item);
 					tx.Commit();
 				}
-			}
-			finally
-			{
-				security.ScopeEnabled = true;
+				if (UserSaved != null)
+					UserSaved(this, new ItemEventArgs(item));
 			}
 		}
 

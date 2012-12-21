@@ -47,8 +47,15 @@ namespace N2.Security
         public ContentMembershipProvider(ItemBridge bridge, Engine.StructureBoundDictionaryCache<string, MembershipUser> cache)
 			: this()
 		{
-			this.bridge = bridge;
+			Set(bridge);
             this.cache = cache;
+		}
+
+		private ItemBridge Set(ItemBridge bridge)
+		{
+			this.bridge = bridge;
+			bridge.UserSaved += (s, ea) => Cache.Expire();
+			return bridge;
 		}
 
         protected virtual Engine.IEngine Engine
@@ -63,7 +70,7 @@ namespace N2.Security
 
 		protected virtual ItemBridge Bridge
 		{
-			get { return bridge ?? (bridge = Engine.Resolve<ItemBridge>()); }
+			get { return bridge ?? Set(Engine.Resolve<ItemBridge>()); }
 		}
 
 		#region provider properties
@@ -434,7 +441,6 @@ namespace N2.Security
 				return false;
 			u.IsLockedOut = false;
 			Bridge.Save(u);
-			Cache.Expire();
 			return true;
 		}
 
@@ -447,7 +453,6 @@ namespace N2.Security
 			{
 				u.UpdateFromMembershipUser(user); // JH: note that password remains unaffected
 				Bridge.Save(u);
-				Cache.Expire();
 			}
 			else
 				throw new N2Exception("User '" + user.UserName + "' not found.");
