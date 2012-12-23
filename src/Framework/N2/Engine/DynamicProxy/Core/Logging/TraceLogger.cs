@@ -53,6 +53,7 @@ namespace Castle.Core.Logging
 #endif
 		public TraceLogger(string name)
 		{
+			Name = name;
 			Initialize();
 			Level = MapLoggerLevel(traceSource.Switch.Level);
 		}
@@ -68,6 +69,7 @@ namespace Castle.Core.Logging
 #endif
 		public TraceLogger(string name, LoggerLevel level)
 		{
+			Name = name;
 			Initialize();
 			Level = MapLoggerLevel(traceSource.Switch.Level);
 		}
