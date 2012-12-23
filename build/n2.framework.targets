@@ -5,11 +5,9 @@
 
 	<ItemGroup>
 		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
-										 $(LibFolder)\Castle.Windsor.*;
 										 $(LibFolder)\System.Web.Mvc.*;
 										 $(SrcFolder)\packages\Iesi.Collections.*\lib\Net35\Iesi.Collections.dll;
-										 $(SrcFolder)\packages\NHibernate.*\lib\Net35\NHibernate.dll;
-										 $(RootFolder)\lib\System.Data.SQLite.dll"/>
+										 $(SrcFolder)\packages\NHibernate.*\lib\Net35\NHibernate.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
 							$(DocFolder)\howto_install.txt;

@@ -37,7 +37,7 @@ namespace N2.Edit.Install
 
 			foreach(var m in Migrator.GetAllMigrations())
 			{
-				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.IsApplicable(Checker.Status) });
+				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.TryApplicable(Checker.Status) ?? true });
 			}
 		}
 
