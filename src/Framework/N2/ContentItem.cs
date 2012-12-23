@@ -121,7 +121,7 @@ namespace N2
 
 		#region Persisted Properties
 		/// <summary>Gets or sets item ID.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
 		public virtual int ID
 		{
 			get { return id; }
@@ -129,7 +129,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets this item's parent. This can be null for root items and previous versions but should be another page in other situations.</summary>
-		[DisplayableAnchor]
+		[DisplayableAnchor, NonInterceptable]
 		public virtual ContentItem Parent
 		{
 			get { return parent; }
@@ -137,7 +137,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
-		[DisplayableHeading(1)]
+		[DisplayableHeading(1), NonInterceptable]
 		public virtual string Title
 		{
 			get { return title; }
@@ -146,7 +146,7 @@ namespace N2
 
         private static char[] invalidCharacters = new char[] { '%', '?', '&', '/', ':' };
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
 		public virtual string Name
 		{
 			get 
@@ -165,7 +165,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual string ZoneName
 		{
 			get { return zoneName; }
@@ -173,7 +173,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the sub-definition name of this item.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
 		public virtual string TemplateKey
 		{
 			get { return templateKey; }
@@ -181,14 +181,15 @@ namespace N2
 		}
 
 		/// <summary>A key shared by translations of an item. It's used to find translations and associate items as translations.</summary>
-		public int? TranslationKey
+		[NonInterceptable]
+		public virtual int? TranslationKey
 		{
 			get { return translationKey; }
 			set { translationKey = value; }
 		}
 
 		/// <summary>Gets or sets when this item was initially created.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual DateTime Created
 		{
 			get { return created; }
@@ -196,7 +197,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the date this item was updated.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual DateTime Updated
 		{
 			get { return updated; }
@@ -204,7 +205,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the publish date of this item.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual DateTime? Published
 		{
 			get { return published; }
@@ -212,7 +213,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the expiration date of this item.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual DateTime? Expires
 		{
 			get { return expires; }
@@ -220,7 +221,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the sort order of this item.</summary>
-        [DisplayableLiteral]
+        [DisplayableLiteral, NonInterceptable]
         public virtual int SortOrder
 		{
 			get { return sortOrder; }
@@ -228,7 +229,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets whether this item is visible. This is normally used to control its visibility in the site map provider.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual bool Visible
 		{
 			get { return visible; }
@@ -236,6 +237,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the published version of this item. If this value is not null then this item is a previous version of the item specified by VersionOf.</summary>
+		[NonInterceptable]
 		public virtual ContentRelation VersionOf
 		{
 			get { return versionOf ?? (versionOf = new ContentRelation()); }
@@ -248,7 +250,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the name of the identity who saved this item.</summary>
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual string SavedBy
 		{
 			get { return savedBy; }
@@ -256,6 +258,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
+		[NonInterceptable]
 		public virtual IContentList<ContentDetail> Details
 		{
 			get { return details; }
@@ -263,6 +266,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection collection. These are details grouped into a collection.</summary>
+		[NonInterceptable]
 		public virtual IContentList<DetailCollection> DetailCollections
 		{
 			get { return detailCollections; }
@@ -270,6 +274,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildren()"/> instead.</summary>
+		[NonInterceptable]
 		public virtual IContentItemList<ContentItem> Children
 		{
 			get { return children; }
@@ -277,6 +282,7 @@ namespace N2
 		}
 
 		/// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/"</summary>
+		[NonInterceptable]
 		public virtual string AncestralTrail
 		{
 			get { return ancestralTrail; }
@@ -284,28 +290,28 @@ namespace N2
         }
 
         /// <summary>The version number of this item</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual int VersionIndex
         {
             get { return versionIndex; }
             set { versionIndex = value; }
         }
 
-		[DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
         public virtual ContentState State
         {
             get { return state; }
             set { state = value; }
         }
-		
-		[DisplayableLiteral]
+
+		[DisplayableLiteral, NonInterceptable]
 		public CollectionState ChildState
 		{
 			get { return childState; }
 			set { childState = value; }
 		}
 
-        [DisplayableLiteral]
+		[DisplayableLiteral, NonInterceptable]
 		public virtual N2.Security.Permission AlteredPermissions
         {
 			get { return alteredPermissions; }
@@ -315,19 +321,21 @@ namespace N2
 
 		#region Generated Properties
 		/// <summary>The default file extension for this content item, e.g. ".aspx".</summary>
-        public virtual string Extension
+        [NonInterceptable]
+		public virtual string Extension
         {
             get { return Web.Url.DefaultExtension; }
         }
 
 		/// <summary>Gets whether this item is a page. This is used for and site map purposes.</summary>
+		[NonInterceptable]
 		public virtual bool IsPage
 		{
 			get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IsPage; }
 		}
 
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
-		[DisplayableAnchor]
+		[DisplayableAnchor, NonInterceptable]
 		public virtual string Url
 		{
 			get 
@@ -344,20 +352,21 @@ namespace N2
 		}
 
 		/// <summary>Gets the template that handle the presentation of this content item. For non page items (IsPage) this can be a user control (ascx).</summary>
+		[NonInterceptable]
 		public virtual string TemplateUrl
 		{
 			get { return "~/Default.aspx"; }
 		}
 
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
-		[DisplayableImage]
+		[DisplayableImage, NonInterceptable]
 		public virtual string IconUrl
         {
 			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconUrl); }
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
-		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()")]
+		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()"), NonInterceptable]
 		public virtual string RewrittenUrl
 		{
 			get { return FindPath(PathData.DefaultAction).GetRewrittenUrl(); }
@@ -367,6 +376,7 @@ namespace N2
 
 		#region Security
 		/// <summary>Gets an array of roles allowed to read this item. Null or empty list is interpreted as this item has no access restrictions (anyone may read).</summary>
+		[NonInterceptable]
 		public virtual IList<Security.AuthorizedRole> AuthorizedRoles
 		{
 			get 
@@ -385,6 +395,7 @@ namespace N2
 		/// <summary>Gets or sets the detail or property with the supplied name. If a property with the supplied name exists this is always returned in favour of any detail that might have the same name.</summary>
 		/// <param name="detailName">The name of the propery or detail.</param>
 		/// <returns>The value of the property or detail. If now property exists null is returned.</returns>
+		[NonInterceptable]
 		public virtual object this[string detailName]
         {
             get
@@ -506,6 +517,7 @@ namespace N2
 		/// <summary>Gets a detail from the details bag.</summary>
 		/// <param name="detailName">The name of the value to get.</param>
 		/// <returns>The value stored in the details bag or null if no item was found.</returns>
+		[NonInterceptable]
 		public virtual object GetDetail(string detailName)
 		{
 			return Details.ContainsKey(detailName)
@@ -517,7 +529,8 @@ namespace N2
         /// <param name="detailName">The name of the value to get.</param>
         /// <param name="defaultValue">The default value to return when no detail is found.</param>
         /// <returns>The value stored in the details bag or null if no item was found.</returns>
-        public virtual T GetDetail<T>(string detailName, T defaultValue)
+		[NonInterceptable]
+		public virtual T GetDetail<T>(string detailName, T defaultValue)
         {
             return Details.ContainsKey(detailName)
                 ? (T)Details[detailName].Value
@@ -528,6 +541,7 @@ namespace N2
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null or equal to defaultValue the detail is removed.</param>
 		/// <param name="defaultValue">The default value. If the value is equal to this value the detail will be removed.</param>
+		[NonInterceptable]
 		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
 			if (value == null || !value.Equals(defaultValue))
@@ -544,6 +558,7 @@ namespace N2
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
 		/// <typeparam name="T">The type of value to store in details.</typeparam>
+		[NonInterceptable]
 		protected internal virtual void SetDetail<T>(string detailName, T value)
 		{
 			SetDetail(detailName, value, typeof(T));
@@ -553,6 +568,7 @@ namespace N2
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
 		/// <param name="valueType">The type of value to store in details.</param>
+		[NonInterceptable]
 		public virtual void SetDetail(string detailName, object value, Type valueType)
 		{
 			ContentDetail detail = null;
@@ -580,6 +596,7 @@ namespace N2
 		/// <param name="collectionName">The name of the detail collection to get.</param>
 		/// <param name="createWhenEmpty">Wether a new collection should be created if none exists. Setting this to false means null will be returned if no collection exists.</param>
 		/// <returns>A new or existing detail collection or null if the createWhenEmpty parameter is false and no collection with the given name exists..</returns>
+		[NonInterceptable]
 		public virtual Details.DetailCollection GetDetailCollection(string collectionName, bool createWhenEmpty = true)
 		{
 			if (DetailCollections.ContainsKey(collectionName))
@@ -599,6 +616,7 @@ namespace N2
 
 		/// <summary>Adds an item to the children of this item updating its parent refernce.</summary>
 		/// <param name="newParent">The new parent of the item. If this parameter is null the item is detached from the hierarchical structure.</param>
+		[NonInterceptable]
 		public virtual void AddTo(ContentItem newParent)
 		{
 			if (Parent != null && Parent != newParent && Parent.Children.Contains(this))
@@ -616,6 +634,7 @@ namespace N2
 		/// <summary>Finds children based on the given url segments. The method supports convering the last segments into action and parameter.</summary>
 		/// <param name="remainingUrl">The remaining url segments.</param>
 		/// <returns>A path data object which can be empty (check using data.IsEmpty()).</returns>
+		[NonInterceptable]
 		public virtual PathData FindPath(string remainingUrl)
 		{
 			if (remainingUrl == null)
@@ -643,6 +662,7 @@ namespace N2
 		/// <param name="childName">The name of the child item to get.</param>
 		/// <returns>The child item if it is found otherwise null.</returns>
 		/// <remarks>If the method is passed an empty or null string it will return null.</remarks>
+		[NonInterceptable]
 		public virtual ContentItem GetChild(string childName)
 		{
 			if (string.IsNullOrEmpty(childName))
@@ -667,7 +687,8 @@ namespace N2
         /// </summary>
         /// <param name="nameSegment">Child name. Cannot contain slashes.</param>
         /// <returns></returns>
-        protected virtual ContentItem FindNamedChild(string nameSegment)
+		[NonInterceptable]
+		protected virtual ContentItem FindNamedChild(string nameSegment)
         {
             var childItem = Children.FindNamed(nameSegment);
             if (childItem == null && string.IsNullOrEmpty(Extension) == false)
@@ -682,7 +703,8 @@ namespace N2
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
 		/// <returns>True if the supplied name is considered the same as the item's.</returns>
-        protected virtual bool IsNamed(string name)
+		[NonInterceptable]
+		protected virtual bool IsNamed(string name)
         {
             if (Name == null)
                 return false;
@@ -693,6 +715,7 @@ namespace N2
 		/// <summary>Gets child items the current user is allowed to access.</summary>
 		/// <returns>A list of content items.</returns>
 		/// <remarks>This method is used by N2 for site map providers, and for data source controls. Keep this in mind when overriding this method.</remarks>
+		[NonInterceptable]
 		public virtual ItemList GetChildren()
 		{
 			return GetChildren(new AccessFilter());
@@ -702,7 +725,8 @@ namespace N2
 		/// <param name="childZoneName">The name of the zone.</param>
 		/// <returns>A list of items that have the specified zone name.</returns>
 		/// <remarks>This method is used by N2 when when non-page items are added to a zone on a page and in edit mode when displaying which items are placed in a certain zone. Keep this in mind when overriding this method.</remarks>
-        public virtual ItemList GetChildren(string childZoneName)
+		[NonInterceptable]
+		public virtual ItemList GetChildren(string childZoneName)
         {
 			return GetChildren(
                 new AllFilter(
@@ -713,6 +737,7 @@ namespace N2
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filters">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
+		[NonInterceptable]
 		public virtual ItemList GetChildren(params ItemFilter[] filters)
 		{
 			return GetChildren(new AllFilter(filters));
@@ -721,6 +746,7 @@ namespace N2
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filter">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
+		[NonInterceptable]
 		public virtual ItemList GetChildren(ItemFilter filter)
 		{
 			IEnumerable<ContentItem> items = !VersionOf.HasValue ? Children : VersionOf.Children;
@@ -732,6 +758,7 @@ namespace N2
 		/// <param name="take">Number of child items to take at the database level.</param>
 		/// <param name="filter">The filters to apply on the children after they have been loaded from the database.</param>
 		/// <returns>A list of filtered child items.</returns>
+		[NonInterceptable]
 		public virtual ItemList GetChildren(int skip, int take, ItemFilter filter)
 		{
 			var items = !VersionOf.HasValue ? Children : VersionOf.Children;
@@ -769,6 +796,7 @@ namespace N2
 		/// <summary>Creates a copy of this item including details and authorized roles resetting ID.</summary>
 		/// <param name="includeChildren">Wether this item's child items also should be cloned.</param>
 		/// <returns>The cloned item with or without cloned child items.</returns>
+		[NonInterceptable]
 		public virtual ContentItem Clone(bool includeChildren)
         {
 			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetContentType(), true); //(ContentItem)MemberwiseClone(); 
@@ -874,6 +902,7 @@ namespace N2
 		#region INode Members
 
 		/// <summary>The logical path to the node from the root node.</summary>
+		[NonInterceptable]
 		public virtual string Path
 		{
 			get
@@ -931,6 +960,7 @@ namespace N2
 		/// <summary>Gets whether a certain user is authorized to view this item.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
+		[NonInterceptable]
 		public virtual bool IsAuthorized(IPrincipal user)
 		{
 			if ((AlteredPermissions & N2.Security.Permission.Read) == N2.Security.Permission.None)
@@ -972,6 +1002,7 @@ namespace N2
 		#region Equals, HashCode and ToString Overrides
 		/// <summary>Checks the item with another for equality.</summary>
 		/// <returns>True if two items have the same ID.</returns>
+		[NonInterceptable]
 		public override bool Equals(object obj)
 		{
 			if (object.ReferenceEquals(this, obj)) return true;
@@ -989,7 +1020,7 @@ namespace N2
 
 		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
-		[DebuggerStepThrough]
+		[DebuggerStepThrough, NonInterceptable]
 		public override int GetHashCode()
 		{
 			if (!hashCode.HasValue)
@@ -1004,7 +1035,7 @@ namespace N2
 
 		/// <summary>Returns this item's name.</summary>
 		/// <returns>The item's name.</returns>
-		[DebuggerStepThrough]
+		[DebuggerStepThrough, NonInterceptable]
 		public override string ToString()
 		{
 			return GetContentType().Name + " {" + Name + "#" + ID + "}";
@@ -1158,7 +1189,6 @@ namespace N2
             }
         }
 
-        [Interceptable]
 		public virtual Type GetContentType()
 		{
 			return base.GetType();

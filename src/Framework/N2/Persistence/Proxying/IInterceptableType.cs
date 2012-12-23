@@ -8,7 +8,7 @@ namespace N2.Persistence.Proxying
 	/// <summary>
 	/// Marks a type available for interception.
 	/// </summary>
-    public interface IInterceptableType : IInterceptable
+    public interface IInterceptableType
 	{
 		/// <summary>The actual content type the proxied object represents.</summary>
 		/// <returns>The actual type.</returns>

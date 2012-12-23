@@ -88,7 +88,13 @@ namespace Castle.DynamicProxy.Contributors
 
         private bool IsInterceptable(MembersCollector collector, MemberInfo member)
         {
-            return collector.Type.IsInterface || member.HasAttribute(typeof(IInterceptable));
+            if (collector.Type.IsInterface)
+				return true;
+			if (member.HasAttribute(typeof(NonInterceptableAttribute)))
+				return false;
+			if (member is MethodInfo && (member as MethodInfo).ContainsGenericParameters)
+				return false;
+			return true;
         }
 
 		protected abstract IEnumerable<MembersCollector> CollectElementsToProxyInternal(IProxyGenerationHook hook);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Shouldly;
 using N2.Definitions.Static;
 using System;
+using N2.Definitions.Runtime;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -112,6 +113,24 @@ namespace N2.Tests.Persistence.Proxying
 	{
 	}
 
+	public class InterceptableRegisteredItem : ContentItem
+	{
+		public virtual string Logotype { get; set; }
+
+		[EditableImageUpload]
+		public virtual string Logotype2 { get; set; }
+	}
+
+	public class InterceptableRegisteredItemRegisterer : FluentRegisterer<InterceptableRegisteredItem>
+	{
+		public override void RegisterDefinition(N2.Definitions.Runtime.IContentRegistration<InterceptableRegisteredItem> register)
+		{
+			register.Page();
+			register.On(i => i.Logotype).ImageUpload();
+		}
+	}
+
+
 	public class IgnoringItem : InterceptableItem
 	{
 		[EditableCheckBox("Ignored Property", 100, PersistAs = PropertyPersistenceLocation.Ignore)]
@@ -124,12 +143,13 @@ namespace N2.Tests.Persistence.Proxying
 	{
 		InterceptingProxyFactory factory;
 		InterceptableItem item;
+		private DefinitionMap map;
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
 			factory = new InterceptingProxyFactory();
-			var map = new DefinitionMap();
+			map = new DefinitionMap();
 			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem), typeof(IgnoringItem) }.Select(t => map.GetOrCreateDefinition(t)));
 		}
 
@@ -620,10 +640,18 @@ namespace N2.Tests.Persistence.Proxying
 			item.EditableChildrenProperty.Single().ShouldBe(item.Children.Single());
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void Attributes_are_retieved_via_definition()
 		{
+			factory.Initialize(new InterceptableRegisteredItemRegisterer().Register(map));
 
+			var item = (InterceptableRegisteredItem)factory.Create(typeof(InterceptableRegisteredItem).FullName, 1);
+
+			item.Logotype = "/hello.jpg";
+			item.Logotype2 = "/hello.jpg";
+
+			item.Details["Logotype"].StringValue.ShouldBe("/hello.jpg");
+			item.Details["Logotype2"].StringValue.ShouldBe("/hello.jpg");
 		}
 
 		//// Copy

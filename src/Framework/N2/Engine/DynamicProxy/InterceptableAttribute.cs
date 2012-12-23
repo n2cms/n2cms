@@ -9,7 +9,7 @@ namespace Castle.DynamicProxy
     /// Attribute used by the proxying system to enable proxying a member.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Event)]
-    public class InterceptableAttribute : Attribute, IInterceptable
+    public class NonInterceptableAttribute : Attribute
     {
     }
 }
