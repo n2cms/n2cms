@@ -33,5 +33,17 @@ namespace N2.Edit.Installation
 		}
 
 		public abstract MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus);
+
+		public bool? TryApplicable(DatabaseStatus initialStatus)
+		{
+			try
+			{
+				return IsApplicable(initialStatus);
+			}
+			catch (System.Exception)
+			{
+				return null;
+			}
+		}
 	}
 }

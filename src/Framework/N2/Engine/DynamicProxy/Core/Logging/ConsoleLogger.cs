@@ -30,7 +30,8 @@ namespace Castle.Core.Logging
 		///   set to <c>LoggerLevel.Debug</c> and the <c>Name</c>
 		///   set to <c>String.Empty</c>.
 		/// </summary>
-		public ConsoleLogger() : this(String.Empty, LoggerLevel.Debug)
+		public ConsoleLogger()
+			: this(String.Empty, LoggerLevel.Debug)
 		{
 		}
 
@@ -39,7 +40,8 @@ namespace Castle.Core.Logging
 		///   set to <c>String.Empty</c>.
 		/// </summary>
 		/// <param name = "logLevel">The logs Level.</param>
-		public ConsoleLogger(LoggerLevel logLevel) : this(String.Empty, logLevel)
+		public ConsoleLogger(LoggerLevel logLevel)
+			: this(String.Empty, logLevel)
 		{
 		}
 
@@ -48,7 +50,8 @@ namespace Castle.Core.Logging
 		///   set to <c>LoggerLevel.Debug</c>.
 		/// </summary>
 		/// <param name = "name">The logs Name.</param>
-		public ConsoleLogger(String name) : this(name, LoggerLevel.Debug)
+		public ConsoleLogger(String name)
+			: this(name, LoggerLevel.Debug)
 		{
 		}
 
@@ -57,7 +60,8 @@ namespace Castle.Core.Logging
 		/// </summary>
 		/// <param name = "name">The logs Name.</param>
 		/// <param name = "logLevel">The logs Level.</param>
-		public ConsoleLogger(String name, LoggerLevel logLevel) : base(name, logLevel)
+		public ConsoleLogger(String name, LoggerLevel logLevel)
+			: base(name, logLevel)
 		{
 		}
 
@@ -75,7 +79,7 @@ namespace Castle.Core.Logging
 			if (exception != null)
 			{
 				Console.Out.WriteLine("[{0}] '{1}' {2}: {3} {4}", loggerLevel, loggerName, exception.GetType().FullName,
-				                      exception.Message, exception.StackTrace);
+									  exception.Message, exception.StackTrace);
 			}
 		}
 

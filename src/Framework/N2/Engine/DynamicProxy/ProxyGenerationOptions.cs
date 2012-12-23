@@ -26,7 +26,7 @@ namespace Castle.DynamicProxy
 	public class ProxyGenerationOptions
 #else
 	[Serializable]
-	public class ProxyGenerationOptions : ISerializable
+	public class ProxyGenerationOptions //MT : ISerializable
 #endif
 	{
 		public static readonly ProxyGenerationOptions Default = new ProxyGenerationOptions();
@@ -84,18 +84,18 @@ namespace Castle.DynamicProxy
 			}
 		}
 
-#if !SILVERLIGHT
-#if DOTNET40
-		[SecurityCritical]
-#endif
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("hook", Hook);
-			info.AddValue("selector", Selector);
-			info.AddValue("mixins", mixins);
-			info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", BaseTypeForInterfaceProxy.AssemblyQualifiedName);
-		}
-#endif
+//MT #if !SILVERLIGHT
+//MT #if DOTNET40
+//MT 		[SecurityCritical]
+//MT #endif
+//MT 		public void GetObjectData(SerializationInfo info, StreamingContext context)
+//MT 		{
+//MT 			info.AddValue("hook", Hook);
+//MT 			info.AddValue("selector", Selector);
+//MT 			info.AddValue("mixins", mixins);
+//MT 			info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", BaseTypeForInterfaceProxy.AssemblyQualifiedName);
+//MT 		}
+//MT #endif
 
 		public IProxyGenerationHook Hook { get; set; }
 

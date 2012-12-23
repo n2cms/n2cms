@@ -32,7 +32,8 @@ namespace Castle.Core.Logging
 		///   Creates a logger based on <see cref = "EventLog" />.
 		/// </summary>
 		/// <param name = "logName"><see cref = "EventLog.Log" /></param>
-		public DiagnosticsLogger(string logName) : this(logName, "default")
+		public DiagnosticsLogger(string logName)
+			: this(logName, "default")
 		{
 		}
 
@@ -41,7 +42,8 @@ namespace Castle.Core.Logging
 		/// </summary>
 		/// <param name = "logName"><see cref = "EventLog.Log" /></param>
 		/// <param name = "source"><see cref = "EventLog.Source" /></param>
-		public DiagnosticsLogger(string logName, string source) : base(LoggerLevel.Debug)
+		public DiagnosticsLogger(string logName, string source)
+			: base(LoggerLevel.Debug)
 		{
 			// Create the source, if it does not already exist.
 			if (!EventLog.SourceExists(source))
@@ -109,13 +111,13 @@ namespace Castle.Core.Logging
 			if (exception == null)
 			{
 				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", loggerLevel, loggerName,
-				                             message);
+											 message);
 			}
 			else
 			{
 				contentToLog = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2} exception: {3} {4} {5}",
-				                             loggerLevel, loggerName, message, exception.GetType(), exception.Message,
-				                             exception.StackTrace);
+											 loggerLevel, loggerName, message, exception.GetType(), exception.Message,
+											 exception.StackTrace);
 			}
 
 			eventLog.WriteEntry(contentToLog, type);

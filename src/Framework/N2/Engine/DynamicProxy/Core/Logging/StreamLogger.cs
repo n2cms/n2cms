@@ -42,7 +42,8 @@ namespace Castle.Core.Logging
 		///  The stream that will be used for logging,
 		///  seeking while the logger is alive 
 		///</param>
-		public StreamLogger(String name, Stream stream) : this(name, new StreamWriter(stream))
+		public StreamLogger(String name, Stream stream)
+			: this(name, new StreamWriter(stream))
 		{
 		}
 
@@ -61,7 +62,8 @@ namespace Castle.Core.Logging
 		///  The encoding that will be used for this stream.
 		///  <see cref = "StreamWriter" />
 		///</param>
-		public StreamLogger(String name, Stream stream, Encoding encoding) : this(name, new StreamWriter(stream, encoding))
+		public StreamLogger(String name, Stream stream, Encoding encoding)
+			: this(name, new StreamWriter(stream, encoding))
 		{
 		}
 
@@ -122,7 +124,8 @@ namespace Castle.Core.Logging
 		/// </summary>
 		/// <param name = "name">The name of the log.</param>
 		/// <param name = "writer">The <c>StreamWriter</c> the log will write to.</param>
-		protected StreamLogger(String name, StreamWriter writer) : base(name, LoggerLevel.Debug)
+		protected StreamLogger(String name, StreamWriter writer)
+			: base(name, LoggerLevel.Debug)
 		{
 			this.writer = writer;
 			writer.AutoFlush = true;
@@ -140,11 +143,11 @@ namespace Castle.Core.Logging
 			if (exception != null)
 			{
 				writer.WriteLine("[{0}] '{1}' {2}: {3} {4}",
-				                 loggerLevel,
-				                 loggerName,
-				                 exception.GetType().FullName,
-				                 exception.Message,
-				                 exception.StackTrace);
+								 loggerLevel,
+								 loggerName,
+								 exception.GetType().FullName,
+								 exception.Message,
+								 exception.StackTrace);
 			}
 		}
 

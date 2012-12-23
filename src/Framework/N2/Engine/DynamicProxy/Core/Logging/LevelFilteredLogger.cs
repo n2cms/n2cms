@@ -54,7 +54,8 @@ namespace Castle.Core.Logging
 			level = loggerLevel;
 		}
 
-		protected LevelFilteredLogger(String loggerName, LoggerLevel loggerLevel) : this(loggerLevel)
+		protected LevelFilteredLogger(String loggerName, LoggerLevel loggerLevel)
+			: this(loggerLevel)
 		{
 			ChangeName(loggerName);
 		}

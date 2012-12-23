@@ -38,7 +38,7 @@ namespace Castle.Core.Logging
 	///   If no portion of the namespace matches the source named "Default" will
 	///   be used.
 	/// </remarks>
-	public class TraceLogger : LevelFilteredLogger
+	public class TraceLogger : ILogger
 	{
 		private static readonly Dictionary<string, TraceSource> cache = new Dictionary<string, TraceSource>();
 
@@ -52,7 +52,6 @@ namespace Castle.Core.Logging
 		[SecuritySafeCritical]
 #endif
 		public TraceLogger(string name)
-			: base(name)
 		{
 			Initialize();
 			Level = MapLoggerLevel(traceSource.Switch.Level);
@@ -68,7 +67,6 @@ namespace Castle.Core.Logging
 		[SecuritySafeCritical]
 #endif
 		public TraceLogger(string name, LoggerLevel level)
-			: base(name, level)
 		{
 			Initialize();
 			Level = MapLoggerLevel(traceSource.Switch.Level);
@@ -83,7 +81,7 @@ namespace Castle.Core.Logging
 #if DOTNET40
 		[SecuritySafeCritical]
 #endif
-		public override ILogger CreateChildLogger(string loggerName)
+		public ILogger CreateChildLogger(string loggerName)
 		{
 			return InternalCreateChildLogger(loggerName);
 		}
@@ -96,7 +94,7 @@ namespace Castle.Core.Logging
 			return new TraceLogger(string.Concat(Name, ".", loggerName), Level);
 		}
 
-		protected override void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
+		protected void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
 		{
 			if (exception == null)
 			{
@@ -179,8 +177,8 @@ namespace Castle.Core.Logging
 		private static bool IsSourceConfigured(TraceSource source)
 		{
 			if (source.Listeners.Count == 1 &&
-			    source.Listeners[0] is DefaultTraceListener &&
-			    source.Listeners[0].Name == "Default")
+				source.Listeners[0] is DefaultTraceListener &&
+				source.Listeners[0].Name == "Default")
 			{
 				return false;
 			}
@@ -242,6 +240,210 @@ namespace Castle.Core.Logging
 			}
 			return TraceEventType.Verbose;
 		}
+
+		public bool IsDebugEnabled
+		{
+			get { return true; }
+		}
+
+		public bool IsErrorEnabled
+		{
+			get { return true; }
+		}
+
+		public bool IsFatalEnabled
+		{
+			get { return true; }
+		}
+
+		public bool IsInfoEnabled
+		{
+			get { return true; }
+		}
+
+		public bool IsWarnEnabled
+		{
+			get { return true; }
+		}
+
+		public void Debug(string message)
+		{
+			Log(LoggerLevel.Debug, Name, message, null);
+		}
+
+		public void Debug(Func<string> messageFactory)
+		{
+			Log(LoggerLevel.Debug, Name, messageFactory(), null);
+		}
+
+		public void Debug(string message, Exception exception)
+		{
+			Log(LoggerLevel.Debug, Name, message, exception);
+		}
+
+		public void DebugFormat(string format, params object[] args)
+		{
+			Log(LoggerLevel.Debug, Name, string.Format(format, args), null);
+		}
+
+		public void DebugFormat(Exception exception, string format, params object[] args)
+		{
+			Log(LoggerLevel.Debug, Name, string.Format(format, args), exception);
+		}
+
+		public void DebugFormat(IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Debug, Name, string.Format(formatProvider, format, args), null);
+		}
+
+		public void DebugFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Debug, Name, string.Format(formatProvider, format, args), exception);
+		}
+
+		public void Error(string message)
+		{
+			Log(LoggerLevel.Error, Name, message, null);
+		}
+
+		public void Error(Func<string> messageFactory)
+		{
+			Log(LoggerLevel.Error, Name, messageFactory(), null);
+		}
+
+		public void Error(string message, Exception exception)
+		{
+			Log(LoggerLevel.Error, Name, message, exception);
+		}
+
+		public void ErrorFormat(string format, params object[] args)
+		{
+			Log(LoggerLevel.Error, Name, string.Format(format, args), null);
+		}
+
+		public void ErrorFormat(Exception exception, string format, params object[] args)
+		{
+			Log(LoggerLevel.Error, Name, string.Format(format, args), exception);
+		}
+
+		public void ErrorFormat(IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Error, Name, string.Format(formatProvider, format, args), null);
+		}
+
+		public void ErrorFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Error, Name, string.Format(formatProvider, format, args), exception);
+		}
+
+		public void Fatal(string message)
+		{
+			Log(LoggerLevel.Fatal, Name, message, null);
+		}
+
+		public void Fatal(Func<string> messageFactory)
+		{
+			Log(LoggerLevel.Fatal, Name, messageFactory(), null);
+		}
+
+		public void Fatal(string message, Exception exception)
+		{
+			Log(LoggerLevel.Fatal, Name, message, exception);
+		}
+
+		public void FatalFormat(string format, params object[] args)
+		{
+			Log(LoggerLevel.Fatal, Name, string.Format(format, args), null);
+		}
+
+		public void FatalFormat(Exception exception, string format, params object[] args)
+		{
+			Log(LoggerLevel.Fatal, Name, string.Format(format, args), exception);
+		}
+
+		public void FatalFormat(IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Fatal, Name, string.Format(formatProvider, format, args), null);
+		}
+
+		public void FatalFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Fatal, Name, string.Format(formatProvider, format, args), exception);
+		}
+
+		public void Info(string message)
+		{
+			Log(LoggerLevel.Info, Name, message, null);
+		}
+
+		public void Info(Func<string> messageFactory)
+		{
+			Log(LoggerLevel.Info, Name, messageFactory(), null);
+		}
+
+		public void Info(string message, Exception exception)
+		{
+			Log(LoggerLevel.Info, Name, message, exception);
+		}
+
+		public void InfoFormat(string format, params object[] args)
+		{
+			Log(LoggerLevel.Info, Name, string.Format(format, args), null);
+		}
+
+		public void InfoFormat(Exception exception, string format, params object[] args)
+		{
+			Log(LoggerLevel.Info, Name, string.Format(format, args), exception);
+		}
+
+		public void InfoFormat(IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Info, Name, string.Format(formatProvider, format, args), null);
+		}
+
+		public void InfoFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Info, Name, string.Format(formatProvider, format, args), exception);
+		}
+
+		public void Warn(string message)
+		{
+			Log(LoggerLevel.Warn, Name, message, null);
+		}
+
+		public void Warn(Func<string> messageFactory)
+		{
+			Log(LoggerLevel.Warn, Name, messageFactory(), null);
+		}
+
+		public void Warn(string message, Exception exception)
+		{
+			Log(LoggerLevel.Warn, Name, message, exception);
+		}
+
+		public void WarnFormat(string format, params object[] args)
+		{
+			Log(LoggerLevel.Warn, Name, string.Format(format, args), null);
+		}
+
+		public void WarnFormat(Exception exception, string format, params object[] args)
+		{
+			Log(LoggerLevel.Warn, Name, string.Format(format, args), exception);
+		}
+
+		public void WarnFormat(IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Warn, Name, string.Format(formatProvider, format, args), null);
+		}
+
+		public void WarnFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
+		{
+			Log(LoggerLevel.Warn, Name, string.Format(formatProvider, format, args), exception);
+		}
+
+		public LoggerLevel Level { get; set; }
+
+		public string Name { get; set; }
 	}
 
 #endif

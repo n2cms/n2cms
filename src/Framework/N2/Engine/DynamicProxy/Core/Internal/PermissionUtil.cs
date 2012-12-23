@@ -31,8 +31,14 @@ namespace Castle.Core.Internal
 #else
 			var permissionSet = new PermissionSet(PermissionState.None);
 			permissionSet.AddPermission(permission);
-
-			return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
+			try
+			{
+				return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
+			}
+			catch (Exception)
+			{
+				return false;
+			}
 #endif
 		}
 	}

@@ -33,7 +33,7 @@ namespace Castle.DynamicProxy.Serialization
 	///   Handles the deserialization of proxies.
 	/// </summary>
 	[Serializable]
-	public class ProxyObjectReference : IObjectReference, ISerializable, IDeserializationCallback
+	public class ProxyObjectReference //MT : IObjectReference, ISerializable, IDeserializationCallback
 	{
 		private static ModuleScope scope = new ModuleScope();
 
@@ -88,9 +88,9 @@ namespace Castle.DynamicProxy.Serialization
 			get { return scope; }
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		protected ProxyObjectReference(SerializationInfo info, StreamingContext context)
 		{
 			this.info = info;
@@ -120,9 +120,9 @@ namespace Castle.DynamicProxy.Serialization
 			return Type.GetType(info.GetString(key), true, false);
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		protected virtual object RecreateProxy()
 		{
 			var generatorType = GetValue<string>("__proxyTypeId");
@@ -140,9 +140,9 @@ namespace Castle.DynamicProxy.Serialization
 			return RecreateInterfaceProxy(generatorType);
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		private object RecreateClassProxyWithTarget()
 		{
 			var generator = new ClassProxyWithTargetGenerator(scope, baseType, interfaces, proxyGenerationOptions);
@@ -150,9 +150,9 @@ namespace Castle.DynamicProxy.Serialization
 			return InstantiateClassProxy(proxyType);
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		public object RecreateInterfaceProxy(string generatorType)
 		{
 			var @interface = DeserializeTypeFromString("__theInterface");
@@ -183,9 +183,9 @@ namespace Castle.DynamicProxy.Serialization
 			return FormatterServices.GetSafeUninitializedObject(proxyType);
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		public object RecreateClassProxy()
 		{
 			var generator = new ClassProxyGenerator(scope, baseType);
@@ -193,9 +193,9 @@ namespace Castle.DynamicProxy.Serialization
 			return InstantiateClassProxy(proxyType);
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		private object InstantiateClassProxy(Type proxy_type)
 		{
 			delegateToBase = GetValue<bool>("__delegateToBase");
@@ -217,41 +217,41 @@ namespace Castle.DynamicProxy.Serialization
 			}
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
-		public object GetRealObject(StreamingContext context)
-		{
-			return proxy;
-		}
+//MT #if DOTNET40
+//MT 		[SecurityCritical]
+//MT #endif
+//MT 		public object GetRealObject(StreamingContext context)
+//MT 		{
+//MT 			return proxy;
+//MT 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			// There is no need to implement this method as 
-			// this class would never be serialized.
-		}
+//MT #if DOTNET40
+//MT 		[SecurityCritical]
+//MT #endif
+//MT 		public void GetObjectData(SerializationInfo info, StreamingContext context)
+//MT 		{
+//MT 			// There is no need to implement this method as 
+//MT 			// this class would never be serialized.
+//MT 		}
 
-#if DOTNET40
-		[SecuritySafeCritical]
-#endif
-		public void OnDeserialization(object sender)
-		{
-			var interceptors = GetValue<IInterceptor[]>("__interceptors");
-			SetInterceptors(interceptors);
+//MT #if DOTNET40
+//MT 		[SecuritySafeCritical]
+//MT #endif
+//MT 		public void OnDeserialization(object sender)
+//MT 		{
+//MT 			var interceptors = GetValue<IInterceptor[]>("__interceptors");
+//MT 			SetInterceptors(interceptors);
+//MT 
+//MT 			DeserializeProxyMembers();
+//MT 
+//MT 			// Get the proxy state again, to get all those members we couldn't get in the constructor due to deserialization ordering.
+//MT 			DeserializeProxyState();
+//MT 			InvokeCallback(proxy);
+//MT 		}
 
-			DeserializeProxyMembers();
-
-			// Get the proxy state again, to get all those members we couldn't get in the constructor due to deserialization ordering.
-			DeserializeProxyState();
-			InvokeCallback(proxy);
-		}
-
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		private void DeserializeProxyMembers()
 		{
 			var proxyType = proxy.GetType();
@@ -276,9 +276,9 @@ namespace Castle.DynamicProxy.Serialization
 			FormatterServices.PopulateObjectMembers(proxy, deserializedMembers.ToArray(), deserializedValues.ToArray());
 		}
 
-#if DOTNET40
-		[SecurityCritical]
-#endif
+//#if DOTNET40
+//		[SecurityCritical]
+//#endif
 		private void DeserializeProxyState()
 		{
 			if (isInterfaceProxy)

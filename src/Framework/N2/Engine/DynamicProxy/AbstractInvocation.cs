@@ -27,8 +27,8 @@ namespace Castle.DynamicProxy
 #if SILVERLIGHT
 	public abstract class AbstractInvocation : IInvocation
 #else
-	[Serializable]
-	public abstract class AbstractInvocation : IInvocation, ISerializable
+//MT 	[Serializable]
+	public abstract class AbstractInvocation : IInvocation//MT, ISerializable
 #endif
 	{
 		private readonly IInterceptor[] interceptors;
@@ -176,16 +176,16 @@ namespace Castle.DynamicProxy
 			}
 		}
 
-#if !SILVERLIGHT
-#if DOTNET40
-		[SecurityCritical]
-#endif
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.SetType(typeof(RemotableInvocation));
-			info.AddValue("invocation", new RemotableInvocation(this));
-		}
-#endif
+//MT #if !SILVERLIGHT
+//MT #if DOTNET40
+//MT 		[SecurityCritical]
+//MT #endif
+//MT 		public void GetObjectData(SerializationInfo info, StreamingContext context)
+//MT 		{
+//MT 			info.SetType(typeof(RemotableInvocation));
+//MT 			info.AddValue("invocation", new RemotableInvocation(this));
+//MT 		}
+//MT #endif
 
 		protected abstract void InvokeMethodOnTarget();
 

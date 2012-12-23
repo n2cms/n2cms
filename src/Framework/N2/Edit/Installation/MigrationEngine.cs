@@ -43,7 +43,7 @@ namespace N2.Edit.Installation
 
 		public virtual IEnumerable<AbstractMigration> GetMigrations(DatabaseStatus initialStatus)
 		{
-			return GetAllMigrations().Where(m => m.IsApplicable(initialStatus));
+			return GetAllMigrations().Where(m => m.TryApplicable(initialStatus) ?? true);
 		}
 	}
 }
