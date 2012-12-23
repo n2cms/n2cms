@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.Drawing;
 using System;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -71,7 +72,7 @@ namespace N2.Details
 		{
 			TagBuilder tb = new TagBuilder("img");
 			bool preferredSizeExists;
-			tb.Attributes["src"] = ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists);
+			tb.Attributes["src"] = Url.ToAbsolute(ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists));
 			tb.Attributes["alt"] = alt;
 			if (preferredSizeExists)
 			{
