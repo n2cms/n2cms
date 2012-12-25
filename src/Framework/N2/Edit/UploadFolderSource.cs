@@ -94,13 +94,15 @@ namespace N2.Edit
 				yield return folder;
 			foreach (var folder in host.DefaultSite.UploadFolders)
 				yield return folder;
-			foreach (var folder in host.Sites.SelectMany(s => s.UploadFolders.Select(f => 
+			foreach (var folder in host.Sites.SelectMany(s => s.UploadFolders.Select(f =>
 			{
 				if (f.Site == null)
 					f.Site = s;
 				return f;
 			})))
+			{
 				yield return folder;
+			}
 		}
 
 		public virtual IEnumerable<FileSystemRoot> GetUploadFolders(Site site)

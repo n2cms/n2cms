@@ -95,8 +95,17 @@ namespace N2.Edit
 			string location = request.QueryString["location"];
 			if (string.IsNullOrEmpty(location))
 				return null;
-			if(Url.Parse(selectedUrl).IsAbsolute)
+			if (Url.Parse(selectedUrl).IsAbsolute)
+			{
+				foreach (var folder in Engine.Resolve<UploadFolderSource>().GetUploadFoldersForCurrentSite())
+					if (!string.IsNullOrEmpty(folder.UrlPrefix) && selectedUrl.StartsWith(folder.UrlPrefix, System.StringComparison.InvariantCultureIgnoreCase))
+					{
+						var source = Engine.Resolve<N2.Persistence.Sources.ContentSource>();
+						var path = source.ResolvePath(selectedUrl.Substring(folder.UrlPrefix.Length));
+						return path.CurrentItem;
+					}
 				return null;
+			}
 
 			string url = Url.ToRelative(selectedUrl).TrimStart('~');
 			if (!url.StartsWith("/"))
