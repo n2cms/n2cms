@@ -14,6 +14,7 @@ using N2.Tests.Fakes;
 using N2.Edit.FileSystem;
 using System;
 using Shouldly;
+using N2.Management.Files.FileSystem.Pages;
 
 namespace N2.Edit.Tests.FileSystem
 {

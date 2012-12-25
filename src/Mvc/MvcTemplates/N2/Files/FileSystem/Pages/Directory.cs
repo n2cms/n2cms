@@ -16,7 +16,7 @@ namespace N2.Edit.FileSystem.Items
 	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
-		string url;
+		string localUrl;
 		string originalName;
 
 		public Directory()
@@ -32,17 +32,27 @@ namespace N2.Edit.FileSystem.Items
 			Title = directory.Name;
 			Updated = directory.Updated;
 			Created = directory.Created;
-			url = directory.VirtualPath;
+			localUrl = N2.Web.Url.ToAbsolute(directory.VirtualPath);
+		}
+
+		public string UrlPrefix { get; set; }
+
+		public override string LocalUrl
+		{
+			get
+			{
+				return localUrl
+				  ?? (Parent != null
+					  ? N2.Web.Url.Combine(Parent.Url, Name)
+					  : N2.Web.Url.Combine("~/", Name));
+			}
 		}
 
 		public override string Url
 		{
 			get 
 			{
-				return url 
-					?? (Parent != null
-						? N2.Web.Url.Combine(Parent.Url, Name) 
-						: N2.Web.Url.Combine("~/", Name));
+				return UrlPrefix + LocalUrl;
 			}
 		}
 
@@ -96,7 +106,7 @@ namespace N2.Edit.FileSystem.Items
 
 		private void ClearUrl()
 		{
-			url = null;
+			localUrl = null;
 		}
 
 		public void Delete()
@@ -146,5 +156,6 @@ namespace N2.Edit.FileSystem.Items
 			injector.FulfilDependencies(node);
 			return node;
 		}
+
 	}
 }

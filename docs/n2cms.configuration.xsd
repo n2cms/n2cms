@@ -59,6 +59,7 @@
 																		</xs:all>
 																		<xs:attribute name="title" type="xs:string" />
 																		<xs:attribute name="path" type="xs:string" use="required" />
+																		<xs:attribute name="urlPrefix" type="xs:string" />
 																	</xs:complexType>
 																</xs:element>
 															</xs:sequence>

@@ -8,6 +8,7 @@ using N2.Management.Content.LinkTracker;
 using N2.Web;
 using N2.Edit.FileSystem.Items;
 using N2.Web.Drawing;
+using N2.Management.Files.FileSystem.Pages;
 
 namespace N2.Edit.LinkTracker
 {

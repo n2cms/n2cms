@@ -13,6 +13,7 @@ using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Workflow;
 using N2.Persistence;
+using N2.Management.Files.FileSystem.Pages;
 
 namespace N2.Edit.Navigation
 {

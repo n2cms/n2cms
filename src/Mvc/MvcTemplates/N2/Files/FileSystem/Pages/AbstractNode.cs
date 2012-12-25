@@ -7,6 +7,7 @@ using N2.Web.Drawing;
 using N2.Persistence.Search;
 using System.Collections.Generic;
 using N2.Persistence;
+using N2.Management.Files.FileSystem.Pages;
 
 namespace N2.Edit.FileSystem.Items
 {

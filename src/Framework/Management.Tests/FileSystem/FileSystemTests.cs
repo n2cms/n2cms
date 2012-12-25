@@ -386,9 +386,10 @@ namespace N2.Edit.Tests.FileSystem
 			fs.CreateDirectory("/upload/hello");
 			fs.WriteFile("/upload/hello/world.txt", new MemoryStream(Encoding.UTF8.GetBytes(text)));
 
-			using (var s = new StreamReader(fs.OpenFile("/upload/hello/world.txt")))
+			using (var s = fs.OpenFile("/upload/hello/world.txt"))
+			using (var sr = new StreamReader(s))
 			{
-				var contents = s.ReadToEnd();
+				var contents = sr.ReadToEnd();
 
 				Assert.That(contents, Is.EqualTo(text));
 			}

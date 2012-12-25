@@ -25,8 +25,8 @@
 		    <asp:Repeater ID="rptFiles" runat="server">
 			    <ItemTemplate>
 				    <div class="file">
-					    <label style='<%# ImageBackgroundStyle((string)Eval("Url")) %>'>
-						    <input name="file" value="<%# Eval("Url") %>" type="checkbox" />
+					    <label style='<%# ImageBackgroundStyle((string)Eval("LocalUrl")) %>'>
+						    <input name="file" value="<%# Eval("LocalUrl") %>" type="checkbox" />
 						    <asp:Image ID="Image1" ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
 					    </label>
 					    <a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>">

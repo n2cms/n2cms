@@ -97,6 +97,7 @@ namespace N2.Management.Files
 			var dir = Directory.New(dd, parent, dependencyInjector);
 			dir.Name = folder.GetName();
 			dir.Title = folder.Title ?? dir.Name;
+			dir.UrlPrefix = folder.UrlPrefix;
 
 			Apply(folder.Readers, dir);
 			Apply(folder.Writers, dir);

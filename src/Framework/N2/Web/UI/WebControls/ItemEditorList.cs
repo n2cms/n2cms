@@ -210,7 +210,7 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ParentItem != null)
 			{
-                var filter = new Collections.CompositeFilter(GetFilters());
+                var filter = new Collections.AllFilter(GetFilters());
                 var items = ParentItem.Children.Where(filter).ToList();
 			
                 foreach (string discriminator in AddedDefinitions)

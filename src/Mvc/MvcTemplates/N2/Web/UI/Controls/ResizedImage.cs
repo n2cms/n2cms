@@ -12,10 +12,13 @@ namespace N2.Edit.Web.UI.Controls
 
 		public int MaxWidth { get; set; }
 		public int MaxHeight { get; set; }
+		public string Hash { get; set; }
 
 		public override void RenderBeginTag(System.Web.UI.HtmlTextWriter writer)
 		{
-			string url = GetResizedImageUrl(ImageUrl, MaxWidth, MaxHeight);
+			Url url = GetResizedImageUrl(ImageUrl, MaxWidth, MaxHeight);
+			if (!string.IsNullOrEmpty(Hash))
+				url = url.AppendQuery("hash", Hash);
 			writer.AddAttribute("src", url);
 			base.RenderBeginTag(writer);
 		}

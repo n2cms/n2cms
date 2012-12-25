@@ -28,6 +28,8 @@ namespace N2.Edit
 			Readers = folder.Readers.ToPermissionMap(Permission.Read, new[] { "Administrators", "Editors", "Writers" }, new[] { "admin" });
 			Writers = folder.Writers.ToPermissionMap(Permission.Write, new[] { "Administrators", "Editors" }, new[] { "admin" });
 			Site = site;
+			if (!string.IsNullOrEmpty(folder.UrlPrefix))
+				UrlPrefix = folder.UrlPrefix.TrimEnd('/');
 		}
 
 		public Site Site { get; set; }
@@ -36,6 +38,7 @@ namespace N2.Edit
 		public bool IsGlobal { get; set; }
 		public PermissionMap Readers { get; set; }
 		public PermissionMap Writers { get; set; }
+		public string UrlPrefix { get; set; }
 
 		private static string FixPath(string path)
 		{

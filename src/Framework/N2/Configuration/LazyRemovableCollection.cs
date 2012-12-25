@@ -53,7 +53,9 @@ namespace N2.Configuration
 		{
 			get
 			{
-				object[] removedKeys = RemovedElements.Select(e => e.ElementKey).ToArray();
+				object[] removedKeys = RemovedElements.Select(e => e.ElementKey)
+					.Union(AddedElements.Select(ae => GetElementKey(ae)))
+					.ToArray();
 				foreach (T element in Defaults)
 				{
 					var key = ((IIdentifiable)element).ElementKey;

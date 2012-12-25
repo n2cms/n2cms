@@ -24,5 +24,10 @@ namespace N2.Edit.FileSystem.Items
             Visible = false;
             SortOrder = 10000;
         }
+
+		public override string LocalUrl
+		{
+			get { return Url; }
+		}
     }
 }

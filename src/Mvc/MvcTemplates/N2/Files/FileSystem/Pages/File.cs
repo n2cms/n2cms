@@ -37,8 +37,6 @@ namespace N2.Edit.FileSystem.Items
 			Size = file.Length;
 			Updated = file.Updated;
 			Created = file.Created;
-
-			url = file.VirtualPath;
 		}
 
         public override void AddTo(ContentItem newParent)
@@ -47,10 +45,14 @@ namespace N2.Edit.FileSystem.Items
                 MoveTo(newParent);
         }
 
-		string url;
+		public virtual string LocalUrl
+		{
+			get { return N2.Web.Url.Combine(Directory.LocalUrl, Name); }
+		}
+
 		public override string Url
 		{
-			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
+			get { return N2.Web.Url.Combine(Parent.Url, Name); }
 		}
 
 		public override bool IsPage
@@ -109,14 +111,12 @@ namespace N2.Edit.FileSystem.Items
 			{
 				FileSystem.MoveFile(Url, Combine(Directory.Url, NewName));
 				Name = NewName;
-				InvalidateUrl();
 			}
         }
 
         public void Delete()
         {
 			FileSystem.DeleteFile(Url);
-			InvalidateUrl();
         }
 
         public void MoveTo(ContentItem destination)
@@ -129,7 +129,6 @@ namespace N2.Edit.FileSystem.Items
 
 			FileSystem.MoveFile(Url, to);
         	Parent = d;
-			InvalidateUrl();
         }
 
 		public ContentItem CopyTo(ContentItem destination)
@@ -162,11 +161,6 @@ namespace N2.Edit.FileSystem.Items
 			{
 				FileSystem.WriteFile(Url, ms);
 			}
-		}
-
-		protected void InvalidateUrl()
-		{
-			this.url = null;
 		}
 	}
 }

@@ -13,6 +13,7 @@ using N2.Web;
 using NUnit.Framework;
 using Shouldly;
 using Rhino.Mocks;
+using N2.Management.Files.FileSystem.Pages;
 
 namespace N2.Edit.Tests.LinkTracker
 {

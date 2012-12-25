@@ -13,51 +13,10 @@ using N2.Security;
 
 namespace N2.Edit.FileSystem.Items
 {
-	[Service]
-	public class ImageSizeCache
-	{
-		public HashSet<string> ImageSizes { get; private set; }
-
-		public ImageSizeCache(ConfigurationManagerWrapper config)
-		{
-			ImageSizes = new HashSet<string>(config.Sections.Management.Images.Sizes.AllElements.Select(ise => ise.Name), StringComparer.InvariantCultureIgnoreCase);
-		}
-
-		public virtual string GetSizeName(string fileName)
-		{
-			int separatorIndex;
-			int dotIndex;
-			if (!TryGetSeparatorAndDotIndex(fileName, out separatorIndex, out dotIndex))
-				return null;
-
-			var sizeName = fileName.Substring(separatorIndex + 1, dotIndex - separatorIndex - 1);
-			if (!ImageSizes.Contains(sizeName))
-				return null;
-
-			return sizeName;
-		}
-
-		public virtual string RemoveImageSize(string fileName)
-		{
-			int separatorIndex;
-			int dotIndex;
-			if (!TryGetSeparatorAndDotIndex(fileName, out separatorIndex, out dotIndex))
-				return null;
-
-			return fileName.Substring(0, separatorIndex) + fileName.Substring(dotIndex);
-		}
-
-		private static bool TryGetSeparatorAndDotIndex(string fileName, out int separatorIndex, out int dotIndex)
-		{
-			separatorIndex = fileName.LastIndexOf(ImagesUtility.Separator[0]);
-			dotIndex = fileName.LastIndexOf('.');
-
-			return separatorIndex >= 0 && separatorIndex < dotIndex;
-		}
-	}
-
     public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory
-    {
+	{
+		public abstract string LocalUrl { get; }
+
     	protected override ContentItem FindNamedChild(string nameSegment)
     	{
     		return GetFiles().FirstOrDefault(f => f.Name == nameSegment) ??
@@ -71,7 +30,7 @@ namespace N2.Edit.FileSystem.Items
 				List<File> files = new List<File>();
 
 				var fileMap = new Dictionary<string, File>(StringComparer.OrdinalIgnoreCase);
-				foreach (var fd in FileSystem.GetFiles(Url))
+				foreach (var fd in FileSystem.GetFiles(LocalUrl))
 				{
 					var file = new File(fd, this);
 					file.Set(FileSystem);
@@ -113,7 +72,7 @@ namespace N2.Edit.FileSystem.Items
             try
             {
 				List<Directory> directories = new List<Directory>();
-				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
+				foreach(DirectoryData dir in FileSystem.GetDirectories(LocalUrl))
 				{
 					var node = Items.Directory.New(dir, this, DependencyInjector);
 					if (!DynamicPermissionMap.IsAllRoles(this, Permission.Read))
