@@ -26,7 +26,8 @@ var freeTextArea_settings = {
 	relative_urls: false,
 	noneditable_noneditable_class: 'cs,csharp,vb,js',
 	tab_focus: ':prev,:next',
-	theme_advanced_resize_horizontal: true
+	theme_advanced_resize_horizontal: true,
+	remove_script_host: false
 };
 var fileBrowserUrl;
 var srcField;
