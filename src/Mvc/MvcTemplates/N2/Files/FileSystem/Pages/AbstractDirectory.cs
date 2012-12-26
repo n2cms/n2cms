@@ -17,6 +17,8 @@ namespace N2.Edit.FileSystem.Items
 	{
 		public abstract string LocalUrl { get; }
 
+		public string UrlPrefix { get; set; }
+
     	protected override ContentItem FindNamedChild(string nameSegment)
     	{
     		return GetFiles().FirstOrDefault(f => f.Name == nameSegment) ??
@@ -75,6 +77,7 @@ namespace N2.Edit.FileSystem.Items
 				foreach(DirectoryData dir in FileSystem.GetDirectories(LocalUrl))
 				{
 					var node = Items.Directory.New(dir, this, DependencyInjector);
+					node.UrlPrefix = this.UrlPrefix;
 					if (!DynamicPermissionMap.IsAllRoles(this, Permission.Read))
 						DynamicPermissionMap.SetRoles(node, Permission.Read, DynamicPermissionMap.GetRoles(this, Permission.Read).ToArray());
 					if (!DynamicPermissionMap.IsAllRoles(this, Permission.Write))

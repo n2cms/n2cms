@@ -48,7 +48,15 @@ namespace N2.Edit.FileSystem.Items
 
 		public virtual AbstractDirectory Directory
         {
-            get { return Parent as AbstractDirectory; }
+            get 
+			{
+				if (Parent is AbstractDirectory)
+					return Parent as AbstractDirectory;
+				else if (Parent is File)
+					return Parent.Parent as AbstractDirectory;
+				else
+					return null;
+			}
         }
 
         public override string Extension

@@ -67,11 +67,11 @@ namespace N2.Edit.FileSystem.Items
 				if (iconUrl != null)
 					return iconUrl;
 
-				string icon = ImagesUtility.GetResizedPath(Url, "icon");
+				string icon = ImagesUtility.GetResizedPath(LocalUrl, "icon");
 				if (FileSystem.FileExists(icon))
 					this.iconUrl = icon;
 				else
-					this.iconUrl = ImagesUtility.GetIconUrl(Url);
+					this.iconUrl = ImagesUtility.GetIconUrl(LocalUrl);
 
 				return iconUrl;
 			}
@@ -79,22 +79,22 @@ namespace N2.Edit.FileSystem.Items
 
 		public bool Exists
 		{
-			get { return Url != null && FileSystem.FileExists(Url); }
+			get { return LocalUrl != null && FileSystem.FileExists(LocalUrl); }
 		}
 
     	public string NewName { get; set; }
 
 		public virtual void TransmitTo(Stream stream)
 		{
-			FileSystem.ReadFileContents(Url, stream);
+			FileSystem.ReadFileContents(LocalUrl, stream);
 		}
 
 		public void WriteToDisk(Stream stream)
 		{
-			if (!FileSystem.DirectoryExists(Directory.Url))
-				FileSystem.CreateDirectory(Directory.Url);
+			if (!FileSystem.DirectoryExists(Directory.LocalUrl))
+				FileSystem.CreateDirectory(Directory.LocalUrl);
 
-			FileSystem.WriteFile(Url, stream);
+			FileSystem.WriteFile(LocalUrl, stream);
 		}
 
 		internal void Add(File file)
@@ -109,25 +109,25 @@ namespace N2.Edit.FileSystem.Items
         {
 			if (!string.IsNullOrEmpty(NewName))
 			{
-				FileSystem.MoveFile(Url, Combine(Directory.Url, NewName));
+				FileSystem.MoveFile(LocalUrl, Combine(Directory.LocalUrl, NewName));
 				Name = NewName;
 			}
         }
 
         public void Delete()
         {
-			FileSystem.DeleteFile(Url);
+			FileSystem.DeleteFile(LocalUrl);
         }
 
         public void MoveTo(ContentItem destination)
         {
             AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = Combine(d.Url, Name);
+			string to = Combine(d.LocalUrl, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
-			FileSystem.MoveFile(Url, to);
+			FileSystem.MoveFile(LocalUrl, to);
         	Parent = d;
         }
 
@@ -135,11 +135,11 @@ namespace N2.Edit.FileSystem.Items
         {
             AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = Combine(d.Url, Name);
+			string to = Combine(d.LocalUrl, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
-			FileSystem.CopyFile(Url, to);
+			FileSystem.CopyFile(LocalUrl, to);
 
 			return d.GetChild(Name);
         }
@@ -148,7 +148,7 @@ namespace N2.Edit.FileSystem.Items
 
 		public string ReadFile()
 		{
-			using (var fs = FileSystem.OpenFile(Url))
+			using (var fs = FileSystem.OpenFile(LocalUrl))
 			using (var sr = new StreamReader(fs))
 			{
 				return sr.ReadToEnd();
@@ -159,7 +159,7 @@ namespace N2.Edit.FileSystem.Items
 		{
 			using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(text)))
 			{
-				FileSystem.WriteFile(Url, ms);
+				FileSystem.WriteFile(LocalUrl, ms);
 			}
 		}
 	}

@@ -35,22 +35,22 @@ namespace N2.Edit.FileSystem.Items
 			localUrl = N2.Web.Url.ToAbsolute(directory.VirtualPath);
 		}
 
-		public string UrlPrefix { get; set; }
-
 		public override string LocalUrl
 		{
 			get
 			{
 				return localUrl
-				  ?? (Parent != null
-					  ? N2.Web.Url.Combine(Parent.Url, Name)
-					  : N2.Web.Url.Combine("~/", Name));
+				  ?? (ParentDirectory != null
+					? N2.Web.Url.Combine(ParentDirectory.localUrl, Name)
+					: Parent != null
+						? N2.Web.Url.Combine(Parent.Url, Name)
+						: N2.Web.Url.Combine("~/", Name));
 			}
 		}
 
 		public override string Url
 		{
-			get 
+			get
 			{
 				return UrlPrefix + LocalUrl;
 			}
@@ -66,18 +66,23 @@ namespace N2.Edit.FileSystem.Items
 			}
 		}
 
+		public virtual Directory ParentDirectory
+		{
+			get { return Parent as Directory; }
+		}
+
 		public override void AddTo(ContentItem newParent)
 		{
 			if (newParent is AbstractDirectory)
 			{
 				AbstractDirectory dir = EnsureDirectory(newParent);
 
-				string to = Combine(dir.Url, Name);
+				string to = Combine(dir.LocalUrl, Name);
 				if (FileSystem.FileExists(to))
 					throw new NameOccupiedException(this, dir);
 
-				if (FileSystem.DirectoryExists(Url))
-					FileSystem.MoveDirectory(Url, to);
+				if (FileSystem.DirectoryExists(LocalUrl))
+					FileSystem.MoveDirectory(LocalUrl, to);
 				else
 					FileSystem.CreateDirectory(to);
 
@@ -95,13 +100,14 @@ namespace N2.Edit.FileSystem.Items
 		{
 			if (!string.IsNullOrEmpty(originalName) && Name != originalName)
 			{
-				string oldPath = N2.Web.Url.Combine(Parent.Url, originalName);
-				string newPath = N2.Web.Url.Combine(Parent.Url, Name);
+				var parentUrl = ParentDirectory != null ? ParentDirectory.LocalUrl : Parent.Url;
+				string oldPath = N2.Web.Url.Combine(parentUrl, originalName);
+				string newPath = N2.Web.Url.Combine(parentUrl, Name);
 				FileSystem.MoveDirectory(oldPath, newPath);
 				ClearUrl();
 			}
-			if (!FileSystem.DirectoryExists(Url))
-				FileSystem.CreateDirectory(Url);
+			if (!FileSystem.DirectoryExists(LocalUrl))
+				FileSystem.CreateDirectory(LocalUrl);
 		}
 
 		private void ClearUrl()
@@ -111,18 +117,18 @@ namespace N2.Edit.FileSystem.Items
 
 		public void Delete()
 		{
-			FileSystem.DeleteDirectory(Url);
+			FileSystem.DeleteDirectory(LocalUrl);
 		}
 
 		public void MoveTo(ContentItem destination)
 		{
 			AbstractDirectory d = EnsureDirectory(destination);
 
-			string to = Combine(d.Url, Name);
+			string to = Combine(d.LocalUrl, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
-			FileSystem.MoveDirectory(Url, to);
+			FileSystem.MoveDirectory(LocalUrl, to);
 
 			Parent = d;
 			ClearUrl();
@@ -132,7 +138,7 @@ namespace N2.Edit.FileSystem.Items
 		{
 			AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = Combine(d.Url, Name);
+			string to = Combine(d.LocalUrl, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
