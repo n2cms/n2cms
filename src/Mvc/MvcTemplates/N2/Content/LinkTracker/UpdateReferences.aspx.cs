@@ -39,7 +39,7 @@ namespace N2.Edit.LinkTracker
 
 			if (Selection.SelectedItem is IFileSystemNode)
 			{
-				previousUrl = Request["previousParent"] + Request["previousName"];
+				previousUrl = Url.Combine(previousParent.Url, previousName);
 			}
 
 			if (!IsPostBack)

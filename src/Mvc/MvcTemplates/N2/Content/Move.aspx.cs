@@ -88,11 +88,12 @@ namespace N2.Edit
 			EnsureAuthorization(toMove, toMove.IsPublished() ? Permission.Publish : Permission.Write);
 
 			var previousParent = toMove.Parent;
+			var previousUrl = toMove.Url;
 
 			Engine.AddActivity(new ManagementActivity { Operation = "Move", PerformedBy = User.Identity.Name, Path = toMove.Path, ID = toMove.ID });
 			Engine.Persister.Move(toMove, Selection.SelectedItem);
 
-			if(tracker.FindReferrers(Request["memory"].TrimEnd('/')).Any())
+			if (tracker.FindReferrers(previousUrl).Any())
 			{
 				Response.Redirect(Selection.SelectedUrl("{ManagementUrl}/Content/LinkTracker/UpdateReferences.aspx", toMove).ToUrl().AppendQuery("previousParent", previousParent != null ? previousParent.Path : null).AppendQuery("previousName", toMove.Name));
 			}
