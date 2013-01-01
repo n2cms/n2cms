@@ -31,7 +31,7 @@ namespace N2.Definitions.Static
 				var definition = map.GetOrCreateDefinition(contentType, templateKey);
 				var template = CreateTemplate(definition);
 				template.OriginalFactory = () => null;
-				template.TemplateFactory = () => activator.CreateInstance(contentType, null, templateKey);
+				template.TemplateFactory = () => activator.CreateInstance(contentType, null, templateKey, asProxy: true);
 				template.Title = ta.TemplateTitle ?? definition.Title;
 				template.Description = ta.TemplateDescription ?? definition.Description;
 				template.Name = templateKey;

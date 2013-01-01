@@ -173,7 +173,8 @@ namespace N2.Web.UI.WebControls
 
 			addPanel.Controls.Add(new Label { Text = Utility.GetLocalResourceString("Add") ?? "Add", CssClass = "addLabel" });
 
-			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
+			var allowedChildren = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User).ToList();
+			foreach (ItemDefinition definition in allowedChildren)
 			{
 				if (!MinimumType.IsAssignableFrom(definition.ItemType))
 				{
@@ -236,7 +237,7 @@ namespace N2.Web.UI.WebControls
 
 		private ContentItem CreateItem(ItemDefinition definition)
 		{
-			ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, ParentItem, definition.TemplateKey);
+			ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, ParentItem, definition.TemplateKey, asProxy: true);
 			item.ZoneName = ZoneName;
 			return item;
 		}

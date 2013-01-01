@@ -119,7 +119,7 @@ namespace N2.Web.UI.WebControls
 					{
 						parentItem = parentItem.FindDescendantByVersionKey(ParentVersionKey);
 					}
-					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem);
+					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem, null, asProxy: true);
 					currentItem.ZoneName = ZoneName;
 				}
 				return currentItem;
@@ -357,6 +357,7 @@ namespace N2.Web.UI.WebControls
 					ParentVersionIndex = parent.VersionIndex;
 					ParentVersionKey = parent.GetVersionKey();
 				}
+				CurrentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parent, null, asProxy: true);
 			}
 			EnsureChildControls();
 		}
