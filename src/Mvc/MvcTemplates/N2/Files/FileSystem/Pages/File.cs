@@ -52,7 +52,10 @@ namespace N2.Edit.FileSystem.Items
 
 		public override string Url
 		{
-			get { return N2.Web.Url.Combine(Parent.Url, Name); }
+			get 
+			{
+				return N2.Web.Url.Combine(Directory.Url, Name); 
+			}
 		}
 
 		public override bool IsPage
