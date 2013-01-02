@@ -15,7 +15,7 @@
 					<asp:CheckBox runat="server" Text="Add permanent redirect at previous URL" ID="chkPermanentRedirect" meta:resourceKey="chkPermanentRedirect" />
 				</p>
 				<fieldset runat="server" id="fsReferences">
-					<legend><asp:Literal Text="These items linking to the moved page will be updateds" runat="server" meta:resourceKey="ltUpdatedLinks"></asp:Literal></legend>
+					<legend><asp:Literal Text="These referring items will be updated" runat="server" meta:resourceKey="ltUpdatedLinks"></asp:Literal></legend>
 		
 					<div style="margin:5px;">
 					<asp:Repeater runat="server" ID="rptReferencingItems">

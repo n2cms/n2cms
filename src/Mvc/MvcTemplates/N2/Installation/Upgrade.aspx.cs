@@ -75,12 +75,12 @@ namespace N2.Edit.Install
 				{
 					errorText.AppendFormat("{0} error: {1}<br/>", result.Migration.Title, error);
 				}
-				lblResult.Text += string.Format("<li class='{0}'>{1}</li>", result.Errors.Count > 0 ? "warning" : "ok", message);
 
-				if (!string.IsNullOrEmpty(result.RedirectTo))
-				{
-					ClientScript.RegisterStartupScript(GetType(), "Redirect", string.Format("if (confirm('Continue with upgrade {0} on separate page?')) window.open('{1}');", result.Migration.Title, result.RedirectTo), addScriptTags: true);
-				}
+				lblResult.Text += string.Format("<li class='{0}'>{1}{2}</li>", 
+					/*0*/ result.Errors.Count > 0 ? "warning" : "ok",
+					/*1*/ message,
+					/*2*/ string.IsNullOrEmpty(result.RedirectTo) ? "" : string.Format(" <a href='{0}' target='{1}'>Click to complete this migration on separate page</a>", N2.Web.Url.ResolveTokens(result.RedirectTo), result.Migration.GetType().Name));
+
 			}
 			lblResult.Text += "</ul>";
 

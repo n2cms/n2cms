@@ -34,20 +34,22 @@ namespace N2.Edit.LinkTracker
 
 			Title = "Update links leading to " + Selection.SelectedItem.Title;
 
+			var item = Selection.SelectedItem;
+
 			previousParent = Engine.Resolve<Navigator>().Navigate(Request["previousParent"]);
 			previousName = Request["previousName"];
+			previousUrl = Request["previousUrl"];
 
-			if (Selection.SelectedItem is IFileSystemNode)
+			if (item is IFileSystemNode && previousParent != null)
 			{
 				previousUrl = Url.Combine(previousParent.Url, previousName);
 			}
 
 			if (!IsPostBack)
 			{
-				var item = Selection.SelectedItem;
-				var referrers = Selection.SelectedItem.ID == 0
-					? tracker.FindReferrers(previousParent.Url.ToUrl().AppendSegment(previousName).SetExtension(item.Extension)).ToList()
-					: tracker.FindReferrers(Selection.SelectedItem).ToList();
+				var referrers = item.ID == 0
+					? tracker.FindReferrers(previousUrl).ToList()
+					: tracker.FindReferrers(item).ToList();
 				bool showReferences = referrers.Count > 0;
 				if (showReferences)
 				{
@@ -57,22 +59,22 @@ namespace N2.Edit.LinkTracker
 				else
 					fsReferences.Visible = false;
 
-				bool showChildren = Selection.SelectedItem.Children.Count > 0;
+				bool showChildren = item.Children.Count > 0;
 				if (showChildren)
 				{
-					targetsToUpdate.CurrentItem = Selection.SelectedItem;
+					targetsToUpdate.CurrentItem = item;
 					targetsToUpdate.DataBind();
 				}
 				else
 					fsChildren.Visible = false;
 
 				chkPermanentRedirect.Visible = previousParent != null 
-					&& Selection.SelectedItem.ID != 0
+					&& item.ID != 0
 					&& Engine.Resolve<Configuration.EditSection>().LinkTracker.PermanentRedirectEnabled;
 
 				if (!showReferences && !showChildren && previousParent == null)
 				{
-					Refresh(Selection.SelectedItem, ToolbarArea.Both);
+					Refresh(item, ToolbarArea.Both);
 				}
 			}
 		}

@@ -18,7 +18,7 @@ namespace N2.Edit.FileSystem
 			foreach (var file in fs.GetFiles(ancestorDir))
 				yield return file;
 			foreach (var dir in fs.GetDirectories(ancestorDir))
-				foreach (var file in fs.GetFiles(dir.VirtualPath))
+				foreach (var file in GetFilesRecursive(fs, dir.VirtualPath))
 					yield return file;
 		}
 	}
