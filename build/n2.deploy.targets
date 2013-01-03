@@ -166,9 +166,9 @@
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">
 		<ItemGroup>
-			<nugetPackages Include="$(DeployFolder)\*.nupkg" />
+			<nugetPackages Include="$(DeployFolder)\*.$(Version).nupkg" />
 		</ItemGroup>
 		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
-		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" ContinueOnError="true" />
 	</Target>
 </Project>
