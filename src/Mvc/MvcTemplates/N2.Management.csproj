@@ -608,6 +608,7 @@
     </Compile>
     <Compile Include="N2\Files\FolderNodeProvider.cs" />
     <Compile Include="N2\Files\FolderPair.cs" />
+    <Compile Include="N2\Files\UpdateFilePrefixMigration.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
