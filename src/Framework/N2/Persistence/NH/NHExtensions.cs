@@ -71,11 +71,14 @@ namespace N2.Persistence.NH
 						.SetProjection(Projections.Property("EnclosingItem.ID"))
 						.Add(Expression.Eq("Name", p.Name)));
 
-			return Subqueries.PropertyIn("ID",
-				DetachedCriteria.For<ContentDetail>()
-					.SetProjection(Projections.Property("EnclosingItem.ID"))
-					.Add(Expression.Eq("Name", p.Name))
-					.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), p.Value, p.Comparison)));
+			var subselect = DetachedCriteria.For<ContentDetail>()
+				.SetProjection(Projections.Property("EnclosingItem.ID"))
+				.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), p.Value, p.Comparison));
+			
+			if (p.Name != null)
+				subselect = subselect.Add(Expression.Eq("Name", p.Name));
+
+			return Subqueries.PropertyIn("ID", subselect);
 		}
 
 		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
