@@ -54,6 +54,22 @@ namespace N2.Persistence
 		/// </summary>
 		/// <param name="repository"></param>
 		/// <param name="entities">the entities to save</param>
+		public static void SaveOrUpdate<TEntity>(this IRepository<TEntity> repository, IEnumerable<TEntity> entities)
+		{
+			using (var tx = repository.BeginTransaction())
+			{
+				foreach (var entity in entities)
+					repository.SaveOrUpdate(entity);
+				tx.Commit();
+			}
+		}
+
+		/// <summary>
+		/// Register te entity for save or update in the database when the unit of work
+		/// is completed. (INSERT or UPDATE)
+		/// </summary>
+		/// <param name="repository"></param>
+		/// <param name="entities">the entities to save</param>
 		public static void SaveOrUpdateRecursive(this IRepository<ContentItem> repository, params ContentItem[] entities)
 		{
 			using (var tx = repository.BeginTransaction())

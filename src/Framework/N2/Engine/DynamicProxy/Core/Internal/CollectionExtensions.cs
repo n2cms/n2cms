@@ -14,6 +14,8 @@
 
 namespace Castle.Core.Internal
 {
+	using N2;
+	using N2.Collections;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
