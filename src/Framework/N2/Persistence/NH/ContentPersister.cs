@@ -72,6 +72,14 @@ namespace N2.Persistence
                 tx.Commit();
             }
 		}
+		/// <summary>
+		/// Fires an event when saving an item as a draft
+		/// </summary>
+		/// <param name="unsavedItem"></param>
+		public virtual void SaveAsDraft(ContentItem unsavedItem)
+		{
+			InvokeDraft(ItemSavedAsDraft, new ItemEventArgs(unsavedItem));
+		}
 
 		/// <summary>Deletes an item an all sub-items</summary>
 		/// <param name="itemNoMore">The item to delete</param>
@@ -145,6 +153,9 @@ namespace N2.Persistence
 		/// <summary>Occurs when an item is loaded</summary>
 		public event EventHandler<ItemEventArgs> ItemLoaded;
 
+		/// <summary>Occurs when an item has been saved as a draft</summary>
+		public event EventHandler<ItemEventArgs> ItemSavedAsDraft;
+
 		#endregion
 
 		#region IDisposable Members
@@ -172,6 +183,13 @@ namespace N2.Persistence
                 handler.Invoke(this, args);
             return args;
         }
+
+		protected virtual T InvokeDraft<T>(EventHandler<T> handler, T args) where T : ItemEventArgs
+		{
+			if (handler != null && !args.AffectedItem.IsPublished())
+				handler.Invoke(this, args);
+			return args;
+		}
 
 		private void EnsureName(ContentItem item)
 		{
