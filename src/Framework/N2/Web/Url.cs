@@ -567,7 +567,10 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(Path) || Path == "/")
 				return AppendSegment(segment, DefaultExtension);
-			
+
+			if (string.IsNullOrEmpty(segment) || segment == "/")
+				return this;
+
 			return AppendSegment(segment, Extension);
 		}
 
