@@ -115,7 +115,7 @@ namespace N2.Persistence.Behaviors
 			using (var tx = persister.Repository.BeginTransaction())
 			{
 				foreach (var unsavedItem in ctx.UnsavedItems)
-					persister.Repository.SaveOrUpdate(unsavedItem);
+					persister.Sources.Save(unsavedItem);
 				tx.Commit();
 			}
 		}
