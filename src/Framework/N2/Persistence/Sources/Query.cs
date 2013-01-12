@@ -20,5 +20,14 @@ namespace N2.Persistence.Sources
 		public bool SkipAuthorization { get; set; }
 
 		public ItemFilter Filter { get; set; }
+
+		public ParameterCollection AsParameters()
+		{
+			var p = Parameter.Equal("Parent", Parent);
+			if (OnlyPages.HasValue)
+				return p & (OnlyPages.Value ? Parameter.IsNull("ZoneName") : Parameter.IsNotNull("ZoneName"));
+
+			return p;
+		}
 	}
 }

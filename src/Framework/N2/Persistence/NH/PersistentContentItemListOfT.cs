@@ -99,6 +99,13 @@ namespace N2.Persistence.NH
 				.UniqueResult<long>();
 		}
 
+		public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
+		{
+			var crit = Session.CreateCriteria<T>(parameters)
+				.Add(Expression.Eq("Parent", Owner));
+			return crit.SelectProperties(properties);
+		}
+
 		#endregion
 
 		private new ISession Session

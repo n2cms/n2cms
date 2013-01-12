@@ -39,19 +39,20 @@ namespace N2.Collections
 	{
 		public ContentList()
 		{
-			inner = new List<T>();
+			lazyInner = Enumerable.Empty<T>();
 		}
 
 		public ContentList(IEnumerable<T> inner)
 		{
-			this.inner = inner.ToList();
+			this.lazyInner = inner;
 		}
 
 		private List<T> inner;
+		private IEnumerable<T> lazyInner;
 
 		protected List<T> Inner
 		{
-			get { return inner; }
+			get { return inner ?? (inner = lazyInner.ToList()); }
 			set { inner = value; }
 		}
 
@@ -65,54 +66,54 @@ namespace N2.Collections
 
 		public int IndexOf(T item)
 		{
-			return inner.IndexOf(item);
+			return Inner.IndexOf(item);
 		}
 
 		public void Insert(int index, T item)
 		{
-			inner.Insert(index, item);
+			Inner.Insert(index, item);
 		}
 
 		public void RemoveAt(int index)
 		{
-			inner.RemoveAt(index);
+			Inner.RemoveAt(index);
 		}
 
 		public T this[int index]
 		{
 			get
 			{
-				return inner[index];
+				return Inner[index];
 			}
 			set
 			{
-				inner[index] = value;
+				Inner[index] = value;
 			}
 		}
 
 		public void Add(T item)
 		{
-			inner.Add(item);
+			Inner.Add(item);
 		}
 
 		public void Clear()
 		{
-			inner.Clear();
+			Inner.Clear();
 		}
 
 		public bool Contains(T item)
 		{
-			return inner.Contains(item);
+			return Inner.Contains(item);
 		}
 
 		public void CopyTo(T[] array, int arrayIndex)
 		{
-			inner.CopyTo(array, arrayIndex);
+			Inner.CopyTo(array, arrayIndex);
 		}
 
 		public int Count
 		{
-			get { return inner.Count; }
+			get { return Inner.Count; }
 		}
 
 		public bool IsReadOnly
@@ -122,17 +123,17 @@ namespace N2.Collections
 
 		public bool Remove(T item)
 		{
-			return inner.Remove(item);
+			return Inner.Remove(item);
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return inner.GetEnumerator();
+			return Inner.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return inner.GetEnumerator();
+			return Inner.GetEnumerator();
 		}
 
 		public void CopyTo(Array array, int index)
@@ -143,7 +144,7 @@ namespace N2.Collections
 				arr[i] = (T)array.GetValue(i);
 			}
 
-			inner.CopyTo(arr, index);
+			Inner.CopyTo(arr, index);
 		}
 
 		// The IsSynchronized Boolean property returns True if the 
@@ -169,7 +170,7 @@ namespace N2.Collections
 		{
 			EnsureName(key, value);
 
-			inner.Add(value);
+			Inner.Add(value);
 		}
 
 		/// <summary>Determines whether the list contains an element with the specified key.</summary>
@@ -177,13 +178,13 @@ namespace N2.Collections
 		/// <returns>true if the System.Collections.Generic.IDictionary<TKey,TValue> contains an element with the key; otherwise, false.</returns>
 		public bool ContainsKey(string key)
 		{
-			return inner.Any(i => i.Name == key);
+			return Inner.Any(i => i.Name == key);
 		}
 
 		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the keys of the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
 		public ICollection<string> Keys
 		{
-			get { return inner.Select(i => i.Name).ToList(); }
+			get { return Inner.Select(i => i.Name).ToList(); }
 		}
 
 		/// <summary>Removes the element with the specified key from the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
@@ -191,9 +192,9 @@ namespace N2.Collections
 		/// <returns>true if the element is successfully removed; otherwise, false. This method also returns false if key was not found in the original list.</returns>
 		public bool Remove(string key)
 		{
-			var index = inner.FindIndex(i => i.Name == key);
+			var index = Inner.FindIndex(i => i.Name == key);
 			if (index >= 0)
-				inner.RemoveAt(index);
+				Inner.RemoveAt(index);
 			return index >= 0;
 		}
 
@@ -203,14 +204,14 @@ namespace N2.Collections
 		/// <returns>true if the list contains an element with the specified key; otherwise, false.</returns>
 		public bool TryGetValue(string key, out T value)
 		{
-			value = inner.FirstOrDefault(i => i.Name == key);
+			value = Inner.FirstOrDefault(i => i.Name == key);
 			return value != null;
 		}
 
 		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the values in the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
 		public ICollection<T> Values
 		{
-			get { return inner.ToList(); }
+			get { return Inner.ToList(); }
 		}
 
 		/// <summary>Gets or sets the element with the specified key.</summary>
@@ -226,11 +227,11 @@ namespace N2.Collections
 			{
 				EnsureName(name, value);
 
-				int index = inner.FindIndex(i => i.Name == name);
+				int index = Inner.FindIndex(i => i.Name == name);
 				if (index < 0)
 					Add(name, value);
 				else
-					inner[index] = value;
+					Inner[index] = value;
 			}
 		}
 
@@ -239,7 +240,7 @@ namespace N2.Collections
 		/// <returns>The item with the given name or null if no item was found.</returns>
 		public T FindNamed(string name)
 		{
-			return inner.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
+			return Inner.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		#endregion
@@ -289,7 +290,7 @@ namespace N2.Collections
 
 		public IQueryable<T> FindRange(int skip, int take)
 		{
-			return inner.Skip(skip).Take(take).AsQueryable();
+			return Inner.Skip(skip).Take(take).AsQueryable();
 		}
 
 		#endregion
@@ -298,14 +299,14 @@ namespace N2.Collections
 
 		public virtual IQueryable<T> Query()
 		{
-			return inner.AsQueryable<T>();
+			return Inner.AsQueryable<T>();
 		}
 
 		#endregion
 
 		public IContentList<T> Clone()
 		{
-			return new ContentList<T>(inner.ToList());
+			return new ContentList<T>(Inner.ToList());
 		}
 
 		public bool WasInitialized

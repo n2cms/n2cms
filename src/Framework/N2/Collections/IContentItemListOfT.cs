@@ -6,6 +6,7 @@ namespace N2.Collections
 		where T : ContentItem
 	{
 		IEnumerable<T> Find(IParameter parameters);
+		IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties);
 		int FindCount(IParameter parameters);
 	}
 }

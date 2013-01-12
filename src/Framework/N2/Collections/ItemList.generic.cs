@@ -237,6 +237,11 @@ namespace N2.Collections
 		{
 			return this.Where(parameters.IsMatch).Count();
 		}
+		public IEnumerable<IDictionary<string, object>> Select(Persistence.IParameter parameters, params string[] properties)
+		{
+			return Find(parameters).Select(i => properties.ToDictionary(p => p, p => i[p]));
+		}
 		#endregion
+
 	}
 }

@@ -231,6 +231,11 @@ namespace N2.Persistence
 		{
 			return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
 		}
+		public static implicit operator ParameterCollection(Parameter p)
+		{
+			return new ParameterCollection(p);
+		}
+
 		#endregion
 
 		#region Equals & GetHashCode
