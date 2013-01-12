@@ -98,12 +98,7 @@ namespace N2.Details
 		public virtual N2.ContentItem EnclosingItem
 		{
 			get { return enclosingItem; }
-			set 
-			{ 
-				enclosingItem = value;
-				foreach (var detail in Details)
-					detail.EnclosingItem = value;
-			}
+			set { enclosingItem = value; }
 		}
 		#endregion
 
@@ -410,6 +405,14 @@ namespace N2.Details
 				if (cd.Value is T)
 					yield return (T)cd.Value;
 			}
+		}
+
+		internal virtual void AddTo(ContentItem destination)
+		{
+			destination.DetailCollections[Name] = this;
+			EnclosingItem = destination;
+			foreach (var detail in Details)
+				detail.EnclosingItem = destination;
 		}
 	}
 }
