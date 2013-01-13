@@ -113,7 +113,7 @@ namespace N2.Management.Content.Sources
 				foreach (var child in source.Children)
 					Sources.Move(child, destination);
 			}
-			return new ChildGroupContainer(destination, source.Title, source.Name, destination.Children);
+			return new ChildGroupContainer(destination, source.Title, source.Name, () => destination.Children);
 		}
 
 		public override ContentItem Copy(ContentItem source, ContentItem destination)
@@ -123,7 +123,7 @@ namespace N2.Management.Content.Sources
 				foreach (var child in source.Children)
 					Sources.Copy(child, destination);
 			}
-			return new ChildGroupContainer(destination, source.Title, source.Name, destination.Children);
+			return new ChildGroupContainer(destination, source.Title, source.Name, () => destination.Children);
 		}
 	}
 }
