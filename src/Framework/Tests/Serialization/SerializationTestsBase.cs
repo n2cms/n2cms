@@ -40,7 +40,7 @@ namespace N2.Tests.Serialization
 					new TransformerBase<IUniquelyNamed>[0],
 					TestSupport.SetupEngineSection()))}, 
 				new ITemplateProvider[0],
-				activator, new StateChanger());
+				activator, new StateChanger(), new DefinitionMap());
 			definitions.Start();
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)

@@ -16,7 +16,7 @@ namespace N2.Tests
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			engine = CreateEngine();
+			Context.Replace(engine = CreateEngine());
 			
 			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
 			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
@@ -36,6 +36,12 @@ namespace N2.Tests
 		{
 			sessionProvider.CloseConnections();
 			base.TearDown();
+		}
+
+		[TestFixtureTearDown]
+		public virtual void TestFixtureTearDown()
+		{
+			Context.Replace(null);
 		}
 
 		protected virtual ContentPersister GetNHibernatePersistenceManager()

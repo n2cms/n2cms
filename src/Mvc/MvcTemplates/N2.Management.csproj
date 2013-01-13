@@ -307,7 +307,9 @@
     <Content Include="N2\Top.master" />
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
     <Content Include="N2\Resources\KeepAlive\Web.config" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="N2\Search\IndexInfo.ashx" />
     <Content Include="N2\log4net.config" />
     <Content Include="N2\Tokens\TokenTemplates\Web.config" />
@@ -348,6 +350,7 @@
     <Compile Include="N2\Content\AvailableZones.ascx.designer.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Content\Sources\ChildGroupSource.cs" />
     <Compile Include="N2\Content\ControlPanelEditingSaveAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelDiscardPreviewOrDeleteAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />

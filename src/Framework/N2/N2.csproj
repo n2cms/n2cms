@@ -129,6 +129,9 @@
     <Compile Include="Configuration\CollaborationElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
+    <Compile Include="Edit\ChildGroupContainer.cs" />
+    <Compile Include="Edit\GroupChildrenAttribute.cs" />
+    <Compile Include="Edit\GroupChildrenMode.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Edit\Versioning\ContentVersionCleanup.cs" />
     <Compile Include="Edit\Versioning\VersioningExtensions.cs" />

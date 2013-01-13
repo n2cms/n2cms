@@ -883,7 +883,43 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(containso.Contains(child2), Is.True);
 			}
 		}
-		
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_Select(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var one = item.Children.Select(Parameter.Equal("Name", "one"), "Name").ToList();
+				var notone = item.Children.Select(Parameter.NotEqual("Name", "one"), "Name", "Title").ToList();
+				var containso = item.Children.Select(Parameter.Like("Name", "%o%"), "ID").ToList();
+
+				one.Single()["Name"].ShouldBe(child1.Name);
+				notone.Count().ShouldBe(2);
+				notone.Any(i => i["Title"].ToString() == child1.Title).ShouldBe(false);
+				notone.Any(i => i["Name"].ToString() == child1.Name).ShouldBe(false);
+				containso.Count().ShouldBe(2);
+				containso.Select(i => i.Values.Single()).Contains(child1.ID);
+				containso.Select(i => i.Values.Single()).Contains(child2.ID);
+			}
+		}
+
 		[Test]
 		public void AddSingleChild()
 		{

@@ -138,6 +138,7 @@
     <Compile Include="PublishScheduledActionTests.cs" />
     <Compile Include="Security\ItemBridgeTests.cs" />
     <Compile Include="Security\Items\UserOverride.cs" />
+    <Compile Include="Sources\GroupedChildrenSourceTest.cs" />
     <Compile Include="Tokens\TokenFinderTests.cs" />
     <Compile Include="Trash\DeleteInterceptorTests.cs" />
     <Compile Include="Trash\NonThrowableItem.cs" />

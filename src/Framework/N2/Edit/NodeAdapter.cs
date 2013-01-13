@@ -194,7 +194,9 @@ namespace N2.Edit
 			var query = new Query { Parent = parent, Interface = userInterface };
 			if (!Settings.DisplayDataItems)
 				query.OnlyPages = true;
-			return Sources.GetChildren(query);
+			var children = Sources.GetChildren(query);
+
+			return children;
 		}
 
 		/// <summary>Returns true when an item has children.</summary>
