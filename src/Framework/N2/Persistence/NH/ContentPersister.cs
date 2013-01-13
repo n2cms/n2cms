@@ -28,12 +28,12 @@ namespace N2.Persistence
 	public class ContentPersister : IPersister
 	{
 		private readonly IContentItemRepository repository;
-		private readonly ContentSource source;
+		private readonly ContentSource sources;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(ContentSource source, IContentItemRepository itemRepository)
+		public ContentPersister(ContentSource sources, IContentItemRepository itemRepository)
 		{
-			this.source = source;
+			this.sources = sources;
 			this.repository = itemRepository;
 		}
 
@@ -44,7 +44,7 @@ namespace N2.Persistence
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual ContentItem Get(int id)
 		{
-            ContentItem item = source.Get(id);
+            ContentItem item = sources.Get(id);
             if (ItemLoaded != null)
             {
                 return Invoke(ItemLoaded, new ItemEventArgs(item)).AffectedItem; 
@@ -65,10 +65,10 @@ namespace N2.Persistence
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-            using (var tx = repository.BeginTransaction())
+            using (var tx = Repository.BeginTransaction())
             {
                 tx.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
-                Utility.InvokeEvent(ItemSaving, unsavedItem, this, source.Save, null);
+                Utility.InvokeEvent(ItemSaving, unsavedItem, this, sources.Save, null);
                 tx.Commit();
             }
 		}
@@ -77,7 +77,7 @@ namespace N2.Persistence
 		/// <param name="itemNoMore">The item to delete</param>
 		public void Delete(ContentItem itemNoMore)
 		{
-			Utility.InvokeEvent(ItemDeleting, itemNoMore, this, source.Delete, ItemDeleted);
+			Utility.InvokeEvent(ItemDeleting, itemNoMore, this, sources.Delete, ItemDeleted);
 		}
 
 		#endregion
@@ -89,7 +89,7 @@ namespace N2.Persistence
 		/// <param name="destination">The destination below which to place the item</param>
 		public virtual void Move(ContentItem source, ContentItem destination)
 		{
-			Utility.InvokeEvent(ItemMoving, this, source, destination, this.source.Move, ItemMoved);
+			Utility.InvokeEvent(ItemMoving, this, source, destination, this.sources.Move, ItemMoved);
 		}
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
@@ -98,7 +98,7 @@ namespace N2.Persistence
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination)
 		{
-			return Utility.InvokeEvent(ItemCopying, this, source, destination, this.source.Copy, ItemCopied);
+			return Utility.InvokeEvent(ItemCopying, this, source, destination, this.sources.Copy, ItemCopied);
 		}
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
@@ -151,7 +151,7 @@ namespace N2.Persistence
 
 		public void Dispose()
 		{
-			repository.Dispose();
+			Repository.Dispose();
 		}
 
 		#endregion
@@ -159,12 +159,19 @@ namespace N2.Persistence
         /// <summary>Persists changes.</summary>
         public void Flush()
         {
-            repository.Flush();
+            Repository.Flush();
         }
-		public IContentItemRepository Repository
+
+		public virtual IContentItemRepository Repository
         {
             get { return this.repository; }
         }
+
+		public virtual ContentSource Sources
+		{
+			get { return sources; }
+		} 
+
         protected virtual T Invoke<T>(EventHandler<T> handler, T args)
             where T : ItemEventArgs
         {
@@ -178,7 +185,7 @@ namespace N2.Persistence
 			if (string.IsNullOrEmpty(item.Name))
 			{
 				item.Name = item.ID.ToString();
-				repository.SaveOrUpdate(item);
+				Repository.SaveOrUpdate(item);
 			}
 		}
     }

@@ -117,7 +117,19 @@ namespace N2.Persistence
             object itemValue = null;
             if (IsDetail && item is ContentItem)
             {
-                itemValue = (item as ContentItem)[Name];
+				var ci = (item as ContentItem);
+				if (string.IsNullOrEmpty(Name))
+				{
+					foreach (var detail in ci.Details)
+						if (Compare(detail.Value))
+							return true;
+					foreach (var collection in ci.DetailCollections)
+						if (collection.Any(v => Compare(v)))
+							return true;
+					return false;
+				}
+
+                itemValue = ci[Name];
                 if (itemValue == null)
                 {
                     var collection = (item as ContentItem).GetDetailCollection(Name, false);
@@ -219,6 +231,11 @@ namespace N2.Persistence
 		{
 			return new ParameterCollection(Persistence.Operator.Or) { { q1 }, { q2 } };
 		}
+		public static implicit operator ParameterCollection(Parameter p)
+		{
+			return new ParameterCollection(p);
+		}
+
 		#endregion
 
 		#region Equals & GetHashCode

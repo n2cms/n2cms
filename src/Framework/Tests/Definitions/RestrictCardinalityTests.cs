@@ -23,7 +23,7 @@ namespace N2.Tests.Definitions
             var changer = new N2.Edit.Workflow.StateChanger();
 			var activator = new ContentActivator(changer, MockRepository.GenerateStrictMock<IItemNotifier>(), new EmptyProxyFactory());
 			DefinitionBuilder builder = new DefinitionBuilder(new DefinitionMap(), new Fakes.FakeTypeFinder(typeof(RestrictsChildWithCardinality), typeof(ChildWithCardinality)), new TransformerBase<IUniquelyNamed>[0], new EngineSection { Definitions = new DefinitionCollection { DefineUnattributedTypes = true } });
-			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer);
+			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer, new DefinitionMap());
 		}
 
         [Test]

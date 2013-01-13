@@ -95,5 +95,16 @@ namespace N2.Collections
 
 			return collection;
 		}
+
+		public static IEnumerable<ContentItem> FindPartsRecursive(this IContentItemList<ContentItem> children)
+		{
+			foreach (var child in children.FindParts())
+			{
+				yield return child;
+				if (child.ChildState.IsAny(CollectionState.Unknown | CollectionState.ContainsPublicParts | CollectionState.ContainsSecuredParts))
+					foreach (var descendant in child.Children.FindPartsRecursive())
+						yield return descendant;
+			}
+		}
 	}
 }

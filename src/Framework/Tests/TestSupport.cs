@@ -102,7 +102,7 @@ namespace N2.Tests
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
 			definitionProviders = new IDefinitionProvider[] { new DefinitionProvider(definitionBuilder) };
-			definitions = new DefinitionManager(definitionProviders, new [] { new TemplateProvider(activator, map) }, activator, new StateChanger());
+			definitions = new DefinitionManager(definitionProviders, new[] { new TemplateProvider(activator, map) }, activator, new StateChanger(), new DefinitionMap());
 			((DefinitionManager)definitions).Start();
 		}
 

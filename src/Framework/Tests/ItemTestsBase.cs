@@ -29,6 +29,19 @@ namespace N2.Tests
 			}
 		}
 
+		protected virtual T CreateItem<T>(string name, ContentItem parent = null, string zoneName = null) where T : ContentItem
+		{
+			T item = (T)Activator.CreateInstance(typeof(T), true);
+			item.Name = name;
+			item.Title = name;
+			item.AncestralTrail = N2.Utility.GetTrail(parent);
+			item.AddTo(parent);
+			item.Published = N2.Utility.CurrentTime();
+			item.State = ContentState.Published;
+			item.ZoneName = zoneName;
+			return item;
+		}
+
 		protected virtual T CreateOneItem<T>(int id, string name, ContentItem parent) where T : ContentItem
 		{
 			T item = (T) Activator.CreateInstance(typeof (T), true);

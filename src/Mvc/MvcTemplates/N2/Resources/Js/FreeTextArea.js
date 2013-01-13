@@ -23,7 +23,7 @@ var freeTextArea_settings = {
 	theme_advanced_resize_horizontal: false,
 	theme_advanced_resizing: true,
 	theme_advanced_disable: 'help,fontselect,fontsizeselect,forecolor,backcolor,styleselect',
-	relative_urls: false,
+	convert_urls: false,
 	noneditable_noneditable_class: 'cs,csharp,vb,js',
 	tab_focus: ':prev,:next',
 	theme_advanced_resize_horizontal: true,

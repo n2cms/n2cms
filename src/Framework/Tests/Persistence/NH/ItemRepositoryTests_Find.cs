@@ -194,6 +194,22 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void Find_DetailLike()
+		{
+			var results = repository.Find(Parameter.Like("Hello", "Wor%").Detail());
+
+			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
+		public void Find_UnknownDetailLike()
+		{
+			var results = repository.Find(Parameter.Like(null, "Wor%").Detail());
+
+			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
 		public void Find_DetailLessThan()
 		{
 			var results = repository.Find(Parameter.LessThan("Age", 2.0).Detail());

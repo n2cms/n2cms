@@ -48,7 +48,7 @@ namespace N2.Tests.Integrity
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer);
+			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer, new DefinitionMap());
 			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);

@@ -188,7 +188,7 @@ namespace N2.Integrity
 					if (item.Equals(potentiallyClashingItem))
 						// it's me!
 						continue;
-					if (item.ID == 0 ^ potentiallyClashingItem.ID == 0)
+					if ((item.ID == 0 && item.State != ContentState.New) ^ potentiallyClashingItem.ID == 0)
 						// it's probably a version of myself, TODO: save version key on master item
 						continue;
 

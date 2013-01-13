@@ -365,7 +365,7 @@ namespace N2.Persistence.NH
 		void ContentDetailCustomization(IClassMapper<ContentDetail> ca)
 		{
 			ca.Table(tablePrefix + "Detail");
-			ca.Lazy(true);
+			ca.Lazy(false);
 			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
@@ -389,7 +389,7 @@ namespace N2.Persistence.NH
 		void DetailCollectionCustomization(IClassMapper<DetailCollection> ca)
 		{
 			ca.Table(tablePrefix + "DetailCollection");
-			ca.Lazy(true);
+			ca.Lazy(false);
 			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });

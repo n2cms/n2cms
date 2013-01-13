@@ -8,6 +8,7 @@ using N2.Engine;
 using N2.Plugin;
 using N2.Persistence;
 using N2.Definitions;
+using N2.Collections;
 
 namespace N2.Edit.LinkTracker
 {
@@ -63,19 +64,29 @@ namespace N2.Edit.LinkTracker
 				logger.DebugFormat("Not updating {0} due to ISystemNode", item);
 				return;
 			}
-			UpdateLinks(item);
+			UpdateLinks(item, true);
 		}
 
-		public virtual void UpdateLinks(ContentItem item)
+		public virtual IEnumerable<ContentItem> UpdateLinks(ContentItem item, bool recursivelyUpdateParts = false)
+		{
+			return UpdateLinksInternal(item, recursivelyUpdateParts).ToList();
+		}
+
+		private IEnumerable<ContentItem> UpdateLinksInternal(ContentItem item, bool recursive)
 		{
 			logger.DebugFormat("Updating link: {0}", item);
+
+			if (recursive)
+				foreach (var part in item.Children.FindParts())
+					foreach (var updatedItem in UpdateLinksInternal(part, recursive))
+						yield return updatedItem;
 
 			var referencedItems = FindLinkedObjects(item).ToList();
 			DetailCollection links = item.GetDetailCollection(LinkDetailName, false);
 			if (links == null && referencedItems.Count == 0)
 			{
 				logger.Debug("Exiting due to no links and none to update");
-				return;
+				yield break;
 			}
 
 			if (links == null)
@@ -103,6 +114,8 @@ namespace N2.Edit.LinkTracker
 			{
 				links.RemoveAt(links.Count - 1);
 			}
+
+			yield return item;
 		}
 
 		/// <summary>Finds items linked by the supplied item. This method only finds links in html text to items within the site.</summary>

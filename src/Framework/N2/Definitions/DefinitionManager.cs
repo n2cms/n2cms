@@ -6,6 +6,7 @@ using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
 using N2.Plugin;
+using N2.Definitions.Static;
 
 namespace N2.Definitions
 {
@@ -19,13 +20,15 @@ namespace N2.Definitions
 		private readonly ITemplateProvider[] providers;
 		private readonly ContentActivator activator;
 		private readonly StateChanger stateChanger;
+		private readonly DefinitionMap map;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] templateProviders, ContentActivator activator, StateChanger changer)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] templateProviders, ContentActivator activator, StateChanger changer, DefinitionMap map)
 		{
 			this.definitionProviders = definitionProviders.OrderBy(dp => dp.SortOrder).ToArray();
 			this.providers = templateProviders.OrderBy(tp => tp.SortOrder).ToArray();
 			this.activator = activator;
 			this.stateChanger = changer;
+			this.map = map;
 
 			activator.Initialize(GetDefinitions());
 		}
@@ -53,7 +56,8 @@ namespace N2.Definitions
 		{
 			if (itemType == null) return null;
 
-			return GetDefinitions().FirstOrDefault(d => d.ItemType == itemType);
+			return GetDefinitions().FirstOrDefault(d => d.ItemType == itemType)
+				?? map.GetOrCreateDefinition(itemType);
 		}
 
 		/// <summary>Gets item definition for a certain discriminator.</summary>
@@ -152,7 +156,7 @@ namespace N2.Definitions
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete]
 		public event EventHandler<ItemEventArgs> ItemCreated;
-
+		
 
 		public virtual IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
 		{

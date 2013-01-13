@@ -890,8 +890,7 @@ namespace N2
 			foreach (DetailCollection collection in source.DetailCollections.Values)
 			{
 				DetailCollection clonedCollection = collection.Clone();
-				clonedCollection.EnclosingItem = destination;
-				destination.DetailCollections[collection.Name] = clonedCollection;
+				clonedCollection.AddTo(destination);
 			}
 		} 
 		#endregion

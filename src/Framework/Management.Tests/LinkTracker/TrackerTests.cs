@@ -72,6 +72,18 @@ namespace N2.Edit.Tests.LinkTracker
 		}
 
 		[Test]
+		public void Track_LinkOnPart()
+		{
+			mocks.ReplayAll();
+
+			item1.ZoneName = "I'mAPart";
+			item1["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
+			persister.Save(root);
+
+			Assert.AreEqual(1, item1.GetDetailCollection("TrackedLinks", false).Count);
+		}
+
+		[Test]
 		public void TrackMultipleLinks()
 		{
 			mocks.ReplayAll();

@@ -2,6 +2,7 @@
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Web
 {
@@ -1127,5 +1128,13 @@ namespace N2.Tests.Web
 			Assert.That(result, Is.EqualTo("/hello"));
 		}
 
+		[Test]
+		public void AppendEmptySegment_ToUrlWithExtension()
+		{
+			Url url = "/hello.aspx";
+			url = url.AppendSegment("/");
+
+			url.ToString().ShouldBe("/hello.aspx");
+		}
 	}
 }

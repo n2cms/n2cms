@@ -67,7 +67,7 @@ namespace N2.Persistence.NH
 	public class NHRepository<TEntity> : INHRepository<TEntity> where TEntity : class 
 	{
 		private ISessionProvider sessionProvider;
-
+		Logger<NHRepository<TEntity>> logger;
 
 		/// <summary>Creates a new instance of the NHRepository.</summary>
 		public NHRepository(ISessionProvider sessionProvider)
@@ -169,7 +169,7 @@ namespace N2.Persistence.NH
 		/// <param name="entity">the entity to save</param>
 		public void SaveOrUpdate(TEntity entity)
 		{
-			Debug.WriteLine("Saving or updating " + entity + " " + entity.GetHashCode());
+			logger.DebugFormat("Saving or updating {0} {1}", entity, entity.GetHashCode());
 			if (entity is IActiveContent)
 			{
 				(entity as IActiveContent).Save();
