@@ -366,7 +366,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void ReplacingDefinition_RemovesReplaced()
 		{
-			ItemDefinition replacingDefinition = definitions.GetDefinition(typeof(DefinitionReplaced));
+			ItemDefinition replacingDefinition = definitions.GetDefinitions().FirstOrDefault(d => d.ItemType == typeof(DefinitionReplaced));
 
 			Assert.That(replacingDefinition, Is.Null);
 		}
@@ -415,9 +415,9 @@ namespace N2.Tests.Definitions
 		[Obsolete]
 		public void ReplaceDefinitionsAttribute_CanRemove_TheSuppliedDefinitions()
 		{
-			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
-			ItemDefinition definitionTwo = definitions.GetDefinition(typeof(DefinitionTwo));
-			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionRemovesNumber2));
+			ItemDefinition definition = definitions.GetDefinitions().FirstOrDefault(d => d.ItemType == typeof(DefinitionTextPage));
+			ItemDefinition definitionTwo = definitions.GetDefinitions().FirstOrDefault(d => d.ItemType == typeof(DefinitionTwo));
+			ItemDefinition definitionReplacement = definitions.GetDefinitions().FirstOrDefault(d => d.ItemType == typeof(DefinitionRemovesNumber2));
 
 			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 
@@ -428,7 +428,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Undefined_ContentItem_IsNotEnabled()
 		{
-			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionUndefined));
+			ItemDefinition definition = definitions.GetDefinitions().FirstOrDefault(d => d.ItemType == typeof(DefinitionUndefined));
 
 			definition.ShouldBe(null);
 		}
