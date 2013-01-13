@@ -350,11 +350,12 @@
     <Compile Include="N2\Content\AvailableZones.ascx.designer.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Content\Sources\ChildGroupSource.cs" />
     <Compile Include="N2\Content\ControlPanelEditingSaveAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelDiscardPreviewOrDeleteAttribute.cs" />
     <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="N2\Content\LinkTracker\UpdateImagesMigration.cs" />
+    <Compile Include="N2\Content\Navigation\ChildGroupContainer.cs" />
+    <Compile Include="N2\Content\Navigation\ChildGroupSource.cs" />
     <Compile Include="N2\Content\Trash\AsyncTrashPurger.cs" />
     <Compile Include="N2\Content\ViewOptionProvider.cs" />
     <Compile Include="N2\Content\EditOptionProvider.cs" />

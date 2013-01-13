@@ -2,6 +2,7 @@
 using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Edit;
+using N2.Edit.Navigation;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Sources;
@@ -11,11 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace N2.Management.Content.Sources
+namespace N2.Management.Content.Navigation
 {
-	
-	
-	
 	[ContentSource]
 	public class ChildGroupSource : SourceBase<ChildGroupContainer>
 	{
@@ -72,7 +70,7 @@ namespace N2.Management.Content.Sources
 			var attributes = map.GetOrCreateDefinition(query.Parent).GetCustomAttributes<GroupChildrenAttribute>();
 			foreach (var attribute in attributes)
 			{
-				return attribute.FilterChildren(previousChildren, query);
+				return attribute.FilterChildren(previousChildren, query, ChildGroupContainer.Create);
 			}
 
 			return previousChildren;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace N2.Edit
+namespace N2.Management.Content.Navigation
 {
 	[Versionable(AllowVersions.No)]
 	[Throwable(AllowInTrash.No)]
@@ -15,25 +15,30 @@ namespace N2.Edit
 		{
 		}
 
-		public ChildGroupContainer(ContentItem parent, string title, string name, Func<IEnumerable<ContentItem>> children = null)
+		public ChildGroupContainer(ContentItem parent, string title, string name, Func<IEnumerable<ContentItem>> childFactory = null)
 		{
 			ID = -1;
 			Title = title;
 			Name = name;
 			Parent = parent;
 
-			if (children != null)
-				Children = new ItemList(children);
+			if (childFactory != null)
+				Children = new ItemList(childFactory);
 		}
 
 		public override string IconUrl
 		{
-			get { return "{IconsUrl}/sitemap.png"; }
+			get { return "{IconsUrl}/folder_page.png"; }
 		}
 
 		public string DirectUrl
 		{
 			get { return Parent.Url; }
+		}
+
+		internal static ContentItem Create(ContentItem parent, string title, string name, Func<IEnumerable<ContentItem>> childFactory)
+		{
+			return new ChildGroupContainer(parent, title, name, childFactory);
 		}
 	}
 }

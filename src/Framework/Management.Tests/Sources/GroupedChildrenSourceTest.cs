@@ -1,5 +1,5 @@
-﻿using N2.Edit;
-using N2.Management.Content.Sources;
+﻿using N2.Definitions;
+using N2.Management.Content.Navigation;
 using N2.Persistence.Sources;
 using N2.Tests;
 using NUnit.Framework;
@@ -145,6 +145,30 @@ namespace N2.Management.Tests.Sources
 			var groups = source.GetChildren(rootQuery).ToList();
 
 			groups.Count.ShouldBe(1);
+		}
+
+		[Test]
+		public void GroupByPagesAfterTreshold_VirtualGroup_ReturnsOriginalPages()
+		{
+			GetAttribute(GroupChildrenMode.PagesAfterTreshold);
+
+			var children = source.GetChildren(rootQuery).ToList();
+
+			children.Count.ShouldBe(2);
+			children.ShouldContain(item1);
+			children.ShouldContain(item2);
+		}
+
+		[Test]
+		public void GroupByPagesAfterTreshold_VirtualGroup_ReturnsPagesUntilTreshold_AndGroupForRemaining()
+		{
+			GetAttribute(GroupChildrenMode.PagesAfterTreshold).StartPagingTreshold = 1;
+
+			var children = source.GetChildren(rootQuery).ToList();
+
+			children.Count.ShouldBe(2);
+			children.ShouldContain(item1);
+			source.GetChildren(Query.From(children[1])).ShouldContain(item2);
 		}
 
 		[Test]

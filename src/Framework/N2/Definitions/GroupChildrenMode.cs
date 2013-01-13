@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace N2.Edit
+namespace N2.Definitions
 {
 	public enum GroupChildrenMode
 	{
@@ -15,6 +15,7 @@ namespace N2.Edit
 		Type,
 		ZoneName,
 		Pages,
+		PagesAfterTreshold,
 		RecentWithArchive
 	}
 }

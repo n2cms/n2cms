@@ -20,6 +20,7 @@ namespace N2.Security.Items
 	[Throwable(AllowInTrash.No)]
 	[Indexable(IsIndexable = false)]
 	[RestrictParents(typeof(IRootPage))]
+	[GroupChildren(GroupChildrenMode.AlphabeticalIndex)]
 	public class UserList : ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
 		ISecurityManager securityManager;
