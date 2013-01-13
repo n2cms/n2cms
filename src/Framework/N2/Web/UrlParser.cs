@@ -323,7 +323,7 @@ namespace N2.Web
 						BuildingUrl(this, args);
 						if (!string.IsNullOrEmpty(args.Url))
 						{
-							url = args.Url.ToUrl().AppendSegment(url);
+							url = Url.ToRelative(args.Url).TrimStart('~').ToUrl().AppendSegment(url);
 							//url = url.PrependSegment(Url.ToRelative(args.Url).TrimStart('~'));
 							break;
 						}
