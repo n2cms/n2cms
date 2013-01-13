@@ -4,11 +4,6 @@
 	<!-- Framework -->
 
 	<ItemGroup>
-		<Framework-Dependencies Include="$(LibFolder)\Castle.Core.*;
-										 $(LibFolder)\System.Web.Mvc.*;
-										 $(SrcFolder)\packages\Iesi.Collections.*\lib\Net35\Iesi.Collections.dll;
-										 $(SrcFolder)\packages\NHibernate.*\lib\Net35\NHibernate.dll"/>
-
 		<TextFiles Include="$(DocFolder)\history.txt;
 							$(DocFolder)\howto_install.txt;
 							$(DocFolder)\howto_develop.txt;
@@ -30,7 +25,8 @@
 	<!-- Prepare dependencies -->
 
 	<Target Name="Framework-PrepareDependencies">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\bin" />
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(ManagementFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(ManagementFolder)\%(RecursiveDir)\%(FileName)%(Extension)" />
 	</Target>
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">

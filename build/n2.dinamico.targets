@@ -14,12 +14,10 @@
 		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
 					DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
-		<ItemGroup>
-			<SqlServerCeBinaries Include="$(LibFolder)\sqlce*;
-																    $(LibFolder)\System.Data.SqlServerCe.*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(SqlServerCeBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Dinamico-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" />
+		
 		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" />
 		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />
 		<MSBuild Projects="n2.proj" Targets="CopyManagementFilesToManagementFilesDestination" Properties="ManagementFilesDestination=$(Dinamico-SourceFolder)\N2" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />

@@ -15,6 +15,7 @@
 		<SnippetsFolder>$(RootFolder)\snippets</SnippetsFolder>
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
+		<PackagesFolder>$(RootFolder)\src\Packages</PackagesFolder>
 		<WebFolder>$(SrcFolder)\WebForms\WebFormsTemplates</WebFolder>
 		<ManagementFolder>$(SrcFolder)\Mvc\MvcTemplates\</ManagementFolder>
 		<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>
@@ -127,14 +128,8 @@
 		<MvcOutDir>$(RootFolder)\Output\Templates\Mvc\</MvcOutDir>
 	</PropertyGroup>
 	<ItemGroup>
-		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SQLite.dll;
-																		 $(LibFolder)\**\NHibernate*.dll;
-																		 $(LibFolder)\**\Castle*.dll;
-																		 $(LibFolder)\**\log4net.dll;" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(SqlCe)' != ''">
-		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SqlServerCe.dll;
-																		 $(LibFolder)\**\sqlceme40.dll;" />
+		<Framework-DependencyBinaries Include="$(PackagesFolder)\System.Data.SQLite.*\lib\net40\System.Data.SQLite*.dll;" />
+		<Framework-Dependencies Include="$(PackagesFolder)\System.Data.SQLite.1.0.82.0\content\net40\**\*;" />
 	</ItemGroup>
 
 	<!-- Create item groups used for copy dependencies for examples -->
@@ -165,7 +160,7 @@
 	<Target Name="Deploy-Framework">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true" 
 						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework;Platform=$(Platform)" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
+		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(FrameworkOutDir)" />
 	</Target>
 	<Target Name="Deploy-Templates-WebForms">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"

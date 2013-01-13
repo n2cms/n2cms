@@ -69,21 +69,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 		..\snippets\readme.txt = ..\snippets\readme.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
-	ProjectSection(SolutionItems) = preProject
-		..\lib\log4net.dll = ..\lib\log4net.dll
-		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
-		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
-		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll
-		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
-		..\lib\nunit.util.dll = ..\lib\nunit.util.dll
-		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
-		..\lib\sqlceme40.dll = ..\lib\sqlceme40.dll
-		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
-		..\lib\System.Data.SqlServerCe.dll = ..\lib\System.Data.SqlServerCe.dll
-		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Add-ons", "Add-ons", "{AA0C3414-F509-44A2-A677-409DE6B49B1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Site MVC", "Site MVC", "{C69DDE3C-8B79-4DDC-867B-C461F605AAA7}"
@@ -855,7 +840,6 @@ Global
 		{E74B5507-F3B1-439D-BA8E-F5E923B327CA} = {3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}
 		{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE} = {3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}
 		{3C49EAD0-C3FF-406F-8290-23229BD4BADF} = {3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}
-		{04E4D1B1-EE03-488C-B53D-989700FE6018} = {3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}
 		{0AFCEA00-8510-48F6-B949-22796F899C77} = {E74B5507-F3B1-439D-BA8E-F5E923B327CA}
 		{F3C813FE-C51B-4C10-85E2-FD2560E73E72} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
