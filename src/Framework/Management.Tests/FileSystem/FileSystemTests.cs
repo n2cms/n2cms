@@ -10,6 +10,7 @@ using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Persistence;
 using NUnit.Framework;
+using System.Threading;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -84,8 +85,19 @@ namespace N2.Edit.Tests.FileSystem
 		[TearDown]
 		public override void TearDown()
 		{
-            if(fs.DirectoryExists("/upload/"))
-				fs.DeleteDirectory("/upload/");
+			if (fs.DirectoryExists("/upload/"))
+			{
+				try
+				{
+					fs.DeleteDirectory("/upload/");
+				}
+				catch (Exception ex)
+				{
+					Thread.Sleep(1000);
+					System.Diagnostics.Debug.WriteLine("Trying to recover from " + ex.Message + " with files: " + string.Join(", ", fs.GetDirectories("/upload/").Select(f => f.VirtualPath).Concat(fs.GetFiles("/upload/").Select(f => f.VirtualPath))));
+					fs.DeleteDirectory("/upload/");
+				}
+			}
 
 			base.TearDown();
 		}
