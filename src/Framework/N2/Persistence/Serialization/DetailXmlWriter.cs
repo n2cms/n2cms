@@ -31,6 +31,7 @@ namespace N2.Persistence.Serialization
 			{
 				detailElement.WriteAttribute("name", detail.Name);
 				detailElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(detail.ValueType));
+				detailElement.WriteAttribute("meta", detail.Meta);
 
 				WriteInnerContents(item, detail, detail.ValueTypeKey, detailElement);
 			}
@@ -75,6 +76,7 @@ namespace N2.Persistence.Serialization
 					element.Write(base64representation);
 					return;
 
+				case ContentDetail.TypeKeys.EnumType: /* TODO: Do we need to write out the 'meta' value here? */
 				case ContentDetail.TypeKeys.StringType:
 					string value = detail.StringValue;
 
@@ -86,6 +88,7 @@ namespace N2.Persistence.Serialization
 						element.WriteCData(value);
 					}
 					return;
+
 
 				default:
 					throw new InvalidOperationException("Invalid detail type: " + valueTypeKey);
