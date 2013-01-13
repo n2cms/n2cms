@@ -15,7 +15,7 @@ namespace N2.Edit
 		{
 		}
 
-		public ChildGroupContainer(ContentItem parent, string title, string name, IEnumerable<ContentItem> children = null)
+		public ChildGroupContainer(ContentItem parent, string title, string name, Func<IEnumerable<ContentItem>> children = null)
 		{
 			ID = -1;
 			Title = title;

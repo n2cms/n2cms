@@ -20,6 +20,7 @@
 
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +41,17 @@ namespace N2.Collections
         {
 		}
 
-        /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
-        public ItemList(IEnumerable<T> items)
-        {
-			Inner = new List<T>(items);
-        }
+		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+		public ItemList(IEnumerable<T> items)
+			: base(items)
+		{
+		}
+
+		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+		public ItemList(Func<IEnumerable<T>> itemsFactory)
+			: base (itemsFactory)
+		{
+		}
 
 		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The full enumeration of items to initialize with.</param>

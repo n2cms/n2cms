@@ -102,12 +102,12 @@ namespace N2.Edit
 
 				return query.Parent.Children.FindPages()
 					.Concat(zones.Where(z => !string.IsNullOrEmpty(z))
-						.Select(z => new ChildGroupContainer(query.Parent, z, "virtual-grouping/" + z, query.Parent.Children.FindParts(z))));
+						.Select(z => new ChildGroupContainer(query.Parent, z, "virtual-grouping/" + z, () => query.Parent.Children.FindParts(z))));
 			}
 
 			return previousChildren.GroupBy(c => c.ZoneName)
 				.OrderBy(g => g.Key)
-				.SelectMany(g => g.Key == null ? (IEnumerable<ContentItem>)g : new ContentItem[] { new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, g) });
+				.SelectMany(g => g.Key == null ? (IEnumerable<ContentItem>)g : new ContentItem[] { new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g) });
 		}
 
 		private IEnumerable<ContentItem> ChildrenByType(IEnumerable<ContentItem> previousChildren, Query query)
@@ -119,12 +119,12 @@ namespace N2.Edit
 					.Distinct()
 					.OrderBy(t => t);
 
-				return types.Select(t => new ChildGroupContainer(query.Parent, t, "virtual-grouping/" + t, query.Parent.Children.Find(query.AsParameters() & Parameter.Equal("class", t))));
+				return types.Select(t => new ChildGroupContainer(query.Parent, t, "virtual-grouping/" + t, () => query.Parent.Children.Find(query.AsParameters() & Parameter.Equal("class", t))));
 			}
 
 			return previousChildren.GroupBy(c => c.GetContentType())
 				.OrderBy(g => g.Key)
-				.Select(g => new ChildGroupContainer(query.Parent, Map.GetOrCreateDefinition(g.Key).Title, "virtual-grouping/" + g.Key.FullName, g));
+				.Select(g => new ChildGroupContainer(query.Parent, Map.GetOrCreateDefinition(g.Key).Title, "virtual-grouping/" + g.Key.FullName, () => g));
 		}
 
 		private IEnumerable<ContentItem> ChildrenByAlphabeticalIndex(IEnumerable<ContentItem> previousChildren, Query query)
@@ -137,11 +137,11 @@ namespace N2.Edit
 					.Distinct()
 					.OrderBy(l => l);
 
-				return letters.Select(l => new ChildGroupContainer(query.Parent, l.ToString().ToUpper(), "virtual-grouping/" + l, query.Parent.Children.Find(query.AsParameters() & Parameter.Like("Title", l + "%"))));
+				return letters.Select(l => new ChildGroupContainer(query.Parent, l.ToString().ToUpper(), "virtual-grouping/" + l, () => query.Parent.Children.Find(query.AsParameters() & Parameter.Like("Title", l + "%"))));
 			}
 
 			return previousChildren.GroupBy(c => string.IsNullOrEmpty(c.Title) ? '-' : c.Title.ToUpper().FirstOrDefault())
-				.Select(g => new ChildGroupContainer(query.Parent, g.Key.ToString(), "virtual-grouping/" + g.Key, g));
+				.Select(g => new ChildGroupContainer(query.Parent, g.Key.ToString(), "virtual-grouping/" + g.Key, () => g));
 		}
 
 		private IEnumerable<ContentItem> ChildrenByYearMonthDay(IEnumerable<ContentItem> previousChildren, Query query)
@@ -153,11 +153,11 @@ namespace N2.Edit
 					.Select(p => p.HasValue ? (DateTime?)p.Value.Date : null)
 					.Distinct()
 					.OrderByDescending(d => d);
-				return dates.Select(ym => new ChildGroupContainer(query.Parent, ym.HasValue ? ym.Value.ToShortDateString() : "-", "virtual-grouping/" + (ym.HasValue ? ym.Value.ToString("yyyy-MM-dd") : "-"), query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddDays(1))) : Parameter.IsNull("Published")))));
+				return dates.Select(ym => new ChildGroupContainer(query.Parent, ym.HasValue ? ym.Value.ToShortDateString() : "-", "virtual-grouping/" + (ym.HasValue ? ym.Value.ToString("yyyy-MM-dd") : "-"), () => query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddDays(1))) : Parameter.IsNull("Published")))));
 			}
 
 			return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToShortDateString() : "-")
-				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, g));
+				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
 		}
 
 		private IEnumerable<ContentItem> ChildrenByYearMonth(IEnumerable<ContentItem> previousChildren, Query query)
@@ -169,11 +169,11 @@ namespace N2.Edit
 					.Select(p => p.HasValue ? (DateTime?)new DateTime(p.Value.Year, p.Value.Month, 1) : null)
 					.Distinct()
 					.OrderByDescending(d => d);
-				return yearsMonths.Select(ym => new ChildGroupContainer(query.Parent, ToString(ym), "virtual-grouping/" + ToString(ym), query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddMonths(1))) : Parameter.IsNull("Published")))));
+				return yearsMonths.Select(ym => new ChildGroupContainer(query.Parent, ToString(ym), "virtual-grouping/" + ToString(ym), () => query.Parent.Children.Find(query.AsParameters() & (ym.HasValue ? (Parameter.GreaterOrEqual("Published", ym.Value) & Parameter.LessThan("Published", ym.Value.AddMonths(1))) : Parameter.IsNull("Published")))));
 			}
 
 			return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy-MM") : "-")
-				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, g));
+				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
 		}
 
 		private static string ToString(DateTime? ym)
@@ -192,11 +192,11 @@ namespace N2.Edit
 					.Distinct()
 					.OrderByDescending(d => d);
 
-				return years.Select(y => new ChildGroupContainer(query.Parent, y, "virtual-grouping/" + y, query.Parent.Children.Find(query.AsParameters() & (y != "-" ? (Parameter.GreaterOrEqual("Published", new DateTime(int.Parse(y), 1, 1)) & Parameter.LessThan("Published", new DateTime(int.Parse(y) + 1, 1, 1))) : Parameter.IsNull("Published")))));
+				return years.Select(y => new ChildGroupContainer(query.Parent, y, "virtual-grouping/" + y, () => query.Parent.Children.Find(query.AsParameters() & (y != "-" ? (Parameter.GreaterOrEqual("Published", new DateTime(int.Parse(y), 1, 1)) & Parameter.LessThan("Published", new DateTime(int.Parse(y) + 1, 1, 1))) : Parameter.IsNull("Published")))));
 			}
 
 			return previousChildren.GroupBy(c => c.Published.HasValue ? c.Published.Value.Date.ToString("yyyy") : "-")
-				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, g));
+				.Select(g => new ChildGroupContainer(query.Parent, g.Key, "virtual-grouping/" + g.Key, () => g));
 		}
 
 		private IEnumerable<ContentItem> ChildrenByPage(IEnumerable<ContentItem> previousChildren, Query query)
@@ -210,13 +210,13 @@ namespace N2.Edit
 				// 3/2 - > 2
 
 				return Enumerable.Range(0, (count + PageSize - 1) / PageSize)
-					.Select(i => new ChildGroupContainer(query.Parent, (i * PageSize + 1) + "-" + (i * PageSize + PageSize), "virtual-grouping/" + i, query.Parent.Children.Find(query.AsParameters().Skip(i * PageSize).Take(PageSize))));
+					.Select(i => new ChildGroupContainer(query.Parent, (i * PageSize + 1) + "-" + (i * PageSize + PageSize), "virtual-grouping/" + i, () => query.Parent.Children.Find(query.AsParameters().Skip(i * PageSize).Take(PageSize))));
 			}
 
 			int pageIndex = 0;
 			return previousChildren
 				.GroupBy(c => pageIndex++ / PageSize)
-				.Select(g => new ChildGroupContainer(query.Parent, (g.Key * PageSize + 1) + "-" + (g.Key * PageSize + PageSize), "virtual-grouping/" + g.Key, g))
+				.Select(g => new ChildGroupContainer(query.Parent, (g.Key * PageSize + 1) + "-" + (g.Key * PageSize + PageSize), "virtual-grouping/" + g.Key, () => g))
 				.ToList();
 		}
 
@@ -226,15 +226,17 @@ namespace N2.Edit
 
 			if (AllowDirectQuery)
 			{
-				var archived = query.Parent.Children.Find(query.AsParameters() & Parameter.LessThan("Published", archiveDate).Take(1)).ToList();
 				var unarchived = query.Parent.Children.Find(query.AsParameters() & (Parameter.GreaterOrEqual("Published", archiveDate) | Parameter.IsNull("Published")));
-				if (archived.Any())
-					return unarchived.Concat(new ContentItem[] { new ChildGroupContainer(query.Parent, "Archive", "virtual-grouping/archive", archived) });
+
+				var archivedQuery = query.AsParameters() & Parameter.LessThan("Published", archiveDate);
+				if (query.Parent.Children.FindCount(archivedQuery) > 0)
+					return unarchived.Concat(new ContentItem[] { new ChildGroupContainer(query.Parent, "Archive", "virtual-grouping/archive", () => query.Parent.Children.Find(archivedQuery)) });
+				
 				return unarchived;
 			}
 
 			return previousChildren.Where(c => c.Published == null || archiveDate < c.Published)
-				.Concat(new[] { new ChildGroupContainer(query.Parent, "Archive", "virtual-grouping/archive", previousChildren.Where(c => c.Published <= archiveDate)) });
+				.Concat(new[] { new ChildGroupContainer(query.Parent, "Archive", "virtual-grouping/archive", () => previousChildren.Where(c => c.Published <= archiveDate)) });
 		}
 
 		public void Set(DefinitionMap dependency)

@@ -39,20 +39,25 @@ namespace N2.Collections
 	{
 		public ContentList()
 		{
-			lazyInner = Enumerable.Empty<T>();
+			inner = new List<T>();
 		}
 
 		public ContentList(IEnumerable<T> inner)
 		{
-			this.lazyInner = inner;
+			this.lazyInner = () => inner;
+		}
+
+		public ContentList(Func<IEnumerable<T>> innerFactory)
+		{
+			this.lazyInner = innerFactory;
 		}
 
 		private List<T> inner;
-		private IEnumerable<T> lazyInner;
+		private Func<IEnumerable<T>> lazyInner;
 
 		protected List<T> Inner
 		{
-			get { return inner ?? (inner = lazyInner.ToList()); }
+			get { return inner ?? (inner = lazyInner().ToList()); }
 			set { inner = value; }
 		}
 

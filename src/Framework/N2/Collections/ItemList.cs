@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace N2.Collections
@@ -12,11 +13,17 @@ namespace N2.Collections
 		{
 		}
 
-        /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
-        public ItemList(IEnumerable<ContentItem> items)
-            : base(items)
-        {
-        }
+		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+		public ItemList(IEnumerable<ContentItem> items)
+			: base(items)
+		{
+		}
+
+		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+		public ItemList(Func<IEnumerable<ContentItem>> itemsFactory)
+			: base(itemsFactory)
+		{
+		}
 
         /// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The gross enumeration of items to initialize with.</param>
