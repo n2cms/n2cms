@@ -4,6 +4,7 @@ using N2.Collections;
 using N2.Integrity;
 using N2.Web.Mvc;
 using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -13,6 +14,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/newspaper_link.png")]
 	[RestrictParents(typeof (IStructuralPage))]
 	[SortChildren(SortBy.PublishedDescending)]
+	[GroupChildren(GroupChildrenMode.PublishedYear)]
 	public class NewsContainer : ContentPageBase
 	{
 		public IList<News> NewsItems
