@@ -27,6 +27,23 @@ namespace N2.Persistence.Serialization
 			Type type = Utility.TypeFromName(attributes["typeName"]);
 
 			string name = attributes["name"];
+			string meta = attributes["meta"];
+
+			if (type == typeof(System.Enum))
+			{
+				// we're going to need to do better- we saved a more specific type in 'meta'
+				try { type = Utility.TypeFromName(meta); }
+				catch (Exception x)
+				{
+					// TODO: log/report the exception. This is really bad because it means the enum type has gone away. 
+					
+					// Also, another exception is going to be thrown later because the enum won't be able to be decoded. So we'll just load the value
+					// as a string and hope that someone eventually deals with it. This may automatically happen if the ContentItem used the regular
+					// GetDetail that returns a System.Object. This is the most robust approach because it is the only way the page MIGHT NOT crash
+					// when this exception is encountered. 
+					type = typeof(String);
+				}
+			}
 
 			if (type == typeof(ContentItem))
 			{
@@ -35,6 +52,7 @@ namespace N2.Persistence.Serialization
 			else if(type == typeof(IMultipleValue))
 			{
 				var multiDetail = ReadMultipleValue(navigator, item, journal, name);
+				multiDetail.Meta = meta;
 				multiDetail.AddTo(item);
 			}
 			else
@@ -75,10 +93,13 @@ namespace N2.Persistence.Serialization
 					case ContentDetail.TypeKeys.ObjectType:
 						multiDetail.ObjectValue = Parse(valueElement.Value, typeof(object));
 						break;
+					case ContentDetail.TypeKeys.EnumType: /* TODO: May need special treatment here as well (see other TODO). */ 
 					case ContentDetail.TypeKeys.StringType:
 						Dictionary<string, string> attributes = GetAttributes(navigator);
 						multiDetail.StringValue = PrepareStringDetail(item, name, valueElement.Value, attributes.ContainsKey("encoded") && Convert.ToBoolean(attributes["encoded"]));
 						break;
+					default:
+						throw new Exception("Failed to read MultipleValue");
 				}
 			}
 			return multiDetail;
