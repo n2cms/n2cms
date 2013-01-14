@@ -84,7 +84,11 @@ namespace N2.Tests.Persistence.Definitions
 		}
 
 		[EditableEnum]
-		public virtual AppDomainManagerInitializationOptions EnumProperty { get; set; }
+		public virtual AppDomainManagerInitializationOptions EnumProperty
+		{
+			get { return GetDetail("EnumProperty", AppDomainManagerInitializationOptions.None); }
+			set { SetDetail("EnumProperty", value, AppDomainManagerInitializationOptions.None); }
+		}
 
 		public virtual Guid GuidProperty
 		{
