@@ -43,6 +43,7 @@ namespace N2.Details
 			public const string StringType = "String";
 			public const string ObjectType = "Object";
 			public const string MultiType = "Multi";
+            public const string EnumType = "Enum";
 		}
 		#endregion
 
@@ -128,6 +129,8 @@ namespace N2.Details
 						return linkedItem;
 					case TypeKeys.StringType:
 						return stringValue;
+                    case TypeKeys.EnumType:
+                        return Enum.Parse(Type.GetType(meta, true, true), stringValue, true);
 					case TypeKeys.MultiType:
 						return new MultipleValueHolder { BoolValue = BoolValue, DateTimeValue = DateTimeValue, DoubleValue = DoubleValue, IntValue = IntValue, LinkedItem = LinkedItem, ObjectValue = ObjectValue, StringValue = StringValue };
 					default:
@@ -190,35 +193,48 @@ namespace N2.Details
 
 			Type t = value.GetType();
 			EmptyValue();
-			switch (t.FullName)
-			{
-				case "System.Boolean":
-					boolValue = (bool)value;
-					return TypeKeys.BoolType;
-				case "System.Int32":
-					intValue = (int)value;
-					return TypeKeys.IntType;
-				case "System.Double":
-					doubleValue = (double)value;
-					return TypeKeys.DoubleType;
-				case "System.DateTime":
-					dateTimeValue = (DateTime)value;
-					return TypeKeys.DateTimeType;
-				case "System.String":
-					stringValue = (string)value;
-					return TypeKeys.StringType;
-				default:
-					if (t.IsSubclassOf(typeof(ContentItem)))
-					{
-						LinkedItem = (ContentItem)value;
-						return TypeKeys.LinkType;
-					}
-					else
-					{
-						objectValue = value;
-						return TypeKeys.ObjectType;
-					}
-			}
+
+            if (t.FullName == "System.Boolean")
+            {
+                boolValue = (bool)value;
+                return TypeKeys.BoolType;
+            }
+            else if (t.FullName == "System.Int32")
+            {
+                intValue = (int)value;
+                return TypeKeys.IntType;
+            }
+            else if (t.FullName == "System.Double")
+            {
+                doubleValue = (double)value;
+                return TypeKeys.DoubleType;
+            }
+            else if (t.FullName == "System.DateTime")
+            {
+                dateTimeValue = (DateTime)value;
+                return TypeKeys.DateTimeType;
+            }
+            else if (t.FullName == "System.String")
+            {
+                stringValue = (string)value;
+                return TypeKeys.StringType;
+            }
+            else if (t.IsEnum)
+            {
+				meta = t.AssemblyQualifiedName;
+				stringValue = value.ToString();
+                return TypeKeys.EnumType;
+            }
+            else if (t.IsSubclassOf(typeof(ContentItem)))
+            {
+                LinkedItem = (ContentItem)value;
+                return TypeKeys.LinkType;
+            }
+            else
+            {
+                objectValue = value;
+                return TypeKeys.ObjectType;
+            }
 		}
 
 		private void EmptyValue()
@@ -243,6 +259,9 @@ namespace N2.Details
 				case TypeKeys.StringType:
 					stringValue = null;
 					return;
+                case TypeKeys.EnumType:
+                    stringValue = null;
+                    return;
 				default:
 					objectValue = null;
 					return;
@@ -270,6 +289,8 @@ namespace N2.Details
 						return typeof(ContentItem);
 					case TypeKeys.MultiType:
 						return typeof(IMultipleValue);
+                    case TypeKeys.EnumType:
+                        return typeof(Enum);
 					default:
 						return typeof(object);
 				}
@@ -429,6 +450,8 @@ namespace N2.Details
 				return "StringValue";
 			else if (value is ContentItem)
 				return "LinkedItem";
+			else if (value is Enum)
+				return "EnumValue";
 			else
 				return "Value";
 		}
@@ -456,6 +479,8 @@ namespace N2.Details
 				return "DateTimeValue";
 			else if (valueType == typeof(string))
 				return "StringValue";
+			else if (typeof(Enum).IsAssignableFrom(valueType))
+				return "EnumValue";
 			else if (typeof(ContentItem).IsAssignableFrom(valueType))
 				return "LinkedItem";
 			else
