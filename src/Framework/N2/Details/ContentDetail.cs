@@ -223,6 +223,7 @@ namespace N2.Details
             {
 				meta = t.AssemblyQualifiedName;
 				stringValue = value.ToString();
+				IntValue = (int)value;
                 return TypeKeys.EnumType;
             }
             else if (t.IsSubclassOf(typeof(ContentItem)))
