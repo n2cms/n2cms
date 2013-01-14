@@ -452,7 +452,7 @@ namespace N2.Details
 			else if (value is ContentItem)
 				return "LinkedItem";
 			else if (value is Enum)
-				return "EnumValue";
+				return "StringValue";
 			else
 				return "Value";
 		}
@@ -483,7 +483,7 @@ namespace N2.Details
 			else if (typeof(Enum).IsAssignableFrom(valueType))
 				return "EnumValue";
 			else if (typeof(ContentItem).IsAssignableFrom(valueType))
-				return "LinkedItem";
+				return "StringValue";
 			else
 				return "Value";
 		}
@@ -599,6 +599,14 @@ namespace N2.Details
 			LinkedItem = other.LinkedItem;
 			ObjectValue = other.ObjectValue;
 			StringValue = other.StringValue;
+		}
+
+		public static object ConvertForQueryParameter(object value)
+		{
+			if (value is Enum)
+				return value.ToString();
+
+			return value;
 		}
 	}
 }

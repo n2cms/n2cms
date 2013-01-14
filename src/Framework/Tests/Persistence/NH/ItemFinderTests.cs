@@ -28,10 +28,10 @@ namespace N2.Tests.Persistence.NH
 		ContentItem item3;
 		ContentItem[] all;
 
-		[SetUp]
-		public override void SetUp()
+		[TestFixtureSetUp]
+		public override void TestFixtureSetUp()
 		{
-			base.SetUp();
+			base.TestFixtureSetUp();
 
 			CreateRootItem();
 			SaveVersionAndUpdateRootItem();
@@ -46,6 +46,21 @@ namespace N2.Tests.Persistence.NH
 
 			ISessionProvider sessionProvider = engine.Resolve<ISessionProvider>();
 			finder = new ItemFinder(sessionProvider, new DefinitionMap());
+		}
+
+		[SetUp]
+		public override void SetUp()
+		{
+			// avoid recreating database here
+			//base.SetUp();
+
+			engine.Persister.Dispose();
+		}
+
+		public override void TearDown()
+		{
+			// avoid closing connections here
+			//base.TearDown();
 		}
 		
 		#endregion
@@ -148,67 +163,12 @@ namespace N2.Tests.Persistence.NH
             Assert.AreEqual(rootItem, items[0]);
         }
 
-		//[Test]
-		//public void ByProperty_VersionIndex_Equals_PreviousVersion()
-		//{
-		//    IList<ContentItem> items = finder.Where.VersionIndex.Eq(0)
-		//        .And.VersionOf.Eq(rootItem)
-		//        .PreviousVersions(VersionOption.Include).Select();
-		//    Assert.AreEqual(1, items.Count);
-		//    Assert.AreEqual(rootItem, items[0].VersionOf.Value);
-		//}
-
-		//[Test]
-		//public void OrderBy_VersionIndex_Desc()
-		//{
-		//    IList<ContentItem> items = finder
-		//        .Where.ID.Eq(rootItem.ID)
-		//        .Or.VersionOf.Eq(rootItem)
-		//        .OrderBy.VersionIndex.Desc
-		//        .PreviousVersions(VersionOption.Include).Select();
-		//    Assert.AreEqual(2, items.Count);
-		//    Assert.AreEqual(rootItem, items[0]);
-		//    Assert.AreEqual(rootItem, items[1].VersionOf.Value);
-		//}
-
-		//[Test]
-		//public void OrderBy_VersionIndex_Asc()
-		//{
-		//    IList<ContentItem> items = finder
-		//        .Where.ID.Eq(rootItem.ID)
-		//        .Or.VersionOf.Eq(rootItem)
-		//        .PreviousVersions(VersionOption.Include)
-		//        .OrderBy.VersionIndex.Asc
-		//        .Select();
-		//    Assert.AreEqual(2, items.Count);
-		//    Assert.AreEqual(rootItem, items[0].VersionOf.Value);
-		//    Assert.AreEqual(rootItem, items[1]);
-		//}
-
         [Test]
         public void ByProperty_State_EqualsPublished()
         {
             IList<ContentItem> items = finder.Where.State.Eq(ContentState.Published).Select();
             Assert.AreEqual(5, items.Count);
         }
-
-		//[Test]
-		//public void ByProperty_State_EqualsUnpublished()
-		//{
-		//    IList<ContentItem> items = finder
-		//        .Where.State.Eq(ContentState.Unpublished)
-		//        .PreviousVersions(VersionOption.Include).Select();
-		//    Assert.AreEqual(1, items.Count);
-		//    Assert.AreEqual(rootItem, items[0].VersionOf.Value);
-		//}
-
-		//[Test]
-		//public void OrderBy_State()
-		//{
-		//    IList<ContentItem> items = finder.All.PreviousVersions(VersionOption.Include)
-		//        .OrderBy.State.Desc.Select();
-		//    Assert.That(items[0].State, Is.GreaterThan(items[items.Count - 1].State));
-		//}
 
 		[Test]
 		public void ByPropertyVisible()
@@ -234,32 +194,6 @@ namespace N2.Tests.Persistence.NH
 			EnumerableAssert.Contains(items, rootItem);
 			EnumerableAssert.Contains(items, startPage);
 		}
-
-		//[Test]
-		//public void ByProperty_VersionOf()
-		//{
-		//    IList<ContentItem> items = finder.Where.VersionOf.Eq(rootItem).Select();
-		//    Assert.AreEqual(1, items.Count);
-		//    Assert.AreNotEqual(rootItem, items[0]);
-		//}
-
-		//[Test]
-		//public void ByProperty_VersionOf_Null()
-		//{
-		//    IList<ContentItem> items = finder.Where.VersionOf.Eq(null).Select();
-		//    Assert.AreEqual(5, items.Count);
-		//}
-
-		//[Test]
-		//public void ByPropertyVersionOfOrVersionOf()
-		//{
-		//    IList<ContentItem> items = finder.Where
-		//        .VersionOf.Eq(rootItem)
-		//        .Or.VersionOf.Eq(startPage)
-		//        .Select();
-		//    Assert.AreEqual(1, items.Count);
-		//    Assert.AreNotEqual(rootItem, items[0]);
-		//}
 
 		[Test]
 		public void ByPropertySavedBy()
@@ -346,6 +280,22 @@ namespace N2.Tests.Persistence.NH
 			IList<ContentItem> items = finder.Where.Detail().Eq("just a string").Select();
 			Assert.AreEqual(2, items.Count);
 			EnumerableAssert.Contains(items, rootItem);
+			EnumerableAssert.Contains(items, startPage);
+		}
+
+		[Test]
+		public void EnumDetail()
+		{
+			IList<ContentItem> items = finder.Where.Detail("EnumProperty").Eq(AppDomainManagerInitializationOptions.RegisterWithHost).Select();
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(startPage, items[0]);
+		}
+
+		[Test]
+		public void AnyEnumDetail()
+		{
+			IList<ContentItem> items = finder.Where.Detail().Eq(AppDomainManagerInitializationOptions.RegisterWithHost).Select();
+			Assert.AreEqual(1, items.Count);
 			EnumerableAssert.Contains(items, startPage);
 		}
 
@@ -1240,6 +1190,14 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void PersistableProperty_Enum()
+		{
+			var items = finder.Where.Property("EnumPersistableProperty").Eq(Base64FormattingOptions.InsertLineBreaks).Select();
+			items.Count().ShouldBe(3);
+			items.First()["EnumPersistableProperty"].ShouldBe(Base64FormattingOptions.InsertLineBreaks);
+		}
+
+		[Test]
 		public void Detail_Null_ExistingDetail()
 		{
 			var items = finder.Where.Detail("IntDetail").Null<int>(true).Select();
@@ -1282,12 +1240,14 @@ namespace N2.Tests.Persistence.NH
 			details.Add(parentPage);
 			details.Add(new DateTime(2009 + index, 1, 1));
 
+
 			item.BoolPersistableProperty = true;
 			item.DateTimePersistableProperty = new DateTime(2010, 06, 18, 14, 30, 00);
 			item.DoublePersistableProperty = 555.555;
 			item.IntPersistableProperty = 555;
 			item.LinkPersistableProperty = rootItem;
 			item.StringPersistableProperty = "in table text";
+			item.EnumPersistableProperty = Base64FormattingOptions.InsertLineBreaks;
 
 			engine.Persister.Save(item);
 			return item;
@@ -1302,6 +1262,7 @@ namespace N2.Tests.Persistence.NH
             startPage.State = ContentState.Published;
 			startPage.IntProperty = 33;
 			startPage.DateTimeProperty = new DateTime(2013, 04, 07);
+			startPage.EnumProperty = AppDomainManagerInitializationOptions.RegisterWithHost;
 			startPage["IntDetail"] = 45;
 			startPage["DoubleDetail"] = 56.66;
 			startPage["BoolDetail"] = true;

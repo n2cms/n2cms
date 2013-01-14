@@ -83,6 +83,9 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<object>("ObjectProperty", value); }
 		}
 
+		[EditableEnum]
+		public virtual AppDomainManagerInitializationOptions EnumProperty { get; set; }
+
 		public virtual Guid GuidProperty
 		{
 			get
