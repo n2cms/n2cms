@@ -7,5 +7,6 @@ namespace N2.Definitions
 {
 	public interface IFileSystemNode : ISystemNode
 	{
+		string LocalUrl { get; }
 	}
 }

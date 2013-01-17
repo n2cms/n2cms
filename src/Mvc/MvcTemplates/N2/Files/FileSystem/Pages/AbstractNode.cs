@@ -33,6 +33,8 @@ namespace N2.Edit.FileSystem.Items
 
 		IFileSystem fileSystem;
 
+		public abstract string LocalUrl { get; }
+
 		protected ImageSizeCache ImageSizes { get; set; }
 		protected IDependencyInjector DependencyInjector { get; set; }
     	protected virtual IFileSystem FileSystem
