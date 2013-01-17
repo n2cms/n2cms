@@ -16,7 +16,7 @@
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 
 		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Dinamico-SourceFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Dinamico-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Dinamico-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
 		
 		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" />
 		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" ContinueOnError="true" />

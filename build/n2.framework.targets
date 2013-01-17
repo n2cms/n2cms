@@ -26,7 +26,7 @@
 
 	<Target Name="Framework-PrepareDependencies">
 		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(ManagementFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(ManagementFolder)\%(RecursiveDir)\%(FileName)%(Extension)" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(ManagementFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
 	</Target>
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">
