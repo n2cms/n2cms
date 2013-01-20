@@ -1,0 +1,89 @@
+﻿@*************************************************************************************************
+
+Image Float: Razor Template-First Sample
+Licensed to users of N2CMS under the terms of The MIT License (MIT)
+
+Copyright (c) 2013 Benjamin Herila <mailto:ben@herila.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the "Software"), to deal in the Software without restriction, 
+including without limitation the rights to use, copy, modify, merge, publish, distribute, 
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or 
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*************************************************************************************************@
+
+@model Dinamico.Models.ContentPart
+
+@{ 
+   
+    Content.Define(ie =>
+    {
+        ie.Title = "Image";
+        ie.IconUrl = "{IconsUrl}/photo.png";
+        ie.Image("Image");
+        ie.Enum("Float", typeof(N2.Web.BlockAlignment)).DefaultValue(N2.Web.BlockAlignment.Middle);
+        ie.FreeText("Caption");
+        ie.Text("AltText").DefaultValue("");
+    });
+
+    var image = "(null)";
+    var Float = N2.Web.BlockAlignment.None;
+    var caption = "(null)";
+    var altText = "(null)";
+    
+    image   = Model.GetDetail<string>("Image", "");   
+    caption = Model.GetDetail<string>("Caption", ""); 
+    altText = Model.GetDetail<string>("AltText", ""); 
+    
+    try {
+        Float = (N2.Web.BlockAlignment) Enum.Parse(typeof(N2.Web.BlockAlignment), (Model.GetDetail("Float") ?? N2.Web.BlockAlignment.Middle).ToString());
+    }
+    catch {
+        Float = N2.Web.BlockAlignment.Middle;   
+    }
+
+    bool HasImage = !String.IsNullOrWhiteSpace(image);
+    bool HasCaption = !String.IsNullOrWhiteSpace(caption);
+}
+
+@switch (Float)
+{
+	case N2.Web.BlockAlignment.Left:
+		<div class="img-block img-block-left" style="float: left;">
+			<img src="@image" alt="@altText" />
+			@if (HasCaption) { <p>@caption</p> }
+		</div>
+		break;
+        
+	case N2.Web.BlockAlignment.Right:
+		<div class="img-block img-block-right" style="float: right;">
+			<img src="@image" alt="@altText" />
+			@if (HasCaption) { <p>@caption</p> }
+		</div>
+		break;
+        
+	case N2.Web.BlockAlignment.Middle:
+		<div class="img-block img-block-middle" style="text-align: center;">
+			<p><img src="@image" alt="@altText" /></p>
+			@if (HasCaption) { <p>@caption</p> }
+		</div>
+		break;
+        
+	default:
+        <div class="img-block img-block-default">
+		    <p><img src="@image" alt="@altText" /></p>
+		    @if (HasCaption) { <p>@caption</p> }
+        </div>
+		break;
+        
+}
