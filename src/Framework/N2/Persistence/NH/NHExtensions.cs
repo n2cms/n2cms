@@ -73,7 +73,7 @@ namespace N2.Persistence.NH
 
 			var subselect = DetachedCriteria.For<ContentDetail>()
 				.SetProjection(Projections.Property("EnclosingItem.ID"))
-				.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), p.Value, p.Comparison));
+				.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), ContentDetail.ConvertForQueryParameter(p.Value), p.Comparison));
 			
 			if (p.Name != null)
 				subselect = subselect.Add(Expression.Eq("Name", p.Name));

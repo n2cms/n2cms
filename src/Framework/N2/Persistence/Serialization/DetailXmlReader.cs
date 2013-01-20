@@ -27,12 +27,17 @@ namespace N2.Persistence.Serialization
 			Type type = Utility.TypeFromName(attributes["typeName"]);
 
 			string name = attributes["name"];
-			string meta = attributes["meta"];
+			string meta = attributes.ContainsKey("meta")
+				? attributes["meta"]
+				: null;
 
 			if (type == typeof(System.Enum))
 			{
 				// we're going to need to do better- we saved a more specific type in 'meta'
-				try { type = Utility.TypeFromName(meta); }
+				try 
+				{
+					type = Utility.TypeFromName(meta); 
+				}
 				catch (Exception x)
 				{
 					// TODO: log/report the exception. This is really bad because it means the enum type has gone away. 

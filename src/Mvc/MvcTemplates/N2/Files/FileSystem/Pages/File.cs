@@ -45,7 +45,7 @@ namespace N2.Edit.FileSystem.Items
                 MoveTo(newParent);
         }
 
-		public virtual string LocalUrl
+		public override string LocalUrl
 		{
 			get { return N2.Web.Url.Combine(Directory.LocalUrl, Name); }
 		}

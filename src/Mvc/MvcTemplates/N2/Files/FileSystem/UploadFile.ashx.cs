@@ -6,6 +6,7 @@ using N2.Edit.FileSystem;
 using N2.Web;
 using System.Collections.Generic;
 using System.IO;
+using N2.Definitions;
 
 namespace N2.Management.Files.FileSystem
 {
@@ -70,7 +71,7 @@ namespace N2.Management.Files.FileSystem
             {
                 var file = context.Request.Files[i];
                 var fileName = Path.GetFileName(file.FileName);
-                var virtualPath = Url.Combine(selection.SelectedItem.Url, fileName);
+                var virtualPath = Url.Combine(((IFileSystemNode)selection.SelectedItem).LocalUrl, fileName);
 
                 fs.WriteFile(virtualPath, file.InputStream);
 

@@ -54,7 +54,7 @@
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
 
 		<Copy SourceFiles="@(Framework-DependencyBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFiles="$(Templates-SourceFolder)\%(RecursiveDir)\%(FileName)%(Extension)" ContinueOnError="true" />
 
 		<Message Text="Skipping mklink (folder exists): $(Templates-SourceFolder)\N2\" Condition="Exists('$(Templates-SourceFolder)\N2\')" Importance="high" />
 		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" ContinueOnError="true" />

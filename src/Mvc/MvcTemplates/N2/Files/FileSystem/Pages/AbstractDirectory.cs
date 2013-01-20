@@ -15,8 +15,6 @@ namespace N2.Edit.FileSystem.Items
 {
     public abstract class AbstractDirectory : AbstractNode, IFileSystemDirectory
 	{
-		public abstract string LocalUrl { get; }
-
 		public string UrlPrefix { get; set; }
 
     	protected override ContentItem FindNamedChild(string nameSegment)

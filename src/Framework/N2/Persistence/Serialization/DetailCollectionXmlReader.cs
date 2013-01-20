@@ -55,6 +55,16 @@ namespace N2.Persistence.Serialization
 						});
 				}
 			}
+			else if (type == typeof(Enum))
+			{
+				if (attributes.ContainsKey("meta"))
+				{
+					collection.Add(ContentDetail.New(
+						collection.EnclosingItem,
+						attributes["name"],
+						Parse(navigator.Value, Type.GetType(attributes["meta"]))));
+				}
+			}
 			else if (type == typeof(IMultipleValue))
 			{
 				detailReader.ReadMultipleValue(navigator, collection.EnclosingItem, journal, collection.Name).AddTo(collection);

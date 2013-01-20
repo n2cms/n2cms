@@ -1,3 +1,4 @@
+using N2.Details;
 using System.Text;
 
 namespace N2.Persistence.NH.Finder
@@ -41,7 +42,7 @@ namespace N2.Persistence.NH.Finder
 		{
 			if (this.Name != null) 
 				query.SetParameter(GetNameParameterName(index), Name);
-			query.SetParameter(GetValueParameterName(index), Value);
+			query.SetParameter(GetValueParameterName(index), ContentDetail.ConvertForQueryParameter(Value));
 		}
 	}
 }

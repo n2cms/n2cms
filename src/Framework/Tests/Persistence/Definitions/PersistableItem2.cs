@@ -19,6 +19,8 @@ namespace N2.Tests.Persistence.Definitions
 		public virtual string StringPersistableProperty { get; set; }
 		[N2.Persistence.Persistable]
 		public virtual ContentItem LinkPersistableProperty { get; set; }
+		[N2.Persistence.Persistable]
+		public virtual Base64FormattingOptions EnumPersistableProperty { get; set; }
 
 		#region ILanguage Members
 

@@ -56,7 +56,10 @@ namespace N2.Web.Mvc.Html
 			var values = new RouteValueDictionary();
 			values[ContentRoute.ActionKey] = "Index";
 			values[ContentRoute.ControllerKey] = controllerName;
-			values[ContentRoute.ContentItemKey] = item;
+			if (item.ID != 0)
+				values[ContentRoute.ContentItemKey] = item.ID;
+			else
+				values[ContentRoute.ContentItemKey] = item;
 
 			// retrieve the virtual path so we can figure out if this item is routed through an area
 			var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
