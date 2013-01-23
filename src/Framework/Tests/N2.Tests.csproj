@@ -242,6 +242,7 @@
     <Compile Include="Persistence\ContentPersister_ContentSourcesTests.cs" />
     <Compile Include="Persistence\Definitions\ActiveContentItem.cs" />
     <Compile Include="Persistence\IActiveContentTests.cs" />
+    <Compile Include="Persistence\MongoDB\ItemRepositoryTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
     <Compile Include="Persistence\NH\ItemRepositoryTests_Find.cs" />
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
