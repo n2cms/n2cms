@@ -90,6 +90,18 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail("EnumProperty", value, AppDomainManagerInitializationOptions.None); }
 		}
 
+		public virtual Guid GuidProperty
+		{
+			get
+			{
+				string value = GetDetail<string>("GuidProperty", null);
+				return string.IsNullOrEmpty(value) ? Guid.Empty : new Guid(value);
+			}
+			set
+			{
+				SetDetail("GuidProperty", value.ToString());
+			}
+		}
 
         public virtual string WritableGuid
         {
