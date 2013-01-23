@@ -8,18 +8,18 @@ using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using Shouldly;
 
-namespace N2.Tests.Persistence.MongoDB
+namespace N2.Tests.MongoDB
 {
     [TestFixture, Category("Integration")]
-    public class ItemRepositoryTests : ItemTestsBase
+    public class MongoRepositoryTests : ItemTestsBase
     {
-        ContentItemRepository repository;
+        MongoContentItemRepository repository;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            repository = new ContentItemRepository();
+            repository = new MongoContentItemRepository(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"));
 
             repository.DropDatabase();
         }
@@ -631,7 +631,7 @@ namespace N2.Tests.Persistence.MongoDB
         {
             using (repository)
             {
-                ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, name, parent);
+                ContentItem item = CreateOneItem<PersistableItem1>(0, name, parent);
                 repository.Save(item);
                 repository.Flush();
                 return item.ID;

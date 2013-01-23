@@ -36,10 +36,11 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using N2.Engine;
 using _MongoDB = MongoDB;
+using N2.Details;
 
 namespace N2.Persistence.MongoDB
 {
-    [Service(typeof(IRepository<>), Key = "n2.repository.generic")]
+    [Service(typeof(IRepository<>), Key = "n2.repository.generic")]//, Replaces = typeof(NH.NHRepository<>))]
     public class MongoDbRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         public readonly MongoDatabase Database;
@@ -50,18 +51,27 @@ namespace N2.Persistence.MongoDB
             myConventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
             BsonClassMap.RegisterConventions(myConventions, t => true);
 
+			BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
+			{
+				cm.AutoMap();
+			});
             BsonClassMap.RegisterClassMap<ContentItem>(cm =>
                                                            {
                                                                cm.AutoMap();
-                                                               cm.MapIdProperty(c => c.ID).SetIdGenerator(new IntIdGenerator());
+                                                               cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
+															   cm.UnmapProperty(ci => ci.Children);
+															   cm.UnmapProperty(ci => ci.Details);
+															   cm.UnmapProperty(ci => ci.DetailCollections);
                                                            });
         }
 
-        public MongoDbRepository()
+        public MongoDbRepository(Configuration.ConfigurationManagerWrapper config)
         {
-            var connectionString = "mongodb://localhost/?safe=true"; //this will eventually come from config
-            var server = MongoServer.Create(connectionString);
-            Database = server.GetDatabase("n2test");
+            //var connectionString = "mongodb://localhost/?safe=true"; //this will eventually come from config
+			var connectionString = config.GetConnectionString();
+			var client = new MongoClient(connectionString);
+			var server = client.GetServer();
+            Database = server.GetDatabase("n2cms");
         }
 
         public TEntity Load(object id)

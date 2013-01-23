@@ -5,8 +5,13 @@ using MongoDB.Driver.Linq;
 
 namespace N2.Persistence.MongoDB
 {
-    public class ContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
+    public class MongoContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
     {
+		public MongoContentItemRepository(Configuration.ConfigurationManagerWrapper config)
+			: base(config)
+		{
+		}
+
         public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
         {
             throw new NotImplementedException();
@@ -34,7 +39,8 @@ namespace N2.Persistence.MongoDB
 
         public void DropDatabase()
         {
-            Database.Drop();
+			foreach (var cn in Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
+				Database.DropCollection(cn);
         }
     }
 }
