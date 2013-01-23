@@ -119,24 +119,22 @@ namespace N2.Tests.MongoDB
         //    }
         //}
 
-        //[Test]
-        //public void CanSaveDetail()
-        //{
-        //    IRepository<N2.Details.ContentDetail> detailRepository = new MongoDbRepository<N2.Details.ContentDetail>();
+		[Test]
+		public void CanSaveDetail()
+		{
+			using (repository)
+			{
+				ContentItem item = CreateOneItem<PersistableItem1>(0, "item", null);
+				item["TheString"] = "the string";
+				repository.Save(item);
+				repository.Flush();
+			}
 
-        //    using (repository)
-        //    {
-        //        ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
-        //        item["TheString"] = "the string";
-        //        repository.Save(item);
-        //        repository.Flush();
-        //    }
-
-        //    using (detailRepository)
-        //    {
-        //        Assert.AreEqual(1, detailRepository.Count());
-        //    }
-        //}
+			using (repository)
+			{
+				repository.Get(1)["TheString"].ShouldBe("the string");
+			}
+		}
 
         //[Test]
         //public void CanDeleteDetail()

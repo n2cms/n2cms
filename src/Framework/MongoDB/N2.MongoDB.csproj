@@ -49,6 +49,9 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="ContentItemSerializationProvider.cs" />
+    <Compile Include="ContentSerializationProvider.cs" />
+    <Compile Include="ContentCollectionSerializationProvider.cs" />
     <Compile Include="MongoContentItemRepository.cs" />
     <Compile Include="IntIdGenerator.cs" />
     <Compile Include="MongoRepository.cs" />

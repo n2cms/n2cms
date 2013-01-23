@@ -37,6 +37,8 @@ using MongoDB.Driver.Builders;
 using N2.Engine;
 using _MongoDB = MongoDB;
 using N2.Details;
+using N2.Security;
+using N2.Edit.Versioning;
 
 namespace N2.Persistence.MongoDB
 {
@@ -51,18 +53,29 @@ namespace N2.Persistence.MongoDB
             myConventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
             BsonClassMap.RegisterConventions(myConventions, t => true);
 
+			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider());
+
+			BsonClassMap.RegisterClassMap<AuthorizedRole>();
 			BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
 			{
 				cm.AutoMap();
+				cm.UnmapProperty(cd => cd.EnclosingCollection);
+				cm.UnmapProperty(cd => cd.EnclosingItem);
 			});
+			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
+			{
+				cm.AutoMap();
+				cm.UnmapProperty(cd => cd.EnclosingItem);
+			});
+			BsonClassMap.RegisterClassMap<ContentVersion>();
             BsonClassMap.RegisterClassMap<ContentItem>(cm =>
-                                                           {
-                                                               cm.AutoMap();
-                                                               cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
-															   cm.UnmapProperty(ci => ci.Children);
-															   cm.UnmapProperty(ci => ci.Details);
-															   cm.UnmapProperty(ci => ci.DetailCollections);
-                                                           });
+				{
+					cm.AutoMap();
+					cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
+					cm.UnmapProperty(ci => ci.Children);
+					//cm.UnmapProperty(ci => ci.Details);
+					cm.UnmapProperty(ci => ci.DetailCollections);
+				});
         }
 
         public MongoDbRepository(Configuration.ConfigurationManagerWrapper config)
