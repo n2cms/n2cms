@@ -15,15 +15,15 @@ namespace N2.Tests.Persistence
 		public void PublishedPagesBelow_ShouldFilter_ByState()
 		{
 			var root = CreateOneItem<Definitions.PersistableItem2>(0, "root", null);
-			var item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			var item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
-			var itemNew = CreateOneItem<Definitions.PersistableItem1>(0, "itemNew", root);
+			var item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			var item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
+			var itemNew = CreateOneItem<Definitions.PersistableItem>(0, "itemNew", root);
 			itemNew.State = ContentState.New;
-			var itemDeleted = CreateOneItem<Definitions.PersistableItem1>(0, "itemDeleted", root);
+			var itemDeleted = CreateOneItem<Definitions.PersistableItem>(0, "itemDeleted", root);
 			itemDeleted.State = ContentState.Deleted;
-			var itemUnpublished = CreateOneItem<Definitions.PersistableItem1>(0, "itemUnpublished", root);
+			var itemUnpublished = CreateOneItem<Definitions.PersistableItem>(0, "itemUnpublished", root);
 			itemUnpublished.State = ContentState.Unpublished;
-			var itemWaiting = CreateOneItem<Definitions.PersistableItem1>(0, "itemWaiting", root);
+			var itemWaiting = CreateOneItem<Definitions.PersistableItem>(0, "itemWaiting", root);
 			itemWaiting.State = ContentState.Waiting;
 
 			engine.Persister.Repository.SaveOrUpdate(root);
@@ -36,7 +36,7 @@ namespace N2.Tests.Persistence
 			new SearchHelper(() => engine).Pages.Where(p => p.State == ContentState.Published).Count().ShouldBe(3);
 			new SearchHelper(() => engine).PublishedPages.Count().ShouldBe(3);
 			new SearchHelper(() => engine).PublishedPagesBelow(root).Count().ShouldBe(3);
-			new SearchHelper(() => engine).PublishedPagesBelow(root).OfType<Definitions.PersistableItem1>().ToList().Count().ShouldBe(2);
+			new SearchHelper(() => engine).PublishedPagesBelow(root).OfType<Definitions.PersistableItem>().ToList().Count().ShouldBe(2);
 		}
 	}
 }

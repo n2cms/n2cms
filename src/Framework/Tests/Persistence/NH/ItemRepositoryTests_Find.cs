@@ -15,13 +15,13 @@ namespace N2.Tests.Persistence.NH
 	{
 		ContentItemRepository repository;
 		new ISessionProvider sessionProvider;
-		private PersistableItem1 root;
-		private PersistableItem1 child1;
-		private PersistableItem1 grandchild1;
-		private PersistableItem1 child2;
-		private PersistablePart1 part1;
-		private PersistablePart1 part2;
-		private PersistableItem1 version;
+		private PersistableItem root;
+		private PersistableItem child1;
+		private PersistableItem grandchild1;
+		private PersistableItem child2;
+		private PersistablePart part1;
+		private PersistablePart part2;
+		private PersistableItem version;
 		private ContentItem[] all;
 
 		[SetUp]
@@ -35,13 +35,13 @@ namespace N2.Tests.Persistence.NH
 
 			all = new ContentItem []
 			{
-				root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null),
-				child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root),
-				grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1_1", child1),
-				part1 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
-				part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
-				child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root),
-				version = CreateOneItem<Definitions.PersistableItem1>(0, "page1", null)
+				root = CreateOneItem<Definitions.PersistableItem>(0, "page", null),
+				child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root),
+				grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1_1", child1),
+				part1 = CreateOneItem<Definitions.PersistablePart>(0, "part1", child1),
+				part2 = CreateOneItem<Definitions.PersistablePart>(0, "part1", child1),
+				child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root),
+				version = CreateOneItem<Definitions.PersistableItem>(0, "page1", null)
 			};
 			part1.ZoneName = "Left";
 			part2.ZoneName = "RecursiveLeft";

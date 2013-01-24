@@ -39,6 +39,8 @@ using _MongoDB = MongoDB;
 using N2.Details;
 using N2.Security;
 using N2.Edit.Versioning;
+using MongoDB.Bson;
+using System.Linq;
 
 namespace N2.Persistence.MongoDB
 {
@@ -75,6 +77,7 @@ namespace N2.Persistence.MongoDB
 					cm.UnmapProperty(ci => ci.Children);
 					//cm.UnmapProperty(ci => ci.Details);
 					cm.UnmapProperty(ci => ci.DetailCollections);
+					//cm.SetIsRootClass(isRootClass: true);
 				});
         }
 
@@ -94,7 +97,7 @@ namespace N2.Persistence.MongoDB
 
         public void Save(TEntity entity)
         {
-            var col = Database.GetCollection<TEntity>(typeof(TEntity).Name);
+            var col = GetCollection();
             col.Save(entity);
         }
 
@@ -115,11 +118,6 @@ namespace N2.Persistence.MongoDB
             return Database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public T Get<T>(object id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<TEntity> Find(string propertyName, object value)
         {
             throw new NotImplementedException();
@@ -127,8 +125,14 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
         {
-            throw new NotImplementedException();
-        }
+			var collection = GetCollection();
+			if (propertyValuesToMatchAll.Length > 1)
+				return collection.Find(new ParameterCollection(propertyValuesToMatchAll).CreateQuery());
+			else if (propertyValuesToMatchAll.Length == 1)
+				return collection.Find(propertyValuesToMatchAll[0].CreateQuery());
+			else
+				return collection.FindAll();
+		}
 
         public IEnumerable<TEntity> Find(IParameter parameters)
         {
@@ -181,18 +185,101 @@ namespace N2.Persistence.MongoDB
             //not required for mongodb
         }
 
+		class NullTransaction : ITransaction
+		{
+			public void Commit()
+			{
+				if (Committed != null)
+					Committed(this, new EventArgs());
+			}
+
+			public void Rollback()
+			{
+				if (Rollbacked != null)
+					Rollbacked(this, new EventArgs());
+			}
+
+			public event EventHandler Committed;
+
+			public event EventHandler Rollbacked;
+
+			public event EventHandler Disposed;
+
+			public void Dispose()
+			{
+				if (Disposed != null)
+					Disposed(this, new EventArgs());
+			}
+		}
+
         public ITransaction BeginTransaction()
         {
-            throw new NotImplementedException();
+			return new NullTransaction();
         }
 
         public ITransaction GetTransaction()
         {
-            throw new NotImplementedException();
+			return new NullTransaction();
         }
 
         public void Dispose()
         {
         }
     }
+
+	internal static class MongoRepositoryExtensions
+	{
+		public static IMongoQuery CreateQuery(this IParameter parameter)
+		{
+			if (parameter is ParameterCollection)
+			{
+				var pc = parameter as ParameterCollection;
+				switch (pc.Operator)
+				{
+					case Operator.And:
+						return Query.And(pc.Select(p => p.CreateQuery()));
+					case Operator.Or:
+						return Query.Or(pc.Select(p => p.CreateQuery()));
+					case Operator.None:
+					default:
+						throw new NotSupportedException();
+				}
+			}
+			else if (parameter is Parameter)
+			{
+				var p = (Parameter)parameter;
+				if (p.Name == "ID")
+					p.Name = "_id";
+				if (p.Name == "class")
+					p.Name = "_t";
+
+				switch (p.Comparison)
+				{
+					case Comparison.Equal:
+						return Query.EQ(p.Name, BsonValue.Create(p.Value));
+					case Comparison.GreaterOrEqual:
+						return Query.GTE(p.Name, BsonValue.Create(p.Value));
+					case Comparison.GreaterThan:
+						return Query.GT(p.Name, BsonValue.Create(p.Value));
+					case Comparison.LessOrEqual:
+						return Query.LTE(p.Name, BsonValue.Create(p.Value));
+					case Comparison.LessThan:
+						return Query.LT(p.Name, BsonValue.Create(p.Value));
+					case Comparison.Like:
+						return Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*"));
+					case Comparison.NotEqual:
+						return Query.Not(Query.EQ(p.Name, BsonValue.Create(p.Value)));
+					case Comparison.NotLike:
+						return Query.Not(Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*")));
+					case Comparison.NotNull:
+						return Query.Exists(p.Name);
+					case Comparison.Null:
+						return Query.NotExists(p.Name);
+					default:
+						throw new NotSupportedException();
+				}
+			}
+			throw new NotSupportedException();
+		}
+	}
 }

@@ -14,7 +14,7 @@ namespace N2.Tests.Persistence
 			Assert.IsNotNull(engine);
 			Assert.IsNotNull(engine.Persister);
 
-			Definitions.PersistableItem1 item = CreateRoot("root", "root item");
+			Definitions.PersistableItem item = CreateRoot("root", "root item");
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void StoreVariousTypesOfDetails()
 		{
-			Definitions.PersistableItem1 root;
+			Definitions.PersistableItem root;
 			ContentItem item1;
 			using (engine.Persister)
 			{
@@ -54,8 +54,8 @@ namespace N2.Tests.Persistence
 
 			using (engine.Persister)
 			{
-				root = (Definitions.PersistableItem1)engine.Persister.Get(root.ID);
-				item1 = (Definitions.PersistableItem1)engine.Persister.Get(item1.ID);
+				root = (Definitions.PersistableItem)engine.Persister.Get(root.ID);
+				item1 = (Definitions.PersistableItem)engine.Persister.Get(item1.ID);
 
 				Assert.AreEqual(root.BoolProperty, false);
 				Assert.AreEqual(root.DateTimeProperty, new DateTime(1978, 12, 02));
@@ -364,7 +364,7 @@ namespace N2.Tests.Persistence
 		public void CloneItem()
 		{
 			// TODO: moveme
-			Definitions.PersistableItem1 root = CreateRoot("root", "root item");
+			Definitions.PersistableItem root = CreateRoot("root", "root item");
 			root.BoolProperty		= false;
 			root.DateTimeProperty	= new DateTime(1978, 12, 02);
 			root.DoubleProperty		= 3.1412;
@@ -374,7 +374,7 @@ namespace N2.Tests.Persistence
 			root.StringProperty		= "dida";
 			engine.Persister.Save(root);
 
-			Definitions.PersistableItem1 clonedRoot = (Definitions.PersistableItem1)root.Clone(true);
+			Definitions.PersistableItem clonedRoot = (Definitions.PersistableItem)root.Clone(true);
 			Assert.AreNotEqual(root.ID, clonedRoot.ID);
 			
 			engine.Persister.Save(clonedRoot);

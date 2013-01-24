@@ -34,10 +34,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CannotCopy_WhenNameIsOccupied()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item1_2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item1_2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", item1);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
 
 			using (persister)
 			{
@@ -61,8 +61,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanCopy_ToSameLocation_ItemWithNoName()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, null, root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, null, root);
 
 			using (persister)
 			{
@@ -80,9 +80,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CannotCopy_ItemWithName()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 			finder.Selector = () => root.Children.Where(c => c.Name.Equals("item1", StringComparison.InvariantCultureIgnoreCase));
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
 
 			using (persister)
 			{

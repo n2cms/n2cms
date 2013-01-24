@@ -11,7 +11,7 @@ namespace N2.Tests.Installation
 		public virtual void CanCreateDatabaseSchema()
 		{
 			CreateDatabaseSchema();
-			PersistableItem1 testItem = new PersistableItem1();
+			PersistableItem testItem = new PersistableItem();
 			engine.Persister.Save(testItem);
 			Assert.AreEqual(1, testItem.ID);
 		}
@@ -22,7 +22,7 @@ namespace N2.Tests.Installation
 			CreateDatabaseSchema();
 			DropDatabaseSchema();
 
-			PersistableItem1 testItem = new PersistableItem1();
+			PersistableItem testItem = new PersistableItem();
 			ExceptionAssert.Throws<Exception>(
 				delegate
 					{

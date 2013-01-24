@@ -90,7 +90,7 @@ namespace N2.Tests.Persistence.NH
 
 		private void CreateStartPageBelow(ContentItem root)
 		{
-			startPage = CreateOneItem<PersistableItem1>(0, "start page", root);
+			startPage = CreateOneItem<PersistableItem>(0, "start page", root);
 			startPage.ZoneName = "AZone";
 			startPage.SortOrder = 34;
 			startPage.Visible = true;
@@ -129,7 +129,7 @@ namespace N2.Tests.Persistence.NH
 
 		private void CreateRootItem()
 		{
-			rootItem = CreateOneItem<PersistableItem1>(0, "root", null);
+			rootItem = CreateOneItem<PersistableItem>(0, "root", null);
 			rootItem.Created = new DateTime(2007, 06, 01);
 			rootItem.Published = new DateTime(2007, 06, 02);
 			rootItem.Expires = new DateTime(2017, 06, 02);

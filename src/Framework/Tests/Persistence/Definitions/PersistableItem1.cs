@@ -8,7 +8,7 @@ using N2.Definitions;
 namespace N2.Tests.Persistence.Definitions
 {
     [PartDefinition("Default persistable part", Name = "PersistablePart")]
-    public class PersistablePart1 : ContentItem, IPart
+    public class PersistablePart : ContentItem, IPart
     {
         [Persistable]
         public virtual string PersistableProperty { get; set; }
@@ -21,7 +21,7 @@ namespace N2.Tests.Persistence.Definitions
     }
 
     [PageDefinition("Default persistable Item", Name = "PersistableItem")]
-    public class PersistableItem1 : N2.ContentItem, IPage
+    public class PersistableItem : N2.ContentItem, IPage
     {
         public virtual bool BoolProperty
         {
@@ -166,7 +166,7 @@ namespace N2.Tests.Persistence.Definitions
 
     [PageDefinition("NonIndexable persistable Item")]
     [Indexable(IsIndexable = false)]
-    public class PersistableItem1b : PersistableItem1
+    public class PersistableItem1b : PersistableItem
     {
     }
 }

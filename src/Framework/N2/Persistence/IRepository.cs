@@ -48,15 +48,6 @@ namespace N2.Persistence
 		TEntity Get(object id);
 
 		/// <summary>
-		/// Get the entity from the persistance store, or return null
-		/// if it doesn't exist.
-		/// </summary>
-		/// <param name="id">The entity's id</param>
-		/// <typeparam name="T">The type of entity to get.</typeparam>
-		/// <returns>Either the entity that matches the id, or a null</returns>
-		T Get<T>(object id);
-
-		/// <summary>
 		/// Finds entitities from the persistance store with matching property value.
 		/// </summary>
 		/// <param name="propertyName">The name of the property to search for.</param>

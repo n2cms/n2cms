@@ -27,16 +27,16 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void CreateInstance_creates_insatnce_of_given_type()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem1>(null);
+			var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
 
-			instance.ShouldBeTypeOf<Definitions.PersistableItem1>();
+			instance.ShouldBeTypeOf<Definitions.PersistableItem>();
 		}
 
 		[Test]
 		public void CreateInstance_creates_insatnce_with_given_parent_without_adding_to_parent_child_collection()
 		{
-			var root = activator.CreateInstance(typeof(Definitions.PersistableItem1), null);
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), root);
+			var root = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), root);
 
 			instance.Parent.ShouldBe(root);
 			root.Children.ShouldNotContain(instance);
@@ -48,7 +48,7 @@ namespace N2.Tests.Persistence
 			ContentItem created = null;
 			activator.ItemCreated += (s, e) => created = e.AffectedItem;
 
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), null);
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
 
 			created.ShouldBe(instance);
 		}
@@ -56,7 +56,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void CreateInstance_sets_template_key()
 		{
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), null, "Hello");
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null, "Hello");
 
 			instance.TemplateKey.ShouldBe("Hello");
 		}
@@ -64,7 +64,7 @@ namespace N2.Tests.Persistence
 		[Test, Ignore("Currently performed by the editable, might make sense to do here")]
 		public void Default_values_are_assigned()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem1>(null);
+			var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
 
 			instance.IntProperty.ShouldBe(666);
 		}

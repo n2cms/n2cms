@@ -9,7 +9,7 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	public class ContentCollectionSerializationProvider<T> : BsonBaseSerializer
+	public class ContentCollectionSerializationProvider<T> : BsonBaseSerializer, IBsonArraySerializer
 		where T : class, INameable
 	{
 		EnumerableSerializer<T> serializer = new EnumerableSerializer<T>();
@@ -41,5 +41,9 @@ namespace N2.Persistence.MongoDB
 			serializer.Serialize(bsonWriter, nominalType, value, options);
 		}
 
+		public BsonSerializationInfo GetItemSerializationInfo()
+		{
+			return new BsonSerializationInfo("item", this, typeof(T), GetDefaultSerializationOptions());
+		}
 	}
 }

@@ -5,7 +5,7 @@ using N2.Engine.Globalization;
 namespace N2.Tests.Persistence.Definitions
 {
 	[SortChildren(SortBy.Expression, SortExpression = "Name DESC")]
-	public class PersistableItem2 : PersistableItem1, ILanguage
+	public class PersistableItem2 : PersistableItem, ILanguage
 	{
 		[N2.Persistence.Persistable]
 		public virtual bool BoolPersistableProperty { get; set; }

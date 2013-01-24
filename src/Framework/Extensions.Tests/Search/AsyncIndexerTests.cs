@@ -24,14 +24,14 @@ namespace N2.Extensions.Tests.Search
 		AsyncIndexer asyncIndexer;
 		AsyncWorker worker;
 
-		PersistableItem1 root;
+		PersistableItem root;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
+			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
@@ -42,7 +42,7 @@ namespace N2.Extensions.Tests.Search
 
 			accessor.LockTimeout = 1L;
 			indexer.Clear();
-			root = CreateOneItem<PersistableItem1>(1, "The Root Page", null);
+			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
 		}
 
 		[TestCase(50)]
@@ -50,8 +50,8 @@ namespace N2.Extensions.Tests.Search
 		//[TestCase(5000)]
 		public void AsyncIndexer(int actionCount)
 		{
-			var world = CreateOneItem<PersistableItem1>(2, "hello world", root);
-			var universe = CreateOneItem<PersistableItem1>(3, "hello universe", root);
+			var world = CreateOneItem<PersistableItem>(2, "hello world", root);
+			var universe = CreateOneItem<PersistableItem>(3, "hello universe", root);
 
 			var generator = new SCG.General.MarkovNameGenerator(Words.Thousand, 3, 2);
 			var words = Enumerable.Range(0, 1000).Select(i => generator.NextName).ToArray();

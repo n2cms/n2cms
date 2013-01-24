@@ -20,7 +20,7 @@ namespace N2.Tests.Persistence.NH
 		protected SchemaExport schemaCreator;
 		protected IItemNotifier notifier;
 		protected InterceptingProxyFactory proxyFactory;
-		protected Type[] persistedTypes = new[] { typeof(Definitions.PersistableItem1), typeof(Definitions.PersistableItem2), typeof(Definitions.NonVirtualItem) };
+		protected Type[] persistedTypes = new[] { typeof(Definitions.PersistableItem), typeof(Definitions.PersistableItem2), typeof(Definitions.NonVirtualItem) };
 			
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
