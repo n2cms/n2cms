@@ -207,6 +207,8 @@ namespace N2.Persistence.NH
 				return DatabaseFlavour.Oracle;
 			if (provider.StartsWith("System.Data.SqlServerCe"))
 				return DatabaseFlavour.SqlCe;
+			if (css.ConnectionString.StartsWith("mongodb:"))
+				throw new ConfigurationErrorsException("Cannot auto-detect MongoDB. This needs to be configured as flavor=\"MongoDB\" in the n2/database config section");
 
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}

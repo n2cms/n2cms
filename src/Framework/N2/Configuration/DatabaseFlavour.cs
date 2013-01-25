@@ -18,6 +18,7 @@
 		Oracle,
 		Oracle9i,
 		Oracle10g,
+		MongoDB,
 		AutoDetect
 	}
 }

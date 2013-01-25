@@ -5,14 +5,20 @@ using MongoDB.Driver.Linq;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using N2.Engine;
+using N2.Persistence.NH;
 
 namespace N2.Persistence.MongoDB
 {
+	[Service(typeof(IContentItemRepository), Configuration = "mongo")]
+	[Service(typeof(IRepository<ContentItem>), Configuration = "mongo", Replaces = typeof(ContentItemRepository))]
     public class MongoContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
     {
-		public MongoContentItemRepository(Configuration.ConfigurationManagerWrapper config)
-			: base(config)
+		private MongoDatabaseProvider provider;
+		public MongoContentItemRepository(MongoDatabaseProvider provider)
+			: base(provider)
 		{
+			this.provider = provider;
 		}
 
         public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
@@ -25,7 +31,7 @@ namespace N2.Persistence.MongoDB
 
 			return results.InlineResults
 				.Where(doc => !doc["_id"].IsBsonNull)
-				.Select(doc => new DiscriminatorCount { Discriminator = (string)doc["_id"], Count = (int)doc["value"].ToDouble() })
+				.Select(doc => new DiscriminatorCount { Discriminator = ((BsonArray)doc["_id"]).Last().ToString(), Count = (int)doc["value"].ToDouble() })
 				.OrderByDescending(dc => dc.Count)
 				.ToList();
         }
@@ -50,23 +56,18 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
         {
-            throw new NotImplementedException();
+			yield break;
         }
 
         public int RemoveReferencesToRecursive(ContentItem target)
         {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<ContentItem> FindAll()
-        {
-            return GetCollection().AsQueryable().ToList();
+			return 0;
         }
 
         public void DropDatabase()
         {
-			foreach (var cn in Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
-				Database.DropCollection(cn);
+			foreach (var cn in provider.Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
+				provider.Database.DropCollection(cn);
         }
     }
 }

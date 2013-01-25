@@ -12,6 +12,7 @@ namespace N2.Persistence.MongoDB
 	public class ContentCollectionSerializationProvider<T> : BsonBaseSerializer, IBsonArraySerializer
 		where T : class, INameable
 	{
+		//DictionarySerializer<string, T> serializer = new DictionarySerializer<string, T>();
 		EnumerableSerializer<T> serializer = new EnumerableSerializer<T>();
 
 		public Type CollectionType { get; set; }

@@ -44,55 +44,20 @@ using System.Linq;
 
 namespace N2.Persistence.MongoDB
 {
-    [Service(typeof(IRepository<>), Key = "n2.repository.generic")]//, Replaces = typeof(NH.NHRepository<>))]
+    [Service(typeof(IRepository<>),
+		Configuration = "mongo",
+		Replaces = typeof(NH.NHRepository<>))]
     public class MongoDbRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        public readonly MongoDatabase Database;
-
-        static MongoDbRepository()
+		private MongoDatabaseProvider provider;
+        public MongoDbRepository(MongoDatabaseProvider provider)
         {
-            var myConventions = new ConventionProfile();
-            myConventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
-            BsonClassMap.RegisterConventions(myConventions, t => true);
-
-			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider());
-
-			BsonClassMap.RegisterClassMap<AuthorizedRole>();
-			BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
-			{
-				cm.AutoMap();
-				cm.UnmapProperty(cd => cd.EnclosingCollection);
-				cm.UnmapProperty(cd => cd.EnclosingItem);
-			});
-			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
-			{
-				cm.AutoMap();
-				cm.UnmapProperty(cd => cd.EnclosingItem);
-			});
-			BsonClassMap.RegisterClassMap<ContentVersion>();
-            BsonClassMap.RegisterClassMap<ContentItem>(cm =>
-				{
-					cm.AutoMap();
-					cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
-					cm.UnmapProperty(ci => ci.Children);
-					//cm.UnmapProperty(ci => ci.Details);
-					cm.UnmapProperty(ci => ci.DetailCollections);
-					//cm.SetIsRootClass(isRootClass: true);
-				});
-        }
-
-        public MongoDbRepository(Configuration.ConfigurationManagerWrapper config)
-        {
-            //var connectionString = "mongodb://localhost/?safe=true"; //this will eventually come from config
-			var connectionString = config.GetConnectionString();
-			var client = new MongoClient(connectionString);
-			var server = client.GetServer();
-            Database = server.GetDatabase("n2cms");
+			this.provider = provider;
         }
 
         public TEntity Load(object id)
         {
-            throw new NotImplementedException();
+			return Get(id);
         }
 
         public void Save(TEntity entity)
@@ -115,12 +80,12 @@ namespace N2.Persistence.MongoDB
 
         protected MongoCollection<TEntity> GetCollection()
         {
-            return Database.GetCollection<TEntity>(typeof(TEntity).Name);
+            return provider.Database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
         public IEnumerable<TEntity> Find(string propertyName, object value)
         {
-            throw new NotImplementedException();
+			return Find(Parameter.Equal(propertyName, value));
         }
 
         public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
@@ -136,7 +101,7 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<TEntity> Find(IParameter parameters)
         {
-            throw new NotImplementedException();
+			return GetCollection().Find(parameters.CreateQuery());
         }
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
@@ -250,8 +215,14 @@ namespace N2.Persistence.MongoDB
 				var p = (Parameter)parameter;
 				if (p.Name == "ID")
 					p.Name = "_id";
-				if (p.Name == "class")
+				else if (p.Name == "class")
 					p.Name = "_t";
+				else if (p.Name == "Parent")
+				{
+					p.Comparison = Comparison.Equal;
+					p.Name = "AncestralTrail";
+					p.Value = ((ContentItem)p.Value).GetTrail();
+				}
 
 				switch (p.Comparison)
 				{

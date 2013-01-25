@@ -15,11 +15,18 @@ namespace N2.Tests.MongoDB
     {
         MongoContentItemRepository repository;
 
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
+		{
+			repository = new MongoContentItemRepository(
+				new MongoDatabaseProvider(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
+				TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart))));
+		}
+
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-            repository = new MongoContentItemRepository(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"));
 
             repository.DropDatabase();
         }
@@ -98,7 +105,7 @@ namespace N2.Tests.MongoDB
 
             using (repository)
             {
-                ICollection<ContentItem> items = repository.FindAll();
+				var items = repository.Find().ToList();
                 Assert.AreEqual(3, items.Count);
                 repository.Flush();
             }
@@ -161,36 +168,6 @@ namespace N2.Tests.MongoDB
 				item["TheString"].ShouldBe(null);
 			}
 		}
-
-        //[Test]
-        //public void DeleteItemCascadesDetails()
-        //{
-        //    IRepository<ContentDetail> detailRepository = new NHRepository<ContentDetail>(sessionProvider);
-        //    int itemID = 0;
-
-        //    using (repository)
-        //    {
-        //        ContentItem item = CreateOneItem<PersistableItem>(0, "item", null);
-        //        item["TheString"] = "the string";
-        //        repository.Save(item);
-        //        repository.Flush();
-        //        itemID = item.ID;
-        //    }
-        //    using(detailRepository)
-        //    {
-        //        Assert.AreEqual(1, detailRepository.Count());
-        //    }
-        //    using(repository)
-        //    {
-        //        ContentItem item = repository.Get(itemID);
-        //        repository.Delete(item);
-        //        repository.Flush();
-        //    }
-        //    using(detailRepository)
-        //    {
-        //        Assert.AreEqual(0, detailRepository.Count());
-        //    }
-        //}
 
 		[Test]
 		public void ItemClasses_MayHaveNonVirtualProperties()
@@ -493,141 +470,141 @@ namespace N2.Tests.MongoDB
 			discriminators.Count().ShouldBe(2);
 		}
 
+		[Test]
+		public void Find_TypeAndParent_ShouldOnlyInclude_ItemWithSpecified_TypeAndParent()
+		{
+			ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+			ContentItem child2 = CreateOneItem<PersistablePart>(0, "part2", root);
+
+			var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
+
+			results.Single().ShouldBe(child1);
+		}
+
 		//[Test]
-		//public void Find_TypeAndParent_ShouldOnlyInclude_ItemWithSpecified_TypeAndParent()
+		//public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget()
 		//{
 		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-		//	ContentItem child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-		//	ContentItem child2 = CreateOneItem<PersistablePart>(0, "part2", root);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
 
-		//	var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
+		//	child1["Link"] = child2;
+		//	child2["Link"] = child1;
+
+		//	repository.Save(root);
+		//	repository.Flush();
+
+		//	var results = repository.FindReferencing(child2);
 
 		//	results.Single().ShouldBe(child1);
 		//}
 
-        //[Test]
-        //public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//[Test]
+		//public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget_InDetailCollection()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
 
-        //    child1["Link"] = child2;
-        //    child2["Link"] = child1;
+		//	child1.GetDetailCollection("Links", true).Add(child2);
+		//	child2.GetDetailCollection("Links", true).Add(child1);
 
-        //    repository.Save(root);
-        //    repository.Flush();
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    var results = repository.FindReferencing(child2);
+		//	var results = repository.FindReferencing(child2);
 
-        //    results.Single().ShouldBe(child1);
-        //}
+		//	results.Single().ShouldBe(child1);
+		//}
 
-        //[Test]
-        //public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget_InDetailCollection()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//[Test]
+		//public void RemoveReferencesTo_ShouldRemove_LinkFromOtherItem()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//	child1["Link"] = child2;
+		//	child2["Link"] = child1;
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    child1.GetDetailCollection("Links", true).Add(child2);
-        //    child2.GetDetailCollection("Links", true).Add(child1);
+		//	repository.RemoveReferencesToRecursive(child2);
 
-        //    repository.Save(root);
-        //    repository.Flush();
+		//	child1["Link"].ShouldBe(null);
+		//}
 
-        //    var results = repository.FindReferencing(child2);
+		//[Test]
+		//public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromOtherItem()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//	child1["Link"] = grandchild1;
+		//	grandchild1["Link"] = grandchild1;
+		//	child2["Link"] = grandchild1;
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    results.Single().ShouldBe(child1);
-        //}
+		//	repository.RemoveReferencesToRecursive(child1);
 
-        //[Test]
-        //public void RemoveReferencesTo_ShouldRemove_LinkFromOtherItem()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
-        //    child1["Link"] = child2;
-        //    child2["Link"] = child1;
-        //    repository.Save(root);
-        //    repository.Flush();
+		//	child2["Link"].ShouldBe(null);
+		//}
 
-        //    repository.RemoveReferencesToRecursive(child2);
+		//[Test]
+		//public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromItself()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//	child1["Link"] = grandchild1;
+		//	grandchild1["Link"] = grandchild1;
+		//	child2["Link"] = grandchild1;
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    child1["Link"].ShouldBe(null);
-        //}
+		//	repository.RemoveReferencesToRecursive(child1);
 
-        //[Test]
-        //public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromOtherItem()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
-        //    child1["Link"] = grandchild1;
-        //    grandchild1["Link"] = grandchild1;
-        //    child2["Link"] = grandchild1;
-        //    repository.Save(root);
-        //    repository.Flush();
+		//	grandchild1["Link"].ShouldBe(null);
+		//}
 
-        //    repository.RemoveReferencesToRecursive(child1);
+		//[Test]
+		//public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromParent()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//	child1["Link"] = grandchild1;
+		//	grandchild1["Link"] = grandchild1;
+		//	child2["Link"] = grandchild1;
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    child2["Link"].ShouldBe(null);
-        //}
+		//	repository.RemoveReferencesToRecursive(child1);
 
-        //[Test]
-        //public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromItself()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
-        //    child1["Link"] = grandchild1;
-        //    grandchild1["Link"] = grandchild1;
-        //    child2["Link"] = grandchild1;
-        //    repository.Save(root);
-        //    repository.Flush();
+		//	child1["Link"].ShouldBe(null);
+		//}
 
-        //    repository.RemoveReferencesToRecursive(child1);
+		//[Test]
+		//public void RemoveReferencesTo_ShouldShouldReturn_NumberOfRemovedReferences()
+		//{
+		//	ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+		//	var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+		//	var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
+		//	var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
+		//	child1["Link"] = grandchild1;
+		//	grandchild1["Link"] = grandchild1;
+		//	child2["Link"] = grandchild1;
+		//	repository.Save(root);
+		//	repository.Flush();
 
-        //    grandchild1["Link"].ShouldBe(null);
-        //}
+		//	int count = repository.RemoveReferencesToRecursive(child1);
 
-        //[Test]
-        //public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromParent()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
-        //    child1["Link"] = grandchild1;
-        //    grandchild1["Link"] = grandchild1;
-        //    child2["Link"] = grandchild1;
-        //    repository.Save(root);
-        //    repository.Flush();
-
-        //    repository.RemoveReferencesToRecursive(child1);
-
-        //    child1["Link"].ShouldBe(null);
-        //}
-
-        //[Test]
-        //public void RemoveReferencesTo_ShouldShouldReturn_NumberOfRemovedReferences()
-        //{
-        //    ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
-        //    var child1 = CreateOneItem<PersistableItem>(0, "page1", root);
-        //    var grandchild1 = CreateOneItem<PersistableItem>(0, "page1", child1);
-        //    var child2 = CreateOneItem<PersistableItem>(0, "page2", root);
-        //    child1["Link"] = grandchild1;
-        //    grandchild1["Link"] = grandchild1;
-        //    child2["Link"] = grandchild1;
-        //    repository.Save(root);
-        //    repository.Flush();
-
-        //    int count = repository.RemoveReferencesToRecursive(child1);
-
-        //    count.ShouldBe(3);
-        //}
+		//	count.ShouldBe(3);
+		//}
 
         private int SaveAnItem(string name, ContentItem parent)
         {
