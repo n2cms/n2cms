@@ -26,9 +26,9 @@ namespace N2.Persistence
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
-		public T CreateInstance<T>(ContentItem parentItem) where T : ContentItem
+		public T CreateInstance<T>(ContentItem parentItem, string templateKey = null, bool asProxy = false) where T : ContentItem
 		{
-			return (T)CreateInstance(typeof(T), parentItem);
+			return (T)CreateInstance(typeof(T), parentItem, templateKey, asProxy);
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>

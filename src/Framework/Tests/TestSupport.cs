@@ -238,9 +238,9 @@ namespace N2.Tests
 				proxyFactory);
 		}
 
-		public static ContentActivator SetupContentActivator()
+		public static ContentActivator SetupContentActivator(IProxyFactory proxies = null)
 		{
-			return new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), new N2.Persistence.Proxying.EmptyProxyFactory());
+			return new ContentActivator(new N2.Edit.Workflow.StateChanger(), new ItemNotifier(), proxies ?? new N2.Persistence.Proxying.EmptyProxyFactory());
 		}
 
 		public static Host SetupHost()

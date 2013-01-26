@@ -16,9 +16,9 @@ namespace N2.Persistence.MongoDB
 	[Service(Configuration = "mongo")]
 	public class MongoDatabaseProvider
 	{
-		public MongoDatabaseProvider(Configuration.ConfigurationManagerWrapper config, IDefinitionManager definitions)
+		public MongoDatabaseProvider(Configuration.ConfigurationManagerWrapper config, IDefinitionManager definitions, ContentActivator activator)
 		{
-			Register(definitions);
+			Register(definitions, activator);
 			Connect(config);
 		}
 
@@ -31,7 +31,7 @@ namespace N2.Persistence.MongoDB
 		}
 
 		static bool isRegistered = false;
-		private static void Register(IDefinitionManager definitions)
+		private void Register(IDefinitionManager definitions, ContentActivator activator)
 		{
 			if (isRegistered)
 				return;
@@ -41,7 +41,7 @@ namespace N2.Persistence.MongoDB
 			conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
 			BsonClassMap.RegisterConventions(conventions, t => true);
 
-			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider());
+			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this));
 
 			BsonClassMap.RegisterClassMap<AuthorizedRole>();
 			BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
@@ -72,10 +72,15 @@ namespace N2.Persistence.MongoDB
 			foreach (var definition in definitions.GetDefinitions())
 			{
 				var factory = (ContentClassMapFactory)Activator.CreateInstance(typeof(ContentClassMapFactory<>).MakeGenericType(definition.ItemType));
-				BsonClassMap.RegisterClassMap(factory.Create(definition, allDefinitions));
+				BsonClassMap.RegisterClassMap(factory.Create(definition, allDefinitions, activator, this));
 			}
 		}
 
 		public MongoDatabase Database { get; set; }
+
+		public MongoCollection<T> GetCollection<T>(string collectionName = null)
+		{
+			return Database.GetCollection<T>(typeof(T).Name);
+		}
 	}
 }

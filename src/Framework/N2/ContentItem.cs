@@ -624,7 +624,8 @@ namespace N2
 
 			url = null;
 			Parent = newParent;
-			
+			AncestralTrail = newParent.GetTrail();
+
 			if (newParent != null && !newParent.Children.Contains(this))
 			{
 				newParent.Children.Add(this);

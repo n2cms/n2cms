@@ -18,9 +18,14 @@ namespace N2.Tests.MongoDB
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
+			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart));
+			var proxies = new N2.Persistence.Proxying.InterceptingProxyFactory();
+			proxies.Initialize(definitions.GetDefinitions());
+
 			repository = new MongoContentItemRepository(
 				new MongoDatabaseProvider(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
-				TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart))));
+				definitions,
+				TestSupport.SetupContentActivator(proxies: proxies)));
 		}
 
         [SetUp]
@@ -480,6 +485,38 @@ namespace N2.Tests.MongoDB
 			var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
 
 			results.Single().ShouldBe(child1);
+		}
+
+		[Test]
+		public void RetrievedItems_AreProxied()
+		{
+			ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+
+			var results = repository.Get(root.ID);
+
+			results.ShouldBeTypeOf<N2.Persistence.Proxying.IInterceptedType>();
+		}
+
+		[Test]
+		public void Children_AreRetrievable()
+		{
+			ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+
+			var results = repository.Get(root.ID);
+
+			results.Children.Single().ID.ShouldBe(child1.ID);
+		}
+
+		[Test]
+		public void Parent_AreRetrievable()
+		{
+			ContentItem root = CreateOneItem<PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<PersistableItem>(0, "page1", root);
+
+			var results = repository.Get(child1.ID);
+
+			results.Parent.ID.ShouldBe(root.ID);
 		}
 
 		//[Test]
