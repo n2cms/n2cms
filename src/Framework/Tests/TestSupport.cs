@@ -94,16 +94,23 @@ namespace N2.Tests
 
 		public static void Setup(out IDefinitionProvider[] definitionProviders, out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes.Select(t => t.Assembly).FirstOrDefault() ?? Assembly.GetExecutingAssembly(), itemTypes);
-
 			var map = new DefinitionMap();
-			var definitionBuilder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
+			definitionProviders = SetupDefinitionProviders(map, itemTypes);
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
-			definitionProviders = new IDefinitionProvider[] { new DefinitionProvider(definitionBuilder) };
 			definitions = new DefinitionManager(definitionProviders, new[] { new TemplateProvider(activator, map) }, activator, new StateChanger(), new DefinitionMap());
 			((DefinitionManager)definitions).Start();
+		}
+
+		public static IDefinitionProvider[] SetupDefinitionProviders(DefinitionMap map, params Type[] itemTypes)
+		{
+			IDefinitionProvider[] definitionProviders;
+			ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes.Select(t => t.Assembly).FirstOrDefault() ?? Assembly.GetExecutingAssembly(), itemTypes);
+
+			var definitionBuilder = new DefinitionBuilder(map, typeFinder, new TransformerBase<IUniquelyNamed>[0], SetupEngineSection());
+			definitionProviders = new IDefinitionProvider[] { new DefinitionProvider(definitionBuilder) };
+			return definitionProviders;
 		}
 
 		public static T Stub<T>()

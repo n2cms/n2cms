@@ -30,7 +30,7 @@ namespace N2.Edit.Installation
 		public InstallationChecker(IWebContext webContext, EventBroker broker, ConfigurationManagerWrapper configuration, InstallationManager installer)
 		{
 			this.installer = installer;
-			if (configuration.Sections.Management.Installer.CheckInstallationStatus)
+			if (configuration.Sections.Management.Installer.CheckInstallationStatus && !configuration.Sections.Database.Flavour.IsFlagSet(DatabaseFlavour.NoSql))
 			{
 				welcomeUrl = configuration.Sections.Management.Installer.WelcomeUrl;
 				managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;

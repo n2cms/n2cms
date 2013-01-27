@@ -7,6 +7,7 @@ using N2.Persistence.MongoDB;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using Shouldly;
+using N2.Definitions.Static;
 
 namespace N2.Tests.MongoDB
 {
@@ -18,13 +19,13 @@ namespace N2.Tests.MongoDB
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart));
+			var definitionProviders = TestSupport.SetupDefinitionProviders(new DefinitionMap(), typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart));
 			var proxies = new N2.Persistence.Proxying.InterceptingProxyFactory();
-			proxies.Initialize(definitions.GetDefinitions());
+			proxies.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()));
 
 			repository = new MongoContentItemRepository(
 				new MongoDatabaseProvider(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
-				definitions,
+				definitionProviders,
 				TestSupport.SetupContentActivator(proxies: proxies)));
 		}
 

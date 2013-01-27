@@ -16,9 +16,9 @@ namespace N2.Persistence.MongoDB
 	[Service(Configuration = "mongo")]
 	public class MongoDatabaseProvider
 	{
-		public MongoDatabaseProvider(Configuration.ConfigurationManagerWrapper config, IDefinitionManager definitions, ContentActivator activator)
+		public MongoDatabaseProvider(Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
-			Register(definitions, activator);
+			Register(definitionProviders, activator);
 			Connect(config);
 		}
 
@@ -31,7 +31,7 @@ namespace N2.Persistence.MongoDB
 		}
 
 		static bool isRegistered = false;
-		private void Register(IDefinitionManager definitions, ContentActivator activator)
+		private void Register(IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
 			if (isRegistered)
 				return;
@@ -49,6 +49,8 @@ namespace N2.Persistence.MongoDB
 				cm.AutoMap();
 				cm.UnmapProperty(cd => cd.EnclosingCollection);
 				cm.UnmapProperty(cd => cd.EnclosingItem);
+				cm.UnmapProperty(cd => cd.Value);
+				cm.UnmapProperty(cd => cd.LinkedItem);
 			});
 			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
 			{
@@ -67,12 +69,12 @@ namespace N2.Persistence.MongoDB
 				cm.UnmapProperty(ci => ci.VersionOf);
 				cm.SetIsRootClass(isRootClass: true);
 			});
-			
-			var allDefinitions = definitions.GetDefinitions().ToList();
-			foreach (var definition in definitions.GetDefinitions())
+
+			var definitions = definitionProviders.SelectMany(dp => dp.GetDefinitions()).ToList();
+			foreach (var definition in definitions)
 			{
 				var factory = (ContentClassMapFactory)Activator.CreateInstance(typeof(ContentClassMapFactory<>).MakeGenericType(definition.ItemType));
-				BsonClassMap.RegisterClassMap(factory.Create(definition, allDefinitions, activator, this));
+				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions, activator, this));
 			}
 		}
 

@@ -27,6 +27,14 @@ namespace N2.Persistence.MongoDB
 
 					cm.SetCreator(() => CreateItem<T>(activator, database));
 
+					foreach (var p in definition.Properties.Values
+						.Where(p => p.Info != null)
+						.Where(p => typeof(ContentItem).IsAssignableFrom(p.Info.PropertyType))
+						.Where(p => p.Info.DeclaringType == definition.ItemType))
+					{
+						cm.UnmapProperty(p.Info.Name);
+					}
+
 					//cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
 
 					//cm.UnmapProperty("Children");

@@ -46,6 +46,7 @@ namespace N2.Edit.Installation
 		IWebContext webContext;
 		DefinitionMap map;
 		ConnectionMonitor connectionContext;
+		DatabaseSection config;
 		bool isDatabaseFileSystemEnbled = false;
 
 		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config)
@@ -59,6 +60,7 @@ namespace N2.Edit.Installation
 			this.configurationBuilder = configurationBuilder;
 			this.webContext = webContext;
 			this.connectionContext = connectionContext;
+			this.config = config;
 			this.isDatabaseFileSystemEnbled = config.Files.StorageLocation == FileStoreLocation.Database;
 		}
 
@@ -144,13 +146,22 @@ namespace N2.Edit.Installation
 
 			DatabaseStatus status = new DatabaseStatus();
 
-			if (UpdateConnection(status))
-				if (UpdateVersion(status))
-					if (UpdateSchema(status))
-						if (UpdateCount(status))
-							if (UpdateItems(status))
-								UpdateAppPath(status);
+			if (IsSql(status))
+				if (UpdateConnection(status))
+					if (UpdateVersion(status))
+						if (UpdateSchema(status))
+							if (UpdateCount(status))
+								if (UpdateItems(status))
+									UpdateAppPath(status);
 			return status;
+		}
+
+		private bool IsSql(DatabaseStatus status)
+		{
+			if (!config.Flavour.IsFlagSet(DatabaseFlavour.NoSql))
+				return true;
+
+			return false;
 		}
 
 		const string installationAppPath = "Installation.AppPath";

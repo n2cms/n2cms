@@ -2,6 +2,7 @@
 {
 	public enum DatabaseFlavour
 	{
+		AutoDetect = 0,
 		SqlServer,
 		SqlServer2008,
 		SqlServer2005,
@@ -18,7 +19,7 @@
 		Oracle,
 		Oracle9i,
 		Oracle10g,
-		MongoDB,
-		AutoDetect
+		NoSql = 1024,
+		MongoDB = NoSql + 1,
 	}
 }

@@ -12,13 +12,13 @@ namespace N2.Persistence
 	{
 		#region Private Fields
 		readonly IDefinitionManager definitions;
-		readonly IItemFinder finder;
+		readonly IContentItemRepository repository;
 		#endregion
 
 		#region Constructors
-		public DescendantItemFinder(IItemFinder finder, IDefinitionManager definitions)
+		public DescendantItemFinder(IContentItemRepository repository, IDefinitionManager definitions)
 		{
-			this.finder = finder;
+			this.repository = repository;
 			this.definitions = definitions;
 		}
 		#endregion
@@ -32,10 +32,7 @@ namespace N2.Persistence
 			{
 				if (typeof(T).IsAssignableFrom(definition.ItemType))
 				{
-					foreach(var item in finder
-						.Where.Type.Eq(definition.ItemType)
-						.And.AncestralTrail.Like(Utility.GetTrail(root) + "%")
-						.Select())
+					foreach (var item in repository.FindDescendants(root, definition.Discriminator))
 					{
 						if (N2.Find.EnumerateParents(item).Any(i => i is ITrashCan))
 							continue;
