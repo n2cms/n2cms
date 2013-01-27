@@ -59,7 +59,7 @@ namespace N2.Edit.Tests.Trash
 			var persister = TestSupport.SetupFakePersister();
 			persister.Save(root);
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister.Repository, null, host, activator), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister.Repository, host, activator, new Definitions.Static.DefinitionMap()), new StateChanger(), new ThreadContext()) { UseNavigationMode = true };
 		}
 
     }

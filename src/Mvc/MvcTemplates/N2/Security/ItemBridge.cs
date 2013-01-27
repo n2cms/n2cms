@@ -8,6 +8,7 @@ using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Security.Items;
 using N2.Web;
+using System.Linq;
 
 namespace N2.Security
 {
@@ -19,7 +20,6 @@ namespace N2.Security
 	public class ItemBridge
 	{
 		readonly private ContentActivator activator;
-		readonly private IItemFinder finder;
 		readonly private IPersister persister;
 		readonly private ISecurityManager security;
 	    private readonly IHost host;
@@ -33,11 +33,10 @@ namespace N2.Security
 		public event EventHandler<ItemEventArgs> UserDeleted;
 		public event EventHandler<ItemEventArgs> UserSaved;
 
-		public ItemBridge(ContentActivator activator, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
+		public ItemBridge(ContentActivator activator, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
 			this.security = security;
 			this.activator = activator;
-			this.finder = finder;
 			this.persister = persister;
 			this.host = host;
 			this.editorUsernames = ToArray(config.Editors.Users);
@@ -49,9 +48,9 @@ namespace N2.Security
 			this.userType = configuredUserType;
 		}
 
-		public IItemFinder Finder
+		public IContentItemRepository Repository
 		{
-			get { return finder; }
+			get { return persister.Repository; }
 		}
 		
 		protected int UserContainerParentID
@@ -112,20 +111,16 @@ namespace N2.Security
 			if (users == null)
 				return new List<Items.User>();
 
-			return finder.Where.Parent.Eq(users)
-				.And.Type.Eq(userType)
-				.And.Name.Like(username)
-				.FirstResult(firstResult)
-				.MaxResults(maxResults)
-				.Select<Items.User>();
+			return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEquals(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
+				.OfType<User>().ToList();
 		}
 
 		public virtual Items.UserList GetUserContainer(bool create)
 		{
-			var q = Finder.Where.Name.Eq(UserContainerName).And.ParentID.Eq(UserContainerParentID).MaxResults(1);
-			foreach (var container in q.Select<UserList>())
+			var parents = Repository.Find(Parameter.Equal("Parent.ID", UserContainerParentID) & Parameter.Equal("Name", UserContainerName));
+			foreach (var container in parents)
 			{
-				return container;
+				return (Items.UserList)container;
 			}
 			
 			if (!create)

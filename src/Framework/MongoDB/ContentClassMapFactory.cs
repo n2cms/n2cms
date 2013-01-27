@@ -20,6 +20,9 @@ namespace N2.Persistence.MongoDB
 				{
 					cm.SetDiscriminator(definition.Discriminator);
 
+					BsonSerializer.RegisterDiscriminatorConvention(definition.ItemType, new IgnoreProxyTypeDiscriminatorConvention());
+
+
 					foreach (var type in allDefinitions.Select(d => d.ItemType).Where(t => definition.ItemType.IsAssignableFrom(t)))
 						cm.AddKnownType(type);
 
@@ -34,12 +37,6 @@ namespace N2.Persistence.MongoDB
 					{
 						cm.UnmapProperty(p.Info.Name);
 					}
-
-					//cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
-
-					//cm.UnmapProperty("Children");
-					//cm.UnmapProperty("DetailCollections");
-					//cm.UnmapProperty("VersionOf");
 				});
 		}
 

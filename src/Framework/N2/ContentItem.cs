@@ -85,6 +85,7 @@ namespace N2
 		private string templateKey;
 		private int? translationKey;
 		private ContentItem parent = null;
+		private ContentRelation parentRelation = null;
         private DateTime created;
         private DateTime updated;
         private DateTime? published = DateTime.Now;
@@ -132,8 +133,16 @@ namespace N2
 		[DisplayableAnchor, NonInterceptable]
 		public virtual ContentItem Parent
 		{
-			get { return parent; }
+			get { return parent ?? (parent = ParentRelation); }
 			set { parent = value; }
+		}
+
+		/// <summary>Gets or sets this item's parent. This can be null for root items and previous versions but should be another page in other situations.</summary>
+		[NonInterceptable]
+		public virtual ContentRelation ParentRelation
+		{
+			get { return parentRelation ?? (parentRelation = new ContentRelation()); }
+			set { parentRelation = value; }
 		}
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>

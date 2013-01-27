@@ -12,7 +12,6 @@ namespace N2.Tests.Persistence.NH
 	public class PersisterIntegrityTests : PersisterTestsBase
 	{
 		IUrlParser parser;
-		new FakeItemFinder finder;
 
 		[SetUp]
 		public override void SetUp()
@@ -22,9 +21,7 @@ namespace N2.Tests.Persistence.NH
 			parser = mocks.StrictMock<IUrlParser>();
 			mocks.ReplayAll();
 
-			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
-
-			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
+			IntegrityManager integrity = new IntegrityManager(definitions, persister.Repository, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, activator);
 			enforcer.Start();
 
@@ -42,16 +39,12 @@ namespace N2.Tests.Persistence.NH
 			using (persister)
 			{
 				persister.Save(root);
-				finder.Selector = () => root.Children.Where(c => c.Name.Equals("item1", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item1);
-				finder.Selector = () => root.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item2);
-				finder.Selector = () => item1.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item1_2);
 
 				ExceptionAssert.Throws<NameOccupiedException>(delegate
 				                                              	{
-																	finder.Selector = () => item1.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 																	persister.Copy(item2, item1);
 				                                              	});
 				Assert.AreEqual(1, item1.Children.Count);
@@ -81,7 +74,6 @@ namespace N2.Tests.Persistence.NH
 		public void CannotCopy_ItemWithName()
 		{
 			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
-			finder.Selector = () => root.Children.Where(c => c.Name.Equals("item1", StringComparison.InvariantCultureIgnoreCase));
 			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
 
 			using (persister)

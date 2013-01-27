@@ -68,7 +68,7 @@ namespace N2.Persistence.MongoDB
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+			SaveOrUpdate(entity);
         }
 
         public TEntity Get(object id)
@@ -121,13 +121,19 @@ namespace N2.Persistence.MongoDB
             //todo: sort this! it sucks
             var idValue = (int)entity.GetType().GetProperty("ID").GetValue(entity, null);
 
-            var update = _MongoDB.Driver.Builders.Update.Replace(entity);
-
-            var result = GetCollection().Update(
-                    Query.EQ("_id", idValue),
-                    update,
-                    UpdateFlags.Upsert,
-                    SafeMode.True);
+			if (idValue != 0)
+			{
+				var update = _MongoDB.Driver.Builders.Update.Replace(entity);
+				var result = GetCollection().Update(
+					Query.EQ("_id", idValue),
+					update,
+					UpdateFlags.Upsert,
+					SafeMode.True);
+			}
+			else
+			{
+				Save(entity);
+			}
         }
 
         public bool Exists()
@@ -237,7 +243,7 @@ namespace N2.Persistence.MongoDB
 					case Comparison.LessThan:
 						return Query.LT(p.Name, BsonValue.Create(p.Value));
 					case Comparison.Like:
-						return Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*"));
+						return Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*").Replace("/", "\\/"));
 					case Comparison.NotEqual:
 						return Query.Not(Query.EQ(p.Name, BsonValue.Create(p.Value)));
 					case Comparison.NotLike:

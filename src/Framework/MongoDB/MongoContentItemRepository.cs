@@ -15,6 +15,12 @@ namespace N2.Persistence.MongoDB
     public class MongoContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
     {
 		private MongoDatabaseProvider provider;
+
+		public MongoDatabaseProvider Provider
+		{
+			get { return provider; }
+		}
+
 		public MongoContentItemRepository(MongoDatabaseProvider provider)
 			: base(provider)
 		{

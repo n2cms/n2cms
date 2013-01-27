@@ -25,7 +25,9 @@ namespace N2.Persistence.MongoDB
 		private void Connect(Configuration.ConfigurationManagerWrapper config)
 		{
 			var connectionString = config.GetConnectionString();
-			var client = new MongoClient(connectionString);
+			var settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
+			settings.ConnectTimeout = TimeSpan.FromSeconds(10);
+			var client = new MongoClient(settings);
 			var server = client.GetServer();
 			Database = server.GetDatabase(config.Sections.Database.TablePrefix + "cms");
 		}
@@ -39,14 +41,21 @@ namespace N2.Persistence.MongoDB
 
 			var conventions = new ConventionProfile();
 			conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
+			conventions.SetMemberFinderConvention(new IgnoreUnderscoreMemberFinderConvention());
 			BsonClassMap.RegisterConventions(conventions, t => true);
 
 			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this));
 
-			BsonClassMap.RegisterClassMap<AuthorizedRole>();
+			BsonClassMap.RegisterClassMap<AuthorizedRole>(cm =>
+			{
+				cm.AutoMap();
+				cm.UnmapProperty(cd => cd.ID);
+				cm.UnmapField(cd => cd.EnclosingItem);
+			});
 			BsonClassMap.RegisterClassMap<ContentDetail>(cm =>
 			{
 				cm.AutoMap();
+				cm.UnmapProperty(cd => cd.ID);
 				cm.UnmapProperty(cd => cd.EnclosingCollection);
 				cm.UnmapProperty(cd => cd.EnclosingItem);
 				cm.UnmapProperty(cd => cd.Value);
@@ -55,6 +64,7 @@ namespace N2.Persistence.MongoDB
 			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
 			{
 				cm.AutoMap();
+				cm.UnmapProperty(cd => cd.ID);
 				cm.UnmapProperty(cd => cd.EnclosingItem);
 			});
 			BsonClassMap.RegisterClassMap<ContentVersion>();
@@ -63,7 +73,6 @@ namespace N2.Persistence.MongoDB
 				cm.AutoMap();
 				cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
 				cm.UnmapProperty(ci => ci.Children);
-				//cm.UnmapProperty(ci => ci.Details);
 				cm.UnmapProperty(ci => ci.DetailCollections);
 				cm.UnmapProperty(ci => ci.Parent);
 				cm.UnmapProperty(ci => ci.VersionOf);

@@ -112,6 +112,22 @@ namespace N2.Persistence
 			return new Parameter(propertyName, null, Comparison.NotNull);
 		}
 
+		public static Parameter TypeEquals(string discriminator)
+		{
+			return Parameter.Equal("class", discriminator);
+		}
+
+		public static Parameter Below(ContentItem ancestor)
+		{
+			return Parameter.Like("AncestralTrail", ancestor.GetTrail() + "%");
+		}
+
+		public static ParameterCollection BelowOrSelf(ContentItem ancestorOrSelf)
+		{
+			return Parameter.Equal("ID", ancestorOrSelf.ID)
+				| Parameter.Like("AncestralTrail", ancestorOrSelf.GetTrail() + "%");
+		}
+
 		public bool IsMatch(object item)
 		{
             object itemValue = null;
@@ -251,5 +267,6 @@ namespace N2.Persistence
 				+ (Value != null ? Value.GetHashCode() : GetHashCode());
 		}
 		#endregion
+
 	}
 }

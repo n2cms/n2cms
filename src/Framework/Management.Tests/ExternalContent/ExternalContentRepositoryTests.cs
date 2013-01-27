@@ -36,7 +36,7 @@ namespace N2.Management.Tests.ExternalContent
 			new BehaviorInvoker(persister, new N2.Definitions.Static.DefinitionMap()).Start();
 
 			//return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(persister, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
-			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(itemRepository, MockRepository.GenerateStub<IItemFinder>(), new Host(new ThreadContext(), 1, 2), activator) { Navigate = true }, persister, activator, new Configuration.EditSection());
+			return new Externals.ExternalContentRepository(new Edit.ContainerRepository<Externals.ExternalItem>(itemRepository, new Host(new ThreadContext(), 1, 2), activator, new Definitions.Static.DefinitionMap()) { Navigate = true }, persister, activator, new Configuration.EditSection());
 		}
 
 		[Test]

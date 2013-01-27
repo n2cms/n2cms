@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web.Security;
 using System.Linq;
+using N2.Persistence;
+using N2.Security.Items;
 
 namespace N2.Security
 {
@@ -290,11 +292,9 @@ namespace N2.Security
 				totalRecords = 0;
 				return muc;
 			}
-			IList<ContentItem> users = Bridge.Finder
-			  .Where.Detail("Email").Eq(emailToMatch)
-			  .And.Type.Eq(typeof(N2.Security.Items.User))
-			  .And.Parent.Eq(userContainer)
-			  .Select();
+			IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Email", emailToMatch) 
+				& Parameter.TypeEquals(typeof(N2.Security.Items.User).Name)
+				& Parameter.Equal("Parent", userContainer)).ToList();
 			totalRecords = users.Count;
 			N2.Collections.CountFilter.Filter(users, pageIndex * pageSize, pageSize);
 
@@ -333,7 +333,8 @@ namespace N2.Security
 				return 0;
 
             int userIsOnlineTimeWindow = (Membership.UserIsOnlineTimeWindow > 0 ? Membership.UserIsOnlineTimeWindow : 20);
-            return Bridge.Finder.Where.Parent.Eq(users).And.Detail("LastActivityDate").Ge(DateTime.Now.AddMinutes(-userIsOnlineTimeWindow)).Count();
+            return (int)Bridge.Repository.Count(Parameter.Equal("Parent", users)
+				& Parameter.GreaterOrEqual("LastActivityDate", DateTime.Now.AddMinutes(-userIsOnlineTimeWindow)).Detail());
 		}
 
 		public override string GetPassword(string username, string answer)
@@ -385,12 +386,9 @@ namespace N2.Security
 				_userId = ((int)_bytes[0]) | ((int)_bytes[1] << 8) | ((int)_bytes[2] << 16) | ((int)_bytes[3] << 24);
 			}
 
-			var users = Bridge.Finder
-			  .Where.ID.Eq(_userId)
-			  .And.Type.Eq(typeof(N2.Security.Items.User))
-			  .And.Parent.Eq(userContainer)
-              .MaxResults(1)
-              .Select<Items.User>();
+			var users = Bridge.Repository.Find(Parameter.Equal("ID", _userId)
+				& Parameter.TypeEquals(typeof(User).Name)
+				& Parameter.Equal("Parent", userContainer)).OfType<User>();
 
             return users.Select(u => u.GetMembershipUser(Name)).FirstOrDefault();
 		}
@@ -400,12 +398,8 @@ namespace N2.Security
 			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			var userNames = Bridge.Finder
-			  .Where.Detail("Email").Eq(email)
-			  .And.Type.Eq(typeof(N2.Security.Items.User))
-			  .And.Parent.Eq(userContainer)
-              .MaxResults(1)
-              .Select("Name");
+			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email) & Parameter.TypeEquals(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
+				"Name").Select(d => d["Name"]);
             return userNames.OfType<string>().FirstOrDefault();
 		}
 

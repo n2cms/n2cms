@@ -16,7 +16,6 @@ namespace N2.Tests.Persistence.NH
 		protected IDefinitionManager definitions;
 		protected ContentPersister persister;
 		protected FakeSessionProvider sessionProvider;
-		protected ItemFinder finder;
 		protected SchemaExport schemaCreator;
 		protected IItemNotifier notifier;
 		protected InterceptingProxyFactory proxyFactory;
@@ -25,6 +24,7 @@ namespace N2.Tests.Persistence.NH
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
+			ItemFinder finder;
 			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
 		}
 

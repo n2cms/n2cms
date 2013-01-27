@@ -31,16 +31,23 @@ namespace N2.Persistence.MongoDB
 		private object Inject(object value)
 		{
 			var item = (ContentItem)value;
-			var collection = database.GetCollection<ContentItem>();
-			var ids = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => BsonInt32.Create(int.Parse(id)));
-			var parents = collection.Find(Query.In("_id", ids));
-			ContentItem last = item;
-			foreach (var parent in parents.OrderByDescending(p => p.AncestralTrail.Length))
+			var parentId = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).LastOrDefault();
+			item.ParentRelation = new ContentRelation
 			{
-				last.Parent = parent;
-				last = parent;
-			}
-			item.Children = new ItemList(() => collection.Find(Query.EQ("AncestralTrail", item.GetTrail())));
+				ID = string.IsNullOrEmpty(parentId) ? null : (int?)int.Parse(parentId),
+				ValueAccessor = (relationId) =>
+				{
+					var ids = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => BsonInt32.Create(int.Parse(id)));
+					var parents = database.GetCollection<ContentItem>().Find(Query.In("_id", ids)).OrderByDescending(p => p.AncestralTrail.Length).ToList();
+					for (int i = 1; i < parents.Count; i++)
+					{
+						parents[i - 1].Parent = parents[i];
+					}
+					return parents[0];
+				}
+			};
+
+			item.Children = new ItemList(() => database.GetCollection<ContentItem>().Find(Query.EQ("AncestralTrail", item.GetTrail())));
 			return item;
 		}
 

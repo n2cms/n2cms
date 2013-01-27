@@ -3,6 +3,9 @@ using N2.Details;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using NUnit.Framework;
+using N2.Persistence.Finder;
+using System.Linq;
+using N2.Persistence.NH.Finder;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -53,6 +56,7 @@ namespace N2.Tests.Persistence.NH
         public override void TestFixtureSetup()
         {
 			InterceptingProxyFactory proxyFactory;
+			ItemFinder finder;
 			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
         }
 
@@ -260,8 +264,8 @@ namespace N2.Tests.Persistence.NH
 		{
 			var item1 = CreateOneItem<PropertyItemInheritor1>(0, "item1", null);
 			persister.Save(item1);
-			var items = finder.All.Select();
-
+			var items = persister.Repository.Find().ToList();
+			
 			Assert.That(items.Count, Is.EqualTo(1));
 		}
 

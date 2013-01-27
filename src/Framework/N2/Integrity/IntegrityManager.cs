@@ -4,6 +4,7 @@ using N2.Definitions;
 using N2.Engine;
 using N2.Persistence.Finder;
 using N2.Edit.Versioning;
+using N2.Persistence;
 
 namespace N2.Integrity
 {
@@ -18,7 +19,7 @@ namespace N2.Integrity
     public class IntegrityManager : IIntegrityManager
     {
 		readonly Web.IUrlParser urlParser;
-		readonly IItemFinder finder;
+		readonly IContentItemRepository repository;
 		readonly Definitions.IDefinitionManager definitions;
 
 		#region Constructor
@@ -26,10 +27,10 @@ namespace N2.Integrity
 		/// <param name="definitions">The definition manager.</param>
 		/// <param name="finder"></param>
 		/// <param name="urlParser"></param>
-		public IntegrityManager(Definitions.IDefinitionManager definitions, IItemFinder finder, Web.IUrlParser urlParser)
+		public IntegrityManager(Definitions.IDefinitionManager definitions, IContentItemRepository repository, Web.IUrlParser urlParser)
 		{
 			this.definitions = definitions;
-			this.finder = finder;
+			this.repository = repository;
 			this.urlParser = urlParser;
 		}
 
@@ -201,7 +202,7 @@ namespace N2.Integrity
 		private IEnumerable<ContentItem> GetItemsWithSameName(string name, ContentItem parentItem)
 		{
 			var siblings = (parentItem.ID != 0)
-				? finder.Where.Parent.Eq(parentItem).And.Name.Like(name).Select()
+				? repository.Find(Parameter.Equal("Parent", parentItem) & Parameter.Like(name, name))
 				: parentItem.Children;
 
 			foreach (var sibling in siblings)
