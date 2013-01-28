@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Versioning;
@@ -22,6 +23,8 @@ namespace N2.Persistence.MongoDB
 			Connect(config);
 		}
 
+		public MongoDatabase Database { get; set; }
+
 		private void Connect(Configuration.ConfigurationManagerWrapper config)
 		{
 			var connectionString = config.GetConnectionString();
@@ -30,6 +33,7 @@ namespace N2.Persistence.MongoDB
 			var client = new MongoClient(settings);
 			var server = client.GetServer();
 			Database = server.GetDatabase(config.Sections.Database.TablePrefix + "cms");
+			GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue");
 		}
 
 		static bool isRegistered = false;
@@ -67,8 +71,13 @@ namespace N2.Persistence.MongoDB
 				cm.UnmapProperty(cd => cd.ID);
 				cm.UnmapProperty(cd => cd.EnclosingItem);
 			});
+			BsonClassMap.RegisterClassMap<Relation<ContentItem>>(cm =>
+				{
+					cm.UnmapProperty(ci => ci.Value);
+					cm.UnmapProperty(ci => ci.ValueAccessor);
+				});
 			BsonClassMap.RegisterClassMap<ContentVersion>();
-			var map = BsonClassMap.RegisterClassMap<ContentItem>(cm =>
+			BsonClassMap.RegisterClassMap<ContentItem>(cm =>
 			{
 				cm.AutoMap();
 				cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
@@ -86,8 +95,6 @@ namespace N2.Persistence.MongoDB
 				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions, activator, this));
 			}
 		}
-
-		public MongoDatabase Database { get; set; }
 
 		public MongoCollection<T> GetCollection<T>(string collectionName = null)
 		{

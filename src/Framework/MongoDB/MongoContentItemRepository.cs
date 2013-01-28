@@ -54,18 +54,39 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
         {
-			yield break;
+			if (linkTarget == null)
+				return Enumerable.Empty<ContentItem>();
+
+			var collection = GetCollection();
+			return collection.Find(Query.EQ("Details.LinkValue", linkTarget.ID));
         }
 
         public int RemoveReferencesToRecursive(ContentItem target)
         {
-			return 0;
+			var collection = GetCollection();
+			var ids = new HashSet<int>(collection.AsQueryable()
+				.Where(i => i.ID == target.ID || i.AncestralTrail.StartsWith(target.GetTrail()))
+				.Select(i => i.ID));
+
+			int count = 0;
+			foreach (var item in collection.Find(Query.In("Details.LinkValue", ids.Select(id => (BsonValue)id))))
+			{
+				foreach (var detail in item.Details.ToList())
+				{
+					if (detail.LinkValue.HasValue && ids.Contains(detail.LinkValue.Value))
+						item.Details.Remove(detail);
+				}
+				collection.Save(item);
+				count++;
+			}
+
+			return count;
         }
 
         public void DropDatabase()
         {
 			foreach (var collectionName in Provider.Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
-				Provider.Database.DropCollection(collectionName);
+				Provider.Database.GetCollection(collectionName).RemoveAll();
         }
 
 		protected override int GetEntityId(ContentItem entity)

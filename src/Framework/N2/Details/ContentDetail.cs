@@ -323,7 +323,7 @@ namespace N2.Details
 			}
 		}
 
-		protected internal virtual int? LinkValue
+		public virtual int? LinkValue
 		{
 			get { return linkValue; }
 			set { linkValue = value; }
