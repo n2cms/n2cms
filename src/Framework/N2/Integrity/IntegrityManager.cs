@@ -202,7 +202,7 @@ namespace N2.Integrity
 		private IEnumerable<ContentItem> GetItemsWithSameName(string name, ContentItem parentItem)
 		{
 			var siblings = (parentItem.ID != 0)
-				? repository.Find(Parameter.Equal("Parent", parentItem) & Parameter.Like(name, name))
+				? repository.Find(Parameter.Equal("Parent", parentItem) & Parameter.Like("Name", name))
 				: parentItem.Children;
 
 			foreach (var sibling in siblings)
