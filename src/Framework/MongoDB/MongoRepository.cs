@@ -50,9 +50,17 @@ namespace N2.Persistence.MongoDB
     public class MongoDbRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
 		private MongoDatabaseProvider provider;
+		private System.Reflection.PropertyInfo idGetter;
+
+		public MongoDatabaseProvider Provider
+		{
+			get { return provider; }
+		}
+
         public MongoDbRepository(MongoDatabaseProvider provider)
         {
 			this.provider = provider;
+			idGetter = typeof(TEntity).GetProperty("ID");
         }
 
         public TEntity Load(object id)
@@ -111,15 +119,18 @@ namespace N2.Persistence.MongoDB
 
         public void Delete(TEntity entity)
         {
-            //todo: sort this! it sucks
-            var idValue = (int)entity.GetType().GetProperty("ID").GetValue(entity, null);
+			var idValue = GetEntityId(entity);
             GetCollection().Remove(Query.EQ("_id", idValue));
         }
 
+		protected virtual int GetEntityId(TEntity entity)
+		{
+			return (int)idGetter.GetValue(entity, null);
+		}
+
         public void SaveOrUpdate(TEntity entity)
-        {
-            //todo: sort this! it sucks
-            var idValue = (int)entity.GetType().GetProperty("ID").GetValue(entity, null);
+		{
+			var idValue = GetEntityId(entity);
 
 			if (idValue != 0)
 			{

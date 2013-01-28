@@ -14,17 +14,9 @@ namespace N2.Persistence.MongoDB
 	[Service(typeof(IRepository<ContentItem>), Configuration = "mongo", Replaces = typeof(ContentItemRepository))]
     public class MongoContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
     {
-		private MongoDatabaseProvider provider;
-
-		public MongoDatabaseProvider Provider
-		{
-			get { return provider; }
-		}
-
 		public MongoContentItemRepository(MongoDatabaseProvider provider)
 			: base(provider)
 		{
-			this.provider = provider;
 		}
 
         public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
@@ -72,8 +64,13 @@ namespace N2.Persistence.MongoDB
 
         public void DropDatabase()
         {
-			foreach (var cn in provider.Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
-				provider.Database.DropCollection(cn);
+			foreach (var collectionName in Provider.Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
+				Provider.Database.DropCollection(collectionName);
         }
+
+		protected override int GetEntityId(ContentItem entity)
+		{
+			return entity.ID;
+		}
     }
 }
