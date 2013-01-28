@@ -217,6 +217,12 @@ namespace N2.Tests
 
 		public static N2.Edit.Versioning.ContentVersionRepository CreateVersionRepository(ref IPersister persister, ref ContentActivator activator, params Type[] definedTypes)
 		{
+			IRepository<ContentVersion> versionRepository = null;
+			return CreateVersionRepository(ref persister, ref activator, ref versionRepository, definedTypes);
+		}
+
+		public static ContentVersionRepository CreateVersionRepository(ref IPersister persister, ref ContentActivator activator, ref IRepository<ContentVersion> versionRepository, params Type[] definedTypes)
+		{
 			if (persister == null)
 				persister = SetupFakePersister();
 			var definitions = SetupDefinitions(definedTypes);
@@ -227,6 +233,8 @@ namespace N2.Tests
 				activator = new ContentActivator(new StateChanger(), new ItemNotifier(), proxyFactory);
 				activator.Initialize(definitions.GetDefinitions());
 			}
+			if (versionRepository == null)
+				versionRepository = new FakeRepository<ContentVersion>();
 			var importer = new Importer(persister,
 				new ItemXmlReader(definitions,
 					activator,
@@ -238,7 +246,7 @@ namespace N2.Tests
 					parser,
 					new FakeMemoryFileSystem()));
 			return new ContentVersionRepository(
-				new FakeRepository<ContentVersion>(),
+				versionRepository,
 				exporter,
 				importer,
 				parser,
@@ -285,5 +293,6 @@ namespace N2.Tests
 
 			return new Scope(() => HttpContext.Current = null);
 		}
+
 	}
 }

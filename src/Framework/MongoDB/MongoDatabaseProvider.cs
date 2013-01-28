@@ -68,15 +68,19 @@ namespace N2.Persistence.MongoDB
 			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
 			{
 				cm.AutoMap();
-				cm.UnmapProperty(cd => cd.ID);
-				cm.UnmapProperty(cd => cd.EnclosingItem);
+				cm.UnmapProperty(dc => dc.ID);
+				cm.UnmapProperty(dc => dc.EnclosingItem);
 			});
 			BsonClassMap.RegisterClassMap<Relation<ContentItem>>(cm =>
 				{
-					cm.UnmapProperty(ci => ci.Value);
-					cm.UnmapProperty(ci => ci.ValueAccessor);
+					cm.MapProperty(r => r.ID);
 				});
-			BsonClassMap.RegisterClassMap<ContentVersion>();
+			BsonClassMap.RegisterClassMap<ContentVersion>(cm =>
+				{
+					cm.AutoMap();
+					cm.MapIdProperty(cv => cv.ID).SetIdGenerator(new IntIdGenerator());
+					cm.UnmapProperty(cv => cv.Version); // TODO, try to avoid
+				});
 			BsonClassMap.RegisterClassMap<ContentItem>(cm =>
 			{
 				cm.AutoMap();
