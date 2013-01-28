@@ -56,7 +56,7 @@ namespace N2.Engine.Globalization
         /// <summary>Gets the language gateway manaing translations on the site for the given item.</summary>
         /// <param name="managingTranslationsOfItem">The item whose related language gateway to get.</param>
         /// <returns>A language gateway filtering languages.</returns>
-        public ILanguageGateway GetLanguageGateway(ContentItem managingTranslationsOfItem)
+        public virtual ILanguageGateway GetLanguageGateway(ContentItem managingTranslationsOfItem)
         {
             return GetLanguageGateway(host.GetSite(managingTranslationsOfItem));
         }
@@ -64,7 +64,7 @@ namespace N2.Engine.Globalization
         /// <summary>Gets the language gateway manaing translations on the given site.</summary>
         /// <param name="managingTranslationsOnSite">the site whose language gateway to get.</param>
         /// <returns>A language gateway filtering languages.</returns>
-        public ILanguageGateway GetLanguageGateway(Site managingTranslationsOnSite)
+        public virtual ILanguageGateway GetLanguageGateway(Site managingTranslationsOnSite)
         {
 			var gateway = languages;
             if (Enabled && LanguagesPerSite)
