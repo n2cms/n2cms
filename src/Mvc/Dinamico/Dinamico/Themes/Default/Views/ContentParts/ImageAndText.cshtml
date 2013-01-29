@@ -1,0 +1,42 @@
+﻿@model Dinamico.Models.ContentPart
+		   
+@{ 
+    Content.Define(ie => {
+        ie.Title = "Image and Text";
+        ie.IconUrl = "{IconsUrl}/text_padding_left.png";
+        ie.Text("Heading", "Heading text");
+        ie.CheckBox("ImageFirst", "Image first").DefaultValue(true);
+	});
+}
+
+@if (Content.Has.Text && !String.IsNullOrWhiteSpace(Content.Data.Text))
+{
+	<h3>@Content.Data.Text</h3>
+}
+
+@if (Content.Has.ImageFirst && Content.Data.ImageFirst)
+{
+	<div class="imageAndText-outer container-fluid">
+		<div class="imageAndText-inner row-fluid">
+			<div class="imageAndText-image imageAndText-i-lt span3">
+				@Content.Register.Image("Image").Configure(c => c.CssClass = "img-polaroid")
+			</div>
+			<div class="imageAndText-text imageAndText-t-rt span9">
+				@Content.Register.FreeText("Description", "Product Description")
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<div class="imageAndText-outer container-fluid">
+		<div class="imageAndText-inner row-fluid">
+			<div class="imageAndText-text imageAndText-t-lt span9">
+				@Content.Register.FreeText("Description", "Product Description")
+			</div>
+			<div class="imageAndText-image imageAndText-i-rt span3">
+				@Content.Register.Image("Image").Configure(c => c.CssClass = "img-polaroid")
+			</div>
+		</div>
+	</div>
+}

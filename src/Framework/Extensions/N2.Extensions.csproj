@@ -134,6 +134,7 @@
     <Compile Include="Persistence\Search\ReindexTextMigration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VariableSubstituter.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Image.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
@@ -187,6 +188,7 @@
     </Compile>
     <Compile Include="Web\ContentList.cs" />
     <Compile Include="Web\RawHtml.cs" />
+    <Compile Include="Web\Slideshow.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
