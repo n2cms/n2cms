@@ -150,8 +150,8 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageFloat.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageGallery.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ContentTile.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageAndText.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
