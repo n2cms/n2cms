@@ -3,6 +3,7 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver.Builders;
 using N2.Collections;
+using N2.Persistence.Proxying;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace N2.Persistence.MongoDB
 		private BsonClassMap classMap;
 		private BsonClassMapSerializer serializer;
 		private MongoDatabaseProvider database;
+		private IProxyFactory proxies;
 
-		public ContentSerializer(Type type, MongoDatabaseProvider database)
+		public ContentSerializer(Type type, MongoDatabaseProvider database, IProxyFactory proxies)
 		{
 			this.database = database;
 			classMap = BsonClassMap.LookupClassMap(type);
 			serializer = new BsonClassMapSerializer(classMap);
+			this.proxies = proxies;
 		}
 
 		public object Deserialize(BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options)
@@ -48,6 +51,7 @@ namespace N2.Persistence.MongoDB
 			};
 
 			item.Children = new ItemList(() => database.GetCollection<ContentItem>().Find(Query.EQ("AncestralTrail", item.GetTrail())));
+			proxies.OnLoaded(item);
 			return item;
 		}
 
@@ -63,6 +67,7 @@ namespace N2.Persistence.MongoDB
 
 		public void Serialize(BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
 		{
+			proxies.OnSaving(value);
 			serializer.Serialize(bsonWriter, nominalType, value, options);
 		}
 

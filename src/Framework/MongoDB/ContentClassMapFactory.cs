@@ -22,7 +22,6 @@ namespace N2.Persistence.MongoDB
 
 					BsonSerializer.RegisterDiscriminatorConvention(definition.ItemType, new IgnoreProxyTypeDiscriminatorConvention());
 
-
 					foreach (var type in allDefinitions.Select(d => d.ItemType).Where(t => definition.ItemType.IsAssignableFrom(t)))
 						cm.AddKnownType(type);
 

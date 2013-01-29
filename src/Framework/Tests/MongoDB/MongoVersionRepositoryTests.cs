@@ -34,23 +34,26 @@ namespace N2.Tests.MongoDB
 			proxies.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()));
 
 			itemRepository = new MongoContentItemRepository(
-				databaseProvider = new MongoDatabaseProvider(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
+				databaseProvider = new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
 				activator = TestSupport.SetupContentActivator(proxies: proxies)));
+
+			persister = new ContentPersister(TestSupport.SetupContentSource(itemRepository), itemRepository);
+			IRepository<ContentVersion> versionRepository = new MongoDbRepository<ContentVersion>(databaseProvider);
+			repository = TestSupport.CreateVersionRepository(
+				ref persister,
+				ref activator,
+				ref versionRepository,
+				typeof(NormalPage), typeof(NormalItem));
+			drafts = new DraftRepository(repository, new FakeCacheWrapper());
 		}
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
-			persister = new ContentPersister(TestSupport.SetupContentSource(itemRepository), itemRepository);
-			IRepository<ContentVersion> versionRepository = new MongoDbRepository<ContentVersion>(databaseProvider);
-			repository = TestSupport.CreateVersionRepository(
-				ref persister, 
-				ref activator, 
-				ref versionRepository, 
-				typeof(NormalPage), typeof(NormalItem));
-			drafts = new DraftRepository(repository, new FakeCacheWrapper());
+			
+			itemRepository.DropDatabase();
         }
 
         [Test]
@@ -63,9 +66,9 @@ namespace N2.Tests.MongoDB
             repository.Repository.Dispose();
 
             var savedDraft = repository.GetVersion(master);
-            savedDraft.Published.ShouldBe(master.Published, TimeSpan.FromSeconds(1));
+            savedDraft.Published.ShouldBe(master.Published, TimeSpan.FromSeconds(10));
             //savedDraft.PublishedBy.ShouldBe(master.SavedBy);
-            savedDraft.Saved.ShouldBe(DateTime.Now, TimeSpan.FromSeconds(1));
+            savedDraft.Saved.ShouldBe(DateTime.Now, TimeSpan.FromSeconds(10));
             savedDraft.SavedBy.ShouldBe(draft.SavedBy);
             savedDraft.State.ShouldBe(master.State);
 			savedDraft.VersionIndex.ShouldBe(master.VersionIndex);

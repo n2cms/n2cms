@@ -24,7 +24,7 @@ namespace N2.Tests.MongoDB
 			proxies.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()));
 
 			repository = new MongoContentItemRepository(
-				new MongoDatabaseProvider(new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
+				new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
 				TestSupport.SetupContentActivator(proxies: proxies)));
 		}

@@ -1,11 +1,13 @@
 ﻿using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Versioning;
 using N2.Engine;
+using N2.Persistence.Proxying;
 using N2.Security;
 using System;
 using System.Collections.Generic;
@@ -17,9 +19,9 @@ namespace N2.Persistence.MongoDB
 	[Service(Configuration = "mongo")]
 	public class MongoDatabaseProvider
 	{
-		public MongoDatabaseProvider(Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator)
+		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
-			Register(definitionProviders, activator);
+			Register(definitionProviders, activator, proxies);
 			Connect(config);
 		}
 
@@ -32,12 +34,12 @@ namespace N2.Persistence.MongoDB
 			settings.ConnectTimeout = TimeSpan.FromSeconds(10);
 			var client = new MongoClient(settings);
 			var server = client.GetServer();
-			Database = server.GetDatabase(config.Sections.Database.TablePrefix + "cms");
+			Database = server.GetDatabase(config.Sections.Database.TablePrefix);
 			GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue");
 		}
 
 		static bool isRegistered = false;
-		private void Register(IDefinitionProvider[] definitionProviders, ContentActivator activator)
+		private void Register(IDefinitionProvider[] definitionProviders, ContentActivator activator, IProxyFactory proxies)
 		{
 			if (isRegistered)
 				return;
@@ -46,9 +48,10 @@ namespace N2.Persistence.MongoDB
 			var conventions = new ConventionProfile();
 			conventions.SetIgnoreIfNullConvention(new AlwaysIgnoreIfNullConvention());
 			conventions.SetMemberFinderConvention(new IgnoreUnderscoreMemberFinderConvention());
+			
 			BsonClassMap.RegisterConventions(conventions, t => true);
 
-			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this));
+			BsonSerializer.RegisterSerializationProvider(new ContentSerializationProvider(this, proxies));
 
 			BsonClassMap.RegisterClassMap<AuthorizedRole>(cm =>
 			{
@@ -64,6 +67,8 @@ namespace N2.Persistence.MongoDB
 				cm.UnmapProperty(cd => cd.EnclosingItem);
 				cm.UnmapProperty(cd => cd.Value);
 				cm.UnmapProperty(cd => cd.LinkedItem);
+				cm.GetMemberMap(cd => cd.DateTimeValue).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+
 			});
 			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
 			{
@@ -74,12 +79,17 @@ namespace N2.Persistence.MongoDB
 			BsonClassMap.RegisterClassMap<Relation<ContentItem>>(cm =>
 				{
 					cm.MapProperty(r => r.ID);
+					cm.MapProperty(r => r.ValueAccessor).SetSerializer(new RelationValueAccessorSerializer<ContentItem>(this));
 				});
 			BsonClassMap.RegisterClassMap<ContentVersion>(cm =>
 				{
 					cm.AutoMap();
 					cm.MapIdProperty(cv => cv.ID).SetIdGenerator(new IntIdGenerator());
 					cm.UnmapProperty(cv => cv.Version); // TODO, try to avoid
+					cm.GetMemberMap(cv => cv.Published).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+					cm.GetMemberMap(cv => cv.Saved).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+					cm.GetMemberMap(cv => cv.FuturePublish).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+					cm.GetMemberMap(cv => cv.Expired).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
 				});
 			BsonClassMap.RegisterClassMap<ContentItem>(cm =>
 			{
@@ -89,6 +99,10 @@ namespace N2.Persistence.MongoDB
 				cm.UnmapProperty(ci => ci.DetailCollections);
 				cm.UnmapProperty(ci => ci.Parent);
 				cm.UnmapProperty(ci => ci.VersionOf);
+				cm.GetMemberMap(ci => ci.Created).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+				cm.GetMemberMap(ci => ci.Updated).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+				cm.GetMemberMap(ci => ci.Published).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
+				cm.GetMemberMap(ci => ci.Expires).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
 				cm.SetIsRootClass(isRootClass: true);
 			});
 

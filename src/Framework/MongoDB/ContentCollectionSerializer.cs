@@ -9,15 +9,14 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	public class ContentCollectionSerializationProvider<T> : BsonBaseSerializer, IBsonArraySerializer
+	public class ContentCollectionSerializer<T> : BsonBaseSerializer, IBsonArraySerializer
 		where T : class, INameable
 	{
-		//DictionarySerializer<string, T> serializer = new DictionarySerializer<string, T>();
 		EnumerableSerializer<T> serializer = new EnumerableSerializer<T>();
 
 		public Type CollectionType { get; set; }
 
-		public ContentCollectionSerializationProvider()
+		public ContentCollectionSerializer()
 		{
 			CollectionType = typeof(ContentList<T>);
 		}

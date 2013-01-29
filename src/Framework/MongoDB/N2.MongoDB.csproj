@@ -50,9 +50,8 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentClassMapFactory.cs" />
-    <Compile Include="ContentItemSerializationProvider.cs" />
     <Compile Include="ContentSerializationProvider.cs" />
-    <Compile Include="ContentCollectionSerializationProvider.cs" />
+    <Compile Include="ContentCollectionSerializer.cs" />
     <Compile Include="ContentSerializer.cs" />
     <Compile Include="IgnoreProxyTypeDiscriminatorConvention.cs" />
     <Compile Include="IgnoreUnderscoreMemberFinderConvention.cs" />
@@ -61,6 +60,7 @@
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="MongoFinder.cs" />
     <Compile Include="MongoRepository.cs" />
+    <Compile Include="RelationValueAccessorSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
