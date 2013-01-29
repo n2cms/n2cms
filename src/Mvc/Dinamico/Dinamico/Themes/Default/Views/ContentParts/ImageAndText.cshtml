@@ -1,18 +1,19 @@
 ﻿@model Dinamico.Models.ContentPart
 		   
 @{ 
-    var imgCssClass = "img-polaroid";
-    if (Content.Has.HiddenPhone && Content.Data.HiddenPhone == true) { imgCssClass += " hidden-phone"; }
-    
+ 
     Content.Define(ie => {
         ie.Title = "Image and Text";
         ie.IconUrl = "{IconsUrl}/text_padding_left.png";
-        ie.Text("Heading", "Heading text").SortOrder(100);
-        ie.Image("Image").SortOrder(200).Configure(c => c.CssClass = imgCssClass);
+        ie.Text("Title", "Heading text").SortOrder(100);
+        ie.Image("Image").SortOrder(200);
         ie.FreeText("Description").SortOrder(300);
         ie.CheckBox("ImageFirst", "Image first").DefaultValue(true).SortOrder(400);
         ie.CheckBox("HiddenPhone", "Hide image in mobile view (requires responsive CSS)").DefaultValue(false).SortOrder(500);
 	});
+
+    var imgCssClass = "img-polaroid";
+    if (Content.Has.HiddenPhone && Content.Data.HiddenPhone == true) { imgCssClass += " hidden-phone"; }
 
 }
 
@@ -25,7 +26,7 @@
 {
 	<div class="imageAndText container-fluid">
 		<div class="row-fluid">
-			<div class="span3">@Content.Display.Image</div>
+			<div class="span3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
 			<div class="span9">@Content.Display.Description</div>
 		</div>
 	</div>
@@ -35,7 +36,7 @@ else
 	<div class="imageAndText container-fluid">
 		<div class="row-fluid">
 			<div class="span9">@Content.Display.Description</div>
-			<div class="span3">@Content.Display.Image</div>
+			<div class="span3"><img class="@imgCssClass" alt="@Content.Data.Title" src="@Content.Data.Image" /></div>
 		</div>
 	</div>
 }
