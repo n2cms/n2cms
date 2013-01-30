@@ -4,21 +4,21 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Install N2</title>
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
-    <style>
-    	form{font-size:1.1em;width:800px;margin:10px auto;}
-    	a{color:#00e;}
-    	li{margin-bottom:10px}
-    	form{padding:20px}
-    	.warning{color:#f00;}
-    	.ok{color:#0c0;}
-    	.buttons { text-align:right; }
-    	textarea{width:95%;height:50px; border:none; background-color:#DDE}
-    	pre { overflow:auto; font-size:10px; color:Gray; }
-    </style>
+	<title>Install N2</title>
+	<link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
+	<link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
+	<link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
+	<style>
+		form{font-size:1.1em;width:800px;margin:10px auto;}
+		a{color:#00e;}
+		li{margin-bottom:10px}
+		form{padding:20px}
+		.warning{color:#f00;}
+		.ok{color:#0c0;}
+		.buttons { text-align:right; }
+		textarea{width:95%;height:50px; border:none; background-color:#DDE}
+		pre { overflow:auto; font-size:10px; color:Gray; }
+	</style>
 	<script type="text/javascript">
 		function show(id) {
 			var el = document.getElementById(id);
@@ -30,10 +30,10 @@
 	</script>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <asp:Literal ID="ltStartupError" runat="server" />
-        
-        <n2:TabPanel ID="Database" ToolTip="1. Database Connection & Tables" runat="server">
+	<form id="form1" runat="server">
+		<asp:Literal ID="ltStartupError" runat="server" />
+		
+		<n2:TabPanel ID="Database" ToolTip="1. Database Connection & Tables" runat="server">
 			<asp:PlaceHolder runat="server" Visible='<%# Status.HasSchema %>'>
 				<p class="ok"><b>Advice: </b> <%= GetStatusText() %></p>
 			</asp:PlaceHolder>
@@ -49,12 +49,12 @@
 				<% if (Status.ConnectionType == "SqlCeConnection" && !Status.IsConnected){ %>
 				<p class="buttons"><asp:Button ID="btnCreateSqlCe" runat="server" OnClick="btnCreateSqlCeFile_Click" Text="Create SqlCe database file" CausesValidation="false" /></p>
 				<% } %>
-            </asp:Panel>
-            <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
+			</asp:Panel>
+			<asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
 				<h1>Create database tables</h1>
 				<% if (Status.HasSchema){ %>
 				<p><a href="#createschema" onclick="return show.call(this, 'createschema');">Re-create database tables.</a></p>
-			    <% } %>
+				<% } %>
 				<div id="createschema" style='display: <%= Status.HasSchema ? "none" : "block"%>'>
 					<asp:Literal runat="server" Visible='<%# !Status.IsConnected %>'>
 						<p class="warning"><b>Advice: </b>Go back and check database connection. </p>
@@ -78,22 +78,22 @@
 					<asp:Label CssClass="ok" runat="server" ID="lblInstall" />
 				</p>
 			</asp:Panel>
-        </n2:TabPanel>
-        <n2:TabPanel ID="Content" ToolTip="2. Content Package" runat="server">				
-            <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
+		</n2:TabPanel>
+		<n2:TabPanel ID="Content" ToolTip="2. Content Package" runat="server">				
+			<asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
 				<p class="ok">
-				    <b>Advice: </b> Proceed to <a href="#Finish">step 3</a>
-				    There is content present in the database. 
-				    If you add more the old content remain but only one root can be used per site.
+					<b>Advice: </b> Proceed to <a href="#Finish">step 3</a>
+					There is content present in the database. 
+					If you add more the old content remain but only one root can be used per site.
 				</p>
-            </asp:Literal>
-            <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
+			</asp:Literal>
+			<asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
 				<p class="warning"><b>Advice: </b>Go back to <a href='#Database'>step 1</a> and check database connection and tables.</p>
-            </asp:Literal>
+			</asp:Literal>
 
 			<h1>Add Content Package</h1>
-            <asp:PlaceHolder ID="plhAddContent" runat="server">
-                <div  style="display:<%= rblExports.Items.Count == 0 ? "none" : "block" %>">
+			<asp:PlaceHolder ID="plhAddContent" runat="server">
+				<div  style="display:<%= rblExports.Items.Count == 0 ? "none" : "block" %>">
 					<p>
 						Pick the <b>content package</b> that tickle your fancy and import it into your site.
 					</p>
@@ -106,65 +106,65 @@
 					</p>
 					<hr />
 					<p><a href="#advancedcontentoptions" onclick="return show.call(this, 'advancedcontentoptions');">Advanced options (includes upload and manual insert).</a></p>
-			    </div>
-			    <div id="advancedcontentoptions" style="display:<%= rblExports.Items.Count > 0 ? "none" : "block" %>">
+				</div>
+				<div id="advancedcontentoptions" style="display:<%= rblExports.Items.Count > 0 ? "none" : "block" %>">
 					<p>
 						N2 CMS needs content in the database to function correctly.
 						The minimum required is a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a>.
 					</p>
-			        <h2>Upload and import package</h2>
-			        <p>Select an export file you may have exported from another site and saved to disk to import on this installation.</p>
-			        <p>Package: <asp:FileUpload ID="fileUpload" runat="server" />(*.n2.xml)</p>
-			        <p class="buttons">
-			            <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="Upload and add" ToolTip="Upload root node." CausesValidation="false" />
-			            <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" EnableClientScript="false" />
-			        </p>
-			        <h2>Manually insert nodes</h2>
-			        <p>
-			            Separate <asp:DropDownList ID="ddlRoot" runat="server" /> 
-			            and <asp:DropDownList ID="ddlStartPage" runat="server" /> 
-			            to insert as <b>two different</b> nodes (preferred)
-			        </p>
-			        <p class="buttons">
-			            <asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Add two separate nodes" ToolTip="Insert different root and start nodes" CausesValidation="false" /> 
-			            <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
+					<h2>Upload and import package</h2>
+					<p>Select an export file you may have exported from another site and saved to disk to import on this installation.</p>
+					<p>Package: <asp:FileUpload ID="fileUpload" runat="server" />(*.n2.xml)</p>
+					<p class="buttons">
+						<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="Upload and add" ToolTip="Upload root node." CausesValidation="false" />
+						<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" EnableClientScript="false" />
 					</p>
-			        <p>
-			            <b>Same node</b> for both <asp:DropDownList ID="ddlRootAndStart" runat="server" /> to insert (simple site).
-			        </p>
-			        <p class="buttons">
-				        <asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="Add a single node" ToolTip="Insert one node as root and start" CausesValidation="false" />
-				        <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
-                    </p>
-                </div>
-            </asp:PlaceHolder>
+					<h2>Manually insert nodes</h2>
+					<p>
+						Separate <asp:DropDownList ID="ddlRoot" runat="server" /> 
+						and <asp:DropDownList ID="ddlStartPage" runat="server" /> 
+						to insert as <b>two different</b> nodes (preferred)
+					</p>
+					<p class="buttons">
+						<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Add two separate nodes" ToolTip="Insert different root and start nodes" CausesValidation="false" /> 
+						<asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
+					</p>
+					<p>
+						<b>Same node</b> for both <asp:DropDownList ID="ddlRootAndStart" runat="server" /> to insert (simple site).
+					</p>
+					<p class="buttons">
+						<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="Add a single node" ToolTip="Insert one node as root and start" CausesValidation="false" />
+						<asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
+					</p>
+				</div>
+			</asp:PlaceHolder>
 			<p>
-                <asp:Literal ID="ltRootNode" runat="server" />  
-            </p>
+				<asp:Literal ID="ltRootNode" runat="server" />  
+			</p>
 <asp:PlaceHolder ID="phSame" runat="server" Visible="false">
-            <h4>Example web.config with same root as start page</h4>
-                <textarea rows="4">
+			<h4>Example web.config with same root as start page</h4>
+				<textarea rows="4">
 <n2>
   <host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
   ...</textarea>
-            <p class="buttons">
+			<p class="buttons">
 				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
-            </p>
+			</p>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="phDiffer" runat="server" Visible="false">
-            <h4>Example web.config with different root as start pages</h4>
-                <textarea rows="4">
+			<h4>Example web.config with different root as start pages</h4>
+				<textarea rows="4">
 <n2>
   <host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
   ...</textarea>
-            <p class="buttons">
+			<p class="buttons">
 				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
-            </p>
+			</p>
 </asp:PlaceHolder>
 			<p><asp:Label runat="server" ID="lblWebConfigUpdated" /></p>
-        </n2:TabPanel>
-        
-        <n2:TabPanel ID="Finish" runat="server" tooltip="3. Finishing touches">
+		</n2:TabPanel>
+		
+		<n2:TabPanel ID="Finish" runat="server" tooltip="3. Finishing touches">
 			<asp:PlaceHolder runat="server" Visible='<%# !Status.IsInstalled %>'>
 				<p class='warning'>
 					<b> Advice: </b> <%# GetStatusText() %>
@@ -172,21 +172,21 @@
 			</asp:PlaceHolder>
 			<h1>Almost done!</h1>
 			<asp:PlaceHolder runat="server" Visible="<%# IsDefaultPassword() %>">
-            <p><b>IMPORTANT!</b> Change the default password in web.config. Once you've created a new administrator user using the management interface, comment out the credentials configuration section entirely.</p>
-            </asp:PlaceHolder>
+			<p><b>IMPORTANT!</b> Change the default password in web.config. Once you've created a new administrator user using the management interface, comment out the credentials configuration section entirely.</p>
+			</asp:PlaceHolder>
 			<% if(Status.IsInstalled) { %>
 			<p><strong>Advice:</strong> For security reasons it's advised to disable this installation wizard and enable it only when needed.</p>
-            <p class="buttons"><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
+			<p class="buttons"><asp:Button runat="server" OnClick="btnRestart_Click" Text="Disable installation in config" CausesValidation="false" /></p>
 			<hr />
 			<p><asp:Literal runat="server" ID="ltDisableFailed" Text="...or configure this manually before browsing to the <a href='..'>management UI</a>:" /></p>
 			<textarea>&lt;n2&gt;
   &lt;edit&gt;
-    &lt;installer allowInstallation="false"/&gt;</textarea>
+	&lt;installer allowInstallation="false"/&gt;</textarea>
   ...
 			<%} %>
-        </n2:TabPanel>
-        <pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>
-        <p style="color:#999"><%# Status.ToStatusString() %></p>
-    </form>
+		</n2:TabPanel>
+		<pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>
+		<p style="color:#999"><%# Status.ToStatusString() %></p>
+	</form>
 </body>
 </html>
