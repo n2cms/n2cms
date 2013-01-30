@@ -87,103 +87,103 @@ namespace N2.Web
 	}
 
 	[PartDefinition("Content List",
-        Description = "A list of pages that can be displayed in a column.",
-        SortOrder = 160,
-        IconUrl = "{IconsUrl}/newspaper_go.png")]
-    [WithEditableTitle("Title", 10, Required = false)]
-    [AvailableZone("Sources", "Sources")]
-    [RestrictChildren(typeof(ContentListContainerLink))]
-    public class ContentList : ContentItem
-    {
-        public override string TemplateKey
-        {
-            get { return "ContentList"; }
+		Description = "A list of pages that can be displayed in a column.",
+		SortOrder = 160,
+		IconUrl = "{IconsUrl}/newspaper_go.png")]
+	[WithEditableTitle("Title", 10, Required = false)]
+	[AvailableZone("Sources", "Sources")]
+	[RestrictChildren(typeof(ContentListContainerLink))]
+	public class ContentList : ContentItem
+	{
+		public override string TemplateKey
+		{
+			get { return "ContentList"; }
 			set { base.TemplateKey = "ContentList"; }
-        }
+		}
 
-        [EditableEnum("Title heading level", 90, typeof(HeadingLevel))]
-        public virtual int TitleLevel
-        {
-            get { return (int)(GetDetail("TitleLevel") ?? 3); }
-            set { SetDetail("TitleLevel", value, 3); }
-        }
+		[EditableEnum("Title heading level", 90, typeof(HeadingLevel))]
+		public virtual int TitleLevel
+		{
+			get { return (int)(GetDetail("TitleLevel") ?? 3); }
+			set { SetDetail("TitleLevel", value, 3); }
+		}
 
-        [EditableChildren("News container", "Sources", 100)]
-        public virtual IList<ContentListContainerLink> Containers
-        {
-            get
-            {
-                try
-                {
-                    if (GetChildren() == null)
-                        return new List<ContentListContainerLink>();
-                    //else
-                        return GetChildren().Cast<ContentListContainerLink>();
-                }
-                catch (Exception x)
-                {
-                    Exceptions.Add(x.ToString());
-                    return new List<ContentListContainerLink>();
-                }
-            }
-        }
+		[EditableChildren("News container", "Sources", 100)]
+		public virtual IList<ContentListContainerLink> Containers
+		{
+			get
+			{
+				try
+				{
+					if (GetChildren() == null)
+						return new List<ContentListContainerLink>();
+					//else
+						return GetChildren().Cast<ContentListContainerLink>();
+				}
+				catch (Exception x)
+				{
+					Exceptions.Add(x.ToString());
+					return new List<ContentListContainerLink>();
+				}
+			}
+		}
 
-        [EditableNumber("Max news to display", 120)]
-        public virtual int MaxNews
-        {
-            get { return (int)(GetDetail("MaxNews") ?? 3); }
-            set { SetDetail("MaxNews", value, 3); }
-        }
+		[EditableNumber("Max news to display", 120)]
+		public virtual int MaxNews
+		{
+			get { return (int)(GetDetail("MaxNews") ?? 3); }
+			set { SetDetail("MaxNews", value, 3); }
+		}
 
-        public virtual void Filter(ItemList items)
-        {
-	        Debug.Assert(items != null, "items != null");
-	        PageFilter.FilterPages(items);
-            CountFilter.Filter(items, 0, MaxNews);
-        }
+		public virtual void Filter(ItemList items)
+		{
+			Debug.Assert(items != null, "items != null");
+			PageFilter.FilterPages(items);
+			CountFilter.Filter(items, 0, MaxNews);
+		}
 
-        [EditableEnum(
-            Title = "Display mode",
-            SortOrder = 150,
-            EnumType = typeof(NewsDisplayMode))
-        ]
-        public virtual NewsDisplayMode DisplayMode
-        {
-            get { return (NewsDisplayMode)(GetDetail("DisplayMode") ?? NewsDisplayMode.TitleAndAbstract); }
-            set { SetDetail("DisplayMode", (int)value, (int)NewsDisplayMode.TitleAndAbstract); }
-        }
+		[EditableEnum(
+			Title = "Display mode",
+			SortOrder = 150,
+			EnumType = typeof(NewsDisplayMode))
+		]
+		public virtual NewsDisplayMode DisplayMode
+		{
+			get { return (NewsDisplayMode)(GetDetail("DisplayMode") ?? NewsDisplayMode.TitleAndAbstract); }
+			set { SetDetail("DisplayMode", (int)value, (int)NewsDisplayMode.TitleAndAbstract); }
+		}
 
-        [EditableEnum(
-            Title = "Sort mode",
-            SortOrder = 200,
-            EnumType = typeof(SortMode))
-        ]
-        public virtual SortMode SortByDate
-        {
-            get { return (SortMode)(GetDetail("SortByDate") ?? SortMode.Descending); }
-            set { SetDetail("SortByDate", (int)value, (int)SortMode.Descending); }
-        }
+		[EditableEnum(
+			Title = "Sort mode",
+			SortOrder = 200,
+			EnumType = typeof(SortMode))
+		]
+		public virtual SortMode SortByDate
+		{
+			get { return (SortMode)(GetDetail("SortByDate") ?? SortMode.Descending); }
+			set { SetDetail("SortByDate", (int)value, (int)SortMode.Descending); }
+		}
 
-        [EditableCheckBox("Group by month", 250)]
-        public virtual bool GroupByMonth
-        {
-            get { return (bool)(GetDetail("GroupByMonth") ?? true); }
-            set { SetDetail("GroupByMonth", value, true); }
-        }
+		[EditableCheckBox("Group by month", 250)]
+		public virtual bool GroupByMonth
+		{
+			get { return (bool)(GetDetail("GroupByMonth") ?? true); }
+			set { SetDetail("GroupByMonth", value, true); }
+		}
 
-        [EditableCheckBox("Show Past Items", 500, CheckBoxText = "Show Past Items")]
-        public virtual bool ShowPastEvents
-        {
-            get { return (bool)(GetDetail("ShowPastEvents") ?? true); }
-            set { SetDetail("ShowPastEvents", value, true); }
-        }
+		[EditableCheckBox("Show Past Items", 500, CheckBoxText = "Show Past Items")]
+		public virtual bool ShowPastEvents
+		{
+			get { return (bool)(GetDetail("ShowPastEvents") ?? true); }
+			set { SetDetail("ShowPastEvents", value, true); }
+		}
 
-        [EditableCheckBox("Show Future Items", 501, CheckBoxText = "Show Future Items")]
-        public virtual bool ShowFutureEvents
-        {
-            get { return (bool)(GetDetail("ShowFutureEvents") ?? false); }
-            set { SetDetail("ShowFutureEvents", value, false); }
-        }
+		[EditableCheckBox("Show Future Items", 501, CheckBoxText = "Show Future Items")]
+		public virtual bool ShowFutureEvents
+		{
+			get { return (bool)(GetDetail("ShowFutureEvents") ?? false); }
+			set { SetDetail("ShowFutureEvents", value, false); }
+		}
 
 		//TODO: Make this property visible only if the NewsDisplayMode is set to HtmlItemTemplate
 		[EditableText(
@@ -199,7 +199,7 @@ namespace N2.Web
 			set { SetDetail("HtmlItemTemplate", value, ""); }
 		}
 
-        public List<string> Exceptions = new List<string>();
+		public List<string> Exceptions = new List<string>();
 
-    }
+	}
 }
