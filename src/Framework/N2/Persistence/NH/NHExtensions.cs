@@ -2,6 +2,7 @@
 using NHibernate;
 using NHibernate.Criterion;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,14 +72,32 @@ namespace N2.Persistence.NH
 						.SetProjection(Projections.Property("EnclosingItem.ID"))
 						.Add(Expression.Eq("Name", p.Name)));
 
+			string propertyName = p.Comparison.HasFlag(Comparison.In)
+				? GetEnumerablePropertyName(p.Value as IEnumerable)
+				: ContentDetail.GetAssociatedPropertyName(p.Value);
+
 			var subselect = DetachedCriteria.For<ContentDetail>()
 				.SetProjection(Projections.Property("EnclosingItem.ID"))
-				.Add(CreateExpression(ContentDetail.GetAssociatedPropertyName(p.Value), ContentDetail.ConvertForQueryParameter(p.Value), p.Comparison));
+				.Add(CreateExpression(propertyName, ContentDetail.ConvertForQueryParameter(p.Value), p.Comparison));
 			
 			if (p.Name != null)
 				subselect = subselect.Add(Expression.Eq("Name", p.Name));
 
 			return Subqueries.PropertyIn("ID", subselect);
+		}
+
+		private static string GetEnumerablePropertyName(IEnumerable value)
+		{
+			if (value == null)
+				throw new NotSupportedException();
+
+			Type collectionType = value.GetType();
+			if (collectionType.IsArray && collectionType.GetElementType() != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetElementType());
+			if (collectionType.IsGenericType && collectionType.GetGenericArguments()[0] != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetGenericArguments()[0]);
+
+			return ContentDetail.GetAssociatedPropertyName(value.OfType<object>().FirstOrDefault());
 		}
 
 		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
@@ -108,6 +127,10 @@ namespace N2.Persistence.NH
 					return Expression.IsNotNull(propertyName);
 				case Comparison.Null:
 					return Expression.IsNull(propertyName);
+				case Comparison.In:
+					return Expression.In(propertyName, ((IEnumerable)value).OfType<object>().ToArray());
+				case Comparison.NotIn:
+					return Expression.Not(Expression.In(propertyName, ((IEnumerable)value).OfType<object>().ToArray()));
 			}
 
 			if (value is string)

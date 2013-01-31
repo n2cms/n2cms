@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Persistence;
+using Parameter = N2.Persistence.Parameter;
+using ParameterCollection = N2.Persistence.ParameterCollection;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using N2.Persistence.NH;
@@ -65,20 +67,20 @@ namespace N2.Details
 
 		protected override ListItem[] GetListItems()
 		{
-			var query = Engine.Content.Search.Find.Where.State.Eq(ContentState.Published);
+			ParameterCollection query = Parameter.Equal("State", ContentState.Published);
 
 			if (LinkedType != null && LinkedType != typeof(ContentItem))
-				query = query.And.Type.Eq(LinkedType);
+				query &= Parameter.TypeEqual(LinkedType);
 
 			if (ExcludedType != null)
-				query = query.And.Type.NotEq(ExcludedType);
+				query &= Parameter.TypeNotEqual(ExcludedType);
 
 			if (!Is(EditableItemSelectionFilter.Pages))
-				query = query.And.ZoneName.IsNull(false);
+				query &= Parameter.IsNotNull("ZoneName");
 			if (!Is(EditableItemSelectionFilter.Parts))
-				query = query.And.ZoneName.IsNull();
+				query &= Parameter.IsNull("ZoneName");
 
-			var items = query.Select("ID", "Title");
+			var items = Engine.Content.Search.Repository.Select(query, "ID", "Title");
 
 			return items.Select(row => new ListItem((string)row["Title"], row["ID"].ToString()))
 				.ToArray();
@@ -94,7 +96,8 @@ namespace N2.Details
 			if (ids == null || ids.Length == 0)
 				return Enumerable.Empty<ContentItem>();
 
-			var items = Engine.Content.Search.Find.Where
+			var items = Engine.Content.Search
+				.Find.Where
 				.Property("ID").In(ids)
 				.Select();
 

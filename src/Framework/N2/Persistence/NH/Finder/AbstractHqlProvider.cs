@@ -73,6 +73,10 @@ namespace N2.Persistence.NH.Finder
 					return " <> ";
 				case Comparison.NotLike:
 					return " not like ";
+				case Comparison.In:
+					return " in ";
+				case Comparison.NotIn:
+					return " not in ";
 			}
 			return string.Empty;
 		}

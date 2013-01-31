@@ -46,6 +46,7 @@ namespace N2.Tests.Persistence.NH
 			part1.ZoneName = "Left";
 			part2.ZoneName = "RecursiveLeft";
 			child1["Hello"] = "World";
+			child2["Age"] = 2.7;
 			grandchild1["Age"] = 1.7;
 
 			version.VersionOf = child1;
@@ -215,6 +216,43 @@ namespace N2.Tests.Persistence.NH
 			var results = repository.Find(Parameter.LessThan("Age", 2.0).Detail());
 
 			results.Single().ShouldBe(grandchild1);
+		}
+
+		[Test]
+		public void Find_In()
+		{
+			var results = repository.Find(Parameter.In("ID", child1.ID, child2.ID)).ToList();
+
+			results.Count.ShouldBe(2);
+			results.ShouldContain(child1);
+			results.ShouldContain(child2);
+		}
+
+		[Test]
+		public void Find_NotIn()
+		{
+			var results = repository.Find(Parameter.NotIn("ID", child1.ID, child2.ID)).ToList();
+
+			results.Count.ShouldBe(all.Length - 2);
+			results.ShouldNotContain(child1);
+			results.ShouldNotContain(child2);
+		}
+
+		[Test]
+		public void Find_DetailIn()
+		{
+			var results = repository.Find(Parameter.In("Hello", "World", "Universe").Detail()).ToList();
+
+			results.Count.ShouldBe(1);
+			results.ShouldContain(child1);
+		}
+
+		[Test]
+		public void Find_DetailNotIn()
+		{
+			var results = repository.Find(Parameter.NotIn("Age", 1.7, 1.9, 2.1).Detail()).ToList();
+
+			results.Single().ShouldBe(child2); // other items are excluded since they don't have a detail named "Hello", might be unexpected though
 		}
 
 		[Test]

@@ -78,7 +78,7 @@ namespace N2.Edit
 			}
 			else
 			{
-				var parameters = Parameter.Equal("Parent", containerContainer) & Parameter.TypeEquals(map.GetOrCreateDefinition(typeof(T)).Discriminator);
+				var parameters = Parameter.Equal("Parent", containerContainer) & Parameter.TypeEqual(map.GetOrCreateDefinition(typeof(T)).Discriminator);
 				if (!string.IsNullOrEmpty(name))
 					parameters.Add(Parameter.Like("Name", name));
 
