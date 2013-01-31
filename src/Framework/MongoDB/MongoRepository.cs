@@ -41,6 +41,7 @@ using N2.Security;
 using N2.Edit.Versioning;
 using MongoDB.Bson;
 using System.Linq;
+using System.Collections;
 
 namespace N2.Persistence.MongoDB
 {
@@ -263,6 +264,10 @@ namespace N2.Persistence.MongoDB
 						return Query.Exists(p.Name);
 					case Comparison.Null:
 						return Query.NotExists(p.Name);
+					case Comparison.In:
+						return Query.In(p.Name, ((IEnumerable)p.Value).OfType<object>().Select(v => BsonValue.Create(v)));
+					case Comparison.NotIn:
+						return Query.Not(Query.In(p.Name, ((IEnumerable)p.Value).OfType<object>().Select(v => BsonValue.Create(v))));
 					default:
 						throw new NotSupportedException();
 				}
