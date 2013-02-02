@@ -33,6 +33,10 @@ namespace N2.Persistence.MongoDB
 			{
 				return new ContentSerializer(type, database, proxies);
 			}
+			if (typeof(DetailCollection) == type)
+			{
+				return new BsonClassMapSerializer(BsonClassMap.LookupClassMap(type));
+			}
 
 			return null;
 		}

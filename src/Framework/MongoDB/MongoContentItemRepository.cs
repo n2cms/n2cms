@@ -10,6 +10,7 @@ using N2.Persistence.NH;
 
 namespace N2.Persistence.MongoDB
 {
+	[Service]
 	[Service(typeof(IContentItemRepository), Configuration = "mongo")]
 	[Service(typeof(IRepository<ContentItem>), Configuration = "mongo", Replaces = typeof(ContentItemRepository))]
     public class MongoContentItemRepository : MongoDbRepository<ContentItem>, IContentItemRepository
@@ -58,7 +59,9 @@ namespace N2.Persistence.MongoDB
 				return Enumerable.Empty<ContentItem>();
 
 			var collection = GetCollection();
-			return collection.Find(Query.EQ("Details.LinkValue", linkTarget.ID));
+			return collection.Find(Query.Or(
+				Query.EQ("Details.LinkValue", linkTarget.ID),
+				Query.EQ("DetailCollections.Details.LinkValue", linkTarget.ID)));
         }
 
         public int RemoveReferencesToRecursive(ContentItem target)

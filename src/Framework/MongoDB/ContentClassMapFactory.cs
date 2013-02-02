@@ -34,7 +34,7 @@ namespace N2.Persistence.MongoDB
 						.Where(p => typeof(ContentItem).IsAssignableFrom(p.Info.PropertyType))
 						.Where(p => p.Info.DeclaringType == definition.ItemType))
 					{
-						cm.UnmapProperty(p.Info.Name);
+						cm.GetMemberMap(p.Name).SetSerializer(new ContentReferenceSerializer(database));
 					}
 				});
 		}

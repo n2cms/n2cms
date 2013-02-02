@@ -50,6 +50,7 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentClassMapFactory.cs" />
+    <Compile Include="ContentReferenceSerializer.cs" />
     <Compile Include="ContentSerializationProvider.cs" />
     <Compile Include="ContentCollectionSerializer.cs" />
     <Compile Include="ContentSerializer.cs" />

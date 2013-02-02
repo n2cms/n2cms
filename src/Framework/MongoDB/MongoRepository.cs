@@ -45,6 +45,7 @@ using System.Collections;
 
 namespace N2.Persistence.MongoDB
 {
+    [Service]
     [Service(typeof(IRepository<>),
 		Configuration = "mongo",
 		Replaces = typeof(NH.NHRepository<>))]
@@ -115,7 +116,11 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
         {
-            throw new NotImplementedException();
+			var map = "function() { emit(this._id, { " + string.Join(", ", properties.Select(p => p == "ID" ? "_id" : p).Select(p => "'" + p + "': this['" + p + "']")) +  " }); }";
+			var reduce = "function(key, emits) { return emits[0]; }";
+			var finalize = "";
+			var result = GetCollection().MapReduce(parameters.CreateQuery(), map, reduce);//, new MapReduceOptionsBuilder().SetFinalize(finalize));
+			throw new NotSupportedException();
         }
 
         public void Delete(TEntity entity)
@@ -140,7 +145,7 @@ namespace N2.Persistence.MongoDB
 					Query.EQ("_id", idValue),
 					update,
 					UpdateFlags.Upsert,
-					SafeMode.True);
+					WriteConcern.Acknowledged);
 			}
 			else
 			{
@@ -150,17 +155,17 @@ namespace N2.Persistence.MongoDB
 
         public bool Exists()
         {
-            throw new NotImplementedException();
+			return Count() > 0;
         }
 
         public long Count()
         {
-            throw new NotImplementedException();
+			return GetCollection().Count();
         }
 
         public long Count(IParameter parameters)
         {
-            throw new NotImplementedException();
+			return GetCollection().Count(parameters.CreateQuery());
         }
 
         public void Flush()
@@ -231,6 +236,24 @@ namespace N2.Persistence.MongoDB
 			else if (parameter is Parameter)
 			{
 				var p = (Parameter)parameter;
+
+				if (p.IsDetail)
+				{
+					var detailExpression = GetValueExpression("Details." + ContentDetail.GetAssociatedPropertyName(p.Value), p.Comparison, p.Value);
+					var collectionExpression = GetValueExpression("DetailCollections.Details." + ContentDetail.GetAssociatedPropertyName(p.Value), p.Comparison, p.Value);
+
+					if (p.Name == null)
+						return Query.Or(detailExpression, collectionExpression);
+					else
+						return Query.Or(
+							Query.And(
+								detailExpression,
+								Query.EQ("Detail.Name", p.Name)),
+							Query.And(
+								detailExpression,
+								Query.EQ("DetailCollections.Detail.Name", p.Name)));
+				}
+
 				if (p.Name == "ID")
 					p.Name = "_id";
 				else if (p.Name == "class")
@@ -242,37 +265,49 @@ namespace N2.Persistence.MongoDB
 					p.Value = ((ContentItem)p.Value).GetTrail();
 				}
 
-				switch (p.Comparison)
-				{
-					case Comparison.Equal:
-						return Query.EQ(p.Name, BsonValue.Create(p.Value));
-					case Comparison.GreaterOrEqual:
-						return Query.GTE(p.Name, BsonValue.Create(p.Value));
-					case Comparison.GreaterThan:
-						return Query.GT(p.Name, BsonValue.Create(p.Value));
-					case Comparison.LessOrEqual:
-						return Query.LTE(p.Name, BsonValue.Create(p.Value));
-					case Comparison.LessThan:
-						return Query.LT(p.Name, BsonValue.Create(p.Value));
-					case Comparison.Like:
-						return Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*").Replace("/", "\\/"));
-					case Comparison.NotEqual:
-						return Query.Not(Query.EQ(p.Name, BsonValue.Create(p.Value)));
-					case Comparison.NotLike:
-						return Query.Not(Query.Matches(p.Name, p.Value.ToString().Replace("%", ".*")));
-					case Comparison.NotNull:
-						return Query.Exists(p.Name);
-					case Comparison.Null:
-						return Query.NotExists(p.Name);
-					case Comparison.In:
-						return Query.In(p.Name, ((IEnumerable)p.Value).OfType<object>().Select(v => BsonValue.Create(v)));
-					case Comparison.NotIn:
-						return Query.Not(Query.In(p.Name, ((IEnumerable)p.Value).OfType<object>().Select(v => BsonValue.Create(v))));
-					default:
-						throw new NotSupportedException();
-				}
+				return GetValueExpression(p.Name, p.Comparison, p.Value);
 			}
 			throw new NotSupportedException();
+		}
+
+		private static IMongoQuery GetValueExpression(string name, Comparison comparison, object value)
+		{
+			switch (comparison)
+			{
+				case Comparison.Equal:
+					return Query.EQ(name, CreateValue(value));
+				case Comparison.GreaterOrEqual:
+					return Query.GTE(name, CreateValue(value));
+				case Comparison.GreaterThan:
+					return Query.GT(name, CreateValue(value));
+				case Comparison.LessOrEqual:
+					return Query.LTE(name, CreateValue(value));
+				case Comparison.LessThan:
+					return Query.LT(name, CreateValue(value));
+				case Comparison.Like:
+					return Query.Matches(name, value.ToString().Replace("%", ".*").Replace("/", "\\/"));
+				case Comparison.NotEqual:
+					return Query.Not(Query.EQ(name, CreateValue(value)));
+				case Comparison.NotLike:
+					return Query.Not(Query.Matches(name, value.ToString().Replace("%", ".*")));
+				case Comparison.NotNull:
+					return Query.Exists(name);
+				case Comparison.Null:
+					return Query.NotExists(name);
+				case Comparison.In:
+					return Query.In(name, ((IEnumerable)value).OfType<object>().Select(v => CreateValue(v)));
+				case Comparison.NotIn:
+					return Query.Not(Query.In(name, ((IEnumerable)value).OfType<object>().Select(v => CreateValue(v))));
+				default:
+					throw new NotSupportedException();
+			}
+		}
+
+		private static BsonValue CreateValue(object value)
+		{
+			if (value is ContentItem)
+				return BsonValue.Create(((ContentItem)value).ID);
+			return BsonValue.Create(value);
 		}
 	}
 }

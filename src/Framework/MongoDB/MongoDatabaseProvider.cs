@@ -16,7 +16,7 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	[Service(Configuration = "mongo")]
+	[Service]
 	public class MongoDatabaseProvider
 	{
 		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator)
@@ -72,6 +72,8 @@ namespace N2.Persistence.MongoDB
 			});
 			BsonClassMap.RegisterClassMap<DetailCollection>(cm =>
 			{
+				//cm.MapProperty(dc => dc.Name);
+				//cm.MapProperty(dc => dc.Details);
 				cm.AutoMap();
 				cm.UnmapProperty(dc => dc.ID);
 				cm.UnmapProperty(dc => dc.EnclosingItem);
@@ -96,7 +98,7 @@ namespace N2.Persistence.MongoDB
 				cm.AutoMap();
 				cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
 				cm.UnmapProperty(ci => ci.Children);
-				cm.UnmapProperty(ci => ci.DetailCollections);
+				//cm.UnmapProperty(ci => ci.DetailCollections);
 				cm.UnmapProperty(ci => ci.Parent);
 				cm.UnmapProperty(ci => ci.VersionOf);
 				cm.GetMemberMap(ci => ci.Created).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
