@@ -56,13 +56,16 @@ namespace N2.Web.Mvc
 			foreach (var containerLink in containerLinks.Where(c => c.Container.IsPage))
 			{
 				var aChildren = containerLink.Container.GetChildren().Where(pageCriteria).ToList();  //TODO: Show unpublished news (e.g. calendar items)
-
+				var cycleCheck = new List<ContentItem>();
 				if (containerLink.Recursive)
 				{
 					while (aChildren.Count > 0)
 					{
 						var child = aChildren[0];
-						aChildren.AddRange(child.GetChildren().Where(pageCriteria));
+						aChildren.RemoveAt(0);
+						var chr = child.GetChildren().Where(pageCriteria).Where(f => !cycleCheck.Contains(f));
+						aChildren.AddRange(chr);
+						cycleCheck.AddRange(chr);
 						allNews.Add(child);
 					}
 				}
