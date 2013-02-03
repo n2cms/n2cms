@@ -100,27 +100,46 @@ namespace N2.Persistence.MongoDB
 
         public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
         {
-			var collection = GetCollection();
 			if (propertyValuesToMatchAll.Length > 1)
-				return collection.Find(new ParameterCollection(propertyValuesToMatchAll).CreateQuery());
+				return Find(new ParameterCollection(propertyValuesToMatchAll));
 			else if (propertyValuesToMatchAll.Length == 1)
-				return collection.Find(propertyValuesToMatchAll[0].CreateQuery());
+				return Find((IParameter)propertyValuesToMatchAll[0]);
 			else
-				return collection.FindAll();
+				return GetCollection().FindAll();
 		}
 
         public IEnumerable<TEntity> Find(IParameter parameters)
-        {
-			return GetCollection().Find(parameters.CreateQuery());
+		{
+			var collection = GetCollection();
+
+			var pc = parameters as ParameterCollection;
+			if (pc != null)
+			{
+				var cursor = pc.Count == 0
+					? collection.FindAll()
+					: collection.Find(parameters.CreateQuery());
+
+				if (pc.Range != null && pc.Range.Skip > 0)
+					cursor = cursor.SetSkip(pc.Range.Skip);
+				if (pc.Range != null && pc.Range.Take > 0)
+					cursor = cursor.SetLimit(pc.Range.Take);
+				if (pc.Order != null && pc.Order.HasValue)
+					cursor = cursor.SetSortOrder(pc.Order.Descending
+						? SortBy.Descending(pc.Order.Property.TranslateProperty())
+						: SortBy.Ascending(pc.Order.Property.TranslateProperty()));
+				return cursor;
+			}
+			else 
+				return collection.Find(parameters.CreateQuery());
         }
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
         {
-			var map = "function() { emit(this._id, { " + string.Join(", ", properties.Select(p => p == "ID" ? "_id" : p).Select(p => "'" + p + "': this['" + p + "']")) +  " }); }";
-			var reduce = "function(key, emits) { return emits[0]; }";
-			var finalize = "";
-			var result = GetCollection().MapReduce(parameters.CreateQuery(), map, reduce);//, new MapReduceOptionsBuilder().SetFinalize(finalize));
-			throw new NotSupportedException();
+			//var map = "function() { emit(this._id, { " + string.Join(", ", properties.Select(p => p == "ID" ? "_id" : p).Select(p => "'" + p + "': this['" + p + "']")) +  " }); }";
+			//var reduce = "function(key, values) {  db.result.save(values[0]); return null; }";
+			//var finalize = "function(key, value) { db.collection_2.insert(value); }";
+			//var result = GetCollection().MapReduce(parameters.CreateQuery(), map, reduce, new MapReduceOptionsBuilder().SetFinalize(finalize));
+			return Find(parameters).Select(e => properties.ToDictionary(p => p, p => Utility.GetProperty(e, p)));
         }
 
         public void Delete(TEntity entity)
@@ -248,26 +267,26 @@ namespace N2.Persistence.MongoDB
 						return Query.Or(
 							Query.And(
 								detailExpression,
-								Query.EQ("Detail.Name", p.Name)),
+								Query.EQ("Details.Name", p.Name)),
 							Query.And(
-								detailExpression,
-								Query.EQ("DetailCollections.Detail.Name", p.Name)));
+								collectionExpression,
+								Query.EQ("DetailCollections.Details.Name", p.Name)));
 				}
 
-				if (p.Name == "ID")
-					p.Name = "_id";
-				else if (p.Name == "class")
-					p.Name = "_t";
-				else if (p.Name == "Parent")
-				{
-					p.Comparison = Comparison.Equal;
-					p.Name = "AncestralTrail";
-					p.Value = ((ContentItem)p.Value).GetTrail();
-				}
-
+				p.Name = p.Name.TranslateProperty();
+				
 				return GetValueExpression(p.Name, p.Comparison, p.Value);
 			}
 			throw new NotSupportedException();
+		}
+
+		internal static string TranslateProperty(this string propertyName)
+		{
+			if (propertyName == "ID")
+				return "_id";
+			else if (propertyName == "class")
+				return "_t";
+			return propertyName;
 		}
 
 		private static IMongoQuery GetValueExpression(string name, Comparison comparison, object value)

@@ -63,8 +63,7 @@ namespace N2.Tests.MongoDB
 			grandchild1["Age"] = 1.7;
 
 			version.VersionOf = child1;
-            foreach (var item in all)
-                repository.SaveOrUpdate(all);
+            repository.SaveOrUpdate(all);
 		}
 
 		[Test]
@@ -130,7 +129,7 @@ namespace N2.Tests.MongoDB
 		[Test]
 		public void Find_Zone_IsNotLike()
 		{
-			repository.Find(Parameter.NotLike("ZoneName", "Recursive%")).Single().ShouldBe(part1);
+			repository.Find(Parameter.NotLike("ZoneName", "Recursive%") & Parameter.IsNotNull("ZoneName")).Single().ShouldBe(part1);
 		}
 
 		[Test]

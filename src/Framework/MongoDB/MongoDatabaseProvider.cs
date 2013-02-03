@@ -98,8 +98,7 @@ namespace N2.Persistence.MongoDB
 				cm.AutoMap();
 				cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
 				cm.UnmapProperty(ci => ci.Children);
-				//cm.UnmapProperty(ci => ci.DetailCollections);
-				cm.UnmapProperty(ci => ci.Parent);
+				cm.GetMemberMap(ci => ci.Parent).SetSerializer(new ContentReferenceSerializer(this));
 				cm.UnmapProperty(ci => ci.VersionOf);
 				cm.GetMemberMap(ci => ci.Created).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
 				cm.GetMemberMap(ci => ci.Updated).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));

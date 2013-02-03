@@ -34,25 +34,32 @@ namespace N2.Persistence.MongoDB
 		private object Inject(object value)
 		{
 			var item = (ContentItem)value;
-			var parentId = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).LastOrDefault();
-			item.ParentRelation = new ContentRelation
-			{
-				ID = string.IsNullOrEmpty(parentId) ? null : (int?)int.Parse(parentId),
-				ValueAccessor = (relationId) =>
-				{
-					var ids = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => BsonInt32.Create(int.Parse(id)));
-					var parents = database.GetCollection<ContentItem>().Find(Query.In("_id", ids)).OrderByDescending(p => p.AncestralTrail.Length).ToList();
-					for (int i = 1; i < parents.Count; i++)
-					{
-						parents[i - 1].Parent = parents[i];
-					}
-					return parents[0];
-				}
-			};
 
-			item.Children = new ItemList(() => database.GetCollection<ContentItem>().Find(Query.EQ("AncestralTrail", item.GetTrail())));
+			//SetAncestors(item);
+
+			SetChildren(item);
+
 			proxies.OnLoaded(item);
 			return item;
+		}
+
+		private void SetChildren(ContentItem item)
+		{
+			item.Children = new ItemList(() => database.GetCollection<ContentItem>().Find(Query.EQ("AncestralTrail", item.GetTrail())));
+		}
+
+		private void SetAncestors(ContentItem item)
+		{
+			var ids = item.AncestralTrail.Split('/').Where(id => !string.IsNullOrEmpty(id)).Select(id => BsonInt32.Create(int.Parse(id))).ToList();
+			if (ids.Count == 0)
+				return;
+
+			var parents = database.GetCollection<ContentItem>().Find(Query.In("_id", ids)).OrderByDescending(p => p.AncestralTrail.Length).ToList();
+			for (int i = 1; i < parents.Count; i++)
+			{
+				parents[i - 1].Parent = parents[i];
+			}
+			item.Parent = parents[0];
 		}
 
 		public object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
