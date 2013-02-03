@@ -258,19 +258,18 @@ namespace N2.Persistence.MongoDB
 
 				if (p.IsDetail)
 				{
-					var detailExpression = GetValueExpression("Details." + ContentDetail.GetAssociatedPropertyName(p.Value), p.Comparison, p.Value);
-					var collectionExpression = GetValueExpression("DetailCollections.Details." + ContentDetail.GetAssociatedPropertyName(p.Value), p.Comparison, p.Value);
+					var valueExpression = GetValueExpression(p.Comparison.HasFlag(Comparison.In)
+						? ContentDetail.GetAssociatedEnumerablePropertyName(p.Value as IEnumerable)
+						: ContentDetail.GetAssociatedPropertyName(p.Value), p.Comparison, p.Value);
+					var detailExpression = (p.Name == null)
+						? valueExpression
+						: Query.And(
+							Query.EQ("Name", p.Name),
+							valueExpression);
 
-					if (p.Name == null)
-						return Query.Or(detailExpression, collectionExpression);
-					else
-						return Query.Or(
-							Query.And(
-								detailExpression,
-								Query.EQ("Details.Name", p.Name)),
-							Query.And(
-								collectionExpression,
-								Query.EQ("DetailCollections.Details.Name", p.Name)));
+					return Query.Or(
+						Query.ElemMatch("Details", detailExpression),
+						Query.ElemMatch("DetailCollections.Details", detailExpression));
 				}
 
 				p.Name = p.Name.TranslateProperty();

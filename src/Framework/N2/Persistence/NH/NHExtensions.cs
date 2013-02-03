@@ -73,7 +73,7 @@ namespace N2.Persistence.NH
 						.Add(Expression.Eq("Name", p.Name)));
 
 			string propertyName = p.Comparison.HasFlag(Comparison.In)
-				? GetEnumerablePropertyName(p.Value as IEnumerable)
+				? ContentDetail.GetAssociatedEnumerablePropertyName(p.Value as IEnumerable)
 				: ContentDetail.GetAssociatedPropertyName(p.Value);
 
 			var subselect = DetachedCriteria.For<ContentDetail>()
@@ -84,20 +84,6 @@ namespace N2.Persistence.NH
 				subselect = subselect.Add(Expression.Eq("Name", p.Name));
 
 			return Subqueries.PropertyIn("ID", subselect);
-		}
-
-		private static string GetEnumerablePropertyName(IEnumerable value)
-		{
-			if (value == null)
-				throw new NotSupportedException();
-
-			Type collectionType = value.GetType();
-			if (collectionType.IsArray && collectionType.GetElementType() != typeof(object))
-				return ContentDetail.GetAssociatedPropertyName(collectionType.GetElementType());
-			if (collectionType.IsGenericType && collectionType.GetGenericArguments()[0] != typeof(object))
-				return ContentDetail.GetAssociatedPropertyName(collectionType.GetGenericArguments()[0]);
-
-			return ContentDetail.GetAssociatedPropertyName(value.OfType<object>().FirstOrDefault());
 		}
 
 		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)

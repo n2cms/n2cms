@@ -21,6 +21,8 @@
 using System;
 using N2.Collections;
 using System.Diagnostics;
+using System.Collections;
+using System.Linq;
 
 namespace N2.Details
 {
@@ -432,6 +434,23 @@ namespace N2.Details
 				ObjectValue = objectValue,
 				StringValue = stringValue
 			};
+		}
+
+		/// <summary>Gets the associated property name for an enumerable collection used for storing In or NotIn comparison values.</summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static string GetAssociatedEnumerablePropertyName(IEnumerable value)
+		{
+			if (value == null)
+				throw new NotSupportedException();
+			
+			Type collectionType = value.GetType();
+			if (collectionType.IsArray && collectionType.GetElementType() != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetElementType());
+			if (collectionType.IsGenericType && collectionType.GetGenericArguments()[0] != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetGenericArguments()[0]);
+
+			return ContentDetail.GetAssociatedPropertyName(value.OfType<object>().FirstOrDefault());
 		}
 
 		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value.</summary>
