@@ -1,33 +1,3 @@
-#region license
-
-// Copyright (c) 2005 - 2007 Ayende Rahien (ayende@ayende.com)
-// All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// 
-//     * Redistributions of source code must retain the above copyright notice,
-//     this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright notice,
-//     this list of conditions and the following disclaimer in the documentation
-//     and/or other materials provided with the distribution.
-//     * Neither the name of Ayende Rahien nor the names of its
-//     contributors may be used to endorse or promote products derived from this
-//     software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-// THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-#endregion
-
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization;
@@ -35,7 +5,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using N2.Engine;
-using _MongoDB = MongoDB;
+using MongoDBUpdate = MongoDB.Driver.Builders.Update;
 using N2.Details;
 using N2.Security;
 using N2.Edit.Versioning;
@@ -59,6 +29,11 @@ namespace N2.Persistence.MongoDB
 			get { return provider; }
 		}
 
+		protected MongoCollection<TEntity> Collection
+		{
+			get { return provider.GetCollection<TEntity>(); }
+		}
+
         public MongoDbRepository(MongoDatabaseProvider provider)
         {
 			this.provider = provider;
@@ -72,8 +47,7 @@ namespace N2.Persistence.MongoDB
 
         public void Save(TEntity entity)
         {
-            var col = GetCollection();
-            col.Save(entity);
+			Collection.Save(entity);
         }
 
         public void Update(TEntity entity)
@@ -83,14 +57,8 @@ namespace N2.Persistence.MongoDB
 
         public TEntity Get(object id)
         {
-            var col = GetCollection();
-            var result = col.FindOne(Query.EQ("_id", (int)id));
+			var result = Collection.FindOne(Query.EQ("_id", (int)id));
             return result;
-        }
-
-        protected MongoCollection<TEntity> GetCollection()
-        {
-            return provider.Database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
         public IEnumerable<TEntity> Find(string propertyName, object value)
@@ -105,19 +73,17 @@ namespace N2.Persistence.MongoDB
 			else if (propertyValuesToMatchAll.Length == 1)
 				return Find((IParameter)propertyValuesToMatchAll[0]);
 			else
-				return GetCollection().FindAll();
+				return Collection.FindAll();
 		}
 
         public IEnumerable<TEntity> Find(IParameter parameters)
 		{
-			var collection = GetCollection();
-
 			var pc = parameters as ParameterCollection;
 			if (pc != null)
 			{
 				var cursor = pc.Count == 0
-					? collection.FindAll()
-					: collection.Find(parameters.CreateQuery());
+					? Collection.FindAll()
+					: Collection.Find(parameters.CreateQuery());
 
 				if (pc.Range != null && pc.Range.Skip > 0)
 					cursor = cursor.SetSkip(pc.Range.Skip);
@@ -129,8 +95,8 @@ namespace N2.Persistence.MongoDB
 						: SortBy.Ascending(pc.Order.Property.TranslateProperty()));
 				return cursor;
 			}
-			else 
-				return collection.Find(parameters.CreateQuery());
+			else
+				return Collection.Find(parameters.CreateQuery());
         }
 
         public IEnumerable<IDictionary<string, object>> Select(IParameter parameters, params string[] properties)
@@ -138,14 +104,14 @@ namespace N2.Persistence.MongoDB
 			//var map = "function() { emit(this._id, { " + string.Join(", ", properties.Select(p => p == "ID" ? "_id" : p).Select(p => "'" + p + "': this['" + p + "']")) +  " }); }";
 			//var reduce = "function(key, values) {  db.result.save(values[0]); return null; }";
 			//var finalize = "function(key, value) { db.collection_2.insert(value); }";
-			//var result = GetCollection().MapReduce(parameters.CreateQuery(), map, reduce, new MapReduceOptionsBuilder().SetFinalize(finalize));
+			//var result = Collection.MapReduce(parameters.CreateQuery(), map, reduce, new MapReduceOptionsBuilder().SetFinalize(finalize));
 			return Find(parameters).Select(e => properties.ToDictionary(p => p, p => Utility.GetProperty(e, p)));
         }
 
         public void Delete(TEntity entity)
         {
 			var idValue = GetEntityId(entity);
-            GetCollection().Remove(Query.EQ("_id", idValue));
+            Collection.Remove(Query.EQ("_id", idValue));
         }
 
 		protected virtual int GetEntityId(TEntity entity)
@@ -159,8 +125,8 @@ namespace N2.Persistence.MongoDB
 
 			if (idValue != 0)
 			{
-				var update = _MongoDB.Driver.Builders.Update.Replace(entity);
-				var result = GetCollection().Update(
+				var update = MongoDBUpdate.Replace(entity);
+				var result = Collection.Update(
 					Query.EQ("_id", idValue),
 					update,
 					UpdateFlags.Upsert,
@@ -179,12 +145,12 @@ namespace N2.Persistence.MongoDB
 
         public long Count()
         {
-			return GetCollection().Count();
+			return Collection.Count();
         }
 
         public long Count(IParameter parameters)
         {
-			return GetCollection().Count(parameters.CreateQuery());
+			return Collection.Count(parameters.CreateQuery());
         }
 
         public void Flush()

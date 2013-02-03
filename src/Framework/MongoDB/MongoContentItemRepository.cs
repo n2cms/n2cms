@@ -25,8 +25,8 @@ namespace N2.Persistence.MongoDB
 			var map = "function() { emit(this._t, 1); }";
 			var reduce = "function(key, emits) { var total = 0; for (var i in emits) { total += emits[i]; }; return total; }";
 			var results = ancestor != null
-				? GetCollection().MapReduce(ItselfOrBelow(ancestor), map, reduce)
-				: GetCollection().MapReduce(map, reduce);
+				? Collection.MapReduce(ItselfOrBelow(ancestor), map, reduce)
+				: Collection.MapReduce(map, reduce);
 
 			return results.InlineResults
 				.Where(doc => !doc["_id"].IsBsonNull)
@@ -48,9 +48,9 @@ namespace N2.Persistence.MongoDB
         public IEnumerable<ContentItem> FindDescendants(ContentItem ancestor, string discriminator)
         {
 			if (ancestor == null)
-				return GetCollection().Find(Query.EQ("_t", discriminator));
+				return Collection.Find(Query.EQ("_t", discriminator));
 			else
-				return GetCollection().Find(Query.And(ItselfOrBelow(ancestor), Query.EQ("_t", discriminator)));
+				return Collection.Find(Query.And(ItselfOrBelow(ancestor), Query.EQ("_t", discriminator)));
         }
 
         public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
@@ -58,28 +58,26 @@ namespace N2.Persistence.MongoDB
 			if (linkTarget == null)
 				return Enumerable.Empty<ContentItem>();
 
-			var collection = GetCollection();
-			return collection.Find(Query.Or(
+			return Collection.Find(Query.Or(
 				Query.EQ("Details.LinkValue", linkTarget.ID),
 				Query.EQ("DetailCollections.Details.LinkValue", linkTarget.ID)));
         }
 
         public int RemoveReferencesToRecursive(ContentItem target)
         {
-			var collection = GetCollection();
-			var ids = new HashSet<int>(collection.AsQueryable()
+			var ids = new HashSet<int>(Collection.AsQueryable()
 				.Where(i => i.ID == target.ID || i.AncestralTrail.StartsWith(target.GetTrail()))
 				.Select(i => i.ID));
 
 			int count = 0;
-			foreach (var item in collection.Find(Query.In("Details.LinkValue", ids.Select(id => (BsonValue)id))))
+			foreach (var item in Collection.Find(Query.In("Details.LinkValue", ids.Select(id => (BsonValue)id))))
 			{
 				foreach (var detail in item.Details.ToList())
 				{
 					if (detail.LinkValue.HasValue && ids.Contains(detail.LinkValue.Value))
 						item.Details.Remove(detail);
 				}
-				collection.Save(item);
+				Collection.Save(item);
 				count++;
 			}
 
