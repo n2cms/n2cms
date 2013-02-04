@@ -151,7 +151,7 @@ namespace N2.Web.Mvc
 				{
 					ContentItem item = itemEnumerator.Current;
 					var itemPublished = item.Published == null ? new DateTime() : item.Published.Value;
-					if (currentItem.GroupByMonth && (lastDate == null || lastDate.Value.Month != itemPublished.Month))
+					if (currentItem.SortColumn == ContentSortMode.PublishDate && currentItem.GroupByMonth && (lastDate == null || lastDate.Value.Month != itemPublished.Month))
 					{
 						// new month ***
 						sb.AppendFormat("<h2>{0:MMMM yyyy}</h2>\n", itemPublished);
