@@ -185,6 +185,13 @@ namespace N2.Web
 			set { SetDetail("ShowFutureEvents", value, false); }
 		}
 
+		[EditableCheckBox("Permissions", 502, CheckBoxText = "Evaluate and Enforce Permissions")]
+		public virtual bool EnforcePermissions
+		{
+			get { return (bool)(GetDetail("EnforcePermissions") ?? true); }
+			set { SetDetail("EnforcePermissions", value, true); }
+		}
+
 		//TODO: Make this property visible only if the NewsDisplayMode is set to HtmlItemTemplate
 		[EditableText(
 			Rows = 10, 
