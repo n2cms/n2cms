@@ -144,7 +144,7 @@ namespace N2.Web.Mvc
 				sb.Append(chH);
 
 			DateTime? lastDate = null;
-			// why no ForEach here? it turns out that the C# compiler changed the behavior RE: how it deals with foreach
+			// why no ForEach here? it turns out that the C# compiler changes the behavior RE: how it deals with foreach
 			// variables accessed from within lambda expressions. 
 			using (var itemEnumerator = newsEnumerable.GetEnumerator())
 				while (itemEnumerator.MoveNext())
