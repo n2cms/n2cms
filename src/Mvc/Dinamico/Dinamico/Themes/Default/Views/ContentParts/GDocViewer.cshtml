@@ -42,8 +42,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		+ (Content.Has.BaseURL ? Content.Data.BaseURL : (Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.UriEscaped)))
 		+ (Content.Data.File);
 
-	var Width   = (Content.Has.Width  && !String.IsNullOrWhitespace(Content.Data.Width )) ? Content.Data.Width  : "100%";
-	var Height  = (Content.Has.Height && !String.IsNullOrWhitespace(Content.Data.Height)) ? Content.Data.Height : "450px";
+	var Width   = (Content.Has.Width  && !String.IsNullOrEmpty(Content.Data.Width )) ? Content.Data.Width  : "100%";
+	var Height  = (Content.Has.Height && !String.IsNullOrEmpty(Content.Data.Height)) ? Content.Data.Height : "450px";
 }
 
 @if (Request.IsLocal)
