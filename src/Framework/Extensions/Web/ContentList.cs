@@ -52,10 +52,18 @@ namespace N2.Web
 		HtmlItemTemplate = 3
 	}
 
-	public enum SortMode
+	public enum SortDirection
 	{
 		Descending = 0,
 		Ascending = 1
+	}
+
+	public enum ContentSortMode
+	{
+		None = -1,
+		Title = 1, 
+		PublishDate = 0,
+		Expiration = 2
 	}
 
 	[PartDefinition("ContentContainer Link", IconUrl = "{IconsUrl}/link.png")]
@@ -108,17 +116,17 @@ namespace N2.Web
 			set { SetDetail("TitleLevel", value, 3); }
 		}
 
-		[EditableChildren("News container", "Sources", 100)]
+		[EditableChildren("Content Containers", "Sources", 100)]
 		public virtual IList<ContentListContainerLink> Containers
 		{
 			get
 			{
 				try
 				{
-					if (GetChildren() == null)
+					var childItems = GetChildren();
+					if (childItems == null)
 						return new List<ContentListContainerLink>();
-					//else
-						return GetChildren().Cast<ContentListContainerLink>();
+					return childItems.Cast<ContentListContainerLink>();
 				}
 				catch (Exception x)
 				{
@@ -153,15 +161,28 @@ namespace N2.Web
 			set { SetDetail("DisplayMode", (int)value, (int)NewsDisplayMode.TitleAndAbstract); }
 		}
 
+
+
 		[EditableEnum(
-			Title = "Sort mode",
-			SortOrder = 200,
-			EnumType = typeof(SortMode))
+			Title = "Sort direction",
+			SortOrder = 205,
+			EnumType = typeof(SortDirection))
 		]
-		public virtual SortMode SortByDate
+		public virtual SortDirection SortDirection
 		{
-			get { return (SortMode)(GetDetail("SortByDate") ?? SortMode.Descending); }
-			set { SetDetail("SortByDate", (int)value, (int)SortMode.Descending); }
+			get { return (SortDirection)(GetDetail("SortDirection") ?? SortDirection.Descending); }
+			set { SetDetail("SortDirection", (int)value, (int)SortDirection.Descending); }
+		}
+
+		[EditableEnum(
+			Title = "Sort attribute",
+			SortOrder = 200,
+			EnumType = typeof(ContentSortMode))
+		]
+		public virtual ContentSortMode SortColumn
+		{
+			get { return (ContentSortMode)(GetDetail("SortColumn") ?? ContentSortMode.PublishDate); }
+			set { SetDetail("SortColumn", (int)value, (int)ContentSortMode.PublishDate); }
 		}
 
 		[EditableCheckBox("Group by month", 250)]
@@ -192,18 +213,45 @@ namespace N2.Web
 			set { SetDetail("EnforcePermissions", value, true); }
 		}
 
-		//TODO: Make this property visible only if the NewsDisplayMode is set to HtmlItemTemplate
+		//TODO: Make the following properties visible only if the NewsDisplayMode is set to HtmlItemTemplate
 		[EditableText(
 			Rows = 10, 
 			Columns = 50, 
 			TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine, 
 			Title = "Custom Item Template (HTML)", 
-			HelpText = "Enclose properties of the news/blog items in $$, e.g. $$Text$$ to insert the \"Text\" property at that location.")
+			HelpText = "Enclose properties of the news/blog items in $$, e.g. $$Text$$ to insert the \"Text\" property at that location.", 
+			SortOrder = 550)
 		]
 		public string HtmlItemTemplate
 		{
 			get { return GetDetail("HtmlItemTemplate", ""); }
 			set { SetDetail("HtmlItemTemplate", value, ""); }
+		}
+
+		[EditableText(
+			Rows = 3,
+			Columns = 50,
+			TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine,
+			Title = "Custom Header (HTML)",
+			SortOrder = 560)
+		]
+		public string HtmlHeader
+		{
+			get { return GetDetail("HtmlHeader", ""); }
+			set { SetDetail("HtmlHeader", value, ""); }
+		}
+
+		[EditableText(
+			Rows = 3,
+			Columns = 50,
+			TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine,
+			Title = "Custom Footer (HTML)",
+			SortOrder = 570)
+		]
+		public string HtmlFooter
+		{
+			get { return GetDetail("HtmlFooter", ""); }
+			set { SetDetail("HtmlFooter", value, ""); }
 		}
 
 		public List<string> Exceptions = new List<string>();

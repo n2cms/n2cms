@@ -50,39 +50,53 @@ namespace N2.Web.Mvc
 				return ("{adapter failure - Model is not a NewsList}"); // nothing to do 
 
 			var currentItem = model as ContentList;
+			var chH = currentItem.HtmlHeader ?? string.Empty;
+			var chF = currentItem.HtmlFooter ?? string.Empty;
+			var sb = new System.Text.StringBuilder(50*1024 + chH.Length + chF.Length);
 			var allNews = new List<ContentItem>();
 			var containerLinks = currentItem.Containers as IEnumerable<ContentListContainerLink>;
 			Func<ContentItem, bool> pageCriteria = x => x.IsPage && x.Published.HasValue;
-			foreach (var containerLink in containerLinks.Where(c => c.Container.IsPage))
+			if (containerLinks == null)
 			{
-				var aChildren =
-					currentItem.EnforcePermissions ?
-					containerLink.Container.GetChildren().Where(pageCriteria).ToList() :
-					containerLink.Container.Children.Where(pageCriteria).ToList();
+				sb.Append(@"<div class=""alert alert-error"">Content List: ContainerLinks is null.</div>");
+			}
+			else if (currentItem.Containers.Count == 0)
+			{
+				sb.Append(@"<div class=""alert alert-warning"">Content List: ContainerLinks is empty. Edit the content list and add at least one content container.</div>");
+			}
+			else
+			{
+				foreach (var containerLink in containerLinks.Where(c => c.Container != null && c.Container.IsPage))
+				{
+					var aChildren =
+						currentItem.EnforcePermissions ?
+						containerLink.Container.GetChildren().Where(pageCriteria).ToList() :
+						containerLink.Container.Children.Where(pageCriteria).ToList();
 
-				var cycleCheck = new List<ContentItem>();
-				if (containerLink.Recursive)
-				{
-					while (aChildren.Count > 0)
+					var cycleCheck = new List<ContentItem>();
+					if (containerLink.Recursive)
 					{
-						var child = aChildren[0];
-						aChildren.RemoveAt(0);
-						var chr =
-							currentItem.EnforcePermissions ?
-							child.GetChildren().Where(pageCriteria).Where(f => !cycleCheck.Contains(f)) :
-							child.Children.Where(pageCriteria).Where(f => !cycleCheck.Contains(f));
-						aChildren.AddRange(chr);
-						cycleCheck.AddRange(chr);
-						allNews.Add(child);
+						while (aChildren.Count > 0)
+						{
+							var child = aChildren[0];
+							aChildren.RemoveAt(0);
+							var chr =
+								currentItem.EnforcePermissions ?
+								child.GetChildren().Where(pageCriteria).Where(f => !cycleCheck.Contains(f)) :
+								child.Children.Where(pageCriteria).Where(f => !cycleCheck.Contains(f));
+							var chrX = chr as ContentItem[] ?? chr.ToArray(); /* otherwise possible multiple enumeration to follow */
+							aChildren.AddRange(chrX);
+							cycleCheck.AddRange(chrX);
+							allNews.Add(child);
+						}
 					}
-				}
-				else
-				{
-					allNews.AddRange(aChildren);
+					else
+					{
+						allNews.AddRange(aChildren);
+					}
 				}
 			}
 
-			var sb = new System.Text.StringBuilder(50 * 1024);
 
 			foreach (var x in currentItem.Exceptions)
 			{
@@ -97,10 +111,22 @@ namespace N2.Web.Mvc
 			var newsEnumerable = allNews.Where(pageCriteria);
 			{
 				// apply sort order ***
-				if (currentItem.SortByDate == SortMode.Ascending)
-					newsEnumerable = allNews.OrderBy(a => a.Published != null ? a.Published.Value : new DateTime());
-				else
-					newsEnumerable = allNews.OrderByDescending(a => a.Published != null ? a.Published.Value : new DateTime());
+				var sortAscending = currentItem.SortDirection == SortDirection.Ascending;
+				switch (currentItem.SortColumn)
+				{
+					case ContentSortMode.Expiration:
+						Func<ContentItem, DateTime> expirySortSelector = a => a.Expires != null ? a.Expires.Value : new DateTime();
+						newsEnumerable = sortAscending ? allNews.OrderBy(expirySortSelector) : allNews.OrderByDescending(expirySortSelector);
+						break;
+					case ContentSortMode.Title:
+						Func<ContentItem, String> titleSortSelector = a => a.Title;
+						newsEnumerable = sortAscending ? allNews.OrderBy(titleSortSelector) : allNews.OrderByDescending(titleSortSelector);
+						break;
+					case ContentSortMode.PublishDate:
+						Func<ContentItem, DateTime> dateSortSelector = a => a.Published != null ? a.Published.Value : new DateTime();
+						newsEnumerable = sortAscending ? allNews.OrderBy(dateSortSelector) : allNews.OrderByDescending(dateSortSelector);
+						break;
+				}
 
 				// apply filter ***
 
@@ -113,6 +139,9 @@ namespace N2.Web.Mvc
 				if (currentItem.MaxNews > 0)
 					newsEnumerable = newsEnumerable.Take(currentItem.MaxNews);
 			}
+
+			if (currentItem.DisplayMode == NewsDisplayMode.HtmlItemTemplate)
+				sb.Append(chH);
 
 			DateTime? lastDate = null;
 			// why no ForEach here? it turns out that the C# compiler changed the behavior RE: how it deals with foreach
@@ -189,6 +218,9 @@ namespace N2.Web.Mvc
 							break;
 					}
 				}
+
+			if (currentItem.DisplayMode == NewsDisplayMode.HtmlItemTemplate)
+				sb.Append(chF);
 
 			return sb.ToString();
 		}
