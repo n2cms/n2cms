@@ -293,7 +293,7 @@ namespace N2.Security
 				return muc;
 			}
 			IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Email", emailToMatch) 
-				& Parameter.TypeEquals(typeof(N2.Security.Items.User).Name)
+				& Parameter.TypeEqual(typeof(N2.Security.Items.User).Name)
 				& Parameter.Equal("Parent", userContainer)).ToList();
 			totalRecords = users.Count;
 			N2.Collections.CountFilter.Filter(users, pageIndex * pageSize, pageSize);
@@ -387,7 +387,7 @@ namespace N2.Security
 			}
 
 			var users = Bridge.Repository.Find(Parameter.Equal("ID", _userId)
-				& Parameter.TypeEquals(typeof(User).Name)
+				& Parameter.TypeEqual(typeof(User).Name)
 				& Parameter.Equal("Parent", userContainer)).OfType<User>();
 
             return users.Select(u => u.GetMembershipUser(Name)).FirstOrDefault();
@@ -398,7 +398,7 @@ namespace N2.Security
 			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email) & Parameter.TypeEquals(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
+			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email) & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
 				"Name").Select(d => d["Name"]);
             return userNames.OfType<string>().FirstOrDefault();
 		}

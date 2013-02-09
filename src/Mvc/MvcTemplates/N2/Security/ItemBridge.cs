@@ -111,7 +111,7 @@ namespace N2.Security
 			if (users == null)
 				return new List<Items.User>();
 
-			return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEquals(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
+			return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
 				.OfType<User>().ToList();
 		}
 
