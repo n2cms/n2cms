@@ -79,7 +79,7 @@ namespace N2.Definitions.Static
 
 			definition.TemplateKey = templateKey;
 
-			SetDefinition(contentType, templateKey, definition);
+			SetDefinitionInternal(contentType, templateKey, definition);
 
 			return definition;
 		}
@@ -91,12 +91,17 @@ namespace N2.Definitions.Static
 
 		public void SetDefinition(Type contentType, string templateKey, ItemDefinition definition)
 		{
+			logger.DebugFormat("Adding definition {1} with key {0}", contentType.FullName + templateKey, definition);
+			SetDefinitionInternal(contentType, templateKey, definition);
+		}
+
+		private void SetDefinitionInternal(Type contentType, string templateKey, ItemDefinition definition)
+		{
 			if (contentType == null) throw new ArgumentNullException("contentType");
 
 			string key = contentType.FullName + templateKey;
 
 			var temp = new Dictionary<string, ItemDefinition>(definitions);
-			logger.DebugFormat("Adding definition key {0} to {1} existing", key, temp.Count);
 
 			if (definition != null)
 				temp[key] = definition;

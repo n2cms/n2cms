@@ -65,8 +65,8 @@ namespace N2.Persistence.NH.Finder
 		{
 			if(name != null)
 				query.SetParameter(GetNameParameterName(index), name);
-			query.SetParameter("lb" + index, ContentDetail.ConvertForQueryParameter(lowerBound));
-			query.SetParameter("ub" + index, ContentDetail.ConvertForQueryParameter(upperBound));
+			query.SetParameter("lb" + index, ContentDetail.ExtractQueryValue(lowerBound));
+			query.SetParameter("ub" + index, ContentDetail.ExtractQueryValue(upperBound));
 		}
 
 		#endregion

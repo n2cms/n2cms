@@ -80,8 +80,8 @@ namespace N2.Persistence.NH
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
 		{
 			return Session
-				.CreateQuery("select ci from ContentItem ci where ci.ID in (select cd.EnclosingItem.ID from ContentDetail cd where cd.LinkedItem=:target)")
-				.SetParameter("target", linkTarget)
+				.CreateQuery("select ci from ContentItem ci where ci.ID in (select cd.EnclosingItem.ID from ContentDetail cd where cd.LinkedItem.ID=:targetID)")
+				.SetParameter("targetID", linkTarget.ID)
 				.SetCacheable(SessionProvider.CacheEnabled)
 				.Enumerable<ContentItem>();
 		}
@@ -89,8 +89,8 @@ namespace N2.Persistence.NH
 		public virtual int RemoveReferencesToRecursive(ContentItem target)
 		{
 			var s = Session;
-			var details = s.CreateQuery("from cd in ContentDetail where (cd.LinkedItem = :ancestor or cd.LinkedItem.AncestralTrail like :trail)")
-				.SetParameter("ancestor", target)
+			var details = s.CreateQuery("from cd in ContentDetail where cd.LinkedItem.ID = :ancestorID or cd.LinkedItem.ID in (select ci.ID from ContentItem ci where ci.AncestralTrail like :trail)")
+				.SetParameter("ancestorID", target.ID)
 				.SetParameter("trail", target.GetTrail() + "%")
 				.List<ContentDetail>();
 

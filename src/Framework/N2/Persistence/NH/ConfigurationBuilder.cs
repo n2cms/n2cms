@@ -380,7 +380,11 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.BoolValue, cm => { });
 			ca.Property(x => x.DateTimeValue, cm => { });
 			ca.Property(x => x.IntValue, cm => { });
-			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.NotFound(NotFoundMode.Ignore); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
+			ca.Component(x => x.LinkedItem, cm =>
+			{
+				cm.Property(cr => cr.ID, pm => pm.Column("LinkValue"));
+			});
+			//ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.NotFound(NotFoundMode.Ignore); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
 			// if you are using Oracle10g and get 
 			// ORA-01461: can bind a LONG value only for insert into a LONG column

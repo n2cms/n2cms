@@ -23,6 +23,7 @@ using N2.Collections;
 using System.Diagnostics;
 using System.Collections;
 using System.Linq;
+using N2.Persistence;
 
 namespace N2.Details
 {
@@ -79,7 +80,7 @@ namespace N2.Details
 		private string valueTypeKey;
 
 		private string stringValue;
-		private ContentItem linkedItem;
+		private ContentRelation linkedItem;
 		private int? linkValue;
 		private double? doubleValue;
 		private DateTime? dateTimeValue;
@@ -128,7 +129,7 @@ namespace N2.Details
 					case TypeKeys.IntType:
 						return intValue;
 					case TypeKeys.LinkType:
-						return linkedItem;
+						return LinkedItem.Value;
 					case TypeKeys.StringType:
 						return stringValue;
                     case TypeKeys.EnumType:
@@ -153,7 +154,7 @@ namespace N2.Details
 			public DateTime? DateTimeValue { get; set; }
 			public double? DoubleValue { get; set; }
 			public int? IntValue { get; set; }
-			public ContentItem LinkedItem { get; set; }
+			public ContentRelation LinkedItem { get; set; }
 			public object ObjectValue { get; set; }
 			public string StringValue { get; set; }
 			#endregion
@@ -257,7 +258,7 @@ namespace N2.Details
 					intValue = 0;
 					return;
 				case TypeKeys.LinkType:
-					linkedItem = null;
+					LinkedItem = null;
 					return;
 				case TypeKeys.StringType:
 					stringValue = null;
@@ -312,9 +313,9 @@ namespace N2.Details
 			set { stringValue = value; }
 		}
 
-		public virtual ContentItem LinkedItem
+		public virtual ContentRelation LinkedItem
 		{
-			get { return linkedItem; }
+			get { return linkedItem ?? (linkedItem = ContentRelation.Empty); }
 			set
 			{
 				linkedItem = value;
@@ -469,7 +470,7 @@ namespace N2.Details
 			else if (value is string)
 				return "StringValue";
 			else if (value is ContentItem)
-				return "LinkedItem";
+				return "LinkedItem.ID";
 			else if (value is Enum)
 				return "StringValue";
 			else
@@ -620,10 +621,12 @@ namespace N2.Details
 			StringValue = other.StringValue;
 		}
 
-		public static object ConvertForQueryParameter(object value)
+		public static object ExtractQueryValue(object value)
 		{
 			if (value is Enum)
 				return value.ToString();
+			if (value is ContentItem)
+				return ((ContentItem)value).ID;
 
 			return value;
 		}

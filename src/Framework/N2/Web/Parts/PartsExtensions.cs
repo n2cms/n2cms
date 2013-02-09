@@ -30,6 +30,13 @@ namespace N2.Web.Parts
 
 		public static void StoreEmbeddedPart(this ContentItem item, string keyPrefix, ContentItem part)
 		{
+			if (part == null)
+			{
+				foreach (var detail in item.Details.Where(d => d.Name.StartsWith(keyPrefix + ".")).ToList())
+					item.Details.Remove(detail);
+				return;
+			}
+
 			DetailCollection collection = item.GetDetailCollection(keyPrefix, true);
 			foreach (var propertyName in ContentItem.KnownProperties.WritablePartProperties)
 			{

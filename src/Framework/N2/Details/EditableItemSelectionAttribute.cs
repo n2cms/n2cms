@@ -96,10 +96,7 @@ namespace N2.Details
 			if (ids == null || ids.Length == 0)
 				return Enumerable.Empty<ContentItem>();
 
-			var items = Engine.Content.Search
-				.Find.Where
-				.Property("ID").In(ids)
-				.Select();
+			var items = Engine.Content.Search.Repository.Find(Parameter.In("ID", ids));
 
 			return items;
 		}

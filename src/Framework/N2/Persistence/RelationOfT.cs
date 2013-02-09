@@ -52,13 +52,21 @@ namespace N2.Persistence
     [DebuggerDisplay("ContentRelation #{ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
-		public string Path 
+		public string Path
 		{
-			get { return HasValue && Value != null ? Value.Path : null; } 
+			get { return HasValue && Value != null ? Value.Path : null; }
+		}
+		public string Name
+		{
+			get { return HasValue && Value != null ? Value.Name : null; }
 		}
 		public ContentRelation Parent 
 		{
 			get { return HasValue ? Value.Parent : null; } 
+		}
+		public ContentRelation VersionOf
+		{
+			get { return HasValue && Value != null ? Value.VersionOf : null; }
 		}
 		public PathData FindPath(string remainingUrl) 
 		{ 
@@ -83,19 +91,19 @@ namespace N2.Persistence
 			return new ContentRelation { ValueAccessor = (id) => item.ID.Equals(id) ? item : DefaultAccessor(id), ID = item.ID };
 		}
 
-		public static bool operator ==(ContentRelation first, ContentRelation second)
-		{
-			if (first is ContentRelation)
-				return first.Equals(second);
-			return false;
-		}
+		//public static bool operator ==(ContentRelation first, ContentRelation second)
+		//{
+		//	if (first is ContentRelation)
+		//		return first.Equals(second);
+		//	return false;
+		//}
 
-		public static bool operator !=(ContentRelation first, ContentRelation second)
-		{
-			if (first is ContentRelation)
-				return !first.Equals(second);
-			return false;
-		}
+		//public static bool operator !=(ContentRelation first, ContentRelation second)
+		//{
+		//	if (first is ContentRelation)
+		//		return !first.Equals(second);
+		//	return false;
+		//}
 
 		public override bool Equals(object obj)
 		{
@@ -124,6 +132,11 @@ namespace N2.Persistence
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();
+		}
+
+		public static ContentRelation Empty 
+		{
+			get { return new ContentRelation(); }
 		}
 	}
 

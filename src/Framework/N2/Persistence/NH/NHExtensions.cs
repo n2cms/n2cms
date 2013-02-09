@@ -43,7 +43,7 @@ namespace N2.Persistence.NH
 				if (p != null && p.IsDetail)
 					return CreateDetailExpression(p);
 
-				return CreateExpression(p.Name, p.Value, p.Comparison);
+				return CreateExpression(p.Name, p.Value, p.Comparison, false);
 			}
 			else if (parameter is ParameterCollection)
 			{
@@ -78,7 +78,7 @@ namespace N2.Persistence.NH
 
 			var subselect = DetachedCriteria.For<ContentDetail>()
 				.SetProjection(Projections.Property("EnclosingItem.ID"))
-				.Add(CreateExpression(propertyName, ContentDetail.ConvertForQueryParameter(p.Value), p.Comparison));
+				.Add(CreateExpression(propertyName, ContentDetail.ExtractQueryValue(p.Value), p.Comparison, true));
 			
 			if (p.Name != null)
 				subselect = subselect.Add(Expression.Eq("Name", p.Name));
@@ -86,10 +86,16 @@ namespace N2.Persistence.NH
 			return Subqueries.PropertyIn("ID", subselect);
 		}
 
-		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType)
+		private static ICriterion CreateExpression(string propertyName, object value, Comparison comparisonType, bool isDetail)
 		{
 			if (value == null)
 				return Expression.IsNull(propertyName);
+
+			if (propertyName == "LinkedItem")
+			{
+				propertyName = "LinkedItem.ID";
+				value = Utility.GetProperty(value, "ID");
+			}
 
 			switch (comparisonType)
 			{

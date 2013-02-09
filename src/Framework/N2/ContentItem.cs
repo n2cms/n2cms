@@ -1008,7 +1008,12 @@ namespace N2
 			if (object.ReferenceEquals(this, obj)) return true;
 			ContentItem other = obj as ContentItem;
 			if (other == null)
-				return false;
+			{
+				ContentRelation relation = obj as ContentRelation;
+				if (relation == null)
+					return false;
+				return relation.HasValue && relation.ID.Value == ID;
+			}
 			if (id != 0 && id == other.id)
 				return true;
 			if (id != 0 || other.id != 0)

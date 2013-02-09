@@ -49,7 +49,7 @@ namespace N2.Persistence.NH.Finder
 		{
 			for (int i = 0; i < Values.Length; i++)
 			{
-				query.SetParameter(GetParameterName(index, i), ContentDetail.ConvertForQueryParameter(Values[i]));
+				query.SetParameter(GetParameterName(index, i), ContentDetail.ExtractQueryValue(Values[i]));
 			}
 		}
 

@@ -31,12 +31,14 @@ using System.Linq;
 using System;
 using N2.Definitions.Static;
 using System.Collections;
+using System.Diagnostics;
 
 namespace N2.Persistence
 {
 	/// <summary>
 	/// A repository query parameter.
 	/// </summary>
+	[DebuggerDisplay("{Name} {Comparison} {Value}, IsDetail={IsDetail}")]
 	public class Parameter : N2.Persistence.IParameter
 	{
 		public string Name { get; set; }
