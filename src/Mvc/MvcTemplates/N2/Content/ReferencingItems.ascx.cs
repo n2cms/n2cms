@@ -1,5 +1,6 @@
 using System;
 using N2.Collections;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -27,7 +28,8 @@ namespace N2.Edit
 
 		protected void AddReferencesRecursive(ContentItem current, ItemList referrers)
 		{
-			referrers.AddRange(Find.Items.Where.Detail().Eq(Item).Select());
+			referrers.AddRange(Content.Search.Repository.Find(Parameter.Equal(null, Item).Detail()));
+				//Find.Items.Where.Detail().Eq(Item).Select());
 			foreach (ContentItem child in current.GetChildren())
 			{
 				AddReferencesRecursive(child, referrers);
