@@ -34,9 +34,9 @@ namespace N2.Edit
 
 				ParameterCollection query = Parameter.Equal("State", ContentState.Deleted);
 				if (selectedItem.ID != 0)
-					query &= (Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url) | Parameter.Equal(null, selectedItem));
+					query &= (Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url).Detail() | Parameter.Equal(null, selectedItem).Detail());
 				else
-					query &= Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url);
+					query &= Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url).Detail();
 				var count = Engine.Persister.Repository.Count(query);
 
 				//var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
