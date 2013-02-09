@@ -18,6 +18,6 @@ namespace N2.Definitions
 		string Tagline { get; set; }
 		string Author { get; set; }
 		
-		IEnumerable<ISyndicatable> GetItems(IRepository<ContentItem> repository);
+		IEnumerable<ISyndicatable> GetItems();
 	}
 }

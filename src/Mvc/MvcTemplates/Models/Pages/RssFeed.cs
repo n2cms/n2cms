@@ -29,8 +29,9 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]
-	public class RssFeed : ContentPageBase, IFeed
+	public class RssFeed : ContentPageBase, IFeed, Engine.IInjectable<IRepository<ContentItem>>
 	{
+		private IRepository<ContentItem> repository;
 		[EditableLink("Feed root", 90, ContainerName = Tabs.Content)]
 		public virtual ContentItem FeedRoot
 		{
@@ -66,13 +67,8 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { base.Visible = value; }
 		}
 
-		public virtual IEnumerable<ISyndicatable> GetItems(IRepository<ContentItem> repository)
+		public virtual IEnumerable<ISyndicatable> GetItems()
 		{
-			//var query = N2.Find.Items
-			//	.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
-			//if (FeedRoot != null)
-			//	query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
-
 			ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
 			if (FeedRoot != null)
 				query &= Parameter.Below(FeedRoot);
@@ -83,6 +79,11 @@ namespace N2.Templates.Mvc.Models.Pages
 			{
 				yield return item;
 			}
+		}
+
+		public void Set(IRepository<ContentItem> dependency)
+		{
+			repository = dependency;
 		}
 	}
 }

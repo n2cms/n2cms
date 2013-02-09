@@ -16,12 +16,10 @@ namespace N2.Web
 	public class RssWriter
 	{
 		private readonly IWebContext context;
-		private IRepository<ContentItem> repository;
 
-		public RssWriter(IWebContext context, IRepository<ContentItem> repository)
+		public RssWriter(IWebContext context)
 		{
 			this.context = context;
-			this.repository = repository;
 		}
 
 		public virtual void Write(TextWriter output, IFeed feed)
@@ -36,7 +34,7 @@ namespace N2.Web
 				rssElement.WriteAttribute("xmlns", "xsd", null, "http://www.w3.org/2001/XMLSchema");
 				using (new ElementWriter("channel", xtw))
 				{
-					IEnumerable<ISyndicatable> items = feed.GetItems(repository);
+					IEnumerable<ISyndicatable> items = feed.GetItems();
 					WriteChannelInfo(xtw, feed);
 					foreach (ISyndicatable item in items)
 					{
