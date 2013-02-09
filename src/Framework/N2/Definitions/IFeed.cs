@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Persistence.Search;
+using N2.Persistence;
 
 namespace N2.Definitions
 {
@@ -17,6 +18,6 @@ namespace N2.Definitions
 		string Tagline { get; set; }
 		string Author { get; set; }
 		
-		IEnumerable<ISyndicatable> GetItems();
+		IEnumerable<ISyndicatable> GetItems(IRepository<ContentItem> repository);
 	}
 }

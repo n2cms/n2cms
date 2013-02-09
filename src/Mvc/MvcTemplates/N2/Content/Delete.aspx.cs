@@ -7,6 +7,7 @@ using N2.Edit.Activity;
 using N2.Management.Activity;
 using N2.Persistence;
 using N2.Edit.Versioning;
+using System.Linq;
 
 namespace N2.Edit
 {
@@ -31,19 +32,27 @@ namespace N2.Edit
 				itemsToDelete.CurrentItem = selectedItem;
 				itemsToDelete.DataBind();
 
-				var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
-
-				q = q.And.OpenBracket()
-					.Detail(LinkTracker.Tracker.LinkDetailName).Like(selectedItem.Url);
+				ParameterCollection query = Parameter.Equal("State", ContentState.Deleted);
 				if (selectedItem.ID != 0)
-					q = q.Or.Detail().Eq(selectedItem);
-				q = q.CloseBracket();
+					query &= (Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url) | Parameter.Equal(null, selectedItem));
+				else
+					query &= Parameter.Like(LinkTracker.Tracker.LinkDetailName, selectedItem.Url);
+				var count = Engine.Persister.Repository.Count(query);
 
-				int count = q.Count();
+				//var q = Engine.Resolve<IItemFinder>().Where.State.NotEq(ContentState.Deleted);
+
+				//q = q.And.OpenBracket()
+				//	.Detail(LinkTracker.Tracker.LinkDetailName).Like(selectedItem.Url);
+				//if (selectedItem.ID != 0)
+				//	q = q.Or.Detail().Eq(selectedItem);
+				//q = q.CloseBracket();
+
+				//int count = q.Count();
 				if (count > 0)
 				{
 					chkAllow.Text += " (" + count + ")";
-					rptReferencing.DataSource = q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
+					rptReferencing.DataSource = Engine.Persister.Repository.Find(query.Take(10)).Where(Content.Is.Distinct());
+						//q.MaxResults(10).Filters(N2.Content.Is.Distinct()).Select();
 					rptReferencing.DataBind();
 					hlReferencingItems.Visible = (count > 10);
 				}

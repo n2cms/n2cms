@@ -300,7 +300,5 @@ namespace N2.Persistence
 				+ (Value != null ? Value.GetHashCode() : GetHashCode());
 		}
 		#endregion
-
-
 	}
 }

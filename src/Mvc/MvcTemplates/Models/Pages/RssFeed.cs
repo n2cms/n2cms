@@ -7,9 +7,9 @@ using N2.Templates.Mvc.Services;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Definitions;
-using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Engine;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -66,18 +66,20 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { base.Visible = value; }
 		}
 
-		public virtual IEnumerable<ISyndicatable> GetItems()
+		public virtual IEnumerable<ISyndicatable> GetItems(IRepository<ContentItem> repository)
 		{
-			var query = N2.Find.Items
-				.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
-			if (FeedRoot != null)
-				query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
+			//var query = N2.Find.Items
+			//	.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
+			//if (FeedRoot != null)
+			//	query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
 
-			foreach (ISyndicatable item in query
-				.Filters(new TypeFilter(typeof(ISyndicatable)), new AccessFilter())
-				.MaxResults(NumberOfItems)
-				.OrderBy.Published.Desc
-				.Select())
+			ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
+			if (FeedRoot != null)
+				query &= Parameter.Below(FeedRoot);
+			
+			foreach (ISyndicatable item in repository.Find(query.Take(NumberOfItems).OrderBy("Published DESC"))
+				.Where(new TypeFilter(typeof(ISyndicatable)) & new AccessFilter())
+				.OfType<ISyndicatable>())
 			{
 				yield return item;
 			}

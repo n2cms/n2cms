@@ -5,6 +5,7 @@ using System.Xml;
 using N2.Definitions;
 using N2.Engine;
 using N2.Persistence.Serialization;
+using N2.Persistence;
 
 namespace N2.Web
 {
@@ -15,10 +16,12 @@ namespace N2.Web
 	public class RssWriter
 	{
 		private readonly IWebContext context;
+		private IRepository<ContentItem> repository;
 
-		public RssWriter(IWebContext context)
+		public RssWriter(IWebContext context, IRepository<ContentItem> repository)
 		{
 			this.context = context;
+			this.repository = repository;
 		}
 
 		public virtual void Write(TextWriter output, IFeed feed)
@@ -33,7 +36,7 @@ namespace N2.Web
 				rssElement.WriteAttribute("xmlns", "xsd", null, "http://www.w3.org/2001/XMLSchema");
 				using (new ElementWriter("channel", xtw))
 				{
-					IEnumerable<ISyndicatable> items = feed.GetItems();
+					IEnumerable<ISyndicatable> items = feed.GetItems(repository);
 					WriteChannelInfo(xtw, feed);
 					foreach (ISyndicatable item in items)
 					{
