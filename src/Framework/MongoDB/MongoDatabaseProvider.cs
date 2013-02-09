@@ -20,13 +20,29 @@ namespace N2.Persistence.MongoDB
 	public class MongoIdentityMap
 	{
 		Dictionary<string, object> map = new Dictionary<string, object>();
+		HashSet<string> stack = new HashSet<string>();
 
 		public TEntity GetEntity<TKey, TEntity>(TKey id, Func<TKey, TEntity> factory)
 		{
 			object entity;
 			string key = GetKey<TEntity>(id);
 			if (!map.TryGetValue(key, out entity))
-				map[key] = entity = factory(id);
+			{
+				if (stack.Contains(key))
+					// stack overflow protection
+					return default(TEntity);
+
+				try
+				{
+					stack.Add(key);
+					entity = factory(id);
+					map[key] = entity;
+				}
+				finally
+				{
+					stack.Remove(key);
+				}
+			}
 			return (TEntity)entity;
 		}
 
