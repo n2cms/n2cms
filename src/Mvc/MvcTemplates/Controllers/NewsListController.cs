@@ -34,7 +34,7 @@ namespace N2.Templates.Mvc.Controllers
 			//	.Filters(new AccessFilter(), new PublishedFilter())
 			//	.MaxResults(CurrentItem.MaxNews)
 			//	.Select<News>();
-			var parameters = Parameter.Below(root) & Parameter.Equal("State", ContentState.Published) & Parameter.TypeEquals(typeof(News).Name);
+			var parameters = Parameter.Below(root) & Parameter.Equal("State", ContentState.Published) & Parameter.TypeEqual(typeof(News).Name);
 			var news = repository.Find(parameters.Take(CurrentItem.MaxNews).OrderBy("Published DESC"))
 				.OfType<News>().ToList();
 
