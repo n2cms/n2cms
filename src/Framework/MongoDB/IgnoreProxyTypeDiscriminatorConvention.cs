@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson.Serialization.Conventions;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,12 @@ namespace N2.Persistence.MongoDB
 			get { return convention.ElementName; }
 		}
 
-		public Type GetActualType(global::MongoDB.Bson.IO.BsonReader bsonReader, Type nominalType)
+		public Type GetActualType(BsonReader bsonReader, Type nominalType)
 		{
 			return convention.GetActualType(bsonReader, nominalType);
 		}
 
-		public global::MongoDB.Bson.BsonValue GetDiscriminator(Type nominalType, Type actualType)
+		public BsonValue GetDiscriminator(Type nominalType, Type actualType)
 		{
 			if (typeof(Proxying.IInterceptedType).IsAssignableFrom(actualType))
 				return convention.GetDiscriminator(nominalType, actualType.BaseType);

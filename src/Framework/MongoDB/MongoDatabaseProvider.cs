@@ -9,6 +9,7 @@ using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Persistence.Proxying;
 using N2.Security;
+using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,57 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	[Service]
-	public class MongoDatabaseProvider
+	public class MongoIdentityMap
 	{
-		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator)
+		Dictionary<string, object> map = new Dictionary<string, object>();
+
+		public TEntity GetEntity<TKey, TEntity>(TKey id, Func<TKey, TEntity> factory)
 		{
+			object entity;
+			string key = GetKey<TEntity>(id);
+			if (!map.TryGetValue(key, out entity))
+				map[key] = entity = factory(id);
+			return (TEntity)entity;
+		}
+
+		private static string GetKey<TEntity>(object id)
+		{
+			return typeof(TEntity).Name + id;
+		}
+
+		internal void Remove<TEntity>(object id)
+		{
+			string key = GetKey<TEntity>(id);
+			if (map.ContainsKey(GetKey<TEntity>(id)))
+				map.Remove(key);
+		}
+	}
+
+	[Service]
+	public class MongoDatabaseProvider : IDisposable
+	{
+		private IWebContext webContext;
+
+		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator, IWebContext webContext)
+		{
+			this.webContext = webContext;
 			Register(definitionProviders, activator, proxies);
 			Connect(config);
+		}
+
+		public MongoIdentityMap IdentityMap
+		{
+			get
+			{
+				var map = webContext.RequestItems["MongoIdentityMap"] as MongoIdentityMap;
+				if (map == null)
+					webContext.RequestItems["MongoIdentityMap"] = map = new MongoIdentityMap();
+				return map;
+			}
+			set
+			{
+				webContext.RequestItems["MongoIdentityMap"] = value;
+			}
 		}
 
 		public MongoDatabase Database { get; set; }
@@ -118,6 +163,18 @@ namespace N2.Persistence.MongoDB
 		public MongoCollection<T> GetCollection<T>(string collectionName = null)
 		{
 			return Database.GetCollection<T>(typeof(T).Name);
+		}
+
+		public void Dispose()
+		{
+			IdentityMap = null;
+		}
+
+		public void DropDatabases()
+		{
+			foreach (var collectionName in Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
+				Database.GetCollection(collectionName).RemoveAll();
+			Dispose();
 		}
 	}
 }

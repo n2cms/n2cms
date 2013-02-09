@@ -26,12 +26,17 @@ namespace N2.Persistence.MongoDB
 		public override object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
 		{
 			var id = bsonReader.ReadInt32();
-			return database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", id));
+			if (id == 0)
+				return null;
+			return database.IdentityMap.GetEntity(id, (i) => database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", i)));
 		}
 
 		public override void Serialize(BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
 		{
-			bsonWriter.WriteInt32(((ContentItem)value).ID);
+			if (value == null)
+				bsonWriter.WriteInt32(0);
+			else
+				bsonWriter.WriteInt32(((ContentItem)value).ID);
 		}
 	}
 }

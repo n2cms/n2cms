@@ -36,7 +36,7 @@ namespace N2.Tests.MongoDB
 			itemRepository = new MongoContentItemRepository(
 				databaseProvider = new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
-				activator = TestSupport.SetupContentActivator(proxies: proxies)));
+				activator = TestSupport.SetupContentActivator(proxies: proxies), new AdaptiveContext()));
 
 			persister = new ContentPersister(TestSupport.SetupContentSource(itemRepository), itemRepository);
 			IRepository<ContentVersion> versionRepository = new MongoDbRepository<ContentVersion>(databaseProvider);
@@ -53,7 +53,7 @@ namespace N2.Tests.MongoDB
         {
             base.SetUp();
 			
-			itemRepository.DropDatabase();
+			itemRepository.Provider.DropDatabases();
         }
 
         [Test]

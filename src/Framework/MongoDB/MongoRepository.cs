@@ -57,7 +57,7 @@ namespace N2.Persistence.MongoDB
 
         public TEntity Get(object id)
         {
-			var result = Collection.FindOne(Query.EQ("_id", (int)id));
+			var result = provider.IdentityMap.GetEntity((int)id, (i) => Collection.FindOne(Query.EQ("_id", i)));
             return result;
         }
 
@@ -110,8 +110,9 @@ namespace N2.Persistence.MongoDB
 
         public void Delete(TEntity entity)
         {
-			var idValue = GetEntityId(entity);
+			int idValue = GetEntityId(entity);
             Collection.Remove(Query.EQ("_id", idValue));
+			Provider.IdentityMap.Remove<TEntity>(idValue);
         }
 
 		protected virtual int GetEntityId(TEntity entity)
@@ -197,6 +198,7 @@ namespace N2.Persistence.MongoDB
 
         public void Dispose()
         {
+			Provider.Dispose();
         }
     }
 

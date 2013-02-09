@@ -84,12 +84,6 @@ namespace N2.Persistence.MongoDB
 			return count;
         }
 
-        public void DropDatabase()
-        {
-			foreach (var collectionName in Provider.Database.GetCollectionNames().Where(cn => !cn.StartsWith("system.")))
-				Provider.Database.GetCollection(collectionName).RemoveAll();
-        }
-
 		protected override int GetEntityId(ContentItem entity)
 		{
 			return entity.ID;

@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Shouldly;
 using N2.Persistence.MongoDB;
 using N2.Definitions.Static;
+using N2.Web;
 
 namespace N2.Tests.MongoDB
 {
@@ -36,7 +37,7 @@ namespace N2.Tests.MongoDB
 			repository = new MongoContentItemRepository(
 				new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
-				TestSupport.SetupContentActivator(proxies: proxies)));
+				TestSupport.SetupContentActivator(proxies: proxies), new AdaptiveContext()));
 		}
 
 		[SetUp]
@@ -44,7 +45,7 @@ namespace N2.Tests.MongoDB
 		{
 			base.SetUp();
 
-			repository.DropDatabase();
+			repository.Provider.DropDatabases();
 
 			all = new ContentItem []
 			{
