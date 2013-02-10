@@ -6,7 +6,7 @@
 
 <%--TODO: Write this into the <HEAD> somehow.--%>
 
-<script src="<%= ResolveClientUrl("~/Content/Galleria/galleria-1.2.7.min.js") %>" type="text/javascript"></script>
+<script src="<%= ResolveClientUrl("~/Content/Galleria/galleria-1.2.9.min.js") %>" type="text/javascript"></script>
 <link rel="Stylesheet" type="text/css" href="<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.css") %>" />
 
 <div id="<%= uniqueID %>" style="height: 400px;">

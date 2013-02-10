@@ -348,8 +348,8 @@
     <Content Include="Areas\Tests\Views\TestPart\Test.ascx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
-    <Content Include="Content\Galleria\galleria-1.2.7.js" />
-    <Content Include="Content\Galleria\galleria-1.2.7.min.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.min.js" />
     <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
     <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
     <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
@@ -526,8 +526,8 @@
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
     <Content Include="App_Themes\Web.config" />
-    <None Include="Content\Galleria\LICENSE" />
     <Content Include="packages.config" />
+    <None Include="Content\Galleria\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
