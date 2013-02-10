@@ -40,21 +40,22 @@ namespace N2.Web
 
 	public enum SlideshowMode
 	{
-		HtmlParagraphs,
-		UlLiImg,			  // <ul>{<li><img /></li>}*</ul>
+		Paragraphs,
+		UlLiImg,
 		DivImg,
-		Responsiveslidercss3, //http://csscience.com/responsiveslidercss3/
-		CustomTemplate
+		TripleDiv, //http://csscience.com/responsiveslidercss3/
+		HtmlItemTemplate
 	}
 
-	[PartDefinition(Title = "Slideshow", IconUrl = "{IconsUrl}/photos.png")]
+	[PartDefinition(Title = "Slideshow", IconUrl = "{IconsUrl}/photos.png", TemplateUrl = "Slideshow")]
 	[RestrictChildren(
-		typeof(ISlideshowEntryProvider), 
-		typeof(SlideshowDirectoryInclude), 
+		typeof(ISlideshowEntryProvider),
+		typeof(SlideshowDirectoryInclude),
 		typeof(SlideshowFileInclude))]
 	[AvailableZone("Sources", "Sources")]
-	public class Slideshow : ContentItem
+	public class Slideshow : ContentItem, N2.Definitions.IPart
 	{
+
 		[EditableChildren("Image sources", "Sources", 100)]
 		public virtual IList<ISlideshowEntryProvider> ImageContainers
 		{
@@ -75,11 +76,13 @@ namespace N2.Web
 			}
 		}
 
+
+#if SlideshowUsesAdapter
 		[EditableEnum("Slideshow Template", 100, typeof(SlideshowMode))]
 		public SlideshowMode SlideshowTemplate
 		{
-			get { return GetDetail("SlideshowTemplate", SlideshowMode.HtmlParagraphs); }
-			set { SetDetail("SlideshowTemplate", value, SlideshowMode.HtmlParagraphs); }
+			get { return GetDetail("SlideshowTemplate", SlideshowMode.Paragraphs); }
+			set { SetDetail("SlideshowTemplate", value, SlideshowMode.Paragraphs); }
 		} 
 
 		[EditableText("Outer CSS Class", 400)]
@@ -89,12 +92,27 @@ namespace N2.Web
 			set { SetDetail("CssClass", value, ""); }
 		}
 		
-		[EditableText("Custom HTML Template", 500, ContainerName = "Advanced", Rows = 10, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
+		[EditableText("Custom HTML Template", 500, ContainerName = "Advanced", Rows = 10, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine, HelpText = "Put {0} where you want the Image URL and {1} where you want the Alt text.")]
 		public string CustomTemplate
 		{
 			get { return GetDetail("CustomTemplate", ""); }
 			set { SetDetail("CustomTemplate", value, ""); }
+		}
+
+		[EditableText("HTML Before", 510, ContainerName = "Advanced", Rows = 3, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
+		public string HTMLBefore
+		{
+			get { return GetDetail("HTMLBefore", ""); }
+			set { SetDetail("HTMLBefore", value, ""); }
+		}
+
+		[EditableText("HTML After", 520, ContainerName = "Advanced", Rows = 3, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
+		public string HTMLAfter
+		{
+			get { return GetDetail("HTMLAfter", ""); }
+			set { SetDetail("HTMLAfter", value, ""); }
 		} 
+#endif
 
 
 		public List<SlideshowImage> GetSlideshowImages()
@@ -113,6 +131,7 @@ namespace N2.Web
 		public string ImageHref { get; set; }
 		public string Description { get; set; }
 		public string Title { get; set; }
+		public string LinkUrl { get; set; }
 	}
 
 	public interface ISlideshowEntryProvider
@@ -131,6 +150,14 @@ namespace N2.Web
 			set { SetDetail("LocalPath", value); }
 		}
 
+		[EditableText("File Include Filter", 125)]
+		public string FileFilter
+		{
+			get { return GetDetail("FileFilter", "*.*"); }
+			set { SetDetail("FileFilter", value, "*.*"); }
+		}
+
+
 		[EditableCheckBox("Recurse", 200, CheckBoxText = "Include subdirectories")]
 		public virtual bool Recurse
 		{
@@ -140,44 +167,21 @@ namespace N2.Web
 
 		public IEnumerable<SlideshowImage> GetSlideshowImages()
 		{
-			return EnumerateImagesInDirectories(LocalPath);
+			return EnumerateImagesInDirectories(LocalPath, FileFilter);
 		}
 
-		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath)
+		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath, string filter)
 		{
-			var baseDir = System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath);
+			var baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
 			var toExplore = new List<string> { baseDir };
 			Debug.Assert(baseDir != null, "baseDir != null");
 			while (toExplore.Count > 0)
 			{
-				var files = System.IO.Directory.GetFiles(toExplore[0]);
+				var files = System.IO.Directory.GetFiles(toExplore[0], filter);
 
 				var filenames = new string[files.Length];
 				for (var i = 0; i < filenames.Length; ++i)
 					filenames[i] = System.IO.Path.GetFileName(files[i]);
-
-				//var metadataIndex = -1;
-				//for (var i = 0; i < filenames.Length; ++i)
-				//	if (0 == String.Compare(filenames[i], "metadata.txt", StringComparison.OrdinalIgnoreCase))
-				//	{
-				//		metadataIndex = i;
-				//		break;
-				//	}
-
-				//var descriptions = new Dictionary<string, SlideshowImage>();
-				//if (metadataIndex >= 0)
-				//{
-				//	var mdfile = from line in System.IO.File.ReadAllLines(files[metadataIndex])
-				//				 let lineParts = line.Split(new[] {':'}, 3)
-				//				 select lineParts;
-
-				//	foreach (var x in mdfile)
-				//	{
-				//		SlideshowImage si = new SlideshowImage(x[0]);
-				//	}
-				//		descriptions.Add(x[0]);
-
-				//}
 
 				for (var i = 0; i < files.Length; ++i)
 				{
@@ -185,11 +189,11 @@ namespace N2.Web
 					if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
 						continue;
 					yield return new SlideshowImage()
-						             {
-							             ImageHref = f.Substring(baseDir.Length),
-							             Description = null,
-							             Title = filenames[i]
-						             };
+									 {
+										 ImageHref = f.Substring(baseDir.Length).Replace('\\', '/'),
+										 Description = null,
+										 Title = filenames[i]
+									 };
 				}
 
 				toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
@@ -210,13 +214,6 @@ namespace N2.Web
 			set { SetDetail("LocalPath", value); }
 		}
 
-		[EditableCheckBox("Recurse", 200, CheckBoxText = "Include subdirectories")]
-		public virtual bool Recurse
-		{
-			get { return GetDetail("Rec", false); }
-			set { SetDetail("Rec", value, false); }
-		}
-
 
 		[EditableFreeTextArea("Description", 450, Rows = 8)]
 		public string Description
@@ -225,13 +222,21 @@ namespace N2.Web
 			set { SetDetail("Description", value, ""); }
 		}
 
+		[EditableUrl("Link Destination", 200)]
+		public virtual string LinkHref
+		{
+			get { return (string)GetDetail("LinkHref"); }
+			set { SetDetail("LinkHref", value); }
+		}
+
 		public IEnumerable<SlideshowImage> GetSlideshowImages()
 		{
 			return (new List<SlideshowImage> { new SlideshowImage()
 				                                   {
 					                                   ImageHref = LocalPath,
 													   Description = this.Description,
-													   Title = this.Title
+													   Title = this.Title,
+													   LinkUrl = this.LinkHref
 				                                   } }).AsReadOnly();
 		}
 	}

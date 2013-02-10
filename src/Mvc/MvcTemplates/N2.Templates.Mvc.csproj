@@ -171,6 +171,7 @@
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\FreeFormController.cs" />
+    <Compile Include="Controllers\SlideshowController.cs" />
     <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
       <DependentUpon>UserRegistration.resx</DependentUpon>
@@ -452,6 +453,7 @@
     </EmbeddedResource>
     <Content Include="Views\Shared\Empty.ascx" />
     <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
+    <Content Include="Views\Slideshow\Index.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
