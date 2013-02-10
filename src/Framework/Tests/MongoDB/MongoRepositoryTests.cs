@@ -23,9 +23,8 @@ namespace N2.Tests.MongoDB
 			var definitionProviders = TestSupport.SetupDefinitionProviders(new DefinitionMap(), typeof(PersistableItem), typeof(NonVirtualItem), typeof(PersistablePart));
 			var proxies = new N2.Persistence.Proxying.InterceptingProxyFactory();
 			proxies.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()));
-
 			repository = new MongoContentItemRepository(
-				new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
+				new MongoDatabaseProvider(TestSupport.CreateDependencyInjector(), proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
 				new AdaptiveContext()));
 		}

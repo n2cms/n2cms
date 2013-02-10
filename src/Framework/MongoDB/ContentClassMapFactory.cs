@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver.Builders;
 using N2.Collections;
 using N2.Definitions;
+using N2.Engine;
 using N2.Persistence.Proxying;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,20 @@ namespace N2.Persistence.MongoDB
 {
 	public abstract class ContentClassMapFactory
 	{
-		public abstract BsonClassMap Create(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions, IProxyFactory proxies, MongoDatabaseProvider database);
+		protected IProxyFactory proxies;
+		protected MongoDatabaseProvider database;
+		protected IServiceContainer services;
 
-		protected BsonClassMap Create<T>(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions, IProxyFactory proxies, MongoDatabaseProvider database)
+		public ContentClassMapFactory(IProxyFactory proxies, MongoDatabaseProvider database, IServiceContainer services)
+		{
+			this.proxies = proxies;
+			this.database = database;
+			this.services = services;
+		}
+
+		public abstract BsonClassMap Create(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions);
+
+		protected BsonClassMap Create<T>(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions)
 			where T : ContentItem
 		{
 			return new BsonClassMap<T>(cm =>
@@ -55,20 +67,27 @@ namespace N2.Persistence.MongoDB
 				});
 		}
 
-		private static T CreateItem<T>(ItemDefinition definition, IProxyFactory proxies, MongoDatabaseProvider database) where T : ContentItem
+		private T CreateItem<T>(ItemDefinition definition, IProxyFactory proxies, MongoDatabaseProvider database) where T : ContentItem
 		{
-			object item = proxies.Create(typeof(T).Name, 0) 
-				?? definition.CreateInstance(null, applyDefaultValues: false);
-			return (T)item;
+			var item = (T)(proxies.Create(typeof(T).FullName, 0) 
+				?? definition.CreateInstance(null, applyDefaultValues: false));
+			services.Resolve<IDependencyInjector>().FulfilDependencies(item);
+			return item;
 		}
 	}
 
 	public class ContentClassMapFactory<T> : ContentClassMapFactory
 		where T: ContentItem
 	{
-		public override BsonClassMap Create(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions, IProxyFactory proxies, MongoDatabaseProvider database)
+		public ContentClassMapFactory(IProxyFactory proxies, MongoDatabaseProvider database, IServiceContainer services)
+			: base(proxies, database, services)
 		{
-			return Create<T>(definition, allDefinitions, proxies, database);
+
+		}
+
+		public override BsonClassMap Create(Definitions.ItemDefinition definition, IEnumerable<Definitions.ItemDefinition> allDefinitions)
+		{
+			return Create<T>(definition, allDefinitions);
 		}
 	}
 }

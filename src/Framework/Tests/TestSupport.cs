@@ -294,5 +294,11 @@ namespace N2.Tests
 			return new Scope(() => HttpContext.Current = null);
 		}
 
+		internal static IServiceContainer CreateDependencyInjector()
+		{
+			var container = new N2.Engine.TinyIoC.TinyIoCServiceContainer();
+			container.AddComponentInstance("injector", typeof(IDependencyInjector), MockRepository.GenerateStub<ContentDependencyInjector>(null, null, null));
+			return container;
+		}
 	}
 }

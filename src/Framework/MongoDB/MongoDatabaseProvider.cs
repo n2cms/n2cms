@@ -77,9 +77,12 @@ namespace N2.Persistence.MongoDB
 	{
 		private IWebContext webContext;
 		Logger<MongoDatabaseProvider> logger;
+		static bool isRegistered = false;
+		private IServiceContainer services;
 
-		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, IWebContext webContext)
+		public MongoDatabaseProvider(IServiceContainer services, IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, IWebContext webContext)
 		{
+			this.services = services;
 			this.webContext = webContext;
 			Register(definitionProviders, proxies);
 			Connect(config);
@@ -112,7 +115,8 @@ namespace N2.Persistence.MongoDB
 			Database = server.GetDatabase(config.Sections.Database.TablePrefix);
 			try
 			{
-				GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue", "Details.StringValue", "DetailCollections.Details.Name", "DetailCollections.Details.LinkValue", "DetailCollections.Details.StringValue");
+				GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue", "Details.StringValue");
+				//GetCollection<ContentItem>().EnsureIndex("DetailCollections.Details.Name", "DetailCollections.Details.LinkValue", "DetailCollections.Details.StringValue");
 			}
 			catch (Exception ex)
 			{
@@ -120,7 +124,6 @@ namespace N2.Persistence.MongoDB
 			}
 		}
 
-		static bool isRegistered = false;
 		private void Register(IDefinitionProvider[] definitionProviders, IProxyFactory proxies)
 		{
 			if (isRegistered)
@@ -192,8 +195,9 @@ namespace N2.Persistence.MongoDB
 			var definitions = definitionProviders.SelectMany(dp => dp.GetDefinitions()).ToList();
 			foreach (var definition in definitions)
 			{
-				var factory = (ContentClassMapFactory)Activator.CreateInstance(typeof(ContentClassMapFactory<>).MakeGenericType(definition.ItemType));
-				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions, proxies, this));
+				var factoryType = typeof(ContentClassMapFactory<>).MakeGenericType(definition.ItemType);
+				var factory = (ContentClassMapFactory)Activator.CreateInstance(factoryType, proxies, this, services);
+				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions));
 			}
 		}
 
