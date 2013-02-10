@@ -152,6 +152,7 @@
     </Content>
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ContentTile.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageAndText.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\Hyperlink.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
@@ -293,6 +294,7 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\Selection.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Dinamico\Themes\Default\Views\Slideshow\Index.cshtml" />
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
   <ItemGroup>
