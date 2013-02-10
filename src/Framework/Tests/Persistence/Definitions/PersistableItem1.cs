@@ -29,12 +29,16 @@ namespace N2.Tests.Persistence.Definitions
             set { SetDetail<bool>("BoolProperty", value); }
         }
 
-        [EditableNumber(DefaultValue = 666)]
-        public virtual int IntProperty
-        {
-            get { return (int)(GetDetail("IntProperty") ?? 0); }
-            set { SetDetail<int>("IntProperty", value); }
-        }
+		[EditableNumber(DefaultValue = 666)]
+		public virtual int IntProperty
+		{
+			get { return (int)(GetDetail("IntProperty") ?? 0); }
+			set { SetDetail<int>("IntProperty", value); }
+		}
+
+		[EditableNumber(DefaultValue = 666)]
+		public virtual int CompilerGeneratedIntProperty { get; set; }
+
         [EditableDate]
         public virtual DateTime DateTimeProperty
         {

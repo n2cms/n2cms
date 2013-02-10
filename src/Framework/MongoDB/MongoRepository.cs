@@ -57,7 +57,7 @@ namespace N2.Persistence.MongoDB
 
         public TEntity Get(object id)
         {
-			var result = provider.IdentityMap.GetEntity((int)id, (i) => Collection.FindOne(Query.EQ("_id", i)));
+			var result = provider.IdentityMap.GetOrCreate((int)id, (i) => Collection.FindOne(Query.EQ("_id", i)));
             return result;
         }
 

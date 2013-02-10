@@ -36,7 +36,7 @@ namespace N2.Tests.MongoDB
 			itemRepository = new MongoContentItemRepository(
 				databaseProvider = new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
-				activator = TestSupport.SetupContentActivator(proxies: proxies), new AdaptiveContext()));
+				new AdaptiveContext()));
 
 			persister = new ContentPersister(TestSupport.SetupContentSource(itemRepository), itemRepository);
 			IRepository<ContentVersion> versionRepository = new MongoDbRepository<ContentVersion>(databaseProvider);

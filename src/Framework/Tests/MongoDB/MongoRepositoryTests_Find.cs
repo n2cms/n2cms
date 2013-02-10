@@ -37,7 +37,7 @@ namespace N2.Tests.MongoDB
 			repository = new MongoContentItemRepository(
 				new MongoDatabaseProvider(proxies, new N2.Configuration.ConfigurationManagerWrapper("n2mongo"),
 				definitionProviders,
-				TestSupport.SetupContentActivator(proxies: proxies), new AdaptiveContext()));
+				new AdaptiveContext()));
 		}
 
 		[SetUp]

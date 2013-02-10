@@ -2,7 +2,6 @@
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Versioning;
@@ -13,42 +12,54 @@ using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
 	public class MongoIdentityMap
 	{
 		Dictionary<string, object> map = new Dictionary<string, object>();
-		HashSet<string> stack = new HashSet<string>();
+		HashSet<string> keyStack = new HashSet<string>();
 
-		public TEntity GetEntity<TKey, TEntity>(TKey id, Func<TKey, TEntity> factory)
+		public void Set(string key, object entity)
+		{
+			map[key] = entity;
+		}
+
+		public object Get(string key)
+		{
+			object entity;
+			if (!map.TryGetValue(key, out entity))
+				return null;
+			return entity;
+		}
+
+		public TEntity GetOrCreate<TKey, TEntity>(TKey id, Func<TKey, TEntity> factory)
 		{
 			object entity;
 			string key = GetKey<TEntity>(id);
 			if (!map.TryGetValue(key, out entity))
 			{
-				if (stack.Contains(key))
+				if (keyStack.Contains(key))
 					// stack overflow protection
 					return default(TEntity);
 
 				try
 				{
-					stack.Add(key);
+					keyStack.Add(key);
 					entity = factory(id);
-					map[key] = entity;
+					Set(key, entity);
 				}
 				finally
 				{
-					stack.Remove(key);
+					keyStack.Remove(key);
 				}
 			}
 			return (TEntity)entity;
 		}
 
-		private static string GetKey<TEntity>(object id)
+		public static string GetKey<TEntity>(object id)
 		{
-			return typeof(TEntity).Name + id;
+			return typeof(TEntity).Name + "#" + id;
 		}
 
 		internal void Remove<TEntity>(object id)
@@ -57,6 +68,8 @@ namespace N2.Persistence.MongoDB
 			if (map.ContainsKey(GetKey<TEntity>(id)))
 				map.Remove(key);
 		}
+
+		public object Current { get; set; }
 	}
 
 	[Service]
@@ -64,10 +77,10 @@ namespace N2.Persistence.MongoDB
 	{
 		private IWebContext webContext;
 
-		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, ContentActivator activator, IWebContext webContext)
+		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, IWebContext webContext)
 		{
 			this.webContext = webContext;
-			Register(definitionProviders, activator, proxies);
+			Register(definitionProviders, proxies);
 			Connect(config);
 		}
 
@@ -100,7 +113,7 @@ namespace N2.Persistence.MongoDB
 		}
 
 		static bool isRegistered = false;
-		private void Register(IDefinitionProvider[] definitionProviders, ContentActivator activator, IProxyFactory proxies)
+		private void Register(IDefinitionProvider[] definitionProviders, IProxyFactory proxies)
 		{
 			if (isRegistered)
 				return;
@@ -172,7 +185,7 @@ namespace N2.Persistence.MongoDB
 			foreach (var definition in definitions)
 			{
 				var factory = (ContentClassMapFactory)Activator.CreateInstance(typeof(ContentClassMapFactory<>).MakeGenericType(definition.ItemType));
-				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions, activator, this));
+				BsonClassMap.RegisterClassMap(factory.Create(definition, definitions, proxies, this));
 			}
 		}
 

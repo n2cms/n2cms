@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Builders;
 using N2.Collections;
 using N2.Persistence.Proxying;
@@ -28,10 +29,48 @@ namespace N2.Persistence.MongoDB
 
 		public object Deserialize(BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options)
 		{
-			return Inject(serializer.Deserialize(bsonReader, nominalType, actualType, options));
+			var doc = BsonDocument.ReadFrom(bsonReader);
+			var id = Convert.ToInt32(doc["_id"]);
+			//return Inject(serializer.Deserialize(bsonReader, nominalType, actualType, options));
+			//return Inject(serializer.Deserialize(BsonReader.Create(doc), nominalType, actualType, options));
+
+			string key = MongoIdentityMap.GetKey<ContentItem>(id);
+
+			var item = database.IdentityMap.Get(key);
+			var type = actualType ?? BsonSerializer.LookupActualType(nominalType, doc["_t"].AsBsonArray.Last());
+			if (item == null)
+			{
+				item = BsonClassMap.LookupClassMap(type).CreateInstance();
+				database.IdentityMap.Set(key, item);
+			}
+			else
+			{
+				if (((ContentItem)item).State != ContentState.None)
+				{
+					return item;
+				}
+			}
+
+			try
+			{
+				database.IdentityMap.Current = item;
+				var deserializedItem = (actualType == null)
+					? serializer.Deserialize(BsonReader.Create(doc), nominalType, options)
+					: serializer.Deserialize(BsonReader.Create(doc), nominalType, actualType, options);
+				return Inject(deserializedItem);
+			}
+			finally
+			{
+				database.IdentityMap.Current = null;
+			}
 		}
 
-		private object Inject(object value)
+		public object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
+		{
+			return serializer.Deserialize(bsonReader, nominalType, options);
+		}
+
+		private ContentItem Inject(object value)
 		{
 			var item = (ContentItem)value;
 
@@ -60,11 +99,6 @@ namespace N2.Persistence.MongoDB
 				parents[i - 1].Parent = parents[i];
 			}
 			item.Parent = parents[0];
-		}
-
-		public object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
-		{
-			return Inject(serializer.Deserialize(bsonReader, nominalType, options));
 		}
 
 		public IBsonSerializationOptions GetDefaultSerializationOptions()

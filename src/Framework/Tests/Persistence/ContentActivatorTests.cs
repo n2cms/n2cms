@@ -6,6 +6,7 @@ using N2.Persistence;
 using NUnit.Framework;
 using Shouldly;
 using N2.Persistence.Proxying;
+using N2.Definitions;
 
 namespace N2.Tests.Persistence
 {
@@ -21,7 +22,8 @@ namespace N2.Tests.Persistence
 		{
 			base.SetUp();
 
-			activator = new ContentActivator(stateChanger = new N2.Edit.Workflow.StateChanger(), notifier = new ItemNotifier(), new EmptyProxyFactory());
+			activator = new ContentActivator(stateChanger = new N2.Edit.Workflow.StateChanger(), notifier = new ItemNotifier(), new InterceptingProxyFactory());
+			activator.Initialize(new[] { new ItemDefinition(typeof(Definitions.PersistableItem)) });
 		}
 
 		[Test]
@@ -30,6 +32,22 @@ namespace N2.Tests.Persistence
 			var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
 
 			instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+		}
+
+		[Test]
+		public void CreateInstance_creates_insatnce_without_proxy()
+		{
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+
+			instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+		}
+
+		[Test]
+		public void CreateInstance_creates_insatnce_with_proxys()
+		{
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+
+			instance.GetType().BaseType.ShouldBe(typeof(Definitions.PersistableItem));
 		}
 
 		[Test]
@@ -61,12 +79,20 @@ namespace N2.Tests.Persistence
 			instance.TemplateKey.ShouldBe("Hello");
 		}
 
-		[Test, Ignore("Currently performed by the editable, might make sense to do here")]
-		public void Default_values_are_assigned()
+		[Test]
+		public void Default_values_are_assigned_for_non_proxies()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
+			var instance = activator.CreateInstance<Definitions.PersistableItem>(null, null, asProxy: false);
 
-			instance.IntProperty.ShouldBe(666);
+			instance.CompilerGeneratedIntProperty.ShouldBe(666);
+		}
+
+		[Test]
+		public void Default_values_are_retrievable_from_proxies()
+		{
+			var instance = activator.CreateInstance<Definitions.PersistableItem>(null, null, asProxy: true);
+
+			instance.CompilerGeneratedIntProperty.ShouldBe(666);
 		}
 	}
 }

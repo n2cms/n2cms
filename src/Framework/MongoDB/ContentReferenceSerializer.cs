@@ -28,7 +28,7 @@ namespace N2.Persistence.MongoDB
 			var id = bsonReader.ReadInt32();
 			if (id == 0)
 				return null;
-			return database.IdentityMap.GetEntity(id, (i) => database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", i)));
+			return database.IdentityMap.GetOrCreate(id, (i) => database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", i)));
 		}
 
 		public override void Serialize(BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
