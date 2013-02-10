@@ -22,7 +22,12 @@ namespace N2.Web.Parts
 			{
 				foreach (var cd in collection.Details)
 				{
-					part.Details.Add(cd.Clone(cd.Name.Substring(keyPrefix.Length + 1)));
+					var name = cd.Name.Substring(keyPrefix.Length + 1);
+					if (cd.ValueTypeKey == ContentDetail.TypeKeys.LinkType)
+						// avoid retrieving item from database
+						part[name] = cd.LinkedItem;
+					else
+						part[name] = cd.Value;
 				}
 			}
 			return part;

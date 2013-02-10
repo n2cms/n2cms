@@ -23,7 +23,7 @@ namespace N2.Tests.Persistence
 			base.SetUp();
 
 			activator = new ContentActivator(stateChanger = new N2.Edit.Workflow.StateChanger(), notifier = new ItemNotifier(), new InterceptingProxyFactory());
-			activator.Initialize(new[] { new ItemDefinition(typeof(Definitions.PersistableItem)) });
+			activator.Initialize(new[] { new ItemDefinition(typeof(Definitions.PersistableItem)), new ItemDefinition(typeof(Definitions.PersistableItem1b)) });
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void CreateInstance_creates_insatnce_with_proxys()
 		{
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null, null, asProxy: true);
 
 			instance.GetType().BaseType.ShouldBe(typeof(Definitions.PersistableItem));
 		}
@@ -82,7 +82,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Default_values_are_assigned_for_non_proxies()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem>(null, null, asProxy: false);
+			var instance = activator.CreateInstance<Definitions.PersistableItem1b>(null, null, asProxy: false);
 
 			instance.CompilerGeneratedIntProperty.ShouldBe(666);
 		}
@@ -90,7 +90,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Default_values_are_retrievable_from_proxies()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem>(null, null, asProxy: true);
+			var instance = activator.CreateInstance<Definitions.PersistableItem1b>(null, null, asProxy: true);
 
 			instance.CompilerGeneratedIntProperty.ShouldBe(666);
 		}

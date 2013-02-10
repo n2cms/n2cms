@@ -84,8 +84,11 @@ namespace N2.Persistence.MongoDB
 		{
 			this.services = services;
 			this.webContext = webContext;
-			Register(definitionProviders, proxies);
-			Connect(config);
+			if (config.Sections.Database.Flavour == Configuration.DatabaseFlavour.MongoDB)
+			{
+				Register(definitionProviders, proxies);
+				Connect(config);
+			}
 		}
 
 		public MongoIdentityMap IdentityMap

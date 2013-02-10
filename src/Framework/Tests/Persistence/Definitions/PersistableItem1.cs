@@ -36,9 +36,6 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<int>("IntProperty", value); }
 		}
 
-		[EditableNumber(DefaultValue = 666)]
-		public virtual int CompilerGeneratedIntProperty { get; set; }
-
         [EditableDate]
         public virtual DateTime DateTimeProperty
         {
@@ -172,5 +169,7 @@ namespace N2.Tests.Persistence.Definitions
     [Indexable(IsIndexable = false)]
     public class PersistableItem1b : PersistableItem
     {
+		[EditableNumber(DefaultValue = 666)]
+		public virtual int CompilerGeneratedIntProperty { get; set; }
     }
 }
