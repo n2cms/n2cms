@@ -45,7 +45,7 @@ namespace N2.Persistence
         /// <param name="parentItem">Parent of the item to create.</param>
         /// <param name="templateKey">The type of template the item is associated with.</param>
         /// <returns>A new instance of an item.</returns>
-        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey, bool asProxy = false)
+        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey, bool asProxy = false, bool invokeBehaviors = true)
         {
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
@@ -63,7 +63,8 @@ namespace N2.Persistence
 			}
             if (templateKey != null)
                 item.TemplateKey = templateKey;
-            OnItemCreating(item, parentItem);
+			if (invokeBehaviors)
+				OnItemCreating(item, parentItem);
             return item;
         }
 

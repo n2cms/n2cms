@@ -22,7 +22,7 @@ namespace N2.Web.Parts
 			{
 				foreach (var cd in collection.Details)
 				{
-					part[cd.Name.Substring(keyPrefix.Length + 1)] = cd.Value;
+					part.Details.Add(cd.Clone(cd.Name.Substring(keyPrefix.Length + 1)));
 				}
 			}
 			return part;

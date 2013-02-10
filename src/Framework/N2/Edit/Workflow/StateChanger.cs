@@ -15,7 +15,7 @@ namespace N2.Edit.Workflow
         /// <summary>Changes a state of an item to the new state.</summary>
         /// <param name="item">The item whose state is to be changed.</param>
         /// <param name="toState">The next state of the item.</param>
-        public void ChangeTo(ContentItem item, ContentState toState)
+        public virtual void ChangeTo(ContentItem item, ContentState toState)
         {
             var args = new StateChangedEventArgs(item, item.State);
             item.State = toState;

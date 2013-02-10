@@ -22,7 +22,7 @@ namespace N2.Persistence
 			ValueAccessor = DefaultAccessor;
 		}
 
-		public int? ID { get; set; }
+		public virtual int? ID { get; set; }
 		
 		public bool HasValue 
 		{ 
@@ -52,6 +52,38 @@ namespace N2.Persistence
     [DebuggerDisplay("ContentRelation #{ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
+		private ContentItem initializedTarget;
+
+		public ContentRelation()
+		{
+		}
+
+		public ContentRelation(ContentItem initializedTarget)
+		{
+			this.initializedTarget = initializedTarget;
+			ValueAccessor = (id) => (initializedTarget != null && initializedTarget.ID.Equals(id))
+				? initializedTarget 
+				: DefaultAccessor(id);
+		}
+
+		public override int? ID
+		{
+			get
+			{
+				if (initializedTarget != null)
+					return initializedTarget.ID;
+
+				return base.ID;
+			}
+			set
+			{
+				if (initializedTarget != null && initializedTarget.ID != value)
+					initializedTarget = null;
+
+				base.ID = value;
+			}
+		}
+
 		public string Path
 		{
 			get { return HasValue && Value != null ? Value.Path : null; }
@@ -88,7 +120,7 @@ namespace N2.Persistence
 		{
 			if (item == null)
 				return new ContentRelation();
-			return new ContentRelation { ValueAccessor = (id) => item.ID.Equals(id) ? item : DefaultAccessor(id), ID = item.ID };
+			return new ContentRelation(item);
 		}
 
 		//public static bool operator ==(ContentRelation first, ContentRelation second)

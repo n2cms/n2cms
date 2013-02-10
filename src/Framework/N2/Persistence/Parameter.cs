@@ -157,6 +157,11 @@ namespace N2.Persistence
 			return new Parameter(name, anyOf, Comparison.NotIn);
 		}
 
+		public static Parameter State(ContentState expectedState)
+		{
+			return Parameter.Equal("State", expectedState);
+		}
+
 		public bool IsMatch(object item)
 		{
             object itemValue = null;
@@ -298,6 +303,14 @@ namespace N2.Persistence
 		{
 			return (Name != null ? Name.GetHashCode() : GetHashCode())
 				+ (Value != null ? Value.GetHashCode() : GetHashCode());
+		}
+
+		public override string ToString()
+		{
+			return (IsDetail ? "Detail." : "Property.") 
+				+ (Name ?? "(Any)") 
+				+ " " + Comparison + " " 
+				+ Value;
 		}
 		#endregion
 	}

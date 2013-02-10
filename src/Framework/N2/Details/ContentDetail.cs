@@ -81,7 +81,6 @@ namespace N2.Details
 
 		private string stringValue;
 		private ContentRelation linkedItem;
-		private int? linkValue;
 		private double? doubleValue;
 		private DateTime? dateTimeValue;
 		private int? intValue;
@@ -328,8 +327,8 @@ namespace N2.Details
 
 		public virtual int? LinkValue
 		{
-			get { return linkValue; }
-			set { linkValue = value; }
+			get { return LinkedItem.ID; }
+			set { LinkedItem.ID = value; }
 		}
 
 		public virtual double? DoubleValue
@@ -560,6 +559,13 @@ namespace N2.Details
 			cloned.ValueTypeKey = this.ValueTypeKey;
 			return cloned;
         }
+
+		public virtual ContentDetail Clone(string newPartName)
+		{
+			var detail = this.Clone();
+			detail.name = newPartName;
+			return detail;
+		}
 
         object ICloneable.Clone()
         {

@@ -72,7 +72,14 @@ namespace N2.Definitions
 
 		private Func<ContentItem> CreateItemFactory(Type itemType)
 		{
-			var construct = Expression.New(itemType.GetConstructor(new Type[0]));
+			if (itemType.IsAbstract)
+				return () => { throw new NotSupportedException("Factory not supported for " + itemType); };
+
+			var constructor = itemType.GetConstructor(new Type[0]);
+			if (constructor == null)
+				return () => { throw new NotSupportedException("Factory not supported for " + itemType + ". It needs a parameterless construcor"); };
+
+			var construct = Expression.New(constructor);
 			var func = Expression.Lambda(typeof(Func<ContentItem>), construct);
 
 			return (Func<ContentItem>)func.Compile();
