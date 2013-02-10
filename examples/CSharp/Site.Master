@@ -7,6 +7,8 @@
     <title><%: Page.Title %> - My ASP.NET Application</title>
     <link href="~/Content/Site.css" rel="stylesheet" /> 
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <asp:PlaceHolder runat="server">        
         <script src="<%: ResolveUrl("~/Scripts/modernizr-2.5.3.js") %>"></script>
     </asp:PlaceHolder>
@@ -16,10 +18,6 @@
 <body>
     <form runat="server">
     <asp:ScriptManager runat="server">
-        <Scripts>
-            <asp:ScriptReference Name="jquery" />
-            <asp:ScriptReference Name="jquery.ui.combined" />
-        </Scripts>
     </asp:ScriptManager>
     <header>
         <div class="content-wrapper">
