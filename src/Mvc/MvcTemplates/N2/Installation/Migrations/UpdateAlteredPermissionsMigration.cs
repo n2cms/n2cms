@@ -29,7 +29,7 @@ namespace N2.Management.Installation
 			int updatedItems = 0;
 			using (var transaction = repository.BeginTransaction())
 			{
-				foreach (var item in installer.ExecuteQuery(InstallationManager.QueryItemsWithAuthorizedRoles))
+				foreach (var item in installer.ExecuteQuery(NHInstallationManager.QueryItemsWithAuthorizedRoles))
 				{
 					item.AlteredPermissions |= Permission.Read;
 					repository.SaveOrUpdate(item);

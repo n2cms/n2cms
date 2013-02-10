@@ -26,16 +26,168 @@ using Environment = NHibernate.Cfg.Environment;
 
 namespace N2.Edit.Installation
 {
+	public abstract class InstallationManager
+	{
+		public const string InstallationAppPath = "Installation.AppPath";
+		public const string installationHost = "Installation.Host";
+
+		public abstract string CheckConnection(out string stackTrace);
+		public abstract string CheckDatabase();
+		public abstract string CheckRootItem();
+		public abstract string CheckStartPage();
+		public abstract DatabaseStatus GetStatus();
+		public abstract void Upgrade();
+		public abstract void Install();
+		public abstract IEnumerable<ContentItem> ExecuteQuery(string query);
+		public abstract string ExportSchema();
+		public abstract void ExportSchema(TextWriter output);
+		public abstract string ExportUpgradeSchema();
+		ConnectionMonitor connectionContext;
+		private Importer importer;
+		private IWebContext webContext;
+		private IPersister persister;
+		private ContentActivator activator;
+
+		public InstallationManager(ConnectionMonitor connectionContext, Importer importer, IWebContext webContext, IPersister persister, ContentActivator activator)
+		{
+			this.connectionContext = connectionContext;
+			this.importer = importer;
+			this.webContext = webContext;
+			this.persister = persister;
+			this.activator = activator;
+		}
+
+		public virtual void UpdateStatus(SystemStatusLevel currentLevel)
+		{
+			connectionContext.SetConnected(currentLevel);
+		}
+
+		public virtual ContentItem InsertExportFile(Stream stream, string filename)
+		{
+			IImportRecord record = importer.Read(stream, filename);
+			record.RootItem["Installation.AppPath"] = N2.Web.Url.ToAbsolute("~/");
+			try
+			{
+				record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString();
+			}
+			catch (HttpException)
+			{
+				// silently ignore "Request is not available in this context" when calling this from init
+			}
+
+			importer.Import(record, null, ImportOption.All);
+
+			return record.RootItem;
+		}
+
+		public virtual ContentItem InsertRootNode(Type type, string name, string title)
+		{
+			ContentItem item = activator.CreateInstance(type, null);
+			item.Name = name;
+			item.Title = title;
+			item[InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
+			item[installationHost] = webContext.Url.HostUrl.ToString();
+			persister.Save(item);
+			return item;
+		}
+
+		public virtual ContentItem InsertStartPage(Type type, ContentItem root, string name, string title)
+		{
+			ContentItem item = activator.CreateInstance(type, root);
+			item.Name = name;
+			item.Title = title;
+			persister.Save(item);
+			return item;
+		}
+
+		/// <summary>Gets definitions suitable as start pages.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public virtual IEnumerable<ItemDefinition> GetStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+
+			foreach (ItemDefinition d in allDefinitions)
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredStartPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverStartPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Gets definitions suitable as root nodes.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public virtual IEnumerable<ItemDefinition> GetRootDefinitions(IEnumerable<ItemDefinition> allDefinitions)
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+
+			foreach (ItemDefinition d in allDefinitions)
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredRootPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverRootPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Gets definitions suitable as start pages and root node.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public virtual IEnumerable<ItemDefinition> GetRootAndStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+
+			foreach (ItemDefinition d in allDefinitions)
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredRootPage) || Is(hint, InstallerHint.PreferredStartPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverRootPage) && !Is(hint, InstallerHint.NeverStartPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Checks installer hint bit flags.</summary>
+		/// <param name="flags">The defined flags.</param>
+		/// <param name="expected">The expected flags.</param>
+		/// <returns>True if the defined contains the expected.</returns>
+		public static bool Is(InstallerHint flags, InstallerHint expected)
+		{
+			return (flags & expected) == expected;
+		}
+	}
+
 	/// <summary>
 	/// Wraps functionality to request database status and generate n2's 
 	/// database schema on multiple database flavours.
 	/// </summary>
 	[Service]
-	public class InstallationManager
+	[Service(typeof(InstallationManager))]
+	public class NHInstallationManager : InstallationManager
 	{
-		public const string InstallationAppPath = "Installation.AppPath";
-		public const string installationHost = "Installation.Host";
-		private readonly Engine.Logger<InstallationManager> logger;
+		private readonly Engine.Logger<NHInstallationManager> logger;
 
 		IConfigurationBuilder configurationBuilder;
 		ContentActivator activator;
@@ -48,8 +200,10 @@ namespace N2.Edit.Installation
 		ConnectionMonitor connectionContext;
 		DatabaseSection config;
 		bool isDatabaseFileSystemEnbled = false;
+		NHibernate.Cfg.Configuration cfg;
 
-		public InstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config)
+		public NHInstallationManager(IHost host, DefinitionMap map, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext, ConnectionMonitor connectionContext, DatabaseSection config)
+			: base(connectionContext, importer, webContext, persister, activator)
 		{
 			this.host = host;
 			this.map = map;
@@ -64,7 +218,6 @@ namespace N2.Edit.Installation
 			this.isDatabaseFileSystemEnbled = config.Files.StorageLocation == FileStoreLocation.Database;
 		}
 
-		NHibernate.Cfg.Configuration cfg;
 		protected NHibernate.Cfg.Configuration Cfg
 		{
 			get { return cfg ?? (cfg = configurationBuilder.BuildConfiguration()); }
@@ -82,7 +235,7 @@ namespace N2.Edit.Installation
 		const bool NoDatabaseExport = false;
 
 		/// <summary>Executes sql create database scripts.</summary>
-		public void Install()
+		public override void Install()
 		{
 			var sf = configurationBuilder.BuildSessionFactory();
 			sf.EvictQueries();
@@ -95,13 +248,13 @@ namespace N2.Edit.Installation
 			exporter.Create(ConsoleOutput, DatabaseExport);
 		}
 
-		public void ExportSchema(TextWriter output)
+		public override void ExportSchema(TextWriter output)
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
 			exporter.Execute(ConsoleOutput, NoDatabaseExport, false, null, output);
 		}
 
-		public string ExportSchema()
+		public override string ExportSchema()
 		{
 			StringBuilder sql = new StringBuilder();
 			using (StringWriter sw = new StringWriter(sql))
@@ -113,13 +266,13 @@ namespace N2.Edit.Installation
 
 
 
-		public void Upgrade()
+		public override void Upgrade()
 		{
 			SchemaUpdate schemaUpdater = new SchemaUpdate(Cfg);
 			schemaUpdater.Execute(true, true);
 		}
 
-		public string ExportUpgradeSchema()
+		public override string ExportUpgradeSchema()
 		{
 			SchemaUpdate schemaUpdater = new SchemaUpdate(Cfg);
 
@@ -140,9 +293,9 @@ namespace N2.Edit.Installation
 			exporter.Drop(ConsoleOutput, DatabaseExport);
 		}
 
-		public DatabaseStatus GetStatus()
+		public override DatabaseStatus GetStatus()
 		{
-			logger.Debug("InstallationManager: checking database status");
+			logger.Debug("checking database status");
 
 			DatabaseStatus status = new DatabaseStatus();
 
@@ -164,7 +317,6 @@ namespace N2.Edit.Installation
 			return false;
 		}
 
-		const string installationAppPath = "Installation.AppPath";
 
 		private void UpdateAppPath(DatabaseStatus status)
 		{
@@ -173,7 +325,7 @@ namespace N2.Edit.Installation
 				if (status.RootItem == null)
 					return;
 
-				status.AppPath = status.RootItem[installationAppPath] as string;
+				status.AppPath = status.RootItem[InstallationAppPath] as string;
 				status.NeedsRebase = !string.IsNullOrEmpty(status.AppPath) && !string.Equals(status.AppPath, N2.Web.Url.ToAbsolute("~/"));
 			}
 			catch (Exception ex)
@@ -289,6 +441,7 @@ namespace N2.Edit.Installation
 				status.Details = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
 				status.DetailCollections = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
 				status.AuthorizedRoles = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
+				status.Versions = Convert.ToInt32(session.CreateQuery("select count(*) from ContentVersion").UniqueResult());
 				
 				return true;
 			}
@@ -322,9 +475,28 @@ namespace N2.Edit.Installation
 			}
 		}
 
+		public override string CheckConnection(out string stackTrace)
+		{
+			try
+			{
+				using (IDbConnection conn = GetConnection())
+				{
+					conn.Open();
+					stackTrace = null;
+					return "Connection OK";
+				}
+			}
+			catch (Exception ex)
+			{
+				stackTrace = ex.StackTrace;
+				return "Connection problem, hopefully this error message can help you figure out what's wrong: <br/>" +
+								 ex.Message;
+			}
+		}
+		
 		/// <summary>Method that will checks the database. If something goes wrong an exception is thrown.</summary>
 		/// <returns>A string with diagnostic information about the database.</returns>
-		public string CheckDatabase()
+		public override string CheckDatabase()
 		{
 			ISession session = sessionProvider.OpenSession.Session;
 
@@ -342,7 +514,7 @@ namespace N2.Edit.Installation
 
 		/// <summary>Checks the root node in the database. Throws an exception if there is something really wrong with it.</summary>
 		/// <returns>A diagnostic string about the root node.</returns>
-		public string CheckRootItem()
+		public override string CheckRootItem()
 		{
 			int rootID = host.DefaultSite.RootItemID;
 			ContentItem rootItem = persister.Get(rootID);
@@ -356,7 +528,7 @@ namespace N2.Edit.Installation
 
 		/// <summary>Checks the root node in the database. Throws an exception if there is something really wrong with it.</summary>
 		/// <returns>A diagnostic string about the root node.</returns>
-		public string CheckStartPage()
+		public override string CheckStartPage()
 		{
 			int startID = host.DefaultSite.StartPageID;
 			ContentItem startPage = persister.Get(startID);
@@ -366,26 +538,6 @@ namespace N2.Edit.Installation
 									 map.GetOrCreateDefinition(startPage), startPage.Published, startPage.Expires);
 			else
 				return "No start page found with the id: " + startID;
-		}
-
-		public ContentItem InsertRootNode(Type type, string name, string title)
-		{
-			ContentItem item = activator.CreateInstance(type, null);
-			item.Name = name;
-			item.Title = title;
-			item[InstallationAppPath] = N2.Web.Url.ToAbsolute("~/");
-			item[installationHost] = webContext.Url.HostUrl.ToString();
-			persister.Save(item);
-			return item;
-		}
-
-		public ContentItem InsertStartPage(Type type, ContentItem root, string name, string title)
-		{
-			ContentItem item = activator.CreateInstance(type, root);
-			item.Name = name;
-			item.Title = title;
-			persister.Save(item);
-			return item;
 		}
 
 		#region Helper Methods
@@ -419,106 +571,10 @@ namespace N2.Edit.Installation
 
 		#endregion
 
-		public ContentItem InsertExportFile(Stream stream, string filename)
-		{
-			IImportRecord record = importer.Read(stream, filename);
-			record.RootItem["Installation.AppPath"] = N2.Web.Url.ToAbsolute("~/");
-			try
-			{
-				record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString();
-			}
-			catch (HttpException)
-			{
-				// silently ignore "Request is not available in this context" when calling this from init
-			}
-
-			importer.Import(record, null, ImportOption.All);
-
-			return record.RootItem;
-		}
-
-		/// <summary>Gets definitions suitable as start pages.</summary>
-		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
-		{
-			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
-			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
-
-			foreach (ItemDefinition d in allDefinitions)
-			{
-				InstallerHint hint = d.Installer;
-
-				if (Is(hint, InstallerHint.PreferredStartPage))
-					preferred.Add(d);
-				if (!Is(hint, InstallerHint.NeverStartPage))
-					fallback.Add(d);
-			}
-
-			if (preferred.Count == 0)
-				preferred = fallback;
-
-			return preferred;
-		}
-
-		/// <summary>Gets definitions suitable as root nodes.</summary>
-		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetRootDefinitions(IEnumerable<ItemDefinition> allDefinitions)
-		{
-			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
-			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
-
-			foreach (ItemDefinition d in allDefinitions)
-			{
-				InstallerHint hint = d.Installer;
-
-				if (Is(hint, InstallerHint.PreferredRootPage))
-					preferred.Add(d);
-				if (!Is(hint, InstallerHint.NeverRootPage))
-					fallback.Add(d);
-			}
-
-			if (preferred.Count == 0)
-				preferred = fallback;
-
-			return preferred;
-		}
-
-		/// <summary>Gets definitions suitable as start pages and root node.</summary>
-		/// <returns>An enumeration of item definitions.</returns>
-		public IEnumerable<ItemDefinition> GetRootAndStartDefinitions(IEnumerable<ItemDefinition> allDefinitions)
-		{
-			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
-			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
-
-			foreach (ItemDefinition d in allDefinitions)
-			{
-				InstallerHint hint = d.Installer;
-
-				if (Is(hint, InstallerHint.PreferredRootPage) || Is(hint, InstallerHint.PreferredStartPage))
-					preferred.Add(d);
-				if (!Is(hint, InstallerHint.NeverRootPage) && !Is(hint, InstallerHint.NeverStartPage))
-					fallback.Add(d);
-			}
-
-			if (preferred.Count == 0)
-				preferred = fallback;
-
-			return preferred;
-		}
-
-		/// <summary>Checks installer hint bit flags.</summary>
-		/// <param name="flags">The defined flags.</param>
-		/// <param name="expected">The expected flags.</param>
-		/// <returns>True if the defined contains the expected.</returns>
-		public static bool Is(InstallerHint flags, InstallerHint expected)
-		{
-			return (flags & expected) == expected;
-		}
-
 		public const string QueryItemsWithAuthorizedRoles = "select distinct ci from ContentItem ci join ci.AuthorizedRoles ar where ci.AlteredPermissions is null or ci.AlteredPermissions = 0 order by ci.ID";
 		public const string QueryItemsWithoutAncestralTrail = "from ContentItem ci where ci.AncestralTrail is null order by ci.ID";
 
-		public virtual IEnumerable<ContentItem> ExecuteQuery(string query)
+		public override IEnumerable<ContentItem> ExecuteQuery(string query)
 		{
 			int iterationSize = 100;
 			long count = persister.Repository.Count();
@@ -535,11 +591,6 @@ namespace N2.Edit.Installation
 					yield return item;
 				}
 			}
-		}
-
-		public void UpdateStatus(SystemStatusLevel currentLevel)
-		{
-			connectionContext.SetConnected(currentLevel);
 		}
 	}
 }

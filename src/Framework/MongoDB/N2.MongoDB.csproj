@@ -60,6 +60,7 @@
     <Compile Include="IntIdGenerator.cs" />
     <Compile Include="MongoDatabaseProvider.cs" />
     <Compile Include="MongoFinder.cs" />
+    <Compile Include="MongoInstallationManager.cs" />
     <Compile Include="MongoRepository.cs" />
     <Compile Include="RelationValueAccessorSerializer.cs" />
   </ItemGroup>

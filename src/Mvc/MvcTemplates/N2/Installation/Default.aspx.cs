@@ -138,23 +138,18 @@ namespace N2.Edit.Install
 
 		protected void btnTest_Click(object sender, EventArgs e)
 		{
-			try
-			{
-				InstallationManager im = Installer;
+			string stackTrace;
+			lblStatus.Text = Installer.CheckConnection(out stackTrace);
 
-				using (IDbConnection conn = im.GetConnection())
-				{
-					conn.Open();
-					lblStatus.CssClass = "ok";
-					lblStatus.Text = "Connection OK";
-				}
+			if (string.IsNullOrEmpty(lblStatus.Text))
+			{
+				lblStatus.CssClass = "ok";
+				lblStatus.Text = "Connection OK";
 			}
-			catch (Exception ex)
+			else
 			{
 				lblStatus.CssClass = "warning";
-				lblStatus.Text = "Connection problem, hopefully this error message can help you figure out what's wrong: <br/>" +
-				                 ex.Message;
-				lblStatus.ToolTip = ex.StackTrace;
+				lblStatus.ToolTip = stackTrace;
 			}
 		}
 

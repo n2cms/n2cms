@@ -76,6 +76,7 @@ namespace N2.Persistence.MongoDB
 	public class MongoDatabaseProvider : IDisposable
 	{
 		private IWebContext webContext;
+		Logger<MongoDatabaseProvider> logger;
 
 		public MongoDatabaseProvider(IProxyFactory proxies, Configuration.ConfigurationManagerWrapper config, IDefinitionProvider[] definitionProviders, IWebContext webContext)
 		{
@@ -109,7 +110,14 @@ namespace N2.Persistence.MongoDB
 			var client = new MongoClient(settings);
 			var server = client.GetServer();
 			Database = server.GetDatabase(config.Sections.Database.TablePrefix);
-			GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue");
+			try
+			{
+				GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue", "Details.StringValue", "DetailCollections.Details.Name", "DetailCollections.Details.LinkValue", "DetailCollections.Details.StringValue");
+			}
+			catch (Exception ex)
+			{
+				logger.Warn(ex);
+			}
 		}
 
 		static bool isRegistered = false;
