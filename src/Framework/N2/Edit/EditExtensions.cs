@@ -9,6 +9,7 @@ using N2.Web.Mvc.Html;
 using N2.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Edit.Versioning;
+using N2.Web.UI;
 
 namespace N2.Edit
 {
@@ -58,10 +59,10 @@ namespace N2.Edit
 
         public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
         {
-            var engine = N2.Context.Current;
+            var engine = page.GetEngine();
             string script = string.Format(RefreshBothFormat,
                 engine.ManagementPaths.GetEditInterfaceUrl(), // 0
-                engine.ManagementPaths.GetNavigationUrl(item), // 1
+				engine.ManagementPaths.GetNavigationUrl(item), // 1
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
                 item.Path, // 4

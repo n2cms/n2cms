@@ -213,7 +213,7 @@ namespace N2.Edit
 				if (ctx.RedirectUrl != null)
 					Response.Redirect(ctx.RedirectUrl.ToUrl().AppendQuery("returnUrl", redirectUrl, unlessNull: true));
 
-				Refresh(ctx.Content, redirectUrl ?? Engine.ManagementPaths.GetPreviewUrl(ctx.Content));
+				Refresh(ctx.Content, redirectUrl ?? Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 			}
         }
 
