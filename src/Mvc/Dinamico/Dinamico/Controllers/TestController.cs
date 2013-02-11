@@ -14,12 +14,12 @@ using N2.Web.Mvc;
 
 namespace Dinamico.Controllers
 {
-    public class TestController : Controller
-    {
-        //
-        // GET: /Test/
+	public class TestController : Controller
+	{
+		//
+		// GET: /Test/
 
-        public ActionResult Index()
+		public ActionResult Index()
 		{
 			StringWriter sw = new StringWriter();
 			IFileSystem files = N2.Context.Current.Resolve<IFileSystem>();
@@ -46,5 +46,5 @@ namespace Dinamico.Controllers
 			return View(expressions);
 		}
 
-    }
+	}
 }

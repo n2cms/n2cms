@@ -18,7 +18,7 @@ namespace Dinamico.Controllers
 	/// connecting this controller to the start page model.
 	/// </summary>
 	public class StartPageController : ContentController<StartPage>
-    {
+	{
 		public ActionResult NotFound()
 		{
 			var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
