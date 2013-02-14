@@ -57,7 +57,7 @@ namespace N2.Web
 
 			if (item.VersionOf.HasValue)
 			{
-				return BuildUrl(item.VersionOf)
+				return BuildUrl(item.VersionOf.Value ?? item)
 					.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
 			}
 			else if (item.ID == 0)
