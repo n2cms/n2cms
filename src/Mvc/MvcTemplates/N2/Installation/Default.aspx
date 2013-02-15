@@ -51,7 +51,7 @@
 				<% } %>
             </asp:Panel>
             <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
-				<h1>Create datbase tables</h1>
+				<h1>Create database tables</h1>
 				<% if (Status.HasSchema){ %>
 				<p><a href="#createschema" onclick="return show.call(this, 'createschema');">Re-create database tables.</a></p>
 			    <% } %>
