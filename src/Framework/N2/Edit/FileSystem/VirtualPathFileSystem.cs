@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Hosting;
 
@@ -181,7 +182,13 @@ namespace N2.Edit.FileSystem
 				DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
-		public virtual Stream OpenFile(string virtualPath, bool readOnly = false)
+		[Obsolete("Change to OpenFile(string, bool)")]
+		public virtual System.IO.Stream OpenFile(string virtualPath)
+		{
+			return OpenFile(virtualPath, false);
+		}
+
+		public virtual Stream OpenFile(string virtualPath, bool readOnly)
 		{
 			if(FileExists(virtualPath))
 			{
