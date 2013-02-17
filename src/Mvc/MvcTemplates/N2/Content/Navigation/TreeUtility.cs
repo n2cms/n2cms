@@ -79,8 +79,6 @@ namespace N2.Management.Content.Navigation
 			if (isSelectable)
 				builder.Attribute("data-selectable", "true");
 
-			builder.Href(adapter.GetPreviewUrl(item));
-
 			return builder;
 		}
 
