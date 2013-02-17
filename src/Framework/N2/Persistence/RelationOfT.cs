@@ -5,6 +5,7 @@ using System.Text;
 using N2.Collections;
 using N2.Web;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace N2.Persistence
 {
@@ -49,6 +50,50 @@ namespace N2.Persistence
 		}
 	}
 
+	public class ContentRelationConverter : TypeConverter
+	{
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+		{
+			if (typeof(ContentItem).IsAssignableFrom(destinationType))
+				return true;
+			if (typeof(int) == destinationType)
+				return true;
+			if (typeof(string) == destinationType)
+				return true;
+
+			return base.CanConvertTo(context, destinationType);
+		}
+
+		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+		{
+			if (typeof(ContentItem).IsAssignableFrom(destinationType))
+				return ((ContentRelation)value).Value;
+			if (typeof(int) == destinationType)
+				return ((ContentRelation)value).ID ?? 0;
+			if (typeof(string) == destinationType)
+				return ((ContentRelation)value).HasValue ? ((ContentRelation)value).ID.ToString() : null;
+
+			return base.ConvertTo(context, culture, value, destinationType);
+		}
+
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+		{
+			if (typeof(ContentItem).IsAssignableFrom(sourceType))
+				return true;
+
+			return base.CanConvertFrom(context, sourceType);
+		}
+
+		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+		{
+			if (value is ContentItem)
+				return (ContentRelation)((ContentItem)value);
+
+			return base.ConvertFrom(context, culture, value);
+		}
+	}
+
+	[TypeConverter(typeof(ContentRelationConverter))]
     [DebuggerDisplay("ContentRelation #{ID}")]
 	public class ContentRelation : Relation<ContentItem>
 	{
@@ -56,6 +101,12 @@ namespace N2.Persistence
 
 		public ContentRelation()
 		{
+		}
+
+		public ContentRelation(int id, Func<object, ContentItem> valueAccessor)
+		{
+			ID = id;
+			ValueAccessor = valueAccessor;
 		}
 
 		public ContentRelation(ContentItem initializedTarget)
