@@ -59,8 +59,8 @@ namespace N2.Persistence.MongoDB
 				return Enumerable.Empty<ContentItem>();
 
 			return Collection.Find(Query.Or(
-				Query.EQ("Details.LinkValue", linkTarget.ID),
-				Query.EQ("DetailCollections.Details.LinkValue", linkTarget.ID)));
+				Query.EQ("Details.LinkedItem", linkTarget.ID),
+				Query.EQ("DetailCollections.Details.LinkedItem", linkTarget.ID)));
         }
 
         public int RemoveReferencesToRecursive(ContentItem target)
@@ -70,11 +70,11 @@ namespace N2.Persistence.MongoDB
 				.Select(i => i.ID));
 
 			int count = 0;
-			foreach (var item in Collection.Find(Query.In("Details.LinkValue", ids.Select(id => (BsonValue)id))))
+			foreach (var item in Collection.Find(Query.In("Details.LinkedItem", ids.Select(id => (BsonValue)id))))
 			{
 				foreach (var detail in item.Details.ToList())
 				{
-					if (detail.LinkValue.HasValue && ids.Contains(detail.LinkValue.Value))
+					if (detail.LinkedItem.HasValue && ids.Contains(detail.LinkedItem.ID.Value))
 						item.Details.Remove(detail);
 				}
 				Collection.Save(item);

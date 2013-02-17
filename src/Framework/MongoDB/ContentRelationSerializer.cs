@@ -9,11 +9,11 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	public class ContentItemRelationSerializer : BsonBaseSerializer
+	public class ContentRelationSerializer : BsonBaseSerializer
 	{
 		private MongoDatabaseProvider database;
 
-		public ContentItemRelationSerializer(MongoDatabaseProvider database)
+		public ContentRelationSerializer(MongoDatabaseProvider database)
 		{
 			this.database = database;
 		}
@@ -27,16 +27,24 @@ namespace N2.Persistence.MongoDB
 		{
 			var id = bsonReader.ReadInt32();
 			if (id == 0)
-				return null;
-			return database.IdentityMap.GetOrCreate(id, (i) => database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", i)));
+				return ContentRelation.Empty;
+			
+			return new ContentRelation(id, Get);
+		}
+
+		private ContentItem Get(object id)
+		{
+			return database.IdentityMap.GetOrCreate(id, (i) => database.GetCollection<ContentItem>().FindOne(Query.EQ("_id", (int)i)));
 		}
 
 		public override void Serialize(BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options)
 		{
-			if (value == null)
+			var relation = value as ContentRelation;
+
+			if (relation == null || !relation.ID.HasValue || relation.ID.Value == 0)
 				bsonWriter.WriteInt32(0);
 			else
-				bsonWriter.WriteInt32(((ContentItem)value).ID);
+				bsonWriter.WriteInt32(relation.ID.Value);
 		}
 	}
 }

@@ -50,11 +50,11 @@
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentClassMapFactory.cs" />
-    <Compile Include="ContentReferenceSerializer.cs" />
+    <Compile Include="ContentRelationSerializer.cs" />
     <Compile Include="ContentSerializationProvider.cs" />
     <Compile Include="ContentCollectionSerializer.cs" />
     <Compile Include="ContentSerializer.cs" />
-    <Compile Include="ContentItemRelationSerializer.cs" />
+    <Compile Include="ContentItemReferenceSerializer.cs" />
     <Compile Include="IgnoreProxyTypeDiscriminatorConvention.cs" />
     <Compile Include="IgnoreUnderscoreMemberFinderConvention.cs" />
     <Compile Include="MongoContentItemRepository.cs" />

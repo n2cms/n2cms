@@ -60,7 +60,7 @@ namespace N2.Persistence.MongoDB
 						.Where(p => p.Info.DeclaringType == definition.ItemType))
 					{
 						if (p.Info.CanRead && p.Info.CanWrite)
-							cm.GetMemberMap(p.Name).SetSerializer(new ContentItemRelationSerializer(database));
+							cm.GetMemberMap(p.Name).SetSerializer(new ContentItemReferenceSerializer(database));
 						else
 							cm.UnmapProperty(p.Name);
 					}

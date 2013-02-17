@@ -118,8 +118,8 @@ namespace N2.Persistence.MongoDB
 			Database = server.GetDatabase(config.Sections.Database.TablePrefix);
 			try
 			{
-				GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkValue", "Details.StringValue");
-				//GetCollection<ContentItem>().EnsureIndex("DetailCollections.Details.Name", "DetailCollections.Details.LinkValue", "DetailCollections.Details.StringValue");
+				GetCollection<ContentItem>().EnsureIndex("Details.Name", "Details.LinkedItem", "Details.StringValue");
+				//GetCollection<ContentItem>().EnsureIndex("DetailCollections.Details.Name", "DetailCollections.Details.LinkedItem", "DetailCollections.Details.StringValue");
 			}
 			catch (Exception ex)
 			{
@@ -154,6 +154,7 @@ namespace N2.Persistence.MongoDB
 				cm.UnmapProperty(cd => cd.EnclosingCollection);
 				cm.UnmapProperty(cd => cd.EnclosingItem);
 				cm.UnmapProperty(cd => cd.Value);
+				cm.MapProperty(cd => cd.LinkedItem).SetSerializer(new ContentRelationSerializer(this));
 				cm.UnmapProperty(cd => cd.LinkValue);
 				cm.GetMemberMap(cd => cd.DateTimeValue).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
 
@@ -187,7 +188,7 @@ namespace N2.Persistence.MongoDB
 				cm.AutoMap();
 				cm.MapIdProperty(ci => ci.ID).SetIdGenerator(new IntIdGenerator());
 				cm.UnmapProperty(ci => ci.Children);
-				cm.GetMemberMap(ci => ci.Parent).SetSerializer(new ContentItemRelationSerializer(this));
+				cm.GetMemberMap(ci => ci.Parent).SetSerializer(new ContentItemReferenceSerializer(this));
 				cm.UnmapProperty(ci => ci.VersionOf);
 				cm.GetMemberMap(ci => ci.Created).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
 				cm.GetMemberMap(ci => ci.Updated).SetSerializationOptions(new DateTimeSerializationOptions(DateTimeKind.Local));
