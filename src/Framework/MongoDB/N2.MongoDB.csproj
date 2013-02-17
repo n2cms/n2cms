@@ -54,6 +54,7 @@
     <Compile Include="ContentSerializationProvider.cs" />
     <Compile Include="ContentCollectionSerializer.cs" />
     <Compile Include="ContentSerializer.cs" />
+    <Compile Include="ContentItemRelationSerializer.cs" />
     <Compile Include="IgnoreProxyTypeDiscriminatorConvention.cs" />
     <Compile Include="IgnoreUnderscoreMemberFinderConvention.cs" />
     <Compile Include="MongoContentItemRepository.cs" />

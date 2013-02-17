@@ -30,7 +30,14 @@ namespace N2.Persistence.MongoDB
 
 		public override string CheckConnection(out string stackTrace)
 		{
-			throw new NotImplementedException();
+			stackTrace = null;
+
+			var status = new DatabaseStatus();
+			if (UpdateConnection(status))
+				return null;
+
+			stackTrace = status.ConnectionException.StackTrace;
+			return status.ConnectionError;
 		}
 
 		public override string CheckDatabase()
@@ -134,6 +141,8 @@ namespace N2.Persistence.MongoDB
 			{
 				logger.Warn(ex);
 				status.IsConnected = false;
+				status.ConnectionError = ex.ToString();
+				status.ConnectionException = ex;
 				return false;
 			}
 		}

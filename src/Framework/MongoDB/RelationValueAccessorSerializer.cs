@@ -21,7 +21,7 @@ namespace N2.Persistence.MongoDB
 
 		private T Get(object id)
 		{
-			return databaseProvider.GetCollection<T>().Find(Query.EQ("_id", (int)id)).FirstOrDefault();
+			return databaseProvider.GetCollection<T>().FindOne(Query.EQ("_id", (int)id));
 		}
 
 		public object Deserialize(BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options)
