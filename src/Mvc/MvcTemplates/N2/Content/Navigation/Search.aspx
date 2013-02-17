@@ -14,10 +14,9 @@
 <body class="framed navigation search">
     <form id="form1" runat="server">
         <asp:Panel runat="server" CssClass="list">
-            <n2:ItemDataSource ID="idsItems" runat="server" />
             <div id="nav" class="nav">
                 <asp:GridView ID="dgrItems" runat="server" 
-					DataSourceID="idsItems" DataKeyNames="ID" DataMember="Query" 
+					DataKeyNames="ID" DataMember="Query" 
 					AutoGenerateColumns="false" CssClass="gv striped" AlternatingRowStyle-CssClass="alt" 
 					UseAccessibleHeader="true" ShowHeader="false">
                     <Columns>

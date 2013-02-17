@@ -102,8 +102,6 @@ namespace N2.Persistence.Serialization
 				item.TemplateKey = attributes["templateKey"];
 			if (attributes.ContainsKey("translationKey") && !string.IsNullOrEmpty(attributes["translationKey"]))
 				item.TranslationKey = Convert.ToInt32(attributes["translationKey"]);
-			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
-				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
 			if (attributes.ContainsKey("ancestralTrail"))
 				item.AncestralTrail = attributes["ancestralTrail"];
 			if (attributes.ContainsKey("alteredPermissions"))
@@ -123,6 +121,11 @@ namespace N2.Persistence.Serialization
 				var parentVersionKey = attributes.ContainsKey("parentVersionKey") ? attributes["parentVersionKey"] : null;
 				HandleParentRelation(item, attributes["parent"], parentVersionKey, journal);
 			}
+
+			if (attributes.ContainsKey("state") && !string.IsNullOrEmpty(attributes["state"]))
+				item.State = (ContentState)Convert.ToInt32(attributes["state"]);
+			else
+				item.State = SerializationUtility.RecaulculateState(item);
 		}
 
 		protected virtual void HandleParentRelation(ContentItem item, string parent, string parentVersionKey, ReadingJournal journal)
@@ -149,7 +152,7 @@ namespace N2.Persistence.Serialization
 		private ContentItem CreateInstance(Dictionary<string, string> attributes)
 		{
 			ItemDefinition definition = FindDefinition(attributes);
-			return activator.CreateInstance(definition.ItemType, null, null, asProxy: true);
+			return activator.CreateInstance(definition.ItemType, null, null, asProxy: true, invokeBehaviors: false);
 		}
 
 		protected virtual ItemDefinition FindDefinition(Dictionary<string, string> attributes)

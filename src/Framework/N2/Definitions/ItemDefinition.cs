@@ -31,6 +31,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Security;
 using N2.Collections;
+using System.Linq.Expressions;
 
 namespace N2.Definitions
 {
@@ -59,6 +60,7 @@ namespace N2.Definitions
 				throw new ArgumentException("Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName, "itemType");
 
 			ItemType = itemType;
+			Factory = CreateItemFactory(itemType);
 			Title = itemType.Name;
 			Discriminator = itemType.Name;
 			Description = "";
@@ -66,6 +68,21 @@ namespace N2.Definitions
 			
 			Clear();
 			Initialize(itemType);
+		}
+
+		private Func<ContentItem> CreateItemFactory(Type itemType)
+		{
+			if (itemType.IsAbstract)
+				return () => { throw new NotSupportedException("Factory not supported for " + itemType); };
+
+			var constructor = itemType.GetConstructor(new Type[0]);
+			if (constructor == null)
+				return () => { throw new NotSupportedException("Factory not supported for " + itemType + ". It needs a parameterless construcor"); };
+
+			var construct = Expression.New(constructor);
+			var func = Expression.Lambda(typeof(Func<ContentItem>), construct);
+
+			return (Func<ContentItem>)func.Compile();
 		}
 
 		#endregion
@@ -116,6 +133,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets or sets the type of this item.</summary>
 		public Type ItemType { get; internal set; }
+
+		/// <summary>Creates an instance of the defined object.</summary>
+		public Func<ContentItem> Factory { get; set; }
 
 		/// <summary>Gets zones available in this items of this class.</summary>
 		public IList<AvailableZoneAttribute> AvailableZones { get; private set; }
@@ -229,14 +249,17 @@ namespace N2.Definitions
 
 		/// <summary>Instantiates a new object of the defined content item class.</summary>
 		/// <returns>A new instance of the defined content item type.</returns>
-		public ContentItem CreateInstance(ContentItem parent)
+		public ContentItem CreateInstance(ContentItem parent, bool applyDefaultValues = true)
 		{
-			var item = (ContentItem) Activator.CreateInstance(ItemType);
+			var item = Factory();
 			item.Parent = parent;
 
-			foreach (var property in Properties.Values.Where(p => p.DefaultValue != null))
+			if (applyDefaultValues)
 			{
-				item[property.Name] = property.DefaultValue;
+				foreach (var property in Properties.Values.Where(p => p.DefaultValue != null))
+				{
+					item[property.Name] = property.DefaultValue;
+				}
 			}
 
 			return item;
@@ -519,5 +542,6 @@ namespace N2.Definitions
 			Properties = new Dictionary<string, PropertyDefinition>();
 			Metadata = new Dictionary<string, object>();
 		}
+
 	}
 }

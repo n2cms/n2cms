@@ -28,7 +28,7 @@ namespace N2.Management.Installation
 			int updatedItems = 0;
 			using (var transaction = repository.BeginTransaction())
 			{
-				foreach (var item in installer.ExecuteQuery(InstallationManager.QueryItemsWithoutAncestralTrail))
+				foreach (var item in installer.ExecuteQuery(NHInstallationManager.QueryItemsWithoutAncestralTrail))
 				{
 					item.AncestralTrail = Utility.GetTrail(item.Parent);
 					repository.SaveOrUpdate(item);

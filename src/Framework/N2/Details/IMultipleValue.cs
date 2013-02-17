@@ -1,4 +1,5 @@
-﻿using System;
+﻿using N2.Persistence;
+using System;
 
 namespace N2.Details
 {
@@ -11,7 +12,7 @@ namespace N2.Details
 		DateTime? DateTimeValue { get; set; }
 		double? DoubleValue { get; set; }
 		int? IntValue { get; set; }
-		ContentItem LinkedItem { get; set; }
+		ContentRelation LinkedItem { get; set; }
 		object ObjectValue { get; set; }
 		string StringValue { get; set; }
         bool Equals(object value);

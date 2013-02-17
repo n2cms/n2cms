@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using N2.Details;
 using N2.Engine.Globalization;
 using N2.Persistence.Finder;
+using N2.Persistence;
+using System.Linq;
 
 namespace N2.Management.Myself
 {
@@ -50,15 +52,17 @@ namespace N2.Management.Myself
 				{
 					var lvm = new LanguageViewModel { Language = language, Root = root };
 
-					var likeness = Utility.GetTrail(root) + "%";
-					var q = Engine.Resolve<IItemFinder>()
-						.Where.AncestralTrail.Like(likeness)
-						.Or.ID.Eq(root.ID);
+					var q = Parameter.BelowOrSelf(root);
+					lvm.TotalItems = (int)Engine.Persister.Repository.Count(q);
+					lvm.Changes = Engine.Persister.Repository.Find(q.Take(CurrentItem.LatestChangesMaxCount)).ToList();
+					//var q = Engine.Resolve<IItemFinder>()
+					//	.Where.AncestralTrail.Like(likeness)
+					//	.Or.ID.Eq(root.ID);
 
-					lvm.TotalItems = q.Count();
-					lvm.Changes = q.OrderBy.Updated.Desc
-						.MaxResults(CurrentItem.LatestChangesMaxCount)
-						.Select();
+					//lvm.TotalItems = q.Count();
+					//lvm.Changes = q.OrderBy.Updated.Desc
+					//	.MaxResults(CurrentItem.LatestChangesMaxCount)
+					//	.Select();
 					
 					languages.Add(lvm);
 				}

@@ -12,9 +12,9 @@ namespace N2.Tests.Persistence.NH
 			ContentItem to, from;
 			using (persister)
 			{
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", null);
 				persister.Save(to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
 				from["Reference"] = to;
 				persister.Save(from);
 			}
@@ -36,10 +36,10 @@ namespace N2.Tests.Persistence.NH
 			ContentItem parent, to, from;
 			using (persister)
 			{
-				parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
+				parent = CreateOneItem<Definitions.PersistableItem>(0, "parent", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", parent);
 				persister.Repository.SaveOrUpdate(parent, to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
 				from["Reference"] = to;
 				persister.Save(from);
 			}
@@ -61,12 +61,12 @@ namespace N2.Tests.Persistence.NH
 			ContentItem version, to, from;
 			using (persister)
 			{
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", null);
 				persister.Save(to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
 				from["Reference"] = to;
 				persister.Save(from);
-				version = CreateOneItem<Definitions.PersistableItem1>(0, "version", null);
+				version = CreateOneItem<Definitions.PersistableItem>(0, "version", null);
 				version.VersionOf = from;
 				version["Reference"] = to;
 				persister.Save(version);
@@ -89,9 +89,9 @@ namespace N2.Tests.Persistence.NH
 			ContentItem to, from;
 			using (persister)
 			{
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", null);
 				persister.Save(to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", to);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", to);
 				from["Reference"] = to;
 				persister.Save(from);
 			}
@@ -108,7 +108,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem to;
 			using (persister)
 			{
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", null);
 				to["Reference"] = to;
 				persister.Save(to);
 			}
@@ -125,9 +125,9 @@ namespace N2.Tests.Persistence.NH
 			ContentItem to, from;
 			using (persister)
 			{
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", null);
 				persister.Save(to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
 				from.GetDetailCollection("References", true).Add(to);
 				persister.Save(from);
 			}
@@ -149,10 +149,10 @@ namespace N2.Tests.Persistence.NH
 			ContentItem parent, to, from;
 			using (persister)
 			{
-				parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
-				to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
+				parent = CreateOneItem<Definitions.PersistableItem>(0, "parent", null);
+				to = CreateOneItem<Definitions.PersistableItem>(0, "to", parent);
 				persister.Repository.SaveOrUpdate(parent, to);
-				from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+				from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
 				from.GetDetailCollection("References", true).Add(to);
 				persister.Save(from);
 			}
@@ -171,14 +171,14 @@ namespace N2.Tests.Persistence.NH
 		[Test]
         public void SaveItem_WithReferences_DoesNotThrowSerializationException()
 		{
-            Definitions.PersistableItem1 parent, to, from;
+            Definitions.PersistableItem parent, to, from;
             using (persister)
             {
-                parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
+                parent = CreateOneItem<Definitions.PersistableItem>(0, "parent", null);
                 persister.Save(parent);
-                to = CreateOneItem<Definitions.PersistableItem1>(0, "to", parent);
+                to = CreateOneItem<Definitions.PersistableItem>(0, "to", parent);
                 persister.Save(to);
-                from = CreateOneItem<Definitions.PersistableItem1>(0, "from", null);
+                from = CreateOneItem<Definitions.PersistableItem>(0, "from", null);
                 from.ContentLinks = new[] {to};
                 persister.Save(from);
             }

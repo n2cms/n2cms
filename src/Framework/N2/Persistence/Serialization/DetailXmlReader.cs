@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 using N2.Details;
 using System.Web;
+using N2.Engine;
 
 namespace N2.Persistence.Serialization
 {
@@ -11,6 +12,7 @@ namespace N2.Persistence.Serialization
 	/// </summary>
 	public class DetailXmlReader : XmlReader, IXmlReader
 	{
+		Logger<DetailXmlReader> logger;
 		string applicationPath = N2.Web.Url.ApplicationPath ?? "/";
 
 		public void Read(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
@@ -38,9 +40,10 @@ namespace N2.Persistence.Serialization
 				{
 					type = Utility.TypeFromName(meta); 
 				}
-				catch (Exception x)
+				catch (Exception ex)
 				{
-					// TODO: log/report the exception. This is really bad because it means the enum type has gone away. 
+					// This is really bad because it means the enum type has gone away. 
+					logger.Warn(ex);
 					
 					// Also, another exception is going to be thrown later because the enum won't be able to be decoded. So we'll just load the value
 					// as a string and hope that someone eventually deals with it. This may automatically happen if the ContentItem used the regular

@@ -6,6 +6,7 @@ using N2.Persistence;
 using NUnit.Framework;
 using Shouldly;
 using N2.Persistence.Proxying;
+using N2.Definitions;
 
 namespace N2.Tests.Persistence
 {
@@ -21,22 +22,39 @@ namespace N2.Tests.Persistence
 		{
 			base.SetUp();
 
-			activator = new ContentActivator(stateChanger = new N2.Edit.Workflow.StateChanger(), notifier = new ItemNotifier(), new EmptyProxyFactory());
+			activator = new ContentActivator(stateChanger = new N2.Edit.Workflow.StateChanger(), notifier = new ItemNotifier(), new InterceptingProxyFactory());
+			activator.Initialize(new[] { new ItemDefinition(typeof(Definitions.PersistableItem)), new ItemDefinition(typeof(Definitions.PersistableItem1b)) });
 		}
 
 		[Test]
 		public void CreateInstance_creates_insatnce_of_given_type()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem1>(null);
+			var instance = activator.CreateInstance<Definitions.PersistableItem>(null);
 
-			instance.ShouldBeTypeOf<Definitions.PersistableItem1>();
+			instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+		}
+
+		[Test]
+		public void CreateInstance_creates_insatnce_without_proxy()
+		{
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+
+			instance.ShouldBeTypeOf<Definitions.PersistableItem>();
+		}
+
+		[Test]
+		public void CreateInstance_creates_insatnce_with_proxys()
+		{
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null, null, asProxy: true);
+
+			instance.GetType().BaseType.ShouldBe(typeof(Definitions.PersistableItem));
 		}
 
 		[Test]
 		public void CreateInstance_creates_insatnce_with_given_parent_without_adding_to_parent_child_collection()
 		{
-			var root = activator.CreateInstance(typeof(Definitions.PersistableItem1), null);
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), root);
+			var root = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), root);
 
 			instance.Parent.ShouldBe(root);
 			root.Children.ShouldNotContain(instance);
@@ -48,7 +66,7 @@ namespace N2.Tests.Persistence
 			ContentItem created = null;
 			activator.ItemCreated += (s, e) => created = e.AffectedItem;
 
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), null);
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null);
 
 			created.ShouldBe(instance);
 		}
@@ -56,17 +74,25 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void CreateInstance_sets_template_key()
 		{
-			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem1), null, "Hello");
+			var instance = activator.CreateInstance(typeof(Definitions.PersistableItem), null, "Hello");
 
 			instance.TemplateKey.ShouldBe("Hello");
 		}
 
-		[Test, Ignore("Currently performed by the editable, might make sense to do here")]
-		public void Default_values_are_assigned()
+		[Test]
+		public void Default_values_are_assigned_for_non_proxies()
 		{
-			var instance = activator.CreateInstance<Definitions.PersistableItem1>(null);
+			var instance = activator.CreateInstance<Definitions.PersistableItem1b>(null, null, asProxy: false);
 
-			instance.IntProperty.ShouldBe(666);
+			instance.CompilerGeneratedIntProperty.ShouldBe(666);
+		}
+
+		[Test]
+		public void Default_values_are_retrievable_from_proxies()
+		{
+			var instance = activator.CreateInstance<Definitions.PersistableItem1b>(null, null, asProxy: true);
+
+			instance.CompilerGeneratedIntProperty.ShouldBe(666);
 		}
 	}
 }

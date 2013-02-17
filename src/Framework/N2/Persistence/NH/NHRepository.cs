@@ -63,8 +63,12 @@ namespace N2.Persistence.NH
 	}
 
 	[Service(typeof(IRepository<>), Key = "n2.repository.generic")]
+#pragma warning disable 612, 618
 	[Service(typeof(INHRepository<>), Key = "n2.nhrepository.generic")]
-	public class NHRepository<TEntity> : INHRepository<TEntity> where TEntity : class 
+	public class NHRepository<TEntity> : 
+		INHRepository<TEntity>,
+#pragma warning restore 612, 618
+		IRepository<TEntity> where TEntity : class
 	{
 		private ISessionProvider sessionProvider;
 		Logger<NHRepository<TEntity>> logger;

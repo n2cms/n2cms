@@ -21,6 +21,9 @@
 using System;
 using N2.Collections;
 using System.Diagnostics;
+using System.Collections;
+using System.Linq;
+using N2.Persistence;
 
 namespace N2.Details
 {
@@ -77,8 +80,7 @@ namespace N2.Details
 		private string valueTypeKey;
 
 		private string stringValue;
-		private ContentItem linkedItem;
-		private int? linkValue;
+		private ContentRelation linkedItem;
 		private double? doubleValue;
 		private DateTime? dateTimeValue;
 		private int? intValue;
@@ -126,7 +128,7 @@ namespace N2.Details
 					case TypeKeys.IntType:
 						return intValue;
 					case TypeKeys.LinkType:
-						return linkedItem;
+						return LinkedItem.Value;
 					case TypeKeys.StringType:
 						return stringValue;
                     case TypeKeys.EnumType:
@@ -151,7 +153,7 @@ namespace N2.Details
 			public DateTime? DateTimeValue { get; set; }
 			public double? DoubleValue { get; set; }
 			public int? IntValue { get; set; }
-			public ContentItem LinkedItem { get; set; }
+			public ContentRelation LinkedItem { get; set; }
 			public object ObjectValue { get; set; }
 			public string StringValue { get; set; }
 			#endregion
@@ -255,7 +257,7 @@ namespace N2.Details
 					intValue = 0;
 					return;
 				case TypeKeys.LinkType:
-					linkedItem = null;
+					LinkedItem = null;
 					return;
 				case TypeKeys.StringType:
 					stringValue = null;
@@ -310,9 +312,9 @@ namespace N2.Details
 			set { stringValue = value; }
 		}
 
-		public virtual ContentItem LinkedItem
+		public virtual ContentRelation LinkedItem
 		{
-			get { return linkedItem; }
+			get { return linkedItem ?? (linkedItem = ContentRelation.Empty); }
 			set
 			{
 				linkedItem = value;
@@ -323,10 +325,10 @@ namespace N2.Details
 			}
 		}
 
-		protected internal virtual int? LinkValue
+		public virtual int? LinkValue
 		{
-			get { return linkValue; }
-			set { linkValue = value; }
+			get { return LinkedItem.ID; }
+			set { LinkedItem.ID = value; }
 		}
 
 		public virtual double? DoubleValue
@@ -434,6 +436,23 @@ namespace N2.Details
 			};
 		}
 
+		/// <summary>Gets the associated property name for an enumerable collection used for storing In or NotIn comparison values.</summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static string GetAssociatedEnumerablePropertyName(IEnumerable value)
+		{
+			if (value == null)
+				throw new NotSupportedException();
+			
+			Type collectionType = value.GetType();
+			if (collectionType.IsArray && collectionType.GetElementType() != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetElementType());
+			if (collectionType.IsGenericType && collectionType.GetGenericArguments()[0] != typeof(object))
+				return ContentDetail.GetAssociatedPropertyName(collectionType.GetGenericArguments()[0]);
+
+			return ContentDetail.GetAssociatedPropertyName(value.OfType<object>().FirstOrDefault());
+		}
+
 		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value.</summary>
 		/// <param name="value">The value for which the to retrieve the associated property.</param>
 		/// <returns>The name of the property on the detail class that can encapsulate the given value.</returns>
@@ -450,7 +469,7 @@ namespace N2.Details
 			else if (value is string)
 				return "StringValue";
 			else if (value is ContentItem)
-				return "LinkedItem";
+				return "LinkedItem.ID";
 			else if (value is Enum)
 				return "StringValue";
 			else
@@ -541,6 +560,13 @@ namespace N2.Details
 			return cloned;
         }
 
+		public virtual ContentDetail Clone(string newPartName)
+		{
+			var detail = this.Clone();
+			detail.name = newPartName;
+			return detail;
+		}
+
         object ICloneable.Clone()
         {
             return this.Clone();
@@ -601,10 +627,12 @@ namespace N2.Details
 			StringValue = other.StringValue;
 		}
 
-		public static object ConvertForQueryParameter(object value)
+		public static object ExtractQueryValue(object value)
 		{
 			if (value is Enum)
 				return value.ToString();
+			if (value is ContentItem)
+				return ((ContentItem)value).ID;
 
 			return value;
 		}

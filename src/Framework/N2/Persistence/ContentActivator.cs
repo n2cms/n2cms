@@ -26,9 +26,9 @@ namespace N2.Persistence
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
-		public T CreateInstance<T>(ContentItem parentItem) where T : ContentItem
+		public T CreateInstance<T>(ContentItem parentItem, string templateKey = null, bool asProxy = false) where T : ContentItem
 		{
-			return (T)CreateInstance(typeof(T), parentItem);
+			return (T)CreateInstance(typeof(T), parentItem, templateKey, asProxy);
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
@@ -45,7 +45,7 @@ namespace N2.Persistence
         /// <param name="parentItem">Parent of the item to create.</param>
         /// <param name="templateKey">The type of template the item is associated with.</param>
         /// <returns>A new instance of an item.</returns>
-        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey, bool asProxy = false)
+        public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, string templateKey, bool asProxy = false, bool invokeBehaviors = true)
         {
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
@@ -57,13 +57,14 @@ namespace N2.Persistence
 			if (item == null)
 			{
 				if (contentBuilders.TryGetValue(itemType, out definition))
-					item = definition.CreateInstance(parentItem);
+					item = definition.CreateInstance(parentItem, applyDefaultValues: !asProxy);
 				else
 					item = Activator.CreateInstance(itemType, true) as ContentItem;
 			}
             if (templateKey != null)
                 item.TemplateKey = templateKey;
-            OnItemCreating(item, parentItem);
+			if (invokeBehaviors)
+				OnItemCreating(item, parentItem);
             return item;
         }
 

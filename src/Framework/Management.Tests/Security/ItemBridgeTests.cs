@@ -51,7 +51,7 @@ namespace N2.Tests.Security
 
 			var root = new N2.Management.Myself.RootBase();
 			persister.Save(root);
-			bridge = new ItemBridge(activator, finder, persister, new SecurityManager(new FakeWebContextWrapper(), new EditSection()), new Host(new FakeWebContextWrapper(), new HostSection { RootID = root.ID }), new EditSection { Membership = new MembershipElement { UserType = typeof(UserOverride).AssemblyQualifiedName } });
+			bridge = new ItemBridge(activator, persister, new SecurityManager(new FakeWebContextWrapper(), new EditSection()), new Host(new FakeWebContextWrapper(), new HostSection { RootID = root.ID }), new EditSection { Membership = new MembershipElement { UserType = typeof(UserOverride).AssemblyQualifiedName } });
 		}
 
 		[TearDown]

@@ -107,10 +107,12 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.52.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+    <Reference Include="System.Data.SQLite, Version=1.0.84.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\System.Data.SQLite.DLL</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.84.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -212,6 +214,8 @@
     <Compile Include="Engine\TypeFinderTests.cs" />
     <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
+    <Compile Include="MongoDB\MongoRepositoryTests_Find.cs" />
+    <Compile Include="MongoDB\MongoVersionRepositoryTests.cs" />
     <Compile Include="Persistence\ChildrenTests.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Persistence\ContentPersister_ContentSourcesTests.cs" />
     <Compile Include="Persistence\Definitions\ActiveContentItem.cs" />
     <Compile Include="Persistence\IActiveContentTests.cs" />
+    <Compile Include="MongoDB\MongoRepositoryTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
     <Compile Include="Persistence\NH\ItemRepositoryTests_Find.cs" />
     <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
@@ -458,6 +463,10 @@
       <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
       <Name>N2.IoC.Windsor3</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MongoDB\N2.MongoDB.csproj">
+      <Project>{86fa9bb3-7d92-488c-9192-80d6b38de5bc}</Project>
+      <Name>N2.MongoDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
@@ -488,6 +497,12 @@
     <Content Include="Web\Drawing\n2logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -516,7 +531,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

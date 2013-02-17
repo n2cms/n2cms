@@ -40,7 +40,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_IsSlash_OnRootPage()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "root", null);
 
 			persister.Save(item);
 
@@ -50,8 +50,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_ContainsParentTrail_OnChildPage()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", root);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", root);
 
 			persister.Save(root);
 			persister.Save(item);
@@ -62,8 +62,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_ContainsParentTrail_OnChildPage_WhenSavedByCascade()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", root);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", root);
 
 			persister.Repository.SaveOrUpdate(root, item);
 
@@ -73,9 +73,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_IsUpdated_WhenItem_IsCopied()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
-			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem one = CreateOneItem<PersistableItem>(0, "one", root);
+			PersistableItem two = CreateOneItem<PersistableItem>(0, "two", root);
 			persister.Repository.SaveOrUpdate(root, one, two);
 
 			ContentItem copiedItem = persister.Copy(two, one);
@@ -86,9 +86,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_IsUpdated_WhenItem_IsMoved()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
-			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem one = CreateOneItem<PersistableItem>(0, "one", root);
+			PersistableItem two = CreateOneItem<PersistableItem>(0, "two", root);
 			persister.Repository.SaveOrUpdate(root, one, two);
 
 			persister.Move(two, one);
@@ -103,10 +103,10 @@ namespace N2.Tests.Persistence.NH
 			//		one
 			//		two
 			//			three
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
-			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
-			PersistableItem1 three = CreateOneItem<PersistableItem1>(0, "three", two);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem one = CreateOneItem<PersistableItem>(0, "one", root);
+			PersistableItem two = CreateOneItem<PersistableItem>(0, "two", root);
+			PersistableItem three = CreateOneItem<PersistableItem>(0, "three", two);
 			persister.Repository.SaveOrUpdate(root, one, two, three);
 
 			//	root
@@ -127,10 +127,10 @@ namespace N2.Tests.Persistence.NH
 			//		one
 			//		two
 			//			three
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
-			PersistableItem1 two = CreateOneItem<PersistableItem1>(0, "two", root);
-			PersistableItem1 three = CreateOneItem<PersistableItem1>(0, "three", two);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem one = CreateOneItem<PersistableItem>(0, "one", root);
+			PersistableItem two = CreateOneItem<PersistableItem>(0, "two", root);
+			PersistableItem three = CreateOneItem<PersistableItem>(0, "three", two);
 			persister.Repository.SaveOrUpdate(root, one, two, three);
 
 			//	root
@@ -145,11 +145,11 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AncestralTrail_IsUpdated_WhenUsing_VersioningManager()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem one = CreateOneItem<PersistableItem>(0, "one", root);
 			persister.Repository.SaveOrUpdate(root, one);
 
-			VersionManager vm = new VersionManager(TestSupport.CreateVersionRepository(typeof(PersistableItem1)), persister.Repository, new N2.Edit.Workflow.StateChanger(), new N2.Configuration.EditSection());
+			VersionManager vm = new VersionManager(TestSupport.CreateVersionRepository(typeof(PersistableItem)), persister.Repository, new N2.Edit.Workflow.StateChanger(), new N2.Configuration.EditSection());
 			var version = vm.AddVersion(one);
 			
 			one.Name += "2";
