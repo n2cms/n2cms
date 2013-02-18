@@ -55,9 +55,9 @@ namespace N2.Web
 		{
 			if (item == null) throw new ArgumentNullException("item");
 
-			if (item.VersionOf.HasValue)
+			if (item.VersionOf.HasValue && item.VersionOf.Value != null)
 			{
-				return BuildUrl(item.VersionOf.Value ?? item)
+				return BuildUrl(item.VersionOf.Value)
 					.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
 			}
 			else if (item.ID == 0)
