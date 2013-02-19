@@ -76,7 +76,15 @@ namespace N2.Web
 			}
 		}
 
-
+#if SlideshowUsesAdapter
+		[EditableText("Outer CSS Class", 400)]
+#endif
+		public string CssClass
+		{
+			get { return GetDetail("CssClass", ""); }
+			set { SetDetail("CssClass", value, ""); }
+		}
+		
 #if SlideshowUsesAdapter
 		[EditableEnum("Slideshow Template", 100, typeof(SlideshowMode))]
 		public SlideshowMode SlideshowTemplate
@@ -85,13 +93,6 @@ namespace N2.Web
 			set { SetDetail("SlideshowTemplate", value, SlideshowMode.Paragraphs); }
 		} 
 
-		[EditableText("Outer CSS Class", 400)]
-		public string CssClass
-		{
-			get { return GetDetail("CssClass", ""); }
-			set { SetDetail("CssClass", value, ""); }
-		}
-		
 		[EditableText("Custom HTML Template", 500, ContainerName = "Advanced", Rows = 10, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine, HelpText = "Put {0} where you want the Image URL and {1} where you want the Alt text.")]
 		public string CustomTemplate
 		{
