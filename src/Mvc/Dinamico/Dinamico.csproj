@@ -109,6 +109,7 @@
     <Compile Include="Dinamico\Models\PartModelBase.cs" />
     <Compile Include="Dinamico\Models\StartPage.cs" />
     <Compile Include="Dinamico\Registrations\FreeFormRegistration.cs" />
+    <Compile Include="Dinamico\Registrations\RecursiveZoneAdapter.cs" />
     <Compile Include="Dinamico\Registrations\StartPageRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -146,9 +147,23 @@
     <Content Include="Dinamico\Themes\Default\Scripts\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\GDocViewer.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageFloat.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\ContentTile.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageAndText.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\Hyperlink.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
+    <Content Include="Dinamico\Themes\Responsive\Content\Site.css" />
+    <Content Include="Dinamico\Themes\Responsive\css\bootstrap.css" />
+    <Content Include="Dinamico\Themes\Responsive\css\bootstrap.min.css" />
+    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings-white.png" />
+    <Content Include="Dinamico\Themes\Responsive\img\glyphicons-halflings.png" />
+    <Content Include="Dinamico\Themes\Responsive\js\bootstrap.js" />
+    <Content Include="Dinamico\Themes\Responsive\js\bootstrap.min.js" />
     <Content Include="Dinamico\Themes\Roadwork\Content\down.png" />
     <Content Include="Dinamico\Themes\Roadwork\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Roadwork\Content\home.png" />
@@ -287,6 +302,12 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\Selection.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Dinamico\Themes\Default\Views\Slideshow\Index.cshtml" />
+    <Content Include="Dinamico\Themes\Responsive\Views\ContentParts\ThreeColumns.cshtml" />
+    <Content Include="Dinamico\Themes\Responsive\Views\Shared\LayoutPartials\Navbar.cshtml" />
+    <Content Include="Dinamico\Themes\Responsive\Views\Shared\_Layout.cshtml" />
+    <Content Include="Dinamico\Themes\Responsive\Views\Web.config" />
+    <Content Include="Dinamico\Themes\Responsive\Views\_ViewStart.cshtml" />
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
   <ItemGroup>

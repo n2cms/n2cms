@@ -3,6 +3,7 @@ using N2.Templates.Mvc.Models.Pages;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;
+using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -16,4 +17,5 @@ namespace N2.Templates.Mvc.Controllers
 			return View(new ImageGalleryModel(CurrentItem, galleryItems));
 		}
 	}
+
 }
