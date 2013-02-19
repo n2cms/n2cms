@@ -49,8 +49,8 @@
 				<% if (Status.ConnectionType == "SqlCeConnection" && !Status.IsConnected){ %>
 				<p class="buttons"><asp:Button ID="btnCreateSqlCe" runat="server" OnClick="btnCreateSqlCeFile_Click" Text="Create SqlCe database file" CausesValidation="false" /></p>
 				<% } %>
-			</asp:Panel>
-			<asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
+            </asp:Panel>
+            <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
 				<h1>Create database tables</h1>
 				<% if (Status.HasSchema){ %>
 				<p><a href="#createschema" onclick="return show.call(this, 'createschema');">Re-create database tables.</a></p>
