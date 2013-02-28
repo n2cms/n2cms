@@ -37,6 +37,18 @@ namespace N2.Tests.Utility
 		}
 
 		[Test]
+		public void GetFileSizeString_Test()
+		{
+			Assert.AreEqual(N2.Utility.GetFileSizeString(1048576, false), "1.0 MiB");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(1024, false), "1 KiB");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(1000000, true), "1.0 MB");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(1024, true), "1 KB");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(1048576, true), "1.0 MB");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(0, true), "0 Bytes");
+			Assert.AreEqual(N2.Utility.GetFileSizeString(0, false), "0 Bytes");
+		}
+
+		[Test]
 		public void UpdateSortOrder_SetsUniqueSortOrder_ForEachItem()
 		{
 			Assert.AreEqual(0, item1.SortOrder);

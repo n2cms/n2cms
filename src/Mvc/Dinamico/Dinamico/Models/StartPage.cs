@@ -59,6 +59,14 @@ namespace Dinamico.Models
 
 		public virtual string Logotype { get; set; }
 
+		[EditableUrl("Login Page", 79, HelpText = "Page to display when authorization to a page fails.")]
+		public virtual string LoginPage
+		{
+			get { return (string)GetDetail("LoginPage"); }
+			set { SetDetail("LoginPage", value); }
+		}
+
+
 		#region ISitesSource Members
 
 		public virtual string HostName { get; set; }

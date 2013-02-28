@@ -3,10 +3,10 @@ using Castle.Core;
 using N2.Plugin;
 using N2.Security;
 using N2.Web;
-using N2.Templates.Items;
 using N2.Engine;
+using N2;
 
-namespace N2.Templates.Services
+namespace Dinamico.Registrations
 {
 	[Service]
 	public class PermissionDeniedHandler : IAutoStart
@@ -24,11 +24,11 @@ namespace N2.Templates.Services
 
 		void securityEnforcer_AuthorizationFailed(object sender, CancellableItemEventArgs e)
 		{
-			StartPage startPage = parser.StartPage as StartPage;
+			var startPage = parser.StartPage as Models.StartPage;
 			if (startPage != null && startPage.LoginPage != null)
 			{
 				e.Cancel = true;
-				context.HttpContext.Response.Redirect(Url.Parse(startPage.LoginPage.Url).AppendQuery("returnUrl", context.Url.LocalUrl));
+				context.HttpContext.Response.Redirect(Url.Parse(startPage.LoginPage).AppendQuery("returnUrl", context.Url.LocalUrl));
 			}
 		}
 
