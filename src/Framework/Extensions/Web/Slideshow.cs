@@ -174,7 +174,7 @@ namespace N2.Web
 		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath, string filter)
 		{
 			var baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
-			foreach (var f in N2.Utility.RecursiveListFiles(relativeBasePath, filter))
+			foreach (var f in N2.Utility.RecursiveListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
 			{
 				if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
 					continue;
