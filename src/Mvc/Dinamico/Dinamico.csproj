@@ -156,6 +156,7 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\ImageAndText.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\Hyperlink.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\FileList.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\ContentParts\LoginForm.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
