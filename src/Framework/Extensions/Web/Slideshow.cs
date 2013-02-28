@@ -174,31 +174,16 @@ namespace N2.Web
 		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath, string filter)
 		{
 			var baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
-			var toExplore = new List<string> { baseDir };
-			Debug.Assert(baseDir != null, "baseDir != null");
-			while (toExplore.Count > 0)
+			foreach (var f in N2.Utility.RecursiveListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
 			{
-				var files = System.IO.Directory.GetFiles(toExplore[0], filter);
+				if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
+					continue;
 
-				var filenames = new string[files.Length];
-				for (var i = 0; i < filenames.Length; ++i)
-					filenames[i] = System.IO.Path.GetFileName(files[i]);
-
-				for (var i = 0; i < files.Length; ++i)
-				{
-					var f = files[i];
-					if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
-						continue;
-					yield return new SlideshowImage()
-									 {
-										 ImageHref = f.Substring(baseDir.Length).Replace('\\', '/'),
-										 Description = null,
-										 Title = filenames[i]
-									 };
-				}
-
-				toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
-				toExplore.RemoveAt(0);
+				yield return new SlideshowImage() {
+					ImageHref = f.Substring(baseDir.Length).Replace('\\', '/'),
+					Description = null,
+					Title = System.IO.Path.GetFileName(f)
+				};
 			}
 		}
 	}
