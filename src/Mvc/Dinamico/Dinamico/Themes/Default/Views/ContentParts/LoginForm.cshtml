@@ -63,6 +63,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		FormsAuthentication.SignOut();
 		showError = false;
 	}
+}
 
 @if (showError)
 {
@@ -72,10 +73,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <form action="@Request.RawUrl" method="post">
 	@if (User.Identity.IsAuthenticated)
 	{
-		@{ Html.DroppableZone("RestrictedAbove").Render(); }
+		Html.DroppableZone("RestrictedAbove").Render();
 		<input type="hidden" name="action" value="sign-out" />
 		<button type="submit" class="btn">Sign out</button>
-		@{ Html.DroppableZone("RestrictedBelow").Render(); }
+		Html.DroppableZone("RestrictedBelow").Render();
 	}
 	else
 	{ 
