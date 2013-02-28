@@ -399,6 +399,23 @@ namespace N2
 			return null; // it's okay to use default text
 		}
 
+		public static IEnumerable<string> RecursiveListFiles(string physicalBasePath, string filter)
+		{
+			var toExplore = new List<string> { physicalBasePath };
+			while (toExplore.Count > 0)
+			{
+				var files = System.IO.Directory.GetFiles(toExplore[0], filter);
+
+				for (var i = 0; i < files.Length; ++i)
+				{
+					yield return files[i];
+				}
+
+				toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
+				toExplore.RemoveAt(0);
+			}
+		}
+
 		/// <summary>
 		/// Somewhat convoluted code to avoid a few exceptions.
 		/// </summary>
@@ -419,9 +436,9 @@ namespace N2
 			{
 				ResourceKey other = obj as ResourceKey;
 				return other != null
-				       && other.classKey == classKey
-				       && other.resourceKey == resourceKey
-				       && other.cultureName == cultureName;
+					   && other.classKey == classKey
+					   && other.resourceKey == resourceKey
+					   && other.cultureName == cultureName;
 			}
 
 			public override int GetHashCode()
@@ -429,8 +446,8 @@ namespace N2
 				unchecked
 				{
 					return classKey.GetHashCode()
-					       + resourceKey.GetHashCode()
-					       + cultureName.GetHashCode();
+						   + resourceKey.GetHashCode()
+						   + cultureName.GetHashCode();
 				}
 			}
 		}
@@ -474,13 +491,13 @@ namespace N2
 				return GetLocalResourceString(resourceKey);
 		}
 
-        public static Func<DateTime> CurrentTime = delegate { return DateTime.Now; };
+		public static Func<DateTime> CurrentTime = delegate { return DateTime.Now; };
 
-        [Obsolete("Moved to N2.Web.Url.ToAbsolute")]
-        public static string ToAbsolute(string relativePath)
-        {
-            return Url.ToAbsolute(relativePath);
-        }
+		[Obsolete("Moved to N2.Web.Url.ToAbsolute")]
+		public static string ToAbsolute(string relativePath)
+		{
+			return Url.ToAbsolute(relativePath);
+		}
 
 		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
 		/// <param name="preHandlers">The event handler to signal.</param>
@@ -551,33 +568,33 @@ namespace N2
 
 			string ancestralTrail = item.AncestralTrail ?? GetTrail(item.Parent);
 			return ancestralTrail + item.ID + "/";
-        }
+		}
 
-        /// <summary>Gets the base types of a given item.</summary>
-        /// <param name="type">The type whose base types to get.</param>
-        /// <returns>The base types of the type.</returns>
-        public static IEnumerable<Type> GetBaseTypes(Type type)
-        {
-            if (type == null || type.IsInterface || type.IsValueType)
-                return new Type[0];
+		/// <summary>Gets the base types of a given item.</summary>
+		/// <param name="type">The type whose base types to get.</param>
+		/// <returns>The base types of the type.</returns>
+		public static IEnumerable<Type> GetBaseTypes(Type type)
+		{
+			if (type == null || type.IsInterface || type.IsValueType)
+				return new Type[0];
 
 			return GetBaseTypesAndSelf(type.BaseType);
-        }
+		}
 
-        /// <summary>Gets the base types of a given item.</summary>
-        /// <param name="type">The type whose base types to get.</param>
-        /// <returns>The base types of the type.</returns>
-        public static IEnumerable<Type> GetBaseTypesAndSelf(Type type)
-        {
-            if (type == null || type.IsInterface || type.IsValueType)
-                yield break;
-            
-            while (type != null)
-            {
-                yield return type;
-                type = type.BaseType;
-            }
-        }
+		/// <summary>Gets the base types of a given item.</summary>
+		/// <param name="type">The type whose base types to get.</param>
+		/// <returns>The base types of the type.</returns>
+		public static IEnumerable<Type> GetBaseTypesAndSelf(Type type)
+		{
+			if (type == null || type.IsInterface || type.IsValueType)
+				yield break;
+			
+			while (type != null)
+			{
+				yield return type;
+				type = type.BaseType;
+			}
+		}
 
 		private static AspNetHostingPermissionLevel? trustLevel;
 		/// <summary>
@@ -660,6 +677,31 @@ namespace N2
 		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		/// <summary>Renders a file size (in bytes) in MB (base 10) or MiB (base 2).</summary>
+		/// <param name="p">File size in bytes</param>
+		/// <returns></returns>
+		public static string GetFileSizeString(long p, bool base10)
+		{
+			if (base10)
+			{
+				if (p > 1000000)
+					return string.Format("{0:#.#} MB", (double)p / 1000000.0);
+				if (p > 4000)
+					return string.Format("{0:#} KB", (double)p / 1000.0);
+				else 
+					return string.Format("{0:#} bytes", (double)p);
+			}
+			else
+			{
+				if (p > 1048576)
+					return string.Format("{0:#.#} MiB", (double)p / 1048576.0);
+				if (p > 4096)
+					return string.Format("{0:#} KiB", (double)p / 1024.0);
+				else
+					return string.Format("{0:#} bytes", (double)p);
+			}
 		}
 
 		/// <summary>Shorthand for resolving an object via an IProvider.</summary>
@@ -775,5 +817,6 @@ namespace N2
 
 			return list;
 		}
+
 	}
 }
