@@ -66,7 +66,7 @@ namespace N2.Web.Mvc.Html
 			return format.Replace(new RouteValueDictionary(replacements));
 		}
 
-        public class ControlPanelHelper : IHtmlString
+		public class ControlPanelHelper : IHtmlString
 		{
 			private bool refreshNavigation = true;
 			private bool forceRefreshNavigation = false;
@@ -127,23 +127,23 @@ namespace N2.Web.Mvc.Html
 				set { includePartStyles = value; }
 			}
 
-            /// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
-            /// <param name="jQuery"></param>
-            /// <param name="jQueryPlugins"></param>
-            /// <param name="partScripts"></param>
-            /// <param name="partStyles"></param>
-            /// <returns></returns>
+			/// <summary>Is used to instruct the control panel helper to render less javascript and css resources.</summary>
+			/// <param name="jQuery"></param>
+			/// <param name="jQueryPlugins"></param>
+			/// <param name="partScripts"></param>
+			/// <param name="partStyles"></param>
+			/// <returns></returns>
 			[Obsolete("Use Configure(c => c.IncludeJQuery = true)")]
-            public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
-            {
-                includeJQuery = jQuery;
-                includeJQueryPlugins = jQueryPlugins;
+			public ControlPanelHelper Includes(bool jQuery = true, bool jQueryPlugins = true, bool partScripts = true, bool partStyles = true)
+			{
+				includeJQuery = jQuery;
+				includeJQueryPlugins = jQueryPlugins;
 				includeJQueryUi = jQueryPlugins;
-                includePartScripts = partScripts;
-                includePartStyles = partStyles;
+				includePartScripts = partScripts;
+				includePartStyles = partStyles;
 
-                return this;
-            }
+				return this;
+			}
 
 			/// <summary>Configures the control panel calling the given lambda expression.</summary>
 			/// <param name="config">The configuration expression.</param>
@@ -154,10 +154,10 @@ namespace N2.Web.Mvc.Html
 				return this;
 			}
 
-            /// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
-            /// <param name="refreshNavigation"></param>
-            /// <returns></returns>
-            public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
+			/// <summary>Is used to instruct the control panel helper not to refresh navigation to the current page.</summary>
+			/// <param name="refreshNavigation"></param>
+			/// <returns></returns>
+			public ControlPanelHelper RefreshNavigation(bool refreshNavigation = true)
 			{
 				this.refreshNavigation = refreshNavigation;
 				return this;
@@ -172,15 +172,15 @@ namespace N2.Web.Mvc.Html
 				return this;
 			}
 
-            /// <summary>Sets the selected item control panel plugins are bound to.</summary>
-            /// <param name="currentItem"></param>
-            /// <returns></returns>
+			/// <summary>Sets the selected item control panel plugins are bound to.</summary>
+			/// <param name="currentItem"></param>
+			/// <returns></returns>
 			public ControlPanelHelper Selected(ContentItem currentItem)
 			{
 				this.currentItem = currentItem;
 				return this;
 			}
-            
+			
 			public override string ToString()
 			{
 				using (var tw = new StringWriter())
@@ -208,12 +208,12 @@ namespace N2.Web.Mvc.Html
 			{
 				var engine = Html.ContentEngine();
 
-                if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
-                    return;
+				if (!Html.ViewContext.HttpContext.User.Identity.IsAuthenticated || !engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User))
+					return;
 				if (RegistrationExtensions.GetRegistrationExpression(Html) != null)
 					return;
 
-                var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
+				var item = currentItem ?? Html.CurrentItem() ?? Html.StartPage();
 
 				var state = ControlPanelExtensions.GetControlPanelState(Html);
 				var settings = new
@@ -230,12 +230,12 @@ namespace N2.Web.Mvc.Html
 					Force = ForceRefreshNavigationOnLoad ? "true" : "false"
 				};
 
-                var resources = Html.Resources(writer).Constants();
-                if (includeJQuery) resources.JQuery();
+				var resources = Html.Resources(writer).Constants();
+				if (includeJQuery) resources.JQuery();
 				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
 				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
-                if (includePartScripts) resources.PartsJs();
-                if (includePartStyles) resources.PartsCss();
+				if (includePartScripts) resources.PartsJs();
+				if (includePartStyles) resources.PartsCss();
 
 				if (refreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));
@@ -282,7 +282,7 @@ namespace N2.Web.Mvc.Html
 						foreach (var t in a.GetTemplates(item, d))
 						{
 							sb.AppendFormat(
-								"<div id='{0}' title='{1}' data-type='{2}' data-template='{3}' class='{4}'>{5}</div>",
+								@"<div id=""{0}"" title=""{1}"" data-type=""{2}"" data-template=""{3}"" class=""{4}"">{5}</div>",
 								/*{0}*/ t.Definition.ToString().Replace('/', '-'),
 								/*{1}*/ t.Description,
 								/*{2}*/ t.Definition.Discriminator,
@@ -293,7 +293,7 @@ namespace N2.Web.Mvc.Html
 					}
 
 					if (sb.Length > 0)
-						return "<div class='definitions'>" + sb + "</div>";
+						return @"<div class=""definitions"">" + sb + "</div>";
 				}
 				return "";
 			}
@@ -321,15 +321,15 @@ namespace N2.Web.Mvc.Html
 })(jQuery);
 //]]></script>
 
-<div id='cpCurtain' class='sc'><div class='scContent'>
-	<div class='controlPanel'>
-		<div class='plugins'>
+<div id=""cpCurtain"" class=""sc""><div class=""scContent"">
+	<div class=""controlPanel"">
+		<div class=""plugins"">
 			{Plugins}
 		</div>
 		{Definitions}
 	</div>
-	<a href='javascript:void(0);' class='close' title='Close'>&laquo;</a>
-	<a href='javascript:void(0);' class='open' title='Open'>&raquo;</a>
+	<a href=""javascript:void(0);"" class=""close"" title=""Close"">&laquo;</a>
+	<a href=""javascript:void(0);"" class=""open"" title=""Open"">&raquo;</a>
 </div></div>
 ";
 			static string formatWithRefresh = format1 + format2 + format3;
