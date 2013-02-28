@@ -35,6 +35,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			ie.Title = "Sign-in Form";
 			ie.IconUrl = "{IconsUrl}/key.png";
 			ie.Text("Title");
+			ie.Url("Redirect", "Redirect URL");
+			ie.CheckBox("ForceRedirect", "Force redirect even if a returnUrl is available.");
 		}
 	);
 
@@ -49,7 +51,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		if (Membership.ValidateUser(userName, password) || FormsAuthentication.Authenticate(userName, password))
 		{
 			FormsAuthentication.SetAuthCookie(userName, remember);
+			if (Model.GetDetail("ForceRedirect", false) == true && Content.Has.Redirect) { Response.Redirect(Content.Data.Redirect); }
 			if (!string.IsNullOrEmpty(Request["returnUrl"])) { Response.Redirect(Request["returnUrl"]); }
+			if (Content.Has.Redirect) { Response.Redirect(Content.Data.Redirect); }
 		}
 		else { showError = true; }
 
@@ -68,8 +72,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <form action="@Request.RawUrl" method="post">
 	@if (User.Identity.IsAuthenticated)
 	{
+		@{ Html.DroppableZone("RestrictedAbove").Render(); }
 		<input type="hidden" name="action" value="sign-out" />
 		<button type="submit" class="btn">Sign out</button>
+		@{ Html.DroppableZone("RestrictedBelow").Render(); }
 	}
 	else
 	{ 
