@@ -1,5 +1,5 @@
 ﻿/*
-Delimited Data Display: Backend Utility
+CSV Import Utility
 Licensed to users of N2CMS under the terms of the Boost Software License
 
 Copyright (c) 2013 Benjamin Herila <mailto:ben@herila.net>
@@ -22,6 +22,10 @@ NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPO
 INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
 FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ * TODO: Add support for escape sequences
+ * TODO: Add support for quoted strings and customizable quote characters
+
 */
 
 using System;
