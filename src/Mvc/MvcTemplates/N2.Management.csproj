@@ -312,7 +312,9 @@
     </Content>
     <Content Include="N2\Search\IndexInfo.ashx" />
     <Content Include="N2\log4net.config" />
-    <Content Include="N2\Tokens\TokenTemplates\Web.config" />
+    <Content Include="N2\Tokens\TokenTemplates\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="N2\Resources\RedirectHandler.ashx" />
     <Content Include="N2\Resources\MessageSink.ashx" />
     <Content Include="packages.config" />
