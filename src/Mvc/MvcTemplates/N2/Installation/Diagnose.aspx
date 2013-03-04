@@ -75,9 +75,6 @@
 						</td>
 					</tr>
 <% } catch (Exception ex) { Response.Write("<tr><th>Error</th><td>" + ex.ToString() + "</td>"); } %>
-					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
-					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
-					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Server</h2></th></tr>
@@ -94,6 +91,17 @@
 					<tr><th>UI Culture</th><td><%= UICulture %></td></tr>
 					<tr><th>Config culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).Culture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
 					<tr><th>Config UI culture</th><td><% try { Response.Write(((System.Web.Configuration.GlobalizationSection)System.Configuration.ConfigurationManager.GetSection("system.web/globalization")).UICulture); } catch (Exception ex) { Response.Write(ex.Message); } %></td></tr>
+				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Security</h2></th></tr>
+					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
+					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
+					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
+					<tr><th>User type</th><td><%= User %> <%= User.Identity %></td></tr>
+					<tr><th>User</th><td><%= User.Identity.Name %></td></tr>
+					<tr><th rowspan="3">Roles</th><td>Writers: <%= User.IsInRole("Writers") %></td></tr>
+					<tr><td>Editors: <%= User.IsInRole("Editors") %></td></tr>
+					<tr><td>Administrators: <%= User.IsInRole("Administrators") %></td></tr>
 				</tbody>
 				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>
