@@ -236,23 +236,22 @@
     <Compile Include="Engine\DynamicProxy\Core\Internal\SlimWriteLockHolder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractExtendedLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\ILoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerException.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerLevel.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLogger.cs">
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLoggerFactory.cs">
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Engine\DynamicProxy\DefaultProxyBuilder.cs" />
