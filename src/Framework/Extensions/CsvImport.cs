@@ -35,7 +35,7 @@ using System.Text;
 
 namespace N2.Extensions
 {
-	class CsvImport
+	public class CsvImport
 	{
 		public CsvImport(ContentItem Model)
 		{

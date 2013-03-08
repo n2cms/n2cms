@@ -52,7 +52,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         </tr>
     </thead> }
     <tbody>
-        @foreach (string row in du.Rows) { 
+        @foreach (string[] row in du.Rows) { 
         <tr>
             @foreach (string col in row) { <td>@col</td> }
         </tr> }
