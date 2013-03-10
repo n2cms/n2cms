@@ -520,6 +520,35 @@ namespace N2.Tests.Serialization
             readItem.EditableItem.Name.ShouldBe("EditableItem");
         }
 
+		[TestCase("\0")]
+		[TestCase("\x03")]
+		[TestCase("\x07")]
+		[TestCase("\x1B")]
+		public void SerializingText_WithInvalidCharacters_RemovesInalidCharacters(string character)
+		{
+			var item = activator.CreateInstance<XmlableItem2>(null);
+			item["Hello"] = "World" + character + "Tour";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem["Hello"].ShouldBe("WorldTour");
+		}
+
+		[TestCase("\t")]
+		[TestCase("\r")]
+		[TestCase("\n")]
+		public void SerializingText_WithSpecialCharacters_CharactersAreNotRemoved(string character)
+		{
+			var item = activator.CreateInstance<XmlableItem2>(null);
+			item["Hello"] = "World" + character + "Tour";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem["Hello"].ShouldBe("World" + character + "Tour");
+		}
+
         [Test, Ignore("Probably enough that this is done when saving")]
         public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
         {
