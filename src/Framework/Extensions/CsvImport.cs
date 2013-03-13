@@ -1,6 +1,5 @@
-﻿@*************************************************************************************************
-
-Delimited Data Display: Razor Template-First Sample
+﻿/*
+CSV Import Utility
 Licensed to users of N2CMS under the terms of the Boost Software License
 
 Copyright (c) 2013 Benjamin Herila <mailto:ben@herila.net>
@@ -24,37 +23,46 @@ INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE
 FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-*************************************************************************************************@
+ * TODO: Add support for escape sequences
+ * TODO: Add support for quoted strings and customizable quote characters
 
-@model Dinamico.Models.ContentPart
-@using N2.Web.Mvc.Html
+*/
 
-@{
-    Content.Define(ie =>
-        {
-            ie.Title = "Delimited Data Display";
-            ie.IconUrl = "{IconsUrl}/table.png";
-            ie.Text("Data").Configure(f => { f.Rows = 10; f.Columns = 60; f.TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine; });
-            ie.Text("Delimiter").Required().DefaultValue(",").Configure(f => f.MaxLength = 2);
-            ie.CheckBox("Headers", "First row contains headers").DefaultValue(false);
-            ie.CheckBox("Sort", "Sort data on the first column").DefaultValue(false);
-        }
-    );
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-    N2.Extensions.CsvImport du = new N2.Extensions.CsvImport(Model);
-    
+namespace N2.Extensions
+{
+	public class CsvImport
+	{
+		public CsvImport(ContentItem Model)
+		{
+			string dcStr = Model.GetDetail("Delimiter", ",");
+			char dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
+
+			var dd = Model.GetDetail("Data", "").Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+			var bSkip = Model.GetDetail<bool>("Headers", false);
+			var nSkip = bSkip ? 1 : 0;
+
+			Rows = new string[dd.Length - nSkip][];
+			for (int i = nSkip; i < dd.Length; ++i)
+				Rows[i] = dd[i].Split(dc);
+			
+			if (Model.GetDetail("Sort", false))
+				Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
+
+			HasHeader = bSkip;
+			if (bSkip)
+				HeaderRow = dd[0].Split(dc);
+		}
+
+
+		public bool HasHeader { get; set; }
+		public string[] HeaderRow { get; set; }
+		public string[][] Rows { get; set; }
+
+	}
 }
-<table class="table">
-    @if (du.HasHeader) {
-    <thead>
-        <tr>
-            @foreach (string str in du.HeaderRow) {  <th>@str</th> }
-        </tr>
-    </thead> }
-    <tbody>
-        @foreach (string[] row in du.Rows) { 
-        <tr>
-            @foreach (string col in row) { <td>@col</td> }
-        </tr> }
-    </tbody>
-</table>

@@ -1,3 +1,4 @@
+- smart redirect to language-localized page when URL is specified with no language (i.e. language root missing)
 - refresh without control panel
 - full mongo support
 - Optimize number of items loaded when saving (http://n2cms.codeplex.com/discussions/395905)

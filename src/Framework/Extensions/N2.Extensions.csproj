@@ -115,6 +115,7 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
+    <Compile Include="CsvImport.cs" />
     <Compile Include="Persistence\Search\AsyncIndexer.cs" />
     <Compile Include="Persistence\Search\ContentChangeTracker.cs">
       <SubType>Code</SubType>

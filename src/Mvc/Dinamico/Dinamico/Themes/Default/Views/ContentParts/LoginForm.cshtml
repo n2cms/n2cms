@@ -52,8 +52,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		{
 			FormsAuthentication.SetAuthCookie(userName, remember);
 			if (Model.GetDetail("ForceRedirect", false) == true && Content.Has.Redirect) { Response.Redirect(Content.Data.Redirect); }
-			if (!string.IsNullOrEmpty(Request["returnUrl"])) { Response.Redirect(Request["returnUrl"]); }
-			if (Content.Has.Redirect) { Response.Redirect(Content.Data.Redirect); }
+			else if (!string.IsNullOrEmpty(Request["returnUrl"])) { Response.Redirect(Request["returnUrl"]); }
+			else if (Content.Has.Redirect) { Response.Redirect(Content.Data.Redirect); }
+			else { @{ Response.Redirect(Request.RawUrl); } <script type="text/javascript">location.replace(location.href);</script> }
 		}
 		else { showError = true; }
 
