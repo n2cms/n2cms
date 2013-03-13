@@ -7,6 +7,8 @@ using N2.Integrity;
 using NUnit.Framework;
 using N2.Edit;
 using Shouldly;
+using System.Globalization;
+using System.Threading;
 
 namespace N2.Tests.Utility
 {
@@ -39,13 +41,22 @@ namespace N2.Tests.Utility
 		[Test]
 		public void GetFileSizeString_Test()
 		{
-			Assert.AreEqual(N2.Utility.GetFileSizeString(1048576, false), "1.0 MiB");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(1024, false), "1 KiB");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(1000000, true), "1.0 MB");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(1024, true), "1 KB");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(1048576, true), "1.0 MB");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(0, true), "0 Bytes");
-			Assert.AreEqual(N2.Utility.GetFileSizeString(0, false), "0 Bytes");
+			var bak = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+			N2.Utility.GetFileSizeString(1000 * 1048576, false).ShouldBe("1,000.0 MiB");
+			N2.Utility.GetFileSizeString(1048576, false).ShouldBe("1.0 MiB");
+			N2.Utility.GetFileSizeString(1024, false).ShouldBe("1,024 bytes");
+			N2.Utility.GetFileSizeString(4 * 1024, false).ShouldBe("4.0 KiB");
+			N2.Utility.GetFileSizeString(1000000000, true).ShouldBe("1,000.0 MB");
+			N2.Utility.GetFileSizeString(1000000, true).ShouldBe("1.0 MB");
+			N2.Utility.GetFileSizeString(1024, true).ShouldBe("1,024 bytes");
+			N2.Utility.GetFileSizeString(4 * 1000, true).ShouldBe("4.0 KB");
+			N2.Utility.GetFileSizeString(1048576, true).ShouldBe("1.0 MB");
+			N2.Utility.GetFileSizeString(0, true).ShouldBe("0 bytes");
+			N2.Utility.GetFileSizeString(0, false).ShouldBe("0 bytes");
+
+			Thread.CurrentThread.CurrentCulture = bak;
 		}
 
 		[Test]

@@ -47,6 +47,7 @@ namespace N2.Edit.Tests.FileSystem
         public override void TestFixtureSetUp()
         {
 			base.TestFixtureSetUp();
+
 			N2.Context.Replace(engine);
 
             Url.DefaultExtension = "/";
@@ -66,10 +67,19 @@ namespace N2.Edit.Tests.FileSystem
 		}
 
         [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        public override void TestFixtureTearDown()
         {
-			System.IO.Directory.Move(backupPath, basePath);
+			base.TestFixtureTearDown();
+
 			Url.DefaultExtension = ".aspx";
+			try
+			{
+				System.IO.Directory.Move(backupPath, basePath);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
         }
 
         [SetUp]

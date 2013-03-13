@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Web.Hosting;
 
 namespace N2.Edit.FileSystem
@@ -121,7 +122,16 @@ namespace N2.Edit.FileSystem
 		public virtual void DeleteDirectory(string virtualPath)
 		{
 			string path = MapPath(virtualPath);
-			Directory.Delete(path, true);
+			try
+			{
+				Directory.Delete(path, true);
+			}
+			catch (IOException)
+			{
+				// retry once
+				Thread.Sleep(10);
+				Directory.Delete(path, true);
+			}
 
 			if (DirectoryDeleted != null)
 				DirectoryDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
@@ -149,7 +159,16 @@ namespace N2.Edit.FileSystem
 			string fromPath = MapPath(fromVirtualPath);
 			string toPath = MapPath(destinationVirtualPath);
 
-			Directory.Move(fromPath, toPath);
+			try
+			{
+				Directory.Move(fromPath, toPath);
+			}
+			catch (IOException)
+			{
+				// retry once
+				Thread.Sleep(10);
+				Directory.Move(fromPath, toPath);
+			}
 
 			if (DirectoryMoved != null)
 				DirectoryMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
@@ -175,10 +194,18 @@ namespace N2.Edit.FileSystem
 		{
 			string path = MapPath(virtualPath);
 
-			Directory.CreateDirectory(path);
+			CreateDirectoryPath(new DirectoryInfo(path));
 			
 			if (DirectoryCreated != null)
 				DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
+		}
+
+		private void CreateDirectoryPath(DirectoryInfo directory)
+		{
+			if (directory == null || directory.Exists)
+				return;
+			CreateDirectoryPath(directory.Parent);
+			directory.Create();
 		}
 
 		public virtual Stream OpenFile(string virtualPath, bool readOnly = false)

@@ -11,6 +11,7 @@ using N2.Tests.Fakes;
 using N2.Tests.Persistence;
 using NUnit.Framework;
 using System.Threading;
+using N2.Web;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -64,13 +65,18 @@ namespace N2.Edit.Tests.FileSystem
 			fs.FileDeleted += (s, e) => Triggered("FileDeleted", e);
 			fs.FileMoved += (s, e) => Triggered("FileMoved", e);
 			fs.FileWritten += (s, e) => Triggered("FileWritten", e);
+
+			
 		}
 
 		protected abstract IFileSystem CreateFileSystem();
 
         [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        public override void TestFixtureTearDown()
         {
+			base.TestFixtureTearDown();
+
+			Url.DefaultExtension = ".aspx";
         }
 
         [SetUp]

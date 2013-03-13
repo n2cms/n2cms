@@ -686,21 +686,21 @@ namespace N2
 		{
 			if (base10)
 			{
-				if (p > 1000000)
-					return string.Format("{0:#.#} MB", (double)p / 1000000.0);
-				if (p > 4000)
-					return string.Format("{0:#} KB", (double)p / 1000.0);
+				if (p >= 1000000)
+					return string.Format("{0:N1} MB", (double)p / 1000000.0);
+				if (p >= 4000)
+					return string.Format("{0:N1} KB", (double)p / 1000.0);
 				else 
-					return string.Format("{0:#} bytes", (double)p);
+					return string.Format("{0:N0} bytes", (double)p);
 			}
 			else
 			{
-				if (p > 1048576)
-					return string.Format("{0:#.#} MiB", (double)p / 1048576.0);
-				if (p > 4096)
-					return string.Format("{0:#} KiB", (double)p / 1024.0);
+				if (p >= 1048576)
+					return string.Format("{0:N1} MiB", (double)p / 1048576.0);
+				if (p >= 4096)
+					return string.Format("{0:N1} KiB", (double)p / 1024.0);
 				else
-					return string.Format("{0:#} bytes", (double)p);
+					return string.Format("{0:N0} bytes", (double)p);
 			}
 		}
 
