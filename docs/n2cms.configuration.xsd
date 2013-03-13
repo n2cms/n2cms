@@ -139,7 +139,7 @@
 									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
-									<xs:attribute name="tinyMCEPath" type="xs:string" use="optional" />
+									<xs:attribute name="ckEditorPath" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="vpp" minOccurs="0">
