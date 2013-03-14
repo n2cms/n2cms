@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
 		public FreeTextArea()
 		{
 			TextMode = TextBoxMode.MultiLine;
-			CssClass = "freeTextArea";
+			CssClass = "ckeditor";
 		}
 
 		public virtual bool EnableFreeTextArea
@@ -80,7 +80,7 @@ namespace N2.Web.UI.WebControls
 			if (EnableFreeTextArea)
 			{
 				Register.JQuery(Page);
-				Register.TinyMCE(Page);
+				Register.CKEditor(Page);
 				Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
 				string freeTextAreaInitScript = string.Format("freeTextArea_init('{0}', {1});",
@@ -108,7 +108,7 @@ namespace N2.Web.UI.WebControls
             }
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/ckeditor/lang/" + language + ".js")))
 				overrides["language"] = language;
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))

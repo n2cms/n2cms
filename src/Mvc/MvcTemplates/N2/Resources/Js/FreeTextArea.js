@@ -121,7 +121,7 @@ staticOverrides["EXTENDED"] = [settingsClr, settingsExtended, settingsPDW2];
 
 function freeTextArea_init(fileBrowser, overrides) {
 	fileBrowserUrl = fileBrowser;
-
+    /*
 	// Default settings:
 	var settings = {};  // keep freeTextArea_settings unmodified
 	jQuery.extend(settings, freeTextArea_settings);
@@ -150,5 +150,6 @@ function freeTextArea_init(fileBrowser, overrides) {
 	    settings.plugins += ",tokencomplete"
 	}
 
-	tinyMCE.init(settings);
+    //tinyMCE.init(settings);
+    */
 }
