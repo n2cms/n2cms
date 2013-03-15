@@ -129,7 +129,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Framework-DependencyBinaries Include="$(PackagesFolder)\System.Data.SQLite.*\lib\net40\System.Data.SQLite*.dll;" />
-		<Framework-Dependencies Include="$(PackagesFolder)\System.Data.SQLite.1.0.82.0\content\net40\**\*;" />
+		<Framework-Dependencies Include="$(PackagesFolder)\System.Data.SQLite.1.0.84.0\content\net40\**\*;" />
 	</ItemGroup>
 
 	<!-- Create item groups used for copy dependencies for examples -->
