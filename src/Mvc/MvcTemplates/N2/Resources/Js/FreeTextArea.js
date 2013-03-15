@@ -121,6 +121,69 @@ staticOverrides["EXTENDED"] = [settingsClr, settingsExtended, settingsPDW2];
 
 function freeTextArea_init(fileBrowser, overrides) {
 	fileBrowserUrl = fileBrowser;
+	console.log("freeTextArea_init", arguments);
+
+	//0: "/N2/Content/Navigation/Tree.aspx"
+	//1: Object
+	//content_css: "/N2/Resources/Css/Editor.css"
+	//elements: "ctl00_ctl00_Frame_Content_ie_Text"
+	//language: "en"
+	//settings_set: "Simple"
+	//tokencomplete_enabled: true
+	//tokencomplete_settings: Object
+	//tokens: Array[26]
+	//0: Object
+	//Name: "Author"
+	//Options: null
+	//__proto__: Object
+
+
+	CKEDITOR.plugins.add('autogrow', {
+		afterInit: function (editor) {
+			editor.on('instanceReady', function () {
+				var editable = editor.editable();
+
+				editor.ui.space('contents').setStyle('height', 'auto');
+				editor.ui.space('contents').setStyle('min-height', '95px');
+			});
+		}
+	});
+
+	function getBrowserUrl(destinationType) {
+		var modes = "All";
+		var location = "selection";
+		var types = "";
+		if (destinationType == "image") {
+			modes = "Files";
+			location = "filesselection";
+			types = "IFileSystemFile";
+		}
+
+		return "/N2/Content/Navigation/Tree.aspx"
+			+ '?location=' + location
+			+ '&availableModes=' + modes
+			//+ '&tbid=' + srcField.id
+			//+ '&destinationType=' + destinationType
+			//+ '&selectedUrl=' + encodeURIComponent(url)
+			+ '&selectableTypes=' + types;
+	}
+
+	CKEDITOR.replace(overrides.elements, {
+		uiColor: '#F8F8F8',
+		extraPlugins: 'filebrowser,divarea,autogrow',
+		removePlugins: 'elementspath,resize',
+		filebrowserBrowseUrl: getBrowserUrl("any"),
+		filebrowserImageBrowseUrl: getBrowserUrl("image"),
+		filebrowserFlashBrowseUrl: getBrowserUrl("any"),
+		filebrowserUploadUrl: getBrowserUrl("any"),
+		filebrowserImageUploadUrl: getBrowserUrl("image"),
+		filebrowserFlashUploadUrl: getBrowserUrl("any"),
+		filebrowserImageWindowWidth: '640',
+		filebrowserImageWindowHeight: '480'
+	});
+
+	//fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url) + '&selectableTypes=' + types
+
     /*
 	// Default settings:
 	var settings = {};  // keep freeTextArea_settings unmodified

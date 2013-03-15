@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
 		public FreeTextArea()
 		{
 			TextMode = TextBoxMode.MultiLine;
-			CssClass = "ckeditor";
+			//CssClass = "ckeditor";
 		}
 
 		public virtual bool EnableFreeTextArea

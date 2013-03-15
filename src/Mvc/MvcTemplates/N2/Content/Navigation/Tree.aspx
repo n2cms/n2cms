@@ -44,28 +44,35 @@
 			bool isNavigation = isFilesNavigation || isContentNavigation;
 		%>
 
-		<% if(isTinyPopup) {%>
+<%--		<% if(isTinyPopup) {%>
         <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
-		<%} %>
+		<%} %>--%>
         
         <% if (isSelection) { %>
         <script type="text/javascript">
 			// selection
         	var updateOpenerWithUrlAndClose = function(relativeUrl) {
         		function selectIn(opener) {
-        			if (opener.onFileSelected && opener.srcField)
-        				opener.onFileSelected(relativeUrl);
-        			else
-        				opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
+        			var tbid = '<%= HttpUtility.JavaScriptStringEncode(Request["tbid"]) %>';
+        			if (tbid) {
+        				opener.document.getElementById(tbid).value = relativeUrl;
+        			} else {
+        				window.opener.CKEDITOR.tools.callFunction(<%= int.Parse(Request["CKEditorFuncNum"]) %>, relativeUrl);
+        			}
+        			//if (opener.onFileSelected && opener.srcField)
+        			//	opener.onFileSelected(relativeUrl);
+        			//else
+        			//	opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
         		}
         		$.cookie('lastSelection', relativeUrl);
         		if (window.opener) {
         			selectIn(window.opener);
         			window.close();
-        		} else if (typeof tinyMCEPopup != "undefined" && tinyMCEPopup.getWin()) {
-        			selectIn(tinyMCEPopup.getWin());
-        			tinyMCEPopup.close();
-        		}
+        		} 
+        		//else if (typeof tinyMCEPopup != "undefined" && tinyMCEPopup.getWin()) {
+        		//	selectIn(tinyMCEPopup.getWin());
+        		//	tinyMCEPopup.close();
+        		//}
         	}
         	var updateOpenerAndClose = function(e) {
         		var relativeUrl = $(this).attr("data-url");
