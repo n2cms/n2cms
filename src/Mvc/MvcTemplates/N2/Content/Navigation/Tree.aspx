@@ -57,7 +57,7 @@
         			if (tbid) {
         				opener.document.getElementById(tbid).value = relativeUrl;
         			} else {
-        				window.opener.CKEDITOR.tools.callFunction(<%= int.Parse(Request["CKEditorFuncNum"]) %>, relativeUrl);
+        				window.opener.CKEDITOR.tools.callFunction(<%= int.Parse(Request["CKEditorFuncNum"] ?? "0") %>, relativeUrl);
         			}
         			//if (opener.onFileSelected && opener.srcField)
         			//	opener.onFileSelected(relativeUrl);
