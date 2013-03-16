@@ -1,237 +1,6 @@
-// Extended by janpub, 11.6.2011 JH
-// See TinyMCE settings, http://tinymce.moxiecode.com/wiki.php/Configuration
-// Requires PDW plugin, http://www.neele.name/pdw_toggle_toolbars/
-//
-var freeTextArea_settings = {
-	mode: 'exact',
-	//plugins: 'table,advimage,advlink,flash,searchreplace,print,contextmenu,paste,fullscreen,noneditable',
-	theme: 'advanced',
-	plugins: 'style,layer,table,advimage,advlink,iespell,spellchecker,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,icode',
-	theme_advanced_buttons1_add_before: '',
-	theme_advanced_buttons1_add: 'sup,|,print,fullscreen,|,search,replace,iespell,spellchecker,autosave',
-	theme_advanced_buttons2_add_before: 'cut,copy,paste,pastetext,pasteword,|',
-	theme_advanced_buttons2_add: '|,table,media,insertlayer,inlinepopups,icode,',
-	theme_advanced_buttons3: '',
-	theme_advanced_buttons3_add_before: '',
-	theme_advanced_buttons3_add: '',
-	theme_advanced_buttons4: '',
-	theme_advanced_toolbar_location: 'top',
-	theme_advanced_toolbar_align: 'left',
-	theme_advanced_path_location: 'bottom',
-	extended_valid_elements: 'hr[class|width|size|noshade],span[class|align|style],pre[class],code[class],iframe[src|width|height|name|align]',
-	file_browser_callback: 'fileBrowserCallBack',
-	theme_advanced_resize_horizontal: false,
-	theme_advanced_resizing: true,
-	theme_advanced_disable: 'help,fontselect,fontsizeselect,forecolor,backcolor,styleselect',
-	convert_urls: false,
-	noneditable_noneditable_class: 'cs,csharp,vb,js',
-	tab_focus: ':prev,:next',
-	theme_advanced_resize_horizontal: true,
-	remove_script_host: false
-};
-var fileBrowserUrl;
-var srcField;
-function fileBrowserCallBack(field_name, url, destinationType, win) {
-	srcField = win.document.forms[0].elements[field_name];
-	var modes = "All";
-	var location = "selection";
-	var types = "";
-	if (destinationType == "image") {
-		modes = "Files";
-		location = "filesselection";
-		types = "IFileSystemFile";
-	}
-	tinymce.activeEditor.windowManager.open({
-		file: fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url) + '&selectableTypes=' + types,
-		height: 500,
-		width: 400,
-		close_previous: false,
-		inline: true,
-		scrollbars: true,
-		resizable: true,
-		maximizable: true
-	});
-}
-function onFileSelected(selectedUrl) {
-	srcField.value = selectedUrl;
-}
-
-// Settings: clear 1..4 toolbars
-var settingsClr = {
-	theme_advanced_buttons1: '',
-	theme_advanced_buttons1_add_before: '',
-	theme_advanced_buttons1_add: '',
-	theme_advanced_buttons2: '',
-	theme_advanced_buttons2_add_before: '',
-	theme_advanced_buttons2_add: '',
-	theme_advanced_buttons3: '',
-	theme_advanced_buttons3_add_before: '',
-	theme_advanced_buttons3_add: '',
-	theme_advanced_buttons4: '',
-	theme_advanced_buttons4_add_before: '',
-	theme_advanced_buttons4_add: ''
-};
-
-// Settings: toolbars
-var settingsSimple = {
-	theme: 'advanced',
-	plugins: 'style,layer,table,advimage,advlink,advhr,media,'
-       + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
-       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
-
-	theme_advanced_buttons1: 'newdocument,|,undo,redo,|,bold,italic,underline,strikethrough,|,'
-       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,icode,',
-	theme_advanced_disable: 'help,save'
-};
-
-var settingsExtended = {
-    theme: 'advanced',
-    plugins: 'pdw,style,layer,table,advimage,advlink,advhr,media,'
-       + 'searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups,'
-       + 'emotions,fullscreen,visualchars,safari,nonbreaking,xhtmlxtras,template,icode',
-
-	theme_advanced_buttons1: 'pdw_toggle,|,newdocument,|,undo,redo,|,bold,italic,underline,strikethrough,|,'
-       + 'justifyleft,justifycenter,justifyright,justifyfull,|,,formatselect,styleselect,removeformat,code,icode,',
-	theme_advanced_buttons2: 'cut,copy,paste,pastetext,pasteword,|,'
-       + 'bullist,numlist,|,outdent,indent,blockquote,|,'
-       + 'link,unlink,anchor,image,|,forecolor,backcolor,fontselect,fontsizeselect,',
-	theme_advanced_buttons3: 'sub,sup,|,charmap,emotions,'
-       + 'media,,hr,advhr,ltr,rtl,visualaid,|,cite,abbr,acronym,del,ins,attribs,cleanup,print,fullscreen',
-	theme_advanced_buttons4: 'tablecontrols,|,insertlayer,moveforward,movebackward,absolute,|,styleprops,|,'
-       + 'visualchars,|,search,replace,|,',
-	theme_advanced_disable: 'help,save'
-};
-
-// Enable PDW plugin, toolbar1 shown by default
-var settingsPDW1 = {
-	pdw_toggle_on: 1,
-	pdw_toggle_toolbars: "2,3,4"
-};
-
-// Enable PDW plugin, toolbars1,2 shown by default
-var settingsPDW2 = {
-	pdw_toggle_on: 1,
-	pdw_toggle_toolbars: "3,4"
-};
-
-var staticOverrides = [];
-staticOverrides["MINIMAL"] = [settingsClr, settingsSimple];
-staticOverrides["SIMPLE"] = [settingsClr, settingsExtended, settingsPDW1];
-staticOverrides["EXTENDED"] = [settingsClr, settingsExtended, settingsPDW2];
-
 /**
  * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
- */
-
-/**
- * @fileOverview The "filebrowser" plugin that adds support for file uploads and
- *               browsing.
- *
- * When a file is uploaded or selected inside the file browser, its URL is
- * inserted automatically into a field defined in the <code>filebrowser</code>
- * attribute. In order to specify a field that should be updated, pass the tab ID and
- * the element ID, separated with a colon.<br /><br />
- *
- * <strong>Example 1: (Browse)</strong>
- *
- * <pre>
- * {
- * 	type : 'button',
- * 	id : 'browse',
- * 	filebrowser : 'tabId:elementId',
- * 	label : editor.lang.common.browseServer
- * }
- * </pre>
- *
- * If you set the <code>filebrowser</code> attribute for an element other than
- * the <code>fileButton</code>, the <code>Browse</code> action will be triggered.<br /><br />
- *
- * <strong>Example 2: (Quick Upload)</strong>
- *
- * <pre>
- * {
- * 	type : 'fileButton',
- * 	id : 'uploadButton',
- * 	filebrowser : 'tabId:elementId',
- * 	label : editor.lang.common.uploadSubmit,
- * 	'for' : [ 'upload', 'upload' ]
- * }
- * </pre>
- *
- * If you set the <code>filebrowser</code> attribute for a <code>fileButton</code>
- * element, the <code>QuickUpload</code> action will be executed.<br /><br />
- *
- * The filebrowser plugin also supports more advanced configuration performed through
- * a JavaScript object.
- *
- * The following settings are supported:
- *
- * <ul>
- * <li><code>action</code> &ndash; <code>Browse</code> or <code>QuickUpload</code>.</li>
- * <li><code>target</code> &ndash; the field to update in the <code><em>tabId:elementId</em></code> format.</li>
- * <li><code>params</code> &ndash; additional arguments to be passed to the server connector (optional).</li>
- * <li><code>onSelect</code> &ndash; a function to execute when the file is selected/uploaded (optional).</li>
- * <li><code>url</code> &ndash; the URL to be called (optional).</li>
- * </ul>
- *
- * <strong>Example 3: (Quick Upload)</strong>
- *
- * <pre>
- * {
- * 	type : 'fileButton',
- * 	label : editor.lang.common.uploadSubmit,
- * 	id : 'buttonId',
- * 	filebrowser :
- * 	{
- * 		action : 'QuickUpload', // required
- * 		target : 'tab1:elementId', // required
- * 		params : // optional
- * 		{
- * 			type : 'Files',
- * 			currentFolder : '/folder/'
- * 		},
- * 		onSelect : function( fileUrl, errorMessage ) // optional
- * 		{
- * 			// Do not call the built-in selectFuntion.
- * 			// return false;
- * 		}
- * 	},
- * 	'for' : [ 'tab1', 'myFile' ]
- * }
- * </pre>
- *
- * Suppose you have a file element with an ID of <code>myFile</code>, a text
- * field with an ID of <code>elementId</code> and a <code>fileButton</code>.
- * If the <code>filebowser.url</code> attribute is not specified explicitly,
- * the form action will be set to <code>filebrowser[<em>DialogWindowName</em>]UploadUrl</code>
- * or, if not specified, to <code>filebrowserUploadUrl</code>. Additional parameters
- * from the <code>params</code> object will be added to the query string. It is
- * possible to create your own <code>uploadHandler</code> and cancel the built-in
- * <code>updateTargetElement</code> command.<br /><br />
- *
- * <strong>Example 4: (Browse)</strong>
- *
- * <pre>
- * {
- * 	type : 'button',
- * 	id : 'buttonId',
- * 	label : editor.lang.common.browseServer,
- * 	filebrowser :
- * 	{
- * 		action : 'Browse',
- * 		url : '/ckfinder/ckfinder.html&amp;type=Images',
- * 		target : 'tab1:elementId'
- * 	}
- * }
- * </pre>
- *
- * In this example, when the button is pressed, the file browser will be opened in a
- * popup window. If you do not specify the <code>filebrowser.url</code> attribute,
- * <code>filebrowser[<em>DialogName</em>]BrowseUrl</code> or
- * <code>filebrowserBrowseUrl</code> will be used. After selecting a file in the file
- * browser, an element with an ID of <code>elementId</code> will be updated. Just
- * like in the third example, a custom <code>onSelect</code> function may be defined.
  */
 
 (function () {
@@ -503,10 +272,9 @@ staticOverrides["EXTENDED"] = [settingsClr, settingsExtended, settingsPDW2];
 
 })();
 
-
 function freeTextArea_init(fileBrowser, overrides) {
 	fileBrowserUrl = fileBrowser;
-	console.log("freeTextArea_init", arguments);
+	//console.log("freeTextArea_init", arguments);
 
 	//0: "/N2/Content/Navigation/Tree.aspx"
 	//1: Object
@@ -521,18 +289,6 @@ function freeTextArea_init(fileBrowser, overrides) {
 	//Name: "Author"
 	//Options: null
 	//__proto__: Object
-
-
-	CKEDITOR.plugins.add('autogrow', {
-		afterInit: function (editor) {
-			editor.on('instanceReady', function () {
-				var editable = editor.editable();
-
-				editor.ui.space('contents').setStyle('height', 'auto');
-				editor.ui.space('contents').setStyle('min-height', '95px');
-			});
-		}
-	});
 
 	function getBrowserUrl(destinationType) {
 		var modes = "All";
@@ -553,55 +309,67 @@ function freeTextArea_init(fileBrowser, overrides) {
 			+ '&selectableTypes=' + types;
 	}
 
-	var editor = CKEDITOR.replace(overrides.elements, {
-		uiColor: '#F8F8F8',
-		extraPlugins: 'filebrowser2,divarea,autogrow',
-		removePlugins: 'elementspath,resize,about',
+	var config = {
+		uiColor: '#ddddcc',
+		extraPlugins: 'filebrowser2', // divarea
+		removePlugins: 'filebrowser,about', // elementspath,resize,
 		filebrowserBrowseUrl: getBrowserUrl("any"),
 		filebrowserImageBrowseUrl: getBrowserUrl("image"),
 		filebrowserFlashBrowseUrl: getBrowserUrl("any"),
 		//filebrowserUploadUrl: getBrowserUrl("any"),
 		//filebrowserImageUploadUrl: getBrowserUrl("image"),
 		//filebrowserFlashUploadUrl: getBrowserUrl("any"),
-		filebrowserImageWindowWidth: '640',
-		filebrowserImageWindowHeight: '480',
+		filebrowserImageWindowWidth: '300',
+		filebrowserImageWindowHeight: '600',
 		filebrowserBrowseOverrideParams: function (params, editor, dialog) {
 			params.selectedUrl = dialog.getContentElement.apply(dialog, editor._.filebrowserSe.filebrowser.target.split(":")).getValue();
 			return params;
-		}
-	});
+		},
+	};
 
-	//fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url) + '&selectableTypes=' + types
+	if (overrides.settings_set == "Fixed") {
 
-    /*
-	// Default settings:
-	var settings = {};  // keep freeTextArea_settings unmodified
-	jQuery.extend(settings, freeTextArea_settings);
+	} else if (overrides.settings_set == "Minimal") {
+		delete config.toolbarGroups;
+		config.toolbar = [['Cut', 'Copy', 'Paste', '-', 'Undo'], ['Bold', 'Italic', 'RemoveFormat'], ['NumberedList', 'BulletedList'], ['Format']];
+	} else if (overrides.settings_set == "Simple") {
+		config.toolbar = [['Cut', 'Copy', 'Paste', 'PasteFromWord', '-', 'Undo'], ['Link', 'Unlink'], ['Image', 'Table'], ['Bold', 'Italic', 'RemoveFormat'], ['NumberedList', 'BulletedList'], ['Format'], ['Maximize']];
+	} else if (overrides.settings_set == "Extended") {
+		//// Toolbar configuration generated automatically by the editor based on config.toolbarGroups.
+		//config.toolbar = [
+		//	{ name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source'] },
+		//	{ name: 'clipboard', groups: ['clipboard', 'undo'], items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+		//	{ name: 'editing', groups: ['find', 'selection', 'spellchecker'], items: ['Scayt'] },
+		//	'/',
+		//	{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'], items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+		//	{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'], items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'] },
+		//	{ name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+		//	{ name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+		//	'/',
+		//	{ name: 'styles', items: ['Styles', 'Format'] },
+		//	{ name: 'tools', items: ['Maximize'] },
+		//	{ name: 'others', items: ['-'] },
+		//	{ name: 'about', items: ['About'] }
+		//];
 
-	// JH: nonstandard setting value selects a set of pre-prepared overrides: 
-	var settings_set = (overrides != null ? overrides["settings_set"] : null);
-	if (settings_set)
-		settings_set = settings_set.toUpperCase();
-	if (!settings_set || (settings_set == 'UNDEFINED'))
-		settings_set = null;
-
-	if (settings_set && staticOverrides) {
-		var extras = staticOverrides[settings_set];
-		if (extras) {
-			for (var idx = 0; idx < extras.length; ++idx) {
-				var extra1 = extras[idx];
-				jQuery.extend(settings, extra1);
-			}
-		}
+		//// Toolbar groups configuration.
+		//config.toolbarGroups = [
+		//	{ name: 'document', groups: ['mode', 'document', 'doctools'] },
+		//	{ name: 'clipboard', groups: ['clipboard', 'undo'] },
+		//	{ name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+		//	{ name: 'forms' },
+		//	{ name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+		//	{ name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
+		//	'/',
+		//	{ name: 'links' },
+		//	{ name: 'insert' },
+		//	{ name: 'styles' },
+		//	{ name: 'colors' },
+		//	{ name: 'tools' },
+		//	{ name: 'others' },
+		//	{ name: 'about' }
+		//];
 	}
 
-	// Explicit overrides:
-	jQuery.extend(settings, overrides);
-
-	if (settings.tokencomplete_enabled) {
-	    settings.plugins += ",tokencomplete"
-	}
-
-    //tinyMCE.init(settings);
-    */
+	var editor = CKEDITOR.replace(overrides.elements, config);
 }

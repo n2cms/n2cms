@@ -20,6 +20,7 @@ namespace N2.Details
 		/// <summary>Setting set is defined by configuration, DEFAULT by default.</summary>
 		Undefined,
 		/// <summary>Fixed rich text editor toolbar, basic features, no additional toolbars.</summary>
+		[Obsolete]
 		Fixed,
 		/// <summary>Single line toolbar, no additional toolbars.</summary>
 		Minimal,
@@ -161,13 +162,7 @@ namespace N2.Details
 		/// </remarks>
 		protected virtual string GetSettingsSetString(FreeTextAreaSettingsSet settingsSet)
 		{
-			if (settingsSet == FreeTextAreaSettingsSet.Undefined)
-				settingsSet = FreeTextAreaSettingsSet.Simple;
-
-			if (settingsSet != FreeTextAreaSettingsSet.Fixed)
-				return settingsSet.ToString();
-			else
-				return string.Empty;
+			return settingsSet.ToString();
 		}
 
 		/// <summary> Comma separated list of CSS file Urls to be used by TinyMCE, defined by application, default empty (unset) </summary>
