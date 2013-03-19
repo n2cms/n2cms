@@ -21,6 +21,9 @@ namespace N2.Resources
 			CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
 			PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 			PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
+			TwitterBootstrapJsPath = DefaultBootstrapJsPath;
+			TwitterBootstrapCssPath = DefaultBootstrapCssPath;
+			TwitterBootstrapResponsiveCssPath = DefaultBootstrapResponsiveCssPath;
 		}
 
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
@@ -28,6 +31,11 @@ namespace N2.Resources
 		
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
+
+		public const string DefaultBootstrapRoot = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/";
+		public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
+		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
+		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryPath { get; set; }
@@ -46,6 +54,16 @@ namespace N2.Resources
 
 		/// <summary>The path to the parts css.</summary>
 		public static string PartsCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap CSS library.</summary>
+		public static string TwitterBootstrapCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap Responsive CSS library.</summary>
+		public static string TwitterBootstrapResponsiveCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap JS library.</summary>
+		public static string TwitterBootstrapJsPath { get; set; }
+
 
 		#region page StyleSheet
 

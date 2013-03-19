@@ -24,6 +24,9 @@ namespace N2.Resources
 			Register.CKEditorPath = configFactory.Sections.Web.Resources.CKEditorPath;
 			Register.PartsJsPath = configFactory.Sections.Web.Resources.PartsJsPath;
 			Register.PartsCssPath = configFactory.Sections.Web.Resources.PartsCssPath;
+			Register.TwitterBootstrapCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapCssPath;
+			Register.TwitterBootstrapResponsiveCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapResponsiveCssPath;
+			Register.TwitterBootstrapJsPath = configFactory.Sections.Web.Resources.TwitterBootstrapJsPath;
 		}
 
 		public void Stop()

@@ -95,7 +95,7 @@ namespace N2.Web.UI.WebControls
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
-			overrides["contentsCss"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
+			overrides["contentsCss"] = configCssUrl ?? Register.TwitterBootstrapCssPath;
 
 			overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
 				.AppendQuery("location", "selection")
