@@ -26,6 +26,18 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
+	config.uiColor = '#F8F8F8';
+	config.filebrowserWindowWidth = 300;
+	config.filebrowserWindowHeight = 600;
+	config.extraPlugins = 'codemirror';
+	config.removePlugins = 'scayt,wsc,elementspath,resize,about';
+	config.height = 300;
+	config.codemirror = {
+		showFormatButton: true,
+		showCommentButton: false,
+		showUncommentButton: false
+	};
+
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
 	config.removeButtons = '';// 'Underline,Subscript,Superscript';

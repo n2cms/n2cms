@@ -96,8 +96,6 @@ namespace N2.Web.UI.WebControls
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
 			overrides["contentsCss"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
-			overrides["filebrowserImageWindowWidth"] = "300";
-			overrides["filebrowserImageWindowHeight"] = "600";
 
 			overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
 				.AppendQuery("location", "selection")
