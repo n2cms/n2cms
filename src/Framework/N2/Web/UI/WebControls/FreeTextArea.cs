@@ -73,7 +73,6 @@ namespace N2.Web.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-
 			if (EnableFreeTextArea)
 			{
 				Register.JQuery(Page);
@@ -106,7 +105,7 @@ namespace N2.Web.UI.WebControls
 				.AppendQuery("selectableTypes", "");
 
 			overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
-				.AppendQuery("location", "fileselection")
+				.AppendQuery("location", "filesselection")
 				.AppendQuery("availableModes", "Files")
 				.AppendQuery("selectableTypes", "IFileSystemFile");
 
