@@ -39,11 +39,11 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The path to the included tiny MCE javascript resource.</summary>
-		[ConfigurationProperty("tinyMCEPath", DefaultValue = "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js?v=" + JQueryVersion)]
-		public string TinyMCEPath
+		[ConfigurationProperty("ckEditorPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion)]
+		public string CKEditorPath
 		{
-			get { return (string)base["tinyMCEPath"]; }
-			set { base["tinyMCEPath"] = value; }
+			get { return (string)base["ckEditorPath"]; }
+			set { base["ckEditorPath"] = value; }
 		}
 
 		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion)]
