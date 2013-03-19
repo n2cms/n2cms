@@ -1,6 +1,28 @@
 CKEditor 4 Changelog
 ====================
 
+## CKEditor 4.1 RC
+
+* [#9829](http://dev.ckeditor.com/ticket/9829): Data and features activation based on editor configuration.
+
+  Brand new data filtering system that works in 2 modes:
+
+  * based on loaded features (toolbar items, plugins) - the data will be filtered according to what the editor in its
+  current configuration can handle,
+  * based on `config.allowedContent` rules - the data will be filtered and the editor features (toolbar items, commands,
+  keystrokes) will be enabled if they are allowed.
+
+  See the `datafiltering.html` sample, [guides](http://docs.ckeditor.com/#!/guide/dev_data_filter) and [`CKEDITOR.filter` API documentation](http://docs.ckeditor.com/#!/api/CKEDITOR.filter).
+* [#9387](http://dev.ckeditor.com/ticket/9387): Reintroduced "Shared Spaces" - the ability to display toolbar and bottom editor space in selected locations and to share them by different editor instances.
+* [#9907](http://dev.ckeditor.com/ticket/9907): Added the `contentPreview` event for preview data manipulation.
+* [#9713](http://dev.ckeditor.com/ticket/9713): Introduced the `sourcedialog` plugin that brings raw HTML editing for inline editor instances.
+* Included in [#9829](http://dev.ckeditor.com/ticket/9829): Introduced new events, `toHtml` and `toDataFormat`, allowing for better integration with data processing. See API documentation: [`toHtml`](http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-toHtml), [`toDataFormat`](http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-toDataFormat).
+* [#9981](http://dev.ckeditor.com/ticket/9981): Added ability to filter `htmlParser.fragment`, `htmlParser.element` etc. by many `htmlParser.filter`s before writing structure to an HTML string.
+* Included in [#10103](http://dev.ckeditor.com/ticket/10103):
+  * Introduced the `editor.status` property to make it easier to check the current status of the editor. See [API documentation](http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-status).
+  * Default `command` state is now `CKEDITOR.TRISTATE_DISABLE`. It will be activated on `editor.instanceReady` or immediately after being added if the editor is already initialized.
+* [#9796](http://dev.ckeditor.com/ticket/9796): Introduced `<s>` as a default tag for strikethrough, which replaces obsolete `<strike>` in HTML5.
+
 ## CKEditor 4.0.2
 
 * [#9779](http://dev.ckeditor.com/ticket/9779): Fixed overriding `CKEDITOR.getUrl` with `CKEDITOR_GETURL`.
