@@ -51,6 +51,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CC6F803A
 		..\build\n2.sources.targets = ..\build\n2.sources.targets
 		..\build\n2.templates.mvc.targets = ..\build\n2.templates.mvc.targets
 		..\build\n2.templates.webforms.targets = ..\build\n2.templates.webforms.targets
+		..\build\nugetdeploy.bat = ..\build\nugetdeploy.bat
+		..\build\nugetpublish.bat = ..\build\nugetpublish.bat
+		..\Prepare_AllDependencies.bat = ..\Prepare_AllDependencies.bat
+		Prepare_SourceDependencies.bat = Prepare_SourceDependencies.bat
+		..\build\test.bat = ..\build\test.bat
+		..\build\zipdeploy.bat = ..\build\zipdeploy.bat
+		..\build\zipnugetdeploy.bat = ..\build\zipnugetdeploy.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snippets", "{3C49EAD0-C3FF-406F-8290-23229BD4BADF}"
