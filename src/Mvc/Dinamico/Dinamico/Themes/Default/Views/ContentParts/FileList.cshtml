@@ -37,6 +37,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		ie.FolderSelection("Directory").Required();
 		ie.Text("FileFilter", "File Filter").DefaultValue("?*.*");
 		ie.CheckBox("Recursive");
+		ie.CheckBox("ReverseOrder").DefaultValue(false);
 	});
 
 	string filter = (string)Model.GetDetail("FileFilter") ?? "*";
@@ -69,8 +70,12 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				select new {
 					FileSize = N2.Utility.GetFileSizeString(fn.Length, true), 
 					Url = f.Substring(baseDir.Length),
-					DisplayName = f.Substring(baseDir.Length + dir.Length + 1)}).ToArray();
-	
+					DisplayName = f.Substring(baseDir.Length + dir.Length + 1)});
+
+	if (Model.GetDetail("ReverseOrder", false)) {
+		data = data.Reverse();
+	}
+					
 }
 
 <table class="table table-striped">
