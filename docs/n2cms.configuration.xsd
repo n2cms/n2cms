@@ -633,6 +633,7 @@
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:enumeration value="Fit"/>
+                                    <xs:enumeration value="FitCenterOnTransparent"/>
 																		<xs:enumeration value="Fill"/>
 																		<xs:enumeration value="Stretch"/>
 																	</xs:restriction>

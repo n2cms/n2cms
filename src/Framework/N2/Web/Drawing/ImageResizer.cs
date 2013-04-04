@@ -93,16 +93,34 @@ namespace N2.Web.Drawing
 			var maxHeight = parameters.MaxHeight;
 			var quality = parameters.Quality;
 			var srcRect = parameters.SourceRectangle;
+            Rectangle dest;
+            double resizeRatio;
+            int newWidth, newHeight;
 
-			if (mode == ImageResizeMode.Fit)
-			{
-				double resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
-				int newWidth = (int)Math.Round(original.Width * resizeRatio);
-				int newHeight = (int)Math.Round(original.Height * resizeRatio);
-				resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
-			}
-			else
-				resized = new Bitmap((int)maxWidth, (int)maxHeight, original.PixelFormat);
+            switch (mode)
+            {
+                case ImageResizeMode.Fit:
+                    resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
+				    newWidth = (int)Math.Round(original.Width * resizeRatio);
+				    newHeight = (int)Math.Round(original.Height * resizeRatio);
+				    resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
+                    dest = new Rectangle(Point.Empty, resized.Size);
+                    break;
+                case ImageResizeMode.FitCenterOnTransparent:
+                    resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
+                    newWidth = (int)Math.Round(original.Width * resizeRatio);
+                    newHeight = (int)Math.Round(original.Height * resizeRatio);
+                    int newImageX = (maxWidth < maxHeight) ? 0 : ((int)((maxWidth - (original.Width * resizeRatio)) / 2));
+                    int newImageY = newImageX != 0 ? 0 : ((int)((maxHeight - (original.Height * resizeRatio)) / 2));
+                    resized = new Bitmap((int)maxWidth, (int)maxHeight, PixelFormat.Format32bppArgb);
+                    dest = new Rectangle(newImageX, newImageY, newWidth, newHeight);
+                    break;
+                default:
+                    resized = new Bitmap((int)maxWidth, (int)maxHeight, original.PixelFormat);
+                    dest = new Rectangle(Point.Empty, resized.Size);
+                    break;
+            }
+
 
     		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
@@ -125,13 +143,15 @@ namespace N2.Web.Drawing
 						? srcRect.Value.Size 
 						: original.Size;
 
-					Rectangle dest = (mode == ImageResizeMode.Fill)
-						? GetFillDestinationRectangle(originalSize, resized.Size)
-						: new Rectangle(Point.Empty, resized.Size);
+                    if (mode == ImageResizeMode.Fill)
+                        dest = GetFillDestinationRectangle(originalSize, resized.Size);
 					
 					var src = new Rectangle(0, 0, original.Width, original.Height);
 					if (srcRect.HasValue)
 						src = srcRect.Value;
+
+                    if (mode == ImageResizeMode.FitCenterOnTransparent)
+                        g.Clear(Color.Transparent);
 
 					g.DrawImage(original, dest, src.X, src.Y, src.Width, src.Height, GraphicsUnit.Pixel, attr);
 				}
@@ -178,6 +198,9 @@ namespace N2.Web.Drawing
 				case "image/gif":
 					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 				case "image/png":
+                    if (resized.PixelFormat == PixelFormat.Format1bppIndexed || resized.PixelFormat == PixelFormat.Format4bppIndexed || resized.PixelFormat == PixelFormat.Format8bppIndexed)
+						return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
+					return Graphics.FromImage(resized);
 				default:
 					return GetResizedBitmap(ref resized, original.PixelFormat);
 			}
