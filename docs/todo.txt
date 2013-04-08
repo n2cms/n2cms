@@ -1,3 +1,4 @@
+- upload tab ckeditor
 - smart redirect to language-localized page when URL is specified with no language (i.e. language root missing)
 - refresh without control panel
 - full mongo support

@@ -18,7 +18,7 @@ namespace N2.Resources
 			JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
 			JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
 			JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
-			TinyMCEPath = "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js?v=" + JQueryVersion;
+			CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
 			PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 			PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
 		}
@@ -38,8 +38,8 @@ namespace N2.Resources
 		/// <summary>The path to the jquery plugins used by N2.</summary>
 		public static string JQueryPluginsPath { get; set; }
 		
-		/// <summary>The path to the tiny MCE editor script</summary>
-		public static string TinyMCEPath { get; set; }
+		/// <summary>The path to the CKeditor script</summary>
+		public static string CKEditorPath { get; set; }
 
 		/// <summary>The path to the parts script.</summary>
 		public static string PartsJsPath { get; set; }
@@ -319,9 +319,9 @@ namespace N2.Resources
 			page.JavaScript(JQueryUiPath.ResolveUrlTokens(), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
-		public static void TinyMCE(this Page page)
+		public static void CKEditor(this Page page)
 		{
-			JavaScript(page, TinyMCEPath.ResolveUrlTokens());
+			JavaScript(page, CKEditorPath.ResolveUrlTokens());
 		}
 
 		#endregion
@@ -389,7 +389,7 @@ namespace N2.Resources
 
 		public static string TinyMCE(IDictionary<string, object> stateCollection)
 		{
-			return JavaScript(stateCollection, Url.ResolveTokens(TinyMCEPath));
+			return JavaScript(stateCollection, Url.ResolveTokens(CKEditorPath));
 		}
 
 		public static string StyleSheet(IDictionary<string, object> stateCollection, string resourceUrl)
