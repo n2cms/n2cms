@@ -18,6 +18,8 @@ examples/MinimalVisualBasic/wwwroot/App_Data/SearchIndex/
 examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
 lib/*.pdb
 examples/*/wwwroot/N2/
+#src/Mvc/*/*/SQLite.Interop.dll
+#src/WebForms/*/*/SQLite.Interop.dll
 
 # User-specific files
 *.suo
