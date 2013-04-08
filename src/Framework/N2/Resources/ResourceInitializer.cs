@@ -21,7 +21,7 @@ namespace N2.Resources
 			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
-			Register.TinyMCEPath = configFactory.Sections.Web.Resources.TinyMCEPath;
+			Register.CKEditorPath = configFactory.Sections.Web.Resources.CKEditorPath;
 			Register.PartsJsPath = configFactory.Sections.Web.Resources.PartsJsPath;
 			Register.PartsCssPath = configFactory.Sections.Web.Resources.PartsCssPath;
 		}
