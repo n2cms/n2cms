@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using NHibernate.Criterion;
+using System;
 
 namespace N2.Persistence.NH
 {
+	[Obsolete("Use IRepository<T>")]
 	public interface INHRepository<TEntity> : IRepository<TEntity>
 	{
 		/// <summary>

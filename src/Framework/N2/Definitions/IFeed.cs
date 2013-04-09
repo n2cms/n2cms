@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Persistence.Search;
+using N2.Persistence;
 
 namespace N2.Definitions
 {

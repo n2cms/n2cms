@@ -30,6 +30,9 @@ namespace N2.Persistence.NH
 
 		public SessionProvider(IConfigurationBuilder builder, NHInterceptorFactory interceptorFactory, IWebContext webContext, DatabaseSection config)
 		{
+			if (config.Flavour.IsFlagSet(DatabaseFlavour.NoSql))
+				return;
+
 			nhSessionFactory = builder.BuildSessionFactory();
 			this.webContext = webContext;
 			this.interceptorFactory = interceptorFactory;

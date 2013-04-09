@@ -917,7 +917,7 @@ namespace N2.Tests.Content
 			var item = new AnItem();
 			var version = new AnItem { ID = 2 };
 
-			(item.VersionOf == null).ShouldBe(true);
+			(item.VersionOf == null).ShouldBe(false); // no longer supported
 			(item.VersionOf == version).ShouldBe(false);
 		}
 
@@ -927,7 +927,7 @@ namespace N2.Tests.Content
 			var item = new AnItem();
 			var version = new AnItem { ID = 2 };
 
-			(item.VersionOf != null).ShouldBe(false);
+			(item.VersionOf != null).ShouldBe(true); // no longer supported
 			(item.VersionOf != version).ShouldBe(true);
 		}
 

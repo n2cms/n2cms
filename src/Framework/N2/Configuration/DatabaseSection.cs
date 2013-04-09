@@ -159,6 +159,9 @@ namespace N2.Configuration
 
 			if (Search.Type == SearchIndexType.Lucene)
 				configurationKeys.Add("lucene");
+
+			if (Flavour == DatabaseFlavour.MongoDB)
+				configurationKeys.Add("mongo");
 		}
 
 	}

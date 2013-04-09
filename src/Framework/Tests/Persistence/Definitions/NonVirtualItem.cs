@@ -27,8 +27,8 @@ namespace N2.Tests.Persistence.Definitions
 		}
 		public double DoubleProperty
 		{
-			get { return (double)(GetDetail("DoubleProperty") ?? 0); }
-			set { SetDetail<double>("DoubleProperty", value); }
+			get { return GetDetail("DoubleProperty", 0.0); }
+			set { SetDetail<double>("DoubleProperty", value, 0.0); }
 		}
 		public string StringProperty
 		{

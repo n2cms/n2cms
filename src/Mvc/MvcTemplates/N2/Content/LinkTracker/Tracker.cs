@@ -123,7 +123,7 @@ namespace N2.Edit.LinkTracker
 		/// <returns>A list of items referenced in html text by the supplied item.</returns>
 		public virtual IList<ContentItem> FindLinkedItems(ContentItem item)
 		{
-			return FindLinkedObjects(item).Select(cd => cd.LinkedItem).Where(i => i != null).ToList();
+			return FindLinkedObjects(item).Select(cd => cd.LinkedItem.Value).Where(i => i != null).ToList();
 		}
 
 		/// <summary>Finds items linked by the supplied item. This method only finds links in html text to items within the site.</summary>
@@ -257,12 +257,12 @@ namespace N2.Edit.LinkTracker
 						if (name == null || detail.StringValue == null)
 							// don't update legacy links
 							continue;
-						if (detail.LinkedItem == null && targetItem.ID != 0)
+						if (!detail.LinkedItem.HasValue && targetItem.ID != 0)
 						{
 							logger.DebugFormat("Skipping due to null linked item and nonempty target {0}", targetItem);
 							continue;
 						}
-						else if (detail.LinkedItem != null && detail.LinkedItem.ID != targetItem.ID)
+						else if (detail.LinkedItem.HasValue && detail.LinkedItem.ID != targetItem.ID)
 						{
 							// don't update other links
 							logger.DebugFormat("Skipping due to other linked item: {0} != {1}", detail.LinkedItem, targetItem);

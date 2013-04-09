@@ -3,14 +3,17 @@ namespace N2.Persistence
 	public enum Comparison
 	{
 		Equal,
-		NotEqual,
 		GreaterThan,
 		LessThan,
 		GreaterOrEqual,
 		LessOrEqual,
 		Like,
-		NotLike,
 		Null,
-		NotNull
+		In,
+		Not = 1024,
+		NotEqual = Not | Equal,
+		NotLike = Not | Like,
+		NotNull = Not | Null,
+		NotIn = Not | In
 	}
 }

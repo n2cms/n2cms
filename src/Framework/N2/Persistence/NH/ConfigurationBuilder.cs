@@ -187,6 +187,8 @@ namespace N2.Persistence.NH
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle10gDialect).AssemblyQualifiedName;
 					break;
+				case DatabaseFlavour.MongoDB:
+					return DatabaseFlavour.MongoDB;
 				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
@@ -207,6 +209,8 @@ namespace N2.Persistence.NH
 				return DatabaseFlavour.Oracle;
 			if (provider.StartsWith("System.Data.SqlServerCe"))
 				return DatabaseFlavour.SqlCe;
+			if (css.ConnectionString.StartsWith("mongodb:"))
+				throw new ConfigurationErrorsException("Cannot auto-detect MongoDB. This needs to be configured as flavor=\"MongoDB\" in the n2/database config section");
 
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}
@@ -376,7 +380,11 @@ namespace N2.Persistence.NH
 			ca.Property(x => x.BoolValue, cm => { });
 			ca.Property(x => x.DateTimeValue, cm => { });
 			ca.Property(x => x.IntValue, cm => { });
-			ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.NotFound(NotFoundMode.Ignore); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
+			ca.Component(x => x.LinkedItem, cm =>
+			{
+				cm.Property(cr => cr.ID, pm => pm.Column("LinkValue"));
+			});
+			//ca.ManyToOne(x => x.LinkedItem, cm => { cm.Column("LinkValue"); cm.NotFound(NotFoundMode.Ignore); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); cm.Cascade(Cascade.None); });
 			ca.Property(x => x.DoubleValue, cm => { });
 			// if you are using Oracle10g and get 
 			// ORA-01461: can bind a LONG value only for insert into a LONG column

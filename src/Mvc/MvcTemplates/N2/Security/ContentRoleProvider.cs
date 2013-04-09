@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Web.Security;
 using System.Linq;
+using N2.Persistence;
 
 namespace N2.Security
 {
@@ -92,10 +93,7 @@ namespace N2.Security
 
 		public override string[] FindUsersInRole(string roleName, string usernameToMatch)
 		{
-			IList<ContentItem> users = Bridge.Finder
-				.Where.Name.Eq(usernameToMatch)
-				.And.Detail("Roles").Eq(roleName)
-				.Select();
+			IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Name", usernameToMatch) & Parameter.Equal("Roles", roleName).Detail()).ToList();
 			return ToArray(users);
 		}
 
@@ -120,9 +118,7 @@ namespace N2.Security
 
 		public override string[] GetUsersInRole(string roleName)
 		{
-			IList<ContentItem> users = Bridge.Finder
-				.Where.Detail("Roles").Like(roleName)
-				.Select();
+			IList<ContentItem> users = Bridge.Repository.Find(Parameter.Equal("Roles", roleName).Detail()).ToList();
 			return ToArray(users);
 		}
 

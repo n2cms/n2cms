@@ -147,7 +147,12 @@ namespace N2.Linq
 		{
 			ParameterExpression detailParameter = Expression.Parameter(detail.DetailType, "cd");
 			var nameEqual = GetPropertyEquals(detailParameter, "Name", Expression.Constant(comparison.NameExpression.Member.Name));
-			var valueExpression = GetPropertyComparison(detailParameter, detail.ValuePropertyName, comparison);
+			bool isLinkQuery = detail.ValuePropertyName == "LinkedItem";
+			var valueExpression = GetPropertyComparison(detailParameter, 
+				 isLinkQuery
+					? Expression.Property(Expression.Property(detailParameter, "LinkedItem"), "ID")
+					: Expression.Property(detailParameter, detail.ValuePropertyName),
+				comparison, isLinkQuery);
 			Expression nameAndValue = Expression.AndAlso(nameEqual, valueExpression);
 			var nameAndValueExpression = Expression.Lambda(nameAndValue, detailParameter);
 			return nameAndValueExpression;
@@ -160,21 +165,19 @@ namespace N2.Linq
 			return binaryExpression;
 		}
 
-		static Expression GetPropertyComparison(ParameterExpression parameterExpression, string propertyName, ComparisonInfo comparison)
+		static Expression GetPropertyComparison(ParameterExpression parameterExpression, MemberExpression propertyAccess, ComparisonInfo comparison, bool isLinkQuery)
 		{
-			MemberExpression propertyAccess = Expression.Property(parameterExpression, propertyName);
-
 			Expression left;
 			Expression right;
 			if (comparison.IsLeftToRight)
 			{
 				left = propertyAccess;
-				right = GetValueExpression(comparison);
+				right = GetValueExpression(comparison, isLinkQuery);
 			}
 			else
 			{
 				right = propertyAccess;
-				left = GetValueExpression(comparison);
+				left = GetValueExpression(comparison, isLinkQuery);
 			}
 
 			switch (comparison.Type)
@@ -197,10 +200,16 @@ namespace N2.Linq
 			}
 		}
 
-		private static Expression GetValueExpression(ComparisonInfo comparison)
+		//static ConstructorInfo nullableIntConstructor = typeof(Nullable<int>).GetConstructor(new [] { typeof(int) });
+
+		private static Expression GetValueExpression(ComparisonInfo comparison, bool isLinkQuery)
 		{
 			if (comparison.ValueExpression.Type.IsValueType)
 				return Expression.Convert(comparison.ValueExpression, typeof(Nullable<>).MakeGenericType(comparison.ValueExpression.Type));
+
+			if (isLinkQuery)
+				return Expression.Convert(Expression.Property(comparison.ValueExpression, "ID"), typeof(Nullable<int>));
+				//return Expression.Property(comparison.ValueExpression, "ID");//Expression.New(nullableIntConstructor, Expression.Property(comparison.ValueExpression, "ID"));
 
 			return comparison.ValueExpression;
 		}

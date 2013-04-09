@@ -43,12 +43,12 @@ namespace N2.Management.Installation
 								var detail = container.Details[p.Name];
 								if (detail == null)
 									continue;
-								if (detail.LinkedItem == null)
+								if (!detail.LinkedItem.HasValue)
 									continue;
 								if (detail.LinkedItem.Parent != container)
 									continue;
 
-								detail.LinkedItem.Name = p.Name;
+								detail.LinkedItem.Value.Name = p.Name;
 								itemRepository.SaveOrUpdate(detail.LinkedItem);
 
 								container.Details.Remove(detail);

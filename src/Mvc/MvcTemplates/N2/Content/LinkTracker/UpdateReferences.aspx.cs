@@ -111,8 +111,9 @@ namespace N2.Edit.LinkTracker
 			if (chkChildren.Checked)
 			{
 				mvPhase.ActiveViewIndex = 1;
-				rptDescendants.DataSource = Content.Search.Find.Where.AncestralTrail.Like(Selection.SelectedItem.GetTrail() + "%").Select()
-					.Where(Content.Is.Accessible());
+				//rptDescendants.DataSource = Content.Search.Find.Where.AncestralTrail.Like(Selection.SelectedItem.GetTrail() + "%").Select()
+				//	.Where(Content.Is.Accessible());
+				rptDescendants.DataSource = Content.Search.Repository.Find(N2.Persistence.Parameter.Below(Selection.SelectedItem)).Where(Content.Is.Accessible());
 				rptDescendants.DataBind();
 			}
 			else

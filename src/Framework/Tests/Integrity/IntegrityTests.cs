@@ -24,12 +24,12 @@ namespace N2.Tests.Integrity
 		private IDefinitionManager definitions;
 		private IUrlParser parser;
 		private IntegrityManager integrityManger;
-		FakeItemFinder finder;
 
 		private IEventRaiser moving;
 		private IEventRaiser copying;
 		private IEventRaiser deleting;
 		private IEventRaiser saving;
+		private FakeContentItemRepository repository;
 
 		#region SetUp
 
@@ -49,8 +49,7 @@ namespace N2.Tests.Integrity
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
 			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer, new DefinitionMap());
-			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
-			integrityManger = new IntegrityManager(definitions, finder, parser);
+			integrityManger = new IntegrityManager(definitions, persister.Repository, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);
 			enforcer.Start();
 		}
@@ -72,6 +71,10 @@ namespace N2.Tests.Integrity
 			mocks.Record();
 			persister = mocks.DynamicMock<IPersister>();
 
+			repository = new FakeContentItemRepository();
+
+			persister.Expect(p => p.Repository).Return(repository);
+
 			persister.ItemMoving += null;
 			moving = LastCall.IgnoreArguments().Repeat.Any().GetEventRaiser();
 
@@ -88,6 +91,13 @@ namespace N2.Tests.Integrity
 		}
 
 		#endregion
+
+		protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
+		{
+			var item = base.CreateOneItem<T>(id, name, parent);
+			repository.SaveOrUpdate(item);
+			return item;
+		}
 
 		#region Move
 
@@ -353,7 +363,6 @@ namespace N2.Tests.Integrity
 		public void CannotSaveNotLocallyUniqueItem()
 		{
 			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
-			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
 			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);
@@ -366,7 +375,6 @@ namespace N2.Tests.Integrity
 		public void LocallyUniqueItemThatWithoutNameYet()
 		{
 			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
-			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, null, startPage);
 			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);
@@ -379,7 +387,6 @@ namespace N2.Tests.Integrity
 		public void CannotSaveNotLocallyUniqueItemEvent()
 		{
 			IntegrityStartPage startPage = CreateOneItem<IntegrityStartPage>(1, "start", null);
-			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			IntegrityPage page2 = CreateOneItem<IntegrityPage>(2, "Sasha", startPage);
 			IntegrityPage page3 = CreateOneItem<IntegrityPage>(3, "Sasha", startPage);

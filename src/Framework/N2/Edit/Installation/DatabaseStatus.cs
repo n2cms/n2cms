@@ -103,5 +103,7 @@ namespace N2.Edit.Installation
 					? "Database connection OK."
 					: string.Format("<span title='{0}'>Couldn't open connection to database.</span><!--{1}-->", ConnectionError, ConnectionException);
 		}
+
+		public int Versions { get; set; }
 	}
 }

@@ -128,7 +128,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
 				item["TheString"] = "the string";
 				repository.Save(item);
 				repository.Flush();
@@ -147,7 +147,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
 				item["TheString"] = "the string";
 				repository.Save(item);
 				repository.Flush();
@@ -170,7 +170,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
 				item["TheString"] = "the string";
 				repository.Save(item);
 				repository.Flush();
@@ -307,8 +307,8 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
-				ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", null);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
+				ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", null);
 				item["reference"] = item2;
 				repository.Save(item);
 				repository.Save(item2);
@@ -339,9 +339,9 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
-				ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item);
-				ContentItem item3 = CreateOneItem<Definitions.PersistableItem1>(0, "item3", item2);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
+				ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", item);
+				ContentItem item3 = CreateOneItem<Definitions.PersistableItem>(0, "item3", item2);
 				item["reference"] = item2;
 				item3["reference"] = item2;
 				repository.Save(item);
@@ -373,8 +373,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDiscriminatorsBelow_FindsDistinctDiscriminators()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "item", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem>(0, "item", root);
 			repository.Save(root);
 
 			repository.FindDescendantDiscriminators(root).Single().Discriminator
@@ -384,9 +384,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDiscriminators_FindsDistinctDiscriminators_Without()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 			repository.Save(root);
-			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
 			repository.Save(child);
 
 			var d = repository.FindDescendantDiscriminators(null).Single();
@@ -397,8 +397,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDiscriminatorsBelow_FindsAncestorDiscriminator()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child = CreateOneItem<Definitions.PersistablePart>(0, "part", root);
 			repository.SaveOrUpdate(root, child);
 
 			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
@@ -409,8 +409,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDiscriminatorsBelow_FindsRootDiscriminator()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child = CreateOneItem<Definitions.PersistablePart1>(0, "part", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child = CreateOneItem<Definitions.PersistablePart>(0, "part", root);
 			repository.SaveOrUpdate(root, child);
 
 			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
@@ -421,9 +421,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDiscriminator_Count()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
 			repository.SaveOrUpdate(root, child1, child2);
 
 			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
@@ -433,10 +433,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDescendantDiscriminators_OnMultipleLevels()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", child1);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "item3", child2);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "item3", child2);
 			repository.SaveOrUpdate(root, child1, child2, child3);
 
 			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
@@ -446,10 +446,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDescendantDiscriminators_IsSortedByNumberOfItmes()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
-			ContentItem child3 = CreateOneItem<Definitions.PersistablePart1>(0, "item3", child2);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistablePart>(0, "item3", child2);
 			repository.SaveOrUpdate(root, child1, child2, child3);
 
 			var discriminators = repository.FindDescendantDiscriminators(root).ToList();
@@ -460,10 +460,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDescends_FindsAncestorOfType()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
-			ContentItem child3 = CreateOneItem<Definitions.PersistablePart1>(0, "item3", child2);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart>(0, "item2", child1);
+			ContentItem child3 = CreateOneItem<Definitions.PersistablePart>(0, "item3", child2);
 			repository.SaveOrUpdate(root, child1, child2, child3);
 
 			var discriminators = repository.FindDescendants(root, "PersistablePart");
@@ -473,9 +473,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDescends_FindsDescendantsOfType()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistablePart1>(0, "item1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "item2", child1);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistablePart>(0, "item1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart>(0, "item2", child1);
 			repository.SaveOrUpdate(root, child1, child2);
 
 			var discriminators = repository.FindDescendants(root, "PersistableItem");
@@ -485,8 +485,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindDescends_WithNull_FinsAllInDb()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", null);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", null);
 			repository.SaveOrUpdate(root, child1);
 
 			var discriminators = repository.FindDescendants(null, "PersistableItem");
@@ -496,9 +496,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Find_TypeAndParent_ShouldOnlyInclude_ItemWithSpecified_TypeAndParent()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-            ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			ContentItem child2 = CreateOneItem<Definitions.PersistablePart1>(0, "part2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+            ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			ContentItem child2 = CreateOneItem<Definitions.PersistablePart>(0, "part2", root);
 
 			var results = repository.Find(new Parameter("class", "PersistableItem"), new Parameter("Parent", root));
 
@@ -508,9 +508,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 
 			child1["Link"] = child2;
 			child2["Link"] = child1;
@@ -526,9 +526,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FindReferencing_ShouldReturn_ItemsThatLinkToTarget_InDetailCollection()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 
 			child1.GetDetailCollection("Links", true).Add(child2);
 			child2.GetDetailCollection("Links", true).Add(child1);
@@ -544,9 +544,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RemoveReferencesTo_ShouldRemove_LinkFromOtherItem()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 			child1["Link"] = child2;
 			child2["Link"] = child1;
 			repository.Save(root);
@@ -560,10 +560,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromOtherItem()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 			child1["Link"] = grandchild1;
 			grandchild1["Link"] = grandchild1;
 			child2["Link"] = grandchild1;
@@ -578,10 +578,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromItself()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 			child1["Link"] = grandchild1;
 			grandchild1["Link"] = grandchild1;
 			child2["Link"] = grandchild1;
@@ -596,10 +596,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RemoveReferencesTo_ShouldRemove_LinkToDescendantItem_FromParent()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 			child1["Link"] = grandchild1;
 			grandchild1["Link"] = grandchild1;
 			child2["Link"] = grandchild1;
@@ -614,10 +614,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RemoveReferencesTo_ShouldShouldReturn_NumberOfRemovedReferences()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null);
-			var child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root);
-			var grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", child1);
-			var child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "page", null);
+			var child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root);
+			var grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", child1);
+			var child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root);
 			child1["Link"] = grandchild1;
 			grandchild1["Link"] = grandchild1;
 			child2["Link"] = grandchild1;
@@ -633,7 +633,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			using (repository)
 			{
-				ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, name, parent);
+				ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, name, parent);
 				repository.Save(item);
 				repository.Flush();
 				return item.ID;

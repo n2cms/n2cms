@@ -27,7 +27,18 @@ namespace N2.Web
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		public bool IsWeb
 		{
-			get { return System.Web.HttpContext.Current != null; }
+			get 
+			{
+				try
+				{
+					return System.Web.HttpContext.Current != null 
+						&& System.Web.HttpContext.Current.Request != null;
+				}
+				catch (HttpException)
+				{
+					return false;
+				}
+			}
 		}
 
 		/// <summary>Returns either the web or the thread context depending on <see cref="IsWeb"/>.</summary>

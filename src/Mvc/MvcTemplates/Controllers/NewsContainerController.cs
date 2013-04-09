@@ -8,6 +8,7 @@ using N2.Templates.Mvc.Models.Pages;
 using System.Collections.Generic;
 using N2.Persistence.Finder;
 using N2.Templates.Mvc.Models;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -17,8 +18,8 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof(Models.Pages.NewsContainer))]
 	public class NewsContainerController : ContentController<Models.Pages.NewsContainer>
 	{
-		IItemFinder finder;
-		public NewsContainerController(IItemFinder finder)
+		IContentItemRepository finder;
+		public NewsContainerController(IContentItemRepository finder)
 		{
 			this.finder = finder;
 		}
@@ -51,13 +52,15 @@ namespace N2.Templates.Mvc.Controllers
 
 		private NewsContainerModel GetNews(string tag, int skip, int take)
 		{
-			IList<News> news = finder.Where.Type.Eq(typeof(News))
-				.And.Parent.Eq(CurrentPage)
-				.And.Detail("Tags").Like(tag)
-				.FirstResult(skip)
-				.MaxResults(take + 1)
-				.OrderBy.Published.Desc
-				.Select<News>();
+			//IList<News> news = finder.Where.Type.Eq(typeof(News))
+			//	.And.Parent.Eq(CurrentPage)
+			//	.And.Detail("Tags").Like(tag)
+			//	.FirstResult(skip)
+			//	.MaxResults(take + 1)
+			//	.OrderBy.Published.Desc
+			//	.Select<News>();
+			var query = (Parameter.Below(CurrentPage) & Parameter.Like("Tags", tag).Detail()).Skip(skip).Take(take + 1).OrderBy("Published DESC");
+			var news = finder.Find(query).OfType<News>().ToList();
 			var model = CreateModel(skip, take, news);
 			model.Tag = tag;
 			return model;
@@ -65,12 +68,14 @@ namespace N2.Templates.Mvc.Controllers
 
 		private NewsContainerModel GetNews(int skip, int take)
 		{
-			IList<News> news = finder.Where.Type.Eq(typeof(News))
-				.And.Parent.Eq(CurrentPage)
-				.FirstResult(skip)
-				.MaxResults(take + 1)
-				.OrderBy.Published.Desc
-				.Select<News>();
+			var query = Parameter.Below(CurrentPage).Skip(skip).Take(take + 1).OrderBy("Published DESC");
+			var news = finder.Find(query).OfType<News>().ToList();
+			//IList<News> news = finder.Where.Type.Eq(typeof(News))
+			//	.And.Parent.Eq(CurrentPage)
+			//	.FirstResult(skip)
+			//	.MaxResults(take + 1)
+			//	.OrderBy.Published.Desc
+			//	.Select<News>();
 
 			return CreateModel(skip, take, news);
 		}

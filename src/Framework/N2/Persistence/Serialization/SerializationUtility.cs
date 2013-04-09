@@ -52,5 +52,16 @@ namespace N2.Persistence.Serialization
 			}
 			return text.ToString();
 		}
+		internal static ContentState RecaulculateState(ContentItem item)
+		{
+			if (!item.Published.HasValue)
+				return ContentState.Draft;
+			if (item.Published.HasValue && Utility.CurrentTime() < item.Published.Value)
+				return ContentState.Waiting;
+			if (item.Expires.HasValue && item.Expires.Value <= Utility.CurrentTime())
+				return ContentState.Unpublished;
+
+			return ContentState.Published;
+		}
 	}
 }
