@@ -50,9 +50,9 @@ namespace N2.Web.Mvc.Html
 			return registrator.StyleSheet(Register.PartsCssPath.ResolveUrlTokens());
 		}
 
-		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)
+		public static ResourcesHelper CKEditor(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(Register.TinyMCEPath.ResolveUrlTokens());
+			return registrator.JavaScript(Register.CKEditorPath.ResolveUrlTokens());
 		}
 
 		[Obsolete("Renamed to Constants")]
