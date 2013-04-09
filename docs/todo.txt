@@ -1,5 +1,11 @@
+- upload tab ckeditor
 - https://github.com/bherila/n2cms/issues
 - Det va en static prop med en private getter i en content item
+- merge mongo stuff
+- mobile support
+- redesign
+- ckeditor
+- upload tab ckeditor
 - smart redirect to language-localized page when URL is specified with no language (i.e. language root missing)
 - refresh without control panel
 - full mongo support
