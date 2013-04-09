@@ -46,7 +46,7 @@ namespace N2.Configuration
 			set { base["ckEditorPath"] = value; }
 		}
 
-		[ConfigurationProperty("FancyboxPath", DefaultValue = N2.Resources.Register.FancyboxPath)]
+		[ConfigurationProperty("FancyboxPath", DefaultValue = N2.Resources.Register.DefaultFancyboxPath)]
 		public string FancyboxPath
 		{
 			get { return (string)base["FancyboxPath"]; }

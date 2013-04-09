@@ -53,6 +53,7 @@ namespace N2.Web
 		typeof(SlideshowDirectoryInclude),
 		typeof(SlideshowFileInclude))]
 	[AvailableZone("Sources", "Sources")]
+	[WithEditableTemplateSelection()]
 	public class Slideshow : ContentItem, N2.Definitions.IPart
 	{
 

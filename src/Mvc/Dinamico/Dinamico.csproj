@@ -309,6 +309,8 @@
     <Content Include="Dinamico\Themes\Responsive\Views\Shared\_Layout.cshtml" />
     <Content Include="Dinamico\Themes\Responsive\Views\Web.config" />
     <Content Include="Dinamico\Themes\Responsive\Views\_ViewStart.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Slideshow\BootstrapGrid.cshtml" />
+    <Content Include="Dinamico\Themes\Default\Views\Slideshow\Galleria.cshtml" />
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
   <ItemGroup>
