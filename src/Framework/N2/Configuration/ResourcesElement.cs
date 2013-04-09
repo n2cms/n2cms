@@ -46,6 +46,13 @@ namespace N2.Configuration
 			set { base["ckEditorPath"] = value; }
 		}
 
+		[ConfigurationProperty("FancyboxPath", DefaultValue = N2.Resources.Register.FancyboxPath)]
+		public string FancyboxPath
+		{
+			get { return (string)base["FancyboxPath"]; }
+			set { base["FancyboxPath"] = value; }
+		}
+
 		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion)]
 		public string PartsJsPath
 		{

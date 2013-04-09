@@ -21,6 +21,19 @@ namespace N2.Web.Mvc.Html
 			return new ResourcesHelper { Writer = writer, ViewData = html.ViewData };
 		}
 
+		/// <summary>
+		/// Includes the Fancybox Jquery plugin. Requires JQuery to be included on your page already. 
+		/// See https://github.com/fancyapps/fancyBox for instructions.
+		/// </summary>
+		/// <param name="registrator"></param>
+		/// <returns></returns>
+		public static ResourcesHelper Fancybox(this ResourcesHelper registrator)
+		{
+			return registrator
+				.JavaScript(Register.FancyboxPath + "jquery.fancybox.pack.js")
+				.StyleSheet("jquery.fancybox.css");
+		}
+
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(N2.Resources.Register.JQueryPath.ResolveUrlTokens());
