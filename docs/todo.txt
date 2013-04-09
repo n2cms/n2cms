@@ -1,3 +1,4 @@
+- enum migration
 - upload tab ckeditor
 - https://github.com/bherila/n2cms/issues
 - Det va en static prop med en private getter i en content item
