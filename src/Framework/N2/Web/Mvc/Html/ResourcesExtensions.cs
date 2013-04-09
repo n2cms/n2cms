@@ -24,12 +24,7 @@ namespace N2.Web.Mvc.Html
 		/// <summary>
 		/// Includes the Fancybox Jquery plugin. Requires JQuery to be included on your page already. 
 		/// See https://github.com/fancyapps/fancyBox for instructions. You need to add a script like
-		/// this somewhere in your page: 
-		///		<script type="text/javascript">
-		///			$(document).ready(function() {
-		///				$(".fancybox").fancybox();
-		///			});
-		///		</script>
+		/// this somewhere in your page: $(document).ready(function() { $(".fancybox").fancybox(); });
 		/// </summary>
 		/// <param name="registrator"></param>
 		/// <returns></returns>
@@ -37,7 +32,7 @@ namespace N2.Web.Mvc.Html
 		{
 			return registrator
 				.JavaScript(Register.FancyboxPath + "jquery.fancybox.pack.js")
-				.StyleSheet("jquery.fancybox.css");
+				.StyleSheet(Register.FancyboxPath + "jquery.fancybox.css");
 		}
 
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
