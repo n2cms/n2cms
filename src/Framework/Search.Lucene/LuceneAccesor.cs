@@ -123,7 +123,7 @@ namespace N2.Persistence.Search
 
 		public virtual QueryParser GetQueryParser()
 		{
-			return new QueryParser(Version.LUCENE_29, "Text", GetAnalyzer());
+			return new QueryParser(Version.LUCENE_30, "Text", GetAnalyzer());
 		}
 
 		public void Dispose()

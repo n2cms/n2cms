@@ -34,7 +34,7 @@ namespace N2.Templates.UI.Views
 				.State(ContentState.Published)
 				.ReadableBy(User, Roles.GetRolesForUser)
 				.Except(Query.For(typeof(ISystemNode)));
-			var result = Engine.Resolve<ITextSearcher>().Search(query);
+			var result = Engine.Resolve<IContentSearcher>().Search(query);
 			Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
 			TotalCount = result.Total;
 			

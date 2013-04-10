@@ -7,11 +7,29 @@ using N2.Persistence.Finder;
 
 namespace N2.Persistence.Search
 {
+	[Service(typeof(ITextSearcher))]
+	[Obsolete("Use IContentSearcher")]
+	public class BackwardsCompatibleSearcher : ITextSearcher
+	{
+		private IContentSearcher searcher;
+		
+		public BackwardsCompatibleSearcher(IContentSearcher searcher)
+		{
+			this.searcher = searcher;
+		}
+
+		public Result<ContentItem> Search(Query query)
+		{
+			return searcher.Search(query);
+		}
+	}
+
+
 	/// <summary>
 	/// Searches for text using the finder API which results in LIKE database queries.
 	/// </summary>
-	[Service(typeof(ITextSearcher))]
-	public class FindingTextSearcher : ITextSearcher
+	[Service(typeof(IContentSearcher))]
+	public class FindingTextSearcher : IContentSearcher
 	{
 		IItemFinder finder;
 
@@ -53,12 +71,12 @@ namespace N2.Persistence.Search
 			return q.FirstResult(skip).MaxResults(take).Select();
 		}
 
-		public Result Search(Query query)
+		public Result<ContentItem> Search(Query query)
 		{
-			var result = new Result();
+			var result = new Result<ContentItem>();
 			int total;
 			result.Hits = Search(query.Ancestor, query.Text, query.SkipHits, query.TakeHits, query.OnlyPages, query.Types, out total)
-				.Select(i => new Hit { Content = i, Score = (i.Title != null && i.Title.ToLower().Contains(query.Text.ToLower())) ? 1 : .5 });
+				.Select(i => new Hit<ContentItem> { Title = i.Title, Url = i.Url, Content = i, Score = (i.Title != null && i.Title.ToLower().Contains(query.Text.ToLower())) ? 1 : .5 });
 			result.Total = total;
 			return result;
 		}

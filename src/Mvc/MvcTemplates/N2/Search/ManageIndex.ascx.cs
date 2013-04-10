@@ -25,7 +25,7 @@ namespace N2.Management.Search
 
         protected void OnClear(object sender, CommandEventArgs args)
         {
-            Engine.Resolve<IIndexer>().Clear();
+            Engine.Resolve<IContentIndexer>().Clear();
         }
         protected void OnIndex(object sender, CommandEventArgs args)
         {
@@ -38,7 +38,7 @@ namespace N2.Management.Search
 
         protected void OnSearch(object sender, CommandEventArgs args)
         {
-            rptSearch.DataSource = Engine.Resolve<ITextSearcher>()
+            rptSearch.DataSource = Engine.Resolve<IContentSearcher>()
                 .Search(Query.For(txtSearch.Text))
                 .Hits.Where(h => h.Content.IsAuthorized(Page.User));
             rptSearch.DataBind();
@@ -49,7 +49,7 @@ namespace N2.Management.Search
             base.OnPreRender(e);
 
             Status = Engine.Resolve<IAsyncIndexer>().GetCurrentStatus();
-            Statistics = Engine.Resolve<IIndexer>().GetStatistics();
+            Statistics = Engine.Resolve<IContentIndexer>().GetStatistics();
         }
     }
 }

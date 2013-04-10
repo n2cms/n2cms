@@ -569,6 +569,8 @@
     <Compile Include="Persistence\ParameterCollection.cs" />
     <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IndexableDocument.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
     <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
@@ -582,13 +584,12 @@
     <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
     <Compile Include="Persistence\Search\IIndexableType.cs" />
-    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IContentIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
-    <Compile Include="Persistence\Search\IndexableContent.cs" />
     <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />
     <Compile Include="Persistence\Search\SearchableTypeAttribute.cs" />
     <Compile Include="Persistence\Search\ITextExtractor.cs" />
-    <Compile Include="Persistence\Search\ITextSearcher.cs" />
+    <Compile Include="Persistence\Search\IContentSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\Finder\DetailNullHqlProvider.cs" />

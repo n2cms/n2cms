@@ -24,7 +24,7 @@ namespace N2.Extensions.Tests.Search
 	[TestFixture]
 	public class LuceneSearchTests : ItemPersistenceMockingBase
 	{
-		LuceneIndexer indexer;
+		LuceneContentIndexer indexer;
 		LuceneAccesor accessor;
 		PersistableItem root;
         IDefinitionManager definitions;
@@ -41,7 +41,7 @@ namespace N2.Extensions.Tests.Search
 			base.SetUp();
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			indexer = new LuceneContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
 			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
 			indexer.Clear();
 		}
@@ -821,15 +821,15 @@ namespace N2.Extensions.Tests.Search
 
 		// sorting
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.Created)]
-		[TestCase(LuceneIndexer.Properties.Published)]
-		[TestCase(LuceneIndexer.Properties.Updated)]
-		[TestCase(LuceneIndexer.Properties.Expires)]
-		[TestCase(LuceneIndexer.Properties.Title)]
-		[TestCase(LuceneIndexer.Properties.Name)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
-		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.Created)]
+		[TestCase(TextExtractor.Properties.Published)]
+		[TestCase(TextExtractor.Properties.Updated)]
+		[TestCase(TextExtractor.Properties.Expires)]
+		[TestCase(TextExtractor.Properties.Title)]
+		[TestCase(TextExtractor.Properties.Name)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.SavedBy)]
 		public void OrderBy(string field)
 		{
 			PersistableItem item;
@@ -842,15 +842,15 @@ namespace N2.Extensions.Tests.Search
 			hits[1].Title.ShouldBe(item2.Title);
 		}
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.Created)]
-		[TestCase(LuceneIndexer.Properties.Published)]
-		[TestCase(LuceneIndexer.Properties.Updated)]
-		[TestCase(LuceneIndexer.Properties.Expires)]
-		[TestCase(LuceneIndexer.Properties.Title)]
-		[TestCase(LuceneIndexer.Properties.Name)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
-		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.Created)]
+		[TestCase(TextExtractor.Properties.Published)]
+		[TestCase(TextExtractor.Properties.Updated)]
+		[TestCase(TextExtractor.Properties.Expires)]
+		[TestCase(TextExtractor.Properties.Title)]
+		[TestCase(TextExtractor.Properties.Name)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.SavedBy)]
 		public void OrderBy_Descending(string field)
 		{
 			PersistableItem item;
@@ -863,8 +863,8 @@ namespace N2.Extensions.Tests.Search
 			hits[1].Title.ShouldBe(item.Title);
 		}
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
 		public void OrderBy_IsNotAlphabetical_ForCertainFields(string field)
 		{
 			var item = CreateOneItem<PersistableItem>(99, "Another", null);

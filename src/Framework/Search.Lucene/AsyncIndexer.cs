@@ -14,7 +14,7 @@ namespace N2.Persistence.Search
     [Service(typeof(IAsyncIndexer))]
     public class AsyncIndexer : IAsyncIndexer
     {
-        IIndexer indexer;
+        IContentIndexer indexer;
         IPersister persister;
         IErrorNotifier errors;
         IWorker worker;
@@ -37,7 +37,7 @@ namespace N2.Persistence.Search
 
         public TimeSpan RetryInterval { get; set; }
 
-        public AsyncIndexer(IIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
+        public AsyncIndexer(IContentIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
         {
             RetryInterval = TimeSpan.FromMinutes(2);
             this.async = config.Search.AsyncIndexing;

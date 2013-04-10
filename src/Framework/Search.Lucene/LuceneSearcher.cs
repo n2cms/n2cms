@@ -9,8 +9,8 @@ using System.Diagnostics;
 
 namespace N2.Persistence.Search
 {
-	[Service(typeof(ITextSearcher), Replaces = typeof(FindingTextSearcher), Configuration = "lucene")]
-	public class LuceneSearcher : ITextSearcher
+	[Service(typeof(IContentSearcher), Replaces = typeof(FindingTextSearcher), Configuration = "lucene")]
+	public class LuceneSearcher : IContentSearcher
 	{
 		private readonly Engine.Logger<LuceneSearcher> logger;
 		LuceneAccesor accessor;
@@ -24,10 +24,10 @@ namespace N2.Persistence.Search
 
 		#region ITextSearcher Members
 
-		public Result Search(N2.Persistence.Search.Query query)
+		public Result<ContentItem> Search(N2.Persistence.Search.Query query)
 		{
 			if (!query.IsValid())
-				return Result.Empty;
+				return Result<ContentItem>.Empty;
 
 			var s = accessor.GetSearcher();
 			try
@@ -46,15 +46,15 @@ namespace N2.Persistence.Search
 							query.SortFields.Select(
 								field => new SortField(field.SortField, GetSortFieldType(field.SortField), field.SortDescending)).ToArray()));
 
-				var result = new Result();
+				var result = new Result<ContentItem>();
 				result.Total = hits.TotalHits;
 				var resultHits = hits.ScoreDocs.Skip(query.SkipHits).Take(query.TakeHits).Select(hit =>
 				{
 					var doc = s.Doc(hit.Doc);
 					int id = int.Parse(doc.Get("ID"));
 					ContentItem item = persister.Get(id);
-					return new Hit { Content = item, Score = hit.Score };
-				}).Where(h => h.Content != null).ToList();
+					return new LazyHit<ContentItem> { ID = id, Title = doc.Get("Title"), Url = doc.Get("Url"), ContentAccessor = persister.Get, Score = hit.Score };
+				}).ToList();
 				result.Hits = resultHits;
 				result.Count = resultHits.Count;
 				return result;
@@ -69,8 +69,8 @@ namespace N2.Persistence.Search
 		{
 			switch(sortField)
 			{
-				case LuceneIndexer.Properties.ID:
-				case LuceneIndexer.Properties.SortOrder:
+				case TextExtractor.Properties.ID:
+				case TextExtractor.Properties.SortOrder:
 					return SortField.INT;
 				default:
 					return SortField.STRING;
@@ -104,7 +104,7 @@ namespace N2.Persistence.Search
 			if (query.Details.Count > 0)
 				foreach (var kvp in query.Details)
 				{
-					if (LuceneIndexer.Properties.All.Contains(kvp.Key))
+					if (TextExtractor.Properties.All.Contains(kvp.Key))
 						q += string.Format(" +{0}:({1})", kvp.Key, kvp.Value);
 					else
 						q += string.Format(" +Detail.{0}:({1})", kvp.Key, kvp.Value);

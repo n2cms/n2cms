@@ -17,7 +17,7 @@ namespace N2.Extensions.Tests.Search
 	[TestFixture]
 	public class AsyncIndexerTests : ItemPersistenceMockingBase
 	{
-		LuceneIndexer indexer;
+		LuceneContentIndexer indexer;
 		LuceneAccesor accessor;
 		LuceneSearcher searcher;
 		ContentChangeTracker tracker;
@@ -34,7 +34,7 @@ namespace N2.Extensions.Tests.Search
 			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			indexer = new LuceneContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
 			searcher = new LuceneSearcher(accessor, persister);
 			worker = new AsyncWorker();
 			asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());

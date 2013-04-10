@@ -7,7 +7,8 @@ using N2.Engine;
 namespace N2.Persistence.Search
 {
 	[Service(typeof(IIndexer))]
-	public class EmptyIndexer : IIndexer
+	[Service(typeof(IContentIndexer))]
+	public class EmptyIndexer : IContentIndexer
 	{
 		public virtual IndexStatistics GetStatistics()
 		{
@@ -37,12 +38,12 @@ namespace N2.Persistence.Search
 		{
 		}
 
-		public IndexDocument CreateDocument(ContentItem item)
+		public IndexableDocument CreateDocument(ContentItem item)
 		{
-			return new IndexDocument();
+			return new IndexableDocument();
 		}
 
-		public void Update(IndexDocument document)
+		public void Update(IndexableDocument document)
 		{
 		}
 	}

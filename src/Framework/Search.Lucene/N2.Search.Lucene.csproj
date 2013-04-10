@@ -7,7 +7,7 @@
     <ProjectGuid>{6E61BC93-4F13-40C8-A610-33E46F1E7C34}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2.Search.Lucene</RootNamespace>
+    <RootNamespace>N2.Persistence.Search</RootNamespace>
     <AssemblyName>N2.Search.Lucene</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -84,6 +84,7 @@
     <Compile Include="ContentChangeTracker.cs" />
     <Compile Include="LuceneAccesor.cs" />
     <Compile Include="LuceneExtensions.cs" />
+    <Compile Include="LuceneContentIndexer.cs" />
     <Compile Include="LuceneIndexer.cs" />
     <Compile Include="LuceneSearcher.cs" />
     <Compile Include="ReindexTextMigration.cs" />

@@ -22,12 +22,12 @@ namespace N2.Persistence.Search
 
 		#region ITextExtractor Members
 
-		public IEnumerable<IndexableContent> Extract(ContentItem item)
+		public IEnumerable<IndexableField> Extract(ContentItem item)
 		{
 			foreach (var indexable in definitions.GetDefinition(item).NamedOperators.OfType<IIndexableProperty>())
 			{
 				if (indexable.IsIndexable)
-					yield return new IndexableContent { Name = indexable.Name, TextContent = indexable.GetIndexableText(item) };
+					yield return new IndexableField { Name = indexable.Name, Value = indexable.GetIndexableText(item), Analyzed = true, Stored = false };
 			}
 		}
 

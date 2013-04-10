@@ -12,10 +12,10 @@ namespace N2.Persistence.Search
 	public class ReindexTextMigration : AbstractMigration
 	{
 		IRepository<ContentItem> repository;
-		IIndexer indexer;
+		IContentIndexer indexer;
 		LuceneAccesor accessor;
 
-		public ReindexTextMigration(IRepository<ContentItem> repository, IIndexer indexer, LuceneAccesor accessor)
+		public ReindexTextMigration(IRepository<ContentItem> repository, IContentIndexer indexer, LuceneAccesor accessor)
 		{
 			this.repository = repository;
 			this.indexer = indexer;
