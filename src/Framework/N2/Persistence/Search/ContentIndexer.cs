@@ -2,27 +2,23 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Web;
 using System;
-using Lucene.Net.Store;
 
 namespace N2.Persistence.Search
 {
 	/// <summary>
 	/// Wraps the usage of lucene to index content items.
 	/// </summary>
-	[Service(typeof(IContentIndexer), Replaces = typeof(EmptyIndexer), Configuration = "lucene")]
-	public class LuceneContentIndexer : IContentIndexer
+	[Service(typeof(IContentIndexer))]
+	public class ContentIndexer : IContentIndexer
 	{
 		private TextExtractor extractor;
 		private IIndexer indexer;
 
-		public LuceneContentIndexer(IIndexer indexer, TextExtractor extractor)
+		public ContentIndexer(IIndexer indexer, TextExtractor extractor)
 		{
 			this.extractor = extractor;
 			this.indexer = indexer;
@@ -87,31 +83,5 @@ namespace N2.Persistence.Search
         {
 			return indexer.GetStatistics();
         }
-
-		public static class Properties
-		{
-			public const string ID = "ID";
-			public const string Title = "Title";
-			public const string Name = "Name";
-			public const string SavedBy = "SavedBy";
-			public const string Created = "Created";
-			public const string Updated = "Updated";
-			public const string Published = "Published";
-			public const string Expires = "Expires";
-			public const string Url = "Url";
-			public const string Path = "Path";
-			public const string AncestralTrail = "AncestralTrail";
-			public const string Trail = "Trail";
-			public const string AlteredPermissions = "AlteredPermissions";
-			public const string State = "State";
-			public const string IsPage = "IsPage";
-			public const string Roles = "Roles";
-			public const string Types = "Types";
-			public const string Language = "Language";
-			public const string Visible = "Visible";
-			public const string SortOrder = "SortOrder";
-
-			public static HashSet<string> All = new HashSet<string> { ID, Title, Name, SavedBy, Created, Updated, Published, Expires, Url, Path, AncestralTrail, Trail, AlteredPermissions, State, IsPage, Roles, Types, Language, Visible };
-		}
 	}
 }

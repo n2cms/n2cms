@@ -5,7 +5,6 @@ using System.Text;
 using N2.Engine;
 using N2.Configuration;
 using N2.Web;
-using Lucene.Net.Store;
 using System.Threading;
 using System.Security;
 
@@ -126,10 +125,6 @@ namespace N2.Persistence.Search
 				try
 				{
 					original();
-				}
-				catch (LockObtainFailedException ex)
-				{
-					AppendError(action, ex);
 				}
 				catch (ThreadAbortException ex)
 				{

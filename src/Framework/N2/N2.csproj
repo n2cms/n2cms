@@ -563,6 +563,7 @@
     <Compile Include="Persistence\NH\SubTransaction.cs" />
     <Compile Include="Persistence\Proxying\IValueAccessor.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
+    <Compile Include="Persistence\Search\AsyncIndexer.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\IParameter.cs" />
     <Compile Include="Persistence\Order.cs" />
@@ -571,6 +572,7 @@
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
     <Compile Include="Persistence\Search\IIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableDocument.cs" />
+    <Compile Include="Persistence\Search\ContentIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
     <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />

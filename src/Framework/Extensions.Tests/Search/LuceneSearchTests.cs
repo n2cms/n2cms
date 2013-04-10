@@ -24,7 +24,7 @@ namespace N2.Extensions.Tests.Search
 	[TestFixture]
 	public class LuceneSearchTests : ItemPersistenceMockingBase
 	{
-		LuceneContentIndexer indexer;
+		ContentIndexer indexer;
 		LuceneAccesor accessor;
 		PersistableItem root;
         IDefinitionManager definitions;
@@ -41,7 +41,7 @@ namespace N2.Extensions.Tests.Search
 			base.SetUp();
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			indexer = new ContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
 			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
 			indexer.Clear();
 		}

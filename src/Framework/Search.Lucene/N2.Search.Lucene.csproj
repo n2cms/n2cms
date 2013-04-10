@@ -80,11 +80,9 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="AsyncIndexer.cs" />
     <Compile Include="ContentChangeTracker.cs" />
     <Compile Include="LuceneAccesor.cs" />
     <Compile Include="LuceneExtensions.cs" />
-    <Compile Include="LuceneContentIndexer.cs" />
     <Compile Include="LuceneIndexer.cs" />
     <Compile Include="LuceneSearcher.cs" />
     <Compile Include="ReindexTextMigration.cs" />

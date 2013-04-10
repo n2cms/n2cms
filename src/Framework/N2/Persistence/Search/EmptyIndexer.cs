@@ -7,8 +7,7 @@ using N2.Engine;
 namespace N2.Persistence.Search
 {
 	[Service(typeof(IIndexer))]
-	[Service(typeof(IContentIndexer))]
-	public class EmptyIndexer : IContentIndexer
+	public class EmptyIndexer : IIndexer
 	{
 		public virtual IndexStatistics GetStatistics()
 		{
