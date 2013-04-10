@@ -177,6 +177,10 @@
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
       <Name>N2.Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Search.Lucene\N2.Search.Lucene.csproj">
+      <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
+      <Name>N2.Search.Lucene</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tests\N2.Tests.csproj">
       <Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>
       <Name>N2.Tests</Name>

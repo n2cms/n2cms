@@ -84,7 +84,7 @@ namespace N2.Persistence.Search
 			logger.Debug("Updating item #" + item.ID);
 
 			if (!item.IsPage)
-			    Update(Find.ClosestPage(item));
+			    Update(N2.Content.Traverse.ClosestPage(item));
 
 			var doc = CreateLuceneDocument(item);
 			WriteToIndex(item.ID, doc);
