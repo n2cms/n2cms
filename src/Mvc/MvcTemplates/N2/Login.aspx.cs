@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -15,7 +17,9 @@ namespace N2.Edit
 				return;
 
 			FormsAuthentication.SignOut();
-            Response.Redirect("login.aspx?returnUrl=Default.aspx");
+			string logoutUrl = ConfigurationManager.AppSettings["N2.logout.url"];
+			if (logoutUrl == null) { logoutUrl = "login.aspx?returnUrl=Default.aspx"; }
+            Response.Redirect(logoutUrl);
 		}
 
 		protected void Login1_LoggingIn(object sender, LoginCancelEventArgs e)
