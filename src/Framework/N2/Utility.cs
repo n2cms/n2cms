@@ -751,6 +751,9 @@ namespace N2
 
 		public static bool IsPublished(this ContentItem item)
 		{
+			if (item == null)
+				return false;
+
 			switch (item.State)
 			{
 				case ContentState.New:
@@ -764,6 +767,9 @@ namespace N2
 		}
 		public static bool IsExpired(this ContentItem item)
 		{
+			if (item == null)
+				return false;
+
 			return item.State == ContentState.Unpublished || (item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime());
 		}
 
