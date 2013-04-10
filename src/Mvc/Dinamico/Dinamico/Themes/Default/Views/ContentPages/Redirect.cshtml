@@ -4,6 +4,7 @@
 	Content.Define(re =>
 	{
 		re.Title = "Redirect";
+		re.IconUrl = "{IconsUrl}/link.png";
 		re.Url("Destination");
 		re.CheckBox("Permanent", "Write HTTP 301 (Permanent) redirect header").DefaultValue(false);
 		re.CheckBox("LocationReplace", "Javascript location.replace").DefaultValue(false);
