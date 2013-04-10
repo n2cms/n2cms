@@ -5,7 +5,6 @@ using System.Text;
 using N2.Engine;
 using N2.Plugin;
 using N2.Configuration;
-using Lucene.Net.Store;
 using N2.Web;
 using System.Threading;
 using System.Security;
@@ -13,9 +12,9 @@ using System.Security;
 namespace N2.Persistence.Search
 {
 	/// <summary>
-	/// Observes changes in the content structure and invokes the <see cref="ILuceneIndexer"/> to perform indexing.
+	/// Observes changes in the content structure and invokes the <see cref="IAsyncIndexer"/> to perform indexing.
 	/// </summary>
-	[Service(Configuration = "lucene")]
+	[Service]
 	public class ContentChangeTracker : IAutoStart
 	{
         IAsyncIndexer indexer;
