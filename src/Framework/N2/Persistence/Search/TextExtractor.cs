@@ -121,7 +121,7 @@ namespace N2.Persistence.Search
 		{
 			string roles = string.Join(" ", item.AuthorizedRoles.Select(r => r.Role).ToArray());
 			if (string.IsNullOrEmpty(roles))
-				roles = "Everyone";
+				roles = Security.AuthorizedRole.Everyone;
 			return roles;
 		}
 

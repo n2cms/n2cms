@@ -19,7 +19,7 @@ namespace N2.Extensions.Tests.Search
 	{
 		ContentIndexer indexer;
 		LuceneAccesor accessor;
-		LuceneSearcher searcher;
+		LuceneContentSearcher searcher;
 		ContentChangeTracker tracker;
 		AsyncIndexer asyncIndexer;
 		AsyncWorker worker;
@@ -35,7 +35,7 @@ namespace N2.Extensions.Tests.Search
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
 			indexer = new ContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
-			searcher = new LuceneSearcher(accessor, persister);
+			searcher = new LuceneContentSearcher(accessor, persister);
 			worker = new AsyncWorker();
 			asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
 			tracker = new ContentChangeTracker(asyncIndexer, persister, new N2.Plugin.ConnectionMonitor(), new DatabaseSection());

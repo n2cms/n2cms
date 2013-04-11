@@ -130,6 +130,7 @@
     <Compile Include="Configuration\ChildrenElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
+    <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
@@ -580,7 +581,7 @@
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
-    <Compile Include="Persistence\FindingTextSearcher.cs" />
+    <Compile Include="Persistence\Search\FindingContentSearcher.cs" />
     <Compile Include="Engine\IDependencyInjector.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />

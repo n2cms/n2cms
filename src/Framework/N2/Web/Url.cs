@@ -193,6 +193,16 @@ namespace N2.Web
 			get { return path; }
 		}
 
+		public string[] Segments
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(path) || path == "/")
+					return new string[0];
+				return path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+			}
+		}
+
 		public string ApplicationRelativePath
 		{
 			get

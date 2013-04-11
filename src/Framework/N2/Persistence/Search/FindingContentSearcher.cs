@@ -29,11 +29,12 @@ namespace N2.Persistence.Search
 	/// Searches for text using the finder API which results in LIKE database queries.
 	/// </summary>
 	[Service(typeof(IContentSearcher))]
-	public class FindingTextSearcher : IContentSearcher
+	[Service(typeof(ILightweightSearcher))]
+	public class FindingContentSearcher : IContentSearcher, ILightweightSearcher
 	{
 		IItemFinder finder;
 
-		public FindingTextSearcher(IItemFinder finder)
+		public FindingContentSearcher(IItemFinder finder)
 		{
 			this.finder = finder;
 		}
@@ -82,5 +83,30 @@ namespace N2.Persistence.Search
 		}
 
 		#endregion
+
+		Result<LightweightHitData> ISearcher<LightweightHitData>.Search(Query query)
+		{
+			var result = Search(query);
+			return new Result<LightweightHitData>
+			{
+				Count = result.Count,
+				Total = result.Total,
+				Hits = result.Hits.Select(h => new Hit<LightweightHitData>
+				{
+					Score = h.Score,
+					Title = h.Title,
+					Url = h.Url,
+					Content = new LightweightHitData 
+					{ 
+						ID = h.Content.ID,
+						AlteredPermissions = h.Content.AlteredPermissions,
+						AuthorizedRoles = h.Content.AuthorizedRoles.Any() ? h.Content.AuthorizedRoles.Select(ar => ar.Role).ToArray() : new[] { "Everyone" }, 
+						State = h.Content.State,
+						Visible = h.Content.Visible,
+						Path = h.Content.Path 
+					}
+				}).ToList()
+			};
+		}
 	}
 }

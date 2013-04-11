@@ -38,7 +38,7 @@ namespace N2.Web
 				return;
 			else if (TryWriteDictionary(value as NameValueCollection))
 				return;
-			else if (TryWriteArray(value as IEnumerable))
+			else if (TryWriteArray(value as ICollection))
 				return;
 			else if (TryWriteType(value as Type))
 				return;
@@ -49,7 +49,14 @@ namespace N2.Web
         static DateTime beginningOfTime = new DateTime(1970, 01, 01);
         private bool TryWriteKnownType(object value)
         {
-            switch(Type.GetTypeCode(value.GetType()))
+			var valueType = value.GetType();
+			if (valueType.IsEnum)
+			{
+                writer.Write(((int)value).ToString());
+				return true;
+			}
+
+			switch (Type.GetTypeCode(valueType))
             {
                 case TypeCode.Boolean:
                     writer.Write((bool)value ? "true" : "false");

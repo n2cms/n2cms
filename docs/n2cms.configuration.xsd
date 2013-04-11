@@ -384,6 +384,13 @@
 							</xs:element>
 							<xs:element name="search" minOccurs="0">
 								<xs:complexType>
+									<xs:all>
+										<xs:element name="server" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
@@ -392,6 +399,7 @@
 											<xs:restriction base="xs:string">
 												<xs:enumeration value="Database"/>
 												<xs:enumeration value="Lucene"/>
+												<xs:enumeration value="RemoteServer"/>
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
