@@ -47,9 +47,9 @@ namespace N2.Persistence.Search
 		/// <param name="skip">A number of items to skip.</param>
 		/// <param name="take">A number of items to take.</param>
 		/// <returns>An enumeration of items matching the search query.</returns>
-		public IEnumerable<ContentItem> Search(ContentItem ancestor, string query, int skip, int take, bool? onlyPages, Type[] types, out int totalRecords)
+		public IEnumerable<ContentItem> Search(string ancestor, string query, int skip, int take, bool? onlyPages, string[] types, out int totalRecords)
 		{
-			var q = finder.Where.AncestralTrail.Like(Utility.GetTrail(ancestor) + "%")
+			var q = finder.Where.AncestralTrail.Like(ancestor + "%")
 				.And.Title.IsNull(false);
 
 			var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w + "%");
@@ -66,7 +66,7 @@ namespace N2.Persistence.Search
 					.Or.ZoneName.Eq("")
 				.CloseBracket();
 			if (types != null)
-				q = q.And.Type.In(types);
+				q = q.And.Property("class").In(types);
 
 			totalRecords = q.Count();
 			return q.FirstResult(skip).MaxResults(take).Select();

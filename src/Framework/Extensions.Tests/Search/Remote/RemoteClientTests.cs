@@ -12,7 +12,7 @@ using System.Text;
 namespace N2.Extensions.Tests.Search.Remote
 {
 	[TestFixture]
-	public class ClientTests : ItemPersistenceMockingBase
+	public class RemoteClientTests : ItemPersistenceMockingBase
 	{
 		private Definitions.IDefinitionManager definitions;
 		private PersistableItem root;

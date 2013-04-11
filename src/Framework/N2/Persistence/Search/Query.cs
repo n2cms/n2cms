@@ -47,8 +47,8 @@ namespace N2.Persistence.Search
 			SortFields = new List<SortFieldData>();
 		}
 
-		/// <summary>The ancestor below which the results should be found.</summary>
-		public ContentItem Ancestor { get; set; }
+		/// <summary>The ancestor trail below which the results should be found.</summary>
+		public string Ancestor { get; set; }
 
 		/// <summary>The query text.</summary>
 		public string Text { get; set; }
@@ -66,7 +66,7 @@ namespace N2.Persistence.Search
 		public bool? OnlyPages { get; set; }
 
 		/// <summary>Types the matches should belong to (either one of them).</summary>
-		public Type[] Types { get; set; }
+		public string[] Types { get; set; }
 
 		/// <summary>Search for pages belonging to the given language code.</summary>
 		public string LanguageCode { get; set; }
@@ -115,7 +115,7 @@ namespace N2.Persistence.Search
 		/// <returns>A <see cref="Query"/> object.</returns>
 		public static Query For(params Type[] types)
 		{
-			return new Query { Types = types };
+			return new Query { Types = types.Select(t => t.Name).ToArray() };
 		}
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace N2.Persistence.Search
         /// <returns></returns>
         public static Query<T> For<T>()
         {
-            return new Query<T> { Types = new[] { typeof(T) } };
+            return new Query<T> { Types = new[] { typeof(T).Name } };
         }
 
 		/// <summary>Restricts the search query to items below the given item.</summary>
@@ -134,7 +134,7 @@ namespace N2.Persistence.Search
 		/// <returns>The query itself.</returns>
 		public Query Below(ContentItem ancestor)
 		{
-			this.Ancestor = ancestor;
+			this.Ancestor = ancestor.GetTrail();
 			return this;
 		}
 
@@ -199,7 +199,7 @@ namespace N2.Persistence.Search
 		/// <returns>The query itself.</returns>
 		public Query OfType(params Type[] types)
 		{
-			Types = types;
+			Types = types.Select(t => t.Name).ToArray();
 			return this;
 		}
 

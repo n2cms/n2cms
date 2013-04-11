@@ -23,13 +23,13 @@ namespace N2.Persistence.Search
 					 : string.Format("+(Title:({0})^4 Text:({0}))", query.Text);
 
 			if (query.Ancestor != null)
-				q += string.Format(" +Trail:{0}*", Utility.GetTrail(query.Ancestor));
+				q += string.Format(" +Trail:{0}*", query.Ancestor);
 			if (query.OnlyPages.HasValue)
 				q += string.Format(" +IsPage:{0}", query.OnlyPages.Value.ToString().ToLower());
 			if (query.Roles != null)
 				q += string.Format(" +Roles:(Everyone {0})", string.Join(" ", query.Roles.ToArray()));
 			if (query.Types != null)
-				q += string.Format(" +Types:({0})", string.Join(" ", query.Types.Select(t => t.Name).ToArray()));
+				q += string.Format(" +Types:({0})", string.Join(" ", query.Types));
 			if (query.LanguageCode != null)
 				q += string.Format(" +Language:({0})", query.LanguageCode);
 			if (query.Exclution != null)

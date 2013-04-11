@@ -170,7 +170,7 @@
     <Compile Include="Search\ContentChangeTrackerTests.cs" />
     <Compile Include="Search\LuceneSearchTests.cs" />
     <Compile Include="Search\MarkovNameGenerator.cs" />
-    <Compile Include="Search\Remote\ClientTests.cs" />
+    <Compile Include="Search\Remote\RemoteClientTests.cs" />
     <Compile Include="Search\Words.cs" />
   </ItemGroup>
   <ItemGroup>
