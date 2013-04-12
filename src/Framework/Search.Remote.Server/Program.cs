@@ -33,6 +33,8 @@ namespace N2.Search.Remote.Server
 					Trace.Listeners.Add(new ConsoleWriterTraceListener());
 				if ("exit".Equals(command, StringComparison.InvariantCultureIgnoreCase))
 					break;
+				if ("cls".Equals(command, StringComparison.InvariantCultureIgnoreCase))
+					Console.Clear();
 			} while (!string.IsNullOrEmpty(command));
 			server.Stop();
 		}
