@@ -9,11 +9,14 @@ using System.Net;
 using N2.Configuration;
 using System.IO;
 using N2.Web;
+using N2.Persistence.Search;
+using N2.Persistence;
 
-namespace N2.Persistence.Search
+namespace N2.Search.Remote.Client
 {
 	[Service(typeof(IContentSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "remote")]
-	public class SearcherClient : IContentSearcher
+	[Service(typeof(ILightweightSearcher), Replaces = typeof(FindingContentSearcher), Configuration = "remote")]
+	public class SearcherClient : IContentSearcher, ILightweightSearcher
 	{
 		private readonly Logger<SearcherClient> logger;
 		private IPersister persister;
@@ -23,6 +26,16 @@ namespace N2.Persistence.Search
 		{
 			this.persister = persister;
 			serverUrl = config.Search.Server.Url.Replace("://*", "://localhost");
+		}
+
+		Result<LightweightHitData> ISearcher<LightweightHitData>.Search(Query query)
+		{
+			if (!query.IsValid())
+				return Result<LightweightHitData>.Empty;
+
+			var result = Request("POST", "items", query.ToJson());
+
+			return new JavaScriptSerializer().Deserialize<Result<LightweightHitData>>(result);
 		}
 
 		public Result<ContentItem> Search(N2.Persistence.Search.Query query)
@@ -50,23 +63,11 @@ namespace N2.Persistence.Search
 			};
 		}
 
-		private string Request(string httpMethod, string path, string requestBody)
+		private string Request(string httpMethod, string relativePath, string requestBody)
 		{
-			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(serverUrl + path);
-			hwr.Method = httpMethod;
-			hwr.ContentType = "application/json";
-			using (var s = hwr.GetRequestStream())
-			using (var tw = new StreamWriter(s))
-			{
-				tw.Write(requestBody);
-			}
+			logger.Debug(httpMethod + " " + serverUrl + relativePath + " (" + requestBody.Length + ")");
 
-			using (var wr = hwr.GetResponse())
-			using (var s = wr.GetResponseStream())
-			using (var sr = new StreamReader(s))
-			{
-				return sr.ReadToEnd();
-			}
+			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody);
 		}
 	}
 }

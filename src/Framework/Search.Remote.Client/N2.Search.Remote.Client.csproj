@@ -45,6 +45,7 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="IndexerClient.cs" />
+    <Compile Include="RemoteExtensions.cs" />
     <Compile Include="SearcherClient.cs" />
   </ItemGroup>
   <ItemGroup>

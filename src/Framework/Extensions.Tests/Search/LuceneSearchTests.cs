@@ -19,6 +19,7 @@ using System.Text;
 using N2.Tests;
 using N2.Engine;
 using N2.Search.Remote.Server;
+using N2.Search.Remote.Client;
 
 namespace N2.Extensions.Tests.Search
 {

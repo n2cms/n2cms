@@ -138,6 +138,15 @@ namespace N2.Persistence.Search
 			return this;
 		}
 
+		/// <summary>Restricts the search query to items below the given item.</summary>
+		/// <param name="ancestor">The ancestor below which to find items.</param>
+		/// <returns>The query itself.</returns>
+		public Query Below(string ancestorTrail)
+		{
+			this.Ancestor = ancestorTrail;
+			return this;
+		}
+
 		/// <summary>Restricts the results to items readable by any one of the given roles.</summary>
 		/// <param name="roles">The roles that should be allowed to read an item being returned.</param>
 		/// <returns>The query itself.</returns>
@@ -200,6 +209,15 @@ namespace N2.Persistence.Search
 		public Query OfType(params Type[] types)
 		{
 			Types = types.Select(t => t.Name).ToArray();
+			return this;
+		}
+
+		/// <summary>Restrict the search results to certain types.</summary>
+		/// <param name="types">The types the search result should belong to.</param>
+		/// <returns>The query itself.</returns>
+		public Query OfType(params string[] typeNames)
+		{
+			Types = typeNames;
 			return this;
 		}
 

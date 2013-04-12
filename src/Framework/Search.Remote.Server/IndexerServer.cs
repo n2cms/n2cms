@@ -13,12 +13,14 @@ using System.Web.Script.Serialization;
 
 namespace N2.Search.Remote.Server
 {
-	public class IndexerServer
+	public class IndexerServer : IDisposable
 	{
 		private Logger<IndexerServer> logger;
 		private HttpListener listener;
 		private IIndexer indexer;
 		private ILightweightSearcher searcher;
+
+		public string UriPrefix { get; private set; }
 
 		public IndexerServer(string uriPrefix, IIndexer indexer, ILightweightSearcher searcher)
 		{
@@ -46,6 +48,8 @@ namespace N2.Search.Remote.Server
 			listener = new HttpListener();
 			listener.Prefixes.Add(uriPrefix);
 
+			UriPrefix = uriPrefix;
+
 			this.indexer = indexer;
 			this.searcher = searcher;
 		}
@@ -72,15 +76,17 @@ namespace N2.Search.Remote.Server
 
 			try
 			{
+				logger.DebugFormat("Handling {0} {1} ({2})", context.Request.HttpMethod, context.Request.RawUrl, context.Request.ContentLength64);
 				Handle(context);
 			}
 			catch (Exception ex)
 			{
-				logger.Error("Error handling " + context.Request.HttpMethod + " " + context.Request.RawUrl, ex);
+				logger.Error("Error handling " + context.Request.HttpMethod + " " + context.Request.RawUrl + " (" + context.Request.ContentLength64 + ")", ex);
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 			}
 			finally
 			{
+				logger.DebugFormat("Ending {0} {1} ({2})", context.Request.HttpMethod, context.Request.RawUrl, context.Request.ContentLength64);
 				context.Response.Close();
 			}
 		}
@@ -90,11 +96,11 @@ namespace N2.Search.Remote.Server
 			context.Response.StatusCode = (int)HttpStatusCode.OK;
 			switch (context.Request.HttpMethod)
 			{
+				case "GET":
+					HandleQuery(context);
+					break;
 				case "PUT":
 					HandleReindex(context.Request);
-					break;
-				case "GET":
-					HandleStatistics(context);
 					break;
 				case "POST":
 					HandleCommand(context);
@@ -108,7 +114,7 @@ namespace N2.Search.Remote.Server
 			}
 		}
 
-		private void HandleStatistics(HttpListenerContext context)
+		private void HandleQuery(HttpListenerContext context)
 		{
 			Url url = context.Request.RawUrl;
 			if (url.Path == "/index/statistics")
@@ -118,6 +124,28 @@ namespace N2.Search.Remote.Server
 					var json = indexer.GetStatistics().ToJson();
 					sw.Write(json);
 				}
+			}
+			if (url.Path == "/items")
+			{
+				var queryString = context.Request.QueryString;
+				var q = Query.For(queryString["q"]);
+				if (queryString["below"] != null)
+					q.Below(queryString["below"]);
+				if (queryString["onlyPages"] != null)
+					q.Pages(Convert.ToBoolean(queryString["onlyPages"]));
+				if (queryString["orderBy"] != null)
+					q.OrderBy(queryString["orderBy"], "true".Equals(queryString["orderByDescending"], StringComparison.InvariantCultureIgnoreCase));
+				if (queryString["language"] != null)
+					q.Language(queryString["language"]);
+				if (queryString["skip"] != null)
+					q.Skip(int.Parse("skip"));
+				if (queryString["take"] != null)
+					q.Take(int.Parse(queryString["take"]));
+				if (queryString["type"] != null)
+					q.OfType(queryString["type"].Split(','));
+
+				var result = searcher.Search(q);
+				WriteQueryResult(result, context.Response);
 			}
 		}
 
@@ -178,5 +206,9 @@ namespace N2.Search.Remote.Server
 			}
 		}
 
+		void IDisposable.Dispose()
+		{
+			Stop();
+		}
 	}
 }

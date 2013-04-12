@@ -478,6 +478,10 @@
       <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
       <Name>N2.Search.Lucene</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Search.Remote.Client\N2.Search.Remote.Client.csproj">
+      <Project>{e2a88d0c-fed0-4ef4-ad49-05dddb0c0386}</Project>
+      <Name>N2.Search.Remote.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image.ashx" />

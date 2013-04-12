@@ -9,8 +9,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
+using N2.Search.Remote.Client;
+using N2.Persistence.Search;
 
-namespace N2.Persistence.Search
+namespace N2.Search.Remote.Client
 {
 	[Service]
 	[Service(typeof(IIndexer), Replaces = typeof(EmptyIndexer), Configuration = "remote")]
@@ -55,33 +57,11 @@ namespace N2.Persistence.Search
 			var response = Request("POST", "index/unlock", "");
 		}
 
-		private string Request(string httpMethod, string path, string requestBody)
+		private string Request(string httpMethod, string relativePath, string requestBody)
 		{
-			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(serverUrl + path);
-			hwr.Method = httpMethod;
-			hwr.ContentType = "application/json";
-			if (string.IsNullOrEmpty(requestBody))
-				hwr.ContentLength = 0;
-			else
-			{
-				using (var s = hwr.GetRequestStream())
-				using (var tw = new StreamWriter(s))
-				{
-					tw.Write(requestBody);
-				}
-			}
+			logger.Debug(httpMethod + " " + serverUrl + relativePath + " (" + requestBody.Length + ")");
 
-			using (var wr = hwr.GetResponse())
-			{
-				if (wr.ContentLength == 0)
-					return "";
-
-				using (var s = wr.GetResponseStream())
-				using (var sr = new StreamReader(s))
-				{
-					return sr.ReadToEnd();
-				}
-			}
+			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody);
 		}
 	}
 }

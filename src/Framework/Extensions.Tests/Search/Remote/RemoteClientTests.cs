@@ -1,4 +1,5 @@
 ﻿using N2.Persistence.Search;
+using N2.Search.Remote.Client;
 using N2.Search.Remote.Server;
 using N2.Tests;
 using N2.Tests.Persistence.Definitions;
