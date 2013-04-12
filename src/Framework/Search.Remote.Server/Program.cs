@@ -19,11 +19,6 @@ namespace N2.Search.Remote.Server
 			
 			server.Start();
 
-			Console.CancelKeyPress += delegate
-			{
-				server.Stop();
-			};
-
 			Console.WriteLine("Listening on " + server.UriPrefix + ". Press enter key to exit");
 			string command = "";
 			do
@@ -36,6 +31,8 @@ namespace N2.Search.Remote.Server
 				if ("cls".Equals(command, StringComparison.InvariantCultureIgnoreCase))
 					Console.Clear();
 			} while (!string.IsNullOrEmpty(command));
+
+			Console.WriteLine("Exiting...");
 			server.Stop();
 		}
 
