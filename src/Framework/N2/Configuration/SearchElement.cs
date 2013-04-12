@@ -60,6 +60,13 @@ namespace N2.Configuration
 			set { base["indexOnMachineNamed"] = value; }
 		}
 
+		[ConfigurationProperty("client")]
+		public ClientElement Client
+		{
+			get { return (ClientElement)base["client"]; }
+			set { base["client"] = value; }
+		}
+
 		[ConfigurationProperty("server")]
 		public ServerElement Server
 		{

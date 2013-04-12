@@ -385,9 +385,16 @@
 							<xs:element name="search" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="server" minOccurs="0">
+										<xs:element name="client" minOccurs="0">
 											<xs:complexType>
 												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
+												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
+												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="server" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="urlPrefix" type="xs:string" use="optional" default="http://*:7850/" />
 											</xs:complexType>
 										</xs:element>
 									</xs:all>

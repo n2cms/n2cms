@@ -128,7 +128,9 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
+    <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />

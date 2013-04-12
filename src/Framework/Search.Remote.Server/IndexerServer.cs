@@ -35,7 +35,7 @@ namespace N2.Search.Remote.Server
 			var accessor = new LuceneAccesor(new ThreadContext(), config);
 			var indexer = new LuceneIndexer(accessor);
 			var searcher = new LuceneLightweightSearcher(accessor);
-			Init(config.Search.Server.Url, indexer, searcher);
+			Init(config.Search.Server.UrlPrefix, indexer, searcher);
 		}
 
 		public IndexerServer()

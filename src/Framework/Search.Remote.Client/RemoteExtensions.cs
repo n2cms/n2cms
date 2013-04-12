@@ -10,11 +10,13 @@ namespace N2.Search.Remote.Client
 {
 	public class RemoteExtensions
 	{
-		public static string RequestJson(string httpMethod, string url, string requestBody)
+		public static string RequestJson(string httpMethod, string url, string requestBody, int timeout = 15000)
 		{
 			HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create(url);
 			hwr.Method = httpMethod;
 			hwr.ContentType = "application/json";
+			hwr.Timeout = timeout;
+
 			if (string.IsNullOrEmpty(requestBody))
 				hwr.ContentLength = 0;
 			else

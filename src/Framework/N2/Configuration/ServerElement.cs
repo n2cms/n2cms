@@ -8,11 +8,11 @@ namespace N2.Configuration
 {
 	public class ServerElement : ConfigurationElement
 	{
-		[ConfigurationProperty("url", DefaultValue = "http://*:7850/")]
-		public string Url
+		[ConfigurationProperty("urlPrefix", DefaultValue = "http://*:7850/")]
+		public string UrlPrefix
 		{
-			get { return (string)base["url"]; }
-			set { base["url"] = value; }
+			get { return (string)base["urlPrefix"]; }
+			set { base["urlPrefix"] = value; }
 		}
 	}
 }
