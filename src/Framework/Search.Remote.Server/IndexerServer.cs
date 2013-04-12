@@ -84,14 +84,8 @@ namespace N2.Search.Remote.Server
 
 				if (!string.IsNullOrEmpty(sharedSecret))
 				{
-					var cookie = context.Request.Cookies["Secret"];
-					if (cookie == null || string.IsNullOrEmpty(cookie.Value))
-					{
-						logger.WarnFormat("No shared secret {0} {1}", context.Request.HttpMethod, context.Request.RawUrl);
-						context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-						return;
-					}
-					if (cookie.Value != sharedSecret)
+					string sentSecret = GetSecret(context);
+					if (sentSecret != sharedSecret)
 					{
 						logger.WarnFormat("Invalid shared secret {0} {1}", context.Request.HttpMethod, context.Request.RawUrl);
 						context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
@@ -111,6 +105,20 @@ namespace N2.Search.Remote.Server
 				logger.DebugFormat("Ending {0} {1} ({2})", context.Request.HttpMethod, context.Request.RawUrl, context.Request.ContentLength64);
 				context.Response.Close();
 			}
+		}
+
+		private static string GetSecret(HttpListenerContext context)
+		{
+			var cookie = context.Request.Cookies["Secret"];
+			if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+			{
+				return cookie.Value;
+			}
+			if (context.Request.QueryString["secret"] != null)
+			{
+				return context.Request.QueryString["secret"];
+			}
+			return "";
 		}
 
 		private void Handle(HttpListenerContext context)

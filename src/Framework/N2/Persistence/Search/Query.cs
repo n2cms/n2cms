@@ -84,19 +84,33 @@ namespace N2.Persistence.Search
 
 		public string SortField
 		{
-			get { return SortFields.FirstOrDefault().SortField; }
-			set { var sortFields = SortFields.FirstOrDefault();
-				sortFields.SortField = value;
+			get 
+			{
+				return SortFields.Select(sf => sf.SortField).FirstOrDefault(); 
+			}
+			set 
+			{
+				var sortFields = SortFields.FirstOrDefault();
+				if (sortFields == null)
+					SortFields.Add(new SortFieldData(value));
+				else
+					sortFields.SortField = value;
 			}
 		}
 
 		public bool SortDescending
 		{
-			get { return SortFields.FirstOrDefault().SortDescending; }
+			get
+			{
+				return SortFields.Select(sf => sf.SortDescending).FirstOrDefault();
+			}
 			set
 			{
 				var sortFields = SortFields.FirstOrDefault();
-				sortFields.SortDescending = value;
+				if (sortFields == null)
+					SortFields.Add(new SortFieldData(null, value));
+				else
+					sortFields.SortDescending = value;
 			}
 		}
 
