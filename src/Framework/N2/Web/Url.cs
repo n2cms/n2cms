@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 
 namespace N2.Web
@@ -179,6 +180,18 @@ namespace N2.Web
 		public string Scheme
 		{
 			get { return scheme; }
+		}
+
+		/// <summary>The domain name information.</summary>
+		public string Domain
+		{
+			get { return authority != null ? authority.Split(':')[0] : null; }
+		}
+
+		/// <summary>The port information.</summary>
+		public int Port
+		{
+			get { return authority != null ? int.Parse(authority.Split(':').Skip(1).FirstOrDefault() ?? "80") : 80; }
 		}
 
 		/// <summary>The domain name and port information.</summary>

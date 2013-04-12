@@ -22,12 +22,14 @@ namespace N2.Search.Remote.Client
 		private IPersister persister;
 		private string serverUrl;
 		private int timeout;
+		private string sharedSecret;
 
 		public SearcherClient(IPersister persister, DatabaseSection config)
 		{
 			this.persister = persister;
 			serverUrl = config.Search.Client.Url;
 			timeout = config.Search.Client.SearchTimeout;
+			sharedSecret = config.Search.Client.SharedSecret;
 		}
 
 		Result<LightweightHitData> ISearcher<LightweightHitData>.Search(Query query)
@@ -69,7 +71,7 @@ namespace N2.Search.Remote.Client
 		{
 			logger.Debug(httpMethod + " " + serverUrl + relativePath + " (" + requestBody.Length + ")");
 
-			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody, timeout: timeout);
+			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody, timeout: timeout, sharedSecret: sharedSecret);
 		}
 	}
 }

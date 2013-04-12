@@ -15,6 +15,13 @@ namespace N2.Configuration
 			set { base["url"] = value; }
 		}
 
+		[ConfigurationProperty("sharedSecret")]
+		public string SharedSecret
+		{
+			get { return (string)base["sharedSecret"]; }
+			set { base["sharedSecret"] = value; }
+		}
+
 		[ConfigurationProperty("searchTimeout", DefaultValue = 10000)]
 		public int SearchTimeout
 		{

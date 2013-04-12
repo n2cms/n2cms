@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 
 namespace N2.Search.Remote.Server
 {
@@ -19,12 +20,13 @@ namespace N2.Search.Remote.Server
 		private HttpListener listener;
 		private IIndexer indexer;
 		private ILightweightSearcher searcher;
+		private string sharedSecret;
 
 		public string UriPrefix { get; private set; }
 
-		public IndexerServer(string uriPrefix, IIndexer indexer, ILightweightSearcher searcher)
+		public IndexerServer(IIndexer indexer, ILightweightSearcher searcher, string uriPrefix, string sharedSecret)
 		{
-			Init(uriPrefix, indexer, searcher);
+			Init(indexer, searcher, uriPrefix, sharedSecret);
 		}
 
 		public IndexerServer(DatabaseSection config)
@@ -35,7 +37,8 @@ namespace N2.Search.Remote.Server
 			var accessor = new LuceneAccesor(new ThreadContext(), config);
 			var indexer = new LuceneIndexer(accessor);
 			var searcher = new LuceneLightweightSearcher(accessor);
-			Init(config.Search.Server.UrlPrefix, indexer, searcher);
+
+			Init(indexer, searcher, config.Search.Server.UrlPrefix, config.Search.Server.SharedSecret);
 		}
 
 		public IndexerServer()
@@ -43,12 +46,13 @@ namespace N2.Search.Remote.Server
 		{
 		}
 
-		private void Init(string uriPrefix, IIndexer indexer, ILightweightSearcher searcher)
+		private void Init(IIndexer indexer, ILightweightSearcher searcher, string uriPrefix, string sharedSecret)
 		{
 			listener = new HttpListener();
 			listener.Prefixes.Add(uriPrefix);
 
 			UriPrefix = uriPrefix;
+			this.sharedSecret = sharedSecret;
 
 			this.indexer = indexer;
 			this.searcher = searcher;
@@ -77,6 +81,24 @@ namespace N2.Search.Remote.Server
 			try
 			{
 				logger.DebugFormat("Handling {0} {1} ({2})", context.Request.HttpMethod, context.Request.RawUrl, context.Request.ContentLength64);
+
+				if (!string.IsNullOrEmpty(sharedSecret))
+				{
+					var cookie = context.Request.Cookies["Secret"];
+					if (cookie == null || string.IsNullOrEmpty(cookie.Value))
+					{
+						logger.WarnFormat("No shared secret {0} {1}", context.Request.HttpMethod, context.Request.RawUrl);
+						context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+						return;
+					}
+					if (cookie.Value != sharedSecret)
+					{
+						logger.WarnFormat("Invalid shared secret {0} {1}", context.Request.HttpMethod, context.Request.RawUrl);
+						context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+						return;
+					}
+				}
+
 				Handle(context);
 			}
 			catch (Exception ex)

@@ -21,11 +21,13 @@ namespace N2.Search.Remote.Client
 		private readonly Engine.Logger<IndexerClient> logger;
 		private string serverUrl;
 		private int timeout;
+		private string sharedSecret;
 
 		public IndexerClient(DatabaseSection config)
 		{
 			serverUrl = config.Search.Client.Url;
 			timeout = config.Search.Client.IndexTimeout;
+			sharedSecret = config.Search.Client.SharedSecret;
 		}
 
 		public void Update(IndexableDocument document)
@@ -63,7 +65,7 @@ namespace N2.Search.Remote.Client
 		{
 			logger.Debug(httpMethod + " " + serverUrl + relativePath + " (" + requestBody.Length + ")");
 
-			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody, timeout: timeout);
+			return RemoteExtensions.RequestJson(httpMethod, serverUrl + relativePath, requestBody, timeout: timeout, sharedSecret: sharedSecret);
 		}
 	}
 }

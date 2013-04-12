@@ -14,5 +14,12 @@ namespace N2.Configuration
 			get { return (string)base["urlPrefix"]; }
 			set { base["urlPrefix"] = value; }
 		}
+
+		[ConfigurationProperty("sharedSecret")]
+		public string SharedSecret
+		{
+			get { return (string)base["sharedSecret"]; }
+			set { base["sharedSecret"] = value; }
+		}
 	}
 }

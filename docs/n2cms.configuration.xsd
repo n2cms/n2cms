@@ -390,11 +390,13 @@
 												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
 												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
 												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
 											</xs:complexType>
 										</xs:element>
 										<xs:element name="server" minOccurs="0">
 											<xs:complexType>
 												<xs:attribute name="urlPrefix" type="xs:string" use="optional" default="http://*:7850/" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
 											</xs:complexType>
 										</xs:element>
 									</xs:all>
