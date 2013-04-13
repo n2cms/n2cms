@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>N2.Persistence.MongoDB</RootNamespace>
-    <AssemblyName>N2.MongoDB</AssemblyName>
+    <AssemblyName>N2.Persistence.MongoDB</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

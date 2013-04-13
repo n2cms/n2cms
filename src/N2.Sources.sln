@@ -190,13 +190,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC.Windsor3", "IoC.Windsor
 		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.MongoDB", "Framework\MongoDB\N2.MongoDB.csproj", "{86FA9BB3-7D92-488C-9192-80D6B38DE5BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Persistence.MongoDB", "Framework\MongoDB\N2.Persistence.MongoDB.csproj", "{86FA9BB3-7D92-488C-9192-80D6B38DE5BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Lucene", "Framework\Search.Lucene\N2.Search.Lucene.csproj", "{6E61BC93-4F13-40C8-A610-33E46F1E7C34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Client", "Framework\Search.Remote.Client\N2.Search.Remote.Client.csproj", "{E2A88D0C-FED0-4EF4-AD49-05DDDB0C0386}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Server", "Framework\Search.Remote.Server\N2.Search.Remote.Server.csproj", "{F30718A5-A1F6-40F6-871E-2873EA87ED56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDB", "MongoDB", "{0606F2F6-734B-4A35-B6AB-73B6F22F3638}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1030,6 +1035,7 @@ Global
 		{97670B82-7B2E-4EE4-8527-8342877AD08C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{9D0BACB7-1032-4E80-94FE-22515CE821B3} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
+		{0606F2F6-734B-4A35-B6AB-73B6F22F3638} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
 		{B3835F3D-C170-49C8-A4FC-CA52F0714B83} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
 		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
 		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}

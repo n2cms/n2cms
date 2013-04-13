@@ -1,0 +1,5 @@
+<configuration>
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<database flavour="MongoDB"/>
+	</n2>
+</configuration>

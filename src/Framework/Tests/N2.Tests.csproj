@@ -463,9 +463,9 @@
       <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
       <Name>N2.IoC.Windsor3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MongoDB\N2.MongoDB.csproj">
+    <ProjectReference Include="..\MongoDB\N2.Persistence.MongoDB.csproj">
       <Project>{86fa9bb3-7d92-488c-9192-80d6b38de5bc}</Project>
-      <Name>N2.MongoDB</Name>
+      <Name>N2.Persistence.MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>

@@ -10,6 +10,8 @@
 		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
 		<Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
 		<Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
+		<MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
+		<RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</RemoteSearch-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
@@ -55,6 +57,21 @@
 		<FileUpdate Files="$(Windsor3-NugetFolder)\N2.Windsor3.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Windsor3-NugetFolder)\" />
+	</Target>
+
+	<Target Name="MongoDB-NuGet">
+		<ItemGroup>
+			<mongoDBNugetBinaries Include="$(SrcFolder)\Framework\MongoDB\bin\$(Configuration)\N2.Persistence.MongoDB.dll;"/>
+			<mongoDBNugetIncludes Include="$(BuildFolder)\Nuget\MongoDB\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(mongoDBNugetBinaries)" DestinationFolder="$(MongoDB-NugetFolder)\lib" />
+		<Copy SourceFiles="@(mongoDBNugetIncludes)" DestinationFolder="$(MongoDB-NugetFolder)\%(RecursiveDir)" />
+		<Message Text="$(MongoDB-NugetFolder)" Importance="high" />
+		<Message Text="MONGODBNUGETBINARIES: @(mongoDBNugetBinaries)" Importance="high" />
+		<Message Text="MONGODBNUGETINCLUDES: @(mongoDBNugetIncludes)" Importance="high" />
+		<FileUpdate Files="$(MongoDB-NugetFolder)\N2.Persistence.MongoDB.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(MongoDB-NugetFolder)\" />
 	</Target>
 
 	<Target Name="Razor-NuGet">
