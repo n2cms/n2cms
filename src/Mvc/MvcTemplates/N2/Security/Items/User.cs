@@ -121,6 +121,7 @@ namespace N2.Security.Items
 			set { SetDetail("LastLockoutDate", value < new DateTime(2000, 1, 1) ? null : value); }
 		}
 
+		/// <summary>This property is always false because a User is never a Page.</summary>
 		public override bool IsPage
 		{
 			get { return false; }
@@ -160,6 +161,9 @@ namespace N2.Security.Items
 			return roles;
 		}
 
+		/// <summary>Determines whether a given user is allowed to inspect this User object.</summary>
+		/// <param name="user">The user requesitng access to the current instance of a User object.</param>
+		/// <returns>True if access should be granted.</returns>
 		public override bool IsAuthorized(IPrincipal user)
 		{
 			return base.IsAuthorized(user) && (security ?? Context.SecurityManager).IsAdmin(user);
