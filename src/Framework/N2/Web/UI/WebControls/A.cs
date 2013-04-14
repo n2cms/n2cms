@@ -3,6 +3,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Web.UI.WebControls
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A")]
 	public class A : HtmlAnchor
 	{
 		public A()
@@ -62,5 +63,6 @@ namespace N2.Web.UI.WebControls
 				base.Render(writer);
 			}
 		}
+
 	}
 }

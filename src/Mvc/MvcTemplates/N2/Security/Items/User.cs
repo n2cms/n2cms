@@ -11,7 +11,7 @@ namespace N2.Security.Items
 {
 	[PartDefinition("User", IconUrl = "{IconsUrl}/user.png")]
 	[RestrictParents(typeof (UserList))]
-    [Throwable(AllowInTrash.No)]
+	[Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
 	public class User : N2.ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
@@ -131,8 +131,8 @@ namespace N2.Security.Items
 		{
 			return
 				new MembershipUser(providerName, Name, new Guid(ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Email, PasswordQuestion, Comment, IsApproved, IsLockedOut,
-				                   Created, LastLoginDate, LastActivityDate, LastPasswordChangedDate,
-				                   (LastLockoutDate ?? DateTime.MinValue));
+								   Created, LastLoginDate, LastActivityDate, LastPasswordChangedDate,
+								   (LastLockoutDate ?? DateTime.MinValue));
 		}
 
 		public virtual void UpdateFromMembershipUser(MembershipUser mu)

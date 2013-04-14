@@ -399,6 +399,7 @@
     <Compile Include="Engine\TypeCache.cs" />
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Linq\FindExtensions.cs" />
     <Compile Include="Persistence\Behaviors\IBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
