@@ -153,4 +153,11 @@
   <data name="tpPreview.ToolTip" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="RequiredField_DefaultText">
+    <value xml:space="preserve">*</value>
+  </data>
+  <data name="RequiredField_DefaultErrorMessage">
+    <value xml:space="preserve">{0}  is required</value>
+    <comment>Format argument 0: question title</comment>
+  </data>
 </root>
