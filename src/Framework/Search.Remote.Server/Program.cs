@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.ServiceProcess;
 using System.Text;
 
 namespace N2.Search.Remote.Server
@@ -15,8 +17,14 @@ namespace N2.Search.Remote.Server
 	{
 		static void Main(string[] args)
 		{
+			if (!Environment.UserInteractive)
+			{
+				ServiceBase.Run(new WindowsService());
+				return;
+			}
+
 			var server = new IndexerServer();
-			
+
 			server.Start();
 
 			Console.WriteLine("Listening on " + server.UriPrefix + ". Press enter key to exit");

@@ -117,6 +117,8 @@ namespace N2.Persistence.Search
 
 		protected virtual IndexSearcher CreateSearcher(Directory dir)
 		{
+			if (!dir.FileExists("segments.gen"))
+				GetWriter().Commit();
 			var s = new IndexSearcher(dir, readOnly: true);
 			return s;
 		}

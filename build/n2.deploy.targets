@@ -78,7 +78,8 @@
 			<remoteSearchNugetServer Include="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.dll;
 																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.exe;
 																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.config;
-																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.manifest;"
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.manifest;
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.bat;"
 															 Exclude="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.vshost.*;"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(remoteSearchNugetBinaries)" DestinationFolder="$(RemoteSearch-NugetFolder)\lib" />
