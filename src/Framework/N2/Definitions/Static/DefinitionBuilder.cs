@@ -238,15 +238,15 @@ namespace N2.Definitions.Static
 			public ISortableRefiner Refiner { get; set; }
 		}
 
-        /// <summary>Enumerates concrete item types provided by the type finder.</summary>
-        /// <returns>An enumeration of types derived from <see cref="N2.ContentItem"/>.</returns>
+		/// <summary>Enumerates concrete item types provided by the type finder.</summary>
+		/// <returns>An enumeration of types derived from <see cref="N2.ContentItem"/>.</returns>
 		protected IEnumerable<Type> FindConcreteTypes()
 		{
 			foreach(Type t in typeFinder.Find(typeof (ContentItem)))
 			{
 				if(t != null && !t.IsAbstract && !t.ContainsGenericParameters)
 				{
-                    yield return t;
+					yield return t;
 				}
 			}
 		}
