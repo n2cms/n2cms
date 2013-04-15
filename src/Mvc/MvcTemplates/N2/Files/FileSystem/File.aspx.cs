@@ -11,9 +11,9 @@ using System.Web;
 
 namespace N2.Edit.FileSystem
 {
-    public partial class File1 : EditPage
-    {
-		protected IEnumerable<ContentItem> ancestors;
+	public partial class File1 : EditPage
+	{
+		protected IEnumerable<ContentItem> Ancestors;
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -21,31 +21,37 @@ namespace N2.Edit.FileSystem
 
 			Page.StyleSheet("{ManagementUrl}/Files/Css/Files.css");
 
-			var config = Engine.Resolve<EditSection>();
-			if (config.FileSystem.IsTextFile(SelectedFile.Url))
+			if (Selection == null || Selection.SelectedItem == null)
 			{
-				btnEdit.Visible = true;
+				Ancestors = new ContentItem[0];
+				btnEdit.Visible = false;
+				hlCrop.Visible = false;
 			}
-			if (ImagesUtility.IsImagePath(Selection.SelectedItem.Url))
+			else
 			{
-				var size = config.Images.GetImageSize(SelectedFile.Url);
-				if (size != null && size.Mode == ImageResizeMode.Fill)
-					hlCrop.NavigateUrl = "../Crop.aspx?selected=" + Selection.SelectedItem.Path;
-				else
-					hlCrop.Visible = false;
+				var config = Engine.Resolve<EditSection>();
+
+				if (config.FileSystem.IsTextFile(SelectedFile.Url))
+					btnEdit.Visible = true;
+
+				if (ImagesUtility.IsImagePath(Selection.SelectedItem.Url))
+				{
+					var size = config.Images.GetImageSize(SelectedFile.Url);
+					if (size != null && size.Mode == ImageResizeMode.Fill)
+						hlCrop.NavigateUrl = "../Crop.aspx?selected=" + Selection.SelectedItem.Path;
+					else
+						hlCrop.Visible = false;
+				}
+				Ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
+				DataBind();
+				LoadSizes();
+				Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
 			}
-			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
-
-			DataBind();
-
-			LoadSizes();
-
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
 		}
 
 		private void LoadSizes()
 		{
-			var imageConfig = Engine.Resolve<Configuration.EditSection>().Images;
+			var imageConfig = Engine.Resolve<EditSection>().Images;
 			string baseImagePath, imageSize;
 			ImagesUtility.SplitImageAndSize(Selection.SelectedItem.Url, imageConfig.Sizes.GetSizeNames(), out baseImagePath, out imageSize);
 			foreach (var size in imageConfig.Sizes.AllElements.Where(s => s.Announced))
@@ -85,20 +91,20 @@ namespace N2.Edit.FileSystem
 
 		protected override void RegisterToolbarSelection()
 		{
-			string script = GetToolbarSelectScript("preview");
+			var script = GetToolbarSelectScript("preview");
 			Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
 		}
 
-        protected File SelectedFile
-        {
-            get { return Selection.SelectedItem as File; }
-        }
+		protected File SelectedFile
+		{
+			get { return Selection.SelectedItem as File; }
+		}
 
-    	protected void OnDownloadCommand(object sender, CommandEventArgs e)
-    	{
+		protected void OnDownloadCommand(object sender, CommandEventArgs e)
+		{
 			Response.ContentType = "application/octet-stream";
 			Response.AppendHeader("Content-disposition", "attachment; filename=" + SelectedFile.Name);
-    		SelectedFile.TransmitTo(Response.OutputStream);
+			SelectedFile.TransmitTo(Response.OutputStream);
 			Response.End();
 		}
 
@@ -127,16 +133,16 @@ namespace N2.Edit.FileSystem
 			btnCancel.Visible = false;
 		}
 
-		const double GB = 1024 * 1024 * 1024;
-		const double MB = 1024 * 1024;
-		const double kB = 1024;
+		const double GiB = 1024 * 1024 * 1024;
+		const double MiB = 1024 * 1024;
+		const double KiB = 1024;
 
 		protected string GetFileSize(long size)
 		{
-			if (size > GB) return string.Format("{0:0.0} GB", size / GB);
-			if (size > MB) return string.Format("{0:0.0} MB", size / MB);
-			if (size > kB) return string.Format("{0:0.0} kB", size / kB);
+			if (size > GiB) return string.Format("{0:0.0} GB", size / GiB);
+			if (size > MiB) return string.Format("{0:0.0} MB", size / MiB);
+			if (size > KiB) return string.Format("{0:0.0} KB", size / KiB);
 			return string.Format("{0} B", size);
 		}
-    }
+	}
 }
