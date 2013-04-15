@@ -11,7 +11,7 @@
 	});
 
 	bool designMode = (Html.ViewContext.HttpContext.User.Identity.IsAuthenticated && Content.Engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User));
-	var url = Model.GetDetail("Url", "/");
+	var url = Model.GetDetail("Destination", "/");
 	if (!designMode)
 	{
 
