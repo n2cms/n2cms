@@ -136,6 +136,12 @@ namespace N2
 			set { parent = value; }
 		}
 
+        /// <summary>Gets this item's parent if available, otherwise returns previsous version's parent.</summary>
+        public virtual ContentItem SafeParent
+        {
+            get { return parent ?? ((VersionOf == null) ? null : VersionOf.Parent); }
+        }
+
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
 		[DisplayableHeading(1), NonInterceptable]
 		public virtual string Title
