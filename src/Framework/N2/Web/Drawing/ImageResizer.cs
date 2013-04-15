@@ -185,6 +185,8 @@ namespace N2.Web.Drawing
 
 		private Graphics GetResizedBitmap(ref Bitmap resized, PixelFormat format)
 		{
+			if (format == PixelFormat.Indexed)
+				format = PixelFormat.Format24bppRgb;
 			Bitmap temp = new Bitmap(resized.Width, resized.Height, format);
 			var g = Graphics.FromImage(temp);
 			g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
