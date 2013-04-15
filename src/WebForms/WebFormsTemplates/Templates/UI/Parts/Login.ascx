@@ -1,6 +1,6 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Login.ascx.cs" Inherits="N2.Templates.UI.Parts.Login" %>
-<n2:H4 Text="<%$ CurrentItem: Title %>" Visible="<%$ HasValue: Title %>" runat="server" />
-<n2:Box ID="boxLogin" runat="server">
+﻿<%@ control language="C#" autoeventwireup="true" codebehind="Login.ascx.cs" inherits="N2.Templates.UI.Parts.Login" %>
+<n2:h4 text="<%$ CurrentItem: Title %>" visible="<%$ HasValue: Title %>" runat="server" />
+<n2:box id="boxLogin" runat="server">
 	<asp:LoginStatus ID="Status" runat="server" LogoutText="<%$ CurrentItem: LogoutText %>" LoginText="" />
 	<asp:Login ID="LoginBox" runat="server" FailureText="<%$ CurrentItem: FailureText %>" VisibleWhenLoggedIn="false">
 		<LayoutTemplate>
@@ -30,4 +30,4 @@
 			</asp:Panel>
 		</LayoutTemplate>
 	</asp:Login>
-</n2:Box>
+</n2:box>
