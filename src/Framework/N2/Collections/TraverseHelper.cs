@@ -362,6 +362,8 @@ namespace N2.Collections
 
 		public PathData Path(string path, ContentItem startItem = null)
 		{
+			if (path == null)
+				return null;
 			return (startItem ?? engine().UrlParser.StartPage).FindPath(path);
 		}
 

@@ -31,7 +31,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 		{
 			if (Rows == 1)
 			{
-				string html = new TagBuilder("input")
+				var html = new TagBuilder("input")
 					.Attr("type", "text")
 					.Attr("name", ElementID)
 					.Attr("size", (Columns ?? 60).ToString())
@@ -40,7 +40,7 @@ namespace N2.Templates.Mvc.Models.Parts.Questions
 			}
 			else
 			{
-				string html = new TagBuilder("textarea")
+				var html = new TagBuilder("textarea")
 					.Attr("rows", Rows.ToString())
 					.Attr("name", ElementID)
 					.Attr("cols", (Columns ?? 60).ToString())
