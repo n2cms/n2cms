@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="RunServiceInteractively.bat">
+    <None Include="RunServerCommandLine.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="UninstallWindowsService.bat">
@@ -77,7 +77,7 @@
     <None Include="InstallAsWindowsService.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="GratPermissionToOpenPort.bat">
+    <None Include="GrantListenPortPermissionToServer.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -337,8 +337,6 @@
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
-												<xs:attribute name="engineType" type="xs:string" />
-												<xs:attribute name="containerType" type="xs:string" />
 												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
@@ -353,6 +351,7 @@
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
 						<xs:attribute name="engineType" type="xs:string" use="optional" />
+						<xs:attribute name="containerType" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
