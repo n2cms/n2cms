@@ -26,8 +26,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 *************************************************************************************************@
 
+@using System.Diagnostics
 @model Dinamico.Models.ContentPart
 
+@* ReSharper disable UnknownCssClass *@
+@* ReSharper disable Html.PathError *@
 @{
 
 	Content.Define(ie =>
@@ -43,16 +46,17 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	string filter = (string)Model.GetDetail("FileFilter") ?? "*";
 	string dir = (string)Model.GetDetail("Directory") ?? "";
 	
-	string[] fileList = new string[0];
+	var fileList = new string[0];
 	try
 	{
+		Debug.Assert(Content != null, "Content != null");
 		if (Content.Data.Recursive == true)
 		{
-			fileList = (N2.Utility.RecursiveListFiles(Server.MapPath(dir), filter) as IEnumerable<string>).ToArray();
+			fileList = N2.Utility.RecursiveListFiles(Server.MapPath(dir), filter).ToArray();
 		}
 		else
 		{
-			fileList = System.IO.Directory.GetFiles(Server.MapPath(dir), filter);
+			fileList = Directory.GetFiles(Server.MapPath(dir), filter);
 		}
 	}
 	catch (Exception x)
@@ -60,7 +64,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<div class="alert alert-error"><pre>@x.ToString()</pre></div>
 	}
 
+@* ReSharper disable PossibleNullReferenceException *@
 	string baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
+@* ReSharper restore PossibleNullReferenceException *@
 	var data = (from f in fileList
 				let fn = new FileInfo(f)
 				where !String.Equals("Thumbs.db", fn.Name, StringComparison.OrdinalIgnoreCase)
@@ -69,7 +75,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				orderby f
 				select new {
 					FileSize = N2.Utility.GetFileSizeString(fn.Length, true), 
-					Url = f.Substring(baseDir.Length),
+					Url = f.Substring(baseDir.Length).Replace('\\', '/').Replace("//", "/"),
 					DisplayName = f.Substring(baseDir.Length + dir.Length + 1)});
 
 	if (Model.GetDetail("ReverseOrder", false)) {
@@ -77,7 +83,6 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	}
 					
 }
-
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -91,7 +96,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<tr>
 			<td><a href="@d.Url">@d.DisplayName</a></td>
 			<td>@d.FileSize</td>
-			<td><a href="@d.Url"><img border="0" src="/N2/Resources/Icons/Disk.png" /></a></td>
+			@* ReSharper disable Html.Obsolete *@
+			<td><a href="@d.Url"><img alt="Download" border="0" src="/n2/resources/icons/disk.png" /></a></td>
+			@* ReSharper restore Html.Obsolete *@
 		</tr>}
 	</tbody>
 </table>
+@* ReSharper restore Html.PathError *@
+@* ReSharper restore UnknownCssClass *@
