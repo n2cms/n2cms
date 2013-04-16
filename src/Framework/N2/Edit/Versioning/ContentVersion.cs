@@ -8,12 +8,12 @@ using N2.Web;
 
 namespace N2.Edit.Versioning
 {
-    public class ContentVersion
+	public sealed class ContentVersion
 	{
-		private Func<string, ContentItem> deserializer;
-		private Func<ContentItem, string> serializer;
-		private string versionDataXml;
-		private ContentItem version;
+		private Func<string, ContentItem> _deserializer;
+		private Func<ContentItem, string> _serializer;
+		private string _versionDataXml;
+		private ContentItem _version;
 
 		public ContentVersion()
 		{
@@ -21,60 +21,62 @@ namespace N2.Edit.Versioning
 
 		public ContentVersion(Importer importer, Exporter exporter, IUrlParser parser)
 		{
-			Deserializer = (xml) => Deserialize(importer, parser, xml);
-			Serializer = (item) => Serialize(exporter, item);
+			Deserializer = xml => Deserialize(importer, parser, xml);
+			Serializer = item => Serialize(exporter, item);
 		}
 
-		public virtual Func<string, ContentItem> Deserializer
+		// ReSharper disable RedundantNameQualifier
+		public Func<string, ContentItem> Deserializer
 		{
 			get
 			{
-				return deserializer 
-					?? (deserializer = (xml) => Deserialize(N2.Context.Current.Resolve<Importer>(), N2.Context.Current.UrlParser, xml));
+				return _deserializer 
+					?? (_deserializer = xml => Deserialize(N2.Context.Current.Resolve<Importer>(), N2.Context.Current.UrlParser, xml));
 			}
-			set { deserializer = value; }
+			set { _deserializer = value; }
 		}
 
-		public virtual Func<ContentItem, string> Serializer
+		public Func<ContentItem, string> Serializer
 		{
 			get 
 			{ 
-				return serializer 
-					?? (serializer = (item) => Serialize(N2.Context.Current.Resolve<Exporter>(), item));
+				return _serializer 
+					?? (_serializer = item => Serialize(N2.Context.Current.Resolve<Exporter>(), item));
 			}
-			set { serializer = value; }
+			set { _serializer = value; }
 		}
+		// ReSharper restore RedundantNameQualifier
 
-        public virtual int ID { get; set; }
-        public virtual int VersionIndex { get; set; }
-		public virtual string Title { get; set; }
-		public virtual ContentRelation Master { get; set; }
-		public virtual ContentState State { get; set; }
-		public virtual DateTime? Published { get; set; }
-		public virtual DateTime? FuturePublish { get; set; }
-		public virtual DateTime? Expired { get; set; }
+		public int ID { get; set; }
+		public int VersionIndex { get; set; }
+		public string Title { get; set; }
+		public ContentRelation Master { get; set; }
+		public ContentState State { get; set; }
+		public DateTime? Published { get; set; }
+		public DateTime? FuturePublish { get; set; }
+		public DateTime? Expired { get; set; }
 		//public virtual string PublishedBy { get; set; }
-        public virtual DateTime Saved { get; set; }
-        public virtual string SavedBy { get; set; }
+		public DateTime Saved { get; set; }
+		public string SavedBy { get; set; }
 
-		public virtual string VersionDataXml
+		public string VersionDataXml
 		{
-			get { return versionDataXml; }
-			set { versionDataXml = value; version = null; }
+			get { return _versionDataXml; }
+			set { _versionDataXml = value; _version = null; }
 		}
 
-		public virtual ContentItem Version
+		public ContentItem Version
 		{
 			get
 			{
 				if (string.IsNullOrEmpty(VersionDataXml))
 					return null;
 				
-				return version ?? (version = Deserializer(VersionDataXml));
+				return _version ?? (_version = Deserializer(VersionDataXml));
 			}
 			set
 			{
-				version = value;
+				_version = value;
 
 				if (value == null)
 				{
@@ -106,6 +108,15 @@ namespace N2.Edit.Versioning
 
 		internal static ContentItem Deserialize(Importer importer, IUrlParser parser, string xml)
 		{
+			if (importer == null)
+				throw new ArgumentException("Importer cannot be null.", "importer");
+			
+			if (parser == null)
+				throw new ArgumentException("Parser cannot be null.", "parser");
+
+			if (String.IsNullOrEmpty(xml))
+				return null; // nothing to deserialize
+
 			var journal = importer.Read(new StringReader(xml));
 			foreach (var link in journal.UnresolvedLinks.Where(ul => ul.IsChild == false))
 			{
@@ -113,8 +124,22 @@ namespace N2.Edit.Versioning
 				if (item != null)
 					link.Setter(item);
 			}
-			foreach (var item in journal.ReadItems)
-				(item as IInjectable<IUrlParser>).Set(parser);
+
+			if (journal.ReadItems == null)
+				throw new Exception("Journal couldn't read items due to journal.ReadItems == null. " + xml);
+
+			try
+			{
+				foreach (var item in journal.ReadItems)
+					(item as IInjectable<IUrlParser>).Set(parser);
+			}
+			catch (NullReferenceException nilX)
+			{
+				throw new Exception("Ran into a null reference while attempting to read items from the journal: " + xml, nilX);
+			}
+
+			if (journal.RootItem == null)
+				return null;
 
 			if (journal.RootItem.VersionOf.HasValue && journal.RootItem.VersionOf.Value != null)
 				journal.RootItem.Parent = journal.RootItem.VersionOf.Parent;

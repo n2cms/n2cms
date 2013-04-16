@@ -4,13 +4,14 @@
 	Content.Define(re =>
 	{
 		re.Title = "Redirect";
+		re.IconUrl = "{IconsUrl}/link.png";
 		re.Url("Destination");
 		re.CheckBox("Permanent", "Write HTTP 301 (Permanent) redirect header").DefaultValue(false);
 		re.CheckBox("LocationReplace", "Javascript location.replace").DefaultValue(false);
 	});
 
 	bool designMode = (Html.ViewContext.HttpContext.User.Identity.IsAuthenticated && Content.Engine.SecurityManager.IsEditor(Html.ViewContext.HttpContext.User));
-	var url = Model.GetDetail("Url", "/");
+	var url = Model.GetDetail("Destination", "/");
 	if (!designMode)
 	{
 

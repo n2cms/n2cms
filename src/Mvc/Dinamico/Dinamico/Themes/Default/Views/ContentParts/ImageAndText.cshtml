@@ -45,9 +45,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 }
 
-@if (Content.Has.Text && !String.IsNullOrWhiteSpace(Content.Data.Text))
+@if (Content.Has.Title && !String.IsNullOrWhiteSpace(Content.Data.Title))
 {
-	<h3>@Content.Data.Text</h3>
+	<h3>@Content.Data.Title</h3>
 }
 
 @if (Content.Has.ImageFirst && Content.Data.ImageFirst)
