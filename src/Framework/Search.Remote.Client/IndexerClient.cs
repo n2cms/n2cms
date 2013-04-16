@@ -22,43 +22,45 @@ namespace N2.Search.Remote.Client
 		private string serverUrl;
 		private int timeout;
 		private string sharedSecret;
+		private string instanceName;
 
 		public IndexerClient(DatabaseSection config)
 		{
 			serverUrl = config.Search.Client.Url;
 			timeout = config.Search.Client.IndexTimeout;
 			sharedSecret = config.Search.Client.SharedSecret;
+			instanceName = config.Search.Client.InstanceName;
 		}
 
 		public void Update(IndexableDocument document)
 		{
-			Request("PUT", "items/" + document.ID + "/", new JavaScriptSerializer().Serialize(document));
+			Request("PUT",  instanceName + "/" + document.ID, new JavaScriptSerializer().Serialize(document));
 		}
 
 		public void Delete(int itemID)
 		{
-			Request("DELETE", "items/" + itemID + "/", "");
+			Request("DELETE", instanceName + "/" + itemID, "");
 		}
 
 		public IndexStatistics GetStatistics()
 		{
-			var response = Request("GET", "index/statistics", "");
+			var response = Request("GET", instanceName + "/statistics", "");
 			return new JavaScriptSerializer().Deserialize<IndexStatistics>(response);
 		}
 
 		public void Clear()
 		{
-			var response = Request("POST", "index/clear", "");
+			var response = Request("POST", instanceName + "/clear", "");
 		}
 
 		public void Optimize()
 		{
-			var response = Request("POST", "index/optimize", "");
+			var response = Request("POST", instanceName + "/optimize", "");
 		}
 
 		public void Unlock()
 		{
-			var response = Request("POST", "index/unlock", "");
+			var response = Request("POST", instanceName + "/unlock", "");
 		}
 
 		private string Request(string httpMethod, string relativePath, string requestBody)

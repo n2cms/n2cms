@@ -23,6 +23,7 @@ namespace N2.Search.Remote.Client
 		private string serverUrl;
 		private int timeout;
 		private string sharedSecret;
+		private string instanceName;
 
 		public SearcherClient(IPersister persister, DatabaseSection config)
 		{
@@ -30,6 +31,7 @@ namespace N2.Search.Remote.Client
 			serverUrl = config.Search.Client.Url;
 			timeout = config.Search.Client.SearchTimeout;
 			sharedSecret = config.Search.Client.SharedSecret;
+			instanceName = config.Search.Client.InstanceName;
 		}
 
 		Result<LightweightHitData> ISearcher<LightweightHitData>.Search(Query query)
@@ -47,7 +49,7 @@ namespace N2.Search.Remote.Client
 			if (!query.IsValid())
 				return Result<ContentItem>.Empty;
 
-			var result = Request("POST", "items", query.ToJson());
+			var result = Request("POST", instanceName, query.ToJson());
 
 			var lightweightResult = new JavaScriptSerializer().Deserialize<Result<LightweightHitData>>(result);
 

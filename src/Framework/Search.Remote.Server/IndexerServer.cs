@@ -16,17 +16,24 @@ namespace N2.Search.Remote.Server
 {
 	public class IndexerServer : IDisposable
 	{
+		class InstanceServices
+		{
+			public IIndexer indexer;
+			public ILightweightSearcher searcher;
+		}
+
 		private Logger<IndexerServer> logger;
 		private HttpListener listener;
-		private IIndexer indexer;
-		private ILightweightSearcher searcher;
+		Dictionary<string, InstanceServices> instances = new Dictionary<string, InstanceServices>(StringComparer.InvariantCultureIgnoreCase);
+		
 		private string sharedSecret;
+		private  string indexPath;
 
 		public string UriPrefix { get; private set; }
 
-		public IndexerServer(IIndexer indexer, ILightweightSearcher searcher, string uriPrefix, string sharedSecret)
+		public IndexerServer(string uriPrefix, string sharedSecret, string indexPath)
 		{
-			Init(indexer, searcher, uriPrefix, sharedSecret);
+			Init(uriPrefix, sharedSecret, indexPath);
 		}
 
 		public IndexerServer(DatabaseSection config)
@@ -34,11 +41,7 @@ namespace N2.Search.Remote.Server
 			if (config == null)
 				config = new DatabaseSection();
 
-			var accessor = new LuceneAccesor(new ThreadContext(), config);
-			var indexer = new LuceneIndexer(accessor);
-			var searcher = new LuceneLightweightSearcher(accessor);
-
-			Init(indexer, searcher, config.Search.Server.UrlPrefix, config.Search.Server.SharedSecret);
+			Init(config.Search.Server.UrlPrefix, config.Search.Server.SharedSecret, config.Search.IndexPath);
 		}
 
 		public IndexerServer()
@@ -46,16 +49,25 @@ namespace N2.Search.Remote.Server
 		{
 		}
 
-		private void Init(IIndexer indexer, ILightweightSearcher searcher, string uriPrefix, string sharedSecret)
+		private void Init(string uriPrefix, string sharedSecret, string indexPath)
 		{
 			listener = new HttpListener();
 			listener.Prefixes.Add(uriPrefix);
 
 			UriPrefix = uriPrefix;
 			this.sharedSecret = sharedSecret;
-
-			this.indexer = indexer;
-			this.searcher = searcher;
+			if (!indexPath.Contains(":\\"))
+				indexPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, indexPath.Trim('~', '/').Replace('/', '\\'));
+			this.indexPath = indexPath;
+		}
+		
+		private InstanceServices CreateServices(string instanceName)
+		{
+			var path = Path.Combine(indexPath, instanceName);
+			var accessor = new LuceneAccesor(path);
+			var indexer = new LuceneIndexer(accessor);
+			var searcher = new LuceneLightweightSearcher(accessor);
+			return new InstanceServices { indexer = indexer, searcher = searcher };
 		}
 
 		public void Start()
@@ -123,20 +135,26 @@ namespace N2.Search.Remote.Server
 
 		private void Handle(HttpListenerContext context)
 		{
+			if (context.Request.RawUrl.ToUrl().Segments.Length < 1)
+			{
+				context.Response.StatusCode = (int)HttpStatusCode.NotAcceptable;
+				return;
+			}
+
 			context.Response.StatusCode = (int)HttpStatusCode.OK;
 			switch (context.Request.HttpMethod)
 			{
 				case "GET":
-					HandleQuery(context);
+					HandleGet(context);
 					break;
 				case "PUT":
-					HandleReindex(context.Request);
+					HandlePut(context);
 					break;
 				case "POST":
-					HandleCommand(context);
+					HandlePost(context);
 					break;
 				case "DELETE":
-					HandleDelete(context.Request);
+					HandleDelete(context);
 					break;
 				default:
 					context.Response.StatusCode = (int)HttpStatusCode.NotImplemented;
@@ -144,18 +162,18 @@ namespace N2.Search.Remote.Server
 			}
 		}
 
-		private void HandleQuery(HttpListenerContext context)
+		private void HandleGet(HttpListenerContext context)
 		{
-			Url url = context.Request.RawUrl;
-			if (url.Path == "/index/statistics")
+			var segments = context.Request.RawUrl.ToUrl().Segments;
+			if (segments.Length > 1 && segments[1] == "statistics")
 			{
 				using (var sw = new StreamWriter(context.Response.OutputStream))
 				{
-					var json = indexer.GetStatistics().ToJson();
+					var json = ResolveServices(context).indexer.GetStatistics().ToJson();
 					sw.Write(json);
 				}
 			}
-			if (url.Path == "/items")
+			if (segments.Length == 1)
 			{
 				var queryString = context.Request.QueryString;
 				var q = Query.For(queryString["q"]);
@@ -174,56 +192,67 @@ namespace N2.Search.Remote.Server
 				if (queryString["type"] != null)
 					q.OfType(queryString["type"].Split(','));
 
-				var result = searcher.Search(q);
+				var result = ResolveServices(context).searcher.Search(q);
 				WriteQueryResult(result, context.Response);
 			}
 		}
 
-		private void HandleCommand(HttpListenerContext context)
+		private InstanceServices ResolveServices(HttpListenerContext context)
 		{
-			Url url = context.Request.RawUrl;
+			var instanceName = context.Request.RawUrl.ToUrl().Segments[0];
+			InstanceServices services;
+			if (instances.TryGetValue(instanceName, out services))
+				return services;
+			instances[instanceName] = services = CreateServices(instanceName);
+			return services;
+		}
 
-			if (url.Path == "/items")
+		private void HandlePost(HttpListenerContext context)
+		{
+			var segments = context.Request.RawUrl.ToUrl().Segments;
+			
+			if (segments.Length == 1)
 			{
-				var result = GetQueryResult(context.Request);
+				var result = GetQueryResult(context);
 				WriteQueryResult(result, context.Response);
 			}
-			if (url.Path == "/index/clear")
+			if (segments.Length > 1 && segments[1] == "clear")
 			{
-				indexer.Clear();
+				ResolveServices(context).indexer.Clear();
 			}
-			if (url.Path == "/index/optimize")
+			if (segments.Length > 1 && segments[1] == "optimize")
 			{
-				indexer.Optimize();
+				ResolveServices(context).indexer.Optimize();
 			}
-			if (url.Path == "/index/unlock")
+			if (segments.Length > 1 && segments[1] == "unlock")
 			{
-				indexer.Unlock();
+				ResolveServices(context).indexer.Unlock();
 			}
 		}
 
-		private void HandleReindex(HttpListenerRequest request)
+		private void HandlePut(HttpListenerContext context)
 		{
-			using (var sr = new StreamReader(request.InputStream))
+			using (var sr = new StreamReader(context.Request.InputStream))
 			{
 				var document = new JavaScriptSerializer().Deserialize<IndexableDocument>(sr.ReadToEnd());
-				indexer.Update(document);
+				ResolveServices(context).indexer.Update(document);
 			}
 		}
 
-		private void HandleDelete(HttpListenerRequest request)
+		private void HandleDelete(HttpListenerContext context)
 		{
-			var url = request.RawUrl.ToUrl();
-			indexer.Delete(int.Parse(url.Segments.Last()));
+			var segments = context.Request.RawUrl.ToUrl().Segments;
+			if (segments.Length > 1)
+				ResolveServices(context).indexer.Delete(int.Parse(segments[1]));
 		}
 
-		private object GetQueryResult(HttpListenerRequest request)
+		private object GetQueryResult(HttpListenerContext context)
 		{
-			using (var sr = new StreamReader(request.InputStream))
+			using (var sr = new StreamReader(context.Request.InputStream))
 			{
 				var json = sr.ReadToEnd();
 				var query = new JavaScriptSerializer().Deserialize<Query>(json);
-				return searcher.Search(query);
+				return ResolveServices(context).searcher.Search(query);
 			}
 		}
 

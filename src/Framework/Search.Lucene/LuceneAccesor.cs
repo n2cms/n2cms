@@ -30,10 +30,16 @@ namespace N2.Persistence.Search
 		IndexSearcher searcher;
 		IndexWriter writer;
 
+		public LuceneAccesor(string indexPath)
+		{
+			LockTimeout = 2000L;
+			this.indexPath = indexPath;
+		}
+
 		public LuceneAccesor(IWebContext webContext, DatabaseSection config)
 		{
 			LockTimeout = 2000L;
-			indexPath = Path.Combine(webContext.MapPath(config.Search.IndexPath), "Pages");
+			indexPath = Path.Combine(webContext.MapPath(config.Search.IndexPath), config.Search.Client.InstanceName);
 		}
 
 		~LuceneAccesor()

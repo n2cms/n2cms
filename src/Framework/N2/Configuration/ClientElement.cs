@@ -22,6 +22,13 @@ namespace N2.Configuration
 			set { base["sharedSecret"] = value; }
 		}
 
+		[ConfigurationProperty("instanceName", DefaultValue = "Pages")]
+		public string InstanceName
+		{
+			get { return (string)base["instanceName"]; }
+			set { base["instanceName"] = value; }
+		}
+
 		[ConfigurationProperty("searchTimeout", DefaultValue = 10000)]
 		public int SearchTimeout
 		{
