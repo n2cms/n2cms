@@ -18,15 +18,15 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 	//	<add key="Demo.EnableContentReset" value="true"/>
 	//</appSettings>
 	[Controls(typeof(DemoPart))]
-    public class DemoController : ContentController<DemoPart>
-    {
-        //
-        // GET: /Tests/Demo/
+	public class DemoController : ContentController<DemoPart>
+	{
+		//
+		// GET: /Tests/Demo/
 
 		private readonly Engine.Logger<DemoController> logger;
 
-        public override ActionResult Index()
-        {
+		public override ActionResult Index()
+		{
 			var model = new DemoViewModel();
 			if (TempData.ContainsKey("Deferred"))
 			{
@@ -43,7 +43,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 				return PartialView("Authenticated", model);
 			else
 				return PartialView("Unauthenticated", model);
-        }
+		}
 
 		public ActionResult Login()
 		{
@@ -73,8 +73,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			}
 
 			FormsAuthentication.SignOut();
-
-			return RedirectToParentPage();
+			string returnUrl = Request["returnUrl"];
+			string logoutUrl = System.Configuration.ConfigurationManager.AppSettings["N2.logout.url"];
+			if (!String.IsNullOrEmpty(logoutUrl)) logoutUrl = CurrentPage.Url;
+			if (!String.IsNullOrEmpty(returnUrl)) logoutUrl = returnUrl;
+			return Redirect(logoutUrl); 
 		}
 
 		private void SendEmail(string subject, string body)
@@ -99,6 +102,6 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 				logger.Error(subject + Environment.NewLine + body + Environment.NewLine + ex);
 			}
 		}
-    }
+	}
 }
 #endif

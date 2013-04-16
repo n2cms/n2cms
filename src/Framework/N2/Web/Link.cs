@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace N2.Web
 {
 	/// <summary>
-	/// A link representation that can be conver to text or an anchor control.
+	/// A link representation that can be converted to text or an anchor control.
 	/// </summary>
 	public class Link : 
 		System.Web.IHtmlString, 
@@ -27,38 +27,35 @@ namespace N2.Web
 
 		#region Fields
 
-		private string text;
-		private string title;
-		private string target;
-		private string className;
-		private Url url;
-		private IDictionary<string, string> attributes;
+		private string _text;
+		private string _title;
+		private string _target;
+		private string _className;
+		private Url _url;
+		private IDictionary<string, string> _attributes;
 		#endregion
 
 		#region Constructor
 
-		public Link()
-			: this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
+		public Link() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
 		{
 		}
 
-		public Link(string text, string href)
-			:this(text, string.Empty, string.Empty, href, string.Empty)
+		public Link(string text, string href) :this(text, string.Empty, string.Empty, href, string.Empty)
 		{
 		}
 
-		public Link(string text, string title, string target, string href)
-			: this(text, title, target, href, string.Empty)
+		public Link(string text, string title, string target, string href) : this(text, title, target, href, string.Empty)
 		{
 		}
 
 		public Link(string text, string title, string target, string href, string className)
 		{
-			this.text = text;
-			this.title = title;
-			this.target = target;
-			this.url = href;
-			this.className = className;
+			_text = text;
+			_title = title;
+			_target = target;
+			_url = href;
+			_className = className;
 		}
 
 		public Link(ILink link)
@@ -66,13 +63,11 @@ namespace N2.Web
 			UpdateFrom(link);
 		}
 
-		public Link(ContentItem item)
-			: this(item, string.Empty)
+		public Link(ContentItem item) : this(item, string.Empty)
 		{
 		}
 
-		public Link(ContentItem item, string className)
-			: this(string.Empty, string.Empty, string.Empty, string.Empty, className)
+		public Link(ContentItem item, string className) : this(string.Empty, string.Empty, string.Empty, string.Empty, className)
 		{
 			UpdateFrom(item);
 		}
@@ -83,43 +78,43 @@ namespace N2.Web
 		
 		private bool HasAttributes
 		{
-			get { return attributes != null && attributes.Count > 0; }
+			get { return _attributes != null && _attributes.Count > 0; }
 		}
 
 		public IDictionary<string, string> Attributes
 		{
-			get { return attributes ?? (attributes = new Dictionary<string, string>()); }
-			set { attributes = value; }
+			get { return _attributes ?? (_attributes = new Dictionary<string, string>()); }
+			set { _attributes = value; }
 		}
 
 		public string Contents
 		{
-			get { return text; }
-			set { text = value; }
+			get { return _text; }
+			set { _text = value; }
 		}
 
 		public string ToolTip
 		{
-			get { return title; }
-			set { title = value; }
+			get { return _title; }
+			set { _title = value; }
 		}
 
 		public string Target
 		{
-			get { return target; }
-			set { target = value; }
+			get { return _target; }
+			set { _target = value; }
 		}
 
 		public string Url
 		{
-			get { return url; }
-			set { url = value; }
+			get { return _url; }
+			set { _url = value; }
 		}
 
 		public string ClassName
 		{
-			get { return className; }
-			set { className = value; }
+			get { return _className; }
+			set { _className = value; }
 		}
 
 		#endregion
@@ -139,8 +134,8 @@ namespace N2.Web
 
 		public Control ToControl()
 		{
-			A a = new A(Url, Target, ToolTip, Contents, ClassName);
-			foreach(KeyValuePair<string,string> pair in Attributes)
+			var a = new A(Url, Target, ToolTip, Contents, ClassName);
+			foreach(var pair in Attributes)
 			{
 				a.Attributes[pair.Key] = pair.Value;
 			}
@@ -152,7 +147,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(Contents))
 				return "";
 
-			string url = Url;
+			var url = Url;
 			var tag = string.IsNullOrEmpty(url)
 				? new TagBuilder("span")
 				: new TagBuilder("a").AddAttributeUnlessEmpty("href", Url).AddAttributeUnlessEmpty("target", Target);
@@ -212,19 +207,19 @@ namespace N2.Web
 
 		ILinkBuilder ILinkBuilder.Href(string href)
 		{
-			this.url = href;
+			this._url = href;
 			return this;
 		}
 
 		public ILinkBuilder Query(string query)
 		{
-			url = url.SetQuery(query);
+			_url = _url.SetQuery(query);
 			return this;
 		}
 
 		public ILinkBuilder AddQuery(string key, string value)
 		{
-			url = url.SetQueryParameter(key, value);
+			_url = _url.SetQueryParameter(key, value);
 			return this;
 		}
 
@@ -240,7 +235,7 @@ namespace N2.Web
 
 		public ILinkBuilder SetFragment(string fragment)
 		{
-			this.url = url.SetFragment(fragment);
+			this._url = _url.SetFragment(fragment);
 			return this;
 		}
 

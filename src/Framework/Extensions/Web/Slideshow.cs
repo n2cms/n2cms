@@ -47,7 +47,7 @@ namespace N2.Web
 		HtmlItemTemplate
 	}
 
-	[PartDefinition(Title = "Slideshow", IconUrl = "{IconsUrl}/photos.png", TemplateUrl = "Slideshow")]
+	[PartDefinition(Title = "Image Gallery", IconUrl = "{IconsUrl}/photos.png", TemplateUrl = "Slideshow")]
 	[RestrictChildren(
 		typeof(ISlideshowEntryProvider),
 		typeof(SlideshowDirectoryInclude),
@@ -174,14 +174,19 @@ namespace N2.Web
 
 		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath, string filter)
 		{
-			var baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
+			// sanitize input just in case
+			relativeBasePath = relativeBasePath.Replace('\\', '/'); 
+			filter = filter ?? "*";
+			if (relativeBasePath[0] == '/')
+				relativeBasePath = '~' + relativeBasePath;
+
 			foreach (var f in N2.Utility.RecursiveListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
 			{
 				if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
 					continue;
 
 				yield return new SlideshowImage() {
-					ImageHref = f.Substring(baseDir.Length).Replace('\\', '/'),
+					ImageHref = N2.Utility.RemapVirtualPath(f),
 					Description = null,
 					Title = System.IO.Path.GetFileName(f)
 				};
