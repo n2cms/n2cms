@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace N2.Persistence.Search
 {
@@ -29,12 +30,15 @@ namespace N2.Persistence.Search
 			if (accessor.IndexExists())
 			{
 				accessor.ClearLock();
-				var w = accessor.GetWriter();
-				if (w.NumDocs() > 0)
+				using (var iw = accessor.GetWriter())
 				{
-					w.DeleteAll();
-					w.Commit();
-					accessor.RecreateSearcher();
+					if (iw.NumDocs() > 0)
+					{
+						iw.DeleteAll();
+						iw.PrepareCommit();
+						iw.Commit();
+						accessor.RecreateSearcher();
+					}
 				}
 				accessor.ClearLock();
 			}
@@ -54,11 +58,14 @@ namespace N2.Persistence.Search
 			if (accessor.IndexExists())
 			{
 				var d = accessor.GetDirectory();
-				var iw = accessor.GetWriter();
-				if (iw.NumDocs() > 0)
+				using (var iw = accessor.GetWriter())
 				{
-					iw.Optimize(true);
-					iw.Commit();
+					if (iw.NumDocs() > 0)
+					{
+						iw.Optimize(doWait: true);
+						iw.PrepareCommit();
+						iw.Commit();
+					}
 				}
 			}
 		}
@@ -76,42 +83,53 @@ namespace N2.Persistence.Search
 
 		private void WriteToIndex(int itemID, Document doc)
 		{
-			if (doc != null)
+			if (doc == null)
+				return;
+			lock (accessor)
 			{
-				lock (accessor)
+				var iw = accessor.GetWriter();
+				try
 				{
-					var iw = accessor.GetWriter();
+					iw.UpdateDocument(new Term(TextExtractor.Properties.ID, itemID.ToString()), doc);
+					iw.PrepareCommit();
+					iw.Commit();
+				}
+				catch (AlreadyClosedException ex)
+				{
+					logger.Error(ex);
 					try
 					{
+						iw = accessor.GetWriter();
 						iw.UpdateDocument(new Term(TextExtractor.Properties.ID, itemID.ToString()), doc);
+						iw.PrepareCommit();
 						iw.Commit();
 					}
-					catch (AlreadyClosedException ex)
+					catch (Exception ex2)
 					{
-						logger.Error(ex);
-						try
-						{
-							iw = accessor.RecreateWriter().GetWriter();
-							iw.UpdateDocument(new Term(TextExtractor.Properties.ID, itemID.ToString()), doc);
-							iw.Commit();
-						}
-						catch (Exception ex2)
-						{
-							logger.Error(ex2);
-							iw.Dispose();
-							accessor.ClearLock();
-						}
-					}
-					catch (Exception ex)
-					{
-						logger.Error(ex);
+						logger.Error(ex2);
 						iw.Dispose();
 						accessor.ClearLock();
 					}
-					finally
-					{
-						accessor.RecreateSearcher();
-					}
+				}
+				catch (ThreadAbortException ex)
+				{
+					logger.Warn(ex);
+					iw.Rollback();
+					iw.Dispose(waitForMerges: false);
+					accessor.ClearLock();
+					throw;
+				}
+				catch (Exception ex)
+				{
+					logger.Error(ex);
+					iw.Rollback();
+					iw.Dispose();
+					accessor.ClearLock();
+				}
+				finally
+				{
+					iw.Dispose(waitForMerges: true);
+					accessor.RecreateSearcher();
 				}
 			}
 		}
@@ -122,15 +140,18 @@ namespace N2.Persistence.Search
 
 			lock (accessor)
 			{
-				var iw = accessor.GetWriter();
-				var s = accessor.GetSearcher();
-				string trail = GetTrail(s, new Term(TextExtractor.Properties.ID, itemID.ToString()));
-				if (trail == null)
-					return; // not indexed
+				using (var iw = accessor.GetWriter())
+				{
+					var s = accessor.GetSearcher();
+					string trail = GetTrail(s, new Term(TextExtractor.Properties.ID, itemID.ToString()));
+					if (trail == null)
+						return; // not indexed
 
-				var query = new PrefixQuery(new Term(TextExtractor.Properties.Trail, trail));
-				iw.DeleteDocuments(query);
-				iw.Commit();
+					var query = new PrefixQuery(new Term(TextExtractor.Properties.Trail, trail));
+					iw.DeleteDocuments(query);
+					iw.PrepareCommit();
+					iw.Commit();
+				}
 				accessor.RecreateSearcher();
 			}
 		}
