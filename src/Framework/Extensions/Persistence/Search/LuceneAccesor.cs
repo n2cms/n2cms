@@ -28,7 +28,6 @@ namespace N2.Persistence.Search
 		public long LockTimeout { get; set; }
 		Directory directory;
 		IndexSearcher searcher;
-		IndexWriter writer;
 
 		public LuceneAccesor(IWebContext webContext, DatabaseSection config)
 		{
@@ -36,25 +35,11 @@ namespace N2.Persistence.Search
 			indexPath = Path.Combine(webContext.MapPath(config.Search.IndexPath), "Pages");
 		}
 
-		~LuceneAccesor()
-		{
-			Dispose();
-		}
-
 		public IndexWriter GetWriter()
 		{
 			lock (this)
 			{
-				return writer ?? (writer = CreateWriter(GetDirectory(), GetAnalyzer()));
-			}
-		}
-
-		public LuceneAccesor RecreateWriter()
-		{
-			lock (this)
-			{
-				writer = null;
-				return this;
+				return CreateWriter(GetDirectory(), GetAnalyzer());
 			}
 		}
 
@@ -130,9 +115,6 @@ namespace N2.Persistence.Search
 		{
 			lock (this)
 			{
-				if (writer != null)
-					writer.Dispose(waitForMerges: true);
-				writer = null;
 				searcher = null;
 				directory = null;
 			}
