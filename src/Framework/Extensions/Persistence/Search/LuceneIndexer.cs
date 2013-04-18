@@ -74,6 +74,7 @@ namespace N2.Persistence.Search
 					{
 						iw.Optimize(true);
 						iw.Commit();
+						accessor.RecreateSearcher();
 					}
 				}
 			}
