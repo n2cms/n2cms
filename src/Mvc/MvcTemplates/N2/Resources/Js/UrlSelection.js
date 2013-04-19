@@ -15,7 +15,6 @@
 //	return decodeURIComponent(n2nav.toRelativeUrl(a.href));
 //}
 
-
 function openUrlSelectorPopup(popupUrl, tbId, popupOptions, defaultMode, availableModes, availableTypes, availableExtensions) {
 	var tb = document.getElementById(tbId);
 	window.open(popupUrl
