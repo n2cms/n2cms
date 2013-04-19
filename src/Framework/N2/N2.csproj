@@ -611,6 +611,7 @@
     <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
+    <Compile Include="Persistence\Xml\XmlContentRepository.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
     <Compile Include="Security\ISecurableBase.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
