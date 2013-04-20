@@ -105,6 +105,8 @@ namespace N2.Edit
 		{
 			return new TreeNode
 			{
+				ID = item.ID,
+				Path = item.Path,
 				IconUrl = GetIconUrl(item),
 				Title = item.Title,
 				MetaInforation = GetMetaInformation(item),

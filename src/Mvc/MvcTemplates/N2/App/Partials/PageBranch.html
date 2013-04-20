@@ -1,0 +1,5 @@
+﻿<treenode model="node" />
+<ul ng-show="node.Children.length">
+	<li ng-repeat="child in node.Children" ng-controller="BranchCtrl" ng-include src="'App/Partials/PageBranch.html'">
+	</li>
+</ul>

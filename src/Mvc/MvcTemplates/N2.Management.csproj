@@ -101,6 +101,7 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\PageBranch.html" />
     <Content Include="N2\App\Partials\MainMenu.html" />
     <Content Include="N2\App\Partials\PageActionBar.html" />
     <Content Include="N2\App\Partials\PageTree.html" />
@@ -153,6 +154,35 @@
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\UpgradeVersions.aspx" />
     <Content Include="N2\Installation\Rebase.aspx" />
+    <Content Include="N2\redesign\bootstrap\css\bootstrap.css" />
+    <Content Include="N2\redesign\bootstrap\css\bootstrap.min.css" />
+    <Content Include="N2\redesign\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="N2\redesign\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="N2\redesign\bootstrap\js\bootstrap.js" />
+    <Content Include="N2\redesign\bootstrap\js\bootstrap.min.js" />
+    <Content Include="N2\redesign\css\n2.css" />
+    <Content Include="N2\redesign\css\normalize.css" />
+    <Content Include="N2\redesign\css\normalize.min.css" />
+    <Content Include="N2\redesign\img\actionbar\edit.png" />
+    <Content Include="N2\redesign\img\actionbar\language.png" />
+    <Content Include="N2\redesign\img\actionbar\publish.png" />
+    <Content Include="N2\redesign\img\actionbar\version.png" />
+    <Content Include="N2\redesign\img\actionbar\view.png" />
+    <Content Include="N2\redesign\img\arrow-down.png" />
+    <Content Include="N2\redesign\img\grabber.png" />
+    <Content Include="N2\redesign\img\icons\page-world.png" />
+    <Content Include="N2\redesign\img\icons\page.png" />
+    <Content Include="N2\redesign\img\logo.png" />
+    <Content Include="N2\redesign\img\minus.png" />
+    <Content Include="N2\redesign\img\plus.png" />
+    <Content Include="N2\redesign\img\search.png" />
+    <Content Include="N2\redesign\img\sliding-loader.png" />
+    <Content Include="N2\redesign\img\tools.png" />
+    <Content Include="N2\redesign\js\main.js" />
+    <Content Include="N2\redesign\js\n2.js" />
+    <Content Include="N2\redesign\js\plugins.js" />
+    <Content Include="N2\redesign\js\vendor\jquery-1.9.1.min.js" />
+    <Content Include="N2\redesign\js\vendor\modernizr-2.6.2.min.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap-prettify.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap-prettify.min.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap.js" />
@@ -919,6 +949,8 @@
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.ttf" />
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.woff" />
     <Content Include="N2\Resources\angular-1.1.4\version.json" />
+    <Content Include="N2\redesign\bootstrap\img\Thumbs.db" />
+    <Content Include="N2\redesign\img\actionbar\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">

@@ -3,6 +3,7 @@ using System.Web.UI;
 using N2.Engine;
 using N2.Web;
 using N2.Edit.Versioning;
+using N2.Collections;
 
 namespace N2.Edit
 {
@@ -44,6 +45,11 @@ namespace N2.Edit
 		{
 			this.selectedItem = selectedItem;
 			this.memorizedItem = memorizedItem;
+		}
+
+		public TraverseHelper Traverse
+		{
+			get { return new TraverseHelper(() => Engine, new FilterHelper(() => Engine), () => new PathData(SelectedItem)); }
 		}
 
         /// <summary>The selected item.</summary>

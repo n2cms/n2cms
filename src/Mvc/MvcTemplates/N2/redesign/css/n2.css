@@ -1,4 +1,4 @@
-﻿body { font-family: 'Myriad Pro'; font-size: 14px; }
+﻿body { font-family: 'Myriad Pro'; font-size: 14px; overflow:hidden; }
 a { text-decoration: none; color: #000; }
 	a:hover { text-decoration: underline; }
 * { box-sizing: border-box; -moz-box-sizing: border-box; }
@@ -32,7 +32,7 @@ ul.menu li { display: inline-block; }
 		#secondary-area .search input[type=text] { border: 1px solid #E6E6E6; color: #4B4B4B; font-size: 14px; height: 30px; text-indent: 5px; width: 100%; }
 			#secondary-area .search input[type=text]:focus { color: #000; text-transform: none; }
 		#secondary-area .search input[type=button] { background: url("../img/search.png") no-repeat scroll 0 0 transparent; border: 0 none; height: 17px; position: absolute; right: 12px; text-indent: -9999px; top: 12px; width: 16px; }
-	#secondary-area #page-tree { }
+	#secondary-area #page-tree { position: absolute; width: 100%; top: 37px; bottom: 83px; overflow: auto; }
 		#secondary-area #page-tree ul { }
 			#secondary-area #page-tree ul li { margin-left: 10px; text-indent: 5px; line-height: 29px; }
 				#secondary-area #page-tree ul li div { cursor: pointer; }
@@ -58,7 +58,7 @@ ul.menu li { display: inline-block; }
 		#secondary-area #trash > div { text-align: center; height: 80px; background: #f0f0f0; border: 1px solid #dddddd; }
 		#secondary-area #trash div div { font-size: 18px; padding-top: 10px; }
 
-#main-area { left: 200px; position: absolute; top: 0; bottom: 0; }
+#main-area { left: 200px; position: absolute; top: 0; bottom: 0; overflow:auto; }
 	#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }
 	#main-area #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
 		#main-area #page-action-bar.secondary ul { float: left; }
@@ -87,3 +87,5 @@ ul.menu li { display: inline-block; }
 				#main-area #page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
 			#main-area #page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
 				#main-area #page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }
+	#main-area #page-preview { position:absolute; top: 39px; bottom: 0; width:100%; }
+		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }

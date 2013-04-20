@@ -38,6 +38,9 @@
             <div class="dragbar"></div>
         </div>
         <div id="main-area">
+			<div id="page-preview" ng-bind-html-unsafe="Interface | pretty">
+				<%--<iframe id="page-preview-frame" src="{{Preview.Url}}"></iframe>--%>
+			</div>
             <div ng-include src="'App/Partials/PageActionBar.html'"></div>
         </div>
     </div>

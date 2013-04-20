@@ -22,22 +22,30 @@ namespace N2.Management.Api
 		public string Frame { get; set; }
 	}
 
-	public class InterfaceContentNode
-	{
-		public string Type { get; set; }
-		public string Title { get; set; }
-		public string Url { get; set; }
+	//public class InterfaceContentNode
+	//{
+	//	public string Type { get; set; }
+	//	public string Title { get; set; }
+	//	public string Url { get; set; }
 
-		public int ID { get; set; }
+	//	public int ID { get; set; }
 
-		public string Path { get; set; }
-	}
+	//	public string Path { get; set; }
+
+	//	public string IconUrl { get; set; }
+
+	//	public string Target { get; set; }
+	//}
 
 	public class InterfaceData
 	{
 		public Node<InterfaceMenuItem> TopMenu { get; set; }
 		public Node<InterfaceMenuItem> ToolbarMenu { get; set; }
-		public Node<InterfaceContentNode> Content { get; set; }
+		public Node<TreeNode> Content { get; set; }
+
+		public Site Site { get; set; }
+
+		public string Authority { get; set; }
 	}
 
 	/// <summary>
@@ -45,41 +53,54 @@ namespace N2.Management.Api
 	/// </summary>
 	public class Interface : IHttpHandler
 	{
+		private SelectionUtility selection;
+		private IEngine engine;
+
 		public void ProcessRequest(HttpContext context)
 		{
+			engine = Context.Current;
+			selection = new SelectionUtility(context.Request, engine);
+
 			context.Response.ContentType = "application/json";
 			new InterfaceData
 			{
 				TopMenu = CreateTopMenu(),
-				Content = CreateContent(context)
+				Content = CreateContent(context),
+				Site = engine.Host.GetSite(selection.SelectedItem),
+				Authority = context.Request.Url.Authority
 			}.ToJson(context.Response.Output);
 			
 		}
 
-		private static Node<InterfaceContentNode> CreateContent(HttpContext context)
+		private Node<TreeNode> CreateContent(HttpContext context)
 		{
-			var selection = new SelectionUtility(context.Request, Context.Current);
-
-			var Filter = Context.Current.EditManager.GetEditorFilter(context.User);
-			var structure = new BranchHierarchyBuilder(selection.SelectedItem, N2.Find.RootItem, true) { UseMasterVersion = false }
-				.Children((item) => Context.Current.Resolve<IContentAdapterProvider>().ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(Filter))
+			var filter = engine.EditManager.GetEditorFilter(context.User);
+			
+			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.StartPage, true) { UseMasterVersion = false }
+				.Children((item) => engine.Resolve<IContentAdapterProvider>().ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
 				.Build();
 
 			return CreateStructure(structure);
 		}
 
-		private static Node<InterfaceContentNode> CreateStructure(HierarchyNode<ContentItem> structure)
+		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure)
 		{
-			return new Node<InterfaceContentNode>
+			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
+			var node = adapter.GetTreeNode(structure.Current);
+			return new Node<TreeNode>
 			{
-				Current = new InterfaceContentNode
-				{
-					ID = structure.Current.ID,
-					Title = structure.Current.Title,
-					Path = structure.Current.Path,
-					Type = structure.Current.GetContentType().Name,
-					Url = structure.Current.Url,
-				},
+				//Current = new InterfaceContentNode
+				//{
+				//	ID = structure.Current.ID,
+				//	Title = structure.Current.Title,
+				//	Path = structure.Current.Path,
+				//	Type = structure.Current.GetContentType().Name,
+				//	Url = structure.Current.Url,
+				//	IconUrl = structure.Current.IconUrl,
+				//	Target = "preview",
+
+				//},
+				Current = node,
 				Children = structure.Children.Select(c => CreateStructure(c)).ToArray()
 			};
 		}
