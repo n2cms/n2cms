@@ -68,7 +68,7 @@ namespace N2.Persistence
             using (var tx = Repository.BeginTransaction())
             {
                 tx.Committed += (s, a) => Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
-                Utility.InvokeEvent(ItemSaving, unsavedItem, this, sources.Save, null);
+				Utility.InvokeEvent(ItemSaving, unsavedItem, this, sources.Save, null);
                 tx.Commit();
             }
 		}

@@ -53,7 +53,7 @@ namespace N2.Persistence.Serialization
 
 				if (type == typeof(string))
 					Write(propertyElement, type, (string)value, true);
-				else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal))
+				else if (type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(decimal) || type == typeof(bool))
 					Write(propertyElement, type, value.ToString(), false);
 				else if (type == typeof(DateTime))
 					Write(propertyElement, type, SerializationUtility.ToUniversalString(((DateTime)value)), false);

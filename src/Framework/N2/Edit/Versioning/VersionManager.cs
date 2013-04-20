@@ -193,20 +193,22 @@ namespace N2.Edit.Versioning
 		{
 			foreach (var detail in currentItem.Details)
 			{
-				if (detail.LinkedItem != null && detail.LinkedItem.VersionOf.HasValue)
-				{
-					detail.LinkedItem = detail.LinkedItem.VersionOf;
-				}
+				Relink(detail);
 			}
 			foreach (var dc in currentItem.DetailCollections)
 			{
 				foreach (var detail in dc.Details)
 				{
-					if (detail.LinkedItem != null && detail.LinkedItem.VersionOf.HasValue)
-					{
-						detail.LinkedItem = detail.LinkedItem.VersionOf;
-					}
+					Relink(detail);
 				}
+			}
+		}
+
+		private static void Relink(Details.ContentDetail detail)
+		{
+			if (detail.LinkedItem.ID.HasValue && detail.LinkedItem.Value != null && detail.LinkedItem.Value.VersionOf.HasValue)
+			{
+				detail.LinkedItem = detail.LinkedItem.Value.VersionOf;
 			}
 		}
 

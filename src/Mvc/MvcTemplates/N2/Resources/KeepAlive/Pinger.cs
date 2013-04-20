@@ -38,14 +38,15 @@ namespace N2.Edit.KeepAlive
                 {
                     wc.Headers["N2KeepAlive"] = "true";
                     url = url.SetPath(config.Scheduler.KeepAlivePath.ResolveUrlTokens());
-                    string response = wc.DownloadString(url);
-                    Debug.WriteLine("Ping " + url + ": " + response);
-                    logger.Debug("Ping " + url + ": " + response);
+
+					logger.Debug("Pinging " + url);
+					string response = wc.DownloadString(url);
+                    logger.Debug("Pinged " + url + ": " + response);
                 }
             }
 			catch(SecurityException ex)
 			{
-				N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environemtn): ", ex);
+				N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environment): ", ex);
 				Repeat = Repeat.Once;
 			}
         }

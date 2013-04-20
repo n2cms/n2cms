@@ -10,6 +10,8 @@
 		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
 		<Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
 		<Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
+		<MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
+		<RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
@@ -55,6 +57,37 @@
 		<FileUpdate Files="$(Windsor3-NugetFolder)\N2.Windsor3.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
 		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Windsor3-NugetFolder)\" />
+	</Target>
+
+	<Target Name="MongoDB-NuGet">
+		<ItemGroup>
+			<mongoDBNugetBinaries Include="$(SrcFolder)\Framework\MongoDB\bin\$(Configuration)\N2.Persistence.MongoDB.dll;"/>
+			<mongoDBNugetIncludes Include="$(BuildFolder)\Nuget\MongoDB\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(mongoDBNugetBinaries)" DestinationFolder="$(MongoDB-NugetFolder)\lib" />
+		<Copy SourceFiles="@(mongoDBNugetIncludes)" DestinationFolder="$(MongoDB-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(MongoDB-NugetFolder)\N2.Persistence.MongoDB.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(MongoDB-NugetFolder)\" />
+	</Target>
+
+	<Target Name="RemoteSearch-NuGet">
+		<ItemGroup>
+			<remoteSearchNugetBinaries Include="$(SrcFolder)\Framework\Search.Remote.Client\bin\$(Configuration)\N2.Search.Remote.Client.dll;"/>
+			<remoteSearchNugetIncludes Include="$(BuildFolder)\Nuget\RemoteSearch\**\*" />
+			<remoteSearchNugetServer Include="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.dll;
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.exe;
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.config;
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.manifest;
+																				$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.bat;"
+															 Exclude="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.vshost.*;"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(remoteSearchNugetBinaries)" DestinationFolder="$(RemoteSearch-NugetFolder)\lib" />
+		<Copy SourceFiles="@(remoteSearchNugetIncludes)" DestinationFolder="$(RemoteSearch-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(remoteSearchNugetServer)" DestinationFolder="$(RemoteSearch-NugetFolder)\Content\RemoteSearchServer" />
+		<FileUpdate Files="$(RemoteSearch-NugetFolder)\N2.Search.Remote.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(RemoteSearch-NugetFolder)\" />
 	</Target>
 
 	<Target Name="Razor-NuGet">
@@ -161,7 +194,7 @@
 		<WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
 	</Target>
 
-	<Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet">
+	<Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet">
 	</Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">

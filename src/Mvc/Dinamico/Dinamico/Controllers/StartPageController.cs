@@ -18,7 +18,7 @@ namespace Dinamico.Controllers
 	/// connecting this controller to the start page model.
 	/// </summary>
 	public class StartPageController : ContentController<StartPage>
-    {
+	{
 		public ActionResult NotFound()
 		{
 			var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
@@ -68,7 +68,7 @@ namespace Dinamico.Controllers
 		private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
 		{
 			var query = Query.For(text).Below(root).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
-			var hits = Engine.Resolve<ITextSearcher>().Search(query).Hits.Select(h => h.Content);
+			var hits = Engine.Resolve<IContentSearcher>().Search(query).Hits.Select(h => h.Content);
 			return hits;
 		}
 

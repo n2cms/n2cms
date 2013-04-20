@@ -28,7 +28,7 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Save_ChildState()
 		{
-			var item = new PersistableItem1();
+			var item = new PersistableItem();
 			persister.Save(item);
 			item.ChildState.ShouldBe(CollectionState.IsEmpty);
 		}
@@ -36,10 +36,10 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Save_WithChildren_ChildState()
 		{
-			var parent = new PersistableItem1();
+			var parent = new PersistableItem();
 			persister.Save(parent);
 
-			var child = new PersistableItem1 { Parent = parent };
+			var child = new PersistableItem { Parent = parent };
 			persister.Save(child);
 
 			parent.ChildState.ShouldBe(CollectionState.ContainsVisiblePublicPages);
@@ -48,10 +48,10 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Save_WithChildren_DoubleSave()
 		{
-			var parent = new PersistableItem1();
+			var parent = new PersistableItem();
 			persister.Save(parent);
 
-			var child = new PersistableItem1 { Parent = parent };
+			var child = new PersistableItem { Parent = parent };
 			persister.Save(child);
 
 			parent.Children.Count.ShouldBe(1);
@@ -64,19 +64,19 @@ namespace N2.Tests.Persistence
 		[Test]
 		public void Save_WithDescendants()
 		{
-			var parent = new PersistableItem1();
+			var parent = new PersistableItem();
 			persister.Save(parent);
 
-			var child1 = new PersistableItem1 { Parent = parent };
+			var child1 = new PersistableItem { Parent = parent };
 			persister.Save(child1);
 
-			var child1_1 = new PersistableItem1 { Parent = child1 };
+			var child1_1 = new PersistableItem { Parent = child1 };
 			persister.Save(child1_1);
 
-			var child2 = new PersistableItem1 { Parent = parent };
+			var child2 = new PersistableItem { Parent = parent };
 			persister.Save(child2);
 
-			var child2_1 = new PersistableItem1 { Parent = child2 };
+			var child2_1 = new PersistableItem { Parent = child2 };
 			persister.Save(child2_1);
 
 			persister.Save(parent);
@@ -93,22 +93,22 @@ namespace N2.Tests.Persistence
 		{
 			for (int i = 0; i < iterations; i++)
 			{
-				var parent = new PersistableItem1();
+				var parent = new PersistableItem();
 				persister.Save(parent);
 
-				var child1 = new PersistableItem1 { Parent = parent };
+				var child1 = new PersistableItem { Parent = parent };
 				child1["parent"] = parent;
 				persister.Save(child1);
 
-				var child1_1 = new PersistableItem1 { Parent = child1 };
+				var child1_1 = new PersistableItem { Parent = child1 };
 				child1_1["parent"] = child1_1;
 				persister.Save(child1_1);
 
-				var child2 = new PersistableItem1 { Parent = parent };
+				var child2 = new PersistableItem { Parent = parent };
 				child2["sibling"] = child1;
 				persister.Save(child2);
 
-				var child2_1 = new PersistableItem1 { Parent = child2 };
+				var child2_1 = new PersistableItem { Parent = child2 };
 				child2_1["cousin"] = child1_1;
 				persister.Save(child2_1);
 
@@ -131,43 +131,43 @@ namespace N2.Tests.Persistence
 		{
 			for (int i = 0; i < 1; i++)
 			{
-				var parent = new PersistableItem1();
+				var parent = new PersistableItem();
 				persister.Save(parent);
 
 				persister.Dispose();
-				parent = persister.Get<PersistableItem1>(parent.ID);
+				parent = persister.Get<PersistableItem>(parent.ID);
 
-				var child1 = new PersistableItem1 { Parent = parent };
+				var child1 = new PersistableItem { Parent = parent };
 				child1["parent"] = parent;
 				persister.Save(child1);
 
-				var child1_1 = new PersistableItem1 { Parent = child1 };
+				var child1_1 = new PersistableItem { Parent = child1 };
 				child1_1["parent"] = child1_1;
 				persister.Save(child1_1);
 
 				persister.Dispose();
 
-				parent = persister.Get<PersistableItem1>(parent.ID);
-				child1 = persister.Get<PersistableItem1>(child1.ID);
-				child1_1 = persister.Get<PersistableItem1>(child1_1.ID);
+				parent = persister.Get<PersistableItem>(parent.ID);
+				child1 = persister.Get<PersistableItem>(child1.ID);
+				child1_1 = persister.Get<PersistableItem>(child1_1.ID);
 
-				var child2 = new PersistableItem1 { Parent = parent };
+				var child2 = new PersistableItem { Parent = parent };
 				child2.ZoneName = "TheZone";
 				child2["sibling"] = child1;
 				persister.Save(child2);
 
-				var child2_1 = new PersistableItem1 { Parent = child2 };
+				var child2_1 = new PersistableItem { Parent = child2 };
 				child2_1.ZoneName = "TheZone";
 				child2_1["cousin"] = child1_1;
 				persister.Save(child2_1);
 
 				persister.Dispose();
 
-				parent = persister.Get<PersistableItem1>(parent.ID);
-				child1 = persister.Get<PersistableItem1>(child1.ID);
-				child1_1 = persister.Get<PersistableItem1>(child1_1.ID);
-				child2 = persister.Get<PersistableItem1>(child2.ID);
-				child2_1 = persister.Get<PersistableItem1>(child2_1.ID);
+				parent = persister.Get<PersistableItem>(parent.ID);
+				child1 = persister.Get<PersistableItem>(child1.ID);
+				child1_1 = persister.Get<PersistableItem>(child1_1.ID);
+				child2 = persister.Get<PersistableItem>(child2.ID);
+				child2_1 = persister.Get<PersistableItem>(child2_1.ID);
 
 				child1["child"] = child1_1;
 				child1["sibling"] = child2;

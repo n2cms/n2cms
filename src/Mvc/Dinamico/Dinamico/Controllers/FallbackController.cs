@@ -10,7 +10,7 @@ using N2.Web.Mvc;
 namespace Dinamico.Controllers
 {
 	[Controls(typeof(PageModelBase))]
-    public class FallbackController : ContentController
-    {
-    }
+	public class FallbackController : ContentController
+	{
+	}
 }

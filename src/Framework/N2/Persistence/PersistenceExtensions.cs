@@ -64,6 +64,12 @@ namespace N2.Persistence
 			}
 		}
 
+		[Obsolete("Use SaveOrUpdate(ContentItem)")]
+		public static void Save(this IRepository<ContentItem> repository, ContentItem entity)
+		{
+			repository.SaveOrUpdate(entity);
+		}
+
 		/// <summary>
 		/// Register te entity for save or update in the database when the unit of work
 		/// is completed. (INSERT or UPDATE)

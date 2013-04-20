@@ -15,13 +15,13 @@ namespace N2.Tests.Persistence.NH
 	{
 		ContentItemRepository repository;
 		new ISessionProvider sessionProvider;
-		private PersistableItem1 root;
-		private PersistableItem1 child1;
-		private PersistableItem1 grandchild1;
-		private PersistableItem1 child2;
-		private PersistablePart1 part1;
-		private PersistablePart1 part2;
-		private PersistableItem1 version;
+		private PersistableItem root;
+		private PersistableItem child1;
+		private PersistableItem grandchild1;
+		private PersistableItem child2;
+		private PersistablePart part1;
+		private PersistablePart part2;
+		private PersistableItem version;
 		private ContentItem[] all;
 
 		[SetUp]
@@ -35,17 +35,18 @@ namespace N2.Tests.Persistence.NH
 
 			all = new ContentItem []
 			{
-				root = CreateOneItem<Definitions.PersistableItem1>(0, "page", null),
-				child1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1", root),
-				grandchild1 = CreateOneItem<Definitions.PersistableItem1>(0, "page1_1", child1),
-				part1 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
-				part2 = CreateOneItem<Definitions.PersistablePart1>(0, "part1", child1),
-				child2 = CreateOneItem<Definitions.PersistableItem1>(0, "page2", root),
-				version = CreateOneItem<Definitions.PersistableItem1>(0, "page1", null)
+				root = CreateOneItem<Definitions.PersistableItem>(0, "page", null),
+				child1 = CreateOneItem<Definitions.PersistableItem>(0, "page1", root),
+				grandchild1 = CreateOneItem<Definitions.PersistableItem>(0, "page1_1", child1),
+				part1 = CreateOneItem<Definitions.PersistablePart>(0, "part1", child1),
+				part2 = CreateOneItem<Definitions.PersistablePart>(0, "part1", child1),
+				child2 = CreateOneItem<Definitions.PersistableItem>(0, "page2", root),
+				version = CreateOneItem<Definitions.PersistableItem>(0, "page1", null)
 			};
 			part1.ZoneName = "Left";
 			part2.ZoneName = "RecursiveLeft";
 			child1["Hello"] = "World";
+			child2["Age"] = 2.7;
 			grandchild1["Age"] = 1.7;
 
 			version.VersionOf = child1;
@@ -215,6 +216,43 @@ namespace N2.Tests.Persistence.NH
 			var results = repository.Find(Parameter.LessThan("Age", 2.0).Detail());
 
 			results.Single().ShouldBe(grandchild1);
+		}
+
+		[Test]
+		public void Find_In()
+		{
+			var results = repository.Find(Parameter.In("ID", child1.ID, child2.ID)).ToList();
+
+			results.Count.ShouldBe(2);
+			results.ShouldContain(child1);
+			results.ShouldContain(child2);
+		}
+
+		[Test]
+		public void Find_NotIn()
+		{
+			var results = repository.Find(Parameter.NotIn("ID", child1.ID, child2.ID)).ToList();
+
+			results.Count.ShouldBe(all.Length - 2);
+			results.ShouldNotContain(child1);
+			results.ShouldNotContain(child2);
+		}
+
+		[Test]
+		public void Find_DetailIn()
+		{
+			var results = repository.Find(Parameter.In("Hello", "World", "Universe").Detail()).ToList();
+
+			results.Count.ShouldBe(1);
+			results.ShouldContain(child1);
+		}
+
+		[Test]
+		public void Find_DetailNotIn()
+		{
+			var results = repository.Find(Parameter.NotIn("Age", 1.7, 1.9, 2.1).Detail()).ToList();
+
+			results.Single().ShouldBe(child2); // other items are excluded since they don't have a detail named "Hello", might be unexpected though
 		}
 
 		[Test]

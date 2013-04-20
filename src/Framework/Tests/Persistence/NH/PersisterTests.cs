@@ -14,8 +14,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void VersionOf_MayBeAccessed()
 		{
-			var item = CreateOneItem<Definitions.PersistableItem1>(0, "item1", null);
-			var item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", null);
+			var item = CreateOneItem<Definitions.PersistableItem>(0, "item1", null);
+			var item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", null);
 			persister.Save(item);
 			item2.VersionOf = item;
 			persister.Save(item2);
@@ -29,7 +29,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Save_AssignsID()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "saveableRoot", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "saveableRoot", null);
 			persister.Save(item);
 			Assert.AreNotEqual(0, item.ID);
 		}
@@ -37,7 +37,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Properties_ArePersisted()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "anitem", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "anitem", null);
 			var props = typeof(ContentItem).GetProperties()
 				.Where(p => p.CanWrite)
 				.Where(p => GetExpectedValue(p.PropertyType) != null)
@@ -93,8 +93,8 @@ namespace N2.Tests.Persistence.NH
 		[Test, Ignore]
 		public void Get_Children_AreEagerlyFetched()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "gettableChild", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem>(0, "gettableChild", item);
 			using (persister)
 			{
 				persister.Save(item);
@@ -109,7 +109,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void SavingItemWithEmptyName_NameIsSetToNull()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "", null);
 
 			persister.Save(item);
 
@@ -119,7 +119,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanUpdate()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "updatableRoot", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "updatableRoot", null);
 
 			using (persister)
 			{
@@ -139,7 +139,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanDelete()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 
 			using (persister)
 			{
@@ -156,9 +156,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanMove()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
 
 			using (persister)
 			{
@@ -191,9 +191,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Copy_ShouldCreate_CopyOfCopiedItem()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
 
 			using (persister)
 			{
@@ -228,11 +228,11 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Copy_OfDeepHierarchy_ShouldCopyDescendants()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
-			ContentItem item3 = CreateOneItem<Definitions.PersistableItem1>(0, "item3", item2);
-			ContentItem item4 = CreateOneItem<Definitions.PersistableItem1>(0, "item4", item3);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", item1);
+			ContentItem item3 = CreateOneItem<Definitions.PersistableItem>(0, "item3", item2);
+			ContentItem item4 = CreateOneItem<Definitions.PersistableItem>(0, "item4", item3);
 			ContentItem copy = null;
 
 			using (persister)
@@ -265,9 +265,9 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Copy_IgnoringChildren_DoesntCopyChildren()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", item1);
 			ContentItem copy = null;
 
 			using (persister)
@@ -297,7 +297,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanChange_SaveAction()
 		{
-			ContentItem itemToSave = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem itemToSave = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 
 			using (persister)
 			{
@@ -317,7 +317,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanChange_DeleteAction()
 		{
-			ContentItem itemToDelete = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem itemToDelete = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 
 			using (persister)
 			{
@@ -337,8 +337,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanChange_MoveAction()
 		{
-			ContentItem source = CreateOneItem<Definitions.PersistableItem1>(0, "source", null);
-			ContentItem destination = CreateOneItem<Definitions.PersistableItem1>(0, "destination", null);
+			ContentItem source = CreateOneItem<Definitions.PersistableItem>(0, "source", null);
+			ContentItem destination = CreateOneItem<Definitions.PersistableItem>(0, "destination", null);
 
 			using (persister)
 			{
@@ -365,14 +365,14 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanChange_CopyAction()
 		{
-			ContentItem source = CreateOneItem<Definitions.PersistableItem1>(0, "source", null);
-			ContentItem destination = CreateOneItem<Definitions.PersistableItem1>(0, "destination", null);
+			ContentItem source = CreateOneItem<Definitions.PersistableItem>(0, "source", null);
+			ContentItem destination = CreateOneItem<Definitions.PersistableItem>(0, "destination", null);
 
 			using (persister)
 			{
 				ContentItem invokedFrom = null;
 				ContentItem invokedTo = null;
-				ContentItem copyToReturn = CreateOneItem<Definitions.PersistableItem1>(0, "copied", null);
+				ContentItem copyToReturn = CreateOneItem<Definitions.PersistableItem>(0, "copied", null);
 				EventHandler<CancellableDestinationEventArgs> handler = delegate(object sender, CancellableDestinationEventArgs e)
 				{
 					e.FinalAction = delegate(ContentItem from, ContentItem to)
@@ -395,8 +395,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSave_Guid()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 fromDB = null;
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem fromDB = null;
 
 			item.GuidProperty = Guid.NewGuid();
 			using (persister)
@@ -404,7 +404,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item);
 			}
 
-			fromDB = persister.Get<PersistableItem1>(item.ID);
+			fromDB = persister.Get<PersistableItem>(item.ID);
 
 			Assert.That(fromDB.GuidProperty, Is.EqualTo(item.GuidProperty));
 		}
@@ -412,8 +412,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSave_ReadOnlyGuid()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 fromDB = null;
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem fromDB = null;
 			string guid = item.ReadOnlyGuid;
 
 			using (persister)
@@ -421,7 +421,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item);
 			}
 
-			fromDB = persister.Get<PersistableItem1>(item.ID);
+			fromDB = persister.Get<PersistableItem>(item.ID);
 
 			Assert.That(fromDB.ReadOnlyGuid, Is.EqualTo(guid));
 		}
@@ -429,8 +429,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSave_WritableGuid()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
-			PersistableItem1 fromDB = null;
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "root", null);
+			PersistableItem fromDB = null;
 
 			string guid = item.WritableGuid;
 			item.WritableGuid = guid;
@@ -439,7 +439,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(item);
 			}
 
-			fromDB = persister.Get<PersistableItem1>(item.ID);
+			fromDB = persister.Get<PersistableItem>(item.ID);
 
 			Assert.That(fromDB.WritableGuid, Is.EqualTo(guid));
 		}
@@ -447,11 +447,11 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Laziness()
 		{
-			ContentItem root = CreateOneItem<PersistableItem1>(0, "root", null);
-			ContentItem root2 = CreateOneItem<PersistableItem1>(0, "root2", null);
+			ContentItem root = CreateOneItem<PersistableItem>(0, "root", null);
+			ContentItem root2 = CreateOneItem<PersistableItem>(0, "root2", null);
 			for (int i = 0; i < 30; i++)
 			{
-				PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", root);
+				PersistableItem item = CreateOneItem<PersistableItem>(0, "item", root);
 			}
 			using (persister)
 			{
@@ -476,14 +476,14 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void Save_CausesSortOrder_ToBeUpdated()
 		{
-			ContentItem parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
+			ContentItem parent = CreateOneItem<Definitions.PersistableItem>(0, "parent", null);
 			persister.Save(parent);
 
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "child1", parent);
 			persister.Save(child1);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "child2", parent);
 			persister.Save(child2);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "child3", parent);
 			persister.Save(child3);
 
 			Assert.That(child1.SortOrder, Is.LessThan(child2.SortOrder));
@@ -514,11 +514,11 @@ namespace N2.Tests.Persistence.NH
 			ContentItem parent = CreateOneItem<Definitions.PersistableItem2>(0, "parent", null);
 			persister.Save(parent);
 
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "child1", parent);
 			persister.Save(child1);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "child2", parent);
 			persister.Save(child2);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "child3", parent);
 			persister.Save(child3);
 
 			Assert.That(child1.SortOrder, Is.GreaterThan(child2.SortOrder));
@@ -529,10 +529,10 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_CanBePaged(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -572,12 +572,12 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_CanBe_FoundByZone(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
 			child1.ZoneName = "First";
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.ZoneName = "Second";
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -610,12 +610,12 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void ZoneNames_CanBeFound(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
 			child1.ZoneName = "TheZone";
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.ZoneName = "TheZone";
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -642,9 +642,9 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void FindPages_ReturnsPages_NotInZone(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
@@ -670,9 +670,9 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void FindNavigatablePages_ReturnsPages_NotInZone(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
@@ -697,9 +697,9 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void FindNavigatablePages_ReturnsPages_ThatAreVisible(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child1.Visible = false;
 			using (persister)
 			{
@@ -724,9 +724,9 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void FindNavigatablePages_ReturnsPages_ThatArePublished(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.Expires = DateTime.Now.AddSeconds(-10);
 			child2.State = ContentState.Unpublished;
 			using (persister)
@@ -752,9 +752,9 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_WhichAreParts_CanBeFound(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
 			child2.ZoneName = "Zone";
 			using (persister)
 			{
@@ -780,10 +780,10 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_CanBe_FoundByName(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -818,10 +818,10 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_CanBeQueried(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -853,10 +853,10 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_Find(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -888,10 +888,10 @@ namespace N2.Tests.Persistence.NH
 		[TestCase(false)]
 		public void Children_Select(bool forceInitialize)
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
-			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
-			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem>(0, "three", item);
 			using (persister)
 			{
 				persister.Repository.SaveOrUpdate(item, child1, child2, child3);
@@ -923,10 +923,10 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void AddSingleChild()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
 			persister.Save(item);
 
-			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
 
 			new N2.Definitions.SortChildrenAttribute(N2.Definitions.SortBy.CurrentOrder).OnSavingChild(new N2.Persistence.Behaviors.BehaviorContext { Action = "Saving", AffectedItem = child1, Parent = item });
 

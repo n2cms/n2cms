@@ -41,7 +41,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void SaveVersion()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			ContentItem version = versioner.AddVersion(item);
 
@@ -53,7 +53,7 @@ namespace N2.Tests.Edit.Versioning
 		{
             string key = "TheKey";
 
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			item[key] = 1;
 			persister.Save(item);
 			ContentItem version = versioner.AddVersion(item);
@@ -71,7 +71,7 @@ namespace N2.Tests.Edit.Versioning
 		{
             string key = "TheKey";
 
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			item[key] = 1;
 			persister.Save(item);
 			ContentItem version = versioner.AddVersion(item);
@@ -87,7 +87,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void GetVersions_DisplaysVersions_InInverseVersionIndexOrder()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
 			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
 			{
 				persister.Save(item);
@@ -107,7 +107,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void GetVersions_IncludesPublishedVersion_WhenItsTheOnlyVersion()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
 			persister.Save(item);
 
 			var versions = versioner.GetVersionsOf(item);
@@ -118,7 +118,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void CanGet_LatestVersion_Only()
 		{
-			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
 			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
 			{
 				persister.Save(item);
@@ -137,7 +137,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void CanTrim_NumberOfVersions()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			versioner.AddVersion(item);
 			versioner.AddVersion(item);
@@ -151,7 +151,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void CanTrim_NumberOfVersions_FromLargeNumberOfVersions()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			for (int i = 0; i < 25; i++)
 			{
@@ -167,7 +167,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void CannotRemove_PublishedVersion()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			ContentItem version = versioner.AddVersion(item);
 			version.Updated = DateTime.Now.AddSeconds(10);
@@ -186,7 +186,7 @@ namespace N2.Tests.Edit.Versioning
         [Test]
         public void Index_IsZero_OnSavedItem()
         {
-            ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+            ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
             persister.Save(item);
 
             Assert.That(item.VersionIndex, Is.EqualTo(0));
@@ -195,7 +195,7 @@ namespace N2.Tests.Edit.Versioning
         [Test]
         public void SaveVersion_Updates_CurrentVersionIndex()
         {
-            ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+            ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
             persister.Save(item);
 
             var version = versioner.AddVersion(item);
@@ -207,13 +207,13 @@ namespace N2.Tests.Edit.Versioning
         [Test]
         public void VersionIndex_IsNotCarriedOn_WhenReplacingVersion()
         {
-            ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+            ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
             persister.Save(item);
 
             var version = versioner.AddVersion(item);
             persister.Save(item);
 
-            versioner.ReplaceVersion(item, CreateOneItem<PersistableItem1>(0, "root2", null));
+            versioner.ReplaceVersion(item, CreateOneItem<PersistableItem>(0, "root2", null));
 
             Assert.That(item.VersionIndex, Is.EqualTo(2));
 		}
@@ -224,7 +224,7 @@ namespace N2.Tests.Edit.Versioning
 			ContentItem item, version;
 			using (persister)
 			{
-				item = CreateOneItem<PersistableItem1>(0, "root", null);
+				item = CreateOneItem<PersistableItem>(0, "root", null);
 				persister.Save(item);
 
 				version = versioner.AddVersion(item);
@@ -245,10 +245,10 @@ namespace N2.Tests.Edit.Versioning
 			ContentItem item, referenced, version;
 			using (persister)
 			{
-				referenced = CreateOneItem<PersistableItem1>(0, "reference", null);
+				referenced = CreateOneItem<PersistableItem>(0, "reference", null);
 				persister.Save(referenced);
 
-				item = CreateOneItem<PersistableItem1>(0, "root", null);
+				item = CreateOneItem<PersistableItem>(0, "root", null);
 				item["Reference"] = referenced;
 				persister.Save(item);
 
@@ -269,28 +269,28 @@ namespace N2.Tests.Edit.Versioning
 		public void DetailCollection_MovesToNextVersion_WhenReplacing()
 		{
 			// Create item to link in original version
-			PersistableItem1 link1 = CreateOneItem<PersistableItem1>(0, "link1", null);
+			PersistableItem link1 = CreateOneItem<PersistableItem>(0, "link1", null);
 			persister.Save(link1);
 
 			// Create item to link in new version
-			PersistableItem1 link2 = CreateOneItem<PersistableItem1>(0, "link2", null);
+			PersistableItem link2 = CreateOneItem<PersistableItem>(0, "link2", null);
 			persister.Save(link2);
 
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			master.ContentLinks = new[] { link1 };
 			persister.Save(master);
 
-			PersistableItem1 version1 = (PersistableItem1) versioner.AddVersion(master);
+			PersistableItem version1 = (PersistableItem) versioner.AddVersion(master);
 			
 			master.ContentLinks = new[] { link2 };
 			persister.Save(master);
 
 			var version2 = versioner.ReplaceVersion(master, version1);
 
-			PersistableItem1 restoredItem = (PersistableItem1) persister.Get(master.ID);
+			PersistableItem restoredItem = (PersistableItem) persister.Get(master.ID);
 			CollectionAssert.AreEqual(new[] { link1 }, restoredItem.ContentLinks);
 
-			PersistableItem1 versionItem = (PersistableItem1)versioner.GetVersion(master, version2.VersionIndex);
+			PersistableItem versionItem = (PersistableItem)versioner.GetVersion(master, version2.VersionIndex);
 			// persister.Get(version2.ID);
 			CollectionAssert.AreEqual(new[] { link2 }, versionItem.ContentLinks);
 
@@ -299,7 +299,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void CreatingVersion_IncreasesVersionIndex()
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(master);
 
 			var version1 = versioner.AddVersion(master);
@@ -311,7 +311,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void ReplacingVersions_IncreasesVersionIndex()
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(master);
 
 			var version1 = versioner.AddVersion(master);
@@ -326,7 +326,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void SavingVersion_CanGiveNewVersion_GreaterIndex()
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(master);
 
 			var version1 = versioner.AddVersion(master, asPreviousVersion: false);
@@ -338,7 +338,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void Replacing_MasterVersion_WithDraft_RemovesDraftVersion()
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			master.State = ContentState.Published;
 			persister.Save(master);
 
@@ -357,7 +357,7 @@ namespace N2.Tests.Edit.Versioning
 		[TestCase(false, ContentState.Draft)]
 		public void AddingVersion_OfPublishedItem_SetsStateOfVersion_AccordingTo_PreviousOrNot(bool isPrevious, ContentState expectedState)
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			master.State = ContentState.Published;
 			persister.Save(master);
 
@@ -370,7 +370,7 @@ namespace N2.Tests.Edit.Versioning
 		[TestCase(false, ContentState.Draft)]
 		public void AddingVersion_OfUnpublishedItem_SetsStateOfVersion_AccordingTo_PreviousOrNot(bool isPrevious, ContentState expectedState)
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			master.State = ContentState.Unpublished;
 			persister.Save(master);
 
@@ -383,7 +383,7 @@ namespace N2.Tests.Edit.Versioning
 		[TestCase(false)]
 		public void AddingVersion_OfDraftItem_SetsStateToDraft(bool isPrevious)
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			master.State = ContentState.Draft;
 			persister.Save(master);
 
@@ -395,7 +395,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void GetGreatestVersionIndex_WhenNoVersions()
 		{
-			PersistableItem1 master = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem master = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(master);
 
 			versioner.Repository.GetGreatestVersionIndex(master).ShouldBe(0);
@@ -404,9 +404,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void SavingVersion_IncludesParts()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
@@ -420,9 +420,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void IncludedParts_InheritStateFromPage()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			persister.Save(part);
 
@@ -436,11 +436,11 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_CreatesNewPart()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
 
 			var draft = versioner.AddVersion(root, asPreviousVersion: false);
-			var part = new PersistablePart1 { Title = "part", Name = "part" };
+			var part = new PersistablePart { Title = "part", Name = "part" };
 			part.ZoneName = "TheZone";
 			part.AddTo(draft);
 
@@ -457,14 +457,14 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_CreatesNewParts_WithHierarchy()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
 
 			var draft = versioner.AddVersion(root, asPreviousVersion: false);
-			var part = CreateOneItem<PersistablePart1>(0, "part", draft);
+			var part = CreateOneItem<PersistablePart>(0, "part", draft);
 			part.ZoneName = "TheZone";
 			part.AddTo(draft);
-			var part2 = CreateOneItem<PersistablePart1>(0, "part2", part);
+			var part2 = CreateOneItem<PersistablePart>(0, "part2", part);
 			part2.ZoneName = "TheZone";
 			part2.AddTo(part);
 
@@ -480,15 +480,15 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_CreatesNewParts_BelowExistingParts()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
 
 			var draft = versioner.AddVersion(root, asPreviousVersion: false);
-			var draftPart = CreateOneItem<PersistablePart1>(0, "new part", null);
+			var draftPart = CreateOneItem<PersistablePart>(0, "new part", null);
 			draftPart.ZoneName = "TheZone";
 			draftPart.AddTo(draft.Children.Single());
 
@@ -504,9 +504,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_RemovesRemovedParts()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
@@ -523,13 +523,13 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_RemovesRemovedParts_InHierarchy()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
-			var part2 = CreateOneItem<PersistablePart1>(0, "part", part);
+			var part2 = CreateOneItem<PersistablePart>(0, "part", part);
 			part2.ZoneName = "TheZone";
 			part2.AddTo(part);
 			persister.Save(part2);
@@ -547,9 +547,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_UpdatesParts()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
@@ -565,13 +565,13 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_Updates_DescendantParts()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
-			var part2 = CreateOneItem<PersistablePart1>(0, "part2", part);
+			var part2 = CreateOneItem<PersistablePart>(0, "part2", part);
 			part2.ZoneName = "TheZone";
 			part2.AddTo(part);
 			persister.Save(part2);
@@ -587,9 +587,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_ZoneName_And_SortOrder_IsUpdatedFromDraft()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.SortOrder = 333;
 			part.AddTo(root);
@@ -610,19 +610,19 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PublishingDraft_PuttingItAllTogether()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part1 = CreateOneItem<PersistablePart1>(0, "part1", root);
+			var part1 = CreateOneItem<PersistablePart>(0, "part1", root);
 			part1.ZoneName = "TheZone";
 			part1.SortOrder = 333;
 			part1.AddTo(root);
 			persister.Save(part1);
-			var part1_1 = CreateOneItem<PersistablePart1>(0, "part1_1", part1);
+			var part1_1 = CreateOneItem<PersistablePart>(0, "part1_1", part1);
 			part1_1.ZoneName = "TheZone";
 			part1_1.SortOrder = 333;
 			part1_1.AddTo(part1);
 			persister.Save(part1_1);
-			var part2 = CreateOneItem<PersistablePart1>(0, "part2", root);
+			var part2 = CreateOneItem<PersistablePart>(0, "part2", root);
 			part2.ZoneName = "TheZone";
 			part2.SortOrder = 333;
 			part2.AddTo(root);
@@ -641,15 +641,15 @@ namespace N2.Tests.Edit.Versioning
 			versionOfPart2.SortOrder = 666;
 			versionOfPart2.ZoneName = "TheOtherZone";
 			// add new1
-			var new1 = CreateOneItem<PersistablePart1>(0, "new1", null);
+			var new1 = CreateOneItem<PersistablePart>(0, "new1", null);
 			new1.ZoneName = "TheZone";
 			new1.AddTo(draft);
 			// add new2 below new1
-			var new1_1 = CreateOneItem<PersistablePart1>(0, "new1_1", null);
+			var new1_1 = CreateOneItem<PersistablePart>(0, "new1_1", null);
 			new1_1.ZoneName = "TheZone";
 			new1_1.AddTo(draft.Children.Single(c => c.Name == "new1"));
 			// add new2 below part2
-			var new2 = CreateOneItem<PersistablePart1>(0, "new2", null);
+			var new2 = CreateOneItem<PersistablePart>(0, "new2", null);
 			new2.ZoneName = "TheZone";
 			new2.AddTo(draft.Children["part2"]);
 			//	root
@@ -680,9 +680,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void AddingVersionOfPart_AddsVersionOfPage_AndReturnsPart()
 		{
-			PersistableItem1 root = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			persister.Save(part);
@@ -698,24 +698,24 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PersistableProperties_AreCarriedAlong_WhenReplacingVersions()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			root.PersistableProperty = "Hello world";
 			persister.Save(root);
 
 			var draft = versioner.AddVersion(root, asPreviousVersion: false);
 
-			var restoredMaster = (PersistableItem1)versioner.ReplaceVersion(root, draft);
+			var restoredMaster = (PersistableItem)versioner.ReplaceVersion(root, draft);
 			restoredMaster.PersistableProperty.ShouldBe("Hello world");
 		}
 
 		[Test]
 		public void ChangesTo_PersistableProperties_AreCarriedOn_FromVersion()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			root.PersistableProperty = "Hello world";
 			persister.Save(root);
 
-			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
+			var draft = (PersistableItem)versioner.AddVersion(root, asPreviousVersion: false);
 			draft.PersistableProperty = "Herro!";
 
 			versioner.ReplaceVersion(root, draft);
@@ -725,9 +725,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void PersistableProperties_OnParts_AreCarriedAlong_WhenReplacingVersions()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			part.PersistableProperty = "Hello world";
@@ -742,16 +742,16 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void ChangesTo_PersistableProperties_OnParts_AreCarriedOn_FromVersion()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			part.PersistableProperty = "Hello world";
 			persister.Save(part);
 
-			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
-			draft.Children.OfType<PersistablePart1>().Single().PersistableProperty = "Herro!";
+			var draft = (PersistableItem)versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.OfType<PersistablePart>().Single().PersistableProperty = "Herro!";
 
 			versioner.ReplaceVersion(root, draft);
 			part["PersistableProperty"].ShouldBe("Herro!");
@@ -760,16 +760,16 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void ReplaceVersion_MaintainsPartState()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", root);
 			part.ZoneName = "TheZone";
 			part.AddTo(root);
 			part["Greeting"] = "Hello";
 			persister.Save(part);
 
-			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
-			draft.Children.OfType<PersistablePart1>().Single()["Greeting"] = "Herro!";
+			var draft = (PersistableItem)versioner.AddVersion(root, asPreviousVersion: false);
+			draft.Children.OfType<PersistablePart>().Single()["Greeting"] = "Herro!";
 
 			versioner.ReplaceVersion(root, draft);
 			part.State.ShouldBe(ContentState.Published);
@@ -778,15 +778,15 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void NewParts_ArePublished()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(root);
 			
-			var draft = (PersistableItem1)versioner.AddVersion(root, asPreviousVersion: false);
+			var draft = (PersistableItem)versioner.AddVersion(root, asPreviousVersion: false);
 
-			var part = CreateOneItem<PersistablePart1>(0, "part", draft);
+			var part = CreateOneItem<PersistablePart>(0, "part", draft);
 			part.ZoneName = "TheZone";
 
-			var part2 = CreateOneItem<PersistablePart1>(0, "part2", part);
+			var part2 = CreateOneItem<PersistablePart>(0, "part2", part);
 			part2.ZoneName = "TheZone";
 
 			versioner.ReplaceVersion(root, draft);
@@ -798,7 +798,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void DeleteVersion()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			versioner.AddVersion(item);
 
@@ -810,7 +810,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void DeleteVersions()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			versioner.AddVersion(item);
 			versioner.AddVersion(item);
@@ -826,7 +826,7 @@ namespace N2.Tests.Edit.Versioning
 		{
 			engine.Resolve<ContentVersionCleanup>().Start();
 
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			versioner.AddVersion(item);
 			versioner.Repository.GetVersions(item).Count().ShouldBe(1);
@@ -838,7 +838,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void SelfLinks_AreStraightened()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 
 			var version = versioner.AddVersion(item);
@@ -852,7 +852,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void SelfLinks_InCollections_AreStraightened()
 		{
-			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 
 			var version = versioner.AddVersion(item);
@@ -866,7 +866,7 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void ProxiedDetail_IsCarriedOn_ToMasterVersion_WhenPublishinig()
 		{
-			var item = CreateOneItem<PersistableItem1>(0, "root", null);
+			var item = CreateOneItem<PersistableItem>(0, "root", null);
 
 			using (persister)
 			{
@@ -874,11 +874,11 @@ namespace N2.Tests.Edit.Versioning
 				persister.Save(item);
 			}
 
-			PersistableItem1 version;
+			PersistableItem version;
 			using (persister)
 			{
-				item = persister.Get<PersistableItem1>(item.ID);
-				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
+				item = persister.Get<PersistableItem>(item.ID);
+				version = (PersistableItem)versioner.AddVersion(item, asPreviousVersion: false);
 
 				version.StringList.Add("three");
 				versioner.UpdateVersion(version);
@@ -888,23 +888,23 @@ namespace N2.Tests.Edit.Versioning
 
 			using (persister)
 			{
-				item = persister.Get<PersistableItem1>(item.ID);
-				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				item = persister.Get<PersistableItem>(item.ID);
+				version = (PersistableItem)versioner.GetVersion(item, version.VersionIndex);
 				versioner.ReplaceVersion(item, version, storeCurrentVersion: false);
 
 				item.StringList.Count.ShouldBe(3);
 				persister.Save(item);
 			}
 
-			item = persister.Get<PersistableItem1>(item.ID);
+			item = persister.Get<PersistableItem>(item.ID);
 			item.StringList.Count.ShouldBe(3);
 		}
 
 		[Test]
 		public void ProxiedDetail_OnPart_IsCarriedOn_ToMasterVersion_WhenPublishinig()
 		{
-			var page = CreateOneItem<PersistableItem1>(0, "root", null);
-			var part = CreateOneItem<PersistablePart1>(0, "part", page);
+			var page = CreateOneItem<PersistableItem>(0, "root", null);
+			var part = CreateOneItem<PersistablePart>(0, "part", page);
 
 			// create initial state
 			using (persister)
@@ -916,17 +916,17 @@ namespace N2.Tests.Edit.Versioning
 			}
 
 			// creae and modify a version
-			PersistableItem1 version;
-			PersistablePart1 partVersion;
+			PersistableItem version;
+			PersistablePart partVersion;
 			using (persister)
 			{
-				page = persister.Get<PersistableItem1>(page.ID);
-				part = (PersistablePart1)page.Children[0];
+				page = persister.Get<PersistableItem>(page.ID);
+				part = (PersistablePart)page.Children[0];
 				part.StringList.Count.ShouldBe(2);
 				((List<string>)part.Details["StringList"].Value).Count.ShouldBe(2);
 				
-				version = (PersistableItem1)versioner.AddVersion(page);
-				partVersion = (PersistablePart1)version.Children[0];
+				version = (PersistableItem)versioner.AddVersion(page);
+				partVersion = (PersistablePart)version.Children[0];
 
 				partVersion.StringList.Add("three");
 				versioner.UpdateVersion(version);
@@ -939,36 +939,36 @@ namespace N2.Tests.Edit.Versioning
 			// publish the version
 			using (persister)
 			{
-				page = persister.Get<PersistableItem1>(page.ID);
-				part = (PersistablePart1)page.Children[0];
+				page = persister.Get<PersistableItem>(page.ID);
+				part = (PersistablePart)page.Children[0];
 
-				version = (PersistableItem1)versioner.GetVersion(page, version.VersionIndex);
-				partVersion = (PersistablePart1)version.Children[0];
+				version = (PersistableItem)versioner.GetVersion(page, version.VersionIndex);
+				partVersion = (PersistablePart)version.Children[0];
 				versioner.ReplaceVersion(page, version, storeCurrentVersion: true);
 
 				part.StringList.Count.ShouldBe(3);
 			}
 
-			page = persister.Get<PersistableItem1>(page.ID);
-			part = (PersistablePart1)page.Children[0];
+			page = persister.Get<PersistableItem>(page.ID);
+			part = (PersistablePart)page.Children[0];
 			part.StringList.Count.ShouldBe(3);
 		}
 
 		[Test]
 		public void CloneForVersioningRecursive_AlsoClones_CertainReferenceTypes()
 		{
-			var page = CreateOneItem<PersistableItem1>(0, "root", null);
+			var page = CreateOneItem<PersistableItem>(0, "root", null);
 			page.StringList = new List<string> { "1", "2" };
 
-			var clone = (PersistableItem1)page.CloneForVersioningRecursive();
+			var clone = (PersistableItem)page.CloneForVersioningRecursive();
 			object.ReferenceEquals(clone.StringList, page.StringList).ShouldBe(false);
 		}
 
 		[Test]
 		public void Links_AreMaintained_WhenCreatinVersions()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
-			var item = CreateOneItem<PersistableItem1>(0, "item", root);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
+			var item = CreateOneItem<PersistableItem>(0, "item", root);
 			item.EditableLink = root;
 			using (persister)
 			{
@@ -976,17 +976,17 @@ namespace N2.Tests.Edit.Versioning
 				persister.Save(item);
 			}
 
-			PersistableItem1 version;
+			PersistableItem version;
 			using (persister)
 			{
-				item = persister.Get<PersistableItem1>(item.ID);
-				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
+				item = persister.Get<PersistableItem>(item.ID);
+				version = (PersistableItem)versioner.AddVersion(item, asPreviousVersion: false);
 				version.EditableLink.ShouldBe(root);
 			}
 
 			using (persister)
 			{
-				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				version = (PersistableItem)versioner.GetVersion(item, version.VersionIndex);
 				version.EditableLink.ShouldBe(root);
 			}
 		}
@@ -994,9 +994,9 @@ namespace N2.Tests.Edit.Versioning
 		[Test]
 		public void Links_AreMaintained_OnParts_WhenCreatingVersions()
 		{
-			var root = CreateOneItem<PersistableItem1>(0, "root", null);
-			var item = CreateOneItem<PersistableItem1>(0, "item", root);
-			var part = CreateOneItem<PersistablePart1>(0, "part", item);
+			var root = CreateOneItem<PersistableItem>(0, "root", null);
+			var item = CreateOneItem<PersistableItem>(0, "item", root);
+			var part = CreateOneItem<PersistablePart>(0, "part", item);
 			part.EditableLink = root;
 			
 			using (persister)
@@ -1006,20 +1006,20 @@ namespace N2.Tests.Edit.Versioning
 				persister.Save(part);
 			}
 
-			PersistableItem1 version;
+			PersistableItem version;
 			using (persister)
 			{
-				item = persister.Get<PersistableItem1>(item.ID);
-				version = (PersistableItem1)versioner.AddVersion(item, asPreviousVersion: false);
-				((PersistablePart1)version.Children[0]).EditableLink.ShouldBe(root);
+				item = persister.Get<PersistableItem>(item.ID);
+				version = (PersistableItem)versioner.AddVersion(item, asPreviousVersion: false);
+				((PersistablePart)version.Children[0]).EditableLink.ShouldBe(root);
 			}
 
 			using (persister)
 			{
-				version = (PersistableItem1)versioner.GetVersion(item, version.VersionIndex);
+				version = (PersistableItem)versioner.GetVersion(item, version.VersionIndex);
 				versioner.Publish(persister, version);
 
-				((PersistablePart1)persister.Get(part.ID)).EditableLink.ShouldBe(root);
+				((PersistablePart)persister.Get(part.ID)).EditableLink.ShouldBe(root);
 			}
 		}
 

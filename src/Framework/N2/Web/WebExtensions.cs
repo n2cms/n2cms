@@ -98,7 +98,7 @@ namespace N2.Web
         {
             using (var sw = new StringWriter())
             {
-                value.ToJson(sw);
+				ToJson(value, sw);
                 return sw.ToString();
             }
         }

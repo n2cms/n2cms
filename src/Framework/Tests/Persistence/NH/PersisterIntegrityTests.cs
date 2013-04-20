@@ -12,7 +12,6 @@ namespace N2.Tests.Persistence.NH
 	public class PersisterIntegrityTests : PersisterTestsBase
 	{
 		IUrlParser parser;
-		new FakeItemFinder finder;
 
 		[SetUp]
 		public override void SetUp()
@@ -22,9 +21,7 @@ namespace N2.Tests.Persistence.NH
 			parser = mocks.StrictMock<IUrlParser>();
 			mocks.ReplayAll();
 
-			finder = new FakeItemFinder(() => Enumerable.Empty<ContentItem>());
-
-			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
+			IntegrityManager integrity = new IntegrityManager(definitions, persister.Repository, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, activator);
 			enforcer.Start();
 
@@ -34,24 +31,20 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CannotCopy_WhenNameIsOccupied()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
-			ContentItem item1_2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
-			ContentItem item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
+			ContentItem item1_2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", item1);
+			ContentItem item2 = CreateOneItem<Definitions.PersistableItem>(0, "item2", root);
 
 			using (persister)
 			{
 				persister.Save(root);
-				finder.Selector = () => root.Children.Where(c => c.Name.Equals("item1", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item1);
-				finder.Selector = () => root.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item2);
-				finder.Selector = () => item1.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 				persister.Save(item1_2);
 
 				ExceptionAssert.Throws<NameOccupiedException>(delegate
 				                                              	{
-																	finder.Selector = () => item1.Children.Where(c => c.Name.Equals("item2", StringComparison.InvariantCultureIgnoreCase));
 																	persister.Copy(item2, item1);
 				                                              	});
 				Assert.AreEqual(1, item1.Children.Count);
@@ -61,8 +54,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanCopy_ToSameLocation_ItemWithNoName()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, null, root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, null, root);
 
 			using (persister)
 			{
@@ -80,9 +73,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CannotCopy_ItemWithName()
 		{
-			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			finder.Selector = () => root.Children.Where(c => c.Name.Equals("item1", StringComparison.InvariantCultureIgnoreCase));
-			ContentItem item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item1", root);
+			ContentItem root = CreateOneItem<Definitions.PersistableItem>(0, "root", null);
+			ContentItem item1 = CreateOneItem<Definitions.PersistableItem>(0, "item1", root);
 
 			using (persister)
 			{

@@ -46,12 +46,12 @@ namespace Castle.DynamicProxy
 		{
 			proxyBuilder = builder;
 
-#if !SILVERLIGHT
-			if (HasSecurityPermission())
-			{
-				Logger = new TraceLogger("Castle.DynamicProxy", LoggerLevel.Warn);
-			}
-#endif
+//#if !SILVERLIGHT
+//			if (HasSecurityPermission())
+//			{
+//				Logger = new TraceLogger("Castle.DynamicProxy", LoggerLevel.Warn);
+//			}
+//#endif
 		}
 
 #if !SILVERLIGHT

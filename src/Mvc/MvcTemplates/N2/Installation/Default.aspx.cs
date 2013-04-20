@@ -138,23 +138,18 @@ namespace N2.Edit.Install
 
 		protected void btnTest_Click(object sender, EventArgs e)
 		{
-			try
-			{
-				InstallationManager im = Installer;
+			string stackTrace;
+			lblStatus.Text = Installer.CheckConnection(out stackTrace);
 
-				using (IDbConnection conn = im.GetConnection())
-				{
-					conn.Open();
-					lblStatus.CssClass = "ok";
-					lblStatus.Text = "Connection OK";
-				}
+			if (string.IsNullOrEmpty(lblStatus.Text))
+			{
+				lblStatus.CssClass = "ok";
+				lblStatus.Text = "Connection OK";
 			}
-			catch (Exception ex)
+			else
 			{
 				lblStatus.CssClass = "warning";
-				lblStatus.Text = "Connection problem, hopefully this error message can help you figure out what's wrong: <br/>" +
-				                 ex.Message;
-				lblStatus.ToolTip = ex.StackTrace;
+				lblStatus.ToolTip = stackTrace;
 			}
 		}
 
@@ -430,7 +425,7 @@ namespace N2.Edit.Install
 			if (!phSame.Visible && !phDiffer.Visible)
 				ShowTab("Finish");
 
-			Engine.Resolve<N2.Persistence.Search.IIndexer>().Update(root);
+			Engine.Resolve<N2.Persistence.Search.IContentIndexer>().Update(root);
 		}
 
 		protected Exception ExecuteWithErrorHandling(Action action)

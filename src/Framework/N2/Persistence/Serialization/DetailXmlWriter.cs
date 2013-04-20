@@ -68,7 +68,7 @@ namespace N2.Persistence.Serialization
 					WriteMultiValue(item, detail, ContentDetail.TypeKeys.IntType, detail.IntValue, element.Writer);
 					WriteMultiValue(item, detail, ContentDetail.TypeKeys.LinkType, detail.LinkedItem, element.Writer);
 					WriteMultiValue(item, detail, ContentDetail.TypeKeys.ObjectType, detail.ObjectValue, element.Writer);
-					WriteMultiValue(item, detail, ContentDetail.TypeKeys.StringType, detail.StringValue, element.Writer);
+					WriteMultiValue(item, detail, ContentDetail.TypeKeys.StringType, SerializationUtility.RemoveInvalidCharacters(detail.StringValue), element.Writer);
 					return;
 
 				case ContentDetail.TypeKeys.ObjectType:
@@ -84,7 +84,7 @@ namespace N2.Persistence.Serialization
 					{
 						value = ExecuteRelativityTransformers(item, detail.Name, value);
 						element.WriteAttribute("encoded", true);
-						value = HttpUtility.HtmlEncode(value);
+						value = HttpUtility.HtmlEncode(SerializationUtility.RemoveInvalidCharacters(value));
 						element.WriteCData(value);
 					}
 					return;

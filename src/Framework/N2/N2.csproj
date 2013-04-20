@@ -70,6 +70,7 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
@@ -94,6 +95,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
@@ -126,8 +128,11 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
+    <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
+    <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
@@ -236,23 +241,22 @@
     <Compile Include="Engine\DynamicProxy\Core\Internal\SlimWriteLockHolder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractExtendedLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\AbstractLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\ILoggerFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerException.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\LoggerLevel.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogFactory.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs" />
-    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLogger.cs">
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextProperties.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Engine\DynamicProxy\Core\Logging\TraceLoggerFactory.cs">
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IContextStacks.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\IExtendedLogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\ILogger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\DynamicProxy\Core\Logging\NullLogger.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Engine\DynamicProxy\DefaultProxyBuilder.cs" />
@@ -400,6 +404,7 @@
     <Compile Include="Engine\TypeCache.cs" />
     <Compile Include="Engine\AttributedType.cs" />
     <Compile Include="Engine\Logger.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Linq\FindExtensions.cs" />
     <Compile Include="Persistence\Behaviors\IBehavior.cs" />
     <Compile Include="Persistence\Behaviors\IDeletingBehavior.cs" />
@@ -562,32 +567,36 @@
     <Compile Include="Persistence\NH\SubTransaction.cs" />
     <Compile Include="Persistence\Proxying\IValueAccessor.cs" />
     <Compile Include="Persistence\RelationOfT.cs" />
+    <Compile Include="Persistence\Search\AsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\ContentChangeTracker.cs" />
     <Compile Include="Persistence\Search\EmptyIndexer.cs" />
     <Compile Include="Persistence\IParameter.cs" />
     <Compile Include="Persistence\Order.cs" />
     <Compile Include="Persistence\ParameterCollection.cs" />
     <Compile Include="Persistence\Range.cs" />
     <Compile Include="Persistence\Search\IAsyncIndexer.cs" />
+    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IndexableDocument.cs" />
+    <Compile Include="Persistence\Search\ContentIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
     <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
     <Compile Include="Persistence\Finder\IUntypedCriteria.cs" />
-    <Compile Include="Persistence\FindingTextSearcher.cs" />
+    <Compile Include="Persistence\Search\FindingContentSearcher.cs" />
     <Compile Include="Engine\IDependencyInjector.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\Proxying\IInterceptorBuilder.cs" />
     <Compile Include="Persistence\SearchHelper.cs" />
     <Compile Include="Persistence\Search\IIndexableProperty.cs" />
     <Compile Include="Persistence\Search\IIndexableType.cs" />
-    <Compile Include="Persistence\Search\IIndexer.cs" />
+    <Compile Include="Persistence\Search\IContentIndexer.cs" />
     <Compile Include="Persistence\Search\IndexableAttribute.cs" />
-    <Compile Include="Persistence\Search\IndexableContent.cs" />
     <Compile Include="Persistence\Search\IndexableDefinitionExtractor.cs" />
     <Compile Include="Persistence\Search\SearchableTypeAttribute.cs" />
     <Compile Include="Persistence\Search\ITextExtractor.cs" />
-    <Compile Include="Persistence\Search\ITextSearcher.cs" />
+    <Compile Include="Persistence\Search\IContentSearcher.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilderParticipator.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\Finder\DetailNullHqlProvider.cs" />

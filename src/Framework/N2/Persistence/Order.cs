@@ -29,5 +29,7 @@ namespace N2.Persistence
 
 		public string Property { get; set; }
 		public bool Descending { get; set; }
+
+		public bool HasValue { get { return !string.IsNullOrEmpty(Property); } }
 	}
 }

@@ -520,6 +520,69 @@ namespace N2.Tests.Serialization
             readItem.EditableItem.Name.ShouldBe("EditableItem");
         }
 
+		[TestCase("\0")]
+		[TestCase("\x03")]
+		[TestCase("\x07")]
+		[TestCase("\x1B")]
+		public void SerializingText_WithInvalidCharacters_RemovesInalidCharacters(string character)
+		{
+			var item = activator.CreateInstance<XmlableItem2>(null);
+			item["Hello"] = "World" + character + "Tour";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem["Hello"].ShouldBe("WorldTour");
+		}
+
+		[TestCase("\t")]
+		[TestCase("\r")]
+		[TestCase("\n")]
+		public void SerializingText_WithSpecialCharacters_CharactersAreNotRemoved(string character)
+		{
+			var item = activator.CreateInstance<XmlableItem2>(null);
+			item["Hello"] = "World" + character + "Tour";
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var readItem = (XmlableItem2)ImportFromString(xml, CreateImporter()).RootItem;
+
+			readItem["Hello"].ShouldBe("World" + character + "Tour");
+		}
+
+		[Test]
+		public void ImportedRelations_AreAssignedToItems_WithinImportPackage()
+		{
+			var item = CreateOneItem<XmlableItem>(0, "item", null);
+			var referenced = CreateOneItem<XmlableItem>(0, "referenced", item);
+			item["Link"] = referenced;
+			persister.Save(item);
+			persister.Save(referenced);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var importer = CreateImporter();
+			var journal = ImportFromString(xml, importer);
+			importer.Import(journal, referenced, ImportOption.All);
+
+			var importedItem = referenced.Children.Single();
+			importedItem.Name.ShouldBe("item");
+			importedItem.Children[0].Name.ShouldBe("referenced");
+			importedItem["Link"].ShouldBe(importedItem.Children[0]);
+		}
+
+		[Test]
+		public void ImportedItems_ArePublished()
+		{
+			var item = CreateOneItem<XmlableItem>(0, "item", null);
+			persister.Save(item);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var importer = CreateImporter();
+			importer.Import(ImportFromString(xml, importer), item, ImportOption.All);
+
+			var importedItem = item.Children.Single();
+			importedItem.State.ShouldBe(ContentState.Published);
+		}
+
         [Test, Ignore("Probably enough that this is done when saving")]
         public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
         {

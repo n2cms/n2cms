@@ -22,6 +22,7 @@ namespace N2.Management.Myself
     [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
     [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
+	[Versionable(AllowVersions.No)]
     public class RootBase : ContentItem, IRootPage, ISystemNode
     {
         public override string Url

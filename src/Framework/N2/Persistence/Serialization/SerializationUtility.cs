@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace N2.Persistence.Serialization
 {
@@ -35,5 +37,31 @@ namespace N2.Persistence.Serialization
                 return value;
             return default(TValue);
         }
+
+		public static string RemoveInvalidCharacters(string value)
+		{
+			if (string.IsNullOrEmpty(value))
+				return value;
+
+			var invalidCharacters = new HashSet<char>(Enumerable.Range(0, 31).Select(n => (char)n).Where(c => c != '\t' && c != '\r' && c != '\n'));
+			var text = new StringBuilder(value);
+			for (int i = 0; i < text.Length; i++)
+			{
+				if (invalidCharacters.Contains(text[i]))
+					text.Remove(i, 1);
+			}
+			return text.ToString();
+		}
+		internal static ContentState RecaulculateState(ContentItem item)
+		{
+			if (!item.Published.HasValue)
+				return ContentState.Draft;
+			if (item.Published.HasValue && Utility.CurrentTime() < item.Published.Value)
+				return ContentState.Waiting;
+			if (item.Expires.HasValue && item.Expires.Value <= Utility.CurrentTime())
+				return ContentState.Unpublished;
+
+			return ContentState.Published;
+		}
 	}
 }

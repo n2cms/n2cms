@@ -268,7 +268,7 @@ namespace N2.Edit.Tests.LinkTracker
 			persister.Save(root);
 
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-			Assert.AreEqual(item1, links.Details[0].LinkedItem);
+			Assert.AreEqual(item1.ID, links.Details[0].LinkedItem.ID);
 		}
 
 
@@ -343,7 +343,7 @@ namespace N2.Edit.Tests.LinkTracker
 
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
 			Assert.That(links, Is.Not.Null);
-			Assert.That(links.Details[0].LinkedItem, Is.Null);
+			Assert.That(links.Details[0].LinkedItem.HasValue, Is.False);
 			Assert.That(links.Details[0].StringValue, Is.EqualTo("/FileSystem/upload/File.txt"));
 		}
 
@@ -364,7 +364,7 @@ namespace N2.Edit.Tests.LinkTracker
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
 
 			Assert.That(links, Is.Not.Null);
-			Assert.That(links.Details[0].LinkedItem, Is.Null);
+			Assert.That(links.Details[0].LinkedItem.HasValue, Is.False);
 			Assert.That(links.Details[0].IntValue, Is.EqualTo(10));
 			Assert.That(links.Details[0].Meta, Is.EqualTo(propertyName));
 			Assert.That(links.Details[0].StringValue, Is.EqualTo("/FileSystem/upload/Image.jpg"));

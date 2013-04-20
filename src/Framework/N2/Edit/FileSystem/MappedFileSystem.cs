@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using N2.Engine;
+using System.Threading;
 
 namespace N2.Edit.FileSystem
 {
@@ -190,7 +191,16 @@ namespace N2.Edit.FileSystem
 
 		public void MoveDirectory(string fromVirtualPath, string destinationVirtualPath)
 		{
-			Directory.Move(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+			try
+			{
+				Directory.Move(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+			}
+			catch (IOException)
+			{
+				// retry once
+				Thread.Sleep(10);
+				Directory.Move(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+			}
 
 			if (DirectoryMoved != null)
 				DirectoryMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
@@ -198,7 +208,16 @@ namespace N2.Edit.FileSystem
 
 		public void DeleteDirectory(string virtualPath)
 		{
-			Directory.Delete(MapPath(virtualPath), true);
+			try
+			{
+				Directory.Delete(MapPath(virtualPath), true);
+			}
+			catch (IOException)
+			{
+				// retry once
+				Thread.Sleep(10);
+				Directory.Delete(MapPath(virtualPath), true);
+			}
 
 			if (DirectoryDeleted != null)
 				DirectoryDeleted.Invoke(this, new FileEventArgs(virtualPath, null));

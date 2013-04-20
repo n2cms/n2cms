@@ -17,13 +17,33 @@ namespace N2.Persistence
 		/// <summary>Gets the current start page (this may vary depending on host url).</summary>
 		public static TStart StartPage
 		{
-			get { return ClosestOf<IStartPage>(CurrentPage) as TStart ?? (TStart)Context.Current.UrlParser.StartPage; }
+			get
+			{
+				try
+				{
+					return ClosestOf<IStartPage>(CurrentPage) as TStart ?? (TStart) Context.Current.UrlParser.StartPage;
+				}
+				catch (InvalidCastException)
+				{
+					return null;
+				}
+			}
 		}
 
 		/// <summary>Gets the site's root items.</summary>
 		public static TRoot RootItem
 		{
-			get { return (TRoot)Context.Current.Persister.Repository.Get(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
+			get
+			{
+				try
+				{
+					return (TRoot)Context.Current.Persister.Repository.Get(Context.Current.Resolve<IHost>().CurrentSite.RootItemID);
+				}
+				catch (InvalidCastException)
+				{
+					return null;
+				}
+			}
 		}
 
 		/// <summary>Gets the currently displayed page (based on the query string).</summary>

@@ -13,15 +13,12 @@
 			This can be done by the web based installer located at http://yoursite/n2/installation/ -->
 		<host configSource="App_Data\n2_host.config" />
 		<engine>
-			<assemblies>
-				<!-- These assembly declarations are necessary in MEDIUM TRUST -->
-			</assemblies>
 			<!-- Update email to receive error reports -->
 			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
 			<!-- Globalization requires you to create additional start pages with a language -->
 			<globalization enabled="true" />
 		</engine>
-		<database connectionStringName="N2CMS" flavour="AutoDetect" caching="true">
+		<database connectionStringName="N2CMS" caching="true">
 		</database>
 		<edit>
 			<!-- Set checkInstallationStatus to false to disable redirect to install page -->

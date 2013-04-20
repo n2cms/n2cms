@@ -5,10 +5,10 @@ using System.Text;
 
 namespace N2.Persistence.Search
 {
-	public struct SortFieldData
+	public class SortFieldData
 	{
-		public string SortField;
-		public bool SortDescending;
+		public string SortField { get; set; }
+		public bool SortDescending { get; set; }
 
 		public SortFieldData(string field)
 		{

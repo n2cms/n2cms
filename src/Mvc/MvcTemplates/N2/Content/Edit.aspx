@@ -57,7 +57,7 @@
     <script type="text/javascript">
     	$(document).ready(function () {
     		// future publish
-    		$("#futurePanel").hide().click(function (e) { e.stopPropagation(); });
+    		$("#futurePanel").hide().click(function (e) { e.stopPropagation(); return false; });
     		$(".future").click(function (e) {
     			$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
     			$("#futurePanel input:first").focus();
