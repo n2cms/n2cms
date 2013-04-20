@@ -15,7 +15,7 @@ using N2.Tests.Fakes;
 namespace N2.Tests.Serialization
 {
 	[TestFixture]
-	public class XmlWriterTests : SerializationTestsBase
+	public class XmlWriterTests : XmlSerializationTestsBase
 	{
 		[Test]
 		public void WriteSingleItem()
@@ -343,28 +343,6 @@ namespace N2.Tests.Serialization
 			byte[] buffer = Convert.FromBase64String(nodes.Current.Value);
 			BinaryFormatter formatter = new BinaryFormatter();
 			return formatter.Deserialize(new MemoryStream(buffer));
-		}
-
-		private XPathNavigator WriteToStreamAndNavigate(ContentItem item)
-		{
-			ItemXmlWriter writer = CreateWriter();
-			StringBuilder sb = new StringBuilder();
-			StringWriter sw = new StringWriter(sb);
-
-			XmlTextWriter xmlOutput = new XmlTextWriter(sw);
-			xmlOutput.Formatting = Formatting.Indented;
-			xmlOutput.WriteStartDocument();
-			xmlOutput.WriteStartElement("n2");
-
-			writer.Write(item, ExportOptions.Default, xmlOutput);
-
-			xmlOutput.WriteEndElement();
-			xmlOutput.WriteEndDocument();
-
-			XmlDocument xd = new XmlDocument();
-			xd.LoadXml(sb.ToString());
-
-			return xd.CreateNavigator();
 		}
 
 		[Test]

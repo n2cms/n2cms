@@ -22,7 +22,7 @@ using System.Linq;
 namespace N2.Tests.Serialization
 {
 	[TestFixture]
-	public class ExportImportTests : SerializationTestsBase
+	public class ExportImportTests : XmlSerializationTestsBase
 	{
 		[Test]
 		public void ExportedImportedItem_KeepsBasicAttributes()
