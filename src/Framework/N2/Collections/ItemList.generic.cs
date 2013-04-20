@@ -32,7 +32,7 @@ namespace N2.Collections
 	/// A generic item list.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
-	public class ItemList<T> : ContentList<T>, IContentItemList<T>, IEnumerable<T>, IHierarchicalEnumerable where T : ContentItem
+	public class ItemList<T> : ContentList<T>, IContentItemList<T>, IEnumerable<T> where T : ContentItem
 	{
         #region Constructors
 
@@ -147,65 +147,6 @@ namespace N2.Collections
 		}
 		#endregion
 
-		#region IHierarchicalEnumerable Members
-
-		public IHierarchyData GetHierarchyData(object enumeratedItem)
-		{
-			return new ItemHierarchyData((ContentItem) enumeratedItem);
-		}
-
-		#endregion
-
-		#region Nested type: ItemHierarchyData
-
-		private class ItemHierarchyData : IHierarchyData
-		{
-			private ContentItem item;
-
-			public ItemHierarchyData(ContentItem item)
-			{
-				this.item = item;
-			}
-
-			#region IHierarchyData Members
-
-			IHierarchicalEnumerable IHierarchyData.GetChildren()
-			{
-				return item.GetChildren();
-			}
-
-			IHierarchyData IHierarchyData.GetParent()
-			{
-				return (item.Parent != null)
-				       	? new ItemHierarchyData(item.Parent)
-				       	: null;
-			}
-
-			bool IHierarchyData.HasChildren
-			{
-				get { return item.GetChildren().Count > 0; }
-			}
-
-			object IHierarchyData.Item
-			{
-				get { return item; }
-			}
-
-			string IHierarchyData.Path
-			{
-				get { return item.Url; }
-			}
-
-			string IHierarchyData.Type
-			{
-				get { return item.GetContentType().Name; }
-			}
-
-			#endregion
-		}
-
-		#endregion
-
 		#region IZonedList<T> Members
 
 		public IEnumerable<T> FindParts(string zoneName)
@@ -249,6 +190,5 @@ namespace N2.Collections
 			return Find(parameters).Select(i => properties.ToDictionary(p => p, p => i[p]));
 		}
 		#endregion
-
 	}
 }

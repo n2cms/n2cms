@@ -10,6 +10,6 @@ namespace N2.Persistence.Search
 	/// </summary>
 	public interface ITextExtractor
 	{
-		IEnumerable<IndexableContent> Extract(ContentItem item);
+		IEnumerable<IndexableField> Extract(ContentItem item);
 	}
 }

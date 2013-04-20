@@ -13,25 +13,25 @@ namespace N2.Tests.Persistence.NH
 	[TestFixture]
 	public class ContentChangeTrackerTests : ItemPersistenceMockingBase
 	{
-		LuceneIndexer indexer;
+		ContentIndexer indexer;
 		LuceneAccesor accessor;
-		LuceneSearcher searcher;
+		LuceneContentSearcher searcher;
 		ContentChangeTracker tracker;
         AsyncIndexer asyncIndexer;
 		AsyncWorker worker;
         
-        PersistableItem1 root;
+        PersistableItem root;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem1), typeof(PersistableItem2), typeof(PersistablePart1));
+			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
-			searcher = new LuceneSearcher(accessor, persister);
+			indexer = new ContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			searcher = new LuceneContentSearcher(accessor, persister);
 			worker = new AsyncWorker();
             asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
 			tracker = new ContentChangeTracker(asyncIndexer, persister, new N2.Plugin.ConnectionMonitor(), new DatabaseSection());
@@ -39,7 +39,7 @@ namespace N2.Tests.Persistence.NH
 			accessor.LockTimeout = 1L;
 			worker.QueueUserWorkItem = (cb) => { cb.Invoke(null); return true; };
 			indexer.Clear();
-			root = CreateOneItem<PersistableItem1>(1, "The Root Page", null);
+			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
 		}
 
 		public override void TearDown()
@@ -52,8 +52,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void LockTimeoutException_WillRetryIndex_AfterSomeTime()
 		{
-			var world = CreateOneItem<PersistableItem1>(2, "hello world", root);
-			var universe = CreateOneItem<PersistableItem1>(3, "hello universe", root);
+			var world = CreateOneItem<PersistableItem>(2, "hello world", root);
+			var universe = CreateOneItem<PersistableItem>(3, "hello universe", root);
 
 			accessor.GetDirectory().MakeLock("write.lock").Obtain();
 			tracker.ItemChanged(world.ID, false);

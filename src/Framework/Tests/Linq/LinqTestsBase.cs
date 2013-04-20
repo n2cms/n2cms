@@ -27,6 +27,7 @@ namespace N2.Extensions.Tests.Linq
 			root.DoubleProperty = 345.678;
 			root.BooleanProperty = true;
 			root.GetDetailCollection("CollectionProperty", true).AddRange(new[] { "hello", "world" });
+			engine.Persister.Repository.SaveOrUpdate(root);
 
 			item = CreateOneItem<LinqItem>(0, "item", null);
 			item.StringProperty = "a string";
@@ -39,7 +40,6 @@ namespace N2.Extensions.Tests.Linq
 			item.ZoneName = "Hello";
 			item.AddTo(root);
 
-			engine.Persister.Repository.SaveOrUpdate(root);
 			engine.Persister.Repository.SaveOrUpdate(item);
 		}
 	}

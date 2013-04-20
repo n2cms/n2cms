@@ -4,6 +4,7 @@ using N2.Collections;
 using N2.Details;
 using N2.Web.UI;
 using N2.Edit.Versioning;
+using N2.Persistence;
 
 namespace N2.Management.Myself
 {
@@ -38,7 +39,8 @@ namespace N2.Management.Myself
 			lblVersionsRatio.Text = string.Format("{0:F2}", (double)totalCount / (double)itemsCount);
 
 			lblServed.Text = "unknown";
-			lblChangesLastWeek.Text = Find.Items.Where.Updated.Ge(DateTime.Now.AddDays(-7)).Select().Count.ToString();
+			lblChangesLastWeek.Text = Engine.Persister.Repository.Count(Parameter.LessOrEqual("Updated", DateTime.Now.AddDays(-7))).ToString();
+				//Find.Items.Where.Updated.Ge(DateTime.Now.AddDays(-7)).Select().Count.ToString();
 
 			DataBind();
 		}

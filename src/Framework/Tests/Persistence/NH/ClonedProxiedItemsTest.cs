@@ -10,7 +10,7 @@ namespace N2.Tests.Persistence.NH
 		[TestFixtureSetUp]
 		public override void TestFixtureSetup()
 		{
-			base.persistedTypes = new[] { typeof(Definitions.PersistableItem1), typeof(InterceptableInheritorItem) };
+			base.persistedTypes = new[] { typeof(Definitions.PersistableItem), typeof(InterceptableInheritorItem) };
 			base.TestFixtureSetup();
 		}
 
@@ -20,7 +20,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem item1, item2;
 			using (persister)
 			{
-				item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+				item1 = CreateOneItem<Definitions.PersistableItem>(0, "item", null);
 				item1["Hello"] = "World";
 				persister.Save(item1);
 

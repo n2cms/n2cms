@@ -7,6 +7,8 @@ using N2.Web;
 using N2.Definitions;
 using N2.Engine;
 using N2.Edit;
+using N2.Persistence;
+using System.Linq;
 
 namespace N2.Templates.Items
 {
@@ -28,8 +30,9 @@ namespace N2.Templates.Items
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
 	[ConventionTemplate("Feed")]
-    public class RssFeed : AbstractContentPage, IFeed
+    public class RssFeed : AbstractContentPage, IFeed, Engine.IInjectable<IRepository<ContentItem>>
     {
+		private IRepository<ContentItem> repository;
         [EditableLink("Feed root", 90)]
         public virtual ContentItem FeedRoot
         {
@@ -70,31 +73,23 @@ namespace N2.Templates.Items
             get { return base.Url + "?hungry=yes"; }
         }
 
-        public virtual IEnumerable<ISyndicatable> GetItems()
-        {
-			var query = N2.Find.Items
-                .Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
+		public virtual IEnumerable<ISyndicatable> GetItems()
+		{
+			ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
 			if (FeedRoot != null)
-				query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
+				query &= Parameter.Below(FeedRoot);
+			
+			foreach (ISyndicatable item in repository.Find(query.Take(NumberOfItems).OrderBy("Published DESC"))
+				.Where(new TypeFilter(typeof(ISyndicatable)) & new AccessFilter())
+				.OfType<ISyndicatable>())
+			{
+				yield return item;
+			}
+		}
 
-			foreach (ISyndicatable item in query
-				.Filters(new TypeFilter(typeof(ISyndicatable)), new AccessFilter())
-                .MaxResults(NumberOfItems)
-                .OrderBy.Published.Desc
-                .Select())
-            {
-                yield return item;
-            }
-        }
-
-        private ItemFilter[] GetFilters()
-        {
-            ItemFilter[] filters;
-            if(FeedRoot != null)
-                filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter(), new AncestorFilter(FeedRoot) };
-            else
-                filters = new ItemFilter[] {  };
-            return filters;
-        }
-    }
+		public void Set(IRepository<ContentItem> dependency)
+		{
+			repository = dependency;
+		}
+	}
 }

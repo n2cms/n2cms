@@ -399,6 +399,28 @@ namespace N2
 			return null; // it's okay to use default text
 		}
 
+		/// <summary>Maps a physical path back to a virtual path, thanks to ahmadh21.</summary>
+		/// <param name="physicalPath"></param>
+		/// <returns></returns>
+		public static string RemapVirtualPath(string physicalPath)
+		{
+			physicalPath = physicalPath.Replace('\\', '/').TrimEnd('/', '\\');
+			var appPhysicalPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath.Replace('\\', '/').TrimEnd('/', '\\');
+			var appVirtualPath = System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath.Replace('\\', '/').TrimEnd('/', '\\');
+
+			if (!physicalPath.StartsWith(appPhysicalPath, StringComparison.OrdinalIgnoreCase))
+				throw new ArgumentException("Physical path given must map below application physical path");
+			
+			var finalPath = physicalPath.Substring(appPhysicalPath.Length);
+
+			if (appVirtualPath.Length > 1)
+			{
+				finalPath = appVirtualPath + finalPath;
+			}
+
+			return finalPath;
+		}
+
 		public static IEnumerable<string> RecursiveListFiles(string physicalBasePath, string filter)
 		{
 			var toExplore = new List<string> { physicalBasePath };
@@ -751,6 +773,9 @@ namespace N2
 
 		public static bool IsPublished(this ContentItem item)
 		{
+			if (item == null)
+				return false;
+
 			switch (item.State)
 			{
 				case ContentState.New:
@@ -764,6 +789,9 @@ namespace N2
 		}
 		public static bool IsExpired(this ContentItem item)
 		{
+			if (item == null)
+				return false;
+
 			return item.State == ContentState.Unpublished || (item.Expires.HasValue && item.Expires.Value < Utility.CurrentTime());
 		}
 
@@ -803,13 +831,13 @@ namespace N2
 			foreach (var detail in item.Details)
 				if (detail.EnclosingItem.ID == 0 && !object.ReferenceEquals(detail.EnclosingItem, item))
 					list.Add(detail);
-				else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+				else if (detail.LinkedItem.HasValue && detail.LinkedItem.ID == 0)
 					list.Add(detail);
 			foreach (var dc in item.DetailCollections)
 				foreach (var detail in dc.Details)
 					if (detail.EnclosingItem.ID == 0 && !object.ReferenceEquals(detail.EnclosingItem, item))
 						list.Add(detail);
-					else if (detail.LinkedItem != null && detail.LinkedItem.ID == 0)
+					else if (detail.LinkedItem.HasValue && detail.LinkedItem.ID == 0)
 						list.Add(detail);
 
 			foreach (var child in item.Children.FindParts())

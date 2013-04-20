@@ -1,0 +1,9 @@
+<configuration>
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<database>
+			<search type="RemoteServer">
+				<client sharedSecret="changemeHereAndOnServerConfig"/>
+			</search>
+		</database>
+	</n2>
+</configuration>

@@ -8,6 +8,7 @@ namespace N2.Configuration
 	public enum SearchIndexType
 	{
 		Database,
-		Lucene
+		Lucene,
+		RemoteServer
 	}
 }

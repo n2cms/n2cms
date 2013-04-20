@@ -75,7 +75,10 @@ body.rightExpanded #content { margin-right:265px; }
 	.framed .editDetail .uploader .revealer { margin-left:10px; background:transparent url(../icons/attach.png) no-repeat 0% 0%; padding-left:20px; }
 	.framed .editDetail button.ui-datepicker-trigger { vertical-align:middle; margin-right:5px; border:solid 1px #BBB; background:#F8F8F8; height:22px; width:22px; padding:2px 0 0 0; margin-left:-1px; }
 	.framed .editDetail button.ui-datepicker-trigger:hover {border-color:#999; background-color:#f0f0f0; }
-	
+.framed .ftaEditor .cke {
+	min-width: 600px;
+}
+
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *, .framed a[disabled=disabled] img, input[disabled=disabled]
     { opacity:.50; filter: alpha(opacity=50); }
 table.editDetail { border-collapse:collapse; }

@@ -37,7 +37,7 @@ namespace N2.Templates.Mvc.Controllers
 				.ReadableBy(User, Roles.GetRolesForUser)
 				.State(ContentState.Published)
 				.Except(Query.For(typeof(ISystemNode)));
-			var result = Engine.Resolve<ITextSearcher>().Search(query);
+			var result = Engine.Resolve<IContentSearcher>().Search(query);
 
 			return View(new SearchModel(result.Hits.Select(h => h.Content).Where(N2.Content.Is.Accessible().Match).ToList()) { SearchTerm = q, TotalResults = result.Total, PageSize = PAGE_SIZE, PageNumber = p ?? 0 });
 		}

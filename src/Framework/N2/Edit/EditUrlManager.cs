@@ -229,7 +229,7 @@ namespace N2.Edit
 				}
 
 				url = url.AppendQuery(SelectionUtility.SelectedQueryKey + "=" + selectedItem.Path);
-				if (selectedItem.VersionOf != null)
+				if (selectedItem.VersionOf.HasValue)
 					url = url.AppendQuery(PathData.VersionIndexQueryKey + "=" + selectedItem.VersionIndex)
 						.AppendQuery("versionKey", selectedItem.GetVersionKey());
 

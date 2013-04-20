@@ -1,6 +1,6 @@
 n2nav.currentUrl = "/";
 n2nav.memorize = function(selected,action){
-    window.n2ctx.memorize(selected, action);
+	window.n2ctx.memorize(selected, action);
 }
 n2nav.setupToolbar = function (options) {
 	n2ctx.update(options);

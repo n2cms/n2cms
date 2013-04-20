@@ -7,9 +7,9 @@ using N2.Templates.Mvc.Services;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Definitions;
-using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Engine;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -29,8 +29,9 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]
-	public class RssFeed : ContentPageBase, IFeed
+	public class RssFeed : ContentPageBase, IFeed, Engine.IInjectable<IRepository<ContentItem>>
 	{
+		private IRepository<ContentItem> repository;
 		[EditableLink("Feed root", 90, ContainerName = Tabs.Content)]
 		public virtual ContentItem FeedRoot
 		{
@@ -68,19 +69,21 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		public virtual IEnumerable<ISyndicatable> GetItems()
 		{
-			var query = N2.Find.Items
-				.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
+			ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
 			if (FeedRoot != null)
-				query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
-
-			foreach (ISyndicatable item in query
-				.Filters(new TypeFilter(typeof(ISyndicatable)), new AccessFilter())
-				.MaxResults(NumberOfItems)
-				.OrderBy.Published.Desc
-				.Select())
+				query &= Parameter.Below(FeedRoot);
+			
+			foreach (ISyndicatable item in repository.Find(query.Take(NumberOfItems).OrderBy("Published DESC"))
+				.Where(new TypeFilter(typeof(ISyndicatable)) & new AccessFilter())
+				.OfType<ISyndicatable>())
 			{
 				yield return item;
 			}
+		}
+
+		public void Set(IRepository<ContentItem> dependency)
+		{
+			repository = dependency;
 		}
 	}
 }

@@ -59,5 +59,19 @@ namespace N2.Configuration
 			get { return (string)base["indexOnMachineNamed"]; }
 			set { base["indexOnMachineNamed"] = value; }
 		}
+
+		[ConfigurationProperty("client")]
+		public ClientElement Client
+		{
+			get { return (ClientElement)base["client"]; }
+			set { base["client"] = value; }
+		}
+
+		[ConfigurationProperty("server")]
+		public ServerElement Server
+		{
+			get { return (ServerElement)base["server"]; }
+			set { base["server"] = value; }
+		}
 	}
 }

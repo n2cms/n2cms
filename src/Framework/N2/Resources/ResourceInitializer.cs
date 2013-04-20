@@ -21,9 +21,13 @@ namespace N2.Resources
 			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
-			Register.TinyMCEPath = configFactory.Sections.Web.Resources.TinyMCEPath;
+			Register.CKEditorPath = configFactory.Sections.Web.Resources.CKEditorPath;
+			Register.FancyboxPath = configFactory.Sections.Web.Resources.FancyboxPath;
 			Register.PartsJsPath = configFactory.Sections.Web.Resources.PartsJsPath;
 			Register.PartsCssPath = configFactory.Sections.Web.Resources.PartsCssPath;
+			Register.TwitterBootstrapCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapCssPath;
+			Register.TwitterBootstrapResponsiveCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapResponsiveCssPath;
+			Register.TwitterBootstrapJsPath = configFactory.Sections.Web.Resources.TwitterBootstrapJsPath;
 		}
 
 		public void Stop()

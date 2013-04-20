@@ -122,5 +122,12 @@ namespace N2.Persistence
 
 		public Order Order { get; set; }
 		public Range Range { get; set; }
+
+		public override string ToString()
+		{
+			return string.Join((Operator == Persistence.Operator.And ? " & " : " | "), parameters.Select(p => p.ToString()))
+				+ (Range == null ? "" : (" (" + Range.Skip + " - " + (Range.Skip + Range.Take)) + ")")
+				+ (Order == null ? "" : (" (by " + Order.Property + (Order.Descending ? " DESC" : "")) + ")");
+		}
 	}
 }

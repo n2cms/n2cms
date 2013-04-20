@@ -22,7 +22,12 @@ namespace N2.Web.Parts
 			{
 				foreach (var cd in collection.Details)
 				{
-					part[cd.Name.Substring(keyPrefix.Length + 1)] = cd.Value;
+					var name = cd.Name.Substring(keyPrefix.Length + 1);
+					if (cd.ValueTypeKey == ContentDetail.TypeKeys.LinkType)
+						// avoid retrieving item from database
+						part[name] = cd.LinkedItem;
+					else
+						part[name] = cd.Value;
 				}
 			}
 			return part;
@@ -30,6 +35,13 @@ namespace N2.Web.Parts
 
 		public static void StoreEmbeddedPart(this ContentItem item, string keyPrefix, ContentItem part)
 		{
+			if (part == null)
+			{
+				foreach (var detail in item.Details.Where(d => d.Name.StartsWith(keyPrefix + ".")).ToList())
+					item.Details.Remove(detail);
+				return;
+			}
+
 			DetailCollection collection = item.GetDetailCollection(keyPrefix, true);
 			foreach (var propertyName in ContentItem.KnownProperties.WritablePartProperties)
 			{

@@ -81,6 +81,9 @@ namespace N2.Management.Files
 			foreach (var folder in folderSource.GetUploadFoldersForAllSites())
 			{
 				var parent = persister.Get(folder.GetParentID());
+				if (parent == null)
+					break;
+
 				var pair = new FolderPair(parent.ID, parent.Path, parent.Path + folder.GetName() + "/", folder);
 				paths.Add(pair);
 			}

@@ -26,7 +26,6 @@ namespace N2.Edit.Trash
 		public const string FormerParent = "FormerParent";
 		public const string DeletedDate = "DeletedDate";
 		private readonly IPersister persister;
-		private readonly IItemFinder finder;
 		private readonly ISecurityManager security;
 		private readonly ContainerRepository<TrashContainerItem> container;
 		private readonly StateChanger stateChanger;
@@ -40,9 +39,8 @@ namespace N2.Edit.Trash
 			set { container.Navigate = value; }
 		}
 
-		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger, IWebContext webContext)
+		public TrashHandler(IPersister persister, ISecurityManager security, ContainerRepository<TrashContainerItem> container, StateChanger stateChanger, IWebContext webContext)
 		{
-			this.finder = finder;
 			this.persister = persister;
 			this.security = security;
 			this.container = container;
@@ -199,9 +197,8 @@ namespace N2.Edit.Trash
 					.Where(i => ((DateTime)i[DeletedDate]) < tresholdDate)
 					.ToList();
 			else
-				expiredItems = finder.Where.Parent.Eq(trash)
-					.And.Detail(TrashHandler.DeletedDate).Le(tresholdDate)
-					.Select();
+				expiredItems = persister.Repository.Find(Parameter.Equal("Parent", trash) 
+					& Parameter.LessOrEqual(TrashHandler.DeletedDate, tresholdDate).Detail()).ToList();
 			
 			try
 			{

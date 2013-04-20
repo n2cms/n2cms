@@ -21,8 +21,8 @@ namespace N2.Tests.Persistence.NH
 		#region SetUp
 
 		IItemFinder finder;
-		PersistableItem1 rootItem;
-		PersistableItem1 startPage;
+		PersistableItem rootItem;
+		PersistableItem startPage;
 		ContentItem item1;
 		ContentItem item2;
 		ContentItem item3;
@@ -739,7 +739,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FilterByTypeEqual2()
 		{
-			IList<PersistableItem1> items = finder.Where.Type.Eq(typeof(PersistableItem1)).Select<PersistableItem1>();
+			IList<PersistableItem> items = finder.Where.Type.Eq(typeof(PersistableItem)).Select<PersistableItem>();
 			Assert.AreEqual(2, items.Count);
 			EnumerableAssert.Contains(items, rootItem);
 			EnumerableAssert.Contains(items, startPage);
@@ -793,7 +793,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			var items = finder
 				.Where.ID.Eq(startPage.ID)
-				.Select<PersistableItem1>("IntProperty");
+				.Select<PersistableItem>("IntProperty");
 
 			items.Single().ShouldBe(33);
 		}
@@ -803,7 +803,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			var items = finder
 				.Where.ID.Eq(startPage.ID)
-				.Select<PersistableItem1>("IntProperty", "DateTimeProperty");
+				.Select<PersistableItem>("IntProperty", "DateTimeProperty");
 
 			items.Single()["IntProperty"].ShouldBe(33);
 			items.Single()["DateTimeProperty"].ShouldBe(new DateTime(2013, 04, 07));
@@ -814,7 +814,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			var items = finder
 				.Where.ID.Eq(startPage.ID)
-				.Select<PersistableItem1>("Title", "IntProperty");
+				.Select<PersistableItem>("Title", "IntProperty");
 
 			items.Single()["Title"].ShouldBe("start page");
 			items.Single()["IntProperty"].ShouldBe(33);
@@ -902,7 +902,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSelectByClassIn()
 		{
-			IList<ContentItem> items = finder.Where.Type.In(typeof(PersistableItem2), typeof(PersistableItem1)).Select();
+			IList<ContentItem> items = finder.Where.Type.In(typeof(PersistableItem2), typeof(PersistableItem)).Select();
 			
 			Assert.AreEqual(5, items.Count);
 		}
@@ -1255,7 +1255,7 @@ namespace N2.Tests.Persistence.NH
 
 		private void CreateStartPageBelow(ContentItem root)
 		{
-			startPage = CreateOneItem<PersistableItem1>(0, "start page", root);
+			startPage = CreateOneItem<PersistableItem>(0, "start page", root);
 			startPage.ZoneName = "AZone";
 			startPage.SortOrder = 34;
 			startPage.Visible = true;
@@ -1300,7 +1300,7 @@ namespace N2.Tests.Persistence.NH
 
 		private void CreateRootItem()
 		{
-			rootItem = CreateOneItem<PersistableItem1>(0, "root", null);
+			rootItem = CreateOneItem<PersistableItem>(0, "root", null);
 			rootItem.Created = new DateTime(2007, 06, 01);
 			rootItem.Published = new DateTime(2007, 06, 02);
 			rootItem.Expires = new DateTime(2017, 06, 02);

@@ -21,6 +21,14 @@ namespace N2.Persistence
 			this.engine = engine;
 		}
 
+		/// <summary>Queries a persisted entity using LINQ.</summary>
+		/// <typeparam name="T">The type of entity to query. Only types mapped via NHibernate are queryable.</typeparam>
+		/// <returns>A queryable expression.</returns>
+		public virtual IQueryable<T> Query<T>()
+		{
+			return engine().Query<T>();
+		}
+
 		/// <summary>Query for content items using LINQ.</summary>
 		/// <remarks>Pending or expired pages may be included in the result.</remarks>
 		public IQueryable<ContentItem> Items
@@ -47,6 +55,14 @@ namespace N2.Persistence
 			return PublishedPages.WhereDescendantOrSelf(ancestorOrSelf);
 		}
 
+
+		/// <summary>Allows finding items using the Find(Parameter...)</summary>
+		public IContentItemRepository Repository
+		{
+			get { return engine().Persister.Repository; }
+		}
+
+
 		/// <summary>Find items using the finder API.</summary>
 		/// <remarks>This API is comparable to using LINQ but not as comperhensive.</remarks>
 		public IItemFinder Find
@@ -54,18 +70,12 @@ namespace N2.Persistence
 			get { return engine().Resolve<IItemFinder>(); }
 		}
 
-		/// <summary>Performs text search for content items.</summary>
-		public ITextSearcher Text
-		{
-			get { return engine().Resolve<ITextSearcher>(); }
-		}
 
-		/// <summary>Queries a persisted entity using LINQ.</summary>
-		/// <typeparam name="T">The type of entity to query. Only types mapped via NHibernate are queryable.</typeparam>
-		/// <returns>A queryable expression.</returns>
-		public virtual IQueryable<T> Query<T>()
+
+		/// <summary>Performs text search for content items.</summary>
+		public IContentSearcher Text
 		{
-			return engine().Query<T>();
+			get { return engine().Resolve<IContentSearcher>(); }
 		}
 	}
 }

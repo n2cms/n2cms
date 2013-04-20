@@ -549,6 +549,40 @@ namespace N2.Tests.Serialization
 			readItem["Hello"].ShouldBe("World" + character + "Tour");
 		}
 
+		[Test]
+		public void ImportedRelations_AreAssignedToItems_WithinImportPackage()
+		{
+			var item = CreateOneItem<XmlableItem>(0, "item", null);
+			var referenced = CreateOneItem<XmlableItem>(0, "referenced", item);
+			item["Link"] = referenced;
+			persister.Save(item);
+			persister.Save(referenced);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var importer = CreateImporter();
+			var journal = ImportFromString(xml, importer);
+			importer.Import(journal, referenced, ImportOption.All);
+
+			var importedItem = referenced.Children.Single();
+			importedItem.Name.ShouldBe("item");
+			importedItem.Children[0].Name.ShouldBe("referenced");
+			importedItem["Link"].ShouldBe(importedItem.Children[0]);
+		}
+
+		[Test]
+		public void ImportedItems_ArePublished()
+		{
+			var item = CreateOneItem<XmlableItem>(0, "item", null);
+			persister.Save(item);
+
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+			var importer = CreateImporter();
+			importer.Import(ImportFromString(xml, importer), item, ImportOption.All);
+
+			var importedItem = item.Children.Single();
+			importedItem.State.ShouldBe(ContentState.Published);
+		}
+
         [Test, Ignore("Probably enough that this is done when saving")]
         public void AutoImplementedProperties_WithEditableChildren_AreTransferred()
         {

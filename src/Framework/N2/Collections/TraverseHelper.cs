@@ -404,6 +404,14 @@ namespace N2.Collections
 			return startPage;
 		}
 
+		public ContentItem ClosestPage(ContentItem item)
+		{
+			TryMasterVersion(ref item);
+			if (item == null || item.IsPage)
+				return item;
+			return ClosestPage(item.Parent);
+		}
+
 		private bool TryRedirect(ref ContentItem page)
 		{
 			var redirect = page as IRedirect;

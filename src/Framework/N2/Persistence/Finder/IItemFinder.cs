@@ -1,4 +1,5 @@
-﻿namespace N2.Persistence.Finder
+﻿using System;
+namespace N2.Persistence.Finder
 {
 	/// <summary>
 	/// Classes implementing this interface are responsible creating a query 
@@ -14,6 +15,7 @@
 		/// <summary>
 		/// Allows selection of all items.
 		/// </summary>
+		[Obsolete("Avoid! This will retrieve all items from the database")]
 		IQueryEnding All { get; }
 	}
 }

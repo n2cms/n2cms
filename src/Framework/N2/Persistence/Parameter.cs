@@ -29,12 +29,16 @@
 using NHibernate.Type;
 using System.Linq;
 using System;
+using N2.Definitions.Static;
+using System.Collections;
+using System.Diagnostics;
 
 namespace N2.Persistence
 {
 	/// <summary>
 	/// A repository query parameter.
 	/// </summary>
+	[DebuggerDisplay("{Name} {Comparison} {Value}, IsDetail={IsDetail}")]
 	public class Parameter : N2.Persistence.IParameter
 	{
 		public string Name { get; set; }
@@ -112,6 +116,52 @@ namespace N2.Persistence
 			return new Parameter(propertyName, null, Comparison.NotNull);
 		}
 
+		public static Parameter TypeEqual(string discriminator)
+		{
+			return Parameter.Equal("class", discriminator);
+		}
+
+		public static Parameter TypeEqual(Type type)
+		{
+			return TypeEqual(DefinitionMap.Instance.GetOrCreateDefinition(type).Discriminator);
+		}
+
+		public static Parameter TypeNotEqual(string discriminator)
+		{
+			return Parameter.NotEqual("class", discriminator);
+		}
+
+		public static Parameter TypeNotEqual(Type type)
+		{
+			return TypeNotEqual(DefinitionMap.Instance.GetOrCreateDefinition(type).Discriminator);
+		}
+
+		public static Parameter Below(ContentItem ancestor)
+		{
+			return Parameter.Like("AncestralTrail", ancestor.GetTrail() + "%");
+		}
+
+		public static ParameterCollection BelowOrSelf(ContentItem ancestorOrSelf)
+		{
+			return Parameter.Equal("ID", ancestorOrSelf.ID)
+				| Parameter.Like("AncestralTrail", ancestorOrSelf.GetTrail() + "%");
+		}
+
+		public static Parameter In(string name, params object[] anyOf)
+		{
+			return new Parameter(name, anyOf, Comparison.In);
+		}
+
+		public static Parameter NotIn(string name, params object[] anyOf)
+		{
+			return new Parameter(name, anyOf, Comparison.NotIn);
+		}
+
+		public static Parameter State(ContentState expectedState)
+		{
+			return Parameter.Equal("State", expectedState);
+		}
+
 		public bool IsMatch(object item)
 		{
             object itemValue = null;
@@ -121,10 +171,10 @@ namespace N2.Persistence
 				if (string.IsNullOrEmpty(Name))
 				{
 					foreach (var detail in ci.Details)
-						if (Compare(detail.Value))
+						if (Compare(Value, Comparison, detail.Value))
 							return true;
 					foreach (var collection in ci.DetailCollections)
-						if (collection.Any(v => Compare(v)))
+						if (collection.Any(v => Compare(Value, Comparison, v)))
 							return true;
 					return false;
 				}
@@ -135,7 +185,7 @@ namespace N2.Persistence
                     var collection = (item as ContentItem).GetDetailCollection(Name, false);
                     if (collection != null)
                     {
-                        return collection.Any(v => Compare(v));
+						return collection.Any(v => Compare(Value, Comparison, v));
                     }
                 }
             }
@@ -148,51 +198,55 @@ namespace N2.Persistence
 			}
 			else
 				itemValue = N2.Utility.GetProperty(item, Name);
-            return Compare(itemValue);
+            return Compare(Value, Comparison, itemValue);
 		}
 
-        private bool Compare(object itemValue)
+        private bool Compare(object value, Comparison comparison, object itemValue)
         {
-            switch (this.Comparison)
+            switch (comparison)
             {
                 case Persistence.Comparison.Equal:
-                    if (Value == null)
+                    if (value == null)
                         return itemValue == null;
                     if (itemValue is Details.IMultipleValue)
                     {
-                        return (itemValue as Details.IMultipleValue).Equals(Value);
+                        return (itemValue as Details.IMultipleValue).Equals(value);
                     }
-                    return Value.Equals(itemValue);
+                    return value.Equals(itemValue);
                 case Persistence.Comparison.NotEqual:
-                    if (Value == null)
+                    if (value == null)
                         return itemValue != null;
                     if (itemValue is Details.IMultipleValue)
                     {
-                        return !(itemValue as Details.IMultipleValue).Equals(Value);
+                        return !(itemValue as Details.IMultipleValue).Equals(value);
                     }
-                    return !Value.Equals(itemValue);
+                    return !value.Equals(itemValue);
                 case Persistence.Comparison.Null:
                     return itemValue == null;
                 case Persistence.Comparison.NotNull:
 					return itemValue != null;
 				case Persistence.Comparison.Like:
-					return CompareInvariant(itemValue);
+					return CompareInvariant(value, itemValue);
 				case Persistence.Comparison.NotLike:
-					return !CompareInvariant(itemValue);
+					return !CompareInvariant(value, itemValue);
+				case Comparison.In:
+					return ((IEnumerable)value).OfType<object>().Any(v => Compare(v, Persistence.Comparison.Equal, v));
+				case Comparison.NotIn:
+					return !Compare(value, comparison, itemValue);
 				default:
-					bool? result = TryCompare(itemValue as IComparable);
+					bool? result = TryCompare(value, comparison, itemValue as IComparable);
 					if (result.HasValue)
 						return result.Value;
-                    throw new NotSupportedException("Operator " + Comparison + " not supported for IsMatch " + Name);
+                    throw new NotSupportedException("Operator " + comparison + " not supported for IsMatch " + Name);
             }
         }
 
-		private bool CompareInvariant(object itemValue)
+		private bool CompareInvariant(object parameterValue, object itemValue)
 		{
-			if (Value == null)
+			if (parameterValue == null)
 				return itemValue == null;
 
-			var value = Value.ToString();
+			var value = parameterValue.ToString();
 			if (value.EndsWith("%"))
 			{
 				if (itemValue is Details.IMultipleValue)
@@ -201,22 +255,22 @@ namespace N2.Persistence
 				return itemValue != null && itemValue.ToString().StartsWith(value.Substring(0, value.Length - 1));
 			}
 
-			return string.Equals(itemValue != null ? itemValue.ToString() : null, Value != null ? Value.ToString() : null, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(itemValue != null ? itemValue.ToString() : null, parameterValue != null ? parameterValue.ToString() : null, StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		private bool? TryCompare(IComparable comparable)
+		private bool? TryCompare(object value, Comparison comparison, IComparable comparable)
 		{
 			if (comparable == null)
 				return null;
 
-			if (this.Comparison == Persistence.Comparison.GreaterOrEqual)
-				return comparable.CompareTo(Value) >= 0;
-			if (this.Comparison == Persistence.Comparison.GreaterThan)
-				return comparable.CompareTo(Value) > 0;
-			if (this.Comparison == Persistence.Comparison.LessOrEqual)
-				return comparable.CompareTo(Value) <= 0;
-			if (this.Comparison == Persistence.Comparison.LessThan)
-				return comparable.CompareTo(Value) < 0;
+			if (comparison == Persistence.Comparison.GreaterOrEqual)
+				return comparable.CompareTo(value) >= 0;
+			if (comparison == Persistence.Comparison.GreaterThan)
+				return comparable.CompareTo(value) > 0;
+			if (comparison == Persistence.Comparison.LessOrEqual)
+				return comparable.CompareTo(value) <= 0;
+			if (comparison == Persistence.Comparison.LessThan)
+				return comparable.CompareTo(value) < 0;
 
 			return null;
 		}
@@ -249,6 +303,14 @@ namespace N2.Persistence
 		{
 			return (Name != null ? Name.GetHashCode() : GetHashCode())
 				+ (Value != null ? Value.GetHashCode() : GetHashCode());
+		}
+
+		public override string ToString()
+		{
+			return (IsDetail ? "Detail." : "Property.") 
+				+ (Name ?? "(Any)") 
+				+ " " + Comparison + " " 
+				+ Value;
 		}
 		#endregion
 	}
