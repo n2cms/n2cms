@@ -21,5 +21,6 @@
 		Oracle10g,
 		NoSql = 1024,
 		MongoDB = NoSql + 1,
+		Xml
 	}
 }
