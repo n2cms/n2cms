@@ -9,52 +9,90 @@ using N2.Definitions;
 using N2.Engine;
 using N2.Persistence.NH;
 using N2.Persistence.Serialization;
+using N2.Web;
 
-namespace N2.Persistence.Xml
+namespace N2.Persistence.Html
 {
 	/// <summary>Provides a service to store content items as loose XML files, rather than using a database.</summary>
 	[Service]
 	[Service(typeof(IContentItemRepository), Configuration = "xml")]
 	[Service(typeof(IRepository<ContentItem>), Configuration = "xml", Replaces = typeof(ContentItemRepository))]
-	class XmlContentRepository : IContentItemRepository
+	class HtmlContentRepository : IContentItemRepository
 	{
 		private readonly List<ContentItem> _appContentItems = new List<ContentItem>();
 		private readonly IDefinitionManager _definitions;
 		private readonly ContentActivator _activator;
+		private readonly IPersister _persister;
 
-		public XmlContentRepository(IDefinitionManager definitions, ContentActivator activator)
+		public HtmlContentRepository(IDefinitionManager definitions, ContentActivator activator)
 		{
 			_definitions = definitions;
 			_activator = activator;
-		}
+			_appContentItems = new List<ContentItem>();
+			_persister = new ContentPersister(null /* what is the contentsource? */, this);
 
-		protected string DataDirectoryVirtual
-		{
-			get { return "/App_Data/ContentItemsXml"; }
-		}
+			if (!Directory.Exists(DataDirectoryPhysical))
+				Directory.CreateDirectory(DataDirectoryPhysical);
 
-		private string GetContentItemFilename(int id)
-		{
-			Debug.Assert(DataDirectoryVirtual != null, "DataDirectoryVirtual != null");
-			var p1 = System.Web.Hosting.HostingEnvironment.MapPath(DataDirectoryVirtual);
-			if (p1 == null)
-				throw new Exception("HostingEnvironment failed to map path");
-			return Path.Combine(p1, String.Format("C{0:00000}.xml", id));
-		}
-
-		private void LoadContentItemXml(int id)
-		{
-			var importer = new Importer(null, null, null);
-			var record = importer.Read(GetContentItemFilename(id));
+			var records = new List<IImportRecord>();
 			var reader = new ItemXmlReader(_definitions, _activator, this);
+			var importer = new Importer(_persister, reader, null);
+			var files = Directory.GetFileSystemEntries(DataDirectoryPhysical, "*.xml");
 
-			//TODO: Help!!!
-			
+			// load all files and get the import records
+			records.AddRange(from f in files select importer.Read(f));
+
+			// resolve links
+			var allIDs = records.SelectMany(f => f.ReadItems).ToDictionary(f => f.ID);
+			var stillUnresolved = new List<UnresolvedLink>();
+			foreach (var unresolvedLink in records.SelectMany(f => f.UnresolvedLinks))
+				if (allIDs.ContainsKey(unresolvedLink.ReferencedItemID))
+					unresolvedLink.Setter(allIDs[unresolvedLink.ReferencedItemID]);
+				else
+					stillUnresolved.Add(unresolvedLink);
+
 		}
+
+		protected string DataDirectoryPhysical
+		{
+			get { return System.Web.Hosting.HostingEnvironment.MapPath("/App_Data/ContentItemsXml"); }
+		}
+
 
 		private void SaveContentItemXml()
 		{
-			//TODO: Help!!!
+			var writer = new ItemXmlWriter(_definitions, null, null);
+			var exporter = new Exporter(writer);
+
+			if (!Directory.Exists(DataDirectoryPhysical))
+				Directory.CreateDirectory(DataDirectoryPhysical);
+
+			foreach (var item in _appContentItems)
+				using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, item.ID + ".xml")))
+					exporter.Export(item, ExportOptions.ExcludePages, tw);
+		}
+
+		/// <summary>
+		/// Returns information about the XML files that would be written out. Primarily used for testing.
+		/// </summary>
+		public string GetContentItemXml()
+		{
+			var writer = new ItemXmlWriter(_definitions, null, null);
+			var exporter = new Exporter(writer);
+
+			if (!Directory.Exists(DataDirectoryPhysical))
+				Directory.CreateDirectory(DataDirectoryPhysical);
+
+			StringBuilder sb = new StringBuilder();
+			using (StringWriter sr = new StringWriter(sb))
+				foreach (var item in _appContentItems)
+				{
+					sb.AppendLine(item.ID + ".xml");
+					exporter.Export(item, ExportOptions.ExcludePages, sr);
+					sr.Flush();
+				}
+
+			return sb.ToString();
 		}
 
 		public IEnumerable<DiscriminatorCount> FindDescendantDiscriminators(ContentItem ancestor)
