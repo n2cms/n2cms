@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 using N2.Definitions;
 using N2.Engine;
@@ -9,11 +10,17 @@ using N2.Edit.Versioning;
 
 namespace N2.Persistence.Serialization
 {
-    /// <summary>
-    /// A content item xml serializer.
-    /// </summary>
+	public interface IItemXmlWriter
+	{
+		void Write(ContentItem item, ExportOptions options, XmlTextWriter writer);
+		void WriteSingleItem(ContentItem item, ExportOptions options, XmlTextWriter writer);
+	}
+
+	/// <summary>
+	/// A content item xml serializer.
+	/// </summary>
 	[Service]
-	public class ItemXmlWriter
+	public class ItemXmlWriter : IItemXmlWriter
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly IUrlParser parser;
@@ -26,7 +33,7 @@ namespace N2.Persistence.Serialization
 			this.fs = fs;
 		}
 
-        public virtual void Write(ContentItem item, ExportOptions options, XmlTextWriter writer)
+		public virtual void Write(ContentItem item, ExportOptions options, XmlTextWriter writer)
 		{
 			WriteSingleItem(item, options, writer);
 
@@ -38,12 +45,12 @@ namespace N2.Persistence.Serialization
 
 		internal static IEnumerable<ContentItem> GetChildren(ContentItem item, ExportOptions options)
 		{
-            if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
-                return item.Children;
-            else if (options.IsFlagSet(ExportOptions.ExcludePages))
-                return item.Children.Where(c => !c.IsPage);
-            else if (options.IsFlagSet(ExportOptions.ExcludeParts))
-                return item.Children.Where(c => c.IsPage);
+			if (!options.IsFlagSet(ExportOptions.ExcludePages) && !options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children;
+			else if (options.IsFlagSet(ExportOptions.ExcludePages))
+				return item.Children.Where(c => !c.IsPage);
+			else if (options.IsFlagSet(ExportOptions.ExcludeParts))
+				return item.Children.Where(c => c.IsPage);
 			return Enumerable.Empty<ContentItem>();
 		}
 
@@ -60,19 +67,19 @@ namespace N2.Persistence.Serialization
 			}
 		}
 
-        private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
-        {
-            if((options & ExportOptions.OnlyDefinedDetails) == ExportOptions.OnlyDefinedDetails)
-                yield return new DefinedDetailXmlWriter(definitions);
-            else
-                yield return new DetailXmlWriter();
+		private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
+		{
+			if((options & ExportOptions.OnlyDefinedDetails) == ExportOptions.OnlyDefinedDetails)
+				yield return new DefinedDetailXmlWriter(definitions);
+			else
+				yield return new DetailXmlWriter();
 			yield return new DetailCollectionXmlWriter();
 			yield return new ChildXmlWriter(options);
 			yield return new AuthorizationXmlWriter();
 			yield return new PersistablePropertyXmlWriter(definitions);
-            if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
-			    yield return new AttachmentXmlWriter(fs);
-        }
+			if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
+				yield return new AttachmentXmlWriter(fs);
+		}
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)
 		{
@@ -110,7 +117,10 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("alteredPermissions", (int)item.AlteredPermissions);
 			itemElement.WriteAttribute("childState", (int)item.ChildState);
 			if(item.VersionOf.HasValue)
+			{
+				Debug.Assert(item.VersionOf.ID != null, "item.VersionOf.ID != null");
 				itemElement.WriteAttribute("versionOf", item.VersionOf.ID.Value);
+			}
 		}
 	}
 }

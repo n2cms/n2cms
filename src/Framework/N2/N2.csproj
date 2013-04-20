@@ -531,6 +531,8 @@
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\IPersistableProperty.cs" />
@@ -620,7 +622,7 @@
     <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
-    <Compile Include="Persistence\Xml\XmlContentRepository.cs" />
+    <Compile Include="Persistence\Serialization\Html\HtmlContentRepository.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
     <Compile Include="Security\ISecurableBase.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />

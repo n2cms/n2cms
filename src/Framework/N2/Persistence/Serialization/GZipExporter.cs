@@ -7,7 +7,7 @@ namespace N2.Persistence.Serialization
 	[Service(typeof(Exporter))]
 	public class GZipExporter : Exporter
 	{
-		public GZipExporter(ItemXmlWriter writer)
+		public GZipExporter(IItemXmlWriter writer)
 			: base(writer)
 		{
 		}

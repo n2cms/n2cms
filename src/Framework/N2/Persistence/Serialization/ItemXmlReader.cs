@@ -8,8 +8,15 @@ using N2.Security;
 
 namespace N2.Persistence.Serialization
 {
+	public interface IItemXmlReader
+	{
+		bool IgnoreMissingTypes { get; set; }
+		IImportRecord Read(XPathNavigator navigator);
+		//ContentItem ReadSingleItem(XPathNavigator navigator, ReadingJournal journal);
+	}
+
 	[Service]
-	public class ItemXmlReader : XmlReader
+	public class ItemXmlReader : XmlReader, IItemXmlReader
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly ContentActivator activator;

@@ -12,10 +12,10 @@ namespace N2.Persistence.Serialization
 	{
 		private readonly Engine.Logger<Importer> logger;
 		private readonly IPersister persister;
-		private readonly ItemXmlReader reader;
+		private readonly IItemXmlReader reader;
 		private IFileSystem fs;
 
-		public Importer(IPersister persister, ItemXmlReader reader, IFileSystem fs)
+		public Importer(IPersister persister, IItemXmlReader reader, IFileSystem fs)
 		{
 			this.persister = persister;
 			this.reader = reader;

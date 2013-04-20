@@ -11,10 +11,10 @@ namespace N2.Persistence.Serialization
 	/// </summary>
 	public class Exporter
 	{
-		private readonly ItemXmlWriter itemWriter;
+		private readonly IItemXmlWriter itemWriter;
 		private Formatting xmlFormatting = Formatting.Indented;
 
-		public Exporter(ItemXmlWriter itemWriter)
+		public Exporter(IItemXmlWriter itemWriter)
 		{
 			this.itemWriter = itemWriter;
 		}
