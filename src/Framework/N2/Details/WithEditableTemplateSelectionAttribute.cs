@@ -1,3 +1,4 @@
+using N2.Definitions;
 using System;
 using System.Linq;
 using System.Web.UI;
@@ -28,7 +29,7 @@ namespace N2.Details
 			if (!editor.Page.IsPostBack)
 			{
 				lc.Items.Clear();
-				lc.Items.AddRange(Engine.Definitions.GetTemplates(item.GetContentType()).Select(t => new ListItem(t.Title, t.Name ?? "")).ToArray());
+				lc.Items.AddRange(Engine.Resolve<ITemplateAggregator>().GetTemplates(item.GetContentType()).Select(t => new ListItem(t.Title, t.Name ?? "")).ToArray());
 			}
 
 			base.UpdateEditor(item, editor);

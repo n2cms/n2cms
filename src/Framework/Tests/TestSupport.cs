@@ -93,14 +93,27 @@ namespace N2.Tests
 		}
 
 		public static void Setup(out IDefinitionProvider[] definitionProviders, out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
-        {
+		{
 			var map = new DefinitionMap();
 			definitionProviders = SetupDefinitionProviders(map, itemTypes);
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
-			definitions = new DefinitionManager(definitionProviders, new[] { new TemplateProvider(activator, map) }, activator, new StateChanger(), new DefinitionMap());
+			definitions = new DefinitionManager(definitionProviders, activator, new StateChanger(), new DefinitionMap());
 			((DefinitionManager)definitions).Start();
+		}
+
+		public static void Setup(out IDefinitionManager definitions, out ITemplateAggregator templates, out ContentActivator activator, params Type[] itemTypes)
+		{
+			var map = new DefinitionMap();
+			var definitionProviders = SetupDefinitionProviders(map, itemTypes);
+			var notifier = new ItemNotifier();
+			var proxyFactory = new InterceptingProxyFactory();
+			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			definitions = new DefinitionManager(definitionProviders, activator, new StateChanger(), new DefinitionMap());
+			templates = new TemplateAggregator(definitions, new[] { new TemplateProvider(activator, map) });
+			((IAutoStart)definitions).Start();
+			((IAutoStart)templates).Start();
 		}
 
 		public static IDefinitionProvider[] SetupDefinitionProviders(DefinitionMap map, params Type[] itemTypes)
