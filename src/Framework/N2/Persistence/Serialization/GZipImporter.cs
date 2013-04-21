@@ -9,7 +9,7 @@ namespace N2.Persistence.Serialization
 	[Service(typeof(Importer))]
 	public class GZipImporter : Importer
 	{
-		public GZipImporter(IPersister persister, IItemXmlReader reader, IFileSystem fs) 
+		public GZipImporter(IPersister persister, ItemXmlReader reader, IFileSystem fs) 
 			: base(persister, reader, fs)
 		{
 		}

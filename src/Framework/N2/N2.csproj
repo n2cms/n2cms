@@ -531,6 +531,7 @@
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
+    <Compile Include="Persistence\FilesystemTransaction.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />

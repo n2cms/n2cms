@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Xml;
 using N2.Definitions;
@@ -20,6 +22,7 @@ namespace N2.Persistence.Serialization
 	/// A content item xml serializer.
 	/// </summary>
 	[Service]
+	[Service(typeof(IItemXmlWriter))]
 	public class ItemXmlWriter : IItemXmlWriter
 	{
 		private readonly IDefinitionManager definitions;
@@ -28,6 +31,11 @@ namespace N2.Persistence.Serialization
 
 		public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser, IFileSystem fs)
 		{
+			if (definitions == null)
+				throw new ArgumentNullException("definitions");
+			if (parser == null)
+				throw new ArgumentNullException("parser");
+
 			this.definitions = definitions;
 			this.parser = parser;
 			this.fs = fs;
@@ -83,6 +91,13 @@ namespace N2.Persistence.Serialization
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)
 		{
+			if (itemElement == null)
+				throw new ArgumentNullException("itemElement");
+			if (item == null)
+				throw new ArgumentNullException("item");
+			if (parser == null)
+				throw new NullReferenceException("urlParser must not be null");
+
 			itemElement.WriteAttribute("id", item.ID);
 			itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
 			if (item.Parent != null)

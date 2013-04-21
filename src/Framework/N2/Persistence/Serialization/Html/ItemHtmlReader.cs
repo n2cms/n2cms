@@ -9,6 +9,7 @@ using N2.Persistence.Serialization;
 namespace N2.Persistence.Html
 {
 	[Service]
+	[Service(typeof(IItemXmlReader))]
 	public class ItemHtmlReader : IItemXmlReader
 	{
 		public bool IgnoreMissingTypes { get; set; }

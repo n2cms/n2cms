@@ -14,6 +14,7 @@ using N2.Edit.Versioning;
 namespace N2.Persistence.Html
 {
 	[Service]
+	[Service(typeof(IItemXmlWriter))]
 	public class ItemHtmlWriter : IItemXmlWriter
 	{
 

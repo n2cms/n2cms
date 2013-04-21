@@ -10,6 +10,7 @@ using N2.Engine;
 using N2.Persistence.NH;
 using N2.Persistence.Serialization;
 using N2.Web;
+using N2.Definitions.Static;
 
 namespace N2.Persistence.Html
 {
@@ -20,14 +21,23 @@ namespace N2.Persistence.Html
 	class HtmlContentRepository : IContentItemRepository
 	{
 		private readonly List<ContentItem> _appContentItems = new List<ContentItem>();
-		private readonly IDefinitionManager _definitions;
-		private readonly ContentActivator _activator;
 		private readonly IPersister _persister;
 
-		public HtmlContentRepository(IDefinitionManager definitions, ContentActivator activator)
+		private readonly IEngine _engine;
+
+		private IDefinitionManager _definitions
 		{
-			_definitions = definitions;
-			_activator = activator;
+			get { return _engine.Resolve<IDefinitionManager>(); }
+		}
+
+		private ContentActivator _activator
+		{
+			get { return _engine.Resolve<ContentActivator>(); }
+		}
+
+		public HtmlContentRepository(IEngine engine)
+		{
+			_engine = engine;
 			_appContentItems = new List<ContentItem>();
 			_persister = new ContentPersister(null /* what is the contentsource? */, this);
 
@@ -51,6 +61,8 @@ namespace N2.Persistence.Html
 				else
 					stillUnresolved.Add(unresolvedLink);
 
+			_itemXmlWriter = new ItemXmlWriter(_definitions, null, null);
+			_exporter = new Exporter(_itemXmlWriter);
 		}
 
 		protected string DataDirectoryPhysical
@@ -61,15 +73,25 @@ namespace N2.Persistence.Html
 
 		private void SaveContentItemXml()
 		{
-			var writer = new ItemXmlWriter(_definitions, null, null);
-			var exporter = new Exporter(writer);
-
 			if (!Directory.Exists(DataDirectoryPhysical))
 				Directory.CreateDirectory(DataDirectoryPhysical);
 
+			// backup existing files to the backup directory
+			var backupDirectory = Path.Combine(DataDirectoryPhysical, "backup");
+			if (!Directory.Exists(backupDirectory))
+				Directory.CreateDirectory(backupDirectory);
+			foreach (var existingFile in Directory.GetFiles(DataDirectoryPhysical, "*.xml"))
+			{
+				var backupTarget = Path.Combine(backupDirectory, Path.GetFileName(existingFile));
+				if (File.Exists(backupTarget))
+					File.Delete(backupTarget);
+				File.Move(existingFile, backupTarget);
+			}
+
 			foreach (var item in _appContentItems)
-				using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, item.ID + ".xml")))
-					exporter.Export(item, ExportOptions.ExcludePages, tw);
+				SaveOrUpdate(item);
+
+			// TODO: Delete the backup directory
 		}
 
 		/// <summary>
@@ -205,12 +227,13 @@ namespace N2.Persistence.Html
 		public void Delete(ContentItem entity)
 		{
 			_appContentItems.RemoveAll(f => f.ID == entity.ID);
+
 		}
 
-		public void SaveOrUpdate(ContentItem entity)
+		public void SaveOrUpdate(ContentItem item)
 		{
-			//TODO: Write out to disk.
-			throw new NotImplementedException();
+			using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, "c" + item.ID + ".xml")))
+				_exporter.Export(item, ExportOptions.ExcludePages, tw);
 		}
 
 		public bool Exists()
@@ -233,19 +256,23 @@ namespace N2.Persistence.Html
 			throw new NotImplementedException();
 		}
 
+		private ITransaction _trans;
+		private readonly ItemXmlWriter _itemXmlWriter;
+		private readonly Exporter _exporter;
+
 		public ITransaction BeginTransaction()
 		{
-			throw new NotImplementedException();
+			return _trans ?? (_trans = new FilesystemTransaction());
 		}
 
 		public ITransaction GetTransaction()
 		{
-			throw new NotImplementedException();
+			return _trans;
 		}
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			_trans.Dispose();
 		}
 	}
 }
