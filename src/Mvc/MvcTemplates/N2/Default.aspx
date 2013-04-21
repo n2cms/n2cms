@@ -15,20 +15,14 @@
 
     <%--<link rel="stylesheet" href="redesign/css/normalize.min.css">--%>
     <%--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">--%>
-    <link rel="stylesheet" href="redesign/bootstrap/css/bootstrap.min.css">
-	<style>
-		ul,ol { padding:0; margin:0; list-style-type:none }
-	</style>
     <link rel="stylesheet" href="redesign/css/n2.css">
 
     <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body ng-controller="ManagementCtrl">
-    <div id="page">
-        <div id="top-area">
-            <div ng-include src="'App/Partials/UserTools.html'"></div>
-            <div ng-include src="'App/Partials/MainMenu.html'"></div>
-        </div>
+    <div id="top-area">
+        <%--<div ng-include src="'App/Partials/UserTools.html'"></div>--%>
+        <div ng-include src="'App/Partials/MainMenu.html'"></div>
     </div>
     <div class="sliding-loader loader"></div>
 	<div id="main-wrapper">
@@ -58,5 +52,14 @@
 	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
+	<link href="redesign/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<script src="redesign/bootstrap/js/bootstrap.js"></script>
+	<style>
+		ul, li {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
 </body>
+
 </html>

@@ -10,7 +10,7 @@
 			},
 			template: "<div class='item'>\
 	<a href='{{model.Current.Url}}' target='{{model.Current.Target}}'>\
-		<img src='{{model.Current.IconUrl}}' />\
+		<span class='icon-custom' style='background-image:url({{model.Current.IconUrl}}); background-position:0 0; width:16px; height:16px;'></span>\
 		{{model.Current.Title}}</a>\
 	<div class='toggle'>\
 		<img src='redesign/img/minus.png' class='collapse' /><img src='redesign/img/plus.png' class='expand' />\

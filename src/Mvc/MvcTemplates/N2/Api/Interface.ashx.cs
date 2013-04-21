@@ -20,22 +20,9 @@ namespace N2.Management.Api
 		public string Title { get; set; }
 		public string Url { get; set; }
 		public string Frame { get; set; }
+
+		public string IconClass { get; set; }
 	}
-
-	//public class InterfaceContentNode
-	//{
-	//	public string Type { get; set; }
-	//	public string Title { get; set; }
-	//	public string Url { get; set; }
-
-	//	public int ID { get; set; }
-
-	//	public string Path { get; set; }
-
-	//	public string IconUrl { get; set; }
-
-	//	public string Target { get; set; }
-	//}
 
 	public class InterfaceData
 	{
@@ -46,6 +33,14 @@ namespace N2.Management.Api
 		public Site Site { get; set; }
 
 		public string Authority { get; set; }
+
+		public InterfaceUser User { get; set; }
+	}
+
+	public class InterfaceUser
+	{
+		public string Name { get; set; }
+		public string Username { get; set; }
 	}
 
 	/// <summary>
@@ -67,9 +62,19 @@ namespace N2.Management.Api
 				TopMenu = CreateTopMenu(),
 				Content = CreateContent(context),
 				Site = engine.Host.GetSite(selection.SelectedItem),
-				Authority = context.Request.Url.Authority
+				Authority = context.Request.Url.Authority,
+				User = CreateUser(context)
 			}.ToJson(context.Response.Output);
 			
+		}
+
+		private InterfaceUser CreateUser(HttpContext context)
+		{
+			return new InterfaceUser
+			{
+				Name = context.User.Identity.Name,
+				Username = context.User.Identity.Name
+			};
 		}
 
 		private Node<TreeNode> CreateContent(HttpContext context)
@@ -86,21 +91,9 @@ namespace N2.Management.Api
 		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
-			var node = adapter.GetTreeNode(structure.Current);
 			return new Node<TreeNode>
 			{
-				//Current = new InterfaceContentNode
-				//{
-				//	ID = structure.Current.ID,
-				//	Title = structure.Current.Title,
-				//	Path = structure.Current.Path,
-				//	Type = structure.Current.GetContentType().Name,
-				//	Url = structure.Current.Url,
-				//	IconUrl = structure.Current.IconUrl,
-				//	Target = "preview",
-
-				//},
-				Current = node,
+				Current = adapter.GetTreeNode(structure.Current),
 				Children = structure.Children.Select(c => CreateStructure(c)).ToArray()
 			};
 		}
@@ -113,45 +106,40 @@ namespace N2.Management.Api
 					{
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Dashboard", Frame = "_top", Url = "#dashboard" },
+							Current = new InterfaceMenuItem { Title = "Home", Frame = "_top", Url = "#home", IconClass = "icon-home" },
 							Children = new Node<InterfaceMenuItem>[0]
 						},
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Content", Frame = "_top", Url = "#content" },
+							Current = new InterfaceMenuItem { Title = "Pages", Frame = "_top", Url = "#pages" },
+							Children = new Node<InterfaceMenuItem>[0]
+						},
+						new Node<InterfaceMenuItem>
+						{
+							Current = new InterfaceMenuItem { Title = "Files", Frame = "_top", Url = "#files" },
+							Children = new Node<InterfaceMenuItem>[0]
+						},
+						new Node<InterfaceMenuItem>
+						{
+							Current = new InterfaceMenuItem { Title = "Settings", Frame = "_top", Url = "#settings" },
 							Children = new Node<InterfaceMenuItem>[]
 							{
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Pages", Frame = "_top", Url = "#content/pages" },
+									Current = new InterfaceMenuItem { Title = "Site", Frame = "_top", Url = "#settings/site" },
 									Children = new Node<InterfaceMenuItem>[0]
 								},
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Files", Frame = "_top", Url = "#content/files" },
+									Current = new InterfaceMenuItem { Title = "Templates", Frame = "_top", Url = "#settings/templates" },
 									Children = new Node<InterfaceMenuItem>[0]
 								},
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Wizards", Frame = "_top", Url = "#content/wizards" },
+									Current = new InterfaceMenuItem { Title = "Wizards", Frame = "_top", Url = "#settings/wizards" },
 									Children = new Node<InterfaceMenuItem>[0]
-								},
-								new Node<InterfaceMenuItem>
-								{
-									Current = new InterfaceMenuItem { Title = "Templates", Frame = "_top", Url = "#content/templates" },
-									Children = new Node<InterfaceMenuItem>[0]
-								},
+								}
 							}
-						},
-						new Node<InterfaceMenuItem>
-						{
-							Current = new InterfaceMenuItem { Title = "Site", Frame = "_top", Url = "#site" },
-							Children = new Node<InterfaceMenuItem>[0]
-						},
-						new Node<InterfaceMenuItem>
-						{
-							Current = new InterfaceMenuItem { Title = "System", Frame = "_top", Url = "#system" },
-							Children = new Node<InterfaceMenuItem>[0]
 						}
 					}
 			};

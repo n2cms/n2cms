@@ -105,8 +105,6 @@
     <Content Include="N2\App\Partials\MainMenu.html" />
     <Content Include="N2\App\Partials\PageActionBar.html" />
     <Content Include="N2\App\Partials\PageTree.html" />
-    <Content Include="N2\App\Partials\Search.html" />
-    <Content Include="N2\App\Partials\UserTools.html" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\EditSingle.aspx" />
