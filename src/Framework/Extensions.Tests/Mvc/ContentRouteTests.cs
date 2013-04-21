@@ -63,7 +63,7 @@ namespace N2.Extensions.Tests.Mvc
 				.ToArray();
 
 			var changer = new StateChanger();
-			var definitions = new DefinitionManager(new[] { new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], TestSupport.SetupEngineSection())) }, new ITemplateProvider[0], new ContentActivator(changer, null, new EmptyProxyFactory()), changer, new DefinitionMap());
+			var definitions = new DefinitionManager(new[] { new DefinitionProvider(new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[0], TestSupport.SetupEngineSection())) }, new ContentActivator(changer, null, new EmptyProxyFactory()), changer, new DefinitionMap());
 			httpContext = new FakeHttpContext();
 			var webContext = new FakeWebContextWrapper(httpContext);
 			var host = new Host(webContext, root.ID, root.ID);

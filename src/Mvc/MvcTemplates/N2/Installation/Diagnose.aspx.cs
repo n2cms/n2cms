@@ -98,7 +98,7 @@ namespace N2.Edit.Install
 
 			try
 			{
-				rptDefinitions.DataSource = N2.Context.Definitions.GetDefinitions().SelectMany(d => N2.Context.Definitions.GetTemplates(d.ItemType).Select(t => t.Definition));
+				rptDefinitions.DataSource = N2.Context.Definitions.GetDefinitions().SelectMany(d => N2.Context.Current.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType).Select(t => t.Definition));
 				rptDefinitions.DataBind();
 			}
 			catch (Exception ex)

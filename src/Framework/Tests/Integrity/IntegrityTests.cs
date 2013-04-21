@@ -48,7 +48,7 @@ namespace N2.Tests.Integrity
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
 			activator = new ContentActivator(changer, notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, new ITemplateProvider[0], activator, changer, new DefinitionMap());
+			definitions = new DefinitionManager(new[] { new DefinitionProvider(builder) }, activator, changer, new DefinitionMap());
 			integrityManger = new IntegrityManager(definitions, persister.Repository, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);
 			enforcer.Start();

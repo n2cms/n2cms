@@ -12,6 +12,7 @@ namespace N2.Definitions
 
 		/// <summary>Short description of the template.</summary>
 		public string Title { get; set; }
+
 		/// <summary>Longer description of the template.</summary>
 		public string Description { get; set; }
 

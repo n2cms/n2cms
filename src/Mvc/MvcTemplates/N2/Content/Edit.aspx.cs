@@ -292,7 +292,7 @@ namespace N2.Edit
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Definitions.GetTemplate(definition.ItemType, template);
+					var info = Engine.Resolve<ITemplateAggregator>().GetTemplate(definition.ItemType, template);
 					definitionTitle = info.Title;
 				}
 
