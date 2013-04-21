@@ -46,7 +46,6 @@ namespace N2.Tests.Serialization
 					finder, 
 					new TransformerBase<IUniquelyNamed>[0],
 					TestSupport.SetupEngineSection()))}, 
-				new ITemplateProvider[0],
 				activator, new StateChanger(), new DefinitionMap());
 			definitions.Start();
 			parser = mocks.StrictMock<IUrlParser>();

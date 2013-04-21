@@ -339,7 +339,7 @@ namespace N2.Web.UI.WebControls
 			var definition = Engine.Definitions.GetDefinition(discriminator);
 			if (!string.IsNullOrEmpty(template))
 			{
-				var info = Engine.Definitions.GetTemplate(definition.ItemType, template);
+				var info = Engine.Resolve<ITemplateAggregator>().GetTemplate(definition.ItemType, template);
 				if (info == null)
 					throw new InvalidOperationException("Failed to find definition for type " + definition.ItemType + " and template " + template);
 				Definition = info.Definition;
