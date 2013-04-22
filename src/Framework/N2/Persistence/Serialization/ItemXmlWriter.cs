@@ -33,8 +33,6 @@ namespace N2.Persistence.Serialization
 		{
 			if (definitions == null)
 				throw new ArgumentNullException("definitions");
-			if (parser == null)
-				throw new ArgumentNullException("parser");
 
 			this.definitions = definitions;
 			this.parser = parser;
@@ -95,8 +93,6 @@ namespace N2.Persistence.Serialization
 				throw new ArgumentNullException("itemElement");
 			if (item == null)
 				throw new ArgumentNullException("item");
-			if (parser == null)
-				throw new NullReferenceException("urlParser must not be null");
 
 			itemElement.WriteAttribute("id", item.ID);
 			itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
@@ -122,7 +118,7 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("published", item.Published);
 			itemElement.WriteAttribute("expires", item.Expires);
 			itemElement.WriteAttribute("sortOrder", item.SortOrder);
-			itemElement.WriteAttribute("url", parser.BuildUrl(item));
+			itemElement.WriteAttribute("url", parser == null ? item.Url : (string)parser.BuildUrl(item));
 			itemElement.WriteAttribute("visible", item.Visible);
 			itemElement.WriteAttribute("savedBy", item.SavedBy);
 			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
