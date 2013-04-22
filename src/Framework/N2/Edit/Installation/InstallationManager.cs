@@ -311,10 +311,9 @@ namespace N2.Edit.Installation
 
 		private bool IsSql(DatabaseStatus status)
 		{
-			if (!config.Flavour.IsFlagSet(DatabaseFlavour.NoSql))
-				return true;
-
-			return false;
+			if (config.Flavour.IsFlagSet(DatabaseFlavour.NoSql))
+				return false;
+			return true;
 		}
 
 
