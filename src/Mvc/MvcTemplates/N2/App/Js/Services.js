@@ -6,4 +6,9 @@
 		return res;
 	});
 
+	module.factory('Children', function ($resource) {
+		var res = $resource('Api/Children.ashx', {}, {});
+		return res;
+	});
+
 })(angular.module('n2.services', ['ngResource']));

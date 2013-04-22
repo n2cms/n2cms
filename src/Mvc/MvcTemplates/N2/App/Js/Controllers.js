@@ -11,8 +11,20 @@ function SearchCtrl() {
 function NavigationCtrl($scope) {
 }
 function TrunkCtrl($scope) {
-	$scope.node = $scope.Interface.Content;
+	$scope.$watch("Interface.Content", function (content) {
+		$scope.node = content;
+	});
+	$scope.toggle = function (node) {
+		node.Expanded = !node.Expanded;
+	};
 }
-function BranchCtrl($scope) {
+function BranchCtrl($scope, Children) {
 	$scope.node = $scope.child;
+	$scope.toggle = function (node) {
+		console.log(node);
+		if (!node.Expanded && !node.Children.length) {
+			node.Children = Children.query({ selected: node.Current.Path });
+		}
+		node.Expanded = !node.Expanded;
+	};
 }

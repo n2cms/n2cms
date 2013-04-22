@@ -3,23 +3,19 @@
 		<li class="root expanded">
 			<div class="item">
 				<a href="#">{{Interface.Site.Authority || Interface.Authority}}</a>
-				<div class="toggle">
-					<img src="redesign/img/minus.png" class="collapse" /><img src="redesign/img/plus.png" class="expand" />
-				</div>
 				<div class="tools">
 					<a href="#">tools</a>
 				</div>
 			</div>
-			
 			<ul>
-				<li ng-controller="TrunkCtrl" ng-include src="'App/Partials/PageBranch.html'"></li>
+				<li ng-controller="TrunkCtrl" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'"></li>
 			</ul>
 		</li>
 	</ul>
 </div>
 <div id="trash">
 	<div>
-		<div><a href="#">trash (4 items)</a></div>
+		<div><a href="#">{{Interface.Trash.Current.Title}} ({{Interface.Trash.ChildItems}} items)</a></div>
 		drag item here to delete
 	</div>
 </div>

@@ -27,13 +27,12 @@
     <div class="sliding-loader loader"></div>
 	<div id="main-wrapper">
         <div id="secondary-area">
-            <div ng-include src="'App/Partials/Search.html'" ng-controller="SearchCtrl"></div>
             <div ng-include src="'App/Partials/PageTree.html'" ng-controller="NavigationCtrl"></div>
             <div class="dragbar"></div>
         </div>
         <div id="main-area">
-			<div id="page-preview" ng-bind-html-unsafe="Interface | pretty">
-				<%--<iframe id="page-preview-frame" src="{{Preview.Url}}"></iframe>--%>
+			<div id="page-preview"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
+				<iframe id="page-preview-frame" name="preview" src="{{Preview.Url}}"></iframe>
 			</div>
             <div ng-include src="'App/Partials/PageActionBar.html'"></div>
         </div>

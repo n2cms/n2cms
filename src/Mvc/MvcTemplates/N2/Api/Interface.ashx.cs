@@ -1,6 +1,8 @@
 ﻿using N2.Collections;
 using N2.Edit;
+using N2.Edit.Trash;
 using N2.Engine;
+using N2.Persistence;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,12 @@ namespace N2.Management.Api
 	{
 		public T Current { get; set; }
 		public IEnumerable<Node<T>> Children { get; set; }
+
+		public bool HasChildren { get; set; }
+
+		public bool Expanded { get; set; }
+
+		public bool Selected { get; set; }
 	}
 
 	public class InterfaceMenuItem
@@ -35,12 +43,20 @@ namespace N2.Management.Api
 		public string Authority { get; set; }
 
 		public InterfaceUser User { get; set; }
+
+		public InterfaceTrash Trash { get; set; }
 	}
 
 	public class InterfaceUser
 	{
 		public string Name { get; set; }
 		public string Username { get; set; }
+	}
+
+	public class InterfaceTrash : Node<TreeNode>
+	{
+		public int TotalItems { get; set; }
+		public int ChildItems { get; set; }
 	}
 
 	/// <summary>
@@ -63,9 +79,32 @@ namespace N2.Management.Api
 				Content = CreateContent(context),
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
-				User = CreateUser(context)
+				User = CreateUser(context),
+				Trash = CreateTrash(context)
 			}.ToJson(context.Response.Output);
 			
+		}
+
+		private InterfaceTrash CreateTrash(HttpContext context)
+		{
+			var trash = engine.Resolve<ITrashHandler>();
+			
+			if (trash.TrashContainer == null)
+				return new InterfaceTrash();
+
+			var container = (ContentItem)trash.TrashContainer;
+
+			var total = (int)engine.Persister.Repository.Count(Parameter.Below(container));
+			var children = (int)engine.Persister.Repository.Count(Parameter.Equal("Parent", container));
+			
+			return new InterfaceTrash
+			{
+				Current = engine.GetContentAdapter<NodeAdapter>(container).GetTreeNode(container),
+				HasChildren = children > 0,
+				ChildItems = children,
+				TotalItems = total,
+				Children = new Node<TreeNode>[0]
+			};
 		}
 
 		private InterfaceUser CreateUser(HttpContext context)
@@ -85,16 +124,21 @@ namespace N2.Management.Api
 				.Children((item) => engine.Resolve<IContentAdapterProvider>().ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
 				.Build();
 
-			return CreateStructure(structure);
+			return CreateStructure(structure, filter);
 		}
 
-		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure)
+		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
+			
+			var children = structure.Children.Select(c => CreateStructure(c, filter)).ToList();
 			return new Node<TreeNode>
 			{
 				Current = adapter.GetTreeNode(structure.Current),
-				Children = structure.Children.Select(c => CreateStructure(c)).ToArray()
+				HasChildren = adapter.HasChildren(structure.Current, filter),
+				Expanded = children.Any(),
+				Selected = selection.SelectedItem == structure.Current,
+				Children = children
 			};
 		}
 
