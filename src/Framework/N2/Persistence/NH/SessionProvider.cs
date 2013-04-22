@@ -52,8 +52,8 @@ namespace N2.Persistence.NH
 		/// <summary>Gets an existing session context or null if no session is in progress.</summary>
 		public virtual SessionContext CurrentSession
 		{
-			get { return webContext.RequestItems[SessionKey] as SessionContext; }
-			set { webContext.RequestItems[SessionKey] = value; }
+			get { return webContext == null ? null : webContext.RequestItems[SessionKey] as SessionContext; }
+			set { if (webContext != null) webContext.RequestItems[SessionKey] = value; }
 		}
 
         public FlushMode FlushAt
