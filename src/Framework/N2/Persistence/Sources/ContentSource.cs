@@ -17,11 +17,14 @@ namespace N2.Persistence.Sources
 		private readonly ISecurityManager _security;
 		public IEnumerable<SourceBase> Sources { get; protected set; }
 		
-		public ContentSource(ISecurityManager security, IEnumerable<SourceBase> sources)
+		// ReSharper disable ParameterTypeCanBeEnumerable.Local
+		// Note: If IEnumerable<SourceBase> is used here, an inversion of control error will occur. 
+		public ContentSource(ISecurityManager security, SourceBase[] sources)
 		{
 			_security = security;
 			Sources = sources.OrderBy(s => s.SortOrder).ToList();
 		}
+		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
 		public virtual PathData ResolvePath(string path)
 		{
