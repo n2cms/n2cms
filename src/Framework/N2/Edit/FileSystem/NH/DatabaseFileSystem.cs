@@ -37,13 +37,15 @@ namespace N2.Edit.FileSystem.NH
                 .Add(Restrictions.Eq("Path.Parent", path.ToString()))
                 .Add(criterion)
 				.AddOrder(Order.Asc("Path.Name"))
+				.SetCacheable(true)
                 .List<FileSystemItem>();
         }
 
         private FileSystemItem GetSpecificItem(FileSystemPath path)
         {
             var c = Session.CreateCriteria<FileSystemItem>()
-                .Add(Restrictions.Eq("Path", path));
+                .Add(Restrictions.Eq("Path", path))
+				.SetCacheable(true);
 
             return c.UniqueResult<FileSystemItem>();
         }
