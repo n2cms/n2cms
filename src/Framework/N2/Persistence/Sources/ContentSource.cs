@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using N2.Engine;
 using N2.Web;
-using N2.Collections;
-using N2.Persistence;
 using N2.Security;
-using N2.Edit.Workflow;
 
 namespace N2.Persistence.Sources
 {
@@ -17,15 +13,13 @@ namespace N2.Persistence.Sources
 	[Service]
 	public class ContentSource
 	{
-		static ContentItem[] NoItems = new ContentItem[0];
-
-		private ISecurityManager security;
-
+		static readonly ContentItem[] NoItems = new ContentItem[0];
+		private readonly ISecurityManager _security;
 		public IEnumerable<SourceBase> Sources { get; protected set; }
 		
-		public ContentSource(ISecurityManager security, SourceBase[] sources)
+		public ContentSource(ISecurityManager security, IEnumerable<SourceBase> sources)
 		{
-			this.security = security;
+			_security = security;
 			Sources = sources.OrderBy(s => s.SortOrder).ToList();
 		}
 
@@ -45,12 +39,10 @@ namespace N2.Persistence.Sources
 
 		public virtual IEnumerable<ContentItem> GetChildren(Query query)
 		{
-			IEnumerable<ContentItem> items = AppendChildren(NoItems, query);
-
+			var items = AppendChildren(NoItems, query);
 			if (query.SkipAuthorization)
 				return items;
-
-			return items.Where(security.GetAuthorizationFilter(Permission.Read));
+			return items.Where(_security.GetAuthorizationFilter(Permission.Read));
 		}
 
 		public virtual bool HasChildren(Query query)
@@ -65,15 +57,13 @@ namespace N2.Persistence.Sources
 
 		public virtual IEnumerable<ContentItem> AppendChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
+			// ReSharper disable LoopCanBeConvertedToQuery
 			foreach (var source in Sources)
-			{
 				previousChildren = source.AppendChildren(previousChildren, query);
-			}
 			foreach (var source in Sources)
-			{
 				previousChildren = source.FilterChildren(previousChildren, query);
-			}
 			return previousChildren;
+			// ReSharper restore LoopCanBeConvertedToQuery
 		}
 
 		public virtual bool IsProvidedBy(ContentItem item)
@@ -113,12 +103,11 @@ namespace N2.Persistence.Sources
 		}
 
 
-
 		private SourceBase GetSourceOrThrow(ContentItem item)
 		{
 			var source = GetSource(item);
 			if (source == null)
-				throw new InvalidOperationException("No source provides for " + item);
+				throw new InvalidOperationException(string.Format("No source provides for {0}", item));
 			return source;
 		}
 	}
