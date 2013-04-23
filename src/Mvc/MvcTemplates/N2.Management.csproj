@@ -167,6 +167,8 @@
     <Content Include="N2\redesign\img\actionbar\version.png" />
     <Content Include="N2\redesign\img\actionbar\view.png" />
     <Content Include="N2\redesign\img\arrow-down.png" />
+    <Content Include="N2\redesign\img\glyphicons-black\default.htm" />
+    <Content Include="N2\redesign\img\glyphicons-white\default.htm" />
     <Content Include="N2\redesign\img\grabber.png" />
     <Content Include="N2\redesign\img\icons\page-world.png" />
     <Content Include="N2\redesign\img\icons\page.png" />
@@ -2239,7 +2241,7 @@
     <Content Include="N2\Resources\Css\themes\icms.css" />
     <Content Include="N2\Resources\Css\themes\default.css" />
     <Content Include="N2\Resources\Css\themes\ink.css" />
-    <Content Include="N2\Resources\icons.html" />
+    <Content Include="N2\Resources\icons\default.html" />
     <Content Include="N2\Resources\img\darken10.png" />
     <Content Include="N2\Resources\img\darken25.png" />
     <Content Include="N2\Resources\img\fieldset_bg.png" />
@@ -2283,7 +2285,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
-    <Folder Include="N2\Resources\icons\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

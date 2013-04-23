@@ -30,6 +30,12 @@ namespace N2.Management.Api
 		public string Frame { get; set; }
 
 		public string IconClass { get; set; }
+
+		public string Description { get; set; }
+
+		public string ToolTip { get; set; }
+
+		public string IconUrl { get; set; }
 	}
 
 	public class InterfaceData
@@ -45,6 +51,8 @@ namespace N2.Management.Api
 		public InterfaceUser User { get; set; }
 
 		public InterfaceTrash Trash { get; set; }
+
+		public Node<InterfaceMenuItem> ActionMenu { get; set; }
 	}
 
 	public class InterfaceUser
@@ -76,13 +84,67 @@ namespace N2.Management.Api
 			new InterfaceData
 			{
 				TopMenu = CreateTopMenu(),
+				ActionMenu = CreateActionMenu(context),
 				Content = CreateContent(context),
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
 				Trash = CreateTrash(context)
 			}.ToJson(context.Response.Output);
-			
+		}
+
+		private Node<InterfaceMenuItem> CreateActionMenu(HttpContext context)
+		{
+			return new Node<InterfaceMenuItem>
+			{
+				Children = new Node<InterfaceMenuItem>[]
+				{
+					new Node<InterfaceMenuItem>
+					{
+						Current = new InterfaceMenuItem { Title = "", ToolTip = "View page preview", Frame = "preview", Url = "#view", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" },
+						Children = new Node<InterfaceMenuItem>[0]
+					},
+					new Node<InterfaceMenuItem>
+					{
+						Current = new InterfaceMenuItem { Title = "Edit", Description = "Page details", Frame = "preview", Url = "#edit", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" },
+						Children = new Node<InterfaceMenuItem>[]
+						{
+							new Node<InterfaceMenuItem>
+							{
+								Current = new InterfaceMenuItem { Title = "Organize Parts", Frame = "preview", Url = "#edit/parts", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" },
+								Children = new Node<InterfaceMenuItem>[0]
+							}
+						}
+					},
+					new Node<InterfaceMenuItem>
+					{
+						Current = new InterfaceMenuItem { Title = "Versions", Description = "Published version", Frame = "preview", Url = "#versions", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" },
+						Children = new Node<InterfaceMenuItem>[0]
+					},
+					new Node<InterfaceMenuItem>
+					{
+						Current = new InterfaceMenuItem { Title = "Language", Description = "English", Frame = "preview", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
+						Children = new Node<InterfaceMenuItem>[]
+						{
+							new Node<InterfaceMenuItem>
+							{
+								Current = new InterfaceMenuItem { Title = "English", Frame = "preview", Url = "#languages/english" },
+								Children = new Node<InterfaceMenuItem>[0]
+							},
+							new Node<InterfaceMenuItem>
+							{
+								Current = new InterfaceMenuItem { Title = "Swedish", Frame = "preview", Url = "#languages/swedish" },
+								Children = new Node<InterfaceMenuItem>[0]
+							}
+						}
+					},
+					new Node<InterfaceMenuItem>
+					{
+						Current = new InterfaceMenuItem { Title = "Publish", Frame = "preview", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" },
+						Children = new Node<InterfaceMenuItem>[0]
+					}
+				}
+			};
 		}
 
 		private InterfaceTrash CreateTrash(HttpContext context)

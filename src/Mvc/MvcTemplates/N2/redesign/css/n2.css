@@ -44,7 +44,7 @@ ul.menu li { display: inline-block; }
 				#page-tree ul li a.toggle { float: right; margin-right: 10px; width:12px; height:12px; }
 					#page-tree ul li a.toggle i { display:none; }
 					#page-tree ul li.collapsed > div > a.toggle i.toggle-expand { display:inline-block; }
-					#page-tree ul li.expanded > div > a.toggle i.toggle-collapse { display:inline-block; }
+					#page-tree ul li.expanded > div:hover > a.toggle i.toggle-collapse { display:inline-block; }
 				/*#page-tree ul li.expanded > div > a.toggle > .open { display: inline-block; }
 				#page-tree ul li.collapsed > div > a.toggle > .open { display: inline-block; }*/
 					/*#page-tree ul li a.toggle { display: none; height:29px; width:16px; background:transparent none no-repeat 50% 50%; }
@@ -67,32 +67,36 @@ ul.menu li { display: inline-block; }
 
 #main-area { left: 200px; position: absolute; top: 0; bottom: 0; overflow:auto; }
 	#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }
-	#main-area #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
-		#main-area #page-action-bar.secondary ul { float: left; }
-			#main-area #page-action-bar.secondary ul li { opacity: 0.9; }
-				#main-area #page-action-bar.secondary ul li:hover { opacity: 1; }
-		#main-area #page-action-bar.primary ul { float: right; }
-		#main-area #page-action-bar li { height: 39px; float: left; display: block; }
-			#main-area #page-action-bar li a { float: left; height: 35px; margin-top: 2px; border-right: 1px solid #74c6eb; padding-left: 15px; padding-right: 15px; }
-			#main-area #page-action-bar li:hover { background-color: #3aaee3; }
-			#main-area #page-action-bar li a div { float: left; line-height: 16px; padding-left: 8px; padding-top: 8px; }
-			#main-area #page-action-bar li.iconed img { float: left; padding-top: 5px; }
-			#main-area #page-action-bar li.iconed a { float: left; height: 35px; margin-top: 2px; }
-			#main-area #page-action-bar li.command-options { }
-				#main-area #page-action-bar li.command-options a div { padding-top: 2px; }
-		#main-area #page-action-bar a { color: #fff; float: left; }
-			#main-area #page-action-bar a:hover { text-decoration: none; }
-		#main-area #page-action-bar span { font-size: 11px; display: block; font-family: Arial; }
-		#main-area #page-action-bar .command-options .command-options { background: #ebf7fc; min-width: 350px; position: absolute; top: 39px; }
-			#main-area #page-action-bar .command-options .command-options ul { float: none; }
-				#main-area #page-action-bar .command-options .command-options ul li { border-top: 1px solid #FFFFFF; border-left: 5px solid #d9f0f9; position: relative; margin-top: 1px; opacity: 1; display: block; float: none; height: 39px; font-size: 14px; line-height: 39px; }
-					#main-area #page-action-bar .command-options .command-options ul li:hover { opacity: 1; border-left-color: #b6e1f4; }
-					#main-area #page-action-bar .command-options .command-options ul li.active { border-left: 5px solid #3aaee3; }
-			#main-area #page-action-bar .command-options .command-options li:hover { background-color: #ebf7fc; }
-			#main-area #page-action-bar .command-options .command-options li a { border: 0 none; border-bottom: 1px solid #d9f0f9; border-right: 1px solid #d9f0f9; color: #000000; float: none; height: 38px; margin: 0; padding: 0; position: absolute; text-indent: 7px; width: 100%; }
-				#main-area #page-action-bar .command-options .command-options li a:hover { text-decoration: underline; }
-				#main-area #page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
-			#main-area #page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
-				#main-area #page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }
 	#main-area #page-preview { position:absolute; top: 39px; bottom: 0; width:100%; }
 		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
+
+#page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
+	#page-action-bar.secondary ul { float: left; }
+		#page-action-bar.secondary ul li { }
+			#page-action-bar.secondary ul li:hover { }
+	#page-action-bar.primary ul { float: right; }
+	#page-action-bar li { height: 39px; float: left; display: block; line-height:16px; }
+		#page-action-bar li a { float: left; height: 35px; margin-top: 2px; border-right: 1px solid #74c6eb; padding-left: 15px; padding-right: 15px; }
+		#page-action-bar li a.page-action-icon { background: transparent none no-repeat 15px 50%; padding-left:45px; padding-right:15px; }
+		#page-action-bar li:hover { background-color: #3aaee3; }
+		#page-action-bar li a div { float: left; line-height: 16px; padding-left: 8px; padding-top: 8px; }
+		#page-action-bar li.iconed img { float: left; padding-top: 5px; }
+		#page-action-bar li.iconed a { float: left; height: 35px; margin-top: 2px; }
+		#page-action-bar li.command-options { }
+		#page-action-bar li.command-options div.command-options { display:none; }
+		#page-action-bar li.command-options:hover div.command-options { display:block; }
+			#page-action-bar li.command-options a div { padding-top: 2px; }
+	#page-action-bar a { color: #fff; float: left; }
+		#page-action-bar a:hover { text-decoration: none; }
+	#page-action-bar span { font-size: 11px; display: block; font-family: Arial; }
+	#page-action-bar .command-options .command-options { background: #ebf7fc; min-width: 350px; position: absolute; top: 39px; }
+		#page-action-bar .command-options .command-options ul { float: none; }
+			#page-action-bar .command-options .command-options ul li { border-top: 1px solid #FFFFFF; border-left: 5px solid #d9f0f9; position: relative; margin-top: 1px; display: block; float: none; height: 39px; font-size: 14px; line-height: 39px; }
+				#page-action-bar .command-options .command-options ul li:hover { border-left-color: #b6e1f4; }
+				#page-action-bar .command-options .command-options ul li.active { border-left: 5px solid #3aaee3; }
+		#page-action-bar .command-options .command-options li:hover { background-color: #ebf7fc; }
+		#page-action-bar .command-options .command-options li a { border: 0 none; border-bottom: 1px solid #d9f0f9; border-right: 1px solid #d9f0f9; color: #000000; float: none; height: 38px; margin: 0; padding: 0; position: absolute; text-indent: 7px; width: 100%; }
+			#page-action-bar .command-options .command-options li a:hover { text-decoration: underline; }
+			#page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
+		#page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
+			#page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }

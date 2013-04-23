@@ -1,5 +1,25 @@
 ﻿<div id="page-action-bar" class="action-bar secondary">
 	<ul class="menu">
+		<li ng-repeat="item in Interface.ActionMenu.Children" title="{{item.Current.ToolTip}}" ng-class="{ 'command-options' : item.Children.length }">
+			<a href="{{item.Current.Url}}" ng-show="item.Current.IconUrl" class="page-action-icon" style="background-image:url({{item.Current.IconUrl}})">
+				{{item.Current.Title}}
+				<span>{{item.Current.Description}}</span>
+			</a>
+			<a href="{{item.Current.Url}}" ng-show="!item.Current.IconUrl">
+				<i ng-show="item.Current.IconClass" class="{{item.Current.IconClass}}"></i>
+				{{item.Current.Title}}
+				<span>{{item.Current.Description}}</span>
+			</a>
+			<div class="command-options" ng-show="item.Children.length">
+				<ul>
+					<li ng-repeat="child in item.Children">
+						<a href="{{child.Current.Url}}">{{child.Current.Title}}</a>
+					</li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+<!--	<ul class="menu">
 		<li class="page-view iconed"><a href="#">
 			<img src="redesign/img/actionbar/view.png" /></a></li>
 		<li class="page-edit command-options iconed">
@@ -36,8 +56,8 @@
 				<img src="redesign/img/actionbar/language.png" /><div>Language<span>English</span></div>
 			</a>
 		</li>
-	</ul>
-	<div id="Div1" class="action-bar primary">
+	</ul>-->
+	<div class="action-bar primary pull-right">
 		<ul>
 			<li class="page-publish iconed"><a href="#">
 				<img src="redesign/img/actionbar/publish.png" /><div>Publish</div>
