@@ -17,6 +17,19 @@ function TrunkCtrl($scope) {
 	$scope.toggle = function (node) {
 		node.Expanded = !node.Expanded;
 	};
+
+	function deselectRecursive(node) {
+		if (node.Selected) {
+			node.Selected = false;
+			return;
+		}
+		for (var i in node.Children)
+			deselectRecursive(node.Children[i]);
+	}
+	$scope.select = function (node) {
+		deselectRecursive($scope.Interface.Content);
+		node.Selected = true;
+	}
 }
 function BranchCtrl($scope, Children) {
 	$scope.node = $scope.child;

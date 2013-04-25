@@ -1,5 +1,5 @@
 ﻿<div class='item'>
-	<a href='{{node.Current.PreviewUrl}}' target='preview'>
+	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview'>
 		<span class='icon-custom' style='background-image:url({{node.Current.IconUrl}}); background-position:0 0; width:16px; height:16px;'></span>
 		{{node.Current.Title}}
 	</a>
