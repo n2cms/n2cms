@@ -113,7 +113,7 @@ namespace N2.Persistence.Serialization
 			return multiDetail;
 		}
 
-		private string PrepareStringDetail(ContentItem item, string name, string value, bool encoded)
+		internal string PrepareStringDetail(ContentItem item, string name, string value, bool encoded)
 		{
 			if (encoded)
 			{
