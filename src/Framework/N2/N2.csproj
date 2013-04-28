@@ -133,6 +133,9 @@
     <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
+    <Compile Include="Definitions\DefinitionEventArgs.cs" />
+    <Compile Include="Definitions\ITemplateAggregator.cs" />
+    <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
