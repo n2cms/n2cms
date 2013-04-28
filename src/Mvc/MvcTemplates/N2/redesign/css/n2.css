@@ -38,6 +38,7 @@ ul.menu li { display: inline-block; }
 	#page-tree ul { list-style-type:none; }
 		#page-tree ul li { margin-left: 10px; text-indent: 5px; line-height: 29px; }
 			#page-tree ul li div { }
+			#page-tree ul li div a.item { display: inline-block; min-width: 60%; }
 				#page-tree ul li div.tools { background: url("../img/tools.png") no-repeat scroll 0 0 transparent; float: right; height: 11px; margin-right: 10px; position: relative; top: 10px; width: 18px; display:none; }
 				#page-tree ul li div.item:hover div.tools { display: block; }
 					#page-tree ul li div.tools a { text-indent: -9999px; display: block; }

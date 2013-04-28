@@ -1,26 +1,43 @@
 ﻿(function (module) {
 	console.log("directives.js");
 
-	module.directive("treenode", function () {
+	module.directive("backgroundImage", function () {
 		return {
-			restrict: "E",
-			replace: true,
-			scope: {
-				model: "="
-			},
-			template: "<div class='item'>\
-	<a href='{{model.Current.Url}}' target='{{model.Current.Target}}'>\
-		<span class='icon-custom' style='background-image:url({{model.Current.IconUrl}}); background-position:0 0; width:16px; height:16px;'></span>\
-		{{model.Current.Title}}</a>\
-	<div class='toggle'>\
-		<img src='redesign/img/minus.png' class='collapse' /><img src='redesign/img/plus.png' class='expand' />\
-	</div>\
-	<div class='tools'>\
-		<a href='#'>tools</a>\
-	</div>\
-</div>",
+			restrict: "A",
 			link: function compile(scope, element, attrs) {
+				if (attrs.backgroundImage) {
+					var style = element.attr("style");
+					if (style)
+						style += ";";
+					else
+						style = "";
+					style += attrs.backgroundImage;
+					element.attr("style", "background-image:url(" + attrs.backgroundImage + ")");
+				}
 			}
+		}
+	});
+
+	module.directive('compile', function ($compile) {
+		// directive factory creates a link function
+		return function (scope, element, attrs) {
+			scope.$watch(
+				function (scope) {
+					// watch the 'compile' expression for changes
+					return scope.$eval(attrs.compile);
+				},
+				function (value) {
+					// when the 'compile' expression changes
+					// assign it into the current DOM
+					element.html(value);
+
+					// compile the new DOM and link it to the current
+					// scope.
+					// NOTE: we only compile .childNodes so that
+					// we don't get into infinite loop compiling ourselves
+					$compile(element.contents())(scope);
+				}
+			);
 		};
 	});
 

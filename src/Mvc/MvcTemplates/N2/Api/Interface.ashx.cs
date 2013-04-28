@@ -7,6 +7,7 @@ using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace N2.Management.Api
@@ -27,7 +28,7 @@ namespace N2.Management.Api
 	{
 		public string Title { get; set; }
 		public string Url { get; set; }
-		public string Frame { get; set; }
+		public string Target { get; set; }
 
 		public string IconClass { get; set; }
 
@@ -36,6 +37,8 @@ namespace N2.Management.Api
 		public string ToolTip { get; set; }
 
 		public string IconUrl { get; set; }
+
+		public string Template { get; set; }
 	}
 
 	public class InterfaceData
@@ -53,6 +56,21 @@ namespace N2.Management.Api
 		public InterfaceTrash Trash { get; set; }
 
 		public Node<InterfaceMenuItem> ActionMenu { get; set; }
+
+		public InterfaceUrls Paths { get; set; }
+	}
+
+	public class InterfaceUrls
+	{
+		public string Management { get; set; }
+
+		public string Create { get; set; }
+
+		public string Delete { get; set; }
+
+		public string Edit { get; set; }
+
+		public string SelectedQueryKey { get; set; }
 	}
 
 	public class InterfaceUser
@@ -89,8 +107,20 @@ namespace N2.Management.Api
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
-				Trash = CreateTrash(context)
+				Trash = CreateTrash(context),
+				Paths = CreateUrls()
 			}.ToJson(context.Response.Output);
+		}
+
+		private InterfaceUrls CreateUrls()
+		{
+			return new InterfaceUrls {
+				Management = engine.ManagementPaths.GetManagementInterfaceUrl(),
+				Delete = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens(),
+				Edit = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens(),
+				SelectedQueryKey = engine.Config.Sections.Management.Paths.SelectedQueryKey.ResolveUrlTokens(),
+				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens()
+			};
 		}
 
 		private Node<InterfaceMenuItem> CreateActionMenu(HttpContext context)
@@ -101,46 +131,46 @@ namespace N2.Management.Api
 				{
 					new Node<InterfaceMenuItem>
 					{
-						Current = new InterfaceMenuItem { Title = "", ToolTip = "View page preview", Frame = "preview", Url = "#view", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" },
+						Current = new InterfaceMenuItem { Template = @"<a target='preview' title='View page preview' href='{{Context.Node.Current.PreviewUrl}}' class='page-action-icon' style='background-image:url(redesign/img/glyphicons-white/glyphicons_051_eye_open.png)'></a>" },
 						Children = new Node<InterfaceMenuItem>[0]
 					},
 					new Node<InterfaceMenuItem>
 					{
-						Current = new InterfaceMenuItem { Title = "Edit", Description = "Page details", Frame = "preview", Url = "#edit", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" },
+						Current = new InterfaceMenuItem { Template = @"<a target='preview' title='Edit page' href='{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}' class='page-action-icon' style='background-image:url(redesign/img/glyphicons-white/glyphicons_150_edit.png)'>Edit<span>Page details</span></a>" },
 						Children = new Node<InterfaceMenuItem>[]
 						{
 							new Node<InterfaceMenuItem>
 							{
-								Current = new InterfaceMenuItem { Title = "Organize Parts", Frame = "preview", Url = "#edit/parts", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" },
+								Current = new InterfaceMenuItem { Title = "Organize Parts", Target = "preview", Url = "#edit/parts", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" },
 								Children = new Node<InterfaceMenuItem>[0]
-							}
+							},
 						}
 					},
 					new Node<InterfaceMenuItem>
 					{
-						Current = new InterfaceMenuItem { Title = "Versions", Description = "Published version", Frame = "preview", Url = "#versions", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" },
+						Current = new InterfaceMenuItem { Title = "Versions", Description = "Published version", Target = "preview", Url = "{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" },
 						Children = new Node<InterfaceMenuItem>[0]
 					},
 					new Node<InterfaceMenuItem>
 					{
-						Current = new InterfaceMenuItem { Title = "Language", Description = "English", Frame = "preview", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
+						Current = new InterfaceMenuItem { Title = "Language", Description = "English", Target = "preview", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
 						Children = new Node<InterfaceMenuItem>[]
 						{
 							new Node<InterfaceMenuItem>
 							{
-								Current = new InterfaceMenuItem { Title = "English", Frame = "preview", Url = "#languages/english" },
+								Current = new InterfaceMenuItem { Title = "English", Target = "preview", Url = "#languages/english" },
 								Children = new Node<InterfaceMenuItem>[0]
 							},
 							new Node<InterfaceMenuItem>
 							{
-								Current = new InterfaceMenuItem { Title = "Swedish", Frame = "preview", Url = "#languages/swedish" },
+								Current = new InterfaceMenuItem { Title = "Swedish", Target = "preview", Url = "#languages/swedish" },
 								Children = new Node<InterfaceMenuItem>[0]
 							}
 						}
 					},
 					new Node<InterfaceMenuItem>
 					{
-						Current = new InterfaceMenuItem { Title = "Publish", Frame = "preview", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" },
+						Current = new InterfaceMenuItem { Title = "Publish", Target = "preview", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" },
 						Children = new Node<InterfaceMenuItem>[0]
 					}
 				}
@@ -212,37 +242,37 @@ namespace N2.Management.Api
 					{
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Home", Frame = "_top", Url = "#home", IconClass = "icon-home" },
+							Current = new InterfaceMenuItem { Title = "Home", Target = "_top", Url = "#home", IconClass = "icon-home" },
 							Children = new Node<InterfaceMenuItem>[0]
 						},
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Pages", Frame = "_top", Url = "#pages" },
+							Current = new InterfaceMenuItem { Title = "Pages", Target = "_top", Url = "#pages" },
 							Children = new Node<InterfaceMenuItem>[0]
 						},
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Files", Frame = "_top", Url = "#files" },
+							Current = new InterfaceMenuItem { Title = "Files", Target = "_top", Url = "#files" },
 							Children = new Node<InterfaceMenuItem>[0]
 						},
 						new Node<InterfaceMenuItem>
 						{
-							Current = new InterfaceMenuItem { Title = "Settings", Frame = "_top", Url = "#settings" },
+							Current = new InterfaceMenuItem { Title = "Settings", Target = "_top", Url = "#settings" },
 							Children = new Node<InterfaceMenuItem>[]
 							{
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Site", Frame = "_top", Url = "#settings/site" },
+									Current = new InterfaceMenuItem { Title = "Site", Target = "_top", Url = "#settings/site" },
 									Children = new Node<InterfaceMenuItem>[0]
 								},
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Templates", Frame = "_top", Url = "#settings/templates" },
+									Current = new InterfaceMenuItem { Title = "Templates", Target = "_top", Url = "#settings/templates" },
 									Children = new Node<InterfaceMenuItem>[0]
 								},
 								new Node<InterfaceMenuItem>
 								{
-									Current = new InterfaceMenuItem { Title = "Wizards", Frame = "_top", Url = "#settings/wizards" },
+									Current = new InterfaceMenuItem { Title = "Wizards", Target = "_top", Url = "#settings/wizards" },
 									Children = new Node<InterfaceMenuItem>[0]
 								}
 							}

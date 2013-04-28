@@ -4,30 +4,40 @@
 
 function ManagementCtrl($scope, Interface) {
 	$scope.Interface = Interface.get();
-	$scope.Preview = { Url: "/" };
+	$scope.Context = {
+		Node: {
+			Current: {
+				PreviewUrl: "Empty.aspx"
+			}
+		}
+	}
 }
 function SearchCtrl() {
 }
-function NavigationCtrl($scope) {
+function NavigationCtrl() {
 }
 function TrunkCtrl($scope) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
+		if (content)
+			$scope.Context.Node = findSelectedRecursive(content);
 	});
 	$scope.toggle = function (node) {
 		node.Expanded = !node.Expanded;
 	};
-
-	function deselectRecursive(node) {
+	function findSelectedRecursive(node) {
 		if (node.Selected) {
-			node.Selected = false;
-			return;
+			return node;
 		}
-		for (var i in node.Children)
-			deselectRecursive(node.Children[i]);
+		for (var i in node.Children) {
+			var n = findSelectedRecursive(node.Children[i]);
+			if (n) return n;
+		}
+		return null;
 	}
 	$scope.select = function (node) {
-		deselectRecursive($scope.Interface.Content);
+		$scope.Context.Node.Selected = false;
+		$scope.Context.Node = node;
 		node.Selected = true;
 	}
 }
@@ -39,5 +49,10 @@ function BranchCtrl($scope, Children) {
 			node.Children = Children.query({ selected: node.Current.Path });
 		}
 		node.Expanded = !node.Expanded;
+	};
+}
+function PageActionCtrl($scope, $interpolate) {
+	$scope.evaluateExpression = function (expr) {
+		return expr && $interpolate(expr)($scope);
 	};
 }

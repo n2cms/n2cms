@@ -1,0 +1,35 @@
+﻿<div ng-show="item.Current.Template" x-compile="item.Current.Template"></div>
+
+<div ng-show="!item.Current.Template">
+	<a ng-class="{ 'page-action-icon': item.Current.IconUrl, 'page-action-description': item.Current.Description }" 
+		href="{{evaluateExpression(item.Current.Url)}}" 
+		target="{{evaluateExpression(item.Current.Target)}}"
+		x-background-image="{{item.Current.IconUrl}}" 
+		title="{{evaluateExpression(item.Current.ToolTip)}}">
+		<i ng-show="item.Current.IconClass" class="{{item.Current.IconClass}}"></i>
+		{{evaluateExpression(item.Current.Title)}}
+		<span ng-show="item.Current.Description">{{evaluateExpression(item.Current.Description)}}</span>
+	</a>
+</div>
+
+<div class="command-options" ng-show="item.Children.length">
+	<ul>
+		<li ng-repeat="child in item.Children">
+
+			<div ng-show="child.Current.Template" x-compile="child.Current.Template"></div>
+
+			<div ng-show="!child.Current.Template">
+				<a ng-show="child.Current.IconUrl" class="page-action-icon" style="background-image:url({{child.Current.IconUrl}})" title="{{child.Current.ToolTip}}">
+					{{child.Current.Title}}
+					<span>{{child.Current.Description}}</span>
+				</a>
+				<a ng-show="!child.Current.IconUrl" href="{{child.Current.Url}}" title="{{child.Current.ToolTip}}">
+					<i ng-show="child.Current.IconClass" class="{{child.Current.IconClass}}"></i>
+					{{child.Current.Title}}
+					<span>{{child.Current.Description}}</span>
+				</a>
+			</div>
+
+		</li>
+	</ul>
+</div>

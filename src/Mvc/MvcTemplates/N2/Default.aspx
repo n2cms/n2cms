@@ -30,10 +30,8 @@
             <div ng-include src="'App/Partials/PageTree.html'" ng-controller="NavigationCtrl"></div>
             <div class="dragbar"></div>
         </div>
-        <div id="main-area">
-			<div id="page-preview"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
-				<iframe id="page-preview-frame" name="preview" src="{{Preview.Url}}"></iframe>
-			</div>
+        <div id="main-area"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
+            <div ng-include src="'App/Partials/PagePreview.html'"></div>
             <div ng-include src="'App/Partials/PageActionBar.html'"></div>
         </div>
     </div>
