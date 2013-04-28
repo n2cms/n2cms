@@ -393,7 +393,8 @@ namespace N2
 				}
 				catch (MissingManifestResourceException)
 				{
-					SingletonDictionary<ResourceKey, string>.Instance[key] = null;
+					if (SingletonDictionary<ResourceKey, string>.Instance.ContainsKey(key)) // fixes NullReferenceException
+						SingletonDictionary<ResourceKey, string>.Instance[key] = null;
 				}
 			}
 			return null; // it's okay to use default text

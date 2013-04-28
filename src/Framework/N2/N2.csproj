@@ -105,6 +105,7 @@
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
     <Compile Include="Collections\ParallelRootHierarchyBuilder.cs" />
