@@ -100,7 +100,19 @@ namespace N2.Persistence.Serialization.Xml
 
 		public virtual void SaveOrUpdate(TEntity item)
 		{
-			throw new NotImplementedException();
+			var s = new System.Xml.Serialization.XmlSerializer(item.GetType());
+			using (var fs = File.CreateText(GetPath(item)))
+				s.Serialize(fs, item);
+		}
+
+		public string GetPath(TEntity item)
+		{
+			// ReSharper disable LoopCanBeConvertedToQuery
+			var type = item.GetType();
+			foreach (var p in type.GetProperties().Where(p => p.Name.ToLower() == "id"))
+				return String.Format("{0}-{1}.xml", type.Name, p.GetValue(item, null));
+			return null;
+			// ReSharper restore LoopCanBeConvertedToQuery
 		}
 
 		public bool Exists()
