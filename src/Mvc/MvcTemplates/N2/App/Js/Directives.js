@@ -1,25 +1,53 @@
 ﻿(function (module) {
 	console.log("directives.js");
 
+	module.directive("pageActionContent", function ($interpolate) {
+		return {
+			restrict: "E",
+			replace: true,
+			scope: true,
+			template: "<div x-compile='pageActionNode.Template'>\
+	<a ng-class=\"{ 'page-action-icon': pageActionNode.IconUrl, 'page-action-description': pageActionNode.Description }\" \
+		href='{{evaluateExpression(pageActionNode.Url)}}' \
+		target='{{evaluateExpression(pageActionNode.Target)}}'\
+		x-background-image='pageActionNode.IconUrl' \
+		title='{{evaluateExpression(pageActionNode.ToolTip)}}'>\
+		<i ng-show='pageActionNode.IconClass' class='{{pageActionNode.IconClass}}'></i>\
+		{{evaluateExpression(pageActionNode.Title)}}\
+		<span ng-show='pageActionNode.Description'>{{evaluateExpression(pageActionNode.Description)}}</span>\
+	</a>\
+</div>",
+			link: function compile(scope, element, attrs) {
+				scope.$watch(attrs.node, function (node) {
+					scope.pageActionNode = node;
+				});
+				scope.evaluateExpression = function (expr) {
+					return expr && $interpolate(expr)(scope);
+				};
+			}
+		}
+	});
+
 	module.directive("backgroundImage", function () {
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				if (attrs.backgroundImage) {
-					var style = element.attr("style");
-					if (style)
-						style += ";";
-					else
-						style = "";
-					style += attrs.backgroundImage;
-					element.attr("style", "background-image:url(" + attrs.backgroundImage + ")");
-				}
+				scope.$watch(attrs.backgroundImage, function (backgroundImage) {
+					if (backgroundImage) {
+						var style = element.attr("style");
+						if (style)
+							style += ";";
+						else
+							style = "";
+						style += backgroundImage;
+						element.attr("style", "background-image:url(" + backgroundImage + ")");
+					}
+				});
 			}
 		}
 	});
 
 	module.directive('compile', function ($compile) {
-		// directive factory creates a link function
 		return function (scope, element, attrs) {
 			scope.$watch(
 				function (scope) {
@@ -27,14 +55,14 @@
 					return scope.$eval(attrs.compile);
 				},
 				function (value) {
-					// when the 'compile' expression changes
-					// assign it into the current DOM
+					if (value === null)
+						return;
+
+					// when the 'compile' expression changes assign it into the current DOM
 					element.html(value);
 
-					// compile the new DOM and link it to the current
-					// scope.
-					// NOTE: we only compile .childNodes so that
-					// we don't get into infinite loop compiling ourselves
+					// compile the new DOM and link it to the current scope.
+					// NOTE: we only compile .childNodes so that we don't get into infinite loop compiling ourselves
 					$compile(element.contents())(scope);
 				}
 			);
