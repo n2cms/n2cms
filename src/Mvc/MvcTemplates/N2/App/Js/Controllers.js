@@ -56,3 +56,12 @@ function PageActionCtrl($scope, $interpolate) {
 		return expr && $interpolate(expr)($scope);
 	};
 }
+function LanguageCtrl($scope, Translations) {
+	$scope.onOver = function (node) {
+		if (node.Children.length && node.Selected == node.Current.Path)
+			return;
+		node.Selected = node.Current.Path;
+		node.Loading = true;
+		node.Children = Translations.query({ selected: node.Current.Path }, function () { node.Loading = false; });
+	}
+}

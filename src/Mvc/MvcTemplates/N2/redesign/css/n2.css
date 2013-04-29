@@ -96,7 +96,7 @@ ul.menu li { display: inline-block; }
 				#page-action-bar .command-options .command-options ul li:hover { border-left-color: #b6e1f4; }
 				#page-action-bar .command-options .command-options ul li.active { border-left: 5px solid #3aaee3; }
 		#page-action-bar .command-options .command-options li:hover { background-color: #ebf7fc; }
-		#page-action-bar .command-options .command-options li a { border: 0 none; border-bottom: 1px solid #d9f0f9; border-right: 1px solid #d9f0f9; color: #000000; float: none; height: 38px; margin: 0; padding: 0; position: absolute; text-indent: 7px; width: 100%; }
+		#page-action-bar .command-options .command-options li a { border: 0 none; border-bottom: 1px solid #d9f0f9; border-right: 1px solid #d9f0f9; color: #000000; float: none; height: 38px; margin: 0; position: absolute; text-indent: 7px; width: 100%; }
 			#page-action-bar .command-options .command-options li a:hover { text-decoration: underline; }
 			#page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
 		#page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }

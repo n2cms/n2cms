@@ -11,4 +11,9 @@
 		return res;
 	});
 
+	module.factory('Translations', function ($resource) {
+		var res = $resource('Api/Translations.ashx', {}, {});
+		return res;
+	});
+
 })(angular.module('n2.services', ['ngResource']));

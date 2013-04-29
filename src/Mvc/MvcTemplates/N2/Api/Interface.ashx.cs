@@ -14,7 +14,19 @@ namespace N2.Management.Api
 {
 	public class Node<T>
 	{
+		public Node()
+		{
+			Children = new Node<T>[0];
+		}
+
+		public Node(T current)
+			: this()
+		{
+			Current = current;
+		}
+
 		public T Current { get; set; }
+
 		public IEnumerable<Node<T>> Children { get; set; }
 
 		public bool HasChildren { get; set; }
@@ -26,6 +38,11 @@ namespace N2.Management.Api
 
 	public class InterfaceMenuItem
 	{
+		public InterfaceMenuItem()
+		{
+			Target = Targets.Preview;
+		}
+
 		public string Title { get; set; }
 		public string Url { get; set; }
 		public string Target { get; set; }
@@ -85,9 +102,6 @@ namespace N2.Management.Api
 		public int ChildItems { get; set; }
 	}
 
-	/// <summary>
-	/// Summary description for UI
-	/// </summary>
 	public class Interface : IHttpHandler
 	{
 		private SelectionUtility selection;
@@ -129,50 +143,26 @@ namespace N2.Management.Api
 			{
 				Children = new Node<InterfaceMenuItem>[]
 				{
-					new Node<InterfaceMenuItem>
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.Node.Current.PreviewUrl}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
 					{
-						Current = new InterfaceMenuItem { Template = @"<a target='preview' title='View page preview' href='{{Context.Node.Current.PreviewUrl}}' class='page-action-icon' style='background-image:url(redesign/img/glyphicons-white/glyphicons_051_eye_open.png)'></a>" },
-						Children = new Node<InterfaceMenuItem>[0]
-					},
-					new Node<InterfaceMenuItem>
-					{
-						Current = new InterfaceMenuItem { Template = @"<a target='preview' title='Edit page' href='{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}' class='page-action-icon' style='background-image:url(redesign/img/glyphicons-white/glyphicons_150_edit.png)'>Edit<span>Page details</span></a>" },
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>
-							{
-								Current = new InterfaceMenuItem { Title = "Organize Parts", Target = "preview", Url = "#edit/parts", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" },
-								Children = new Node<InterfaceMenuItem>[0]
-							},
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize Parts", Url = "{{Context.Node.Current.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" }),
 						}
 					},
-					new Node<InterfaceMenuItem>
-					{
-						Current = new InterfaceMenuItem { Title = "Versions", Description = "Published version", Target = "preview", Url = "{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" },
-						Children = new Node<InterfaceMenuItem>[0]
-					},
-					new Node<InterfaceMenuItem>
-					{
-						Current = new InterfaceMenuItem { Title = "Language", Description = "English", Target = "preview", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
-						Children = new Node<InterfaceMenuItem>[]
-						{
-							new Node<InterfaceMenuItem>
-							{
-								Current = new InterfaceMenuItem { Title = "English", Target = "preview", Url = "#languages/english" },
-								Children = new Node<InterfaceMenuItem>[0]
-							},
-							new Node<InterfaceMenuItem>
-							{
-								Current = new InterfaceMenuItem { Title = "Swedish", Target = "preview", Url = "#languages/swedish" },
-								Children = new Node<InterfaceMenuItem>[0]
-							}
-						}
-					},
-					new Node<InterfaceMenuItem>
-					{
-						Current = new InterfaceMenuItem { Title = "Publish", Target = "preview", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" },
-						Children = new Node<InterfaceMenuItem>[0]
-					}
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Versions", Description = "Published version", Url = "{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageLanguage.html'""></div>" }),
+					//{
+					//	//Current = new InterfaceMenuItem { Title = "Language", Description = "English", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
+					//	Children = new Node<InterfaceMenuItem>[]
+					//	{
+					//		new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "English", Url = "#languages/english" }),
+					//		new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Swedish", Url = "#languages/swedish" })
+					//	}
+					//},
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};
 		}

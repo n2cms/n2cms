@@ -51,6 +51,8 @@
 	<script src="App/Js/Directives.js"></script>
 	<link href="redesign/bootstrap/css/bootstrap.css" rel="stylesheet" />
 	<script src="redesign/bootstrap/js/bootstrap.js"></script>
+	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
+	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
 	<style>
 		ul, li {
 			margin: 0;

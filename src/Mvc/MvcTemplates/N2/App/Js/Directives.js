@@ -6,20 +6,20 @@
 			restrict: "E",
 			replace: true,
 			scope: true,
-			template: "<div x-compile='pageActionNode.Template'>\
-	<a ng-class=\"{ 'page-action-icon': pageActionNode.IconUrl, 'page-action-description': pageActionNode.Description }\" \
-		href='{{evaluateExpression(pageActionNode.Url)}}' \
-		target='{{evaluateExpression(pageActionNode.Target)}}'\
-		x-background-image='pageActionNode.IconUrl' \
-		title='{{evaluateExpression(pageActionNode.ToolTip)}}'>\
-		<i ng-show='pageActionNode.IconClass' class='{{pageActionNode.IconClass}}'></i>\
-		{{evaluateExpression(pageActionNode.Title)}}\
-		<span ng-show='pageActionNode.Description'>{{evaluateExpression(pageActionNode.Description)}}</span>\
+			template: "<div x-compile='node.Current.Template'>\
+	<a ng-class=\"{ 'page-action-icon': node.Current.IconUrl, 'page-action-description': node.Current.Description }\" \
+		href='{{evaluateExpression(node.Current.Url)}}' \
+		target='{{evaluateExpression(node.Current.Target)}}'\
+		x-background-image='node.Current.IconUrl' \
+		title='{{evaluateExpression(node.Current.ToolTip)}}'>\
+		<i ng-show='node.Current.IconClass' class='{{node.Current.IconClass}}'></i>\
+		{{evaluateExpression(node.Current.Title)}}\
+		<span ng-show='node.Current.Description'>{{evaluateExpression(node.Current.Description)}}</span>\
 	</a>\
 </div>",
 			link: function compile(scope, element, attrs) {
 				scope.$watch(attrs.node, function (node) {
-					scope.pageActionNode = node;
+					scope.node = node;
 				});
 				scope.evaluateExpression = function (expr) {
 					return expr && $interpolate(expr)(scope);

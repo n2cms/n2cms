@@ -1,0 +1,11 @@
+﻿<a 
+	ng-mouseover='onOver(node)' 
+	ng-controller='LanguageCtrl' 
+	target='preview' 
+	title='View page preview' 
+	href='{{Interface.Paths.Management}}Content/Globalization/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}' 
+	class='page-action-icon' 
+	style='background-image:url(redesign/img/glyphicons-white/glyphicons_370_globe_af.png)'>
+	Language
+	<span>{{Context.Language.Title}}</span>
+</a>

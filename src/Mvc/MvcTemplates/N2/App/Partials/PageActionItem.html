@@ -1,23 +1,12 @@
-﻿<!--<div x-compile="item.Current.Template">
-	<a ng-class="{ 'page-action-icon': item.Current.IconUrl, 'page-action-description': item.Current.Description }" 
-		href="{{evaluateExpression(item.Current.Url)}}" 
-		target="{{evaluateExpression(item.Current.Target)}}"
-		x-background-image="{{item.Current.IconUrl}}" 
-		title="{{evaluateExpression(item.Current.ToolTip)}}">
-		<i ng-show="item.Current.IconClass" class="{{item.Current.IconClass}}"></i>
-		{{evaluateExpression(item.Current.Title)}}
-		<span ng-show="item.Current.Description">{{evaluateExpression(item.Current.Description)}}</span>
-	</a>
-</div>-->
-<div>
-	<page-action-content node="item.Current" />
+﻿<div>
+	<page-action-content node="item" />
 </div>
 
 <div class="command-options" ng-show="item.Children.length">
 	<ul>
 		<li ng-repeat="child in item.Children">
 
-			<page-action-content node="child.Current" />
+			<page-action-content node="child" />
 
 		</li>
 	</ul>
