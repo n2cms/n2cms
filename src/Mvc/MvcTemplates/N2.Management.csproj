@@ -101,6 +101,7 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\PageVersions.html" />
     <Content Include="N2\App\Partials\PageLanguage.html" />
     <Content Include="N2\App\Partials\PageActionItem.html" />
     <Content Include="N2\App\Partials\PagePreview.html" />
@@ -1036,6 +1037,7 @@
     <Content Include="N2\Api\Children.ashx" />
     <Content Include="N2\Api\Translations.ashx" />
     <Content Include="N2\Api\Context.ashx" />
+    <Content Include="N2\Api\Versions.ashx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -1084,6 +1086,9 @@
     </Compile>
     <Compile Include="N2\Api\Context.ashx.cs">
       <DependentUpon>Context.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Api\Versions.ashx.cs">
+      <DependentUpon>Versions.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Api\Translations.ashx.cs">
       <DependentUpon>Translations.ashx</DependentUpon>

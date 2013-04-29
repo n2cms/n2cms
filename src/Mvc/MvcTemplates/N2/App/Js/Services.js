@@ -21,4 +21,9 @@
 		return res;
 	});
 
+	module.factory('Versions', function ($resource) {
+		var res = $resource('Api/Versions.ashx', {}, {});
+		return res;
+	});
+
 })(angular.module('n2.services', ['ngResource']));

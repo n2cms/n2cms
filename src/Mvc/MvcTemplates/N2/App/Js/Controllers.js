@@ -2,8 +2,12 @@
 	console.log("controllers.js");
 });
 
-function ManagementCtrl($scope, Interface, Context) {
-	$scope.Interface = Interface.get();
+function ManagementCtrl($scope, Interface, Context, $window) {
+	
+	$scope.Interface = Interface.get({
+		view: window.location.search.match(/[?&]view=([^?&]+)/)[1],
+		selected: window.location.search.match(/[?&]selected=([^?&]+)/)[1],
+	});
 	$scope.Context = {
 		Node: {
 			Current: {
@@ -22,7 +26,12 @@ function ManagementCtrl($scope, Interface, Context) {
 }
 function SearchCtrl() {
 }
-function NavigationCtrl() {
+function NavigationCtrl($scope) {
+	$scope.$watch("Interface.User.PreferredView", function (view) {
+		$scope.viewPreference = view == 0
+			? "draft"
+			: "published";
+	});
 }
 function TrunkCtrl($scope) {
 	$scope.$watch("Interface.Content", function (content) {
@@ -70,6 +79,20 @@ function LanguageCtrl($scope, Translations) {
 			return;
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Translations.query({ selected: node.Current.Path }, function () { node.Loading = false; });
+		node.Children = Translations.query({ selected: node.Current.Path }, function () {
+			node.Loading = false;
+		});
+	}
+}
+
+function VersionsCtrl($scope, Versions) {
+	$scope.onOver = function (node) {
+		if (node.Children.length && $scope.Selected == node.Current.Path)
+			return;
+		$scope.Selected = node.Current.Path;
+		node.Loading = true;
+		node.Children = Versions.query({ selected: node.Current.Path }, function (versions) {
+			node.Loading = false;
+		});
 	}
 }

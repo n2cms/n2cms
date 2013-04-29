@@ -96,6 +96,7 @@ namespace N2.Management.Api
 	{
 		public string Name { get; set; }
 		public string Username { get; set; }
+		public ViewPreference PreferredView { get; set; }
 	}
 
 	public class InterfaceTrash : Node<TreeNode>
@@ -145,16 +146,23 @@ namespace N2.Management.Api
 			{
 				Children = new Node<InterfaceMenuItem>[]
 				{
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.Node.Current.PreviewUrl}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.Node.Current.PreviewUrl}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" })
+					{
+						Children = new Node<InterfaceMenuItem>[]
+						{
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = "", Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = "", Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}" }),
+						}
+					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize Parts", Url = "{{Context.Node.Current.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize Parts", Url = "{{Context.Node.Current.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Versions", Description = "Published version", Url = "{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageVersions.html'""></div>" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageLanguage.html'""></div>" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
@@ -188,7 +196,8 @@ namespace N2.Management.Api
 			return new InterfaceUser
 			{
 				Name = context.User.Identity.Name,
-				Username = context.User.Identity.Name
+				Username = context.User.Identity.Name,
+				PreferredView = engine.Config.Sections.Management.Versions.DefaultViewMode
 			};
 		}
 
