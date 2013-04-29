@@ -11,9 +11,6 @@ using System.Web;
 
 namespace N2.Management.Api
 {
-	/// <summary>
-	/// Retrieves children.
-	/// </summary>
 	public class Children : IHttpHandler
 	{
 		private SelectionUtility selection;
@@ -21,7 +18,7 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContext context)
 		{
-			engine = Context.Current;
+			engine = N2.Context.Current;
 			selection = new SelectionUtility(context.Request, engine);
 
 			context.Response.ContentType = "application/json";

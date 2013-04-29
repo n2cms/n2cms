@@ -1035,6 +1035,7 @@
     <Content Include="N2\Api\Interface.ashx" />
     <Content Include="N2\Api\Children.ashx" />
     <Content Include="N2\Api\Translations.ashx" />
+    <Content Include="N2\Api\Context.ashx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -1080,6 +1081,9 @@
     </Compile>
     <Compile Include="N2\Api\Children.ashx.cs">
       <DependentUpon>Children.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Api\Context.ashx.cs">
+      <DependentUpon>Context.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Api\Translations.ashx.cs">
       <DependentUpon>Translations.ashx</DependentUpon>

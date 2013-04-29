@@ -2,7 +2,7 @@
 	console.log("controllers.js");
 });
 
-function ManagementCtrl($scope, Interface) {
+function ManagementCtrl($scope, Interface, Context) {
 	$scope.Interface = Interface.get();
 	$scope.Context = {
 		Node: {
@@ -11,6 +11,14 @@ function ManagementCtrl($scope, Interface) {
 			}
 		}
 	}
+	$scope.$watch("Context.Node.Current.Path", function (path) {
+		if (path) {
+			var item = $scope.Context.Node.Current;
+			Context.get({ selected: item.Path }, function (ctx) {
+				angular.extend($scope.Context, ctx);
+			});
+		}
+	});
 }
 function SearchCtrl() {
 }

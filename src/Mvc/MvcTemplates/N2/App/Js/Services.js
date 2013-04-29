@@ -16,4 +16,9 @@
 		return res;
 	});
 
+	module.factory('Context', function ($resource) {
+		var res = $resource('Api/Context.ashx', {}, {});
+		return res;
+	});
+
 })(angular.module('n2.services', ['ngResource']));

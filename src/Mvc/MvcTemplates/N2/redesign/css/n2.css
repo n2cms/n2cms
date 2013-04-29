@@ -101,3 +101,23 @@ ul.menu li { display: inline-block; }
 			#page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
 		#page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
 			#page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }
+
+#debug-context {
+	right:30px;
+}
+.debug {
+	position:absolute;
+	top:0;
+	right:10px;
+	z-index:1000;
+	height:10px;
+	width:10px;
+	overflow:hidden;
+	border:solid 5px orange;
+	font-size:.8em;
+}
+.debug:hover {
+	height:90%;
+	width:90%;
+	overflow:auto;
+}

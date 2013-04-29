@@ -61,7 +61,11 @@ namespace N2.Management.Api
 	public class InterfaceData
 	{
 		public Node<InterfaceMenuItem> TopMenu { get; set; }
+		
 		public Node<InterfaceMenuItem> ToolbarMenu { get; set; }
+
+		public Node<InterfaceMenuItem> ActionMenu { get; set; }
+
 		public Node<TreeNode> Content { get; set; }
 
 		public Site Site { get; set; }
@@ -71,8 +75,6 @@ namespace N2.Management.Api
 		public InterfaceUser User { get; set; }
 
 		public InterfaceTrash Trash { get; set; }
-
-		public Node<InterfaceMenuItem> ActionMenu { get; set; }
 
 		public InterfaceUrls Paths { get; set; }
 	}
@@ -109,7 +111,7 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContext context)
 		{
-			engine = Context.Current;
+			engine = N2.Context.Current;
 			selection = new SelectionUtility(context.Request, engine);
 
 			context.Response.ContentType = "application/json";
@@ -154,14 +156,6 @@ namespace N2.Management.Api
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Versions", Description = "Published version", Url = "{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_057_history.png" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageLanguage.html'""></div>" }),
-					//{
-					//	//Current = new InterfaceMenuItem { Title = "Language", Description = "English", Url = "#languages", IconUrl = "redesign/img/glyphicons-white/glyphicons_370_globe_af.png" },
-					//	Children = new Node<InterfaceMenuItem>[]
-					//	{
-					//		new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "English", Url = "#languages/english" }),
-					//		new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Swedish", Url = "#languages/swedish" })
-					//	}
-					//},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};

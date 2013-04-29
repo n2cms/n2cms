@@ -35,6 +35,9 @@
             <div ng-include src="'App/Partials/PageActionBar.html'"></div>
         </div>
     </div>
+    <div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
+    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>
+	
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
