@@ -1,4 +1,4 @@
-﻿<div id="page-tree">
+﻿<div id="page-tree" ui-jq="disableSelection">
 	<ul class="site">
 		<li class="root expanded">
 			<div class="item">
@@ -7,15 +7,19 @@
 					<a href="#">tools</a>
 				</div>
 			</div>
-			<ul>
-				<li ng-controller="TrunkCtrl" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'"></li>
+			<ul class="targettable">
+				<li ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
 			</ul>
 		</li>
 	</ul>
 </div>
 <div id="trash">
 	<div>
-		<div><a target="preview" href="{{Interface.Trash.Current.PreviewUrl}}">{{Interface.Trash.Current.Title}} ({{Interface.Trash.ChildItems}} items)</a></div>
+		<ul>
+		</ul>
+		<div>
+			<a target="preview" href="{{Interface.Trash.Current.PreviewUrl}}">{{Interface.Trash.Current.Title}} ({{Interface.Trash.ChildItems}} items)</a>
+		</div>
 		drag item here to delete
 	</div>
 </div>

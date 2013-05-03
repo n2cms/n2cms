@@ -20,6 +20,10 @@ namespace N2.Edit
 
 		public Security.Permission MaximumPermission { get; set; }
 
-		public IEnumerable<MetaInfo> MetaInforation { get; set; }
+		public IDictionary<string, MetaInfo> MetaInformation { get; set; }
+
+		public ContentState State { get; set; }
+
+		public int SortOrder { get; set; }
 	}
 }

@@ -62,6 +62,7 @@ ul.menu li { display: inline-block; }
 					#page-tree ul li.root ul li a img { padding-right: 4px; position: relative; top: 3px; }
 					#page-tree ul li.root ul li div.item:hover { border-left: 5px solid #d9f0f9; background: #f9fdfe; }
 					#page-tree ul li.root ul li.active > div.item { border-left: 5px solid #3aaee3; background: #ebf7fc; }
+				#page-tree ul.loading { padding:20px 0; background:transparent url(../img/glyphicons-black/glyphicons_365_restart.png) no-repeat 2px 50%; display:block; }
 #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
 	#trash > div { text-align: center; height: 60px; background: #f0f0f0; border: 1px solid #dddddd; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
@@ -120,4 +121,28 @@ ul.menu li { display: inline-block; }
 	height:90%;
 	width:90%;
 	overflow:auto;
+}
+
+.ui-sortable-helper .toggle,
+.ui-sortable-helper .tools {
+	display:none !important;
+}
+
+.sortable-placeholder {
+	border:dotted 1px #52D017;
+	border-left:solid 5px #52D017;
+	height:30px;
+	margin-top:1px;
+}
+
+.targettable.collapsed {
+	padding:10px 0;
+	margin:-10px 0;
+}
+
+ul.collapsed li {
+	display:none;
+}
+ul.collapsed li.sortable-placeholder {
+	display:block;
 }

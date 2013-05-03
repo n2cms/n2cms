@@ -56,6 +56,7 @@
 	<script src="redesign/bootstrap/js/bootstrap.js"></script>
 	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
 	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
+	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
 	<style>
 		ul, li {
 			margin: 0;

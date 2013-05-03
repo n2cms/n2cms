@@ -39,13 +39,51 @@
 							style += ";";
 						else
 							style = "";
-						style += backgroundImage;
-						element.attr("style", "background-image:url(" + backgroundImage + ")");
+						style += "background-image:url(" + backgroundImage + ")";
+						element.attr("style", style);
 					}
 				});
 			}
 		}
 	});
+
+	//module.directive("sortable", function () {
+	//	return {
+	//		restrict: "A",
+	//		link: function compile(scope, element, attrs) {
+	//			element.sortable({
+	//				connectWith: '.targettable',
+	//				distance: 15,
+	//				placeholder: 'drop-placeholder',
+	//				appendTo: "#main-wrapper"
+	//			});
+	//			element.on("update", function (event, ui) {
+	//				scope.$emit("update", {});
+	//				console.log("update", ui);
+	//			});
+	//			element.on("start", function (event, ui) {
+	//				console.log("start", ui);
+	//			});
+	//		}
+	//	}
+	//});
+
+	//module.directive("sortStartStopClassify", function () {
+	//	return {
+	//		restrict: "A",
+	//		link: function compile(scope, element, attrs) {
+	//			console.log("sortStartStopClassify");
+	//			element.on("start", function (event, ui) {
+	//				console.log("sortStartStopClassify start");
+	//				element.addClass("sorting");
+	//			});
+	//			element.on("stop", function (event, ui) {
+	//				console.log("sortStartStopClassify stop");
+	//				element.removeClass("sorting");
+	//			});
+	//		}
+	//	}
+	//});
 
 	module.directive('compile', function ($compile) {
 		return function (scope, element, attrs) {

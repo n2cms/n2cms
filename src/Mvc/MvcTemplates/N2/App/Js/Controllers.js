@@ -1,12 +1,14 @@
-﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services'], function () {
+﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
 	console.log("controllers.js");
 });
 
 function ManagementCtrl($scope, Interface, Context, $window) {
 	
+	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
+	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
 	$scope.Interface = Interface.get({
-		view: window.location.search.match(/[?&]view=([^?&]+)/)[1],
-		selected: window.location.search.match(/[?&]selected=([^?&]+)/)[1],
+		view: viewMatch && viewMatch,
+		selected: selectedMatch && selectedMatch[1],
 	});
 	$scope.Context = {
 		Node: {
@@ -24,8 +26,10 @@ function ManagementCtrl($scope, Interface, Context, $window) {
 		}
 	});
 }
+
 function SearchCtrl() {
 }
+
 function NavigationCtrl($scope) {
 	$scope.$watch("Interface.User.PreferredView", function (view) {
 		$scope.viewPreference = view == 0
@@ -33,7 +37,9 @@ function NavigationCtrl($scope) {
 			: "published";
 	});
 }
-function TrunkCtrl($scope) {
+
+
+function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
 		if (content)
@@ -57,16 +63,24 @@ function TrunkCtrl($scope) {
 		$scope.Context.Node = node;
 		node.Selected = true;
 	}
+	$scope.$on("moved", function (e, content) {
+		console.log("moved", content);
+	});
+	$scope.sort = new SortHelperFactory($scope);
 }
-function BranchCtrl($scope, Children) {
+
+function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.node = $scope.child;
 	$scope.toggle = function (node) {
-		console.log(node);
 		if (!node.Expanded && !node.Children.length) {
-			node.Children = Children.query({ selected: node.Current.Path });
+			node.Loading = true;
+			node.Children = Content.query({ selected: node.Current.Path }, function () {
+				node.Loading = false;
+			});
 		}
 		node.Expanded = !node.Expanded;
 	};
+	$scope.sort = new SortHelperFactory($scope);
 }
 function PageActionCtrl($scope, $interpolate) {
 	$scope.evaluateExpression = function (expr) {

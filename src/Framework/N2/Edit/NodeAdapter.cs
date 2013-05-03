@@ -103,56 +103,81 @@ namespace N2.Edit
 		/// <returns>Tree node data.</returns>
 		public virtual TreeNode GetTreeNode(ContentItem item)
 		{
-			return new TreeNode
+			var node = new TreeNode
 			{
 				ID = item.ID,
 				Path = item.Path,
+				State = item.State,
 				IconUrl = GetIconUrl(item),
 				Title = item.Title,
-				MetaInforation = GetMetaInformation(item),
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
-				CssClass = GetClassName(item),
 				PreviewUrl = GetPreviewUrl(item),
 				MaximumPermission = GetMaximumPermission(item),
+				SortOrder = item.SortOrder
 			};
+			
+			node.MetaInformation = GetMetaInformation(item);
+			ApplyStateFlags(node, item);
+			return node;
 		}
 
-		protected virtual IEnumerable<MetaInfo> GetMetaInformation(ContentItem item)
+		protected virtual IDictionary<string, MetaInfo> GetMetaInformation(ContentItem item)
 		{
+			var mi = new Dictionary<string, MetaInfo>();
+
 			if (Languages.IsLanguageRoot(item) && Languages.GetLanguage(item) != null)
-				yield return new MetaInfo { Name = "language", Text = Languages.GetLanguage(item).LanguageCode };
+				mi["language"] = new MetaInfo { Text = Languages.GetLanguage(item).LanguageCode };
+			
 			if(!item.IsPage)
-				yield return new MetaInfo { Name = "zone", Text = item.ZoneName };
+				mi["zone"] = new MetaInfo { Text = item.ZoneName };
+			
 			if (Host.IsStartPage(item))
-				yield return new MetaInfo { Name = "authority", Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
+				mi["authority"] = new MetaInfo { Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
+			
 			var draftInfo = Drafts.GetDraftInfo(item);
 			if (draftInfo != null && draftInfo.Saved > item.Updated)
-				yield return new MetaInfo { Name = "draft", Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
+				mi["draft"] = new MetaInfo { Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
+
+			return mi;
 		}
 
-		private string GetClassName(ContentItem item)
+		private void ApplyStateFlags(TreeNode node, ContentItem item)
 		{
 			StringBuilder className = new StringBuilder();
 
 			if (!item.IsPublished())
+			{
 				className.Append("unpublished ");
+			}
 			else if (item.Published > DateTime.Now.AddDays(-1))
+			{
 				className.Append("day ");
+			}
 			else if (item.Published > DateTime.Now.AddDays(-7))
+			{
 				className.Append("week ");
+			}
 			else if (item.Published > DateTime.Now.AddMonths(-1))
+			{
 				className.Append("month ");
+			}
 
 			if (item.IsExpired())
+			{
 				className.Append("expired ");
+			}
 
 			if (!item.Visible)
+			{
 				className.Append("invisible ");
+			}
 
 			if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)
+			{
 				className.Append("locked ");
+			}
 
-			return className.ToString();
+			node.CssClass = className.ToString();
 		}
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
