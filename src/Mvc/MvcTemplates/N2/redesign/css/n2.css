@@ -71,6 +71,7 @@ ul.menu li { display: inline-block; }
 	#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }
 	#main-area #page-preview { position:absolute; top: 39px; bottom: 0; width:100%; }
 		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
+		#main-area #page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }
 
 #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
 	#page-action-bar.secondary ul { float: left; }

@@ -6,17 +6,19 @@ N2.splitter = function (master, slave, options) {
     $(settings.dragbarSelector, $master).mousedown(function (e) {
         e.preventDefault();
         $(document).mousemove(function (e) {
-            $master.css("width", e.pageX);
-            $slave.css({
-                left: $master.outerWidth(true),
-                width: ($(window).width() - $master.outerWidth(true) - ($slave.outerWidth(true) - $slave.width()))
-            });
-            $("html").css("cursor", "w-resize")
-        })
+        	$master.css("width", e.pageX);
+        	$slave.css({
+        		left: $master.outerWidth(true),
+        		width: ($(window).width() - $master.outerWidth(true) - ($slave.outerWidth(true) - $slave.width()))
+        	});
+        	$("html").css("cursor", "w-resize")
+        });
+        $("#page-preview-frame-cover").show();
     });
     $(document).mouseup(function (e) {
         $(document).unbind('mousemove');
         $("html").css("cursor", "auto");
+        $("#page-preview-frame-cover").hide();
     });
     $(window).resize(resize);
     function resize() {
