@@ -180,7 +180,7 @@ namespace N2.Web
 			if (relativeBasePath[0] == '/')
 				relativeBasePath = '~' + relativeBasePath;
 
-			foreach (var f in N2.Utility.RecursiveListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
+			foreach (var f in N2.Utility.ListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
 			{
 				if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
 					continue;
