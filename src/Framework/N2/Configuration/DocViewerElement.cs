@@ -24,7 +24,7 @@ namespace N2.Configuration
 		/// The URL to the document viewer. Put {abs} and {rel} for the absolute and/or relative URL of the document to be viewed. 
 		/// For URL Escaping, put {abs_encoded} and {rel_encoded} instead. 
 		/// </summary>
-		[ConfigurationProperty("url", DefaultValue = "")]
+		[ConfigurationProperty("url", DefaultValue = "http://docs.google.com/viewer?url={abs}")]
 		public string Url
 		{
 			get { return (string)base["url"]; }
