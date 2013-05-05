@@ -1,4 +1,8 @@
-﻿using System;
+﻿using N2.Edit.FileSystem;
+using N2.Engine;
+using N2.Plugin;
+using N2.Web;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -6,21 +10,80 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
-using N2.Web;
 
 namespace N2.Management.Resources
 {
 	/// <summary>
 	/// Extracts individual icons out of CSS sprites.
 	/// </summary>
-	public class IconHandler : IHttpHandler
+	[Service]
+	public class IconHandler : IHttpHandler, IAutoStart
 	{
+		private EventBroker broker;
+		private IFileSystem fileSystem;
+
+		public IconHandler(IFileSystem fileSystem, EventBroker broker)
+		{
+			this.fileSystem = fileSystem;
+			this.broker = broker;
+		}
+
+		private void HttpApplication_PreRequestHandlerExecute(object sender, EventArgs e)
+		{
+			var app = sender as HttpApplication;
+			if (app == null) return;
+
+			string collection = null, key = null;
+			try
+			{
+				var p = app.Request.Path;
+				string iconBase = "resources/icons/";
+				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0)
+				{
+					collection = "silk";
+					p = EatTo(p, iconBase);
+					key = p.Substring(0, p.IndexOf(".png", StringComparison.OrdinalIgnoreCase));
+					app.Context.Handler = this;
+					return;
+				}
+
+				iconBase = "resources/img/flags/";
+				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0)
+				{
+					collection = "flags";
+					p = EatTo(p, iconBase);
+					key = p.Substring(0, p.IndexOf(".png", StringComparison.OrdinalIgnoreCase));
+					app.Context.Handler = this;
+					return;
+				}
+			}
+			finally
+			{
+				if (key != null)
+					app.Context.Items["key"] = key;
+				if (collection != null)
+					app.Context.Items["set"] = collection;
+			}
+		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			broker.PreRequestHandlerExecute += HttpApplication_PreRequestHandlerExecute;
+		}
+
+		public void Stop()
+		{
+			broker.PreRequestHandlerExecute -= HttpApplication_PreRequestHandlerExecute;
+		}
+
+		#endregion
 
 		#region string parsing 
 
-		private int GetNumber(string r)
+		private static int GetNumber(string r)
 		{
 			var sb = new StringBuilder(r.Length);
 			foreach (var ch in r)
@@ -39,9 +102,9 @@ namespace N2.Management.Resources
 			return int.Parse(sb.ToString());
 		}
 
-		private string EatTo(string r, string eat)
+		private static string EatTo(string r, string eat)
 		{
-			return r.Substring(r.IndexOf(eat, StringComparison.Ordinal) + eat.Length);
+			return r.Substring(r.IndexOf(eat, StringComparison.OrdinalIgnoreCase) + eat.Length);
 		}
 
 
@@ -73,10 +136,11 @@ namespace N2.Management.Resources
 		}
 
 		//TODO: Add unit test for icon handler
+		//TODO: Make icons work with the ZIP VPP
 		public void ProcessRequest(HttpContext context)
 		{
-			var set = context.Request["set"];
-			var key = context.Request["key"];
+			var set = context.Items["set"];
+			var key = context.Items["key"];
 			var ico = Url.ResolveTokens("{ManagementUrl}/Resources/icons/");
 
 			var cssFile = ico + set + ".css";
@@ -84,6 +148,8 @@ namespace N2.Management.Resources
 
 			cssFile = context.Server.MapPath(cssFile);
 			sprFile = context.Server.MapPath(sprFile);
+
+			//TODO: use IFileSystem rather than System.IO.File
 
 			var cssLines = File.ReadAllLines(cssFile).Where(f =>
 				f.Contains("." + key + " {") ||
