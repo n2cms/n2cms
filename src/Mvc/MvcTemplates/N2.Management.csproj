@@ -306,6 +306,7 @@
     <Content Include="N2\Resources\fancybox\helpers\jquery.fancybox-thumbs.js" />
     <Content Include="N2\Resources\fancybox\jquery.fancybox.css" />
     <Content Include="N2\Resources\fancybox\jquery.fancybox.pack.js" />
+    <Content Include="N2\Resources\IconHandler.ashx" />
     <Content Include="N2\Resources\Js\jquery-1.7.2.min.js" />
     <Content Include="N2\Resources\Js\jquery.multiselect.filter.js" />
     <Content Include="N2\Resources\Js\jquery.multiselect.js" />
@@ -783,6 +784,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Resources\IconHandler.ashx.cs">
+      <DependentUpon>IconHandler.ashx</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="N2\Resources\MessageSink.ashx.cs">
@@ -1613,7 +1618,6 @@
     <Content Include="N2\Resources\Css\themes\icms.css" />
     <Content Include="N2\Resources\Css\themes\default.css" />
     <Content Include="N2\Resources\Css\themes\ink.css" />
-    <Content Include="N2\Resources\icons.html" />
     <Content Include="N2\Resources\img\darken10.png" />
     <Content Include="N2\Resources\img\darken25.png" />
     <Content Include="N2\Resources\img\fieldset_bg.png" />
