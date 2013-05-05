@@ -55,7 +55,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	var filter = Model.GetDetail("FileFilter", "*");
 	var dir = Model.GetDetail("Directory", "");
 	var fileList = new string[] {};
-	try { fileList = N2.Utility.ListFiles(Server.MapPath(dir), filter, Content.Data.Recursive).ToArray(); }
+	try { fileList = N2.Utility.ListFiles(Server.MapPath(dir), filter, (bool)Content.Data.Recursive).ToArray(); }
 	catch (Exception x) {  <div class="alert alert-error"><pre>@x.ToString()</pre></div> }
 
 	@* ReSharper disable PossibleNullReferenceException *@
