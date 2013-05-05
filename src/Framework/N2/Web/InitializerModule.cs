@@ -12,7 +12,6 @@ namespace N2.Web
 		public void Init(HttpApplication context)
 		{
 			EventBroker.Instance.Attach(context);
-
 			N2.Context.Initialize(false);
 		}
 
