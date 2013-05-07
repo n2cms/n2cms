@@ -132,6 +132,9 @@
     <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
     <Compile Include="Configuration\COnfigurationElement.cs" />
+    <Compile Include="Configuration\FileListElement.cs" />
+    <Compile Include="Configuration\DocViewerElement.cs" />
+    <Compile Include="Configuration\WebSection.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
@@ -650,6 +653,7 @@
     <Compile Include="Web\EmptyDisposable.cs" />
     <Compile Include="Web\ErrorEventArgs.cs" />
     <Compile Include="Definitions\IUrlSource.cs" />
+    <Compile Include="Web\DocViewerUtility.cs" />
     <Compile Include="Web\IExceptionFilter.cs" />
     <Compile Include="Web\JsonWriter.cs" />
     <Compile Include="Web\Messaging\Envelope.cs" />

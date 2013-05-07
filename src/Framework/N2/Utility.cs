@@ -422,7 +422,8 @@ namespace N2
 			return finalPath;
 		}
 
-		public static IEnumerable<string> RecursiveListFiles(string physicalBasePath, string filter)
+
+		public static IEnumerable<string> ListFiles(string physicalBasePath, string filter, bool recursive = true)
 		{
 			var toExplore = new List<string> { physicalBasePath };
 			while (toExplore.Count > 0)
@@ -434,7 +435,8 @@ namespace N2
 					yield return files[i];
 				}
 
-				toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
+				if (recursive)
+					toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
 				toExplore.RemoveAt(0);
 			}
 		}

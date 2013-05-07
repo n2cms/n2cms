@@ -225,8 +225,8 @@
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
-                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
-                  <xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -651,7 +651,7 @@
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:enumeration value="Fit"/>
-                                    <xs:enumeration value="FitCenterOnTransparent"/>
+																		<xs:enumeration value="FitCenterOnTransparent"/>
 																		<xs:enumeration value="Fill"/>
 																		<xs:enumeration value="Stretch"/>
 																	</xs:restriction>
@@ -693,6 +693,25 @@
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="web">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="docviewer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="url" type="xs:string" use="optional" />
+									<xs:attribute name="maxsize" type="xs:string" use="optional" />
+									<xs:attribute name="extensions" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="ignoreFiles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
 					</xs:complexType>
 				</xs:element>
 			</xs:all>
