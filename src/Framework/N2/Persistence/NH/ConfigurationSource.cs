@@ -28,7 +28,7 @@ namespace N2.Persistence.NH
 				{
 					logger.Debug("Building Configuration");
 					cfg = builder.BuildConfiguration();
-                    logger.Debug("Built Configuration");
+					logger.Debug("Built Configuration");
 				}
 
 				return cfg;
@@ -42,7 +42,7 @@ namespace N2.Persistence.NH
 				if (factory == null)
 				{
 					var cfg = BuildConfiguration();
-                    logger.Debug("Building Session Factory");
+					logger.Debug("Building Session Factory");
 					factory = cfg.BuildSessionFactory();
 					logger.Info("Built Session Factory");
 				}

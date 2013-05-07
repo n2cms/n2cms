@@ -159,6 +159,7 @@ namespace Dinamico.Models
 	{
 		void SignIn(string userName, bool createPersistentCookie);
 		void SignOut();
+		void SignOut(string returnUrl);
 	}
 
 	[Service(typeof(IFormsAuthenticationService))]
@@ -174,6 +175,12 @@ namespace Dinamico.Models
 		public void SignOut()
 		{
 			FormsAuthentication.SignOut();
+		}
+
+		public void SignOut(string returnUrl)
+		{
+			FormsAuthentication.SignOut();
+			HttpContext.Current.Response.Redirect(returnUrl);
 		}
 	}
 	#endregion

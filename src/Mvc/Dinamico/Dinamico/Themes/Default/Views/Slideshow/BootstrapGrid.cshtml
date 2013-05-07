@@ -1,0 +1,37 @@
+﻿@model N2.Web.Slideshow
+@* 
+Note: Requires Twitter Bootstrap. Fancybox will work on non-linked images if it's included in the page already.
+
+Due to a bug in Bootstrap, some extra CSS is required.  See: https://github.com/twitter/bootstrap/issues/3494
+
+.row-fluid ul.thumbnails li.span12 + li { margin-left : 0px;clear:left }
+.row-fluid ul.thumbnails li.span6:nth-child(2n + 3) { margin-left : 0px;clear:left }
+.row-fluid ul.thumbnails li.span4:nth-child(3n + 4) { margin-left : 0px;clear:left }
+.row-fluid ul.thumbnails li.span3:nth-child(4n + 5) { margin-left : 0px; clear:left}
+.row-fluid ul.thumbnails li.span2:nth-child(6n + 7) { margin-left : 0px;clear:left }
+.row-fluid ul.thumbnails li.span1:nth-child(12n + 13) { margin-left : 0px;clear:left }
+
+*@
+@{
+	Content.Define(ie => { ie.Title = "Bootstrap Grid"; });
+	int columns = 4;
+	string spanclass = "span" + (12 / columns);
+	string uniqueId = Html.UniqueID("cs");
+}
+<div class="container-fluid"><div class="row">
+<ul class="thumbnails @Model.CssClass">
+	@foreach (var img in Model.GetSlideshowImages())
+	{
+		<li class="@spanclass">
+		@if (!String.IsNullOrEmpty(img.LinkUrl))
+		{ 
+			<a class="thumbnail" href="@img.LinkUrl"><img src="@img.ImageHref" alt="@img.Title" /></a>
+		}
+		else
+		{ 
+			<a class="thumbnail fancybox" rel="@uniqueId" href="@img.ImageHref"><img src="@img.ImageHref" alt="@img.Title" /></a>
+		}
+		</li>
+	}
+</ul>
+</div></div>
