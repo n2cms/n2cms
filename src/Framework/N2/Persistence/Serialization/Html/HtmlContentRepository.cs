@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -23,7 +24,8 @@ namespace N2.Persistence.Serialization.Xml
 		private ContentActivator _activator
 		{
 			//get { return _engine.Resolve<ContentActivator>(); }
-			get; set;
+			get;
+			set;
 		}
 
 		public HtmlContentRepository(IDefinitionManager definitions, ContentActivator activator, IFileSystem fs)//IEngine engine)
@@ -39,16 +41,16 @@ namespace N2.Persistence.Serialization.Xml
 			var records = new List<IImportRecord>();
 			var reader = new ItemXmlReader(_definitions, _activator, this);
 			var importer = new Importer(_persister, reader, null);
-			var files = Directory.GetFileSystemEntries(DataDirectoryPhysical, "c*.xml");
+			var files = Directory.GetFileSystemEntries(DataDirectoryPhysical, "c-*.xml");
 
 			// load all files and get the import records
 			records.AddRange(from f in files select importer.Read(f));
 
 			// resolve links
 			var itemsByid = (from x in records.SelectMany(f => f.ReadItems)
-			                 group x by x.ID
-			                 into y
-			                 select new {ID = y.Key, ContentItem = y.First()})
+							 group x by x.ID
+								 into y
+								 select new { ID = y.Key, ContentItem = y.First() })
 				.ToLookup(f => f.ID);
 
 			var stillUnresolved = new List<UnresolvedLink>();
@@ -65,28 +67,28 @@ namespace N2.Persistence.Serialization.Xml
 		}
 
 
-		private void SaveContentItemXml()
-		{
-			if (!Directory.Exists(DataDirectoryPhysical))
-				Directory.CreateDirectory(DataDirectoryPhysical);
+		//private void SaveContentItemXml()
+		//{
+		//	if (!Directory.Exists(DataDirectoryPhysical))
+		//		Directory.CreateDirectory(DataDirectoryPhysical);
 
-			// backup existing files to the backup directory
-			var backupDirectory = Path.Combine(DataDirectoryPhysical, "backup");
-			if (!Directory.Exists(backupDirectory))
-				Directory.CreateDirectory(backupDirectory);
-			foreach (var existingFile in Directory.GetFiles(DataDirectoryPhysical, "c*.xml"))
-			{
-				var backupTarget = Path.Combine(backupDirectory, Path.GetFileName(existingFile));
-				if (File.Exists(backupTarget))
-					File.Delete(backupTarget);
-				File.Move(existingFile, backupTarget);
-			}
+		//	// backup existing files to the backup directory
+		//	var backupDirectory = Path.Combine(DataDirectoryPhysical, "backup");
+		//	if (!Directory.Exists(backupDirectory))
+		//		Directory.CreateDirectory(backupDirectory);
+		//	foreach (var existingFile in Directory.GetFiles(DataDirectoryPhysical, "c*.xml"))
+		//	{
+		//		var backupTarget = Path.Combine(backupDirectory, Path.GetFileName(existingFile));
+		//		if (File.Exists(backupTarget))
+		//			File.Delete(backupTarget);
+		//		File.Move(existingFile, backupTarget);
+		//	}
 
-			foreach (var item in _appContentItems)
-				SaveOrUpdate(item);
+		//	foreach (var item in _appContentItems)
+		//		SaveOrUpdate(item);
 
-			// TODO: Delete the backup directory
-		}
+		//	// TODO: Delete the backup directory
+		//}
 
 		/// <summary>
 		/// Returns information about the XML files that would be written out. Primarily used for testing.
@@ -101,9 +103,9 @@ namespace N2.Persistence.Serialization.Xml
 
 			StringBuilder sb = new StringBuilder();
 			using (StringWriter sr = new StringWriter(sb))
-				foreach (var item in _appContentItems)
+				foreach (var item in AppContentItems)
 				{
-					sb.AppendLine("c" + item.ID + ".xml");
+					sb.AppendLine(GetContentItemFilename(item));
 					exporter.Export(item, ExportOptions.ExcludePages, sr);
 					sr.Flush();
 				}
@@ -115,11 +117,11 @@ namespace N2.Persistence.Serialization.Xml
 		{
 			// ReSharper disable RedundantIfElseBlock
 			if (ancestor == null)
-				return (from x in _appContentItems
+				return (from x in AppContentItems
 						where _definitions.GetDefinition(x).Discriminator == discriminator
 						select x).ToList(); // force immediate execution of lambda
 			else
-				return (from x in _appContentItems
+				return (from x in AppContentItems
 						where (x.ID == ancestor.ID || x.AncestralTrail.StartsWith(ancestor.AncestralTrail))
 							  && _definitions.GetDefinition(x).Discriminator == discriminator
 						select x).ToList(); // force immediate execution of lambda
@@ -128,16 +130,16 @@ namespace N2.Persistence.Serialization.Xml
 
 		public IEnumerable<ContentItem> FindReferencing(ContentItem linkTarget)
 		{
-			return (from x in _appContentItems
-			        where x.Details.Any(d => d.LinkedItem.ID == linkTarget.ID)
-			        select x).ToList(); // force immediate execution of lambda
+			return (from x in AppContentItems
+					where x.Details.Any(d => d.LinkedItem.ID == linkTarget.ID)
+					select x).ToList(); // force immediate execution of lambda
 		}
 
 		public int RemoveReferencesToRecursive(ContentItem target)
 		{
 			var count = 0;
 			var toUpdate = new HashSet<ContentItem>();
-			foreach (var detail in _appContentItems.SelectMany(x => x.Details))
+			foreach (var detail in AppContentItems.SelectMany(x => x.Details))
 			{
 				toUpdate.Add(detail.EnclosingItem);
 				detail.AddTo((ContentItem)null);
@@ -149,15 +151,25 @@ namespace N2.Persistence.Serialization.Xml
 		}
 
 
-		public T Get<T>(object id)
-		{
-			throw new NotImplementedException();
-		}
+		//public T Get<T>(object id)
+		//{
+		//	throw new NotImplementedException();
+		//}
+
+		//public override ContentItem Get(object id)
+		//{
+		//	if (id is Int32 && (int)id == 0)
+		//		return null;
+		//	if (!_database.ContainsKey(id))
+		//		throw new KeyNotFoundException(String.Format("The key {0} for ContentItem of type {1} was not found.", id,
+		//													 typeof(ContentItem).ToString()));
+		//	return _database[id];
+		//}
 
 		private readonly ItemXmlWriter _itemXmlWriter;
-		private IEnumerable<ContentItem> _appContentItems { get { return _database.Values; } }
+		private IEnumerable<ContentItem> AppContentItems { get { return _database.Values; } }
 
-		public virtual void Dispose()
+		public override void Dispose()
 		{
 			_trans.Dispose();
 			base.Dispose();
@@ -166,13 +178,39 @@ namespace N2.Persistence.Serialization.Xml
 		public override void SaveOrUpdate(ContentItem item)
 		{
 			if (_database.All(x => x.Value != item))
-				item.ID = _database.Count > 0 ? _appContentItems.Max(f => f.ID) + 1 : 1;
+				item.ID = _database.Count > 0 ? AppContentItems.Max(f => f.ID) + 1 : 1;
 			_database[item.ID] = item;
+
+			// delete existing file
+			foreach (var f in Directory.GetFiles(DataDirectoryPhysical, "c-*-" + ZeroPadItemId(item) + ".xml"))
+				File.Delete(f);
+
 
 			// write out to file
 			Debug.Assert(item.ID > 0);
-			using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, "c" + item.ID + ".xml")))
-				_exporter.Export(item, ExportOptions.ExcludePages, tw);
+			using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, GetContentItemFilename(item))))
+				_exporter.Export(item, ExportOptions.ExcludeAttachments | ExportOptions.ExcludePages, tw);
+		}
+
+		private static string GetContentItemFilename(ContentItem item)
+		{
+			StringBuilder sb = new StringBuilder(60);
+			sb.Append("c-");
+			char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+			foreach (var c in item.Url)
+				if (invalidFileNameChars.Contains(c))
+					sb.Append('-');
+				else
+					sb.Append(c);
+			sb.Append('-');
+			sb.Append(ZeroPadItemId(item));
+			sb.Append(".xml");
+			return sb.ToString();
+		}
+
+		private static string ZeroPadItemId(ContentItem item)
+		{
+			return item.ID.ToString(CultureInfo.InvariantCulture).PadLeft(5, '0');
 		}
 	}
 }

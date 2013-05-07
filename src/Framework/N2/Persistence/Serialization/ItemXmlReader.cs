@@ -22,7 +22,7 @@ namespace N2.Persistence.Serialization
 		private readonly IDefinitionManager definitions;
 		private readonly ContentActivator activator;
 		private readonly IDictionary<string, IXmlReader> readers;
-		bool _ignoreMissingTypes = true;
+		bool _ignoreMissingTypes = false;
 		private IRepository<ContentItem> repository;
 
 		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IRepository<ContentItem> repository)

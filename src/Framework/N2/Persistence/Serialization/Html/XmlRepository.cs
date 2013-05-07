@@ -5,24 +5,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using N2.Definitions;
+using N2.Edit.Versioning;
 using N2.Engine;
 
 namespace N2.Persistence.Serialization.Xml
 {
 	[Service]
-	[Service(typeof (IRepository<>),
+	[Service(typeof(IRepository<>),
 		Configuration = "xml",
-		Replaces = typeof (NH.NHRepository<>))]
+		Replaces = typeof(NH.NHRepository<>))]
 	public class XmlRepository<TEntity> : IRepository<TEntity> where TEntity : class
 	{
 		//protected List<TEntity> _appContentItems = new List<TEntity>();
 
-		protected IDictionary<object, TEntity> _database = new Dictionary<object,TEntity>();
+		protected IDictionary<object, TEntity> _database = new Dictionary<object, TEntity>();
 		protected ITransaction _trans;
 		protected Exporter _exporter;
 		protected IDefinitionManager _definitions
 		{
-			get; set; 
+			get;
+			set;
 		}
 
 		protected string DataDirectoryPhysical
@@ -52,19 +54,21 @@ namespace N2.Persistence.Serialization.Xml
 					discriminators.Add(discriminator, 1);
 			}
 			return from x in discriminators
-				   select new DiscriminatorCount {Count = x.Value, Discriminator = x.Key};
+				   select new DiscriminatorCount { Count = x.Value, Discriminator = x.Key };
 		}
 
-		public TEntity Get(object id)
+		public virtual TEntity Get(object id)
 		{
-			if (id is Int32 && (int)id == 0) return null;
-			//return _appContentItems.FirstOrDefault(f => f.ID == Convert.ToInt32(id));
+			if (id is Int32 && (int)id == 0)
+				return null;
+			if (!_database.ContainsKey(id))
+				return null;
 			return _database[id];
 		}
 
-		public IEnumerable<TEntity> Find(string propertyName, object value)
+		public virtual IEnumerable<TEntity> Find(string propertyName, object value)
 		{
-			return Find((IParameter) Parameter.Equal(propertyName, value));
+			return Find((IParameter)Parameter.Equal(propertyName, value));
 		}
 
 		public IEnumerable<TEntity> Find(params Parameter[] propertyValuesToMatchAll)
@@ -100,9 +104,16 @@ namespace N2.Persistence.Serialization.Xml
 
 		public virtual void SaveOrUpdate(TEntity item)
 		{
-			var s = new System.Xml.Serialization.XmlSerializer(item.GetType());
-			using (var fs = File.CreateText(GetPath(item)))
-				s.Serialize(fs, item);
+			if (typeof(TEntity) == typeof(ContentVersion))
+			{
+				//TODO: Make XmlRepository handle versions
+			}
+			else
+			{
+				var s = new System.Xml.Serialization.XmlSerializer(item.GetType());
+				using (var fs = File.CreateText(GetPath(item)))
+					s.Serialize(fs, item);
+			}
 		}
 
 		public string GetPath(TEntity item)
@@ -132,6 +143,11 @@ namespace N2.Persistence.Serialization.Xml
 
 		public void Flush()
 		{
+			if (typeof(TEntity) == typeof(ContentVersion))
+			{
+				//TODO: Make XmlRepository handle versions
+				return;
+			}
 			throw new NotImplementedException();
 		}
 
