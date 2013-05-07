@@ -8,7 +8,6 @@
 			.insertAfter(this)
 			.wrap("<span class='themeThumbnail'/>");
 
-
 		$(this).hover(function() {
 			var thumbnail = thumbnails[this.value];
 			if (thumbnail) {
