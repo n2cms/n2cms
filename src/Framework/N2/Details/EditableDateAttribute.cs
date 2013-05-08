@@ -13,6 +13,7 @@ namespace N2.Details
 	{
 		bool showDate = true;
 		bool showTime = true;
+        bool useTodayAsDefault = false;
 
 		public EditableDateAttribute()
 			: base(null, 20)
@@ -30,6 +31,13 @@ namespace N2.Details
 			get { return showTime; }
 			set { showTime = value; }
 		}
+
+        /// <summary>Set to show the current date and time as default value.</summary>
+        public bool UseTodayAsDefault
+        {
+            get { return useTodayAsDefault; }
+            set { useTodayAsDefault = value; }
+        }
 
 		/// <summary>Set to false to hide date box.</summary>
 		public bool ShowDate
@@ -63,7 +71,19 @@ namespace N2.Details
 			DatePicker picker = (DatePicker) editor;
             object value = item[Name];
             if (value == null)
-                picker.SelectedDate = null;
+            {
+                if (useTodayAsDefault == true)
+                    picker.SelectedDate = DateTime.Now;
+                else
+                    picker.SelectedDate = null;
+            }
+            else if ((DateTime)value == DateTime.MinValue)
+            {
+                if (useTodayAsDefault == true)
+                    picker.SelectedDate = DateTime.Now;
+                else
+                    picker.SelectedDate = (DateTime?)value;
+            }
             else if (value is DateTime?)
                 picker.SelectedDate = (DateTime?)value;
             else if (value is DateTime)
@@ -80,7 +100,9 @@ namespace N2.Details
 			picker.ID = Name;
             picker.DatePickerBox.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
             picker.TimePickerBox.Placeholder(GetLocalizedText("TimePlaceholder") ?? TimePlaceholder);
+            
 			container.Controls.Add(picker);
+            
 			return picker;
 		}
 
