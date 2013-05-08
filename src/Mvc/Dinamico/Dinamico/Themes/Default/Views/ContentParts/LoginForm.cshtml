@@ -63,6 +63,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	{ 
 		FormsAuthentication.SignOut();
 		showError = false;
+		string logoutUrl = System.Configuration.ConfigurationManager.AppSettings["N2.logout.url"];
+		if (!string.IsNullOrEmpty(Request["returnUrl"])) { Response.Redirect(Request["returnUrl"]); }
+		else if (!string.IsNullOrEmpty(logoutUrl)) { Response.Redirect(logoutUrl); }
 	}
 }
 
