@@ -20,5 +20,9 @@ namespace N2.Configuration
 		{
 			get { return (EditSection)Sections["edit"]; }
 		}
+		public WebSection Web
+		{
+			get { return (WebSection)Sections["web"]; }
+		}
 	}
 }
