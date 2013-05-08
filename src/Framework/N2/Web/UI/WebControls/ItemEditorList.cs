@@ -73,9 +73,9 @@ namespace N2.Web.UI.WebControls
 
 		/// <summary>The minimum type to filter children by.</summary>
 		public Type MinimumType
-        {
-            get { return Type.GetType((string)ViewState["MinimumType"] ?? typeof(object).FullName); }
-            set { ViewState["MinimumType"] = value.AssemblyQualifiedName; }
+		{
+			get { return Type.GetType((string)ViewState["MinimumType"] ?? typeof(object).FullName); }
+			set { ViewState["MinimumType"] = value.AssemblyQualifiedName; }
 		}
 
 		public IList<string> AddedDefinitions
@@ -103,8 +103,8 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				return partsAdapter ??
-				       (partsAdapter =
-				        Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem));
+					   (partsAdapter =
+						Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem));
 			}
 			set { partsAdapter = value; }
 		}
@@ -126,7 +126,7 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				return parentItem
-				       ?? (parentItem = Engine.Persister.Get(ParentItemID));
+					   ?? (parentItem = Engine.Persister.Get(ParentItemID));
 			}
 			set
 			{
@@ -211,10 +211,10 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ParentItem != null)
 			{
-                var filter = new Collections.AllFilter(GetFilters());
-                var items = ParentItem.Children.Where(filter).ToList();
+				var filter = new Collections.AllFilter(GetFilters());
+				var items = ParentItem.Children.Where(filter).ToList();
 			
-                foreach (string discriminator in AddedDefinitions)
+				foreach (string discriminator in AddedDefinitions)
 				{
 					ContentItem item = CreateItem(Definitions.GetDefinition(discriminator));
 					items.Add(item);
@@ -224,16 +224,16 @@ namespace N2.Web.UI.WebControls
 			return new ContentItem[0];
 		}
 
-        private IEnumerable<ItemFilter> GetFilters()
-        {
-            yield return new AccessFilter(Page.User, Engine.SecurityManager);
+		private IEnumerable<ItemFilter> GetFilters()
+		{
+			yield return new AccessFilter(Page.User, Engine.SecurityManager);
 
-            if (MinimumType != null)
-                yield return new TypeFilter(MinimumType);
+			if (MinimumType != null)
+				yield return new TypeFilter(MinimumType);
 
-            if (!string.IsNullOrEmpty(ZoneName))
-                yield return new ZoneFilter(ZoneName);
-        }
+			if (!string.IsNullOrEmpty(ZoneName))
+				yield return new ZoneFilter(ZoneName);
+		}
 
 		private ContentItem CreateItem(ItemDefinition definition)
 		{

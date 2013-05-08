@@ -70,6 +70,7 @@ stylecop.*
 *.log
 *.log.20*
 AssemblyCache.config
+Thumbs.db
 
 # Git files to ignore
 *.orig

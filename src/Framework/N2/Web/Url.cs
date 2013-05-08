@@ -604,8 +604,8 @@ namespace N2.Web
 
 		public Url PrependSegment(string segment, string extension)
 		{
-            if (string.IsNullOrEmpty(segment))
-                return this;
+			if (string.IsNullOrEmpty(segment))
+				return this;
 
 			string newPath;
 			if (string.IsNullOrEmpty(path) || path == "/")
@@ -979,6 +979,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
+			//TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
 			foreach (var kvp in replacements)
 				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
 			return ToAbsolute(urlFormat);

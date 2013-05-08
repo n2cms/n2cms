@@ -399,7 +399,30 @@ namespace N2
 			return null; // it's okay to use default text
 		}
 
-		public static IEnumerable<string> RecursiveListFiles(string physicalBasePath, string filter)
+		/// <summary>Maps a physical path back to a virtual path, thanks to ahmadh21.</summary>
+		/// <param name="physicalPath"></param>
+		/// <returns></returns>
+		public static string RemapVirtualPath(string physicalPath)
+		{
+			physicalPath = physicalPath.Replace('\\', '/').TrimEnd('/', '\\');
+			var appPhysicalPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath.Replace('\\', '/').TrimEnd('/', '\\');
+			var appVirtualPath = System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath.Replace('\\', '/').TrimEnd('/', '\\');
+
+			if (!physicalPath.StartsWith(appPhysicalPath, StringComparison.OrdinalIgnoreCase))
+				throw new ArgumentException("Physical path given must map below application physical path");
+			
+			var finalPath = physicalPath.Substring(appPhysicalPath.Length);
+
+			if (appVirtualPath.Length > 1)
+			{
+				finalPath = appVirtualPath + finalPath;
+			}
+
+			return finalPath;
+		}
+
+
+		public static IEnumerable<string> ListFiles(string physicalBasePath, string filter, bool recursive = true)
 		{
 			var toExplore = new List<string> { physicalBasePath };
 			while (toExplore.Count > 0)
@@ -411,7 +434,8 @@ namespace N2
 					yield return files[i];
 				}
 
-				toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
+				if (recursive)
+					toExplore.AddRange(System.IO.Directory.GetDirectories(toExplore[0]));
 				toExplore.RemoveAt(0);
 			}
 		}
