@@ -213,7 +213,8 @@ namespace N2
 			var pi = GetPropertyInfo(ref instance, propertyName);
 
 			if (pi == null)
-				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
+				return null;
+			//	throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
 
 			return pi.GetValue(instance, null);
 		}
