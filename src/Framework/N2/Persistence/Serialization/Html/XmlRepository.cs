@@ -121,7 +121,7 @@ namespace N2.Persistence.Serialization.Xml
 			// ReSharper disable LoopCanBeConvertedToQuery
 			var type = item.GetType();
 			foreach (var p in type.GetProperties().Where(p => p.Name.ToLower() == "id"))
-				return String.Format("{0}-{1}.xml", type.Name, p.GetValue(item, null));
+				return Path.Combine(DataDirectoryPhysical, String.Format("t{0}-{1}.xml", type.Name, p.GetValue(item, null)));
 			return null;
 			// ReSharper restore LoopCanBeConvertedToQuery
 		}
