@@ -35,6 +35,7 @@ namespace N2.Persistence.Serialization.Xml
 			_activator = activator;
 			_persister = new ContentPersister(null /* what is the contentsource? */, this);
 
+
 			if (!Directory.Exists(DataDirectoryPhysical))
 				Directory.CreateDirectory(DataDirectoryPhysical);
 
@@ -177,19 +178,32 @@ namespace N2.Persistence.Serialization.Xml
 
 		public override void SaveOrUpdate(ContentItem item)
 		{
-			if (_database.All(x => x.Value != item))
-				item.ID = _database.Count > 0 ? AppContentItems.Max(f => f.ID) + 1 : 1;
-			_database[item.ID] = item;
+			if (item.ID == 0)
+			{
+				if (_database.All(x => x.Value != item))
+					item.ID = _database.Count > 0 ? AppContentItems.Max(f => f.ID) + 1 : 1;
+				_database[item.ID] = item;
+			}
+			
+			if (item.IsPage)
+			{
+				// delete existing file
+				foreach (var f in Directory.GetFiles(DataDirectoryPhysical, "c-*-" + ZeroPadItemId(item) + ".xml"))
+					File.Delete(f);
 
-			// delete existing file
-			foreach (var f in Directory.GetFiles(DataDirectoryPhysical, "c-*-" + ZeroPadItemId(item) + ".xml"))
-				File.Delete(f);
-
-
-			// write out to file
-			Debug.Assert(item.ID > 0);
-			using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, GetContentItemFilename(item))))
-				_exporter.Export(item, ExportOptions.ExcludeAttachments | ExportOptions.ExcludePages, tw);
+				// write out to file
+				Debug.Assert(item.ID > 0);
+				using (var tw = File.CreateText(Path.Combine(DataDirectoryPhysical, GetContentItemFilename(item))))
+					_exporter.Export(item, ExportOptions.ExcludeAttachments | ExportOptions.ExcludePages, tw);
+			}
+			else if (item.Parent != null)
+			{
+				SaveOrUpdate(item.Parent);
+			}
+			else
+			{
+				throw new ArgumentException("Invalid item: not a page and parent = null");
+			}
 		}
 
 		private static string GetContentItemFilename(ContentItem item)
@@ -198,9 +212,7 @@ namespace N2.Persistence.Serialization.Xml
 			sb.Append("c-");
 			char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 			foreach (var c in item.Url)
-				if (invalidFileNameChars.Contains(c))
-					sb.Append('-');
-				else
+				if (!invalidFileNameChars.Contains(c))
 					sb.Append(c);
 			sb.Append('-');
 			sb.Append(ZeroPadItemId(item));
