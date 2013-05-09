@@ -1281,7 +1281,6 @@
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <Content Include="N2\Content\Activity\Notify.ashx" />
     <Content Include="N2\Api\Interface.ashx" />
-    <Content Include="N2\Api\Children.ashx" />
     <Content Include="N2\Api\Translations.ashx" />
     <Content Include="N2\Api\Context.ashx" />
     <Content Include="N2\Api\Versions.ashx" />
@@ -1341,9 +1340,6 @@
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
-    </Compile>
-    <Compile Include="N2\Api\Children.ashx.cs">
-      <DependentUpon>Children.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Api\Context.ashx.cs">
       <DependentUpon>Context.ashx</DependentUpon>

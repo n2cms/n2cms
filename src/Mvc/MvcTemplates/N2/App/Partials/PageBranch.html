@@ -1,15 +1,17 @@
-﻿<div class='item'>
+﻿<div class='item' ng-class="{ loading: node.Loading }">
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item">
 		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position:0 0; width:16px; height:16px;"></span>
 		{{node.Current.Title}}
 	</a>
-	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i></a>
+	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
 	<div class='tools'>
 		<a href='#'>tools</a>
 	</div>
 </div>
 <!-- ng-show="node.Expanded && node.Children.length"  -->
-<ul class="targettable" ui-sortable="{ receive: sort.receive, remove: sort.remove, update: sort.update, start: sort.start, stop: sort.stop, connectWith: '.targettable', placeholder: 'sortable-placeholder', handle: '.item', distance: 10 }" ng-model="node.Children" ng-class="{ expanded: node.Expanded && node.Children.length, collapsed: !node.Expanded || !node.Children.length, loading: node.Loading  }">
+<!--ui-sortable="{ receive: sort.receive, update: sort.update, start: sort.start, stop: sort.stop, connectWith: '.targettable', placeholder: 'sortable-placeholder', handle: '.item', distance: 10 }" ng-model="node.Children" ng-class="{ expanded: node.Expanded && node.Children.length, collapsed: !node.Expanded || !node.Children.length  }"-->
+<ul class="targettable">
 	<li ng-repeat="child in node.Children" ng-controller="BranchCtrl" ng-class="{ active: child.Selected, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/PageBranch.html'">
 	</li>
+	<li class="pager" ng-show="node.IsPaged"><a href="#" ng-click="loadRemaining(node)">Load all</a></li>
 </ul>

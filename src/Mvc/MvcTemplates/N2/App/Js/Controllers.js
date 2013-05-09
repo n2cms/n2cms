@@ -63,6 +63,16 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 		$scope.Context.Node = node;
 		node.Selected = true;
 	}
+	$scope.loadRemaining = function (node) {
+		node.Loading = true;
+		Content.children({ selected: node.Current.Path, skip: node.Children.length }, function (data) {
+			node.Children.length--;
+			for (var i in data.Children)
+				node.Children.push(data.Children[i]);
+			node.Loading = false;
+			node.IsPaged = false;
+		});
+	}
 	$scope.$on("moved", function (e, content) {
 		console.log("moved", content);
 	});
@@ -74,8 +84,11 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.toggle = function (node) {
 		if (!node.Expanded && !node.Children.length) {
 			node.Loading = true;
-			node.Children = Content.query({ selected: node.Current.Path }, function () {
+			Content.children({ selected: node.Current.Path }, function (data) {
+				node.Children = data.Children;
 				node.Loading = false;
+				if (data.IsPaged)
+					node.IsPaged = true;
 			});
 		}
 		node.Expanded = !node.Expanded;

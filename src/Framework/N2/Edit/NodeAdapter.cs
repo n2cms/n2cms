@@ -194,14 +194,23 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			IEnumerable<ContentItem> children = GetNodeChildren(parent, userInterface);
+			return GetChildren(new Query { Parent = parent, Interface = userInterface });
+		}
+
+		/// <summary>Gets the children of the given item for the given user interface.</summary>
+		/// <param name="parent">The item whose children to get.</param>
+		/// <param name="userInterface">The interface where the children are displayed.</param>
+		/// <returns>An enumeration of the children.</returns>
+		public virtual IEnumerable<ContentItem> GetChildren(Query query)
+		{
+			IEnumerable<ContentItem> children = GetNodeChildren(query);
 
 			foreach (var child in children)
 				yield return child;
 
-			if (Interfaces.Managing == userInterface)
+			if (Interfaces.Managing == query.Interface)
 			{
-				foreach (var child in NodeFactory.GetChildren(parent.Path))
+				foreach (var child in NodeFactory.GetChildren(query.Parent.Path))
 				{
 					yield return child;
 				}
@@ -210,17 +219,19 @@ namespace N2.Edit
 
 		protected virtual IEnumerable<ContentItem> GetNodeChildren(ContentItem parent)
 		{
-			return GetNodeChildren(parent, Interfaces.Viewing);
+			return GetNodeChildren(new Query { Parent = parent, Interface = Interfaces.Viewing });
 		}
 
-		protected virtual IEnumerable<ContentItem> GetNodeChildren(ContentItem parent, string userInterface)
+		protected virtual IEnumerable<ContentItem> GetNodeChildren(Query query)
 		{
-			if (parent is IActiveChildren)
-				return ((IActiveChildren)parent).GetChildren(new AccessFilter(WebContext.User, Security));
+			if (query == null) throw new ArgumentNullException("query");
 
-			var query = new Query { Parent = parent, Interface = userInterface };
+			if (query.Parent is IActiveChildren)
+				return ((IActiveChildren)query.Parent).GetChildren(new AccessFilter(WebContext.User, Security));
+
 			if (!Settings.DisplayDataItems)
 				query.OnlyPages = true;
+
 			var children = Sources.GetChildren(query);
 
 			return children;

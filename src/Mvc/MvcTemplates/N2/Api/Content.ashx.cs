@@ -1,8 +1,10 @@
 ﻿using N2.Collections;
+using N2.Definitions;
 using N2.Edit;
 using N2.Edit.Trash;
 using N2.Engine;
 using N2.Persistence;
+using N2.Persistence.Sources;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,13 @@ namespace N2.Management.Api
 			switch (context.Request.HttpMethod)
 			{
 				case "GET":
-					WriteChildren(context);
+					switch (context.Request.PathInfo)
+					{
+						case "/children":
+						default:
+							WriteChildren(context);
+							break;
+					}
 					break;
 				case "POST":
 					switch (context.Request.PathInfo)
@@ -60,14 +68,30 @@ namespace N2.Management.Api
 		private void WriteChildren(HttpContext context)
 		{
 			var children = CreateChildren(context).ToList();
-			children.ToJson(context.Response.Output);
+			new 
+			{ 
+				Children = children,
+				IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge)
+			}.ToJson(context.Response.Output);
 		}
 
 		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContext context)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
 			var filter = engine.EditManager.GetEditorFilter(context.User);
-			return adapter.GetChildren(selection.SelectedItem, Interfaces.Managing)
+			
+			var query = Query.From(selection.SelectedItem);
+			query.Interface = Interfaces.Managing;
+			if (context.Request["pages"] != null)
+				query.OnlyPages = Convert.ToBoolean(context.Request["pages"]);
+			if (selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge))
+				query.Limit = new Range(0, SyncChildCollectionStateAttribute.LargeCollecetionThreshold);
+			if (context.Request["skip"] != null)
+				query.Skip(int.Parse(context.Request["skip"]));
+			if (context.Request["take"] != null)
+				query.Take(int.Parse(context.Request["take"]));
+
+			return adapter.GetChildren(query)
 				.Select(c => CreateNode(c, filter));
 		}
 
