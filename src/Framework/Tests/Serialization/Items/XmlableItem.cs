@@ -60,6 +60,18 @@ namespace N2.Tests.Serialization.Items
 			get { return XDocument.Parse(GetDetail("Xml", "<root/>")); }
 			set { SetDetail("Xml", value.ToString()); }
 		}
+
+		private bool? _page = null;
+		public new bool IsPage
+		{
+			get
+			{
+				if (!_page.HasValue)
+					return base.IsPage;
+				return _page.Value;
+			}
+			set { _page = value; }
+		}
 	}
 
 	public class XmlableItem2 : XmlableItem

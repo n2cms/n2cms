@@ -36,19 +36,19 @@ namespace N2.Persistence.Serialization
 			}
 		}
 
-        private static byte[] ReadFully(Stream input)
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
-        }
+		private static byte[] ReadFully(Stream input)
+		{
+			byte[] buffer = new byte[16 * 1024];
+			using (MemoryStream ms = new MemoryStream())
+			{
+				int read;
+				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+				{
+					ms.Write(buffer, 0, read);
+				}
+				return ms.ToArray();
+			}
+		}
 
 		public Attachment Read(XPathNavigator navigator, ContentItem item)
 		{
@@ -68,13 +68,13 @@ namespace N2.Persistence.Serialization
 			{
 				string path = a.Url;
 
-                if(!fs.DirectoryExists(Path.GetDirectoryName(path)))
-                {
-                    fs.CreateDirectory(Path.GetDirectoryName(path));
-                }
+				if(!fs.DirectoryExists(Path.GetDirectoryName(path)))
+				{
+					fs.CreateDirectory(Path.GetDirectoryName(path));
+				}
 
-			    var memoryStream = new MemoryStream(a.FileContents);
-			    fs.WriteFile(path, memoryStream);
+				var memoryStream = new MemoryStream(a.FileContents);
+				fs.WriteFile(path, memoryStream);
 			}
 		}
 

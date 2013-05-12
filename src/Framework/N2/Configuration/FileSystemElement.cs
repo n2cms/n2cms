@@ -12,6 +12,36 @@ namespace N2.Configuration
 			set { base["textFileExtensions"] = value; }
 		}
 
+		[ConfigurationProperty("imageFileExtensions", DefaultValue = ".jpg,.gif,.jpeg,.png")]
+		public string ImageFileExtensions
+		{
+			get { return (string)base["imageFileExtensions"]; }
+			set { base["imageFileExtensions"] = value; }
+		}
+
+		[ConfigurationProperty("uploadFilenameStrip", DefaultValue = "")]
+		public string UploadFilenameStrip
+		{
+			get { return (string)base["uploadFilenameStrip"]; }
+			set { base["uploadFilenameStrip"] = value; }
+		}
+
+		//[ConfigurationProperty("uploadFilenameRegexFind", DefaultValue = "")]
+		//public string UploadFilenameRegexFind
+		//{
+		//	get { return (string)base["uploadFilenameRegexFind"]; }
+		//	set { base["uploadFilenameRegexFind"] = value; }
+		//}
+
+		//[ConfigurationProperty("uploadFilenameRegexReplace", DefaultValue = "")]
+		//public string UploadFilenameRegexReplace
+		//{
+		//	get { return (string)base["uploadFilenameRegexReplace"]; }
+		//	set { base["uploadFilenameRegexReplace"] = value; }
+		//}
+
+
+
 		public bool IsTextFile(string virtualPath)
 		{
 			return Array.FindIndex(

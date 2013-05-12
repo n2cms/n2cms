@@ -112,6 +112,13 @@ namespace N2.Persistence.NH
 			}
 		}
 
+		/// <summary>
+		/// Configures the properties of each supported database flavor. You need to extend this method if you want to 
+		/// add your own database flavor. 
+		/// </summary>
+		/// <param name="config"></param>
+		/// <param name="connectionStrings"></param>
+		/// <returns></returns>
 		private DatabaseFlavour SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			DatabaseFlavour flavour = config.Flavour;
@@ -189,6 +196,8 @@ namespace N2.Persistence.NH
 					break;
 				case DatabaseFlavour.MongoDB:
 					return DatabaseFlavour.MongoDB;
+				case DatabaseFlavour.Xml:
+					return DatabaseFlavour.Xml;
 				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}

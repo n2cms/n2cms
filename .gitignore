@@ -70,7 +70,9 @@ stylecop.*
 *.log
 *.log.20*
 AssemblyCache.config
+Thumbs.db
 
 # Git files to ignore
 *.orig
 src/N2.Sources.6.0.ReSharper
+src/Mvc/MvcTemplates/App_Data/ContentItemsXml/

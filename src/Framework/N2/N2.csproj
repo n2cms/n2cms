@@ -105,6 +105,7 @@
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
     <Compile Include="Collections\ParallelRootHierarchyBuilder.cs" />
@@ -537,6 +538,9 @@
     <Compile Include="Edit\IExternalContentRepository.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
+    <Compile Include="Persistence\FilesystemTransaction.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
+    <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
     <Compile Include="Persistence\Behaviors\ISavingBehavior.cs" />
     <Compile Include="Persistence\IPersistableProperty.cs" />
@@ -586,6 +590,7 @@
     <Compile Include="Persistence\Search\ContentIndexer.cs" />
     <Compile Include="Persistence\Search\SortFieldData.cs" />
     <Compile Include="Persistence\Serialization\ChildXmlReader.cs" />
+    <Compile Include="Persistence\Serialization\Html\XmlRepository.cs" />
     <Compile Include="Persistence\Serialization\UnresolvedLink.cs" />
     <Compile Include="Persistence\Sources\ContentSource.cs" />
     <Compile Include="Persistence\Finder\INullableCriteriaOfT.cs" />
@@ -626,6 +631,7 @@
     <Compile Include="Persistence\Sources\SourcesExtensions.cs" />
     <Compile Include="Persistence\TagsRepository.cs" />
     <Compile Include="Persistence\TemporaryFileHelper.cs" />
+    <Compile Include="Persistence\Serialization\Html\XmlContentItemRepository.cs" />
     <Compile Include="Plugin\ConnectionMonitor.cs" />
     <Compile Include="Security\ISecurableBase.cs" />
     <Compile Include="Security\SecurableExtensions.cs" />
