@@ -19,6 +19,7 @@ namespace N2.Persistence.Serialization.Xml
 	class HtmlContentRepository : XmlRepository<ContentItem>, IContentItemRepository
 	{
 		private readonly IPersister _persister;
+		private readonly IDependencyInjector _injector;
 		//private readonly IEngine _engine;
 
 		private ContentActivator _activator
@@ -28,12 +29,13 @@ namespace N2.Persistence.Serialization.Xml
 			set;
 		}
 
-		public HtmlContentRepository(IDefinitionManager definitions, ContentActivator activator, IFileSystem fs)//IEngine engine)
+		public HtmlContentRepository(IDefinitionManager definitions, ContentActivator activator, IFileSystem fs, IDependencyInjector injector)//IEngine engine)
 		{
 			//_engine = engine;
 			_definitions = definitions;
 			_activator = activator;
 			_persister = new ContentPersister(null /* what is the contentsource? */, this);
+			_injector = injector;
 
 
 			if (!Directory.Exists(DataDirectoryPhysical))
@@ -206,8 +208,10 @@ namespace N2.Persistence.Serialization.Xml
 			}
 		}
 
-		private static string GetContentItemFilename(ContentItem item)
+		private string GetContentItemFilename(ContentItem item)
 		{
+			if (!_injector.FulfilDependencies(item))
+				throw new Exception(String.Format("Failed to fulfill item dependencies for #{0}", item.ID));
 			StringBuilder sb = new StringBuilder(60);
 			sb.Append("c-");
 			char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
