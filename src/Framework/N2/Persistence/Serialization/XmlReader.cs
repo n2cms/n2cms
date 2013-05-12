@@ -67,31 +67,31 @@ namespace N2.Persistence.Serialization
 		{
 			int referencedItemID = int.Parse(value);
 
-            if (referencedItemID != 0)
-            {
-                ContentItem referencedItem = journal.Find(referencedItemID);
-                if (referencedItem != null)
-                {
-                    setter(referencedItem);
-                }
-                else
-                {
-                    journal.Register(referencedItemID, setter);
-                }
-            }
-            else if (!string.IsNullOrEmpty(versionKey))
-            {
+			if (referencedItemID != 0)
+			{
+				ContentItem referencedItem = journal.Find(referencedItemID);
+				if (referencedItem != null)
+				{
+					setter(referencedItem);
+				}
+				else
+				{
+					journal.Register(referencedItemID, setter);
+				}
+			}
+			else if (!string.IsNullOrEmpty(versionKey))
+			{
 
-                ContentItem referencedItem = journal.Find(versionKey);
-                if (referencedItem != null)
-                {
-                    setter(referencedItem);
-                }
-                else
-                {
-                    journal.Register(versionKey, setter);
-                }
-            }
+				ContentItem referencedItem = journal.Find(versionKey);
+				if (referencedItem != null)
+				{
+					setter(referencedItem);
+				}
+				else
+				{
+					journal.Register(versionKey, setter);
+				}
+			}
 		}
 	}
 }

@@ -7,17 +7,17 @@ namespace N2.Persistence.Serialization
 {
 	public class AttachmentXmlWriter : IXmlWriter
 	{
-		private readonly AttributeExplorer explorer = new AttributeExplorer();
-		private IFileSystem fs;
+		private readonly AttributeExplorer _explorer = new AttributeExplorer();
+		private readonly IFileSystem _fs;
 
 		public AttachmentXmlWriter(IFileSystem fs)
 		{
-			this.fs = fs;
+			_fs = fs;
 		}
 
 		public void Write(ContentItem item, XmlTextWriter writer)
 		{
-			IList<IAttachmentHandler> attachments = explorer.Find<IAttachmentHandler>(item.GetContentType());
+			IList<IAttachmentHandler> attachments = _explorer.Find<IAttachmentHandler>(item.GetContentType());
 			if(attachments.Count > 0)
 			{
 				using(new ElementWriter("attachments", writer))
@@ -27,7 +27,7 @@ namespace N2.Persistence.Serialization
 						using (ElementWriter attachmentElement = new ElementWriter("attachment", writer))
 						{
 							attachmentElement.WriteAttribute("name", attachment.Name);
-							attachment.Write(fs, item, writer);
+							attachment.Write(_fs, item, writer);
 						}
 					}
 				}
