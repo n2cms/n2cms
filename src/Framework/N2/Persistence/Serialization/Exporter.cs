@@ -25,7 +25,7 @@ namespace N2.Persistence.Serialization
 			set { xmlFormatting = value; }
 		}
 
-        public virtual void Export(ContentItem item, ExportOptions options, HttpResponse response)
+		public virtual void Export(ContentItem item, ExportOptions options, HttpResponse response)
 		{
 			response.ContentType = GetContentType();
 			response.AppendHeader("Content-Disposition", "attachment;filename=" + GetExportFilename(item));
@@ -53,7 +53,7 @@ namespace N2.Persistence.Serialization
 			return Regex.Replace(item.Title.Replace(' ', '_'), "[^a-zA-Z0-9_-]", "") + ".n2.xml";
 		}
 
-        public virtual void Export(ContentItem item, ExportOptions options, TextWriter output)
+		public virtual void Export(ContentItem item, ExportOptions options, TextWriter output)
 		{
 			XmlTextWriter xmlOutput = new XmlTextWriter(output);
 			xmlOutput.Formatting = XmlFormatting;

@@ -13,8 +13,8 @@ namespace N2.Persistence.Serialization
 		/// <summary>Reads an attachment from import stream.</summary>
 		Attachment Read(XPathNavigator navigator, ContentItem item);
 
-        /// <summary>Imports an attachment into the host system.</summary>
-        /// <param name="attachment">The attachment to import.</param>
+		/// <summary>Imports an attachment into the host system.</summary>
+		/// <param name="attachment">The attachment to import.</param>
 		void Import(IFileSystem fs, Attachment attachment);
 	}
 }

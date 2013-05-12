@@ -13,12 +13,12 @@ namespace N2.Persistence.NH
 	[Service(typeof(ISessionProvider))]
 	public class SessionProvider : ISessionProvider
 	{
-        Logger<SessionProvider> logger;
+		Logger<SessionProvider> logger;
 		private static string SessionKey = "SessionProvider.Session";
 		private NHInterceptorFactory interceptorFactory;
 		private readonly IWebContext webContext;
 		private readonly ISessionFactory nhSessionFactory;
-        private FlushMode flushAt = FlushMode.Commit;
+		private FlushMode flushAt = FlushMode.Commit;
 		private System.Data.IsolationLevel? isolation;
 		private bool autoStartTransaction;
 
@@ -56,56 +56,56 @@ namespace N2.Persistence.NH
 			set { if (webContext != null) webContext.RequestItems[SessionKey] = value; }
 		}
 
-        public FlushMode FlushAt
-        {
-            get { return flushAt; }
-            set { flushAt = value; }
-        }
+		public FlushMode FlushAt
+		{
+			get { return flushAt; }
+			set { flushAt = value; }
+		}
 
 		public virtual SessionContext OpenSession
 		{
-            get
-            {
-                SessionContext sc = CurrentSession;
+			get
+			{
+				SessionContext sc = CurrentSession;
 				if (sc == null)
 				{
 					ISession s = interceptorFactory.CreateSession(nhSessionFactory);
 					s.FlushMode = FlushAt;
 					CurrentSession = sc = new SessionContext(this, s);
-                    logger.DebugFormat("Creating session {0}", sc.GetHashCode());
+					logger.DebugFormat("Creating session {0}", sc.GetHashCode());
 					if (autoStartTransaction)
 						sc.Transaction = BeginTransaction();
 				}
 				else
 				{
-                    logger.DebugFormat("Reusing session {0}", sc.GetHashCode());
+					logger.DebugFormat("Reusing session {0}", sc.GetHashCode());
 				}
-                return sc;
-            }
+				return sc;
+			}
 		}
 
-	    public virtual void Flush()
+		public virtual void Flush()
 		{
-            SessionContext sc = CurrentSession;
+			SessionContext sc = CurrentSession;
 
-            if (sc != null)
+			if (sc != null)
 				sc.Session.Flush();
 		}
 
 		public virtual void Dispose()
 		{
-            SessionContext sc = CurrentSession;
+			SessionContext sc = CurrentSession;
 
-            if (sc != null)
-            {
+			if (sc != null)
+			{
 				if (autoStartTransaction && sc.Transaction != null)
 					sc.Transaction.Commit();
 
-                logger.DebugFormat("Closing session {0}", sc.GetHashCode());
-                sc.Session.Dispose();
-                CurrentSession = null;
-            }
-        }
+				logger.DebugFormat("Closing session {0}", sc.GetHashCode());
+				sc.Session.Dispose();
+				CurrentSession = null;
+			}
+		}
 
 		/// <summary>Begins a transaction.</summary>
 		/// <returns>A disposable transaction wrapper. Call Commit to commit the transaction.</returns>
