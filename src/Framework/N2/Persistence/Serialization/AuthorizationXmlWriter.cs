@@ -11,7 +11,7 @@ namespace N2.Persistence.Serialization
 			{
 				if (item.AuthorizedRoles != null)
 				{
-					foreach (Security.AuthorizedRole ar in item.AuthorizedRoles)
+					foreach (AuthorizedRole ar in item.AuthorizedRoles)
 					{
 						WriteRole(writer, ar);
 					}

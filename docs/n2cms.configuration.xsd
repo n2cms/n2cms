@@ -621,6 +621,8 @@
 							<xs:element name="fileSystem" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="textFileExtensions" type="xs:string" use="optional" default=".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt" />
+									<xs:attribute name="imageFileExtensions" type="xs:string" use="optional" default=".jpg,.gif,.jpeg,.png,.bmp" />
+									<xs:attribute name="uploadFilenameStrip" type="xs:string" use="optional" default="+," />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="images" minOccurs="0">

@@ -14,17 +14,17 @@ namespace N2.Persistence.Serialization
 		{
 			using (new ElementWriter("details", writer))
 			{
-                foreach (ContentDetail detail in GetDetails(item))
+				foreach (ContentDetail detail in GetDetails(item))
 				{
 					WriteDetail(item, detail, writer);
 				}
 			}
 		}
 
-        protected virtual IEnumerable<ContentDetail> GetDetails(ContentItem item)
-        {
-            return item.Details;
-        }
+		protected virtual IEnumerable<ContentDetail> GetDetails(ContentItem item)
+		{
+			return item.Details;
+		}
 		public virtual void WriteDetail(ContentItem item, ContentDetail detail, XmlTextWriter writer)
 		{
 			using (ElementWriter detailElement = new ElementWriter("detail", writer))

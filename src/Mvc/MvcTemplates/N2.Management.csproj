@@ -2313,6 +2313,10 @@
     <Content Include="N2\Resources\KeepAlive\ping.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\IoC.Windsor\N2.IoC.Windsor3.csproj">
+      <Project>{7a9c0479-64af-4df1-818c-118866db8a3d}</Project>
+      <Name>N2.IoC.Windsor3</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
