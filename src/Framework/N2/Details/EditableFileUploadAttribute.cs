@@ -20,7 +20,7 @@ namespace N2.Details
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
-
+		private string uploadDirectory = string.Empty;
 
 
 		public EditableFileUploadAttribute()
@@ -34,7 +34,7 @@ namespace N2.Details
 		}
 
 
-
+		
 		/// <summary>Image alt text.</summary>
 		public string Alt
 		{
@@ -47,6 +47,13 @@ namespace N2.Details
 		{
 			get { return cssClass; }
 			set { cssClass = value; }
+		}
+
+		/// <summary>Set a specific upload directory.</summary>
+		public string UploadDirectory
+		{
+			get { return uploadDirectory; }
+			set { uploadDirectory = value; }
 		}
 
 		/// <summary>CSS class on the image element.</summary>
@@ -65,7 +72,14 @@ namespace N2.Details
 			if (postedFile != null && !string.IsNullOrEmpty(postedFile.FileName))
 			{
 				IFileSystem fs = Engine.Resolve<IFileSystem>();
-				string directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
+
+				string directoryPath;
+				if (uploadDirectory == string.Empty)
+					directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
+				else
+					directoryPath = uploadDirectory;
+
+
 				if (!fs.DirectoryExists(directoryPath))
 					fs.CreateDirectory(directoryPath);
 
