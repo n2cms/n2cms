@@ -113,7 +113,7 @@ namespace N2.Details
 			SelectingUploadCompositeControl composite = new SelectingUploadCompositeControl();
 			composite.ID = Name;
 			composite.UploadLabel.Text = UploadText ?? "Upload";
-            composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
+			composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(composite);
 			return composite;
 		}
