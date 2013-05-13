@@ -23,7 +23,6 @@ namespace N2.Details
 		private string uploadDirectory = string.Empty;
 
 
-
 		public EditableFileUploadAttribute()
 			: this(null, 42)
 		{
@@ -63,7 +62,7 @@ namespace N2.Details
 		/// <summary>The image size to display by default if available.</summary>
 		public string PreferredSize { get; set; }
 
-        
+
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
@@ -73,11 +72,13 @@ namespace N2.Details
 			if (postedFile != null && !string.IsNullOrEmpty(postedFile.FileName))
 			{
 				IFileSystem fs = Engine.Resolve<IFileSystem>();
+
 				string directoryPath;
 				if (uploadDirectory == string.Empty)
 					directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
 				else
 					directoryPath = uploadDirectory;
+
 
 				if (!fs.DirectoryExists(directoryPath))
 					fs.CreateDirectory(directoryPath);
