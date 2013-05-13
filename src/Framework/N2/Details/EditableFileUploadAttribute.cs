@@ -33,8 +33,7 @@ namespace N2.Details
 		{
 		}
 
-
-
+		
 		/// <summary>Image alt text.</summary>
 		public string Alt
 		{
