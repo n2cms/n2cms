@@ -1,5 +1,4 @@
 ﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
-	console.log("controllers.js");
 });
 
 function ManagementCtrl($scope, Interface, Context, $window) {
@@ -76,7 +75,7 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$on("moved", function (e, content) {
 		console.log("moved", content);
 	});
-	$scope.sort = new SortHelperFactory($scope);
+	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
 function BranchCtrl($scope, Content, SortHelperFactory) {
@@ -93,7 +92,7 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		}
 		node.Expanded = !node.Expanded;
 	};
-	$scope.sort = new SortHelperFactory($scope);
+	$scope.sort = new SortHelperFactory($scope, Content);
 }
 function PageActionCtrl($scope, $interpolate) {
 	$scope.evaluateExpression = function (expr) {

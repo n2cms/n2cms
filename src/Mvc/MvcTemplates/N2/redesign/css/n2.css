@@ -48,7 +48,8 @@ ul.menu li { display: inline-block; }
 					#page-tree ul li.expanded > div:hover > a.toggle i.toggle-collapse { display:inline-block; }
 					#page-tree ul > li > div.loading > a.toggle i { display:none !important; }
 					#page-tree ul > li > div.loading > a.toggle i.toggle-loading { display:inline-block !important; }
-
+					#page-tree ul li .tree-pager { display:block; padding-left:20px; }
+						#page-tree ul li .tree-pager i { float:right; margin:5px; }
 				/*#page-tree ul li.expanded > div > a.toggle > .open { display: inline-block; }
 				#page-tree ul li.collapsed > div > a.toggle > .open { display: inline-block; }*/
 					/*#page-tree ul li a.toggle { display: none; height:29px; width:16px; background:transparent none no-repeat 50% 50%; }
@@ -61,10 +62,15 @@ ul.menu li { display: inline-block; }
 				#page-tree ul li.root > div { background: #fafafa; }
 					#page-tree ul li.root > div:hover { background: #f3f3f3; }
 				#page-tree ul li.root ul li { border-top: 1px solid #FFFFFF; }
-					#page-tree ul li.root ul li div.item { border-left: 5px solid #ebf7fc; border-bottom: 1px solid #ebf7fc; }
+					#page-tree ul li.root ul li div.item { border-bottom: 1px solid #ebf7fc; }
+					#page-tree ul li.root ul li div.item b.handle { background: #ebf7fc none no-repeat 50% 50%; display:inline-block; height:29px; width:5px; cursor:move; float:left; }
+					#page-tree ul li.root ul li div.item b.handle:hover {transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
+					#page-tree ul li.root ul li.ui-sortable-helper > div.item b.handle { width:19px; }
 					#page-tree ul li.root ul li a img { padding-right: 4px; position: relative; top: 3px; }
-					#page-tree ul li.root ul li div.item:hover { border-left: 5px solid #d9f0f9; background: #f9fdfe; }
-					#page-tree ul li.root ul li.active > div.item { border-left: 5px solid #3aaee3; background: #ebf7fc; }
+					#page-tree ul li.root ul li div.item:hover { background: #f9fdfe; }
+					#page-tree ul li.root ul li div.item:hover b.handle { background-color: #d9f0f9; }
+					#page-tree ul li.root ul li.active > div.item { background: #ebf7fc; }
+					#page-tree ul li.root ul li.active > div.item b.handle { background-color: #3aaee3; }
 #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
 	#trash > div { text-align: center; height: 60px; background: #f0f0f0; border: 1px solid #dddddd; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
@@ -129,6 +135,9 @@ ul.menu li { display: inline-block; }
 .ui-sortable-helper .toggle,
 .ui-sortable-helper .tools {
 	display:none !important;
+}
+
+.targettable {
 }
 
 .sortable-placeholder {

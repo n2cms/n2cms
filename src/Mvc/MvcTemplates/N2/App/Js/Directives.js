@@ -1,6 +1,4 @@
 ﻿(function (module) {
-	console.log("directives.js");
-
 	module.directive("pageActionContent", function ($interpolate) {
 		return {
 			restrict: "E",
@@ -47,12 +45,83 @@
 		}
 	});
 
-	module.directive("sortable", function (uiSortable) {
-		console.log("sortable", uiSortable);
+	module.directive("sortable", function () {
+
+		var ctx = {
+		};
 
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
+				var sort = {
+					start: function (e, args) {
+						var $from = $(args.item[0]).parent().closest("li");
+						ctx = {
+							operation: "sort",
+							indexes: {
+								from: args.item.index()
+							},
+							scopes: {
+								from: $from.length && angular.element($from).scope()
+							},
+							paths: {
+								from: $from.attr("sortable-path") || null
+							}
+						};
+					},
+					remove: function (e, args) {
+					},
+					update: function (e, args) {
+					},
+					receive: function (e, args) {
+						ctx.operation = "move";
+					},
+					stop: function (e, args) {
+						var $selected = $(args.item[0]);
+						var $to = $selected.parent().closest("li");
+
+						ctx.paths.selected = $selected.attr("sortable-path") || null;
+						ctx.paths.to = $to.attr("sortable-path") || null;
+						ctx.paths.before = $selected.next().attr("sortable-path") || null;
+
+						ctx.scopes.selected = $selected.length && angular.element($selected).scope();
+						ctx.scopes.to = $to.length && angular.element($to).scope();
+						
+						ctx.indexes.to = args.item.index();
+
+						ctx.scopes.from.node.Children.splice(ctx.indexes.from, 1);
+
+						//ctx.elements = {
+						//	selected: $selected,
+						//	to: $to
+						//};
+
+						var options = scope.$eval(attrs.sortable)
+
+						if (ctx.operation == "move") {
+							options.move && options.move(ctx);
+						} else {
+							options.sort && options.sort(ctx);
+						}
+						ctx.scopes.from.$digest();
+						ctx.scopes.to.$digest();
+						ctx = {};
+					}
+				};
+
+				setTimeout(function () {
+					element.sortable({
+						connectWith: '.targettable',
+						placeholder: 'sortable-placeholder',
+						handle: '.item',
+						receive: sort.receive,
+						remove: sort.remove,
+						update: sort.update,
+						start: sort.start,
+						stop: sort.stop
+					});
+				}, 100);
+
 				//ui-sortable="{ receive: sort.receive, remove: sort.remove, update: sort.update, start: sort.start, stop: sort.stop, connectWith: '.targettable', placeholder: 'sortable-placeholder', handle: '.item', distance: 10 }" 
 
 				//element.sortable({

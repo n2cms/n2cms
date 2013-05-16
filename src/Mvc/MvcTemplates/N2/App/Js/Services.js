@@ -1,15 +1,8 @@
 ﻿(function (module) {
-	console.log("services.js");
-
 	module.factory('Interface', function ($resource) {
 		var res = $resource('Api/Interface.ashx', {}, {});
 		return res;
 	});
-
-	//module.factory('Children', function ($resource) {
-	//	var res = $resource('Api/Children.ashx', {}, {});
-	//	return res;
-	//});
 
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
@@ -51,62 +44,42 @@
 	});
 
 	module.factory('SortHelperFactory', function (Content) {
+		window.Ct = Content;
 		var context = {}
 		return function (scope) {
-			var isOrigin = false;
-			this.start = function (e, args) {
-				var $element = $(args.item.context).closest(".ng-scope");
-				context.from = angular.element($element).scope().node;
-				context.parent = scope.node;
-				context.siblingCount = scope.node.Children.length;
-				isOrigin = true;
-			};
-			this.stop = function (e, args) {
-				setTimeout(function () {
-					context = {};
-					isOrigin = false;
-				}, 11);
-			};
-			this.remove = function (e, args) {
-			};
-			this.receive = function (e, args) {
-				var $element = $(args.item.context).closest(".ng-scope");
-				var $next = $element.next(".ng-scope");
+			function reload(ctx) {
+				var node = ctx.scopes.to && ctx.scopes.to.node;
+				if (!node) return;
 
-				var from = angular.element($element).scope().node;
-				var to = scope.node;
-				var before = $next.length ? angular.element($next).scope().node : null;
+				node.HasChildren = true;
+				node.Loading = true;
+				Content.children({ selected: node.Current.Path }, function (data) {
+					//ctx.elements.selected.remove();
 
-				console.log("moving ", from.Current.Title, " -> ", to.Current.Title, " (before ", before && before.Current && before.Current.Title, ")");
-				Content.move({ selected: from.Current.Path, to: to.Current.Path, before: before && before.Current && before.Current.Path }, {}, function () {
-					to.HasChildren = true;
-					Content.query({ selected: to.Current.Path }, function (children) {
-						to.Children = children;
-						to.Expanded = true;
-						scope.$emit("moved", from);
-					});
+					node.Children = data.Children;
+					node.Expanded = true;
+					node.Loading = false;
+					if (data.IsPaged)
+						node.IsPaged = true;
 				});
-
-			};
-			this.update = function (e, args) {
-				if (!isOrigin || scope.node.Current.Path != context.parent.Current.Path)
-					return;
-
-				var $element = $(args.item.context).closest(".ng-scope");
-				var $next = $element.next(".ng-scope");
-
-				var from = angular.element($element).scope().node;
-				var to = scope.node;
-				var before = $next.length ? angular.element($next).scope().node : null;
-
-				setTimeout(function () {
-					if (context.siblingCount != context.parent.Children.length)
-						return;
-
-					console.log("sorting ", from.Current.Title, " -> ", to.Current.Title, " (before ", before && before.Current && before.Current.Title, ")");
-					Content.move({ selected: from.Current.Path, to: to.Current.Path, before: before && before.Current && before.Current.Path }, {});
-				}, 0);
 			}
+			this.move = function (ctx) {
+				console.log("moving", ctx);
+				Content.move(ctx.paths, function () {
+					console.log("moved", ctx);
+
+					reload(ctx);
+				});
+			};
+			this.sort = function (ctx) {
+				console.log("sorting", ctx);
+				Content.sort(ctx.paths, function () {
+					console.log("sorted", ctx);
+
+					reload(ctx);
+				});
+			};
+
 			return this;
 		};
 	});

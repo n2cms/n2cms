@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Engine;
@@ -56,7 +57,9 @@ namespace N2.Edit
 
 		public void MoveTo(ContentItem item, ContentItem parent)
 		{
-			if (item.Parent == null || !parent.Children.Contains(item))
+			if (item.Parent == parent)
+			{ }
+			else if (item.Parent == null || !parent.Children.Contains(item))
 				item.AddTo(parent);
 
 			using (var tx = persister.Repository.BeginTransaction())
@@ -71,8 +74,13 @@ namespace N2.Edit
 
 		public void MoveTo(ContentItem item, ContentItem parent, int index)
 		{
-			if (item.Parent == null || !parent.Children.Contains(item))
+			if (item.Parent != parent || !parent.Children.Contains(item))
 				item.AddTo(parent);
+			else if (parent.Children.Contains(item) && parent.Children.Last() != item)
+			{
+				item.AddTo(null);
+				item.AddTo(parent);
+			}
 
 			IList<ContentItem> siblings = parent.Children;
 			Utility.MoveToIndex(siblings, item, index);

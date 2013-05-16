@@ -15,6 +15,7 @@ using N2.Definitions;
 using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Versioning;
+using System.Web.Script.Serialization;
 
 namespace N2.Web
 {
@@ -251,6 +252,34 @@ namespace N2.Web
 				return true;
 			}
 			return false;
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpRequest request)
+		{
+			return new HttpRequestWrapper(request).GetRequestValueAccessor();
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpRequestBase request)
+		{
+			if (request.HttpMethod == "POST" && request.ContentType.StartsWith("application/json") && request.ContentLength > 0)
+			{
+				using (var sr = new StreamReader(request.InputStream))
+				{
+					var body = sr.ReadToEnd();
+					var json = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
+					if (json == null)
+						return (key) => request[key];
+
+					return (key) =>
+					{
+						if (json.ContainsKey(key))
+							return json[key];
+						return request[key];
+					};
+				}
+			}
+			else
+				return (key) => request[key];
 		}
 	}
 }

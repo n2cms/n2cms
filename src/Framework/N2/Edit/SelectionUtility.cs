@@ -4,6 +4,10 @@ using N2.Engine;
 using N2.Web;
 using N2.Edit.Versioning;
 using N2.Collections;
+using System;
+using System.Web.Script.Serialization;
+using System.Collections.Generic;
+using System.IO;
 
 namespace N2.Edit
 {
@@ -12,7 +16,7 @@ namespace N2.Edit
     /// </summary>
     public class SelectionUtility
     {
-        HttpRequestBase request;
+        Func<string, string> request;
 		IEngine engine;
         ContentItem selectedItem;
         ContentItem memorizedItem;
@@ -25,22 +29,26 @@ namespace N2.Edit
 
         public SelectionUtility(Control container, IEngine engine)
         {
-			this.request = new HttpRequestWrapper(container.Page.Request);
+			this.request = (key) => container.Page.Request[key];
             this.Engine = engine;
 		}
 
 		public SelectionUtility(HttpRequest request, IEngine engine)
+			: this(new HttpRequestWrapper(request), engine)
 		{
-			this.request = new HttpRequestWrapper(request);
-			this.Engine = engine;
 		}
 
 		public SelectionUtility(HttpRequestBase request, IEngine engine)
 		{
-			this.request = request;
+			this.request = request.GetRequestValueAccessor();
 			this.Engine = engine;
 		}
 
+		public SelectionUtility(Func<string, string> accessor, IEngine engine)
+		{
+			this.request = accessor;
+			this.engine = engine;
+		}
 		public SelectionUtility(ContentItem selectedItem, ContentItem memorizedItem)
 		{
 			this.selectedItem = selectedItem;
@@ -70,7 +78,7 @@ namespace N2.Edit
         {
 			if (request == null) return null; // explicitly passed memory
 
-            return Engine.Resolve<Navigator>().Navigate(request["memory"]);
+            return Engine.Resolve<Navigator>().Navigate(request("memory"));
         }
 
         public virtual ContentItem ParseSelectionFromRequest()
@@ -78,27 +86,27 @@ namespace N2.Edit
 			if (request == null) return null; // explicitly passed selection
 
 			ContentItem selectedItem = null;
-			string selected = request[SelectedQueryKey];
+			string selected = request(SelectedQueryKey);
             if (!string.IsNullOrEmpty(selected))
                 selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
-            string selectedUrl = request["selectedUrl"];
+            string selectedUrl = request("selectedUrl");
 			if (!string.IsNullOrEmpty(selectedUrl))
 				selectedItem = Engine.UrlParser.Parse(selectedUrl)
 					?? SelectFile(selectedUrl);
 
-            string itemId = request[PathData.ItemQueryKey];
+            string itemId = request(PathData.ItemQueryKey);
             if (!string.IsNullOrEmpty(itemId))
 				selectedItem = Engine.Persister.Get(int.Parse(itemId));
 			
 			var cvr = Engine.Resolve<ContentVersionRepository>();
-			return cvr.ParseVersion(request[PathData.VersionIndexQueryKey], request["versionKey"], selectedItem)
+			return cvr.ParseVersion(request(PathData.VersionIndexQueryKey), request("versionKey"), selectedItem)
 				?? selectedItem;
         }
 
 		private ContentItem SelectFile(string selectedUrl)
 		{
-			string location = request.QueryString["location"];
+			string location = request("location");
 			if (string.IsNullOrEmpty(location))
 				return null;
 			if (Url.Parse(selectedUrl).IsAbsolute)
@@ -135,6 +143,7 @@ namespace N2.Edit
 		{
 			SelectedQueryKey = "selected";
 		}
+
 		public static string SelectedQueryKey { get; set; }
 	}
 }

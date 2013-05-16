@@ -17,11 +17,13 @@ namespace N2.Management.Api
 	{
 		private SelectionUtility selection;
 		private IEngine engine;
+		private Func<string, string> accessor;
 
 		public void ProcessRequest(HttpContext context)
 		{
 			engine = N2.Context.Current;
-			selection = new SelectionUtility(context.Request, engine);
+			accessor = context.Request.GetRequestValueAccessor();
+			selection = new SelectionUtility(accessor, engine);
 
 			context.Response.ContentType = "application/json";
 
@@ -39,28 +41,39 @@ namespace N2.Management.Api
 				case "POST":
 					switch (context.Request.PathInfo)
 					{
+						case "/sort":
 						case "/move":
-							Move(context);
+							Move(accessor);
 							break;
 					}
 					break;
 			}
 		}
 
-		private void Move(HttpContext context)
+		private void Move(Func<string, string> request)
 		{
 			var sorter = engine.Resolve<ITreeSorter>();
 			var from = selection.SelectedItem;
-			var to = engine.Resolve<Navigator>().Navigate(context.Request["to"]);
-			if (to == null)
-				throw new InvalidOperationException("Cannot move to null");
-			if (!string.IsNullOrEmpty(context.Request["before"]))
+			if (!string.IsNullOrEmpty(request("before")))
 			{
-				var before = engine.Resolve<Navigator>().Navigate(context.Request["before"]);
+				var before = engine.Resolve<Navigator>().Navigate(request("before"));
+
+				var ex = engine.IntegrityManager.GetMoveException(from, before.Parent);
+				if (ex != null)
+					throw ex;
+
 				sorter.MoveTo(from, NodePosition.Before, before);
 			}
 			else
 			{
+				var to = engine.Resolve<Navigator>().Navigate(request("to"));
+				if (to == null)
+					throw new InvalidOperationException("Cannot move to null");
+
+				var ex = engine.IntegrityManager.GetMoveException(from, to);
+				if (ex != null)
+					throw ex;
+
 				sorter.MoveTo(from, to);
 			}
 		}
@@ -92,6 +105,7 @@ namespace N2.Management.Api
 				query.Take(int.Parse(context.Request["take"]));
 
 			return adapter.GetChildren(query)
+				.Where(filter)
 				.Select(c => CreateNode(c, filter));
 		}
 
