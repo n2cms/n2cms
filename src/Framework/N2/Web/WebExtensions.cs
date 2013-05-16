@@ -59,7 +59,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(value))
 				return tag;
 
-			tag.Attributes[attribute] = value;
+			tag.Attributes[attribute] = HttpUtility.HtmlEncode(value);
 
 			return tag;
 		}
@@ -94,20 +94,20 @@ namespace N2.Web
 				container.Controls.Add(c);
 			return c;
 		}
-
-        public static string ToJson(this object value)
-        {
-            using (var sw = new StringWriter())
-            {
-				ToJson(value, sw);
-                return sw.ToString();
-            }
-        }
-
-        public static void ToJson(this object value, TextWriter sw)
-        {
-            new JsonWriter(sw).Write(value);
-        }
+		
+		public static string ToJson(this object value)
+		{
+			using (var sw = new StringWriter())
+			{
+				value.ToJson(sw);
+				return sw.ToString();
+			}
+		}
+		
+		public static void ToJson(this object value, TextWriter sw)
+		{
+			new JsonWriter(sw).Write(value);
+		}
 
 		public static string ResolveUrlTokens(this string url)
 		{
@@ -157,19 +157,19 @@ namespace N2.Web
 					.UpdateQuery(path.QueryParameters)
 					.SetQueryParameter(PathData.ItemQueryKey, path.CurrentItem.ID);
 
-            return null;
+			return null;
 		}
 
-        public static bool IsFlagSet<T>(this T value, T flag) where T : struct
-        {
-            if (!typeof(T).IsEnum)
-            {
-                throw new ArgumentException(string.Format("'{0}' is not Enum type", typeof(T).FullName));
-            }
+		public static bool IsFlagSet<T>(this T value, T flag) where T : struct
+		{
+			if (!typeof(T).IsEnum)
+			{
+				throw new ArgumentException(string.Format("'{0}' is not Enum type", typeof(T).FullName));
+			}
 
 			var flagValue = Convert.ToInt64(flag);
-            return flagValue == 0 || (Convert.ToInt64(value) & flagValue) != 0;
-        }
+			return flagValue == 0 || (Convert.ToInt64(value) & flagValue) != 0;
+		}
 
 		internal static string ViewPreferenceQueryString = "view";
 		internal static string DraftQueryValue = ViewPreference.Draft.ToString().ToLower();

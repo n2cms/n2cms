@@ -16,88 +16,88 @@ namespace N2.Templates.Items
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
-    [RecursiveContainer("SiteAreaContainer", 70,
+	[RecursiveContainer("SiteAreaContainer", 70,
 		RequiredPermission = Permission.Administer)]
-    [TabContainer(LanguageRoot.SiteArea, "Site", 0, 
-        ContainerName = "SiteAreaContainer")]
+	[TabContainer(LanguageRoot.SiteArea, "Site", 0, 
+		ContainerName = "SiteAreaContainer")]
 	[RestrictParents(typeof(StartPage))]
 	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
 	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
 	[ConventionTemplate("Start")]
 	public class LanguageRoot : AbstractContentPage, IStartPage, IStructuralPage, ILanguage
 	{
-        public LanguageRoot()
-        {
-            Visible = false;
-            SortOrder = 10000;
-        }
+		public LanguageRoot()
+		{
+			Visible = false;
+			SortOrder = 10000;
+		}
 
-        public const string SiteArea = "siteArea";
-        public const string MiscArea = "miscArea";
+		public const string SiteArea = "siteArea";
+		public const string MiscArea = "miscArea";
 
-        #region ILanguage Members
+		#region ILanguage Members
 
-        public string FlagUrl
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(LanguageCode))
-                    return "";
-                else
-                {
-                    string[] parts = LanguageCode.Split('-');
+		public string FlagUrl
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(LanguageCode))
+					return "";
+				else
+				{
+					string[] parts = LanguageCode.Split('-');
 					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
-                }
-            }
-        }
+				}
+			}
+		}
 
-        [EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
-        public string LanguageCode
-        {
-            get { return (string)GetDetail("LanguageCode"); }
-            set { SetDetail("LanguageCode", value); }
-        }
+		[EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
+		public string LanguageCode
+		{
+			get { return (string)GetDetail("LanguageCode"); }
+			set { SetDetail("LanguageCode", value); }
+		}
 
-        public string LanguageTitle
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(LanguageCode))
-                    return "";
-                else
-                    return new CultureInfo(LanguageCode).DisplayName;
-            }
-        }
+		public string LanguageTitle
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(LanguageCode))
+					return "";
+				else
+					return new CultureInfo(LanguageCode).DisplayName;
+			}
+		}
 
-        #endregion
+		#endregion
 
 
 		[FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
-        public virtual string TopImage
-        {
-            get { return (string)(GetDetail("TopImage") ?? string.Empty); }
-            set { SetDetail("TopImage", value, string.Empty); }
-        }
+		public virtual string TopImage
+		{
+			get { return (string)(GetDetail("TopImage") ?? string.Empty); }
+			set { SetDetail("TopImage", value, string.Empty); }
+		}
 
 		[FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
-        public virtual string Image
-        {
-            get { return (string)(GetDetail("Image") ?? string.Empty); }
-            set { SetDetail("Image", value, string.Empty); }
-        }
+		public virtual string Image
+		{
+			get { return (string)(GetDetail("Image") ?? string.Empty); }
+			set { SetDetail("Image", value, string.Empty); }
+		}
 
-        [EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
-        public virtual string FooterText
-        {
-            get { return (string)(GetDetail("FooterText") ?? string.Empty); }
-            set { SetDetail("FooterText", value, string.Empty); }
-        }
+		[EditableText("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 3)]
+		public virtual string FooterText
+		{
+			get { return (string)(GetDetail("FooterText") ?? string.Empty); }
+			set { SetDetail("FooterText", value, string.Empty); }
+		}
 
-        [EditableItem("Header", 100, ContainerName = SiteArea)]
-        public virtual Top Header
-        {
-            get { return (Top)GetDetail("Header"); }
-            set { SetDetail("Header", value); }
-        }
+		[EditableItem("Header", 100, ContainerName = SiteArea)]
+		public virtual Top Header
+		{
+			get { return (Top)GetDetail("Header"); }
+			set { SetDetail("Header", value); }
+		}
 	}
 }

@@ -71,10 +71,11 @@ namespace N2.Persistence.Serialization
 			}
 			else
 			{
-				collection.Add(ContentDetail.New(
-					collection.EnclosingItem,
-					attributes["name"],
-					Parse(navigator.Value, type)));
+				object value = Parse(navigator.Value, type);
+				if (value is string)
+					value = detailReader.PrepareStringDetail(collection.EnclosingItem, collection.Name, value as string, attributes.ContainsKey("encoded") && Convert.ToBoolean(attributes["encoded"]));
+
+				collection.Add(ContentDetail.New(collection.EnclosingItem, attributes["name"], value));
 			}
 		}
 

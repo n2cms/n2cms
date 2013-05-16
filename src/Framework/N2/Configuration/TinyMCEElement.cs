@@ -24,7 +24,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>Url to the free text area editor css file.</summary>
-		[ConfigurationProperty("cssUrl", DefaultValue = "{ManagementUrl}/Resources/Css/Editor.css")]
+		[ConfigurationProperty("cssUrl", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
 		public string CssUrl
 		{
 			get { return (string)base["cssUrl"]; }
@@ -39,12 +39,12 @@ namespace N2.Configuration
 			set { base["scriptUrl"] = value; }
 		}
 
-        /// <summary>Url to the free text area editor configuration script file.</summary>
-        [ConfigurationProperty("enableTokenDropdown", DefaultValue = true)]
-        public bool EnableTokenDropdown
-        {
-            get { return (bool)base["enableTokenDropdown"]; }
-            set { base["enableTokenDropdown"] = value; }
-        }
+		/// <summary>Url to the free text area editor configuration script file.</summary>
+		[ConfigurationProperty("enableTokenDropdown", DefaultValue = true)]
+		public bool EnableTokenDropdown
+		{
+			get { return (bool)base["enableTokenDropdown"]; }
+			set { base["enableTokenDropdown"] = value; }
+		}
 	}
 }

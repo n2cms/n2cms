@@ -38,6 +38,17 @@ CKEDITOR.editorConfig = function( config ) {
 		showUncommentButton: false
 	};
 
+	// extra allowed content for Twitter Bootstrap styles
+	config.extraAllowedContent =
+		  "table(table,table-bordered,table-condensed,table-striped,table-hover);tr(success,error,warning,info);"
+		+ "address;abbr[title];cite(pull-right);dl(dl-horizontal);dt;code;"
+		+ "div(alert,alert-error,alert-success,alert-info,container,container-fluid,hero-unit,media,media-body,page-header,row,span1,span2,span3,span4,span5,span6,span7,span8,span9,span10,span11,span12,well,well-large,well-small);"
+		+ "p(lead);"
+		+ "*(media-heading,visible-phone,visible-tablet,visible-desktop,hidden-phone,hidden-tablet,hidden-desktop,muted,pull-left,pull-right);"
+		+ "span(label,label-success,label-warning,label-important,label-info,label-inverse);"
+		+ "img[data-src](media-object);"
+		+ "a button(btn,btn-primary,btn-info,btn-success,btn-warning,btn-danger,btn-inverse,btn-link,btn-large,btn-small,btn-mini)";
+
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
 	config.removeButtons = '';// 'Underline,Subscript,Superscript';
