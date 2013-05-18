@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Xml.XPath;
 using N2.Details;
@@ -10,21 +9,21 @@ namespace N2.Persistence.Serialization
 {
 	public class Importer
 	{
-		private readonly Engine.Logger<Importer> logger;
-		private readonly IPersister persister;
-		private readonly ItemXmlReader reader;
-		private IFileSystem fs;
+		private Engine.Logger<Importer> logger; // TODO: Figure out how/where this gets initialized.
+		private readonly IPersister _persister;
+		private readonly IItemXmlReader _reader;
+		private readonly IFileSystem _fs;
 
-		public Importer(IPersister persister, ItemXmlReader reader, IFileSystem fs)
+		public Importer(IPersister persister, IItemXmlReader reader, IFileSystem fs)
 		{
-			this.persister = persister;
-			this.reader = reader;
-			this.fs = fs;
+			_persister = persister;
+			_reader = reader;
+			_fs = fs;
 		}
 
 		public IPersister Persister
 		{
-			get { return persister; }
+			get { return _persister; }
 		} 
 
 		public virtual IImportRecord Read(string path)
@@ -52,7 +51,7 @@ namespace N2.Persistence.Serialization
 			if (2 != version)
 				throw new WrongVersionException("Invalid export version, expected 2 but was " + version);
 
-			return reader.Read(navigator);
+			return _reader.Read(navigator);
 		}
 
 		protected virtual XPathNavigator CreateNavigator(TextReader input)
@@ -71,7 +70,7 @@ namespace N2.Persistence.Serialization
 			if ((options & ImportOption.AllItems) == ImportOption.AllItems)
 			{
 				record.RootItem.AddTo(destination);
-				persister.SaveRecursive(record.RootItem);
+				_persister.SaveRecursive(record.RootItem);
 			}
 			else if ((options & ImportOption.Children) == ImportOption.Children)
 			{
@@ -80,7 +79,7 @@ namespace N2.Persistence.Serialization
 				{
 					ContentItem child = record.RootItem.Children[0];
 					child.AddTo(destination);
-                    persister.SaveRecursive(child);
+					_persister.SaveRecursive(child);
 				}
 			}
 			else
@@ -92,15 +91,15 @@ namespace N2.Persistence.Serialization
 			{
 				foreach(Attachment a in record.Attachments)
 				{
-                    try
-                    {
-                        a.Import(fs);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Warn(ex);
-                        record.FailedAttachments.Add(a);
-                    }
+					try
+					{
+						a.Import(_fs);
+					}
+					catch (Exception ex)
+					{
+						logger.Warn(ex);
+						record.FailedAttachments.Add(a);
+					}
 				}
 			}
 		}

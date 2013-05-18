@@ -25,7 +25,7 @@ namespace N2.Web
 			if (!useViewer)
 			{
 				// check site-wide configuration
-				useViewer = Content.Traverse.StartPage.GetDetail(UseDocViewerPropertyKey, false);
+				useViewer = Content.Traverse.StartPage != null && Content.Traverse.StartPage.GetDetail(UseDocViewerPropertyKey, false);
 				if (!useViewer)
 				{
 					// check web.config configuration
