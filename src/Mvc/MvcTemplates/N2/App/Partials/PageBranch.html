@@ -1,13 +1,11 @@
-﻿<div class='item' ng-class="{ loading: node.Loading }">
+﻿<div class='node' ng-class="{ loading: node.Loading }">
 	<b class="handle"></b>
+	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
+	<a href='#' class='tools'>tools</a>
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item">
 		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position:0 0; width:16px; height:16px;"></span>
 		{{node.Current.Title}}
 	</a>
-	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
-	<div class='tools'>
-		<a href='#'>tools</a>
-	</div>
 </div>
 
 <ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">

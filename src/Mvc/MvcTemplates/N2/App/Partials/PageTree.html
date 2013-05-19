@@ -1,19 +1,21 @@
 ﻿<div id="page-tree" ui-jq="disableSelection" ng-controller="NavigationCtrl">
-	<ul class="site">
+	<ul class="targettable">
+		<li class="root" sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
+	</ul>
+
+<!--	<ul class="site">
 		<li class="root expanded">
 			<div class="item">
 				<a href="#">{{Interface.Site.Authority || Interface.Authority}}</a>
-				<div class="tools">
-					<a href="#">tools</a>
-				</div>
+				<a href="#" class="tools">tools</a>
 			</div>
 			<ul class="targettable">
 				<li sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
 			</ul>
 		</li>
-	</ul>
+	</ul>-->
 </div>
-<div id="trash" ng-controller="TrashCtrl">
+<!--<div id="trash" ng-controller="TrashCtrl">
 	<div>
 		<ul>
 		</ul>
@@ -22,4 +24,4 @@
 		</div>
 		drag item here to delete
 	</div>
-</div>
+</div>-->
