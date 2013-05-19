@@ -37,6 +37,9 @@ function NavigationCtrl($scope) {
 	});
 }
 
+function TrashCtrl($scope) {
+
+}
 
 function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
@@ -121,4 +124,17 @@ function VersionsCtrl($scope, Versions) {
 			node.Loading = false;
 		});
 	}
+}
+
+function AlertCtrl($scope, $timeout, Alert) {
+	var defaults = { visible: true, type: "warning" };
+
+	function clear() {
+		$scope.Alert = {};
+	};
+
+	Alert.subscribe(function (options) {
+		$scope.Alert = angular.extend({}, defaults, options);
+		options.timeout && $timeout(clear, options.timeout);
+	});
 }

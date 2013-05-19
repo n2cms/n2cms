@@ -43,7 +43,23 @@
 		return res;
 	});
 
-	module.factory('SortHelperFactory', function (Content) {
+	module.factory('Alert', function () {
+		var callbacks = [];
+		var alert = {
+			subscribe: function (callback) {
+				callbacks.push(callback);
+			},
+			unsubscribe: function (callback) {
+				callbacks.slice(callbacks.indexOf(callback), 1);
+			},
+			show: function (options) {
+				angular.forEach(callbacks, function (cb) { cb(options); });
+			}
+		};
+		return alert;
+	});
+
+	module.factory('SortHelperFactory', function (Content, Alert) {
 		window.Ct = Content;
 		var context = {}
 		return function (scope) {
@@ -54,8 +70,6 @@
 				node.HasChildren = true;
 				node.Loading = true;
 				Content.children({ selected: node.Current.Path }, function (data) {
-					//ctx.elements.selected.remove();
-
 					node.Children = data.Children;
 					node.Expanded = true;
 					node.Loading = false;
@@ -69,6 +83,9 @@
 					console.log("moved", ctx);
 
 					reload(ctx);
+					Alert.show({ message: "Successfully noved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+				}, function () {
+					Alert.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});
 			};
 			this.sort = function (ctx) {
@@ -77,6 +94,9 @@
 					console.log("sorted", ctx);
 
 					reload(ctx);
+					Alert.show({ message: "Successfully sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+				}, function () {
+					Alert.show({ message: "Failed sorting " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});
 			};
 

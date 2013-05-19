@@ -58,7 +58,11 @@ namespace N2.Edit
 		public void MoveTo(ContentItem item, ContentItem parent)
 		{
 			if (item.Parent == parent)
-			{ }
+			{
+				// move it last
+				item.AddTo(null);
+				item.AddTo(parent);
+			}
 			else if (item.Parent == null || !parent.Children.Contains(item))
 				item.AddTo(parent);
 

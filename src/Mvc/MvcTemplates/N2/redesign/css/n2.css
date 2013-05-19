@@ -112,6 +112,15 @@ ul.menu li { display: inline-block; }
 		#page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
 			#page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }
 
+#footer {
+	position:absolute;
+	bottom:0;	
+	width:100%;
+}
+	#footer .alert {
+		margin: 10px;
+	}
+
 #debug-context {
 	right:30px;
 }

@@ -27,7 +27,7 @@
     <div class="sliding-loader loader"></div>
 	<div id="main-wrapper">
         <div id="secondary-area">
-            <div ng-include src="'App/Partials/PageTree.html'" ng-controller="NavigationCtrl"></div>
+            <div ng-include src="'App/Partials/PageTree.html'"></div>
             <div class="dragbar"></div>
         </div>
         <div id="main-area"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
@@ -35,8 +35,10 @@
             <div ng-include src="'App/Partials/PageActionBar.html'"></div>
         </div>
     </div>
-    <div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
-    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>
+	<div id="footer" ng-include src="'App/Partials/Footer.html'">
+	</div>
+    <%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
+    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
 	
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
