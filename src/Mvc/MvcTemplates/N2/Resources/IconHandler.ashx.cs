@@ -29,7 +29,7 @@ namespace N2.Management.Resources
 			this.broker = broker;
 		}
 
-		private void HttpApplication_PreRequestHandlerExecute(object sender, EventArgs e)
+		private void HttpApplication_PostResolveRequestCache(object sender, EventArgs e)
 		{
 			var app = sender as HttpApplication;
 			if (app == null) return;
@@ -44,7 +44,7 @@ namespace N2.Management.Resources
 					collection = "silk";
 					p = EatTo(p, iconBase);
 					key = p.Substring(0, p.IndexOf(".png", StringComparison.OrdinalIgnoreCase));
-					app.Context.Handler = this;
+					app.Context.RemapHandler(this);
 					return;
 				}
 
@@ -54,7 +54,7 @@ namespace N2.Management.Resources
 					collection = "flags";
 					p = EatTo(p, iconBase);
 					key = p.Substring(0, p.IndexOf(".png", StringComparison.OrdinalIgnoreCase));
-					app.Context.Handler = this;
+					app.Context.RemapHandler(this);
 					return;
 				}
 			}
@@ -71,12 +71,12 @@ namespace N2.Management.Resources
 
 		public void Start()
 		{
-			broker.PreRequestHandlerExecute += HttpApplication_PreRequestHandlerExecute;
+			broker.PostResolveRequestCache += HttpApplication_PostResolveRequestCache;
 		}
 
 		public void Stop()
 		{
-			broker.PreRequestHandlerExecute -= HttpApplication_PreRequestHandlerExecute;
+			broker.PreRequestHandlerExecute -= HttpApplication_PostResolveRequestCache;
 		}
 
 		#endregion
