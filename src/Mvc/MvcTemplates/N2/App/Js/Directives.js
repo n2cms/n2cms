@@ -108,7 +108,7 @@
 					element.sortable({
 						connectWith: '.targettable',
 						placeholder: 'sortable-placeholder',
-						handle: '.item',
+						handle: '.handle',
 						receive: sort.receive,
 						remove: sort.remove,
 						update: sort.update,

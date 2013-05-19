@@ -134,7 +134,10 @@ function AlertCtrl($scope, $timeout, Alert) {
 	};
 
 	Alert.subscribe(function (options) {
-		$scope.Alert = angular.extend({}, defaults, options);
-		options.timeout && $timeout(clear, options.timeout);
+		setTimeout(function () {
+			$scope.Alert = angular.extend({}, defaults, options);
+			options.timeout && $timeout(clear, options.timeout);
+			$scope.$digest();
+		}, 10);
 	});
 }
