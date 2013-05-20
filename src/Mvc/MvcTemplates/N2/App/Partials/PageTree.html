@@ -1,6 +1,6 @@
 ﻿<div id="page-tree" ui-jq="disableSelection" ng-controller="NavigationCtrl">
 	<ul class="targettable">
-		<li class="root" sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
+		<li class="root" sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content == Context.SelectedNode, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
 	</ul>
 
 <!--	<ul class="site">

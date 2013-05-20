@@ -38,7 +38,7 @@ ul.menu li { display: inline-block; }
 	#page-tree ul { list-style-type:none; }
 		#page-tree ul li { margin-left: 10px; text-indent: 5px; line-height: 29px; }
 			#page-tree ul li div.node { position:relative; }
-			#page-tree ul li div.node a.item { display: inline-block; min-width: 60%; max-width:70%; overflow:hidden; white-space:nowrap; }
+			#page-tree ul li div.node a.item { display: inline-block; min-width: 60%; max-width:80%; overflow:hidden; white-space:nowrap; text-overflow: ellipsis; }
 				#page-tree ul li .tools { position:absolute; right:20px; height: 11px; top: 10px; width: 18px; display:none; text-indent: -9999px; }
 				#page-tree ul li div.node:hover .tools { display: block; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; }
 				#page-tree ul li a.toggle { position:absolute; right: 10px; width:12px; height:12px; }

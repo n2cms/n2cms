@@ -1,7 +1,7 @@
 ﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
 });
 
-function ManagementCtrl($scope, Interface, Context, $window) {
+function ManagementCtrl($scope, $window, $timeout, Interface, Context) {
 	
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
@@ -10,18 +10,31 @@ function ManagementCtrl($scope, Interface, Context, $window) {
 		selected: selectedMatch && selectedMatch[1],
 	});
 	$scope.Context = {
-		Node: {
-			Current: {
-				PreviewUrl: "Empty.aspx"
-			}
+		CurrentItem: {
+			PreviewUrl: "Empty.aspx"
+		},
+		SelectedNode: {
 		}
 	}
-	$scope.$watch("Context.Node.Current.Path", function (path) {
+	$scope.$watch("Context.CurrentItem.Path", function (path) {
 		if (path) {
-			var item = $scope.Context.Node.Current;
+			var item = $scope.Context.CurrentItem;
 			Context.get({ selected: item.Path }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 			});
+		}
+	});
+	$scope.$on("loaded", function (scope, e) {
+		var ctxUrl = $scope.Context.CurrentItem.PreviewUrl;
+		if (e.path + e.query != ctxUrl && e.path != ctxUrl) {
+			// reload
+			$timeout(function () {
+				Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
+					console.log("reloaded", ctx);
+					angular.extend($scope.Context, ctx);
+					$scope.$broadcast("contextchanged", $scope.Context);
+				});
+			}, 100);
 		}
 	});
 }
@@ -45,25 +58,28 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
 		if (content)
-			$scope.Context.Node = findSelectedRecursive(content);
+			$scope.Context.SelectedNode = findSelectedRecursive(content, $scope.Interface.SelectedPath);
 	});
+	$scope.$on("contextchanged", function (scope, ctx) {
+		$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
+	});
+
 	$scope.toggle = function (node) {
 		node.Expanded = !node.Expanded;
 	};
-	function findSelectedRecursive(node) {
-		if (node.Selected) {
+	function findSelectedRecursive(node, selectedPath) {
+		if (node.Current.Path == selectedPath) {
 			return node;
 		}
 		for (var i in node.Children) {
-			var n = findSelectedRecursive(node.Children[i]);
+			var n = findSelectedRecursive(node.Children[i], selectedPath);
 			if (n) return n;
 		}
 		return null;
 	}
 	$scope.select = function (node) {
-		$scope.Context.Node.Selected = false;
-		$scope.Context.Node = node;
-		node.Selected = true;
+		$scope.Context.CurrentItem = node.Current;
+		$scope.Context.SelectedNode = node;
 	}
 	$scope.loadRemaining = function (node) {
 		node.Loading = true;
@@ -102,6 +118,18 @@ function PageActionCtrl($scope, $interpolate) {
 		return expr && $interpolate(expr)($scope);
 	};
 }
+
+function PreviewCtrl($scope) {
+	$scope.frameLoaded = function (e) {
+		try {
+			var loco = e.target.contentWindow.location;
+			$scope.$emit("loaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+}
+
 function LanguageCtrl($scope, Translations) {
 	$scope.onOver = function (node) {
 		if (node.Children.length && node.Selected == node.Current.Path)

@@ -3,9 +3,9 @@
 	ng-controller='VersionsCtrl' 
 	target='preview' 
 	title='View page versions' 
-	href='{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.Node.Current.Path}}&selectedId={{Context.Node.Current.ID}}' 
+	href='{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentNode.Path}}&selectedId={{Context.CurrentNode.ID}}' 
 	class='page-action-icon' 
 	style='background-image:url(redesign/img/glyphicons-white/glyphicons_057_history.png)'>
 	Versions
-	<span>{{Context.Node.Current.State}}</span>
+	<span>{{Context.CurrentNode.State}}</span>
 </a>

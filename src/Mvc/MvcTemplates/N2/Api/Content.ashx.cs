@@ -117,8 +117,7 @@ namespace N2.Management.Api
 				Current = adapter.GetTreeNode(item),
 				Children = new Node<TreeNode>[0],
 				HasChildren	= adapter.HasChildren(item, filter),
-				Expanded = false,
-				Selected = false
+				Expanded = false
 			};
 		}
 

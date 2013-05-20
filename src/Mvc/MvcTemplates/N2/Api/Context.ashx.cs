@@ -15,6 +15,8 @@ namespace N2.Management.Api
 	public class ContextData
 	{
 		public ILanguage Language { get; set; }
+
+		public TreeNode CurrentItem { get; set; }
 	}
 
 	public class Context : IHttpHandler
@@ -31,6 +33,7 @@ namespace N2.Management.Api
 
 			var ctx = new ContextData
 			{
+				CurrentItem = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetTreeNode(selection.SelectedItem),
 				Language = engine.Resolve<ILanguageGateway>().GetLanguage(selection.SelectedItem)
 			};
 			ctx.ToJson(context.Response.Output);

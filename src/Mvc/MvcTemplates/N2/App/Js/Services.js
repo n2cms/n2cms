@@ -35,6 +35,7 @@
 
 	module.factory('Context', function ($resource) {
 		var res = $resource('Api/Context.ashx', {}, {});
+
 		return res;
 	});
 

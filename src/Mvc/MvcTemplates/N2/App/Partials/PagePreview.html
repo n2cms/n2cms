@@ -1,4 +1,4 @@
-﻿<div id="page-preview">
+﻿<div id="page-preview" ng-controller="PreviewCtrl">
 	<div id="page-preview-frame-cover"></div>
-	<iframe id="page-preview-frame" name="preview" src="{{Context.Node.Current.PreviewUrl}}"></iframe>
+	<iframe id="page-preview-frame" name="preview" src="{{Context.CurrentNode.PreviewUrl}}" load="frameLoaded($event)"></iframe>
 </div>
