@@ -1,4 +1,38 @@
 ﻿(function (module) {
+	module.directive("evaluateHref", function ($interpolate) {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				scope.$watch(attrs.evaluateHref, function (expr) {
+					element.attr("href", expr && $interpolate(expr)(scope));
+				});
+			}
+		}
+	});
+
+	module.directive("evaluateTitle", function ($interpolate) {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				scope.$watch(attrs.evaluateTitle, function (expr) {
+					element.attr("title", expr && $interpolate(expr)(scope));
+				});
+			}
+		}
+	});
+
+	module.directive("evaluateInnerHtml", function ($interpolate) {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				scope.$watch(attrs.evaluateInnerHtml, function (expr) {
+					console.log("watching", expr, $interpolate(expr)(scope), scope.Context.CurrentItem.Title);
+					element.html(expr && $interpolate(expr)(scope));
+				});
+			}
+		}
+	});
+
 	module.directive("pageActionContent", function ($interpolate) {
 		return {
 			restrict: "E",

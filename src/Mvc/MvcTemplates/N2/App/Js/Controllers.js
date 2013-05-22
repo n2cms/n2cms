@@ -1,12 +1,12 @@
 ﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
 });
 
-function ManagementCtrl($scope, $window, $timeout, Interface, Context) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context) {
 	
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
 	$scope.Interface = Interface.get({
-		view: viewMatch && viewMatch,
+		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1],
 	});
 	$scope.Context = {
@@ -14,6 +14,8 @@ function ManagementCtrl($scope, $window, $timeout, Interface, Context) {
 			PreviewUrl: "Empty.aspx"
 		},
 		SelectedNode: {
+		},
+		ContextMenu: {
 		}
 	}
 	$scope.$watch("Context.CurrentItem.Path", function (path) {
@@ -24,6 +26,10 @@ function ManagementCtrl($scope, $window, $timeout, Interface, Context) {
 			});
 		}
 	});
+	$scope.$watch("Context.ContextMenu", function (menu) {
+		console.log("context menu", menu);
+	});
+
 	$scope.$on("loaded", function (scope, e) {
 		var ctxUrl = $scope.Context.CurrentItem.PreviewUrl;
 		if (e.path + e.query != ctxUrl && e.path != ctxUrl) {
@@ -37,17 +43,32 @@ function ManagementCtrl($scope, $window, $timeout, Interface, Context) {
 			}, 100);
 		}
 	});
+
+	$scope.evaluateExpression = function (expr) {
+		return expr && $interpolate(expr)($scope);
+	};
+}
+
+function MainMenuCtrl($scope) {
+	$scope.$watch("Interface.MainMenu", function (mainMenu) {
+		$scope.menu = mainMenu;
+	});
+	$scope.$watch("Interface.User", function (user) {
+		$scope.user = user;
+	});
 }
 
 function SearchCtrl() {
 }
 
-function NavigationCtrl($scope) {
+function NavigationCtrl($scope, ContextMenuFactory) {
 	$scope.$watch("Interface.User.PreferredView", function (view) {
 		$scope.viewPreference = view == 0
 			? "draft"
 			: "published";
 	});
+
+	$scope.ContextMenu = ContextMenuFactory($scope);
 }
 
 function TrashCtrl($scope) {
@@ -68,6 +89,8 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 		node.Expanded = !node.Expanded;
 	};
 	function findSelectedRecursive(node, selectedPath) {
+		if (!node)
+			return null;
 		if (node.Current.Path == selectedPath) {
 			return node;
 		}
@@ -113,10 +136,8 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	};
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
+
 function PageActionCtrl($scope, $interpolate) {
-	$scope.evaluateExpression = function (expr) {
-		return expr && $interpolate(expr)($scope);
-	};
 }
 
 function PreviewCtrl($scope) {

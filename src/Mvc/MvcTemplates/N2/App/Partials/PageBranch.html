@@ -1,16 +1,20 @@
-﻿<div class='node' ng-class="{ loading: node.Loading }">
+﻿<div class='item' ng-class="{ loading: node.Loading }">
 	<b class="handle"></b>
 	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
-	<a href='#' class='tools'>tools</a>
+
+	<!--<a href='#' ng-click="showOptions(node)" class='tools'>tools</a>-->
+
+	<a href="#" ng-show="ContextMenu.node != node" ng-click="ContextMenu.show(node)" class="tools tools-toggler">tools</a>
+	<div ng-include src="ContextMenu.node == node && 'App/Partials/ContextMenu.html'"></div>
+
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item">
-		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position:0 0; width:16px; height:16px;"></span>
+		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position: 0 0; width: 16px; height: 16px;"></span>
 		{{node.Current.Title}}
 	</a>
 </div>
 
 <ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
-	<li ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/PageBranch.html'">
-	</li>
+	<li class="node" ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/PageBranch.html'"></li>
 </ul>
 
 <a class="tree-pager" ng-show="node.IsPaged && node.Expanded" href="#" ng-click="loadRemaining(node)"><i class="toggle-loading icon-repeat" ng-show="node.Loading"></i><i class="toggle-remaining icon-chevron-down" ng-show="!node.Loading"></i>Load remaining</a>

@@ -54,11 +54,15 @@ namespace N2.Management.Api
 		public string IconUrl { get; set; }
 
 		public string Template { get; set; }
+
+		public string Name { get; set; }
+
+		public bool IsDivider { get; set; }
 	}
 
 	public class InterfaceData
 	{
-		public Node<InterfaceMenuItem> TopMenu { get; set; }
+		public Node<InterfaceMenuItem> MainMenu { get; set; }
 		
 		public Node<InterfaceMenuItem> ToolbarMenu { get; set; }
 
@@ -77,6 +81,8 @@ namespace N2.Management.Api
 		public InterfaceUrls Paths { get; set; }
 
 		public string SelectedPath { get; set; }
+
+		public Node<InterfaceMenuItem> ContextMenu { get; set; }
 	}
 
 	public class InterfaceUrls
@@ -118,7 +124,7 @@ namespace N2.Management.Api
 			context.Response.ContentType = "application/json";
 			new InterfaceData
 			{
-				TopMenu = CreateTopMenu(),
+				MainMenu = CreateMainMenu(),
 				ActionMenu = CreateActionMenu(context),
 				Content = CreateContent(context),
 				SelectedPath = selection.SelectedItem.Path,
@@ -126,8 +132,46 @@ namespace N2.Management.Api
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
 				Trash = CreateTrash(context),
-				Paths = CreateUrls()
+				Paths = CreateUrls(),
+				ContextMenu = CreateContextMenu(context)
 			}.ToJson(context.Response.Output);
+		}
+
+		private Node<InterfaceMenuItem> CreateContextMenu(HttpContext context)
+		{
+			return new Node<InterfaceMenuItem>
+			{
+				Children = engine.EditManager.GetPlugins<NavigationPluginAttribute>(context.User)
+					.Select(np => new Node<InterfaceMenuItem>(new InterfaceMenuItem 
+					{
+						Title = np.Title,
+						Name = np.Name, 
+						Target = np.Target, 
+						ToolTip = np.ToolTip,
+						IconUrl = Retoken(np.IconUrl), 
+						Url = Retoken(np.UrlFormat),
+						IsDivider = np.IsDivider
+					})).ToList()
+			};
+		}
+
+		static Dictionary<string, string> replacements = new Dictionary<string, string>
+		{
+			 { "{selected}", "{{Context.CurrentItem.Path}}" },
+			 { "{memory}", "{{Context.Memory.Path}}" },
+			 { "{action}", "{{Context.Memory.Action}}" },
+			 { "{ManagementUrl}", Url.ResolveTokens("{ManagementUrl}") },
+			 { "{Selection.SelectedQueryKey}", "{{Interface.Paths.SelectedQueryKey}}" }
+		};
+
+		private string Retoken(string urlFormat)
+		{
+			if (string.IsNullOrEmpty(urlFormat))
+				return urlFormat;
+
+			foreach (var kvp in replacements)
+				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
+			return urlFormat;
 		}
 
 		private InterfaceUrls CreateUrls()
@@ -151,16 +195,17 @@ namespace N2.Management.Api
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = "", Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = "", Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = "", Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = "", Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = "", Url = "{{Interface.Paths.Management}}/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize Parts", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageVersions.html'""></div>" }),
@@ -227,50 +272,26 @@ namespace N2.Management.Api
 			};
 		}
 
-		private static Node<InterfaceMenuItem> CreateTopMenu()
+		private Node<InterfaceMenuItem> CreateMainMenu()
 		{
 			return new Node<InterfaceMenuItem>
 			{
 				Children = new Node<InterfaceMenuItem>[]
+				{
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Home", Target = Targets.Preview, Url = engine.Content.Traverse.RootPage.Url, IconClass = "icon-home" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Pages", Target = "_top", Url = "{ManagementUrl}".ResolveUrlTokens() }),
+					//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Files", Target = "_top", Url = "#files" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Settings", Target = "_top", Url = "#settings" })
 					{
-						new Node<InterfaceMenuItem>
+						Children = new Node<InterfaceMenuItem>[]
 						{
-							Current = new InterfaceMenuItem { Title = "Home", Target = "_top", Url = "#home", IconClass = "icon-home" },
-							Children = new Node<InterfaceMenuItem>[0]
-						},
-						new Node<InterfaceMenuItem>
-						{
-							Current = new InterfaceMenuItem { Title = "Pages", Target = "_top", Url = "#pages" },
-							Children = new Node<InterfaceMenuItem>[0]
-						},
-						new Node<InterfaceMenuItem>
-						{
-							Current = new InterfaceMenuItem { Title = "Files", Target = "_top", Url = "#files" },
-							Children = new Node<InterfaceMenuItem>[0]
-						},
-						new Node<InterfaceMenuItem>
-						{
-							Current = new InterfaceMenuItem { Title = "Settings", Target = "_top", Url = "#settings" },
-							Children = new Node<InterfaceMenuItem>[]
-							{
-								new Node<InterfaceMenuItem>
-								{
-									Current = new InterfaceMenuItem { Title = "Site", Target = "_top", Url = "#settings/site" },
-									Children = new Node<InterfaceMenuItem>[0]
-								},
-								new Node<InterfaceMenuItem>
-								{
-									Current = new InterfaceMenuItem { Title = "Templates", Target = "_top", Url = "#settings/templates" },
-									Children = new Node<InterfaceMenuItem>[0]
-								},
-								new Node<InterfaceMenuItem>
-								{
-									Current = new InterfaceMenuItem { Title = "Wizards", Target = "_top", Url = "#settings/wizards" },
-									Children = new Node<InterfaceMenuItem>[0]
-								}
-							}
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Site", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/EditRecursive.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Templates", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Templates/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Wizards", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Wizard/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Users", ToolTip = "Manage users", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Users/Users.aspx" }),
 						}
 					}
+				}
 			};
 		}
 

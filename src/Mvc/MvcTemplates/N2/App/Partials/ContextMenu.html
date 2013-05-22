@@ -1,0 +1,10 @@
+﻿<ul class="nav tools">
+	<li class="dropdown open">
+		<a href='#' ng-click="ContextMenu.hide()" class='tools-toggler dropdown-toggle'>tools</a>
+		<ul class="dropdown-menu pull-right">
+			<li ng-repeat="option in ContextMenu.options" ng-class="{ divider: option.IsDivider }">
+				<a ng-class="{ 'iconed-text': option.IconUrl }" x-background-image="option.IconUrl" ng-show="!option.IsDivider" x-evaluate-href="option.Url" target="{{option.Target}}" ng-click="option.Activate()">{{option.Title}}</a>
+			</li>
+		</ul>
+	</li>
+</ul>

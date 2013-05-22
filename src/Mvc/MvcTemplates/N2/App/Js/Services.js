@@ -60,8 +60,33 @@
 		return alert;
 	});
 
+	module.factory('ContextMenuFactory', function () {
+		return function (scope) {
+			return {
+				show: function (node) {
+					scope.Context.CurrentItem = node.Current;
+					scope.Context.SelectedNode = node;
+					scope.ContextMenu.node = node;
+					scope.ContextMenu.options = [];
+
+					for (var i in scope.Interface.ContextMenu.Children) {
+						var cm = scope.Interface.ContextMenu.Children[i];
+						scope.ContextMenu.options.push(cm.Current);
+					}
+
+					console.log("show", scope.ContextMenu);
+				},
+				hide: function () {
+					console.log("hide", scope.ContextMenu.node);
+
+					delete scope.ContextMenu.node;
+					delete scope.ContextMenu.options;
+				}
+			}
+		}
+	});
+
 	module.factory('SortHelperFactory', function (Content, Alert) {
-		window.Ct = Content;
 		var context = {}
 		return function (scope) {
 			function reload(ctx) {

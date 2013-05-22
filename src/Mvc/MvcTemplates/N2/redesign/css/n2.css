@@ -36,40 +36,43 @@ ul.menu li { display: inline-block; }
 			#secondary-area .search input[type=text]:focus { color: #000; text-transform: none; }*/
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; }
 	#page-tree ul { list-style-type:none; }
-		#page-tree ul li { margin-left: 10px; text-indent: 5px; line-height: 29px; }
-			#page-tree ul li div.node { position:relative; }
-			#page-tree ul li div.node a.item { display: inline-block; min-width: 60%; max-width:80%; overflow:hidden; white-space:nowrap; text-overflow: ellipsis; }
-				#page-tree ul li .tools { position:absolute; right:20px; height: 11px; top: 10px; width: 18px; display:none; text-indent: -9999px; }
-				#page-tree ul li div.node:hover .tools { display: block; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; }
-				#page-tree ul li a.toggle { position:absolute; right: 10px; width:12px; height:12px; }
-					#page-tree ul li a.toggle i { display:none; }
-					#page-tree ul li.collapsed > div > a.toggle i.toggle-expand { display:inline-block; }
-					#page-tree ul li.expanded > div:hover > a.toggle i.toggle-collapse { display:inline-block; }
+		#page-tree ul li.node { margin-left: 10px; text-indent: 5px; line-height: 29px; }
+			#page-tree ul li.node div.item { position:relative; }
+			#page-tree ul li.node div.item a.item { display: inline-block; min-width: 60%; max-width:80%; overflow:hidden; white-space:nowrap; text-overflow: ellipsis; }
+				#page-tree ul li.node .tools { position:absolute; right:20px; top: 10px; }
+					#page-tree ul li.node .tools-toggler { display:none; height: 11px; width: 18px; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; text-indent: -9999px;}
+				#page-tree ul li.node div.item:hover .tools-toggler,
+				#page-tree ul li.node div.item .open .tools-toggler { display: block; }
+				.iconed-text { background: transparent none no-repeat 5px 50%; background-repeat:no-repeat !important; }
+				#page-tree ul li.node a.toggle { position:absolute; right: 10px; width:12px; height:12px; }
+					#page-tree ul li.node a.toggle i { display:none; }
+					#page-tree ul li.node.collapsed > div > a.toggle i.toggle-expand { display:inline-block; }
+					#page-tree ul li.node.expanded > div:hover > a.toggle i.toggle-collapse { display:inline-block; }
 					#page-tree ul > li > div.loading > a.toggle i { display:none !important; }
 					#page-tree ul > li > div.loading > a.toggle i.toggle-loading { display:inline-block !important; }
-					#page-tree ul li .tree-pager { display:block; padding-left:20px; }
-						#page-tree ul li .tree-pager i { float:right; margin:5px; }
-				/*#page-tree ul li.expanded > div > a.toggle > .open { display: inline-block; }
-				#page-tree ul li.collapsed > div > a.toggle > .open { display: inline-block; }*/
-					/*#page-tree ul li a.toggle { display: none; height:29px; width:16px; background:transparent none no-repeat 50% 50%; }
-			#page-tree ul li.expanded > div > a.toggle { display: inline; background-image:url(../img/minus.png); }
-			#page-tree ul li.collapsed > div > a.toggle { display: inline-block; background-image:url(../img/plus.png); }*/
+					#page-tree ul li.node .tree-pager { display:block; padding-left:20px; }
+						#page-tree ul li.node .tree-pager i { float:right; margin:5px; }
+				/*#page-tree ul li.node.expanded > div > a.toggle > .open { display: inline-block; }
+				#page-tree ul li.node.collapsed > div > a.toggle > .open { display: inline-block; }*/
+					/*#page-tree ul li.node a.toggle { display: none; height:29px; width:16px; background:transparent none no-repeat 50% 50%; }
+			#page-tree ul li.node.expanded > div > a.toggle { display: inline; background-image:url(../img/minus.png); }
+			#page-tree ul li.node.collapsed > div > a.toggle { display: inline-block; background-image:url(../img/plus.png); }*/
 			#page-tree ul li.root { margin-left: 0; }
 				#page-tree ul li.root > div > a { font-weight: bold; }
 				#page-tree ul li.root > div > b.handle { display:none; }
 				#page-tree ul li.root > div { background: #fafafa; }
 				#page-tree ul li.root > div:hover { background: #f3f3f3; }
 				#page-tree ul li.root > ul > li { margin: 0; }
-				#page-tree ul li.root ul li { border-top: 1px solid #FFFFFF; }
-					#page-tree ul li.root ul li div.node { border-bottom: 1px solid #ebf7fc; }
-					#page-tree ul li.root ul li div.node b.handle { background: #ebf7fc none no-repeat 2px 50%; display:inline-block; height:29px; width:5px; cursor:move; float:left; }
-					#page-tree ul li.root ul li div.node b.handle:hover { transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
-					#page-tree ul li.root ul li.ui-sortable-helper > div.node b.handle { width:19px; }
-					#page-tree ul li.root ul li a img { padding-right: 4px; position: relative; top: 3px; }
-					#page-tree ul li.root ul li div.node:hover { background: #f9fdfe; }
-					#page-tree ul li.root ul li div.node:hover b.handle { background-color: #d9f0f9; }
-					#page-tree ul li.root ul li.active > div.node { background: #ebf7fc; }
-					#page-tree ul li.root ul li.active > div.node b.handle { background-color: #3aaee3; }
+				#page-tree ul li.root ul li.node { border-top: 1px solid #FFFFFF; }
+					#page-tree ul li.root ul li.node div.item { border-bottom: 1px solid #ebf7fc; }
+					#page-tree ul li.root ul li.node div.item b.handle { background: #ebf7fc none no-repeat 2px 50%; display:inline-block; height:29px; width:5px; cursor:move; float:left; }
+					#page-tree ul li.root ul li.node div.item b.handle:hover { transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
+					#page-tree ul li.root ul li.ui-sortable-helper > div.item b.handle { width:19px; }
+					#page-tree ul li.root ul li.node a img { padding-right: 4px; position: relative; top: 3px; }
+					#page-tree ul li.root ul li.node div.item:hover { background: #f9fdfe; }
+					#page-tree ul li.root ul li.node div.item:hover b.handle { background-color: #d9f0f9; }
+					#page-tree ul li.root ul li.active > div.item { background: #ebf7fc; }
+					#page-tree ul li.root ul li.active > div.item b.handle { background-color: #3aaee3; }
 #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
 	#trash > div { text-align: center; height: 60px; background: #f0f0f0; border: 1px solid #dddddd; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
