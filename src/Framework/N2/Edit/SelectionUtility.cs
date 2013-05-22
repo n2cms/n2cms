@@ -81,6 +81,8 @@ namespace N2.Edit
             return Engine.Resolve<Navigator>().Navigate(request("memory"));
         }
 
+		/// <summary>Analyzes the request trying to determine the selected item.</summary>
+		/// <returns>A content item or null if no item was discovered.</returns>
         public virtual ContentItem ParseSelectionFromRequest()
         {
 			if (request == null) return null; // explicitly passed selection

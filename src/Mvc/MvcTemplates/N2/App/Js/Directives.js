@@ -81,8 +81,19 @@
 
 	module.directive("load", function($parse){
 		return function (scope, element, attr) {
-			var fn = $parse(attr["load"]);
+			var fn = $parse(attr.load);
 			element.bind("load", function (e) {
+				scope.$apply(function () {
+					fn(scope, { $event: e });
+				});
+			});
+		};
+	});
+
+	module.directive("keyup", function ($parse) {
+		return function (scope, element, attr) {
+			var fn = $parse(attr.keyup);
+			element.bind("keyup", function (e) {
 				scope.$apply(function () {
 					fn(scope, { $event: e });
 				});

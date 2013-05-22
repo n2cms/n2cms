@@ -7,6 +7,7 @@
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
 			children: { method: 'GET', params: { target: 'children' } },
+			search: { method: 'GET', params: { target: 'search' } },
 			move: { method: 'POST', params: { target: 'move' } },
 			sort: { method: 'POST', params: { target: 'sort' } }
 		});

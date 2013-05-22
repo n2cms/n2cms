@@ -52,7 +52,7 @@ namespace N2.Persistence.Search
 			var q = finder.Where.AncestralTrail.Like(ancestor + "%")
 				.And.Title.IsNull(false);
 
-			var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w + "%");
+			var words = query.Split(' ').Where(w => w.Length > 0).Select(w => "%" + w.Trim('*') + "%");
 			foreach (var word in words)
 			{
 				q = q.And.OpenBracket()

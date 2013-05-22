@@ -32,6 +32,9 @@ namespace N2.Management.Api
 				case "GET":
 					switch (context.Request.PathInfo)
 					{
+						case "/search":
+							WriteSearch(context);
+							break;
 						case "/children":
 						default:
 							WriteChildren(context);
@@ -47,13 +50,41 @@ namespace N2.Management.Api
 							break;
 					}
 					break;
+				case "DELETE":
+					Delete();
+					break;
 			}
+		}
+
+		private void WriteSearch(HttpContext context)
+		{
+			var q = N2.Persistence.Search.Query.Parse(new HttpRequestWrapper(context.Request));
+			var result = engine.Content.Search.Text.Search(q);
+
+			new
+			{
+				Total = result.Total,
+				Hits = result
+					.Where(i => engine.SecurityManager.IsAuthorized(i, context.User))
+					.Select(i => engine.GetContentAdapter<NodeAdapter>(i).GetTreeNode(i))
+					.ToList()
+			}.ToJson(context.Response.Output);
+		}
+
+		private void Delete()
+		{
+			var item = selection.ParseSelectionFromRequest();
+			var ex = engine.IntegrityManager.GetDeleteException(item);
+			if (ex != null)
+				throw ex;
+
+			engine.Persister.Delete(item);
 		}
 
 		private void Move(Func<string, string> request)
 		{
 			var sorter = engine.Resolve<ITreeSorter>();
-			var from = selection.SelectedItem;
+			var from = selection.ParseSelectionFromRequest();
 			if (!string.IsNullOrEmpty(request("before")))
 			{
 				var before = engine.Resolve<Navigator>().Navigate(request("before"));

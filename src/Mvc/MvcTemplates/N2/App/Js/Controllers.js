@@ -58,7 +58,26 @@ function MainMenuCtrl($scope) {
 	});
 }
 
-function SearchCtrl() {
+function SearchCtrl($scope, $timeout, Content) {
+	$scope.searchExpression = "";
+	var cancel = null;
+	$scope.$watch("searchExpression", function (searchExpression) {
+		cancel && $timeout.cancel(cancel);
+		cancel = $timeout(function () {
+			$scope.search(searchExpression + "*");
+		}, 500);
+	});
+	$scope.search = function (searchExpression) {
+		if (!searchExpression || searchExpression == "*") {
+			$scope.hits = [];
+			return;
+		}
+		$scope.searching = true;
+		Content.search({ q: searchExpression, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
+			$scope.hits = data.Hits;
+			$scope.searching = false;
+		});
+	}
 }
 
 function NavigationCtrl($scope, ContextMenuFactory) {

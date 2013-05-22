@@ -339,5 +339,29 @@ namespace N2.Persistence.Search
 
             return !isInvalid;
         }
+
+		public static Query Parse(System.Web.HttpRequestWrapper request)
+		{
+			var q = Query.For(request["q"]);
+			if (!string.IsNullOrEmpty(request["below"]))
+				q = q.Below(request["below"]);
+			if (!string.IsNullOrEmpty(request["pages"]))
+				q = q.Pages(Convert.ToBoolean(request["pages"]));
+
+			if (!string.IsNullOrEmpty(request["skip"]))
+				q = q.Skip(int.Parse(request["skip"]));
+			if (!string.IsNullOrEmpty(request["take"]))
+				q = q.Take(int.Parse(request["take"]));
+			if (!string.IsNullOrEmpty(request["types"]))
+				q = q.OfType(request["types"].Split(','));
+			if (!string.IsNullOrEmpty(request["roles"]))
+				q = q.ReadableBy(request["roles"].Split(','));
+			if (!string.IsNullOrEmpty(request["orderBy"]))
+			{
+				var by = request["orderBy"].Split(' ');
+				q = q.OrderBy(by[0], by.Length > 1 && string.Equals(by[1], "DESC", StringComparison.InvariantCultureIgnoreCase));
+			}
+			return q;
+		}
 	}
 }
