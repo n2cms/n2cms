@@ -256,6 +256,7 @@
     <Compile Include="Persistence\Sources\ContentSourceTests.cs" />
     <Compile Include="Plugin\Scheduling\Actions.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Web\SlugTests.cs" />
     <Compile Include="Web\UrlParser_IUrlSource_VirtualDirectory.cs" />
     <Compile Include="Web\UrlParser_IUrlSource_MultipleSites.cs" />
     <Compile Include="Web\Items\UrlSourcePage.cs" />
@@ -455,7 +456,9 @@
     <Compile Include="Workflow\SHould.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
