@@ -38,7 +38,7 @@
 			restrict: "E",
 			replace: true,
 			scope: true,
-			template: "<div x-compile='node.Current.Template'>\
+			template: "<div x-compile='node.Current.Template' class='page-action'>\
 	<a ng-class=\"{ 'page-action-icon': node.Current.IconUrl, 'page-action-description': node.Current.Description }\" \
 		href='{{evaluateExpression(node.Current.Url)}}' \
 		target='{{evaluateExpression(node.Current.Target)}}'\
@@ -97,6 +97,19 @@
 				scope.$apply(function () {
 					fn(scope, { $event: e });
 				});
+			});
+		};
+	});
+
+	module.directive("esc", function ($parse) {
+		return function (scope, element, attr) {
+			var fn = $parse(attr.keyup);
+			element.bind("keyup", function (e) {
+				if (e.keyCode == 27) {
+					scope.$apply(function () {
+						fn(scope, { $event: e });
+					});
+				}
 			});
 		};
 	});

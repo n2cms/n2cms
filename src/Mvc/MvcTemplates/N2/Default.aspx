@@ -5,7 +5,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" ng-app="n2">
+<html class="no-js">
 <!--<![endif]-->
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
 
     <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body ng-controller="ManagementCtrl">
+<body ng-controller="ManagementCtrl" ng-app="n2">
     <div id="top-area">
         <%--<div ng-include src="'App/Partials/UserTools.html'"></div>--%>
         <div ng-include src="'App/Partials/MainMenu.html'"></div>
@@ -54,8 +54,8 @@
 	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
-	<link href="redesign/bootstrap/css/bootstrap.css" rel="stylesheet" />
-	<script src="redesign/bootstrap/js/bootstrap.js"></script>
+	<link href="Resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<script src="Resources/bootstrap/js/bootstrap.js"></script>
 	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
 	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
 	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>

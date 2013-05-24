@@ -1,18 +1,32 @@
-﻿<div id="page-action-bar" class="action-bar secondary">
-	<ul class="menu">
-		<li ng-repeat="item in Interface.ActionMenu.Children" 
-			ng-class="{ 'command-options' : item.Children.length }" 
-			ng-include src="'App/Partials/PageActionItem.html'"
+﻿<div id="page-action-bar" class="action-bar secondary navbar">
+	<ul class="menu nav">
+		<li ng-repeat="item in Interface.ActionMenu.Children"
+			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl">
+			
+			<page-action-content node="item"></page-action-content>
+			
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+				<b class="caret"></b>
+			</a>
+
+			<ul class="dropdown-menu" ng-show="item.Children.length">
+				<li ng-repeat="child in item.Children">
+					<page-action-content node="child"></page-action-content>
+				</li>
+			</ul>
 		</li>
 	</ul>
-	<div class="action-bar primary pull-right">
-		<ul>
-			<li class="page-publish iconed"><a href="#">
-				<img src="redesign/img/actionbar/publish.png" /><div>Publish</div>
-			</a></li>
-		</ul>
-	</div>
-	<div id="main-area-content">
-	</div>
+	<ul class="nav pull-right">
+		<li class="page-publish">
+			<div class="page-action">
+				<a href="#" class="page-action-icon" style="background-image:url(redesign/img/glyphicons-white/glyphicons_063_power.png)">
+					Publish
+				</a>
+			</div>
+		</li>
+	</ul>
+	
+<!--	<div id="main-area-content">
+	</div>-->
 </div>

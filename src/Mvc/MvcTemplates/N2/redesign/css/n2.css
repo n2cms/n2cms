@@ -78,28 +78,34 @@ ul.menu li { display: inline-block; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
 
 #main-area { left: 200px; position: absolute; top: 0; bottom: 0; overflow:auto; }
-	#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }
+	/*#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }*/
 	#main-area #page-preview { position:absolute; top: 39px; bottom: 0; width:100%; }
 		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
 		#main-area #page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }
 
 #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
-	#page-action-bar.secondary ul { float: left; }
-		#page-action-bar.secondary ul li { }
-			#page-action-bar.secondary ul li:hover { }
-	#page-action-bar.primary ul { float: right; }
-	#page-action-bar li { height: 39px; float: left; display: block; line-height:16px; }
-		#page-action-bar li a { float: left; height: 35px; margin-top: 2px; border-right: 1px solid #74c6eb; padding-left: 15px; padding-right: 15px; }
-		#page-action-bar li a.page-action-icon { background: transparent none no-repeat 15px 50%; padding-left:45px; padding-right:15px; }
-		#page-action-bar li:hover { background-color: #3aaee3; }
-		#page-action-bar li a div { float: left; line-height: 16px; padding-left: 8px; padding-top: 8px; }
+	#page-action-bar > ul > li { }
+		#page-action-bar > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
+			#page-action-bar > ul > li .page-action a { display:block; height: 38px; padding: 10px 15px; line-height: 16px; white-space:nowrap; }
+			#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; }
+			#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 15px 50%; padding-left:45px; }
+			#page-action-bar > ul > li .page-action a:hover { background-color: #3aaee3; }
+			#page-action-bar > ul > li .dropdown-toggle { line-height: 22px; padding: 8px 4px; float:left; }
+			#page-action-bar > ul > li .dropdown-toggle .caret { border-top-color:#fff; bordr-bottom-color:fff; }
+			#page-action-bar > ul > li .dropdown-toggle:hover,
+			#page-action-bar > ul > li.open .dropdown-toggle { background-color:#3aaee3 }
+			#page-action-bar > ul > li .dropdown-menu { background-color: #18a0de; margin-top:0; border-radius:0; }
+			#page-action-bar > ul > li .dropdown-menu:before,
+			#page-action-bar > ul > li .dropdown-menu:after { display:none; }
+				#page-action-bar li .dropdown-menu li,
+				#page-action-bar li .dropdown-menu li a { display:block; }
 		#page-action-bar li.iconed img { float: left; padding-top: 5px; }
 		#page-action-bar li.iconed a { float: left; height: 35px; margin-top: 2px; }
-		#page-action-bar li.command-options { }
+		/*#page-action-bar li.command-options { }
 		#page-action-bar li.command-options div.command-options { display:none; }
 		#page-action-bar li.command-options:hover div.command-options { display:block; }
-			#page-action-bar li.command-options a div { padding-top: 2px; }
-	#page-action-bar a { color: #fff; float: left; }
+			#page-action-bar li.command-options a div { padding-top: 2px; }*/
+	#page-action-bar a { color: #fff; }
 		#page-action-bar a:hover { text-decoration: none; }
 	#page-action-bar span { font-size: 11px; display: block; font-family: Arial; }
 	#page-action-bar .command-options .command-options { background: #ebf7fc; min-width: 350px; position: absolute; top: 39px; }

@@ -67,10 +67,13 @@ function SearchCtrl($scope, $timeout, Content) {
 			$scope.search(searchExpression + "*");
 		}, 500);
 	});
+	$scope.clear = function () {
+		$scope.hits = [];
+		$scope.searchExpression = "";
+	};
 	$scope.search = function (searchExpression) {
 		if (!searchExpression || searchExpression == "*") {
-			$scope.hits = [];
-			return;
+			return $scope.clear();
 		}
 		$scope.searching = true;
 		Content.search({ q: searchExpression, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
@@ -168,6 +171,16 @@ function PreviewCtrl($scope) {
 			console.log(ex);
 		}
 	};
+
+	if ($scope.Context.CurrentItem) {
+		$scope.src = $scope.Context.CurrentItem.PreviewUrl;
+	}
+	var remove = $scope.$watch("Context.CurrentItem", function (item) {
+		if (item && item.PreviewUrl != "Empty.aspx") {
+			$scope.src = item.PreviewUrl;
+			remove || setTimeout(remove, 10);
+		}
+	});
 }
 
 function LanguageCtrl($scope, Translations) {

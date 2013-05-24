@@ -6,7 +6,7 @@
 			
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
 				{{evaluateExpression(item.Current.Title)}}
-				<b class="caret" ng-show="item.Children.length"></b>
+				<b class="caret"></b>
 			</a>
 		    <ul class="dropdown-menu">
 				<li ng-repeat="childItem in item.Children">
@@ -30,8 +30,8 @@
 			</ul>
 		</li>
 		<li class="dropdown" ng-controller="SearchCtrl" ng-class="{ open: searchExpression }">
-			<form class="navbar-search">
-				<input type="text" class="search-query" placeholder="Search" ng-model="searchExpression">
+			<form class="navbar-search" ng-submit="search()">
+				<input type="text" class="search-query" placeholder="Search" ng-model="searchExpression" x-esc="console.log('esc')">
 				<input type="button" value="Search" ng-click="search(searchExpression)">
 			</form>
 			<ul class="dropdown-menu" role="menu">

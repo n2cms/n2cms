@@ -105,7 +105,6 @@
     <Content Include="N2\App\Partials\Footer.html" />
     <Content Include="N2\App\Partials\PageVersions.html" />
     <Content Include="N2\App\Partials\PageLanguage.html" />
-    <Content Include="N2\App\Partials\PageActionItem.html" />
     <Content Include="N2\App\Partials\PagePreview.html" />
     <Content Include="N2\App\Partials\PageBranch.html" />
     <Content Include="N2\App\Partials\MainMenu.html" />
@@ -158,12 +157,6 @@
     <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\UpgradeVersions.aspx" />
     <Content Include="N2\Installation\Rebase.aspx" />
-    <Content Include="N2\redesign\bootstrap\css\bootstrap.css" />
-    <Content Include="N2\redesign\bootstrap\css\bootstrap.min.css" />
-    <Content Include="N2\redesign\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="N2\redesign\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="N2\redesign\bootstrap\js\bootstrap.js" />
-    <Content Include="N2\redesign\bootstrap\js\bootstrap.min.js" />
     <Content Include="N2\redesign\css\n2.css" />
     <Content Include="N2\redesign\css\normalize.css" />
     <Content Include="N2\redesign\css\normalize.min.css" />
@@ -773,6 +766,18 @@
     <Content Include="N2\Resources\angular-1.1.4\i18n\angular-locale_zu-za.js" />
     <Content Include="N2\Resources\angular-1.1.4\i18n\angular-locale_zu.js" />
     <Content Include="N2\Resources\angular-1.1.4\version.txt" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui-ieshiv.js" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui-ieshiv.min.js" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.css" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.js" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.min.css" />
+    <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.min.js" />
+    <Content Include="N2\Resources\bootstrap\css\bootstrap.css" />
+    <Content Include="N2\Resources\bootstrap\css\bootstrap.min.css" />
+    <Content Include="N2\Resources\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="N2\Resources\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="N2\Resources\bootstrap\js\bootstrap.js" />
+    <Content Include="N2\Resources\bootstrap\js\bootstrap.min.js" />
     <Content Include="N2\Resources\ckeditor\build-config.js" />
     <Content Include="N2\Resources\ckeditor\ckeditor.js" />
     <Content Include="N2\Resources\ckeditor\config.js" />
@@ -1335,7 +1340,6 @@
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.ttf" />
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.woff" />
     <Content Include="N2\Resources\angular-1.1.4\version.json" />
-    <Content Include="N2\redesign\bootstrap\img\Thumbs.db" />
     <Content Include="N2\redesign\img\actionbar\Thumbs.db" />
     <Content Include="N2\Resources\ckeditor\LICENSE.md" />
     <Content Include="N2\Resources\ckeditor\skins\moono\readme.md" />
@@ -1357,6 +1361,7 @@
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.selectable.jquery.json" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.sortable.jquery.json" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.widget.jquery.json" />
+    <Content Include="N2\Resources\bootstrap\img\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
