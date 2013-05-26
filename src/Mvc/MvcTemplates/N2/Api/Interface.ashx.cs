@@ -204,8 +204,8 @@ namespace N2.Management.Api
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-white/glyphicons_154_more_windows.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageVersions.html'""></div>" }),
