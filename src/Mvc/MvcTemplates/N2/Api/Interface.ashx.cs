@@ -78,14 +78,14 @@ namespace N2.Management.Api
 
 		public InterfaceTrash Trash { get; set; }
 
-		public InterfaceUrls Paths { get; set; }
+		public InterfacePaths Paths { get; set; }
 
 		public string SelectedPath { get; set; }
 
 		public Node<InterfaceMenuItem> ContextMenu { get; set; }
 	}
 
-	public class InterfaceUrls
+	public class InterfacePaths
 	{
 		public string Management { get; set; }
 
@@ -96,6 +96,8 @@ namespace N2.Management.Api
 		public string Edit { get; set; }
 
 		public string SelectedQueryKey { get; set; }
+
+		public string ViewPreference { get; set; }
 	}
 
 	public class InterfaceUser
@@ -132,7 +134,7 @@ namespace N2.Management.Api
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
 				Trash = CreateTrash(context),
-				Paths = CreateUrls(),
+				Paths = CreateUrls(context),
 				ContextMenu = CreateContextMenu(context)
 			}.ToJson(context.Response.Output);
 		}
@@ -174,14 +176,15 @@ namespace N2.Management.Api
 			return urlFormat;
 		}
 
-		private InterfaceUrls CreateUrls()
+		private InterfacePaths CreateUrls(HttpContext context)
 		{
-			return new InterfaceUrls {
+			return new InterfacePaths {
 				Management = engine.ManagementPaths.GetManagementInterfaceUrl(),
 				Delete = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens(),
 				Edit = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens(),
 				SelectedQueryKey = engine.Config.Sections.Management.Paths.SelectedQueryKey.ResolveUrlTokens(),
-				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens()
+				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
+				ViewPreference = new HttpContextWrapper(context).GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString()
 			};
 		}
 

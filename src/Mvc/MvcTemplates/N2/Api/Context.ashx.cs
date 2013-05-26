@@ -1,6 +1,7 @@
 ﻿using N2.Collections;
 using N2.Edit;
 using N2.Edit.Trash;
+using N2.Edit.Versioning;
 using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Persistence;
@@ -17,6 +18,10 @@ namespace N2.Management.Api
 		public ILanguage Language { get; set; }
 
 		public TreeNode CurrentItem { get; set; }
+
+		public bool NotFound { get; set; }
+
+		public IEnumerable<TreeNode> Versions { get; set; }
 	}
 
 	public class Context : IHttpHandler
@@ -31,11 +36,20 @@ namespace N2.Management.Api
 
 			context.Response.ContentType = "application/json";
 
-			var ctx = new ContextData
+			var item = selection.ParseSelectionFromRequest();
+			ContextData ctx;
+			if (item == null)
+				ctx = new ContextData { NotFound = true };
+			else
 			{
-				CurrentItem = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetTreeNode(selection.SelectedItem),
-				Language = engine.Resolve<ILanguageGateway>().GetLanguage(selection.SelectedItem)
-			};
+				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
+				ctx = new ContextData
+				{
+					CurrentItem = adapter.GetTreeNode(item),
+					Language = engine.Resolve<ILanguageGateway>().GetLanguage(item),
+					Versions = engine.Resolve<IVersionManager>().GetVersionsOf(item).Select(v => adapter.GetTreeNode(v)).ToList()
+				};
+			}
 			ctx.ToJson(context.Response.Output);
 		}
 

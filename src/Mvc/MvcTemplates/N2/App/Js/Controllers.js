@@ -18,29 +18,49 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		ContextMenu: {
 		}
 	}
-	$scope.$watch("Context.CurrentItem.Path", function (path) {
-		if (path) {
-			var item = $scope.Context.CurrentItem;
-			Context.get({ selected: item.Path }, function (ctx) {
+
+	$scope.select = function (node) {
+		$scope.Context.SelectedNode = node;
+		$timeout(function () {
+			Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 			});
-		}
-	});
+		}, 200);
+		//$scope.Context.CurrentItem = node.Current;
+	}
+
+	//$scope.$watch("Context.CurrentItem.Path", function (path) {
+	//	if (path) {
+	//		var item = $scope.Context.CurrentItem;
+	//		var loco = window.preview.location;
+	//		if (loco.pathname != item.PreviewUrl && loco.pathname + loco.search != item.PreviewUrl) {
+	//			console.log("path changed", path, " -- ", loco.pathname + loco.search, item.PreviewUrl);
+	//			Context.get({ selected: item.Path }, function (ctx) {
+	//				angular.extend($scope.Context, ctx);
+	//			});
+	//		}
+	//	}
+	//});
 	$scope.$watch("Context.ContextMenu", function (menu) {
 		console.log("context menu", menu);
 	});
 
+	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("loaded", function (scope, e) {
 		var ctxUrl = $scope.Context.CurrentItem.PreviewUrl;
-		if (e.path + e.query != ctxUrl && e.path != ctxUrl) {
+		if (e.path + e.query != ctxUrl && e.path != ctxUrl.replace(viewExpression, "")) {
 			// reload
 			$timeout(function () {
+				console.log("url changed", e.path + e.query, "!=", ctxUrl, e.path, "!=", ctxUrl.replace(viewExpression, ""));
 				Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
+					if (ctx.NotFound)
+						return;
+					
 					console.log("reloaded", ctx);
 					angular.extend($scope.Context, ctx);
 					$scope.$broadcast("contextchanged", $scope.Context);
 				});
-			}, 100);
+			}, 200);
 		}
 	});
 
@@ -122,10 +142,6 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 		}
 		return null;
 	}
-	$scope.select = function (node) {
-		$scope.Context.CurrentItem = node.Current;
-		$scope.Context.SelectedNode = node;
-	}
 	$scope.loadRemaining = function (node) {
 		node.Loading = true;
 		Content.children({ selected: node.Current.Path, skip: node.Children.length }, function (data) {
@@ -172,15 +188,15 @@ function PreviewCtrl($scope) {
 		}
 	};
 
-	if ($scope.Context.CurrentItem) {
-		$scope.src = $scope.Context.CurrentItem.PreviewUrl;
-	}
-	var remove = $scope.$watch("Context.CurrentItem", function (item) {
-		if (item && item.PreviewUrl != "Empty.aspx") {
-			$scope.src = item.PreviewUrl;
-			remove || setTimeout(remove, 10);
-		}
-	});
+	//if ($scope.Context.CurrentItem) {
+	//	$scope.src = $scope.Context.CurrentItem.PreviewUrl;
+	//}
+	//var remove = $scope.$watch("Context.CurrentItem", function (item) {
+	//	if (item && item.PreviewUrl != "Empty.aspx") {
+	//		$scope.src = item.PreviewUrl;
+	//		remove || setTimeout(remove, 10);
+	//	}
+	//});
 }
 
 function LanguageCtrl($scope, Translations) {

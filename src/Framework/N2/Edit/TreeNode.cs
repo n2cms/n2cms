@@ -25,5 +25,7 @@ namespace N2.Edit
 		public ContentState State { get; set; }
 
 		public int SortOrder { get; set; }
+
+		public int VersionIndex { get; set; }
 	}
 }

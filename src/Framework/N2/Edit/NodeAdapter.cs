@@ -113,7 +113,8 @@ namespace N2.Edit
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
 				PreviewUrl = GetPreviewUrl(item),
 				MaximumPermission = GetMaximumPermission(item),
-				SortOrder = item.SortOrder
+				SortOrder = item.SortOrder,
+				VersionIndex = item.VersionIndex
 			};
 			
 			node.MetaInformation = GetMetaInformation(item);

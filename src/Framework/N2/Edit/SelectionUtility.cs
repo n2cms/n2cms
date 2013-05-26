@@ -89,13 +89,22 @@ namespace N2.Edit
 
 			ContentItem selectedItem = null;
 			string selected = request(SelectedQueryKey);
-            if (!string.IsNullOrEmpty(selected))
-                selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
+			if (!string.IsNullOrEmpty(selected))
+			{
+				selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
+				if (string.Equals(request(WebExtensions.ViewPreferenceQueryString), WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
+					selectedItem = TryApplyDraft(selectedItem);
+			}
 
-            string selectedUrl = request("selectedUrl");
+            Url selectedUrl = request("selectedUrl");
 			if (!string.IsNullOrEmpty(selectedUrl))
-				selectedItem = Engine.UrlParser.Parse(selectedUrl)
-					?? SelectFile(selectedUrl);
+			{
+				selectedItem = Engine.UrlParser.Parse(selectedUrl);
+				if (selectedItem != null && string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
+					selectedItem = TryApplyDraft(selectedItem);
+				else
+					selectedItem = SelectFile(selectedUrl);
+			}
 
             string itemId = request(PathData.ItemQueryKey);
             if (!string.IsNullOrEmpty(itemId))
@@ -105,6 +114,18 @@ namespace N2.Edit
 			return cvr.ParseVersion(request(PathData.VersionIndexQueryKey), request("versionKey"), selectedItem)
 				?? selectedItem;
         }
+
+		private ContentItem TryApplyDraft(ContentItem selectedItem)
+		{
+			var drafts = Engine.Resolve<DraftRepository>();
+			if (drafts.HasDraft(selectedItem))
+			{
+				var version = drafts.Versions.GetVersion(selectedItem);
+				if (version != null && version.Version != null)
+					selectedItem = version.Version;
+			}
+			return selectedItem;
+		}
 
 		private ContentItem SelectFile(string selectedUrl)
 		{
