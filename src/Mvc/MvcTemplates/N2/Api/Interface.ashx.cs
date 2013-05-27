@@ -194,21 +194,22 @@ namespace N2.Management.Api
 			{
 				Children = new Node<InterfaceMenuItem>[]
 				{
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.CurrentItem.PreviewUrl}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Preview, IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = "", Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = "", Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html" }),

@@ -45,6 +45,11 @@
 		return res;
 	});
 
+	module.factory('Definitions', function ($resource) {
+		var res = $resource('Api/Definitions.ashx', {}, {});
+		return res;
+	});
+
 	module.factory('Alert', function () {
 		var callbacks = [];
 		var alert = {

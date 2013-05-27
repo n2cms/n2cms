@@ -203,6 +203,17 @@ function PreviewCtrl($scope) {
 	//});
 }
 
+function AddCtrl($scope, Definitions) {
+	$scope.loadDefinitions = function (node) {
+		console.log("loading definitions for ", node);
+		node.Selected = node.Current.Path;
+		node.Loading = true;
+		node.Children = Definitions.query({ selected: $scope.Context.CurrentItem.Path }, function () {
+			node.Loading = false;
+		});
+	}
+}
+
 function LanguageCtrl($scope, Translations) {
 	$scope.loadLanguages = function (node) {
 		console.log("loading languages for ", node);

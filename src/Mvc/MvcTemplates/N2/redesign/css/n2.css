@@ -102,7 +102,7 @@ ul.menu li { display: inline-block; }
 			#page-action-bar > ul > li .dropdown-toggle .caret { border-top-color:#fff; bordr-bottom-color:fff; }
 			#page-action-bar > ul > li .dropdown-toggle:hover,
 			#page-action-bar > ul > li.open .dropdown-toggle { background-color:#3aaee3 }
-			#page-action-bar > ul > li .dropdown-menu { background-color: ##ebf7fc; margin-top:0; border-radius:0; padding:0; }
+			#page-action-bar > ul > li .dropdown-menu { background-color: ##ebf7fc; margin-top:0; border-radius:0; padding:0; max-height: 400px; overflow-x: hidden; overflow-y: auto; }
 			#page-action-bar > ul > li .dropdown-menu:before,
 			#page-action-bar > ul > li .dropdown-menu:after { display:none; }
 				#page-action-bar li .dropdown-menu li,
