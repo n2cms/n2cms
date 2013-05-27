@@ -73,6 +73,13 @@ ul.menu li { display: inline-block; }
 					#page-tree ul li.root ul li.node div.item:hover b.handle { background-color: #d9f0f9; }
 					#page-tree ul li.root ul li.active > div.item { background: #ebf7fc; }
 					#page-tree ul li.root ul li.active > div.item b.handle { background-color: #3aaee3; }
+
+					#page-tree ul li.root ul li.node div.item.draft b.handle { background-color: #FFBB88; }
+					#page-tree ul li.root ul li.node div.item.draft:hover b.handle { background-color: #FF9966; }
+
+					#page-tree ul li.root ul li.node div.item.unpublished b.handle { background-color: #FF6600; }
+					#page-tree ul li.root ul li.node div.item.unpublished:hover b.handle { background-color: #EE3300; }
+
 #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
 	#trash > div { text-align: center; height: 60px; background: #f0f0f0; border: 1px solid #dddddd; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
@@ -119,6 +126,18 @@ ul.menu li { display: inline-block; }
 			#page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
 		#page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
 			#page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(../img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }*/
+
+#page-action-bar.draft { background-color: #FF8822; }
+		#page-action-bar.draft > ul > li .page-action { border-left-color: #FF9933 }
+		#page-action-bar.draft > ul > li .page-action a:hover,
+		#page-action-bar.draft > ul > li .dropdown-toggle:hover,
+		#page-action-bar.draft > ul > li.open .dropdown-toggle { background-color:#FF9933 }
+
+#page-action-bar.unpublished { background-color: #CC3300; }
+		#page-action-bar.unpublished > ul > li .page-action { border-left-color: #FF3300 }
+		#page-action-bar.unpublished	 > ul > li .page-action a:hover,
+		#page-action-bar.unpublished > ul > li .dropdown-toggle:hover,
+		#page-action-bar.unpublished > ul > li.open .dropdown-toggle { background-color:#FF3300 }
 
 #footer {
 	position:absolute;

@@ -47,7 +47,7 @@ namespace N2.Management.Api
 				{
 					CurrentItem = adapter.GetTreeNode(item),
 					Language = engine.Resolve<ILanguageGateway>().GetLanguage(item),
-					Versions = engine.Resolve<IVersionManager>().GetVersionsOf(item).Select(v => adapter.GetTreeNode(v)).ToList()
+					Versions = engine.Resolve<IVersionManager>().GetVersionsOf(item.VersionOf.Value ?? item).Select(v => adapter.GetTreeNode(v)).ToList()
 				};
 			}
 			ctx.ToJson(context.Response.Output);

@@ -7,5 +7,9 @@
 	class='page-action-icon page-action-description' 
 	style='background-image:url(redesign/img/glyphicons-white/glyphicons_057_history.png)'>
 	Versions
-	<span>{{Context.CurrentItem.State}}</span>
+	<span ng-show="Context.CurrentItem.State == Content.states.Draft">Draft</span>
+	<span ng-show="Context.CurrentItem.State == Content.states.Waiting">Waiting</span>
+	<span ng-show="Context.CurrentItem.State == Content.states.Published">Published</span>
+	<span ng-show="Context.CurrentItem.State == Content.states.Unpublished">Unpublished</span>
+	<span ng-show="Context.CurrentItem.State == Content.states.Deleted">Deleted</span>
 </a>

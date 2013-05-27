@@ -1,4 +1,4 @@
-﻿<div class='item' ng-class="{ loading: node.Loading }">
+﻿<div class='item' ng-class="{ loading: node.Loading, draft: node.Current.MetaInformation.draft, unpublished: node.Current.State == Content.states.Unpublished || node.Current.State == Content.states.Deleted }">
 	<b class="handle"></b>
 	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
 

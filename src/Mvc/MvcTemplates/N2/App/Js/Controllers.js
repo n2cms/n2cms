@@ -1,8 +1,9 @@
 ﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
 });
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context) {
-	
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content) {
+	$scope.Content = Content;
+
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
 	$scope.Interface = Interface.get({
@@ -175,7 +176,10 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
-function PageActionCtrl($scope, $interpolate) {
+function PageActionBarCtrl($scope, Content) {
+}
+
+function PageActionCtrl($scope) {
 }
 
 function PreviewCtrl($scope) {
