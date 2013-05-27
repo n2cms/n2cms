@@ -70,8 +70,7 @@
 		return function (scope) {
 			return {
 				show: function (node) {
-					scope.Context.CurrentItem = node.Current;
-					scope.Context.SelectedNode = node;
+					scope.select(node);
 					scope.ContextMenu.node = node;
 					scope.ContextMenu.options = [];
 

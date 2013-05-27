@@ -5,7 +5,7 @@
 </a>
 
 <ul class="dropdown-menu" ng-show="item.Children.length">
-	<li ng-repeat="child in item.Children">
+	<li ng-repeat="child in item.Children" class="item">
 		<page-action-content node="child"></page-action-content>
 	</li>
 </ul>

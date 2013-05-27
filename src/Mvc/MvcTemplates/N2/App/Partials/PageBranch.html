@@ -4,8 +4,10 @@
 
 	<!--<a href='#' ng-click="showOptions(node)" class='tools'>tools</a>-->
 
-	<a href="#" ng-show="ContextMenu.node != node" ng-click="ContextMenu.show(node)" class="tools tools-toggler">tools</a>
-	<div ng-include src="ContextMenu.node == node && 'App/Partials/ContextMenu.html'"></div>
+	<div class="nav tools dropdown">
+		<a href='#' ng-click="ContextMenu.show(node)" class='tools-toggler dropdown-toggle' data-toggle="dropdown" title="{{ContextMenu.SelectedNode == node}}">tools</a>
+		<ul ng-include src="ContextMenu.node == node && 'App/Partials/ContextMenu.html'" class="dropdown-menu pull-right"></ul>
+	</div>
 
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item">
 		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position: 0 0; width: 16px; height: 16px;"></span>

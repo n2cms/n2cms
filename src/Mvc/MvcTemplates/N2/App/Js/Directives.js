@@ -1,4 +1,17 @@
 ﻿(function (module) {
+	module.directive("contextMenuTrigger", function () {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				element.bind("contextmenu", function (e) {
+					var clickedElements = $(e.target).closest(".item").find(".dropdown-toggle").trigger("click").length;
+					if (clickedElements)
+						e.preventDefault();
+				});
+			}
+		}
+	});
+
 	module.directive("evaluateHref", function ($interpolate) {
 		return {
 			restrict: "A",

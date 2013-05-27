@@ -237,6 +237,12 @@ function VersionsCtrl($scope, Versions) {
 	}
 }
 
+function PagePublishCtrl($scope, $rootScope) {
+	$rootScope.$on("loaded", function (scope, e) {
+		
+	});
+}
+
 function AlertCtrl($scope, $timeout, Alert) {
 	var defaults = { visible: true, type: "warning" };
 

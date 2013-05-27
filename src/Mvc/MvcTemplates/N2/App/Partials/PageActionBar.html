@@ -1,6 +1,7 @@
 ﻿<div id="page-action-bar" class="action-bar secondary navbar" ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" title="{{Content}}" ng-controller="PageActionBarCtrl">
 	<ul class="menu nav">
-		<li ng-repeat="item in Interface.ActionMenu.Children"
+		<li class="item"
+			ng-repeat="item in Interface.ActionMenu.Children"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'">
@@ -19,12 +20,7 @@
 		</li>
 	</ul>
 	<ul class="nav pull-right">
-		<li class="page-publish">
-			<div class="page-action">
-				<a href="#" class="page-action-icon" style="background-image:url(redesign/img/glyphicons-white/glyphicons_063_power.png)">
-					Publish
-				</a>
-			</div>
+		<li class="page-publish" ng-include src="'App/Partials/PagePublish.html'">
 		</li>
 	</ul>
 	
