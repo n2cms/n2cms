@@ -38,7 +38,7 @@
 			restrict: "E",
 			replace: true,
 			scope: true,
-			template: "<div x-compile='node.Current.Template' class='page-action'>\
+			template: "<div class='page-action'>\
 	<a ng-class=\"{ 'page-action-icon': node.Current.IconUrl, 'page-action-description': node.Current.Description }\" \
 		href='{{evaluateExpression(node.Current.Url)}}' \
 		target='{{evaluateExpression(node.Current.Target)}}'\
@@ -52,6 +52,10 @@
 			link: function compile(scope, element, attrs) {
 				scope.$watch(attrs.node, function (node) {
 					scope.node = node;
+					if (node.Current && !node.Current.Target)
+						node.Current.Target = "preview";
+					if (node.Current && !node.Current.Url && node.Current.PreviewUrl)
+						node.Current.Url = node.Current.PreviewUrl;
 				});
 				scope.evaluateExpression = function (expr) {
 					return expr && $interpolate(expr)(scope);

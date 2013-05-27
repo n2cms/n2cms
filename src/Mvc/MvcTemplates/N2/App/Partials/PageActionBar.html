@@ -2,7 +2,8 @@
 	<ul class="menu nav">
 		<li ng-repeat="item in Interface.ActionMenu.Children"
 			ng-class="{ dropdown : item.Children.length }"
-			ng-controller="PageActionCtrl">
+			ng-controller="PageActionCtrl"
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'">
 			
 			<page-action-content node="item"></page-action-content>
 			

@@ -90,10 +90,11 @@ ul.menu li { display: inline-block; }
 		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
 		#main-area #page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }
 
-#page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
+#page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; }
 	#page-action-bar > ul { white-space:nowrap; }
 		#page-action-bar > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
-			#page-action-bar > ul > li .page-action a { display:block; height: 38px; padding: 10px 15px; line-height: 16px; white-space:nowrap; }
+			#page-action-bar > ul > li .page-action > a { display:block; height: 38px; padding: 10px 15px; line-height: 16px; white-space:nowrap; text-transform: lowercase; }
+				#page-action-bar > ul > li .page-action a span { text-transform: none; }
 			#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; }
 			#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 15px 50%; padding-left:45px; }
 			#page-action-bar > ul > li .page-action a:hover { background-color: #3aaee3; }
@@ -101,7 +102,7 @@ ul.menu li { display: inline-block; }
 			#page-action-bar > ul > li .dropdown-toggle .caret { border-top-color:#fff; bordr-bottom-color:fff; }
 			#page-action-bar > ul > li .dropdown-toggle:hover,
 			#page-action-bar > ul > li.open .dropdown-toggle { background-color:#3aaee3 }
-			#page-action-bar > ul > li .dropdown-menu { background-color: ##ebf7fc; margin-top:0; border-radius:0; }
+			#page-action-bar > ul > li .dropdown-menu { background-color: ##ebf7fc; margin-top:0; border-radius:0; padding:0; }
 			#page-action-bar > ul > li .dropdown-menu:before,
 			#page-action-bar > ul > li .dropdown-menu:after { display:none; }
 				#page-action-bar li .dropdown-menu li,
@@ -138,6 +139,10 @@ ul.menu li { display: inline-block; }
 		#page-action-bar.unpublished	 > ul > li .page-action a:hover,
 		#page-action-bar.unpublished > ul > li .dropdown-toggle:hover,
 		#page-action-bar.unpublished > ul > li.open .dropdown-toggle { background-color:#FF3300 }
+
+#page-action-bar .versions li.draft a { border-left:solid 5px #FF8822; }
+#page-action-bar .versions li.published a { border-left:solid 5px #d9f0f9; }
+#page-action-bar .versions li.unpublished a { border-left:solid 5px #FF3300; }
 
 #footer {
 	position:absolute;

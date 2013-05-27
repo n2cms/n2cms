@@ -102,6 +102,7 @@
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
     <Content Include="N2\App\Partials\ContextMenu.html" />
+    <Content Include="N2\App\Partials\PageActionItem.html" />
     <Content Include="N2\App\Partials\Footer.html" />
     <Content Include="N2\App\Partials\PageVersions.html" />
     <Content Include="N2\App\Partials\PageLanguage.html" />

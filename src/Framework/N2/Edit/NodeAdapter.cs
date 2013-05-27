@@ -101,7 +101,7 @@ namespace N2.Edit
 		/// <summary>Gets the node representation used to build the tree hierarchy in the management UI.</summary>
 		/// <param name="item">The item to link to.</param>
 		/// <returns>Tree node data.</returns>
-		public virtual TreeNode GetTreeNode(ContentItem item)
+		public virtual TreeNode GetTreeNode(ContentItem item, bool allowDraft = true)
 		{
 			var node = new TreeNode
 			{
@@ -111,7 +111,7 @@ namespace N2.Edit
 				IconUrl = GetIconUrl(item),
 				Title = item.Title,
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
-				PreviewUrl = GetPreviewUrl(item),
+				PreviewUrl = GetPreviewUrl(item, allowDraft: false),
 				MaximumPermission = GetMaximumPermission(item),
 				SortOrder = item.SortOrder,
 				VersionIndex = item.VersionIndex
@@ -253,9 +253,21 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
 			string url = ManagementPaths.GetPreviewUrl(item);
-			url = String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
-			var viewPrefrence = WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode);
-			url = url.ToUrl().AppendViewPreference(viewPrefrence, ViewPreference.Published);
+			return String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
+		}
+
+		/// <summary>Gets the url used from the management UI when previewing an item.</summary>
+		/// <param name="item">The item to preview.</param>
+		/// <param name="allowDraft">Allow this url to display a draft rather thant he published version.</param>
+		/// <returns>An url to preview the item.</returns>
+		public virtual string GetPreviewUrl(ContentItem item, bool allowDraft)
+		{
+			var url = GetPreviewUrl(item);
+			if (allowDraft)
+			{
+				var viewPrefrence = WebContext.HttpContext.GetViewPreference(Engine.Config.Sections.Management.Versions.DefaultViewMode);
+				url = url.ToUrl().AppendViewPreference(viewPrefrence, ViewPreference.Published);
+			}
 			return url;
 		}
 

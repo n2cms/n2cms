@@ -1,15 +1,27 @@
-﻿<a 
-	ng-mouseover='onOver(node)' 
-	ng-controller='VersionsCtrl' 
-	target='preview' 
-	title='View page versions' 
-	href='{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}' 
-	class='page-action-icon page-action-description' 
-	style='background-image:url(redesign/img/glyphicons-white/glyphicons_057_history.png)'>
-	Versions
-	<span ng-show="Context.CurrentItem.State == Content.states.Draft">Draft</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Waiting">Waiting</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Published">Published</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Unpublished">Unpublished</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Deleted">Deleted</span>
+﻿<div class='page-action'>
+	<a 
+		target='preview' 
+		title='View page versions' 
+		href='{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}' 
+		class='page-action-icon page-action-description' 
+		style='background-image:url(redesign/img/glyphicons-white/glyphicons_057_history.png)'>
+		Versions
+		<span ng-show="Context.CurrentItem.State == Content.states.Draft">Draft</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Waiting">Waiting</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Published">Published</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Unpublished">Unpublished</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Deleted">Deleted</span>
+	</a>
+
+</div>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-controller='VersionsCtrl'
+	ng-click='loadVersions(item)'>
+	<b class="caret"></b>
 </a>
+
+<ul class="dropdown-menu versions" ng-show="item.Children.length">
+	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted  }">
+		<page-action-content node="child"></page-action-content>
+	</li>
+</ul>

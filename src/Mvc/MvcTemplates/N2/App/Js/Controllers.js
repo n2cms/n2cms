@@ -204,24 +204,23 @@ function PreviewCtrl($scope) {
 }
 
 function LanguageCtrl($scope, Translations) {
-	$scope.onOver = function (node) {
-		if (node.Children.length && node.Selected == node.Current.Path)
-			return;
+	$scope.loadLanguages = function (node) {
+		console.log("loading languages for ", node);
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Translations.query({ selected: node.Current.Path }, function () {
+		node.Children = Translations.query({ selected: $scope.Context.CurrentItem.Path }, function () {
 			node.Loading = false;
 		});
 	}
 }
 
 function VersionsCtrl($scope, Versions) {
-	$scope.onOver = function (node) {
-		if (node.Children.length && $scope.Selected == node.Current.Path)
-			return;
+	$scope.loadVersions = function (node) {
+		console.log("loading versions for ", node);
+
 		$scope.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Versions.query({ selected: node.Current.Path }, function (versions) {
+		node.Children = Versions.query({ selected: $scope.Context.CurrentItem.Path }, function (versions) {
 			node.Loading = false;
 		});
 	}

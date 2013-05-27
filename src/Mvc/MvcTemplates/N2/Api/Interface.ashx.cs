@@ -53,11 +53,11 @@ namespace N2.Management.Api
 
 		public string IconUrl { get; set; }
 
-		public string Template { get; set; }
-
 		public string Name { get; set; }
 
 		public bool IsDivider { get; set; }
+
+		public string TemplateUrl { get; set; }
 	}
 
 	public class InterfaceData
@@ -211,8 +211,8 @@ namespace N2.Management.Api
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageVersions.html'""></div>" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Template = @"<div ng-include src=""'App/Partials/PageLanguage.html'""></div>" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html" }),
 					//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};

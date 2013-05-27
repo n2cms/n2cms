@@ -32,7 +32,7 @@ namespace N2.Management.Api
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
 			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(selection.SelectedItem);
-			return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v)));
+			return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
 		}
 
 		public bool IsReusable

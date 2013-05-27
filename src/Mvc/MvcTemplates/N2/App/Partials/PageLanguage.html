@@ -1,11 +1,23 @@
-﻿<a 
-	ng-mouseover='onOver(node)' 
-	ng-controller='LanguageCtrl' 
-	target='preview' 
-	title='View page preview' 
-	href='{{Interface.Paths.Management}}Content/Globalization/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentNode.Path}}&selectedId={{Context.Node.Current.ID}}' 
-	class='page-action-icon page-action-description' 
-	style='background-image:url(redesign/img/glyphicons-white/glyphicons_370_globe_af.png)'>
-	Language
-	<span>{{Context.Language.LanguageTitle}}</span>
+﻿<div class='page-action'>
+	<a 
+		target='preview' 
+		title='View page preview' 
+		href='{{Interface.Paths.Management}}Content/Globalization/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentNode.Path}}&selectedId={{Context.Node.Current.ID}}' 
+		class='page-action-icon page-action-description' 
+		style='background-image:url(redesign/img/glyphicons-white/glyphicons_370_globe_af.png)'>
+		Language
+		<span>{{Context.Language.LanguageTitle}}</span>
+	</a>
+</div>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+	ng-click='loadLanguages(item)'
+	ng-controller='LanguageCtrl'>
+	<b class="caret"></b>
 </a>
+
+<ul class="dropdown-menu" ng-show="item.Children.length">
+	<li ng-repeat="child in item.Children">
+		<page-action-content node="child"></page-action-content>
+	</li>
+</ul>
