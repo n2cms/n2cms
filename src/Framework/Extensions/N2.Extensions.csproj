@@ -172,6 +172,7 @@
     <Compile Include="Web\ContentList.cs" />
     <Compile Include="Web\RawHtml.cs" />
     <Compile Include="Web\Slideshow.cs" />
+    <Compile Include="Web\SubNavigation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">
