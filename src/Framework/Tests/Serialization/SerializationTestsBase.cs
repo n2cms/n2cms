@@ -10,7 +10,7 @@ using N2.Edit.Workflow;
 using N2.Persistence;
 using N2.Persistence.Proxying;
 using N2.Persistence.Serialization;
-using N2.Persistence.Html;
+using N2.Persistence.Serialization.Xml;
 using N2.Tests.Fakes;
 using N2.Tests.Serialization.Items;
 using N2.Web;
@@ -27,7 +27,7 @@ namespace N2.Tests.Serialization
 		protected DefinitionManager definitions;
 		protected ContentActivator activator;
 		protected IUrlParser parser;
-        protected IPersister persister;
+		protected IPersister persister;
 		protected FakeTypeFinder finder;
 		protected IItemNotifier notifier;
 

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using N2.Definitions;
-using N2.Details;
 using N2.Engine;
-using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Edit.FileSystem;
 using System.Linq;
 using N2.Edit.Versioning;
 
-namespace N2.Persistence.Html
+namespace N2.Persistence.Serialization.Xml
 {
 	[Service]
 	[Service(typeof(IItemXmlWriter))]
