@@ -1,4 +1,4 @@
-﻿@import url("smoothness/jquery-ui-1.8.22.full.css");
+﻿@import url("../jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.min.css");
 
 /* FRAMED */
 body { background-image:url(../../Resources/Img/lighten10.png); background-repeat:repeat-x; }

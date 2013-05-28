@@ -1,0 +1,89 @@
+﻿body { font-family: 'Myriad Pro'; font-size: 14px; }
+a { text-decoration: none; color: #000; }
+	a:hover { text-decoration: underline; }
+* { box-sizing: border-box; -moz-box-sizing: border-box; }
+
+.loader { background-repeat: no-repeat; }
+.sliding-loader { height: 2px; }
+.dragbar { cursor: w-resize; background: url(/img/grabber.png) repeat-y center; height: 40px; width: 6px; }
+
+ul.menu li { display: inline-block; }
+
+#top-area { margin: 10px; }
+	#top-area #logo, #top-area #user-tools { float: right; padding-top: 4px; }
+	#top-area #logo { padding-left: 10px; }
+		#top-area #logo a { background-image: url(/img/logo.png); text-indent: -9999px; display: inline-block; width: 58px; height: 39px; }
+	#top-area #user-tools { text-align: right; }
+		#top-area #user-tools .menu { text-transform: uppercase; font-size: 13px; line-height: 17px; }
+			#top-area #user-tools .menu li { border-right: 1px solid #838383; padding-left: 7px; padding-right: 7px; }
+				#top-area #user-tools .menu li:first-child { padding-left: 0; }
+				#top-area #user-tools .menu li:last-child { border-right: none; padding-right: 0; }
+		#top-area #user-tools .current-user { font-size: 20px; }
+	#top-area #main-menu .menu { text-transform: lowercase; font-size: 22px; padding-bottom: 5px; }
+		#top-area #main-menu .menu li { margin: 0 7px; }
+	#top-area .menu a { color: #838383; }
+	#top-area .menu .active a { color: #000; }
+	#top-area #main-menu .submenu { text-transform: uppercase; font-size: 14px; padding-bottom: 0; }
+
+#main-wrapper { position: absolute; top: 74px; bottom: 0; }
+#secondary-area { border-top: 1px solid #c7c7c7; border-right: 1px solid #c7c7c7; position: absolute; bottom: 0; top: 0; margin-right: 3px; width: 350px; }
+	#secondary-area .dragbar { position: absolute; right: -5px; margin: auto; top: 40%; }
+	#secondary-area .search { padding: 5px; position: relative; }
+		#secondary-area .search input[type=text] { border: 1px solid #E6E6E6; color: #4B4B4B; font-size: 14px; height: 30px; text-indent: 5px; width: 100%; }
+			#secondary-area .search input[type=text]:focus { color: #000; text-transform: none; }
+		#secondary-area .search input[type=button] { background: url("/img/search.png") no-repeat scroll 0 0 transparent; border: 0 none; height: 17px; position: absolute; right: 12px; text-indent: -9999px; top: 12px; width: 16px; }
+	#secondary-area #page-tree { }
+		#secondary-area #page-tree ul { }
+			#secondary-area #page-tree ul li { margin-left: 10px; text-indent: 5px; line-height: 29px; }
+				#secondary-area #page-tree ul li div { cursor: pointer; }
+					#secondary-area #page-tree ul li div.tools { background: url("/img/tools.png") no-repeat scroll 0 0 transparent; float: right; height: 11px; margin-right: 10px; position: relative; top: 10px; width: 18px; display:none; }
+					#secondary-area #page-tree ul li div.item:hover div.tools { display: block; }
+						#secondary-area #page-tree ul li div.tools a { text-indent: -9999px; display: block; }
+					#secondary-area #page-tree ul li div.toggle { float: right; margin-right: 10px;width:12px;height:4px; }
+						#secondary-area #page-tree ul li div.toggle img { display: none; }
+				#secondary-area #page-tree ul li.expanded > div:hover > div.toggle > img.collapse { display: inline; }
+				#secondary-area #page-tree ul li.collapsed > div > div.toggle > img.expand { display: inline; }
+				#secondary-area #page-tree ul li.root { margin-left: 0; text-indent: 12px; }
+					#secondary-area #page-tree ul li.root > div > a { font-weight: bold; }
+					#secondary-area #page-tree ul li.root > ul > li { margin: 0; }
+					#secondary-area #page-tree ul li.root ul { }
+					#secondary-area #page-tree ul li.root > div { background: #fafafa; }
+						#secondary-area #page-tree ul li.root > div:hover { background: #f3f3f3; }
+					#secondary-area #page-tree ul li.root ul li { border-top: 1px solid #FFFFFF; }
+						#secondary-area #page-tree ul li.root ul li div.item { border-left: 5px solid #ebf7fc; border-bottom: 1px solid #ebf7fc; }
+						#secondary-area #page-tree ul li.root ul li a img { padding-right: 4px; position: relative; top: 3px; }
+						#secondary-area #page-tree ul li.root ul li div.item:hover { border-left: 5px solid #d9f0f9; background: #f9fdfe; }
+						#secondary-area #page-tree ul li.root ul li.active > div.item { border-left: 5px solid #3aaee3; background: #ebf7fc; }
+	#secondary-area #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
+		#secondary-area #trash > div { text-align: center; height: 80px; background: #f0f0f0; border: 1px solid #dddddd; }
+		#secondary-area #trash div div { font-size: 18px; padding-top: 10px; }
+
+#main-area { left: 200px; position: absolute; top: 0; bottom: 0; }
+	#main-area #main-area-content { position: absolute; top: 39px; bottom: 0; border-left: 1px solid #c7c7c7; }
+	#main-area #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; text-transform: lowercase; }
+		#main-area #page-action-bar.secondary ul { float: left; }
+			#main-area #page-action-bar.secondary ul li { opacity: 0.9; }
+				#main-area #page-action-bar.secondary ul li:hover { opacity: 1; }
+		#main-area #page-action-bar.primary ul { float: right; }
+		#main-area #page-action-bar li { height: 39px; float: left; display: block; }
+			#main-area #page-action-bar li a { float: left; height: 35px; margin-top: 2px; border-right: 1px solid #74c6eb; padding-left: 15px; padding-right: 15px; }
+			#main-area #page-action-bar li:hover { background-color: #3aaee3; }
+			#main-area #page-action-bar li a div { float: left; line-height: 16px; padding-left: 8px; padding-top: 8px; }
+			#main-area #page-action-bar li.iconed img { float: left; padding-top: 5px; }
+			#main-area #page-action-bar li.iconed a { float: left; height: 35px; margin-top: 2px; }
+			#main-area #page-action-bar li.command-options { }
+				#main-area #page-action-bar li.command-options a div { padding-top: 2px; }
+		#main-area #page-action-bar a { color: #fff; float: left; }
+			#main-area #page-action-bar a:hover { text-decoration: none; }
+		#main-area #page-action-bar span { font-size: 11px; display: block; font-family: Arial; }
+		#main-area #page-action-bar .command-options .command-options { background: #ebf7fc; min-width: 350px; position: absolute; top: 39px; }
+			#main-area #page-action-bar .command-options .command-options ul { float: none; }
+				#main-area #page-action-bar .command-options .command-options ul li { border-top: 1px solid #FFFFFF; border-left: 5px solid #d9f0f9; position: relative; margin-top: 1px; opacity: 1; display: block; float: none; height: 39px; font-size: 14px; line-height: 39px; }
+					#main-area #page-action-bar .command-options .command-options ul li:hover { opacity: 1; border-left-color: #b6e1f4; }
+					#main-area #page-action-bar .command-options .command-options ul li.active { border-left: 5px solid #3aaee3; }
+			#main-area #page-action-bar .command-options .command-options li:hover { background-color: #ebf7fc; }
+			#main-area #page-action-bar .command-options .command-options li a { border: 0 none; border-bottom: 1px solid #d9f0f9; border-right: 1px solid #d9f0f9; color: #000000; float: none; height: 38px; margin: 0; padding: 0; position: absolute; text-indent: 7px; width: 100%; }
+				#main-area #page-action-bar .command-options .command-options li a:hover { text-decoration: underline; }
+				#main-area #page-action-bar .command-options .command-options li a span { float: right; padding-right: 7px; text-transform: none; color: #838383; }
+			#main-area #page-action-bar .command-options .command-options li.load-more { height: 24px; background: #ebf7fc; margin-top: 1px; border: none; border-top: 1px solid #fff; }
+				#main-area #page-action-bar .command-options .command-options li.load-more a { height: 23px; background: url(/img/arrow-down.png) no-repeat center; border-color: #EBF7FC; }

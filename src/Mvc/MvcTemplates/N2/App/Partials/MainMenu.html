@@ -1,0 +1,56 @@
+﻿<!--<div id="main-menu">
+	<ul class="menu">
+		<li><a href="#">Dashboard</a></li>
+		<li class="active"><a href="#">Content</a></li>
+		<li><a href="#">Site</a></li>
+		<li><a href="#">System</a></li>
+	</ul>
+	<ul class="menu submenu">
+		<li class="active"><a href="#">Pages</a></li>
+		<li><a href="#">Files</a></li>
+		<li><a href="#">Wizards</a></li>
+	</ul>
+
+</div>-->
+
+<div class="navbar clearfix">
+	<ul class="nav nav-pills">
+		<li ng-repeat="item in Interface.TopMenu.Children" ng-class="{ dropdown: item.Children.length }">
+			<a href="{{item.Current.Url}}" target="{{item.Current.Frame}}" ng-show="!item.Children.length">{{item.Current.Title}}</a>
+			
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+				{{item.Current.Title}}
+				<b class="caret" ng-show="item.Children.length"></b>
+			</a>
+		    <ul class="dropdown-menu">
+				<li ng-repeat="childItem in item.Children">
+					<a href="{{childItem.Current.Url}}" target="{{childItem.Current.Frame}}">{{childItem.Current.Title}}</a>
+				</li>
+		    </ul>
+		</li>
+	</ul>
+	<ul class="nav pull-right">
+		<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{Interface.User.Name}}
+			  <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#">Settings</a>
+				</li>
+				<li>
+					<a href="#">Sign out</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<form class="navbar-search">
+				<input type="text" class="search-query" placeholder="Search">
+				<input type="button" value="Search">
+			</form>
+		</li>
+		<li>
+			<div id="logo"><a href="http://n2cms.com/">N2 CMS</a></div>
+		</li>
+	</ul>
+</div>

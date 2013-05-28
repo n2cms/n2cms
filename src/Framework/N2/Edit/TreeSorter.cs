@@ -54,6 +54,38 @@ namespace N2.Edit
 			}
 		}
 
+		public void MoveTo(ContentItem item, ContentItem parent)
+		{
+			if (item.Parent == null || !parent.Children.Contains(item))
+				item.AddTo(parent);
+
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (ContentItem updatedItem in Utility.UpdateSortOrder(parent.Children))
+				{
+					persister.Repository.SaveOrUpdate(updatedItem);
+				}
+				tx.Commit();
+			}
+		}
+
+		public void MoveTo(ContentItem item, ContentItem parent, int index)
+		{
+			if (item.Parent == null || !parent.Children.Contains(item))
+				item.AddTo(parent);
+
+			IList<ContentItem> siblings = parent.Children;
+			Utility.MoveToIndex(siblings, item, index);
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
+				{
+					persister.Repository.SaveOrUpdate(updatedItem);
+				}
+				tx.Commit();
+			}
+		}
+
 		public void MoveTo(ContentItem item, int index)
 		{
 			IList<ContentItem> siblings = item.Parent.Children;
