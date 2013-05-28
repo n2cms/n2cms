@@ -20,6 +20,8 @@ namespace N2.Edit
 
 		#region Public Properties
 
+		public bool Legacy { get; set; }
+
 		public Type Decorates { get; set; }
 
 		public string Name { get; set; }

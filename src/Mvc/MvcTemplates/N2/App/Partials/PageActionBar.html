@@ -4,8 +4,8 @@
 			ng-repeat="item in Interface.ActionMenu.Children"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'">
-			
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'"
+			ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
 			<page-action-content node="item"></page-action-content>
 			
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
@@ -13,7 +13,8 @@
 			</a>
 
 			<ul class="dropdown-menu" ng-show="item.Children.length">
-				<li ng-repeat="child in item.Children">
+				<li ng-repeat="child in item.Children"
+					ng-show="Security.permissions.is(child.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
 					<page-action-content node="child"></page-action-content>
 				</li>
 			</ul>

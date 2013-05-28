@@ -1,4 +1,0 @@
-﻿<li>hej!</li>
-<li ng-repeat="option in ContextMenu.options" ng-class="{ divider: option.IsDivider }">
-	<a ng-class="{ 'iconed-text': option.IconUrl }" x-background-image="option.IconUrl" ng-show="!option.IsDivider" x-evaluate-href="option.Url" target="{{option.Target}}" ng-click="option.Activate()">{{option.Title}}</a>
-</li>

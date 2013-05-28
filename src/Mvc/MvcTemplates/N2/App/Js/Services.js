@@ -45,6 +45,24 @@
 		return res;
 	});
 
+	module.factory('Security', function ($resource) {
+		var res = $resource('Api/Security.ashx', {}, {});
+		res.permissions = {
+			None: 0,
+			Read: 1,
+			Write: 2,
+			Publish: 4,
+			Administer: 8,
+			ReadWrite: 3,
+			ReadWritePublish: 7,
+			Full: 13,
+			is: function (actual, expected) {
+				return actual <= expected;
+			}
+		};
+		return res;
+	});
+
 	module.factory('Definitions', function ($resource) {
 		var res = $resource('Api/Definitions.ashx', {}, {});
 		return res;
@@ -68,26 +86,36 @@
 
 	module.factory('ContextMenuFactory', function () {
 		return function (scope) {
-			return {
-				show: function (node) {
-					scope.select(node);
-					scope.ContextMenu.node = node;
-					scope.ContextMenu.options = [];
+			var contextMenu = this;
+			contextMenu.show = function (node) {
+				scope.select(node);
+				scope.ContextMenu.node = node;
+				scope.ContextMenu.options = [];
 
-					for (var i in scope.Interface.ContextMenu.Children) {
-						var cm = scope.Interface.ContextMenu.Children[i];
-						scope.ContextMenu.options.push(cm.Current);
-					}
-
-					console.log("show", scope.ContextMenu);
-				},
-				hide: function () {
-					console.log("hide", scope.ContextMenu.node);
-
-					delete scope.ContextMenu.node;
-					delete scope.ContextMenu.options;
+				for (var i in scope.Interface.ContextMenu.Children) {
+					var cm = scope.Interface.ContextMenu.Children[i];
+					scope.ContextMenu.options.push(cm.Current);
 				}
-			}
+
+				console.log("show", scope.ContextMenu);
+			};
+			contextMenu.hide = function () {
+				console.log("hide", scope.ContextMenu.node);
+
+				delete scope.ContextMenu.node;
+				delete scope.ContextMenu.options;
+				delete scope.ContextMenu.memory;
+				delete scope.ContextMenu.action;
+			};
+			contextMenu.cut = function (node) {
+				contextMenu.memory = node.Current;
+				contextMenu.action = "cut";
+				
+			};
+			contextMenu.copy = function (node) {
+				contextMenu.memory = node.Current;
+				contextMenu.action = "copy";
+			};
 		}
 	});
 

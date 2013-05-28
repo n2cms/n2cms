@@ -3,6 +3,7 @@ using N2.Edit;
 using N2.Edit.Trash;
 using N2.Engine;
 using N2.Persistence;
+using N2.Security;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace N2.Management.Api
 		public InterfaceMenuItem()
 		{
 			Target = Targets.Preview;
+			RequiredPermission = Permission.Read;
 		}
 
 		public string Title { get; set; }
@@ -58,6 +60,8 @@ namespace N2.Management.Api
 		public bool IsDivider { get; set; }
 
 		public string TemplateUrl { get; set; }
+
+		public Permission RequiredPermission { get; set; }
 	}
 
 	public class InterfaceData
@@ -144,6 +148,7 @@ namespace N2.Management.Api
 			return new Node<InterfaceMenuItem>
 			{
 				Children = engine.EditManager.GetPlugins<NavigationPluginAttribute>(context.User)
+					.Where(np => !np.Legacy)
 					.Select(np => new Node<InterfaceMenuItem>(new InterfaceMenuItem 
 					{
 						Title = np.Title,
@@ -203,17 +208,18 @@ namespace N2.Management.Api
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts on {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}Content/Security/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_203_lock.png", RequiredPermission = Permission.Administer }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", RequiredPermission = Permission.Publish }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html", RequiredPermission = Permission.Write }),
 					//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};
@@ -256,7 +262,7 @@ namespace N2.Management.Api
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 			
 			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.RootPage, true) { UseMasterVersion = false }
-				.Children((item) => engine.Resolve<IContentAdapterProvider>().ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
+				.Children((item) => engine.GetContentAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
 				.Build();
 
 			return CreateStructure(structure, filter);
@@ -289,10 +295,10 @@ namespace N2.Management.Api
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Site", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/EditRecursive.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Templates", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Templates/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Site", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/EditRecursive.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Templates", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Templates/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", RequiredPermission = Permission.Administer }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Wizards", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Wizard/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Users", ToolTip = "Manage users", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Users/Users.aspx" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Users", ToolTip = "Manage users", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Users/Users.aspx", RequiredPermission = Permission.Administer }),
 						}
 					}
 				}

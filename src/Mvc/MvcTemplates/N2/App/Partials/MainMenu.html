@@ -1,15 +1,17 @@
 ﻿<div class="navbar clearfix" ng-controller="MainMenuCtrl">
 	<ul class="nav nav-pills">
-		<li ng-repeat="item in menu.Children" ng-class="{ dropdown: item.Children.length }">
-
-			<a href="{{evaluateExpression(item.Current.Url)}}" title="evaluateExpression(item.Current.ToolTip)" target="{{item.Current.Target}}" ng-show="!item.Children.length">{{evaluateExpression(item.Current.Title)}}</a>
+		<li ng-repeat="item in menu.Children" ng-class="{ dropdown: item.Children.length }" ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+			
+			<a href="{{evaluateExpression(item.Current.Url)}}" title="evaluateExpression(item.Current.ToolTip)" target="{{item.Current.Target}}" ng-show="!item.Children.length">
+				{{evaluateExpression(item.Current.Title)}}
+			</a>
 			
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
 				{{evaluateExpression(item.Current.Title)}}
 				<b class="caret"></b>
 			</a>
 		    <ul class="dropdown-menu">
-				<li ng-repeat="childItem in item.Children">
+				<li ng-repeat="childItem in item.Children" ng-show="Security.permissions.is(childItem.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
 					<a href="{{evaluateExpression(childItem.Current.Url)}}" title="{{evaluateExpression(childItem.Current.ToolTip)}}" target="{{childItem.Current.Target}}">{{evaluateExpression(childItem.Current.Title)}}</a>
 				</li>
 		    </ul>

@@ -1,14 +1,30 @@
 ﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
 });
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content) {
+function findSelectedRecursive(node, selectedPath) {
+	if (!node)
+		return null;
+	if (node.Current.Path == selectedPath) {
+		return node;
+	}
+	for (var i in node.Children) {
+		var n = findSelectedRecursive(node.Children[i], selectedPath);
+		if (n) return n;
+	}
+	return null;
+}
+
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security) {
 	$scope.Content = Content;
+	$scope.Security = Security;
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
 	$scope.Interface = Interface.get({
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1],
+	}, function () {
+		console.log("Interface loaded");
 	});
 	$scope.Context = {
 		CurrentItem: {
@@ -111,7 +127,7 @@ function NavigationCtrl($scope, ContextMenuFactory) {
 			: "published";
 	});
 
-	$scope.ContextMenu = ContextMenuFactory($scope);
+	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
 
 function TrashCtrl($scope) {
@@ -121,8 +137,10 @@ function TrashCtrl($scope) {
 function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
-		if (content)
-			$scope.Context.SelectedNode = findSelectedRecursive(content, $scope.Interface.SelectedPath);
+		if (content) {
+			$scope.select(findSelectedRecursive(content, $scope.Interface.SelectedPath));
+			console.log("selecting", $scope.Context.SelectedNode);
+		}
 	});
 	$scope.$on("contextchanged", function (scope, ctx) {
 		$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
@@ -131,18 +149,6 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.toggle = function (node) {
 		node.Expanded = !node.Expanded;
 	};
-	function findSelectedRecursive(node, selectedPath) {
-		if (!node)
-			return null;
-		if (node.Current.Path == selectedPath) {
-			return node;
-		}
-		for (var i in node.Children) {
-			var n = findSelectedRecursive(node.Children[i], selectedPath);
-			if (n) return n;
-		}
-		return null;
-	}
 	$scope.loadRemaining = function (node) {
 		node.Loading = true;
 		Content.children({ selected: node.Current.Path, skip: node.Children.length }, function (data) {
@@ -192,15 +198,12 @@ function PreviewCtrl($scope) {
 		}
 	};
 
-	//if ($scope.Context.CurrentItem) {
-	//	$scope.src = $scope.Context.CurrentItem.PreviewUrl;
-	//}
-	//var remove = $scope.$watch("Context.CurrentItem", function (item) {
-	//	if (item && item.PreviewUrl != "Empty.aspx") {
-	//		$scope.src = item.PreviewUrl;
-	//		remove || setTimeout(remove, 10);
-	//	}
-	//});
+	$scope.$watch("Interface.SelectedPath", function (path) {
+		if (path) {
+			var node = findSelectedRecursive($scope.Interface.Content, path);
+			$scope.src = node && node.Current && node.Current.PreviewUrl;
+		}
+	});
 }
 
 function AddCtrl($scope, Definitions) {

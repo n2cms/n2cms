@@ -28,7 +28,8 @@ ul.menu li { display: inline-block; }
 					#page-tree ul li.node .tools-toggler { display:none; height: 11px; width: 18px; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; text-indent: -9999px;}
 				#page-tree ul li.node div.item:hover .tools-toggler,
 				#page-tree ul li.node div.item .open .tools-toggler { display: block; }
-					#page-tree ul li.node div.item .dropdown-menu .divider { height:2px; }
+					#page-tree ul li.node div.item .dropdown-menu { border-radius: 0; padding: 0; }
+						#page-tree ul li.node div.item .dropdown-menu .divider { height:2px; }
 				.iconed-text { background: transparent none no-repeat 5px 50%; background-repeat:no-repeat !important; }
 				#page-tree ul li.node a.toggle { position:absolute; right: 10px; width:12px; height:12px; }
 					#page-tree ul li.node a.toggle i { display:none; }
@@ -164,4 +165,13 @@ ul.collapsed li {
 }
 ul.collapsed li.sortable-placeholder {
 	display:block;
+}
+
+a[disabled=disabled] {
+	color:#999 !important;
+	opacity:.5 !important;
+}
+a[disabled=disabled]:hover {
+	background-color:transparent !important;
+	cursor:default;
 }
