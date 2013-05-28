@@ -19,7 +19,7 @@
 
     <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body ng-controller="ManagementCtrl" ng-app="n2"><%-- x-context-menu-trigger=".item">--%>
+<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item">
     <div id="top-area">
         <%--<div ng-include src="'App/Partials/UserTools.html'"></div>--%>
         <div ng-include src="'App/Partials/MainMenu.html'"></div>

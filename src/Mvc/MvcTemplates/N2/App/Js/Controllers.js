@@ -246,16 +246,16 @@ function PagePublishCtrl($scope, $rootScope) {
 	});
 }
 
-function AlertCtrl($scope, $timeout, Alert) {
+function NotifyCtrl($scope, $timeout, Notify) {
 	var defaults = { visible: true, type: "warning" };
 
 	function clear() {
-		$scope.Alert = {};
+		$scope.Notify = {};
 	};
 
-	Alert.subscribe(function (options) {
+	Notify.subscribe(function (options) {
 		setTimeout(function () {
-			$scope.Alert = angular.extend({}, defaults, options);
+			$scope.Notify = angular.extend({}, defaults, options);
 			options.timeout && $timeout(clear, options.timeout);
 			$scope.$digest();
 		}, 10);

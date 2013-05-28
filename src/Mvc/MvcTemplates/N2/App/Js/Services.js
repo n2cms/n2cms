@@ -68,9 +68,9 @@
 		return res;
 	});
 
-	module.factory('Alert', function () {
+	module.factory('Notify', function () {
 		var callbacks = [];
-		var alert = {
+		var notify = {
 			subscribe: function (callback) {
 				callbacks.push(callback);
 			},
@@ -81,7 +81,7 @@
 				angular.forEach(callbacks, function (cb) { cb(options); });
 			}
 		};
-		return alert;
+		return notify;
 	});
 
 	module.factory('ContextMenuFactory', function () {
@@ -119,7 +119,7 @@
 		}
 	});
 
-	module.factory('SortHelperFactory', function (Content, Alert) {
+	module.factory('SortHelperFactory', function (Content, Notify) {
 		var context = {}
 		return function (scope) {
 			function reload(ctx) {
@@ -142,9 +142,9 @@
 					console.log("moved", ctx);
 
 					reload(ctx);
-					Alert.show({ message: "Successfully noved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+					Notify.show({ message: "Successfully noved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {
-					Alert.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
+					Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});
 			};
 			this.sort = function (ctx) {
@@ -153,9 +153,9 @@
 					console.log("sorted", ctx);
 
 					reload(ctx);
-					Alert.show({ message: "Successfully sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+					Notify.show({ message: "Successfully sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {
-					Alert.show({ message: "Failed sorting " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
+					Notify.show({ message: "Failed sorting " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});
 			};
 
