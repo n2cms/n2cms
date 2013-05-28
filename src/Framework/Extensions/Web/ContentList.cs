@@ -44,6 +44,27 @@ namespace N2.Web
 		H4 = 4
 	}
 
+	public static class HeadingLevelUtility
+	{
+		public static string DoTitle(HeadingLevel hl, string title)
+		{
+			switch (hl)
+			{
+				case HeadingLevel.H1:
+					return "<h1>" + title + "</h1>";
+				case HeadingLevel.H2:
+					return "<h2>" + title + "</h2>";
+				case HeadingLevel.H3:
+					return "<h3>" + title + "</h3>";
+				case HeadingLevel.H4:
+					return "<h4>" + title + "</h4>";
+				default:
+					throw new ArgumentException("hl");
+			}
+		}
+
+	}
+
 	public enum NewsDisplayMode
 	{
 		TitleLinkOnly = 0,
@@ -256,5 +277,7 @@ namespace N2.Web
 
 		public List<string> Exceptions = new List<string>();
 
+
+		
 	}
 }
