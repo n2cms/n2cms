@@ -1,6 +1,7 @@
 ﻿<li ng-repeat="option in ContextMenu.options" ng-class="{ divider: option.IsDivider }">
-	<a ng-class="{ 'iconed-text': option.IconUrl }" x-background-image="option.IconUrl" ng-show="!option.IsDivider" x-evaluate-href="option.Url" target="{{option.Target}}" ng-click="option.Activate()">{{option.Title}}</a>
+	<a ng-class="{ 'iconed-text': option.IconUrl }" x-background-image="option.IconUrl" ng-show="!option.IsDivider" href="{{evaluateExpression(option.Url)}}" target="{{option.Target}}" ng-click="option.Activate()">{{option.Title}}</a>
 </li>
+
 <li ng-enabled="Security.permissions.is(Security.permissions.Publish, Context.CurrentItem.MaximumPermission)">
 	<a class="iconed-text" ng-click="ContextMenu.cut(node)" style="background-image: url(http://n2mvc/N2/Resources/icons/cut.png);" href="#">Cut</a>
 </li>

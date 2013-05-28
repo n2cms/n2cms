@@ -97,7 +97,7 @@
 					scope.ContextMenu.options.push(cm.Current);
 				}
 
-				console.log("show", scope.ContextMenu);
+				console.log("showing", node.Current.Title, scope.ContextMenu);
 			};
 			contextMenu.hide = function () {
 				console.log("hide", scope.ContextMenu.node);

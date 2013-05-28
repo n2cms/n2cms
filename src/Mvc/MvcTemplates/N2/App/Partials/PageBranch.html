@@ -2,8 +2,6 @@
 	<b class="handle"></b>
 	<a href="#" ng-click="toggle(node)" class="toggle"><i class="toggle-expand icon-chevron-right"></i><i class="toggle-collapse icon-chevron-up"></i><i class="toggle-loading icon-repeat"></i></a>
 
-	<!--<a href='#' ng-click="showOptions(node)" class='tools'>tools</a>-->
-
 	<div class="nav tools dropdown">
 		<a href='#' ng-click="ContextMenu.show(node)" class='tools-toggler dropdown-toggle' data-toggle="dropdown" title="{{ContextMenu.SelectedNode == node}}">tools</a>
 		<ul ng-include src="ContextMenu.node == node && 'App/Partials/PageContextMenu.html'" class="dropdown-menu pull-right"></ul>
