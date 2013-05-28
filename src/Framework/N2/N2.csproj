@@ -144,6 +144,7 @@
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
     <Compile Include="Definitions\GroupChildrenMode.cs" />
+    <Compile Include="Edit\SlugGenerator.cs" />
     <Compile Include="Edit\Versioning\ContentVersionCleanup.cs" />
     <Compile Include="Edit\Versioning\VersioningExtensions.cs" />
     <Compile Include="Edit\Versioning\DraftRepository.cs" />
@@ -709,6 +710,7 @@
     <Compile Include="Web\Rendering\DisplayableTokenRenderer.cs" />
     <Compile Include="Web\Rendering\IContentRenderer.cs" />
     <Compile Include="Web\Rendering\RenderingExtensions.cs" />
+    <Compile Include="Web\Slug.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\Tokens\TokenDefinition.cs" />

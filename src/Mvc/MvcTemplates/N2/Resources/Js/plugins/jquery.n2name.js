@@ -6,15 +6,28 @@
     function getName(titleid, whitespace, tolower, replacements){
         var titleBox=document.getElementById(titleid);
 		if (!titleBox) return null;
-        var name = titleBox.value.replace(/[.]+/g, '-')
-	        .replace(/[%?&/+:<>]/g, '')
-	        .replace(/\s+/g, whitespace)
-	        .replace(/[-]+/g, '-')
-	        .replace(/[-]+$/g, '');
-        if(tolower) name = name.toLowerCase();
-        for (var i in replacements){
-	        name = name.replace(replacements[i].pattern, replacements[i].value);
-        }
+	    var name;
+
+        $.ajax({
+        	type: 'POST',
+        	async: false,
+        	cache: false,
+        	url: '/sluggenerator.n2.ashx',
+        	data: { action: "sluggenerator", title: titleBox.value },
+        	success: function (result) { name = result; },
+        	error: function () {
+        		name = titleBox.value.replace(/[.]+/g, '-')
+        		    .replace(/[%?&/+:<>]/g, '')
+        		    .replace(/\s+/g, whitespace)
+        		    .replace(/[-]+/g, '-')
+        		    .replace(/[-]+$/g, '');
+        		if(tolower) name = name.toLowerCase();
+        		for (var i in replacements){
+        			name = name.replace(replacements[i].pattern, replacements[i].value);
+        		}        		
+        	}
+        });
+
         return name;
     };
     

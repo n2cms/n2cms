@@ -15,7 +15,8 @@ namespace N2.Web.UI.WebControls
 	public class NameEditor : CompositeControl, IValidator, ITextControl
 	{
 		static NameEditorElement config;
-		
+
+		private Slug slug;
 		private CheckBox keepUpdated = new CheckBox();
 		private TextBox editor = new TextBox();
 		private bool? showKeepUpdated;
@@ -32,6 +33,7 @@ namespace N2.Web.UI.WebControls
 		{
 			editor.MaxLength = 250;
 			CssClass = "nameEditor";
+			slug = N2.Context.Current.Resolve<Slug>();
 		}
 
 		public static NameEditorElement Config
@@ -242,17 +244,8 @@ namespace N2.Web.UI.WebControls
 						return;
 					}
 
-					foreach(PatternValueElement element in Config.Replacements.AllElements)
-					{
-						if(element.ServerValidate && Regex.IsMatch(Text, element.Pattern, RegexOptions.Compiled))
-						{
-							ErrorMessage = InvalidCharactersErrorFormat;
-							IsValid = false;
-							return;
-						}
-					}
-
-					if(Text.IndexOfAny(new char[]{'?', '&', '/', '+', ':', '%'}) >= 0)
+					// Check validity of slug
+					if (!this.slug.IsValid(Text))
 					{
 						ErrorMessage = InvalidCharactersErrorFormat;
 						IsValid = false;
