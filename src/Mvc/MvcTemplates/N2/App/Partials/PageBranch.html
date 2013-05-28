@@ -10,7 +10,7 @@
 	</div>
 
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item">
-		<span class='icon-custom' x-background-image="node.Current.IconUrl" style="background-position: 0 0; width: 16px; height: 16px;"></span>
+		<span class='page-icon' x-background-image="node.Current.IconUrl" ng-show="node.Current.IconUrl" style="background-position: 0 0; width: 16px; height: 16px;"></span>
 		{{node.Current.Title}}
 	</a>
 </div>
