@@ -586,7 +586,7 @@ namespace N2
 
 		/// <summary>Gets the trail to a certain item. A trail is a slash-separated sequence of IDs, e.g. "/1/6/12/".</summary>
 		/// <param name="item">The item whose trail to get.</param>
-		/// <returns>The trail leading to the item.</returns>
+		/// <returns>The trail leading to the item. The trail contains the item's ID.</returns>
 		public static string GetTrail(this ContentItem item)
 		{
 			if (item == null)

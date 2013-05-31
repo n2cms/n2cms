@@ -88,20 +88,20 @@ namespace N2.Web.Parts
 			set { security = value; }
 		}
 
-        /// <summary>Retrieves content items added to a zone of the parnet item.</summary>
+		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
 		/// <returns>A list of items in the zone.</returns>
-        [Obsolete("Use overload with interface parameter")]
-        public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
-        {
-            return new ItemList(GetParts(parentItem, zoneName, Interfaces.Viewing));
-        }
+		[Obsolete("Use overload with interface parameter")]
+		public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
+		{
+			return new ItemList(GetParts(parentItem, zoneName, Interfaces.Viewing));
+		}
 		
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="belowParentItem">The item whose items to get.</param>
 		/// <param name="inZoneNamed">The zone in which the items should be contained.</param>
-        /// <param name="filteredForInterface">Interface where the parts are displayed.</param>
+		/// <param name="filteredForInterface">Interface where the parts are displayed.</param>
 		/// <returns>A list of items in the zone.</returns>
 		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface)
 		{
@@ -115,7 +115,7 @@ namespace N2.Web.Parts
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="belowParentItem">The item whose items to get.</param>
 		/// <param name="inZoneNamed">The zone in which the items should be contained.</param>
-        /// <param name="filteredForInterface">Interface where the parts are displayed.</param>
+		/// <param name="filteredForInterface">Interface where the parts are displayed.</param>
 		/// <param name="state">The control panel state to consider.</param>
 		/// <returns>A list of items in the zone.</returns>
 		public virtual IEnumerable<ContentItem> GetParts(ContentItem belowParentItem, string inZoneNamed, string filteredForInterface, ControlPanelState state)
@@ -126,12 +126,12 @@ namespace N2.Web.Parts
 			var items = belowParentItem.Children.FindParts(inZoneNamed)
 				.Where(new AccessFilter(WebContext.User, Security));
 
-            if(filteredForInterface == Interfaces.Viewing 
+			if(filteredForInterface == Interfaces.Viewing 
 				&& !state.IsFlagSet(ControlPanelState.Previewing) 
 				&& !belowParentItem.VersionOf.HasValue)
-                items = items.Where(new PublishedFilter());
+				items = items.Where(new PublishedFilter());
 
-            return items;
+			return items;
 		}
 
 		/// <summary>Retrieves allowed item definitions.</summary>
@@ -152,7 +152,7 @@ namespace N2.Web.Parts
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
 			return Definitions.GetAllowedChildren(parentItem)
-                .Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None && d.Enabled)
+				.Where(d => d.Enabled && d.AllowedIn != Integrity.AllowedZones.None && d.Enabled)
 				.WhereAuthorized(Security, user, parentItem);
 		}
 
