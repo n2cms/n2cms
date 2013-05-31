@@ -20,6 +20,8 @@ namespace N2.Management.Api
 		public TreeNode CurrentItem { get; set; }
 
 		public bool NotFound { get; set; }
+
+		public List<string> Flags { get; set; }
 	}
 
 	public class Context : IHttpHandler
@@ -35,18 +37,29 @@ namespace N2.Management.Api
 			context.Response.ContentType = "application/json";
 
 			var item = selection.ParseSelectionFromRequest();
-			ContextData ctx;
-			if (item == null)
-				ctx = new ContextData { NotFound = true };
-			else
+			var ctx = new ContextData();
+			var selectedUrl = context.Request["selectedUrl"];
+
+			if (item == null && selectedUrl != null)
+				item = selection.ParseUrl(selectedUrl.ToUrl()[PathData.SelectedQueryKey]);
+			
+			if (item != null)
 			{
 				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
-				ctx = new ContextData
-				{
-					CurrentItem = adapter.GetTreeNode(item),
-					Language = engine.Resolve<ILanguageGateway>().GetLanguage(item),
-				};
+				ctx.CurrentItem = adapter.GetTreeNode(item);
+				ctx.Language = adapter.GetLanguage(item);
+				ctx.Flags = adapter.GetNodeFlags(item).ToList();
 			}
+			else
+				ctx.Flags = new List<string>();
+			
+			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
+			if (selectedUrl != null && selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
+			{
+				ctx.Flags.Add("Management");
+				ctx.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+			}
+			
 			ctx.ToJson(context.Response.Output);
 		}
 

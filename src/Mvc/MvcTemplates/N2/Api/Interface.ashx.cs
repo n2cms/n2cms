@@ -62,6 +62,12 @@ namespace N2.Management.Api
 		public string TemplateUrl { get; set; }
 
 		public Permission RequiredPermission { get; set; }
+
+		public string HiddenBy { get; set; }
+
+		public string DisplayedBy { get; set; }
+
+		public string Alignment { get; set; }
 	}
 
 	public class InterfaceData
@@ -203,23 +209,25 @@ namespace N2.Management.Api
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = Targets.Top, Url = "{{Interface.Paths.Management}}?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write, HiddenBy = "Management" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png", RequiredPermission = Permission.Write }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png", RequiredPermission = Permission.Write }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}Content/Security/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_203_lock.png", RequiredPermission = Permission.Administer }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}Content/Security/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_203_lock.png", RequiredPermission = Permission.Administer }),
 						}
 					},
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", RequiredPermission = Permission.Publish }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html", RequiredPermission = Permission.Write }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", Alignment = "Right" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublish.html", RequiredPermission = Permission.Write, HiddenBy = "Management", Alignment = "Right" }),
 					//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};

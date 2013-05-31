@@ -295,5 +295,33 @@ namespace N2.Edit
 		{
 			return PermissionMap.GetMaximumPermission(Security.GetPermissions(WebContext.User, item));
 		}
+
+		public virtual IEnumerable<string> GetNodeFlags(ContentItem item)
+		{
+			var type = item.GetContentType();
+			var tags = new List<string>();
+			tags.Add(type.Assembly.GetName().Name);
+			tags.AddRange(Utility.GetBaseTypesAndSelf(type).Select(t => t.Name));
+			tags.AddRange(type.GetInterfaces().Where(t => t.Namespace.Contains("Definition")).Select(t => t.Name));
+
+			if (!item.IsPublished())
+				tags.Add("Unpublished");
+			if (item.IsExpired())
+				tags.Add("Expired");
+			if (!item.Visible)
+				tags.Add("Invisible");
+			if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)
+				tags.Add("Locked");
+
+			if (Drafts.HasDraft(item))
+				tags.Add("HasDraft");
+
+			return tags;
+		}
+
+		public virtual ILanguage GetLanguage(ContentItem item)
+		{
+			return Languages.GetLanguage(item);
+		}
 	}
 }

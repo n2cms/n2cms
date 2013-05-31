@@ -87,24 +87,11 @@ namespace N2.Edit
         {
 			if (request == null) return null; // explicitly passed selection
 
-			ContentItem selectedItem = null;
-			string selected = request(SelectedQueryKey);
-			if (!string.IsNullOrEmpty(selected))
-			{
-				selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
-				if (string.Equals(request(WebExtensions.ViewPreferenceQueryString), WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
-					selectedItem = TryApplyDraft(selectedItem);
-			}
+			var selectedItem = ParseSelected(request(SelectedQueryKey));
 
-            Url selectedUrl = request("selectedUrl");
+			var selectedUrl = request("selectedUrl");
 			if (!string.IsNullOrEmpty(selectedUrl))
-			{
-				selectedItem = Engine.UrlParser.Parse(selectedUrl);
-				if (selectedItem == null)
-					selectedItem = SelectFile(selectedUrl);
-				else if (string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
-					selectedItem = TryApplyDraft(selectedItem);
-			}
+				selectedItem = ParseUrl(selectedUrl);
 
             string itemId = request(PathData.ItemQueryKey);
             if (!string.IsNullOrEmpty(itemId))
@@ -114,6 +101,29 @@ namespace N2.Edit
 			return cvr.ParseVersion(request(PathData.VersionIndexQueryKey), request("versionKey"), selectedItem)
 				?? selectedItem;
         }
+
+		public ContentItem ParseSelected(string selected)
+		{
+			if (string.IsNullOrEmpty(selected))
+				return null;
+			var selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
+			if (string.Equals(request(WebExtensions.ViewPreferenceQueryString), WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
+				selectedItem = TryApplyDraft(selectedItem);
+			return selectedItem;
+		}
+
+		public ContentItem ParseUrl(Url selectedUrl)
+		{
+			if (string.IsNullOrEmpty(selectedUrl))
+				return null;
+
+			var selectedItem = Engine.UrlParser.Parse(selectedUrl);
+			if (selectedItem == null)
+				return SelectFile(selectedUrl);
+			else if (string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
+				return TryApplyDraft(selectedItem);
+			return selectedItem;
+		}
 
 		private ContentItem TryApplyDraft(ContentItem selectedItem)
 		{

@@ -7,7 +7,7 @@ a { text-decoration: none; color: #000; }
 	.sliding-loader { height: 2px; }
 .dragbar { cursor: w-resize; background: url(../img/grabber.png) repeat-y center; height: 40px; width: 6px; }
 
-ul.menu li { display: inline-block; }
+/*ul.menu li { display: inline-block; }*/
 
 
 #top-area { }

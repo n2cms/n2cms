@@ -1,11 +1,11 @@
 ﻿<div id="page-action-bar" class="action-bar secondary navbar" ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" title="{{Content}}" ng-controller="PageActionBarCtrl">
-	<ul class="menu nav">
+	<ul class="menu nav" ng-repeat="nav in navs" ng-class="{ 'pull-right': nav.Alignment == 'Right' }">
 		<li class="item"
-			ng-repeat="item in Interface.ActionMenu.Children"
+			ng-repeat="item in nav.Items"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'"
-			ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+			ng-show="isDisplayable(item)">
 			<page-action-content node="item"></page-action-content>
 			
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
@@ -14,16 +14,14 @@
 
 			<ul class="dropdown-menu" ng-show="item.Children.length">
 				<li ng-repeat="child in item.Children"
-					ng-show="Security.permissions.is(child.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+					ng-show="isDisplayable(child)">
 					<page-action-content node="child"></page-action-content>
 				</li>
 			</ul>
 		</li>
 	</ul>
-	<ul class="nav pull-right">
-		<li class="page-publish" ng-include src="'App/Partials/PagePublish.html'">
-		</li>
-	</ul>
+	<!--<ul class="nav pull-right">
+	</ul>-->
 	
 <!--	<div id="main-area-content">
 	</div>-->

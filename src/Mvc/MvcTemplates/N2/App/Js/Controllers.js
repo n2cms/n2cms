@@ -73,17 +73,17 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 	});
 
 	var viewExpression = /[?&]view=[^?&]*/;
-	$scope.$on("loaded", function (scope, e) {
-		var ctxUrl = $scope.Context.CurrentItem.PreviewUrl;
+	$scope.$on("preiewloaded", function (scope, e) {
+		var ctxUrl = $scope.Context.CurrentItem && $scope.Context.CurrentItem.PreviewUrl || "";
 		if (e.path + e.query != ctxUrl && e.path != ctxUrl.replace(viewExpression, "")) {
 			// reload
 			$timeout(function () {
 				console.log("URL CHANGED", e.path + e.query, "!=", ctxUrl);
 				Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
-					if (ctx.NotFound) {
-						console.log("notfound", e.path + e.query);
-						return;
-					}
+					//if (ctx.NotFound) {
+					//	console.log("notfound", e.path + e.query);
+					//	return;
+					//}
 					
 					console.log("reloaded", ctx);
 					angular.extend($scope.Context, ctx);
@@ -155,7 +155,11 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 		}
 	});
 	$scope.$on("contextchanged", function (scope, ctx) {
-		$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
+		console.log("contextchanged", ctx);
+		if (ctx.CurrentItem)
+			$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
+		else
+			$scope.Context.SelectedNode = null;
 	});
 
 	$scope.toggle = function (node) {
@@ -194,7 +198,33 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
-function PageActionBarCtrl($scope, Content) {
+function PageActionBarCtrl($scope, Security) {
+	$scope.$watch("Interface.ActionMenu.Children", function (children) {
+		var lefties = [];
+		var righties = [];
+		for (var i in children) {
+			if (children[i].Current.Alignment == "Right")
+				righties.push(children[i]);
+			else
+				lefties.push(children[i]);
+		}
+		$scope.navs =
+			[
+				{ Alignment: "Left", Items: lefties },
+				{ Alignment: "Right", Items: righties },
+			];
+	});
+
+	$scope.isDisplayable = function (item) {
+		console.log("isDisplayable", item);
+		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission))
+			return false;
+		if (item.Current.DisplayedBy)
+			return $scope.Context.Flags.indexOf(item.Current.DisplayedBy) >= 0;
+		if (item.Current.HiddenBy)
+			return $scope.Context.Flags.indexOf(item.Current.HiddenBy) < 0;
+		return true;
+	};
 }
 
 function PageActionCtrl($scope) {
@@ -204,7 +234,7 @@ function PreviewCtrl($scope) {
 	$scope.frameLoaded = function (e) {
 		try {
 			var loco = e.target.contentWindow.location;
-			$scope.$emit("loaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
+			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -253,7 +283,7 @@ function VersionsCtrl($scope, Versions) {
 }
 
 function PagePublishCtrl($scope, $rootScope) {
-	$rootScope.$on("loaded", function (scope, e) {
+	$rootScope.$on("preiewloaded", function (scope, e) {
 		
 	});
 }
