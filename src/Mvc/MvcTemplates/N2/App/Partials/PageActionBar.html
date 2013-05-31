@@ -1,4 +1,6 @@
-﻿<div id="page-action-bar" class="action-bar secondary navbar" ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" title="{{Content}}" ng-controller="PageActionBarCtrl">
+﻿<div id="page-action-bar" class="action-bar secondary navbar" 
+	ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" 
+	ng-controller="PageActionBarCtrl">
 	<ul class="menu nav" ng-repeat="nav in navs" ng-class="{ 'pull-right': nav.Alignment == 'Right' }">
 		<li class="item"
 			ng-repeat="item in nav.Items"

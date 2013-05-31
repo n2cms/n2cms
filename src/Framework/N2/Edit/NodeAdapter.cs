@@ -111,7 +111,7 @@ namespace N2.Edit
 				IconUrl = GetIconUrl(item),
 				Title = item.Title,
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
-				PreviewUrl = GetPreviewUrl(item, allowDraft: false),
+				PreviewUrl = GetPreviewUrl(item, allowDraft: allowDraft),
 				MaximumPermission = GetMaximumPermission(item),
 				SortOrder = item.SortOrder,
 				VersionIndex = item.VersionIndex

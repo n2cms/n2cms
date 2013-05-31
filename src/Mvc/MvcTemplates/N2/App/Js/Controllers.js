@@ -216,7 +216,6 @@ function PageActionBarCtrl($scope, Security) {
 	});
 
 	$scope.isDisplayable = function (item) {
-		console.log("isDisplayable", item);
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission))
 			return false;
 		if (item.Current.DisplayedBy)
