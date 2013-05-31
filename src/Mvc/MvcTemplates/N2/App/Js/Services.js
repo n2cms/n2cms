@@ -4,6 +4,28 @@
 		return res;
 	});
 
+	module.factory('FrameContext', function () {
+		window.top.n2ctx = {
+			refresh: function () {
+				console.log("refresh", arguments);
+			},
+			select: function () {
+				console.log("select", arguments);
+			},
+			unselect: function(){
+				console.log("unselect", arguments);
+			},
+			update: function () {
+				console.log("update", arguments);
+			},
+			hasTop: function () {
+				console.log("hasTop", arguments);
+				return true;
+			}
+		};
+		return window.top.n2ctx;
+	});
+
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
 			children: { method: 'GET', params: { target: 'children' } },

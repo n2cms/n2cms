@@ -100,10 +100,10 @@ namespace N2.Edit
 			if (!string.IsNullOrEmpty(selectedUrl))
 			{
 				selectedItem = Engine.UrlParser.Parse(selectedUrl);
-				if (selectedItem != null && string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
-					selectedItem = TryApplyDraft(selectedItem);
-				else
+				if (selectedItem == null)
 					selectedItem = SelectFile(selectedUrl);
+				else if (string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
+					selectedItem = TryApplyDraft(selectedItem);
 			}
 
             string itemId = request(PathData.ItemQueryKey);

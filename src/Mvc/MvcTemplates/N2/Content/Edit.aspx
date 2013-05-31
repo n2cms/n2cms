@@ -89,5 +89,34 @@
 			// 
     	});
 
+    	$(function () {
+    		var options = [];
+
+    		function create(commandElement) {
+    			return {
+    				Title: $(commandElement).text(),
+    				Action: function () { $(commandElement).click() }
+    			};
+    		};
+    		
+    		$(".command").each(function () {
+    			if ($(this).closest(".optionGroup").length)
+    				return;
+
+    			var node = {
+    				Current: create(this),
+    				Children: []
+    			};
+
+    			$(this).siblings(".optionGroup").find(".command").each(function () {
+    				node.Children.push({ Current: create(this) });
+    			});
+
+    			options.push(node);
+				
+    		});
+    		console.log("command", options);
+    	});
+
     </script>
 </asp:Content>

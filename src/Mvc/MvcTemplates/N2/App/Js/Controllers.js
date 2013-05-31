@@ -14,9 +14,19 @@ function findSelectedRecursive(node, selectedPath) {
 	return null;
 }
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security) {
+function decorate(obj, name, callback) {
+	var original = obj[name] || function () { };
+	obj[name] = function () {
+		original.apply(this, arguments);
+		callback.apply(this, arguments);
+	};
+};
+
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security, FrameContext) {
 	$scope.Content = Content;
 	$scope.Security = Security;
+
+
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
@@ -68,10 +78,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		if (e.path + e.query != ctxUrl && e.path != ctxUrl.replace(viewExpression, "")) {
 			// reload
 			$timeout(function () {
-				console.log("url changed", e.path + e.query, "!=", ctxUrl, e.path, "!=", ctxUrl.replace(viewExpression, ""));
+				console.log("URL CHANGED", e.path + e.query, "!=", ctxUrl);
 				Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
-					if (ctx.NotFound)
+					if (ctx.NotFound) {
+						console.log("notfound", e.path + e.query);
 						return;
+					}
 					
 					console.log("reloaded", ctx);
 					angular.extend($scope.Context, ctx);
