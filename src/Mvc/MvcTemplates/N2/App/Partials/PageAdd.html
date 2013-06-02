@@ -2,7 +2,7 @@
 	<a 
 		target='preview' 
 		title='Add' 
-		href='{{Interface.Paths.Create}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}' 
+		href='{{Interface.Paths.Create}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}' 
 		class='page-action-icon' 
 		style='background-image:url(redesign/img/glyphicons-white/glyphicons_190_circle_plus.png)'>
 	</a>
@@ -16,7 +16,7 @@
 <ul class="dropdown-menu versions" ng-show="item.Children.length">
 	<li ng-repeat="child in item.Children">
 		<div class="page-action">
-			<a class="page-action-icon" x-background-image="child.IconUrl" target="preview" href="{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&selectedId={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}">
+			<a class="page-action-icon" x-background-image="child.IconUrl" target="preview" href="{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}">
 				{{child.Title}}
 				<span>{{child.Description}}</span>
 			</a>

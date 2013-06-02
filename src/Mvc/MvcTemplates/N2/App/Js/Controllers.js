@@ -48,49 +48,37 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 	$scope.select = function (node) {
 		$scope.Context.SelectedNode = node;
+		if (!node)
+			return;
 		$timeout(function () {
 			Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 			});
 		}, 200);
-		//$scope.Context.CurrentItem = node.Current;
 	}
 
-	//$scope.$watch("Context.CurrentItem.Path", function (path) {
-	//	if (path) {
-	//		var item = $scope.Context.CurrentItem;
-	//		var loco = window.preview.location;
-	//		if (loco.pathname != item.PreviewUrl && loco.pathname + loco.search != item.PreviewUrl) {
-	//			console.log("path changed", path, " -- ", loco.pathname + loco.search, item.PreviewUrl);
-	//			Context.get({ selected: item.Path }, function (ctx) {
-	//				angular.extend($scope.Context, ctx);
-	//			});
-	//		}
-	//	}
-	//});
 	$scope.$watch("Context.ContextMenu", function (menu) {
 		console.log("context menu", menu);
 	});
 
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
-		var ctxUrl = $scope.Context.CurrentItem && $scope.Context.CurrentItem.PreviewUrl || "";
-		if (e.path + e.query != ctxUrl && e.path != ctxUrl.replace(viewExpression, "")) {
-			// reload
-			$timeout(function () {
-				console.log("URL CHANGED", e.path + e.query, "!=", ctxUrl);
-				Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
-					//if (ctx.NotFound) {
-					//	console.log("notfound", e.path + e.query);
-					//	return;
-					//}
-					
-					console.log("reloaded", ctx);
-					angular.extend($scope.Context, ctx);
-					$scope.$broadcast("contextchanged", $scope.Context);
-				});
-			}, 200);
-		}
+		if ($scope.Context.AppliesTo == e.url)
+			return;
+		$scope.Context.AppliesTo = e.url;
+
+		$timeout(function () {
+			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
+				//if (ctx.NotFound) {
+				//	console.log("notfound", e.path + e.query);
+				//	return;
+				//}
+
+				console.log("reloaded", ctx);
+				angular.extend($scope.Context, ctx);
+				$scope.$broadcast("contextchanged", $scope.Context);
+			});
+		}, 200);
 	});
 
 	$scope.evaluateExpression = function (expr) {
@@ -198,7 +186,7 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
-function PageActionBarCtrl($scope, Security) {
+function PageActionBarCtrl($scope, $rootScope, Security) {
 	$scope.$watch("Interface.ActionMenu.Children", function (children) {
 		var lefties = [];
 		var righties = [];
@@ -224,6 +212,10 @@ function PageActionBarCtrl($scope, Security) {
 			return $scope.Context.Flags.indexOf(item.Current.HiddenBy) < 0;
 		return true;
 	};
+	
+	$scope.previewUrl = function (url) {
+		$scope.Interface.Paths.PreviewUrl = url || "Empty.aspx";
+	}
 }
 
 function PageActionCtrl($scope) {
@@ -239,11 +231,8 @@ function PreviewCtrl($scope) {
 		}
 	};
 
-	$scope.$watch("Interface.SelectedPath", function (path) {
-		if (path) {
-			var node = findSelectedRecursive($scope.Interface.Content, path);
-			$scope.src = node && node.Current && node.Current.PreviewUrl;
-		}
+	$scope.$watch("Interface.Paths.PreviewUrl", function (url) {
+		$scope.src = url || "Empty.aspx";
 	});
 }
 

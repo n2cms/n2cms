@@ -53,6 +53,7 @@
 			scope: true,
 			template: "<div class='page-action'>\
 	<a ng-class=\"{ 'page-action-icon': node.Current.IconUrl, 'page-action-description': node.Current.Description }\" \
+		ng-click='evalExpression(node.Current.ClientAction)' \
 		href='{{evaluateExpression(node.Current.Url)}}' \
 		target='{{evaluateExpression(node.Current.Target)}}'\
 		x-background-image='node.Current.IconUrl' \
@@ -72,6 +73,10 @@
 				});
 				scope.evaluateExpression = function (expr) {
 					return expr && $interpolate(expr)(scope);
+				};
+				scope.evalExpression = function (expr) {
+					console.log("eval", expr, scope.Context.CurrentItem && scope.Context.CurrentItem.PreviewUrl);
+					expr && scope.$eval(expr);
 				};
 			}
 		}

@@ -68,6 +68,8 @@ namespace N2.Management.Api
 		public string DisplayedBy { get; set; }
 
 		public string Alignment { get; set; }
+
+		public string ClientAction { get; set; }
 	}
 
 	public class InterfaceData
@@ -90,8 +92,6 @@ namespace N2.Management.Api
 
 		public InterfacePaths Paths { get; set; }
 
-		public string SelectedPath { get; set; }
-
 		public Node<InterfaceMenuItem> ContextMenu { get; set; }
 	}
 
@@ -108,6 +108,8 @@ namespace N2.Management.Api
 		public string SelectedQueryKey { get; set; }
 
 		public string ViewPreference { get; set; }
+
+		public string PreviewUrl { get; set; }
 	}
 
 	public class InterfaceUser
@@ -139,7 +141,6 @@ namespace N2.Management.Api
 				MainMenu = CreateMainMenu(),
 				ActionMenu = CreateActionMenu(context),
 				Content = CreateContent(context),
-				SelectedPath = selection.SelectedItem.Path,
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
@@ -189,13 +190,15 @@ namespace N2.Management.Api
 
 		private InterfacePaths CreateUrls(HttpContext context)
 		{
+			
 			return new InterfacePaths {
 				Management = engine.ManagementPaths.GetManagementInterfaceUrl(),
 				Delete = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens(),
 				Edit = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens(),
 				SelectedQueryKey = engine.Config.Sections.Management.Paths.SelectedQueryKey.ResolveUrlTokens(),
 				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
-				ViewPreference = new HttpContextWrapper(context).GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString()
+				ViewPreference = new HttpContextWrapper(context).GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString(),
+				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetPreviewUrl(selection.SelectedItem)
 			};
 		}
 
