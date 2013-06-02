@@ -4,6 +4,29 @@
 		return res;
 	});
 
+	module.factory('FrameManipulator', function () {
+		var manipulator = {
+			click: function (className) {
+				window.frames.preview.window.location = window.frames.preview.window.jQuery(className, window.frames.preview.window.document).attr("href");
+			},
+			publish: function () {
+				manipulator.click(".publish:first");
+			},
+			preview: function () {
+				manipulator.click(".preview:first");
+			},
+			save: function () {
+				manipulator.click(".save:first");
+			},
+			future: function () {
+				manipulator.click(".future:first");
+			},
+			unpublish: function () {
+				manipulator.click(".unpublish:first");
+			}
+		};
+		return manipulator;
+	});
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function () {

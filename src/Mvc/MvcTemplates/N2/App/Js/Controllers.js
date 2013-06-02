@@ -69,12 +69,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 		$timeout(function () {
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
-				//if (ctx.NotFound) {
-				//	console.log("notfound", e.path + e.query);
-				//	return;
-				//}
-
-				console.log("reloaded", ctx);
 				angular.extend($scope.Context, ctx);
 				$scope.$broadcast("contextchanged", $scope.Context);
 			});
@@ -203,13 +197,17 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 			];
 	});
 
+	$scope.isFlagged = function (flag) {
+		return $scope.Context.Flags.indexOf(flag) >= 0;
+	};
+
 	$scope.isDisplayable = function (item) {
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission))
 			return false;
 		if (item.Current.DisplayedBy)
-			return $scope.Context.Flags.indexOf(item.Current.DisplayedBy) >= 0;
+			return $scope.isFlagged(item.Current.DisplayedBy);
 		if (item.Current.HiddenBy)
-			return $scope.Context.Flags.indexOf(item.Current.HiddenBy) < 0;
+			return !$scope.isFlagged(item.Current.HiddenBy);
 		return true;
 	};
 	
@@ -275,6 +273,10 @@ function PagePublishCtrl($scope, $rootScope) {
 		
 	});
 }
+
+function EditPublishCtrl($scope, FrameManipulator) {
+	$scope.manipulator = FrameManipulator;
+};
 
 function NotifyCtrl($scope, $timeout, Notify) {
 	var defaults = { visible: true, type: "warning" };

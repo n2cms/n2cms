@@ -229,8 +229,9 @@ namespace N2.Management.Api
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublish.html", RequiredPermission = Permission.Write, DisplayedBy = "Unpublished", HiddenBy = "ContentEdit", Alignment = "Right" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/EditPublish.html", RequiredPermission = Permission.Write, DisplayedBy = "ContentEdit", Alignment = "Right" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", Alignment = "Right" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublish.html", RequiredPermission = Permission.Write, DisplayedBy = "Unpublished", Alignment = "Right" }),
 					//new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", Url = "#publish", IconUrl = "redesign/img/glyphicons-white/glyphicons_063_power.png" })
 				}
 			};
