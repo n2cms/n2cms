@@ -23,7 +23,7 @@ namespace N2.Templates.Mvc.Controllers
 		public override ActionResult Index()
 		{
 			var parameters = Parameter.TypeEqual(typeof(Event).Name)
-				& Parameter.GreaterOrEqual("EventDate", DateTime.Now);
+				& Parameter.GreaterOrEqual("EventDate", N2.Utility.CurrentTime());
 
 			if (CurrentItem.Container != null)
 				parameters.Add(Parameter.BelowOrSelf(CurrentItem.Container));

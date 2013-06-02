@@ -209,7 +209,7 @@ namespace N2.Tests.Details
 		[Test]
 		public void Collection_CanCombine_MultipleTypes()
 		{
-			object[] objects = new object[] {"hello", 1, 3.1415, true, DateTime.Now, new Content.AnItem(), new object[0]};
+			object[] objects = new object[] {"hello", 1, 3.1415, true, N2.Utility.CurrentTime(), new Content.AnItem(), new object[0]};
 			DetailCollection collection = new DetailCollection();
 			collection.AddRange(objects);
 

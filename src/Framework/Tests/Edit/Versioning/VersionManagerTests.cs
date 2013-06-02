@@ -88,7 +88,7 @@ namespace N2.Tests.Edit.Versioning
 		public void GetVersions_DisplaysVersions_InInverseVersionIndexOrder()
 		{
 			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
-			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
+			using (new TimeCapsule(N2.Utility.CurrentTime().AddSeconds(-10)))
 			{
 				persister.Save(item);
 			}
@@ -119,7 +119,7 @@ namespace N2.Tests.Edit.Versioning
 		public void CanGet_LatestVersion_Only()
 		{
 			PersistableItem item = CreateOneItem<PersistableItem>(0, "item", null);
-			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
+			using (new TimeCapsule(N2.Utility.CurrentTime().AddSeconds(-10)))
 			{
 				persister.Save(item);
 			}
@@ -170,7 +170,7 @@ namespace N2.Tests.Edit.Versioning
 			ContentItem item = CreateOneItem<PersistableItem>(0, "root", null);
 			persister.Save(item);
 			ContentItem version = versioner.AddVersion(item);
-			version.Updated = DateTime.Now.AddSeconds(10);
+			version.Updated = N2.Utility.CurrentTime().AddSeconds(10);
 			engine.Persister.Repository.SaveOrUpdate(version);
 			engine.Persister.Repository.Flush();
 
@@ -448,7 +448,7 @@ namespace N2.Tests.Edit.Versioning
 
 			var addedChild = master.Children.Single();
 			addedChild.State.ShouldBe(ContentState.Published);
-			DateTime.Now.ShouldBeGreaterThanOrEqualTo(addedChild.Published.Value);
+			N2.Utility.CurrentTime().ShouldBeGreaterThanOrEqualTo(addedChild.Published.Value);
 			addedChild.ID.ShouldNotBe(0);
 			addedChild.VersionOf.HasValue.ShouldBe(false);
 			addedChild.Title.ShouldBe("part");

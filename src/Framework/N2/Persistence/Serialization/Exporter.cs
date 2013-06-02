@@ -63,7 +63,7 @@ namespace N2.Persistence.Serialization
 			{
 				envelope.WriteAttribute("version", GetType().Assembly.GetName().Version.ToString());
 				envelope.WriteAttribute("exportVersion", 2);
-				envelope.WriteAttribute("exportDate", DateTime.Now);
+				envelope.WriteAttribute("exportDate", N2.Utility.CurrentTime());
 
 				itemWriter.Write(item, options, xmlOutput);
 			}

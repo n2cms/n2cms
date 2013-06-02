@@ -727,7 +727,7 @@ namespace N2.Tests.Persistence.NH
 			ContentItem item = CreateOneItem<Definitions.PersistableItem>(0, "gettableRoot", null);
 			ContentItem child1 = CreateOneItem<Definitions.PersistableItem>(0, "one", item);
 			ContentItem child2 = CreateOneItem<Definitions.PersistableItem>(0, "two", item);
-			child2.Expires = DateTime.Now.AddSeconds(-10);
+			child2.Expires = N2.Utility.CurrentTime().AddSeconds(-10);
 			child2.State = ContentState.Unpublished;
 			using (persister)
 			{

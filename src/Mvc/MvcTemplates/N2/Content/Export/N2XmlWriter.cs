@@ -61,7 +61,7 @@ namespace N2.Xml
 			xtw.WriteStartElement("n2");
 			xtw.WriteAttributeString("version", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 			xtw.WriteAttributeString("exportVersion", "1");
-			xtw.WriteAttributeString("exportDate", GetDateTimeString(DateTime.Now));
+			xtw.WriteAttributeString("exportDate", GetDateTimeString(N2.Utility.CurrentTime()));
 
 			OnWritingItem(rootItem, xtw);
 

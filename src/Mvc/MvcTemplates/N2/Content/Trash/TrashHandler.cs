@@ -116,7 +116,7 @@ namespace N2.Edit.Trash
 			item[FormerName] = item.Name;
 			item[FormerParent] = item.Parent;
 			item[FormerState] = (int)item.State;
-			item[DeletedDate] = DateTime.Now;
+			item[DeletedDate] = N2.Utility.CurrentTime();
 			item.Name = item.ID.ToString();
 			
 			ExpireTrashedItemsRecursive(item);

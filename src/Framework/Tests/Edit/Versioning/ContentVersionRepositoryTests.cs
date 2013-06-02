@@ -44,7 +44,7 @@ namespace N2.Tests.Edit.Versioning
             var savedDraft = repository.GetVersion(master);
             savedDraft.Published.ShouldBe(master.Published, TimeSpan.FromSeconds(1));
             //savedDraft.PublishedBy.ShouldBe(master.SavedBy);
-            savedDraft.Saved.ShouldBe(DateTime.Now, TimeSpan.FromSeconds(1));
+            savedDraft.Saved.ShouldBe(N2.Utility.CurrentTime(), TimeSpan.FromSeconds(1));
             savedDraft.SavedBy.ShouldBe(draft.SavedBy);
             savedDraft.State.ShouldBe(master.State);
 			savedDraft.VersionIndex.ShouldBe(master.VersionIndex);

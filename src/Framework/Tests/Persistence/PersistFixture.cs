@@ -82,7 +82,7 @@ namespace N2.Tests.Persistence
 			{
 				root = CreateRoot("root", "root item");
 				rootItemID = root.ID;
-				referenceDate = DateTime.Now;
+				referenceDate = N2.Utility.CurrentTime();
 				root["DateDetail"] = referenceDate;
 				root["StringDetail"] = "time 4 test";
 				engine.Persister.Save(root);
@@ -301,7 +301,7 @@ namespace N2.Tests.Persistence
 			{
 				// Create an item with some values
 				ContentItem item1 = CreateAndSaveItem("item1", "item one", root);
-				DateTime d = DateTime.Now;
+				DateTime d = N2.Utility.CurrentTime();
 				item1["DateDetail"] = d;
 				item1["StringDetail"] = "time 4 test";
 				engine.Persister.Save(item1);

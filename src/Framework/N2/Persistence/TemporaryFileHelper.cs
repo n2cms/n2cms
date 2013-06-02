@@ -55,7 +55,7 @@ namespace N2.Persistence
 
 			foreach (var fi in di.GetFileSystemInfos())
 			{
-				if (fi.LastWriteTime < DateTime.Now.Subtract(olderThan))
+				if (fi.LastWriteTime < N2.Utility.CurrentTime().Subtract(olderThan))
 					fi.Delete();
 				else
 					allDeleted = false;

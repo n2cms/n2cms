@@ -412,7 +412,7 @@ namespace N2.Tests.Utility
 		public void Insert_SortByPublished()
 		{
 			ContentItem root = CreateOneItem<UtilityItem>(10, "10", null);
-			item1.Published = DateTime.Now.AddSeconds(-10);
+			item1.Published = N2.Utility.CurrentTime().AddSeconds(-10);
 			N2.Utility.Insert(item1, root, "Published");
 			int index2 = N2.Utility.Insert(item2, root, "Published");
 
@@ -425,7 +425,7 @@ namespace N2.Tests.Utility
 		public void Insert_SortByPublishedDesc()
 		{
 			ContentItem root = CreateOneItem<UtilityItem>(10, "10", null);
-			item1.Published = DateTime.Now.AddSeconds(-10);
+			item1.Published = N2.Utility.CurrentTime().AddSeconds(-10);
 			N2.Utility.Insert(item1, root, "Published DESC");
 			int index2 = N2.Utility.Insert(item2, root, "Published DESC");
 
@@ -439,11 +439,11 @@ namespace N2.Tests.Utility
 		{
 			ContentItem root = CreateOneItem<UtilityItem>(10, "10", null);
 
-			item1.Published = DateTime.Now.AddSeconds(-50);
-			item2.Published = DateTime.Now.AddSeconds(-40);
-			item3.Published = DateTime.Now.AddSeconds(-30);
-			item4.Published = DateTime.Now.AddSeconds(-20);
-			item5.Published = DateTime.Now.AddSeconds(-10);
+			item1.Published = N2.Utility.CurrentTime().AddSeconds(-50);
+			item2.Published = N2.Utility.CurrentTime().AddSeconds(-40);
+			item3.Published = N2.Utility.CurrentTime().AddSeconds(-30);
+			item4.Published = N2.Utility.CurrentTime().AddSeconds(-20);
+			item5.Published = N2.Utility.CurrentTime().AddSeconds(-10);
 
 			N2.Utility.Insert(item2, root, "Published DESC");
 			N2.Utility.Insert(item1, root, "Published DESC");
@@ -496,8 +496,8 @@ namespace N2.Tests.Utility
 		{
 			ContentItem root = CreateOneItem<UtilityItem>(10, "10", null);
 
-			item1.Published = DateTime.Now.AddSeconds(-50);
-			item2.Published = DateTime.Now.AddSeconds(-40);
+			item1.Published = N2.Utility.CurrentTime().AddSeconds(-50);
+			item2.Published = N2.Utility.CurrentTime().AddSeconds(-40);
 
 			N2.Utility.Insert(item1, root, "Published");
 			N2.Utility.Insert(item2, root, "Published");

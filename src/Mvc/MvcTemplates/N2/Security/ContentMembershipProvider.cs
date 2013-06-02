@@ -334,7 +334,7 @@ namespace N2.Security
 
             int userIsOnlineTimeWindow = (Membership.UserIsOnlineTimeWindow > 0 ? Membership.UserIsOnlineTimeWindow : 20);
             return (int)Bridge.Repository.Count(Parameter.Equal("Parent", users)
-				& Parameter.GreaterOrEqual("LastActivityDate", DateTime.Now.AddMinutes(-userIsOnlineTimeWindow)).Detail());
+				& Parameter.GreaterOrEqual("LastActivityDate", N2.Utility.CurrentTime().AddMinutes(-userIsOnlineTimeWindow)).Detail());
 		}
 
 		public override string GetPassword(string username, string answer)
@@ -457,7 +457,7 @@ namespace N2.Security
 			N2.Security.Items.User u = Bridge.GetUser(username);
 			if (u != null && u.Password == ToStoredPassword(password)) // JH
 			{
-				u.LastLoginDate = DateTime.Now; // JH
+				u.LastLoginDate = N2.Utility.CurrentTime(); // JH
 				Bridge.Save(u);
 				return true;
 			}

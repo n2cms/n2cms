@@ -134,11 +134,11 @@ namespace N2.Edit
 
 			if (!item.IsPublished())
 				className.Append("unpublished ");
-			else if (item.Published > DateTime.Now.AddDays(-1))
+			else if (item.Published > N2.Utility.CurrentTime().AddDays(-1))
 				className.Append("day ");
-			else if (item.Published > DateTime.Now.AddDays(-7))
+			else if (item.Published > N2.Utility.CurrentTime().AddDays(-7))
 				className.Append("week ");
-			else if (item.Published > DateTime.Now.AddMonths(-1))
+			else if (item.Published > N2.Utility.CurrentTime().AddMonths(-1))
 				className.Append("month ");
 
 			if (item.IsExpired())

@@ -107,7 +107,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void SortBy_Updated()
 		{
-			var item = AddIt(new DefinitionOne { Updated = DateTime.Now, Parent = parent }, SortBy.Updated);
+			var item = AddIt(new DefinitionOne { Updated = N2.Utility.CurrentTime(), Parent = parent }, SortBy.Updated);
 
 			parent.Children.Last().ShouldBe(item);
 		}
@@ -115,7 +115,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void SortBy_UpdatedDescending()
 		{
-			var item = AddIt(new DefinitionOne { Updated = DateTime.Now, Parent = parent }, SortBy.UpdatedDescending);
+			var item = AddIt(new DefinitionOne { Updated = N2.Utility.CurrentTime(), Parent = parent }, SortBy.UpdatedDescending);
 
 			parent.Children.First().ShouldBe(item);
 		}

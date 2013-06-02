@@ -108,7 +108,7 @@ namespace N2.Edit.Tests.Trash
         private void PutItemInTrash()
         {
             item.AddTo(trash);
-            item[TrashHandler.DeletedDate] = DateTime.Now;
+            item[TrashHandler.DeletedDate] = N2.Utility.CurrentTime();
         }
 
         [Test]

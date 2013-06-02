@@ -107,7 +107,7 @@ namespace N2.Details
 				case ValidationDataType.Currency:
 					return default(decimal).ToString();
 				case ValidationDataType.Date:
-					return DateTime.Now.ToString();
+					return N2.Utility.CurrentTime().ToString();
 				case ValidationDataType.Double:
 					return default(double).ToString();
 				case ValidationDataType.Integer:

@@ -93,7 +93,7 @@ namespace N2.Tests.Fakes
 
 		public void CreateDirectory(string virtualPath)
 		{
-			directories[virtualPath] = new DirectoryData { VirtualPath = virtualPath, Created = DateTime.Now, Updated = DateTime.Now, Name = N2.Web.Url.GetName(virtualPath) };
+			directories[virtualPath] = new DirectoryData { VirtualPath = virtualPath, Created = N2.Utility.CurrentTime(), Updated = N2.Utility.CurrentTime(), Name = N2.Web.Url.GetName(virtualPath) };
 		}
 
 		public event EventHandler<N2.Edit.FileEventArgs> FileWritten = delegate { };

@@ -98,7 +98,7 @@ namespace N2.Web.Messaging
 		private string GetSecret()
 		{
 			var secret = string.IsNullOrEmpty(SharedSecret)
-				? FormsAuthentication.Encrypt(new FormsAuthenticationTicket(1, "messaging", DateTime.Now, DateTime.Now.AddYears(1), false, "authorize me"))
+				? FormsAuthentication.Encrypt(new FormsAuthenticationTicket(1, "messaging", N2.Utility.CurrentTime(), N2.Utility.CurrentTime().AddYears(1), false, "authorize me"))
 				: SharedSecret;
 			return secret;
 		}

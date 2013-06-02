@@ -72,12 +72,12 @@ namespace N2.Web.UI.WebControls
 		{
 			StringBuilder className = new StringBuilder();
 
-			if (!item.Published.HasValue || item.Published > DateTime.Now)
+			if (!item.Published.HasValue || item.Published > N2.Utility.CurrentTime())
 				className.Append("unpublished ");
-			else if (item.Published > DateTime.Now.AddDays(-2))
+			else if (item.Published > N2.Utility.CurrentTime().AddDays(-2))
 				className.Append("new ");
 
-			if (item.Expires.HasValue && item.Expires <= DateTime.Now)
+			if (item.Expires.HasValue && item.Expires <= N2.Utility.CurrentTime())
 				className.Append("expired ");
 
 			if (item == selectedItem)

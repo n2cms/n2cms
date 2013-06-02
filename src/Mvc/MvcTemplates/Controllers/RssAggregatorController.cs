@@ -59,7 +59,7 @@ namespace N2.Templates.Mvc.Controllers
 					HttpContext.Cache.Add(CacheKey,
 						items,
 						new ContentCacheDependency(Engine.Persister),
-						DateTime.Now.AddSeconds(60),
+						N2.Utility.CurrentTime().AddSeconds(60),
 						TimeSpan.Zero,
 						CacheItemPriority.Normal,
 						null);
@@ -132,7 +132,7 @@ namespace N2.Templates.Mvc.Controllers
 				    new RssAggregatorModel.RssItem()
 				       	{
 				       		Title = Resources.RssAggregator.CannotLoadRss,
-							Published = DateTime.Now,
+							Published = N2.Utility.CurrentTime(),
 							Url = "#",
 							Introduction = reason,
 				       	}, 

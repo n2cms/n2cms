@@ -131,10 +131,10 @@ namespace N2.Web.Mvc
 				// apply filter ***
 
 				if (!currentItem.ShowFutureEvents)
-					newsEnumerable = newsEnumerable.Where(a => a.Published != null && a.Published.Value <= DateTime.Now);
+					newsEnumerable = newsEnumerable.Where(a => a.Published != null && a.Published.Value <= N2.Utility.CurrentTime());
 
 				if (!currentItem.ShowPastEvents)
-					newsEnumerable = newsEnumerable.Where(a => a.Published != null && a.Published.Value >= DateTime.Now);
+					newsEnumerable = newsEnumerable.Where(a => a.Published != null && a.Published.Value >= N2.Utility.CurrentTime());
 
 				if (currentItem.MaxNews > 0)
 					newsEnumerable = newsEnumerable.Take(currentItem.MaxNews);

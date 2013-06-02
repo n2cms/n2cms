@@ -1120,7 +1120,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FilterByProperty_DateTime_Equals_NonMatchingValue()
 		{
-			var items = finder.Where.Property("DateTimePersistableProperty").Eq(DateTime.Now).Select();
+			var items = finder.Where.Property("DateTimePersistableProperty").Eq(N2.Utility.CurrentTime()).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
 		[Test]
@@ -1138,7 +1138,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void FilterByProperty_DateTime_In_MatchingValue()
 		{
-			var items = finder.Where.Property("DateTimePersistableProperty").In(new DateTime(2010, 06, 18, 14, 30, 00), DateTime.Now).Select();
+			var items = finder.Where.Property("DateTimePersistableProperty").In(new DateTime(2010, 06, 18, 14, 30, 00), N2.Utility.CurrentTime()).Select();
 			Assert.That(items.Count, Is.EqualTo(3));
 		}
 

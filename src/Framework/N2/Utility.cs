@@ -515,7 +515,7 @@ namespace N2
 				return GetLocalResourceString(resourceKey);
 		}
 
-		public static Func<DateTime> CurrentTime = delegate { return DateTime.Now; };
+		public static Func<DateTime> CurrentTime = () => DateTime.Now;
 
 		[Obsolete("Moved to N2.Web.Url.ToAbsolute")]
 		public static string ToAbsolute(string relativePath)

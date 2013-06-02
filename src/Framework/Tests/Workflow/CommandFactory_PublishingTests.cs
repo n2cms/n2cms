@@ -97,7 +97,7 @@ namespace N2.Tests.Workflow
 		//    dispatcher.Execute(command, context);
 
 		//    Assert.That(item.Published, Is.Not.Null);
-		//    Assert.That(item.Published.Value, Is.GreaterThanOrEqualTo(DateTime.Now.AddSeconds(-10)));
+		//    Assert.That(item.Published.Value, Is.GreaterThanOrEqualTo(N2.Utility.CurrentTime().AddSeconds(-10)));
 		//}
     }
 }

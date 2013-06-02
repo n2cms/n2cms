@@ -155,12 +155,10 @@ namespace N2.Web.Drawing
 
 					// Use higher quality compression if the original image is jpg. Default is 75L.
 					var codec = GetEncoderInfo(original.RawFormat.Guid);
-
 					if (codec != null && codec.MimeType.Equals("image/jpeg"))
 					{
 						EncoderParameters encoderParams = new EncoderParameters(1);
 						encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
-
 						resized.Save(output, codec, encoderParams);
 					}
 					else
