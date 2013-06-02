@@ -250,63 +250,63 @@ namespace N2.Web
 
 		private List<ContentTreeNode> BuildNavTree()
 		{
+			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
 			var ci = Content.Current.Page;
+			if (ci == null)
+				return navTree;
 			cId = ci.ID; // need to cache this due to the following if clause:
 			if (ci.VersionOf != null && ci.VersionOf.Value != null)
 				ci = ci.VersionOf.Value; // get the published version
 
-			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
+			// follow the ancestral trail up to the desired "start from level"
+			var convertedAncestralTrail = Array.ConvertAll(
+				ci.AncestralTrail.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries),
+				int.Parse);
+
+			var xn = menuPart.StartFromLevel;
+			if (xn < 0)
+				xn += convertedAncestralTrail.Length; // handle "zero" case
+
+			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
-				// follow the ancestral trail up to the desired "start from level"
-				var convertedAncestralTrail = Array.ConvertAll(
-					ci.AncestralTrail.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries),
-					int.Parse);
-
-				var xn = menuPart.StartFromLevel;
-				if (xn < 0)
-					xn += convertedAncestralTrail.Length; // handle "zero" case
-
-				for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
-				{
-					var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-					var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault());
-					navTree.Add(ancestorNode);
-				}
-
-				// add a node for the current page
-				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
-				var navItemCParent = navTree.LastOrDefault();
-				navTree.Add(navItemCurrent);
-
-				// get children and sibilings
-				var sibs = (from x in ci.Parent.GetChildren()
-				            where x.ID != cId && x.IsPage && x.IsPublished()
-				            select x).ToArray();
-
-				var chil = (from x in ci.GetChildren() 
-							where x.IsPage && x.IsPublished()
-							select x).ToArray();
-
-				// show sibilings of the current item (put under navItemCParent)
-				if (menuPart.ShowSibilings != MenuPartBase.SibilingDisplayOptions.Never)
-				{
-					if (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.Always
-					    || (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
-					{
-						// ok...
-						// ReSharper disable LoopCanBeConvertedToQuery
-						foreach (var sibiling in sibs.OrderBy(f => f.SortOrder))
-							navTree.Add(new ContentTreeNode(sibiling, navItemCParent));
-						// ReSharper restore LoopCanBeConvertedToQuery
-					}
-				}
-
-				// show children of the current item  (put under navItemCurrent)
-				// ReSharper disable LoopCanBeConvertedToQuery
-				foreach (var child in chil.OrderBy(f => f.SortOrder))
-					navTree.Add(new ContentTreeNode(child, navItemCurrent));
-				// ReSharper restore LoopCanBeConvertedToQuery
+				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
+				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault());
+				navTree.Add(ancestorNode);
 			}
+
+			// add a node for the current page
+			var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
+			var navItemCParent = navTree.LastOrDefault();
+			navTree.Add(navItemCurrent);
+
+			// get children and sibilings
+			var sibs = (from x in ci.Parent.GetChildren()
+						where x.ID != cId && x.IsPage && x.Visible && x.IsPublished()
+			            select x).ToArray();
+
+			var chil = (from x in ci.GetChildren()
+			            where x.IsPage && x.Visible && x.IsPublished()
+			            select x).ToArray();
+
+			// show sibilings of the current item (put under navItemCParent)
+			if (menuPart.ShowSibilings != MenuPartBase.SibilingDisplayOptions.Never)
+			{
+				if (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.Always
+				    || (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
+				{
+					// ok...
+					// ReSharper disable LoopCanBeConvertedToQuery
+					foreach (var sibiling in sibs.OrderBy(f => f.SortOrder))
+						navTree.Add(new ContentTreeNode(sibiling, navItemCParent));
+					// ReSharper restore LoopCanBeConvertedToQuery
+				}
+			}
+
+			// show children of the current item  (put under navItemCurrent)
+			// ReSharper disable LoopCanBeConvertedToQuery
+			foreach (var child in chil.OrderBy(f => f.SortOrder))
+				navTree.Add(new ContentTreeNode(child, navItemCurrent));
+			// ReSharper restore LoopCanBeConvertedToQuery
 			return navTree;
 		}
 
@@ -319,7 +319,7 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.OuterUlCssClass : menuPart.InnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes)
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder))
 			{
 				WriteListItem(childNode, xml, level, null);
 				WriteChildList(childNode, xml, level + 1);
@@ -343,11 +343,11 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.OuterUlCssClass : menuPart.InnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes)
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder))
 			{
 				WriteListItem(childNode, xml, 0, "nav-header"); // header item
 
-				var childNodes2 = database.Where(f => f.Parent == childNode).ToList();
+				var childNodes2 = database.Where(f => f.Parent == childNode).OrderBy(n => n.SortOrder).ToList();
 				foreach (var childnode2 in childNodes2)
 				{
 					WriteListItem(childnode2, xml, 1, null);
