@@ -75,7 +75,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if (loggingEvent.MessageObject != null)
 			{
 				getListToUse().Add(
-					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString(), Time = DateTime.Now });
+					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString(), Time = N2.Utility.CurrentTime() });
 			}
 		}
 

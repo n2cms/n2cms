@@ -268,7 +268,7 @@ namespace N2.Management.Tests.Trash
 		[Test]
 		public void Relations_InMultiValues_AreDeleted()
 		{
-			N2.Details.ContentDetail.Multi("Relation", true, 1, 1.1, DateTime.Now, "hello", item, null).AddTo(item2);
+			N2.Details.ContentDetail.Multi("Relation", true, 1, 1.1, N2.Utility.CurrentTime(), "hello", item, null).AddTo(item2);
 			engine.Persister.Save(item2);
 
 			persister.Dispose();

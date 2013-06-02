@@ -119,6 +119,7 @@
     <Compile Include="VariableSubstituter.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Image.cs" />
+    <Compile Include="Web\MenuPart.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ContentListAdapter.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />

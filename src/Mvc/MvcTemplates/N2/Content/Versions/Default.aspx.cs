@@ -49,7 +49,7 @@ namespace N2.Edit.Versions
 				{
 					currentVersion.SavedBy = User.Identity.Name;
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
-						currentVersion.Published = DateTime.Now;
+						currentVersion.Published = N2.Utility.CurrentTime();
 					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);
@@ -64,7 +64,7 @@ namespace N2.Edit.Versions
 					currentVersion.SavedBy = User.Identity.Name;
 					
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
-						currentVersion.Published = DateTime.Now;
+						currentVersion.Published = N2.Utility.CurrentTime();
 					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);

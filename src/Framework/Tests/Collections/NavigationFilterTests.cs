@@ -75,7 +75,7 @@ namespace N2.Tests.Collections
 		public void CanFilterUnpublished()
 		{
 			ItemList list = CreateList();
-			list[0].Published = DateTime.Now.AddDays(1);
+			list[0].Published = N2.Utility.CurrentTime().AddDays(1);
 
 			(new NavigationFilter()).Filter(list);
 
@@ -86,7 +86,7 @@ namespace N2.Tests.Collections
 		public void CanFilterExpired()
 		{
 			ItemList list = CreateList();
-			list[0].Expires = DateTime.Now.AddDays(-1);
+			list[0].Expires = N2.Utility.CurrentTime().AddDays(-1);
 
 			(new NavigationFilter()).Filter(list);
 

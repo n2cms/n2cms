@@ -661,7 +661,6 @@
     <Compile Include="Web\Messaging\ReceivedEventArgs.cs" />
     <Compile Include="Web\Messaging\ReceiverAttribute.cs" />
     <Compile Include="Web\Messaging\ReceiverBase.cs" />
-    <Compile Include="Web\Messaging\Sender.cs" />
     <Compile Include="Web\Messaging\HttpRequestChannel.cs" />
     <Compile Include="Web\MultipleSitesInitializer.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />

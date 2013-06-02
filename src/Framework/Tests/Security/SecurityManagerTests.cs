@@ -197,7 +197,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.Published = DateTime.Now.AddDays(1);
+			root.Published = N2.Utility.CurrentTime().AddDays(1);
 
 			IPrincipal user = CreatePrincipal("User1");
 			Assert.IsFalse(security.IsEditor(user), "Dang! He's editor.");
@@ -210,7 +210,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.Expires = DateTime.Now;
+			root.Expires = N2.Utility.CurrentTime();
 
 			IPrincipal user = CreatePrincipal("User1");
 			Assert.IsFalse(security.IsAuthorized(root, user));
@@ -234,7 +234,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.Published = DateTime.Now.AddSeconds(10);
+			root.Published = N2.Utility.CurrentTime().AddSeconds(10);
 
 			IPrincipal user = CreatePrincipal("User1");
 			Assert.IsFalse(security.IsAuthorized(root, user));
@@ -246,7 +246,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.Expires = DateTime.Now;
+			root.Expires = N2.Utility.CurrentTime();
 
 			bool isPublished = security.IsPublished(root);
 			Assert.IsFalse(isPublished, "Item should not have been published.");
@@ -270,7 +270,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.Published = DateTime.Now.AddDays(1);
+			root.Published = N2.Utility.CurrentTime().AddDays(1);
 
 			bool isPublished = security.IsPublished(root);
 			Assert.IsFalse(isPublished);

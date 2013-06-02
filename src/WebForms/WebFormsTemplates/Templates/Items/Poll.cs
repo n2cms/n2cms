@@ -52,7 +52,7 @@ namespace N2.Templates.Items
         public virtual HttpCookie GetAnsweredCookie(int selectedItem)
         {
             HttpCookie c = new HttpCookie("p" + Question.ID, selectedItem.ToString());
-            c.Expires = DateTime.Now.AddMonths(1);
+            c.Expires = N2.Utility.CurrentTime().AddMonths(1);
             return c;
         }
 

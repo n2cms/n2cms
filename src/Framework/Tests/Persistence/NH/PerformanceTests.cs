@@ -174,7 +174,7 @@ namespace N2.Tests.Persistence.NH
 			if (loggingEvent.MessageObject != null)
 			{
 				GetList().Add(
-					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString(), Time = DateTime.Now });
+					new Row { Caller = AddStack ? GetCaller(new StackTrace()) : "", Sql = loggingEvent.MessageObject.ToString(), Time = N2.Utility.CurrentTime() });
 			}
 		}
 

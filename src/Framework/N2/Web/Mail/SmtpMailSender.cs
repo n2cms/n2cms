@@ -29,12 +29,12 @@ namespace N2.Web.Mail
 
 		protected SmtpClient CreateSmtpClient(string host, int port, string user, string password)
 		{
-            SmtpClient client;
+			SmtpClient client;
 
-            if (string.IsNullOrEmpty(host))
-                client = new SmtpClient();
-            else
-                client = new SmtpClient(host, port);
+			if (string.IsNullOrEmpty(host))
+				client = new SmtpClient();
+			else
+				client = new SmtpClient(host, port);
 
 			if (!string.IsNullOrEmpty(user))
 			{

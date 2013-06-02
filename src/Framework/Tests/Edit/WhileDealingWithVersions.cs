@@ -125,7 +125,7 @@ namespace N2.Tests.Edit
         public void VersionOnly_WhenNewItem_SavesIt_ButUnpublishesIt()
         {
             ComplexContainersItem newItem = new ComplexContainersItem(0, "an item");
-            newItem.Published = DateTime.Now;
+            newItem.Published = N2.Utility.CurrentTime();
 
             mocks.ReplayAll();
 
@@ -152,7 +152,7 @@ namespace N2.Tests.Edit
 
 			Assert.That(persister.Repository.Get(1), Is.EqualTo(newItem));
             Assert.IsNotNull(newItem.Published, "Unpublished item should have been published.");
-            Assert.Greater(newItem.Published, DateTime.Now.AddSeconds(-10));
+            Assert.Greater(newItem.Published, N2.Utility.CurrentTime().AddSeconds(-10));
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace N2.Tests.Edit
 
 			Assert.That(persister.Repository.Get(1), Is.EqualTo(currentMaster));
             Assert.IsNotNull(currentMaster.Published);
-            Assert.Greater(currentMaster.Published, DateTime.Now.AddSeconds(-10));
+            Assert.Greater(currentMaster.Published, N2.Utility.CurrentTime().AddSeconds(-10));
         }
 
         [Test]

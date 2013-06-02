@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using N2.Collections;
-using N2.Linq;
 using N2.Web.Mvc.Html;
-using N2.Persistence.Finder;
 using N2.Engine;
 
 namespace N2.Web.Mvc
@@ -15,24 +10,19 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ViewContentHelper : ContentHelperBase
 	{
-		HtmlHelper html;
-
 		public ViewContentHelper(HtmlHelper html)
-			: base(() => html.ContentEngine(), () => html.CurrentPath())
+			: base(html.ContentEngine, html.CurrentPath)
 		{
-			this.html = html;
+			Html = html;
 		}
 
 		public ViewContentHelper(HtmlHelper html, Func<IEngine> engineGetter, Func<PathData> pathGetter)
-			: base (engineGetter, pathGetter)
+			: base(engineGetter, pathGetter)
 		{
-			this.html = html;
+			Html = html;
 		}
 
-		public HtmlHelper Html
-		{
-			get { return html; }
-		}
+		public HtmlHelper Html { get; private set; }
 
 		public virtual RegisterHelper Register
 		{
@@ -46,9 +36,7 @@ namespace N2.Web.Mvc
 
 		public bool HasValue(string detailName)
 		{
-			return Current.Item != null 
-				&& Current.Item[detailName] != null 
-				&& !("".Equals(Current.Item[detailName]));
+			return Current.Item != null && Current.Item[detailName] != null && !(string.Empty.Equals(Current.Item[detailName]));
 		}
 	}
 

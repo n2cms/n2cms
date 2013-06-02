@@ -77,7 +77,7 @@ namespace N2.Web
 		private readonly object syncLock = new object();
 		private long errorCount;
 		private long errorsThisHour;
-		private int hour = DateTime.Now.Hour;
+		private int hour = N2.Utility.CurrentTime().Hour;
 		private bool handleSqlException;
 
 		public ErrorHandler(IErrorNotifier notifier, IWebContext context, InstallationManager installer, IExceptionFilter exceptionFilter, IMailSender mailSender, 
@@ -147,13 +147,13 @@ namespace N2.Web
 		{
 			lock (syncLock)
 			{
-				if (DateTime.Now.Hour == hour)
+				if (N2.Utility.CurrentTime().Hour == hour)
 				{
 					++errorsThisHour;
 				}
 				else
 				{
-					hour = DateTime.Now.Hour;
+					hour = N2.Utility.CurrentTime().Hour;
 					errorsThisHour = 0;
 				}
 			}

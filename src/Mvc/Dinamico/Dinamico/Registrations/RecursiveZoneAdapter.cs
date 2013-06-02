@@ -12,21 +12,17 @@ namespace Dinamico.Registrations
 	[Adapts(typeof(ContentPage))]
 	public class RecursiveZonesAdapter : PartsAdapter
 	{
-		public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem parentItem, string zoneName, string @interface)
+		public override System.Collections.Generic.IEnumerable<ContentItem> GetParts(ContentItem page, string zoneName, string @interface)
 		{
-			var items = base.GetParts(parentItem, zoneName, @interface);
-			ContentItem grandParentItem = parentItem;
-			if (zoneName.StartsWith("Recursive") && grandParentItem is ContentPage && !(grandParentItem is LanguageIntersection))
-			{
-				if (!parentItem.VersionOf.HasValue)
-				{
-					items = items.Union(GetParts(parentItem.Parent, zoneName, @interface));
-				}
-				else
-				{
-					items = items.Union(GetParts(parentItem.VersionOf.Parent, zoneName, @interface));
-				}
-			}
+			var items = base.GetParts(page, zoneName, @interface);
+
+			var pageParent = page.VersionOf.HasValue
+									  ? (ContentItem)page.VersionOf.Parent
+									  : page.Parent;
+
+			if (pageParent != null && zoneName.StartsWith("Recursive"))
+				return items.Union(GetParts(pageParent, zoneName, @interface));
+
 			return items;
 		}
 	}

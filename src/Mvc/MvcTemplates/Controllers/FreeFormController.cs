@@ -42,7 +42,7 @@ namespace N2.Templates.Mvc.Controllers
 			var mm = new MailMessage(CurrentItem.MailFrom, CurrentItem.MailTo.Replace(";", ","));
 			mm.Subject = CurrentItem.MailSubject;
 			mm.Headers["X-FreeForm-Submitter-IP"] = Request.UserHostName;
-			mm.Headers["X-FreeForm-Submitter-Date"] = DateTime.Now.ToString();
+			mm.Headers["X-FreeForm-Submitter-Date"] = N2.Utility.CurrentTime().ToString();
 			using (var sw = new StringWriter())
 			{
 				sw.WriteLine(CurrentItem.MailBody);

@@ -450,7 +450,7 @@ namespace N2.Extensions.Tests.Linq
 		public void WherePublished_PendingItem_IsNotSelected()
 		{
 			item.State = ContentState.Waiting;
-			item.Published = DateTime.Now.AddSeconds(10);
+			item.Published = N2.Utility.CurrentTime().AddSeconds(10);
 			engine.Persister.Repository.SaveOrUpdate(item);
 			engine.Persister.Repository.Flush();
 
@@ -464,7 +464,7 @@ namespace N2.Extensions.Tests.Linq
 		[Test]
 		public void WherePublished_ExpiredItem_IsNotSelected()
 		{
-			item.Expires = DateTime.Now.AddSeconds(-10);
+			item.Expires = N2.Utility.CurrentTime().AddSeconds(-10);
 			item.State = ContentState.Unpublished;
 			engine.Persister.Repository.SaveOrUpdate(item);
 			engine.Persister.Repository.Flush();

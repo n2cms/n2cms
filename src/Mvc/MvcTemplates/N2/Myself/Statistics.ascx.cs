@@ -39,8 +39,8 @@ namespace N2.Management.Myself
 			lblVersionsRatio.Text = string.Format("{0:F2}", (double)totalCount / (double)itemsCount);
 
 			lblServed.Text = "unknown";
-			lblChangesLastWeek.Text = Engine.Persister.Repository.Count(Parameter.LessOrEqual("Updated", DateTime.Now.AddDays(-7))).ToString();
-				//Find.Items.Where.Updated.Ge(DateTime.Now.AddDays(-7)).Select().Count.ToString();
+			lblChangesLastWeek.Text = Engine.Persister.Repository.Count(Parameter.LessOrEqual("Updated", N2.Utility.CurrentTime().AddDays(-7))).ToString();
+				//Find.Items.Where.Updated.Ge(N2.Utility.CurrentTime().AddDays(-7)).Select().Count.ToString();
 
 			DataBind();
 		}

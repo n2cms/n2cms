@@ -61,7 +61,7 @@ namespace N2.Edit.Web
 			RegisterToolbarSelection();
 			RegisterThemeCss();
 			Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
+			Response.ExpiresAbsolute = N2.Utility.CurrentTime().AddDays(-1);
 			SetupClientConstants();
 			RegisterModalScrollFix();
 

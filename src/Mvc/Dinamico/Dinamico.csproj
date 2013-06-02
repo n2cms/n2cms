@@ -159,6 +159,7 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\LoginForm.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\DelimitedDataDisplay.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\Redirect.cshtml" />
+    <Content Include="Dinamico.wpp.targets" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
@@ -330,6 +331,9 @@
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Management</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

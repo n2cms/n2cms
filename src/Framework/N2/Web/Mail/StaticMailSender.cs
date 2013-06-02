@@ -9,16 +9,16 @@ namespace N2.Web.Mail
 		string host;
 		int port = 25;
 		string user = null;
-        string password = null;
+		string password = null;
 
-        public StaticMailSender()
-        {
-        }
+		public StaticMailSender()
+		{
+		}
 
-        public StaticMailSender(string host)
-        {
-            this.host = host;
-        }
+		public StaticMailSender(string host)
+		{
+			this.host = host;
+		}
 
 		public StaticMailSender(string host, int port)
 			: this(host)

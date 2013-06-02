@@ -10,13 +10,13 @@ using System.Security;
 
 namespace N2.Persistence.Search
 {
-    [Service(typeof(IAsyncIndexer))]
-    public class AsyncIndexer : IAsyncIndexer
-    {
-        IContentIndexer indexer;
-        IPersister persister;
-        IErrorNotifier errors;
-        IWorker worker;
+	[Service(typeof(IAsyncIndexer))]
+	public class AsyncIndexer : IAsyncIndexer
+	{
+		IContentIndexer indexer;
+		IPersister persister;
+		IErrorNotifier errors;
+		IWorker worker;
 		Logger<AsyncIndexer> logger;
 		public int maxErrorsPerWorkItem = 3;
 
@@ -27,35 +27,35 @@ namespace N2.Persistence.Search
 			public int ErrorCount { get; set; }
 		}
 
-        Queue<Work> workQueue = new Queue<Work>();
-        DateTime lastAttempt = DateTime.Now;
-        bool async;
-        bool handleErrors;
-        bool isWorking;
-        string currentWork = "";
+		Queue<Work> workQueue = new Queue<Work>();
+		DateTime lastAttempt = N2.Utility.CurrentTime();
+		bool async;
+		bool handleErrors;
+		bool isWorking;
+		string currentWork = "";
 
-        public TimeSpan RetryInterval { get; set; }
+		public TimeSpan RetryInterval { get; set; }
 
-        public AsyncIndexer(IContentIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
-        {
-            RetryInterval = TimeSpan.FromMinutes(2);
-            this.async = config.Search.AsyncIndexing;
-            this.handleErrors = config.Search.HandleErrors;
+		public AsyncIndexer(IContentIndexer indexer, IPersister persister, IWorker worker, IErrorNotifier errors, DatabaseSection config)
+		{
+			RetryInterval = TimeSpan.FromMinutes(2);
+			this.async = config.Search.AsyncIndexing;
+			this.handleErrors = config.Search.HandleErrors;
 
-            this.indexer = indexer;
-            this.persister = persister;
-            this.worker = worker;
-            this.errors = errors;
-        }
+			this.indexer = indexer;
+			this.persister = persister;
+			this.worker = worker;
+			this.errors = errors;
+		}
 
-        protected void Execute(Work work)
-        {
-            if (handleErrors)
-                WrapActionInErrorHandling(work);
+		protected void Execute(Work work)
+		{
+			if (handleErrors)
+				WrapActionInErrorHandling(work);
 
-            if (!async)
+			if (!async)
 			{
-                work.Action();
+				work.Action();
 				return;
 			}
 
@@ -66,7 +66,7 @@ namespace N2.Persistence.Search
 			}
 
 			ExecuteEnqueuedActionsAsync();
-        }
+		}
 
 		private void ExecuteEnqueuedActionsAsync()
 		{
@@ -117,9 +117,9 @@ namespace N2.Persistence.Search
 			}
 		}
 
-        private void WrapActionInErrorHandling(Work action)
-        {
-            var original = action.Action;
+		private void WrapActionInErrorHandling(Work action)
+		{
+			var original = action.Action;
 			action.Action = () =>
 			{
 				try
@@ -144,25 +144,25 @@ namespace N2.Persistence.Search
 				else if (action.ErrorCount < maxErrorsPerWorkItem)
 					original();
 			};
-        }
+		}
 
 
-        private void AppendError(Work work, Exception ex)
-        {
+		private void AppendError(Work work, Exception ex)
+		{
 			logger.Error("Error while processing " + work.Name);
 			errors.Notify(ex);
-            lock (workQueue)
-            {
+			lock (workQueue)
+			{
 				work.ErrorCount++;
 				if (work.ErrorCount < maxErrorsPerWorkItem)
 					workQueue.Enqueue(work);
 				else
 					logger.WarnFormat("Maximum numer of errors per work item ({0}) reached, dropping work '{1}'", work.ErrorCount, work.Name);
-            }
-        }
+			}
+		}
 
-        private void RetryFailedActions()
-        {
+		private void RetryFailedActions()
+		{
 			lock (workQueue)
 			{
 				if (workQueue.Count == 0)
@@ -170,15 +170,15 @@ namespace N2.Persistence.Search
 
 				if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
 				{
-                    indexer.Unlock();
-                    lastAttempt = DateTime.Now;
+					indexer.Unlock();
+					lastAttempt = N2.Utility.CurrentTime();
 					ExecuteEnqueuedActionsAsync();
 				}
 			}
 		}
 
 		public virtual void ReindexDescendants(int rootID, bool clearBeforeReindex)
-        {
+		{
 			Execute(new Work
 			{
 				Name = "Reindex descendants of #" + rootID,
@@ -190,10 +190,10 @@ namespace N2.Persistence.Search
 					Reindex(rootID, true);
 				}
 			});
-        }
+		}
 
-        public virtual void Reindex(int itemID, bool affectsChildren)
-        {
+		public virtual void Reindex(int itemID, bool affectsChildren)
+		{
 			var itemX = persister.Get(itemID);
 			if (itemX == null)
 				return;
@@ -223,10 +223,10 @@ namespace N2.Persistence.Search
 						}
 					}
 				});
-        }
+		}
 
-        public virtual void Delete(int itemID)
-        {
+		public virtual void Delete(int itemID)
+		{
 			Execute(new Work
 				{
 					Name = "Delete #" + itemID,
@@ -236,16 +236,16 @@ namespace N2.Persistence.Search
 						indexer.Delete(itemID);
 					}
 				});
-        }
+		}
 
-        public IndexStatus GetCurrentStatus()
-        {
-            return new IndexStatus
-            {
-                CurrentWork = currentWork,
-                WorkerCount = isWorking ? 1 : 0,
+		public IndexStatus GetCurrentStatus()
+		{
+			return new IndexStatus
+			{
+				CurrentWork = currentWork,
+				WorkerCount = isWorking ? 1 : 0,
 				QueueSize = workQueue.Count
-            };
-        }
+			};
+		}
 	}
 }
