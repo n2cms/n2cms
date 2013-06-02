@@ -528,6 +528,7 @@
     <Content Include="App_Themes\Web.config" />
     <Content Include="packages.config" />
     <None Include="Content\Galleria\LICENSE" />
+    <Content Include="N2.Templates.Mvc.wpp.targets" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">

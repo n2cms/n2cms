@@ -628,6 +628,7 @@
     <Content Include="App_Themes\n2cms\Menu.skin" />
     <Content Include="App_Themes\Corporate\Menu.skin" />
     <Content Include="App_Themes\Web.config" />
+    <Content Include="N2.Templates.wpp.targets" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
