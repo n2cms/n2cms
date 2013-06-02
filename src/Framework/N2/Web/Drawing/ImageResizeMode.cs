@@ -9,8 +9,8 @@
 		Stretch,
 		/// <summary>Fit the image inside the box.</summary>
 		Fit,
-        /// <summary>Fit the image inside the box best and center it.</summary>
-        FitCenterOnTransparent,
+		/// <summary>Fit the image inside the box best and center it.</summary>
+		FitCenterOnTransparent,
 		/// <summary>Crop portions of the image outside the box</summary>
 		Fill
 	}

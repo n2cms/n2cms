@@ -42,9 +42,9 @@ namespace N2.Web.Drawing
 	/// Resizes an image.
 	/// </summary>
 	[Service]
-    public class ImageResizer
-    {
-	    [Obsolete("Use overload with parameters")]
+	public class ImageResizer
+	{
+		[Obsolete("Use overload with parameters")]
 		public virtual void Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, Stream outputStream)
 		{
 			Resize(inputStream, new ImageResizeParameters(maxWidth, maxHeight, ImageResizeMode.Fit), outputStream);
@@ -64,7 +64,7 @@ namespace N2.Web.Drawing
 
 		public virtual bool Resize(Stream inputStream, ImageResizeParameters parameters, Stream outputStream)
 		{
-            if (inputStream == null) throw new ArgumentNullException("inputStream");
+			if (inputStream == null) throw new ArgumentNullException("inputStream");
 
 			using (Bitmap original = new Bitmap(inputStream))
 			{
@@ -75,7 +75,7 @@ namespace N2.Web.Drawing
 
 		public virtual byte[] GetResizedBytes(Stream imageStream, ImageResizeParameters parameters)
 		{
-            if (imageStream == null) throw new ArgumentNullException("imageStream");
+			if (imageStream == null) throw new ArgumentNullException("imageStream");
 
 			using (Bitmap original = new Bitmap(imageStream))
 			{
@@ -85,105 +85,105 @@ namespace N2.Web.Drawing
 			}
 		}
 
-	    private void Resize(Bitmap original, ImageResizeParameters parameters, Stream output)
-    	{
-    		Bitmap resized;
+		private void Resize(Bitmap original, ImageResizeParameters parameters, Stream output)
+		{
+			Bitmap resized;
 			var mode = parameters.Mode;
 			var maxWidth = parameters.MaxWidth;
 			var maxHeight = parameters.MaxHeight;
 			var quality = parameters.Quality;
 			var srcRect = parameters.SourceRectangle;
-            Rectangle dest;
-            double resizeRatio;
-            int newWidth, newHeight;
+			Rectangle dest;
+			double resizeRatio;
+			int newWidth, newHeight;
 
-            switch (mode)
-            {
-                case ImageResizeMode.Fit:
-                    resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
-				    newWidth = (int)Math.Round(original.Width * resizeRatio);
-				    newHeight = (int)Math.Round(original.Height * resizeRatio);
-				    resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
-                    dest = new Rectangle(Point.Empty, resized.Size);
-                    break;
-                case ImageResizeMode.FitCenterOnTransparent:
-                    resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
-                    newWidth = (int)Math.Round(original.Width * resizeRatio);
-                    newHeight = (int)Math.Round(original.Height * resizeRatio);
-                    int newImageX = (maxWidth < maxHeight) ? 0 : ((int)((maxWidth - (original.Width * resizeRatio)) / 2));
-                    int newImageY = newImageX != 0 ? 0 : ((int)((maxHeight - (original.Height * resizeRatio)) / 2));
-                    resized = new Bitmap((int)maxWidth, (int)maxHeight, PixelFormat.Format32bppArgb);
-                    dest = new Rectangle(newImageX, newImageY, newWidth, newHeight);
-                    break;
-                default:
-                    resized = new Bitmap((int)maxWidth, (int)maxHeight, original.PixelFormat);
-                    dest = new Rectangle(Point.Empty, resized.Size);
-                    break;
-            }
+			switch (mode)
+			{
+				case ImageResizeMode.Fit:
+					resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
+					newWidth = (int)Math.Round(original.Width * resizeRatio);
+					newHeight = (int)Math.Round(original.Height * resizeRatio);
+					resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
+					dest = new Rectangle(Point.Empty, resized.Size);
+					break;
+				case ImageResizeMode.FitCenterOnTransparent:
+					resizeRatio = GetResizeRatio(original, maxWidth, maxHeight);
+					newWidth = (int)Math.Round(original.Width * resizeRatio);
+					newHeight = (int)Math.Round(original.Height * resizeRatio);
+					int newImageX = (maxWidth < maxHeight) ? 0 : ((int)((maxWidth - (original.Width * resizeRatio)) / 2));
+					int newImageY = newImageX != 0 ? 0 : ((int)((maxHeight - (original.Height * resizeRatio)) / 2));
+					resized = new Bitmap((int)maxWidth, (int)maxHeight, PixelFormat.Format32bppArgb);
+					dest = new Rectangle(newImageX, newImageY, newWidth, newHeight);
+					break;
+				default:
+					resized = new Bitmap((int)maxWidth, (int)maxHeight, original.PixelFormat);
+					dest = new Rectangle(Point.Empty, resized.Size);
+					break;
+			}
 
 
-    		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
+			resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
-    		Graphics g = CreateGraphics(original, ref resized);
+			Graphics g = CreateGraphics(original, ref resized);
 
-    		using (g)
-    		{
-    			g.PageUnit = GraphicsUnit.Pixel;
-    			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-    			g.SmoothingMode = SmoothingMode.HighQuality;
-    			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-    			g.CompositingMode = CompositingMode.SourceCopy;
-    			g.CompositingQuality = CompositingQuality.HighQuality;
+			using (g)
+			{
+				g.PageUnit = GraphicsUnit.Pixel;
+				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				g.SmoothingMode = SmoothingMode.HighQuality;
+				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				g.CompositingMode = CompositingMode.SourceCopy;
+				g.CompositingQuality = CompositingQuality.HighQuality;
 
-    			using (ImageAttributes attr = new ImageAttributes())
-    			{
-    				attr.SetWrapMode(WrapMode.TileFlipXY);
+				using (ImageAttributes attr = new ImageAttributes())
+				{
+					attr.SetWrapMode(WrapMode.TileFlipXY);
 
 					var originalSize = srcRect.HasValue 
 						? srcRect.Value.Size 
 						: original.Size;
 
-                    if (mode == ImageResizeMode.Fill)
-                        dest = GetFillDestinationRectangle(originalSize, resized.Size);
+					if (mode == ImageResizeMode.Fill)
+						dest = GetFillDestinationRectangle(originalSize, resized.Size);
 					
 					var src = new Rectangle(0, 0, original.Width, original.Height);
 					if (srcRect.HasValue)
 						src = srcRect.Value;
 
-                    if (mode == ImageResizeMode.FitCenterOnTransparent)
-                        g.Clear(Color.Transparent);
+					if (mode == ImageResizeMode.FitCenterOnTransparent)
+						g.Clear(Color.Transparent);
 
 					g.DrawImage(original, dest, src.X, src.Y, src.Width, src.Height, GraphicsUnit.Pixel, attr);
 				}
 
-                // Use higher quality compression if the original image is jpg. Default is 75L.
-                ImageCodecInfo codec = GetEncoderInfo(original.RawFormat.Guid);
+				// Use higher quality compression if the original image is jpg. Default is 75L.
+				ImageCodecInfo codec = GetEncoderInfo(original.RawFormat.Guid);
 
-                if (codec != null && codec.MimeType.Equals("image/jpeg"))
-                {
-                    EncoderParameters encoderParams = new EncoderParameters(1);
+				if (codec != null && codec.MimeType.Equals("image/jpeg"))
+				{
+					EncoderParameters encoderParams = new EncoderParameters(1);
 					encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, (long)quality);
 
-                    resized.Save(output, codec, encoderParams);                    
-                }
-                else
-                {
-    			    resized.Save(output, original.RawFormat);
-                }
-    		}
-    	}
+					resized.Save(output, codec, encoderParams);                    
+				}
+				else
+				{
+					resized.Save(output, original.RawFormat);
+				}
+			}
+		}
 
-        private ImageCodecInfo GetEncoderInfo(Guid formatID)
-        {
-            // Get image codecs for all image formats
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+		private ImageCodecInfo GetEncoderInfo(Guid formatID)
+		{
+			// Get image codecs for all image formats
+			ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
 
-            // Find the correct image codec
-            for (int i = 0; i < codecs.Length; i++)
-                if (codecs[i].FormatID == formatID)
-                    return codecs[i];
-            return null;
-        }
+			// Find the correct image codec
+			for (int i = 0; i < codecs.Length; i++)
+				if (codecs[i].FormatID == formatID)
+					return codecs[i];
+			return null;
+		}
 
 		private Graphics CreateGraphics(Bitmap original, ref Bitmap resized)
 		{
@@ -198,7 +198,7 @@ namespace N2.Web.Drawing
 				case "image/gif":
 					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 				case "image/png":
-                    if (resized.PixelFormat == PixelFormat.Format1bppIndexed || resized.PixelFormat == PixelFormat.Format4bppIndexed || resized.PixelFormat == PixelFormat.Format8bppIndexed)
+					if (resized.PixelFormat == PixelFormat.Format1bppIndexed || resized.PixelFormat == PixelFormat.Format4bppIndexed || resized.PixelFormat == PixelFormat.Format8bppIndexed)
 						return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
 					return Graphics.FromImage(resized);
 				default:
@@ -258,5 +258,5 @@ namespace N2.Web.Drawing
 				outputStream.Write(buffer, 0, bytesRead);
 			}
 		}
-    }
+	}
 }

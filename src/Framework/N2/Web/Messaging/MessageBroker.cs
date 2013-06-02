@@ -14,10 +14,10 @@ namespace N2.Web.Messaging
 	public class MessageBroker : ISender, IAutoStart
 	{
 		Logger<MessageBroker> logger;
-		private IWorker worker;
-		IChannel channel;
-		JavaScriptSerializer serializer = new JavaScriptSerializer();
-		private ILookup<string, IReceiver> receivers;
+		private readonly IWorker worker;
+		readonly IChannel channel;
+		readonly JavaScriptSerializer serializer = new JavaScriptSerializer();
+		private readonly ILookup<string, IReceiver> receivers;
 
 		public MessageBroker(IChannel channel, IWorker worker, IReceiver[] receivers, Configuration.HostSection config)
 		{
