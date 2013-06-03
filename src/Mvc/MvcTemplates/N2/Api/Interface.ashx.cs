@@ -218,7 +218,7 @@ namespace N2.Management.Api
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write, HiddenBy = "Management" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write, HiddenBy = "Management" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{

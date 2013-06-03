@@ -105,7 +105,7 @@ namespace N2.Edit
 		{
 			var node = new TreeNode
 			{
-				ID = item.ID,
+				ID = item.VersionOf.ID ?? item.ID,
 				Path = item.Path,
 				State = item.State,
 				IconUrl = GetIconUrl(item),
