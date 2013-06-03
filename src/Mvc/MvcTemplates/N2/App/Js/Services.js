@@ -9,21 +9,11 @@
 			click: function (selector) {
 				console.log("click", selector);
 				window.frames.preview.window.location = window.frames.preview.window.jQuery(selector, window.frames.preview.window.document).attr("href");
-			//},
-			//publish: function () {
-			//	this.click(".publish:first");
-			//},
-			//preview: function () {
-			//	this.click(".preview:first");
-			//},
-			//save: function () {
-			//	this.click(".save:first");
-			//},
-			//future: function () {
-			//	this.click(".future:first");
-			//},
-			//unpublish: function () {
-			//	this.click(".unpublish:first");
+			},
+			hideToolbar: function (force) {
+				console.log("HIDE", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
+				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0)
+					window.frames.preview.window.jQuery(".toolbar").hide();
 			}
 		};
 

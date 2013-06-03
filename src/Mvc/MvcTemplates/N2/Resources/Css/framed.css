@@ -9,7 +9,7 @@ a img,
 
 /* toolbar */
 
-.toolbar { position:fixed; top:0; width:100%; height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; }
+.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; }
 	.toolbar .inner { margin:0 10px;}
 	.toolbar a,
 	.toolbar .command { display:block; float:left; height:15px; padding:9px; margin:1px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; }
@@ -64,7 +64,7 @@ a img,
 
 	
 	
-#content { margin:50px 0 0 0; }
+#content { }
 	h1 { margin:1em 10px; }
 	.tabPanel h1 { margin:1em 0; }
 	.panel { margin:0 10px; }

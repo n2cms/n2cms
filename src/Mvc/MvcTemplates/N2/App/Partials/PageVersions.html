@@ -2,7 +2,7 @@
 	<a 
 		target='preview' 
 		title='View page versions' 
-		href='{{Interface.Paths.Management}}Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}' 
+		href='{{evaluateExpression(item.Current.Url)}}' 
 		class='page-action-icon page-action-description' 
 		style='background-image:url(redesign/img/glyphicons-white/glyphicons_057_history.png)'>
 		Versions

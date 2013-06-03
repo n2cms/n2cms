@@ -10,7 +10,7 @@
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
 	 <%--onclick="$(document.body).toggleClass('rightExpanded');"--%>
-		<asp:PlaceHolder runat="server" ID="phPluginArea" /><a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
+		<asp:PlaceHolder runat="server" ID="phPluginArea" />
     </div>
     <n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSavePublish" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
@@ -22,6 +22,7 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
+	<a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
 	<uc1:ItemInfo id="ucInfo" runat="server" />
 	<uc1:RecentVersions id="ucVersions" runat="server" />
 	<uc1:RecentActivity id="ucActivity" runat="server" />
@@ -29,6 +30,7 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+
 <%--  	
 <table>
 	<tr><th>Selected</th><td><%= Selection.SelectedItem %> (<%= Selection.SelectedItem.State %>)</td><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
@@ -87,39 +89,6 @@
     			$(".showZones").click();
 
 			// 
-    	});
-
-    	$(function () {
-    		var actions = [];
-
-    		function create(commandElement) {
-    			return {
-    				Title: $(commandElement).text(),
-    				Id: commandElement.id,
-    				Selector: "#" + commandElement.id,
-    				Href: commandElement.href
-    			};
-    		};
-    		
-    		$(".primary-action").each(function () {
-    			if ($(this).closest(".optionGroup").length)
-    				return;
-
-    			var node = {
-    				Current: create(this),
-    				Children: []
-    			};
-
-    			$(this).siblings(".optionGroup").find(".command").each(function () {
-    				node.Children.push({ Current: create(this) });
-    			});
-
-    			actions.push(node);
-				
-    		});
-    		window.frameActions = actions;
-    		//if (window.top.frameManipulator)
-    		//	window.top.frameManipulator.push(actions);
     	});
 
     </script>

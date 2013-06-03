@@ -298,6 +298,7 @@ function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
 	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
 	$rootScope.$on("preiewloaded", function (scope, e) {
 		var actions = window.frames.preview && window.frames.preview.frameActions;
+		$scope.$parent.manipulator.hideToolbar();
 		if (actions && actions.length) {
 			$scope.$parent.action = actions[0];
 		} else {
