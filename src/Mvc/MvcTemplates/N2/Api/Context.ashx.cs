@@ -19,8 +19,6 @@ namespace N2.Management.Api
 
 		public TreeNode CurrentItem { get; set; }
 
-		public bool NotFound { get; set; }
-
 		public List<string> Flags { get; set; }
 	}
 
@@ -41,7 +39,7 @@ namespace N2.Management.Api
 			var selectedUrl = context.Request["selectedUrl"];
 
 			if (item == null && selectedUrl != null)
-				item = selection.ParseUrl(selectedUrl.ToUrl()[PathData.SelectedQueryKey]);
+				item = selection.ParseSelected(selectedUrl.ToUrl()[PathData.SelectedQueryKey]);
 			
 			if (item != null)
 			{

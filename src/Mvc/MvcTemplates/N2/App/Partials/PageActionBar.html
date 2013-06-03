@@ -8,18 +8,6 @@
 			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'"
 			ng-show="isDisplayable(item)">
-			<page-action-content node="item"></page-action-content>
-			
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
-				<b class="caret"></b>
-			</a>
-
-			<ul class="dropdown-menu" ng-show="item.Children.length">
-				<li ng-repeat="child in item.Children"
-					ng-show="isDisplayable(child)">
-					<page-action-content node="child"></page-action-content>
-				</li>
-			</ul>
 		</li>
 	</ul>
 	<!--<ul class="nav pull-right">

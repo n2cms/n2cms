@@ -13,7 +13,7 @@
 		<asp:PlaceHolder runat="server" ID="phPluginArea" /><a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
     </div>
     <n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSavePublish" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnSavePublish" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
         <asp:HyperLink ID="hlFuturePublish" NavigateUrl="#futurePanel" CssClass="command plain iconed future" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
@@ -90,16 +90,18 @@
     	});
 
     	$(function () {
-    		var options = [];
+    		var actions = [];
 
     		function create(commandElement) {
     			return {
     				Title: $(commandElement).text(),
-    				Action: function () { $(commandElement).click() }
+    				Id: commandElement.id,
+    				Selector: "#" + commandElement.id,
+    				Href: commandElement.href
     			};
     		};
     		
-    		$(".command").each(function () {
+    		$(".primary-action").each(function () {
     			if ($(this).closest(".optionGroup").length)
     				return;
 
@@ -112,10 +114,12 @@
     				node.Children.push({ Current: create(this) });
     			});
 
-    			options.push(node);
+    			actions.push(node);
 				
     		});
-    		console.log("command", options);
+    		window.frameActions = actions;
+    		//if (window.top.frameManipulator)
+    		//	window.top.frameManipulator.push(actions);
     	});
 
     </script>

@@ -26,7 +26,20 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 	$scope.Content = Content;
 	$scope.Security = Security;
 
+	decorate(FrameContext, "refresh", function (ctx) {
+		if (ctx.force) {
+			var parentPathExpr = /((.*)[/])[^/]+[/]/;
+			var parentPath = parentPathExpr.exec(ctx.path) && parentPathExpr.exec(ctx.path)[1];
 
+			var node = findSelectedRecursive($scope.Interface.Content, parentPath);
+			console.log("Reloading ", node);
+			Content.loadChildren(node, function () {
+				var selectedNode = findSelectedRecursive(node, ctx.path);
+				console.log("Reloaded", node, " selecting ", selectedNode);
+				$scope.select(selectedNode);
+			});
+		}
+	});
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
@@ -52,6 +65,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			return;
 		$timeout(function () {
 			Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
+				console.log("Ctx loaded", ctx, node);
 				angular.extend($scope.Context, ctx);
 			});
 		}, 200);
@@ -167,16 +181,22 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	$scope.node = $scope.child;
 	$scope.toggle = function (node) {
 		if (!node.Expanded && !node.Children.length) {
-			node.Loading = true;
-			Content.children({ selected: node.Current.Path }, function (data) {
-				node.Children = data.Children;
-				node.Loading = false;
-				if (data.IsPaged)
-					node.IsPaged = true;
-			});
+			Content.loadChildren(node);
 		}
 		node.Expanded = !node.Expanded;
 	};
+	//	function (node) {
+	//	if (!node.Expanded && !node.Children.length) {
+	//		node.Loading = true;
+	//		Content.children({ selected: node.Current.Path }, function (data) {
+	//			node.Children = data.Children;
+	//			node.Loading = false;
+	//			if (data.IsPaged)
+	//				node.IsPaged = true;
+	//		});
+	//	}
+	//	node.Expanded = !node.Expanded;
+	//};
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
@@ -204,10 +224,10 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 	$scope.isDisplayable = function (item) {
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission))
 			return false;
-		if (item.Current.DisplayedBy)
-			return $scope.isFlagged(item.Current.DisplayedBy);
 		if (item.Current.HiddenBy)
 			return !$scope.isFlagged(item.Current.HiddenBy);
+		if (item.Current.DisplayedBy)
+			return $scope.isFlagged(item.Current.DisplayedBy);
 		return true;
 	};
 	
@@ -274,8 +294,16 @@ function PagePublishCtrl($scope, $rootScope) {
 	});
 }
 
-function EditPublishCtrl($scope, FrameManipulator) {
-	$scope.manipulator = FrameManipulator;
+function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
+	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
+	$rootScope.$on("preiewloaded", function (scope, e) {
+		var actions = window.frames.preview && window.frames.preview.frameActions;
+		if (actions && actions.length) {
+			$scope.$parent.action = actions[0];
+		} else {
+			delete $scope.$parent.action;
+		}
+	});
 };
 
 function NotifyCtrl($scope, $timeout, Notify) {

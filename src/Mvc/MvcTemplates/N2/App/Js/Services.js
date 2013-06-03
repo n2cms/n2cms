@@ -4,45 +4,59 @@
 		return res;
 	});
 
-	module.factory('FrameManipulator', function () {
-		var manipulator = {
-			click: function (className) {
-				window.frames.preview.window.location = window.frames.preview.window.jQuery(className, window.frames.preview.window.document).attr("href");
-			},
-			publish: function () {
-				manipulator.click(".publish:first");
-			},
-			preview: function () {
-				manipulator.click(".preview:first");
-			},
-			save: function () {
-				manipulator.click(".save:first");
-			},
-			future: function () {
-				manipulator.click(".future:first");
-			},
-			unpublish: function () {
-				manipulator.click(".unpublish:first");
+	module.factory('FrameManipulatorFactory', function () {
+		var frameManipulator = {
+			click: function (selector) {
+				console.log("click", selector);
+				window.frames.preview.window.location = window.frames.preview.window.jQuery(selector, window.frames.preview.window.document).attr("href");
+			//},
+			//publish: function () {
+			//	this.click(".publish:first");
+			//},
+			//preview: function () {
+			//	this.click(".preview:first");
+			//},
+			//save: function () {
+			//	this.click(".save:first");
+			//},
+			//future: function () {
+			//	this.click(".future:first");
+			//},
+			//unpublish: function () {
+			//	this.click(".unpublish:first");
 			}
 		};
+
+		function manipulator(scope) {
+			window.frameManipulator = this;
+
+			this.scope = scope;
+
+			scope.$on("$destroy", function () {
+				delete window.frameManipulator;
+			});
+			return this;
+		};
+		manipulator.prototype = frameManipulator;
+
 		return manipulator;
 	});
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
-			refresh: function () {
-				console.log("refresh", arguments);
-			},
-			select: function () {
+			refresh: function (ctx) {
 				console.log("select", arguments);
 			},
+			select: function () {
+				//console.log("select", arguments);
+			},
 			unselect: function(){
-				console.log("unselect", arguments);
+				//console.log("unselect", arguments);
 			},
 			update: function () {
-				console.log("update", arguments);
+				//console.log("update", arguments);
 			},
 			hasTop: function () {
-				console.log("hasTop", arguments);
+				//console.log("hasTop", arguments);
 				return true;
 			}
 		};
@@ -56,6 +70,19 @@
 			move: { method: 'POST', params: { target: 'move' } },
 			sort: { method: 'POST', params: { target: 'sort' } }
 		});
+
+		res.loadChildren = function (node, callback) {callback
+			if (!node)
+				return;
+
+			node.Loading = true;
+			res.children({ selected: node.Current.Path }, function (data) {
+				node.Children = data.Children;
+				delete node.Loading;
+				node.IsPaged = data.IsPaged;
+				callback && callback(node);
+			});
+		};
 
 		res.states = {
 			None: 0,

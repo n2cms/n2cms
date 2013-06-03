@@ -95,7 +95,7 @@ a { text-decoration: none; color: #000; }
 			#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 10px 50%; padding-left:40px; }
 			#page-action-bar > ul > li .page-action a:hover { background-color: #3aaee3; }
 
-			#page-action-bar > ul > li .dropdown-toggle { line-height: 22px; padding: 8px 4px; float:left; margin-left:-5px; }
+			#page-action-bar > ul > li .dropdown-toggle { line-height: 22px; padding: 8px 4px; float:left; }
 			#page-action-bar > ul > li .dropdown-toggle .caret { border-top-color:#fff; bordr-bottom-color:fff; }
 			#page-action-bar > ul > li .dropdown-toggle:hover,
 			#page-action-bar > ul > li.open .dropdown-toggle { background-color:#3aaee3 }

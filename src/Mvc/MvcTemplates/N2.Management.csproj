@@ -101,7 +101,7 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
-    <Content Include="N2\App\Partials\EditPublish.html" />
+    <Content Include="N2\App\Partials\FrameAction.html" />
     <Content Include="N2\App\Partials\PageContextMenu.html" />
     <Content Include="N2\App\Partials\PagePublish.html" />
     <Content Include="N2\App\Partials\PageAdd.html" />
