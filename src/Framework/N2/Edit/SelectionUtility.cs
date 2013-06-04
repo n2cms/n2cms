@@ -107,8 +107,6 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(selected))
 				return null;
 			var selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
-			if (string.Equals(request(WebExtensions.ViewPreferenceQueryString), WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
-				selectedItem = TryApplyDraft(selectedItem);
 			return selectedItem;
 		}
 
@@ -118,10 +116,17 @@ namespace N2.Edit
 				return null;
 
 			var selectedItem = Engine.UrlParser.Parse(selectedUrl);
+			int versionIndex;
+			if (selectedItem == null)
+				selectedItem = ParseSelected(selectedUrl[PathData.SelectedQueryKey]);
+
 			if (selectedItem == null)
 				return SelectFile(selectedUrl);
+			else if (int.TryParse(selectedUrl[PathData.VersionIndexQueryKey], out versionIndex))
+				return Engine.Resolve<IVersionManager>().GetVersion(selectedItem, versionIndex);
 			else if (string.Equals(selectedUrl[WebExtensions.ViewPreferenceQueryString], WebExtensions.DraftQueryValue, StringComparison.InvariantCultureIgnoreCase))
 				return TryApplyDraft(selectedItem);
+
 			return selectedItem;
 		}
 

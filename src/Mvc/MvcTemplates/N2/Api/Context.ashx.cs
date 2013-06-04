@@ -39,7 +39,7 @@ namespace N2.Management.Api
 			var selectedUrl = context.Request["selectedUrl"];
 
 			if (item == null && selectedUrl != null)
-				item = selection.ParseSelected(selectedUrl.ToUrl()[PathData.SelectedQueryKey]);
+				item = selection.ParseUrl(selectedUrl);
 			
 			if (item != null)
 			{

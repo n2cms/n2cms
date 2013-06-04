@@ -71,6 +71,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		}, 200);
 	}
 
+	$scope.isFlagged = function (flag) {
+		return $scope.Context.Flags.indexOf(flag) >= 0;
+	};
+
 	$scope.$watch("Context.ContextMenu", function (menu) {
 		console.log("context menu", menu);
 	});
@@ -217,10 +221,6 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 			];
 	});
 
-	$scope.isFlagged = function (flag) {
-		return $scope.Context.Flags.indexOf(flag) >= 0;
-	};
-
 	$scope.isDisplayable = function (item) {
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission))
 			return false;
@@ -296,13 +296,15 @@ function PagePublishCtrl($scope, $rootScope) {
 
 function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
 	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
-	$rootScope.$on("preiewloaded", function (scope, e) {
+	$rootScope.$on("contextchanged", function (scope, e) {
+		delete $scope.$parent.action;
+		if (!$scope.isFlagged("Management"))
+			return;
+
 		var actions = window.frames.preview && window.frames.preview.frameActions;
-		$scope.$parent.manipulator.hideToolbar();
 		if (actions && actions.length) {
+			$scope.$parent.manipulator.hideToolbar();
 			$scope.$parent.action = actions[0];
-		} else {
-			delete $scope.$parent.action;
 		}
 	});
 };
