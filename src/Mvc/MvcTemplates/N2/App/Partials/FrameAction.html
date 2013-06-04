@@ -1,10 +1,9 @@
 ﻿<div class='page-action' ng-controller="FrameActionCtrl" ng-show="action">
-	<a 
-		ng-click="manipulator.click(action.Current.Selector)"
-		ng-class="{ 'page-action-icon': action.Current.IconUrl }"
+	<a href="{{action.Current.Url}}"
 		target="{{action.Current.Target}}"
-		href="{{action.Current.Url}}"
+		ng-click="manipulator.click(action.Current.Selector)"
 		x-background-image="action.Current.IconUrl">
+		<i class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></i>
 		{{action.Current.Title}}
 	</a>
 </div>
@@ -16,9 +15,10 @@
 <ul class="dropdown-menu" ng-show="action.Children.length">
 	<li ng-repeat="child in action.Children">
 		<a ng-click="manipulator.click(child.Current.Selector)"
-			ng-class="{ 'page-action-icon': action.IconUrl }"
 			target="{{child.Current.Target}}"
-			href="{{child.Current.Url}}"
-			x-background-image="child.Current.IconUrl">{{child.Current.Title}}</a>
+			href="{{child.Current.Url}}">
+			<i class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></i>
+			{{child.Current.Title}}
+		</a>
 	</li>
 </ul>

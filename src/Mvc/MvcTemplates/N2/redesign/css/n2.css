@@ -87,12 +87,18 @@ a { text-decoration: none; color: #000; }
 
 
 #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; }
+	#page-action-bar i.ico { font-size:28px; vertical-align:middle; position:relative; top:-5px; }
+		#page-action-bar .dropdown-menu i.ico { top:0; font-size:14px; } 
+	#page-action-bar .page-action-description > i.ico { top:3px; margin-right:5px; float:left; }
+	#page-action-bar i.ico-custom { background:transparent none no-repeat 50% 50%; height:32px; width:32px; display:inline-block; }
+		#page-action-bar .dropdown-menu i.ico-custom { height:16px; width:16px; display:inline-block; }
+	/*#page-action-bar .page-action-description i.ico { margin-top:0; }*/
 	#page-action-bar > ul { white-space:nowrap; }
 		#page-action-bar > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
 			#page-action-bar > ul > li .page-action > a { display:block; height: 39px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; }
-				#page-action-bar > ul > li .page-action a span { text-transform: none; }
-			#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; }
-			#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 10px 50%; padding-left:40px; }
+				#page-action-bar > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
+		#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; }
+			/*#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 10px 50%; padding-left:40px; }*/
 			#page-action-bar > ul > li .page-action a:hover { background-color: #3aaee3; }
 
 			#page-action-bar > ul > li .dropdown-toggle { line-height: 22px; padding: 8px 4px; float:left; }
@@ -107,8 +113,7 @@ a { text-decoration: none; color: #000; }
 		#page-action-bar li.iconed a { float: left; height: 35px; margin-top: 2px; }
 	#page-action-bar a { color: #fff; }
 		#page-action-bar a:hover { text-decoration: none; }
-	#page-action-bar span { font-size: 11px; display: block; font-family: Arial; }
-
+	
 #page-action-bar.draft { background-color: #FF8822; }
 	#page-action-bar.draft > ul > li .page-action { border-left-color: #FF9933 }
 	#page-action-bar.draft > ul > li .page-action a:hover,

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="redesign/css/n2.css">
 
     <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
+
 </head>
 <body ng-controller="ManagementCtrl" ng-app="n2"><%-- x-context-menu-trigger=".item">--%>
     <div id="top-area">
@@ -56,6 +57,7 @@
 	<script src="App/Js/Directives.js"></script>
 	<link href="Resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
 	<script src="Resources/bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
 	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
 	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
 	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>

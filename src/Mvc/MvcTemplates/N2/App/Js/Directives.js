@@ -52,15 +52,14 @@
 			replace: true,
 			scope: true,
 			template: "<div class='page-action'>\
-	<a ng-class=\"{ 'page-action-icon': node.Current.IconUrl, 'page-action-description': node.Current.Description }\" \
+	<a ng-class=\"{ 'page-action-description': node.Current.Description }\" \
 		ng-click='evalExpression(node.Current.ClientAction)' \
 		href='{{evaluateExpression(node.Current.Url)}}' \
 		target='{{evaluateExpression(node.Current.Target)}}'\
-		x-background-image='node.Current.IconUrl' \
 		title='{{evaluateExpression(node.Current.ToolTip)}}'>\
-		<i ng-show='node.Current.IconClass' class='{{node.Current.IconClass}}'></i>\
+		<i class='ico' ng-show='node.Current.IconClass || node.Current.IconUrl' ng-class='node.Current.IconClass || \"ico-custom\"' x-background-image='node.Current.IconUrl'></i>\
 		{{evaluateExpression(node.Current.Title)}}\
-		<span ng-show='node.Current.Description'>{{evaluateExpression(node.Current.Description)}}</span>\
+		<span ng-show='node.Current.Description'><br/>{{evaluateExpression(node.Current.Description)}}</span>\
 	</a>\
 </div>",
 			link: function compile(scope, element, attrs) {

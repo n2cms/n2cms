@@ -1,12 +1,11 @@
 ﻿<div class='page-action'>
-	<a 
+	<a href="{{evaluateExpression(item.Current.Url)}}"
 		target='preview' 
 		title='View page preview' 
-		href="{{evaluateExpression(item.Current.Url)}}"
-		class='page-action-icon page-action-description' 
-		style='background-image:url(redesign/img/glyphicons-white/glyphicons_370_globe_af.png)'>
+		class='page-action-description'>
+		<i class='ico icon-globe'></i>
 		Language
-		<span>{{Context.Language.LanguageTitle}}</span>
+		<span><br />{{Context.Language.LanguageTitle}}</span>
 	</a>
 </div>
 

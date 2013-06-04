@@ -210,23 +210,25 @@ namespace N2.Management.Api
 			{
 				Children = new Node<InterfaceMenuItem>[]
 				{
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Preview, IconUrl = "redesign/img/glyphicons-white/glyphicons_051_eye_open.png" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Url = "{{Context.CurrentItem.PreviewUrl}}", Target = Targets.Preview, IconClass = "icon-eye-open" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", Target = Targets.Top, Url = mgmt + "/?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", Target = Targets.Top, Url = mgmt + "/?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", Target = Targets.Preview, Url = mgmt + "/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Fullscreen", IconClass = "icon-fullscreen", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View latest drafts", IconClass = "icon-fast-forward", Target = Targets.Top, Url = mgmt + "/?view=draft&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "View published versions", IconClass = "icon-play-sign", Target = Targets.Top, Url = mgmt + "/?view=published&{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Show links", IconClass = "icon-link", Target = Targets.Preview, Url = mgmt + "/Content/LinkTracker/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}" }),
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-white/glyphicons_150_edit.png", RequiredPermission = Permission.Write, HiddenBy = "Management" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { IconClass = "icon-trash", ClientAction = "dispose()", ToolTip = "Throw selected item", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", IconClass = "icon-edit-sign", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", RequiredPermission = Permission.Write, HiddenBy = "Management" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_150_edit.png", RequiredPermission = Permission.Write }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", IconUrl = "redesign/img/glyphicons-black/glyphicons_154_more_windows.png", RequiredPermission = Permission.Write }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", Target = Targets.Preview, Url = mgmt + "/Content/Security/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", IconUrl = "redesign/img/glyphicons-black/glyphicons_203_lock.png", RequiredPermission = Permission.Administer }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit {{Context.CurrentItem.Title}}", IconClass = "icon-edit", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts", IconClass = "icon-th-large", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", IconClass = "icon-lock", Target = Targets.Preview, Url = mgmt + "/Content/Security/Default.aspx?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", RequiredPermission = Permission.Administer }),
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", Url = mgmt + "/Content/Versions/?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),

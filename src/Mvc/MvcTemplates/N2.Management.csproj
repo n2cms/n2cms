@@ -930,6 +930,11 @@
     <Content Include="N2\Resources\Css\jquery.multiselect.filter.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.dialog.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.full.css" />
+    <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.css" />
+    <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.min.css" />
+    <Content Include="N2\Resources\font-awesome\css\font-awesome.css" />
+    <Content Include="N2\Resources\font-awesome\css\font-awesome.min.css" />
+    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.svg" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\animated-overlay.gif" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\css\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1367,6 +1372,10 @@
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.sortable.jquery.json" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.widget.jquery.json" />
     <Content Include="N2\Resources\bootstrap\img\Thumbs.db" />
+    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.eot" />
+    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.ttf" />
+    <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.woff" />
+    <Content Include="N2\Resources\font-awesome\font\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -1723,6 +1732,7 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>
       <SubType>Code</SubType>
