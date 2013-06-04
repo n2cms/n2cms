@@ -9,6 +9,7 @@ using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace N2.Management.Api
@@ -48,10 +49,13 @@ namespace N2.Management.Api
 						case "/move":
 							Move(accessor);
 							break;
+						case "/delete":
+							Delete(context);
+							break;
 					}
 					break;
 				case "DELETE":
-					Delete();
+					Delete(context);
 					break;
 			}
 		}
@@ -71,7 +75,7 @@ namespace N2.Management.Api
 			}.ToJson(context.Response.Output);
 		}
 
-		private void Delete()
+		private void Delete(HttpContext context)
 		{
 			var item = selection.ParseSelectionFromRequest();
 			var ex = engine.IntegrityManager.GetDeleteException(item);
@@ -79,6 +83,21 @@ namespace N2.Management.Api
 				throw ex;
 
 			engine.Persister.Delete(item);
+
+			var deleted = engine.Persister.Get(item.ID);
+			
+			context.Response.StatusCode = (int)HttpStatusCode.OK;
+			if (deleted != null)
+				new
+				{
+					RemovedPermanently = false,
+					Current = engine.GetContentAdapter<NodeAdapter>(deleted).GetTreeNode(deleted)
+				}.ToJson(context.Response.Output);
+			else
+				new
+				{
+					RemovedPermanently = true
+				}.ToJson(context.Response.Output);
 		}
 
 		private void Move(Func<string, string> request)

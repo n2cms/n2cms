@@ -22,22 +22,26 @@ function decorate(obj, name, callback) {
 	};
 };
 
+function reloadSiblings($scope, Content, path) {
+	var parentPathExpr = /((.*)[/])[^/]+[/]/;
+	var parentPath = parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];
+
+	var node = findSelectedRecursive($scope.Interface.Content, parentPath);
+	console.log("Reloading ", node);
+	Content.loadChildren(node, function () {
+		var selectedNode = findSelectedRecursive(node, path);
+		console.log("Reloaded", node, " selecting ", selectedNode);
+		$scope.select(selectedNode);
+	});
+}
+
 function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security, FrameContext) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		if (ctx.force) {
-			var parentPathExpr = /((.*)[/])[^/]+[/]/;
-			var parentPath = parentPathExpr.exec(ctx.path) && parentPathExpr.exec(ctx.path)[1];
-
-			var node = findSelectedRecursive($scope.Interface.Content, parentPath);
-			console.log("Reloading ", node);
-			Content.loadChildren(node, function () {
-				var selectedNode = findSelectedRecursive(node, ctx.path);
-				console.log("Reloaded", node, " selecting ", selectedNode);
-				$scope.select(selectedNode);
-			});
+			reloadSiblings($scope, Content, ctx.path);
 		}
 	});
 
@@ -236,7 +240,14 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 	}
 }
 
-function PageActionCtrl($scope) {
+function PageActionCtrl($scope, Content) {
+	$scope.dispose = function () {
+		Content.delete({ selected: $scope.Context.CurrentItem.Path }, function () {
+			reloadSiblings($scope, Content, $scope.Context.CurrentItem.Path);
+			console.log("done");
+		});
+		console.log("dispose", arguments);
+	}
 }
 
 function PreviewCtrl($scope) {
@@ -294,9 +305,9 @@ function PagePublishCtrl($scope, $rootScope) {
 	});
 }
 
-function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
+function FrameActionCtrl($scope, FrameManipulatorFactory) {
 	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
-	$rootScope.$on("contextchanged", function (scope, e) {
+	$scope.$on("contextchanged", function (scope, e) {
 		delete $scope.$parent.action;
 		if (!$scope.isFlagged("Management"))
 			return;

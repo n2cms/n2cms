@@ -48,6 +48,8 @@
 			hasTop: function () {
 				//console.log("hasTop", arguments);
 				return true;
+			},
+			toolbarSelect: function () {
 			}
 		};
 		return window.top.n2ctx;
@@ -58,7 +60,8 @@
 			children: { method: 'GET', params: { target: 'children' } },
 			search: { method: 'GET', params: { target: 'search' } },
 			move: { method: 'POST', params: { target: 'move' } },
-			sort: { method: 'POST', params: { target: 'sort' } }
+			sort: { method: 'POST', params: { target: 'sort' } },
+			'delete': { method: 'POST', params: { target: 'delete' } }
 		});
 
 		res.loadChildren = function (node, callback) {callback
