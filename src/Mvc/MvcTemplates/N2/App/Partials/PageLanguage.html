@@ -1,5 +1,5 @@
 ﻿<div class='page-action'>
-	<a href="{{evaluateExpression(item.Current.Url)}}"
+	<a href='{{evaluateExpression(item.Current.Url)}}'
 		target='preview' 
 		title='View page preview' 
 		class='page-action-description'>
@@ -10,8 +10,8 @@
 </div>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-	ng-click='loadLanguages(item)'
-	ng-controller='LanguageCtrl'>
+	ng-controller='LanguageCtrl'
+	ng-click='loadLanguages(item)'>
 	<b class="caret"></b>
 </a>
 

@@ -14,13 +14,19 @@
 
 </div>
 
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-controller='VersionsCtrl'
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+	ng-controller='VersionsCtrl'
 	ng-click='loadVersions(item)'>
 	<b class="caret"></b>
 </a>
 
 <ul class="dropdown-menu versions" ng-show="item.Children.length">
 	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted  }">
-		<page-action-content node="child"></page-action-content>
+		<div class="page-action">
+			<a href="{{child.Current.PreviewUrl}}" target="preview">
+				<i class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class="child.Current.IconClass || 'ico-custom'" x-background-image='child.Current.IconUrl'></i>
+				{{child.Current.VersionIndex}}: {{child.Current.Title}}
+			</a>
+		</div>
 	</li>
 </ul>

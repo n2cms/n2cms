@@ -227,15 +227,15 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 
 	$scope.isDisplayable = function (item) {
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission)) {
-			console.log("unauthorized", item);
+			//console.log("unauthorized", item);
 			return false;
 		}
 		if (item.Current.HiddenBy) {
-			console.log("hidden by", item.Current.HiddenBy, item);
+			//console.log("hidden by", item.Current.HiddenBy, item);
 			return !$scope.isFlagged(item.Current.HiddenBy);
 		}
 		if (item.Current.DisplayedBy) {
-			console.log("displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
+			//console.log("displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
 			return $scope.isFlagged(item.Current.DisplayedBy);
 		}
 		return true;
