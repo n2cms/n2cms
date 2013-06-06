@@ -7,6 +7,7 @@
 	<asp:PlaceHolder runat="server">
 		<link href="<%=ResolveUrl("~/App_Themes/" + (Start != null ? Start.Theme : "Default") + "/Style.css")%>" type="text/css" rel="stylesheet" />
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
+		<%= Html.Resources().JQuery() %>
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>

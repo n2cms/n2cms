@@ -20,8 +20,6 @@ namespace N2.Templates.Mvc.Views.Shared
 
 		protected override void OnInit(EventArgs e)
 		{
-			N2.Resources.Register.JQuery(Page);
-
 			ViewPage view = Page as ViewPage;
 			if (view != null)
 				Html = view.Html;
