@@ -82,7 +82,7 @@ directive.jsFiddle = function(getEmbeddedTemplate, escape, script) {
             fields.css) +
           hiddenField('html', fields.html) +
           hiddenField('js', fields.js) +
-          '<button class="btn btn-primary"><i class="icon-white icon-pencil"></i> Edit Me</button>' +
+          '<button class="btn btn-primary"><i class="n2-icon-white icon-pencil"></i> Edit Me</button>' +
           '</form>');
 
       function hiddenField(name, value) {

@@ -38,6 +38,7 @@ namespace N2.Edit
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Write)]
 	[ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
+		CssClass = "complementary",
 		RequiredPermission = Permission.Write)]
 	public partial class New : Web.EditPage
     {

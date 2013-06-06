@@ -21,7 +21,10 @@ namespace N2.Web.UI.WebControls
 			if (context.HttpContext.Request.QueryString["edit"] == "drag")
 				link.CssClass += " toggled";
 			else
+			{
+				link.CssClass += " complementary";
 				link.NavigateUrl = link.NavigateUrl.ToUrl().AppendQuery("edit=drag");
+			}
 			return link;
 		}
 	}
