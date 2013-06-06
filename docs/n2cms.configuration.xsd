@@ -693,6 +693,7 @@
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+						<xs:attribute name="legacy" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="web">

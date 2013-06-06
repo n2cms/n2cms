@@ -147,5 +147,13 @@ namespace N2.Configuration
 			get { return (CollaborationElement)base["collaboration"]; }
 			set { base["collaboration"] = value; }
 		}
+
+		/// <summary>Display legacy management interface.</summary>
+		[ConfigurationProperty("legacy")]
+		public bool Legacy
+		{
+			get { return (bool)base["legacy"]; }
+			set { base["legacy"] = value; }
+		}
 	}
 }
