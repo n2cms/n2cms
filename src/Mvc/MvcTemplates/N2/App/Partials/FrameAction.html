@@ -3,7 +3,7 @@
 		target="{{action.Current.Target}}"
 		ng-click="manipulator.click(action.Current.Selector)"
 		x-background-image="action.Current.IconUrl">
-		<i class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></i>
+		<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
 		{{action.Current.Title}}
 	</a>
 </div>
@@ -17,7 +17,7 @@
 		<a ng-click="manipulator.click(child.Current.Selector)"
 			target="{{child.Current.Target}}"
 			href="{{child.Current.Url}}">
-			<i class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></i>
+			<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></b>
 			{{child.Current.Title}}
 		</a>
 	</li>

@@ -4,7 +4,7 @@
 		href='{{evaluateExpression(node.Current.Url)}}' 
 		target='{{evaluateExpression(node.Current.Target)}}'
 		title='{{evaluateExpression(node.Current.ToolTip)}}'>
-		<i class='ico' ng-show='node.Current.IconClass || node.Current.IconUrl' ng-class='node.Current.IconClass || "ico-custom"' x-background-image='node.Current.IconUrl'></i>
+		<b class='ico' ng-show='node.Current.IconClass || node.Current.IconUrl' ng-class='node.Current.IconClass || "ico-custom"' x-background-image='node.Current.IconUrl'></b>
 		{{evaluateExpression(node.Current.Title)}}
 		<span ng-show='node.Current.Description'><br/>{{evaluateExpression(node.Current.Description)}}</span>
 	</a>

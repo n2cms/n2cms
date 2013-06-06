@@ -319,7 +319,7 @@ function FrameActionCtrl($scope, FrameManipulatorFactory) {
 			return;
 
 		var actions = window.frames.preview && window.frames.preview.frameActions;
-		if (actions && actions.length) {
+		if (actions) {
 			$scope.$parent.manipulator.hideToolbar();
 			$scope.$parent.action = actions[0];
 		}

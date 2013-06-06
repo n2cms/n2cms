@@ -24,7 +24,7 @@
 	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted  }">
 		<div class="page-action">
 			<a href="{{child.Current.PreviewUrl}}" target="preview">
-				<i class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class="child.Current.IconClass || 'ico-custom'" x-background-image='child.Current.IconUrl'></i>
+				<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class="child.Current.IconClass || 'ico-custom'" x-background-image='child.Current.IconUrl'></b>
 				{{child.Current.VersionIndex}}: {{child.Current.Title}}
 			</a>
 		</div>

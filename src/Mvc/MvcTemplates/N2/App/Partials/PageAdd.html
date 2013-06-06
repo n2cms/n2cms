@@ -2,7 +2,7 @@
 	<a href='{{Interface.Paths.Create}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}'
 		target='preview' 
 		title='Add' >
-		<i class='ico icon-plus-sign'></i>
+		<b class='ico icon-plus-sign'></b>
 	</a>
 </div>
 
@@ -15,7 +15,7 @@
 	<li ng-repeat="child in item.Children">
 		<div class="page-action">
 			<a target="preview" href="{{Interface.Paths.Edit}}?{{Interface.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}" class="page-action-description">
-				<i class='ico' ng-show='child.IconClass || child.IconUrl' ng-class="child.IconClass || 'ico-custom'" x-background-image='child.IconUrl'></i>
+				<b class='ico' ng-show='child.IconClass || child.IconUrl' ng-class="child.IconClass || 'ico-custom'" x-background-image='child.IconUrl'></b>
 				{{child.Title}}
 				<span><br />{{child.Description}}</span>
 			</a>
