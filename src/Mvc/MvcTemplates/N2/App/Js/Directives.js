@@ -51,17 +51,18 @@
 			restrict: "E",
 			replace: true,
 			scope: true,
-			template: "<div class='page-action'>\
-	<a ng-class=\"{ 'page-action-description': node.Current.Description }\" \
-		ng-click='evalExpression(node.Current.ClientAction)' \
-		href='{{evaluateExpression(node.Current.Url)}}' \
-		target='{{evaluateExpression(node.Current.Target)}}'\
-		title='{{evaluateExpression(node.Current.ToolTip)}}'>\
-		<i class='ico' ng-show='node.Current.IconClass || node.Current.IconUrl' ng-class='node.Current.IconClass || \"ico-custom\"' x-background-image='node.Current.IconUrl'></i>\
-		{{evaluateExpression(node.Current.Title)}}\
-		<span ng-show='node.Current.Description'><br/>{{evaluateExpression(node.Current.Description)}}</span>\
-	</a>\
-</div>",
+			templateUrl: 'App/Partials/PageActionLink.html',
+//			template: "<div class='page-action'>\
+//	<a ng-class=\"{ 'page-action-description': node.Current.Description }\" \
+//		ng-click='evalExpression(node.Current.ClientAction)' \
+//		href='{{evaluateExpression(node.Current.Url)}}' \
+//		target='{{evaluateExpression(node.Current.Target)}}'\
+//		title='{{evaluateExpression(node.Current.ToolTip)}}'>\
+//		<i class='ico' ng-show='node.Current.IconClass || node.Current.IconUrl' ng-class='node.Current.IconClass || \"ico-custom\"' x-background-image='node.Current.IconUrl'></i>\
+//		{{evaluateExpression(node.Current.Title)}}\
+//		<span ng-show='node.Current.Description'><br/>{{evaluateExpression(node.Current.Description)}}</span>\
+//	</a>\
+//</div>",
 			link: function compile(scope, element, attrs) {
 				scope.$watch(attrs.node, function (node) {
 					scope.node = node;

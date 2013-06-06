@@ -90,11 +90,12 @@ a { text-decoration: none; color: #000; }
 	#page-action-bar > ul { white-space:nowrap; }
 		#page-action-bar > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
 			#page-action-bar > ul > li .page-action > a { display:block; height: 39px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; }
-				#page-action-bar > ul > li .page-action a i.ico { font-size:28px; line-height:14px; position:relative; top:4px; }
+				#page-action-bar > ul > li.primary-action > .page-action > a > i.ico { font-size:28px; line-height:14px; position:relative; top:4px; }
 				#page-action-bar > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
 			#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; padding-left:42px; position:relative; }
-				#page-action-bar > ul > li .page-action a.page-action-description > i.ico { position:absolute; left: 10px; top:15px; }
-					#page-action-bar > ul > li .dropdown-menu .page-action a i.ico { top:0; font-size:14px; vertical-align:middle } 
+				#page-action-bar > ul > li.primary-action .page-action a.page-action-description > i.ico { position:absolute; left: 10px; top:15px; }
+					#page-action-bar > ul > li .dropdown-menu .page-action a i.ico { font-size:14px; vertical-align:middle; } 
+					/*#page-action-bar > ul > li .dropdown-menu .page-action a i.ico { font-size:14px; vertical-align:middle; position:absolute; }*/ 
 				#page-action-bar > ul > li .page-action a i.ico-custom { background:transparent none no-repeat 50% 50%; height:32px; width:32px; display:inline-block; }
 					#page-action-bar > ul > li .page-action a i.ico-custom { height:16px; width:16px; display:inline-block; }
 			/*#page-action-bar > ul > li .page-action a.page-action-icon { background: transparent none no-repeat 10px 50%; padding-left:40px; }*/
