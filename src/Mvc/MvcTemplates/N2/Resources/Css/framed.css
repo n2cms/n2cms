@@ -7,7 +7,8 @@ a img,
 
 /* toolbar */
 
-.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; width:100%; display:none; }
+body.toolbar-hidden .toolbar { display:none; }
+.toolbar { height:35px; border-bottom:solid 1px #ccc; background-color:#DDC; width:100%; }
 	.toolbar .inner { margin:0 10px;}
 	.toolbar a,
 	.toolbar .command { display:block; float:left; height:15px; padding:9px; margin:1px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; line-height:18px; }
@@ -63,11 +64,17 @@ a img,
 	
 	
 #content { padding: 1em; }
-	h1 { margin:1em 10px; }
-	.tabPanel h1 { margin:1em 0; }
-	.panel { margin:0 10px; }
 
-body.framed select,
+
+.alert-margin {
+	display:block;
+	margin:10px 0;
+}
+	/*h1 { margin:1em 10px; }
+	.tabPanel h1 { margin:1em 0; }
+	.panel { margin:0 10px; }*/
+
+/*body.framed select,
 body.framed input,
 body.framed label{
 	vertical-align:middle;
@@ -99,7 +106,7 @@ body.framed .formField{
 }
 body.framed .formField label{
 	vertical-align:top;
-}
+}*/
 
 body.framed .info,
 body.framed .validator{
