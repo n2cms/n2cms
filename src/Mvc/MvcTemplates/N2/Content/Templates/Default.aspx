@@ -38,7 +38,7 @@
 		<edit:PermissionPanel id="ppAdd" RequiredPermission="Publish" runat="server" meta:resourceKey="ppPermitted">
 		<table>
 		<tr><td>
-			<asp:Label ID="lblTitle" runat="server" AssociatedControlID="txtTitle" CssClass="label"
+			<asp:Label ID="lblTitle" runat="server" AssociatedControlID="txtTitle"
 				Text="Title" meta:resourcekey="lblTitleResource1" />
 		</td><td colspan="1">
 			<asp:TextBox ID="txtTitle" runat="server" 
@@ -46,7 +46,7 @@
 					meta:resourcekey="txtTitleResource1" />
 		</td></tr>
 		<tr><td>
-			<asp:Label ID="lblDescription" runat="server" AssociatedControlID="txtDescription" CssClass="label"
+			<asp:Label ID="lblDescription" runat="server" AssociatedControlID="txtDescription" 
 				Text="Description" meta:resourcekey="lblDescription" />
 		</td><td colspan="1">
 			<asp:TextBox ID="txtDescription" runat="server" meta:resourcekey="txtDescription" />
