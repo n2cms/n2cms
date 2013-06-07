@@ -12,15 +12,15 @@
 
 	<div class="cf">
 		<asp:Panel ID="pnlNewName" runat="server" CssClass="formField" Visible="false">
-			<asp:Label ID="lblNewName" runat="server" AssociatedControlID="txtNewName" meta:resourceKey="lblNewName" Text="New name" CssClass="label" />
+			<asp:Label ID="lblNewName" runat="server" AssociatedControlID="txtNewName" meta:resourceKey="lblNewName" Text="New name" />
 			<asp:TextBox ID="txtNewName" runat="server" />
 		</asp:Panel>
 		<div class="formField">
-			<asp:Label ID="lblFrom" runat="server" AssociatedControlID="from" meta:resourceKey="lblFrom" Text="From" CssClass="label" />
+			<asp:Label ID="lblFrom" runat="server" AssociatedControlID="from" meta:resourceKey="lblFrom" Text="From" />
 			<asp:Label ID="from" runat="server"/>
 		</div>
 		<div class="formField">
-			<asp:Label ID="lblTo" runat="server" AssociatedControlID="to" meta:resourceKey="lblTo" Text="To" CssClass="label" />        
+			<asp:Label ID="lblTo" runat="server" AssociatedControlID="to" meta:resourceKey="lblTo" Text="To" />        
 			<asp:Label ID="to" runat="server"/>
 		</div>
 	</div>

@@ -2201,7 +2201,6 @@
     <Content Include="N2\Resources\Js\plugins\jquery.SimpleTree.js" />
     <Content Include="N2\Resources\Js\tinymce.ashx" />
     <Content Include="N2\Content\Security\Default.aspx" />
-    <Content Include="N2\Resources\Css\Versions.css" />
     <Content Include="N2\Content\Versions\Default.aspx" />
     <Content Include="N2\Resources\img\book_previous.gif" />
     <Content Include="N2\Resources\img\bullet_star.gif" />

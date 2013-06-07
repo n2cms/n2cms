@@ -4,7 +4,7 @@
 <asp:CustomValidator id="cvImport" runat="server" CssClass="validator" meta:resourceKey="cvImport" Display="Dynamic"/>
 
 <asp:Panel ID="pnlNewName" runat="server" CssClass="formField" Visible="false">
-	<asp:Label ID="lblNewName" runat="server" AssociatedControlID="txtNewName" meta:resourceKey="lblNewName" Text="New name" CssClass="label" />
+	<asp:Label ID="lblNewName" runat="server" AssociatedControlID="txtNewName" meta:resourceKey="lblNewName" Text="New name" />
 	<asp:TextBox ID="txtNewName" runat="server" />
 </asp:Panel>
 <div>

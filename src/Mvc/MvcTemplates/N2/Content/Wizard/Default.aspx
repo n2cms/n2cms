@@ -42,18 +42,18 @@
 			<asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">
-                    <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" CssClass="label" meta:resourcekey="lblLocation" />
+                    <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" meta:resourcekey="lblLocation" />
                     <strong><asp:Label ID="lblLocationTitle" runat="server" CssClass="title"
 						  Text=<%# Selection.SelectedItem.Title %>/></strong>
                 </div>
                 <div class="cf">
-                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" CssClass="label"
+                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" 
 						meta:resourcekey="LabelResource1" />
                     <asp:TextBox ID="txtTitle" runat="server" CssClass="title"
 						meta:resourcekey="txtTitleResource1" />
                 </div>
                 <div class="cf">
-                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" CssClass="label"
+                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" 
 						meta:resourcekey="LabelResource2" />
                     <asp:DropDownList ID="ddlTypes" runat="server" DataTextField="Title" CssClass="types"
 						DataValueField="Value" meta:resourcekey="ddlTypesResource1" />
