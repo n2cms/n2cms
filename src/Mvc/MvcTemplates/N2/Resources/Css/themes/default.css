@@ -4,7 +4,7 @@
 body .header,
 #home h4
 {
-    background-color:#79C;
+    background-color:#18a0de;
 }
 body .box
 {
@@ -25,16 +25,17 @@ body .framed .optionGroup,
 body .framed .commandOptions .opener,
 body.framed .outside
 {
-    background-color:#18a0de;
-	border-color:#fff;
+    background-color:#ebf7fc;
+	border-color:#d9f0f9;
+}
+.framed .outside .box {
+	border-color:#d9f0f9 !important;
 }
 body .gv th,
 body .gv thead td
 {
     background-color:#ddc;
 }
-body,
-body .gv .alt td { background-color:#F8F8E8; }
 
 body .toolbar .toggled,
 body .toolbar .command:hover

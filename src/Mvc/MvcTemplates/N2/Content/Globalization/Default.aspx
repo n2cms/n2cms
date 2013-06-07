@@ -17,12 +17,12 @@
 	<asp:CustomValidator Text="Cannot associate language roots. They are assumed to be translations of each other." ID="cvAssociateLanguageRoots" meta:resourceKey="cvAssociateLanguageRoots" runat="server" CssClass="validator info" Display="Dynamic" />
 	
 	<asp:Panel ID="pnlLanguages" runat="server" CssClass="languages">
-		<table class="gv">
+		<table class="table table-striped table-hover table-condensed">
 		    <thead>
 			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>'>
 				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
 				    <ItemTemplate>
-					    <td title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></td>
+					    <th title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></th>
 				    </ItemTemplate>	
 				    <FooterTemplate></tr></FooterTemplate>
 			    </asp:Repeater>
@@ -39,7 +39,7 @@
 			<asp:Repeater runat="server" DataSource="<%# GetChildren(true) %>">
 				<HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
-					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
+					<tr class="i<%# Container.ItemIndex %>">
 					    <td>
 							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Eval("Path") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
 						</td>

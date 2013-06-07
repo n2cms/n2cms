@@ -1,25 +1,22 @@
 ﻿@import url("../jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.min.css");
 
 /* FRAMED */
-body { background-image:url(../../Resources/Img/lighten10.png); background-repeat:repeat-x; }
-.tabPanel  { background-color:#fff; }
-
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 
 /* toolbar */
 
-.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; }
+.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; width:100%; }
 	.toolbar .inner { margin:0 10px;}
 	.toolbar a,
-	.toolbar .command { display:block; float:left; height:15px; padding:9px; margin:1px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; }
+	.toolbar .command { display:block; float:left; height:15px; padding:9px; margin:1px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; line-height:18px; }
 	.toolbar .toggled,
 	.toolbar .command:hover{ text-decoration:none; outline:solid 1px #ddd; }
 	.toolbar .command:active{ background-color:#ddd; }
 	.toolbar .command img{ margin-right:3px; } 
 	.toolbar .plain,
 	.toolbar .cancel { font-size:1em; font-weight:normal; }
-	.toolbar .iconed { background:transparent none no-repeat 2px 8px; padding-left:20px; }
+	.toolbar .iconed { background:transparent none no-repeat 2px 9px; padding-left:22px; }
 	
 	/* Toolbox */
 #top{ position:relative; }
@@ -64,7 +61,7 @@ a img,
 
 	
 	
-#content { }
+#content { padding: 1em; }
 	h1 { margin:1em 10px; }
 	.tabPanel h1 { margin:1em 0; }
 	.panel { margin:0 10px; }
@@ -84,7 +81,6 @@ body.framed .cbl label{
 body.framed #toolbar{
 	z-index:77;
 	white-space:nowrap;
-	box-shadow: #666 0 2px 10px -6px; 
 }
 body.framed #toolbar label{
 	color:#333333;
@@ -129,12 +125,9 @@ body.framed .validator ul{
 }
 
 /* GRIDVIEW */
-.gv { margin-bottom:10px; width:100%; background:#fff; }
-    .gv, .gv th, .gv td { border:solid 1px #eed; border-collapse:collapse; text-align:left; }
-    .gv th { padding: 4px 2px; }
-    .gv td { padding:2px; }
-    .gv a { display:block; }
-    .striped, .striped td, .striped th {  }
+.table td, .table th {
+	border-style:none;
+}
 
 /* NAVIGATCONTEXTMENU */
 body.framed .ui-menu { box-shadow: #666 2px 2px 8px -3px; background-color:#fff; }

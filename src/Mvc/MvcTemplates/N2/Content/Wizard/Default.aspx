@@ -9,9 +9,9 @@
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel runat="server" meta:resourceKey="popNotSupported">
 		<n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
-																																																																																	<asp:GridView ID="gvLocations" runat="server" 
+			<asp:GridView ID="gvLocations" runat="server" BorderWidth="0"
 			OnRowDeleting="gvLocations_OnRowDeleting" DataKeyNames="ID"
-			CssClass="gv" AutoGenerateColumns="false" ShowHeader="false">
+			CssClass="table table-striped table-hover table-condensed" AutoGenerateColumns="false" ShowHeader="false">
 			<Columns>
 				<asp:TemplateField>
 					<ItemTemplate>

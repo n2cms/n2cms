@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Upgrade N2</title>
+    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -81,7 +82,7 @@
 				<h1>Upgrade versions to 2.4 model</h1>
 				<p>The migrate button will convert versions stored as items in the content item database to an external table. In the process the existing versions items will be deleted, and an added to the version table.</p>
 				<p>The version table will also include current parts on the page. Only the latest version of parts is included and previous versions of parts will be lost.</p>
-				<table class="gv">
+				<table class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr><th>ID</th><th>Index</th><th>Title</th><th>Version Of</th></tr>
 				</thead>

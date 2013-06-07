@@ -163,14 +163,8 @@ table.editDetail { border-collapse:collapse; }
 	.expandable-expanded .expander { background-image:url(../icons/bullet_toggle_minus.png); border-bottom:solid 1px #E8E8D8; padding-bottom:5px; margin-bottom:10px; }
 
 
-fieldset 
+/*fieldset 
 {
-	/*
-	border:solid 1px #E8E8D8;
-	*/
-	border:none 1px #E8E8D8;
-	border-style:solid none none solid;
-	background-color:#F8F8E8;
 	position:relative;
 	margin-bottom:30px;
 	padding:30px 15px 15px 15px;
@@ -179,14 +173,6 @@ fieldset
 	{
 		display:block;
 		position:static;
-		/*
-		border-top:solid 1px #E8E8D8;
-		background-color:#F8F8E8;
-		position:absolute;
-		top:-20px;	
-		padding:3px 10px;
-		display:block;
-		*/
 		font-weight:bold;
 	}
 
@@ -195,7 +181,7 @@ hr
 	border:solid 1px #E8E8D8;
 	border-bottom-color:#fff;
 	border-right-color:#fff;
-}
+}*/
 
 .editDetail .help
 {

@@ -11,8 +11,8 @@
 </style>
 	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
     <n2:tabpanel ID="tpTemplates" runat="server" ToolTip="Templates" CssClass="tabPanel" meta:resourcekey="tpTemplates" RegisterTabCss="False">
-        <asp:GridView id="gvTemplates" runat="server" AutoGenerateColumns="False" CssClass="gv" ShowHeader="false"
-			DataKeyNames="Name" OnRowDeleting="gvTemplates_OnRowDeleting"
+        <asp:GridView id="gvTemplates" runat="server" AutoGenerateColumns="False" CssClass="table table-striped table-hover table-condensed" ShowHeader="false"
+			DataKeyNames="Name" OnRowDeleting="gvTemplates_OnRowDeleting" BorderWidth="0"
 			DataSource="<%# Templates.GetAllTemplates() %>" 
 			meta:resourcekey="gvTemplatesResource1">
 			<Columns>
