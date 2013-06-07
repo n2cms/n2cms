@@ -22,7 +22,6 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
-	<a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
 	<uc1:ItemInfo id="ucInfo" runat="server" />
 	<uc1:RecentVersions id="ucVersions" runat="server" />
 	<uc1:RecentActivity id="ucActivity" runat="server" />
@@ -30,6 +29,7 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+	<a href="javascript:void(0);" class="rightOpener"><span class='rightOpener-open'>&laquo;</span><span class='rightOpener-close'>&raquo;</span></a>
 
 <%--  	
 <table>
@@ -92,4 +92,9 @@
     	});
 
     </script>
+	<%--<style>
+
+	 .nav-tabs { outline:dotted 1px green; }
+	 .tab-content { outline:solid 1px red; }
+	</style>--%>
 </asp:Content>

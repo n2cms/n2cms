@@ -1,13 +1,16 @@
 <%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
+	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../Resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<script src="../Resources/bootstrap/js/bootstrap.min.js"></script>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
     <form id="f" runat="server">
         <div id="toolbar" class="toolbar"><div class="inner">
             <asp:ContentPlaceHolder ID="Toolbar" runat="server" />
         </div></div>
-      	<div id="outside" class="outside">
+		<div id="outside" class="outside">
  	         <asp:ContentPlaceHolder ID="Outside" runat="server" />
         </div>
         <div id="content" class="content">

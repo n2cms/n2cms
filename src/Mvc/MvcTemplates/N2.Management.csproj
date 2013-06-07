@@ -165,14 +165,7 @@
     <Content Include="N2\redesign\css\n2.css" />
     <Content Include="N2\redesign\css\normalize.css" />
     <Content Include="N2\redesign\css\normalize.min.css" />
-    <Content Include="N2\redesign\img\actionbar\edit.png" />
-    <Content Include="N2\redesign\img\actionbar\language.png" />
-    <Content Include="N2\redesign\img\actionbar\publish.png" />
-    <Content Include="N2\redesign\img\actionbar\version.png" />
-    <Content Include="N2\redesign\img\actionbar\view.png" />
     <Content Include="N2\redesign\img\arrow-down.png" />
-    <Content Include="N2\redesign\img\glyphicons-black\default.htm" />
-    <Content Include="N2\redesign\img\glyphicons-white\default.htm" />
     <Content Include="N2\redesign\img\grabber.png" />
     <Content Include="N2\redesign\img\icons\page-world.png" />
     <Content Include="N2\redesign\img\icons\page.png" />
@@ -931,6 +924,7 @@
     <Content Include="N2\Resources\Css\jquery.multiselect.filter.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.dialog.css" />
     <Content Include="N2\Resources\Css\smoothness\jquery-ui-1.8.22.full.css" />
+    <Content Include="N2\Resources\Css\tree.css" />
     <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.css" />
     <Content Include="N2\Resources\font-awesome\css\font-awesome-ie7.min.css" />
     <Content Include="N2\Resources\font-awesome\css\font-awesome.css" />
@@ -1351,7 +1345,6 @@
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.ttf" />
     <Content Include="N2\Resources\angular-1.1.4\docs\font\fontawesome-webfont.woff" />
     <Content Include="N2\Resources\angular-1.1.4\version.json" />
-    <Content Include="N2\redesign\img\actionbar\Thumbs.db" />
     <Content Include="N2\Resources\ckeditor\LICENSE.md" />
     <Content Include="N2\Resources\ckeditor\skins\moono\readme.md" />
     <Content Include="N2\Resources\ckeditor\plugins\scayt\LICENSE.md" />
