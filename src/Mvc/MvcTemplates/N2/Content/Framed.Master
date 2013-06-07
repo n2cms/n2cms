@@ -25,5 +25,8 @@
     			$("#toolbar a.cancel").focus();
     		}
     	});
+    	if (n2ctx.hasTop() != "metro") {
+    		$("#toolbar").show();
+    	}
     </script>
 </asp:Content>

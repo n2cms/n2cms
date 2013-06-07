@@ -51,7 +51,7 @@
 			},
 			hasTop: function () {
 				//console.log("hasTop", arguments);
-				return true;
+				return "metro";
 			},
 			toolbarSelect: function () {
 			}

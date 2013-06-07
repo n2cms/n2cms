@@ -3,10 +3,11 @@
 /* FRAMED */
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
+.nav-tabs > li > a { border-radius:0 !important; }
 
 /* toolbar */
 
-.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; width:100%; }
+.toolbar { height:35px; border-bottom:solid 1px #ccc; background:#DDC url(../../Resources/Img/lighten10.png) repeat-x 0 0px; width:100%; display:none; }
 	.toolbar .inner { margin:0 10px;}
 	.toolbar a,
 	.toolbar .command { display:block; float:left; height:15px; padding:9px; margin:1px; overflow:hidden; text-decoration:none; font-weight:bold; overflow:hidden; font-size:1.2em; line-height:18px; }
