@@ -16,7 +16,7 @@
 	<asp:ContentPlaceHolder ID="Head" runat="server">
 	</asp:ContentPlaceHolder>
 </head>
-<body id="default" class="edit" style="margin:0">
+<body id="default" class="edit">
 	<div id="permission">
 		<div id="top">
 			<div id="topbar" class="header cf themeBg">
