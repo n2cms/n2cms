@@ -300,12 +300,14 @@ namespace N2.Edit
 		{
 			var type = item.GetContentType();
 			var tags = new List<string>();
-			tags.Add(type.Assembly.GetName().Name);
-			tags.AddRange(Utility.GetBaseTypesAndSelf(type).Select(t => t.Name));
-			tags.AddRange(type.GetInterfaces().Where(t => t.Namespace.Contains("Definition")).Select(t => t.Name));
+
+			tags.Add(item.State.ToString());
+			foreach (var possibleState in Enum.GetValues(typeof(CollectionState)).Cast<CollectionState>())
+				if (possibleState != CollectionState.Unknown && item.ChildState.HasFlag(possibleState))
+					tags.Add(possibleState.ToString());
 
 			if (!item.IsPublished())
-				tags.Add("Unpublished");
+				tags.Add("NotPublished");
 			if (item.IsExpired())
 				tags.Add("Expired");
 			if (!item.Visible)
@@ -315,6 +317,14 @@ namespace N2.Edit
 
 			if (Drafts.HasDraft(item))
 				tags.Add("HasDraft");
+
+			if (item.Created.AddDays(3) > Utility.CurrentTime())
+				tags.Add("Recent");
+
+			tags.Add(type.Assembly.GetName().Name);
+			
+			tags.AddRange(Utility.GetBaseTypesAndSelf(type).Where(t => t != typeof(object)).Select(t => t.Name));
+			tags.AddRange(type.GetInterfaces().Where(t => t.Namespace.Contains("Definition")).Select(t => t.Name));
 
 			return tags;
 		}

@@ -38,7 +38,7 @@
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function (ctx) {
-				console.log("select", arguments);
+				console.log("refresh", arguments);
 			},
 			select: function () {
 				//console.log("select", arguments);
