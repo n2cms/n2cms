@@ -22,14 +22,16 @@ function decorate(obj, name, callback) {
 	};
 };
 
-function reloadSiblings($scope, Content, path) {
+function getParentPath(path) {
 	var parentPathExpr = /((.*)[/])[^/]+[/]/;
-	var parentPath = parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];
+	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
+}
 
+function reloadChildren($scope, Content, parentPath) {
 	var node = findSelectedRecursive($scope.Interface.Content, parentPath);
 	console.log("Reloading ", node);
 	Content.loadChildren(node, function () {
-		var selectedNode = findSelectedRecursive(node, path);
+		var selectedNode = findSelectedRecursive(node, parentPath);
 		console.log("Reloaded", node, " selecting ", selectedNode);
 		$scope.select(selectedNode);
 	});
@@ -41,8 +43,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		if (ctx.force) {
-			reloadSiblings($scope, Content, ctx.path);
+			reloadChildren($scope, Content, ctx.path);
+			if (ctx.previewUrl) {
+				console.log("PREVIEWING ", ctx.previewUrl);
+				$scope.previewUrl(ctx.previewUrl);
+			}
+			else
+				$scope.select(ctx.path);
 		}
+		else
+			$scope.select(ctx.path);
 	});
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
@@ -50,8 +60,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 	$scope.Interface = Interface.get({
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1],
-	}, function () {
-		console.log("Interface loaded");
+	}, function (i) {
+		console.log("Interface loaded", i);
+		$scope.previewUrl(i.Paths.PreviewUrl);
 	});
 	$scope.Context = {
 		CurrentItem: {
@@ -63,25 +74,32 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		}
 	}
 
-	$scope.select = function (node) {
-		$scope.Context.SelectedNode = node;
-		if (!node)
-			return;
-		$timeout(function () {
-			Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
-				console.log("Ctx loaded", ctx, node);
-				angular.extend($scope.Context, ctx);
-			});
-		}, 200);
+	$scope.select = function (nodeOrPath) {
+		console.log("selecting", typeof nodeOrPath, nodeOrPath);
+		if (typeof nodeOrPath == "string") {
+			var path = nodeOrPath;
+			var node = findSelectedRecursive($scope.Interface.Content, path);
+			if (node)
+				$scope.select(node);
+			else
+				console.log("select: path not found", path);
+		} else if (typeof nodeOrPath == "object") {
+			var node = nodeOrPath;
+			$scope.Context.SelectedNode = node;
+			if (!node)
+				return;
+			$timeout(function () {
+				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
+					console.log("Ctx reloaded", ctx, node);
+					angular.extend($scope.Context, ctx);
+				});
+			}, 200);
+		}
 	}
 
 	$scope.isFlagged = function (flag) {
 		return $scope.Context.Flags.indexOf(flag) >= 0;
 	};
-
-	$scope.$watch("Context.ContextMenu", function (menu) {
-		console.log("context menu", menu);
-	});
 
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
@@ -154,8 +172,8 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
 		if (content) {
-			$scope.select(findSelectedRecursive(content, $scope.Interface.SelectedPath));
 			console.log("selecting", $scope.Context.SelectedNode);
+			$scope.select(findSelectedRecursive(content, $scope.Interface.SelectedPath));
 		}
 	});
 	$scope.$on("contextchanged", function (scope, ctx) {
@@ -240,35 +258,32 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 		}
 		return true;
 	};
-	
-	$scope.previewUrl = function (url) {
-		$scope.Interface.Paths.PreviewUrl = url || "Empty.aspx";
-	}
 }
 
 function PageActionCtrl($scope, Content) {
 	$scope.dispose = function () {
+		console.log("disposing", $scope.Context.CurrentItem);
 		Content.delete({ selected: $scope.Context.CurrentItem.Path }, function () {
-			reloadSiblings($scope, Content, $scope.Context.CurrentItem.Path);
-			console.log("done");
+			reloadChildren($scope, Content, getParentPath($scope.Context.CurrentItem.Path));
+			console.log("disposed");
 		});
-		console.log("dispose", arguments);
 	}
 }
 
-function PreviewCtrl($scope) {
+function PreviewCtrl($scope, $rootScope) {
 	$scope.frameLoaded = function (e) {
 		try {
 			var loco = e.target.contentWindow.location;
 			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
 		} catch (ex) {
-			console.log(ex);
+			console.log("frame access exception", ex);
 		}
 	};
 
-	$scope.$watch("Interface.Paths.PreviewUrl", function (url) {
-		$scope.src = url || "Empty.aspx";
-	});
+	$rootScope.previewUrl = function (url) {
+		console.log("Previewing ", url);
+		window.frames.preview.window.location = url || "Empty.aspx";
+	}
 }
 
 function AddCtrl($scope, Definitions) {
