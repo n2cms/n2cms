@@ -19,3 +19,16 @@
 		<page-action-content node="child"></page-action-content>
 	</li>
 </ul>
+
+<dl class="info-menu dl-horizontal" ng-class="{ open: showInfo }">
+	<dt ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">State</dt><dd ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">{{Content.states.toString(Context.CurrentItem.State)}}</dd>
+	<dt>Created</dt><dd>{{Context.ExtendedInfo.Created | date}}</dd>
+	<dt>Published</dt><dd>{{Context.ExtendedInfo.Published | date}}&nbsp;</dd>
+	<dt ng-show="Context.ExtendedInfo.Expires">Expires</dt><dd ng-show="Context.ExtendedInfo.Expires">{{Context.ExtendedInfo.Expires | date}}&nbsp;</dd>
+	<dt>Updated</dt><dd>{{Context.ExtendedInfo.Updated | date}} by {{Context.ExtendedInfo.SavedBy}}</dd>
+	<dt>Language</dt><dd>{{Context.Language.LanguageCode}} <span ng-show="Context.CurrentItem.MetaInformation.language">(language root)</span>&nbsp;</dd>
+	<dt>Version</dt><dd>{{Context.ExtendedInfo.VersionIndex + 1}} 
+		<span ng-show="Context.ExtendedInfo.VersionOf">(master: <a href="{{Context.ExtendedInfo.VersionOf.Url}}" target="preview" title="{{Context.ExtendedInfo.VersionOf.SavedBy}}: {{Context.ExtendedInfo.VersionOf.Updated | date}}">{{Context.ExtendedInfo.VersionOf.VersionIndex + 1}}</a>)</span>
+		<span ng-show="Context.ExtendedInfo.Draft">(draft: <a href="{{Context.ExtendedInfo.Draft.Url}}" target="preview" title="{{Context.ExtendedInfo.Draft.SavedBy}}: {{Context.ExtendedInfo.Draft.Updated | date}}">{{Context.ExtendedInfo.Draft.VersionIndex + 1}}</a>)</span>
+	</dd>
+</dl>

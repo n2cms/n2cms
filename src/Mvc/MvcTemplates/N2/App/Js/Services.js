@@ -12,10 +12,10 @@
 			},
 			hideToolbar: function (force) {
 				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0) {
-					console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
+					//console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
 					window.frames.preview.window.jQuery("body").addClass("toolbar-hidden");
 				} else {
-					console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
+					//console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
 					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
 				}
 			}
@@ -92,6 +92,12 @@
 			All: 2 + 4 + 8 + 16 + 32 + 64,
 			is: function (actual, expected) {
 				return (actual & expected) == expected;
+			},
+			toString: function (state) {
+				for (var key in res.states)
+					if (res.states[key] == state)
+						return key;
+				return null;
 			}
 		};
 		

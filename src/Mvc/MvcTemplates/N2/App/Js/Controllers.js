@@ -231,11 +231,11 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 			return false;
 		}
 		if (item.Current.HiddenBy) {
-			console.log(item.Current.Title, "hidden by", item.Current.HiddenBy, item);
+			//console.log(item.Current.Title, "hidden by", item.Current.HiddenBy, item);
 			return !$scope.isFlagged(item.Current.HiddenBy);
 		}
 		if (item.Current.DisplayedBy) {
-			console.log(item.Current.Title, "displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
+			//console.log(item.Current.Title, "displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
 			return $scope.isFlagged(item.Current.DisplayedBy);
 		}
 		return true;
@@ -309,6 +309,20 @@ function PagePublishCtrl($scope, $rootScope) {
 	$rootScope.$on("preiewloaded", function (scope, e) {
 		
 	});
+
+	$scope.publish = function () {
+		console.log("publish");
+	};
+	$scope.schedule = function () {
+		console.log("schedule");
+	};
+	$scope.unpublish = function () {
+		console.log("unpublish");
+	};
+	$scope.toggleInfo = function () {
+		console.log("toggleInfo", $scope.showInfo);
+		$scope.$parent.showInfo = !$scope.$parent.showInfo;
+	}
 }
 
 function FrameActionCtrl($scope, FrameManipulatorFactory) {
