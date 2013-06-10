@@ -59,7 +59,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
 	$scope.Interface = Interface.get({
 		view: viewMatch && viewMatch[1],
-		selected: selectedMatch && selectedMatch[1],
+		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		console.log("Interface loaded", i);
 		$scope.previewUrl(i.Paths.PreviewUrl);

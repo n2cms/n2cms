@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 
 namespace N2.Management.Api
@@ -42,6 +43,8 @@ namespace N2.Management.Api
 		public string Url { get; set; }
 
 		public ExtendedContextData Draft { get; set; }
+
+		public bool ReadProtected { get; set; }
 	}
 
 	public class Context : IHttpHandler
@@ -100,7 +103,8 @@ namespace N2.Management.Api
 				Visible = item.Visible,
 				ZoneName = item.ZoneName,
 				VersionIndex = item.VersionIndex,
-				Url = item.Url
+				Url = item.Url,
+				ReadProtected = !engine.SecurityManager.IsAuthorized(item, new GenericPrincipal(new GenericIdentity(""), null))
 			};
 			if (resolveVersions)
 			{
