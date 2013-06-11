@@ -12,10 +12,10 @@
 			},
 			hideToolbar: function (force) {
 				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0) {
-					//console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
+					console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
 					window.frames.preview.window.jQuery("body").addClass("toolbar-hidden");
 				} else {
-					//console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
+					console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
 					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
 				}
 			}
@@ -50,7 +50,6 @@
 				//console.log("update", arguments);
 			},
 			hasTop: function () {
-				//console.log("hasTop", arguments);
 				return "metro";
 			},
 			toolbarSelect: function () {
@@ -61,11 +60,14 @@
 
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
-			children: { method: 'GET', params: { target: 'children' } },
-			search: { method: 'GET', params: { target: 'search' } },
-			move: { method: 'POST', params: { target: 'move' } },
-			sort: { method: 'POST', params: { target: 'sort' } },
-			'delete': { method: 'POST', params: { target: 'delete' } }
+			'children': { method: 'GET', params: { target: 'children' } },
+			'search': { method: 'GET', params: { target: 'search' } },
+			'move': { method: 'POST', params: { target: 'move' } },
+			'sort': { method: 'POST', params: { target: 'sort' } },
+			'delete': { method: 'POST', params: { target: 'delete' } },
+			'publish': { method: 'POST', params: { target: 'publish' } },
+			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
+			'schedule': { method: 'POST', params: { target: 'schedule' } }
 		});
 
 		res.loadChildren = function (node, callback) {callback

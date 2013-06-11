@@ -27,11 +27,11 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function reloadChildren($scope, Content, parentPath) {
+function reloadChildren($scope, Content, parentPath, selectedPath) {
 	var node = findSelectedRecursive($scope.Interface.Content, parentPath);
 	console.log("Reloading ", node);
 	Content.loadChildren(node, function () {
-		var selectedNode = findSelectedRecursive(node, parentPath);
+		var selectedNode = findSelectedRecursive(node, selectedPath || parentPath);
 		console.log("Reloaded", node, " selecting ", selectedNode);
 		$scope.select(selectedNode);
 	});
@@ -47,9 +47,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			if (ctx.previewUrl) {
 				console.log("PREVIEWING ", ctx.previewUrl);
 				$scope.previewUrl(ctx.previewUrl);
+			} else if (!$scope.select(ctx.path)) {
+				reloadChildren($scope, Content, getParentPath(ctx.path), ctx.path);
 			}
-			else
-				$scope.select(ctx.path);
 		}
 		else
 			$scope.select(ctx.path);
@@ -80,20 +80,21 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Interface.Content, path);
 			if (node)
-				$scope.select(node);
+				return $scope.select(node);
 			else
-				console.log("select: path not found", path);
+				return console.log("select: path not found", path) && false;
 		} else if (typeof nodeOrPath == "object") {
 			var node = nodeOrPath;
 			$scope.Context.SelectedNode = node;
 			if (!node)
-				return;
+				return false;
 			$timeout(function () {
 				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
 					console.log("Ctx reloaded", ctx, node);
 					angular.extend($scope.Context, ctx);
 				});
 			}, 200);
+			return true;
 		}
 	}
 
@@ -320,19 +321,22 @@ function VersionsCtrl($scope, Versions) {
 	}
 }
 
-function PagePublishCtrl($scope, $rootScope) {
+function PagePublishCtrl($scope, $rootScope, Content) {
 	$rootScope.$on("preiewloaded", function (scope, e) {
 		
 	});
 
 	$scope.publish = function () {
-		console.log("publish");
+		console.log("publish", $scope.Context.CurrentItem);
+		Content.publish({ selected: $scope.Context.CurrentItem.Path });
 	};
 	$scope.schedule = function () {
 		console.log("schedule");
+		Content.schedule({ selected: $scope.Context.CurrentItem.Path, publishDate: '2013-07-01' });
 	};
 	$scope.unpublish = function () {
 		console.log("unpublish");
+		Content.unpublish({ selected: $scope.Context.CurrentItem.Path });
 	};
 	$scope.toggleInfo = function () {
 		console.log("toggleInfo", $scope.showInfo);

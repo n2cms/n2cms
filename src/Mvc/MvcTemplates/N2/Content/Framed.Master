@@ -26,6 +26,7 @@
     		}
     	});
     	if (n2ctx.hasTop() != "metro") {
+    		console.log("revealing", n2ctx.hasTop());
     		$(document.body).removeClass("toolbar-hidden");
     	}
     </script>

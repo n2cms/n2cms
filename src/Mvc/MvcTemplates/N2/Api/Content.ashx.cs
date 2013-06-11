@@ -2,6 +2,8 @@
 using N2.Definitions;
 using N2.Edit;
 using N2.Edit.Trash;
+using N2.Edit.Versioning;
+using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Sources;
@@ -52,12 +54,38 @@ namespace N2.Management.Api
 						case "/delete":
 							Delete(context);
 							break;
+						case "/publish":
+							Publish(context);
+							break;
+						case "/unpublish":
+							Unpublish(context);
+							break;
+						case "/schedule":
+							Schedule(context);
+							break;
 					}
 					break;
 				case "DELETE":
 					Delete(context);
 					break;
 			}
+		}
+
+		private void Schedule(HttpContext context)
+		{
+			var publishDate = DateTime.Parse(context.Request["publishDate"]);
+			selection.SelectedItem.SchedulePublishing(publishDate, engine);
+		}
+
+		private void Publish(HttpContext context)
+		{
+			engine.Resolve<IVersionManager>().Publish(engine.Persister, selection.SelectedItem);
+		}
+
+		private void Unpublish(HttpContext context)
+		{
+			engine.Resolve<StateChanger>().ChangeTo(selection.SelectedItem, ContentState.Unpublished);
+			engine.Persister.Save(selection.SelectedItem);
 		}
 
 		private void WriteSearch(HttpContext context)

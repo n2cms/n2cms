@@ -6,7 +6,7 @@ using N2.Engine.Globalization;
 
 namespace N2.Edit.Globalization
 {
-	[EditToolbarPlugin("{ManagementUrl}/Content/Globalization/LanguageMenu.ascx")]
+	//[EditToolbarPlugin("{ManagementUrl}/Content/Globalization/LanguageMenu.ascx")]
 	public partial class LanguageMenu : EditPageUserControl
 	{
 		protected Repeater rptLanguages;
