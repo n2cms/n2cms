@@ -27,36 +27,24 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function reloadChildren($scope, Content, parentPath, selectedPath) {
-	var node = findSelectedRecursive($scope.Interface.Content, parentPath);
-	console.log("Reloading ", node);
-	Content.loadChildren(node, function () {
-		if (selectedPath) {
-			var selectedNode = findSelectedRecursive(node, selectedPath);
-			console.log("Reloaded children of", node, " selecting ", selectedNode);
-			$scope.select(selectedNode);
-		} else {
-			console.log("Reloaded children of", node);
-		}
-	});
-}
-
 function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security, FrameContext) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		if (ctx.force) {
-			reloadChildren($scope, Content, ctx.path);
+			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
 				console.log("PREVIEWING ", ctx.previewUrl);
 				$scope.previewUrl(ctx.previewUrl);
-			} else if (!$scope.select(ctx.path, ctx.versionIndex)) {
-				reloadChildren($scope, Content, getParentPath(ctx.path), ctx.path);
+				return;
 			}
 		}
-		else
-			$scope.select(ctx.path);
+		if (!$scope.select(ctx.path, ctx.versionIndex)) {
+			$scope.reloadChildren(getParentPath(ctx.path), function () {
+				$scope.select(ctx.path, ctx.versionIndex, !ctx.force);
+			});
+		}
 	});
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
@@ -78,15 +66,21 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		}
 	}
 
-	$scope.select = function (nodeOrPath, versionIndex) {
+	$scope.select = function (nodeOrPath, versionIndex, keepFlags) {
 		console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Interface.Content, path);
-			if (node)
-				return $scope.select(node, versionIndex);
+			if (!node) {
+				var parentNode = findSelectedRecursive($scope.Interface.Content, getParentPath(path));
+				if (parentNode) {
+					$scope.reloadChildren(parentNode, function () {
+						$scope.select(path);
+					});
+				}
+			}
 			else
-				return console.log("select: path not found", path) && false;
+				return $scope.select(node, versionIndex);
 		} else if (typeof nodeOrPath == "object") {
 			var node = nodeOrPath;
 			$scope.Context.SelectedNode = node;
@@ -95,11 +89,23 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			$timeout(function () {
 				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
 					console.log("Ctx reloaded", ctx, node);
-					angular.extend($scope.Context, ctx);
+					if (keepFlags)
+						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
+					else
+						angular.extend($scope.Context, ctx);
 				});
 			}, 200);
 			return true;
 		}
+	}
+
+	$scope.reloadChildren = function(parentPathOrNode, callback) {
+		var node = typeof parentPathOrNode == "string"
+			? findSelectedRecursive($scope.Interface.Content, parentPathOrNode)
+			: parentPathOrNode;
+
+		console.log("Reloading ", node);
+		Content.loadChildren(node, callback);
 	}
 
 	$scope.isFlagged = function (flag) {
@@ -269,7 +275,7 @@ function PageActionCtrl($scope, Content) {
 	$scope.dispose = function () {
 		console.log("disposing", $scope.Context.CurrentItem);
 		Content.delete({ selected: $scope.Context.CurrentItem.Path }, function () {
-			reloadChildren($scope, Content, getParentPath($scope.Context.CurrentItem.Path));
+			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
 			console.log("disposed");
 		});
 	}
@@ -333,6 +339,7 @@ function PagePublishCtrl($scope, $rootScope, Content) {
 	$scope.publish = function () {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			console.log("published", $scope.Context.CurrentItem, result);
+			window.frames.preview.window.location = result.Current.PreviewUrl;
 		});
 	};
 	$scope.schedule = function () {

@@ -83,7 +83,7 @@ namespace N2.Management.Api
 			var publishDate = DateTime.Parse(context.Request["publishDate"]);
 			selection.SelectedItem.SchedulePublishing(publishDate, engine);
 
-			context.Response.WriteJson(new { Scheduled = true, Path = selection.SelectedItem.Path, VersionIndex = selection.SelectedItem.VersionIndex });
+			context.Response.WriteJson(new { Scheduled = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
 		}
 
 		private void Publish(HttpContext context)
@@ -93,7 +93,7 @@ namespace N2.Management.Api
 
 			var item = engine.Resolve<IVersionManager>().Publish(engine.Persister, selection.SelectedItem);
 
-			context.Response.WriteJson(new { Published = true, Path = item.Path, VersionIndex = item.VersionIndex });
+			context.Response.WriteJson(new { Published = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
 		}
 
 		private void Unpublish(HttpContext context)
@@ -104,7 +104,7 @@ namespace N2.Management.Api
 			engine.Resolve<StateChanger>().ChangeTo(selection.SelectedItem, ContentState.Unpublished);
 			engine.Persister.Save(selection.SelectedItem);
 
-			context.Response.WriteJson(new { Unpublished = true, Path = selection.SelectedItem.Path, VersionIndex = selection.SelectedItem.VersionIndex });
+			context.Response.WriteJson(new { Unpublished = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
 		}
 
 		private void WriteSearch(HttpContext context)
