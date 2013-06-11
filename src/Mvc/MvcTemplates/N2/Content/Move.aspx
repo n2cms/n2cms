@@ -7,8 +7,8 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator id="cvMove" runat="server" CssClass="validator info" meta:resourceKey="cvMove"/>
-    <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
+    <asp:CustomValidator id="cvMove" runat="server" CssClass="alert alert-margin" meta:resourceKey="cvMove"/>
+    <asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
     
 	<div class="cf">
 		<asp:Panel ID="pnlNewName" runat="server" CssClass="formField">

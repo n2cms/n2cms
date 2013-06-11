@@ -10,9 +10,9 @@
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Publish" runat="server" meta:resourceKey="ppPermitted">
-    <asp:CustomValidator ID="cvRemoved" Text="Can't delete item that is not available. It may have been deleted or renamed in another window." runat="server" CssClass="validator info" meta:resourceKey="cvRemoved" Display="Dynamic" />
-    <asp:CustomValidator ID="cvDelete" runat="server" CssClass="validator info" meta:resourceKey="cvDelete" Display="Dynamic" />
-    <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
+    <asp:CustomValidator ID="cvRemoved" Text="Can't delete item that is not available. It may have been deleted or renamed in another window." runat="server" CssClass="alert alert-error alert-margin" meta:resourceKey="cvRemoved" Display="Dynamic" />
+    <asp:CustomValidator ID="cvDelete" runat="server" CssClass="alert alert-margin" meta:resourceKey="cvDelete" Display="Dynamic" />
+    <asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
 	<fieldset id="referencingItems" runat="server" style="padding:8px; margin-bottom:10px">
 		<legend><asp:CheckBox ID="chkAllow" Checked="true" AutoPostBack="true" OnCheckedChanged="chkAllow_OnCheckedChanged" runat="server" Text="Delete and break references" meta:resourceKey="chkAllow" /></legend>
 		<div style="padding: 5px;">
