@@ -28,7 +28,8 @@ namespace N2.Management.Api
 			accessor = context.Request.GetRequestValueAccessor();
 			selection = new SelectionUtility(accessor, engine);
 
-			context.Response.ContentType = "application/json";
+			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Read))
+				throw new UnauthorizedAccessException();
 
 			switch (context.Request.HttpMethod)
 			{
@@ -49,7 +50,10 @@ namespace N2.Management.Api
 					{
 						case "/sort":
 						case "/move":
-							Move(accessor);
+							Move(context, accessor);
+							break;
+						case "/copy":
+							Copy(context, accessor);
 							break;
 						case "/delete":
 							Delete(context);
@@ -73,19 +77,34 @@ namespace N2.Management.Api
 
 		private void Schedule(HttpContext context)
 		{
+			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+				throw new UnauthorizedAccessException();
+
 			var publishDate = DateTime.Parse(context.Request["publishDate"]);
 			selection.SelectedItem.SchedulePublishing(publishDate, engine);
+
+			context.Response.WriteJson(new { Scheduled = true, Path = selection.SelectedItem.Path, VersionIndex = selection.SelectedItem.VersionIndex });
 		}
 
 		private void Publish(HttpContext context)
 		{
-			engine.Resolve<IVersionManager>().Publish(engine.Persister, selection.SelectedItem);
+			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+				throw new UnauthorizedAccessException();
+
+			var item = engine.Resolve<IVersionManager>().Publish(engine.Persister, selection.SelectedItem);
+
+			context.Response.WriteJson(new { Published = true, Path = item.Path, VersionIndex = item.VersionIndex });
 		}
 
 		private void Unpublish(HttpContext context)
 		{
+			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+				throw new UnauthorizedAccessException();
+
 			engine.Resolve<StateChanger>().ChangeTo(selection.SelectedItem, ContentState.Unpublished);
 			engine.Persister.Save(selection.SelectedItem);
+
+			context.Response.WriteJson(new { Unpublished = true, Path = selection.SelectedItem.Path, VersionIndex = selection.SelectedItem.VersionIndex });
 		}
 
 		private void WriteSearch(HttpContext context)
@@ -93,14 +112,14 @@ namespace N2.Management.Api
 			var q = N2.Persistence.Search.Query.Parse(new HttpRequestWrapper(context.Request));
 			var result = engine.Content.Search.Text.Search(q);
 
-			new
+			context.Response.WriteJson(new
 			{
 				Total = result.Total,
 				Hits = result
 					.Where(i => engine.SecurityManager.IsAuthorized(i, context.User))
 					.Select(i => engine.GetContentAdapter<NodeAdapter>(i).GetTreeNode(i))
 					.ToList()
-			}.ToJson(context.Response.Output);
+			});
 		}
 
 		private void Delete(HttpContext context)
@@ -110,60 +129,106 @@ namespace N2.Management.Api
 			if (ex != null)
 				throw ex;
 
+			if (!engine.SecurityManager.IsAuthorized(context.User, item, item.IsPublished() ? Security.Permission.Publish : Security.Permission.Write))
+				throw new UnauthorizedAccessException();
+
 			engine.Persister.Delete(item);
 
 			var deleted = engine.Persister.Get(item.ID);
 			
-			context.Response.StatusCode = (int)HttpStatusCode.OK;
 			if (deleted != null)
-				new
-				{
-					RemovedPermanently = false,
-					Current = engine.GetContentAdapter<NodeAdapter>(deleted).GetTreeNode(deleted)
-				}.ToJson(context.Response.Output);
+				context.Response.WriteJson(new { RemovedPermanently = false, Current = engine.GetContentAdapter<NodeAdapter>(deleted).GetTreeNode(deleted) });
 			else
-				new
-				{
-					RemovedPermanently = true
-				}.ToJson(context.Response.Output);
+				context.Response.WriteJson(new { RemovedPermanently = true });
 		}
 
-		private void Move(Func<string, string> request)
+		private void Move(HttpContext context, Func<string, string> request)
 		{
 			var sorter = engine.Resolve<ITreeSorter>();
 			var from = selection.ParseSelectionFromRequest();
 			if (!string.IsNullOrEmpty(request("before")))
 			{
 				var before = engine.Resolve<Navigator>().Navigate(request("before"));
-
-				var ex = engine.IntegrityManager.GetMoveException(from, before.Parent);
-				if (ex != null)
-					throw ex;
+				
+				PerformMoveChecks(context, from, before.Parent);
 
 				sorter.MoveTo(from, NodePosition.Before, before);
 			}
 			else
 			{
 				var to = engine.Resolve<Navigator>().Navigate(request("to"));
-				if (to == null)
-					throw new InvalidOperationException("Cannot move to null");
 
-				var ex = engine.IntegrityManager.GetMoveException(from, to);
-				if (ex != null)
-					throw ex;
+				PerformMoveChecks(context, from, to);
 
 				sorter.MoveTo(from, to);
 			}
+
+			context.Response.WriteJson(new { Moved = true, Current = engine.GetNodeAdapter(from).GetTreeNode(from) });
+		}
+
+		private void PerformMoveChecks(HttpContext context, ContentItem from, ContentItem to)
+		{
+			if (to == null)
+				throw new InvalidOperationException("Cannot move to null");
+
+			var ex = engine.IntegrityManager.GetMoveException(from, to);
+			if (ex != null)
+				throw ex;
+
+			if (!engine.SecurityManager.IsAuthorized(context.User, to, Security.Permission.Publish))
+				throw new UnauthorizedAccessException();
+		}
+
+		private void Copy(HttpContext context, Func<string, string> request)
+		{
+			ContentItem newItem;
+			var from = selection.ParseSelectionFromRequest();
+			if (!string.IsNullOrEmpty(request("before")))
+			{
+				var before = engine.Resolve<Navigator>().Navigate(request("before"));
+				
+				newItem = PerformCopy(context, from, before.Parent);
+
+				var sorter = engine.Resolve<ITreeSorter>();
+				sorter.MoveTo(newItem, NodePosition.Before, before);
+			}
+			else
+			{
+				var to = engine.Resolve<Navigator>().Navigate(request("to"));
+				newItem = PerformCopy(context, from, to);
+			}
+
+			context.Response.WriteJson(new { Copied = true, Current = engine.GetNodeAdapter(newItem).GetTreeNode(newItem) });
+		}
+
+		private ContentItem PerformCopy(HttpContext context, ContentItem from, ContentItem to)
+		{
+			if (to == null)
+				throw new InvalidOperationException("Cannot move to null");
+
+			ContentItem newItem;
+			var ex = engine.IntegrityManager.GetCopyException(from, to);
+			if (ex != null)
+				throw ex;
+
+			if (!engine.SecurityManager.IsAuthorized(context.User, to, Security.Permission.Write))
+				throw new UnauthorizedAccessException();
+
+			newItem = engine.Persister.Copy(selection.SelectedItem, to);
+
+			if (engine.SecurityManager.IsAuthorized(context.User, to, Security.Permission.Publish))
+				return newItem;
+
+			engine.Resolve<StateChanger>().ChangeTo(newItem, ContentState.Draft);
+			engine.Persister.Save(newItem);
+
+			return newItem;
 		}
 
 		private void WriteChildren(HttpContext context)
 		{
 			var children = CreateChildren(context).ToList();
-			new 
-			{ 
-				Children = children,
-				IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge)
-			}.ToJson(context.Response.Output);
+			context.Response.WriteJson(new  { Children = children, IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
 		}
 
 		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContext context)

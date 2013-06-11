@@ -31,9 +31,13 @@ function reloadChildren($scope, Content, parentPath, selectedPath) {
 	var node = findSelectedRecursive($scope.Interface.Content, parentPath);
 	console.log("Reloading ", node);
 	Content.loadChildren(node, function () {
-		var selectedNode = findSelectedRecursive(node, selectedPath || parentPath);
-		console.log("Reloaded", node, " selecting ", selectedNode);
-		$scope.select(selectedNode);
+		if (selectedPath) {
+			var selectedNode = findSelectedRecursive(node, selectedPath);
+			console.log("Reloaded children of", node, " selecting ", selectedNode);
+			$scope.select(selectedNode);
+		} else {
+			console.log("Reloaded children of", node);
+		}
 	});
 }
 
@@ -47,7 +51,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			if (ctx.previewUrl) {
 				console.log("PREVIEWING ", ctx.previewUrl);
 				$scope.previewUrl(ctx.previewUrl);
-			} else if (!$scope.select(ctx.path)) {
+			} else if (!$scope.select(ctx.path, ctx.versionIndex)) {
 				reloadChildren($scope, Content, getParentPath(ctx.path), ctx.path);
 			}
 		}
@@ -74,13 +78,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		}
 	}
 
-	$scope.select = function (nodeOrPath) {
+	$scope.select = function (nodeOrPath, versionIndex) {
 		console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Interface.Content, path);
 			if (node)
-				return $scope.select(node);
+				return $scope.select(node, versionIndex);
 			else
 				return console.log("select: path not found", path) && false;
 		} else if (typeof nodeOrPath == "object") {
@@ -89,7 +93,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			if (!node)
 				return false;
 			$timeout(function () {
-				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference }, function (ctx) {
+				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
 					console.log("Ctx reloaded", ctx, node);
 					angular.extend($scope.Context, ctx);
 				});
@@ -327,8 +331,9 @@ function PagePublishCtrl($scope, $rootScope, Content) {
 	});
 
 	$scope.publish = function () {
-		console.log("publish", $scope.Context.CurrentItem);
-		Content.publish({ selected: $scope.Context.CurrentItem.Path });
+		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
+			console.log("published", $scope.Context.CurrentItem, result);
+		});
 	};
 	$scope.schedule = function () {
 		console.log("schedule");

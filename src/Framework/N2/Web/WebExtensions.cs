@@ -109,6 +109,12 @@ namespace N2.Web
 			new JsonWriter(sw).Write(value);
 		}
 
+		public static void WriteJson(this HttpResponse response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
+		}
+
 		public static string ResolveUrlTokens(this string url)
 		{
 			return Url.ResolveTokens(url);
