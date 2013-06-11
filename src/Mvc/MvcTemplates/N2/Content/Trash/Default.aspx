@@ -9,7 +9,7 @@
 	
 	<asp:HyperLink ID="hlRunning" runat="server" Text="A delete task is in progress" CssClass="info" Visible="False" meta:resourcekey="hlRunning"/>
 
-	<asp:CustomValidator ID="cvRestore" CssClass="validator" ErrorMessage="An item with the same name already exists at the previous location." runat="server" Display="Dynamic" />
+	<asp:CustomValidator ID="cvRestore" CssClass="alert alert-margin" ErrorMessage="An item with the same name already exists at the previous location." runat="server" Display="Dynamic" />
 	<asp:GridView ID="gvTrash" DataKeyNames="ID" runat="server" BorderWidth="0" DataSourceID="idsTrash" AutoGenerateColumns="false" OnRowCommand="gvTrash_RowCommand" EmptyDataText="No items in trash" CssClass="table table-striped table-hover table-condensed">
 		<Columns>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="colTitle">
