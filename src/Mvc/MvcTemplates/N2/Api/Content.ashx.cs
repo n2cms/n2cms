@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace N2.Management.Api
 {
@@ -79,11 +80,19 @@ namespace N2.Management.Api
 		{
 			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
+			
+			if (string.IsNullOrEmpty(accessor("publishDate")))
+			{
+				context.Response.WriteJson(new { Scheduled = false });
+				return;
+			}
+			else
+			{
+				var publishDate = DateTime.Parse(accessor("publishDate"));
+				selection.SelectedItem.SchedulePublishing(publishDate, engine);
 
-			var publishDate = DateTime.Parse(context.Request["publishDate"]);
-			selection.SelectedItem.SchedulePublishing(publishDate, engine);
-
-			context.Response.WriteJson(new { Scheduled = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
+				context.Response.WriteJson(new { Scheduled = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
+			}
 		}
 
 		private void Publish(HttpContext context)

@@ -86,6 +86,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			$scope.Context.SelectedNode = node;
 			if (!node)
 				return false;
+
+			if ($scope.Context.AppliesTo == node.Current.PreviewUrl)
+				return true;
+			$scope.Context.AppliesTo = node.Current.PreviewUrl;
+
 			$timeout(function () {
 				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
 					console.log("Ctx reloaded", ctx, node);
@@ -114,9 +119,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
-		if ($scope.Context.AppliesTo == e.url)
+		if ($scope.Context.AppliesTo == (e.path + e.query))
 			return;
-		$scope.Context.AppliesTo = e.url;
+		$scope.Context.AppliesTo = e.path + e.query;
 
 		$timeout(function () {
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
@@ -344,7 +349,7 @@ function PagePublishCtrl($scope, $rootScope, Content) {
 	};
 	$scope.schedule = function () {
 		console.log("schedule");
-		Content.schedule({ selected: $scope.Context.CurrentItem.Path, publishDate: '2013-07-01' });
+		Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: '2013-07-01' });
 	};
 	$scope.unpublish = function () {
 		console.log("unpublish");

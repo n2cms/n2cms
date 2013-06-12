@@ -30,6 +30,7 @@ namespace N2.Management.Api
 	{
 		public string Created { get; set; }
 		public string Expires { get; set; }
+		public string FuturePublishDate { get; set; }
 		public bool IsPage { get; set; }
 		public string Published { get; set; }
 		public string SavedBy { get; set; }
@@ -117,6 +118,12 @@ namespace N2.Management.Api
 				}
 				data.VersionOf = CreateExtendedContextData(item.VersionOf);
 			};
+			if (selection.SelectedItem.State == ContentState.Waiting)
+			{
+				DateTime? futurePublishDate = (DateTime?)selection.SelectedItem["FuturePublishDate"];
+				if (futurePublishDate.HasValue)
+					data.FuturePublishDate = futurePublishDate.Value.ToString("o");
+			}
 			return data;
 		}
 

@@ -269,23 +269,29 @@ namespace N2.Web
 		{
 			if (request.HttpMethod == "POST" && request.ContentType.StartsWith("application/json") && request.ContentLength > 0)
 			{
-				using (var sr = new StreamReader(request.InputStream))
-				{
-					var body = sr.ReadToEnd();
-					var json = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
-					if (json == null)
-						return (key) => request[key];
+				var json = DeserialiseJson(request.InputStream);
+				if (json == null)
+					return (key) => request[key];
 
-					return (key) =>
-					{
-						if (json.ContainsKey(key))
-							return json[key];
-						return request[key];
-					};
-				}
+				return (key) =>
+				{
+					if (json.ContainsKey(key))
+						return json[key];
+					return request[key];
+				};
+
 			}
 			else
 				return (key) => request[key];
+		}
+
+		public static IDictionary<string, string> DeserialiseJson(this Stream stream)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
+			}
 		}
 	}
 }
