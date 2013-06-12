@@ -101,6 +101,7 @@ namespace N2.Management.Api
 			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
 
+			selection.SelectedItem.Expires = DateTime.Now;
 			engine.Resolve<StateChanger>().ChangeTo(selection.SelectedItem, ContentState.Unpublished);
 			engine.Persister.Save(selection.SelectedItem);
 

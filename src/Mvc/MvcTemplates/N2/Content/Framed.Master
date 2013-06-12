@@ -25,7 +25,7 @@
     			$("#toolbar a.cancel").focus();
     		}
     	});
-    	if (n2ctx.hasTop() != "metro") {
+    	if (n2ctx.hasTop() != "metro" || <%= Request["modal"] == "true" ? "true" : "false" %>) {
     		console.log("revealing", n2ctx.hasTop());
     		$(document.body).removeClass("toolbar-hidden");
     	}
