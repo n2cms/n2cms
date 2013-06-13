@@ -94,7 +94,7 @@ $(function () {
     		Children: []
     	};
 
-    	$(this).siblings('.optionGroup').find('.command').each(function () {
+    	$(this).siblings('.optionGroup').find('.command').not('.hidden-action').each(function () {
     		node.Children.push({ Current: create(this) });
     	});
 
