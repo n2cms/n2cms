@@ -1,7 +1,6 @@
 ﻿body { font-family: 'Myriad Pro'; font-size: 14px; overflow:hidden; }
 a { text-decoration: none; color: #000; }
 	a:hover { text-decoration: underline; }
-* { box-sizing: border-box; -moz-box-sizing: border-box; }
 
 .loader { background-repeat: repeat-y; }
 	.sliding-loader { height: 2px; }
@@ -12,7 +11,7 @@ a { text-decoration: none; color: #000; }
 
 #top-area { }
 	#top-area .navbar { text-transform:lowercase; margin:10px; font-size:22px; }
-		#top-area .navbar .navbar-search input.search-query { padding:12px; }
+		#top-area .navbar .navbar-search input.search-query { }
 		#top-area .navbar .navbar-search input[type=button] { background: url("../img/search.png") no-repeat scroll 0 0 transparent; border: 0 none; height: 17px; position: absolute; right: 12px; text-indent: -9999px; top: 5px; width: 16px; }
 		#top-area .navbar #logo { padding-left: 10px; }
 			#top-area .navbar #logo a { background-image: url(../img/logo.png); text-indent: -9999px; display: inline-block; width: 58px; height: 39px; }
@@ -89,10 +88,10 @@ a { text-decoration: none; color: #000; }
 #page-action-bar { height: 39px; background-color: #18a0de; font-size: 18px; }
 	#page-action-bar > ul { white-space:nowrap; }
 		#page-action-bar > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
-			#page-action-bar > ul > li .page-action > a { display:block; height: 39px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; }
+			#page-action-bar > ul > li .page-action > a { display:block; height: 19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; }
 				#page-action-bar > ul > li.primary-action > .page-action > a > .ico { font-size:28px; line-height:14px; position:relative; top:4px; }
 				#page-action-bar > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
-			#page-action-bar > ul > li .page-action a.page-action-description { padding-top: 2px; padding-left:42px; position:relative; }
+			#page-action-bar > ul > li .page-action a.page-action-description { height:27px; padding-top: 2px; padding-left:42px; position:relative; }
 				#page-action-bar > ul > li.primary-action .page-action a.page-action-description > .ico { position:absolute; left: 10px; top:15px; }
 					#page-action-bar > ul > li .dropdown-menu .page-action a .ico { font-size:14px; vertical-align:middle; } 
 					/*#page-action-bar > ul > li .dropdown-menu .page-action a .ico { font-size:14px; vertical-align:middle; position:absolute; }*/ 
@@ -129,7 +128,6 @@ a { text-decoration: none; color: #000; }
 #page-action-bar .versions li.draft a { border-left:solid 5px #FF8822; }
 #page-action-bar .versions li.published a { border-left:solid 5px #d9f0f9; }
 #page-action-bar .versions li.unpublished a { border-left:solid 5px #FF3300; }
-
 
 .info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; }
 .info-menu.open { display:block; }

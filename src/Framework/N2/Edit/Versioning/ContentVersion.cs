@@ -74,8 +74,15 @@ namespace N2.Edit.Versioning
 			{
 				if (string.IsNullOrEmpty(VersionDataXml))
 					return null;
+
+				if (_version != null)
+					return _version;
 				
-				return _version ?? (_version = Deserializer(VersionDataXml));
+				_version = Deserializer(VersionDataXml);
+				if (FuturePublish.HasValue)
+					_version["FuturePublishDate"] = FuturePublish;
+				_version.Updated = Saved;
+				return _version;
 			}
 			set
 			{

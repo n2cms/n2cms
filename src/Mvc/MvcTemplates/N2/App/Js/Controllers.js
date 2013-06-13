@@ -1,4 +1,11 @@
-﻿angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui'], function () {
+﻿var app = angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui', '$strap.directives'], function () {
+});
+
+app.value('$strapConfig', {
+	datepicker: {
+		language: 'en',
+		format: 'M d, yyyy'
+	}
 });
 
 function findSelectedRecursive(node, selectedPath) {
@@ -336,11 +343,11 @@ function VersionsCtrl($scope, Versions) {
 	}
 }
 
-function PagePublishCtrl($scope, $rootScope, Content) {
+function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 	$rootScope.$on("preiewloaded", function (scope, e) {
 		
 	});
-
+	
 	$scope.publish = function () {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			console.log("published", $scope.Context.CurrentItem, result);
@@ -349,7 +356,9 @@ function PagePublishCtrl($scope, $rootScope, Content) {
 	};
 	$scope.schedule = function () {
 		console.log("schedule");
-		Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: '2013-07-01' });
+		//$scope.showDatePicker = true;
+		//Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: '2013-07-01' });
+
 	};
 	$scope.unpublish = function () {
 		console.log("unpublish");
@@ -359,6 +368,28 @@ function PagePublishCtrl($scope, $rootScope, Content) {
 		console.log("toggleInfo", $scope.showInfo);
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
 	}
+}
+
+function PageScheduleCtrl($scope, Content) {
+	$scope.schedule = {
+		"date": new Date(),
+		"time": "00:00",
+		submit: function () {
+			var time = $scope.schedule.time;
+			var hour = parseInt(time.substr(0, 2));
+			var min = parseInt(time.substr(3, 2));
+			var meridian = time.substr(5).replace(/^\s+|\s+$/g, '');
+			if (meridian == "PM")
+				hour += 12;
+
+			var date = $scope.schedule.date;
+			date.setHours(hour, min);
+
+			console.log("scheduling", $scope.schedule);
+
+			Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date });
+		}
+	};
 }
 
 function FrameActionCtrl($scope, FrameManipulatorFactory) {

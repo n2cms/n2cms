@@ -15,9 +15,27 @@
 
     <%--<link rel="stylesheet" href="redesign/css/normalize.min.css">--%>
     <%--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">--%>
+    <%--<script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>--%>
     <link rel="stylesheet" href="redesign/css/n2.css">
 
-    <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.9.1.min.js"><\/script>')</script>
+    <script src="redesign/js/plugins.js"></script>
+    <script src="redesign/js/n2.js"></script>
+    <script src="redesign/js/main.js"></script>
+	<script src="Resources/angular-1.1.4/angular.js"></script>
+	<script src="Resources/angular-1.1.4/angular-resource.js"></script>
+	<link href="Resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<script src="Resources/bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
+	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
+	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
+	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+	<link href="Resources/bootstrap-components/bootstrap-datepicker.css" rel="stylesheet" />
+	<script src="Resources/bootstrap-components/bootstrap-datepicker.js"></script>
+	<link href="Resources/bootstrap-components/bootstrap-timepicker.css" rel="stylesheet" />
+	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
+	<script src="Resources/bootstrap-components/angular-strap.js"></script>
 
 </head>
 <body ng-controller="ManagementCtrl" ng-app="n2"><%-- x-context-menu-trigger=".item">--%>
@@ -41,26 +59,11 @@
     <div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
     <%--<div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
 	
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-
-    <script src="redesign/js/plugins.js"></script>
-    <script src="redesign/js/n2.js"></script>
-    <%--<script src="redesign/js/n2.loaders.js"></script>--%>
-    <script src="redesign/js/main.js"></script>
-	<script src="Resources/angular-1.1.4/angular.js"></script>
-	<script src="Resources/angular-1.1.4/angular-resource.js"></script>
 	<script src="App/Js/Services.js"></script>
 	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
-	<link href="Resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
-	<script src="Resources/bootstrap/js/bootstrap.js"></script>
-	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
-	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
-	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
-	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+
 	<style>
 		ul, li {
 			margin: 0;

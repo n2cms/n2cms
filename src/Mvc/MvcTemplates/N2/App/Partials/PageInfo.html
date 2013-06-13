@@ -1,4 +1,6 @@
 ﻿<dt ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">State</dt><dd ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">{{Content.states.toString(Context.CurrentItem.State)}}</dd>
+<dt ng-show="Context.ExtendedInfo.FuturePublishDate">Scheduled for</dt><dd ng-show="Context.ExtendedInfo.FuturePublishDate">{{Context.ExtendedInfo.FuturePublishDate | date}}</dd>
+
 <dt>Created</dt><dd>{{Context.ExtendedInfo.Created | date}}</dd>
 <dt>Published</dt><dd>{{Context.ExtendedInfo.Published | date}}&nbsp;</dd>
 <dt ng-show="Context.ExtendedInfo.Expires">Expires</dt><dd ng-show="Context.ExtendedInfo.Expires">{{Context.ExtendedInfo.Expires | date}}&nbsp;</dd>

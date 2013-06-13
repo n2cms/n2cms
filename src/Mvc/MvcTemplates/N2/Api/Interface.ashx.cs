@@ -239,7 +239,7 @@ namespace N2.Management.Api
 						Children = new Node<InterfaceMenuItem>[]
 						{
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", IconClass = "n2-icon-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Schedule", IconClass = "n2-icon-time", ClientAction = "schedule()", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Unpublish", IconClass = "n2-icon-stop", ClientAction = "unpublish()", RequiredPermission = Permission.Publish, DisplayedBy = "Published" }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Info", IconClass = "n2-icon-info-sign", ClientAction = "toggleInfo()" }),
 						}

@@ -101,6 +101,9 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\PagePublishItem.html" />
+    <Content Include="N2\App\Partials\PagePublishSchedule.html" />
+    <Content Include="N2\App\Partials\PageScheduleDialog.html" />
     <Content Include="N2\App\Partials\PageInfo.html" />
     <Content Include="N2\App\Partials\PageActionLink.html" />
     <Content Include="N2\App\Partials\FrameAction.html" />
@@ -771,6 +774,10 @@
     <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.js" />
     <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.min.css" />
     <Content Include="N2\Resources\angular-ui-0.4.0\build\angular-ui.min.js" />
+    <Content Include="N2\Resources\bootstrap-components\bootstrap-datepicker.css" />
+    <Content Include="N2\Resources\bootstrap-components\bootstrap-datepicker.js" />
+    <Content Include="N2\Resources\bootstrap-components\bootstrap-timepicker.css" />
+    <Content Include="N2\Resources\bootstrap-components\bootstrap-timepicker.js" />
     <Content Include="N2\Resources\bootstrap\css\bootstrap.css" />
     <Content Include="N2\Resources\bootstrap\css\bootstrap.min.css" />
     <Content Include="N2\Resources\bootstrap\img\glyphicons-halflings-white.png" />
@@ -1177,6 +1184,8 @@
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-1.9.1.js" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-ui-1.10.2.custom.js" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-ui-1.10.2.custom.min.js" />
+    <Content Include="N2\Resources\bootstrap-components\angular-strap.js" />
+    <Content Include="N2\Resources\bootstrap-components\angular-strap.min.js" />
     <Content Include="N2\Resources\Js\jquery-1.9.1.min.js" />
     <Content Include="N2\Resources\fancybox\blank.gif" />
     <Content Include="N2\Resources\fancybox\fancybox_loading%402x.gif" />
@@ -1197,7 +1206,6 @@
     <Content Include="N2\Resources\icons\flags.png" />
     <Content Include="N2\Resources\icons\silk.css" />
     <Content Include="N2\Resources\icons\silk.png" />
-    <Content Include="N2\Resources\Js\jquery-1.7.2.min.js" />
     <Content Include="N2\Resources\Js\jquery.multiselect.filter.js" />
     <Content Include="N2\Resources\Js\jquery.multiselect.js" />
     <Content Include="N2\Resources\Js\plugins\aaa.js" />
