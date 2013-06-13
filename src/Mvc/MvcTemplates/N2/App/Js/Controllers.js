@@ -100,11 +100,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 			$timeout(function () {
 				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
-					console.log("Ctx reloaded", ctx, node);
 					if (keepFlags)
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
+					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
 			return true;
@@ -133,7 +133,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		$timeout(function () {
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
-				$scope.$broadcast("contextchanged", $scope.Context);
+				$scope.$emit("contextchanged", $scope.Context);
 			});
 		}, 200);
 	});
@@ -191,7 +191,7 @@ function TrashCtrl($scope) {
 
 }
 
-function TrunkCtrl($scope, Content, SortHelperFactory) {
+function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Interface.Content", function (content) {
 		$scope.node = content;
 		if (content) {
@@ -199,8 +199,7 @@ function TrunkCtrl($scope, Content, SortHelperFactory) {
 			$scope.select(findSelectedRecursive(content, $scope.Interface.SelectedPath));
 		}
 	});
-	$scope.$on("contextchanged", function (scope, ctx) {
-		console.log("contextchanged", ctx);
+	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.CurrentItem)
 			$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
 		else
@@ -392,18 +391,18 @@ function PageScheduleCtrl($scope, Content) {
 	};
 }
 
-function FrameActionCtrl($scope, FrameManipulatorFactory) {
+function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
 	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
-	$scope.$on("contextchanged", function (scope, e) {
-		delete $scope.$parent.action;
-		if (!$scope.isFlagged("Management"))
-			return;
-
-		var actions = window.frames.preview && window.frames.preview.frameActions;
-		if (actions) {
-			$scope.$parent.manipulator.hideToolbar();
-			$scope.$parent.action = actions[0];
+	$rootScope.$on("contextchanged", function (scope, e) {
+		$scope.$parent.action = null;
+		if ($scope.isFlagged("Management")) {
+			var actions = $scope.manipulator.getFrameActions();
+			if (actions && actions.length) {
+				$scope.$parent.manipulator.hideToolbar();
+				$scope.$parent.action = actions[0];
+			}
 		}
+		console.log("ACTIONS", $scope.action);
 	});
 };
 

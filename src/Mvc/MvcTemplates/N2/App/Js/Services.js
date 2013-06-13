@@ -18,6 +18,9 @@
 					console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
 					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
 				}
+			},
+			getFrameActions: function () {
+				return window.frames.preview && window.frames.preview.frameActions;;
 			}
 		};
 
