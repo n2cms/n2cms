@@ -38,6 +38,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	$scope.Content = Content;
 	$scope.Security = Security;
 
+	$scope.previewUrl = function (url) {
+		console.log("Previewing ", url);
+		window.frames.preview.window.location = url || "Empty.aspx";
+	}
+
 	decorate(FrameContext, "refresh", function (ctx) {
 		if (ctx.force) {
 			$scope.reloadChildren(ctx.path);
@@ -235,18 +240,7 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		}
 		node.Expanded = !node.Expanded;
 	};
-	//	function (node) {
-	//	if (!node.Expanded && !node.Children.length) {
-	//		node.Loading = true;
-	//		Content.children({ selected: node.Current.Path }, function (data) {
-	//			node.Children = data.Children;
-	//			node.Loading = false;
-	//			if (data.IsPaged)
-	//				node.IsPaged = true;
-	//		});
-	//	}
-	//	node.Expanded = !node.Expanded;
-	//};
+
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
@@ -300,11 +294,6 @@ function PreviewCtrl($scope, $rootScope) {
 			console.log("frame access exception", ex);
 		}
 	};
-
-	$rootScope.previewUrl = function (url) {
-		console.log("Previewing ", url);
-		window.frames.preview.window.location = url || "Empty.aspx";
-	}
 }
 
 function AddCtrl($scope, Content) {
