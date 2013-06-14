@@ -1,11 +1,13 @@
-﻿<page-action-content node="item"></page-action-content>
+﻿<page-action-link node="item"></page-action-link>
 			
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
 	<b class="caret"></b>
 </a>
 
 <ul class="dropdown-menu" ng-show="item.Children.length">
-	<li ng-repeat="child in item.Children" class="item secondary-action">
-		<page-action-content node="child"></page-action-content>
+	<li class="item secondary-action"
+		ng-repeat="child in item.Children"
+		ng-class="{ divider: child.Current.Divider }">
+		<page-action-link node="child"></page-action-link>
 	</li>
 </ul>

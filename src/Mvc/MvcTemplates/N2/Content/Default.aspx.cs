@@ -28,9 +28,11 @@ namespace N2.Edit
 	[ToolbarPlugin("PAGES", "tree", "{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Navigation, Targets.Top, "{ManagementUrl}/Resources/icons/sitemap_color.png", -30,
 		ToolTip = "show navigation",
 		GlobalResourceClassName = "Toolbar", SortOrder = -1,
-		OptionProvider = typeof(ViewOptionProvider))]
-	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview", 
-		GlobalResourceClassName = "Toolbar")]
+		OptionProvider = typeof(ViewOptionProvider),
+		Legacy = true)]
+	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview",
+		GlobalResourceClassName = "Toolbar",
+		Legacy = true)]
 	[SwitchToManagementControlPanelLink]
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
 		CssClass = "toggled",

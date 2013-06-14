@@ -38,7 +38,8 @@
 <body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item">
     <div id="top-area">
         <%--<div ng-include src="'App/Partials/UserTools.html'"></div>--%>
-        <div ng-include src="'App/Partials/MainMenu.html'"></div>
+        <%--<div ng-include src="'App/Partials/MainMenu.html'"></div>--%>
+		<div ng-include src="'App/Partials/Menu.html'"></div>
     </div>
     <div class="sliding-loader loader"></div>
 	<div id="main-wrapper">
@@ -48,7 +49,6 @@
 		</div>
 		<div id="main-area"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
 			<div ng-include src="'App/Partials/PagePreview.html'"></div>
-			<div ng-include src="'App/Partials/PageActionBar.html'"></div>
 		</div>
     </div>
 	<div id="footer" ng-include src="'App/Partials/Footer.html'">

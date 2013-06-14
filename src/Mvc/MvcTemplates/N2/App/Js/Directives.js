@@ -46,7 +46,7 @@
 		}
 	});
 
-	module.directive("pageActionContent", function ($interpolate) {
+	module.directive("pageActionLink", function ($interpolate) {
 		return {
 			restrict: "E",
 			replace: true,

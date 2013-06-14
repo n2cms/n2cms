@@ -8,6 +8,5 @@ namespace N2.Edit
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
 	public abstract class NavigationPluginAttribute : LinkPluginAttribute
     {
-		public bool IsDivider { get; set; }
 	}
 }

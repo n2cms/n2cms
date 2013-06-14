@@ -13,7 +13,8 @@ namespace N2.Edit.Versions
 	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90, 
         ToolTip = "versions", 
         GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
 	[ControlPanelPendingVersion("There is a newer unpublished version of this item.", 200)]
 	public partial class Default : Web.EditPage
 	{

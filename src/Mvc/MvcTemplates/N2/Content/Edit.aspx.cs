@@ -20,11 +20,13 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation", 
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign")]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write,
-		OptionProvider = typeof(EditOptionProvider))]
+		OptionProvider = typeof(EditOptionProvider),
+		Legacy = true)]
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write)]

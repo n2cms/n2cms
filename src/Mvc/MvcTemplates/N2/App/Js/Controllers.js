@@ -260,11 +260,8 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 			else
 				lefties.push(children[i]);
 		}
-		$scope.navs =
-			[
-				{ Alignment: "Left", Items: lefties },
-				{ Alignment: "Right", Items: righties },
-			];
+		$scope.primaryNavigation = lefties;
+		$scope.secondaryNavigation = righties;
 	});
 
 	$scope.isDisplayable = function (item) {

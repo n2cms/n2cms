@@ -117,7 +117,7 @@
     <Content Include="N2\App\Partials\PagePreview.html" />
     <Content Include="N2\App\Partials\PageBranch.html" />
     <Content Include="N2\App\Partials\MainMenu.html" />
-    <Content Include="N2\App\Partials\PageActionBar.html" />
+    <Content Include="N2\App\Partials\Menu.html" />
     <Content Include="N2\App\Partials\PageTree.html" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />
     <Content Include="N2\Content\AffectedItems.ascx" />
@@ -2185,7 +2185,6 @@
     <Content Include="N2\Resources\img\bullet_star.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="N2\Resources\img\n2.gif" />
     <Content Include="N2\Resources\img\toolarea_bg.gif" />
     <Content Include="N2\Resources\img\toolitem_separator.gif" />
     <Content Include="N2\Content\Navigation\LoadTree.ashx" />

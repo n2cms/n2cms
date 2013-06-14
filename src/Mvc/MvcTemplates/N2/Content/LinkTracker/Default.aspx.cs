@@ -3,8 +3,9 @@ using System;
 namespace N2.Edit.LinkTracker
 {
 	[ToolbarPlugin("LINKS", "linktracker", "{ManagementUrl}/Content/LinkTracker/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/link_break.png", 160, 
-        ToolTip = "tracks inbound/outbound links", 
-        GlobalResourceClassName = "Toolbar")]
+        ToolTip = "tracks inbound/outbound links",
+		GlobalResourceClassName = "Toolbar",
+		Legacy = true)]
 	public partial class _Default : N2.Edit.Web.EditPage
 	{
 		protected override void OnLoad(EventArgs e)

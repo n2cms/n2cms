@@ -14,6 +14,8 @@ namespace N2.Edit
 		private string toolTip;
 		private string urlFormat;
 
+		public bool IsDivider { get; set; }
+
 		/// <summary>The target frame for the plugn link.</summary>
 		public string Target
 		{
@@ -55,6 +57,8 @@ namespace N2.Edit
 			get { return globalResourceClassName; }
 			set { globalResourceClassName = value; }
 		}
+
+		public string IconClass { get; set; }
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
