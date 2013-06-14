@@ -16,7 +16,7 @@
 		li{margin-bottom:10px}
 		form{padding:20px}
 		.buttons { text-align:right; }
-		textarea{width:95%;height:50px; border:none; background-color:#DDE}
+		textarea{width:95%;height:80px; border:none; background-color:#DDE}
 		pre { overflow:auto; font-size:10px; color:Gray; }
 	</style>
 	<script type="text/javascript">
