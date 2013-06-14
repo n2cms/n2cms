@@ -115,6 +115,12 @@ namespace N2.Web
 			value.ToJson(response.Output);
 		}
 
+		public static void WriteJson(this HttpResponseBase response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
+		}
+
 		public static string ResolveUrlTokens(this string url)
 		{
 			return Url.ResolveTokens(url);

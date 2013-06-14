@@ -312,7 +312,6 @@ function PreviewCtrl($scope, $rootScope) {
 
 function AddCtrl($scope, Definitions) {
 	$scope.loadDefinitions = function (node) {
-		console.log("loading definitions for ", node);
 		node.Selected = node.Current.Path;
 		node.Loading = true;
 		node.Children = Definitions.query({ selected: $scope.Context.CurrentItem.Path }, function () {
@@ -321,25 +320,24 @@ function AddCtrl($scope, Definitions) {
 	}
 }
 
-function LanguageCtrl($scope, Translations) {
+function LanguageCtrl($scope, Content) {
 	$scope.loadLanguages = function (node) {
-		console.log("loading languages for ", node);
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Translations.query({ selected: $scope.Context.CurrentItem.Path }, function () {
+		Content.translations({ selected: $scope.Context.CurrentItem.Path }, function (data) {
 			node.Loading = false;
+			node.Children = data.Translations;
 		});
 	}
 }
 
-function VersionsCtrl($scope, Versions) {
+function VersionsCtrl($scope, Content) {
 	$scope.loadVersions = function (node) {
-		console.log("loading versions for ", node);
-
 		$scope.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Versions.query({ selected: $scope.Context.CurrentItem.Path }, function (versions) {
+		Content.versions({ selected: $scope.Context.CurrentItem.Path }, function (data) {
 			node.Loading = false;
+			node.Children = data.Versions;
 		});
 	}
 }

@@ -60,6 +60,8 @@
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
 			'children': { method: 'GET', params: { target: 'children' } },
 			'search': { method: 'GET', params: { target: 'search' } },
+			'translations': { method: 'GET', params: { target: 'translations' } },
+			'versions': { method: 'GET', params: { target: 'versions' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'delete': { method: 'POST', params: { target: 'delete' } },
@@ -104,22 +106,12 @@
 		return res;
 	});
 
-	module.factory('Translations', function ($resource) {
-		var res = $resource('Api/Translations.ashx', {}, {});
-		return res;
-	});
-
 	module.factory('Context', function ($resource) {
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
 			'full': { method: 'GET', params: { target: 'full' } }
 		});
 
-		return res;
-	});
-
-	module.factory('Versions', function ($resource) {
-		var res = $resource('Api/Versions.ashx', {}, {});
 		return res;
 	});
 

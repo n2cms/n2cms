@@ -5,6 +5,7 @@ using N2.Edit.Trash;
 using N2.Edit.Versioning;
 using N2.Edit.Workflow;
 using N2.Engine;
+using N2.Engine.Globalization;
 using N2.Persistence;
 using N2.Persistence.Sources;
 using N2.Web;
@@ -25,6 +26,11 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContext context)
 		{
+			ProcessRequest(new HttpContextWrapper(context));
+		}
+
+		public void ProcessRequest(HttpContextBase context)
+		{
 			engine = N2.Context.Current;
 			accessor = context.Request.GetRequestValueAccessor();
 			selection = new SelectionUtility(accessor, engine);
@@ -40,9 +46,18 @@ namespace N2.Management.Api
 						case "/search":
 							WriteSearch(context);
 							break;
+						case "/translations":
+							var translations = new { Translations = CreateTranslations(context).ToList() };
+							context.Response.WriteJson(translations);
+							break;
+						case "/versions":
+							var versions = new { Versions = CreateVersions(context).ToList() };
+							context.Response.WriteJson(versions);
+							break;
 						case "/children":
 						default:
-							WriteChildren(context);
+							var children = CreateChildren(context).ToList();
+							context.Response.WriteJson(new  { Children = children, IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
 							break;
 					}
 					break;
@@ -76,7 +91,26 @@ namespace N2.Management.Api
 			}
 		}
 
-		private void Schedule(HttpContext context)
+		private IEnumerable<Node<TreeNode>> CreateVersions(HttpContextBase context)
+		{
+			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
+			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(selection.SelectedItem);
+			return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
+		}
+
+		private IEnumerable<Node<InterfaceMenuItem>> CreateTranslations(HttpContextBase context)
+		{
+			var languages = engine.Resolve<ILanguageGateway>();
+			return languages.GetEditTranslations(selection.SelectedItem, true, true)
+				.Select(t => new Node<InterfaceMenuItem>(new InterfaceMenuItem
+				{
+					Title = t.Language.LanguageTitle,
+					Url = t.EditUrl,
+					IconUrl = t.FlagUrl
+				}));
+		}
+
+		private void Schedule(HttpContextBase context)
 		{
 			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
@@ -95,7 +129,7 @@ namespace N2.Management.Api
 			}
 		}
 
-		private void Publish(HttpContext context)
+		private void Publish(HttpContextBase context)
 		{
 			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
@@ -105,7 +139,7 @@ namespace N2.Management.Api
 			context.Response.WriteJson(new { Published = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
 		}
 
-		private void Unpublish(HttpContext context)
+		private void Unpublish(HttpContextBase context)
 		{
 			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
@@ -117,9 +151,9 @@ namespace N2.Management.Api
 			context.Response.WriteJson(new { Unpublished = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
 		}
 
-		private void WriteSearch(HttpContext context)
+		private void WriteSearch(HttpContextBase context)
 		{
-			var q = N2.Persistence.Search.Query.Parse(new HttpRequestWrapper(context.Request));
+			var q = N2.Persistence.Search.Query.Parse(context.Request);
 			var result = engine.Content.Search.Text.Search(q);
 
 			context.Response.WriteJson(new
@@ -132,7 +166,7 @@ namespace N2.Management.Api
 			});
 		}
 
-		private void Delete(HttpContext context)
+		private void Delete(HttpContextBase context)
 		{
 			var item = selection.ParseSelectionFromRequest();
 			var ex = engine.IntegrityManager.GetDeleteException(item);
@@ -152,7 +186,7 @@ namespace N2.Management.Api
 				context.Response.WriteJson(new { RemovedPermanently = true });
 		}
 
-		private void Move(HttpContext context, Func<string, string> request)
+		private void Move(HttpContextBase context, Func<string, string> request)
 		{
 			var sorter = engine.Resolve<ITreeSorter>();
 			var from = selection.ParseSelectionFromRequest();
@@ -176,7 +210,7 @@ namespace N2.Management.Api
 			context.Response.WriteJson(new { Moved = true, Current = engine.GetNodeAdapter(from).GetTreeNode(from) });
 		}
 
-		private void PerformMoveChecks(HttpContext context, ContentItem from, ContentItem to)
+		private void PerformMoveChecks(HttpContextBase context, ContentItem from, ContentItem to)
 		{
 			if (to == null)
 				throw new InvalidOperationException("Cannot move to null");
@@ -189,7 +223,7 @@ namespace N2.Management.Api
 				throw new UnauthorizedAccessException();
 		}
 
-		private void Copy(HttpContext context, Func<string, string> request)
+		private void Copy(HttpContextBase context, Func<string, string> request)
 		{
 			ContentItem newItem;
 			var from = selection.ParseSelectionFromRequest();
@@ -211,7 +245,7 @@ namespace N2.Management.Api
 			context.Response.WriteJson(new { Copied = true, Current = engine.GetNodeAdapter(newItem).GetTreeNode(newItem) });
 		}
 
-		private ContentItem PerformCopy(HttpContext context, ContentItem from, ContentItem to)
+		private ContentItem PerformCopy(HttpContextBase context, ContentItem from, ContentItem to)
 		{
 			if (to == null)
 				throw new InvalidOperationException("Cannot move to null");
@@ -235,13 +269,7 @@ namespace N2.Management.Api
 			return newItem;
 		}
 
-		private void WriteChildren(HttpContext context)
-		{
-			var children = CreateChildren(context).ToList();
-			context.Response.WriteJson(new  { Children = children, IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-		}
-
-		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContext context)
+		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContextBase context)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
 			var filter = engine.EditManager.GetEditorFilter(context.User);

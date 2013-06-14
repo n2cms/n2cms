@@ -340,7 +340,7 @@ namespace N2.Persistence.Search
             return !isInvalid;
         }
 
-		public static Query Parse(System.Web.HttpRequestWrapper request)
+		public static Query Parse(System.Web.HttpRequestBase request)
 		{
 			var q = Query.For(request["q"]);
 			if (!string.IsNullOrEmpty(request["below"]))
