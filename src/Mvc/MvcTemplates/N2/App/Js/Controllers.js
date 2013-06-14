@@ -310,12 +310,13 @@ function PreviewCtrl($scope, $rootScope) {
 	}
 }
 
-function AddCtrl($scope, Definitions) {
+function AddCtrl($scope, Content) {
 	$scope.loadDefinitions = function (node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		node.Children = Definitions.query({ selected: $scope.Context.CurrentItem.Path }, function () {
+		Content.definitions({ selected: $scope.Context.CurrentItem.Path }, function (data) {
 			node.Loading = false;
+			node.Children = data.Definitions;
 		});
 	}
 }

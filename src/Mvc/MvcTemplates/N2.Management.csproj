@@ -1321,7 +1321,6 @@
     <Content Include="N2\Content\Activity\Notify.ashx" />
     <Content Include="N2\Api\Context.ashx" />
     <Content Include="N2\Api\Content.ashx" />
-    <Content Include="N2\Api\Definitions.ashx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -1386,9 +1385,6 @@
     </Compile>
     <Compile Include="N2\Api\Content.ashx.cs">
       <DependentUpon>Content.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Api\Definitions.ashx.cs">
-      <DependentUpon>Definitions.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
     <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />

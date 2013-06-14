@@ -47,12 +47,19 @@ namespace N2.Management.Api
 							WriteSearch(context);
 							break;
 						case "/translations":
-							var translations = new { Translations = CreateTranslations(context).ToList() };
-							context.Response.WriteJson(translations);
+							var translations = CreateTranslations(context).ToList();
+							context.Response.WriteJson(new { Translations = translations });
 							break;
 						case "/versions":
-							var versions = new { Versions = CreateVersions(context).ToList() };
-							context.Response.WriteJson(versions);
+							var versions = CreateVersions(context).ToList();
+							context.Response.WriteJson(new { Versions = versions });
+							break;
+						case "/definitions":
+							var definitions = engine.Definitions.GetAllowedChildren(selection.SelectedItem, null)
+								.WhereAuthorized(engine.SecurityManager, context.User, selection.SelectedItem)
+								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl })
+								.ToList();
+							context.Response.WriteJson(new { Definitions = definitions });
 							break;
 						case "/children":
 						default:

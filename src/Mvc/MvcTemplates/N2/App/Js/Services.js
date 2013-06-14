@@ -62,6 +62,7 @@
 			'search': { method: 'GET', params: { target: 'search' } },
 			'translations': { method: 'GET', params: { target: 'translations' } },
 			'versions': { method: 'GET', params: { target: 'versions' } },
+			'definitions': { method: 'GET', params: { target: 'definitions' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
 			'delete': { method: 'POST', params: { target: 'delete' } },
@@ -132,11 +133,6 @@
 				return actual <= expected;
 			}
 		};
-		return res;
-	});
-
-	module.factory('Definitions', function ($resource) {
-		var res = $resource('Api/Definitions.ashx', {}, {});
 		return res;
 	});
 
