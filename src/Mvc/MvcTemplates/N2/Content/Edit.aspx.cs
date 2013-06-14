@@ -29,13 +29,15 @@ namespace N2.Edit
 		Legacy = true)]
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
 		CssClass = "complementary",
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign")]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
     [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
-		UrlEncode = false)]
+		UrlEncode = false,
+		IconClass = "n2-icon-check-minus")]
 	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{

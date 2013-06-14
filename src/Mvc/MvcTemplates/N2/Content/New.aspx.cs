@@ -41,7 +41,8 @@ namespace N2.Edit
 		Legacy = true)]
 	[ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
 		CssClass = "complementary",
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-plus-sign")]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

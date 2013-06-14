@@ -11,9 +11,10 @@ namespace N2.Edit
 		public SwitchToManagementControlPanelLinkAttribute()
 			: base ("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "{ManagementUrl}/?{Selection.SelectedQueryKey}={Selected.Path}", "Manage content", -50, ControlPanelState.Visible)
 		{
-			CssClass = "complementary";
+			CssClass = "complementary toggled";
 			Target = Targets.Top;
 			RequiredPermission = Permission.Read;
+			IconClass = "n2-icon-fullscreen";
 		}
 
 		protected override N2.Web.Url GetNavigateUrl(PluginContext context)
@@ -35,8 +36,9 @@ namespace N2.Edit
 		Legacy = true)]
 	[SwitchToManagementControlPanelLink]
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
-		CssClass = "toggled",
-		Target = Targets.Top)]
+		CssClass = "",
+		Target = Targets.Top,
+		IconClass = "n2-icon-fullscreen")]
 	public partial class Default : Web.EditPage
 	{
 		private readonly Engine.Logger<Default> logger;

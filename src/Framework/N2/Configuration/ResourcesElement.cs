@@ -88,5 +88,11 @@ namespace N2.Configuration
 			set { base["TwitterBootstrapJsPath"] = value; }
 		}
 
+		[ConfigurationProperty("IconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]
+		public string IconsCssPath
+		{
+			get { return (string)base["IconsCssPath"]; }
+			set { base["IconsCssPath"] = value; }
+		}
 	}
 }

@@ -18,6 +18,7 @@ namespace N2.Edit
 		{
 			RequiredPermission = Permission.Write;
 			CssClass = "complementary";
+			IconClass = "n2-icon-trash";
 		}
 
 		public override Control AddTo(Control container, PluginContext context)
