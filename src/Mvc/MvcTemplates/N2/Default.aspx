@@ -13,16 +13,13 @@
     <title>N2 Management</title>
     <meta name="viewport" content="width=device-width">
 
-    <%--<link rel="stylesheet" href="redesign/css/normalize.min.css">--%>
-    <%--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">--%>
-    <%--<script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>--%>
-    <link rel="stylesheet" href="redesign/css/n2.css">
+    <link rel="stylesheet" href="Resources/css/n2.css">
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.9.1.min.js"><\/script>')</script>
-    <script src="redesign/js/plugins.js"></script>
-    <script src="redesign/js/n2.js"></script>
-    <script src="redesign/js/main.js"></script>
+    <script src="Resources/js/plugins.js"></script>
+    <script src="Resources/js/n2.js"></script>
+    <script src="Resources/js/main.js"></script>
 	<script src="Resources/angular-1.1.4/angular.js"></script>
 	<script src="Resources/angular-1.1.4/angular-resource.js"></script>
 	<link href="Resources/bootstrap/css/bootstrap.css" rel="stylesheet" />
@@ -56,8 +53,8 @@
     </div>
 	<div id="footer" ng-include src="'App/Partials/Footer.html'">
 	</div>
-    <div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
-    <%--<div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
+    <%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
+    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
 	
 	<script src="App/Js/Services.js"></script>
 	<script src="App/Js/Routes.js"></script>
