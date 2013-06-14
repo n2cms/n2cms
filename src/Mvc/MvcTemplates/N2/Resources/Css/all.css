@@ -21,7 +21,8 @@ a:hover{ text-decoration:underline; }
     a img{ vertical-align:middle; text-decoration:none; }
 img{ border:none; }
 
-input[type="checkbox"] { float: left; margin-right: 5px; }
+input[type="checkbox"],
+input[type="radio"] { float: left; margin-right: 5px; }
 
 /* toolbar */
 body.framed fieldset{
