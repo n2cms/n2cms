@@ -13,6 +13,7 @@ namespace N2.Edit
 		public ControlPanelDragPluginAttribute(string name, string iconUrl, string url, string toolTip, int sortOrder, ControlPanelState showDuring)
 			: base(name, iconUrl, url, toolTip, sortOrder, showDuring)
 		{
+			IconClass = "n2-icon-th-large";
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

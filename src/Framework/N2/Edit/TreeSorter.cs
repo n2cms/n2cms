@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Engine;
@@ -51,6 +52,49 @@ namespace N2.Edit
 				{
 					MoveTo(item, NodePosition.After, filtered[index + 1]);
 				}
+			}
+		}
+
+		public void MoveTo(ContentItem item, ContentItem parent)
+		{
+			if (item.Parent == parent)
+			{
+				// move it last
+				item.AddTo(null);
+				item.AddTo(parent);
+			}
+			else if (item.Parent == null || !parent.Children.Contains(item))
+				item.AddTo(parent);
+
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (ContentItem updatedItem in Utility.UpdateSortOrder(parent.Children))
+				{
+					persister.Repository.SaveOrUpdate(updatedItem);
+				}
+				tx.Commit();
+			}
+		}
+
+		public void MoveTo(ContentItem item, ContentItem parent, int index)
+		{
+			if (item.Parent != parent || !parent.Children.Contains(item))
+				item.AddTo(parent);
+			else if (parent.Children.Contains(item) && parent.Children.Last() != item)
+			{
+				item.AddTo(null);
+				item.AddTo(parent);
+			}
+
+			IList<ContentItem> siblings = parent.Children;
+			Utility.MoveToIndex(siblings, item, index);
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
+				{
+					persister.Repository.SaveOrUpdate(updatedItem);
+				}
+				tx.Commit();
 			}
 		}
 

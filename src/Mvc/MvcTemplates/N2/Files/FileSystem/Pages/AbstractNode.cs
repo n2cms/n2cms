@@ -14,7 +14,7 @@ namespace N2.Edit.FileSystem.Items
 	[Adapts(typeof(AbstractNode))]
 	public class AbstractNodeAdapter : NodeAdapter
 	{
-		public override string GetPreviewUrl(ContentItem item)
+		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
 		{
 			return N2.Web.Url.Parse(item.FindPath("info").TemplateUrl).AppendQuery(SelectionUtility.SelectedQueryKey, item.Path).ResolveTokens();
 		}

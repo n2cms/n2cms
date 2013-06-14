@@ -15,7 +15,8 @@ namespace N2.Management.Content
 {
 	[ToolbarPlugin("SITE", "site", "{ManagementUrl}/Content/EditRecursive.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/database_gear.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		Legacy = true)]
 	public partial class EditRecursive : EditPage, IRecursiveContainerInterface
 	{
 		protected override void OnInit(EventArgs e)

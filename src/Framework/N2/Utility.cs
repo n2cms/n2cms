@@ -12,6 +12,7 @@ using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
 using N2.Web;
+using N2.Edit;
 
 namespace N2
 {
@@ -213,7 +214,8 @@ namespace N2
 			var pi = GetPropertyInfo(ref instance, propertyName);
 
 			if (pi == null)
-				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
+				return null;
+			//	throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
 
 			return pi.GetValue(instance, null);
 		}
@@ -393,7 +395,8 @@ namespace N2
 				}
 				catch (MissingManifestResourceException)
 				{
-					SingletonDictionary<ResourceKey, string>.Instance[key] = null;
+					if (SingletonDictionary<ResourceKey, string>.Instance.ContainsKey(key)) // fixes NullReferenceException
+						SingletonDictionary<ResourceKey, string>.Instance[key] = null;
 				}
 			}
 			return null; // it's okay to use default text
@@ -701,6 +704,15 @@ namespace N2
 		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		/// <summary>Shorthand for resolving a node adapter.</summary>
+		/// <param name="engine">Used to resolve the provider.</param>
+		/// <param name="item">The item whose adapter to get.</param>
+		/// <returns>The most relevant adapter.</returns>
+		internal static NodeAdapter GetNodeAdapter(this IEngine engine, ContentItem item)
+		{
+			return engine.GetContentAdapter<NodeAdapter>(item);
 		}
 
 		/// <summary>Renders a file size (in bytes) in MB (base 10) or MiB (base 2).</summary>

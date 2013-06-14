@@ -1,0 +1,13 @@
+﻿<li ng-repeat="option in ContextMenu.options" ng-class="{ divider: option.IsDivider }">
+	<a ng-class="{ 'iconed-text': option.IconUrl }" x-background-image="option.IconUrl" ng-show="!option.IsDivider" href="{{evaluateExpression(option.Url)}}" target="{{option.Target}}" ng-click="option.Activate()"><b ng-class='option.IconClass' ng-show="option.IconClass"></b> {{option.Title}}</a>
+</li>
+
+<li ng-enabled="Security.permissions.is(Security.permissions.Publish, Context.CurrentItem.MaximumPermission)">
+	<a ng-click="ContextMenu.cut(node)" href="#"><b class="n2-icon-cut"></b> Cut</a>
+</li>
+<li>
+	<a ng-click="ContextMenu.copy(node)" href="#"><b class="n2-icon-copy"></b> Copy</a>
+</li>
+<li ng-enabled="Security.permissions.is(Security.permissions.Publish, Context.CurrentItem.MaximumPermission)">
+	<a ng-disabled="ContextMenu.memory == null" href="{{Context.Paths.Management}}Content/Paste.aspx?selected={{Context.CurrentItem.Path}}&memory={{ContextMenu.memory.Path}}&action={{ContextMenu.action}}" target="preview"><b class="n2-icon-paste"></b> Paste</a>
+</li>

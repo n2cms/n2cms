@@ -7,14 +7,14 @@
 </asp:Content>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save</asp:LinkButton>
+	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save</asp:LinkButton>
 	<edit:CancelLink ID="hlCancel" runat="server" Text="Cancel" meta:resourceKey="hlCancel" />
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
-		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
-		<asp:CustomValidator ID="cvException" runat="server" Display="None" />
+		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+		<asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="None" />
 
 		<asp:PlaceHolder ID="phAncestors" runat="server" />
 	</edit:PermissionPanel>

@@ -1,0 +1,30 @@
+﻿<div class="page-action" ng-controller="PagePublishCtrl">
+	<a href="#" ng-click="publish()" ng-show="Context.CurrentItem.State == Content.states.Draft">
+		<i class="ico n2-icon-play-sign"></i>
+		Publish
+	</a>
+	<a href="#" ng-click="toggleInfo()" ng-show="Context.CurrentItem.State != Content.states.Draft">
+		<i class="ico n2-icon-info-sign"></i>
+		Info
+	</a>
+</div>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+	<b class="caret"></b>
+</a>
+
+<ul class="dropdown-menu" ng-show="item.Children.length" ng-controller="PagePublishCtrl">
+	<li ng-repeat="child in item.Children" class="item secondary-action"
+		ng-include src="child.Current.TemplateUrl || 'App/Partials/PagePublishItem.html'"
+		ng-show="isDisplayable(child)">
+	</li>
+	<!--<li class="item secondary-action">
+		<a href="#schedule-dialog" role="button" bs-modal="'App/Partials/PageScheduleDialog.html'"><b class="n2-icon-time"></b> Schedule</a>
+	</li>-->
+</ul>
+
+<dl class="info-menu dl-horizontal" ng-class="{ open: showInfo }" ng-include src="'App/Partials/PageInfo.html'">
+</dl>
+
+<!--<form ng-include src="'App/Partials/PageScheduleDialog.html'" ng-controller="PagePublishCtrl">
+</form>-->

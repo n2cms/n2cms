@@ -23,6 +23,7 @@ namespace N2.Persistence
 {
 	/// <summary>
 	/// A wrapper for NHibernate persistence functionality.
+	/// TODO: Explain how this differs from ContentItemRepositories. 
 	/// </summary>
 	[Service(typeof(IPersister))]
 	public class ContentPersister : IPersister

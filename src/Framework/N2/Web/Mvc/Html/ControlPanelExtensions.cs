@@ -309,7 +309,7 @@ namespace N2.Web.Mvc.Html
 			static string format2 = @"
 		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
 			static string format3 = @"
-		if (n2ctx.hasTop()) $('.cpAdminister').hide();
+		if (n2ctx.hasTop()) $('.complementary').hide();
 		else $('.cpView').hide();
 				
 		if (window.n2SlidingCurtain) {

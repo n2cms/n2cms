@@ -14,7 +14,7 @@
 	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
 	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
 
-    <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
+    <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="alert alert-margin" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
     <style>
 		.defaults td { border-bottom:solid 1px #ccc;}
 		.permissionsHeader { width:130px; }

@@ -8,7 +8,8 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Management.Myself
 {
-	[ToolbarPlugin("HOME", "home", "{ManagementUrl}/Myself/Root.aspx", ToolbarArea.Navigation, Targets.Preview, "{ManagementUrl}/Resources/icons/application_home.png", -50)]
+	[ToolbarPlugin("HOME", "home", "{ManagementUrl}/Myself/Root.aspx", ToolbarArea.Navigation, Targets.Preview, "{ManagementUrl}/Resources/icons/application_home.png", -50,
+		Legacy = true)]
 	public partial class Root : EditPage, IContentTemplate, IItemContainer
     {
 		protected override void OnPreInit(System.EventArgs e)

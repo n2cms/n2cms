@@ -51,8 +51,8 @@
 			<asp:Button ID="btnSelectEditors" runat="server" OnCommand="OnGotoEdit" Text="Next" />
 		</asp:View>
 		<asp:View ID="vEditing" runat="server">
-			<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
-			<asp:CustomValidator ID="cvException" runat="server" Display="None" />
+			<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+			<asp:CustomValidator ID="cvException" CssClass="alert alert-error alert-margin" runat="server" Display="None" />
 
 			<n2:ItemEditor ID="ie" runat="server" />
 

@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[Adapts(typeof(RssFeed))]
 	public class RssFeedNodeAdapter : NodeAdapter
 	{
-		public override string GetPreviewUrl(ContentItem item)
+		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
 		{
 			return new Url(base.GetPreviewUrl(item)).AppendSegment("Preview");;
 		}

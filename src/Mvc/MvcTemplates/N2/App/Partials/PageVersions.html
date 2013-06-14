@@ -1,0 +1,32 @@
+﻿<div class='page-action'>
+	<a href='{{evaluateExpression(item.Current.Url)}}' 
+		target='preview' 
+		title='View page versions' 
+		class='page-action-description'>
+		<i class="ico n2-icon-time"></i>
+		Versions<br />
+		<span ng-show="Context.CurrentItem.State == Content.states.Draft">Draft</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Waiting">Waiting</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Published">Published</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Unpublished">Unpublished</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Deleted">Deleted</span>
+	</a>
+
+</div>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+	ng-controller='VersionsCtrl'
+	ng-click='loadVersions(item)'>
+	<b class="caret"></b>
+</a>
+
+<ul class="dropdown-menu versions" ng-show="item.Children.length">
+	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted  }">
+		<div class="page-action">
+			<a href="{{child.Current.PreviewUrl}}" target="preview">
+				<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class="child.Current.IconClass || 'ico-custom'" x-background-image='child.Current.IconUrl'></b>
+				{{child.Current.VersionIndex + 1}}: {{child.Current.Title}}
+			</a>
+		</div>
+	</li>
+</ul>

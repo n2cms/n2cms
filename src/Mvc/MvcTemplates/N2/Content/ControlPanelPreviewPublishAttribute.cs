@@ -16,6 +16,7 @@ namespace N2.Edit
 		public ControlPanelPreviewPublishAttribute(string toolTip, int sortOrder)
             : base("cpPreviewPublish", "{ManagementUrl}/Resources/icons/disk_green.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
+			IconClass = "n2-icon-play-sign";
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

@@ -175,6 +175,7 @@ namespace N2.Edit.Install
 					{
 						// retry once upon error
 						lblInstall.Text = "Database created, now insert root items.";
+						lblInstall.CssClass = "alert alert-success";
 						ShowTab("Content");
 					}
 				}

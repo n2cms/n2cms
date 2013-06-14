@@ -7,6 +7,8 @@ namespace N2.Edit
 {
 	public class TreeNode
 	{
+		public int ID { get; set; }
+		public string Path { get; set; }
 		public string Title { get; set; }
 		public string ToolTip { get; set; }
 
@@ -18,6 +20,12 @@ namespace N2.Edit
 
 		public Security.Permission MaximumPermission { get; set; }
 
-		public IEnumerable<MetaInfo> MetaInforation { get; set; }
+		public IDictionary<string, MetaInfo> MetaInformation { get; set; }
+
+		public ContentState State { get; set; }
+
+		public int SortOrder { get; set; }
+
+		public int VersionIndex { get; set; }
 	}
 }

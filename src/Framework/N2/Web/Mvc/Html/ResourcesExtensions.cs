@@ -56,7 +56,8 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper PartsJs(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens());
+			return registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens())
+				.StyleSheet(Register.IconsCssPath);
 		}
 
 		public static ResourcesHelper PartsCss(this ResourcesHelper registrator)

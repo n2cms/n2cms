@@ -41,7 +41,7 @@ namespace N2.Management.Content.Tags
 			string tagName = context.Request["tagName"];
 			string term = context.Request["term"];
 			
-			var selection = new SelectionUtility(context.Request, engine);
+			var selection = new SelectionUtility(context, engine);
 			var startPage = engine.Content.Traverse.ClosestStartPage(selection.SelectedItem);
 
 			var allTags = engine.Resolve<CacheWrapper>()

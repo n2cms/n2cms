@@ -16,8 +16,8 @@
         <asp:Panel runat="server" CssClass="list">
             <div id="nav" class="nav">
                 <asp:GridView ID="dgrItems" runat="server" 
-					DataKeyNames="ID" DataMember="Query" 
-					AutoGenerateColumns="false" CssClass="gv striped" AlternatingRowStyle-CssClass="alt" 
+					DataKeyNames="ID" DataMember="Query" BorderWidth="0"
+					AutoGenerateColumns="false" CssClass="table table-striped table-hover table-condensed" AlternatingRowStyle-CssClass="alt" 
 					UseAccessibleHeader="true" ShowHeader="false">
                     <Columns>
 						<asp:TemplateField  HeaderText="Title" meta:resourceKey="colTitle" >

@@ -15,6 +15,8 @@ using N2.Definitions;
 using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Versioning;
+using System.Web.Script.Serialization;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -106,6 +108,18 @@ namespace N2.Web
 		public static void ToJson(this object value, TextWriter sw)
 		{
 			new JsonWriter(sw).Write(value);
+		}
+
+		public static void WriteJson(this HttpResponse response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
+		}
+
+		public static void WriteJson(this HttpResponseBase response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
 		}
 
 		public static string ResolveUrlTokens(this string url)
@@ -251,6 +265,48 @@ namespace N2.Web
 				return true;
 			}
 			return false;
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpContext context)
+		{
+			return new HttpContextWrapper(context).GetRequestValueAccessor();
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpContextBase context)
+		{
+			if (context.Request.HttpMethod == "POST" && context.Request.ContentType.StartsWith("application/json") && context.Request.ContentLength > 0)
+			{
+				var json = GetOrDeserializeRequestStreamJson(context);
+				if (json == null)
+					return (key) => context.Request[key];
+
+				return (key) =>
+				{
+					if (json.ContainsKey(key))
+						return json[key];
+					return context.Request[key];
+				};
+
+			}
+			else
+				return (key) => context.Request[key];
+		}
+
+		private static IDictionary<string, string> GetOrDeserializeRequestStreamJson(HttpContextBase context)
+		{
+			var json = context.Items["CachedRequestStream"] as IDictionary<string, string>;
+			if (json == null)
+				context.Items["CachedRequestStream"] = json = DeserialiseJson(context.Request.InputStream);
+			return json;
+		}
+
+		public static IDictionary<string, string> DeserialiseJson(this Stream stream)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
+			}
 		}
 	}
 }

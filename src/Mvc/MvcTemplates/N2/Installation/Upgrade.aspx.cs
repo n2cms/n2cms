@@ -85,6 +85,7 @@ namespace N2.Edit.Install
 			lblResult.Text += "</ul>";
 
 			errorLabel.Text = errorText.ToString();
+			errorLabel.Visible = !string.IsNullOrEmpty(errorLabel.Text);
 		}
 
 		protected void btnInstall_Click(object sender, EventArgs e)
@@ -116,6 +117,7 @@ namespace N2.Edit.Install
 			catch (Exception ex)
 			{
 				errorLabel.Text = FormatException(ex);
+				errorLabel.Visible = true;
 				return ex;
 			}
 		}

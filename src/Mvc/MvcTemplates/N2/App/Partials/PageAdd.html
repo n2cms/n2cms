@@ -1,0 +1,24 @@
+﻿<div class='page-action'>
+	<a href='{{Context.Paths.Create}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}'
+		target='preview' 
+		title='Add'>
+		<b class='ico n2-icon-plus-sign'></b>
+	</a>
+</div>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-controller='AddCtrl'
+	ng-click='loadDefinitions(item)'>
+	<b class="caret"></b>
+</a>
+
+<ul class="dropdown-menu versions" ng-show="item.Children.length">
+	<li ng-repeat="child in item.Children">
+		<div class="page-action">
+			<a target="preview" href="{{Context.Paths.Edit}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&discriminator={{child.Discriminator}}" title="{{child.Title}}" class="page-action-description">
+				<b class='ico' ng-show='child.IconClass || child.IconUrl' ng-class="child.IconClass || 'ico-custom'" x-background-image='child.IconUrl'></b>
+				{{child.Title}}
+				<span><br />{{child.Description}}</span>
+			</a>
+		</div>
+	</li>
+</ul>

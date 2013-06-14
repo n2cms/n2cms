@@ -20,6 +20,8 @@ namespace N2.Edit
 
 		#region Public Properties
 
+		public bool Legacy { get; set; }
+
 		public Type Decorates { get; set; }
 
 		public string Name { get; set; }
@@ -45,6 +47,9 @@ namespace N2.Edit
 		/// <summary>Url to the anchor's image icon.</summary>
 		public string IconUrl { get; set; }
 
+		/// <summary>A css class used to render the icon.</summary>
+		public string IconClass { get; set; }
+
 		/// <summary>The current N2 context.</summary>
 		protected internal IEngine Engine
 		{
@@ -67,6 +72,8 @@ namespace N2.Edit
 
 		protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)
 		{
+			if (!string.IsNullOrEmpty(IconClass))
+				return string.Format("<b class='{0}'></b> {1}", IconClass, text);
 			if (string.IsNullOrEmpty(iconUrl))
 				return text;
 			return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.Rebase(iconUrl), alt, text);

@@ -7,20 +7,20 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator id="cvMove" runat="server" CssClass="validator info" meta:resourceKey="cvMove"/>
-    <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
+    <asp:CustomValidator id="cvMove" runat="server" CssClass="alert alert-margin" meta:resourceKey="cvMove"/>
+    <asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
     
 	<div class="cf">
 		<asp:Panel ID="pnlNewName" runat="server" CssClass="formField">
-			<asp:Label ID="lblNewName" runat="server" Text="New name"  meta:resourceKey="lblNewName" AssociatedControlID="txtNewName" CssClass="label" />
+			<asp:Label ID="lblNewName" runat="server" Text="New name"  meta:resourceKey="lblNewName" AssociatedControlID="txtNewName" />
 			<asp:TextBox ID="txtNewName" runat="server" />
 		</asp:Panel>
 		<div class="formField">
-			<asp:Label ID="lblFrom" runat="server" Text="From"  meta:resourceKey="lblFrom" AssociatedControlID="from" CssClass="label" />
+			<asp:Label ID="lblFrom" runat="server" Text="From"  meta:resourceKey="lblFrom" AssociatedControlID="from" />
 			<asp:Label ID="from" runat="server"/>
 		</div>
 		<div class="formField">
-			<asp:Label ID="lblTo" runat="server" Text="To"  meta:resourceKey="lblTo" AssociatedControlID="to" CssClass="label" />
+			<asp:Label ID="lblTo" runat="server" Text="To"  meta:resourceKey="lblTo" AssociatedControlID="to" />
 			<asp:Label ID="to" runat="server"/>
 		</div>
 	</div>
