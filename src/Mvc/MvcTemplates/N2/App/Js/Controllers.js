@@ -34,7 +34,7 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Context, Content, Security, FrameContext) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Security, FrameContext) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -56,13 +56,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
-	$scope.Interface = Interface.get({
-		view: viewMatch && viewMatch[1],
-		selected: selectedMatch && selectedMatch[1]
-	}, function (i) {
-		console.log("Interface loaded", i);
-		$scope.previewUrl(i.Paths.PreviewUrl);
-	});
 	$scope.Context = {
 		CurrentItem: {
 			PreviewUrl: "Empty.aspx"
@@ -72,14 +65,23 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 		ContextMenu: {
 		}
 	}
+	Context.full({
+		view: viewMatch && viewMatch[1],
+		selected: selectedMatch && selectedMatch[1]
+	}, function (i) {
+		console.log("Loading interface with", i);
+		angular.extend($scope.Context, i.Interface);
+		angular.extend($scope.Context, i.Context);
+		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
+	});
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags) {
 		console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
-			var node = findSelectedRecursive($scope.Interface.Content, path);
+			var node = findSelectedRecursive($scope.Context.Content, path);
 			if (!node) {
-				var parentNode = findSelectedRecursive($scope.Interface.Content, getParentPath(path));
+				var parentNode = findSelectedRecursive($scope.Context.Content, getParentPath(path));
 				if (parentNode) {
 					$scope.reloadChildren(parentNode, function () {
 						$scope.select(path);
@@ -99,7 +101,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 			$scope.Context.AppliesTo = node.Current.PreviewUrl;
 
 			$timeout(function () {
-				Context.get({ selected: node.Current.Path, view: $scope.Interface.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
+				Context.get({ selected: node.Current.Path, view: $scope.Context.Paths.ViewPreference, versionIndex: versionIndex }, function (ctx) {
 					if (keepFlags)
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
@@ -113,7 +115,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 
 	$scope.reloadChildren = function(parentPathOrNode, callback) {
 		var node = typeof parentPathOrNode == "string"
-			? findSelectedRecursive($scope.Interface.Content, parentPathOrNode)
+			? findSelectedRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
 		console.log("Reloading ", node);
@@ -144,10 +146,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Interface, Cont
 }
 
 function MainMenuCtrl($scope) {
-	$scope.$watch("Interface.MainMenu", function (mainMenu) {
+	$scope.$watch("Context.MainMenu", function (mainMenu) {
 		$scope.menu = mainMenu;
 	});
-	$scope.$watch("Interface.User", function (user) {
+	$scope.$watch("Context.User", function (user) {
 		$scope.user = user;
 	});
 }
@@ -178,7 +180,7 @@ function SearchCtrl($scope, $timeout, Content) {
 }
 
 function NavigationCtrl($scope, ContextMenuFactory) {
-	$scope.$watch("Interface.User.PreferredView", function (view) {
+	$scope.$watch("Context.User.PreferredView", function (view) {
 		$scope.viewPreference = view == 0
 			? "draft"
 			: "published";
@@ -192,16 +194,16 @@ function TrashCtrl($scope) {
 }
 
 function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
-	$scope.$watch("Interface.Content", function (content) {
+	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 		if (content) {
 			console.log("selecting", $scope.Context.SelectedNode);
-			$scope.select(findSelectedRecursive(content, $scope.Interface.SelectedPath));
+			$scope.select(findSelectedRecursive(content, $scope.Context.SelectedPath));
 		}
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.CurrentItem)
-			$scope.Context.SelectedNode = findSelectedRecursive($scope.Interface.Content, ctx.CurrentItem.Path);
+			$scope.Context.SelectedNode = findSelectedRecursive($scope.Context.Content, ctx.CurrentItem.Path);
 		else
 			$scope.Context.SelectedNode = null;
 	});
@@ -249,7 +251,7 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 }
 
 function PageActionBarCtrl($scope, $rootScope, Security) {
-	$scope.$watch("Interface.ActionMenu.Children", function (children) {
+	$scope.$watch("Context.ActionMenu.Children", function (children) {
 		var lefties = [];
 		var righties = [];
 		for (var i in children) {

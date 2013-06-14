@@ -1319,7 +1319,6 @@
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <Content Include="N2\Content\Activity\Notify.ashx" />
-    <Content Include="N2\Api\Interface.ashx" />
     <Content Include="N2\Api\Translations.ashx" />
     <Content Include="N2\Api\Context.ashx" />
     <Content Include="N2\Api\Versions.ashx" />
@@ -1398,9 +1397,6 @@
     </Compile>
     <Compile Include="N2\Api\Translations.ashx.cs">
       <DependentUpon>Translations.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Api\Interface.ashx.cs">
-      <DependentUpon>Interface.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
     <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />

@@ -1,27 +1,5 @@
 ﻿<div id="page-tree" ui-jq="disableSelection" ng-controller="NavigationCtrl">
 	<ul class="targettable">
-		<li class="root node" sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content == Context.SelectedNode, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
+		<li class="root node" sortable-path="{{Context.Content.Current.Path}}" ng-class="{ active: Context.Content == Context.SelectedNode, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
 	</ul>
-
-<!--	<ul class="site">
-		<li class="root expanded">
-			<div class="item">
-				<a href="#">{{Interface.Site.Authority || Interface.Authority}}</a>
-				<a href="#" class="tools">tools</a>
-			</div>
-			<ul class="targettable">
-				<li sortable-path="{{Interface.Content.Current.Path}}" ng-class="{ active: Interface.Content.Selected, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/PageBranch.html'" ng-controller="TrunkCtrl"></li>
-			</ul>
-		</li>
-	</ul>-->
 </div>
-<!--<div id="trash" ng-controller="TrashCtrl">
-	<div>
-		<ul>
-		</ul>
-		<div>
-			<a target="preview" href="{{Interface.Trash.Current.PreviewUrl}}">{{Interface.Trash.Current.Title}} ({{Interface.Trash.ChildItems}} items)</a>
-		</div>
-		drag item here to delete
-	</div>
-</div>-->

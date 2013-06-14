@@ -141,6 +141,8 @@
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
+    <Compile Include="Edit\Api\ContextBuilder.cs" />
+    <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
     <Compile Include="Definitions\GroupChildrenMode.cs" />

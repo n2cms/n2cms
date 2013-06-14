@@ -23,12 +23,10 @@ namespace N2.Management.Api
 			engine = N2.Context.Current;
 			selection = new SelectionUtility(context.Request, engine);
 
-			context.Response.ContentType = "application/json";
-			
-			engine.Definitions.GetAllowedChildren(selection.SelectedItem, null)
+			context.Response.WriteJson(engine.Definitions.GetAllowedChildren(selection.SelectedItem, null)
 				.WhereAuthorized(engine.SecurityManager, context.User, selection.SelectedItem)
 				.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl })
-				.ToList().ToJson(context.Response.Output);
+				.ToList());
 		}
 
 		public bool IsReusable

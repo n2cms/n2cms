@@ -1,14 +1,12 @@
 ﻿using N2.Collections;
 using N2.Edit;
 using N2.Edit.Trash;
-using N2.Engine;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 
 namespace N2.Management.Api
@@ -75,7 +73,7 @@ namespace N2.Management.Api
 	public class InterfaceData
 	{
 		public Node<InterfaceMenuItem> MainMenu { get; set; }
-		
+
 		public Node<InterfaceMenuItem> ToolbarMenu { get; set; }
 
 		public Node<InterfaceMenuItem> ActionMenu { get; set; }
@@ -119,50 +117,51 @@ namespace N2.Management.Api
 		public ViewPreference PreferredView { get; set; }
 	}
 
-	public class InterfaceTrash : Node<TreeNode>
+	public class InterfaceTrash : Node<N2.Edit.TreeNode>
 	{
 		public int TotalItems { get; set; }
 		public int ChildItems { get; set; }
 	}
 
-	public class Interface : IHttpHandler
+	public class InterfaceBuilder
 	{
-		private SelectionUtility selection;
-		private IEngine engine;
+		private Engine.IEngine engine;
 
-		public void ProcessRequest(HttpContext context)
+		public InterfaceBuilder(Engine.IEngine engine)
 		{
-			engine = N2.Context.Current;
-			selection = new SelectionUtility(context.Request, engine);
+			this.engine = engine;
+		}
 
-			context.Response.ContentType = "application/json";
-			new InterfaceData
+		public InterfaceData GetInterfaceContextData(HttpContextWrapper context, SelectionUtility selection)
+		{
+			var data = new InterfaceData
 			{
 				MainMenu = CreateMainMenu(),
 				ActionMenu = CreateActionMenu(context),
-				Content = CreateContent(context),
+				Content = CreateContent(context, selection),
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
 				Trash = CreateTrash(context),
-				Paths = CreateUrls(context),
+				Paths = CreateUrls(context, selection),
 				ContextMenu = CreateContextMenu(context)
-			}.ToJson(context.Response.Output);
+			};
+			return data;
 		}
 
-		private Node<InterfaceMenuItem> CreateContextMenu(HttpContext context)
+		private Node<InterfaceMenuItem> CreateContextMenu(HttpContextWrapper context)
 		{
 			return new Node<InterfaceMenuItem>
 			{
 				Children = engine.EditManager.GetPlugins<NavigationPluginAttribute>(context.User)
 					.Where(np => !np.Legacy)
-					.Select(np => new Node<InterfaceMenuItem>(new InterfaceMenuItem 
+					.Select(np => new Node<InterfaceMenuItem>(new InterfaceMenuItem
 					{
 						Title = np.Title,
-						Name = np.Name, 
-						Target = np.Target, 
+						Name = np.Name,
+						Target = np.Target,
 						ToolTip = np.ToolTip,
-						IconUrl = Retoken(np.IconUrl), 
+						IconUrl = Retoken(np.IconUrl),
 						Url = Retoken(np.UrlFormat),
 						IsDivider = np.IsDivider
 					})).ToList()
@@ -188,24 +187,23 @@ namespace N2.Management.Api
 			return urlFormat;
 		}
 
-		private InterfacePaths CreateUrls(HttpContext context)
+		private InterfacePaths CreateUrls(HttpContextWrapper context, SelectionUtility selection)
 		{
-			
-			return new InterfacePaths {
+
+			return new InterfacePaths
+			{
 				Management = engine.ManagementPaths.GetManagementInterfaceUrl(),
 				Delete = engine.Config.Sections.Management.Paths.DeleteItemUrl.ResolveUrlTokens(),
 				Edit = engine.Config.Sections.Management.Paths.EditItemUrl.ResolveUrlTokens(),
 				SelectedQueryKey = engine.Config.Sections.Management.Paths.SelectedQueryKey.ResolveUrlTokens(),
 				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
-				ViewPreference = new HttpContextWrapper(context).GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString(),
+				ViewPreference = context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString(),
 				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetPreviewUrl(selection.SelectedItem, allowDraft: true)
 			};
 		}
 
-		private Node<InterfaceMenuItem> CreateActionMenu(HttpContext context)
+		private Node<InterfaceMenuItem> CreateActionMenu(HttpContextWrapper context)
 		{
-			string mgmt = "{ManagementUrl}".ResolveUrlTokens();
-
 			return new Node<InterfaceMenuItem>
 			{
 				Children = new Node<InterfaceMenuItem>[]
@@ -222,11 +220,11 @@ namespace N2.Management.Api
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { IconClass = "n2-icon-trash", Url = "{ManagementUrl}/Content/Delete.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), ToolTip = "Throw selected item", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Description = "Page details", Url = "{{Interface.Paths.Edit}}?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" })
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Description = "Page details", Url = "{ManagementUrl}/Content/Edit.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" })
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit details", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Url = "{{Interface.Paths.Edit}}?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Edit details", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Edit.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Organize parts", IconClass = "n2-icon-th-large", Target = Targets.Preview, Url = "{{Context.CurrentItem.PreviewUrl}}&edit=drag", RequiredPermission = Permission.Write }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Manage security", IconClass = "n2-icon-lock", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Security/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Bulk editing", IconClass = "n2-icon-edit", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/BulkEditing.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
@@ -245,15 +243,15 @@ namespace N2.Management.Api
 						}
 					},
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write, Alignment = "Right" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", Url = "{{Context.CurrentItem.PreviewUrl || Interface.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", Alignment = "Right" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", Url = "{{Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management", Alignment = "Right" }),
 				}
 			};
 		}
 
-		private InterfaceTrash CreateTrash(HttpContext context)
+		private InterfaceTrash CreateTrash(HttpContextWrapper context)
 		{
 			var trash = engine.Resolve<ITrashHandler>();
-			
+
 			if (trash.TrashContainer == null)
 				return new InterfaceTrash();
 
@@ -261,7 +259,7 @@ namespace N2.Management.Api
 
 			var total = (int)engine.Persister.Repository.Count(Parameter.Below(container));
 			var children = (int)engine.Persister.Repository.Count(Parameter.Equal("Parent", container));
-			
+
 			return new InterfaceTrash
 			{
 				Current = engine.GetContentAdapter<NodeAdapter>(container).GetTreeNode(container),
@@ -272,7 +270,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private InterfaceUser CreateUser(HttpContext context)
+		private InterfaceUser CreateUser(HttpContextWrapper context)
 		{
 			return new InterfaceUser
 			{
@@ -282,10 +280,10 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<TreeNode> CreateContent(HttpContext context)
+		private Node<TreeNode> CreateContent(HttpContextWrapper context, SelectionUtility selection)
 		{
 			var filter = engine.EditManager.GetEditorFilter(context.User);
-			
+
 			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.RootPage, true) { UseMasterVersion = false }
 				.Children((item) => engine.GetContentAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
 				.Build();
@@ -296,7 +294,7 @@ namespace N2.Management.Api
 		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
-			
+
 			var children = structure.Children.Select(c => CreateStructure(c, filter)).ToList();
 			return new Node<TreeNode>
 			{
@@ -320,21 +318,16 @@ namespace N2.Management.Api
 					{
 						Children = new Node<InterfaceMenuItem>[]
 						{
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Site", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/EditRecursive.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Templates", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Templates/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Wizards", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Content/Wizard/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
-							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Users", ToolTip = "Manage users", Target = Targets.Preview, Url = "{{Interface.Paths.Management}}/Users/Users.aspx", RequiredPermission = Permission.Administer }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Site", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{ManagementUrl}/Content/EditRecursive.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&id={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Templates", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Templates/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens().ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Wizards", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Wizard/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Users", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Export", ToolTip = "Export selected content", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Export.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
 							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Import", ToolTip = "Import content", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
 						}
 					}
 				}
 			};
-		}
-
-		public bool IsReusable
-		{
-			get { return false; }
 		}
 	}
 }

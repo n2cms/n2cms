@@ -1,6 +1,8 @@
 ﻿<div class="navbar clearfix" ng-controller="MainMenuCtrl">
 	<ul class="nav nav-pills">
-		<li ng-repeat="item in menu.Children" ng-class="{ dropdown: item.Children.length }" ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+		<li ng-repeat="item in menu.Children" 
+			ng-class="{ dropdown: item.Children.length }" 
+			ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
 			
 			<a href="{{evaluateExpression(item.Current.Url)}}" title="evaluateExpression(item.Current.ToolTip)" target="{{item.Current.Target}}" ng-show="!item.Children.length">
 				{{evaluateExpression(item.Current.Title)}}
@@ -23,11 +25,8 @@
 			  <b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu">
-				<!--<li>
-					<a href="#">Settings</a>
-				</li>-->
 				<li>
-					<a href="{{Interface.Paths.Management}}Login.aspx?logout=true">Sign out</a>
+					<a href="{{Context.Paths.Management}}Login.aspx?logout=true">Sign out</a>
 				</li>
 			</ul>
 		</li>

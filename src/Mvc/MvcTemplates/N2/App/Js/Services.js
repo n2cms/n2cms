@@ -1,9 +1,4 @@
 ﻿(function (module) {
-	module.factory('Interface', function ($resource) {
-		var res = $resource('Api/Interface.ashx', {}, {});
-		return res;
-	});
-
 	module.factory('FrameManipulatorFactory', function () {
 		var frameManipulator = {
 			click: function (selector) {
@@ -115,7 +110,10 @@
 	});
 
 	module.factory('Context', function ($resource) {
-		var res = $resource('Api/Context.ashx', {}, {});
+		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
+			'interface': { method: 'GET', params: { target: 'interface' } },
+			'full': { method: 'GET', params: { target: 'full' } }
+		});
 
 		return res;
 	});
@@ -137,6 +135,8 @@
 			ReadWritePublish: 7,
 			Full: 13,
 			is: function (actual, expected) {
+				if (expected === null)
+					return true;
 				return actual <= expected;
 			}
 		};
@@ -172,8 +172,8 @@
 				scope.ContextMenu.node = node;
 				scope.ContextMenu.options = [];
 
-				for (var i in scope.Interface.ContextMenu.Children) {
-					var cm = scope.Interface.ContextMenu.Children[i];
+				for (var i in scope.Context.ContextMenu.Children) {
+					var cm = scope.Context.ContextMenu.Children[i];
 					scope.ContextMenu.options.push(cm.Current);
 				}
 

@@ -15,39 +15,6 @@ using System.Web;
 
 namespace N2.Management.Api
 {
-	public class ContextData
-	{
-		public ILanguage Language { get; set; }
-
-		public TreeNode CurrentItem { get; set; }
-
-		public ExtendedContextData ExtendedInfo { get; set; }
-
-		public List<string> Flags { get; set; }
-	}
-
-	public class ExtendedContextData 
-	{
-		public string Created { get; set; }
-		public string Expires { get; set; }
-		public string FuturePublishDate { get; set; }
-		public bool IsPage { get; set; }
-		public string Published { get; set; }
-		public string SavedBy { get; set; }
-		public string Updated { get; set; }
-		public bool Visible { get; set; }
-		public string ZoneName { get; set; }
-		public ExtendedContextData VersionOf { get; set; }
-
-		public int VersionIndex { get; set; }
-
-		public string Url { get; set; }
-
-		public ExtendedContextData Draft { get; set; }
-
-		public bool ReadProtected { get; set; }
-	}
-
 	public class Context : IHttpHandler
 	{
 		private SelectionUtility selection;
@@ -58,80 +25,28 @@ namespace N2.Management.Api
 			engine = N2.Context.Current;
 			selection = new SelectionUtility(context.Request, engine);
 
-			context.Response.ContentType = "application/json";
-
 			var item = selection.ParseSelectionFromRequest();
 
 			var selectedUrl = context.Request["selectedUrl"];
 			if (item == null && selectedUrl != null)
 				item = selection.ParseUrl(selectedUrl);
 
-			var ctx = GetInterfaceContextData(item, selectedUrl);
-			
-			ctx.ToJson(context.Response.Output);
-		}
-
-		private ContextData GetInterfaceContextData(ContentItem item, string selectedUrl)
-		{
-			var ctx = new ContextData();
-
-			if (item != null)
+			switch (context.Request.PathInfo)
 			{
-				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
-				ctx.CurrentItem = adapter.GetTreeNode(item);
-				ctx.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
-				ctx.Language = adapter.GetLanguage(item);
-				ctx.Flags = adapter.GetNodeFlags(item).ToList();
+				case "/interface":
+					context.Response.WriteJson(new InterfaceBuilder(engine).GetInterfaceContextData(new HttpContextWrapper(context), selection));
+					return;
+				case "/full":
+					context.Response.WriteJson(new
+					{
+						Interface = new InterfaceBuilder(engine).GetInterfaceContextData(new HttpContextWrapper(context), selection),
+						Context = new ContextBuilder(engine).GetInterfaceContextData(item, selectedUrl)
+					});
+					return;
+				default:
+					context.Response.WriteJson(new ContextBuilder(engine).GetInterfaceContextData(item, selectedUrl));
+					return;
 			}
-			else
-				ctx.Flags = new List<string>();
-
-			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
-			if (selectedUrl != null && selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
-			{
-				ctx.Flags.Add("Management");
-				ctx.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
-			}
-			return ctx;
-		}
-
-		private ExtendedContextData CreateExtendedContextData(ContentItem item, bool resolveVersions = false)
-		{
-			if (item == null)
-				return null;
-
-			var data = new ExtendedContextData
-			{
-				Created = item.Created.ToString("o"),
-				Expires = item.Expires.HasValue ? item.Expires.Value.ToString("o") : null,
-				IsPage = item.IsPage,
-				Published = item.Published.HasValue ? item.Published.Value.ToString("o") : null,
-				SavedBy = item.SavedBy,
-				Updated = item.Updated.ToString("o"),
-				Visible = item.Visible,
-				ZoneName = item.ZoneName,
-				VersionIndex = item.VersionIndex,
-				Url = item.Url,
-				ReadProtected = !engine.SecurityManager.IsAuthorized(item, new GenericPrincipal(new GenericIdentity(""), null))
-			};
-			if (resolveVersions)
-			{
-				var draftInfo = engine.Resolve<DraftRepository>().GetDraftInfo(item);
-				data.Draft = CreateExtendedContextData(draftInfo != null ? engine.Resolve<IVersionManager>().GetVersion(item, draftInfo.VersionIndex) : null);
-				if (data.Draft != null)
-				{
-					data.Draft.SavedBy = draftInfo.SavedBy;
-					data.Draft.Updated = draftInfo.Saved.ToString("o");
-				}
-				data.VersionOf = CreateExtendedContextData(item.VersionOf);
-			};
-			if (selection.SelectedItem.State == ContentState.Waiting)
-			{
-				DateTime? futurePublishDate = (DateTime?)selection.SelectedItem["FuturePublishDate"];
-				if (futurePublishDate.HasValue)
-					data.FuturePublishDate = futurePublishDate.Value.ToString("o");
-			}
-			return data;
 		}
 
 		public bool IsReusable
