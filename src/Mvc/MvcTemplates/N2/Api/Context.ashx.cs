@@ -61,12 +61,20 @@ namespace N2.Management.Api
 			context.Response.ContentType = "application/json";
 
 			var item = selection.ParseSelectionFromRequest();
-			var ctx = new ContextData();
-			var selectedUrl = context.Request["selectedUrl"];
 
+			var selectedUrl = context.Request["selectedUrl"];
 			if (item == null && selectedUrl != null)
 				item = selection.ParseUrl(selectedUrl);
+
+			var ctx = GetInterfaceContextData(item, selectedUrl);
 			
+			ctx.ToJson(context.Response.Output);
+		}
+
+		private ContextData GetInterfaceContextData(ContentItem item, string selectedUrl)
+		{
+			var ctx = new ContextData();
+
 			if (item != null)
 			{
 				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
@@ -77,15 +85,14 @@ namespace N2.Management.Api
 			}
 			else
 				ctx.Flags = new List<string>();
-			
+
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
 			if (selectedUrl != null && selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
 			{
 				ctx.Flags.Add("Management");
 				ctx.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
 			}
-			
-			ctx.ToJson(context.Response.Output);
+			return ctx;
 		}
 
 		private ExtendedContextData CreateExtendedContextData(ContentItem item, bool resolveVersions = false)
