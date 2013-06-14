@@ -265,7 +265,7 @@ namespace N2.Management.Api
 					}
 				},
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", IconClass = "n2-icon-check-minus", Url = "{{Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management" }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", /*IconClass = "n2-icon-check-minus", */Url = "{{Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management" }),
 			};
 
 			children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)

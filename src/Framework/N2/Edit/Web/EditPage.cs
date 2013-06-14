@@ -81,7 +81,8 @@ $(function () {
     		Id: commandElement.id,
     		Selector: '#' + commandElement.id,
     		Href: commandElement.href,
-			CssClass: commandElement.className
+			CssClass: commandElement.className,
+			IconClass: $(commandElement).attr('data-icon-class')
     	};
     };
     		

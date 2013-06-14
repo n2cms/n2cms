@@ -18,13 +18,7 @@
 		ng-include src="child.Current.TemplateUrl || 'App/Partials/PagePublishItem.html'"
 		ng-show="isDisplayable(child)">
 	</li>
-	<!--<li class="item secondary-action">
-		<a href="#schedule-dialog" role="button" bs-modal="'App/Partials/PageScheduleDialog.html'"><b class="n2-icon-time"></b> Schedule</a>
-	</li>-->
 </ul>
 
 <dl class="info-menu dl-horizontal" ng-class="{ open: showInfo }" ng-include src="'App/Partials/PageInfo.html'">
 </dl>
-
-<!--<form ng-include src="'App/Partials/PageScheduleDialog.html'" ng-controller="PagePublishCtrl">
-</form>-->

@@ -5,8 +5,8 @@
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <n2:OptionsMenu id="om" runat="server">
-        <asp:LinkButton ID="btnSave" runat="server" CssClass="command" OnCommand="btnSave_Command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
-        <asp:LinkButton ID="btnSaveRecursive" runat="server" CssClass="command" OnCommand="btnSaveRecursive_Command" meta:resourcekey="btnSaveRecursiveResource1">Save whole branch</asp:LinkButton>
+        <asp:LinkButton ID="btnSave" runat="server" CssClass="command save primary-action" data-icon-class="n2-icon-save" OnCommand="btnSave_Command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
+        <asp:LinkButton ID="btnSaveRecursive" runat="server" CssClass="command" data-icon-class="n2-icon-save" OnCommand="btnSaveRecursive_Command" meta:resourcekey="btnSaveRecursiveResource1">Save whole branch</asp:LinkButton>
     </n2:OptionsMenu>
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourcekey="hlCancelResource1">Cancel</edit:CancelLink>
 </asp:Content>
