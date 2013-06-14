@@ -16,6 +16,7 @@ using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Versioning;
 using System.Web.Script.Serialization;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -266,29 +267,37 @@ namespace N2.Web
 			return false;
 		}
 
-		public static Func<string, string> GetRequestValueAccessor(this HttpRequest request)
+		public static Func<string, string> GetRequestValueAccessor(this HttpContext context)
 		{
-			return new HttpRequestWrapper(request).GetRequestValueAccessor();
+			return new HttpContextWrapper(context).GetRequestValueAccessor();
 		}
 
-		public static Func<string, string> GetRequestValueAccessor(this HttpRequestBase request)
+		public static Func<string, string> GetRequestValueAccessor(this HttpContextBase context)
 		{
-			if (request.HttpMethod == "POST" && request.ContentType.StartsWith("application/json") && request.ContentLength > 0)
+			if (context.Request.HttpMethod == "POST" && context.Request.ContentType.StartsWith("application/json") && context.Request.ContentLength > 0)
 			{
-				var json = DeserialiseJson(request.InputStream);
+				var json = GetOrDeserializeRequestStreamJson(context);
 				if (json == null)
-					return (key) => request[key];
+					return (key) => context.Request[key];
 
 				return (key) =>
 				{
 					if (json.ContainsKey(key))
 						return json[key];
-					return request[key];
+					return context.Request[key];
 				};
 
 			}
 			else
-				return (key) => request[key];
+				return (key) => context.Request[key];
+		}
+
+		private static IDictionary<string, string> GetOrDeserializeRequestStreamJson(HttpContextBase context)
+		{
+			var json = context.Items["CachedRequestStream"] as IDictionary<string, string>;
+			if (json == null)
+				context.Items["CachedRequestStream"] = json = DeserialiseJson(context.Request.InputStream);
+			return json;
 		}
 
 		public static IDictionary<string, string> DeserialiseJson(this Stream stream)

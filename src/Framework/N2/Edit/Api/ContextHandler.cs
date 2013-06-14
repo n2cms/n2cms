@@ -15,31 +15,44 @@ using System.Web;
 
 namespace N2.Management.Api
 {
-	public class Context : IHttpHandler
+	[Service(typeof(IApiHandler))]
+	public class ContextHandler : IHttpHandler, IApiHandler
 	{
-		private SelectionUtility selection;
+		public ContextHandler()
+			: this(Context.Current)
+		{
+		}
+
+		public ContextHandler(IEngine engine)
+		{
+			this.engine = engine;
+		}
+
 		private IEngine engine;
+		private SelectionUtility Selection { get { return engine.RequestContext.HttpContext.GetSelectionUtility(engine); } }
 
 		public void ProcessRequest(HttpContext context)
 		{
-			engine = N2.Context.Current;
-			selection = new SelectionUtility(context.Request, engine);
+			ProcessRequest(new HttpContextWrapper(context));
+		}
 
-			var item = selection.ParseSelectionFromRequest();
+		public void ProcessRequest(HttpContextBase context)
+		{
+			var item = Selection.ParseSelectionFromRequest();
 
 			var selectedUrl = context.Request["selectedUrl"];
 			if (item == null && selectedUrl != null)
-				item = selection.ParseUrl(selectedUrl);
+				item = Selection.ParseUrl(selectedUrl);
 
 			switch (context.Request.PathInfo)
 			{
 				case "/interface":
-					context.Response.WriteJson(new InterfaceBuilder(engine).GetInterfaceContextData(new HttpContextWrapper(context), selection));
+					context.Response.WriteJson(new InterfaceBuilder(engine).GetInterfaceContextData(context, Selection));
 					return;
 				case "/full":
 					context.Response.WriteJson(new
 					{
-						Interface = new InterfaceBuilder(engine).GetInterfaceContextData(new HttpContextWrapper(context), selection),
+						Interface = new InterfaceBuilder(engine).GetInterfaceContextData(context, Selection),
 						Context = new ContextBuilder(engine).GetInterfaceContextData(item, selectedUrl)
 					});
 					return;

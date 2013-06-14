@@ -141,7 +141,11 @@
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
+    <Compile Include="Edit\Api\ApiHandlerDispatcher.cs" />
+    <Compile Include="Edit\Api\ContentHandler.cs" />
     <Compile Include="Edit\Api\ContextBuilder.cs" />
+    <Compile Include="Edit\Api\ContextHandler.cs" />
+    <Compile Include="Edit\Api\IApiHandler.cs" />
     <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />

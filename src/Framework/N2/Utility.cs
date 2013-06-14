@@ -12,6 +12,7 @@ using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
 using N2.Web;
+using N2.Edit;
 
 namespace N2
 {
@@ -703,6 +704,15 @@ namespace N2
 		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		/// <summary>Shorthand for resolving a node adapter.</summary>
+		/// <param name="engine">Used to resolve the provider.</param>
+		/// <param name="item">The item whose adapter to get.</param>
+		/// <returns>The most relevant adapter.</returns>
+		internal static NodeAdapter GetNodeAdapter(this IEngine engine, ContentItem item)
+		{
+			return engine.GetContentAdapter<NodeAdapter>(item);
 		}
 
 		/// <summary>Renders a file size (in bytes) in MB (base 10) or MiB (base 2).</summary>

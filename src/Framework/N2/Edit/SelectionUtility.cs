@@ -16,7 +16,7 @@ namespace N2.Edit
     /// </summary>
     public class SelectionUtility
     {
-        Func<string, string> request;
+		Func<string, string> requestValueAccessor = (key) => null;
 		IEngine engine;
         ContentItem selectedItem;
         ContentItem memorizedItem;
@@ -27,30 +27,37 @@ namespace N2.Edit
 			set { engine = value; }
 		}
 
+		public Func<string, string> RequestValueAccessor
+		{
+			get { return requestValueAccessor; }
+			set { requestValueAccessor = value; }
+		}
+
         public SelectionUtility(Control container, IEngine engine)
         {
-			this.request = (key) => container.Page.Request[key];
+			this.RequestValueAccessor = (key) => container.Page.Request[key];
             this.Engine = engine;
 		}
 
-		public SelectionUtility(HttpRequest request, IEngine engine)
-			: this(new HttpRequestWrapper(request), engine)
+		public SelectionUtility(HttpContext context, IEngine engine)
+			: this(new HttpContextWrapper(context), engine)
 		{
 		}
 
-		public SelectionUtility(HttpRequestBase request, IEngine engine)
+		public SelectionUtility(HttpContextBase context, IEngine engine)
 		{
-			this.request = request.GetRequestValueAccessor();
+			this.RequestValueAccessor = context.GetRequestValueAccessor();
 			this.Engine = engine;
 		}
 
 		public SelectionUtility(Func<string, string> accessor, IEngine engine)
 		{
-			this.request = accessor;
+			this.RequestValueAccessor = accessor;
 			this.engine = engine;
 		}
+
 		public SelectionUtility(ContentItem selectedItem, ContentItem memorizedItem)
-		{
+		{;
 			this.selectedItem = selectedItem;
 			this.memorizedItem = memorizedItem;
 		}
@@ -76,29 +83,29 @@ namespace N2.Edit
 
         private ContentItem GetMemoryFromUrl()
         {
-			if (request == null) return null; // explicitly passed memory
+			if (RequestValueAccessor == null) return null; // explicitly passed memory
 
-            return Engine.Resolve<Navigator>().Navigate(request("memory"));
+            return Engine.Resolve<Navigator>().Navigate(RequestValueAccessor("memory"));
         }
 
 		/// <summary>Analyzes the request trying to determine the selected item.</summary>
 		/// <returns>A content item or null if no item was discovered.</returns>
         public virtual ContentItem ParseSelectionFromRequest()
         {
-			if (request == null) return null; // explicitly passed selection
+			if (RequestValueAccessor == null) return null; // explicitly passed selection
 
-			var selectedItem = ParseSelected(request(SelectedQueryKey));
+			var selectedItem = ParseSelected(RequestValueAccessor(SelectedQueryKey));
 
-			var selectedUrl = request("selectedUrl");
+			var selectedUrl = RequestValueAccessor("selectedUrl");
 			if (!string.IsNullOrEmpty(selectedUrl))
 				selectedItem = ParseUrl(selectedUrl);
 
-            string itemId = request(PathData.ItemQueryKey);
+            string itemId = RequestValueAccessor(PathData.ItemQueryKey);
             if (!string.IsNullOrEmpty(itemId))
 				selectedItem = Engine.Persister.Get(int.Parse(itemId)) ?? selectedItem;
 			
 			var cvr = Engine.Resolve<ContentVersionRepository>();
-			return cvr.ParseVersion(request(PathData.VersionIndexQueryKey), request("versionKey"), selectedItem)
+			return cvr.ParseVersion(RequestValueAccessor(PathData.VersionIndexQueryKey), RequestValueAccessor("versionKey"), selectedItem)
 				?? selectedItem;
         }
 
@@ -144,7 +151,7 @@ namespace N2.Edit
 
 		private ContentItem SelectFile(string selectedUrl)
 		{
-			string location = request("location");
+			string location = RequestValueAccessor("location");
 			if (string.IsNullOrEmpty(location))
 				return null;
 			if (Url.Parse(selectedUrl).IsAbsolute)

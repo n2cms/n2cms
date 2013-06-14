@@ -18,11 +18,21 @@ using System.Web.Script.Serialization;
 
 namespace N2.Management.Api
 {
-	public class Content : IHttpHandler
+	[Service(typeof(IApiHandler))]
+	public class ContentHandler : IHttpHandler, IApiHandler
 	{
-		private SelectionUtility selection;
+		public ContentHandler()
+			: this(Context.Current)
+		{
+		}
+
+		public ContentHandler(IEngine engine)
+		{
+			this.engine = engine;
+		}
+
 		private IEngine engine;
-		private Func<string, string> accessor;
+		private SelectionUtility Selection { get { return engine.RequestContext.HttpContext.GetSelectionUtility(engine); } }
 
 		public void ProcessRequest(HttpContext context)
 		{
@@ -31,11 +41,7 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContextBase context)
 		{
-			engine = N2.Context.Current;
-			accessor = context.Request.GetRequestValueAccessor();
-			selection = new SelectionUtility(accessor, engine);
-
-			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Read))
+			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Read))
 				throw new UnauthorizedAccessException();
 
 			switch (context.Request.HttpMethod)
@@ -55,8 +61,8 @@ namespace N2.Management.Api
 							context.Response.WriteJson(new { Versions = versions });
 							break;
 						case "/definitions":
-							var definitions = engine.Definitions.GetAllowedChildren(selection.SelectedItem, null)
-								.WhereAuthorized(engine.SecurityManager, context.User, selection.SelectedItem)
+							var definitions = engine.Definitions.GetAllowedChildren(Selection.SelectedItem, null)
+								.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
 								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl })
 								.ToList();
 							context.Response.WriteJson(new { Definitions = definitions });
@@ -64,7 +70,7 @@ namespace N2.Management.Api
 						case "/children":
 						default:
 							var children = CreateChildren(context).ToList();
-							context.Response.WriteJson(new  { Children = children, IsPaged = selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
 							break;
 					}
 					break;
@@ -73,10 +79,10 @@ namespace N2.Management.Api
 					{
 						case "/sort":
 						case "/move":
-							Move(context, accessor);
+							Move(context, Selection.RequestValueAccessor);
 							break;
 						case "/copy":
-							Copy(context, accessor);
+							Copy(context, Selection.RequestValueAccessor);
 							break;
 						case "/delete":
 							Delete(context);
@@ -100,15 +106,15 @@ namespace N2.Management.Api
 
 		private IEnumerable<Node<TreeNode>> CreateVersions(HttpContextBase context)
 		{
-			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
-			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(selection.SelectedItem);
+			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
+			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
 			return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
 		}
 
 		private IEnumerable<Node<InterfaceMenuItem>> CreateTranslations(HttpContextBase context)
 		{
 			var languages = engine.Resolve<ILanguageGateway>();
-			return languages.GetEditTranslations(selection.SelectedItem, true, true)
+			return languages.GetEditTranslations(Selection.SelectedItem, true, true)
 				.Select(t => new Node<InterfaceMenuItem>(new InterfaceMenuItem
 				{
 					Title = t.Language.LanguageTitle,
@@ -119,43 +125,43 @@ namespace N2.Management.Api
 
 		private void Schedule(HttpContextBase context)
 		{
-			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
-			
-			if (string.IsNullOrEmpty(accessor("publishDate")))
+
+			if (string.IsNullOrEmpty(Selection.RequestValueAccessor("publishDate")))
 			{
 				context.Response.WriteJson(new { Scheduled = false });
 				return;
 			}
 			else
 			{
-				var publishDate = DateTime.Parse(accessor("publishDate"));
-				selection.SelectedItem.SchedulePublishing(publishDate, engine);
+				var publishDate = DateTime.Parse(Selection.RequestValueAccessor("publishDate"));
+				Selection.SelectedItem.SchedulePublishing(publishDate, engine);
 
-				context.Response.WriteJson(new { Scheduled = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
+				context.Response.WriteJson(new { Scheduled = true, Current = engine.GetNodeAdapter(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem) });
 			}
 		}
 
 		private void Publish(HttpContextBase context)
 		{
-			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
 
-			var item = engine.Resolve<IVersionManager>().Publish(engine.Persister, selection.SelectedItem);
+			var item = engine.Resolve<IVersionManager>().Publish(engine.Persister, Selection.SelectedItem);
 
-			context.Response.WriteJson(new { Published = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
+			context.Response.WriteJson(new { Published = true, Current = engine.GetNodeAdapter(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem) });
 		}
 
 		private void Unpublish(HttpContextBase context)
 		{
-			if (!engine.SecurityManager.IsAuthorized(context.User, selection.SelectedItem, Security.Permission.Publish))
+			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Publish))
 				throw new UnauthorizedAccessException();
 
-			selection.SelectedItem.Expires = DateTime.Now;
-			engine.Resolve<StateChanger>().ChangeTo(selection.SelectedItem, ContentState.Unpublished);
-			engine.Persister.Save(selection.SelectedItem);
+			Selection.SelectedItem.Expires = DateTime.Now;
+			engine.Resolve<StateChanger>().ChangeTo(Selection.SelectedItem, ContentState.Unpublished);
+			engine.Persister.Save(Selection.SelectedItem);
 
-			context.Response.WriteJson(new { Unpublished = true, Current = engine.GetNodeAdapter(selection.SelectedItem).GetTreeNode(selection.SelectedItem) });
+			context.Response.WriteJson(new { Unpublished = true, Current = engine.GetNodeAdapter(Selection.SelectedItem).GetTreeNode(Selection.SelectedItem) });
 		}
 
 		private void WriteSearch(HttpContextBase context)
@@ -175,7 +181,7 @@ namespace N2.Management.Api
 
 		private void Delete(HttpContextBase context)
 		{
-			var item = selection.ParseSelectionFromRequest();
+			var item = Selection.ParseSelectionFromRequest();
 			var ex = engine.IntegrityManager.GetDeleteException(item);
 			if (ex != null)
 				throw ex;
@@ -186,7 +192,7 @@ namespace N2.Management.Api
 			engine.Persister.Delete(item);
 
 			var deleted = engine.Persister.Get(item.ID);
-			
+
 			if (deleted != null)
 				context.Response.WriteJson(new { RemovedPermanently = false, Current = engine.GetContentAdapter<NodeAdapter>(deleted).GetTreeNode(deleted) });
 			else
@@ -196,11 +202,11 @@ namespace N2.Management.Api
 		private void Move(HttpContextBase context, Func<string, string> request)
 		{
 			var sorter = engine.Resolve<ITreeSorter>();
-			var from = selection.ParseSelectionFromRequest();
+			var from = Selection.ParseSelectionFromRequest();
 			if (!string.IsNullOrEmpty(request("before")))
 			{
 				var before = engine.Resolve<Navigator>().Navigate(request("before"));
-				
+
 				PerformMoveChecks(context, from, before.Parent);
 
 				sorter.MoveTo(from, NodePosition.Before, before);
@@ -233,11 +239,11 @@ namespace N2.Management.Api
 		private void Copy(HttpContextBase context, Func<string, string> request)
 		{
 			ContentItem newItem;
-			var from = selection.ParseSelectionFromRequest();
+			var from = Selection.ParseSelectionFromRequest();
 			if (!string.IsNullOrEmpty(request("before")))
 			{
 				var before = engine.Resolve<Navigator>().Navigate(request("before"));
-				
+
 				newItem = PerformCopy(context, from, before.Parent);
 
 				var sorter = engine.Resolve<ITreeSorter>();
@@ -265,7 +271,7 @@ namespace N2.Management.Api
 			if (!engine.SecurityManager.IsAuthorized(context.User, to, Security.Permission.Write))
 				throw new UnauthorizedAccessException();
 
-			newItem = engine.Persister.Copy(selection.SelectedItem, to);
+			newItem = engine.Persister.Copy(Selection.SelectedItem, to);
 
 			if (engine.SecurityManager.IsAuthorized(context.User, to, Security.Permission.Publish))
 				return newItem;
@@ -278,14 +284,14 @@ namespace N2.Management.Api
 
 		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContextBase context)
 		{
-			var adapter = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem);
+			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
 			var filter = engine.EditManager.GetEditorFilter(context.User);
-			
-			var query = Query.From(selection.SelectedItem);
+
+			var query = Query.From(Selection.SelectedItem);
 			query.Interface = Interfaces.Managing;
 			if (context.Request["pages"] != null)
 				query.OnlyPages = Convert.ToBoolean(context.Request["pages"]);
-			if (selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge))
+			if (Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge))
 				query.Limit = new Range(0, SyncChildCollectionStateAttribute.LargeCollecetionThreshold);
 			if (context.Request["skip"] != null)
 				query.Skip(int.Parse(context.Request["skip"]));
@@ -304,7 +310,7 @@ namespace N2.Management.Api
 			{
 				Current = adapter.GetTreeNode(item),
 				Children = new Node<TreeNode>[0],
-				HasChildren	= adapter.HasChildren(item, filter),
+				HasChildren = adapter.HasChildren(item, filter),
 				Expanded = false
 			};
 		}

@@ -1319,8 +1319,6 @@
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <Content Include="N2\Content\Activity\Notify.ashx" />
-    <Content Include="N2\Api\Context.ashx" />
-    <Content Include="N2\Api\Content.ashx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -1379,12 +1377,6 @@
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
-    </Compile>
-    <Compile Include="N2\Api\Context.ashx.cs">
-      <DependentUpon>Context.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Api\Content.ashx.cs">
-      <DependentUpon>Content.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Activity\ActivityNotificationAttribute.cs" />
     <Compile Include="N2\Content\Activity\KeepAliveControlPanel.cs" />

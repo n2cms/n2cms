@@ -31,14 +31,14 @@ namespace N2.Management.Content.Activity
 
 		private void NotifyViewing(IEngine engine, HttpContextWrapper context)
 		{
-			var selection = new SelectionUtility(context.Request, engine);
+			var selection = new SelectionUtility(context, engine);
 			if (selection.SelectedItem != null)
 				engine.AddActivity(new ManagementActivity { Operation = "View", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
 		}
 
 		private void NotifyEditing(IEngine engine, HttpContextWrapper context)
 		{
-			var selection = new SelectionUtility(context.Request, engine);
+			var selection = new SelectionUtility(context, engine);
 			if (Convert.ToBoolean(context.Request["changes"]))
 				engine.AddActivity(new ManagementActivity { Operation = "Edit", PerformedBy = context.User.Identity.Name, ID = selection.SelectedItem.ID, Path = selection.SelectedItem.Path });
 

@@ -18,11 +18,5 @@ namespace N2.Edit
 			Type itemType = item != null ? item.GetContentType() : typeof (ContentItem);
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(itemType);
 		}
-
-		internal static NodeAdapter GetNodeAdapter(this IEngine engine, ContentItem item)
-		{
-			return engine.GetContentAdapter<NodeAdapter>(item);
-		}
-
 	}
 }

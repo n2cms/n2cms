@@ -18,7 +18,7 @@ namespace N2.Management.Content.LinkTracker
 		public void ProcessRequest(HttpContext context)
 		{
 			var engine = N2.Context.Current;
-			var selection = new SelectionUtility(context.Request, engine);
+			var selection = new SelectionUtility(context, engine);
 			engine.Resolve<Tracker>().UpdateReferencesTo(selection.SelectedItem);
 
 			context.Response.ContentType = "application/json";
