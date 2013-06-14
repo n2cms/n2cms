@@ -52,8 +52,8 @@ namespace N2.Edit.Workflow
             validate = new ValidateCommand();
             this.security = security;
             save = new SaveCommand(persister);
-            draftState = new UpdateContentStateCommand(changer, ContentState.Draft);
-            publishedState = new UpdateContentStateCommand(changer, ContentState.Published);
+            draftState = new UpdateContentStateCommand(changer, ContentState.Draft, persister);
+						publishedState = new UpdateContentStateCommand(changer, ContentState.Published, persister);
             saveActiveContent = new ActiveContentSaveCommand();
 			moveToPosition = new MoveToPositionCommand();
 			unpublishedDate = new EnsureNotPublishedCommand();

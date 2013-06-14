@@ -31,6 +31,10 @@ namespace N2.Persistence
 		/// <remarks>When using <see cref="N2.Persistence.NH.ContentPersister"/> changes on existing items are tracked and automatically persisted.</remarks>
 		void Save(ContentItem unsavedItem);
 
+		/// <summary>Saves an item to persistence medium as a draft.</summary>
+		/// <param name="unsavedItem">The item to save as a draft.</param>
+		void SaveAsDraft(ContentItem unsavedItem);
+
 		/// <summary>Deletes an item including child items, any associations towards it (<see cref="N2.Details.LinkDetail"/>) and previous versions.</summary>
 		/// <param name="itemNoMore">The item to delete.</param>
 		void Delete(ContentItem itemNoMore);
@@ -75,5 +79,7 @@ namespace N2.Persistence
 		event EventHandler<DestinationEventArgs> ItemCopied;
 		/// <summary>Occurs when an item is loaded</summary>
 		event EventHandler<N2.ItemEventArgs> ItemLoaded;
+		/// <summary>Occurs when an item has been saved as a draft</summary>
+		event EventHandler<N2.ItemEventArgs> ItemSavedAsDraft;
 	}
 }
