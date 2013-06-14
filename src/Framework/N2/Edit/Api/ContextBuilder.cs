@@ -1,5 +1,6 @@
 ﻿using N2.Edit;
 using N2.Edit.Versioning;
+using N2.Engine;
 using N2.Engine.Globalization;
 using N2.Web;
 using System;
@@ -43,6 +44,12 @@ namespace N2.Management.Api
 		public bool ReadProtected { get; set; }
 	}
 
+	public class ContextBuiltEventArgs : EventArgs
+	{
+		public ContextData Data { get; internal set; }
+	}
+
+	[Service]
 	public class ContextBuilder
 	{
 		private Engine.IEngine engine;
@@ -51,28 +58,35 @@ namespace N2.Management.Api
 		{
 			this.engine = engine;
 		}
-		public ContextData GetInterfaceContextData(ContentItem item, string selectedUrl)
+
+		public event EventHandler<ContextBuiltEventArgs> ContextBuilt;
+
+		public virtual ContextData GetInterfaceContextData(ContentItem item, string selectedUrl)
 		{
-			var ctx = new ContextData();
+			var data = new ContextData();
 
 			if (item != null)
 			{
 				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
-				ctx.CurrentItem = adapter.GetTreeNode(item);
-				ctx.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
-				ctx.Language = adapter.GetLanguage(item);
-				ctx.Flags = adapter.GetNodeFlags(item).ToList();
+				data.CurrentItem = adapter.GetTreeNode(item);
+				data.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
+				data.Language = adapter.GetLanguage(item);
+				data.Flags = adapter.GetNodeFlags(item).ToList();
 			}
 			else
-				ctx.Flags = new List<string>();
+				data.Flags = new List<string>();
 
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
 			if (selectedUrl != null && selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
 			{
-				ctx.Flags.Add("Management");
-				ctx.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+				data.Flags.Add("Management");
+				data.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
 			}
-			return ctx;
+
+			if (ContextBuilt != null)
+				ContextBuilt(this, new ContextBuiltEventArgs { Data = data });
+
+			return data;
 		}
 
 		private ExtendedContentInfo CreateExtendedContextData(ContentItem item, bool resolveVersions = false)

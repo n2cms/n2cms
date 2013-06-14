@@ -1,6 +1,7 @@
 ﻿using N2.Collections;
 using N2.Edit;
 using N2.Edit.Trash;
+using N2.Engine;
 using N2.Persistence;
 using N2.Security;
 using N2.Web;
@@ -123,16 +124,24 @@ namespace N2.Management.Api
 		public int ChildItems { get; set; }
 	}
 
+	public class InterfaceBuiltEventArgs : EventArgs
+	{
+		public InterfaceData Data { get; internal set; }
+	}
+
+	[Service]
 	public class InterfaceBuilder
 	{
-		private Engine.IEngine engine;
+		private IEngine engine;
 
-		public InterfaceBuilder(Engine.IEngine engine)
+		public InterfaceBuilder(IEngine engine)
 		{
 			this.engine = engine;
 		}
 
-		public InterfaceData GetInterfaceContextData(HttpContextBase context, SelectionUtility selection)
+		public event EventHandler<InterfaceBuiltEventArgs> InterfaceBuilt;
+
+		public virtual InterfaceData GetInterfaceContextData(HttpContextBase context, SelectionUtility selection)
 		{
 			var data = new InterfaceData
 			{
@@ -146,6 +155,10 @@ namespace N2.Management.Api
 				Paths = CreateUrls(context, selection),
 				ContextMenu = CreateContextMenu(context)
 			};
+			
+			if (InterfaceBuilt != null)
+				InterfaceBuilt(this, new InterfaceBuiltEventArgs { Data = data });
+
 			return data;
 		}
 
@@ -187,7 +200,7 @@ namespace N2.Management.Api
 			return urlFormat;
 		}
 
-		private InterfacePaths CreateUrls(HttpContextBase context, SelectionUtility selection)
+		protected virtual InterfacePaths CreateUrls(HttpContextBase context, SelectionUtility selection)
 		{
 
 			return new InterfacePaths
@@ -202,7 +215,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<InterfaceMenuItem> CreateActionMenu(HttpContextBase context)
+		protected virtual Node<InterfaceMenuItem> CreateActionMenu(HttpContextBase context)
 		{
 			return new Node<InterfaceMenuItem>
 			{
@@ -248,7 +261,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private InterfaceTrash CreateTrash(HttpContextBase context)
+		protected virtual InterfaceTrash CreateTrash(HttpContextBase context)
 		{
 			var trash = engine.Resolve<ITrashHandler>();
 
@@ -270,7 +283,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private InterfaceUser CreateUser(HttpContextBase context)
+		protected virtual InterfaceUser CreateUser(HttpContextBase context)
 		{
 			return new InterfaceUser
 			{
@@ -280,7 +293,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<TreeNode> CreateContent(HttpContextBase context, SelectionUtility selection)
+		protected virtual Node<TreeNode> CreateContent(HttpContextBase context, SelectionUtility selection)
 		{
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
@@ -291,7 +304,7 @@ namespace N2.Management.Api
 			return CreateStructure(structure, filter);
 		}
 
-		private Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
+		protected virtual Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
 
@@ -305,7 +318,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<InterfaceMenuItem> CreateMainMenu()
+		protected virtual Node<InterfaceMenuItem> CreateMainMenu()
 		{
 			return new Node<InterfaceMenuItem>
 			{
