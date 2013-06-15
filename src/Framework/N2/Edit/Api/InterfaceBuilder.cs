@@ -343,7 +343,6 @@ namespace N2.Management.Api
 				{
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Dashboard", IconClass = "n2-icon-home" , Target = Targets.Preview, Url = engine.Content.Traverse.RootPage.Url }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Pages", IconClass = "n2-icon-edit", Target = "_top", Url = "{ManagementUrl}".ResolveUrlTokens() }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Search", IconClass = "n2-icon-search", Url = "#search", Target = Targets.Top }),
 					
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Divider = true }),
 					

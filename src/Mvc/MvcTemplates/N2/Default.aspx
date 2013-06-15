@@ -43,8 +43,9 @@
     </div>
     <div class="sliding-loader loader"></div>
 	<div id="main-wrapper">
-		<div id="secondary-area">
-			<div ng-include src="'App/Partials/PageTree.html'"></div>
+		<div id="secondary-area" ng-controller="NavigationCtrl">
+			<div ng-include src="'App/Partials/PageSearch.html'" id="page-search"></div>
+			<div ng-include src="'App/Partials/PageTree.html'" id="page-tree"></div>
 			<div class="dragbar"></div>
 		</div>
 		<div id="main-area"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
