@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		docs\License.txt = docs\License.txt
 		docs\n2_readme.txt = docs\n2_readme.txt
 		docs\n2cms.configuration.xsd = docs\n2cms.configuration.xsd
+		build\n2cms.iss = build\n2cms.iss
 		docs\nodo.txt = docs\nodo.txt
 		docs\runtime_readme.txt = docs\runtime_readme.txt
 		docs\solution_overview.txt = docs\solution_overview.txt
@@ -243,6 +244,10 @@ Global
 		{1A4DD4BB-86DA-4A37-BCA1-E3259C46E913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A4DD4BB-86DA-4A37-BCA1-E3259C46E913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A4DD4BB-86DA-4A37-BCA1-E3259C46E913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9C0479-64AF-4DF1-818C-118866DB8A3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

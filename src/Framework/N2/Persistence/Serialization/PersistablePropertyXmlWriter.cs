@@ -60,33 +60,33 @@ namespace N2.Persistence.Serialization
 				else if (type.IsEnum)
 					Write(propertyElement, type, ((int)value).ToString(), false);
 				else if (typeof(ContentItem).IsAssignableFrom(type))
-                    WriteItem(propertyElement, (ContentItem)value);
-                else if (type.IsContentItemEnumeration())
-                    WriteItems(propertyElement, (IEnumerable)value);
+					WriteItem(propertyElement, (ContentItem)value);
+				else if (type.IsContentItemEnumeration())
+					WriteItems(propertyElement, (IEnumerable)value);
 				else
 					Write(propertyElement, typeof(object), SerializationUtility.ToBase64String(value), false);
 			}
 		}
 
-        private void WriteItems(ElementWriter propertyElement, IEnumerable enumerable)
-        {
-            propertyElement.WriteAttribute("typeName", "System.Collections.Generic.IEnumerable`1[[N2.ContentItem, N2]]");
-            foreach (ContentItem item in enumerable)
-            {
-                using (ElementWriter itemElement = new ElementWriter("item", propertyElement.Writer))
-                {
-                    itemElement.WriteAttribute("versionKey", item.GetVersionKey());
-                    itemElement.Write(item.ID.ToString());
-                }
-            }
-        }
+		private void WriteItems(ElementWriter propertyElement, IEnumerable enumerable)
+		{
+			propertyElement.WriteAttribute("typeName", "System.Collections.Generic.IEnumerable`1[[N2.ContentItem, N2]]");
+			foreach (ContentItem item in enumerable)
+			{
+				using (ElementWriter itemElement = new ElementWriter("item", propertyElement.Writer))
+				{
+					itemElement.WriteAttribute("versionKey", item.GetVersionKey());
+					itemElement.Write(item.ID.ToString());
+				}
+			}
+		}
 
-        private void WriteItem(ElementWriter propertyElement, ContentItem item)
-        {
-            propertyElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(typeof(ContentItem)));
-            propertyElement.WriteAttribute("versionKey", item.GetVersionKey());
-            propertyElement.Write(item.ID.ToString());
-        }
+		private void WriteItem(ElementWriter propertyElement, ContentItem item)
+		{
+			propertyElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(typeof(ContentItem)));
+			propertyElement.WriteAttribute("versionKey", item.GetVersionKey());
+			propertyElement.Write(item.ID.ToString());
+		}
 
 		private void Write(ElementWriter propertyElement, Type type, string contents, bool cdata)
 		{

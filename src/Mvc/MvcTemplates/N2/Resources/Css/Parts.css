@@ -49,29 +49,29 @@
         .controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
         .controlPanel a,.controlPanel a:visited { }
     .controlPanel a { text-decoration:none; padding:1px; }
-    .controlPanel .plugins { padding:1px 20px 1px 1px; height:30px; background:#eed; }
+		.controlPanel a b { font-size:16px; }
+    .controlPanel .plugins { padding:1px 20px 1px 1px; height:30px; }
         .controlPanel .plugins a {
             display:block;
             float:left;
-            padding:7px;
+            padding:8px;
             text-align:center; 
-            color:#000; 
+            color:#fff; 
             position:relative;
             font-family: 'Lucida Console', Monaco, monospace;
             font-size: 10px;
             text-transform:uppercase;
-            background:#FFFFFF url(../../Resources/Img/lighten10.png) repeat-x scroll 0 50%;
+            background-color:#18a0de;
+			border-right: solid 1px #74c6eb;
             overflow:hidden;
-            border-left:solid 1px #fff;
-            border-right:solid 1px #d8d8d8;
             text-align:center;
             height:16px;
         }
         .controlPanel .plugins a.toggled {
-            background-image:none;
+            background-color: #74c6eb; 
         }
     .controlPanel .plugins .authorizedFalse { opacity:.33 }
-    .controlPanel .plugins a:hover { background-image:url(../../Resources/Img/toolbar_button_bg_hover.png); background-position:50% 10px; }
+    .controlPanel .plugins a:hover { background-color: #74c6eb; }
 	
     .sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:0; right:0; height:30px; width:20px; cursor:pointer; cursor:hand; display:block; background:transparent url(../../Resources/Img/SlidingCurtain_open.png) no-repeat 50% 50%; }
     .sc .close {display:none; background-image:url(../../Resources/Img/SlidingCurtain_close.png)}
@@ -85,7 +85,7 @@
 .definitionimg { vertical-align:middle;margin-right:1px;}
 * html .masked select { visibility:hidden;}
 
-.ui-dialog { padding-bottom:15px; }
+.ui-dialog { padding-bottom:15px; z-index:9999; }
 	.ui-dialog .ui-dialog-content { background-color:#fff; padding:0; }
 		.ui-dialog .ui-dialog-content iframe { width:100%; height:100%; border:0; margin-bottom:10px; margin-top:3px; }
 		.ui-dialog.ui-resizable-resizing .ui-dialog-content iframe { visibility:hidden; }

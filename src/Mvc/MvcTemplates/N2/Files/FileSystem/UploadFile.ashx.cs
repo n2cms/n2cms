@@ -20,7 +20,7 @@ namespace N2.Management.Files.FileSystem
 
             ValidateTicket(context.Request["ticket"]);
 
-            SelectionUtility selection = new SelectionUtility(context.Request, N2.Context.Current);
+            SelectionUtility selection = new SelectionUtility(context, N2.Context.Current);
             var fs = N2.Context.Current.Resolve<IFileSystem>();
 
             List<FilesStatus> statuses;

@@ -1,0 +1,48 @@
+﻿<div class="navbar clearfix" ng-controller="MainMenuCtrl">
+	<ul class="nav nav-pills">
+		<li ng-repeat="item in menu.Children" 
+			ng-class="{ dropdown: item.Children.length }" 
+			ng-show="Security.permissions.is(item.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+			
+			<a href="{{evaluateExpression(item.Current.Url)}}" title="evaluateExpression(item.Current.ToolTip)" target="{{item.Current.Target}}" ng-show="!item.Children.length">
+				{{evaluateExpression(item.Current.Title)}}
+			</a>
+			
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+				{{evaluateExpression(item.Current.Title)}}
+				<b class="caret"></b>
+			</a>
+		    <ul class="dropdown-menu">
+				<li ng-repeat="childItem in item.Children" ng-show="Security.permissions.is(childItem.Current.RequiredPermission, Context.CurrentItem.MaximumPermission)">
+					<a href="{{evaluateExpression(childItem.Current.Url)}}" title="{{evaluateExpression(childItem.Current.ToolTip)}}" target="{{childItem.Current.Target}}">{{evaluateExpression(childItem.Current.Title)}}</a>
+				</li>
+		    </ul>
+		</li>
+	</ul>
+	<ul class="nav pull-right">
+		<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.Name}}
+			  <b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="{{Context.Paths.Management}}Login.aspx?logout=true">Sign out</a>
+				</li>
+			</ul>
+		</li>
+		<li class="dropdown" ng-controller="SearchCtrl" ng-class="{ open: searchExpression }">
+			<form class="navbar-search" ng-submit="search()">
+				<input type="text" class="search-query" placeholder="Search" ng-model="searchExpression" x-esc="console.log('esc')">
+				<input type="button" value="Search" ng-click="search(searchExpression)">
+			</form>
+			<ul class="dropdown-menu" role="menu">
+				<li ng-show="searching">Searching...</li>
+				<li ng-repeat="hit in hits"><a target="preview" href="{{hit.PreviewUrl}}">{{hit.Title}}</a></li>
+				<li ng-show="!searching && !hits.length">No hits</li>
+			</ul>
+		</li>
+		<li>
+			<div id="logo"><a href="http://n2cms.com/">N2 CMS</a></div>
+		</li>
+	</ul>
+</div>

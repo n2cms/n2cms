@@ -6,18 +6,39 @@ using System.Web.Security;
 
 namespace N2.Edit
 {
+	public class SwitchToManagementControlPanelLinkAttribute : ControlPanelLinkAttribute
+	{
+		public SwitchToManagementControlPanelLinkAttribute()
+			: base ("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "{ManagementUrl}/?{Selection.SelectedQueryKey}={Selected.Path}", "Manage content", -50, ControlPanelState.Visible)
+		{
+			CssClass = "complementary toggled";
+			Target = Targets.Top;
+			RequiredPermission = Permission.Read;
+			IconClass = "n2-icon-fullscreen";
+		}
+
+		protected override N2.Web.Url GetNavigateUrl(PluginContext context)
+		{
+			if (!Engine.Config.Sections.Management.Legacy)
+				return base.GetNavigateUrl(context);
+
+			return context.Rebase(context.Format("{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={Selected.Path}", UrlEncode));
+		}
+	}
+
 	[ToolbarPlugin("PAGES", "tree", "{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Navigation, Targets.Top, "{ManagementUrl}/Resources/icons/sitemap_color.png", -30,
 		ToolTip = "show navigation",
 		GlobalResourceClassName = "Toolbar", SortOrder = -1,
-		OptionProvider = typeof(ViewOptionProvider))]
-	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview", 
-		GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "{ManagementUrl}/Content/Default.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Manage content", -50, ControlPanelState.Visible,
-		Target = Targets.Top,
-		RequiredPermission = Permission.Read)]
+		OptionProvider = typeof(ViewOptionProvider),
+		Legacy = true)]
+	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview",
+		GlobalResourceClassName = "Toolbar",
+		Legacy = true)]
+	[SwitchToManagementControlPanelLink]
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
-		CssClass = "toggled",
-		Target = Targets.Top)]
+		CssClass = "",
+		Target = Targets.Top,
+		IconClass = "n2-icon-fullscreen")]
 	public partial class Default : Web.EditPage
 	{
 		private readonly Engine.Logger<Default> logger;

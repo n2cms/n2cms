@@ -1,4 +1,47 @@
-﻿/*
+﻿//(function ($) {
+//	// initializes elements in query selection as tabs
+//	var n2tabs = {};
+
+//	$.fn.n2tabs = function (tabGroupName, initial, tabContainer) {
+//		if (!this.length)
+//			return;
+
+//		if (!tabGroupName) tabGroupName = "tab";
+
+//		// ensure each tab content has an id
+//		this.each(function (i) {
+//			if (!this.id) this.id = tabGroupName + i;
+//		});
+
+//		console.log("processing", tabGroupName, this.length, this);
+
+//		var $tabContent = this.closest(".tab-content");
+//		if (!$tabContent.length)
+//			$tabContent = this.wrapAll("<div class='tab-content' />");
+
+//		$tabContent.attr("data-tab-container", tabContainer);
+//		$tabContent.css("border", "solid 1px red")
+
+//		//var $tab = $("#" + tabGroupName);
+//		//if (!$tab.length)
+//		//	$tab = $("<ul id='" + tabGroupName + "' class='nav nav-tabs' />").insertBefore($tabContent);
+//		//this.not(".tab-pane").each(function (i) {
+//		//	var $li = $("<li><a href='#" + this.id + "'>" + (this.getAttribute("data-tab-text") || this.title) + "</a></li>").appendTo($tab);
+//		//	if (i == 0) {
+//		//		$li.addClass("active");
+//		//		$(this).addClass("active");
+//		//	}
+//		//}).addClass("tab-pane");
+
+//		//$tab.on("click", "a", function (e) {
+//		//	e.preventDefault();
+//		//	$(this).tab("show");
+//		//});
+//	}
+//})(jQuery);
+
+
+/*
 * n2tabs 0.2 - Copyright (c) 2007 Cristian Libardo
 */
 
@@ -10,6 +53,8 @@
 		if (this.length > 0) {
 			if (!tabGroupName) tabGroupName = "tab";
 			if (!tabContainer) tabContainer = n2tabs.createContainer(this.get(0));
+
+			this.removeClass("tabPanel").addClass("tab-pane").wrapAll("<div class='tab-content' />");
 
 			// ensure each tab content has an id
 			this.each(function (i) {
@@ -45,7 +90,7 @@
 
 			n2tabs.buildTabs(tabSettings);
 
-			this.addClass("tabContentHidden");
+			//this.addClass("tabContentHidden");
 			n2tabs.show(tabSettings.current);
 
 			document.documentElement.scrollTop = 0;
@@ -59,7 +104,7 @@
 
 	// creates a tab container element
 	n2tabs.createContainer = function (firstContents) {
-		return $(firstContents).before("<ul class='tabs'></ul>").prev().get(0);
+		return $(firstContents).before("<ul class='nav nav-tabs'></ul>").prev().get(0);
 	}
 
 	// creates a tab element
@@ -131,14 +176,14 @@
 		var tabSettings = contents.n2tab_settings();
 
 		// show tab contents    
-		tabSettings.current.addClass("tabContentHidden");
+		tabSettings.current.addClass("inactive").removeClass("active");
 		tabSettings.current = contents;
-		contents.removeClass("tabContentHidden");
+		contents.removeClass("inactive").addClass("active");
 
 		// select tab
 		if (!tab) tab = contents.n2tab_getTab();
-		$(".selected", tabSettings.container).removeClass("selected");
-		tab.blur().parent().addClass("selected");
+		$(".active", tabSettings.container).removeClass("active");
+		tab.blur().parent().addClass("active");
 
 		// this prevents page from scrolling (stolen from jquery.tabs)
 		var toShowId = contents.attr('id');

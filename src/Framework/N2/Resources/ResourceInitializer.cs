@@ -28,6 +28,7 @@ namespace N2.Resources
 			Register.TwitterBootstrapCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapCssPath;
 			Register.TwitterBootstrapResponsiveCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapResponsiveCssPath;
 			Register.TwitterBootstrapJsPath = configFactory.Sections.Web.Resources.TwitterBootstrapJsPath;
+			Register.IconsCssPath = configFactory.Sections.Web.Resources.IconsCssPath;
 		}
 
 		public void Stop()

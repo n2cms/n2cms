@@ -27,7 +27,7 @@ namespace N2.Collections
 		protected virtual HierarchyNode<ContentItem> BuildHierarchyTree(ContentItem currentItem, int remainingDepth)
 		{
 			HierarchyNode<ContentItem> parent = new HierarchyNode<ContentItem>(currentItem);
-			if (remainingDepth > 1)
+			if (remainingDepth > 1 && currentItem != null)
 			{
 				foreach (ContentItem childItem in GetChildren(currentItem))
 				{

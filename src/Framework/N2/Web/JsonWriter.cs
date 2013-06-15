@@ -50,6 +50,13 @@ namespace N2.Web
         private bool TryWriteKnownType(object value)
         {
 			var valueType = value.GetType();
+
+			if (typeof(MulticastDelegate).IsAssignableFrom(valueType))
+			{
+				writer.Write("null");
+				return true;
+			}
+
 			if (valueType.IsEnum)
 			{
                 writer.Write(((int)value).ToString());

@@ -64,9 +64,7 @@ namespace N2.Edit
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
 			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
 			link.Text = GetInnerHtml(context, IconUrl, tooltip, title);
-			Url url = context.Rebase(context.Format(NavigateUrl, UrlEncode));
-			if (!string.IsNullOrEmpty(NavigateQuery))
-				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
+			Url url = GetNavigateUrl(context);
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
 			link.CssClass = Name + " authorized" + context.Engine.SecurityManager.IsAuthorized(this, context.HttpContext.User, context.Selected) + " " + CssClass;
@@ -76,6 +74,14 @@ namespace N2.Edit
 			container.Controls.Add(link);
 
 			return link;
+		}
+
+		protected virtual Url GetNavigateUrl(PluginContext context)
+		{
+			Url url = context.Rebase(context.Format(NavigateUrl, UrlEncode));
+			if (!string.IsNullOrEmpty(NavigateQuery))
+				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
+			return url;
 		}
 
 		private void AddTargetAttribute(HyperLink link)

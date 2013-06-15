@@ -7,7 +7,6 @@ namespace N2.Edit
 {
 	public class MetaInfo
 	{
-		public string Name { get; set; }
 		public string ToolTip { get; set; }
 		public string Text { get; set; }
 	}

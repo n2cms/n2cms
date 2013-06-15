@@ -7,11 +7,13 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "{ManagementUrl}/Resources/icons/page_copy.png", 50,
 		GlobalResourceClassName = "Navigation",
-		RequiredPermission = Permission.Read)]
+		RequiredPermission = Permission.Read,
+		Legacy = true)]
 	[ToolbarPlugin("", "copy_tool", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/page_copy.png", 40,
 		ToolTip = "copy",
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
 	public partial class Copy : Web.EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

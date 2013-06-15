@@ -9,7 +9,8 @@ namespace N2.Edit.Wizard
 	[ToolbarPlugin("WIZARD", "wizard", "{ManagementUrl}/Content/Wizard/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Options, Targets.Preview, "{ManagementUrl}/Resources/icons/wand.png", 55, 
         ToolTip = "create items in default locations", 
         GlobalResourceClassName = "Toolbar",
-		OptionProvider = typeof(WizardOptionProvider))]
+		OptionProvider = typeof(WizardOptionProvider),
+		Legacy = true)]
 	public partial class Default : Web.EditPage
 	{
 		protected TextBox txtTitle;

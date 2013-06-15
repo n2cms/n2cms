@@ -59,9 +59,10 @@ namespace N2.Management.Content.Navigation
 			StringBuilder text = new StringBuilder();
 			text.AppendFormat("<img src='{0}' alt='icon'/>", node.IconUrl);
 			text.Append(node.Title);
-			foreach(var mi in node.MetaInforation)
+
+			foreach (var mi in node.MetaInformation)
 			{
-				text.AppendFormat(" <span class='meta {0}' title='{1}'>{2}</span>", mi.Name, mi.ToolTip, mi.Text);
+				text.AppendFormat(" <span class='meta {0}' title='{1}'>{2}</span>", mi.Key, mi.Value.ToolTip, mi.Value.Text);
 			}
 
 			var builder = new Link(text.ToString(), node.ToolTip, node.Target ?? target, node.PreviewUrl, className)

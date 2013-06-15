@@ -18,12 +18,17 @@ namespace N2.Persistence.Sources
 		public string Interface { get; set; }
 		public bool? OnlyPages { get; set; }
 		public bool SkipAuthorization { get; set; }
+		public Range Limit { get; set; }
 
 		public ItemFilter Filter { get; set; }
 
 		public ParameterCollection AsParameters()
 		{
-			var p = Parameter.Equal("Parent", Parent);
+			var p = new ParameterCollection(Parameter.Equal("Parent", Parent));
+
+			if (Limit != null)
+				p.Range	= Limit;
+
 			if (OnlyPages.HasValue)
 				return p & (OnlyPages.Value ? Parameter.IsNull("ZoneName") : Parameter.IsNotNull("ZoneName"));
 
@@ -33,6 +38,16 @@ namespace N2.Persistence.Sources
 		public static Query From(ContentItem parent)
 		{
 			return new Query { Parent = parent };
+		}
+
+		public void Skip(int skip)
+		{
+			this.Limit = new Range(skip, Limit != null ? Limit.Take : 0);
+		}
+
+		public void Take(int take)
+		{
+			this.Limit = new Range(Limit != null ? Limit.Skip : 0, take);
 		}
 	}
 }

@@ -16,11 +16,11 @@
 		<div style="margin:10px">
 	</edit:FieldSet>
 	</td><td style="padding:10px;">
-		<img src="../../Resources/Icons/link_go.png" alt="right" />
+		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td style="padding:10px;">
 		<a href='<%# Selection.SelectedItem.Url %>'><asp:Image ID="Image1" ImageUrl='<%# ResolveUrl(Selection.SelectedItem.IconUrl) %>' runat="server" /><%# Selection.SelectedItem.Title %></a>
 	</td><td style="padding:10px;">
-		<img src="../../Resources/Icons/link_go.png" alt="right" />
+		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td>
 	<edit:FieldSet class="referencedItems" runat="server" Legend="Outgoing links" meta:resourceKey="referencedItems">
 		<div style="margin:10px;min-height:15px;">

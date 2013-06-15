@@ -32,13 +32,9 @@ namespace N2.Edit.AutoPublish
 
 		public virtual void MarkForFuturePublishing(ContentItem item, DateTime futureDate)
 		{
-			if (!item.VersionOf.HasValue)
-				item.Published = futureDate;
-			else
-				item["FuturePublishDate"] = futureDate;
-			changer.ChangeTo(item, ContentState.Waiting);
-
+			VersioningExtensions.MarkForFuturePublishing(changer, item, futureDate);
 		}
+
         public override void Execute()
         {
 			using (security.Disable())

@@ -9,6 +9,7 @@ namespace N2.Edit.Navigation
 			: base("", "sort", "#", ToolbarArea.Operations, "navigation", "", -40)
 		{
 			GlobalResourceClassName = "Toolbar";
+			Legacy = true;
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

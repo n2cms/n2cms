@@ -17,6 +17,8 @@ namespace N2.Edit
 			: base("cpDelete", "{IconsUrl}/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible | ControlPanelState.Previewing)
 		{
 			RequiredPermission = Permission.Write;
+			CssClass = "complementary";
+			IconClass = "n2-icon-trash";
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

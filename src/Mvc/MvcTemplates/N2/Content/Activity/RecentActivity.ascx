@@ -4,7 +4,7 @@
 <n2:Box ID="boxActivity" HeadingText="Recent Activity" CssClass="box activityBox" runat="server" Visible="<%# ShowActivities %>" meta:resourceKey="boxActivity">
 </n2:Box>
 <script type="text/template" id="activityTemplate">
-	<table class="gv">
+	<table class="table table-striped table-hover table-condensed">
 		<thead>
 			<tr><td><%= GetLocalResourceString("bfOperation.HeaderText", "Operation") %></td><td><%= GetLocalResourceString("bfBy.HeaderText", "By") %></td><td></td></tr>
 		</thead>

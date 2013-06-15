@@ -37,6 +37,7 @@ namespace N2.Resources
 		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
 		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
+		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
 		
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryPath { get; set; }
@@ -64,6 +65,9 @@ namespace N2.Resources
 
 		/// <summary>The path to Twitter Bootstrap JS library.</summary>
 		public static string TwitterBootstrapJsPath { get; set; }
+
+		/// <summary>The path to the icon css classes.</summary>
+		public static string IconsCssPath { get; set; }
 
 		/// <summary>The path to the Fancybox library.</summary>
 		public static string FancyboxPath { get; set; }

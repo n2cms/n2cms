@@ -12,13 +12,15 @@ using N2.Persistence;
 
 namespace N2.Edit
 {
-	[NavigationSeparatorPlugin("copyPasteSeparator", 40)]
+	[NavigationSeparatorPlugin("copyPasteSeparator", 40, Legacy = true)]
     [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "{ManagementUrl}/Resources/icons/cut.png", 42,
 		GlobalResourceClassName = "Navigation",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
     [ToolbarPlugin("", "move_tool", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/cut.png", 30, ToolTip = "move",
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
 	public partial class Move : EditPage
 	{
 		private readonly Engine.Logger<Move> logger;

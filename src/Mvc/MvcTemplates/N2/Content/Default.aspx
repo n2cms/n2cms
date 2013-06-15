@@ -19,7 +19,7 @@
 
 	<script type="text/javascript">
 		window.name = "top";
-		n2ctx.hasTop = function() { return true; }
+		n2ctx.hasTop = function() { return "legacy"; }
 		n2ctx.location = "content";
 
 		jQuery(document).ready(function () {

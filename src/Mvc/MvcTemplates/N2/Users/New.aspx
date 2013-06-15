@@ -43,7 +43,8 @@
 					</div>
 				</ContentTemplate>
 			</asp:CreateUserWizardStep>
-			<asp:CompleteWizardStep runat="server"></asp:CompleteWizardStep>
+			<asp:CompleteWizardStep runat="server">
+			</asp:CompleteWizardStep>
 		</WizardSteps>
 	</asp:CreateUserWizard>
 	</div>

@@ -64,8 +64,47 @@ namespace N2.Edit.Web
 			Response.ExpiresAbsolute = N2.Utility.CurrentTime().AddDays(-1);
 			SetupClientConstants();
 			RegisterModalScrollFix();
+			RegisterActionContext();
 
             base.OnInit(e);
+		}
+
+		private void RegisterActionContext()
+		{
+			Page.JavaScript(@"
+$(function () {
+    var actions = [];
+
+    function create(commandElement) {
+    	return {
+    		Title: $(commandElement).text(),
+    		Id: commandElement.id,
+    		Selector: '#' + commandElement.id,
+    		Href: commandElement.href,
+			CssClass: commandElement.className,
+			IconClass: $(commandElement).attr('data-icon-class')
+    	};
+    };
+    		
+    $('.primary-action').each(function () {
+    	if ($(this).closest('.optionGroup').length)
+    		return;
+
+    	var node = {
+    		Current: create(this),
+    		Children: []
+    	};
+
+    	$(this).siblings('.optionGroup').find('.command').not('.hidden-action').each(function () {
+    		node.Children.push({ Current: create(this) });
+    	});
+
+    	actions.push(node);
+				
+    });
+    window.frameActions = actions;
+});
+", ScriptOptions.DocumentReady);
 		}
 
 		private void RegisterModalScrollFix()

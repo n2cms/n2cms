@@ -16,7 +16,7 @@ namespace N2.Templates.Items
 	[Adapts(typeof(RssFeed))]
 	public class RssFeedNodeAdapter : NodeAdapter
 	{
-		public override string GetPreviewUrl(ContentItem item)
+		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
 		{
 			return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 		}

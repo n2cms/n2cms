@@ -7,7 +7,7 @@
 </asp:PlaceHolder>
 <asp:PlaceHolder runat="server" Visible='<%# !CreatingNew %>'>
 	<n2:OptionsMenu id="om" runat="server">
-		<asp:HyperLink runat="server" CssClass="command plain" NavigateUrl='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Server.UrlEncode(Selection.SelectedItem.Path) %>' ToolTip="<%# CurrentLanguage.LanguageCode %>">
+		<asp:HyperLink runat="server" CssClass="command plain globalize" NavigateUrl='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Server.UrlEncode(Selection.SelectedItem.Path) %>' ToolTip="<%# CurrentLanguage.LanguageCode %>">
 			<asp:Image ID="imgCurrent" ImageUrl='<%# CurrentLanguage.FlagUrl %>' AlternateText="flag" runat="server" />
 			<%# CurrentLanguage.LanguageTitle %>
 		</asp:HyperLink>

@@ -8,8 +8,8 @@ namespace N2.Persistence.Serialization
 	public class ReadingJournal : IImportRecord
 	{
 		readonly IList<ContentItem> readItems = new List<ContentItem>();
-        readonly IList<Attachment> attachments = new List<Attachment>();
-        readonly IList<Attachment> failedAttachments = new List<Attachment>();
+		readonly IList<Attachment> attachments = new List<Attachment>();
+		readonly IList<Attachment> failedAttachments = new List<Attachment>();
 		readonly IList<Exception> errors = new List<Exception>();
 		public event EventHandler<ItemEventArgs> ItemAdded;
 

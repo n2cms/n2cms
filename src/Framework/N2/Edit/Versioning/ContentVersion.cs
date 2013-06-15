@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using N2.Persistence;
 using N2.Persistence.Serialization;
 using N2.Engine;
@@ -26,6 +27,7 @@ namespace N2.Edit.Versioning
 		}
 
 		// ReSharper disable RedundantNameQualifier
+		[XmlIgnore]
 		public Func<string, ContentItem> Deserializer
 		{
 			get
@@ -36,6 +38,7 @@ namespace N2.Edit.Versioning
 			set { _deserializer = value; }
 		}
 
+		[XmlIgnore]
 		public Func<ContentItem, string> Serializer
 		{
 			get 
@@ -71,8 +74,15 @@ namespace N2.Edit.Versioning
 			{
 				if (string.IsNullOrEmpty(VersionDataXml))
 					return null;
+
+				if (_version != null)
+					return _version;
 				
-				return _version ?? (_version = Deserializer(VersionDataXml));
+				_version = Deserializer(VersionDataXml);
+				if (FuturePublish.HasValue)
+					_version["FuturePublishDate"] = FuturePublish;
+				_version.Updated = Saved;
+				return _version;
 			}
 			set
 			{

@@ -18,6 +18,7 @@ namespace N2.Edit
 		public ControlPanelEditingSaveAttribute(string toolTip, int sortOrder)
             : base("cpEditingSave", "{ManagementUrl}/Resources/icons/disk_green.png", null, toolTip, sortOrder, ControlPanelState.Editing)
 		{
+			IconClass = "icon-save";
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

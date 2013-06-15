@@ -5,7 +5,7 @@
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
-	<asp:CustomValidator ID="cvPermission" CssClass="validator info" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
+	<asp:CustomValidator ID="cvPermission" CssClass="alert alert-margin" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType">
 		<div class="cf">
 		<asp:PlaceHolder runat="server">

@@ -17,6 +17,7 @@ namespace N2.Web
 		/// <summary>The token used for resolving the management url.</summary>
 		public const string ManagementUrlToken = "{ManagementUrl}";
 		public const string ThemesUrlToken = "{ThemesUrl}";
+		public const string SelectedQueryKeyToken = "{SelectedQueryKey}";
 
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
@@ -32,7 +33,7 @@ namespace N2.Web
 																			"arguments"
 																		};
 
-		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" } };
+		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" }, { SelectedQueryKeyToken, "selected" } };
 
 		string scheme;
 		string authority;

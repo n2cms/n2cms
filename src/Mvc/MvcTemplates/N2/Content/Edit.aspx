@@ -10,14 +10,14 @@
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
 	 <%--onclick="$(document.body).toggleClass('rightExpanded');"--%>
-		<asp:PlaceHolder runat="server" ID="phPluginArea" /><a href="javascript:void(0);" class="command rightOpener"><span class='open'>&laquo;</span><span class='close'>&raquo;</span></a>
+		<asp:PlaceHolder runat="server" ID="phPluginArea" />
     </div>
     <n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSavePublish" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
-        <asp:HyperLink ID="hlFuturePublish" NavigateUrl="#futurePanel" CssClass="command plain iconed future" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
-		<asp:LinkButton ID="btnUnpublish" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
+		<asp:LinkButton ID="btnSavePublish" data-icon-class="n2-icon-play-sign" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnPreview" data-icon-class="n2-icon-eye-open" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
+		<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="n2-icon-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+        <asp:HyperLink ID="hlFuturePublish" data-icon-class="n2-icon-time" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
+		<asp:LinkButton ID="btnUnpublish" data-icon-class="n2-icon-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
     </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
@@ -29,6 +29,8 @@
 	<uc1:AvailableZones id="ucZones" runat="server" />
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+	<a href="javascript:void(0);" class="rightOpener"><span class='rightOpener-open'>&laquo;</span><span class='rightOpener-close'>&raquo;</span></a>
+
 <%--  	
 <table>
 	<tr><th>Selected</th><td><%= Selection.SelectedItem %> (<%= Selection.SelectedItem.State %>)</td><th>VersionOf</th><td><%= Selection.SelectedItem.VersionOf.ID %></td><th>Parent</th><td><%= Selection.SelectedItem.Parent %></td></tr>
@@ -40,9 +42,9 @@
 </table>
 --%>
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
-	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info draftExists" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
-	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info isVersion" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
-    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="alert alert-margin" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
+	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="alert alert-info alert-margin" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
+    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
     <asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
     <div id="futurePanel" class="popup">
@@ -90,4 +92,9 @@
     	});
 
     </script>
+	<%--<style>
+
+	 .nav-tabs { outline:dotted 1px green; }
+	 .tab-content { outline:solid 1px red; }
+	</style>--%>
 </asp:Content>

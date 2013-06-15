@@ -10,6 +10,7 @@ using N2.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Edit.Versioning;
 using N2.Web.UI;
+using System.Web;
 
 namespace N2.Edit
 {
@@ -161,6 +162,19 @@ namespace N2.Edit
 				child.AddTo(parent);
 				Utility.UpdateSortOrder(parent.Children);
 			}
+		}
+
+		public static SelectionUtility GetSelectionUtility(this HttpContext context, IEngine engine = null)
+		{
+			return GetSelectionUtility(new HttpContextWrapper(context), engine);
+		}
+
+		public static SelectionUtility GetSelectionUtility(this HttpContextBase context, IEngine engine = null)
+		{
+			var selection = context.Items["CachedSelectionUtility"] as SelectionUtility;
+			if (selection == null)
+				context.Items["CachedSelectionUtility"] = selection = new SelectionUtility(context, engine ?? Context.Current);
+			return selection;
 		}
 	}
 

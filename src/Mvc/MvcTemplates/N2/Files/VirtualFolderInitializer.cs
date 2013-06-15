@@ -77,8 +77,17 @@ namespace N2.Management.Files
 		{
 			var paths = new List<FolderPair>();
 
+			if (folderSource == null)
+				throw new NullReferenceException("folderSource is null");
+				//return new FolderPair[0];
+			
+			var gpp = new List<FileSystemRoot>(folderSource.GetUploadFoldersForAllSites()); // non-lazy easier to debug :-)
+
+			if (gpp == null)
+				throw new NullReferenceException("folderSource.GetUploadFoldersForAllSites() returned null");
+
 			// configured folders to the root node
-			foreach (var folder in folderSource.GetUploadFoldersForAllSites())
+			foreach (var folder in gpp)
 			{
 				var parent = persister.Get(folder.GetParentID());
 				if (parent == null)

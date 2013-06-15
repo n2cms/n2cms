@@ -16,9 +16,11 @@ namespace N2.Web.UI.WebControls
 			base.OnPreRender(e);
 		}
 
+		public string CssClass { get; set; }
+
 		protected override void Render(HtmlTextWriter writer)
 		{
-			writer.Write("<div id='" + ClientID + "' class='optionGroup'>");
+			writer.Write("<div id='" + ClientID + "' class='optionGroup " + CssClass + "'>");
 			RenderChildren(writer);
 			writer.Write("</div>");
 		}

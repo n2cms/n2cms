@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title></title>
+    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -47,7 +48,7 @@ public class MyPage...</code></pre>
             </li>
         </ul>
         <p>These are are the problematic classes in the database. Their type/discriminator doesn't match any content class definition (class name or attribute name/discriminator) in the application:</p>
-        <asp:DataGrid ID="dgrItems" runat="server" CssClass="gv"></asp:DataGrid>
+        <asp:DataGrid ID="dgrItems" runat="server" CssClass="table table-striped table-hover table-condensed"></asp:DataGrid>
 
     </div>
     </form>

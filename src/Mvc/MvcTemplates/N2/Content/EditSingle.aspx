@@ -13,8 +13,8 @@
 
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
-		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
-		<asp:CustomValidator ID="cvException" runat="server" Display="None" />
+		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+		<asp:CustomValidator ID="cvException" CssClass="alert alert-error alert-margin" runat="server" Display="None" />
 
 		<n2:ItemEditor ID="ie" runat="server" />
 		

@@ -5,8 +5,8 @@
     			.insertBefore(this)
     			.click(function () {
     				$(this).hide()
-    				.siblings().show()
-    				.end().closest(".editDetail").addClass("crowded");
+    					.siblings().show()
+    					.end().parent().addClass("well");
     			}).siblings().hide();
 		});
 	};

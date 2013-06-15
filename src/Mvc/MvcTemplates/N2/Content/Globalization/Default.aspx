@@ -9,20 +9,20 @@
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator Text="Globalization is not enabled." ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" Display="Dynamic" CssClass="validator info" runat="server" />
-    <asp:CustomValidator Text="This page cannot be translated." ID="cvOutsideGlobalization" meta:resourceKey="cvOutsideGlobalization" Display="Dynamic" CssClass="validator info" runat="server" />
-	<asp:CustomValidator Text="Select at least two items to associate." ID="cvAssociate" meta:resourceKey="cvAssociate" runat="server" CssClass="validator info" Display="Dynamic" />
-	<asp:CustomValidator Text="Couldn't enable globalization. Please configure it manually in the web configuration." ID="cvEnable" meta:resourceKey="cvEnable" runat="server" CssClass="validator info" Display="Dynamic" />
-	<asp:CustomValidator Text="No language roots available. Please add one or more start pages and set the language on the site tab." ID="cvLanguageRoots" meta:resourceKey="cvLanguageRoots" runat="server" CssClass="validator info" Display="Dynamic" />
-	<asp:CustomValidator Text="Cannot associate language roots. They are assumed to be translations of each other." ID="cvAssociateLanguageRoots" meta:resourceKey="cvAssociateLanguageRoots" runat="server" CssClass="validator info" Display="Dynamic" />
+    <asp:CustomValidator Text="Globalization is not enabled." ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" Display="Dynamic" CssClass="alert alert-margin" runat="server" />
+    <asp:CustomValidator Text="This page cannot be translated." ID="cvOutsideGlobalization" meta:resourceKey="cvOutsideGlobalization" Display="Dynamic" CssClass="alert alert-margin" runat="server" />
+	<asp:CustomValidator Text="Select at least two items to associate." ID="cvAssociate" meta:resourceKey="cvAssociate" runat="server" CssClass="alert alert-margin" Display="Dynamic" />
+	<asp:CustomValidator Text="Couldn't enable globalization. Please configure it manually in the web configuration." ID="cvEnable" meta:resourceKey="cvEnable" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
+	<asp:CustomValidator Text="No language roots available. Please add one or more start pages and set the language on the site tab." ID="cvLanguageRoots" meta:resourceKey="cvLanguageRoots" runat="server" CssClass="alert alert-margin" Display="Dynamic" />
+	<asp:CustomValidator Text="Cannot associate language roots. They are assumed to be translations of each other." ID="cvAssociateLanguageRoots" meta:resourceKey="cvAssociateLanguageRoots" runat="server" CssClass="alert alert-margin" Display="Dynamic" />
 	
 	<asp:Panel ID="pnlLanguages" runat="server" CssClass="languages">
-		<table class="gv">
+		<table class="table table-striped table-hover table-condensed">
 		    <thead>
 			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>'>
 				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
 				    <ItemTemplate>
-					    <td title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></td>
+					    <th title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></th>
 				    </ItemTemplate>	
 				    <FooterTemplate></tr></FooterTemplate>
 			    </asp:Repeater>
@@ -39,7 +39,7 @@
 			<asp:Repeater runat="server" DataSource="<%# GetChildren(true) %>">
 				<HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
-					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
+					<tr class="i<%# Container.ItemIndex %>">
 					    <td>
 							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Eval("Path") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
 						</td>
@@ -63,9 +63,9 @@
 		</table>
 		<div class="panel">
 		<asp:Label runat="server" Text="Selected: " id="lblSelected" meta:resourceKey="lblSelected" />
-		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnAssociate_Click" meta:resourceKey="btnAssociate" />
-		<asp:Button ID="btnUnassociate" runat="server" Text="Unassociate" OnClick="btnUnassociate_Click" meta:resourceKey="btnUnassociate" />
+		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnAssociate_Click" meta:resourceKey="btnAssociate" CssClass="btn" />
+		<asp:Button ID="btnUnassociate" runat="server" Text="Unassociate" OnClick="btnUnassociate_Click" meta:resourceKey="btnUnassociate" CssClass="btn" />
 		</div>
 	</asp:Panel>
-	<asp:Button ID="btnEnable" runat="server" Text="Enable Globalization" OnClick="btnEnable_Click" meta:resourceKey="btnEnable" />
+	<asp:Button ID="btnEnable" runat="server" Text="Enable Globalization" OnClick="btnEnable_Click" meta:resourceKey="btnEnable" CssClass="btn" />
 </asp:Content>

@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
+	<link href="../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
     <style type="text/css">
         label{font-weight:bold;margin:5px 10px 0 0;}

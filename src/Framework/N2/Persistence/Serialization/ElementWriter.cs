@@ -33,13 +33,13 @@ namespace N2.Persistence.Serialization
 
 		public void WriteAttribute(string attributeName, DateTime value)
 		{
-            WriteAttribute(attributeName, SerializationUtility.ToUniversalString(value));
+			WriteAttribute(attributeName, SerializationUtility.ToUniversalString(value));
 		}
 
-	    public void WriteAttribute(string attributeName, DateTime? value)
+		public void WriteAttribute(string attributeName, DateTime? value)
 		{
 			WriteAttribute(attributeName, value.HasValue ? SerializationUtility.ToUniversalString(value.Value) : string.Empty);
-        }
+		}
 
 		public void WriteAttribute(string attributeName, string value)
 		{

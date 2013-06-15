@@ -13,6 +13,7 @@ namespace N2.Edit
         {
             Name = name;
             SortOrder = sortOrder;
+			IsDivider = true;
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

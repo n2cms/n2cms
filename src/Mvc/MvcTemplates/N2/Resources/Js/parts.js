@@ -24,7 +24,7 @@
 			var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
-			$('.titleBar a.command').live('click', function (e) {
+			$(document).on('click', '.titleBar a.command', function (e) {
 				e.preventDefault();
 				e.stopPropagation();
 				self.showDialog($(this).attr('href'));
@@ -43,8 +43,7 @@
 		showDialog: function (href, dialogOptions) {
 			href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
 			if (dialog) dialog.remove();
-			dialog = $('<div id="editorDialog" />').hide();
-			$(document).append(dialog);
+			dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
 			var iframe = document.createElement('iframe');
 			dialog.append(iframe);
 			iframe.src = href;
@@ -72,7 +71,15 @@
 		},
 
 		makeDraggable: function () {
-			var $draggables = $('.zoneItem,.definition').draggable({
+			$('.definition').draggable({
+				dragPrevention: 'a,input,textarea,select,img',
+				helper: this.makeDragHelper,
+				cursorAt: { top: 8, left: 8 },
+				scroll: true,
+				stop: this.stopDragging,
+				start: this.startDragging
+			}).data("handler", this);
+			$('.zoneItem').draggable({
 				handle: "> .titleBar",
 				dragPrevention: 'a,input,textarea,select,img',
 				helper: this.makeDragHelper,
@@ -80,8 +87,7 @@
 				scroll: true,
 				stop: this.stopDragging,
 				start: this.startDragging
-			})
-			$draggables.data("handler", this);
+			}).data("handler", this);
 		},
 
 		appendSelection: function (url, command) {
