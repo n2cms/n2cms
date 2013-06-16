@@ -222,7 +222,7 @@ namespace N2.Edit
 			if (query.Parent is IActiveChildren)
 				return ((IActiveChildren)query.Parent).GetChildren(new AccessFilter(WebContext.User, Security));
 
-			if (!Settings.DisplayDataItems)
+			if (!query.OnlyPages.HasValue && !Settings.DisplayDataItems)
 				query.OnlyPages = true;
 
 			var children = Sources.GetChildren(query);

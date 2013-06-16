@@ -225,10 +225,6 @@ function NavigationCtrl($scope, Content, ContextMenuFactory, Eventually) {
 	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
 
-function TrashCtrl($scope) {
-
-}
-
 function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
@@ -261,6 +257,16 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		console.log("moved", content);
 	});
 	$scope.sort = new SortHelperFactory($scope, Content);
+	$scope.parts = {
+		show: function (node) {
+			Content.children({ selected: node.Current.Path, pages: false }, function (data) {
+				console.log("parts", data);
+			});
+		},
+		hide: function (node) {
+			delete node.Parts;
+		}
+	}
 }
 
 function BranchCtrl($scope, Content, SortHelperFactory) {
