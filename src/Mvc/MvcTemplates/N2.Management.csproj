@@ -101,6 +101,7 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\PageTransitions.html" />
     <Content Include="N2\App\Partials\PageSearch.html" />
     <Content Include="N2\App\Partials\PagePublishItem.html" />
     <Content Include="N2\App\Partials\PagePublishSchedule.html" />
@@ -109,7 +110,6 @@
     <Content Include="N2\App\Partials\PageActionLink.html" />
     <Content Include="N2\App\Partials\FrameAction.html" />
     <Content Include="N2\App\Partials\PageContextMenu.html" />
-    <Content Include="N2\App\Partials\PagePublish.html" />
     <Content Include="N2\App\Partials\PageAdd.html" />
     <Content Include="N2\App\Partials\PageActionItem.html" />
     <Content Include="N2\App\Partials\Footer.html" />

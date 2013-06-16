@@ -3,9 +3,8 @@
 		<i class="ico n2-icon-play-sign"></i>
 		Publish
 	</a>
-	<a href="#" ng-click="toggleInfo()" ng-show="Context.CurrentItem.State != Content.states.Draft">
-		<i class="ico n2-icon-info-sign"></i>
-		Info
+	<a href="#" href="{{item.Children[0].Current.Url}}" ng-show="Context.CurrentItem.State != Content.states.Draft">
+		<i class="ico n2-icon-trash"></i>
 	</a>
 </div>
 
@@ -19,6 +18,3 @@
 		ng-show="isDisplayable(child)">
 	</li>
 </ul>
-
-<dl class="info-menu dl-horizontal" ng-class="{ open: showInfo }" ng-include src="'App/Partials/PageInfo.html'">
-</dl>
