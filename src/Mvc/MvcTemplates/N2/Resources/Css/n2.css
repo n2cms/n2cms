@@ -23,7 +23,7 @@ a { text-decoration: none; color: #000; }
 	#secondary-area .dragbar { position: absolute; right: -5px; margin: auto; top: 40%; }
 
 #page-search { }
-	#page-search .search-query { margin:1px 39px 1px 1px; display:block; width:auto; }
+	#page-search .search-query { margin:-1px 37px 1px -1px; display:block; width:auto; }
 		#page-search .search-query input { width:100%; padding-right:32px; box-sizing:border-box; height:30px; }
 	#page-search .search-results { display:block; background-color:#fff; position:absolute; z-index:3000; width:100%; max-height:300px; overflow:auto; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
 	#page-search .search-results.stale { opacity:.5; }
