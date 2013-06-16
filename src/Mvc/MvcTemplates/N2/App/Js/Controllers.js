@@ -259,6 +259,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.parts = {
 		show: function (node) {
+			node.Loading = true;
 			Content.children({ selected: node.Current.Path, pages: false }, function (data) {
 				var zones = {};
 				for (var i in data.Children) {
@@ -266,18 +267,23 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					var zone = zones[part.Current.ZoneName];
 					if (!zone)
 						zones[part.Current.ZoneName] = zone = [];
-					zone.push({ Current: part });
+					zone.push(part);
 				}
 
+				node.Parts = [];
 				for (var zone in zones) {
+					if (!zone)
+						continue;
 					var child = {
-						Current: { Title: zone, IconClass: "n2-icon-columns" },
+						Current: { Title: zone, IconClass: "n2-icon-columns silver" },
+						HasChildren: true,
 						Children: zones[zone]
 					}
-					node.Children.splice(0, 0, child);
+					node.Parts.push(child);
 				}
 
 				console.log(node);
+				delete node.Loading;
 			});
 		},
 		hide: function (node) {
