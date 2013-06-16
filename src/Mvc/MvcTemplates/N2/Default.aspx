@@ -13,9 +13,7 @@
     <title>N2 Management</title>
     <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="Resources/css/n2.css">
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.9.1.min.js"><\/script>')</script>
     <script src="Resources/js/plugins.js"></script>
     <script src="Resources/js/n2.js"></script>
@@ -34,6 +32,7 @@
 	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
 	<script src="Resources/bootstrap-components/angular-strap.js"></script>
 
+    <link rel="stylesheet" href="Resources/css/n2.css">
 </head>
 <body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item">
     <div id="top-area">

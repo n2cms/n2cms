@@ -51,7 +51,7 @@ namespace N2.Tests.Edit
 
 			versioner = mocks.StrictMock<IVersionManager>();
 			var urls = new FakeEditUrlManager();
-			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), TestSupport.SetupEngineSection()), new EditSection());
+			editManager = new EditManager(definitions, persister, versioner, null, null, urls, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), TestSupport.SetupEngineSection()), new EditSection());
 			editManager.EnableVersioning = true;
 
 			var engine = new FakeEngine();

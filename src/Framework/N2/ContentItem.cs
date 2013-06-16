@@ -365,6 +365,13 @@ namespace N2
 			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconUrl); }
 		}
 
+		/// <summary>Gets the icon class used by a CSS spite in the management UI to represent this item.</summary>
+		[DisplayableLiteral, NonInterceptable]
+		public virtual string IconClass
+		{
+			get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconClass; }
+		}
+
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
 		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()"), NonInterceptable]
 		public virtual string RewrittenUrl

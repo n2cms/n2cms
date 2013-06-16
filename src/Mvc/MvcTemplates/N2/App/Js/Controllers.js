@@ -260,7 +260,24 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.parts = {
 		show: function (node) {
 			Content.children({ selected: node.Current.Path, pages: false }, function (data) {
-				console.log("parts", data);
+				var zones = {};
+				for (var i in data.Children) {
+					var part = data.Children[i];
+					var zone = zones[part.Current.ZoneName];
+					if (!zone)
+						zones[part.Current.ZoneName] = zone = [];
+					zone.push({ Current: part });
+				}
+
+				for (var zone in zones) {
+					var child = {
+						Current: { Title: zone, IconClass: "n2-icon-columns" },
+						Children: zones[zone]
+					}
+					node.Children.splice(0, 0, child);
+				}
+
+				console.log(node);
 			});
 		},
 		hide: function (node) {

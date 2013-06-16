@@ -8,7 +8,7 @@ using N2.Persistence.Search;
 namespace N2.Edit.Wizard.Items
 {
 	[PartDefinition("Magic Location",
-		IconUrl = "{ManagementUrl}/Resources/icons/wand.png")]
+		IconClass = "n2-icon-magic")]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
 	[Throwable(AllowInTrash.No)]

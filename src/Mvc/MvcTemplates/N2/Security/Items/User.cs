@@ -9,7 +9,7 @@ using N2.Engine;
 
 namespace N2.Security.Items
 {
-	[PartDefinition("User", IconUrl = "{IconsUrl}/user.png")]
+	[PartDefinition("User", IconClass = "n2-icon-user")]
 	[RestrictParents(typeof (UserList))]
 	[Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]

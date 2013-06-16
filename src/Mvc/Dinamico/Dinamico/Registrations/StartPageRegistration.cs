@@ -19,7 +19,7 @@ namespace Dinamico.Dinamico.Registrations
 			register.ControlledBy<Controllers.StartPageController>();
 
 			register.Page(title: "Start Page", description: "The topmost node of a site. This can be placed below a language intersection to also represent a language");
-			register.Icon("{IconsUrl}/page_world.png");
+			register.IconClass("n2-icon-globe");
 			register.Definition.Installer = N2.Installation.InstallerHint.PreferredStartPage;
 			register.RestrictParents(typeof(IRootPage), typeof(LanguageIntersection));
 

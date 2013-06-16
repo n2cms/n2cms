@@ -153,6 +153,9 @@ namespace N2.Definitions
 		    set { iconUrl = value; }
 		}
 
+		/// <summary>Gets the icon class which .</summary>
+		public string IconClass { get; set; }
+
 		/// <summary>Gets or sets editables defined for the item.</summary>
 		public IContentList<IEditable> Editables { get; private set; }
 
