@@ -12,6 +12,39 @@
 		}
 	});
 
+	var key = { enter: 13, esc: 27, left: 37, up: 38, right: 39, down: 40, del: 46, a: 65, c: 67, n: 78, v: 86, x: 88, z: 90 };
+
+	angular.forEach(["Enter", "Esc", "Down", "Up"], function (k) {
+		var name = "n2Key" + k;
+		module.directive(name, function () {
+			return {
+				restrict: "A",
+				link: function compile(scope, element, attrs) {
+					var code = key[k.toLowerCase()];
+					element.bind("keyup", function (e) {
+						if (e.keyCode == code) {
+							console.log(name, attrs[name]);
+							scope.$apply(attrs[name]);
+						}
+					});
+				}
+			}
+		});
+	});
+
+	module.directive("n2Focus", function () {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				scope.$watch(function () {
+					return scope.$eval(attrs.n2Focus);
+				}, function (focus) {
+					if (focus) element.focus();
+				});
+			}
+		}
+	});
+
 	module.directive("evaluateHref", function ($interpolate) {
 		return {
 			restrict: "A",

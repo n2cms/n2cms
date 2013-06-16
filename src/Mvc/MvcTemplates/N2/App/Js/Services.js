@@ -1,4 +1,34 @@
 ﻿(function (module) {
+
+	module.factory('Eventually', function ($timeout) {
+		return (function () {
+			// clears the previous action if a new event is triggered before the timeout
+			var timer = 0;
+			var timers = {}
+			return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
+				if (!!parallelWorkGroup) {
+					if (timers[parallelWorkGroup]) {
+						clearTimeout(timers[parallelWorkGroup]);
+						onWorkCancelled();
+					}
+					timers[parallelWorkGroup] = setTimeout(function () {
+						timers[parallelWorkGroup] = null;
+						callback();
+					}, ms);
+				} else {
+					if (timer && onWorkCancelled) {
+						onWorkCancelled();
+					}
+					clearTimeout(timer);
+					timer = setTimeout(function () {
+						timer = 0;
+						callback();
+					}, ms);
+				}
+			}
+		})();
+	});
+
 	module.factory('FrameManipulatorFactory', function () {
 		var frameManipulator = {
 			click: function (selector) {

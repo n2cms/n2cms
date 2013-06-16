@@ -159,32 +159,63 @@ function MainMenuCtrl($scope) {
 	});
 }
 
-function SearchCtrl($scope, $timeout, Content) {
-	$scope.searchExpression = "";
-	var cancel = null;
-	$scope.$watch("searchExpression", function (searchExpression) {
-		cancel && $timeout.cancel(cancel);
-		cancel = $timeout(function () {
-			$scope.search(searchExpression + "*");
-		}, 500);
-	});
-	$scope.clear = function () {
-		$scope.hits = [];
-		$scope.searchExpression = "";
-	};
-	$scope.search = function (searchExpression) {
-		if (!searchExpression || searchExpression == "*") {
-			return $scope.clear();
-		}
-		$scope.searching = true;
-		Content.search({ q: searchExpression, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
-			$scope.hits = data.Hits;
-			$scope.searching = false;
-		});
-	}
-}
+//function SearchCtrl($scope, $timeout, Content) {
+//	$scope.searchExpression = "";
+//	var cancel = null;
+//	$scope.$watch("searchExpression", function (searchExpression) {
+//		cancel && $timeout.cancel(cancel);
+//		cancel = $timeout(function () {
+//			$scope.search(searchExpression + "*");
+//		}, 500);
+//	});
+//	$scope.clear = function () {
+//		$scope.hits = [];
+//		$scope.searchExpression = "";
+//	};
+//	$scope.search = function (searchExpression) {
+//		if (!searchExpression || searchExpression == "*") {
+//			return $scope.clear();
+//		}
+//		$scope.searching = true;
+//		Content.search({ q: searchExpression, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
+//			$scope.hits = data.Hits;
+//			$scope.searching = false;
+//		});
+//	}
+//}
 
-function NavigationCtrl($scope, ContextMenuFactory) {
+function NavigationCtrl($scope, Content, ContextMenuFactory, Eventually) {
+	$scope.search = {
+		execute: function (searchQuery) {
+			if (!searchQuery)
+				return $scope.search.clear();
+			else if (searchQuery == $scope.search.searching)
+				return;
+
+			$scope.search.searching = searchQuery;
+			Content.search({ q: searchQuery, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
+				$scope.search.hits = data.Hits;
+				$scope.search.searching = "";
+			});
+		},
+		clear: function () {
+			$scope.search.query = "";
+			$scope.search.searching = "";
+			$scope.search.hits = null;
+			$scope.search.focused = -1;
+		},
+		hits: null,
+		query: "",
+		searching: false,
+		focused: undefined,
+	};
+	$scope.$watch("search.query", function (searchQuery) {
+		Eventually(function () {
+			$scope.search.execute(searchQuery);
+			$scope.$digest();
+		}, 400);
+	});
+
 	$scope.$watch("Context.User.PreferredView", function (view) {
 		$scope.viewPreference = view == 0
 			? "draft"
@@ -192,10 +223,6 @@ function NavigationCtrl($scope, ContextMenuFactory) {
 	});
 
 	$scope.ContextMenu = new ContextMenuFactory($scope);
-}
-
-function TrashCtrl($scope) {
-
 }
 
 function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
@@ -230,6 +257,16 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		console.log("moved", content);
 	});
 	$scope.sort = new SortHelperFactory($scope, Content);
+	$scope.parts = {
+		show: function (node) {
+			Content.children({ selected: node.Current.Path, pages: false }, function (data) {
+				console.log("parts", data);
+			});
+		},
+		hide: function (node) {
+			delete node.Parts;
+		}
+	}
 }
 
 function BranchCtrl($scope, Content, SortHelperFactory) {

@@ -47,12 +47,12 @@ namespace N2.Management.Api
 			switch (context.Request.PathInfo)
 			{
 				case "/interface":
-					context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceContextData(context, Selection));
+					context.Response.WriteJson(engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection));
 					return;
 				case "/full":
 					context.Response.WriteJson(new
 					{
-						Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceContextData(context, Selection),
+						Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
 						Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(item, selectedUrl)
 					});
 					return;

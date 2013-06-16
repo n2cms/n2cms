@@ -73,7 +73,7 @@ namespace N2.Management.Api
 		public bool Divider { get; set; }
 	}
 
-	public class InterfaceData
+	public class InterfaceDefinition
 	{
 		public Node<InterfaceMenuItem> MainMenu { get; set; }
 
@@ -128,7 +128,7 @@ namespace N2.Management.Api
 
 	public class InterfaceBuiltEventArgs : EventArgs
 	{
-		public InterfaceData Data { get; internal set; }
+		public InterfaceDefinition Data { get; internal set; }
 	}
 
 	[Service]
@@ -143,9 +143,9 @@ namespace N2.Management.Api
 
 		public event EventHandler<InterfaceBuiltEventArgs> InterfaceBuilt;
 
-		public virtual InterfaceData GetInterfaceContextData(HttpContextBase context, SelectionUtility selection)
+		public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
 		{
-			var data = new InterfaceData
+			var data = new InterfaceDefinition
 			{
 				MainMenu = CreateMainMenu(),
 				ActionMenu = CreateActionMenu(context),
@@ -164,7 +164,7 @@ namespace N2.Management.Api
 			return data;
 		}
 
-		private Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
+		protected virtual Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
 		{
 			return new Node<InterfaceMenuItem>
 			{
@@ -174,7 +174,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
+		protected virtual Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
 		{
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem
 			{
@@ -251,21 +251,21 @@ namespace N2.Management.Api
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Bulk editing", IconClass = "n2-icon-edit", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/BulkEditing.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
 					}
 				},
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { IconClass = "n2-icon-trash", Url = "{ManagementUrl}/Content/Delete.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), ToolTip = "Throw selected item", RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageVersions.html", Url = "{ManagementUrl}/Content/Versions/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageLanguage.html", Url = "{ManagementUrl}/Content/Globalization/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublish.html", RequiredPermission = Permission.Write, DisplayedBy = "Unpublished", HiddenBy = "Management", Alignment = "Right" })
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageTransitions.html", RequiredPermission = Permission.Publish, DisplayedBy = "Unpublished", HiddenBy = "Management" })
 				{
 					Children = new Node<InterfaceMenuItem>[]
 					{
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Throw", IconClass = "n2-icon-trash", Url = "{ManagementUrl}/Content/Delete.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), ToolTip = "Throw selected item", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Publish", IconClass = "n2-icon-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PagePublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Unpublish", IconClass = "n2-icon-stop", ClientAction = "unpublish()", RequiredPermission = Permission.Publish, DisplayedBy = "Published" }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Info", IconClass = "n2-icon-info-sign", ClientAction = "toggleInfo()" }),
 					}
 				},
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Close", /*IconClass = "n2-icon-check-minus", */Url = "{{Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management" }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { TemplateUrl = "App/Partials/PageInfo.html", RequiredPermission = Permission.Read, HiddenBy = "Management", Alignment = "Right" })
 			};
 
 			children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
@@ -343,7 +343,6 @@ namespace N2.Management.Api
 				{
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Dashboard", IconClass = "n2-icon-home" , Target = Targets.Preview, Url = engine.Content.Traverse.RootPage.Url }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Pages", IconClass = "n2-icon-edit", Target = "_top", Url = "{ManagementUrl}".ResolveUrlTokens() }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = "Search", IconClass = "n2-icon-search", Url = "#search", Target = Targets.Top }),
 					
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Divider = true }),
 					
