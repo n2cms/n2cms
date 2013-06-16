@@ -73,7 +73,7 @@ namespace N2.Management.Api
 		public bool Divider { get; set; }
 	}
 
-	public class InterfaceData
+	public class InterfaceDefinition
 	{
 		public Node<InterfaceMenuItem> MainMenu { get; set; }
 
@@ -128,7 +128,7 @@ namespace N2.Management.Api
 
 	public class InterfaceBuiltEventArgs : EventArgs
 	{
-		public InterfaceData Data { get; internal set; }
+		public InterfaceDefinition Data { get; internal set; }
 	}
 
 	[Service]
@@ -143,9 +143,9 @@ namespace N2.Management.Api
 
 		public event EventHandler<InterfaceBuiltEventArgs> InterfaceBuilt;
 
-		public virtual InterfaceData GetInterfaceContextData(HttpContextBase context, SelectionUtility selection)
+		public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
 		{
-			var data = new InterfaceData
+			var data = new InterfaceDefinition
 			{
 				MainMenu = CreateMainMenu(),
 				ActionMenu = CreateActionMenu(context),
@@ -164,7 +164,7 @@ namespace N2.Management.Api
 			return data;
 		}
 
-		private Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
+		protected virtual Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
 		{
 			return new Node<InterfaceMenuItem>
 			{
@@ -174,7 +174,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		private Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
+		protected virtual Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
 		{
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem
 			{
