@@ -1,4 +1,123 @@
 ﻿(function (module) {
+	var translations = {
+		branch: {
+			noname: "(no name)"
+		},
+		footer: {
+			close: { title: "Dismiss" }
+		},
+		add: {
+			link: { title: "Create content below the selected page" },
+			toggle: { title: "Display common content types to create" }
+		},
+		contextmenu: {
+			cut: { text: " Cut" },
+			copy: { text: " Copy" },
+			paste: { text: " Paste" },
+			parts: {
+				show: { text: " Show" },
+				hide: { text: " Hide" }
+			}
+		},
+		info: {
+			state: { dt: "State" },
+			scheduled: { dt: "Scheduled for" },
+			created: { dt: "Created" },
+			published: { dt: "Published" },
+			expires: { dt: "Expires" },
+			updated: { dt: "Updated", by: "by" },
+			language: { dt: "Language", root: { title: "This page the starting point for a language (language root)" } },
+			version: { dt: "Version", master: "master", draft: "draft" },
+			access: { dt: "Access", privileged: "Privileged users" }
+		},
+		language: {
+			action: { text: "Language", title: "Overview translations table" },
+			toggle: { title: "Display translatable languages" }
+		},
+		schedule: {
+			action: " Schedule",
+			heading: "Schedule publishing",
+			dismiss: { title: "Dismiss" },
+			question: "When should this content be published?",
+			date: { 'data-date-format': "dd MM, yyyy", placeholder: 'dd MM, yyyy' },
+			time: { 'data-show-meridian': "true", placeholder: "hh:mm AM/PM" },
+			submit: { text: "Schedule" },
+			close: { text: "Close" }
+		},
+		search: {
+			query: { placeholder: "Search" },
+			clear: { title: "Clear search" },
+			noname: "(no name)",
+			nohits: "No hits"
+		},
+		transitions: {
+			actions: { text: "Publish" },
+			trash: { title: "Throw selected item" }
+		},
+		versions: {
+			action: { text: "Versions", title: "Overview versions" },
+			draft: "Draft",
+			waiting: "Waiting",
+			published: "Published",
+			unpublished: "Unpublished",
+			deleted: "Deleted",
+			toggle: { title: "Display page versions" }
+		}
+	}
+
+	module.filter("translate", function (Translate) {
+		return function (fallback, key) {
+			if (!key) console.error("No key provided for translation text ", fallback);
+
+			//console.log("translate filter", fallback, key);
+			return Translate(key, fallback);
+		}
+	});
+
+	module.directive("translate", function (Translate) {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				//console.log("TRANSLATE", element[0]);
+				if (!attrs.translate) console.error("No key provided for translation element", element[0]);
+
+				var translation = Translate(attrs.translate);
+				//console.log("translate directive", attrs.translate, translation);
+				if (typeof translation == "string") {
+					element.html(translation);
+					return;
+				}
+				for (var key in translation) {
+					if (key == "html")
+						element.html(translation[key]);
+					else if (key == "text") {
+						for (var i in element[0].childNodes) {
+							var node = element[0].childNodes[i]
+							if (node.nodeType == Node.TEXT_NODE && node.nodeValue && node.nodeValue.replace(/\s/g, "")) {
+								node.nodeValue = translation[key];
+								return;
+							}
+						}
+					}
+					else
+						element.attr(key, translation[key]);
+				}
+			}
+		}
+	});
+
+	module.factory('Translate', function () {
+		return function (key, fallback) {
+			var t = translations;
+			var k = key.split('.');
+			for (var i in k) {
+				t = t[k[i]];
+				if (!t) return fallback;
+			}
+			return t;
+		}
+	});
+
 	module.directive("contextMenuTrigger", function () {
 		return {
 			restrict: "A",

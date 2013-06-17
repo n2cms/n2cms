@@ -10,7 +10,7 @@
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item" title="{{node.Current.ToolTip}}">
 		<b class='ico' ng-show='node.Current.IconClass && !node.Current.IconUrl' ng-class='node.Current.IconClass || "ico-custom"'></b>
 		<span class='page-icon' ng-show='node.Current.IconUrl' x-background-image='node.Current.IconUrl'></span>
-		{{node.Current.Title || '(no name)'}}
+		{{node.Current.Title || ('(no name)' | translate:'branch.noname')}}
 	</a>
 </div>
 

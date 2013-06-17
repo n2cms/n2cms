@@ -63,7 +63,7 @@ namespace N2.Management.Api
 						case "/definitions":
 							var definitions = engine.Definitions.GetAllowedChildren(Selection.SelectedItem, null)
 								.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
-								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl })
+								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass })
 								.ToList();
 							context.Response.WriteJson(new { Definitions = definitions });
 							break;

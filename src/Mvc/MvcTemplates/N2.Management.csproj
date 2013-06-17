@@ -117,7 +117,6 @@
     <Content Include="N2\App\Partials\PageLanguage.html" />
     <Content Include="N2\App\Partials\PagePreview.html" />
     <Content Include="N2\App\Partials\PageBranch.html" />
-    <Content Include="N2\App\Partials\MainMenu.html" />
     <Content Include="N2\App\Partials\Menu.html" />
     <Content Include="N2\App\Partials\PageTree.html" />
     <Content Include="N2\Content\Activity\RecentActivity.ascx" />

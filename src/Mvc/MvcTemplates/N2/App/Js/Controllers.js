@@ -389,6 +389,16 @@ function VersionsCtrl($scope, Content) {
 	}
 }
 
+function PageInfoCtrl($scope) {
+	$scope.exctractLanguage = function (language) {
+		return language && language.replace(/[(].*?[)]/, "");
+	}
+	$scope.toggleInfo = function () {
+		console.log("toggleInfo", $scope.showInfo);
+		$scope.$parent.showInfo = !$scope.$parent.showInfo;
+	}
+}
+
 function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 	$rootScope.$on("preiewloaded", function (scope, e) {
 		
@@ -410,10 +420,6 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 		console.log("unpublish");
 		Content.unpublish({ selected: $scope.Context.CurrentItem.Path });
 	};
-	$scope.toggleInfo = function () {
-		console.log("toggleInfo", $scope.showInfo);
-		$scope.$parent.showInfo = !$scope.$parent.showInfo;
-	}
 }
 
 function PageScheduleCtrl($scope, Content) {
