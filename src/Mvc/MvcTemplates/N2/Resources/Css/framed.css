@@ -159,20 +159,15 @@ body.framed a.title { white-space:nowrap; }
 /* NEW */
 body.framed .type { clear:both; position:relative; width:99%; border-top:solid 1px #EED; }
 body.framed .d0 { border-top-style:none; }
-	body.framed .type a { font-size:.8em; margin-left:19px; padding:6px 1px 6px 22px; display:block; color:#666; background:transparent none no-repeat 5px 5px; }
-	body.framed .type a.t0 { font-size:1em; margin-left:0; padding-left:24px; }
+	body.framed .type a { font-size:.8em; padding:5px 10px; display:block; color:#666; background:transparent none no-repeat 5px 5px; }
+	body.framed .type a.t0 { font-size:1em; }
 		body.framed .type a .title { font-weight:bold; color:#333; display:inline-block; min-width:110px; margin-right:10px; }
 	body.framed .type a:hover { color:#000; text-decoration:none; background-color:#f8f8f8; }
 
-	body.framed .type.d0 > a, 
-	body.framed .type.d1 > a,
-	body.framed .type.d2 > a { padding-bottom:8px; display:block; }
 	body.framed .type.d0 span.title, 
 	body.framed .type.d1 span.title,
-	body.framed .type.d2 span.title { clear:right; font-size:1.1em; }
-	body.framed .type.d0 span.description, 
-	body.framed .type.d1 span.description,
-	body.framed .type.d2 span.description { display:block; }
+	body.framed .type.d2 span.title { font-size:1.25em; }
+	body.framed .type span.description { display:block; }
 
 body.framed .position em { color:Green; font-weight:bold; }
 .position input, .position label { float:left; display:block; }
