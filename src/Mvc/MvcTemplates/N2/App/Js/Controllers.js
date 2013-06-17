@@ -1,12 +1,11 @@
-﻿var app = angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'ui', '$strap.directives'], function () {
-});
-
-app.value('$strapConfig', {
-	datepicker: {
-		language: 'en',
-		format: 'M d, yyyy'
-	}
-});
+﻿(function(app){
+	app.value('$strapConfig', {
+		datepicker: {
+			language: 'en',
+			format: 'M d, yyyy'
+		}
+	});
+})(angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives']))
 
 function findSelectedRecursive(node, selectedPath) {
 	if (!node)
@@ -34,7 +33,7 @@ function getParentPath(path) {
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
 }
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Security, FrameContext) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Security, FrameContext, Translate) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -70,11 +69,27 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		ContextMenu: {
 		}
 	}
+
+	function translateNavigationRecursive(node) {
+		var translation = node.Current && node.Current.Name && Translate(node.Current.Name);
+		if (translation) {
+			if (translation.text) node.Current.Title = translation.text;
+			if (translation.title) node.Current.ToolTip = translation.title;
+			if (translation.description) node.Current.Description = translation.description;
+		}
+		for (var i in node.Children) {
+			translateNavigationRecursive(node.Children[i]);
+		}
+	}
+
 	Context.full({
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		console.log("Loading interface with", i);
+		translateNavigationRecursive(i.Interface.MainMenu);
+		translateNavigationRecursive(i.Interface.ActionMenu);
+		translateNavigationRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);

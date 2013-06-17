@@ -10,7 +10,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Management</RootNamespace>
+    <RootNamespace>REMOVE</RootNamespace>
     <AssemblyName>N2.Management</AssemblyName>
     <SccProjectName>
     </SccProjectName>
@@ -97,6 +97,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="N2\App\i18n\en.js" />
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
@@ -175,9 +176,7 @@
     <Content Include="N2\Resources\img\search.png" />
     <Content Include="N2\Resources\img\sliding-loader.png" />
     <Content Include="N2\Resources\img\tools.png" />
-    <Content Include="N2\Resources\Js\main.js" />
     <Content Include="N2\Resources\Js\n2.js" />
-    <Content Include="N2\Resources\Js\plugins.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap-prettify.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap-prettify.min.js" />
     <Content Include="N2\Resources\angular-1.1.4\angular-bootstrap.js" />
@@ -2005,6 +2004,7 @@
     <Compile Include="N2\Content\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Web\AngularLocalizationHandler.cs" />
     <Compile Include="N2\Web\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="N2\Web\DirectoryNode.cs" />
     <Compile Include="N2\Web\FileNode.cs" />

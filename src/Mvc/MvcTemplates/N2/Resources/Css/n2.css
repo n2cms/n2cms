@@ -36,7 +36,7 @@ a { text-decoration: none; color: #000; }
 				#page-search .search-results li a .ico-custom { height:16px; width:16px; display:inline-block; vertical-align:middle; }
 
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; margin-top:33px;}
-	#page-tree ul { list-style-type:none; }
+	#page-tree ul { list-style-type:none; padding:0; margin:0; }
 		#page-tree ul li.node { margin-left: 10px; text-indent: 5px; line-height: 28px; }
 			#page-tree ul li.node div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; }
 			#page-tree ul li.node div.item a.item { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }

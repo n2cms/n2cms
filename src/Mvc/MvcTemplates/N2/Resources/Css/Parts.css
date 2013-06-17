@@ -49,8 +49,8 @@
         .controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
         .controlPanel a,.controlPanel a:visited { }
     .controlPanel a { text-decoration:none; padding:1px; }
-		.controlPanel a b { font-size:16px; }
-    .controlPanel .plugins { padding:1px 20px 1px 1px; height:30px; }
+		.controlPanel a b { font-size:18px; }
+    .controlPanel .plugins { padding:1px 3px 1px 1px; height:30px; }
         .controlPanel .plugins a {
             display:block;
             float:left;
@@ -73,12 +73,13 @@
     .controlPanel .plugins .authorizedFalse { opacity:.33 }
     .controlPanel .plugins a:hover { background-color: #74c6eb; }
 	
-    .sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:0; right:0; height:30px; width:20px; cursor:pointer; cursor:hand; display:block; background:transparent url(../../Resources/Img/SlidingCurtain_open.png) no-repeat 50% 50%; }
-    .sc .close {display:none; background-image:url(../../Resources/Img/SlidingCurtain_close.png)}
+    .sc .open,.sc .close { text-indent:-2000px; position:absolute; top:1px; right:0; height:32px; width:2px; cursor:pointer; cursor:hand; display:block; margin-left:1px; border-right:dotted 3px #000; background-color:transparent; }
+    .sc .close {display:none; }
     .opened .open {display:none; }
     .opened .close {display:inline;}
+	.dragDrop .sc .open { top:auto; bottom: 0; }
 
-.definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; max-height:200px; overflow:auto; margin-bottom:30px; }
+.definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; max-height:200px; overflow:auto; margin-bottom:0; }
     .definition { cursor:move; padding:1px 10px; }
     .definition:hover { background-color:#eee; }
     .definition:hover { background-image:url(../../Resources/Img/part_bg.png) }
