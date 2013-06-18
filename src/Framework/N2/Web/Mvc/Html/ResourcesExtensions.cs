@@ -81,12 +81,6 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.CKEditorPath.ResolveUrlTokens());
 		}
 
-		[Obsolete("Renamed to Constants")]
-		public static ResourcesHelper Constnats(this ResourcesHelper registrator)
-		{
-			return Constants(registrator);
-		}
-
 		public static ResourcesHelper Constants(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(Register.SelectedQueryKeyRegistrationScript(), ScriptOptions.ScriptTags);
