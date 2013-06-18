@@ -17,6 +17,7 @@ namespace N2.Edit
 		public string CssClass { get; set; }
 
 		public string IconUrl { get; set; }
+		public string IconClass { get; set; }
 
 		public Security.Permission MaximumPermission { get; set; }
 
@@ -27,5 +28,7 @@ namespace N2.Edit
 		public int SortOrder { get; set; }
 
 		public int VersionIndex { get; set; }
+
+		public string ZoneName { get; set; }
 	}
 }

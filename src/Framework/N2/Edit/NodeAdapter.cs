@@ -109,12 +109,14 @@ namespace N2.Edit
 				Path = item.Path,
 				State = item.State,
 				IconUrl = GetIconUrl(item),
+				IconClass = GetIconClass(item),
 				Title = item.Title,
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
 				PreviewUrl = GetPreviewUrl(item, allowDraft: allowDraft),
 				MaximumPermission = GetMaximumPermission(item),
 				SortOrder = item.SortOrder,
-				VersionIndex = item.VersionIndex
+				VersionIndex = item.VersionIndex,
+				ZoneName = item.ZoneName
 			};
 			
 			node.MetaInformation = GetMetaInformation(item);
@@ -278,6 +280,14 @@ namespace N2.Edit
 		public virtual string GetIconUrl(ContentItem item)
 		{
 			return Url.ResolveTokens(item.IconUrl);
+		}
+
+		/// <summary>Gets the the icon class representing this item. This CSS class is used by a CSS sprite on the client.</summary>
+		/// <param name="item">The item whose icon class to get.</param>
+		/// <returns>An icon CSS class name or null.</returns>
+		public virtual string GetIconClass(ContentItem item)
+		{
+			return Url.ResolveTokens(item.IconClass);
 		}
 
 		/// <summary>Gets the permissions for the logged in user towards an item.</summary>

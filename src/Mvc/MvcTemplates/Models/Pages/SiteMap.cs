@@ -7,7 +7,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Site Map",
 		Description = "Displays all pages",
 		SortOrder = 420,
-		IconUrl = "~/Content/Img/sitemap.png")]
+		IconClass = "n2-icon-sitemap")]
 	[RestrictParents(typeof (IStructuralPage))]
 	public class SiteMap : ContentPageBase, IStructuralPage
 	{

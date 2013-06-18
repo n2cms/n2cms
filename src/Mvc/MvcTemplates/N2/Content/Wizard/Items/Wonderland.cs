@@ -7,7 +7,7 @@ using N2.Integrity;
 namespace N2.Edit.Wizard.Items
 {
 	[PageDefinition("Wizard Container",
-		IconUrl = "{ManagementUrl}/Resources/icons/wand.png",
+		IconClass = "n2-icon-magic",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		AuthorizedRoles = new string[0])]
 	[Throwable(AllowInTrash.No)]

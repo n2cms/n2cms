@@ -8,7 +8,7 @@ namespace N2.Edit.Trash
 	[PageDefinition("Trash", 
 		Name = "TrashContainerItem", 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconUrl = "{ManagementUrl}/Resources/icons/bin.png", 
+        IconClass = "n2-icon-trash", 
 		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx",
 		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
@@ -43,15 +43,13 @@ namespace N2.Edit.Trash
 			set { SetDetail("AsyncTrashPurging", value, true); }
 		}
 
-		public override string IconUrl
+		public override string IconClass
 		{
 			get
 			{
-				return Context.Current.ManagementPaths.ResolveResourceUrl(
-					this.Children.Count > 0
-						? "{ManagementUrl}/Resources/icons/bin.png"
-						: "{ManagementUrl}/Resources/icons/bin_closed.png"
-					);
+				return base.IconClass + (this.Children.Count > 0
+					? ""
+					: " opaque");
 			}
 		}
 	}

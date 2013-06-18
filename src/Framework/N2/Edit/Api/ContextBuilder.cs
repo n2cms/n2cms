@@ -13,13 +13,22 @@ namespace N2.Management.Api
 {
 	public class ContextData
 	{
-		public ILanguage Language { get; set; }
+		public ContextLanguage Language { get; set; }
 
 		public TreeNode CurrentItem { get; set; }
 
 		public ExtendedContentInfo ExtendedInfo { get; set; }
 
 		public List<string> Flags { get; set; }
+	}
+
+	public class ContextLanguage
+	{
+		public string FlagUrl { get; set; }
+
+		public string LanguageTitle { get; set; }
+
+		public string LanguageCode { get; set; }
 	}
 
 	public class ExtendedContentInfo
@@ -70,7 +79,8 @@ namespace N2.Management.Api
 				var adapter = engine.GetContentAdapter<NodeAdapter>(item);
 				data.CurrentItem = adapter.GetTreeNode(item);
 				data.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
-				data.Language = adapter.GetLanguage(item);
+				var l = adapter.GetLanguage(item);
+				data.Language = new ContextLanguage { FlagUrl = Url.ToAbsolute(l.FlagUrl), LanguageCode = l.LanguageCode, LanguageTitle = l.LanguageTitle };
 				data.Flags = adapter.GetNodeFlags(item).ToList();
 			}
 			else

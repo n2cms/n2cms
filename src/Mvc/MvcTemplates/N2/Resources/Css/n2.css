@@ -1,5 +1,5 @@
 ﻿html { height:100%; }
-body { font-family: 'Myriad Pro'; font-size: 14px; overflow:hidden; height:100%; padding:0 !important; }
+body { font-family: ' Segoe UI', 'Myriad Pro', sans-serif; font-size: 14px; overflow:hidden; height:100%; padding:0 !important; }
 a { text-decoration: none; color: #000; }
 	a:hover { text-decoration: underline; }
 
@@ -36,11 +36,11 @@ a { text-decoration: none; color: #000; }
 				#page-search .search-results li a .ico-custom { height:16px; width:16px; display:inline-block; vertical-align:middle; }
 
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; margin-top:33px;}
-	#page-tree ul { list-style-type:none; }
+	#page-tree ul { list-style-type:none; padding:0; margin:0; }
 		#page-tree ul li.node { margin-left: 10px; text-indent: 5px; line-height: 28px; }
 			#page-tree ul li.node div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; }
 			#page-tree ul li.node div.item a.item { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
-				#page-tree ul li.node div.item a.item .page-icon { display: inline-block; width: 14px; height: 14px; line-height: 14px; vertical-align: text-top; background: transparent none no-repeat 0 0; margin-top:1px; }
+				#page-tree ul li.node div.item a.item .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
 				#page-tree ul li.node .tools { position:absolute; right:20px; top: 10px; }
 					#page-tree ul li.node .tools-toggler { display:none; height: 11px; width: 18px; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; text-indent: -9999px;}
 				#page-tree ul li.node div.item:hover .tools-toggler,
@@ -205,3 +205,11 @@ a[disabled=disabled]:hover {
 		overflow:hidden;
 	}
 }
+
+.blue { color:blue; }
+.red { color:red; }
+.green { color:red; }
+.yellow { color:yellow; }
+.silver { color:silver; }
+.shadow { text-shadow: 3px 3px #999; }
+.opaque { opacity: .5; }

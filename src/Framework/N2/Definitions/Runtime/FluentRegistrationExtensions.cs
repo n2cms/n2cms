@@ -274,6 +274,13 @@ namespace N2.Definitions.Runtime
 			return registration;
 		}
 
+		/// <summary>Specifies the icon to display when selecting new items to create.</summary>
+		public static IContentRegistration<TModel> IconClass<TModel>(this IContentRegistration<TModel> registration, string iconClass)
+		{
+			registration.Definition.IconClass = iconClass;
+			return registration;
+		}
+
 		class AppendAttributeRefiner : IDefinitionRefiner
 		{
 			private object attribute;

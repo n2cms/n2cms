@@ -48,7 +48,6 @@ namespace N2.Tests.Details
 				MockRepository.GenerateStub<IVersionManager>(),
 				new Fakes.FakeSecurityManager(),
 				MockRepository.GenerateStub<IPluginFinder>(),
-				new NavigationSettings(engine.RequestContext),
 				new Fakes.FakeEditUrlManager(),
 				new N2.Edit.Workflow.StateChanger(),
 				new EditableHierarchyBuilder(new Fakes.FakeSecurityManager(), new N2.Configuration.EngineSection()),

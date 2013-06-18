@@ -1,4 +1,29 @@
-﻿var N2 = {};
+﻿// Avoid `console` errors in browsers that lack a console.
+(function () {
+	var method;
+	var noop = function () { };
+	var methods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeStamp', 'trace', 'warn'
+	];
+	var length = methods.length;
+	var console = (window.console = window.console || {});
+
+	while (length--) {
+		method = methods[length];
+
+		// Only stub undefined methods.
+		if (!console[method]) {
+			console[method] = noop;
+		}
+	}
+}());
+
+// Place any jQuery/helper plugins in here.
+
+var N2 = {};
 
 N2.splitter = function (master, slave, options) {
     var settings = $.extend({}, N2.splitter.defaults, options),
@@ -82,3 +107,15 @@ N2.slidingLoader.defaults = {
 N2.slidingLoader.prototype = {
 
 };
+
+$(function () {
+	var loader = new N2.slidingLoader(".sliding-loader", { loaderImage: "Resources/img/sliding-loader.png" });
+
+	loader.start();
+
+	setTimeout(function () {
+		loader.stop();
+	}, 5000);
+
+	var sidebarSplitter = new N2.splitter("#secondary-area", "#main-area");
+});

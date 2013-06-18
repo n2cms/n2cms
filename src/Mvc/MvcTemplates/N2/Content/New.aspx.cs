@@ -152,11 +152,13 @@ namespace N2.Edit
 
 		private string GetNodeText(ContentItem item, bool isCurrent)
 		{
-			string format = "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} ";
+			string format = string.IsNullOrEmpty(item.IconClass)
+				? "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} "
+				: "<a href='{2}' title='{1}'><b class='{5}'></b></a> {1} ";
 			if (isCurrent)
 				format = "<strong>" + format + "</strong>";
 
-			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
+			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current", item.IconClass);
 		}
 
 		private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)

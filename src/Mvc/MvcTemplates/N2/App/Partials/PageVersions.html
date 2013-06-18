@@ -2,21 +2,23 @@
 	<a href='{{evaluateExpression(item.Current.Url)}}' 
 		target='preview' 
 		title='View page versions' 
-		class='page-action-description'>
+		class='page-action-description'
+		translate="versions.action">
 		<b class="ico n2-icon-briefcase"></b>
 		Versions<br />
-		<span ng-show="Context.CurrentItem.State == Content.states.Draft">Draft</span>
-		<span ng-show="Context.CurrentItem.State == Content.states.Waiting">Waiting</span>
-		<span ng-show="Context.CurrentItem.State == Content.states.Published">Published</span>
-		<span ng-show="Context.CurrentItem.State == Content.states.Unpublished">Unpublished</span>
-		<span ng-show="Context.CurrentItem.State == Content.states.Deleted">Deleted</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Draft" translate="versions.draft">Draft</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Waiting" translate="versions.waiting">Waiting</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Published" translate="versions.published">Published</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Unpublished" translate="versions.unpublished">Unpublished</span>
+		<span ng-show="Context.CurrentItem.State == Content.states.Deleted" translate="versions.deleted">Deleted</span>
 	</a>
 
 </div>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
 	ng-controller='VersionsCtrl'
-	ng-click='loadVersions(item)'>
+	ng-click='loadVersions(item)'
+	translate="versions.toggle">
 	<b class="caret"></b>
 </a>
 

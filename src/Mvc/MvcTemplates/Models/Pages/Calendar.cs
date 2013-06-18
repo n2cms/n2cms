@@ -8,8 +8,9 @@ using N2.Definitions;
 namespace N2.Templates.Mvc.Models.Pages
 {
 	[PageDefinition("Calendar", 
-		Description = "A list of recent events.", 
-		SortOrder = 120)]
+		Description = "A list of recent events.",
+		SortOrder = 120,
+		IconClass = "n2-icon-calendar")]
 	[RestrictParents(typeof (IStructuralPage))]
 	[SortChildren(SortBy.Expression, SortExpression = "EventDate")]
 	public class Calendar : ContentPageBase

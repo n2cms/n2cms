@@ -14,7 +14,7 @@ namespace N2.Edit
 			CssClass = "complementary toggled";
 			Target = Targets.Top;
 			RequiredPermission = Permission.Read;
-			IconClass = "n2-icon-fullscreen";
+			IconClass = "n2-icon-eye-close";
 		}
 
 		protected override N2.Web.Url GetNavigateUrl(PluginContext context)
@@ -38,7 +38,7 @@ namespace N2.Edit
 	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
 		CssClass = "",
 		Target = Targets.Top,
-		IconClass = "n2-icon-fullscreen")]
+		IconClass = "n2-icon-eye-open")]
 	public partial class Default : Web.EditPage
 	{
 		private readonly Engine.Logger<Default> logger;

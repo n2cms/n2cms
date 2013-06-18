@@ -1,4 +1,46 @@
 ﻿(function (module) {
+
+	module.filter("translate", function (Translate) {
+		return function (fallback, key) {
+			if (!key) console.error("No key provided for translation text ", fallback);
+
+			//console.log("translate filter", fallback, key);
+			return Translate(key, fallback);
+		}
+	});
+
+	module.directive("translate", function (Translate) {
+		return {
+			restrict: "A",
+			link: function compile(scope, element, attrs) {
+				//console.log("TRANSLATE", element[0]);
+				if (!attrs.translate) console.error("No key provided for translation element", element[0]);
+
+				var translation = Translate(attrs.translate);
+				//console.log("translate directive", attrs.translate, translation);
+				if (typeof translation == "string") {
+					element.html(translation);
+					return;
+				}
+				for (var key in translation) {
+					if (key == "html")
+						element.html(translation[key]);
+					else if (key == "text") {
+						for (var i in element[0].childNodes) {
+							var node = element[0].childNodes[i]
+							if (node.nodeType == Node.TEXT_NODE && node.nodeValue && node.nodeValue.replace(/\s/g, "")) {
+								node.nodeValue = translation[key];
+								return;
+							}
+						}
+					}
+					else
+						element.attr(key, translation[key]);
+				}
+			}
+		}
+	});
+
 	module.directive("contextMenuTrigger", function () {
 		return {
 			restrict: "A",
@@ -288,4 +330,4 @@ span.null {color:silver}\
 		};
 	});
 
-})(angular.module('n2.directives', []));
+})(angular.module('n2.directives', ['n2.localization']));

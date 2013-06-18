@@ -1,13 +1,15 @@
 ﻿<div class='page-action'>
 	<a href='{{Context.Paths.Create}}?{{Context.Paths.SelectedQueryKey}}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}'
 		target='preview' 
+		translate="add.link"
 		title='Add'>
 		<b class='ico n2-icon-plus-sign'></b>
 	</a>
 </div>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-controller='AddCtrl'
-	ng-click='loadDefinitions(item)'>
+	ng-click='loadDefinitions(item)'
+	translate="add.toggle">
 	<b class="caret"></b>
 </a>
 

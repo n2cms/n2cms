@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("FAQ",
 		Description = "A list of frequently asked questions with answers.",
 		SortOrder = 200,
-		IconUrl = "~/Content/Img/help.png")]
+		IconClass = "n2-icon-question-sign")]
 	[AvailableZone("Questions", "Questions")]
 	[RestrictParents(typeof (IStructuralPage))]
 	public class FaqList : ContentPageBase, IStructuralPage
