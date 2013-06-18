@@ -6,7 +6,7 @@
 	<asp:Repeater ID="rptLanguages" runat="server">
 		<ItemTemplate>
 			<a href="<%# Eval("Page.Url") %>" class="language<%# Eval("Page") == CurrentPage ? " current" : "" %>" title="<%# Eval("Language.LanguageTitle") %>">
-				<span class="<%= LanguageCode.Split('-').LastOrDefault().ToLower() %> sprite"></span>
+				<span class="<%# Eval("Language.LanguageCode").ToString().Split('-').LastOrDefault().ToLower() %> sprite"></span>
 			</a>
 		</ItemTemplate>
 	</asp:Repeater>

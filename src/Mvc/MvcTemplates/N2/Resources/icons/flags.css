@@ -204,7 +204,7 @@
 .rw {width:16px; height:11px; background-position: -110px -54px}
 .sa {width:16px; height:11px; background-position: -110px -41px}
 .sb {width:16px; height:11px; background-position: -110px -28px}
-.sc {width:16px; height:11px; background-position: -110px -15px}
+/*.sc {width:16px; height:11px; background-position: -110px -15px}*/ /* this is a conflict with N2 control panel */
 .scotland {width:16px; height:11px; background-position: -110px -2px}
 .sd {width:16px; height:11px; background-position: -92px -106px}
 .se {width:16px; height:11px; background-position: -92px -93px}

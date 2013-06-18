@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using N2.Engine.Globalization;
 using N2.Templates.Layouts;
 using N2.Collections;
+using N2.Resources;
 
 namespace N2.Templates.UI.Layouts
 {
@@ -17,6 +18,8 @@ namespace N2.Templates.UI.Layouts
         protected ILanguageGateway languages;
         protected override void OnInit(EventArgs e)
         {
+			Page.StyleSheet(Register.DefaultFlagsCssPath);
+
             languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
 
             if (languages.Enabled)

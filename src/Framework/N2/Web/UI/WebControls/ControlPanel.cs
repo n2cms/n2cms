@@ -123,6 +123,10 @@ jQuery(document).ready(function(){{
 				AppendDefinedTemplate(HiddenTemplate, this);
 				return;
 			}
+
+			Register.StyleSheet(Page, Register.DefaultIconsCssPath);
+
+
 			if (state.IsFlagSet(ControlPanelState.Visible))
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
 			if (state.IsFlagSet(ControlPanelState.DragDrop))
@@ -381,16 +385,22 @@ jQuery(document).ready(function(){{
 		public static string FormatImageAndText(string iconUrl, string iconClass, string text)
 		{
 			const string C_SPRITE = "sprite:";
+			string icon = "";
 			if (!string.IsNullOrEmpty(iconClass))
 			{
-				return string.Format(@"<b class=""{0}"">&nbsp;{1}", iconClass, text);
+				icon = string.Format(@"<b class=""{0}""></b>", iconClass);
 			}
-			else if (iconUrl != null && iconUrl.StartsWith(C_SPRITE))
+			else if (iconUrl != null)
 			{
-				iconUrl = (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower();
-				return string.Format(@"<span class=""{0} sprite"">&nbsp;{1}", iconUrl, text);
+				if (iconUrl.StartsWith(C_SPRITE))
+					icon = string.Format(@"<span class=""{0} sprite""></span>", (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower());
+				else
+					icon = string.Format(@"<img src=""{0}"" alt=""icon"" />", iconUrl);
 			}
-			return string.Format(@"<img src=""{0}"" alt=""{1}"" />&nbsp;{1}", iconUrl, text);
+			if (string.IsNullOrEmpty(text))
+				return icon;
+			else
+				return icon + " " + text;
 		}
 
 		public static void RegisterArrayValue(Page page, string key, string value)

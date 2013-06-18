@@ -8,6 +8,7 @@
 		<link href="<%=ResolveUrl("~/App_Themes/" + (Start != null ? Start.Theme : "Default") + "/Style.css")%>" type="text/css" rel="stylesheet" />
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
 		<%= Html.Resources().JQuery() %>
+		<%= Html.Resources().StyleSheet(N2.Resources.Register.DefaultFlagsCssPath) %>
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
