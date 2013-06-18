@@ -32,18 +32,19 @@ namespace N2.Web
 			None
 		}
 
-		public abstract TitleDisplayOptions TitleDisplayMode { get; set; }
-		public abstract HeadingLevel TitleHeadingLevel { get; set; }
-		public abstract int NumChildLevels { get; set; }
-		public abstract int StartFromLevel { get; set; }
-		public abstract SibilingDisplayOptions ShowSibilings { get; set; }
-		public abstract bool FlattenTopLevel { get; set; }
-		public abstract bool DontLinkTopLevel { get; set; }
-		public abstract bool ShowCaretOnItemsWithChildren { get; set; }
-		public abstract string OuterUlCssClass { get; set; }
-		public abstract string InnerUlCssClass { get; set; }
-		public abstract string LiCssClass { get; set; }
-		public abstract string SelectedLiCssClass { get; set; }
+		public abstract TitleDisplayOptions MenuTitleDisplayMode { get; set; }
+		public abstract HeadingLevel MenuTitleHeadingLevel { get; set; }
+		public abstract int MenuNumChildLevels { get; set; }
+		public abstract int MenuStartFromLevel { get; set; }
+		public abstract SibilingDisplayOptions MenuShowSibilings { get; set; }
+		public abstract bool MenuFlattenTopLevel { get; set; }
+		public abstract bool MenuDontLinkTopLevel { get; set; }
+		public abstract bool MenuShowCaretOnItemsWithChildren { get; set; }
+		public abstract string MenuOuterUlCssClass { get; set; }
+		public abstract string MenuInnerUlCssClass { get; set; }
+		public abstract string MenuLiCssClass { get; set; }
+		public abstract string MenuSelectedLiCssClass { get; set; }
+		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
 	}
 
 	/// <summary>
@@ -58,14 +59,14 @@ namespace N2.Web
 		#region Title Display
 
 		[EditableEnum("Title Display Mode", 100, typeof(TitleDisplayOptions))]
-		public override TitleDisplayOptions TitleDisplayMode
+		public override TitleDisplayOptions MenuTitleDisplayMode
 		{
 			get { return GetDetail("TitleDisplay", TitleDisplayOptions.None); }
 			set { SetDetail("TitleDisplay", value); }
 		}
 
 		[EditableEnum("Title Heading Format", 150, typeof(HeadingLevel))]
-		public override HeadingLevel TitleHeadingLevel
+		public override HeadingLevel MenuTitleHeadingLevel
 		{
 			get { return GetDetail("TitleMode", HeadingLevel.H1); }
 			set { SetDetail("TitleMode", value); }
@@ -77,7 +78,7 @@ namespace N2.Web
 		#region Hierarchy Options
 
 		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
-		public override int NumChildLevels
+		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
 			set { SetDetail("Levels", value); }
@@ -87,7 +88,7 @@ namespace N2.Web
 			Required = true,
 			HelpText = "Positive values are absolute from root; negative values are relative-up from current item.",
 			ContainerName = NestingContainerName)]
-		public override int StartFromLevel
+		public override int MenuStartFromLevel
 		{
 			get { return GetDetail("StartLevel", 2); }
 			set { SetDetail("StartLevel", value); }
@@ -95,31 +96,38 @@ namespace N2.Web
 
 
 		[EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
-		public override SibilingDisplayOptions ShowSibilings
+		public override SibilingDisplayOptions MenuShowSibilings
 		{
 			get { return GetDetail("ShowSibilings",  SibilingDisplayOptions.OnlyIfItemHasNoChildren); }
 			set { SetDetail("ShowSibilings", value); }
 		}
 
 		[EditableCheckBox("Flatten top-level items to list-headers", 460, ContainerName = NestingContainerName)]
-		public override bool FlattenTopLevel
+		public override bool MenuFlattenTopLevel
 		{
 			get { return GetDetail("ftl", false); }
 			set { SetDetail("ftl", value); }
 		}
 
 		[EditableCheckBox("Do not link top-level items", 470, ContainerName = NestingContainerName)]
-		public override bool DontLinkTopLevel
+		public override bool MenuDontLinkTopLevel
 		{
 			get { return GetDetail("nll", false); }
 			set { SetDetail("nll", value); }
 		}
 
 		[EditableCheckBox("Show caret on items with children", 480, ContainerName = NestingContainerName)]
-		public override bool ShowCaretOnItemsWithChildren
+		public override bool MenuShowCaretOnItemsWithChildren
 		{
 			get { return GetDetail("sc", false); }
 			set { SetDetail("sc", value); }
+		}
+
+		[EditableCheckBox("Show current item even if item is hidden", 490, ContainerName = NestingContainerName)]
+		public override bool MenuShowCurrentItemIfHidden
+		{
+			get { return GetDetail("MenuShowCurrentItemIfHidden", false); }
+			set { SetDetail("MenuShowCurrentItemIfHidden", value); }
 		}
 
 		#endregion 
@@ -128,28 +136,28 @@ namespace N2.Web
 		#region CSS Overrides
 
 		[EditableText("Outer UL CssClass", 500, ContainerName = CssContainerName)]
-		public override string OuterUlCssClass
+		public override string MenuOuterUlCssClass
 		{
 			get { return GetDetail("OuterUlClass", "nav nav-list"); }
 			set { SetDetail("OuterUlClass", value); }
 		}
 
 		[EditableText("Inner UL CssClass", 510, ContainerName = CssContainerName)]
-		public override string InnerUlCssClass
+		public override string MenuInnerUlCssClass
 		{
 			get { return GetDetail("InnerUlClass", "nav nav-list nav-inner"); }
 			set { SetDetail("InnerUlClass", value); }
 		}
 
 		[EditableText("Item CssClass", 520, ContainerName = CssContainerName)]
-		public override string LiCssClass
+		public override string MenuLiCssClass
 		{
 			get { return GetDetail("LiCssClass", "nav-item"); }
 			set { SetDetail("LiCssClass", value); }
 		}
 
 		[EditableText("Selected Item CssClass", 530, ContainerName = CssContainerName)]
-		public override string SelectedLiCssClass
+		public override string MenuSelectedLiCssClass
 		{
 			get { return GetDetail("SelectedLiCssClass", "nav-item active"); }
 			set { SetDetail("SelectedLiCssClass", value); }
@@ -179,7 +187,6 @@ namespace N2.Web
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
-
 	
 	public sealed class MenuPartRenderer
 	{
@@ -191,8 +198,10 @@ namespace N2.Web
 				Item = item;
 				Parent = parent;
 				SortOrder = item.SortOrder;
+				ItemId = item.ID;
 			}
 
+			public int ItemId { get; protected set; }
 			public int SortOrder { get; protected set; }
 			public ContentItem Item { get; private set; }
 			public ContentTreeNode Parent { get; private set; }
@@ -224,19 +233,19 @@ namespace N2.Web
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
 			xml.RenderBeginTag("div");
 
-			switch (menuPart.TitleDisplayMode)
+			switch (menuPart.MenuTitleDisplayMode)
 			{
 				case MenuPart.TitleDisplayOptions.CustomTitle:
-					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.TitleHeadingLevel, menuPart.Title));
+					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, menuPart.Title));
 					break;
 				case MenuPart.TitleDisplayOptions.CurrentPageTitle:
-					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.TitleHeadingLevel, Content.Current.Page.Title));
+					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
 					break;
 				case MenuPart.TitleDisplayOptions.None:
 					break;
 			}
 
-			if (menuPart.FlattenTopLevel)
+			if (menuPart.MenuFlattenTopLevel)
 			{
 				WriteListWithHeaders(null, xml);
 			}
@@ -246,6 +255,13 @@ namespace N2.Web
 			}
 
 			xml.RenderEndTag(); // </div>
+		}
+
+		private IEnumerable<ContentItem> GetChildren(ContentItem ancestorItem)
+		{
+			return (from x in ancestorItem.GetChildren()
+					where x.IsPage && x.Visible && x.IsPublished() && x.ID != Content.Current.Page.ID
+					select x).ToArray();
 		}
 
 		private List<ContentTreeNode> BuildNavTree()
@@ -263,50 +279,66 @@ namespace N2.Web
 				ci.AncestralTrail.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries),
 				int.Parse);
 
-			var xn = menuPart.StartFromLevel;
+			var xn = menuPart.MenuStartFromLevel;
 			if (xn < 0)
 				xn += convertedAncestralTrail.Length; // handle "zero" case
 
+			var expandedParents = new List<ContentTreeNode>();
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
 				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault());
 				navTree.Add(ancestorNode);
+
+				// expand the ancestor
+				// ReSharper disable LoopCanBeConvertedToQuery
+				foreach (var item in GetChildren(ancestorItem)) 
+					expandedParents.Add(new ContentTreeNode(item, ancestorNode));
+				// ReSharper restore LoopCanBeConvertedToQuery
 			}
 
-			// add a node for the current page
-			var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
-			var navItemCParent = navTree.LastOrDefault();
-			navTree.Add(navItemCurrent);
 
-			// get children and sibilings
-			var sibs = (from x in ci.Parent.GetChildren()
-						where x.ID != cId && x.IsPage && x.Visible && x.IsPublished()
-			            select x).ToArray();
+			// Add current item ================================================================
 
-			var chil = (from x in ci.GetChildren()
-			            where x.IsPage && x.Visible && x.IsPublished()
-			            select x).ToArray();
+			if (ci.Visible || this.menuPart.MenuShowCurrentItemIfHidden)
+			{
+				// -- add a node for the current page --
+				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
+				var navItemCParent = navTree.LastOrDefault();
+				navTree.Add(navItemCurrent);
+
+				// -- get children and sibilings --
+				// ReSharper disable LoopCanBeConvertedToQuery
+				foreach (var child in GetChildren(ci).OrderBy(f => f.SortOrder))
+					navTree.Add(new ContentTreeNode(child, navItemCurrent));
+				// ReSharper restore LoopCanBeConvertedToQuery
+			}
+
+
+
+			// add the ancestors we just expanded 
+			// ReSharper disable LoopCanBeConvertedToQuery
+			foreach (var item in expandedParents)
+				if (!navTree.Any(f => f.ItemId == item.ItemId))
+					navTree.Add(item);
+			// ReSharper restore LoopCanBeConvertedToQuery
+
+
 
 			// show sibilings of the current item (put under navItemCParent)
-			if (menuPart.ShowSibilings != MenuPartBase.SibilingDisplayOptions.Never)
-			{
-				if (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.Always
-				    || (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
-				{
-					// ok...
-					// ReSharper disable LoopCanBeConvertedToQuery
-					foreach (var sibiling in sibs.OrderBy(f => f.SortOrder))
-						navTree.Add(new ContentTreeNode(sibiling, navItemCParent));
-					// ReSharper restore LoopCanBeConvertedToQuery
-				}
-			}
+			//if (menuPart.ShowSibilings != MenuPartBase.SibilingDisplayOptions.Never)
+			//{
+			//	if (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.Always
+			//		|| (menuPart.ShowSibilings == MenuPartBase.SibilingDisplayOptions.OnlyIfItemHasNoChildren && chil.Length > 0))
+			//	{
+			//		// ok...
+			//		// ReSharper disable LoopCanBeConvertedToQuery
+			//		foreach (var sibiling in sibs.OrderBy(f => f.SortOrder))
+			//			navTree.Add(new ContentTreeNode(sibiling, navItemCParent));
+			//		// ReSharper restore LoopCanBeConvertedToQuery
+			//	}
+			//}
 
-			// show children of the current item  (put under navItemCurrent)
-			// ReSharper disable LoopCanBeConvertedToQuery
-			foreach (var child in chil.OrderBy(f => f.SortOrder))
-				navTree.Add(new ContentTreeNode(child, navItemCurrent));
-			// ReSharper restore LoopCanBeConvertedToQuery
 			return navTree;
 		}
 
@@ -317,9 +349,9 @@ namespace N2.Web
 			var childNodes = database.Where(f => f.Parent == currentNode).ToList();
 			if (childNodes.Count <= 0) return;
 
-			xml.AddAttribute("class", currentNode == null ? menuPart.OuterUlCssClass : menuPart.InnerUlCssClass);
+			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder))
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
 			{
 				WriteListItem(childNode, xml, level, null);
 				WriteChildList(childNode, xml, level + 1);
@@ -341,9 +373,9 @@ namespace N2.Web
 			var childNodes = database.Where(f => f.Parent == currentNode).ToList();
 			if (childNodes.Count <= 0) return;
 
-			xml.AddAttribute("class", currentNode == null ? menuPart.OuterUlCssClass : menuPart.InnerUlCssClass);
+			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder))
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
 			{
 				WriteListItem(childNode, xml, 0, "nav-header"); // header item
 
@@ -365,11 +397,11 @@ namespace N2.Web
 			var isSelected = childItem.ID == cId;
 
 			if (cssClass == null)
-				cssClass = isSelected ? sn.SelectedLiCssClass : sn.LiCssClass;
+				cssClass = isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
 			xml.AddAttribute("class", cssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Li);
 
-			if (isSelected || (level == 0 && sn.DontLinkTopLevel))
+			if (isSelected || (level == 0 && sn.MenuDontLinkTopLevel))
 			{
 				xml.Write(childItem.Title);
 			}
@@ -380,7 +412,7 @@ namespace N2.Web
 				xml.Write(childItem.Title);
 
 				// render caret if subitems exist
-				if (sn.ShowCaretOnItemsWithChildren
+				if (sn.MenuShowCaretOnItemsWithChildren
 					&& database.Any(f => f.Parent == childNode))
 				{
 					// <b class="caret"></b> 
