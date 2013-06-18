@@ -8,18 +8,18 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <div class="rightAligned">
+		<div class="rightAligned">
 	 <%--onclick="$(document.body).toggleClass('rightExpanded');"--%>
 		<asp:PlaceHolder runat="server" ID="phPluginArea" />
-    </div>
-    <n2:OptionsMenu id="om" runat="server">
+		</div>
+		<n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSavePublish" data-icon-class="n2-icon-play-sign" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" data-icon-class="n2-icon-eye-open" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="n2-icon-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
-        <asp:HyperLink ID="hlFuturePublish" data-icon-class="n2-icon-time" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
+				<asp:HyperLink ID="hlFuturePublish" data-icon-class="n2-icon-time" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>
 		<asp:LinkButton ID="btnUnpublish" data-icon-class="n2-icon-stop" OnCommand="OnUnpublishCommand" runat="server" CssClass="command plain iconed unpublish hidden-action" meta:resourceKey="btnUnpublish">Unpublish</asp:LinkButton>
-    </n2:OptionsMenu>
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
+		</n2:OptionsMenu>
+		<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
 	<uc1:ItemInfo id="ucInfo" runat="server" />
@@ -44,54 +44,54 @@
 	<edit:PermissionPanel id="ppPermitted" RequiredPermission="Write" runat="server" meta:resourceKey="ppPermitted">
 	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="alert alert-margin" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
 	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="alert alert-info alert-margin" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
-    <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
-    <asp:CustomValidator ID="cvException" runat="server" Display="None" />
+		<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-block alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+		<asp:CustomValidator ID="cvException" runat="server" Display="None" />
 
-    <div id="futurePanel" class="popup">
-        <n2:DatePicker Label-Text="When" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
-        <asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
-        <asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Cancel</asp:HyperLink>
-    </div>
+		<div id="futurePanel" class="popup">
+				<n2:DatePicker Label-Text="When" ID="dpFuturePublishDate" runat="server" meta:resourceKey="dpFuturePublishDate" />
+				<asp:Button ID="btnSavePublishInFuture" Text="OK" OnCommand="OnSaveFuturePublishCommand" CssClass="ok" runat="server" meta:resourceKey="btnSavePublishInFuture" />
+				<asp:HyperLink ID="hlCancelSavePublishInFuture" NavigateUrl="javascript:void(0);" runat="server" CssClass="cancel" meta:resourceKey="hlCancelSavePublishInFuture">Cancel</asp:HyperLink>
+		</div>
 
-    <n2:ItemEditor ID="ie" runat="server" />
+		<n2:ItemEditor ID="ie" runat="server" />
 	</edit:PermissionPanel>
 
-    <script type="text/javascript">
-    	$(document).ready(function () {
-    		// future publish
-    		$("#futurePanel").hide().click(function (e) { e.stopPropagation(); return false; });
-    		$(".future").click(function (e) {
-    			$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
-    			$("#futurePanel input:first").focus();
-    			e.preventDefault();
-    			e.stopPropagation();
-    		});
+		<script type="text/javascript">
+			$(document).ready(function () {
+				// future publish
+				$("#futurePanel").hide().click(function (e) { e.stopPropagation(); return false; });
+				$(".future").click(function (e) {
+					$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
+					$("#futurePanel input:first").focus();
+					e.preventDefault();
+					e.stopPropagation();
+				});
 
-    		$("#futurePanel .cancel").click(function () {
-    			$("#futurePanel").hide();
-    		});
-    		$(document.body).click(function (e) {
-    			if ($(e.target).closest(".jCalendar").length == 0)
-    				$("#futurePanel").hide();
-    		});
+				$("#futurePanel .cancel").click(function () {
+					$("#futurePanel").hide();
+				});
+				$(document.body).click(function (e) {
+					if ($(e.target).closest(".jCalendar").length == 0)
+						$("#futurePanel").hide();
+				});
 
 			// zones
-    		$(".showZones").toggle(function () {
-    			n2toggle.show(this, ".zonesBox");
-    		}, function () {
-    			n2toggle.hide(this, ".zonesBox");
-    		});
+				$(".showZones").toggle(function () {
+					n2toggle.show(this, ".zonesBox");
+				}, function () {
+					n2toggle.hide(this, ".zonesBox");
+				});
 
 			// info
-    		if ($.cookie(".infoBox"))
-    			$(".showInfo").click();
-    		if ($.cookie(".zonesBox"))
-    			$(".showZones").click();
+				if ($.cookie(".infoBox"))
+					$(".showInfo").click();
+				if ($.cookie(".zonesBox"))
+					$(".showZones").click();
 
 			// 
-    	});
+			});
 
-    </script>
+		</script>
 	<%--<style>
 
 	 .nav-tabs { outline:dotted 1px green; }

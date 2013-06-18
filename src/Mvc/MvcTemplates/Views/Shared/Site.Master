@@ -30,12 +30,9 @@
 					<div id="menu" class="secondary">
 						<% Html.RenderAction("SubMenu", "Navigation", new { area = "" }); %>
 
-						<% Html.DroppableZone(Language, Zones.SiteLeft)
-                            .Render();%>
-						<% Html.DroppableZone(Zones.Left)
-                            .Render();%>
-						<% Html.DroppableZone(Zones.RecursiveLeft)
-                            .Render();%>
+						<% Html.DroppableZone(Language, Zones.SiteLeft).Render();%>
+						<% Html.DroppableZone(Zones.Left).Render();%>
+						<% Html.DroppableZone(Zones.RecursiveLeft).Render();%>
 					</div>
 				</asp:ContentPlaceHolder>
 				<div id="content" class="">
@@ -61,12 +58,9 @@
 						</div>
 						<asp:ContentPlaceHolder ID="Sidebar" runat="server">
 							<div id="extras" class="secondary">
-								<% Html.DroppableZone(Zones.RecursiveRight)
-                                    .Render();%>
-								<% Html.DroppableZone(Zones.Right)
-                                    .Render();%>
-								<% Html.DroppableZone(Language, Zones.SiteRight)
-                                    .Render();%>
+								<% Html.DroppableZone(Zones.RecursiveRight).Render();%>
+								<% Html.DroppableZone(Zones.Right).Render();%>
+								<% Html.DroppableZone(Language, Zones.SiteRight).Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
 					</asp:ContentPlaceHolder>

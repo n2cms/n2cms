@@ -42,7 +42,7 @@ namespace Dinamico.Models
 		}
 
 		#endregion
-		
+
 		public virtual string FooterText { get; set; }
 
 		public virtual string Logotype { get; set; }

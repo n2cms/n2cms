@@ -16,7 +16,7 @@ namespace N2.Engine.Globalization
 			Language = language;
 			ExistingItem = existingItem;
 			Definition = definition;
-            Site = site;
+			Site = site;
 			IsTranslatable = true;
 		}
 
@@ -35,6 +35,6 @@ namespace N2.Engine.Globalization
 
 		public ContentItem ExistingItem { get; set; }
 
-        public Site Site { get; set; }
-    }
+		public Site Site { get; set; }
+	}
 }

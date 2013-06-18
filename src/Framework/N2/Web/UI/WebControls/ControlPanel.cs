@@ -95,7 +95,7 @@ namespace N2.Web.UI.WebControls
 		private const string switchScriptFormat =
 			@"
 jQuery(document).ready(function(){{
-    if(window.n2ctx){{
+	if(window.n2ctx){{
 		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4} }});
 		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
 		else jQuery('.cpView').hide();
@@ -365,12 +365,12 @@ jQuery(document).ready(function(){{
 			if (!security.IsEditor(user))
 				return ControlPanelState.Hidden;
 
-            var state = ControlPanelState.Visible;
+			var state = ControlPanelState.Visible;
 
 			if (queryString["edit"] == "true")
-                state |= ControlPanelState.Editing;
-            if (queryString["edit"] == "drag")
-                state |= ControlPanelState.DragDrop;
+				state |= ControlPanelState.Editing;
+			if (queryString["edit"] == "drag")
+				state |= ControlPanelState.DragDrop;
 			if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
 				state |= ControlPanelState.Previewing;
 
