@@ -35,6 +35,15 @@ namespace N2.Web.Mvc.Html
 				.StyleSheet(Register.FancyboxPath + "jquery.fancybox.css");
 		}
 
+		public static IEnumerable<ResourcesHelper> IconsCss(this ResourcesHelper registrator)
+		{
+			var p = Register.IconsCssPath.Split(';');
+			var r = new ResourcesHelper[p.Length];
+			for (int i = 0; i < p.Length; ++i)
+				r[i] = registrator.StyleSheet(p[i].ResolveUrlTokens());
+			return r;
+		}
+
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(N2.Resources.Register.JQueryPath.ResolveUrlTokens());
@@ -42,7 +51,7 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator, bool includeJQuery = true)
 		{
-			if(includeJQuery)
+			if (includeJQuery)
 				registrator = registrator.JQuery();
 			return registrator.JavaScript(Register.JQueryPluginsPath.ResolveUrlTokens());
 		}
@@ -54,10 +63,12 @@ namespace N2.Web.Mvc.Html
 			return registrator.JavaScript(Register.JQueryUiPath.ResolveUrlTokens());
 		}
 
-		public static ResourcesHelper PartsJs(this ResourcesHelper registrator)
+		public static IEnumerable<ResourcesHelper> PartsJs(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens())
-				.StyleSheet(Register.IconsCssPath);
+			List<ResourcesHelper> result = new List<ResourcesHelper>();
+			result.AddRange(registrator.IconsCss());
+			result.Add(registrator.JavaScript(Register.PartsJsPath.ResolveUrlTokens()));
+			return result;
 		}
 
 		public static ResourcesHelper PartsCss(this ResourcesHelper registrator)
@@ -68,12 +79,6 @@ namespace N2.Web.Mvc.Html
 		public static ResourcesHelper CKEditor(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(Register.CKEditorPath.ResolveUrlTokens());
-		}
-
-		[Obsolete("Renamed to Constants")]
-		public static ResourcesHelper Constnats(this ResourcesHelper registrator)
-		{
-			return Constants(registrator);
 		}
 
 		public static ResourcesHelper Constants(this ResourcesHelper registrator)

@@ -32,12 +32,9 @@ namespace N2.Engine.Globalization
 		{
 			public Language(ILanguage language)
 			{
-				FlagUrl = language.FlagUrl;
 				LanguageTitle = language.LanguageTitle;
 				LanguageCode = language.LanguageCode;
 			}
-
-			public string FlagUrl { get; set; }
 
 			public string LanguageTitle { get; set; }
 

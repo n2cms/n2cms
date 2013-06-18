@@ -24,6 +24,7 @@ namespace N2.Resources
 			TwitterBootstrapJsPath = DefaultBootstrapJsPath;
 			TwitterBootstrapCssPath = DefaultBootstrapCssPath;
 			TwitterBootstrapResponsiveCssPath = DefaultBootstrapResponsiveCssPath;
+			IconsCssPath = DefaultIconsCssPath;
 		}
 
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
@@ -37,7 +38,7 @@ namespace N2.Resources
 		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
 		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
-		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
+		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css;{ManagementUrl}/Resources/icons/flags.css";
 		
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryPath { get; set; }

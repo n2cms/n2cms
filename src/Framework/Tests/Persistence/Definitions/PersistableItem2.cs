@@ -24,8 +24,6 @@ namespace N2.Tests.Persistence.Definitions
 
 		#region ILanguage Members
 
-		public virtual string FlagUrl { get; set; }
-
 		public virtual string LanguageTitle { get; set; }
 
 		public virtual string LanguageCode { get; set; }

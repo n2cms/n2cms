@@ -235,7 +235,7 @@ namespace N2.Web.Mvc.Html
 				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
 				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
 				if (includePartScripts) resources.PartsJs();
-				if (includePartStyles) resources.PartsCss();
+				if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
 
 				if (refreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));

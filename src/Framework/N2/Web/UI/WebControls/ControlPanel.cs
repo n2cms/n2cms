@@ -14,6 +14,7 @@ using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Security;
+using System.Linq;
 
 namespace N2.Web.UI.WebControls
 {
@@ -94,7 +95,7 @@ namespace N2.Web.UI.WebControls
 		private const string switchScriptFormat =
 			@"
 jQuery(document).ready(function(){{
-    if(window.n2ctx){{
+	if(window.n2ctx){{
 		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4} }});
 		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
 		else jQuery('.cpView').hide();
@@ -364,12 +365,12 @@ jQuery(document).ready(function(){{
 			if (!security.IsEditor(user))
 				return ControlPanelState.Hidden;
 
-            var state = ControlPanelState.Visible;
+			var state = ControlPanelState.Visible;
 
 			if (queryString["edit"] == "true")
-                state |= ControlPanelState.Editing;
-            if (queryString["edit"] == "drag")
-                state |= ControlPanelState.DragDrop;
+				state |= ControlPanelState.Editing;
+			if (queryString["edit"] == "drag")
+				state |= ControlPanelState.DragDrop;
 			if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
 				state |= ControlPanelState.Previewing;
 
@@ -379,7 +380,13 @@ jQuery(document).ready(function(){{
 
 		public static string FormatImageAndText(string iconUrl, string text)
 		{
-			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
+			const string C_SPRITE = "sprite:";
+			if (iconUrl.StartsWith(C_SPRITE))
+			{
+				iconUrl = (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower();
+				return string.Format(@"<span class=""{0} sprite"">&nbsp;{1}", iconUrl, text);
+			}
+			return string.Format(@"<img src=""{0}"" alt=""{1}"" />&nbsp;{1}", iconUrl, text);
 		}
 
 		public static void RegisterArrayValue(Page page, string key, string value)

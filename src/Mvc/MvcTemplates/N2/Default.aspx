@@ -34,6 +34,7 @@
 
 	<link href="Resources/bootstrap-components/bootstrap-timepicker.css" rel="stylesheet" />
 	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
+	<link href="Resources/icons/flags.css" rel="stylesheet" />
 
 	<script src="Resources/bootstrap-components/angular-strap.min.js"></script>
 
