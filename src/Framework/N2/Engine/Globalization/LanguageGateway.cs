@@ -106,7 +106,7 @@ namespace N2.Engine.Globalization
 					var languageItem = language as ContentItem;
 					int languageID = languageItem.ID;
 					if (languageItem != null && languageItem.ID > 0)
-						languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, FlagUrl = language.FlagUrl, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
+						languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
 				}
 			}
 			return languages.ToArray();

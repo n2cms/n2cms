@@ -8,9 +8,6 @@ namespace N2.Engine.Globalization
 	/// </summary>
 	public interface ILanguage
 	{
-		/// <summary>The path of the image representing this language. It's used to represent the language in the editor interface.</summary>
-		string FlagUrl { get; }
-
 		/// <summary>The friendly name of the language.</summary>
 		string LanguageTitle { get; }
 
