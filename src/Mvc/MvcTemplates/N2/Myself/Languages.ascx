@@ -13,7 +13,7 @@
 		<ItemTemplate>
 			<tr><td rowspan="<%# 1 + (int)Eval("Changes.Count") %>">
 				<asp:HyperLink NavigateUrl='<%# Eval("Root.Url") %>' ToolTip='<%# Eval("Language.LanguageCode")%>' runat="server">
-					<asp:Image ImageUrl='<%# Eval("Language.FlagUrl") %>' runat="server" />
+					<span class="<%# Eval("Language.LanguageCode").Split('-').Last().ToLower() %> sprite"></span>
 					<%# Eval("Language.LanguageTitle")%>
 				</asp:HyperLink>
 			</td><td rowspan="<%# 1 + (int)Eval("Changes.Count") %>">

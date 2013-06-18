@@ -119,7 +119,7 @@ namespace N2.Management.Api
 				{
 					Title = t.Language.LanguageTitle,
 					Url = t.EditUrl,
-					IconUrl = t.FlagUrl
+					IconUrl = "sprite:" + (t.Language.LanguageCode.Split('-').LastOrDefault() ?? string.Empty).ToLower()
 				}));
 		}
 

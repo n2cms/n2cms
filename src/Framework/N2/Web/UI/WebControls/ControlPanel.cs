@@ -14,6 +14,7 @@ using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Security;
+using System.Linq;
 
 namespace N2.Web.UI.WebControls
 {
@@ -379,7 +380,13 @@ jQuery(document).ready(function(){{
 
 		public static string FormatImageAndText(string iconUrl, string text)
 		{
-			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
+			const string C_SPRITE = "sprite:";
+			if (iconUrl.StartsWith(C_SPRITE))
+			{
+				iconUrl = (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower();
+				return string.Format(@"<span class=""{0} sprite"">&nbsp;{1}", iconUrl, text);
+			}
+			return string.Format(@"<img src=""{0}"" alt=""{1}"" />&nbsp;{1}", iconUrl, text);
 		}
 
 		public static void RegisterArrayValue(Page page, string key, string value)

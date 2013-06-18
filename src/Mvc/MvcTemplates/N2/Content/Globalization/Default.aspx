@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="lang" TagName="Languages" Src="Languages.ascx" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import Namespace="N2.Web" %>
+<%@ Import Namespace="System.Linq" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="../../Resources/Css/Globalization.css" type="text/css" />
 </asp:Content>
@@ -18,29 +19,29 @@
 	
 	<asp:Panel ID="pnlLanguages" runat="server" CssClass="languages">
 		<table class="table table-striped table-hover table-condensed">
-		    <thead>
-			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>'>
-				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
-				    <ItemTemplate>
-					    <th title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></th>
-				    </ItemTemplate>	
-				    <FooterTemplate></tr></FooterTemplate>
-			    </asp:Repeater>
+				<thead>
+					<asp:Repeater runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>'>
+						<HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
+						<ItemTemplate>
+							<th title='<%# Eval("Language.LanguageCode") %>'><span class="<%# Eval("Language.LanguageCode").ToString().Split('-').Last().ToLower() %> sprite"></span></th>
+						</ItemTemplate>
+						<FooterTemplate></tr></FooterTemplate>
+					</asp:Repeater>
 
-			    <tr class="selected">
-			        <td>
+					<tr class="selected">
+							<td>
 						<% if (Selection.SelectedItem.Parent != null){ %>
 							<a href="Default.aspx?<%# N2.Edit.SelectionUtility.SelectedQueryKey %>=<%# Selection.SelectedItem.Parent.Path %>"><img src="../../Resources/icons/bullet_toggle_minus.png" class="up" /></a>
 						<% } %>
 					</td>
-			        <lang:Languages runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>' />
-                </tr>
-		    </thead>
+							<lang:Languages runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>' />
+								</tr>
+				</thead>
 			<asp:Repeater runat="server" DataSource="<%# GetChildren(true) %>">
 				<HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
 					<tr class="i<%# Container.ItemIndex %>">
-					    <td>
+							<td>
 							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# "Default.aspx?" + N2.Edit.SelectionUtility.SelectedQueryKey + "=" + Eval("Path") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
 						</td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />

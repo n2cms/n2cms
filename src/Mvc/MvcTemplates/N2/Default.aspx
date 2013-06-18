@@ -33,7 +33,7 @@
 	<link href="Resources/bootstrap-components/bootstrap-timepicker.css" rel="stylesheet" />
 	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
 	<script src="Resources/bootstrap-components/angular-strap.js"></script>
-
+	<link href="Resources/icons/flags.css" rel="stylesheet" />
 </head>
 <body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item">
     <div id="top-area">

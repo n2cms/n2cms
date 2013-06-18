@@ -3,6 +3,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Web;
+using System.Linq;
 
 namespace N2.Engine.Globalization
 {
@@ -40,9 +41,14 @@ namespace N2.Engine.Globalization
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');
                 h.Target = Targets.Preview;
 				h.NavigateUrl = context.Rebase(context.Format(url, true));
-                h.CssClass = "templatedurl language";
-                h.ToolTip = language.LanguageTitle;
-                h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
+				h.CssClass = "templatedurl language";
+				h.ToolTip = language.LanguageTitle;
+
+				// [bherila] use CSS sprite instead of flag image here
+				//h.Text = string.Format("<img src='{0}' alt=''/>", Url.ToAbsolute(language.FlagUrl));
+				string[] parts = language.LanguageCode.Split('-');
+				h.Text = string.Format(@"<span class=""{0} sprite""></span>", parts.LastOrDefault().ToLower());
+
 				h.Attributes["data-url-template"] = context.Rebase(url);
                 div.Controls.Add(h);
             }
