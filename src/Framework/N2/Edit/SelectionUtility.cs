@@ -104,10 +104,35 @@ namespace N2.Edit
             if (!string.IsNullOrEmpty(itemId))
 				selectedItem = Engine.Persister.Get(int.Parse(itemId)) ?? selectedItem;
 			
-			var cvr = Engine.Resolve<ContentVersionRepository>();
-			return cvr.ParseVersion(RequestValueAccessor(PathData.VersionIndexQueryKey), RequestValueAccessor("versionKey"), selectedItem)
-				?? selectedItem;
+			if (selectedItem != null && RequestValueAccessor(PathData.VersionIndexQueryKey) != null)
+			{
+				selectedItem = ParseSpecificVersion(selectedItem);
+			}
+			else if (selectedItem != null && RequestValueAccessor(WebExtensions.ViewPreferenceQueryString) != null)
+			{
+				selectedItem = ParseLatestDraft(selectedItem);
+			}
+			return selectedItem;
         }
+
+		private ContentItem ParseLatestDraft(ContentItem selectedItem)
+		{
+			var dr = Engine.Resolve<DraftRepository>();
+			if (dr.HasDraft(selectedItem))
+			{
+				var draft = dr.GetDraftInfo(selectedItem);
+				var cvr = Engine.Resolve<ContentVersionRepository>();
+				selectedItem = cvr.ParseVersion(draft.VersionIndex.ToString(), RequestValueAccessor("versionKey"), selectedItem);
+			}
+			return selectedItem;
+		}
+
+		private ContentItem ParseSpecificVersion(ContentItem selectedItem)
+		{
+			var cvr = Engine.Resolve<ContentVersionRepository>();
+			selectedItem = cvr.ParseVersion(RequestValueAccessor(PathData.VersionIndexQueryKey), RequestValueAccessor("versionKey"), selectedItem);
+			return selectedItem;
+		}
 
 		public ContentItem ParseSelected(string selected)
 		{
