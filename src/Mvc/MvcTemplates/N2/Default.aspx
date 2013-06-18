@@ -58,8 +58,8 @@
 	</div>
 	<div id="footer" ng-include src="'App/Partials/Footer.html'">
 	</div>
-	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
-    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
+	<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
+    <%--<div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
 
 	<script src="<%= GetLocalizationPath() %>"></script>
 	<script src="App/Js/Services.js"></script>

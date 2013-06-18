@@ -92,11 +92,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		translateNavigationRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
+		console.log("CurrentItem", $scope.Context.CurrentItem);
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
 	});
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags) {
-		console.log("selecting", typeof nodeOrPath, nodeOrPath);
+		//console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Context.Content, path);
@@ -126,6 +127,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
+					console.log("CurrentItem", $scope.Context.CurrentItem);
 					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
@@ -156,6 +158,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
+				console.log("CurrentItem", $scope.Context.CurrentItem);
 			});
 		}, 200);
 	});
@@ -417,7 +420,6 @@ function PageInfoCtrl($scope, Content) {
 		for (var i in data.Definitions) {
 			$scope.definitions[data.Definitions[i].TypeName] = data.Definitions[i];
 		}
-		console.log("got definition", $scope.definitions);
 	});
 }
 

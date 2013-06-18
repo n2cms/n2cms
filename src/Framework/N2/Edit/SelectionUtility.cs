@@ -106,11 +106,11 @@ namespace N2.Edit
 			
 			if (selectedItem != null && RequestValueAccessor(PathData.VersionIndexQueryKey) != null)
 			{
-				selectedItem = ParseSpecificVersion(selectedItem);
+				selectedItem = ParseSpecificVersion(selectedItem) ?? selectedItem;
 			}
 			else if (selectedItem != null && RequestValueAccessor(WebExtensions.ViewPreferenceQueryString) != null)
 			{
-				selectedItem = ParseLatestDraft(selectedItem);
+				selectedItem = ParseLatestDraft(selectedItem) ?? selectedItem;
 			}
 			return selectedItem;
         }
