@@ -2016,6 +2016,7 @@
     </Compile>
     <Compile Include="N2\Web\RootNode.cs" />
     <Compile Include="N2\Web\UI\Controls\CancelLink.cs" />
+    <Compile Include="N2\Web\UI\Controls\ItemLink.cs" />
     <Compile Include="N2\Web\UI\Controls\PermissionPanel.cs" />
     <Compile Include="N2\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="N2\Web\UI\Controls\InfoLabel.cs" />

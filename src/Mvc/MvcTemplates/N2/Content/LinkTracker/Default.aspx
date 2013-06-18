@@ -10,7 +10,9 @@
 		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencingItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div>
+					<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Container.DataItem %>" runat="server" />
+				</div>
 			</ItemTemplate>
 		</asp:Repeater>
 		<div style="margin:10px">
@@ -18,7 +20,7 @@
 	</td><td style="padding:10px;">
 		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td style="padding:10px;">
-		<a href='<%# Selection.SelectedItem.Url %>'><asp:Image ID="Image1" ImageUrl='<%# ResolveUrl(Selection.SelectedItem.IconUrl) %>' runat="server" /><%# Selection.SelectedItem.Title %></a>
+		<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Selection.SelectedItem %>" runat="server" />
 	</td><td style="padding:10px;">
 		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td>
@@ -26,7 +28,9 @@
 		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencedItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div>
+					<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Container.DataItem %>" runat="server" />
+				</div>
 			</ItemTemplate>
 		</asp:Repeater>	
 		</div>

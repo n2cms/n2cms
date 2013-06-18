@@ -308,5 +308,13 @@ namespace N2.Web
 				return new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
 			}
 		}
+
+		public static Url AppendSelection(this Url url, ContentItem item)
+		{
+			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+			if (item.ID != 0)
+				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
+			return url;
+		}
 	}
 }

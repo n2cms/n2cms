@@ -8,6 +8,13 @@ namespace N2.Edit.LinkTracker
 		Legacy = true)]
 	public partial class _Default : N2.Edit.Web.EditPage
 	{
+		protected override void OnInit(EventArgs e)
+		{
+			Page.Title += ": " + Selection.SelectedItem.Title;
+
+			base.OnInit(e);
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
