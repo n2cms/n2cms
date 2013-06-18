@@ -4,7 +4,8 @@
 	</a>
 </div>
 
-<dl class="info-menu dl-horizontal" ng-class="{ open: showInfo }" ng-controller="PageInfoCtrl">
+<dl class="info-menu dl-horizontal" ng-class="{ open: showInfo && Context.ExtendedInfo }" ng-controller="PageInfoCtrl">
+	<dt translate="info.type.dt">Type</dt><dd title="{{definitions[Context.ExtendedInfo.TypeName].Description}}">{{definitions[Context.ExtendedInfo.TypeName].Title}}</dd>
 	<dt translate="info.state.dt" ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">State</dt><dd ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">{{Content.states.toString(Context.CurrentItem.State)}}</dd>
 	<dt translate="info.scheduled.dt" ng-show="Context.ExtendedInfo.FuturePublishDate">Scheduled for</dt><dd ng-show="Context.ExtendedInfo.FuturePublishDate">{{Context.ExtendedInfo.FuturePublishDate | date}}</dd>
 

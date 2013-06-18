@@ -20,6 +20,7 @@
 		}
 	},
 	"info": {
+		"type": { "dt": "Type" },
 		"state": { "dt": "State" },
 		"scheduled": { "dt": "Scheduled for" },
 		"created": { "dt": "Created" },

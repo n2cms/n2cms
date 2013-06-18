@@ -61,9 +61,8 @@ namespace N2.Management.Api
 							context.Response.WriteJson(new { Versions = versions });
 							break;
 						case "/definitions":
-							var definitions = engine.Definitions.GetAllowedChildren(Selection.SelectedItem, null)
-								.WhereAuthorized(engine.SecurityManager, context.User, Selection.SelectedItem)
-								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass })
+							var definitions = CreateDefinitions(context)
+								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass, TypeName = d.ItemType.Name })
 								.ToList();
 							context.Response.WriteJson(new { Definitions = definitions });
 							break;
@@ -102,6 +101,15 @@ namespace N2.Management.Api
 					Delete(context);
 					break;
 			}
+		}
+
+		private IEnumerable<ItemDefinition> CreateDefinitions(HttpContextBase context)
+		{
+			var item = Selection.ParseSelectionFromRequest();
+			if (item != null)
+				return engine.Definitions.GetAllowedChildren(item, null).WhereAuthorized(engine.SecurityManager, context.User, item);
+			else
+				return engine.Definitions.GetDefinitions();
 		}
 
 		private IEnumerable<Node<TreeNode>> CreateVersions(HttpContextBase context)

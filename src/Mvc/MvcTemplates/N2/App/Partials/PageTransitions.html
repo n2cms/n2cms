@@ -3,7 +3,7 @@
 		<i class="ico n2-icon-play-sign"></i>
 		Publish
 	</a>
-	<a href="#" href="{{item.Children[0].Current.Url}}" ng-show="Context.CurrentItem.State != Content.states.Draft" translate="transitions.trash">
+	<a href="{{evaluateExpression(item.Children[0].Current.Url)}}" target="preview" ng-show="Context.CurrentItem.State != Content.states.Draft" translate="transitions.trash">
 		<i class="ico n2-icon-trash"></i>
 	</a>
 </div>

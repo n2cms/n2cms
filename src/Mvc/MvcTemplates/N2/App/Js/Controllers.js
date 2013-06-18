@@ -404,7 +404,7 @@ function VersionsCtrl($scope, Content) {
 	}
 }
 
-function PageInfoCtrl($scope) {
+function PageInfoCtrl($scope, Content) {
 	$scope.exctractLanguage = function (language) {
 		return language && language.replace(/[(].*?[)]/, "");
 	}
@@ -412,6 +412,13 @@ function PageInfoCtrl($scope) {
 		console.log("toggleInfo", $scope.showInfo);
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
 	}
+	$scope.definitions = {};
+	Content.definitions({}, function (data) {
+		for (var i in data.Definitions) {
+			$scope.definitions[data.Definitions[i].TypeName] = data.Definitions[i];
+		}
+		console.log("got definition", $scope.definitions);
+	});
 }
 
 function PagePublishCtrl($scope, $rootScope, $modal, Content) {

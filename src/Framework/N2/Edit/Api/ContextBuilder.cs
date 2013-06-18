@@ -42,15 +42,12 @@ namespace N2.Management.Api
 		public string Updated { get; set; }
 		public bool Visible { get; set; }
 		public string ZoneName { get; set; }
-		public ExtendedContentInfo VersionOf { get; set; }
-
 		public int VersionIndex { get; set; }
-
 		public string Url { get; set; }
-
-		public ExtendedContentInfo Draft { get; set; }
-
 		public bool ReadProtected { get; set; }
+		public string TypeName { get; set; }
+		public ExtendedContentInfo VersionOf { get; set; }
+		public ExtendedContentInfo Draft { get; set; }
 	}
 
 	public class ContextBuiltEventArgs : EventArgs
@@ -80,7 +77,8 @@ namespace N2.Management.Api
 				data.CurrentItem = adapter.GetTreeNode(item);
 				data.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
 				var l = adapter.GetLanguage(item);
-				data.Language = new ContextLanguage { FlagUrl = Url.ToAbsolute(l.FlagUrl), LanguageCode = l.LanguageCode, LanguageTitle = l.LanguageTitle };
+				if (l != null)
+					data.Language = new ContextLanguage { FlagUrl = Url.ToAbsolute(l.FlagUrl), LanguageCode = l.LanguageCode, LanguageTitle = l.LanguageTitle };
 				data.Flags = adapter.GetNodeFlags(item).ToList();
 			}
 			else
@@ -116,7 +114,8 @@ namespace N2.Management.Api
 				ZoneName = item.ZoneName,
 				VersionIndex = item.VersionIndex,
 				Url = item.Url,
-				ReadProtected = !engine.SecurityManager.IsAuthorized(item, new GenericPrincipal(new GenericIdentity(""), null))
+				ReadProtected = !engine.SecurityManager.IsAuthorized(item, new GenericPrincipal(new GenericIdentity(""), null)),
+				TypeName = item.GetContentType().Name
 			};
 			if (resolveVersions)
 			{

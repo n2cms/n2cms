@@ -64,7 +64,6 @@ namespace N2.Definitions
 			Title = itemType.Name;
 			Discriminator = itemType.Name;
 			Description = "";
-			ToolTip = itemType.FullName;
 			
 			Clear();
 			Initialize(itemType);
