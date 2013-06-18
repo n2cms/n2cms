@@ -24,7 +24,7 @@
 			}
 		</style>
     </head>
-<body class="tree framed noneSelected noPermission" style="font-family:'Myriad Pro',Sans-Serif; font-size:12px;">
+<body class="tree framed noneSelected noPermission" style="font-family:'Segoe UI', Helvetica,Sans-Serif; font-size:12px;">
 	<form id="form1" runat="server">
 		<div class="FileUpload">
 			<asp:Image ImageUrl="../../Resources/Icons/page_white_get.png" runat="server" style="vertical-align:middle" />

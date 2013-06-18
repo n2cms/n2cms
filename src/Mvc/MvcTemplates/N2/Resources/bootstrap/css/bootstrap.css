@@ -205,7 +205,7 @@ textarea {
 }
 body {
   margin: 0;
-  font-family: 'Myriad Pro', Sans-Serif;
+  font-family: 'Segoe UI', Helvetica, Sans-Serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
@@ -1214,7 +1214,7 @@ input,
 button,
 select,
 textarea {
-  font-family: 'Myriad Pro', Sans-Serif;
+  font-family: 'Segoe UI', Helvetica, Sans-Serif;
 }
 label {
   display: block;
@@ -3573,7 +3573,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   margin-bottom: 0;
   padding: 4px 14px;
-  font-family: 'Myriad Pro', Sans-Serif;
+  font-family: 'Segoe UI', Helvetica, Sans-Serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
