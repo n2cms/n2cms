@@ -173,7 +173,7 @@ jQuery(document).ready(function(){{
 				div.Attributes["id"] = definition.Discriminator;
 				div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
 				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.Title);
+				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.IconClass, definition.Title);
 				definitions.Controls.Add(div);
 			}
 		}
@@ -378,10 +378,14 @@ jQuery(document).ready(function(){{
 
 		}
 
-		public static string FormatImageAndText(string iconUrl, string text)
+		public static string FormatImageAndText(string iconUrl, string iconClass, string text)
 		{
 			const string C_SPRITE = "sprite:";
-			if (iconUrl.StartsWith(C_SPRITE))
+			if (!string.IsNullOrEmpty(iconClass))
+			{
+				return string.Format(@"<b class=""{0}"">&nbsp;{1}", iconClass, text);
+			}
+			else if (iconUrl != null && iconUrl.StartsWith(C_SPRITE))
 			{
 				iconUrl = (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower();
 				return string.Format(@"<span class=""{0} sprite"">&nbsp;{1}", iconUrl, text);

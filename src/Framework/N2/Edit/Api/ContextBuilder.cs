@@ -29,6 +29,8 @@ namespace N2.Management.Api
 		public string LanguageTitle { get; set; }
 
 		public string LanguageCode { get; set; }
+
+		public string IconClass { get; set; }
 	}
 
 	public class ExtendedContentInfo
@@ -78,7 +80,7 @@ namespace N2.Management.Api
 				data.ExtendedInfo = CreateExtendedContextData(item, resolveVersions: true);
 				var l = adapter.GetLanguage(item);
 				if (l != null)
-					data.Language = new ContextLanguage { FlagUrl = Url.ToAbsolute(l.FlagUrl), LanguageCode = l.LanguageCode, LanguageTitle = l.LanguageTitle };
+					data.Language = new ContextLanguage { IconClass = "sprite " + (l.LanguageCode.Split('-').LastOrDefault() ?? string.Empty).ToLower(), LanguageCode = l.LanguageCode, LanguageTitle = l.LanguageTitle };
 				data.Flags = adapter.GetNodeFlags(item).ToList();
 			}
 			else

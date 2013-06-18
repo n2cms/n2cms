@@ -391,6 +391,7 @@ function LanguageCtrl($scope, Content) {
 		node.Loading = true;
 		Content.translations({ selected: $scope.Context.CurrentItem.Path }, function (data) {
 			node.Loading = false;
+			console.log("translations", data);
 			node.Children = data.Translations;
 		});
 	}

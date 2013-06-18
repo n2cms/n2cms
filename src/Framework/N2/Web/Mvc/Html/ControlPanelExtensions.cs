@@ -288,7 +288,7 @@ namespace N2.Web.Mvc.Html
 								/*{2}*/ t.Definition.Discriminator,
 								/*{3}*/ t.Name,
 								/*{4}*/ "definition " + t.Definition.Discriminator,
-								/*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Title));
+								/*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Definition.IconClass, t.Title));
 						}
 					}
 

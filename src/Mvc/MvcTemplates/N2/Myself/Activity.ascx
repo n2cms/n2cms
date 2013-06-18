@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Activity.ascx.cs" Inherits="N2.Management.Myself.Activity" %>
+<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <div class="uc">
 	<h4 class="header"><%= CurrentItem.Title %></h4>
@@ -11,11 +12,11 @@
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<asp:HyperLink NavigateUrl='<%# ResolveUrl(Eval("Url")) %>' runat="server"><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
+				<edit:ItemLink DataSource="<%# Container.DataItem %>" runat="server" />
 			</td><td>
-				<%# Eval("SavedBy") %>
+				<%# Eval("SavedBy")%>
 			</td><td>
-				<%# Eval("Updated") %>
+				<%# Eval("Updated")%>
 			</td></tr>
 		</ItemTemplate>
 		<FooterTemplate>
@@ -32,13 +33,13 @@
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<asp:HyperLink NavigateUrl='<%# ResolveUrl(Eval("Version.Url")) %>' runat="server"><asp:Image ImageUrl='<%# ResolveUrl(Eval("Version.IconUrl")) %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
+				<edit:ItemLink ID="ItemLink1" DataSource='<%# Eval("Version") %>' runat="server" />
 			</td><td>
-				<%# Eval("VersionIndex") %>
+				<%# Eval("VersionIndex")%>
 			</td><td>
-				<%# Eval("SavedBy") %>
+				<%# Eval("SavedBy")%>
 			</td><td>
-				<%# Eval("Saved") %>
+				<%# Eval("Saved")%>
 			</td><td>
 				<asp:LinkButton runat="server" CommandName="Delete" Text="Delete"/>
 			</td></tr>

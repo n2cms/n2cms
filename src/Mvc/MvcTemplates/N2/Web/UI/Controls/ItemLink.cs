@@ -24,7 +24,7 @@ namespace N2.Edit.Web.UI.Controls
 			if (string.IsNullOrEmpty(InterfaceUrl))
 				this.NavigateUrl = N2.Context.Current.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
 			else
-				this.NavigateUrl = Url.Parse(InterfaceUrl).AppendSelection(item);
+				this.NavigateUrl = InterfaceUrl.ResolveUrlTokens().ToUrl().AppendSelection(item);
 
 			if (string.IsNullOrEmpty(item.IconClass))
 			{
@@ -32,7 +32,7 @@ namespace N2.Edit.Web.UI.Controls
 			}
 			else
 			{
-				Text = string.Format("<v class='{0}'></b> {1}", item.IconClass, item.Title);
+				Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, item.Title);
 			}
 		}
 	}

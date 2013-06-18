@@ -127,7 +127,7 @@ namespace N2.Management.Api
 				{
 					Title = t.Language.LanguageTitle,
 					Url = t.EditUrl,
-					IconUrl = "sprite:" + (t.Language.LanguageCode.Split('-').LastOrDefault() ?? string.Empty).ToLower()
+					IconClass = "sprite " + (t.Language.LanguageCode.Split('-').LastOrDefault() ?? string.Empty).ToLower()
 				}));
 		}
 
