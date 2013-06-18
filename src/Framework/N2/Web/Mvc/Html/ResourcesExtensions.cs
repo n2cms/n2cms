@@ -51,7 +51,7 @@ namespace N2.Web.Mvc.Html
 
 		public static ResourcesHelper JQueryPlugins(this ResourcesHelper registrator, bool includeJQuery = true)
 		{
-			if(includeJQuery)
+			if (includeJQuery)
 				registrator = registrator.JQuery();
 			return registrator.JavaScript(Register.JQueryPluginsPath.ResolveUrlTokens());
 		}
