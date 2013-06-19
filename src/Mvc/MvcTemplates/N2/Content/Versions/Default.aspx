@@ -18,7 +18,8 @@
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# Eval("Content.Url") %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
+					<edit:ItemLink DataSource='<%# Eval("Content") %>' InterfaceUrl="../Edit.aspx" runat="server" />
+				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>

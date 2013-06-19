@@ -22,7 +22,7 @@
 						<HeaderTemplate><div style="max-height:200px; overflow:auto;"></HeaderTemplate>
 						<ItemTemplate>
 							<div>
-								<a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a>
+								<edit:ItemLink DataSource='<%# Container.DataItem%>' InterfaceUrl="../Edit.aspx" runat="server" />
 							</div>
 						</ItemTemplate>
 						<FooterTemplate></div></FooterTemplate>
@@ -54,8 +54,8 @@
 					<legend>Updatring references to:</legend>
 					<asp:Repeater runat="server" ID="rptDescendants">
 						<ItemTemplate>
-							<div class="ItemToUpdate" data-id="<%# Eval("ID") %>" data-path="<%# Eval("Path") %>" data-title="<%# Eval("Title") %>">
-								<a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a>
+							<div class="ItemToUpdate" data-id="<%# Eval("ID")%>" data-path="<%# Eval("Path")%>" data-title="<%# Eval("Title")%>">
+								<edit:ItemLink DataSource='<%# Container.DataItem %>' runat="server" />
 							</div>
 						</ItemTemplate>
 					</asp:Repeater>

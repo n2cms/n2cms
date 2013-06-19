@@ -312,8 +312,15 @@ namespace N2.Web
 		public static Url AppendSelection(this Url url, ContentItem item)
 		{
 			url = url.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+			
 			if (item.ID != 0)
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
+			else if (item.VersionOf.ID != 0)
+				url = url.AppendQuery(PathData.ItemQueryKey, item.VersionOf.ID);
+
+			if (item.VersionOf.HasValue)
+				url = url.AppendQuery("versionIndex", item.VersionIndex);
+	
 			return url;
 		}
 	}

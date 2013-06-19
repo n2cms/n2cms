@@ -36,7 +36,7 @@
 		"toggle": { "title": "Display translatable languages" }
 	},
 	"schedule": {
-		"action": " Schedule",
+		"action": { text: " Schedule" },
 		"heading": "Schedule publishing",
 		"dismiss": { "title": "Dismiss" },
 		"question": "When should this content be published?",
@@ -62,7 +62,13 @@
 		"published": "Published",
 		"unpublished": "Unpublished",
 		"deleted": "Deleted",
-		"toggle": { "title": "Display page versions" }
+		"toggle": { "title": "Display page versions" },
+		"states": {
+			"published": "(published version)",
+			"draft": "(draft)",
+			"unpublished": "(previously published)",
+			"waiting": "(scheduled for publishing)"
+		}
 	},
 	"dashboard": { text: "Dashboard" },
 	"pages": { text: "Pages" },

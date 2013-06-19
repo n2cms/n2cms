@@ -288,7 +288,7 @@ namespace N2.Edit
 
 		private void InitTitle()
 		{
-			if (ie.CurrentItem.ID == 0)
+			if (ie.CurrentItem.ID == 0 && !ie.CurrentItem.VersionOf.HasValue)
 			{
 				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
 				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;

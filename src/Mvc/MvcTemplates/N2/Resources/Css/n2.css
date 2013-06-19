@@ -134,14 +134,19 @@ a { text-decoration: none; color: #000; }
 	#menu.draft > ul > li.open .dropdown-toggle { background-color:#FF9933 }
 
 #menu.unpublished { background-color: #E10C02; }
-	#menu.unpublished > ul > li .page-action { border-left-color: #FF3300 }
+	#menu.unpublished > ul > li .page-action { border-left-color: #E10C02 }
 	#menu.unpublished > ul > li .page-action a:hover,
 	#menu.unpublished > ul > li .dropdown-toggle:hover,
-	#menu.unpublished > ul > li.open .dropdown-toggle { background-color:#FF3300 }
+	#menu.unpublished > ul > li.open .dropdown-toggle { background-color:#E10C02 }
 
-#menu .versions li.draft a { border-left:solid 5px #FF8822; }
-#menu .versions li.published a { border-left:solid 5px #d9f0f9; }
-#menu .versions li.unpublished a { border-left:solid 5px #FF3300; }
+#menu .versions li a { border-left:solid 5px #ccc; }
+	#menu .versions li a strong { display:inline-block; min-width: 20px; text-align:right; margin-right:10px; font-size:12px; }
+	#menu .versions li a span { color:#666; }
+#menu .versions li.draft a { border-left-color:#FF8822; }
+#menu .versions li.waiting a { border-left-color:#FF8822; }
+#menu .versions li.published a { border-left-color:#d9f0f9; }
+#menu .versions li.unpublished a { border-left-color:#FF3300; }
+
 
 .info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
 .info-menu.open { display:block; }
