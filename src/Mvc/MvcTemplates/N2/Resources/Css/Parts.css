@@ -67,11 +67,34 @@
             text-align:center;
             height:16px;
         }
-        .controlPanel .plugins a.toggled {
+        .controlPanel .plugins a:hover,
+		.controlPanel .plugins a.toggled {
             background-color: #74c6eb; 
         }
-    .controlPanel .plugins .authorizedFalse { opacity:.33 }
-    .controlPanel .plugins a:hover { background-color: #74c6eb; }
+		.controlPanel .plugins .authorizedFalse { opacity:.33 }
+
+        .controlPanel.stateWaiting .plugins a,
+        .controlPanel.stateDraft .plugins a {
+			background-color:#FF8822;
+		}
+        .controlPanel.stateWaiting .plugins a:hover,
+        .controlPanel.stateDraft .plugins a:hover,
+        .controlPanel.stateWaiting .plugins a.toggled,
+        .controlPanel.stateDraft .plugins a.toggled {
+			background-color:#FF9933;
+		}
+		
+        .controlPanel.stateUnpublished .plugins a,
+        .controlPanel.stateDeleted .plugins a {
+			background-color:#E10C02;
+		}
+        .controlPanel.stateUnpublished .plugins a:hover,
+        .controlPanel.stateDeleted .plugins a:hover,
+        .controlPanel.stateUnpublished .plugins a.toggled,
+        .controlPanel.stateDeleted .plugins a.toggled {
+			background-color:#E16C62;
+		}
+
 	
     .sc .open,.sc .close { text-indent:-2000px; position:absolute; top:1px; right:0; height:28px; width:1px; cursor:pointer; cursor:hand; display:block; margin-left:1px; border:solid 2px #18a0de; background-color:transparent; }
 	.sc .open:hover,.sc .close:hover { border-color: #74c6eb; }

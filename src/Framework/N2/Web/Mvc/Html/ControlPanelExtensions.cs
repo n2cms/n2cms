@@ -227,7 +227,8 @@ namespace N2.Web.Mvc.Html
 					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
 					VersionIndex = item.VersionIndex,
 					VersionKey = item.GetVersionKey(),
-					Force = ForceRefreshNavigationOnLoad ? "true" : "false"
+					Force = ForceRefreshNavigationOnLoad ? "true" : "false",
+					State = item != null ? item.State.ToString() : "NonContent"
 				};
 
 				var resources = Html.Resources(writer).Constants();
@@ -322,7 +323,7 @@ namespace N2.Web.Mvc.Html
 //]]></script>
 
 <div id=""cpCurtain"" class=""sc""><div class=""scContent"">
-	<div class=""controlPanel"">
+	<div class=""controlPanel state{State}"">
 		<div class=""plugins"">
 			{Plugins}
 		</div>

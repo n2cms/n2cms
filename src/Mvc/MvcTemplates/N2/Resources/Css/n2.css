@@ -137,7 +137,7 @@ a { text-decoration: none; color: #000; }
 	#menu.unpublished > ul > li .page-action { border-left-color: #E10C02 }
 	#menu.unpublished > ul > li .page-action a:hover,
 	#menu.unpublished > ul > li .dropdown-toggle:hover,
-	#menu.unpublished > ul > li.open .dropdown-toggle { background-color:#E10C02 }
+	#menu.unpublished > ul > li.open .dropdown-toggle { background-color:#E11C12 }
 
 #menu .versions li a { border-left:solid 5px #ccc; }
 	#menu .versions li a strong { display:inline-block; min-width: 20px; text-align:right; margin-right:10px; font-size:12px; }

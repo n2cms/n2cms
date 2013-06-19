@@ -177,31 +177,6 @@ function MainMenuCtrl($scope) {
 	});
 }
 
-//function SearchCtrl($scope, $timeout, Content) {
-//	$scope.searchExpression = "";
-//	var cancel = null;
-//	$scope.$watch("searchExpression", function (searchExpression) {
-//		cancel && $timeout.cancel(cancel);
-//		cancel = $timeout(function () {
-//			$scope.search(searchExpression + "*");
-//		}, 500);
-//	});
-//	$scope.clear = function () {
-//		$scope.hits = [];
-//		$scope.searchExpression = "";
-//	};
-//	$scope.search = function (searchExpression) {
-//		if (!searchExpression || searchExpression == "*") {
-//			return $scope.clear();
-//		}
-//		$scope.searching = true;
-//		Content.search({ q: searchExpression, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
-//			$scope.hits = data.Hits;
-//			$scope.searching = false;
-//		});
-//	}
-//}
-
 function NavigationCtrl($scope, Content, ContextMenuFactory, Eventually) {
 	$scope.search = {
 		execute: function (searchQuery) {
@@ -425,25 +400,23 @@ function PageInfoCtrl($scope, Content) {
 }
 
 function PagePublishCtrl($scope, $rootScope, $modal, Content) {
-	$rootScope.$on("preiewloaded", function (scope, e) {
-		
-	});
-	
 	$scope.publish = function () {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
-			console.log("published", $scope.Context.CurrentItem, result);
-			window.frames.preview.window.location = result.Current.PreviewUrl;
+			$scope.previewUrl(result.Current.PreviewUrl);
+
+			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
+				$scope.select(result.Current.Path, result.Current.VersionIndex);
+			});
 		});
 	};
-	$scope.schedule = function () {
-		console.log("schedule");
-		//$scope.showDatePicker = true;
-		//Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: '2013-07-01' });
-
-	};
 	$scope.unpublish = function () {
-		console.log("unpublish");
-		Content.unpublish({ selected: $scope.Context.CurrentItem.Path });
+		Content.unpublish({ selected: $scope.Context.CurrentItem.Path }, function (result) {
+			$scope.previewUrl(result.Current.PreviewUrl);
+			
+			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
+				$scope.select(result.Current.Path, result.Current.VersionIndex);
+			});
+		});
 	};
 }
 
