@@ -11,7 +11,7 @@ using N2.Web.Drawing;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-        IconUrl = "{ManagementUrl}/Resources/icons/page_white.png",
+        IconClass = "n2-icon-file-text-alt",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]

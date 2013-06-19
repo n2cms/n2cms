@@ -5,12 +5,6 @@
 		<meta name="robots" content="noindex, nofollow" />
         <title id="title" runat="server"></title>
 		<asp:PlaceHolder runat="server">
-		
-        <link rel="stylesheet" href="<%= ResolveClientUrl("Resources/Css/all.css") %>" type="text/css" />
-        <link rel="stylesheet" href="<%= ResolveClientUrl("Resources/Css/framed.css") %>" type="text/css" />
-        <!--[if lte IE 6]>
-            <link href="<%= ResolveClientUrl("Resources/Css/IE6.css") %>" rel="stylesheet" type="text/css" />
-        <![endif]-->
         <asp:ContentPlaceHolder ID="Head" runat="server" />
         </asp:PlaceHolder>
     </head>

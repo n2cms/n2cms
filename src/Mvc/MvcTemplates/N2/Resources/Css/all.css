@@ -22,7 +22,7 @@ a:hover{ text-decoration:underline; }
 img{ border:none; }
 
 input[type="checkbox"],
-input[type="radio"] { float: left; margin-right: 5px; }
+input[type="radio"] { float: left; margin: 4px; }
 
 /* toolbar */
 body.framed fieldset{

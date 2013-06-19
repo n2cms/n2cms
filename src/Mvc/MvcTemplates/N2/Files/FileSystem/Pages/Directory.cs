@@ -7,7 +7,7 @@ using N2.Engine;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-		IconUrl = "{ManagementUrl}/Resources/icons/folder.png",
+		IconClass = "n2-icon-folder-open",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]

@@ -4,6 +4,7 @@
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }
 .nav-tabs > li > a { border-radius:0 !important; }
+td,th { vertical-align:top; }
 
 /* toolbar */
 
@@ -176,9 +177,8 @@ body.framed .position em { color:Green; font-weight:bold; }
 .position .indent { border:solid 1px silver; padding:5px; width:400px;}
 .position .indent .indent { padding:0 0 0 20px; border:none; width:auto; }
 
-body.framed #nav .day { color:#393; }
-body.framed #nav .week { color:#363; }
-body.framed #nav .invisible{ color:#999;}
+body.framed #nav { font-size:1.2em; }
+body.framed #nav .invisible{ opacity:.75; }
 body.framed #nav .unpublished,
 body.framed #nav .expired,
 body.framed #nav .locked { color:#C66; }
@@ -278,8 +278,8 @@ a.dp-choose-date.dp-disabled {
 input.dp-applied {
 }
 
-.datePicker { width:95px; }
-.timePicker { width:80px; }
+.datePicker { width:90px; }
+.timePicker { width:75px; }
 
 .fileContents
 {
@@ -355,3 +355,4 @@ input.dp-applied {
 	display:block;
 }
 
+/* jquery ui css fix */

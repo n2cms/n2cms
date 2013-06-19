@@ -9,6 +9,7 @@
         <title>Navigation</title>
         <asp:PlaceHolder runat="server">
 		<link rel="stylesheet" href="<%= MapCssUrl("all.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%= MapCssUrl("../font-awesome/css/font-awesome.min.css")%>" type="text/css" />
 		<link rel="stylesheet" href="<%= MapCssUrl("framed.css")%>" type="text/css" />
 		<link rel="stylesheet" href="<%= MapCssUrl("tree.css")%>" type="text/css" />
 		</asp:PlaceHolder>
