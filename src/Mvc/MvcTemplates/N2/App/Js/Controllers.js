@@ -43,6 +43,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
+		// legacy refresh call from frame
 		if (ctx.force) {
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
@@ -96,7 +97,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
 	});
 
-	$scope.select = function (nodeOrPath, versionIndex, keepFlags) {
+	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh) {
 		//console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
@@ -105,19 +106,19 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 				var parentNode = findSelectedRecursive($scope.Context.Content, getParentPath(path));
 				if (parentNode) {
 					$scope.reloadChildren(parentNode, function () {
-						$scope.select(path);
+						$scope.select(path, versionIndex, keepFlags, forceContextRefresh);
 					});
 				}
 			}
 			else
-				return $scope.select(node, versionIndex);
+				return $scope.select(node, versionIndex, keepFlags, forceContextRefresh);
 		} else if (typeof nodeOrPath == "object") {
 			var node = nodeOrPath;
 			$scope.Context.SelectedNode = node;
 			if (!node)
 				return false;
 
-			if ($scope.Context.AppliesTo == node.Current.PreviewUrl)
+			if ($scope.Context.AppliesTo == node.Current.PreviewUrl && !forceContextRefresh)
 				return true;
 			$scope.Context.AppliesTo = node.Current.PreviewUrl;
 
@@ -405,7 +406,7 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 
 			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
-				$scope.select(result.Current.Path, result.Current.VersionIndex);
+				$scope.select(result.Current.Path, result.Current.VersionIndex, /*keepFlags*/false, /*forceContextRefresh*/true);
 			});
 		});
 	};
@@ -414,7 +415,7 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 			
 			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
-				$scope.select(result.Current.Path, result.Current.VersionIndex);
+				$scope.select(result.Current.Path, result.Current.VersionIndex, /*keepFlags*/false, /*forceContextRefresh*/true);
 			});
 		});
 	};
