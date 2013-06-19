@@ -133,7 +133,7 @@ a { text-decoration: none; color: #000; }
 	#menu.draft > ul > li .dropdown-toggle:hover,
 	#menu.draft > ul > li.open .dropdown-toggle { background-color:#FF9933 }
 
-#menu.unpublished { background-color: #CC3300; }
+#menu.unpublished { background-color: #E10C02; }
 	#menu.unpublished > ul > li .page-action { border-left-color: #FF3300 }
 	#menu.unpublished > ul > li .page-action a:hover,
 	#menu.unpublished > ul > li .dropdown-toggle:hover,
