@@ -59,7 +59,16 @@ namespace N2.Engine
 			}
 
 			if (changesMade)
-				SaveCache();
+			{
+				try
+				{
+					SaveCache();
+				}
+				catch (Exception ex)
+				{
+					logger.Error("Error saving assembly cache", ex);
+				}
+			}
 		}
 
 		/// <summary>
