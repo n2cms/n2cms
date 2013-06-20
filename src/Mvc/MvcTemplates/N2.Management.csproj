@@ -110,9 +110,10 @@
     <Content Include="N2\App\Js\Directives.js" />
     <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
+    <Content Include="N2\App\Partials\DevicePreview.html" />
     <Content Include="N2\App\Partials\PageTransitions.html" />
     <Content Include="N2\App\Partials\PageSearch.html" />
-    <Content Include="N2\App\Partials\PagePublishItem.html" />
+    <Content Include="N2\App\Partials\PageActionSubItem.html" />
     <Content Include="N2\App\Partials\PagePublishSchedule.html" />
     <Content Include="N2\App\Partials\PageScheduleDialog.html" />
     <Content Include="N2\App\Partials\PageInfo.html" />

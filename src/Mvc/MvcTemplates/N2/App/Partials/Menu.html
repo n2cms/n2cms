@@ -10,8 +10,10 @@
 			<ul class="dropdown-menu" ng-show="Context.MainMenu.Children.length">
 				<li class="item secondary-action"
 					ng-repeat="child in Context.MainMenu.Children"
-					ng-class="{ divider: child.Current.Divider }">
-					<page-action-link node="child"></page-action-link>
+					ng-class="{ divider: child.Current.Divider }"
+					ng-controller="PageActionCtrl"
+					ng-include src="child.Current.TemplateUrl || 'App/Partials/PageActionSubItem.html'"
+					ng-show="isDisplayable(child)">
 				</li>
 			</ul>
 
