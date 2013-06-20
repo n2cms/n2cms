@@ -1,4 +1,4 @@
-﻿<div class='page-action'>
+﻿<div class='page-action' ng-show="!node.Current.Divider">
 	<a ng-class="{ 'page-action-description': node.Current.Description }"
 		ng-click='evalExpression(node.Current.ClientAction)' 
 		href='{{evaluateExpression(node.Current.Url)}}' 
