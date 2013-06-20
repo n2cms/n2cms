@@ -322,15 +322,15 @@ namespace N2.Web.Mvc.Html
 })(jQuery);
 //]]></script>
 
-<div id=""cpCurtain"" class=""sc""><div class=""scContent"">
-	<div class=""controlPanel state{State}"">
+<div id=""cpCurtain"" class=""sc state{State}""><div class=""scContent"">
+	<div class=""controlPanel"">
 		<div class=""plugins"">
 			{Plugins}
 		</div>
 		{Definitions}
 	</div>
-	<a href=""javascript:void(0);"" class=""close"" title=""Close"">&laquo;</a>
-	<a href=""javascript:void(0);"" class=""open"" title=""Open"">&raquo;</a>
+	<a href=""javascript:void(0);"" class=""close sc-toggler"" title=""Close"">&laquo;</a>
+	<a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>
 </div></div>
 ";
 			static string formatWithRefresh = format1 + format2 + format3;
