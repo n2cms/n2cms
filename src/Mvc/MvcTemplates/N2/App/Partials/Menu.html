@@ -12,7 +12,7 @@
 					ng-repeat="child in Context.MainMenu.Children"
 					ng-class="{ divider: child.Current.Divider }"
 					ng-controller="PageActionCtrl"
-					ng-include src="child.Current.TemplateUrl || 'App/Partials/PageActionSubItem.html'"
+					ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuActionSubItem.html'"
 					ng-show="isDisplayable(child)">
 				</li>
 			</ul>
@@ -22,7 +22,7 @@
 			ng-repeat="item in primaryNavigation"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'"
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuActionItem.html'"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>
@@ -32,7 +32,7 @@
 			ng-repeat="item in secondaryNavigation"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/PageActionItem.html'"
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuActionItem.html'"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>

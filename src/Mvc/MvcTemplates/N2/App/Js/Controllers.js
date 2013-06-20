@@ -39,7 +39,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 	$scope.previewUrl = function (url) {
 		console.log("Previewing ", url);
-		window.frames.preview.window.location = url || "Empty.aspx";
+		if (window.frames.preview)
+			window.frames.preview.window.location = url || "Empty.aspx";
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -68,6 +69,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		SelectedNode: {
 		},
 		ContextMenu: {
+		},
+		Partials: {
+			Management: "App/Partials/Loading.html"
 		}
 	}
 
@@ -87,6 +91,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
+		$scope.Context.Partials.Management = "App/Partials/Management.html";
 		console.log("Loading interface with", i);
 		translateNavigationRecursive(i.Interface.MainMenu);
 		translateNavigationRecursive(i.Interface.ActionMenu);

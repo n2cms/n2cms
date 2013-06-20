@@ -126,7 +126,7 @@
 			restrict: "E",
 			replace: true,
 			scope: true,
-			templateUrl: 'App/Partials/PageActionLink.html',
+			templateUrl: 'App/Partials/MenuActionLink.html',
 			link: function compile(scope, element, attrs) {
 				scope.$watch(attrs.node, function (node) {
 					scope.node = node;

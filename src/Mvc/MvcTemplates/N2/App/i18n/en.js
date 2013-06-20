@@ -1,5 +1,6 @@
 ﻿{
 	"i18n": { language: "en" },
+	"loading": { text: "Loading..." },
 	"branch": {
 		"noname": "(no name)"
 	},

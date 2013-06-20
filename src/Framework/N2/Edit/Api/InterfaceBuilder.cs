@@ -94,6 +94,8 @@ namespace N2.Management.Api
 		public InterfacePaths Paths { get; set; }
 
 		public Node<InterfaceMenuItem> ContextMenu { get; set; }
+
+		public InterfacePartials Partials { get; set; }
 	}
 
 	public class InterfacePaths
@@ -126,6 +128,25 @@ namespace N2.Management.Api
 		public int ChildItems { get; set; }
 	}
 
+	public class InterfacePartials
+	{
+		public string Management { get; set; }
+
+		public string Menu { get; set; }
+
+		public string Preview { get; set; }
+
+		public string Main { get; set; }
+
+		public string Tree { get; set; }
+
+		public string Search { get; set; }
+
+		public string Footer { get; set; }
+
+		public string ContextMenu { get; set; }
+	}
+
 	public class InterfaceBuiltEventArgs : EventArgs
 	{
 		public InterfaceDefinition Data { get; internal set; }
@@ -155,13 +176,29 @@ namespace N2.Management.Api
 				User = CreateUser(context),
 				Trash = CreateTrash(context),
 				Paths = CreateUrls(context, selection),
-				ContextMenu = CreateContextMenu(context)
+				ContextMenu = CreateContextMenu(context),
+				Partials = CreatePartials(context)
 			};
 			
 			if (InterfaceBuilt != null)
 				InterfaceBuilt(this, new InterfaceBuiltEventArgs { Data = data });
 
 			return data;
+		}
+
+		private InterfacePartials CreatePartials(HttpContextBase context)
+		{
+			return new InterfacePartials
+			{
+				Management = "App/Partials/Management.html",
+				Menu = "App/Partials/Menu.html",
+				Main = "App/Partials/Main.html",
+				Tree = "App/Partials/ContentTree.html",
+				Preview = "App/Partials/ContentPreview.html",
+				Search = "App/Partials/ContentSearch.html",
+				Footer = "App/Partials/Footer.html",
+				ContextMenu = "App/Partials/ContentContextMenu.html"
+			};
 		}
 
 		protected virtual Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
@@ -239,7 +276,7 @@ namespace N2.Management.Api
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "n2-icon-link", Target = Targets.Preview, Url = "{ManagementUrl}/Content/LinkTracker/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
 					}
 				},
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/PageAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/ContentAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Description = "Page details", Url = "{ManagementUrl}/Content/Edit.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}&versionIndex={{Context.CurrentItem.VersionIndex}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" })
 				{
 					Children = new Node<InterfaceMenuItem>[]
@@ -251,21 +288,21 @@ namespace N2.Management.Api
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "bulk", Title = "Bulk editing", IconClass = "n2-icon-edit", Target = Targets.Preview, Url = "{ManagementUrl}/Content/Export/BulkEditing.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
 					}
 				},
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "versions", TemplateUrl = "App/Partials/PageVersions.html", Url = "{ManagementUrl}/Content/Versions/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "language", TemplateUrl = "App/Partials/PageLanguage.html", Url = "{ManagementUrl}/Content/Globalization/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/PageTransitions.html", RequiredPermission = Permission.Publish, DisplayedBy = "Unpublished", HiddenBy = "Management" })
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "versions", TemplateUrl = "App/Partials/ContentVersions.html", Url = "{ManagementUrl}/Content/Versions/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish, HiddenBy = "Management" }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "language", TemplateUrl = "App/Partials/ContentLanguage.html", Url = "{ManagementUrl}/Content/Globalization/?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" }),
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "transitions", TemplateUrl = "App/Partials/ContentTransitions.html", RequiredPermission = Permission.Publish, DisplayedBy = "Unpublished", HiddenBy = "Management" })
 				{
 					Children = new Node<InterfaceMenuItem>[]
 					{
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "throw", Title = "Throw", IconClass = "n2-icon-trash", Url = "{ManagementUrl}/Content/Delete.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), ToolTip = "Move selected item to trash", RequiredPermission = Permission.Publish, HiddenBy = "Deleted" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "publish", Title = "Publish", IconClass = "n2-icon-play-sign", ClientAction = "publish()", RequiredPermission = Permission.Publish, HiddenBy = "Published" }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "schedule", TemplateUrl = "App/Partials/PagePublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "schedule", TemplateUrl = "App/Partials/ContentPublishSchedule.html", RequiredPermission = Permission.Publish, DisplayedBy = "Draft" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "unpublish", Title = "Unpublish", IconClass = "n2-icon-stop", ClientAction = "unpublish()", RequiredPermission = Permission.Publish, DisplayedBy = "Published" }),
 					}
 				},
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "frameaction", TemplateUrl = "App/Partials/FrameAction.html", RequiredPermission = Permission.Write }),
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "close", Title = "Close", Url = "{{Context.CurrentItem.PreviewUrl || Context.Paths.PreviewUrl}}", Target = Targets.Preview, DisplayedBy = "Management" }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/PageInfo.html", RequiredPermission = Permission.Read, HiddenBy = "Management", Alignment = "Right" })
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "info", TemplateUrl = "App/Partials/ContentInfo.html", RequiredPermission = Permission.Read, HiddenBy = "Management", Alignment = "Right" })
 			};
 
 			children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
