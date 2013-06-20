@@ -117,5 +117,8 @@ $(function () {
 		loader.stop();
 	}, 5000);
 
-	var sidebarSplitter = new N2.splitter("#secondary-area", "#main-area");
 });
+
+$.fn.n2splitter = function (master, slave) {
+	new N2.splitter(master, slave);
+}
