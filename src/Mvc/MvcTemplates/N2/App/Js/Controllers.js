@@ -38,7 +38,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	$scope.Security = Security;
 
 	$scope.previewUrl = function (url) {
-		console.log("Previewing ", url);
+		//console.log("Previewing ", url);
 		if (window.frames.preview)
 			window.frames.preview.window.location = url || "Empty.aspx";
 	}
@@ -48,7 +48,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		if (ctx.force) {
 			$scope.reloadChildren(ctx.path);
 			if (ctx.previewUrl) {
-				console.log("PREVIEWING ", ctx.previewUrl);
 				$scope.previewUrl(ctx.previewUrl);
 				return;
 			}
@@ -102,16 +101,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
 	});
 
-	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh) {
+	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload) {
 		//console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Context.Content, path);
 			if (!node) {
 				var parentNode = findSelectedRecursive($scope.Context.Content, getParentPath(path));
-				if (parentNode) {
+				if (!preventReload && parentNode) {
 					$scope.reloadChildren(parentNode, function () {
-						$scope.select(path, versionIndex, keepFlags, forceContextRefresh);
+						$scope.select(path, versionIndex, keepFlags, forceContextRefresh, /*preventReload*/true);
 					});
 				}
 			}
@@ -228,7 +227,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 		if (content) {
-			console.log("selecting", $scope.Context.SelectedNode);
+			//console.log("selecting", $scope.Context.SelectedNode);
 			$scope.select(findSelectedRecursive(content, $scope.Context.SelectedPath));
 		}
 	});
@@ -459,7 +458,6 @@ function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
 				$scope.$parent.action = actions[0];
 			}
 		}
-		console.log("ACTIONS", $scope.action);
 	});
 };
 
