@@ -42,6 +42,10 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
+			if (controllerContext.IsChildAction == false)
+			{
+				controllerContext.InitTheme();
+			}
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(controllerContext, theme);
 			var result = engine.FindPartialView(controllerContext, partialViewName, useCache);
