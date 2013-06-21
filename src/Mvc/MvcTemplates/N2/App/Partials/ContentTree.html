@@ -1,0 +1,3 @@
+﻿<ul class="targettable"  ui-jq="disableSelection">
+	<li class="root node" sortable-path="{{Context.Content.Current.Path}}" ng-class="{ active: Context.Content == Context.SelectedNode, expanded: Interface.Content.Expanded, collapsed: Interface.Content.HasChildren && !Interface.Content.Expanded }" ng-include src="'App/Partials/ContentBranch.html'" ng-controller="TrunkCtrl"></li>
+</ul>

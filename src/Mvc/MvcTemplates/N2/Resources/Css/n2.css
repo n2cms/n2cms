@@ -16,7 +16,7 @@ a { text-decoration: none; color: #000; }
 		#top-area .navbar .navbar-search input[type=button] { background: url("../img/search.png") no-repeat scroll 0 0 transparent; border: 0 none; height: 17px; position: absolute; right: 12px; text-indent: -9999px; top: 5px; width: 16px; }
 
 
-#main-wrapper { position: absolute; top: 42px; bottom: 0; }
+#main-wrapper { position: absolute; top: 42px; bottom: 0; width:100%; }
 
 
 #secondary-area { border-top: 1px solid #c7c7c7; border-right: 1px solid #c7c7c7; position: absolute; bottom: 0; top: 0; margin-right: 3px; width: 350px; }
@@ -94,7 +94,7 @@ a { text-decoration: none; color: #000; }
 	#trash div div { font-size: 18px; padding-top: 10px; }
 
 
-#main-area { left: 200px; position: absolute; top: 0; bottom: 0; overflow:auto; }
+#main-area { left: 354px; position: absolute; top: 0; bottom: 0; right:0; overflow:auto; }
 	#main-area #page-preview { position:absolute; top: 0; bottom: 0; width:100%; }
 		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
 		#main-area #page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }

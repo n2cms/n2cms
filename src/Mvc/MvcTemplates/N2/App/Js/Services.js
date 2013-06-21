@@ -32,15 +32,14 @@
 	module.factory('FrameManipulatorFactory', function () {
 		var frameManipulator = {
 			click: function (selector) {
-				console.log("click", selector);
 				window.frames.preview.window.location = window.frames.preview.window.jQuery(selector, window.frames.preview.window.document).attr("href");
 			},
 			hideToolbar: function (force) {
 				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0) {
-					console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
+					//console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
 					window.frames.preview.window.jQuery("body").addClass("toolbar-hidden");
 				} else {
-					console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
+					//console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
 					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
 				}
 			},
@@ -66,7 +65,7 @@
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function (ctx) {
-				console.log("refresh", arguments);
+				//console.log("refresh", arguments);
 			},
 			select: function () {
 				//console.log("select", arguments);

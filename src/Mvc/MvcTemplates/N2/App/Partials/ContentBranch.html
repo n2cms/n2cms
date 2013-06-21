@@ -4,7 +4,7 @@
 
 	<div class="nav tools dropdown">
 		<a href='#' ng-click="ContextMenu.show(node)" class='tools-toggler dropdown-toggle' data-toggle="dropdown" title="{{ContextMenu.SelectedNode == node}}">tools</a>
-		<ul ng-include src="ContextMenu.node == node && 'App/Partials/PageContextMenu.html'" class="dropdown-menu pull-right"></ul>
+		<ul ng-include src="ContextMenu.node == node && Context.Partials.ContextMenu" class="dropdown-menu pull-right"></ul>
 	</div>
 
 	<a href='{{node.Current.PreviewUrl}}' ng-click="select(node)" target='preview' class="item" title="{{node.Current.ToolTip}}">
@@ -15,11 +15,11 @@
 </div>
 
 <ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
-	<li class="node" ng-repeat="child in node.Parts" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/PageBranch.html'"></li>
+	<li class="node" ng-repeat="child in node.Parts" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/ContentBranch.html'"></li>
 </ul>
 
 <ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
-	<li class="node" ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/PageBranch.html'"></li>
+	<li class="node" ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/ContentBranch.html'"></li>
 </ul>
 
 <a class="tree-pager" ng-show="node.IsPaged && node.Expanded" href="#" ng-click="loadRemaining(node)"><i class="toggle-loading n2-icon-repeat" ng-show="node.Loading"></i><i class="toggle-remaining icon-chevron-down" ng-show="!node.Loading"></i>Load remaining</a>

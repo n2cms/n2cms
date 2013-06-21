@@ -40,33 +40,15 @@
 
 	<script src="Resources/js/n2.js"></script>
 	<link rel="stylesheet" href="Resources/css/n2.css">
-</head>
-<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item">
-	<div id="top-area">
-		<div ng-include src="'App/Partials/Menu.html'"></div>
-	</div>
-	<div class="sliding-loader loader"></div>
-	<div id="main-wrapper">
-		<div id="secondary-area" ng-controller="NavigationCtrl">
-			<div ng-include src="'App/Partials/PageSearch.html'" id="page-search"></div>
-			<div ng-include src="'App/Partials/PageTree.html'" id="page-tree"></div>
-			<div class="dragbar"></div>
-		</div>
-		<div id="main-area">
-			<%-- ng-bind-html-unsafe="Interface | pretty">--%>
-			<div ng-include src="'App/Partials/PagePreview.html'"></div>
-		</div>
-	</div>
-	<div id="footer" ng-include src="'App/Partials/Footer.html'">
-	</div>
-	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>
-    <%--<div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>--%>
 
 	<script src="<%= GetLocalizationPath() %>"></script>
 	<script src="App/Js/Services.js"></script>
 	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
+</head>
+<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item" ng-include src="Context.Partials.Management">
+	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>
 </body>
 </html>
 
