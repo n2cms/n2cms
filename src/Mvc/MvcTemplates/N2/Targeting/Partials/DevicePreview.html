@@ -1,0 +1,17 @@
+﻿<div id="page-preview" ng-controller="TargetingCtrl">
+	<div id="page-preview-frame-cover"></div>
+	
+	<iframe ui-if="preview.size == null" id="page-preview-frame" name="preview" src="{{preview.url || Context.Paths.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}"></iframe>
+	<div class="device-background" ui-if="preview.size != null">
+		<div id="device-preview" ng-class="{ horizontal: preview.horizontal }">
+			<div class="device-preview-frame-cover"></div>
+			<div class="device-preview-info">
+				<label>{{preview.size.title}}</label>
+				<p><em>Size</em> {{preview.size.h}}x{{preview.size.w}}</p>
+			</div>
+			<iframe id="device-preview-frame" name="preview" src="{{preview.url || Context.CurrentItem.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}" style="width:{{preview.size.w}}px; height:{{preview.size.h}}px"></iframe>
+			<div id="device-preview-gripper-h" n2-resize-x="preview.size.w"></div>
+			<div id="device-preview-gripper-v" n2-resize-y="preview.size.h"></div>
+		</div>
+	</div>
+</div>
