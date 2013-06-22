@@ -297,6 +297,36 @@
 		};
 	});
 
+	angular.forEach(['X', 'Y'], function (dir) {
+		module.directive('n2Resize' + dir, function ($parse) {
+			return function (scope, element, attrs) {
+				var modelGet = $parse(attrs["n2Resize" + dir]);
+				var modelSet = modelGet.assign;
+
+				var initialClientValue, initialModelValue;
+
+				element.bind("mousedown", function (e) {
+					initialClientValue = e["client" + dir];
+					initialModelValue = modelGet(scope);
+
+					$(document).bind("mousemove.n2Resize", function (e) {
+						modelSet(scope, initialModelValue + e["client" + dir] - initialClientValue);
+						console.log("moving", initialModelValue, "+", e["client" + dir], "-", initialClientValue, "=", initialModelValue + e["client" + dir] - initialClientValue);
+						scope.$digest();
+					});
+					$(document.body).addClass("resizing");
+				});
+				element.bind("mouseup", function (e) {
+					$scope.$emit("resized", { direction: dir, from: initialModelValue, to: modelGet(scope)});
+					$(document).unbind("mousemove.n2Resize");
+					$(document.body).removeClass("resizing");
+					initialClientValue = undefined;
+					initialModelValue = undefined;
+				});
+			};
+		});
+	});
+
 	module.filter('pretty', function () {
 		function syntaxHighlight(json) {
 			if (typeof json != 'string') {
