@@ -269,10 +269,10 @@ namespace N2.Management.Api
 					Children = new Node<InterfaceMenuItem>[]
 					{
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "n2-icon-eye-open", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider3", Divider = true }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewdrafts", Title = "View latest drafts", IconClass = "n2-icon-circle-blank", Target = Targets.Top, Url = "{ManagementUrl}/?view=draft&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewpublished", Title = "View published versions", IconClass = "n2-icon-play-sign", Target = Targets.Top, Url = "{ManagementUrl}/?view=published&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider4", Divider = true }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider2", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "n2-icon-link", Target = Targets.Preview, Url = "{ManagementUrl}/Content/LinkTracker/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
 					}
 				},
