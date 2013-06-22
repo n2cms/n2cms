@@ -46,6 +46,18 @@
 	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
+
+	<asp:PlaceHolder runat="server">
+	<% foreach(var module in N2.Context.Current.Container.ResolveAll<N2.Management.Api.ManagementModuleBase>()) { %>
+	<!-- <%= module.GetType().Name %> -->
+	<% foreach(var script in module.ScriptIncludes) { %>
+	<script src="<%= N2.Web.Url.ResolveTokens(script) %>"></script>
+	<% } %>
+	<% foreach(var style in module.StyleIncludes) { %>
+	<link href="<%= N2.Web.Url.ResolveTokens(style) %>" rel="stylesheet" />
+	<% } %>
+	<% } %>
+	</asp:PlaceHolder>
 </head>
 <body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item" ng-include src="Context.Partials.Management">
 	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>

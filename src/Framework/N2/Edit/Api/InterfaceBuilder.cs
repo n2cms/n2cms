@@ -269,23 +269,10 @@ namespace N2.Management.Api
 					Children = new Node<InterfaceMenuItem>[]
 					{
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "n2-icon-eye-open", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "devicepreview", Url = "#", Title = "Device preview", IconClass = "n2-icon-mobile-phone" }) 
-						{
-							Children = new Node<InterfaceMenuItem>[]
-							{
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "pc", IconClass = "n2-icon-laptop", Title = "PC", ClientAction = "previewDevice(null)" }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "mobiledivider1", Divider = true }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "mobilevertical", IconClass = "n2-icon-mobile-phone", Title = "Mobile", ClientAction = "previewDevice(480,780)" }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "mobilehorizontal", IconClass = "n2-icon-mobile-phone tilted90", Title = "Mobile horizontal", ClientAction = "previewDevice(780,480)" }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "mobiledivider2", Divider = true }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "tabletvertical", IconClass = "n2-icon-tablet", Title = "Tablet", ClientAction = "previewDevice(780,1024)" }),
-								new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "tablethorizontal", IconClass = "n2-icon-tablet tilted90", Title = "Tablet horizontal", ClientAction = "previewDevice(1024,780)" }),
-							}
-						},
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider3", Divider = true }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewdrafts", Title = "View latest drafts", IconClass = "n2-icon-circle-blank", Target = Targets.Top, Url = "{ManagementUrl}/?view=draft&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewpublished", Title = "View published versions", IconClass = "n2-icon-play-sign", Target = Targets.Top, Url = "{ManagementUrl}/?view=published&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider4", Divider = true }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider2", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "n2-icon-link", Target = Targets.Preview, Url = "{ManagementUrl}/Content/LinkTracker/Default.aspx?{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens() }),
 					}
 				},

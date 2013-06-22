@@ -220,9 +220,11 @@ a[disabled=disabled]:hover {
 .silver { color:silver; }
 .shadow { text-shadow: 3px 3px #999; }
 .opaque { opacity: .5; }
-.tilted90 {display:inline-block; transform: rotate(90deg); -ms-transform: rotate(90deg); /* IE 9 */ -webkit-transform: rotate(90deg); /* Safari and Chrome */ }
-.tilted180 { transform: rotate(180deg); -ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); }
-.tilted270 { transform: rotate(270deg); -ms-transform: rotate(270deg); -webkit-transform: rotate(270deg); }
+
+		
+.tilted90 { display:inline-block !important; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
+.tilted180 { display:inline-block !important; -webkit-transform: rotate(180px); -moz-transform: rotate(180px); -ms-transform: rotate(180px); -o-transform: rotate(180px); transform: rotate(180px); }
+.tilted270 { display:inline-block !important; -webkit-transform: rotate(270px); -moz-transform: rotate(270px); -ms-transform: rotate(270px); -o-transform: rotate(270px); transform: rotate(270px); }
 
 /* MULTI-LEVEL DROPDOWNS FOR BOOTSTRAP */
 
