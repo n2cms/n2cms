@@ -79,7 +79,7 @@ namespace N2.Engine
 				this.config = config;
 			}
 
-			public override T GetSection<T>(string sectionName)
+			public override T GetSection<T>(string sectionName, bool required = true)
 			{
 				return config.GetSection(sectionName) as T;
 			}

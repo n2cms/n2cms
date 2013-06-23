@@ -35,18 +35,25 @@ namespace N2.Configuration
 				GetContentSection<EditSection>("edit") ?? new EditSection());
 		}
 
-		public virtual T GetSection<T>(string sectionName) where T : ConfigurationSection
+		public virtual T GetSection<T>(string sectionName, bool required = true) where T : ConfigurationSection, new()
 		{
 			object section = ConfigurationManager.GetSection(sectionName);
-			if (section == null) throw new ConfigurationErrorsException("Missing configuration section at '" + sectionName + "'");
+			if (section == null)
+			{
+				if (required)
+					throw new ConfigurationErrorsException("Missing configuration section at '" + sectionName + "'");
+				else
+					return new T();
+			}
+
 			T contentSection = section as T;
 			if (contentSection == null) throw new ConfigurationErrorsException("The configuration section at '" + sectionName + "' is of type '" + section.GetType().FullName + "' instead of '" + typeof(T).FullName + "' which is required.");
 			return contentSection;
 		}
 
-		public virtual T GetContentSection<T>(string relativeSectionName) where T : ConfigurationSectionBase
+		public virtual T GetContentSection<T>(string relativeSectionName, bool required = true) where T : ConfigurationSectionBase, new()
 		{
-			return GetSection<T>(sectionGroup + "/" + relativeSectionName);
+			return GetSection<T>(sectionGroup + "/" + relativeSectionName, required);
 		}
 
 		public virtual ConnectionStringsSection GetConnectionStringsSection()
