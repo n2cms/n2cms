@@ -1,17 +1,21 @@
 ﻿<div id="page-preview" ng-controller="TargetingCtrl">
+
 	<div id="page-preview-frame-cover"></div>
 	
-	<iframe ui-if="preview.size == null" id="page-preview-frame" name="preview" src="{{preview.url || Context.Paths.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}"></iframe>
-	<div class="device-background" ui-if="preview.size != null">
-		<div id="device-preview" ng-class="{ horizontal: preview.horizontal }">
+<!--<iframe ui-if="preview.size == null" id="page-preview-frame" name="preview" src="{{preview.url || Context.Paths.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}"></iframe>-->
+
+	<div class="device-background" ng-class="{ fullscreen: preview.size == null, device: preview.size != null, horizontal: preview.size.Width > preview.size.Height, tablet: preview.size.IconClass.indexOf('tablet') >= 0, desktop: preview.size.IconClass.indexOf('desktop') >= 0 }">
+		<div id="device-preview">
 			<div class="device-preview-frame-cover"></div>
 			<div class="device-preview-info">
-				<label>{{preview.size.title}}</label>
-				<p><em>Size</em> {{preview.size.h}}x{{preview.size.w}}</p>
+				<label>{{preview.size.Title}}</label>
+				<p><em>Viewport size</em> {{preview.size.Height}}x{{preview.size.Width}}</p>
+				<button class="btn btn-close" ng-click="$emit('device-close', {})">Close</button>
 			</div>
-			<iframe id="device-preview-frame" name="preview" src="{{preview.url || Context.CurrentItem.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}" style="width:{{preview.size.w}}px; height:{{preview.size.h}}px"></iframe>
-			<div id="device-preview-gripper-h" n2-resize-x="preview.size.w"></div>
-			<div id="device-preview-gripper-v" n2-resize-y="preview.size.h"></div>
+			<iframe id="page-preview-frame" name="preview" src="{{Context.Paths.PreviewUrl}}" load="frameLoaded($event)" title="{{Context.Paths.PreviewUrl}}" style="width:{{preview.size.Width}}px; height:{{preview.size.Height}}px"></iframe>
+			<div id="device-preview-gripper-h" n2-resize-x="preview.size.Width"></div>
+			<div id="device-preview-gripper-v" n2-resize-y="preview.size.Height"></div>
+			<div class="device-footer"></div>
 		</div>
 	</div>
 </div>

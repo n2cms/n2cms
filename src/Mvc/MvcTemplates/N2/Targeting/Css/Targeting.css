@@ -1,5 +1,4 @@
 ﻿#page-preview {
-	background-color: #333;
 }
 
 /*
@@ -12,20 +11,41 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-.device-background {
+#main-area {
 	background-color: #333;
+}
+
+.fullscreen.device-background {
+	height:100%;
+}
+.fullscreen .btn-close,
+.fullscreen .device-preview-info,
+.fullscreen .device-preview-gripper-h,
+.fullscreen .device-preview-gripper-w,
+.fullscreen .device-footer {
+	display:none
+}
+
+.device.device-background {
 	padding:20px 20px 80px 20px;
 	position:relative;
 	color:#ccc;
+	position:relative;
 }
-	.device-preview-info {
+	/*.device .btn-close {
+		position:fixed;
+		top:0;
+		right:0;
+	}*/
+
+	.device .device-preview-info {
 		position:absolute;
 		top:50px;
 		left: 100%;
 		margin-left:10px;
 		white-space:nowrap;
 	}
-	.horizontal .device-preview-info {
+	.device.horizontal .device-preview-info {
 		top:10px;
 	}
 	.device-preview-frame-cover {
@@ -39,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	.resizing .device-preview-frame-cover {
 		display:block;
 	}
-	#device-preview {
+	.device #device-preview {
 		border-radius: 15px;
 		background: #0c0c0c;
 		position: relative;
@@ -48,23 +68,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		margin:0 auto;
 		padding:50px 10px;
 		display:inline-block;
+		border-top:solid 1px #666;
+		border-left:solid 1px #666;
 	}
-	#device-preview.horizontal {
+	.device.horizontal #device-preview {
 		padding:10px 50px;
 	}
+	.device.tablet #device-preview {
+		padding:50px;
+	}
+	.device.desktop #device-preview {
+		border-radius: 5px;
+		padding:20px;
+		z-index:10;
+	}
+		.device.desktop .device-footer {
+			position:absolute;
+			bottom:0;
+			left:50%;
+			margin-bottom:-30px;
+			margin-left:-20%;
+			height:45px;
+			width:40%;
+			background-color:#0c0c0c;
+			border-bottom:solid 1px #666;
+			-moz-border-radius: 40% / 20px;
+			-webkit-border-radius: 40% / 20px;
+			border-radius: 40% / 20px;
+			z-index:5;
+		}
 
-		#device-preview-frame {
+		.device #page-preview-frame {
 			border:none;
 			display: block;
 			background: #151515;
 			border-radius: 3px;
 			box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.1);
+			position:relative;
 		}
-		.horizontal #device-preview-frame {
+		.device.horizontal #page-preview-frame {
 			width: 370px;
 			height: 260px;
 		}
-		#device-preview-gripper-h {
+		.device #device-preview-gripper-h {
 			position:absolute;
 			height:40px;
 			width:2px;
@@ -75,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			border-style:none solid;
 			cursor:e-resize;
 		}
-		#device-preview-gripper-v {
+		.device #device-preview-gripper-v {
 			position:absolute;
 			height:2px;
 			width:40px;
