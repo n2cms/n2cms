@@ -1,9 +1,4 @@
 ﻿function TargetingCtrl($rootScope, $scope) {
-	$scope.preview = {
-		size: { w: 320, h: 480, title: "Testing 123" },
-		url: "/",
-		horizontal: false
-	}
 
 	$rootScope.$on("device-preview", function (e, size) {
 		$scope.preview = {
@@ -24,6 +19,7 @@
 			var loco = e.target.contentWindow.location;
 			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
 		} catch (ex) {
+			$scope.$emit("preiewaccessexception", { ex: ex });
 			console.log("frame access exception", ex);
 		}
 	};

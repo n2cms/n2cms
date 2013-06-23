@@ -349,6 +349,7 @@ function PreviewCtrl($scope, $rootScope) {
 			var loco = e.target.contentWindow.location;
 			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
 		} catch (ex) {
+			$scope.$emit("preiewaccessexception", { ex: ex });
 			console.log("frame access exception", ex);
 		}
 	};
