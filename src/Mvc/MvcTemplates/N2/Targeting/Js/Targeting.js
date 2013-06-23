@@ -1,4 +1,18 @@
-﻿function TargetingCtrl($rootScope, $scope) {
+﻿function TargetingCtrl($rootScope, $scope, Translate, n2translations) {
+	angular.extend(n2translations, {
+		targeting: {
+			menu: {
+				fullsize: " Full size",
+				rotate: " Switch portrait/landscape"
+			},
+			preview: {
+				custom: "Custom",
+				viewportsize: "Viewport size",
+				close: "Close"
+			}
+		}
+	});
+
 	$rootScope.$on("contextchanged", function (scope, e) {
 		if ($scope.Context.Flags.indexOf('Management') >= 0)
 			delete $scope.preview;
@@ -30,7 +44,7 @@
 		}
 	});
 	$rootScope.$on("resized", function () {
-		$scope.preview.size.Title = "Custom";
+		$scope.preview.size.Title = Translate("targeting.preview.custom");// "Custom";
 	});
 
 	$scope.frameLoaded = function (e) {
