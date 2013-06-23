@@ -44,6 +44,8 @@ module.factory('Translate', function () {
 			{
 				TransferBetweenStreams(s, context.Response.OutputStream);
 			}
+			context.Response.Write(";" + Environment.NewLine);
+			context.Response.Write("module.value('n2translations', translations);");
 
 			context.Response.Write("})(angular.module('n2.localization', []));");
 		}
