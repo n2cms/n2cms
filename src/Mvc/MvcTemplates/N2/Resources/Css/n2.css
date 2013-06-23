@@ -95,9 +95,9 @@ a { text-decoration: none; color: #000; }
 
 
 #main-area { left: 354px; position: absolute; top: 0; bottom: 0; right:0; overflow:auto; }
-	#main-area #page-preview { position:absolute; top: 0; bottom: 0; width:100%; }
-		#main-area #page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
-		#main-area #page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }
+	#page-preview { position:absolute; top: 0; bottom: 0; width:100%; }
+		#page-preview-frame { position:absolute; height:100%; width:100%; border:none; display:block; }
+		#page-preview-frame-cover { position:absolute; height:100%; width:100%; display:none; z-index:100; }
 
 
 #menu { height: 39px; background-color: #18a0de; font-size: 18px; }

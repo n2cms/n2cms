@@ -317,7 +317,7 @@
 					$(document.body).addClass("resizing");
 				});
 				element.bind("mouseup", function (e) {
-					$scope.$emit("resized", { direction: dir, from: initialModelValue, to: modelGet(scope)});
+					scope.$emit("resized", { direction: dir, from: initialModelValue, to: modelGet(scope)});
 					$(document).unbind("mousemove.n2Resize");
 					$(document.body).removeClass("resizing");
 					initialClientValue = undefined;
