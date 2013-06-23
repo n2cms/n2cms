@@ -2,8 +2,8 @@
 	angular.extend(n2translations, {
 		targeting: {
 			menu: {
-				fullsize: " Full size",
-				rotate: " Switch portrait/landscape"
+				fullsize: { text: " Full size" },
+				rotate: { text: " Switch portrait/landscape" }
 			},
 			preview: {
 				custom: "Custom",
