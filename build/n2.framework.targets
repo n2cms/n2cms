@@ -38,7 +38,8 @@
 																						 $(EditFolder)\**\App_LocalResources\nl\*.resx;$(EditFolder)\**\App_LocalResources\*.nl.resx;
 																						 $(EditFolder)\**\App_LocalResources\ru\*.resx;$(EditFolder)\**\App_LocalResources\*.ru.resx;
 																						 $(EditFolder)\**\App_LocalResources\sl\*.resx;$(EditFolder)\**\App_LocalResources\*.sl.resx;"
-																		Exclude="$(EditFolder)\**\i18n\*en.js;"/>
+																		Exclude="$(EditFolder)\**\i18n\*en.js;
+																						 $(EditFolder)\**\lang\*en.js;"/>
 			<Framework-EditFiles Include="$(EditFolder)\**\*.resx;
 											 $(EditFolder)\**\*.as?x;
 											 $(EditFolder)\**\*.master;
@@ -56,6 +57,8 @@
 													 $(EditFolder)\**\obj\**\*.*;
 													 $(EditFolder)\**\Debug\**\*.*;
 													 $(EditFolder)\**\Release\**\*.*;
+													 $(EditFolder)\**\test\**\*.*;
+													 $(EditFolder)\**\samples\**\*.*;
 													 @(Framework-LocalizedResources)" />
 		</ItemGroup>
 	</Target>
