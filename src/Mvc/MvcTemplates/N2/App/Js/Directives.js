@@ -65,7 +65,8 @@
 					var code = key[k.toLowerCase()];
 					element.bind("keyup", function (e) {
 						if (e.keyCode == code) {
-							console.log(name, attrs[name]);
+							e.preventDefault();
+							e.stopPropagation();
 							scope.$apply(attrs[name]);
 						}
 					});
