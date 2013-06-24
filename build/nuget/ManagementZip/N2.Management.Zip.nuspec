@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>N2CMS.Management.Zip</id>
+		<id>N2CMS.Management</id>
 		<version>{Version}</version>
 		<title>N2CMS Management (ZIP deployment)</title>
 		<authors>Cristian Libardo</authors>
