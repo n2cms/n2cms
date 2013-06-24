@@ -129,66 +129,25 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "Mvc\Dinamico\Dinamico.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5-CF13-47DD-942E-72E34B26FE48}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{68ABA761-8210-4BE8-9F6D-6D3A69D273B0}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\nuget\Framework\N2.Cms.nuspec = ..\build\nuget\Framework\N2.Cms.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dinamico", "Dinamico", "{18314BAF-CA7C-491D-9CBF-0B458B8E150B}"
-	ProjectSection(SolutionItems) = preProject
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
+		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
+		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
+		..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec = ..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec
+		..\build\nuget\ManagementZip\N2.Management.Zip.nuspec = ..\build\nuget\ManagementZip\N2.Management.Zip.nuspec
+		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
+		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
+		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
+		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
+		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Razor", "Framework\Razor\N2.Razor.csproj", "{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Packaging", "Framework\Packaging\N2.Packaging.csproj", "{8292DB1E-D760-417B-8620-7024DE3505F2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLIte", "SQLIte", "{541230E3-044D-4B21-90EB-B93B491C6AFE}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{9C9945AF-7DE6-459D-A783-C026E5B7F596}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\SQLite\Content\web.config.transform = ..\build\nuget\SQLite\Content\web.config.transform
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Razor", "Razor", "{97670B82-7B2E-4EE4-8527-8342877AD08C}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Management\N2.Management.nuspec = ..\build\nuget\Management\N2.Management.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{A4646281-64FB-4CE0-A3D7-9167070FF19A}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B3835F3D-C170-49C8-A4FC-CA52F0714B83}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.IoC.Windsor3", "Framework\IoC.Windsor\N2.IoC.Windsor3.csproj", "{7A9C0479-64AF-4DF1-818C-118866DB8A3D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC.Windsor3", "IoC.Windsor3", "{9D0BACB7-1032-4E80-94FE-22515CE821B3}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Persistence.MongoDB", "Framework\MongoDB\N2.Persistence.MongoDB.csproj", "{86FA9BB3-7D92-488C-9192-80D6B38DE5BC}"
 EndProject
@@ -197,16 +156,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Client", "Framework\Search.Remote.Client\N2.Search.Remote.Client.csproj", "{E2A88D0C-FED0-4EF4-AD49-05DDDB0C0386}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Server", "Framework\Search.Remote.Server\N2.Search.Remote.Server.csproj", "{F30718A5-A1F6-40F6-871E-2873EA87ED56}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDB", "MongoDB", "{0606F2F6-734B-4A35-B6AB-73B6F22F3638}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RemoteSearch", "RemoteSearch", "{2A6E2609-8AE0-42A7-9EA5-20870E638241}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1033,19 +982,5 @@ Global
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
-		{68ABA761-8210-4BE8-9F6D-6D3A69D273B0} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{18314BAF-CA7C-491D-9CBF-0B458B8E150B} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{541230E3-044D-4B21-90EB-B93B491C6AFE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{97670B82-7B2E-4EE4-8527-8342877AD08C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{9D0BACB7-1032-4E80-94FE-22515CE821B3} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{0606F2F6-734B-4A35-B6AB-73B6F22F3638} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{2A6E2609-8AE0-42A7-9EA5-20870E638241} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{B3835F3D-C170-49C8-A4FC-CA52F0714B83} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
-		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
-		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}
-		{9C9945AF-7DE6-459D-A783-C026E5B7F596} = {541230E3-044D-4B21-90EB-B93B491C6AFE}
-		{A4646281-64FB-4CE0-A3D7-9167070FF19A} = {B3835F3D-C170-49C8-A4FC-CA52F0714B83}
 	EndGlobalSection
 EndGlobal
