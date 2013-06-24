@@ -59,6 +59,24 @@
 													 $(EditFolder)\**\Release\**\*.*;
 													 $(EditFolder)\**\test\**\*.*;
 													 $(EditFolder)\**\samples\**\*.*;
+													 $(EditFolder)\**\angular.js;
+													 $(EditFolder)\Resources\angular-*\angular-cookies*.js;
+													 $(EditFolder)\Resources\angular-*\angular-loader*.js;
+													 $(EditFolder)\Resources\angular-*\angular-mobile*.js;
+													 $(EditFolder)\Resources\angular-*\angular-mocks*.js;
+													 $(EditFolder)\Resources\angular-*\angular-resource.js;
+													 $(EditFolder)\Resources\angular-*\angular-sanitize*.js;
+													 $(EditFolder)\Resources\angular-*\angular-scenario.js;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui-ieshiv.css;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.css;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.js;
+													 $(EditFolder)\Resources\bootstrap\css\bootstrap.css;
+													 $(EditFolder)\Resources\bootstrap\js\bootstrap.js;
+													 $(EditFolder)\Resources\bootstrap-components\angular-strap.js;
+													 $(EditFolder)\Resources\font-awesome\css\font-awesome-ie7.css;
+													 $(EditFolder)\Resources\font-awesome\css\font-awesome.css;
+													 $(EditFolder)\Resources\jquery-ui*\css\smoothness\jquery-ui-1.10.2.custom.css;
+													 $(EditFolder)\Resources\jquery-ui*\js\jquery-ui-1.10.2.custom.js;
 													 @(Framework-LocalizedResources)" />
 		</ItemGroup>
 	</Target>
