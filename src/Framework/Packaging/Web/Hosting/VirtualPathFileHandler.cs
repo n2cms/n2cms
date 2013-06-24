@@ -114,8 +114,14 @@ namespace N2.Web.Hosting
 					return "text/txt";
 				case ".swf":
 					return "application/x-shockwave-flash";
+				case ".svg":
+					return "image/svg+xml";
+				case ".woff":
+					return "application/x-woff";
+				case ".ttf":
+					return "application/x-ttf";
 				default:
-					return "application/data";
+					return "application/x-" + extension.TrimStart('.');
 			}
 		}
 
