@@ -470,6 +470,10 @@
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Framework\ReusableParts\N2.ReusableParts.csproj">
+      <Project>{2f45b409-52cd-4fb9-963a-d20e0b113d26}</Project>
+      <Name>N2.ReusableParts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image.ashx" />
