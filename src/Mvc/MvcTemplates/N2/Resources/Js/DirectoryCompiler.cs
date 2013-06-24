@@ -28,9 +28,8 @@ namespace N2.Edit.Js
 			if (context.Request == null) throw new ArgumentNullException("context.Request");
 			if (context.Request.Headers == null) throw new ArgumentNullException("context.Request.Headers");
 			if (context.Response == null) throw new ArgumentNullException("context.Response");
-			if (context.Server == null) throw new ArgumentNullException("context.Server");
 
-			if (CacheUtility.IsUnmodifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
+			if (context.Server != null && CacheUtility.IsUnmodifiedSince(context.Request, GetFiles(context).Select(vf => context.Server.MapPath(vf.VirtualPath))))
 			{
 				CacheUtility.NotModified(context.Response);
 			}

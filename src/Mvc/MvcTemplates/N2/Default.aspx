@@ -16,18 +16,18 @@
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.9.1.min.js"><\/script>')</script>
-	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom-min.js"></script>
 
-	<script src="Resources/angular-1.1.4/angular.min.js"></script>
-	<script src="Resources/angular-1.1.4/angular-resource.min.js"></script>
+	<script src="Resources/angular-1.1.5/angular.min.js"></script>
+	<script src="Resources/angular-1.1.5/angular-resource.min.js"></script>
 
 	<link href="Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<script src="Resources/bootstrap/js/bootstrap.min.js"></script>
 
 	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
 
-	<script src="Resources/angular-ui-0.4.0/build/angular-ui.min.js"></script>
-	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
+	<script src="Resources/angular-ui-0.4.0/angular-ui.min.js"></script>
+	<link href="Resources/angular-ui-0.4.0/angular-ui.min.css" rel="stylesheet" />
 
 	<link href="Resources/bootstrap-components/bootstrap-datepicker.css" rel="stylesheet" />
 	<script src="Resources/bootstrap-components/bootstrap-datepicker.js"></script>

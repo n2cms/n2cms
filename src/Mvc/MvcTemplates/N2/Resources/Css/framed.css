@@ -197,63 +197,6 @@ body.framed #nav a span.zone { display:none }
 body.framed #nav a:hover span.zone { display:inline; background-color:#ddd; color:#fff; padding:0 1px; }
 body.framed #nav span.draft { vertical-align:middle; height:16px; width:16px; background:transparent url(../../Resources/icons/bullet_orange.png) no-repeat 50% 0; display:inline-block; }
 
-/* TABS */
-ul.tabs{
-	list-style-type:none;
-	padding:0;
-	margin:10px 0 0 0;
-	display:block;
-	height:30px;
-}
-.tabs li{
-	float:left;
-	display:block;
-	clear:none;
-	height:30px;
-	border-left:solid 1px #fff;
-	border-right:solid 1px #d8d8d8;
-    background:transparent url(../../Resources/Img/darken10.png) repeat-x 0% 50%;
-	box-shadow: #666 0 -2px 5px -5px; 
-}
-.tabs a{
-	display:block;
-	text-decoration:none;
-	color:#333;
-	display:block;
-	padding:8px;
-	height:14px;
-	-moz-outline-style:none;
-}
-.tabs .selected{
-	border-bottom:none;
-	font-weight:bold;
-}
-.tabs .selected a{
-	background-color:#fff;
-}
-.tabPanel{
-	padding:30px 15px;
-	box-shadow: #666 0 -1px 10px -5px; 
-}
-.tabContentHidden{
-	position:absolute;
-	top:-10000px;
-	left:-10000px;
-}
-    .tabPanel .tabs {
-	    border-left:solid 1px #DDC;
-    }
-		.tabPanel .tabs li{
-    		background-position:100% 0;
-			border-top:solid 1px #DDC;
-			border-left:none;
-		}
-    .tabPanel .tabPanel{
-	    padding: 30px 15px 15px 15px;
-	    border: solid 1px #DDC;
-	    z-index:10;
-    }
-
 
 /* located in demo.css and creates a little calendar icon
  * instead of a text link for "Choose date"

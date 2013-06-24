@@ -8,7 +8,8 @@
     <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
-    <Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
     <SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
     <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
@@ -28,12 +29,23 @@
   </Target>
   
   <Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-    <Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
-    <Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
   </Target>
 
-  <Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
+	<Target Name="Framework-LocalizedResources-Nuget" DependsOnTargets="Framework-CreateItemGroups">
+		<ItemGroup>
+			<localizedResourcesIncludes Include="$(BuildFolder)\Nuget\ManagementLocalizedResources\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(localizedResourcesIncludes)" DestinationFolder="$(Management-LocalizedResourcesFolder)\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(Framework-LocalizedResources)" DestinationFolder="$(Management-LocalizedResourcesFolder)\Content\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+		<FileUpdate Files="$(Management-LocalizedResourcesFolder)\N2.Management.LocalizedResources.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-LocalizedResourcesFolder)\" />
+	</Target>
+
+	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
     <ItemGroup>
       <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
                        $(ManagementFolder)\bin\N2.pdb;
@@ -228,7 +240,7 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget">
   </Target>
 
   <Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">

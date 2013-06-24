@@ -31,6 +31,15 @@
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">
 		<ItemGroup>
+			<Framework-LocalizedResources Include="$(EditFolder)\**\i18n\*.js;
+																						 $(EditFolder)\**\App_LocalResources\da\*.resx;$(EditFolder)\**\App_LocalResources\*.da.resx;
+																						 $(EditFolder)\**\App_LocalResources\it\*.resx;$(EditFolder)\**\App_LocalResources\*.it.resx;
+																						 $(EditFolder)\**\App_LocalResources\mk-MK\*.resx;$(EditFolder)\**\App_LocalResources\*.mk-MK.resx;
+																						 $(EditFolder)\**\App_LocalResources\nl\*.resx;$(EditFolder)\**\App_LocalResources\*.nl.resx;
+																						 $(EditFolder)\**\App_LocalResources\ru\*.resx;$(EditFolder)\**\App_LocalResources\*.ru.resx;
+																						 $(EditFolder)\**\App_LocalResources\sl\*.resx;$(EditFolder)\**\App_LocalResources\*.sl.resx;"
+																		Exclude="$(EditFolder)\**\i18n\*en.js;
+																						 $(EditFolder)\**\lang\*en.js;"/>
 			<Framework-EditFiles Include="$(EditFolder)\**\*.resx;
 											 $(EditFolder)\**\*.as?x;
 											 $(EditFolder)\**\*.master;
@@ -40,8 +49,35 @@
 											 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
 											 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
 											 $(EditFolder)\**\*.swf;
+											 $(EditFolder)\**\*.eot;$(EditFolder)\**\*.svg;$(EditFolder)\**\*.ttf;$(EditFolder)\**\*.woff;$(EditFolder)\**\*.otf;
 											 $(EditFolder)\**\*.txt;$(EditFolder)\**\*.sql;"
-									Exclude="$(EditFolder)\**\*_src.js;" />
+									Exclude="$(EditFolder)\**\*_src.js;
+													 $(EditFolder)\**\development-bundle\**\*.*;
+													 $(EditFolder)\**\docs\**\*.*;
+													 $(EditFolder)\**\obj\**\*.*;
+													 $(EditFolder)\**\Debug\**\*.*;
+													 $(EditFolder)\**\Release\**\*.*;
+													 $(EditFolder)\**\test\**\*.*;
+													 $(EditFolder)\**\samples\**\*.*;
+													 $(EditFolder)\**\angular.js;
+													 $(EditFolder)\Resources\angular-*\angular-cookies*.js;
+													 $(EditFolder)\Resources\angular-*\angular-loader*.js;
+													 $(EditFolder)\Resources\angular-*\angular-mobile*.js;
+													 $(EditFolder)\Resources\angular-*\angular-mocks*.js;
+													 $(EditFolder)\Resources\angular-*\angular-resource.js;
+													 $(EditFolder)\Resources\angular-*\angular-sanitize*.js;
+													 $(EditFolder)\Resources\angular-*\angular-scenario.js;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui-ieshiv.css;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.css;
+													 $(EditFolder)\Resources\angular-ui-*\build\angular-ui.js;
+													 $(EditFolder)\Resources\bootstrap\css\bootstrap.css;
+													 $(EditFolder)\Resources\bootstrap\js\bootstrap.js;
+													 $(EditFolder)\Resources\bootstrap-components\angular-strap.js;
+													 $(EditFolder)\Resources\font-awesome\css\font-awesome-ie7.css;
+													 $(EditFolder)\Resources\font-awesome\css\font-awesome.css;
+													 $(EditFolder)\Resources\jquery-ui*\css\smoothness\jquery-ui-1.10.2.custom.css;
+													 $(EditFolder)\Resources\jquery-ui*\js\jquery-ui-1.10.2.custom.js;
+													 @(Framework-LocalizedResources)" />
 		</ItemGroup>
 	</Target>
 
@@ -92,5 +128,6 @@
 	<Target Name="CopyManagementFilesToManagementFilesDestination" Condition="'$(ManagementFilesDestination)' != ''" DependsOnTargets="Framework-CreateItemGroups-EditFiles">
 		<Message Text="xcopy management files to $(ManagementFilesDestination)" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(ManagementFilesDestination)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-LocalizedResources)" DestinationFolder="$(ManagementFilesDestination)\%(RecursiveDir)" />
 	</Target>
 </Project>
