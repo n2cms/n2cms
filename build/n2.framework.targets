@@ -31,6 +31,14 @@
 
 	<Target Name="Framework-CreateItemGroups-EditFiles">
 		<ItemGroup>
+			<Framework-LocalizedResources Include="$(EditFolder)\**\i18n\*.js;
+																						 $(EditFolder)\**\App_LocalResources\da\*.resx;$(EditFolder)\**\App_LocalResources\*.da.resx;
+																						 $(EditFolder)\**\App_LocalResources\it\*.resx;$(EditFolder)\**\App_LocalResources\*.it.resx;
+																						 $(EditFolder)\**\App_LocalResources\mk-MK\*.resx;$(EditFolder)\**\App_LocalResources\*.mk-MK.resx;
+																						 $(EditFolder)\**\App_LocalResources\nl\*.resx;$(EditFolder)\**\App_LocalResources\*.nl.resx;
+																						 $(EditFolder)\**\App_LocalResources\ru\*.resx;$(EditFolder)\**\App_LocalResources\*.ru.resx;
+																						 $(EditFolder)\**\App_LocalResources\sl\*.resx;$(EditFolder)\**\App_LocalResources\*.sl.resx;"
+																		Exclude="$(EditFolder)\**\i18n\*en.js;"/>
 			<Framework-EditFiles Include="$(EditFolder)\**\*.resx;
 											 $(EditFolder)\**\*.as?x;
 											 $(EditFolder)\**\*.master;
@@ -40,8 +48,15 @@
 											 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
 											 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
 											 $(EditFolder)\**\*.swf;
+											 $(EditFolder)\**\*.eot;$(EditFolder)\**\*.svg;$(EditFolder)\**\*.ttf;$(EditFolder)\**\*.woff;$(EditFolder)\**\*.otf;
 											 $(EditFolder)\**\*.txt;$(EditFolder)\**\*.sql;"
-									Exclude="$(EditFolder)\**\*_src.js;" />
+									Exclude="$(EditFolder)\**\*_src.js;
+													 $(EditFolder)\**\development-bundle\**\*.*;
+													 $(EditFolder)\**\docs\**\*.*;
+													 $(EditFolder)\**\obj\**\*.*;
+													 $(EditFolder)\**\Debug\**\*.*;
+													 $(EditFolder)\**\Release\**\*.*;
+													 @(Framework-LocalizedResources)" />
 		</ItemGroup>
 	</Target>
 
@@ -92,5 +107,6 @@
 	<Target Name="CopyManagementFilesToManagementFilesDestination" Condition="'$(ManagementFilesDestination)' != ''" DependsOnTargets="Framework-CreateItemGroups-EditFiles">
 		<Message Text="xcopy management files to $(ManagementFilesDestination)" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(ManagementFilesDestination)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-LocalizedResources)" DestinationFolder="$(ManagementFilesDestination)\%(RecursiveDir)" />
 	</Target>
 </Project>

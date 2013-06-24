@@ -1334,7 +1334,6 @@
     <Content Include="N2\Files\Resize.ashx" />
     <Content Include="N2\Top.master" />
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
-    <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1372,7 +1371,6 @@
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.selectable.jquery.json" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.sortable.jquery.json" />
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\development-bundle\ui.widget.jquery.json" />
-    <Content Include="N2\Resources\bootstrap\img\Thumbs.db" />
     <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.eot" />
     <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.ttf" />
     <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.woff" />
@@ -2170,7 +2168,6 @@
   <ItemGroup>
     <Content Include="N2\Resources\img\gripper.gif" />
     <Content Include="N2\Resources\img\shading.png" />
-    <Content Include="N2\Resources\img\SlidingCurtain_bg.png" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.splitter.js" />
     <Content Include="N2\Resources\Js\plugins\n2.js" />
@@ -2263,9 +2260,6 @@
     <Content Include="N2\Resources\img\bullet_arrow_down.gif" />
     <Content Include="N2\Resources\img\login_logo.png" />
     <Content Include="N2\Resources\img\separator.png" />
-    <Content Include="N2\Resources\img\SlidingCurtain_close.png" />
-    <Content Include="N2\Resources\img\SlidingCurtain_logo.png" />
-    <Content Include="N2\Resources\img\SlidingCurtain_open.png" />
     <Content Include="N2\Resources\Js\plugins\date.js" />
     <Content Include="N2\Content\App_LocalResources\Dependencies.aspx.resx">
       <SubType>Designer</SubType>
