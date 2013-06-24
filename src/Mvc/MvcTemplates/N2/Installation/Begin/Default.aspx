@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
 	<title>Install N2</title>
+	<link href="../../Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/all.css" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/framed.css" />
 	<link rel="stylesheet" type="text/css" href="../../Resources/Css/themes/default.css" />
@@ -22,11 +23,11 @@
 <body>
 	<form id="form1" runat="server">
 	<div>
-		<ul class="tabs">
-			<li class="tab selected"><a href="#">0. Prepare yourself</a></li>
-			<li class="tab"><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">0. Prepare yourself</a></li>
+			<li><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
 		</ul>
-		<div class="tabPanel">
+		<div class="tab-content">
 			<asp:CustomValidator ID="cvSave" runat="server" />
 			<% if (!installationAllowed) { %>
 				<%= N2.Management.Installation.InstallationUtility.InstallationUnallowedHtml %>
@@ -36,7 +37,7 @@
 				<p><asp:Label Text="User Name" AssociatedControlID="lblUserName" runat="server" /><asp:Label Text="admin" ID="lblUserName" runat="server" /></p>
 				<p><asp:Label Text="Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtPassword" runat="server" /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtPassword" Text="Password is required" runat="server" /></p>
 				<p><asp:Label Text="Repeat Password" AssociatedControlID="txtPassword" runat="server" /><asp:TextBox TextMode="Password" ID="txtRepeatPassword" runat="server" /><asp:RequiredFieldValidator ControlToValidate="txtRepeatPassword" runat="server" /><asp:CompareValidator ControlToValidate="txtRepeatPassword" ControlToCompare="txtPassword" Text="Passwords doesn't match" runat="server" /></p>
-				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /> <em>(recommended, you can change this later in web.config)</em></p>
+				<p><asp:CheckBox ID="chkLoginUrl" Checked="true" Text="Use N2 to sign in on this site" ToolTip="Checking this box will update web.config forms element" runat="server" /> <em>(Recommended! If you uncheck this you might not be able to log in. You can change this later in web.config)</em></p>
 				<p><asp:Button runat="server" Text="OK" OnCommand="OkCommand" /></p>
 			<%} else if (action == "install"){%>
 				<h1>Welcome to <a href="http://n2cms.com/">N2 CMS</a> Installation Wizard</h1>
