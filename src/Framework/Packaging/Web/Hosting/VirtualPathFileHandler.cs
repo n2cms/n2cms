@@ -117,7 +117,7 @@ namespace N2.Web.Hosting
 				case ".svg":
 					return "image/svg+xml";
 				case ".woff":
-					return "application/x-woff";
+					return "application/font-woff";
 				case ".ttf":
 					return "application/x-ttf";
 				default:

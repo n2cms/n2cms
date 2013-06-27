@@ -28,7 +28,7 @@ namespace N2.Management.Web
 					Transmit(context, "application/x-ttf");
 					return;
 				case ".woff":
-					Transmit(context, "application/x-woff");
+					Transmit(context, "application/font-woff");
 					return;
 				case ".otf":
 					Transmit(context, "application/x-otf");
