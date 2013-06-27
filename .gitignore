@@ -71,6 +71,7 @@ stylecop.*
 *.log.20*
 AssemblyCache.config
 Thumbs.db
+*.ncrunchsolution
 
 # Git files to ignore
 *.orig
