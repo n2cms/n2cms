@@ -33,7 +33,7 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContext context)
 		{
-			ProcessRequest(new HttpContextWrapper(context));
+			ProcessRequest(context.GetHttpContextBase());
 		}
 
 		public void ProcessRequest(HttpContextBase context)

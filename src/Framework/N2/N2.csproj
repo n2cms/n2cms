@@ -719,6 +719,12 @@
     <Compile Include="Web\Slug.cs" />
     <Compile Include="Web\TagWrapper.cs" />
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
+    <Compile Include="Web\Targeting\DetectorAttribute.cs" />
+    <Compile Include="Web\Targeting\DetectorBase.cs" />
+    <Compile Include="Web\Targeting\Detectors\MembershipDetector.cs" />
+    <Compile Include="Web\Targeting\TargetingRadar.cs" />
+    <Compile Include="Web\Targeting\TargetingContext.cs" />
+    <Compile Include="Web\Targeting\TargetingExtensions.cs" />
     <Compile Include="Web\Tokens\TokenDefinition.cs" />
     <Compile Include="Web\Tokens\TokenDefinitionFinder.cs" />
     <Compile Include="Web\Tokens\TokenOption.cs" />

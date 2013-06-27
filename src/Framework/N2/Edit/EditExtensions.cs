@@ -166,7 +166,7 @@ namespace N2.Edit
 
 		public static SelectionUtility GetSelectionUtility(this HttpContext context, IEngine engine = null)
 		{
-			return GetSelectionUtility(new HttpContextWrapper(context), engine);
+			return GetSelectionUtility(context.GetHttpContextBase(), engine);
 		}
 
 		public static SelectionUtility GetSelectionUtility(this HttpContextBase context, IEngine engine = null)

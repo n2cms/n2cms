@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using N2.Web;
 
 namespace N2.Management.Api
 {
@@ -23,7 +24,7 @@ namespace N2.Management.Api
 
 			var handler = Context.Current.Container.ResolveAll<IApiHandler>().FirstOrDefault(h => h.GetType().Name == name);
 			if (handler != null)
-				handler.ProcessRequest(new HttpContextWrapper(context));
+				handler.ProcessRequest(context.GetHttpContextBase());
 		}
 	}
 }

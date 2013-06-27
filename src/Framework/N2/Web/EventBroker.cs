@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using N2.Engine;
 using N2.Plugin.Scheduling;
+using System.Collections.Generic;
 
 namespace N2.Web
 {
@@ -28,6 +29,21 @@ namespace N2.Web
 			protected set { Singleton<EventBroker>.Instance = value; }
 		}
 
+		public EventBroker()
+		{
+			StaticResourceExtensions = new HashSet<string>
+			{
+				".gif",
+				".png",
+				".jpg",
+				".jpeg",
+				".swf",
+				".js",
+				".css",
+				".axd"
+			};
+		}
+
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
@@ -46,6 +62,8 @@ namespace N2.Web
 
 			application.Disposed += Application_Disposed;
 		}
+
+		public HashSet<string> StaticResourceExtensions { get; set; }
 
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
@@ -153,7 +171,7 @@ namespace N2.Web
 		/// .js
 		/// .axd
 		/// </remarks>
-		protected static bool IsStaticResource(object sender)
+		protected bool IsStaticResource(object sender)
 		{
 			HttpApplication application = sender as HttpApplication;
 			if(application != null)
@@ -162,20 +180,11 @@ namespace N2.Web
 
 				string extension = VirtualPathUtility.GetExtension(path);
 				if(extension == null) return false;
-				switch (extension.ToLower())
-				{
-					case ".gif":
-					case ".png":
-					case ".jpg":
-					case ".jpeg":
-					case ".swf":
-					case ".js":
-					case ".css":
-					case ".axd":
-						return File.Exists(application.Request.PhysicalPath);
-				}
+				if (StaticResourceExtensions.Contains(extension.ToLower()))
+					return File.Exists(application.Request.PhysicalPath);
 			}
 			return false;
 		}
+
 	}
 }

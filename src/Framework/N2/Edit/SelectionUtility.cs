@@ -40,7 +40,7 @@ namespace N2.Edit
 		}
 
 		public SelectionUtility(HttpContext context, IEngine engine)
-			: this(new HttpContextWrapper(context), engine)
+			: this(context.GetHttpContextBase(), engine)
 		{
 		}
 
