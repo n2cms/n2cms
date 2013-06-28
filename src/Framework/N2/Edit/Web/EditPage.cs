@@ -103,9 +103,10 @@ $(function () {
     });
 
 	window.frameInteraction = {
-		actions: actions,
+		getActions: function() {
+			return actions;
+		},
 		hideToolbar: function (force) {
-			console.log('hiding', force);
 			if (force || $('#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command').not('.primary-action, .cancel, .globalize').length == 0) {
 				$('body').addClass('toolbar-hidden');
 			} else {
@@ -113,10 +114,8 @@ $(function () {
 			}
 		},
 		execute: function(selector){
-			console.log('executing', selector);
 			window.location = $(selector).attr('href');
-		},
-		mode: 'Default'
+		}
 	}
 });
 ", ScriptOptions.DocumentReady);

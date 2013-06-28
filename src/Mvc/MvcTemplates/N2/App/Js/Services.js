@@ -38,7 +38,7 @@
 				window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.hideToolbar(force);
 			},
 			getFrameActions: function () {
-				return window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.actions;
+				return window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.getActions();
 			}
 		};
 

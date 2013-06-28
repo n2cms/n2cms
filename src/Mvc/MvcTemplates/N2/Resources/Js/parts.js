@@ -361,4 +361,38 @@
 			$sc.find(".open").click(self.open);
 		}
 	};
+
+	window.frameInteraction = {
+		getActions: function () {
+			function create(commandElement) {
+				return {
+					Title: $(commandElement).attr('title'),
+					Id: commandElement.id,
+					Selector: '#' + commandElement.id,
+					Href: commandElement.href,
+					CssClass: commandElement.className,
+					IconClass: $(commandElement).attr('data-icon-class')
+				};
+			};
+			var actions = [];
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+				actions.push({ Current: create(this) });
+			});
+			if (actions.length == 0)
+				return actions;
+			return [{
+				Current: actions[0].Current,
+				Children: actions.slice(1)
+			}];
+		},
+		hideToolbar: function (force) {
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+				$(this).parent().hide();
+			});
+		},
+		execute: function(selector){
+			window.location = $(selector).attr('href');
+		}
+	}
+
 })(jQuery);

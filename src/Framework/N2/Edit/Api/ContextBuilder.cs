@@ -87,10 +87,18 @@ namespace N2.Management.Api
 				data.Flags = new List<string>();
 
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
-			if (selectedUrl != null && selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
+			if (selectedUrl != null)
 			{
-				data.Flags.Add("Management");
-				data.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+				if (selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
+				{
+					data.Flags.Add("Management");
+					data.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+				}
+				else if (selectedUrl.ToUrl().GetQuery("edit") == "drag")
+				{
+					data.Flags.Add("Management");
+					data.Flags.Add("Organize");
+				}
 			}
 
 			if (ContextBuilt != null)
