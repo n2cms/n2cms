@@ -32,19 +32,13 @@
 	module.factory('FrameManipulatorFactory', function () {
 		var frameManipulator = {
 			click: function (selector) {
-				window.frames.preview.window.location = window.frames.preview.window.jQuery(selector, window.frames.preview.window.document).attr("href");
+				window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.execute(selector);
 			},
 			hideToolbar: function (force) {
-				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0) {
-					//console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
-					window.frames.preview.window.jQuery("body").addClass("toolbar-hidden");
-				} else {
-					//console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
-					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
-				}
+				window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.hideToolbar(force);
 			},
 			getFrameActions: function () {
-				return window.frames.preview && window.frames.preview.frameActions;;
+				return window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.actions;
 			}
 		};
 
