@@ -14,17 +14,21 @@ namespace N2.Web.UI.WebControls
 		{
 			UrlEncode = false;
 			IconClass = "n2-icon-th-large";
+			Target = Targets.Top;
 		}
 
 		public override System.Web.UI.Control AddTo(System.Web.UI.Control container, PluginContext context)
 		{
 			HyperLink link = (HyperLink)base.AddTo(container, context);
 			if (context.HttpContext.Request.QueryString["edit"] == "drag")
+			{
 				link.CssClass += " toggled";
+				link.NavigateUrl = Engine.ManagementPaths.GetManagementInterfaceUrl().ToUrl().AppendSelection(context.Selected);
+			}
 			else
 			{
 				link.CssClass += " complementary";
-				link.NavigateUrl = link.NavigateUrl.ToUrl().AppendQuery("edit=drag");
+				link.NavigateUrl = Engine.ManagementPaths.GetManagementInterfaceUrl().ToUrl().AppendQuery("mode=Organize").AppendSelection(context.Selected);
 			}
 			return link;
 		}

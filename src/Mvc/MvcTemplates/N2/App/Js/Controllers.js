@@ -37,10 +37,17 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	$scope.Content = Content;
 	$scope.Security = Security;
 
+	$scope.appendPreviewOptions = function (url) {
+		if (!$scope.Context.Organize && url != "Empty.aspx")
+			return url;
+		else
+			return url + (url.indexOf("?") >= 0 ? "&" : "?") + "edit=drag";
+	}
+
 	$scope.previewUrl = function (url) {
-		//console.log("Previewing ", url);
+		console.log("Previewing ", url, "->", $scope.appendPreviewOptions(url));
 		if (window.frames.preview)
-			window.frames.preview.window.location = url || "Empty.aspx";
+			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -61,6 +68,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
+	var organizeMatch = window.location.search.match(/[?&]mode=([^?&#]+)/);
 	$scope.Context = {
 		CurrentItem: {
 			PreviewUrl: "Empty.aspx"
@@ -71,7 +79,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		},
 		Partials: {
 			Management: "App/Partials/Loading.html"
-		}
+		},
+		Organize: organizeMatch && organizeMatch[1] == "Organize"
 	}
 
 	function translateNavigationRecursive(node) {
@@ -91,12 +100,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		console.log("Loading interface with", i);
 		translateNavigationRecursive(i.Interface.MainMenu);
 		translateNavigationRecursive(i.Interface.ActionMenu);
 		translateNavigationRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
+		console.log("Loaded interface", $scope.Context);
 		console.log("CurrentItem", $scope.Context.CurrentItem);
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
 	});
@@ -298,7 +307,6 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		}
 		node.Expanded = !node.Expanded;
 	};
-
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
