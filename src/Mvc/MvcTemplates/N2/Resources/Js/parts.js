@@ -375,9 +375,14 @@
 				};
 			};
 			var actions = [];
+			var idCounter = 0;
 			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+				if (!this.id)
+					this.id = "action" + ++idCounter;
 				actions.push({ Current: create(this) });
 			});
+
+			console.log("actions", actions);
 			if (actions.length == 0)
 				return actions;
 			return [{
