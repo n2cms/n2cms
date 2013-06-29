@@ -104,18 +104,16 @@
 				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
 					+ "&versionKey=" + $t.attr("data-versionKey")
-					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
-				var openDialog = function (e) {
-					//e.preventDefault();
-					//e.stopPropagation();
-					//self.showDialog(url /* + encodeURIComponent(window.location.search.indexOf("scroll=") < 0 ? ("&scroll=" + window.pageYOffset) : "")*/, { width: 700, height: 520 });
+					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search)
+					+ "&edit=drag";
+				
+				$(this).dblclick(function (e) {
 					window.location = url;
-				};
-				$(this).dblclick(openDialog).each(function () {
+				}).each(function () {
 					if ($(this).closest("a").length > 0)
 						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
-				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
+				$("<a class='editor' href='" + url + "'>Edit</a>").appendTo(this);
 			});
 		},
 		scroll: function () {

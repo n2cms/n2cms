@@ -31,7 +31,7 @@ namespace N2.Edit
 		CssClass = "complementary",
 		RequiredPermission = Permission.Write,
 		IconClass = "n2-icon-edit-sign")]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
+	[ControlPanelPreviewPublish("Publish draft", 70, 
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]

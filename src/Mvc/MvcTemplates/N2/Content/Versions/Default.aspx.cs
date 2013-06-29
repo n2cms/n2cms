@@ -15,7 +15,7 @@ namespace N2.Edit.Versions
         GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish,
 		Legacy = true)]
-	[ControlPanelPendingVersion("There is a newer unpublished version of this item.", 200)]
+	[ControlPanelPendingVersion("View draft", 200)]
 	public partial class Default : Web.EditPage
 	{
 		ContentItem publishedItem;

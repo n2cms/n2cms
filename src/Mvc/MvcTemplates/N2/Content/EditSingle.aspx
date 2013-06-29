@@ -7,7 +7,7 @@
 </asp:Content>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save</asp:LinkButton>
+	<asp:LinkButton ID="btnSave" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save</asp:LinkButton>
 	<edit:CancelLink ID="hlCancel" runat="server" Text="Cancel" meta:resourceKey="hlCancel" />
 </asp:Content>
 
