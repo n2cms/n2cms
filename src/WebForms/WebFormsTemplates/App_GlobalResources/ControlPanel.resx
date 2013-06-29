@@ -142,7 +142,7 @@
     <value>Manage content</value>
   </data>
   <data name="cpDelete.ToolTip" xml:space="preserve">
-    <value>Delete this page</value>
+    <value>Delete</value>
   </data>
   <data name="cpOrganize.ToolTip" xml:space="preserve">
     <value>Organize parts</value>

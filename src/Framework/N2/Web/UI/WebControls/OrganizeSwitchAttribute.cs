@@ -14,6 +14,7 @@ namespace N2.Web.UI.WebControls
 		{
 			UrlEncode = false;
 			IconClass = "n2-icon-th-large";
+			Target = Targets.Top;
 		}
 
 		public override System.Web.UI.Control AddTo(System.Web.UI.Control container, PluginContext context)
@@ -23,7 +24,6 @@ namespace N2.Web.UI.WebControls
 			{
 				link.CssClass += " toggled";
 				link.NavigateUrl = Engine.ManagementPaths.GetManagementInterfaceUrl().ToUrl().AppendSelection(context.Selected);
-				link.Target = Targets.Top;
 			}
 			else
 			{

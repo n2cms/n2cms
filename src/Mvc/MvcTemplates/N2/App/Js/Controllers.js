@@ -164,8 +164,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.isFlagged = function (flag) {
-		if (flag == "Organize")
-			console.log("isFlagged", flag, angular.copy($scope.Context.Flags));
 		return $scope.Context.Flags.indexOf(flag) >= 0;
 	};
 
@@ -462,15 +460,17 @@ function PageScheduleCtrl($scope, Content) {
 	};
 }
 
-function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
-	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
+function FrameActionCtrl($scope, $rootScope, FrameManipulator) {
+	$scope.$parent.manipulator = FrameManipulator;
 	$rootScope.$on("contextchanged", function (scope, e) {
 		$scope.$parent.action = null;
+		$scope.$parent.item.Children = [];
 		if ($scope.isFlagged("Management")) {
 			var actions = $scope.manipulator.getFrameActions();
 			if (actions && actions.length) {
 				$scope.$parent.manipulator.hideToolbar();
 				$scope.$parent.action = actions[0];
+				$scope.$parent.item.Children = actions[0].Children;
 			}
 		}
 	});

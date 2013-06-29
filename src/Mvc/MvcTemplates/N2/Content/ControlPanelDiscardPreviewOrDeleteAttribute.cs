@@ -14,11 +14,12 @@ namespace N2.Edit
 	public class ControlPanelDiscardPreviewOrDeleteAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelDiscardPreviewOrDeleteAttribute()
-			: base("cpDelete", "{IconsUrl}/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible | ControlPanelState.Previewing)
+			: base("cpDelete", "{IconsUrl}/cross.png", "{ManagementUrl}/Content/Delete.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "Delete", 60, ControlPanelState.Visible | ControlPanelState.Previewing)
 		{
 			RequiredPermission = Permission.Write;
 			CssClass = "complementary";
 			IconClass = "n2-icon-trash";
+			SortOrder = 100;
 		}
 
 		public override Control AddTo(Control container, PluginContext context)

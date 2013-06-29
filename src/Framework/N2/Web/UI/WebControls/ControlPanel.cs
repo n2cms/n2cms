@@ -97,8 +97,8 @@ namespace N2.Web.UI.WebControls
 jQuery(document).ready(function(){{
 	if(window.n2ctx){{
 		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4}, mode:'{5}' }});
-		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
-		else jQuery('.cpView').hide();
+		if (n2ctx.hasTop()) $('.complementary').hide();
+		else $('.cpView').hide();
 	}}
 	if(window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
 }});";

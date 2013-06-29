@@ -29,33 +29,25 @@
 		})();
 	});
 
-	module.factory('FrameManipulatorFactory', function () {
+	module.factory('FrameManipulator', function () {
 		var frameManipulator = {
 			click: function (selector) {
-				window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.execute(selector);
+				var pf = window.frames.preview;
+				pf && pf.frameInteraction && pf.frameInteraction.execute(selector);
 			},
 			hideToolbar: function (force) {
-				window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.hideToolbar(force);
+				var pf = window.frames.preview;
+				pf && pf.frameInteraction && pf.frameInteraction.hideToolbar(force);
 			},
 			getFrameActions: function () {
-				return window.frames.preview && window.frames.preview.frameInteraction && window.frames.preview.frameInteraction.getActions();
+				var pf = window.frames.preview;
+				return pf && pf.frameInteraction && pf.frameInteraction.getActions();
 			}
 		};
 
-		function manipulator(scope) {
-			window.frameManipulator = this;
-
-			this.scope = scope;
-
-			scope.$on("$destroy", function () {
-				delete window.frameManipulator;
-			});
-			return this;
-		};
-		manipulator.prototype = frameManipulator;
-
-		return manipulator;
+		return frameManipulator;
 	});
+
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function (ctx) {

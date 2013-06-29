@@ -382,7 +382,6 @@
 				actions.push({ Current: create(this) });
 			});
 
-			console.log("actions", actions);
 			if (actions.length == 0)
 				return actions;
 			return [{
@@ -391,9 +390,8 @@
 			}];
 		},
 		hideToolbar: function (force) {
-			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
-				$(this).parent().hide();
-			});
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse')
+				.parent().hide();
 		},
 		execute: function(selector){
 			window.location = $(selector).attr('href');
