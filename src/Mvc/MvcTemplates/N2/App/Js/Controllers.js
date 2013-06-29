@@ -59,6 +59,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 				return;
 			}
 		}
+
+		if (ctx.mode && ctx.mode.indexOf('DragDrop') >= 0)
+			// the context will be reoloaded anyway due to PreviewUrl != url with edit=drag
+			return;
+
 		if (!$scope.select(ctx.path, ctx.versionIndex)) {
 			$scope.reloadChildren(getParentPath(ctx.path), function () {
 				$scope.select(ctx.path, ctx.versionIndex, !ctx.force);
@@ -141,7 +146,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
-					console.log("CurrentItem", $scope.Context.CurrentItem);
+					console.log("select", $scope.Context.CurrentItem, "keepFlags", keepFlags);
 					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
@@ -159,6 +164,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.isFlagged = function (flag) {
+		if (flag == "Organize")
+			console.log("isFlagged", flag, angular.copy($scope.Context.Flags));
 		return $scope.Context.Flags.indexOf(flag) >= 0;
 	};
 
@@ -172,7 +179,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
-				console.log("CurrentItem", $scope.Context.CurrentItem);
+				console.log("previewloaded", $scope.Context.CurrentItem);
 			});
 		}, 200);
 	});
