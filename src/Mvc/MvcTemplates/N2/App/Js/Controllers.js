@@ -116,7 +116,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	});
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload) {
-		//console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Context.Content, path);
@@ -146,7 +145,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
-					console.log("select", $scope.Context.CurrentItem, "keepFlags", keepFlags);
+					console.log("Selected", $scope.Context.CurrentItem, "keepFlags", keepFlags);
 					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
@@ -159,7 +158,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			? findSelectedRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		console.log("Reloading ", node);
 		Content.loadChildren(node, callback);
 	}
 
@@ -177,7 +175,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
-				console.log("previewloaded", $scope.Context.CurrentItem);
+				console.log("Preview loaded", $scope.Context.CurrentItem);
 			});
 		}, 200);
 	});
@@ -241,7 +239,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 		if (content) {
-			//console.log("selecting", $scope.Context.SelectedNode);
 			$scope.select(findSelectedRecursive(content, $scope.Context.SelectedPath));
 		}
 	});

@@ -1,5 +1,4 @@
 ﻿<div id="menu" class="action-bar secondary navbar" 
-	title="{{Context.Flags}}"
 	ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" 
 	ng-controller="PageActionBarCtrl">
 	<ul class="menu nav">
@@ -13,7 +12,7 @@
 					ng-repeat="child in Context.MainMenu.Children"
 					ng-class="{ divider: child.Current.Divider }"
 					ng-controller="PageActionCtrl"
-					ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuActionSubItem.html'"
+					ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubItem.html'"
 					ng-show="isDisplayable(child)">
 				</li>
 			</ul>
@@ -23,7 +22,7 @@
 			ng-repeat="item in primaryNavigation"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuActionItem.html'"
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuItem.html'"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>
@@ -33,7 +32,7 @@
 			ng-repeat="item in secondaryNavigation"
 			ng-class="{ dropdown : item.Children.length }"
 			ng-controller="PageActionCtrl"
-			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuActionItem.html'"
+			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuItem.html'"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>
