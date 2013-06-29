@@ -1,4 +1,5 @@
 ﻿<div id="menu" class="action-bar secondary navbar" 
+	title="{{Context.Flags}}"
 	ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" 
 	ng-controller="PageActionBarCtrl">
 	<ul class="menu nav">

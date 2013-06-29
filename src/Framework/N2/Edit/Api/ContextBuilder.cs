@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Web;
 
 namespace N2.Management.Api
 {
@@ -20,6 +21,8 @@ namespace N2.Management.Api
 		public ExtendedContentInfo ExtendedInfo { get; set; }
 
 		public List<string> Flags { get; set; }
+
+		public string ReturnUrl { get; set; }
 	}
 
 	public class ContextLanguage
@@ -69,7 +72,7 @@ namespace N2.Management.Api
 
 		public event EventHandler<ContextBuiltEventArgs> ContextBuilt;
 
-		public virtual ContextData GetInterfaceContextData(ContentItem item, string selectedUrl)
+		public virtual ContextData GetInterfaceContextData(ContentItem item, Url selectedUrl)
 		{
 			var data = new ContextData();
 
@@ -87,14 +90,18 @@ namespace N2.Management.Api
 				data.Flags = new List<string>();
 
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
-			if (selectedUrl != null)
+			if (!selectedUrl.IsEmpty())
 			{
-				if (selectedUrl.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
+				data.ReturnUrl = HttpUtility.UrlDecode(selectedUrl["returnUrl"]);
+				var isOrganizing = selectedUrl["edit"] == "drag";
+				if (selectedUrl.Path.StartsWith(mangementUrl, StringComparison.InvariantCultureIgnoreCase))
 				{
 					data.Flags.Add("Management");
-					data.Flags.Add(selectedUrl.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+					data.Flags.Add(selectedUrl.Path.Substring(mangementUrl.Length).ToUrl().PathWithoutExtension.Replace("/", ""));
+					if (isOrganizing)
+						data.Flags.Add("Organize");
 				}
-				else if (selectedUrl.ToUrl().GetQuery("edit") == "drag")
+				else if (isOrganizing)
 				{
 					data.Flags.Add("Management");
 					data.Flags.Add("Organize");

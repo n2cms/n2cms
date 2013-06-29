@@ -347,7 +347,12 @@ namespace N2.Web
 
 		internal static void SetEngine(this HttpContextBase context, IEngine engine)
 		{
-			 context.Items["N2.Engine"] = engine;
+			context.Items["N2.Engine"] = engine;
+		}
+
+		internal static bool IsEmpty(this Url url)
+		{
+			return url == null || string.IsNullOrEmpty(url);
 		}
 	}
 }
