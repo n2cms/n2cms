@@ -112,5 +112,17 @@ namespace N2.Tests.Web
 
 			item.ShouldBe(page1_1);
 		}
+
+		[Test]
+		public void DeletedPages_AreNotFound_ViaDirectUrl()
+		{
+			page1.DirectUrl = "/hello";
+			page1.State = ContentState.Deleted;
+			repository.Save(page1);
+
+			var item = parser.Parse("/hello/");
+
+			item.ShouldBe(null);
+		}
 	}
 }
