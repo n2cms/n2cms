@@ -83,9 +83,9 @@ a { text-decoration: none; color: #000; }
 				.ui-sortable-helper .toggle,
 				.ui-sortable-helper .tools { display:none !important; }
 				.sortable-placeholder { border:dotted 1px #52D017; border-left:solid 5px #52D017; height:30px; margin-top:1px; margin-left:10px; }
-				.targettable.collapsed { padding:8px 0 4px 0; margin:-8px 0 -4px 0; }
-				ul.collapsed li { display:none; }
-				ul.collapsed li.sortable-placeholder { display:block; }
+				#page-tree ul.targettable.collapsed { padding:8px 0 4px 0; margin:-8px 0 -4px 0; }
+				#page-tree ul.collapsed li { display:none; }
+				#page-tree ul.collapsed li.sortable-placeholder { display:block; }
 
 
 #trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
