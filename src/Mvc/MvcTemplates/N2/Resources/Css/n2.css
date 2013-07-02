@@ -11,9 +11,7 @@ a { text-decoration: none; color: #000; }
 
 
 #top-area { }
-	#top-area .navbar { text-transform:lowercase; font-size:22px; }
-		#top-area .navbar .navbar-search input.search-query { }
-		#top-area .navbar .navbar-search input[type=button] { background: url("../img/search.png") no-repeat scroll 0 0 transparent; border: 0 none; height: 17px; position: absolute; right: 12px; text-indent: -9999px; top: 5px; width: 16px; }
+	#top-area .navbar { text-transform:lowercase; }
 
 
 #main-wrapper { position: absolute; top: 42px; bottom: 0; width:100%; }
@@ -105,7 +103,7 @@ a { text-decoration: none; color: #000; }
 	#menu > ul { white-space:nowrap; }
 		#menu #logo { padding-left:60px; background-image: url(../img/n2.png); background-repeat: no-repeat; background-position: 10px 50%; }
 		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
-			#menu > ul > li .page-action > a { display:block; height: 19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; }
+			#menu > ul > li .page-action > a { display:block; height: 19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; font-size:20px; }
 	#menu > ul > li.primary-action > .page-action > a > .ico { font-size: 28px; line-height:14px; }
 				#menu > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
 			#menu > ul > li .page-action a.page-action-description { height:32px; padding-top: 5px; padding-left:44px; padding-bottom:0; position:relative; line-height:12px; }
@@ -151,7 +149,7 @@ a { text-decoration: none; color: #000; }
 #menu .versions li.unpublished a { border-left-color:#FF3300; }
 
 
-.info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
+.info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); font-size:14px; }
 .info-menu.open { display:block; }
 	.info-menu.dl-horizontal dt { width: 140px; }
 	.info-menu.dl-horizontal dd { margin-left: 150px; }
