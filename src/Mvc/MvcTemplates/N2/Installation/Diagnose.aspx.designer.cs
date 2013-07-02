@@ -67,24 +67,6 @@ namespace N2.Edit.Install {
         protected global::System.Web.UI.WebControls.Label lblChanges;
         
         /// <summary>
-        /// lblN2Version control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblN2Version;
-        
-        /// <summary>
-        /// lblEditVersion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEditVersion;
-        
-        /// <summary>
         /// lblError control.
         /// </summary>
         /// <remarks>

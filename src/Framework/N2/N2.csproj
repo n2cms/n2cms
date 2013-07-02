@@ -149,6 +149,8 @@
     <Compile Include="Edit\Api\IApiHandler.cs" />
     <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
+    <Compile Include="Edit\Installation\InstallationExtensions.cs" />
+    <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
     <Compile Include="Definitions\GroupChildrenAttribute.cs" />
     <Compile Include="Definitions\GroupChildrenMode.cs" />
