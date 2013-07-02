@@ -8,6 +8,6 @@
 	<li class="item secondary-action"
 		ng-repeat="child in item.Children"
 		ng-class="{ divider: child.Current.Divider, dropdown : child.Children.length }"
-		ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuActionSubItem.html'">
+		ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubItem.html'">
 	</li>
 </ul>

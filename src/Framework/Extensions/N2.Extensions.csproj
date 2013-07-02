@@ -116,12 +116,9 @@
     </Compile>
     <Compile Include="ContentExtensions.cs" />
     <Compile Include="CsvImport.cs" />
-    <Compile Include="VariableSubstituter.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Image.cs" />
-    <Compile Include="Web\MenuPart.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
-    <Compile Include="Web\Mvc\ContentListAdapter.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\EditableItemRenderer.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
@@ -169,9 +166,6 @@
     <Compile Include="Web\Mvc\Obsolete\N2ViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\ContentList.cs" />
-    <Compile Include="Web\RawHtml.cs" />
-    <Compile Include="Web\Slideshow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">

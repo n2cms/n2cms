@@ -13,6 +13,7 @@
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
     <SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
     <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
+    <ReusableParts-NugetFolder>$(DeployFolder)\$(DeployPrefix)ReusableParts_Nuget</ReusableParts-NugetFolder>
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
     <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
     <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
@@ -125,6 +126,18 @@
     <FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
+  </Target>
+
+  <Target Name="ReusableParts-NuGet">
+    <ItemGroup>
+      <reusablePartsNugetIncludes Include="$(BuildFolder)\Nuget\ReusableParts\**\*" />
+      <nugetReusablePartsBinFiles Include="$(SrcFolder)\Framework\ReusableParts\bin\$(Configuration)\N2.ReusableParts.*;" />
+    </ItemGroup>
+    <Copy SourceFiles="@(reusablePartsNugetIncludes)" DestinationFolder="$(ReusableParts-NugetFolder)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(nugetReusablePartsBinFiles)" DestinationFolder="$(ReusableParts-NugetFolder)\lib\NET40" />
+    <FileUpdate Files="$(ReusableParts-NugetFolder)\N2.ReusableParts.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(ReusableParts-NugetFolder)\" />
   </Target>
 
   <!--common ItemGroups for the next 2 targets-->
@@ -240,7 +253,7 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet">
   </Target>
 
   <Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">

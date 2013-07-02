@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>N2CMS.ReusableParts</id>
+		<version>{Version}</version>
+		<title>N2CMS Reusable Parts</title>
+		<authors>Benjamin Herila</authors>
+		<owners>Benjamin Herila, Cristian Libardo</owners>
+		<licenseUrl>http://www.boost.org/users/license.html</licenseUrl>
+		<projectUrl>http://n2cms.com/</projectUrl>
+		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Common parts that can be re-used across projects.</description>
+		<summary>N2CMS is a lightweight CMS library that can be used as is, or in combination with many features out of the box using template pack for MVC2, MVC3/razor or WebForms.</summary>
+		<language>en-US</language>
+		<tags>N2 CMS</tags>
+		<dependencies>
+			<dependency id="N2CMS.Library" version="{Version}" />
+			<!--<dependency id="AspNetMvc" version="4.0.20126.16343" />
+			<dependency id="AspNetRazor.Core" version="2.0.20126.16343" />-->
+		</dependencies>
+	</metadata>
+</package>

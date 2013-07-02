@@ -82,7 +82,7 @@ namespace N2.Definitions.Runtime
 					var vpp = vppProvider.Get();
 					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
 					logger.DebugFormat("Got {0} descriptions", descriptions.Count);
-					definitions = BuildDefinitions(descriptions);
+					definitions = BuildDefinitions(descriptions).ToList();
 					logger.Debug("Built definitions");
 
 					var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();

@@ -38,7 +38,7 @@ namespace N2.Details
 
 		private static HtmlHelper CreateHtmlHelper(ContentItem item, TextWriter writer)
 		{
-			var httpContext = new HttpContextWrapper(HttpContext.Current);
+			var httpContext = HttpContext.Current.GetHttpContextBase();
 			var routeData = new RouteData();
 			RouteExtensions.ApplyCurrentPath(routeData, "WebForms", "Index", new PathData(item.ClosestPage(), item));
             var cc = new ControllerContext() { HttpContext = httpContext, RequestContext = new RequestContext(httpContext, routeData), RouteData = routeData };

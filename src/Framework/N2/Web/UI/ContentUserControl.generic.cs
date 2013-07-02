@@ -24,7 +24,7 @@ namespace N2.Web.UI
 				if (currentPage == null)
 				{
 					IItemContainer page = Page as IItemContainer;
-					ContentItem item = (page != null) ? page.CurrentItem : N2.Context.CurrentPage;
+					ContentItem item = (page != null) ? page.CurrentItem : N2.Context.CurrentPage ?? N2.Content.Traverse.StartPage;
 					currentPage = ItemUtility.EnsureType<TPage>(item);
 				}
 				return currentPage;

@@ -37,10 +37,17 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	$scope.Content = Content;
 	$scope.Security = Security;
 
+	$scope.appendPreviewOptions = function (url) {
+		if (!$scope.Context.Organize && url != "Empty.aspx")
+			return url;
+		else
+			return url + (url.indexOf("?") >= 0 ? "&" : "?") + "edit=drag";
+	}
+
 	$scope.previewUrl = function (url) {
-		//console.log("Previewing ", url);
+		console.log("Previewing ", url, "->", $scope.appendPreviewOptions(url));
 		if (window.frames.preview)
-			window.frames.preview.window.location = url || "Empty.aspx";
+			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -52,6 +59,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 				return;
 			}
 		}
+
+		if (ctx.mode && ctx.mode.indexOf('DragDrop') >= 0)
+			// the context will be reoloaded anyway due to PreviewUrl != url with edit=drag
+			return;
+
 		if (!$scope.select(ctx.path, ctx.versionIndex)) {
 			$scope.reloadChildren(getParentPath(ctx.path), function () {
 				$scope.select(ctx.path, ctx.versionIndex, !ctx.force);
@@ -61,6 +73,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
 	var selectedMatch = window.location.search.match(/[?&]selected=([^?&]+)/);
+	var organizeMatch = window.location.search.match(/[?&]mode=([^?&#]+)/);
 	$scope.Context = {
 		CurrentItem: {
 			PreviewUrl: "Empty.aspx"
@@ -71,7 +84,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		},
 		Partials: {
 			Management: "App/Partials/Loading.html"
-		}
+		},
+		Organize: organizeMatch && organizeMatch[1] == "Organize"
 	}
 
 	function translateNavigationRecursive(node) {
@@ -91,18 +105,17 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		console.log("Loading interface with", i);
 		translateNavigationRecursive(i.Interface.MainMenu);
 		translateNavigationRecursive(i.Interface.ActionMenu);
 		translateNavigationRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
+		console.log("Loaded interface", $scope.Context);
 		console.log("CurrentItem", $scope.Context.CurrentItem);
 		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
 	});
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload) {
-		//console.log("selecting", typeof nodeOrPath, nodeOrPath);
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findSelectedRecursive($scope.Context.Content, path);
@@ -132,7 +145,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
-					console.log("CurrentItem", $scope.Context.CurrentItem);
+					console.log("Selected", $scope.Context.CurrentItem, "keepFlags", keepFlags);
 					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
@@ -145,7 +158,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			? findSelectedRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
-		console.log("Reloading ", node);
 		Content.loadChildren(node, callback);
 	}
 
@@ -163,7 +175,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
-				console.log("CurrentItem", $scope.Context.CurrentItem);
+				console.log("Preview loaded", $scope.Context.CurrentItem);
 			});
 		}, 200);
 	});
@@ -227,7 +239,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 		if (content) {
-			//console.log("selecting", $scope.Context.SelectedNode);
 			$scope.select(findSelectedRecursive(content, $scope.Context.SelectedPath));
 		}
 	});
@@ -298,7 +309,6 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		}
 		node.Expanded = !node.Expanded;
 	};
-
 	$scope.sort = new SortHelperFactory($scope, Content);
 }
 
@@ -448,15 +458,17 @@ function PageScheduleCtrl($scope, Content) {
 	};
 }
 
-function FrameActionCtrl($scope, $rootScope, FrameManipulatorFactory) {
-	$scope.$parent.manipulator = new FrameManipulatorFactory($scope);
+function FrameActionCtrl($scope, $rootScope, FrameManipulator) {
+	$scope.$parent.manipulator = FrameManipulator;
 	$rootScope.$on("contextchanged", function (scope, e) {
 		$scope.$parent.action = null;
+		$scope.$parent.item.Children = [];
 		if ($scope.isFlagged("Management")) {
 			var actions = $scope.manipulator.getFrameActions();
 			if (actions && actions.length) {
 				$scope.$parent.manipulator.hideToolbar();
 				$scope.$parent.action = actions[0];
+				$scope.$parent.item.Children = actions[0].Children;
 			}
 		}
 	});

@@ -29,39 +29,25 @@
 		})();
 	});
 
-	module.factory('FrameManipulatorFactory', function () {
+	module.factory('FrameManipulator', function () {
 		var frameManipulator = {
 			click: function (selector) {
-				window.frames.preview.window.location = window.frames.preview.window.jQuery(selector, window.frames.preview.window.document).attr("href");
+				var pf = window.frames.preview;
+				pf && pf.frameInteraction && pf.frameInteraction.execute(selector);
 			},
 			hideToolbar: function (force) {
-				if (force || window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length == 0) {
-					//console.log("HIDING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize").length);
-					window.frames.preview.window.jQuery("body").addClass("toolbar-hidden");
-				} else {
-					//console.log("SHOWING", window.frames.preview.window.jQuery("#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command").not(".primary-action, .cancel, .globalize"));
-					window.frames.preview.window.jQuery("body").removeClass("toolbar-hidden");
-				}
+				var pf = window.frames.preview;
+				pf && pf.frameInteraction && pf.frameInteraction.hideToolbar(force);
 			},
 			getFrameActions: function () {
-				return window.frames.preview && window.frames.preview.frameActions;;
+				var pf = window.frames.preview;
+				return pf && pf.frameInteraction && pf.frameInteraction.getActions();
 			}
 		};
 
-		function manipulator(scope) {
-			window.frameManipulator = this;
-
-			this.scope = scope;
-
-			scope.$on("$destroy", function () {
-				delete window.frameManipulator;
-			});
-			return this;
-		};
-		manipulator.prototype = frameManipulator;
-
-		return manipulator;
+		return frameManipulator;
 	});
+
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function (ctx) {

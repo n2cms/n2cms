@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 
 namespace N2.Management.Resources
 {
@@ -21,11 +22,11 @@ namespace N2.Management.Resources
 	public class IconHandler : IHttpHandler, IAutoStart
 	{
 		private EventBroker broker;
-		private IFileSystem fileSystem;
+		private IProvider<VirtualPathProvider> vppProvider;
 
-		public IconHandler(IFileSystem fileSystem, EventBroker broker)
+		public IconHandler(IProvider<VirtualPathProvider> vppProvider, EventBroker broker)
 		{
-			this.fileSystem = fileSystem;
+			this.vppProvider = vppProvider;
 			this.broker = broker;
 		}
 
@@ -39,7 +40,7 @@ namespace N2.Management.Resources
 			{
 				var p = app.Request.Path;
 				string iconBase = "resources/icons/";
-				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0)
+				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0 && p.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
 				{
 					collection = "silk";
 					p = EatTo(p, iconBase);
@@ -49,7 +50,7 @@ namespace N2.Management.Resources
 				}
 
 				iconBase = "resources/img/flags/";
-				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0)
+				if (p.IndexOf(iconBase, StringComparison.OrdinalIgnoreCase) >= 0 && p.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase))
 				{
 					collection = "flags";
 					p = EatTo(p, iconBase);
@@ -146,37 +147,42 @@ namespace N2.Management.Resources
 			var cssFile = ico + set + ".css";
 			var sprFile = ico + set + ".png";
 
-			cssFile = context.Server.MapPath(cssFile);
-			sprFile = context.Server.MapPath(sprFile);
-
-			//TODO: use IFileSystem rather than System.IO.File
-
-			var cssLines = File.ReadAllLines(cssFile).Where(f =>
-				f.Contains("." + key + " {") ||
-				f.Contains("." + key + "{")).ToArray();
-			if (cssLines.Length == 0)
-				throw new KeyNotFoundException(String.Format("Sprite '{0}' not found in CSS at '{1}'.", key, cssFile));
-			if (cssLines.Length > 1)
-				throw new AmbiguousMatchException(String.Format("Sprite '{0}' ambiguous in CSS at '{1}'.", key, cssFile));
-
-			var css = ParseCssLine(cssLines[0]); // and throw the rest away
-
-			using (var bmp = new Bitmap(css.R.Width, css.R.Height))
+			var vpp = vppProvider.Get();
+			using (var fileStream = vpp.GetFile(cssFile).Open())
+			using (var sr = new StreamReader(fileStream))
 			{
-				using (var g = Graphics.FromImage(bmp))
-				using (var spr = Image.FromFile(sprFile))
+				var cssLines = new List<string>();
+				while (!sr.EndOfStream)
 				{
-					// draw the sprite into bmp
-					Rectangle destRect = new Rectangle(0, 0, css.R.Width, css.R.Height);
-					g.DrawImage(spr, destRect, css.R, GraphicsUnit.Pixel);
+					var f = sr.ReadLine();
+					if (f.Contains("." + key + " {") || f.Contains("." + key + "{"))
+						cssLines.Add(f);
 				}
+				if (cssLines.Count == 0)
+					throw new KeyNotFoundException(String.Format("Sprite '{0}' not found in CSS at '{1}'.", key, cssFile));
+				if (cssLines.Count > 1)
+					throw new AmbiguousMatchException(String.Format("Sprite '{0}' ambiguous in CSS at '{1}'.", key, cssFile));
 
-				// save bmp
-				using (MemoryStream m = new MemoryStream())
+				var css = ParseCssLine(cssLines[0]); // and throw the rest away
+
+				using (var bmp = new Bitmap(css.R.Width, css.R.Height))
 				{
-					bmp.Save(m, ImageFormat.Png);
-					context.Response.ContentType = "image/png";
-					context.Response.BinaryWrite(m.ToArray());
+					using (var g = Graphics.FromImage(bmp))
+					using (var sprStream = vpp.GetFile(sprFile).Open())
+					using (var spr = Image.FromStream(sprStream))
+					{
+						// draw the sprite into bmp
+						Rectangle destRect = new Rectangle(0, 0, css.R.Width, css.R.Height);
+						g.DrawImage(spr, destRect, css.R, GraphicsUnit.Pixel);
+					}
+
+					// save bmp
+					using (MemoryStream m = new MemoryStream())
+					{
+						bmp.Save(m, ImageFormat.Png);
+						context.Response.ContentType = "image/png";
+						context.Response.BinaryWrite(m.ToArray());
+					}
 				}
 			}
 		}

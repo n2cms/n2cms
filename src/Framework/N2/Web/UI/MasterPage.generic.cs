@@ -18,8 +18,9 @@ namespace N2.Web.UI
 
 		public virtual TPage CurrentPage
 		{
-			get { return (TPage)N2.Context.CurrentPage; }
+			get { return (N2.Context.CurrentPage ?? Content.Traverse.StartPage) as TPage; }
 		}
+
 		public virtual TPage CurrentItem
 		{
 			get { return CurrentPage; }

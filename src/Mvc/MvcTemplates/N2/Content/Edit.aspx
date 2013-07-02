@@ -13,7 +13,7 @@
 		<asp:PlaceHolder runat="server" ID="phPluginArea" />
 		</div>
 		<n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSavePublish" data-icon-class="n2-icon-play-sign" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish primary-action" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnSavePublish" data-icon-class="n2-icon-play-sign" OnCommand="OnPublishCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" data-icon-class="n2-icon-eye-open" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" data-icon-class="n2-icon-save" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
 				<asp:HyperLink ID="hlFuturePublish" data-icon-class="n2-icon-time" NavigateUrl="#futurePanel" CssClass="command plain iconed future hidden-action" runat="server" meta:resourceKey="hlSavePublishInFuture">Save and publish version in future</asp:HyperLink>

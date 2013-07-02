@@ -921,7 +921,7 @@ namespace N2.Web
 		/// <returns>A dictionary of the query parts.</returns>
 		public static IDictionary<string, string> ParseQueryString(string query)
 		{
-			var dictionary = new Dictionary<string, string>();
+			var dictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 			if (query == null)
 				return dictionary;
 

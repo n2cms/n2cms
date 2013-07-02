@@ -323,5 +323,36 @@ namespace N2.Web
 	
 			return url;
 		}
+
+		internal static HttpContextBase GetHttpContextBase(this HttpContext httpContext)
+		{
+			var ctx = httpContext.Items["N2.HttpContextBase"] as HttpContextBase;
+			if (ctx == null)
+				httpContext.Items["N2.HttpContextBase"] = ctx = new HttpContextWrapper(httpContext);
+			return ctx;
+		}
+
+		internal static IEngine GetEngine(this HttpContext context)
+		{
+			return context.GetHttpContextBase().GetEngine();
+		}
+
+		internal static IEngine GetEngine(this HttpContextBase context)
+		{
+			var engine = context.Items["N2.Engine"] as IEngine;
+			if (engine == null)
+				context.Items["N2.Engine"] = engine = N2.Context.Current;
+			return engine;
+		}
+
+		internal static void SetEngine(this HttpContextBase context, IEngine engine)
+		{
+			context.Items["N2.Engine"] = engine;
+		}
+
+		internal static bool IsEmpty(this Url url)
+		{
+			return url == null || string.IsNullOrEmpty(url);
+		}
 	}
 }

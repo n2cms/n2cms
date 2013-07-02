@@ -228,7 +228,8 @@ namespace N2.Web.Mvc.Html
 					VersionIndex = item.VersionIndex,
 					VersionKey = item.GetVersionKey(),
 					Force = ForceRefreshNavigationOnLoad ? "true" : "false",
-					State = item != null ? item.State.ToString() : "NonContent"
+					State = item != null ? item.State.ToString() : "NonContent",
+					Mode = GetControlPanelState(Html).ToString()
 				};
 
 				var resources = Html.Resources(writer).Constants();
@@ -308,7 +309,7 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}', mode: '{Mode}' });";
 			static string format3 = @"
 		if (n2ctx.hasTop()) $('.complementary').hide();
 		else $('.cpView').hide();

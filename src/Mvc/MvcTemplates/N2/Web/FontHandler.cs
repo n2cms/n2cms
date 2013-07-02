@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 
 namespace N2.Management.Web
 {
@@ -27,7 +28,7 @@ namespace N2.Management.Web
 					Transmit(context, "application/x-ttf");
 					return;
 				case ".woff":
-					Transmit(context, "application/x-woff");
+					Transmit(context, "application/font-woff");
 					return;
 				case ".otf":
 					Transmit(context, "application/x-otf");
@@ -37,11 +38,38 @@ namespace N2.Management.Web
 
 		private void Transmit(HttpContext context, string contentType)
 		{
-			if (!File.Exists(context.Request.PhysicalPath))
+			context.Response.ContentType = contentType;
+
+			if (File.Exists(context.Request.PhysicalPath))
+			{
+				context.Response.TransmitFile(context.Request.PhysicalPath);
+				return;
+			}
+
+			var file = HostingEnvironment.VirtualPathProvider.GetFile(context.Request.AppRelativeCurrentExecutionFilePath);
+			if (file == null)
 				return;
 
-			context.Response.ContentType = contentType;
-			context.Response.TransmitFile(context.Request.PhysicalPath);
+			using (var s = file.Open())
+			{
+				TransferBetweenStreams(s, context.Response.OutputStream);
+			}
+		}
+
+		long TransferBetweenStreams(Stream inputStream, Stream outputStream)
+		{
+			long inputStreamLength = 0;
+			byte[] buffer = new byte[32768];
+			while (true)
+			{
+				int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+				if (bytesRead <= 0)
+					break;
+
+				outputStream.Write(buffer, 0, bytesRead);
+				inputStreamLength += bytesRead;
+			}
+			return inputStreamLength;
 		}
 	}
 }

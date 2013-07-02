@@ -100,9 +100,23 @@ $(function () {
     	});
 
     	actions.push(node);
-				
     });
-    window.frameActions = actions;
+
+	window.frameInteraction = {
+		getActions: function() {
+			return actions;
+		},
+		hideToolbar: function (force) {
+			if (force || $('#toolbar .inner > .command, #toolbar .rightAligned > .command, #toolbar .inner > .commandOptions > .command, #toolbar .rightAligned > .commandOptions >.command').not('.primary-action, .cancel, .globalize').length == 0) {
+				$('body').addClass('toolbar-hidden');
+			} else {
+				$('body').removeClass('toolbar-hidden');
+			}
+		},
+		execute: function(selector){
+			window.location = $(selector).attr('href');
+		}
+	}
 });
 ", ScriptOptions.DocumentReady);
 		}
