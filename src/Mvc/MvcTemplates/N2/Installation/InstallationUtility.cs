@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using N2.Web;
+using System.Reflection;
+using N2.Edit.Installation;
 
 namespace N2.Management.Installation
 {
@@ -26,6 +28,11 @@ namespace N2.Management.Installation
 			context.Response.Write(InstallationUnallowedHtml);
 			context.Response.Write("</div></body></html>");
 			context.Response.End();
+		}
+
+		public static string GetFileVersion(System.Reflection.Assembly assembly)
+		{
+			return InstallationExtensions.GetFileVersion(assembly);
 		}
 	}
 }

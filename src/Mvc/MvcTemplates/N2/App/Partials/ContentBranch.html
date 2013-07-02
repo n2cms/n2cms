@@ -14,7 +14,7 @@
 	</a>
 </div>
 
-<ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
+<ul ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
 	<li class="node" ng-repeat="child in node.Parts" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/ContentBranch.html'"></li>
 </ul>
 

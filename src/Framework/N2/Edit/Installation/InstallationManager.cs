@@ -23,6 +23,7 @@ using NHibernate.Driver;
 using NHibernate.SqlTypes;
 using NHibernate.Tool.hbm2ddl;
 using Environment = NHibernate.Cfg.Environment;
+using System.Linq;
 
 namespace N2.Edit.Installation
 {
@@ -30,6 +31,9 @@ namespace N2.Edit.Installation
 	{
 		public const string InstallationAppPath = "Installation.AppPath";
 		public const string installationHost = "Installation.Host";
+		public const string installationAssemblyVersion = "Installation.AssemblyVersion";
+		public const string installationFileVersion = "Installation.FileVersion";
+		public const string installationFeatures = "Installation.Features";
 
 		public abstract string CheckConnection(out string stackTrace);
 		public abstract string CheckDatabase();
@@ -237,15 +241,20 @@ namespace N2.Edit.Installation
 		/// <summary>Executes sql create database scripts.</summary>
 		public override void Install()
 		{
+			ClearNHCache();
+
+			SchemaExport exporter = new SchemaExport(Cfg);
+			exporter.Create(ConsoleOutput, DatabaseExport);
+		}
+
+		private void ClearNHCache()
+		{
 			var sf = configurationBuilder.BuildSessionFactory();
 			sf.EvictQueries();
 			foreach (var collectionMetadata in sf.GetAllCollectionMetadata())
 				sf.EvictCollection(collectionMetadata.Key);
 			foreach (var classMetadata in sf.GetAllClassMetadata())
 				sf.EvictEntity(classMetadata.Key);
-
-			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Create(ConsoleOutput, DatabaseExport);
 		}
 
 		public override void ExportSchema(TextWriter output)
@@ -270,6 +279,16 @@ namespace N2.Edit.Installation
 		{
 			SchemaUpdate schemaUpdater = new SchemaUpdate(Cfg);
 			schemaUpdater.Execute(true, true);
+
+			ClearNHCache();
+
+			var status = GetStatus();
+			if (status.RootItem != null)
+			{
+				status.RootItem[InstallationManager.installationAssemblyVersion] = typeof(N2.Context).Assembly.GetName().Version.ToString();
+				status.RootItem[InstallationManager.installationFileVersion] = typeof(N2.Context).Assembly.GetFileVersion();
+				persister.Save(status.RootItem);
+			}
 		}
 
 		public override string ExportUpgradeSchema()
@@ -305,7 +324,7 @@ namespace N2.Edit.Installation
 						if (UpdateSchema(status))
 							if (UpdateCount(status))
 								if (UpdateItems(status))
-									UpdateAppPath(status);
+									UpdateRecordedValues(status);
 			return status;
 		}
 
@@ -317,7 +336,7 @@ namespace N2.Edit.Installation
 		}
 
 
-		private void UpdateAppPath(DatabaseStatus status)
+		private void UpdateRecordedValues(DatabaseStatus status)
 		{
 			try
 			{
@@ -326,6 +345,14 @@ namespace N2.Edit.Installation
 
 				status.AppPath = status.RootItem[InstallationAppPath] as string;
 				status.NeedsRebase = !string.IsNullOrEmpty(status.AppPath) && !string.Equals(status.AppPath, N2.Web.Url.ToAbsolute("~/"));
+
+				Version v;
+				if (status.RootItem[installationAssemblyVersion] != null && Version.TryParse(status.RootItem[installationAssemblyVersion].ToString(), out v))
+					status.RecordedAssemblyVersion = v;
+				if (status.RootItem[installationFileVersion] != null && Version.TryParse(status.RootItem[installationFileVersion].ToString(), out v))
+					status.RecordedFileVersion = v;
+
+				status.RecordedFeatures = status.RootItem.GetInstalledFeatures();
 			}
 			catch (Exception ex)
 			{
@@ -342,6 +369,7 @@ namespace N2.Edit.Installation
 				status.StartPage = persister.Get(status.StartPageID);
 				status.RootItem = persister.Get(status.RootItemID);
 				status.IsInstalled = status.RootItem != null && status.StartPage != null;
+
 				return true;
 			}
 			catch (Exception ex)

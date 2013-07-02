@@ -239,8 +239,8 @@ input.dp-applied {
     .directory .file
     {
 	    display:block;
-	    width:80px;
-	    height:80px;
+	    width:90px;
+	    height:90px;
 	    position:relative;
 	    float:left;
 	    margin:1px;
@@ -261,6 +261,7 @@ input.dp-applied {
         {
 	        display:block;
 	        overflow: hidden;
+			text-overflow:ellipsis;
         }
     .droparea, .pickarea { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
     .droparea:hover, .pickarea:hover { border-style:solid; opacity:1; }

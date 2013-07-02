@@ -33,6 +33,7 @@ namespace N2.Edit.Install
 		{
 			Engine = N2.Context.Current;
 			InstallationUtility.CheckInstallationAllowed(Context);
+			Status = Engine.Resolve<InstallationManager>().GetStatus();
 			N2.Resources.Register.JQuery(this);
 			base.OnInit(e);
 		}
@@ -84,16 +85,6 @@ namespace N2.Edit.Install
 			catch (Exception ex)
 			{
 				lblChanges.Text = formatException(ex);
-			}
-
-			try
-			{
-				lblN2Version.Text = (new AssemblyName(Assembly.Load("N2").FullName)).Version.ToString();
-				lblEditVersion.Text = (new AssemblyName(Assembly.Load("N2.Management").FullName)).Version.ToString();
-			}
-			catch (Exception ex)
-			{
-				lblEditVersion.Text = formatException(ex);
 			}
 
 			try
@@ -184,5 +175,7 @@ namespace N2.Edit.Install
 		{
 			return string.Join(", ", N2.Context.Definitions.GetDefinitions().Where(d => d.ItemType.Assembly == a).Select(d => d.Title).ToArray());
 		}
+
+		protected DatabaseStatus Status { get; set; }
 	}
 }

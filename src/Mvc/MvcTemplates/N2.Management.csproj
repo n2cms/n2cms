@@ -1124,6 +1124,7 @@
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
     <Compile Include="N2\Installation\Migrations\ConvertEnumsMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\RecordedAssemblyVersionMigration.cs" />
     <Compile Include="N2\Installation\Migrations\EditableItemMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersion.ashx.cs">
       <DependentUpon>UpgradeVersion.ashx</DependentUpon>
