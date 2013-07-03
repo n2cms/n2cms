@@ -78,40 +78,6 @@ namespace N2.Details
 		/// <summary> Current rich text editor setting set (e.g. basic features with simple toolbar, extended etc) </summary>
 		public FreeTextAreaSettingsSet Toolbars { get; set; }
 
-		public override Control AddTo(Control container)
-		{
-			HtmlTableCell labelCell = new HtmlTableCell();
-			labelCell.Attributes["class"] = "ftaLabel";
-			Label label = AddLabel(labelCell);
-
-			HtmlTableCell editorCell = new HtmlTableCell();
-			editorCell.Attributes["class"] = "ftaEditor";
-			Control editor = AddEditor(editorCell);
-			if (label != null && editor != null && !string.IsNullOrEmpty(editor.ID))
-				label.AssociatedControlID = editor.ID;
-
-			HtmlTableCell extraCell = new HtmlTableCell();
-			extraCell.Attributes["class"] = "ftaExtra";
-			if (Required)
-				AddRequiredFieldValidator(extraCell, editor);
-			if (Validate)
-				AddRegularExpressionValidator(extraCell, editor);
-
-			AddHelp(extraCell);
-
-			HtmlTableRow row = new HtmlTableRow();
-			row.Cells.Add(labelCell);
-			row.Cells.Add(editorCell);
-			row.Cells.Add(extraCell);
-
-			HtmlTable editorTable = new HtmlTable();
-			editorTable.Attributes["class"] = "editDetail";
-			editorTable.Controls.Add(row);
-			container.Controls.Add(editorTable);
-
-			return editor;
-		}
-
 		protected override void ModifyEditor(TextBox tb)
 		{
 			// set width and height to control the size of the tinyMCE editor

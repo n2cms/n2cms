@@ -185,7 +185,6 @@ namespace N2.Details
 				label.AssociatedControlID = editor.ID;
 
 			AddValidation(panel, editor);
-			AddHelp(panel);
 
 			return editor;
 		}
@@ -203,46 +202,56 @@ namespace N2.Details
 			string text = GetLocalizedText("HelpText") ?? HelpText;
 			string title = GetLocalizedText("HelpTitle") ?? HelpTitle;
 
-			if (!string.IsNullOrEmpty(text))
+			if (string.IsNullOrEmpty(text) && string.IsNullOrEmpty(title))
+				return null;
+
+			var b = new HtmlGenericControl("b");
+			b.ID = "hi_" + Name;
+			b.Attributes["data-placement"] = "right";
+			b.Attributes["title"] = title;
+			container.Controls.Add(b);
+
+			if (string.IsNullOrEmpty(text))
 			{
-				HtmlGenericControl helpPanel = new HtmlGenericControl("span");
-				helpPanel.ID = "hp_" + Name;
-				helpPanel.Attributes["class"] = "helpPanel revealer";
-				container.Controls.Add(helpPanel);
-
-				AddHelpButton(helpPanel, title);
-
-				HtmlGenericControl div = new HtmlGenericControl("span");
-				div.ID = "hd_" + Name;
-				div.Attributes["class"] = "helpText";
-				helpPanel.Controls.Add(div);
-
-				HtmlGenericControl header = new HtmlGenericControl("b");
-				header.InnerHtml = title;
-				div.Controls.Add(header);
-
-				HtmlGenericControl span = new HtmlGenericControl("span");
-				span.InnerHtml = text;
-				div.Controls.Add(span);
-
+				b.Attributes["class"] = "help help-tooltip n2-icon-question-sign";
+				b.Attributes["data-toggle"] = "tooltip";
 			}
-			else if (!string.IsNullOrEmpty(title))
+			else
 			{
-				return AddHelpButton(container, title);
+				b.Attributes["class"] = "help help-popover n2-icon-question-sign";
+				b.Attributes["data-toggle"] = "popover";
+				b.Attributes["data-content"] = text;
 			}
 
-			return null;
-		}
+			//if (!string.IsNullOrEmpty(text))
+			//{
+			//	HtmlGenericControl helpPanel = new HtmlGenericControl("span");
+			//	helpPanel.ID = "hp_" + Name;
+			//	helpPanel.Attributes["class"] = "helpPanel revealer";
+			//	container.Controls.Add(helpPanel);
 
-		private HtmlImage AddHelpButton(Control container, string tooltip)
-		{
-			HtmlImage img = new HtmlImage();
-			img.ID = "hi_" + Name;
-			img.Attributes["class"] = "help revealer";
-			img.Attributes["title"] = tooltip;
-			img.Src = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/help.png");
-			container.Controls.Add(img);
-			return img;
+			//	AddHelpButton(helpPanel, title);
+
+			//	HtmlGenericControl div = new HtmlGenericControl("span");
+			//	div.ID = "hd_" + Name;
+			//	div.Attributes["class"] = "helpText";
+			//	helpPanel.Controls.Add(div);
+
+			//	HtmlGenericControl header = new HtmlGenericControl("b");
+			//	header.InnerHtml = title;
+			//	div.Controls.Add(header);
+
+			//	HtmlGenericControl span = new HtmlGenericControl("span");
+			//	span.InnerHtml = text;
+			//	div.Controls.Add(span);
+
+			//}
+			//else if (!string.IsNullOrEmpty(title))
+			//{
+			//	return AddHelpButton(container, title);
+			//}
+
+			return b;
 		}
 
 		/// <summary>Gets a localized resource string from the global resource with the name denoted by <see cref="LocalizationClassKey"/>. The resource key follows the pattern <see cref="Name"/>.key where the name is the name of the detail and the key is the supplied parameter.</summary>
@@ -381,10 +390,13 @@ namespace N2.Details
 		{
 			Label label = new Label();
 			label.ID = "lbl" + Name;
-			label.Text = GetLocalizedText("Title") ?? Title;
 			label.CssClass = "editorLabel";
 			label.Attributes["data-sortorder"] = SortOrder.ToString();
 			container.Controls.Add(label);
+
+			label.Controls.Add(new LiteralControl(GetLocalizedText("Title") ?? Title));
+			AddHelp(label);
+
 			return label;
 		}
 

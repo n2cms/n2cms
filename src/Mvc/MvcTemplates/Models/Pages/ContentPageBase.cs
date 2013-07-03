@@ -27,7 +27,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		// editables
 
 		[Persistable]
-		[EditableSummary("Summary", 90, ContainerName = Tabs.Content, Source = "Text")]
+		[EditableSummary("Summary", 90, ContainerName = Tabs.Content, Source = "Text", HelpTitle = "Text summary used for representing this page in listings", HelpText = "The summary is automaticaly generated from the first lines of text. Optionally it can be overridden with a custom text.")]
 		public virtual string Summary { get; set; }
 
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
