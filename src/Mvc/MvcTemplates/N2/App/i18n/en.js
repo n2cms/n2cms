@@ -16,8 +16,8 @@
 		"copy": { "text": " Copy" },
 		"paste": { "text": " Paste" },
 		"parts": {
-			"show": { "text": " Show" },
-			"hide": { "text": " Hide" }
+			"show": { "text": " Show parts" },
+			"hide": { "text": " Hide parts" }
 		}
 	},
 	"info": {

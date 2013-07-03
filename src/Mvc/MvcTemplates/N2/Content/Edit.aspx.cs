@@ -21,7 +21,8 @@ namespace N2.Edit
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation", 
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-edit-sign")]
+		IconClass = "n2-icon-edit-sign",
+		Legacy = true)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write,
