@@ -183,6 +183,22 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	$scope.evaluateExpression = function (expr) {
 		return expr && $interpolate(expr)($scope);
 	};
+
+	$scope.isDisplayable = function (item) {
+		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission)) {
+			//console.log("unauthorized", item);
+			return false;
+		}
+		if (item.Current.HiddenBy) {
+			//console.log(item.Current.Title, "hidden by", item.Current.HiddenBy, item);
+			return !$scope.isFlagged(item.Current.HiddenBy);
+		}
+		if (item.Current.DisplayedBy) {
+			//console.log(item.Current.Title, "displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
+			return $scope.isFlagged(item.Current.DisplayedBy);
+		}
+		return true;
+	};
 }
 
 function MainMenuCtrl($scope) {
@@ -325,22 +341,6 @@ function PageActionBarCtrl($scope, $rootScope, Security) {
 		$scope.primaryNavigation = lefties;
 		$scope.secondaryNavigation = righties;
 	});
-
-	$scope.isDisplayable = function (item) {
-		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission)) {
-			//console.log("unauthorized", item);
-			return false;
-		}
-		if (item.Current.HiddenBy) {
-			//console.log(item.Current.Title, "hidden by", item.Current.HiddenBy, item);
-			return !$scope.isFlagged(item.Current.HiddenBy);
-		}
-		if (item.Current.DisplayedBy) {
-			//console.log(item.Current.Title, "displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
-			return $scope.isFlagged(item.Current.DisplayedBy);
-		}
-		return true;
-	};
 }
 
 function PageActionCtrl($scope, Content) {

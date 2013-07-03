@@ -34,7 +34,8 @@ namespace N2.Edit
 	[NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10,
 		GlobalResourceClassName = "Navigation",
 		RequiredPermission = Permission.Write,
-		IconClass = "n2-icon-plus-sign")]
+		IconClass = "n2-icon-plus-sign",
+		Legacy = true)]
 	[ToolbarPlugin("", "new_tool", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
 		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Write,
