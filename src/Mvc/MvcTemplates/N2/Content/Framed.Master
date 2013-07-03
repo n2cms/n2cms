@@ -33,7 +33,6 @@
 			});
 			var modal = <%= Request["modal"] == "true" ? "true" : "false" %>;
 			if (n2ctx.hasTop() != "metro" || modal) {
-				console.log("revealing", n2ctx.hasTop());
 				$(document.body).removeClass("toolbar-hidden");
 			}
 		</script>

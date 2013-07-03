@@ -48,21 +48,21 @@ body.rightExpanded #content { margin-right:265px; }
 .framed .content fieldset { clear:left; padding:10px; }
 .framed table.editDetail td { margin:0; padding:0; }
 
-.framed .titleEditor { width:580px; }
-.framed textarea.textEditor { width:580px; }
-.framed textarea.freeTextArea { width:580px; height:380px; }
+.framed .titleEditor { width:530px; }
+.framed textarea.textEditor { width:530px; }
+.framed textarea.freeTextArea { width:530px; height:380px; }
 .framed .ftaLabel { overflow:hidden; }
 .framed .editDetail { margin:0 0 10px 0; clear:left; }
-.framed .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 10px; }
+/*.framed .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 10px; }
 .framed .itemEditor .tabPanel .editorLabel { margin:0 0 5px 0; }
-	.framed td .editorLabel { width:106px; }
+	.framed td .editorLabel { width:106px; }*/
 .framed .editControl { float:left; padding:0; margin:0 0 5px 0; }
 .framed .editControl label { font-weight:normal; display:inline; float:none; }
 .framed .editControl input { vertical-align:middle; }
 .framed .nameEditor input { width:142px; }
 .framed .prefix { color:silver; vertical-align:middle; font-size:.9em; }
-.framed .selector  { width:426px; }
-.framed .textEditor { width:426px; }
+.framed .selector  { width:530px; }
+.framed .textEditor { width:530px; }
 .framed .textEditorReadOnly { width:426px; opacity:.5; }
 .framed .titleEditor { font-size:1.5em; }
 .framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
@@ -85,7 +85,7 @@ body.rightExpanded #content { margin-right:265px; }
 		.ui-datepicker-calendar { width: 100%; }
 		.ui-datepicker-calendar a { display:block; padding:3px; }
 .framed .ftaEditor .cke {
-	min-width: 600px;
+	min-width: 530px;
 }
 
 .framed input.disabled, .framed .disabled *, .framed input.dimmed, .framed .dimmed *, .framed a[disabled=disabled] img, input[disabled=disabled]
@@ -110,7 +110,10 @@ table.editDetail { border-collapse:collapse; }
 .framed .tabPanel fieldset fieldset { margin-top:20px; }
 .framed .itemEditor hr { margin:15px 0 }
 
-.framed .help { vertical-align:middle; margin-bottom:10px; }
+.framed .editDetail .help { color:#0088cc; opacity:0; transition: linear 2s; }
+.framed .editDetail:hover .help { opacity:.5; }
+.framed .editDetail .tooltip { width: 200px; }
+.framed .editDetail .popover { width: 400px; }
 
 .framed .helpPanel { cursor:pointer; padding:5px; }
 	.framed .helpText { display:none; }
@@ -201,7 +204,7 @@ hr
 .themePreview { margin-left:10px; }
 
 /* jQuery Tags Input Plugin 1.2.5 */
-div.tagsinput { border:1px solid #ccc; padding:2px 2px 0 2px; width:580px; height:46px; overflow-y: auto;}
+div.tagsinput { border:1px solid #ccc; padding:2px 2px 0 2px; width:530px; height:46px; overflow-y: auto;}
 div.tagsinput span.tag { border: 1px solid #ccc; border-radius:2px; display: block; float: left; padding: 2px; text-decoration:none; background: #ccc; color: #333; margin-right: 2px; margin-bottom:2px; background:#fff url(../../Resources/Img/lighten10.png) repeat-x; }
 div.tagsinput span.tag a { font-weight: bold; color: #333; text-decoration:none; padding:0 2px; } 
 div.tagsinput span.tag a:hover { outline:solid 1px #ccc; background-color:#eee; } 

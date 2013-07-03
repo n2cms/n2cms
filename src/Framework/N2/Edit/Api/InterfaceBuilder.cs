@@ -77,8 +77,6 @@ namespace N2.Management.Api
 	{
 		public Node<InterfaceMenuItem> MainMenu { get; set; }
 
-		public Node<InterfaceMenuItem> ToolbarMenu { get; set; }
-
 		public Node<InterfaceMenuItem> ActionMenu { get; set; }
 
 		public Node<TreeNode> Content { get; set; }

@@ -88,13 +88,14 @@
 				if ($.cookie(".zonesBox"))
 					$(".showZones").click();
 
-			// 
+				$(".help-tooltip").tooltip({ });
+				$(".help-popover").each(function () {
+					var title = $(this).attr("title");
+					var content = $(this).attr("data-content");
+					$(this).attr("title", "");
+					$(this).tooltip({ html: true, title: "<h6>" + title + "</h6><p>" + content + "</p>" });
+				});
 			});
 
 		</script>
-	<%--<style>
-
-	 .nav-tabs { outline:dotted 1px green; }
-	 .tab-content { outline:solid 1px red; }
-	</style>--%>
 </asp:Content>
