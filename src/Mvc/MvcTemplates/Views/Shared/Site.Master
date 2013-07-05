@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title></title>
 	<asp:PlaceHolder runat="server">
-		<link href="<%=ResolveUrl("~/App_Themes/" + (Start != null ? Start.Theme : "Default") + "/Style.css")%>" type="text/css" rel="stylesheet" />
+		<%= Html.ThemedStyleSheet("~/Content/Style.css") %>
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
 		<%= Html.Resources().JQuery() %>
 		<%= Html.Resources().StyleSheet(N2.Resources.Register.DefaultFlagsCssPath) %>
@@ -39,9 +39,6 @@
 				<div id="content" class="">
 					<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 						<div id="main">
-							<% foreach(var d in N2.Context.Current.Resolve<N2.Web.Targeting.TargetingRadar>().BuildTargetingContext(Html.ViewContext.HttpContext).TargetedBy) { %>
-							<%= d.Name %>, 
-							<% } %>
 							<asp:ContentPlaceHolder ID="PreContent" runat="server">
 								<% Html.DroppableZone(Zones.RecursiveAbove).Render();%>
 							</asp:ContentPlaceHolder>

@@ -1,5 +1,4 @@
 ﻿using System;
-using N2.Templates.Mvc.Web;
 using N2.Web.Mvc;
 using N2.Web.Mvc.Html;
 using N2.Web.UI;

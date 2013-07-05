@@ -22,7 +22,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[AvailableZone("Site Wide Top", Zones.SiteTop), 
      AvailableZone("Site Wide Left", Zones.SiteLeft),
 	 AvailableZone("Site Wide Right", Zones.SiteRight)]
-	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
+	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource, IThemeable
 	{
 		public const string LayoutArea = "layoutArea";
 
