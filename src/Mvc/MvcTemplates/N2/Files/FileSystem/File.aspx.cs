@@ -31,17 +31,21 @@ namespace N2.Edit.FileSystem
 			{
 				var config = Engine.Resolve<EditSection>();
 
-				if (config.FileSystem.IsTextFile(SelectedFile.Url))
-					btnEdit.Visible = true;
-
-				if (ImagesUtility.IsImagePath(Selection.SelectedItem.Url))
+				if (SelectedFile != null)
 				{
-					var size = config.Images.GetImageSize(SelectedFile.Url);
-					if (size != null && size.Mode == ImageResizeMode.Fill)
-						hlCrop.NavigateUrl = "../Crop.aspx?selected=" + Selection.SelectedItem.Path;
-					else
-						hlCrop.Visible = false;
+					if (config.FileSystem.IsTextFile(SelectedFile.Url))
+						btnEdit.Visible = true;
+
+					if (ImagesUtility.IsImagePath(Selection.SelectedItem.Url))
+					{
+						var size = config.Images.GetImageSize(SelectedFile.Url);
+						if (size != null && size.Mode == ImageResizeMode.Fill)
+							hlCrop.NavigateUrl = "../Crop.aspx?selected=" + Selection.SelectedItem.Path;
+						else
+							hlCrop.Visible = false;
+					}
 				}
+
 				Ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 				DataBind();
 				LoadSizes();
@@ -56,10 +60,9 @@ namespace N2.Edit.FileSystem
 			ImagesUtility.SplitImageAndSize(Selection.SelectedItem.Url, imageConfig.Sizes.GetSizeNames(), out baseImagePath, out imageSize);
 			foreach (var size in imageConfig.Sizes.AllElements.Where(s => s.Announced))
 			{
-				var hl = new HyperLink();
-				hl.ID = size.Name + "Size";
+				var hl = new HyperLink {ID = size.Name + "Size"};
 				bool exists;
-				var path = ImagesUtility.GetExistingImagePath(Engine.Resolve<IFileSystem>(), baseImagePath, size.Name, out exists);
+				var path = Engine.Resolve<IFileSystem>().GetExistingImagePath(baseImagePath, size.Name, out exists);
 				if (exists)
 				{
 					var file = (SelectedFile.Parent as File) ?? SelectedFile;
@@ -81,12 +84,11 @@ namespace N2.Edit.FileSystem
 		{
 			if (w == 0 && h == 0)
 				return " &infin;";
-			else if (w == 0)
+			if (w == 0)
 				return string.Format(" &infin;x{0}", w);
-			else if (h == 0)
+			if (h == 0)
 				return string.Format(" {0}x&infin;", w);
-			else
-				return string.Format(" {0}x{1}", w, h);
+			return string.Format(" {0}x{1}", w, h);
 		}
 
 		protected override void RegisterToolbarSelection()
