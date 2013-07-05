@@ -10,7 +10,7 @@ namespace N2.Templates.Configuration
 	public class TemplatesSection : ConfigurationSectionBase
     {
         /// <summary>The master page used for template pages.</summary>
-        [ConfigurationProperty("masterPageFile", DefaultValue = "~/Templates/UI/Layouts/Top+SubMenu.Master")]
+        [ConfigurationProperty("masterPageFile")]
 		public string MasterPageFile
         {
             get { return (string)base["masterPageFile"]; }

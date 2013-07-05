@@ -237,7 +237,7 @@ namespace N2.Web.UI.WebControls
 				if (string.IsNullOrEmpty(args.TemplateUrl))
 					addedControl = PartsAdapter.AddChildPart(item, container);
 				else
-					addedControl = ItemUtility.AddUserControl(args.TemplateUrl, container, args.Item);
+					addedControl = PartsAdapter.AddUserControl(args.TemplateUrl, container, args.Item);
 			}
 			else
 				addedControl = PartsAdapter.AddChildPart(item, container);

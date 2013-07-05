@@ -49,11 +49,19 @@ namespace N2.Web
 		protected virtual string GetHandlerPath(PathData path)
 		{
 			var templateUrl = path.GetRewrittenUrl();
+			return ResolveTargetingUrl(templateUrl);
+		}
+
+		/// <summary>Retrieves the first targeting path which exists according to the virtual path provider or default.</summary>
+		/// <param name="defaultUrl"></param>
+		/// <returns></returns>
+		public virtual string ResolveTargetingUrl(string defaultUrl)
+		{
 			var ctx = WebContext.HttpContext.GetTargetingContext(Engine);
-			foreach (var alternativeUrl in ctx.GetTargetedPaths(templateUrl))
-				if (WebContext.Vpp.FileExists(alternativeUrl))
+			foreach (var alternativeUrl in ctx.GetTargetedPaths(defaultUrl))
+				if (WebContext.Vpp.FileExists(Url.PathPart(alternativeUrl)))
 					return alternativeUrl;
-			return templateUrl;
+			return defaultUrl;
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>

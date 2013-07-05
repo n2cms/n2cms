@@ -75,6 +75,7 @@ namespace N2.Web.UI
 			return item;
 		}
 
+		[Obsolete("Use Engine.ResolveAdapter<PartsAdapter>(page).AddChildPart(item, page);")]
 		public static Control AddUserControl(Control container, ContentItem item)
 		{
 			PathData path = item.FindPath(PathData.DefaultAction);
@@ -85,6 +86,7 @@ namespace N2.Web.UI
 			return null;
 		}
 
+		[Obsolete("Use Engine.ResolveAdapter<PartsAdapter>(page).AddChildPart(item, page);")]
 		public static Control AddUserControl(string templateUrl, Control container, ContentItem item)
 		{
 			using (new ItemStacker(item))
@@ -97,7 +99,7 @@ namespace N2.Web.UI
 			}
 		}
 
-		private class ItemStacker : IDisposable
+		internal class ItemStacker : IDisposable
 		{
 			public ItemStacker(ContentItem currentItem)
 			{
