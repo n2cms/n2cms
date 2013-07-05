@@ -12,10 +12,10 @@ namespace N2.Web.Targeting
 		public TargetingContext(HttpContextBase context)
 		{
 			HttpContext = context;
-			Flags = new HashSet<string>();
+			TargetedBy = new HashSet<DetectorBase>();
 		}
 
 		public HttpContextBase HttpContext { get; set; }
-		public HashSet<string> Flags { get; set; }
+		public ICollection<DetectorBase> TargetedBy { get; set; }
 	}
 }

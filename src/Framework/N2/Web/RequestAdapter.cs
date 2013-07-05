@@ -4,6 +4,8 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
+using N2.Web.Targeting;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -46,7 +48,12 @@ namespace N2.Web
         /// <returns></returns>
 		protected virtual string GetHandlerPath(PathData path)
 		{
-			return path.GetRewrittenUrl();
+			var templateUrl = path.GetRewrittenUrl();
+			var ctx = WebContext.HttpContext.GetTargetingContext(Engine);
+			foreach (var alternativeUrl in ctx.GetTargetedPaths(templateUrl))
+				if (WebContext.Vpp.FileExists(alternativeUrl))
+					return alternativeUrl;
+			return templateUrl;
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>

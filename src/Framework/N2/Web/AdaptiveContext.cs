@@ -5,6 +5,7 @@ using System.Web;
 using N2.Engine;
 using N2.Engine.Providers;
 using System.Web.Caching;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -179,6 +180,11 @@ namespace N2.Web
 		public Cache Cache
 		{
 			get { return CurrentContext.Cache; }
+		}
+
+		public VirtualPathProvider Vpp
+		{
+			get { return HostingEnvironment.VirtualPathProvider; }
 		}
 
 		#region IDisposable Members

@@ -186,6 +186,11 @@ namespace N2.Web
 			get { return HttpRuntime.Cache; }
 		}
 
+		public VirtualPathProvider Vpp
+		{
+			get { return HostingEnvironment.VirtualPathProvider; }
+		}
+
 		#region IDisposable Members
 
 		void IDisposable.Dispose()

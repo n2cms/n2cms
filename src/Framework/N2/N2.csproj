@@ -723,7 +723,10 @@
     <Compile Include="Web\Rendering\DisplayableToken.cs" />
     <Compile Include="Web\Targeting\DetectorAttribute.cs" />
     <Compile Include="Web\Targeting\DetectorBase.cs" />
-    <Compile Include="Web\Targeting\Detectors\MembershipDetector.cs" />
+    <Compile Include="Web\Targeting\Detectors\Authenticated.cs" />
+    <Compile Include="Web\Targeting\Detectors\Anonymous.cs" />
+    <Compile Include="Web\Targeting\Detectors\Manager.cs" />
+    <Compile Include="Web\Targeting\Detectors\MobileDevice.cs" />
     <Compile Include="Web\Targeting\TargetingRadar.cs" />
     <Compile Include="Web\Targeting\TargetingContext.cs" />
     <Compile Include="Web\Targeting\TargetingExtensions.cs" />
