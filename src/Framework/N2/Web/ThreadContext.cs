@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -173,6 +174,10 @@ namespace N2.Web
 			get { return HttpRuntime.Cache; }
 		}
 
+		public VirtualPathProvider Vpp
+		{
+			get { return HostingEnvironment.VirtualPathProvider; }
+		}
 
 		#region IDisposable Members
 
