@@ -28,10 +28,5 @@ namespace N2.Web.Mvc.Html
 		{
 			return RouteExtensions.ResolveServices<T>(helper.ViewContext.RouteData);
 		}
-
-		public static T ResolveAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
-		{
-			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
-		}
 	}
 }

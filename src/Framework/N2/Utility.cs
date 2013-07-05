@@ -860,5 +860,9 @@ namespace N2
 			return list;
 		}
 
+		public static T ResolveAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
+		{
+			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
 	}
 }

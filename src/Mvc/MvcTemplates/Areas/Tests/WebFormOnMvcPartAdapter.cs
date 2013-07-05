@@ -26,7 +26,7 @@ namespace N2.Templates.Mvc.Areas.Tests
 			ContentPage page = new ContentPage();
 			page.CurrentPage = html.CurrentPage();
 
-			N2.Web.UI.ItemUtility.AddUserControl(page, item);
+			Engine.ResolveAdapter<PartsAdapter>(page.CurrentPage).AddChildPart(item, page);
 
 			page.RenderControl(new HtmlTextWriter(html.ViewContext.Writer));
 		}

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.UI;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Web.Parts;
 
 namespace N2.Details
 {
@@ -69,7 +70,8 @@ namespace N2.Details
 				if (linkedItem.IsPage)
 					return DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).AddTo(container);
 				else
-					return Web.UI.ItemUtility.AddUserControl(container, linkedItem);
+					Engine.GetContentAdapter<PartsAdapter>(item).AddChildPart(item, container);
+					//return Web.UI.ItemUtility.AddUserControl(container, linkedItem);
 			}
 			return null;
 		}

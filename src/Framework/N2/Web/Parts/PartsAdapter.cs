@@ -207,7 +207,30 @@ namespace N2.Web.Parts
 			if (string.IsNullOrEmpty(templateUrl))
 				return null;
 
-			return ItemUtility.AddUserControl(Url.ResolveTokens(templateUrl), container, item);
+			return AddUserControl(Url.ResolveTokens(templateUrl), container, item);
+		}
+
+		//private Control AddUserControl(Control container, ContentItem item)
+		//{
+		//	PathData path = item.FindPath(PathData.DefaultAction);
+		//	if (!path.IsEmpty())
+		//	{
+		//		return AddUserControl(path.TemplateUrl, container, item);
+		//	}
+		//	return null;
+		//}
+
+		internal Control AddUserControl(string templateUrl, Control container, ContentItem item)
+		{
+			var userControlPath = Engine.ResolveAdapter<RequestAdapter>(item).ResolveTargetingUrl(templateUrl.ResolveUrlTokens());
+			using (new ItemUtility.ItemStacker(item))
+			{
+				Control templateItem = container.Page.LoadControl(userControlPath);
+				if (templateItem is IContentTemplate)
+					(templateItem as IContentTemplate).CurrentItem = item;
+				container.Controls.Add(templateItem);
+				return templateItem;
+			}
 		}
 
 		/// <summary>Gets the path to the given item's template. This is a way to override the default template provided by the content item.</summary>
