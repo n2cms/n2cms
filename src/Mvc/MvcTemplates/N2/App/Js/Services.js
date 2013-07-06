@@ -86,7 +86,7 @@
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
 		});
 
-		res.loadChildren = function (node, callback) {callback
+		res.loadChildren = function (node, callback) {
 			if (!node)
 				return;
 
