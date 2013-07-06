@@ -68,8 +68,8 @@ namespace N2.Details
             if (LinkedType != null && LinkedType != typeof(ContentItem))
                 query &= Parameter.TypeEqual(LinkedType);
 
-            if (ExcludedType != null)
-                query &= Parameter.TypeNotEqual(ExcludedType);
+			if (ExcludedType != null)
+				query &= Parameter.TypeNotIn(Engine.Definitions.GetDefinitions().Where(d => ExcludedType.IsAssignableFrom(d.ItemType)).Select(d => d.Discriminator).ToArray());
 
             if (!Is(EditableItemSelectionFilter.Pages))
                 query &= Parameter.IsNotNull("ZoneName");
