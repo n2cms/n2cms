@@ -41,6 +41,22 @@ namespace N2.Details
 			return cb;
 		}
 
+		protected override Control AddEditor(Control container)
+		{
+			var editor = base.AddEditor(container);
+			if (string.IsNullOrEmpty(Title))
+				AddHelp(container);
+			return editor;
+		}
+
+		protected override Label AddLabel(Control container)
+		{
+			if (string.IsNullOrEmpty(Title))
+				return null;
+			
+			return base.AddLabel(container);
+		}
+
 		#region IWritingDisplayable Members
 
 		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)

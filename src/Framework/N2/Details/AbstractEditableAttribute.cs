@@ -379,7 +379,7 @@ namespace N2.Details
 		protected virtual Control AddPanel(Control container)
 		{
 			HtmlGenericControl detailContainer = new HtmlGenericControl("div");
-			detailContainer.Attributes["class"] = "editDetail";
+			detailContainer.Attributes["class"] = "editDetail " + GetType().Name.Replace("Attribute", "");
 			container.Controls.Add(detailContainer);
 			return detailContainer;
 		}
