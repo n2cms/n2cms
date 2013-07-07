@@ -23,6 +23,8 @@ namespace N2.Edit
 			EditTreeUrl = config.Paths.EditTreeUrl;
 			EditItemUrl = config.Paths.EditItemUrl;
 			EditInterfaceUrl = config.Paths.EditInterfaceUrl;
+			if (config.Legacy)
+				EditInterfaceUrl += "Content/";
 			NewItemUrl = config.Paths.NewItemUrl;
 			DeleteItemUrl = config.Paths.DeleteItemUrl;
 			defaultViewPreference = config.Versions.DefaultViewMode;

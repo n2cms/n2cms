@@ -119,6 +119,9 @@ namespace N2.Management.Api
 				}
 			}
 
+			if (new[] { "MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers" }.Intersect(data.Flags).Any() == false)
+				data.Flags.Add("ContentPages");
+
 			if (ContextBuilt != null)
 				ContextBuilt(this, new ContextBuiltEventArgs { Data = data });
 
