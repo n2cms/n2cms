@@ -2,13 +2,13 @@
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='../Resources/Icons/page_copy.png' /> Try again</asp:LinkButton>
-    <asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel">Cancel</asp:HyperLink>
+		<asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='../Resources/Icons/page_copy.png' /> Try again</asp:LinkButton>
+		<asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel">Cancel</asp:HyperLink>
 </asp:Content>
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator id="cvCopy" meta:resourceKey="cvCopy" runat="server" CssClass="alert alert-margin" />
-    <asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
+		<asp:CustomValidator id="cvCopy" meta:resourceKey="cvCopy" runat="server" CssClass="alert alert-margin" />
+		<asp:CustomValidator ID="cvException" runat="server" CssClass="alert alert-error alert-margin" Display="Dynamic" />
 
 	<div class="cf">
 		<asp:Panel ID="pnlNewName" runat="server" CssClass="formField" Visible="false">
@@ -24,7 +24,7 @@
 			<asp:Label ID="to" runat="server"/>
 		</div>
 	</div>
-    <hr />
-    <h3 id="h3" runat="server" meta:resourceKey="h3">Copied items:</h3>
-    <uc1:AffectedItems id="itemsToCopy" runat="server" />
+		<hr />
+		<h3 id="h3" runat="server" meta:resourceKey="h3">Copied items:</h3>
+		<uc1:AffectedItems id="itemsToCopy" runat="server" />
 </asp:Content>

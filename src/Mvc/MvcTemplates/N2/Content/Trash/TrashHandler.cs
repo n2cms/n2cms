@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using N2.Definitions;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence;
-using N2.Persistence.Finder;
 using N2.Security;
-using System.Security.Principal;
 using N2.Web;
 using N2.Collections;
 
@@ -48,7 +47,7 @@ namespace N2.Edit.Trash
 			this.webContext = webContext;
 		}
 
-        /// <summary>The container of thrown items.</summary>
+		/// <summary>The container of thrown items.</summary>
 		ITrashCan ITrashHandler.TrashContainer
 		{
 			get { return GetTrashContainer(false) as ITrashCan; }
@@ -59,7 +58,7 @@ namespace N2.Edit.Trash
 			if (!create)
 				container.GetBelowRoot();
 
-			return container.GetOrCreateBelowRoot((trashContainer) =>
+			return container.GetOrCreateBelowRoot(trashContainer =>
 			{
 				trashContainer.Name = TrashContainerName;
 				trashContainer.Title = TrashContainerName;
@@ -71,53 +70,50 @@ namespace N2.Edit.Trash
 			});
 		}
 
-        /// <summary>Checks if the trash is enabled, the item is not already thrown and for the NotThrowable attribute.</summary>
-        /// <param name="affectedItem">The item to check.</param>
-        /// <returns>True if the item may be thrown.</returns>
+		/// <summary>Checks if the trash is enabled, the item is not already thrown and for the NotThrowable attribute.</summary>
+		/// <param name="affectedItem">The item to check.</param>
+		/// <returns>True if the item may be thrown.</returns>
 		public bool CanThrow(ContentItem affectedItem)
 		{
-			TrashContainerItem trash = GetTrashContainer(false);
-            bool enabled = trash == null || trash.Enabled;
-            bool alreadyThrown = IsInTrash(affectedItem);
-
+			var trash = GetTrashContainer(false);
+			var enabled = trash == null || trash.Enabled;
+			var alreadyThrown = IsInTrash(affectedItem);
 			var throwables = (ThrowableAttribute[])affectedItem.GetContentType().GetCustomAttributes(typeof(ThrowableAttribute), true);
-			bool throwable = throwables.Length == 0 || throwables[0].Throwable == AllowInTrash.Yes;
+			var throwable = throwables.Length == 0 || throwables[0].Throwable == AllowInTrash.Yes;
 			return enabled && !alreadyThrown && throwable;
 		}
 
-        /// <summary>Throws an item in a way that it later may be restored to it's original location at a later stage.</summary>
-        /// <param name="item">The item to throw.</param>
+		/// <summary>Throws an item in a way that it later may be restored to it's original location at a later stage.</summary>
+		/// <param name="item">The item to throw.</param>
 		public virtual void Throw(ContentItem item)
 		{
-            CancellableItemEventArgs args = Invoke<CancellableItemEventArgs>(ItemThrowing, new CancellableItemEventArgs(item));
-            if (!args.Cancel)
-            {
-                item = args.AffectedItem;
+			CancellableItemEventArgs args = Invoke(ItemThrowing, new CancellableItemEventArgs(item));
+			if (args.Cancel) return;
 
-                ExpireTrashedItem(item);
+			item = args.AffectedItem;
+			ExpireTrashedItem(item);
 
-                try
-                {
-					persister.Move(item, GetTrashContainer(true));
-                }
-                catch (PermissionDeniedException ex)
-                {
-                    throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using N2.Context.Security or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
-                }
+			try
+			{
+				persister.Move(item, GetTrashContainer(true));
+			}
+			catch (PermissionDeniedException ex)
+			{
+				throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using N2.Context.Security or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
+			}
 
-                Invoke<ItemEventArgs>(ItemThrowed, new ItemEventArgs(item));
-            }
+			Invoke(ItemThrowed, new ItemEventArgs(item));
 		}
 
-        /// <summary>Expires an item that has been thrown so that it's not accessible to external users.</summary>
-        /// <param name="item">The item to restore.</param>
+		/// <summary>Expires an item that has been thrown so that it's not accessible to external users.</summary>
+		/// <param name="item">The item to restore.</param>
 		public virtual void ExpireTrashedItem(ContentItem item)
 		{
 			item[FormerName] = item.Name;
 			item[FormerParent] = item.Parent;
 			item[FormerState] = (int)item.State;
-			item[DeletedDate] = N2.Utility.CurrentTime();
-			item.Name = item.ID.ToString();
+			item[DeletedDate] = Utility.CurrentTime();
+			item.Name = item.ID.ToString(CultureInfo.InvariantCulture);
 			
 			ExpireTrashedItemsRecursive(item);
 		}
@@ -126,7 +122,7 @@ namespace N2.Edit.Trash
 		{
 			if (item.State == ContentState.Published)
 				stateChanger.ChangeTo(item, ContentState.Deleted);
-			foreach (ContentItem child in item.Children)
+			foreach (var child in item.Children)
 				ExpireTrashedItemsRecursive(child);
 		}
 
@@ -136,7 +132,7 @@ namespace N2.Edit.Trash
 		{
 			ContentItem parent = (ContentItem)item["FormerParent"];
 			RestoreValues(item);
-            persister.Save(item);
+			persister.Save(item);
 			persister.Move(item, parent);
 		}
 
@@ -164,22 +160,22 @@ namespace N2.Edit.Trash
 				RestoreValuesRecursive(child);
 		}
 
-        /// <summary>Determines wether an item has been thrown away.</summary>
-        /// <param name="item">The item to check.</param>
-        /// <returns>True if the item is in the scraps.</returns>
+		/// <summary>Determines wether an item has been thrown away.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is in the scraps.</returns>
 		public bool IsInTrash(ContentItem item)
 		{
-            TrashContainerItem trash = GetTrashContainer(false);
+			TrashContainerItem trash = GetTrashContainer(false);
 			return trash != null && Find.IsDescendantOrSelf(item, trash);
 		}
 
-        protected virtual T Invoke<T>(EventHandler<T> handler, T args)
-            where T : ItemEventArgs
-        {
+		protected virtual T Invoke<T>(EventHandler<T> handler, T args)
+			where T : ItemEventArgs
+		{
 			if (handler != null && !args.AffectedItem.VersionOf.HasValue)
-                handler.Invoke(this, args);
-            return args;
-        }
+				handler.Invoke(this, args);
+			return args;
+		}
 
 		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
 		public void PurgeOldItems()
@@ -188,8 +184,8 @@ namespace N2.Edit.Trash
 			if (trash == null) return;
 			if (trash.PurgeInterval == TrashPurgeInterval.Never) return;
 
-			DateTime tresholdDate = Utility.CurrentTime().AddDays(-(int)trash.PurgeInterval);
-			IList<ContentItem> expiredItems = null;
+			var tresholdDate = Utility.CurrentTime().AddDays(-(int)trash.PurgeInterval);
+			IList<ContentItem> expiredItems;
 
 			if (UseNavigationMode)
 				expiredItems = trash.Children
@@ -217,26 +213,25 @@ namespace N2.Edit.Trash
 		public void PurgeAll(Action<PurgingStatus> onProgress = null)
 		{
 			logger.InfoFormat("Purging all trash");
-			var container = GetTrashContainer(create: false);
-			if (container != null)
+			var containerItem = GetTrashContainer(create: false);
+			if (containerItem == null) return;
+
+			var children = containerItem.GetChildren(new AccessFilter(webContext.User, security)).ToList()
+				.Select(c => new { Item = c, DescendantCount = persister.Repository.CountDescendants(c) }).ToList();
+
+			int deletedCount = 0;
+			int total = children.Sum(c => c.DescendantCount);
+			foreach (var child in children)
 			{
-				var children = container.GetChildren(new AccessFilter(webContext.User, security)).ToList()
-					.Select(c => new { Item = c, DescendantCount = persister.Repository.CountDescendants(c) }).ToList();
+				logger.InfoFormat("Purging {0} and {1} descendants", child, child.DescendantCount);
+				if (onProgress != null)
+					onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
 
-				int deletedCount = 0;
-				int total = children.Sum(c => c.DescendantCount);
-				foreach (var child in children)
-				{
-					logger.InfoFormat("Purging {0} and {1} descendants", child, child.DescendantCount);
-					if (onProgress != null)
-						onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
+				persister.Delete(child.Item);
+				deletedCount += child.DescendantCount;
 
-					persister.Delete(child.Item);
-					deletedCount += child.DescendantCount;
-
-					if (onProgress != null)
-						onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
-				}
+				if (onProgress != null)
+					onProgress(new PurgingStatus { Deleted = deletedCount, Remaining = total - deletedCount });
 			}
 		}
 
@@ -254,9 +249,9 @@ namespace N2.Edit.Trash
 				onProgress(new PurgingStatus { Deleted = count, Remaining = 0 });
 		}
 
-        /// <summary>Occurs before an item is thrown.</summary>
-        public event EventHandler<CancellableItemEventArgs> ItemThrowing;
-        /// <summary>Occurs after an item has been thrown.</summary>
-        public event EventHandler<ItemEventArgs> ItemThrowed;
+		/// <summary>Occurs before an item is thrown.</summary>
+		public event EventHandler<CancellableItemEventArgs> ItemThrowing;
+		/// <summary>Occurs after an item has been thrown.</summary>
+		public event EventHandler<ItemEventArgs> ItemThrowed;
 	}
 }
