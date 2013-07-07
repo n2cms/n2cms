@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
+		<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
 	<edit:ToolbarPluginDisplay ID="OptionsPlugins" Area="Options" runat="server" />
 </asp:Content>
 
@@ -33,5 +33,5 @@
 			resizeFrames();
 			$(window).resize(resizeFrames);
 		});
-    </script>
+		</script>
 </asp:Content>
