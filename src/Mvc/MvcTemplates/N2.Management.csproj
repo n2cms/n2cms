@@ -115,7 +115,7 @@
     <Content Include="N2\App\Partials\Management.html" />
     <Content Include="N2\App\Partials\ContentTransitions.html" />
     <Content Include="N2\App\Partials\ContentSearch.html" />
-    <Content Include="N2\App\Partials\MenuSubItem.html" />
+    <Content Include="N2\App\Partials\MenuSubNode.html" />
     <Content Include="N2\App\Partials\ContentPublishSchedule.html" />
     <Content Include="N2\App\Partials\ContentScheduleDialog.html" />
     <Content Include="N2\App\Partials\ContentInfo.html" />
@@ -123,7 +123,7 @@
     <Content Include="N2\App\Partials\FrameAction.html" />
     <Content Include="N2\App\Partials\ContentContextMenu.html" />
     <Content Include="N2\App\Partials\ContentAdd.html" />
-    <Content Include="N2\App\Partials\MenuItem.html" />
+    <Content Include="N2\App\Partials\MenuNode.html" />
     <Content Include="N2\App\Partials\Footer.html" />
     <Content Include="N2\App\Partials\ContentVersions.html" />
     <Content Include="N2\App\Partials\ContentLanguage.html" />

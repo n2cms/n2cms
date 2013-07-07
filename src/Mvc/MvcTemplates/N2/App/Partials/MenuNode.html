@@ -8,6 +8,6 @@
 	<li class="item secondary-action"
 		ng-repeat="child in item.Children"
 		ng-class="{ divider: child.Current.Divider, dropdown : child.Children.length, selected: isFlagged(child.Current.SelectedBy) }"
-		ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubItem.html'">
+		ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubNode.html'">
 	</li>
 </ul>
