@@ -189,9 +189,10 @@ namespace N2.Web
 		internal static string PublishedQueryValue = ViewPreference.Published.ToString().ToLower();
 		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
 		{
-			if (context.Request[ViewPreferenceQueryString] == DraftQueryValue)
+			string viewPreference = context.Request[ViewPreferenceQueryString];
+			if (DraftQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))
 				return ViewPreference.Draft;
-			else if (context.Request[ViewPreferenceQueryString] == PublishedQueryValue)
+			else if (PublishedQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))
 				return ViewPreference.Published;
 			else
 				return defaultPreference;

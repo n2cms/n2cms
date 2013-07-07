@@ -38,12 +38,6 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContextBase context)
 		{
-			var item = Selection.ParseSelectionFromRequest();
-
-			var selectedUrl = context.Request["selectedUrl"];
-			if (item == null && selectedUrl != null)
-				item = Selection.ParseUrl(selectedUrl);
-
 			switch (context.Request.PathInfo)
 			{
 				case "/interface":
@@ -53,11 +47,11 @@ namespace N2.Management.Api
 					context.Response.WriteJson(new
 					{
 						Interface = engine.Resolve<InterfaceBuilder>().GetInterfaceDefinition(context, Selection),
-						Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(item, selectedUrl)
+						Context = engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection)
 					});
 					return;
 				default:
-					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(item, selectedUrl));
+					context.Response.WriteJson(engine.Resolve<ContextBuilder>().GetInterfaceContextData(context, Selection));
 					return;
 			}
 		}

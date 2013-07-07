@@ -7,7 +7,7 @@
 <ul class="dropdown-menu" ng-show="item.Children.length">
 	<li class="item secondary-action"
 		ng-repeat="child in item.Children"
-		ng-class="{ divider: child.Current.Divider, dropdown : child.Children.length }"
+		ng-class="{ divider: child.Current.Divider, dropdown : child.Children.length, selected: isFlagged(child.Current.SelectedBy) }"
 		ng-include src="child.Current.TemplateUrl || 'App/Partials/MenuSubItem.html'">
 	</li>
 </ul>

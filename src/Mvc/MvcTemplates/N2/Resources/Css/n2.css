@@ -57,6 +57,7 @@ a { text-decoration: none; color: #000; }
 					#page-tree ul > li > div.loading > a.toggle i.toggle-loading { display:inline-block !important; }
 					#page-tree ul li.node .tree-pager { display:block; padding-left:20px; }
 						#page-tree ul li.node .tree-pager i { float:right; margin:5px; }
+
 			#page-tree ul li.root { margin-left: 0; }
 				#page-tree ul li.root > div > a { font-weight: bold; }
 				#page-tree ul li.root > div > b.handle { display:none; }
@@ -79,7 +80,7 @@ a { text-decoration: none; color: #000; }
 
 					#page-tree ul li.root ul li.node div.item.unpublished b.handle { background-color: #FF6600; }
 					#page-tree ul li.root ul li.node div.item.unpublished:hover b.handle { background-color: #EE3300; }
-					
+		
 				.ui-sortable-helper .toggle,
 				.ui-sortable-helper .tools { display:none !important; }
 				.sortable-placeholder { border:dotted 1px #52D017; border-left:solid 5px #52D017; height:30px; margin-top:1px; margin-left:10px; }
@@ -104,6 +105,7 @@ a { text-decoration: none; color: #000; }
 		#menu #logo { padding-left:60px; background-image: url(../img/n2.png); background-repeat: no-repeat; background-position: 10px 50%; }
 		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
 			#menu > ul > li .page-action > a { display:block; height: 19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; font-size:20px; }
+				#menu > ul > li ul li.selected { background-color:#ebf7fc; border-top:solid 1px #e6f0f5; }
 	#menu > ul > li.primary-action > .page-action > a > .ico { font-size: 28px; line-height:14px; }
 				#menu > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
 			#menu > ul > li .page-action a.page-action-description { height:32px; padding-top: 5px; padding-left:44px; padding-bottom:0; position:relative; line-height:12px; }
@@ -149,7 +151,7 @@ a { text-decoration: none; color: #000; }
 #menu .versions li.unpublished a { border-left-color:#FF3300; }
 
 
-.info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); font-size:14px; }
+.info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); font-size:14px; text-transform:none; }
 .info-menu.open { display:block; }
 	.info-menu.dl-horizontal dt { width: 140px; }
 	.info-menu.dl-horizontal dd { margin-left: 150px; }

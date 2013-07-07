@@ -84,7 +84,7 @@
 	"fullscreen": { text: "Fullscreen" },
 	"viewdrafts": { text: "View latest drafts" },
 	"viewpublished": { text: "View published versions" },
-	"links": { text: "Show link connections" },
+	"links": { text: "Link connections" },
 	"edit": { text: "Edit" },
 	"editdetails": { text: "Edit details" },
 	"organize": { text: "Organize parts" },

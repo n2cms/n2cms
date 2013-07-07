@@ -18,7 +18,7 @@
 </a>
 
 <ul class="dropdown-menu" ng-show="item.Children.length">
-	<li ng-repeat="child in item.Children">
+	<li ng-repeat="child in item.Children" ng-class="{ selected: child.Current.Title == Context.Language.LanguageTitle }" title="{{Context.ExtendedInfo}}">
 		<page-action-link node="child"></page-action-link>
 	</li>
 </ul>
