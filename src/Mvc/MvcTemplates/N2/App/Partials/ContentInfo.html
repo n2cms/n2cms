@@ -19,5 +19,5 @@
 		<span ng-show="Context.ExtendedInfo.Draft">(<span translate="info.version.draft">draft</span>: <a href="{{Context.ExtendedInfo.Draft.Url}}" target="preview" title="{{Context.ExtendedInfo.Draft.SavedBy}}: {{Context.ExtendedInfo.Draft.Updated | date}}">{{Context.ExtendedInfo.Draft.VersionIndex + 1}}</a>)</span>
 	</dd>
 	<dt translate="info.access.dt" ng-show="Context.ExtendedInfo.ReadProtected">Access</dt><dd translate="info.access.privileged" ng-show="Context.ExtendedInfo.ReadProtected">Privileged users</dd>
-	<dt>Flags</dt><dd ng-repeat="flag in Context.Flags">{{flag}}</dd>
+	<!--<dt>Flags</dt><dd ng-repeat="flag in Context.Flags">{{flag}}</dd>-->
 </dl>
