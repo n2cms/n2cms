@@ -5,10 +5,10 @@ using N2.Integrity;
 
 namespace N2.Edit.Trash
 {
-	[PageDefinition("Trash", 
-		Name = "TrashContainerItem", 
+	[PageDefinition("Trash",
+		Name = "TrashContainerItem",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconClass = "n2-icon-trash", 
+		IconClass = "n2-icon-trash",
 		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx",
 		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
@@ -19,7 +19,7 @@ namespace N2.Edit.Trash
 		public virtual int KeepDays
 		{
 			get { return (int)(GetDetail("KeepDays") ?? 31); }
-			set { SetDetail<int>("KeepDays", value); }
+			set { SetDetail("KeepDays", value); }
 		}
 
 		[EditableCheckBox("Enabled", 80)]
@@ -47,9 +47,7 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				return base.IconClass + (this.Children.Count > 0
-					? ""
-					: " opaque");
+				return base.IconClass + (this.Children.Count > 0 ? string.Empty : " opaque");
 			}
 		}
 	}

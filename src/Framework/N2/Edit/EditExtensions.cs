@@ -43,105 +43,105 @@ namespace N2.Edit
 			return items.Union(new[] { new CreatorItem(engine, parent) });
 		}
 
-        public static void RefreshManagementInterface(this Page page, ContentItem item)
-        {
-            string previewUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl(item);
-            string script = string.Format("window.top.location = '{0}';", previewUrl);
+		public static void RefreshManagementInterface(this Page page, ContentItem item)
+		{
+			string previewUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl(item);
+			string script = string.Format("window.top.location = '{0}';", previewUrl);
 
-            page.ClientScript.RegisterClientScriptBlock(
-                typeof(EditExtensions),
-                "RefreshScript",
-                script, true);
-        }
+			page.ClientScript.RegisterClientScriptBlock(
+				typeof(EditExtensions),
+				"RefreshScript",
+				script, true);
+		}
 
-        private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
+		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
 		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
 		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}', permission:'{5}', force:{6}, versionIndex:{7}, versionKey:'{8}' }});";
 
-        public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
-        {
-            var engine = page.GetEngine();
-            string script = string.Format(RefreshBothFormat,
-                engine.ManagementPaths.GetEditInterfaceUrl(), // 0
+		public static void RefreshPreviewFrame(this Page page, ContentItem item, string previewUrl)
+		{
+			var engine = page.GetEngine();
+			string script = string.Format(RefreshBothFormat,
+				engine.ManagementPaths.GetEditInterfaceUrl(), // 0
 				engine.ManagementPaths.GetNavigationUrl(item), // 1
-                Url.ToAbsolute(previewUrl), // 2
-                item.ID, // 3
-                item.Path, // 4
-                engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // permission:'{5}',
-                "true", // force:{6}
+				Url.ToAbsolute(previewUrl), // 2
+				item.ID, // 3
+				item.Path, // 4
+				engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // permission:'{5}',
+				"true", // force:{6}
 				item.VersionIndex,
 				item.GetVersionKey()
-            );
+			);
 			
-            page.ClientScript.RegisterClientScriptBlock(
-                typeof(EditExtensions),
-                "RefreshFramesScript",
-                script, true);
-        }
+			page.ClientScript.RegisterClientScriptBlock(
+				typeof(EditExtensions),
+				"RefreshFramesScript",
+				script, true);
+		}
 
-        /// <summary>Referesh the selected frames after loading the page.</summary>
-        /// <param name="item"></param>
-        /// <param name="area"></param>
-        public static void RefreshFrames(this Page page, ContentItem item, ToolbarArea area, bool force = true)
-        {
-            string script = GetRefreshFramesScript(page, item, area, force);
+		/// <summary>Referesh the selected frames after loading the page.</summary>
+		/// <param name="item"></param>
+		/// <param name="area"></param>
+		public static void RefreshFrames(this Page page, ContentItem item, ToolbarArea area, bool force = true)
+		{
+			string script = GetRefreshFramesScript(page, item, area, force);
 
-            page.ClientScript.RegisterClientScriptBlock(
-                typeof(EditExtensions),
-                "RefreshFramesScript",
-                script, true);
-        }
+			page.ClientScript.RegisterClientScriptBlock(
+				typeof(EditExtensions),
+				"RefreshFramesScript",
+				script, true);
+		}
 
-        public static string GetRefreshFramesScript(this Page page, ContentItem item, ToolbarArea area, bool force = true)
-        {
-            var engine = N2.Context.Current;
+		public static string GetRefreshFramesScript(this Page page, ContentItem item, ToolbarArea area, bool force = true)
+		{
+			var engine = N2.Context.Current;
 
-            string format;
-            if (area == ToolbarArea.Both)
-                format = EditExtensions.RefreshBothFormat;
-            else if (area == ToolbarArea.Preview)
-                format = RefreshPreviewFormat;
-            else
-                format = RefreshNavigationFormat;
+			string format;
+			if (area == ToolbarArea.Both)
+				format = EditExtensions.RefreshBothFormat;
+			else if (area == ToolbarArea.Preview)
+				format = RefreshPreviewFormat;
+			else
+				format = RefreshNavigationFormat;
 
-            string script = string.Format(format,
-                engine.ManagementPaths.GetEditInterfaceUrl(), // 0
-                engine.ManagementPaths.GetNavigationUrl(item), // 1
-                GetPreviewUrl(page, engine, item), // 2
-                item.ID, // 3
-                item.Path, // 4
-                engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // 5
-                force.ToString().ToLower(), // 6
+			string script = string.Format(format,
+				engine.ManagementPaths.GetEditInterfaceUrl(), // 0
+				engine.ManagementPaths.GetNavigationUrl(item), // 1
+				GetPreviewUrl(page, engine, item), // 2
+				item.ID, // 3
+				item.Path, // 4
+				engine.ResolveAdapter<NodeAdapter>(item).GetMaximumPermission(item), // 5
+				force.ToString().ToLower(), // 6
 				item.VersionIndex,
 				item.GetVersionKey()
-                );
-            return script;
-        }
+				);
+			return script;
+		}
 
-        internal static string GetPreviewUrl(this Page page, IEngine engine, ContentItem item)
-        {
+		internal static string GetPreviewUrl(this Page page, IEngine engine, ContentItem item)
+		{
 			string returnUrl = page.Request["returnUrl"];
 			if (!string.IsNullOrEmpty(returnUrl))
 				return Url.Parse(returnUrl).SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex).SetQueryParameter("versionKey", item.GetVersionKey());
-            return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
-        }
+			return engine.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item);
+		}
 
 		internal static string GetNavigationUrl(this Page page, IEngine engine, ContentItem item)
 		{
 			return engine.ResolveAdapter<NodeAdapter>(item).GetNavigationUrl(item);
 		}
 
-        public static SelectionUtility GetSelection(this Page page)
-        {
-            if (page is Web.EditPage)
-                return (page as Web.EditPage).Selection;
+		public static SelectionUtility GetSelection(this Page page)
+		{
+			if (page is Web.EditPage)
+				return (page as Web.EditPage).Selection;
 
 			var selection = page.Items["SelectionUtility"] as SelectionUtility;
 			if(selection == null)
 				page.Items["SelectionUtility"] = selection = new SelectionUtility(page, N2.Context.Current);
 
 			return selection;
-        }
+		}
 
 		public static void InsertChildBefore(this ContentItem parent, ContentItem child, int beforeSortOrder)
 		{
@@ -182,11 +182,11 @@ namespace N2.Edit
 	{
 		public CreatorItem()
 		{
-            State = ContentState.Published;
+			State = ContentState.Published;
 		}
 
 		public CreatorItem(IEngine engine, ContentItem parent)
-            : this()
+			: this()
 		{
 			this.url = engine.ManagementPaths.GetSelectNewItemUrl(parent).ToUrl().AppendQuery("returnUrl", engine.Resolve<IWebContext>().HttpContext.Request.RawUrl);
 			this.Title = "<span class='creator-add'>&nbsp;</span>" + (Utility.GetGlobalResourceString("Management", "Add") ?? "Add...");
