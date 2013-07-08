@@ -15,7 +15,7 @@
 				<HeaderTemplate><dd class="items"></HeaderTemplate>
 				<ItemTemplate>
 					<div class="edit">
-						<edit:ItemLink DataSource="<%# Container.DataItem %>" runat="server" />
+						<edit:ItemLink DataSource="<%# Container.DataItem %>" runat="server" InterfaceUrl="Edit.aspx" />
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
