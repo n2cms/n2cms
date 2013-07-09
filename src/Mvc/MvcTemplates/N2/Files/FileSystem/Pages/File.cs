@@ -7,6 +7,7 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Definitions;
 using N2.Web.Drawing;
+using N2.Edit.Api;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -17,6 +18,7 @@ namespace N2.Edit.FileSystem.Items
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/File.aspx")]
+	[InterfaceFlags("Management")]
     public class File : AbstractNode, IActiveContent, IFileSystemFile
     {
 		public long Size { get; set; }

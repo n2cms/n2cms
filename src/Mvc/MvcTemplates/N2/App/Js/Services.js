@@ -42,6 +42,11 @@
 			getFrameActions: function () {
 				var pf = window.frames.preview;
 				return pf && pf.frameInteraction && pf.frameInteraction.getActions();
+			},
+			getFlags: function () {
+				var pf = window.frames.preview;
+				var flags = pf && pf.frameInteraction && pf.frameInteraction.getFlags && pf.frameInteraction.getFlags();
+				return flags || [];
 			}
 		};
 

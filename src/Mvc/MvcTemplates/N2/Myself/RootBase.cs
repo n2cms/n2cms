@@ -5,6 +5,7 @@ using N2.Web;
 using N2.Details;
 using N2.Web.UI;
 using N2.Security;
+using N2.Edit.Api;
 
 namespace N2.Management.Myself
 {
@@ -23,6 +24,7 @@ namespace N2.Management.Myself
     [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
 	[Versionable(AllowVersions.No)]
+	[InterfaceFlags("Management", "Unclosable")]
     public class RootBase : ContentItem, IRootPage, ISystemNode
     {
         public override string Url

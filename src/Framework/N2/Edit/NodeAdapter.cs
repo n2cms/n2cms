@@ -324,7 +324,9 @@ namespace N2.Edit
 				tags.Add("Recent");
 
 			tags.Add(type.Assembly.GetName().Name);
-			
+
+			tags.AddRange(Definitions.GetDefinition(item).Flags);
+
 			tags.AddRange(Utility.GetBaseTypesAndSelf(type).Where(t => t != typeof(object)).Select(t => t.Name));
 			tags.AddRange(type.GetInterfaces().Where(t => t.Namespace.Contains("Definition")).Select(t => t.Name));
 

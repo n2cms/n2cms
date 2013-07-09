@@ -12,7 +12,7 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<h1><% foreach (N2.ContentItem node in Ancestors){ %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 
-	<div class="tabPanel">
+	<div class="tabPanel" data-flag="Unclosable">
 	<a href="<%= SelectedItem.Url %>">
 		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
@@ -24,4 +24,10 @@
 		<edit:ResizedImage MaxHeight="200" MaxWidth="300" ImageUrl="<%# SelectedFile.LocalUrl %>" runat="server" Hash="<%# SelectedFile.Updated.ToString() %>" />
 	</div>
 	</div>
+
+	<script>
+		$(function () {
+			$('body').removeClass('toolbar-hidden');
+		});
+	</script>
 </asp:Content>

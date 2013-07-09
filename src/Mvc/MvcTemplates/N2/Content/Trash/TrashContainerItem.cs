@@ -1,5 +1,6 @@
 using N2.Definitions;
 using N2.Details;
+using N2.Edit.Api;
 using N2.Installation;
 using N2.Integrity;
 
@@ -13,6 +14,7 @@ namespace N2.Edit.Trash
 		AuthorizedRoles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
 	[Throwable(AllowInTrash.No)]
+	[InterfaceFlags("Management", "Unclosable")]
 	public class TrashContainerItem : N2.ContentItem, ITrashCan, ISystemNode
 	{
 		[EditableNumber("Number of days to keep deleted items", 100)]

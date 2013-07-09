@@ -186,15 +186,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 	$scope.isDisplayable = function (item) {
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission)) {
-			//console.log("unauthorized", item);
 			return false;
 		}
+		if (item.Current.DisplayedBy && item.Current.HiddenBy) {
+			return $scope.isFlagged(item.Current.DisplayedBy)
+				&& !$scope.isFlagged(item.Current.HiddenBy);
+		}
 		if (item.Current.HiddenBy) {
-			//console.log(item.Current.Title, "hidden by", item.Current.HiddenBy, item);
 			return !$scope.isFlagged(item.Current.HiddenBy);
 		}
 		if (item.Current.DisplayedBy) {
-			//console.log(item.Current.Title, "displayed by", item.Current.DisplayedBy, $scope.isFlagged(item.Current.DisplayedBy), item);
 			return $scope.isFlagged(item.Current.DisplayedBy);
 		}
 		return true;
@@ -462,12 +463,21 @@ function FrameActionCtrl($scope, $rootScope, FrameManipulator) {
 	$rootScope.$on("contextchanged", function (scope, e) {
 		$scope.$parent.action = null;
 		$scope.$parent.item.Children = [];
+		var extraFlags = FrameManipulator.getFlags();
+		for (var i in extraFlags) {
+			console.log("Pushing flags", extraFlags[i]);
+			$scope.Context.Flags.push(extraFlags[i]);
+		}
 		if ($scope.isFlagged("Management")) {
 			var actions = $scope.manipulator.getFrameActions();
 			if (actions && actions.length) {
 				$scope.$parent.manipulator.hideToolbar();
+
 				$scope.$parent.action = actions[0];
-				$scope.$parent.item.Children = actions[0].Children;
+				if (actions.length == 1)
+					$scope.$parent.item.Children = actions[0].Children;
+				else
+					$scope.$parent.item.Children = actions;
 			}
 		}
 	});
