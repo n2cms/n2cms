@@ -36,50 +36,48 @@ a { text-decoration: none; color: #000; }
 
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; margin-top:33px;}
 	#page-tree ul { list-style-type:none; padding:0; margin:0; }
-		#page-tree ul li.node { margin-left: 10px; text-indent: 5px; line-height: 28px; }
-			#page-tree ul li.node div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; }
-			#page-tree ul li.node div.item a.item { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
-				#page-tree ul li.node div.item a.item .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
-				#page-tree ul li.node .tools { position:absolute; right:20px; top: 10px; }
-					#page-tree ul li.node .tools-toggler { display:none; height: 11px; width: 18px; background: url("../img/tools.png") no-repeat scroll 0 0 transparent; text-indent: -9999px;}
-				#page-tree ul li.node div.item:hover .tools-toggler,
-				#page-tree ul li.node div.item .open .tools-toggler { display: block; }
-					#page-tree ul li.node div.item .dropdown-menu { border-radius: 0; padding: 0; }
-						#page-tree ul li.node div.item .dropdown-menu li.divider { height:2px; }
-							#page-tree ul li.node div.item .dropdown-menu li a { padding:3px; }
-							#page-tree ul li.node div.item .dropdown-menu li a.iconed-text { padding-left:25px; background-position: 10px 50%;  background-repeat:no-repeat !important; color:#000 }
-				#page-tree ul li.node a.toggle { position:absolute; right: 5px; top:1px; }
-				#page-tree ul li.node a.toggle:hover { text-decoration:none; }
-					#page-tree ul li.node a.toggle i { display:none; }
-					#page-tree ul li.node.collapsed > div > a.toggle i.toggle-expand { display:inline-block; }
-					#page-tree ul li.node.expanded > div:hover > a.toggle i.toggle-collapse { display:inline-block; }
-					#page-tree ul > li > div.loading > a.toggle i { display:none !important; }
-					#page-tree ul > li > div.loading > a.toggle i.toggle-loading { display:inline-block !important; }
-					#page-tree ul li.node .tree-pager { display:block; padding-left:20px; }
-						#page-tree ul li.node .tree-pager i { float:right; margin:5px; }
+		#page-tree li { margin-left: 10px; text-indent: 5px; line-height: 28px; }
+			#page-tree li div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; }
+			#page-tree li div.item a.item { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
+				#page-tree li div.item a.item .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
+				
+				#page-tree li div.item .tools { position:absolute; right:20px; top: 0; }
+					#page-tree li div.item		 .tools .dropdown-toggle { opacity:0; color:#666; transition: opacity .5s ease-in-out; text-decoration:none; }
+					#page-tree li div.item:hover .tools .dropdown-toggle { opacity:1; }
+					#page-tree li div.item .tools .dropdown-menu { border-radius: 0; padding: 0; }
+						#page-tree li div.item .tools .dropdown-menu li.divider { height:2px; }
+							#page-tree li div.item .tools .dropdown-menu li a { padding:3px; }
+							#page-tree li div.item .tools .dropdown-menu li a.iconed-text { padding-left:25px; background-position: 10px 50%;  background-repeat:no-repeat !important; color:#000 }
 
-			#page-tree ul li.root { margin-left: 0; }
-				#page-tree ul li.root > div > a { font-weight: bold; }
-				#page-tree ul li.root > div > b.handle { display:none; }
-				#page-tree ul li.root > div { background: #fafafa; }
-				#page-tree ul li.root > div:hover { background: #f3f3f3; }
-				#page-tree ul li.root > ul > li { margin: 0; }
-				#page-tree ul li.root ul li.node { border-top: 1px solid #FFFFFF; clear:both; }
-					#page-tree ul li.root ul li.node div.item { border-bottom: 1px solid #ebf7fc; }
-					#page-tree ul li.root ul li.node div.item b.handle { background: #ebf7fc none no-repeat 2px 50%; display:inline-block; height:28px; width:5px; cursor:move; float:left; }
-					#page-tree ul li.root ul li.node div.item b.handle:hover { transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
-					#page-tree ul li.root ul li.ui-sortable-helper > div.item b.handle { width:19px; }
-					#page-tree ul li.root ul li.node a img { padding-right: 4px; position: relative; top: 3px; }
-					#page-tree ul li.root ul li.node div.item:hover { background: #f9fdfe; }
-					#page-tree ul li.root ul li.node div.item:hover b.handle { background-color: #d9f0f9; }
-					#page-tree ul li.root ul li.active > div.item { background: #ebf7fc; }
-					#page-tree ul li.root ul li.active > div.item b.handle { background-color: #3aaee3; }
+				#page-tree li div.item a.toggle { position:absolute; right: 5px; top:1px; }
+				#page-tree li div.item a.toggle:hover { text-decoration:none; }
+					#page-tree li div.item a.toggle b { display:none; }
+					#page-tree li.collapsed > div.item > a.toggle .toggle-expand { display:inline-block; }
+					#page-tree li.expanded > div.item:hover > a.toggle .toggle-collapse { display:inline-block; }
+					#page-tree li div.item.loading > a.toggle b { display:none !important; }
+					#page-tree li div.item.loading > a.toggle .toggle-loading { display:inline-block !important; }
+					#page-tree li .tree-pager { display:block; padding-left:20px; }
+						#page-tree li .tree-pager b { float:right; margin:5px; }
 
-					#page-tree ul li.root ul li.node div.item.draft b.handle { background-color: #FFBB88; }
-					#page-tree ul li.root ul li.node div.item.draft:hover b.handle { background-color: #FF9966; }
+			#page-tree li.root { margin-left: 0; }
+				#page-tree li div.item.startpage a { font-weight: bold; }
 
-					#page-tree ul li.root ul li.node div.item.unpublished b.handle { background-color: #FF6600; }
-					#page-tree ul li.root ul li.node div.item.unpublished:hover b.handle { background-color: #EE3300; }
+				#page-tree li.root > ul > li { margin:0; }
+					#page-tree li			 div.item { border-bottom: 1px solid #ebf7fc; }
+						#page-tree li	     div.item		b.handle { background: #ebf7fc none no-repeat 2px 50%; display:inline-block; height:28px; width:5px; cursor:move; float:left; }
+						#page-tree li	     div.item:hover b.handle { background-color: #d9f0f9; }
+						#page-tree li	     div.item		b.handle:hover { transition: width ease-in-out 100ms; width:19px; background-image: url(../../Resources/Img/gripper.gif); }
+						#page-tree li.root > div.item		b.handle { display:none; }
+					#page-tree li.active   > div.item { background: #ebf7fc; }
+						#page-tree li.active > div.item b.handle { background-color: #3aaee3; }
+
+						#page-tree li.ui-sortable-helper > div.item b.handle { width:19px; }
+
+						#page-tree li div.item.draft	   b.handle { background-color: #FFBB88; }
+						#page-tree li div.item.draft:hover b.handle { background-color: #FF9966; }
+
+						#page-tree li div.item.unpublished		 b.handle { background-color: #FF6600; }
+						#page-tree li div.item.unpublished:hover b.handle { background-color: #EE3300; }
 		
 				.ui-sortable-helper .toggle,
 				.ui-sortable-helper .tools { display:none !important; }
@@ -87,12 +85,6 @@ a { text-decoration: none; color: #000; }
 				#page-tree ul.targettable.collapsed { padding:8px 0 4px 0; margin:-8px 0 -4px 0; }
 				#page-tree ul.collapsed li { display:none; }
 				#page-tree ul.collapsed li.sortable-placeholder { display:block; }
-
-
-#trash { position: absolute; bottom: 0; width: 100%; font-size: 12px; padding: 2px; }
-	#trash > div { text-align: center; height: 60px; background: #f0f0f0; border: 1px solid #dddddd; }
-	#trash div div { font-size: 18px; padding-top: 10px; }
-
 
 #main-area { left: 354px; position: absolute; top: 0; bottom: 0; right:0; overflow:auto; }
 	#page-preview { position:absolute; top: 0; bottom: 0; width:100%; }

@@ -133,10 +133,13 @@ namespace N2.Edit
 			
 			if(!item.IsPage)
 				mi["zone"] = new MetaInfo { Text = item.ZoneName };
-			
+
 			if (Host.IsStartPage(item))
 				mi["authority"] = new MetaInfo { Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
-			
+
+			if (item.Parent == null)
+				mi["root"] = new MetaInfo { Text = "" };
+
 			var draftInfo = Drafts.GetDraftInfo(item);
 			if (draftInfo != null && draftInfo.Saved > item.Updated)
 				mi["draft"] = new MetaInfo { Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
