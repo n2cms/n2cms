@@ -72,8 +72,14 @@ namespace N2.Management.Api
 
 		public event EventHandler<ContextBuiltEventArgs> ContextBuilt;
 
-		public virtual ContextData GetInterfaceContextData(ContentItem item, Url selectedUrl)
+		public virtual ContextData GetInterfaceContextData(HttpContextBase context, SelectionUtility selection)
 		{
+			var item = selection.ParseSelectionFromRequest();
+
+			Url selectedUrl = context.Request["selectedUrl"];
+			if (item == null && selectedUrl != null)
+				item = selection.ParseUrl(selectedUrl);
+
 			var data = new ContextData();
 
 			if (item != null)
@@ -88,6 +94,11 @@ namespace N2.Management.Api
 			}
 			else
 				data.Flags = new List<string>();
+
+			if (context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode) == ViewPreference.Published)
+				data.Flags.Add("ViewPublished");
+			else
+				data.Flags.Add("ViewDraft");
 
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
 			if (!selectedUrl.IsEmpty())
@@ -107,6 +118,9 @@ namespace N2.Management.Api
 					data.Flags.Add("Organize");
 				}
 			}
+
+			if (new[] { "MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers" }.Intersect(data.Flags).Any() == false)
+				data.Flags.Add("ContentPages");
 
 			if (ContextBuilt != null)
 				ContextBuilt(this, new ContextBuiltEventArgs { Data = data });

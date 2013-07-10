@@ -23,7 +23,7 @@
 </a>
 
 <ul class="dropdown-menu versions" ng-show="item.Children.length">
-	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, waiting: child.Current.State == Content.states.Waiting, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted  }">
+	<li ng-repeat="child in item.Children" ng-class="{ draft: child.Current.State == Content.states.Draft, waiting: child.Current.State == Content.states.Waiting, published: child.Current.State == Content.states.Published, unpublished: child.Current.State == Content.states.Unpublished || child.Current.State == Content.states.Deleted, selected: child.Current.VersionIndex == Context.CurrentItem.VersionIndex }">
 		<div class="page-action">
 			<a href="{{child.Current.PreviewUrl}}" target="preview">
 				<strong>{{child.Current.VersionIndex + 1}}</strong>

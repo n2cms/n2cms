@@ -36,7 +36,7 @@ namespace N2.Configuration
 			set { base["managementInterfaceUrl"] = value; }
 		}
 
-		[ConfigurationProperty("editInterfaceUrl", DefaultValue = "{ManagementUrl}/Content/")]
+		[ConfigurationProperty("editInterfaceUrl", DefaultValue = "{ManagementUrl}/")]
 		public string EditInterfaceUrl
 		{
 			get { return (string)base["editInterfaceUrl"]; }

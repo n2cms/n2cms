@@ -8,6 +8,7 @@ using System;
 using N2.Details;
 using N2.Web.UI;
 using N2.Security;
+using N2.Edit.Api;
 
 namespace N2.Templates.Mvc.Areas.Management.Models
 {
@@ -29,6 +30,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
     [RecursiveContainer("RootSettings", 120, RequiredPermission = Permission.Administer)]
     [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
+	[InterfaceFlags("Management", "Unclosable")]
     public class RootPage : ContentItem, IRootPage, ISystemNode
     {
         public override string Url

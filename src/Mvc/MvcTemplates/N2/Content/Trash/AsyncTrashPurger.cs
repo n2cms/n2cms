@@ -1,12 +1,8 @@
-﻿using N2;
-using N2.Edit.Trash;
+﻿using N2.Edit.Trash;
 using N2.Engine;
 using N2.Persistence;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace N2.Management.Content.Trash
 {
@@ -29,8 +25,8 @@ namespace N2.Management.Content.Trash
 		private ITrashHandler trash;
 		private IPersister persister;
 
-		private AsyncPurgeStatus currentStatus;
-		bool isWorking;
+		private AsyncPurgeStatus _currentStatus;
+		bool _isWorking;
 		ConcurrentQueue<Work> workQueue = new ConcurrentQueue<Work>();
 
 		public AsyncTrashPurger(IWorker worker, ITrashHandler trash, IPersister persister)
@@ -42,8 +38,8 @@ namespace N2.Management.Content.Trash
 
 		public AsyncPurgeStatus Status
 		{
-			get { return currentStatus ?? new AsyncPurgeStatus { IsRunning = false }; }
-			set { currentStatus = value; }
+			get { return _currentStatus ?? new AsyncPurgeStatus { IsRunning = false }; }
+			set { _currentStatus = value; }
 		}
 
 		public virtual void BeginPurgeAll()
@@ -51,26 +47,26 @@ namespace N2.Management.Content.Trash
 			workQueue.Enqueue(new Work { Task = () => 
 			{
 				Status = new AsyncPurgeStatus { IsRunning = true, Progress = new PurgingStatus { Deleted = 0, Remaining = 1 }, Title = "All" };
-				trash.PurgeAll((s) => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = "All" }; });
+				trash.PurgeAll(s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = "All" }; });
 				Status = null;
 			}});
 			BeginWorking();
 		}
 
-		public virtual void BeginPurge(int rootID)
+		public virtual void BeginPurge(int rootId)
 		{
 			workQueue.Enqueue(new Work
 			{
 				Task = () =>
 				{
-					var item = persister.Get(rootID);
+					var item = persister.Get(rootId);
 					if (item == null)
 						return;
 
 					string title = item.Title;
 					Status = new AsyncPurgeStatus { IsRunning = true, Progress = new PurgingStatus { Deleted = 0, Remaining = 1 }, Title = title };
 
-					trash.Purge(item, (s) => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = title }; });
+					trash.Purge(item, s => { Status = new AsyncPurgeStatus { IsRunning = true, Progress = s, Title = title }; });
 					Status = null;
 				}
 			});
@@ -81,11 +77,11 @@ namespace N2.Management.Content.Trash
 		{
 			lock (this)
 			{
-				if (isWorking)
+				if (_isWorking)
 					return;
 
 				Status = new AsyncPurgeStatus { IsRunning = true };
-				isWorking = true;
+				_isWorking = true;
 				worker.DoWork(() =>
 					{
 						Work work;
@@ -96,7 +92,7 @@ namespace N2.Management.Content.Trash
 
 						lock (this)
 						{
-							isWorking = false;
+							_isWorking = false;
 						}
 					});
 			}

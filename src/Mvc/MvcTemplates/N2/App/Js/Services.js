@@ -42,6 +42,11 @@
 			getFrameActions: function () {
 				var pf = window.frames.preview;
 				return pf && pf.frameInteraction && pf.frameInteraction.getActions();
+			},
+			getFlags: function () {
+				var pf = window.frames.preview;
+				var flags = pf && pf.frameInteraction && pf.frameInteraction.getFlags && pf.frameInteraction.getFlags();
+				return flags || [];
 			}
 		};
 
@@ -86,7 +91,7 @@
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
 		});
 
-		res.loadChildren = function (node, callback) {callback
+		res.loadChildren = function (node, callback) {
 			if (!node)
 				return;
 
@@ -225,7 +230,7 @@
 					console.log("moved", ctx);
 
 					reload(ctx);
-					Notify.show({ message: "Successfully noved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+					Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {
 					Notify.show({ message: "Failed moving " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});
@@ -236,7 +241,7 @@
 					console.log("sorted", ctx);
 
 					reload(ctx);
-					Notify.show({ message: "Successfully sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
+					Notify.show({ message: "Sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {
 					Notify.show({ message: "Failed sorting " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "error" });
 				});

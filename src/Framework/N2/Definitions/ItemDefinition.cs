@@ -32,6 +32,7 @@ using N2.Web.UI;
 using N2.Security;
 using N2.Collections;
 using System.Linq.Expressions;
+using N2.Edit.Api;
 
 namespace N2.Definitions
 {
@@ -196,6 +197,9 @@ namespace N2.Definitions
 
 		/// <summary>Information kept on the definition</summary>
 		public IDictionary<string, object> Metadata { get; set; }
+
+		/// <summary>Interface flags used control displayed UI elements.</summary>
+		public ICollection<string> Flags { get; set; }
 
 		#endregion
 
@@ -406,6 +410,12 @@ namespace N2.Definitions
 				refiner.Refine(this);
 
 			initializedTypes.Add(type);
+
+			foreach (var flag in type.GetCustomAttributes(typeof(InterfaceFlagsAttribute), false)
+				.OfType<InterfaceFlagsAttribute>()
+				.SelectMany(f => f.Flags))
+				Flags.Add(flag);
+
 			return this;
 		}
 
@@ -478,6 +488,7 @@ namespace N2.Definitions
 			id.IsDefined = IsDefined;
 			id.NumberOfItems = 0;
 			id.Metadata = Metadata.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			id.Flags = Flags.ToList();
 			id.Properties = Properties.ToDictionary(p => p.Key, p => p.Value.Clone());
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
@@ -543,7 +554,7 @@ namespace N2.Definitions
 			Attributes = new List<object>();
 			Properties = new Dictionary<string, PropertyDefinition>();
 			Metadata = new Dictionary<string, object>();
+			Flags = new List<string>();
 		}
-
 	}
 }

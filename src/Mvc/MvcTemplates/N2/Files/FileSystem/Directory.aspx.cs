@@ -8,6 +8,7 @@ using N2.Resources;
 using N2.Web.Drawing;
 using System.Configuration;
 using System.Web.Configuration;
+using N2.Web;
 
 namespace N2.Edit.FileSystem
 {
@@ -36,6 +37,7 @@ namespace N2.Edit.FileSystem
 
             Refresh(Selection.SelectedItem, ToolbarArea.Navigation, force: false);
             btnDelete.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, N2.Security.Permission.Publish);
+			hlEdit.NavigateUrl = Engine.ManagementPaths.GetEditExistingItemUrl(Selection.SelectedItem);
         }
 
 		private void Reload()

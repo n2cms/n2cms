@@ -3,6 +3,7 @@ using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Engine;
+using N2.Edit.Api;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -14,6 +15,7 @@ namespace N2.Edit.FileSystem.Items
 	[WithEditableName(Focus = true)]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
 	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
+	[InterfaceFlags("Management")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
 		string localUrl;

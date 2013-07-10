@@ -4,7 +4,7 @@
 
 <ul class="dropdown-menu sub-menu" ng-show="child.Children.length">
 	<li ng-repeat="grandchild in child.Children"
-		ng-class="{ divider: grandchild.Current.Divider }">
+		ng-class="{ divider: grandchild.Current.Divider, selected: isFlagged(grandchild.Current.SelectedBy) }">
 		<page-action-link node="grandchild"></page-action-link>
 	</li>
 </ul>

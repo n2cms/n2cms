@@ -6,17 +6,16 @@
 		<HeaderTemplate><dl></HeaderTemplate>
 		<ItemTemplate>
 			<dt>
-				<asp:HyperLink CssClass="new" ID="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>"
-					ImageUrl="../Resources/icons/add.png" Text="New" meta:resourceKey="hlNew" />
-				<strong><%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %></strong>
+				<asp:HyperLink CssClass="new" ID="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>">
+					<b class="n2-icon-plus-sign"></b>
+					<%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %>
+				</asp:HyperLink>
 			</dt>
 			<asp:Repeater ID="rptItems" runat="server" DataSource="<%# GetItemsInZone(Container.DataItem) %>">
 				<HeaderTemplate><dd class="items"></HeaderTemplate>
 				<ItemTemplate>
 					<div class="edit">
-						<asp:HyperLink runat="server" Text="<%# GetEditDataItemText(Container.DataItem) %>" 
-							NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>"
-							CssClass="<%# GetEditDataItemClass(Container.DataItem) %>" />
+						<edit:ItemLink DataSource="<%# Container.DataItem %>" runat="server" InterfaceUrl="Edit.aspx" />
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
@@ -25,8 +24,9 @@
 							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
 							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
 							ImageUrl="../Resources/icons/bullet_arrow_up.png" OnClick="MoveItemUp"/>
-						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" 
-							ImageUrl="../Resources/icons/cross.png" meta:resourceKey="hlDelete" />
+						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server">
+							<b class="n2-icon-trash"></b>
+						</asp:HyperLink>
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>

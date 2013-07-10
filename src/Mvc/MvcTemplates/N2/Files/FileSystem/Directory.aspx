@@ -2,11 +2,14 @@
 <%@ Register TagPrefix="edit" TagName="FileUpload" Src="FileUpload.ascx" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
+	<n2:OptionsMenu id="om" runat="server">
+		<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command primary-action" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" meta:resourceKey="btnDelete" />
+		<asp:HyperLink ID="hlEdit" runat="server" Text="Edit" CssClass="command edit" meta:resourceKey="hlEdit" />
+	</n2:OptionsMenu>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
 	<h1><% foreach (N2.ContentItem node in ancestors) { %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
-	<div class="tabPanel">
+	<div class="tabPanel" data-flag="Unclosable">
         <div class="directory cf">
 		    <asp:Repeater ID="rptDirectories" runat="server">
 			    <ItemTemplate>

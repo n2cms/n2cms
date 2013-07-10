@@ -387,17 +387,18 @@ jQuery(document).ready(function(){{
 		{
 			const string C_SPRITE = "sprite:";
 			string icon = "";
-			if (!string.IsNullOrEmpty(iconClass))
-			{
-				icon = string.Format(@"<b class=""{0}""></b>", iconClass);
-			}
-			else if (iconUrl != null)
+			if (!string.IsNullOrEmpty(iconUrl))
 			{
 				if (iconUrl.StartsWith(C_SPRITE))
 					icon = string.Format(@"<span class=""{0} sprite""></span>", (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower());
 				else
 					icon = string.Format(@"<img src=""{0}"" alt=""icon"" />", iconUrl);
 			}
+			else if (!string.IsNullOrEmpty(iconClass))
+			{
+				icon = string.Format(@"<b class=""{0}""></b>", iconClass);
+			}
+			
 			if (string.IsNullOrEmpty(text))
 				return icon;
 			else

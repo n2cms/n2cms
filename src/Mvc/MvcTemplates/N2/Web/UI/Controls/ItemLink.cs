@@ -26,13 +26,13 @@ namespace N2.Edit.Web.UI.Controls
 			else
 				this.NavigateUrl = InterfaceUrl.ResolveUrlTokens().ToUrl().AppendSelection(item);
 
-			if (string.IsNullOrEmpty(item.IconClass))
+			if (string.IsNullOrEmpty(item.IconUrl))
 			{
-				Text = string.Format("<img src='{0}' alt='{1]' /> {2}", item.IconUrl.ResolveUrlTokens(), item.GetContentType().Name, item.Title);
+				Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, item.Title);
 			}
 			else
 			{
-				Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, item.Title);
+				Text = string.Format("<img src='{0}' alt='{1}' /> {2}", item.IconUrl.ResolveUrlTokens(), item.GetContentType().Name, string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
 			}
 		}
 	}

@@ -133,10 +133,13 @@ namespace N2.Edit
 			
 			if(!item.IsPage)
 				mi["zone"] = new MetaInfo { Text = item.ZoneName };
-			
+
 			if (Host.IsStartPage(item))
 				mi["authority"] = new MetaInfo { Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
-			
+
+			if (item.Parent == null)
+				mi["root"] = new MetaInfo { Text = "" };
+
 			var draftInfo = Drafts.GetDraftInfo(item);
 			if (draftInfo != null && draftInfo.Saved > item.Updated)
 				mi["draft"] = new MetaInfo { Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
@@ -324,7 +327,9 @@ namespace N2.Edit
 				tags.Add("Recent");
 
 			tags.Add(type.Assembly.GetName().Name);
-			
+
+			tags.AddRange(Definitions.GetDefinition(item).Flags);
+
 			tags.AddRange(Utility.GetBaseTypesAndSelf(type).Where(t => t != typeof(object)).Select(t => t.Name));
 			tags.AddRange(type.GetInterfaces().Where(t => t.Namespace.Contains("Definition")).Select(t => t.Name));
 
