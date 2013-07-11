@@ -44,6 +44,23 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			return url + (url.indexOf("?") >= 0 ? "&" : "?") + "edit=drag";
 	}
 
+	$scope.appendQuery = function(url, query, value)
+	{
+		var hashIndex = url.indexOf("#");
+		if (hashIndex >= 0) {
+			return $scope.appendQuery(url.substr(0, hashIndex), query, value) + url.substr(hashIndex);
+		}
+		return url + (url.indexOf("?") < 0 ? "?" : "&") + query + (value ? ("=" + value) : "")
+	}
+
+	$scope.appendSelection = function (url, appendVersionIndex) {
+		var ctx = $scope.Context;
+		url = $scope.appendQuery(url, ctx.Paths.SelectedQueryKey + "=" + ctx.CurrentItem.Path + "&" + ctx.Paths.ItemQueryKey + "=" + ctx.CurrentItem.ID);
+		if (appendVersionIndex)
+			url += "&versionIndex=" + ctx.CurrentItem.VersionIndex;
+		return url;
+	}
+
 	$scope.previewUrl = function (url) {
 		console.log("Previewing ", url, "->", $scope.appendPreviewOptions(url));
 		if (window.frames.preview)
