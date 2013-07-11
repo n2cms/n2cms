@@ -3,12 +3,13 @@
 <page-action-link node="child"></page-action-link>
 
 <ul class="dropdown-menu sub-menu" ng-show="child.Children.length">
-	<li><div class="page-action"><a href="#" ng-click="$emit('device-close', {})" translate="targeting.menu.fullsize"><b class="n2-icon-fullscreen"></b> Full size</a></div></li>
+	<li ng-class="{ selected: isFlagged('PreviewFullscreen') }"><div class="page-action"><a href="#" ng-click="$emit('device-close', {})" translate="targeting.menu.fullsize"><b class="n2-icon-fullscreen"></b> Full size</a></div></li>
 	<li class="divider"></li>
 	<li ng-repeat="grandchild in child.Children"
-		ng-class="{ divider: grandchild.Current.Divider }">
+		title="selected: {{isFlagged(grandchild.Current.SelectedBy)}}"
+		ng-class="{ divider: grandchild.Current.Divider, selected: isFlagged(grandchild.Current.SelectedBy) }">
 		<page-action-link node="grandchild"></page-action-link>
 	</li>
-	<li class="divider"></li>
-	<li><div class="page-action"><a href="#" ng-click="$emit('device-rotate', {})" translate="targeting.menu.rotate"><b class="n2-icon-rotate-right"></b> Switch portrait/landscape</a></div></li>
+	<li class="divider" ng-show="!isFlagged('PreviewFullscreen')"></li>
+	<li ng-show="!isFlagged('PreviewFullscreen')" ng-class="{ selected: isFlagged('PreviewTilted') }"><div class="page-action"><a href="#" ng-click="$emit('device-rotate', {})" translate="targeting.menu.rotate"><b class="n2-icon-rotate-right"></b> Switch portrait/landscape</a></div></li>
 </ul>
