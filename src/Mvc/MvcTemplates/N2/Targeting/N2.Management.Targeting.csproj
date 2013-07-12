@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="Css\Targeting.css" />
     <Content Include="Js\Targeting.js" />
+    <Content Include="Partials\TargetMenu.html" />
     <Content Include="Partials\DevicePreview.html" />
     <Content Include="Partials\DeviceMenu.html" />
     <Content Include="Web.config" />

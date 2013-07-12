@@ -1,6 +1,7 @@
 ﻿using N2.Configuration;
 using N2.Management.Api;
 using N2.Web;
+using N2.Web.Targeting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace N2.Management.Targeting
 	public class TargetingModule : ManagementModuleBase
 	{
 		private ConfigurationManagerWrapper config;
+		private DetectorBase[] detectors;
 
-		public TargetingModule(InterfaceBuilder builder, ConfigurationManagerWrapper config)
+		public TargetingModule(InterfaceBuilder builder, ConfigurationManagerWrapper config, DetectorBase[] detectors)
 		{
 			this.config = config;
+			this.detectors = detectors;
 			builder.InterfaceBuilt += builder_InterfaceBuilt;
 		}
 
@@ -28,6 +31,13 @@ namespace N2.Management.Targeting
 					Children = config.GetContentSection<Configuration.TargetingSection>("targeting", required: false).PreviewSizes.AllElements
 						.Select(te => new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = te.Title, Name = te.Name, IconClass = te.IconClass, ClientAction = string.Format("$emit('device-preview', {0})", new { te.Title, te.Name, te.IconClass, te.Width, te.Height }.ToJson()), SelectedBy = "Preview" + te.Name })).ToList()
 				}, insertBeforeSiblingWithName: "previewdivider1");
+			e.Data.ActionMenu.Add("preview",
+							new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "targetspreview", Title = "Target preview", IconClass = "n2-icon-bullseye", TemplateUrl = "{ManagementUrl}/Targeting/Partials/TargetMenu.html".ResolveUrlTokens() })
+							{
+								Children = detectors
+									.Select(d => new Node<InterfaceMenuItem>(new InterfaceMenuItem { Title = d.Description.Title, Name = d.Name, IconClass = d.Description.IconClass, ClientAction = string.Format("$emit('target-preview', {0})", new { d.Name, d.Description.Title, d.Description.IconClass }.ToJson()), SelectedBy = "Target" + d.Name })).ToList()
+							}, insertBeforeSiblingWithName: "previewdivider1");
+
 		}
 
 		public override IEnumerable<string> ScriptIncludes
