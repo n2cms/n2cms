@@ -95,11 +95,6 @@ namespace N2.Management.Api
 			else
 				data.Flags = new List<string>();
 
-			if (context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode) == ViewPreference.Published)
-				data.Flags.Add("ViewPublished");
-			else
-				data.Flags.Add("ViewDraft");
-
 			var mangementUrl = "{ManagementUrl}".ResolveUrlTokens();
 			if (!selectedUrl.IsEmpty())
 			{

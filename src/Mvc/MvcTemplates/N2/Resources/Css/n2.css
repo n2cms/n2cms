@@ -224,7 +224,7 @@ a[disabled=disabled]:hover {
 .submenu-toggle {
 	float:right;
 	font-size:18px;
-	margin:8px;
+	margin:8px 8px 0 0;
 }
 
 .dropdown-menu .sub-menu {
