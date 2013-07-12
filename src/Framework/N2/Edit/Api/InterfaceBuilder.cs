@@ -112,8 +112,6 @@ namespace N2.Management.Api
 
 		public string ItemQueryKey { get; set; }
 
-		public string ViewPreference { get; set; }
-
 		public string PreviewUrl { get; set; }
 
 		public string PageQueryKey { get; set; }
@@ -123,7 +121,7 @@ namespace N2.Management.Api
 	{
 		public string Name { get; set; }
 		public string Username { get; set; }
-		public ViewPreference PreferredView { get; set; }
+		public string ViewPreference { get; set; }
 	}
 
 	public class InterfaceTrash : Node<N2.Edit.TreeNode>
@@ -270,7 +268,6 @@ namespace N2.Management.Api
 				ItemQueryKey = PathData.ItemQueryKey,
 				PageQueryKey = PathData.PageQueryKey,
 				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
-				ViewPreference = context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString(),
 				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetPreviewUrl(selection.SelectedItem, allowDraft: true)
 			};
 		}
@@ -285,8 +282,12 @@ namespace N2.Management.Api
 					{
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "fullscreen", Title = "Fullscreen", IconClass = "n2-icon-eye-open", Target = Targets.Top, Url = "{{Context.CurrentItem.PreviewUrl}}" }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider1", Divider = true }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewdrafts", Title = "View latest drafts", IconClass = "n2-icon-circle-blank", Target = Targets.Top, Url = "{ManagementUrl}/?view=draft&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), SelectedBy = "ViewDraft" }),
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewpublished", Title = "View published versions", IconClass = "n2-icon-play-sign", Target = Targets.Top, Url = "{ManagementUrl}/?view=published&{SelectedQueryKey}={{Context.CurrentItem.Path}}&item={{Context.CurrentItem.ID}}".ResolveUrlTokens(), SelectedBy = "ViewPublished"  }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewdrafts", Title = "View latest drafts", IconClass = "n2-icon-circle-blank", 
+							ClientAction = "setViewPreference('draft')",
+							SelectedBy = "Viewdraft" }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "viewpublished", Title = "View published versions", IconClass = "n2-icon-play-sign", 
+							ClientAction = "setViewPreference('published')",
+							SelectedBy = "Viewpublished"  }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "previewdivider2", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "links", Title = "Show links", IconClass = "n2-icon-link", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/LinkTracker/Default.aspx')}}".ResolveUrlTokens() }),
 					}
@@ -360,7 +361,7 @@ namespace N2.Management.Api
 			{
 				Name = context.User.Identity.Name,
 				Username = context.User.Identity.Name,
-				PreferredView = engine.Config.Sections.Management.Versions.DefaultViewMode
+				ViewPreference = context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString().ToLower()
 			};
 		}
 

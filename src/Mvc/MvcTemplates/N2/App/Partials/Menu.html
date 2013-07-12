@@ -1,6 +1,6 @@
 ﻿<div id="menu" class="action-bar secondary navbar"
 	ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" 
-	ng-controller="PageActionBarCtrl">
+	ng-controller="MenuCtrl">
 	<ul class="menu nav">
 		<li class="main-menu item">
 			<a id="logo" href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="Context.MainMenu.Children.length">

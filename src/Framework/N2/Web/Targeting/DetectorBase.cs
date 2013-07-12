@@ -18,5 +18,16 @@ namespace N2.Web.Targeting
 		{
 			return Name.CompareTo(other.Name);
 		}
+
+		public virtual DetectorDescription Description
+		{
+			get { return new DetectorDescription { Title = Name, IconClass = "n2-icon-screenshot" }; }
+		}
+
+		public class DetectorDescription
+		{
+			public string Title { get; set; }
+			public string IconClass { get; set; }
+		}
 	}
 }
