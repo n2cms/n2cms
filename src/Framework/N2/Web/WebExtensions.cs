@@ -338,9 +338,12 @@ namespace N2.Web
 			return context.GetHttpContextBase().GetEngine();
 		}
 
-		internal static IEngine GetEngine(this HttpContextBase context)
+		internal static IEngine GetEngine(this HttpContextBase context, IEngine engine = null)
 		{
-			var engine = context.Items["N2.Engine"] as IEngine;
+			if (engine != null)
+				return engine;
+
+			engine = context.Items["N2.Engine"] as IEngine;
 			if (engine == null)
 				context.Items["N2.Engine"] = engine = N2.Context.Current;
 			return engine;
