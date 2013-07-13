@@ -7,12 +7,6 @@ namespace N2.Web.Mvc.Html
 {
 	public static class DroppableZoneExtensions
 	{
-		[Obsolete("Use e.g. html.ControlPanelState()")]
-        public static ControlPanelState ControlPanelState(this HttpContextBase context)
-        {
-            return N2.Web.UI.WebControls.ControlPanel.GetState(Context.Current);
-        }
-
         /// <summary>
         /// Gets the HTML for all items in the Zone of the given name from the item held by the <see cref="container" />.
         /// </summary>

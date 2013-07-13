@@ -10,7 +10,7 @@
 	.zoneItem .zoneItem .titleBar	{ left:6px; top:6px; }
 		.zoneItem .zoneItem .zoneItem .titleBar	{ left:0; top:0; }
     .titleBar .command { cursor:pointer; padding:2px; display:inline-block; vertical-align:middle; font-size:16px; }
-    .titleBar .title { background:transparent none no-repeat 5px 33%; color:#333; padding-left:24px; padding-right:10px; font-size:12px; line-height:20px; height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; vertical-align:middle; }
+    .titleBar .title { background:transparent none no-repeat 5px 33%; color:#333; padding-left:24px; padding-right:10px; font-size:13px; line-height:20px; height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; vertical-align:middle; }
 .dropZone .titleBar { opacity:.66; overflow:hidden; width:18px; }
 .dropZone .titleBar * { display:inline-block; vertical-align:middle; }
 .dropZone .titleBar:hover { background-color:#fafafa; border:solid 1px #d1d4d3; opacity:1; width:auto; }
@@ -129,3 +129,18 @@ a .creator-add { background: url(../../Resources/icons/add.png) no-repeat 50% 50
 	.editable .editor:hover { opacity:1; text-decoration:none; background-color:#74c6eb; color:#fff; }
 
 #editorDialog { overflow:hidden; }
+
+.target-container { outline: dotted 2px magenta; min-height:20px; position:relative; }
+.target-name { display:inline-block; position:absolute; top:0; right:0; padding:1px 2px; font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; color:#fff; background-color:magenta; z-index:666; }
+
+.n2-blue { color:blue; }
+.n2-red { color:red; }
+.n2-green { color:red; }
+.n2-yellow { color:yellow; }
+.n2-magenta { color:magenta; }
+.n2-silver { color:silver; }
+.n2-shadow { text-shadow: 3px 3px #999; }
+.n2-opaque { opacity: .5; }
+.n2-tilted90 { display:inline-block !important; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
+.n2-tilted180 { display:inline-block !important; -webkit-transform: rotate(180px); -moz-transform: rotate(180px); -ms-transform: rotate(180px); -o-transform: rotate(180px); transform: rotate(180px); }
+.n2-tilted270 { display:inline-block !important; -webkit-transform: rotate(270px); -moz-transform: rotate(270px); -ms-transform: rotate(270px); -o-transform: rotate(270px); transform: rotate(270px); }

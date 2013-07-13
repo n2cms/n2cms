@@ -3,26 +3,56 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Edit;
+using N2.Web.Parts;
+using N2.Engine;
 
 namespace N2.Web.Mvc.Html
 {
-	public class ZoneHelper : ItemHelper
+	public class ZoneHelper
 	{
-
-        public ZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
-			: base(helper, currentItem)
-        {
-            ZoneName = zoneName;
-        }
+		private ContentItem currentItem;
+		private PartsAdapter partsAdapter;
 
 		protected System.Web.Mvc.TagBuilder Wrapper { get; set; }
 
 		protected string ZoneName { get; set; }
 
-		public ZoneHelper WrapIn(string tagName, object attributes)
+		public HtmlHelper Html { get; set; }
+
+		protected ContentItem CurrentItem
+		{
+			get { return currentItem ?? (currentItem = Html.CurrentItem()); }
+			set { this.currentItem = value; }
+		}
+
+		protected IContentAdapterProvider Adapters
+		{
+			get { return Html.ResolveService<IContentAdapterProvider>(); }
+		}
+
+		/// <summary>The content adapter related to the current page item.</summary>
+		protected virtual PartsAdapter PartsAdapter
+		{
+			get
+			{
+				if (partsAdapter == null)
+					partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem);
+				return partsAdapter;
+			}
+		}
+
+        public ZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
+        {
+			Html = helper;
+			CurrentItem = currentItem;
+            ZoneName = zoneName;
+        }
+
+		public ZoneHelper WrapIn(string tagName, object attributes, string innerHtml = null)
 		{
 			Wrapper = new System.Web.Mvc.TagBuilder(tagName);
 			Wrapper.MergeAttributes(new RouteValueDictionary(attributes));
+			Wrapper.InnerHtml = innerHtml;
 
 			return this;
 		}
@@ -59,11 +89,12 @@ namespace N2.Web.Mvc.Html
 
         protected virtual void RenderTemplate(TextWriter writer, ContentItem model)
         {
-            if (Wrapper != null)
-                writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
-
-			var adapter = Adapters.ResolveAdapter<MvcAdapter>(model);
-			adapter.RenderTemplate(Html, model);
+			if (Wrapper != null)
+			{
+				writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+				writer.Write(Wrapper.InnerHtml);
+			}
+			PartsAdapter.RenderPart(Html, model);
 
 			if (Wrapper != null)
                 writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));

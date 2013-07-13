@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using N2.Web.Mvc;
 using N2.Web.UI;
+using N2.Web.Parts;
 
 namespace N2.Web
 {
@@ -50,7 +51,7 @@ namespace N2.Web
 	/// <summary>
 	/// Provides navigation across child and sibiling pages. Ideal for sidebars. 
 	/// </summary>
-	[PartDefinition(Title = "Menu", IconUrl = "~/N2/Resources/icons/bullet.png")]
+	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul")]
 	[WithEditableTitle]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]
@@ -171,17 +172,17 @@ namespace N2.Web
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof (MenuPart))]
-	public class MenuPartMvcAdapter: MvcAdapter
+	public class MenuPartMvcAdapter: PartsAdapter
 	{
-		public override void RenderTemplate(System.Web.Mvc.HtmlHelper html, ContentItem model)
+		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-			if (!(model is MenuPart))
-				throw new ArgumentException("model");
+			if (!(part is MenuPart))
+				throw new ArgumentException("part");
 
 			if (html.ViewContext.Writer is HtmlTextWriter)
-				(new MenuPartRenderer(model as MenuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
+				(new MenuPartRenderer(part as MenuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
 			else
-				html.ViewContext.Writer.Write(new MenuPartRenderer(model as MenuPart).GetHtml());
+				html.ViewContext.Writer.Write(new MenuPartRenderer(part as MenuPart).GetHtml());
 		}
 	}
 

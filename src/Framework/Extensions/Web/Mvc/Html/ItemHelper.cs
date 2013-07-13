@@ -8,7 +8,6 @@ namespace N2.Web.Mvc.Html
 	public abstract class ItemHelper
 	{
 		PartsAdapter partsAdapter;
-		MvcAdapter mvcAdapter;
 		ContentItem currentItem;
 
         protected ItemHelper(HtmlHelper helper, ContentItem currentItem)
@@ -37,13 +36,12 @@ namespace N2.Web.Mvc.Html
 		}
 
 		/// <summary>The content adapter related to the current page item.</summary>
+		[Obsolete("Use PartsAdapter")]
 		protected virtual MvcAdapter MvcAdapter
 		{
 			get
 			{
-				if (mvcAdapter == null)
-					mvcAdapter = Adapters.ResolveAdapter<MvcAdapter>(CurrentItem);
-				return mvcAdapter;
+				return Adapters.ResolveAdapter<MvcAdapter>(CurrentItem);
 			}
 		}
 

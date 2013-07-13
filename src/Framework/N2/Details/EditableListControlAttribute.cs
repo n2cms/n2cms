@@ -77,6 +77,16 @@ namespace N2.Details
         }
 		
 		protected abstract ListControl CreateEditor();
+
+		protected override Control AddHelp(Control container)
+		{
+			return base.AddHelp(container);
+		}
+
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			return null;
+		}
 		 
 		protected override Control AddEditor(Control container)
 		{

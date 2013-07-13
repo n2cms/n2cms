@@ -37,7 +37,7 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-            if (State.IsFlagSet(ControlPanelState.DragDrop) && (AllowExternalManipulation || CurrentItem == CurrentPage))
+            if (State.IsFlagSet(ControlPanelState.DragDrop) && (AllowExternalManipulation || CurrentItem == CurrentPage || Find.ClosestPage(CurrentItem) == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
