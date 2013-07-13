@@ -102,6 +102,7 @@ namespace N2.Edit.Web
 		{
 			Register.JQuery(this);
 			Register.JQueryPlugins(this);
+			Register.FrameInteraction(this);
 		}
 
 		/// <summary>Selects a toolbar item in the top frame</summary>

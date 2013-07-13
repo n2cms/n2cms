@@ -15,6 +15,11 @@ using N2.Web.UI;
 using N2.Security;
 using N2.Edit;
 using N2.Web.UI.WebControls;
+using System.Web.Mvc;
+using System.IO;
+using N2.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Mvc.Html;
 
 namespace N2.Web.Parts
 {
@@ -33,6 +38,8 @@ namespace N2.Web.Parts
 		ContentVersionRepository versionRepository;
 		Rendering.ContentRendererSelector rendererSelector;
 		private ITemplateAggregator templateAggregator;
+
+		Logger<PartsAdapter> logger;
 
 		public Rendering.ContentRendererSelector RendererSelector
 		{
@@ -169,16 +176,31 @@ namespace N2.Web.Parts
 		{
 			private Rendering.IContentRenderer renderer;
 			private Rendering.ContentRenderingContext context;
+			private string renderedContent;
 
 			public ContentRendererControl(Rendering.IContentRenderer renderer, Rendering.ContentRenderingContext context)
 			{
 				this.renderer = renderer;
 				this.context = context;
+				this.context.Container = this;
+			}
+
+			protected override void OnInit(EventArgs e)
+			{
+				base.OnInit(e);
+
+				using (var sw = new StringWriter())
+				{
+					renderer.Render(context, sw);
+					renderedContent = sw.ToString();
+				}
 			}
 
 			protected override void Render(HtmlTextWriter writer)
 			{
-				renderer.Render(context, writer);
+				base.Render(writer);
+
+				writer.Write(renderedContent);
 			}
 		}
 
@@ -244,6 +266,79 @@ namespace N2.Web.Parts
 		public virtual IEnumerable<TemplateDefinition> GetTemplates(ContentItem item, ItemDefinition definition)
 		{
 			return TemplateAggregator.GetTemplates(definition.ItemType);
+		}
+
+		public virtual void RenderPart(HtmlHelper html, ContentItem part, TextWriter writer = null)
+		{
+			var renderer = part as Rendering.IContentRenderer
+				?? RendererSelector.ResolveRenderer(part.GetContentType());
+			if (renderer != null)
+			{
+				renderer.Render(new Rendering.ContentRenderingContext { Content = part, Html = html }, writer ?? html.ViewContext.Writer);
+				return;
+			}
+
+			logger.WarnFormat("Using legacy template rendering for part {0}", part);
+			new LegacyTemplateRenderer(Engine.Resolve<IControllerMapper>()).RenderTemplate(part, html);
+		}
+
+		public class LegacyTemplateRenderer
+		{
+			Logger<LegacyTemplateRenderer> logger;
+
+			private readonly IControllerMapper controllerMapper;
+
+			public LegacyTemplateRenderer(IControllerMapper controllerMapper)
+			{
+				this.controllerMapper = controllerMapper;
+			}
+
+			public void RenderTemplate(ContentItem item, HtmlHelper helper)
+			{
+				RouteValueDictionary values = GetRouteValues(helper, item);
+
+				if (values == null)
+					return;
+
+				var currentPath = helper.ViewContext.RouteData.CurrentPath();
+				try
+				{
+					var newPath = currentPath.Clone(currentPath.CurrentPage, item);
+					helper.ViewContext.RouteData.ApplyCurrentPath(newPath);
+					helper.RenderAction("Index", values);
+				}
+				finally
+				{
+					helper.ViewContext.RouteData.ApplyCurrentPath(currentPath);
+				}
+			}
+
+			private RouteValueDictionary GetRouteValues(HtmlHelper helper, ContentItem item)
+			{
+				Type itemType = item.GetContentType();
+				string controllerName = controllerMapper.GetControllerName(itemType);
+				if (string.IsNullOrEmpty(controllerName))
+				{
+					logger.WarnFormat("Found no controller for type {0}", itemType);
+					return null;
+				}
+
+				var values = new RouteValueDictionary();
+				values[ContentRoute.ActionKey] = "Index";
+				values[ContentRoute.ControllerKey] = controllerName;
+				if (item.ID != 0)
+					values[ContentRoute.ContentItemKey] = item.ID;
+				else
+					values[ContentRoute.ContentItemKey] = item;
+
+				// retrieve the virtual path so we can figure out if this item is routed through an area
+				var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
+				if (vpd == null)
+					throw new InvalidOperationException("Unable to render " + item + " (" + controllerName + " did not match any route)");
+
+				values["area"] = vpd.DataTokens["area"];
+				return values;
+			}
 		}
 	}
 }

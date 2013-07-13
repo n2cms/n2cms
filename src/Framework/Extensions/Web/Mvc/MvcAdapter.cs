@@ -6,6 +6,7 @@ using System;
 namespace N2.Web.Mvc
 {
 	[Adapts(typeof(ContentItem))]
+	[Obsolete("Use PartsAdapter")]
 	public class MvcAdapter : AbstractContentAdapter
 	{
 		ITemplateRenderer renderer;
@@ -23,10 +24,7 @@ namespace N2.Web.Mvc
 			set { rendererSelector = value; }
 		}
 
-//#pragma warning disable 618
-//#pragma warning restore 618
-
-		//[Obsolete("This method for overriding rendering of parts is deprecated in favor for the content renderer system. Try implementing IContentRenderer or adding a class [ContentRenderer] public class MyRenderer : ContentRendererBase<My>")]
+		[Obsolete("Use PartsAdapter.RenderPart")]
 		public virtual void RenderTemplate(HtmlHelper html, ContentItem model)
 		{
 			var renderer = model as Rendering.IContentRenderer

@@ -86,6 +86,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		console.log("Previewing ", url, "->", $scope.appendPreviewOptions(url));
 		if (window.frames.preview)
 			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
+		else
+			console.log("no frame");
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -123,11 +125,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		Partials: {
 			Management: "App/Partials/Loading.html"
 		},
-		Organize: organizeMatch && organizeMatch[1] == "Organize",
 		PreviewQueries: {}
 	}
 
-	function translateNavigationRecursive(node) {
+	function translateMenuRecursive(node) {
 		var translation = node.Current && node.Current.Name && Translate(node.Current.Name);
 		if (translation) {
 			if (translation.text) node.Current.Title = translation.text;
@@ -135,7 +136,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			if (translation.description) node.Current.Description = translation.description;
 		}
 		for (var i in node.Children) {
-			translateNavigationRecursive(node.Children[i]);
+			translateMenuRecursive(node.Children[i]);
 		}
 	}
 
@@ -148,14 +149,14 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
-		translateNavigationRecursive(i.Interface.MainMenu);
-		translateNavigationRecursive(i.Interface.ActionMenu);
-		translateNavigationRecursive(i.Interface.ContextMenu);
+		translateMenuRecursive(i.Interface.MainMenu);
+		translateMenuRecursive(i.Interface.ActionMenu);
+		translateMenuRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
-		console.log("Loaded interface", $scope.Context);
-		console.log("CurrentItem", $scope.Context.CurrentItem);
-		$scope.previewUrl(i.Interface.Paths.PreviewUrl);
+		console.log("Loaded interface", $scope.Context, "   CurrentItem", $scope.Context.CurrentItem);
+		if (organizeMatch && organizeMatch[1] == "Organize")
+			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 	});
 
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload) {
@@ -292,10 +293,10 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		else
 			$scope.Context.SelectedNode = null;
 
-		if (ctx.Organize)
-			$scope.setPreviewQuery("edit", "drag");
-		else
-			$scope.setPreviewQuery("edit", null);
+		//if (ctx.Organize)
+		//	$scope.setPreviewQuery("edit", "drag");
+		//else
+		//	$scope.setPreviewQuery("edit", null);
 	});
 
 	$scope.toggle = function (node) {
@@ -505,16 +506,16 @@ function PageScheduleCtrl($scope, Content) {
 	};
 }
 
-function FrameActionCtrl($scope, $rootScope, FrameManipulator) {
+function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 	$scope.$parent.manipulator = FrameManipulator;
 	$rootScope.$on("contextchanged", function (scope, e) {
 		$scope.$parent.action = null;
 		$scope.$parent.item.Children = [];
 		var extraFlags = FrameManipulator.getFlags();
 		for (var i in extraFlags) {
-			console.log("Pushing flags", extraFlags[i]);
 			$scope.Context.Flags.push(extraFlags[i]);
 		}
+
 		if ($scope.isFlagged("Management")) {
 			var actions = $scope.manipulator.getFrameActions();
 			if (actions && actions.length) {

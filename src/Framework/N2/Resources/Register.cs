@@ -434,5 +434,10 @@ namespace N2.Resources
 		{
 			return "n2SelectedQueryKey = '" + SelectionUtility.SelectedQueryKey + "';";
 		}
+
+		internal static void FrameInteraction(this Page page)
+		{
+			JavaScript(page, "{ManagementUrl}/Resources/Js/frameInteraction.js");
+		}
 	}
 }

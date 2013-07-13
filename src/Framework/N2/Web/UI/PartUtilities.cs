@@ -70,11 +70,21 @@ namespace N2.Web.UI
 
 		private static void WriteTitle(TextWriter writer, ItemDefinition definition)
 		{
-			writer.Write("<span class='title' style='background-image:url(");
-			writer.Write(Url.ResolveTokens(definition.IconUrl));
-			writer.Write(");'>");
-			writer.Write(definition.Title);
-			writer.Write("</span>");
+			if (string.IsNullOrEmpty(definition.IconUrl))
+			{
+				writer.Write("<span class='title'>");
+				writer.Write("<b class='" + definition.IconClass + "'></b>");
+				writer.Write(definition.Title);
+				writer.Write("</span>");
+			}
+			else
+			{
+				writer.Write("<span class='title' style='background-image:url(");
+				writer.Write(Url.ResolveTokens(definition.IconUrl));
+				writer.Write(");'>");
+				writer.Write(definition.Title);
+				writer.Write("</span>");
+			}
 		}
 	}
 }

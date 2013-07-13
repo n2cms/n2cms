@@ -206,18 +206,20 @@ a[disabled=disabled]:hover {
 	}
 }
 
-.blue { color:blue; }
-.red { color:red; }
-.green { color:red; }
-.yellow { color:yellow; }
-.silver { color:silver; }
-.shadow { text-shadow: 3px 3px #999; }
-.opaque { opacity: .5; }
-
-		
-.tilted90 { display:inline-block !important; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
-.tilted180 { display:inline-block !important; -webkit-transform: rotate(180px); -moz-transform: rotate(180px); -ms-transform: rotate(180px); -o-transform: rotate(180px); transform: rotate(180px); }
-.tilted270 { display:inline-block !important; -webkit-transform: rotate(270px); -moz-transform: rotate(270px); -ms-transform: rotate(270px); -o-transform: rotate(270px); transform: rotate(270px); }
+.n2-blue,.blue { color:blue; }
+.n2-darkslateblue { color:darkslateblue; }
+.n2-brown { color:brown; }
+.n2-red,.red { color:red; }
+.n2-green,.green { color:red; }
+.n2-yellow,.yellow { color:yellow; }
+.n2-gold { color:gold; }
+.n2-magenta,.magenta { color:magenta; }
+.n2-silver,.silver { color:silver; }
+.n2-shadow,.shadow { text-shadow: 3px 3px #999; }
+.n2-opaque,.opaque { opacity: .5; }
+.n2-tilted90,.tilted90 { display:inline-block !important; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
+.n2-tilted180,.tilted180 { display:inline-block !important; -webkit-transform: rotate(180px); -moz-transform: rotate(180px); -ms-transform: rotate(180px); -o-transform: rotate(180px); transform: rotate(180px); }
+.n2-tilted270,.tilted270 { display:inline-block !important; -webkit-transform: rotate(270px); -moz-transform: rotate(270px); -ms-transform: rotate(270px); -o-transform: rotate(270px); transform: rotate(270px); }
 
 /* MULTI-LEVEL DROPDOWNS FOR BOOTSTRAP */
 

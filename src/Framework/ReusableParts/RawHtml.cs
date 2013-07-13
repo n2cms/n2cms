@@ -30,6 +30,7 @@ using System;
 using N2.Web.Mvc;
 using N2.Engine;
 using N2.Details;
+using N2.Web.Parts;
 
 namespace N2.Web
 {
@@ -45,13 +46,13 @@ namespace N2.Web
     }
 
     [Adapts(typeof(RawHtml))]
-    public class RawHtmlAdapter : MvcAdapter
+    public class RawHtmlAdapter : PartsAdapter
     {
-        public override void RenderTemplate(System.Web.Mvc.HtmlHelper html, ContentItem model)
-        {
-            if (!(model is RawHtml))
+		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
+		{
+            if (!(part is RawHtml))
                 throw new ArgumentException("This adapter can only be used to adapt RawHTML parts.");
-            html.ViewContext.Writer.Write((model as RawHtml).HtmlContent);
+            html.ViewContext.Writer.Write((part as RawHtml).HtmlContent);
         }
     }
 

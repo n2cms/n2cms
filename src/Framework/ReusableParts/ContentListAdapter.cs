@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using N2.Engine;
+using N2.Web.Parts;
 
 namespace N2.Web.Mvc
 {
@@ -40,7 +41,7 @@ namespace N2.Web.Mvc
 	}
 
 	[Adapts(typeof(ContentList))]
-	public class ContentListAdapter : MvcAdapter
+	public class ContentListAdapter : PartsAdapter
 	{
 		public static string GetHtml(ContentItem model)
 		{
@@ -225,9 +226,9 @@ namespace N2.Web.Mvc
 			return sb.ToString();
 		}
 
-		public override void RenderTemplate(System.Web.Mvc.HtmlHelper html, ContentItem model)
+		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
 		{
-			html.ViewContext.Writer.Write(GetHtml(model));
+			html.ViewContext.Writer.Write(GetHtml(part));
 		}
 	}
 }

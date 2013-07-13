@@ -2,6 +2,7 @@
 using N2.Details;
 using N2.Engine;
 using N2.Web.Mvc;
+using N2.Web.Parts;
 
 namespace N2.Web.Rendering
 {
@@ -23,7 +24,7 @@ namespace N2.Web.Rendering
 				context.Html.ViewContext.Writer = writer;
 				var referencedItem = context.Content[context.PropertyName] as ContentItem;
 				if (referencedItem != null)
-					adapters.ResolveAdapter<MvcAdapter>(context.Content).RenderTemplate(context.Html, referencedItem);
+					adapters.ResolveAdapter<PartsAdapter>(context.Content).RenderPart(context.Html, referencedItem, writer);
 			}
 			finally
 			{

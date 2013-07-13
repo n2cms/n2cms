@@ -363,6 +363,7 @@
 	};
 
 	window.frameInteraction = {
+		location: "Organize",
 		getActions: function () {
 			function create(commandElement) {
 				return {
