@@ -136,7 +136,6 @@
     <Compile Include="Configuration\DocViewerElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
     <Compile Include="Configuration\TargetingElement.cs" />
-    <Compile Include="Configuration\WebSection.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />

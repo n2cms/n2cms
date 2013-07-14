@@ -12,17 +12,15 @@ namespace N2.Configuration
 		{
 			get { return (DatabaseSection)Sections["database"]; }
 		}
+		// AKA Web, TODO: Handle upgrade and rename
 		public HostSection Host
 		{
 			get { return (HostSection)Sections["host"]; }
 		}
+		// AKA Management, TODO: Handle upgrade and rename
 		public EditSection Edit
 		{
 			get { return (EditSection)Sections["edit"]; }
-		}
-		public WebSection Web
-		{
-			get { return (WebSection)Sections["web"]; }
 		}
 	}
 }
