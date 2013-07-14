@@ -62,7 +62,7 @@ namespace N2.Web.Mvc
 			var ctx = controllerContext.HttpContext.GetTargetingContext();
 			foreach (var detector in ctx.TargetedBy)
 			{
-				var result = engine.FindPartialView(controllerContext, detector.Name + "/" + partialViewName, useCache);
+				var result = engine.FindPartialView(controllerContext, (partialViewName ?? "Index") + "_" + detector.Name, useCache);
 				if (result.View != null)
 					return result;
 			}
@@ -79,7 +79,7 @@ namespace N2.Web.Mvc
 			var ctx = controllerContext.HttpContext.GetTargetingContext();
 			foreach (var detector in ctx.TargetedBy)
 			{
-				var result = engine.FindView(controllerContext, detector.Name + "/" + viewName, masterName, useCache);
+				var result = engine.FindView(controllerContext, (viewName ?? "Index") + "_" + detector.Name, masterName, useCache);
 				if (result.View != null)
 					return result;
 			}

@@ -36,16 +36,27 @@ namespace N2.Web.Targeting
 
 		public static IEnumerable<string> GetTargetedPaths(this TargetingContext context, string templateUrl)
 		{
-			var url = templateUrl.ToUrl();
-			var file = url.Segments.LastOrDefault();
-			var dir = url.RemoveTrailingSegment(maintainExtension: false);
-			
-			foreach (var target in context.TargetedBy)
+			if (string.IsNullOrEmpty(templateUrl))
+				yield break;
+
+			var extension = Url.GetExtension(templateUrl);
+			if (string.IsNullOrEmpty(extension))
 			{
-				yield return dir.AppendSegment(target.Name, useDefaultExtension: false).AppendSegment(file);
+				if (templateUrl[templateUrl.Length - 1] != '/')
+					yield break;
+
+				foreach (var target in context.TargetedBy)
+				{
+					yield return templateUrl + target.Name + "/";
+				}
+				yield break;
 			}
 
-			yield return templateUrl;
+			var templateUrlWithoutExtension = templateUrl.Substring(0, templateUrl.Length - extension.Length);
+			foreach (var target in context.TargetedBy)
+			{
+				yield return templateUrlWithoutExtension + "_" + target.Name + extension;
+			}
 		}
 	}
 }
