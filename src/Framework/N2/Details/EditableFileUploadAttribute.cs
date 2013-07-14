@@ -1,14 +1,12 @@
-﻿using System.IO;
+﻿using N2.Edit.FileSystem;
+using N2.Web;
+using N2.Web.Drawing;
+using N2.Web.UI.WebControls;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using N2.Edit.FileSystem;
-using N2.Web;
-using N2.Web.UI.WebControls;
-using System.Text.RegularExpressions;
-using N2.Web.Drawing;
-using System;
 
 namespace N2.Details
 {
@@ -160,7 +158,8 @@ namespace N2.Details
 			switch (ImagesUtility.GetExtensionGroup(extension))
 			{
 				case ImagesUtility.ExtensionGroups.Images:
-					DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
+					var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
+					DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
 					return;
 				default:
 					WriteUrl(item, propertyName, cssClass, writer, url);

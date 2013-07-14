@@ -46,7 +46,7 @@ namespace N2.Tests.Web.Targeting
 		[SetUp]
 		public void SetUp()
 		{
-			radar = new TargetingRadar(new DetectorBase[] { new Always(), new Never() });
+			radar = new TargetingRadar(new N2.Configuration.HostSection(), new DetectorBase[] { new Always(), new Never() });
 			context = radar.BuildTargetingContext(new Fakes.FakeHttpContext());
 		}
 

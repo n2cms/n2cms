@@ -18,6 +18,9 @@ namespace N2.Web.Targeting
 			var context = httpContext.Items["N2.TargetingContext"] as TargetingContext;
 			if (context == null)
 			{
+				if (!TargetingRadar.Enabled)
+					return new TargetingContext(httpContext);
+
 				if (httpContext.Request["targets"] != null && httpContext.GetEngine(engine).SecurityManager.IsEditor(httpContext.User))
 				{
 					var targets = httpContext.Request["targets"].Split(',');

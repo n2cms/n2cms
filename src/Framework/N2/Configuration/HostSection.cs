@@ -60,6 +60,13 @@ namespace N2.Configuration
 			set { base["web"] = value; }
 		}
 
+		[ConfigurationProperty("targeting")]
+		public TargetingCollection Targeting
+		{
+			get { return (TargetingCollection)base["targeting"]; }
+			set { base["targeting"] = value; }
+		}
+
 		/// <summary>Configures output cache for the templates.</summary>
 		[ConfigurationProperty("outputCache")]
 		public OutputCacheElement OutputCache
