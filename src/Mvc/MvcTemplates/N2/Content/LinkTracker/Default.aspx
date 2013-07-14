@@ -17,11 +17,11 @@
 		</asp:Repeater>
 		<div style="margin:10px">
 	</edit:FieldSet>
-	</td><td style="padding:10px;">
+	</td><td style="padding:22px 10px;">
 		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
-	</td><td style="padding:10px;">
+	</td><td style="padding:22px 10px;">
 		<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Selection.SelectedItem %>" runat="server" />
-	</td><td style="padding:10px;">
+	</td><td style="padding:22px 10px;">
 		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td>
 	<edit:FieldSet class="referencedItems" runat="server" Legend="Outgoing links" meta:resourceKey="referencedItems">
