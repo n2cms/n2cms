@@ -41,7 +41,7 @@
         .controlPanel { }
         .controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
         .controlPanel a,.controlPanel a:visited { }
-    .controlPanel a { text-decoration:none; padding:1px; }
+    .controlPanel a { padding:1px; }
 		.controlPanel a b { font-size:18px; }
     .controlPanel .plugins { padding:1px 6px 1px 1px; height:30px; }
         .controlPanel .plugins a {
@@ -63,6 +63,7 @@
         .controlPanel .plugins a:hover,
 		.controlPanel .plugins a.toggled {
             background-color: #74c6eb; 
+			text-decoration:none;
         }
 		.controlPanel .plugins .authorizedFalse { opacity:.33 }
 
