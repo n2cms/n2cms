@@ -370,7 +370,11 @@ namespace N2.Management.Api
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
 			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.RootPage, true) { UseMasterVersion = false }
-				.Children((item) => engine.GetContentAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing).Where(filter))
+				.Children((item) => 
+				{
+					var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };
+					return engine.GetContentAdapter<NodeAdapter>(item).GetChildren(q);
+				})
 				.Build();
 
 			return CreateStructure(structure, filter);

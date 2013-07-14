@@ -5,7 +5,7 @@
 			format: 'M d, yyyy'
 		}
 	});
-})(angular.module('n2', ['n2.routes', 'n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives']))
+})(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives']))
 
 function findSelectedRecursive(node, selectedPath) {
 	if (!node)
@@ -292,11 +292,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			$scope.Context.SelectedNode = findSelectedRecursive($scope.Context.Content, ctx.CurrentItem.Path);
 		else
 			$scope.Context.SelectedNode = null;
-
-		//if (ctx.Organize)
-		//	$scope.setPreviewQuery("edit", "drag");
-		//else
-		//	$scope.setPreviewQuery("edit", null);
 	});
 
 	$scope.toggle = function (node) {
@@ -323,9 +318,10 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 				var zones = {};
 				for (var i in data.Children) {
 					var part = data.Children[i];
-					var zone = zones[part.Current.ZoneName];
+					var zoneName = part.Current.ZoneName || "(empty)";
+					var zone = zones[zoneName];
 					if (!zone)
-						zones[part.Current.ZoneName] = zone = [];
+						zones[zoneName] = zone = [];
 					zone.push(part);
 				}
 

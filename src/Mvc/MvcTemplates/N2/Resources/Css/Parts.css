@@ -9,7 +9,7 @@
 .dropZone .titleBar { position:absolute; left:-2px; top:-2px; z-index:900; padding-left:18px }
 	.zoneItem .zoneItem .titleBar	{ left:6px; top:6px; }
 		.zoneItem .zoneItem .zoneItem .titleBar	{ left:0; top:0; }
-    .titleBar .command { cursor:pointer; padding:2px; display:inline-block; vertical-align:middle; font-size:16px; }
+    .titleBar .command { cursor:pointer; padding:2px; display:inline-block; vertical-align:middle; font-size:16px; text-decoration:none; }
     .titleBar .title { background:transparent none no-repeat 5px 33%; color:#333; padding-left:24px; padding-right:10px; font-size:13px; line-height:20px; height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; vertical-align:middle; }
 .dropZone .titleBar { opacity:.66; overflow:hidden; width:18px; }
 .dropZone .titleBar * { display:inline-block; vertical-align:middle; }
