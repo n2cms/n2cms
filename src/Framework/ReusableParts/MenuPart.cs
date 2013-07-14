@@ -51,7 +51,7 @@ namespace N2.Web
 	/// <summary>
 	/// Provides navigation across child and sibiling pages. Ideal for sidebars. 
 	/// </summary>
-	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul")]
+	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	[WithEditableTitle]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]

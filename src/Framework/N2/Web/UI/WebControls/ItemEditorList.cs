@@ -11,6 +11,7 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web.Parts;
 using N2.Collections;
+using System.Web.UI.HtmlControls;
 
 namespace N2.Web.UI.WebControls
 {
@@ -20,7 +21,7 @@ namespace N2.Web.UI.WebControls
 
 		private readonly Engine.Logger<ItemEditorList> logger;
 		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
-		private readonly Panel addPanel = new Panel { CssClass = "addArea" };
+		private readonly Panel addPanel = new Panel { CssClass = "addArea form-actions" };
 		private List<string> addedDefinitions = new List<string>();
 		private IDefinitionManager definitions;
 		private List<int> deletedIndexes = new List<int>();
@@ -159,6 +160,14 @@ namespace N2.Web.UI.WebControls
 			logger.Debug("addedTypes: " + addedDefinitions.Count + ", deletedIndexes: " + deletedIndexes.Count);
 		}
 
+		private HtmlGenericControl CreateControl(Control parent, string tagName, string className)
+		{
+			var hgc = new HtmlGenericControl(tagName);
+			parent.Controls.Add(hgc);
+			hgc.Attributes["class"] = className;
+			return hgc;
+		}
+
 		protected override void CreateChildControls()
 		{
 			if (!string.IsNullOrEmpty(Label))
@@ -171,35 +180,59 @@ namespace N2.Web.UI.WebControls
 				CreateItemEditor(item);
 			}
 
-			addPanel.Controls.Add(new Label { Text = Utility.GetLocalResourceString("Add") ?? "Add", CssClass = "addLabel" });
-
-			var allowedChildren = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User).ToList();
-			foreach (ItemDefinition definition in allowedChildren)
+			var allowedChildren = Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User)
+				.Where(d => MinimumType.IsAssignableFrom(d.ItemType))
+				.ToList();
+			if (allowedChildren.Count == 0)
 			{
-				if (!MinimumType.IsAssignableFrom(definition.ItemType))
-				{
-					continue;
-				}
+				var alert = CreateControl(addPanel, "div", "alert");
+				alert.InnerHtml = "Cannot add any parts due to zone/user/type restrictions";
+			}
+			else if (allowedChildren.Count == 1)
+			{
+				var btn = CreateButton(addPanel, allowedChildren[0]);
+				btn.CssClass = "btn";
+			}
+			else
+			{
+				var btnGroup = CreateControl(addPanel, "div", "btn-group");
+				var toggle = CreateControl(btnGroup, "a", "btn dropdown-toggle");
+				toggle.Attributes["data-toggle"] = "dropdown";
+				toggle.Attributes["href"] = "#";
+				toggle.InnerHtml = "<b class='n2-icon-plus-sign'></b>" + (Utility.GetLocalResourceString("Add") ?? "Add") + " <b class='caret'></b>";
 
-				var button = new LinkButton
+				var dropdownMenu = CreateControl(btnGroup, "ul", "dropdown-menu");
+
+				foreach (ItemDefinition definition in allowedChildren)
 				{
-					ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
-					Text = string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
-					ToolTip = definition.ToolTip,
-					CausesValidation = false
-				};
-				var closureDefinition = definition;
-				button.Command += (s, a) =>
-					{
-						ContentItem item = CreateItem(closureDefinition);
-						item.ZoneName = ZoneName;
-						AddedDefinitions.Add(closureDefinition.GetDiscriminatorWithTemplateKey());
-						CreateItemEditor(item);
-					};
-				addPanel.Controls.Add(button);
+					CreateButton(addPanel, definition);
+				}
 			}
 
 			base.CreateChildControls();
+		}
+
+		private LinkButton CreateButton(Control container, ItemDefinition definition)
+		{
+			var button = new LinkButton
+			{
+				ID = "iel" + ID + "_" + definition.GetDiscriminatorWithTemplateKey().Replace('/', '_'),
+				Text = string.IsNullOrEmpty(definition.IconUrl)
+					? string.Format("<b class='{0}'></b> {1}", definition.IconClass, definition.Title)
+					: string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
+				ToolTip = definition.ToolTip,
+				CausesValidation = false
+			};
+			var closureDefinition = definition;
+			button.Command += (s, a) =>
+			{
+				ContentItem item = CreateItem(closureDefinition);
+				item.ZoneName = ZoneName;
+				AddedDefinitions.Add(closureDefinition.GetDiscriminatorWithTemplateKey());
+				CreateItemEditor(item);
+			};
+			container.Controls.Add(button);
+			return button;
 		}
 
 		protected override object SaveViewState()
