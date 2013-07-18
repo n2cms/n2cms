@@ -394,7 +394,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 function PageActionCtrl($scope, Content) {
 	$scope.dispose = function () {
 		console.log("disposing", $scope.Context.CurrentItem);
-		Content.delete({ selected: $scope.Context.CurrentItem.Path }, function () {
+		Content.remove({ selected: $scope.Context.CurrentItem.Path }, function () {
 			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
 			console.log("disposed");
 		});
