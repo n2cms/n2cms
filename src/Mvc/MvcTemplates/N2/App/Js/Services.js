@@ -85,7 +85,7 @@
 			'definitions': { method: 'GET', params: { target: 'definitions' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
-			'delete': { method: 'POST', params: { target: 'delete' } },
+			'remove': { method: 'POST', params: { target: 'delete' } },
 			'publish': { method: 'POST', params: { target: 'publish' } },
 			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
