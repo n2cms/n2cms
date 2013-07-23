@@ -186,6 +186,7 @@
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
     <Content Include="N2\Resources\Js\frameInteraction.js" />
+    <Content Include="N2\Resources\Js\less-1.4.1.min.js" />
     <Content Include="N2\Resources\Js\n2.js" />
     <Content Include="N2\Resources\angular-1.1.5\angular-cookies.js" />
     <Content Include="N2\Resources\angular-1.1.5\angular-cookies.min.js" />
