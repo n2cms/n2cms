@@ -4,7 +4,6 @@
 		return function (fallback, key) {
 			if (!key) console.error("No key provided for translation text ", fallback);
 
-			//console.log("translate filter", fallback, key);
 			return Translate(key, fallback);
 		}
 	});
@@ -13,11 +12,9 @@
 		return {
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
-				//console.log("TRANSLATE", element[0]);
 				if (!attrs.translate) console.error("No key provided for translation element", element[0]);
 
 				var translation = Translate(attrs.translate);
-				//console.log("translate directive", attrs.translate, translation);
 				if (typeof translation == "string") {
 					element.html(translation);
 					return;
@@ -115,7 +112,6 @@
 			restrict: "A",
 			link: function compile(scope, element, attrs) {
 				scope.$watch(attrs.evaluateInnerHtml, function (expr) {
-					console.log("watching", expr, $interpolate(expr)(scope), scope.Context.CurrentItem.Title);
 					element.html(expr && $interpolate(expr)(scope));
 				});
 			}
@@ -140,7 +136,6 @@
 					return expr && $interpolate(expr)(scope);
 				};
 				scope.evalExpression = function (expr) {
-					console.log("eval", expr, scope.Context.CurrentItem && scope.Context.CurrentItem.PreviewUrl);
 					expr && scope.$eval(expr);
 				};
 			}
@@ -312,7 +307,6 @@
 
 					$(document).bind("mousemove.n2Resize", function (e) {
 						modelSet(scope, initialModelValue + e["client" + dir] - initialClientValue);
-						console.log("moving", initialModelValue, "+", e["client" + dir], "-", initialClientValue, "=", initialModelValue + e["client" + dir] - initialClientValue);
 						scope.$digest();
 					});
 					$(document.body).addClass("resizing");

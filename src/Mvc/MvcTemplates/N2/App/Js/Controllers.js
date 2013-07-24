@@ -83,11 +83,8 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.previewUrl = function (url) {
-		console.log("Previewing ", url, "->", $scope.appendPreviewOptions(url));
 		if (window.frames.preview)
 			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
-		else
-			console.log("no frame");
 	}
 
 	decorate(FrameContext, "refresh", function (ctx) {
@@ -154,7 +151,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		translateMenuRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
-		console.log("Loaded interface", $scope.Context, "   CurrentItem", $scope.Context.CurrentItem);
 		if (organizeMatch && organizeMatch[1] == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 	});
@@ -189,7 +185,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 					else
 						angular.extend($scope.Context, ctx);
-					console.log("Selected", $scope.Context.CurrentItem, "keepFlags", keepFlags);
 					$scope.$emit("contextchanged", $scope.Context);
 				});
 			}, 200);
@@ -219,7 +214,6 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
-				console.log("Preview loaded", $scope.Context.CurrentItem);
 			});
 		}, 200);
 	});
@@ -308,7 +302,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		});
 	}
 	$scope.$on("moved", function (e, content) {
-		console.log("moved", content);
 	});
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.parts = {
@@ -337,7 +330,6 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					node.Parts.push(child);
 				}
 
-				console.log(node);
 				delete node.Loading;
 			});
 		},
@@ -389,10 +381,8 @@ function MenuCtrl($rootScope, $scope, Security) {
 
 function PageActionCtrl($scope, Content) {
 	$scope.dispose = function () {
-		console.log("disposing", $scope.Context.CurrentItem);
 		Content.remove({ selected: $scope.Context.CurrentItem.Path }, function () {
 			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
-			console.log("disposed");
 		});
 	}
 }
@@ -403,7 +393,7 @@ function PreviewCtrl($scope, $rootScope) {
 			var loco = e.target.contentWindow.location;
 			$scope.$emit("preiewloaded", { path: loco.pathname, query: loco.search, url: loco.toString() });
 		} catch (ex) {
-			console.log("frame access exception", ex);
+			window.console && console.log("frame access exception", ex);
 		}
 	};
 }
@@ -425,7 +415,6 @@ function LanguageCtrl($scope, Content) {
 		node.Loading = true;
 		Content.translations({ selected: $scope.Context.CurrentItem.Path }, function (data) {
 			node.Loading = false;
-			console.log("translations", data);
 			node.Children = data.Translations;
 		});
 	}
@@ -447,7 +436,6 @@ function PageInfoCtrl($scope, Content) {
 		return language && language.replace(/[(].*?[)]/, "");
 	}
 	$scope.toggleInfo = function () {
-		console.log("toggleInfo", $scope.showInfo);
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
 	}
 	$scope.definitions = {};
@@ -493,8 +481,6 @@ function PageScheduleCtrl($scope, Content) {
 
 			var date = $scope.schedule.date;
 			date.setHours(hour, min);
-
-			console.log("scheduling", $scope.schedule);
 
 			Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date });
 		}
