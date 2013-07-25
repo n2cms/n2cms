@@ -118,7 +118,6 @@
     <Content Include="N2\App\Partials\ContentPublishSchedule.html" />
     <Content Include="N2\App\Partials\ContentScheduleDialog.html" />
     <Content Include="N2\App\Partials\ContentInfo.html" />
-    <Content Include="N2\App\Partials\MenuLink.html" />
     <Content Include="N2\App\Partials\FrameAction.html" />
     <Content Include="N2\App\Partials\ContentContextMenu.html" />
     <Content Include="N2\App\Partials\ContentAdd.html" />

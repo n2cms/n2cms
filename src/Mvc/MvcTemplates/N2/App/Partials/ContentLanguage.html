@@ -1,13 +1,11 @@
-﻿<div class='page-action'>
-	<a href='{{evaluateExpression(item.Current.Url)}}'
-		target='preview' 
-		title='Overview translations table' 
-		class='page-action-description' translate="language.action">
-		<b class='ico n2-icon-globe'></b>
-		Language<br />
-		<span>{{Context.Language.LanguageTitle}}</span>
-	</a>
-</div>
+﻿<a href='{{evaluateExpression(item.Current.Url)}}'
+	target='preview' 
+	title='Overview translations table' 
+	class='page-action page-action-description' translate="language.action">
+	<b class='ico n2-icon-globe'></b>
+	Language<br />
+	<span>{{Context.Language.LanguageTitle}}</span>
+</a>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
 	title="Display translatable languages"
@@ -19,6 +17,6 @@
 
 <ul class="dropdown-menu" ng-show="item.Children.length">
 	<li ng-repeat="child in item.Children" ng-class="{ selected: child.Current.Title == Context.Language.LanguageTitle }" title="{{Context.ExtendedInfo}}">
-		<page-action-link node="child"></page-action-link>
+		<a page-action-link="child"></a>
 	</li>
 </ul>

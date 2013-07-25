@@ -120,24 +120,66 @@
 
 	module.directive("pageActionLink", function ($interpolate) {
 		return {
-			restrict: "E",
-			replace: true,
+			restrict: "A",
 			scope: true,
-			templateUrl: 'App/Partials/MenuLink.html',
 			link: function compile(scope, element, attrs) {
-				scope.$watch(attrs.node, function (node) {
-					scope.node = node;
-					if (node.Current && !node.Current.Target)
-						node.Current.Target = "preview";
-					if (node.Current && !node.Current.Url && node.Current.PreviewUrl)
-						node.Current.Url = node.Current.PreviewUrl;
-				});
+
+				function watch(expr, scope, applicator) {
+					var factory = expr && $interpolate(expr);
+					if (factory) {
+						return scope.$watch(function () {
+							return factory(scope);
+						}, applicator);
+					} else
+						applicator(null);
+				}
+
 				scope.evaluateExpression = function (expr) {
 					return expr && $interpolate(expr)(scope);
 				};
 				scope.evalExpression = function (expr) {
 					expr && scope.$eval(expr);
 				};
+
+				var unwatchHref, unwatchTitle, unwatchInnerHtml;
+				scope.$watch(attrs.pageActionLink, function (node) {
+					scope.node = node;
+
+					if (!node.Current || node.Current.Divider) {
+						element.hide();
+						return;
+					} else
+						element.show();
+
+					if (!node.Current.Target)
+						node.Current.Target = "preview";
+					if (!node.Current.Url && node.Current.PreviewUrl)
+						node.Current.Url = node.Current.PreviewUrl;
+
+					unwatchHref && unwatchHref();
+					unwatchHref = watch(node.Current.Url, scope, function (value) { element.attr("href", value || "#"); });
+
+					unwatchTitle && unwatchTitle();
+					unwatchTitle = watch(node.Current.ToolTip, scope, function (value) { element.attr("title", value); });
+
+					unwatchInnerHtml && unwatchInnerHtml();
+
+					unwatchInnerHtml = watch(
+						(node.Current.IconClass ? ("<b class='ico " + node.Current.IconClass + "'></b> ") : node.Current.IconUrl ? ("<b class='ico ico-custom' style='background-image:url(" + node.Current.IconUrl + ")'></b> ") : "")
+						+ "{{evaluateExpression(node.Current.Title)}}"
+						+ (node.Current.Description ? "<br /><span>{{evaluateExpression(node.Current.Description)}}</span>" : ""), scope, function (value) { element.html(value); });
+
+					element.attr("target", node.Current.Target);
+
+					element.attr("class", node.Current.Description ? "page-action page-action-description" : "page-action");
+
+					element.click(function (e) {
+						if (node.Current.ClientAction) {
+							e.preventDefault();
+							scope.$apply(node.Current.ClientAction);
+						}
+					});
+				});
 			}
 		}
 	});
