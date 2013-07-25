@@ -55,7 +55,7 @@ namespace N2.Web
 		private static DocViewerElement _dve = null;
 		private static DocViewerElement CurrentDocViewerElement
 		{
-			get { return (_dve = _dve ?? Context.Current.Resolve<DocViewerElement>());}
+			get { return (_dve ?? (_dve = Context.Current.Resolve<HostSection>().DocViewer));}
 		}
 
 		public static bool DocViewerAppliesTo(string documentUrl)

@@ -60,7 +60,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(value))
 				return tag;
 
-			tag.Attributes[attribute] = HttpUtility.HtmlEncode(value);
+			tag.Attributes[attribute] = value;
 
 			return tag;
 		}

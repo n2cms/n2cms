@@ -24,6 +24,19 @@
 				<xs:element name="host">
 					<xs:complexType>
 						<xs:all>
+							<xs:element name="targeting" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="enabled" default="true"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="sites" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>

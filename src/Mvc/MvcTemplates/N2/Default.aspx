@@ -43,7 +43,6 @@
 
 	<script src="<%= GetLocalizationPath() %>"></script>
 	<script src="App/Js/Services.js"></script>
-	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
 

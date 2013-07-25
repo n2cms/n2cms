@@ -36,12 +36,12 @@ a { text-decoration: none; color: #000; }
 
 #page-tree { position: absolute; left:0; right:1px; top: 0; bottom: 0; overflow: auto; margin-top:33px;}
 	#page-tree ul { list-style-type:none; padding:0; margin:0; }
-		#page-tree li { margin-left: 10px; text-indent: 5px; line-height: 28px; }
+		#page-tree li.node { margin-left: 10px; text-indent: 5px; line-height: 28px; }
 			#page-tree li div.item { position:relative; white-space:nowrap; text-overflow: ellipsis; }
-			#page-tree li div.item a.item { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
-				#page-tree li div.item a.item .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
+			#page-tree li div.item a.link { min-width: 60%; max-width:80%; overflow:hidden; padding-right:20px; }
+				#page-tree li div.item a.link .page-icon { display: inline-block; width: 16px; height: 16px; vertical-align: text-bottom; background: transparent none no-repeat 0 0; }
 				
-				#page-tree li div.item .tools { position:absolute; right:20px; top: 0; }
+				#page-tree li div.item .tools { position:absolute; right:30px; top: 0; }
 					#page-tree li div.item		 .tools .dropdown-toggle { opacity:0; color:#666; transition: opacity .5s ease-in-out; text-decoration:none; }
 					#page-tree li div.item:hover .tools .dropdown-toggle { opacity:1; }
 					#page-tree li div.item .tools .dropdown-menu { border-radius: 0; padding: 0; }
@@ -49,7 +49,7 @@ a { text-decoration: none; color: #000; }
 							#page-tree li div.item .tools .dropdown-menu li a { padding:3px; }
 							#page-tree li div.item .tools .dropdown-menu li a.iconed-text { padding-left:25px; background-position: 10px 50%;  background-repeat:no-repeat !important; color:#000 }
 
-				#page-tree li div.item a.toggle { position:absolute; right: 5px; top:1px; }
+				#page-tree li div.item a.toggle { position:absolute; right:0; top:1px; padding-right:8px; }
 				#page-tree li div.item a.toggle:hover { text-decoration:none; }
 					#page-tree li div.item a.toggle b { display:none; }
 					#page-tree li.collapsed > div.item > a.toggle .toggle-expand { display:inline-block; }
@@ -60,7 +60,7 @@ a { text-decoration: none; color: #000; }
 						#page-tree li .tree-pager b { float:right; margin:5px; }
 
 			#page-tree li.root { margin-left: 0; }
-				#page-tree li div.item.startpage a { font-weight: bold; }
+				#page-tree li div.item.startpage a.link { font-weight: bold; }
 
 				#page-tree li.root > ul > li { margin:0; }
 					#page-tree li			 div.item { border-bottom: 1px solid #ebf7fc; }
@@ -95,17 +95,16 @@ a { text-decoration: none; color: #000; }
 #menu { height: 39px; background-color: #18a0de; font-size: 18px; }
 	#menu > ul { white-space:nowrap; }
 		#menu #logo { padding-left:60px; background-image: url(../img/n2.png); background-repeat: no-repeat; background-position: 10px 50%; }
-		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; }
-			#menu > ul > li .page-action > a { display:block; height: 19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; font-size:20px; }
+		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; display:block; height: 19px; min-width:19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; font-size:20px; text-shadow:none; }
 				#menu > ul > li ul li.selected { background-color:#ebf7fc; border-top:solid 1px #e6f0f5; }
-	#menu > ul > li.primary-action > .page-action > a > .ico { font-size: 28px; line-height:14px; }
-				#menu > ul > li .page-action a span { text-transform: none; font-size: 11px; font-family: Arial; }
-			#menu > ul > li .page-action a.page-action-description { height:32px; padding-top: 5px; padding-left:44px; padding-bottom:0; position:relative; line-height:12px; }
-				#menu > ul > li.primary-action .page-action a.page-action-description > .ico { position:absolute; left: 9px; top:11px; }
-					#menu > ul > li .dropdown-menu .page-action a .ico { font-size:14px; vertical-align:middle; } 
-				#menu > ul > li .page-action a .ico-custom { background:transparent none no-repeat 50% 50%; height:32px; width:32px; display:inline-block; }
-					#menu > ul > li .page-action a .ico-custom { height:16px; width:16px; display:inline-block; }
-			#menu > ul > li .page-action a:hover { background-color: #3aaee3; }
+	#menu > ul > li.primary-action > .page-action .ico { font-size: 28px; line-height:14px; }
+				#menu > ul > li .page-action span { text-transform: none; font-size: 11px; font-family: Arial; }
+			#menu > ul > li .page-action-description { height:32px; padding-top: 5px; padding-left:44px; padding-bottom:0; position:relative; line-height:12px; }
+				#menu > ul > li.primary-action .page-action-description > .ico { position:absolute; left: 9px; top:11px; }
+					#menu > ul > li .dropdown-menu .page-action .ico { font-size:14px; vertical-align:middle; } 
+				#menu > ul > li .page-action .ico-custom { background:transparent none no-repeat 50% 50%; height:32px; width:32px; display:inline-block; }
+					#menu > ul > li .page-action .ico-custom { height:16px; width:16px; display:inline-block; }
+			#menu > ul > li .page-action:hover { background-color: #3aaee3; }
 
 			#menu > ul > li .dropdown-toggle { line-height: 22px; padding: 8px; float:left; }
 			#menu > ul > li .dropdown-toggle .caret { border-top-color:#fff; bordr-bottom-color:fff; }
@@ -114,6 +113,7 @@ a { text-decoration: none; color: #000; }
 			#menu > ul > li .dropdown-menu { }
 				#menu li .dropdown-menu li { display:block; color:#000; }
 					#menu li .dropdown-menu li a { display:block; color:#000; padding:5px 10px; height:auto; line-height:20px; max-width:400px; text-overflow: ellipsis; }
+					#menu li .dropdown-menu li a.page-action-description .ico { position:relative; top:0; left:0; }
 
 		#menu li.iconed img { float: left; padding-top: 5px; }
 		#menu li.iconed a { float: left; height: 35px; margin-top: 2px; }
@@ -122,13 +122,13 @@ a { text-decoration: none; color: #000; }
 
 #menu.draft { background-color: #FF8822; }
 	#menu.draft > ul > li .page-action { border-left-color: #FF9933 }
-	#menu.draft > ul > li .page-action a:hover,
+	#menu.draft > ul > li .page-action:hover,
 	#menu.draft > ul > li .dropdown-toggle:hover,
 	#menu.draft > ul > li.open .dropdown-toggle { background-color:#FF9933 }
 
 #menu.unpublished { background-color: #E10C02; }
 	#menu.unpublished > ul > li .page-action { border-left-color: #E10C02 }
-	#menu.unpublished > ul > li .page-action a:hover,
+	#menu.unpublished > ul > li .page-action:hover,
 	#menu.unpublished > ul > li .dropdown-toggle:hover,
 	#menu.unpublished > ul > li.open .dropdown-toggle { background-color:#E11C12 }
 

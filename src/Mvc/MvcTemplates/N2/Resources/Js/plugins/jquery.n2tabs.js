@@ -1,47 +1,4 @@
-﻿//(function ($) {
-//	// initializes elements in query selection as tabs
-//	var n2tabs = {};
-
-//	$.fn.n2tabs = function (tabGroupName, initial, tabContainer) {
-//		if (!this.length)
-//			return;
-
-//		if (!tabGroupName) tabGroupName = "tab";
-
-//		// ensure each tab content has an id
-//		this.each(function (i) {
-//			if (!this.id) this.id = tabGroupName + i;
-//		});
-
-//		console.log("processing", tabGroupName, this.length, this);
-
-//		var $tabContent = this.closest(".tab-content");
-//		if (!$tabContent.length)
-//			$tabContent = this.wrapAll("<div class='tab-content' />");
-
-//		$tabContent.attr("data-tab-container", tabContainer);
-//		$tabContent.css("border", "solid 1px red")
-
-//		//var $tab = $("#" + tabGroupName);
-//		//if (!$tab.length)
-//		//	$tab = $("<ul id='" + tabGroupName + "' class='nav nav-tabs' />").insertBefore($tabContent);
-//		//this.not(".tab-pane").each(function (i) {
-//		//	var $li = $("<li><a href='#" + this.id + "'>" + (this.getAttribute("data-tab-text") || this.title) + "</a></li>").appendTo($tab);
-//		//	if (i == 0) {
-//		//		$li.addClass("active");
-//		//		$(this).addClass("active");
-//		//	}
-//		//}).addClass("tab-pane");
-
-//		//$tab.on("click", "a", function (e) {
-//		//	e.preventDefault();
-//		//	$(this).tab("show");
-//		//});
-//	}
-//})(jQuery);
-
-
-/*
+﻿/*
 * n2tabs 0.2 - Copyright (c) 2007 Cristian Libardo
 */
 

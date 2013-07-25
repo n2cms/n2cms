@@ -108,7 +108,6 @@
     <Content Include="N2\App\i18n\en.js" />
     <Content Include="N2\App\Js\Controllers.js" />
     <Content Include="N2\App\Js\Directives.js" />
-    <Content Include="N2\App\Js\Routes.js" />
     <Content Include="N2\App\Js\Services.js" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
@@ -119,7 +118,6 @@
     <Content Include="N2\App\Partials\ContentPublishSchedule.html" />
     <Content Include="N2\App\Partials\ContentScheduleDialog.html" />
     <Content Include="N2\App\Partials\ContentInfo.html" />
-    <Content Include="N2\App\Partials\MenuLink.html" />
     <Content Include="N2\App\Partials\FrameAction.html" />
     <Content Include="N2\App\Partials\ContentContextMenu.html" />
     <Content Include="N2\App\Partials\ContentAdd.html" />
@@ -1125,6 +1123,7 @@
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\CleanZoneNameMigration.cs" />
     <Compile Include="N2\Installation\Migrations\ConvertEnumsMigration.cs" />
+    <Compile Include="N2\Installation\Migrations\FixZoneNamePartsMigration.cs" />
     <Compile Include="N2\Installation\Migrations\RecordedAssemblyVersionMigration.cs" />
     <Compile Include="N2\Installation\Migrations\EditableItemMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersion.ashx.cs">

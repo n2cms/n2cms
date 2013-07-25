@@ -6,18 +6,13 @@ using N2.Integrity;
 
 namespace N2.Edit.Wizard.Items
 {
-	[PageDefinition("Wizard Container",
+	[PartDefinition("Wizard Container",
 		IconClass = "n2-icon-magic",
-		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		AuthorizedRoles = new string[0])]
 	[Throwable(AllowInTrash.No)]
 	[Indexable(IsIndexable = false)]
 	[RestrictParents(typeof(IRootPage))]
 	public class Wonderland : ContentItem, ISystemNode
 	{
-		public override bool IsPage
-		{
-			get { return false; }
-		}
 	}
 }

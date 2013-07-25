@@ -1,6 +1,7 @@
 using System.Web;
 using N2.Web;
 using System.Security.Principal;
+using System.Collections;
 
 namespace N2.Tests.Fakes
 {
@@ -20,6 +21,11 @@ namespace N2.Tests.Fakes
 			foreach (var q in url.GetQueries())
 				request.query[q.Key] = q.Value;
 			request.rawUrl = url.PathAndQuery;
+		}
+		public Hashtable items = new Hashtable();
+		public override System.Collections.IDictionary Items
+		{
+			get { return items; }
 		}
 		public FakeHttpRequest request;
 		public override HttpRequestBase Request

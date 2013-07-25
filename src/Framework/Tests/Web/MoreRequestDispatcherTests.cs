@@ -7,6 +7,7 @@ using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
 using N2.Persistence;
+using N2.Web.Targeting;
 
 namespace N2.Tests.Web
 {
@@ -81,6 +82,7 @@ namespace N2.Tests.Web
 			errorHandler = new FakeErrorHandler();
 			engine = new FakeEngine();
 			engine.Container.AddComponentInstance(null, typeof(IWebContext), webContext);
+			engine.Container.AddComponentInstance(null, typeof(TargetingRadar), new TargetingRadar(hostSection, new DetectorBase[0]));
 			adapterProvider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
 			adapterProvider.Start();
 

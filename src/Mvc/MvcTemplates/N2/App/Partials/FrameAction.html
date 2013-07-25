@@ -1,12 +1,13 @@
-﻿<div class='page-action' ng-controller="FrameActionCtrl" ng-show="action">
-	<a href="{{action.Current.Url}}"
-		target="{{action.Current.Target}}"
-		ng-click="manipulator.click(action.Current.Selector)"
-		x-background-image="action.Current.IconUrl">
-		<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
-		{{action.Current.Title}}
-	</a>
-</div>
+﻿<a class='page-action' 
+	href="{{action.Current.Url}}"
+	target="{{action.Current.Target}}"
+	ng-controller="FrameActionCtrl" 
+	ng-show="action"
+	ng-click="manipulator.click(action.Current.Selector)"
+	x-background-image="action.Current.IconUrl">
+	<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
+	{{action.Current.Title}}
+</a>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
 	<b class="caret"></b>

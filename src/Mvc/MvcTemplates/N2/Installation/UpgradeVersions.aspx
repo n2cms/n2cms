@@ -35,7 +35,6 @@
 
 			var $next = $(".version:not(.error):first");
 			if ($next.length) {
-				console.log("next ", $next);
 				$next.css("background-color", "moccasin");
 				$.post("UpgradeVersion.ashx", { item: $next.children(".version-id").text() }, function (result) {
 					if (result.success) {

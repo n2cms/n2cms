@@ -9,13 +9,22 @@ using System.Web;
 namespace N2.Web.Targeting
 {
 	[Service]
-	public class TargetingRadar
+	public class TargetingRadar : IAutoStart
 	{
+		public static bool Enabled { get; set; }
+
 		public IEnumerable<DetectorBase> Detectors { get; private set; }
 
-		public TargetingRadar(DetectorBase[] detectors)
+		public TargetingRadar(Configuration.HostSection config, DetectorBase[] detectors)
 		{
-			var sortableDetectors = detectors.ToList();
+			Enabled = config.Targeting.Enabled;
+			if (!config.Targeting.Enabled || config.Targeting.IsCleared)
+			{
+				Detectors = Enumerable.Empty<DetectorBase>();
+				return;
+			}
+			var removedDetectors = new HashSet<string>(config.Targeting.RemovedElements.Select(t => t.Name));
+			var sortableDetectors = detectors.Where(d => !removedDetectors.Contains(d.Name)).ToList();
 			sortableDetectors.Sort();
 			Detectors = sortableDetectors;
 		}
@@ -29,6 +38,14 @@ namespace N2.Web.Targeting
 					ctx.TargetedBy.Add(detector);
 
 			return ctx;
+		}
+
+		public void Start()
+		{
+		}
+
+		public void Stop()
+		{
 		}
 	}
 }

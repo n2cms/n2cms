@@ -26,7 +26,7 @@ namespace N2.Web.UI.WebControls
 		private IDefinitionManager definitions;
 		private List<int> deletedIndexes = new List<int>();
 		private int itemEditorIndex;
-		private PlaceHolder itemEditorsContainer;
+		private PlaceHolder itemEditorsContainer = new PlaceHolder();
 		private Type minimumType = typeof (ContentItem);
 		private ContentItem parentItem;
 		private PartsAdapter partsAdapter;
@@ -117,7 +117,7 @@ namespace N2.Web.UI.WebControls
 
 		public IEnumerable<LinkButton> AddButtons
 		{
-			get { return addPanel.Controls.OfType<LinkButton>(); }
+			get { return ItemUtility.FindInChildren<LinkButton>(addPanel).Where(lb => lb.CssClass == "addButton").ToList(); }
 		}
 
 		#endregion
@@ -144,7 +144,6 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 
-			itemEditorsContainer = new PlaceHolder();
 			Controls.Add(itemEditorsContainer);
 
 			Controls.Add(addPanel);
@@ -222,7 +221,8 @@ namespace N2.Web.UI.WebControls
 					? string.Format("<b class='{0}'></b> {1}", definition.IconClass, definition.Title)
 					: string.Format("<img src='{0}' alt='ico'/>{1}", definition.IconUrl, definition.Title),
 				ToolTip = definition.ToolTip,
-				CausesValidation = false
+				CausesValidation = false,
+				CssClass = "addButton"
 			};
 			var closureDefinition = definition;
 			button.Command += (s, a) =>
