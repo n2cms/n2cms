@@ -109,7 +109,8 @@ namespace N2.Details
 
 		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
+			var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
+			DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
 		}
 
 		#endregion

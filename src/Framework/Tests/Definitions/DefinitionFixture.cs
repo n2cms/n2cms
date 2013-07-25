@@ -134,10 +134,10 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void Definition_UsesDefinedIconUrl_NotRuntimeIconUrl()
+		public void Definition_UsesDefinedIconClass_NotRuntimeIconUrl()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.AreEqual("/N2/Resources/icons/page.png", definition.IconUrl);
+			Assert.AreEqual("n2-icon-file", definition.IconClass);
 		}
 
 		[Test]
@@ -160,7 +160,7 @@ namespace N2.Tests.Definitions
 		public void HasCorrectNumberOfDisplayableAttributes()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.That(definition.Displayables.Count, Is.EqualTo(20));
+			Assert.That(definition.Displayables.Count, Is.EqualTo(21));
 		}
 
 		[Test]

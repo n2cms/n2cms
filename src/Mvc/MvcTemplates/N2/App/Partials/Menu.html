@@ -1,4 +1,5 @@
-﻿<div id="menu" class="action-bar secondary navbar"
+﻿
+<div id="menu" class="action-bar secondary navbar"
 	ng-class="{ draft: Context.CurrentItem.State == Content.states.Draft || Context.CurrentItem.State == Content.states.Waiting, unpublished: Context.CurrentItem.State == Content.states.Unpublished || Context.CurrentItem.State == Content.states.Deleted }" 
 	ng-controller="MenuCtrl">
 	<ul class="menu nav">
@@ -23,6 +24,7 @@
 			ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy) }"
 			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
+			title="{{isDisplayable(item) + ', ' + item.Current.TemplateUrl}}"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>
@@ -36,4 +38,4 @@
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>
-</div>
+</div+u6u

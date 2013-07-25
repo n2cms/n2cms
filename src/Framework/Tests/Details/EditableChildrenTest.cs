@@ -88,9 +88,9 @@ namespace N2.Tests.Details
             editor.Parts = new FakePartsAdapter();
             attribute.UpdateEditor(p.CurrentItem, editor);
 
-            editor.GetType()
-                .GetMethod("CreateChildControls", BindingFlags.NonPublic | BindingFlags.Instance)
-                .Invoke(editor, null);
+			editor.GetType()
+				.GetMethod("CreateChildControls", BindingFlags.NonPublic | BindingFlags.Instance)
+				.Invoke(editor, null);
 
 			Assert.That(editor.AddButtons.Count(), Is.EqualTo(2));
         }

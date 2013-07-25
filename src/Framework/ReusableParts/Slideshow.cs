@@ -47,7 +47,7 @@ namespace N2.Web
 		HtmlItemTemplate
 	}
 
-	[PartDefinition(Title = "Image Gallery", IconUrl = "{IconsUrl}/photos.png", TemplateUrl = "Slideshow")]
+	[PartDefinition(Title = "Image Gallery", TemplateUrl = "Slideshow", IconClass = "n2-icon-camera n2-blue")]
 	[RestrictChildren(
 		typeof(ISlideshowEntryProvider),
 		typeof(SlideshowDirectoryInclude),

@@ -46,7 +46,7 @@ namespace N2.Tests.Web.Targeting
 		[SetUp]
 		public void SetUp()
 		{
-			radar = new TargetingRadar(new DetectorBase[] { new Always(), new Never() });
+			radar = new TargetingRadar(new N2.Configuration.HostSection(), new DetectorBase[] { new Always(), new Never() });
 			context = radar.BuildTargetingContext(new Fakes.FakeHttpContext());
 		}
 
@@ -57,21 +57,34 @@ namespace N2.Tests.Web.Targeting
 			ctx.TargetedBy.Single().ShouldBeTypeOf<Always>();
 		}
 
-		[TestCase("/world.aspx", "/Always/world.aspx")]
-		[TestCase("/hello/world.aspx", "/hello/Always/world.aspx")]
-		[TestCase("/Views/Shared/_Layout.cshtml", "/Views/Shared/Always/_Layout.cshtml")]
-		[TestCase("/", "/Always")]
-		public void TargeName_IsInserted_BeforeFileName(string original, string expected)
+		[TestCase("/world.aspx", "/world_Always.aspx")]
+		[TestCase("/hello/world.aspx", "/hello/world_Always.aspx")]
+		[TestCase("/Views/Shared/_Layout.cshtml", "/Views/Shared/_Layout_Always.cshtml")]
+		public void TargeName_IsInserted_AfterFileName(string original, string expected)
 		{
 			context.GetTargetedPaths(original).First().ShouldBe(expected);
 		}
 
-		[TestCase("/world.aspx", "/world.aspx")]
-		[TestCase("/hello/world.aspx", "/hello/world.aspx")]
-		[TestCase("/", "/")]
-		public void LastTarget_IsOriginalPath(string original, string expected)
+		[TestCase("/", "/Always/")]
+		[TestCase("/Hello/", "/Hello/Always/")]
+		public void TargetWithPath_AppendsTargetName_AsTrailingSegment(string original, string expected)
 		{
-			context.GetTargetedPaths(original).Last().ShouldBe(expected);
+			context.GetTargetedPaths(original).First().ShouldBe(expected);
+		}
+
+
+		[Test]
+		public void PathWithoutExtensionOrTrailingSlash_IsIgnored()
+		{
+			context.GetTargetedPaths("/hello").Any().ShouldBe(false);
+		}
+
+		[TestCase("/world.aspx")]
+		[TestCase("/hello/world.aspx")]
+		[TestCase("/")]
+		public void LastTarget_IsNotOriginalPath(string original)
+		{
+			context.GetTargetedPaths(original).Last().ShouldNotBe(original);
 		}
 	}
 }

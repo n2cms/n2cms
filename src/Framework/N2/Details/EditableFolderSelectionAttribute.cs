@@ -117,8 +117,9 @@ namespace N2.Details
 					DisplayableImageAttribute.WriteImage(potentialImage.VirtualPath, writer);
 				else
 				{
-					if (N2.Web.Drawing.ImagesUtility.GetSize(potentialImage.VirtualPath, new[] { PreferredSize }) == PreferredSize)
-						DisplayableImageAttribute.WriteImage(potentialImage.VirtualPath, writer, PreferredSize);
+					var possibleSizes = new[] { PreferredSize };
+					if (N2.Web.Drawing.ImagesUtility.GetSize(potentialImage.VirtualPath, possibleSizes) == PreferredSize)
+						DisplayableImageAttribute.WriteImage(potentialImage.VirtualPath, writer, possibleSizes);
 				}
 			}
 		}

@@ -154,7 +154,6 @@ var initn2context = function (w) {
 					href = href.replace(format, formats[key]);
 				}
 				href = href.replace("{query}", href.indexOf('?') >= 0 ? "&" : "?");
-				//console.log(a, a.href, " -> ", href);
 				this.href = href;
 			});
 

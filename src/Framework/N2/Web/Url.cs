@@ -790,6 +790,21 @@ namespace N2.Web
 			return path.Substring(0, index);
 		}
 
+		/// <summary>Gets the file extension from the path (if any).</summary>
+		/// <param name="path">The path to find the extension of.</param>
+		/// <returns>An extension including . or null if no extnesion was found</returns>
+		public static string GetExtension(string path)
+		{
+			int index = path.LastIndexOfAny(dotsAndSlashes);
+
+			if (index < 0)
+				return null;
+			if (path[index] == '/')
+				return null;
+
+			return path.Substring(index);
+		}
+
 		/// <summary>Removes the last part from the url segments.</summary>
 		/// <returns></returns>
 		public Url RemoveTrailingSegment(bool maintainExtension)

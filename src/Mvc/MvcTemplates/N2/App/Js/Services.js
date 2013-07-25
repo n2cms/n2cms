@@ -56,16 +56,12 @@
 	module.factory('FrameContext', function () {
 		window.top.n2ctx = {
 			refresh: function (ctx) {
-				//console.log("refresh", arguments);
 			},
 			select: function () {
-				//console.log("select", arguments);
 			},
 			unselect: function(){
-				//console.log("unselect", arguments);
 			},
 			update: function () {
-				//console.log("update", arguments);
 			},
 			hasTop: function () {
 				return "metro";
@@ -85,7 +81,7 @@
 			'definitions': { method: 'GET', params: { target: 'definitions' } },
 			'move': { method: 'POST', params: { target: 'move' } },
 			'sort': { method: 'POST', params: { target: 'sort' } },
-			'delete': { method: 'POST', params: { target: 'delete' } },
+			'remove': { method: 'POST', params: { target: 'delete' } },
 			'publish': { method: 'POST', params: { target: 'publish' } },
 			'unpublish': { method: 'POST', params: { target: 'unpublish' } },
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
@@ -184,12 +180,8 @@
 					var cm = scope.Context.ContextMenu.Children[i];
 					scope.ContextMenu.options.push(cm.Current);
 				}
-
-				console.log("showing", node.Current.Title, scope.ContextMenu);
 			};
 			contextMenu.hide = function () {
-				console.log("hide", scope.ContextMenu.node);
-
 				delete scope.ContextMenu.node;
 				delete scope.ContextMenu.options;
 				delete scope.ContextMenu.memory;
@@ -225,10 +217,7 @@
 				});
 			}
 			this.move = function (ctx) {
-				console.log("moving", ctx);
 				Content.move(ctx.paths, function () {
-					console.log("moved", ctx);
-
 					reload(ctx);
 					Notify.show({ message: "Moved " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {
@@ -236,10 +225,7 @@
 				});
 			};
 			this.sort = function (ctx) {
-				console.log("sorting", ctx);
 				Content.sort(ctx.paths, function () {
-					console.log("sorted", ctx);
-
 					reload(ctx);
 					Notify.show({ message: "Sorted " + (ctx.scopes.selected && ctx.scopes.selected.node && ctx.scopes.selected.node.Current.Title), type: "success", timeout: 3000 });
 				}, function () {

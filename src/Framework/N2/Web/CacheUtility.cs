@@ -54,6 +54,18 @@ namespace N2.Web
 			return false;
 		}
 
+        /// <summary>
+        /// Updates response cache settings to prevent client caching
+        /// </summary>
+        /// <param name="response">The response whose cache to modify.</param>
+        public static void SetNoCache(this HttpResponseBase response)
+        {
+            response.Cache.SetCacheability(HttpCacheability.NoCache);
+            response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+            response.Cache.SetLastModified(DateTime.UtcNow);
+            response.Cache.SetMaxAge(new TimeSpan(0));
+        }
+
 		/// <summary>Sets public cacheablility (ask server if resources is modified) on the response header.</summary>
 		/// <param name="response">The response whose cache to modify.</param>
 		/// <param name="expirationTime">The time before the resource expires.</param>

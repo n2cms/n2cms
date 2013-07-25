@@ -52,6 +52,7 @@ namespace N2.Tests.Details
 				new N2.Edit.Workflow.StateChanger(),
 				new EditableHierarchyBuilder(new Fakes.FakeSecurityManager(), new N2.Configuration.EngineSection()),
 				new N2.Configuration.EditSection()));
+			engine.AddComponentInstance(new N2.Web.Slug(new N2.Configuration.ConfigurationManagerWrapper()));
 		}
 
 		[TestFixtureTearDown]

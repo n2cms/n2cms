@@ -255,6 +255,9 @@ namespace N2.Tests.Serialization
 
             try
             {
+				var nowDate = DateTime.Now;
+				N2.Utility.CurrentTime = () => nowDate;
+
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
                 string xmlUS = ExportToString(item, CreateExporter(), ExportOptions.Default);
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
@@ -264,6 +267,7 @@ namespace N2.Tests.Serialization
             }
             finally
             {
+				N2.Utility.CurrentTime = () => DateTime.Now;
                 Thread.CurrentThread.CurrentCulture = originalCulture;
             }
         }

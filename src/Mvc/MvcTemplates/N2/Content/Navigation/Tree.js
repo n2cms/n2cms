@@ -40,7 +40,6 @@
 		var permission = $a.attr("data-permission");
 
 		if ($(document.documentElement).is(".filesselectionLocation")) {
-			console.log("FILE", type, permission);
 			if (type == "Directory" && (permission == "Write" || permission == "Add" || permission == "Publish" || permission == "Administer")) {
 				$(".FileUpload:not(:visible)").slideDown();
 			} else {

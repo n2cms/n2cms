@@ -39,21 +39,25 @@ namespace N2.Extensions
 	{
 		public CsvImport(ContentItem Model)
 		{
-			string dcStr = Model.GetDetail("Delimiter", ",");
-			char dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
-
+			var dcStr = Model.GetDetail("Delimiter", ",");
+			if (String.IsNullOrEmpty(dcStr))
+				return; // can't do anything.
+			 
+			var dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
 			var dd = Model.GetDetail("Data", "").Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-			var bSkip = Model.GetDetail<bool>("Headers", false);
+			var bSkip = Model.GetDetail("Headers", false);
 			var nSkip = bSkip ? 1 : 0;
 
-			Rows = new string[dd.Length - nSkip][];
-			for (int i = nSkip; i < dd.Length; ++i)
-				Rows[i] = dd[i].Split(dc);
-			
-			if (Model.GetDetail("Sort", false))
-				Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
+			if (dd.Length - nSkip >= 0)
+			{
+				Rows = new string[dd.Length - nSkip][];
+				for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
+					Rows[i] = dd[i].Split(dc);
 
+				if (Model.GetDetail("Sort", false))
+					Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
+			}
 			HasHeader = bSkip;
 			if (bSkip)
 				HeaderRow = dd[0].Split(dc);

@@ -1,8 +1,6 @@
-﻿<div class="page-action" ng-controller="PageInfoCtrl">
-	<a href="#" ng-click="toggleInfo()" ng-show="Context.CurrentItem.State != Content.states.Draft">
-		<i class="ico n2-icon-info-sign"></i>
-	</a>
-</div>
+﻿<a href="#" class="page-action" ng-click="toggleInfo()" ng-controller="PageInfoCtrl">
+	<i class="ico n2-icon-info-sign"></i>
+</a>
 
 <dl class="info-menu dl-horizontal" ng-class="{ open: showInfo && Context.ExtendedInfo }" ng-controller="PageInfoCtrl">
 	<dt translate="info.type.dt">Type</dt><dd title="{{definitions[Context.ExtendedInfo.TypeName].Description}}">{{definitions[Context.ExtendedInfo.TypeName].Title}}</dd>

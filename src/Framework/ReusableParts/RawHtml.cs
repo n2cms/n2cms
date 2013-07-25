@@ -34,7 +34,7 @@ using N2.Web.Parts;
 
 namespace N2.Web
 {
-    [PartDefinition(Title = "Raw HTML", IconUrl = "~/N2/Resources/Icons/tag.png") ]
+	[PartDefinition(Title = "Raw HTML", RequiredPermission = N2.Security.Permission.Publish, IconClass = "n2-icon-code")]
     public class RawHtml : ContentItem
     {
         [EditableText(Rows = 10, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
