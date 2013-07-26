@@ -28,20 +28,6 @@ function decorate(obj, name, callback) {
 	};
 };
 
-if (Array.prototype.indexOf) {
-	window.indexOf = function (list, obj) {
-		return list.indexOf(obj);
-	}
-} else {
-	window.indexOf = function (list, obj, start) {
-		for (var i = (start || 0), j = list.length; i < j; i++) {
-			if (list[i] === obj)
-				return i;
-		}
-		return -1;
-	}
-}
-
 function getParentPath(path) {
 	var parentPathExpr = /((.*)[/])[^/]+[/]/;
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
@@ -215,7 +201,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.isFlagged = function (flag) {
-		return indexOf($scope.Context.Flags, flag) >= 0;
+		return jQuery.inArray(flag, $scope.Context.Flags) >= 0;
 	};
 	
 	var viewExpression = /[?&]view=[^?&]*/;
@@ -383,7 +369,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	};
 	$scope.$watch("Context.User.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
-		var existingIndex = indexOf($scope.Context.Flags, "View" + previousPreference);
+		var existingIndex = jQuery.inArray("View" + previousPreference, $scope.Context.Flags);
 		if (existingIndex >= 0)
 			$scope.Context.Flags.splice(existingIndex, 1);
 		$scope.Context.Flags.push("View" + viewPreference);
