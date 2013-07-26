@@ -95,7 +95,9 @@ a { text-decoration: none; color: #000; }
 #menu { height: 39px; background-color: #18a0de; font-size: 18px; }
 	#menu > ul { white-space:nowrap; }
 		#menu #logo { padding-left:60px; background-image: url(../img/n2.png); background-repeat: no-repeat; background-position: 10px 50%; }
-		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; display:block; height: 19px; min-width:19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; color: #fff; font-size:20px; text-shadow:none; }
+		#menu a { color:#fff; }
+		#menu .dropdown-menu a { color:#000; }
+		#menu > ul > li > .page-action { float: left; border-left: 1px solid #74c6eb; display:block; height: 19px; min-width:19px; padding: 10px; line-height: 16px; white-space:nowrap; text-transform: lowercase; font-size:20px; text-shadow:none; }
 				#menu > ul > li ul li.selected { background-color:#ebf7fc; border-top:solid 1px #e6f0f5; }
 	#menu > ul > li.primary-action > .page-action .ico { font-size: 28px; line-height:14px; }
 				#menu > ul > li .page-action span { text-transform: none; font-size: 11px; font-family: Arial; }
@@ -112,7 +114,7 @@ a { text-decoration: none; color: #000; }
 			#menu > ul > li.open .dropdown-toggle { background-color:#3aaee3 }
 			#menu > ul > li .dropdown-menu { }
 				#menu li .dropdown-menu li { display:block; color:#000; }
-					#menu li .dropdown-menu li a { display:block; color:#000; padding:5px 10px; height:auto; line-height:20px; max-width:400px; text-overflow: ellipsis; }
+					#menu li .dropdown-menu li a { display:block; padding:5px 10px; height:auto; line-height:20px; max-width:400px; text-overflow: ellipsis; }
 					#menu li .dropdown-menu li a.page-action-description .ico { position:relative; top:0; left:0; }
 
 		#menu li.iconed img { float: left; padding-top: 5px; }
