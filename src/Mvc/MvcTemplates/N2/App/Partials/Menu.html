@@ -24,7 +24,6 @@
 			ng-class="{ dropdown : item.Children.length, selected: isFlagged(item.Current.SelectedBy) }"
 			ng-controller="PageActionCtrl"
 			ng-include src="item.Current.TemplateUrl || 'App/Partials/MenuNode.html'"
-			title="{{isDisplayable(item) + ', ' + item.Current.TemplateUrl}}"
 			ng-show="isDisplayable(item)">
 		</li>
 	</ul>

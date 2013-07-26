@@ -364,6 +364,7 @@
 
 	window.frameInteraction = {
 		location: "Organize",
+		ready: true,
 		getActions: function () {
 			function create(commandElement) {
 				return {

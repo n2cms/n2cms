@@ -28,6 +28,20 @@ function decorate(obj, name, callback) {
 	};
 };
 
+if (Array.prototype.indexOf) {
+	window.indexOf = function (list, obj) {
+		return list.indexOf(obj);
+	}
+} else {
+	window.indexOf = function (list, obj, start) {
+		for (var i = (start || 0), j = list.length; i < j; i++) {
+			if (list[i] === obj)
+				return i;
+		}
+		return -1;
+	}
+}
+
 function getParentPath(path) {
 	var parentPathExpr = /((.*)[/])[^/]+[/]/;
 	return parentPathExpr.exec(path) && parentPathExpr.exec(path)[1];;
@@ -201,9 +215,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.isFlagged = function (flag) {
-		return $scope.Context.Flags.indexOf(flag) >= 0;
+		return indexOf($scope.Context.Flags, flag) >= 0;
 	};
-
+	
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
 		if ($scope.Context.AppliesTo == (e.path + e.query))
@@ -369,7 +383,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	};
 	$scope.$watch("Context.User.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
-		var existingIndex = $scope.Context.Flags.indexOf("View" + previousPreference);
+		var existingIndex = indexOf($scope.Context.Flags, "View" + previousPreference);
 		if (existingIndex >= 0)
 			$scope.Context.Flags.splice(existingIndex, 1);
 		$scope.Context.Flags.push("View" + viewPreference);
@@ -498,16 +512,34 @@ function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 		}
 
 		if ($scope.isFlagged("Management")) {
-			var actions = $scope.manipulator.getFrameActions();
-			if (actions && actions.length) {
-				$scope.$parent.manipulator.hideToolbar();
+			function loadActions() {
+				var actions = $scope.manipulator.getFrameActions();
+				if (actions && actions.length) {
+					$scope.$parent.manipulator.hideToolbar();
 
-				$scope.$parent.action = actions[0];
-				if (actions.length == 1)
-					$scope.$parent.item.Children = actions[0].Children;
-				else
-					$scope.$parent.item.Children = actions;
+					$scope.$parent.action = actions[0];
+					if (actions.length == 1)
+						$scope.$parent.item.Children = actions[0].Children;
+					else
+						$scope.$parent.item.Children = actions;
+				}
 			}
+			if (!FrameManipulator.isReady()) {
+				var iterations = 0;
+				var handle = setInterval(function () {
+					iterations++;
+					try {
+						if (iterations < 10 || !FrameManipulator.isReady())
+							return;
+						loadActions();
+						clearInterval(handle);
+					} catch (e) {
+						window.console && console.log("Error loading actions", e);
+						clearInterval(handle);
+					}
+				}, 500);
+			} else
+				loadActions();
 		}
 	});
 };
