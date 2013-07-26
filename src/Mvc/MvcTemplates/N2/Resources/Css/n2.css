@@ -224,9 +224,10 @@ a[disabled=disabled]:hover {
 /* MULTI-LEVEL DROPDOWNS FOR BOOTSTRAP */
 
 .submenu-toggle {
-	float:right;
 	font-size:18px;
 	margin:8px 8px 0 0;
+	position:absolute;
+	right:3px;
 }
 
 .dropdown-menu .sub-menu {
