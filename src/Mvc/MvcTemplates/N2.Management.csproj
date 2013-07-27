@@ -1111,6 +1111,7 @@
     <Compile Include="N2\Files\FileSystem\Pages\AbstractNode.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\Directory.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\File.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\FileSystemNodeAdapter.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\ImageSizeCache.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\RootDirectory.cs" />
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
