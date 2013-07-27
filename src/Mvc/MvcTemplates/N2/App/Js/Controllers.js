@@ -323,7 +323,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					if (!zone)
 						continue;
 					var child = {
-						Current: { Title: zone, IconClass: "n2-icon-columns silver" },
+						Current: { Title: zone, IconClass: "n2-icon-columns silver", MetaInformation: [] },
 						HasChildren: true,
 						Children: zones[zone]
 					}
@@ -348,6 +348,20 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		node.Expanded = !node.Expanded;
 	};
 	$scope.sort = new SortHelperFactory($scope, Content);
+	$scope.tags = [];
+	if ($scope.node.Current) {
+		var mi = $scope.node.Current.MetaInformation;
+		if (mi) {
+			if (mi.authority) $scope.tags.push({ ToolTip: "Site: " + (mi.authority.ToolTip || " (*)"), IconClass: "n2-icon-home", Url: "#" });
+			if (mi.hidden) $scope.tags.push({ ToolTip: "Hidden", IconClass: "n2-icon-eraser", Url: "#" });
+			if (mi.language) $scope.tags.push({ ToolTip: "Language: " + mi.language.Text, IconClass: "n2-icon-globe", Url: "#" });
+			if (mi.locked) $scope.tags.push({ ToolTip: "Access restrictions", IconClass: "n2-icon-lock", Url: "#" });
+			if (mi.zone) $scope.tags.push({ ToolTip: "In zone: " + mi.zone.Text, IconClass: "n2-icon-columns", Url: "#" });
+			if (mi.draft) $scope.tags.push({ ToolTip: "Has draft: " + mi.draft.ToolTip, IconClass: "n2-icon-circle-blank", Url: "#" });
+			if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "n2-icon-asterisk", Url: "#" });
+			if ($scope.node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: "Unpublished", IconClass: "n2-icon-stop", Url: "#" });
+		}
+	}
 }
 
 function MenuCtrl($rootScope, $scope, Security) {
