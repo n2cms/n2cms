@@ -43,8 +43,7 @@ a { text-decoration: none; color: #000; }
 				
 				#page-tree li div.item .tags { position:absolute; right:55px; top: 0; display:none; font-size:12px; }
 				#page-tree li div.item:hover .tags { display:block; }
-					#page-tree li div.item .tags a { color:#999; }
-					#page-tree li div.item .tags a:hover { text-decoration:none; }
+					#page-tree li div.item .tags { opacity:.33; }
 
 				#page-tree li div.item .tools { position:absolute; right:30px; top: 0; }
 					#page-tree li div.item		 .tools .dropdown-toggle { opacity:0; color:#666; transition: opacity .5s ease-in-out; text-decoration:none; }

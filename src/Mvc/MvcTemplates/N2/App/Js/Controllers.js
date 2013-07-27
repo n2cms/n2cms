@@ -339,7 +339,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	}
 }
 
-function BranchCtrl($scope, Content, SortHelperFactory) {
+function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	$scope.node = $scope.child;
 	$scope.toggle = function (node) {
 		if (!node.Expanded && !node.Children.length) {
@@ -352,14 +352,14 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 	if ($scope.node.Current) {
 		var mi = $scope.node.Current.MetaInformation;
 		if (mi) {
-			if (mi.authority) $scope.tags.push({ ToolTip: "Site: " + (mi.authority.ToolTip || " (*)"), IconClass: "n2-icon-home", Url: "#" });
-			if (mi.hidden) $scope.tags.push({ ToolTip: "Hidden", IconClass: "n2-icon-eraser", Url: "#" });
-			if (mi.language) $scope.tags.push({ ToolTip: "Language: " + mi.language.Text, IconClass: "n2-icon-globe", Url: "#" });
-			if (mi.locked) $scope.tags.push({ ToolTip: "Access restrictions", IconClass: "n2-icon-lock", Url: "#" });
-			if (mi.zone) $scope.tags.push({ ToolTip: "In zone: " + mi.zone.Text, IconClass: "n2-icon-columns", Url: "#" });
-			if (mi.draft) $scope.tags.push({ ToolTip: "Has draft: " + mi.draft.ToolTip, IconClass: "n2-icon-circle-blank", Url: "#" });
-			if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "n2-icon-asterisk", Url: "#" });
-			if ($scope.node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: "Unpublished", IconClass: "n2-icon-stop", Url: "#" });
+			if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "n2-icon-home", Url: "#" });
+			if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "n2-icon-eraser", Url: "#" });
+			if (mi.language) $scope.tags.push({ ToolTip: Translate("branch.tags.language", "Language: ") + mi.language.Text, IconClass: "n2-icon-globe", Url: "#" });
+			if (mi.locked) $scope.tags.push({ ToolTip: Translate("branch.tags.locked", "Access restrictions"), IconClass: "n2-icon-lock", Url: "#" });
+			if (mi.zone) $scope.tags.push({ ToolTip: Translate("branch.tags.zone", "In zone: ") + mi.zone.Text, IconClass: "n2-icon-columns", Url: "#" });
+			if (mi.draft) $scope.tags.push({ ToolTip: Translate("branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "n2-icon-circle-blank", Url: "#" });
+			if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "n2-icon-qrcode", Url: "#" });
+			if ($scope.node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: Translate("branch.tags.unpublished", "Unpublished"), IconClass: "n2-icon-stop", Url: "#" });
 		}
 	}
 }

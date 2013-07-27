@@ -2,7 +2,16 @@
 	"i18n": { language: "en" },
 	"loading": { "text": "Loading..." },
 	"branch": {
-		"noname": "(no name)"
+		"noname": "(no name)",
+		"tags": {
+			"authority": "Site: ",
+			"hidden": "Hidden",
+			"language": "Language: ",
+			"locked": "Access restrictions",
+			"zone": "In zone: ",
+			"draft": "Has draft: ",
+			"unpublished": "Unpublished"
+		}
 	},
 	"footer": {
 		"close": { "title": "Dismiss" }

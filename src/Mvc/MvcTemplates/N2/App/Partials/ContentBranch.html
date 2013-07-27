@@ -4,7 +4,7 @@
 	<a href="#" ng-click="toggle(node)" class="toggle"><b class="toggle-expand n2-icon-chevron-right"></b><b class="toggle-collapse icon-chevron-up"></b><b class="toggle-loading icon-repeat"></b></a>
 
 	<div class="tags">
-		<a ng-repeat="tag in tags" title="{{tag.ToolTip}}" href="{{tag.Url}}" target="{{tag.Target}}"><b class="{{tag.IconClass}}"></b></a>
+		<b ng-repeat="tag in tags" title="{{tag.ToolTip}}" class="{{tag.IconClass}}"></b>
 	</div>
 
 	<div class="tools dropdown">
