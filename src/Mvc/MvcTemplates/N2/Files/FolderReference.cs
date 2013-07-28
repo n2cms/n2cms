@@ -6,9 +6,9 @@ using N2.Edit;
 
 namespace N2.Management.Files
 {
-	internal struct FolderPair
+	public struct FolderReference
 	{
-		public FolderPair(int parentID, string parentPath, string path, FileSystemRoot folder)
+		public FolderReference(int parentID, string parentPath, string path, FileSystemRoot folder)
 		{
 			ParentID = parentID;
 			Path = path;

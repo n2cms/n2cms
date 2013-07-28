@@ -88,7 +88,7 @@ namespace N2.Edit
 			return GetUploadFolders(host.CurrentSite);
 		}
 
-		public IEnumerable<FileSystemRoot> GetUploadFoldersForAllSites()
+		public virtual IEnumerable<FileSystemRoot> GetUploadFoldersForAllSites()
 		{
 			foreach (var folder in globalFolders)
 				yield return folder;
