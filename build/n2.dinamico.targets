@@ -74,6 +74,7 @@
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
 										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
 												  $(Dinamico-SourceFolder)\Global.*;
+												  $(Dinamico-SourceFolder)\Dinamico.*;
 												  $(Dinamico-SourceFolder)\*.config;
 												  $(Dinamico-SourceFolder)\Properties\*;
 												  $(Dinamico-SourceFolder)\*.log;
