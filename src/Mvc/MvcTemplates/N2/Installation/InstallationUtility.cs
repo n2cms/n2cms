@@ -13,7 +13,7 @@ namespace N2.Management.Installation
 	{
 		public static string InstallationUnallowedHtml = @"<h1>Installation not allowed</h1>
 <p>Your configuration specifies that installation isn't allowed. To allow installation modify web.config:</p>
-<code><pre>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation=""<strong>true</strong>""/&gt;</pre></code>";
+<pre>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation=""<strong>true</strong>""/&gt;</pre>";
 
 		public static void CheckInstallationAllowed(HttpContext context)
 		{

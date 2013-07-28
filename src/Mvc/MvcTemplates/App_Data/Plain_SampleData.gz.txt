@@ -1,2 +1,2 @@
-<img src="../../App_Themes/Plain/Thumbnail.jpg" style="float:left;"/>
+<img src="../../Themes/Plain/Thumbnail.jpg" style="float:left;"/>
 <b>Plain Orange Theme</b> with Example Content
