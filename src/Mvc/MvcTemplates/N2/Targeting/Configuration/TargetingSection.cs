@@ -21,8 +21,8 @@ namespace N2.Management.Targeting.Configuration
 	{
 		public PreviewElementCollection()
 		{
-			AddDefault(new PreviewElement { Name = "phone", Title = "Mobile (iPhone, etc.)", Width = 320, Height = 480, IconClass = "n2-icon-mobile-phone" });
-			AddDefault(new PreviewElement { Name = "phone5", Title = "iPhone 5", Width = 320, Height = 568, IconClass = "n2-icon-mobile-phone" });
+			AddDefault(new PreviewElement { Name = "iphone", Title = "Mobile (iPhone, etc.)", Width = 320, Height = 480, IconClass = "n2-icon-mobile-phone" });
+			AddDefault(new PreviewElement { Name = "iphone5", Title = "iPhone 5", Width = 320, Height = 568, IconClass = "n2-icon-mobile-phone" });
 			AddDefault(new PreviewElement { Name = "tablet", Title = "Tablet (iPad 3, etc.)", Width = 768, Height = 1024, IconClass = "n2-icon-tablet" });
 			AddDefault(new PreviewElement { Name = "hdtv", Title = "HDTV", Width = 1920, Height = 1080, IconClass = "n2-icon-desktop" });
 		}
