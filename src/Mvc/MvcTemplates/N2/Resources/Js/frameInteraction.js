@@ -1,5 +1,6 @@
 ﻿window.frameInteraction = {
 	location: "EditPage",
+	ready: false,
 	getActions: function () {
 		var actions = [];
 
@@ -54,3 +55,6 @@
 		window.location = $(selector).attr('href');
 	}
 }
+jQuery(function ($) {
+	window.frameInteraction.ready = true;
+});

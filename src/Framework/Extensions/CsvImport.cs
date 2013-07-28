@@ -44,14 +44,14 @@ namespace N2.Extensions
 				return; // can't do anything.
 			 
 			var dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
-			var dd = Model.GetDetail("Data", "").Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+			var dd = Model.GetDetail("Data", string.Empty).Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
 			var bSkip = Model.GetDetail("Headers", false);
 			var nSkip = bSkip ? 1 : 0;
 
 			if (dd.Length - nSkip >= 0)
 			{
-				Rows = new string[dd.Length - nSkip][];
+				Rows = new string[Math.Max(dd.Length - nSkip, 0)][];
 				for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
 					Rows[i] = dd[i].Split(dc);
 

@@ -46,6 +46,7 @@ namespace N2.Web
 		public abstract string MenuLiCssClass { get; set; }
 		public abstract string MenuSelectedLiCssClass { get; set; }
 		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
+		public abstract bool MenuShowInvisible { get; set; }
 	}
 
 	/// <summary>
@@ -73,7 +74,7 @@ namespace N2.Web
 			set { SetDetail("TitleMode", value); }
 		}
 
-		#endregion 
+		#endregion
 
 
 		#region Hierarchy Options
@@ -85,7 +86,7 @@ namespace N2.Web
 			set { SetDetail("Levels", value); }
 		}
 
-		[EditableNumber("Start from Level", 420, 
+		[EditableNumber("Start from Level", 420,
 			Required = true,
 			HelpText = "Positive values are absolute from root; negative values are relative-up from current item.",
 			ContainerName = NestingContainerName)]
@@ -99,7 +100,7 @@ namespace N2.Web
 		[EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
 		public override SibilingDisplayOptions MenuShowSibilings
 		{
-			get { return GetDetail("ShowSibilings",  SibilingDisplayOptions.OnlyIfItemHasNoChildren); }
+			get { return GetDetail("ShowSibilings", SibilingDisplayOptions.OnlyIfItemHasNoChildren); }
 			set { SetDetail("ShowSibilings", value); }
 		}
 
@@ -131,7 +132,14 @@ namespace N2.Web
 			set { SetDetail("MenuShowCurrentItemIfHidden", value); }
 		}
 
-		#endregion 
+		[EditableCheckBox("Show items that aren't normally visible in navigation", 491, ContainerName = NestingContainerName)]
+		public override bool MenuShowInvisible
+		{
+			get { return GetDetail("ShowInvisible", false); }
+			set { SetDetail("ShowInvisible", value); }
+		}
+
+		#endregion
 
 
 		#region CSS Overrides
@@ -171,8 +179,8 @@ namespace N2.Web
 	/// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
-	[Adapts(typeof (MenuPart))]
-	public class MenuPartMvcAdapter: PartsAdapter
+	[Adapts(typeof(MenuPart))]
+	public class MenuPartMvcAdapter : PartsAdapter
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
@@ -188,7 +196,7 @@ namespace N2.Web
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
-	
+
 	public sealed class MenuPartRenderer
 	{
 
@@ -236,13 +244,13 @@ namespace N2.Web
 
 			switch (menuPart.MenuTitleDisplayMode)
 			{
-				case MenuPart.TitleDisplayOptions.CustomTitle:
+				case MenuPartBase.TitleDisplayOptions.CustomTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, menuPart.Title));
 					break;
-				case MenuPart.TitleDisplayOptions.CurrentPageTitle:
+				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
 					break;
-				case MenuPart.TitleDisplayOptions.None:
+				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
 
@@ -261,7 +269,7 @@ namespace N2.Web
 		private IEnumerable<ContentItem> GetChildren(ContentItem ancestorItem)
 		{
 			return (from x in ancestorItem.GetChildren()
-					where x.IsPage && x.Visible && x.IsPublished() && x.ID != Content.Current.Page.ID
+					where x.IsPage && (menuPart.MenuShowInvisible || x.Visible) && x.IsPublished() && x.ID != Content.Current.Page.ID
 					select x).ToArray();
 		}
 
@@ -276,9 +284,7 @@ namespace N2.Web
 				ci = ci.VersionOf.Value; // get the published version
 
 			// follow the ancestral trail up to the desired "start from level"
-			var convertedAncestralTrail = Array.ConvertAll(
-				ci.AncestralTrail.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries),
-				int.Parse);
+			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new [] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
 
 			var xn = menuPart.MenuStartFromLevel;
 			if (xn < 0)
@@ -293,7 +299,7 @@ namespace N2.Web
 
 				// expand the ancestor
 				// ReSharper disable LoopCanBeConvertedToQuery
-				foreach (var item in GetChildren(ancestorItem)) 
+				foreach (var item in GetChildren(ancestorItem))
 					expandedParents.Add(new ContentTreeNode(item, ancestorNode));
 				// ReSharper restore LoopCanBeConvertedToQuery
 			}
@@ -301,7 +307,7 @@ namespace N2.Web
 
 			// Add current item ================================================================
 
-			if (ci.Visible || this.menuPart.MenuShowCurrentItemIfHidden)
+			if (ci.Visible || menuPart.MenuShowCurrentItemIfHidden)
 			{
 				// -- add a node for the current page --
 				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
@@ -320,7 +326,7 @@ namespace N2.Web
 			// add the ancestors we just expanded 
 			// ReSharper disable LoopCanBeConvertedToQuery
 			foreach (var item in expandedParents)
-				if (!navTree.Any(f => f.ItemId == item.ItemId))
+				if (navTree.All(f => f.ItemId != item.ItemId))
 					navTree.Add(item);
 			// ReSharper restore LoopCanBeConvertedToQuery
 
@@ -430,5 +436,5 @@ namespace N2.Web
 		}
 
 	}
-	
+
 }

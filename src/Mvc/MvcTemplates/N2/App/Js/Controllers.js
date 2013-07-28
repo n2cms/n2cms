@@ -204,9 +204,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	}
 
 	$scope.isFlagged = function (flag) {
-		return $scope.Context.Flags.indexOf(flag) >= 0;
+		return jQuery.inArray(flag, $scope.Context.Flags) >= 0;
 	};
-
+	
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
 		if ($scope.Context.AppliesTo == (e.path + e.query))
@@ -331,7 +331,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					if (!zone)
 						continue;
 					var child = {
-						Current: { Title: zone, IconClass: "n2-icon-columns silver" },
+						Current: { Title: zone, IconClass: "n2-icon-columns silver", MetaInformation: [] },
 						HasChildren: true,
 						Children: zones[zone]
 					}
@@ -347,7 +347,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	}
 }
 
-function BranchCtrl($scope, Content, SortHelperFactory) {
+function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	$scope.node = $scope.child;
 	$scope.toggle = function (node) {
 		if (!node.Expanded && !node.Children.length) {
@@ -356,6 +356,20 @@ function BranchCtrl($scope, Content, SortHelperFactory) {
 		node.Expanded = !node.Expanded;
 	};
 	$scope.sort = new SortHelperFactory($scope, Content);
+	$scope.tags = [];
+	if ($scope.node.Current) {
+		var mi = $scope.node.Current.MetaInformation;
+		if (mi) {
+			if (mi.authority) $scope.tags.push({ ToolTip: Translate("branch.tags.authority", "Site: ") + (mi.authority.ToolTip || " (*)"), IconClass: "n2-icon-home", Url: "#" });
+			if (mi.hidden) $scope.tags.push({ ToolTip: Translate("branch.tags.hidden", "Hidden"), IconClass: "n2-icon-eraser", Url: "#" });
+			if (mi.language) $scope.tags.push({ ToolTip: Translate("branch.tags.language", "Language: ") + mi.language.Text, IconClass: "n2-icon-globe", Url: "#" });
+			if (mi.locked) $scope.tags.push({ ToolTip: Translate("branch.tags.locked", "Access restrictions"), IconClass: "n2-icon-lock", Url: "#" });
+			if (mi.zone) $scope.tags.push({ ToolTip: Translate("branch.tags.zone", "In zone: ") + mi.zone.Text, IconClass: "n2-icon-columns", Url: "#" });
+			if (mi.draft) $scope.tags.push({ ToolTip: Translate("branch.tags.draft", "Has draft: ") + mi.draft.ToolTip, IconClass: "n2-icon-circle-blank", Url: "#" });
+			if (mi.system) $scope.tags.push({ ToolTip: mi.system.ToolTip, IconClass: "n2-icon-qrcode", Url: "#" });
+			if ($scope.node.Current.State == Content.states.Unpublished) $scope.tags.push({ ToolTip: Translate("branch.tags.unpublished", "Unpublished"), IconClass: "n2-icon-stop", Url: "#" });
+		}
+	}
 }
 
 function MenuCtrl($rootScope, $scope, Security) {
@@ -377,7 +391,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	};
 	$scope.$watch("Context.User.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
-		var existingIndex = $scope.Context.Flags.indexOf("View" + previousPreference);
+		var existingIndex = jQuery.inArray("View" + previousPreference, $scope.Context.Flags);
 		if (existingIndex >= 0)
 			$scope.Context.Flags.splice(existingIndex, 1);
 		$scope.Context.Flags.push("View" + viewPreference);
@@ -506,16 +520,34 @@ function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
 		}
 
 		if ($scope.isFlagged("Management")) {
-			var actions = $scope.manipulator.getFrameActions();
-			if (actions && actions.length) {
-				$scope.$parent.manipulator.hideToolbar();
+			function loadActions() {
+				var actions = $scope.manipulator.getFrameActions();
+				if (actions && actions.length) {
+					$scope.$parent.manipulator.hideToolbar();
 
-				$scope.$parent.action = actions[0];
-				if (actions.length == 1)
-					$scope.$parent.item.Children = actions[0].Children;
-				else
-					$scope.$parent.item.Children = actions;
+					$scope.$parent.action = actions[0];
+					if (actions.length == 1)
+						$scope.$parent.item.Children = actions[0].Children;
+					else
+						$scope.$parent.item.Children = actions;
+				}
 			}
+			if (!FrameManipulator.isReady()) {
+				var iterations = 0;
+				var handle = setInterval(function () {
+					iterations++;
+					try {
+						if (iterations < 10 || !FrameManipulator.isReady())
+							return;
+						loadActions();
+						clearInterval(handle);
+					} catch (e) {
+						window.console && console.log("Error loading actions", e);
+						clearInterval(handle);
+					}
+				}, 500);
+			} else
+				loadActions();
 		}
 	});
 };

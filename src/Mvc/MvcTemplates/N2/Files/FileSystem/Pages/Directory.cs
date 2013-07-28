@@ -8,7 +8,7 @@ using N2.Edit.Api;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-		IconClass = "n2-icon-folder-open",
+		IconClass = "n2-icon-folder-close",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]
@@ -58,13 +58,13 @@ namespace N2.Edit.FileSystem.Items
 			}
 		}
 
-		public override string IconUrl
+		public override string IconClass
 		{
 			get
 			{
 				if (base.GetFiles().Count > 0)
-					return Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/folder_page_white.png");
-				return base.IconUrl;
+					return "n2-icon-folder-open";
+				return base.IconClass;
 			}
 		}
 

@@ -81,7 +81,7 @@
 			<%}%>
 			<hr />
 			<p><strong>Already done this?</strong> There might be problems connecting to the database. To prevent this screen from appearing modify web.config:</p>
-			<code><pre>&lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="<strong>false</strong>"/&gt;</pre></code>
+			<pre>&lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="<strong>false</strong>"/&gt;</pre>
 		</div>
 	</div>
 	</form>

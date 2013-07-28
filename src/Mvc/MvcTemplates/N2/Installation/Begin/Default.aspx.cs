@@ -84,11 +84,8 @@ namespace N2.Edit.Install.Begin
 
 					cfg.Save();
 
-					if (FormsAuthentication.Authenticate("admin", txtPassword.Text))
-					{
-						FormsAuthentication.SetAuthCookie("admin", false);
-						Response.Redirect(continueUrl);
-					}
+					FormsAuthentication.SetAuthCookie("admin", false);
+					Response.Redirect(continueUrl);
 				}
 				else
 				{

@@ -29,11 +29,20 @@
 		})();
 	});
 
+	window.frameHost = {
+		notify: function () {
+		}
+	}
 	module.factory('FrameManipulator', function () {
 		var frameManipulator = {
+			host: window.frameHost,
 			click: function (selector) {
 				var pf = window.frames.preview;
 				pf && pf.frameInteraction && pf.frameInteraction.execute(selector);
+			},
+			isReady: function () {
+				var pf = window.frames.preview;
+				return pf && pf.frameInteraction && pf.frameInteraction.ready;
 			},
 			hideToolbar: function (force) {
 				var pf = window.frames.preview;

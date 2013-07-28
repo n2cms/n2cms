@@ -1111,13 +1111,14 @@
     <Compile Include="N2\Files\FileSystem\Pages\AbstractNode.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\Directory.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\File.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\FileSystemNodeAdapter.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\ImageSizeCache.cs" />
     <Compile Include="N2\Files\FileSystem\Pages\RootDirectory.cs" />
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
       <DependentUpon>UploadFile.ashx</DependentUpon>
     </Compile>
     <Compile Include="N2\Files\FolderNodeProvider.cs" />
-    <Compile Include="N2\Files\FolderPair.cs" />
+    <Compile Include="N2\Files\FolderReference.cs" />
     <Compile Include="N2\Files\UpdateFilePrefixMigration.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />

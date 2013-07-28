@@ -24,17 +24,17 @@
         <ul>
             <li><b>Missing dll.</b> A dll containing class definitions (e.g. N2.Management.dll) is no longer available in the /bin folder</li>
             <li><b>Changed or removed class.</b> The name of a class has changed or a class has been removed. E.g. a content class such as
-                <pre><code>[Definition]
-public class PageItem</code></pre> 
+                <pre>[Definition]
+public class PageItem</pre> 
                 could have been renamed to 
-                <pre><code>[Definition]
-public class <b>Other</b>PageItem</code></pre>
+                <pre>[Definition]
+public class <b>Other</b>PageItem</pre>
             </li>
             <li><b>Changed discriminator.</b> The discriminator of a class definition has changed e.g.
-                <pre><code>[Definition("My page", "Discriminator")]
-public class MyPage...</code></pre>
-                <pre><code>[Definition("My page", "<b>Changed</b>Discriminator")]
-public class MyPage...</code></pre>
+                <pre>[Definition("My page", "Discriminator")]
+public class MyPage...</pre>
+                <pre>[Definition("My page", "<b>Changed</b>Discriminator")]
+public class MyPage...</pre>
             </li>
             <li><b>UFO landing.</b> Someone did nasty experiments to your database...</li>
         </ul>

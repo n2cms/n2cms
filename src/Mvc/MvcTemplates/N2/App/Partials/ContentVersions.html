@@ -1,15 +1,15 @@
 ﻿<a href='{{evaluateExpression(item.Current.Url)}}' 
 	target='preview' 
 	title='View page versions' 
-	class='page-action page-action-description'
+	class='page-action page-action-description page-versions'
 	translate="versions.action">
 	<b class="ico n2-icon-briefcase"></b>
 	Versions<br />
-	<span ng-show="Context.CurrentItem.State == Content.states.Draft" translate="versions.draft">Draft</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Waiting" translate="versions.waiting">Waiting</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Published" translate="versions.published">Published</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Unpublished" translate="versions.unpublished">Unpublished</span>
-	<span ng-show="Context.CurrentItem.State == Content.states.Deleted" translate="versions.deleted">Deleted</span>
+	<span class="draft" ng-show="Context.CurrentItem.State == Content.states.Draft" translate="versions.draft"><b class="n2-icon-circle-blank"></b> Draft</span>
+	<span class="waiting" ng-show="Context.CurrentItem.State == Content.states.Waiting" translate="versions.waiting"><b class="n2-icon-time"></b> Scheduled</span>
+	<span class="published" ng-show="Context.CurrentItem.State == Content.states.Published" translate="versions.published"><b class="n2-icon-play-sign"></b> Published</span>
+	<span class="unpublished" ng-show="Context.CurrentItem.State == Content.states.Unpublished" translate="versions.unpublished"><b class="n2-icon-stop"></b> Unpublished</span>
+	<span class="deleted" ng-show="Context.CurrentItem.State == Content.states.Deleted" translate="versions.deleted"><b class="n2-icon-trash"></b> Deleted</span>
 </a>
 
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"

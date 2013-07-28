@@ -81,7 +81,7 @@
 		
         .sc.stateUnpublished .plugins a,
         .sc.stateDeleted .plugins a {
-			background-color:#E10C02;
+			background-color:#EE3300;
 		}
         .sc.stateUnpublished .plugins a:hover,
         .sc.stateDeleted .plugins a:hover,
@@ -101,7 +101,7 @@
 	.sc .open:hover { outline:solid 1px #fff; margin-right:-1px; width:2px; }
 	.sc .close { border-right-style:dotted; }
     .sc.stateDeleted .sc-toggler,
-    .sc.stateUnpublished .sc-toggler { border-color: #E10C02; } 
+    .sc.stateUnpublished .sc-toggler { border-color: #EE3300; }
     .sc.stateDeleted .sc-toggler:hover,
     .sc.stateUnpublished .sc-toggler:hover { border-color: #E16C62; } 
 	.sc.stateWaiting .sc-toggler,

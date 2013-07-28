@@ -3,6 +3,10 @@
 	
 	<a href="#" ng-click="toggle(node)" class="toggle"><b class="toggle-expand n2-icon-chevron-right"></b><b class="toggle-collapse icon-chevron-up"></b><b class="toggle-loading icon-repeat"></b></a>
 
+	<div class="tags">
+		<b ng-repeat="tag in tags" title="{{tag.ToolTip}}" class="{{tag.IconClass}}"></b>
+	</div>
+
 	<div class="tools dropdown">
 		<a href='#' ng-click="ContextMenu.show(node)" class='dropdown-toggle' data-toggle="dropdown"><b class="n2-icon-reorder"></b></a>
 		<ul ng-include src="ContextMenu.node == node && Context.Partials.ContextMenu" class="dropdown-menu pull-right"></ul>

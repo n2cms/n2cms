@@ -9,9 +9,16 @@ namespace N2.Edit.Web.UI.Controls
 {
 	public class ItemLink : HyperLink
 	{
+		public ItemLink()
+		{
+			ShowIcon = true;
+		}
+
 		public object DataSource { get; set; }
 
 		public string InterfaceUrl { get; set; }
+
+		public bool ShowIcon { get; set; }
 
 		protected override void OnPreRender(EventArgs e)
 		{
@@ -26,7 +33,11 @@ namespace N2.Edit.Web.UI.Controls
 			else
 				this.NavigateUrl = InterfaceUrl.ResolveUrlTokens().ToUrl().AppendSelection(item);
 
-			if (string.IsNullOrEmpty(item.IconUrl))
+			if (!ShowIcon)
+			{
+				Text = item.Title;
+			}
+			else if (string.IsNullOrEmpty(item.IconUrl))
 			{
 				Text = string.Format("<b class='{0}'></b> {1}", item.IconClass, item.Title);
 			}

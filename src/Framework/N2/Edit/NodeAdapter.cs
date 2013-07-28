@@ -130,9 +130,15 @@ namespace N2.Edit
 
 			if (Languages.IsLanguageRoot(item) && Languages.GetLanguage(item) != null)
 				mi["language"] = new MetaInfo { Text = Languages.GetLanguage(item).LanguageCode };
-			
-			if(!item.IsPage)
+
+			if (!item.IsPage)
 				mi["zone"] = new MetaInfo { Text = item.ZoneName };
+
+			if (!item.Visible)
+				mi["hidden"] = new MetaInfo { Text = "", ToolTip = "Hidden" };
+
+			if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)
+				mi["locked"] = new MetaInfo { Text = "", ToolTip = "Locked" };
 
 			if (Host.IsStartPage(item))
 				mi["authority"] = new MetaInfo { Text = string.IsNullOrEmpty(Host.GetSite(item).Authority) ? "*" : Host.GetSite(item).Authority };
@@ -143,6 +149,9 @@ namespace N2.Edit
 			var draftInfo = Drafts.GetDraftInfo(item);
 			if (draftInfo != null && draftInfo.Saved > item.Updated)
 				mi["draft"] = new MetaInfo { Text = "&nbsp;", ToolTip = draftInfo.SavedBy + ": " + draftInfo.Saved };
+
+			if (item is ISystemNode)
+				mi["system"] = new MetaInfo { ToolTip = Definitions.GetDefinition(item).Title };
 
 			return mi;
 		}

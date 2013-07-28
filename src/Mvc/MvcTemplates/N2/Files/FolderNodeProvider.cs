@@ -24,11 +24,11 @@ namespace N2.Management.Files
 		private IRepository<ContentItem> repository;
 		private IDependencyInjector dependencyInjector;
 
-		internal FolderPair[] UploadFolderPaths { get; set; }
+		internal FolderReference[] UploadFolderPaths { get; set; }
 
 		public FolderNodeProvider(IFileSystem fs, IRepository<ContentItem> repository, IDependencyInjector dependencyInjector)
 		{
-			UploadFolderPaths = new FolderPair[0];
+			UploadFolderPaths = new FolderReference[0];
 			this.fs = fs;
 			this.repository = repository;
 			this.dependencyInjector = dependencyInjector;
@@ -84,7 +84,7 @@ namespace N2.Management.Files
 			}
 		}
 
-		private Directory CreateDirectory(FolderPair pair)
+		private Directory CreateDirectory(FolderReference pair)
 		{
 			return CreateDirectory(pair.Folder, fs, repository, dependencyInjector);
 		}
