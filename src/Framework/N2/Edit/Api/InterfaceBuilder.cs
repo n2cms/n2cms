@@ -179,11 +179,42 @@ namespace N2.Management.Api
 				ContextMenu = CreateContextMenu(context),
 				Partials = CreatePartials(context)
 			};
-			
+
+			PostProcess(data);
+
 			if (InterfaceBuilt != null)
 				InterfaceBuilt(this, new InterfaceBuiltEventArgs { Data = data });
 
 			return data;
+		}
+
+		protected virtual void PostProcess(InterfaceDefinition data)
+		{
+			var removedComponents = new HashSet<string>(engine.Config.Sections.Engine.InterfacePlugins.RemovedElements.Select(re => re.Name));
+			if (removedComponents.Count == 0)
+				return;
+
+			RemoveRemovedComponentsRecursive(data.MainMenu, removedComponents);
+			RemoveRemovedComponentsRecursive(data.ActionMenu, removedComponents);
+			RemoveRemovedComponentsRecursive(data.ContextMenu, removedComponents);
+		}
+
+		private void RemoveRemovedComponentsRecursive(Node<InterfaceMenuItem> node, HashSet<string> removedComponents)
+		{
+			if (node.Children == null)
+				return;
+
+			var children = node.Children.ToList();
+			for (int i = children.Count - 1; i >= 0; i--)
+			{
+				RemoveRemovedComponentsRecursive(children[i], removedComponents);
+
+				if (children[i].Current == null || !removedComponents.Contains(children[i].Current.Name))
+					continue;
+
+				children.RemoveAt(i);
+				node.Children = children.ToArray();
+			}
 		}
 
 		private InterfacePartials CreatePartials(HttpContextBase context)
