@@ -198,6 +198,7 @@
     <Compile Include="Details\Models\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />
     <Compile Include="Details\Models\Multiple.cs" />
+    <Compile Include="Edit\Api\InterfaceBuilderTests.cs" />
     <Compile Include="Edit\ContainerRepositoryTests.cs" />
     <Compile Include="Edit\EditUrlManagerTests.cs" />
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />

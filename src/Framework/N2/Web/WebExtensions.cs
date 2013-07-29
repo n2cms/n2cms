@@ -187,9 +187,12 @@ namespace N2.Web
 		internal static string ViewPreferenceQueryString = "view";
 		internal static string DraftQueryValue = ViewPreference.Draft.ToString().ToLower();
 		internal static string PublishedQueryValue = ViewPreference.Published.ToString().ToLower();
-		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
+		public static ViewPreference GetViewPreference(this HttpContextBase httpContext, ViewPreference defaultPreference = ViewPreference.Published)
 		{
-			string viewPreference = context.Request[ViewPreferenceQueryString];
+			if (httpContext == null)
+				return defaultPreference;
+
+			string viewPreference = httpContext.Request[ViewPreferenceQueryString];
 			if (DraftQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))
 				return ViewPreference.Draft;
 			else if (PublishedQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))

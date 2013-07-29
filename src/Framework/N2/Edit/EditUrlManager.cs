@@ -65,7 +65,7 @@ namespace N2.Edit
 			try
 			{
 				// If hostname == localhost, then don't use custom hostnames in the management navigation tree
-				if (HttpContext.Current.Request.Url.Host == "localhost")
+				if (HttpContext.Current != null && HttpContext.Current.Request.Url.Host == "localhost")
 					return selectedItem.FindPath(PathData.DefaultAction).GetRewrittenUrl();
 
 				Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));

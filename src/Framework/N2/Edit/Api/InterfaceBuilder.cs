@@ -89,8 +89,6 @@ namespace N2.Management.Api
 
 		public InterfaceUser User { get; set; }
 
-		public InterfaceTrash Trash { get; set; }
-
 		public InterfacePaths Paths { get; set; }
 
 		public Node<InterfaceMenuItem> ContextMenu { get; set; }
@@ -124,11 +122,11 @@ namespace N2.Management.Api
 		public string ViewPreference { get; set; }
 	}
 
-	public class InterfaceTrash : Node<N2.Edit.TreeNode>
-	{
-		public int TotalItems { get; set; }
-		public int ChildItems { get; set; }
-	}
+	//public class InterfaceTrash : Node<N2.Edit.TreeNode>
+	//{
+	//	public int TotalItems { get; set; }
+	//	public int ChildItems { get; set; }
+	//}
 
 	public class InterfacePartials
 	{
@@ -176,7 +174,7 @@ namespace N2.Management.Api
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = CreateUser(context),
-				Trash = CreateTrash(context),
+				//Trash = CreateTrash(context),
 				Paths = CreateUrls(context, selection),
 				ContextMenu = CreateContextMenu(context),
 				Partials = CreatePartials(context)
@@ -333,27 +331,27 @@ namespace N2.Management.Api
 			};
 		}
 
-		protected virtual InterfaceTrash CreateTrash(HttpContextBase context)
-		{
-			var trash = engine.Resolve<ITrashHandler>();
+		//protected virtual InterfaceTrash CreateTrash(HttpContextBase context)
+		//{
+		//	var trash = engine.Resolve<ITrashHandler>();
 
-			if (trash.TrashContainer == null)
-				return new InterfaceTrash();
+		//	if (trash.TrashContainer == null)
+		//		return new InterfaceTrash();
 
-			var container = (ContentItem)trash.TrashContainer;
+		//	var container = (ContentItem)trash.TrashContainer;
 
-			var total = (int)engine.Persister.Repository.Count(Parameter.Below(container));
-			var children = (int)engine.Persister.Repository.Count(Parameter.Equal("Parent", container));
+		//	var total = (int)engine.Persister.Repository.Count(Parameter.Below(container));
+		//	var children = (int)engine.Persister.Repository.Count(Parameter.Equal("Parent", container));
 
-			return new InterfaceTrash
-			{
-				Current = engine.GetContentAdapter<NodeAdapter>(container).GetTreeNode(container),
-				HasChildren = children > 0,
-				ChildItems = children,
-				TotalItems = total,
-				Children = new Node<TreeNode>[0]
-			};
-		}
+		//	return new InterfaceTrash
+		//	{
+		//		Current = engine.GetContentAdapter<NodeAdapter>(container).GetTreeNode(container),
+		//		HasChildren = children > 0,
+		//		ChildItems = children,
+		//		TotalItems = total,
+		//		Children = new Node<TreeNode>[0]
+		//	};
+		//}
 
 		protected virtual InterfaceUser CreateUser(HttpContextBase context)
 		{
