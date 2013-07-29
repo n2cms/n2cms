@@ -270,6 +270,49 @@
 			<pre><%= ex %></pre>
 			<% } %>
 
+			
+			<% try { %>
+			<table class="t openable"><thead><tr><th colspan="2"><h2>Interface context</h2></th></tr></thead>
+			<tbody>
+				<% var ctx = Engine.Resolve<N2.Management.Api.InterfaceBuilder>().GetInterfaceDefinition(new System.Web.HttpContextWrapper(Context), new N2.Edit.SelectionUtility(Context, Engine)); %>
+				<tr><th colspan="2">MainMenu</th></tr>
+				<% foreach (var mi in ctx.MainMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
+				<tr><th colspan="2">ActionMenu</th></tr>
+				<% foreach (var mi in ctx.ActionMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
+				<tr><th colspan="2">ContextMenu</th></tr>
+				<% foreach (var mi in ctx.ContextMenu.Children) { %>
+				<tr>
+					<td><strong><%= mi.Current.Name %></strong></td>
+					<td>
+						<% foreach (var mi2 in mi.Children) { %>
+						<div><%= mi2.Current.Name %></div>
+						<% } %>
+					</td>
+			    </tr>
+				<% } %>
+			</tbody></table>
+			<% } catch (Exception ex) { %>
+			<pre><%= ex %></pre>
+			<% } %>
+
 
 			<% try { %>
 			<table class="t openable"><thead><tr><th colspan="2"><h2>Cache</h2></th></tr><tr><td>NH Cache Region</td><td>Cache</td></tr></thead>

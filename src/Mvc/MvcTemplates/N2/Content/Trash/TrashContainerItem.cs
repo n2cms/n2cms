@@ -1,6 +1,6 @@
 using N2.Definitions;
 using N2.Details;
-using N2.Edit.Api;
+using N2.Management.Api;
 using N2.Installation;
 using N2.Integrity;
 

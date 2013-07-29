@@ -3,7 +3,7 @@ using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Engine;
-using N2.Edit.Api;
+using N2.Management.Api;
 
 namespace N2.Edit.FileSystem.Items
 {
