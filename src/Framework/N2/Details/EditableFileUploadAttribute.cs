@@ -192,7 +192,7 @@ namespace N2.Details
 		{
 			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
 			if(string.IsNullOrEmpty(cssClass))
-				writer.Write(string.Format("<a href=\"{0}\">{2}</a>", url, VirtualPathUtility.GetFileName(url)));
+				writer.Write(string.Format("<a href=\"{0}\">{1}</a>", url, VirtualPathUtility.GetFileName(url)));
 			else
 				writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, VirtualPathUtility.GetFileName(url)));
 		}
