@@ -31,9 +31,14 @@
 			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
-				.filter(function () { return this.parentNode.className.indexOf('control') != 0; })
+				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
+				.filter(function () { return !this.target || this.target == "_self"; })
 				.each(function () {
-					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
+					var hashIndex = this.href.indexOf("#");
+					if (hashIndex >= 0)
+						this.href = this.href.substr(0, hashIndex) + ((this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag") + this.href.substr(hashIndex);
+					else
+						this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
 				});
 
 			self.makeEditable();
