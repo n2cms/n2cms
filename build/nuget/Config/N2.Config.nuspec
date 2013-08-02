@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>N2CMS.Config</id>
-		<version>1.0</version>
+		<version>1.1</version>
 		<title>N2CMS Configuration</title>
 		<authors>Cristian Libardo</authors>
 		<owners>Cristian Libardo</owners>
