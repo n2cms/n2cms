@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<host>
+			<vpp xdt:Transform="Insert">
+				<zips>
+					<add name="n2.management" observedPath="~/N2/" filePath="~/N2/N2.zip" />
+				</zips>
+			</vpp>
+		</host>
+	</n2>
+</configuration>

@@ -131,6 +131,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5-CF13-47DD-942E-72E34B26FE48}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\nuget\Framework\N2.Cms.nuspec = ..\build\nuget\Framework\N2.Cms.nuspec
+		..\build\nuget\Config\N2.Config.nuspec = ..\build\nuget\Config\N2.Config.nuspec
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
 		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
 		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
