@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -116,7 +117,27 @@ namespace N2.Details
 			return composite;
 		}
 
+		/// <summary>Adds a required field validator.</summary>
+		/// <param name="container">The container control for this validator.</param>
+		/// <param name="editor">The editor control to validate.</param>
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			SelectingUploadCompositeControl composite = editor as SelectingUploadCompositeControl;
+			if (composite != null)
+			{
+				RequireEitherFieldValidator rfv = new RequireEitherFieldValidator();
+				rfv.ID = Name + "_rfv";
+				rfv.ControlToValidate = composite.SelectorControl.ID;
+				rfv.OtherControlToValidate = composite.UploadControl.ID;
+				rfv.Display = ValidatorDisplay.Dynamic;
+				rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
+				rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
+				editor.Controls.Add(rfv);
 
+				return rfv;
+			}
+			return null;
+		}
 
 
 		#region IDisplayable Members
@@ -171,7 +192,7 @@ namespace N2.Details
 		{
 			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
 			if(string.IsNullOrEmpty(cssClass))
-				writer.Write(string.Format("<a href=\"{0}\">{2}</a>", url, VirtualPathUtility.GetFileName(url)));
+				writer.Write(string.Format("<a href=\"{0}\">{1}</a>", url, VirtualPathUtility.GetFileName(url)));
 			else
 				writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, VirtualPathUtility.GetFileName(url)));
 		}

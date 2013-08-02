@@ -745,6 +745,7 @@
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
     <Compile Include="Web\UI\WebControls\OrganizeSwitchAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\RequireEitherFieldValidator.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
     <Compile Include="Web\UrlEventArgs.cs" />
