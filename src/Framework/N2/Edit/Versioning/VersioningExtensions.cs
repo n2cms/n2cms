@@ -170,6 +170,8 @@ namespace N2.Edit.Versioning
 				previewedItem.State = ContentState.Published;
 				if (!previewedItem.Published.HasValue)
 					previewedItem.Published = Utility.CurrentTime();
+				if (previewedItem.Expires.HasValue)
+					previewedItem.Expires = null;
 
 				persister.Save(previewedItem);
 			}
