@@ -2,6 +2,7 @@
 #### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications
 
 ##Give your content managers this user experience
+Sharing control of your web application's content makes the site better and it will grow naturally without having to push builds.
 
 **Main**
 
@@ -154,7 +155,7 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 ###Reference Documentation
 **On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started
 
->We know... we need to move this to public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
+>We know... we need to move this to github wiki or our public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
 
 ###Examples
 
