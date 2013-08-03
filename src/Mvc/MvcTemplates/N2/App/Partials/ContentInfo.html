@@ -4,7 +4,14 @@
 
 <dl class="info-menu dl-horizontal" ng-class="{ open: showInfo && Context.ExtendedInfo }" ng-controller="PageInfoCtrl">
 	<dt translate="info.type.dt">Type</dt><dd title="{{definitions[Context.ExtendedInfo.TypeName].Description}}">{{definitions[Context.ExtendedInfo.TypeName].Title}}</dd>
-	<dt translate="info.state.dt" ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">State</dt><dd ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">{{Content.states.toString(Context.CurrentItem.State)}}</dd>
+	<dt translate="info.state.dt" ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">State</dt>
+	<dd ng-class="'info-' + Content.states.toString(Context.CurrentItem.State)">
+		<span class="draft" ng-show="Context.CurrentItem.State == Content.states.Draft" translate="versions.draft"><b class="n2-icon-circle-blank"></b> Draft</span>
+		<span class="waiting" ng-show="Context.CurrentItem.State == Content.states.Waiting" translate="versions.waiting"><b class="n2-icon-time"></b> Scheduled</span>
+		<span class="published" ng-show="Context.CurrentItem.State == Content.states.Published" translate="versions.published"><b class="n2-icon-play-sign"></b> Published</span>
+		<span class="unpublished" ng-show="Context.CurrentItem.State == Content.states.Unpublished" translate="versions.unpublished"><b class="n2-icon-stop"></b> Unpublished</span>
+		<span class="deleted" ng-show="Context.CurrentItem.State == Content.states.Deleted" translate="versions.deleted"><b class="n2-icon-trash"></b> Deleted</span>
+	</dd>
 	<dt translate="info.scheduled.dt" ng-show="Context.ExtendedInfo.FuturePublishDate">Scheduled for</dt><dd ng-show="Context.ExtendedInfo.FuturePublishDate">{{Context.ExtendedInfo.FuturePublishDate | date}}</dd>
 
 	<dt translate="info.created.dt">Created</dt><dd>{{Context.ExtendedInfo.Created | date}}</dd>
