@@ -1,9 +1,9 @@
 # N2CMS
-### A Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
+### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
 
-## How do you integrate it?
+## How do I integrate it?
 
-###MVC Example
+###MVC Projects
 
 **Model**
 
@@ -18,16 +18,49 @@ public class MyPage : N2.ContentItem
 
 **View**
 
-```html
+```razor
+@model MyPage
 
+<html>
+	<head>
+		<title>
+			@model.Title
+		</title>
+	</head>
+	<body>
+		<h1>@model.Title
+		
+		<p>This CMS make it so easy to publish @model.Text!</p>
+	</body>
+</html>
 ```
 
-###WebForm Example
+**Controller**
 
-Class
+```c#
+using N2.Web;
+
+
+/// <summary>
+/// This controller will handle pages deriving from AbstractPage which are not 
+/// defined by another controller [Controls(typeof(MyPage))]. The default 
+/// behavior is to render a template with this pattern:
+///  * "~/Views/SharedPages/{ContentTypeName}.aspx"
+/// </summary>
+[Controls(typeof(MyPage))]
+public class MyPage : N2.ContentController<MyPage>
+{
+	
+}
+```
+
+###WebForm Projects
+
+**Class**
 
 ```csharp
 [PageDefinition("My Page", TemplateUrl = "~/MyPage.aspx")]
+[AvailableZones("Right Column", "RightColumn")]
 public class MyPage : N2.ContentItem
 {
 	[EditableFreeTextArea]
@@ -36,7 +69,25 @@ public class MyPage : N2.ContentItem
 
 ```
 
+**Page**
 
+```html
+Binds a control to the current page's text property: 
+<asp:Literal Text="<%$ CurrentItem: Text %>" runat="server" />
+
+Provides create, read, update, delete access to content through ASP.NET the databinding API:
+<n2:ItemDataSource ID="Level1Items" runat="server" Path="/" />
+<asp:DataGrid DataSourceID="Level1Items" runat="server" />
+
+Renders non-page items added to the "RightColumn" zone:
+<n2:Zone ZoneName="RightColumn" runat="server" />
+
+Outputs content using the default control (a literal in this case):
+<n2:Display PropertyName="Text" runat="server" />
+```
+##I want this in my project.  Where do I download it?
+
+**Install the Nuget package: http://www.nuget.org/packages/N2CMS/**
 
 ##Source Code
 
@@ -86,12 +137,7 @@ hosting provider. Common issues are addressed here:
 * http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
 
 
-
-
-
-
-
-FEEDBACK
+##Feedback
 
 You are very welcome to let me know about your build experiences in the 
-forum so I can improve things.
+issues so I can improve things.
