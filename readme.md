@@ -2,7 +2,8 @@
 #### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications
 
 ##Give your content managers this user experience
-Sharing control of your web application's content makes the site better and it will grow naturally without having to push builds.
+Sharing control of your web application's content makes the site better. 
+The site will grow naturally and you won't have to push builds nearly as often.
 
 **Main**
 
