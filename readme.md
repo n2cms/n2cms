@@ -40,7 +40,7 @@ public class MyPage : N2.ContentItem
 	<body>
 		<h1>@model.Title
 		
-		<p>This CMS make it so easy to publish @model.Text!</p>
+		<p>This CMS makes it so easy to publish @model.Text!</p>
 	</body>
 </html>
 ```
