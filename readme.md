@@ -1,5 +1,5 @@
 # N2CMS
-### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
+#### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
 
 ## How do I integrate it?
 
@@ -18,7 +18,7 @@ public class MyPage : N2.ContentItem
 
 **View**
 
-```razor
+```html
 @model MyPage
 
 <html>
@@ -85,21 +85,48 @@ Renders non-page items added to the "RightColumn" zone:
 Outputs content using the default control (a literal in this case):
 <n2:Display PropertyName="Text" runat="server" />
 ```
+###Content Management User Experience
+
+**Main**
+
+![Management Console](https://pbs.twimg.com/media/BPziGS2CYAAqg7S.png:large)
+
+**Page or Part Edit**
+
+![Page / Part Edit](http://content.screencast.com/users/brianmatic/folders/Jing/media/51addd78-38b8-4eed-b948-ddbe91c9ba98/00000002.png)
+
 ##I want this in my project.  Where do I download it?
 
 **Install the Nuget package: http://www.nuget.org/packages/N2CMS/**
 
-##Source Code
+##Where do I get more advanced documentation?
+
+###Reference Documentation
+**On our Confluence wiki:** https://n2cmsdocs.atlassian.net/wiki/display/N2CMS/Getting+Started
+
+>We know... we need to move this to public site.  We are the cobblers kids.  Would love help if you are interested.  Contact us.
+
+###Examples
+
+**We currently post them on CodePlex: http://n2cms.codeplex.com/releases/**.  You can also find them in the source code within this repo.
+
+>We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.
+
+>You may have to make certain configuration changes when moving the code to a 
+>hosting provider. Common issues are addressed here:
+>http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
+
+##Clone the Source Code and Contribute to N2CMS
+
+##What is here?
 
 Here you will find the N2 CMS framework and a number of template projects that 
 demonstrate alternative ways to use this CMS. They all share a framework that 
 consists of N2.dll and the UI management files residing below the /N2/ folder.
 
+##How do I setup my development environment?
 
-
-##How to setup your development environment
-
-1. Clone this repo.
+1. Clone this repo to your PC.
 2. Double-click on Prepare_AllDependencies.bat
 3. Choose amount of templates (ranging from minimal example to many features in the box):
 	* Examples - Minimal C#
@@ -120,21 +147,14 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 > N2 CMS supports many databases, this code is set up to use the SQLite embedded 
 database. You may want to use SQL Server or MySQL in production.
 
-##Resources and Documentation
+##More Resources and Documentation
 
 * http://n2cms.codeplex.com/releases/ (Download N2 CMS 2.x Developer Documentation)
 * http://n2cms.com/Documentation.aspx
 * http://google.com
 * http://n2cms.codeplex.com/Thread/List.aspx
 * http://n2cms.com/wiki/Project-life-cycle.aspx
-
-
-
-##Helpful tips
-
-You may have to make certain configuration changes when moving the code to a 
-hosting provider. Common issues are addressed here:
-* http://n2cms.com/wiki/Troubleshooting-site-deployment.aspx
+* http://stackoverflow.com/questions/tagged/n2cms
 
 
 ##Feedback
