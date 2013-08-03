@@ -1,8 +1,15 @@
 # N2CMS
-### A Content Management System (CMS) for custom asp.net MVC and WebForm application.
+### A Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
 
 ## How do you integrate it?
 
+###MVC Example
+
+Model
+
+```javascript
+function hello();
+```
 
 
 N2 CMS Source Code
