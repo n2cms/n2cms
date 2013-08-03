@@ -104,18 +104,26 @@ public class MyPage : N2.ContentItem
 ```
 
 **Here are some other interesting WebControls**
-```html
+
 Binds a control to the current page's text property: 
+```html
 <asp:Literal Text="<%$ CurrentItem: Text %>" runat="server" />
+```
 
 Provides create, read, update, delete access to content through ASP.NET the databinding API:
+```html
 <n2:ItemDataSource ID="Level1Items" runat="server" Path="/" />
 <asp:DataGrid DataSourceID="Level1Items" runat="server" />
+```
 
 Renders non-page items added to the "RightColumn" zone:
+
+```html
 <n2:Zone ZoneName="MyZone" runat="server" />
+```
 
 Outputs content using the default control (a literal in this case):
+```html
 <n2:Display PropertyName="Text" runat="server" />
 ```
 
