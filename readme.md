@@ -70,7 +70,7 @@ public class MyPage : N2.ContentController<MyPage>
 
 ```csharp
 [PageDefinition("My Page", TemplateUrl = "~/MyPage.aspx")]
-[AvailableZones("Right Column", "RightColumn")]
+[AvailableZones("My zone for N2 Parts", "MyZone")]
 public class MyPage : N2.ContentItem
 {
 	[EditableFreeTextArea]
@@ -89,7 +89,7 @@ public class MyPage : N2.ContentItem
 
 	<!-- The droppable zone enables drop of parts onto the tempalate when in drag&drop mode -->        
     <div class="zone">
-		<n2:DroppableZone ID="DroppableZone1" runat="server" ZoneName="SecondaryContent"/>
+		<n2:DroppableZone ID="DroppableZone1" runat="server" ZoneName="MyZone"/>
 	</div>
 
     <asp:SiteMapPath ID="Path" runat="server" CssClass="breadcrumb" />
@@ -113,7 +113,7 @@ Provides create, read, update, delete access to content through ASP.NET the data
 <asp:DataGrid DataSourceID="Level1Items" runat="server" />
 
 Renders non-page items added to the "RightColumn" zone:
-<n2:Zone ZoneName="RightColumn" runat="server" />
+<n2:Zone ZoneName="MyZone" runat="server" />
 
 Outputs content using the default control (a literal in this case):
 <n2:Display PropertyName="Text" runat="server" />
