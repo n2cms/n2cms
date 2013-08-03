@@ -1,7 +1,17 @@
 # N2CMS
-#### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications.
+#### The best Content Management System (CMS) for custom ASP.NET MVC and WebForm applications
 
-## How do I integrate it?
+##Give your content managers this user experience
+
+**Main**
+
+![Management Console](https://pbs.twimg.com/media/BPziGS2CYAAqg7S.png:large)
+
+**Page or Part Edit**
+
+![Page / Part Edit](http://content.screencast.com/users/brianmatic/folders/Jing/media/b9c58f64-853e-4484-8dc1-317eeb2fe80b/00000003.png)
+
+## How do I integrate it in my code?
 
 ###MVC Projects
 
@@ -85,15 +95,24 @@ Renders non-page items added to the "RightColumn" zone:
 Outputs content using the default control (a literal in this case):
 <n2:Display PropertyName="Text" runat="server" />
 ```
-###Content Management User Experience
 
-**Main**
+###API
 
-![Management Console](https://pbs.twimg.com/media/BPziGS2CYAAqg7S.png:large)
+You can use the API within your methods and properties to develop advance content manageable features.
 
-**Page or Part Edit**
+```csharp
+public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
+{
+	IList<ContentItem> items = N2.Find.Items
+		.Where.Created.Between(minDate, maxDate)
+		.And.SavedBy.Eq("admin")
+		.OrderBy.Published.Desc
+		.Select();
 
-![Page / Part Edit](http://content.screencast.com/users/brianmatic/folders/Jing/media/51addd78-38b8-4eed-b948-ddbe91c9ba98/00000002.png)
+	foreach (ContentItem item in items)
+		DoSomethingWith(item);
+}
+```
 
 ##I want this in my project.  Where do I download it?
 
