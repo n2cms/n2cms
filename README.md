@@ -146,6 +146,7 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 		DoSomethingWith(item);
 }
 ```
+There are more API usage examples here: http://n2cms.com/Documentation/Manipulating%20content/Finding%20content.aspx.
 
 ##I want this in my project.  Where do I download it?
 
