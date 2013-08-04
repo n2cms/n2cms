@@ -271,7 +271,7 @@
     <Content Include="Dinamico\Themes\Default\Views\StartPage\NotFound.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Test\Index.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Web.config" />
-    <Content Include="Dinamico\Themes\Default\Views\_ViewStart.cshtml" />
+    <Content Include="Dinamico\Themes\_ViewStart.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Footer.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\Logotype.cshtml" />
     <Content Include="Dinamico\Themes\Roadwork\Views\Shared\LayoutPartials\SubNavigation.cshtml" />
@@ -322,7 +322,6 @@
     <Content Include="Dinamico\Themes\Responsive\Views\_ViewStart.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Slideshow\BootstrapGrid.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\Slideshow\Galleria.cshtml" />
-    <Content Include="Dinamico\Themes\Terracotta\Views\StartPage\Index.cshtml" />
     <None Include="Dinamico\Themes\Web.config.MVC3" />
   </ItemGroup>
   <ItemGroup>
