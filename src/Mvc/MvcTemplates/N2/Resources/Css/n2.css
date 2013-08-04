@@ -147,11 +147,11 @@ a { text-decoration: none; color: #000; }
 #menu .versions li.waiting a { border-left-color:#FF8822; }
 #menu .versions li.published a { border-left-color:#d9f0f9; }
 #menu .versions li.unpublished a { border-left-color:#FF3300; }
-#menu .page-versions .draft { color: #FF8822 }
-#menu .page-versions .waiting { color: #FF8822 }
-#menu .page-versions .published { color: limegreen }
-#menu .page-versions .unpublished { color: #EE6600 }
-#menu .page-versions .deleted { color: #EE6600 }
+#menu .page-versions .draft b { color: #FF8822 }
+#menu .page-versions .waiting b { color: #FF8822 }
+#menu .page-versions .published b { color: limegreen }
+#menu .page-versions .unpublished b { color: #EE6600 }
+#menu .page-versions .deleted b { color: #EE6600 }
 
 .info-menu { position: absolute; top: 100%; right: 0; z-index: 100; display: none; float: left; min-width: 160px; padding: 5px; list-style: none; background-color: #ffffff; margin:0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); font-size:14px; text-transform:none; }
 .info-menu.open { display:block; }
