@@ -40,7 +40,7 @@ public class MyPage : N2.ContentItem
 		</title>
 	</head>
 	<body>
-		<h1>@model.Title
+		<h1>@model.Title</h1>
 		
 		<p>This CMS makes it so easy to publish @model.Text!</p>
 	</body>
@@ -131,7 +131,7 @@ Outputs content using the default control (a literal in this case):
 
 ###API
 
-You can use the API within your methods and properties to develop advance content manageable features.
+You can use the API within your methods and properties to develop advanced content manageable features.
 
 ```csharp
 public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
@@ -146,6 +146,7 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 		DoSomethingWith(item);
 }
 ```
+There are more API usage examples here: http://n2cms.com/Documentation/Manipulating%20content/Finding%20content.aspx.
 
 ##I want this in my project.  Where do I download it?
 
@@ -162,7 +163,7 @@ public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
 
 **We currently post them on CodePlex: http://n2cms.codeplex.com/releases/**.  You can also find them in the source code within this repo.
 
->We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.
+>**We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.**
 
 >You may have to make certain configuration changes when moving the code to a 
 >hosting provider. Common issues are addressed here:
