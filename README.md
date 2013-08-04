@@ -163,7 +163,7 @@ There are more API usage examples here: http://n2cms.com/Documentation/Manipulat
 
 **We currently post them on CodePlex: http://n2cms.codeplex.com/releases/**.  You can also find them in the source code within this repo.
 
->We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.
+>**We recommend starting with the minimal examples if you are new to N2CMS.  This release has easy to download minimal examples: http://n2cms.codeplex.com/releases/view/70951.**
 
 >You may have to make certain configuration changes when moving the code to a 
 >hosting provider. Common issues are addressed here:
