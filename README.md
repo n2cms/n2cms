@@ -131,7 +131,7 @@ Outputs content using the default control (a literal in this case):
 
 ###API
 
-You can use the API within your methods and properties to develop advance content manageable features.
+You can use the API within your methods and properties to develop advanced content manageable features.
 
 ```csharp
 public void DoSomeStuffWithSomeItems(DateTime minDate, DateTime maxDate)
