@@ -217,9 +217,9 @@ issues so I can improve things.
 
 ##Frequently Asked Questions
 
-* **What does the N2 in N2CMS stand for?** 
-	* It is short for "en tva" (1-2 in swedish).
-* **I want to create an open source project based on N2CMS.  I want N2CMS to be part of the branding my project.
-Do you have guidance on naming my project?**
-	* Yes, please use the entire project name "N2CMS" in your project name.  For example, N2CMS.BootstrapBlog would be great project name.
-	We feel that just using "N2" is too generic.  Using N2CMS will help with organic search results.
+####What does the N2 in N2CMS stand for?
+> It is short for "en tva" (1-2 in swedish).
+
+####I want to create an open source project based on N2CMS.  I want N2CMS to be part of branding my project. Do you have guidance on naming my project?
+> Yes, please use the entire project name "N2CMS" in your project name.  For example, N2CMS.BootstrapBlog would be great project name.
+> We feel that just using "N2" is too generic.  Using N2CMS will help with organic search results.
