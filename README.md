@@ -214,3 +214,8 @@ database. You may want to use SQL Server or MySQL in production.
 
 You are very welcome to let me know about your build experiences in the 
 issues so I can improve things.
+
+##Frequently Asked Questions
+
+* What does the N2 in N2CMS stand for?  
+	* It is short for "en tva" (1-2 in swedish).
