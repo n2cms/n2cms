@@ -218,4 +218,4 @@ issues so I can improve things.
 ##Frequently Asked Questions
 
 * What does the N2 in N2CMS stand for?  
-	* It is short for "en tva" (1-2 in swedish)
+	* It is short for "en tva" (1-2 in swedish).
