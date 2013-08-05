@@ -45,6 +45,7 @@
 		.controlPanel a b { font-size:18px; }
     .controlPanel .plugins { padding:1px 6px 1px 1px; height:30px; }
         .controlPanel .plugins a {
+			box-sizing:content-box;
             display:block;
             float:left;
             padding:8px;

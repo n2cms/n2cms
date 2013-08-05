@@ -245,11 +245,7 @@ jQuery(document).ready(function(){{
 			ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
-				var span = new HtmlGenericControl("span");
-				span.Attributes["class"] = "control";
-				pluginPanel.Controls.Add(span);
-
-				plugin.AddTo(span, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
+				plugin.AddTo(pluginPanel, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 

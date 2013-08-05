@@ -256,12 +256,7 @@ namespace N2.Web.Mvc.Html
 				Page p = new Page();
 				foreach (IControlPanelPlugin plugin in html.ContentEngine().Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 				{
-					var span = new System.Web.UI.HtmlControls.HtmlGenericControl("span");
-					span.Attributes["class"] = "control";
-					var pluginControl = plugin.AddTo(span, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
-
-					if (pluginControl != null)
-						p.Controls.Add(span);
+					plugin.AddTo(p, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
 				}
 
 				using (var sw = new StringWriter())
