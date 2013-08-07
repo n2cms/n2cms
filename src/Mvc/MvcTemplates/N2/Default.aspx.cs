@@ -6,7 +6,6 @@ namespace N2.Management
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			//Response.Redirect("Content");
 		}
 	}
 }

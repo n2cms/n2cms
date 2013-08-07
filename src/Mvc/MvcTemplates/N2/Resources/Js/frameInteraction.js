@@ -15,7 +15,7 @@
 			};
 		};
 
-		$('.primary-action').each(function () {
+		$('.primary-action,.command.action').each(function () {
 			if ($(this).closest('.optionGroup').length)
 				// skip itself cloned in the option group
 				return;
