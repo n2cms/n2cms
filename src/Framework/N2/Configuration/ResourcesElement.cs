@@ -7,10 +7,10 @@ namespace N2.Configuration
 		public const string JQueryVersion = "1.9.1";
 
 		/// <summary>Whether to make registered web resources debuggable.</summary>
-		[ConfigurationProperty("debug", DefaultValue = false)]
-		public bool Debug
+		[ConfigurationProperty("debug")]
+		public bool? Debug
 		{
-			get { return (bool)base["debug"]; }
+			get { return (bool?)base["debug"]; }
 			set { base["debug"] = value; }
 		}
 

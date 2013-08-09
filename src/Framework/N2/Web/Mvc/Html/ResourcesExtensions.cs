@@ -3,6 +3,8 @@ using System.IO;
 using System.Web.Mvc;
 using N2.Resources;
 using System;
+using System.Collections;
+using System.Web;
 
 namespace N2.Web.Mvc.Html
 {
@@ -11,14 +13,22 @@ namespace N2.Web.Mvc.Html
 	/// </summary>
 	public static class ResourcesExtensions
 	{
+		public static ICollection<string> GetResourceStateCollection(this HttpContextBase context)
+		{
+			var collection = context.Items["ResourceStateCollection"] as ICollection<string>;
+			if (collection == null)
+				context.Items["ResourceStateCollection"] = collection = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+			return collection;
+		}
+
 		public static ResourcesHelper Resources(this HtmlHelper html)
 		{
-			return new ResourcesHelper { Writer = html.ViewContext.Writer, ViewData = html.ViewData };
+			return new ResourcesHelper { Writer = html.ViewContext.Writer, StateCollection = html.ViewContext.HttpContext.GetResourceStateCollection() };
 		}
 
 		public static ResourcesHelper Resources(this HtmlHelper html, TextWriter writer)
 		{
-			return new ResourcesHelper { Writer = writer, ViewData = html.ViewData };
+			return new ResourcesHelper { Writer = writer, StateCollection = html.ViewContext.HttpContext.GetResourceStateCollection() };
 		}
 
 		/// <summary>
@@ -89,23 +99,23 @@ namespace N2.Web.Mvc.Html
 		public class ResourcesHelper
 		{
 			internal TextWriter Writer { get; set; }
-			internal IDictionary<string, object> ViewData { get; set; }
+			internal ICollection<string> StateCollection { get; set; }
 
 			public ResourcesHelper JavaScript(string resourceUrl)
 			{
-				Writer.Write(N2.Resources.Register.JavaScript(ViewData, resourceUrl));
+				Writer.Write(N2.Resources.Register.JavaScript(StateCollection, resourceUrl));
 				return this;
 			}
 
 			public ResourcesHelper JavaScript(string script, ScriptOptions options)
 			{
-				Writer.Write(N2.Resources.Register.JavaScript(ViewData, script, options));
+				Writer.Write(N2.Resources.Register.JavaScript(StateCollection, script, options));
 				return this;
 			}
 
 			public ResourcesHelper StyleSheet(string resourceUrl)
 			{
-				Writer.Write(N2.Resources.Register.StyleSheet(ViewData, resourceUrl));
+				Writer.Write(N2.Resources.Register.StyleSheet(StateCollection, resourceUrl));
 				return this;
 			}
 

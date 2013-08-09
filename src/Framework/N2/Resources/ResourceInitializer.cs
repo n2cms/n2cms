@@ -17,7 +17,8 @@ namespace N2.Resources
 
 		public void Start()
 		{
-			Register.Debug = configFactory.Sections.Web.Resources.Debug;
+			if (configFactory.Sections.Web.Resources.Debug.HasValue)
+				Register.Debug = configFactory.Sections.Web.Resources.Debug.Value;
 			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;

@@ -30,7 +30,7 @@ namespace N2.Web
 				context.Response.Status = "404 Not Found";
 				return;
 			}
-
+			
 			if (!Resources.Register.Debug)
 				context.TrySetCompressionFilter();
 			context.Response.ContentType = "text/css";
