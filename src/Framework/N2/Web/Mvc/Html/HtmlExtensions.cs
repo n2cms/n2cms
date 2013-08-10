@@ -42,7 +42,7 @@ namespace N2.Web.Mvc.Html
 
 			var tree = N2.Web.Tree.Using(builder);
 			if (htmlAttributes != null)
-				tree.Tag(ApplyToRootUl(htmlAttributes));
+				tree.Tag(BootstrapTagAlterations(startsFrom, current, htmlAttributes));
 
 			ClassifyAnchors(startsFrom, current, parallelRoot, tree);
 
@@ -58,16 +58,20 @@ namespace N2.Web.Mvc.Html
 			tree.LinkWriter((n, w) => n.Current.Link().Class(n.Current == current ? "current" : ancestors.Contains(n.Current) ? "trail" : "").WriteTo(w));
 		}
 
-		private static Action<HierarchyNode<ContentItem>, TagBuilder> ApplyToRootUl(object htmlAttributes)
+		private static Action<HierarchyNode<ContentItem>, TagBuilder> BootstrapTagAlterations(ContentItem root, ContentItem current, object rootAttributes)
 		{
+			var ancestors = new HashSet<ContentItem>(Find.EnumerateParents(current, root, true).TakeWhile(ci => ci != root));
 			return (n, t) =>
 			{
-				if (t.TagName != "ul")
-					return;
-				if (n.Parent != null && n.Parent.Current != null)
-					return;
-
-				t.MergeAttributes(htmlAttributes);
+				if (t.TagName == "ul" && n.Current == root)
+					t.MergeAttributes(rootAttributes);
+				if (t.TagName == "li")
+				{
+					if (ancestors.Contains(n.Current) || (current == root && n.Current == root))
+					{
+						t.AddCssClass("active");
+					}
+				}
 			};
 		}
 
