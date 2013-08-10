@@ -155,5 +155,12 @@ namespace N2.Configuration
 			get { return (bool)base["legacy"]; }
 			set { base["legacy"] = value; }
 		}
+
+		[ConfigurationProperty("docviewer")]
+		public DocViewerElementCollection DocViewer
+		{
+			get { return (DocViewerElementCollection)base["docviewer"]; }
+			set { base["docviewer"] = value; }
+		}
 	}
 }

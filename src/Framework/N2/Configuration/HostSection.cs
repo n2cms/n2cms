@@ -105,13 +105,6 @@ namespace N2.Configuration
 			set { base["messaging"] = value; }
 		}
 
-		[ConfigurationProperty("docviewer")]
-		public DocViewerElement DocViewer
-		{
-			get { return (DocViewerElement)base["docviewer"]; }
-			set { base["docviewer"] = value; }
-		}
-
 		[ConfigurationProperty("filelist")]
 		public FileListElement FileList
 		{
