@@ -5,6 +5,7 @@ using System.Web.Routing;
 using N2.Edit;
 using N2.Web.Parts;
 using N2.Engine;
+using System;
 
 namespace N2.Web.Mvc.Html
 {
@@ -13,7 +14,7 @@ namespace N2.Web.Mvc.Html
 		private ContentItem currentItem;
 		private PartsAdapter partsAdapter;
 
-		protected System.Web.Mvc.TagBuilder Wrapper { get; set; }
+		protected Func<ContentItem, TagBuilder> Wrapper { get; set; }
 
 		protected string ZoneName { get; set; }
 
@@ -50,9 +51,20 @@ namespace N2.Web.Mvc.Html
 
 		public ZoneHelper WrapIn(string tagName, object attributes, string innerHtml = null)
 		{
-			Wrapper = new System.Web.Mvc.TagBuilder(tagName);
-			Wrapper.MergeAttributes(new RouteValueDictionary(attributes));
-			Wrapper.InnerHtml = innerHtml;
+			Wrapper = (ci) =>
+			{
+				var w = new System.Web.Mvc.TagBuilder(tagName);
+				w.MergeAttributes(new RouteValueDictionary(attributes));
+				w.InnerHtml = innerHtml;
+				return w;
+			};
+
+			return this;
+		}
+
+		public ZoneHelper WrapIn(Func<ContentItem, TagBuilder> wrapperFactory)
+		{
+			Wrapper = wrapperFactory;
 
 			return this;
 		}
@@ -89,15 +101,16 @@ namespace N2.Web.Mvc.Html
 
         protected virtual void RenderTemplate(TextWriter writer, ContentItem model)
         {
-			if (Wrapper != null)
+			var w = Wrapper != null ? Wrapper(model) : null;
+			if (w != null)
 			{
-				writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
-				writer.Write(Wrapper.InnerHtml);
+				writer.Write(w.ToString(TagRenderMode.StartTag));
+				writer.Write(w.InnerHtml);
 			}
 			Adapters.ResolveAdapter<PartsAdapter>(model).RenderPart(Html, model);
 
-			if (Wrapper != null)
-                writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));
+			if (w != null)
+                writer.WriteLine(w.ToString(TagRenderMode.EndTag));
         }
 	}
 }
