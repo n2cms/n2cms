@@ -87,9 +87,9 @@ namespace N2.Web.Mvc.Html
 		{
 			return render.Displayable<DisplayableImageAttribute>(detailName);
 		}
-		public static DisplayRenderer<DisplayableImageAttribute> Image(this RenderHelper render, string detailName, string preferredSize)
+		public static DisplayRenderer<DisplayableImageAttribute> Image(this RenderHelper render, string detailName, string preferredSize, string cssClass = null)
 		{
-			return render.Displayable(new DisplayableImageAttribute { Name = detailName, PreferredSize = preferredSize });
+			return render.Displayable(new DisplayableImageAttribute { Name = detailName, PreferredSize = preferredSize, CssClass = cssClass ?? preferredSize });
 		}
 
 		public static DisplayRenderer<DisplayableHeadingAttribute> Heading(this RenderHelper render, string detailName)
