@@ -18,8 +18,10 @@
 		meta:resourcekey="txtEmailResource1" />
     <asp:Label ID="lblRoles" runat="server" AssociatedControlID="cblRoles" 
 		Text="Roles" meta:resourcekey="lblRolesResource1" />
-    <asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
-		DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" />
+	<div class="checkBoxList">
+		<asp:CheckBoxList ID="cblRoles" runat="server" CssClass="cbl" 
+			DataSourceID="odsRoles" meta:resourcekey="cblRolesResource1" RepeatLayout="Flow" />
+	</div>
     <asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
 	</div>
 </asp:Content>
