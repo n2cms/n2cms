@@ -34,6 +34,7 @@ namespace N2.Edit.Installation
 		public const string installationAssemblyVersion = "Installation.AssemblyVersion";
 		public const string installationFileVersion = "Installation.FileVersion";
 		public const string installationFeatures = "Installation.Features";
+		public const string installationImageSizes = "Installation.ImageSizes";
 
 		public abstract string CheckConnection(out string stackTrace);
 		public abstract string CheckDatabase();
@@ -353,6 +354,8 @@ namespace N2.Edit.Installation
 					status.RecordedFileVersion = v;
 
 				status.RecordedFeatures = status.RootItem.GetInstalledFeatures();
+
+				status.RecordedImageSizes = status.RootItem.GetInstalledImageSizes().ToArray();
 			}
 			catch (Exception ex)
 			{
