@@ -55,5 +55,13 @@ namespace N2.Definitions
 				properties[name] = property = new PropertyDefinition(name, propertyType);
 			return property;
 		}
+
+		internal static T TryClone<T>(this T obj)
+		{
+			if (obj is ICloneable)
+				return (T)(obj as ICloneable).Clone();
+			else
+				return obj;
+		}
 	}
 }

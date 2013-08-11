@@ -475,12 +475,12 @@ namespace N2.Definitions
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
-			id.Containers = Containers.Clone();
+			id.Containers = new ContentList<IEditableContainer>(Containers.Select(ec => ec.TryClone()));
 			id.ContentTransformers = ContentTransformers.ToList();
 			id.Description = Description;
 			id.Discriminator = Discriminator;
-			id.Displayables = new ContentList<IDisplayable>(Displayables);
-			id.Editables = Editables.Clone();
+			id.Displayables = new ContentList<IDisplayable>(Displayables.Select(d => d.TryClone()));
+			id.Editables = new ContentList<IEditable>(Editables.Select(e => e.TryClone()));
 			id.Enabled = Enabled;
 			id.EditableModifiers = EditableModifiers.ToList();
 			id.IconUrl = IconUrl;

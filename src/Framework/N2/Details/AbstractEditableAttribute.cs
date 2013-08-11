@@ -18,7 +18,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{name, nq} [{TypeName, nq}]")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, IViewEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer, IComparable<IUniquelyNamed>
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, IViewEditable, ISecurable, IPermittable, IInterceptableProperty, IContentTransformer, IComparable<IUniquelyNamed>, ICloneable
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -523,6 +523,11 @@ namespace N2.Details
 		public bool IsViewEditable { get; set; }
 
 		#endregion
+
+		object ICloneable.Clone()
+		{
+			return MemberwiseClone();
+		}
 	}
 }
 
