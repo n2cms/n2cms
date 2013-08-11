@@ -29,12 +29,13 @@ namespace N2.Web.Mvc
 		}
 
 
-		public Builder<T> RegisterDisplayable<T>(string name) where T : IDisplayable, new()
+		public Builder<T> RegisterDisplayable<T>(string name) where T : class, IDisplayable, new()
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);
 			if (re != null)
 			{
-				re.Add(new T() { Name = name });
+				var displayable = re.Definition.Displayables[name] as T ?? new T { Name = name };
+				re.Add(displayable);
 			}
 
 			return new Builder<T>(name, re);
@@ -49,12 +50,13 @@ namespace N2.Web.Mvc
 
 		#region IContentRegistration Members
 
-		public EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : IEditable, new()
+		public EditableBuilder<T> RegisterEditable<T>(string name, string title) where T : class, IEditable, new()
 		{
 			var re = RegistrationExtensions.GetRegistrationExpression(Html);
 			if (re != null)
 			{
-				re.Add(new T(), name, title);
+				var editable = re.Definition.Editables[name] as T ?? new T();
+				re.Add(editable, name, title);
 			}
 
 			return RendererFactory.Create<T>(Rendering.RenderingContext.Create(Html, name), re);
