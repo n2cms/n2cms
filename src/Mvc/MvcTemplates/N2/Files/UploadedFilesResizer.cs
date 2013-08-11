@@ -29,61 +29,73 @@ namespace N2.Management.Files
 
 		void files_FileWritten(object sender, FileEventArgs e)
 		{
-			if (!IsResizableImagePath(e.VirtualPath))
+			Url virtualPath = e.VirtualPath;
+
+			if (!IsResizableImagePath(virtualPath))
 				return;
 
 			if(images.Sizes.Count == 0)
 				return;
 
-			byte[] image;
-			using (var s = files.OpenFile(e.VirtualPath))
-			{
-				image = new byte[s.Length];
-				s.Read(image, 0, image.Length);
-			}
+			byte[] image = GetImageBytes(virtualPath);
 
 			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
-				if (!size.ResizeOnUpload)
-					continue;
+				CreateSize(virtualPath, image, size);
+			}
+		}
 
-				Url url = e.VirtualPath;
-				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
+		public virtual void CreateSize(Url virtualPath, byte[] image, ImageSizeElement size)
+		{
+			if (!size.ResizeOnUpload)
+				return;
 
-				using (var sourceStream = new MemoryStream(image))
+			string resizedPath = ImagesUtility.GetResizedPath(virtualPath, size.Name);
+
+			using (var sourceStream = new MemoryStream(image))
+			{
+				if (size.Width <= 0 && size.Height <= 0)
 				{
-					if (size.Width <= 0 && size.Height <= 0)
+					using (var destinationStream = files.OpenFile(resizedPath))
 					{
-						using (var destinationStream = files.OpenFile(resizedPath))
+						int b;
+						while ((b = sourceStream.ReadByte()) != -1)
 						{
-							int b;
-							while((b = sourceStream.ReadByte()) != -1) 
-							{
-								destinationStream.WriteByte((byte)b);
-							}
+							destinationStream.WriteByte((byte)b);
 						}
 					}
-					else
+				}
+				else
+				{
+					if (!files.FileExists(resizedPath) || size.Replace)
 					{
-						if (!files.FileExists(resizedPath) || size.Replace)
+						// Delete the image before writing.
+						// Fixes a weird bug where overwriting the original file while it still exists
+						//  leaves the resized image the with the exact same file size as the original even 
+						//  though it should be smaller.
+						if (files.FileExists(resizedPath))
 						{
-                            // Delete the image before writing.
-                            // Fixes a weird bug where overwriting the original file while it still exists
-                            //  leaves the resized image the with the exact same file size as the original even 
-                            //  though it should be smaller.
-                            if (files.FileExists(resizedPath))
-                            {
-                                files.DeleteFile(resizedPath);
-                            }
+							files.DeleteFile(resizedPath);
+						}
 
-							using (var destinationStream = files.OpenFile(resizedPath))
-							{
-								resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
-							}
+						using (var destinationStream = files.OpenFile(resizedPath))
+						{
+							resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
 						}
 					}
 				}
 			}
+		}
+
+		public virtual byte[] GetImageBytes(string virtualPath)
+		{
+			byte[] image;
+			using (var s = files.OpenFile(virtualPath))
+			{
+				image = new byte[s.Length];
+				s.Read(image, 0, image.Length);
+			}
+			return image;
 		}
 
 		void files_FileCopied(object sender, FileEventArgs e)

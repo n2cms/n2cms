@@ -215,6 +215,7 @@
     <Compile Include="Engine\TypeFinderTests.cs" />
     <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
+    <Compile Include="Installation\ImageSizesMigrationTests.cs" />
     <Compile Include="Persistence\ChildrenTests.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />

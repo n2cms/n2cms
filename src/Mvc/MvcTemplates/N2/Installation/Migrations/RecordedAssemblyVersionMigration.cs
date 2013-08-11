@@ -17,6 +17,8 @@ namespace N2.Installation.Migrations
 		public RecordedAssemblyVersionMigration(IPersister persister)
 		{
 			this.persister = persister;
+			Title = "Record Assembly Version";
+			Description = "Records current N2 assembly version for future usage";
 		}
 
 		public override bool IsApplicable(DatabaseStatus status)

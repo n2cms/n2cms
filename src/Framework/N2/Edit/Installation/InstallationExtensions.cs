@@ -1,6 +1,9 @@
-﻿using N2.Persistence;
+﻿using N2.Configuration;
+using N2.Persistence;
+using N2.Web.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -42,6 +45,22 @@ namespace N2.Edit.Installation
 				return;
 
 			features.Remove(feature);
+		}
+
+		public static IEnumerable<ImageSizeElement> GetInstalledImageSizes(this ContentItem root)
+		{
+			var features = root.GetDetailCollection(InstallationManager.installationImageSizes, false);
+			if (features == null)
+				return new ImageSizeElement[0];
+
+			return features.OfType<string>().Select(s => ImageSizeElement.Parse(s)).ToList();
+		}
+
+		public static void RecordInstalledImageSizes(this ContentItem root, Configuration.ImageSizesCollection sizes)
+		{
+			var features = root.GetDetailCollection(InstallationManager.installationImageSizes, true);
+
+			features.Replace(sizes.AllElements.Select(s => s.ToString()));
 		}
 	}
 }

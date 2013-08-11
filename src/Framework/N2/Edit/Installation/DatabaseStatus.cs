@@ -19,6 +19,7 @@ namespace N2.Edit.Installation
 		public Version RecordedAssemblyVersion { get; set; }
 		public Version RecordedFileVersion { get; set; }
 		public string[] RecordedFeatures { get; set; }
+		public Configuration.ImageSizeElement[] RecordedImageSizes { get; set; }
 		public string ConnectionType { get; set; }
 		public int AuthorizedRoles { get; set; }
 		public int DetailCollections { get; set; }
@@ -115,5 +116,6 @@ namespace N2.Edit.Installation
 		}
 
 		public int Versions { get; set; }
+
 	}
 }
