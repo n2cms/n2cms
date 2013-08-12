@@ -550,6 +550,11 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="ckeditor" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="configJsPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/config.js" />
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="tinyMCE" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
@@ -638,6 +643,26 @@
 									<xs:attribute name="uploadFilenameStrip" type="xs:string" use="optional" default="+," />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="docviewer" minOccurs="0">
+								<xs:complexType>
+										<xs:sequence>
+											<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required" />
+													<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+													<xs:attribute name="url" type="xs:string" use="optional" />
+													<xs:attribute name="maxsize" type="xs:string" use="optional" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="images" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
@@ -712,14 +737,6 @@
 				<xs:element name="web">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="docviewer" minOccurs="0" maxOccurs="1">
-								<xs:complexType>
-									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
-									<xs:attribute name="url" type="xs:string" use="optional" />
-									<xs:attribute name="maxsize" type="xs:string" use="optional" />
-									<xs:attribute name="extensions" type="xs:string" use="optional" />
-								</xs:complexType>
-							</xs:element>
 							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:attribute name="ignoreFiles" type="xs:string" use="optional" />

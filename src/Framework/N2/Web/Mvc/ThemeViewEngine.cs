@@ -14,7 +14,7 @@ namespace N2.Web.Mvc
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class ThemeViewEngine<T> : IViewEngine, IDecorator<IViewEngine>
-        where T : VirtualPathProviderViewEngine, new()
+		where T : VirtualPathProviderViewEngine, new()
 	{
 		Engine.Logger<ThemeViewEngine<T>> logger;
 
@@ -129,8 +129,8 @@ namespace N2.Web.Mvc
 				engines = temp;
 			}
 
-            if (controllerContext != null)
-			    controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
+			if (controllerContext != null)
+				controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
 
 			return engine;
 		}
@@ -153,9 +153,9 @@ namespace N2.Web.Mvc
 
 		#endregion
 
-        public IViewEngine Component
-        {
-            get { return GetOrCreateViewEngine(null, null); }
-        }
-    }
+		public IViewEngine Component
+		{
+			get { return GetOrCreateViewEngine(null, null); }
+		}
+	}
 }

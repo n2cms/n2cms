@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -70,12 +71,19 @@ namespace N2.Configuration
 		}
 
 
-
+		[Obsolete("TinyMCE is no longer used. Please use CKEditor instead.")]
 		[ConfigurationProperty("tinyMCE")]
 		public TinyMCEElement TinyMCE
 		{
 			get { return (TinyMCEElement)base["tinyMCE"]; }
 			set { base["tinyMCE"] = value; }
+		}
+
+		[ConfigurationProperty("ckeditor")]
+		public CkEditorElement CkEditor
+		{
+			get { return (CkEditorElement)base["ckeditor"]; }
+			set { base["ckeditor"] = value; }
 		}
 
 		[ConfigurationProperty("nameEditor")]
@@ -154,6 +162,13 @@ namespace N2.Configuration
 		{
 			get { return (bool)base["legacy"]; }
 			set { base["legacy"] = value; }
+		}
+
+		[ConfigurationProperty("docviewer")]
+		public DocViewerElementCollection DocViewer
+		{
+			get { return (DocViewerElementCollection)base["docviewer"]; }
+			set { base["docviewer"] = value; }
 		}
 	}
 }
