@@ -12,53 +12,37 @@ using System.Web;
 
 namespace N2.Details
 {
-	/// <summary>
-	/// Rich text editor settings set (toolbars, features).
-	/// </summary>
-	public enum FreeTextAreaSettingsSet
-	{
-		/// <summary>Setting set is defined by configuration, DEFAULT by default.</summary>
-		Undefined,
-		/// <summary>Fixed rich text editor toolbar, basic features, no additional toolbars.</summary>
-		[Obsolete]
-		Fixed,
-		/// <summary>Single line toolbar, no additional toolbars.</summary>
-		Minimal,
-		/// <summary>Single line tooolbar, all other toolbars shown by toogle icon.</summary>
-		Simple,
-		/// <summary>Extended toolbar with all features, less frequently used toolbars shown by toogle icon.</summary>
-		Extended
-	}
 
 
 	/// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="N2.Web.UI.WebControls.FreeTextArea"/> web control as editor.</summary>
 	/// <example>
+	/// Editor with standard toolbars:
 	/// [N2.Details.EditableFreeTextArea("Text", 110)] 
 	/// public virtual string Text { get; set; }
 	/// 
-	/// Setting set with full features:
-	/// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextAreaSettingsSet.Extended)]
+	/// Editor with full toolbars:
+	/// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextArea.EditorModeSetting.Full)]
+	/// 
+	/// Editor with reduced toolbars:
+	/// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextArea.EditorModeSetting.Basic)]
 	/// 
 	/// Default toolbar mode can be set in Web.config, e.g.
 	/// <![CDATA[ 
 	///  <n2>
 	///   <edit>
 	///     <tinyMCE cssUrl="/Content/myrichtext.css">
-	///       <settings>
-	///         <add key="settings_set" value="Extended" />
-	///       </settings>
 	///   </edit>
 	///  </n2>
 	/// ]]>
 	/// 
-	/// Notes: 
-	/// settings_set property is nonstantard.
-	/// See also standard TinyMCE settings at http://tinymce.moxiecode.com/wiki.php/Configuration
-	/// Toogle toolbars: see PWD plugin at http://www.neele.name/pdw_toggle_toolbars/
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute, IRelativityTransformer
 	{
+		private FreeTextArea.EditorModeSetting editorMode = FreeTextArea.EditorModeSetting.Standard;
+		private string additionalFormats = string.Empty;
+		private string useStylesSet = string.Empty;
+
 		public EditableFreeTextAreaAttribute()
 			: base(null, 100)
 		{
@@ -69,18 +53,25 @@ namespace N2.Details
 		{
 		}
 
-		public EditableFreeTextAreaAttribute(string title, int sortOrder, FreeTextAreaSettingsSet toolbars)
-			: base(title, sortOrder)
+
+		public FreeTextArea.EditorModeSetting EditorMode
 		{
-			Toolbars = toolbars;
+			set { editorMode = value; }
 		}
 
-		/// <summary> Current rich text editor setting set (e.g. basic features with simple toolbar, extended etc) </summary>
-		public FreeTextAreaSettingsSet Toolbars { get; set; }
+		public string AdditionalFormats
+		{
+			set { additionalFormats = value; }
+		}
+
+		public string UseStylesSet
+		{
+			set { useStylesSet = value; }
+		}
 
 		protected override void ModifyEditor(TextBox tb)
 		{
-			// set width and height to control the size of the tinyMCE editor
+			// set width and height to control the size of the ckeditor
 			// 1 column is evaluated to 10px
 			// 1 row is evaluated to 20px
 			if (Columns > 0)
@@ -91,7 +82,13 @@ namespace N2.Details
 
 		protected override TextBox CreateEditor()
 		{
-			return new FreeTextArea();
+			FreeTextArea fta = new FreeTextArea();
+
+			fta.EditorMode = editorMode;
+			fta.AdditionalFormats = additionalFormats;
+			fta.UseStylesSet = useStylesSet;
+
+			return fta;
 		}
 
 		protected override Control AddRequiredFieldValidator(Control container, Control editor)
@@ -106,39 +103,16 @@ namespace N2.Details
 			base.UpdateEditor(item, editor);
 
 			FreeTextArea fta = (FreeTextArea)editor;
+			
+			fta.EditorMode = editorMode;
+			fta.AdditionalFormats = additionalFormats;
+			fta.UseStylesSet = useStylesSet;
 
 			if (item is IDocumentBaseSource)
 				fta.DocumentBaseUrl = (item as IDocumentBaseSource).BaseUrl;
 
-			string rt_mode = GetSettingsSetString(Toolbars);
-			if (!string.IsNullOrEmpty(rt_mode))
-				fta.CustomOverrides["settings_set"] = rt_mode;
-
-			string content_css = GetCssFiles(string.Empty);
-			if (!string.IsNullOrEmpty(content_css))
-			{
-				fta.CustomOverrides["content_css"] = content_css;
-			}
 		}
 
-		/// <summary>Stringify current settingset mode.</summary>
-		/// <remarks>Extended class might implement extended logics, 
-		///   e.g. check current site StartPage properties when UNDEFINED. 
-		///   When defined will override default config. value.
-		/// </remarks>
-		protected virtual string GetSettingsSetString(FreeTextAreaSettingsSet settingsSet)
-		{
-			return settingsSet.ToString();
-		}
-
-		/// <summary> Comma separated list of CSS file Urls to be used by TinyMCE, defined by application, default empty (unset) </summary>
-		/// <remarks> Extended class might implement extended logics, e.g. to check current site StartPage properties to set site specific styling. 
-		///   When defined will override default config. value.
-		/// </remarks>
-		protected virtual string GetCssFiles(string cssFiles)
-		{
-			return cssFiles;
-		}
 
         public override string GetIndexableText(ContentItem item)
         {

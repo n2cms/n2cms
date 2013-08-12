@@ -12,17 +12,28 @@ using N2.Web.Tokens;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
-	/// A wrapper for the tinyMCE free text editor (http://tinymce.moxiecode.com).
+	/// A wrapper for the ckeditor (http://ckeditor.com).
 	/// </summary>
 	public class FreeTextArea : TextBox
 	{
-		static string configCssUrl;
-		static string configScriptUrl;
+
+		public enum EditorModeSetting
+		{
+			Basic,
+			Standard,
+			Full,
+		}
+
+		static string contentCssUrl;
 		static bool configEnabled = true;
 		static bool isInitalized = false;
-		static bool configTokensEnabled = true;
-		static NameValueCollection configSettings = new NameValueCollection();
-		private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
+		static string configJsPath = string.Empty;
+		static string overwriteStylesSet = string.Empty;
+		static string overwriteFormatTags = string.Empty;
+		private EditorModeSetting editorMode = EditorModeSetting.Standard;
+		private string additionalFormats = string.Empty;
+		private string useStylesSet = string.Empty;
+		private bool advancedMenues = false;
 
 		public FreeTextArea()
 		{
@@ -30,6 +41,7 @@ namespace N2.Web.UI.WebControls
 			CssClass = "ckeditor";
 		}
 
+		
 		public virtual bool EnableFreeTextArea
 		{
 			get { return (bool)(ViewState["EnableFreeTextArea"] ?? configEnabled); }
@@ -42,11 +54,24 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["DocumentBaseUrl"] = value; }
 		}
 
-		/// <summary> Custom TinyMCE config options </summary>  
-		/// <remarks> Will override Web.config TinyMCE settings.
-		///   See: http://tinymce.moxiecode.com/wiki.php/Configuration
-		/// </remarks>
-		public IDictionary<string, string> CustomOverrides { get { return customOverrides_; } }
+
+		public EditorModeSetting EditorMode
+		{
+			get { return editorMode; }
+			set { editorMode = value; }
+		}
+
+		public string AdditionalFormats
+		{
+			get { return additionalFormats; }
+			set { additionalFormats = value; }
+		}
+
+		public string UseStylesSet
+		{
+			get { return useStylesSet; }
+			set { useStylesSet = value; }
+		}
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -58,14 +83,11 @@ namespace N2.Web.UI.WebControls
 				var config = N2.Context.Current.Resolve<EditSection>();
 				if (config != null)
 				{
-					configCssUrl = Url.ResolveTokens(config.TinyMCE.CssUrl);
-					configScriptUrl = Url.ResolveTokens(config.TinyMCE.ScriptUrl);
-					configEnabled = config.TinyMCE.Enabled;
-					configTokensEnabled = config.TinyMCE.EnableTokenDropdown;
-					foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
-					{
-						configSettings[element.Key] = element.Value;
-					}
+					configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath );
+					overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
+					overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
+					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
+					advancedMenues = config.CkEditor.AdvancedMenues;
 				}
 			}
 		}
@@ -77,7 +99,6 @@ namespace N2.Web.UI.WebControls
 			{
 				Register.JQuery(Page);
 				Register.CKEditor(Page);
-				//Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
 				string freeTextAreaInitScript = string.Format("CKEDITOR.replace('{0}', {1});",
 					ClientID,
@@ -95,7 +116,7 @@ namespace N2.Web.UI.WebControls
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
-			overrides["contentsCss"] = configCssUrl ?? Register.TwitterBootstrapCssPath;
+			overrides["contentsCss"] = contentCssUrl ?? Register.TwitterBootstrapCssPath;
 
 			overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
 				.AppendQuery("location", "selection")
@@ -109,11 +130,6 @@ namespace N2.Web.UI.WebControls
 
 			overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 
-			//if (configTokensEnabled)
-			//{
-			//	overrides["tokencomplete_enabled"] = "true";
-			//	overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
-			//}
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/ckeditor/lang/" + language + ".js")))
@@ -122,15 +138,55 @@ namespace N2.Web.UI.WebControls
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
 				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
 
-			foreach (string key in configSettings.AllKeys)
-				overrides[key] = configSettings[key];
+			if (advancedMenues==false)
+				overrides["removeDialogTabs"] = "image:advanced;link:advanced";
 
-			foreach (var item in CustomOverrides)
-				overrides[item.Key] = item.Value;
+			if (!string.IsNullOrEmpty(configJsPath))
+				overrides["customConfig"] = configJsPath;
+
+
+			if (!string.IsNullOrEmpty(overwriteStylesSet))
+				overrides["stylesSet"] = overwriteStylesSet;
+
+			if (!string.IsNullOrEmpty(useStylesSet))
+				overrides["stylesSet"] = useStylesSet;
+
+
+
+			if (!string.IsNullOrEmpty(overwriteFormatTags))
+				overrides["format_tags"] = overwriteFormatTags;
+			else
+				overrides["format_tags"] = "p;h1;h2;h3;pre";
+
+
+
+			if (!string.IsNullOrEmpty(additionalFormats))
+			{
+				if (additionalFormats.StartsWith(";"))
+					overrides["format_tags"] = overrides["format_tags"] + additionalFormats;
+				else
+					overrides["format_tags"] = overrides["format_tags"] + ";" + additionalFormats;
+
+				if (overrides["format_tags"].EndsWith(";"))
+					overrides["format_tags"] = overrides["format_tags"].Remove(overrides["format_tags"].Length - 1, 1);
+			}
+
+
+			//switch toolbar
+			switch (editorMode)
+			{
+				case EditorModeSetting.Basic:
+					overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline' ] },{ name: 'paragraph', items : [ 'NumberedList','BulletedList' ] }]";
+					break;
+				case EditorModeSetting.Standard:
+					overrides["toolbar"] = "[{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] }, { name: 'links', items : [ 'Link','Unlink','Anchor' ] }, { name: 'insert', items : [ 'Image','Table','HorizontalRule','SpecialChar' ] },{ name: 'tools', items : [ 'Maximize'] }, { name: 'document', items : [ 'Source'] }, '/', { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] }, { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote' ] },{ name: 'styles', items : [ 'Styles','Format' ] }]";
+					break;
+			}
+
 
 			return ToJsonString(overrides);
 		}
-
+				
 		protected static string ToJsonString(IDictionary<string, string> collection)
 		{
 			var sb = new StringBuilder("{");
@@ -150,6 +206,9 @@ namespace N2.Web.UI.WebControls
 			}
 			if (sb.Length > 1)
 				sb.Length--; // remove trailing comma
+
+
+
 			return sb.Append("}").ToString();
 		}
 	}
