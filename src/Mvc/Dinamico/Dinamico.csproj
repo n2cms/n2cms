@@ -20,7 +20,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -67,7 +70,10 @@
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.1.0\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -92,6 +98,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\..\packages\WebActivatorEx.2.0.2\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dinamico\Controllers\ContentPagesController.cs" />
@@ -122,6 +134,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\bootstrap-glyphicons.css" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\bootstrap.css" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\docs.css" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.svg" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\index.html" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap-glyphicons.css" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap.css" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Dinamico\N2\readme.txt" />
     <Content Include="Dinamico\readme.txt" />
     <Content Include="Dinamico\Themes\Cloudy\Content\Elements.css" />
@@ -140,8 +161,6 @@
     <Content Include="Dinamico\Themes\Dark\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Dark\Content\Site.css" />
     <Content Include="Dinamico\Themes\Dark\Thumbnail.JPG" />
-    <Content Include="Dinamico\Themes\Default\Content\Boilerfoot.css" />
-    <Content Include="Dinamico\Themes\Default\Content\Boilerhead.css" />
     <Content Include="Dinamico\Themes\Default\Content\Elements.css" />
     <Content Include="Dinamico\Themes\Default\Content\Features.css" />
     <Content Include="Dinamico\Themes\Default\Content\IE.css" />
@@ -164,6 +183,15 @@
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\DelimitedDataDisplay.cshtml" />
     <Content Include="Dinamico\Themes\Default\Views\ContentPages\Redirect.cshtml" />
     <Content Include="Dinamico.wpp.targets" />
+    <Content Include="Content\fonts\glyphiconshalflings-regular.woff" />
+    <Content Include="Content\fonts\glyphiconshalflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphiconshalflings-regular.otf" />
+    <Content Include="Content\fonts\glyphiconshalflings-regular.eot" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.eot" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.otf" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.ttf" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.woff" />
+    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\LICENSE" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
@@ -184,6 +212,11 @@
     <Content Include="Dinamico\Themes\Terracotta\Thumbnail.JPG" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <None Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Dinamico\Themes\Default\Scripts\bootstrap.js" />
+    <Content Include="Dinamico\Themes\Default\Scripts\bootstrap.min.js" />
+    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.js" />
+    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -193,9 +226,11 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\" />
     <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>
@@ -369,7 +404,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>5446</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:5446/</IISUrl>
+          <IISUrl>http://dinamico/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

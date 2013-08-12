@@ -17,7 +17,18 @@ namespace Dinamico
 			public const string Site = "Site";
 			public const string Advanced = "Advanced";
 		}
-		
+
+		public static string ContentClass(string zoneName)
+		{
+			switch (zoneName)
+			{
+				case "SliderArea":
+					return "carousel-caption";
+				default:
+					return "content";
+			}
+		}
+
 		public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
 		{
 			if (string.IsNullOrEmpty(preferredSize))

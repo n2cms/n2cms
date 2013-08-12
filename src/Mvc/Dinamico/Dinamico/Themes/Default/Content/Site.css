@@ -1,6 +1,35 @@
-@import "Boilerhead.css";
+@import "bootstrap/bootstrap.min.css";
 @import "Layout.css";
+
+ul.nav li a.logotype {
+	padding:0;
+}
+	ul.nav li a.logotype img {
+		height:50px;
+		width:auto;
+	}
+
+#main > img { margin: 0 15px; }
+
+.contentlink .img {
+	float:left;
+	margin:20px 10px 10px 0;
+}
+
+td {
+	vertical-align:top;
+}
+
+/*.nav li.dropdown {
+	padding-right:25px;
+}
+.nav li a.dropdown-toggle {
+	position:absolute;
+	right:0;
+	top:0;
+}*/
+/*
 @import "Elements.css";
 @import "Features.css";
 @import "Mood.css";
-@import "Boilerfoot.css";
+*/
