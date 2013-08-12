@@ -550,6 +550,11 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="ckeditor" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="configJsPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/config.js" />
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="tinyMCE" minOccurs="0">
 								<xs:complexType>
 									<xs:all>

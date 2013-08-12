@@ -1,10 +1,12 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace N2.Configuration
 {
 	/// <summary>
 	/// Configuration related to the free text area included with the CMS.
 	/// </summary>
+	[Obsolete]
 	public class TinyMCEElement : ConfigurationElement
 	{
 		/// <summary>Set enabled to false to disable the tinyMCE free text editor.</summary>
