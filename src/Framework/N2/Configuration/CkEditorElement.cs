@@ -39,11 +39,11 @@ namespace N2.Configuration
 			set { base["contentsCssPath"] = value; }
 		}
 
-		[ConfigurationProperty("advancedMenues")]
-		public bool AdvancedMenues
+		[ConfigurationProperty("advancedMenus")]
+		public bool AdvancedMenus
 		{
-			get { return (bool)base["advancedMenues"]; }
-			set { base["advancedMenues"] = value; }
+			get { return (bool)base["advancedMenus"]; }
+			set { base["advancedMenus"] = value; }
 		}
 	}
 }

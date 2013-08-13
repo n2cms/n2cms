@@ -87,7 +87,7 @@ namespace N2.Web.UI.WebControls
 					overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
 					overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
 					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
-					advancedMenues = config.CkEditor.AdvancedMenues;
+					advancedMenues = config.CkEditor.AdvancedMenus;
 				}
 			}
 		}
