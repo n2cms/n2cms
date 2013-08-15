@@ -2,6 +2,22 @@
 
 namespace N2.Configuration
 {
+	public static class AllowInstallationOption
+	{
+		public const string AnonymousUser = "AnonymousUser";
+		public const string Administrator = "Administrator";
+		public const string No = "No";
+		public static string Parse(string configValue)
+		{
+			if (configValue == AnonymousUser || "true".Equals(configValue, System.StringComparison.InvariantCultureIgnoreCase))
+				return AnonymousUser;
+			if (configValue == No || "false".Equals(configValue, System.StringComparison.InvariantCultureIgnoreCase))
+				return No;
+			
+			return Administrator;
+		}
+	}
+
 	public class InstallerElement : ConfigurationElement
 	{
 		/// <summary>When set to true this setting will cause the database connection to be verified upon startup. If the database connection is down the first user is redirected to an installation screen.</summary>
@@ -13,10 +29,10 @@ namespace N2.Configuration
 		}
 
 		/// <summary>When set to false this option disallows usage of the potentially dangerous interfaces located below /n2/installation/.</summary>
-		[ConfigurationProperty("allowInstallation", DefaultValue = true)]
-		public bool AllowInstallation
+		[ConfigurationProperty("allowInstallation", DefaultValue = AllowInstallationOption.Administrator)]
+		public string AllowInstallation
 		{
-			get { return (bool)base["allowInstallation"]; }
+			get { return (string)base["allowInstallation"]; }
 			set { base["allowInstallation"] = value; }
 		}
 
