@@ -1,6 +1,7 @@
-<configuration>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<configSections>
-		<sectionGroup name="n2" type="N2.Configuration.SectionGroup, N2">
+		<sectionGroup xdt:transform="Remove" xdt:Locator="Match(name)" name="n2" type="N2.Configuration.SectionGroup, N2">
+		<sectionGroup xdt:transform="Insert" xdt:Locator="Match(name)" name="n2" type="N2.Configuration.SectionGroup, N2">
 			<section name="host" type="N2.Configuration.HostSection, N2" requirePermission="false" restartOnExternalChanges="true"/>
 			<section name="engine" type="N2.Configuration.EngineSection, N2" requirePermission="false" restartOnExternalChanges="true"/>
 			<section name="database" type="N2.Configuration.DatabaseSection, N2" requirePermission="false" restartOnExternalChanges="true"/>
@@ -9,10 +10,11 @@
 	</configSections>
 
 	<appSettings>
-		<add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+		<add xdt:transform="Remove" xdt:Locator="Match(key)" key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+		<add xdt:transform="Insert" xdt:Locator="Match(key)" key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
 	</appSettings>
 
-	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3" xdt:Transform="InsertIfMissing" xdt:Locator="XPath(/configuration/n2)">
 		<!--
 			When installing a database from scratch you'll need to insert some required pages. 
 			This can be done by the web based installer located at http://yoursite/n2/installation/ 
@@ -40,7 +42,7 @@
 		</edit>
 	</n2>
 
-	<connectionStrings>
+	<connectionStrings xdt:Transform="InsertIfMissing">
 		<!-- Some connection string examples:
 		SQLite:           <add name="N2CMS" connectionString="Data Source=|DataDirectory|\n2.sqlite.db;Version=3;New=True;" providerName="System.Data.SQLite" />
 		SQL Server 2005:  <add name="N2CMS" connectionString="Server=(local);Database=N2_Templates;Integrated Security=SSPI"/>
@@ -53,71 +55,86 @@
 
 	<system.web>
 		<!-- Comment for .NET < 4 -->
-		<httpRuntime requestValidationMode="2.0"/>
+		<httpRuntime xdt:Transform="InsertIfMissing" xdt:Locator="Match(requestValidationMode)" requestValidationMode="2.0"/>
 		
 		<authentication mode="Forms">
 			<forms>
-				<credentials passwordFormat="SHA1">
+				<credentials passwordFormat="SHA1" xdt:Transform="InsertIfMissing">
 					<!-- WARNING: Make sure the admin password was changed manually or using the installer at http://yoursite/n2/installation/begin/. -->
-					<user name="admin" password="fa9beb99e4029ad5a6615399e7bbae21356086b3" />
+					<user xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)"name="admin" password="fa9beb99e4029ad5a6615399e7bbae21356086b3" />
 				</credentials>
 			</forms>
 		</authentication>
 
 		<!-- These membership and role providers store their data as content items. You can also use the forms authentication 
-					 credentials only (then remove these sections) or the default ASP.NET providers (search for asp.net membership) -->
+				credentials only (then remove these sections) or the default ASP.NET providers (search for asp.net membership) -->
 		<membership>
 			<providers>
-				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
+				<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(name,type)" name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Management" passwordFormat="Hashed" />
 			</providers>
 		</membership>
 		<roleManager>
 			<providers>
-				<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
+				<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(name,type)" name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Management" />
 			</providers>
 		</roleManager>
 		<profile>
 			<providers>
-				<add name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
+				<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(name,type)" name="ContentProfileProvider" type="N2.Security.ContentProfileProvider, N2.Management" />
 			</providers>
 		</profile>
-		<siteMap defaultProvider="PublicSiteMap"><providers>
-			<add name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
-		</providers></siteMap>
+		<siteMap defaultProvider="PublicSiteMap">
+			<providers>
+				<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(name,type)" name="PublicSiteMap" type="N2.Web.PublicSiteMapProvider, N2" startPageIsRoot="true" />
+			</providers>
+		</siteMap>
 
 		<pages>
 			<controls>
-				<add tagPrefix="n2" namespace="N2.Web.UI.WebControls" assembly="N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(tagPrefix)" tagPrefix="n2" namespace="N2.Web.UI.WebControls" assembly="N2" />
+				<add xdt:Transform="Insert" xdt:Locator="Match(tagPrefix)" tagPrefix="n2" namespace="N2.Web.UI.WebControls" assembly="N2" />
 			</controls>
 			<tagMapping>
-				<add tagType="System.Web.UI.HtmlControls.HtmlForm"  mappedTagType="N2.Web.UI.WebControls.RawUrlForm"/>
+				<add xdt:Transform="Remove" xdt:Locator="Match(tagType)" tagType="System.Web.UI.HtmlControls.HtmlForm"  mappedTagType="N2.Web.UI.WebControls.RawUrlForm"/>
+				<add xdt:Transform="Insert" xdt:Locator="Match(tagType)" tagType="System.Web.UI.HtmlControls.HtmlForm"  mappedTagType="N2.Web.UI.WebControls.RawUrlForm"/>
 			</tagMapping>
 			<namespaces>
-				<add namespace="N2.Linq"/>
-				<add namespace="N2.Web.Mvc.Html"/>
+				<add xdt:Transform="Remove" xdt:Locator="Match(namespace)" namespace="N2.Linq"/>
+				<add xdt:Transform="Remove" xdt:Locator="Match(namespace)" namespace="N2.Web.Mvc.Html"/>
+				<add xdt:Transform="Insert" xdt:Locator="Match(namespace)" namespace="N2.Linq"/>
+				<add xdt:Transform="Insert" xdt:Locator="Match(namespace)" namespace="N2.Web.Mvc.Html"/>
 			</namespaces>
 		</pages>
 
 		<compilation>
 			<expressionBuilders>
-				<add expressionPrefix="CurrentItem" type="N2.Web.Compilation.CurrentItemExpressionBuilder, N2" />
-				<add expressionPrefix="CurrentPage" type="N2.Web.Compilation.CurrentPageExpressionBuilder, N2" />
-				<add expressionPrefix="StartPage" type="N2.Web.Compilation.StartPageExpressionBuilder, N2" />
-				<add expressionPrefix="Code" type="N2.Web.Compilation.CodeExpressionBuilder, N2" />
-				<add expressionPrefix="HasValue" type="N2.Web.Compilation.HasValueExpressionBuilder, N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(expressionPrefix)" expressionPrefix="CurrentItem" type="N2.Web.Compilation.CurrentItemExpressionBuilder, N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(expressionPrefix)" expressionPrefix="CurrentPage" type="N2.Web.Compilation.CurrentPageExpressionBuilder, N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(expressionPrefix)" expressionPrefix="StartPage" type="N2.Web.Compilation.StartPageExpressionBuilder, N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(expressionPrefix)" expressionPrefix="Code" type="N2.Web.Compilation.CodeExpressionBuilder, N2" />
+				<add xdt:Transform="Remove" xdt:Locator="Match(expressionPrefix)" expressionPrefix="HasValue" type="N2.Web.Compilation.HasValueExpressionBuilder, N2" />
+				
+				<add xdt:Transform="Insert" xdt:Locator="Match(expressionPrefix)" expressionPrefix="CurrentItem" type="N2.Web.Compilation.CurrentItemExpressionBuilder, N2" />
+				<add xdt:Transform="Insert" xdt:Locator="Match(expressionPrefix)" expressionPrefix="CurrentPage" type="N2.Web.Compilation.CurrentPageExpressionBuilder, N2" />
+				<add xdt:Transform="Insert" xdt:Locator="Match(expressionPrefix)" expressionPrefix="StartPage" type="N2.Web.Compilation.StartPageExpressionBuilder, N2" />
+				<add xdt:Transform="Insert" xdt:Locator="Match(expressionPrefix)" expressionPrefix="Code" type="N2.Web.Compilation.CodeExpressionBuilder, N2" />
+				<add xdt:Transform="Insert" xdt:Locator="Match(expressionPrefix)" expressionPrefix="HasValue" type="N2.Web.Compilation.HasValueExpressionBuilder, N2" />
 			</expressionBuilders>
 		</compilation>
 		
 		<httpModules>
-			<add name="n2.initializer" type="N2.Web.InitializerModule, N2" />
+			<add xdt:Transform="Remove" xdt:Locator="Match(name)" name="n2.initializer" type="N2.Web.InitializerModule, N2" />
+			<add xdt:Transform="Insert" xdt:Locator="Match(name)" name="n2.initializer" type="N2.Web.InitializerModule, N2" />
 		</httpModules>
 
 	</system.web>
 
 	<system.webServer>
-		<validation validateIntegratedModeConfiguration="false"/>
-		<modules runAllManagedModulesForAllRequests="true">
-			<add name="n2.initializer" type="N2.Web.InitializerModule, N2" />
+		<validation xdt:Transform="Remove" />
+		<validation xdt:Transform="Insert" validateIntegratedModeConfiguration="false"/>
+		<modules xdt:Transform="InsertIfMissing" runAllManagedModulesForAllRequests="true">
+			<add xdt:Transform="Remove" name="n2.initializer" type="N2.Web.InitializerModule, N2" />
+			<add xdt:Transform="Insert" name="n2.initializer" type="N2.Web.InitializerModule, N2" />
 		</modules>
 	</system.webServer>
 </configuration>
