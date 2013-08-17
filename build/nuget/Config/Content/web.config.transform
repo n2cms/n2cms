@@ -8,6 +8,10 @@
 		</sectionGroup>
 	</configSections>
 
+	<appSettings>
+		<add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
+	</appSettings>
+
 	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
 		<!--
 			When installing a database from scratch you'll need to insert some required pages. 
