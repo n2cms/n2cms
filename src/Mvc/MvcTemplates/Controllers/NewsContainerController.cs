@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using N2.Definitions;
 using N2.Web;
 using N2.Web.Mvc;
 using N2.Collections;
@@ -16,6 +17,7 @@ namespace N2.Templates.Mvc.Controllers
 	/// This controller returns a view that displays the item created via the management interface
 	/// </summary>
 	[Controls(typeof(Models.Pages.NewsContainer))]
+	[GroupChildren(GroupChildrenMode.PublishedYearMonth)]
 	public class NewsContainerController : ContentController<Models.Pages.NewsContainer>
 	{
 		IContentItemRepository finder;
@@ -32,9 +34,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public virtual ActionResult Index(string tag)
 		{
-			var model = string.IsNullOrEmpty(tag)
-				? GetNews(0, 20)
-				: GetNews(tag, 0, 20);
+			var model = string.IsNullOrEmpty(tag) ? GetNews(0, 20) : GetNews(tag, 0, 20);
 			return View(model);
 		}
 
