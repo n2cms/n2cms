@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<host xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<vpp>
+		<zips>
+			<add name="n2.management" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+		</zips>
+	</vpp>
+</host>

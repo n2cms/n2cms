@@ -36,6 +36,13 @@ namespace N2.Configuration
 			set { base["allowInstallation"] = value; }
 		}
 
+		//[ConfigurationProperty("installedVersion")]
+		//public string InstalledVersion
+		//{
+		//	get { return (string)base["installedVersion"]; }
+		//	set { base["installedVersion"] = value; }
+		//}
+
 		[ConfigurationProperty("welcomeUrl", DefaultValue = "{ManagementUrl}/Installation/Begin/Default.aspx")]
 		public string WelcomeUrl
 		{

@@ -13,9 +13,7 @@
 			When installing a database from scratch you'll need to insert some required pages. 
 			This can be done by the web based installer located at http://yoursite/n2/installation/ 
 			-->
-		<host rootID="1" startPageID="2" multipleSites="true">
-			<web extension="" />
-		</host>
+		<host configSource="App_Data\n2_host.config" />
 		<engine>
 			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
 			<globalization enabled="true" />

@@ -530,6 +530,7 @@
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
+									<xs:attribute name="installedVersion" type="xs:string" use="optional" />
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
