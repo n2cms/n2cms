@@ -12,12 +12,13 @@
 		<host rootID="1" startPageID="2" multipleSites="true" xdt:Transform="InsertIfMissing">
 			<web extension="" />
 		</host>
-		<engine>
+		<engine xdt:Transform="InsertIfMissing">
 			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
 			<globalization enabled="true" />
 		</engine>
-		<database connectionStringName="N2CMS" caching="true"></database>
-		<edit>
+		<database connectionStringName="N2CMS" caching="true" xdt:Transform="InsertIfMissing">
+		</database>
+		<edit xdt:Transform="InsertIfMissing">
 			<installer checkInstallationStatus="true" />
 			<writers dynamic="true"/>
 			<editors dynamic="true"/>

@@ -132,7 +132,6 @@
     <Compile Include="Configuration\CkEditorElement.cs" />
     <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
-    <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\FileListElement.cs" />
     <Compile Include="Configuration\DocViewerElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
@@ -686,6 +685,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
@@ -694,6 +694,7 @@
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
