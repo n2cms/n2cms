@@ -15,6 +15,7 @@
     <language>en-US</language>
     <tags>N2 CMS</tags>
 		<dependencies>
+			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Razor" version="{Version}" />
 			<dependency id="N2CMS.ReusableParts" version="{Version}" />
 		</dependencies>

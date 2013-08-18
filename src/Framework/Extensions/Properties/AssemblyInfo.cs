@@ -47,3 +47,6 @@ using N2.Web.Mvc.Html;
 [assembly: TypeForwardedTo(typeof(DroppableZoneHelper))]
 [assembly: TypeForwardedTo(typeof(ZoneExtensions))]
 [assembly: TypeForwardedTo(typeof(ZoneHelper))]
+
+[assembly: TypeForwardedTo(typeof(ControllerFactoryConfigurator))]
+[assembly: TypeForwardedTo(typeof(ServiceLocatingControllerFactory))]

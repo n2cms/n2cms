@@ -336,7 +336,7 @@ namespace N2.Edit.Install
 			{
 				System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~");
 				EditSection edit = (EditSection)cfg.GetSection("n2/edit");
-				edit.Installer.AllowInstallation = false;
+				edit.Installer.AllowInstallation = AllowInstallationOption.No;
 				cfg.Save();
 
 				Response.Redirect(Engine.ManagementPaths.GetManagementInterfaceUrl());

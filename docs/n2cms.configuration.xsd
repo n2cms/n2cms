@@ -521,7 +521,16 @@
 							<xs:element name="installer" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="checkInstallationStatus" type="xs:boolean" use="optional" />
-									<xs:attribute name="allowInstallation" type="xs:boolean" use="optional" />
+									<xs:attribute name="allowInstallation" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Administrator"/>
+												<xs:enumeration value="AnonymousUser"/>
+												<xs:enumeration value="No"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="installedVersion" type="xs:string" use="optional" />
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
