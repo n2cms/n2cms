@@ -45,7 +45,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the name of the editor containing the title to input in the name editor.</summary>
 		public string TitleEditorName
 		{
-			get { return (string) (ViewState["TitleEditorName"] ?? "Title"); }
+			get { return (string)(ViewState["TitleEditorName"] ?? "Title"); }
 			set { ViewState["TitleEditorName"] = value; }
 		}
 
@@ -108,7 +108,7 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return keepUpdated; }
 		}
-		
+
 		[NotifyParentProperty(true)]
 		public TextBox Editor
 		{
@@ -143,7 +143,7 @@ namespace N2.Web.UI.WebControls
 
 			keepUpdated.ID = "ku";
 			keepUpdated.Checked = true;
-            keepUpdated.CssClass = "keepUpdated";
+			keepUpdated.CssClass = "keepUpdated";
 			Controls.Add(keepUpdated);
 
 			base.CreateChildControls();
@@ -157,7 +157,7 @@ namespace N2.Web.UI.WebControls
 
 			if (itemEditor == null)
 				return;
-			
+
 			try
 			{
 				if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
@@ -190,7 +190,7 @@ namespace N2.Web.UI.WebControls
 		string GetReplacementsJson()
 		{
 			StringBuilder sb = new StringBuilder("[");
-			foreach(PatternValueElement element in Config.Replacements.AllElements)
+			foreach (PatternValueElement element in Config.Replacements.AllElements)
 			{
 				if (sb.Length > 1)
 					sb.Append(", ");
@@ -207,14 +207,14 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the error message generated when the name editor contains invalid values.</summary>
 		public string ErrorMessage
 		{
-			get { return (string) ViewState["ErrorMessage"] ?? ""; }
+			get { return (string)ViewState["ErrorMessage"] ?? ""; }
 			set { ViewState["ErrorMessage"] = value; }
 		}
 
 		/// <summary>Gets or sets wether the name editor's value passes validaton.</summary>
 		public bool IsValid
 		{
-			get { return ViewState["IsValid"] != null ? (bool) ViewState["IsValid"] : true; }
+			get { return ViewState["IsValid"] != null ? (bool)ViewState["IsValid"] : true; }
 			set { ViewState["IsValid"] = value; }
 		}
 
@@ -259,7 +259,7 @@ namespace N2.Web.UI.WebControls
 
 		public override void RenderBeginTag(HtmlTextWriter writer)
 		{
-			if(!string.IsNullOrEmpty(Prefix))
+			if (!string.IsNullOrEmpty(Prefix))
 				writer.Write("<span class='prefix'>" + Prefix + "</span>");
 			base.RenderBeginTag(writer);
 		}
@@ -269,7 +269,7 @@ namespace N2.Web.UI.WebControls
 		public override void RenderEndTag(HtmlTextWriter writer)
 		{
 			base.RenderEndTag(writer);
-			if(!string.IsNullOrEmpty(Suffix))
+			if (!string.IsNullOrEmpty(Suffix))
 				writer.Write("<span class='suffix'>" + Suffix + "</span>");
 			if (!IsValid)
 				writer.Write("<span style='color:red'>*</span>");
