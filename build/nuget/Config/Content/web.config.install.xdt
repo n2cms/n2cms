@@ -45,8 +45,8 @@
 
 	<system.web>
 		<!-- Comment for .NET < 4 -->
-		<httpRuntime xdt:Transform="InsertIfMissing" />
-		<httpRuntime xdt:Transform="SetAttributes(requestValidationMode)" requestValidationMode="2.0"/>
+		<httpRuntime xdt:Transform="InsertIfMissing" requestValidationMode="2.0" />
+		<httpRuntime xdt:Transform="SetAttributes(requestValidationMode)" requestValidationMode="2.0" />
 		
 		<authentication mode="Forms" xdt:Transform="InsertIfMissing">
 			<forms>
