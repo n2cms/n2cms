@@ -25,7 +25,7 @@ namespace N2.ReusableParts
 		{
 			StringBuilder sb = new StringBuilder();
 			if (designMode)
-				sb.Append(@"<span class=""label""><i class=""icon-anchor""></i> ");
+				sb.Append(@"<span class=""label""><i class=""n2-icon-anchor""></i> ");
 			sb.AppendFormat(@"<a name=""{0}"" />", part.Title);
 			if (designMode)
 				sb.Append("</span>");
