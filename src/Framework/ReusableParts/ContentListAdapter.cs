@@ -50,6 +50,7 @@ namespace N2.Web.Mvc
 			if (!(model is ContentList))
 				return ("{adapter failure - Model is not a NewsList}"); // nothing to do 
 
+			var errorList = new List<string>();
 			var currentItem = model as ContentList;
 			var chH = currentItem.HtmlHeader ?? string.Empty;
 			var chF = currentItem.HtmlFooter ?? string.Empty;
@@ -100,9 +101,7 @@ namespace N2.Web.Mvc
 
 
 			foreach (var x in currentItem.Exceptions)
-			{
-				sb.AppendFormat(@"<div class=""alert alert-error""><pre>{0}</pre></div>", x);
-			}
+				errorList.Add(x.ToString());
 
 			if (!String.IsNullOrEmpty(currentItem.Title))
 			{
@@ -201,27 +200,36 @@ namespace N2.Web.Mvc
 							break;
 
 						case NewsDisplayMode.HtmlItemTemplate:
-							if (String.IsNullOrWhiteSpace(currentItem.HtmlItemTemplate))
+							try
 							{
-								break;
-							}
-							if (!currentItem.HtmlItemTemplate.Contains('$'))
-							{
-								sb.Append(currentItem.HtmlItemTemplate);
-								break;
-							}
+								if (String.IsNullOrWhiteSpace(currentItem.HtmlItemTemplate))
+								{
+									break;
+								}
+								if (!currentItem.HtmlItemTemplate.Contains("$$") && !currentItem.HtmlItemTemplate.Contains("{{"))
+								{
+									sb.Append(currentItem.HtmlItemTemplate);
+									break;
+								}
 
-							sb.Append(VariableSubstituter.Substitute(currentItem.HtmlItemTemplate, item));
+								sb.Append(VariableSubstituter.Substitute(currentItem.HtmlItemTemplate, item));
+							}
+							catch (Exception x)
+							{
+								errorList.Add(x.ToString());
+							}
 							break;
 
 						default:
-							Debug.Assert(false, "Assertion failed due to invalid NewsDisplayMode.");
+							errorList.Add("Can't render web part: invalid NewsDisplayMode.");
 							break;
 					}
 				}
 
 			if (currentItem.DisplayMode == NewsDisplayMode.HtmlItemTemplate)
 				sb.Append(chF);
+
+			errorList.ForEach(x => sb.AppendFormat(@"<div class=""alert alert-error""><pre>{0}</pre></div>", x));
 
 			return sb.ToString();
 		}
