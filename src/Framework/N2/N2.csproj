@@ -73,7 +73,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -129,9 +129,9 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\CkEditorElement.cs" />
     <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
-    <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\FileListElement.cs" />
     <Compile Include="Configuration\DocViewerElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
@@ -685,6 +685,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
@@ -693,6 +694,7 @@
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />

@@ -152,6 +152,7 @@ namespace N2.Edit
 				if (sibling.SortOrder >= beforeSortOrder)
 				{
 					parent.Children.Insert(i, child);
+					child.Parent = parent;
 					Utility.UpdateSortOrder(parent.Children);
 					wasAdded = true;
 					break;

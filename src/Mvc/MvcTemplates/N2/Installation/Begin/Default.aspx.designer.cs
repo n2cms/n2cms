@@ -31,6 +31,33 @@ namespace N2.Edit.Install.Begin {
         protected global::System.Web.UI.WebControls.CustomValidator cvSave;
         
         /// <summary>
+        /// preManualConfig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl preManualConfig;
+        
+        /// <summary>
+        /// chkLoginUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkLoginUrl;
+        
+        /// <summary>
+        /// pnlPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlPassword;
+        
+        /// <summary>
         /// lblUserName control.
         /// </summary>
         /// <remarks>
@@ -67,12 +94,12 @@ namespace N2.Edit.Install.Begin {
         protected global::System.Web.UI.WebControls.TextBox txtRepeatPassword;
         
         /// <summary>
-        /// chkLoginUrl control.
+        /// pnlNoPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkLoginUrl;
+        protected global::System.Web.UI.WebControls.Panel pnlNoPassword;
     }
 }
