@@ -9,6 +9,7 @@ using N2.Engine.Globalization;
 using N2.Persistence;
 using N2.Persistence.Sources;
 using N2.Web;
+using N2.Web.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,10 @@ namespace N2.Management.Api
 								.ToList();
 							context.Response.WriteJson(new { Definitions = definitions });
 							break;
+						case "/tokens":
+							var tokens = CreateTokens(context);
+							context.Response.WriteJson(new { Tokens = tokens });
+							break;
 						case "/children":
 						default:
 							var children = CreateChildren(context).ToList();
@@ -103,6 +108,11 @@ namespace N2.Management.Api
 					Delete(context);
 					break;
 			}
+		}
+
+		private IEnumerable<TokenDefinition> CreateTokens(HttpContextBase context)
+		{
+			return engine.Resolve<TokenDefinitionFinder>().FindTokens();
 		}
 
 		private IEnumerable<ItemDefinition> CreateDefinitions(HttpContextBase context)
