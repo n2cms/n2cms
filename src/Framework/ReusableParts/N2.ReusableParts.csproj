@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="ContentList.cs" />
     <Compile Include="ContentListAdapter.cs" />
+    <Compile Include="HtmlAnchor.cs" />
     <Compile Include="MenuPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawHtml.cs" />
