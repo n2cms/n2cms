@@ -30,6 +30,7 @@ namespace N2.Web.UI.WebControls
 		static string configJsPath = string.Empty;
 		static string overwriteStylesSet = string.Empty;
 		static string overwriteFormatTags = string.Empty;
+		static string overwriteLanguage = string.Empty;
 		private EditorModeSetting editorMode = EditorModeSetting.Standard;
 		private string additionalFormats = string.Empty;
 		private string useStylesSet = string.Empty;
@@ -86,6 +87,7 @@ namespace N2.Web.UI.WebControls
 					configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath );
 					overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
 					overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
+					overwriteLanguage = config.CkEditor.OverwriteLanguage;
 					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
 					advancedMenues = config.CkEditor.AdvancedMenus;
 				}
@@ -131,9 +133,22 @@ namespace N2.Web.UI.WebControls
 			overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 
 
+
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+
+			if (!string.IsNullOrEmpty(overwriteLanguage))
+				language = overwriteLanguage;
+
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/ckeditor/lang/" + language + ".js")))
+			{
 				overrides["language"] = language;
+			}
+			else
+			{
+				overrides["language"] = "en";
+			}
+
+		
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
 				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
@@ -150,7 +165,6 @@ namespace N2.Web.UI.WebControls
 
 			if (!string.IsNullOrEmpty(useStylesSet))
 				overrides["stylesSet"] = useStylesSet;
-
 
 
 			if (!string.IsNullOrEmpty(overwriteFormatTags))
