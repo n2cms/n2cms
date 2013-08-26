@@ -45,5 +45,12 @@ namespace N2.Configuration
 			get { return (bool)base["advancedMenus"]; }
 			set { base["advancedMenus"] = value; }
 		}
+
+		[ConfigurationProperty("overwriteLanguage")]
+		public string OverwriteLanguage
+		{
+			get { return (string)base["overwriteLanguage"]; }
+			set { base["overwriteLanguage"] = value; }
+		}
 	}
 }

@@ -566,6 +566,7 @@
                   <xs:attribute name="overwriteFormatTags" type="xs:string" use="optional" default="p;h1;h2;h3;pre" />
                   <xs:attribute name="contentsCssPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/contents.css" />
                   <xs:attribute name="advancedMenus" type="xs:boolean" use="optional" default="false" />
+                  <xs:attribute name="overwriteLanguage" type="xs:string" use="optional" default="en" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="tinyMCE" minOccurs="0">
