@@ -4,7 +4,7 @@ namespace N2.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
 	{
-		public const string JQueryVersion = "1.9.1";
+		public const string JQueryVersion = "1.10.2";
 
 		/// <summary>Whether to make registered web resources debuggable.</summary>
 		[ConfigurationProperty("debug")]
