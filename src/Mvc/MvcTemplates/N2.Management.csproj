@@ -1163,6 +1163,7 @@
     <Compile Include="N2\Installation\Migrations\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\Migrations\UpdateAppPathMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersionWorker.cs" />
+    <Compile Include="N2\ManagementItem.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
     <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs">
       <SubType>Code</SubType>

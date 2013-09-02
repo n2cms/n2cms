@@ -9,6 +9,9 @@ using N2.Details;
 using N2.Engine;
 using N2.Persistence.Search;
 using N2.Integrity;
+using N2.Edit;
+using N2.Web;
+using N2.Management;
 
 namespace N2.Security.Items
 {
@@ -22,7 +25,7 @@ namespace N2.Security.Items
 	[RestrictParents(typeof(IRootPage))]
 	[GroupChildren(GroupChildrenMode.AlphabeticalIndex)]
 	[Versionable(AllowVersions.No)]
-	public class UserList : ContentItem, ISystemNode, IInjectable<ISecurityManager>
+	public class UserList : ManagementItem, ISystemNode, IInjectable<ISecurityManager>
 	{
 		ISecurityManager securityManager;
 
