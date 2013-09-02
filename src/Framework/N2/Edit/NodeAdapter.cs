@@ -176,7 +176,7 @@ namespace N2.Edit
 
 			if (!item.Visible)
 			{
-				className.Append("invisible ");
+				className.Append("notvisible ");
 			}
 
 			if (item.AlteredPermissions != Permission.None && item.AuthorizedRoles != null && item.AuthorizedRoles.Count > 0)

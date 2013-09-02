@@ -39,7 +39,7 @@ body.rightExpanded #content { margin-right:265px; }
 .zonesBox .iconed { background:transparent none no-repeat 2px 50%; padding:2px 2px 2px 19px; float:right; }
 .zonesBox .day { color:#393; }
 .zonesBox .week { color:#363; }
-.zonesBox .invisible{ color:#999;}
+.zonesBox .notvisible{ color:#999;}
 .zonesBox .unpublished,
 .zonesBox .expired,
 .zonesBox .locked { color:#C66; }
