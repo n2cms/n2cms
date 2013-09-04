@@ -199,7 +199,10 @@ namespace N2.Definitions
 		public IDictionary<string, object> Metadata { get; set; }
 
 		/// <summary>Interface flags used control displayed UI elements.</summary>
-		public ICollection<string> Flags { get; set; }
+		public ICollection<string> AdditionalFlags { get; set; }
+
+		/// <summary>Removed interface flags used control displayed UI elements.</summary>
+		public ICollection<string> RemovedFlags { get; set; }
 
 		#endregion
 
@@ -411,10 +414,16 @@ namespace N2.Definitions
 
 			initializedTypes.Add(type);
 
-			foreach (var flag in type.GetCustomAttributes(typeof(InterfaceFlagsAttribute), false)
-				.OfType<InterfaceFlagsAttribute>()
-				.SelectMany(f => f.Flags))
-				Flags.Add(flag);
+			foreach (var attribute in type.GetCustomAttributes(typeof(InterfaceFlagsAttribute), false)
+				.OfType<InterfaceFlagsAttribute>())
+			{
+				foreach (var flag in attribute.AdditionalFlags)
+					AdditionalFlags.Add(flag);
+				if (attribute.RemovedFlags != null)
+					foreach (var flag in attribute.RemovedFlags)
+						RemovedFlags.Add(flag);
+			}
+
 
 			return this;
 		}
@@ -488,7 +497,8 @@ namespace N2.Definitions
 			id.IsDefined = IsDefined;
 			id.NumberOfItems = 0;
 			id.Metadata = Metadata.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-			id.Flags = Flags.ToList();
+			id.AdditionalFlags = AdditionalFlags.ToList();
+			id.RemovedFlags = RemovedFlags.ToList();
 			id.Properties = Properties.ToDictionary(p => p.Key, p => p.Value.Clone());
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
@@ -554,7 +564,8 @@ namespace N2.Definitions
 			Attributes = new List<object>();
 			Properties = new Dictionary<string, PropertyDefinition>();
 			Metadata = new Dictionary<string, object>();
-			Flags = new List<string>();
+			AdditionalFlags = new List<string>();
+			RemovedFlags = new List<string>();
 		}
 	}
 }
