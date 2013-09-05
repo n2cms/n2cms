@@ -886,7 +886,6 @@
     <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.ttf" />
     <Content Include="N2\Resources\font-awesome\font\fontawesome-webfont.woff" />
     <Content Include="N2\Resources\font-awesome\font\FontAwesome.otf" />
-    <None Include="Properties\PublishProfiles\test.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Framework\AssemblyVersion.cs">
@@ -1865,6 +1864,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="N2\Content\LinkTracker\App_LocalResources\Default.aspx.resx" />
