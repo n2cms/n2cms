@@ -24,7 +24,7 @@ namespace N2.Management.Myself
     [TabContainer("Search", "Search", 120, ContainerName = "RootSettings")]
     [WithManageableSearch(ContainerName = "Search")]
 	[Versionable(AllowVersions.No)]
-	[InterfaceFlags("Management", "Unclosable")]
+	[InterfaceFlags(RemovedFlags = new [] { "Management" })]
     public class RootBase : ContentItem, IRootPage, ISystemNode
     {
         public override string Url

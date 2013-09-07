@@ -187,6 +187,7 @@
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\main.js" />
     <Content Include="N2\Resources\jQuery-File-Upload-8.5.0\js\vendor\jquery.ui.widget.js" />
     <Content Include="N2\Resources\Js\frameInteraction.js" />
+    <Content Include="N2\Resources\Js\jquery-1.10.2.min.js" />
     <Content Include="N2\Resources\Js\less-1.4.1.min.js" />
     <Content Include="N2\Resources\Js\n2.js" />
     <Content Include="N2\Resources\angular-1.1.5\angular-cookies.js" />
@@ -681,7 +682,6 @@
     <Content Include="N2\Resources\jquery-ui-1.10.2.custom\js\jquery-ui-1.10.2.custom.min.js" />
     <Content Include="N2\Resources\bootstrap-components\angular-strap.js" />
     <Content Include="N2\Resources\bootstrap-components\angular-strap.min.js" />
-    <Content Include="N2\Resources\Js\jquery-1.9.1.min.js" />
     <Content Include="N2\Resources\fancybox\blank.gif" />
     <Content Include="N2\Resources\fancybox\fancybox_loading%402x.gif" />
     <Content Include="N2\Resources\fancybox\fancybox_loading.gif" />
@@ -1185,6 +1185,7 @@
     <Compile Include="N2\Installation\Migrations\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\Migrations\UpdateAppPathMigration.cs" />
     <Compile Include="N2\Installation\UpgradeVersionWorker.cs" />
+    <Compile Include="N2\ManagementItem.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
     <Compile Include="N2\Myself\Analytics\Controllers\ManageAnalyticsController.cs">
       <SubType>Code</SubType>

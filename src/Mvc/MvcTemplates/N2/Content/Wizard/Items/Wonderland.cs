@@ -3,6 +3,7 @@ using N2.Edit.Trash;
 using N2.Installation;
 using N2.Persistence.Search;
 using N2.Integrity;
+using N2.Management;
 
 namespace N2.Edit.Wizard.Items
 {
@@ -12,7 +13,7 @@ namespace N2.Edit.Wizard.Items
 	[Throwable(AllowInTrash.No)]
 	[Indexable(IsIndexable = false)]
 	[RestrictParents(typeof(IRootPage))]
-	public class Wonderland : ContentItem, ISystemNode
+	public class Wonderland : ManagementItem, ISystemNode
 	{
 	}
 }
