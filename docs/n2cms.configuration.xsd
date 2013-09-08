@@ -562,7 +562,7 @@
 							<xs:element name="ckeditor" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="settings">
+										<xs:element name="settings" minOccurs="0" maxOccurs="1">
 											<xs:complexType>
 												<xs:sequence>
 													<!--<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
