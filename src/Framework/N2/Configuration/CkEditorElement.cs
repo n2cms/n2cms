@@ -59,5 +59,12 @@ namespace N2.Configuration
 			get { return (string)base["overwriteLanguage"]; }
 			set { base["overwriteLanguage"] = value; }
 		}
+
+		[ConfigurationProperty("settings")]
+		public KeyValueConfigurationCollection Settings
+		{
+			get { return (KeyValueConfigurationCollection)base["settings"]; }
+			set { base["settings"] = value; }
+		}
 	}
 }

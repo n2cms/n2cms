@@ -36,6 +36,7 @@ namespace N2.Web.UI.WebControls
 		private string useStylesSet = string.Empty;
 		private bool advancedMenues = false;
 		private bool? allowedContent;
+		private KeyValueConfigurationCollection customConfig;
 
 		public FreeTextArea()
 		{
@@ -92,6 +93,7 @@ namespace N2.Web.UI.WebControls
 					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
 					advancedMenues = config.CkEditor.AdvancedMenus;
 					allowedContent = config.CkEditor.AllowedContent;
+					customConfig = config.CkEditor.Settings ?? new KeyValueConfigurationCollection();
 				}
 			}
 		}
@@ -200,6 +202,9 @@ namespace N2.Web.UI.WebControls
 					break;
 			}
 
+			if (customConfig.Count > 0)
+				foreach (var key in customConfig.AllKeys)
+					overrides[key] = customConfig[key].Value;
 
 			return ToJsonString(overrides);
 		}
@@ -211,13 +216,14 @@ namespace N2.Web.UI.WebControls
 			foreach (string key in collection.Keys)
 			{
 				string value = collection[key];
+				int ignored = 0;
 				if (value == "true")
 					value = "true";
 				else if (value == "false")
 					value = "false";
 				else if (value == null)
 					value = "null";
-				else if (!value.StartsWith("[") && !value.StartsWith("{"))
+				else if (!int.TryParse(value, out ignored) && !value.StartsWith("[") && !value.StartsWith("{"))
 					value = "'" + value + "'";
 				sb.Append("'").Append(key).Append("': ").Append(value).Append(",");
 			}
