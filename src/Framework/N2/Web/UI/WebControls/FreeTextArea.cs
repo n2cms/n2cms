@@ -26,11 +26,10 @@ namespace N2.Web.UI.WebControls
 
 		static string contentCssUrl;
 		static bool configEnabled = true;
-		static bool isInitalized = false;
-		static string configJsPath = string.Empty;
-		static string overwriteStylesSet = string.Empty;
-		static string overwriteFormatTags = string.Empty;
-		static string overwriteLanguage = string.Empty;
+		string configJsPath = string.Empty;
+		string overwriteStylesSet = string.Empty;
+		string overwriteFormatTags = string.Empty;
+		string overwriteLanguage = string.Empty;
 		private EditorModeSetting editorMode = EditorModeSetting.Standard;
 		private string additionalFormats = string.Empty;
 		private string useStylesSet = string.Empty;
@@ -80,21 +79,17 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 
-			if (!isInitalized)
+			var config = N2.Context.Current.Resolve<EditSection>();
+			if (config != null)
 			{
-				isInitalized = true;
-				var config = N2.Context.Current.Resolve<EditSection>();
-				if (config != null)
-				{
-					configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath );
-					overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
-					overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
-					overwriteLanguage = config.CkEditor.OverwriteLanguage;
-					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
-					advancedMenues = config.CkEditor.AdvancedMenus;
-					allowedContent = config.CkEditor.AllowedContent;
-					customConfig = config.CkEditor.Settings ?? new KeyValueConfigurationCollection();
-				}
+				configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath);
+				overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
+				overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
+				overwriteLanguage = config.CkEditor.OverwriteLanguage;
+				contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
+				advancedMenues = config.CkEditor.AdvancedMenus;
+				allowedContent = config.CkEditor.AllowedContent;
+				customConfig = config.CkEditor.Settings ?? new KeyValueConfigurationCollection();
 			}
 		}
 
