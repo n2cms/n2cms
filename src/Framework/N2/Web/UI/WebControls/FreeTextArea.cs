@@ -35,6 +35,7 @@ namespace N2.Web.UI.WebControls
 		private string additionalFormats = string.Empty;
 		private string useStylesSet = string.Empty;
 		private bool advancedMenues = false;
+		private bool? allowedContent;
 
 		public FreeTextArea()
 		{
@@ -90,6 +91,7 @@ namespace N2.Web.UI.WebControls
 					overwriteLanguage = config.CkEditor.OverwriteLanguage;
 					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
 					advancedMenues = config.CkEditor.AdvancedMenus;
+					allowedContent = config.CkEditor.AllowedContent;
 				}
 			}
 		}
@@ -132,8 +134,6 @@ namespace N2.Web.UI.WebControls
 
 			overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 
-
-
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 
 			if (!string.IsNullOrEmpty(overwriteLanguage))
@@ -155,6 +155,9 @@ namespace N2.Web.UI.WebControls
 
 			if (advancedMenues==false)
 				overrides["removeDialogTabs"] = "image:advanced;link:advanced";
+
+			if (allowedContent.HasValue)
+				overrides["allowedContent"] = allowedContent.Value.ToString().ToLower();
 
 			if (!string.IsNullOrEmpty(configJsPath))
 				overrides["customConfig"] = configJsPath;

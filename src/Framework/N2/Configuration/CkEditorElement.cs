@@ -46,6 +46,13 @@ namespace N2.Configuration
 			set { base["advancedMenus"] = value; }
 		}
 
+		[ConfigurationProperty("allowedContent")]
+		public bool? AllowedContent
+		{
+			get { return (bool?)base["allowedContent"]; }
+			set { base["allowedContent"] = value; }
+		}
+
 		[ConfigurationProperty("overwriteLanguage")]
 		public string OverwriteLanguage
 		{
