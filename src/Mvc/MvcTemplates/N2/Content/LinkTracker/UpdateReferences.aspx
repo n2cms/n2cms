@@ -51,7 +51,7 @@
 			</asp:View>
 			<asp:View runat="server">
 				<fieldset>
-					<legend>Updatring references to:</legend>
+					<legend>Updating references to:</legend>
 					<asp:Repeater runat="server" ID="rptDescendants">
 						<ItemTemplate>
 							<div class="ItemToUpdate" data-id="<%# Eval("ID")%>" data-path="<%# Eval("Path")%>" data-title="<%# Eval("Title")%>">
