@@ -4,10 +4,10 @@
 
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnUpdate" meta:resourceKey="btnUpdate" runat="server" OnCommand="OnUpdateCommand" CssClass="command primary-action"><img src='../../Resources/Icons/link_edit.png' /> Update links</asp:LinkButton>
-	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Close</edit:CancelLink>
+	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel" CssClass="command cancel">Close</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-	<div class="tabPanel">
+	<div class="tabPanel" data-flag="Management">
 
 		<asp:MultiView ID="mvPhase" runat="server" ActiveViewIndex="0">
 			<asp:View runat="server">
@@ -51,7 +51,7 @@
 			</asp:View>
 			<asp:View runat="server">
 				<fieldset>
-					<legend>Updatring references to:</legend>
+					<legend>Updating references to:</legend>
 					<asp:Repeater runat="server" ID="rptDescendants">
 						<ItemTemplate>
 							<div class="ItemToUpdate" data-id="<%# Eval("ID")%>" data-path="<%# Eval("Path")%>" data-title="<%# Eval("Title")%>">

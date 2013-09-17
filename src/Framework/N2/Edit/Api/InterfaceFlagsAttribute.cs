@@ -7,11 +7,12 @@ namespace N2.Management.Api
 {
 	public class InterfaceFlagsAttribute : Attribute
 	{
-		public InterfaceFlagsAttribute(params string[] flags)
+		public InterfaceFlagsAttribute(params string[] additionalFlags)
 		{
-			Flags = flags;
+			AdditionalFlags = additionalFlags;
 		}
 
-		public string[] Flags { get; private set; }
+		public string[] AdditionalFlags { get; private set; }
+		public string[] RemovedFlags { get; set; }
 	}
 }

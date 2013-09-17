@@ -45,5 +45,26 @@ namespace N2.Configuration
 			get { return (bool)base["advancedMenus"]; }
 			set { base["advancedMenus"] = value; }
 		}
+
+		[ConfigurationProperty("allowedContent")]
+		public bool? AllowedContent
+		{
+			get { return (bool?)base["allowedContent"]; }
+			set { base["allowedContent"] = value; }
+		}
+
+		[ConfigurationProperty("overwriteLanguage")]
+		public string OverwriteLanguage
+		{
+			get { return (string)base["overwriteLanguage"]; }
+			set { base["overwriteLanguage"] = value; }
+		}
+
+		[ConfigurationProperty("settings")]
+		public KeyValueConfigurationCollection Settings
+		{
+			get { return (KeyValueConfigurationCollection)base["settings"]; }
+			set { base["settings"] = value; }
+		}
 	}
 }

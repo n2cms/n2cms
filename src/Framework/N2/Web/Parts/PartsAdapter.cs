@@ -247,11 +247,18 @@ namespace N2.Web.Parts
 			var userControlPath = Engine.ResolveAdapter<RequestAdapter>(item).ResolveTargetingUrl(templateUrl.ResolveUrlTokens());
 			using (new ItemUtility.ItemStacker(item))
 			{
-				Control templateItem = container.Page.LoadControl(userControlPath);
-				if (templateItem is IContentTemplate)
-					(templateItem as IContentTemplate).CurrentItem = item;
-				container.Controls.Add(templateItem);
-				return templateItem;
+				try
+				{
+					Control templateItem = container.Page.LoadControl(userControlPath);
+					if (templateItem is IContentTemplate)
+						(templateItem as IContentTemplate).CurrentItem = item;
+					container.Controls.Add(templateItem);
+					return templateItem;
+				}
+				catch (HttpException ex)
+				{
+					throw new HttpException("Error adding control for " + item, ex);
+				}
 			}
 		}
 

@@ -26,14 +26,16 @@ namespace N2.Web.UI.WebControls
 
 		static string contentCssUrl;
 		static bool configEnabled = true;
-		static bool isInitalized = false;
-		static string configJsPath = string.Empty;
-		static string overwriteStylesSet = string.Empty;
-		static string overwriteFormatTags = string.Empty;
+		string configJsPath = string.Empty;
+		string overwriteStylesSet = string.Empty;
+		string overwriteFormatTags = string.Empty;
+		string overwriteLanguage = string.Empty;
 		private EditorModeSetting editorMode = EditorModeSetting.Standard;
 		private string additionalFormats = string.Empty;
 		private string useStylesSet = string.Empty;
 		private bool advancedMenues = false;
+		private bool? allowedContent;
+		private KeyValueConfigurationCollection customConfig;
 
 		public FreeTextArea()
 		{
@@ -77,18 +79,17 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 
-			if (!isInitalized)
+			var config = N2.Context.Current.Resolve<EditSection>();
+			if (config != null)
 			{
-				isInitalized = true;
-				var config = N2.Context.Current.Resolve<EditSection>();
-				if (config != null)
-				{
-					configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath );
-					overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
-					overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
-					contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
-					advancedMenues = config.CkEditor.AdvancedMenus;
-				}
+				configJsPath = Url.ResolveTokens(config.CkEditor.ConfigJsPath);
+				overwriteStylesSet = Url.ResolveTokens(config.CkEditor.OverwriteStylesSet);
+				overwriteFormatTags = config.CkEditor.OverwriteFormatTags;
+				overwriteLanguage = config.CkEditor.OverwriteLanguage;
+				contentCssUrl = Url.ResolveTokens(config.CkEditor.ContentsCssPath);
+				advancedMenues = config.CkEditor.AdvancedMenus;
+				allowedContent = config.CkEditor.AllowedContent;
+				customConfig = config.CkEditor.Settings ?? new KeyValueConfigurationCollection();
 			}
 		}
 
@@ -130,16 +131,30 @@ namespace N2.Web.UI.WebControls
 
 			overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
 
-
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+
+			if (!string.IsNullOrEmpty(overwriteLanguage))
+				language = overwriteLanguage;
+
 			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/ckeditor/lang/" + language + ".js")))
+			{
 				overrides["language"] = language;
+			}
+			else
+			{
+				overrides["language"] = "en";
+			}
+
+		
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
 				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
 
 			if (advancedMenues==false)
 				overrides["removeDialogTabs"] = "image:advanced;link:advanced";
+
+			if (allowedContent.HasValue)
+				overrides["allowedContent"] = allowedContent.Value.ToString().ToLower();
 
 			if (!string.IsNullOrEmpty(configJsPath))
 				overrides["customConfig"] = configJsPath;
@@ -150,7 +165,6 @@ namespace N2.Web.UI.WebControls
 
 			if (!string.IsNullOrEmpty(useStylesSet))
 				overrides["stylesSet"] = useStylesSet;
-
 
 
 			if (!string.IsNullOrEmpty(overwriteFormatTags))
@@ -183,6 +197,9 @@ namespace N2.Web.UI.WebControls
 					break;
 			}
 
+			if (customConfig.Count > 0)
+				foreach (var key in customConfig.AllKeys)
+					overrides[key] = customConfig[key].Value;
 
 			return ToJsonString(overrides);
 		}
@@ -194,13 +211,14 @@ namespace N2.Web.UI.WebControls
 			foreach (string key in collection.Keys)
 			{
 				string value = collection[key];
+				int ignored = 0;
 				if (value == "true")
 					value = "true";
 				else if (value == "false")
 					value = "false";
 				else if (value == null)
 					value = "null";
-				else if (!value.StartsWith("[") && !value.StartsWith("{"))
+				else if (!int.TryParse(value, out ignored) && !value.StartsWith("[") && !value.StartsWith("{"))
 					value = "'" + value + "'";
 				sb.Append("'").Append(key).Append("': ").Append(value).Append(",");
 			}

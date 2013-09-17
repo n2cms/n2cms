@@ -179,7 +179,7 @@ body.framed .position em { color:Green; font-weight:bold; }
 .position .indent .indent { padding:0 0 0 20px; border:none; width:auto; }
 
 body.framed #nav { font-size:1.2em; }
-body.framed #nav .invisible{ opacity:.75; }
+body.framed #nav .notvisible{ opacity:.75; }
 body.framed #nav .unpublished,
 body.framed #nav .expired,
 body.framed #nav .locked { color:#C66; }

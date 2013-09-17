@@ -3,7 +3,7 @@
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnSave" OnClick="btnSave_Click" runat="server" CssClass="command" meta:resourceKey="btnSave">Save</asp:LinkButton>
+	<asp:LinkButton ID="btnSave" OnClick="btnSave_Click" runat="server" CssClass="command primary-action" meta:resourceKey="btnSave">Save</asp:LinkButton>
 	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
