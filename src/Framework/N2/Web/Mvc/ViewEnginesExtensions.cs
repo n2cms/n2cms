@@ -53,19 +53,44 @@ namespace N2.Web.Mvc
 		/// <param name="viewEngines">The view engines to append.</param>
 		public static void RegisterTokenViewEngine(this ViewEngineCollection viewEngines)
 		{
-			var noLocations = new string[0];
-			var tokenLocations = new[] { Url.ResolveTokens("{ManagementUrl}/Tokens/{0}.ascx") };
-			var ve = new WebFormViewEngine
-			{
-				AreaMasterLocationFormats = noLocations,
-				AreaPartialViewLocationFormats = noLocations,
-				AreaViewLocationFormats = noLocations,
-				MasterLocationFormats = noLocations,
-				PartialViewLocationFormats = tokenLocations,
-				ViewLocationFormats = tokenLocations,
-				ViewLocationCache = new DefaultViewLocationCache()
-			};
-			viewEngines.Add(ve);
+			viewEngines.Add(new TokenViewEngine());
 		}
+
+		class TokenViewEngine : IViewEngine
+		{
+			WebFormViewEngine inner;
+			string[] noLocations = new string[0];
+
+			public TokenViewEngine()
+			{
+				var tokenLocations = new[] { Url.ResolveTokens("{ManagementUrl}/Tokens/{0}.ascx") };
+				inner = new WebFormViewEngine
+				{
+					AreaMasterLocationFormats = noLocations,
+					AreaPartialViewLocationFormats = noLocations,
+					AreaViewLocationFormats = noLocations,
+					MasterLocationFormats = noLocations,
+					PartialViewLocationFormats = tokenLocations,
+					ViewLocationFormats = tokenLocations,
+					ViewLocationCache = new DefaultViewLocationCache()
+				};
+			}
+
+			public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+			{
+				return inner.FindPartialView(controllerContext, partialViewName, useCache);
+			}
+
+			public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+			{
+				return new ViewEngineResult(noLocations);
+			}
+
+			public void ReleaseView(ControllerContext controllerContext, IView view)
+			{
+				inner.ReleaseView(controllerContext, view);
+			}
+		}
+
 	}
 }
