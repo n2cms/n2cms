@@ -31,9 +31,20 @@ namespace N2.Management.Files
 				.Where(f => !f.Name.Contains('_'))
 				.ToList();
 
-			BuildImageSizes(preExistingFiles, Request["add"]);
-			BuildImageSizes(preExistingFiles, Request["modify"]);
-			RemoveImageSizes(preExistingFiles, Request["remove"]);
+			var resizer = Engine.Resolve<UploadedFilesResizer>();
+			var previouslyEnabled = resizer.Enabled;
+			try
+			{
+				resizer.Enabled = false;
+
+				BuildImageSizes(preExistingFiles, Request["add"]);
+				BuildImageSizes(preExistingFiles, Request["modify"]);
+				RemoveImageSizes(preExistingFiles, Request["remove"]);
+			}
+			finally
+			{
+				resizer.Enabled = previouslyEnabled;
+			}
 		}
 
 		private void RemoveImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
@@ -64,6 +75,8 @@ namespace N2.Management.Files
 			{
 				ImageSizeElement size;
 				if (!ConfiguredSizes.TryGetValue(s, out size))
+					continue;
+				if (size.Height == 0 && size.Width == 0)
 					continue;
 
 				foreach (var file in preExistingFiles)

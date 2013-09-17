@@ -19,16 +19,22 @@ namespace N2.Management.Files
 		ImagesElement images;
 		string[] sizeNames;
 
+		public bool Enabled { get; set; }
+
 		public UploadedFilesResizer(IFileSystem files, ImageResizer resizer, EditSection config)
 		{
 			this.files = files;
 			this.resizer = resizer;
 			this.images = config.Images;
+			this.Enabled = config.Images.ResizeUploadedImages;
 			sizeNames = config.Images.Sizes.AllElements.Select(s => s.Name).ToArray();
 		}
 
 		void files_FileWritten(object sender, FileEventArgs e)
 		{
+			if (!Enabled)
+				return;
+
 			Url virtualPath = e.VirtualPath;
 
 			if (!IsResizableImagePath(virtualPath))
@@ -67,21 +73,18 @@ namespace N2.Management.Files
 				}
 				else
 				{
-					if (!files.FileExists(resizedPath) || size.Replace)
+					// Delete the image before writing.
+					// Fixes a weird bug where overwriting the original file while it still exists
+					//  leaves the resized image the with the exact same file size as the original even 
+					//  though it should be smaller.
+					if (files.FileExists(resizedPath))
 					{
-						// Delete the image before writing.
-						// Fixes a weird bug where overwriting the original file while it still exists
-						//  leaves the resized image the with the exact same file size as the original even 
-						//  though it should be smaller.
-						if (files.FileExists(resizedPath))
-						{
-							files.DeleteFile(resizedPath);
-						}
+						files.DeleteFile(resizedPath);
+					}
 
-						using (var destinationStream = files.OpenFile(resizedPath))
-						{
-							resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
-						}
+					using (var destinationStream = files.OpenFile(resizedPath))
+					{
+						resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
 					}
 				}
 			}
@@ -100,6 +103,9 @@ namespace N2.Management.Files
 
 		void files_FileCopied(object sender, FileEventArgs e)
 		{
+			if (!Enabled)
+				return;
+
 			if (IsResizedPath(e.VirtualPath))
 				return;
 			
@@ -132,6 +138,9 @@ namespace N2.Management.Files
 
 		void files_FileMoved(object sender, FileEventArgs e)
 		{
+			if (!Enabled)
+				return;
+
 			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 			
@@ -149,6 +158,9 @@ namespace N2.Management.Files
 
 		void files_FileDeleted(object sender, FileEventArgs e)
 		{
+			if (!Enabled)
+				return;
+
 			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 
@@ -171,9 +183,6 @@ namespace N2.Management.Files
 
 		public void Start()
 		{
-			if (!images.ResizeUploadedImages)
-				return;
-
 			files.FileWritten += files_FileWritten;
 			files.FileMoved += files_FileMoved;
 			files.FileDeleted += files_FileDeleted;
@@ -182,9 +191,6 @@ namespace N2.Management.Files
 
 		public void Stop()
 		{
-			if (!images.ResizeUploadedImages)
-				return;
-
 			files.FileWritten -= files_FileWritten;
 			files.FileMoved -= files_FileMoved;
 			files.FileDeleted -= files_FileDeleted;
