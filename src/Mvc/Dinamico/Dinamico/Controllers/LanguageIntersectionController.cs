@@ -18,10 +18,7 @@ namespace Dinamico.Controllers
 			ContentItem language = Request.SelectLanguage(CurrentItem);
 			if (language != null)
 			{
-				if (language.Url.StartsWith("http"))
-					return Redirect(language.Url);
-
-				return ViewPage(language);
+				return Redirect(language.Url);
 			}
 
 			if(CurrentItem.RedirectUrl != CurrentItem.Url)
