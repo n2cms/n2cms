@@ -47,13 +47,19 @@
 		<!-- Comment for .NET < 4 -->
 		<httpRuntime xdt:Transform="InsertIfMissing" requestValidationMode="2.0" />
 		<httpRuntime xdt:Transform="SetAttributes(requestValidationMode)" requestValidationMode="2.0" />
-		
+
 		<authentication mode="Forms" xdt:Transform="InsertIfMissing">
 			<forms>
 				<credentials passwordFormat="SHA1" xdt:Transform="InsertIfMissing">
 					<!-- WARNING: Make sure the admin password was changed manually or using the installer at http://yoursite/n2/installation/begin/. -->
 					<user xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" name="admin" password="fa9beb99e4029ad5a6615399e7bbae21356086b3" />
 				</credentials>
+			</forms>
+		</authentication>
+
+		<authentication mode="Forms" xdt:Transform="SetAttributes(mode)" xdt:Locator="Condition(@mode!='Federated' and @mode!='Windows' and @mode!='None')">
+			<forms>
+				<credentials passwordFormat="SHA1" xdt:Transform="SetAttributes(passwordFormat)" xdt:Locator="Condition(@passwordFormat!='Clear' and @mode!='MD5')"></credentials>
 			</forms>
 		</authentication>
 
@@ -103,7 +109,7 @@
 				<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(expressionPrefix)" expressionPrefix="HasValue" type="N2.Web.Compilation.HasValueExpressionBuilder, N2" />
 			</expressionBuilders>
 		</compilation>
-		
+
 		<httpModules xdt:Transform="InsertIfMissing">
 			<add xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" name="n2.initializer" type="N2.Web.InitializerModule, N2" />
 		</httpModules>
