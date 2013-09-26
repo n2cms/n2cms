@@ -403,6 +403,7 @@
 												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
 												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
 												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+												<xs:attribute name="instanceName" type="xs:string" use="optional" />
 											</xs:complexType>
 										</xs:element>
 										<xs:element name="server" minOccurs="0">
