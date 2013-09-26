@@ -78,6 +78,12 @@ namespace N2.Management.Api
 				case "POST":
 					switch (context.Request.PathInfo)
 					{
+						case "":
+							Create(context);
+							break;
+						case "/update":
+							Update(context);
+							break;
 						case "/sort":
 						case "/move":
 							Move(context, Selection.RequestValueAccessor);
@@ -102,7 +108,20 @@ namespace N2.Management.Api
 				case "DELETE":
 					Delete(context);
 					break;
+				case "PUT":
+					Update(context);
+					break;
 			}
+		}
+
+		private void Update(HttpContextBase context)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void Create(HttpContextBase context)
+		{
+			throw new NotImplementedException();
 		}
 
 		private IEnumerable<ItemDefinition> CreateDefinitions(HttpContextBase context)
