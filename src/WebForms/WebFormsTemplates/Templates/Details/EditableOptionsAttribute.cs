@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Templates.Items;
+using N2.Web.UI;
 
 namespace N2.Templates.Details
 {
@@ -32,6 +33,8 @@ namespace N2.Templates.Details
                     child.AddTo(item);
                 }
                 child.SortOrder = i;
+
+				editor.RegisterItemToSave(child);
             }
 
             return true;
