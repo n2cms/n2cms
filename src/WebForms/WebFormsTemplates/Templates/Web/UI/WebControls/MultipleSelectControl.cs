@@ -19,12 +19,14 @@ namespace N2.Templates.Web.UI.WebControls
 			l = new Label();
 			l.Text = item.Title;
 			l.CssClass = "label";
-			l.AssociatedControlID = item.Name;
+			if (item.ID > 0)
+				l.AssociatedControlID = "q" + item.ID;
 			this.Controls.Add(l);
 
 			list = new CheckBoxList();
 			list.RepeatDirection = direction;
-			list.ID = item.Name;
+			if (item.ID > 0)
+				list.ID = "q" + item.ID;
 			list.CssClass = "alternatives";
 			list.DataSource = item.GetChildren();
 			list.DataTextField = "Title";
