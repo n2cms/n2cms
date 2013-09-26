@@ -257,7 +257,13 @@ namespace N2.Security
 				return null;
 			}
 
-			// TODO: RequiresUniqueEmail validation
+			if (requiresUniqueEmail)
+			{
+				if(!string.IsNullOrEmpty(GetUserNameByEmail(email))){
+					status = MembershipCreateStatus.DuplicateEmail;
+					return null;
+				}
+			}
 
 			var args = new ValidatePasswordEventArgs(username, password, true);
 			OnValidatingPassword(args);

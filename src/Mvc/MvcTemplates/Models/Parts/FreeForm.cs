@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Free form",
-	    Description = "A form that can be sumitted and sent to an email address or viewd online.",
+	    Description = "A form that can be sumitted and sent to an email address or viewed online.",
 	    SortOrder = 250,
 	    IconUrl = "~/Content/Img/report.png")]
 	[FieldSetContainer("Email", "Email", 180)]
