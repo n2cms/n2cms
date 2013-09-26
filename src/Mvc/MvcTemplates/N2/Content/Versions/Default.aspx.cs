@@ -83,13 +83,44 @@ namespace N2.Edit.Versions
 
 		}
 
+		public class VersionInfo
+		{
+			public int ID { get; set; }
+
+			public string Title { get; set; }
+
+			public ContentState State { get; set; }
+
+			public string IconUrl { get; set; }
+
+			public DateTime? Published { get; set; }
+
+			public DateTime? Expires { get; set; }
+
+			public int VersionIndex { get; set; }
+
+			public string SavedBy { get; set; }
+
+			public ContentItem Content { get; set; }
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 
-			IList<ContentItem> versions = versioner.GetVersionsOf(publishedItem);
+			var versions = versioner.GetVersionsOf(publishedItem)
+				.Select(v => new VersionInfo { ID = v.ID, Title = v.Title, State = v.State, IconUrl = v.IconUrl, Published = v.Published, Expires = v.Expires, VersionIndex = v.VersionIndex, SavedBy = v.SavedBy, Content = v })
+				.ToList();
 
-			gvHistory.DataSource = versions.Select(v => new { v.ID, v.Title, v.State, v.IconUrl, v.Published, v.Expires, v.VersionIndex, v.SavedBy, Content = v });
+
+			DateTime? previousExpired = publishedItem.Published;
+			foreach (var version in versions.OrderBy(v => v.VersionIndex))
+			{
+				version.Published = previousExpired;
+				previousExpired = version.Expires;
+			}
+
+			gvHistory.DataSource = versions;
 			gvHistory.DataBind();
 		}
 
