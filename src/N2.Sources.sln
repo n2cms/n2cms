@@ -141,6 +141,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5
 		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
 		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
 		..\build\nuget\ReusableParts\N2.ReusableParts.nuspec = ..\build\nuget\ReusableParts\N2.ReusableParts.nuspec
+		..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec = ..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec
 		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
 		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
 		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
