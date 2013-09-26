@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using N2.Configuration;
 using N2.Resources;
 using N2.Web.Tokens;
+using N2.Details;
 
 namespace N2.Web.UI.WebControls
 {
@@ -16,14 +17,6 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	public class FreeTextArea : TextBox
 	{
-
-		public enum EditorModeSetting
-		{
-			Basic,
-			Standard,
-			Full,
-		}
-
 		static string contentCssUrl;
 		static bool configEnabled = true;
 		string configJsPath = string.Empty;
