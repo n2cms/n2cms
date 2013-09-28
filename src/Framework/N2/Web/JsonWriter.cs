@@ -7,6 +7,7 @@ using System.Collections;
 using System.Web.Routing;
 using System.Globalization;
 using System.Collections.Specialized;
+using N2.Persistence;
 
 namespace N2.Web
 {
@@ -42,11 +43,21 @@ namespace N2.Web
 				return;
 			else if (TryWriteType(value as Type))
 				return;
+			else if (TryWriteContentRelation(value as Relation<ContentItem>))
+				return;
 			else if (TryWriteContentItem(value as ContentItem))
 				return;
 			else if (TryWriteObject(value))
 				return;
         }
+
+		private bool TryWriteContentRelation(Relation<ContentItem> relation)
+		{
+			if (relation == null)
+				return false;
+			writer.Write(relation.ID);
+			return true;
+		}
 
 		private bool TryWriteContentItem(ContentItem item)
 		{

@@ -74,11 +74,12 @@ namespace N2.Management.Api
 							context.Response.WriteJson(new { Tokens = tokens });
 							break;
 						case "/children":
+							context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							break;
 						default:
 							if (string.IsNullOrEmpty(context.Request.PathInfo))
 							{
-								var children = GetChildren(context).ToList();
-								context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+								context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
 							}
 							else
 							{
@@ -143,12 +144,33 @@ namespace N2.Management.Api
 
 		private void Update(HttpContextBase context)
 		{
-			throw new NotImplementedException();
+			var item = Selection.ParseSelectionFromRequest();
+			if (item == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			foreach (var kvp in requestBody)
+				item[kvp.Key] = kvp.Value;
+
+			engine.Persister.Save(item);
 		}
 
 		private void Create(HttpContextBase context)
 		{
-			throw new NotImplementedException();
+			var parent = Selection.ParseSelectionFromRequest();
+			if (parent == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var discriminator = context.Request["discriminator"];
+			var definition = engine.Definitions.GetDefinition(discriminator);
+			
+			var item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent);
+
+			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			foreach (var kvp in requestBody)
+				item[kvp.Key] = kvp.Value;
+
+			engine.Persister.Save(item);
 		}
 
 		private IEnumerable<ItemDefinition> GetDefinitions(HttpContextBase context)
