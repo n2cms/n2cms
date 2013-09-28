@@ -42,9 +42,18 @@ namespace N2.Web
 				return;
 			else if (TryWriteType(value as Type))
 				return;
+			else if (TryWriteContentItem(value as ContentItem))
+				return;
 			else if (TryWriteObject(value))
 				return;
         }
+
+		private bool TryWriteContentItem(ContentItem item)
+		{
+			if (item == null)
+				return false;
+			return TryWriteDictionary(item.ToDictionary());
+		}
 
         static DateTime beginningOfTime = new DateTime(1970, 01, 01);
         private bool TryWriteKnownType(object value)
@@ -71,7 +80,7 @@ namespace N2.Web
                 case TypeCode.DateTime:
                     {
                         var date = (DateTime)value;
-                        writer.Write("\"\\/Date(" + date.Subtract(beginningOfTime).TotalMilliseconds + ")\\/\"");
+                        writer.Write("\"\\/Date(" + (long)date.Subtract(beginningOfTime).TotalMilliseconds + ")\\/\"");
                     }
                     return true;
                 case TypeCode.String:

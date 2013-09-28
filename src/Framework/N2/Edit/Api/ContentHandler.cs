@@ -82,7 +82,17 @@ namespace N2.Management.Api
 							}
 							else
 							{
-
+								if (context.Request.PathInfo.StartsWith("/"))
+								{
+									int id;
+									if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
+									{
+										var item = engine.Persister.Get(id);
+										context.Response.WriteJson(item);
+										return;
+									}
+								}
+								throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
 							}
 							break;
 					}
