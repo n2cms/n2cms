@@ -75,8 +75,15 @@ namespace N2.Management.Api
 							break;
 						case "/children":
 						default:
-							var children = CreateChildren(context).ToList();
-							context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							if (string.IsNullOrEmpty(context.Request.PathInfo))
+							{
+								var children = CreateChildren(context).ToList();
+								context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							}
+							else
+							{
+
+							}
 							break;
 					}
 					break;
