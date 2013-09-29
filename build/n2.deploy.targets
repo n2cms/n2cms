@@ -269,7 +269,7 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
   </Target>
 
   <Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">
