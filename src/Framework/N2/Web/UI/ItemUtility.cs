@@ -1,3 +1,5 @@
+using N2.Edit.Workflow;
+using N2.Web.UI.WebControls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,6 +99,16 @@ namespace N2.Web.UI
 				container.Controls.Add(templateItem);
 				return templateItem;
 			}
+		}
+
+		public static void RegisterItemToSave(this Control descendantControl, ContentItem item)
+		{
+			var itemEditor = FindInParents<ItemEditor>(descendantControl);
+			if (itemEditor == null)
+				throw new ArgumentException("Couldn't find an associated ItemEditor control", "descendantControl");
+			if (itemEditor.BinderContext == null)
+				throw new ArgumentException("Couldn't find an active BinderContext on the ItemEditor control", "descendantControl");
+			itemEditor.BinderContext.RegisterItemToSave(item);
 		}
 
 		internal class ItemStacker : IDisposable

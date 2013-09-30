@@ -4,15 +4,43 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit;
-using N2.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using N2.Web;
 using NHibernate.Criterion;
 using System.Web;
+using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
+	
+	/// <summary>
+	/// Rich text editor settings set (toolbars, features).
+	/// </summary>
+	[Obsolete]
+	public enum FreeTextAreaSettingsSet
+	{
+		/// <summary>Setting set is defined by configuration, DEFAULT by default.</summary>
+		Undefined = 0,
+		/// <summary>Fixed rich text editor toolbar, basic features, no additional toolbars.</summary>
+		[Obsolete]
+		Fixed = 1,
+		/// <summary>Single line toolbar, no additional toolbars.</summary>
+		Minimal = 2,
+		/// <summary>Single line tooolbar, all other toolbars shown by toogle icon.</summary>
+		Simple = 3,
+		/// <summary>Extended toolbar with all features, less frequently used toolbars shown by toogle icon.</summary>
+		Extended = 4
+	}
 
+	/// <summary>
+	/// Rich text editor settings set (toolbars, features).
+	/// </summary>
+	public enum EditorModeSetting
+	{
+		Standard = 0,
+		Basic = 3,
+		Full = 4,
+	}
 
 	/// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="N2.Web.UI.WebControls.FreeTextArea"/> web control as editor.</summary>
 	/// <example>
@@ -39,7 +67,7 @@ namespace N2.Details
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute, IRelativityTransformer
 	{
-		private FreeTextArea.EditorModeSetting editorMode = FreeTextArea.EditorModeSetting.Standard;
+		private EditorModeSetting editorMode = EditorModeSetting.Standard;
 		private string additionalFormats = string.Empty;
 		private string useStylesSet = string.Empty;
 
@@ -53,10 +81,24 @@ namespace N2.Details
 		{
 		}
 
-
-		public FreeTextArea.EditorModeSetting EditorMode
+		[Obsolete("Use EditorMode")]
+		public EditableFreeTextAreaAttribute(string title, int sortOrder, FreeTextAreaSettingsSet toolbars)
+			: base(title, sortOrder)
 		{
+			Toolbars = toolbars;
+		}
+
+		public EditorModeSetting EditorMode
+		{
+			get { return editorMode; }
 			set { editorMode = value; }
+		}
+
+		[Obsolete("Use EditorMode")]
+		public FreeTextAreaSettingsSet Toolbars
+		{
+			get { return (FreeTextAreaSettingsSet)EditorMode; }
+			set { EditorMode = (EditorModeSetting)value; }
 		}
 
 		public string AdditionalFormats

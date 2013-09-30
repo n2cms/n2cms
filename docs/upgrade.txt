@@ -1,3 +1,30 @@
+To v2.5:
+Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
+Make sure checkInstallationStatus and allowInstallation are not false and there is an admin superuser in web.config.
+Browse to the site, /N2/Installation/Upgrade and follow the upgrade instructions.
+
+Breaking changes:
+* The new UI might break some custom editors
+* CKEditor replaces TinyMCE
+* Nuget packages have changed and additional packages may be required to have previous functionality
+* Lucene Search classes have moved to N2.Search.Lucene
+
+
+To v2.4:
+Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
+Make sure checkInstallationStatus and allowInstallation are not false and there is an admin superuser in web.config.
+Browse to the site, follow the upgrade instructions, including upgrade versions on separate page.
+
+Breaking changes:
+* Versions are stored differently and old versions are migrated. During this process part versions are lost.
+* .NET >= 4.0 is now required
+* NHibernate.Caches.SysCache2 is now integrated in N2.dll and dll and config should be removed
+
+
+To v2.2 & v2.3:
+Smooth sailing?
+
+
 To v2.1:
 Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
 

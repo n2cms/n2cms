@@ -33,7 +33,8 @@ namespace N2.Templates.Web.UI.WebControls
 			}
 
             lc.CssClass = "alternatives";
-            lc.ID = "q" + question.ID;
+			if (question.ID > 0)
+				lc.ID = "q" + question.ID;
             lc.DataTextField = "Title";
             lc.DataValueField = "ID";
             lc.DataSource = question.GetChildren();
@@ -42,7 +43,8 @@ namespace N2.Templates.Web.UI.WebControls
             l = new Label();
             l.CssClass = "label";
             l.Text = question.Title;
-            l.AssociatedControlID = lc.ID;
+			if (question.ID > 0)
+				l.AssociatedControlID = lc.ID;
 
 			Controls.Add(l);
 			Controls.Add(lc);

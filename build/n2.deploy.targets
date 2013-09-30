@@ -11,7 +11,8 @@
 		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
 		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
-    <SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
+		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
+		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
     <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
     <ReusableParts-NugetFolder>$(DeployFolder)\$(DeployPrefix)ReusableParts_Nuget</ReusableParts-NugetFolder>
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
@@ -63,7 +64,22 @@
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Library-NugetFolder)\" />
   </Target>
 
-  <Target Name="SQLite-NuGet">
+	<Target Name="LuceneSearch-NuGet" DependsOnTargets="Framework-Deploy">
+		<ItemGroup>
+			<nugetLuceneSearchBinFiles Include="$(SrcFolder)\Framework\Search.Lucene\bin\$(Configuration)\N2.Search.Lucene.dll;"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(nugetLuceneSearchBinFiles)" DestinationFolder="$(LuceneSearch-NugetFolder)\lib" />
+
+		<ItemGroup>
+			<LuceneSearchNugetIncludes Include="$(BuildFolder)\Nuget\LuceneSearch\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(LuceneSearchNugetIncludes)" DestinationFolder="$(LuceneSearch-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(LuceneSearch-NugetFolder)\N2.Search.Lucene.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(LuceneSearch-NugetFolder)\" />
+	</Target>
+
+	<Target Name="SQLite-NuGet">
     <ItemGroup>
       <sqliteNugetIncludes Include="$(BuildFolder)\Nuget\SQLite\**\*" />
     </ItemGroup>

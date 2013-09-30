@@ -253,7 +253,7 @@ namespace N2.Management.Api
 
 		protected virtual Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
 		{
-			return new Node<InterfaceMenuItem>(new InterfaceMenuItem
+			var node = new Node<InterfaceMenuItem>(new InterfaceMenuItem
 			{
 				Title = np.Title,
 				Name = np.Name,
@@ -263,6 +263,27 @@ namespace N2.Management.Api
 				Url = Retoken(np.UrlFormat),
 				IsDivider = np.IsDivider,
 				IconClass = np.IconClass
+			});
+			if (np is ToolbarPluginAttribute)
+			{
+				var tp = np as ToolbarPluginAttribute;
+				if (tp.OptionProvider != null)
+				{
+					var options = (IProvider<ToolbarOption>)engine.Resolve(tp.OptionProvider);
+					node.Children = options.GetAll().Select(o => CreateNode(o)).ToList();
+				}
+			}
+			return node;
+		}
+
+		private Node<InterfaceMenuItem> CreateNode(ToolbarOption o)
+		{
+			return new Node<InterfaceMenuItem>(new InterfaceMenuItem
+			{
+				Title = o.Title,
+				Name = o.Name,
+				Target = o.Target,
+				Url = Retoken(o.Url)
 			});
 		}
 

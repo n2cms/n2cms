@@ -327,13 +327,6 @@ namespace N2.Edit.Versioning
 				.Skip(skip).Take(take)
 				.ToList();
 			return versions;
-
-			//return itemRepository.Find(
-			//    (new Parameter("VersionOf.ID", publishedItem.ID) | new Parameter("ID", publishedItem.ID))
-			//        .OrderBy("VersionIndex DESC")
-			//        .Skip(skip)
-			//        .Take(take))
-			//    .ToList();
 		}
 
 		/// <summary>Removes exessive versions.</summary>

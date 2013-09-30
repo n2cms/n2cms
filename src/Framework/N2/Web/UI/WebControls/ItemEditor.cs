@@ -270,7 +270,7 @@ namespace N2.Web.UI.WebControls
 
 		#region IBinder<CommandContext> Members
 
-		internal N2.Edit.Workflow.CommandContext BinderContext { get; set; }
+		public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
 
 		public bool UpdateObject(N2.Edit.Workflow.CommandContext value)
 		{
