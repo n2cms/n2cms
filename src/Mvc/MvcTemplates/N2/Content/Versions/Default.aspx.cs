@@ -10,9 +10,9 @@ using N2.Edit.Versioning;
 
 namespace N2.Edit.Versions
 {
-	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90, 
-        ToolTip = "versions", 
-        GlobalResourceClassName = "Toolbar",
+	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90,
+		ToolTip = "versions",
+		GlobalResourceClassName = "Toolbar",
 		RequiredPermission = Permission.Publish,
 		Legacy = true)]
 	[ControlPanelPendingVersion("View draft", 200)]
@@ -25,13 +25,13 @@ namespace N2.Edit.Versions
 
 		protected override void OnInit(EventArgs e)
 		{
-            Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
+			Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
 
 			persister = Engine.Persister;
 			versioner = Engine.Resolve<IVersionManager>();
 
 			bool isVersionable = versioner.IsVersionable(Selection.SelectedItem);
-            cvVersionable.IsValid = isVersionable;
+			cvVersionable.IsValid = isVersionable;
 
 			publishedItem = Selection.SelectedItem.VersionOf.Value ?? Selection.SelectedItem;
 
@@ -42,7 +42,7 @@ namespace N2.Edit.Versions
 		{
 			var stateChanger = Engine.Resolve<StateChanger>();
 
-            ContentItem currentVersion = Selection.SelectedItem;
+			ContentItem currentVersion = Selection.SelectedItem;
 			int versionIndex = Convert.ToInt32(e.CommandArgument);
 			if (e.CommandName == "Publish")
 			{
@@ -63,7 +63,7 @@ namespace N2.Edit.Versions
 					ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, storeCurrent);
 
 					currentVersion.SavedBy = User.Identity.Name;
-					
+
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
 						currentVersion.Published = N2.Utility.CurrentTime();
 					stateChanger.ChangeTo(currentVersion, ContentState.Published);
@@ -86,21 +86,13 @@ namespace N2.Edit.Versions
 		public class VersionInfo
 		{
 			public int ID { get; set; }
-
 			public string Title { get; set; }
-
 			public ContentState State { get; set; }
-
 			public string IconUrl { get; set; }
-
 			public DateTime? Published { get; set; }
-
 			public DateTime? Expires { get; set; }
-
 			public int VersionIndex { get; set; }
-
 			public string SavedBy { get; set; }
-
 			public ContentItem Content { get; set; }
 		}
 
@@ -143,7 +135,7 @@ namespace N2.Edit.Versions
 				return true;
 			if (!item.VersionOf.HasValue && item.Published.HasValue && item.Published > Utility.CurrentTime())
 				return true;
-			
+
 			return false;
 		}
 	}

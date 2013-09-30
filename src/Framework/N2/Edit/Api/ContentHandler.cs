@@ -45,7 +45,7 @@ namespace N2.Management.Api
 			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Read))
 				throw new UnauthorizedAccessException();
 
-		    CacheUtility.SetNoCache(context.Response);
+			CacheUtility.SetNoCache(context.Response);
 
 			switch (context.Request.HttpMethod)
 			{

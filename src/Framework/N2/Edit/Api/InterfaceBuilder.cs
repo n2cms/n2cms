@@ -376,7 +376,7 @@ namespace N2.Management.Api
 			children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
 					.Where(np => !np.Legacy)
 					.Select(np => CreateNode(np)));
-			
+
 			return new Node<InterfaceMenuItem>
 			{
 				Children = children
@@ -420,7 +420,7 @@ namespace N2.Management.Api
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
 			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.RootPage, true) { UseMasterVersion = false }
-				.Children((item) => 
+				.Children((item) =>
 				{
 					var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };
 					return engine.GetContentAdapter<NodeAdapter>(item).GetChildren(q);
