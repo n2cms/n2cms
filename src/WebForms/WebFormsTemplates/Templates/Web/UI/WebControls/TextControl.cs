@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Resources;
-using TextQuestion=N2.Templates.Items.TextQuestion;
+using TextQuestion = N2.Templates.Items.TextQuestion;
 
 namespace N2.Templates.Web.UI.WebControls
 {
