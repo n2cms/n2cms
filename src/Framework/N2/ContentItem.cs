@@ -437,8 +437,7 @@ namespace N2
 					case "Visible":				return Visible;
 					case "ZoneName":			return ZoneName;
 					default:
-						return Utility.Evaluate(this, detailName)
-							?? GetDetail(detailName);
+						return Utility.Evaluate(this, detailName) ?? GetDetail(detailName);
 				}
 			}
 			set 
@@ -527,9 +526,7 @@ namespace N2
 		[NonInterceptable]
 		public virtual object GetDetail(string detailName)
 		{
-			return Details.ContainsKey(detailName)
-				? Details[detailName].Value
-				: null;
+			return Details.ContainsKey(detailName) ? Details[detailName].Value : null;
 		}
 
 		/// <summary>Gets a detail from the details bag.</summary>
@@ -539,9 +536,26 @@ namespace N2
 		[NonInterceptable]
 		public virtual T GetDetail<T>(string detailName, T defaultValue)
 		{
-			return Details.ContainsKey(detailName)
-				? (T)Details[detailName].Value
-				: defaultValue;
+			object o = null;
+			try
+			{
+				if (Details.ContainsKey(detailName))
+				{
+					o = Details[detailName].Value;
+					return (T)(o == null ? null : o);
+				}
+				else
+					return defaultValue;
+			}
+			catch (InvalidCastException inner)
+			{
+				throw new InvalidCastException(
+					String.Format("Cannot cast detail {0} of type {1} to type {2}.",
+						detailName,
+						o == null ? "NULL" : o.GetType().FullName,
+						typeof(T).FullName
+						), inner);
+			}
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten. If the value equals the default value it will be removed from the details bag.</summary>
@@ -552,13 +566,9 @@ namespace N2
 		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
 			if (value == null || !value.Equals(defaultValue))
-			{
 				SetDetail(detailName, value);
-			}
 			else if (Details.ContainsKey(detailName))
-			{
 				details.Remove(detailName);
-			}
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>
