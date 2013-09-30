@@ -542,10 +542,19 @@ namespace N2
 				if (Details.ContainsKey(detailName))
 				{
 					o = Details[detailName].Value;
-					return (T)(o == null ? null : o);
+					if (typeof(T).IsEnum && o != null && o.GetType() == typeof(string) && Enum.IsDefined(typeof(T), o))
+					{
+						return (T)Enum.Parse(typeof(T), (string)o); // Special case: Handle enum
+					}
+					else
+					{
+						return (T)(o == null ? null : o); // Attempt regular cast conversion
+					}
 				}
 				else
+				{
 					return defaultValue;
+				}
 			}
 			catch (InvalidCastException inner)
 			{
