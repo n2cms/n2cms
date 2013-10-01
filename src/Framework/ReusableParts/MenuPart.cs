@@ -147,14 +147,14 @@ namespace N2.Web
 		[EditableText("Outer UL CssClass", 500, ContainerName = CssContainerName)]
 		public override string MenuOuterUlCssClass
 		{
-			get { return GetDetail("OuterUlClass", "nav nav-list"); }
+			get { return GetDetail("OuterUlClass", "nav nav-stacked"); }
 			set { SetDetail("OuterUlClass", value); }
 		}
 
 		[EditableText("Inner UL CssClass", 510, ContainerName = CssContainerName)]
 		public override string MenuInnerUlCssClass
 		{
-			get { return GetDetail("InnerUlClass", "nav nav-list nav-inner"); }
+			get { return GetDetail("InnerUlClass", "nav nav-stacked nav-inner"); }
 			set { SetDetail("InnerUlClass", value); }
 		}
 
@@ -384,7 +384,7 @@ namespace N2.Web
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
 			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
 			{
-				WriteListItem(childNode, xml, 0, "nav-header"); // header item
+				WriteListItem(childNode, xml, 0, "nav-header disabled"); // header item
 
 				var childNodes2 = database.Where(f => f.Parent == childNode).OrderBy(n => n.SortOrder).ToList();
 				foreach (var childnode2 in childNodes2)
@@ -410,7 +410,9 @@ namespace N2.Web
 
 			if (isSelected || (level == 0 && sn.MenuDontLinkTopLevel))
 			{
+				xml.RenderBeginTag(HtmlTextWriterTag.A); // wrap in a dummy <a> for Bootstrap 3, http://stackoverflow.com/questions/18329010/what-happened-to-nav-header-class
 				xml.Write(childItem.Title);
+				xml.RenderEndTag();
 			}
 			else
 			{

@@ -36,7 +36,7 @@ namespace N2.Web.UI.WebControls
 			CssClass = "ckeditor";
 		}
 
-		
+
 		public virtual bool EnableFreeTextArea
 		{
 			get { return (bool)(ViewState["EnableFreeTextArea"] ?? configEnabled); }
@@ -138,12 +138,12 @@ namespace N2.Web.UI.WebControls
 				overrides["language"] = "en";
 			}
 
-		
+
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
 				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
 
-			if (advancedMenues==false)
+			if (advancedMenues == false)
 				overrides["removeDialogTabs"] = "image:advanced;link:advanced";
 
 			if (allowedContent.HasValue)
@@ -196,7 +196,7 @@ namespace N2.Web.UI.WebControls
 
 			return ToJsonString(overrides);
 		}
-				
+
 		protected static string ToJsonString(IDictionary<string, string> collection)
 		{
 			var sb = new StringBuilder("{");

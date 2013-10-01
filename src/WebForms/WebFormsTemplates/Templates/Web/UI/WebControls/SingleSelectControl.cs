@@ -1,18 +1,18 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using SingleSelect=N2.Templates.Items.SingleSelect;
+using SingleSelect = N2.Templates.Items.SingleSelect;
 
 namespace N2.Templates.Web.UI.WebControls
 {
-    public class SingleSelectControl : Control, IQuestionControl
-    {
-        readonly ListControl lc;
-        readonly Label l;
+	public class SingleSelectControl : Control, IQuestionControl
+	{
+		readonly ListControl lc;
+		readonly Label l;
 		readonly CustomValidator cv;
 
-        public SingleSelectControl(SingleSelect question)
-        {
-			RepeatDirection direction = question.Vertical ?  RepeatDirection.Vertical : RepeatDirection.Horizontal;
+		public SingleSelectControl(SingleSelect question)
+		{
+			RepeatDirection direction = question.Vertical ? RepeatDirection.Vertical : RepeatDirection.Horizontal;
 
 			switch (question.SelectionType)
 			{
@@ -32,17 +32,17 @@ namespace N2.Templates.Web.UI.WebControls
 					break;
 			}
 
-            lc.CssClass = "alternatives";
+			lc.CssClass = "alternatives";
 			if (question.ID > 0)
 				lc.ID = "q" + question.ID;
-            lc.DataTextField = "Title";
-            lc.DataValueField = "ID";
-            lc.DataSource = question.GetChildren();
-            lc.DataBind();
+			lc.DataTextField = "Title";
+			lc.DataValueField = "ID";
+			lc.DataSource = question.GetChildren();
+			lc.DataBind();
 
-            l = new Label();
-            l.CssClass = "label";
-            l.Text = question.Title;
+			l = new Label();
+			l.CssClass = "label";
+			l.Text = question.Title;
 			if (question.ID > 0)
 				l.AssociatedControlID = lc.ID;
 
@@ -57,42 +57,42 @@ namespace N2.Templates.Web.UI.WebControls
 				cv.ValidationGroup = "Form";
 				Controls.Add(cv);
 			}
-        }
+		}
 
-        public int SelectedIndex
-        {
-            get { return lc.SelectedIndex; }
-        }
+		public int SelectedIndex
+		{
+			get { return lc.SelectedIndex; }
+		}
 
-        public string SelectedValue
-        {
-            get { return lc.SelectedValue; }
-        }
+		public string SelectedValue
+		{
+			get { return lc.SelectedValue; }
+		}
 
-        #region IQuestionControl Members
+		#region IQuestionControl Members
 
-        public string AnswerText
-        {
-            get 
-            {
-                return lc.SelectedIndex >= 0
-                           ? lc.SelectedItem.Text
-                           : string.Empty;
-            }
-        }
+		public string AnswerText
+		{
+			get
+			{
+				return lc.SelectedIndex >= 0
+						   ? lc.SelectedItem.Text
+						   : string.Empty;
+			}
+		}
 
-        public string Question
-        {
-            get { return l.Text; }
-        }
+		public string Question
+		{
+			get { return l.Text; }
+		}
 
-        #endregion
+		#endregion
 
-        protected override void Render(HtmlTextWriter writer)
-        {
-            writer.Write("<div class='row cf'>");
-            base.Render(writer);
-            writer.Write("</div>");
-        }
-    }
+		protected override void Render(HtmlTextWriter writer)
+		{
+			writer.Write("<div class='row cf'>");
+			base.Render(writer);
+			writer.Write("</div>");
+		}
+	}
 }

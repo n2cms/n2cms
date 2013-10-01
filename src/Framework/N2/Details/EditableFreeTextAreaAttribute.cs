@@ -12,7 +12,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
-	
+
 	/// <summary>
 	/// Rich text editor settings set (toolbars, features).
 	/// </summary>
@@ -145,7 +145,7 @@ namespace N2.Details
 			base.UpdateEditor(item, editor);
 
 			FreeTextArea fta = (FreeTextArea)editor;
-			
+
 			fta.EditorMode = editorMode;
 			fta.AdditionalFormats = additionalFormats;
 			fta.UseStylesSet = useStylesSet;
@@ -155,11 +155,10 @@ namespace N2.Details
 
 		}
 
-
-        public override string GetIndexableText(ContentItem item)
-        {
-            return HttpUtility.HtmlDecode(base.GetIndexableText(item) ?? "");
-        }
+		public override string GetIndexableText(ContentItem item)
+		{
+			return HttpUtility.HtmlDecode(base.GetIndexableText(item) ?? "");
+		}
 
 		#region IRelativityTransformer Members
 

@@ -12,14 +12,14 @@ namespace N2.Web.UI
 	/// Some helpful methods that havn't founda better place yet (use at your 
 	/// own risk).
 	/// </summary>
-    public static class ItemUtility
-    {
+	public static class ItemUtility
+	{
 		public static Control Closest(this Control control, Func<Control, bool> predicate)
 		{
 			return Closest<Control>(control, predicate);
 		}
 
-		public static T Closest<T>(this Control control, Func<T, bool> predicate) where T: Control
+		public static T Closest<T>(this Control control, Func<T, bool> predicate) where T : Control
 		{
 			if (control == null)
 				return null;
@@ -32,7 +32,7 @@ namespace N2.Web.UI
 			return Closest<T>(control.Parent, predicate);
 		}
 
-		public static T FindInParents<T>(Control parentControl) where T:class
+		public static T FindInParents<T>(Control parentControl) where T : class
 		{
 			if (parentControl == null || parentControl is T)
 				return parentControl as T;
@@ -40,27 +40,27 @@ namespace N2.Web.UI
 				return FindInParents<T>(parentControl.Parent);
 		}
 
-        public static ContentItem FindCurrentItem(Control startControl)
-        {
-            IItemContainer itemContainer = FindInParents<IItemContainer>(startControl);
-            if (itemContainer != null)
-                return itemContainer.CurrentItem;
-            return null;
-        }
+		public static ContentItem FindCurrentItem(Control startControl)
+		{
+			IItemContainer itemContainer = FindInParents<IItemContainer>(startControl);
+			if (itemContainer != null)
+				return itemContainer.CurrentItem;
+			return null;
+		}
 
 		public static ContentItem WalkPath(ContentItem startItem, string path)
 		{
 			// find starting point
-            if (path.StartsWith("/"))
-            {
-                startItem = Context.Current.Persister.Get(Context.Current.Host.CurrentSite.RootItemID);
-                path = path.Substring(1);
-            }
-            else if (path.StartsWith("~/"))
-            {
-                startItem = Context.Current.UrlParser.StartPage;
-                path = path.Substring(2);
-            }
+			if (path.StartsWith("/"))
+			{
+				startItem = Context.Current.Persister.Get(Context.Current.Host.CurrentSite.RootItemID);
+				path = path.Substring(1);
+			}
+			else if (path.StartsWith("~/"))
+			{
+				startItem = Context.Current.UrlParser.StartPage;
+				path = path.Substring(2);
+			}
 
 			// walk path
 			ContentItem item = startItem;
@@ -137,7 +137,7 @@ namespace N2.Web.UI
 				{
 					HttpContextItems["ItemStack"] = stack = new Stack<ContentItem>();
 					ContentItem currentPage = HttpContextItems["CurrentPage"] as ContentItem;
-					if(currentPage != null)
+					if (currentPage != null)
 						stack.Push(currentPage);
 				}
 				return stack;
@@ -153,19 +153,19 @@ namespace N2.Web.UI
 		}
 
 		public static IEnumerable<T> FindInChildren<T>(Control container)
-			where T:class
+			where T : class
 		{
 			foreach (Control child in container.Controls)
 			{
 				if (child is T)
 					yield return child as T;
-				foreach(T match in FindInChildren<T>(child))
+				foreach (T match in FindInChildren<T>(child))
 					yield return match;
 			}
 		}
 
 		public static T EnsureType<T>(ContentItem item)
-			where T: ContentItem
+			where T : ContentItem
 		{
 			if (item != null && !(item is T))
 			{

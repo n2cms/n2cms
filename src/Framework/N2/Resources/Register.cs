@@ -41,8 +41,8 @@ namespace N2.Resources
 
 		public const string DefaultBootstrapRoot = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/";
 		public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
-		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
-		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
 		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
 		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
