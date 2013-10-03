@@ -99,6 +99,7 @@ namespace N2.Management.Api
 					}
 					break;
 				case "POST":
+					EnsureValidSelection();
 					switch (context.Request.PathInfo)
 					{
 						case "":
@@ -129,12 +130,20 @@ namespace N2.Management.Api
 					}
 					break;
 				case "DELETE":
+					EnsureValidSelection();
 					Delete(context);
 					break;
 				case "PUT":
+					EnsureValidSelection();
 					Update(context);
 					break;
 			}
+		}
+
+		private void EnsureValidSelection()
+		{
+			if (Selection.ParseSelectionFromRequest() == null)
+				throw new HttpException(404, "Not Found");
 		}
 
 		private IEnumerable<TokenDefinition> GetTokens(HttpContextBase context)

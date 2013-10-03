@@ -56,6 +56,7 @@ namespace N2.Edit.Web
 
 		protected override void OnInit(EventArgs e)
 		{
+			EnsureValidSelection();
 			EnsureAuthorization(Permission.Read);
 			RegisterScripts();
 			RegisterToolbarSelection();
@@ -66,6 +67,12 @@ namespace N2.Edit.Web
 			RegisterModalScrollFix();
 			
             base.OnInit(e);
+		}
+
+		protected virtual void EnsureValidSelection()
+		{
+			if (IsPostBack && Selection.ParseSelectionFromRequest() == null)
+				throw new HttpException(404, "Not Found");
 		}
 
 		private void RegisterModalScrollFix()
