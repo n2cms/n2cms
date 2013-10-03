@@ -160,6 +160,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		selected: selectedMatch && selectedMatch[1]
 	}, function (i) {
 		$scope.Context.Partials.Management = "App/Partials/Management.html";
+		Content.paths = i.Interface.Paths;
 		translateMenuRecursive(i.Interface.MainMenu);
 		translateMenuRecursive(i.Interface.ActionMenu);
 		translateMenuRecursive(i.Interface.ContextMenu);
@@ -202,7 +203,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			}
 
 			$timeout(function () {
-				Context.get({ selected: node.Current.Path, view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, function (ctx) {
+				Context.get(Content.applySelection({ view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
 					console.log("select -> contextchanged", { nodeOrPath: nodeOrPath, versionIndex: versionIndex, keepFlags: keepFlags, forceContextRefresh: forceContextRefresh, preventReload: preventReload }, ctx);
 					if (keepFlags)
 						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -276,7 +277,7 @@ function NavigationCtrl($rootScope, $scope, Content, ContextMenuFactory, Eventua
 				return;
 
 			$scope.search.searching = searchQuery;
-			Content.search({ q: searchQuery, take: 20, selected: $scope.Context.CurrentItem.Path, pages: true }, function (data) {
+			Content.search(Content.applySelection({ q: searchQuery, take: 20, pages: true }, $scope.Context.CurrentItem), function (data) {
 				$scope.search.hits = data.Hits;
 				$scope.search.searching = "";
 			});
@@ -326,7 +327,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	};
 	$scope.loadRemaining = function (node) {
 		node.Loading = true;
-		Content.children({ selected: node.Current.Path, skip: node.Children.length }, function (data) {
+		Content.children(Content.applySelection({ skip: node.Children.length }, node.Current), function (data) {
 			node.Children.length--;
 			for (var i in data.Children)
 				node.Children.push(data.Children[i]);
@@ -340,7 +341,7 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.parts = {
 		show: function (node) {
 			node.Loading = true;
-			Content.children({ selected: node.Current.Path, pages: false }, function (data) {
+			Content.children(Content.applySelection({ pages: false }, node.Current), function (data) {
 				var zones = {};
 				for (var i in data.Children) {
 					var part = data.Children[i];
@@ -428,7 +429,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 
 function PageActionCtrl($scope, Content) {
 	$scope.dispose = function () {
-		Content.remove({ selected: $scope.Context.CurrentItem.Path }, function () {
+		Content.remove(Content.applySelection({}, node.Current), function () {
 			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
 		});
 	}
@@ -449,7 +450,7 @@ function AddCtrl($scope, Content) {
 	$scope.loadDefinitions = function (node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.definitions({ selected: $scope.Context.CurrentItem.Path }, function (data) {
+		Content.definitions(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
 			node.Loading = false;
 			node.Children = data.Definitions;
 		});
@@ -460,7 +461,7 @@ function LanguageCtrl($scope, Content) {
 	$scope.loadLanguages = function (node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.translations({ selected: $scope.Context.CurrentItem.Path }, function (data) {
+		Content.translations(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
 			node.Loading = false;
 			node.Children = data.Translations;
 		});
@@ -471,7 +472,7 @@ function VersionsCtrl($scope, Content) {
 	$scope.loadVersions = function (node) {
 		$scope.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.versions({ selected: $scope.Context.CurrentItem.Path }, function (data) {
+		Content.versions(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
 			node.Loading = false;
 			node.Children = data.Versions;
 		});
@@ -504,7 +505,7 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 		});
 	};
 	$scope.unpublish = function () {
-		Content.unpublish({ selected: $scope.Context.CurrentItem.Path }, function (result) {
+		Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 			
 			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
@@ -529,7 +530,7 @@ function PageScheduleCtrl($scope, Content) {
 			var date = $scope.schedule.date;
 			date.setHours(hour, min);
 
-			Content.schedule({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date });
+			Content.schedule(Content.applySelection({ versionIndex: $scope.Context.CurrentItem.VersionIndex, publishDate: date }, $scope.Context.CurrentItem));
 		}
 	};
 }
