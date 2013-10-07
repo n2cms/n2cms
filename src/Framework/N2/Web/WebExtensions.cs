@@ -15,6 +15,8 @@ using N2.Definitions;
 using N2.Configuration;
 using N2.Edit;
 using N2.Edit.Versioning;
+using System.Web.Script.Serialization;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -58,7 +60,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(value))
 				return tag;
 
-			tag.Attributes[attribute] = HttpUtility.HtmlEncode(value);
+			tag.Attributes[attribute] = value;
 
 			return tag;
 		}
@@ -106,6 +108,18 @@ namespace N2.Web
 		public static void ToJson(this object value, TextWriter sw)
 		{
 			new JsonWriter(sw).Write(value);
+		}
+
+		public static void WriteJson(this HttpResponse response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
+		}
+
+		public static void WriteJson(this HttpResponseBase response, object value)
+		{
+			response.ContentType = "application/json";
+			value.ToJson(response.Output);
 		}
 
 		public static string ResolveUrlTokens(this string url)
@@ -173,11 +187,15 @@ namespace N2.Web
 		internal static string ViewPreferenceQueryString = "view";
 		internal static string DraftQueryValue = ViewPreference.Draft.ToString().ToLower();
 		internal static string PublishedQueryValue = ViewPreference.Published.ToString().ToLower();
-		public static ViewPreference GetViewPreference(this HttpContextBase context, ViewPreference defaultPreference = ViewPreference.Published)
+		public static ViewPreference GetViewPreference(this HttpContextBase httpContext, ViewPreference defaultPreference = ViewPreference.Published)
 		{
-			if (context.Request[ViewPreferenceQueryString] == DraftQueryValue)
+			if (httpContext == null)
+				return defaultPreference;
+
+			string viewPreference = httpContext.Request[ViewPreferenceQueryString];
+			if (DraftQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))
 				return ViewPreference.Draft;
-			else if (context.Request[ViewPreferenceQueryString] == PublishedQueryValue)
+			else if (PublishedQueryValue.Equals(viewPreference, StringComparison.InvariantCultureIgnoreCase))
 				return ViewPreference.Published;
 			else
 				return defaultPreference;
@@ -251,6 +269,107 @@ namespace N2.Web
 				return true;
 			}
 			return false;
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpContext context)
+		{
+			return new HttpContextWrapper(context).GetRequestValueAccessor();
+		}
+
+		public static Func<string, string> GetRequestValueAccessor(this HttpContextBase context)
+		{
+			if (context.Request.HttpMethod == "POST" && context.Request.ContentType.StartsWith("application/json") && context.Request.ContentLength > 0)
+			{
+				var json = GetOrDeserializeRequestStreamJson(context);
+				if (json == null)
+					return (key) => context.Request[key];
+
+				return (key) =>
+				{
+					if (json.ContainsKey(key))
+						return json[key];
+					return context.Request[key];
+				};
+
+			}
+			else
+				return (key) => context.Request[key];
+		}
+
+		internal static IDictionary<string, string> GetOrDeserializeRequestStreamJson(this HttpContextBase context)
+		{
+			var json = context.Items["CachedRequestStream"] as IDictionary<string, string>;
+			if (json == null)
+				context.Items["CachedRequestStream"] = json = DeserialiseJson(context.Request.InputStream);
+			return json;
+		}
+
+		public static IDictionary<string, string> DeserialiseJson(this Stream stream)
+		{
+			using (var sr = new StreamReader(stream))
+			{
+				var body = sr.ReadToEnd();
+				return new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
+			}
+		}
+
+		public static Url AppendSelection(this Url url, ContentItem item)
+		{
+			if (item.ID != 0)
+				// most published pages & parts
+				return url.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path)
+					.AppendQuery(PathData.ItemQueryKey, item.ID);
+			
+			if (item.VersionOf.HasValue)
+				// versions of published pages and parts
+				return url.AppendQuery(SelectionUtility.SelectedQueryKey, item.VersionOf.Path)
+					.AppendQuery(PathData.VersionIndexQueryKey, item.VersionIndex);
+	
+			if (!item.IsPage)
+			{
+				var page = N2.Find.ClosestPage(item);
+				if (page != null)
+					// new parts
+					return url.AppendQuery(SelectionUtility.SelectedQueryKey, page.Path)
+						.AppendQuery(PathData.VersionIndexQueryKey, page.VersionIndex)
+						.AppendQuery(PathData.VersionKeyQueryKey, item.GetVersionKey());
+			}
+
+			return url.AppendQuery(SelectionUtility.SelectedQueryKey, item.Path);
+		}
+
+		internal static HttpContextBase GetHttpContextBase(this HttpContext httpContext)
+		{
+			var ctx = httpContext.Items["N2.HttpContextBase"] as HttpContextBase;
+			if (ctx == null)
+				httpContext.Items["N2.HttpContextBase"] = ctx = new HttpContextWrapper(httpContext);
+			return ctx;
+		}
+
+		internal static IEngine GetEngine(this HttpContext context)
+		{
+			return context.GetHttpContextBase().GetEngine();
+		}
+
+		internal static IEngine GetEngine(this HttpContextBase context, IEngine engine = null)
+		{
+			if (engine != null)
+				return engine;
+
+			engine = context.Items["N2.Engine"] as IEngine;
+			if (engine == null)
+				context.Items["N2.Engine"] = engine = N2.Context.Current;
+			return engine;
+		}
+
+		internal static void SetEngine(this HttpContextBase context, IEngine engine)
+		{
+			context.Items["N2.Engine"] = engine;
+		}
+
+		internal static bool IsEmpty(this Url url)
+		{
+			return url == null || string.IsNullOrEmpty(url);
 		}
 	}
 }

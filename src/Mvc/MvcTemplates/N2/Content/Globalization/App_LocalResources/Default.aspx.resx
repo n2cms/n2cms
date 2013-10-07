@@ -124,7 +124,7 @@
     <value>Unassociate</value>
   </data>
   <data name="cvAssociate.Text" xml:space="preserve">
-    <value>Seleact two or more items to associate.</value>
+    <value>Select two or more items to associate.</value>
   </data>
   <data name="cvGlobalizationDisabled.Text" xml:space="preserve">
     <value>Globalization is not enabled. Update the web configuration file to enable it.</value>

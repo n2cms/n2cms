@@ -35,7 +35,7 @@ namespace N2.Plugin.Scheduling
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			logger.Debug("Beat: " + DateTime.Now);
+			logger.Debug("Beat: " + N2.Utility.CurrentTime());
 			if (Beat != null)
 				Beat(this, e);
 		}

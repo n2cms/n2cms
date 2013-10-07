@@ -5,6 +5,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Web;
 using N2.Edit;
+using System.Web;
 
 namespace N2.Resources
 {
@@ -24,19 +25,27 @@ namespace N2.Resources
 			TwitterBootstrapJsPath = DefaultBootstrapJsPath;
 			TwitterBootstrapCssPath = DefaultBootstrapCssPath;
 			TwitterBootstrapResponsiveCssPath = DefaultBootstrapResponsiveCssPath;
+			IconsCssPath = DefaultIconsCssPath;
 		}
 
+		private static bool? debug;
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
-		public static bool Debug { get; set; }
+		public static bool Debug
+		{
+			get { return Register.debug ?? (HttpContext.Current != null ? HttpContext.Current.IsDebuggingEnabled : false); }
+			set { Register.debug = value; }
+		}
 		
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
 
 		public const string DefaultBootstrapRoot = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/";
 		public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
-		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
-		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
 		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
+		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
+		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
 		
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryPath { get; set; }
@@ -64,6 +73,9 @@ namespace N2.Resources
 
 		/// <summary>The path to Twitter Bootstrap JS library.</summary>
 		public static string TwitterBootstrapJsPath { get; set; }
+
+		/// <summary>The path to the icon css classes.</summary>
+		public static string IconsCssPath { get; set; }
 
 		/// <summary>The path to the Fancybox library.</summary>
 		public static string FancyboxPath { get; set; }
@@ -348,21 +360,21 @@ namespace N2.Resources
 		#endregion
 
 		#region MVC
-		public static bool RegisterResource(IDictionary<string, object> stateCollection, string resourceUrl)
+		public static bool RegisterResource(ICollection<string> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return true;
-			
-			stateCollection[resourceUrl] = "";
+
+			stateCollection.Add(resourceUrl);
 			return false;
 		}
 
-		public static bool IsRegistered(IDictionary<string, object> stateCollection, string resourceUrl)
+		public static bool IsRegistered(ICollection<string> stateCollection, string resourceUrl)
 		{
-			return stateCollection.ContainsKey(resourceUrl);
+			return stateCollection.Contains(resourceUrl);
 		}
 
-		public static string JavaScript(IDictionary<string, object> stateCollection, string resourceUrl)
+		public static string JavaScript(ICollection<string> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return null;
@@ -374,7 +386,7 @@ namespace N2.Resources
 
 		const string scriptFormat = @"<script type=""text/javascript"">//<![CDATA[
 {0}//]]></script>";
-		public static string JavaScript(IDictionary<string, object> stateCollection, string script, ScriptOptions options)
+		public static string JavaScript(ICollection<string> stateCollection, string script, ScriptOptions options)
 		{
 			if (IsRegistered(stateCollection, script))
 				return null;
@@ -393,27 +405,27 @@ namespace N2.Resources
 			throw new NotSupportedException(options + " not supported");
 		}
 
-		public static string JQuery(IDictionary<string, object> stateCollection)
+		public static string JQuery(ICollection<string> stateCollection)
 		{
 			return JavaScript(stateCollection, JQueryPath.ResolveUrlTokens());
 		}
 
-		public static string JQueryPlugins(IDictionary<string, object> stateCollection)
+		public static string JQueryPlugins(ICollection<string> stateCollection)
 		{
 			return JQuery(stateCollection) + JavaScript(stateCollection, JQueryPluginsPath.ResolveUrlTokens());
 		}
 
-		public static string JQueryUi(IDictionary<string, object> stateCollection)
+		public static string JQueryUi(ICollection<string> stateCollection)
 		{
 			return JQuery(stateCollection) + JavaScript(stateCollection, JQueryUiPath.ResolveUrlTokens());
 		}
 
-		public static string TinyMCE(IDictionary<string, object> stateCollection)
+		public static string TinyMCE(ICollection<string> stateCollection)
 		{
 			return JavaScript(stateCollection, Url.ResolveTokens(CKEditorPath));
 		}
 
-		public static string StyleSheet(IDictionary<string, object> stateCollection, string resourceUrl)
+		public static string StyleSheet(ICollection<string> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return null;
@@ -427,6 +439,11 @@ namespace N2.Resources
 		internal static string SelectedQueryKeyRegistrationScript()
 		{
 			return "n2SelectedQueryKey = '" + SelectionUtility.SelectedQueryKey + "';";
+		}
+
+		internal static void FrameInteraction(this Page page)
+		{
+			JavaScript(page, "{ManagementUrl}/Resources/Js/frameInteraction.js");
 		}
 	}
 }

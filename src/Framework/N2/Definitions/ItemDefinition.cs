@@ -32,6 +32,7 @@ using N2.Web.UI;
 using N2.Security;
 using N2.Collections;
 using System.Linq.Expressions;
+using N2.Management.Api;
 
 namespace N2.Definitions
 {
@@ -64,7 +65,6 @@ namespace N2.Definitions
 			Title = itemType.Name;
 			Discriminator = itemType.Name;
 			Description = "";
-			ToolTip = itemType.FullName;
 			
 			Clear();
 			Initialize(itemType);
@@ -153,6 +153,9 @@ namespace N2.Definitions
 		    set { iconUrl = value; }
 		}
 
+		/// <summary>Gets the icon class which .</summary>
+		public string IconClass { get; set; }
+
 		/// <summary>Gets or sets editables defined for the item.</summary>
 		public IContentList<IEditable> Editables { get; private set; }
 
@@ -194,6 +197,12 @@ namespace N2.Definitions
 
 		/// <summary>Information kept on the definition</summary>
 		public IDictionary<string, object> Metadata { get; set; }
+
+		/// <summary>Interface flags used control displayed UI elements.</summary>
+		public ICollection<string> AdditionalFlags { get; set; }
+
+		/// <summary>Removed interface flags used control displayed UI elements.</summary>
+		public ICollection<string> RemovedFlags { get; set; }
 
 		#endregion
 
@@ -404,6 +413,18 @@ namespace N2.Definitions
 				refiner.Refine(this);
 
 			initializedTypes.Add(type);
+
+			foreach (var attribute in type.GetCustomAttributes(typeof(InterfaceFlagsAttribute), false)
+				.OfType<InterfaceFlagsAttribute>())
+			{
+				foreach (var flag in attribute.AdditionalFlags)
+					AdditionalFlags.Add(flag);
+				if (attribute.RemovedFlags != null)
+					foreach (var flag in attribute.RemovedFlags)
+						RemovedFlags.Add(flag);
+			}
+
+
 			return this;
 		}
 
@@ -463,12 +484,12 @@ namespace N2.Definitions
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
-			id.Containers = Containers.Clone();
+			id.Containers = new ContentList<IEditableContainer>(Containers.Select(ec => ec.TryClone()));
 			id.ContentTransformers = ContentTransformers.ToList();
 			id.Description = Description;
 			id.Discriminator = Discriminator;
-			id.Displayables = new ContentList<IDisplayable>(Displayables);
-			id.Editables = Editables.Clone();
+			id.Displayables = new ContentList<IDisplayable>(Displayables.Select(d => d.TryClone()));
+			id.Editables = new ContentList<IEditable>(Editables.Select(e => e.TryClone()));
 			id.Enabled = Enabled;
 			id.EditableModifiers = EditableModifiers.ToList();
 			id.IconUrl = IconUrl;
@@ -476,6 +497,8 @@ namespace N2.Definitions
 			id.IsDefined = IsDefined;
 			id.NumberOfItems = 0;
 			id.Metadata = Metadata.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			id.AdditionalFlags = AdditionalFlags.ToList();
+			id.RemovedFlags = RemovedFlags.ToList();
 			id.Properties = Properties.ToDictionary(p => p.Key, p => p.Value.Clone());
 			id.RelatedTo = RelatedTo;
 			id.SortOrder = SortOrder;
@@ -541,7 +564,8 @@ namespace N2.Definitions
 			Attributes = new List<object>();
 			Properties = new Dictionary<string, PropertyDefinition>();
 			Metadata = new Dictionary<string, object>();
+			AdditionalFlags = new List<string>();
+			RemovedFlags = new List<string>();
 		}
-
 	}
 }

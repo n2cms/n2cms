@@ -1,14 +1,13 @@
-﻿using System.IO;
+﻿using N2.Edit.FileSystem;
+using N2.Web;
+using N2.Web.Drawing;
+using N2.Web.UI.WebControls;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using N2.Edit.FileSystem;
-using N2.Web;
-using N2.Web.UI.WebControls;
-using System.Text.RegularExpressions;
-using N2.Web.Drawing;
-using System;
 
 namespace N2.Details
 {
@@ -20,7 +19,7 @@ namespace N2.Details
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
-
+		private string uploadDirectory = string.Empty;
 
 
 		public EditableFileUploadAttribute()
@@ -34,7 +33,7 @@ namespace N2.Details
 		}
 
 
-
+		
 		/// <summary>Image alt text.</summary>
 		public string Alt
 		{
@@ -47,6 +46,13 @@ namespace N2.Details
 		{
 			get { return cssClass; }
 			set { cssClass = value; }
+		}
+
+		/// <summary>Set a specific upload directory.</summary>
+		public string UploadDirectory
+		{
+			get { return uploadDirectory; }
+			set { uploadDirectory = value; }
 		}
 
 		/// <summary>CSS class on the image element.</summary>
@@ -65,7 +71,14 @@ namespace N2.Details
 			if (postedFile != null && !string.IsNullOrEmpty(postedFile.FileName))
 			{
 				IFileSystem fs = Engine.Resolve<IFileSystem>();
-				string directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
+
+				string directoryPath;
+				if (uploadDirectory == string.Empty)
+					directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
+				else
+					directoryPath = uploadDirectory;
+
+
 				if (!fs.DirectoryExists(directoryPath))
 					fs.CreateDirectory(directoryPath);
 
@@ -99,12 +112,32 @@ namespace N2.Details
 			SelectingUploadCompositeControl composite = new SelectingUploadCompositeControl();
 			composite.ID = Name;
 			composite.UploadLabel.Text = UploadText ?? "Upload";
-            composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
+			composite.SelectorControl.Placeholder(GetLocalizedText("Placeholder") ?? Placeholder);
 			container.Controls.Add(composite);
 			return composite;
 		}
 
+		/// <summary>Adds a required field validator.</summary>
+		/// <param name="container">The container control for this validator.</param>
+		/// <param name="editor">The editor control to validate.</param>
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			SelectingUploadCompositeControl composite = editor as SelectingUploadCompositeControl;
+			if (composite != null)
+			{
+				RequireEitherFieldValidator rfv = new RequireEitherFieldValidator();
+				rfv.ID = Name + "_rfv";
+				rfv.ControlToValidate = composite.SelectorControl.ID;
+				rfv.OtherControlToValidate = composite.UploadControl.ID;
+				rfv.Display = ValidatorDisplay.Dynamic;
+				rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
+				rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
+				editor.Controls.Add(rfv);
 
+				return rfv;
+			}
+			return null;
+		}
 
 
 		#region IDisplayable Members
@@ -146,7 +179,8 @@ namespace N2.Details
 			switch (ImagesUtility.GetExtensionGroup(extension))
 			{
 				case ImagesUtility.ExtensionGroups.Images:
-					DisplayableImageAttribute.WriteImage(item, propertyName, PreferredSize, alt, CssClass, writer);
+					var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
+					DisplayableImageAttribute.WriteImage(item, propertyName, sizes, alt, CssClass, writer);
 					return;
 				default:
 					WriteUrl(item, propertyName, cssClass, writer, url);
@@ -158,7 +192,7 @@ namespace N2.Details
 		{
 			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
 			if(string.IsNullOrEmpty(cssClass))
-				writer.Write(string.Format("<a href=\"{0}\">{2}</a>", url, VirtualPathUtility.GetFileName(url)));
+				writer.Write(string.Format("<a href=\"{0}\">{1}</a>", url, VirtualPathUtility.GetFileName(url)));
 			else
 				writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, VirtualPathUtility.GetFileName(url)));
 		}

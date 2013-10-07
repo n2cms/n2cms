@@ -6,6 +6,7 @@ using N2.Edit.Workflow;
 using N2.Persistence;
 using N2.Definitions;
 using N2.Definitions.Static;
+using N2.Engine;
 
 namespace N2.Edit.Versioning
 {
@@ -142,6 +143,21 @@ namespace N2.Edit.Versioning
 				.Any(va => va.Versionable == AllowVersions.No);
 		}
 
+		public static void SchedulePublishing(this ContentItem previewedItem, DateTime publishDate, IEngine engine)
+		{
+			MarkForFuturePublishing(engine.Resolve<StateChanger>(), previewedItem, publishDate);
+			engine.Persister.Save(previewedItem);
+		}
+
+		public static void MarkForFuturePublishing(Workflow.StateChanger changer, ContentItem item, DateTime futureDate)
+		{
+			if (!item.VersionOf.HasValue)
+				item.Published = futureDate;
+			else
+				item["FuturePublishDate"] = futureDate;
+			changer.ChangeTo(item, ContentState.Waiting);
+		}
+
 		public static ContentItem Publish(this IVersionManager versionManager, IPersister persister, ContentItem previewedItem)
 		{
 			if (previewedItem.VersionOf.HasValue)
@@ -154,6 +170,8 @@ namespace N2.Edit.Versioning
 				previewedItem.State = ContentState.Published;
 				if (!previewedItem.Published.HasValue)
 					previewedItem.Published = Utility.CurrentTime();
+				if (previewedItem.Expires.HasValue)
+					previewedItem.Expires = null;
 
 				persister.Save(previewedItem);
 			}

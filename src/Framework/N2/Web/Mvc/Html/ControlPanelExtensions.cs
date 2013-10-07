@@ -227,7 +227,9 @@ namespace N2.Web.Mvc.Html
 					Permission = engine.GetContentAdapter<NodeAdapter>(item).GetMaximumPermission(item),
 					VersionIndex = item.VersionIndex,
 					VersionKey = item.GetVersionKey(),
-					Force = ForceRefreshNavigationOnLoad ? "true" : "false"
+					Force = ForceRefreshNavigationOnLoad ? "true" : "false",
+					State = item != null ? item.State.ToString() : "NonContent",
+					Mode = GetControlPanelState(Html).ToString()
 				};
 
 				var resources = Html.Resources(writer).Constants();
@@ -235,7 +237,7 @@ namespace N2.Web.Mvc.Html
 				if (includeJQueryPlugins) resources.JQueryPlugins(includeJQuery);
 				if (includeJQueryUi) resources.JQueryUi(includeJQuery);
 				if (includePartScripts) resources.PartsJs();
-				if (includePartStyles) resources.PartsCss();
+				if (includePartStyles) { resources.PartsCss(); resources.IconsCss(); }
 
 				if (refreshNavigation)
 					writer.Write(formatWithRefresh.Replace(settings));
@@ -254,12 +256,7 @@ namespace N2.Web.Mvc.Html
 				Page p = new Page();
 				foreach (IControlPanelPlugin plugin in html.ContentEngine().Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 				{
-					var span = new System.Web.UI.HtmlControls.HtmlGenericControl("span");
-					span.Attributes["class"] = "control";
-					var pluginControl = plugin.AddTo(span, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
-
-					if (pluginControl != null)
-						p.Controls.Add(span);
+					plugin.AddTo(p, new PluginContext(new SelectionUtility(item, null), start, root, state, html.ContentEngine(), html.ViewContext.HttpContext));
 				}
 
 				using (var sw = new StringWriter())
@@ -288,7 +285,7 @@ namespace N2.Web.Mvc.Html
 								/*{2}*/ t.Definition.Discriminator,
 								/*{3}*/ t.Name,
 								/*{4}*/ "definition " + t.Definition.Discriminator,
-								/*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Title));
+								/*{5}*/ UI.WebControls.ControlPanel.FormatImageAndText(t.Definition.IconUrl, t.Definition.IconClass, t.Title));
 						}
 					}
 
@@ -307,9 +304,9 @@ namespace N2.Web.Mvc.Html
 	n2ctx.select('preview');
 	$(document).ready(function () {";
 			static string format2 = @"
-		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}' });";
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', permission: '{Permission}', force: {Force}, versionIndex:{VersionIndex}, versionKey:'{VersionKey}', mode: '{Mode}' });";
 			static string format3 = @"
-		if (n2ctx.hasTop()) $('.cpAdminister').hide();
+		if (n2ctx.hasTop()) $('.complementary').hide();
 		else $('.cpView').hide();
 				
 		if (window.n2SlidingCurtain) {
@@ -321,15 +318,15 @@ namespace N2.Web.Mvc.Html
 })(jQuery);
 //]]></script>
 
-<div id=""cpCurtain"" class=""sc""><div class=""scContent"">
+<div id=""cpCurtain"" class=""sc state{State}""><div class=""scContent"">
 	<div class=""controlPanel"">
 		<div class=""plugins"">
 			{Plugins}
 		</div>
 		{Definitions}
 	</div>
-	<a href=""javascript:void(0);"" class=""close"" title=""Close"">&laquo;</a>
-	<a href=""javascript:void(0);"" class=""open"" title=""Open"">&raquo;</a>
+	<a href=""javascript:void(0);"" class=""close sc-toggler"" title=""Close"">&laquo;</a>
+	<a href=""javascript:void(0);"" class=""open sc-toggler"" title=""Open"">&raquo;</a>
 </div></div>
 ";
 			static string formatWithRefresh = format1 + format2 + format3;

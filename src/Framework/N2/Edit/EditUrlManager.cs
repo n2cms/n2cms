@@ -13,16 +13,18 @@ namespace N2.Edit
 	{
 		private string editTreeUrl;
 		private ViewPreference defaultViewPreference;
-        private IUrlParser parser;
+		private IUrlParser parser;
 
 		public EditUrlManager(IUrlParser parser, EditSection config)
 		{
-            this.parser = parser;
+			this.parser = parser;
 
 			ManagementInterfaceUrl = config.Paths.ManagementInterfaceUrl.TrimEnd('/');
 			EditTreeUrl = config.Paths.EditTreeUrl;
 			EditItemUrl = config.Paths.EditItemUrl;
 			EditInterfaceUrl = config.Paths.EditInterfaceUrl;
+			if (config.Legacy)
+				EditInterfaceUrl += "Content/";
 			NewItemUrl = config.Paths.NewItemUrl;
 			DeleteItemUrl = config.Paths.DeleteItemUrl;
 			defaultViewPreference = config.Versions.DefaultViewMode;
@@ -60,15 +62,19 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-            try
-            {
-			    Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));
-			    return url;
-            }
-            catch (N2Exception)
-            {
-                return Url.ResolveTokens("{ManagementUrl}/Empty.aspx?item=" + selectedItem.ID);
-            }
+			try
+			{
+				// If hostname == localhost, then don't use custom hostnames in the management navigation tree
+				if (HttpContext.Current != null && HttpContext.Current.Request.Url.Host == "localhost")
+					return selectedItem.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+
+				Url url = ResolveResourceUrl(parser.BuildUrl(selectedItem));
+				return url;
+			}
+			catch (N2Exception)
+			{
+				return Url.ResolveTokens("{ManagementUrl}/Empty.aspx?item=" + selectedItem.ID);
+			}
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>

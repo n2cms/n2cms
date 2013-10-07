@@ -33,7 +33,7 @@ namespace N2.Management.Tests
 		[Test]
 		public void ItemBecomePublished_ByDateChange_ChangesStateToPublished()
 		{
-			var item = new ExternalItem { State = ContentState.Waiting, Published = DateTime.Now.AddSeconds(-10) };
+			var item = new ExternalItem { State = ContentState.Waiting, Published = N2.Utility.CurrentTime().AddSeconds(-10) };
 			using (engine.SecurityManager.Disable())
 			{
 				engine.Persister.Save(item);
@@ -47,7 +47,7 @@ namespace N2.Management.Tests
 		[Test]
 		public void ItemBecomeExpired_ByDateChange_ChangesStateToUnpublished()
 		{
-			var item = new ExternalItem { State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10), Expires = DateTime.Now.AddSeconds(-5) };
+			var item = new ExternalItem { State = ContentState.Published, Published = N2.Utility.CurrentTime().AddSeconds(-10), Expires = N2.Utility.CurrentTime().AddSeconds(-5) };
 			using (engine.SecurityManager.Disable())
 			{
 				engine.Persister.Save(item);
@@ -60,14 +60,14 @@ namespace N2.Management.Tests
 		[Test]
 		public void ItemMarkedForFuturePublishing_IsPublished_WhenPublishingTimeIsReached()
 		{
-			var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10) };
+			var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = N2.Utility.CurrentTime().AddSeconds(-10) };
 			using (engine.SecurityManager.Disable())
 			{
 				engine.Persister.Save(item);
 
 				var version = versionManager.AddVersion(item, asPreviousVersion: false);
 				version.Title = "ToBePublished";
-				action.MarkForFuturePublishing(version, DateTime.Now.AddSeconds(-5));
+				action.MarkForFuturePublishing(version, N2.Utility.CurrentTime().AddSeconds(-5));
 				versionManager.UpdateVersion(version);
 			}
 
@@ -87,11 +87,11 @@ namespace N2.Management.Tests
 		{
 			using (engine.SecurityManager.Disable())
 			{
-				var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10) };
+				var item = new ExternalItem { Title = "Original", State = ContentState.Published, Published = N2.Utility.CurrentTime().AddSeconds(-10) };
 				engine.Persister.Save(item);
 
-				var version = new ExternalItem { Title = "ToBePublished", State = ContentState.Published, Published = DateTime.Now.AddSeconds(-10), VersionOf = item };
-				action.MarkForFuturePublishing(version, DateTime.Now.AddSeconds(-5));
+				var version = new ExternalItem { Title = "ToBePublished", State = ContentState.Published, Published = N2.Utility.CurrentTime().AddSeconds(-10), VersionOf = item };
+				action.MarkForFuturePublishing(version, N2.Utility.CurrentTime().AddSeconds(-5));
 				engine.Persister.Save(version);
 			}
 

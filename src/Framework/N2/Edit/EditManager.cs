@@ -34,7 +34,6 @@ namespace N2.Edit
 		private readonly IPersister persister;
 		private readonly IPluginFinder pluginFinder;
 		private readonly ISecurityManager securityManager;
-		private readonly NavigationSettings settings;
 		private readonly IEditUrlManager urls;
 		private readonly StateChanger stateChanger;
 		private readonly IList<string> uploadFolders = new List<string>();
@@ -43,8 +42,8 @@ namespace N2.Edit
 		protected EventHandlerList Events = new EventHandlerList();
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
-		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-		                   IEditUrlManager urls, StateChanger changer, EditableHierarchyBuilder interfaceBuilder, EditSection config)
+		                   ISecurityManager securityManager, IPluginFinder pluginFinder, IEditUrlManager urls, 
+						   StateChanger changer, EditableHierarchyBuilder interfaceBuilder, EditSection config)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
@@ -54,7 +53,6 @@ namespace N2.Edit
 			this.urls = urls;
 			this.stateChanger = changer;
 			this.interfaceBuilder = interfaceBuilder;
-			this.settings = settings;
 
 			EditTheme = config.EditTheme;
 			EnableVersioning = config.Versions.Enabled;
@@ -240,10 +238,6 @@ namespace N2.Edit
 		public virtual ItemFilter GetEditorFilter(IPrincipal user)
 		{
 			ItemFilter filter = new AccessFilter(user, securityManager);
-			if (!settings.DisplayDataItems)
-			{
-				filter = new AllFilter(new PageFilter(), filter);
-			}
 			return filter;
 		}
 

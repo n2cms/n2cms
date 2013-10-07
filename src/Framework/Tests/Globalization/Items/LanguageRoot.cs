@@ -7,13 +7,6 @@ namespace N2.Tests.Globalization.Items
 	[FieldSetContainer("globalization", "Globalization", 200)]
 	public class LanguageRoot : ContentItem, ILanguage
 	{
-		[EditableText("FlagUrl", 100, ContainerName = "globalization")]
-		public virtual string FlagUrl
-		{
-			get { return (string)(GetDetail("FlagUrl") ?? string.Empty); }
-			set { SetDetail("FlagUrl", value, string.Empty); }
-		}
-
 		[EditableText("LanguageTitle", 110, ContainerName = "globalization")]
 		public virtual string LanguageTitle
 		{

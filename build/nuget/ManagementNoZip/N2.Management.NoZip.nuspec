@@ -16,7 +16,6 @@
 		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
-			<dependency id="Lucene.Net" version="3.0" />
 		</dependencies>
 	</metadata>
 </package>

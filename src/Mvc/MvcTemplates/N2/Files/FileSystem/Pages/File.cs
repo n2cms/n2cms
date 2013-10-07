@@ -7,16 +7,18 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Definitions;
 using N2.Web.Drawing;
+using N2.Management.Api;
 
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-        IconUrl = "{ManagementUrl}/Resources/icons/page_white.png",
+        IconClass = "n2-icon-file-text-alt",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/File.aspx")]
+	[InterfaceFlags("Management")]
     public class File : AbstractNode, IActiveContent, IFileSystemFile
     {
 		public long Size { get; set; }

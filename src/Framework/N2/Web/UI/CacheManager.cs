@@ -58,9 +58,9 @@ namespace N2.Web.UI
             if (context.CurrentPage != null && context.CurrentPage.Expires.HasValue)
             {
                 DateTime expires = context.CurrentPage.Expires.Value;
-                if (expires > DateTime.Now && expires < DateTime.Now.AddSeconds(parameters.Duration))
+                if (expires > N2.Utility.CurrentTime() && expires < N2.Utility.CurrentTime().AddSeconds(parameters.Duration))
                 {
-                    parameters.Duration = (int)expires.Subtract(DateTime.Now).TotalSeconds;
+                    parameters.Duration = (int)expires.Subtract(N2.Utility.CurrentTime()).TotalSeconds;
                 }
             }
             parameters.Enabled = enabled;

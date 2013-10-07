@@ -4,7 +4,6 @@ using System.Web.Routing;
 using N2.Engine;
 using N2.Templates.Mvc.Controllers;
 using N2.Web.Mvc;
-using N2.Templates.Mvc.Web;
 
 namespace N2.Templates.Mvc
 {
@@ -39,7 +38,7 @@ namespace N2.Templates.Mvc
 
 		public static void RegisterViewEngines(ViewEngineCollection viewEngines)
 		{
-			viewEngines.Insert(0, new ThemedMasterViewEngine());
+			viewEngines.RegisterThemeViewEngine<WebFormViewEngine>();
 		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)

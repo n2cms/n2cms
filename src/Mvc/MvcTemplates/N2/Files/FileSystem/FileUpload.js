@@ -19,6 +19,11 @@
 		refreshFrames();
 		window.location = window.location;
 	}
+	function onUploadFailed() {
+		$("#fileupload").removeClass("uploading");
+		$("#uploadcontrols").slideDown();
+		$("#uploadcontrols").prepend("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button>Failed uploading</div>");
+	}
 	function onUploadStart() {
 		$("#uploadcontrols").slideUp();
 		$("#fileupload").addClass("uploading");
@@ -40,7 +45,7 @@
 	})
     .bind('fileuploadstart', onUploadStart)
     .bind('fileuploaddone', onFileUploaded)
-    .bind('fileuploadfail', function () { });
+    .bind('fileuploadfail', onUploadFailed);
 
 
 	//        // Load existing files:

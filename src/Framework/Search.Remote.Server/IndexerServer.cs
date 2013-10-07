@@ -6,11 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web.Script.Serialization;
-using System.Web.Security;
 
 namespace N2.Search.Remote.Server
 {
@@ -27,7 +24,7 @@ namespace N2.Search.Remote.Server
 		Dictionary<string, InstanceServices> instances = new Dictionary<string, InstanceServices>(StringComparer.InvariantCultureIgnoreCase);
 		
 		private string sharedSecret;
-		private  string indexPath;
+		private string indexPath;
 
 		public string UriPrefix { get; private set; }
 

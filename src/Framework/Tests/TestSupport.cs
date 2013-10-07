@@ -136,7 +136,7 @@ namespace N2.Tests
         {
             var changer = new N2.Edit.Workflow.StateChanger();
 			versions = new VersionManager(TestSupport.CreateVersionRepository(), persister.Repository, changer, new N2.Configuration.EditSection());
-			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
+			editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, changer, new EditableHierarchyBuilder(new SecurityManager(new ThreadContext(), new EditSection()), SetupEngineSection()), null);
         }
 
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, IContentItemRepository itemRepository, IRepository<ContentDetail> linkRepository, SchemaExport schemaCreator)
@@ -313,5 +313,32 @@ namespace N2.Tests
 			container.AddComponentInstance("injector", typeof(IDependencyInjector), MockRepository.GenerateStub<ContentDependencyInjector>(null, null, null));
 			return container;
 		}
+
+		//internal static void SetupDefaultComponents(this FakeEngine engine, ContentItem root, ContentItem startPage, IPersister persister = null, IDefinitionManager definitions = null)
+		//{
+		//	var ctx = new ThreadContext();
+		//	engine.AddComponentInstance<IHost>(new Host(ctx, root.ID, startPage.ID));
+		//	engine.AddComponentInstance<IWebContext>(ctx);
+		//	engine.AddComponentInstance<IPersister>(persister ?? (persister = SetupFakePersister()));
+		//	var types = new[] { startPage.GetType(), root.GetType(), typeof(NodeAdapter) }.Distinct().ToArray();
+		//	var adapterProvider = new ContentAdapterProvider(engine, new FakeTypeFinder(types));
+		//	adapterProvider.Start();
+		//	engine.AddComponentInstance<IContentAdapterProvider>(adapterProvider);
+		//	engine.AddComponentInstance<IEditManager>(SetupEditManager(definitions, persister, types));
+		//}
+
+		//private static IEditManager SetupEditManager(IDefinitionManager definitions, IPersister persister, Type[] types)
+		//{
+		//	var contentTypes = types.Where(t => typeof(ContentItem).IsAssignableFrom(t)).ToArray();
+		//	return new EditManager(definitions ?? SetupDefinitions(contentTypes),
+		//		persister,
+		//		new FakeVersionManager((FakeContentItemRepository)persister.Repository, new StateChanger(), contentTypes),
+		//		new FakeSecurityManager(),
+		//		new PluginFinder(new FakeTypeFinder(types), new FakeSecurityManager(), new EngineSection()),
+		//		new FakeEditUrlManager(),
+		//		new StateChanger(),
+		//		new EditableHierarchyBuilder(new FakeSecurityManager(), new EngineSection()),
+		//		new EditSection());
+		//}
 	}
 }

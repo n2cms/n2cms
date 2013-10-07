@@ -134,7 +134,7 @@ namespace N2.Web.UI.WebControls
 					Discriminator = Definition.Discriminator;
 					if (value.VersionOf.HasValue && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
-					
+
 					if (previous != null && previous != currentItem)
 						Controls.Clear();
 
@@ -270,7 +270,7 @@ namespace N2.Web.UI.WebControls
 
 		#region IBinder<CommandContext> Members
 
-		internal N2.Edit.Workflow.CommandContext BinderContext { get; set; }
+		public N2.Edit.Workflow.CommandContext BinderContext { get; internal set; }
 
 		public bool UpdateObject(N2.Edit.Workflow.CommandContext value)
 		{

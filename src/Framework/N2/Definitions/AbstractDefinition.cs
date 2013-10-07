@@ -30,6 +30,9 @@ namespace N2.Definitions
 		/// <summary>The icon url is presented to editors and is used distinguish item types when creating and managing content nodes.</summary>
 		public string IconUrl { get; set; }
 
+		/// <summary>A class used by a CSS sprite on the client to display an icon.</summary>
+		public string IconClass { get; set; }
+
 		/// <summary>Whether the defined item is a page or not. This affects whether the item is displayed in the edit tree and how it's url is calculated.</summary>
 		public bool IsPage { get; protected set; }
 
@@ -64,6 +67,11 @@ namespace N2.Definitions
 			get { return "{ManagementUrl}/Resources/icons/page.png"; }
 		}
 
+		protected virtual string DefaultIconClass
+		{
+			get { return "n2-icon-file"; }
+		}
+
 		public virtual void Refine(ItemDefinition currentDefinition)
 		{
             currentDefinition.Title = Title ?? currentDefinition.Title ?? currentDefinition.ItemType.Name;
@@ -74,7 +82,8 @@ namespace N2.Definitions
             if (!string.IsNullOrEmpty(Description))
 			    currentDefinition.Description = Description;
 			currentDefinition.Discriminator = Name ?? currentDefinition.ItemType.Name;
-			currentDefinition.IconUrl = IconUrl ?? currentDefinition.IconUrl ?? DefaultIconUrl;
+			currentDefinition.IconUrl = IconUrl ?? currentDefinition.IconUrl;
+			currentDefinition.IconClass = IconClass ?? currentDefinition.IconClass ?? DefaultIconClass;
 			currentDefinition.IsPage = IsPage;
 
 			currentDefinition.IsDefined = true;

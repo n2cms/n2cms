@@ -10,6 +10,7 @@ using N2.Persistence;
 using N2.Plugin;
 using N2.Web;
 using N2.Collections;
+using System.Linq;
 
 namespace N2.Management.Files
 {
@@ -64,31 +65,39 @@ namespace N2.Management.Files
 
 		void monitor_Online(object sender, EventArgs e)
 		{
-			nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
-			//virtualNodes.Register(nodeProvider);
+			nodeProvider.UploadFolderPaths = GetUploadFolderPaths().ToArray();
 		}
 
 		void host_SitesChanged(object sender, SitesChangedEventArgs e)
 		{
-			nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
+			nodeProvider.UploadFolderPaths = GetUploadFolderPaths().ToArray();
 		}
 
-		private FolderPair[] GetUploadFolderPaths()
+		protected virtual IEnumerable<FolderReference> GetUploadFolderPaths()
 		{
-			var paths = new List<FolderPair>();
+			var paths = new List<FolderReference>();
+
+			if (folderSource == null)
+				throw new NullReferenceException("folderSource is null");
+				//return new FolderPair[0];
+			
+			var gpp = new List<FileSystemRoot>(folderSource.GetUploadFoldersForAllSites()); // non-lazy easier to debug :-)
+
+			if (gpp == null)
+				throw new NullReferenceException("folderSource.GetUploadFoldersForAllSites() returned null");
 
 			// configured folders to the root node
-			foreach (var folder in folderSource.GetUploadFoldersForAllSites())
+			foreach (var folder in gpp)
 			{
 				var parent = persister.Get(folder.GetParentID());
 				if (parent == null)
 					break;
 
-				var pair = new FolderPair(parent.ID, parent.Path, parent.Path + folder.GetName() + "/", folder);
+				var pair = new FolderReference(parent.ID, parent.Path, parent.Path + folder.GetName() + "/", folder);
 				paths.Add(pair);
 			}
 
-			return paths.ToArray();
+			return paths;
 		}
 	}
 }

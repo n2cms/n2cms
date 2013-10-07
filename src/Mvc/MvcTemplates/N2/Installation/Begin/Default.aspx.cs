@@ -6,6 +6,7 @@ using System.Configuration;
 using N2.Web;
 using System.Text;
 using System.IO;
+using N2.Configuration;
 
 namespace N2.Edit.Install.Begin
 {
@@ -26,7 +27,7 @@ namespace N2.Edit.Install.Begin
 			action = Request["action"];
 			version = typeof(N2.ContentItem).Assembly.GetName().Version;
 			config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
-			installationAllowed = config.AllowInstallation;
+			installationAllowed = AllowInstallationOption.Parse(config.AllowInstallation) != AllowInstallationOption.No;
 
 			continueUrl = action == "install"
 				? config.InstallUrl
@@ -40,12 +41,29 @@ namespace N2.Edit.Install.Begin
 
 			continueUrl = N2.Web.Url.ResolveTokens(continueUrl);
 
-			needsPasswordChange = FormsAuthentication.Authenticate("admin", "changeme");
+			System.Configuration.Configuration cfg;
+			try
+			{
+				if (FormsAuthentication.Authenticate("admin", "changeme"))
+					needsPasswordChange = true;
+				else
+				{
+					if (TryOpenWebConfiguration(out cfg))
+					{
+						var authentication = (AuthenticationSection)cfg.GetSection("system.web/authentication");
+						needsPasswordChange = authentication.Forms.Credentials.Users["admin"] == null 
+							&& AllowInstallationOption.Parse(config.AllowInstallation) == AllowInstallationOption.AnonymousUser;
+					}
+				}
+			}
+			catch (Exception)
+			{
+			}
+
 			autoLogin = Request["autologin"] == "true";
 			if (autoLogin)
 				return;
 
-			System.Configuration.Configuration cfg;
 			if (!TryOpenWebConfiguration(out cfg))
 			{
 				FormsAuthentication.SetAuthCookie("admin", false);
@@ -65,7 +83,10 @@ namespace N2.Edit.Install.Begin
 						authentication.Forms.LoginUrl = "N2/Login.aspx";
 
 					authentication.Forms.Credentials.PasswordFormat = FormsAuthPasswordFormat.SHA1;
-					authentication.Forms.Credentials.Users["admin"].Password = ComputeSHA1Hash(txtPassword.Text);
+					if (authentication.Forms.Credentials.Users["admin"] != null)
+						authentication.Forms.Credentials.Users["admin"].Password = ComputeSHA1Hash(txtPassword.Text);
+					else
+						authentication.Forms.Credentials.Users.Add(new FormsAuthenticationUser("admin", ComputeSHA1Hash(txtPassword.Text)));
 
 					var membership = (MembershipSection)cfg.GetSection("system.web/membership");
 					if (membership.Providers["ContentMembershipProvider"] != null)
@@ -84,23 +105,59 @@ namespace N2.Edit.Install.Begin
 
 					cfg.Save();
 
-					if (FormsAuthentication.Authenticate("admin", txtPassword.Text))
-					{
-						FormsAuthentication.SetAuthCookie("admin", false);
-						Response.Redirect(continueUrl);
-					}
+					FormsAuthentication.SetAuthCookie("admin", false);
+					Response.Redirect(continueUrl);
 				}
 				else
 				{
-					cvSave.Text = "Unable to save password, please modify web.config manually";
+					ReportManualConfigChange();
 				}
 			}
 			catch (Exception ex)
 			{
-				cvSave.Text = "Unable to save password, please modify web.config manually";
+				ReportManualConfigChange();
 				cvSave.ToolTip = ex.ToString();
 			}
 			needsPasswordChange = false;
+		}
+
+		private void ReportManualConfigChange()
+		{
+			cvSave.IsValid = false;
+			cvSave.Text = "Unable to save forms user password and membership providers, please modify web.config manually";
+
+			preManualConfig.Visible = true;
+			preManualConfig.InnerHtml = Server.HtmlEncode(string.Format(@"<system.web>
+	<authentication mode=""Forms"">
+		<forms loginUrl=""N2/Login.aspx"">
+		<credentials passwordFormat=""SHA1"">
+			<user name=""admin"" password=""{0}"" />
+		</credentials>
+		</forms>
+	</authentication>
+
+	<membership defaultProvider=""ContentMembershipProvider"">
+		<providers>
+			<clear />
+			<add passwordFormat=""Hashed"" 
+				name=""ContentMembershipProvider"" 
+				type=""N2.Security.ContentMembershipProvider, N2.Management"" />
+		</providers>
+	</membership>
+	<roleManager enabled=""true"" defaultProvider=""ContentRoleProvider"">
+		<providers>
+			<clear />
+			<add name=""ContentRoleProvider"" 
+				type=""N2.Security.ContentRoleProvider, N2.Management"" />
+		</providers>
+	</roleManager>
+	<profile defaultProvider=""ContentProfileProvider"">
+		<providers>
+			<clear />
+			<add name=""ContentProfileProvider"" 
+				type=""N2.Security.ContentProfileProvider, N2.Management"" />
+		</providers>
+	</profile>", ComputeSHA1Hash(txtPassword.Text)));
 		}
 
 		public string ComputeSHA1Hash(string input)
@@ -127,6 +184,12 @@ namespace N2.Edit.Install.Begin
 				Engine.Logger.Warn(ex);
 				return false;
 			}
+		}
+
+		protected void chkLoginUrl_CheckedChanged(object sender, EventArgs e)
+		{
+			pnlPassword.Visible = chkLoginUrl.Checked;
+			pnlNoPassword.Visible = !chkLoginUrl.Checked;
 		}
 	}
 }

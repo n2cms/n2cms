@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[Adapts(typeof(RssFeed))]
 	public class RssFeedNodeAdapter : NodeAdapter
 	{
-		public override string GetPreviewUrl(ContentItem item)
+		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
 		{
 			return new Url(base.GetPreviewUrl(item)).AppendSegment("Preview");;
 		}
@@ -25,7 +25,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Feed",
 		Description = "An RSS feed that outputs an xml with the latest feeds.",
 		SortOrder = 260,
-		IconUrl = "~/Content/Img/feed.png")]
+		IconClass = "n2-icon-rss")]
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]

@@ -11,10 +11,10 @@ namespace N2.Persistence.Serialization
 	/// </summary>
 	public class Exporter
 	{
-		private readonly ItemXmlWriter itemWriter;
+		private readonly IItemXmlWriter itemWriter;
 		private Formatting xmlFormatting = Formatting.Indented;
 
-		public Exporter(ItemXmlWriter itemWriter)
+		public Exporter(IItemXmlWriter itemWriter)
 		{
 			this.itemWriter = itemWriter;
 		}
@@ -25,7 +25,7 @@ namespace N2.Persistence.Serialization
 			set { xmlFormatting = value; }
 		}
 
-        public virtual void Export(ContentItem item, ExportOptions options, HttpResponse response)
+		public virtual void Export(ContentItem item, ExportOptions options, HttpResponse response)
 		{
 			response.ContentType = GetContentType();
 			response.AppendHeader("Content-Disposition", "attachment;filename=" + GetExportFilename(item));
@@ -53,7 +53,7 @@ namespace N2.Persistence.Serialization
 			return Regex.Replace(item.Title.Replace(' ', '_'), "[^a-zA-Z0-9_-]", "") + ".n2.xml";
 		}
 
-        public virtual void Export(ContentItem item, ExportOptions options, TextWriter output)
+		public virtual void Export(ContentItem item, ExportOptions options, TextWriter output)
 		{
 			XmlTextWriter xmlOutput = new XmlTextWriter(output);
 			xmlOutput.Formatting = XmlFormatting;
@@ -63,7 +63,7 @@ namespace N2.Persistence.Serialization
 			{
 				envelope.WriteAttribute("version", GetType().Assembly.GetName().Version.ToString());
 				envelope.WriteAttribute("exportVersion", 2);
-				envelope.WriteAttribute("exportDate", DateTime.Now);
+				envelope.WriteAttribute("exportDate", N2.Utility.CurrentTime());
 
 				itemWriter.Write(item, options, xmlOutput);
 			}

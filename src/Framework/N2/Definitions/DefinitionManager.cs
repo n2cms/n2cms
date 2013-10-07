@@ -152,7 +152,7 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>
-        /// <param name="parentDefinition">The parent whose allowed children to get.</param>
+		/// <param name="parentDefinition">The parent whose allowed children to get.</param>
 		/// <param name="zoneName">The zone whose allowed child item types to get.</param>
 		/// <param name="user">The user whose access to query.</param>
 		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>

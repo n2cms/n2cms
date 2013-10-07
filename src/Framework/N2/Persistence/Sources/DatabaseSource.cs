@@ -35,6 +35,9 @@ namespace N2.Persistence.Sources
 			if (query.Filter != null)
 				items = items.Where(query.Filter);
 
+			if (query.Limit != null)
+				items = items.Skip(query.Limit.Skip).Take(query.Limit.Take);
+
 			return previousChildren.Union(items);
 		}
 

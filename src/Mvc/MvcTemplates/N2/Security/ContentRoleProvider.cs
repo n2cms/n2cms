@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Web.Security;
 using System.Linq;
 using N2.Persistence;
+using System.Configuration;
+using N2.Configuration;
 
 namespace N2.Security
 {
@@ -112,6 +114,11 @@ namespace N2.Security
                     Items.User u = Bridge.GetUser(username);
                     if (u != null)
                         return new CachedRoles { Roles = u.GetRoles() ?? new string[0] };
+
+					if (username == "admin")
+					{
+						return new CachedRoles { Roles = new string[] { "Administrators" } };
+					}
                     return new CachedRoles { Roles = new string[0] };
                 }).Roles;
 		}

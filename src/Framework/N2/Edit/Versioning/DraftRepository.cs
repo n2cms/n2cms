@@ -14,6 +14,8 @@ namespace N2.Edit.Versioning
 		public int ItemID { get; set; }
 		public DateTime Saved { get; set; }
 		public string SavedBy { get; set; }
+
+		public int VersionIndex { get; set; }
 	}
 
 	[Service]
@@ -84,7 +86,8 @@ namespace N2.Edit.Versioning
 						{
 							ItemID = itemID, 
 							Saved = draft.Saved, 
-							SavedBy = draft.SavedBy 
+							SavedBy = draft.SavedBy,
+							VersionIndex = draft.VersionIndex
 						};
 					}
 					return drafts;

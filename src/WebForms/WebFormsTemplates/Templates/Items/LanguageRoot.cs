@@ -37,20 +37,6 @@ namespace N2.Templates.Items
 
 		#region ILanguage Members
 
-		public string FlagUrl
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(LanguageCode))
-					return "";
-				else
-				{
-					string[] parts = LanguageCode.Split('-');
-					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
-				}
-			}
-		}
-
 		[EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
 		public string LanguageCode
 		{

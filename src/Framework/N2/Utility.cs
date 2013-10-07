@@ -12,6 +12,8 @@ using N2.Integrity;
 using N2.Persistence.NH;
 using NHibernate;
 using N2.Web;
+using N2.Edit;
+using N2.Details;
 
 namespace N2
 {
@@ -213,7 +215,8 @@ namespace N2
 			var pi = GetPropertyInfo(ref instance, propertyName);
 
 			if (pi == null)
-				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
+				return null;
+			//	throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, originalInstance.GetType());
 
 			return pi.GetValue(instance, null);
 		}
@@ -393,7 +396,8 @@ namespace N2
 				}
 				catch (MissingManifestResourceException)
 				{
-					SingletonDictionary<ResourceKey, string>.Instance[key] = null;
+					if (SingletonDictionary<ResourceKey, string>.Instance.ContainsKey(key)) // fixes NullReferenceException
+						SingletonDictionary<ResourceKey, string>.Instance[key] = null;
 				}
 			}
 			return null; // it's okay to use default text
@@ -515,7 +519,7 @@ namespace N2
 				return GetLocalResourceString(resourceKey);
 		}
 
-		public static Func<DateTime> CurrentTime = delegate { return DateTime.Now; };
+		public static Func<DateTime> CurrentTime = () => DateTime.Now;
 
 		[Obsolete("Moved to N2.Web.Url.ToAbsolute")]
 		public static string ToAbsolute(string relativePath)
@@ -584,7 +588,7 @@ namespace N2
 
 		/// <summary>Gets the trail to a certain item. A trail is a slash-separated sequence of IDs, e.g. "/1/6/12/".</summary>
 		/// <param name="item">The item whose trail to get.</param>
-		/// <returns>The trail leading to the item.</returns>
+		/// <returns>The trail leading to the item. The trail contains the item's ID.</returns>
 		public static string GetTrail(this ContentItem item)
 		{
 			if (item == null)
@@ -701,6 +705,15 @@ namespace N2
 		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		/// <summary>Shorthand for resolving a node adapter.</summary>
+		/// <param name="engine">Used to resolve the provider.</param>
+		/// <param name="item">The item whose adapter to get.</param>
+		/// <returns>The most relevant adapter.</returns>
+		internal static NodeAdapter GetNodeAdapter(this IEngine engine, ContentItem item)
+		{
+			return engine.GetContentAdapter<NodeAdapter>(item);
 		}
 
 		/// <summary>Renders a file size (in bytes) in MB (base 10) or MiB (base 2).</summary>
@@ -848,5 +861,153 @@ namespace N2
 			return list;
 		}
 
+		public static T ResolveAdapter<T>(this IEngine engine, ContentItem item) where T : AbstractContentAdapter
+		{
+			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
+		}
+
+		public static IDictionary<string, object> ToDictionary(this ContentItem item)
+		{
+			return new ContentDictionary(item);
+		}
+
+		class ContentDictionary : IDictionary<string, object>
+		{
+			private ContentItem item;
+
+			public ContentDictionary(ContentItem item)
+			{
+				this.item = item;
+			}
+
+			public void Add(string key, object value)
+			{
+				item[key] = value;
+			}
+
+			public bool ContainsKey(string key)
+			{
+				return item[key] != null;
+			}
+
+			public ICollection<string> Keys
+			{
+				get { return ContentItem.KnownProperties.WritableProperties.Union(item.Details.Select(d => d.Name)).Union(item.DetailCollections.Select(dc => dc.Name)).ToList(); }
+			}
+
+			public bool Remove(string key)
+			{
+				if (!ContainsKey(key))
+					return false;
+
+				item[key] = null;
+				return true;
+			}
+
+			public bool TryGetValue(string key, out object value)
+			{
+				try
+				{
+					value = item[key];
+					return value != null;
+				}
+				catch (Exception)
+				{
+					value = null;
+					return false;
+				}
+			}
+
+			public ICollection<object> Values
+			{
+				get 
+				{
+					return ContentItem.KnownProperties.WritableProperties.Select(wp => WriteProperty(wp))
+						.Union(item.Details.Select(d => WriteDetailValue(d)))
+						.Union(item.DetailCollections.Select(dc => dc.Details.Select(d => WriteDetailValue(d)).ToList()))
+						.ToList();
+				}
+			}
+
+			private object WriteProperty(string wp)
+			{
+				if (wp == "Parent")
+					return item.Parent != null
+						? item.Parent.ID
+						: 0;
+				else
+					return item[wp];
+			}
+
+			public object this[string key]
+			{
+				get { return item[key]; }
+				set { item[key] = value; }
+			}
+
+			public void Add(KeyValuePair<string, object> item)
+			{
+				this.item[item.Key] = item.Value;
+			}
+
+			public void Clear()
+			{
+				item.Details.Clear();
+				item.DetailCollections.Clear();
+			}
+
+			public bool Contains(KeyValuePair<string, object> item)
+			{
+				return this.item[item.Key] != null && this.item[item.Key] == item.Value;
+			}
+
+			public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+			{
+				var kvps = this.ToList();
+				for (int i = 0; i < kvps.Count; i++)
+				{
+					array[i + arrayIndex] = kvps[i];
+				}
+			}
+
+			public int Count
+			{
+				get { return Keys.Count; }
+			}
+
+			public bool IsReadOnly
+			{
+				get { return false; }
+			}
+
+			public bool Remove(KeyValuePair<string, object> item)
+			{
+				if (!Contains(item))
+					return false;
+				this.item[item.Key] = null;
+				return true;
+			}
+
+			public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+			{
+				return ContentItem.KnownProperties.WritableProperties.Select(wp => new KeyValuePair<string, object>(wp, WriteProperty(wp)))
+					.Union(item.Details.Select(d => new KeyValuePair<string, object>(d.Name, WriteDetailValue(d))))
+					.Union(item.DetailCollections.Select(dc => new KeyValuePair<string, object>(dc.Name, dc.Details.Select(d => WriteDetailValue(d)).ToList())))
+					.ToList()
+					.GetEnumerator();
+			}
+
+			private object WriteDetailValue(Details.ContentDetail d)
+			{
+				if (d.ValueTypeKey == ContentDetail.TypeKeys.LinkType)
+					return d.LinkedItem.ID;
+				return d.Value;
+			}
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+		}
 	}
 }

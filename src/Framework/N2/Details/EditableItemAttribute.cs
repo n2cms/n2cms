@@ -11,6 +11,7 @@ using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Versioning;
 using N2.Persistence.Proxying;
+using N2.Web.Parts;
 
 namespace N2.Details
 {
@@ -197,8 +198,9 @@ namespace N2.Details
 			{
 				if (linkedItem.IsPage)
 					return DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).AddTo(container);
-				
-				return ItemUtility.AddUserControl(container, linkedItem);
+
+				return Engine.GetContentAdapter<PartsAdapter>(item).AddChildPart(linkedItem, container);
+				//return ItemUtility.AddUserControl(container, linkedItem);
 			}
 			return null;
 		}

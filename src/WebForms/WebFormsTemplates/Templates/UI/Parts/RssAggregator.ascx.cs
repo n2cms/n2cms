@@ -54,7 +54,7 @@ namespace N2.Templates.UI.Parts
                 Cache.Add(CacheKey,
                           items,
                           new ContentCacheDependency(Engine.Persister),
-                          DateTime.Now.Add(ExpirationTime),
+                          N2.Utility.CurrentTime().Add(ExpirationTime),
                           Cache.NoSlidingExpiration,
                           CacheItemPriority.Normal, null);
             }

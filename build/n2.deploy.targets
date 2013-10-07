@@ -8,10 +8,13 @@
     <Config-NugetFolder>$(DeployFolder)\$(DeployPrefix)Config_Nuget</Config-NugetFolder>
     <Framework-NugetFolder>$(DeployFolder)\$(DeployPrefix)Framework_Nuget</Framework-NugetFolder>
     <Management-NugetFolderZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_Zip</Management-NugetFolderZip>
-    <Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-NugetFolderNoZip>$(DeployFolder)\$(DeployPrefix)Management_Nuget_NoZip</Management-NugetFolderNoZip>
+		<Management-LocalizedResourcesFolder>$(DeployFolder)\$(DeployPrefix)Management_LocalizedResources_Nuget</Management-LocalizedResourcesFolder>
     <Library-NugetFolder>$(DeployFolder)\$(DeployPrefix)Library_Nuget</Library-NugetFolder>
-    <SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
+		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
+		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
     <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
+    <ReusableParts-NugetFolder>$(DeployFolder)\$(DeployPrefix)ReusableParts_Nuget</ReusableParts-NugetFolder>
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
     <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
     <RemoteSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)RemoteSearch_Nuget</RemoteSearch-NugetFolder>
@@ -28,12 +31,23 @@
   </Target>
   
   <Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-    <Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
-    <Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
   </Target>
 
-  <Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
+	<Target Name="Framework-LocalizedResources-Nuget" DependsOnTargets="Framework-CreateItemGroups">
+		<ItemGroup>
+			<localizedResourcesIncludes Include="$(BuildFolder)\Nuget\ManagementLocalizedResources\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(localizedResourcesIncludes)" DestinationFolder="$(Management-LocalizedResourcesFolder)\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(Framework-LocalizedResources)" DestinationFolder="$(Management-LocalizedResourcesFolder)\Content\N2\%(RecursiveDir)" SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+		<FileUpdate Files="$(Management-LocalizedResourcesFolder)\N2.Management.LocalizedResources.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Management-LocalizedResourcesFolder)\" />
+	</Target>
+
+	<Target Name="Library-NuGet" DependsOnTargets="Config-NuGet;Framework-Deploy">
     <ItemGroup>
       <nugetLibraryBinFiles Include="$(ManagementFolder)\bin\N2.dll;
                        $(ManagementFolder)\bin\N2.pdb;
@@ -50,7 +64,22 @@
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Library-NugetFolder)\" />
   </Target>
 
-  <Target Name="SQLite-NuGet">
+	<Target Name="LuceneSearch-NuGet" DependsOnTargets="Framework-Deploy">
+		<ItemGroup>
+			<nugetLuceneSearchBinFiles Include="$(SrcFolder)\Framework\Search.Lucene\bin\$(Configuration)\N2.Search.Lucene.dll;"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(nugetLuceneSearchBinFiles)" DestinationFolder="$(LuceneSearch-NugetFolder)\lib" />
+
+		<ItemGroup>
+			<LuceneSearchNugetIncludes Include="$(BuildFolder)\Nuget\LuceneSearch\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(LuceneSearchNugetIncludes)" DestinationFolder="$(LuceneSearch-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(LuceneSearch-NugetFolder)\N2.Search.Lucene.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(LuceneSearch-NugetFolder)\" />
+	</Target>
+
+	<Target Name="SQLite-NuGet">
     <ItemGroup>
       <sqliteNugetIncludes Include="$(BuildFolder)\Nuget\SQLite\**\*" />
     </ItemGroup>
@@ -113,6 +142,18 @@
     <FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
+  </Target>
+
+  <Target Name="ReusableParts-NuGet">
+    <ItemGroup>
+      <reusablePartsNugetIncludes Include="$(BuildFolder)\Nuget\ReusableParts\**\*" />
+      <nugetReusablePartsBinFiles Include="$(SrcFolder)\Framework\ReusableParts\bin\$(Configuration)\N2.ReusableParts.*;" />
+    </ItemGroup>
+    <Copy SourceFiles="@(reusablePartsNugetIncludes)" DestinationFolder="$(ReusableParts-NugetFolder)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(nugetReusablePartsBinFiles)" DestinationFolder="$(ReusableParts-NugetFolder)\lib\NET40" />
+    <FileUpdate Files="$(ReusableParts-NugetFolder)\N2.ReusableParts.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(ReusableParts-NugetFolder)\" />
   </Target>
 
   <!--common ItemGroups for the next 2 targets-->
@@ -228,7 +269,7 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
   </Target>
 
   <Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">

@@ -13,7 +13,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Redirect",
 		Description = "Redirects to another page or an external address.",
 		SortOrder = 40,
-		IconUrl = "~/Content/Img/page_go.png")]
+		IconClass = "n2-icon-external-link")]
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content),
 	 WithEditableName("Name", 20, ContainerName = Tabs.Content),
 	 WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]

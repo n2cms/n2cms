@@ -21,7 +21,7 @@ namespace N2.Tests.Collections
 			list.Add(item2 = CreateOneItem<SecondItem>(2, "two", item1));
 			list.Add(item3 = CreateOneItem<NonPageItem>(3, "three", item2));
 
-			item1.Published = DateTime.Now.AddSeconds(10);
+			item1.Published = N2.Utility.CurrentTime().AddSeconds(10);
 		}
 
 		[Test]

@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("News Container",
 		Description = "A list of news. News items can be added to this page.",
 		SortOrder = 150,
-		IconUrl = "~/Content/Img/newspaper_link.png")]
+		IconClass = "n2-icon-list blue")]
 	[RestrictParents(typeof (IStructuralPage))]
 	[SortChildren(SortBy.PublishedDescending)]
 	[GroupChildren(GroupChildrenMode.PublishedYear)]

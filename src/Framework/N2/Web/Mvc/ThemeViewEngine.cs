@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Web.Mvc.Html;
 using N2.Engine;
+using N2.Web.Targeting;
 
 namespace N2.Web.Mvc
 {
@@ -13,7 +14,7 @@ namespace N2.Web.Mvc
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class ThemeViewEngine<T> : IViewEngine, IDecorator<IViewEngine>
-        where T : VirtualPathProviderViewEngine, new()
+		where T : VirtualPathProviderViewEngine, new()
 	{
 		Engine.Logger<ThemeViewEngine<T>> logger;
 
@@ -21,6 +22,12 @@ namespace N2.Web.Mvc
 		string themeFolderPath;
 		private string[] viewExtensions;
 		private string[] masterExtensions;
+
+		/// <summary>Search for views in ~/Themes/Default/Views... as fallback to any theme preference.</summary>
+		public bool FallbackToDefaultTheme { get; set; }
+
+		/// <summary>Search for view in ~/Views/...</summary>
+		public bool FallbackToRootViews { get; set; }
 
 		public ThemeViewEngine()
 			: this("~/Themes/", new string[] { "cshtml", "vbhtml" }, new string[] { "cshtml", "vbhtml" })
@@ -36,16 +43,31 @@ namespace N2.Web.Mvc
 			this.themeFolderPath = themeFolderPath;
 			this.viewExtensions = fileExtensions;
 			this.masterExtensions = masterExtensions;
+
+			FallbackToDefaultTheme = true;
+			FallbackToRootViews = true;
 		}
 
 		#region IViewEngine Members
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
+			if (controllerContext.IsChildAction == false)
+			{
+				controllerContext.InitTheme();
+			}
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(controllerContext, theme);
-			var result = engine.FindPartialView(controllerContext, partialViewName, useCache);
-			return result;
+
+			var ctx = controllerContext.HttpContext.GetTargetingContext();
+			foreach (var detector in ctx.TargetedBy)
+			{
+				var result = engine.FindPartialView(controllerContext, (partialViewName ?? "Index") + "_" + detector.Name, useCache);
+				if (result.View != null)
+					return result;
+			}
+
+			return engine.FindPartialView(controllerContext, partialViewName, useCache);
 		}
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
@@ -53,8 +75,16 @@ namespace N2.Web.Mvc
 			controllerContext.InitTheme();
 			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(controllerContext, theme);
-			var result = engine.FindView(controllerContext, viewName, masterName, useCache);
-			return result;
+
+			var ctx = controllerContext.HttpContext.GetTargetingContext();
+			foreach (var detector in ctx.TargetedBy)
+			{
+				var result = engine.FindView(controllerContext, (viewName ?? "Index") + "_" + detector.Name, masterName, useCache);
+				if (result.View != null)
+					return result;
+			}
+
+			return engine.FindView(controllerContext, viewName, masterName, useCache);
 		}
 
 		public void ReleaseView(ControllerContext controllerContext, IView view)
@@ -64,7 +94,7 @@ namespace N2.Web.Mvc
 			engine.ReleaseView(controllerContext, view);
 		}
 
-		private IViewEngine GetOrCreateViewEngine(ControllerContext controllerContext, string theme)
+		private VirtualPathProviderViewEngine GetOrCreateViewEngine(ControllerContext controllerContext, string theme)
 		{
 			if(string.IsNullOrEmpty(theme))
 				theme = "Default";
@@ -72,17 +102,24 @@ namespace N2.Web.Mvc
 			T engine;
 			if (!engines.TryGetValue(theme, out engine))
 			{
-				string fallbackPath = themeFolderPath + "Default/";
 				string themePath = themeFolderPath + theme + "/";
+				string defaultThemePath = themeFolderPath + "Default/";
+				string rootViewsPath = "~/";
 
-				logger.InfoFormat("Creating themed view engine for theme {0} below path {1}", theme, themePath);
+				var paths = new List<string> { themePath };
+				if (FallbackToDefaultTheme && defaultThemePath != themePath)
+					paths.Add(defaultThemePath);
+				if (FallbackToRootViews)
+					paths.Add(rootViewsPath);
+
+				logger.InfoFormat("Creating themed view engine for theme {0} below paths {1}", theme, string.Join(", ", paths));
 
 				engine = new T();
-				engine.AreaMasterLocationFormats = GetAreaLocations(themePath, fallbackPath, masterExtensions);
-				engine.AreaViewLocationFormats = GetAreaLocations(themePath, fallbackPath, viewExtensions);
+				engine.AreaMasterLocationFormats = GetAreaLocations(paths, masterExtensions);
+				engine.AreaViewLocationFormats = GetAreaLocations(paths, viewExtensions);
 				engine.AreaPartialViewLocationFormats = engine.AreaViewLocationFormats;
-				engine.MasterLocationFormats = GetLocations(themePath, fallbackPath, masterExtensions);
-				engine.ViewLocationFormats = GetLocations(themePath, fallbackPath, viewExtensions);
+				engine.MasterLocationFormats = GetLocations(paths, masterExtensions);
+				engine.ViewLocationFormats = GetLocations(paths, viewExtensions);
 				engine.PartialViewLocationFormats = engine.ViewLocationFormats;
 				engine.ViewLocationCache = new ThemeViewLocationCache();
 				Utility.TrySetProperty(engine, "FileExtensions", viewExtensions);
@@ -92,35 +129,33 @@ namespace N2.Web.Mvc
 				engines = temp;
 			}
 
-            if (controllerContext != null)
-			    controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
+			if (controllerContext != null)
+				controllerContext.RouteData.DataTokens["ThemeViewEngine.ThemeFolderPath"] = themeFolderPath;
 
 			return engine;
 		}
 
-		private string[] GetAreaLocations(string themePath, string fallbackPath, string[] extensions)
+		private string[] GetAreaLocations(IEnumerable<string> paths, IEnumerable<string> extensions)
 		{
-			return extensions.SelectMany(ext => new[] { 
-					themePath + "Areas/{2}/Views/{1}/{0}." + ext, 
-					themePath + "Areas/{2}/Views/Shared/{0}." + ext, 
-					fallbackPath + "Areas/{2}/Views/{1}/{0}." + ext, 
-					fallbackPath + "Areas/{2}/Views/Shared/{0}." + ext }).ToArray();
+			return paths.SelectMany(p =>
+				extensions.SelectMany(ext => new[] { 
+					p + "Areas/{2}/Views/{1}/{0}." + ext, 
+					p + "Areas/{2}/Views/Shared/{0}." + ext })).ToArray();
 		}
 
-		private string[] GetLocations(string themePath, string fallbackPath, string[] extensions)
+		private string[] GetLocations(IEnumerable<string> paths, IEnumerable<string> extensions)
 		{
-			return extensions.SelectMany(ext => new[] { 
-					themePath + "Views/{1}/{0}." + ext, 
-					themePath + "Views/Shared/{0}." + ext, 
-					fallbackPath + "Views/{1}/{0}." + ext, 
-					fallbackPath + "Views/Shared/{0}." + ext }).ToArray();
+			return paths.SelectMany(p =>
+				extensions.SelectMany(ext => new[] {
+					p + "Views/{1}/{0}." + ext, 
+					p + "Views/Shared/{0}." + ext })).ToArray();
 		}
 
 		#endregion
 
-        public IViewEngine Component
-        {
-            get { return GetOrCreateViewEngine(null, null); }
-        }
-    }
+		public IViewEngine Component
+		{
+			get { return GetOrCreateViewEngine(null, null); }
+		}
+	}
 }

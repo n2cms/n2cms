@@ -566,7 +566,7 @@ namespace NHibernate.Caches.SysCache2
 			//time of day expiration if that is specified
 			if (_relativeExpiration.HasValue)
 			{
-				expiration = DateTime.Now.Add(_relativeExpiration.Value);
+				expiration = N2.Utility.CurrentTime().Add(_relativeExpiration.Value);
 			}
 			else if (_timeOfDayExpiration.HasValue)
 			{
@@ -575,7 +575,7 @@ namespace NHibernate.Caches.SysCache2
 
 				//add a day to the expiration time if the time of day has already passed,
 				//this will cause the item to expire tommorrow
-				if (DateTime.Now.TimeOfDay > _timeOfDayExpiration.Value)
+				if (N2.Utility.CurrentTime().TimeOfDay > _timeOfDayExpiration.Value)
 				{
 					timeExpiration = timeExpiration.AddDays(1);
 				}

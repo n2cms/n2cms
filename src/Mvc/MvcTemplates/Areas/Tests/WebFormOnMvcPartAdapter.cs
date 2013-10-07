@@ -19,14 +19,14 @@ namespace N2.Templates.Mvc.Areas.Tests
 	}
 
 	[Adapts(typeof(IWebFormPart))]
-	public class WebFormOnMvcPartAdapter : MvcAdapter
+	public class WebFormOnMvcPartAdapter : PartsAdapter
 	{
-		public override void RenderTemplate(HtmlHelper html, ContentItem item)
+		public override void RenderPart(HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
 		{
 			ContentPage page = new ContentPage();
 			page.CurrentPage = html.CurrentPage();
 
-			N2.Web.UI.ItemUtility.AddUserControl(page, item);
+			Engine.ResolveAdapter<PartsAdapter>(page.CurrentPage).AddChildPart(part, page);
 
 			page.RenderControl(new HtmlTextWriter(html.ViewContext.Writer));
 		}

@@ -4,6 +4,8 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
+using N2.Web.Targeting;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -46,7 +48,20 @@ namespace N2.Web
         /// <returns></returns>
 		protected virtual string GetHandlerPath(PathData path)
 		{
-			return path.GetRewrittenUrl();
+			var templateUrl = path.GetRewrittenUrl();
+			return ResolveTargetingUrl(templateUrl);
+		}
+
+		/// <summary>Retrieves the first targeting path which exists according to the virtual path provider or default.</summary>
+		/// <param name="defaultUrl"></param>
+		/// <returns></returns>
+		public virtual string ResolveTargetingUrl(string defaultUrl)
+		{
+			var ctx = WebContext.HttpContext.GetTargetingContext(Engine);
+			foreach (var alternativeUrl in ctx.GetTargetedPaths(defaultUrl))
+				if (WebContext.Vpp.FileExists(Url.PathPart(alternativeUrl)))
+					return alternativeUrl;
+			return defaultUrl;
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>

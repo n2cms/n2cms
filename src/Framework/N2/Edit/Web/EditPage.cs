@@ -56,16 +56,23 @@ namespace N2.Edit.Web
 
 		protected override void OnInit(EventArgs e)
 		{
+			EnsureValidSelection();
 			EnsureAuthorization(Permission.Read);
 			RegisterScripts();
 			RegisterToolbarSelection();
 			RegisterThemeCss();
 			Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
+			Response.ExpiresAbsolute = N2.Utility.CurrentTime().AddDays(-1);
 			SetupClientConstants();
 			RegisterModalScrollFix();
-
+			
             base.OnInit(e);
+		}
+
+		protected virtual void EnsureValidSelection()
+		{
+			if (IsPostBack && Selection.ParseSelectionFromRequest() == null)
+				throw new HttpException(404, "Not Found");
 		}
 
 		private void RegisterModalScrollFix()
@@ -102,6 +109,7 @@ namespace N2.Edit.Web
 		{
 			Register.JQuery(this);
 			Register.JQueryPlugins(this);
+			Register.FrameInteraction(this);
 		}
 
 		/// <summary>Selects a toolbar item in the top frame</summary>

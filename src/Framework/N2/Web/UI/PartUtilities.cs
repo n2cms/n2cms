@@ -54,8 +54,8 @@ namespace N2.Web.UI
 			writer.Write(definition.Discriminator);
 			writer.Write("'>");
 
-			WriteCommand(writer, "Edit part", "command edit", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-			WriteCommand(writer, "Delete part", "command delete", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Edit part", "command edit n2-icon-edit-sign", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Delete part", "command delete n2-icon-trash", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
 			WriteTitle(writer, definition);
 
 			writer.Write("</div>");
@@ -70,11 +70,21 @@ namespace N2.Web.UI
 
 		private static void WriteTitle(TextWriter writer, ItemDefinition definition)
 		{
-			writer.Write("<span class='title' style='background-image:url(");
-			writer.Write(Url.ResolveTokens(definition.IconUrl));
-			writer.Write(");'>");
-			writer.Write(definition.Title);
-			writer.Write("</span>");
+			if (string.IsNullOrEmpty(definition.IconUrl))
+			{
+				writer.Write("<span class='title'>");
+				writer.Write("<b class='" + definition.IconClass + "'></b>");
+				writer.Write(definition.Title);
+				writer.Write("</span>");
+			}
+			else
+			{
+				writer.Write("<span class='title' style='background-image:url(");
+				writer.Write(Url.ResolveTokens(definition.IconUrl));
+				writer.Write(");'>");
+				writer.Write(definition.Title);
+				writer.Write("</span>");
+			}
 		}
 	}
 }

@@ -10,11 +10,12 @@ using N2.Edit.Versioning;
 
 namespace N2.Edit.Versions
 {
-	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90, 
-        ToolTip = "versions", 
-        GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Publish)]
-	[ControlPanelPendingVersion("There is a newer unpublished version of this item.", 200)]
+	[ToolbarPlugin("VERS", "versions", "{ManagementUrl}/Content/Versions/Default.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/book_previous.png", 90,
+		ToolTip = "versions",
+		GlobalResourceClassName = "Toolbar",
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
+	[ControlPanelPendingVersion("View draft", 200)]
 	public partial class Default : Web.EditPage
 	{
 		ContentItem publishedItem;
@@ -24,13 +25,13 @@ namespace N2.Edit.Versions
 
 		protected override void OnInit(EventArgs e)
 		{
-            Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
+			Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title", "Versions"), Selection.SelectedItem.Title);
 
 			persister = Engine.Persister;
 			versioner = Engine.Resolve<IVersionManager>();
 
 			bool isVersionable = versioner.IsVersionable(Selection.SelectedItem);
-            cvVersionable.IsValid = isVersionable;
+			cvVersionable.IsValid = isVersionable;
 
 			publishedItem = Selection.SelectedItem.VersionOf.Value ?? Selection.SelectedItem;
 
@@ -41,7 +42,7 @@ namespace N2.Edit.Versions
 		{
 			var stateChanger = Engine.Resolve<StateChanger>();
 
-            ContentItem currentVersion = Selection.SelectedItem;
+			ContentItem currentVersion = Selection.SelectedItem;
 			int versionIndex = Convert.ToInt32(e.CommandArgument);
 			if (e.CommandName == "Publish")
 			{
@@ -49,7 +50,7 @@ namespace N2.Edit.Versions
 				{
 					currentVersion.SavedBy = User.Identity.Name;
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
-						currentVersion.Published = DateTime.Now;
+						currentVersion.Published = N2.Utility.CurrentTime();
 					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);
@@ -62,9 +63,9 @@ namespace N2.Edit.Versions
 					ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestore, storeCurrent);
 
 					currentVersion.SavedBy = User.Identity.Name;
-					
+
 					if (!currentVersion.Published.HasValue || currentVersion.Published.Value > Utility.CurrentTime())
-						currentVersion.Published = DateTime.Now;
+						currentVersion.Published = N2.Utility.CurrentTime();
 					stateChanger.ChangeTo(currentVersion, ContentState.Published);
 					persister.Save(currentVersion);
 					Refresh(currentVersion, ToolbarArea.Both);
@@ -82,13 +83,36 @@ namespace N2.Edit.Versions
 
 		}
 
+		public class VersionInfo
+		{
+			public int ID { get; set; }
+			public string Title { get; set; }
+			public ContentState State { get; set; }
+			public string IconUrl { get; set; }
+			public DateTime? Published { get; set; }
+			public DateTime? Expires { get; set; }
+			public int VersionIndex { get; set; }
+			public string SavedBy { get; set; }
+			public ContentItem Content { get; set; }
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 
-			IList<ContentItem> versions = versioner.GetVersionsOf(publishedItem);
+			var versions = versioner.GetVersionsOf(publishedItem)
+				.Select(v => new VersionInfo { ID = v.ID, Title = v.Title, State = v.State, IconUrl = v.IconUrl, Published = v.Published, Expires = v.Expires, VersionIndex = v.VersionIndex, SavedBy = v.SavedBy, Content = v })
+				.ToList();
 
-			gvHistory.DataSource = versions.Select(v => new { v.ID, v.Title, v.State, v.IconUrl, v.Published, v.Expires, v.VersionIndex, v.SavedBy, Content = v });
+
+			DateTime? previousExpired = publishedItem.Published;
+			foreach (var version in versions.OrderBy(v => v.VersionIndex))
+			{
+				version.Published = previousExpired;
+				previousExpired = version.Expires;
+			}
+
+			gvHistory.DataSource = versions;
 			gvHistory.DataBind();
 		}
 
@@ -111,7 +135,7 @@ namespace N2.Edit.Versions
 				return true;
 			if (!item.VersionOf.HasValue && item.Published.HasValue && item.Published > Utility.CurrentTime())
 				return true;
-			
+
 			return false;
 		}
 	}

@@ -17,6 +17,7 @@ namespace N2.Web
 		/// <summary>The token used for resolving the management url.</summary>
 		public const string ManagementUrlToken = "{ManagementUrl}";
 		public const string ThemesUrlToken = "{ThemesUrl}";
+		public const string SelectedQueryKeyToken = "{SelectedQueryKey}";
 
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
@@ -32,7 +33,7 @@ namespace N2.Web
 																			"arguments"
 																		};
 
-		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" } };
+		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" }, { ThemesUrlToken, "~/App_Themes/" }, { SelectedQueryKeyToken, "selected" } };
 
 		string scheme;
 		string authority;
@@ -789,6 +790,21 @@ namespace N2.Web
 			return path.Substring(0, index);
 		}
 
+		/// <summary>Gets the file extension from the path (if any).</summary>
+		/// <param name="path">The path to find the extension of.</param>
+		/// <returns>An extension including . or null if no extnesion was found</returns>
+		public static string GetExtension(string path)
+		{
+			int index = path.LastIndexOfAny(dotsAndSlashes);
+
+			if (index < 0)
+				return null;
+			if (path[index] == '/')
+				return null;
+
+			return path.Substring(index);
+		}
+
 		/// <summary>Removes the last part from the url segments.</summary>
 		/// <returns></returns>
 		public Url RemoveTrailingSegment(bool maintainExtension)
@@ -920,7 +936,7 @@ namespace N2.Web
 		/// <returns>A dictionary of the query parts.</returns>
 		public static IDictionary<string, string> ParseQueryString(string query)
 		{
-			var dictionary = new Dictionary<string, string>();
+			var dictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 			if (query == null)
 				return dictionary;
 

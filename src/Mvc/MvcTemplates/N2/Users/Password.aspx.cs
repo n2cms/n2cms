@@ -1,9 +1,10 @@
+using N2.Edit.Web;
 using System;
 using System.Web.Security;
 
 namespace N2.Edit.Membership
 {
-	public partial class Password : System.Web.UI.Page
+	public partial class Password : EditPage
 	{
 		string SelectedUserName;
 		private MembershipUser SelectedUser;

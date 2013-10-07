@@ -126,7 +126,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 			List<int> created = new List<int> { containerID };
 
-			var start = DateTime.Now;
+			var start = N2.Utility.CurrentTime();
 
 			var sentences = CreateSentences(1000, 10);
 			for (int i = 0; i < amount; i++)

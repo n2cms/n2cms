@@ -175,11 +175,11 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(url)) return null;
 
 			ContentItem startingPoint = GetStartPage(url);
-            if (startingPoint == null)
-                return null;
+			if (startingPoint == null)
+				return null;
 
-            return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
-                ?? Parse(startingPoint, url);
+			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
+				?? Parse(startingPoint, url);
 		}
 
 		#region Parse Helper Methods
@@ -269,8 +269,7 @@ namespace N2.Web
 			{
 				ContentItem version = item.VersionOf;
 				if (version != null)
-					return BuildUrl(version)
-						.SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
+					return BuildUrl(version).SetQueryParameter(PathData.VersionIndexQueryKey, item.VersionIndex);
 			}
 			else if (item.ID == 0)
 			{

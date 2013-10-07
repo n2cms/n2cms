@@ -1,15 +1,13 @@
 <%@ Page MasterPageFile="..\Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Versions.Default" Title="Previous Versions" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
-<asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-	<link rel="stylesheet" href="../../Resources/Css/Versions.css" type="text/css" />
-</asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
 	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />
+	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="alert alert-margin" meta:resourceKey="cvVersionable" Display="Dynamic" />
 	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
-	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="VersionIndex" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
+
+	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="VersionIndex" CssClass="table table-striped table-hover table-condensed" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
 		<Columns>
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
@@ -20,7 +18,8 @@
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# Eval("Content.Url") %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Eval("Content")).Title) ? "(untitled)" : ((N2.ContentItem)Eval("Content")).Title%></a></ItemTemplate>
+					<edit:ItemLink DataSource='<%# Eval("Content") %>' InterfaceUrl="../Edit.aspx" runat="server" />
+				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
 				<ItemTemplate>

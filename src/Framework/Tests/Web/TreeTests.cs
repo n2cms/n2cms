@@ -183,9 +183,9 @@ namespace N2.Tests.Web
 		//[Test]
 		//public void CanSetItemClasses()
 		//{
-		//    a_a.Published = DateTime.Now.AddDays(3);
+		//    a_a.Published = N2.Utility.CurrentTime().AddDays(3);
 		//    a_a.AuthorizedRoles.Add(new AuthorizedRole(a_a, "Administrator"));
-		//    a_a_b.Expires = DateTime.Now;
+		//    a_a_b.Expires = N2.Utility.CurrentTime();
 
 		//    string treeString = Tree.From(a_a)
 		//        .OpenTo(a_a_a)

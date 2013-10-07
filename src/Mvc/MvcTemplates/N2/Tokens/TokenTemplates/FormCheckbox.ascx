@@ -9,11 +9,14 @@
 %>
 
 <span class="formfield">
-<% foreach(var opt in options) { %>
-<% var id = @Html.UniqueID(null); %>
-<span class="formcheckbox">
-<input type="checkbox" name="<%= name %>" value="<%= opt %>" id="<%= id %>" />
-<label for="<%= id %>"><%= opt %></label>
-</span>
-<% } %>
+	<% foreach (var opt in options)
+	{ %>
+	<% var id = @Html.UniqueID(null); %>
+	<span class="formcheckbox">
+		<label for="<%= id %>" class="checkbox">
+			<input type="checkbox" name="<%= name %>" value="<%= opt %>" id="<%= id %>" />
+			<%= opt %>
+		</label>
+	</span>
+	<% } %>
 </span>

@@ -121,9 +121,19 @@ namespace N2.Persistence
 			return Parameter.Equal("class", discriminator);
 		}
 
+		public static Parameter TypeIn(string[] discriminators)
+		{
+			return Parameter.In("class", discriminators);
+		}
+
 		public static Parameter TypeEqual(Type type)
 		{
 			return TypeEqual(DefinitionMap.Instance.GetOrCreateDefinition(type).Discriminator);
+		}
+
+		public static Parameter TypeIn(params Type[] types)
+		{
+			return TypeIn(types.Select(t => DefinitionMap.Instance.GetOrCreateDefinition(t).Discriminator).ToArray());
 		}
 
 		public static Parameter TypeNotEqual(string discriminator)
@@ -131,9 +141,19 @@ namespace N2.Persistence
 			return Parameter.NotEqual("class", discriminator);
 		}
 
+		public static Parameter TypeNotIn(string[] discriminators)
+		{
+			return Parameter.NotIn("class", discriminators);
+		}
+
 		public static Parameter TypeNotEqual(Type type)
 		{
 			return TypeNotEqual(DefinitionMap.Instance.GetOrCreateDefinition(type).Discriminator);
+		}
+
+		public static Parameter TypeNotIn(params Type[] types)
+		{
+			return Parameter.NotIn("class", types.Select(t => DefinitionMap.Instance.GetOrCreateDefinition(t).Discriminator).ToArray());
 		}
 
 		public static Parameter Below(ContentItem ancestor)

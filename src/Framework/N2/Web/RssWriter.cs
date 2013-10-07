@@ -54,7 +54,7 @@ namespace N2.Web
 			xtw.WriteElementString("language", "en-us");
             if(feed.Published != null)
                 xtw.WriteElementString("pubDate", GetDate(feed.Published.Value));
-            xtw.WriteElementString("lastBuildDate", GetDate(DateTime.Now));
+            xtw.WriteElementString("lastBuildDate", GetDate(N2.Utility.CurrentTime()));
 			xtw.WriteElementString("generator", "N2 CMS");
 			xtw.WriteElementString("managingEditor", feed.Author);
 		}

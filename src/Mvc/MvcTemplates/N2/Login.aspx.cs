@@ -18,8 +18,8 @@ namespace N2.Edit
 			FormsAuthentication.SignOut();
 			string returnUrl = Request["returnUrl"];
 			string logoutUrl = System.Configuration.ConfigurationManager.AppSettings["N2.logout.url"];
-			if (!String.IsNullOrEmpty(logoutUrl)) logoutUrl = "login.aspx?returnUrl=Default.aspx";
-			if (!String.IsNullOrEmpty(returnUrl)) logoutUrl = returnUrl;
+			if (string.IsNullOrEmpty(logoutUrl)) logoutUrl = "login.aspx?returnUrl=.";
+			if (!string.IsNullOrEmpty(returnUrl)) logoutUrl = returnUrl;
 			Response.Redirect(logoutUrl);
 		}
 

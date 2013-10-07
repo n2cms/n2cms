@@ -23,7 +23,7 @@ namespace N2.Extensions.Tests.Linq
 			root.StringProperty = "a string";
 			root.StringProperty2 = "another string";
 			root.IntProperty = 123;
-			root.DateTimeProperty = now = DateTime.Now;
+			root.DateTimeProperty = now = N2.Utility.CurrentTime();
 			root.DoubleProperty = 345.678;
 			root.BooleanProperty = true;
 			root.GetDetailCollection("CollectionProperty", true).AddRange(new[] { "hello", "world" });

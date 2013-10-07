@@ -59,7 +59,11 @@ namespace N2.Web.UI.WebControls
 		{
 			writer.Write("<div id='");
 			writer.Write(ClientID);
-			writer.Write("' class='sc'");
+			writer.Write("' class='sc");
+			var item = ItemUtility.FindCurrentItem(this);
+			if (item != null)
+				writer.Write(" state" + item.State.ToString());
+			writer.Write("'");
 			if (BackgroundUrl.Length > 0)
 			{
 				WriteBgStyle(BackgroundUrl, writer);
@@ -68,7 +72,7 @@ namespace N2.Web.UI.WebControls
 			writer.Write("<div class='scContent'>");
 
 			base.Render(writer);
-			writer.Write("<a href='javascript:void(0);' class='close' title='Close'>&laquo;</a><a href='javascript:void(0);' class='open' title='Open'>&raquo;</a>");
+			writer.Write("<a href='javascript:void(0);' class='close sc-toggler' title='Close'>&laquo;</a><a href='javascript:void(0);' class='open sc-toggler' title='Open'>&raquo;</a>");
 			writer.Write("</div></div>");
 		}
 

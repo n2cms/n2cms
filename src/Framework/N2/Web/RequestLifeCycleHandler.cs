@@ -23,6 +23,7 @@ namespace N2.Web
 		protected bool initialized;
 		protected RewriteMethod rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
 		protected string managementUrl;
+		private string selectedQueryKey;
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
@@ -36,6 +37,7 @@ namespace N2.Web
 		{
 			rewriteMethod = configuration.Sections.Web.Web.Rewrite;
 			managementUrl = configuration.Sections.Management.Paths.ManagementInterfaceUrl;
+			selectedQueryKey = configuration.Sections.Management.Paths.SelectedQueryKey;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;
@@ -64,6 +66,7 @@ namespace N2.Web
 					string dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
 					Url.SetToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
 					Url.SetToken("{IconsUrl}", Url.ResolveTokens(Url.ManagementUrlToken + "/Resources/icons"));
+					Url.SetToken(Url.SelectedQueryKeyToken, selectedQueryKey);
 				}
 			}
 			PathData data = dispatcher.GetCurrentPath();

@@ -40,7 +40,7 @@ namespace N2.Management.Myself.Analytics.Controllers
 
 		//public ActionResult Statistics()
 		//{
-		//    var entries = GetStatisticsEntries(DateTime.Today.AddDays(-CurrentItem.ChartPeriod), DateTime.Now);
+		//    var entries = GetStatisticsEntries(DateTime.Today.AddDays(-CurrentItem.ChartPeriod), N2.Utility.CurrentTime());
 
 		//    return PartialView(new AnalyticsViewModel { Entries = entries });
 		//}
@@ -49,7 +49,7 @@ namespace N2.Management.Myself.Analytics.Controllers
 		//public ActionResult StatisticsData(DateTime? from, DateTime? to)
 		//{
 		//    var start = from ?? DateTime.Today.AddDays(-CurrentItem.ChartPeriod);
-		//    var stop = to ?? DateTime.Now;
+		//    var stop = to ?? N2.Utility.CurrentTime();
 		//    var entries = GetStatisticsEntries(start, stop).ToList();
 
 		//    var labels = new string[entries.Count];

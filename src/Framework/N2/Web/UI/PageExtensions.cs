@@ -6,15 +6,6 @@ namespace N2.Web.UI
 {
 	public static class PageExtensions
 	{
-		internal static IEngine GetEngine(this HttpContext context)
-		{
-			var engine = context.Items["N2.Engine"] as IEngine;
-			if (engine != null)
-				return engine;
-
-			return N2.Context.Current;
-		}
-
 		/// <summary>
 		/// Gets the engine from the page or falls back to static context.
 		/// </summary>

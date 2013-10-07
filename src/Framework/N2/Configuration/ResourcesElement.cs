@@ -4,13 +4,13 @@ namespace N2.Configuration
 {
 	public class ResourcesElement : ConfigurationElement
 	{
-		public const string JQueryVersion = "1.7.2";
+		public const string JQueryVersion = "1.10.2";
 
 		/// <summary>Whether to make registered web resources debuggable.</summary>
-		[ConfigurationProperty("debug", DefaultValue = false)]
-		public bool Debug
+		[ConfigurationProperty("debug")]
+		public bool? Debug
 		{
-			get { return (bool)base["debug"]; }
+			get { return (bool?)base["debug"]; }
 			set { base["debug"] = value; }
 		}
 
@@ -23,7 +23,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The path to the included jQuery UI javascript resource.</summary>
-		[ConfigurationProperty("jQueryUiPath", DefaultValue = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion)]
+		[ConfigurationProperty("jQueryUiPath", DefaultValue = "{ManagementUrl}/Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js")]
 		public string JQueryUiPath
 		{
 			get { return (string)base["jQueryUiPath"]; }
@@ -88,5 +88,11 @@ namespace N2.Configuration
 			set { base["TwitterBootstrapJsPath"] = value; }
 		}
 
+		[ConfigurationProperty("IconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]
+		public string IconsCssPath
+		{
+			get { return (string)base["IconsCssPath"]; }
+			set { base["IconsCssPath"] = value; }
+		}
 	}
 }

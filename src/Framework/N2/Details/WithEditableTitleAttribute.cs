@@ -70,7 +70,7 @@ namespace N2.Details
 			TextBox tb = new TextBox();
 			tb.ID = Name;
 			tb.MaxLength = 250;
-			tb.CssClass = "titleEditor";
+			tb.CssClass = "titleEditor input-xxlarge";
             tb.Placeholder(GetLocalizedText("FromDatePlaceholder") ?? Placeholder);
 			container.Controls.Add(tb);
 			return tb;

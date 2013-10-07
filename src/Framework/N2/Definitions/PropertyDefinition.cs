@@ -69,7 +69,7 @@ namespace N2.Definitions
 		public PropertyDefinition Clone()
 		{
 			var pd = (PropertyDefinition)MemberwiseClone();
-			pd.Attributes = pd.Attributes.ToArray();
+			pd.Attributes = pd.Attributes.Select(a => a.TryClone()).ToArray();
 			return pd;
 		}
 

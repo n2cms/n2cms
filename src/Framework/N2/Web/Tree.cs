@@ -12,8 +12,7 @@ namespace N2.Web
 	/// <summary>
 	/// Creates a hierarchical tree of ul and li:s for usage on web pages.
 	/// </summary>
-	public class Tree
-		: System.Web.IHtmlString
+	public class Tree : System.Web.IHtmlString
 	{
 		private HierarchyBuilder hierarchy;
 
@@ -191,23 +190,29 @@ namespace N2.Web
 		private void WriteChildren(TextWriter writer, HierarchyNode<ContentItem> parent, bool renderUl)
 		{
 			IDisposable wrapper = null;
-			foreach (var child in parent.Children)
+			try
 			{
-				if (!filter.Match(child.Current))
-					continue;
-
-				if (renderUl && wrapper == null)
-					wrapper = TagWrapper.Begin("ul", child, tagModifier, writer);
-
-				using (TagWrapper.Begin("li", child, tagModifier, writer))
+				foreach (var child in parent.Children)
 				{
-					linkWriter(child, writer);
-					WriteChildren(writer, child, true);
-				}
-			}
+					if (!filter.Match(child.Current))
+						continue;
 
-			if (wrapper != null)
-				wrapper.Dispose();
+					if (renderUl && wrapper == null)
+						wrapper = TagWrapper.Begin("ul", child, tagModifier, writer);
+
+					using (TagWrapper.Begin("li", child, tagModifier, writer))
+					{
+						linkWriter(child, writer);
+						WriteChildren(writer, child, true);
+					}
+				}
+
+			}
+			finally
+			{
+				if (wrapper != null)
+					wrapper.Dispose();
+			}
 		}
 
 		public override string ToString()

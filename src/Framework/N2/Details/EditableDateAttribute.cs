@@ -73,14 +73,14 @@ namespace N2.Details
             if (value == null)
             {
                 if (useTodayAsDefault == true)
-                    picker.SelectedDate = DateTime.Now;
+                    picker.SelectedDate = N2.Utility.CurrentTime();
                 else
                     picker.SelectedDate = null;
             }
             else if ((DateTime)value == DateTime.MinValue)
             {
                 if (useTodayAsDefault == true)
-                    picker.SelectedDate = DateTime.Now;
+                    picker.SelectedDate = N2.Utility.CurrentTime();
                 else
                     picker.SelectedDate = (DateTime?)value;
             }

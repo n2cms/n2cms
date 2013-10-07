@@ -14,6 +14,7 @@ using N2.Plugin;
 using N2.Resources;
 using N2.Web.Parts;
 using N2.Security;
+using System.Linq;
 
 namespace N2.Web.UI.WebControls
 {
@@ -94,10 +95,10 @@ namespace N2.Web.UI.WebControls
 		private const string switchScriptFormat =
 			@"
 jQuery(document).ready(function(){{
-    if(window.n2ctx){{
-		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4} }});
-		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
-		else jQuery('.cpView').hide();
+	if(window.n2ctx){{
+		n2ctx.refresh({{ path: '{0}', navigationUrl: '{2}', permission: '{3}', force:{4}, mode:'{5}' }});
+		if (n2ctx.hasTop()) $('.complementary').hide();
+		else $('.cpView').hide();
 	}}
 	if(window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
 }});";
@@ -122,6 +123,10 @@ jQuery(document).ready(function(){{
 				AppendDefinedTemplate(HiddenTemplate, this);
 				return;
 			}
+
+			Register.StyleSheet(Page, Register.DefaultIconsCssPath);
+
+
 			if (state.IsFlagSet(ControlPanelState.Visible))
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
 			if (state.IsFlagSet(ControlPanelState.DragDrop))
@@ -172,7 +177,7 @@ jQuery(document).ready(function(){{
 				div.Attributes["id"] = definition.Discriminator;
 				div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
 				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.Title);
+				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.IconClass, definition.Title);
 				definitions.Controls.Add(div);
 			}
 		}
@@ -240,11 +245,7 @@ jQuery(document).ready(function(){{
 			ContentItem root = Engine.Persister.Repository.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
-				var span = new HtmlGenericControl("span");
-				span.Attributes["class"] = "control";
-				pluginPanel.Controls.Add(span);
-
-				plugin.AddTo(span, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
+				plugin.AddTo(pluginPanel, new PluginContext(new SelectionUtility(CurrentItem, null), start, root, state, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 
@@ -290,7 +291,8 @@ jQuery(document).ready(function(){{
 						previewUrl, // 1
 						navigationUrl, // 2
 						adapter.GetMaximumPermission(CurrentItem), // 3
-						(Page.Request["refresh"] == "true").ToString().ToLower());
+						(Page.Request["refresh"] == "true").ToString().ToLower(), // 4
+						GetState(Page.GetEngine()).ToString());
 					writer.WriteLineNoTabs(script);
 				}
 				writer.WriteLineNoTabs("}");
@@ -298,7 +300,7 @@ jQuery(document).ready(function(){{
 
 			writer.Write(@"//--></script>");
 
-			writer.Write("<div class='controlPanel'>");
+			writer.Write("<div class='controlPanel state" + CurrentItem.State.ToString() + "'>");
 			base.Render(writer);
 			writer.Write("</div>");
 		}
@@ -364,12 +366,12 @@ jQuery(document).ready(function(){{
 			if (!security.IsEditor(user))
 				return ControlPanelState.Hidden;
 
-            var state = ControlPanelState.Visible;
+			var state = ControlPanelState.Visible;
 
 			if (queryString["edit"] == "true")
-                state |= ControlPanelState.Editing;
-            if (queryString["edit"] == "drag")
-                state |= ControlPanelState.DragDrop;
+				state |= ControlPanelState.Editing;
+			if (queryString["edit"] == "drag")
+				state |= ControlPanelState.DragDrop;
 			if (item != null && (item.State == ContentState.Draft || item.VersionOf.HasValue))
 				state |= ControlPanelState.Previewing;
 
@@ -377,9 +379,26 @@ jQuery(document).ready(function(){{
 
 		}
 
-		public static string FormatImageAndText(string iconUrl, string text)
+		public static string FormatImageAndText(string iconUrl, string iconClass, string text)
 		{
-			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
+			const string C_SPRITE = "sprite:";
+			string icon = "";
+			if (!string.IsNullOrEmpty(iconUrl))
+			{
+				if (iconUrl.StartsWith(C_SPRITE))
+					icon = string.Format(@"<span class=""{0} sprite""></span>", (iconUrl.Split('-').LastOrDefault() ?? string.Empty).ToLower());
+				else
+					icon = string.Format(@"<img src=""{0}"" alt=""icon"" />", iconUrl);
+			}
+			else if (!string.IsNullOrEmpty(iconClass))
+			{
+				icon = string.Format(@"<b class=""{0}""></b>", iconClass);
+			}
+			
+			if (string.IsNullOrEmpty(text))
+				return icon;
+			else
+				return icon + " " + text;
 		}
 
 		public static void RegisterArrayValue(Page page, string key, string value)

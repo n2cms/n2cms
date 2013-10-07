@@ -14,7 +14,7 @@
     <n2:tabpanel runat="server" ToolTip="Import" meta:resourceKey="tpImport">
 	    <asp:MultiView ID="uploadFlow" runat="server" ActiveViewIndex="0">
 		    <asp:View ID="uploadView" runat="server">
-		        <asp:CustomValidator id="cvImport" runat="server" CssClass="validator" meta:resourceKey="cvImport" Display="Dynamic"/>
+		        <asp:CustomValidator id="cvImport" runat="server" CssClass="alert alert-error alert-margin" meta:resourceKey="cvImport" Display="Dynamic"/>
 			    <div class="upload">
 				    <div class="cf">
 				        <asp:FileUpload ID="fuImport" runat="server" />

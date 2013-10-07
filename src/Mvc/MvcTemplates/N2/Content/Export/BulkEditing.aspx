@@ -38,7 +38,7 @@
 					</blockquote>
 				</div>
 				<hr />
-				<asp:Button runat="server" OnCommand="OnNext" Text="Next" />
+				<asp:Button runat="server" OnCommand="OnNext" Text="Next" CssClass="btn" />
 			</div>
 		</asp:View>
 		<asp:View ID="vEditors" runat="server">
@@ -48,16 +48,16 @@
 				<asp:CheckBoxList ID="cblEditors" DataTextField="Title" DataValueField="Name" runat="server" />
 			</div>
 			<hr />
-			<asp:Button ID="btnSelectEditors" runat="server" OnCommand="OnGotoEdit" Text="Next" />
+			<asp:Button ID="btnSelectEditors" runat="server" OnCommand="OnGotoEdit" Text="Next" CssClass="btn" />
 		</asp:View>
 		<asp:View ID="vEditing" runat="server">
-			<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
-			<asp:CustomValidator ID="cvException" runat="server" Display="None" />
+			<asp:ValidationSummary ID="vsEdit" runat="server" CssClass="alert alert-margin" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+			<asp:CustomValidator ID="cvException" CssClass="alert alert-error alert-margin" runat="server" Display="None" />
 
 			<n2:ItemEditor ID="ie" runat="server" />
 
 			<hr />
-			<asp:Button ID="btnSave" runat="server" OnCommand="OnSave" Text="Save" />
+			<asp:Button ID="btnSave" runat="server" OnCommand="OnSave" Text="Save" CssClass="btn btn-primary" />
 		</asp:View>
 		<asp:View ID="vConfirmation" runat="server">
 			<asp:Repeater ID="rptAffectedItems" runat="server">

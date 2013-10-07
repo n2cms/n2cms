@@ -18,7 +18,7 @@ namespace N2.Edit.Navigation
 		{
             string target = context.Request["target"] ?? Targets.Preview;
 
-			var selection = new SelectionUtility(context.Request, N2.Context.Current);
+			var selection = new SelectionUtility(context, N2.Context.Current);
 			ContentItem selectedItem = selection.SelectedItem;
 			
 			context.Response.ContentType = "text/plain";

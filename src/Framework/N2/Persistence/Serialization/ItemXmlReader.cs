@@ -8,17 +8,29 @@ using N2.Security;
 
 namespace N2.Persistence.Serialization
 {
+	public interface IItemXmlReader
+	{
+		bool IgnoreMissingTypes { get; set; }
+		IImportRecord Read(XPathNavigator navigator);
+		//ContentItem ReadSingleItem(XPathNavigator navigator, ReadingJournal journal);
+	}
+
 	[Service]
-	public class ItemXmlReader : XmlReader
+	[Service(typeof(IItemXmlReader))]
+	public class ItemXmlReader : XmlReader, IItemXmlReader
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly ContentActivator activator;
 		private readonly IDictionary<string, IXmlReader> readers;
-		bool ignoreMissingTypes = true;
+		bool _ignoreMissingTypes = false;
 		private IRepository<ContentItem> repository;
 
 		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IRepository<ContentItem> repository)
 		{
+			if (definitions == null)
+				throw new ArgumentNullException("definitions");
+
+
 			this.definitions = definitions;
 			this.activator = activator;
 			this.readers = DefaultReaders();
@@ -27,8 +39,8 @@ namespace N2.Persistence.Serialization
 
 		public bool IgnoreMissingTypes
 		{
-			get { return ignoreMissingTypes; }
-			set { ignoreMissingTypes = value; }
+			get { return _ignoreMissingTypes; }
+			set { _ignoreMissingTypes = value; }
 		}
 
 		private static IDictionary<string, IXmlReader> DefaultReaders()
@@ -58,7 +70,7 @@ namespace N2.Persistence.Serialization
 				catch (DefinitionNotFoundException ex)
 				{
 					journal.Error(ex);
-					if (!ignoreMissingTypes)
+					if (!_ignoreMissingTypes)
 						throw;
 				}
 			}
@@ -84,7 +96,7 @@ namespace N2.Persistence.Serialization
 
 		protected virtual void ReadDefaultAttributes(Dictionary<string, string> attributes, ContentItem item, ReadingJournal journal)
 		{
-            item.Created = ToNullableDateTime(attributes["created"]).Value;
+			item.Created = ToNullableDateTime(attributes["created"]).Value;
 			item.Expires = ToNullableDateTime(attributes["expires"]);
 			item.ID = Convert.ToInt32(attributes["id"]);
 			item.Name = attributes["name"];
@@ -94,7 +106,7 @@ namespace N2.Persistence.Serialization
 			item.SavedBy = attributes["savedBy"];
 			item.SortOrder = Convert.ToInt32(attributes["sortOrder"]);
 			item.Title = attributes["title"];
-            item.Updated = ToNullableDateTime(attributes["updated"]).Value;
+			item.Updated = ToNullableDateTime(attributes["updated"]).Value;
 			item.Visible = Convert.ToBoolean(attributes["visible"]);
 			if (!string.IsNullOrEmpty(attributes["zoneName"]))
 				item.ZoneName = attributes["zoneName"];
@@ -157,10 +169,17 @@ namespace N2.Persistence.Serialization
 
 		protected virtual ItemDefinition FindDefinition(Dictionary<string, string> attributes)
 		{
-			var definition = definitions.GetDefinition(attributes["discriminator"]);
-			if(definition == null)
-				throw new DefinitionNotFoundException(string.Format("No definition found for '{0}' with name '{1}' and discriminator '{2}'", attributes["title"], attributes["name"], attributes["discriminator"]), attributes);
-			return definition;
+			var discriminator = attributes.ContainsKey("discriminator") ? attributes["discriminator"] : null;
+			var title = attributes.ContainsKey("title") ? attributes["title"] : null;
+			var name = attributes.ContainsKey("name") ? attributes["name"] : null;
+			if (discriminator != null)
+			{
+				var definition = definitions.GetDefinition(discriminator);
+				if (definition != null)
+					return definition;
+			}
+			throw new DefinitionNotFoundException(string.Format("No definition found for '{0}' with name '{1}' and discriminator '{2}'", title, name, discriminator), attributes);
 		}
+
 	}
 }

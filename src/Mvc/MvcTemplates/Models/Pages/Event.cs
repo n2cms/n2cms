@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Event",
 		Description = "An event in the event calendar.",
 		SortOrder = 110,
-		IconUrl = "~/Content/Img/calendar_view_day.png")]
+		IconClass = "n2-icon-calendar-empty")]
 	[RestrictParents(typeof (Calendar))]
 	public class Event : ContentPageBase, ISyndicatable
 	{

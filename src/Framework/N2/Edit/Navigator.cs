@@ -22,7 +22,7 @@ namespace N2.Edit
 			this.sources = sources;
 		}
 
-		public ContentItem Navigate(ContentItem startingPoint, string path)
+		public virtual ContentItem Navigate(ContentItem startingPoint, string path)
 		{
 			return startingPoint.GetChild(path)
 				?? sources.ResolvePath(startingPoint, path).CurrentItem
@@ -30,7 +30,7 @@ namespace N2.Edit
 				?? virtualNodes.Get(path);
 		}
 
-		public ContentItem Navigate(string path)
+		public virtual ContentItem Navigate(string path)
 		{
 			if (path == null) 
 				return null;

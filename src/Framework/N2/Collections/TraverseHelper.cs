@@ -364,7 +364,8 @@ namespace N2.Collections
 		{
 			if (path == null)
 				return null;
-			return (startItem ?? engine().UrlParser.StartPage).FindPath(path);
+			var g = (startItem ?? engine().UrlParser.StartPage);
+			return g == null ? null : g.FindPath(path);
 		}
 
 		/// <summary>Gets the item at of the specified type.</summary>

@@ -13,9 +13,9 @@ using N2.Web;
 
 namespace N2.Engine.Globalization
 {
-    /// <summary>
-    /// Globalization handler.
-    /// </summary>
+	/// <summary>
+	/// Globalization handler.
+	/// </summary>
 	[Service(typeof(ILanguageGateway))]
 	public class LanguageGateway : ILanguageGateway
 	{
@@ -25,11 +25,11 @@ namespace N2.Engine.Globalization
 		readonly IEditUrlManager editUrlManager;
 		readonly IDefinitionManager definitions;
 		readonly IHost host;
-    	readonly ISecurityManager security;
-    	readonly IWebContext context;
+		readonly ISecurityManager security;
+		readonly IWebContext context;
 		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
 		readonly DescendantItemFinder descendantFinder;
-        bool enabled = true;
+		bool enabled = true;
 
 		public LanguageGateway(
 			IPersister persister,
@@ -53,11 +53,11 @@ namespace N2.Engine.Globalization
 			Enabled = config.Globalization.Enabled;
 		}
 
-    	public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
+		public bool Enabled
+		{
+			get { return enabled; }
+			set { enabled = value; }
+		}
 
 		public ILanguage GetLanguage(ContentItem item)
 		{
@@ -74,13 +74,13 @@ namespace N2.Engine.Globalization
 			return null;
 		}
 
-        /// <summary>Gets the language with a certain language code.</summary>
-        /// <param name="languageCode">The language code to find a matching language for.</param>
-        /// <returns>The language with the code or null.</returns>
-        public ILanguage GetLanguage(string languageCode)
-        {
-            return GetLanguageWithCode(GetAvailableLanguages(), languageCode);
-        }
+		/// <summary>Gets the language with a certain language code.</summary>
+		/// <param name="languageCode">The language code to find a matching language for.</param>
+		/// <returns>The language with the code or null.</returns>
+		public ILanguage GetLanguage(string languageCode)
+		{
+			return GetLanguageWithCode(GetAvailableLanguages(), languageCode);
+		}
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
@@ -106,16 +106,16 @@ namespace N2.Engine.Globalization
 					var languageItem = language as ContentItem;
 					int languageID = languageItem.ID;
 					if (languageItem != null && languageItem.ID > 0)
-						languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, FlagUrl = language.FlagUrl, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
+						languages.Add(new LanguageInfo { ID = languageID, LanguageCode = language.LanguageCode, LanguageTitle = language.LanguageTitle, Translation = () => persister.Get(languageID) });
 				}
 			}
 			return languages.ToArray();
 		}
 
-    	public IEnumerable<ContentItem> FindTranslations(ContentItem item)
+		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
 		{
-            if (item == null) 
-                return new ContentItem[0];
+			if (item == null) 
+				return new ContentItem[0];
 
 			if (item is ILanguage)
 			{
@@ -145,7 +145,7 @@ namespace N2.Engine.Globalization
 			IEnumerable<ContentItem> translations = FindTranslations(item);
 			IEnumerable<ILanguage> languages = GetAvailableLanguages();
 
-            var itemSite = host.GetSite(item);
+			var itemSite = host.GetSite(item);
 			foreach (ILanguage language in languages)
 			{
 				if (language != itemlanguage || includeCurrent)
@@ -158,7 +158,7 @@ namespace N2.Engine.Globalization
 					if (translation != null)
 					{
 						string url = editUrlManager.GetEditExistingItemUrl(translation);
-                        yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translation));
+						yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translation));
 					}
 					else
 					{
@@ -168,7 +168,7 @@ namespace N2.Engine.Globalization
 						{
 							if (generateNonTranslated)
 							{
-                                yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(GetTranslation(language)))
+								yield return new TranslateSpecification("#", language, translation, definition, host.GetSite(GetTranslation(language)))
 								{
 									IsTranslatable = false
 								};
@@ -179,7 +179,7 @@ namespace N2.Engine.Globalization
 						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
 						url = url.AppendQuery(TranslationKey, item.TranslationKey ?? item.ID);
 
-                        yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translatedParent));
+						yield return new TranslateSpecification(url, language, translation, definition, host.GetSite(translatedParent));
 					}
 				}
 			}
@@ -219,13 +219,13 @@ namespace N2.Engine.Globalization
 			return null;
 		}
 
-        /// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
-        /// <param name="items">The translations to associate with each other.</param>
-        public void Associate(IEnumerable<ContentItem> items)
-        {
-            EnsureNoLanguageRoots(items);
+		/// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
+		/// <param name="items">The translations to associate with each other.</param>
+		public void Associate(IEnumerable<ContentItem> items)
+		{
+			EnsureNoLanguageRoots(items);
 
-            ContentItem appointedMaster = AppointMaster(items);
+			ContentItem appointedMaster = AppointMaster(items);
 			using (var tx = persister.Repository.BeginTransaction())
 			{
 				foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
@@ -234,14 +234,14 @@ namespace N2.Engine.Globalization
 				}
 				tx.Commit();
 			}
-        }
+		}
 
-        /// <summary>
-        /// Unassociates an item from the relation to other translated pages.
-        /// </summary>
-        /// <param name="item">The item to remove as translation.</param>
-        public void Unassociate(ContentItem item)
-        {
+		/// <summary>
+		/// Unassociates an item from the relation to other translated pages.
+		/// </summary>
+		/// <param name="item">The item to remove as translation.</param>
+		public void Unassociate(ContentItem item)
+		{
 			if (item.TranslationKey != null)
 			{
 				item.TranslationKey = null;
@@ -251,7 +251,7 @@ namespace N2.Engine.Globalization
 					tx.Commit();
 				}
 			}
-        }
+		}
 
 		/// <summary>Gets indication whether a certain item is the root item of a language branch.</summary>
 		/// <param name="item">The item to check.</param>
@@ -261,73 +261,73 @@ namespace N2.Engine.Globalization
 			return item is ILanguage && !string.IsNullOrEmpty((item as ILanguage).LanguageCode);
 		}
 
-        /// <summary>Throws an exception if any of the items is a language root.</summary>
-        /// <param name="items"></param>
-        protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)
-        {
-            foreach (ContentItem item in items)
-                if (object.ReferenceEquals(item, GetLanguage(item)))
-                    throw new N2Exception("Cannot associate " + item.Name + " #" + item.ID + " since it's a language root.");
-        }
-
-        /// <summary>Determines the preferred "master" or picks the first one.</summary>
-        /// <param name="items"></param>
-        /// <returns>An item whose id will be used as language key.</returns>
-        protected ContentItem AppointMaster(IEnumerable<ContentItem> items)
-        {
-            ContentItem appointedMaster = null;
-            foreach (ContentItem item in items)
-            {
-                appointedMaster = item;
-                if (appointedMaster.TranslationKey != null)
-                    break;
-            }
-            foreach (ContentItem item in items)
-            {
-                if (item.TranslationKey != null && item.ID == (int)item.TranslationKey)
-                {
-                    appointedMaster = item;
-                    break;
-                }
-            }
-            if (appointedMaster.TranslationKey == null)
-                appointedMaster.TranslationKey = appointedMaster.ID;
-            return appointedMaster;
-        }
-
-        /// <summary>Updates language keys and removes language keys from any existing translations within a certain language branch.</summary>
-        /// <param name="items"></param>
-        /// <param name="appointedMaster"></param>
-        /// <returns>Items that have been updated as a result of the operation.</returns>
-        protected IEnumerable<ContentItem> UpdateLanguageKeys(IEnumerable<ContentItem> items, ContentItem appointedMaster)
-        {
-            foreach (ContentItem item in items)
-            {
-                ILanguage language = GetLanguage(item);
-                ContentItem existingTranslation = GetTranslation(appointedMaster, language);
-                if (item == existingTranslation)
-                {
-                    continue;
-                }
-                else if (existingTranslation != null)
-                {
-                    existingTranslation.TranslationKey = null;
-                    yield return existingTranslation;
-                }
-                item.TranslationKey = appointedMaster.TranslationKey;
-                yield return item;
-            }
+		/// <summary>Throws an exception if any of the items is a language root.</summary>
+		/// <param name="items"></param>
+		protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)
+		{
+			foreach (ContentItem item in items)
+				if (object.ReferenceEquals(item, GetLanguage(item)))
+					throw new N2Exception("Cannot associate " + item.Name + " #" + item.ID + " since it's a language root.");
 		}
 
-        /// <summary>Gets the language with a certain language code.</summary>
-        /// <param name="languages">The languages to select between.</param>
-        /// <param name="languageCode">The language code to find a matching language for.</param>
-        /// <returns>The language with the code or null.</returns>
-        public static ILanguage GetLanguageWithCode(IEnumerable<ILanguage> languages, string languageCode)
-        {
-            if (languageCode == null) throw new ArgumentNullException("languageCode");
+		/// <summary>Determines the preferred "master" or picks the first one.</summary>
+		/// <param name="items"></param>
+		/// <returns>An item whose id will be used as language key.</returns>
+		protected ContentItem AppointMaster(IEnumerable<ContentItem> items)
+		{
+			ContentItem appointedMaster = null;
+			foreach (ContentItem item in items)
+			{
+				appointedMaster = item;
+				if (appointedMaster.TranslationKey != null)
+					break;
+			}
+			foreach (ContentItem item in items)
+			{
+				if (item.TranslationKey != null && item.ID == (int)item.TranslationKey)
+				{
+					appointedMaster = item;
+					break;
+				}
+			}
+			if (appointedMaster.TranslationKey == null)
+				appointedMaster.TranslationKey = appointedMaster.ID;
+			return appointedMaster;
+		}
 
-            return languages.FirstOrDefault(l => languageCode.Equals(l.LanguageCode, StringComparison.InvariantCultureIgnoreCase));
-        }
+		/// <summary>Updates language keys and removes language keys from any existing translations within a certain language branch.</summary>
+		/// <param name="items"></param>
+		/// <param name="appointedMaster"></param>
+		/// <returns>Items that have been updated as a result of the operation.</returns>
+		protected IEnumerable<ContentItem> UpdateLanguageKeys(IEnumerable<ContentItem> items, ContentItem appointedMaster)
+		{
+			foreach (ContentItem item in items)
+			{
+				ILanguage language = GetLanguage(item);
+				ContentItem existingTranslation = GetTranslation(appointedMaster, language);
+				if (item == existingTranslation)
+				{
+					continue;
+				}
+				else if (existingTranslation != null)
+				{
+					existingTranslation.TranslationKey = null;
+					yield return existingTranslation;
+				}
+				item.TranslationKey = appointedMaster.TranslationKey;
+				yield return item;
+			}
+		}
+
+		/// <summary>Gets the language with a certain language code.</summary>
+		/// <param name="languages">The languages to select between.</param>
+		/// <param name="languageCode">The language code to find a matching language for.</param>
+		/// <returns>The language with the code or null.</returns>
+		public static ILanguage GetLanguageWithCode(IEnumerable<ILanguage> languages, string languageCode)
+		{
+			if (languageCode == null) throw new ArgumentNullException("languageCode");
+
+			return languages.FirstOrDefault(l => languageCode.Equals(l.LanguageCode, StringComparison.InvariantCultureIgnoreCase));
+		}
 	}
 }

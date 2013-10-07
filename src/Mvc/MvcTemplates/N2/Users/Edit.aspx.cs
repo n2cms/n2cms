@@ -1,10 +1,12 @@
+using N2.Edit.Web;
+using N2.Web;
 using System;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 
 namespace N2.Edit.Membership
 {
-	public partial class Edit : System.Web.UI.Page
+	public partial class Edit : EditPage
 	{
 		string SelectedUserName;
 		private MembershipUser SelectedUser;
@@ -12,7 +14,7 @@ namespace N2.Edit.Membership
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			LoadSelectedUser();
-            hlPassword.NavigateUrl = "Password.aspx?user=" + Request["user"];
+            hlPassword.NavigateUrl = "{ManagementUrl}/Users/Password.aspx?user=".ResolveUrlTokens() + Request["user"];
 			if (!IsPostBack)
 			{
 				cblRoles.DataBind();

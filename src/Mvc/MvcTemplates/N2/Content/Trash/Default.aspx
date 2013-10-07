@@ -1,6 +1,6 @@
 <%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Trash.Default" %>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnClear" runat="server" CssClass="command" meta:resourceKey="btnClear" OnClientClick="return confirm('really empty trash?');" OnClick="btnClear_Click">Empty trash</asp:LinkButton>
+    <asp:LinkButton ID="btnClear" runat="server" CssClass="command restore primary-action" meta:resourceKey="btnClear" OnClientClick="return confirm('really empty trash?');" OnClick="btnClear_Click">Empty trash</asp:LinkButton>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
@@ -9,8 +9,8 @@
 	
 	<asp:HyperLink ID="hlRunning" runat="server" Text="A delete task is in progress" CssClass="info" Visible="False" meta:resourcekey="hlRunning"/>
 
-	<asp:CustomValidator ID="cvRestore" CssClass="validator" ErrorMessage="An item with the same name already exists at the previous location." runat="server" Display="Dynamic" />
-	<asp:GridView ID="gvTrash" DataKeyNames="ID" runat="server" DataSourceID="idsTrash" AutoGenerateColumns="false" OnRowCommand="gvTrash_RowCommand" EmptyDataText="No items in trash" CssClass="gv" AlternatingRowStyle-CssClass="alt">
+	<asp:CustomValidator ID="cvRestore" CssClass="alert alert-margin" ErrorMessage="An item with the same name already exists at the previous location." runat="server" Display="Dynamic" />
+	<asp:GridView ID="gvTrash" DataKeyNames="ID" runat="server" BorderWidth="0" DataSourceID="idsTrash" AutoGenerateColumns="false" OnRowCommand="gvTrash_RowCommand" EmptyDataText="No items in trash" CssClass="table table-striped table-hover table-condensed">
 		<Columns>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="colTitle">
 				<ItemTemplate>

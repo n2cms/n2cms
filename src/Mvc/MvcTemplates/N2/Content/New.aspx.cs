@@ -33,12 +33,17 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("New", "new", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10,
 		GlobalResourceClassName = "Navigation",
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-plus-sign",
+		Legacy = true)]
 	[ToolbarPlugin("", "new_tool", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new",
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		Legacy = true)]
 	[ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "{ManagementUrl}/Content/New.aspx?{Selection.SelectedQueryKey}={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible,
-		RequiredPermission = Permission.Write)]
+		CssClass = "complementary",
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-plus-sign")]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;
@@ -148,11 +153,13 @@ namespace N2.Edit
 
 		private string GetNodeText(ContentItem item, bool isCurrent)
 		{
-			string format = "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} ";
+			string format = string.IsNullOrEmpty(item.IconClass)
+				? "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} "
+				: "<a href='{2}' title='{1}'><b class='{5}'></b></a> {1} ";
 			if (isCurrent)
 				format = "<strong>" + format + "</strong>";
 
-			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
+			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current", item.IconClass);
 		}
 
 		private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)

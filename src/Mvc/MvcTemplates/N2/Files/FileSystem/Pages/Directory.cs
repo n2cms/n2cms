@@ -3,17 +3,19 @@ using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Engine;
+using N2.Management.Api;
 
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-		IconUrl = "{ManagementUrl}/Resources/icons/folder.png",
+		IconClass = "n2-icon-folder-close",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]
 	[WithEditableName(Focus = true)]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
 	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
+	[InterfaceFlags("Management")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
 		string localUrl;
@@ -56,13 +58,13 @@ namespace N2.Edit.FileSystem.Items
 			}
 		}
 
-		public override string IconUrl
+		public override string IconClass
 		{
 			get
 			{
 				if (base.GetFiles().Count > 0)
-					return Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/folder_page_white.png");
-				return base.IconUrl;
+					return "n2-icon-folder-open";
+				return base.IconClass;
 			}
 		}
 

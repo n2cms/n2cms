@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Database Search",
 		Description = "Searches for items searching for texts on the pages.",
 		SortOrder = 200,
-		IconUrl = "~/Content/Img/zoom.png")]
+		IconClass = "n2-icon-search")]
 	public class DatabaseSearch : SearchBase
 	{
 		[Obsolete("Text search is now used from the controller")]

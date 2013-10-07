@@ -3,6 +3,7 @@ using System.Collections;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -91,5 +92,8 @@ namespace N2.Web
 
 		/// <summary>Retrieves the http context cache.</summary>
 		Cache Cache { get; }
+
+		/// <summary>Virtual path provider.</summary>
+		VirtualPathProvider Vpp { get; }
 	}
 }

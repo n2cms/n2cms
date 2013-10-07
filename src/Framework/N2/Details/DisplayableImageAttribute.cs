@@ -4,6 +4,11 @@ using System.Web.UI.WebControls;
 using N2.Web.Drawing;
 using System;
 using N2.Web;
+using System.Collections.Generic;
+using System.Web;
+using N2.Engine;
+using N2.Web.Targeting;
+using System.Linq;
 
 namespace N2.Details
 {
@@ -58,6 +63,15 @@ namespace N2.Details
 		/// <param name="writer">The writer to write to.</param>
 		public static void WriteImage(ContentItem item, string detailName, string preferredSize, string alt, string cssClass, System.IO.TextWriter writer)
 		{
+			WriteImage(item, detailName, string.IsNullOrEmpty(preferredSize) ? new string[0] : new string[] { preferredSize }, alt, cssClass, writer);
+		}
+
+		/// <summary>Writes an image html to the given writer.</summary>
+		/// <param name="item">The item containing the data.</param>
+		/// <param name="detailName">The name of the property to write.</param>
+		/// <param name="writer">The writer to write to.</param>
+		public static void WriteImage(ContentItem item, string detailName, IEnumerable<string> preferredSizes, string alt, string cssClass, System.IO.TextWriter writer)
+		{
 			string imageUrl = item[detailName] as string;
 			if (string.IsNullOrEmpty(imageUrl))
 				return;
@@ -65,14 +79,29 @@ namespace N2.Details
 			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
 			string altText = item.GetDetail(detailName + "_AlternateText", alt);
 
-			cssClass = WriteImage(imageUrl, writer, preferredSize, cssClass, altText);
+			WriteImage(imageUrl, writer, preferredSizes, cssClass, altText);
 		}
 
-		public static string WriteImage(string imageUrl, System.IO.TextWriter writer, string preferredSize = null, string cssClass = null, string alt = null)
+		public static void WriteImage(string imageUrl, System.IO.TextWriter writer, IEnumerable<string> preferredSizes = null, string cssClass = null, string alt = null)
 		{
 			TagBuilder tb = new TagBuilder("img");
-			bool preferredSizeExists;
-			tb.Attributes["src"] = Url.ToAbsolute(ImagesUtility.GetExistingImagePath(imageUrl, preferredSize, out preferredSizeExists));
+			bool preferredSizeExists = false;
+			string preferredSize = null;
+			if (preferredSizes != null)
+			{
+				foreach (var size in preferredSizes)
+				{
+					var sizeUrl = ImagesUtility.GetExistingImagePath(imageUrl, size, out preferredSizeExists);
+					if (!preferredSizeExists)
+						continue;
+
+					preferredSize = size;
+					imageUrl = sizeUrl;
+					break;
+				}
+			}
+
+			tb.Attributes["src"] = Url.ToAbsolute(imageUrl);
 			tb.Attributes["alt"] = alt;
 			if (preferredSizeExists)
 			{
@@ -86,16 +115,26 @@ namespace N2.Details
 				tb.AddCssClass(cssClass);
 
 			writer.Write(tb.ToString(TagRenderMode.SelfClosing));
-			return cssClass;
 		}
 
 		#region IWritingDisplayable Members
 
 		public override void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, detailName, PreferredSize, alt, CssClass, writer);
+			var sizes = DisplayableImageAttribute.GetSizes(PreferredSize);
+			DisplayableImageAttribute.WriteImage(item, detailName, sizes, alt, CssClass, writer);
 		}
 
 		#endregion
+
+		internal static IEnumerable<string> GetSizes(string preferredSize)
+		{
+			var sizes = new List<string>();
+			if (!string.IsNullOrEmpty(preferredSize))
+				sizes.Add(preferredSize);
+			if (HttpContext.Current != null && TargetingRadar.Enabled)
+				sizes.AddRange(HttpContext.Current.GetTargetingContext().TargetedBy.Select(t => t.Name));
+			return sizes;
+		}
 	}
 }

@@ -17,7 +17,8 @@ namespace N2.Resources
 
 		public void Start()
 		{
-			Register.Debug = configFactory.Sections.Web.Resources.Debug;
+			if (configFactory.Sections.Web.Resources.Debug.HasValue)
+				Register.Debug = configFactory.Sections.Web.Resources.Debug.Value;
 			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
@@ -28,6 +29,7 @@ namespace N2.Resources
 			Register.TwitterBootstrapCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapCssPath;
 			Register.TwitterBootstrapResponsiveCssPath = configFactory.Sections.Web.Resources.TwitterBootstrapResponsiveCssPath;
 			Register.TwitterBootstrapJsPath = configFactory.Sections.Web.Resources.TwitterBootstrapJsPath;
+			Register.IconsCssPath = configFactory.Sections.Web.Resources.IconsCssPath;
 		}
 
 		public void Stop()

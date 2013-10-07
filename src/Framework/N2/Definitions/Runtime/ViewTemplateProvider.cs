@@ -56,7 +56,7 @@ namespace N2.Definitions.Runtime
 			if (httpContext == null)
 			{
 				logger.Warn("Trying to get templates with no context");
-			    return Enumerable.Empty<TemplateDefinition>();
+				return Enumerable.Empty<TemplateDefinition>();
 			}
 
 			try
@@ -66,7 +66,7 @@ namespace N2.Definitions.Runtime
 			catch (Exception ex)
 			{
 				logger.Warn("Trying to get templates with invalid context", ex);
-                return Enumerable.Empty<TemplateDefinition>();
+				return Enumerable.Empty<TemplateDefinition>();
 			}
 			
 			const string cacheKey = "RazorDefinitions";
@@ -82,7 +82,7 @@ namespace N2.Definitions.Runtime
 					var vpp = vppProvider.Get();
 					var descriptions = analyzer.AnalyzeViews(vpp, httpContext, sources).ToList();
 					logger.DebugFormat("Got {0} descriptions", descriptions.Count);
-					definitions = BuildDefinitions(descriptions);
+					definitions = BuildDefinitions(descriptions).ToList();
 					logger.Debug("Built definitions");
 
 					var files = descriptions.SelectMany(p => p.Context.TouchedPaths).Distinct().ToList();

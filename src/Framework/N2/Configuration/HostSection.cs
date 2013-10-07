@@ -60,6 +60,13 @@ namespace N2.Configuration
 			set { base["web"] = value; }
 		}
 
+		[ConfigurationProperty("targeting")]
+		public TargetingCollection Targeting
+		{
+			get { return (TargetingCollection)base["targeting"]; }
+			set { base["targeting"] = value; }
+		}
+
 		/// <summary>Configures output cache for the templates.</summary>
 		[ConfigurationProperty("outputCache")]
 		public OutputCacheElement OutputCache
@@ -97,5 +104,13 @@ namespace N2.Configuration
 			get { return (MessagingElement)base["messaging"]; }
 			set { base["messaging"] = value; }
 		}
+
+		[ConfigurationProperty("filelist")]
+		public FileListElement FileList
+		{
+			get { return (FileListElement)base["filelist"]; }
+			set { base["filelist"] = value; }
+		}
+
 	}
 }

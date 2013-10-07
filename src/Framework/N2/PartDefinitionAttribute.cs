@@ -29,9 +29,9 @@ namespace N2
 			AllowedIn = AllowedZones.AllNamed;
 		}
 
-		protected override string DefaultIconUrl
+		protected override string DefaultIconClass
 		{
-			get { return "{ManagementUrl}/Resources/icons/page_white.png"; }
+			get { return "n2-icon-file-alt"; }
 		}
 
 		public override void Refine(ItemDefinition currentDefinition)

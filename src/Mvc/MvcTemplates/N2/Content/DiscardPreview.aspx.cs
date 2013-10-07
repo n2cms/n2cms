@@ -1,5 +1,6 @@
 ﻿using System;
 using N2.Edit.Web;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -12,11 +13,11 @@ namespace N2.Edit
 		{
 			base.OnInit(e);
 
-            ContentItem published = Selection.SelectedItem.VersionOf;
+            ContentItem published = Selection.SelectedItem.VersionOf.Value;
 			if (published == null) throw new N2Exception("Cannot discard item that is not a version of another item");
             Engine.Persister.Delete(Selection.SelectedItem);
 
-            Response.Redirect(published.Url);
+            Response.Redirect(published.Url.ToUrl().AppendQuery("refresh", true));
 		}
 	}
 }

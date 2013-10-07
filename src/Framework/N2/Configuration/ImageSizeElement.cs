@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using N2.Web.Drawing;
+using System;
 
 namespace N2.Configuration
 {
@@ -66,6 +67,24 @@ namespace N2.Configuration
 		{
 			get { return (ImageResizeMode)base["mode"]; }
 			set { base["mode"] = value; }
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}={1},{2},{3}", Name, Width, Height, Mode);
+		}
+
+		public static ImageSizeElement Parse(string text)
+		{
+			var s = text.Split('=');
+			var s2 = s[1].Split(',');
+			return new ImageSizeElement 
+			{ 
+				Name = s[0], 
+				Width = int.Parse(s2[0]), 
+				Height = int.Parse(s2[1]), 
+				Mode = (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), s2[2])
+			};
 		}
 	}
 }

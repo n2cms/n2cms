@@ -137,7 +137,7 @@ namespace N2.Tests.Persistence.NH
         {
             SaveLoadAndCompare<DateTime>(
                 (i) => i.DateTimeProperty,
-                (i) => { i.DateTimeProperty = DateTime.Now.StripMilliseconds(); });
+                (i) => { i.DateTimeProperty = N2.Utility.CurrentTime().StripMilliseconds(); });
         }
 
         [Test]
@@ -145,7 +145,7 @@ namespace N2.Tests.Persistence.NH
         {
             SaveLoadAndCompare<DateTime?>(
                 (i) => i.NullableDateTimeProperty,
-                (i) => { i.NullableDateTimeProperty = DateTime.Now.StripMilliseconds(); });
+                (i) => { i.NullableDateTimeProperty = N2.Utility.CurrentTime().StripMilliseconds(); });
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace N2.Tests.Persistence.NH
         {
             SaveLoadAndCompare<DateTime?>(
                 (i) => i.NullableDateTimeProperty,
-                (i) => { i.NullableDateTimeProperty = DateTime.Now.StripMilliseconds(); });
+                (i) => { i.NullableDateTimeProperty = N2.Utility.CurrentTime().StripMilliseconds(); });
         }
 
         // double

@@ -22,7 +22,7 @@ using System.Linq;
 namespace N2.Tests.Serialization
 {
 	[TestFixture]
-	public class ExportImportTests : SerializationTestsBase
+	public class ExportImportTests : XmlSerializationTestsBase
 	{
 		[Test]
 		public void ExportedImportedItem_KeepsBasicAttributes()
@@ -255,6 +255,9 @@ namespace N2.Tests.Serialization
 
             try
             {
+				var nowDate = DateTime.Now;
+				N2.Utility.CurrentTime = () => nowDate;
+
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
                 string xmlUS = ExportToString(item, CreateExporter(), ExportOptions.Default);
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
@@ -264,6 +267,7 @@ namespace N2.Tests.Serialization
             }
             finally
             {
+				N2.Utility.CurrentTime = () => DateTime.Now;
                 Thread.CurrentThread.CurrentCulture = originalCulture;
             }
         }
@@ -987,8 +991,8 @@ Public License instead of this License.
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item["License"] = lgplLicense;
 
-			Exporter exporter = new GZipExporter(CreateWriter());
-			Importer importer = new GZipImporter(null, CreateReader(), new FakeMemoryFileSystem());
+			Exporter exporter = new GZipExporter((ItemXmlWriter)CreateWriter());
+			Importer importer = new GZipImporter(null, (ItemXmlReader)CreateReader(), new FakeMemoryFileSystem());
 
 			StringBuilder sb = new StringBuilder();
 			HttpResponse hr  = new HttpResponse(new StringWriter(sb));

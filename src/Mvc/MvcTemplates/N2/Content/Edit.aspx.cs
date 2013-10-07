@@ -20,19 +20,25 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("Edit", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation", 
-		RequiredPermission = Permission.Write)]
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign",
+		Legacy = true)]
 	[ToolbarPlugin("EDIT", "edit", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit",
 		GlobalResourceClassName = "Toolbar", 
 		RequiredPermission = Permission.Write,
-		OptionProvider = typeof(EditOptionProvider))]
+		OptionProvider = typeof(EditOptionProvider),
+		Legacy = true)]
 	[ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "{ManagementUrl}/Content/Edit.aspx?{Selection.SelectedQueryKey}={Selected.Path}&versionIndex={Selected.VersionIndex}", "Edit page", 50, ControlPanelState.Visible | ControlPanelState.DragDrop, 
-		RequiredPermission = Permission.Write)]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 70, 
+		CssClass = "complementary",
+		RequiredPermission = Permission.Write,
+		IconClass = "n2-icon-edit-sign")]
+	[ControlPanelPreviewPublish("Publish draft", 70, 
 		RequiredPermission = Permission.Publish)]
 	[ControlPanelEditingSave("Save changes", 10,
 		RequiredPermission = Permission.Write)]
     [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
-		UrlEncode = false)]
+		UrlEncode = false,
+		IconClass = "n2-icon-check-minus")]
 	[N2.Management.Activity.ActivityNotification]
 	public partial class Edit : EditPage, IItemEditor
 	{
@@ -92,8 +98,12 @@ namespace N2.Edit
             bool isExisting = ie.CurrentItem.ID != 0;
 
 			btnSavePublish.Visible = isPublicableItem && isPublicableByUser;
-            btnPreview.Visible = isVersionable && isWritableByUser;
-            btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
+			if (btnSavePublish.Visible)
+				btnSavePublish.CssClass += " primary-action";
+			else
+				btnPreview.CssClass += " primary-action";
+			btnPreview.Visible = isVersionable && isWritableByUser;
+			btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
 			btnUnpublish.Visible = isExisting && isPublicableByUser && ie.CurrentItem.IsPublished();
 		}
@@ -283,7 +293,7 @@ namespace N2.Edit
 
 		private void InitTitle()
 		{
-			if (ie.CurrentItem.ID == 0)
+			if (ie.CurrentItem.ID == 0 && !ie.CurrentItem.VersionOf.HasValue)
 			{
 				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
 				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;

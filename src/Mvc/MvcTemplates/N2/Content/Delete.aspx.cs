@@ -13,11 +13,14 @@ namespace N2.Edit
 {
 	[NavigationLinkPlugin("Delete", "delete", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}&alert=true", Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 30, 
 		GlobalResourceClassName = "Navigation",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		IconClass = "n2-icon-trash",
+		Legacy = true)]
 	[ToolbarPlugin("", "delete_tool", "{ManagementUrl}/Content/delete.aspx?{Selection.SelectedQueryKey}={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/cross.png", 60, 
 		ToolTip = "delete",
 		GlobalResourceClassName = "Toolbar",
-		RequiredPermission = Permission.Publish)]
+		RequiredPermission = Permission.Publish,
+		Legacy = true)]
 	[ControlPanelDiscardPreviewOrDelete]
 	public partial class Delete : Web.EditPage
     {

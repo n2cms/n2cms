@@ -74,7 +74,7 @@ namespace N2.Edit.Tests.Trash
 			engine.Persister.Save(item);
 			engine.Persister.Delete(item);
 
-			Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval).AddSeconds(-10);
+			Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays((int)interval).AddSeconds(-10);
 
 			engine.Resolve<ITrashHandler>().PurgeOldItems();
 
@@ -92,7 +92,7 @@ namespace N2.Edit.Tests.Trash
 			engine.Persister.Save(item);
 			engine.Persister.Delete(item);
 
-			Utility.CurrentTime = () => DateTime.Now.AddDays(1000);
+			Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays(1000);
 
 			engine.Resolve<ITrashHandler>().PurgeOldItems();
 
@@ -115,7 +115,7 @@ namespace N2.Edit.Tests.Trash
 			engine.Persister.Save(item);
 			engine.Persister.Delete(item);
 
-			Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval);
+			Utility.CurrentTime = () => N2.Utility.CurrentTime().AddDays((int)interval);
 
 			engine.Resolve<ITrashHandler>().PurgeOldItems();
 

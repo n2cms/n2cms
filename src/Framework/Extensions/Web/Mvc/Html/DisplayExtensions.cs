@@ -33,6 +33,14 @@ namespace N2.Web.Mvc.Html
 			return helper.DisplayContent(member.Member.Name);
 		}
 
+		public static Displayable DisplayContent<TItem, TProp>(this HtmlHelper<TItem> helper,
+												 Expression<Func<TItem, TProp>> expression)
+			where TItem : ContentItem
+		{
+			var member = (MemberExpression)expression.Body;
+			return helper.DisplayContent(member.Member.Name);
+		}
+
 		public static Displayable DisplayContent<TItem>(this HtmlHelper helper, TItem item, Expression<Func<TItem, object>> expression)
 			where TItem : ContentItem
 		{
@@ -40,7 +48,12 @@ namespace N2.Web.Mvc.Html
 			return helper.DisplayContent(item, member.Member.Name);
         }
 
-
+		public static Displayable DisplayContent<TItem, TProp>(this HtmlHelper helper, TItem item, Expression<Func<TItem, TProp>> expression)
+			where TItem : ContentItem
+		{
+			var member = (MemberExpression)expression.Body;
+			return helper.DisplayContent(item, member.Member.Name);
+		}
 
         public static void RenderDisplay(this HtmlHelper helper, string detailName)
         {
@@ -63,11 +76,26 @@ namespace N2.Web.Mvc.Html
             helper.RenderDisplay(member.Member.Name);
         }
 
+		public static void RenderDisplay<TItem, TProp>(this HtmlHelper<TItem> helper,
+												 Expression<Func<TItem, TProp>> expression)
+			where TItem : ContentItem
+		{
+			var member = (MemberExpression)expression.Body;
+			helper.RenderDisplay(member.Member.Name);
+		}
+
         public static void RenderDisplay<TItem>(this HtmlHelper helper, TItem item, Expression<Func<TItem, object>> expression)
             where TItem : ContentItem
         {
             var member = (MemberExpression)expression.Body;
 			helper.DisplayContent(item, member.Member.Name).Render(helper.ViewContext.Writer);
         }
+
+		public static void RenderDisplay<TItem, TProp>(this HtmlHelper helper, TItem item, Expression<Func<TItem, TProp>> expression)
+			where TItem : ContentItem
+		{
+			var member = (MemberExpression)expression.Body;
+			helper.DisplayContent(item, member.Member.Name).Render(helper.ViewContext.Writer);
+		}
 	}
 }

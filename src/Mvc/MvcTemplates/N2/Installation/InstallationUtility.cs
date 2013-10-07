@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using N2.Web;
+using System.Reflection;
+using N2.Edit.Installation;
+using N2.Configuration;
 
 namespace N2.Management.Installation
 {
@@ -11,14 +14,15 @@ namespace N2.Management.Installation
 	{
 		public static string InstallationUnallowedHtml = @"<h1>Installation not allowed</h1>
 <p>Your configuration specifies that installation isn't allowed. To allow installation modify web.config:</p>
-<code><pre>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation=""<strong>true</strong>""/&gt;</pre></code>";
+<pre>&lt;n2&gt;&lt;edit&gt;&lt;installer allowInstallation=""<strong>Administrator</strong>""/&gt;</pre>";
 
 		public static void CheckInstallationAllowed(HttpContext context)
 		{
-			if(N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer.AllowInstallation)
+			if(AllowInstallationOption.Parse(N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer.AllowInstallation) != AllowInstallationOption.No)
 				return;
 
 			context.Response.Write("<html><head>");
+			context.Response.Write("<link rel='stylesheet' type='text/css' href='" + Url.ResolveTokens("{ManagementUrl}/Resources/bootstrap/css/bootstrap.min.css") + "' />");
 			context.Response.Write("<link rel='stylesheet' type='text/css' href='" + Url.ResolveTokens("{ManagementUrl}/Resources/Css/all.css") + "' />");
 			context.Response.Write("<link rel='stylesheet' type='text/css' href='" + Url.ResolveTokens("{ManagementUrl}/Resources/Css/framed.css") + "' />");
 			context.Response.Write("<link rel='stylesheet' type='text/css' href='" + Url.ResolveTokens("{ManagementUrl}/Resources/Css/themes/default.css") + "' />");
@@ -26,6 +30,11 @@ namespace N2.Management.Installation
 			context.Response.Write(InstallationUnallowedHtml);
 			context.Response.Write("</div></body></html>");
 			context.Response.End();
+		}
+
+		public static string GetFileVersion(System.Reflection.Assembly assembly)
+		{
+			return InstallationExtensions.GetFileVersion(assembly);
 		}
 	}
 }

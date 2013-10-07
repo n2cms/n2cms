@@ -1,6 +1,7 @@
 ﻿using N2.Definitions;
 using N2.Edit;
 using N2.Web;
+using System.Linq;
 
 namespace N2.Engine.Globalization
 {
@@ -15,8 +16,7 @@ namespace N2.Engine.Globalization
 			Language = language;
 			ExistingItem = existingItem;
 			Definition = definition;
-			FlagUrl = GetFlag(language);
-            Site = site;
+			Site = site;
 			IsTranslatable = true;
 		}
 
@@ -35,17 +35,6 @@ namespace N2.Engine.Globalization
 
 		public ContentItem ExistingItem { get; set; }
 
-		public string FlagUrl { get; set; }
-
-		protected string GetFlag(ILanguage language)
-		{
-			string flagUrl = language.FlagUrl;
-			if (string.IsNullOrEmpty(flagUrl))
-				flagUrl = "{ManagementUrl}" + string.Format("/Resources/Img/Flags/{0}.png", language.LanguageCode);
-
-			return Url.ResolveTokens(flagUrl);
-		}
-
-        public Site Site { get; set; }
-    }
+		public Site Site { get; set; }
+	}
 }

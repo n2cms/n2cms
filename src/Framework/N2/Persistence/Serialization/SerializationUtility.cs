@@ -30,13 +30,13 @@ namespace N2.Persistence.Serialization
 			return value.Value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
 		}
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> values, TKey key)
-        {
-            TValue value;
-            if (values.TryGetValue(key, out value))
-                return value;
-            return default(TValue);
-        }
+		public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> values, TKey key)
+		{
+			TValue value;
+			if (values.TryGetValue(key, out value))
+				return value;
+			return default(TValue);
+		}
 
 		public static string RemoveInvalidCharacters(string value)
 		{

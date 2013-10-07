@@ -1,6 +1,9 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using N2.Definitions;
+using N2.Engine;
+using System.Linq;
+using System;
 
 namespace N2.Web.Mvc
 {
@@ -22,6 +25,11 @@ namespace N2.Web.Mvc
 				?? "Default"; // fallback
 		}
 
+		public static bool IsThemeInitialized(this ControllerContext context)
+		{
+			return context.HttpContext.Items[ThemeKey] != null;
+		}
+
 		public static void SetTheme(this ControllerContext context, string theme)
 		{
 			context.HttpContext.Items[ThemeKey] = theme;
@@ -29,6 +37,9 @@ namespace N2.Web.Mvc
 
 		public static void InitTheme(this ControllerContext context)
 		{
+			if (context.IsThemeInitialized())
+				return;
+
 			var page = context.RequestContext.CurrentPage<ContentItem>()
 				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).FindPath(context.HttpContext.Request["returnUrl"]).StopItem
 				?? RouteExtensions.ResolveService<IUrlParser>(context.RouteData).FindPath(context.HttpContext.Request.AppRelativeCurrentExecutionFilePath).StopItem
@@ -48,6 +59,16 @@ namespace N2.Web.Mvc
 				InitTheme(context, start.Parent);
 			else
 				context.SetTheme(themeSource.Theme);
+		}
+
+		/// <summary>
+		/// Registers all controllers in assemblies normally considered for content definition with the Engine, so that they may be resolved correctly.
+		/// </summary>
+		/// <param name="engine"></param>
+		public static void RegisterAllControllers(this IEngine engine)
+		{
+			foreach (Type type in engine.Resolve<ITypeFinder>().Find(typeof(IController)).Where(t => !t.IsAbstract).Where(t => !t.IsInterface))
+				engine.Container.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
 		}
 	}
 }

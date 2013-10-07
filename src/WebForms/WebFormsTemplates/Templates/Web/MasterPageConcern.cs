@@ -7,6 +7,7 @@ using N2.Templates.Services;
 using N2.Templates.Web.UI;
 using N2.Engine;
 using N2.Configuration;
+using N2.Web;
 
 namespace N2.Templates.Web
 {
@@ -17,19 +18,29 @@ namespace N2.Templates.Web
 	[Service(typeof(ContentPageConcern))]
 	public class MasterPageConcern : ContentPageConcern
 	{
-		string masterPageFile;
+		private IEngine engine;
+		private string configuredMasterPagePath;
 
-		public MasterPageConcern(ConfigurationManagerWrapper configuration)
+		public MasterPageConcern(IEngine engine)
 		{
-			var section = configuration.GetContentSection<TemplatesSection>("templates");
+			this.engine = engine;
+			var section = engine.Config.GetContentSection<TemplatesSection>("templates");
 			if (section != null)
-				masterPageFile = section.MasterPageFile;
+				configuredMasterPagePath = section.MasterPageFile;
 		}
 
 		public override void OnPreInit(System.Web.UI.Page page, ContentItem item)
 		{
-			if (!string.IsNullOrEmpty(masterPageFile) && !string.IsNullOrEmpty(page.MasterPageFile))
-				page.MasterPageFile = masterPageFile;
+			if (string.IsNullOrEmpty(page.MasterPageFile))
+				return;
+
+			if (!string.IsNullOrEmpty(configuredMasterPagePath))
+				page.MasterPageFile = configuredMasterPagePath;
+
+			var defaultUrl = page.ResolveUrl(page.MasterPageFile);
+			var alternateUrl = engine.ResolveAdapter<RequestAdapter>(item).ResolveTargetingUrl(defaultUrl);
+			if (!string.Equals(alternateUrl, defaultUrl, System.StringComparison.InvariantCultureIgnoreCase))
+				page.MasterPageFile = alternateUrl;
 		}
 	}
 }

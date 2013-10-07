@@ -115,7 +115,7 @@ namespace N2.Edit.Tests.Trash
 
             Assert.AreEqual("item", item[TrashHandler.FormerName]);
             Assert.AreEqual(root, item[TrashHandler.FormerParent]);
-            Assert.Less(DateTime.Now.AddSeconds(-10), (DateTime)item[TrashHandler.DeletedDate]);
+            Assert.Less(N2.Utility.CurrentTime().AddSeconds(-10), (DateTime)item[TrashHandler.DeletedDate]);
         }
 
         [Test]

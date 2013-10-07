@@ -89,7 +89,7 @@ namespace N2.Web.Drawing
 			string preferredUrl = ImagesUtility.GetResizedPath(imageUrl, preferredSize);
 			try
 			{
-                if (fs.FileExists(preferredUrl))
+				if (fs.FileExists(preferredUrl))
 				{
 					preferredSizeExists = true;
 					return preferredUrl;

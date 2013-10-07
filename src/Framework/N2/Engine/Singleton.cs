@@ -45,7 +45,7 @@ namespace N2.Engine
 	}
 
 	/// <summary>
-	/// Provides a singleton dictionary for a certain key and vlaue type.
+	/// Provides a singleton dictionary for a certain key and value type.
 	/// </summary>
 	/// <typeparam name="TKey">The type of key.</typeparam>
 	/// <typeparam name="TValue">The type of value.</typeparam>

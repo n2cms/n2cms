@@ -6,14 +6,17 @@ using N2.Details;
 using N2.Integrity;
 using N2.Security.Details;
 using N2.Engine;
+using N2.Edit;
+using N2.Web;
+using N2.Management;
 
 namespace N2.Security.Items
 {
-	[PartDefinition("User", IconUrl = "{IconsUrl}/user.png")]
+	[PartDefinition("User", IconClass = "n2-icon-user")]
 	[RestrictParents(typeof (UserList))]
 	[Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
-	public class User : N2.ContentItem, ISystemNode, IInjectable<ISecurityManager>
+	public class User : ManagementItem, IInjectable<ISecurityManager>
 	{
 		private ISecurityManager security;
 

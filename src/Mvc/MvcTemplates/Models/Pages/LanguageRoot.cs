@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Language root",
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
-		IconUrl = "~/Content/Img/page_world.png")]
+		IconClass = "n2-icon-globe")]
 	[RecursiveContainer(LanguageRoot.SiteArea, 70, 
 		RequiredPermission = Permission.Administer)]
 	[RestrictParents(typeof (StartPage))]
@@ -35,18 +35,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		public const string MiscArea = "miscArea";
 
 		#region ILanguage Members
-
-		public string FlagUrl
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(LanguageCode))
-					return "";
-
-				string[] parts = LanguageCode.Split('-');
-				return String.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
-			}
-		}
 
 		[EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
 		public string LanguageCode
