@@ -168,7 +168,7 @@ namespace N2.Definitions.Static
 
 		void AddContainable(ItemDefinition definition, ContainableElement editable)
 		{
-			Type editableType = EnsureType<IEditable>(editable.Type);
+			Type editableType = EnsureType<IContainable>(editable.Type);
 			try
 			{
 				IContainable containable = Activator.CreateInstance(editableType) as IContainable;
