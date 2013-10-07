@@ -48,7 +48,7 @@ namespace N2.Edit.Wizard
 						{
 							Value = d.Discriminator,
 							Title = d.Title
-						}}.Union(Definitions.GetTemplates(d.ItemType).Select(t =>
+						}}.Union(Engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType).Select(t =>
 							new 
 							{
 								Value = d.Discriminator + ":" + t.Name,

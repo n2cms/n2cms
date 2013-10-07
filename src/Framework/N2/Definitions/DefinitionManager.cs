@@ -22,10 +22,9 @@ namespace N2.Definitions
 		private readonly StateChanger stateChanger;
 		private readonly DefinitionMap map;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, ITemplateProvider[] templateProviders, ContentActivator activator, StateChanger changer, DefinitionMap map)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator, StateChanger changer, DefinitionMap map)
 		{
 			this.definitionProviders = definitionProviders.OrderBy(dp => dp.SortOrder).ToArray();
-			this.providers = templateProviders.OrderBy(tp => tp.SortOrder).ToArray();
 			this.activator = activator;
 			this.stateChanger = changer;
 			this.map = map;
@@ -56,8 +55,16 @@ namespace N2.Definitions
 		{
 			if (itemType == null) return null;
 
-			return GetDefinitions().FirstOrDefault(d => d.ItemType == itemType)
-				?? map.GetOrCreateDefinition(itemType);
+			var e = new DefinitionEventArgs
+			{
+				ContentType = itemType,
+				Definition = GetDefinitions().FirstOrDefault(d => d.ItemType == itemType) ?? map.GetOrCreateDefinition(itemType)
+			};
+
+			if (DefinitionResolving != null)
+				DefinitionResolving(this, e);
+
+			return e.Definition;
 		}
 
 		/// <summary>Gets item definition for a certain discriminator.</summary>
@@ -68,20 +75,25 @@ namespace N2.Definitions
 			if (discriminator == null) throw new ArgumentNullException("discriminator");
 
 			var definitionTemplatePair = discriminator.Split('/');
+
+			var e = new DefinitionEventArgs();
 			if (definitionTemplatePair.Length > 1)
 			{
 				foreach (ItemDefinition definition in GetDefinitions())
 					if (definition.Discriminator == definitionTemplatePair[0] && definition.TemplateKey == definitionTemplatePair[1])
-						return definition;
+						e.Definition = definition;
 			}
 			else
 			{
 				foreach (ItemDefinition definition in GetDefinitions())
 					if (definition.Discriminator == discriminator)
-						return definition;
+						e.Definition = definition;
 			}
 
-			return null;
+			if (DefinitionResolving != null)
+				DefinitionResolving(this, e);
+
+			return e.Definition;
 		}
 
 		/// <summary>Gets the definition for a certain item.</summary>
@@ -89,11 +101,10 @@ namespace N2.Definitions
 		/// <returns>The definition matching a certain item.</returns>
 		public virtual ItemDefinition GetDefinition(ContentItem item)
 		{
-			var t = GetTemplate(item);
-			if (t != null)
-				return t.Definition;
-
-			return GetDefinition(item.GetContentType());
+			var e = new DefinitionEventArgs { AffectedItem = item, Definition = GetDefinition(item.GetContentType()) };
+			if (DefinitionResolving != null)
+				DefinitionResolving(this, e);
+			return e.Definition;
 		}
 
 		/// <summary>Gets all item definitions.</summary>
@@ -156,33 +167,8 @@ namespace N2.Definitions
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		[Obsolete]
 		public event EventHandler<ItemEventArgs> ItemCreated;
-		
 
-		public virtual IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
-		{
-			if (contentType == null) return new TemplateDefinition[0];
-
-			var templates = providers.SelectMany(tp => tp.GetTemplates(contentType)).ToList();
-			if (!templates.Any(t => t.ReplaceDefault))
-				return templates;
-			return templates.Where(t => t.Name != null).ToList();
-		}
-
-		public virtual TemplateDefinition GetTemplate(Type contentType, string templateKey)
-		{
-			if (contentType == null) return null;
-
-			return providers
-				.SelectMany(tp => tp.GetTemplates(contentType))
-				.FirstOrDefault(td => string.Equals(td.Name ?? "", templateKey ?? ""));
-		}
-
-		public virtual TemplateDefinition GetTemplate(ContentItem item)
-		{
-			if (item == null) return null;
-
-			return providers.Select(tp => tp.GetTemplate(item)).FirstOrDefault(t => t != null);
-		}
+		public event EventHandler<DefinitionEventArgs> DefinitionResolving;
 
 		#region IAutoStart Members
 

@@ -95,7 +95,7 @@ namespace N2.Edit
             btnPreview.Visible = isVersionable && isWritableByUser;
             btnSaveUnpublished.Visible = isVersionable && isWritableByUser;
 			hlFuturePublish.Visible = isVersionable && isPublicableByUser;
-			btnUnpublish.Visible = isExisting && ie.CurrentItem.IsPublished();
+			btnUnpublish.Visible = isExisting && isPublicableByUser && ie.CurrentItem.IsPublished();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -292,7 +292,7 @@ namespace N2.Edit
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Definitions.GetTemplate(definition.ItemType, template);
+					var info = Engine.Resolve<ITemplateAggregator>().GetTemplate(definition.ItemType, template);
 					definitionTitle = info.Title;
 				}
 

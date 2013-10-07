@@ -170,12 +170,25 @@
     <Compile Include="Search\ContentChangeTrackerTests.cs" />
     <Compile Include="Search\LuceneSearchTests.cs" />
     <Compile Include="Search\MarkovNameGenerator.cs" />
+    <Compile Include="Search\Remote\RemoteClientTests.cs" />
     <Compile Include="Search\Words.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Extensions\N2.Extensions.csproj">
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
       <Name>N2.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Search.Lucene\N2.Search.Lucene.csproj">
+      <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
+      <Name>N2.Search.Lucene</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Search.Remote.Client\N2.Search.Remote.Client.csproj">
+      <Project>{e2a88d0c-fed0-4ef4-ad49-05dddb0c0386}</Project>
+      <Name>N2.Search.Remote.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Search.Remote.Server\N2.Search.Remote.Server.csproj">
+      <Project>{f30718a5-a1f6-40f6-871e-2873ea87ed56}</Project>
+      <Name>N2.Search.Remote.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tests\N2.Tests.csproj">
       <Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>

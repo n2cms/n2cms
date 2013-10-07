@@ -160,6 +160,9 @@ namespace N2.Configuration
 			if (Search.Type == SearchIndexType.Lucene)
 				configurationKeys.Add("lucene");
 
+			if (Search.Type == SearchIndexType.RemoteServer)
+				configurationKeys.Add("remote");
+
 			if (Flavour == DatabaseFlavour.MongoDB)
 				configurationKeys.Add("mongo");
 		}

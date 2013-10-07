@@ -20,7 +20,7 @@ namespace N2.Management.Search
             context.Response.ContentType = "application/json";
             new
             {
-                Statistics = N2.Context.Current.Resolve<IIndexer>().GetStatistics(),
+                Statistics = N2.Context.Current.Resolve<IContentIndexer>().GetStatistics(),
                 Status = N2.Context.Current.Resolve<IAsyncIndexer>().GetCurrentStatus()
             }.ToJson(context.Response.Output);
         }

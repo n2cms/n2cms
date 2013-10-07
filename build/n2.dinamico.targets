@@ -74,10 +74,14 @@
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
 										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
 												  $(Dinamico-SourceFolder)\Global.*;
-												  $(Dinamico-SourceFolder)\web.*;
+												  $(Dinamico-SourceFolder)\*.config;
 												  $(Dinamico-SourceFolder)\Properties\*;
-												  $(Dinamico-SourceFolder)\*.csproj;
+												  $(Dinamico-SourceFolder)\*.log;
+												  $(Dinamico-SourceFolder)\*.user;
+												  $(Dinamico-SourceFolder)\**\*.orig;
+												  $(Dinamico-SourceFolder)\x*\*;
 												  $(Dinamico-SourceFolder)\App_Data\*.sdf;
+												  $(Dinamico-SourceFolder)\App_Data\*.db;
 												  $(Dinamico-SourceFolder)\App_Data\*.log;" />
 		</ItemGroup>
 		<Copy SourceFiles="@(dinamicoFilesWithExceptions)" DestinationFiles="$(Dinamico-NugetFolder)\Content\%(RecursiveDir)\%(FileName)%(Extension)" />

@@ -1,0 +1,26 @@
+﻿@model N2.Web.Slideshow
+@* 
+	Note: Requires Galleria JS to be available in your page template. Or, you can adapt this 
+	template in your own theme to supply Galleria-like functionality. 
+*@
+@{
+	Content.Define(ie => { ie.Title = "Galleria"; });
+	string uniqueId = Html.UniqueID("cs");
+}
+<div class="gallery @Model.CssClass" id="@uniqueId">
+	@foreach (var img in Model.GetSlideshowImages())
+	{
+		if (!String.IsNullOrEmpty(img.LinkUrl))
+		{ 
+			<a href="@img.LinkUrl"><img src="@img.ImageHref" alt="@img.Title" /></a>
+		}
+		else
+		{ 
+			<img src="@img.ImageHref" alt="@img.Title" />
+		}
+	}
+</div>
+<script type="text/javascript">
+	if (typeof (Galleria) != "undefined") { Galleria.run("#@uniqueId"); }
+	else { document.write('<div class="alert alert-error">Failed to load Galleria</div>'); }
+</script>

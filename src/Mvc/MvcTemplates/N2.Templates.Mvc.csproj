@@ -171,6 +171,7 @@
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\FreeFormController.cs" />
+    <Compile Include="Controllers\SlideshowController.cs" />
     <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
       <DependentUpon>UserRegistration.resx</DependentUpon>
@@ -347,8 +348,8 @@
     <Content Include="Areas\Tests\Views\TestPart\Test.ascx" />
     <Content Include="Areas\Tests\Views\Test\Index.aspx" />
     <Content Include="Areas\Tests\Views\Test\Test.aspx" />
-    <Content Include="Content\Galleria\galleria-1.2.7.js" />
-    <Content Include="Content\Galleria\galleria-1.2.7.min.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.js" />
+    <Content Include="Content\Galleria\galleria-1.2.9.min.js" />
     <Content Include="Content\Galleria\plugins\flickr\flickr-demo.html" />
     <Content Include="Content\Galleria\plugins\flickr\flickr-loader.gif" />
     <Content Include="Content\Galleria\plugins\flickr\galleria.flickr.js" />
@@ -452,6 +453,7 @@
     </EmbeddedResource>
     <Content Include="Views\Shared\Empty.ascx" />
     <Content Include="Views\Shared\PartTemplates\TagCloud.ascx" />
+    <Content Include="Views\Slideshow\Index.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -464,13 +466,13 @@
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
       <Name>N2.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\MongoDB\N2.MongoDB.csproj">
-      <Project>{86fa9bb3-7d92-488c-9192-80d6b38de5bc}</Project>
-      <Name>N2.MongoDB</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Search.Lucene\N2.Search.Lucene.csproj">
+      <Project>{6e61bc93-4f13-40c8-a610-33e46f1e7c34}</Project>
+      <Name>N2.Search.Lucene</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -528,8 +530,8 @@
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
     <Content Include="App_Themes\Web.config" />
-    <None Include="Content\Galleria\LICENSE" />
     <Content Include="packages.config" />
+    <None Include="Content\Galleria\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">

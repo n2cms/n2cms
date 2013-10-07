@@ -115,27 +115,12 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="ContentExtensions.cs" />
-    <Compile Include="Persistence\Search\AsyncIndexer.cs" />
-    <Compile Include="Persistence\Search\ContentChangeTracker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Search\LuceneAccesor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Search\LuceneExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Search\LuceneIndexer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Search\LuceneSearcher.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Persistence\Search\ReindexTextMigration.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="CsvImport.cs" />
+    <Compile Include="VariableSubstituter.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
+    <Compile Include="Web\Image.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
+    <Compile Include="Web\Mvc\ContentListAdapter.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\EditableItemRenderer.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
@@ -183,9 +168,9 @@
     <Compile Include="Web\Mvc\Obsolete\N2ViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Compile Include="Web\ContentList.cs" />
+    <Compile Include="Web\RawHtml.cs" />
+    <Compile Include="Web\Slideshow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">
@@ -213,9 +198,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Edit\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

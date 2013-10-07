@@ -39,11 +39,18 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The path to the included tiny MCE javascript resource.</summary>
-		[ConfigurationProperty("tinyMCEPath", DefaultValue = "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js?v=" + JQueryVersion)]
-		public string TinyMCEPath
+		[ConfigurationProperty("ckEditorPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion)]
+		public string CKEditorPath
 		{
-			get { return (string)base["tinyMCEPath"]; }
-			set { base["tinyMCEPath"] = value; }
+			get { return (string)base["ckEditorPath"]; }
+			set { base["ckEditorPath"] = value; }
+		}
+
+		[ConfigurationProperty("FancyboxPath", DefaultValue = N2.Resources.Register.DefaultFancyboxPath)]
+		public string FancyboxPath
+		{
+			get { return (string)base["FancyboxPath"]; }
+			set { base["FancyboxPath"] = value; }
 		}
 
 		[ConfigurationProperty("partsJsPath", DefaultValue = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion)]
@@ -59,5 +66,27 @@ namespace N2.Configuration
 			get { return (string)base["partsCssPath"]; }
 			set { base["partsCssPath"] = value; }
 		}
+
+		[ConfigurationProperty("TwitterBootstrapCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
+		public string TwitterBootstrapCssPath
+		{
+			get { return (string)base["TwitterBootstrapCssPath"]; }
+			set { base["TwitterBootstrapCssPath"] = value; }
+		}
+
+		[ConfigurationProperty("TwitterBootstrapResponsiveCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapResponsiveCssPath)]
+		public string TwitterBootstrapResponsiveCssPath
+		{
+			get { return (string)base["TwitterBootstrapResponsiveCssPath"]; }
+			set { base["TwitterBootstrapResponsiveCssPath"] = value; }
+		}
+
+		[ConfigurationProperty("TwitterBootstrapJsPath", DefaultValue = N2.Resources.Register.DefaultBootstrapJsPath)]
+		public string TwitterBootstrapJsPath
+		{
+			get { return (string)base["TwitterBootstrapJsPath"]; }
+			set { base["TwitterBootstrapJsPath"] = value; }
+		}
+
 	}
 }

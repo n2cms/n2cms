@@ -362,6 +362,8 @@ namespace N2.Collections
 
 		public PathData Path(string path, ContentItem startItem = null)
 		{
+			if (path == null)
+				return null;
 			return (startItem ?? engine().UrlParser.StartPage).FindPath(path);
 		}
 
@@ -400,6 +402,14 @@ namespace N2.Collections
 			var startPage = ClosestOf<IStartPage>(item ?? CurrentItem) ?? engine().UrlParser.StartPage;
 			TryRedirect(ref startPage);
 			return startPage;
+		}
+
+		public ContentItem ClosestPage(ContentItem item)
+		{
+			TryMasterVersion(ref item);
+			if (item == null || item.IsPage)
+				return item;
+			return ClosestPage(item.Parent);
 		}
 
 		private bool TryRedirect(ref ContentItem page)

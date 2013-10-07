@@ -47,7 +47,7 @@ namespace N2.Details
 			if(TemplateSelection)
 				return Engine.Definitions.GetDefinitions()
 					.Where(IsUnfiltered)
-					.SelectMany(d => Engine.Definitions.GetTemplates(d.ItemType))
+					.SelectMany(d => Engine.Resolve<ITemplateAggregator>().GetTemplates(d.ItemType))
 					.Select(t => new ListItem(t.Title, t.Definition.GetDiscriminatorWithTemplateKey()))
 					.ToArray();
 

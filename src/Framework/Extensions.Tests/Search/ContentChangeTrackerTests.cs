@@ -13,9 +13,9 @@ namespace N2.Tests.Persistence.NH
 	[TestFixture]
 	public class ContentChangeTrackerTests : ItemPersistenceMockingBase
 	{
-		LuceneIndexer indexer;
+		ContentIndexer indexer;
 		LuceneAccesor accessor;
-		LuceneSearcher searcher;
+		LuceneContentSearcher searcher;
 		ContentChangeTracker tracker;
         AsyncIndexer asyncIndexer;
 		AsyncWorker worker;
@@ -30,8 +30,8 @@ namespace N2.Tests.Persistence.NH
 			var definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
-			searcher = new LuceneSearcher(accessor, persister);
+			indexer = new ContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			searcher = new LuceneContentSearcher(accessor, persister);
 			worker = new AsyncWorker();
             asyncIndexer = new AsyncIndexer(indexer, persister, worker, Rhino.Mocks.MockRepository.GenerateStub<IErrorNotifier>(), new DatabaseSection());
 			tracker = new ContentChangeTracker(asyncIndexer, persister, new N2.Plugin.ConnectionMonitor(), new DatabaseSection());

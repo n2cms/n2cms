@@ -29,7 +29,7 @@ namespace N2.Web.Rendering
 		{
 			var context = new RenderingContext();
 			context.Content = html.CurrentItem();
-			var template = html.ResolveService<IDefinitionManager>().GetTemplate(context.Content);
+			var template = html.ResolveService<ITemplateAggregator>().GetTemplate(context.Content);
 			if (template != null)
 				context.Displayable = template.Definition.Displayables.FirstOrDefault(d => d.Name == propertyName);
 			context.Html = html;

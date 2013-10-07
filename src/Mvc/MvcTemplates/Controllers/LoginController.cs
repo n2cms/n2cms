@@ -11,25 +11,23 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			var model = new LoginModel(CurrentItem)
-			            	{
-			            		LoggedIn = User.Identity.IsAuthenticated
-			            	};
-
+			var model = new LoginModel(CurrentItem) { LoggedIn = User.Identity.IsAuthenticated };
 			return View(model);
 		}
 
 		public ActionResult Login(string userName, string password, bool? remember)
 		{
-			if(Membership.ValidateUser(userName, password) 
-				|| FormsAuthentication.Authenticate(userName, password))
+			if(Membership.ValidateUser(userName, password) || FormsAuthentication.Authenticate(userName, password))
 			{
 				FormsAuthentication.SetAuthCookie(userName, remember ?? false);
-
 				if (string.IsNullOrEmpty(Request["returnUrl"]))
+				{
 					return RedirectToParentPage();
+				}
 				else
+				{
 					return Redirect(Request["returnUrl"]);
+				}
 			}
 			else
 			{

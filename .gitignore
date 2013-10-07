@@ -18,6 +18,9 @@ examples/MinimalVisualBasic/wwwroot/App_Data/SearchIndex/
 examples/Mvc/wwwroot/App_Data/SearchIndex/Pages/
 lib/*.pdb
 examples/*/wwwroot/N2/
+src/Framework/Search.Remote.Server/App_Data/SearchIndex/
+#src/Mvc/*/*/SQLite.Interop.dll
+#src/WebForms/*/*/SQLite.Interop.dll
 
 # User-specific files
 *.suo
@@ -67,6 +70,7 @@ stylecop.*
 *.log
 *.log.20*
 AssemblyCache.config
+Thumbs.db
 
 # Git files to ignore
 *.orig

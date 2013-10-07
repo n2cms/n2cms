@@ -210,7 +210,7 @@ namespace N2.Edit
 
 		public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
 		{
-			return Definitions.GetTemplates(definition.ItemType)
+			return Engine.Resolve<ITemplateAggregator>().GetTemplates(definition.ItemType)
 				.AllowedBelow(Definitions.GetDefinition(Selection.SelectedItem), Selection.SelectedItem, Engine.Definitions)
 				.Where(t => t.Definition.IsAllowedInZone(ZoneName))
 				.Where(t => Engine.SecurityManager.IsAuthorized(t.Definition, User, Selection.SelectedItem))

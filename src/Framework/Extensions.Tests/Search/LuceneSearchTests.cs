@@ -18,22 +18,15 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Tests;
 using N2.Engine;
+using N2.Search.Remote.Server;
+using N2.Search.Remote.Client;
 
 namespace N2.Extensions.Tests.Search
 {
 	[TestFixture]
-	public class LuceneSearchTests : ItemPersistenceMockingBase
+	public class LocalLuceneSearchTests : LuceneSearchTests
 	{
-		LuceneIndexer indexer;
 		LuceneAccesor accessor;
-		PersistableItem root;
-        IDefinitionManager definitions;
-
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
-        {
-            definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
-        }
 
 		[SetUp]
 		public override void SetUp()
@@ -41,8 +34,9 @@ namespace N2.Extensions.Tests.Search
 			base.SetUp();
 
 			accessor = new LuceneAccesor(new ThreadContext(), new DatabaseSection());
-			indexer = new LuceneIndexer(accessor, new TextExtractor(new IndexableDefinitionExtractor(definitions)));
-			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
+			indexer = new ContentIndexer(new LuceneIndexer(accessor), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			searcher = new LuceneContentSearcher(accessor, persister);
+
 			indexer.Clear();
 		}
 
@@ -53,13 +47,71 @@ namespace N2.Extensions.Tests.Search
 			base.TearDown();
 		}
 
+	}
+
+	[TestFixture]
+	public class RemoteLuceneSearchTests : LuceneSearchTests
+	{
+		private IndexerServer server;
+
+		[TestFixtureSetUp]
+		public override void TestFixtureSetUp()
+		{
+			base.TestFixtureSetUp();
+
+			definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
+			server = new IndexerServer();
+			server.Start();
+		}
+
+		[TestFixtureTearDown]
+		public void TestFixtureTearDown()
+		{
+			server.Stop();
+		}
+
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+
+			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
+			indexer = new ContentIndexer(new IndexerClient(new Configuration.DatabaseSection()), new TextExtractor(new IndexableDefinitionExtractor(definitions)));
+			searcher = new SearcherClient(persister, new Configuration.DatabaseSection());
+			
+			indexer.Clear();
+		}
+
+	}
+
+
+	public abstract class LuceneSearchTests : ItemPersistenceMockingBase
+	{
+		protected IContentIndexer indexer;
+		protected IContentSearcher searcher;
+		protected IDefinitionManager definitions;
+		protected PersistableItem root;
+
+		[TestFixtureSetUp]
+		public virtual void TestFixtureSetUp()
+		{
+			definitions = TestSupport.SetupDefinitions(typeof(PersistableItem), typeof(PersistableItem2), typeof(PersistablePart));
+		}
+
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+			
+			root = CreateOneItem<PersistableItem>(1, "The Root Page", null);
+		}
+
 		[Test]
 		public void Title()
 		{
 			var item = CreateOneItem<PersistableItem>(2, "Hello world", root);
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
 			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -72,7 +124,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(CreateOneItem<PersistableItem>(2, "Hello world", root));
 			indexer.Update(CreateOneItem<PersistableItem>(4, "Hello universe", root));
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits1 = searcher.Search(Query.For("hello").Take(1));
 			var hits2 = searcher.Search(Query.For("hello").Skip(1).Take(1));
 			var hits3 = searcher.Search(Query.For("hello").Skip(2).Take(1));
@@ -89,7 +141,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(CreateOneItem<PersistableItem>(2, "Hello world", root));
 			indexer.Update(CreateOneItem<PersistableItem>(4, "Hello universe", root));
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits1 = searcher.Search(Query.For("hello").Take(1));
 
 			Assert.That(hits1.Count, Is.EqualTo(1));
@@ -102,7 +154,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(CreateOneItem<PersistableItem>(2, "Hello world", root));
 			indexer.Update(CreateOneItem<PersistableItem>(4, "Hello universe", root));
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").Take(2));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -116,7 +168,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(CreateOneItem<PersistableItem>(2, "Hello world", root));
 			indexer.Update(CreateOneItem<PersistableItem>(4, "Hello universe", root));
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").Take(2));
 
 			Assert.That(hits.Total, Is.EqualTo(3));
@@ -129,7 +181,7 @@ namespace N2.Extensions.Tests.Search
 			item.StringProperty = "Hej Världen";
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("världen"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -142,7 +194,7 @@ namespace N2.Extensions.Tests.Search
 			item.IntProperty = 444;
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("444"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -155,7 +207,7 @@ namespace N2.Extensions.Tests.Search
 			var item = CreateOneItem<PersistableItem>(2, "Hello world", root);
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello root"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -171,7 +223,7 @@ namespace N2.Extensions.Tests.Search
 			item.StringProperty = root.Title;
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 
 			var hits1 = searcher.Search(Query.For("hello"));
 			var hits2 = searcher.Search(Query.For("root"));
@@ -192,7 +244,7 @@ namespace N2.Extensions.Tests.Search
 			var item2b = CreateOneItem<PersistableItem>(5, "second item B", item2);
 			indexer.Update(item2b);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("item").Below(item1));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -208,7 +260,7 @@ namespace N2.Extensions.Tests.Search
 			var part1 = CreateOneItem<PersistablePart>(3, "first part", page1);
 			indexer.Update(part1);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("first").Pages(true));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -223,7 +275,7 @@ namespace N2.Extensions.Tests.Search
 			var part1 = CreateOneItem<PersistablePart>(3, "first part", page1);
 			indexer.Update(part1);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("first").Pages(false));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -239,7 +291,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page1);
 			indexer.Update(part1);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("part").Pages(true));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -253,7 +305,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(item);
 			indexer.Delete(item.ID);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
@@ -269,7 +321,7 @@ namespace N2.Extensions.Tests.Search
 
 			indexer.Delete(item.ID);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
@@ -282,7 +334,7 @@ namespace N2.Extensions.Tests.Search
 			item.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(item, "Members"));
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").ReadableBy("Everyone"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(0));
@@ -295,7 +347,7 @@ namespace N2.Extensions.Tests.Search
 			item.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(item, "Members"));
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -308,7 +360,7 @@ namespace N2.Extensions.Tests.Search
 			item.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(item, "Members"));
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").ReadableBy("Members"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -322,7 +374,7 @@ namespace N2.Extensions.Tests.Search
 			item.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(item, "Writers"));
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").ReadableBy("Writers", "Editors"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -334,7 +386,7 @@ namespace N2.Extensions.Tests.Search
 			var item = CreateOneItem<PersistableItem>(2, "Hello world", root);
 			indexer.Update(item);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").ReadableBy("Members"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -360,7 +412,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").OfType(typeof(PersistablePart)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -375,7 +427,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").OfType(typeof(PersistablePart)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -390,7 +442,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").OfType(typeof(IPart)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -405,7 +457,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").OfType(typeof(IPart), typeof(IPage)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -421,7 +473,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").OfType(typeof(object)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -437,7 +489,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").Except("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -452,7 +504,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").Except(typeof(IPage)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -467,7 +519,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello") - Query.For(typeof(IPage)));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -484,7 +536,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(part);
 			indexer.Update(part2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello") - Query.For(typeof(IPage)) - Query.For("region"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -499,7 +551,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello").And(Query.For("world")));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -514,7 +566,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello") & Query.For("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -529,7 +581,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("hello") & Query.For("world") & Query.For("hunger"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(1));
@@ -544,7 +596,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("region").Or(Query.For("world")));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -560,7 +612,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page);
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("region") | Query.For("world"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(2));
@@ -578,7 +630,7 @@ namespace N2.Extensions.Tests.Search
 			indexer.Update(page2);
 			indexer.Update(page3);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var hits = searcher.Search(Query.For("region") | Query.For("world") | Query.For("universe"));
 
 			Assert.That(hits.Hits.Count(), Is.EqualTo(3));
@@ -601,7 +653,7 @@ namespace N2.Extensions.Tests.Search
 			var enitem = CreateOneItem<PersistableItem>(5, "Hello world", en);
 			indexer.Update(enitem);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("hello").Language(sv));
 
 			Assert.That(result.Hits.Count(), Is.EqualTo(1));
@@ -622,7 +674,7 @@ namespace N2.Extensions.Tests.Search
 			var enitem = CreateOneItem<PersistableItem>(5, "Hello world", en);
 			indexer.Update(enitem);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("hello").Language(sv.LanguageCode));
 
 			Assert.That(result.Hits.Count(), Is.EqualTo(1));
@@ -646,7 +698,7 @@ namespace N2.Extensions.Tests.Search
 			var enitem = CreateOneItem<PersistableItem>(5, "Hello world", en);
 			indexer.Update(enitem);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("").Language(sv));
 
 			Assert.That(result.Hits.Count(), Is.EqualTo(2));
@@ -659,7 +711,7 @@ namespace N2.Extensions.Tests.Search
 			root.NonDetailProperty = "Lorem dolor";
 			indexer.Update(root);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("dolor"));
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
@@ -670,7 +722,7 @@ namespace N2.Extensions.Tests.Search
 		{
 			indexer.Update(root);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("ipsum"));
 
 			Assert.That(result.Hits.Single().Content, Is.EqualTo(root));
@@ -682,7 +734,7 @@ namespace N2.Extensions.Tests.Search
 			var child = CreateOneItem<PersistableItem1b>(2, "child", root);
 			indexer.Update(child);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("child"));
 
 			Assert.That(result.Hits.Any(), Is.False);
@@ -694,7 +746,7 @@ namespace N2.Extensions.Tests.Search
             root.StringProperty = "This is a very special string";
             indexer.Update(root);
 
-            var searcher = new LuceneSearcher(accessor, persister);
+            
             var query = Query.For<PersistableItem>();
 
             query.Contains(pi => pi.StringProperty, "special");
@@ -708,7 +760,7 @@ namespace N2.Extensions.Tests.Search
 		{
 			indexer.Update(root);
 			
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var query = Query.For<PersistableItem>();
 
 			query.Contains(pi => pi.Title, "root");
@@ -724,7 +776,7 @@ namespace N2.Extensions.Tests.Search
 			var part = CreateOneItem<PersistableItem2>(0, "some other page", root);
 			indexer.Update(part);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var query = Query.For("page")
 				.OfType(typeof(IPage))
 				.Below(root)
@@ -745,11 +797,11 @@ namespace N2.Extensions.Tests.Search
 			var second = CreateOneItem<PersistableItem2>(0, "some other stuff", root);
 			indexer.Update(second);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			// TODO: support this
 			//var query = (Query.For("some") | Query.For("other"))
 			//    .Below(first);
-			var query = new Query { Ancestor = first, Intersection = Query.For("some") | Query.For("other") };
+			var query = new Query { Ancestor = first.GetTrail(), Intersection = Query.For("some") | Query.For("other") };
 
 			var result = searcher.Search(query);
 
@@ -762,7 +814,7 @@ namespace N2.Extensions.Tests.Search
 		{
 			indexer.Update(root);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var query = Query.For<PersistableItem>();
 
 			query.Contains(pi => pi.Title, "ro*");
@@ -776,7 +828,7 @@ namespace N2.Extensions.Tests.Search
 		{
 			indexer.Update(root);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var query = Query.For<PersistableItem>();
 
 			query.Contains(pi => pi.Visible, "true");
@@ -796,7 +848,7 @@ namespace N2.Extensions.Tests.Search
 			page2.Tags = new[] { "Howdy", "Universe" };
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For("world"));
 
 			result.Single().ShouldBe(page);
@@ -813,7 +865,7 @@ namespace N2.Extensions.Tests.Search
 			page2.Tags = new[] { "Howdy", "Universe" };
 			indexer.Update(page2);
 
-			var searcher = new LuceneSearcher(accessor, persister);
+			
 			var result = searcher.Search(Query.For<PersistableItem>().Property("Tags", "Hello"));
 
 			result.Single().ShouldBe(page);
@@ -821,15 +873,15 @@ namespace N2.Extensions.Tests.Search
 
 		// sorting
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.Created)]
-		[TestCase(LuceneIndexer.Properties.Published)]
-		[TestCase(LuceneIndexer.Properties.Updated)]
-		[TestCase(LuceneIndexer.Properties.Expires)]
-		[TestCase(LuceneIndexer.Properties.Title)]
-		[TestCase(LuceneIndexer.Properties.Name)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
-		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.Created)]
+		[TestCase(TextExtractor.Properties.Published)]
+		[TestCase(TextExtractor.Properties.Updated)]
+		[TestCase(TextExtractor.Properties.Expires)]
+		[TestCase(TextExtractor.Properties.Title)]
+		[TestCase(TextExtractor.Properties.Name)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.SavedBy)]
 		public void OrderBy(string field)
 		{
 			PersistableItem item;
@@ -842,15 +894,15 @@ namespace N2.Extensions.Tests.Search
 			hits[1].Title.ShouldBe(item2.Title);
 		}
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.Created)]
-		[TestCase(LuceneIndexer.Properties.Published)]
-		[TestCase(LuceneIndexer.Properties.Updated)]
-		[TestCase(LuceneIndexer.Properties.Expires)]
-		[TestCase(LuceneIndexer.Properties.Title)]
-		[TestCase(LuceneIndexer.Properties.Name)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
-		[TestCase(LuceneIndexer.Properties.SavedBy)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.Created)]
+		[TestCase(TextExtractor.Properties.Published)]
+		[TestCase(TextExtractor.Properties.Updated)]
+		[TestCase(TextExtractor.Properties.Expires)]
+		[TestCase(TextExtractor.Properties.Title)]
+		[TestCase(TextExtractor.Properties.Name)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.SavedBy)]
 		public void OrderBy_Descending(string field)
 		{
 			PersistableItem item;
@@ -863,8 +915,8 @@ namespace N2.Extensions.Tests.Search
 			hits[1].Title.ShouldBe(item.Title);
 		}
 
-		[TestCase(LuceneIndexer.Properties.ID)]
-		[TestCase(LuceneIndexer.Properties.SortOrder)]
+		[TestCase(TextExtractor.Properties.ID)]
+		[TestCase(TextExtractor.Properties.SortOrder)]
 		public void OrderBy_IsNotAlphabetical_ForCertainFields(string field)
 		{
 			var item = CreateOneItem<PersistableItem>(99, "Another", null);
@@ -967,7 +1019,7 @@ namespace N2.Extensions.Tests.Search
 				}
 				Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + " Index stop: " + DateTime.Now);
 			});
-			var searcher = new LuceneSearcher(accessor, persister);
+			
             int searches = 0;
 			var searchFunction = new ThreadStart(() =>
 			{
@@ -1025,7 +1077,6 @@ namespace N2.Extensions.Tests.Search
 
 		private System.Collections.Generic.List<ContentItem> Search(params SortFieldData[] sortFields)
 		{
-			var searcher = new LuceneSearcher(accessor, persister);
 			var query = Query.For<PersistableItem>();
 			Array.ForEach(sortFields, sortField => query.OrderBy(sortField.SortField, sortField.SortDescending));
 

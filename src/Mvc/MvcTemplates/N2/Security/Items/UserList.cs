@@ -21,6 +21,7 @@ namespace N2.Security.Items
 	[Indexable(IsIndexable = false)]
 	[RestrictParents(typeof(IRootPage))]
 	[GroupChildren(GroupChildrenMode.AlphabeticalIndex)]
+	[Versionable(AllowVersions.No)]
 	public class UserList : ContentItem, ISystemNode, IInjectable<ISecurityManager>
 	{
 		ISecurityManager securityManager;
@@ -33,7 +34,7 @@ namespace N2.Security.Items
 		[EditableText("Roles", 100, TextMode = TextBoxMode.MultiLine, Rows = 10, RequiredPermission = Permission.Administer)]
 		public virtual string Roles
 		{
-			get { return (string) (GetDetail("Roles") ?? "Everyone"); }
+			get { return GetDetail("Roles", "Everyone"); }
 			set { SetDetail("Roles", value, "Everyone"); }
 		}
 

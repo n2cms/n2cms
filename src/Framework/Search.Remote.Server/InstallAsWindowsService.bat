@@ -1,0 +1,1 @@
+InstallUtil /i N2.Search.Remote.Server.exe

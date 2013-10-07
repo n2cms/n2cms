@@ -288,7 +288,7 @@ namespace N2.Persistence.NH
 		{
 			ca.Table(tablePrefix + "Item");
 			ca.Lazy(false);
-			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.Discriminator(cm => { cm.Column("Type"); cm.Type(NHibernateUtil.String); });
 			ca.Property(x => x.Created, cm => { });
@@ -329,7 +329,7 @@ namespace N2.Persistence.NH
 				cm.Lazy(childrenLaziness);
 				if (childrenBatch)
 					cm.BatchSize(batchSize ?? 10);
-				cm.Cache(m => { m.Usage(CacheUsage.ReadWrite); m.Region(cacheRegion); });
+				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 			ca.Bag(x => x.Details, cm =>
 			{
@@ -340,7 +340,7 @@ namespace N2.Persistence.NH
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.BatchSize(batchSize ?? 10);
-				cm.Cache(m => { m.Usage(CacheUsage.ReadWrite); m.Region(cacheRegion); });
+				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 				cm.Where("DetailCollectionID IS NULL");
 			}, cr => cr.OneToMany());
 			ca.Bag(x => x.DetailCollections, cm =>
@@ -352,7 +352,7 @@ namespace N2.Persistence.NH
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.BatchSize(batchSize ?? 10);
-				cm.Cache(m => { m.Usage(CacheUsage.ReadWrite); m.Region(cacheRegion); });
+				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 			ca.Bag(x => x.AuthorizedRoles, cm =>
 			{
@@ -362,7 +362,7 @@ namespace N2.Persistence.NH
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.BatchSize(batchSize ?? 25);
-				cm.Cache(m => { m.Usage(CacheUsage.ReadWrite); m.Region(cacheRegion); });
+				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 		}
 
@@ -370,7 +370,7 @@ namespace N2.Persistence.NH
 		{
 			ca.Table(tablePrefix + "Detail");
 			ca.Lazy(false);
-			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.ManyToOne(x => x.EnclosingCollection, cm => { cm.Column("DetailCollectionID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
@@ -398,7 +398,7 @@ namespace N2.Persistence.NH
 		{
 			ca.Table(tablePrefix + "DetailCollection");
 			ca.Lazy(false);
-			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.Fetch(FetchKind.Select); cm.Lazy(LazyRelation.Proxy); });
 			ca.Property(x => x.Name, cm => { cm.Length(50); cm.NotNullable(true); });
@@ -409,7 +409,7 @@ namespace N2.Persistence.NH
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
 				cm.Lazy(CollectionLazy.Lazy);
 				cm.Fetch(CollectionFetchMode.Select);
-				cm.Cache(m => { m.Usage(CacheUsage.ReadWrite); m.Region(cacheRegion); });
+				cm.Cache(m => { m.Usage(CacheUsage.NonstrictReadWrite); m.Region(cacheRegion); });
 			}, cr => cr.OneToMany());
 		}
 
@@ -417,7 +417,7 @@ namespace N2.Persistence.NH
 		{
 			ca.Table(tablePrefix + "AllowedRole");
 			ca.Lazy(false);
-			ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
 			ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 			ca.ManyToOne(x => x.EnclosingItem, cm => { cm.Column("ItemID"); cm.NotNullable(true); });
 			ca.Property(x => x.Role, cm => { cm.Length(50); cm.NotNullable(true); });
@@ -427,7 +427,7 @@ namespace N2.Persistence.NH
         {
             ca.Table(tablePrefix + "Version");
             ca.Lazy(false);
-            ca.Cache(cm => { cm.Usage(CacheUsage.ReadWrite); cm.Region(cacheRegion); });
+			ca.Cache(cm => { cm.Usage(CacheUsage.NonstrictReadWrite); cm.Region(cacheRegion); });
             ca.Id(x => x.ID, cm => { cm.Generator(Generators.Native); });
 
             ca.Component(x => x.Master, cm => { cm.Property(cr => cr.ID, pm => pm.Column("MasterID")); });

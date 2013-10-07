@@ -2053,7 +2053,7 @@ Build 1.0.1.0
 Bugs Fixed:
 
     * [NH-406] - NHibernate.Cfg.Configuration.Configure("MyAssembly.dll.config") results in System.NullReferenceException
-    * [NH-407] - session.Refresh(myObject) does not refresh/load the object from the datbase if it does not exist in the cache.
+    * [NH-407] - session.Refresh(myObject) does not refresh/load the object from the database if it does not exist in the cache.
     * [NH-414] - Need to process <cache> and <collection-cache> in configuration files
     * [NH-417] - Column Alias bug
     * [NH-422] - <meta-value> child tag missing from <many-to-any>

@@ -139,7 +139,7 @@
 									<xs:attribute name="jQueryPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryUiPath" type="xs:string" use="optional" />
 									<xs:attribute name="jQueryPluginsPath" type="xs:string" use="optional" />
-									<xs:attribute name="tinyMCEPath" type="xs:string" use="optional" />
+									<xs:attribute name="ckEditorPath" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="vpp" minOccurs="0">
@@ -225,8 +225,8 @@
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
-                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
-                  <xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -337,8 +337,6 @@
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
-												<xs:attribute name="engineType" type="xs:string" />
-												<xs:attribute name="containerType" type="xs:string" />
 												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
@@ -353,6 +351,7 @@
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
 						<xs:attribute name="engineType" type="xs:string" use="optional" />
+						<xs:attribute name="containerType" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
@@ -384,6 +383,22 @@
 							</xs:element>
 							<xs:element name="search" minOccurs="0">
 								<xs:complexType>
+									<xs:all>
+										<xs:element name="client" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
+												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
+												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="server" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="urlPrefix" type="xs:string" use="optional" default="http://*:7850/" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
@@ -392,6 +407,7 @@
 											<xs:restriction base="xs:string">
 												<xs:enumeration value="Database"/>
 												<xs:enumeration value="Lucene"/>
+												<xs:enumeration value="RemoteServer"/>
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
@@ -633,6 +649,7 @@
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:enumeration value="Fit"/>
+																		<xs:enumeration value="FitCenterOnTransparent"/>
 																		<xs:enumeration value="Fill"/>
 																		<xs:enumeration value="Stretch"/>
 																	</xs:restriction>
@@ -674,6 +691,25 @@
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="web">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="docviewer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="url" type="xs:string" use="optional" />
+									<xs:attribute name="maxsize" type="xs:string" use="optional" />
+									<xs:attribute name="extensions" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="ignoreFiles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
 					</xs:complexType>
 				</xs:element>
 			</xs:all>

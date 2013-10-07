@@ -21,6 +21,20 @@ namespace N2.Web.Mvc.Html
 			return new ResourcesHelper { Writer = writer, ViewData = html.ViewData };
 		}
 
+		/// <summary>
+		/// Includes the Fancybox Jquery plugin. Requires JQuery to be included on your page already. 
+		/// See https://github.com/fancyapps/fancyBox for instructions. You need to add a script like
+		/// this somewhere in your page: $(document).ready(function() { $(".fancybox").fancybox(); });
+		/// </summary>
+		/// <param name="registrator"></param>
+		/// <returns></returns>
+		public static ResourcesHelper Fancybox(this ResourcesHelper registrator)
+		{
+			return registrator
+				.JavaScript(Register.FancyboxPath + "jquery.fancybox.pack.js")
+				.StyleSheet(Register.FancyboxPath + "jquery.fancybox.css");
+		}
+
 		public static ResourcesHelper JQuery(this ResourcesHelper registrator)
 		{
 			return registrator.JavaScript(N2.Resources.Register.JQueryPath.ResolveUrlTokens());
@@ -50,9 +64,9 @@ namespace N2.Web.Mvc.Html
 			return registrator.StyleSheet(Register.PartsCssPath.ResolveUrlTokens());
 		}
 
-		public static ResourcesHelper TinyMCE(this ResourcesHelper registrator)
+		public static ResourcesHelper CKEditor(this ResourcesHelper registrator)
 		{
-			return registrator.JavaScript(Register.TinyMCEPath.ResolveUrlTokens());
+			return registrator.JavaScript(Register.CKEditorPath.ResolveUrlTokens());
 		}
 
 		[Obsolete("Renamed to Constants")]

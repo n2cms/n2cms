@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		public override ICollection<ContentItem> Search(string query, int pageNumber, int pageSize, out int totalRecords)
 		{
 			var q = Query.For(query).Below(SearchRoot).Range(pageSize * pageNumber, pageSize).Pages(true).Except(Query.For(typeof(ISystemNode)));
-			var result = Context.Current.Resolve<ITextSearcher>()
+			var result = Context.Current.Resolve<IContentSearcher>()
 				.Search(q);
 			
 			totalRecords = result.Total;

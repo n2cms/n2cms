@@ -15,15 +15,17 @@ namespace N2.Web.Parts
 		readonly IEditUrlManager managementPaths;
 		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
+		readonly ITemplateAggregator templates;
         readonly Navigator navigator;
 		private IVersionManager versions;
 		private ContentVersionRepository versionRepository;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, Navigator navigator, IVersionManager versions, ContentVersionRepository versionRepository)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ITemplateAggregator templates, ContentActivator activator, Navigator navigator, IVersionManager versions, ContentVersionRepository versionRepository)
 		{
             this.persister = persister;
 			this.managementPaths = editUrlManager;
 			this.definitions = definitions;
+			this.templates = templates;
 			this.activator = activator;
             this.navigator = navigator;
 			this.versions = versions;
@@ -125,7 +127,7 @@ namespace N2.Web.Parts
 
 		private TemplateDefinition GetTemplate(string discriminator, string templateKey)
 		{
-			return definitions.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateKey);
+			return templates.GetTemplate(definitions.GetDefinition(discriminator).ItemType, templateKey);
 		}
 	}
 }

@@ -37,12 +37,12 @@ namespace N2.Persistence.Search
 		{
 		}
 
-		public IndexDocument CreateDocument(ContentItem item)
+		public IndexableDocument CreateDocument(ContentItem item)
 		{
-			return new IndexDocument();
+			return new IndexableDocument();
 		}
 
-		public void Update(IndexDocument document)
+		public void Update(IndexableDocument document)
 		{
 		}
 	}

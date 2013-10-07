@@ -26,6 +26,9 @@ namespace N2.Web.Drawing
 			ImageResizeMode mode;
 			switch (m)
 			{
+                case "FitCenterOnTransparent":
+                    mode = ImageResizeMode.FitCenterOnTransparent;
+                    break;
 				case "Fill":
 					mode = ImageResizeMode.Fill;
 					break;
@@ -37,31 +40,36 @@ namespace N2.Web.Drawing
 					break;
 			}
 
-			IFileSystem fs = N2.Context.Current.Resolve<IFileSystem>();
-			if (fs.FileExists(imageUrl))
-			{
-				string path = context.Server.MapPath(imageUrl);
-				if (CacheUtility.IsUnmodifiedSince(context.Request, path))
-				{
-					CacheUtility.NotModified(context.Response);
-				}
+            if (ImagesUtility.IsImagePath(imageUrl) == true)
+            {
+                IFileSystem fs = N2.Context.Current.Resolve<IFileSystem>();
+                if (fs.FileExists(imageUrl))
+                {
+                    string path = context.Server.MapPath(imageUrl);
+                    if (CacheUtility.IsUnmodifiedSince(context.Request, path))
+                    {
+                        CacheUtility.NotModified(context.Response);
+                    }
 
-				context.Response.ContentType = "image/jpeg";
+                    context.Response.ContentType = "image/jpeg";
 
-				string extension = VirtualPathUtility.GetExtension(imageUrl);
-				ImageResizer ir = N2.Context.Current.Resolve<ImageResizer>();
+                    string extension = VirtualPathUtility.GetExtension(imageUrl);
+                    ImageResizer ir = N2.Context.Current.Resolve<ImageResizer>();
 
-				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
-				using (var s = fs.OpenFile(imageUrl, readOnly: true))
-				{
-					var resized = ir.GetResizedBytes(s, new ImageResizeParameters(width, height, mode));
-					context.Response.BinaryWrite(resized);
-				}
-			}
-			else
-			{
-				throw new HttpException(404, "Not found");
-			}
+                    CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
+                    using (var s = fs.OpenFile(imageUrl, readOnly: true))
+                    {
+                        var resized = ir.GetResizedBytes(s, new ImageResizeParameters(width, height, mode));
+                        context.Response.BinaryWrite(resized);
+                    }
+                }
+                else
+                {
+                    throw new HttpException(404, "Not found");
+                }
+            }
+
+			
 		}
 
 		public bool IsReusable

@@ -11,10 +11,10 @@ using N2;
 namespace Dinamico.Controllers
 {
 	[Controls(typeof(LanguageIntersection))]
-    public class LanguageIntersectionController : ContentController<LanguageIntersection>
-    {
-        public override ActionResult Index()
-        {
+	public class LanguageIntersectionController : ContentController<LanguageIntersection>
+	{
+		public override ActionResult Index()
+		{
 			ContentItem language = Request.SelectLanguage(CurrentItem);
 			if (language != null)
 			{
@@ -28,7 +28,7 @@ namespace Dinamico.Controllers
 				return Redirect(CurrentItem.RedirectUrl);
 
 			return View(CurrentItem);
-        }
+		}
 
-    }
+	}
 }

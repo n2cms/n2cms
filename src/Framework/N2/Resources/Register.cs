@@ -18,9 +18,12 @@ namespace N2.Resources
 			JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
 			JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
 			JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
-			TinyMCEPath = "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js?v=" + JQueryVersion;
+			CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
 			PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 			PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
+			TwitterBootstrapJsPath = DefaultBootstrapJsPath;
+			TwitterBootstrapCssPath = DefaultBootstrapCssPath;
+			TwitterBootstrapResponsiveCssPath = DefaultBootstrapResponsiveCssPath;
 		}
 
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
@@ -28,6 +31,12 @@ namespace N2.Resources
 		
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
+
+		public const string DefaultBootstrapRoot = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/";
+		public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
+		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
+		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
+		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
 		
 		/// <summary>Path to jQuery.</summary>
 		public static string JQueryPath { get; set; }
@@ -38,14 +47,26 @@ namespace N2.Resources
 		/// <summary>The path to the jquery plugins used by N2.</summary>
 		public static string JQueryPluginsPath { get; set; }
 		
-		/// <summary>The path to the tiny MCE editor script</summary>
-		public static string TinyMCEPath { get; set; }
+		/// <summary>The path to the CKeditor script</summary>
+		public static string CKEditorPath { get; set; }
 
 		/// <summary>The path to the parts script.</summary>
 		public static string PartsJsPath { get; set; }
 
 		/// <summary>The path to the parts css.</summary>
 		public static string PartsCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap CSS library.</summary>
+		public static string TwitterBootstrapCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap Responsive CSS library.</summary>
+		public static string TwitterBootstrapResponsiveCssPath { get; set; }
+
+		/// <summary>The path to Twitter Bootstrap JS library.</summary>
+		public static string TwitterBootstrapJsPath { get; set; }
+
+		/// <summary>The path to the Fancybox library.</summary>
+		public static string FancyboxPath { get; set; }
 
 		#region page StyleSheet
 
@@ -319,9 +340,9 @@ namespace N2.Resources
 			page.JavaScript(JQueryUiPath.ResolveUrlTokens(), ScriptPosition.Header, ScriptOptions.Include);
 		}
 
-		public static void TinyMCE(this Page page)
+		public static void CKEditor(this Page page)
 		{
-			JavaScript(page, TinyMCEPath.ResolveUrlTokens());
+			JavaScript(page, CKEditorPath.ResolveUrlTokens());
 		}
 
 		#endregion
@@ -389,7 +410,7 @@ namespace N2.Resources
 
 		public static string TinyMCE(IDictionary<string, object> stateCollection)
 		{
-			return JavaScript(stateCollection, Url.ResolveTokens(TinyMCEPath));
+			return JavaScript(stateCollection, Url.ResolveTokens(CKEditorPath));
 		}
 
 		public static string StyleSheet(IDictionary<string, object> stateCollection, string resourceUrl)

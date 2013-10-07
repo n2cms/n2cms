@@ -73,9 +73,9 @@ namespace N2.Persistence
 
 
 		/// <summary>Performs text search for content items.</summary>
-		public ITextSearcher Text
+		public IContentSearcher Text
 		{
-			get { return engine().Resolve<ITextSearcher>(); }
+			get { return engine().Resolve<IContentSearcher>(); }
 		}
 	}
 }

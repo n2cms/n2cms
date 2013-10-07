@@ -5,9 +5,6 @@ using System.Configuration;
 using System.Text;
 using System.Web.Hosting;
 using System.Web.UI.WebControls;
-
-using System.Linq;
-
 using N2.Configuration;
 using N2.Resources;
 using N2.Web.Tokens;
@@ -23,14 +20,14 @@ namespace N2.Web.UI.WebControls
 		static string configScriptUrl;
 		static bool configEnabled = true;
 		static bool isInitalized = false;
-        static bool configTokensEnabled = true;
-        static NameValueCollection configSettings = new NameValueCollection();
-        private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
+		static bool configTokensEnabled = true;
+		static NameValueCollection configSettings = new NameValueCollection();
+		private Dictionary<string, string> customOverrides_ = new Dictionary<string, string>();
 
 		public FreeTextArea()
 		{
 			TextMode = TextBoxMode.MultiLine;
-			CssClass = "freeTextArea";
+			CssClass = "ckeditor";
 		}
 
 		public virtual bool EnableFreeTextArea
@@ -64,7 +61,7 @@ namespace N2.Web.UI.WebControls
 					configCssUrl = Url.ResolveTokens(config.TinyMCE.CssUrl);
 					configScriptUrl = Url.ResolveTokens(config.TinyMCE.ScriptUrl);
 					configEnabled = config.TinyMCE.Enabled;
-                    configTokensEnabled = config.TinyMCE.EnableTokenDropdown;
+					configTokensEnabled = config.TinyMCE.EnableTokenDropdown;
 					foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
 					{
 						configSettings[element.Key] = element.Value;
@@ -76,43 +73,54 @@ namespace N2.Web.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-
 			if (EnableFreeTextArea)
 			{
 				Register.JQuery(Page);
-				Register.TinyMCE(Page);
-				Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
+				Register.CKEditor(Page);
+				//Register.JavaScript(Page, configScriptUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
-				string freeTextAreaInitScript = string.Format("freeTextArea_init('{0}', {1});",
-					Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl),
+				string freeTextAreaInitScript = string.Format("CKEDITOR.replace('{0}', {1});",
+					ClientID,
 					GetOverridesJson());
-                Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, freeTextAreaInitScript, true);
+				Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, freeTextAreaInitScript, true);
 			}
 		}
 
-        private IEnumerable<TokenDefinition> GetTokens()
-        {
-            return Context.GetEngine().Resolve<TokenDefinitionFinder>().FindTokens();
-        }
+		private IEnumerable<TokenDefinition> GetTokens()
+		{
+			return Context.GetEngine().Resolve<TokenDefinitionFinder>().FindTokens();
+		}
 
 		protected virtual string GetOverridesJson()
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
-			overrides["content_css"] = configCssUrl ?? Url.ResolveTokens("{ManagementUrl}/Resources/Css/Editor.css");
+			overrides["contentsCss"] = configCssUrl ?? Register.TwitterBootstrapCssPath;
 
-            if (configTokensEnabled)
-            {
-                overrides["tokencomplete_enabled"] = "true";
-                overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
-            }
+			overrides["filebrowserBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
+				.AppendQuery("location", "selection")
+				.AppendQuery("availableModes", "All")
+				.AppendQuery("selectableTypes", "");
+
+			overrides["filebrowserImageBrowseUrl"] = Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl)
+				.AppendQuery("location", "filesselection")
+				.AppendQuery("availableModes", "Files")
+				.AppendQuery("selectableTypes", "IFileSystemFile");
+
+			overrides["filebrowserFlashBrowseUrl"] = overrides["filebrowserImageBrowseUrl"];
+
+			//if (configTokensEnabled)
+			//{
+			//	overrides["tokencomplete_enabled"] = "true";
+			//	overrides["tokencomplete_settings"] = new { tokens = GetTokens() }.ToJson();
+			//}
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(Url.ResolveTokens("{ManagementUrl}/Resources/ckeditor/lang/" + language + ".js")))
 				overrides["language"] = language;
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
-				overrides["document_base_url"] = Page.ResolveUrl(DocumentBaseUrl);
+				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
 
 			foreach (string key in configSettings.AllKeys)
 				overrides[key] = configSettings[key];

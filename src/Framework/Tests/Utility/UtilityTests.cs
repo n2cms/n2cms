@@ -7,6 +7,8 @@ using N2.Integrity;
 using NUnit.Framework;
 using N2.Edit;
 using Shouldly;
+using System.Globalization;
+using System.Threading;
 
 namespace N2.Tests.Utility
 {
@@ -34,6 +36,27 @@ namespace N2.Tests.Utility
 			item5 = CreateOneItem<UtilityItem>(++i, i.ToString(), null);
 
 			items = new ContentItem[] {item1, item2, item3, item4, item5};
+		}
+
+		[Test]
+		public void GetFileSizeString_Test()
+		{
+			var bak = Thread.CurrentThread.CurrentCulture;
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+			N2.Utility.GetFileSizeString(1000 * 1048576, false).ShouldBe("1,000.0 MiB");
+			N2.Utility.GetFileSizeString(1048576, false).ShouldBe("1.0 MiB");
+			N2.Utility.GetFileSizeString(1024, false).ShouldBe("1,024 bytes");
+			N2.Utility.GetFileSizeString(4 * 1024, false).ShouldBe("4.0 KiB");
+			N2.Utility.GetFileSizeString(1000000000, true).ShouldBe("1,000.0 MB");
+			N2.Utility.GetFileSizeString(1000000, true).ShouldBe("1.0 MB");
+			N2.Utility.GetFileSizeString(1024, true).ShouldBe("1,024 bytes");
+			N2.Utility.GetFileSizeString(4 * 1000, true).ShouldBe("4.0 KB");
+			N2.Utility.GetFileSizeString(1048576, true).ShouldBe("1.0 MB");
+			N2.Utility.GetFileSizeString(0, true).ShouldBe("0 bytes");
+			N2.Utility.GetFileSizeString(0, false).ShouldBe("0 bytes");
+
+			Thread.CurrentThread.CurrentCulture = bak;
 		}
 
 		[Test]

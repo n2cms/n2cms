@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 
 namespace N2.Web
@@ -181,6 +182,18 @@ namespace N2.Web
 			get { return scheme; }
 		}
 
+		/// <summary>The domain name information.</summary>
+		public string Domain
+		{
+			get { return authority != null ? authority.Split(':')[0] : null; }
+		}
+
+		/// <summary>The port information.</summary>
+		public int Port
+		{
+			get { return authority != null ? int.Parse(authority.Split(':').Skip(1).FirstOrDefault() ?? "80") : 80; }
+		}
+
 		/// <summary>The domain name and port information.</summary>
 		public string Authority
 		{
@@ -191,6 +204,16 @@ namespace N2.Web
 		public string Path
 		{
 			get { return path; }
+		}
+
+		public string[] Segments
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(path) || path == "/")
+					return new string[0];
+				return path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+			}
 		}
 
 		public string ApplicationRelativePath
@@ -581,8 +604,8 @@ namespace N2.Web
 
 		public Url PrependSegment(string segment, string extension)
 		{
-            if (string.IsNullOrEmpty(segment))
-                return this;
+			if (string.IsNullOrEmpty(segment))
+				return this;
 
 			string newPath;
 			if (string.IsNullOrEmpty(path) || path == "/")
@@ -956,6 +979,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(urlFormat))
 				return urlFormat;
 
+			//TODO: Use a nicer method for replacing tokens. Doesn't work if token values contain other tokens.
 			foreach (var kvp in replacements)
 				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
 			return ToAbsolute(urlFormat);

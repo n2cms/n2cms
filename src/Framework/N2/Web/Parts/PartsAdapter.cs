@@ -32,6 +32,7 @@ namespace N2.Web.Parts
 		ISecurityManager security;
 		ContentVersionRepository versionRepository;
 		Rendering.ContentRendererSelector rendererSelector;
+		private ITemplateAggregator templateAggregator;
 
 		public Rendering.ContentRendererSelector RendererSelector
 		{
@@ -67,6 +68,12 @@ namespace N2.Web.Parts
 		{
 			get { return definitions ?? Engine.Definitions; }
 			set { definitions = value; }
+		}
+
+		public ITemplateAggregator TemplateAggregator
+		{
+			get { return templateAggregator ?? Engine.Resolve<ITemplateAggregator>(); }
+			set { templateAggregator = value; }
 		}
 
 		public IEnumerable<ITemplateProvider> Templates
@@ -213,7 +220,7 @@ namespace N2.Web.Parts
 
 		public virtual IEnumerable<TemplateDefinition> GetTemplates(ContentItem item, ItemDefinition definition)
 		{
-			return Definitions.GetTemplates(definition.ItemType);
+			return TemplateAggregator.GetTemplates(definition.ItemType);
 		}
 	}
 }

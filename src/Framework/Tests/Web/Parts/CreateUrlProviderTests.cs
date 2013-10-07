@@ -14,6 +14,8 @@ using N2.Security;
 using System.Collections.Specialized;
 using Shouldly;
 using N2.Details;
+using N2.Definitions;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Web.Parts
 {
@@ -34,11 +36,17 @@ namespace N2.Tests.Web.Parts
 			var types = new[] { typeof(Items.PageItem), typeof(Items.DataItem) };
 			versionRepository = TestSupport.CreateVersionRepository(types);
 			var versions = TestSupport.SetupVersionManager(persister, versionRepository);
+			//definitions = TestSupport.SetupDefinitions(types);
+
+			ITemplateAggregator templates;
+			ContentActivator activator;
+			TestSupport.Setup(out definitions, out templates, out activator, types);
 			creator = new CreateUrlProvider(
 				persister,
                 new EditUrlManager(null, new EditSection()),
-				definitions = TestSupport.SetupDefinitions(types),
-				TestSupport.SetupContentActivator(),
+				definitions,
+				templates,
+				activator,
 				new Navigator(persister, TestSupport.SetupHost(), new VirtualNodeFactory(), TestSupport.SetupContentSource()),
 				versions, 
 				versionRepository);

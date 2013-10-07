@@ -1,0 +1,29 @@
+﻿@model N2.Web.Slideshow
+
+@{
+	Content.Define(ie => { ie.Title = "Default Slideshow"; });
+	string uniqueId = Html.UniqueID("cs");
+}
+
+@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
+
+<div class="@Model.CssClass" id="@uniqueId">
+	@foreach (var img in Model.GetSlideshowImages())
+	{ 
+		<img src="@img.ImageHref" />
+	}
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var $container = $("#@uniqueId");
+		$container.wrapInner("<ul/>").children("ul")
+			.children("*").wrap("<li/>").each(function(){
+				if($(this).text().length > 0)
+					$(this).wrap("<div class='textual'/>").wrap("<div class='textual-inner'/>");
+			}).end()
+			.each(function(){
+				var $t = $(this);
+				$t.anythingSlider({ width: $container.width(), delay:5000, animationTime:200, resizeContents:true, buildArrows:false });
+			});
+	});
+</script>
