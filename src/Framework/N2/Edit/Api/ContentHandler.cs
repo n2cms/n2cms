@@ -56,31 +56,50 @@ namespace N2.Management.Api
 							WriteSearch(context);
 							break;
 						case "/translations":
-							var translations = CreateTranslations(context).ToList();
+							var translations = GetTranslations(context).ToList();
 							context.Response.WriteJson(new { Translations = translations });
 							break;
 						case "/versions":
-							var versions = CreateVersions(context).ToList();
+							var versions = GetVersions(context).ToList();
 							context.Response.WriteJson(new { Versions = versions });
 							break;
 						case "/definitions":
-							var definitions = CreateDefinitions(context)
+							var definitions = GetDefinitions(context)
 								.Select(d => new { d.Title, d.Description, d.Discriminator, d.ToolTip, d.IconUrl, d.IconClass, TypeName = d.ItemType.Name })
 								.ToList();
 							context.Response.WriteJson(new { Definitions = definitions });
 							break;
 						case "/tokens":
-							var tokens = CreateTokens(context);
+							var tokens = GetTokens(context);
 							context.Response.WriteJson(new { Tokens = tokens });
 							break;
 						case "/children":
+							context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							break;
 						default:
-							var children = CreateChildren(context).ToList();
-							context.Response.WriteJson(new { Children = children, IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							if (string.IsNullOrEmpty(context.Request.PathInfo))
+							{
+								context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+							}
+							else
+							{
+								if (context.Request.PathInfo.StartsWith("/"))
+								{
+									int id;
+									if (int.TryParse(context.Request.PathInfo.Trim('/'), out id))
+									{
+										var item = engine.Persister.Get(id);
+										context.Response.WriteJson(item);
+										return;
+									}
+								}
+								throw new HttpException((int)HttpStatusCode.NotImplemented, "Not Implemented");
+							}
 							break;
 					}
 					break;
 				case "POST":
+					EnsureValidSelection();
 					switch (context.Request.PathInfo)
 					{
 						case "":
@@ -111,30 +130,59 @@ namespace N2.Management.Api
 					}
 					break;
 				case "DELETE":
+					EnsureValidSelection();
 					Delete(context);
 					break;
 				case "PUT":
+					EnsureValidSelection();
 					Update(context);
 					break;
 			}
 		}
 
-		private IEnumerable<TokenDefinition> CreateTokens(HttpContextBase context)
+		private void EnsureValidSelection()
+		{
+			if (Selection.ParseSelectionFromRequest() == null)
+				throw new HttpException(404, "Not Found");
+		}
+
+		private IEnumerable<TokenDefinition> GetTokens(HttpContextBase context)
 		{
 			return engine.Resolve<TokenDefinitionFinder>().FindTokens();
 		}
 
 		private void Update(HttpContextBase context)
 		{
-			throw new NotImplementedException();
+			var item = Selection.ParseSelectionFromRequest();
+			if (item == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			foreach (var kvp in requestBody)
+				item[kvp.Key] = kvp.Value;
+
+			engine.Persister.Save(item);
 		}
 
 		private void Create(HttpContextBase context)
 		{
-			throw new NotImplementedException();
+			var parent = Selection.ParseSelectionFromRequest();
+			if (parent == null)
+				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
+
+			var discriminator = context.Request["discriminator"];
+			var definition = engine.Definitions.GetDefinition(discriminator);
+			
+			var item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent);
+
+			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			foreach (var kvp in requestBody)
+				item[kvp.Key] = kvp.Value;
+
+			engine.Persister.Save(item);
 		}
 
-		private IEnumerable<ItemDefinition> CreateDefinitions(HttpContextBase context)
+		private IEnumerable<ItemDefinition> GetDefinitions(HttpContextBase context)
 		{
 			var item = Selection.ParseSelectionFromRequest();
 			if (item != null)
@@ -143,14 +191,14 @@ namespace N2.Management.Api
 				return engine.Definitions.GetDefinitions();
 		}
 
-		private IEnumerable<Node<TreeNode>> CreateVersions(HttpContextBase context)
+		private IEnumerable<Node<TreeNode>> GetVersions(HttpContextBase context)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
 			var versions = engine.Resolve<IVersionManager>().GetVersionsOf(Selection.SelectedItem);
 			return versions.Select(v => new Node<TreeNode>(adapter.GetTreeNode(v, allowDraft: false)));
 		}
 
-		private IEnumerable<Node<InterfaceMenuItem>> CreateTranslations(HttpContextBase context)
+		private IEnumerable<Node<InterfaceMenuItem>> GetTranslations(HttpContextBase context)
 		{
 			var languages = engine.Resolve<ILanguageGateway>();
 			return languages.GetEditTranslations(Selection.SelectedItem, true, true)
@@ -321,7 +369,7 @@ namespace N2.Management.Api
 			return newItem;
 		}
 
-		private IEnumerable<Node<TreeNode>> CreateChildren(HttpContextBase context)
+		private IEnumerable<Node<TreeNode>> GetChildren(HttpContextBase context)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem);
 			var filter = engine.EditManager.GetEditorFilter(context.User);
@@ -339,10 +387,10 @@ namespace N2.Management.Api
 
 			return adapter.GetChildren(query)
 				.Where(filter)
-				.Select(c => CreateNode(c, filter));
+				.Select(c => GetNode(c, filter));
 		}
 
-		private Node<TreeNode> CreateNode(ContentItem item, ItemFilter filter)
+		private Node<TreeNode> GetNode(ContentItem item, ItemFilter filter)
 		{
 			var adapter = engine.GetContentAdapter<NodeAdapter>(item);
 			return new Node<TreeNode>

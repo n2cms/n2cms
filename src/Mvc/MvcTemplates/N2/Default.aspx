@@ -14,8 +14,7 @@
 	<title>N2 Management</title>
 	<meta name="viewport" content="width=device-width">
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.10.2.min.js"><\/script>')</script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryPath) %>"></script>
 	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
 
 	<script src="Resources/angular-1.1.5/angular.min.js"></script>

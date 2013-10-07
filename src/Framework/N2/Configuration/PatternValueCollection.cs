@@ -10,10 +10,10 @@ namespace N2.Configuration
 	{
 		public PatternValueCollection()
 		{
-			AddDefault(new PatternValueElement("At", "[@]", "a", true));
+			AddDefault(new PatternValueElement("At", "[@]", "at", true));
 			AddDefault(new PatternValueElement("smallAE", "[æ]", "ae", true));
 			AddDefault(new PatternValueElement("smallA", "[ä]", "a", true));
-			AddDefault(new PatternValueElement("capitalAE", "[Æ]", "AE", true));
+			AddDefault(new PatternValueElement("capitalAE", "[Æ]", "Ae", true));
 			AddDefault(new PatternValueElement("capitalA", "[Ä]", "A", true));
 			AddDefault(new PatternValueElement("smallOE", "[ö]", "o", true));
 			AddDefault(new PatternValueElement("capitalOE", "[Ö]", "O", true));

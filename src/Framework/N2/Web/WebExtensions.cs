@@ -296,7 +296,7 @@ namespace N2.Web
 				return (key) => context.Request[key];
 		}
 
-		private static IDictionary<string, string> GetOrDeserializeRequestStreamJson(HttpContextBase context)
+		internal static IDictionary<string, string> GetOrDeserializeRequestStreamJson(this HttpContextBase context)
 		{
 			var json = context.Items["CachedRequestStream"] as IDictionary<string, string>;
 			if (json == null)

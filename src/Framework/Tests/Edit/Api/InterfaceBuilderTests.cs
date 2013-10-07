@@ -59,7 +59,7 @@ namespace N2.Tests.Edit.Api
 
 		[TestCase("add")]
 		[TestCase("edit")]
-		[TestCase("throw")]
+		[TestCase("delete")]
 		[TestCase("security")]
 		public void ContextMenu_ContainsMenuItems(string expectedMenuItem)
 		{

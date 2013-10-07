@@ -105,13 +105,13 @@ namespace N2.Tests.Web
 		[TestCase("ṃ,ỹ,ṛ,è,ş,ư,ḿ,ĕ", "m-y-r-e-s-u-m-e")]
 		[TestCase("á-é-í-ó-ú", "a-e-i-o-u")]
 		[TestCase("à,å,á,â,ã,å,ą", "a-a-a-a-a-a-a")]
-		[TestCase("ä", "ae")]
+		[TestCase("ä", "a")]
 		[TestCase("è,é,ê,ë,ę", "e-e-e-e-e")]
 		[TestCase("ì,í,î,ï,ı", "i-i-i-i-i")]
 		[TestCase("ò,ó,ô,õ,ø", "o-o-o-o-o")]
-		[TestCase("ö", "oe")]
+		[TestCase("ö", "o")]
 		[TestCase("ù,ú,û", "u-u-u")]
-		[TestCase("ü", "ue")]
+		[TestCase("ü", "u")]
 		[TestCase("ç,ć,č", "c-c-c")]
 		[TestCase("ż,ź,ž", "z-z-z")]
 		[TestCase("ś,ş,š", "s-s-s")]
@@ -154,10 +154,10 @@ namespace N2.Tests.Web
 		}
 
 		[TestCase("å,á,à,â,ã", "a-a-a-a-a")]
-		[TestCase("@", "a")]
+		[TestCase("@", "at")]
 		[TestCase("Å,Á,À,Â,Ã", "A-A-A-A-A")]
-		[TestCase("æ,ä", "ae-ae")]
-		[TestCase("Æ,Ä", "Ae-Ae")]
+		[TestCase("æ,ä", "ae-a")]
+		[TestCase("Æ,Ä", "Ae-A")]
 		[TestCase("é,è", "e-e")]
 		[TestCase("É,È", "E-E")]
 		[TestCase("í,ì", "i-i")]
@@ -166,8 +166,8 @@ namespace N2.Tests.Web
 		[TestCase("Ø,Ó,Ò,Ô,Õ", "O-O-O-O-O")]
 		[TestCase("ú,ù", "u-u")]
 		[TestCase("Ú,Ù", "U-U")]
-		[TestCase("ü", "ue")]
-		[TestCase("Ü", "Ue")]
+		[TestCase("ü", "u")]
+		[TestCase("Ü", "U")]
 		[TestCase("ß", "ss")]
 		public void Create_Should_Keep_CaseInvariant_Compatibility_With_Old_N2_Slug_Implementation(string value, string expected)
 		{
@@ -176,10 +176,10 @@ namespace N2.Tests.Web
 		}	
 		
 		[TestCase("å,á,à,â,ã", "a-a-a-a-a")]
-		[TestCase("@", "a")]
+		[TestCase("@", "at")]
 		[TestCase("Å,Á,À,Â,Ã", "a-a-a-a-a")]
-		[TestCase("æ,ä", "ae-ae")]
-		[TestCase("Æ,Ä", "ae-ae")]
+		[TestCase("æ,ä", "ae-a")]
+		[TestCase("Æ,Ä", "ae-a")]
 		[TestCase("é,è", "e-e")]
 		[TestCase("É,È", "e-e")]
 		[TestCase("í,ì", "i-i")]
@@ -188,8 +188,8 @@ namespace N2.Tests.Web
 		[TestCase("Ø,Ó,Ò,Ô,Õ", "o-o-o-o-o")]
 		[TestCase("ú,ù", "u-u")]
 		[TestCase("Ú,Ù", "u-u")]
-		[TestCase("ü", "ue")]
-		[TestCase("Ü", "ue")]
+		[TestCase("ü", "u")]
+		[TestCase("Ü", "u")]
 		[TestCase("ß", "ss")]
 		public void Create_Should_Keep_Lowercase_Compatibility_With_Old_N2_Slug_Implementation(string value, string expected)
 		{

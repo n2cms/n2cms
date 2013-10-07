@@ -96,12 +96,29 @@
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
 		});
 
+		res.paths = {
+			SelectedQueryKey: "selected",
+			ItemQueryKey: "item"
+		}
+
+		res.applySelection = function(settings, currentItem) {
+			var path = currentItem && currentItem.Path;
+			var id = currentItem && currentItem.ID;
+			if (path || id) {
+				var selection = {};
+				selection[res.paths.SelectedQueryKey] = path;
+				selection[res.paths.ItemQueryKey] = id;
+				return angular.extend(selection, settings);
+			}
+			return settings;
+		}
+
 		res.loadChildren = function (node, callback) {
 			if (!node)
 				return;
 
 			node.Loading = true;
-			res.children({ selected: node.Current.Path }, function (data) {
+			res.children(res.applySelection({}, node.Current), function (data) {
 				node.Children = data.Children;
 				delete node.Loading;
 				node.IsPaged = data.IsPaged;
@@ -217,7 +234,7 @@
 
 				node.HasChildren = true;
 				node.Loading = true;
-				Content.children({ selected: node.Current.Path }, function (data) {
+				Content.children(Content.applySelection({}, node.Current), function (data) {
 					node.Children = data.Children;
 					node.Expanded = true;
 					node.Loading = false;
