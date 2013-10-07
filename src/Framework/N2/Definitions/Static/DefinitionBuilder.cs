@@ -18,7 +18,7 @@ namespace N2.Definitions.Static
 		private readonly ITypeFinder typeFinder;
 		TransformerBase<IUniquelyNamed>[] transformers;
 		private readonly EngineSection config;
-		
+
 		private ItemDefinition[] definitionsCache;
 
 		public DefinitionBuilder(DefinitionMap staticDefinitions, ITypeFinder typeFinder, TransformerBase<IUniquelyNamed>[] transformers, EngineSection config)
@@ -42,7 +42,7 @@ namespace N2.Definitions.Static
 
 			return definitionsCache = definitions.Where(d => d.IsDefined)
 				// check for attribute since a definition may have been defined by another source
-				.Where(d => config.Definitions.DefineUnattributedTypes || d.GetCustomAttributes<AbstractDefinition>().Any() )
+				.Where(d => config.Definitions.DefineUnattributedTypes || d.GetCustomAttributes<AbstractDefinition>().Any())
 				.ToArray();
 		}
 
@@ -86,7 +86,7 @@ namespace N2.Definitions.Static
 				definitions.Remove(definition);
 			}
 
-			foreach(DefinitionElement element in config.Definitions.AllElements)
+			foreach (DefinitionElement element in config.Definitions.AllElements)
 			{
 				if (element.Name == "*")
 					UpdateMatchingDefinitions(definitions, element);
@@ -242,9 +242,9 @@ namespace N2.Definitions.Static
 		/// <returns>An enumeration of types derived from <see cref="N2.ContentItem"/>.</returns>
 		protected IEnumerable<Type> FindConcreteTypes()
 		{
-			foreach(Type t in typeFinder.Find(typeof (ContentItem)))
+			foreach (Type t in typeFinder.Find(typeof(ContentItem)))
 			{
-				if(t != null && !t.IsAbstract && !t.ContainsGenericParameters)
+				if (t != null && !t.IsAbstract && !t.ContainsGenericParameters)
 				{
 					yield return t;
 				}
