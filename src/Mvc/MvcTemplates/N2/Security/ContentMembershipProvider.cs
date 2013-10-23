@@ -404,7 +404,7 @@ namespace N2.Security
 			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email) & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
+			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email).Detail() & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
 				"Name").Select(d => d["Name"]);
             return userNames.OfType<string>().FirstOrDefault();
 		}
