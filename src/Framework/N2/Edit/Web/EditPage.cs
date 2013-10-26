@@ -71,7 +71,7 @@ namespace N2.Edit.Web
 
 		protected virtual void EnsureValidSelection()
 		{
-			if (IsPostBack && Selection.ParseSelectionFromRequest() == null)
+			if (IsPostBack && Selection.ParseSelectionFromRequest() == null && !string.IsNullOrEmpty(Request["selected"]))
 				throw new HttpException(404, "Not Found");
 		}
 
