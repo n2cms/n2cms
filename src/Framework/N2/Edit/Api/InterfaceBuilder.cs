@@ -419,29 +419,16 @@ namespace N2.Management.Api
 		{
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
-			var structure = new BranchHierarchyBuilder(selection.SelectedItem, selection.Traverse.RootPage, true) { UseMasterVersion = false }
-				.Children((item) =>
-				{
-					var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };
-					return engine.GetContentAdapter<NodeAdapter>(item).GetChildren(q);
-				})
-				.Build();
+            var selectedItem = selection.SelectedItem;
+            var root = selection.Traverse.RootPage;
+            var structure = ApiExtensions.BuildStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
 
 			return CreateStructure(structure, filter);
 		}
 
 		protected virtual Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
 		{
-			var adapter = engine.GetContentAdapter<NodeAdapter>(structure.Current);
-
-			var children = structure.Children.Select(c => CreateStructure(c, filter)).ToList();
-			return new Node<TreeNode>
-			{
-				Current = adapter.GetTreeNode(structure.Current),
-				HasChildren = adapter.HasChildren(structure.Current, filter),
-				Expanded = children.Any(),
-				Children = children
-			};
+            return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
 		}
 
 		protected virtual Node<InterfaceMenuItem> CreateMainMenu()

@@ -72,10 +72,13 @@ namespace N2.Management.Api
 						case "/tokens":
 							var tokens = GetTokens(context);
 							context.Response.WriteJson(new { Tokens = tokens });
-							break;
-						case "/children":
-							context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
-							break;
+                            break;
+                        case "/children":
+                            context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
+                            break;
+                        case "/branch":
+                            context.Response.WriteJson(new { Content = GetBranch(context) });
+                            break;
 						default:
 							if (string.IsNullOrEmpty(context.Request.PathInfo))
 							{
@@ -139,6 +142,15 @@ namespace N2.Management.Api
 					break;
 			}
 		}
+
+        private Node<TreeNode> GetBranch(HttpContextBase context)
+        {
+            var root = Selection.ParseSelected(context.Request["root"]) ?? Selection.Traverse.RootPage;
+            var selectedItem = Selection.SelectedItem;
+            var filter = engine.EditManager.GetEditorFilter(context.User);
+            var structure = ApiExtensions.BuildStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
+            return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
+        }
 
 		private void EnsureValidSelection()
 		{

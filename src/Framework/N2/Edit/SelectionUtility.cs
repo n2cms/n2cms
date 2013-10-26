@@ -138,6 +138,11 @@ namespace N2.Edit
 		{
 			if (string.IsNullOrEmpty(selected))
 				return null;
+            
+            int id;
+            if (int.TryParse(selected, out id))
+                return engine.Persister.Get(id);
+
 			var selectedItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 			return selectedItem;
 		}

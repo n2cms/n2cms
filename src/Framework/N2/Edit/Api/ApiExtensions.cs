@@ -1,4 +1,7 @@
-﻿using System;
+﻿using N2.Collections;
+using N2.Edit;
+using N2.Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,5 +50,32 @@ namespace N2.Management.Api
 
 			parentNode.Children = siblings;
 		}
-	}
+
+        internal static Node<TreeNode> CreateNode(this HierarchyNode<ContentItem> structure, IContentAdapterProvider adapters, Collections.ItemFilter filter)
+        {
+            var adapter = adapters.ResolveAdapter<NodeAdapter>(structure.Current);
+
+            var children = structure.Children.Select(c => CreateNode(c, adapters, filter)).ToList();
+            return new Node<TreeNode>
+            {
+                Current = adapter.GetTreeNode(structure.Current),
+                HasChildren = adapter.HasChildren(structure.Current, filter),
+                Expanded = children.Any(),
+                Children = children
+            };
+        }
+
+        internal static HierarchyNode<ContentItem> BuildStructure(ItemFilter filter, IContentAdapterProvider adapters, ContentItem selectedItem, ContentItem root)
+        {
+            var structure = new BranchHierarchyBuilder(selectedItem, root, true) { UseMasterVersion = false }
+                .Children((item) =>
+                {
+                    var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };
+                    return adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(q);
+                })
+                .Build();
+            return structure;
+        }
+
+    }
 }
