@@ -251,6 +251,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	};
 
 	$scope.isDisplayable = function (item) {
+	    if (item.IsHidden) {
+	        return false;
+	    }
 		if ($scope.Context.CurrentItem && !Security.permissions.is(item.Current.RequiredPermission, $scope.Context.CurrentItem.MaximumPermission)) {
 			return false;
 		}
@@ -425,6 +428,25 @@ function MenuCtrl($rootScope, $scope, Security) {
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		ctx.Flags.push("View" + ctx.User.ViewPreference)
 	});
+}
+
+function MenuNodeLastChildCtrl($scope) {
+    function replace(item, replacement) {
+        var r = replacement.Current;
+        var copy = angular.copy(item.Current);
+        item.Current = angular.extend(copy, { Description: r.Title, Url: r.Url, Target: r.Target, IconClass: r.IconClass, ToolTip: r.ToolTip, IconUrl: r.IconUrl, RequiredPermission: r.RequiredPermission, ClientAction: r.ClientAction });
+    }
+
+    $scope.$watch("item", function (item) {
+        if (!item.Children || !item.Children.length) {
+            item.IsHidden = true;
+            return;
+        }
+        replace(item, item.Children[0]);
+    });
+    $scope.$on("nodeclicked", function (scope, node) {
+        replace($scope.item, node);
+    });
 }
 
 function PageActionCtrl($scope, Content) {

@@ -114,6 +114,7 @@
     <Content Include="N2\App\Partials\Management.html" />
     <Content Include="N2\App\Partials\ContentTransitions.html" />
     <Content Include="N2\App\Partials\ContentSearch.html" />
+    <Content Include="N2\App\Partials\MenuNodeLastChild.html" />
     <Content Include="N2\App\Partials\MenuSubNode.html" />
     <Content Include="N2\App\Partials\ContentPublishSchedule.html" />
     <Content Include="N2\App\Partials\ContentScheduleDialog.html" />
