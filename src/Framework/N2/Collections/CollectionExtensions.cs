@@ -107,7 +107,7 @@ namespace N2.Collections
 			}
 			else
 			{
-				foreach (var x in collection.Where(i => i.Name == item.Name))
+				foreach (var x in collection.Where(i => i.Name == item.Name).ToList())
 					collection.Remove(x);
 				collection.Add(item);
 			}
