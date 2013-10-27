@@ -343,12 +343,12 @@ namespace N2.Management.Api
 					}
 				},
 				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "add", TemplateUrl = "App/Partials/ContentAdd.html", RequiredPermission = Permission.Write, HiddenBy = "Management" }),
-				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Description = "Page details", Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" })
+				new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "edit", Title = "Edit", IconClass = "n2-icon-th-large", Target = Targets.Preview, Description = "Organize parts", Url =  "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, HiddenBy = "Management" })
 				{
 					Children = new Node<InterfaceMenuItem>[]
 					{
-						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Edit details", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "organize", Title = "Organize parts", IconClass = "n2-icon-th-large", Target = Targets.Preview, Url = "{{appendQuery(Context.CurrentItem.PreviewUrl, 'edit=drag')}}", RequiredPermission = Permission.Write }),
+						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "editdetails", Title = "Properties", IconClass = "n2-icon-edit-sign", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Edit.aspx', true)}}".ResolveUrlTokens(), RequiredPermission = Permission.Write }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider5", Divider = true }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "security", Title = "Manage security", IconClass = "n2-icon-lock", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Security/Default.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Administer }),
 						new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "bulk", Title = "Bulk editing", IconClass = "n2-icon-edit", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Export/BulkEditing.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Publish }),
