@@ -65,9 +65,21 @@ namespace N2.Management.Api
             };
         }
 
-        internal static HierarchyNode<ContentItem> BuildStructure(ItemFilter filter, IContentAdapterProvider adapters, ContentItem selectedItem, ContentItem root)
+        internal static HierarchyNode<ContentItem> BuildBranchStructure(ItemFilter filter, IContentAdapterProvider adapters, ContentItem selectedItem, ContentItem root)
         {
             var structure = new BranchHierarchyBuilder(selectedItem, root, true) { UseMasterVersion = false }
+                .Children((item) =>
+                {
+                    var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };
+                    return adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(q);
+                })
+                .Build();
+            return structure;
+        }
+
+        internal static HierarchyNode<ContentItem> BuildTreeStructure(ItemFilter filter, IContentAdapterProvider adapters, ContentItem selectedItem, int maxDepth)
+        {
+            var structure = new TreeHierarchyBuilder(selectedItem, maxDepth)
                 .Children((item) =>
                 {
                     var q = new N2.Persistence.Sources.Query { Parent = item, OnlyPages = true, Interface = Interfaces.Managing, Filter = filter };

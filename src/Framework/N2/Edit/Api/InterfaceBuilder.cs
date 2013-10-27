@@ -421,7 +421,7 @@ namespace N2.Management.Api
 
             var selectedItem = selection.SelectedItem;
             var root = selection.Traverse.RootPage;
-            var structure = ApiExtensions.BuildStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
+            var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
 
 			return CreateStructure(structure, filter);
 		}

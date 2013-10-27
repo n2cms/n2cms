@@ -72,10 +72,10 @@ namespace N2.Collections
 		/// <param name="item"></param>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null)
+		public IEnumerable<ContentItem> Ancestors(ContentItem item = null, ItemFilter filter = null, ContentItem lastAncestor = null)
 		{
 			TryMasterVersion(ref item);
-			return N2.Find.EnumerateParents(item ?? CurrentItem, StartPage, true).Where(filter ?? DefaultFilter);
+            return N2.Find.EnumerateParents(item ?? CurrentItem, lastAncestor ?? StartPage, true).Where(filter ?? DefaultFilter);
 		}
 
 		/// <summary>Ancestors between a start level and a descendant level.</summary>

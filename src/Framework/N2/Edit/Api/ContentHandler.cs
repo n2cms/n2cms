@@ -77,7 +77,16 @@ namespace N2.Management.Api
                             context.Response.WriteJson(new { Children = GetChildren(context).ToList(), IsPaged = Selection.SelectedItem.ChildState.IsAny(CollectionState.IsLarge) });
                             break;
                         case "/branch":
-                            context.Response.WriteJson(new { Content = GetBranch(context) });
+                            context.Response.WriteJson(new { Branch = GetBranch(context) });
+                            break;
+                        case "/tree":
+                            context.Response.WriteJson(new { Tree = GetTree(context) });
+                            break;
+                        case "/ancestors":
+                            context.Response.WriteJson(new { Ancestors = GetAncestors(context) });
+                            break;
+                        case "/parent":
+                            context.Response.WriteJson(new { Parent = GetParent(context) });
                             break;
 						default:
 							if (string.IsNullOrEmpty(context.Request.PathInfo))
@@ -143,12 +152,35 @@ namespace N2.Management.Api
 			}
 		}
 
+        private Node<TreeNode> GetTree(HttpContextBase context)
+        {
+            var adapters = engine.Resolve<IContentAdapterProvider>();
+            var selectedItem = Selection.SelectedItem;
+            var filter = engine.EditManager.GetEditorFilter(context.User);
+            int maxDepth;
+            int.TryParse(context.Request["depth"], out maxDepth);
+            var structure = ApiExtensions.BuildTreeStructure(filter, adapters, selectedItem, maxDepth);
+            return ApiExtensions.CreateNode(structure, adapters, filter);
+        }
+
+        private TreeNode GetParent(HttpContextBase context)
+        {
+            var parent = Selection.SelectedItem.Parent;
+            return engine.ResolveAdapter<NodeAdapter>(parent).GetTreeNode(parent);
+        }
+
+        private IEnumerable<TreeNode> GetAncestors(HttpContextBase context)
+        {
+            var root = Selection.ParseSelected(context.Request["root"]) ?? Selection.Traverse.RootPage;
+            return Selection.Traverse.Ancestors(filter: engine.EditManager.GetEditorFilter(context.User), lastAncestor: root).Select(ci => engine.ResolveAdapter<NodeAdapter>(ci).GetTreeNode(ci)).ToList();
+        }
+
         private Node<TreeNode> GetBranch(HttpContextBase context)
         {
             var root = Selection.ParseSelected(context.Request["root"]) ?? Selection.Traverse.RootPage;
             var selectedItem = Selection.SelectedItem;
             var filter = engine.EditManager.GetEditorFilter(context.User);
-            var structure = ApiExtensions.BuildStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
+            var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
             return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
         }
 
