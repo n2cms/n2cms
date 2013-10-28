@@ -7,14 +7,15 @@
 	});
 })(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives']))
 
-function findSelectedRecursive(node, selectedPath) {
+function findNodeRecursive(node, selectedPath) {
 	if (!node)
 		return null;
 	if (node.Current.Path == selectedPath) {
 		return node;
 	}
+
 	for (var i in node.Children) {
-		var n = findSelectedRecursive(node.Children[i], selectedPath);
+		var n = findNodeRecursive(node.Children[i], selectedPath);
 		if (n) return n;
 	}
 	return null;
@@ -170,12 +171,24 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 	});
 
+	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
+	    Context.get(Content.applySelection({ view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
+	        console.log("select -> contextchanged", node, versionIndex, ctx);
+	        if (keepFlags)
+	            angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
+	        else
+	            angular.extend($scope.Context, ctx);
+	        callback && callback(ctx);
+	        $scope.$emit("contextchanged", $scope.Context);
+	    });
+	}
+
 	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
-			var node = findSelectedRecursive($scope.Context.Content, path);
+			var node = findNodeRecursive($scope.Context.Content, path);
 			if (!node) {
-				var parentNode = findSelectedRecursive($scope.Context.Content, getParentPath(path));
+				var parentNode = findNodeRecursive($scope.Context.Content, getParentPath(path));
 				if (!preventReload && parentNode) {
 					$scope.reloadChildren(parentNode, function () {
 						// this is meant to refresh an item with changed path
@@ -203,25 +216,28 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			}
 
 			$timeout(function () {
-				Context.get(Content.applySelection({ view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
-					console.log("select -> contextchanged", { nodeOrPath: nodeOrPath, versionIndex: versionIndex, keepFlags: keepFlags, forceContextRefresh: forceContextRefresh, preventReload: preventReload }, ctx);
-					if (keepFlags)
-						angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
-					else
-						angular.extend($scope.Context, ctx);
-					$scope.$emit("contextchanged", $scope.Context);
-				});
+			    $scope.refreshContext(node, versionIndex, keepFlags)
 			}, 200);
 			return true;
 		}
 	}
 
-	$scope.reloadChildren = function(parentPathOrNode, callback) {
+	$scope.reloadChildren = function (parentPathOrNode, callback) {
 		var node = typeof parentPathOrNode == "string"
-			? findSelectedRecursive($scope.Context.Content, parentPathOrNode)
+			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
 		Content.loadChildren(node, callback);
+	}
+
+	$scope.reloadNode = function (pathOrNode, callback) {
+	    var node = typeof pathOrNode == "string"
+			? findNodeRecursive($scope.Context.Content, pathOrNode)
+			: pathOrNode;
+
+	    Content.reload(node, function (node) {
+	        callback && callback(node);
+	    });
 	}
 
 	$scope.isFlagged = function (flag) {
@@ -309,18 +325,18 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
 		if (content) {
-			$scope.select(findSelectedRecursive(content, $scope.Context.SelectedPath));
+			$scope.select(findNodeRecursive(content, $scope.Context.SelectedPath));
 		}
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.Actions.refresh) {
 			$scope.reloadChildren(ctx.Actions.refresh, function () {
 				$scope.select(ctx.CurrentItem.Path, ctx.CurrentItem.VersionIndex, /*keepFlags*/true);
-				$scope.Context.SelectedNode = findSelectedRecursive($scope.Context.Content, ctx.CurrentItem.Path);
+				$scope.Context.SelectedNode = findNodeRecursive($scope.Context.Content, ctx.CurrentItem.Path);
 			});
 		}
 		else if (ctx.CurrentItem)
-			$scope.Context.SelectedNode = findSelectedRecursive($scope.Context.Content, ctx.CurrentItem.Path);
+			$scope.Context.SelectedNode = findNodeRecursive($scope.Context.Content, ctx.CurrentItem.Path);
 		else
 			$scope.Context.SelectedNode = null;
 	});
@@ -521,18 +537,14 @@ function PagePublishCtrl($scope, $rootScope, $modal, Content) {
 		Content.publish({ selected: $scope.Context.CurrentItem.Path, versionIndex: $scope.Context.CurrentItem.VersionIndex }, function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 
-			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
-				$scope.select(result.Current.Path, result.Current.VersionIndex, /*keepFlags*/false, /*forceContextRefresh*/true);
-			});
+			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
 		});
 	};
 	$scope.unpublish = function () {
 		Content.unpublish(Content.applySelection({}, $scope.Context.CurrentItem), function (result) {
 			$scope.previewUrl(result.Current.PreviewUrl);
 			
-			$scope.reloadChildren(getParentPath(result.Current.Path), function () {
-				$scope.select(result.Current.Path, result.Current.VersionIndex, /*keepFlags*/false, /*forceContextRefresh*/true);
-			});
+			$scope.reloadNode(result.Current.Path, $scope.refreshContext);
 		});
 	};
 }

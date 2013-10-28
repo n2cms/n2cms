@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -42,8 +43,7 @@ namespace N2.Management.Api
 
 		public void ProcessRequest(HttpContextBase context)
 		{
-			if (!engine.SecurityManager.IsAuthorized(context.User, Selection.SelectedItem, Security.Permission.Read))
-				throw new UnauthorizedAccessException();
+            Authorize(context.User, Selection.SelectedItem);
 
 			CacheUtility.SetNoCache(context.Response);
 
@@ -87,6 +87,9 @@ namespace N2.Management.Api
                             break;
                         case "/parent":
                             context.Response.WriteJson(new { Parent = GetParent(context) });
+                            break;
+                        case "/node":
+                            context.Response.WriteJson(new { Node = GetNode(context) });
                             break;
 						default:
 							if (string.IsNullOrEmpty(context.Request.PathInfo))
@@ -152,6 +155,23 @@ namespace N2.Management.Api
 			}
 		}
 
+        private void Authorize(IPrincipal user, ContentItem item)
+        {
+            if (!engine.SecurityManager.IsAuthorized(user, item, Security.Permission.Read))
+                throw new UnauthorizedAccessException();
+        }
+
+        private void EnsureValidSelection()
+        {
+            if (Selection.ParseSelectionFromRequest() == null)
+                throw new HttpException(404, "Not Found");
+        }
+
+        private Node<TreeNode> GetNode(HttpContextBase context)
+        {
+            return ApiExtensions.CreateNode(new HierarchyNode<ContentItem>(Selection.SelectedItem), engine.Resolve<IContentAdapterProvider>(), engine.EditManager.GetEditorFilter(context.User));
+        }
+
         private Node<TreeNode> GetTree(HttpContextBase context)
         {
             var adapters = engine.Resolve<IContentAdapterProvider>();
@@ -166,6 +186,7 @@ namespace N2.Management.Api
         private TreeNode GetParent(HttpContextBase context)
         {
             var parent = Selection.SelectedItem.Parent;
+            Authorize(context.User, parent);
             return engine.ResolveAdapter<NodeAdapter>(parent).GetTreeNode(parent);
         }
 
@@ -183,12 +204,6 @@ namespace N2.Management.Api
             var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
             return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
         }
-
-		private void EnsureValidSelection()
-		{
-			if (Selection.ParseSelectionFromRequest() == null)
-				throw new HttpException(404, "Not Found");
-		}
 
 		private IEnumerable<TokenDefinition> GetTokens(HttpContextBase context)
 		{

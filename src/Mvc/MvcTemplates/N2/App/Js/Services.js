@@ -84,6 +84,11 @@
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
 			'children': { method: 'GET', params: { target: 'children' } },
+			'branch': { method: 'GET', params: { target: 'branch' } },
+			'tree': { method: 'GET', params: { target: 'tree' } },
+			'ancestors': { method: 'GET', params: { target: 'ancestors' } },
+			'node': { method: 'GET', params: { target: 'node' } },
+			'parent': { method: 'GET', params: { target: 'parent' } },
 			'search': { method: 'GET', params: { target: 'search' } },
 			'translations': { method: 'GET', params: { target: 'translations' } },
 			'versions': { method: 'GET', params: { target: 'versions' } },
@@ -114,16 +119,28 @@
 		}
 
 		res.loadChildren = function (node, callback) {
-			if (!node)
-				return;
+		    if (!node)
+		        return;
 
-			node.Loading = true;
-			res.children(res.applySelection({}, node.Current), function (data) {
-				node.Children = data.Children;
-				delete node.Loading;
-				node.IsPaged = data.IsPaged;
-				callback && callback(node);
-			});
+		    node.Loading = true;
+		    res.children(res.applySelection({}, node.Current), function (data) {
+		        node.Children = data.Children;
+		        delete node.Loading;
+		        node.IsPaged = data.IsPaged;
+		        callback && callback(node);
+		    });
+		};
+
+		res.reload = function (node, callback) {
+		    if (!node)
+		        return;
+
+		    node.Loading = true;
+		    res.node(res.applySelection({ }, node.Current), function (data) {
+		        node.Current = data.Node.Current;
+		        delete node.Loading;
+		        callback && callback(node);
+		    });
 		};
 
 		res.states = {
