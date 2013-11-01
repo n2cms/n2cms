@@ -527,7 +527,6 @@
     <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
-    <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -535,13 +534,8 @@
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
-    <Compile Include="Obsolete\DoubleDetail.cs" />
-    <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
     <Compile Include="Details\EditableTextAttribute.cs" />
-    <Compile Include="Obsolete\StringDetail.cs" />
-    <Compile Include="Obsolete\DateTimeDetail.cs" />
-    <Compile Include="Obsolete\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
@@ -840,7 +834,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -880,7 +873,6 @@
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
-    <Compile Include="Obsolete\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
     <Compile Include="Edit\Web\EditPage.cs">
