@@ -114,8 +114,9 @@ namespace N2.Tests.Edit.Api
 		[Test]
 		public void User_ShouldBe_LoggedInUser()
 		{
-			var definition = builder.GetInterfaceDefinition(new FakeHttpContext(), new SelectionUtility(item, null));
-			definition.User.Name.ShouldBe(engine.RequestContext.User.Identity.Name);
+            var currentUser = engine.RequestContext.User;
+            var definition = builder.GetInterfaceDefinition(new FakeHttpContext() { User = currentUser }, new SelectionUtility(item, null));
+            definition.User.Name.ShouldBe(currentUser.Identity.Name);
 		}
 	}
 }
