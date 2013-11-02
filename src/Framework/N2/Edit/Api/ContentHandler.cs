@@ -45,7 +45,7 @@ namespace N2.Management.Api
 		{
             Authorize(context.User, Selection.SelectedItem);
 
-			CacheUtility.SetNoCache(context.Response);
+			context.Response.SetNoCache();
 
 			switch (context.Request.HttpMethod)
 			{
@@ -216,7 +216,7 @@ namespace N2.Management.Api
 			if (item == null)
 				throw new HttpException((int)HttpStatusCode.NotFound, "Not Found");
 
-			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
 			foreach (var kvp in requestBody)
 				item[kvp.Key] = kvp.Value;
 
@@ -234,7 +234,7 @@ namespace N2.Management.Api
 			
 			var item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, parent);
 
-			var requestBody = context.GetOrDeserializeRequestStreamJson();
+			var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
 			foreach (var kvp in requestBody)
 				item[kvp.Key] = kvp.Value;
 

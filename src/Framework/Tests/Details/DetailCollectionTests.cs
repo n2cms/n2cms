@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Details;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Details
 {
@@ -290,5 +291,59 @@ namespace N2.Tests.Details
 				Assert.That(number >= 1 && number <= 3);
 			}
 		}
+
+		[Test]
+		public void CanWorkAsDictionary()
+		{
+			DetailCollection collection = new DetailCollection();
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 }, { "Three", 3 } });
+			var dict = collection.AsDictionary();
+
+			dict.Count.ShouldBe(3);
+			dict["One"].ShouldBe(1);
+			dict["Two"].ShouldBe(2);
+			dict["Three"].ShouldBe(3);
+		}
+
+		[Test]
+		public void CanAddToDictionary()
+		{
+			DetailCollection collection = new DetailCollection();
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 } });
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 }, { "Three", 3 } });
+			var dict = collection.AsDictionary();
+
+			dict.Count.ShouldBe(3);
+			dict["One"].ShouldBe(1);
+			dict["Two"].ShouldBe(2);
+			dict["Three"].ShouldBe(3);
+		}
+
+		[Test]
+		public void CanRemoveFromDictionary()
+		{
+			DetailCollection collection = new DetailCollection();
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 }, { "Three", 3 } });
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 } });
+			var dict = collection.AsDictionary();
+
+			dict.Count.ShouldBe(2);
+			dict["One"].ShouldBe(1);
+			dict["Two"].ShouldBe(2);
+		}
+
+		[Test]
+		public void CanReplaceInDictionary()
+		{
+			DetailCollection collection = new DetailCollection();
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Two", 2 } });
+			collection.Replace(new Dictionary<string, object> { { "One", 1 }, { "Three", 3 } });
+			var dict = collection.AsDictionary();
+
+			dict.Count.ShouldBe(2);
+			dict["One"].ShouldBe(1);
+			dict["Three"].ShouldBe(3);
+		}
+
 	}
 }

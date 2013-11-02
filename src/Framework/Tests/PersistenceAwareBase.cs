@@ -10,20 +10,14 @@ namespace N2.Tests
 	public abstract class PersistenceAwareBase : ItemTestsBase
 	{
 		protected IEngine engine;
-		protected SchemaExport schemaCreator;
-		protected FakeSessionProvider sessionProvider;
+		protected PersistenceTestHelper helper;
 
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			Context.Replace(engine = CreateEngine());
-			
-			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
-			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
-			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
-			CreateDatabaseSchema();
-
-			engine.Initialize();
+			helper = new PersistenceTestHelper();
+			helper.TestFixtureSetUp();
+			engine = helper.Engine;
 		}
 
 		protected virtual ContentEngine CreateEngine()
@@ -34,30 +28,24 @@ namespace N2.Tests
 		[TearDown]
 		public override void TearDown()
 		{
-			sessionProvider.CloseConnections();
+			helper.TearDown();
 			base.TearDown();
 		}
 
 		[TestFixtureTearDown]
 		public virtual void TestFixtureTearDown()
 		{
-			Context.Replace(null);
-		}
-
-		protected virtual ContentPersister GetNHibernatePersistenceManager()
-		{
-			return engine.Persister as ContentPersister;
+			helper.TestFixtureTearDown();
 		}
 
 		protected virtual void CreateDatabaseSchema()
 		{
-			sessionProvider.CurrentSession = null;
-			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
+			helper.CreateDatabaseSchema();
 		}
 
 		protected virtual void DropDatabaseSchema()
 		{
-			schemaCreator.Execute(false, true, true, sessionProvider.OpenSession.Session.Connection, null);
+			helper.DropDatabaseSchema();
 		}
 	}
 }

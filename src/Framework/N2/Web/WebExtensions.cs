@@ -280,14 +280,14 @@ namespace N2.Web
 		{
 			if (context.Request.HttpMethod == "POST" && context.Request.ContentType.StartsWith("application/json") && context.Request.ContentLength > 0)
 			{
-				var json = GetOrDeserializeRequestStreamJson(context);
+				var json = GetOrDeserializeRequestStreamJson<object>(context);
 				if (json == null)
 					return (key) => context.Request[key];
 
 				return (key) =>
 				{
 					if (json.ContainsKey(key))
-						return json[key];
+						return (string)json[key];
 					return context.Request[key];
 				};
 
@@ -296,20 +296,20 @@ namespace N2.Web
 				return (key) => context.Request[key];
 		}
 
-		internal static IDictionary<string, string> GetOrDeserializeRequestStreamJson(this HttpContextBase context)
+		internal static IDictionary<string, T> GetOrDeserializeRequestStreamJson<T>(this HttpContextBase context)
 		{
-			var json = context.Items["CachedRequestStream"] as IDictionary<string, string>;
+			var json = context.Items["CachedRequestStream"] as IDictionary<string, T>;
 			if (json == null)
-				context.Items["CachedRequestStream"] = json = DeserialiseJson(context.Request.InputStream);
+				context.Items["CachedRequestStream"] = json = DeserialiseJson<T>(context.Request.InputStream);
 			return json;
 		}
 
-		public static IDictionary<string, string> DeserialiseJson(this Stream stream)
+		public static IDictionary<string, T> DeserialiseJson<T>(this Stream stream)
 		{
 			using (var sr = new StreamReader(stream))
 			{
 				var body = sr.ReadToEnd();
-				return new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(body);
+				return new JavaScriptSerializer().Deserialize<Dictionary<string, T>>(body);
 			}
 		}
 

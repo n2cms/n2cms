@@ -1,3 +1,6 @@
+- module signing
+- dinamico bootstrap
+-    <add key="ValidationSettings:UnobtrusiveValidationMode" value="None" />
 - double encoding when using embedded parts
 - upload tab ckeditor
 - https://github.com/bherila/n2cms/issues
