@@ -2,9 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 
-namespace N2.Edit.Api
+namespace N2.Management.Api
 {
 	public class ProfileUser
 	{
@@ -28,15 +29,35 @@ namespace N2.Edit.Api
 
 	public static class ProfileRepositoryExtensions
 	{
+		public static ProfileUser Get(this IProfileRepository repository, IPrincipal user)
+		{
+			string username = GetUserName(user);
+			if (string.IsNullOrEmpty(username))
+				return new ProfileUser { Name = "Anonymous" };
+			return repository.Get(username);
+		}
+
+		public static ProfileUser GetOrCreate(this IProfileRepository repository, IPrincipal user)
+		{
+			string username = GetUserName(user);
+			if (string.IsNullOrEmpty(username))
+				return new ProfileUser { Name = "Anonymous" };
+			
+			return GetOrCreate(repository, username);
+		}
+
 		public static ProfileUser GetOrCreate(this IProfileRepository repository, string username)
 		{
 			var user = repository.Get(username);
 			if (user != null)
 				return user;
 
-			user = new ProfileUser { Name = username };
-			repository.Save(user);
-			return user;
+			return new ProfileUser { Name = username };
+		}
+
+		private static string GetUserName(IPrincipal user)
+		{
+			return user != null ? user.Identity != null ? user.Identity.Name : null : null;
 		}
 	}
 

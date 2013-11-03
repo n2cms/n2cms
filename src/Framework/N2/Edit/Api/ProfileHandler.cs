@@ -4,10 +4,11 @@ using N2.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Web;
 
-namespace N2.Edit.Api
+namespace N2.Management.Api
 {
 	[Service(typeof(IApiHandler))]
 	public class ProfileHandler : IHttpHandler, IApiHandler
@@ -34,7 +35,7 @@ namespace N2.Edit.Api
 					switch (context.Request.PathInfo)
 					{
 						case "":
-							var user = GetUser(context.User.Identity.Name);
+							var user = GetUser(context.User);
 							context.Response.WriteJson(new { User = user });
 							break;
 					}
@@ -62,7 +63,7 @@ namespace N2.Edit.Api
 		private void Save(System.Web.HttpContextBase context)
 		{
 			var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
-			var user = GetUser(context.User.Identity.Name);
+			var user = GetUser(context.User);
 			if (requestBody.ContainsKey("Settings") && requestBody["Settings"] is IDictionary<string, object>)
 				user.Settings = (IDictionary<string, object>)requestBody["Settings"];
 			repository.Save(user);
@@ -72,7 +73,7 @@ namespace N2.Edit.Api
 		private void Patch(HttpContextBase context)
 		{
 			var requestBody = context.GetOrDeserializeRequestStreamJson<object>();
-			var user = GetUser(context.User.Identity.Name);
+			var user = GetUser(context.User);
 			if (requestBody.ContainsKey("Settings") && requestBody["Settings"] is IDictionary<string, object>)
 				foreach (var kvp in (IDictionary<string, object>)requestBody["Settings"])
 				{
@@ -85,9 +86,9 @@ namespace N2.Edit.Api
 			context.Response.WriteJson(new { User = user });
 		}
 
-		private ProfileUser GetUser(string username)
+		private ProfileUser GetUser(IPrincipal user)
 		{
-			return repository.GetOrCreate(username);
+			return repository.GetOrCreate(user);
 		}
 
 		public bool IsReusable

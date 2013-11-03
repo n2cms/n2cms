@@ -48,7 +48,7 @@ function Uri(uri) {
 	}
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Security, FrameContext, Translate) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -137,7 +137,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		Partials: {
 			Management: "App/Partials/Loading.html"
 		},
-		PreviewQueries: {}
+		PreviewQueries: {},
+		User: {
+			Settings: {}
+		}
 	}
 
 	function translateMenuRecursive(node) {
@@ -156,6 +159,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		
 	};
 
+	$scope.watchChanges = function(watchExpression, listener, objectEquality) {
+		var firstTime = true;
+		$scope.$watch(watchExpression, function () {
+			if (firstTime)
+				firstTime = false;
+			else
+				listener.apply($scope, arguments)
+		}, objectEquality);
+	}
+
 	Context.full({
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1]
@@ -169,10 +182,21 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		angular.extend($scope.Context, i.Context);
 		if (organizeMatch && organizeMatch[1] == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
+		$scope.watchChanges("Context.User", function (user) {
+			console.log("CHAngeD", user);
+			Profile.save({}, user, function (userChnged) {
+				console.log("HEJ", userChnged);
+			});
+		}, true);
 	});
 
+	setTimeout(function () {
+		$scope.Context.User.Settings.Hello = "World";
+		$scope.$digest();
+	}, 1000);
+
 	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
-	    Context.get(Content.applySelection({ view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
+	    Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
 	        console.log("select -> contextchanged", node, versionIndex, ctx);
 	        if (keepFlags)
 	            angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
@@ -434,7 +458,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	$scope.setViewPreference = function (viewPreference) {
 		$scope.Context.User.ViewPreference = viewPreference;
 	};
-	$scope.$watch("Context.User.ViewPreference", function (viewPreference, previousPreference) {
+	$scope.$watch("Context.User.Settings.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
 		var existingIndex = jQuery.inArray("View" + previousPreference, $scope.Context.Flags);
 		if (existingIndex >= 0)
@@ -442,11 +466,11 @@ function MenuCtrl($rootScope, $scope, Security) {
 		$scope.Context.Flags.push("View" + viewPreference);
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
-		ctx.Flags.push("View" + ctx.User.ViewPreference)
+		ctx.Flags.push("View" + ctx.User.Settings.ViewPreference)
 	});
 }
 
-function MenuNodeLastChildCtrl($scope) {
+function MenuNodeLastChildCtrl($scope, $timeout) {
     function replace(item, replacement) {
         var r = replacement.Current;
         var copy = angular.copy(item.Current);
@@ -458,10 +482,22 @@ function MenuNodeLastChildCtrl($scope) {
             item.IsHidden = true;
             return;
         }
-        replace(item, item.Children[0]);
+        var preferredItem = item.Children[0];
+        var preferredEditAction = $scope.Context.User.Settings.PreferredEditAction;
+        if (preferredEditAction) {
+        	for (var i in item.Children) {
+        		if (item.Children[i].Current.Name == preferredEditAction) {
+        			preferredItem = item.Children[i];
+        		}
+        	}
+        }
+        replace(item, preferredItem);
     });
     $scope.$on("nodeclicked", function (scope, node) {
-        replace($scope.item, node);
+    	replace($scope.item, node);
+    	$timeout(function () {
+    		$scope.Context.User.Settings.PreferredEditAction = node.Current.Name;
+    	}, 2000);
     });
 }
 

@@ -175,6 +175,13 @@
 		return res;
 	});
 
+	module.factory('Profile', function ($resource) {
+		var res = $resource('Api/Profile.ashx', {}, {
+		});
+
+		return res;
+	});
+
 	module.factory('Security', function ($resource) {
 		var res = $resource('Api/Security.ashx', {}, {});
 		res.permissions = {
