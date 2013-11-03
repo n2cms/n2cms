@@ -183,17 +183,9 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		if (organizeMatch && organizeMatch[1] == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
 		$scope.watchChanges("Context.User", function (user) {
-			console.log("CHAngeD", user);
-			Profile.save({}, user, function (userChnged) {
-				console.log("HEJ", userChnged);
-			});
+			Profile.save({}, user);
 		}, true);
 	});
-
-	setTimeout(function () {
-		$scope.Context.User.Settings.Hello = "World";
-		$scope.$digest();
-	}, 1000);
 
 	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
 	    Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
@@ -456,7 +448,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 	});
 
 	$scope.setViewPreference = function (viewPreference) {
-		$scope.Context.User.ViewPreference = viewPreference;
+		$scope.Context.User.Settings.ViewPreference = viewPreference;
 	};
 	$scope.$watch("Context.User.Settings.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
