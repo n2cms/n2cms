@@ -164,12 +164,12 @@ namespace N2.Management.Api
 			{
 				MainMenu = GetMainMenu(),
 				ActionMenu = GetActionMenu(context),
+				ContextMenu = GetContextMenu(context),
 				Content = GetContent(context, selection),
 				Site = engine.Host.GetSite(selection.SelectedItem),
 				Authority = context.Request.Url.Authority,
 				User = GetUser(context),
 				Paths = GetUrls(context, selection),
-				ContextMenu = GetContextMenu(context),
 				Partials = GetPartials(context)
 			};
 

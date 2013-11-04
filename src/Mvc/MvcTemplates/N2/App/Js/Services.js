@@ -175,7 +175,7 @@
 		return res;
 	});
 
-	module.factory('Profile', function ($resource) {
+	module.factory('Profile', function ($resource, Eventually) {
 		var res = $resource('Api/Profile.ashx', {}, {
 		});
 

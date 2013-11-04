@@ -12,7 +12,7 @@ using N2.Management;
 
 namespace N2.Security.Items
 {
-	[PartDefinition("User", IconClass = "n2-icon-user")]
+	[PageDefinition("User", IconClass = "n2-icon-user")]
 	[RestrictParents(typeof (UserList))]
 	[Throwable(AllowInTrash.No)]
 	[Versionable(AllowVersions.No)]
@@ -20,14 +20,14 @@ namespace N2.Security.Items
 	{
 		private ISecurityManager security;
 
-		[EditableText("Title", 10, Required = true)]
+		[EditableText("Title", 10, Required = true, LocalizationClassKey = "Displayname")]
 		public override string Title
 		{
 			get { return base.Title; }
 			set { base.Title = value; }
 		}
 
-		[EditableText("Username", 20, Required = true)]
+		[EditableText("Username", 20, Required = true, LocalizationClassKey = "Username")]
 		public override string Name
 		{
 			get { return base.Name; }
@@ -37,62 +37,67 @@ namespace N2.Security.Items
 		[EditableText("Password", 30, IsIndexable = false)]
 		public virtual string Password
 		{
-			get { return GetDetail("Password", string.Empty); }
-			set { SetDetail("Password", value, string.Empty); }
+			get { return "****"; }
+			set 
+			{
+				if (value == "****")
+					return;
+				SetDetail("Password", value, string.Empty); 
+			}
 		}
 
-		[EditableText("Email", 40)]
+		[EditableText("Email", 40, Validate = true, ValidationExpression = "[^@]+@[^@.]+[.][^@.]+")]
 		public virtual string Email
 		{
-			get { return (string) (GetDetail("Email") ?? string.Empty); }
+			get { return GetDetail("Email", string.Empty); }
 			set { SetDetail("Email", value, string.Empty); }
 		}
 
 		[EditableRoles(Title = "Roles", SortOrder = 50)]
 		public virtual DetailCollection Roles
 		{
-			get { return GetDetailCollection("Roles", true); }
+			get { return DetailCollections["Roles"]; }
 		}
 
 		[EditableText("PasswordQuestion", 120)]
 		public virtual string PasswordQuestion
 		{
-			get { return (string) (GetDetail("PasswordQuestion") ?? string.Empty); }
+			get { return GetDetail("PasswordQuestion", string.Empty); }
 			set { SetDetail("PasswordQuestion", value, string.Empty); }
 		}
 
 		[EditableText("PasswordAnswer", 130, IsIndexable = false)]
 		public virtual string PasswordAnswer
 		{
-			get { return (string) (GetDetail("PasswordAnswer") ?? string.Empty); }
+			get { return GetDetail("PasswordAnswer", string.Empty); }
 			set { SetDetail("PasswordAnswer", value, string.Empty); }
 		}
 
 		[EditableCheckBox("Is Online", 140)]
 		public virtual bool IsOnline
 		{
-			get { return (bool) (GetDetail("IsOnline") ?? false); }
+			get { return GetDetail("IsOnline", false); }
 			set { SetDetail("IsOnline", value, false); }
 		}
 
 		[EditableCheckBox("Is Approved", 142)]
 		public virtual bool IsApproved
 		{
-			get { return (bool) (GetDetail("IsApproved") ?? false); }
+			get { return GetDetail("IsApproved", false); }
 			set { SetDetail("IsApproved", value, false); }
 		}
 
 		[EditableCheckBox("Is Locked Out", 144)]
 		public virtual bool IsLockedOut
 		{
-			get { return (bool) (GetDetail("IsLockedOut") ?? false); }
+			get { return GetDetail("IsLockedOut", false); }
 			set { SetDetail("IsLockedOut", value, false); }
 		}
 
 		[EditableText("Comment", 150)]
 		public virtual string Comment
 		{
-			get { return (string) (GetDetail("Comment") ?? string.Empty); }
+			get { return GetDetail("Comment", string.Empty); }
 			set { SetDetail("Comment", value, string.Empty); }
 		}
 

@@ -49,5 +49,21 @@ namespace N2.Persistence.Sources
 		{
 			this.Limit = new Range(Limit != null ? Limit.Skip : 0, take);
 		}
+
+		public bool IsMatch(ContentItem item)
+		{
+			if (Parent != null && item.Parent != Parent)
+				return false;
+			if (OnlyPages.HasValue)
+			{
+				if (OnlyPages.Value && !item.IsPage)
+					return false;
+				else if (!OnlyPages.Value && item.IsPage)
+					return false;
+			}
+			if (Filter != null && !Filter.Match(item))
+				return false;
+			return true;
+		}
 	}
 }
