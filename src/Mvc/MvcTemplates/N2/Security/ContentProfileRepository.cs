@@ -36,8 +36,12 @@ namespace N2.Security
 		{
 			var user = bridge.GetUser(profile.Name);
 			if (user == null)
+			{
 				user = bridge.CreateUser(profile.Name, Guid.NewGuid().ToString(), profile.Email, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), false, profile.Name);
+				user.IsLogin = false;
+			}
 
+			user.IsProfile = true;
 			var clientSettings = user.DetailCollections["Settings"];
 			clientSettings.Replace(profile.Settings);
 			

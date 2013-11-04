@@ -240,12 +240,6 @@ namespace N2.Security
 
 		public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
 		{
-			N2.Security.Items.User u = Bridge.GetUser(username);
-			if (u != null)
-			{
-				status = MembershipCreateStatus.DuplicateUserName;
-				return null;
-			}
 			if (string.IsNullOrEmpty(username))
 			{
 				status = MembershipCreateStatus.InvalidUserName;
@@ -255,6 +249,19 @@ namespace N2.Security
 			{
 				status = MembershipCreateStatus.InvalidPassword;
 				return null;
+			}
+
+			N2.Security.Items.User u = Bridge.GetUser(username);
+			if (u != null)
+			{
+				if (u.IsLogin)
+				{
+					status = MembershipCreateStatus.DuplicateUserName;
+					return null;
+				}
+				else
+					// The user object may be a profile which isn't yet a user
+					u.IsLogin = true;
 			}
 
 			if (requiresUniqueEmail)
@@ -271,9 +278,16 @@ namespace N2.Security
 				throw new MembershipCreateUserException("Create user cancelled", args.FailureInformation);
 
 			status = MembershipCreateStatus.Success;
-			u = Bridge.CreateUser(username, ToStoredPassword(password), // JH
-								  email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
-
+			if (u == null)
+				u = Bridge.CreateUser(username, ToStoredPassword(password), email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
+			else
+			{
+				u.Password = ToStoredPassword(password);
+				u.Email = email;
+				u.PasswordQuestion = passwordQuestion;
+				u.PasswordAnswer = passwordAnswer;
+				u.IsApproved = isApproved;
+			}
 			Cache.Expire();
 			MembershipUser m = u.GetMembershipUser(this.Name);
 			return m;
@@ -461,7 +475,7 @@ namespace N2.Security
 		public override bool ValidateUser(string username, string password)
 		{
 			N2.Security.Items.User u = Bridge.GetUser(username);
-			if (u != null && u.Password == ToStoredPassword(password)) // JH
+			if (u != null && u.Password == ToStoredPassword(password) && u.IsLogin) // JH
 			{
 				u.LastLoginDate = N2.Utility.CurrentTime(); // JH
 				Bridge.Save(u);

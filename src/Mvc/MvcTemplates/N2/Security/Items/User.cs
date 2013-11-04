@@ -94,6 +94,20 @@ namespace N2.Security.Items
 			set { SetDetail("IsLockedOut", value, false); }
 		}
 
+		[EditableCheckBox("Is Login", 146)]
+		public virtual bool IsLogin
+		{
+			get { return GetDetail("IsLogin", true); }
+			set { SetDetail("IsLogin", value, true); }
+		}
+
+		[EditableCheckBox("Is Profile", 148)]
+		public virtual bool IsProfile
+		{
+			get { return GetDetail("IsProfile", false); }
+			set { SetDetail("IsProfile", value, false); }
+		}
+
 		[EditableText("Comment", 150)]
 		public virtual string Comment
 		{
