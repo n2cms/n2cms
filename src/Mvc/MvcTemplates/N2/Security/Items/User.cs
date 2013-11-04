@@ -34,16 +34,11 @@ namespace N2.Security.Items
 			set { base.Name = value; }
 		}
 
-		[EditableText("Password", 30, IsIndexable = false)]
+		[EditablePassword("Password", 30, IsIndexable = false, Placeholder = "****")]
 		public virtual string Password
 		{
-			get { return "****"; }
-			set 
-			{
-				if (value == "****")
-					return;
-				SetDetail("Password", value, string.Empty); 
-			}
+			get { return GetDetail("Password", string.Empty); }
+			set { SetDetail("Password", value, string.Empty); }
 		}
 
 		[EditableText("Email", 40, Validate = true, ValidationExpression = "[^@]+@[^@.]+[.][^@.]+")]

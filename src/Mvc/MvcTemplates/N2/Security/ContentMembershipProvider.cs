@@ -178,7 +178,7 @@ namespace N2.Security
 		///   Unmodified password value returned for Clear password format,
 		///   Hashed(SHA1) and Encrypted passwords using machineKey configuration settings.
 		/// </remarks>
-		protected virtual string ToStoredPassword(string password)  // JH
+		public virtual string ToStoredPassword(string password)  // JH
 		{
 			switch (PasswordFormat)
 			{
@@ -191,7 +191,7 @@ namespace N2.Security
 			}
 		}
 
-		protected virtual string FromStoredPassword(string storedPassword)
+		public virtual string FromStoredPassword(string storedPassword)
 		{
 			switch (PasswordFormat)
 			{
