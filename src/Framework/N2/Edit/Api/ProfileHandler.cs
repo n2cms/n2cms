@@ -1,5 +1,6 @@
 ﻿using N2.Engine;
 using N2.Management.Api;
+using N2.Plugin;
 using N2.Web;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,31 @@ using System.Web;
 
 namespace N2.Management.Api
 {
+	//[Service]
+	//public class ProfileInjector : IAutoStart
+	//{
+	//	private InterfaceBuilder builder;
+	//	public ProfileInjector(InterfaceBuilder builder)
+	//	{
+	//		this.builder = builder;
+	//	}
+
+	//	void builder_InterfaceBuilt(object sender, InterfaceBuiltEventArgs e)
+	//	{
+			
+	//	}
+
+	//	public void Start()
+	//	{
+	//		builder.InterfaceBuilt += builder_InterfaceBuilt;
+	//	}
+
+	//	public void Stop()
+	//	{
+	//		builder.InterfaceBuilt -= builder_InterfaceBuilt;
+	//	}
+	//}
+
 	[Service(typeof(IApiHandler))]
 	public class ProfileHandler : IHttpHandler, IApiHandler
 	{

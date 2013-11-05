@@ -115,13 +115,6 @@ namespace N2.Management.Api
 		public string PageQueryKey { get; set; }
 	}
 
-	public class InterfaceUser
-	{
-		public string Name { get; set; }
-		public string Username { get; set; }
-		public string ViewPreference { get; set; }
-	}
-
 	public class InterfacePartials
 	{
 		public string Management { get; set; }
@@ -160,16 +153,19 @@ namespace N2.Management.Api
 
 		public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
 		{
+			var profile = GetUser(context);
+			var selectedItem = GetSelectedItem(selection, profile);
+
 			var data = new InterfaceDefinition
 			{
 				MainMenu = GetMainMenu(),
 				ActionMenu = GetActionMenu(context),
 				ContextMenu = GetContextMenu(context),
-				Content = GetContent(context, selection),
-				Site = engine.Host.GetSite(selection.SelectedItem),
+				Content = GetContent(context, selection, selectedItem),
+				Site = engine.Host.GetSite(selectedItem),
 				Authority = context.Request.Url.Authority,
-				User = GetUser(context),
-				Paths = GetUrls(context, selection),
+				User = profile,
+				Paths = GetUrls(context, selectedItem),
 				Partials = GetPartials(context)
 			};
 
@@ -299,7 +295,7 @@ namespace N2.Management.Api
 			return urlFormat;
 		}
 
-		protected virtual InterfacePaths GetUrls(HttpContextBase context, SelectionUtility selection)
+		protected virtual InterfacePaths GetUrls(HttpContextBase context, ContentItem selectedItem)
 		{
 
 			return new InterfacePaths
@@ -311,7 +307,7 @@ namespace N2.Management.Api
 				ItemQueryKey = PathData.ItemQueryKey,
 				PageQueryKey = PathData.PageQueryKey,
 				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
-				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetPreviewUrl(selection.SelectedItem, allowDraft: true)
+				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selectedItem).GetPreviewUrl(selectedItem, allowDraft: true)
 			};
 		}
 
@@ -385,15 +381,24 @@ namespace N2.Management.Api
 			return profile;
 		}
 
-		protected virtual Node<TreeNode> GetContent(HttpContextBase context, SelectionUtility selection)
+		protected virtual Node<TreeNode> GetContent(HttpContextBase context, SelectionUtility selection, ContentItem selectedItem)
 		{
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
-            var selectedItem = selection.SelectedItem;
             var root = selection.Traverse.RootPage;
             var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
 
 			return GetStructure(structure, filter);
+		}
+
+		private static ContentItem GetSelectedItem(SelectionUtility selection, ProfileUser profile)
+		{
+			var selectedItem = selection.ParseSelectionFromRequest();
+			if (selectedItem == null && profile.Settings.ContainsKey("Selected"))
+				selectedItem = selection.ParseSelected((string)profile.Settings["Selected"]);
+			if (selectedItem == null)
+				selectedItem = selection.Traverse.StartPage;
+			return selectedItem;
 		}
 
 		protected virtual Node<TreeNode> GetStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)

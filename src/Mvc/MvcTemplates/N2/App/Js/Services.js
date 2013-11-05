@@ -8,19 +8,17 @@
 			return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
-						clearTimeout(timers[parallelWorkGroup]);
+						$timeout.cancel(timers[parallelWorkGroup]);
 						onWorkCancelled();
 					}
-					timers[parallelWorkGroup] = setTimeout(function () {
+					timers[parallelWorkGroup] = $timeout(function () {
 						timers[parallelWorkGroup] = null;
 						callback();
 					}, ms);
 				} else {
-					if (timer && onWorkCancelled) {
-						onWorkCancelled();
-					}
-					clearTimeout(timer);
-					timer = setTimeout(function () {
+					timer && onWorkCancelled && onWorkCancelled();
+					timer && $timeout.cancel(timer);
+					timer = $timeout(function () {
 						timer = 0;
 						callback();
 					}, ms);
@@ -106,9 +104,16 @@
 			ItemQueryKey: "item"
 		}
 
-		res.applySelection = function(settings, currentItem) {
+		res.applySelection = function (settings, currentItem) {
 			var path = currentItem && currentItem.Path;
 			var id = currentItem && currentItem.ID;
+
+			if (typeof currentItem == "string") {
+				path = currentItem;
+			} else if (typeof currentItem == "number") {
+				id = currentItem;
+			}
+
 			if (path || id) {
 				var selection = {};
 				selection[res.paths.SelectedQueryKey] = path;
@@ -175,7 +180,7 @@
 		return res;
 	});
 
-	module.factory('Profile', function ($resource, Eventually) {
+	module.factory('Profile', function ($resource) {
 		var res = $resource('Api/Profile.ashx', {}, {
 		});
 
