@@ -16,4 +16,8 @@
 	<a translate="contextmenu.parts.show" href="#" ng-click="parts.show(node)" ng-show="!node.Parts"><b class="n2-icon-th-large"></b> Show parts</a>
 	<a translate="contextmenu.parts.hide" href="#" ng-click="parts.hide(node)" ng-show="node.Parts"><b class="n2-icon-eye-close"></b> Hide parts</a>
 </li>
+<li>
+	<a translate="contextmenu.scope.here" href="#" ng-click="scope.here(node)" ng-show="!scope.from">Scope from here</a>
+	<a translate="contextmenu.scope.clear" href="#" ng-click="scope.clear()" ng-show="scope.from">Clear scope</a>
+</li>
 

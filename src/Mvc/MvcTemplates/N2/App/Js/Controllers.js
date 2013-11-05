@@ -358,6 +358,9 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	});
 
 	$scope.toggle = function (node) {
+		if (!node.Expanded && !node.Children.length) {
+			Content.loadChildren(node);
+		}
 		node.Expanded = !node.Expanded;
 	};
 	$scope.loadRemaining = function (node) {
@@ -406,16 +409,21 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			delete node.Parts;
 		}
 	}
+	$scope.scope = {
+		from: null,
+		here: function (node) {
+			$scope.scope.from = node;
+			$scope.node = node;
+		},
+		clear: function () {
+			$scope.node = $scope.Context.Content;
+			delete $scope.scope.from;
+		}
+	}
 }
 
 function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	$scope.node = $scope.child;
-	$scope.toggle = function (node) {
-		if (!node.Expanded && !node.Children.length) {
-			Content.loadChildren(node);
-		}
-		node.Expanded = !node.Expanded;
-	};
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.tags = [];
 	if ($scope.node.Current) {
