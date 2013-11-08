@@ -56,7 +56,6 @@ namespace N2.Details
 
 		public FreeTextArea.EditorModeSetting EditorMode
 		{
-			get { return editorMode; }
 			set { editorMode = value; }
 		}
 
