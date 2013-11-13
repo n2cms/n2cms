@@ -5,16 +5,16 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Web.UI.WebControls
 {
-    public class MultipleSelectControl : Control, IQuestionControl
-    {
+	public class MultipleSelectControl : Control, IQuestionControl
+	{
 		Label l;
 		MultipleSelect item;
-        CheckBoxList list;
+		CheckBoxList list;
 		CustomValidator cv;
 
-        public MultipleSelectControl(MultipleSelect item, RepeatDirection direction)
-        {
-            this.item = item;
+		public MultipleSelectControl(MultipleSelect item, RepeatDirection direction)
+		{
+			this.item = item;
 
 			l = new Label();
 			l.Text = item.Title;
@@ -42,34 +42,34 @@ namespace N2.Templates.Web.UI.WebControls
 				cv.ValidationGroup = "Form";
 				this.Controls.Add(cv);
 			}
-        }
+		}
 
-        protected override void Render(HtmlTextWriter writer)
-        {
-            writer.Write("<div class='row cf'>");
-            base.Render(writer);
-            writer.Write("</div>");
-        }
+		protected override void Render(HtmlTextWriter writer)
+		{
+			writer.Write("<div class='row cf'>");
+			base.Render(writer);
+			writer.Write("</div>");
+		}
 
-        public string AnswerText
-        {
-            get
-            {
-                string answer = string.Empty;
-                foreach (ListItem li in list.Items)
-                {
-                    if (li.Selected)
-                    {
-                        answer += li.Text + Environment.NewLine;
-                    }
-                }
-                return answer;
-            }
-        }
+		public string AnswerText
+		{
+			get
+			{
+				string answer = string.Empty;
+				foreach (ListItem li in list.Items)
+				{
+					if (li.Selected)
+					{
+						answer += li.Text + Environment.NewLine;
+					}
+				}
+				return answer;
+			}
+		}
 
-        public string Question
-        {
-            get { return item.Title; }
-        }
-    }
+		public string Question
+		{
+			get { return item.Title; }
+		}
+	}
 }

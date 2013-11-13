@@ -16,8 +16,7 @@
 		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
-			<dependency id="N2CMS.Config" version="1.3.14" />
-			<dependency id="Lucene.Net" version="3.0.3" />
+			<dependency id="N2CMS.Config" version="2.5" />
 			<dependency id="SharpZipLib" version="0.86.0" />
 		</dependencies>
 	</metadata>

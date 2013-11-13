@@ -34,7 +34,7 @@ namespace N2.Management.Files
 
 		public override IEnumerable<ContentItem> FilterChildren(IEnumerable<ContentItem> previousChildren, Query query)
 		{
-			if (query.Interface != Interfaces.Managing)
+			if (query.Interface != Interfaces.Managing || (query.OnlyPages.HasValue && query.OnlyPages.Value != true))
 				return previousChildren;
 
 			return previousChildren.Union(nodes.GetChildren(query.Parent.Path));

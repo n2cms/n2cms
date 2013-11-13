@@ -5,7 +5,7 @@
 		<%=ContentHtml.DisplayContent(m => m.SubmitText)%>
 	<%}else{%>
 		<%= Html.ValidationSummary() %>
-		<%using(Html.BeginForm("Submit", "Form", FormMethod.Post, new {enctype="multipart/form-data"})){%>
+		<%using (Html.BeginForm("Submit", "Form", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" })) {%>
 			<%=ContentHtml.DisplayContent(m => m.Title)%>
 			<%=ContentHtml.DisplayContent(m => m.IntroText)%>
 			<div class="inputForm">

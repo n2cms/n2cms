@@ -27,6 +27,10 @@
 		"parts": {
 			"show": { "text": " Show parts" },
 			"hide": { "text": " Hide parts" }
+		},
+		"scope": {
+			"here": "Scope from here",
+			"clear": "Clear scope"
 		}
 	},
 	"info": {
@@ -99,7 +103,7 @@
 	"organize": { "text": "Organize parts" },
 	"security": { "text": "Manage security" },
 	"bulk": { "text": "Bulk editing" },
-	"throw": { "text": "Throw", title: "Move selected item to trash" },
+	"delete": { "text": "Delete", title: "Move selected item to trash" },
 	"publish": { "text": "Publish" },
 	"unpublish": { "text": "Unpublish" },
 	"frameaction": { "text": "" },

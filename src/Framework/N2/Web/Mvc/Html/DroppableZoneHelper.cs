@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Web.Mvc;
 using N2.Definitions;
@@ -38,22 +39,35 @@ namespace N2.Web.Mvc.Html
 
         public override void Render(TextWriter writer)
         {
+			if (writer == null)
+				throw new NullReferenceException("writer cannot be null");
+
 			if (state.IsFlagSet(ControlPanelState.DragDrop))
 			{
-				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+				if (String.IsNullOrWhiteSpace(ZoneName))
+					throw new N2Exception("Zone name cannot be null, empty, or consist only of whitespace.");
+				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) 
+					throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+				if (CurrentItem == null)
+					throw new N2Exception("CurrentItem cannot be null");
+				var dm = Html.ResolveService<IDefinitionManager>();
+				if (dm == null)
+					throw new N2Exception("Failed to resolve the definition manager.");
 
-				writer.Write("<div class='" + ZoneName + " dropZone'");
+
+
+				writer.Write("<div class=\"" + ZoneName + " dropZone\"");
 				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
 					writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path);
 				else
 				{
-					writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(CurrentItem).Path)
-						.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey())
-						.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
+					writer.WriteAttribute(PartUtilities.PathAttribute, (Find.ClosestPage(CurrentItem) ?? CurrentItem).Path);
+					writer.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey());
+					writer.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
 				}
 				writer.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName));
+					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(dm.GetDefinition(CurrentItem), ZoneName));
 				writer.Write(">");
 
                 RenderPreview(writer);

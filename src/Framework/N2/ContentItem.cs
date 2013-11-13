@@ -97,7 +97,7 @@ namespace N2
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
-		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
+		private IContentList<DetailCollection> detailCollections = new DetailCollectionList();
 		[NonSerialized]
 		private IUrlParser urlParser;
 		private string ancestralTrail;
@@ -269,7 +269,13 @@ namespace N2
 		[NonInterceptable]
 		public virtual IContentList<DetailCollection> DetailCollections
 		{
-			get { return detailCollections; }
+			get
+			{
+				var enclosed = detailCollections as IEncolsedComponent;
+				if (enclosed != null && enclosed.EnclosingItem == null)
+					enclosed.EnclosingItem = this;
+				return detailCollections; 
+			}
 			set { detailCollections = value; }
 		}
 
@@ -437,8 +443,7 @@ namespace N2
 					case "Visible":				return Visible;
 					case "ZoneName":			return ZoneName;
 					default:
-						return Utility.Evaluate(this, detailName)
-							?? GetDetail(detailName);
+						return Utility.Evaluate(this, detailName) ?? GetDetail(detailName);
 				}
 			}
 			set 
@@ -491,6 +496,7 @@ namespace N2
 		{
 			public const string AlteredPermissions = "AlteredPermissions";
 			public const string AncestralTrail = "AncestralTrail";
+			public const string ChildState = "ChildState";
 			public const string Created = "Created";
 			public const string Expires = "Expires";
 			public const string Extension = "Extension";
@@ -514,8 +520,8 @@ namespace N2
 			public const string Visible = "Visible";
 			public const string ZoneName = "ZoneName";
 
-			public static HashSet<string> WritablePartProperties = new HashSet<string>(new[] { AlteredPermissions, Created, Expires, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, Visible, ZoneName });
-			public static HashSet<string> WritableProperties = new HashSet<string>(new[] { AlteredPermissions, AncestralTrail, Created, Expires, ID, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, VersionIndex, Visible, ZoneName });
+			public static HashSet<string> WritablePartProperties = new HashSet<string>(new[] { AlteredPermissions, ChildState, Created, Expires, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, Visible, ZoneName });
+			public static HashSet<string> WritableProperties = new HashSet<string>(new[] { AlteredPermissions, AncestralTrail, ChildState, Created, Expires, ID, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, VersionIndex, Visible, ZoneName });
 			public static HashSet<string> ReadonlyProperties = new HashSet<string>(new [] { Extension, IconUrl, IsPage, Path, TemplateUrl, Url });
 		}
 		#endregion
@@ -527,9 +533,7 @@ namespace N2
 		[NonInterceptable]
 		public virtual object GetDetail(string detailName)
 		{
-			return Details.ContainsKey(detailName)
-				? Details[detailName].Value
-				: null;
+			return Details.ContainsKey(detailName) ? Details[detailName].Value : null;
 		}
 
 		/// <summary>Gets a detail from the details bag.</summary>
@@ -539,9 +543,35 @@ namespace N2
 		[NonInterceptable]
 		public virtual T GetDetail<T>(string detailName, T defaultValue)
 		{
-			return Details.ContainsKey(detailName)
-				? (T)Details[detailName].Value
-				: defaultValue;
+			object o = null;
+			try
+			{
+				if (Details.ContainsKey(detailName))
+				{
+					o = Details[detailName].Value;
+					if (typeof(T).IsEnum && o != null && o.GetType() == typeof(string) && Enum.IsDefined(typeof(T), o))
+					{
+						return (T)Enum.Parse(typeof(T), (string)o); // Special case: Handle enum
+					}
+					else
+					{
+						return (T)(o == null ? null : o); // Attempt regular cast conversion
+					}
+				}
+				else
+				{
+					return defaultValue;
+				}
+			}
+			catch (InvalidCastException inner)
+			{
+				throw new InvalidCastException(
+					String.Format("Cannot cast detail {0} of type {1} to type {2}.",
+						detailName,
+						o == null ? "NULL" : o.GetType().FullName,
+						typeof(T).FullName
+						), inner);
+			}
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten. If the value equals the default value it will be removed from the details bag.</summary>
@@ -552,13 +582,9 @@ namespace N2
 		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
 			if (value == null || !value.Equals(defaultValue))
-			{
 				SetDetail(detailName, value);
-			}
 			else if (Details.ContainsKey(detailName))
-			{
 				details.Remove(detailName);
-			}
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>

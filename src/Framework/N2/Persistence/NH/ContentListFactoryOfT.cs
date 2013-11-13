@@ -31,7 +31,7 @@ namespace N2.Persistence.NH
 			return ((IList<T>)collection).IndexOf((T)entity);
 		}
 
-		public object Instantiate(int anticipatedSize)
+		public virtual object Instantiate(int anticipatedSize)
 		{
 			return new ContentList<T>();
 		}

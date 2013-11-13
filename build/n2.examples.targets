@@ -4,8 +4,7 @@
 	<!-- EXAMPLES -->
 
 	<PropertyGroup>
-		<Examples-VB-SourceFolder>$(Examples-Folder)\MinimalVisualBasic</Examples-VB-SourceFolder>
-		<Examples-CS-SourceFolder>$(Examples-Folder)\MinimalCSharp</Examples-CS-SourceFolder>
+		<Examples-CS-SourceFolder>$(Examples-Folder)\CSharp</Examples-CS-SourceFolder>
 		<Examples-Mvc-SourceFolder>$(Examples-Folder)\Mvc</Examples-Mvc-SourceFolder>
 
 		<Example-CS-DeployFolder>$(DeployFolder)\$(DeployPrefix)Example_CS</Example-CS-DeployFolder>
@@ -46,19 +45,14 @@
 	<!-- Build -->
 
 	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build; 
-							 Example-SimpleVisualBasic-Build; 
-							 Examples-Mvc-Build"/>
+		<CallTarget Targets="Examples-Mvc-Build"/>
 	</Target>
 
 	<Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
-		<MSBuild Projects="$(Examples-CS-SourceFolder)\CSharp_Example-vs2008.sln"/>
-	</Target>
-	<Target Name="Example-SimpleVisualBasic-Build" DependsOnTargets="Examples-VisualBasic-PrepareDependencies">
-		<MSBuild Projects="$(Examples-VB-SourceFolder)\VisualBasic_Example-vs2008.sln"/>
+		<MSBuild Projects="$(Examples-CS-SourceFolder)\CSharp.sln"/>
 	</Target>
 	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
-		<MSBuild Projects="$(Examples-Mvc-SourceFolder)\Mvc_Example.sln" />
+		<MSBuild Projects="$(Examples-Mvc-SourceFolder)\Mvc.csproj" />
 	</Target>
 	
 	<!-- Clean -->
@@ -66,12 +60,11 @@
 	<Target Name="Examples-Clean">
 		<ItemGroup>
 			<_Configurations Include="Debug;Release;" />
-			<_ExamplesSolutions Include="$(Examples-Folder)\**\*.sln"
-													Exclude="$(Examples-Folder)\**\*vs2005.sln" />
+			<_ExamplesSolutions Include="$(Examples-Folder)\**\*.sln" Exclude="$(Examples-Folder)\**\*vs2005.sln" />
 			<_DependencyFolders Include="$(Examples-Folder)\MinimalCSharp\wwwroot\N2\;
-																		$(Examples-Folder)\MinimalVisualBasic\wwwroot\N2\;
-																		$(Examples-Folder)\Mvc\wwwroot\N2\;
-																		$(Examples-Folder)\**\PrecompiledWeb"/>
+											$(Examples-Folder)\MinimalVisualBasic\wwwroot\N2\;
+											$(Examples-Folder)\Mvc\wwwroot\N2\;
+											$(Examples-Folder)\**\PrecompiledWeb"/>
 			<_BinFiles Include="$(Examples-Folder)\**\bin\*" />
 		</ItemGroup>
 

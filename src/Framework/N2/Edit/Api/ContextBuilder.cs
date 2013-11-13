@@ -23,6 +23,8 @@ namespace N2.Management.Api
 		public List<string> Flags { get; set; }
 
 		public string ReturnUrl { get; set; }
+
+		public Dictionary<string, object> Actions { get; set; }
 	}
 
 	public class ContextLanguage
@@ -117,10 +119,29 @@ namespace N2.Management.Api
 			if (new[] { "MyselfRoot", "ContentEditRecursive", "ContentTemplatesDefault", "ContentWizardDefault", "UsersUsers" }.Intersect(data.Flags).Any() == false)
 				data.Flags.Add("ContentPages");
 
+			data.Actions = CreateActions(context);
+
 			if (ContextBuilt != null)
 				ContextBuilt(this, new ContextBuiltEventArgs { Data = data });
 
 			return data;
+		}
+
+		private Dictionary<string, object> CreateActions(HttpContextBase context)
+		{
+			var actions = new Dictionary<string, object>();
+
+			Url selectedUrl = context.Request["selectedUrl"];
+			if (selectedUrl.IsEmpty())
+				return actions;
+
+			if (selectedUrl["refresh"] == "true")
+			{
+				var item = engine.UrlParser.Parse(selectedUrl);
+				if (item != null && item.Parent != null)
+					actions["refresh"] = item.Parent.Path;
+			}
+			return actions;
 		}
 
 		private ExtendedContentInfo CreateExtendedContextData(ContentItem item, bool resolveVersions = false)

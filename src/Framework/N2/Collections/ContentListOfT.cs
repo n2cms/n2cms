@@ -243,7 +243,7 @@ namespace N2.Collections
 		/// <summary>Finds an item with the given name.</summary>
 		/// <param name="name">The name of the item to find.</param>
 		/// <returns>The item with the given name or null if no item was found.</returns>
-		public T FindNamed(string name)
+		public virtual T FindNamed(string name)
 		{
 			return Inner.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 		}

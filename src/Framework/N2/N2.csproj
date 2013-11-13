@@ -71,8 +71,7 @@
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NHibernate">
       <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -85,14 +84,30 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -105,6 +120,7 @@
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\DetailCollectionList.cs" />
     <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
@@ -151,7 +167,9 @@
     <Compile Include="Edit\Api\IApiHandler.cs" />
     <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\Api\InterfaceFlagsAttribute.cs" />
+    <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
+    <Compile Include="Edit\Api\ProfileHandler.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
@@ -512,7 +530,6 @@
     <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
-    <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -520,13 +537,8 @@
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
-    <Compile Include="Obsolete\DoubleDetail.cs" />
-    <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
     <Compile Include="Details\EditableTextAttribute.cs" />
-    <Compile Include="Obsolete\StringDetail.cs" />
-    <Compile Include="Obsolete\DateTimeDetail.cs" />
-    <Compile Include="Obsolete\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
@@ -553,6 +565,8 @@
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
     <Compile Include="Persistence\FilesystemTransaction.cs" />
+    <Compile Include="Persistence\NH\DetailCollectionFactory.cs" />
+    <Compile Include="Persistence\NH\PersistentDetailCollectionList.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
@@ -825,7 +839,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -865,7 +878,6 @@
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
-    <Compile Include="Obsolete\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
     <Compile Include="Edit\Web\EditPage.cs">

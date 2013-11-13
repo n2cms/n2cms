@@ -178,7 +178,7 @@ namespace N2.Security
 		///   Unmodified password value returned for Clear password format,
 		///   Hashed(SHA1) and Encrypted passwords using machineKey configuration settings.
 		/// </remarks>
-		protected virtual string ToStoredPassword(string password)  // JH
+		public virtual string ToStoredPassword(string password)  // JH
 		{
 			switch (PasswordFormat)
 			{
@@ -191,7 +191,7 @@ namespace N2.Security
 			}
 		}
 
-		protected virtual string FromStoredPassword(string storedPassword)
+		public virtual string FromStoredPassword(string storedPassword)
 		{
 			switch (PasswordFormat)
 			{
@@ -240,12 +240,6 @@ namespace N2.Security
 
 		public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
 		{
-			N2.Security.Items.User u = Bridge.GetUser(username);
-			if (u != null)
-			{
-				status = MembershipCreateStatus.DuplicateUserName;
-				return null;
-			}
 			if (string.IsNullOrEmpty(username))
 			{
 				status = MembershipCreateStatus.InvalidUserName;
@@ -257,7 +251,26 @@ namespace N2.Security
 				return null;
 			}
 
-			// TODO: RequiresUniqueEmail validation
+			N2.Security.Items.User u = Bridge.GetUser(username);
+			if (u != null)
+			{
+				if (u.IsLogin)
+				{
+					status = MembershipCreateStatus.DuplicateUserName;
+					return null;
+				}
+				else
+					// The user object may be a profile which isn't yet a user
+					u.IsLogin = true;
+			}
+
+			if (requiresUniqueEmail)
+			{
+				if(!string.IsNullOrEmpty(GetUserNameByEmail(email))){
+					status = MembershipCreateStatus.DuplicateEmail;
+					return null;
+				}
+			}
 
 			var args = new ValidatePasswordEventArgs(username, password, true);
 			OnValidatingPassword(args);
@@ -265,9 +278,16 @@ namespace N2.Security
 				throw new MembershipCreateUserException("Create user cancelled", args.FailureInformation);
 
 			status = MembershipCreateStatus.Success;
-			u = Bridge.CreateUser(username, ToStoredPassword(password), // JH
-								  email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
-
+			if (u == null)
+				u = Bridge.CreateUser(username, ToStoredPassword(password), email, passwordQuestion, passwordAnswer, isApproved, providerUserKey);
+			else
+			{
+				u.Password = ToStoredPassword(password);
+				u.Email = email;
+				u.PasswordQuestion = passwordQuestion;
+				u.PasswordAnswer = passwordAnswer;
+				u.IsApproved = isApproved;
+			}
 			Cache.Expire();
 			MembershipUser m = u.GetMembershipUser(this.Name);
 			return m;
@@ -398,7 +418,7 @@ namespace N2.Security
 			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email) & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
+			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email).Detail() & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
 				"Name").Select(d => d["Name"]);
             return userNames.OfType<string>().FirstOrDefault();
 		}
@@ -455,7 +475,7 @@ namespace N2.Security
 		public override bool ValidateUser(string username, string password)
 		{
 			N2.Security.Items.User u = Bridge.GetUser(username);
-			if (u != null && u.Password == ToStoredPassword(password)) // JH
+			if (u != null && u.Password == ToStoredPassword(password) && u.IsLogin) // JH
 			{
 				u.LastLoginDate = N2.Utility.CurrentTime(); // JH
 				Bridge.Save(u);

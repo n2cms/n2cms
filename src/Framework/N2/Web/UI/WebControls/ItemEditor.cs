@@ -134,7 +134,7 @@ namespace N2.Web.UI.WebControls
 					Discriminator = Definition.Discriminator;
 					if (value.VersionOf.HasValue && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
-					
+
 					if (previous != null && previous != currentItem)
 						Controls.Clear();
 

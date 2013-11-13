@@ -108,8 +108,8 @@
 		<PropertyGroup>
 			<Exe></Exe>
 		</PropertyGroup>
-		<Message Text="$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)" />
-		<Exec Command="$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)" />
+		<Message Text="$(PackagesFolder)\NUnit.Runners.2.6.3\tools\nunit-console-x86.exe %(AssembliesToTest.FullPath) /framework:net-4.0" />
+		<Exec Command="$(PackagesFolder)\NUnit.Runners.2.6.3\tools\nunit-console-x86.exe %(AssembliesToTest.FullPath) /framework:net-4.0" />
 	</Target>
 
 

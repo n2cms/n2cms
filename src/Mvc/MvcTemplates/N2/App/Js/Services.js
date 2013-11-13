@@ -8,19 +8,17 @@
 			return function (callback, ms, onWorkCancelled, parallelWorkGroup) {
 				if (!!parallelWorkGroup) {
 					if (timers[parallelWorkGroup]) {
-						clearTimeout(timers[parallelWorkGroup]);
+						$timeout.cancel(timers[parallelWorkGroup]);
 						onWorkCancelled();
 					}
-					timers[parallelWorkGroup] = setTimeout(function () {
+					timers[parallelWorkGroup] = $timeout(function () {
 						timers[parallelWorkGroup] = null;
 						callback();
 					}, ms);
 				} else {
-					if (timer && onWorkCancelled) {
-						onWorkCancelled();
-					}
-					clearTimeout(timer);
-					timer = setTimeout(function () {
+					timer && onWorkCancelled && onWorkCancelled();
+					timer && $timeout.cancel(timer);
+					timer = $timeout(function () {
 						timer = 0;
 						callback();
 					}, ms);
@@ -84,6 +82,11 @@
 	module.factory('Content', function ($resource) {
 		var res = $resource('Api/Content.ashx/:target', { target: '' }, {
 			'children': { method: 'GET', params: { target: 'children' } },
+			'branch': { method: 'GET', params: { target: 'branch' } },
+			'tree': { method: 'GET', params: { target: 'tree' } },
+			'ancestors': { method: 'GET', params: { target: 'ancestors' } },
+			'node': { method: 'GET', params: { target: 'node' } },
+			'parent': { method: 'GET', params: { target: 'parent' } },
 			'search': { method: 'GET', params: { target: 'search' } },
 			'translations': { method: 'GET', params: { target: 'translations' } },
 			'versions': { method: 'GET', params: { target: 'versions' } },
@@ -96,17 +99,53 @@
 			'schedule': { method: 'POST', params: { target: 'schedule' } }
 		});
 
-		res.loadChildren = function (node, callback) {
-			if (!node)
-				return;
+		res.paths = {
+			SelectedQueryKey: "selected",
+			ItemQueryKey: "item"
+		}
 
-			node.Loading = true;
-			res.children({ selected: node.Current.Path }, function (data) {
-				node.Children = data.Children;
-				delete node.Loading;
-				node.IsPaged = data.IsPaged;
-				callback && callback(node);
-			});
+		res.applySelection = function (settings, currentItem) {
+			var path = currentItem && currentItem.Path;
+			var id = currentItem && currentItem.ID;
+
+			if (typeof currentItem == "string") {
+				path = currentItem;
+			} else if (typeof currentItem == "number") {
+				id = currentItem;
+			}
+
+			if (path || id) {
+				var selection = {};
+				selection[res.paths.SelectedQueryKey] = path;
+				selection[res.paths.ItemQueryKey] = id;
+				return angular.extend(selection, settings);
+			}
+			return settings;
+		}
+
+		res.loadChildren = function (node, callback) {
+		    if (!node)
+		        return;
+
+		    node.Loading = true;
+		    res.children(res.applySelection({}, node.Current), function (data) {
+		        node.Children = data.Children;
+		        delete node.Loading;
+		        node.IsPaged = data.IsPaged;
+		        callback && callback(node);
+		    });
+		};
+
+		res.reload = function (node, callback) {
+		    if (!node)
+		        return;
+
+		    node.Loading = true;
+		    res.node(res.applySelection({ }, node.Current), function (data) {
+		        node.Current = data.Node.Current;
+		        delete node.Loading;
+		        callback && callback(node);
+		    });
 		};
 
 		res.states = {
@@ -136,6 +175,13 @@
 		var res = $resource('Api/Context.ashx/:target', { target: '' }, {
 			'interface': { method: 'GET', params: { target: 'interface' } },
 			'full': { method: 'GET', params: { target: 'full' } }
+		});
+
+		return res;
+	});
+
+	module.factory('Profile', function ($resource) {
+		var res = $resource('Api/Profile.ashx', {}, {
 		});
 
 		return res;
@@ -217,7 +263,7 @@
 
 				node.HasChildren = true;
 				node.Loading = true;
-				Content.children({ selected: node.Current.Path }, function (data) {
+				Content.children(Content.applySelection({}, node.Current), function (data) {
 					node.Children = data.Children;
 					node.Expanded = true;
 					node.Loading = false;

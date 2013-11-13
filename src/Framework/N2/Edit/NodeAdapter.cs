@@ -219,7 +219,8 @@ namespace N2.Edit
 			{
 				foreach (var child in NodeFactory.GetChildren(query.Parent.Path))
 				{
-					yield return child;
+					if (query.IsMatch(child))
+						yield return child;
 				}
 			}
 		}

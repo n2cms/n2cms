@@ -36,79 +36,79 @@
 .droppable-active { background:url(../../Resources/Img/shading_green.png); padding:0; }
 .droppable-hover { background-color:#8e8; outline:solid 2px #393; }
 
-.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:1001; border:none 1px #ccb; border-style:none solid solid none; background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px;  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; }
-    .sc .scContent { }
-        .controlPanel { }
-        .controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
-        .controlPanel a,.controlPanel a:visited { }
-    .controlPanel a { padding:1px; }
+.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:1100; border:none 1px #ccb; border-style:none solid solid none; background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px;  font-family: 'Segoe UI', Helvetica, sans-serif; font-size:13px; }
+	.sc .scContent { }
+		.controlPanel { }
+		.controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
+		.controlPanel a,.controlPanel a:visited { }
+	.controlPanel a { padding:1px; }
 		.controlPanel a b { font-size:18px; }
-    .controlPanel .plugins { padding:1px 6px 1px 1px; height:30px; }
-        .controlPanel .plugins a {
+	.controlPanel .plugins { padding:1px 6px 1px 1px; height:30px; }
+		.controlPanel .plugins a {
 			box-sizing:content-box;
-            display:block;
-            float:left;
-            padding:8px;
-            text-align:center; 
-            color:#fff; 
-            position:relative;
-            font-family: 'Segoe UI', Helvetica, sans-serif; 
-            font-size: 10px;
-            text-transform:uppercase;
-            background-color:#18a0de;
+			display:block;
+			float:left;
+			padding:8px;
+			text-align:center; 
+			color:#fff; 
+			position:relative;
+			font-family: 'Segoe UI', Helvetica, sans-serif; 
+			font-size: 10px;
+			text-transform:uppercase;
+			background-color:#18a0de;
 			border-right: solid 1px #74c6eb;
-            overflow:hidden;
-            text-align:center;
-            height:16px;
+			overflow:hidden;
+			text-align:center;
+			height:16px;
 			text-decoration:none;
-        }
-        .controlPanel .plugins a:hover,
+		}
+		.controlPanel .plugins a:hover,
 		.controlPanel .plugins a.toggled {
-            background-color: #74c6eb; 
+			background-color: #74c6eb; 
 			text-decoration:none;
-        }
+		}
 		.controlPanel .plugins .authorizedFalse { opacity:.33 }
 
-        .sc.stateWaiting .plugins a,
-        .sc.stateDraft .plugins a {
+		.sc.stateWaiting .plugins a,
+		.sc.stateDraft .plugins a {
 			background-color:#FF8822;
 		}
-        .sc.stateWaiting .plugins a:hover,
-        .sc.stateDraft .plugins a:hover,
-        .sc.stateWaiting .plugins a.toggled,
-        .sc.stateDraft .plugins a.toggled {
+		.sc.stateWaiting .plugins a:hover,
+		.sc.stateDraft .plugins a:hover,
+		.sc.stateWaiting .plugins a.toggled,
+		.sc.stateDraft .plugins a.toggled {
 			background-color:#FF9933;
 		}
 		
-        .sc.stateUnpublished .plugins a,
-        .sc.stateDeleted .plugins a {
+		.sc.stateUnpublished .plugins a,
+		.sc.stateDeleted .plugins a {
 			background-color:#EE3300;
 		}
-        .sc.stateUnpublished .plugins a:hover,
-        .sc.stateDeleted .plugins a:hover,
-        .sc.stateUnpublished .plugins a.toggled,
-        .sc.stateDeleted .plugins a.toggled {
+		.sc.stateUnpublished .plugins a:hover,
+		.sc.stateDeleted .plugins a:hover,
+		.sc.stateUnpublished .plugins a.toggled,
+		.sc.stateDeleted .plugins a.toggled {
 			background-color:#E16C62;
 		}
 
 	
-    .sc .sc-toggler { text-indent:-2000px; position:absolute; top:1px; right:0; height:28px; width:1px; cursor:pointer; cursor:hand; display:block; margin-left:1px; border:solid 2px #18a0de; background-color:transparent; }
+	.sc .sc-toggler { text-indent:-2000px; position:absolute; top:1px; right:0; height:28px; width:1px; cursor:pointer; cursor:hand; display:block; margin-left:1px; border:solid 2px #18a0de; background-color:transparent; }
 	.sc .sc-toggler:hover { border-color: #74c6eb; }
-    .sc .close { display:none; }
-    .opened .open { display:none; }
-    .opened .close { display:inline;}
+	.sc .close { display:none; }
+	.opened .open { display:none; }
+	.opened .close { display:inline;}
 	.dragDrop .sc .open { top:auto; bottom: 0; }
 	.sc .open { border-left-style:dotted; }
 	.sc .open:hover { outline:solid 1px #fff; margin-right:-1px; width:2px; }
 	.sc .close { border-right-style:dotted; }
-    .sc.stateDeleted .sc-toggler,
-    .sc.stateUnpublished .sc-toggler { border-color: #EE3300; }
-    .sc.stateDeleted .sc-toggler:hover,
-    .sc.stateUnpublished .sc-toggler:hover { border-color: #E16C62; } 
+	.sc.stateDeleted .sc-toggler,
+	.sc.stateUnpublished .sc-toggler { border-color: #EE3300; }
+	.sc.stateDeleted .sc-toggler:hover,
+	.sc.stateUnpublished .sc-toggler:hover { border-color: #E16C62; } 
 	.sc.stateWaiting .sc-toggler,
-    .sc.stateDraft .sc-toggler { border-color: #FF8822; } 
-    .sc.stateWaiting .sc-toggler:hover,
-    .sc.stateDraft .sc-toggler:hover { border-color: #FF9933; } 
+	.sc.stateDraft .sc-toggler { border-color: #FF8822; } 
+	.sc.stateWaiting .sc-toggler:hover,
+	.sc.stateDraft .sc-toggler:hover { border-color: #FF9933; } 
 
 .definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; max-height:200px; overflow:auto; margin-bottom:0; }
     .definition { cursor:move; padding:1px 10px; }
@@ -145,5 +145,5 @@ a .creator-add { background: url(../../Resources/icons/add.png) no-repeat 50% 50
 .n2-shadow { text-shadow: 3px 3px #999; }
 .n2-opaque { opacity: .5; }
 .n2-tilted90 { display:inline-block !important; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
-.n2-tilted180 { display:inline-block !important; -webkit-transform: rotate(180px); -moz-transform: rotate(180px); -ms-transform: rotate(180px); -o-transform: rotate(180px); transform: rotate(180px); }
-.n2-tilted270 { display:inline-block !important; -webkit-transform: rotate(270px); -moz-transform: rotate(270px); -ms-transform: rotate(270px); -o-transform: rotate(270px); transform: rotate(270px); }
+.n2-tilted180 { display:inline-block !important; -webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); -ms-transform: rotate(180deg); -o-transform: rotate(180deg); transform: rotate(180deg); }
+.n2-tilted270 { display:inline-block !important; -webkit-transform: rotate(270deg); -moz-transform: rotate(270deg); -ms-transform: rotate(270deg); -o-transform: rotate(270deg); transform: rotate(270deg); }

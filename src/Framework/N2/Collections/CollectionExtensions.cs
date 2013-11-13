@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Definitions;
+using NHibernate.Mapping;
 
 namespace N2.Collections
 {
@@ -82,17 +83,34 @@ namespace N2.Collections
 		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) 
 			where T : IUniquelyNamed
 		{
-			return CollectionExtensions.AddOrReplace(collection, item, false);
+			return AddOrReplace(collection, item, false);
 		}
 		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item, bool replaceIfComparedBefore) 
 			where T : IUniquelyNamed
 		{
-			var existing = collection.FirstOrDefault(i => i.Name == item.Name);
-			if (existing != null)
-				collection.Remove(existing);
-
-			collection.Add(item);
-
+			if (collection is List<T>)
+			{
+				var rp = false;
+				var c2 = collection as List<T>;
+				lock (collection)
+				{
+					for (int i = 0; i < c2.Count; ++i)
+						if (c2[i].Name == item.Name)
+						{
+							c2[i] = item;
+							rp = true;
+							break;
+						}
+				}
+				if (!rp)
+					c2.Add(item);
+			}
+			else
+			{
+				foreach (var x in collection.Where(i => i.Name == item.Name).ToList())
+					collection.Remove(x);
+				collection.Add(item);
+			}
 			return collection;
 		}
 

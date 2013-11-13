@@ -111,7 +111,7 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		public T FindNamed(string name)
+		public virtual T FindNamed(string name)
 		{
 			if (WasInitialized) return List.FirstOrDefault(i => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase));
 

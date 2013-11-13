@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using N2.Configuration;
 using N2.Resources;
 using N2.Web.Tokens;
+using N2.Details;
 
 namespace N2.Web.UI.WebControls
 {
@@ -16,14 +17,6 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	public class FreeTextArea : TextBox
 	{
-
-		public enum EditorModeSetting
-		{
-			Basic,
-			Standard,
-			Full,
-		}
-
 		static string contentCssUrl;
 		static bool configEnabled = true;
 		string configJsPath = string.Empty;
@@ -43,7 +36,7 @@ namespace N2.Web.UI.WebControls
 			CssClass = "ckeditor";
 		}
 
-		
+
 		public virtual bool EnableFreeTextArea
 		{
 			get { return (bool)(ViewState["EnableFreeTextArea"] ?? configEnabled); }
@@ -145,12 +138,12 @@ namespace N2.Web.UI.WebControls
 				overrides["language"] = "en";
 			}
 
-		
+
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
 				overrides["baseHref"] = Page.ResolveUrl(DocumentBaseUrl);
 
-			if (advancedMenues==false)
+			if (advancedMenues == false)
 				overrides["removeDialogTabs"] = "image:advanced;link:advanced";
 
 			if (allowedContent.HasValue)
@@ -203,7 +196,7 @@ namespace N2.Web.UI.WebControls
 
 			return ToJsonString(overrides);
 		}
-				
+
 		protected static string ToJsonString(IDictionary<string, string> collection)
 		{
 			var sb = new StringBuilder("{");

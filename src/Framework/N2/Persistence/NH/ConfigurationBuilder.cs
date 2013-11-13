@@ -356,7 +356,7 @@ namespace N2.Persistence.NH
 			{
 				cm.Key(k => k.Column("ItemID"));
 				cm.Inverse(true);
-				cm.Type<ContentListFactory<DetailCollection>>();
+				cm.Type<DetailCollectionFactory>();
 				cm.Cascade(Cascade.All | Cascade.DeleteOrphans);
 				cm.Fetch(CollectionFetchMode.Select);
 				cm.Lazy(CollectionLazy.Lazy);
