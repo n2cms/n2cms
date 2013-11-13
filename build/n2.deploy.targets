@@ -272,11 +272,23 @@
   <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
   </Target>
 
-  <Target Name="Publish-NuGet" DependsOnTargets="Build-NuGet">
+	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">
+		<Warning Text="Publish-Nuget is deprecated; Use Push-Nuget"/>
+	</Target>
+	
+	<Target Name="Push-NuGet" DependsOnTargets="Build-NuGet">
     <ItemGroup>
       <nugetPackages Include="$(DeployFolder)\*.$(Version).nupkg" />
     </ItemGroup>
     <!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" />-->
     <Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetPackages.Identity)" ContinueOnError="true" />
   </Target>
+
+	<Target Name="Push-NuGet-Config" DependsOnTargets="Build-NuGet">
+		<ItemGroup>
+			<nugetConfigPackages Include="$(DeployFolder)\N2CMS.Config.*.nupkg" />
+		</ItemGroup>
+		<!--<Message Text="$(BuildFolder)\lib\NuGet.exe Push %(nugetConfigPackages.Identity)" />-->
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe Push %(nugetConfigPackages.Identity)" ContinueOnError="true" />
+	</Target>
 </Project>
