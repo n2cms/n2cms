@@ -197,10 +197,9 @@ jQuery(document).ready(function(){{
 			else
 				availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
 
-			var sortedDefinitions = new List<ItemDefinition>();
-			sortedDefinitions.AddRange(availableDefinitions);
-			sortedDefinitions.Sort();
-			return sortedDefinitions;
+			return from x in availableDefinitions
+				orderby x ascending, x.SortOrder ascending
+				select x;
 		}
 
 		private static List<ItemDefinition> GetPossibleDefinitions(PartsAdapter adapter, IEnumerable<Zone> pageZones, IPrincipal user)
