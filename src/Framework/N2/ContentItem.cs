@@ -97,7 +97,7 @@ namespace N2
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
-		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
+		private IContentList<DetailCollection> detailCollections = new DetailCollectionList();
 		[NonSerialized]
 		private IUrlParser urlParser;
 		private string ancestralTrail;
@@ -269,7 +269,13 @@ namespace N2
 		[NonInterceptable]
 		public virtual IContentList<DetailCollection> DetailCollections
 		{
-			get { return detailCollections; }
+			get
+			{
+				var enclosed = detailCollections as IEncolsedComponent;
+				if (enclosed != null && enclosed.EnclosingItem == null)
+					enclosed.EnclosingItem = this;
+				return detailCollections; 
+			}
 			set { detailCollections = value; }
 		}
 

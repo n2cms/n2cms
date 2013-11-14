@@ -17,6 +17,7 @@ using System.Linq;
 using Shouldly;
 using System.Web;
 using N2.Edit.Versioning;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -31,11 +32,13 @@ namespace N2.Tests.Persistence.NH
 		ContentItem item1;
 		ContentItem item2;
 		ContentItem item3;
+		protected FakeSessionProvider sessionProvider;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
+			sessionProvider = helper.SessionProvider;
 
 			CreateRootItem();
 			SaveVersionAndUpdateRootItem();

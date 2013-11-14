@@ -147,7 +147,7 @@ table.editDetail { border-collapse:collapse; }
 .framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
 .framed .unpublish.iconed { background-image:url(../../Resources/icons/clock_stop.png); }
 
-.EditableCheckBoxList label { display:inline-block; }
+.EditableCheckBoxList label, .EditableRoles label { display:inline-block; }
 
 .popup
 {

@@ -48,7 +48,7 @@ function Uri(uri) {
 	}
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Security, FrameContext, Translate) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
@@ -116,11 +116,11 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			// the context will be reoloaded anyway due to PreviewUrl != url with edit=drag
 			return;
 
-		if (!$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true)) {
-			$scope.reloadChildren(getParentPath(ctx.path), function () {
-				$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/!ctx.force, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
-			});
-		}
+		//if (!$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true)) {
+		//	$scope.reloadChildren(getParentPath(ctx.path), function () {
+		//		$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/!ctx.force, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
+		//	});
+		//}
 	});
 
 	var viewMatch = window.location.search.match(/[?&]view=([^?&]+)/);
@@ -137,7 +137,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		Partials: {
 			Management: "App/Partials/Loading.html"
 		},
-		PreviewQueries: {}
+		PreviewQueries: {},
+		User: {
+			Settings: {}
+		}
 	}
 
 	function translateMenuRecursive(node) {
@@ -156,6 +159,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		
 	};
 
+	$scope.watchChanges = function(watchExpression, listener, objectEquality) {
+		var firstTime = true;
+		$scope.$watch(watchExpression, function () {
+			if (firstTime)
+				firstTime = false;
+			else
+				listener.apply($scope, arguments)
+		}, objectEquality);
+	}
+
 	Context.full({
 		view: viewMatch && viewMatch[1],
 		selected: selectedMatch && selectedMatch[1]
@@ -167,13 +180,21 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		translateMenuRecursive(i.Interface.ContextMenu);
 		angular.extend($scope.Context, i.Interface);
 		angular.extend($scope.Context, i.Context);
+
 		if (organizeMatch && organizeMatch[1] == "Organize")
 			$scope.Context.Paths.PreviewUrl = $scope.appendQuery($scope.Context.Paths.PreviewUrl, "edit", "drag");
+
+		$scope.watchChanges("Context.User", function (user) {
+			Eventually(function () {
+				Profile.save({}, user, function(data){
+				});
+			}, 20000);
+		}, true);
 	});
 
 	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
-	    Context.get(Content.applySelection({ view: $scope.Context.User.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
-	        console.log("select -> contextchanged", node, versionIndex, ctx);
+	    Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
+	        //console.log("select -> contextchanged", node, versionIndex, ctx);
 	        if (keepFlags)
 	            angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
 	        else
@@ -206,12 +227,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 			if (!forceContextRefresh){
 				if ($scope.Context.AppliesTo == node.Current.PreviewUrl) {
-					console.log("exiting due to same", node.Current.PreviewUrl);
+					//console.log("exiting due to same", node.Current.PreviewUrl);
 					return true;
 				}
 			}
 			if (!disregardNodeUrl) {
-				console.log("setting appliesTo (1)", node.Current.PreviewUrl);
+				//console.log("setting appliesTo (1)", node.Current.PreviewUrl);
 				$scope.Context.AppliesTo = node.Current.PreviewUrl;
 			}
 
@@ -247,15 +268,15 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 	var viewExpression = /[?&]view=[^?&]*/;
 	$scope.$on("preiewloaded", function (scope, e) {
 		if ($scope.Context.AppliesTo == (e.path + e.query)) {
-			console.log("bailing out", $scope.Context.AppliesTo, "==", (e.path + e.query));
+			//console.log("bailing out", $scope.Context.AppliesTo, "==", (e.path + e.query));
 			return;
 		}
-		console.log("setting appliesTo (2)", e.path + e.query);
+		//console.log("setting appliesTo (2)", e.path + e.query);
 		$scope.Context.AppliesTo = e.path + e.query;
 
 		$timeout(function () {
 			Context.get({ selectedUrl: e.path + e.query }, function (ctx) {
-				console.log("previewloaded -> contextchanged", e, ctx);
+				//console.log("previewloaded -> contextchanged", e, ctx);
 				angular.extend($scope.Context, ctx);
 				$scope.$emit("contextchanged", $scope.Context);
 			});
@@ -321,12 +342,31 @@ function NavigationCtrl($rootScope, $scope, Content, ContextMenuFactory, Eventua
 	$scope.ContextMenu = new ContextMenuFactory($scope);
 }
 
+function ScopeHandler($scope, Content) {
+	this.from = false;
+	this.here = function (node) {
+		this.from = true;
+		$scope.node = node;
+		$scope.Context.User.Settings.Scope = node.Current.Path;
+	};
+	this.clear = function () {
+		$scope.node = $scope.Context.Content;
+		delete $scope.Context.User.Settings.Scope;
+		this.from = false;
+	};
+	if ($scope.Context.User.Settings.Scope) {
+		var t = this;
+		Content.tree(Content.applySelection({}, $scope.Context.User.Settings.Scope), function (data) {
+			$scope.node = data.Tree;
+			t.from = true;
+		});
+	}
+	return this;
+}
+
 function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	$scope.$watch("Context.Content", function (content) {
 		$scope.node = content;
-		if (content) {
-			$scope.select(findNodeRecursive(content, $scope.Context.SelectedPath));
-		}
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
 		if (ctx.Actions.refresh) {
@@ -340,8 +380,14 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 		else
 			$scope.Context.SelectedNode = null;
 	});
-
+	$scope.nodeClicked = function (node) {
+		$scope.Context.User.Settings.Selected = node.Current.Path;
+		$scope.select(node);
+	}
 	$scope.toggle = function (node) {
+		if (!node.Expanded && !node.Children.length) {
+			Content.loadChildren(node);
+		}
 		node.Expanded = !node.Expanded;
 	};
 	$scope.loadRemaining = function (node) {
@@ -390,16 +436,11 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 			delete node.Parts;
 		}
 	}
+	$scope.scope = new ScopeHandler($scope, Content);
 }
 
 function BranchCtrl($scope, Content, Translate, SortHelperFactory) {
 	$scope.node = $scope.child;
-	$scope.toggle = function (node) {
-		if (!node.Expanded && !node.Children.length) {
-			Content.loadChildren(node);
-		}
-		node.Expanded = !node.Expanded;
-	};
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.tags = [];
 	if ($scope.node.Current) {
@@ -432,9 +473,9 @@ function MenuCtrl($rootScope, $scope, Security) {
 	});
 
 	$scope.setViewPreference = function (viewPreference) {
-		$scope.Context.User.ViewPreference = viewPreference;
+		$scope.Context.User.Settings.ViewPreference = viewPreference;
 	};
-	$scope.$watch("Context.User.ViewPreference", function (viewPreference, previousPreference) {
+	$scope.$watch("Context.User.Settings.ViewPreference", function (viewPreference, previousPreference) {
 		$scope.setPreviewQuery("view", viewPreference);
 		var existingIndex = jQuery.inArray("View" + previousPreference, $scope.Context.Flags);
 		if (existingIndex >= 0)
@@ -442,11 +483,11 @@ function MenuCtrl($rootScope, $scope, Security) {
 		$scope.Context.Flags.push("View" + viewPreference);
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
-		ctx.Flags.push("View" + ctx.User.ViewPreference)
+		ctx.Flags.push("View" + ctx.User.Settings.ViewPreference)
 	});
 }
 
-function MenuNodeLastChildCtrl($scope) {
+function MenuNodeLastChildCtrl($scope, $timeout) {
     function replace(item, replacement) {
         var r = replacement.Current;
         var copy = angular.copy(item.Current);
@@ -458,10 +499,20 @@ function MenuNodeLastChildCtrl($scope) {
             item.IsHidden = true;
             return;
         }
-        replace(item, item.Children[0]);
+        var preferredItem = item.Children[0];
+        var preferredEditAction = $scope.Context.User.Settings.PreferredEditAction;
+        if (preferredEditAction) {
+        	for (var i in item.Children) {
+        		if (item.Children[i].Current.Name == preferredEditAction) {
+        			preferredItem = item.Children[i];
+        		}
+        	}
+        }
+        replace(item, preferredItem);
     });
     $scope.$on("nodeclicked", function (scope, node) {
-        replace($scope.item, node);
+    	replace($scope.item, node);
+    	$scope.Context.User.Settings.PreferredEditAction = node.Current.Name;
     });
 }
 

@@ -116,13 +116,13 @@ namespace N2.Details
 		public virtual void Replace(IEnumerable values)
 		{
 			bool[] valuesToKeep = new bool[this.Count];
-			
+			var valuesToAdd = new List<object>();
 			// Add new items and mark items that should be kept.
 			foreach (object value in values)
 			{
 				int i = this.IndexOf(value);
 				if (i < 0)
-					this.Add(value);
+					valuesToAdd.Add(value);
 				else
 					valuesToKeep[i] = true;
 			}
@@ -132,6 +132,30 @@ namespace N2.Details
 			{
 				if (!valuesToKeep[i])
 					this.RemoveAt(i);
+			}
+
+			foreach (var value in valuesToAdd)
+				this.Add(value);
+		}
+
+		public virtual void Replace(IDictionary<string, object> dictionary)
+		{
+			var kvps = dictionary.ToList();
+			// replace existing details
+			for (int i = 0; i < Details.Count && i < kvps.Count; i++)
+			{
+				Details[i].Meta = kvps[i].Key;
+				Details[i].Value = kvps[i].Value;
+			}
+			// add extra values
+			for (int i = Details.Count; i < kvps.Count; i++)
+			{
+				Add(new ContentDetail(EnclosingItem, Name, kvps[i].Value) { Meta = kvps[i].Key });
+			}
+			// remove superflous
+			for (int i = Details.Count - 1; i >= kvps.Count; i--)
+			{
+				RemoveAt(i);
 			}
 		}
 		#endregion
@@ -157,6 +181,7 @@ namespace N2.Details
 		/// <param name="value">The value to insert.</param>
 		public virtual void Insert(int index, object value)
 		{
+			Untemporarize();
 			ContentDetail detail = GetDetail(value);
 			Details.Insert(index, detail);
 		}
@@ -175,7 +200,8 @@ namespace N2.Details
 		{
 			get { return Details[index].Value; }
 			set 
-			{ 
+			{
+				Untemporarize();
 				Details[index] = GetDetail(value); 
 			}
 		}
@@ -195,9 +221,19 @@ namespace N2.Details
 		/// <returns>the index of the added value.</returns>
 		public virtual int Add(object value)
 		{
+			Untemporarize();
 			ContentDetail detail = GetDetail(value);
 			Details.Add(detail);
 			return Details.Count - 1;
+		}
+
+		private void Untemporarize()
+		{
+			if (Temporary)
+			{
+				Temporary = false;
+				AddTo(EnclosingItem);
+			}
 		}
 
 		/// <summary>Clears the collection.</summary>
@@ -414,6 +450,17 @@ namespace N2.Details
 			foreach (var detail in Details)
 				detail.EnclosingItem = destination;
 		}
+
+		public IDictionary<string, object> AsDictionary()
+		{
+			var map = new Dictionary<string, object>();
+			foreach (var d in Details)
+				if (d.Meta != null)
+					map[d.Meta] = d.Value;
+			return map;
+		}
+
+		public bool Temporary { get; set; }
 	}
 }
 

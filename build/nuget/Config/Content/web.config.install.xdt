@@ -1,4 +1,5 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	
 	<n2 xmlns="http://n2cms.com/schemas/configuration/v3" xdt:Transform="InsertIfMissing">
 		<!--
 			When installing a database from scratch you'll need to insert some required pages. 
@@ -36,6 +37,10 @@
 		SQL Compact 4:    <add name="N2CMS" connectionString="Data Source=|DataDirectory|\n2cms.sdf" providerName="System.Data.SqlServerCe.SqlCeEngine, System.Data.SqlServerCe"/>
 		-->
 	</connectionStrings>
+
+	<appSettings xdt:Transform="InsertIfMissing">
+		<add key="ValidationSettings:UnobtrusiveValidationMode" value="None" xdt:Locator="Match(key)" xdt:Transform="InsertIfMissing"/>
+	</appSettings>
 
 	<system.web>
 		<!-- Comment for .NET < 4 -->

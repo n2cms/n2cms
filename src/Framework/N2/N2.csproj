@@ -120,6 +120,7 @@
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\DetailCollectionList.cs" />
     <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
@@ -166,7 +167,9 @@
     <Compile Include="Edit\Api\IApiHandler.cs" />
     <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\Api\InterfaceFlagsAttribute.cs" />
+    <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
+    <Compile Include="Edit\Api\ProfileHandler.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
@@ -527,7 +530,6 @@
     <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
-    <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -535,13 +537,8 @@
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
-    <Compile Include="Obsolete\DoubleDetail.cs" />
-    <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
     <Compile Include="Details\EditableTextAttribute.cs" />
-    <Compile Include="Obsolete\StringDetail.cs" />
-    <Compile Include="Obsolete\DateTimeDetail.cs" />
-    <Compile Include="Obsolete\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
@@ -568,6 +565,8 @@
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
     <Compile Include="Persistence\FilesystemTransaction.cs" />
+    <Compile Include="Persistence\NH\DetailCollectionFactory.cs" />
+    <Compile Include="Persistence\NH\PersistentDetailCollectionList.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
@@ -840,7 +839,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -880,7 +878,6 @@
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
-    <Compile Include="Obsolete\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
     <Compile Include="Edit\Web\EditPage.cs">

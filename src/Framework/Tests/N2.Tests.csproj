@@ -189,6 +189,8 @@
     <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
     <Compile Include="Definitions\Items\TitleTransformer.cs" />
     <Compile Include="Details\ContentDetailTests.cs" />
+    <Compile Include="Details\PersistentDetailCollecetionTests.cs" />
+    <Compile Include="Details\TemporaryDetailCollectionTests.cs" />
     <Compile Include="Details\EditableItemTest.cs" />
     <Compile Include="Details\DisplayableTokensTest.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Fakes\FakeCacheWrapper.cs" />
     <Compile Include="Fakes\FakeProvider.cs" />
     <Compile Include="Installation\ImageSizesMigrationTests.cs" />
+    <Compile Include="PersistenceTestHelper.cs" />
     <Compile Include="Persistence\ChildrenTests.cs" />
     <Compile Include="Persistence\ContentActivatorTests.cs" />
     <Compile Include="Engine\Items\AdapterIInterfaced.cs" />

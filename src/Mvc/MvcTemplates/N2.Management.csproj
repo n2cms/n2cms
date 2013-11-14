@@ -1237,6 +1237,8 @@
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="N2\Security\ContentProfileRepository.cs" />
+    <Compile Include="N2\Security\EditablePassword.cs" />
     <Compile Include="N2\Web\FontHandler.cs" />
     <Compile Include="N2\Resources\IconHandler.ashx.cs">
       <DependentUpon>IconHandler.ashx</DependentUpon>

@@ -87,7 +87,7 @@ namespace N2.Management.Api
 
 		public string Authority { get; set; }
 
-		public InterfaceUser User { get; set; }
+		public ProfileUser User { get; set; }
 
 		public InterfacePaths Paths { get; set; }
 
@@ -113,13 +113,6 @@ namespace N2.Management.Api
 		public string PreviewUrl { get; set; }
 
 		public string PageQueryKey { get; set; }
-	}
-
-	public class InterfaceUser
-	{
-		public string Name { get; set; }
-		public string Username { get; set; }
-		public string ViewPreference { get; set; }
 	}
 
 	public class InterfacePartials
@@ -160,17 +153,20 @@ namespace N2.Management.Api
 
 		public virtual InterfaceDefinition GetInterfaceDefinition(HttpContextBase context, SelectionUtility selection)
 		{
+			var profile = GetUser(context);
+			var selectedItem = GetSelectedItem(selection, profile);
+
 			var data = new InterfaceDefinition
 			{
-				MainMenu = CreateMainMenu(),
-				ActionMenu = CreateActionMenu(context),
-				Content = CreateContent(context, selection),
-				Site = engine.Host.GetSite(selection.SelectedItem),
+				MainMenu = GetMainMenu(),
+				ActionMenu = GetActionMenu(context),
+				ContextMenu = GetContextMenu(context),
+				Content = GetContent(context, selection, selectedItem),
+				Site = engine.Host.GetSite(selectedItem),
 				Authority = context.Request.Url.Authority,
-				User = CreateUser(context),
-				Paths = CreateUrls(context, selection),
-				ContextMenu = CreateContextMenu(context),
-				Partials = CreatePartials(context)
+				User = profile,
+				Paths = GetUrls(context, selectedItem),
+				Partials = GetPartials(context)
 			};
 
 			PostProcess(data);
@@ -210,7 +206,7 @@ namespace N2.Management.Api
 			}
 		}
 
-		private InterfacePartials CreatePartials(HttpContextBase context)
+		private InterfacePartials GetPartials(HttpContextBase context)
 		{
 			return new InterfacePartials
 			{
@@ -225,7 +221,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		protected virtual Node<InterfaceMenuItem> CreateContextMenu(HttpContextBase context)
+		protected virtual Node<InterfaceMenuItem> GetContextMenu(HttpContextBase context)
 		{
 			var children = new List<Node<InterfaceMenuItem>> 
 			{
@@ -236,7 +232,7 @@ namespace N2.Management.Api
 			};
 			children.AddRange(engine.EditManager.GetPlugins<NavigationPluginAttribute>(context.User)
 				.Where(np => !np.Legacy)
-				.Select(np => CreateNode(np)));
+				.Select(np => GetNode(np)));
 
 			return new Node<InterfaceMenuItem>
 			{
@@ -244,7 +240,7 @@ namespace N2.Management.Api
 			};
 		}
 
-		protected virtual Node<InterfaceMenuItem> CreateNode(LinkPluginAttribute np)
+		protected virtual Node<InterfaceMenuItem> GetNode(LinkPluginAttribute np)
 		{
 			var node = new Node<InterfaceMenuItem>(new InterfaceMenuItem
 			{
@@ -263,13 +259,13 @@ namespace N2.Management.Api
 				if (tp.OptionProvider != null)
 				{
 					var options = (IProvider<ToolbarOption>)engine.Resolve(tp.OptionProvider);
-					node.Children = options.GetAll().Select(o => CreateNode(o)).ToList();
+					node.Children = options.GetAll().Select(o => GetNode(o)).ToList();
 				}
 			}
 			return node;
 		}
 
-		private Node<InterfaceMenuItem> CreateNode(ToolbarOption o)
+		private Node<InterfaceMenuItem> GetNode(ToolbarOption o)
 		{
 			return new Node<InterfaceMenuItem>(new InterfaceMenuItem
 			{
@@ -299,7 +295,7 @@ namespace N2.Management.Api
 			return urlFormat;
 		}
 
-		protected virtual InterfacePaths CreateUrls(HttpContextBase context, SelectionUtility selection)
+		protected virtual InterfacePaths GetUrls(HttpContextBase context, ContentItem selectedItem)
 		{
 
 			return new InterfacePaths
@@ -311,11 +307,11 @@ namespace N2.Management.Api
 				ItemQueryKey = PathData.ItemQueryKey,
 				PageQueryKey = PathData.PageQueryKey,
 				Create = engine.Config.Sections.Management.Paths.NewItemUrl.ResolveUrlTokens(),
-				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selection.SelectedItem).GetPreviewUrl(selection.SelectedItem, allowDraft: true)
+				PreviewUrl = engine.GetContentAdapter<NodeAdapter>(selectedItem).GetPreviewUrl(selectedItem, allowDraft: true)
 			};
 		}
 
-		protected virtual Node<InterfaceMenuItem> CreateActionMenu(HttpContextBase context)
+		protected virtual Node<InterfaceMenuItem> GetActionMenu(HttpContextBase context)
 		{
 			var children = new List<Node<InterfaceMenuItem>>
 			{
@@ -368,7 +364,7 @@ namespace N2.Management.Api
 
 			children.AddRange(engine.EditManager.GetPlugins<ToolbarPluginAttribute>(context.User)
 					.Where(np => !np.Legacy)
-					.Select(np => CreateNode(np)));
+					.Select(np => GetNode(np)));
 
 			return new Node<InterfaceMenuItem>
 			{
@@ -376,33 +372,41 @@ namespace N2.Management.Api
 			};
 		}
 
-		protected virtual InterfaceUser CreateUser(HttpContextBase context)
+		protected virtual ProfileUser GetUser(HttpContextBase context)
 		{
-			return new InterfaceUser
-			{
-				Name = context.User.Identity.Name,
-				Username = context.User.Identity.Name,
-				ViewPreference = context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString().ToLower()
-			};
+			var profile = engine.Resolve<IProfileRepository>().GetOrCreate(context.User);
+			if (!profile.Settings.ContainsKey("ViewPreference"))
+				profile.Settings["ViewPreference"] = context.GetViewPreference(engine.Config.Sections.Management.Versions.DefaultViewMode).ToString().ToLower();
+
+			return profile;
 		}
 
-		protected virtual Node<TreeNode> CreateContent(HttpContextBase context, SelectionUtility selection)
+		protected virtual Node<TreeNode> GetContent(HttpContextBase context, SelectionUtility selection, ContentItem selectedItem)
 		{
 			var filter = engine.EditManager.GetEditorFilter(context.User);
 
-            var selectedItem = selection.SelectedItem;
             var root = selection.Traverse.RootPage;
             var structure = ApiExtensions.BuildBranchStructure(filter, engine.Resolve<IContentAdapterProvider>(), selectedItem, root);
 
-			return CreateStructure(structure, filter);
+			return GetStructure(structure, filter);
 		}
 
-		protected virtual Node<TreeNode> CreateStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
+		private static ContentItem GetSelectedItem(SelectionUtility selection, ProfileUser profile)
+		{
+			var selectedItem = selection.ParseSelectionFromRequest();
+			if (selectedItem == null && profile.Settings.ContainsKey("Selected"))
+				selectedItem = selection.ParseSelected((string)profile.Settings["Selected"]);
+			if (selectedItem == null)
+				selectedItem = selection.Traverse.StartPage;
+			return selectedItem;
+		}
+
+		protected virtual Node<TreeNode> GetStructure(HierarchyNode<ContentItem> structure, ItemFilter filter)
 		{
             return ApiExtensions.CreateNode(structure, engine.Resolve<IContentAdapterProvider>(), filter);
 		}
 
-		protected virtual Node<InterfaceMenuItem> CreateMainMenu()
+		protected virtual Node<InterfaceMenuItem> GetMainMenu()
 		{
 			return new Node<InterfaceMenuItem>
 			{
@@ -416,7 +420,7 @@ namespace N2.Management.Api
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "sitesettings", Title = "Site Settings", IconClass = "n2-icon-cog", ToolTip = "Edit site settings", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/EditRecursive.aspx')}}".ResolveUrlTokens(), RequiredPermission = Permission.Write, SelectedBy = "ContentEditRecursive" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "templates", Title = "Templates", IconClass = "n2-icon-plus-sign-alt", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Templates/Default.aspx')}}".ResolveUrlTokens().ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "ContentTemplatesDefault" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "wizards", Title = "Wizards", IconClass = "n2-icon-magic", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Wizard/Default.aspx')}}".ResolveUrlTokens(), SelectedBy = "ContentWizardDefault" }),
-					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "n2-icon-user", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
+					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "n2-icon-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
 					
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider2", Divider = true }),
 

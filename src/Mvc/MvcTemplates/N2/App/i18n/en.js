@@ -27,6 +27,10 @@
 		"parts": {
 			"show": { "text": " Show parts" },
 			"hide": { "text": " Hide parts" }
+		},
+		"scope": {
+			"here": "Scope from here",
+			"clear": "Clear scope"
 		}
 	},
 	"info": {
