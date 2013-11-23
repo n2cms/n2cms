@@ -22,6 +22,8 @@ namespace N2.Resources
 			Register.JQueryPath = configFactory.Sections.Web.Resources.JQueryPath;
 			Register.JQueryUiPath = configFactory.Sections.Web.Resources.JQueryUiPath;
 			Register.JQueryPluginsPath = configFactory.Sections.Web.Resources.JQueryPluginsPath;
+		    Register.AngularPath = configFactory.Sections.Web.Resources.AngularPath;
+		    Register.AngularResourcesPath = configFactory.Sections.Web.Resources.AngularResourcesPath;
 			Register.CKEditorPath = configFactory.Sections.Web.Resources.CKEditorPath;
 			Register.FancyboxPath = configFactory.Sections.Web.Resources.FancyboxPath;
 			Register.PartsJsPath = configFactory.Sections.Web.Resources.PartsJsPath;

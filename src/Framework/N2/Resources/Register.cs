@@ -19,6 +19,8 @@ namespace N2.Resources
 			JQueryPath = "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js";
 			JQueryUiPath = "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + JQueryVersion;
 			JQueryPluginsPath = "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + JQueryVersion;
+            AngularPath = "{ManagementUrl}/Resources/angular-1.1.5/angular.min.js";
+            AngularResourcesPath = "{ManagementUrl}/Resources/angular-1.1.5/angular-resource.min.js";
 			CKEditorPath = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion;
 			PartsJsPath = "{ManagementUrl}/Resources/Js/parts.js?v=" + JQueryVersion;
 			PartsCssPath = "{ManagementUrl}/Resources/Css/parts.css?v=" + JQueryVersion;
@@ -32,19 +34,19 @@ namespace N2.Resources
 		/// <summary>Whether javascript resources should be uncompressed.</summary>
 		public static bool Debug
 		{
-			get { return Register.debug ?? (HttpContext.Current != null ? HttpContext.Current.IsDebuggingEnabled : false); }
+			get { return Register.debug ?? (HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled); }
 			set { Register.debug = value; }
 		}
 		
 		/// <summary>The jQuery version used by N2.</summary>
 		public const string JQueryVersion = N2.Configuration.ResourcesElement.JQueryVersion;
 
-		public const string DefaultBootstrapRoot = "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/";
+        public const string DefaultBootstrapRoot = "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/";
 		public const string DefaultBootstrapJsPath = DefaultBootstrapRoot + "js/bootstrap.min.js";
 		public const string DefaultBootstrapResponsiveCssPath = DefaultBootstrapRoot + "css/bootstrap-responsive.min.css";
 		public const string DefaultBootstrapCssPath = DefaultBootstrapRoot + "css/bootstrap.min.css";
 		public const string DefaultFancyboxPath = "{ManagementUrl}/Resources/fancybox/";
-		public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
+        public const string DefaultIconsCssPath = "{ManagementUrl}/Resources/font-awesome/css/font-awesome.min.css";
 		public const string DefaultFlagsCssPath = "{ManagementUrl}/Resources/icons/flags.css";
 		
 		/// <summary>Path to jQuery.</summary>
@@ -55,6 +57,12 @@ namespace N2.Resources
 		
 		/// <summary>The path to the jquery plugins used by N2.</summary>
 		public static string JQueryPluginsPath { get; set; }
+
+        /// <summary> The path to angularjs used by N2. </summary>
+        public static string AngularPath { get; set; }
+
+        /// <summary> The path to angular-resources used by N2. </summary>
+        public static string AngularResourcesPath { get; set; }
 		
 		/// <summary>The path to the CKeditor script</summary>
 		public static string CKEditorPath { get; set; }
