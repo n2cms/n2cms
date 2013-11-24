@@ -38,6 +38,22 @@ namespace N2.Configuration
 			set { base["jQueryPluginsPath"] = value; }
 		}
 
+        /// <summary>The path to the included angular javascript resource.</summary>
+        [ConfigurationProperty("angularPath", DefaultValue = "{ManagementUrl}/Resources/angular-1.1.5/angular.min.js")]
+	    public string AngularPath
+	    {
+            get { return (string)base["angularPath"]; }
+            set { base["angularPath"] = value; }
+	    }
+
+        /// <summary>The path to the included angular javascript resource.</summary>
+        [ConfigurationProperty("angularResourcesPath", DefaultValue = "{ManagementUrl}/Resources/angular-1.1.5/angular-resource.min.js")]
+        public string AngularResourcesPath
+        {
+            get { return (string)base["angularResourcesPath"]; }
+            set { base["angularResourcesPath"] = value; }
+        }
+
 		/// <summary>The path to the included tiny MCE javascript resource.</summary>
 		[ConfigurationProperty("ckEditorPath", DefaultValue = "{ManagementUrl}/Resources/ckeditor/ckeditor.js?v=" + JQueryVersion)]
 		public string CKEditorPath
@@ -67,32 +83,32 @@ namespace N2.Configuration
 			set { base["partsCssPath"] = value; }
 		}
 
-		[ConfigurationProperty("TwitterBootstrapCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
+		[ConfigurationProperty("twitterBootstrapCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
 		public string TwitterBootstrapCssPath
 		{
-			get { return (string)base["TwitterBootstrapCssPath"]; }
-			set { base["TwitterBootstrapCssPath"] = value; }
+			get { return (string)base["twitterBootstrapCssPath"]; }
+			set { base["twitterBootstrapCssPath"] = value; }
 		}
 
-		[ConfigurationProperty("TwitterBootstrapResponsiveCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapResponsiveCssPath)]
+		[ConfigurationProperty("twitterBootstrapResponsiveCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapResponsiveCssPath)]
 		public string TwitterBootstrapResponsiveCssPath
 		{
-			get { return (string)base["TwitterBootstrapResponsiveCssPath"]; }
-			set { base["TwitterBootstrapResponsiveCssPath"] = value; }
+			get { return (string)base["twitterBootstrapResponsiveCssPath"]; }
+			set { base["twitterBootstrapResponsiveCssPath"] = value; }
 		}
 
-		[ConfigurationProperty("TwitterBootstrapJsPath", DefaultValue = N2.Resources.Register.DefaultBootstrapJsPath)]
+		[ConfigurationProperty("twitterBootstrapJsPath", DefaultValue = N2.Resources.Register.DefaultBootstrapJsPath)]
 		public string TwitterBootstrapJsPath
 		{
-			get { return (string)base["TwitterBootstrapJsPath"]; }
-			set { base["TwitterBootstrapJsPath"] = value; }
+			get { return (string)base["twitterBootstrapJsPath"]; }
+			set { base["twitterBootstrapJsPath"] = value; }
 		}
 
-		[ConfigurationProperty("IconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]
+		[ConfigurationProperty("iconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]
 		public string IconsCssPath
 		{
-			get { return (string)base["IconsCssPath"]; }
-			set { base["IconsCssPath"] = value; }
+			get { return (string)base["iconsCssPath"]; }
+			set { base["iconsCssPath"] = value; }
 		}
 	}
 }
