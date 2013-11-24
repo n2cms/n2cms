@@ -791,6 +791,9 @@
     <Content Include="N2\Resources\syntaxhighlighter\styles\shCore.css" />
     <Content Include="N2\Resources\syntaxhighlighter\styles\shCoreDefault.css" />
     <Content Include="N2\Resources\syntaxhighlighter\styles\shThemeDefault.css" />
+    <Content Include="N2\Roles\New.aspx" />
+    <Content Include="N2\Roles\Edit.aspx" />
+    <Content Include="N2\Roles\Roles.aspx" />
     <Content Include="N2\Search\ManageIndex.ascx" />
     <Content Include="N2\Resources\Css\default.css" />
     <Content Include="N2\Content\Default.aspx" />
@@ -856,6 +859,9 @@
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
     <Content Include="N2\Content\Activity\Notify.ashx" />
+    <Content Include="N2\Roles\App_LocalResources\Roles.aspx.resx" />
+    <Content Include="N2\Roles\App_LocalResources\New.aspx.resx" />
+    <Content Include="N2\Roles\App_LocalResources\Edit.aspx.resx" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
     <Content Include="N2\Installation\log4net.config" />
@@ -1237,6 +1243,27 @@
     </Compile>
     <Compile Include="N2\Myself\Analytics\Models\ManageAnalyticsPart.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Roles\Roles.aspx.designer.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Roles\New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Roles\New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Roles\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Roles\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Roles\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
