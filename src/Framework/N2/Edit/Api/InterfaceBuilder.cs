@@ -421,6 +421,7 @@ namespace N2.Management.Api
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "templates", Title = "Templates", IconClass = "n2-icon-plus-sign-alt", ToolTip = "Show predefined templates with content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Templates/Default.aspx')}}".ResolveUrlTokens().ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "ContentTemplatesDefault" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "wizards", Title = "Wizards", IconClass = "n2-icon-magic", ToolTip = "Show predefined types and locations for content", Target = Targets.Preview, Url = "{{appendSelection('{ManagementUrl}/Content/Wizard/Default.aspx')}}".ResolveUrlTokens(), SelectedBy = "ContentWizardDefault" }),
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "users", Title = "Users", IconClass = "n2-icon-user shadow", ToolTip = "Manage users", Target = Targets.Preview, Url = "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens(), RequiredPermission = Permission.Administer, SelectedBy = "UsersUsers" }),
+                    new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "password", Title = "Manage password", IconClass = "n2-icon-user shadow", ToolTip = "Manage password", Target = Targets.Preview, Url = "{ManagementUrl}/EditPassword.aspx".ResolveUrlTokens(), SelectedBy = "EditPassword" }),
 					
 					new Node<InterfaceMenuItem>(new InterfaceMenuItem { Name = "divider2", Divider = true }),
 
