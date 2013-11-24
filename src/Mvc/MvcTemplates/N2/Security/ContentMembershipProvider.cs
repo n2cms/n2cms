@@ -415,12 +415,14 @@ namespace N2.Security
 
 		public override string GetUserNameByEmail(string email)
 		{
-			N2.Security.Items.UserList userContainer = Bridge.GetUserContainer(false);
+			UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
-			var userNames = Bridge.Repository.Select(Parameter.Equal("Email", email).Detail() & Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer),
-				"Name").Select(d => d["Name"]);
-            return userNames.OfType<string>().FirstOrDefault();
+
+			var users = Bridge.Repository.Find(Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer)).ToList();
+			var userNames = users.Where(x => x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+
+			return userNames.FirstOrDefault();
 		}
 
 		public override string ResetPassword(string username, string answer)
