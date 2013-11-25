@@ -130,6 +130,7 @@ namespace N2.Web
 	[Serializable]
 	public class SlideshowImage
 	{
+		public int ID { get; set; }
 		public string ImageHref { get; set; }
 		public string Description { get; set; }
 		public string Title { get; set; }
@@ -224,7 +225,7 @@ namespace N2.Web
 		public IEnumerable<SlideshowImage> GetSlideshowImages()
 		{
 			return (new List<SlideshowImage> { new SlideshowImage()
-				                                   {
+				                                   {       ID = this.ID,
 					                                   ImageHref = LocalPath,
 													   Description = this.Description,
 													   Title = this.Title,
