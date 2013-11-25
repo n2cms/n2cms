@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Edit {
+namespace N2.Edit.Myself {
     
     
     public partial class EditPassword {
@@ -20,6 +20,15 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSave;
+        
+        /// <summary>
+        /// cvNoUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvNoUser;
         
         /// <summary>
         /// lblOldPassword control.

@@ -854,7 +854,7 @@
     <Content Include="N2\Tokens\TokenTemplates\SyntaxHighlighter.ascx" />
     <Content Include="N2\Tokens\TokenTemplates\TOC.ascx" />
     <Content Include="N2\Users\Activity.aspx" />
-    <Content Include="N2\EditPassword.aspx" />
+    <Content Include="N2\Myself\EditPassword.aspx" />
     <Content Include="N2\Web.config" />
     <Content Include="N2\Content\LinkTracker\App_LocalResources\UpdateReferences.aspx.resx" />
     <Content Include="N2\Content\Versions\App_LocalResources\RecentVersions.ascx.resx" />
@@ -1267,11 +1267,11 @@
     </Compile>
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />
-    <Compile Include="N2\EditPassword.aspx.cs">
+    <Compile Include="N2\Myself\EditPassword.aspx.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="N2\EditPassword.aspx.designer.cs">
+    <Compile Include="N2\Myself\EditPassword.aspx.designer.cs">
       <DependentUpon>EditPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Web\FontHandler.cs" />

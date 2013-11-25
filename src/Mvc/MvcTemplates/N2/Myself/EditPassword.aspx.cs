@@ -5,7 +5,7 @@ using N2.Edit.Web;
 using System.Drawing;
 
 
-namespace N2.Edit
+namespace N2.Edit.Myself
 {
     public partial class EditPassword : EditPage
     {
@@ -14,28 +14,27 @@ namespace N2.Edit
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            StylePasswordField();
-            LoadSelectedUser();
-        }
-        protected void Page_PreRender(object sender, EventArgs e)
-        {
-            btnSave.Enabled = !SelectedUser.IsLockedOut;
+            if (!LoadSelectedUser())
+			{
+				cvNoUser.IsValid = false;
+				btnSave.Enabled = false;
+				txtPassword.Enabled = false;
+				txtOldPassword.Enabled = false;
+				txtRepeatPassword.Enabled = false;
+			}
+			else
+				btnSave.Enabled = !SelectedUser.IsLockedOut;
+
         }
 
-        private void StylePasswordField()
-        {
-            txtPassword.Attributes.CssStyle.Add("float", "right");
-            txtOldPassword.Attributes.CssStyle.Add("float", "right");
-            txtRepeatPassword.Attributes.CssStyle.Add("float", "right");
-        }
-
-        private void LoadSelectedUser()
+        private bool LoadSelectedUser()
         {
             SelectedUserName = HttpContext.Current.User.Identity.Name;
             MembershipUserCollection muc = System.Web.Security.Membership.FindUsersByName(SelectedUserName);
-            if (muc.Count < 1)
-                throw new N2.N2Exception("User '{0}' not found.", SelectedUserName);
+			if (muc.Count < 1)
+				return false;
             SelectedUser = muc[SelectedUserName];
+			return true;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)

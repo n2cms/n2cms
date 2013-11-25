@@ -92,7 +92,6 @@
 	"users": { title: "Users", title: "Manage users" },
 	"export": { title: "Export", title: "Export content to file" },
 	"import": { title: "Import", title: "Import content from file" },
-	"signout": { title: "Sign out", title: "Sign out {{Context.User.Name}}" },
 	"preview": { title: "Fullscreen" },
 	"fullscreen": { "text": "Fullscreen" },
 	"viewdrafts": { "text": "View latest drafts" },
@@ -107,5 +106,8 @@
 	"publish": { "text": "Publish" },
 	"unpublish": { "text": "Unpublish" },
 	"frameaction": { "text": "" },
-	"close": { "text": "Close" }
+	"close": { "text": "Close" },
+	"me": { },
+	"password": { text: "Change password" },
+	"signout": { text: "Sign out", title: "Sign out {{Context.User.Name}}" },
 }
