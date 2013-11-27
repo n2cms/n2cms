@@ -53,7 +53,7 @@ namespace N2.Definitions.Runtime
 			return this;
 		}
 
-		public EditableBuilder<T> SortOffset(string name, int offset)
+		public EditableBuilder<T> SortOffset(int offset)
 		{
 			if (Registration != null)
 				Current.SortOrder = Current.SortOrder + offset;
@@ -61,14 +61,14 @@ namespace N2.Definitions.Runtime
 			return this;
 		}
 
-		public EditableBuilder<T> SortBefore(string name, int offset)
+		public EditableBuilder<T> SortBefore()
 		{
-			return SortOffset(name, -1);
+			return SortOffset(-1);
 		}
 
-		public EditableBuilder<T> SortAfter(string name, int offset)
+		public EditableBuilder<T> SortAfter()
 		{
-			return SortOffset(name, 1);
+			return SortOffset(1);
 		}
 	}
 }
