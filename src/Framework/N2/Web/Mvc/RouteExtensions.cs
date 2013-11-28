@@ -118,14 +118,14 @@ namespace N2.Web.Mvc
 				
 				var item = value as T;
 				if (item != null)
-					return item as T;
+					return item;
 
 				if(value is int)
 					return persister.Get((int)value) as T;
 
 				int itemId;
 				if (value is string && int.TryParse(value as string, out itemId))
-					return persister.Get((int)value) as T;
+					return persister.Get(itemId) as T;
 			}
 
 			return null;
@@ -144,11 +144,12 @@ namespace N2.Web.Mvc
 			}
 
 		}
-		internal class QueryStringOutput<K, V>
-		{
-			private IDictionary<K, V> values;
 
-			public QueryStringOutput(IDictionary<K, V> values)
+		internal class QueryStringOutput<TKey, TValue>
+		{
+			private readonly IDictionary<TKey, TValue> values;
+
+			public QueryStringOutput(IDictionary<TKey, TValue> values)
 			{
 				this.values = values;
 			}
@@ -156,14 +157,14 @@ namespace N2.Web.Mvc
 			public override string ToString()
 			{
 				if (values == null)
-					return null;
+					return string.Empty;
 				return string.Join("&", values.Select(kvp => kvp.Key + "=" + kvp.Value).ToArray());
 			}
 		}
 
-		public static string ToQueryString<K, V>(this IDictionary<K, V> values)
+		public static string ToQueryString<TKey, TValue>(this IDictionary<TKey, TValue> values)
 		{
-			return new QueryStringOutput<K, V>(values).ToString();
+			return new QueryStringOutput<TKey, TValue>(values).ToString();
 		}
 	}
 }
