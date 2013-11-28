@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
@@ -21,7 +22,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableTitleAttribute()
-			: this("Title", -20)
+			: this("Title", -20) 
 		{
 		}
 
@@ -33,8 +34,24 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
+			AllowHtml = true; // TODO: Load default value from web.config
 			Required = true;
 		}
+
+		/// <summary>
+		/// Creates a new instance of the WithEditableAttribute class with default values.
+		/// </summary>
+		/// <param name="title">The label displayed to editors</param>
+		/// <param name="sortOrder">The order of this editor</param>
+		/// <param name="allowHtml">Determines whether the title tag may contain HTML (otherwise, any HTML text content will be escaped)</param>
+		public WithEditableTitleAttribute(string title, int sortOrder, bool allowHtml)
+			: base(title, "Title", sortOrder)
+		{
+			AllowHtml = allowHtml;
+			Required = true;
+		}
+
+	    public bool AllowHtml { get; set; }
 
 		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
 		public bool Focus
@@ -47,13 +64,10 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			TextBox tb = (TextBox)editor;
-			if (item.Title != tb.Text)
-			{
-				item.Title = tb.Text;
-				return true;
-			}
-			return false;
+			var tb = (TextBox)editor;
+			if (item.Title == tb.Text) return false;
+			item.Title = tb.Text;
+			return true;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -84,16 +98,16 @@ namespace N2.Details
 			if (value != null)
 			{
 				int headingLevel = item.IsPage ? 1 : 2;
-				writer.Write("<h");
-				writer.Write(headingLevel);
-				if(CssClass != null)
-					writer.Write(" class='" + CssClass + "'");
-				writer.Write(">");
+			writer.Write("<h");
+			writer.Write(headingLevel);
+			if(CssClass != null)
+				writer.Write(" class='" + CssClass + "'");
+			writer.Write(">");
 				writer.Write(value);
-				writer.Write("</h");
-				writer.Write(headingLevel);
-				writer.Write(">");
-			}
+			writer.Write("</h");
+			writer.Write(headingLevel);
+			writer.Write(">");
+		}
 		}
 
 		#endregion
@@ -105,8 +119,13 @@ namespace N2.Details
 			var value = item[detailName];
 			if (value != null)
 			{
-				var heading = new Hn { Level = item.IsPage ? 1 : 2, Text = value.ToString() };
-				heading.CssClass = CssClass;
+				var heading = new Hn
+				{
+					Level = item.IsPage ? 1 : 2,
+					Text = value.ToString(),
+					AllowHtml = this.AllowHtml,
+					CssClass = CssClass
+				};
 				container.Controls.Add(heading);
 				return heading;
 			}
