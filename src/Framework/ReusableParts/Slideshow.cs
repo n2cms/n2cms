@@ -85,7 +85,7 @@ namespace N2.Web
 			get { return GetDetail("CssClass", ""); }
 			set { SetDetail("CssClass", value, ""); }
 		}
-		
+
 #if SlideshowUsesAdapter
 		[EditableEnum("Slideshow Template", 100, typeof(SlideshowMode))]
 		public SlideshowMode SlideshowTemplate
@@ -122,6 +122,8 @@ namespace N2.Web
 			var slideshowImages = new List<SlideshowImage>();
 			foreach (var imageSrc in ImageContainers)
 				slideshowImages.AddRange(imageSrc.GetSlideshowImages());
+			for (int i = 0; i < slideshowImages.Count; ++i)
+				slideshowImages[i].HtmlElementId = String.Format("slideshow{0}_img{1}", this.ID, i);
 			return slideshowImages;
 		}
 
@@ -130,7 +132,7 @@ namespace N2.Web
 	[Serializable]
 	public class SlideshowImage
 	{
-		public int ID { get; set; }
+		public string HtmlElementId { get; set; }
 		public string ImageHref { get; set; }
 		public string Description { get; set; }
 		public string Title { get; set; }
@@ -176,18 +178,19 @@ namespace N2.Web
 		public static IEnumerable<SlideshowImage> EnumerateImagesInDirectories(string relativeBasePath, string filter)
 		{
 			// sanitize input just in case
-			relativeBasePath = relativeBasePath.Replace('\\', '/'); 
+			relativeBasePath = relativeBasePath.Replace('\\', '/');
 			filter = filter ?? "*";
 			if (relativeBasePath[0] == '/')
 				relativeBasePath = '~' + relativeBasePath;
 
-			foreach (var f in N2.Utility.ListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
+			foreach (var f in Utility.ListFiles(System.Web.Hosting.HostingEnvironment.MapPath(relativeBasePath), filter))
 			{
 				if (!(f.EndsWith("jpg") || f.EndsWith("gif") || f.EndsWith("png") || f.EndsWith("jpeg")))
 					continue;
 
-				yield return new SlideshowImage() {
-					ImageHref = N2.Utility.RemapVirtualPath(f),
+				yield return new SlideshowImage
+				{
+					ImageHref = Utility.RemapVirtualPath(f),
 					Description = null,
 					Title = System.IO.Path.GetFileName(f)
 				};
@@ -224,13 +227,12 @@ namespace N2.Web
 
 		public IEnumerable<SlideshowImage> GetSlideshowImages()
 		{
-			return (new List<SlideshowImage> { new SlideshowImage()
-				                                   {       ID = this.ID,
-					                                   ImageHref = LocalPath,
-													   Description = this.Description,
-													   Title = this.Title,
-													   LinkUrl = this.LinkHref
-				                                   } }).AsReadOnly();
+			return (new List<SlideshowImage> { new SlideshowImage {       
+					ImageHref = LocalPath,
+					Description = this.Description,
+					Title = this.Title,
+					LinkUrl = this.LinkHref
+				} }).AsReadOnly();
 		}
 	}
 
