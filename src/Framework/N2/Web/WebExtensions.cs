@@ -287,7 +287,7 @@ namespace N2.Web
 				return (key) =>
 				{
 					if (json.ContainsKey(key))
-						return (string)json[key];
+						return json[key] != null ? json[key].ToString() : null;
 					return context.Request[key];
 				};
 
