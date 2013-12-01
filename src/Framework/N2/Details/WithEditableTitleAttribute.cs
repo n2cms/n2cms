@@ -2,6 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Configuration;
 using N2.Web.UI.WebControls;
 
 namespace N2.Details
@@ -34,7 +35,7 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
-			AllowHtml = true; // TODO: Load default value from web.config
+			AllowHtml = N2.Context.Current.Resolve<EngineSection>().DefaultHtmlEscape;
 			Required = true;
 		}
 
