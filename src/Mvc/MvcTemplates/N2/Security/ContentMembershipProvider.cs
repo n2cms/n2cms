@@ -223,7 +223,7 @@ namespace N2.Security
 			if (u == null || u.Password != ToStoredPassword(oldPassword)) // JH
 				return false;
 			u.Password = ToStoredPassword(newPassword); // JH
-			Bridge.Save(u);
+            Bridge.SaveUser(u);
 			return true;
 		}
 
@@ -234,7 +234,7 @@ namespace N2.Security
 				return false;
 			u.PasswordQuestion = newPasswordQuestion;
 			u.PasswordAnswer = newPasswordAnswer;
-			Bridge.Save(u);
+            Bridge.SaveUser(u);
 			return true;
 		}
 
@@ -298,7 +298,7 @@ namespace N2.Security
 			N2.Security.Items.User u = Bridge.GetUser(username);
 			if (u == null)
 				return false;
-			Bridge.Delete(u);
+			Bridge.DeleteUser(u);
 			Cache.Expire();
 			return true;
 		}
@@ -444,7 +444,7 @@ namespace N2.Security
 				string newPassword = GenerateRandomPassword();
 				u.Password = ToStoredPassword(newPassword);
 				u.IsLockedOut = false;
-				Bridge.Save(u);
+                Bridge.SaveUser(u);
 				return newPassword;
 			}
 			return null;
@@ -456,7 +456,7 @@ namespace N2.Security
 			if (u == null)
 				return false;
 			u.IsLockedOut = false;
-			Bridge.Save(u);
+            Bridge.SaveUser(u);
 			return true;
 		}
 
@@ -468,7 +468,7 @@ namespace N2.Security
 			if (u != null)
 			{
 				u.UpdateFromMembershipUser(user); // JH: note that password remains unaffected
-				Bridge.Save(u);
+                Bridge.SaveUser(u);
 			}
 			else
 				throw new N2Exception("User '" + user.UserName + "' not found.");
@@ -480,7 +480,7 @@ namespace N2.Security
 			if (u != null && u.Password == ToStoredPassword(password) && u.IsLogin) // JH
 			{
 				u.LastLoginDate = N2.Utility.CurrentTime(); // JH
-				Bridge.Save(u);
+                Bridge.SaveUser(u);
 				return true;
 			}
 			return false;

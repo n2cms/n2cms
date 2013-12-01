@@ -48,7 +48,7 @@ namespace N2.Security
 			this.userType = configuredUserType;
 		}
 
-		public IContentItemRepository Repository
+        public IContentItemRepository Repository
 		{
 			get { return persister.Repository; }
 		}
@@ -70,7 +70,9 @@ namespace N2.Security
 			set { defaultRoles = value; }
 		}
 
-		public virtual Items.User CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
+        #region User
+
+        public virtual Items.User CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
 		{
 			if(IsEditorOrAdmin(username))
 				throw new ArgumentException("Invalid username.", "username");
@@ -84,7 +86,7 @@ namespace N2.Security
 			u.PasswordAnswer = passwordAnswer;
 			u.IsApproved = isApproved;
 
-			Save(u);
+			SaveUser(u);
 			
 			return u;
 		}
@@ -93,10 +95,18 @@ namespace N2.Security
 		{
 			try
 			{
+                /*
 				IList<Items.User> users = GetUsers(username, 0, 1);
 				if (users.Count == 0)
 					return null;
 				return users[0];
+                */
+
+                Items.UserList users = GetUserContainer(false);
+                if (users == null)
+                    return null;
+
+                return Repository.Find(Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Name", username)).Cast<User>().FirstOrDefault();         
 			}
 			catch (Exception ex)
 			{
@@ -111,11 +121,19 @@ namespace N2.Security
 			if (users == null)
 				return new List<Items.User>();
 
-			return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
+            return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Like("Name", username)).Skip(firstResult).Take(maxResults))
 				.OfType<User>().ToList();
 		}
 
-		public virtual Items.UserList GetUserContainer(bool create)
+        public virtual void SaveUser(Items.User user) { SaveItem(user); }
+
+        public virtual void DeleteUser(Items.User user) { DeleteItem(user); }
+
+        #endregion
+
+        #region UserList
+
+        public virtual Items.UserList GetUserContainer(bool create)
 		{
 			var parents = Repository.Find(Parameter.Equal("Parent.ID", UserContainerParentID) & Parameter.Equal("Name", UserContainerName));
 			foreach (var container in parents)
@@ -140,11 +158,65 @@ namespace N2.Security
 				m.AddRole(role);
 			}
 
-			Save(m);
+            SaveUserContainer(m);
 			return m;
 		}
 
-		public virtual void Delete(ContentItem item)
+        public virtual void SaveUserContainer(Items.UserList userList) { SaveItem(userList); }
+
+        #endregion
+
+        #region UserLoginInfo
+
+        public virtual UserLogin FindLogin(string loginProvider, string providerKey)
+        {
+            return FindUserLogin(null, loginProvider, providerKey);
+        }
+
+        public virtual UserLogin FindUserLogin(Items.User user, string loginProvider, string providerKey)
+        {
+            return Repository.Find(UserLogin.QueryLoginInfoParameter(loginProvider, providerKey, user))
+                         .OfType<UserLogin>()
+                         .FirstOrDefault();
+        }
+
+        public virtual IEnumerable<UserLogin> FindUserLogins(Items.User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            return user.GetChildren().OfType<UserLogin>();
+        }
+
+        public virtual bool DeleteUserLogin(Items.User user, string loginProvider, string providerKey) 
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            var loginItem = FindUserLogin(user, loginProvider, providerKey);
+            if (loginItem == null)
+                return false;
+            DeleteItem(loginItem);
+            return true;
+        }
+
+        public virtual bool AddUserLogin(Items.User user, string loginProvider, string providerKey)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            if (FindUserLogin(user, loginProvider, providerKey) != null)
+                return false;
+            var loginItem = activator.CreateInstance<UserLogin>(user);
+            loginItem.LoginProvider = loginProvider;
+            loginItem.ProviderKey = providerKey;
+            SaveItem(loginItem);
+            return true;
+        }
+
+        #endregion
+
+        [Obsolete("Use specialized methods instead, e.g. DeleteUser")]
+		public virtual void Delete(ContentItem item) { DeleteItem(item); }
+
+        protected virtual void DeleteItem(ContentItem item)
 		{
 			using (security.Disable())
 			{
@@ -156,7 +228,10 @@ namespace N2.Security
 			}
 		}
 
-		public virtual void Save(ContentItem item)
+        [Obsolete("Use specialized methods instead, e.g. SaveUser, SaveUserList")]
+        public virtual void Save(ContentItem item) { SaveItem(item); }
+
+        protected virtual void SaveItem(ContentItem item)
 		{
 			using (security.Disable())
 			{

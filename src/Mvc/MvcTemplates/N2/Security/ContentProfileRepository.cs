@@ -44,8 +44,8 @@ namespace N2.Security
 			user.IsProfile = true;
 			var clientSettings = user.DetailCollections["Settings"];
 			clientSettings.Replace(profile.Settings);
-			
-			bridge.Save(user);
+
+            bridge.SaveUser(user);
 		}
 	}
 }
