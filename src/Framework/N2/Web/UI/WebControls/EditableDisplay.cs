@@ -31,7 +31,7 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return state; }
 			set { state = value; }
-		}
+		} 
 
 		protected override void OnInit(EventArgs e)
 		{
