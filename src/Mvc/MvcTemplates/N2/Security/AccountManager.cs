@@ -1,4 +1,7 @@
-﻿using N2.Engine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using N2.Engine;
 using N2.Plugin;
 
 namespace N2.Security
@@ -6,40 +9,106 @@ namespace N2.Security
     /// <summary>
     /// User accounts management resources
     /// </summary>
-    [Service]
-    public class AccountManager : IAutoStart
+    public abstract class AccountManager : IAutoStart
 	{
+        public const int PageSize = 100;
+
         public AccountManager()
 		{
 		}
 
         public virtual void Start()
-        {
-            N2.Web.Url.SetToken(LoginPageUrlToken,        "{ManagementUrl}/Login.aspx");
-            N2.Web.Url.SetToken(LogoutPageUrlToken,       "{ManagementUrl}/Login.aspx?logout=true");
-            N2.Web.Url.SetToken(UsersPageUrlToken,        "{ManagementUrl}/Users/Users.aspx");
-            N2.Web.Url.SetToken(UsersEditPageUrlToken,    "{ManagementUrl}/Users/Edit.aspx");
-            N2.Web.Url.SetToken(RolesPageUrlToken ,       "{ManagementUrl}/Roles/Roles.aspx");
-            N2.Web.Url.SetToken(EditPasswordPageUrlToken, "{ManagementUrl}/Myself/EditPassword.aspx");
-            
+        {            
         }
 
         public virtual void Stop()
         {
         }
 
-        // Framework\N2\Edit\Api\InterfaceBuilder.cs
-        // Mvc\MvcTemplates\N2\ManagementItem.cs
-        // MvcTemplates\N2\Top.master
-        // Dinamico\Themes\Default\Views\Shared\LayoutPartials\LogOn.cshtml
-        public const string LoginPageUrlToken         = "{Account.Login.PageUrl}";
-        public const string LogoutPageUrlToken        = "{Account.Logout.PageUrl}";
-        public const string UsersPageUrlToken         = "{Account.Users.PageUrl}";
-        public const string UsersEditPageUrlToken     = "{Account.Users.Edit.PageUrl}";
-        public const string RolesPageUrlToken         = "{Account.Roles.PageUrl}";
-        public const string EditPasswordPageUrlToken  = "{Account.EditPassword.PageUrl}";
+        public enum ManagerType
+        {
+            /// <summary> Account subsystem is not in use at all </summary>
+            NONE,
 
-        // TODO: login dialog as part (external providers live in full pages)
-        // Dinamico\Themes\Default\Views\ContentParts\LoginForm.cshtml  (ContentPart)
+            /// <summary> Accounts based on Membership subsystem </summary>
+            MEMBERSHIP,
+
+            /// <summary> Accounts based on Aspnet.Identity subsystem  </summary>
+            ASPNET_IDENTITY
+        }
+
+        /// <summary> Type of account management subsystem </summary>
+        public abstract ManagerType AccountType { get; }
+
+        /// <summary> Are Accounts based on Membership subsystem? <seealso cref="AccountType"/> </summary>
+        public bool IsMembershipAccountType() { return AccountType == ManagerType.MEMBERSHIP; }
+
+        #region Users
+
+        /// <summary> Returns user info, null: not found </summary>
+        public abstract IAccountInfo FindUserByName(string userName);
+
+        /// <summary> Returns all users in specified range </summary>
+        /// <param name="startIndex"> Start index </param>
+        /// <param name="max"> Maximum number of users returned </param>
+        public abstract IList<IAccountInfo> GetUsers(int startIndex, int max);
+
+        /// <summary> Count of all users </summary>
+        public abstract int GetUsersCount();
+
+        public abstract void UpdateUserEmail(string userName, string email);
+
+        public abstract void UnlockUser(string userName);
+
+        public abstract bool ChangePassword(string userName, string newPassword);
+
+        /// <summary> Delete specified user </summary>
+        public abstract void DeleteUser(string userName);
+
+        #endregion
+
+        #region Roles
+        // see Mvc\MvcTemplates\N2\Roles
+
+        /// <summary> N2 built-in roles </summary>
+        protected static readonly string[] SystemRoles = new[] { "Administrators", "Editors", "Writers" };
+
+        /// <summary> Is N2 built-in role? </summary>
+        /// <remarks> Built-in roles always exist. Should not be removed. </remarks>
+        public bool IsSystemRole(string roleName) { return SystemRoles.Contains(roleName, StringComparer.InvariantCultureIgnoreCase); }
+
+        /// <summary> Is known role? <seealso cref="GetAllRoles"/></summary>
+        public bool IsValidRole(string roleName) { return !GetAllRoles().Any(r => r.Equals(roleName, StringComparison.OrdinalIgnoreCase)); }
+
+        /// <summary> Returns all known roles </summary>
+        public abstract string[] GetAllRoles();
+
+        /// <summary> Add role to list of known roles <seealso cref="GetAllRoles"/></summary>
+        public abstract void CreateRole(string roleName);
+
+        /// <summary> Delete role from list of known roles <seealso cref="GetAllRoles"/> </summary>
+        public abstract bool DeleteRole(string roleName);
+
+        #endregion
+
+        #region User roles
+
+        /// <summary> Exist one or more users in specified role? </summary>
+        public abstract bool HasUsersInRole(string roleName);
+
+        /// <summary> Returns users (UserNames) in specified role </summary>
+        public abstract string[] GetUsersInRole(string roleName);
+
+        /// <summary> Is specified user in specified role? </summary>
+        public abstract bool IsUserInRole(string userName, string roleName);
+
+        /// <summary> Add specified user in a role </summary>
+        public abstract void AddUserToRole(string userName, string roleName);
+
+        /// <summary> Removes specified user from role </summary>
+        public abstract void RemoveUserFromRole(string userName, string roleName);
+
+        #endregion
+
     }
 }

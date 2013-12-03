@@ -1265,6 +1265,10 @@
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="N2\Security\AccountInfo.cs" />
+    <Compile Include="N2\Security\AccountResources.cs" />
+    <Compile Include="N2\Security\MembershipAccountResources.cs" />
+    <Compile Include="N2\Security\MembershipAccountManager.cs" />
     <Compile Include="N2\Security\ContentProfileRepository.cs" />
     <Compile Include="N2\Security\AccountManager.cs" />
     <Compile Include="N2\Security\EditablePassword.cs" />

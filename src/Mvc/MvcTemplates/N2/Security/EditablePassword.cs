@@ -16,6 +16,8 @@ namespace N2.Security
 			this.TextMode = TextBoxMode.Password;
 		}
 
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
 		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
 		{
 		}
@@ -26,11 +28,14 @@ namespace N2.Security
 			if (string.IsNullOrEmpty(password))
 				return false;
 
-			var membershpiProvider = Membership.Provider as ContentMembershipProvider;
-			if (membershpiProvider != null)
-			{
-				password = membershpiProvider.ToStoredPassword(password);
-			}
+            if (AccountManager.IsMembershipAccountType())
+            {
+                var membershpiProvider = Membership.Provider as ContentMembershipProvider;
+                if (membershpiProvider != null)
+                {
+                    password = membershpiProvider.ToStoredPassword(password);
+                }
+            }
 
 			item[Name] = password;
 			return true;

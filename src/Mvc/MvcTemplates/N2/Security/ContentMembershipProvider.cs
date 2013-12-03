@@ -420,7 +420,18 @@ namespace N2.Security
 				return null;
 
 			var users = Bridge.Repository.Find(Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer)).ToList();
-			var userNames = users.Where(x => x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+            
+            // janpub 1.12.2013: handle null emails gracefully
+            // var userNames = users.Where(x => x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+            Func<ContentItem, string, bool> hasEqualEmail = (item, email2) => {
+                if (string.IsNullOrEmpty(email))
+                    return false;
+                var emailDetail = item.Details["Email"];
+                if (emailDetail == null)
+                   return false;
+                return emailDetail.ToString().Equals(email2, StringComparison.OrdinalIgnoreCase);
+            };
+            var userNames = users.Where(x => hasEqualEmail(x,email)).Select(x => x.Name);
 
 			return userNames.FirstOrDefault();
 		}

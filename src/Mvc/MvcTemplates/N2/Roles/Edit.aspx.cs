@@ -3,18 +3,21 @@ using System.Linq;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
+using N2.Security;
 
 namespace N2.Edit.Membership
 {
     public partial class EditRoles : EditPage
     {
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 var roleName = Request.QueryString["role"];
 
-                var usersInRole = Roles.GetUsersInRole(roleName);
+                var usersInRole = AccountManager.GetUsersInRole(roleName);
 
                 if (usersInRole.Any())
                 {
@@ -36,7 +39,7 @@ namespace N2.Edit.Membership
             var roleName = Request.QueryString["role"];
             var userName = (string) e.Keys[0];
 
-            Roles.RemoveUserFromRole(userName, roleName);
+            AccountManager.RemoveUserFromRole(userName, roleName);
 
             Response.Redirect(Request.RawUrl);
         }
