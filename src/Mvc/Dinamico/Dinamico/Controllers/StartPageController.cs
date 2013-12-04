@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ using N2.Engine.Globalization;
 using N2.Persistence.Search;
 using N2.Web;
 using N2.Web.Mvc;
+using N2.Security;
 
 namespace Dinamico.Controllers
 {
@@ -19,6 +21,8 @@ namespace Dinamico.Controllers
 	/// </summary>
 	public class StartPageController : ContentController<StartPage>
 	{
+        private  AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
 		public ActionResult NotFound()
 		{
 			var closestMatch = Content.Traverse.Path(Request.AppRelativeCurrentExecutionFilePath.Trim('~', '/')).StopItem;
@@ -67,7 +71,9 @@ namespace Dinamico.Controllers
 
 		private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
 		{
-			var query = Query.For(text).Below(root).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
+            // var query = Query.For(text).Below(root).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
+            Func<string, string[]> getRolesForUser = (userName) => AccountManager.GetRolesForUser(userName);
+            var query = Query.For(text).Below(root).ReadableBy(User, getRolesForUser).Except(Query.For(typeof(ISystemNode)));
 			var hits = Engine.Resolve<IContentSearcher>().Search(query).Hits.Select(h => h.Content);
 			return hits;
 		}

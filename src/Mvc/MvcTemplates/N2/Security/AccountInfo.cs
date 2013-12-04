@@ -32,7 +32,7 @@ namespace N2.Security
     }
 
 
-    internal class AccountInfo : IAccountInfo
+    public class AccountInfo : IAccountInfo
     {
         public string UserName { get; set; }
 

@@ -52,7 +52,7 @@ namespace N2.Edit.Membership
 	}
 
 
-    public static class RolessSource
+    public static class RolesSource
     {
         private static AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
 

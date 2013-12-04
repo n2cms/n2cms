@@ -26,10 +26,10 @@ namespace N2.Security
         public const string LoginPageUrlToken         = "{Account.Login.PageUrl}";
         public const string LogoutPageUrlToken        = "{Account.Logout.PageUrl}";
 
+        public const string EditPasswordPageUrlToken = "{Account.EditPassword.PageUrl}";
         public const string UsersPageUrlToken         = "{Account.Users.PageUrl}";
         public const string UsersEditPageUrlToken     = "{Account.Users.Edit.PageUrl}";
-        public const string EditPasswordPageUrlToken  = "{Account.EditPassword.PageUrl}";
-
+        
         public const string RolesPageUrlToken         = "{Account.Roles.PageUrl}";
         
         // See:

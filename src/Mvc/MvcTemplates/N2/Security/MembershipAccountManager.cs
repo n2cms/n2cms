@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
 using N2.Engine;
-using N2.Plugin;
 
 namespace N2.Security
 {
@@ -122,9 +121,19 @@ namespace N2.Security
         #region Roles
         // see Mvc\MvcTemplates\N2\Roles
 
+        public override bool AreRolesEnabled()
+        {
+            return System.Web.Security.Roles.Enabled;
+        }
+
         public override string[] GetAllRoles()
         {
-            return Roles.GetAllRoles();
+            // review: (JH) Compare logics with GetAvailableRoles - Mvc\MvcTemplates\N2\Content\Security\Default.aspx.cs 
+
+            if (System.Web.Security.Roles.Enabled)
+                return Roles.GetAllRoles();
+            else
+                return new string[] { }; // review: (JH) Should we return SystemRoles?
         }
 
         public override void CreateRole(string roleName)
@@ -149,6 +158,11 @@ namespace N2.Security
         public override string[] GetUsersInRole(string roleName)
         {
             return Roles.GetUsersInRole(roleName);
+        }
+
+        public override string[] GetRolesForUser(string userName)
+        {
+            return Roles.GetRolesForUser(userName);
         }
 
         public override bool IsUserInRole(string userName, string roleName)

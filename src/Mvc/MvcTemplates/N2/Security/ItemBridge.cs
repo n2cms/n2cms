@@ -44,9 +44,25 @@ namespace N2.Security
 
 			Type configuredUserType = Type.GetType(config.Membership.UserType);
 			if (configuredUserType == null) throw new ArgumentException("Couldn't create configured membership user type: " + config.Membership.UserType);
-			if (!typeof(User).IsAssignableFrom(configuredUserType)) throw new ArgumentException("Configured membership user type '" + config.Membership.UserType + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
-			this.userType = configuredUserType;
+            SetUserType(configuredUserType);
 		}
+
+        /// <summary>
+        /// Define N2 User type (application wide)
+        /// </summary>
+        /// <remarks>
+        /// User type shall be assignable to <see cref="User"/> basic user type.
+        /// User type defaults to <see cref="User"/> basic user type or type defined by N2 <see cref="MembershipElement.UserType"/> configuration parameter.
+        /// User type may be explicitly set at start of application, e.g. by custom account system what overrides configured type.
+        /// Limitations: All user records shall be exactly of a specified user type, any records of other user types are ignored by Bridge.
+        ///              Data migration shall be planned when introducing new user type.
+        /// </remarks>
+        public void SetUserType(Type userType)
+        {
+            if (!typeof(User).IsAssignableFrom(userType))
+                throw new ArgumentException("Configured membership user type '" + userType.AssemblyQualifiedName + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
+            this.userType = userType;
+        }
 
         public IContentItemRepository Repository
 		{
@@ -106,7 +122,8 @@ namespace N2.Security
                 if (users == null)
                     return null;
 
-                return Repository.Find(Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Name", username)).Cast<User>().FirstOrDefault();         
+                return Repository.Find(Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Name", username))
+                                 .Cast<User>().FirstOrDefault();         
 			}
 			catch (Exception ex)
 			{
@@ -125,9 +142,53 @@ namespace N2.Security
 				.OfType<User>().ToList();
 		}
 
-        public virtual void SaveUser(Items.User user) { SaveItem(user); }
+        public virtual IEnumerable<Items.User> GetUsers(int firstResult, int maxResults)
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return new List<Items.User>();
 
-        public virtual void DeleteUser(Items.User user) { DeleteItem(user); }
+            return users.Children.FindRange(firstResult, maxResults).OfType<Items.User>();
+            // return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name)).Skip(firstResult).Take(maxResults))
+            //    .OfType<User>();
+        }
+
+        public virtual int GetUsersCount()
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return 0;
+            return users.Children.OfType<User>().Count(); 
+        }
+
+        /// <summary> Exist one or more users in specified role? </summary>
+        public virtual bool HasUsersInRole(string roleName)
+        {
+            foreach (var userName in GetUsersInRole(roleName, 1))
+                return true;
+            return false;
+        }
+
+        /// <summary> Returns users (UserNames) in specified role </summary>
+        public virtual string[] GetUsersInRole(string roleName, int maxResults)
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return new string[] {};
+
+            return Repository.Find((Parameter.Equal("Parent", users) & Parameter.TypeEqual(userType.Name) & Parameter.Equal("Roles",roleName).SetDetail(true)).Take(maxResults))
+              .OfType<User>().Select(u => u.Name).ToArray();
+        }
+
+        public virtual void SaveUser(Items.User user) 
+        { 
+            SaveItem(user); 
+        }
+
+        public virtual void DeleteUser(Items.User user) 
+        { 
+            DeleteItem(user); 
+        }
 
         #endregion
 
@@ -266,5 +327,6 @@ namespace N2.Security
 				return true;
 			return false;
 		}
-	}
+
+    }
 }

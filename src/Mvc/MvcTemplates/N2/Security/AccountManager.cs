@@ -7,23 +7,15 @@ using N2.Plugin;
 namespace N2.Security
 {
     /// <summary>
-    /// User accounts management resources
+    /// User accounts management
     /// </summary>
-    public abstract class AccountManager : IAutoStart
+    public abstract class AccountManager
 	{
         public const int PageSize = 100;
 
         public AccountManager()
 		{
 		}
-
-        public virtual void Start()
-        {            
-        }
-
-        public virtual void Stop()
-        {
-        }
 
         public enum ManagerType
         {
@@ -80,6 +72,9 @@ namespace N2.Security
         /// <summary> Is known role? <seealso cref="GetAllRoles"/></summary>
         public bool IsValidRole(string roleName) { return !GetAllRoles().Any(r => r.Equals(roleName, StringComparison.OrdinalIgnoreCase)); }
 
+        /// <summary> Is role subsystem enabled? </summary>
+        public abstract bool AreRolesEnabled();
+
         /// <summary> Returns all known roles </summary>
         public abstract string[] GetAllRoles();
 
@@ -98,6 +93,9 @@ namespace N2.Security
 
         /// <summary> Returns users (UserNames) in specified role </summary>
         public abstract string[] GetUsersInRole(string roleName);
+
+        /// <summary> Returns user's roles </summary>
+        public abstract string[] GetRolesForUser(string userName);
 
         /// <summary> Is specified user in specified role? </summary>
         public abstract bool IsUserInRole(string userName, string roleName);

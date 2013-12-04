@@ -1117,6 +1117,7 @@
     <Compile Include="N2\Content\ItemInfo.ascx.designer.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Details\EditableRolesAttribute.cs" />
     <Compile Include="N2\Empty.aspx.cs">
       <DependentUpon>Empty.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

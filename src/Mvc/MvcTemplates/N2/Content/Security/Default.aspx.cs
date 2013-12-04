@@ -19,6 +19,8 @@ namespace N2.Edit.Security
 		protected string[] Roles;
 		Control[,] map;
 
+        private AccountManager AccountManager { get { return N2.Context.Current.Resolve<AccountManager>(); } }
+
 		protected override void OnInit(EventArgs e)
 		{
 			InitValues();
@@ -36,8 +38,6 @@ namespace N2.Edit.Security
 			base.OnLoad(e);
 		}
 
-
-
 		protected void rptPermissions_ItemDataBound(object sender, RepeaterItemEventArgs args)
 		{
 			CheckBox cb = (CheckBox)args.Item.FindControl("cbRole");
@@ -51,8 +51,6 @@ namespace N2.Edit.Security
 				map[args.Item.ItemIndex, roleIndex] = args.Item;
 			}
 		}
-
-
 
 		protected void btnSave_Command(object sender, CommandEventArgs e)
 		{
@@ -136,8 +134,12 @@ namespace N2.Edit.Security
 
         protected string[] GetAvailableRoles()
         {
+            /*
 			if (System.Web.Security.Roles.Enabled)
 				return System.Web.Security.Roles.GetAllRoles();
+            */
+            if (AccountManager.AreRolesEnabled())
+                return AccountManager.GetAllRoles();
 
             List<string> roles = new List<string>();
             roles.Add(AuthorizedRole.Everyone);
