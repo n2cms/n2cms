@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Web.UI;
 
 namespace N2.Web.UI.WebControls
@@ -44,13 +45,15 @@ namespace N2.Web.UI.WebControls
 
 		protected string TagKey { get { return "h" + this.Level; } }
 
+		public bool AllowHtml { get; set; }
+
 		protected override void Render(HtmlTextWriter writer)
 		{
 			if (Text.Length > 0)
 			{
 				string tag = TagKey;
 				writer.WriteFullBeginTag(tag);
-				writer.Write(Text);
+				writer.Write(AllowHtml ? Text : HttpUtility.HtmlEncode(Text));
 				if (CssClass != null)
 					writer.WriteAttribute("class", CssClass);
 				writer.WriteEndTag(tag);

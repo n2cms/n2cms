@@ -99,6 +99,18 @@ namespace N2.Edit.Install.Begin
 						roleManager.DefaultProvider = "ContentRoleProvider";
 					}
 
+					try
+					{
+						
+						if (!Roles.RoleExists("Administrators"))
+							Roles.CreateRole("Administrators");
+						Roles.AddUserToRole("admin", "Administrators");
+					}
+					catch (Exception)
+					{
+						//TODO: Needs testing; once tested, please remove this try/catch statement.
+					}
+
 					var profile = (ProfileSection)cfg.GetSection("system.web/profile");
 					if (profile.Providers["ContentProfileProvider"] != null)
 						profile.DefaultProvider = "ContentProfileProvider";
