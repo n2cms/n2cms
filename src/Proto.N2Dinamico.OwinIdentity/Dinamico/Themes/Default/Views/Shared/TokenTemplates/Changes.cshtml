@@ -1,0 +1,27 @@
+﻿@model string
+@{
+	try
+	{
+		var changes = Content.Search.PublishedPagesBelow(Content.Traverse.StartPage)
+			.OrderByDescending(ci => ci.Updated)
+			.Take(10)
+			;
+		@Html.UnorderedList(changes, @<span>@Html.Link(item.Data)</span>)
+	}
+	catch (NotSupportedException ex)
+	{
+		// Related to SqlCe?
+		if(!Html.ViewContext.HttpContext.IsCustomErrorEnabled)
+		{
+			<pre style="font-size:.8em; max-height:100px; overflow:auto;">@ex</pre>
+		}
+	}
+	catch (System.Security.VerificationException ex)
+	{
+		// TODO: figure out this VerificationException (related to medium trust)
+		if (!Html.ViewContext.HttpContext.IsCustomErrorEnabled)
+		{
+			<pre style="font-size:.8em; max-height:100px; overflow:auto;">@ex</pre>
+		}
+	}
+}

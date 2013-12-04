@@ -1,0 +1,23 @@
+﻿@model Dinamico.Models.ContentPart
+@using N2.Web.Mvc.Html
+
+@{ Content.Define(ie => 
+	   {
+		   ie.Title = "Teaser";
+		   ie.IconUrl = "{IconsUrl}/photo_link.png";
+		   ie.Link("ForwardsTo");
+		   ie.ImageSize("ImageSize", "Image Size").Configure(e => e.DefaultValue = "");
+	   }); }
+@using (Html.BeginEditableWrapper(Content.Current.Item, "ForwardsTo"))
+{
+<div class="part teaser">
+@if (Content.Has.ForwardsTo)
+{
+	@Html.Partial("Partials/ContentLink", (N2.ContentItem)Content.Data.ForwardsTo, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Current.Item.ZoneName) } })
+}
+else
+{
+	<p>@Content.Translate["No target"]</p>
+}
+</div>
+}

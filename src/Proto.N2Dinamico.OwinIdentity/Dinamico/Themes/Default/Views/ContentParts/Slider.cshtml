@@ -1,0 +1,32 @@
+﻿@model Dinamico.Models.ContentPart
+		   
+@{ 
+	Content.Define(ie => 
+	{
+		ie.Title = "Parts Slider";
+		ie.IconUrl = "{IconsUrl}/photos.png";
+	});
+	string uniqueId = Html.UniqueID("s");
+}
+
+@{ Html.Resources().JavaScript(Url.ThemedContent("~/Scripts/jquery.anythingslider.js")); }
+
+<div class="slider partSlider">
+	<div id="@uniqueId">
+		@{ Html.DroppableZone("SliderArea").Render(); }
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var $container = $("#@uniqueId");
+			if($container.children(".dropZone").length > 0) return;
+
+			$container.wrapInner("<ul/>").children("ul")
+				.children("*").wrap("<li/>").end()
+				.each(function(){
+					var $t = $(this);
+					$t.anythingSlider({ width: $container.width(), delay:5000, animationTime:200, resizeContents:true, buildArrows:false });
+				});
+		});
+	</script>
+</div>

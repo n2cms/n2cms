@@ -1,0 +1,14 @@
+﻿@using N2.Web
+@if(Request.IsAuthenticated) 
+{
+	// <a href="@Url.Action("LogOff", "Membership")">@Content.Translate["Log off"] <strong>@Context.User.Identity.Name</strong></a>
+    string logOffUrl = "{Account.Logout.PageUrl}".ResolveUrlTokens(); 
+	<a href="@Html.Raw(logOffUrl)">@Content.Translate["Log off"] <strong>@Context.User.Identity.Name</strong></a>
+}
+else
+{
+	var returnUrl = Request["returnUrl"] ?? Content.Data.Url ?? Content.Traverse.StartPage.Url;
+	// @Html.ActionLink(Content.Translate.Text("Log on"), "LogOn", new { controller = "Membership", returnUrl = returnUrl })
+    string logOnUrl = N2.Web.Url.ParseTokenized("{Account.Login.PageUrl}").AppendQuery("returnUrl", returnUrl).ToString();
+    <a href="@Html.Raw(logOnUrl)">@Content.Translate["Log on"]</a>
+}

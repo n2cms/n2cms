@@ -1,0 +1,6 @@
+﻿@model string
+@using (Content.BeginScope(Model))
+{
+	var next = @Content.Traverse.Children(Content.Traverse.Parent(), Content.Is.AccessiblePage()).SkipWhile(i => i != Content.Current.Item).Skip(1).FirstOrDefault();
+	<span>@Html.Link(next)</span>
+}	

@@ -1,0 +1,35 @@
+﻿@model Dinamico.Models.ContentPart
+
+@{ Content.Define(re =>
+	   {
+		   re.Title = "YouTube video";
+		   re.IconUrl = "{IconsUrl}/film.png";
+		   re.Text("WatchUrl", "YouTube address").DefaultValue("");
+		   re.CheckBox("HD", "High Definition");
+	   });
+}
+
+@if (Content.Has.WatchUrl)
+{
+	string uniqueId = Html.UniqueID("v");
+	var watchUrl = new N2.Web.Url(Content.Data.WatchUrl);
+	N2.Web.Url embed = "http://www.youtube.com/v/" + watchUrl.GetQuery("v"); //"http://www.youtube.com/embed/" + watchUrl.GetQuery("v");
+	if (Content.Has.HD)
+	{
+		embed = embed.AppendQuery("hd", Content.Data.HD ? 1 : 0);
+	}
+<div id="@uniqueId" class="part video">
+<div class="video-inner">
+@*<iframe title="YouTube video player" width="640" height="390" src="@embed" frameborder="0" allowfullscreen></iframe>*@
+<object width="480" height="390"><param name="movie" value="@embed"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="@embed" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="390"></embed></object>
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var $c = $("#@uniqueId");
+		var lowerPadding = ($c.closest(".slider").length > 0) ? 42 : 0;
+		var map = { width: $c.width(), height: ($c.height() - lowerPadding) };
+		$c.find("object").attr(map).find("embed").attr(map);
+	});
+</script>
+</div>
+}

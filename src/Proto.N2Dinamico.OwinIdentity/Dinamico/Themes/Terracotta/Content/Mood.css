@@ -1,0 +1,24 @@
+@import "../../Default/Content/Mood.css";
+
+html { background:#ac3400 url(fade.png) no-repeat 50% 0; }
+	div#top {
+		border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
+	}
+	div#nav {
+		background:url("fade.png") no-repeat scroll 50% 0 #bc5430;
+		border-top-left-radius: 2px 2px; border-top-right-radius: 2px 2px;
+	}
+		div#nav ul.submenu { background-color:transparent; border-top:solid 1px #ac3400; }
+			div#nav ul.menu li a { background-color: transparent; color:#fff; }
+			div#nav ul.menu li a.current { color:#000; }
+	div#main {
+		border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
+	}
+	div#footer { background:url("fade.png") no-repeat scroll 50% -150px #bc5430; }
+	
+
+/* elements */
+
+.dropmenu {
+	border-bottom-left-radius: 2px 2px; border-bottom-right-radius: 2px 2px;
+}

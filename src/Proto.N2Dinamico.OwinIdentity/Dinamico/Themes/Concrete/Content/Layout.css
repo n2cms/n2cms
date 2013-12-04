@@ -1,0 +1,28 @@
+@import "../../Default/Content/Layout.css";
+
+	div#wrapper { width:auto; }
+		div#top { position:absolute; right:50%; margin-right:-350px; top:5px; z-index:10; text-align:right; }
+		div#header { min-width:960px; padding-top:0; }
+			div#header a.logotype {
+				left:auto;
+				top: 10px; 
+				right: 50%;
+				margin-right: -450px;
+			}
+				div#header a.logotype img { height:80px; }
+		div#nav { width:960px; margin:0 auto; }
+			div#nav ul.menu li { float:left; }
+				div#nav ul.menu li a { float:left; height:20px; padding:60px 30px 20px 30px; }
+				div#nav ul.menu li a.current,div#nav ul.menu li a.trail { position:relative; top:2px; }
+	div#page { width:960px; background-color:#fff; margin:0 auto; }
+		div#page .submenu { border-bottom:solid 1px #E5D7C4; margin:0; padding:0; }
+			div#page .submenu li { display:inline-block; white-space:nowrap; }
+			div#page .submenu li a { display:block; padding:10px 10px 10px 20px; }
+			div#page .submenu li a.trail { font-weight:bold; }
+			div#page .submenu li a.current { font-weight:bold; color:#403C37; }
+	div#content { }
+		div#content { float:left; width:590px; }
+			div#content img.main { width:590px; }
+		div#aside { float:right; width:280px; margin:15px 0 0 30px; }
+	div#footer { width:900px; margin:0 auto; padding:15px 30px; }
+		div#footer a { float:right; }

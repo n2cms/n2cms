@@ -1,0 +1,6 @@
+﻿@model string
+
+@using (Content.BeginScope(Model))
+{
+	@Html.UnorderedList(Content.Traverse.Siblings(Content.Is.AccessiblePage()).SkipWhile(s => s != Content.Current.Item).Skip(1), @<span>@Html.Link(item.Data)</span>)
+}

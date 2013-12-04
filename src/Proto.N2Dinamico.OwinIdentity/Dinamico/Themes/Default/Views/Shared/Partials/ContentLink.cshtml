@@ -1,0 +1,16 @@
+﻿@model N2.ContentItem
+
+@if(Model != null && Model.ID != 0)
+{
+	string imgSize = (string)ViewBag.preferredSize ?? "thumb";
+	using (Content.BeginScope(Model))
+	{
+<div class="contentlink clearfix @(imgSize)Size">
+	<a class="img" href="@Content.Current.Item.Url">@Content.Render.Image("Image", imgSize)</a>		
+	<div class="content">
+		<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title</a></h3>
+		<a class="summary" href="@Content.Current.Item.Url">@Content.Display.Summary</a>
+	</div>
+</div>
+	}
+}

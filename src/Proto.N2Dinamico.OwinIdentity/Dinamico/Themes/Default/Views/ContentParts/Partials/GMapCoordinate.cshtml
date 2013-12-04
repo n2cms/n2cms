@@ -1,0 +1,24 @@
+﻿@model Dinamico.Models.ContentPart
+
+@{ string uniqueId = Html.UniqueID("gmc"); }
+
+<div id="@uniqueId">
+@Content.Data.Latitude, @Content.Data.Longitude
+</div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var $mp = $("#@uniqueId");
+		if($mp.closest(".slider").length > 0) {
+			$mp.html("<img src='http://maps.google.com/maps/api/staticmap?center=@(Content.Data.Latitude),@(Content.Data.Longitude)&zoom=10&size=" + $mp.parent().width() + "x" + $mp.parent().height() + "&maptype=roadmap&sensor=false&maptype=@(Content.Data.MapType)&markers=color:blue%7Clabel:@Content.Data.MarkerText%7C@(Content.Data.Latitude),@(Content.Data.Longitude)' alt='@Content.Data.MarkerText'/>");
+			return;
+		}
+		var location = new google.maps.LatLng(@Content.Data.Latitude,@Content.Data.Longitude);
+		var mapOptions = { zoom: @(Content.Data.Zoom ?? 10), center: location, mapTypeId: google.maps.MapTypeId['@((Content.Data.MapType ?? "ROADMAP").ToUpper())'] };
+		var map = new google.maps.Map(document.getElementById("@uniqueId"), mapOptions);
+		
+		var marker = '@Content.Data.MarkerText';
+		if(marker){
+			var marker = new google.maps.Marker({ position: location, map: map, title:marker });
+		}
+	});
+</script>

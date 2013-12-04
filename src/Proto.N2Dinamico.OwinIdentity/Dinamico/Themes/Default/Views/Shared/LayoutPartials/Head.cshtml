@@ -1,0 +1,20 @@
+﻿<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<title>@(Content.Has.SeoTitle ? Content.Data.SeoTitle : Content.Data.Title)</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+@Content.Register.Meta("Author").Container("Metadata").Display()
+@Content.Register.Meta("Keywords").Container("Metadata").Display()
+@Content.Register.Meta("Description").Container("Metadata").Display()
+
+<link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="@Url.ThemedContent("~/favicon.ico")" />
+<link rel="apple-touch-icon" href="@Url.ThemedContent("~/apple-touch-icon.png")" />
+<link rel="canonical" href="@(Content.Data.Url ?? Request.RawUrl)" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->

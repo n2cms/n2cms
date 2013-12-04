@@ -1,0 +1,24 @@
+@import "../../Default/Content/Mood.css";
+
+html { background-color:#bbc695 }
+body { font:.9em Arial,SansSerif; color:#403C37; }
+button,select,textarea,input {font:100% Arial,SansSerif}
+a,a:active,a:hover,a:visited { color:#0096DB; text-decoration:none; }
+a:hover { text-decoration:underline; }
+h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
+
+div#top { background-color:transparent; }
+div#header { background-color:#403C37; border-bottom:solid 2px #E5D7C4; }
+	div#nav ul.menu { font-size:1.2em; }
+		div#nav ul.menu li a { background-color:#403C37; border-left:solid 1px #33302C; border-right:solid 1px #4D4842; }
+		div#nav ul.menu li a:hover { background-color:#423E39; color:#0076bb; }
+		div#nav ul.menu li a.current { color:#E5D7C4; }
+
+div#footer { background-color:#403C37; color:#E5D7C4 }
+
+/* elements */
+
+.dropmenu {
+	background-color:#403C37;
+	border-bottom-left-radius: 5px 5px; border-bottom-right-radius: 5px 5px;
+}

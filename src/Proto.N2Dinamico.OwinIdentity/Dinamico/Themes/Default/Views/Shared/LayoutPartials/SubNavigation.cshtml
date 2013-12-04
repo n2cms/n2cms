@@ -1,0 +1,8 @@
+﻿@using N2.Edit
+@{
+	int level = 1;
+	foreach (var a in Content.Traverse.AncestorsBetween(level, 2)){
+		level++;
+		@Html.UnorderedList(Content.Traverse.NavigatableChildPages(a).TryAppendCreatorNode(Html.ContentEngine(), a), @<span>@Html.Link(item.Data)</span>, htmlAttributes: new { @class = "submenu menu clearfix level" + level });
+	}
+}

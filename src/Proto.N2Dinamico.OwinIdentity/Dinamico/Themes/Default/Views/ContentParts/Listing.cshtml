@@ -1,0 +1,35 @@
+﻿@model Dinamico.Models.ContentPart
+@using N2.Web.Mvc.Html
+		   
+@{ Content.Define(ie => 
+	   {
+		   ie.Title = "Listing";
+		   ie.Definition.IconClass = "n2-icon-list-alt";
+		   ie.Link("ListFrom", "List from");
+		   ie.Text("Count", "Number of items").Configure(e => { e.Columns = 3; e.Required = true; e.Validate = true; e.ValidationExpression = "\\d+"; e.DefaultValue = 3; });
+		   ie.CheckBox("Tease", "Tease first item");
+		   ie.ImageSize("ImageSize", "Teaser image size").Configure(e => e.DefaultValue = "");
+	   }); }
+
+@using (Html.BeginEditableWrapper(Content.Current.Item, "ForwardsTo"))
+{
+<div class="part listing">
+	@{
+		bool tease = Content.Data.Tease ?? false;
+		int count = Convert.ToInt32(Content.Data.Count ?? 3) + (tease ? 1 : 0);
+		var children = Content.Traverse.Children((N2.ContentItem)Content.Data.ListFrom).Take(count);
+	}
+	@if(tease)
+	{
+		var first = children.FirstOrDefault();
+		if (first != null)
+		{
+			<div class="list-item">@Html.Partial("Partials/ContentLink", first, new ViewDataDictionary { { "preferredSize", Dinamico.Defaults.ImageSize(Content.Data.ImageSize, Content.Current.Item.ZoneName) } })</div>
+		}
+		children = children.Skip(1);
+	}
+	@Html.Loop(children,
+		template: @<div class="list-item">@Html.Partial("Partials/ContentLink", item.Data, new ViewDataDictionary { { "preferredSize", "thumb" } })</div>,
+		wrapper: @<div class="list">@item.RenderContents()</div>)
+</div>
+}
