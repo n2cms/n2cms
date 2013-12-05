@@ -420,7 +420,9 @@ namespace N2.Security
 				return null;
 
 			var users = Bridge.Repository.Find(Parameter.TypeEqual(typeof(User).Name) & Parameter.Equal("Parent", userContainer)).ToList();
-			var userNames = users.Where(x => x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
+
+            // default admin account does not have an email field be default, to test first.
+			var userNames = users.Where(x => x.Details.ContainsKey("Email") && x.Details["Email"].ToString().Equals(email, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
 
 			return userNames.FirstOrDefault();
 		}
