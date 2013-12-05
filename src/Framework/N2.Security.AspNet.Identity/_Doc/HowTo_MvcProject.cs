@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace N2.Security.AspNet.Identity
 {
     /// <summary>
@@ -15,25 +10,25 @@ namespace N2.Security.AspNet.Identity
     ///     or developers that are going to include N2 CMS as part of larger project.
     /// </em>
     /// 
+    /// <h4>Overview</h4>
     /// <ul>
-    ///  <li>Create new Visual Studio 2013 ASTP.NET MVC project (Individual user Accounts)</li>
-    ///  <li>Add resources from N2.Templates.Mvc Dinamico project
-    ///   <ul>
-    ///    <li>Copy all assembiles from N2.Templates.Mvc Dinamico/bin to project's bin folder
-    ///        (N2 loads all assembiles, found in bin directory)
-    ///    </li>
-    ///    <li>Copy N2.Templates.Mvc Dinamico/x82 and x86 to project folder
-    ///        (SqLite interop assembiles)
-    ///    </li>
-    ///    <li>Add N2.Templates.Mvc Dinamico/Dinamico to project folder</li>
-    ///    <li>Add N2 folder from N2.Management to project folder</li>
-    ///   </ul>
-    ///  </li>
+    ///  <li>Create new ASP.NET MVC Visual Studio 2013 project </li>
+    ///  <li>Add N2 Dinamico resources</li>
+    ///  <li>Add N2 Dinamico references</li>
+    ///  <li>Web.config</li>
+    ///  <li>Create ApplicationUser class</li>
+    ///  <li>Modify AccountController konstructor</li>
+    ///  <li>Run N2 CMS (on preloaded SqLite database)</li>
+    /// </ul>
+    /// 
+    /// <h4>Create new ASP.NET MVC Visual Studio 2013 project</h4>
+    /// <ul>
+    ///  <li>Create new Visual Studio 2013 ASP.NET MVC project (.NET 4.5.1 or newer, Individual user Accounts)</li>
     ///  <li>Remove Entity Framework from genetared project (N2 is based on NHibernate ORM)
     ///    <ul>
     ///     <li>NuGet: remove Microsoft.AspNet.Identity.EntityFramework </li>
     ///     <li>Web.config: remove any residual Entity Framework lines</li>
-    ///     <li>project's bin folder: remove Entity Framework assemblies (EntityFramework.dll, 
+    ///     <li>Project's bin folder: clean the folder, remove Entity Framework assemblies (EntityFramework.dll, 
     ///         EntityFramework.SqlServer.dll, Microsoft.AspNet.Identity.EntityFramework.dll) </li>
     ///    </ul>
     ///  </li>
@@ -43,33 +38,92 @@ namespace N2.Security.AspNet.Identity
     ///      <li>Controllers: comment out AccountController's constructors (will be fixed later)</li>
     ///    </ul>
     ///  </li>
-    ///  <li>Add N2 libraries</li>
-    ///  <ul>
-    ///   <li>Standard N2: N2, N2.Extensions, N2.Management, N2.IoC.Windsor, N2.Razor, N2.ReusableParts</li>
-    ///   <li>N2.Security.AspNet.Identity</li>
-    ///   <li>Web.config: add standard N2 configuration - see Web.sample.config</li>
-    ///  </ul>
-    ///  <li>Final touches:</li>
-    ///  <ul>
-    ///   <li>Models: 
-    ///    <ul>
-    ///     <li>create ApplicationUser.cs<br/>
-    ///      <em>You may add your custom properties to this ContentItem to describe user's properties.</em>
-    ///      <pre>public class ApplicationUser : N2.AspNet.Identity.ContentUser { } </pre>
-    ///     </li>
-    ///     <li>create ApplicationUserManager.cs<br/>
-    ///      <pre>[Service(typeof(AccountManager), Replaces=typeof(AspnetAccountManager))] 
-    ///           public class ApplicationUserManager : AspnetAccountManager<ApplicationUser> { } 
-    ///      </pre>
-    ///     </li>
-    ///    </ul>
-    ///   </li>
-    ///   <li>AccountController:<br>
-    ///     <em>define controller's constructor</em>
-    ///     
-    ///   </li>
-    ///  </ul>
     /// </ul>
+    /// 
+    /// <h4>Add N2 Dinamico resources</h4>
+    /// <em>Resources are copied from N2.Templates.Mvc Dinamico project</em>
+    /// <ul> 
+    ///  <li>Copy all assembiles from Dinamico/bin to project's bin folder
+    ///      (Note: N2 loads all assembiles, found in bin directory)
+    ///  </li>
+    ///  <li>Copy Dinamico/x86 and x64 to project folder
+    ///      (SqLite interop assembiles)
+    ///  </li>
+    ///  <li>Add Dinamico/Dinamico to project folder 
+    ///      (by copying content or creating a soft link to Dinamico local repository)</li>
+    ///  <li>Add N2 folder (and contents) </li>
+    ///  <li>Add App_Data/n2.sqlite.db (with Root and StartPage already defined)<br/>
+    ///      or configure database of your choice, preload initial contents and remove SqLite assembiles from bin folder.
+    ///  </li>
+    /// </ul>
+    ///
+    /// <h4>Add N2 Dinamico references </h4>
+    ///  <ul>
+    ///   <li>Standard N2 references: N2, N2.Extensions, N2.Management, N2.IoC.Windsor, N2.Razor, N2.ReusableParts</li>
+    ///   <li>New reference: N2.Security.AspNet.Identity</li>
+    ///  </ul>
+    /// 
+    /// <h4>Web.config </h4>
+    ///  <ul>
+    ///   <li>Web.config: add standard N2 configuration, connectionString, httpModules etc - see Web.sample.config<br/>
+    ///       Note: checkInstallationStatus="false" turns off installation procedures.
+    ///   </li>
+    ///   <li>appSettings<br/>
+    ///     key="ValidationSettings:UnobtrusiveValidationMode" value="None" <br/>
+    ///     See also: https://n2cms.codeplex.com/workitem/33883
+    ///               http://connect.microsoft.com/VisualStudio/feedback/details/735928/in-asp-net-web-application-visual-basic-the-requiredfieldvalidator-doest-work
+    ///   </li>
+    ///   <li>Fix problem with different Razor versions: <br/>
+    ///     runtime > assemblyBinding 
+    ///<![CDATA[
+    ///     <dependentAssembly>
+    ///      <assemblyIdentity name="System.Web.WebPages.Razor" publicKeyToken="31bf3856ad364e35" />
+    ///      <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+    ///    </dependentAssembly>
+    ///]]>
+    ///   </li>
+    ///  </ul>
+    ///  
+    /// <h4>Create ApplicationUser class</h4>
+    /// <em>ApplicationUser describes user account. You may add additional properties to the class. 
+    ///     Note: it's no longer needed to define Items.User extended class in N2 configuration
+    ///           - the subsystem will register ApplicationUser with ItemBridge at start of application.
+    ///   <see cref="ContentUser"/> </em>
+    ///<![CDATA[
+    ///     [PageDefinition("ApplicationUser", IconClass = "n2-icon-user")]
+    ///     [RestrictParents(typeof(N2.Security.Items.UserList))]
+    ///     [Throwable(AllowInTrash.No)]
+    ///     [Versionable(AllowVersions.No)]
+    ///     public class ApplicationUser : N2.Security.AspNet.Identity.ContentUser
+    ///     {
+    ///     }
+    ///]]>
+    /// 
+    /// <h4>Modify AccountController</h4>
+    /// <em>Set controller's user manager</em>
+    ///<![CDATA[
+    ///      public AccountController()
+    ///         : this(Context.Current.Resolve<UserStore<ApplicationUser>>().GetUserManager())
+    ///        {
+    ///        }
+    ///
+    ///      public AccountController(UserManager<ApplicationUser> userManager)
+    ///      {
+    ///         UserManager = userManager;
+    ///      }
+    ///]]>
+    ///
+    /// <em>Make sure LogOff is available</em>
+    ///<![CDATA[
+    ///  /// <summary> Log off current user, with redirection to home </summary>
+    ///  /// <remarks> GET and POST log off requests are supported. Anonymous user is just redirected to home. </remarks>
+    ///  // MS: POST: /Account/LogOff
+    ///  // MS: [HttpPost]
+    ///  // MS: [ValidateAntiForgeryToken]
+    ///  [AllowAnonymous]
+    ///  public ActionResult LogOff()
+    ///]]>
+    /// 
     /// </summary>
     internal class HowTo_MvcProject
     {
