@@ -35,7 +35,7 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
-			AllowHtml = N2.Context.Current.Resolve<EngineSection>().DefaultHtmlEscape;
+			_allowHtmlLoaded = false;
 			Required = true;
 		}
 
@@ -52,7 +52,27 @@ namespace N2.Details
 			Required = true;
 		}
 
-	    public bool AllowHtml { get; set; }
+		private bool _allowHtmlLoaded;
+		private bool _allowHtmlValue;
+
+		public bool AllowHtml
+		{
+			get
+			{
+				if (!_allowHtmlLoaded)
+				{
+					_allowHtmlValue = N2.Context.Current.Resolve<EngineSection>().DefaultHtmlEscape;
+					_allowHtmlLoaded = true;
+				}
+				return _allowHtmlValue;
+			}
+			set
+			{
+				_allowHtmlLoaded = true;
+				_allowHtmlValue = value;
+			}
+		}
+			
 
 		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
 		public bool Focus
