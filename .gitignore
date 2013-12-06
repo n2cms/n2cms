@@ -78,5 +78,6 @@ src/N2.Sources.6.0.ReSharper
 src/Mvc/MvcTemplates/App_Data/ContentItemsXml/
 src/Framework/Extensions/x64/
 packages/
+src/packages/
 src/Framework/Extensions/x86/
 .DS_Store
