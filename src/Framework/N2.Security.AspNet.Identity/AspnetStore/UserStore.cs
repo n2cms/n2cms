@@ -9,6 +9,9 @@ using N2.Engine;
 
 // review: (JH) should we silently upgrade non-TUser persistent data? See also: ToApplicationUser.
 // review: (JH) should we define a one-time upgrade procedure?
+// review: (JH) N2.Security.ContentMembershipProvider includes additional logics (unique UserName, Email etc).
+//              How the logics should be migrated to N2 Aspnet.Identity?
+//              Should we attach logics on Items.User to assure logics inplace for all user data changes? 
 
 namespace N2.Security.AspNet.Identity
 {
@@ -52,7 +55,7 @@ namespace N2.Security.AspNet.Identity
 
         public virtual Task CreateAsync(TUser user)
         {
-            return Task.FromResult(SaveUser(user));
+            return Task.FromResult(AddUser(user));
         }
 
         public virtual Task DeleteAsync(TUser user)
@@ -77,6 +80,15 @@ namespace N2.Security.AspNet.Identity
 
         #endregion
         #region private: Bridge
+        private static string[] UserDefaultRoles = { "Everyone", "Members", "Writers" }; // TODO
+
+        internal bool AddUser(TUser user)
+        {
+            bool result = SaveUser(user);
+            if (result && (UserDefaultRoles.Length > 0))
+                AddUserToRoles(user, UserDefaultRoles);
+            return result;
+        }
 
         internal bool SaveUser(TUser user)
         {
@@ -298,20 +310,30 @@ namespace N2.Security.AspNet.Identity
 
         internal bool AddUserToRole(TUser user, string role)
         {
+            return AddUserToRoles(user, new string[] { role });
+        }
+        internal bool AddUserToRoles(TUser user, string[] roles)
+        {
             if (user == null)
                 throw new ArgumentNullException("user");
+
+            if ((roles == null) || (roles.Length == 0))
+                throw new ArgumentNullException("roles");  
 
             var userList = Bridge.GetUserContainer(false);
             if (userList == null)
                 throw new ArgumentNullException("userList");
 
-            if (string.IsNullOrWhiteSpace(role) || !userList.HasRole(role))
-                throw new ArgumentOutOfRangeException(string.Format("Unknown role {0}.", role));
+            foreach (string role in roles)
+            {
+                if (string.IsNullOrWhiteSpace(role) || !userList.HasRole(role))
+                    throw new ArgumentOutOfRangeException(string.Format("Unknown role {0}.", role));
 
-            if (user.Roles.Contains(role))
-                return false;
+                if (user.Roles.Contains(role))
+                    return false;
 
-            user.Roles.Add(role);
+                user.Roles.Add(role);
+            }
             Bridge.SaveUser(user);
             return true;
         }
