@@ -8,6 +8,7 @@ namespace N2.Engine
 	/// <summary>
 	/// Wraps logging oprations performed by N2.
 	/// </summary>
+	[Service]
 	public struct Logger<T>
 	{
 		private LogWriterBase Writer
