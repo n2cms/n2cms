@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Web.UI;
 using N2.Resources;
 using N2.Web;
@@ -23,7 +24,7 @@ namespace N2.Edit
 		{
 			if (h1 != null)
 			{
-				h1.InnerHtml = Page.Title;
+				h1.InnerHtml = HttpUtility.HtmlEncode(Page.Title);
 				h1.Visible = !string.IsNullOrEmpty(Page.Title);
 			}
 			base.OnPreRender(e);
