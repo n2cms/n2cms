@@ -404,8 +404,12 @@ namespace N2.Definitions
 			AddRangeInternal(Properties.Values.SelectMany(p => p.Attributes).OfType<IUniquelyNamed>());
 
 			// Define attributes on class, including editables defined there
-			foreach (object attribute in type.GetCustomAttributes(true))
-				Attributes.Add(attribute);
+
+			lock (Attributes)
+			{
+				foreach (object attribute in type.GetCustomAttributes(true))
+					Attributes.Add(attribute);
+			}
 			AddRange(GetCustomAttributes<IUniquelyNamed>().Where(un => !string.IsNullOrEmpty(un.Name)));
 
 			// Execute refiners which modify the definition
@@ -480,7 +484,10 @@ namespace N2.Definitions
 			id.AllowedChildFilters = AllowedChildFilters.ToList();
 			id.AllowedIn = AllowedIn;
 			id.AllowedParentFilters = AllowedParentFilters.ToList();
-			id.Attributes = Attributes.ToList();
+			lock (Attributes)
+			{
+				id.Attributes = Attributes.ToList();
+			}
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
 			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToArray() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();

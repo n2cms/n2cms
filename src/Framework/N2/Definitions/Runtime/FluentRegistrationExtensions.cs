@@ -297,7 +297,10 @@ namespace N2.Definitions.Runtime
 
 			public void Refine(ItemDefinition currentDefinition, System.Collections.Generic.IList<ItemDefinition> allDefinitions)
 			{
-				currentDefinition.Attributes.Add(attribute);
+				lock (currentDefinition.Attributes)
+				{
+					currentDefinition.Attributes.Add(attribute);
+				}
 			}
 
 			public int CompareTo(ISortableRefiner other)
