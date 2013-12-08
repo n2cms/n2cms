@@ -24,7 +24,7 @@ namespace N2.Edit
 		{
 			if (h1 != null)
 			{
-				h1.InnerHtml = HttpUtility.HtmlEncode(Page.Title);
+				h1.InnerHtml = N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Page.Title);
 				h1.Visible = !string.IsNullOrEmpty(Page.Title);
 			}
 			base.OnPreRender(e);

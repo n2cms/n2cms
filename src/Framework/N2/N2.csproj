@@ -170,6 +170,8 @@
     <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
     <Compile Include="Edit\Api\ProfileHandler.cs" />
+    <Compile Include="Edit\ISafeContentRenderer.cs" />
+    <Compile Include="Edit\SafeContentRenderer.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
