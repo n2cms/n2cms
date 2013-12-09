@@ -28,7 +28,8 @@ namespace N2.Security
 
 			var clientSettings = user.DetailCollections["Settings"];
 			foreach (var setting in clientSettings.Details)
-				profile.Settings[setting.Meta] = setting.Value;
+				if (!string.IsNullOrEmpty(setting.Meta))
+					profile.Settings[setting.Meta] = setting.Value;
 			return profile;
 		}
 
