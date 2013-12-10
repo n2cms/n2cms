@@ -63,5 +63,15 @@ namespace N2.Definitions
 			else
 				return obj;
 		}
+
+		public static bool IsVersionable(this ItemDefinition definition)
+		{
+			return definition.GetCustomAttributes<VersionableAttribute>().Select(va => va.Versionable).FirstOrDefault() != AllowVersions.No;
+		}
+
+		public static bool IsThrowable(this ItemDefinition definition)
+		{
+			return definition.GetCustomAttributes<ThrowableAttribute>().Select(va => va.Throwable).FirstOrDefault() != AllowInTrash.No;
+		}
 	}
 }

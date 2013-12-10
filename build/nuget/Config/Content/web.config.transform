@@ -8,7 +8,6 @@
 		</sectionGroup>
 	</configSections>
 	<system.webServer>
-		<validation />
 		<validation validateIntegratedModeConfiguration="false"/>
 		<modules runAllManagedModulesForAllRequests="true">
 			<add name="n2.initializer" type="N2.Web.InitializerModule, N2" />

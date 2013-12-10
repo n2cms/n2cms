@@ -8,6 +8,7 @@ using N2.Management.Activity;
 using N2.Persistence;
 using N2.Edit.Versioning;
 using System.Linq;
+using N2.Definitions;
 
 namespace N2.Edit
 {
@@ -138,7 +139,10 @@ namespace N2.Edit
             var parent = item.Parent;
 			try
             {
-				if (!item.IsPage)
+				bool versionablePart = !item.IsPage
+					&& Engine.Definitions.GetDefinition(item).IsVersionable();
+
+				if (versionablePart)
 				{
 					// it's a published part, create a version of it's page and remove the part from it.
 					var page = Find.ClosestPage(item);

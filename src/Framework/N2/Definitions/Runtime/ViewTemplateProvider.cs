@@ -138,8 +138,7 @@ namespace N2.Definitions.Runtime
 		{
 			var definitions = registrations.Select(r => r.Definition).ToList();
 			builder.ExecuteRefiners(definitions);
-			foreach (var registration in registrations)
-				yield return registration.Finalize();
+			return registrations.Select(r => r.Finalize()).ToList();
 		}
 
 		#endregion

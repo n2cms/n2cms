@@ -5,7 +5,7 @@ namespace N2.Engine
     /// <summary>
     /// Markes a service that is registered in automatically registered in N2's inversion of control container.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
     public class ServiceAttribute : Attribute
     {
         public ServiceAttribute()

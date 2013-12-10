@@ -3622,6 +3622,9 @@ namespace TinyIoC
 			}
 #endif
 
+			if (typeToConstruct.IsValueType)
+				return Activator.CreateInstance(typeToConstruct);
+
 			if (constructor == null)
 			{
 				// Try and get the best constructor that we can construct
@@ -3632,7 +3635,9 @@ namespace TinyIoC
 			}
 
 			if (constructor == null)
+			{
 				throw new TinyIoCResolutionException(typeToConstruct);
+			}
 
 			var ctorParams = constructor.GetParameters();
 			object[] args = new object[ctorParams.Count()];

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using N2.Configuration;
 using N2.Engine;
 using N2.Persistence;
-using N2.Persistence.Finder;
 using N2.Security.Items;
 using N2.Web;
 using System.Linq;
@@ -23,22 +21,23 @@ namespace N2.Security
 		readonly private IPersister persister;
 		readonly private ISecurityManager security;
 	    private readonly IHost host;
-		private readonly Engine.Logger<ItemBridge> logger;
+		private readonly Logger<ItemBridge> logger;
 		private string userContainerName = "TemplateUsers";
-		private string[] defaultRoles = new string[] { "Everyone", "Members", "Writers", "Editors", "Administrators" };
-		string[] editorUsernames = new string[] {"admin"};
-		string[] administratorUsernames = new string[] { "admin" };
+		private string[] defaultRoles = { "Everyone", "Members", "Writers", "Editors", "Administrators" };
+		readonly string[] editorUsernames = {"admin"};
+		readonly string[] administratorUsernames = { "admin" };
 		Type userType = typeof(User);
 
 		public event EventHandler<ItemEventArgs> UserDeleted;
 		public event EventHandler<ItemEventArgs> UserSaved;
 
-		public ItemBridge(ContentActivator activator, IPersister persister, ISecurityManager security, IHost host, EditSection config)
+		public ItemBridge(ContentActivator activator, IPersister persister, ISecurityManager security, IHost host, EditSection config, Logger<ItemBridge> logger)
 		{
 			this.security = security;
 			this.activator = activator;
 			this.persister = persister;
 			this.host = host;
+			this.logger = logger;
 			this.editorUsernames = ToArray(config.Editors.Users);
 			this.administratorUsernames = ToArray(config.Administrators.Users);
 
