@@ -2,7 +2,6 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Configuration;
 using N2.Web.UI.WebControls;
 
 namespace N2.Details
@@ -35,26 +34,10 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
-			AllowHtml = N2.Context.Current.Resolve<EngineSection>().DefaultHtmlEscape;
 			Required = true;
 		}
 
-		/// <summary>
-		/// Creates a new instance of the WithEditableAttribute class with default values.
-		/// </summary>
-		/// <param name="title">The label displayed to editors</param>
-		/// <param name="sortOrder">The order of this editor</param>
-		/// <param name="allowHtml">Determines whether the title tag may contain HTML (otherwise, any HTML text content will be escaped)</param>
-		public WithEditableTitleAttribute(string title, int sortOrder, bool allowHtml)
-			: base(title, "Title", sortOrder)
-		{
-			AllowHtml = allowHtml;
-			Required = true;
-		}
-
-	    public bool AllowHtml { get; set; }
-
-		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
+	    /// <summary>Gets or sets whether the title editor should receive focus.</summary>
 		public bool Focus
 		{
 			get { return focus; }
@@ -124,7 +107,6 @@ namespace N2.Details
 				{
 					Level = item.IsPage ? 1 : 2,
 					Text = value.ToString(),
-					AllowHtml = this.AllowHtml,
 					CssClass = CssClass
 				};
 				container.Controls.Add(heading);
