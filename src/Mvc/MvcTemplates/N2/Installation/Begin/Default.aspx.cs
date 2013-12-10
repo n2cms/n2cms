@@ -81,7 +81,7 @@ namespace N2.Edit.Install.Begin
 					var authentication = (AuthenticationSection)cfg.GetSection("system.web/authentication");
 					if (chkLoginUrl.Checked)
 					{
-						authentication.Forms.LoginUrl = "N2/Login.aspx";
+						authentication.Forms.LoginUrl = "~/N2/Login.aspx";
 						authentication.Mode = AuthenticationMode.Forms;
 					}
 
