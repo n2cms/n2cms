@@ -37,6 +37,7 @@ namespace N2.Web
 		public abstract HeadingLevel MenuTitleHeadingLevel { get; set; }
 		public abstract int MenuNumChildLevels { get; set; }
 		public abstract int MenuStartFromLevel { get; set; }
+        public abstract bool MenuShowTreeRoot { get; set; }
 		public abstract SibilingDisplayOptions MenuShowSibilings { get; set; }
 		public abstract bool MenuFlattenTopLevel { get; set; }
 		public abstract bool MenuDontLinkTopLevel { get; set; }
@@ -47,6 +48,8 @@ namespace N2.Web
 		public abstract string MenuSelectedLiCssClass { get; set; }
 		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
 		public abstract bool MenuShowInvisible { get; set; }
+        public abstract bool MenuNestChildUls { get; set; }
+        public abstract bool MenuAtiveClassOnAllAncestors { get; set; }
 	}
 
 	/// <summary>
@@ -96,8 +99,15 @@ namespace N2.Web
 			set { SetDetail("StartLevel", value); }
 		}
 
+        [EditableCheckBox("Show the root node of the tree.", 460, ContainerName = NestingContainerName,
+            HelpText = "Disabling the root node of a tree can be usefull when configuring the menu from a positive start level and only wanting to see its children on the root page of the menu.")]
+        public override bool MenuShowTreeRoot
+        {
+            get { return GetDetail("ShowTreeRoot", true); }
+            set { SetDetail("ShowTreeRoot", value); }
+        }
 
-		[EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
+	    [EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
 		public override SibilingDisplayOptions MenuShowSibilings
 		{
 			get { return GetDetail("ShowSibilings", SibilingDisplayOptions.OnlyIfItemHasNoChildren); }
@@ -139,7 +149,21 @@ namespace N2.Web
 			set { SetDetail("ShowInvisible", value); }
 		}
 
-		#endregion
+        [EditableCheckBox("Nest child UL elements inside the parent LI element", 495, ContainerName = NestingContainerName)]
+        public override bool MenuNestChildUls
+        {
+            get { return GetDetail("NestChildUls", false); }
+            set { SetDetail("NestChildUls", value); }
+        }
+
+        [EditableCheckBox("Add active class to all ancestors of the selected page.", 497, ContainerName = NestingContainerName)]
+        public override bool MenuAtiveClassOnAllAncestors
+        {
+            get { return GetDetail("ActiveAncestors", false); }
+            set { SetDetail("ActiveAncestors", value); }
+        }
+
+	    #endregion
 
 
 		#region CSS Overrides
@@ -214,6 +238,7 @@ namespace N2.Web
 			public int SortOrder { get; protected set; }
 			public ContentItem Item { get; private set; }
 			public ContentTreeNode Parent { get; private set; }
+            public bool IsAncestor { get; set; }
 		}
 
 		private readonly List<ContentTreeNode> database;
@@ -294,8 +319,8 @@ namespace N2.Web
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault());
-				navTree.Add(ancestorNode);
+				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true };
+			    navTree.Add(ancestorNode);
 
 				// expand the ancestor
 				// ReSharper disable LoopCanBeConvertedToQuery
@@ -358,10 +383,25 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
-			{
-				WriteListItem(childNode, xml, level, null);
-				WriteChildList(childNode, xml, level + 1);
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+            {
+                // Write the <li> if showing the root node, or not at the root node level
+                var showCurrentChildNode = menuPart.MenuShowTreeRoot || level != 0;
+                if (showCurrentChildNode)
+                {
+                    WriteListItem(childNode, xml, level, null);
+                }
+                else
+                {
+                    // If not showing the current node, then start with the child list.
+                    WriteChildList(childNode, xml, level + 1);
+                }
+
+                // Show the non-nested <ul> only if we have just added a <li>
+                if (showCurrentChildNode && !menuPart.MenuNestChildUls)
+                {
+                    WriteChildList(childNode, xml, level + 1);
+			    }
 			}
 			xml.RenderEndTag();
 		}
@@ -382,7 +422,7 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
 			{
 				WriteListItem(childNode, xml, 0, "nav-header disabled"); // header item
 
@@ -390,52 +430,61 @@ namespace N2.Web
 				foreach (var childnode2 in childNodes2)
 				{
 					WriteListItem(childnode2, xml, 1, null);
-					WriteChildList(childnode2, xml, 2);
+
+                    if (!menuPart.MenuNestChildUls)
+                    {
+                        WriteChildList(childNode, xml, 2);
+                    }
 				}
 			}
 			xml.RenderEndTag();
 		}
 
-		private void WriteListItem(ContentTreeNode childNode, HtmlTextWriter xml, int level, string cssClass)
-		{
-			// write LI...
-			var sn = menuPart;
-			var childItem = childNode.Item;
-			var isSelected = childItem.ID == cId;
+	    private void WriteListItem(ContentTreeNode childNode, HtmlTextWriter xml, int level, string cssClass)
+	    {
+	        // write LI...
+	        var sn = menuPart;
+	        var childItem = childNode.Item;
+	        var isSelected = childItem.ID == cId || (sn.MenuAtiveClassOnAllAncestors && childNode.IsAncestor);
 
-			if (cssClass == null)
-				cssClass = isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
-			xml.AddAttribute("class", cssClass);
-			xml.RenderBeginTag(HtmlTextWriterTag.Li);
+	        if (cssClass == null)
+	            cssClass = isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
+	        xml.AddAttribute("class", cssClass);
+	        xml.RenderBeginTag(HtmlTextWriterTag.Li);
 
-			if (isSelected || (level == 0 && sn.MenuDontLinkTopLevel))
-			{
-				xml.RenderBeginTag(HtmlTextWriterTag.A); // wrap in a dummy <a> for Bootstrap 3, http://stackoverflow.com/questions/18329010/what-happened-to-nav-header-class
-				xml.Write(childItem.Title);
-				xml.RenderEndTag();
-			}
-			else
-			{
-				xml.AddAttribute("href", childItem.Url);
-				xml.RenderBeginTag(HtmlTextWriterTag.A);
-				xml.Write(childItem.Title);
+	        if (isSelected || (level == 0 && sn.MenuDontLinkTopLevel))
+	        {
+	            xml.RenderBeginTag(HtmlTextWriterTag.A); // wrap in a dummy <a> for Bootstrap 3, http://stackoverflow.com/questions/18329010/what-happened-to-nav-header-class
+	            xml.Write(childItem.Title);
+	            xml.RenderEndTag();
+	        }
+	        else
+	        {
+	            xml.AddAttribute("href", childItem.Url);
+	            xml.RenderBeginTag(HtmlTextWriterTag.A);
+	            xml.Write(childItem.Title);
 
-				// render caret if subitems exist
-				if (sn.MenuShowCaretOnItemsWithChildren
-					&& database.Any(f => f.Parent == childNode))
-				{
-					// <b class="caret"></b> 
-					xml.Write(' ');
-					xml.AddAttribute("class", "caret");
-					xml.RenderBeginTag(HtmlTextWriterTag.B);
-					xml.RenderEndTag();
-				}
-				xml.RenderEndTag();
-			}
+	            // render caret if subitems exist
+	            if (sn.MenuShowCaretOnItemsWithChildren
+	                && database.Any(f => f.Parent == childNode))
+	            {
+	                // <b class="caret"></b> 
+	                xml.Write(' ');
+	                xml.AddAttribute("class", "caret");
+	                xml.RenderBeginTag(HtmlTextWriterTag.B);
+	                xml.RenderEndTag();
+	            }
+	            xml.RenderEndTag();
+	        }
 
-			xml.RenderEndTag(); // </li>
-			xml.WriteLine();
-		}
+	        if (menuPart.MenuNestChildUls)
+	        {
+	            WriteChildList(childNode, xml, level + 1);
+	        }
+
+	        xml.RenderEndTag(); // </li>
+	        xml.WriteLine();
+	    }
 
 	}
 
