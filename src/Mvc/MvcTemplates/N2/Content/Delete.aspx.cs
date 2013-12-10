@@ -144,7 +144,7 @@ namespace N2.Edit
 
 				if (versionablePart)
 				{
-					// it's a published part, create a version of it's page and remove the part from it.
+					// it's a published part, create a version of its page and remove the part from it.
 					var page = Find.ClosestPage(item);
 					if (page != null)
 					{
