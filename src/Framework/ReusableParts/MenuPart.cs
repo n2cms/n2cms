@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Web.UI;
+using System.Xml.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
@@ -46,10 +47,10 @@ namespace N2.Web
 		public abstract string MenuInnerUlCssClass { get; set; }
 		public abstract string MenuLiCssClass { get; set; }
 		public abstract string MenuSelectedLiCssClass { get; set; }
+        public abstract string MenuAncestorLiCssClass { get; set; }
 		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
 		public abstract bool MenuShowInvisible { get; set; }
         public abstract bool MenuNestChildUls { get; set; }
-        public abstract bool MenuAtiveClassOnAllAncestors { get; set; }
 	}
 
 	/// <summary>
@@ -135,7 +136,7 @@ namespace N2.Web
 			set { SetDetail("sc", value); }
 		}
 
-		[EditableCheckBox("Show current item even if item is hidden", 490, ContainerName = NestingContainerName)]
+	    [EditableCheckBox("Show current item even if item is hidden", 490, ContainerName = NestingContainerName)]
 		public override bool MenuShowCurrentItemIfHidden
 		{
 			get { return GetDetail("MenuShowCurrentItemIfHidden", false); }
@@ -154,13 +155,6 @@ namespace N2.Web
         {
             get { return GetDetail("NestChildUls", false); }
             set { SetDetail("NestChildUls", value); }
-        }
-
-        [EditableCheckBox("Add active class to all ancestors of the selected page.", 497, ContainerName = NestingContainerName)]
-        public override bool MenuAtiveClassOnAllAncestors
-        {
-            get { return GetDetail("ActiveAncestors", false); }
-            set { SetDetail("ActiveAncestors", value); }
         }
 
 	    #endregion
@@ -195,6 +189,13 @@ namespace N2.Web
 			get { return GetDetail("SelectedLiCssClass", "nav-item active"); }
 			set { SetDetail("SelectedLiCssClass", value); }
 		}
+
+        [EditableText("Acestor Item CssClass", 540, ContainerName = CssContainerName)]
+        public override string MenuAncestorLiCssClass
+        {
+            get { return GetDetail("AncestorLiCssClass", "ancestor"); }
+            set { SetDetail("AncestorLiCssClass", value); }
+        }
 
 		#endregion
 
@@ -445,10 +446,13 @@ namespace N2.Web
 	        // write LI...
 	        var sn = menuPart;
 	        var childItem = childNode.Item;
-	        var isSelected = childItem.ID == cId || (sn.MenuAtiveClassOnAllAncestors && childNode.IsAncestor);
+	        var isSelected = childItem.ID == cId;
 
 	        if (cssClass == null)
-	            cssClass = isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
+	            cssClass = childNode.IsAncestor
+	                ? sn.MenuAncestorLiCssClass
+	                : isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
+
 	        xml.AddAttribute("class", cssClass);
 	        xml.RenderBeginTag(HtmlTextWriterTag.Li);
 
