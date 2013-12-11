@@ -14,16 +14,16 @@
 
 namespace Castle.Core.Logging
 {
-	using System;
+    using System;
 
-	public interface IContextStack
-	{
-		int Count { get; }
+    public interface IContextStack
+    {
+        int Count { get; }
 
-		void Clear();
+        void Clear();
 
-		string Pop();
+        string Pop();
 
-		IDisposable Push(string message);
-	}
+        IDisposable Push(string message);
+    }
 }

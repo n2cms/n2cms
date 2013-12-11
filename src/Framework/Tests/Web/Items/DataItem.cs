@@ -5,30 +5,30 @@ using N2.Web.Parts;
 
 namespace N2.Tests.Web.Items
 {
-	[PartDefinition]
-	public class DataItem : N2.ContentItem, IAddablePart
-	{
-		public override ItemList GetChildren(string childZoneName)
-		{
-			return GetChildren(new ZoneFilter(childZoneName));
-		}
+    [PartDefinition]
+    public class DataItem : N2.ContentItem, IAddablePart
+    {
+        public override ItemList GetChildren(string childZoneName)
+        {
+            return GetChildren(new ZoneFilter(childZoneName));
+        }
 
-		public override bool IsPage
-		{
-			get { return false; }
-		}
+        public override bool IsPage
+        {
+            get { return false; }
+        }
 
-		public override string TemplateUrl
-		{
-			get { return "~/Part.ascx"; }
-		}
+        public override string TemplateUrl
+        {
+            get { return "~/Part.ascx"; }
+        }
 
-		public Control AddTo(Control container)
-		{
-			Literal l = new Literal();
-			l.Text = "[" + Name + "]";
-			container.Controls.Add(l);
-			return l;
-		}
-	}
+        public Control AddTo(Control container)
+        {
+            Literal l = new Literal();
+            l.Text = "[" + Name + "]";
+            container.Controls.Add(l);
+            return l;
+        }
+    }
 }

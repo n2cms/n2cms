@@ -6,16 +6,16 @@ using N2.Web.UI;
 
 namespace N2.Web.Mvc
 {
-	/// <summary>
-	/// A ViewPage implementation that allows N2 Display helpers to be used
-	/// 
-	/// The Model must be a ContentItem
-	/// </summary>
-	/// <typeparam name="TItem"></typeparam>
+    /// <summary>
+    /// A ViewPage implementation that allows N2 Display helpers to be used
+    /// 
+    /// The Model must be a ContentItem
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
     [Obsolete("Use System.Web.Mvc.ViewPage<>")]
-	public class N2ViewPage<TItem> : ViewPage<TItem>, IItemContainer
-		where TItem : ContentItem
-	{
+    public class N2ViewPage<TItem> : ViewPage<TItem>, IItemContainer
+        where TItem : ContentItem
+    {
         #region IItemContainer Members
 
         public TItem CurrentItem
@@ -47,5 +47,5 @@ namespace N2.Web.Mvc
 
             ProcessRequest(context);
         }
-	}
+    }
 }

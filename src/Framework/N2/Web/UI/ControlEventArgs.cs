@@ -23,24 +23,24 @@ using System.Web.UI;
 
 namespace N2.Web.UI
 {
-	/// <summary>
-	/// Provides data about a control. These event arguments can be used to 
-	/// expose child controls while they are added.
-	/// </summary>
-	public class ControlEventArgs : EventArgs
-	{
-		/// <summary>Creates a new instance of the ControlEventArgs.</summary>
-		/// <param name="control">The control to reference with these arguments.</param>
-		public ControlEventArgs(Control control)
-		{
-			this.control = control;
-		}
+    /// <summary>
+    /// Provides data about a control. These event arguments can be used to 
+    /// expose child controls while they are added.
+    /// </summary>
+    public class ControlEventArgs : EventArgs
+    {
+        /// <summary>Creates a new instance of the ControlEventArgs.</summary>
+        /// <param name="control">The control to reference with these arguments.</param>
+        public ControlEventArgs(Control control)
+        {
+            this.control = control;
+        }
 
-		private Control control;
-		/// <summary>The control associated with these arguments.</summary>
-		public Control Control
-		{
-			get { return control; }
-		}
-	}
+        private Control control;
+        /// <summary>The control associated with these arguments.</summary>
+        public Control Control
+        {
+            get { return control; }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,38 +8,38 @@ using N2.Web.UI;
 
 namespace N2.Edit.Web.UI.Controls
 {
-	public class PersistentOnlyPanel : PlaceHolder
-	{
-		CustomValidator cv = new CustomValidator
-		{
-			CssClass = "info",
-			Text = "This is not supported for this type of item.",
-			Display = ValidatorDisplay.Dynamic
-		};
+    public class PersistentOnlyPanel : PlaceHolder
+    {
+        CustomValidator cv = new CustomValidator
+        {
+            CssClass = "info",
+            Text = "This is not supported for this type of item.",
+            Display = ValidatorDisplay.Dynamic
+        };
 
-		public string Text
-		{
-			get { return cv.Text; }
-			set { cv.Text = value; }
-		}
+        public string Text
+        {
+            get { return cv.Text; }
+            set { cv.Text = value; }
+        }
 
-		protected override void CreateChildControls()
-		{
-			base.CreateChildControls();
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
 
-			cv.Page = Page;
-		}
+            cv.Page = Page;
+        }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
-			if (item == null || item.ID == 0)
-			{
-				cv.IsValid = false;
-				cv.RenderControl(writer);
-			}
-			else
-				base.Render(writer);
-		}
-	}
+        protected override void Render(HtmlTextWriter writer)
+        {
+            var item = new SelectionUtility(this, Page.GetEngine()).SelectedItem;
+            if (item == null || item.ID == 0)
+            {
+                cv.IsValid = false;
+                cv.RenderControl(writer);
+            }
+            else
+                base.Render(writer);
+        }
+    }
 }

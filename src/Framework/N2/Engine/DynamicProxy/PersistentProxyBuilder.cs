@@ -15,33 +15,33 @@
 namespace Castle.DynamicProxy
 {
 #if !SILVERLIGHT
-	/// <summary>
-	///   ProxyBuilder that persists the generated type.
-	/// </summary>
-	/// <remarks>
-	///   The saved assembly contains just the last generated type.
-	/// </remarks>
-	public class PersistentProxyBuilder : DefaultProxyBuilder
-	{
-		/// <summary>
-		///   Initializes a new instance of the <see cref = "PersistentProxyBuilder" /> class.
-		/// </summary>
-		public PersistentProxyBuilder() : base(new ModuleScope(true))
-		{
-		}
+    /// <summary>
+    ///   ProxyBuilder that persists the generated type.
+    /// </summary>
+    /// <remarks>
+    ///   The saved assembly contains just the last generated type.
+    /// </remarks>
+    public class PersistentProxyBuilder : DefaultProxyBuilder
+    {
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "PersistentProxyBuilder" /> class.
+        /// </summary>
+        public PersistentProxyBuilder() : base(new ModuleScope(true))
+        {
+        }
 
-		/// <summary>
-		///   Saves the generated assembly to a physical file. Note that this renders the <see cref = "PersistentProxyBuilder" /> unusable.
-		/// </summary>
-		/// <returns>The path of the generated assembly file, or null if no assembly has been generated.</returns>
-		/// <remarks>
-		///   This method does not support saving multiple files. If both a signed and an unsigned module have been generated, use the 
-		///   respective methods of the <see cref = "ModuleScope" />.
-		/// </remarks>
-		public string SaveAssembly()
-		{
-			return ModuleScope.SaveAssembly();
-		}
-	}
+        /// <summary>
+        ///   Saves the generated assembly to a physical file. Note that this renders the <see cref = "PersistentProxyBuilder" /> unusable.
+        /// </summary>
+        /// <returns>The path of the generated assembly file, or null if no assembly has been generated.</returns>
+        /// <remarks>
+        ///   This method does not support saving multiple files. If both a signed and an unsigned module have been generated, use the 
+        ///   respective methods of the <see cref = "ModuleScope" />.
+        /// </remarks>
+        public string SaveAssembly()
+        {
+            return ModuleScope.SaveAssembly();
+        }
+    }
 #endif
 }

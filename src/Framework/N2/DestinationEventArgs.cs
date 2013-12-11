@@ -40,6 +40,6 @@ namespace N2
         public ContentItem Destination
         {
             get { return destination; }
-        }	
+        }   
     }
 }

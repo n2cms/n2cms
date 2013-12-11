@@ -14,116 +14,116 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-	public abstract class ArgumentsUtil
-	{
-		public static Expression[] ConvertArgumentReferenceToExpression(ArgumentReference[] args)
-		{
-			var expressions = new Expression[args.Length];
+    public abstract class ArgumentsUtil
+    {
+        public static Expression[] ConvertArgumentReferenceToExpression(ArgumentReference[] args)
+        {
+            var expressions = new Expression[args.Length];
 
-			for (var i = 0; i < args.Length; ++i)
-			{
-				expressions[i] = args[i].ToExpression();
-			}
+            for (var i = 0; i < args.Length; ++i)
+            {
+                expressions[i] = args[i].ToExpression();
+            }
 
-			return expressions;
-		}
+            return expressions;
+        }
 
-		public static ArgumentReference[] ConvertToArgumentReference(Type[] args)
-		{
-			var arguments = new ArgumentReference[args.Length];
+        public static ArgumentReference[] ConvertToArgumentReference(Type[] args)
+        {
+            var arguments = new ArgumentReference[args.Length];
 
-			for (var i = 0; i < args.Length; ++i)
-			{
-				arguments[i] = new ArgumentReference(args[i]);
-			}
+            for (var i = 0; i < args.Length; ++i)
+            {
+                arguments[i] = new ArgumentReference(args[i]);
+            }
 
-			return arguments;
-		}
+            return arguments;
+        }
 
-		public static ArgumentReference[] ConvertToArgumentReference(ParameterInfo[] args)
-		{
-			var arguments = new ArgumentReference[args.Length];
+        public static ArgumentReference[] ConvertToArgumentReference(ParameterInfo[] args)
+        {
+            var arguments = new ArgumentReference[args.Length];
 
-			for (var i = 0; i < args.Length; ++i)
-			{
-				arguments[i] = new ArgumentReference(args[i].ParameterType);
-			}
+            for (var i = 0; i < args.Length; ++i)
+            {
+                arguments[i] = new ArgumentReference(args[i].ParameterType);
+            }
 
-			return arguments;
-		}
+            return arguments;
+        }
 
-		public static ReferenceExpression[] ConvertToArgumentReferenceExpression(ParameterInfo[] args)
-		{
-			var arguments = new ReferenceExpression[args.Length];
+        public static ReferenceExpression[] ConvertToArgumentReferenceExpression(ParameterInfo[] args)
+        {
+            var arguments = new ReferenceExpression[args.Length];
 
-			for (var i = 0; i < args.Length; ++i)
-			{
-				arguments[i] = new ReferenceExpression(new ArgumentReference(args[i].ParameterType, i + 1));
-			}
+            for (var i = 0; i < args.Length; ++i)
+            {
+                arguments[i] = new ReferenceExpression(new ArgumentReference(args[i].ParameterType, i + 1));
+            }
 
-			return arguments;
-		}
+            return arguments;
+        }
 
-		public static void EmitLoadOwnerAndReference(Reference reference, ILGenerator il)
-		{
-			if (reference == null)
-			{
-				return;
-			}
+        public static void EmitLoadOwnerAndReference(Reference reference, ILGenerator il)
+        {
+            if (reference == null)
+            {
+                return;
+            }
 
-			EmitLoadOwnerAndReference(reference.OwnerReference, il);
+            EmitLoadOwnerAndReference(reference.OwnerReference, il);
 
-			reference.LoadReference(il);
-		}
+            reference.LoadReference(il);
+        }
 
-		public static Type[] GetTypes(ParameterInfo[] parameters)
-		{
-			var types = new Type[parameters.Length];
-			for (var i = 0; i < parameters.Length; i++)
-			{
-				types[i] = parameters[i].ParameterType;
-			}
-			return types;
-		}
+        public static Type[] GetTypes(ParameterInfo[] parameters)
+        {
+            var types = new Type[parameters.Length];
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                types[i] = parameters[i].ParameterType;
+            }
+            return types;
+        }
 
-		public static Type[] InitializeAndConvert(ArgumentReference[] args)
-		{
-			var types = new Type[args.Length];
+        public static Type[] InitializeAndConvert(ArgumentReference[] args)
+        {
+            var types = new Type[args.Length];
 
-			for (var i = 0; i < args.Length; ++i)
-			{
-				args[i].Position = i + 1;
-				types[i] = args[i].Type;
-			}
+            for (var i = 0; i < args.Length; ++i)
+            {
+                args[i].Position = i + 1;
+                types[i] = args[i].Type;
+            }
 
-			return types;
-		}
+            return types;
+        }
 
-		public static void InitializeArgumentsByPosition(ArgumentReference[] args, bool isStatic)
-		{
-			var offset = isStatic ? 0 : 1;
-			for (var i = 0; i < args.Length; ++i)
-			{
-				args[i].Position = i + offset;
-			}
-		}
+        public static void InitializeArgumentsByPosition(ArgumentReference[] args, bool isStatic)
+        {
+            var offset = isStatic ? 0 : 1;
+            for (var i = 0; i < args.Length; ++i)
+            {
+                args[i].Position = i + offset;
+            }
+        }
 
-		public static bool IsAnyByRef(ParameterInfo[] parameters)
-		{
-			for (var i = 0; i < parameters.Length; i++)
-			{
-				if (parameters[i].ParameterType.IsByRef)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+        public static bool IsAnyByRef(ParameterInfo[] parameters)
+        {
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].ParameterType.IsByRef)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

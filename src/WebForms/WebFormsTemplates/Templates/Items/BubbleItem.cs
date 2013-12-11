@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Configuration;
 using System.Web;
@@ -12,8 +12,8 @@ using N2.Details;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Bubble",
-		IconUrl = "~/Templates/UI/Img/help.png")]
+    [PartDefinition("Bubble",
+        IconUrl = "~/Templates/UI/Img/help.png")]
     [AllowedZones(Zones.Left, Zones.Right, Zones.ColumnLeft, Zones.ColumnRight)]
     public class BubbleItem : AbstractItem
     {

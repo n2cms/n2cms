@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,45 +8,45 @@ using N2.Details;
 
 namespace N2.Web.Rendering
 {
-	[Service]
-	public class ContentRendererSelector
-	{
-		IContentRenderer[] renderers;
-		Dictionary<Type, IContentRenderer> rendererForType = new Dictionary<Type, IContentRenderer>();
+    [Service]
+    public class ContentRendererSelector
+    {
+        IContentRenderer[] renderers;
+        Dictionary<Type, IContentRenderer> rendererForType = new Dictionary<Type, IContentRenderer>();
 
-		public ContentRendererSelector(IContentRenderer[] renderers)
-		{
-			this.renderers = renderers
-				.OrderByDescending(r => Utility.InheritanceDepth(r.HandledContentType))
-				.ThenByDescending(r => Utility.InheritanceDepth(r.GetType()))
-				.ToArray();
-		}
+        public ContentRendererSelector(IContentRenderer[] renderers)
+        {
+            this.renderers = renderers
+                .OrderByDescending(r => Utility.InheritanceDepth(r.HandledContentType))
+                .ThenByDescending(r => Utility.InheritanceDepth(r.GetType()))
+                .ToArray();
+        }
 
-		public virtual IContentRenderer ResolveRenderer(Type displayableType)
-		{
-			IContentRenderer renderer;
-			if (rendererForType.TryGetValue(displayableType, out renderer))
-				return renderer;
+        public virtual IContentRenderer ResolveRenderer(Type displayableType)
+        {
+            IContentRenderer renderer;
+            if (rendererForType.TryGetValue(displayableType, out renderer))
+                return renderer;
 
-			renderer = renderers.FirstOrDefault(r => r.HandledContentType.IsAssignableFrom(displayableType));
-			if (renderer == null)
-				return null;
+            renderer = renderers.FirstOrDefault(r => r.HandledContentType.IsAssignableFrom(displayableType));
+            if (renderer == null)
+                return null;
 
-			var temp = new Dictionary<Type, IContentRenderer>(rendererForType);
-			temp[displayableType] = renderer;
-			rendererForType = temp;
+            var temp = new Dictionary<Type, IContentRenderer>(rendererForType);
+            temp[displayableType] = renderer;
+            rendererForType = temp;
 
-			return renderer;
-		}
+            return renderer;
+        }
 
-		public bool TryRender(RenderingContext context, TextWriter writer)
-		{
-			var renderer = ResolveRenderer(context.Displayable.GetType());
-			if (renderer == null)
-				return false;
+        public bool TryRender(RenderingContext context, TextWriter writer)
+        {
+            var renderer = ResolveRenderer(context.Displayable.GetType());
+            if (renderer == null)
+                return false;
 
-			renderer.Render(context, writer);
-			return true;
-		}
-	}
+            renderer.Render(context, writer);
+            return true;
+        }
+    }
 }

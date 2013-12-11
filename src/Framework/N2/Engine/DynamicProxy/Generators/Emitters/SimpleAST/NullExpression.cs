@@ -14,19 +14,19 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public class NullExpression : Expression
-	{
-		public static readonly NullExpression Instance = new NullExpression();
+    public class NullExpression : Expression
+    {
+        public static readonly NullExpression Instance = new NullExpression();
 
-		protected NullExpression()
-		{
-		}
+        protected NullExpression()
+        {
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			gen.Emit(OpCodes.Ldnull);
-		}
-	}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            gen.Emit(OpCodes.Ldnull);
+        }
+    }
 }

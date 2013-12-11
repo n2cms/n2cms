@@ -1,9 +1,9 @@
-﻿namespace N2.Extensions.Tests
+namespace N2.Extensions.Tests
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-		}
-	}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+    }
 }

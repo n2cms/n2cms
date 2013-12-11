@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,27 +14,27 @@
 
 namespace Castle.DynamicProxy.Generators
 {
-	using System;
-	using System.Reflection;
+    using System;
+    using System.Reflection;
 
-	using Castle.DynamicProxy.Contributors;
+    using Castle.DynamicProxy.Contributors;
 
-	public class DelegateMembersCollector : MembersCollector
-	{
-		public DelegateMembersCollector(Type type) : base(type)
-		{
-		}
+    public class DelegateMembersCollector : MembersCollector
+    {
+        public DelegateMembersCollector(Type type) : base(type)
+        {
+        }
 
-		protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
-		{
-			var accepted = AcceptMethod(method, true, hook);
-			if (accepted == false)
-			{
-				//we don't need to do anything...
-				return null;
-			}
+        protected override MetaMethod GetMethodToGenerate(MethodInfo method, IProxyGenerationHook hook, bool isStandalone)
+        {
+            var accepted = AcceptMethod(method, true, hook);
+            if (accepted == false)
+            {
+                //we don't need to do anything...
+                return null;
+            }
 
-			return new MetaMethod(method, method, isStandalone, true, !method.IsAbstract);
-		}
-	}
+            return new MetaMethod(method, method, isStandalone, true, !method.IsAbstract);
+        }
+    }
 }

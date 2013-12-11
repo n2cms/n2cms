@@ -1,4 +1,4 @@
-﻿using N2.Definitions;
+using N2.Definitions;
 using N2.Edit;
 using N2.Edit.Wizard.Items;
 using N2.Engine;
@@ -11,24 +11,24 @@ using System.Web;
 
 namespace N2.Management
 {
-	[Adapts(typeof(ManagementItem))]
-	public class ManagementItemsNodeAdapter : NodeAdapter
-	{
-		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
-		{
-			if (item is UserList)
-				return "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens();
-			if (item is User)
-				return "{ManagementUrl}/Users/Edit.aspx".ToUrl().ResolveTokens().AppendQuery("user", item.Name);
+    [Adapts(typeof(ManagementItem))]
+    public class ManagementItemsNodeAdapter : NodeAdapter
+    {
+        public override string GetPreviewUrl(ContentItem item, bool allowDraft)
+        {
+            if (item is UserList)
+                return "{ManagementUrl}/Users/Users.aspx".ResolveUrlTokens();
+            if (item is User)
+                return "{ManagementUrl}/Users/Edit.aspx".ToUrl().ResolveTokens().AppendQuery("user", item.Name);
 
-			if (item is Wonderland)
-				return "{ManagementUrl}/Content/Wizard/Default.aspx".ToUrl().ResolveTokens().AppendSelection(Engine.UrlParser.StartPage);
+            if (item is Wonderland)
+                return "{ManagementUrl}/Content/Wizard/Default.aspx".ToUrl().ResolveTokens().AppendSelection(Engine.UrlParser.StartPage);
 
-			return base.GetPreviewUrl(item, allowDraft);
-		}
-	}
+            return base.GetPreviewUrl(item, allowDraft);
+        }
+    }
 
-	public abstract class ManagementItem : ContentItem, ISystemNode
-	{
-	}
+    public abstract class ManagementItem : ContentItem, ISystemNode
+    {
+    }
 }

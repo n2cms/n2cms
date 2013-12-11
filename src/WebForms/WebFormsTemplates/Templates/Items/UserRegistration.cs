@@ -5,8 +5,8 @@ using N2.Security.Details;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Register",
-		IconUrl = "~/Templates/UI/Img/user_add.png")]
+    [PartDefinition("Register",
+        IconUrl = "~/Templates/UI/Img/user_add.png")]
     [AllowedZones(Zones.Content)]
     [N2.Web.UI.FieldSetContainer("registration", "Registration", 30)]
     [N2.Web.UI.FieldSetContainer("verification", "Verification", 40)]

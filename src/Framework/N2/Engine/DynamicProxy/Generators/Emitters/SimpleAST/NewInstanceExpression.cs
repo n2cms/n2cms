@@ -14,48 +14,48 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	public class NewInstanceExpression : Expression
-	{
-		private readonly Expression[] arguments;
-		private readonly Type[] constructorArgs;
-		private readonly Type type;
-		private ConstructorInfo constructor;
+    public class NewInstanceExpression : Expression
+    {
+        private readonly Expression[] arguments;
+        private readonly Type[] constructorArgs;
+        private readonly Type type;
+        private ConstructorInfo constructor;
 
-		public NewInstanceExpression(ConstructorInfo constructor, params Expression[] args)
-		{
-			this.constructor = constructor;
-			arguments = args;
-		}
+        public NewInstanceExpression(ConstructorInfo constructor, params Expression[] args)
+        {
+            this.constructor = constructor;
+            arguments = args;
+        }
 
-		public NewInstanceExpression(Type target, Type[] constructor_args, params Expression[] args)
-		{
-			type = target;
-			constructorArgs = constructor_args;
-			arguments = args;
-		}
+        public NewInstanceExpression(Type target, Type[] constructor_args, params Expression[] args)
+        {
+            type = target;
+            constructorArgs = constructor_args;
+            arguments = args;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			foreach (var exp in arguments)
-			{
-				exp.Emit(member, gen);
-			}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            foreach (var exp in arguments)
+            {
+                exp.Emit(member, gen);
+            }
 
-			if (constructor == null)
-			{
-				constructor = type.GetConstructor(constructorArgs);
-			}
+            if (constructor == null)
+            {
+                constructor = type.GetConstructor(constructorArgs);
+            }
 
-			if (constructor == null)
-			{
-				throw new ProxyGenerationException("Could not find constructor matching specified arguments");
-			}
+            if (constructor == null)
+            {
+                throw new ProxyGenerationException("Could not find constructor matching specified arguments");
+            }
 
-			gen.Emit(OpCodes.Newobj, constructor);
-		}
-	}
+            gen.Emit(OpCodes.Newobj, constructor);
+        }
+    }
 }

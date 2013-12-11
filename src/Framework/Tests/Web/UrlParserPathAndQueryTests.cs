@@ -63,7 +63,7 @@ namespace N2.Tests.Web
         public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
         {
             host = new Host(wrapper, 10, 1);
-			parser = TestSupport.Setup(persister, wrapper, host);
+            parser = TestSupport.Setup(persister, wrapper, host);
 
             CreateDefaultStructure();
             ContentItem root = CreateOneItem<PageItem>(10, "root", null);
@@ -72,8 +72,8 @@ namespace N2.Tests.Web
 
             mocks.ReplayAll();
 
-			Assert.AreEqual(parser.BuildUrl(root).ToString(), root.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
-			Assert.AreEqual(parser.BuildUrl(outside1).ToString(), outside1.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
+            Assert.AreEqual(parser.BuildUrl(root).ToString(), root.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
+            Assert.AreEqual(parser.BuildUrl(outside1).ToString(), outside1.FindPath(PathData.DefaultAction).GetRewrittenUrl().ToString());
         }
     }
 }

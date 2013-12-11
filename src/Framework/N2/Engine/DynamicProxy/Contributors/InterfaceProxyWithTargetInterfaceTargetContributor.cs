@@ -14,21 +14,21 @@
 
 namespace Castle.DynamicProxy.Contributors
 {
-	using System;
+    using System;
 
-	using Castle.DynamicProxy.Generators;
+    using Castle.DynamicProxy.Generators;
 
-	public class InterfaceProxyWithTargetInterfaceTargetContributor : InterfaceProxyTargetContributor
-	{
-		public InterfaceProxyWithTargetInterfaceTargetContributor(Type proxyTargetType, bool allowChangeTarget,
-		                                                          INamingScope namingScope)
-			: base(proxyTargetType, allowChangeTarget, namingScope)
-		{
-		}
+    public class InterfaceProxyWithTargetInterfaceTargetContributor : InterfaceProxyTargetContributor
+    {
+        public InterfaceProxyWithTargetInterfaceTargetContributor(Type proxyTargetType, bool allowChangeTarget,
+                                                                  INamingScope namingScope)
+            : base(proxyTargetType, allowChangeTarget, namingScope)
+        {
+        }
 
-		protected override MembersCollector GetCollectorForInterface(Type @interface)
-		{
-			return new InterfaceMembersCollector(@interface);
-		}
-	}
+        protected override MembersCollector GetCollectorForInterface(Type @interface)
+        {
+            return new InterfaceMembersCollector(@interface);
+        }
+    }
 }

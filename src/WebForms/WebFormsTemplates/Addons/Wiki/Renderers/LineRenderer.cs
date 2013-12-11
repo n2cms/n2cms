@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -14,7 +14,7 @@ namespace N2.Addons.Wiki.Renderers
 
         public Control AddTo(Control container, ViewContext context)
         {
-			string html = context.Fragment.ToString();
+            string html = context.Fragment.ToString();
             if (paragraph.IsMatch(html))
                 html = html.Trim();
             LiteralControl br = new LiteralControl(html.Replace(Environment.NewLine, "<br/>"));

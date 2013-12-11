@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,8 +14,8 @@ namespace N2.Addons.Wiki.Renderers
         public Control AddTo(Control container, ViewContext context)
         {
             Literal l = new Literal();
-			var text = context.Fragment.ToString();
-			l.Text = text.Substring(1, text.Length - 2);
+            var text = context.Fragment.ToString();
+            l.Text = text.Substring(1, text.Length - 2);
             container.Controls.Add(l);
             return l;
         }

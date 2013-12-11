@@ -3,7 +3,7 @@ using N2.Templates.Items;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Result : Templates.Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.Poll>
+    public partial class Result : Templates.Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.Poll>
     {
         private int total = 0;
 
@@ -12,7 +12,7 @@ namespace N2.Templates.UI.Parts
             get { return total; }
             set { total = value; }
         }
-	
+    
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

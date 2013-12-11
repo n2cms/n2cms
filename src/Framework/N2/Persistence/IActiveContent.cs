@@ -1,4 +1,4 @@
-﻿namespace N2.Persistence
+namespace N2.Persistence
 {
     /// <summary>
     /// Content items implementing this interface are responsible for their 

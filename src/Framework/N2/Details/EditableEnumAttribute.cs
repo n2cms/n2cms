@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.UI.WebControls;
 
 namespace N2.Details
@@ -9,18 +9,18 @@ namespace N2.Details
     /// <remarks>
     /// Depending on the property type the values will be stored as enum, integer or string.
     /// </remarks>
-	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableEnumAttribute : EditableDropDownAttribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EditableEnumAttribute : EditableDropDownAttribute
     {
-		public EditableEnumAttribute()
-			: this("", 10, typeof(EmptyEnum))
-		{
-		}
+        public EditableEnumAttribute()
+            : this("", 10, typeof(EmptyEnum))
+        {
+        }
 
-		public EditableEnumAttribute(Type enumType)
-			: this("", 10, enumType)
-		{
-		}
+        public EditableEnumAttribute(Type enumType)
+            : this("", 10, enumType)
+        {
+        }
 
         public EditableEnumAttribute(string title, int sortOrder, Type enumType)
             : base(title, sortOrder)
@@ -32,15 +32,15 @@ namespace N2.Details
             EnumType = enumType;
         }
 
-		/// <summary>The type of enum listed by this editor.</summary>
-		public Type EnumType { get; set; }
+        /// <summary>The type of enum listed by this editor.</summary>
+        public Type EnumType { get; set; }
 
         protected override System.Web.UI.WebControls.ListItem[] GetListItems()
         {
             Array values = Enum.GetValues(EnumType);
             ListItem[] items = new ListItem[values.Length];
             for (int i = 0; i < values.Length; i++)
-			{
+            {
                 int value = (int)values.GetValue(i);
                 string name = Utility.GetGlobalResourceString(EnumType.Name, Enum.GetName(EnumType, value)) 
                     ?? Enum.GetName(EnumType, value);
@@ -78,8 +78,8 @@ namespace N2.Details
             return Enum.ToObject(EnumType, int.Parse(value));
         }
 
-		enum EmptyEnum
-		{
-		}
+        enum EmptyEnum
+        {
+        }
     }
 }

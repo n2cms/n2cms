@@ -6,14 +6,14 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Teaser",
-		IconUrl = "~/Templates/UI/Img/heart.png")]
+    [PartDefinition("Teaser",
+        IconUrl = "~/Templates/UI/Img/heart.png")]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Left, Zones.Right)]
     [WithEditableTitle("Title", 10)]
     public class Teaser : AbstractItem
     {
-		[DisplayableHeading(4)]
-		public override string Title
+        [DisplayableHeading(4)]
+        public override string Title
         {
             get { return base.Title; }
             set { base.Title = value; }

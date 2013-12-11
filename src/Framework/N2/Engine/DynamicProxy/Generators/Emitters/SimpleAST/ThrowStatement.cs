@@ -14,30 +14,30 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection.Emit;
 
-	public class ThrowStatement : Statement
-	{
-		private readonly string errorMessage;
-		private readonly Type exceptionType;
+    public class ThrowStatement : Statement
+    {
+        private readonly string errorMessage;
+        private readonly Type exceptionType;
 
-		public ThrowStatement(Type exceptionType, String errorMessage)
-		{
-			this.exceptionType = exceptionType;
-			this.errorMessage = errorMessage;
-		}
+        public ThrowStatement(Type exceptionType, String errorMessage)
+        {
+            this.exceptionType = exceptionType;
+            this.errorMessage = errorMessage;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			var ci = exceptionType.GetConstructor(new[] { typeof(String) });
-			var constRef = new ConstReference(errorMessage);
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            var ci = exceptionType.GetConstructor(new[] { typeof(String) });
+            var constRef = new ConstReference(errorMessage);
 
-			var creationStmt = new NewInstanceExpression(ci, constRef.ToExpression());
+            var creationStmt = new NewInstanceExpression(ci, constRef.ToExpression());
 
-			creationStmt.Emit(member, gen);
+            creationStmt.Emit(member, gen);
 
-			gen.Emit(OpCodes.Throw);
-		}
-	}
+            gen.Emit(OpCodes.Throw);
+        }
+    }
 }

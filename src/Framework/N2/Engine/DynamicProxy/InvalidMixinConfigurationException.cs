@@ -14,25 +14,25 @@
 
 namespace Castle.DynamicProxy
 {
-	using System;
-	using System.Runtime.Serialization;
+    using System;
+    using System.Runtime.Serialization;
 
-	[Serializable]
-	public class InvalidMixinConfigurationException : Exception
-	{
-		public InvalidMixinConfigurationException(string message)
-			: base(message)
-		{
-		}
+    [Serializable]
+    public class InvalidMixinConfigurationException : Exception
+    {
+        public InvalidMixinConfigurationException(string message)
+            : base(message)
+        {
+        }
 
-		public InvalidMixinConfigurationException(string message, Exception innerException) : base(message, innerException)
-		{
-		}
+        public InvalidMixinConfigurationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
 
 #if !SILVERLIGHT
-		protected InvalidMixinConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
-		{
-		}
+        protected InvalidMixinConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
 #endif
-	}
+    }
 }
