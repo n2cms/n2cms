@@ -82,9 +82,9 @@ namespace N2.Web
 		#endregion
 
 
-		#region Hierarchy Options
+        #region Hierarchy Options
 
-		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
+        [EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
 		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
@@ -202,7 +202,7 @@ namespace N2.Web
 
 	}
 
-	/// <summary>
+    /// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof(MenuPart))]
@@ -210,15 +210,18 @@ namespace N2.Web
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-			if (!(part is MenuPart))
+		    var menuPart = part as MenuPart;
+			if (part == null)
 				throw new ArgumentException("part");
 
 			if (html.ViewContext.Writer is HtmlTextWriter)
-				(new MenuPartRenderer(part as MenuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
+				(new MenuPartRenderer(menuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
 			else
-				html.ViewContext.Writer.Write(new MenuPartRenderer(part as MenuPart).GetHtml());
+				html.ViewContext.Writer.Write(new MenuPartRenderer(menuPart).GetHtml());
 		}
 	}
+
+
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
@@ -244,10 +247,10 @@ namespace N2.Web
 		}
 
 		private readonly List<ContentTreeNode> database;
-		private readonly MenuPartBase menuPart;
+		private readonly MenuPart menuPart;
 		private int cId;
 
-		public MenuPartRenderer(MenuPartBase menuPart)
+		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
 			database = BuildNavTree();
@@ -267,6 +270,7 @@ namespace N2.Web
 		public void WriteHtml(HtmlTextWriter xml)
 		{
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
+            xml.AddAttribute("class", "menuNavPart");
 			xml.RenderBeginTag("div");
 
 			switch (menuPart.MenuTitleDisplayMode)
@@ -276,7 +280,7 @@ namespace N2.Web
 					break;
 				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
-					break;
+                    break;
 				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
@@ -385,27 +389,23 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
-			{
-				// Write the <li> if showing the root node, or not at the root node level
-				var showCurrentChildNode = menuPart.MenuShowTreeRoot || level != 0;
-				if (showCurrentChildNode)
-				{
-					WriteListItem(childNode, xml, level, null);
-				}
-				else
-				{
-					// If not showing the current node, then start with the child list.
-					WriteChildList(childNode, xml, level + 1);
-				}
 
-				// Show the non-nested <ul> only if we have just added a <li>
-				if (showCurrentChildNode && !menuPart.MenuNestChildUls)
-				{
-					WriteChildList(childNode, xml, level + 1);
-				}
-			}
-			xml.RenderEndTag();
+		    if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
+		    {
+                // Skip directly to the childre of the root node.
+		        childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
+		    }
+
+		    foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+		    {
+		        WriteListItem(childNode, xml, level, null);
+
+		        if (!menuPart.MenuNestChildUls)
+		        {
+		            WriteChildList(childNode, xml, level + 1);
+		        }
+		    }
+		    xml.RenderEndTag();
 		}
 		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
