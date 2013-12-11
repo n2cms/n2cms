@@ -31,13 +31,12 @@ namespace N2.Security
 		public event EventHandler<ItemEventArgs> UserDeleted;
 		public event EventHandler<ItemEventArgs> UserSaved;
 
-		public ItemBridge(ContentActivator activator, IPersister persister, ISecurityManager security, IHost host, EditSection config, Logger<ItemBridge> logger)
+		public ItemBridge(ContentActivator activator, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
 			this.security = security;
 			this.activator = activator;
 			this.persister = persister;
 			this.host = host;
-			this.logger = logger;
 			this.editorUsernames = ToArray(config.Editors.Users);
 			this.administratorUsernames = ToArray(config.Administrators.Users);
 
