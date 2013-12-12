@@ -1,7 +1,7 @@
 #!/bin/bash
 
 expand_func () {
-  dos2unix -b -n "$1" "$1.tmp"
+  dos2unix -m -n "$1" "$1.tmp"
   mv "$1.tmp" "$1"
 }
 
