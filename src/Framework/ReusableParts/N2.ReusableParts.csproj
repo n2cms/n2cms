@@ -75,6 +75,7 @@
     <Compile Include="MenuPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawHtml.cs" />
+    <Compile Include="ResponsiveMenuPart.cs" />
     <Compile Include="Slideshow.cs" />
     <Compile Include="VariableSubstituter.cs" />
   </ItemGroup>
