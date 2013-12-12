@@ -65,6 +65,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.ajaxRequestDispatcher", typeof(AjaxRequestDispatcher), typeof(AjaxRequestDispatcher));
 			engine.Container.AddComponent("n2.cacheManager", typeof(ICacheManager), typeof(CacheManager));
 			engine.Container.AddComponent("n2.security", typeof(ISecurityManager), typeof(SecurityManager));
+			engine.Container.AddComponent("n2.safecontentrenderer", typeof(ISafeContentRenderer), typeof(SafeContentRenderer));
 			engine.Container.AddComponent("n2.securityEnforcer", typeof(ISecurityEnforcer), typeof(SecurityEnforcer));
 			engine.Container.AddComponent("n2.fileSystem", typeof(IFileSystem), typeof(VirtualPathFileSystem));
 			engine.Container.AddComponent("n2.defaultDirectory", typeof(IDefaultDirectory), typeof(DefaultDirectorySelector));

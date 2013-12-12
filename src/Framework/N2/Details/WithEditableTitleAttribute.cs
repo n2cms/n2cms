@@ -2,7 +2,6 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Configuration;
 using N2.Web.UI.WebControls;
 
 namespace N2.Details
@@ -35,6 +34,12 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
+<<<<<<< HEAD
+			Required = true;
+		}
+
+	    /// <summary>Gets or sets whether the title editor should receive focus.</summary>
+=======
 			_allowHtmlLoaded = false;
 			Required = true;
 		}
@@ -75,6 +80,7 @@ namespace N2.Details
 			
 
 		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
+>>>>>>> source/master
 		public bool Focus
 		{
 			get { return focus; }
@@ -144,7 +150,6 @@ namespace N2.Details
 				{
 					Level = item.IsPage ? 1 : 2,
 					Text = value.ToString(),
-					AllowHtml = this.AllowHtml,
 					CssClass = CssClass
 				};
 				container.Controls.Add(heading);

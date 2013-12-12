@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using System.Web;
 using System.Web.UI;
 using System;
+using N2.Edit;
 
 namespace N2.Details
 {
@@ -29,7 +31,7 @@ namespace N2.Details
 			writer.Write("<meta name=\"");
 			writer.Write(propertyName.ToLower());
 			writer.Write("\" content=\"");
-			writer.Write(content);
+			N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(content, writer);
 			writer.Write("\" />");			
 		}
 	}
