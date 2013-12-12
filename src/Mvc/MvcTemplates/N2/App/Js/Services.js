@@ -132,6 +132,7 @@
 		        node.Children = data.Children;
 		        delete node.Loading;
 		        node.IsPaged = data.IsPaged;
+		        node.HasChildren = data.Children.length > 0;
 		        callback && callback(node);
 		    });
 		};
