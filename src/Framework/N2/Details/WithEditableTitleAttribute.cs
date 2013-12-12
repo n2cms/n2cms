@@ -1,5 +1,4 @@
 using System;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
@@ -34,53 +33,9 @@ namespace N2.Details
 		public WithEditableTitleAttribute(string title, int sortOrder)
 			: base(title, "Title", sortOrder)
 		{
-<<<<<<< HEAD
 			Required = true;
 		}
 
-	    /// <summary>Gets or sets whether the title editor should receive focus.</summary>
-=======
-			_allowHtmlLoaded = false;
-			Required = true;
-		}
-
-		/// <summary>
-		/// Creates a new instance of the WithEditableAttribute class with default values.
-		/// </summary>
-		/// <param name="title">The label displayed to editors</param>
-		/// <param name="sortOrder">The order of this editor</param>
-		/// <param name="allowHtml">Determines whether the title tag may contain HTML (otherwise, any HTML text content will be escaped)</param>
-		public WithEditableTitleAttribute(string title, int sortOrder, bool allowHtml)
-			: base(title, "Title", sortOrder)
-		{
-			AllowHtml = allowHtml;
-			Required = true;
-		}
-
-		private bool _allowHtmlLoaded;
-		private bool _allowHtmlValue;
-
-		public bool AllowHtml
-		{
-			get
-			{
-				if (!_allowHtmlLoaded)
-				{
-					_allowHtmlValue = N2.Context.Current.Resolve<EngineSection>().DefaultHtmlEscape;
-					_allowHtmlLoaded = true;
-				}
-				return _allowHtmlValue;
-			}
-			set
-			{
-				_allowHtmlLoaded = true;
-				_allowHtmlValue = value;
-			}
-		}
-			
-
-		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
->>>>>>> source/master
 		public bool Focus
 		{
 			get { return focus; }
