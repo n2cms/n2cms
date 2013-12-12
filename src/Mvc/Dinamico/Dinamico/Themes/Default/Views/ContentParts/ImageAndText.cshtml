@@ -34,7 +34,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         ie.Title = "Image and Text";
         ie.IconUrl = "{IconsUrl}/text_padding_left.png";
         ie.Text("Title", "Heading text").SortOrder(100);
-        ie.Image("Image").SortOrder(200);
+        ie.ImageUpload("Image").SortOrder(200);
         ie.FreeText("Description").SortOrder(300);
         ie.CheckBox("ImageFirst", "Image first").DefaultValue(true).SortOrder(400);
         ie.CheckBox("HiddenPhone", "Hide image in mobile view (requires responsive CSS)").DefaultValue(false).SortOrder(500);
