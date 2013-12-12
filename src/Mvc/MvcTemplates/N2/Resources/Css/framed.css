@@ -262,7 +262,8 @@ input.dp-applied {
         {
 	        display:block;
 	        overflow: hidden;
-			text-overflow:ellipsis;
+		text-overflow:ellipsis;
+		white-space: nowrap;
         }
     .droparea, .pickarea { margin:20px 0 0 0; padding:10px; border:dashed 1px silver; border-radius:3px; clear:both; opacity:.5; }
     .droparea:hover, .pickarea:hover { border-style:solid; opacity:1; }
