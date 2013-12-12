@@ -7,45 +7,45 @@ using NUnit.Framework;
 
 namespace N2.Tests
 {
-	public abstract class PersistenceAwareBase : ItemTestsBase
-	{
-		protected IEngine engine;
-		protected PersistenceTestHelper helper;
+    public abstract class PersistenceAwareBase : ItemTestsBase
+    {
+        protected IEngine engine;
+        protected PersistenceTestHelper helper;
 
-		[TestFixtureSetUp]
-		public virtual void TestFixtureSetUp()
-		{
-			helper = new PersistenceTestHelper();
-			helper.TestFixtureSetUp();
-			engine = helper.Engine;
-		}
+        [TestFixtureSetUp]
+        public virtual void TestFixtureSetUp()
+        {
+            helper = new PersistenceTestHelper();
+            helper.TestFixtureSetUp();
+            engine = helper.Engine;
+        }
 
-		protected virtual ContentEngine CreateEngine()
-		{
-			return new ContentEngine();
-		}
+        protected virtual ContentEngine CreateEngine()
+        {
+            return new ContentEngine();
+        }
 
-		[TearDown]
-		public override void TearDown()
-		{
-			helper.TearDown();
-			base.TearDown();
-		}
+        [TearDown]
+        public override void TearDown()
+        {
+            helper.TearDown();
+            base.TearDown();
+        }
 
-		[TestFixtureTearDown]
-		public virtual void TestFixtureTearDown()
-		{
-			helper.TestFixtureTearDown();
-		}
+        [TestFixtureTearDown]
+        public virtual void TestFixtureTearDown()
+        {
+            helper.TestFixtureTearDown();
+        }
 
-		protected virtual void CreateDatabaseSchema()
-		{
-			helper.CreateDatabaseSchema();
-		}
+        protected virtual void CreateDatabaseSchema()
+        {
+            helper.CreateDatabaseSchema();
+        }
 
-		protected virtual void DropDatabaseSchema()
-		{
-			helper.DropDatabaseSchema();
-		}
-	}
+        protected virtual void DropDatabaseSchema()
+        {
+            helper.DropDatabaseSchema();
+        }
+    }
 }

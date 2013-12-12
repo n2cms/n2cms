@@ -1,4 +1,4 @@
-﻿using N2.Tests.Web.Items;
+using N2.Tests.Web.Items;
 using NUnit.Framework;
 
 namespace N2.Tests.Web
@@ -10,7 +10,7 @@ namespace N2.Tests.Web
         ContentItem item3_2;
         ContentItem ext2_2;
 
-		[SetUp]
+        [SetUp]
         public override void SetUp()
         {
             base.SetUp();

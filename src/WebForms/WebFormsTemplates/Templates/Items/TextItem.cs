@@ -3,8 +3,8 @@ using N2.Integrity;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Text", Name = "Text",
-		IconUrl = "~/Templates/UI/Img/text_align_left.png")]
+    [PartDefinition("Text", Name = "Text",
+        IconUrl = "~/Templates/UI/Img/text_align_left.png")]
     [AllowedZones(AllowedZones.AllNamed)]
     public class TextItem : AbstractItem
     {

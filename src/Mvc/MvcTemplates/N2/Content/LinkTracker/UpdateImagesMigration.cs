@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,56 +13,56 @@ using N2.Web.Drawing;
 
 namespace Management.N2.Content.LinkTracker
 {
-	[Service(typeof(AbstractMigration))]
-	public class UpdateImagesMigration : AbstractMigration
-	{
-		private IRepository<ContentDetail> repository;
-		private Tracker linkTracker;
-		private IContentItemRepository itemRepository;
+    [Service(typeof(AbstractMigration))]
+    public class UpdateImagesMigration : AbstractMigration
+    {
+        private IRepository<ContentDetail> repository;
+        private Tracker linkTracker;
+        private IContentItemRepository itemRepository;
 
-		public UpdateImagesMigration(IRepository<ContentDetail> repository, IContentItemRepository itemRepository, Tracker linkTracker)
-		{
-			this.repository = repository;
-			this.itemRepository = itemRepository;
-			this.linkTracker = linkTracker;
+        public UpdateImagesMigration(IRepository<ContentDetail> repository, IContentItemRepository itemRepository, Tracker linkTracker)
+        {
+            this.repository = repository;
+            this.itemRepository = itemRepository;
+            this.linkTracker = linkTracker;
 
-			Title = "Update tracked images to v2.3 model";
-			Description = "In order to support updating images src:s when moving and renaming more information is stored about references on the site.";
-		}
+            Title = "Update tracked images to v2.3 model";
+            Description = "In order to support updating images src:s when moving and renaming more information is stored about references on the site.";
+        }
 
-		public override bool IsApplicable(DatabaseStatus status)
-		{
-			return status.DatabaseVersion < 7 || repository.Find(new Parameter("Name", Tracker.LinkDetailName)).Any();
-		}
+        public override bool IsApplicable(DatabaseStatus status)
+        {
+            return status.DatabaseVersion < 7 || repository.Find(new Parameter("Name", Tracker.LinkDetailName)).Any();
+        }
 
-		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
-		{
-			var alreadyUpdated = new HashSet<string>();
+        public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
+        {
+            var alreadyUpdated = new HashSet<string>();
 
-			int updatedItems = 0;
-			using (var transaction = repository.BeginTransaction())
-			{
-				var detailsWithImages = repository.Find(
-					Parameter.Equal("ValueTypeKey", "String"),
-					Parameter.Like("StringValue", "%<img%")
-				);
+            int updatedItems = 0;
+            using (var transaction = repository.BeginTransaction())
+            {
+                var detailsWithImages = repository.Find(
+                    Parameter.Equal("ValueTypeKey", "String"),
+                    Parameter.Like("StringValue", "%<img%")
+                );
 
-				foreach (var detail in detailsWithImages)
-				{
-					if (alreadyUpdated.Contains(detail.EnclosingItem.Name))
-						continue;
+                foreach (var detail in detailsWithImages)
+                {
+                    if (alreadyUpdated.Contains(detail.EnclosingItem.Name))
+                        continue;
 
-					alreadyUpdated.Add(detail.EnclosingItem.Name);
-					linkTracker.UpdateLinks(detail.EnclosingItem);
-					itemRepository.SaveOrUpdate(detail.EnclosingItem);
-					updatedItems++;
-				}
+                    alreadyUpdated.Add(detail.EnclosingItem.Name);
+                    linkTracker.UpdateLinks(detail.EnclosingItem);
+                    itemRepository.SaveOrUpdate(detail.EnclosingItem);
+                    updatedItems++;
+                }
 
-				repository.Flush();
-				transaction.Commit();
-			}
+                repository.Flush();
+                transaction.Commit();
+            }
 
-			return new MigrationResult(this) { UpdatedItems = updatedItems };
-		}
-	}
+            return new MigrationResult(this) { UpdatedItems = updatedItems };
+        }
+    }
 }

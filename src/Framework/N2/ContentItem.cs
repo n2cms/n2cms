@@ -29,6 +29,7 @@ using System.Web;
 using N2.Collections;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
@@ -1016,7 +1017,7 @@ namespace N2
 
 		string ILink.Contents
 		{
-			get { return Title; }
+			get { return N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Title); }
 		}
 
 		string ILink.ToolTip

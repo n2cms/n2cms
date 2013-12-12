@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 // Credits to http://www.siliconcommandergames.com/MarkovNameGenerator.htm
 
 using System;

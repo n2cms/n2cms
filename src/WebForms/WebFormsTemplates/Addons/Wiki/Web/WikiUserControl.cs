@@ -17,14 +17,14 @@ namespace N2.Addons.Wiki.Web
             }
         }
 
-		protected string CurrentAction
-		{
-			get { return Engine.RequestContext.CurrentPath.Action; }
-		}
-		protected string CurrentArguments
-		{
-			get { return Engine.RequestContext.CurrentPath.Argument; }
-		}
+        protected string CurrentAction
+        {
+            get { return Engine.RequestContext.CurrentPath.Action; }
+        }
+        protected string CurrentArguments
+        {
+            get { return Engine.RequestContext.CurrentPath.Argument; }
+        }
 
         ViewContext viewed = null;
         public ViewContext Viewed 

@@ -14,24 +14,24 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection.Emit;
 
-	using Castle.DynamicProxy.Tokens;
+    using Castle.DynamicProxy.Tokens;
 
-	public class TypeTokenExpression : Expression
-	{
-		private readonly Type type;
+    public class TypeTokenExpression : Expression
+    {
+        private readonly Type type;
 
-		public TypeTokenExpression(Type type)
-		{
-			this.type = type;
-		}
+        public TypeTokenExpression(Type type)
+        {
+            this.type = type;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			gen.Emit(OpCodes.Ldtoken, type);
-			gen.Emit(OpCodes.Call, TypeMethods.GetTypeFromHandle);
-		}
-	}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            gen.Emit(OpCodes.Ldtoken, type);
+            gen.Emit(OpCodes.Call, TypeMethods.GetTypeFromHandle);
+        }
+    }
 }

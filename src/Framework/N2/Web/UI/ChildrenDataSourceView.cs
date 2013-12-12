@@ -9,33 +9,33 @@ using N2.Security;
 
 namespace N2.Web.UI
 {
-	/// <summary>A data source view that provides the child items of a parent item.</summary>
-	public class ChildrenDataSourceView : ItemDataSourceView
-	{
-		#region Private Fields
-		private ContentItem parentItem = null;
-		private Collections.ItemList allItems = null;
+    /// <summary>A data source view that provides the child items of a parent item.</summary>
+    public class ChildrenDataSourceView : ItemDataSourceView
+    {
+        #region Private Fields
+        private ContentItem parentItem = null;
+        private Collections.ItemList allItems = null;
         private Collections.AllFilter filter;
-		#endregion
+        #endregion
 
-		#region Constructors
-		public ChildrenDataSourceView(Engine.IEngine engine, IDataSource owner, string viewName, ContentItem parentItem)
-			: base(engine, owner, viewName)
-		{
-			this.parentItem = parentItem;
-		}		
-		#endregion
+        #region Constructors
+        public ChildrenDataSourceView(Engine.IEngine engine, IDataSource owner, string viewName, ContentItem parentItem)
+            : base(engine, owner, viewName)
+        {
+            this.parentItem = parentItem;
+        }       
+        #endregion
 
-		#region Properties
-		public ContentItem ParentItem
-		{
-			get { return parentItem; }
-			set
-			{
-				parentItem = value;
-				this.allItems = null;
-				this.OnDataSourceViewChanged(EventArgs.Empty);
-			}
+        #region Properties
+        public ContentItem ParentItem
+        {
+            get { return parentItem; }
+            set
+            {
+                parentItem = value;
+                this.allItems = null;
+                this.OnDataSourceViewChanged(EventArgs.Empty);
+            }
         }
 
         public Collections.AllFilter Filter
@@ -45,155 +45,155 @@ namespace N2.Web.UI
         }
 
         [Obsolete("Use Filter instaed")]
-		public IEnumerable<Collections.ItemFilter> Filters
-		{
-			set { filter = new Collections.AllFilter(value); }
-		}
+        public IEnumerable<Collections.ItemFilter> Filters
+        {
+            set { filter = new Collections.AllFilter(value); }
+        }
 
-		public string SortBy { get; set; }
+        public string SortBy { get; set; }
 
-		public override bool CanInsert
-		{
-			get { return parentItem != null; }
-		}
-		public override bool CanRetrieveTotalRowCount
-		{
-			get { return true; }
-		}
-		public override bool CanSort
-		{
-			get { return true; }
-		}
-		#endregion
+        public override bool CanInsert
+        {
+            get { return parentItem != null; }
+        }
+        public override bool CanRetrieveTotalRowCount
+        {
+            get { return true; }
+        }
+        public override bool CanSort
+        {
+            get { return true; }
+        }
+        #endregion
 
-		#region Methods
-		#region On...
-		protected virtual void OnItemCreated(ItemEventArgs e)
-		{
-			EventHandler<ItemEventArgs> handler = base.Events[EventItemCreated] as EventHandler<ItemEventArgs>;
-			if (handler != null)
-				handler.Invoke(this, e);
-		}
-		protected virtual void OnItemCreating(ItemEventArgs e)
-		{
-			EventHandler<ItemEventArgs> handler = base.Events[EventItemCreating] as EventHandler<ItemEventArgs>;
-			if (handler != null)
-				handler.Invoke(this, e);
+        #region Methods
+        #region On...
+        protected virtual void OnItemCreated(ItemEventArgs e)
+        {
+            EventHandler<ItemEventArgs> handler = base.Events[EventItemCreated] as EventHandler<ItemEventArgs>;
+            if (handler != null)
+                handler.Invoke(this, e);
+        }
+        protected virtual void OnItemCreating(ItemEventArgs e)
+        {
+            EventHandler<ItemEventArgs> handler = base.Events[EventItemCreating] as EventHandler<ItemEventArgs>;
+            if (handler != null)
+                handler.Invoke(this, e);
 
-			if (e.AffectedItem != null)
-			{
-				IDefinitionManager definitions = Engine.Definitions;
-				ISecurityManager security = Engine.SecurityManager;
-				ContentActivator activator = Engine.Resolve<ContentActivator>();
-				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem);
+            if (e.AffectedItem != null)
+            {
+                IDefinitionManager definitions = Engine.Definitions;
+                ISecurityManager security = Engine.SecurityManager;
+                ContentActivator activator = Engine.Resolve<ContentActivator>();
+                ItemDefinition parentDefinition = definitions.GetDefinition(parentItem);
 
-				if (parentDefinition.IsChildAllowed(definitions, parentItem, parentDefinition))
-				{
-					e.AffectedItem = Engine.Resolve<ContentActivator>().CreateInstance(parentItem.GetContentType(), parentItem);
-					return;
-				}
-				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentItem, null).WhereAuthorized(security, HttpContext.Current.User, parentItem))
-				{
-					e.AffectedItem = activator.CreateInstance(definition.ItemType, parentItem);
-					return;
-				}
-				throw new N2.Definitions.NoItemAllowedException(parentItem);
-			}
-		}
-		#endregion
+                if (parentDefinition.IsChildAllowed(definitions, parentItem, parentDefinition))
+                {
+                    e.AffectedItem = Engine.Resolve<ContentActivator>().CreateInstance(parentItem.GetContentType(), parentItem);
+                    return;
+                }
+                foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentItem, null).WhereAuthorized(security, HttpContext.Current.User, parentItem))
+                {
+                    e.AffectedItem = activator.CreateInstance(definition.ItemType, parentItem);
+                    return;
+                }
+                throw new N2.Definitions.NoItemAllowedException(parentItem);
+            }
+        }
+        #endregion
 
-		private Collections.ItemList GetAllItems()
-		{
-			if (allItems == null && parentItem != null)
-				allItems = parentItem.GetChildren();
-			return allItems;
-		}
+        private Collections.ItemList GetAllItems()
+        {
+            if (allItems == null && parentItem != null)
+                allItems = parentItem.GetChildren();
+            return allItems;
+        }
 
-		private string currentSortExpression = "";
-		protected override System.Collections.IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
-		{
-			ItemDataSourceSelectingEventArgs selectingArgs = new ItemDataSourceSelectingEventArgs(arguments);
-			OnSelecting(selectingArgs);
-			Collections.ItemListEventArgs args = new N2.Collections.ItemListEventArgs(GetAllItems());
-			if (args.Items == null)
-				return null;
-			
-			if(selectingArgs.Arguments.RetrieveTotalRowCount)
-				selectingArgs.Arguments.TotalRowCount = args.Items.Count;
+        private string currentSortExpression = "";
+        protected override System.Collections.IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
+        {
+            ItemDataSourceSelectingEventArgs selectingArgs = new ItemDataSourceSelectingEventArgs(arguments);
+            OnSelecting(selectingArgs);
+            Collections.ItemListEventArgs args = new N2.Collections.ItemListEventArgs(GetAllItems());
+            if (args.Items == null)
+                return null;
+            
+            if(selectingArgs.Arguments.RetrieveTotalRowCount)
+                selectingArgs.Arguments.TotalRowCount = args.Items.Count;
 
-			if (!string.IsNullOrEmpty(selectingArgs.Arguments.SortExpression) && selectingArgs.Arguments.SortExpression != currentSortExpression)
-			{
-				args.Items.Sort(new Collections.ItemComparer(selectingArgs.Arguments.SortExpression));
-				currentSortExpression = selectingArgs.Arguments.SortExpression;
-			}
-			else if (!string.IsNullOrEmpty(SortBy))
-			{
-				args.Items.Sort(new Collections.ItemComparer(SortBy));
-			}
+            if (!string.IsNullOrEmpty(selectingArgs.Arguments.SortExpression) && selectingArgs.Arguments.SortExpression != currentSortExpression)
+            {
+                args.Items.Sort(new Collections.ItemComparer(selectingArgs.Arguments.SortExpression));
+                currentSortExpression = selectingArgs.Arguments.SortExpression;
+            }
+            else if (!string.IsNullOrEmpty(SortBy))
+            {
+                args.Items.Sort(new Collections.ItemComparer(SortBy));
+            }
 
-			OnFiltering(args);
-			if (Filter != null || (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0))
-			{
-				Collections.ItemList filteredItems = args.Items;
-				
-				if (Filter != null)
-					filteredItems = new Collections.ItemList(filteredItems, Filter);
+            OnFiltering(args);
+            if (Filter != null || (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0))
+            {
+                Collections.ItemList filteredItems = args.Items;
+                
+                if (Filter != null)
+                    filteredItems = new Collections.ItemList(filteredItems, Filter);
 
-				if (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0)
-					filteredItems = new Collections.ItemList(filteredItems, new Collections.CountFilter(selectingArgs.Arguments.StartRowIndex, selectingArgs.Arguments.MaximumRows));
-				
-				args = new N2.Collections.ItemListEventArgs(filteredItems);
-			}
+                if (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0)
+                    filteredItems = new Collections.ItemList(filteredItems, new Collections.CountFilter(selectingArgs.Arguments.StartRowIndex, selectingArgs.Arguments.MaximumRows));
+                
+                args = new N2.Collections.ItemListEventArgs(filteredItems);
+            }
 
-			OnSelected(args);
-			return args.Items;
-		}
+            OnSelected(args);
+            return args.Items;
+        }
 
-		protected override int ExecuteInsert(System.Collections.IDictionary values)
-		{
-			if (parentItem == null)
-				throw new ArgumentNullException("parentItem", "Can't insert item since we have no parent item to insert below");
+        protected override int ExecuteInsert(System.Collections.IDictionary values)
+        {
+            if (parentItem == null)
+                throw new ArgumentNullException("parentItem", "Can't insert item since we have no parent item to insert below");
 
-			ItemEventArgs args = new ItemEventArgs(null);
-			OnItemCreating(args);
-			OnItemCreated(args);
+            ItemEventArgs args = new ItemEventArgs(null);
+            OnItemCreating(args);
+            OnItemCreated(args);
 
-			if (args.AffectedItem != null)
-			{
-				// Insert new values
-				args.AffectedItem.Parent = parentItem;
-				foreach (string propertyName in values.Keys)
-					args.AffectedItem[propertyName] = values[propertyName];
+            if (args.AffectedItem != null)
+            {
+                // Insert new values
+                args.AffectedItem.Parent = parentItem;
+                foreach (string propertyName in values.Keys)
+                    args.AffectedItem[propertyName] = values[propertyName];
 
-				OnInserting(args);
-				Engine.Persister.Save(args.AffectedItem);
-				GetAllItems().Add(args.AffectedItem);
-				OnInserted(args);
-				OnDataSourceViewChanged(EventArgs.Empty);
+                OnInserting(args);
+                Engine.Persister.Save(args.AffectedItem);
+                GetAllItems().Add(args.AffectedItem);
+                OnInserted(args);
+                OnDataSourceViewChanged(EventArgs.Empty);
 
-				return 1;
-			}
-			return 0;
-		}
+                return 1;
+            }
+            return 0;
+        }
  
-		#endregion	
+        #endregion  
 
-		#region Events
-		public event EventHandler<ItemEventArgs> ItemCreated
-		{
-			add { base.Events.AddHandler(EventItemCreated, value); }
-			remove { base.Events.RemoveHandler(EventItemCreated, value); }
-		}
-		public event EventHandler<ItemEventArgs> ItemCreating
-		{
-			add { base.Events.AddHandler(EventItemCreating, value); }
-			remove { base.Events.RemoveHandler(EventItemCreating, value); }
-		}
-		#endregion
+        #region Events
+        public event EventHandler<ItemEventArgs> ItemCreated
+        {
+            add { base.Events.AddHandler(EventItemCreated, value); }
+            remove { base.Events.RemoveHandler(EventItemCreated, value); }
+        }
+        public event EventHandler<ItemEventArgs> ItemCreating
+        {
+            add { base.Events.AddHandler(EventItemCreating, value); }
+            remove { base.Events.RemoveHandler(EventItemCreating, value); }
+        }
+        #endregion
 
-		#region Static Event Keys
-		private static readonly object EventItemCreated = new object();
-		private static readonly object EventItemCreating = new object();
-		#endregion	
-	}
+        #region Static Event Keys
+        private static readonly object EventItemCreated = new object();
+        private static readonly object EventItemCreating = new object();
+        #endregion  
+    }
 }

@@ -11,155 +11,155 @@ using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Mvc.Html
 {
-	[TestFixture]
-	public class DisplayExtensionsTests
-	{
-		private class RegularPageContainer : IItemContainer<RegularPage>
-		{
-			public RegularPageContainer(RegularPage page)
-			{
-				CurrentItem = page;
-			}
+    [TestFixture]
+    public class DisplayExtensionsTests
+    {
+        private class RegularPageContainer : IItemContainer<RegularPage>
+        {
+            public RegularPageContainer(RegularPage page)
+            {
+                CurrentItem = page;
+            }
 
-			#region IItemContainer<RegularPage> Members
+            #region IItemContainer<RegularPage> Members
 
-			public RegularPage CurrentItem { get; set; }
+            public RegularPage CurrentItem { get; set; }
 
-			/// <summary>Gets the item associated with the item container.</summary>
-			ContentItem IItemContainer.CurrentItem
-			{
-				get { return CurrentItem; }
-			}
+            /// <summary>Gets the item associated with the item container.</summary>
+            ContentItem IItemContainer.CurrentItem
+            {
+                get { return CurrentItem; }
+            }
 
-			#endregion
-		}
+            #endregion
+        }
 
-		private class DisplayableItem : ContentItem
-		{
-			public string Text { get; set; }
+        private class DisplayableItem : ContentItem
+        {
+            public string Text { get; set; }
 
-			[TestDisplayable]
-			public ContentItem Property
-			{
-				get { return GetDetail("Property") as ContentItem; }
-				set { SetDetail("Property", value); }
-			}
+            [TestDisplayable]
+            public ContentItem Property
+            {
+                get { return GetDetail("Property") as ContentItem; }
+                set { SetDetail("Property", value); }
+            }
 
-			public override string ToString()
-			{
-				return Text;
-			}
+            public override string ToString()
+            {
+                return Text;
+            }
 
-			#region Nested type: TestDisplayableAttribute
+            #region Nested type: TestDisplayableAttribute
 
-			private class TestDisplayableAttribute : Attribute, IDisplayable
-			{
-				#region IDisplayable Members
+            private class TestDisplayableAttribute : Attribute, IDisplayable
+            {
+                #region IDisplayable Members
 
-				/// <summary>Gets or sets the name of the prpoerty referenced by this attribute.</summary>
-				public string Name { get; set; }
+                /// <summary>Gets or sets the name of the prpoerty referenced by this attribute.</summary>
+                public string Name { get; set; }
 
-				/// <summary>Creates, initializes adds and returns the displayer.</summary>
-				/// <param name="item">The item from which to get it's value.</param>
-				/// <param name="detailName"></param>
-				/// <param name="container">The container onto which to add the displayer.</param>
-				/// <returns>The displayer control that was added.</returns>
-				public Control AddTo(ContentItem item, string detailName, Control container)
-				{
-					Name = detailName;
+                /// <summary>Creates, initializes adds and returns the displayer.</summary>
+                /// <param name="item">The item from which to get it's value.</param>
+                /// <param name="detailName"></param>
+                /// <param name="container">The container onto which to add the displayer.</param>
+                /// <returns>The displayer control that was added.</returns>
+                public Control AddTo(ContentItem item, string detailName, Control container)
+                {
+                    Name = detailName;
 
-					var control = new LiteralControl("<displayed>" + item[detailName] + "</displayed>");
+                    var control = new LiteralControl("<displayed>" + item[detailName] + "</displayed>");
 
-					container.Controls.Add(control);
+                    container.Controls.Add(control);
 
-					return control;
-				}
+                    return control;
+                }
 
-				#endregion
-			}
+                #endregion
+            }
 
-			#endregion
-		}
+            #endregion
+        }
 
-		[Controls(typeof (DisplayableItem))]
-		public class DisplayableItemController : Controller
-		{
-			public ActionResult Index()
-			{
-				return Content("Hello");
-			}
-		}
+        [Controls(typeof (DisplayableItem))]
+        public class DisplayableItemController : Controller
+        {
+            public ActionResult Index()
+            {
+                return Content("Hello");
+            }
+        }
 
-		[Test]
-		public void ModelViewPageSyntaxTestWithLambda()
-		{
+        [Test]
+        public void ModelViewPageSyntaxTestWithLambda()
+        {
             var item = new RegularPage { Title = "A Title" };
             var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
             page.InitHelpers();
 
             var result = page.ContentHtml.DisplayContent(m => m.Title).ToString();
 
-			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
-		}
+            Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
+        }
 
-		[Test]
-		public void ModelViewPageSyntaxTestWithString()
-		{
+        [Test]
+        public void ModelViewPageSyntaxTestWithString()
+        {
             var item = new RegularPage { Title = "A Title" };
             var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
-			page.InitHelpers();
+            page.InitHelpers();
 
-			var result = page.ContentHtml.DisplayContent("Title").ToString();
+            var result = page.ContentHtml.DisplayContent("Title").ToString();
 
-			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
-		}
+            Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
+        }
 
-		[Test]
-		public void ViewPageSyntaxTestWithLambda()
-		{
+        [Test]
+        public void ViewPageSyntaxTestWithLambda()
+        {
             var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
-			page.InitHelpers();
+            page.InitHelpers();
 
-			var result = page.Html.DisplayContent(m => m.Title).ToString();
+            var result = page.Html.DisplayContent(m => m.Title).ToString();
 
-			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
-		}
+            Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
+        }
 
-		[Test]
-		public void ViewPageSyntaxTestWithString()
-		{
+        [Test]
+        public void ViewPageSyntaxTestWithString()
+        {
             var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
-			page.InitHelpers();
+            page.InitHelpers();
 
             var result = page.Html.DisplayContent("Title").ToString();
 
-			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
-		}
+            Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
+        }
 
-		//TODO: test sometime
-		//[Test]
-		//public void WhenPassedDisplayable_ForContentItem_PassesThatContentItem_AsModel()
-		//{
-		//    var testItem = new DisplayableItem
-		//                    {
-		//                        Text = "RootTestItem",
-		//                        Property = new DisplayableItem {Text = "NestedTestItem"},
-		//                    };
-		//    var page = MvcTestUtilities.CreateViewPage(testItem);
-		//    page.InitHelpers();
+        //TODO: test sometime
+        //[Test]
+        //public void WhenPassedDisplayable_ForContentItem_PassesThatContentItem_AsModel()
+        //{
+        //    var testItem = new DisplayableItem
+        //                    {
+        //                        Text = "RootTestItem",
+        //                        Property = new DisplayableItem {Text = "NestedTestItem"},
+        //                    };
+        //    var page = MvcTestUtilities.CreateViewPage(testItem);
+        //    page.InitHelpers();
 
-		//    var adapter = MockRepository.GenerateMock<MvcAdapter>();
-		//    adapter.Expect(r => r.RenderTemplate(page.Html, testItem.Property));
-			
-		//    var adapterProvider = MockRepository.GenerateStub<IContentAdapterProvider>();
-		//    adapterProvider.Expect(ap => ap.ResolveAdapter<MvcAdapter>(testItem.Property)).Return(adapter);
+        //    var adapter = MockRepository.GenerateMock<MvcAdapter>();
+        //    adapter.Expect(r => r.RenderTemplate(page.Html, testItem.Property));
+            
+        //    var adapterProvider = MockRepository.GenerateStub<IContentAdapterProvider>();
+        //    adapterProvider.Expect(ap => ap.ResolveAdapter<MvcAdapter>(testItem.Property)).Return(adapter);
 
-		//    var engine = page.ViewContext.RouteData.GetEngine();
-		//    engine.Expect(e => e.Resolve<IContentAdapterProvider>()).Return(adapterProvider).Repeat.Any();
+        //    var engine = page.ViewContext.RouteData.GetEngine();
+        //    engine.Expect(e => e.Resolve<IContentAdapterProvider>()).Return(adapterProvider).Repeat.Any();
 
-		//    var result = page.Html.DisplayContent(p => p.Property).ToString();
+        //    var result = page.Html.DisplayContent(p => p.Property).ToString();
 
-		//    adapter.VerifyAllExpectations();
-		//}
-	}
+        //    adapter.VerifyAllExpectations();
+        //}
+    }
 }

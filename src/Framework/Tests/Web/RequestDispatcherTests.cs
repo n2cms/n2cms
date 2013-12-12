@@ -37,7 +37,7 @@
 //            dispatcher = new RequestPathProvider(webContext, parser, new FakeErrorHandler(), hostSection, versionRepository);
 //        }
 //    }
-	
+    
 //    public abstract class RequestDispatcherTests : ItemPersistenceMockingBase
 //    {
 //        protected PageItem startItem, item1, item1_1, item2, item2_1;
@@ -51,7 +51,7 @@
 //        public override void SetUp()
 //        {
 //            base.SetUp();
-			
+            
 //            CreateDefaultStructure();
 //            webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 //            hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};

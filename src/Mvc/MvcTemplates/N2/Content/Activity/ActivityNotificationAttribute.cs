@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,20 +8,20 @@ using N2.Edit.Activity;
 
 namespace N2.Management.Activity
 {
-	public class ActivityNotificationAttribute : Attribute, IContentPageConcern
-	{
-		public ActivityNotificationAttribute()
-		{
-			Operation = "Edit";
-		}
+    public class ActivityNotificationAttribute : Attribute, IContentPageConcern
+    {
+        public ActivityNotificationAttribute()
+        {
+            Operation = "Edit";
+        }
 
-		public string Operation { get; set; }
+        public string Operation { get; set; }
 
-		public void OnPreInit(System.Web.UI.Page page, ContentItem item)
-		{
-			var engine = page.GetEngine();
-			if (item != null && engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled)
-				engine.AddActivity(new ManagementActivity { Operation = Operation, PerformedBy = page.User.Identity.Name, Path = item.Path, ID = item.ID });
-		}
-	}
+        public void OnPreInit(System.Web.UI.Page page, ContentItem item)
+        {
+            var engine = page.GetEngine();
+            if (item != null && engine.Config.Sections.Management.Collaboration.ActivityTrackingEnabled)
+                engine.AddActivity(new ManagementActivity { Operation = Operation, PerformedBy = page.User.Identity.Name, Path = item.Path, ID = item.ID });
+        }
+    }
 }

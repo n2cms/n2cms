@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2009 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2009 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,36 +14,36 @@
 
 namespace Castle.Core.Internal
 {
-	using System.Threading;
+    using System.Threading;
 
-	internal class MonitorLockHolder : ILockHolder
-	{
-		private readonly object locker;
-		private bool lockAcquired;
+    internal class MonitorLockHolder : ILockHolder
+    {
+        private readonly object locker;
+        private bool lockAcquired;
 
-		public MonitorLockHolder(object locker, bool waitForLock)
-		{
-			this.locker = locker;
-			if(waitForLock)
-			{
-				Monitor.Enter(locker);
-				lockAcquired = true;
-				return;
-			}
+        public MonitorLockHolder(object locker, bool waitForLock)
+        {
+            this.locker = locker;
+            if(waitForLock)
+            {
+                Monitor.Enter(locker);
+                lockAcquired = true;
+                return;
+            }
 
-			lockAcquired = Monitor.TryEnter(locker, 0);
-		}
+            lockAcquired = Monitor.TryEnter(locker, 0);
+        }
 
-		public void Dispose()
-		{
-			if (!LockAcquired) return;
-			Monitor.Exit(locker);
-			lockAcquired = false;
-		}
+        public void Dispose()
+        {
+            if (!LockAcquired) return;
+            Monitor.Exit(locker);
+            lockAcquired = false;
+        }
 
-		public bool LockAcquired
-		{
-			get { return lockAcquired; }
-		}
-	}
+        public bool LockAcquired
+        {
+            get { return lockAcquired; }
+        }
+    }
 }

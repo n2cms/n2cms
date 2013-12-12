@@ -9,10 +9,10 @@ namespace N2.Templates.UI.Views
     {
         protected Repeater rc;
 
-    	protected string RequestedDate
-    	{
-			get { return Server.UrlDecode(Request["date"]); }
-    	}
+        protected string RequestedDate
+        {
+            get { return Server.UrlDecode(Request["date"]); }
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -20,10 +20,10 @@ namespace N2.Templates.UI.Views
 
             Register.StyleSheet(Page, "~/Templates/UI/Css/Calendar.css", Media.All);
 
-			if(Request["filter"] != null)
-				rc.DataSource = CurrentPage.GetEvents(Convert.ToDateTime(RequestedDate));
-			else
-				rc.DataSource = CurrentPage.GetEvents();
+            if(Request["filter"] != null)
+                rc.DataSource = CurrentPage.GetEvents(Convert.ToDateTime(RequestedDate));
+            else
+                rc.DataSource = CurrentPage.GetEvents();
             rc.DataBind();
         }
     }

@@ -14,44 +14,44 @@
 
 namespace Castle.DynamicProxy.Contributors
 {
-	using System;
+    using System;
 
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-	using Castle.DynamicProxy.Tokens;
+    using Castle.DynamicProxy.Generators.Emitters;
+    using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Tokens;
 
-	public class InterfaceProxyInstanceContributor : ProxyInstanceContributor
-	{
-		protected override Expression GetTargetReferenceExpression(ClassEmitter emitter)
-		{
-			return emitter.GetField("__target").ToExpression();
-		}
+    public class InterfaceProxyInstanceContributor : ProxyInstanceContributor
+    {
+        protected override Expression GetTargetReferenceExpression(ClassEmitter emitter)
+        {
+            return emitter.GetField("__target").ToExpression();
+        }
 
-		public InterfaceProxyInstanceContributor(Type targetType, string proxyGeneratorId, Type[] interfaces)
-			: base(targetType, interfaces, proxyGeneratorId)
-		{
-		}
+        public InterfaceProxyInstanceContributor(Type targetType, string proxyGeneratorId, Type[] interfaces)
+            : base(targetType, interfaces, proxyGeneratorId)
+        {
+        }
 
 #if !SILVERLIGHT
-		protected override void CustomizeGetObjectData(AbstractCodeBuilder codebuilder, ArgumentReference serializationInfo,
-		                                               ArgumentReference streamingContext, ClassEmitter emitter)
-		{
-			var targetField = emitter.GetField("__target");
+        protected override void CustomizeGetObjectData(AbstractCodeBuilder codebuilder, ArgumentReference serializationInfo,
+                                                       ArgumentReference streamingContext, ClassEmitter emitter)
+        {
+            var targetField = emitter.GetField("__target");
 
-			codebuilder.AddStatement(new ExpressionStatement(
-			                         	new MethodInvocationExpression(serializationInfo, SerializationInfoMethods.AddValue_Object,
-			                         	                               new ConstReference("__targetFieldType").ToExpression(),
-			                         	                               new ConstReference(
-			                         	                               	targetField.Reference.FieldType.AssemblyQualifiedName).
-			                         	                               	ToExpression())));
+            codebuilder.AddStatement(new ExpressionStatement(
+                                        new MethodInvocationExpression(serializationInfo, SerializationInfoMethods.AddValue_Object,
+                                                                       new ConstReference("__targetFieldType").ToExpression(),
+                                                                       new ConstReference(
+                                                                        targetField.Reference.FieldType.AssemblyQualifiedName).
+                                                                        ToExpression())));
 
-			codebuilder.AddStatement(new ExpressionStatement(
-			                         	new MethodInvocationExpression(serializationInfo, SerializationInfoMethods.AddValue_Object,
-			                         	                               new ConstReference("__theInterface").ToExpression(),
-			                         	                               new ConstReference(targetType.AssemblyQualifiedName).
-			                         	                               	ToExpression())));
-		}
+            codebuilder.AddStatement(new ExpressionStatement(
+                                        new MethodInvocationExpression(serializationInfo, SerializationInfoMethods.AddValue_Object,
+                                                                       new ConstReference("__theInterface").ToExpression(),
+                                                                       new ConstReference(targetType.AssemblyQualifiedName).
+                                                                        ToExpression())));
+        }
 #endif
-	}
+    }
 }

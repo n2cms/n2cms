@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -44,11 +44,11 @@ namespace N2.Configuration
             set { base["mailFrom"] = value; }
         }
 
-		[ConfigurationProperty("sqlExceptionHandling", DefaultValue = ExceptionResolutionMode.RefreshGet)]
-		public ExceptionResolutionMode SqlExceptionHandling
-		{
-			get { return (ExceptionResolutionMode)base["sqlExceptionHandling"]; }
-			set { base["sqlExceptionHandling"] = value; }
-		}
-	}
+        [ConfigurationProperty("sqlExceptionHandling", DefaultValue = ExceptionResolutionMode.RefreshGet)]
+        public ExceptionResolutionMode SqlExceptionHandling
+        {
+            get { return (ExceptionResolutionMode)base["sqlExceptionHandling"]; }
+            set { base["sqlExceptionHandling"] = value; }
+        }
+    }
 }

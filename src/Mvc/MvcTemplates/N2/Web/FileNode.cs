@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 
 namespace N2.Edit.Web
 {
@@ -10,7 +10,7 @@ namespace N2.Edit.Web
 
         public override string IconUrl
         {
-			get { return "../Resources/icons/page_white.png"; }
+            get { return "../Resources/icons/page_white.png"; }
         }
 
         public override string Target

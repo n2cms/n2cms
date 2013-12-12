@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 
 namespace Castle.Core.Internal
 {
-	internal class NoOpLock : ILockHolder
-	{
-		public static readonly ILockHolder Lock = new NoOpLock();
+    internal class NoOpLock : ILockHolder
+    {
+        public static readonly ILockHolder Lock = new NoOpLock();
 
-		public void Dispose()
-		{
+        public void Dispose()
+        {
 
-		}
+        }
 
-		public bool LockAcquired
-		{
-			get { return true; }
-		}
-	}
+        public bool LockAcquired
+        {
+            get { return true; }
+        }
+    }
 }

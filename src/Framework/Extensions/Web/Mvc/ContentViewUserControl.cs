@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using N2.Web.Mvc.Html;
 using N2.Web.UI;
 

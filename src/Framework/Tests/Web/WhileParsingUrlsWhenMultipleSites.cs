@@ -1,4 +1,4 @@
-﻿using N2.Web;
+using N2.Web;
 using NUnit.Framework;
 
 namespace N2.Tests.Web
@@ -6,23 +6,23 @@ namespace N2.Tests.Web
     [TestFixture]
     public class WhileParsingUrlsWhenMultipleSites : MultipleHostUrlParserTests
     {
-		[Test]
-		public void CanGetFirstSite()
-		{
-			mocks.ReplayAll();
+        [Test]
+        public void CanGetFirstSite()
+        {
+            mocks.ReplayAll();
 
-			Site s = host.GetSite("http://www.n2cms.com");
-			Assert.AreSame(sites[1], s);
-		}
+            Site s = host.GetSite("http://www.n2cms.com");
+            Assert.AreSame(sites[1], s);
+        }
 
-		[Test]
-		public void CanGetSiteWithPort()
-		{
-			mocks.ReplayAll();
+        [Test]
+        public void CanGetSiteWithPort()
+        {
+            mocks.ReplayAll();
 
             Site s = host.GetSite("http://www.n2cms.com:8080");
-			Assert.AreSame(sites[3], s);
-		}
+            Assert.AreSame(sites[3], s);
+        }
 
 
         [Test]

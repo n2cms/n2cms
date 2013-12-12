@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Web.UI;
+using System.Xml.Linq;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
@@ -37,6 +38,7 @@ namespace N2.Web
 		public abstract HeadingLevel MenuTitleHeadingLevel { get; set; }
 		public abstract int MenuNumChildLevels { get; set; }
 		public abstract int MenuStartFromLevel { get; set; }
+		public abstract bool MenuShowTreeRoot { get; set; }
 		public abstract SibilingDisplayOptions MenuShowSibilings { get; set; }
 		public abstract bool MenuFlattenTopLevel { get; set; }
 		public abstract bool MenuDontLinkTopLevel { get; set; }
@@ -45,8 +47,10 @@ namespace N2.Web
 		public abstract string MenuInnerUlCssClass { get; set; }
 		public abstract string MenuLiCssClass { get; set; }
 		public abstract string MenuSelectedLiCssClass { get; set; }
+		public abstract string MenuAncestorLiCssClass { get; set; }
 		public abstract bool MenuShowCurrentItemIfHidden { get; set; }
 		public abstract bool MenuShowInvisible { get; set; }
+		public abstract bool MenuNestChildUls { get; set; }
 	}
 
 	/// <summary>
@@ -54,6 +58,7 @@ namespace N2.Web
 	/// </summary>
 	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	[WithEditableTitle]
+    [WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]
 	public class MenuPart : MenuPartBase, IPart
@@ -77,9 +82,9 @@ namespace N2.Web
 		#endregion
 
 
-		#region Hierarchy Options
+        #region Hierarchy Options
 
-		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
+        [EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
 		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
@@ -96,6 +101,13 @@ namespace N2.Web
 			set { SetDetail("StartLevel", value); }
 		}
 
+		[EditableCheckBox("Show the root node of the tree.", 460, ContainerName = NestingContainerName,
+			HelpText = "Disabling the root node of a tree can be usefull when configuring the menu from a positive start level and only wanting to see its children on the root page of the menu.")]
+		public override bool MenuShowTreeRoot
+		{
+			get { return GetDetail("ShowTreeRoot", true); }
+			set { SetDetail("ShowTreeRoot", value); }
+		}
 
 		[EditableEnum(typeof(SibilingDisplayOptions), Title = "Show Sibilings", ContainerName = NestingContainerName)]
 		public override SibilingDisplayOptions MenuShowSibilings
@@ -139,6 +151,13 @@ namespace N2.Web
 			set { SetDetail("ShowInvisible", value); }
 		}
 
+		[EditableCheckBox("Nest child UL elements inside the parent LI element", 495, ContainerName = NestingContainerName)]
+		public override bool MenuNestChildUls
+		{
+			get { return GetDetail("NestChildUls", false); }
+			set { SetDetail("NestChildUls", value); }
+		}
+
 		#endregion
 
 
@@ -172,11 +191,18 @@ namespace N2.Web
 			set { SetDetail("SelectedLiCssClass", value); }
 		}
 
+		[EditableText("Acestor Item CssClass", 540, ContainerName = CssContainerName)]
+		public override string MenuAncestorLiCssClass
+		{
+			get { return GetDetail("AncestorLiCssClass", "ancestor"); }
+			set { SetDetail("AncestorLiCssClass", value); }
+		}
+
 		#endregion
 
 	}
 
-	/// <summary>
+    /// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof(MenuPart))]
@@ -184,15 +210,18 @@ namespace N2.Web
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-			if (!(part is MenuPart))
+		    var menuPart = part as MenuPart;
+			if (part == null)
 				throw new ArgumentException("part");
 
 			if (html.ViewContext.Writer is HtmlTextWriter)
-				(new MenuPartRenderer(part as MenuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
+				(new MenuPartRenderer(menuPart)).WriteHtml(html.ViewContext.Writer as HtmlTextWriter);
 			else
-				html.ViewContext.Writer.Write(new MenuPartRenderer(part as MenuPart).GetHtml());
+				html.ViewContext.Writer.Write(new MenuPartRenderer(menuPart).GetHtml());
 		}
 	}
+
+
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
@@ -214,13 +243,14 @@ namespace N2.Web
 			public int SortOrder { get; protected set; }
 			public ContentItem Item { get; private set; }
 			public ContentTreeNode Parent { get; private set; }
+			public bool IsAncestor { get; set; }
 		}
 
 		private readonly List<ContentTreeNode> database;
-		private readonly MenuPartBase menuPart;
+		private readonly MenuPart menuPart;
 		private int cId;
 
-		public MenuPartRenderer(MenuPartBase menuPart)
+		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
 			database = BuildNavTree();
@@ -240,6 +270,7 @@ namespace N2.Web
 		public void WriteHtml(HtmlTextWriter xml)
 		{
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
+            xml.AddAttribute("class", "menuNavPart");
 			xml.RenderBeginTag("div");
 
 			switch (menuPart.MenuTitleDisplayMode)
@@ -249,7 +280,7 @@ namespace N2.Web
 					break;
 				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
-					break;
+                    break;
 				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
@@ -294,7 +325,7 @@ namespace N2.Web
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault());
+				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true };
 				navTree.Add(ancestorNode);
 
 				// expand the ancestor
@@ -358,12 +389,23 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
-			{
-				WriteListItem(childNode, xml, level, null);
-				WriteChildList(childNode, xml, level + 1);
-			}
-			xml.RenderEndTag();
+
+		    if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
+		    {
+                // Skip directly to the childre of the root node.
+		        childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
+		    }
+
+		    foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+		    {
+		        WriteListItem(childNode, xml, level, null);
+
+		        if (!menuPart.MenuNestChildUls)
+		        {
+		            WriteChildList(childNode, xml, level + 1);
+		        }
+		    }
+		    xml.RenderEndTag();
 		}
 		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
@@ -382,7 +424,7 @@ namespace N2.Web
 
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
-			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).OrderBy(n => n.Item.ID))
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
 			{
 				WriteListItem(childNode, xml, 0, "nav-header disabled"); // header item
 
@@ -390,7 +432,11 @@ namespace N2.Web
 				foreach (var childnode2 in childNodes2)
 				{
 					WriteListItem(childnode2, xml, 1, null);
-					WriteChildList(childnode2, xml, 2);
+
+					if (!menuPart.MenuNestChildUls)
+					{
+						WriteChildList(childNode, xml, 2);
+					}
 				}
 			}
 			xml.RenderEndTag();
@@ -404,7 +450,10 @@ namespace N2.Web
 			var isSelected = childItem.ID == cId;
 
 			if (cssClass == null)
-				cssClass = isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
+				cssClass = childNode.IsAncestor
+					? sn.MenuAncestorLiCssClass
+					: isSelected ? sn.MenuSelectedLiCssClass : sn.MenuLiCssClass;
+
 			xml.AddAttribute("class", cssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Li);
 
@@ -431,6 +480,11 @@ namespace N2.Web
 					xml.RenderEndTag();
 				}
 				xml.RenderEndTag();
+			}
+
+			if (menuPart.MenuNestChildUls)
+			{
+				WriteChildList(childNode, xml, level + 1);
 			}
 
 			xml.RenderEndTag(); // </li>

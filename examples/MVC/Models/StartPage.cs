@@ -1,4 +1,4 @@
-﻿using N2.Definitions;
+using N2.Definitions;
 using N2.Definitions.Runtime;
 using System;
 using System.Collections.Generic;

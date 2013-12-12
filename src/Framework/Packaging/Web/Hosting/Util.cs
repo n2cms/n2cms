@@ -28,42 +28,42 @@ using System.Web;
 
 namespace SharpZipLib.Web.VirtualPathProvider
 {
-	internal static class Util
-	{
-		internal static string ConvertVirtualPathToZipPath (String virtualPath, bool isFile)
-		{
-			if (virtualPath[0] == '~')
-			{
-				if (!isFile)
-					return virtualPath.Substring(2).TrimEnd('/') + "/";
-				else
-					return virtualPath.Substring(2);
-			}
-			else if (virtualPath[0] == '/')
-			{
-				virtualPath = ToAppRelative(virtualPath);
-				if (!isFile)
-					return virtualPath.Substring(2).TrimEnd('/') + "/";
-				else
-					return virtualPath.Substring(2);
-			}
-			else
-				return virtualPath;
-		}
+    internal static class Util
+    {
+        internal static string ConvertVirtualPathToZipPath (String virtualPath, bool isFile)
+        {
+            if (virtualPath[0] == '~')
+            {
+                if (!isFile)
+                    return virtualPath.Substring(2).TrimEnd('/') + "/";
+                else
+                    return virtualPath.Substring(2);
+            }
+            else if (virtualPath[0] == '/')
+            {
+                virtualPath = ToAppRelative(virtualPath);
+                if (!isFile)
+                    return virtualPath.Substring(2).TrimEnd('/') + "/";
+                else
+                    return virtualPath.Substring(2);
+            }
+            else
+                return virtualPath;
+        }
 
-		private static string ToAppRelative(String virtualPath)
-		{
-			if(HttpContext.Current == null || !virtualPath.StartsWith(HttpContext.Current.Request.ApplicationPath))
-				return "~" + virtualPath;
+        private static string ToAppRelative(String virtualPath)
+        {
+            if(HttpContext.Current == null || !virtualPath.StartsWith(HttpContext.Current.Request.ApplicationPath))
+                return "~" + virtualPath;
 
-			return VirtualPathUtility.ToAppRelative(virtualPath);
-		}
+            return VirtualPathUtility.ToAppRelative(virtualPath);
+        }
 
-		internal static string ConvertZipPathToVirtualPath (String zipPath)
-		{
-			return "/" + zipPath;
-		}
-	}
+        internal static string ConvertZipPathToVirtualPath (String zipPath)
+        {
+            return "/" + zipPath;
+        }
+    }
 
     internal enum VirtualPathType
     {

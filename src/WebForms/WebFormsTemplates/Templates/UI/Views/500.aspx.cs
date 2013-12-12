@@ -5,7 +5,7 @@ namespace N2.Templates.UI.Views
 {
     public partial class Error500 : System.Web.UI.Page
     {
-		private readonly Engine.Logger<Error500> logger;
+        private readonly Engine.Logger<Error500> logger;
 
         protected override void OnInit(EventArgs args)
         {
@@ -17,7 +17,7 @@ namespace N2.Templates.UI.Views
                 {
                     var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
                     wc.CurrentPage = page;
-					Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).GetRewrittenUrl()).AppendQuery("postback", page.Url));
+                    Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).GetRewrittenUrl()).AppendQuery("postback", page.Url));
                     Response.End();
                     return;
                 }

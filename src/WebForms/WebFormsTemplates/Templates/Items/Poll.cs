@@ -11,8 +11,8 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Poll",
-		IconUrl = "~/Templates/UI/Img/chart_pie.png")]
+    [PartDefinition("Poll",
+        IconUrl = "~/Templates/UI/Img/chart_pie.png")]
     [AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight)]
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof(SingleSelect))]
@@ -36,10 +36,10 @@ namespace N2.Templates.Items
         public virtual Control AddTo(Control container)
         {
             string templateUrl = (DisplayResult(container.Page.Request))
-				? "~/Templates/UI/Parts/Result.ascx"
-				: TemplateUrl;
+                ? "~/Templates/UI/Parts/Result.ascx"
+                : TemplateUrl;
 
-			return N2.Web.UI.ItemUtility.AddUserControl(templateUrl, container, this);
+            return N2.Web.UI.ItemUtility.AddUserControl(templateUrl, container, this);
         }
 
         public virtual void AddAnswer(IPersister persister, int selectedItem)

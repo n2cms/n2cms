@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -33,7 +33,7 @@ namespace N2.Management.Search
         }
         protected void OnReindex(object sender, CommandEventArgs args)
         {
-			Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, true);
+            Engine.Resolve<IAsyncIndexer>().ReindexDescendants(Engine.Content.Traverse.RootPage.ID, true);
         }
 
         protected void OnSearch(object sender, CommandEventArgs args)

@@ -1,4 +1,4 @@
-﻿namespace N2.Edit
+namespace N2.Edit
 {
     /// <summary>
     /// Known interfaces in N2 CMS.
@@ -9,9 +9,9 @@
         public const string Editing = "Editing";
 
         /// <summary>The preview interface</summary>
-		public const string Viewing = "Viewing";
+        public const string Viewing = "Viewing";
 
-		/// <summary>The managing interface</summary>
-		public const string Managing = "Managing";
+        /// <summary>The managing interface</summary>
+        public const string Managing = "Managing";
     }
 }

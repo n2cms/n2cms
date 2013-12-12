@@ -14,64 +14,64 @@
 
 namespace Castle.DynamicProxy.Generators
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Reflection;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
 
-	using Castle.DynamicProxy.Contributors;
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-	using Castle.DynamicProxy.Serialization;
+    using Castle.DynamicProxy.Contributors;
+    using Castle.DynamicProxy.Generators.Emitters;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Serialization;
 
-	public class InterfaceProxyWithTargetInterfaceGenerator : InterfaceProxyWithTargetGenerator
-	{
-		public InterfaceProxyWithTargetInterfaceGenerator(ModuleScope scope, Type @interface)
-			: base(scope, @interface)
-		{
-		}
+    public class InterfaceProxyWithTargetInterfaceGenerator : InterfaceProxyWithTargetGenerator
+    {
+        public InterfaceProxyWithTargetInterfaceGenerator(ModuleScope scope, Type @interface)
+            : base(scope, @interface)
+        {
+        }
 
-		protected override bool AllowChangeTarget
-		{
-			get { return true; }
-		}
+        protected override bool AllowChangeTarget
+        {
+            get { return true; }
+        }
 
-		protected override string GeneratorType
-		{
-			get { return ProxyTypeConstants.InterfaceWithTargetInterface; }
-		}
+        protected override string GeneratorType
+        {
+            get { return ProxyTypeConstants.InterfaceWithTargetInterface; }
+        }
 
-		protected override ITypeContributor AddMappingForTargetType(
-			IDictionary<Type, ITypeContributor> typeImplementerMapping, Type proxyTargetType, ICollection<Type> targetInterfaces,
-			ICollection<Type> additionalInterfaces, INamingScope namingScope)
-		{
-			var contributor = new InterfaceProxyWithTargetInterfaceTargetContributor(
-				proxyTargetType,
-				AllowChangeTarget,
-				namingScope) { Logger = Logger };
-			foreach (var @interface in targetType.GetAllInterfaces())
-			{
-				contributor.AddInterfaceToProxy(@interface);
-				AddMappingNoCheck(@interface, contributor, typeImplementerMapping);
-			}
+        protected override ITypeContributor AddMappingForTargetType(
+            IDictionary<Type, ITypeContributor> typeImplementerMapping, Type proxyTargetType, ICollection<Type> targetInterfaces,
+            ICollection<Type> additionalInterfaces, INamingScope namingScope)
+        {
+            var contributor = new InterfaceProxyWithTargetInterfaceTargetContributor(
+                proxyTargetType,
+                AllowChangeTarget,
+                namingScope) { Logger = Logger };
+            foreach (var @interface in targetType.GetAllInterfaces())
+            {
+                contributor.AddInterfaceToProxy(@interface);
+                AddMappingNoCheck(@interface, contributor, typeImplementerMapping);
+            }
 
-			return contributor;
-		}
+            return contributor;
+        }
 
-		protected override InterfaceProxyWithoutTargetContributor GetContributorForAdditionalInterfaces(
-			INamingScope namingScope)
-		{
-			return new InterfaceProxyWithOptionalTargetContributor(namingScope, GetTargetExpression, GetTarget)
-			{ Logger = Logger };
-		}
+        protected override InterfaceProxyWithoutTargetContributor GetContributorForAdditionalInterfaces(
+            INamingScope namingScope)
+        {
+            return new InterfaceProxyWithOptionalTargetContributor(namingScope, GetTargetExpression, GetTarget)
+            { Logger = Logger };
+        }
 
-		private Reference GetTarget(ClassEmitter @class, MethodInfo method)
-		{
-			return new AsTypeReference(@class.GetField("__target"), method.DeclaringType);
-		}
+        private Reference GetTarget(ClassEmitter @class, MethodInfo method)
+        {
+            return new AsTypeReference(@class.GetField("__target"), method.DeclaringType);
+        }
 
-		private Expression GetTargetExpression(ClassEmitter @class, MethodInfo method)
-		{
-			return GetTarget(@class, method).ToExpression();
-		}
-	}
+        private Expression GetTargetExpression(ClassEmitter @class, MethodInfo method)
+        {
+            return GetTarget(@class, method).ToExpression();
+        }
+    }
 }

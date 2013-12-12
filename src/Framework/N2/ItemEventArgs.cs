@@ -38,6 +38,6 @@ namespace N2
 
 
         /// <summary>Gets or sets the item associated with these arguments.</summary>
-		public ContentItem AffectedItem { get; set; }
+        public ContentItem AffectedItem { get; set; }
     }
 }

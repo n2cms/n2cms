@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web;
 using N2.Collections;
 using N2.Edit.FileSystem;
 using N2.Edit.Workflow;
@@ -110,7 +111,7 @@ namespace N2.Edit
 				State = item.State,
 				IconUrl = GetIconUrl(item),
 				IconClass = GetIconClass(item),
-				Title = item.Title,
+				Title = Engine.Resolve<ISafeContentRenderer>().HtmlEncode(item.Title),
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
 				PreviewUrl = GetPreviewUrl(item, allowDraft: allowDraft),
 				MaximumPermission = GetMaximumPermission(item),

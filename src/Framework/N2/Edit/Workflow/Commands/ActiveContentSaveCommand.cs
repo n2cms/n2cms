@@ -1,4 +1,4 @@
-﻿using N2.Persistence;
+using N2.Persistence;
 
 namespace N2.Edit.Workflow.Commands
 {

@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,39 +15,39 @@
 namespace Castle.Core.Internal
 {
 #if SILVERLIGHT
-	internal class MonitorLock : Lock
-	{
-		private readonly object locker = new object();
+    internal class MonitorLock : Lock
+    {
+        private readonly object locker = new object();
 
-		public override IUpgradeableLockHolder ForReadingUpgradeable()
-		{
-			return ForReadingUpgradeable(true);
-		}
+        public override IUpgradeableLockHolder ForReadingUpgradeable()
+        {
+            return ForReadingUpgradeable(true);
+        }
 
-		public override ILockHolder ForReading()
-		{
-			return ForReading(true);
-		}
+        public override ILockHolder ForReading()
+        {
+            return ForReading(true);
+        }
 
-		public override ILockHolder ForWriting()
-		{
-			return ForWriting(true);
-		}
+        public override ILockHolder ForWriting()
+        {
+            return ForWriting(true);
+        }
 
-		public override IUpgradeableLockHolder ForReadingUpgradeable(bool waitForLock)
-		{
-			return new MonitorUpgradeableLockHolder(locker, waitForLock);
-		}
+        public override IUpgradeableLockHolder ForReadingUpgradeable(bool waitForLock)
+        {
+            return new MonitorUpgradeableLockHolder(locker, waitForLock);
+        }
 
-		public override ILockHolder ForReading(bool waitForLock)
-		{
-			return new MonitorLockHolder(locker, waitForLock);
-		}
+        public override ILockHolder ForReading(bool waitForLock)
+        {
+            return new MonitorLockHolder(locker, waitForLock);
+        }
 
-		public override ILockHolder ForWriting(bool waitForLock)
-		{
-			return new MonitorLockHolder(locker, waitForLock);
-		}
-	}
+        public override ILockHolder ForWriting(bool waitForLock)
+        {
+            return new MonitorLockHolder(locker, waitForLock);
+        }
+    }
 #endif
 }

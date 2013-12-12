@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Details;
 using N2.Integrity;
 
