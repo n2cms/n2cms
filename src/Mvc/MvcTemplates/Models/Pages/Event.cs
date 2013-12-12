@@ -9,41 +9,41 @@ using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
-	[PageDefinition("Event",
-		Description = "An event in the event calendar.",
-		SortOrder = 110,
-		IconClass = "n2-icon-calendar-empty")]
-	[RestrictParents(typeof (Calendar))]
-	public class Event : ContentPageBase, ISyndicatable
-	{
-		[EditableDate("Event date", 22, ContainerName = Tabs.Content)]
-		[Persistable]
-		public virtual DateTime? EventDate { get; set; }
+    [PageDefinition("Event",
+        Description = "An event in the event calendar.",
+        SortOrder = 110,
+        IconClass = "n2-icon-calendar-empty")]
+    [RestrictParents(typeof (Calendar))]
+    public class Event : ContentPageBase, ISyndicatable
+    {
+        [EditableDate("Event date", 22, ContainerName = Tabs.Content)]
+        [Persistable]
+        public virtual DateTime? EventDate { get; set; }
 
-		[DefaultValue(false)]
-		public override bool Visible
-		{
-			get { return base.Visible; }
-			set { base.Visible = value; }
-		}
+        [DefaultValue(false)]
+        public override bool Visible
+        {
+            get { return base.Visible; }
+            set { base.Visible = value; }
+        }
 
         [DisplayableLiteral]
-		public virtual string EventDateString
-		{
-			get
-			{
-				if (!EventDate.HasValue) return null;
-				if (EventDate.Value.TimeOfDay.TotalSeconds == 0) return EventDate.Value.ToShortDateString();
+        public virtual string EventDateString
+        {
+            get
+            {
+                if (!EventDate.HasValue) return null;
+                if (EventDate.Value.TimeOfDay.TotalSeconds == 0) return EventDate.Value.ToShortDateString();
 
-				return EventDate.Value.ToString();
-			}
-		}
+                return EventDate.Value.ToString();
+            }
+        }
 
-		[Obsolete("Use Summary")]
-		[DisplayableLiteral]
-		public virtual string Introduction { get { return Summary; } }
+        [Obsolete("Use Summary")]
+        [DisplayableLiteral]
+        public virtual string Introduction { get { return Summary; } }
 
-		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public virtual bool Syndicate { get; set; }
-	}
+        [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
+        public virtual bool Syndicate { get; set; }
+    }
 }

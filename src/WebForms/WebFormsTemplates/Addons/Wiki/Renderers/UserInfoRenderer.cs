@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
@@ -15,10 +15,10 @@ namespace N2.Addons.Wiki.Renderers
         public Control AddTo(Control container, ViewContext context)
         {
             Literal l = new Literal();
-			var text = context.Fragment.ToString();
-			if (text.Length <= 3)
+            var text = context.Fragment.ToString();
+            if (text.Length <= 3)
                 l.Text = context.Article.SavedBy;
-			else if (text.Length >= 5)
+            else if (text.Length >= 5)
                 l.Text = context.Article.Updated.ToString();
             else
                 l.Text = context.Article.SavedBy + ", " + context.Article.Updated.ToString();

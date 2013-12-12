@@ -1,4 +1,4 @@
-﻿using N2.Plugin;
+using N2.Plugin;
 
 namespace N2.Addons.MyAddon.Services
 {

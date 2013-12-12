@@ -1,4 +1,4 @@
-﻿using N2.Templates.Mvc.Details.Controls;
+using N2.Templates.Mvc.Details.Controls;
 
 namespace N2.Templates.Web.UI.WebControls
 {

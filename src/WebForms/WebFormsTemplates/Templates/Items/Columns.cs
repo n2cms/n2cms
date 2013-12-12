@@ -3,8 +3,8 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Two column container",
-		IconUrl = "~/Templates/UI/Img/text_columns.png")]
+    [PartDefinition("Two column container",
+        IconUrl = "~/Templates/UI/Img/text_columns.png")]
     [AvailableZone("Left", "ColumnLeft"), AvailableZone("Right", "ColumnRight")]
     [AllowedZones("Content")]
     public class Columns : AbstractItem

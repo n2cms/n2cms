@@ -14,92 +14,92 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	public class ClassEmitter : AbstractTypeEmitter
-	{
-		private const TypeAttributes DefaultAttributes =
-			TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
+    public class ClassEmitter : AbstractTypeEmitter
+    {
+        private const TypeAttributes DefaultAttributes =
+            TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable;
 
-		private readonly ModuleScope moduleScope;
+        private readonly ModuleScope moduleScope;
 
-		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces)
-			: this(modulescope, name, baseType, interfaces, DefaultAttributes, ShouldForceUnsigned())
-		{
-		}
+        public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces)
+            : this(modulescope, name, baseType, interfaces, DefaultAttributes, ShouldForceUnsigned())
+        {
+        }
 
-		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
-		                    TypeAttributes flags)
-			: this(modulescope, name, baseType, interfaces, flags, ShouldForceUnsigned())
-		{
-		}
+        public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
+                            TypeAttributes flags)
+            : this(modulescope, name, baseType, interfaces, flags, ShouldForceUnsigned())
+        {
+        }
 
-		public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
-		                    TypeAttributes flags,
-		                    bool forceUnsigned)
-			: this(CreateTypeBuilder(modulescope, name, baseType, interfaces, flags, forceUnsigned))
-		{
-			interfaces = InitializeGenericArgumentsFromBases(ref baseType, interfaces);
+        public ClassEmitter(ModuleScope modulescope, String name, Type baseType, IEnumerable<Type> interfaces,
+                            TypeAttributes flags,
+                            bool forceUnsigned)
+            : this(CreateTypeBuilder(modulescope, name, baseType, interfaces, flags, forceUnsigned))
+        {
+            interfaces = InitializeGenericArgumentsFromBases(ref baseType, interfaces);
 
-			if (interfaces != null)
-			{
-				foreach (var inter in interfaces)
-				{
-					TypeBuilder.AddInterfaceImplementation(inter);
-				}
-			}
+            if (interfaces != null)
+            {
+                foreach (var inter in interfaces)
+                {
+                    TypeBuilder.AddInterfaceImplementation(inter);
+                }
+            }
 
-			TypeBuilder.SetParent(baseType);
-			moduleScope = modulescope;
-		}
+            TypeBuilder.SetParent(baseType);
+            moduleScope = modulescope;
+        }
 
-		public ClassEmitter(TypeBuilder typeBuilder)
-			: base(typeBuilder)
-		{
-		}
+        public ClassEmitter(TypeBuilder typeBuilder)
+            : base(typeBuilder)
+        {
+        }
 
-		public ModuleScope ModuleScope
-		{
-			get { return moduleScope; }
-		}
+        public ModuleScope ModuleScope
+        {
+            get { return moduleScope; }
+        }
 
-		protected virtual IEnumerable<Type> InitializeGenericArgumentsFromBases(ref Type baseType,
-		                                                                        IEnumerable<Type> interfaces)
-		{
-			if (baseType != null && baseType.IsGenericTypeDefinition)
-			{
-				throw new NotSupportedException("ClassEmitter does not support open generic base types. Type: " + baseType.FullName);
-			}
+        protected virtual IEnumerable<Type> InitializeGenericArgumentsFromBases(ref Type baseType,
+                                                                                IEnumerable<Type> interfaces)
+        {
+            if (baseType != null && baseType.IsGenericTypeDefinition)
+            {
+                throw new NotSupportedException("ClassEmitter does not support open generic base types. Type: " + baseType.FullName);
+            }
 
-			if (interfaces == null)
-			{
-				return interfaces;
-			}
+            if (interfaces == null)
+            {
+                return interfaces;
+            }
 
-			foreach (var inter in interfaces)
-			{
-				if (inter.IsGenericTypeDefinition)
-				{
-					throw new NotSupportedException("ClassEmitter does not support open generic interfaces. Type: " + inter.FullName);
-				}
-			}
-			return interfaces;
-		}
+            foreach (var inter in interfaces)
+            {
+                if (inter.IsGenericTypeDefinition)
+                {
+                    throw new NotSupportedException("ClassEmitter does not support open generic interfaces. Type: " + inter.FullName);
+                }
+            }
+            return interfaces;
+        }
 
-		private static TypeBuilder CreateTypeBuilder(ModuleScope modulescope, string name, Type baseType,
-		                                             IEnumerable<Type> interfaces,
-		                                             TypeAttributes flags, bool forceUnsigned)
-		{
-			var isAssemblySigned = !forceUnsigned && !StrongNameUtil.IsAnyTypeFromUnsignedAssembly(baseType, interfaces);
-			return modulescope.DefineType(isAssemblySigned, name, flags);
-		}
+        private static TypeBuilder CreateTypeBuilder(ModuleScope modulescope, string name, Type baseType,
+                                                     IEnumerable<Type> interfaces,
+                                                     TypeAttributes flags, bool forceUnsigned)
+        {
+            var isAssemblySigned = !forceUnsigned && !StrongNameUtil.IsAnyTypeFromUnsignedAssembly(baseType, interfaces);
+            return modulescope.DefineType(isAssemblySigned, name, flags);
+        }
 
-		private static bool ShouldForceUnsigned()
-		{
-			return StrongNameUtil.CanStrongNameAssembly == false;
-		}
-	}
+        private static bool ShouldForceUnsigned()
+        {
+            return StrongNameUtil.CanStrongNameAssembly == false;
+        }
+    }
 }

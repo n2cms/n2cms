@@ -14,89 +14,89 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-	public class ConstructorEmitter : IMemberEmitter
-	{
-		private readonly ConstructorBuilder builder;
-		private readonly AbstractTypeEmitter maintype;
+    public class ConstructorEmitter : IMemberEmitter
+    {
+        private readonly ConstructorBuilder builder;
+        private readonly AbstractTypeEmitter maintype;
 
-		private ConstructorCodeBuilder constructorCodeBuilder;
+        private ConstructorCodeBuilder constructorCodeBuilder;
 
-		protected internal ConstructorEmitter(AbstractTypeEmitter maintype, ConstructorBuilder builder)
-		{
-			this.maintype = maintype;
-			this.builder = builder;
-		}
+        protected internal ConstructorEmitter(AbstractTypeEmitter maintype, ConstructorBuilder builder)
+        {
+            this.maintype = maintype;
+            this.builder = builder;
+        }
 
-		internal ConstructorEmitter(AbstractTypeEmitter maintype, params ArgumentReference[] arguments)
-		{
-			this.maintype = maintype;
+        internal ConstructorEmitter(AbstractTypeEmitter maintype, params ArgumentReference[] arguments)
+        {
+            this.maintype = maintype;
 
-			var args = ArgumentsUtil.InitializeAndConvert(arguments);
+            var args = ArgumentsUtil.InitializeAndConvert(arguments);
 
-			builder = maintype.TypeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, args);
-		}
+            builder = maintype.TypeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, args);
+        }
 
-		public virtual ConstructorCodeBuilder CodeBuilder
-		{
-			get
-			{
-				if (constructorCodeBuilder == null)
-				{
-					constructorCodeBuilder = new ConstructorCodeBuilder(
-						maintype.BaseType, builder.GetILGenerator());
-				}
-				return constructorCodeBuilder;
-			}
-		}
+        public virtual ConstructorCodeBuilder CodeBuilder
+        {
+            get
+            {
+                if (constructorCodeBuilder == null)
+                {
+                    constructorCodeBuilder = new ConstructorCodeBuilder(
+                        maintype.BaseType, builder.GetILGenerator());
+                }
+                return constructorCodeBuilder;
+            }
+        }
 
-		public ConstructorBuilder ConstructorBuilder
-		{
-			get { return builder; }
-		}
+        public ConstructorBuilder ConstructorBuilder
+        {
+            get { return builder; }
+        }
 
-		public MemberInfo Member
-		{
-			get { return builder; }
-		}
+        public MemberInfo Member
+        {
+            get { return builder; }
+        }
 
-		public Type ReturnType
-		{
-			get { return typeof(void); }
-		}
+        public Type ReturnType
+        {
+            get { return typeof(void); }
+        }
 
-		private bool ImplementedByRuntime
-		{
-			get
-			{
-				var attributes = builder.GetMethodImplementationFlags();
-				return (attributes & MethodImplAttributes.Runtime) != 0;
-			}
-		}
+        private bool ImplementedByRuntime
+        {
+            get
+            {
+                var attributes = builder.GetMethodImplementationFlags();
+                return (attributes & MethodImplAttributes.Runtime) != 0;
+            }
+        }
 
-		public virtual void EnsureValidCodeBlock()
-		{
-			if (ImplementedByRuntime == false && CodeBuilder.IsEmpty)
-			{
-				CodeBuilder.InvokeBaseConstructor();
-				CodeBuilder.AddStatement(new ReturnStatement());
-			}
-		}
+        public virtual void EnsureValidCodeBlock()
+        {
+            if (ImplementedByRuntime == false && CodeBuilder.IsEmpty)
+            {
+                CodeBuilder.InvokeBaseConstructor();
+                CodeBuilder.AddStatement(new ReturnStatement());
+            }
+        }
 
-		public virtual void Generate()
-		{
-			if (ImplementedByRuntime)
-			{
-				return;
-			}
+        public virtual void Generate()
+        {
+            if (ImplementedByRuntime)
+            {
+                return;
+            }
 
-			CodeBuilder.Generate(this, builder.GetILGenerator());
-		}
-	}
+            CodeBuilder.Generate(this, builder.GetILGenerator());
+        }
+    }
 }

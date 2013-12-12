@@ -5,38 +5,38 @@ using System.IO;
 
 namespace N2.Details
 {
-	/// <summary>
-	/// An abstract base class that implements editable list functionality.
-	/// Override and implement GetListItems to use.
-	/// Implement a CreateEditor() method to instantiate a desired editor control.
-	/// </summary>
-	public abstract class EditableListControlAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
-	{
-		public EditableListControlAttribute(): base() { }
+    /// <summary>
+    /// An abstract base class that implements editable list functionality.
+    /// Override and implement GetListItems to use.
+    /// Implement a CreateEditor() method to instantiate a desired editor control.
+    /// </summary>
+    public abstract class EditableListControlAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
+    {
+        public EditableListControlAttribute(): base() { }
 
-		public EditableListControlAttribute(string title, int sortOrder)
-			: base(title, sortOrder)
-		{
-		}
+        public EditableListControlAttribute(string title, int sortOrder)
+            : base(title, sortOrder)
+        {
+        }
 
-		public override bool UpdateItem(ContentItem item, Control editor)
-		{
-			ListControl ddl = editor as ListControl;
-			string current = GetValue(item);
-			string newValue = GetValue(ddl);
+        public override bool UpdateItem(ContentItem item, Control editor)
+        {
+            ListControl ddl = editor as ListControl;
+            string current = GetValue(item);
+            string newValue = GetValue(ddl);
 
-			if (!newValue.Equals(current))
-			{
+            if (!newValue.Equals(current))
+            {
                 item[Name] = ConvertToValue(newValue);
-				return true;
-			}
-			else if (current != null && current.Equals(DefaultValue))
-			{
-				item[Name] = newValue;
-				return true;
-			}
-			return false;
-		}
+                return true;
+            }
+            else if (current != null && current.Equals(DefaultValue))
+            {
+                item[Name] = newValue;
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>Gets the object to store as content from the drop down list editor.</summary>
         /// <param name="ddl">The editor.</param>
@@ -46,13 +46,13 @@ namespace N2.Details
             return ddl.SelectedValue;
         }
 
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			ListControl ddl = editor as ListControl;
-			if (item[Name] != null)
-			{
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            ListControl ddl = editor as ListControl;
+            if (item[Name] != null)
+            {
                 ddl.SelectedValue = GetValue(item);
-			}
+            }
         }
 
         /// <summary>Gets a string value from the drop down list editor from the content item.</summary>
@@ -75,57 +75,57 @@ namespace N2.Details
         {
             return value;
         }
-		
-		protected abstract ListControl CreateEditor();
+        
+        protected abstract ListControl CreateEditor();
 
-		protected override Control AddHelp(Control container)
-		{
-			return base.AddHelp(container);
-		}
+        protected override Control AddHelp(Control container)
+        {
+            return base.AddHelp(container);
+        }
 
-		protected override Control AddRequiredFieldValidator(Control container, Control editor)
-		{
-			return null;
-		}
-		 
-		protected override Control AddEditor(Control container)
-		{
-			ListControl ddl = this.CreateEditor();
+        protected override Control AddRequiredFieldValidator(Control container, Control editor)
+        {
+            return null;
+        }
+         
+        protected override Control AddEditor(Control container)
+        {
+            ListControl ddl = this.CreateEditor();
             ddl.ID = Name;
-			if (!Required)
-				ddl.Items.Add(new ListItem());
+            if (!Required)
+                ddl.Items.Add(new ListItem());
 
-			ddl.Items.AddRange(GetListItems());
-			container.Controls.Add(ddl);
-			return ddl;
-		}
+            ddl.Items.AddRange(GetListItems());
+            container.Controls.Add(ddl);
+            return ddl;
+        }
 
-		protected abstract ListItem[] GetListItems();
+        protected abstract ListItem[] GetListItems();
 
-		#region IDisplayable Members
+        #region IDisplayable Members
 
-		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
-		{
-			using (var sw = new StringWriter())
-			{
-				Write(item, detailName, sw);
-				var lc = new LiteralControl(sw.ToString());
-				container.Controls.Add(lc);
-				return lc;
-			}
-		}
+        Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
+        {
+            using (var sw = new StringWriter())
+            {
+                Write(item, detailName, sw);
+                var lc = new LiteralControl(sw.ToString());
+                container.Controls.Add(lc);
+                return lc;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region IWritingDisplayable Members
+        #region IWritingDisplayable Members
 
-		public virtual void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
-		{
-			var selected = item[propertyName] as string;
-			if (selected != null)
-				writer.Write(GetListItems().Where(li => li.Value == selected).Select(li => li.Text).FirstOrDefault());
-		}
+        public virtual void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+        {
+            var selected = item[propertyName] as string;
+            if (selected != null)
+                writer.Write(GetListItems().Where(li => li.Value == selected).Select(li => li.Text).FirstOrDefault());
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

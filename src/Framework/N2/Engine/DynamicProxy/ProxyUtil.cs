@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,68 +14,68 @@
 
 namespace Castle.DynamicProxy
 {
-	using System;
-	using System.Runtime.Remoting;
+    using System;
+    using System.Runtime.Remoting;
 
-	public class ProxyUtil
-	{
-		public static object GetUnproxiedInstance(object instance)
-		{
+    public class ProxyUtil
+    {
+        public static object GetUnproxiedInstance(object instance)
+        {
 #if (!SILVERLIGHT)
-			if (!RemotingServices.IsTransparentProxy(instance))
+            if (!RemotingServices.IsTransparentProxy(instance))
 #endif
-			{
-				var accessor = instance as IProxyTargetAccessor;
-				if (accessor != null)
-				{
-					instance = accessor.DynProxyGetTarget();
-				}
-			}
+            {
+                var accessor = instance as IProxyTargetAccessor;
+                if (accessor != null)
+                {
+                    instance = accessor.DynProxyGetTarget();
+                }
+            }
 
-			return instance;
-		}
+            return instance;
+        }
 
-		public static Type GetUnproxiedType(object instance)
-		{
+        public static Type GetUnproxiedType(object instance)
+        {
 #if (!SILVERLIGHT)
-			if (!RemotingServices.IsTransparentProxy(instance))
+            if (!RemotingServices.IsTransparentProxy(instance))
 #endif
-			{
-				var accessor = instance as IProxyTargetAccessor;
+            {
+                var accessor = instance as IProxyTargetAccessor;
 
-				if (accessor != null)
-				{
-					var target = accessor.DynProxyGetTarget();
+                if (accessor != null)
+                {
+                    var target = accessor.DynProxyGetTarget();
 
-					if (target != null)
-					{
-						if (ReferenceEquals(target, instance))
-						{
-							return instance.GetType().BaseType;
-						}
+                    if (target != null)
+                    {
+                        if (ReferenceEquals(target, instance))
+                        {
+                            return instance.GetType().BaseType;
+                        }
 
-						instance = target;
-					}
-				}
-			}
+                        instance = target;
+                    }
+                }
+            }
 
-			return instance.GetType();
-		}
+            return instance.GetType();
+        }
 
-		public static bool IsProxy(object instance)
-		{
+        public static bool IsProxy(object instance)
+        {
 #if (!SILVERLIGHT)
-			if (RemotingServices.IsTransparentProxy(instance))
-			{
-				return true;
-			}
+            if (RemotingServices.IsTransparentProxy(instance))
+            {
+                return true;
+            }
 #endif
-			return instance is IProxyTargetAccessor;
-		}
+            return instance is IProxyTargetAccessor;
+        }
 
-		public static bool IsProxyType(Type type)
-		{
-			return typeof(IProxyTargetAccessor).IsAssignableFrom(type);
-		}
-	}
+        public static bool IsProxyType(Type type)
+        {
+            return typeof(IProxyTargetAccessor).IsAssignableFrom(type);
+        }
+    }
 }

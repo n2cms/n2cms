@@ -11,27 +11,27 @@ using N2.Persistence;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(CalendarTeaser))]
-	public class CalendarTeaserController : ContentController<CalendarTeaser>
-	{
-		private IContentItemRepository repository;
-		public CalendarTeaserController(IContentItemRepository repository)
-		{
-			this.repository = repository;
-		}
+    [Controls(typeof(CalendarTeaser))]
+    public class CalendarTeaserController : ContentController<CalendarTeaser>
+    {
+        private IContentItemRepository repository;
+        public CalendarTeaserController(IContentItemRepository repository)
+        {
+            this.repository = repository;
+        }
 
-		public override ActionResult Index()
-		{
-			var parameters = Parameter.TypeEqual(typeof(Event).Name)
-				& Parameter.GreaterOrEqual("EventDate", N2.Utility.CurrentTime());
+        public override ActionResult Index()
+        {
+            var parameters = Parameter.TypeEqual(typeof(Event).Name)
+                & Parameter.GreaterOrEqual("EventDate", N2.Utility.CurrentTime());
 
-			if (CurrentItem.Container != null)
-				parameters.Add(Parameter.BelowOrSelf(CurrentItem.Container));
+            if (CurrentItem.Container != null)
+                parameters.Add(Parameter.BelowOrSelf(CurrentItem.Container));
 
-			var hits = repository.Find(parameters.OrderBy("EventDate").Take(5))
-				.OfType<Event>().ToList();
+            var hits = repository.Find(parameters.OrderBy("EventDate").Take(5))
+                .OfType<Event>().ToList();
 
-			return PartialView(new CalendarTeaserModel(CurrentItem, hits));
-		}
-	}
+            return PartialView(new CalendarTeaserModel(CurrentItem, hits));
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using N2.Web;
+using N2.Web;
 using NUnit.Framework;
 
 namespace N2.Templates.Tests.Wiki

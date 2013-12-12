@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Edit;
 using N2.Edit.Web;
 using N2.Collections;

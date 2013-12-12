@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,7 +17,7 @@ namespace Dinamico
 			public const string Site = "Site";
 			public const string Advanced = "Advanced";
 		}
-		
+
 		public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
 		{
 			if (string.IsNullOrEmpty(preferredSize))

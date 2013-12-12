@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -18,13 +18,13 @@ namespace N2.Configuration
             set { base["runWhileDebuggerAttached"] = value; }
         }
 
-		/// <summary>Run scheduled actions in parallel.</summary>
-		[ConfigurationProperty("asyncActions", DefaultValue = true)]
-		public bool AsyncActions
-		{
-			get { return (bool)base["asyncActions"]; }
-			set { base["asyncActions"] = value; }
-		}
+        /// <summary>Run scheduled actions in parallel.</summary>
+        [ConfigurationProperty("asyncActions", DefaultValue = true)]
+        public bool AsyncActions
+        {
+            get { return (bool)base["asyncActions"]; }
+            set { base["asyncActions"] = value; }
+        }
 
         [ConfigurationProperty("interval", DefaultValue = 60)]
         public int Interval
@@ -39,20 +39,20 @@ namespace N2.Configuration
             get { return (bool)base["keepAlive"]; }
             set { base["keepAlive"] = value; }
         }
-		
-		[ConfigurationProperty("keepAlivePath", DefaultValue = "{ManagementUrl}/Resources/keepalive/ping.ashx")]
+        
+        [ConfigurationProperty("keepAlivePath", DefaultValue = "{ManagementUrl}/Resources/keepalive/ping.ashx")]
         public string KeepAlivePath
         {
             get { return (string)base["keepAlivePath"]; }
             set { base["keepAlivePath"] = value; }
         }
 
-		/// <summary>When not empty this prevents the scheduler from running except when the machien name matches the given string.</summary>
-		[ConfigurationProperty("executeOnMachineNamed")]
-		public string ExecuteOnMachineNamed
-		{
-			get { return (string)base["executeOnMachineNamed"]; }
-			set { base["executeOnMachineNamed"] = value; }
-		}
+        /// <summary>When not empty this prevents the scheduler from running except when the machien name matches the given string.</summary>
+        [ConfigurationProperty("executeOnMachineNamed")]
+        public string ExecuteOnMachineNamed
+        {
+            get { return (string)base["executeOnMachineNamed"]; }
+            set { base["executeOnMachineNamed"] = value; }
+        }
     }
 }

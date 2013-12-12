@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Details;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -14,14 +14,14 @@ namespace N2.Addons.Wiki
         {
         }
 
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			base.UpdateEditor(item, editor);
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            base.UpdateEditor(item, editor);
 
-			FreeTextArea fta = editor as FreeTextArea;
-			IArticle article = item as IArticle;
-			fta.EnableFreeTextArea = article.WikiRoot.EnableFreeText;
-		}
+            FreeTextArea fta = editor as FreeTextArea;
+            IArticle article = item as IArticle;
+            fta.EnableFreeTextArea = article.WikiRoot.EnableFreeText;
+        }
 
         Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
         {

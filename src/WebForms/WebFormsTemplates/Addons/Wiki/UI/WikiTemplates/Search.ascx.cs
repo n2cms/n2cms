@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Web;
 
 namespace N2.Addons.Wiki.UI.WikiTemplates
@@ -8,7 +8,7 @@ namespace N2.Addons.Wiki.UI.WikiTemplates
     {
         protected override void OnInit(EventArgs e)
         {
-			
+            
             if (CurrentAction == "search" || CurrentAction == "nohits")
             {
                 txtSearch.Text = CurrentArguments;

@@ -6,17 +6,17 @@ using N2.Web.Mvc;
 
 namespace N2.Extensions.Tests.Mvc.Controllers
 {
-	[Controls(typeof(SearchPage))]
-	public class SearchController : ContentController<SearchPage>
-	{
-		public override ActionResult Index()
-		{
-			throw new NotImplementedException();
-		}
+    [Controls(typeof(SearchPage))]
+    public class SearchController : ContentController<SearchPage>
+    {
+        public override ActionResult Index()
+        {
+            throw new NotImplementedException();
+        }
 
-		public ActionResult Find(string q)
-		{
-			return View(new string[q.Length]);
-		}
-	}
+        public ActionResult Find(string q)
+        {
+            return View(new string[q.Length]);
+        }
+    }
 }

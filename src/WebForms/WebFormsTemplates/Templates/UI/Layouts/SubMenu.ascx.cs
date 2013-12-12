@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Collections;
 
 namespace N2.Templates.UI.Layouts

@@ -33,12 +33,12 @@ namespace N2.Templates.UI.Parts
             DateTime date = cEvents.SelectedDate.Date;
             if(CurrentItem.Container != null)
             {
-            	IList<Event> events = CurrentItem.Container.GetEvents(date);
-				if(events.Count == 1) Response.Redirect(events[0].Url);
+                IList<Event> events = CurrentItem.Container.GetEvents(date);
+                if(events.Count == 1) Response.Redirect(events[0].Url);
 
                 Url url = CurrentItem.Container.Url;
-            	url = url.AppendQuery("date", date);
-				url = url.AppendQuery("filter", "true");
+                url = url.AppendQuery("date", date);
+                url = url.AppendQuery("filter", "true");
                 Response.Redirect(url);
             }
         }

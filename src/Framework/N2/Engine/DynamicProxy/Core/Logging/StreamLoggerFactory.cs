@@ -15,31 +15,31 @@
 namespace Castle.Core.Logging
 {
 #if !SILVERLIGHT
-	using System;
-	using System.IO;
-	using System.Text;
+    using System;
+    using System.IO;
+    using System.Text;
 
-	/// <summary>
-	///   Creates <see cref = "StreamLogger" /> outputing 
-	///   to files. The name of the file is derived from the log name
-	///   plus the 'log' extension.
-	/// </summary>
-	[Serializable]
-	public class StreamLoggerFactory : AbstractLoggerFactory
-	{
-		public override ILogger Create(string name)
-		{
-			return new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write), Encoding.Default);
-		}
+    /// <summary>
+    ///   Creates <see cref = "StreamLogger" /> outputing 
+    ///   to files. The name of the file is derived from the log name
+    ///   plus the 'log' extension.
+    /// </summary>
+    [Serializable]
+    public class StreamLoggerFactory : AbstractLoggerFactory
+    {
+        public override ILogger Create(string name)
+        {
+            return new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write), Encoding.Default);
+        }
 
-		public override ILogger Create(string name, LoggerLevel level)
-		{
-			var logger =
-				new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write), Encoding.Default);
-			logger.Level = level;
-			return logger;
-		}
-	}
+        public override ILogger Create(string name, LoggerLevel level)
+        {
+            var logger =
+                new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write), Encoding.Default);
+            logger.Level = level;
+            return logger;
+        }
+    }
 
 #endif
 }

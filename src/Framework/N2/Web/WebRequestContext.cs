@@ -14,14 +14,14 @@ namespace N2.Web
     /// </summary>
     public class WebRequestContext : IWebContext, IDisposable
     {
-		private readonly Engine.Logger<WebRequestContext> logger;
-		IProvider<HttpContextBase> httpContextProvider;
-		private const string CurrentPathKey = "N2.CurrentPath";
+        private readonly Engine.Logger<WebRequestContext> logger;
+        IProvider<HttpContextBase> httpContextProvider;
+        private const string CurrentPathKey = "N2.CurrentPath";
 
-		public WebRequestContext(IProvider<HttpContextBase> httpContextProvider)
-		{
-			this.httpContextProvider = httpContextProvider;
-		}
+        public WebRequestContext(IProvider<HttpContextBase> httpContextProvider)
+        {
+            this.httpContextProvider = httpContextProvider;
+        }
 
         /// <summary>Provides access to HttpContext.Current.</summary>
         protected virtual HttpContext CurrentHttpContext
@@ -30,14 +30,14 @@ namespace N2.Web
             {
                 if (System.Web.HttpContext.Current == null)
                     throw new N2Exception("Tried to retrieve HttpContext.Current but it's null. This may happen when working outside a request or when doing stuff after the context has been recycled.");
-				return System.Web.HttpContext.Current;
+                return System.Web.HttpContext.Current;
             }
         }
 
-		public virtual HttpContextBase HttpContext
-		{
-			get { return httpContextProvider.Get(); }
-		}
+        public virtual HttpContextBase HttpContext
+        {
+            get { return httpContextProvider.Get(); }
+        }
 
         public bool IsWeb
         {
@@ -54,54 +54,54 @@ namespace N2.Web
         public ContentItem CurrentPage
         {
             get { return CurrentPath.CurrentPage; }
-			set { CurrentPath.CurrentPage = value; }
-		}
+            set { CurrentPath.CurrentPage = value; }
+        }
 
-		/// <summary>The template used to serve this request.</summary>
-		public PathData CurrentPath
-		{
-			get { return RequestItems[CurrentPathKey] as PathData ?? PathData.Empty; }
-			set { RequestItems[CurrentPathKey] = value; }
-		}
+        /// <summary>The template used to serve this request.</summary>
+        public PathData CurrentPath
+        {
+            get { return RequestItems[CurrentPathKey] as PathData ?? PathData.Empty; }
+            set { RequestItems[CurrentPathKey] = value; }
+        }
 
-		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
-		[Obsolete("Use HttpContext.SkipAuthorization")]
-		public bool SkipAuthorization
-		{
-			get { return CurrentHttpContext.SkipAuthorization; }
-			set { CurrentHttpContext.SkipAuthorization = value; }
-		}
+        /// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
+        [Obsolete("Use HttpContext.SkipAuthorization")]
+        public bool SkipAuthorization
+        {
+            get { return CurrentHttpContext.SkipAuthorization; }
+            set { CurrentHttpContext.SkipAuthorization = value; }
+        }
 
         /// <summary>The handler associated with the current request.</summary>
-		[Obsolete("Use HttpContext.Handler")]
-		public IHttpHandler Handler
+        [Obsolete("Use HttpContext.Handler")]
+        public IHttpHandler Handler
         {
             get { return CurrentHttpContext.Handler; }
         }
 
         /// <summary>The current request object.</summary>
-		[Obsolete("Use HttpContext.Request")]
-		public HttpRequest Request
+        [Obsolete("Use HttpContext.Request")]
+        public HttpRequest Request
         {
             get { return CurrentHttpContext.Request; }
         }
 
         /// <summary>The physical path on disk to the requested resource.</summary>
-		[Obsolete("Use HttpContext.Request.PhysicalPath")]
-		public virtual string PhysicalPath
+        [Obsolete("Use HttpContext.Request.PhysicalPath")]
+        public virtual string PhysicalPath
         {
             get { return CurrentHttpContext.Request.PhysicalPath; }
         }
 
-		/// <summary>The host part of the requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
+        /// <summary>The host part of the requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
         public Url Url
         {
-			get { return new Url(HttpContext.Request.Url.Scheme, HttpContext.Request.Url.Authority, HttpContext.Request.RawUrl); }
+            get { return new Url(HttpContext.Request.Url.Scheme, HttpContext.Request.Url.Authority, HttpContext.Request.RawUrl); }
         }
 
         /// <summary>The current request object.</summary>
-		[Obsolete("Use HttpContext.Response")]
-		public HttpResponse Response
+        [Obsolete("Use HttpContext.Response")]
+        public HttpResponse Response
         {
             get { return CurrentHttpContext.Response; }
         }
@@ -115,8 +115,8 @@ namespace N2.Web
         /// <summary>Converts a virtual url to an absolute url.</summary>
         /// <param name="virtualPath">The virtual url to make absolute.</param>
         /// <returns>The absolute url.</returns>
-		[Obsolete("Use N2.Web.Url.ToAbsolute(path)")]
-		public virtual string ToAbsolute(string virtualPath)
+        [Obsolete("Use N2.Web.Url.ToAbsolute(path)")]
+        public virtual string ToAbsolute(string virtualPath)
         {
             return N2.Web.Url.ToAbsolute(virtualPath);
         }
@@ -124,10 +124,10 @@ namespace N2.Web
         /// <summary>Converts an absolute url to an app relative url.</summary>
         /// <param name="virtualPath">The absolute url to convert.</param>
         /// <returns>An app relative url.</returns>
-		[Obsolete("Use N2.Web.Url.ToRelative(path)")]
-		public virtual string ToAppRelative(string virtualPath)
+        [Obsolete("Use N2.Web.Url.ToRelative(path)")]
+        public virtual string ToAppRelative(string virtualPath)
         {
-			return N2.Web.Url.ToRelative(virtualPath);
+            return N2.Web.Url.ToRelative(virtualPath);
         }
 
         /// <summary>Maps a virtual path to a physical disk path.</summary>
@@ -135,37 +135,37 @@ namespace N2.Web
         /// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
         public string MapPath(string path)
         {
-			return HostingEnvironment.MapPath(path);
+            return HostingEnvironment.MapPath(path);
         }
 
-		/// <summary>Assigns a rewrite path.</summary>
-		/// <param name="path">The path to the template that will handle the request.</param>
-		[Obsolete("Use HttpContext.RewritePath(path)")]
-		public void RewritePath(string path)
-		{
-			logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
-			CurrentHttpContext.RewritePath(path, false);
-		}
+        /// <summary>Assigns a rewrite path.</summary>
+        /// <param name="path">The path to the template that will handle the request.</param>
+        [Obsolete("Use HttpContext.RewritePath(path)")]
+        public void RewritePath(string path)
+        {
+            logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+            CurrentHttpContext.RewritePath(path, false);
+        }
 
-		/// <summary>Assigns a rewrite path.</summary>
-		/// <param name="path">The path to the template that will handle the request.</param>
-		/// <param name="queryString">The query string to rewrite to.</param>
-		[Obsolete("Use HttpContext.RewritePath(path, \"\", queryString)")]
-		public void RewritePath(string path, string queryString)
-		{
-			logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
-			CurrentHttpContext.RewritePath(path, "", queryString);
-		}
+        /// <summary>Assigns a rewrite path.</summary>
+        /// <param name="path">The path to the template that will handle the request.</param>
+        /// <param name="queryString">The query string to rewrite to.</param>
+        [Obsolete("Use HttpContext.RewritePath(path, \"\", queryString)")]
+        public void RewritePath(string path, string queryString)
+        {
+            logger.Debug("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+            CurrentHttpContext.RewritePath(path, "", queryString);
+        }
 
-		/// <summary>Calls into HttpContext.ClearError().</summary>
-		[Obsolete("Use HttpContext.ClearError()")]
-		public void ClearError()
-		{
-			CurrentHttpContext.ClearError();
-		}
+        /// <summary>Calls into HttpContext.ClearError().</summary>
+        [Obsolete("Use HttpContext.ClearError()")]
+        public void ClearError()
+        {
+            CurrentHttpContext.ClearError();
+        }
 
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
-		public virtual void Close()
+        public virtual void Close()
         {
             object[] keys = new object[RequestItems.Keys.Count];
             RequestItems.Keys.CopyTo(keys, 0);
@@ -180,24 +180,24 @@ namespace N2.Web
             }
         }
 
-		/// <summary>Retrieves the http context cache.</summary>
-		public Cache Cache
-		{
-			get { return HttpRuntime.Cache; }
-		}
+        /// <summary>Retrieves the http context cache.</summary>
+        public Cache Cache
+        {
+            get { return HttpRuntime.Cache; }
+        }
 
-		public VirtualPathProvider Vpp
-		{
-			get { return HostingEnvironment.VirtualPathProvider; }
-		}
+        public VirtualPathProvider Vpp
+        {
+            get { return HostingEnvironment.VirtualPathProvider; }
+        }
 
-		#region IDisposable Members
+        #region IDisposable Members
 
-		void IDisposable.Dispose()
-		{
-			Close();
-		}
+        void IDisposable.Dispose()
+        {
+            Close();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

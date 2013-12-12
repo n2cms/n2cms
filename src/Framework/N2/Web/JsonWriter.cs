@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +11,10 @@ using N2.Persistence;
 
 namespace N2.Web
 {
-	interface IJsonWriter
-	{
-		void Write(TextWriter writer);
-	}
+    interface IJsonWriter
+    {
+        void Write(TextWriter writer);
+    }
     class JsonWriter
     {
         HashSet<object> visitedObjects = new HashSet<object>();
@@ -31,59 +31,59 @@ namespace N2.Web
                 writer.Write("null");
             else if (TryWriteKnownType(value))
                 return;
-			else if (value is IJsonWriter)
-				(value as IJsonWriter).Write(writer);
-			else if (TryWriteDictionary(value as IDictionary<string, object>))
-				return;
-			else if (TryWriteDictionary(value as IDictionary))
-				return;
-			else if (TryWriteDictionary(value as NameValueCollection))
-				return;
-			else if (TryWriteArray(value as ICollection))
-				return;
-			else if (TryWriteType(value as Type))
-				return;
-			else if (TryWriteContentRelation(value as Relation<ContentItem>))
-				return;
-			else if (TryWriteContentItem(value as ContentItem))
-				return;
-			else if (TryWriteObject(value))
-				return;
+            else if (value is IJsonWriter)
+                (value as IJsonWriter).Write(writer);
+            else if (TryWriteDictionary(value as IDictionary<string, object>))
+                return;
+            else if (TryWriteDictionary(value as IDictionary))
+                return;
+            else if (TryWriteDictionary(value as NameValueCollection))
+                return;
+            else if (TryWriteArray(value as ICollection))
+                return;
+            else if (TryWriteType(value as Type))
+                return;
+            else if (TryWriteContentRelation(value as Relation<ContentItem>))
+                return;
+            else if (TryWriteContentItem(value as ContentItem))
+                return;
+            else if (TryWriteObject(value))
+                return;
         }
 
-		private bool TryWriteContentRelation(Relation<ContentItem> relation)
-		{
-			if (relation == null)
-				return false;
-			writer.Write(relation.ID);
-			return true;
-		}
+        private bool TryWriteContentRelation(Relation<ContentItem> relation)
+        {
+            if (relation == null)
+                return false;
+            writer.Write(relation.ID);
+            return true;
+        }
 
-		private bool TryWriteContentItem(ContentItem item)
-		{
-			if (item == null)
-				return false;
-			return TryWriteDictionary(item.ToDictionary());
-		}
+        private bool TryWriteContentItem(ContentItem item)
+        {
+            if (item == null)
+                return false;
+            return TryWriteDictionary(item.ToDictionary());
+        }
 
         static DateTime beginningOfTime = new DateTime(1970, 01, 01);
         private bool TryWriteKnownType(object value)
         {
-			var valueType = value.GetType();
+            var valueType = value.GetType();
 
-			if (typeof(MulticastDelegate).IsAssignableFrom(valueType))
-			{
-				writer.Write("null");
-				return true;
-			}
+            if (typeof(MulticastDelegate).IsAssignableFrom(valueType))
+            {
+                writer.Write("null");
+                return true;
+            }
 
-			if (valueType.IsEnum)
-			{
+            if (valueType.IsEnum)
+            {
                 writer.Write(((int)value).ToString());
-				return true;
-			}
+                return true;
+            }
 
-			switch (Type.GetTypeCode(valueType))
+            switch (Type.GetTypeCode(valueType))
             {
                 case TypeCode.Boolean:
                     writer.Write((bool)value ? "true" : "false");
@@ -238,14 +238,14 @@ namespace N2.Web
             return true;
         }
 
-		private bool TryWriteType(Type type)
-		{
-			if (type == null)
-				return false;
-			
-			writer.Write("'" + type.AssemblyQualifiedName + "'");
-			return true;
-		}
+        private bool TryWriteType(Type type)
+        {
+            if (type == null)
+                return false;
+            
+            writer.Write("'" + type.AssemblyQualifiedName + "'");
+            return true;
+        }
 
         private bool TryWriteObject(object value)
         {

@@ -13,26 +13,26 @@ using System.Linq;
 namespace N2.Templates.Items
 {
 
-	[Adapts(typeof(RssFeed))]
-	public class RssFeedNodeAdapter : NodeAdapter
-	{
-		public override string GetPreviewUrl(ContentItem item, bool allowDraft)
-		{
-			return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
-		}
-	}
+    [Adapts(typeof(RssFeed))]
+    public class RssFeedNodeAdapter : NodeAdapter
+    {
+        public override string GetPreviewUrl(ContentItem item, bool allowDraft)
+        {
+            return item.FindPath(PathData.DefaultAction).GetRewrittenUrl();
+        }
+    }
 
-	[PageDefinition("Feed", 
-		Description = "An RSS feed that outputs an xml with the latest feeds.",
-		SortOrder = 260,
-		IconUrl = "~/Templates/UI/Img/feed.png")]
+    [PageDefinition("Feed", 
+        Description = "An RSS feed that outputs an xml with the latest feeds.",
+        SortOrder = 260,
+        IconUrl = "~/Templates/UI/Img/feed.png")]
     [RestrictParents(typeof (IStructuralPage))]
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
-	[ConventionTemplate("Feed")]
+    [ConventionTemplate("Feed")]
     public class RssFeed : AbstractContentPage, IFeed, Engine.IInjectable<IRepository<ContentItem>>
     {
-		private IRepository<ContentItem> repository;
+        private IRepository<ContentItem> repository;
         [EditableLink("Feed root", 90)]
         public virtual ContentItem FeedRoot
         {
@@ -40,7 +40,7 @@ namespace N2.Templates.Items
             set { SetDetail("FeedRoot", value); }
         }
 
-		[EditableNumber("Number of items", 100)]
+        [EditableNumber("Number of items", 100)]
         public virtual int NumberOfItems
         {
             get { return (int) (GetDetail("NumberOfItems") ?? 10); }
@@ -73,23 +73,23 @@ namespace N2.Templates.Items
             get { return base.Url + "?hungry=yes"; }
         }
 
-		public virtual IEnumerable<ISyndicatable> GetItems()
-		{
-			ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
-			if (FeedRoot != null)
-				query &= Parameter.Below(FeedRoot);
-			
-			foreach (ISyndicatable item in repository.Find(query.Take(NumberOfItems).OrderBy("Published DESC"))
-				.Where(new TypeFilter(typeof(ISyndicatable)) & new AccessFilter())
-				.OfType<ISyndicatable>())
-			{
-				yield return item;
-			}
-		}
+        public virtual IEnumerable<ISyndicatable> GetItems()
+        {
+            ParameterCollection query = Parameter.Equal(SyndicatableDefinitionAppender.SyndicatableDetailName, true).Detail();
+            if (FeedRoot != null)
+                query &= Parameter.Below(FeedRoot);
+            
+            foreach (ISyndicatable item in repository.Find(query.Take(NumberOfItems).OrderBy("Published DESC"))
+                .Where(new TypeFilter(typeof(ISyndicatable)) & new AccessFilter())
+                .OfType<ISyndicatable>())
+            {
+                yield return item;
+            }
+        }
 
-		public void Set(IRepository<ContentItem> dependency)
-		{
-			repository = dependency;
-		}
-	}
+        public void Set(IRepository<ContentItem> dependency)
+        {
+            repository = dependency;
+        }
+    }
 }

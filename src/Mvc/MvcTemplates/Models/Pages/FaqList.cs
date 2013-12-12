@@ -6,18 +6,18 @@ using N2.Definitions;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
-	[PageDefinition("FAQ",
-		Description = "A list of frequently asked questions with answers.",
-		SortOrder = 200,
-		IconClass = "n2-icon-question-sign")]
-	[AvailableZone("Questions", "Questions")]
-	[RestrictParents(typeof (IStructuralPage))]
-	public class FaqList : ContentPageBase, IStructuralPage
-	{
-		[N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName = Tabs.Content)]
-		public virtual IList<Faq> Questions
-		{
-			get { return GetChildren<Faq>("Questions"); }
-		}
-	}
+    [PageDefinition("FAQ",
+        Description = "A list of frequently asked questions with answers.",
+        SortOrder = 200,
+        IconClass = "n2-icon-question-sign")]
+    [AvailableZone("Questions", "Questions")]
+    [RestrictParents(typeof (IStructuralPage))]
+    public class FaqList : ContentPageBase, IStructuralPage
+    {
+        [N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName = Tabs.Content)]
+        public virtual IList<Faq> Questions
+        {
+            get { return GetChildren<Faq>("Questions"); }
+        }
+    }
 }

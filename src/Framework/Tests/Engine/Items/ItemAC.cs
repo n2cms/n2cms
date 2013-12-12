@@ -1,10 +1,10 @@
-﻿namespace N2.Tests.Engine.Items
+namespace N2.Tests.Engine.Items
 {
-	public interface IInterfacedItem
-	{
-	}
+    public interface IInterfacedItem
+    {
+    }
 
-	public class ItemAC : ItemA, IInterfacedItem
-	{
-	}
+    public class ItemAC : ItemA, IInterfacedItem
+    {
+    }
 }

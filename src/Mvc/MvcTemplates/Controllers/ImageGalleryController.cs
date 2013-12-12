@@ -7,15 +7,15 @@ using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(ImageGallery))]
-	public class ImageGalleryController : ContentController<ImageGallery>
-	{
-		public override System.Web.Mvc.ActionResult Index()
-		{
-			var galleryItems = CurrentItem.GalleryItems;
+    [Controls(typeof(ImageGallery))]
+    public class ImageGalleryController : ContentController<ImageGallery>
+    {
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var galleryItems = CurrentItem.GalleryItems;
 
-			return View(new ImageGalleryModel(CurrentItem, galleryItems));
-		}
-	}
+            return View(new ImageGalleryModel(CurrentItem, galleryItems));
+        }
+    }
 
 }

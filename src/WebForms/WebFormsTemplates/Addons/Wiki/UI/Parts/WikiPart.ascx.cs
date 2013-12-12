@@ -1,4 +1,4 @@
-﻿using N2.Web.UI;
+using N2.Web.UI;
 
 namespace N2.Addons.Wiki.UI.Parts
 {

@@ -14,45 +14,45 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public abstract class Reference
-	{
-		protected Reference owner = SelfReference.Self;
+    public abstract class Reference
+    {
+        protected Reference owner = SelfReference.Self;
 
-		protected Reference()
-		{
-		}
+        protected Reference()
+        {
+        }
 
-		protected Reference(Reference owner)
-		{
-			this.owner = owner;
-		}
+        protected Reference(Reference owner)
+        {
+            this.owner = owner;
+        }
 
-		public Reference OwnerReference
-		{
-			get { return owner; }
-			set { owner = value; }
-		}
+        public Reference OwnerReference
+        {
+            get { return owner; }
+            set { owner = value; }
+        }
 
-		public abstract void LoadAddressOfReference(ILGenerator gen);
+        public abstract void LoadAddressOfReference(ILGenerator gen);
 
-		public abstract void LoadReference(ILGenerator gen);
+        public abstract void LoadReference(ILGenerator gen);
 
-		public abstract void StoreReference(ILGenerator gen);
+        public abstract void StoreReference(ILGenerator gen);
 
-		public virtual void Generate(ILGenerator gen)
-		{
-		}
+        public virtual void Generate(ILGenerator gen)
+        {
+        }
 
-		public virtual Expression ToAddressOfExpression()
-		{
-			return new AddressOfReferenceExpression(this);
-		}
+        public virtual Expression ToAddressOfExpression()
+        {
+            return new AddressOfReferenceExpression(this);
+        }
 
-		public virtual Expression ToExpression()
-		{
-			return new ReferenceExpression(this);
-		}
-	}
+        public virtual Expression ToExpression()
+        {
+            return new ReferenceExpression(this);
+        }
+    }
 }
