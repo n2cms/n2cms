@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using N2.Web.Parsing;
 using NUnit.Framework;
+using Shouldly;
 
 namespace N2.Tests.Web.Parsing
 {
@@ -348,5 +349,65 @@ namespace N2.Tests.Web.Parsing
             Assert.That(tokens[0].Index, Is.EqualTo(0));
             Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Element));
         }
+
+		[Test]
+		public void Comment()
+		{
+			string text = "<!-- hello world -->";
+			var tokens = text.Tokenize().ToList();
+
+			Assert.That(tokens[0].Fragment, Is.EqualTo("<!-- hello world -->"));
+			Assert.That(tokens[0].Index, Is.EqualTo(0));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Comment));
+		}
+
+		[Test]
+		public void Doctype()
+		{
+			string text = "<!DOCTYPE html>";
+			var tokens = text.Tokenize().ToList();
+
+			Assert.That(tokens[0].Fragment, Is.EqualTo("<!DOCTYPE html>"));
+			Assert.That(tokens[0].Index, Is.EqualTo(0));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.Comment));
+		}
+
+		[Test]
+		public void Cdata()
+		{
+			string text = @"thebeginning<![CDATA[x]]>therest";
+			var tokens = text.Tokenize().ToList();
+
+			Assert.That(tokens[1].Fragment, Is.EqualTo(@"<![CDATA[x]]>"));
+			Assert.That(tokens[1].Index, Is.EqualTo(12));
+			Assert.That(tokens[1].Type, Is.EqualTo(TokenType.CData));
+		}
+
+		[Test]
+		public void Cdata_AtEof()
+		{
+			string text = @"<![CDATA[x]]>";
+			var tokens = text.Tokenize().ToList();
+
+			tokens.Count.ShouldBe(1);
+			Assert.That(tokens[0].Fragment, Is.EqualTo(@"<![CDATA[x]]>"));
+			Assert.That(tokens[0].Index, Is.EqualTo(0));
+			Assert.That(tokens[0].Type, Is.EqualTo(TokenType.CData));
+		}
+
+		[Test]
+		public void Script_Cdata()
+		{
+			string text = @"<script>//<![CDATA[
+alert(1);
+//]]></script>";
+			var tokens = text.Tokenize().ToList();
+
+			Assert.That(tokens[2].Fragment, Is.EqualTo(@"<![CDATA[
+alert(1);
+//]]>"));
+			Assert.That(tokens[2].Index, Is.EqualTo(10));
+			Assert.That(tokens[2].Type, Is.EqualTo(TokenType.CData));
+		}
     }
 }
