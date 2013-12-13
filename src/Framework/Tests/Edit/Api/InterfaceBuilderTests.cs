@@ -10,6 +10,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 
 namespace N2.Tests.Edit.Api
@@ -36,7 +37,10 @@ namespace N2.Tests.Edit.Api
         [TestCase("add")]
         [TestCase("edit")]
         [TestCase("versions")]
-        [TestCase("language")]
+		[TestCase("language")]
+		[TestCase("transitions")]
+		[TestCase("me")]
+		[TestCase("info")]
         public void ActionMenu_ContainsSignOut(string expectedMenuItem)
         {
             var definition = builder.GetInterfaceDefinition(new FakeHttpContext(), new SelectionUtility(item, null));
@@ -60,15 +64,20 @@ namespace N2.Tests.Edit.Api
         [TestCase("add")]
         [TestCase("edit")]
         [TestCase("delete")]
-        [TestCase("security")]
+		[TestCase("security")]
         public void ContextMenu_ContainsMenuItems(string expectedMenuItem)
         {
             var definition = builder.GetInterfaceDefinition(new FakeHttpContext(), new SelectionUtility(item, null));
             definition.ContextMenu.Children.Any(mi => mi.Current.Name == expectedMenuItem).ShouldBe(true);
         }
 
-        [TestCase("signout")]
-        [TestCase("dashboard")]
+		[TestCase("dashboard")]
+		[TestCase("pages")]
+		[TestCase("sitesettings")]
+		[TestCase("templates")]
+		[TestCase("wizards")]
+		[TestCase("users")]
+		[TestCase("roles")]
         public void MainMenu_ContainsMenuItems(string expectedMenuItem)
         {
             var definition = builder.GetInterfaceDefinition(new FakeHttpContext(), new SelectionUtility(item, null));
@@ -111,12 +120,11 @@ namespace N2.Tests.Edit.Api
             definition.Site.StartPageID.ShouldBe(item.ID);
         }
 
-        [Test]
-        public void User_ShouldBe_LoggedInUser()
-        {
-            var currentUser = engine.RequestContext.User;
-            var definition = builder.GetInterfaceDefinition(new FakeHttpContext() { User = currentUser }, new SelectionUtility(item, null));
-            definition.User.Name.ShouldBe(currentUser.Identity.Name);
-        }
+		[Test]
+		public void User_ShouldBe_LoggedInUser()
+		{
+			var definition = builder.GetInterfaceDefinition(new FakeHttpContext() { User = new GenericPrincipal(new GenericIdentity("howdy", ""), null) }, new SelectionUtility(item, null));
+			definition.User.Name.ShouldBe("howdy");
+		}
     }
 }
