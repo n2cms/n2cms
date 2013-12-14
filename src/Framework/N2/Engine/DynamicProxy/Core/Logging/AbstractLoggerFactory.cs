@@ -14,63 +14,63 @@
 
 namespace Castle.Core.Logging
 {
-	using System;
-	using System.IO;
+    using System;
+    using System.IO;
 
 #if SILVERLIGHT
-	public abstract class AbstractLoggerFactory : ILoggerFactory
+    public abstract class AbstractLoggerFactory : ILoggerFactory
 #else
-	[Serializable]
-	public abstract class AbstractLoggerFactory : MarshalByRefObject, ILoggerFactory
+    [Serializable]
+    public abstract class AbstractLoggerFactory : MarshalByRefObject, ILoggerFactory
 #endif
-	{
-		public virtual ILogger Create(Type type)
-		{
-			if (type == null)
-			{
-				throw new ArgumentNullException("type");
-			}
+    {
+        public virtual ILogger Create(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
 
-			return Create(type.FullName);
-		}
+            return Create(type.FullName);
+        }
 
-		public virtual ILogger Create(Type type, LoggerLevel level)
-		{
-			if (type == null)
-			{
-				throw new ArgumentNullException("type");
-			}
+        public virtual ILogger Create(Type type, LoggerLevel level)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
 
-			return Create(type.FullName, level);
-		}
+            return Create(type.FullName, level);
+        }
 
-		public abstract ILogger Create(String name);
+        public abstract ILogger Create(String name);
 
-		public abstract ILogger Create(String name, LoggerLevel level);
+        public abstract ILogger Create(String name, LoggerLevel level);
 
-		/// <summary>
-		///   Gets the configuration file.
-		/// </summary>
-		/// <param name = "fileName">i.e. log4net.config</param>
-		/// <returns></returns>
-		protected static FileInfo GetConfigFile(string fileName)
-		{
+        /// <summary>
+        ///   Gets the configuration file.
+        /// </summary>
+        /// <param name = "fileName">i.e. log4net.config</param>
+        /// <returns></returns>
+        protected static FileInfo GetConfigFile(string fileName)
+        {
 #if !SILVERLIGHT
-			FileInfo result;
+            FileInfo result;
 
-			if (Path.IsPathRooted(fileName))
-			{
-				result = new FileInfo(fileName);
-			}
-			else
-			{
-				result = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
-			}
+            if (Path.IsPathRooted(fileName))
+            {
+                result = new FileInfo(fileName);
+            }
+            else
+            {
+                result = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+            }
 
-			return result;
+            return result;
 #else
-			return new FileInfo(fileName);
+            return new FileInfo(fileName);
 #endif
-		}
-	}
+        }
+    }
 }

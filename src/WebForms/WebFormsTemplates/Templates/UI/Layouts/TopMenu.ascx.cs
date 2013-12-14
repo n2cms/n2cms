@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using N2.Engine.Globalization;
 using N2.Templates.Layouts;
@@ -18,7 +18,7 @@ namespace N2.Templates.UI.Layouts
         protected ILanguageGateway languages;
         protected override void OnInit(EventArgs e)
         {
-			Page.StyleSheet(Register.DefaultFlagsCssPath);
+            Page.StyleSheet(Register.DefaultFlagsCssPath);
 
             languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
 
@@ -38,17 +38,17 @@ namespace N2.Templates.UI.Layouts
 
         private IEnumerable<Translation> GetTranslations()
         {
-        	ItemFilter languageFilter = new AllFilter(new AccessFilter(), new PublishedFilter());
-        	IEnumerable<ContentItem> translations = languages.FindTranslations(CurrentPage);
-			foreach (ContentItem translation in languageFilter.Pipe(translations))
-			{
-				ILanguage language = languages.GetLanguage(translation);
-				
-				// Hide translations when filtered access to their language
-				ContentItem languageItem = language as ContentItem;
-				if(languageItem == null || languageFilter.Match(languageItem))
-					yield return new Translation(translation, language);
-			}
+            ItemFilter languageFilter = new AllFilter(new AccessFilter(), new PublishedFilter());
+            IEnumerable<ContentItem> translations = languages.FindTranslations(CurrentPage);
+            foreach (ContentItem translation in languageFilter.Pipe(translations))
+            {
+                ILanguage language = languages.GetLanguage(translation);
+                
+                // Hide translations when filtered access to their language
+                ContentItem languageItem = language as ContentItem;
+                if(languageItem == null || languageFilter.Match(languageItem))
+                    yield return new Translation(translation, language);
+            }
         }
     }
 }

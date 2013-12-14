@@ -26,41 +26,41 @@ using N2.Definitions;
 
 namespace N2.Integrity
 {
-	/// <summary>
-	/// A class decoration used to define which items are allowed below this 
-	/// item. When this attribute intersects with 
-	/// <see cref="RestrictParentsAttribute"/>, the union of these two are 
-	/// considered to be allowed.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
-	public class AllowedChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner, IAllowedDefinitionFilter
-	{
-		/// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
-		public AllowedChildrenAttribute()
-		{
-			RefinementOrder = RefineOrder.After;
-		}
+    /// <summary>
+    /// A class decoration used to define which items are allowed below this 
+    /// item. When this attribute intersects with 
+    /// <see cref="RestrictParentsAttribute"/>, the union of these two are 
+    /// considered to be allowed.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    public class AllowedChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner, IAllowedDefinitionFilter
+    {
+        /// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
+        public AllowedChildrenAttribute()
+        {
+            RefinementOrder = RefineOrder.After;
+        }
 
-		/// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
-		/// <param name="allowedChildTypes">A list of allowed types. Null is interpreted as all types are allowed.</param>
-		public AllowedChildrenAttribute(params Type[] allowedChildTypes)
-			: this()
-		{
-			Types = allowedChildTypes;
-		}
+        /// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
+        /// <param name="allowedChildTypes">A list of allowed types. Null is interpreted as all types are allowed.</param>
+        public AllowedChildrenAttribute(params Type[] allowedChildTypes)
+            : this()
+        {
+            Types = allowedChildTypes;
+        }
 
-		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
-		{
-			currentDefinition.AllowedChildFilters.Add(this);
-		}
+        public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+        {
+            currentDefinition.AllowedChildFilters.Add(this);
+        }
 
-		#region IAllowedDefinitionFilter Members
+        #region IAllowedDefinitionFilter Members
 
-		public AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery context)
-		{
-			return IsAssignable(context.ChildDefinition.ItemType) ? AllowedDefinitionResult.Allow : AllowedDefinitionResult.DontCare;
-		}
+        public AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery context)
+        {
+            return IsAssignable(context.ChildDefinition.ItemType) ? AllowedDefinitionResult.Allow : AllowedDefinitionResult.DontCare;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

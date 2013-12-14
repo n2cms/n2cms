@@ -4,7 +4,7 @@ using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Poll : Templates.Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.Poll>
+    public partial class Poll : Templates.Web.UI.TemplateUserControl<ContentItem, N2.Templates.Items.Poll>
     {
         protected PlaceHolder phQuestion;
         protected SingleSelectControl lcAlternatives;

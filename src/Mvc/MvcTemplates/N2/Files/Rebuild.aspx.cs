@@ -1,4 +1,4 @@
-﻿using N2.Configuration;
+using N2.Configuration;
 using N2.Edit.FileSystem;
 using N2.Edit.Web;
 using N2.Web.Drawing;
@@ -11,18 +11,18 @@ using System.Web.UI.WebControls;
 
 namespace N2.Management.Files
 {
-	public partial class Rebuild : EditPage
-	{
-		protected Dictionary<string, Configuration.ImageSizeElement> ConfiguredSizes;
-		private UploadedFilesResizer Resizer;
-		private IFileSystem Fs;
+    public partial class Rebuild : EditPage
+    {
+        protected Dictionary<string, Configuration.ImageSizeElement> ConfiguredSizes;
+        private UploadedFilesResizer Resizer;
+        private IFileSystem Fs;
 
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			ConfiguredSizes = Engine.Config.Sections.Management.Images.Sizes.AllElements.ToDictionary(s => s.Name);
-			Resizer = Engine.Resolve<UploadedFilesResizer>();
-			Fs = Engine.Resolve<IFileSystem>();
-		}
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ConfiguredSizes = Engine.Config.Sections.Management.Images.Sizes.AllElements.ToDictionary(s => s.Name);
+            Resizer = Engine.Resolve<UploadedFilesResizer>();
+            Fs = Engine.Resolve<IFileSystem>();
+        }
 
 		protected void btnUpdate_Command(object sender, CommandEventArgs e)
 		{
@@ -47,29 +47,29 @@ namespace N2.Management.Files
 			}
 		}
 
-		private void RemoveImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
-		{
-			if (string.IsNullOrEmpty(commaSeparatedListOfSizes))
-				return;
+        private void RemoveImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
+        {
+            if (string.IsNullOrEmpty(commaSeparatedListOfSizes))
+                return;
 
-			foreach (var s in commaSeparatedListOfSizes.Split(','))
-			{
-				foreach (var file in preExistingFiles)
-				{
-					var resizedPath = ImagesUtility.GetResizedPath(file.VirtualPath, s);
-					if (Fs.FileExists(resizedPath))
-					{
-						Response.Write("<div class='processed-image'>Removing " + file.Name + " - " + s + "</div>");
-						Fs.DeleteFile(resizedPath);
-					}
-				}
-			}
-		}
+            foreach (var s in commaSeparatedListOfSizes.Split(','))
+            {
+                foreach (var file in preExistingFiles)
+                {
+                    var resizedPath = ImagesUtility.GetResizedPath(file.VirtualPath, s);
+                    if (Fs.FileExists(resizedPath))
+                    {
+                        Response.Write("<div class='processed-image'>Removing " + file.Name + " - " + s + "</div>");
+                        Fs.DeleteFile(resizedPath);
+                    }
+                }
+            }
+        }
 
-		private void BuildImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
-		{
-			if (string.IsNullOrEmpty(commaSeparatedListOfSizes))
-				return;
+        private void BuildImageSizes(List<FileData> preExistingFiles, string commaSeparatedListOfSizes)
+        {
+            if (string.IsNullOrEmpty(commaSeparatedListOfSizes))
+                return;
 
 			foreach (var s in commaSeparatedListOfSizes.Split(','))
 			{
@@ -79,18 +79,18 @@ namespace N2.Management.Files
 				if (size.Height == 0 && size.Width == 0)
 					continue;
 
-				foreach (var file in preExistingFiles)
-				{
-					Response.Write("<div class='processed-image'>Creating " + file.VirtualPath + "</div>");
+                foreach (var file in preExistingFiles)
+                {
+                    Response.Write("<div class='processed-image'>Creating " + file.VirtualPath + "</div>");
 
-					var originalPath = ImagesUtility.GetResizedPath(file.VirtualPath, "original");
-					var sourcePath = Fs.FileExists(originalPath)
-						? originalPath
-						: file.VirtualPath;
+                    var originalPath = ImagesUtility.GetResizedPath(file.VirtualPath, "original");
+                    var sourcePath = Fs.FileExists(originalPath)
+                        ? originalPath
+                        : file.VirtualPath;
 
-					Resizer.CreateSize(file.VirtualPath, Resizer.GetImageBytes(sourcePath), size);
-				}
-			}
-		}
-	}
+                    Resizer.CreateSize(file.VirtualPath, Resizer.GetImageBytes(sourcePath), size);
+                }
+            }
+        }
+    }
 }

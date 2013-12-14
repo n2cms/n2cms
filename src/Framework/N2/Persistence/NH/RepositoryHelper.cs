@@ -33,50 +33,50 @@ namespace N2.Persistence.NH
 {
     internal class RepositoryHelper<T>
     {
-		internal static IQuery CreateQuery(ISession session, string namedQuery, Parameter[] parameters)
-		{
-			IQuery query = session.GetNamedQuery(namedQuery);
-			foreach (Parameter parameter in parameters)
-			{
-				query.SetParameter(parameter.Name, parameter.Value);
-			}
-			return query;
-		}
+        internal static IQuery CreateQuery(ISession session, string namedQuery, Parameter[] parameters)
+        {
+            IQuery query = session.GetNamedQuery(namedQuery);
+            foreach (Parameter parameter in parameters)
+            {
+                query.SetParameter(parameter.Name, parameter.Value);
+            }
+            return query;
+        }
 
-		public static ICriteria GetExecutableCriteria(ISession session, DetachedCriteria criteria, NHibernate.Criterion.Order[] orders)
-		{
-			ICriteria executableCriteria;
-			if (criteria != null)
-			{
-				executableCriteria = criteria.GetExecutableCriteria(session);
-			}
-			else
-			{
-				executableCriteria = session.CreateCriteria(typeof(T));
-			}
+        public static ICriteria GetExecutableCriteria(ISession session, DetachedCriteria criteria, NHibernate.Criterion.Order[] orders)
+        {
+            ICriteria executableCriteria;
+            if (criteria != null)
+            {
+                executableCriteria = criteria.GetExecutableCriteria(session);
+            }
+            else
+            {
+                executableCriteria = session.CreateCriteria(typeof(T));
+            }
 
-			if (orders != null)
-			{
-				foreach (NHibernate.Criterion.Order order in orders)
-				{
-					executableCriteria.AddOrder(order);
-				}
-			}
-			return executableCriteria;
-		}
+            if (orders != null)
+            {
+                foreach (NHibernate.Criterion.Order order in orders)
+                {
+                    executableCriteria.AddOrder(order);
+                }
+            }
+            return executableCriteria;
+        }
 
-		public static ICriteria CreateCriteriaFromArray(ISession session, ICriterion[] criteria)
-		{
-			ICriteria crit = session.CreateCriteria(typeof(T));
-			foreach (ICriterion criterion in criteria)
-			{
-				//allow some fancy antics like returning possible return 
-				// or null to ignore the criteria
-				if (criterion == null)
-					continue;
-				crit.Add(criterion);
-			}
-			return crit;
-		}
-	}
+        public static ICriteria CreateCriteriaFromArray(ISession session, ICriterion[] criteria)
+        {
+            ICriteria crit = session.CreateCriteria(typeof(T));
+            foreach (ICriterion criterion in criteria)
+            {
+                //allow some fancy antics like returning possible return 
+                // or null to ignore the criteria
+                if (criterion == null)
+                    continue;
+                crit.Add(criterion);
+            }
+            return crit;
+        }
+    }
 }

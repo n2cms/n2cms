@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,22 +8,22 @@ using N2.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
-	/// <summary>
-	/// Moves files into the database file system.
-	/// </summary>
+    /// <summary>
+    /// Moves files into the database file system.
+    /// </summary>
     public class DatabaseFileSystemMigrator
     {
-		private string returnValue = "";
-		private IFileSystem fs;
-		private UploadFolderSource folderSource;
-		private IWebContext webContext;
+        private string returnValue = "";
+        private IFileSystem fs;
+        private UploadFolderSource folderSource;
+        private IWebContext webContext;
 
-		public DatabaseFileSystemMigrator(IFileSystem fs, UploadFolderSource folderSource, IWebContext webContext)
-		{
-			this.fs = fs;
-			this.folderSource = folderSource;
-			this.webContext = webContext;
-		}
+        public DatabaseFileSystemMigrator(IFileSystem fs, UploadFolderSource folderSource, IWebContext webContext)
+        {
+            this.fs = fs;
+            this.folderSource = folderSource;
+            this.webContext = webContext;
+        }
 
         public string CopyToDb()
         {

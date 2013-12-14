@@ -23,19 +23,19 @@ using N2.Engine;
 namespace N2.Web
 {
     /// <summary>
-	/// Enables N2 to interact with the ASP.NET application request to do url 
-	/// rewriting, authorizing requests and closing NHibernate sessions.
-	/// </summary>
+    /// Enables N2 to interact with the ASP.NET application request to do url 
+    /// rewriting, authorizing requests and closing NHibernate sessions.
+    /// </summary>
     public class Global : System.Web.HttpApplication
     {
-    	/// <summary>Initializes the N2 factory.</summary>
+        /// <summary>Initializes the N2 factory.</summary>
         public override void Init()
         {
-			base.Init();
+            base.Init();
 
-			EventBroker.Instance.Attach(this);
+            EventBroker.Instance.Attach(this);
 
-			N2.Context.Initialize(false);
+            N2.Context.Initialize(false);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using N2.Engine;
+using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
@@ -23,15 +23,15 @@ namespace N2.Tests.Web
             Url u = new Url("");
             Assert.That(u.Path, Is.EqualTo(""));
             Assert.That(u.ToString(), Is.EqualTo(""));
-		}
+        }
 
-		[Test]
-		public void NullUrl()
-		{
-			Url u = new Url((string)null);
-			Assert.That(u.Path, Is.EqualTo(""));
-			Assert.That(u.ToString(), Is.EqualTo(""));
-		}
+        [Test]
+        public void NullUrl()
+        {
+            Url u = new Url((string)null);
+            Assert.That(u.Path, Is.EqualTo(""));
+            Assert.That(u.ToString(), Is.EqualTo(""));
+        }
 
         [Test]
         public void CanConstruct_AbsoluteLocalPath()
@@ -245,37 +245,37 @@ namespace N2.Tests.Web
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
 
-		[Test]
-		public void CanRemoveValue_UsingKeyAndValue()
-		{
-			Url u = "/";
-			u = u.SetQueryParameter("key", null, true);
-			Assert.That(u.Query, Is.Null);
-		}
+        [Test]
+        public void CanRemoveValue_UsingKeyAndValue()
+        {
+            Url u = "/";
+            u = u.SetQueryParameter("key", null, true);
+            Assert.That(u.Query, Is.Null);
+        }
 
-		[Test]
-		public void CanRemoveQuery()
-		{
-			Url u = "/?key=value&key2=value2";
-			u = u.RemoveQuery("key");
-			Assert.That(u.ToString(), Is.EqualTo("/?key2=value2"));
-		}
+        [Test]
+        public void CanRemoveQuery()
+        {
+            Url u = "/?key=value&key2=value2";
+            u = u.RemoveQuery("key");
+            Assert.That(u.ToString(), Is.EqualTo("/?key2=value2"));
+        }
 
-		[Test]
-		public void CanRemoveQuery2()
-		{
-			Url u = "/?key=value&key2=value2";
-			u = u.RemoveQuery("key2");
-			Assert.That(u.ToString(), Is.EqualTo("/?key=value"));
-		}
+        [Test]
+        public void CanRemoveQuery2()
+        {
+            Url u = "/?key=value&key2=value2";
+            u = u.RemoveQuery("key2");
+            Assert.That(u.ToString(), Is.EqualTo("/?key=value"));
+        }
 
-		[Test]
-		public void CanRemoveValue_OnExistingQueryString_UsingKeyAndValue()
-		{
-			Url u = "/?key=somevalue";
-			u = u.SetQueryParameter("key", null, true);
-			Assert.That(u.Query, Is.Null);
-		}
+        [Test]
+        public void CanRemoveValue_OnExistingQueryString_UsingKeyAndValue()
+        {
+            Url u = "/?key=somevalue";
+            u = u.SetQueryParameter("key", null, true);
+            Assert.That(u.Query, Is.Null);
+        }
 
         [Test]
         public void AppendedValue_IsUrlEncoded()
@@ -363,21 +363,21 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/path/";
             u = u.AppendSegment("test2", true);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/path/test2.aspx"));
-		}
+        }
 
-		[Test]
-		public void Extension_WillNotCrossSegments()
-		{
-			Url u = "/hello.world/universe";
-			Assert.That(u.Extension, Is.Null);
-		}
+        [Test]
+        public void Extension_WillNotCrossSegments()
+        {
+            Url u = "/hello.world/universe";
+            Assert.That(u.Extension, Is.Null);
+        }
 
-		[Test]
-		public void PathWithoutExtension_WillNotCrossSegments()
-		{
-			Url u = "/hello.world/universe";
-			Assert.That(u.PathWithoutExtension, Is.EqualTo("/hello.world/universe"));
-		}
+        [Test]
+        public void PathWithoutExtension_WillNotCrossSegments()
+        {
+            Url u = "/hello.world/universe";
+            Assert.That(u.PathWithoutExtension, Is.EqualTo("/hello.world/universe"));
+        }
 
         //[Test]
         //public void CanAppendSegment_UsingDefaultExtension_ToPathWithOtherExtension()
@@ -465,203 +465,203 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/hello";
             u = u.AppendSegment("test2", false);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/hello/test2"));
-		}
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment()
-		{
-			Url u = "/hello/world";
+        [Test]
+        public void CanRemove_TrailingSegment()
+        {
+            Url u = "/hello/world";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment_WhenTrailingSlash()
-		{
-			Url u = "/hello/world/";
+        [Test]
+        public void CanRemove_TrailingSegment_WhenTrailingSlash()
+        {
+            Url u = "/hello/world/";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello")); // tiny inconsitency
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello")); // tiny inconsitency
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment_WhenFileExtension()
-		{
-			Url u = "/hello/world.aspx";
+        [Test]
+        public void CanRemove_TrailingSegment_WhenFileExtension()
+        {
+            Url u = "/hello/world.aspx";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment_WhenSingleSegment()
-		{
-			Url u = "/hello";
+        [Test]
+        public void CanRemove_TrailingSegment_WhenSingleSegment()
+        {
+            Url u = "/hello";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/"));
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment_WhenSingleSegment_AndTrailingSlash()
-		{
-			Url u = "/hello/";
+        [Test]
+        public void CanRemove_TrailingSegment_WhenSingleSegment_AndTrailingSlash()
+        {
+            Url u = "/hello/";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/"));
+        }
 
-		[Test]
-		public void CanRemove_TrailingSegment_WhenSingleSegment_AndExtension()
-		{
-			Url u = "/hello.aspx";
+        [Test]
+        public void CanRemove_TrailingSegment_WhenSingleSegment_AndExtension()
+        {
+            Url u = "/hello.aspx";
 
-			u = u.RemoveTrailingSegment();
+            u = u.RemoveTrailingSegment();
 
-			Assert.That(u.ToString(), Is.EqualTo("/"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/"));
+        }
 
-		[TestCase("/hello/world.aspx", "/hello/")]
-		[TestCase("/hello/world/", "/hello/")]
-		[TestCase("/hello.aspx", "/")]
-		[TestCase("/hello/", "/")]
-		[TestCase("/", "")]
-		[TestCase("", null)]
-		public void CanRemove_LastSegment(string input, string expected)
-		{
-			string result = Url.RemoveLastSegment(input);
+        [TestCase("/hello/world.aspx", "/hello/")]
+        [TestCase("/hello/world/", "/hello/")]
+        [TestCase("/hello.aspx", "/")]
+        [TestCase("/hello/", "/")]
+        [TestCase("/", "")]
+        [TestCase("", null)]
+        public void CanRemove_LastSegment(string input, string expected)
+        {
+            string result = Url.RemoveLastSegment(input);
 
-			Assert.That(result, Is.EqualTo(expected));
-		}
+            Assert.That(result, Is.EqualTo(expected));
+        }
 
-		[TestCase("/hello/world.aspx", "world.aspx")]
-		[TestCase("/hello/world/", "world")]
-		[TestCase("/hello.aspx", "hello.aspx")]
-		[TestCase("/hello/", "hello")]
-		[TestCase("/", "")]
-		[TestCase("", null)]
-		public void CanGet_Name(string input, string expected)
-		{
-			string result = Url.GetName(input);
+        [TestCase("/hello/world.aspx", "world.aspx")]
+        [TestCase("/hello/world/", "world")]
+        [TestCase("/hello.aspx", "hello.aspx")]
+        [TestCase("/hello/", "hello")]
+        [TestCase("/", "")]
+        [TestCase("", null)]
+        public void CanGet_Name(string input, string expected)
+        {
+            string result = Url.GetName(input);
 
-			Assert.That(result, Is.EqualTo(expected));
-		}
+            Assert.That(result, Is.EqualTo(expected));
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex0()
-		{
-			Url u = "/hello/whole/world";
-			
-			u = u.RemoveSegment(0);
+        [Test]
+        public void CanRemove_SegmentIndex0()
+        {
+            Url u = "/hello/whole/world";
+            
+            u = u.RemoveSegment(0);
 
-			Assert.That(u.ToString(), Is.EqualTo("/whole/world"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/whole/world"));
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex0_WhenTrailingSlash()
-		{
-			Url u = "/hello/whole/world/";
+        [Test]
+        public void CanRemove_SegmentIndex0_WhenTrailingSlash()
+        {
+            Url u = "/hello/whole/world/";
 
-			u = u.RemoveSegment(0);
+            u = u.RemoveSegment(0);
 
-			Assert.That(u.ToString(), Is.EqualTo("/whole/world/"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/whole/world/"));
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex0_WhenFileExtension()
-		{
-			Url u = "/hello/whole/world.aspx";
+        [Test]
+        public void CanRemove_SegmentIndex0_WhenFileExtension()
+        {
+            Url u = "/hello/whole/world.aspx";
 
-			u = u.RemoveSegment(0);
+            u = u.RemoveSegment(0);
 
-			Assert.That(u.ToString(), Is.EqualTo("/whole/world.aspx"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/whole/world.aspx"));
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex1()
-		{
-			Url u = "/hello/whole/world";
+        [Test]
+        public void CanRemove_SegmentIndex1()
+        {
+            Url u = "/hello/whole/world";
 
-			u = u.RemoveSegment(1);
+            u = u.RemoveSegment(1);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/world"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/world"));
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex1_WhenTrailingSlash()
-		{
-			Url u = "/hello/whole/world/";
+        [Test]
+        public void CanRemove_SegmentIndex1_WhenTrailingSlash()
+        {
+            Url u = "/hello/whole/world/";
 
-			u = u.RemoveSegment(1);
+            u = u.RemoveSegment(1);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/world")); // tiny inconsitency
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/world")); // tiny inconsitency
+        }
 
-		[Test]
-		public void CanRemove_SegmentIndex1_WhenFileExtension()
-		{
-			Url u = "/hello/whole/world.aspx";
+        [Test]
+        public void CanRemove_SegmentIndex1_WhenFileExtension()
+        {
+            Url u = "/hello/whole/world.aspx";
 
-			u = u.RemoveSegment(1);
+            u = u.RemoveSegment(1);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/world.aspx")); // tiny inconsitency
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/world.aspx")); // tiny inconsitency
+        }
 
-		[Test]
-		public void CanRemove_LastSegmentIndex()
-		{
-			Url u = "/hello/whole/world";
+        [Test]
+        public void CanRemove_LastSegmentIndex()
+        {
+            Url u = "/hello/whole/world";
 
-			u = u.RemoveSegment(2);
+            u = u.RemoveSegment(2);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
+        }
 
-		[Test]
-		public void CanRemove_LastSegmentIndex_WhenTrailingSlash()
-		{
-			Url u = "/hello/whole/world/";
+        [Test]
+        public void CanRemove_LastSegmentIndex_WhenTrailingSlash()
+        {
+            Url u = "/hello/whole/world/";
 
-			u = u.RemoveSegment(2);
+            u = u.RemoveSegment(2);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
+        }
 
-		[Test]
-		public void CanRemove_LastSegmentIndex_WhenFileExtension()
-		{
-			Url u = "/hello/whole/world.aspx";
+        [Test]
+        public void CanRemove_LastSegmentIndex_WhenFileExtension()
+        {
+            Url u = "/hello/whole/world.aspx";
 
-			u = u.RemoveSegment(2);
+            u = u.RemoveSegment(2);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello/whole.aspx"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello/whole.aspx"));
+        }
 
-		[Test]
-		public void RemoveSegment_GracefullyExcepts_ArgumentsBeyondBounds()
-		{
-			Url u = "/hello.aspx";
+        [Test]
+        public void RemoveSegment_GracefullyExcepts_ArgumentsBeyondBounds()
+        {
+            Url u = "/hello.aspx";
 
-			u = u.RemoveSegment(2);
+            u = u.RemoveSegment(2);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+        }
 
-		[Test]
-		public void RemoveSegment_GracefullyExcepts_BeforeBounds()
-		{
-			Url u = "/hello.aspx";
+        [Test]
+        public void RemoveSegment_GracefullyExcepts_BeforeBounds()
+        {
+            Url u = "/hello.aspx";
 
-			u = u.RemoveSegment(-1);
+            u = u.RemoveSegment(-1);
 
-			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
-		}
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+        }
 
         [Test]
         public void CanAppendSegment_WithoutUsingDefaultExtension_ToEmptyPath()
@@ -824,100 +824,100 @@ namespace N2.Tests.Web
             Url u = new Url("/hello.aspx?something=someotherthing&query=value&query3=value3");
             u = u.SetQueryParameter("query3", null);
             Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing&query=value"));
-		}
+        }
 
-		[Test]
-		public void CanChangeExtension()
-		{
-			Url u = new Url("/hello.aspx?something=someotherthing");
-			u = u.SetExtension(".html");
-			Assert.That(u.ToString(), Is.EqualTo("/hello.html?something=someotherthing"));
-		}
+        [Test]
+        public void CanChangeExtension()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            u = u.SetExtension(".html");
+            Assert.That(u.ToString(), Is.EqualTo("/hello.html?something=someotherthing"));
+        }
 
-		[Test]
-		public void CanClearExtension()
-		{
-			Url u = new Url("/hello.aspx?something=someotherthing");
-			u = u.SetExtension("");
-			Assert.That(u.ToString(), Is.EqualTo("/hello?something=someotherthing"));
-		}
+        [Test]
+        public void CanClearExtension()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            u = u.SetExtension("");
+            Assert.That(u.ToString(), Is.EqualTo("/hello?something=someotherthing"));
+        }
 
-		[Test]
-		public void CanSplitOut_HostPart()
-		{
-			Url u = "http://n2cms.com/some/path.aspx?existing=query";
-			u = u.HostUrl;
-			Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com"));
-		}
+        [Test]
+        public void CanSplitOut_HostPart()
+        {
+            Url u = "http://n2cms.com/some/path.aspx?existing=query";
+            u = u.HostUrl;
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com"));
+        }
 
-		[Test]
-		public void CanSplitOut_HostPart_AndGetExtension()
-		{
-			Url u = "http://n2cms.com/some/path.aspx?existing=query";
-			string extension = u.HostUrl.Extension;
-			Assert.That(extension, Is.Null);
-		}
+        [Test]
+        public void CanSplitOut_HostPart_AndGetExtension()
+        {
+            Url u = "http://n2cms.com/some/path.aspx?existing=query";
+            string extension = u.HostUrl.Extension;
+            Assert.That(extension, Is.Null);
+        }
 
-		[Test]
-		public void CanSplitOut_LocalPart()
-		{
-			Url u = "http://n2cms.com/some/path.aspx?existing=query";
-			u = u.LocalUrl;
-			Assert.That(u.ToString(), Is.EqualTo("/some/path.aspx?existing=query"));
-		}
+        [Test]
+        public void CanSplitOut_LocalPart()
+        {
+            Url u = "http://n2cms.com/some/path.aspx?existing=query";
+            u = u.LocalUrl;
+            Assert.That(u.ToString(), Is.EqualTo("/some/path.aspx?existing=query"));
+        }
 
-		[Test]
-		public void CanConstruct_WithBaseSchemeAndRawUrl()
-		{
-			Url u = new Url("http", "www.n2cms.com", "/Default.aspx?");
-			Assert.That(u.Scheme, Is.EqualTo("http"));
-			Assert.That(u.Authority, Is.EqualTo("www.n2cms.com"));
-			Assert.That(u.PathAndQuery, Is.EqualTo("/Default.aspx"));
-		}
+        [Test]
+        public void CanConstruct_WithBaseSchemeAndRawUrl()
+        {
+            Url u = new Url("http", "www.n2cms.com", "/Default.aspx?");
+            Assert.That(u.Scheme, Is.EqualTo("http"));
+            Assert.That(u.Authority, Is.EqualTo("www.n2cms.com"));
+            Assert.That(u.PathAndQuery, Is.EqualTo("/Default.aspx"));
+        }
 
-		[Test]
-		public void CanRecognize_AbsoluteUrl()
-		{
-			Url u = "http://www.n2cms.com";
-			Assert.That(u.IsAbsolute, Is.True);
-		}
+        [Test]
+        public void CanRecognize_AbsoluteUrl()
+        {
+            Url u = "http://www.n2cms.com";
+            Assert.That(u.IsAbsolute, Is.True);
+        }
 
-		[Test]
-		public void CanRecognize_LocalUrl()
-		{
-			Url u = "/";
-			Assert.That(u.IsAbsolute, Is.False);
-		}
+        [Test]
+        public void CanRecognize_LocalUrl()
+        {
+            Url u = "/";
+            Assert.That(u.IsAbsolute, Is.False);
+        }
 
-		[TestCase("", "", "")]
-		[TestCase("", "/", "/")]
-		[TestCase("/", "", "/")]
-		[TestCase("/", "/", "/")]
-		[TestCase("", "hello", "hello")]
-		[TestCase("/", "/hello", "/hello")]
-		[TestCase("/hello", "hello", "/hello/hello")]
-		[TestCase("/hello", "/hello", "/hello")]
-		[TestCase("/hello.aspx", "hello.aspx", "/hello.aspx/hello.aspx")]
-		[TestCase("/hello", "hello?one=1", "/hello/hello?one=1")]
-		[TestCase("/hello?one=1", "hello", "/hello/hello?one=1")]
-		[TestCase("/hello?one=1", "hello?two=2", "/hello/hello?one=1&two=2")]
-		[TestCase("/hello?one=1&two=2", "hello?three=3&four=4", "/hello/hello?one=1&two=2&three=3&four=4")]
-		[TestCase("/n2/", "{selected}", "{selected}")]
-		[TestCase("/n2/", "javascript:alert(1);", "javascript:alert(1);")]
-		[TestCase("/hello", "hello#world", "/hello/hello#world")]
-		public void Combine1(string url1, string url2, string expected)
-		{
-			string result = Url.Combine(url1, url2);
-			Assert.That(result, Is.EqualTo(expected), "'" + url1 + "' + '" + url2 + "' != '" + expected + "'");
-		}
+        [TestCase("", "", "")]
+        [TestCase("", "/", "/")]
+        [TestCase("/", "", "/")]
+        [TestCase("/", "/", "/")]
+        [TestCase("", "hello", "hello")]
+        [TestCase("/", "/hello", "/hello")]
+        [TestCase("/hello", "hello", "/hello/hello")]
+        [TestCase("/hello", "/hello", "/hello")]
+        [TestCase("/hello.aspx", "hello.aspx", "/hello.aspx/hello.aspx")]
+        [TestCase("/hello", "hello?one=1", "/hello/hello?one=1")]
+        [TestCase("/hello?one=1", "hello", "/hello/hello?one=1")]
+        [TestCase("/hello?one=1", "hello?two=2", "/hello/hello?one=1&two=2")]
+        [TestCase("/hello?one=1&two=2", "hello?three=3&four=4", "/hello/hello?one=1&two=2&three=3&four=4")]
+        [TestCase("/n2/", "{selected}", "{selected}")]
+        [TestCase("/n2/", "javascript:alert(1);", "javascript:alert(1);")]
+        [TestCase("/hello", "hello#world", "/hello/hello#world")]
+        public void Combine1(string url1, string url2, string expected)
+        {
+            string result = Url.Combine(url1, url2);
+            Assert.That(result, Is.EqualTo(expected), "'" + url1 + "' + '" + url2 + "' != '" + expected + "'");
+        }
 
-		[Test]
-		public void CanParse_RelativePath_WithUrl_AsQuery()
-		{
-			Url u = "/path?dns=host.com&url=http://www.hello.net/howdy";
-			Assert.That(u.Path, Is.EqualTo("/path"));
-			Assert.That(u.Query, Is.EqualTo("dns=host.com&url=http://www.hello.net/howdy"));
-		}
+        [Test]
+        public void CanParse_RelativePath_WithUrl_AsQuery()
+        {
+            Url u = "/path?dns=host.com&url=http://www.hello.net/howdy";
+            Assert.That(u.Path, Is.EqualTo("/path"));
+            Assert.That(u.Query, Is.EqualTo("dns=host.com&url=http://www.hello.net/howdy"));
+        }
 
         [Test]
         public void ServerUrl_Returns_FallbackValue_InThreadContext()
@@ -928,7 +928,7 @@ namespace N2.Tests.Web
                 var engine = new FakeEngine();
                 var webContext = new FakeWebContextWrapper();
                 webContext.isWeb = true;
-				engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
+                engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
                 Singleton<IEngine>.Instance = engine;
 
                 webContext.Url = "http://site1/app";
@@ -953,7 +953,7 @@ namespace N2.Tests.Web
                 var engine = new FakeEngine();
                 var webContext = new FakeWebContextWrapper();
                 webContext.isWeb = true;
-				engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
+                engine.Container.AddComponentInstance("", typeof(IWebContext), webContext);
                 Singleton<IEngine>.Instance = engine;
 
                 webContext.Url = "http://site1/app";
@@ -967,174 +967,174 @@ namespace N2.Tests.Web
             }
         }
 
-		[Test]
-		public void Resolve_Uses_DefaultReplacements()
-		{
-			string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+        [Test]
+        public void Resolve_Uses_DefaultReplacements()
+        {
+            string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
 
-			Assert.That(result, Is.EqualTo("/N2/Resources/Icons/add.png"));
-		}
+            Assert.That(result, Is.EqualTo("/N2/Resources/Icons/add.png"));
+        }
 
-		[Test]
-		public void Resolve_CanChange_DefaultReplacements()
-		{
-			string backup = Url.GetToken("{ManagementUrl}");
+        [Test]
+        public void Resolve_CanChange_DefaultReplacements()
+        {
+            string backup = Url.GetToken("{ManagementUrl}");
 
-			try
-			{
-				Url.SetToken("{ManagementUrl}", "/Manage");
+            try
+            {
+                Url.SetToken("{ManagementUrl}", "/Manage");
 
-				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+                string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
 
-				Assert.That(result, Is.EqualTo("/Manage/Resources/Icons/add.png"));
-			}
-			finally
-			{
-				Url.SetToken("{ManagementUrl}", backup);
-			}
-		}
+                Assert.That(result, Is.EqualTo("/Manage/Resources/Icons/add.png"));
+            }
+            finally
+            {
+                Url.SetToken("{ManagementUrl}", backup);
+            }
+        }
 
-		[Test]
-		public void Resolve_CanAdd_Replcement()
-		{
-			string backup = Url.GetToken("{HelloUrl}");
+        [Test]
+        public void Resolve_CanAdd_Replcement()
+        {
+            string backup = Url.GetToken("{HelloUrl}");
 
-			try
-			{
-				Url.SetToken("{HelloUrl}", "/Hello/World");
+            try
+            {
+                Url.SetToken("{HelloUrl}", "/Hello/World");
 
-				string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
+                string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
 
-				Assert.That(result, Is.EqualTo("/Hello/World/Resources/Icons/add.png"));
-			}
-			finally
-			{
-				Url.SetToken("{HelloUrl}", backup);
-			}
-		}
+                Assert.That(result, Is.EqualTo("/Hello/World/Resources/Icons/add.png"));
+            }
+            finally
+            {
+                Url.SetToken("{HelloUrl}", backup);
+            }
+        }
 
-		[Test]
-		public void Resolve_CanClear_Replcement()
-		{
-			string backup = Url.GetToken("{ManagementUrl}");
+        [Test]
+        public void Resolve_CanClear_Replcement()
+        {
+            string backup = Url.GetToken("{ManagementUrl}");
 
-			try
-			{
-				Url.SetToken("{ManagementUrl}", null);
+            try
+            {
+                Url.SetToken("{ManagementUrl}", null);
 
-				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+                string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
 
-				Assert.That(result, Is.EqualTo("{ManagementUrl}/Resources/Icons/add.png"));
-			}
-			finally
-			{
-				Url.SetToken("{ManagementUrl}", backup);
-			}
-		}
+                Assert.That(result, Is.EqualTo("{ManagementUrl}/Resources/Icons/add.png"));
+            }
+            finally
+            {
+                Url.SetToken("{ManagementUrl}", backup);
+            }
+        }
 
-		[Test]
-		public void Resolve_DoesntReplace_UnknownTokens()
-		{
-			string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
+        [Test]
+        public void Resolve_DoesntReplace_UnknownTokens()
+        {
+            string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
 
-			Assert.That(result, Is.EqualTo("{HelloUrl}/Resources/Icons/add.png"));
-		}
+            Assert.That(result, Is.EqualTo("{HelloUrl}/Resources/Icons/add.png"));
+        }
 
-		[Test]
-		public void Resolve_MakesPath_ToAbsolute()
-		{
-			Url.ApplicationPath = "/hello/";
-			try
-			{
-				string result = Url.ResolveTokens("~/N2/Resources/Icons/add.png");
+        [Test]
+        public void Resolve_MakesPath_ToAbsolute()
+        {
+            Url.ApplicationPath = "/hello/";
+            try
+            {
+                string result = Url.ResolveTokens("~/N2/Resources/Icons/add.png");
 
-				Assert.That(result, Is.EqualTo("/hello/N2/Resources/Icons/add.png"));
-			}
-			finally
-			{
-				Url.ApplicationPath = "/";
-			}
-		}
+                Assert.That(result, Is.EqualTo("/hello/N2/Resources/Icons/add.png"));
+            }
+            finally
+            {
+                Url.ApplicationPath = "/";
+            }
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesAnyExtension()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension();
+        [Test]
+        public void RemoveExtension_RemovesAnyExtension()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension();
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesValidExtension()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension(".aspx");
+        [Test]
+        public void RemoveExtension_RemovesValidExtension()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension(".aspx");
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void RemoveExtension_DoesntRemove_InvalidExtension()
-		{
-			Url url = "/hello.gif";
-			string result = url.RemoveExtension(".aspx");
+        [Test]
+        public void RemoveExtension_DoesntRemove_InvalidExtension()
+        {
+            Url url = "/hello.gif";
+            string result = url.RemoveExtension(".aspx");
 
-			Assert.That(result, Is.EqualTo("/hello.gif"));
-		}
+            Assert.That(result, Is.EqualTo("/hello.gif"));
+        }
 
-		[Test]
-		public void RemoveExtension_DoesntRemove_WhenNoExtension()
-		{
-			Url url = "/hello.gif";
-			string result = url.RemoveExtension("");
+        [Test]
+        public void RemoveExtension_DoesntRemove_WhenNoExtension()
+        {
+            Url url = "/hello.gif";
+            string result = url.RemoveExtension("");
 
-			Assert.That(result, Is.EqualTo("/hello.gif"));
-		}
+            Assert.That(result, Is.EqualTo("/hello.gif"));
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesValidExtension_WhenDefinedAsFirst()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension(".aspx", ".html");
+        [Test]
+        public void RemoveExtension_RemovesValidExtension_WhenDefinedAsFirst()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension(".aspx", ".html");
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesValidExtension_WhenDefinedAsSecond()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension(".html", ".aspx");
+        [Test]
+        public void RemoveExtension_RemovesValidExtension_WhenDefinedAsSecond()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension(".html", ".aspx");
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesValidExtension_WhenDefinedBeforeEmpty()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension(".aspx", "");
+        [Test]
+        public void RemoveExtension_RemovesValidExtension_WhenDefinedBeforeEmpty()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension(".aspx", "");
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void RemoveExtension_RemovesValidExtension_WhenDefinedAfterEmpty()
-		{
-			Url url = "/hello.aspx";
-			string result = url.RemoveExtension("", ".aspx");
+        [Test]
+        public void RemoveExtension_RemovesValidExtension_WhenDefinedAfterEmpty()
+        {
+            Url url = "/hello.aspx";
+            string result = url.RemoveExtension("", ".aspx");
 
-			Assert.That(result, Is.EqualTo("/hello"));
-		}
+            Assert.That(result, Is.EqualTo("/hello"));
+        }
 
-		[Test]
-		public void AppendEmptySegment_ToUrlWithExtension()
-		{
-			Url url = "/hello.aspx";
-			url = url.AppendSegment("/");
+        [Test]
+        public void AppendEmptySegment_ToUrlWithExtension()
+        {
+            Url url = "/hello.aspx";
+            url = url.AppendSegment("/");
 
-			url.ToString().ShouldBe("/hello.aspx");
-		}
-	}
+            url.ToString().ShouldBe("/hello.aspx");
+        }
+    }
 }

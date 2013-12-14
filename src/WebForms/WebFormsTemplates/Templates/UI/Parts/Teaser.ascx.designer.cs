@@ -19,6 +19,6 @@ namespace N2.Templates.UI.Parts {
     /// Auto-generated class.
     /// </remarks>
     public partial class Teaser {
-		protected HyperLink hl;
+        protected HyperLink hl;
     }
 }

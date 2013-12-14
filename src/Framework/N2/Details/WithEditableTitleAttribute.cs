@@ -21,7 +21,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableTitleAttribute()
-			: this("Title", -20)
+			: this("Title", -20) 
 		{
 		}
 
@@ -36,7 +36,6 @@ namespace N2.Details
 			Required = true;
 		}
 
-		/// <summary>Gets or sets whether the title editor should receive focus.</summary>
 		public bool Focus
 		{
 			get { return focus; }
@@ -47,13 +46,10 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			TextBox tb = (TextBox)editor;
-			if (item.Title != tb.Text)
-			{
-				item.Title = tb.Text;
-				return true;
-			}
-			return false;
+			var tb = (TextBox)editor;
+			if (item.Title == tb.Text) return false;
+			item.Title = tb.Text;
+			return true;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -84,16 +80,16 @@ namespace N2.Details
 			if (value != null)
 			{
 				int headingLevel = item.IsPage ? 1 : 2;
-				writer.Write("<h");
-				writer.Write(headingLevel);
-				if(CssClass != null)
-					writer.Write(" class='" + CssClass + "'");
-				writer.Write(">");
+			writer.Write("<h");
+			writer.Write(headingLevel);
+			if(CssClass != null)
+				writer.Write(" class='" + CssClass + "'");
+			writer.Write(">");
 				writer.Write(value);
-				writer.Write("</h");
-				writer.Write(headingLevel);
-				writer.Write(">");
-			}
+			writer.Write("</h");
+			writer.Write(headingLevel);
+			writer.Write(">");
+		}
 		}
 
 		#endregion
@@ -105,8 +101,12 @@ namespace N2.Details
 			var value = item[detailName];
 			if (value != null)
 			{
-				var heading = new Hn { Level = item.IsPage ? 1 : 2, Text = value.ToString() };
-				heading.CssClass = CssClass;
+				var heading = new Hn
+				{
+					Level = item.IsPage ? 1 : 2,
+					Text = value.ToString(),
+					CssClass = CssClass
+				};
 				container.Controls.Add(heading);
 				return heading;
 			}

@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -11,12 +11,12 @@ namespace N2.Configuration
             set { base["enabled"] = value; }
         }
 
-		[ConfigurationProperty("cache", DefaultValue = false)]
-		public bool Cache
-		{
-			get { return (bool)base["cache"]; }
-			set { base["cache"] = value; }
-		}
+        [ConfigurationProperty("cache", DefaultValue = false)]
+        public bool Cache
+        {
+            get { return (bool)base["cache"]; }
+            set { base["cache"] = value; }
+        }
 
         [ConfigurationProperty("languagesPerSite", DefaultValue = false)]
         public bool LanguagesPerSite
@@ -25,11 +25,11 @@ namespace N2.Configuration
             set { base["languagesPerSite"] = value; }
         }
 
-		[ConfigurationProperty("autoDeleteTranslations", DefaultValue = false)]
-		public bool AutoDeleteTranslations
-		{
-			get { return (bool)base["autoDeleteTranslations"]; }
-			set { base["autoDeleteTranslations"] = value; }
-		}
+        [ConfigurationProperty("autoDeleteTranslations", DefaultValue = false)]
+        public bool AutoDeleteTranslations
+        {
+            get { return (bool)base["autoDeleteTranslations"]; }
+            set { base["autoDeleteTranslations"] = value; }
+        }
     }
 }

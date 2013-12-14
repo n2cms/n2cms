@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using N2.Addons.Wiki;
@@ -66,9 +66,9 @@ namespace N2.Templates.Tests.Wiki
       
             Assert.That(fragments.Count, Is.EqualTo(2));
             Assert.That(fragments[0].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
         }
 
         [Test]
@@ -78,9 +78,9 @@ namespace N2.Templates.Tests.Wiki
     
             Assert.That(fragments.Count, Is.EqualTo(2));
             Assert.That(fragments[0].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("[[link]]"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("[[link]]"));
             Assert.That(fragments[1].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("end"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("end"));
         }
 
         [Test]
@@ -90,11 +90,11 @@ namespace N2.Templates.Tests.Wiki
       
             Assert.That(fragments.Count, Is.EqualTo(3));
             Assert.That(fragments[0].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
             Assert.That(fragments[2].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[2].ToString(), Is.EqualTo("end"));
+            Assert.That(fragments[2].ToString(), Is.EqualTo("end"));
         }
 
         [Test]
@@ -104,9 +104,9 @@ namespace N2.Templates.Tests.Wiki
 
             Assert.That(fragments.Count, Is.EqualTo(2));
             Assert.That(fragments[0].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("[[link1]]"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("[[link1]]"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[link2]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[link2]]"));
         }
 
         [Test]
@@ -116,15 +116,15 @@ namespace N2.Templates.Tests.Wiki
             
             Assert.That(fragments.Count, Is.EqualTo(5));
             Assert.That(fragments[0].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("beginning"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[link]]"));
             Assert.That(fragments[2].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[2].ToString(), Is.EqualTo("middle"));
+            Assert.That(fragments[2].ToString(), Is.EqualTo("middle"));
             Assert.That(fragments[3].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[3].ToString(), Is.EqualTo("[[link2]]"));
+            Assert.That(fragments[3].ToString(), Is.EqualTo("[[link2]]"));
             Assert.That(fragments[4].Command, Is.EqualTo("Text"));
-			Assert.That(fragments[4].ToString(), Is.EqualTo("end"));
+            Assert.That(fragments[4].ToString(), Is.EqualTo("end"));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace N2.Templates.Tests.Wiki
 
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("[http://n2cms.com]"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("[http://n2cms.com]"));
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace N2.Templates.Tests.Wiki
 
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com"));
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace N2.Templates.Tests.Wiki
 
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com/something.aspx"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com/something.aspx"));
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace N2.Templates.Tests.Wiki
 
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com/something.aspx?key=value&auml;key2=value2#bookmark"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("http://n2cms.com/something.aspx?key=value&auml;key2=value2#bookmark"));
         }
 
         [Test]
@@ -173,10 +173,10 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse("Visit http://n2cms.com/ for more information.").ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(3));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("Visit "));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("Visit "));
             Assert.That(fragments[1].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("http://n2cms.com/"));
-			Assert.That(fragments[2].ToString(), Is.EqualTo(" for more information."));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("http://n2cms.com/"));
+            Assert.That(fragments[2].ToString(), Is.EqualTo(" for more information."));
         }
 
         [Test]
@@ -185,10 +185,10 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse("before[[some text]]after").ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(3));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("before"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("before"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[some text]]"));
-			Assert.That(fragments[2].ToString(), Is.EqualTo("after"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[some text]]"));
+            Assert.That(fragments[2].ToString(), Is.EqualTo("after"));
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("{{WikiArticleList}}").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
             Assert.That(fragments[0].Command, Is.EqualTo("Template"));
         }
 
@@ -205,9 +205,9 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("{{WikiArticleList}}[[internallink]]").ToList();
             Assert.That(fragments.Count, Is.EqualTo(2));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
             Assert.That(fragments[0].Command, Is.EqualTo("Template"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[internallink]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[internallink]]"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
         }
 
@@ -216,13 +216,13 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("{{WikiArticleList}}[[internallink]][external]text{{WikiArticleList2}}[[internallink2]][external2]text2").ToList();
             Assert.That(fragments.Count, Is.EqualTo(8));
-			Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
+            Assert.That(fragments[0].ToString(), Is.EqualTo("{{WikiArticleList}}"));
             Assert.That(fragments[0].Command, Is.EqualTo("Template"));
-			Assert.That(fragments[1].ToString(), Is.EqualTo("[[internallink]]"));
+            Assert.That(fragments[1].ToString(), Is.EqualTo("[[internallink]]"));
             Assert.That(fragments[1].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[2].ToString(), Is.EqualTo("[external]"));
+            Assert.That(fragments[2].ToString(), Is.EqualTo("[external]"));
             Assert.That(fragments[2].Command, Is.EqualTo("ExternalLink"));
-			Assert.That(fragments[3].ToString(), Is.EqualTo("text"));
+            Assert.That(fragments[3].ToString(), Is.EqualTo("text"));
             Assert.That(fragments[3].Command, Is.EqualTo("Text"));
             Assert.That(fragments[4].Command, Is.EqualTo("Template"));
             Assert.That(fragments[5].Command, Is.EqualTo("InternalLink"));
@@ -235,8 +235,8 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("=Heading 1=").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
-			Assert.That(fragments[0].Command, Is.EqualTo("Heading"));
-			Assert.That(fragments[0].Argument, Is.EqualTo("="));
+            Assert.That(fragments[0].Command, Is.EqualTo("Heading"));
+            Assert.That(fragments[0].Argument, Is.EqualTo("="));
         }
 
         [Test]
@@ -244,27 +244,27 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("==Heading 2==").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
-			Assert.That(fragments[0].Command, Is.EqualTo("Heading"));
-			Assert.That(fragments[0].Argument, Is.EqualTo("=="));
+            Assert.That(fragments[0].Command, Is.EqualTo("Heading"));
+            Assert.That(fragments[0].Argument, Is.EqualTo("=="));
         }
 
         [TestCase("* List item contents", "UnorderedListItem", "*")]
-		[TestCase("** List item contents", "UnorderedListItem", "**")]
-		[TestCase("*** List item contents", "UnorderedListItem", "***")]
+        [TestCase("** List item contents", "UnorderedListItem", "**")]
+        [TestCase("*** List item contents", "UnorderedListItem", "***")]
         [TestCase("# List item contents", "OrderedListItem", "#")]
-		[TestCase("## List item contents", "OrderedListItem", "##")]
-		[TestCase("### List item contents", "OrderedListItem", "###")]
+        [TestCase("## List item contents", "OrderedListItem", "##")]
+        [TestCase("### List item contents", "OrderedListItem", "###")]
         public void Lists_CanContainChildFragments_WithText(string input, string expectedName, string expectedValue)
         {
             var fragments = parser.Parse(input).ToList();
             Assert.That(fragments.Count, Is.EqualTo(1), "'" + input + "' resulted in too many fragments.");
             Assert.That(fragments[0].Command, Is.EqualTo(expectedName));
-			Assert.That(fragments[0].Argument, Is.EqualTo(expectedValue));
+            Assert.That(fragments[0].Argument, Is.EqualTo(expectedValue));
             
             var children = fragments[0].Components.ToList();
             Assert.That(children.Count, Is.EqualTo(1));
             Assert.That(children[0].Command, Is.EqualTo("Text"));
-			Assert.That(children[0].ToString(), Is.EqualTo("List item contents"));
+            Assert.That(children[0].ToString(), Is.EqualTo("List item contents"));
         }
 
         [Test]
@@ -272,9 +272,9 @@ namespace N2.Templates.Tests.Wiki
         {
             var fragments = parser.Parse("* [[Link]] Text").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
-			Assert.That(fragments[0].Components.Count(), Is.EqualTo(2));
-			Assert.That(fragments[0].Components.ToList()[0].Command, Is.EqualTo("InternalLink"));
-			Assert.That(fragments[0].Components.ToList()[1].Command, Is.EqualTo("Text"));
+            Assert.That(fragments[0].Components.Count(), Is.EqualTo(2));
+            Assert.That(fragments[0].Components.ToList()[0].Command, Is.EqualTo("InternalLink"));
+            Assert.That(fragments[0].Components.ToList()[1].Command, Is.EqualTo("Text"));
         }
 
         [Test]
@@ -285,8 +285,8 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse(input).ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(2));
-			Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[1].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[1].Command, Is.EqualTo("UnorderedListItem"));
         }
 
         [Test]
@@ -297,8 +297,8 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse(input).ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(2));
-			Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[0].Components.Single().Command, Is.EqualTo("Text"));
+            Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[0].Components.Single().Command, Is.EqualTo("Text"));
         }
 
         [Test]
@@ -311,15 +311,15 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse(input).ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(4));
-			Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[0].Argument, Is.EqualTo("*"));
-			Assert.That(fragments[1].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[1].Argument, Is.EqualTo("**"));
-			Assert.That(fragments[2].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[2].Argument, Is.EqualTo("**"));
-			Assert.That(fragments[3].Command, Is.EqualTo("UnorderedListItem"));
-			Assert.That(fragments[3].Argument, Is.EqualTo("*"));
-		}
+            Assert.That(fragments[0].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[0].Argument, Is.EqualTo("*"));
+            Assert.That(fragments[1].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[1].Argument, Is.EqualTo("**"));
+            Assert.That(fragments[2].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[2].Argument, Is.EqualTo("**"));
+            Assert.That(fragments[3].Command, Is.EqualTo("UnorderedListItem"));
+            Assert.That(fragments[3].Argument, Is.EqualTo("*"));
+        }
 
 //        [Test]
 //        public void ChildFragments_ReferToEachOther()
@@ -345,7 +345,7 @@ namespace N2.Templates.Tests.Wiki
             var fragments = parser.Parse(input).ToList();
 
             Assert.That(fragments.Count, Is.EqualTo(4));
-			Assert.That(fragments.Any(f => f.Command != "UnorderedListItem"), Is.False);
+            Assert.That(fragments.Any(f => f.Command != "UnorderedListItem"), Is.False);
         }
 
 //        [Test]
@@ -371,22 +371,22 @@ namespace N2.Templates.Tests.Wiki
 //            Assert.That(m[1].Value, Is.EqualTo("world"));
 //        }
 
-		//[Test]
-		//public void Next_PointsTo_NextFragment()
-		//{
-		//    string input = "hello [[world]]";
-		//    var fragments = parser.Parse(input).ToList();
-		//    Assert.That(fragments[0].Next, Is.SameAs(fragments[1]));
-		//    Assert.That(fragments[1].Next, Is.Null);
-		//}
+        //[Test]
+        //public void Next_PointsTo_NextFragment()
+        //{
+        //    string input = "hello [[world]]";
+        //    var fragments = parser.Parse(input).ToList();
+        //    Assert.That(fragments[0].Next, Is.SameAs(fragments[1]));
+        //    Assert.That(fragments[1].Next, Is.Null);
+        //}
 
-		//[Test]
-		//public void Previous_PointsTo_PreviousFragment()
-		//{
-		//    string input = "hello [[world]]";
-		//    var fragments = parser.Parse(input).ToList();
-		//    Assert.That(fragments[0].Previous, Is.Null); 
-		//    Assert.That(fragments[1].Previous, Is.SameAs(fragments[0]));
-		//}
+        //[Test]
+        //public void Previous_PointsTo_PreviousFragment()
+        //{
+        //    string input = "hello [[world]]";
+        //    var fragments = parser.Parse(input).ToList();
+        //    Assert.That(fragments[0].Previous, Is.Null); 
+        //    Assert.That(fragments[1].Previous, Is.SameAs(fragments[0]));
+        //}
     }
 }

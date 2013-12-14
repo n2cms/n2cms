@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using System.Web;
 using N2.Configuration;
@@ -11,16 +11,15 @@ using N2.Web.Drawing;
 
 namespace N2.Management.Files
 {
-	[Service]
-	public class UploadedFilesResizer : IAutoStart
-	{
-		IFileSystem files;
-		ImageResizer resizer;
-		ImagesElement images;
-		string[] sizeNames;
+    [Service]
+    public class UploadedFilesResizer : IAutoStart
+    {
+        IFileSystem files;
+        ImageResizer resizer;
+        ImagesElement images;
+        string[] sizeNames;
 
 		public bool Enabled { get; set; }
-
 		public UploadedFilesResizer(IFileSystem files, ImageResizer resizer, EditSection config)
 		{
 			this.files = files;
@@ -37,26 +36,26 @@ namespace N2.Management.Files
 
 			Url virtualPath = e.VirtualPath;
 
-			if (!IsResizableImagePath(virtualPath))
-				return;
+            if (!IsResizableImagePath(virtualPath))
+                return;
 
-			if(images.Sizes.Count == 0)
-				return;
+            if(images.Sizes.Count == 0)
+                return;
 
-			byte[] image = GetImageBytes(virtualPath);
+            byte[] image = GetImageBytes(virtualPath);
 
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				CreateSize(virtualPath, image, size);
-			}
-		}
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                CreateSize(virtualPath, image, size);
+            }
+        }
 
-		public virtual void CreateSize(Url virtualPath, byte[] image, ImageSizeElement size)
-		{
-			if (!size.ResizeOnUpload)
-				return;
+        public virtual void CreateSize(Url virtualPath, byte[] image, ImageSizeElement size)
+        {
+            if (!size.ResizeOnUpload)
+                return;
 
-			string resizedPath = ImagesUtility.GetResizedPath(virtualPath, size.Name);
+            string resizedPath = ImagesUtility.GetResizedPath(virtualPath, size.Name);
 
 			using (var sourceStream = new MemoryStream(image))
 			{
@@ -90,16 +89,16 @@ namespace N2.Management.Files
 			}
 		}
 
-		public virtual byte[] GetImageBytes(string virtualPath)
-		{
-			byte[] image;
-			using (var s = files.OpenFile(virtualPath))
-			{
-				image = new byte[s.Length];
-				s.Read(image, 0, image.Length);
-			}
-			return image;
-		}
+        public virtual byte[] GetImageBytes(string virtualPath)
+        {
+            byte[] image;
+            using (var s = files.OpenFile(virtualPath))
+            {
+                image = new byte[s.Length];
+                s.Read(image, 0, image.Length);
+            }
+            return image;
+        }
 
 		void files_FileCopied(object sender, FileEventArgs e)
 		{
@@ -114,27 +113,27 @@ namespace N2.Management.Files
 				Url sourceUrl = e.SourcePath;
 				Url destinationUrl = e.VirtualPath;
 
-				string sourcePath = ImagesUtility.GetResizedPath(sourceUrl, size.Name);
+                string sourcePath = ImagesUtility.GetResizedPath(sourceUrl, size.Name);
 
-				if (!files.FileExists(sourcePath))
-					continue;
+                if (!files.FileExists(sourcePath))
+                    continue;
 
-				string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
-				if(!files.FileExists(destinationPath))
-					files.CopyFile(sourcePath, destinationPath);
-			}
-		}
+                string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
+                if(!files.FileExists(destinationPath))
+                    files.CopyFile(sourcePath, destinationPath);
+            }
+        }
 
-		private bool IsResizedPath(string path)
-		{
-			string extensionlessPath = Url.RemoveAnyExtension(path);
-			foreach (var sizeName in sizeNames)
-			{
-				if (extensionlessPath.EndsWith("_" + sizeName))
-					return true;
-			}
-			return false;
-		}
+        private bool IsResizedPath(string path)
+        {
+            string extensionlessPath = Url.RemoveAnyExtension(path);
+            foreach (var sizeName in sizeNames)
+            {
+                if (extensionlessPath.EndsWith("_" + sizeName))
+                    return true;
+            }
+            return false;
+        }
 
 		void files_FileMoved(object sender, FileEventArgs e)
 		{
@@ -164,39 +163,45 @@ namespace N2.Management.Files
 			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				string resizedPath = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                string resizedPath = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
 
-				if (files.FileExists(resizedPath))
-					files.DeleteFile(resizedPath);
-			}
-		}
+                if (files.FileExists(resizedPath))
+                    files.DeleteFile(resizedPath);
+            }
+        }
 
-		public bool IsResizableImagePath(string imageUrl)
-		{
-			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
-			return images.ResizedExtensions.Contains(fileExtension.ToLower());
-		}
+        public bool IsResizableImagePath(string imageUrl)
+        {
+            string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
+            return images.ResizedExtensions.Contains(fileExtension.ToLower());
+        }
 
-		#region IAutoStart Members
+        #region IAutoStart Members
 
-		public void Start()
-		{
-			files.FileWritten += files_FileWritten;
-			files.FileMoved += files_FileMoved;
-			files.FileDeleted += files_FileDeleted;
-			files.FileCopied += files_FileCopied;
-		}
+        public void Start()
+        {
+            if (!images.ResizeUploadedImages)
+                return;
 
-		public void Stop()
-		{
-			files.FileWritten -= files_FileWritten;
-			files.FileMoved -= files_FileMoved;
-			files.FileDeleted -= files_FileDeleted;
-			files.FileCopied -= files_FileCopied;
-		}
+            files.FileWritten += files_FileWritten;
+            files.FileMoved += files_FileMoved;
+            files.FileDeleted += files_FileDeleted;
+            files.FileCopied += files_FileCopied;
+        }
 
-		#endregion
-	}
+        public void Stop()
+        {
+            if (!images.ResizeUploadedImages)
+                return;
+
+            files.FileWritten -= files_FileWritten;
+            files.FileMoved -= files_FileMoved;
+            files.FileDeleted -= files_FileDeleted;
+            files.FileCopied -= files_FileCopied;
+        }
+
+        #endregion
+    }
 }

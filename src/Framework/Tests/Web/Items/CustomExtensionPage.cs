@@ -1,4 +1,4 @@
-﻿namespace N2.Tests.Web.Items
+namespace N2.Tests.Web.Items
 {
     public class CustomExtensionPage : PageItem
     {

@@ -130,6 +130,11 @@ namespace N2.Web.Mvc.Html
 			return registration.RegisterEditable<EditableImageSizeAttribute>(name, title);
 		}
 
+        public static EditableBuilder<EditableImageUploadAttribute> ImageUpload(this IContentRegistration registration, string name, string title = null)
+        {
+            return registration.RegisterEditable<EditableImageUploadAttribute>(name, title);
+        }
+
 		public static EditableBuilder<EditableItemAttribute> Item(this IContentRegistration registration, string name, string title = null)
 		{
 			return registration.RegisterEditable<EditableItemAttribute>(name, title);
@@ -238,7 +243,10 @@ namespace N2.Web.Mvc.Html
 
 			public void Refine(ItemDefinition currentDefinition, System.Collections.Generic.IList<ItemDefinition> allDefinitions)
 			{
-				currentDefinition.Attributes.Add(attribute);
+				lock (currentDefinition.Attributes)
+				{
+					currentDefinition.Attributes.Add(attribute);
+				}
 			}
 
 			public int CompareTo(ISortableRefiner other)

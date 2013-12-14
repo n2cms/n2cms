@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Addons.Wiki;
 using System.Web.UI.WebControls;
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +8,19 @@ using N2.Security;
 
 namespace N2.Tests.Persistence
 {
-	[TestFixture]
-	public class ContentPersister_ContentSourcesTests
-	{
-		[SetUp]
-		public void SetUp()
-		{
-			
-		}
+    [TestFixture]
+    public class ContentPersister_ContentSourcesTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            
+        }
 
-		[Test]
-		public void Test()
-		{
+        [Test]
+        public void Test()
+        {
 
-		}
-	}
+        }
+    }
 }

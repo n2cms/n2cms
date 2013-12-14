@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 using System.Web.UI.WebControls;
 using N2.Configuration;
 using N2.Details;

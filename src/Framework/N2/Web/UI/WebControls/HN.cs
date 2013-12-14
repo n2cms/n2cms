@@ -1,5 +1,7 @@
 using System;
+using System.Web;
 using System.Web.UI;
+using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {
@@ -50,7 +52,7 @@ namespace N2.Web.UI.WebControls
 			{
 				string tag = TagKey;
 				writer.WriteFullBeginTag(tag);
-				writer.Write(Text);
+				N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Text, writer);
 				if (CssClass != null)
 					writer.WriteAttribute("class", CssClass);
 				writer.WriteEndTag(tag);

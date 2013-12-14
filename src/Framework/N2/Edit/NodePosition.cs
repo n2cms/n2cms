@@ -1,8 +1,8 @@
-﻿namespace N2.Edit
+namespace N2.Edit
 {
-	public enum NodePosition
-	{
-		Before,
-		After
-	}
+    public enum NodePosition
+    {
+        Before,
+        After
+    }
 }
