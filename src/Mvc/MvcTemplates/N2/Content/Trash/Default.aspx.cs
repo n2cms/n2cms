@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Management.Content.Trash;
@@ -72,6 +73,11 @@ namespace N2.Edit.Trash
                 RegisterRefreshNavigationScript(CurrentItem);
             }
         }
+
+	    protected string HtmlEncode(String value)
+	    {
+		    return SafeContentRenderer.HtmlEncode(value);
+	    }
 
         protected void btnClear_Click(object sender, EventArgs e)
         {
