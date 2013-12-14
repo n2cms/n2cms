@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Move.aspx.cs" Inherits="N2.Edit.Move" Title="Move" %>
+﻿<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Move.aspx.cs" Inherits="N2.Edit.Move" Title="Move" %>
 
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 

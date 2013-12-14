@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Content/Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Root.aspx.cs" Inherits="N2.Management.Myself.Root" Title="Root" %>
+﻿<%@ Page MasterPageFile="../Content/Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Root.aspx.cs" Inherits="N2.Management.Myself.Root" Title="Root" %>
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<link href="<%= N2.Web.Url.ResolveTokens("{ManagementUrl}/Resources/Css/Root.css") %>"" rel="stylesheet" type="text/css" />
 </asp:Content>

@@ -7,5 +7,5 @@ expand_func () {
 
 export -f expand_func
 
-find . -name \*.cs -exec bash -c 'expand_func {}' \;
+find . -name \*.aspx -exec bash -c 'expand_func {}' \;
 
