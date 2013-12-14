@@ -16,18 +16,14 @@ ul.nav li a.logotype {
 	margin:20px 10px 10px 0;
 }
 
+.carousel .contentlink .img {
+	margin:0;
+}
+
 td {
 	vertical-align:top;
 }
 
-/*.nav li.dropdown {
-	padding-right:25px;
-}
-.nav li a.dropdown-toggle {
-	position:absolute;
-	right:0;
-	top:0;
-}*/
 /*
 @import "Elements.css";
 @import "Features.css";
