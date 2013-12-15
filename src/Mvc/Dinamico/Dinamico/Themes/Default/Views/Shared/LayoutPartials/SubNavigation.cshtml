@@ -5,7 +5,7 @@
 }
 @foreach(var ancestor in ancestors)
 {
-	<ul class="nav nav-pills">
+	<ul class="nav nav-pills level@(Content.Traverse.LevelOf(ancestor))">
 	@foreach(var child in Content.Traverse.NavigatableChildPages(ancestor).TryAppendCreatorNode(Html.ContentEngine(), ancestor))
 	{
 		<li class="@(allAncestors.Contains(child) ? "active" : "")">

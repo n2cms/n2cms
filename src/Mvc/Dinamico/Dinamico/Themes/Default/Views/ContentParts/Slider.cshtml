@@ -9,7 +9,7 @@
 	string uniqueId = Html.UniqueID("s");
 }
 
-<div id="@uniqueId" class="carousel slide">
+<div id="@uniqueId" class="part carousel slide">
 	<ol class="carousel-indicators">
 	@{ var index = 0; }
 	@foreach (var item in Content.Traverse.ChildParts("SliderArea"))

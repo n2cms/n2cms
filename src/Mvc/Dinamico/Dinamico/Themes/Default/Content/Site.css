@@ -1,15 +1,30 @@
 @import "../lib/bootstrap-3.0.3/css/bootstrap.min.css";
 @import "../lib/bootstrap-3.0.3/css/bootstrap-theme.min.css";
 
+#nav {
+	margin-bottom:15px;
+}
+
 ul.nav li a.logotype {
-	padding:0;
+	padding:0 20px;
 }
 	ul.nav li a.logotype img {
 		height:50px;
 		width:auto;
 	}
+		ul.nav li ul {
+			list-style-type:none;
+		}
+
+	/*ul.nav #searchform .input-group{
+		float:left;
+	}*/
 
 #main > img { margin: 0 15px; }
+
+.part {
+	margin-bottom:15px;
+}
 
 .carousel-caption a {
 	color:#fff;
@@ -22,6 +37,10 @@ ul.nav li a.logotype {
 .contentlink .img {
 	float:left;
 	margin:20px 10px 10px 0;
+}
+
+.carousel .part {
+	margin-bottom:0;
 }
 
 .carousel .contentlink .img {
