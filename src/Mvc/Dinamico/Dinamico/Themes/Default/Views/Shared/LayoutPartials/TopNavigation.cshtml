@@ -1,29 +1,4 @@
 ﻿<div class="navbar">
 @Html.Tree(Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage,
-		htmlAttributes: new { id = "menu", @class = "nav navbar-nav clearfix level1" });
-
-@*@{ var root = Content.Parse(Request["returnUrl"]) ?? Content.Traverse.StartPage; }
-@Html.Tree(root, 
-	htmlAttributes: new { id = "menu", @class = "nav navbar-nav clearfix level1" }, 
-	takeLevels: 3,
-		appendCreatorNode: true).Tag((node, tag) => {
-			if (tag.TagName == "li" && node.Children.Any())
-				tag.AddCssClass("dropdown");
-			else if (node.Current != root && node.Parent != null && node.Parent.Current != root && tag.TagName == "ul")
-				tag.AddCssClass("dropdown-menu");
-			}).LinkWriter((node, tw) => {
-				if (node.Current is N2.Definitions.IPlaceholder)
-				{
-					tw.Write("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>" + node.Current.Title + " <b class='caret'></b></a>");
-				}
-				else if (node.Children.Any())
-				{
-					N2.Web.Link.To(node.Current).WriteTo(tw);
-					tw.Write("<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret'></b></a>");
-				}
-				else
-				{
-					N2.Web.Link.To(node.Current).WriteTo(tw);
-				}
-			});*@
+		htmlAttributes: new { id = "menu", @class = "nav navbar-nav clearfix level1" })
 </div>

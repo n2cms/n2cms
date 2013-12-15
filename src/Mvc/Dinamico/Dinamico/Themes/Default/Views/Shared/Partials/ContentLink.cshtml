@@ -7,7 +7,10 @@
 	using (Content.BeginScope(Model))
 	{
 <div class="contentlink clearfix @(imgSize)Size">
+	@if (Content.Has.Image)
+	{
 	<a class="img @imgSize" href="@Content.Current.Item.Url">@Content.Render.Image("Image", imgSize, cssClass: "img-responsive")</a>		
+	}
 	<div class="@contentClass">
 		<h3><a class="heading" href="@Content.Current.Item.Url">@Content.Current.Item.Title</a></h3>
 		<a class="summary" href="@Content.Current.Item.Url">@Content.Display.Summary</a>

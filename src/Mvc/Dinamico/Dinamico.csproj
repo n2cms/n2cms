@@ -138,14 +138,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\bootstrap-glyphicons.css" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\bootstrap.css" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\css\docs.css" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.svg" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\index.html" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap-glyphicons.css" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap.css" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap-theme.min.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\css\bootstrap.min.css" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\js\bootstrap.js" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\js\bootstrap.min.js" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.svg" />
     <Content Include="Dinamico\N2\readme.txt" />
     <Content Include="Dinamico\readme.txt" />
@@ -171,8 +170,9 @@
     <Content Include="Dinamico\Themes\Default\Content\Layout.css" />
     <Content Include="Dinamico\Themes\Default\Content\Mood.css" />
     <Content Include="Dinamico\Themes\Default\Content\Site.css" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery.anythingslider.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery.highlight-3.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.min.js" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery.highlight-3.js" />
     <Content Include="Dinamico\Themes\Default\Scripts\Site.js" />
     <Content Include="Dinamico\Themes\Default\Thumbnail.JPG" />
     <Content Include="Dinamico\Themes\Default\Views\ContentParts\GDocViewer.cshtml" />
@@ -191,11 +191,10 @@
     <Content Include="Content\fonts\glyphiconshalflings-regular.ttf" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.otf" />
     <Content Include="Content\fonts\glyphiconshalflings-regular.eot" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.eot" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.otf" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.ttf" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\fonts\glyphiconshalflings-regular.woff" />
-    <Content Include="Dinamico\Themes\Default\Content\bootstrap-glyphicons-gh-pages\LICENSE" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Dinamico\Themes\Default\lib\bootstrap-3.0.3\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Dinamico\Themes\Default\lib\jquery\jquery-1.10.2.min.map" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Form.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Index.cshtml" />
     <None Include="Dinamico\Themes\Default\Views\FreeForm\Submitted.cshtml" />
@@ -216,11 +215,6 @@
     <Content Include="Dinamico\Themes\Terracotta\Thumbnail.JPG" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <None Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\bootstrap.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\bootstrap.min.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.js" />
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -230,11 +224,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Dinamico\Themes\Default\Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\" />
     <Folder Include="Scripts\" />
     <Folder Include="Upload\" />
   </ItemGroup>
