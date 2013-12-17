@@ -304,7 +304,14 @@ namespace N2.Web
 					select x).ToArray();
 		}
 
-		private List<ContentTreeNode> BuildNavTree()
+        private bool HasChildren(ContentItem ancestorItem)
+        {
+            return menuPart.MenuShowInvisible
+                ? Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem)
+                : Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem && item.Visible);
+        }
+
+	    private List<ContentTreeNode> BuildNavTree()
 		{
 			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
 			var ci = Content.Current.Page;
@@ -325,13 +332,13 @@ namespace N2.Web
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true };
+                var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true};
 				navTree.Add(ancestorNode);
 
 				// expand the ancestor
 				// ReSharper disable LoopCanBeConvertedToQuery
 				foreach (var item in GetChildren(ancestorItem))
-					expandedParents.Add(new ContentTreeNode(item, ancestorNode));
+                    expandedParents.Add(new ContentTreeNode(item, ancestorNode));
 				// ReSharper restore LoopCanBeConvertedToQuery
 			}
 
@@ -341,7 +348,7 @@ namespace N2.Web
 			if (ci.Visible || menuPart.MenuShowCurrentItemIfHidden)
 			{
 				// -- add a node for the current page --
-				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
+                var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
 				var navItemCParent = navTree.LastOrDefault();
 				navTree.Add(navItemCurrent);
 
@@ -471,7 +478,7 @@ namespace N2.Web
 
 				// render caret if subitems exist
 				if (sn.MenuShowCaretOnItemsWithChildren
-					&& database.Any(f => f.Parent == childNode))
+					&& HasChildren(childItem))
 				{
 					// <b class="caret"></b> 
 					xml.Write(' ');
