@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Web.UI;
 using System.Xml.Linq;
 using N2.Definitions;

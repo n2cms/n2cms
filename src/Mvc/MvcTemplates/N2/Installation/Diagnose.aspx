@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Diagnose.aspx.cs" Inherits="N2.Edit.Install.Diagnose" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Diagnose.aspx.cs" Inherits="N2.Edit.Install.Diagnose" %>
 <%@ Import Namespace="System.Collections.Generic"%>
 <%@ Import Namespace="System.Reflection"%>
 <%@ Import Namespace="N2.Web"%>

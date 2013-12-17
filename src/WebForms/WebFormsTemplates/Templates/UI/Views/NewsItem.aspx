@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.News.UI.NewsItem" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.News.UI.NewsItem" %>
 <asp:Content ContentPlaceHolderID="TextContent" runat="server">
     <n2:EditableDisplay ID="edt" PropertyName="Title" runat="server" />
     <span class="date"><%= CurrentItem.Published %></span>

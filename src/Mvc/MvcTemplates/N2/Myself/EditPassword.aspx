@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="True" 
+﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="True" 
     CodeBehind="EditPassword.aspx.cs" Inherits="N2.Edit.Myself.EditPassword" Title="Change password" meta:resourcekey="PageResource1"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">    
     

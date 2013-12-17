@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Copy.aspx.cs" Inherits="N2.Edit.Copy" Title="Copy" %>
+﻿<%@ Page MasterPageFile="Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Copy.aspx.cs" Inherits="N2.Edit.Copy" Title="Copy" %>
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">

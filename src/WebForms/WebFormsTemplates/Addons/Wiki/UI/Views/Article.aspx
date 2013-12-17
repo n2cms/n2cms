@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Article.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.WikiArticle" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Article.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.WikiArticle" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <asp:Content ID="tc" ContentPlaceHolderID="TextContent" runat="server">
     <div class="controls">View
