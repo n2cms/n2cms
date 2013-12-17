@@ -735,6 +735,8 @@
     <Compile Include="Collections\TraverseHelper.cs" />
     <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
+    <Compile Include="Web\Parsing\ElementAnalyzer.cs" />
+    <Compile Include="Web\Parsing\HtmlCommentAnalyzer.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Parts\IIntegerityManager.cs" />

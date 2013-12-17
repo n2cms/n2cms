@@ -57,7 +57,7 @@ namespace N2.Web
             xml.AddAttribute("type", "button");
             xml.AddAttribute("class", "navbar-toggle menuToggle");
             xml.AddAttribute("data-toggle", "collapse");
-            xml.AddAttribute("data-target", ".navbar-collapse");
+            xml.AddAttribute("data-target", string.Format("#{0}-collapse", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name));
             xml.RenderBeginTag("button"); // <button>
 
             // add the screen reader info
@@ -100,6 +100,7 @@ namespace N2.Web
 
             xml.RenderEndTag(); // </button>
 
+            xml.AddAttribute("id", string.Format("{0}-collapse", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name));
             xml.AddAttribute("class", "collapse navbar-collapse");
             xml.RenderBeginTag("div"); //<div class="collapse navbar-collapse">
         }

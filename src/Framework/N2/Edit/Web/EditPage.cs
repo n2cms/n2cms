@@ -343,6 +343,13 @@ namespace N2.Edit.Web
 
         #region Properties
 
+	    private ISafeContentRenderer safeContentRenderer;
+	    public ISafeContentRenderer SafeContentRenderer
+	    {
+		    get { return safeContentRenderer ?? (safeContentRenderer = Engine.Resolve<ISafeContentRenderer>()); }
+			set { safeContentRenderer = value; }
+	    }
+
         Engine.IEngine engine;
         public Engine.IEngine Engine
         {
