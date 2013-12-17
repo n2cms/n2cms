@@ -304,7 +304,7 @@ namespace N2.Web
 					select x).ToArray();
 		}
 
-        private bool HasChildren(ContentItem ancestorItem)
+        private bool HasVisibleChildren(ContentItem ancestorItem)
         {
             return menuPart.MenuShowInvisible
                 ? Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem)
@@ -478,7 +478,7 @@ namespace N2.Web
 
 				// render caret if subitems exist
 				if (sn.MenuShowCaretOnItemsWithChildren
-					&& HasChildren(childItem))
+					&& HasVisibleChildren(childItem))
 				{
 					// <b class="caret"></b> 
 					xml.Write(' ');
