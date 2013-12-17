@@ -58,7 +58,7 @@ namespace N2.Web
 	/// </summary>
 	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	[WithEditableTitle]
-    [WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
+	[WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]
 	public class MenuPart : MenuPartBase, IPart
@@ -82,9 +82,9 @@ namespace N2.Web
 		#endregion
 
 
-        #region Hierarchy Options
+		#region Hierarchy Options
 
-        [EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
+		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
 		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
@@ -202,7 +202,7 @@ namespace N2.Web
 
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof(MenuPart))]
@@ -210,7 +210,7 @@ namespace N2.Web
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-		    var menuPart = part as MenuPart;
+			var menuPart = part as MenuPart;
 			if (part == null)
 				throw new ArgumentException("part");
 
@@ -270,7 +270,7 @@ namespace N2.Web
 		public void WriteHtml(HtmlTextWriter xml)
 		{
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
-            xml.AddAttribute("class", "menuNavPart");
+			xml.AddAttribute("class", "menuNavPart");
 			xml.RenderBeginTag("div");
 
 			switch (menuPart.MenuTitleDisplayMode)
@@ -280,7 +280,7 @@ namespace N2.Web
 					break;
 				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
-                    break;
+					break;
 				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
@@ -304,14 +304,14 @@ namespace N2.Web
 					select x).ToArray();
 		}
 
-        private bool HasVisibleChildren(ContentItem ancestorItem)
-        {
-            return menuPart.MenuShowInvisible
-                ? Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem)
-                : Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem && item.Visible);
-        }
+		private bool HasVisibleChildren(ContentItem ancestorItem)
+		{
+			return menuPart.MenuShowInvisible
+				? Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem)
+				: Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem && item.Visible);
+		}
 
-	    private List<ContentTreeNode> BuildNavTree()
+		private List<ContentTreeNode> BuildNavTree()
 		{
 			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
 			var ci = Content.Current.Page;
@@ -332,13 +332,13 @@ namespace N2.Web
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-                var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true};
+				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true};
 				navTree.Add(ancestorNode);
 
 				// expand the ancestor
 				// ReSharper disable LoopCanBeConvertedToQuery
 				foreach (var item in GetChildren(ancestorItem))
-                    expandedParents.Add(new ContentTreeNode(item, ancestorNode));
+					expandedParents.Add(new ContentTreeNode(item, ancestorNode));
 				// ReSharper restore LoopCanBeConvertedToQuery
 			}
 
@@ -348,7 +348,7 @@ namespace N2.Web
 			if (ci.Visible || menuPart.MenuShowCurrentItemIfHidden)
 			{
 				// -- add a node for the current page --
-                var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
+				var navItemCurrent = new ContentTreeNode(ci, navTree.LastOrDefault());
 				var navItemCParent = navTree.LastOrDefault();
 				navTree.Add(navItemCurrent);
 
@@ -397,22 +397,22 @@ namespace N2.Web
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-		    if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
-		    {
-                // Skip directly to the childre of the root node.
-		        childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
-		    }
+			if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
+			{
+				// Skip directly to the childre of the root node.
+				childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
+			}
 
-		    foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
-		    {
-		        WriteListItem(childNode, xml, level, null);
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+			{
+				WriteListItem(childNode, xml, level, null);
 
-		        if (!menuPart.MenuNestChildUls)
-		        {
-		            WriteChildList(childNode, xml, level + 1);
-		        }
-		    }
-		    xml.RenderEndTag();
+				if (!menuPart.MenuNestChildUls)
+				{
+					WriteChildList(childNode, xml, level + 1);
+				}
+			}
+			xml.RenderEndTag();
 		}
 		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
