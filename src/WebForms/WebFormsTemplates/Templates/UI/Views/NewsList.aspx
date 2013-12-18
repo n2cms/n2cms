@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="NewsList.aspx.cs" Inherits="N2.Templates.UI.Views.NewsContainer" Title="" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="NewsList.aspx.cs" Inherits="N2.Templates.UI.Views.NewsContainer" Title="" %>
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
     <n2:ItemDataSource id="idsNews" runat="server" />
     <asp:Repeater runat="server" DataSourceID="idsNews">

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -14,30 +14,30 @@ using NHibernate;
 
 namespace N2.Edit.FileSystem.NH
 {
-	/// <summary>
-	/// A file system implementation that stores files in the database.
-	/// </summary>
-	[Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
-	public class DatabaseFileSystem : IFileSystem
-	{
-		private readonly Engine.Logger<DatabaseFileSystem> logger;
-		private readonly ISessionProvider _sessionProvider;
-		private const long UploadFileSize = long.MaxValue;
-		private int chunkSize;
+    /// <summary>
+    /// A file system implementation that stores files in the database.
+    /// </summary>
+    [Service(typeof(IFileSystem), Configuration = "dbfs", Replaces = typeof(MappedFileSystem))]
+    public class DatabaseFileSystem : IFileSystem
+    {
+        private readonly Engine.Logger<DatabaseFileSystem> logger;
+        private readonly ISessionProvider _sessionProvider;
+        private const long UploadFileSize = long.MaxValue;
+        private int chunkSize;
 
-		public DatabaseFileSystem(ISessionProvider sessionProvider, DatabaseSection config)
+        public DatabaseFileSystem(ISessionProvider sessionProvider, DatabaseSection config)
         {
             this._sessionProvider = sessionProvider;
-			this.chunkSize = config.Files.ChunkSize;
+            this.chunkSize = config.Files.ChunkSize;
         }
 
         private IEnumerable<FileSystemItem> FindChildren(FileSystemPath path, ICriterion criterion)
         {
-			return Session.CreateCriteria<FileSystemItem>()
+            return Session.CreateCriteria<FileSystemItem>()
                 .Add(Restrictions.Eq("Path.Parent", path.ToString()))
                 .Add(criterion)
-				.AddOrder(Order.Asc("Path.Name"))
-				.SetCacheable(true)
+                .AddOrder(Order.Asc("Path.Name"))
+                .SetCacheable(true)
                 .List<FileSystemItem>();
         }
 
@@ -45,7 +45,7 @@ namespace N2.Edit.FileSystem.NH
         {
             var c = Session.CreateCriteria<FileSystemItem>()
                 .Add(Restrictions.Eq("Path", path))
-				.SetCacheable(true);
+                .SetCacheable(true);
 
             return c.UniqueResult<FileSystemItem>();
         }
@@ -79,11 +79,11 @@ namespace N2.Edit.FileSystem.NH
         public FileData GetFile(string virtualPath)
         {
             var path = FileSystemPath.File(virtualPath);
-			var item = GetSpecificItem(path);
+            var item = GetSpecificItem(path);
 
-			return item == null
-				? null
-				: item.ToFileData();
+            return item == null
+                ? null
+                : item.ToFileData();
         }
 
         public IEnumerable<DirectoryData> GetDirectories(string parentVirtualPath)
@@ -122,7 +122,7 @@ namespace N2.Edit.FileSystem.NH
 
                 var file = GetSpecificItem(source);
                 file.Path = target;
-				file.Updated = Utility.CurrentTime();
+                file.Updated = Utility.CurrentTime();
                 trx.Commit();
             }
 
@@ -138,14 +138,14 @@ namespace N2.Edit.FileSystem.NH
             {
                 var path = FileSystemPath.File(virtualPath);
 
-				var file = GetSpecificItem(path);
+                var file = GetSpecificItem(path);
 
-				int deletedChunks = Session.CreateQuery("delete from " + typeof(FileSystemChunk).Name + " where BelongsTo = :file")
-					.SetParameter("file", file)
-					.ExecuteUpdate();
+                int deletedChunks = Session.CreateQuery("delete from " + typeof(FileSystemChunk).Name + " where BelongsTo = :file")
+                    .SetParameter("file", file)
+                    .ExecuteUpdate();
 
-				Session.Delete(file);
-				logger.Debug("Deleted 1 item and " + deletedChunks + " chunks at " + path);
+                Session.Delete(file);
+                logger.Debug("Deleted 1 item and " + deletedChunks + " chunks at " + path);
 
                 trx.Commit();
             }
@@ -161,7 +161,7 @@ namespace N2.Edit.FileSystem.NH
             var source = FileSystemPath.File(fromVirtualPath);
             var target = FileSystemPath.File(destinationVirtualPath);
 
-			var s = Session;
+            var s = Session;
             using (var trx = s.BeginTransaction())
             {
                 AssertParentExists(target);
@@ -172,21 +172,21 @@ namespace N2.Edit.FileSystem.NH
                 {
                     Path = target,
                     Length = file.Length,
-					Created = Utility.CurrentTime(),
-					Updated = Utility.CurrentTime()
+                    Created = Utility.CurrentTime(),
+                    Updated = Utility.CurrentTime()
                 };
 
                 s.Save(copy);
 
-				foreach (var sourceChunk in GetChunks(file))
-				{
-					var chunkCopy = CreateChunk(copy, sourceChunk.Offset, sourceChunk.Data);
-					s.Save(chunkCopy);
-					
-					s.Flush();
-					s.Evict(sourceChunk);
-					s.Evict(chunkCopy);
-				}
+                foreach (var sourceChunk in GetChunks(file))
+                {
+                    var chunkCopy = CreateChunk(copy, sourceChunk.Offset, sourceChunk.Data);
+                    s.Save(chunkCopy);
+                    
+                    s.Flush();
+                    s.Evict(sourceChunk);
+                    s.Evict(chunkCopy);
+                }
 
                 trx.Commit();
             }
@@ -197,12 +197,12 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
-		private NHibernate.ISession Session
-		{
-			get { return _sessionProvider.OpenSession.Session; }
-		}
+        private NHibernate.ISession Session
+        {
+            get { return _sessionProvider.OpenSession.Session; }
+        }
 
-		public Stream OpenFile(string virtualPath, bool readOnly = false)
+        public Stream OpenFile(string virtualPath, bool readOnly = false)
         {
             var path = FileSystemPath.File(virtualPath);
 
@@ -211,8 +211,8 @@ namespace N2.Edit.FileSystem.NH
                 CreateFile(path, new MemoryStream());
             }
             var blob = GetSpecificItem(path);
-			var stream = new DatabaseFileSystemStream(blob, this, Session, chunkSize);
-			return stream;
+            var stream = new DatabaseFileSystemStream(blob, this, Session, chunkSize);
+            return stream;
         }
 
         public void WriteFile(string virtualPath, Stream inputStream)
@@ -249,184 +249,184 @@ namespace N2.Edit.FileSystem.NH
         internal void UpdateFile(FileSystemPath virtualPath, Stream inputStream)
         {
             CheckStreamSize(inputStream, virtualPath);
-			if (inputStream.CanSeek && inputStream.Position > 0)
-				inputStream.Position = 0;
+            if (inputStream.CanSeek && inputStream.Position > 0)
+                inputStream.Position = 0;
 
             var file = GetSpecificItem(virtualPath);
-			file.Updated = Utility.CurrentTime();
+            file.Updated = Utility.CurrentTime();
 
-			var s = Session;
-			using (var trx = s.BeginTransaction())
-			{
-				var temp = new byte[chunkSize];
-				int offset = 0;
-				int length = 0;
+            var s = Session;
+            using (var trx = s.BeginTransaction())
+            {
+                var temp = new byte[chunkSize];
+                int offset = 0;
+                int length = 0;
 
-				bool endOfInputFile = false;
-				foreach (var chunk in GetChunks(file.Path))
-				{
-					if (endOfInputFile)
-					{
-						s.Delete(chunk);
-						s.Flush();
-						s.Evict(chunk);
-						continue;
-					}
+                bool endOfInputFile = false;
+                foreach (var chunk in GetChunks(file.Path))
+                {
+                    if (endOfInputFile)
+                    {
+                        s.Delete(chunk);
+                        s.Flush();
+                        s.Evict(chunk);
+                        continue;
+                    }
 
-					int size = inputStream.Read(temp, 0, temp.Length);
-					endOfInputFile = size <= 0;
-					length += size;
-					
-					if (endOfInputFile)
-					{
-						s.Delete(chunk);
-						s.Flush();
-						s.Evict(chunk);
-						continue;
-					}
+                    int size = inputStream.Read(temp, 0, temp.Length);
+                    endOfInputFile = size <= 0;
+                    length += size;
+                    
+                    if (endOfInputFile)
+                    {
+                        s.Delete(chunk);
+                        s.Flush();
+                        s.Evict(chunk);
+                        continue;
+                    }
 
-					var buffer = Copy(temp, size);
+                    var buffer = Copy(temp, size);
 
-					chunk.Offset = offset;
-					chunk.Data = buffer;
-					s.Update(chunk);
-					s.Flush();
-					s.Evict(chunk);
+                    chunk.Offset = offset;
+                    chunk.Data = buffer;
+                    s.Update(chunk);
+                    s.Flush();
+                    s.Evict(chunk);
 
-					offset += size;
-				}
+                    offset += size;
+                }
 
-				while (true && !endOfInputFile)
-				{
-					int size = inputStream.Read(temp, 0, temp.Length);
-					if (size <= 0)
-						break;
+                while (true && !endOfInputFile)
+                {
+                    int size = inputStream.Read(temp, 0, temp.Length);
+                    if (size <= 0)
+                        break;
 
-					length += size;
-					var buffer = Copy(temp, size);
-					var chunk = CreateChunk(file, offset, buffer);
-					s.Save(chunk);
-					s.Flush();
-					s.Evict(chunk);
-				}
+                    length += size;
+                    var buffer = Copy(temp, size);
+                    var chunk = CreateChunk(file, offset, buffer);
+                    s.Save(chunk);
+                    s.Flush();
+                    s.Evict(chunk);
+                }
 
-				file.Length = length;
-				s.Update(file);
-				
-				trx.Commit();
-			}
+                file.Length = length;
+                s.Update(file);
+                
+                trx.Commit();
+            }
         }
 
-		private static byte[] Copy(byte[] temp, int size)
-		{
-			var buffer = new byte[size];
-			Array.Copy(temp, buffer, size);
-			return buffer;
-		}
+        private static byte[] Copy(byte[] temp, int size)
+        {
+            var buffer = new byte[size];
+            Array.Copy(temp, buffer, size);
+            return buffer;
+        }
 
         private void CreateFile(FileSystemPath virtualPath, Stream inputStream)
         {
-			EnsureParentExists(virtualPath);
+            EnsureParentExists(virtualPath);
 
             CheckStreamSize(inputStream, virtualPath);
-			long fileSize = inputStream.CanSeek ? inputStream.Length : 0;
-			
-			using (var trx = Session.BeginTransaction())
-			{
-				var item = new FileSystemItem
-				{
-					Path = virtualPath,
-					Created = Utility.CurrentTime(),
-					Updated = Utility.CurrentTime(),
-					Length = fileSize
-				};
-				Session.Save(item);
+            long fileSize = inputStream.CanSeek ? inputStream.Length : 0;
+            
+            using (var trx = Session.BeginTransaction())
+            {
+                var item = new FileSystemItem
+                {
+                    Path = virtualPath,
+                    Created = Utility.CurrentTime(),
+                    Updated = Utility.CurrentTime(),
+                    Length = fileSize
+                };
+                Session.Save(item);
 
-				var temp = new byte[chunkSize];
-				int offset = 0;
-				int size = 0;
-				while(true)
-				{
-					size = inputStream.Read(temp, 0, temp.Length);
-					if (size <= 0)
-						break;
+                var temp = new byte[chunkSize];
+                int offset = 0;
+                int size = 0;
+                while(true)
+                {
+                    size = inputStream.Read(temp, 0, temp.Length);
+                    if (size <= 0)
+                        break;
 
-					var buffer = Copy(temp, size);
+                    var buffer = Copy(temp, size);
 
-					var chunk = CreateChunk(item, offset, buffer);
-					Session.Save(chunk);
+                    var chunk = CreateChunk(item, offset, buffer);
+                    Session.Save(chunk);
 
-					if (size < temp.Length)
-						break;
+                    if (size < temp.Length)
+                        break;
 
-					offset += size;
-				}
+                    offset += size;
+                }
 
-				if (fileSize == 0)
-				{
-					item.Length = offset + size;
-					Session.Update(item);
-				}
+                if (fileSize == 0)
+                {
+                    item.Length = offset + size;
+                    Session.Update(item);
+                }
 
-				trx.Commit();
-			}
-			//using (var buffer = (inputStream.CanSeek && (inputStream.Length <= int.MaxValue) ? new MemoryStream((int)inputStream.Length) : new MemoryStream()))
-			//{
-			//    AssertParentExists(virtualPath);
+                trx.Commit();
+            }
+            //using (var buffer = (inputStream.CanSeek && (inputStream.Length <= int.MaxValue) ? new MemoryStream((int)inputStream.Length) : new MemoryStream()))
+            //{
+            //  AssertParentExists(virtualPath);
 
-			//    inputStream.Position = 0;
-			//    CopyStream(inputStream, buffer);
-			//    inputStream.Position = 0;
+            //  inputStream.Position = 0;
+            //  CopyStream(inputStream, buffer);
+            //  inputStream.Position = 0;
 
-			//    var item = new FileSystemItem
-			//                   {
-			//                       Path = virtualPath,
-			//                       Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray(),
-			//                       Created = Utility.CurrentTime(),
-			//                       Updated = Utility.CurrentTime(),
-			//                       Length = buffer.Length
-			//                   };
+            //  var item = new FileSystemItem
+            //                 {
+            //                     Path = virtualPath,
+            //                     Data = (inputStream.CanSeek && inputStream.Length == buffer.GetBuffer().Length ) ? buffer.GetBuffer() : buffer.ToArray(),
+            //                     Created = Utility.CurrentTime(),
+            //                     Updated = Utility.CurrentTime(),
+            //                     Length = buffer.Length
+            //                 };
 
-			//    Session.Save(item);
-			//    trx.Commit();
-			//}
+            //  Session.Save(item);
+            //  trx.Commit();
+            //}
         }
 
-		private static FileSystemChunk CreateChunk(FileSystemItem item, int offset, byte[] buffer)
-		{
-			var chunk = new FileSystemChunk
-			{
-				BelongsTo = item,
-				Data = buffer,
-				Offset = offset
-			};
-			return chunk;
-		}
+        private static FileSystemChunk CreateChunk(FileSystemItem item, int offset, byte[] buffer)
+        {
+            var chunk = new FileSystemChunk
+            {
+                BelongsTo = item,
+                Data = buffer,
+                Offset = offset
+            };
+            return chunk;
+        }
 
         public void ReadFileContents(string virtualPath, Stream outputStream)
         {
             var path = FileSystemPath.File(virtualPath);
-			foreach (var chunk in GetChunks(path))
-			{
-				outputStream.Write(chunk.Data, 0, chunk.Data.Length);
-				Session.Evict(chunk);
-			}
+            foreach (var chunk in GetChunks(path))
+            {
+                outputStream.Write(chunk.Data, 0, chunk.Data.Length);
+                Session.Evict(chunk);
+            }
         }
 
-		private IEnumerable<FileSystemChunk> GetChunks(FileSystemPath filePath)
-		{
-			return Session.CreateQuery("from FileSystemChunk fsc where fsc.BelongsTo.Path.Parent = :parentPath and fsc.BelongsTo.Path.Name = :name order by fsc.Offset")
-				.SetParameter("parentPath", filePath.Parent)
-				.SetParameter("name", filePath.Name)
-				.Enumerable<FileSystemChunk>();
-		}
+        private IEnumerable<FileSystemChunk> GetChunks(FileSystemPath filePath)
+        {
+            return Session.CreateQuery("from FileSystemChunk fsc where fsc.BelongsTo.Path.Parent = :parentPath and fsc.BelongsTo.Path.Name = :name order by fsc.Offset")
+                .SetParameter("parentPath", filePath.Parent)
+                .SetParameter("name", filePath.Name)
+                .Enumerable<FileSystemChunk>();
+        }
 
-		private IEnumerable<FileSystemChunk> GetChunks(FileSystemItem file)
-		{
-			return Session.CreateQuery("from FileSystemChunk fsc where fsc.BelongsTo = :belongsTo order by fsc.Offset")
-				.SetParameter("belongsTo", file)
-				.Enumerable<FileSystemChunk>();
-		}
+        private IEnumerable<FileSystemChunk> GetChunks(FileSystemItem file)
+        {
+            return Session.CreateQuery("from FileSystemChunk fsc where fsc.BelongsTo = :belongsTo order by fsc.Offset")
+                .SetParameter("belongsTo", file)
+                .Enumerable<FileSystemChunk>();
+        }
 
         public bool DirectoryExists(string virtualPath)
         {
@@ -445,10 +445,10 @@ namespace N2.Edit.FileSystem.NH
                 throw new ApplicationException("Cannot move directory into own subdictory.");
             }
 
-			using (var trx = Session.BeginTransaction())
+            using (var trx = Session.BeginTransaction())
             {
                 var directory = GetSpecificItem(source);
-				var descendants = Session
+                var descendants = Session
                     .CreateCriteria<FileSystemItem>()
                     .Add(Restrictions.Like("Path.Parent", directory.Path.ToString(), MatchMode.Start))
                     .List<FileSystemItem>();
@@ -458,9 +458,9 @@ namespace N2.Edit.FileSystem.NH
                     item.Path.Rebase(source, target);
                 }
 
-				directory.Updated = Utility.CurrentTime();
+                directory.Updated = Utility.CurrentTime();
                 directory.Path = target;
-				Session.Update(directory);
+                Session.Update(directory);
 
                 trx.Commit();
             }
@@ -475,12 +475,12 @@ namespace N2.Edit.FileSystem.NH
         {
             var path = FileSystemPath.Directory(virtualPath);
 
-			using (var trx = Session.BeginTransaction())
+            using (var trx = Session.BeginTransaction())
             {
-				DeleteDescendants(path);
+                DeleteDescendants(path);
 
-				var directory = GetSpecificItem(path);
-				Session.Delete(directory);
+                var directory = GetSpecificItem(path);
+                Session.Delete(directory);
 
                 trx.Commit();
             }
@@ -491,18 +491,18 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
-		private void DeleteDescendants(FileSystemPath path)
-		{
-			int deletedChunks = Session.CreateQuery("delete from " + typeof(FileSystemChunk).Name + " fsc where fsc.BelongsTo.ID in (select fsi.ID from " + typeof(FileSystemItem).Name + " fsi where fsi.Path.Parent like :parent)")
-				.SetParameter("parent", path + "%")
-				.ExecuteUpdate();
+        private void DeleteDescendants(FileSystemPath path)
+        {
+            int deletedChunks = Session.CreateQuery("delete from " + typeof(FileSystemChunk).Name + " fsc where fsc.BelongsTo.ID in (select fsi.ID from " + typeof(FileSystemItem).Name + " fsi where fsi.Path.Parent like :parent)")
+                .SetParameter("parent", path + "%")
+                .ExecuteUpdate();
 
-			int deletedItems = Session.CreateQuery("delete from " + typeof(FileSystemItem).Name + " fsi where fsi.Path.Parent like :parent")
-				.SetParameter("parent", path + "%")
-				.ExecuteUpdate();
-			
-			logger.Debug("Deleted " + deletedItems + " items and " + deletedChunks + " chunks below " + path);
-		}
+            int deletedItems = Session.CreateQuery("delete from " + typeof(FileSystemItem).Name + " fsi where fsi.Path.Parent like :parent")
+                .SetParameter("parent", path + "%")
+                .ExecuteUpdate();
+            
+            logger.Debug("Deleted " + deletedItems + " items and " + deletedChunks + " chunks below " + path);
+        }
 
         public void CreateDirectory(string virtualPath)
         {
@@ -511,7 +511,7 @@ namespace N2.Edit.FileSystem.NH
             if(DirectoryExists(path.ToString()))
                 throw new IOException("The directory " + path.ToString() + " already exists.");
 
-			using (var trx = Session.BeginTransaction())
+            using (var trx = Session.BeginTransaction())
             {
                 CreateDirectoryInternal(virtualPath);
                 trx.Commit();
@@ -535,11 +535,11 @@ namespace N2.Edit.FileSystem.NH
             var item = new FileSystemItem
                            {
                                Path = path,
-							   Created = Utility.CurrentTime(),
-							   Updated = Utility.CurrentTime()
+                               Created = Utility.CurrentTime(),
+                               Updated = Utility.CurrentTime()
                            };
 
-			Session.Save(item);
+            Session.Save(item);
         }
 
         public event EventHandler<FileEventArgs> FileWritten;

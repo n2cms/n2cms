@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,12 @@ using N2.Definitions;
 
 namespace N2.Tests.Definitions
 {
-	public class TitleTransformer : AttributeTransformerBase<WithEditableTitleAttribute>
-	{
-		public override IUniquelyNamed Transform(WithEditableTitleAttribute attribute)
-		{
-			attribute.Title += " Transformed";
-			return attribute;
-		}
-	}
+    public class TitleTransformer : AttributeTransformerBase<WithEditableTitleAttribute>
+    {
+        public override IUniquelyNamed Transform(WithEditableTitleAttribute attribute)
+        {
+            attribute.Title += " Transformed";
+            return attribute;
+        }
+    }
 }

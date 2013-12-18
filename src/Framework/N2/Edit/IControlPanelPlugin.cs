@@ -4,8 +4,8 @@ using N2.Security;
 
 namespace N2.Edit
 {
-	public interface IControlPanelPlugin : IPlugin, ISecurable, IPermittable
-	{
-		Control AddTo(Control container, PluginContext context);
-	}
+    public interface IControlPanelPlugin : IPlugin, ISecurable, IPermittable
+    {
+        Control AddTo(Control container, PluginContext context);
+    }
 }

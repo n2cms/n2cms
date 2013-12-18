@@ -1,7 +1,7 @@
-﻿namespace N2.Definitions
+namespace N2.Definitions
 {
-	public interface IAllowedDefinitionFilter
-	{
-		AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery query);
-	}
+    public interface IAllowedDefinitionFilter
+    {
+        AllowedDefinitionResult IsAllowed(AllowedDefinitionQuery query);
+    }
 }

@@ -3,6 +3,7 @@
 
 <div id="fileupload" class="droparea">
 	<div id="uploadcontrols">
+		<b class="n2-icon-upload"></b>
 		<p><strong><%= GetLocalResourceString("SelectFiles", "Select files to upload") %></strong></p>
 		<p>
 			<input id="fuAlternative" runat="server" type="file" name="files[]" multiple="multiple" />
@@ -43,7 +44,9 @@
     var maxFileSize = <%= maxFileSize %>;
     var ticket = '<%= FormsAuthentication.Encrypt(new FormsAuthenticationTicket("SecureUpload-" + Guid.NewGuid(), false, 60)) %>';
     var selected = '<%= Selection.SelectedItem.Path %>';
-	var refreshFrames = function(){<%= Page.GetRefreshFramesScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation, true) %>;};
+	var refreshFrames = function(){
+		<%= Page.GetRefreshFramesScript(Selection.SelectedItem, N2.Edit.ToolbarArea.Navigation, true) %>;
+	};
     
 	$(function(){
 		n2.FileUpload(maxFileSize, ticket, selected, refreshFrames);

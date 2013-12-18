@@ -8,14 +8,14 @@ using N2.Definitions;
 namespace N2.Addons.Wiki.Items
 {
     [PageDefinition("Wiki", 
-		Description = "A set of pages that can be updated by external users.", 
-		IconUrl = "~/Addons/Wiki/UI/Img/page_wiki.gif",
-		SortOrder = 460)]
+        Description = "A set of pages that can be updated by external users.", 
+        IconUrl = "~/Addons/Wiki/UI/Img/page_wiki.gif",
+        SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabContainer(Wiki.WikiTab, "Wiki", 110)]
-	[Template("search", "~/Addons/Wiki/UI/Views/Search.aspx")]
-	[Template("nohits", "~/Addons/Wiki/UI/Views/NoHits.aspx")]
-	public class Wiki : WikiArticle, IWiki
+    [Template("search", "~/Addons/Wiki/UI/Views/Search.aspx")]
+    [Template("nohits", "~/Addons/Wiki/UI/Views/NoHits.aspx")]
+    public class Wiki : WikiArticle, IWiki
     {
         public const string WikiTab = "wiki";
 
@@ -72,19 +72,19 @@ namespace N2.Addons.Wiki.Items
             set { SetDetail("NoHitsText", value, DefaultNoHitsText); }
         }
 
-		[EditableCheckBox("Enable Free Text Editing", 112, ContainerName = Wiki.WikiTab)]
-		public virtual bool EnableFreeText
-		{
-			get { return GetDetail("EnableFreeText", false); }
-			set { SetDetail("EnableFreeText", value, false); }
-		}
+        [EditableCheckBox("Enable Free Text Editing", 112, ContainerName = Wiki.WikiTab)]
+        public virtual bool EnableFreeText
+        {
+            get { return GetDetail("EnableFreeText", false); }
+            set { SetDetail("EnableFreeText", value, false); }
+        }
 
-		[EditableNumber("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
-		public virtual int ImageWidth
-		{
-			get { return (int)(GetDetail("ImageWidth") ?? 500); }
-			set { SetDetail("ImageWidth", value, 500); }
-		}
+        [EditableNumber("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
+        public virtual int ImageWidth
+        {
+            get { return (int)(GetDetail("ImageWidth") ?? 500); }
+            set { SetDetail("ImageWidth", value, 500); }
+        }
 
         [EditableRoles(Title = "Role required for write access", ContainerName = Wiki.WikiTab)]
         public virtual IEnumerable<string> ModifyRoles
@@ -97,16 +97,16 @@ namespace N2.Addons.Wiki.Items
             get { return this; }
         }
 
-		public override PathData FindPath(string remainingUrl)
-		{
-			PathData data = base.FindPath(remainingUrl);
-			if(data.CurrentItem == null)
-			{
-				if (remainingUrl.EndsWith(Extension))
-					remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - Extension.Length);
-				data = new PathData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
-			}
-			return data;
-		}
+        public override PathData FindPath(string remainingUrl)
+        {
+            PathData data = base.FindPath(remainingUrl);
+            if(data.CurrentItem == null)
+            {
+                if (remainingUrl.EndsWith(Extension))
+                    remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - Extension.Length);
+                data = new PathData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
+            }
+            return data;
+        }
     }
 }

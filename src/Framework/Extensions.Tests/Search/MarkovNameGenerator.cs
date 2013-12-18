@@ -1,4 +1,4 @@
-﻿// Credits to http://www.siliconcommandergames.com/MarkovNameGenerator.htm
+// Credits to http://www.siliconcommandergames.com/MarkovNameGenerator.htm
 
 using System;
 using System.Collections.Generic;

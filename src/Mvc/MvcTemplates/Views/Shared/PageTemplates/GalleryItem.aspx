@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" 
+﻿<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" 
 	Inherits="System.Web.Mvc.ViewPage<GalleryItem>" Title="" %>
 <%@ Import Namespace="N2.Collections"%>
 <%@ Import Namespace="N2.Templates.Mvc.Models.Pages"%>

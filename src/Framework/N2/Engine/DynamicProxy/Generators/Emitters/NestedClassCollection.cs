@@ -14,9 +14,9 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System.Collections.ObjectModel;
+    using System.Collections.ObjectModel;
 
-	public class NestedClassCollection : Collection<NestedClassEmitter>
-	{
-	}
+    public class NestedClassCollection : Collection<NestedClassEmitter>
+    {
+    }
 }

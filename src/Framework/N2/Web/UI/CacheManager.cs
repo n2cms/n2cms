@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 using System.Web.UI;
 using N2.Configuration;
@@ -7,7 +7,7 @@ using N2.Persistence;
 
 namespace N2.Web.UI
 {
-	[Service(typeof(ICacheManager))]
+    [Service(typeof(ICacheManager))]
     public class CacheManager : N2.Web.UI.ICacheManager
     {
         IWebContext context;
@@ -46,8 +46,8 @@ namespace N2.Web.UI
 
         public virtual void AddCacheInvalidation(HttpResponse response)
         {
-			response.AddCacheDependency(new ContentCacheDependency(persister));
-			response.Cache.AddValidationCallback(ValidateCacheRequest, null);
+            response.AddCacheDependency(new ContentCacheDependency(persister));
+            response.Cache.AddValidationCallback(ValidateCacheRequest, null);
         }
 
         public virtual OutputCacheParameters GetOutputCacheParameters()
@@ -76,17 +76,17 @@ namespace N2.Web.UI
         }
     }
 
-	public static class CacheUtility
-	{
-		public static void InitOutputCache(ICacheManager cacheManager, HttpContext context)
-		{
-			if (!cacheManager.Enabled)
-				return;
+    public static class CacheUtility
+    {
+        public static void InitOutputCache(ICacheManager cacheManager, HttpContext context)
+        {
+            if (!cacheManager.Enabled)
+                return;
 
-			OutputCacheParameters cacheSettings = cacheManager.GetOutputCacheParameters();
+            OutputCacheParameters cacheSettings = cacheManager.GetOutputCacheParameters();
 
-		}
-	}
+        }
+    }
 
 
 

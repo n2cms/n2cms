@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Trash.Default" %>
+﻿<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Trash.Default" %>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnClear" runat="server" CssClass="command restore primary-action" meta:resourceKey="btnClear" OnClientClick="return confirm('really empty trash?');" OnClick="btnClear_Click">Empty trash</asp:LinkButton>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
@@ -16,7 +16,7 @@
 				<ItemTemplate>
 					<asp:HyperLink ID="hlDeletedItem" runat="server" NavigateUrl='<%# Eval("Url") %>' data-id='<%# Eval("ID") %>'>
 						<asp:Image runat="server" ImageUrl='<%# Eval("IconUrl") %>' />
-						<%# Eval("Title") %>
+						<%# HtmlEncode((string) Eval("Title")) %>
 					</asp:HyperLink>
 				</ItemTemplate>
 			</asp:TemplateField>
@@ -29,7 +29,7 @@
 				<ItemTemplate>
 					<asp:HyperLink ID="hlPreviousLocation" runat="server" NavigateUrl='<%# DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "Url") %>'>
 						<asp:Image runat="server" ImageUrl='<%# DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "IconUrl") %>' />
-						<%# DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "Title") %>
+						<%# HtmlEncode((string)DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "Title")) %>
 					</asp:HyperLink>
 				</ItemTemplate>
 			</asp:TemplateField>

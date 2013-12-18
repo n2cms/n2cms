@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using N2.Persistence;
 using N2.Persistence.Finder;

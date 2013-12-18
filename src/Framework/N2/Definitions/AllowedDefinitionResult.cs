@@ -1,9 +1,9 @@
-﻿namespace N2.Definitions
+namespace N2.Definitions
 {
-	public enum AllowedDefinitionResult
-	{
-		Allow,
-		Deny,
-		DontCare
-	}
+    public enum AllowedDefinitionResult
+    {
+        Allow,
+        Deny,
+        DontCare
+    }
 }

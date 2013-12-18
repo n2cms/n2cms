@@ -1,4 +1,4 @@
-﻿using N2.Edit.FileSystem;
+using N2.Edit.FileSystem;
 
 namespace N2.Edit.Tests.FileSystem
 {

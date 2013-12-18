@@ -1,7 +1,7 @@
-﻿namespace N2.Integrity
+namespace N2.Integrity
 {
-	public interface IIntegrityEnforcer
-	{
-		void Start();
-	}
+    public interface IIntegrityEnforcer
+    {
+        void Start();
+    }
 }

@@ -13,6 +13,6 @@ namespace N2.Edit
 
     public partial class AffectedItems
     {
-    	protected Web.UI.Controls.Tree tv;
+        protected Web.UI.Controls.Tree tv;
     }
 }

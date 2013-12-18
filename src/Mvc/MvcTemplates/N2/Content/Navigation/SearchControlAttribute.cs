@@ -1,4 +1,4 @@
-﻿using System.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 using N2.Web;
 
 namespace N2.Edit.Navigation
@@ -9,7 +9,7 @@ namespace N2.Edit.Navigation
             : base("Search", "search", "Navigation/Search.aspx", ToolbarArea.Options)
         {
             GlobalResourceClassName = "Toolbar";
-			Legacy = true;
+            Legacy = true;
         }
 
         public override System.Web.UI.Control AddTo(System.Web.UI.Control container, PluginContext context)

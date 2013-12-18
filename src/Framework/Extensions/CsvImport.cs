@@ -1,4 +1,4 @@
-﻿/*
+/*
 CSV Import Utility
 Licensed to users of N2CMS under the terms of the Boost Software License
 
@@ -35,38 +35,38 @@ using System.Text;
 
 namespace N2.Extensions
 {
-	public class CsvImport
-	{
-		public CsvImport(ContentItem Model)
-		{
-			var dcStr = Model.GetDetail("Delimiter", ",");
-			if (String.IsNullOrEmpty(dcStr))
-				return; // can't do anything.
-			 
-			var dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
-			var dd = Model.GetDetail("Data", string.Empty).Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+    public class CsvImport
+    {
+        public CsvImport(ContentItem Model)
+        {
+            var dcStr = Model.GetDetail("Delimiter", ",");
+            if (String.IsNullOrEmpty(dcStr))
+                return; // can't do anything.
+             
+            var dc = (dcStr == "\\t" ? '\t' : dcStr[0]);
+            var dd = Model.GetDetail("Data", string.Empty).Replace('\r', '\n').Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-			var bSkip = Model.GetDetail("Headers", false);
-			var nSkip = bSkip ? 1 : 0;
+            var bSkip = Model.GetDetail("Headers", false);
+            var nSkip = bSkip ? 1 : 0;
 
-			if (dd.Length - nSkip >= 0)
-			{
-				Rows = new string[Math.Max(dd.Length - nSkip, 0)][];
-				for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
-					Rows[i] = dd[i].Split(dc);
+            if (dd.Length - nSkip >= 0)
+            {
+                Rows = new string[Math.Max(dd.Length - nSkip, 0)][];
+                for (int i = nSkip; i < dd.Length && i < Rows.Length; ++i)
+                    Rows[i] = dd[i].Split(dc);
 
-				if (Model.GetDetail("Sort", false))
-					Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
-			}
-			HasHeader = bSkip;
-			if (bSkip)
-				HeaderRow = dd[0].Split(dc);
-		}
+                if (Model.GetDetail("Sort", false))
+                    Rows = Rows.Where(f => f.Length > 0).OrderBy(f => f[0]).ToArray();
+            }
+            HasHeader = bSkip;
+            if (bSkip)
+                HeaderRow = dd[0].Split(dc);
+        }
 
 
-		public bool HasHeader { get; set; }
-		public string[] HeaderRow { get; set; }
-		public string[][] Rows { get; set; }
+        public bool HasHeader { get; set; }
+        public string[] HeaderRow { get; set; }
+        public string[][] Rows { get; set; }
 
-	}
+    }
 }

@@ -1,7 +1,7 @@
-﻿namespace N2.Extensions.Tests.Mvc.Models
+namespace N2.Extensions.Tests.Mvc.Models
 {
-	[PageDefinition]
-	public class ExecutiveTeamPage : AboutUsSectionPage
-	{
-	}
+    [PageDefinition]
+    public class ExecutiveTeamPage : AboutUsSectionPage
+    {
+    }
 }

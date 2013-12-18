@@ -1,4 +1,4 @@
-﻿using N2.Definitions;
+using N2.Definitions;
 
 namespace N2.Persistence
 {
@@ -8,9 +8,9 @@ namespace N2.Persistence
     /// </summary>
     public class NotVersionableAttribute : VersionableAttribute
     {
-		public NotVersionableAttribute()
-			: base(AllowVersions.No)
-		{
-		}
+        public NotVersionableAttribute()
+            : base(AllowVersions.No)
+        {
+        }
     }
 }

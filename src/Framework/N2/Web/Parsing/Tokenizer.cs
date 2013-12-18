@@ -121,6 +121,12 @@ namespace N2.Web.Parsing
 			{
 				sw.Write(c);
 				c = (char)reader.Read();
+				if (c == '!')
+				{
+					sw.Write(c);
+					return ReadComment(reader, sw, ref c);
+				}
+
 				TokenType tt = (c != '/') ? TokenType.Element : TokenType.EndElement;
                 bool isQuoting = false;
                 bool isEscaping = false;
@@ -170,6 +176,106 @@ namespace N2.Web.Parsing
 						break;
 				}
 				return new Token { Type = tt, Fragment = sw.ToString() };
+			}
+		}
+
+		private Token ReadComment(TextReader reader, StringWriter sw, ref char c)
+		{
+			if (WasEof(reader, out c))
+				return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+			sw.Write(c);
+
+			if (c == '[')
+			{
+				if (!ReadExactly("CDATA[", reader, sw, ref c))
+					return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+
+				if (!ReadUntil("]]>", reader, sw, ref c))
+					return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+
+				return new Token { Type = TokenType.CData, Fragment = sw.ToString() };
+			}
+
+			if (c == 'D')
+			{
+				if (!ReadExactly("OCTYPE", reader, sw, ref c))
+					return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+
+				ReadUntil(">", reader, sw, ref c);
+				return new Token { Type = TokenType.Comment, Fragment = sw.ToString() };
+			}
+
+			if (c != '-')
+			{
+				return new Token { Type = TokenType.Text, Fragment = sw.ToString() };	
+			}
+
+			if (WasEof(reader, out c))
+				return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+			sw.Write(c);
+			if (c != '-')
+				return new Token { Type = TokenType.Text, Fragment = sw.ToString() };
+
+			ReadUntil("-->", reader, sw, ref c);
+			return new Token { Type = TokenType.Comment, Fragment = sw.ToString() };
+		}
+
+		private bool ReadUntil(string ending, TextReader reader, StringWriter sw, ref char c)
+		{
+			if (WasEof(reader, out c))
+				return false;
+			
+			int i = 0;
+			var buffer = new char[ending.Length];
+			while (true)
+			{
+				if (i >= ending.Length)
+					return true;
+
+				sw.Write(c);
+
+				if (ending[i] == c)
+				{
+					buffer[i] = c;
+					i++;
+				}
+				else if (i > 0 && buffer[i - 1] == c)
+				{
+					buffer[i] = c;
+
+					if (!ending.StartsWith(new string(buffer, 1, i)))
+						i = 0;
+					else
+						for (int j = 1; j < i; j++)
+							buffer[j - 1] = buffer[j];
+				}
+				else
+					i = 0;
+
+				if (WasEof(reader, out c))
+					return i == ending.Length;
+			}
+		}
+
+		private bool ReadExactly(string expected, TextReader reader, StringWriter sw, ref char c)
+		{
+			if (WasEof(reader, out c))
+				return false;
+
+			int i = 0;
+			while (true)
+			{
+				sw.Write(c);
+
+				if (i > expected.Length - 1)
+					return true;
+
+				if (expected[i] != c)
+					return false;
+				
+				i++;
+				if (WasEof(reader, out c))
+					return i == expected.Length;
 			}
 		}
 

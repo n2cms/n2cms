@@ -3,8 +3,8 @@ using N2.Integrity;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Calendar Teaser",
-		IconUrl = "~/Templates/UI/Img/calendar_view_month.png")]
+    [PartDefinition("Calendar Teaser",
+        IconUrl = "~/Templates/UI/Img/calendar_view_month.png")]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left)]
     public class CalendarTeaser : SidebarItem
     {

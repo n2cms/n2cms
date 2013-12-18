@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Linq;
 using System.Web.Security;
 using N2.Edit;
@@ -10,11 +10,11 @@ using N2.Definitions;
 
 namespace N2.Management.Files.FileSystem
 {
-	public class UploadFile : IHttpHandler
-	{
+    public class UploadFile : IHttpHandler
+    {
 
-		public void ProcessRequest(HttpContext context)
-		{
+        public void ProcessRequest(HttpContext context)
+        {
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
@@ -114,7 +114,7 @@ namespace N2.Management.Files.FileSystem
                 return false;
             }
         }
-	}
+    }
 
 
     public class FilesStatus
@@ -136,7 +136,7 @@ namespace N2.Management.Files.FileSystem
             size = fileLength;
             progress = "1.0";
             url = "File.aspx?selected=" + fileName;
-			thumbnail_url = "../Resize.ashx?w=48&h=48&img=" + fileName;
+            thumbnail_url = "../Resize.ashx?w=48&h=48&img=" + fileName;
         }
     }
 }

@@ -8,9 +8,9 @@ using N2.Persistence;
 namespace N2.Templates.Items
 {
     [PageDefinition("News", Description = "A news page.", SortOrder = 155,
-		IconUrl = "~/Templates/UI/Img/newspaper.png")]
+        IconUrl = "~/Templates/UI/Img/newspaper.png")]
     [RestrictParents(typeof (NewsContainer))]
-	[ConventionTemplate("NewsItem")]
+    [ConventionTemplate("NewsItem")]
     public class News : AbstractContentPage, ISyndicatable
     {
         public News()
@@ -36,7 +36,7 @@ namespace N2.Templates.Items
             get { return Introduction; }
         }
 
-		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public virtual bool Syndicate { get; set; }
+        [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
+        public virtual bool Syndicate { get; set; }
     }
 }

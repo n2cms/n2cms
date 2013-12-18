@@ -23,23 +23,23 @@ using System;
 namespace N2.Collections
 {
     /// <summary>
-	/// Event argument containing items.
-	/// </summary>
+    /// Event argument containing items.
+    /// </summary>
     public class ItemListEventArgs : EventArgs
     {
-		/// <summary>Creates a new instance of the ItemListEventArgs.</summary>
-		/// <param name="items">The items to associate with these arguments.</param>
-		public ItemListEventArgs(ItemList items)
+        /// <summary>Creates a new instance of the ItemListEventArgs.</summary>
+        /// <param name="items">The items to associate with these arguments.</param>
+        public ItemListEventArgs(ItemList items)
         {
             this.items = items;
         }
 
         private ItemList items;
-		/// <summary>Gets or sets the items associated with these arguments.</summary>
-		public ItemList Items
+        /// <summary>Gets or sets the items associated with these arguments.</summary>
+        public ItemList Items
         {
             get { return items; }
-			set { items = value; }
+            set { items = value; }
         }
     }
 }

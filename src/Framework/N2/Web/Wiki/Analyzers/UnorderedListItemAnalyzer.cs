@@ -1,10 +1,10 @@
-﻿namespace N2.Web.Wiki.Analyzers
+namespace N2.Web.Wiki.Analyzers
 {
-	public class UnorderedListItemAnalyzer : ListItemAnalyzerBase
-	{
-		public UnorderedListItemAnalyzer()
-			: base("*")
-		{
-		}
-	}
+    public class UnorderedListItemAnalyzer : ListItemAnalyzerBase
+    {
+        public UnorderedListItemAnalyzer()
+            : base("*")
+        {
+        }
+    }
 }

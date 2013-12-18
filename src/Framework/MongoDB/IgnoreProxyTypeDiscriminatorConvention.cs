@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization.Conventions;
 using System;
@@ -8,26 +8,26 @@ using System.Text;
 
 namespace N2.Persistence.MongoDB
 {
-	public class IgnoreProxyTypeDiscriminatorConvention : IDiscriminatorConvention
-	{
-		HierarchicalDiscriminatorConvention convention = StandardDiscriminatorConvention.Hierarchical;
+    public class IgnoreProxyTypeDiscriminatorConvention : IDiscriminatorConvention
+    {
+        HierarchicalDiscriminatorConvention convention = StandardDiscriminatorConvention.Hierarchical;
 
-		public string ElementName
-		{
-			get { return convention.ElementName; }
-		}
+        public string ElementName
+        {
+            get { return convention.ElementName; }
+        }
 
-		public Type GetActualType(BsonReader bsonReader, Type nominalType)
-		{
-			return convention.GetActualType(bsonReader, nominalType);
-		}
+        public Type GetActualType(BsonReader bsonReader, Type nominalType)
+        {
+            return convention.GetActualType(bsonReader, nominalType);
+        }
 
-		public BsonValue GetDiscriminator(Type nominalType, Type actualType)
-		{
-			if (typeof(Proxying.IInterceptedType).IsAssignableFrom(actualType))
-				return convention.GetDiscriminator(nominalType, actualType.BaseType);
+        public BsonValue GetDiscriminator(Type nominalType, Type actualType)
+        {
+            if (typeof(Proxying.IInterceptedType).IsAssignableFrom(actualType))
+                return convention.GetDiscriminator(nominalType, actualType.BaseType);
 
-			return convention.GetDiscriminator(nominalType, actualType);
-		}
-	}
+            return convention.GetDiscriminator(nominalType, actualType);
+        }
+    }
 }

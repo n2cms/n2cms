@@ -11,17 +11,17 @@ using N2.Web.Mail;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Form : TemplateUserControl<ContentItem, Items.Form>
+    public partial class Form : TemplateUserControl<ContentItem, Items.Form>
     {
         protected MultiView mv;
         protected Zone zq;
 
         protected void btnSubmit_Command(object sender, CommandEventArgs args)
         {
-			Page.Validate("Form");
-			if (!Page.IsValid)
-				return;
-			
+            Page.Validate("Form");
+            if (!Page.IsValid)
+                return;
+            
             StringBuilder sb = new StringBuilder(CurrentItem.MailBody);
             foreach (Control c in zq.Controls)
             {

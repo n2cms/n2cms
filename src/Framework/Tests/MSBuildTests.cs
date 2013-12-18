@@ -1,18 +1,18 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace N2.Tests
 {
-	[TestFixture]
-	public class MSBuildTests
-	{
-		string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
-		string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
+    [TestFixture]
+    public class MSBuildTests
+    {
+        string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
+        string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
 
-		#region Xmls
+        #region Xmls
 
-		string projectXml = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        string projectXml = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <ProjectReference Include=""..\N2.Extensions\N2.Extensions.csproj"">
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
@@ -27,7 +27,7 @@ namespace N2.Tests
   </ItemGroup>
 </Project>
 ";
-		string expectedXml = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        string expectedXml = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <Reference Include=""N2.Extensions""><SpecificVersion>False</SpecificVersion><HintPath>bin\N2.Extensions.dll</HintPath></Reference>
   </ItemGroup>
@@ -39,10 +39,10 @@ namespace N2.Tests
   </ItemGroup>
 </Project>
 ";
-		string pattern2 = "<Reference Include=\"(?<Name>[^,\"]*)(,[^\"]*)?\">(?<Contents>.*?)</Reference>";
+        string pattern2 = "<Reference Include=\"(?<Name>[^,\"]*)(,[^\"]*)?\">(?<Contents>.*?)</Reference>";
 
-		#region 2a
-		string projectXml2 = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        #region 2a
+        string projectXml2 = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <Reference Include=""Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
@@ -55,7 +55,7 @@ namespace N2.Tests
   </ItemGroup>
 </Project>
 ";
-		string expectedXml2 = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        string expectedXml2 = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <Reference Include=""Castle.Core""><SpecificVersion>False</SpecificVersion><HintPath>bin\Castle.Core.dll</HintPath></Reference>
     <Reference Include=""System"" />
@@ -65,9 +65,9 @@ namespace N2.Tests
   </ItemGroup>
 </Project>
 ";
-		#endregion
+        #endregion
 
-		string projectXml2b = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        string projectXml2b = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <Reference Include=""NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
@@ -89,7 +89,7 @@ namespace N2.Tests
   </ItemGroup>
 </Project>
 ";
-		string expectedXml2b = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+        string expectedXml2b = @"<Project ToolsVersion=""3.5"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <ItemGroup>
     <Reference Include=""NHibernate""><SpecificVersion>False</SpecificVersion><HintPath>bin\NHibernate.dll</HintPath></Reference>
     <Reference Include=""System"" />
@@ -105,58 +105,58 @@ namespace N2.Tests
 </Project>
 ";
 
-		public string Rehint(Match m)
-		{
-			if (!m.Groups["Contents"].Success || !m.Groups["Contents"].Value.Contains("<HintPath"))
-				return m.Value;
+        public string Rehint(Match m)
+        {
+            if (!m.Groups["Contents"].Success || !m.Groups["Contents"].Value.Contains("<HintPath"))
+                return m.Value;
 
-			return @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>".Replace("${Name}", m.Groups["Name"].Value);
-		}
-		#endregion
+            return @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>".Replace("${Name}", m.Groups["Name"].Value);
+        }
+        #endregion
 
-		[Test]
-		public void CanMatch_ProjectReferences()
-		{
-			var match = Regex.Match(projectXml, pattern, RegexOptions.Singleline);
+        [Test]
+        public void CanMatch_ProjectReferences()
+        {
+            var match = Regex.Match(projectXml, pattern, RegexOptions.Singleline);
 
-			Assert.That(match.Success, Is.True);
-			Assert.That(match.Groups["Name"].Value, Is.EqualTo("N2.Extensions"));
-			Assert.That(match.Groups["Name"].Captures[0].Value, Is.EqualTo("N2.Extensions"));
-		}
+            Assert.That(match.Success, Is.True);
+            Assert.That(match.Groups["Name"].Value, Is.EqualTo("N2.Extensions"));
+            Assert.That(match.Groups["Name"].Captures[0].Value, Is.EqualTo("N2.Extensions"));
+        }
 
-		[Test]
-		public void CanReplace_ProjectReferences()
-		{
-			string result = Regex.Replace(projectXml, pattern, replacement, RegexOptions.Singleline);
+        [Test]
+        public void CanReplace_ProjectReferences()
+        {
+            string result = Regex.Replace(projectXml, pattern, replacement, RegexOptions.Singleline);
 
-			Assert.That(result, Is.EqualTo(expectedXml));
-		}
+            Assert.That(result, Is.EqualTo(expectedXml));
+        }
 
-		[Test]
-		public void CanRelocate_LibraryReferences()
-		{
-			string result = Regex.Replace(projectXml2, pattern2, Rehint, RegexOptions.Singleline);
+        [Test]
+        public void CanRelocate_LibraryReferences()
+        {
+            string result = Regex.Replace(projectXml2, pattern2, Rehint, RegexOptions.Singleline);
 
-			Assert.That(result, Is.EqualTo(expectedXml2));
-		}
+            Assert.That(result, Is.EqualTo(expectedXml2));
+        }
 
-		[Test]
-		public void CanRelocate_LibraryReferencesB()
-		{
-			string result = Regex.Replace(projectXml2b, pattern2, Rehint, RegexOptions.Singleline);
+        [Test]
+        public void CanRelocate_LibraryReferencesB()
+        {
+            string result = Regex.Replace(projectXml2b, pattern2, Rehint, RegexOptions.Singleline);
 
-			Assert.That(result, Is.EqualTo(expectedXml2b));
-		}
+            Assert.That(result, Is.EqualTo(expectedXml2b));
+        }
 
-		[Test]
-		public void CanOperate_OnProject()
-		{
-			string input = File.ReadAllText(@"..\..\N2.Tests.csproj");
+        [Test]
+        public void CanOperate_OnProject()
+        {
+            string input = File.ReadAllText(@"..\..\N2.Tests.csproj");
 
-			string result = Regex.Replace(input, pattern, replacement, RegexOptions.Singleline);
+            string result = Regex.Replace(input, pattern, replacement, RegexOptions.Singleline);
 
-			Assert.That(input.Contains("ProjectReference"), Is.True);
-			Assert.That(result.Contains("ProjectReference"), Is.False);
-		}
-	}
+            Assert.That(input.Contains("ProjectReference"), Is.True);
+            Assert.That(result.Contains("ProjectReference"), Is.False);
+        }
+    }
 }

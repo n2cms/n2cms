@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using N2.Edit.Workflow;
 
 namespace N2.Edit

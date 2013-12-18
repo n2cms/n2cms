@@ -9,7 +9,7 @@ namespace N2.Templates.Items
     [AllowedZones("Questions", "")]
     public abstract class Question : AbstractItem
     {
-		[EditableCheckBox("Required", 120)]
-		public virtual bool Required { get; set; }
+        [EditableCheckBox("Required", 120)]
+        public virtual bool Required { get; set; }
     }
 }

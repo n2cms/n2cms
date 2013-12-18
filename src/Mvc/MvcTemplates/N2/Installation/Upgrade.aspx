@@ -84,7 +84,7 @@
 				</p>
             </div>
 		</n2:TabPanel>
-        <asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="alert alert-error" Visible="false" />
+        <asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="alert alert-error" Visible="false" style="font-size:10px; display:block;" />
     </div>
     </form>
 </body>

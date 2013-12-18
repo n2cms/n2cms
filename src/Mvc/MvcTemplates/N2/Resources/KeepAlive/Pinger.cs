@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using N2.Plugin.Scheduling;
 using System.Diagnostics;
@@ -13,7 +13,7 @@ namespace N2.Edit.KeepAlive
     [ScheduleExecution(1, TimeUnit.Minutes)]
     public class Pinger : ScheduledAction
     {
-		private readonly Engine.Logger<Pinger> logger;
+        private readonly Engine.Logger<Pinger> logger;
 
         IEngine engine = null;
         EngineSection config = null;
@@ -39,16 +39,16 @@ namespace N2.Edit.KeepAlive
                     wc.Headers["N2KeepAlive"] = "true";
                     url = url.SetPath(config.Scheduler.KeepAlivePath.ResolveUrlTokens());
 
-					logger.Debug("Pinging " + url);
-					string response = wc.DownloadString(url);
+                    logger.Debug("Pinging " + url);
+                    string response = wc.DownloadString(url);
                     logger.Debug("Pinged " + url + ": " + response);
                 }
             }
-			catch(SecurityException ex)
-			{
-				N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environment): ", ex);
-				Repeat = Repeat.Once;
-			}
+            catch(SecurityException ex)
+            {
+                N2.Engine.Logger.Warn("Stopping keep-alive after exception (probably medium trust environment): ", ex);
+                Repeat = Repeat.Once;
+            }
         }
     }
 }

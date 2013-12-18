@@ -1,4 +1,4 @@
-﻿using N2.Engine.Globalization;
+using N2.Engine.Globalization;
 
 namespace N2.Templates.Layouts
 {

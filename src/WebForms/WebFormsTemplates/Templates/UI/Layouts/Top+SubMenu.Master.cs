@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Engine.Globalization;
 using N2.Templates.Items;
 
@@ -12,7 +12,7 @@ namespace N2.Templates.UI.Layouts
         {
             if (CurrentPage != null)
             {
-				languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
+                languages = Engine.Resolve<LanguageGatewaySelector>().GetLanguageGateway(CurrentPage);
 
                 ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
 
@@ -20,7 +20,7 @@ namespace N2.Templates.UI.Layouts
 
                 if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
                 if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool) CurrentPage["ShowTitle"];
-				if (t != null) t.Text = CurrentPage["HeadTitle"] as string ?? CurrentPage.Title;
+                if (t != null) t.Text = CurrentPage["HeadTitle"] as string ?? CurrentPage.Title;
                 if (dh != null) dh.CurrentItem = language;
 
                 if (zsl != null)
@@ -38,7 +38,7 @@ namespace N2.Templates.UI.Layouts
             if (CurrentPage != null)
             {
                 string className = CurrentPage.GetContentType().Name;
-				return "type" + className;
+                return "type" + className;
             }
             return null;
         }

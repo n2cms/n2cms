@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,38 +10,38 @@ using N2.Configuration;
 
 namespace N2.Tests.Definitions
 {
-	[TestFixture]
-	public class AttributeTransformerTests : TypeFindingBase
-	{
-		DefinitionBuilder builder;
+    [TestFixture]
+    public class AttributeTransformerTests : TypeFindingBase
+    {
+        DefinitionBuilder builder;
 
-		[SetUp]
-		public override void SetUp()
-		{
-			base.SetUp();
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
 
-			builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[] { new TitleTransformer() }, TestSupport.SetupEngineSection());
-		}
+            builder = new DefinitionBuilder(new DefinitionMap(), typeFinder, new TransformerBase<IUniquelyNamed>[] { new TitleTransformer() }, TestSupport.SetupEngineSection());
+        }
 
-		protected override Type[] GetTypes()
-		{
-			return new Type[] { typeof(Items.DefinitionStartPage) };
-		}
+        protected override Type[] GetTypes()
+        {
+            return new Type[] { typeof(Items.DefinitionStartPage) };
+        }
 
-		[Test]
-		public void Transforms_Editable_OfCorrectType()
-		{
-			IList<IEditable> editables = builder.GetDefinitions().Single(d => d.ItemType == typeof(Items.DefinitionStartPage)).Editables;
-			
-			Assert.That(editables.OfType<WithEditableTitleAttribute>().Single().Title.EndsWith(" Transformed"));
-		}
+        [Test]
+        public void Transforms_Editable_OfCorrectType()
+        {
+            IList<IEditable> editables = builder.GetDefinitions().Single(d => d.ItemType == typeof(Items.DefinitionStartPage)).Editables;
+            
+            Assert.That(editables.OfType<WithEditableTitleAttribute>().Single().Title.EndsWith(" Transformed"));
+        }
 
-		[Test]
-		public void DoesntTransform_Editables_OfIncorrectTypes()
-		{
-			IList<IEditable> editables = builder.GetDefinitions().Single(d => d.ItemType == typeof(Items.DefinitionStartPage)).Editables;
-			
-			Assert.That(!editables.OfType<WithEditableNameAttribute>().Single().Title.EndsWith(" Transformed"));
-		}
-	}
+        [Test]
+        public void DoesntTransform_Editables_OfIncorrectTypes()
+        {
+            IList<IEditable> editables = builder.GetDefinitions().Single(d => d.ItemType == typeof(Items.DefinitionStartPage)).Editables;
+            
+            Assert.That(!editables.OfType<WithEditableNameAttribute>().Single().Title.EndsWith(" Transformed"));
+        }
+    }
 }

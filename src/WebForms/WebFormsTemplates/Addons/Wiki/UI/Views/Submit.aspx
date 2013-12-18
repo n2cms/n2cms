@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Submit.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SubmitArticle" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Submit.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SubmitArticle" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <%@ Register TagPrefix="parts" TagName="EditArticle" Src="../Parts/EditArticle.ascx" %>
 <asp:Content ContentPlaceHolderID="TextContent" runat="server">

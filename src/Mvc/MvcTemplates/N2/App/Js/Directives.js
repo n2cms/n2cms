@@ -141,43 +141,47 @@
 					expr && scope.$eval(expr);
 				};
 
-				var unwatchHref, unwatchTitle, unwatchInnerHtml;
+				var unwatchHref, unwatchTitle, unwatchInnerHtml, unwatchCurrent;
 				scope.$watch(attrs.pageActionLink, function (node) {
 					scope.node = node;
 
-					if (!node.Current || node.Current.Divider) {
-						element.hide();
-						return;
-					} else
-						element.show();
+					unwatchCurrent && unwatchCurrent();
+					unwatchCurrent = scope.$watch(function () { return node.Current }, function (current) {
+					    if (!current || current.Divider) {
+					        element.hide();
+					        return;
+					    } else
+					        element.show();
 
-					if (!node.Current.Target)
-						node.Current.Target = "preview";
-					if (!node.Current.Url && node.Current.PreviewUrl)
-						node.Current.Url = node.Current.PreviewUrl;
+					    if (!current.Target)
+					        current.Target = "preview";
+					    if (!current.Url && current.PreviewUrl)
+					        current.Url = current.PreviewUrl;
 
-					unwatchHref && unwatchHref();
-					unwatchHref = watch(node.Current.Url, scope, function (value) { element.attr("href", value || "#"); });
+					    unwatchHref && unwatchHref();
+					    unwatchHref = watch(current.Url, scope, function (value) { element.attr("href", value || "#"); });
 
-					unwatchTitle && unwatchTitle();
-					unwatchTitle = watch(node.Current.ToolTip, scope, function (value) { element.attr("title", value); });
+					    unwatchTitle && unwatchTitle();
+					    unwatchTitle = watch(current.ToolTip, scope, function (value) { element.attr("title", value); });
 
-					unwatchInnerHtml && unwatchInnerHtml();
+					    unwatchInnerHtml && unwatchInnerHtml();
 
-					unwatchInnerHtml = watch(
-						(node.Current.IconClass ? ("<b class='ico " + node.Current.IconClass + "'></b> ") : node.Current.IconUrl ? ("<b class='ico ico-custom' style='background-image:url(" + node.Current.IconUrl + ")'></b> ") : "")
-						+ "{{evaluateExpression(node.Current.Title)}}"
-						+ (node.Current.Description ? "<br /><span>{{evaluateExpression(node.Current.Description)}}</span>" : ""), scope, function (value) { element.html(value); });
+					    unwatchInnerHtml = watch(
+                            (current.IconClass ? ("<b class='ico " + current.IconClass + "'></b> ") : current.IconUrl ? ("<b class='ico ico-custom' style='background-image:url(" + current.IconUrl + ")'></b> ") : "")
+                            + "{{evaluateExpression(node.Current.Title)}}"
+                            + (current.Description ? "<br /><span>{{evaluateExpression(node.Current.Description)}}</span>" : ""), scope, function (value) { element.html(value); });
 
-					element.attr("target", node.Current.Target);
+					    element.attr("target", current.Target);
 
-					element.attr("class", node.Current.Description ? "page-action page-action-description" : "page-action");
+					    element.attr("class", current.Description ? "page-action page-action-description" : "page-action");
 
-					element.click(function (e) {
-						if (node.Current.ClientAction) {
-							e.preventDefault();
-							scope.$apply(node.Current.ClientAction);
-						}
+					    element.click(function (e) {
+					        if (current.ClientAction) {
+					            e.preventDefault();
+					            scope.$apply(node.Current.ClientAction);
+					        }
+					        scope.$emit("nodeclicked", node);
+					    });
 					});
 				});
 			}

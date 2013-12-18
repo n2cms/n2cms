@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,34 +14,34 @@
 
 namespace Castle.Core.Logging
 {
-	/// <summary>
-	///   Supporting Logger levels.
-	/// </summary>
-	public enum LoggerLevel
-	{
-		/// <summary>
-		///   Logging will be off
-		/// </summary>
-		Off = 0,
-		/// <summary>
-		///   Fatal logging level
-		/// </summary>
-		Fatal = 1,
-		/// <summary>
-		///   Error logging level
-		/// </summary>
-		Error = 2,
-		/// <summary>
-		///   Warn logging level
-		/// </summary>
-		Warn = 3,
-		/// <summary>
-		///   Info logging level
-		/// </summary>
-		Info = 4,
-		/// <summary>
-		///   Debug logging level
-		/// </summary>
-		Debug = 5,
-	}
+    /// <summary>
+    ///   Supporting Logger levels.
+    /// </summary>
+    public enum LoggerLevel
+    {
+        /// <summary>
+        ///   Logging will be off
+        /// </summary>
+        Off = 0,
+        /// <summary>
+        ///   Fatal logging level
+        /// </summary>
+        Fatal = 1,
+        /// <summary>
+        ///   Error logging level
+        /// </summary>
+        Error = 2,
+        /// <summary>
+        ///   Warn logging level
+        /// </summary>
+        Warn = 3,
+        /// <summary>
+        ///   Info logging level
+        /// </summary>
+        Info = 4,
+        /// <summary>
+        ///   Debug logging level
+        /// </summary>
+        Debug = 5,
+    }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -20,43 +20,43 @@ namespace N2.Tests.Plugin.Scheduling
         Scheduler scheduler;
         IEventRaiser raiser;
         IErrorNotifier errorHandler;
-		private IWebContext ctx;
-		private Fakes.FakeEngine engine;
-		private AsyncWorker worker;
-		private EngineSection config;
-		private ScheduledAction[] actions;
-		private IHeart heart;
+        private IWebContext ctx;
+        private Fakes.FakeEngine engine;
+        private AsyncWorker worker;
+        private EngineSection config;
+        private ScheduledAction[] actions;
+        private IHeart heart;
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-			config = TestSupport.SetupEngineSection();
-			actions = new ScheduledAction[] { new OnceAction(), new RepeatAction() };
+            config = TestSupport.SetupEngineSection();
+            actions = new ScheduledAction[] { new OnceAction(), new RepeatAction() };
 
-			heart = mocks.Stub<IHeart>();
-			heart.Beat += null;
-			raiser = LastCall.IgnoreArguments().GetEventRaiser();
-			mocks.Replay(heart);
+            heart = mocks.Stub<IHeart>();
+            heart.Beat += null;
+            raiser = LastCall.IgnoreArguments().GetEventRaiser();
+            mocks.Replay(heart);
 
-			errorHandler = mocks.DynamicMock<IErrorNotifier>();
+            errorHandler = mocks.DynamicMock<IErrorNotifier>();
             mocks.Replay(errorHandler);
 
             ctx = mocks.DynamicMock<IWebContext>();
             mocks.Replay(ctx);
 
-			engine = new Fakes.FakeEngine();
-			engine.Container.AddComponentInstance("", typeof(IErrorNotifier), MockRepository.GenerateStub<IErrorNotifier>());
+            engine = new Fakes.FakeEngine();
+            engine.Container.AddComponentInstance("", typeof(IErrorNotifier), MockRepository.GenerateStub<IErrorNotifier>());
 
-			worker = new AsyncWorker();
-			worker.QueueUserWorkItem = delegate(WaitCallback function)
-			{
-				function(null);
-				return true;
-			};
+            worker = new AsyncWorker();
+            worker.QueueUserWorkItem = delegate(WaitCallback function)
+            {
+                function(null);
+                return true;
+            };
 
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
             scheduler.Start();
         }
 
@@ -140,90 +140,90 @@ namespace N2.Tests.Plugin.Scheduling
             Assert.That(repeat.Executions, Is.EqualTo(1));
         }
 
-		[Test]
-		public void Action_WithIClosableInterface_AreDisposed()
-		{
-			var action = new ClosableAction();
-			scheduler.Actions.Insert(0, action);
-			raiser.Raise(null, new EventArgs());
-			Assert.That(action.wasExecuted);
-			Assert.That(action.wasClosed);
-		}
+        [Test]
+        public void Action_WithIClosableInterface_AreDisposed()
+        {
+            var action = new ClosableAction();
+            scheduler.Actions.Insert(0, action);
+            raiser.Raise(null, new EventArgs());
+            Assert.That(action.wasExecuted);
+            Assert.That(action.wasClosed);
+        }
 
-		[Test, Ignore]
-		public void ScheduledAction_WillBeInjected_WithDependencies()
-		{
-			throw new NotImplementedException("TODO test");
-		}
+        [Test, Ignore]
+        public void ScheduledAction_WillBeInjected_WithDependencies()
+        {
+            throw new NotImplementedException("TODO test");
+        }
 
-		[Test]
-		public void DisabledScheduler_DoesntExecuteActions()
-		{
-			config = new EngineSection { Scheduler = new SchedulerElement { Enabled = false } };
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void DisabledScheduler_DoesntExecuteActions()
+        {
+            config = new EngineSection { Scheduler = new SchedulerElement { Enabled = false } };
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Count.ShouldBe(0);
-		}
+            scheduler.Actions.Count.ShouldBe(0);
+        }
 
-		[Test]
-		public void RemovedAction_IsNotExecuted()
-		{
-			config.Scheduler.Remove(new ScheduledActionElement { Name = "RepeatAction" });
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void RemovedAction_IsNotExecuted()
+        {
+            config.Scheduler.Remove(new ScheduledActionElement { Name = "RepeatAction" });
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Single().ShouldBeTypeOf<OnceAction>();
-		}
+            scheduler.Actions.Single().ShouldBeTypeOf<OnceAction>();
+        }
 
-		[Test]
-		public void Interval_AndRepeat_CanBeReconfigured()
-		{
-			config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", Interval = TimeSpan.FromHours(6), Repeat = true });
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void Interval_AndRepeat_CanBeReconfigured()
+        {
+            config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", Interval = TimeSpan.FromHours(6), Repeat = true });
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			var once = SelectThe<OnceAction>();
-			once.Repeat.ShouldBe(Repeat.Indefinitely);
-			once.Interval.ShouldBe(TimeSpan.FromHours(6));
-		}
+            var once = SelectThe<OnceAction>();
+            once.Repeat.ShouldBe(Repeat.Indefinitely);
+            once.Interval.ShouldBe(TimeSpan.FromHours(6));
+        }
 
-		[Test]
-		public void Scheduler_OnMachineWithName_ExecutesActions()
-		{
-			config = new EngineSection { Scheduler = new SchedulerElement { ExecuteOnMachineNamed = Environment.MachineName } };
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void Scheduler_OnMachineWithName_ExecutesActions()
+        {
+            config = new EngineSection { Scheduler = new SchedulerElement { ExecuteOnMachineNamed = Environment.MachineName } };
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Count.ShouldBe(2);
-		}
+            scheduler.Actions.Count.ShouldBe(2);
+        }
 
-		[Test]
-		public void Scheduler_OnMachineWithOtherName_DoesntExecuteActions()
-		{
-			config = new EngineSection { Scheduler = new SchedulerElement { ExecuteOnMachineNamed = "SomeOtherMachine" } };
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void Scheduler_OnMachineWithOtherName_DoesntExecuteActions()
+        {
+            config = new EngineSection { Scheduler = new SchedulerElement { ExecuteOnMachineNamed = "SomeOtherMachine" } };
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Count.ShouldBe(0);
-		}
+            scheduler.Actions.Count.ShouldBe(0);
+        }
 
-		[Test]
-		public void Action_OnMachineWithName_IsExecuted()
-		{
-			config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", ExecuteOnMachineNamed = Environment.MachineName });
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void Action_OnMachineWithName_IsExecuted()
+        {
+            config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", ExecuteOnMachineNamed = Environment.MachineName });
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Count.ShouldBe(2);
-		}
+            scheduler.Actions.Count.ShouldBe(2);
+        }
 
-		[Test]
-		public void Action_OnMachineWithOtherName_DoesntExecute()
-		{
-			config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", ExecuteOnMachineNamed = "SomeOtherMachine" });
-			scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
+        [Test]
+        public void Action_OnMachineWithOtherName_DoesntExecute()
+        {
+            config.Scheduler.Add(new ScheduledActionElement { Name = "OnceAction", ExecuteOnMachineNamed = "SomeOtherMachine" });
+            scheduler = new Scheduler(engine, heart, worker, ctx, errorHandler, actions, config);
 
-			scheduler.Actions.Count.ShouldBe(1);
-		}
+            scheduler.Actions.Count.ShouldBe(1);
+        }
 
         private T SelectThe<T>() where T: ScheduledAction
         {
-			return scheduler.Actions.OfType<T>().Single();
+            return scheduler.Actions.OfType<T>().Single();
         }
 
         private class ClosableAction : ScheduledAction, N2.Web.IClosable
