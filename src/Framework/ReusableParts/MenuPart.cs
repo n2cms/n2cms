@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Web.UI;
 using System.Xml.Linq;
 using N2.Definitions;
@@ -58,7 +58,7 @@ namespace N2.Web
 	/// </summary>
 	[PartDefinition(Title = "Menu", IconClass = "n2-icon-list-ul", RequiredPermission = N2.Security.Permission.Administer)]
 	[WithEditableTitle]
-    [WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
+	[WithEditableName(HelpText = "The name will be used to set the HTML id of the part")]
 	[FieldSetContainer(NestingContainerName, "Hierarchy View Settings", 400)]
 	[FieldSetContainer(CssContainerName, "Developer: Stylesheets", 500)]
 	public class MenuPart : MenuPartBase, IPart
@@ -82,9 +82,9 @@ namespace N2.Web
 		#endregion
 
 
-        #region Hierarchy Options
+		#region Hierarchy Options
 
-        [EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
+		[EditableNumber("Num Child Levels", 400, MinimumValue = "0", Required = true, ContainerName = NestingContainerName)]
 		public override int MenuNumChildLevels
 		{
 			get { return GetDetail("Levels", 1); }
@@ -202,7 +202,7 @@ namespace N2.Web
 
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Renders the SubNavigation part using the ASP.NET MVC framework.
 	/// </summary>
 	[Adapts(typeof(MenuPart))]
@@ -210,7 +210,7 @@ namespace N2.Web
 	{
 		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, TextWriter writer = null)
 		{
-		    var menuPart = part as MenuPart;
+			var menuPart = part as MenuPart;
 			if (part == null)
 				throw new ArgumentException("part");
 
@@ -225,7 +225,7 @@ namespace N2.Web
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
-
+	/// <summary>Handles rendering of MenuParts for both MVC and Webforms.</summary>
 	public sealed class MenuPartRenderer
 	{
 
@@ -253,24 +253,30 @@ namespace N2.Web
 		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
-			database = BuildNavTree();
+			var cacheKey = String.Concat(N2.Context.CurrentPage.ID.ToString(), "+", menuPart.AncestralTrail);
+			var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
+			if (cacheData == null)
+			{
+				cacheData = BuildNavTree();
+				System.Web.Hosting.HostingEnvironment.Cache.Add(cacheKey, cacheData, null, DateTime.Now.AddSeconds(15),
+					System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+			}
+			database = (List<ContentTreeNode>)cacheData;
 		}
 
 		public string GetHtml()
 		{
-
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			using (var sw = new StringWriter(sb))
 			using (var xml = new XhtmlTextWriter(sw))
 				WriteHtml(xml);
 			return sb.ToString();
 		}
 
-
 		public void WriteHtml(HtmlTextWriter xml)
 		{
 			xml.AddAttribute("id", String.IsNullOrEmpty(menuPart.Name) ? "menu" + menuPart.ID : menuPart.Name);
-            xml.AddAttribute("class", "menuNavPart");
+			xml.AddAttribute("class", "menuNavPart");
 			xml.RenderBeginTag("div");
 
 			switch (menuPart.MenuTitleDisplayMode)
@@ -280,7 +286,7 @@ namespace N2.Web
 					break;
 				case MenuPartBase.TitleDisplayOptions.CurrentPageTitle:
 					xml.WriteLine(HeadingLevelUtility.DoTitle(menuPart.MenuTitleHeadingLevel, Content.Current.Page.Title));
-                    break;
+					break;
 				case MenuPartBase.TitleDisplayOptions.None:
 					break;
 			}
@@ -304,6 +310,16 @@ namespace N2.Web
 					select x).ToArray();
 		}
 
+		/// <summary>Determines if the given ContentItem has children that are visible to this MenuPart.</summary>
+		/// <param name="ancestorItem">The (potentially) parent item to check for children</param>
+		/// <returns>Returns True if the given ContentItem has children that are visible to this MenuPart.</returns>
+		private bool HasVisibleChildren(ContentItem ancestorItem)
+		{
+			return menuPart.MenuShowInvisible
+				? Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem)
+				: Content.Search.PublishedPages.Any(item => item.Parent == ancestorItem && item.Visible);
+		}
+
 		private List<ContentTreeNode> BuildNavTree()
 		{
 			List<ContentTreeNode> navTree = new List<ContentTreeNode>();
@@ -315,7 +331,7 @@ namespace N2.Web
 				ci = ci.VersionOf.Value; // get the published version
 
 			// follow the ancestral trail up to the desired "start from level"
-			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new [] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
 
 			var xn = menuPart.MenuStartFromLevel;
 			if (xn < 0)
@@ -390,22 +406,22 @@ namespace N2.Web
 			xml.AddAttribute("class", currentNode == null ? menuPart.MenuOuterUlCssClass : menuPart.MenuInnerUlCssClass);
 			xml.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-		    if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
-		    {
-                // Skip directly to the childre of the root node.
-		        childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
-		    }
+			if (currentNode == null && (!menuPart.MenuShowTreeRoot && childNodes.Count > 0)) // indicates that we are starting the menu, 
+			{
+				// Skip directly to the childre of the root node.
+				childNodes = database.Where(f => f.Parent == childNodes.First()).ToList();
+			}
 
-		    foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
-		    {
-		        WriteListItem(childNode, xml, level, null);
+			foreach (var childNode in childNodes.OrderBy(n => n.SortOrder).ThenBy(n => n.Item.ID))
+			{
+				WriteListItem(childNode, xml, level, null);
 
-		        if (!menuPart.MenuNestChildUls)
-		        {
-		            WriteChildList(childNode, xml, level + 1);
-		        }
-		    }
-		    xml.RenderEndTag();
+				if (!menuPart.MenuNestChildUls)
+				{
+					WriteChildList(childNode, xml, level + 1);
+				}
+			}
+			xml.RenderEndTag();
 		}
 		// ReSharper restore ParameterTypeCanBeEnumerable.Local
 
@@ -471,7 +487,7 @@ namespace N2.Web
 
 				// render caret if subitems exist
 				if (sn.MenuShowCaretOnItemsWithChildren
-					&& database.Any(f => f.Parent == childNode))
+					&& HasVisibleChildren(childItem))
 				{
 					// <b class="caret"></b> 
 					xml.Write(' ');

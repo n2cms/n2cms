@@ -17,86 +17,86 @@ using N2.Edit.Versioning;
 
 namespace N2.Edit
 {
-	[Adapts(typeof(ContentItem))]
-	public class NodeAdapter : AbstractContentAdapter
-	{
-		private IEditUrlManager editUrlManager;
-		private IWebContext webContext;
-		private IHost host;
-		private IFileSystem fileSystem;
-		private VirtualNodeFactory nodeFactory;
-		private ISecurityManager security;
-		private NavigationSettings settings;
-		private ContentSource sources;
-		private IDefinitionManager definitions;
-		private ILanguageGateway languages;
-		private DraftRepository drafts;
+    [Adapts(typeof(ContentItem))]
+    public class NodeAdapter : AbstractContentAdapter
+    {
+        private IEditUrlManager editUrlManager;
+        private IWebContext webContext;
+        private IHost host;
+        private IFileSystem fileSystem;
+        private VirtualNodeFactory nodeFactory;
+        private ISecurityManager security;
+        private NavigationSettings settings;
+        private ContentSource sources;
+        private IDefinitionManager definitions;
+        private ILanguageGateway languages;
+        private DraftRepository drafts;
 
-		public NavigationSettings Settings
-		{
-			get { return settings ?? Engine.Resolve<NavigationSettings>(); }
-			set { settings = value; }
-		}
+        public NavigationSettings Settings
+        {
+            get { return settings ?? Engine.Resolve<NavigationSettings>(); }
+            set { settings = value; }
+        }
 
-		public ISecurityManager Security
-		{
-			get { return security ?? Engine.Resolve<ISecurityManager>(); }
-			set { security = value; }
-		}
+        public ISecurityManager Security
+        {
+            get { return security ?? Engine.Resolve<ISecurityManager>(); }
+            set { security = value; }
+        }
 
-		public IWebContext WebContext
-		{
-			get { return webContext ?? Engine.Resolve<IWebContext>(); }
-			set { webContext = value; }
-		}
+        public IWebContext WebContext
+        {
+            get { return webContext ?? Engine.Resolve<IWebContext>(); }
+            set { webContext = value; }
+        }
 
-		public VirtualNodeFactory NodeFactory
-		{
-			get { return nodeFactory ?? Engine.Resolve<VirtualNodeFactory>(); }
-			set { nodeFactory = value; }
-		}
+        public VirtualNodeFactory NodeFactory
+        {
+            get { return nodeFactory ?? Engine.Resolve<VirtualNodeFactory>(); }
+            set { nodeFactory = value; }
+        }
 
-		public IFileSystem FileSystem
-		{
-			get { return fileSystem ?? Engine.Resolve<IFileSystem>(); }
-			set { fileSystem = value; }
-		}
+        public IFileSystem FileSystem
+        {
+            get { return fileSystem ?? Engine.Resolve<IFileSystem>(); }
+            set { fileSystem = value; }
+        }
 
-		public IHost Host
-		{
-			get { return host ?? Engine.Resolve<IHost>(); }
-			set { host = value; }
-		}
+        public IHost Host
+        {
+            get { return host ?? Engine.Resolve<IHost>(); }
+            set { host = value; }
+        }
 
-		public IEditUrlManager ManagementPaths
-		{
-			get { return editUrlManager ?? Engine.ManagementPaths; }
-			set { editUrlManager = value; }
-		}
+        public IEditUrlManager ManagementPaths
+        {
+            get { return editUrlManager ?? Engine.ManagementPaths; }
+            set { editUrlManager = value; }
+        }
 
-		public ContentSource Sources
-		{
-			get { return sources ?? Engine.Resolve<ContentSource>(); }
-			set { sources = value; }
-		}
+        public ContentSource Sources
+        {
+            get { return sources ?? Engine.Resolve<ContentSource>(); }
+            set { sources = value; }
+        }
 
-		public IDefinitionManager Definitions
-		{
-			get { return definitions ?? Engine.Resolve<IDefinitionManager>(); }
-			set { definitions = value; }
-		}
+        public IDefinitionManager Definitions
+        {
+            get { return definitions ?? Engine.Resolve<IDefinitionManager>(); }
+            set { definitions = value; }
+        }
 
-		public ILanguageGateway Languages
-		{
-			get { return languages ?? Engine.Resolve<ILanguageGateway>(); }
-			set { languages = value; }
-		}
+        public ILanguageGateway Languages
+        {
+            get { return languages ?? Engine.Resolve<ILanguageGateway>(); }
+            set { languages = value; }
+        }
 
-		public DraftRepository Drafts
-		{
-			get { return drafts ?? Engine.Resolve<DraftRepository>(); }
-			set { drafts = value; }
-		}
+        public DraftRepository Drafts
+        {
+            get { return drafts ?? Engine.Resolve<DraftRepository>(); }
+            set { drafts = value; }
+        }
 
 
 		/// <summary>Gets the node representation used to build the tree hierarchy in the management UI.</summary>

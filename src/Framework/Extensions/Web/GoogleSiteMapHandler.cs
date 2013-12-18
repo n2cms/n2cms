@@ -1,10 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.Caching;
 using System.Xml;
 using N2.Engine.Globalization;
 using N2.Engine;
@@ -55,7 +52,7 @@ namespace N2.Web
         protected virtual void SetOutputCache(HttpContext context)
         {
             context.TrySetCompressionFilter();
-            context.Response.SetOutputCache(N2.Utility.CurrentTime().AddDays(1));
+            context.Response.SetOutputCache(Utility.CurrentTime().AddDays(1));
             context.Response.AddCacheDependency(new ContentCacheDependency(Engine.Persister));
         }
 
@@ -115,7 +112,7 @@ namespace N2.Web
             return "http://" + context.Request.Url.Authority;
         }
 
-        public IEnumerable<ContentItem> GetDescendants(ContentItem parent)
+        public virtual IEnumerable<ContentItem> GetDescendants(ContentItem parent)
         {
             var children = parent.Children.FindPages();
             foreach (var child in children)
