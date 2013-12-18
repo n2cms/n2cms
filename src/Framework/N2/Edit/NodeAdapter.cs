@@ -111,7 +111,7 @@ namespace N2.Edit
 				State = item.State,
 				IconUrl = GetIconUrl(item),
 				IconClass = GetIconClass(item),
-				Title = Engine.Resolve<ISafeContentRenderer>().HtmlEncode(item.Title),
+				Title = Engine.Resolve<ISafeContentRenderer>().GetSafeHtml(item.Title),
 				ToolTip = "#" + item.ID + ": " +  Definitions.GetDefinition(item).Title,
 				PreviewUrl = GetPreviewUrl(item, allowDraft: allowDraft),
 				MaximumPermission = GetMaximumPermission(item),
