@@ -225,7 +225,7 @@ namespace N2.Web
 
 	//TODO: Write a WebForms compatible adapter for MenuPart.
 
-
+	/// <summary>Handles rendering of MenuParts for both MVC and Webforms.</summary>
 	public sealed class MenuPartRenderer
 	{
 
@@ -253,19 +253,25 @@ namespace N2.Web
 		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
-			database = BuildNavTree();
+			var cacheKey = String.Concat(N2.Context.CurrentPage.ID.ToString(), "+", menuPart.AncestralTrail);
+			var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
+			if (cacheData == null)
+			{
+				cacheData = BuildNavTree();
+				System.Web.Hosting.HostingEnvironment.Cache.Add(cacheKey, cacheData, null, DateTime.Now.AddSeconds(15),
+					System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+			}
+			database = (List<ContentTreeNode>)cacheData;
 		}
 
 		public string GetHtml()
 		{
-
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			using (var sw = new StringWriter(sb))
 			using (var xml = new XhtmlTextWriter(sw))
 				WriteHtml(xml);
 			return sb.ToString();
 		}
-
 
 		public void WriteHtml(HtmlTextWriter xml)
 		{
@@ -304,6 +310,9 @@ namespace N2.Web
 					select x).ToArray();
 		}
 
+		/// <summary>Determines if the given ContentItem has children that are visible to this MenuPart.</summary>
+		/// <param name="ancestorItem">The (potentially) parent item to check for children</param>
+		/// <returns>Returns True if the given ContentItem has children that are visible to this MenuPart.</returns>
 		private bool HasVisibleChildren(ContentItem ancestorItem)
 		{
 			return menuPart.MenuShowInvisible
@@ -322,7 +331,7 @@ namespace N2.Web
 				ci = ci.VersionOf.Value; // get the published version
 
 			// follow the ancestral trail up to the desired "start from level"
-			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new [] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+			var convertedAncestralTrail = Array.ConvertAll(ci.AncestralTrail.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
 
 			var xn = menuPart.MenuStartFromLevel;
 			if (xn < 0)
@@ -332,7 +341,7 @@ namespace N2.Web
 			for (var i = Math.Max(xn, 0); i < convertedAncestralTrail.Length; ++i)
 			{
 				var ancestorItem = Context.Current.Persister.Get(Convert.ToInt32(convertedAncestralTrail[i]));
-				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true};
+				var ancestorNode = new ContentTreeNode(ancestorItem, navTree.LastOrDefault()) { IsAncestor = true };
 				navTree.Add(ancestorNode);
 
 				// expand the ancestor
