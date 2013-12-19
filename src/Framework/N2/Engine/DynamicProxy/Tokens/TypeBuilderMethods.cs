@@ -14,18 +14,18 @@
 
 namespace Castle.DynamicProxy.Tokens
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	public static class TypeBuilderMethods
-	{
-		public static readonly MethodInfo DefineProperty =
-			typeof(TypeBuilder).GetMethod("DefineProperty",
-			                              new[]
-			                              {
-			                              	typeof(string), typeof(PropertyAttributes), typeof(CallingConventions), typeof(Type),
-			                              	typeof(Type[]), typeof(Type[]), typeof(Type[]), typeof(Type[][]), typeof(Type[][])
-			                              });
-	}
+    public static class TypeBuilderMethods
+    {
+        public static readonly MethodInfo DefineProperty =
+            typeof(TypeBuilder).GetMethod("DefineProperty",
+                                          new[]
+                                          {
+                                            typeof(string), typeof(PropertyAttributes), typeof(CallingConventions), typeof(Type),
+                                            typeof(Type[]), typeof(Type[]), typeof(Type[]), typeof(Type[][]), typeof(Type[][])
+                                          });
+    }
 }

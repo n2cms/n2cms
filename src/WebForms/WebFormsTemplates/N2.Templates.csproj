@@ -32,6 +32,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +56,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FiftyOne.Foundation">
+      <HintPath>..\..\packages\51Degrees.mobi.2.1.19.4\lib\NET40\FiftyOne.Foundation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -619,6 +628,7 @@
   <ItemGroup>
     <Content Include="App_Browsers\genericmozilla5.browser" />
     <Content Include="App_Browsers\Templates.browser" />
+    <Content Include="51Degrees.mobi.config" />
     <None Include="App_Data\ContentFocus_SampleData.gz" />
     <None Include="App_Data\Corporate_SampleData.gz" />
     <None Include="App_Data\DarkStrips_SampleData.gz" />
@@ -628,6 +638,8 @@
     <Content Include="App_Themes\n2cms\Menu.skin" />
     <Content Include="App_Themes\Corporate\Menu.skin" />
     <Content Include="App_Themes\Web.config" />
+    <Content Include="N2.Templates.wpp.targets" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
@@ -874,4 +886,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Security.Principal;
 
 namespace N2.Plugin
@@ -8,7 +8,7 @@ namespace N2.Plugin
         /// <summary>Gets plugins found in the environment sorted and filtered by the given user.</summary>
         /// <typeparam name="T">The type of plugin to get.</typeparam>
         /// <param name="user">The user that should be authorized for the plugin.</param>
-		/// <returns>An enumeration of plugins.</returns>
+        /// <returns>An enumeration of plugins.</returns>
         IEnumerable<T> GetPlugins<T>(IPrincipal user) where T : class, IPlugin;
 
         /// <summary>Gets plugins found in the environment sorted.</summary>

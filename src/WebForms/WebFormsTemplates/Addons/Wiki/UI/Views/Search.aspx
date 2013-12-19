@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SearchArticle" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SearchArticle" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <asp:Content ID="Content9" ContentPlaceHolderID="TextContent" runat="server">
     <h1>Searching for '<%= CurrentArguments %>'</h1>

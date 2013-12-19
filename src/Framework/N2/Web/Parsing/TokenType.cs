@@ -7,6 +7,8 @@
 		NewLine,
 		Element,
 		EndElement,
-		Symbol
+		Symbol,
+		Comment,
+		CData
 	}
 }

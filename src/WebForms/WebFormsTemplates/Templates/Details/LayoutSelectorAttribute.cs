@@ -10,26 +10,26 @@ using System.IO;
 
 namespace N2.Templates.Details
 {
-	[AttributeUsage(AttributeTargets.Property)]
-	public class LayoutSelectorAttribute : EditableDropDownAttribute
-	{
-		public LayoutSelectorAttribute(string title, int sortOrder)
-			:base(title, sortOrder)
-		{
-		}
+    [AttributeUsage(AttributeTargets.Property)]
+    public class LayoutSelectorAttribute : EditableDropDownAttribute
+    {
+        public LayoutSelectorAttribute(string title, int sortOrder)
+            :base(title, sortOrder)
+        {
+        }
 
-		protected override ListItem[] GetListItems()
-		{
-			List<ListItem> items = new List<ListItem>();
-			string path = HostingEnvironment.MapPath("~/Layouts/");
+        protected override ListItem[] GetListItems()
+        {
+            List<ListItem> items = new List<ListItem>();
+            string path = HostingEnvironment.MapPath("~/Layouts/");
 
-			foreach(string file in Directory.GetFiles(path, "*.Master"))
-			{
-				string url = "~/Layouts/" + Path.GetFileName(file);
-				string title = Path.GetFileNameWithoutExtension(file);
-				items.Add(new ListItem(title, url));
-			}
-			return items.ToArray();
-		}
-	}
+            foreach(string file in Directory.GetFiles(path, "*.Master"))
+            {
+                string url = "~/Layouts/" + Path.GetFileName(file);
+                string title = Path.GetFileNameWithoutExtension(file);
+                items.Add(new ListItem(title, url));
+            }
+            return items.ToArray();
+        }
+    }
 }

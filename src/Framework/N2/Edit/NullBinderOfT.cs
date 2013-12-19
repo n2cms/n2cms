@@ -1,4 +1,4 @@
-﻿using N2.Edit.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Edit
 {

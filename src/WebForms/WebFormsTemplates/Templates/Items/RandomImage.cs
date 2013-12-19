@@ -7,8 +7,8 @@ using N2.Persistence;
 
 namespace N2.Templates.Items
 {
-	[PartDefinition("Random image",
-		IconUrl = "~/Templates/UI/Img/photos.png")]
+    [PartDefinition("Random image",
+        IconUrl = "~/Templates/UI/Img/photos.png")]
     [AllowedZones(Zones.Content, Zones.RecursiveAbove, Zones.Left, Zones.Right)]
     [NotVersionable]
     public class RandomImage : AbstractItem

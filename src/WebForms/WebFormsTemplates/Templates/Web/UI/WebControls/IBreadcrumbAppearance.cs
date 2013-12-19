@@ -1,4 +1,4 @@
-﻿namespace N2.Templates.Web.UI.WebControls
+namespace N2.Templates.Web.UI.WebControls
 {
     /// <summary>
     /// When applied to a content item this interface helps the path control to 

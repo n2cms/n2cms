@@ -15,12 +15,12 @@ using N2.Web.UI.WebControls;
 namespace N2.Templates.Items
 {
     [PartDefinition("FAQ Item", 
-		Description = "A question with answer.",
-		SortOrder = 0,
-		IconUrl = "~/Templates/UI/Img/information.png")]
+        Description = "A question with answer.",
+        SortOrder = 0,
+        IconUrl = "~/Templates/UI/Img/information.png")]
     [RestrictParents(typeof(FaqList))]
     [AllowedZones("Questions")]
-	[WithEditableTitle("Question", 90, Focus = false)]
+    [WithEditableTitle("Question", 90, Focus = false)]
     public class Faq : AbstractItem
     {
         [DisplayableHeading(3)]

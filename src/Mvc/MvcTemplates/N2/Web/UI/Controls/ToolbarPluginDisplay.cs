@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Web;
@@ -19,53 +19,53 @@ namespace N2.Edit.Web.UI.Controls
         {
             base.CreateChildControls();
 
-			var start = Engine.Resolve<IUrlParser>().StartPage;
-			var root = Engine.Persister.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-			foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
+            var start = Engine.Resolve<IUrlParser>().StartPage;
+            var root = Engine.Persister.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+            foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
                 if ((plugin.Area & Area) != Area)
-					continue;
+                    continue;
 
-				HtmlGenericControl item = new HtmlGenericControl("div");
-				item.Attributes["id"] = plugin.Name;
-				item.Attributes["class"] = "item";
-				Controls.Add(item);
+                HtmlGenericControl item = new HtmlGenericControl("div");
+                item.Attributes["id"] = plugin.Name;
+                item.Attributes["class"] = "item";
+                Controls.Add(item);
 
-				HtmlGenericControl command = new HtmlGenericControl("div");
-				command.Attributes["class"] = "command";
-				item.Controls.Add(command);
+                HtmlGenericControl command = new HtmlGenericControl("div");
+                command.Attributes["class"] = "command";
+                item.Controls.Add(command);
 
-				if (plugin.OptionProvider != null)
-				{
-					var optionProvider = Engine.Resolve(plugin.OptionProvider) as IProvider<ToolbarOption>;
-					var options = optionProvider.GetAll().ToList();
+                if (plugin.OptionProvider != null)
+                {
+                    var optionProvider = Engine.Resolve(plugin.OptionProvider) as IProvider<ToolbarOption>;
+                    var options = optionProvider.GetAll().ToList();
 
-					if (options.Count > 0)
-					{
-						OptionsMenu menu = new OptionsMenu();
-						menu.ID = ID + "_" + plugin.Name;
-						command.Controls.Add(menu);
+                    if (options.Count > 0)
+                    {
+                        OptionsMenu menu = new OptionsMenu();
+                        menu.ID = ID + "_" + plugin.Name;
+                        command.Controls.Add(menu);
 
-						AddPlugin(start, root, plugin, menu);
+                        AddPlugin(start, root, plugin, menu);
 
-						foreach (var option in options)
-						{
-							option.AddTo(menu);
-						}
-						continue;
-					}
-				}
-				
-				AddPlugin(start, root, plugin, command);
+                        foreach (var option in options)
+                        {
+                            option.AddTo(menu);
+                        }
+                        continue;
+                    }
+                }
+                
+                AddPlugin(start, root, plugin, command);
             }
         }
 
-		private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
-		{
-			plugin.AddTo(command, new PluginContext(Page.GetSelection(), start, root,
-			                                        ControlPanelState.Visible,
-			                                        Engine, new HttpContextWrapper(Context)));
-		}
+        private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
+        {
+            plugin.AddTo(command, new PluginContext(Page.GetSelection(), start, root,
+                                                    ControlPanelState.Visible,
+                                                    Engine, new HttpContextWrapper(Context)));
+        }
 
         protected override void Render(HtmlTextWriter writer)
         {

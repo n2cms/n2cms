@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
+﻿<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import namespace="N2.Edit.Wizard.Items"%>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
@@ -9,9 +9,9 @@
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<edit:PersistentOnlyPanel runat="server" meta:resourceKey="popNotSupported">
 		<n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
-																																																																																	<asp:GridView ID="gvLocations" runat="server" 
+			<asp:GridView ID="gvLocations" runat="server" BorderWidth="0"
 			OnRowDeleting="gvLocations_OnRowDeleting" DataKeyNames="ID"
-			CssClass="gv" AutoGenerateColumns="false" ShowHeader="false">
+			CssClass="table table-striped table-hover table-condensed" AutoGenerateColumns="false" ShowHeader="false">
 			<Columns>
 				<asp:TemplateField>
 					<ItemTemplate>
@@ -42,18 +42,18 @@
 			<asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">
-                    <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" CssClass="label" meta:resourcekey="lblLocation" />
+                    <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" meta:resourcekey="lblLocation" />
                     <strong><asp:Label ID="lblLocationTitle" runat="server" CssClass="title"
 						  Text=<%# Selection.SelectedItem.Title %>/></strong>
                 </div>
                 <div class="cf">
-                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" CssClass="label"
+                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" 
 						meta:resourcekey="LabelResource1" />
                     <asp:TextBox ID="txtTitle" runat="server" CssClass="title"
 						meta:resourcekey="txtTitleResource1" />
                 </div>
                 <div class="cf">
-                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" CssClass="label"
+                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" 
 						meta:resourcekey="LabelResource2" />
                     <asp:DropDownList ID="ddlTypes" runat="server" DataTextField="Title" CssClass="types"
 						DataValueField="Value" meta:resourcekey="ddlTypesResource1" />

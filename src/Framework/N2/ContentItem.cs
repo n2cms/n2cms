@@ -29,6 +29,7 @@ using System.Web;
 using N2.Collections;
 using N2.Definitions;
 using N2.Details;
+using N2.Edit;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
@@ -87,7 +88,7 @@ namespace N2
 		private ContentItem parent = null;
 		private DateTime created;
 		private DateTime updated;
-		private DateTime? published = DateTime.Now;
+        private DateTime? published = N2.Utility.CurrentTime();
 		private DateTime? expires = null;
 		private int sortOrder;
 		private string url = null;
@@ -97,7 +98,7 @@ namespace N2
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
 		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
-		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
+        private IContentList<DetailCollection> detailCollections = new DetailCollectionList();
 		[NonSerialized]
 		private IUrlParser urlParser;
 		private string ancestralTrail;
@@ -275,7 +276,13 @@ namespace N2
 		[NonInterceptable]
 		public virtual IContentList<DetailCollection> DetailCollections
 		{
-			get { return detailCollections; }
+            get
+            {
+                var enclosed = detailCollections as IEncolsedComponent;
+                if (enclosed != null && enclosed.EnclosingItem == null)
+                    enclosed.EnclosingItem = this;
+                return detailCollections; 
+            }
 			set { detailCollections = value; }
 		}
 
@@ -287,7 +294,7 @@ namespace N2
 			set { children = value; }
 		}
 
-		/// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/"</summary>
+        /// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/". The current item id is the last item in the ancestral trail.</summary>
 		[NonInterceptable]
 		public virtual string AncestralTrail
 		{
@@ -371,6 +378,13 @@ namespace N2
 			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconUrl); }
 		}
 
+        /// <summary>Gets the icon class used by a CSS spite in the management UI to represent this item.</summary>
+        [DisplayableLiteral, NonInterceptable]
+        public virtual string IconClass
+        {
+            get { return Definitions.Static.DefinitionMap.Instance.GetOrCreateDefinition(this).IconClass; }
+        }
+
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
 		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).GetRewrittenUrl()"), NonInterceptable]
 		public virtual string RewrittenUrl
@@ -436,8 +450,7 @@ namespace N2
 					case "Visible":				return Visible;
 					case "ZoneName":			return ZoneName;
 					default:
-						return Utility.Evaluate(this, detailName)
-							?? GetDetail(detailName);
+                        return Utility.Evaluate(this, detailName) ?? GetDetail(detailName);
 				}
 			}
 			set 
@@ -490,6 +503,7 @@ namespace N2
 		{
 			public const string AlteredPermissions = "AlteredPermissions";
 			public const string AncestralTrail = "AncestralTrail";
+            public const string ChildState = "ChildState";
 			public const string Created = "Created";
 			public const string Expires = "Expires";
 			public const string Extension = "Extension";
@@ -513,8 +527,8 @@ namespace N2
 			public const string Visible = "Visible";
 			public const string ZoneName = "ZoneName";
 
-			public static HashSet<string> WritablePartProperties = new HashSet<string>(new[] { AlteredPermissions, Created, Expires, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, Visible, ZoneName });
-			public static HashSet<string> WritableProperties = new HashSet<string>(new[] { AlteredPermissions, AncestralTrail, Created, Expires, ID, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, VersionIndex, Visible, ZoneName });
+            public static HashSet<string> WritablePartProperties = new HashSet<string>(new[] { AlteredPermissions, ChildState, Created, Expires, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, Visible, ZoneName });
+            public static HashSet<string> WritableProperties = new HashSet<string>(new[] { AlteredPermissions, AncestralTrail, ChildState, Created, Expires, ID, Name, Parent, Published, SavedBy, SortOrder, State, TemplateKey, TranslationKey, Title, Updated, VersionIndex, Visible, ZoneName });
 			public static HashSet<string> ReadonlyProperties = new HashSet<string>(new [] { Extension, IconUrl, IsPage, Path, TemplateUrl, Url });
 		}
 		#endregion
@@ -526,9 +540,7 @@ namespace N2
 		[NonInterceptable]
 		public virtual object GetDetail(string detailName)
 		{
-			return Details.ContainsKey(detailName)
-				? Details[detailName].Value
-				: null;
+            return Details.ContainsKey(detailName) ? Details[detailName].Value : null;
 		}
 
 		/// <summary>Gets a detail from the details bag.</summary>
@@ -538,9 +550,35 @@ namespace N2
 		[NonInterceptable]
 		public virtual T GetDetail<T>(string detailName, T defaultValue)
 		{
-			return Details.ContainsKey(detailName)
-				? (T)Details[detailName].Value
-				: defaultValue;
+            object o = null;
+            try
+            {
+                if (Details.ContainsKey(detailName))
+                {
+                    o = Details[detailName].Value;
+                    if (typeof(T).IsEnum && o != null && o.GetType() == typeof(string) && Enum.IsDefined(typeof(T), o))
+                    {
+                        return (T)Enum.Parse(typeof(T), (string)o); // Special case: Handle enum
+                    }
+                    else
+                    {
+                        return (T)(o == null ? null : o); // Attempt regular cast conversion
+                    }
+                }
+                else
+                {
+                    return defaultValue;
+                }
+            }
+            catch (InvalidCastException inner)
+            {
+                throw new InvalidCastException(
+                    String.Format("Cannot cast detail {0} of type {1} to type {2}.",
+                        detailName,
+                        o == null ? "NULL" : o.GetType().FullName,
+                        typeof(T).FullName
+                        ), inner);
+            }
 		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten. If the value equals the default value it will be removed from the details bag.</summary>
@@ -551,14 +589,10 @@ namespace N2
 		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
 			if (value == null || !value.Equals(defaultValue))
-			{
 				SetDetail(detailName, value);
-			}
 			else if (Details.ContainsKey(detailName))
-			{
 				details.Remove(detailName);
 			}
-		}
 
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>
 		/// <param name="detailName">The name of the item to set.</param>
@@ -630,6 +664,7 @@ namespace N2
 
 			url = null;
 			Parent = newParent;
+            AncestralTrail = newParent.GetTrail();
 			
 			if (newParent != null && !newParent.Children.Contains(this))
 			{
@@ -940,16 +975,16 @@ namespace N2
 			{
 				StringBuilder className = new StringBuilder();
 
-				if (!Published.HasValue || Published > DateTime.Now)
+                if (!Published.HasValue || Published > N2.Utility.CurrentTime())
 					className.Append("unpublished ");
-				else if (Published > DateTime.Now.AddDays(-1))
+                else if (Published > N2.Utility.CurrentTime().AddDays(-1))
 					className.Append("day ");
-				else if (Published > DateTime.Now.AddDays(-7))
+                else if (Published > N2.Utility.CurrentTime().AddDays(-7))
 					className.Append("week ");
-				else if (Published > DateTime.Now.AddMonths(-1))
+                else if (Published > N2.Utility.CurrentTime().AddMonths(-1))
 					className.Append("month ");
 
-				if (Expires.HasValue && Expires <= DateTime.Now)
+                if (Expires.HasValue && Expires <= N2.Utility.CurrentTime())
 					className.Append("expired ");
 
 				if (!Visible)
@@ -988,7 +1023,7 @@ namespace N2
 
 		string ILink.Contents
 		{
-			get { return Title; }
+            get { return N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Title); }
 		}
 
 		string ILink.ToolTip
@@ -1013,7 +1048,12 @@ namespace N2
 			if (object.ReferenceEquals(this, obj)) return true;
 			ContentItem other = obj as ContentItem;
 			if (other == null)
+            {
+                ContentRelation relation = obj as ContentRelation;
+                if (relation == null)
 				return false;
+                return relation.HasValue && relation.ID.Value == ID;
+            }
 			if (id != 0 && id == other.id)
 				return true;
 			if (id != 0 || other.id != 0)

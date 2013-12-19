@@ -29,73 +29,73 @@ using N2.Edit;
 
 namespace N2.Details
 {
-	/// <summary>
-	/// Attribute used to mark the DirectUrl property of an <see cref="Definition.IUrlSource"/> 
-	/// as editable. This editor is predefined to set constraints relating to url sources.
-	/// <example>
-	/// public class TextPage : ContentItem, N2.Definitions.IUrlSource
-	/// {
-	///		[N2.Details.EditableDirectUrl("Direct URL", 50)]
-	///		public virtual string DirectUrl { get; set; }
-	///	}
-	/// </example>
-	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableDirectUrlAttribute : EditableTextAttribute
-	{
-		public EditableDirectUrlAttribute()
-			: this(null, 100)
-		{
-		}
+    /// <summary>
+    /// Attribute used to mark the DirectUrl property of an <see cref="Definition.IUrlSource"/> 
+    /// as editable. This editor is predefined to set constraints relating to url sources.
+    /// <example>
+    /// public class TextPage : ContentItem, N2.Definitions.IUrlSource
+    /// {
+    ///     [N2.Details.EditableDirectUrl("Direct URL", 50)]
+    ///     public virtual string DirectUrl { get; set; }
+    /// }
+    /// </example>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EditableDirectUrlAttribute : EditableTextAttribute
+    {
+        public EditableDirectUrlAttribute()
+            : this(null, 100)
+        {
+        }
 
 
         public string UniqueUrlText { get; set; }
 
         public string UniqueUrlMessage { get; set; }
 
-		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
-		/// <param name="title">The label displayed to editors</param>
-		/// <param name="sortOrder">The order of this editor</param>
-		public EditableDirectUrlAttribute(string title, int sortOrder)
-			: base(title, sortOrder)
+        /// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
+        /// <param name="title">The label displayed to editors</param>
+        /// <param name="sortOrder">The order of this editor</param>
+        public EditableDirectUrlAttribute(string title, int sortOrder)
+            : base(title, sortOrder)
         {
             UniqueUrlText = "*";
             UniqueUrlMessage = "{0} must be unique, but is already used by {1} (#{2})";
 
-			Validate = true;
-			ValidationExpression = "^/[^?]*$";
-			ValidationMessage = "The direct url must start with slash (/), e.g. /direct";
-		}
+            Validate = true;
+            ValidationExpression = "^/[^?]*$";
+            ValidationMessage = "The direct url must start with slash (/), e.g. /direct";
+        }
 
-		public override bool UpdateItem(ContentItem item, Control editor)
-		{
-			if (item is IUrlSource)
-			{
-				TextBox tb = editor as TextBox;
-				string value = tb.Text;
-				if (DefaultValue is string && tb.Text == (string)DefaultValue)
-					value = null;
-				if (!AreEqual(value, item[Name]))
-				{
-					item[Name] = value.TrimEnd('/');
-					return true;
-				}
-			}
-			return false;
-		}
+        public override bool UpdateItem(ContentItem item, Control editor)
+        {
+            if (item is IUrlSource)
+            {
+                TextBox tb = editor as TextBox;
+                string value = tb.Text;
+                if (DefaultValue is string && tb.Text == (string)DefaultValue)
+                    value = null;
+                if (!AreEqual(value, item[Name]))
+                {
+                    item[Name] = value.TrimEnd('/');
+                    return true;
+                }
+            }
+            return false;
+        }
 
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			TextBox tb = editor as TextBox;
-			if (item is IUrlSource)
-			{
-				tb.Text = Utility.Convert<string>(item[Name]) ?? DefaultValue as string;
-			}
-			else
-			{
-				tb.Text = item.GetContentType() + " doesn't implement IUrlSource and cannot be used in combination with [EditableDirectUrl].";
-				tb.ReadOnly = true;
-			}
-		}
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            TextBox tb = editor as TextBox;
+            if (item is IUrlSource)
+            {
+                tb.Text = Utility.Convert<string>(item[Name]) ?? DefaultValue as string;
+            }
+            else
+            {
+                tb.Text = item.GetContentType() + " doesn't implement IUrlSource and cannot be used in combination with [EditableDirectUrl].";
+                tb.ReadOnly = true;
+            }
+        }
 
         protected override void AddValidation(Control container, Control editor)
         {

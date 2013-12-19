@@ -1,8 +1,8 @@
-﻿using System.Configuration;
+using System.Configuration;
 
 namespace N2.Configuration
 {
-	public class SiteElement : ConfigurationElement
+    public class SiteElement : ConfigurationElement
     {
         [ConfigurationProperty("id", IsRequired = true)]
         public int ID
@@ -19,11 +19,11 @@ namespace N2.Configuration
             set { base["rootID"] = value; }
         }
 
-		[ConfigurationProperty("name", IsRequired = true, IsKey = true)]
-		public string Name
-		{
-			get { return (string)base["name"]; }
-			set { base["name"] = value; }
+        [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
+        public string Name
+        {
+            get { return (string)base["name"]; }
+            set { base["name"] = value; }
         }
 
         /// <summary>Use wildcard matching for this hostname, e.g. both n2cms.com and www.n2cms.com.</summary>

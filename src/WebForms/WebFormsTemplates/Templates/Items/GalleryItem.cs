@@ -6,19 +6,19 @@ using N2.Persistence.Serialization;
 
 namespace N2.Templates.Items
 {
-	[PageDefinition("Gallery Item",
-		IconUrl = "~/Templates/UI/Img/photo.png")]
+    [PageDefinition("Gallery Item",
+        IconUrl = "~/Templates/UI/Img/photo.png")]
     [RestrictParents(typeof(ImageGallery))]
     [TabContainer("advanced", "Advanced", 100)]
-	[ConventionTemplate]
-	public class GalleryItem : AbstractContentPage
+    [ConventionTemplate]
+    public class GalleryItem : AbstractContentPage
     {
         public GalleryItem()
         {
             Visible = false;
         }
 
-		[FileAttachment, EditableFileUploadAttribute("Image", 30, ContainerName = Tabs.Content)]
+        [FileAttachment, EditableFileUploadAttribute("Image", 30, ContainerName = Tabs.Content)]
         public virtual string ImageUrl
         {
             get { return (string)base.GetDetail("ImageUrl"); }
@@ -42,7 +42,7 @@ namespace N2.Templates.Items
 
         public override string Url
         {
-			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery(PathData.ItemQueryKey, ID).SetFragment("#t" + ID); }
+            get { return N2.Web.Url.Parse(Parent.Url).AppendQuery(PathData.ItemQueryKey, ID).SetFragment("#t" + ID); }
         }
     }
 }

@@ -21,7 +21,7 @@
 	
 	<script type="text/javascript">
 		window.name = "top";
-		n2ctx.hasTop = function() { return true; }
+		n2ctx.hasTop = function() { return "legacy"; }
 		n2ctx.initToolbar();
 		n2ctx.update({ path: '<%= Selection.SelectedItem.Path %>', previewUrl: '<%= ResolveClientUrl(Selection.SelectedItem.Url) %>' });
 		n2ctx.location = "files";

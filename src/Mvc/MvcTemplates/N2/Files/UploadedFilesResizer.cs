@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using System.Web;
 using N2.Configuration;
@@ -11,174 +11,186 @@ using N2.Web.Drawing;
 
 namespace N2.Management.Files
 {
-	[Service]
-	public class UploadedFilesResizer : IAutoStart
-	{
-		IFileSystem files;
-		ImageResizer resizer;
-		ImagesElement images;
-		string[] sizeNames;
+    [Service]
+    public class UploadedFilesResizer : IAutoStart
+    {
+        IFileSystem files;
+        ImageResizer resizer;
+        ImagesElement images;
+        string[] sizeNames;
 
-		public UploadedFilesResizer(IFileSystem files, ImageResizer resizer, EditSection config)
-		{
-			this.files = files;
-			this.resizer = resizer;
-			this.images = config.Images;
-			sizeNames = config.Images.Sizes.AllElements.Select(s => s.Name).ToArray();
-		}
+        public UploadedFilesResizer(IFileSystem files, ImageResizer resizer, EditSection config)
+        {
+            this.files = files;
+            this.resizer = resizer;
+            this.images = config.Images;
+            sizeNames = config.Images.Sizes.AllElements.Select(s => s.Name).ToArray();
+        }
 
-		void files_FileWritten(object sender, FileEventArgs e)
-		{
-			if (!IsResizableImagePath(e.VirtualPath))
-				return;
+        void files_FileWritten(object sender, FileEventArgs e)
+        {
+            Url virtualPath = e.VirtualPath;
 
-			if(images.Sizes.Count == 0)
-				return;
+            if (!IsResizableImagePath(virtualPath))
+                return;
 
-			byte[] image;
-			using (var s = files.OpenFile(e.VirtualPath))
-			{
-				image = new byte[s.Length];
-				s.Read(image, 0, image.Length);
-			}
+            if(images.Sizes.Count == 0)
+                return;
 
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				if (!size.ResizeOnUpload)
-					continue;
+            byte[] image = GetImageBytes(virtualPath);
 
-				Url url = e.VirtualPath;
-				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                CreateSize(virtualPath, image, size);
+            }
+        }
 
-				using (var sourceStream = new MemoryStream(image))
-				{
-					if (size.Width <= 0 && size.Height <= 0)
-					{
-						using (var destinationStream = files.OpenFile(resizedPath))
-						{
-							int b;
-							while((b = sourceStream.ReadByte()) != -1) 
-							{
-								destinationStream.WriteByte((byte)b);
-							}
-						}
-					}
-					else
-					{
-						if (!files.FileExists(resizedPath) || size.Replace)
-						{
-                            // Delete the image before writing.
-                            // Fixes a weird bug where overwriting the original file while it still exists
-                            //  leaves the resized image the with the exact same file size as the original even 
-                            //  though it should be smaller.
-                            if (files.FileExists(resizedPath))
-                            {
-                                files.DeleteFile(resizedPath);
-                            }
+        public virtual void CreateSize(Url virtualPath, byte[] image, ImageSizeElement size)
+        {
+            if (!size.ResizeOnUpload)
+                return;
 
-							using (var destinationStream = files.OpenFile(resizedPath))
-							{
-								resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
-							}
-						}
-					}
-				}
-			}
-		}
+            string resizedPath = ImagesUtility.GetResizedPath(virtualPath, size.Name);
 
-		void files_FileCopied(object sender, FileEventArgs e)
-		{
-			if (IsResizedPath(e.VirtualPath))
-				return;
-			
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				Url sourceUrl = e.SourcePath;
-				Url destinationUrl = e.VirtualPath;
+            using (var sourceStream = new MemoryStream(image))
+            {
+                if (size.Width <= 0 && size.Height <= 0)
+                {
+                    using (var destinationStream = files.OpenFile(resizedPath))
+                    {
+                        int b;
+                        while ((b = sourceStream.ReadByte()) != -1)
+                        {
+                            destinationStream.WriteByte((byte)b);
+                        }
+                    }
+                }
+                else
+                {
+                    if (!files.FileExists(resizedPath) || size.Replace)
+                    {
+                        // Delete the image before writing.
+                        // Fixes a weird bug where overwriting the original file while it still exists
+                        //  leaves the resized image the with the exact same file size as the original even 
+                        //  though it should be smaller.
+                        if (files.FileExists(resizedPath))
+                        {
+                            files.DeleteFile(resizedPath);
+                        }
 
-				string sourcePath = ImagesUtility.GetResizedPath(sourceUrl, size.Name);
+                        using (var destinationStream = files.OpenFile(resizedPath))
+                        {
+                            resizer.Resize(sourceStream, new ImageResizeParameters(size.Width, size.Height, size.Mode) { Quality = size.Quality }, destinationStream);
+                        }
+                    }
+                }
+            }
+        }
 
-				if (!files.FileExists(sourcePath))
-					continue;
+        public virtual byte[] GetImageBytes(string virtualPath)
+        {
+            byte[] image;
+            using (var s = files.OpenFile(virtualPath))
+            {
+                image = new byte[s.Length];
+                s.Read(image, 0, image.Length);
+            }
+            return image;
+        }
 
-				string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
-				if(!files.FileExists(destinationPath))
-					files.CopyFile(sourcePath, destinationPath);
-			}
-		}
+        void files_FileCopied(object sender, FileEventArgs e)
+        {
+            if (IsResizedPath(e.VirtualPath))
+                return;
+            
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                Url sourceUrl = e.SourcePath;
+                Url destinationUrl = e.VirtualPath;
 
-		private bool IsResizedPath(string path)
-		{
-			string extensionlessPath = Url.RemoveAnyExtension(path);
-			foreach (var sizeName in sizeNames)
-			{
-				if (extensionlessPath.EndsWith("_" + sizeName))
-					return true;
-			}
-			return false;
-		}
+                string sourcePath = ImagesUtility.GetResizedPath(sourceUrl, size.Name);
 
-		void files_FileMoved(object sender, FileEventArgs e)
-		{
-			if (!IsResizableImagePath(e.VirtualPath))
-				return;
-			
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				string source = ImagesUtility.GetResizedPath(e.SourcePath, size.Name);
-				if (files.FileExists(source))
-				{
-					string destination = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
-					if (!files.FileExists(destination))
-						files.MoveFile(source, destination);
-				}
-			}
-		}
+                if (!files.FileExists(sourcePath))
+                    continue;
 
-		void files_FileDeleted(object sender, FileEventArgs e)
-		{
-			if (!IsResizableImagePath(e.VirtualPath))
-				return;
+                string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
+                if(!files.FileExists(destinationPath))
+                    files.CopyFile(sourcePath, destinationPath);
+            }
+        }
 
-			foreach (ImageSizeElement size in images.Sizes.AllElements)
-			{
-				string resizedPath = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
+        private bool IsResizedPath(string path)
+        {
+            string extensionlessPath = Url.RemoveAnyExtension(path);
+            foreach (var sizeName in sizeNames)
+            {
+                if (extensionlessPath.EndsWith("_" + sizeName))
+                    return true;
+            }
+            return false;
+        }
 
-				if (files.FileExists(resizedPath))
-					files.DeleteFile(resizedPath);
-			}
-		}
+        void files_FileMoved(object sender, FileEventArgs e)
+        {
+            if (!IsResizableImagePath(e.VirtualPath))
+                return;
+            
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                string source = ImagesUtility.GetResizedPath(e.SourcePath, size.Name);
+                if (files.FileExists(source))
+                {
+                    string destination = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
+                    if (!files.FileExists(destination))
+                        files.MoveFile(source, destination);
+                }
+            }
+        }
 
-		public bool IsResizableImagePath(string imageUrl)
-		{
-			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
-			return images.ResizedExtensions.Contains(fileExtension.ToLower());
-		}
+        void files_FileDeleted(object sender, FileEventArgs e)
+        {
+            if (!IsResizableImagePath(e.VirtualPath))
+                return;
 
-		#region IAutoStart Members
+            foreach (ImageSizeElement size in images.Sizes.AllElements)
+            {
+                string resizedPath = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
 
-		public void Start()
-		{
-			if (!images.ResizeUploadedImages)
-				return;
+                if (files.FileExists(resizedPath))
+                    files.DeleteFile(resizedPath);
+            }
+        }
 
-			files.FileWritten += files_FileWritten;
-			files.FileMoved += files_FileMoved;
-			files.FileDeleted += files_FileDeleted;
-			files.FileCopied += files_FileCopied;
-		}
+        public bool IsResizableImagePath(string imageUrl)
+        {
+            string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
+            return images.ResizedExtensions.Contains(fileExtension.ToLower());
+        }
 
-		public void Stop()
-		{
-			if (!images.ResizeUploadedImages)
-				return;
+        #region IAutoStart Members
 
-			files.FileWritten -= files_FileWritten;
-			files.FileMoved -= files_FileMoved;
-			files.FileDeleted -= files_FileDeleted;
-			files.FileCopied -= files_FileCopied;
-		}
+        public void Start()
+        {
+            if (!images.ResizeUploadedImages)
+                return;
 
-		#endregion
-	}
+            files.FileWritten += files_FileWritten;
+            files.FileMoved += files_FileMoved;
+            files.FileDeleted += files_FileDeleted;
+            files.FileCopied += files_FileCopied;
+        }
+
+        public void Stop()
+        {
+            if (!images.ResizeUploadedImages)
+                return;
+
+            files.FileWritten -= files_FileWritten;
+            files.FileMoved -= files_FileMoved;
+            files.FileDeleted -= files_FileDeleted;
+            files.FileCopied -= files_FileCopied;
+        }
+
+        #endregion
+    }
 }

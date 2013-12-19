@@ -37,6 +37,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			ie.Text("Title");
 			ie.Url("Redirect", "Redirect URL");
 			ie.CheckBox("ForceRedirect", "Force redirect even if a returnUrl is available.");
+			ie.FreeText("LoginPageText", "Login page text");
 		}
 	);
 
@@ -86,9 +87,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	{ 
 	<input type="hidden" name="action" value="sign-in" />
 	<fieldset>
-		@if (!String.IsNullOrEmpty(Model.Title))
-		{ <legend>@Model.Title</legend> }
-
+		@if (!String.IsNullOrEmpty(Model.Title)) { <legend>@Model.Title</legend> }
+		@if (Content.Has.Text) {  <div>@Content.Data.LoginPageText</div> }
 		<div class="control-group">
 			<label class="control-label" for="inputEmail">Username</label>
 			<div class="controls">

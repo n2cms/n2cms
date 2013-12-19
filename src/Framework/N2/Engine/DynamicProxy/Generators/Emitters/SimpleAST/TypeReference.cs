@@ -14,24 +14,24 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
+    using System;
 
-	public abstract class TypeReference : Reference
-	{
-		private readonly Type type;
+    public abstract class TypeReference : Reference
+    {
+        private readonly Type type;
 
-		protected TypeReference(Type argumentType) : this(null, argumentType)
-		{
-		}
+        protected TypeReference(Type argumentType) : this(null, argumentType)
+        {
+        }
 
-		protected TypeReference(Reference owner, Type type) : base(owner)
-		{
-			this.type = type;
-		}
+        protected TypeReference(Reference owner, Type type) : base(owner)
+        {
+            this.type = type;
+        }
 
-		public Type Type
-		{
-			get { return type; }
-		}
-	}
+        public Type Type
+        {
+            get { return type; }
+        }
+    }
 }

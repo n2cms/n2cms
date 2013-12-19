@@ -1,4 +1,4 @@
-﻿using N2.Web;
+using N2.Web;
 using NHibernate;
 
 namespace N2.Persistence.NH
@@ -12,15 +12,15 @@ namespace N2.Persistence.NH
         private ISession session;
         private ISessionProvider provider;
 
-		/// <summary>Gets an existing session or null if no session has been started.</summary>
+        /// <summary>Gets an existing session or null if no session has been started.</summary>
         public ISession Session
         {
             get { return session; }
             set { session = value; }
         }
 
-		/// <summary>Gets an existing transaction or null if no transaction is running.</summary>
-		public virtual ITransaction Transaction { get; set; }
+        /// <summary>Gets an existing transaction or null if no transaction is running.</summary>
+        public virtual ITransaction Transaction { get; set; }
 
         public SessionContext(ISessionProvider provider, ISession session)
         {
@@ -28,10 +28,10 @@ namespace N2.Persistence.NH
             this.session = session;
         }
 
-		public System.Data.IDbConnection Connection
-		{
-			get { return Session.Connection; }
-		}
+        public System.Data.IDbConnection Connection
+        {
+            get { return Session.Connection; }
+        }
 
         #region IDisposable Members
 

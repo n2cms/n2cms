@@ -14,13 +14,13 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public class NopStatement : Statement
-	{
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			gen.Emit(OpCodes.Nop);
-		}
-	}
+    public class NopStatement : Statement
+    {
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            gen.Emit(OpCodes.Nop);
+        }
+    }
 }

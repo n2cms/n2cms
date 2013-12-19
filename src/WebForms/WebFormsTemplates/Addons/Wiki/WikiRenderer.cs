@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +15,7 @@ namespace N2.Addons.Wiki
     /// Turns a stream of wiki fragments into asp.net controls responsible for 
     /// rendering the user interface.
     /// </summary>
-	[Service]
+    [Service]
     public class WikiRenderer
     {
         IDictionary<string, IRenderer> renderers = new Dictionary<string, IRenderer>();
@@ -32,10 +32,10 @@ namespace N2.Addons.Wiki
             Renderers["Line"] = new LineRenderer();
             Renderers["OrderedListItem"] = new OrderedListItemRenderer();
             Renderers["UnorderedListItem"] = new UnorderedListItemRenderer();
-			Renderers["Bold"] = new FormatRenderer();
-			Renderers["Italics"] = new FormatRenderer();
-			Renderers["BoldItalics"] = new FormatRenderer();
-		}
+            Renderers["Bold"] = new FormatRenderer();
+            Renderers["Italics"] = new FormatRenderer();
+            Renderers["BoldItalics"] = new FormatRenderer();
+        }
 
         public IRenderer FallbackRenderer { get; set; }
 
@@ -53,21 +53,21 @@ namespace N2.Addons.Wiki
             AddTo(fragments, container, article, new Dictionary<string, object>());
         }
 
-		protected virtual void AddTo(IEnumerable<Component> fragments, Control container, IArticle article, IDictionary<string, object> state)
+        protected virtual void AddTo(IEnumerable<Component> fragments, Control container, IArticle article, IDictionary<string, object> state)
         {
-			var list = fragments.ToList();
-			for (int i = 0; i < list.Count; i++)
-			{
-				var f = list[i];
-				var ctx = new ViewContext { Renderer = this, Article = article, Fragment = f, State = state };
-				if (i > 0)
-					ctx.Previous = list[i - 1];
-				if (i < list.Count - 1)
-					ctx.Next = list[i + 1];
+            var list = fragments.ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var f = list[i];
+                var ctx = new ViewContext { Renderer = this, Article = article, Fragment = f, State = state };
+                if (i > 0)
+                    ctx.Previous = list[i - 1];
+                if (i < list.Count - 1)
+                    ctx.Next = list[i + 1];
 
-				if (Renderers.ContainsKey(f.Command))
+                if (Renderers.ContainsKey(f.Command))
                 {
-					Control c = Renderers[f.Command].AddTo(container, ctx);
+                    Control c = Renderers[f.Command].AddTo(container, ctx);
                 }
                 else if (FallbackRenderer != null)
                 {

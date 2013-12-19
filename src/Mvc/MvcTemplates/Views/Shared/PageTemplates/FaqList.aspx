@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<FaqList>" Title="" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<FaqList>" Title="" %>
 
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
 	<div class="list">

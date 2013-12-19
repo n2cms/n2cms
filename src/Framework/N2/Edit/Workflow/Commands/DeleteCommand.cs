@@ -1,4 +1,4 @@
-﻿using N2.Persistence;
+using N2.Persistence;
 
 namespace N2.Edit.Workflow.Commands
 {
@@ -14,7 +14,7 @@ namespace N2.Edit.Workflow.Commands
         public override void Process(CommandContext state)
         {
             repository.Delete(state.Content);
-			state.UnregisterItemToSave(state.Content);
+            state.UnregisterItemToSave(state.Content);
         }
     }
 }

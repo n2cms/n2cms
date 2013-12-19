@@ -3,21 +3,17 @@ using N2.Edit.Trash;
 using N2.Installation;
 using N2.Persistence.Search;
 using N2.Integrity;
+using N2.Management;
 
 namespace N2.Edit.Wizard.Items
 {
-	[PageDefinition("Wizard Container",
-		IconUrl = "{ManagementUrl}/Resources/icons/wand.png",
-		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-		AuthorizedRoles = new string[0])]
-	[Throwable(AllowInTrash.No)]
-	[Indexable(IsIndexable = false)]
-	[RestrictParents(typeof(IRootPage))]
-	public class Wonderland : ContentItem, ISystemNode
-	{
-		public override bool IsPage
-		{
-			get { return false; }
-		}
-	}
+    [PartDefinition("Wizard Container",
+        IconClass = "n2-icon-magic",
+        AuthorizedRoles = new string[0])]
+    [Throwable(AllowInTrash.No)]
+    [Indexable(IsIndexable = false)]
+    [RestrictParents(typeof(IRootPage))]
+    public class Wonderland : ManagementItem, ISystemNode
+    {
+    }
 }

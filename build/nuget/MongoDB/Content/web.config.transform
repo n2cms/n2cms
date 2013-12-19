@@ -1,0 +1,9 @@
+<configuration>
+	<connectionStrings>
+		<remove name="N2CMS" />
+		<add name="N2CMS" connectionString="mongodb://localhost/n2" />
+	</connectionStrings>
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3">
+		<database flavour="MongoDB"/>
+	</n2>
+</configuration>

@@ -11,8 +11,8 @@ namespace N2.Templates.Services
     /// to the items implementing the <see cref="ISyndicatable" />
     /// interface.
     /// </summary>
-	[Service]
-	public class SyndicatableDefinitionAppender : IAutoStart
+    [Service]
+    public class SyndicatableDefinitionAppender : IAutoStart
     {
         private readonly IDefinitionManager definitions;
         private string checkBoxText = "Make available for syndication.";
@@ -49,7 +49,7 @@ namespace N2.Templates.Services
             {
                 if (typeof (ISyndicatable).IsAssignableFrom(definition.ItemType))
                 {
-					EditableCheckBoxAttribute ecb = new EditableCheckBoxAttribute(CheckBoxText, 10);
+                    EditableCheckBoxAttribute ecb = new EditableCheckBoxAttribute(CheckBoxText, 10);
                     ecb.Name = SyndicatableDetailName;
                     ecb.ContainerName = ContainerName;
                     ecb.SortOrder = SortOrder;

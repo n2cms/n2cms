@@ -9,11 +9,11 @@ using N2.Web;
 namespace N2.Templates.Items
 {
     [RestrictParents(typeof (IStructuralPage))]
-	[ConventionTemplate("Search")]
+    [ConventionTemplate("Search")]
     public abstract class AbstractSearch : AbstractContentPage
     {
-		[Obsolete("Text search is now used")]
-		public abstract ICollection<ContentItem> Search(string query);
+        [Obsolete("Text search is now used")]
+        public abstract ICollection<ContentItem> Search(string query);
 
         [EditableLink("Search Root", 100, ContainerName = Tabs.Content)]
         public virtual ContentItem SearchRoot

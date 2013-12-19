@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.LinkTracker._Default" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.LinkTracker._Default" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
@@ -10,23 +10,27 @@
 		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencingItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div>
+					<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Container.DataItem %>" runat="server" />
+				</div>
 			</ItemTemplate>
 		</asp:Repeater>
 		<div style="margin:10px">
 	</edit:FieldSet>
-	</td><td style="padding:10px;">
-		<img src="../../Resources/Icons/link_go.png" alt="right" />
-	</td><td style="padding:10px;">
-		<a href='<%# Selection.SelectedItem.Url %>'><asp:Image ID="Image1" ImageUrl='<%# ResolveUrl(Selection.SelectedItem.IconUrl) %>' runat="server" /><%# Selection.SelectedItem.Title %></a>
-	</td><td style="padding:10px;">
-		<img src="../../Resources/Icons/link_go.png" alt="right" />
+	</td><td style="padding:22px 10px;">
+		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
+	</td><td style="padding:22px 10px;">
+		<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Selection.SelectedItem %>" runat="server" />
+	</td><td style="padding:22px 10px;">
+		<b style="font-size:24px" class="n2-icon-long-arrow-right"></b>
 	</td><td>
 	<edit:FieldSet class="referencedItems" runat="server" Legend="Outgoing links" meta:resourceKey="referencedItems">
 		<div style="margin:10px;min-height:15px;">
 		<asp:Repeater runat="server" ID="rptReferencedItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div>
+					<edit:ItemLink InterfaceUrl="Default.aspx" DataSource="<%# Container.DataItem %>" runat="server" />
+				</div>
 			</ItemTemplate>
 		</asp:Repeater>	
 		</div>

@@ -1,4 +1,4 @@
-﻿using System.Web.UI;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
 using NUnit.Framework;

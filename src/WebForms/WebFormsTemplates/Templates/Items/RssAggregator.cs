@@ -4,10 +4,10 @@ using N2.Integrity;
 namespace N2.Templates.Items
 {
     [PartDefinition("Rss List", 
-		Name = "RssAggregatorItem", 
-		Description = "A list of news items retrieved from an rss source.",
-		SortOrder = 165,
-		IconUrl = "~/Templates/UI/Img/rss.png")]
+        Name = "RssAggregatorItem", 
+        Description = "A list of news items retrieved from an rss source.",
+        SortOrder = 165,
+        IconUrl = "~/Templates/UI/Img/rss.png")]
     [WithEditableTitle("Title", 10, Required = false)]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
     public class RssAggregator : SidebarItem
@@ -26,7 +26,7 @@ namespace N2.Templates.Items
             set { SetDetail("RssUrl", value, string.Empty); }
         }
 
-		[EditableNumber("Max Count", 130)]
+        [EditableNumber("Max Count", 130)]
         public virtual int MaxCount
         {
             get { return (int)(GetDetail("MaxCount") ?? 5); }

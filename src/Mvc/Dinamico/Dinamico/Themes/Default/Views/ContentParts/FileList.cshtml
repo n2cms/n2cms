@@ -26,8 +26,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 *************************************************************************************************@
 
+@using System.Diagnostics
 @model Dinamico.Models.ContentPart
 
+@* ReSharper disable UnknownCssClass *@
+@* ReSharper disable Html.PathError *@
 @{
 
 	Content.Define(ie =>
@@ -38,46 +41,46 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		ie.Text("FileFilter", "File Filter").DefaultValue("?*.*");
 		ie.CheckBox("Recursive");
 		ie.CheckBox("ReverseOrder").DefaultValue(false);
+
+		ie.FieldSet("Viewer", "Document Viewer", f =>
+		{
+			f.CheckBox(N2.Web.DocViewerUtility.UseDocViewerPropertyKey, "Override site view/download settings").DefaultValue(false);
+			f.Text(N2.Web.DocViewerUtility.DocViewerUrlPropertyKey, "Document viewer URL").DefaultValue("");
+		});
+		
 	});
 
-	string filter = (string)Model.GetDetail("FileFilter") ?? "*";
-	string dir = (string)Model.GetDetail("Directory") ?? "";
-	
-	string[] fileList = new string[0];
-	try
-	{
-		if (Content.Data.Recursive == true)
-		{
-			fileList = (N2.Utility.RecursiveListFiles(Server.MapPath(dir), filter) as IEnumerable<string>).ToArray();
-		}
-		else
-		{
-			fileList = System.IO.Directory.GetFiles(Server.MapPath(dir), filter);
-		}
-	}
-	catch (Exception x)
-	{ 
-		<div class="alert alert-error"><pre>@x.ToString()</pre></div>
-	}
 
-	string baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
+
+	var filter = Model.GetDetail("FileFilter", "*");
+	var dir = Model.GetDetail("Directory", "");
+	var fileList = new string[] {};
+	try { fileList = N2.Utility.ListFiles(Server.MapPath(dir), filter, Model.GetDetail("Recursive", false)).ToArray(); }
+	catch (Exception x) {  <div class="alert alert-error"><pre>@x.ToString()</pre></div> }
+
+	@* ReSharper disable PossibleNullReferenceException *@
+	var baseDir = System.Web.Hosting.HostingEnvironment.MapPath("/").TrimEnd('/', '\\');
+	@* ReSharper restore PossibleNullReferenceException *@
+	@* ReSharper disable ImplicitlyCapturedClosure *@
 	var data = (from f in fileList
 				let fn = new FileInfo(f)
-				where !String.Equals("Thumbs.db", fn.Name, StringComparison.OrdinalIgnoreCase)
-				&& !fn.Name.StartsWith(".")
-				&& f.Length > baseDir.Length + dir.Length + 1
+				where !String.Equals("Thumbs.db", fn.Name, StringComparison.OrdinalIgnoreCase) //TODO: Use the config value.
+					  && !fn.Name.StartsWith(".")
+					  && f.Length > baseDir.Length + dir.Length + 1
 				orderby f
-				select new {
-					FileSize = N2.Utility.GetFileSizeString(fn.Length, true), 
-					Url = f.Substring(baseDir.Length),
-					DisplayName = f.Substring(baseDir.Length + dir.Length + 1)});
+				select new
+				{
+					FileSize = N2.Utility.GetFileSizeString(fn.Length, true),
+					Url = N2.Web.DocViewerUtility.GetDocumentUrl(Model, f.Substring(baseDir.Length).Replace('\\', '/').Replace("//", "/")),
+					DisplayName = f.Substring(baseDir.Length + dir.Length + 1)
+				});
+	@* ReSharper restore ImplicitlyCapturedClosure *@
 
 	if (Model.GetDetail("ReverseOrder", false)) {
 		data = data.Reverse();
 	}
 					
 }
-
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -91,7 +94,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		<tr>
 			<td><a href="@d.Url">@d.DisplayName</a></td>
 			<td>@d.FileSize</td>
-			<td><a href="@d.Url"><img border="0" src="/N2/Resources/Icons/Disk.png" /></a></td>
+			@* ReSharper disable Html.Obsolete *@
+			<td><a href="@d.Url"><img alt="Download" border="0" src="/n2/resources/icons/disk.png" /></a></td>
+			@* ReSharper restore Html.Obsolete *@
 		</tr>}
 	</tbody>
 </table>
+@* ReSharper restore Html.PathError *@
+@* ReSharper restore UnknownCssClass *@

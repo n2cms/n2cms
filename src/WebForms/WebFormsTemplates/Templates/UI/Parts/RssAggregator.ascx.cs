@@ -31,10 +31,10 @@ namespace N2.Templates.UI.Parts
             base.OnInit(e);
         }
 
-		private string CacheKey
-		{
-			get { return "RssAggregator.NewsItems" + CurrentItem.ID; }
-		}
+        private string CacheKey
+        {
+            get { return "RssAggregator.NewsItems" + CurrentItem.ID; }
+        }
 
         private static TimeSpan ExpirationTime = TimeSpan.FromMinutes(1);
         private IEnumerable<RssItem> CacheNewsItems(string url, Func<string, IEnumerable<RssItem>> reader)
@@ -54,7 +54,7 @@ namespace N2.Templates.UI.Parts
                 Cache.Add(CacheKey,
                           items,
                           new ContentCacheDependency(Engine.Persister),
-                          DateTime.Now.Add(ExpirationTime),
+                          N2.Utility.CurrentTime().Add(ExpirationTime),
                           Cache.NoSlidingExpiration,
                           CacheItemPriority.Normal, null);
             }

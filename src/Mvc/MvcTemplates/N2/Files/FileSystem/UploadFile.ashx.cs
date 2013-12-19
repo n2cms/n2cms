@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Linq;
 using System.Web.Security;
 using N2.Edit;
@@ -10,17 +10,17 @@ using N2.Definitions;
 
 namespace N2.Management.Files.FileSystem
 {
-	public class UploadFile : IHttpHandler
-	{
+    public class UploadFile : IHttpHandler
+    {
 
-		public void ProcessRequest(HttpContext context)
-		{
+        public void ProcessRequest(HttpContext context)
+        {
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
             ValidateTicket(context.Request["ticket"]);
 
-            SelectionUtility selection = new SelectionUtility(context.Request, N2.Context.Current);
+            SelectionUtility selection = new SelectionUtility(context, N2.Context.Current);
             var fs = N2.Context.Current.Resolve<IFileSystem>();
 
             List<FilesStatus> statuses;
@@ -114,7 +114,7 @@ namespace N2.Management.Files.FileSystem
                 return false;
             }
         }
-	}
+    }
 
 
     public class FilesStatus
@@ -136,7 +136,7 @@ namespace N2.Management.Files.FileSystem
             size = fileLength;
             progress = "1.0";
             url = "File.aspx?selected=" + fileName;
-			thumbnail_url = "../Resize.ashx?w=48&h=48&img=" + fileName;
+            thumbnail_url = "../Resize.ashx?w=48&h=48&img=" + fileName;
         }
     }
 }

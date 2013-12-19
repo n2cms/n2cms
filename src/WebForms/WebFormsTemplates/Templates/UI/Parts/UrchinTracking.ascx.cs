@@ -7,15 +7,15 @@ namespace N2.Templates.UI.Parts
         public virtual bool Track
         {
             get { return CurrentItem.Enabled 
-				&& !string.IsNullOrEmpty(CurrentItem.UACCT) 
-				&& (CurrentItem.TrackEditors || !N2.Context.SecurityManager.IsEditor(Page.User)); }
+                && !string.IsNullOrEmpty(CurrentItem.UACCT) 
+                && (CurrentItem.TrackEditors || !N2.Context.SecurityManager.IsEditor(Page.User)); }
         }
 
         protected override void OnInit(System.EventArgs e)
         {
-			DataBind();
-			
-			base.OnInit(e);
+            DataBind();
+            
+            base.OnInit(e);
         }
     }
 }

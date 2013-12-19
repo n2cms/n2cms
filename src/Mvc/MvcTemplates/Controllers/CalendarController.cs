@@ -8,23 +8,23 @@ using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(Calendar))]
-	public class CalendarController : ContentController<Calendar>
-	{
-		[NonAction]
-		public override ActionResult Index()
-		{
-			return Index(null);
-		}
+    [Controls(typeof(Calendar))]
+    public class CalendarController : ContentController<Calendar>
+    {
+        [NonAction]
+        public override ActionResult Index()
+        {
+            return Index(null);
+        }
 
-		public ActionResult Index(DateTime? date)
-		{
-			var hits = CurrentItem.GetEvents().Where(e => e.EventDate > DateTime.Today);
-			
-			if (date != null)
-				hits = CurrentItem.GetEvents(date.Value);
+        public ActionResult Index(DateTime? date)
+        {
+            var hits = CurrentItem.GetEvents().Where(e => e.EventDate > DateTime.Today);
+            
+            if (date != null)
+                hits = CurrentItem.GetEvents(date.Value);
 
-			return View(new CalendarModel(CurrentItem, hits.ToList()));
-		}
-	}
+            return View(new CalendarModel(CurrentItem, hits.ToList()));
+        }
+    }
 }

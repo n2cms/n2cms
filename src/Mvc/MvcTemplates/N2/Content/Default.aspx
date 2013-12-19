@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
+		<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
 	<edit:ToolbarPluginDisplay ID="OptionsPlugins" Area="Options" runat="server" />
 </asp:Content>
 
@@ -19,7 +19,7 @@
 
 	<script type="text/javascript">
 		window.name = "top";
-		n2ctx.hasTop = function() { return true; }
+		n2ctx.hasTop = function() { return "legacy"; }
 		n2ctx.location = "content";
 
 		jQuery(document).ready(function () {
@@ -33,5 +33,5 @@
 			resizeFrames();
 			$(window).resize(resizeFrames);
 		});
-    </script>
+		</script>
 </asp:Content>

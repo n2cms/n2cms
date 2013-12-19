@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Templates.Items;
+using N2.Web.UI;
 
 namespace N2.Templates.Details
 {
@@ -12,7 +13,7 @@ namespace N2.Templates.Details
         {
             TextBox tb = (TextBox)editor;
             string[] rows = tb.Text.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            for (int i = item.Children.Count-1; i >= 0; --i)
+            for (int i = item.Children.Count - 1; i >= 0; --i)
             {
                 int index = Array.FindIndex(rows, delegate(string row)
                                                       {
@@ -32,6 +33,8 @@ namespace N2.Templates.Details
                     child.AddTo(item);
                 }
                 child.SortOrder = i;
+
+                editor.RegisterItemToSave(child);
             }
 
             return true;

@@ -1,22 +1,21 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>N2CMS.SQLite.x86</id>
-    <version>{Version}</version>
-    <title>N2 CMS SQLite config (x86)</title>
-    <authors>Cristian Libardo</authors>
-    <owners>Cristian Libardo</owners>
-    <licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
-    <projectUrl>http://n2cms.com/</projectUrl>
-	<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
-	<requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Configures SQLite database connection string on an N2 CMS site.</description>
-    <summary></summary>
-    <language>en-US</language>
-    <tags>N2 CMS</tags>
+	<metadata>
+		<id>N2CMS.Config.SQLite</id>
+		<version>{Version}</version>
+		<title>N2 CMS SQLite config (x86)</title>
+		<authors>Cristian Libardo</authors>
+		<owners>Cristian Libardo</owners>
+		<licenseUrl>http://n2cms.com/Project/License.aspx</licenseUrl>
+		<projectUrl>http://n2cms.com/</projectUrl>
+		<iconUrl>http://n2cms.com/Upload/logo-5.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Configures SQLite enbedded database connection string on an N2 CMS site.</description>
+		<summary></summary>
+		<language>en-US</language>
+		<tags>N2 CMS</tags>
 		<dependencies>
-			<dependency id="System.Data.SQLite" version="1.0.66.1" />
-			<dependency id="N2CMS.Library" version="{Version}" />
+			<dependency id="System.Data.SQLite" version="1.0.88.0" />
 		</dependencies>
 	</metadata>
 </package>

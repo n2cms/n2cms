@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace N2.Web.Parsing
 {
+	[DebuggerDisplay("{Command} ({Tokens.Count}): {ToString()}")]
 	public class Component
 	{
 		public string Command { get; set; }

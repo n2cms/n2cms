@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using Microsoft.AspNet.Membership.OpenAuth;

@@ -130,25 +130,25 @@
     <value>Back to edit</value>
   </data>
   <data name="cpPreviewPublish.ToolTip" xml:space="preserve">
-    <value>Publish the currently displayed page version.</value>
+    <value>Publish draft</value>
   </data>
   <data name="cpPreviewDiscard.ToolTip" xml:space="preserve">
-    <value>Irrecoverably delete the currently displayed version.</value>
+    <value>Remove draft</value>
   </data>
   <data name="cpNew.ToolTip" xml:space="preserve">
-    <value>New item one level down from this page</value>
+    <value>Create new item below</value>
   </data>
   <data name="cpAdminister.ToolTip" xml:space="preserve">
     <value>Manage content</value>
   </data>
   <data name="cpDelete.ToolTip" xml:space="preserve">
-    <value>Delete this page</value>
+    <value>Delete</value>
   </data>
   <data name="cpOrganize.ToolTip" xml:space="preserve">
     <value>Organize parts</value>
   </data>
   <data name="cpPendingVersion.ToolTip" xml:space="preserve">
-    <value>There is a newer unpublished version of this item.</value>
+    <value>Go to draft</value>
   </data>
   <data name="tpPreview.ToolTip" xml:space="preserve">
     <value>Edit</value>

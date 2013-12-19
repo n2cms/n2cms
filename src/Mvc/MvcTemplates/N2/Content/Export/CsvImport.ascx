@@ -11,7 +11,7 @@
 <div>
 	<asp:CheckBox ID="chkFirstRow" runat="server" Text="First row is header row" AutoPostBack="true" OnCheckedChanged="chkFirstRow_OnCheckedChanged" />
 
-	<table class="gv">
+	<table class="table table-striped table-hover">
 		<thead><tr>
 			<asp:Repeater id="rptPreview" runat="server" DataSource="<%# FirstRow.Columns %>">
 				<ItemTemplate>

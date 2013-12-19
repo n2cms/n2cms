@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,25 +10,25 @@ using N2;
 
 namespace Dinamico.Controllers
 {
-	[Controls(typeof(LanguageIntersection))]
-	public class LanguageIntersectionController : ContentController<LanguageIntersection>
-	{
-		public override ActionResult Index()
-		{
-			ContentItem language = Request.SelectLanguage(CurrentItem);
-			if (language != null)
-			{
-				if (language.Url.StartsWith("http"))
-					return Redirect(language.Url);
+    [Controls(typeof(LanguageIntersection))]
+    public class LanguageIntersectionController : ContentController<LanguageIntersection>
+    {
+        public override ActionResult Index()
+        {
+            ContentItem language = Request.SelectLanguage(CurrentItem);
+            if (language != null)
+            {
+                if (language.Url.StartsWith("http"))
+                    return Redirect(language.Url);
 
-				return ViewPage(language);
-			}
+                return ViewPage(language);
+            }
 
-			if(CurrentItem.RedirectUrl != CurrentItem.Url)
-				return Redirect(CurrentItem.RedirectUrl);
+            if(CurrentItem.RedirectUrl != CurrentItem.Url)
+                return Redirect(CurrentItem.RedirectUrl);
 
-			return View(CurrentItem);
-		}
+            return View(CurrentItem);
+        }
 
-	}
+    }
 }
