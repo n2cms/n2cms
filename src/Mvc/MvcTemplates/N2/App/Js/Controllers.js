@@ -116,6 +116,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			// the context will be reoloaded anyway due to PreviewUrl != url with edit=drag
 			return;
 
+		if (!findNodeRecursive($scope.Context.Content, ctx.path)) {
+			$scope.reloadChildren(getParentPath(ctx.path), function () {
+				$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);
+			});
+		}
+
 		//if (!$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/false, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true)) {
 		//	$scope.reloadChildren(getParentPath(ctx.path), function () {
 		//		$scope.select(ctx.path, ctx.versionIndex, /*keepFlags*/!ctx.force, /*forceContextRefresh*/false, /*preventReload*/false, /*disregardNodeUrl*/true);

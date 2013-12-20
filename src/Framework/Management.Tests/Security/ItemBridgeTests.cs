@@ -50,10 +50,10 @@ namespace N2.Tests.Security
 
             schemaCreator.Execute(/*script*/false, /*export*/true, /*justDrop*/false, sessionProvider.OpenSession.Connection, null);
 
-            var root = new N2.Management.Myself.RootBase();
-            persister.Save(root);
-            bridge = new ItemBridge(activator, persister, new SecurityManager(new FakeWebContextWrapper(), new EditSection()), new Host(new FakeWebContextWrapper(), new HostSection { RootID = root.ID }), new EditSection { Membership = new MembershipElement { UserType = typeof(UserOverride).AssemblyQualifiedName } });
-        }
+			var root = new N2.Management.Myself.RootBase();
+			persister.Save(root);
+			bridge = new ItemBridge(activator, persister, new SecurityManager(new FakeWebContextWrapper(), new EditSection()), new Host(new FakeWebContextWrapper(), new HostSection { RootID = root.ID }), new EditSection { Membership = new MembershipElement { UserType = typeof(UserOverride).AssemblyQualifiedName } });
+		}
 
         [TearDown]
         public override void TearDown()

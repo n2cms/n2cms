@@ -57,7 +57,7 @@ namespace N2.Tests.Edit
         [Test]
         public void VirtualNodes_AreAdded_ToTheirParent()
         {
-            adapter.NodeFactory.Register(new FunctionalNodeProvider("/hello/", (path) => new Items.NormalPage { Name = "World" }));
+            adapter.NodeFactory.Register(new FunctionalNodeProvider("/hello/", (path) => new Items.NormalPage { Name = "World", Parent = root }));
 
             var children = adapter.GetChildren(root, Interfaces.Managing);
             Assert.That(children.Count(), Is.EqualTo(1 + root.Children.FindPages().Count()));
@@ -67,7 +67,7 @@ namespace N2.Tests.Edit
         [Test]
         public void VirtualNodes_AreNotAdded_ToOtherNodes()
         {
-            adapter.NodeFactory.Register(new FunctionalNodeProvider("/hello/", (path) => new Items.NormalPage { Name = "World" }));
+            adapter.NodeFactory.Register(new FunctionalNodeProvider("/hello/", (path) => new Items.NormalPage { Name = "World", Parent = start }));
 
             var children = adapter.GetChildren(start, Interfaces.Managing);
             Assert.That(children.Count(), Is.EqualTo(start.Children.Count));
@@ -77,7 +77,7 @@ namespace N2.Tests.Edit
         [Test]
         public void VirtualNodes_CanBeAdded_ToADeeperLevel()
         {
-            adapter.NodeFactory.Register(new FunctionalNodeProvider("/start/hello/", (path) => new Items.NormalPage { Name = "World" }));
+            adapter.NodeFactory.Register(new FunctionalNodeProvider("/start/hello/", (path) => new Items.NormalPage { Name = "World", Parent = start }));
 
             var children = adapter.GetChildren(start, Interfaces.Managing);
             Assert.That(children.Count(), Is.EqualTo(1 + start.Children.Count));
