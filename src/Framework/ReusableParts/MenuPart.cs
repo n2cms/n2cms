@@ -48,7 +48,7 @@ namespace N2.Web
 		public abstract int MenuStartFromLevel { get; set; }
 		public abstract bool MenuShowTreeRoot { get; set; }
 		[Obsolete("Please use MenuShowSiblings instead")]
-		public abstract SiblingDisplayOptions MenuShowSibilings
+		public SiblingDisplayOptions MenuShowSibilings
 		{
 			get { return MenuShowSiblings; }
 			set { MenuShowSiblings = value; }
@@ -189,7 +189,7 @@ namespace N2.Web
 		public override bool MenuFlattenTopLevel
 		{
 			get { return GetDetail("ftl", false); }
-			set { SetDetail("ftl", value); }
+			set { SetDetail("ftl", value, false); }
 		}
 
 		[EditableCheckBox("Do not link top-level items", 470, ContainerName = NestingContainerName)]
@@ -203,28 +203,35 @@ namespace N2.Web
 		public override bool MenuShowCaretOnItemsWithChildren
 		{
 			get { return GetDetail("sc", false); }
-			set { SetDetail("sc", value); }
+			set { SetDetail("sc", value, false); }
 		}
 
 		[EditableCheckBox("Show current item even if item is hidden", 490, ContainerName = NestingContainerName)]
 		public override bool MenuShowCurrentItemIfHidden
 		{
 			get { return GetDetail("MenuShowCurrentItemIfHidden", false); }
-			set { SetDetail("MenuShowCurrentItemIfHidden", value); }
+			set { SetDetail("MenuShowCurrentItemIfHidden", value, false); }
 		}
 
 		[EditableCheckBox("Show items that aren't normally visible in navigation", 491, ContainerName = NestingContainerName)]
 		public override bool MenuShowInvisible
 		{
 			get { return GetDetail("ShowInvisible", false); }
-			set { SetDetail("ShowInvisible", value); }
+			set { SetDetail("ShowInvisible", value, false); }
 		}
 
 		[EditableCheckBox("Nest child UL elements inside the parent LI element", 495, ContainerName = NestingContainerName)]
 		public override bool MenuNestChildUls
 		{
 			get { return GetDetail("NestChildUls", false); }
-			set { SetDetail("NestChildUls", value); }
+			set { SetDetail("NestChildUls", value, false); }
+		}
+
+		[EditableText("Caret HTML", 500, HelpText = "Overrides the HTML code for the caret; by default, renders a Twitter Bootstrap caret.", Columns = 20, Rows = 4, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine, Required = false)]
+		public override string MenuCaretCustomHtml
+		{
+			get { return GetDetail("MenuCaretCustomHtml", string.Empty); }
+			set { SetDetail("MenuCaretCustomHtml", value, string.Empty); }
 		}
 
 		#endregion
