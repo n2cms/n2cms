@@ -264,7 +264,8 @@ namespace N2.Security
                     u.IsLogin = true;
             }
 
-            if (requiresUniqueEmail)
+			//access the property, not the field, in case overriden by a subclass
+            if (RequiresUniqueEmail) 
             {
                 if(!string.IsNullOrEmpty(GetUserNameByEmail(email))){
                     status = MembershipCreateStatus.DuplicateEmail;
