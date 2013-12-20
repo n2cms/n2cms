@@ -248,11 +248,16 @@ namespace N2.Web
 
 		private readonly List<ContentTreeNode> database;
 		private readonly MenuPart menuPart;
-		private int cId;
+		private readonly int cId;
 
 		public MenuPartRenderer(MenuPart menuPart)
 		{
-			this.menuPart = menuPart;
+            this.menuPart = menuPart;
+		    var page = Content.Current.Page;
+
+            // Need the current page ID regardless of cached database or not to render selected page correctly.
+		    cId = page == null ? 0 : page.ID; 
+
 			var cacheKey = String.Concat(N2.Context.CurrentPage.ID.ToString(), "+", menuPart.AncestralTrail);
 			var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
 			if (cacheData == null)
@@ -326,7 +331,7 @@ namespace N2.Web
 			var ci = Content.Current.Page;
 			if (ci == null)
 				return navTree;
-			cId = ci.ID; // need to cache this due to the following if clause:
+
 			if (ci.VersionOf != null && ci.VersionOf.Value != null)
 				ci = ci.VersionOf.Value; // get the published version
 
