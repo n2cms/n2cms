@@ -15,6 +15,9 @@ using N2.Web.Parts;
 
 namespace N2.Web
 {
+	/// <summary>
+	/// Base class for a MenuPart.
+	/// </summary>
 	public abstract class MenuPartBase : ContentItem
 	{
 		public const string CssContainerName = "cssContainer";
@@ -42,10 +45,44 @@ namespace N2.Web
 			None
 		}
 
+		/// <summary>
+		/// Gets or sets the menu title display mode.
+		/// </summary>
+		/// <value>
+		/// The menu title display mode.
+		/// </value>
 		public abstract TitleDisplayOptions MenuTitleDisplayMode { get; set; }
+
+		/// <summary>
+		/// Gets or sets the menu title heading level.
+		/// </summary>
+		/// <value>
+		/// The menu title heading level.
+		/// </value>
 		public abstract HeadingLevel MenuTitleHeadingLevel { get; set; }
+
+		/// <summary>
+		/// Gets or sets the number of child levels.
+		/// </summary>
+		/// <value>
+		/// The number of child levels.
+		/// </value>
 		public abstract int MenuNumChildLevels { get; set; }
+
+		/// <summary>
+		/// Gets or sets the menu starting level.
+		/// </summary>
+		/// <value>
+		/// The menu starting level.
+		/// </value>
 		public abstract int MenuStartFromLevel { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the root node of the tree should be shown (rendered).
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if the root node of the tree should be shown (rendered); otherwise, <c>false</c>.
+		/// </value>
 		public abstract bool MenuShowTreeRoot { get; set; }
 		[Obsolete("Please use MenuShowSiblings instead")]
 		public SiblingDisplayOptions MenuShowSibilings
