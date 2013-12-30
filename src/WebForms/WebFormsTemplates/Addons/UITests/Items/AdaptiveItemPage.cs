@@ -46,13 +46,13 @@ namespace N2.Addons.UITests.Items
         [EditableChildren("None items", "None", 1000)]
         public virtual ItemList NoneItems
         {
-            get { return GetChildren("NoneItems"); }
+            get { return GetChildren(new ZoneFilter("NoneItems")); }
         }
 
         [EditableChildren("None items", "Any", 1000)]
         public virtual IList<UITestContentCreator> UITestItemItems
         {
-            get { return new ItemList<UITestContentCreator>(GetChildren("Any")); }
+            get { return new ItemList<UITestContentCreator>(GetChildren(new ZoneFilter("Any"))); }
         }
     }
 }

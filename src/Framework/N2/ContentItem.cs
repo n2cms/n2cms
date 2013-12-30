@@ -760,14 +760,11 @@ namespace N2
         /// <param name="childZoneName">The name of the zone.</param>
         /// <returns>A list of items that have the specified zone name.</returns>
         /// <remarks>This method is used by N2 when when non-page items are added to a zone on a page and in edit mode when displaying which items are placed in a certain zone. Keep this in mind when overriding this method.</remarks>
-        [NonInterceptable]
+        [NonInterceptable, Obsolete("Use GetChildren(new ZoneFilter(\"childZoneName\"), new AccessFilter()) instead. This method will be removed in N2CMS 3.0.")]
         public virtual ItemList GetChildren(string childZoneName)
         {
-            return GetChildren(
-                new AllFilter(
-                    new ZoneFilter(childZoneName), 
-                    new AccessFilter()));
-        }
+            return GetChildren(new AllFilter(new ZoneFilter(childZoneName), new AccessFilter()));
+		}
 
         /// <summary>Gets children applying filters.</summary>
         /// <param name="filters">The filters to apply on the children.</param>
@@ -1004,13 +1001,7 @@ namespace N2
                 return true;
 
             // Iterate allowed roles to find an allowed role
-            foreach (Security.AuthorizedRole auth in AuthorizedRoles)
-            {
-                if (auth.IsAuthorized(user))
-                    return true;
-            }
-            return false;
-
+	        return AuthorizedRoles.Any(auth => auth.IsAuthorized(user));
         }
 
         #region ILink Members
