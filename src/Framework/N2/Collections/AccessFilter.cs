@@ -12,15 +12,10 @@ namespace N2.Collections
     public class AccessFilter : ItemFilter
     {
         /// <summary>Used to decouple from HttpContext during testing.</summary>
-        public static Func<IPrincipal> CurrentUser = delegate
-        {
-            return HttpContext.Current != null ? HttpContext.Current.User : null;
-        };
+        public static Func<IPrincipal> CurrentUser = () => HttpContext.Current != null ? HttpContext.Current.User : null;
+
         /// <summary>Used to decouple from N2.Context.Current during testing.</summary>
-        public static Func<ISecurityManager> CurrentSecurityManager = delegate
-        {
-            return Context.Current.SecurityManager;
-        };
+        public static Func<ISecurityManager> CurrentSecurityManager = () => Context.Current.SecurityManager;
 
         private IPrincipal user;
         private ISecurityManager securityManager;

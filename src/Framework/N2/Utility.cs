@@ -7,6 +7,7 @@ using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
+using N2.Collections;
 using N2.Engine;
 using N2.Integrity;
 using N2.Persistence.NH;
@@ -838,9 +839,9 @@ namespace N2
             return Regex.Replace(format, "{([\\w\\.]+)}", m => (string)Utility.Evaluate(values, m.Groups[1].Value), RegexOptions.Compiled);
         }
 
-        internal static List<object> FindEmpty(ContentItem item)
+        internal static List<INameable> FindEmpty(ContentItem item)
         {
-            var list = new List<object>();
+            var list = new List<INameable>();
             if (item.Parent != null && item.Parent.ID == 0)
                 list.Add(item);
             foreach (var detail in item.Details)
@@ -999,12 +1000,10 @@ namespace N2
 
             private object WriteDetailValue(Details.ContentDetail d)
             {
-                if (d.ValueTypeKey == ContentDetail.TypeKeys.LinkType)
-                    return d.LinkedItem.ID;
-                return d.Value;
+	            return d.ValueTypeKey == ContentDetail.TypeKeys.LinkType ? d.LinkedItem.ID : d.Value;
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+	        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
