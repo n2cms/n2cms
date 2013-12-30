@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
 using System.Globalization;
@@ -13,9 +14,9 @@ namespace N2.Web.UI.WebControls
 	[ValidationProperty("SelectedDate")]
 	public class DatePicker : Control, IEditableTextControl, INamingContainer
 	{
-		Label label = new Label();
-		TextBox datePicker = new TextBox();
-		TextBox timePicker = new TextBox();
+		readonly Label label = new Label();
+		readonly TextBox datePicker = new TextBox();
+		readonly TextBox timePicker = new TextBox();
 
 		protected override void CreateChildControls()
 		{
@@ -38,7 +39,6 @@ namespace N2.Web.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
-
 			label.Visible = label.Text.Length > 0;
 		}
 
@@ -53,15 +53,12 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				DateTime d;
-				if (DateTime.TryParse(Text, out d))
-					return d;
+				if (DateTime.TryParse(Text, out d)) return d;
 				return null;
 			}
 			set
 			{
-				Text = value != null 
-					? value.Value.ToString() 
-					: null;
+				Text = value != null  ? value.Value.ToString(CultureInfo.InvariantCulture) : null;
 			}
 		}
 
@@ -69,15 +66,17 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			EnsureChildControls();
-			RegiserClientScript();
+			RegisterClientScript();
 		}
 
-		private void RegiserClientScript()
+		private void RegisterClientScript()
 		{
+			// ReSharper disable InvokeAsExtensionMethod
 			Register.JQuery(Page);
 			Register.JQueryUi(Page);
 			Register.JQueryPlugins(Page);
-			string script = string.Format(DateScriptFormat, 
+			// ReSharper disable once FormatStringProblem
+			var script = string.Format(DateScriptFormat, 
 				/* {0} */ FirstDayOfWeek,
 				/* {1} */ DateFormat,
 				/* {2} */ FirstDate,
@@ -86,14 +85,15 @@ namespace N2.Web.UI.WebControls
 				/* {5} */ ToJsonArray(FormatInfo.AbbreviatedMonthNames),
 				/* {6} */ ToJsonArray(FormatInfo.MonthNames),
 				/* {7} */ Url.ResolveTokens("{ManagementUrl}/Resources/icons/calendar.png"),
-				/* {8} */ this.datePicker.ClientID
+				/* {8} */ datePicker.ClientID
 				);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
+			// ReSharper restore InvokeAsExtensionMethod
 		}
 
-		private string ToJsonArray(string[] strings)
+		private static string ToJsonArray(IEnumerable<string> strings)
 		{
-			return "[" + string.Join(",", strings.Select(s => "'" + s + "'").ToArray()) + "]";
+			return '[' + string.Join(",", strings.Select(s => '\'' + s + '\'').ToArray()) + ']';
 		}
 
 		protected const string DateScriptFormat = @"
@@ -113,11 +113,11 @@ jQuery('#{8}').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMin:{3}, 
 		{
 			get
 			{
-				CultureInfo culture = Thread.CurrentThread.CurrentCulture;
-				string datePattern = culture.DateTimeFormat.ShortDatePattern;
+				var culture = Thread.CurrentThread.CurrentCulture;
+				var datePattern = culture.DateTimeFormat.ShortDatePattern;
 				datePattern = Regex.Replace(datePattern, "M+", "mm");
 				datePattern = Regex.Replace(datePattern, "d+", "dd");
-				datePattern = Regex.Replace(datePattern, "y+", delegate(Match m) { return m.Value.Length < 3 ? "y" : "yy"; });
+				datePattern = Regex.Replace(datePattern, "y+", m => m.Value.Length < 3 ? "y" : "yy");
 				return datePattern;
 			}
 		}
@@ -146,14 +146,10 @@ jQuery('#{8}').n2datepicker({{ firstDay:{0}, dateFormat:'{1}', dayNamesMin:{3}, 
 				if(value != null)
 				{
 					DateTime parsed;
-					if (DateTime.TryParse(value, out parsed))
-					{
-						DatePickerBox.Text = parsed.ToShortDateString();
-						if (parsed.Second == 0)
-							TimePickerBox.Text = parsed.ToShortTimeString();
-						else
-							TimePickerBox.Text = parsed.ToLongTimeString();
-					}
+					if (!DateTime.TryParse(value, out parsed)) 
+						return;
+					DatePickerBox.Text = parsed.ToShortDateString();
+					TimePickerBox.Text = parsed.Second == 0 ? parsed.ToShortTimeString() : parsed.ToLongTimeString();
 				}
 				else
 				{
