@@ -7,7 +7,7 @@
 		<HeaderTemplate><dl></HeaderTemplate>
 		<ItemTemplate>
 			<dt>
-				<asp:HyperLink CssClass="new" ID="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>">
+				<asp:HyperLink CssClass="new" ID="hlNew" meta:resourceKey="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>">
 					<b class="n2-icon-plus-sign"></b>
 					<%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %>
 				</asp:HyperLink>
@@ -17,17 +17,17 @@
 				<ItemTemplate>
 					<div class="edit">
 						<edit:ItemLink ToolTip="<%# ((ContentItem)Container.DataItem).GetContentType().Name %>" DataSource="<%# Container.DataItem %>" runat="server" InterfaceUrl="Edit.aspx" />
-						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
+						<asp:ImageButton meta:resourceKey="MoveItemDown" runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
 							ToolTip="Move down"
 							ImageUrl="../Resources/icons/bullet_arrow_down.png" OnClick="MoveItemDown" />
-						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>"
+						<asp:ImageButton meta:resourceKey="MoveItemUp" runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>"
 							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
 							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
 							ToolTip="Move up"
 							ImageUrl="../Resources/icons/bullet_arrow_up.png" OnClick="MoveItemUp"/>
-						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" ToolTip="Move to trash">
+						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" meta:resourceKey="hlDelete" ToolTip="Move to trash">
 							<b class="n2-icon-trash"></b>
 						</asp:HyperLink>
 					</div>
