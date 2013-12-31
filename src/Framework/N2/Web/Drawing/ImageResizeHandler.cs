@@ -1,44 +1,44 @@
-﻿using System;
+using System;
 using System.Web;
 using N2.Edit.FileSystem;
 
 namespace N2.Web.Drawing
 {
-	/// <summary>
-	/// Resizes the requested image to the requested size.
-	/// </summary>
-	public class ImageResizeHandler : IHttpHandler
-	{
-		public void ProcessRequest(HttpContext context)
-		{
-			//UrlDecode is neccessary to compensate encoding in ImageAdapter
-			string imageUrl = HttpUtility.UrlDecode(context.Request["img"]);
-			string w = context.Request["w"];
-			string h = context.Request["h"];
-			string m = context.Request["m"];
+    /// <summary>
+    /// Resizes the requested image to the requested size.
+    /// </summary>
+    public class ImageResizeHandler : IHttpHandler
+    {
+        public void ProcessRequest(HttpContext context)
+        {
+            //UrlDecode is neccessary to compensate encoding in ImageAdapter
+            string imageUrl = HttpUtility.UrlDecode(context.Request["img"]);
+            string w = context.Request["w"];
+            string h = context.Request["h"];
+            string m = context.Request["m"];
 
-			double width = 0;
-			double.TryParse(w, out width);
+            double width = 0;
+            double.TryParse(w, out width);
 
-			double height = 0;
-			double.TryParse(h, out height);
+            double height = 0;
+            double.TryParse(h, out height);
 
-			ImageResizeMode mode;
-			switch (m)
-			{
+            ImageResizeMode mode;
+            switch (m)
+            {
                 case "FitCenterOnTransparent":
                     mode = ImageResizeMode.FitCenterOnTransparent;
                     break;
-				case "Fill":
-					mode = ImageResizeMode.Fill;
-					break;
-				case "Stretch":
-					mode = ImageResizeMode.Stretch;
-					break;
-				default:
-					mode = ImageResizeMode.Fit;
-					break;
-			}
+                case "Fill":
+                    mode = ImageResizeMode.Fill;
+                    break;
+                case "Stretch":
+                    mode = ImageResizeMode.Stretch;
+                    break;
+                default:
+                    mode = ImageResizeMode.Fit;
+                    break;
+            }
 
             if (ImagesUtility.IsImagePath(imageUrl) == true)
             {
@@ -69,12 +69,12 @@ namespace N2.Web.Drawing
                 }
             }
 
-			
-		}
+            
+        }
 
-		public bool IsReusable
-		{
-			get { return true; }
-		}
-	}
+        public bool IsReusable
+        {
+            get { return true; }
+        }
+    }
 }

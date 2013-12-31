@@ -14,46 +14,46 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System;
-	using System.Reflection;
-	using System.Reflection.Emit;
+    using System;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
-	using Castle.DynamicProxy.Tokens;
+    using Castle.DynamicProxy.Tokens;
 
-	public class MethodTokenExpression : Expression
-	{
-		private readonly MethodInfo method;
+    public class MethodTokenExpression : Expression
+    {
+        private readonly MethodInfo method;
 #if !MONO
-		private readonly Type declaringType;
+        private readonly Type declaringType;
 #endif
 
-		public MethodTokenExpression(MethodInfo method)
-		{
-			this.method = method;
+        public MethodTokenExpression(MethodInfo method)
+        {
+            this.method = method;
 #if !MONO
-			declaringType = method.DeclaringType;
+            declaringType = method.DeclaringType;
 #endif
-		}
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			gen.Emit(OpCodes.Ldtoken, method);
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            gen.Emit(OpCodes.Ldtoken, method);
 #if !MONO
-			if (declaringType == null)
-			{
-				throw new GeneratorException("declaringType can't be null for this situation");
-			}
-			gen.Emit(OpCodes.Ldtoken, declaringType);
-#endif
-
-			var minfo = MethodBaseMethods.GetMethodFromHandle1;
-
-#if !MONO
-			minfo = MethodBaseMethods.GetMethodFromHandle2;
+            if (declaringType == null)
+            {
+                throw new GeneratorException("declaringType can't be null for this situation");
+            }
+            gen.Emit(OpCodes.Ldtoken, declaringType);
 #endif
 
-			gen.Emit(OpCodes.Call, minfo);
-			gen.Emit(OpCodes.Castclass, typeof(MethodInfo));
-		}
-	}
+            var minfo = MethodBaseMethods.GetMethodFromHandle1;
+
+#if !MONO
+            minfo = MethodBaseMethods.GetMethodFromHandle2;
+#endif
+
+            gen.Emit(OpCodes.Call, minfo);
+            gen.Emit(OpCodes.Castclass, typeof(MethodInfo));
+        }
+    }
 }

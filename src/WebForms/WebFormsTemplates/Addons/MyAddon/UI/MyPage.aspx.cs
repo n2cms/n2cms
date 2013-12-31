@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Resources;
 using N2.Templates.Web.UI;
 

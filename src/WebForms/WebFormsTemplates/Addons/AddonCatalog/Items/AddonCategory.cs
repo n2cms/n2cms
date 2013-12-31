@@ -1,4 +1,4 @@
-﻿using N2.Templates.Items;
+using N2.Templates.Items;
 
 namespace N2.Addons.AddonCatalog.Items
 {

@@ -16,7 +16,7 @@
 		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
-			<dependency id="mongocsharpdriver" version="1.8.1" />
+			<dependency id="mongocsharpdriver" version="1.8.2" />
 		</dependencies>
 	</metadata>
 </package>

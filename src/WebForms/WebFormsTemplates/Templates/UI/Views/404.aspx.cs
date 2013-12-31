@@ -15,7 +15,7 @@ namespace N2.Templates.UI.Views
                 {
                     var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
                     wc.CurrentPage = page;
-					Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).GetRewrittenUrl()).AppendQuery("postback", page.Url));
+                    Server.Execute(Url.Parse(page.FindPath(PathData.DefaultAction).GetRewrittenUrl()).AppendQuery("postback", page.Url));
                     Response.Status = "404 Not Found";
                     Response.End();
                     return;

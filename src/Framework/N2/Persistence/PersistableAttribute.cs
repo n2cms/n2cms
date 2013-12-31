@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using N2.Persistence.Proxying;
 using NHibernate.Cfg.MappingSchema;
@@ -21,95 +21,95 @@ namespace N2.Persistence
     /// }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-	public class PersistableAttribute : Attribute, IInterceptableProperty, IUniquelyNamed, IPersistableProperty
+    public class PersistableAttribute : Attribute, IInterceptableProperty, IUniquelyNamed, IPersistableProperty
     {
-		public PersistableAttribute()
-		{
-			PersistAs = PropertyPersistenceLocation.Column;
-		}
+        public PersistableAttribute()
+        {
+            PersistAs = PropertyPersistenceLocation.Column;
+        }
 
         /// <summary>The length of this column (usually for string properties)</summary>
-		public int Length { get; set; }
+        public int Length { get; set; }
 
-		/// <summary>An alternative name of the column (optional).</summary>
-		public string Column { get; set; }
+        /// <summary>An alternative name of the column (optional).</summary>
+        public string Column { get; set; }
 
-		/// <summary>Where to store this property (default is column).</summary>
-		public PropertyPersistenceLocation PersistAs { get; set; }
+        /// <summary>Where to store this property (default is column).</summary>
+        public PropertyPersistenceLocation PersistAs { get; set; }
 
-		public object GetPropertyMapping(PropertyInfo info, Func<string, string> formatter)
-		{
-			string columnName = Column ?? info.Name;
-			string length = Length > 0 ? Length.ToString() : "{StringLength}";
-			bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
-			var propertyType = isNullable
-				? info.PropertyType.GetGenericArguments()[0]
-				: info.PropertyType;
-			string typeName = GetTypeName(propertyType);
+        public object GetPropertyMapping(PropertyInfo info, Func<string, string> formatter)
+        {
+            string columnName = Column ?? info.Name;
+            string length = Length > 0 ? Length.ToString() : "{StringLength}";
+            bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
+            var propertyType = isNullable
+                ? info.PropertyType.GetGenericArguments()[0]
+                : info.PropertyType;
+            string typeName = GetTypeName(propertyType);
 
-			if (typeof(ContentItem).IsAssignableFrom(propertyType))
-				return new HbmManyToOne { name = info.Name, column = formatter(columnName), @class = typeName };
+            if (typeof(ContentItem).IsAssignableFrom(propertyType))
+                return new HbmManyToOne { name = info.Name, column = formatter(columnName), @class = typeName };
 
-			return new HbmProperty { name = info.Name, column = formatter(columnName), type = new HbmType { name = typeName }, length = formatter(length) };
-		}
+            return new HbmProperty { name = info.Name, column = formatter(columnName), type = new HbmType { name = typeName }, length = formatter(length) };
+        }
 
         /// <summary>Generates the mapping xml for this property.</summary>
         /// <param name="info">The property the attribute was added to.</param>
         /// <returns>An hbm xml snippet.</returns>
-		[Obsolete("Use GetPropertyMapping", true)]
-		public virtual string GenerateMapping(PropertyInfo info)
+        [Obsolete("Use GetPropertyMapping", true)]
+        public virtual string GenerateMapping(PropertyInfo info)
         {
             const string propertyFormat = "<property name=\"{0}\" column=\"{1}\" type=\"{2}\" length=\"{3}\" />";
-			const string relationFormat = "<many-to-one name=\"{0}\" column=\"{1}\" class=\"{2}\" not-null=\"false\" />";
+            const string relationFormat = "<many-to-one name=\"{0}\" column=\"{1}\" class=\"{2}\" not-null=\"false\" />";
 
-			string columnName = Column ?? info.Name;
-			string length = Length > 0 ? Length.ToString() : "{StringLength}";
+            string columnName = Column ?? info.Name;
+            string length = Length > 0 ? Length.ToString() : "{StringLength}";
             bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
-			var propertyType = isNullable
+            var propertyType = isNullable
                 ? info.PropertyType.GetGenericArguments()[0]
                 : info.PropertyType;
-			string typeName = GetTypeName(propertyType);
-			string format = propertyFormat;
-			if (typeof(ContentItem).IsAssignableFrom(propertyType))
-				format = relationFormat;
-			return string.Format(format, info.Name, columnName, typeName, length);
+            string typeName = GetTypeName(propertyType);
+            string format = propertyFormat;
+            if (typeof(ContentItem).IsAssignableFrom(propertyType))
+                format = relationFormat;
+            return string.Format(format, info.Name, columnName, typeName, length);
         }
 
-		private static string GetTypeName(Type propertyType)
-		{
-			if(propertyType == typeof(string))
-				return "StringClob";
-			else if(propertyType == typeof(bool))
-				return "Boolean";
-			else if(propertyType == typeof(int))
-				return "Int32";
-			else if(propertyType == typeof(double))
-				return "Double";
-			else if(propertyType == typeof(DateTime))
-				return "DateTime";
-			else
-				return propertyType.FullName + ", " + propertyType.Assembly.FullName.Split(',')[0];
-		}
+        private static string GetTypeName(Type propertyType)
+        {
+            if(propertyType == typeof(string))
+                return "StringClob";
+            else if(propertyType == typeof(bool))
+                return "Boolean";
+            else if(propertyType == typeof(int))
+                return "Int32";
+            else if(propertyType == typeof(double))
+                return "Double";
+            else if(propertyType == typeof(DateTime))
+                return "DateTime";
+            else
+                return propertyType.FullName + ", " + propertyType.Assembly.FullName.Split(',')[0];
+        }
 
-		#region IInterceptableProperty Members
+        #region IInterceptableProperty Members
 
-		object IInterceptableProperty.DefaultValue
-		{
-			get { return null; }
-		}
+        object IInterceptableProperty.DefaultValue
+        {
+            get { return null; }
+        }
 
-		#endregion
+        #endregion
 
-		#region IUniquelyNamed Members
+        #region IUniquelyNamed Members
 
-		string IUniquelyNamed.Name { get; set; }
-		 
-		#endregion
+        string IUniquelyNamed.Name { get; set; }
+         
+        #endregion
 
-		#region INameable Members
+        #region INameable Members
 
-		string INameable.Name { get { return ((IUniquelyNamed)this).Name; } }
+        string INameable.Name { get { return ((IUniquelyNamed)this).Name; } }
 
-		#endregion
-	}
+        #endregion
+    }
 }

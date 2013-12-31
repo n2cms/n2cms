@@ -8,7 +8,7 @@ using ICSharpCode.SharpZipLib.Zip;
 namespace N2.Edit.FileSystem
 {
     public partial class Export : EditPage
-	{
+    {
         private IFileSystem fileSystem;
         private string rootPath;
 
@@ -23,7 +23,7 @@ namespace N2.Edit.FileSystem
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
-		{
+        {
             var zipFileName = System.IO.Path.GetFileName(rootPath) + ".zip";
 
             var directory = Directory.New(fileSystem.GetDirectory(rootPath), null, Engine.Resolve<IDependencyInjector>());
@@ -77,7 +77,7 @@ namespace N2.Edit.FileSystem
 
             mvwImport.ActiveViewIndex = 1;
 
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
         }
-	}
+    }
 }

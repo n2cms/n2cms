@@ -14,17 +14,17 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Reflection;
+    using System;
+    using System.Reflection;
 
-	public interface IMemberEmitter
-	{
-		MemberInfo Member { get; }
+    public interface IMemberEmitter
+    {
+        MemberInfo Member { get; }
 
-		Type ReturnType { get; }
+        Type ReturnType { get; }
 
-		void EnsureValidCodeBlock();
+        void EnsureValidCodeBlock();
 
-		void Generate();
-	}
+        void Generate();
+    }
 }

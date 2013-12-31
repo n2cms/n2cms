@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -13,7 +13,7 @@ namespace N2.Addons.Wiki.Renderers
         public Control AddTo(Control container, ViewContext context)
         {
             string text = context.Fragment.ToString().TrimStart('\'');
-			int quotesCount = context.Fragment.ToString().Length - text.Length;
+            int quotesCount = context.Fragment.ToString().Length - text.Length;
             text = text.TrimEnd('\'');
             LiteralControl lc = new LiteralControl(text);
             Control c;

@@ -1,12 +1,13 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
+﻿<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
+<%@ Import Namespace="N2.Edit" %>
 <%@ Import Namespace="N2.Security"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
 		<n2:OptionsMenu id="om" runat="server">
-				<asp:LinkButton ID="btnSave" runat="server" CssClass="command" OnCommand="btnSave_Command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
-				<asp:LinkButton ID="btnSaveRecursive" runat="server" CssClass="command" OnCommand="btnSaveRecursive_Command" meta:resourcekey="btnSaveRecursiveResource1">Save whole branch</asp:LinkButton>
+        <asp:LinkButton ID="btnSave" runat="server" CssClass="command save primary-action" data-icon-class="n2-icon-save" OnCommand="btnSave_Command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
+        <asp:LinkButton ID="btnSaveRecursive" runat="server" CssClass="command" data-icon-class="n2-icon-save" OnCommand="btnSaveRecursive_Command" meta:resourcekey="btnSaveRecursiveResource1">Save whole branch</asp:LinkButton>
 		</n2:OptionsMenu>
 		<edit:CancelLink ID="hlCancel" runat="server" meta:resourcekey="hlCancelResource1">Cancel</edit:CancelLink>
 </asp:Content>
@@ -14,7 +15,7 @@
 	<edit:PersistentOnlyPanel ID="popNotSupported" runat="server" meta:resourceKey="popNotSupported">
 	<edit:PermissionPanel id="ppPermitted" runat="server" meta:resourceKey="ppPermitted">
 
-		<asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
+    <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="alert alert-margin" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
 		<style>
 		.defaults td { border-bottom:solid 1px #ccc;}
 		.permissionsHeader { width:130px; }
@@ -22,32 +23,32 @@
 		.AuthorizedFalse { opacity:.33; }
 		</style>
 		<script type="text/javascript">
-			$(document).ready(function() {
-				$.fn.disable = function() {
-					return this.attr("disabled", "disabled");
-				};
-				$.fn.enable = function() {
-					return this.removeAttr("disabled");
-				};
-				var updateColumn = function() {
-					var groupName = this.parentNode.className.split(' ')[1];
-					var $grouped = $("." + groupName + " input").not(this);
-					if (this.checked) {
-						$grouped.parent().andSelf().disable();
-					} else {
-						$grouped.parent().andSelf().enable();
-					}
-					var $unauthorized = $grouped.parent().filter(".AuthorizedFalse").children("input").andSelf();
-					$unauthorized.disable();
-					return $grouped;
-				};
-				$(".overrides .cb input").filter(":checked").addClass("defaultChecked");
-				$(".defaults .cb input").click(function() {
-					var $grouped = updateColumn.call(this);
-					$grouped.filter(".defaultChecked").attr("checked", true);
-					$grouped.filter(":not(.defaultChecked)").removeAttr("checked");
-				}).each(updateColumn);
-			});
+    	$(document).ready(function() {
+    		$.fn.disable = function() {
+    			return this.attr("disabled", "disabled");
+    		};
+    		$.fn.enable = function() {
+    			return this.removeAttr("disabled");
+    		};
+    		var updateColumn = function() {
+    			var groupName = this.parentNode.className.split(' ')[1];
+    			var $grouped = $("." + groupName + " input").not(this);
+    			if (this.checked) {
+    				$grouped.parent().andSelf().disable();
+    			} else {
+    				$grouped.parent().andSelf().enable();
+    			}
+    			var $unauthorized = $grouped.parent().filter(".AuthorizedFalse").children("input").andSelf();
+    			$unauthorized.disable();
+    			return $grouped;
+    		};
+    		$(".overrides .cb input").filter(":checked").addClass("defaultChecked");
+    		$(".defaults .cb input").click(function() {
+    			var $grouped = updateColumn.call(this);
+    			$grouped.filter(".defaultChecked").attr("checked", true);
+    			$grouped.filter(":not(.defaultChecked)").removeAttr("checked");
+    		}).each(updateColumn);
+    	});
 		</script>
 <div class="tabPanel">
 		<table>

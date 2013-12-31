@@ -6,32 +6,32 @@ using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Models.Parts.Questions
 {
-	[WithEditableTitle("Question", 10, Focus = false)]
-	[RestrictParents(typeof (ISurvey))]
-	[AllowedZones("Questions", "")]
-	public abstract class Question : PartBase, IQuestion
-	{
-		#region IQuestion Members
+    [WithEditableTitle("Question", 10, Focus = false)]
+    [RestrictParents(typeof (ISurvey))]
+    [AllowedZones("Questions", "")]
+    public abstract class Question : PartBase, IQuestion
+    {
+        #region IQuestion Members
 
-		public abstract MvcHtmlString CreateHtmlElement();
+        public abstract MvcHtmlString CreateHtmlElement();
 
-		public virtual string ElementID { get { return "q" + ID; } }
+        public virtual string ElementID { get { return "q" + ID; } }
 
-		public virtual string QuestionText
-		{
-			get { return Title; }
-		}
+        public virtual string QuestionText
+        {
+            get { return Title; }
+        }
 
-		public virtual void AppendAnswer(AnswerContext context, string postedValue)
-		{
-			context.AppendAnswer(QuestionText, GetAnswerText(postedValue));
-		}
+        public virtual void AppendAnswer(AnswerContext context, string postedValue)
+        {
+            context.AppendAnswer(QuestionText, GetAnswerText(postedValue));
+        }
 
-		#endregion
+        #endregion
 
-		public virtual string GetAnswerText(string value)
-		{
-			return value;
-		}
-	}
+        public virtual string GetAnswerText(string value)
+        {
+            return value;
+        }
+    }
 }

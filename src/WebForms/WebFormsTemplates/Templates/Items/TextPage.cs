@@ -10,17 +10,17 @@ namespace N2.Templates.Items
     /// A page containing textual information.
     /// </summary>
     [PageDefinition("Text Page", 
-		Description = "A simple text page. It displays a vertical menu, the content and provides a sidebar column", 
-		SortOrder = 20)]
-	[ConventionTemplate("Text")]
-	[Template("Wide", "~/Templates/UI/Views/WideText.aspx", 
-		SelectableAsDefault = true,
-		TemplateTitle = "Wide Text Page",
-		TemplateDescription = "A simple Text page without sidebar column")]
-	[WithEditableTemplateSelection(ContainerName = Tabs.Advanced)]
+        Description = "A simple text page. It displays a vertical menu, the content and provides a sidebar column", 
+        SortOrder = 20)]
+    [ConventionTemplate("Text")]
+    [Template("Wide", "~/Templates/UI/Views/WideText.aspx", 
+        SelectableAsDefault = true,
+        TemplateTitle = "Wide Text Page",
+        TemplateDescription = "A simple Text page without sidebar column")]
+    [WithEditableTemplateSelection(ContainerName = Tabs.Advanced)]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
-		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+        [FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string Image
         {
             get { return (string)(GetDetail("Image") ?? string.Empty); }
@@ -29,10 +29,10 @@ namespace N2.Templates.Items
 
         public string Summary
         {
-			get { return Utility.ExtractFirstSentences(Text, 250); }
+            get { return Utility.ExtractFirstSentences(Text, 250); }
         }
 
-		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public virtual bool Syndicate { get; set; }
+        [Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
+        public virtual bool Syndicate { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,18 +17,18 @@ namespace N2.Persistence.Search
         IPersister persister;
         IErrorNotifier errors;
         IWorker worker;
-		Logger<AsyncIndexer> logger;
-		public int maxErrorsPerWorkItem = 3;
+        Logger<AsyncIndexer> logger;
+        public int maxErrorsPerWorkItem = 3;
 
-		protected class Work
-		{
-			public string Name { get; set; }
-			public Action Action { get; set; }
-			public int ErrorCount { get; set; }
-		}
+        protected class Work
+        {
+            public string Name { get; set; }
+            public Action Action { get; set; }
+            public int ErrorCount { get; set; }
+        }
 
         Queue<Work> workQueue = new Queue<Work>();
-        DateTime lastAttempt = DateTime.Now;
+        DateTime lastAttempt = N2.Utility.CurrentTime();
         bool async;
         bool handleErrors;
         bool isWorking;
@@ -54,188 +54,188 @@ namespace N2.Persistence.Search
                 WrapActionInErrorHandling(work);
 
             if (!async)
-			{
+            {
                 work.Action();
-				return;
-			}
+                return;
+            }
 
-			lock (workQueue)
-			{
-				logger.Debug("Enqueuing " + work.Name + ", to existing: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
-				workQueue.Enqueue(work);
-			}
+            lock (workQueue)
+            {
+                logger.Debug("Enqueuing " + work.Name + ", to existing: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
+                workQueue.Enqueue(work);
+            }
 
-			ExecuteEnqueuedActionsAsync();
+            ExecuteEnqueuedActionsAsync();
         }
 
-		private void ExecuteEnqueuedActionsAsync()
-		{
-			lock (workQueue)
-			{
-				// only 1 worker
-				if (isWorking)
-					return;
-				isWorking = true;
-				
-				worker.DoWork(() =>
-				{
-					try
-					{
-						while (true)
-						{
-							// we want a new session on the thread after each action avoid creating big NH sessions
-							using (persister)
-							{
-								// work while there is remaining work
-								Work work = null;
-								lock (workQueue)
-								{
-									if (workQueue.Count <= 0)
-										// all done, we can end
-										return;
+        private void ExecuteEnqueuedActionsAsync()
+        {
+            lock (workQueue)
+            {
+                // only 1 worker
+                if (isWorking)
+                    return;
+                isWorking = true;
+                
+                worker.DoWork(() =>
+                {
+                    try
+                    {
+                        while (true)
+                        {
+                            // we want a new session on the thread after each action avoid creating big NH sessions
+                            using (persister)
+                            {
+                                // work while there is remaining work
+                                Work work = null;
+                                lock (workQueue)
+                                {
+                                    if (workQueue.Count <= 0)
+                                        // all done, we can end
+                                        return;
 
-									// next thing to do
-									work = workQueue.Dequeue();
-									logger.Debug("Dequeuing " + work.Name + ", remaining: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
-								}
+                                    // next thing to do
+                                    work = workQueue.Dequeue();
+                                    logger.Debug("Dequeuing " + work.Name + ", remaining: " + workQueue.Count + " on thread " + Thread.CurrentThread.ManagedThreadId);
+                                }
 
-								logger.Debug("Executing " + work.Name);
-								work.Action();
-							}
-						}
-					}
-					finally
-					{
-						lock (workQueue)
-						{
-							// allow new worker to be spawned
-							isWorking = false;
-							currentWork = "";
-						}
-					}
-				});
-			}
-		}
+                                logger.Debug("Executing " + work.Name);
+                                work.Action();
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        lock (workQueue)
+                        {
+                            // allow new worker to be spawned
+                            isWorking = false;
+                            currentWork = "";
+                        }
+                    }
+                });
+            }
+        }
 
         private void WrapActionInErrorHandling(Work action)
         {
             var original = action.Action;
-			action.Action = () =>
-			{
-				try
-				{
-					original();
-				}
-				catch (ThreadAbortException ex)
-				{
-					AppendError(action, ex);
-				}
-				catch (SecurityException ex)
-				{
-					AppendError(action, ex);
-				}
-				catch (Exception ex)
-				{
-					AppendError(action, ex);
-				}
+            action.Action = () =>
+            {
+                try
+                {
+                    original();
+                }
+                catch (ThreadAbortException ex)
+                {
+                    AppendError(action, ex);
+                }
+                catch (SecurityException ex)
+                {
+                    AppendError(action, ex);
+                }
+                catch (Exception ex)
+                {
+                    AppendError(action, ex);
+                }
 
-				if (async)
-					RetryFailedActions();
-				else if (action.ErrorCount < maxErrorsPerWorkItem)
-					original();
-			};
+                if (async)
+                    RetryFailedActions();
+                else if (action.ErrorCount < maxErrorsPerWorkItem)
+                    original();
+            };
         }
 
 
         private void AppendError(Work work, Exception ex)
         {
-			logger.Error("Error while processing " + work.Name);
-			errors.Notify(ex);
+            logger.Error("Error while processing " + work.Name);
+            errors.Notify(ex);
             lock (workQueue)
             {
-				work.ErrorCount++;
-				if (work.ErrorCount < maxErrorsPerWorkItem)
-					workQueue.Enqueue(work);
-				else
-					logger.WarnFormat("Maximum numer of errors per work item ({0}) reached, dropping work '{1}'", work.ErrorCount, work.Name);
+                work.ErrorCount++;
+                if (work.ErrorCount < maxErrorsPerWorkItem)
+                    workQueue.Enqueue(work);
+                else
+                    logger.WarnFormat("Maximum numer of errors per work item ({0}) reached, dropping work '{1}'", work.ErrorCount, work.Name);
             }
         }
 
         private void RetryFailedActions()
         {
-			lock (workQueue)
-			{
-				if (workQueue.Count == 0)
-					return;
+            lock (workQueue)
+            {
+                if (workQueue.Count == 0)
+                    return;
 
-				if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
-				{
+                if (Utility.CurrentTime().Subtract(lastAttempt) >= RetryInterval)
+                {
                     indexer.Unlock();
-                    lastAttempt = DateTime.Now;
-					ExecuteEnqueuedActionsAsync();
-				}
-			}
-		}
+                    lastAttempt = N2.Utility.CurrentTime();
+                    ExecuteEnqueuedActionsAsync();
+                }
+            }
+        }
 
-		public virtual void ReindexDescendants(int rootID, bool clearBeforeReindex)
+        public virtual void ReindexDescendants(int rootID, bool clearBeforeReindex)
         {
-			Execute(new Work
-			{
-				Name = "Reindex descendants of #" + rootID,
-				Action = () =>
-				{
-					if (clearBeforeReindex)
-						indexer.Delete(rootID);
+            Execute(new Work
+            {
+                Name = "Reindex descendants of #" + rootID,
+                Action = () =>
+                {
+                    if (clearBeforeReindex)
+                        indexer.Delete(rootID);
 
-					Reindex(rootID, true);
-				}
-			});
+                    Reindex(rootID, true);
+                }
+            });
         }
 
         public virtual void Reindex(int itemID, bool affectsChildren)
         {
-			var itemX = persister.Get(itemID);
-			if (itemX == null)
-				return;
+            var itemX = persister.Get(itemID);
+            if (itemX == null)
+                return;
 
-			string title = itemX.Title;
-			var document = indexer.CreateDocument(itemX);
+            string title = itemX.Title;
+            var document = indexer.CreateDocument(itemX);
 
-			Execute(new Work
-				{
-					Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
-					Action = () =>
-					{
-						// update the index
-						currentWork = "Indexing " + title + " #" + itemID;
-						indexer.Update(document);
+            Execute(new Work
+                {
+                    Name = "Reindex #" + itemID + " (affectsChildren = " + affectsChildren + ")",
+                    Action = () =>
+                    {
+                        // update the index
+                        currentWork = "Indexing " + title + " #" + itemID;
+                        indexer.Update(document);
 
-						if (affectsChildren)
-						{
-							var reindexIds = persister.Repository
-								.Select(Parameter.Equal("Parent.ID", itemID), "ID")
-								.Select(d => d["ID"]).Cast<int>().ToList();
+                        if (affectsChildren)
+                        {
+                            var reindexIds = persister.Repository
+                                .Select(Parameter.Equal("Parent.ID", itemID), "ID")
+                                .Select(d => d["ID"]).Cast<int>().ToList();
 
-							foreach (var childId in reindexIds)
-							{
-								Reindex(childId, affectsChildren);
-							}
-						}
-					}
-				});
+                            foreach (var childId in reindexIds)
+                            {
+                                Reindex(childId, affectsChildren);
+                            }
+                        }
+                    }
+                });
         }
 
         public virtual void Delete(int itemID)
         {
-			Execute(new Work
-				{
-					Name = "Delete #" + itemID,
-					Action = () =>
-					{
-						currentWork = "Deleting #" + itemID;
-						indexer.Delete(itemID);
-					}
-				});
+            Execute(new Work
+                {
+                    Name = "Delete #" + itemID,
+                    Action = () =>
+                    {
+                        currentWork = "Deleting #" + itemID;
+                        indexer.Delete(itemID);
+                    }
+                });
         }
 
         public IndexStatus GetCurrentStatus()
@@ -244,8 +244,8 @@ namespace N2.Persistence.Search
             {
                 CurrentWork = currentWork,
                 WorkerCount = isWorking ? 1 : 0,
-				QueueSize = workQueue.Count
+                QueueSize = workQueue.Count
             };
         }
-	}
+    }
 }

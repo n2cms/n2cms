@@ -12,7 +12,7 @@
 		<asp:TextBox ID="txtMessage" runat="server" placeholder="Message" />
 		<asp:Button Text="Send" runat="server" OnCommand="OnSendCommand" />
 
-		<asp:GridView ID="gvMessages" runat="server" CssClass="gv">
+		<asp:GridView ID="gvMessages" runat="server" CssClass="table table-striped table-hover table-condensed" BorderWidth="0">
 		</asp:GridView>
 	</fieldset>
 

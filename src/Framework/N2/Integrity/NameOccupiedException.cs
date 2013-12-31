@@ -1,9 +1,9 @@
 namespace N2.Integrity
 {
     /// <summary>
-	/// An exception that is thrown when an item is saved and another sibling 
-	/// (item with same parent) page already has the same name.
-	/// </summary>
+    /// An exception that is thrown when an item is saved and another sibling 
+    /// (item with same parent) page already has the same name.
+    /// </summary>
     public class NameOccupiedException : N2Exception
     {
         private ContentItem sourceItem;

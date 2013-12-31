@@ -1,0 +1,10 @@
+﻿<b class="submenu-toggle n2-icon-caret-right" ng-show="child.Children.length"></b>
+
+<a page-action-link="child"></a>
+
+<ul class="dropdown-menu sub-menu" ng-show="child.Children.length">
+	<li ng-repeat="grandchild in child.Children"
+		ng-class="{ divider: grandchild.Current.Divider, selected: isFlagged(grandchild.Current.SelectedBy) }">
+		<a page-action-link="grandchild"></a>
+	</li>
+</ul>

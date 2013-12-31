@@ -2,9 +2,9 @@ using System;
 
 namespace N2.Web.UI.WebControls
 {
-	/// <summary>
-	/// Display state for the control panel.
-	/// </summary>
+    /// <summary>
+    /// Display state for the control panel.
+    /// </summary>
     [Flags]
     public enum ControlPanelState
     {
@@ -20,7 +20,7 @@ namespace N2.Web.UI.WebControls
         DragDrop = 8,
         /// <summary>The control panel is displayed while previewing an item version.</summary>
         Previewing = 16,
-		///// <summary>The control panel is displayed while manipulating a draft</summary>
-		//Draft = 32,
+        ///// <summary>The control panel is displayed while manipulating a draft</summary>
+        //Draft = 32,
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Engine;
 
 namespace N2.Plugin.Scheduling
@@ -16,25 +16,25 @@ namespace N2.Plugin.Scheduling
         private Repeat repeat = Repeat.Indefinitely;
 
         protected ScheduleExecutionAttribute()
-			: base (typeof(ScheduledAction))
+            : base (typeof(ScheduledAction))
         {
         }
 
         public ScheduleExecutionAttribute(Repeat repeat)
-			: this()
+            : this()
         {
             this.repeat = repeat;
         }
 
         public ScheduleExecutionAttribute(int seconds)
-			: this()
-		{
+            : this()
+        {
             interval = seconds;
         }
 
         public ScheduleExecutionAttribute(int interval, TimeUnit unit)
-			: this()
-		{
+            : this()
+        {
             this.interval = interval;
             this.unit = unit;
         }
@@ -63,36 +63,36 @@ namespace N2.Plugin.Scheduling
             set { decorates = value; }
         }
 
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
 
-		public int SortOrder
-		{
-			get { return sortOrder; }
-			set { sortOrder = value; }
-		}
+        public int SortOrder
+        {
+            get { return sortOrder; }
+            set { sortOrder = value; }
+        }
 
         public bool IsAuthorized(System.Security.Principal.IPrincipal user)
         {
             return true;
         }
 
-		public TimeSpan CalculateInterval()
-		{
-			switch (unit)
-			{
-				case TimeUnit.Seconds:
-					return new TimeSpan(0, 0, interval);
-				case TimeUnit.Minutes:
-					return new TimeSpan(0, interval, 0);
-				case TimeUnit.Hours:
-					return new TimeSpan(interval, 0, 0);
-				default:
-					throw new NotImplementedException("Unknown time unit: " + unit);
-			}
-		}
+        public TimeSpan CalculateInterval()
+        {
+            switch (unit)
+            {
+                case TimeUnit.Seconds:
+                    return new TimeSpan(0, 0, interval);
+                case TimeUnit.Minutes:
+                    return new TimeSpan(0, interval, 0);
+                case TimeUnit.Hours:
+                    return new TimeSpan(interval, 0, 0);
+                default:
+                    throw new NotImplementedException("Unknown time unit: " + unit);
+            }
+        }
     }
 }

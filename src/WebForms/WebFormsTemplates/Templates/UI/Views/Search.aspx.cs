@@ -15,7 +15,7 @@ namespace N2.Templates.UI.Views
             Resources.Register.StyleSheet(this, "~/Templates/UI/Css/Search.css", N2.Resources.Media.All);
         }
 
-		private IEnumerable<ContentItem> hits = new List<ContentItem>();
+        private IEnumerable<ContentItem> hits = new List<ContentItem>();
 
         protected IEnumerable<ContentItem> Hits
         {
@@ -23,21 +23,21 @@ namespace N2.Templates.UI.Views
             set { hits = value; }
         }
 
-		protected int TotalCount;
+        protected int TotalCount;
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-			var query = Query.For(txtQuery.Text)
-				.Below(CurrentItem.SearchRoot ?? Content.Traverse.StartPage)
-				.Range(0, 100)
-				.Pages(true)
-				.State(ContentState.Published)
-				.ReadableBy(User, Roles.GetRolesForUser)
-				.Except(Query.For(typeof(ISystemNode)));
-			var result = Engine.Resolve<IContentSearcher>().Search(query);
-			Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
-			TotalCount = result.Total;
-			
+            var query = Query.For(txtQuery.Text)
+                .Below(CurrentItem.SearchRoot ?? Content.Traverse.StartPage)
+                .Range(0, 100)
+                .Pages(true)
+                .State(ContentState.Published)
+                .ReadableBy(User, Roles.GetRolesForUser)
+                .Except(Query.For(typeof(ISystemNode)));
+            var result = Engine.Resolve<IContentSearcher>().Search(query);
+            Hits = result.Hits.Select(h => h.Content).Where(Content.Is.Accessible()).ToList();
+            TotalCount = result.Total;
+            
             DataBind();
         }
     }

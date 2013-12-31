@@ -1,68 +1,79 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Management.Default" %>
+
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" ng-app="n2">
+<html class="no-js">
 <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>N2 Management</title>
-    <meta name="viewport" content="width=device-width">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>N2 Management</title>
+	<meta name="viewport" content="width=device-width">
 
-    <%--<link rel="stylesheet" href="redesign/css/normalize.min.css">--%>
-    <%--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">--%>
-    <link rel="stylesheet" href="redesign/css/n2.css">
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryPath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryUiPath) %>"></script>
 
-    <script src="redesign/js/vendor/modernizr-2.6.2.min.js"></script>
-</head>
-<body ng-controller="ManagementCtrl">
-    <div id="top-area">
-        <%--<div ng-include src="'App/Partials/UserTools.html'"></div>--%>
-        <div ng-include src="'App/Partials/MainMenu.html'"></div>
-    </div>
-    <div class="sliding-loader loader"></div>
-	<div id="main-wrapper">
-        <div id="secondary-area">
-            <div ng-include src="'App/Partials/PageTree.html'" ng-controller="NavigationCtrl"></div>
-            <div class="dragbar"></div>
-        </div>
-        <div id="main-area"><%-- ng-bind-html-unsafe="Interface | pretty">--%>
-            <div ng-include src="'App/Partials/PagePreview.html'"></div>
-            <div ng-include src="'App/Partials/PageActionBar.html'"></div>
-        </div>
-    </div>
-    <div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>
-    <div id="debug-interface" class="debug" ng-bind-html-unsafe="Interface | pretty"></div>
-	
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularPath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularResourcesPath) %>"></script>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+	<link href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapCssPath) %>" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapJsPath) %>"></script>
 
-    <script src="redesign/js/plugins.js"></script>
-    <script src="redesign/js/n2.js"></script>
-    <%--<script src="redesign/js/n2.loaders.js"></script>--%>
-    <script src="redesign/js/main.js"></script>
-	<script src="Resources/angular-1.1.4/angular.js"></script>
-	<script src="Resources/angular-1.1.4/angular-resource.js"></script>
+	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
+
+	<script src="Resources/angular-ui-0.4.0/angular-ui.min.js"></script>
+	<link href="Resources/angular-ui-0.4.0/angular-ui.min.css" rel="stylesheet" />
+
+	<link href="Resources/bootstrap-components/bootstrap-datepicker.css" rel="stylesheet" />
+	<script src="Resources/bootstrap-components/bootstrap-datepicker.js"></script>
+
+	<link href="Resources/bootstrap-components/bootstrap-timepicker.css" rel="stylesheet" />
+	<script src="Resources/bootstrap-components/bootstrap-timepicker.js"></script>
+	<link href="Resources/icons/flags.css" rel="stylesheet" />
+
+	<script src="Resources/bootstrap-components/angular-strap.min.js"></script>
+
+	<script src="Resources/js/n2.js"></script>
+	<link rel="stylesheet" href="Resources/css/n2.css">
+
+	<script src="<%= GetLocalizationPath() %>"></script>
 	<script src="App/Js/Services.js"></script>
-	<script src="App/Js/Routes.js"></script>
 	<script src="App/Js/Controllers.js"></script>
 	<script src="App/Js/Directives.js"></script>
-	<link href="redesign/bootstrap/css/bootstrap.css" rel="stylesheet" />
-	<script src="redesign/bootstrap/js/bootstrap.js"></script>
-	<script src="Resources/angular-ui-0.4.0/build/angular-ui.js"></script>
-	<link href="Resources/angular-ui-0.4.0/build/angular-ui.min.css" rel="stylesheet" />
-	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
-	<style>
-		ul, li {
-			margin: 0;
-			padding: 0;
-		}
-	</style>
-</body>
 
+	<asp:PlaceHolder runat="server">
+	<% foreach(var module in N2.Context.Current.Container.ResolveAll<N2.Management.Api.ManagementModuleBase>()) { %>
+	<!-- <%= module.GetType().Name %> -->
+	<% foreach(var script in module.ScriptIncludes) { %>
+	<script src="<%= N2.Web.Url.ResolveTokens(script) %>"></script>
+	<% } %>
+	<% foreach(var style in module.StyleIncludes) { %>
+	<link href="<%= N2.Web.Url.ResolveTokens(style) %>" rel="stylesheet" />
+	<% } %>
+	<% } %>
+	</asp:PlaceHolder>
+</head>
+<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item" ng-include src="Context.Partials.Management">
+	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>
+</body>
 </html>
+
+<script runat="server">
+
+	protected string GetLocalizationPath()
+	{
+		var culture = System.Threading.Thread.CurrentThread.CurrentUICulture;
+		var languagePreferenceList = new[] { culture.ToString(), culture.TwoLetterISOLanguageName };
+		foreach (var languageCode in languagePreferenceList)
+		{
+			var path = N2.Web.Url.ResolveTokens("{ManagementUrl}/App/i18n/" + languageCode + ".js.ashx");
+			if (System.Web.Hosting.HostingEnvironment.VirtualPathProvider.FileExists(path))
+				return path;
+		}
+		return "App/i18n/en.js.ashx";
+	}
+</script>

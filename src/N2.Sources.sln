@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\example.web.config = ..\docs\example.web.config
@@ -129,66 +131,29 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "Mvc\Dinamico\Dinamico.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5-CF13-47DD-942E-72E34B26FE48}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{68ABA761-8210-4BE8-9F6D-6D3A69D273B0}"
 	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\BundlesDinamico\N2.Bundles.Dinamico.nuspec = ..\build\nuget\BundlesDinamico\N2.Bundles.Dinamico.nuspec
 		..\build\nuget\Framework\N2.Cms.nuspec = ..\build\nuget\Framework\N2.Cms.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dinamico", "Dinamico", "{18314BAF-CA7C-491D-9CBF-0B458B8E150B}"
-	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\Config\N2.Config.nuspec = ..\build\nuget\Config\N2.Config.nuspec
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
+		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
+		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
+		..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec = ..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec
+		..\build\nuget\ManagementZip\N2.Management.Zip.nuspec = ..\build\nuget\ManagementZip\N2.Management.Zip.nuspec
+		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
+		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
+		..\build\nuget\ReusableParts\N2.ReusableParts.nuspec = ..\build\nuget\ReusableParts\N2.ReusableParts.nuspec
+		..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec = ..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec
+		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
+		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
+		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B0AF013A-2386-4774-8EE6-FB5AE43390B2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{F00EA637-6C32-4504-A248-AB6E5B7D395D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Razor", "Framework\Razor\N2.Razor.csproj", "{D701D33B-3FBB-440C-9AAE-F0E99DFF04F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Packaging", "Framework\Packaging\N2.Packaging.csproj", "{8292DB1E-D760-417B-8620-7024DE3505F2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLIte", "SQLIte", "{541230E3-044D-4B21-90EB-B93B491C6AFE}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{9C9945AF-7DE6-459D-A783-C026E5B7F596}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\SQLite\Content\web.config.transform = ..\build\nuget\SQLite\Content\web.config.transform
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Razor", "Razor", "{97670B82-7B2E-4EE4-8527-8342877AD08C}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Management\N2.Management.nuspec = ..\build\nuget\Management\N2.Management.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{A4646281-64FB-4CE0-A3D7-9167070FF19A}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\App_Data\n2_host.config = ..\build\nuget\Framework\Content\App_Data\n2_host.config
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{B3835F3D-C170-49C8-A4FC-CA52F0714B83}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\Framework\Content\web.config.transform = ..\build\nuget\Framework\Content\web.config.transform
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.IoC.Windsor3", "Framework\IoC.Windsor\N2.IoC.Windsor3.csproj", "{7A9C0479-64AF-4DF1-818C-118866DB8A3D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC.Windsor3", "IoC.Windsor3", "{9D0BACB7-1032-4E80-94FE-22515CE821B3}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Persistence.MongoDB", "Framework\MongoDB\N2.Persistence.MongoDB.csproj", "{86FA9BB3-7D92-488C-9192-80D6B38DE5BC}"
 EndProject
@@ -198,14 +163,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Client", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Server", "Framework\Search.Remote.Server\N2.Search.Remote.Server.csproj", "{F30718A5-A1F6-40F6-871E-2873EA87ED56}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDB", "MongoDB", "{0606F2F6-734B-4A35-B6AB-73B6F22F3638}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.ReusableParts", "Framework\ReusableParts\N2.ReusableParts.csproj", "{2F45B409-52CD-4FB9-963A-D20E0B113D26}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RemoteSearch", "RemoteSearch", "{2A6E2609-8AE0-42A7-9EA5-20870E638241}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7C88A485-3564-4B34-BEA2-154A08D4B06A}"
 	ProjectSection(SolutionItems) = preProject
-		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Global
@@ -997,6 +962,41 @@ Global
 		{F30718A5-A1F6-40F6-871E-2873EA87ED56}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F30718A5-A1F6-40F6-871E-2873EA87ED56}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F30718A5-A1F6-40F6-871E-2873EA87ED56}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugDinamico|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugDinamico|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugDinamico|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugDinamico|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugDinamico|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugFramework|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugFramework|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugFramework|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugFramework|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugFramework|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugMvc|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugMvc|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugMvc|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugMvc|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugMvc|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugWebForms|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugWebForms|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugWebForms|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugWebForms|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.DebugWebForms|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Demo|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Demo|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Demo|x86.ActiveCfg = Debug|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1019,6 +1019,7 @@ Global
 		{6E61BC93-4F13-40C8-A610-33E46F1E7C34} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{E2A88D0C-FED0-4EF4-AD49-05DDDB0C0386} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{F30718A5-A1F6-40F6-871E-2873EA87ED56} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{2F45B409-52CD-4FB9-963A-D20E0B113D26} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
 		{AA0C3414-F509-44A2-A677-409DE6B49B1C} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{D42D096E-399D-4618-AEB4-9B023BA1316D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{CEE6525F-F502-4890-AA36-7B8755A5E47D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
@@ -1033,19 +1034,5 @@ Global
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
 		{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9} = {C69DDE3C-8B79-4DDC-867B-C461F605AAA7}
-		{68ABA761-8210-4BE8-9F6D-6D3A69D273B0} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{18314BAF-CA7C-491D-9CBF-0B458B8E150B} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{CCE2DE93-7719-48BA-80E7-20E8C52BAEBE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{541230E3-044D-4B21-90EB-B93B491C6AFE} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{97670B82-7B2E-4EE4-8527-8342877AD08C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{F4E05C2E-256E-4C71-9AE3-6CFF8F8D997C} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{9D0BACB7-1032-4E80-94FE-22515CE821B3} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{0606F2F6-734B-4A35-B6AB-73B6F22F3638} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{2A6E2609-8AE0-42A7-9EA5-20870E638241} = {4508EBF5-CF13-47DD-942E-72E34B26FE48}
-		{B3835F3D-C170-49C8-A4FC-CA52F0714B83} = {68ABA761-8210-4BE8-9F6D-6D3A69D273B0}
-		{B0AF013A-2386-4774-8EE6-FB5AE43390B2} = {18314BAF-CA7C-491D-9CBF-0B458B8E150B}
-		{F00EA637-6C32-4504-A248-AB6E5B7D395D} = {B0AF013A-2386-4774-8EE6-FB5AE43390B2}
-		{9C9945AF-7DE6-459D-A783-C026E5B7F596} = {541230E3-044D-4B21-90EB-B93B491C6AFE}
-		{A4646281-64FB-4CE0-A3D7-9167070FF19A} = {B3835F3D-C170-49C8-A4FC-CA52F0714B83}
 	EndGlobalSection
 EndGlobal

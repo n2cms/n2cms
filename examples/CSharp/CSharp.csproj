@@ -45,44 +45,49 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Lucene.Net.3.0.3-RC2\lib\net40\Lucene.Net.dll</HintPath>
+      <HintPath>..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="N2, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\N2CMS.Library.2.4-beta4\lib\N2.dll</HintPath>
+      <HintPath>..\..\packages\N2CMS.Library.2.5.6.1\lib\N2.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Extensions, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2.Extensions, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\N2CMS.Management.2.4-beta4\lib\N2.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\N2CMS.Management.2.5.6.1\lib\N2.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Management, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\N2CMS.Management.2.4-beta4\lib\N2.Management.dll</HintPath>
+    <Reference Include="N2.IoC.Windsor3">
+      <HintPath>..\..\packages\N2CMS.Management.2.5.6.1\lib\N2.IoC.Windsor3.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Packaging, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2.Management, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\N2CMS.Management.2.4-beta4\lib\N2.Packaging.dll</HintPath>
+      <HintPath>..\..\packages\N2CMS.Management.2.5.6.1\lib\N2.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="N2.Packaging, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\N2CMS.Management.2.5.6.1\lib\N2.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="N2.ReusableParts">
+      <HintPath>..\..\packages\N2CMS.Management.2.5.6.1\lib\N2.ReusableParts.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq">
-      <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Data.SQLite.1.0.88.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -130,16 +135,15 @@
     <Content Include="N2\n2_readme.txt" />
     <Content Include="N2\upgrade.txt" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\ContentView.aspx" />
+    <Content Include="N2\N2.zip" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="N2\web.config" />
-    <Content Include="N2\N2.zip" />
-    <Content Include="App_Data\n2_host.config" />
     <None Include="N2\n2cms.configuration.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -193,11 +197,14 @@
       <DependentUpon>ContentView.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="N2\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

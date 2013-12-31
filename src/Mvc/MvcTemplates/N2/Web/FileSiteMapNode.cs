@@ -8,7 +8,7 @@ namespace N2.Edit.Web
             : base(provider, url)
         {
             Url = url;
-			Title = VirtualPathUtility.GetFileName(url);
+            Title = VirtualPathUtility.GetFileName(url);
             FileExtension = VirtualPathUtility.GetExtension(url).TrimStart('.');
         }
 

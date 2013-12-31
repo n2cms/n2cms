@@ -14,77 +14,77 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 #if !SILVERLIGHT
-	using System.Security;
-	using System.Security.Permissions;
+    using System.Security;
+    using System.Security.Permissions;
 #endif
 
-	public static class StrongNameUtil
-	{
-		private static readonly IDictionary<Assembly, bool> signedAssemblyCache = new Dictionary<Assembly, bool>();
-		private static readonly object lockObject = new object();
+    public static class StrongNameUtil
+    {
+        private static readonly IDictionary<Assembly, bool> signedAssemblyCache = new Dictionary<Assembly, bool>();
+        private static readonly object lockObject = new object();
 
 
 #if DOTNET40
-		[SecuritySafeCritical]
+        [SecuritySafeCritical]
 #endif
-		static StrongNameUtil()
-		{
+        static StrongNameUtil()
+        {
 #if SILVERLIGHT
-			CanStrongNameAssembly = true;
+            CanStrongNameAssembly = true;
 #else
-			//idea after http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx
-			try
-			{
-				new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
-				CanStrongNameAssembly = true;
-			}
-			catch (SecurityException)
-			{
-				CanStrongNameAssembly = false;
-			}
+            //idea after http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx
+            try
+            {
+                new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
+                CanStrongNameAssembly = true;
+            }
+            catch (SecurityException)
+            {
+                CanStrongNameAssembly = false;
+            }
 #endif
-		}
+        }
 
 
-		public static bool IsAssemblySigned(this Assembly assembly)
-		{
-			lock (lockObject)
-			{
-				if (signedAssemblyCache.ContainsKey(assembly) == false)
-				{
-					var isSigned = assembly.ContainsPublicKey();
-					signedAssemblyCache.Add(assembly, isSigned);
-				}
-				return signedAssemblyCache[assembly];
-			}
-		}
+        public static bool IsAssemblySigned(this Assembly assembly)
+        {
+            lock (lockObject)
+            {
+                if (signedAssemblyCache.ContainsKey(assembly) == false)
+                {
+                    var isSigned = assembly.ContainsPublicKey();
+                    signedAssemblyCache.Add(assembly, isSigned);
+                }
+                return signedAssemblyCache[assembly];
+            }
+        }
 
-		private static bool ContainsPublicKey(this Assembly assembly)
-		{
-			// Pulled from a comment on http://www.flawlesscode.com/post/2008/08/Mocking-and-IOC-in-Silverlight-2-Castle-Project-and-Moq-ports.aspx
-			return assembly.FullName != null && !assembly.FullName.Contains("PublicKeyToken=null");
-		}
+        private static bool ContainsPublicKey(this Assembly assembly)
+        {
+            // Pulled from a comment on http://www.flawlesscode.com/post/2008/08/Mocking-and-IOC-in-Silverlight-2-Castle-Project-and-Moq-ports.aspx
+            return assembly.FullName != null && !assembly.FullName.Contains("PublicKeyToken=null");
+        }
 
-		public static bool IsAnyTypeFromUnsignedAssembly(IEnumerable<Type> types)
-		{
-			return types.Any(t => t.Assembly.IsAssemblySigned() == false);
-		}
+        public static bool IsAnyTypeFromUnsignedAssembly(IEnumerable<Type> types)
+        {
+            return types.Any(t => t.Assembly.IsAssemblySigned() == false);
+        }
 
-		public static bool IsAnyTypeFromUnsignedAssembly(Type baseType, IEnumerable<Type> interfaces)
-		{
-			if (baseType != null && baseType.Assembly.IsAssemblySigned() == false)
-			{
-				return true;
-			}
+        public static bool IsAnyTypeFromUnsignedAssembly(Type baseType, IEnumerable<Type> interfaces)
+        {
+            if (baseType != null && baseType.Assembly.IsAssemblySigned() == false)
+            {
+                return true;
+            }
 
-			return IsAnyTypeFromUnsignedAssembly(interfaces);
-		}
+            return IsAnyTypeFromUnsignedAssembly(interfaces);
+        }
 
-		public static bool CanStrongNameAssembly { get; set; }
-	}
+        public static bool CanStrongNameAssembly { get; set; }
+    }
 }

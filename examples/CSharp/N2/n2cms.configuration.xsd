@@ -24,6 +24,19 @@
 				<xs:element name="host">
 					<xs:complexType>
 						<xs:all>
+							<xs:element name="targeting" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="enabled" default="true"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="sites" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
@@ -59,6 +72,7 @@
 																		</xs:all>
 																		<xs:attribute name="title" type="xs:string" />
 																		<xs:attribute name="path" type="xs:string" use="required" />
+																		<xs:attribute name="urlPrefix" type="xs:string" />
 																	</xs:complexType>
 																</xs:element>
 															</xs:sequence>
@@ -224,8 +238,8 @@
 							</xs:element>
 							<xs:element name="globalization" minOccurs="0">
 								<xs:complexType>
-                  <xs:attribute name="enabled" type="xs:boolean" use="optional" />
-                  <xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="languagesPerSite" type="xs:boolean" use="optional" />
 									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -336,8 +350,6 @@
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
-												<xs:attribute name="engineType" type="xs:string" />
-												<xs:attribute name="containerType" type="xs:string" />
 												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
@@ -352,6 +364,7 @@
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
 						<xs:attribute name="engineType" type="xs:string" use="optional" />
+						<xs:attribute name="containerType" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
@@ -383,6 +396,22 @@
 							</xs:element>
 							<xs:element name="search" minOccurs="0">
 								<xs:complexType>
+									<xs:all>
+										<xs:element name="client" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="url" type="xs:string" use="optional" default="http://localhost:7850/" />
+												<xs:attribute name="searchTimeout" type="xs:int" use="optional" default="10000" />
+												<xs:attribute name="indexTimeout" type="xs:int" use="optional" default="100000" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="server" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="urlPrefix" type="xs:string" use="optional" default="http://*:7850/" />
+												<xs:attribute name="sharedSecret" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
 									<xs:attribute name="indexPath" type="xs:string" use="optional" default="~/App_Data/SearchIndex/" />
 									<xs:attribute name="asyncIndexing" type="xs:boolean" use="optional" default="true" />
 									<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true" />
@@ -391,6 +420,7 @@
 											<xs:restriction base="xs:string">
 												<xs:enumeration value="Database"/>
 												<xs:enumeration value="Lucene"/>
+												<xs:enumeration value="RemoteServer"/>
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:attribute>
@@ -491,7 +521,16 @@
 							<xs:element name="installer" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="checkInstallationStatus" type="xs:boolean" use="optional" />
-									<xs:attribute name="allowInstallation" type="xs:boolean" use="optional" />
+									<xs:attribute name="allowInstallation" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Administrator"/>
+												<xs:enumeration value="AnonymousUser"/>
+												<xs:enumeration value="No"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="installedVersion" type="xs:string" use="optional" />
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
@@ -518,6 +557,16 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ckeditor" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="ckConfigJsPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/config.js" />
+                  <xs:attribute name="overwriteStylesSet" type="xs:string" use="optional" default="default" />
+                  <xs:attribute name="overwriteFormatTags" type="xs:string" use="optional" default="p;h1;h2;h3;pre" />
+                  <xs:attribute name="contentsCssPath" type="xs:string" use="optional" default="~/N2/Resources/ckeditor/contents.css" />
+                  <xs:attribute name="advancedMenus" type="xs:boolean" use="optional" default="false" />
+                  <xs:attribute name="overwriteLanguage" type="xs:string" use="optional" default="en" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="tinyMCE" minOccurs="0">
@@ -604,6 +653,28 @@
 							<xs:element name="fileSystem" minOccurs="0">
 								<xs:complexType>
 									<xs:attribute name="textFileExtensions" type="xs:string" use="optional" default=".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt" />
+									<xs:attribute name="imageFileExtensions" type="xs:string" use="optional" default=".jpg,.gif,.jpeg,.png,.bmp" />
+									<xs:attribute name="uploadFilenameStrip" type="xs:string" use="optional" default="+," />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="docviewer" minOccurs="0">
+								<xs:complexType>
+										<xs:sequence>
+											<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="extensions" type="xs:string" use="required" />
+													<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+													<xs:attribute name="url" type="xs:string" use="optional" />
+													<xs:attribute name="maxsize" type="xs:string" use="optional" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="images" minOccurs="0">
@@ -632,6 +703,7 @@
 																<xs:simpleType>
 																	<xs:restriction base="xs:string">
 																		<xs:enumeration value="Fit"/>
+																		<xs:enumeration value="FitCenterOnTransparent"/>
 																		<xs:enumeration value="Fill"/>
 																		<xs:enumeration value="Stretch"/>
 																	</xs:restriction>
@@ -673,6 +745,18 @@
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+						<xs:attribute name="legacy" type="xs:boolean" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="web">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="filelist" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="ignoreFiles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
 					</xs:complexType>
 				</xs:element>
 			</xs:all>

@@ -1,10 +1,11 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Fix.aspx.cs" Inherits="N2.Edit.Install.Fix" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Fix.aspx.cs" Inherits="N2.Edit.Install.Fix" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Untitled Page</title>
+    <title>Fix</title>
+    <link rel="stylesheet" type="text/css" href="../Resources/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
     <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
@@ -64,9 +65,9 @@
 			<li>Deleting pages that have children (other.ParentID = this.ID) may cause "detached" items to be lying around in the database which can't be access by normal means (although they'll be here).</li>
 		</ul>
 		
-		<asp:GridView ID="gvItems" runat="server" DataSourceID="sdsItems" PageSize="22"
+		<asp:GridView ID="gvItems" runat="server" DataSourceID="sdsItems" PageSize="22" BorderWidth="0"
 			AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False"
-			DataKeyNames="ID">
+			DataKeyNames="ID" CssClass="table table-striped table-hover table-condensed">
 			<Columns>
 				<asp:CommandField ShowCancelButton="true" ShowDeleteButton="true" ShowEditButton="true" CancelText="Cancel" UpdateText="Update" DeleteText="Delete" EditText="Edit" />
 				<asp:BoundField DataField="ID" HeaderText="ID" InsertVisible="False" ReadOnly="True" SortExpression="ID" />

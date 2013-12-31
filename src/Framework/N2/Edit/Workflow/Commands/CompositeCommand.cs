@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace N2.Edit.Workflow.Commands
 {
@@ -19,10 +19,10 @@ namespace N2.Edit.Workflow.Commands
 
         public override void Process(CommandContext context)
         {
-			foreach (var command in Commands)
-			{
-				command.Process(context);
-			}
+            foreach (var command in Commands)
+            {
+                command.Process(context);
+            }
         }
     }
 }

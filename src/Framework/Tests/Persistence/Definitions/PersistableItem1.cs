@@ -29,12 +29,12 @@ namespace N2.Tests.Persistence.Definitions
             set { SetDetail<bool>("BoolProperty", value); }
         }
 
-		[EditableNumber(DefaultValue = 666)]
-		public virtual int IntProperty
-		{
-			get { return (int)(GetDetail("IntProperty") ?? 0); }
-			set { SetDetail<int>("IntProperty", value); }
-		}
+        [EditableNumber(DefaultValue = 666)]
+        public virtual int IntProperty
+        {
+            get { return (int)(GetDetail("IntProperty") ?? 0); }
+            set { SetDetail<int>("IntProperty", value); }
+        }
 
         [EditableDate]
         public virtual DateTime DateTimeProperty
@@ -84,25 +84,25 @@ namespace N2.Tests.Persistence.Definitions
             set { SetDetail<object>("ObjectProperty", value); }
         }
 
-		[EditableEnum]
-		public virtual AppDomainManagerInitializationOptions EnumProperty
-		{
-			get { return GetDetail("EnumProperty", AppDomainManagerInitializationOptions.None); }
-			set { SetDetail("EnumProperty", value, AppDomainManagerInitializationOptions.None); }
-		}
+        [EditableEnum]
+        public virtual AppDomainManagerInitializationOptions EnumProperty
+        {
+            get { return GetDetail("EnumProperty", AppDomainManagerInitializationOptions.None); }
+            set { SetDetail("EnumProperty", value, AppDomainManagerInitializationOptions.None); }
+        }
 
-		public virtual Guid GuidProperty
-		{
-			get
-			{
-				string value = GetDetail<string>("GuidProperty", null);
-				return string.IsNullOrEmpty(value) ? Guid.Empty : new Guid(value);
-			}
-			set
-			{
-				SetDetail("GuidProperty", value.ToString());
-			}
-		}
+        public virtual Guid GuidProperty
+        {
+            get
+            {
+                string value = GetDetail<string>("GuidProperty", null);
+                return string.IsNullOrEmpty(value) ? Guid.Empty : new Guid(value);
+            }
+            set
+            {
+                SetDetail("GuidProperty", value.ToString());
+            }
+        }
 
         public virtual string WritableGuid
         {
@@ -169,7 +169,7 @@ namespace N2.Tests.Persistence.Definitions
     [Indexable(IsIndexable = false)]
     public class PersistableItem1b : PersistableItem
     {
-		[EditableNumber(DefaultValue = 666)]
-		public virtual int CompilerGeneratedIntProperty { get; set; }
+        [EditableNumber(DefaultValue = 666)]
+        public virtual int CompilerGeneratedIntProperty { get; set; }
     }
 }

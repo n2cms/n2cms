@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +13,35 @@ using N2.Persistence;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
-	[Controls(typeof(TestPage))]
-	public class TestPageController : ContentController<ContentItem>
+    [Controls(typeof(TestPage))]
+    public class TestPageController : ContentController<ContentItem>
     {
-		IDefinitionManager definitions;
-		ContentActivator activator;
+        IDefinitionManager definitions;
+        ContentActivator activator;
 
-		public TestPageController(IDefinitionManager definitions, ContentActivator activator)
-		{
-			this.definitions = definitions;
-			this.activator = activator;
-		}
+        public TestPageController(IDefinitionManager definitions, ContentActivator activator)
+        {
+            this.definitions = definitions;
+            this.activator = activator;
+        }
 
-		public override ActionResult Index()
-		{
-			if ("Tests" != (string)RouteData.DataTokens["area"])
-				throw new Exception("Incorrect area: " + RouteData.Values["area"]);
+        public override ActionResult Index()
+        {
+            if ("Tests" != (string)RouteData.DataTokens["area"])
+                throw new Exception("Incorrect area: " + RouteData.Values["area"]);
 
-			return View();
-		}
+            return View();
+        }
 
-		public ActionResult Test()
-		{
-			return View();
-		}
+        public ActionResult Test()
+        {
+            return View();
+        }
 
-		public ActionResult TheAction()
-		{
-			return Content("TheAction");
-		}
+        public ActionResult TheAction()
+        {
+            return Content("TheAction");
+        }
 
         public ActionResult Json()
         {

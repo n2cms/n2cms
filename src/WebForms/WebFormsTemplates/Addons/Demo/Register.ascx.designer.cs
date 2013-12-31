@@ -21,7 +21,7 @@ namespace Demo {
         protected System.Web.UI.WebControls.Label lblPraise;
         protected System.Web.UI.WebControls.TextBox txtPraise;
 
-		protected System.Web.UI.WebControls.TextBox txtPassword; 
-		protected System.Web.UI.WebControls.Button btnSubmit;
+        protected System.Web.UI.WebControls.TextBox txtPassword; 
+        protected System.Web.UI.WebControls.Button btnSubmit;
     }
 }

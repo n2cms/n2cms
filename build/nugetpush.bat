@@ -1,1 +1,1 @@
-build /t:Publish-NuGet & pause
+build /t:Push-NuGet & pause

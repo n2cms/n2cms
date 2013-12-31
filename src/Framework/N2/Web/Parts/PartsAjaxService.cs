@@ -4,28 +4,28 @@ using System.Web;
 
 namespace N2.Web.Parts
 {
-	/// <summary>
-	/// Ajax service that adds itself to the ajax request dispatecher upon start.
-	/// </summary>
-	public abstract class PartsAjaxService : IAjaxService
-	{
-		public abstract string Name { get;}
+    /// <summary>
+    /// Ajax service that adds itself to the ajax request dispatecher upon start.
+    /// </summary>
+    public abstract class PartsAjaxService : IAjaxService
+    {
+        public abstract string Name { get;}
 
-		public bool RequiresEditAccess
-		{
-			get { return true; }
-		}
+        public bool RequiresEditAccess
+        {
+            get { return true; }
+        }
 
-		public bool IsValidHttpMethod(string httpMethod)
-		{
-			return httpMethod == "POST";
-		}
+        public bool IsValidHttpMethod(string httpMethod)
+        {
+            return httpMethod == "POST";
+        }
 
-		public void Handle(HttpContextBase context)
-		{
-			NameValueCollection response = HandleRequest(context.Request.Form);
-			context.Response.ContentType = "application/json";
-			context.Response.Write(ToJson(response));
+        public void Handle(HttpContextBase context)
+        {
+            NameValueCollection response = HandleRequest(context.Request.Form);
+            context.Response.ContentType = "application/json";
+            context.Response.Write(ToJson(response));
         }
 
         protected string ToJson(NameValueCollection response)
@@ -42,6 +42,6 @@ namespace N2.Web.Parts
             return sb.ToString();
         }
 
-		public abstract NameValueCollection HandleRequest(NameValueCollection request);
-	}
+        public abstract NameValueCollection HandleRequest(NameValueCollection request);
+    }
 }

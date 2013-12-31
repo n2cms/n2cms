@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
@@ -17,14 +17,14 @@ namespace N2.Addons.AddonCatalog.UI
         {
             base.OnInit(e);
 
-			Items.Addon addon = CurrentPage as Items.Addon;
+            Items.Addon addon = CurrentPage as Items.Addon;
 
-        	bool isAuthorizedToModify = IsAuthorized(Page.User);
-        	if(addon == null && isAuthorizedToModify)
-			{
-				Register.JQuery(Page);
-			}
-			else if (addon != null && isAuthorizedToModify && IsAuthor(Page.User, addon))
+            bool isAuthorizedToModify = IsAuthorized(Page.User);
+            if(addon == null && isAuthorizedToModify)
+            {
+                Register.JQuery(Page);
+            }
+            else if (addon != null && isAuthorizedToModify && IsAuthor(Page.User, addon))
             {
                 rfvAddon.Enabled = false;
                 LoadAddon(addon);
@@ -72,19 +72,19 @@ namespace N2.Addons.AddonCatalog.UI
         private bool IsAuthorized(IPrincipal user)
         {
             bool isEditor = Engine.SecurityManager.IsEditor(user);
-        	Items.AddonCatalog catalog = CurrentPage as Items.AddonCatalog ?? CurrentPage.Parent as Items.AddonCatalog;
-        	bool isAllowedRole = false;
-			foreach (string role in catalog.ModifyRoles)
-			{
-				isAllowedRole |= user.IsInRole(role);
-			}
+            Items.AddonCatalog catalog = CurrentPage as Items.AddonCatalog ?? CurrentPage.Parent as Items.AddonCatalog;
+            bool isAllowedRole = false;
+            foreach (string role in catalog.ModifyRoles)
+            {
+                isAllowedRole |= user.IsInRole(role);
+            }
             return isEditor || isAllowedRole;
         }
 
-		private bool IsAuthor(IPrincipal user, Items.Addon addon)
+        private bool IsAuthor(IPrincipal user, Items.Addon addon)
         {
-			return string.Equals(addon.AuthorUserName ?? addon.SavedBy, user.Identity.Name, StringComparison.InvariantCultureIgnoreCase)
-			       || Engine.SecurityManager.IsEditor(Page.User);
+            return string.Equals(addon.AuthorUserName ?? addon.SavedBy, user.Identity.Name, StringComparison.InvariantCultureIgnoreCase)
+                   || Engine.SecurityManager.IsEditor(Page.User);
         }
 
         protected void save_Click(object sender, EventArgs e)
@@ -97,9 +97,9 @@ namespace N2.Addons.AddonCatalog.UI
             Items.Addon addon = CurrentItem as Items.Addon;
             if(addon == null)
             {
-				addon = Engine.Resolve<ContentActivator>().CreateInstance<Items.Addon>(CurrentPage);
-				addon.AuthorUserName = Page.User.Identity.Name;
-			}
+                addon = Engine.Resolve<ContentActivator>().CreateInstance<Items.Addon>(CurrentPage);
+                addon.AuthorUserName = Page.User.Identity.Name;
+            }
             else if(!IsAuthor(Page.User, addon))
             {
                 cvAuthenticated.IsValid = false;
@@ -107,7 +107,7 @@ namespace N2.Addons.AddonCatalog.UI
             }
 
             addon.Title = Encode(txtTitle.Text);
-			addon.Name = Engine.Resolve<HtmlFilter>().CleanUrl(txtTitle.Text);
+            addon.Name = Engine.Resolve<HtmlFilter>().CleanUrl(txtTitle.Text);
 
             addon.Text = Encode(txtDescription.Text);
             addon.AddonVersion = Encode(txtVersion.Text);
@@ -119,10 +119,10 @@ namespace N2.Addons.AddonCatalog.UI
             addon.Requirements = (Items.Requirement) AssembleSelected(cblRequirements.Items);
             addon.SourceCodeUrl = Encode(txtSource.Text);
             addon.Summary = Encode(txtSummary.Text);
-        	if(fuAddon.PostedFile.ContentLength > 0)
+            if(fuAddon.PostedFile.ContentLength > 0)
             {
-				IFileSystem fs = Engine.Resolve<IFileSystem>();
-				
+                IFileSystem fs = Engine.Resolve<IFileSystem>();
+                
                 if(!string.IsNullOrEmpty(addon.UploadedFileUrl))
                 {
                     if(File.Exists(addon.UploadedFileUrl))
@@ -130,11 +130,11 @@ namespace N2.Addons.AddonCatalog.UI
                 }
                 string fileName = Path.GetFileName(fuAddon.PostedFile.FileName);
                 Url folder = Url.Parse(Engine.EditManager.UploadFolders[0]).AppendSegment("Addons");
-            	if(!fs.DirectoryExists(folder))
-					fs.CreateDirectory(folder);
+                if(!fs.DirectoryExists(folder))
+                    fs.CreateDirectory(folder);
                 
                 addon.UploadedFileUrl = folder.AppendSegment(Path.GetFileNameWithoutExtension(fileName), Path.GetExtension(fileName));
-				fs.WriteFile(addon.UploadedFileUrl, fuAddon.PostedFile.InputStream);
+                fs.WriteFile(addon.UploadedFileUrl, fuAddon.PostedFile.InputStream);
             }
 
             Engine.Persister.Save(addon);

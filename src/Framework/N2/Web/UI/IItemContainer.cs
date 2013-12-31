@@ -23,7 +23,7 @@ namespace N2.Web.UI
     /// <summary>Defines an interface that controls can use when traversing the control hierarchy to find the current most relevant item.</summary>
     public interface IItemContainer
     {
-		/// <summary>Gets the item associated with the item container.</summary>
+        /// <summary>Gets the item associated with the item container.</summary>
         ContentItem CurrentItem { get; }
     }
 }

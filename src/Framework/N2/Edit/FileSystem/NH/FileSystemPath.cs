@@ -1,19 +1,19 @@
-﻿using System;
+using System;
 
 namespace N2.Edit.FileSystem.NH
 {
-	/// <summary>
-	/// A path component used by <see cref="FileSystemItem"/>.
-	/// </summary>
+    /// <summary>
+    /// A path component used by <see cref="FileSystemItem"/>.
+    /// </summary>
     public class FileSystemPath
     {
         public string Parent { get; set; }
         public string Name { get; set; }
-		public bool IsDirectory { get; set; }
+        public bool IsDirectory { get; set; }
 
         public FileSystemPath()
-		{
-		}
+        {
+        }
 
         private FileSystemPath(string virtualPath)
         {
@@ -55,6 +55,6 @@ namespace N2.Edit.FileSystem.NH
 
             Parent = new FileSystemPath(target + ToString().Substring(source.ToString().Length)).Parent;
         }
-	}
+    }
 
 }

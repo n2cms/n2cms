@@ -1,0 +1,67 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	
+	<n2 xmlns="http://n2cms.com/schemas/configuration/v3" xdt:Transform="InsertIfMissing">
+		<!--
+			When installing a database from scratch you'll need to insert some required pages. 
+			This can be done by the web based installer located at http://yoursite/n2/installation/ 
+			-->
+		<host rootID="1" startPageID="2" multipleSites="true" xdt:Transform="InsertIfMissing">
+		</host>
+		<engine xdt:Transform="InsertIfMissing">
+			<errors action="Email" mailTo="" mailFrom="noreply@yourdomain.com" />
+			<globalization enabled="true" />
+		</engine>
+		<database connectionStringName="N2CMS" caching="true" xdt:Transform="InsertIfMissing">
+		</database>
+		<edit xdt:Transform="InsertIfMissing">
+			<installer checkInstallationStatus="true" />
+			<writers dynamic="true"/>
+			<editors dynamic="true"/>
+			<administrators dynamic="true"/>
+			<images>
+				<sizes>
+					<add name="thumb" width="50" height="50" mode="Fill"/>
+					<add name="wide" width="960" height="480" mode="Fill" />
+				</sizes>
+			</images>
+		</edit>
+	</n2>
+
+	<connectionStrings xdt:Transform="InsertIfMissing">
+		<!-- Some connection string examples:
+		SQLite:           <add name="N2CMS" connectionString="Data Source=|DataDirectory|\n2.sqlite.db;Version=3;New=True;" providerName="System.Data.SQLite" />
+		SQL Server 2005:  <add name="N2CMS" connectionString="Server=(local);Database=N2_Templates;Integrated Security=SSPI"/>
+		SQL Express 2005: <add name="N2CMS" connectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\N2.mdf;Integrated Security=True;User Instance=True" providerName="System.Data.SqlClient"/>
+		SQL Server 2000:  <add name="N2CMS" connectionString="Data Source=SQLServer2000;Database=SQLDatabase2000;User Id=SqlUser2000;Password=SqlPassword2000;Network Library=DBMSSOCN;" providerName="System.Data.SqlClient"/>
+		MySQL:            <add name="N2CMS" connectionString="Data Source=MySQLServer;Database=MySQLDatabase;User Id=MySQLUser;Password=MySQLPassword;" providerName="MySql.Data.MySqlClient"/>
+		SQL Compact 4:    <add name="N2CMS" connectionString="Data Source=|DataDirectory|\n2cms.sdf" providerName="System.Data.SqlServerCe.SqlCeEngine, System.Data.SqlServerCe"/>
+		-->
+	</connectionStrings>
+
+	<appSettings xdt:Transform="InsertIfMissing">
+		<add key="ValidationSettings:UnobtrusiveValidationMode" value="None" xdt:Locator="Match(key)" xdt:Transform="InsertIfMissing"/>
+	</appSettings>
+
+	<system.web>
+		<!-- Comment for .NET < 4 -->
+		<httpRuntime xdt:Transform="InsertIfMissing" requestValidationMode="2.0" />
+		<httpRuntime xdt:Transform="SetAttributes(requestValidationMode)" requestValidationMode="2.0" />
+
+		<authentication mode="Forms" xdt:Transform="InsertIfMissing">
+			<forms>
+				<credentials passwordFormat="SHA1" xdt:Transform="InsertIfMissing">
+					<!-- WARNING: Make sure the admin password was changed manually or using the installer at http://yoursite/n2/installation/begin/. -->
+					<user xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" name="admin" password="fa9beb99e4029ad5a6615399e7bbae21356086b3" />
+				</credentials>
+			</forms>
+		</authentication>
+
+		<authentication mode="Forms" xdt:Transform="SetAttributes(mode)" xdt:Locator="Condition(@mode!='Federated' and @mode!='Windows' and @mode!='None')">
+			<forms>
+				<credentials passwordFormat="SHA1" xdt:Transform="SetAttributes(passwordFormat)" xdt:Locator="Condition(@passwordFormat!='Clear' and @mode!='MD5')"></credentials>
+			</forms>
+		</authentication>
+
+	</system.web>
+
+</configuration>

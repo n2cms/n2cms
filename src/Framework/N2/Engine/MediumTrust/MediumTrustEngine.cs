@@ -9,12 +9,12 @@ namespace N2.Engine.MediumTrust
     /// <remarks>
     /// Since N2 2.0 this is not used since .NET 3.5 and changes to the Windsor container allows usage in medium trust.
     /// </remarks>
-	[Obsolete("Create ContentEngine passing it MediumTrustServiceContainer", true)]
-	public class MediumTrustEngine : ContentEngine
-	{
-		public MediumTrustEngine()
-			: base(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer())
-		{
-		}
-	}
+    [Obsolete("Create ContentEngine passing it MediumTrustServiceContainer", true)]
+    public class MediumTrustEngine : ContentEngine
+    {
+        public MediumTrustEngine()
+            : base(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer())
+        {
+        }
+    }
 }

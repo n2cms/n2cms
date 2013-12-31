@@ -24,51 +24,56 @@
 			var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
-			$(document).on('click', '.titleBar a.command', function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-				self.showDialog($(this).attr('href'));
-			});
+			//$(document).on('click', '.titleBar a.command', function (e) {
+			//	e.preventDefault();
+			//	e.stopPropagation();
+			//	self.showDialog($(this).attr('href'));
+			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
-				.filter(function () { return this.parentNode.className.indexOf('control') != 0; })
+				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
+				.filter(function () { return !this.target || this.target == "_self"; })
 				.each(function () {
-					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
+					var hashIndex = this.href.indexOf("#");
+					if (hashIndex >= 0)
+						this.href = this.href.substr(0, hashIndex) + ((this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag") + this.href.substr(hashIndex);
+					else
+						this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
 				});
 
 			self.makeEditable();
 			self.scroll();
 		},
 
-		showDialog: function (href, dialogOptions) {
-			href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
-			if (dialog) dialog.remove();
-			dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
-			var iframe = document.createElement('iframe');
-			dialog.append(iframe);
-			iframe.src = href;
-			$(iframe).load(function () {
-				var doc = $(iframe.contentWindow.document);
-				doc.find('#toolbar a.cancel').click(function () {
-					dialog.dialog('close');
-				});
-			});
+		//showDialog: function (href, dialogOptions) {
+		//	href += (href.indexOf('?') >= 0 ? '&' : "?") + "modal=true";
+		//	if (dialog) dialog.remove();
+		//	dialog = $('<div id="editorDialog" />').appendTo(document.body).hide();
+		//	var iframe = document.createElement('iframe');
+		//	dialog.append(iframe);
+		//	iframe.src = href;
+		//	$(iframe).load(function () {
+		//		var doc = $(iframe.contentWindow.document);
+		//		doc.find('#toolbar a.cancel').click(function () {
+		//			dialog.dialog('close');
+		//		});
+		//	});
 
-			dialog.dialog($.extend({
-				modal: true,
-				width: Math.min(1000, $(window).width() - 50),
-				height: Math.min(800, $(window).height() - 100),
-				closeOnEscape: true,
-				resizable: true
-			}, dialogOptions));
+		//	dialog.dialog($.extend({
+		//		modal: true,
+		//		width: Math.min(1000, $(window).width() - 50),
+		//		height: Math.min(800, $(window).height() - 100),
+		//		closeOnEscape: true,
+		//		resizable: true
+		//	}, dialogOptions));
 
-			window.n2ScrollBack = (function (x, y) {
-				return function () {
-					// workaround to maintain scroll position
-					setTimeout(function () { window.scrollTo(x, y); }, 10);
-				}
-			})(window.pageXOffset, window.pageYOffset);
-		},
+		//	window.n2ScrollBack = (function (x, y) {
+		//		return function () {
+		//			// workaround to maintain scroll position
+		//			setTimeout(function () { window.scrollTo(x, y); }, 10);
+		//		}
+		//	})(window.pageXOffset, window.pageYOffset);
+		//},
 
 		makeDraggable: function () {
 			$('.definition').draggable({
@@ -104,17 +109,16 @@
 				var url = self.appendSelection(self.urls.editsingle, { below: $t.attr("data-path") })
 					+ "&property=" + $t.attr("data-property")
 					+ "&versionKey=" + $t.attr("data-versionKey")
-					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search);
-				var openDialog = function (e) {
-					e.preventDefault();
-					e.stopPropagation();
-					self.showDialog(url /* + encodeURIComponent(window.location.search.indexOf("scroll=") < 0 ? ("&scroll=" + window.pageYOffset) : "")*/, { width: 700, height: 520 });
-				};
-				$(this).dblclick(openDialog).each(function () {
+					+ "&returnUrl=" + encodeURIComponent(window.location.pathname + window.location.search)
+					+ "&edit=drag";
+				
+				$(this).dblclick(function (e) {
+					window.location = url;
+				}).each(function () {
 					if ($(this).closest("a").length > 0)
 						$(this).click(function (e) { e.preventDefault(); e.stopPropagation(); });
 				});
-				$("<a class='editor' href='" + url + "'>Edit</a>").click(openDialog).appendTo(this);
+				$("<a class='editor n2-icon-pencil' href='" + url + "'></a>").appendTo(this);
 			});
 		},
 		scroll: function () {
@@ -272,9 +276,10 @@
 			var reloaded = false;
 			$.post(url, command, function (data) {
 				reloaded = true;
-				if (data.redirect && command.action == "create" && data.dialog !== "no")
-					self.showDialog(data.redirect);
-				else if (data.redirect)
+				//if (data.redirect && command.action == "create" && data.dialog !== "no")
+				//	self.showDialog(data.redirect);
+				//else
+				if (data.redirect)
 					window.location = data.redirect;
 				else
 					window.location.reload();
@@ -306,7 +311,7 @@
 
 		recalculate: function () {
 			var $sc = $(this.selector)
-			this.closedPos = { top: (30 - $sc.height()) + "px", left: (20 - $sc.width()) + "px" };
+			this.closedPos = { top: (33 - $sc.height()) + "px", left: (5 - $sc.width()) + "px" };
 			if (!this.isOpen()) $sc.css(this.closedPos);
 		},
 
@@ -319,8 +324,9 @@
 			var $sc = $(selector);
 			var self = this;
 
-			$(window).load(function () {
+			$(function () {
 				self.recalculate();
+				setTimeout(function () { self.recalculate(); }, 100);
 			});
 
 			self.open = function (e) {
@@ -360,4 +366,43 @@
 			$sc.find(".open").click(self.open);
 		}
 	};
+
+	window.frameInteraction = {
+		location: "Organize",
+		ready: true,
+		getActions: function () {
+			function create(commandElement) {
+				return {
+					Title: $(commandElement).attr('title'),
+					Id: commandElement.id,
+					Selector: '#' + commandElement.id,
+					Href: commandElement.href,
+					CssClass: commandElement.className,
+					IconClass: $(commandElement).attr('data-icon-class')
+				};
+			};
+			var actions = [];
+			var idCounter = 0;
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+				if (!this.id)
+					this.id = "action" + ++idCounter;
+				actions.push({ Current: create(this) });
+			});
+
+			if (actions.length == 0)
+				return actions;
+			return [{
+				Current: actions[0].Current,
+				Children: actions.slice(1)
+			}];
+		},
+		hideToolbar: function (force) {
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse')
+				.parent().hide();
+		},
+		execute: function(selector){
+			window.location = $(selector).attr('href');
+		}
+	}
+
 })(jQuery);

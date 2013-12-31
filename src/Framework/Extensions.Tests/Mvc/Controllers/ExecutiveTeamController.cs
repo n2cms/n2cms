@@ -6,12 +6,12 @@ using N2.Web.Mvc;
 
 namespace N2.Extensions.Tests.Mvc.Controllers
 {
-	[Controls(typeof(ExecutiveTeamPage))]
-	public class ExecutiveTeamController : ContentController<ExecutiveTeamPage>
-	{
-		public override ActionResult Index()
-		{
-			throw new NotImplementedException();
-		}
-	}
+    [Controls(typeof(ExecutiveTeamPage))]
+    public class ExecutiveTeamController : ContentController<ExecutiveTeamPage>
+    {
+        public override ActionResult Index()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

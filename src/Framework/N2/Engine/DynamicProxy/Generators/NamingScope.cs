@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,48 +14,48 @@
 
 namespace Castle.DynamicProxy.Generators
 {
-	using System.Collections.Generic;
-	using System.Diagnostics;
+    using System.Collections.Generic;
+    using System.Diagnostics;
 
-	public class NamingScope : INamingScope
-	{
-		private readonly IDictionary<string, int> names = new Dictionary<string, int>();
-		private readonly INamingScope parentScope;
+    public class NamingScope : INamingScope
+    {
+        private readonly IDictionary<string, int> names = new Dictionary<string, int>();
+        private readonly INamingScope parentScope;
 
-		public NamingScope()
-		{
-		}
+        public NamingScope()
+        {
+        }
 
-		private NamingScope(INamingScope parent)
-		{
-			parentScope = parent;
-		}
+        private NamingScope(INamingScope parent)
+        {
+            parentScope = parent;
+        }
 
-		public INamingScope ParentScope
-		{
-			get { return parentScope; }
-		}
+        public INamingScope ParentScope
+        {
+            get { return parentScope; }
+        }
 
-		public string GetUniqueName(string suggestedName)
-		{
-			Debug.Assert(string.IsNullOrEmpty(suggestedName) == false,
-			             "string.IsNullOrEmpty(suggestedName) == false");
+        public string GetUniqueName(string suggestedName)
+        {
+            Debug.Assert(string.IsNullOrEmpty(suggestedName) == false,
+                         "string.IsNullOrEmpty(suggestedName) == false");
 
-			int counter;
-			if (!names.TryGetValue(suggestedName, out counter))
-			{
-				names.Add(suggestedName, 0);
-				return suggestedName;
-			}
+            int counter;
+            if (!names.TryGetValue(suggestedName, out counter))
+            {
+                names.Add(suggestedName, 0);
+                return suggestedName;
+            }
 
-			counter++;
-			names[suggestedName] = counter;
-			return suggestedName + "_" + counter.ToString();
-		}
+            counter++;
+            names[suggestedName] = counter;
+            return suggestedName + "_" + counter.ToString();
+        }
 
-		public INamingScope SafeSubScope()
-		{
-			return new NamingScope(this);
-		}
-	}
+        public INamingScope SafeSubScope()
+        {
+            return new NamingScope(this);
+        }
+    }
 }

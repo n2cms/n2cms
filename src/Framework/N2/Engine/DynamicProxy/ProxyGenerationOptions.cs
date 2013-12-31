@@ -14,197 +14,197 @@
 
 namespace Castle.DynamicProxy
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Reflection.Emit;
-	using System.Runtime.Serialization;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+    using System.Runtime.Serialization;
 #if DOTNET40
-	using System.Security;
+    using System.Security;
 #endif
 
 #if SILVERLIGHT
-	public class ProxyGenerationOptions
+    public class ProxyGenerationOptions
 #else
-	[Serializable]
-	public class ProxyGenerationOptions //MT : ISerializable
+    [Serializable]
+    public class ProxyGenerationOptions //MT : ISerializable
 #endif
-	{
-		public static readonly ProxyGenerationOptions Default = new ProxyGenerationOptions();
+    {
+        public static readonly ProxyGenerationOptions Default = new ProxyGenerationOptions();
 
-		private List<object> mixins;
-		internal readonly IList<Attribute> attributesToAddToGeneratedTypes = new List<Attribute>();
-		private readonly IList<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
+        private List<object> mixins;
+        internal readonly IList<Attribute> attributesToAddToGeneratedTypes = new List<Attribute>();
+        private readonly IList<CustomAttributeBuilder> additionalAttributes = new List<CustomAttributeBuilder>();
 
 #if !SILVERLIGHT
-		[NonSerialized]
+        [NonSerialized]
 #endif
-		private MixinData mixinData; // this is calculated dynamically on proxy type creation
+        private MixinData mixinData; // this is calculated dynamically on proxy type creation
 
-		/// <summary>
-		///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
-		/// </summary>
-		/// <param name = "hook">The hook.</param>
-		public ProxyGenerationOptions(IProxyGenerationHook hook)
-		{
-			BaseTypeForInterfaceProxy = typeof(object);
-			Hook = hook;
-		}
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
+        /// </summary>
+        /// <param name = "hook">The hook.</param>
+        public ProxyGenerationOptions(IProxyGenerationHook hook)
+        {
+            BaseTypeForInterfaceProxy = typeof(object);
+            Hook = hook;
+        }
 
-		/// <summary>
-		///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
-		/// </summary>
-		public ProxyGenerationOptions()
-			: this(new AllMethodsHook())
-		{
-		}
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ProxyGenerationOptions" /> class.
+        /// </summary>
+        public ProxyGenerationOptions()
+            : this(new AllMethodsHook())
+        {
+        }
 
 #if !SILVERLIGHT
-		private ProxyGenerationOptions(SerializationInfo info, StreamingContext context)
-		{
-			Hook = (IProxyGenerationHook)info.GetValue("hook", typeof(IProxyGenerationHook));
-			Selector = (IInterceptorSelector)info.GetValue("selector", typeof(IInterceptorSelector));
-			mixins = (List<object>)info.GetValue("mixins", typeof(List<object>));
-			BaseTypeForInterfaceProxy = Type.GetType(info.GetString("baseTypeForInterfaceProxy.AssemblyQualifiedName"));
-		}
+        private ProxyGenerationOptions(SerializationInfo info, StreamingContext context)
+        {
+            Hook = (IProxyGenerationHook)info.GetValue("hook", typeof(IProxyGenerationHook));
+            Selector = (IInterceptorSelector)info.GetValue("selector", typeof(IInterceptorSelector));
+            mixins = (List<object>)info.GetValue("mixins", typeof(List<object>));
+            BaseTypeForInterfaceProxy = Type.GetType(info.GetString("baseTypeForInterfaceProxy.AssemblyQualifiedName"));
+        }
 #endif
 
-		public void Initialize()
-		{
-			if (mixinData == null)
-			{
-				try
-				{
-					mixinData = new MixinData(mixins);
-				}
-				catch (ArgumentException ex)
-				{
-					throw new InvalidMixinConfigurationException(
-						"There is a problem with the mixins added to this ProxyGenerationOptions: " + ex.Message, ex);
-				}
-			}
-		}
+        public void Initialize()
+        {
+            if (mixinData == null)
+            {
+                try
+                {
+                    mixinData = new MixinData(mixins);
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new InvalidMixinConfigurationException(
+                        "There is a problem with the mixins added to this ProxyGenerationOptions: " + ex.Message, ex);
+                }
+            }
+        }
 
 //MT #if !SILVERLIGHT
 //MT #if DOTNET40
-//MT 		[SecurityCritical]
+//MT        [SecurityCritical]
 //MT #endif
-//MT 		public void GetObjectData(SerializationInfo info, StreamingContext context)
-//MT 		{
-//MT 			info.AddValue("hook", Hook);
-//MT 			info.AddValue("selector", Selector);
-//MT 			info.AddValue("mixins", mixins);
-//MT 			info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", BaseTypeForInterfaceProxy.AssemblyQualifiedName);
-//MT 		}
+//MT        public void GetObjectData(SerializationInfo info, StreamingContext context)
+//MT        {
+//MT            info.AddValue("hook", Hook);
+//MT            info.AddValue("selector", Selector);
+//MT            info.AddValue("mixins", mixins);
+//MT            info.AddValue("baseTypeForInterfaceProxy.AssemblyQualifiedName", BaseTypeForInterfaceProxy.AssemblyQualifiedName);
+//MT        }
 //MT #endif
 
-		public IProxyGenerationHook Hook { get; set; }
+        public IProxyGenerationHook Hook { get; set; }
 
-		public IInterceptorSelector Selector { get; set; }
+        public IInterceptorSelector Selector { get; set; }
 
-		public Type BaseTypeForInterfaceProxy { get; set; }
+        public Type BaseTypeForInterfaceProxy { get; set; }
 
-		[Obsolete(
-			"This property is obsolete and will be removed in future versions. Use AdditionalAttributes property instead. " +
-			"You can use AttributeUtil class to simplify creating CustomAttributeBuilder instances for common cases.")]
-		public IList<Attribute> AttributesToAddToGeneratedTypes
-		{
-			get { return attributesToAddToGeneratedTypes; }
-		}
+        [Obsolete(
+            "This property is obsolete and will be removed in future versions. Use AdditionalAttributes property instead. " +
+            "You can use AttributeUtil class to simplify creating CustomAttributeBuilder instances for common cases.")]
+        public IList<Attribute> AttributesToAddToGeneratedTypes
+        {
+            get { return attributesToAddToGeneratedTypes; }
+        }
 
-		public IList<CustomAttributeBuilder> AdditionalAttributes
-		{
-			get { return additionalAttributes; }
-		}
+        public IList<CustomAttributeBuilder> AdditionalAttributes
+        {
+            get { return additionalAttributes; }
+        }
 
-		public MixinData MixinData
-		{
-			get
-			{
-				if (mixinData == null)
-				{
-					throw new InvalidOperationException("Call Initialize before accessing the MixinData property.");
-				}
-				return mixinData;
-			}
-		}
+        public MixinData MixinData
+        {
+            get
+            {
+                if (mixinData == null)
+                {
+                    throw new InvalidOperationException("Call Initialize before accessing the MixinData property.");
+                }
+                return mixinData;
+            }
+        }
 
-		public void AddMixinInstance(object instance)
-		{
-			if (instance == null)
-			{
-				throw new ArgumentNullException("instance");
-			}
+        public void AddMixinInstance(object instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
 
-			if (mixins == null)
-			{
-				mixins = new List<object>();
-			}
+            if (mixins == null)
+            {
+                mixins = new List<object>();
+            }
 
-			mixins.Add(instance);
-			mixinData = null;
-		}
+            mixins.Add(instance);
+            mixinData = null;
+        }
 
-		public object[] MixinsAsArray()
-		{
-			if (mixins == null)
-			{
-				return new object[0];
-			}
+        public object[] MixinsAsArray()
+        {
+            if (mixins == null)
+            {
+                return new object[0];
+            }
 
-			return mixins.ToArray();
-		}
+            return mixins.ToArray();
+        }
 
-		public bool HasMixins
-		{
-			get { return mixins != null && mixins.Count != 0; }
-		}
+        public bool HasMixins
+        {
+            get { return mixins != null && mixins.Count != 0; }
+        }
 
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(this, obj))
-			{
-				return true;
-			}
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
-			var proxyGenerationOptions = obj as ProxyGenerationOptions;
-			if (ReferenceEquals(proxyGenerationOptions, null))
-			{
-				return false;
-			}
+            var proxyGenerationOptions = obj as ProxyGenerationOptions;
+            if (ReferenceEquals(proxyGenerationOptions, null))
+            {
+                return false;
+            }
 
-			// ensure initialization before accessing MixinData
-			Initialize();
-			proxyGenerationOptions.Initialize();
+            // ensure initialization before accessing MixinData
+            Initialize();
+            proxyGenerationOptions.Initialize();
 
-			if (!Equals(Hook, proxyGenerationOptions.Hook))
-			{
-				return false;
-			}
-			if (!Equals(Selector == null, proxyGenerationOptions.Selector == null))
-			{
-				return false;
-			}
-			if (!Equals(MixinData, proxyGenerationOptions.MixinData))
-			{
-				return false;
-			}
-			if (!Equals(BaseTypeForInterfaceProxy, proxyGenerationOptions.BaseTypeForInterfaceProxy))
-			{
-				return false;
-			}
-			return true;
-		}
+            if (!Equals(Hook, proxyGenerationOptions.Hook))
+            {
+                return false;
+            }
+            if (!Equals(Selector == null, proxyGenerationOptions.Selector == null))
+            {
+                return false;
+            }
+            if (!Equals(MixinData, proxyGenerationOptions.MixinData))
+            {
+                return false;
+            }
+            if (!Equals(BaseTypeForInterfaceProxy, proxyGenerationOptions.BaseTypeForInterfaceProxy))
+            {
+                return false;
+            }
+            return true;
+        }
 
-		public override int GetHashCode()
-		{
-			// ensure initialization before accessing MixinData
-			Initialize();
+        public override int GetHashCode()
+        {
+            // ensure initialization before accessing MixinData
+            Initialize();
 
-			var result = Hook != null ? Hook.GetType().GetHashCode() : 0;
-			result = 29*result + (Selector != null ? 1 : 0);
-			result = 29*result + MixinData.GetHashCode();
-			result = 29*result + (BaseTypeForInterfaceProxy != null ? BaseTypeForInterfaceProxy.GetHashCode() : 0);
-			return result;
-		}
-	}
+            var result = Hook != null ? Hook.GetType().GetHashCode() : 0;
+            result = 29*result + (Selector != null ? 1 : 0);
+            result = 29*result + MixinData.GetHashCode();
+            result = 29*result + (BaseTypeForInterfaceProxy != null ? BaseTypeForInterfaceProxy.GetHashCode() : 0);
+            return result;
+        }
+    }
 }

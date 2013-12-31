@@ -3,14 +3,14 @@ using System;
 namespace N2.Details
 {
     /// <summary>Class applicable attribute used to mark properties/details on a content item as editable. This attribute is used in situations were base class properties or details that havn't been blessed with a property are editable. This is used to associate the web control used for the editing with the property on the content item.</summary>
-	/// <example>
-	/// [N2.Details.WithEditable("A certain detail", typeof(TextBox), "Text", 10, "ACertainDetail")]
-	/// public abstract class AbstractBaseItem : N2.ContentItem 
-	/// {
-	///	}
-	/// </example>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-	public class WithEditableAttribute : EditableAttribute
+    /// <example>
+    /// [N2.Details.WithEditable("A certain detail", typeof(TextBox), "Text", 10, "ACertainDetail")]
+    /// public abstract class AbstractBaseItem : N2.ContentItem 
+    /// {
+    /// }
+    /// </example>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    public class WithEditableAttribute : EditableAttribute
     {
         /// <summary>
         /// Initializes a new instance of the WithEditableAttribute class set to use a server control.

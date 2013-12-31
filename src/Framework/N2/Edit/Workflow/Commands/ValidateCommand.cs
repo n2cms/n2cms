@@ -1,4 +1,4 @@
-﻿
+
 namespace N2.Edit.Workflow.Commands
 {
     public class ValidateCommand : CommandBase<CommandContext>

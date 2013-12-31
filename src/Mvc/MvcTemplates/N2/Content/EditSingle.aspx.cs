@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,34 +15,34 @@ using N2.Edit.Versioning;
 
 namespace N2.Management.Content
 {
-	public partial class EditSingle : EditPage
-	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+    public partial class EditSingle : EditPage
+    {
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
 
-			bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
-			btnSave.Enabled = isPublicableByUser;
+            bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+            btnSave.Enabled = isPublicableByUser;
 
-			if (Request["cancel"] == "reloadTop")
-				hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
-			else
-				hlCancel.NavigateUrl = CancelUrl();
+            if (Request["cancel"] == "reloadTop")
+                hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
+            else
+                hlCancel.NavigateUrl = CancelUrl();
 
-			ie.EditableNameFilter = new [] { Request["property"] };
-			ie.CurrentItem = Selection.SelectedItem;
+            ie.EditableNameFilter = new [] { Request["property"] };
+            ie.CurrentItem = Selection.SelectedItem;
             EnsureChildControls();
-		}
+        }
 
-		protected void OnPublishCommand(object sender, CommandEventArgs args)
-		{
-			var ctx = ie.CreateCommandContext();
-			Engine.Resolve<CommandDispatcher>().Save(ctx);
-			var returnUrl = ctx.Content.Url.ToUrl()
-				.SetQueryParameter(PathData.VersionIndexQueryKey, ctx.Content.VersionIndex)
-				.SetQueryParameter("edit", "drag");
+        protected void OnPublishCommand(object sender, CommandEventArgs args)
+        {
+            var ctx = ie.CreateCommandContext();
+            Engine.Resolve<CommandDispatcher>().Save(ctx);
+            var returnUrl = ctx.Content.Url.ToUrl()
+                .SetQueryParameter(PathData.VersionIndexQueryKey, ctx.Content.VersionIndex)
+                .SetQueryParameter("edit", "drag");
 
-			Refresh(Selection.SelectedItem, returnUrl);
-		}
-	}
+            Refresh(Selection.SelectedItem, returnUrl);
+        }
+    }
 }

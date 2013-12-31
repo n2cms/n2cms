@@ -1,22 +1,22 @@
-﻿using System;
+using System;
 using System.Collections;
 
 namespace N2.Engine.Globalization
 {
-	public class DictionaryScope : IDisposable
-	{
+    public class DictionaryScope : IDisposable
+    {
         IDictionary dictionary;
-		object previousValue = null;
+        object previousValue = null;
         object key;
 
-		public DictionaryScope(IDictionary dictionary, object key, object value)
+        public DictionaryScope(IDictionary dictionary, object key, object value)
         {
             if (dictionary.Contains(key))
-				previousValue = dictionary[key];
-			dictionary[key] = value;
+                previousValue = dictionary[key];
+            dictionary[key] = value;
             this.key = key;
             this.dictionary = dictionary;
-		}
+        }
 
         #region IDisposable Members
 

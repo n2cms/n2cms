@@ -1,11 +1,11 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
+﻿<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import namespace="N2.Definitions"%>
 <asp:Content ContentPlaceHolderID="Toolbar" ID="ct" runat="server">
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
-	<asp:CustomValidator ID="cvPermission" CssClass="validator info" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
+	<asp:CustomValidator ID="cvPermission" CssClass="alert alert-margin" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType">
 		<div class="cf">
 		<asp:PlaceHolder runat="server">
@@ -13,7 +13,8 @@
 			<div class="type cf d<%= i %> a<%= i % 2 %>">
 			<% int templateIndex = 0; %>
 			<% foreach(TemplateDefinition template in GetTemplates(AvailableDefinitions[i])){ %>
-				<a href="<%= GetEditUrl(template.Definition) %>" style="background-image:url(<%= ResolveUrl(template.Definition.IconUrl) %>)" class="<%= template.Definition.TemplateKey != null ? "template" : "definition"  %> t<%= templateIndex %>">
+				<a href="<%= GetEditUrl(template.Definition) %>" style=" <%= string.IsNullOrEmpty(template.Definition.IconClass) ? string.Format("padding-left:22px; background-image:url({0})", ResolveUrl(template.Definition.IconUrl)) : "" %>" class="<%= template.Definition.TemplateKey != null ? "template" : "definition"  %> t<%= templateIndex %>">
+					<b class="<%= template.Definition.IconClass %>"></b>
 					<span class="title"><%= GetLocalizedString("Definitions", template.Definition.Discriminator + template.Name, "Title") ?? template.Title %></span>
 					<span class="description"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Description") ?? template.Description %></span>
 				</a>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,67 +8,67 @@ using N2.Definitions;
 
 namespace Dinamico
 {
-	public static class Defaults
-	{
-		public static class Containers
-		{
-			public const string Metadata = "Metadata";
-			public const string Content = "Content";
-			public const string Site = "Site";
-			public const string Advanced = "Advanced";
-		}
-		
-		public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
-		{
-			if (string.IsNullOrEmpty(preferredSize))
-				return ImageSize(fallbackToZoneNamed);
-			return preferredSize;
-		}
+    public static class Defaults
+    {
+        public static class Containers
+        {
+            public const string Metadata = "Metadata";
+            public const string Content = "Content";
+            public const string Site = "Site";
+            public const string Advanced = "Advanced";
+        }
 
-		public static string ImageSize(string zoneName)
-		{
-			switch (zoneName)
-			{
-				case "SliderArea":
-				case "PreContent":
-				case "PostContent":
-					return "wide";
-				default:
-					return "half";
-			}
-		}
+        public static string ImageSize(string preferredSize, string fallbackToZoneNamed)
+        {
+            if (string.IsNullOrEmpty(preferredSize))
+                return ImageSize(fallbackToZoneNamed);
+            return preferredSize;
+        }
+
+        public static string ImageSize(string zoneName)
+        {
+            switch (zoneName)
+            {
+                case "SliderArea":
+                case "PreContent":
+                case "PostContent":
+                    return "wide";
+                default:
+                    return "half";
+            }
+        }
 
 
-		/// <summary>
-		/// Picks the translation best matching the browser-language or the first translation in the list
-		/// </summary>
-		/// <param name="request"></param>
-		/// <param name="currentPage"></param>
-		/// <returns></returns>
-		public static ContentItem SelectLanguage(this HttpRequestBase request, ContentItem currentPage)
-		{
-			var start = Find.ClosestOf<IStartPage>(currentPage) ?? N2.Find.StartPage;
-			if (start == null) return null;
+        /// <summary>
+        /// Picks the translation best matching the browser-language or the first translation in the list
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="currentPage"></param>
+        /// <returns></returns>
+        public static ContentItem SelectLanguage(this HttpRequestBase request, ContentItem currentPage)
+        {
+            var start = Find.ClosestOf<IStartPage>(currentPage) ?? N2.Find.StartPage;
+            if (start == null) return null;
 
-			if (start is LanguageIntersection)
-			{
-				var translations = GetTranslations(currentPage).ToList();
+            if (start is LanguageIntersection)
+            {
+                var translations = GetTranslations(currentPage).ToList();
 
-				if (request.UserLanguages == null)
-					return translations.FirstOrDefault();
+                if (request.UserLanguages == null)
+                    return translations.FirstOrDefault();
 
-				var selectedlanguage = request.UserLanguages.Select(ul => translations.FirstOrDefault(t => t.LanguageCode == ul))
-					.Where(t => t != null)
-					.FirstOrDefault();
-				return selectedlanguage ?? translations.FirstOrDefault();
-			}
+                var selectedlanguage = request.UserLanguages.Select(ul => translations.FirstOrDefault(t => t.LanguageCode == ul))
+                    .Where(t => t != null)
+                    .FirstOrDefault();
+                return selectedlanguage ?? translations.FirstOrDefault();
+            }
 
-			return start;
-		}
+            return start;
+        }
 
-		private static IEnumerable<StartPage> GetTranslations(ContentItem currentPage)
-		{
-			return currentPage.GetChildren().OfType<StartPage>();
-		}
-	}
+        private static IEnumerable<StartPage> GetTranslations(ContentItem currentPage)
+        {
+            return currentPage.GetChildren().OfType<StartPage>();
+        }
+    }
 }

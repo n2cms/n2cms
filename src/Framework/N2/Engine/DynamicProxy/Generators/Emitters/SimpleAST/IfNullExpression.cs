@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,29 +14,29 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters.SimpleAST
 {
-	using System.Reflection.Emit;
+    using System.Reflection.Emit;
 
-	public class IfNullExpression : Expression
-	{
-		private readonly Expression ifNotNull;
-		private readonly Expression ifNull;
-		private readonly Reference reference;
+    public class IfNullExpression : Expression
+    {
+        private readonly Expression ifNotNull;
+        private readonly Expression ifNull;
+        private readonly Reference reference;
 
-		public IfNullExpression(Reference reference, Expression ifNull, Expression ifNotNull)
-		{
-			this.reference = reference;
-			this.ifNull = ifNull;
-			this.ifNotNull = ifNotNull;
-		}
+        public IfNullExpression(Reference reference, Expression ifNull, Expression ifNotNull)
+        {
+            this.reference = reference;
+            this.ifNull = ifNull;
+            this.ifNotNull = ifNotNull;
+        }
 
-		public override void Emit(IMemberEmitter member, ILGenerator gen)
-		{
-			ArgumentsUtil.EmitLoadOwnerAndReference(reference, gen);
-			var notNull = gen.DefineLabel();
-			gen.Emit(OpCodes.Brtrue_S, notNull);
-			ifNull.Emit(member, gen);
-			gen.MarkLabel(notNull);
-			ifNotNull.Emit(member, gen);
-		}
-	}
+        public override void Emit(IMemberEmitter member, ILGenerator gen)
+        {
+            ArgumentsUtil.EmitLoadOwnerAndReference(reference, gen);
+            var notNull = gen.DefineLabel();
+            gen.Emit(OpCodes.Brtrue_S, notNull);
+            ifNull.Emit(member, gen);
+            gen.MarkLabel(notNull);
+            ifNotNull.Emit(member, gen);
+        }
+    }
 }

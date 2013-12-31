@@ -1,0 +1,25 @@
+﻿<a class='page-action' 
+	href="{{action.Current.Url}}"
+	target="{{action.Current.Target}}"
+	ng-controller="FrameActionCtrl" 
+	ng-show="action"
+	ng-click="manipulator.click(action.Current.Selector)"
+	x-background-image="action.Current.IconUrl">
+	<b class='ico' ng-show='action.Current.IconClass || action.Current.IconUrl' ng-class='action.Current.IconClass' x-background-image='action.Current.IconUrl'></b>
+	{{action.Current.Title}}
+</a>
+
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-show="item.Children.length">
+	<b class="caret"></b>
+</a>
+
+<ul class="dropdown-menu" ng-show="item.Children.length">
+	<li ng-repeat="child in item.Children">
+		<a ng-click="manipulator.click(child.Current.Selector)"
+			target="{{child.Current.Target}}"
+			href="{{child.Current.Url}}">
+			<b class='ico' ng-show='child.Current.IconClass || child.Current.IconUrl' ng-class='child.Current.IconClass' x-background-image='child.Current.IconUrl'></b>
+			{{child.Current.Title}}
+		</a>
+	</li>
+</ul>
