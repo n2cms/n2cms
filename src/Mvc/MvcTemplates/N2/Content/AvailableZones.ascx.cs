@@ -173,7 +173,7 @@ namespace N2.Edit
 
         public void LoadZonesOf(Definitions.ItemDefinition definition, ContentItem contentItem)
         {
-            DataSource = definition.AvailableZones.Union(contentItem.Children.FindZoneNames().Where(zn => !string.IsNullOrEmpty(zn)).Select(zn => new AvailableZoneAttribute(zn, zn)));
+	        DataSource = definition.AvailableZones.Union(contentItem.Children.FindZoneNames().Where(zn => !string.IsNullOrEmpty(zn)).Select(zn => new AvailableZoneAttribute(zn, zn)));
             DataBind();
         }
     }
