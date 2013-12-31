@@ -443,20 +443,28 @@ namespace N2.Web
 		public MenuPartRenderer(MenuPart menuPart)
 		{
 			this.menuPart = menuPart;
-			var page = Content.Current.Page;
+			var page = Context.CurrentPage;
 
 			// Need the current page ID regardless of cached database or not to render selected page correctly.
 			currentPageId = page == null ? 0 : page.ID;
 
-			var cacheKey = String.Concat(N2.Context.CurrentPage.ID.ToString(), "+", menuPart.AncestralTrail);
-			var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
-			if (cacheData == null)
-			{
-				cacheData = BuildNavigationTree(page);
-				System.Web.Hosting.HostingEnvironment.Cache.Add(cacheKey, cacheData, null, DateTime.Now.AddSeconds(15),
-					System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
-			}
-			database = (List<ContentTreeNode>)cacheData;
+
+		    if (page != null)
+		    {
+		        var cacheKey = String.Concat(page.ID.ToString(), "+", menuPart.AncestralTrail);
+		        var cacheData = System.Web.Hosting.HostingEnvironment.Cache.Get(cacheKey);
+		        if (cacheData == null)
+		        {
+		            cacheData = BuildNavigationTree(page);
+		            System.Web.Hosting.HostingEnvironment.Cache.Add(cacheKey, cacheData, null, DateTime.Now.AddSeconds(15),
+		                System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, null);
+		        }
+		        database = (List<ContentTreeNode>) cacheData;
+		    }
+		    else
+		    {
+		        database = new List<ContentTreeNode>();
+		    }
 		}
 
 		/// <summary>
