@@ -67,10 +67,18 @@ namespace Dinamico.Controllers
 
         private IEnumerable<ContentItem> GetSearchResults(ContentItem root, string text, int take)
         {
-            var query = Query.For(text).Below(root).ReadableBy(User, Roles.GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
+            var query = Query.For(text).Below(root).ReadableBy(User, GetRolesForUser).Except(Query.For(typeof(ISystemNode)));
             var hits = Engine.Resolve<IContentSearcher>().Search(query).Hits.Select(h => h.Content);
             return hits;
         }
+
+		protected virtual string[] GetRolesForUser(string username)
+		{
+			if (Roles.Enabled)
+				return Roles.GetRolesForUser(username);
+			else
+				return new [] { N2.Security.AuthorizedRole.Everyone };
+		}
 
         [ContentOutputCache]
         public ActionResult Translations(int id)
