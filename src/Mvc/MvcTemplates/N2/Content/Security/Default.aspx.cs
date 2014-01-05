@@ -36,13 +36,6 @@ namespace N2.Edit.Security
             base.OnLoad(e);
         }
 
-
-
-        protected void rptPermissions_ItemDataBound(object sender, RepeaterItemEventArgs args)
-        {
-            CheckBox cb = (CheckBox)args.Item.FindControl("cbRole");
-        }
-
         protected void rptPermissions_ItemCreated(object sender, RepeaterItemEventArgs args)
         {
             if(args.Item.ItemType == ListItemType.Item || args.Item.ItemType == ListItemType.AlternatingItem)
