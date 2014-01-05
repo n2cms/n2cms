@@ -1,8 +1,11 @@
-using System.Collections.Generic;
 
 namespace N2.Collections
 {
-    /// <summary>
+	using System;
+	using System.Collections.Generic;
+
+
+	/// <summary>
     /// Filters based on start index and count.
     /// </summary>
     public class CountFilter : ItemFilter
@@ -13,8 +16,8 @@ namespace N2.Collections
         /// <param name="maxCount">The maximum number of items to leave.</param>
         public CountFilter(int startIndex, int maxCount)
         {
-            this.startIndex = startIndex;
-            this.maxCount = maxCount > 0 ? maxCount : int.MaxValue;
+            this.startIndex = startIndex >= 0 ? startIndex : 0;
+            this.maxCount = maxCount >= 0 ? maxCount : 0;
         } 
         #endregion
 
@@ -47,10 +50,22 @@ namespace N2.Collections
         #region Methods
         public override void Filter(IList<ContentItem> items)
         {
-            while (items.Count > maxCount + startIndex)
-                items.RemoveAt(items.Count - 1);
-            while (items.Count > maxCount)
-                items.RemoveAt(0);
+	        int frontSurplus = Math.Min(items.Count, startIndex);
+	        int endSurplus = items.Count - frontSurplus - maxCount;
+
+	        if (startIndex >= items.Count || maxCount == 0 || frontSurplus + endSurplus >= items.Count)
+	        {
+		        items.Clear();
+	        }
+			else if (startIndex == 0 && maxCount >= items.Count)
+			{
+				// select all, hence do nothing
+			}
+	        else
+	        {
+				for (int i = 0; i < frontSurplus; i++) items.RemoveAt(0);
+				for (int i = 0; i < endSurplus; i++) items.RemoveAt(items.Count - 1);		        
+	        }
         }
 
         /// <summary>This method doesn't consider the input item at all. Instead it increments and compares against this filter's CurrentIndex property.</summary>
