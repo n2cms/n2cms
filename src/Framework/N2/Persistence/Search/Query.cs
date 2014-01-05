@@ -176,7 +176,7 @@ namespace N2.Persistence.Search
         /// <returns>The query itself.</returns>
         public Query ReadableBy(IPrincipal user, Func<string, string[]> getRolesForUser)
         {
-            return ReadableBy(user.Identity.IsAuthenticated ? getRolesForUser(user.Identity.Name) : new[] { "Everyone" });
+            return ReadableBy(user.Identity.IsAuthenticated ? getRolesForUser(user.Identity.Name) : new[] { N2.Security.AuthorizedRole.Everyone });
         }
 
         /// <summary>Skip and take results.</summary>
