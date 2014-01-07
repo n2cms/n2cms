@@ -13,6 +13,7 @@ namespace N2.Edit.Wizard.Items
     [WithEditableTitle("Title", 10)]
     [Throwable(AllowInTrash.No)]
     [Indexable(IsIndexable = false)]
+	[Versionable(AllowVersions.No)]
     public class MagicLocation : ContentItem, ISystemNode
     {
         public bool HasLocation
