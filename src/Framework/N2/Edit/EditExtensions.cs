@@ -179,7 +179,7 @@ namespace N2.Edit
         }
     }
 
-    internal class CreatorItem : ContentItem, ISystemNode
+    internal class CreatorItem : ContentItem, ISystemNode, IStyleable
     {
         public CreatorItem()
         {
@@ -190,7 +190,7 @@ namespace N2.Edit
             : this()
         {
             this.url = engine.ManagementPaths.GetSelectNewItemUrl(parent).ToUrl().AppendQuery("returnUrl", engine.Resolve<IWebContext>().HttpContext.Request.RawUrl);
-            this.Title = "<span class='creator-add'>&nbsp;</span>" + (Utility.GetGlobalResourceString("Management", "Add") ?? "Add...");
+            this.Title = Utility.GetGlobalResourceString("Management", "Add") ?? "Add...";
         }
 
         string url;
@@ -198,5 +198,10 @@ namespace N2.Edit
         {
             get { return url; }
         }
-    }
+
+		public ElementStyle Style
+		{
+			get { return ElementStyle.Empty.Prefix("<b class='n2-icon-plus-sign'></b> "); }
+		}
+	}
 }

@@ -158,6 +158,7 @@
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
     <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Web\IStyleable.cs" />
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
