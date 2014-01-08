@@ -11,7 +11,7 @@ namespace Dinamico.Controllers
 
 		public override ActionResult Index()
 		{
-			if (CurrentItem == null || String.IsNullOrEmpty(CurrentItem.TemplateKey))
+			if (CurrentItem == null)
 			{
 				//TODO: Maybe could search for an error page and display that instead?
 

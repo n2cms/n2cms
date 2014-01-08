@@ -25,7 +25,7 @@
 				<asp:TemplateField>
 					<ItemTemplate>
 						<asp:HyperLink ID="hlNew" NavigateUrl='<%# Eval("Location.Url") %>' Visible='<%# Eval("HasLocation") %>' runat="server">
-							<asp:Image ID="imgIco" ImageUrl='<%# Engine.ManagementPaths.ResolveResourceUrl((string)Eval("Location.IconUrl")) %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+							<asp:Image ID="imgIco" ImageUrl='<%# Engine.ManagementPaths.ResolveResourceUrl((string)Eval("Location.IconUrl")) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("Location.IconUrl")) %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
 							<%# Eval("Location.Title")%>
 						</asp:HyperLink>
 					</ItemTemplate>
