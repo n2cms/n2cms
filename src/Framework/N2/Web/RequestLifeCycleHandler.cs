@@ -230,36 +230,36 @@ namespace N2.Web
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
+			//if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
 
-			//TODO: Add ForceConsistentUrls property?
+			////TODO: Add ForceConsistentUrls property?
 
-			HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
-			Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
-			string
-				rawUrl = new Uri(requestBaseUrl, httpContext.Request.RawUrl).ToString(),
-				preferredUrl = GetPreferredUrl(webContext.CurrentPage, requestBaseUrl);
+			//HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
+			//Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
+			//string
+			//	rawUrl = new Uri(requestBaseUrl, httpContext.Request.RawUrl).ToString(),
+			//	preferredUrl = GetPreferredUrl(webContext.CurrentPage, requestBaseUrl);
 
-			if (!rawUrl.Equals(preferredUrl, StringComparison.InvariantCulture))
-			{
-				int queryStringIndex = rawUrl.IndexOf('?');
-				if (queryStringIndex < 0) // Not equal to SafeUrl - redirect
-					RedirectPermanent(httpContext.Response, preferredUrl);
-				else if (queryStringIndex != preferredUrl.Length)
-				{
-					// There was a query string - this could have caused the difference
-					string
-						queryString = rawUrl.Substring(queryStringIndex),
-						destination = preferredUrl + queryString;
-					RedirectPermanent(httpContext.Response, destination);
-				}
-			}
-			else
-			{
-				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
-				adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
-			}
+			//if (!rawUrl.Equals(preferredUrl, StringComparison.InvariantCulture))
+			//{
+			//	int queryStringIndex = rawUrl.IndexOf('?');
+			//	if (queryStringIndex < 0) // Not equal to SafeUrl - redirect
+			//		RedirectPermanent(httpContext.Response, preferredUrl);
+			//	else if (queryStringIndex != preferredUrl.Length)
+			//	{
+			//		// There was a query string - this could have caused the difference
+			//		string
+			//			queryString = rawUrl.Substring(queryStringIndex),
+			//			destination = preferredUrl + queryString;
+			//		RedirectPermanent(httpContext.Response, destination);
+			//	}
+			//}
+			//else
+			//{
+			//	var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
+			//	adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
+			//}
 		}
 
 		protected virtual void Application_Error(object sender, EventArgs e)
