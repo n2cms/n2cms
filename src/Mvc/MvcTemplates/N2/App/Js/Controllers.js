@@ -36,23 +36,23 @@ function getParentPath(path) {
 
 function Uri(uri) {
 	this.uri = uri;
-	this.appendQuery = function (key, value) {
+	this.appendQuery = function(key, value) {
 		if (uri.indexOf("?") >= 0)
 			this.uri += "&" + key + "=" + value;
 		else
 			this.uri += "?" + key + "=" + value;
 		return this;
-	}
-	this.toString = function () {
+	};
+	this.toString = function() {
 		return this.uri;
-	}
+	};
 };
 
 function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 
-	$scope.appendPreviewOptions = function (url) {
+	$scope.appendPreviewOptions = function(url) {
 		if (url == "Empty.aspx")
 			return url;
 
@@ -61,17 +61,16 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}
 
 		return url;
-	}
+	};
 
-	$scope.setPreviewQuery = function (key, value) {
+	$scope.setPreviewQuery = function(key, value) {
 		if (value)
 			$scope.Context.PreviewQueries[key] = value;
 		else
 			delete $scope.Context.PreviewQueries[key];
-	}
-	
-	$scope.appendQuery = function(url, key, value)
-	{
+	};
+
+	$scope.appendQuery = function(url, key, value) {
 		if (!url) return url;
 
 		var hashIndex = url.indexOf("#");
@@ -84,10 +83,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		if (url.match(re))
 			return url.replace(re, '$1' + keyValue + '$2');
 		else
-			return url + (url.indexOf("?") < 0 ? "?" : "&") + keyValue
-	}
+			return url + (url.indexOf("?") < 0 ? "?" : "&") + keyValue;
+	};
 
-	$scope.appendSelection = function (url, appendVersionIndex) {
+	$scope.appendSelection = function(url, appendVersionIndex) {
 		var ctx = $scope.Context;
 		if (!ctx.CurrentItem)
 			return url;
@@ -95,12 +94,12 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		if (appendVersionIndex)
 			url += "&versionIndex=" + ctx.CurrentItem.VersionIndex;
 		return url;
-	}
+	};
 
-	$scope.previewUrl = function (url) {
+	$scope.previewUrl = function(url) {
 		if (window.frames.preview)
 			window.frames.preview.window.location = $scope.appendPreviewOptions(url) || "Empty.aspx";
-	}
+	};
 
 	decorate(FrameContext, "refresh", function (ctx) {
 		// legacy refresh call from frame
@@ -137,8 +136,10 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			PreviewUrl: "Empty.aspx"
 		},
 		SelectedNode: {
+			
 		},
 		ContextMenu: {
+			
 		},
 		Partials: {
 			Management: "App/Partials/Loading.html"
@@ -147,7 +148,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		User: {
 			Settings: {}
 		}
-	}
+	};
 
 	function translateMenuRecursive(node) {
 		var translation = node.Current && node.Current.Name && Translate(node.Current.Name);
@@ -167,13 +168,13 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 
 	$scope.watchChanges = function(watchExpression, listener, objectEquality) {
 		var firstTime = true;
-		$scope.$watch(watchExpression, function () {
+		$scope.$watch(watchExpression, function() {
 			if (firstTime)
 				firstTime = false;
 			else
-				listener.apply($scope, arguments)
+				listener.apply($scope, arguments);
 		}, objectEquality);
-	}
+	};
 
 	Context.full({
 		view: viewMatch && viewMatch[1],
@@ -198,32 +199,31 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 		}, true);
 	});
 
-	$scope.refreshContext = function (node, versionIndex, keepFlags, callback) {
-	    Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function (ctx) {
-	        //console.log("select -> contextchanged", node, versionIndex, ctx);
-	        if (keepFlags)
-	            angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
-	        else
-	            angular.extend($scope.Context, ctx);
-	        callback && callback(ctx);
-	        $scope.$emit("contextchanged", $scope.Context);
-	    });
-	}
+	$scope.refreshContext = function(node, versionIndex, keepFlags, callback) {
+		Context.get(Content.applySelection({ view: $scope.Context.User.Settings.ViewPreference, versionIndex: versionIndex }, node.Current), function(ctx) {
+			//console.log("select -> contextchanged", node, versionIndex, ctx);
+			if (keepFlags)
+				angular.extend($scope.Context, ctx, { Flags: $scope.Context.Flags });
+			else
+				angular.extend($scope.Context, ctx);
+			callback && callback(ctx);
+			$scope.$emit("contextchanged", $scope.Context);
+		});
+	};
 
-	$scope.select = function (nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
+	$scope.select = function(nodeOrPath, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl) {
 		if (typeof nodeOrPath == "string") {
 			var path = nodeOrPath;
 			var node = findNodeRecursive($scope.Context.Content, path);
 			if (!node) {
 				var parentNode = findNodeRecursive($scope.Context.Content, getParentPath(path));
 				if (!preventReload && parentNode) {
-					$scope.reloadChildren(parentNode, function () {
+					$scope.reloadChildren(parentNode, function() {
 						// this is meant to refresh an item with changed path
 						$scope.select(path, versionIndex, keepFlags, forceContextRefresh, /*preventReload*/true, /*disregardNodeUrl*/true);
 					});
 				}
-			}
-			else
+			} else
 				return $scope.select(node, versionIndex, keepFlags, forceContextRefresh, preventReload, disregardNodeUrl);
 		} else if (typeof nodeOrPath == "object") {
 			var node = nodeOrPath;
@@ -231,7 +231,7 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 			if (!node)
 				return false;
 
-			if (!forceContextRefresh){
+			if (!forceContextRefresh) {
 				if ($scope.Context.AppliesTo == node.Current.PreviewUrl) {
 					//console.log("exiting due to same", node.Current.PreviewUrl);
 					return true;
@@ -242,30 +242,30 @@ function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Conten
 				$scope.Context.AppliesTo = node.Current.PreviewUrl;
 			}
 
-			$timeout(function () {
-			    $scope.refreshContext(node, versionIndex, keepFlags)
+			$timeout(function() {
+				$scope.refreshContext(node, versionIndex, keepFlags)
 			}, 200);
 			return true;
 		}
-	}
+	};
 
-	$scope.reloadChildren = function (parentPathOrNode, callback) {
+	$scope.reloadChildren = function(parentPathOrNode, callback) {
 		var node = typeof parentPathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, parentPathOrNode)
 			: parentPathOrNode;
 
 		Content.loadChildren(node, callback);
-	}
+	};
 
-	$scope.reloadNode = function (pathOrNode, callback) {
-	    var node = typeof pathOrNode == "string"
+	$scope.reloadNode = function(pathOrNode, callback) {
+		var node = typeof pathOrNode == "string"
 			? findNodeRecursive($scope.Context.Content, pathOrNode)
 			: pathOrNode;
 
-	    Content.reload(node, function (node) {
-	        callback && callback(node);
-	    });
-	}
+		Content.reload(node, function(node) {
+			callback && callback(node);
+		});
+	};
 
 	$scope.isFlagged = function (flag) {
 		return jQuery.inArray(flag, $scope.Context.Flags) >= 0;
@@ -410,9 +410,9 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 	});
 	$scope.sort = new SortHelperFactory($scope, Content);
 	$scope.parts = {
-		show: function (node) {
+		show: function(node) {
 			node.Loading = true;
-			Content.children(Content.applySelection({ pages: false }, node.Current), function (data) {
+			Content.children(Content.applySelection({ pages: false }, node.Current), function(data) {
 				var zones = {};
 				for (var i in data.Children) {
 					var part = data.Children[i];
@@ -431,17 +431,17 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 						Current: { Title: zone, IconClass: "n2-icon-columns silver", MetaInformation: [] },
 						HasChildren: true,
 						Children: zones[zone]
-					}
+					};
 					node.Parts.push(child);
 				}
 
 				delete node.Loading;
 			});
 		},
-		hide: function (node) {
+		hide: function(node) {
 			delete node.Parts;
 		}
-	}
+	};
 	$scope.scope = new ScopeHandler($scope, Content);
 }
 
@@ -489,7 +489,7 @@ function MenuCtrl($rootScope, $scope, Security) {
 		$scope.Context.Flags.push("View" + viewPreference);
 	});
 	$rootScope.$on("contextchanged", function (scope, ctx) {
-		ctx.Flags.push("View" + ctx.User.Settings.ViewPreference)
+		ctx.Flags.push("View" + ctx.User.Settings.ViewPreference);
 	});
 }
 
@@ -523,11 +523,11 @@ function MenuNodeLastChildCtrl($scope, $timeout) {
 }
 
 function PageActionCtrl($scope, Content) {
-	$scope.dispose = function () {
-		Content.remove(Content.applySelection({}, node.Current), function () {
+	$scope.dispose = function() {
+		Content.remove(Content.applySelection({}, node.Current), function() {
 			$scope.reloadChildren(getParentPath($scope.Context.CurrentItem.Path));
 		});
-	}
+	};
 }
 
 function PreviewCtrl($scope, $rootScope) {
@@ -542,45 +542,45 @@ function PreviewCtrl($scope, $rootScope) {
 }
 
 function AddCtrl($scope, Content) {
-	$scope.loadDefinitions = function (node) {
+	$scope.loadDefinitions = function(node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.definitions(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
+		Content.definitions(Content.applySelection({}, $scope.Context.CurrentItem), function(data) {
 			node.Loading = false;
 			node.Children = data.Definitions;
 		});
-	}
+	};
 }
 
 function LanguageCtrl($scope, Content) {
-	$scope.loadLanguages = function (node) {
+	$scope.loadLanguages = function(node) {
 		node.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.translations(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
+		Content.translations(Content.applySelection({}, $scope.Context.CurrentItem), function(data) {
 			node.Loading = false;
 			node.Children = data.Translations;
 		});
-	}
+	};
 }
 
 function VersionsCtrl($scope, Content) {
-	$scope.loadVersions = function (node) {
+	$scope.loadVersions = function(node) {
 		$scope.Selected = node.Current.Path;
 		node.Loading = true;
-		Content.versions(Content.applySelection({}, $scope.Context.CurrentItem), function (data) {
+		Content.versions(Content.applySelection({}, $scope.Context.CurrentItem), function(data) {
 			node.Loading = false;
 			node.Children = data.Versions;
 		});
-	}
+	};
 }
 
 function PageInfoCtrl($scope, Content) {
-	$scope.exctractLanguage = function (language) {
+	$scope.exctractLanguage = function(language) {
 		return language && language.replace(/[(].*?[)]/, "");
-	}
-	$scope.toggleInfo = function () {
+	};
+	$scope.toggleInfo = function() {
 		$scope.$parent.showInfo = !$scope.$parent.showInfo;
-	}
+	};
 	$scope.definitions = {};
 	Content.definitions({}, function (data) {
 		for (var i in data.Definitions) {
