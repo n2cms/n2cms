@@ -77,9 +77,7 @@
 		<asp:Repeater ID="rptPermittedRoles" runat="server" DataSource="<%# GetAvailableRoles() %>"><ItemTemplate>
 			<tr>
 				<td><%# Container.DataItem %></td>
-				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" 
-							  OnItemDataBound="rptPermissions_ItemDataBound"
-							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
+				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
 					<td>
 						<asp:CheckBox ID="cbRole" runat="server" 
 									  Checked="<%# IsRolePermitted(GetRole(Container), (Permission)Container.DataItem) %>" 
