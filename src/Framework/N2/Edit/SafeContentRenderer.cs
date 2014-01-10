@@ -16,13 +16,11 @@ namespace N2.Edit {
     [Service(typeof(ISafeContentRenderer))]
     public class SafeContentRenderer : ISafeContentRenderer
     {
-        protected readonly EngineSection config;
-        protected bool AllowHtml;
+        protected bool encodeHtml;
 
-        public SafeContentRenderer(EngineSection config)
+        public SafeContentRenderer(HostSection config)
         {
-            this.config = config;
-            AllowHtml = config.DefaultHtmlEscape;
+            encodeHtml = config.HtmlSanitize.EncodeHtml;
         }
 
         /// <summary>
@@ -32,16 +30,16 @@ namespace N2.Edit {
         /// <returns>The html encoded value</returns>
         public virtual string HtmlEncode(string value)
         {
-            return (AllowHtml ? value : HttpUtility.HtmlEncode(value));
+            return (encodeHtml ? HttpUtility.HtmlEncode(value) : value);
         }
 
         public virtual void HtmlEncode(string value, TextWriter writer)
         {
-            writer.Write(AllowHtml ? value : HttpUtility.HtmlEncode(value));
+			writer.Write(HtmlEncode(value));
         }
 
         /// <summary>
-        /// Strip unsafe html tags from the supplied html string.
+        /// Strip unsafe html tags from the supplied html string. This implementation doesn't do any stripping. To secure content override this method in a subclass and perform real stripping.
         /// </summary>
         /// <param name="value">String to strip unsafe html tags from</param>
         /// <returns>A safe html string</returns>
@@ -52,7 +50,7 @@ namespace N2.Edit {
 
         public virtual void GetSafeHtml(string value, TextWriter writer)
         {
-            writer.Write(value);
+            writer.Write(GetSafeHtml(value));
         }
     }
 }
