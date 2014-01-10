@@ -14,6 +14,7 @@
 		<LuceneSearch-NugetFolder>$(DeployFolder)\$(DeployPrefix)LuceneSearch_Nuget</LuceneSearch-NugetFolder>
 		<SQLite-NugetFolder>$(DeployFolder)\$(DeployPrefix)SQLite_Nuget</SQLite-NugetFolder>
     <Razor-NugetFolder>$(DeployFolder)\$(DeployPrefix)Razor_Nuget</Razor-NugetFolder>
+		<Mvc-NugetFolder>$(DeployFolder)\$(DeployPrefix)Mvc_Nuget</Mvc-NugetFolder>
     <ReusableParts-NugetFolder>$(DeployFolder)\$(DeployPrefix)ReusableParts_Nuget</ReusableParts-NugetFolder>
     <Windsor3-NugetFolder>$(DeployFolder)\$(DeployPrefix)Windsor3_Nuget</Windsor3-NugetFolder>
     <MongoDB-NugetFolder>$(DeployFolder)\$(DeployPrefix)MongoDB_Nuget</MongoDB-NugetFolder>
@@ -121,7 +122,8 @@
                                         $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.exe;
                                         $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.config;
                                         $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.manifest;
-                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.bat;"
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.bat;
+                                        $(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.txt;"
                                Exclude="$(SrcFolder)\Framework\Search.Remote.Server\bin\$(Configuration)\*.vshost.*;"/>
     </ItemGroup>
     <Copy SourceFiles="@(remoteSearchNugetBinaries)" DestinationFolder="$(RemoteSearch-NugetFolder)\lib" />
@@ -132,19 +134,29 @@
     <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(RemoteSearch-NugetFolder)\" />
   </Target>
 
-  <Target Name="Razor-NuGet">
-    <ItemGroup>
-      <razorNugetIncludes Include="$(BuildFolder)\Nuget\Razor\**\*" />
-      <nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
-    </ItemGroup>
-    <Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
-    <Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\NET40" />
-    <FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+	<Target Name="Razor-NuGet">
+		<ItemGroup>
+			<razorNugetIncludes Include="$(BuildFolder)\Nuget\Razor\**\*" />
+			<nugetRazorBinFiles Include="$(SrcFolder)\Framework\Razor\bin\$(Configuration)\N2.Razor.*;" />
+		</ItemGroup>
+		<Copy SourceFiles="@(razorNugetIncludes)" DestinationFolder="$(Razor-NugetFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(nugetRazorBinFiles)" DestinationFolder="$(Razor-NugetFolder)\lib\NET40" />
+		<FileUpdate Files="$(Razor-NugetFolder)\N2.Razor.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
 
-    <Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
-  </Target>
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Razor-NugetFolder)\" />
+	</Target>
 
-  <Target Name="ReusableParts-NuGet">
+	<Target Name="Mvc-NuGet">
+		<ItemGroup>
+			<mvcNugetIncludes Include="$(BuildFolder)\Nuget\Mvc\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(mvcNugetIncludes)" DestinationFolder="$(Mvc-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Mvc-NugetFolder)\N2.Mvc.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Mvc-NugetFolder)\" />
+	</Target>
+
+	<Target Name="ReusableParts-NuGet">
     <ItemGroup>
       <reusablePartsNugetIncludes Include="$(BuildFolder)\Nuget\ReusableParts\**\*" />
       <nugetReusablePartsBinFiles Include="$(SrcFolder)\Framework\ReusableParts\bin\$(Configuration)\N2.ReusableParts.*;" />
@@ -269,7 +281,7 @@
     <WriteLinesToFile Lines="@(buildLine)" File="$(DeployFolder)\BuildAll.bat" Overwrite="true" />
   </Target>
 
-  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
+  <Target Name="Build-NuGet" DependsOnTargets="Framework-NuGet;Library-NuGet;SQLite-NuGet;Razor-NuGet;Mvc-NuGet;Dinamico-NuGet;Bundle-Dinamico-Nuget;Windsor3-NuGet;MongoDB-NuGet;RemoteSearch-NuGet;Framework-LocalizedResources-Nuget;ReusableParts-NuGet;LuceneSearch-NuGet">
   </Target>
 
 	<Target Name="Publish-NuGet" DependsOnTargets="Push-NuGet">

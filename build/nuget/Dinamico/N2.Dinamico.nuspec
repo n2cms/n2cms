@@ -17,6 +17,7 @@
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Razor" version="{Version}" />
+			<dependency id="N2CMS.Mvc" version="{Version}" />
 			<dependency id="N2CMS.ReusableParts" version="{Version}" />
 			<dependency id="Microsoft.AspNet.Mvc" version="5.0.0" />
 		</dependencies>
