@@ -331,7 +331,7 @@ namespace N2.Edit
 			{
 				Type t = Type.GetType(dataType);
 				if (t == null)
-					throw new ArgumentException("Couldn't load a type of the given parameter '" + dataType + "'", "dataType");
+					throw new ArgumentException(String.Format("Couldn't load a type of the given parameter '{0}'", dataType), "dataType");
 				ItemDefinition d = Definitions.GetDefinition(discriminator);
 				if (d == null)
 					throw new N2Exception("Couldn't find any definition for type '" + t + "'");
