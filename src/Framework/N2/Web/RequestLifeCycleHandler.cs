@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+// uncomment this line to turn on Safe URL Handling (has some bugs):
+// #define SAFE_URL_HANDLING
+
 namespace N2.Web
 {
 	/// <summary>
@@ -233,8 +236,8 @@ namespace N2.Web
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
 
-			//TODO: Add ForceConsistentUrls property?
-
+			//TODO: Add ForceConsistentUrls property? For now we just have the #if to turn it on/off completely.
+#if SAFE_URL_HANDLING
 			HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
 			Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
 			string
@@ -256,6 +259,7 @@ namespace N2.Web
 				}
 			}
 			else
+#endif
 			{
 				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
 				adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
