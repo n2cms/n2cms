@@ -233,11 +233,11 @@ namespace N2.Web
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
+			//TODO: Add ForceConsistentUrls property? Right now there is only this #if to turn it off by default.
+#if SAFE_URL_HANDLING
+
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-
-			//TODO: Add ForceConsistentUrls property? For now we just have the #if to turn it on/off completely.
-#if SAFE_URL_HANDLING
 			HttpContext httpContext = ((HttpApplication)sender).Context; // jamestharpe: webContext.Request causes Obsolete warning.
 			Uri requestBaseUrl = new Uri(string.Format("{0}{1}{2}", httpContext.Request.Url.Scheme, Uri.SchemeDelimiter, httpContext.Request.Url.Authority));
 			string
@@ -259,11 +259,13 @@ namespace N2.Web
 				}
 			}
 			else
-#endif
 			{
 				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
 				adapter.InjectCurrentPage(webContext.CurrentPath, webContext.HttpContext.Handler);
 			}
+
+#endif
+
 		}
 
 		protected virtual void Application_Error(object sender, EventArgs e)
