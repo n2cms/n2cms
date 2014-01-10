@@ -20,6 +20,11 @@ namespace N2.Web.UI.WebControls
 
     public class Hn : Control, ITextControl
     {
+		public Hn()
+		{
+			HtmlEncode = true;
+		}
+
         public int Level
         {
             get { return (int)(ViewState["Level"] ?? DefaultLevel); }
@@ -37,7 +42,9 @@ namespace N2.Web.UI.WebControls
             set { ViewState["Text"] = value; }
         }
 
-        public string CssClass { get; set; }
+		public string CssClass { get; set; }
+
+		public bool HtmlEncode { get; set; }
 
         protected virtual int DefaultLevel
         {
@@ -52,7 +59,10 @@ namespace N2.Web.UI.WebControls
             {
                 string tag = TagKey;
                 writer.WriteFullBeginTag(tag);
-                N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Text, writer);
+				if (HtmlEncode)
+					N2.Context.Current.Resolve<ISafeContentRenderer>().HtmlEncode(Text, writer);
+				else
+					writer.Write(Text);
                 if (CssClass != null)
                     writer.WriteAttribute("class", CssClass);
                 writer.WriteEndTag(tag);
