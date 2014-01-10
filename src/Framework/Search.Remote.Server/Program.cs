@@ -26,19 +26,18 @@ namespace N2.Search.Remote.Server
             var server = new IndexerServer();
 
             server.Start();
-
-            Console.WriteLine("Listening on " + server.UriPrefix + ". Press enter key to exit");
+            Console.WriteLine("Listening on " + server.UriPrefix + ". Type \"exit\" and press enter to exit");
             string command = "";
             do
             {
                 command = Console.ReadLine();
                 if ("debug".Equals(command, StringComparison.InvariantCultureIgnoreCase))
                     Trace.Listeners.Add(new ConsoleWriterTraceListener());
-                if ("exit".Equals(command, StringComparison.InvariantCultureIgnoreCase))
+                else if ("exit".Equals(command, StringComparison.InvariantCultureIgnoreCase))
                     break;
-                if ("cls".Equals(command, StringComparison.InvariantCultureIgnoreCase))
+                else if ("cls".Equals(command, StringComparison.InvariantCultureIgnoreCase))
                     Console.Clear();
-            } while (!string.IsNullOrEmpty(command));
+            } while (true);
 
             Console.WriteLine("Exiting...");
             server.Stop();

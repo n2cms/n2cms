@@ -25,7 +25,7 @@ namespace N2.Persistence.Search
 
         public virtual void Clear()
         {
-            logger.Debug("Clearing index");
+            logger.Info("Clearing index");
 
             if (accessor.IndexExists())
             {
@@ -46,14 +46,14 @@ namespace N2.Persistence.Search
 
         public virtual void Unlock()
         {
-            logger.Debug("Unlocking index");
+			logger.Info("Unlocking index");
 
             accessor.GetDirectory().ClearLock("write.lock");
         }
 
         public virtual void Optimize()
         {
-            logger.Debug("Optimizing index");
+			logger.Info("Optimizing index");
 
             if (accessor.IndexExists())
             {
@@ -72,7 +72,7 @@ namespace N2.Persistence.Search
 
         public virtual void Update(IndexableDocument document)
         {
-            logger.Debug("Updating item #" + document.ID);
+			logger.Info("Updating item #" + document.ID);
 
             var doc = new Document();
             foreach (var field in document.Values)
@@ -136,7 +136,7 @@ namespace N2.Persistence.Search
 
         public virtual void Delete(int itemID)
         {
-            logger.Debug("Deleting item #" + itemID);
+			logger.Info("Deleting item #" + itemID);
 
             lock (accessor)
             {
