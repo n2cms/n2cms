@@ -31,7 +31,7 @@ namespace N2.Edit
         Navigation = 1,
         /// <summary>The far right area above the preview area.</summary>
         Preview = 2,
-        /// <summary>Both panes. Used when referencing multiple panes in user interfaces.</summary>
+        /// <summary>Both Navigation and Preview panes. Used when referencing multiple panes in user interfaces.</summary>
         Both = 3,
         /// <summary>The central area above the preview area.</summary>
         Operations = 4,
