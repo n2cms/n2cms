@@ -57,7 +57,7 @@ namespace N2.Edit.Security
             InitValues();
             DataBind();
 
-            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Both);
         }
 
         protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
@@ -69,7 +69,7 @@ namespace N2.Edit.Security
             ApplyRolesRecursive(Selection.SelectedItem);
             DataBind();
 
-            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Both);
         }
 
 
