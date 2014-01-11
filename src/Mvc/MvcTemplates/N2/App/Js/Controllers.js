@@ -627,6 +627,9 @@ function PageScheduleCtrl($scope, Content) {
 }
 
 function FrameActionCtrl($scope, $rootScope, $timeout, FrameManipulator) {
+	$scope.execute = function (action) {
+		//FrameManipulator.click(action.Current.Selector);
+	}
 	$scope.$parent.manipulator = FrameManipulator;
 	$rootScope.$on("contextchanged", function (scope, e) {
 		$scope.$parent.action = null;
