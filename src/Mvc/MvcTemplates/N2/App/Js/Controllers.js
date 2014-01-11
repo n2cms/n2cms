@@ -1,11 +1,15 @@
-﻿(function(app){
-	app.value('$strapConfig', {
+﻿(function(n2Module){
+	n2Module.value('$strapConfig', {
 		datepicker: {
 			language: 'en',
 			format: 'M d, yyyy'
 		}
 	});
-})(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives']))
+})(angular.module('n2', ['n2.directives', 'n2.services', 'n2.localization', 'ui', '$strap.directives', "ngRoute"], function ($routeProvider, $locationProvider) {
+	$locationProvider.html5Mode(true);
+	$locationProvider.hashPrefix("!");
+	$routeProvider.otherwise({ templateUrl: "App/Partials/Framework.html", controller: "ManagementCtrl", reloadOnSearch: false });
+}))
 
 function findNodeRecursive(node, selectedPath) {
 	if (!node)
@@ -48,7 +52,7 @@ function Uri(uri) {
 	};
 };
 
-function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually) {
+function ManagementCtrl($scope, $window, $timeout, $interpolate, Context, Content, Profile, Security, FrameContext, Translate, Eventually, LocationKeeper) {
 	$scope.Content = Content;
 	$scope.Security = Security;
 

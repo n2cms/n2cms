@@ -62,6 +62,8 @@ namespace N2.Resources
 		public static string AngularPath { get { return AngularRoot + "angular.min.js"; } }
 
         /// <summary> The path to angular-resources used by N2. </summary>
+		public static string AngularResourcePath { get { return AngularRoot + "angular-resource.min.js"; } }
+		[Obsolete("Use AngularResourcePath")]
 		public static string AngularResourcesPath { get { return AngularRoot + "angular-resource.min.js"; } }
         
         /// <summary>The path to the CKeditor script</summary>
