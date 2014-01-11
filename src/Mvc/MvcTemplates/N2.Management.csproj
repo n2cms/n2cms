@@ -113,6 +113,7 @@
     <Content Include="N2\App\Js\Services.js" />
     <Content Include="N2\App\Partials\Main.html" />
     <Content Include="N2\App\Partials\Loading.html" />
+    <Content Include="N2\App\Partials\Framework.html" />
     <Content Include="N2\App\Partials\Management.html" />
     <Content Include="N2\App\Partials\ContentTransitions.html" />
     <Content Include="N2\App\Partials\ContentSearch.html" />
