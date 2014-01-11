@@ -210,10 +210,10 @@ a[disabled=disabled]:hover {
 .dropdown-menu:after { display:none !important; }
 
 
-@media (max-width: 979px) {
-	#menu > ul > li > .page-action {
-		width:44px;
-		overflow:hidden;
+@media (max-width: 919px) {
+	#menu > ul > li > .page-action,
+	#menu > ul > li > .page-action span {
+		font-size:0;
 	}
 }
 
