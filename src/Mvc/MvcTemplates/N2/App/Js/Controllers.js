@@ -438,12 +438,14 @@ function TrunkCtrl($scope, $rootScope, Content, SortHelperFactory) {
 					};
 					node.Parts.push(child);
 				}
-
+				node.Expanded = true;
 				delete node.Loading;
 			});
 		},
 		hide: function(node) {
 			delete node.Parts;
+			if (!node.HasChildren)
+				node.Expanded = false;
 		}
 	};
 	$scope.scope = new ScopeHandler($scope, Content);

@@ -252,7 +252,15 @@ namespace N2.Edit
 		/// <returns>True when there are children.</returns>
 		public virtual bool HasChildren(ContentItem parent, ItemFilter filter)
 		{
-			return Sources.HasChildren(new Query { Parent = parent, Filter = filter, Interface = Interfaces.Managing });
+			return HasChildren(new Query { Parent = parent, Filter = filter, Interface = Interfaces.Managing });
+		}
+
+		/// <summary>Returns true when an item has children.</summary>
+		/// <param name="query">The item whose childrens existence is to be determined.</param>
+		/// <returns>True when there are children.</returns>
+		public virtual bool HasChildren(Query query)
+		{
+			return Sources.HasChildren(query);
 		}
 
 		/// <summary>Gets the url used from the management UI when previewing an item.</summary>

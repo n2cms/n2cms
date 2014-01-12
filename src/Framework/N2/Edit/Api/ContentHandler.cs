@@ -446,19 +446,19 @@ namespace N2.Management.Api
 
             return adapter.GetChildren(query)
                 .Where(filter)
-                .Select(c => GetNode(c, filter));
+				.Select(c => GetNode(c, query));
         }
 
-        private Node<TreeNode> GetNode(ContentItem item, ItemFilter filter)
+        private Node<TreeNode> GetNode(ContentItem item, Query query)
         {
             var adapter = engine.GetContentAdapter<NodeAdapter>(item);
-            return new Node<TreeNode>
-            {
-                Current = adapter.GetTreeNode(item),
-                Children = new Node<TreeNode>[0],
-                HasChildren = adapter.HasChildren(item, filter),
-                Expanded = false
-            };
+			return new Node<TreeNode>
+			{
+				Current = adapter.GetTreeNode(item),
+				Children = new Node<TreeNode>[0],
+				HasChildren = adapter.HasChildren(new Query { Parent = item, Filter = query.Filter, Interface = query.Interface, OnlyPages = query.OnlyPages }),
+				Expanded = false
+			};
         }
 
         public bool IsReusable
