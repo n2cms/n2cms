@@ -39,19 +39,11 @@ namespace N2.Configuration
         }
 
         /// <summary>The path to the included angular javascript resource.</summary>
-        [ConfigurationProperty("angularPath", DefaultValue = "{ManagementUrl}/Resources/angular-1.1.5/angular.min.js")]
-        public string AngularPath
+		[ConfigurationProperty("angularRoot", DefaultValue = "{ManagementUrl}/Resources/angular-1.2.8/")]
+		public string AngularRoot
         {
-            get { return (string)base["angularPath"]; }
-            set { base["angularPath"] = value; }
-        }
-
-        /// <summary>The path to the included angular javascript resource.</summary>
-        [ConfigurationProperty("angularResourcesPath", DefaultValue = "{ManagementUrl}/Resources/angular-1.1.5/angular-resource.min.js")]
-        public string AngularResourcesPath
-        {
-            get { return (string)base["angularResourcesPath"]; }
-            set { base["angularResourcesPath"] = value; }
+			get { return (string)base["angularRoot"]; }
+			set { base["angularRoot"] = value; }
         }
 
         /// <summary>The path to the included tiny MCE javascript resource.</summary>
@@ -83,25 +75,11 @@ namespace N2.Configuration
             set { base["partsCssPath"] = value; }
         }
 
-        [ConfigurationProperty("twitterBootstrapCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
-        public string TwitterBootstrapCssPath
+		[ConfigurationProperty("twitterBootstrapRoot", DefaultValue = "{ManagementUrl}/Resources/bootstrap/")]
+		public string TwitterBootstrapRoot
         {
-            get { return (string)base["twitterBootstrapCssPath"]; }
-            set { base["twitterBootstrapCssPath"] = value; }
-        }
-
-        [ConfigurationProperty("twitterBootstrapResponsiveCssPath", DefaultValue = N2.Resources.Register.DefaultBootstrapResponsiveCssPath)]
-        public string TwitterBootstrapResponsiveCssPath
-        {
-            get { return (string)base["twitterBootstrapResponsiveCssPath"]; }
-            set { base["twitterBootstrapResponsiveCssPath"] = value; }
-        }
-
-        [ConfigurationProperty("twitterBootstrapJsPath", DefaultValue = N2.Resources.Register.DefaultBootstrapJsPath)]
-        public string TwitterBootstrapJsPath
-        {
-            get { return (string)base["twitterBootstrapJsPath"]; }
-            set { base["twitterBootstrapJsPath"] = value; }
+			get { return (string)base["twitterBootstrapRoot"]; }
+			set { base["twitterBootstrapRoot"] = value; }
         }
 
         [ConfigurationProperty("iconsCssPath", DefaultValue = N2.Resources.Register.DefaultIconsCssPath)]

@@ -23,10 +23,10 @@
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
         a { color:Blue; }
-        .expandable { padding:1px; }
+        .expandable { padding:1px; position:relative; }
 			.expandable .opened { display:none; }
 			.expandable .opener { display:block; }
-			.expandable:hover .opened { display:block; }
+			.expandable:hover .opened { display:block; position:absolute; background:#fff; z-index:9999; }
 			.expandable:hover .opener { display:none; }
     </style>
 	<script type="text/javascript">
@@ -106,7 +106,7 @@
 				<tbody>
 					<tr><th colspan="2"><h2>Security</h2></th></tr>
 					<tr><th>Membership</th><td><%= System.Web.Security.Membership.Provider %></td></tr>
-					<tr><th>Roles</th><td><%= System.Web.Security.Roles.Provider %></td></tr>
+					<tr><th>Roles</th><td><% try { Response.Write(System.Web.Security.Roles.Provider.ToString()); } catch(Exception ex) { Response.Write(ex.Message); } %></td></tr>
 					<tr><th>Profile</th><td><%= System.Web.Profile.ProfileManager.Provider %></td></tr>
 					<tr><th>User type</th><td><%= User %> <%= User.Identity %></td></tr>
 					<tr><th>User</th><td><%= User.Identity.Name %></td></tr>

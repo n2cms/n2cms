@@ -24,7 +24,7 @@
 </ul>
 
 <ul class="targettable" ng-class="{ collapsed: !node.Expanded }" x-sortable="{ move: sort.move, sort: sort.sort }">
-	<li class="node" ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: child.HasChildren && !child.Expanded }" ng-include src="'App/Partials/ContentBranch.html'"></li>
+	<li class="node" ng-repeat="child in node.Children" sortable-path="{{child.Current.Path}}" ng-controller="BranchCtrl" ng-class="{ active: child == Context.SelectedNode, expanded: child.Expanded, collapsed: (child.HasChildren || child.Parts) && !child.Expanded }" ng-include src="'App/Partials/ContentBranch.html'"></li>
 </ul>
 
 <a class="tree-pager" ng-show="node.IsPaged && node.Expanded" href="#" ng-click="loadRemaining(node)">

@@ -18,7 +18,8 @@
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryUiPath) %>"></script>
 
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularPath) %>"></script>
-	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularResourcesPath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularResourcePath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularRoot + "angular-route.js") %>"></script>
 
 	<link href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapCssPath) %>" rel="stylesheet" />
 	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapJsPath) %>"></script>
@@ -57,7 +58,7 @@
 	<% } %>
 	</asp:PlaceHolder>
 </head>
-<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item" ng-include src="Context.Partials.Management">
+<body ng-app="n2" ng-view>
 	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>
 </body>
 </html>

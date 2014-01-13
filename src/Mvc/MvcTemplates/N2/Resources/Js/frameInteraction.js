@@ -53,6 +53,7 @@
 	},
 	execute: function (selector) {
 		window.location = $(selector).attr('href');
+		//$(selector).click();
 	}
 }
 jQuery(function ($) {

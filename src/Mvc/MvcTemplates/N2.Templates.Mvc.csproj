@@ -464,7 +464,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\n2_host.config" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Web.config" />
   </ItemGroup>

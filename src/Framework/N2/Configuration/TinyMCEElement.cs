@@ -26,7 +26,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Url to the free text area editor css file.</summary>
-        [ConfigurationProperty("cssUrl", DefaultValue = N2.Resources.Register.DefaultBootstrapCssPath)]
+		[ConfigurationProperty("cssUrl", DefaultValue = "{ManagementUrl}/Resources/bootstrap/css/boostrap.min.css")]
         public string CssUrl
         {
             get { return (string)base["cssUrl"]; }

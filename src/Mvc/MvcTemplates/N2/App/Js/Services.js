@@ -1,4 +1,11 @@
 ﻿(function (module) {
+	module.factory('LocationKeeper', function ($rootScope, $routeParams, $location, Content) {
+		$rootScope.$on("contextchanged", function (s, ctx) {
+			$location.search(Content.applySelection({}, ctx.CurrentItem))
+				.replace();
+		});
+		return {};
+	});
 
 	module.factory('Eventually', function ($timeout) {
 		return (function () {

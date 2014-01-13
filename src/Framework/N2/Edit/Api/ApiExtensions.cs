@@ -1,6 +1,7 @@
 using N2.Collections;
 using N2.Edit;
 using N2.Engine;
+using N2.Persistence.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +57,13 @@ namespace N2.Management.Api
             var adapter = adapters.ResolveAdapter<NodeAdapter>(structure.Current);
 
             var children = structure.Children.Select(c => CreateNode(c, adapters, filter)).ToList();
-            return new Node<TreeNode>
-            {
-                Current = adapter.GetTreeNode(structure.Current),
-                HasChildren = adapter.HasChildren(structure.Current, filter),
-                Expanded = children.Any(),
-                Children = children
-            };
+			return new Node<TreeNode>
+			{
+				Current = adapter.GetTreeNode(structure.Current),
+				HasChildren = adapter.HasChildren(new Query { Parent = structure.Current, Filter = filter, Interface = Interfaces.Managing, OnlyPages = true }),
+				Expanded = children.Any(),
+				Children = children
+			};
         }
 
         internal static HierarchyNode<ContentItem> BuildBranchStructure(ItemFilter filter, IContentAdapterProvider adapters, ContentItem selectedItem, ContentItem root)
