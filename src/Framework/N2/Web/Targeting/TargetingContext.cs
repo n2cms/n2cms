@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -7,15 +7,15 @@ using System.Web;
 
 namespace N2.Web.Targeting
 {
-	public class TargetingContext
-	{
-		public TargetingContext(HttpContextBase context)
-		{
-			HttpContext = context;
-			TargetedBy = new HashSet<DetectorBase>();
-		}
+    public class TargetingContext
+    {
+        public TargetingContext(HttpContextBase context)
+        {
+            HttpContext = context;
+            TargetedBy = new HashSet<DetectorBase>();
+        }
 
-		public HttpContextBase HttpContext { get; set; }
-		public ICollection<DetectorBase> TargetedBy { get; set; }
-	}
+        public HttpContextBase HttpContext { get; set; }
+        public ICollection<DetectorBase> TargetedBy { get; set; }
+    }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2009 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2009 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,38 +14,38 @@
 
 namespace Castle.Core.Internal
 {
-	using System.Threading;
+    using System.Threading;
 
 #if !SILVERLIGHT
-	internal class SlimWriteLockHolder : ILockHolder
-	{
-		private readonly ReaderWriterLockSlim locker;
+    internal class SlimWriteLockHolder : ILockHolder
+    {
+        private readonly ReaderWriterLockSlim locker;
 
-		private bool lockAcquired;
+        private bool lockAcquired;
 
-		public SlimWriteLockHolder(ReaderWriterLockSlim locker, bool waitForLock)
-		{
-			this.locker = locker;
-			if(waitForLock)
-			{
-				locker.EnterWriteLock();
-				lockAcquired = true;
-				return;
-			}
-			lockAcquired = locker.TryEnterWriteLock(0);
-		}
+        public SlimWriteLockHolder(ReaderWriterLockSlim locker, bool waitForLock)
+        {
+            this.locker = locker;
+            if(waitForLock)
+            {
+                locker.EnterWriteLock();
+                lockAcquired = true;
+                return;
+            }
+            lockAcquired = locker.TryEnterWriteLock(0);
+        }
 
-		public void Dispose()
-		{
-			if(!LockAcquired) return;
-			locker.ExitWriteLock();
-			lockAcquired = false;
-		}
+        public void Dispose()
+        {
+            if(!LockAcquired) return;
+            locker.ExitWriteLock();
+            lockAcquired = false;
+        }
 
-		public bool LockAcquired
-		{
-			get { return lockAcquired; }
-		}
-	}
+        public bool LockAcquired
+        {
+            get { return lockAcquired; }
+        }
+    }
 #endif
 }

@@ -1,9 +1,9 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Move.aspx.cs" Inherits="N2.Edit.Move" Title="Move" %>
+﻿<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Move.aspx.cs" Inherits="N2.Edit.Move" Title="Move" %>
 
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Toolbar" runat="server">
-	<asp:LinkButton ID="btnMove" runat="server" OnClick="OnMoveClick" CssClass="command" meta:resourceKey="btnMove">try again</asp:LinkButton>
+	<asp:LinkButton ID="btnMove" runat="server" OnClick="OnMoveClick" CssClass="command primary-action" meta:resourceKey="btnMove">try again</asp:LinkButton>
 	<asp:HyperLink ID="btnCancel" runat="server" Text="cancel" CssClass="command cancel" meta:resourceKey="hlCancel" />
 </asp:Content>
 

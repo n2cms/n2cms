@@ -16,7 +16,8 @@
 		<tags>N2 CMS</tags>
 		<dependencies>
 			<dependency id="N2CMS.Library" version="{Version}" />
-			<dependency id="Castle.Windsor" version="3.1.0" />
+			<dependency id="N2CMS.Config" version="2.5" />
+			<dependency id="Castle.Windsor" version="3.2.1" />
 		</dependencies>
 	</metadata>
 </package>

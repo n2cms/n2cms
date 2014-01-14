@@ -22,26 +22,26 @@ using System;
 
 namespace N2.Web.UI.WebControls
 {
-	/// <summary>A drop down list that allows selection between available zones on the parent item.</summary>
+    /// <summary>A drop down list that allows selection between available zones on the parent item.</summary>
     public class ZoneSelector : System.Web.UI.WebControls.DropDownList
     {
-		protected virtual Definitions.IDefinitionManager Definitions
-		{
-			get { return N2.Context.Definitions; }
-		}
+        protected virtual Definitions.IDefinitionManager Definitions
+        {
+            get { return N2.Context.Definitions; }
+        }
 
-		/// <summary>Initializes the zone selector control.</summary>
+        /// <summary>Initializes the zone selector control.</summary>
         protected override void OnInit(EventArgs e)
         {
-			this.CssClass = "ZoneSelector";
-			base.OnInit(e);
+            this.CssClass = "ZoneSelector";
+            base.OnInit(e);
 
             ContentItem item = ItemUtility.FindCurrentItem(this.Parent);
-			if (item != null && item.Parent != null)
+            if (item != null && item.Parent != null)
             {
-				N2.Definitions.ItemDefinition definition = N2.Context.Definitions.GetDefinition(item.Parent);
-				this.DataSource = definition.AvailableZones;
-				this.DataTextField = "Title";
+                N2.Definitions.ItemDefinition definition = N2.Context.Definitions.GetDefinition(item.Parent);
+                this.DataSource = definition.AvailableZones;
+                this.DataTextField = "Title";
                 this.DataValueField = "ZoneName";
                 this.DataBind();
                 this.Items.Insert(0, "");

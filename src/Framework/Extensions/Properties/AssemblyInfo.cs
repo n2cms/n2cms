@@ -1,8 +1,9 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using N2.Linq;
 using N2.Web.Mvc;
+using N2.Web.Mvc.Html;
 
 // General Information about an assembly is controlled through the following set of attributes. Change these attribute values to modify the information associated with an assembly.
 [assembly: AssemblyTitle("N2.Extensions")]
@@ -41,3 +42,11 @@ using N2.Web.Mvc;
 [assembly: TypeForwardedTo(typeof(RouteExtensions))]
 [assembly: TypeForwardedTo(typeof(Traversal))]
 [assembly: TypeForwardedTo(typeof(ViewPageResult))]
+
+[assembly: TypeForwardedTo(typeof(DroppableZoneExtensions))]
+[assembly: TypeForwardedTo(typeof(DroppableZoneHelper))]
+[assembly: TypeForwardedTo(typeof(ZoneExtensions))]
+[assembly: TypeForwardedTo(typeof(ZoneHelper))]
+
+[assembly: TypeForwardedTo(typeof(ControllerFactoryConfigurator))]
+[assembly: TypeForwardedTo(typeof(ServiceLocatingControllerFactory))]

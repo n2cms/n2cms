@@ -27,6 +27,10 @@
 		"parts": {
 			"show": { "text": " Show parts" },
 			"hide": { "text": " Hide parts" }
+		},
+		"scope": {
+			"here": "Scope from here",
+			"clear": "Clear scope"
 		}
 	},
 	"info": {
@@ -84,11 +88,11 @@
 	"pages": { "text": "Pages" },
 	"sitesettings": { "text": "Site Settings", title: "Edit site settings" },
 	"templates": { "text": "Templates", title: "Show predefined templates with content" },
-	"wizards": { title: "Wizards", title: "Show predefined types and locations for content" },
-	"users": { title: "Users", title: "Manage users" },
-	"export": { title: "Export", title: "Export content to file" },
-	"import": { title: "Import", title: "Import content from file" },
-	"signout": { title: "Sign out", title: "Sign out {{Context.User.Name}}" },
+	"wizards": { text: "Wizards", title: "Show predefined types and locations for content" },
+	"users": { text: "Users", title: "Manage users" },
+	"roles": { text: "Roles", title: "Manage roles" },
+	"export": { text: "Export", title: "Export content to file" },
+	"import": { text: "Import", title: "Import content from file" },
 	"preview": { title: "Fullscreen" },
 	"fullscreen": { "text": "Fullscreen" },
 	"viewdrafts": { "text": "View latest drafts" },
@@ -99,9 +103,12 @@
 	"organize": { "text": "Organize parts" },
 	"security": { "text": "Manage security" },
 	"bulk": { "text": "Bulk editing" },
-	"throw": { "text": "Throw", title: "Move selected item to trash" },
+	"delete": { "text": "Delete", title: "Move selected item to trash" },
 	"publish": { "text": "Publish" },
 	"unpublish": { "text": "Unpublish" },
 	"frameaction": { "text": "" },
-	"close": { "text": "Close" }
+	"close": { "text": "Close" },
+	"me": { },
+	"password": { text: "Change password" },
+	"signout": { text: "Sign out", title: "Sign out {{Context.User.Name}}" },
 }

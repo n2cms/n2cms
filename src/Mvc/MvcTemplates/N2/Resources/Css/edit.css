@@ -39,7 +39,7 @@ body.rightExpanded #content { margin-right:265px; }
 .zonesBox .iconed { background:transparent none no-repeat 2px 50%; padding:2px 2px 2px 19px; float:right; }
 .zonesBox .day { color:#393; }
 .zonesBox .week { color:#363; }
-.zonesBox .invisible{ color:#999;}
+.zonesBox .notvisible{ color:#999;}
 .zonesBox .unpublished,
 .zonesBox .expired,
 .zonesBox .locked { color:#C66; }
@@ -147,7 +147,7 @@ table.editDetail { border-collapse:collapse; }
 .framed .future.iconed { background-image:url(../../Resources/icons/clock_play.png); }
 .framed .unpublish.iconed { background-image:url(../../Resources/icons/clock_stop.png); }
 
-.EditableCheckBoxList label { display:inline-block; }
+.EditableCheckBoxList label, .EditableRoles label { display:inline-block; }
 
 .popup
 {

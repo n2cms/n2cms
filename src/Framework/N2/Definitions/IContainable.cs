@@ -4,11 +4,11 @@ using N2.Security;
 
 namespace N2.Definitions
 {
-	/// <summary>
-	/// Classes implementing this interface can add a graphical representation to 
-	/// a control hierarchy.
-	/// </summary>
-	public interface IContainable : IUniquelyNamed, IComparable<IContainable>, ISecurableBase
+    /// <summary>
+    /// Classes implementing this interface can add a graphical representation to 
+    /// a control hierarchy.
+    /// </summary>
+    public interface IContainable : IUniquelyNamed, IComparable<IContainable>, ISecurableBase
     {
         /// <summary>Gets or sets the name of a container containing this container.</summary>
         string ContainerName { get; set;}

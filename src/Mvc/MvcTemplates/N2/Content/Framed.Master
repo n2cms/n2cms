@@ -1,4 +1,5 @@
 <%@ Master MasterPageFile="../Simple.master" Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
+
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<link href="<%= ResolveUrl("../Resources/bootstrap/css/bootstrap.min.css") %>" rel="stylesheet" />
 	<script src="<%= ResolveUrl("../Resources/bootstrap/js/bootstrap.min.js") %>"></script>
@@ -12,28 +13,30 @@
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
-		<form id="f" runat="server">
-				<div id="toolbar" class="toolbar"><div class="inner">
-						<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
-				</div></div>
+	<form id="f" runat="server">
+		<div id="toolbar" class="toolbar">
+			<div class="inner">
+				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
+			</div>
+		</div>
 		<div id="outside" class="outside">
-					 <asp:ContentPlaceHolder ID="Outside" runat="server" />
-				</div>
-				<div id="content" class="content">
+			<asp:ContentPlaceHolder ID="Outside" runat="server" />
+		</div>
+		<div id="content" class="content">
 			<h1 id="h1" runat="server" />
-						<asp:ContentPlaceHolder ID="Content" runat="server" />
-				</div>
-		</form>
-		<script type="text/javascript">
-			jQuery(document).keyup(function (e) {
-				var key = { esc: 27 };
-				if (e.keyCode == key.esc) {
-					$("#toolbar a.cancel").focus();
-				}
-			});
-			var modal = <%= Request["modal"] == "true" ? "true" : "false" %>;
-			if (n2ctx.hasTop() != "metro" || modal) {
-				$(document.body).removeClass("toolbar-hidden");
+			<asp:ContentPlaceHolder ID="Content" runat="server" />
+		</div>
+	</form>
+	<script type="text/javascript">
+		jQuery(document).keyup(function (e) {
+			var key = { esc: 27 };
+			if (e.keyCode == key.esc) {
+				$("#toolbar a.cancel").focus();
 			}
-		</script>
+		});
+		var modal = <%= Request["modal"] == "true" ? "true" : "false" %>;
+		if (n2ctx.hasTop() != "metro" || modal) {
+			$(document.body).removeClass("toolbar-hidden");
+		}
+	</script>
 </asp:Content>

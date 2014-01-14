@@ -1,4 +1,4 @@
-﻿namespace N2.Configuration
+namespace N2.Configuration
 {
     public enum ErrorAction
     {

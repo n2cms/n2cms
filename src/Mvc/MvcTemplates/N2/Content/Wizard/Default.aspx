@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
+﻿<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import namespace="N2.Edit.Wizard.Items"%>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
@@ -25,7 +25,7 @@
 				<asp:TemplateField>
 					<ItemTemplate>
 						<asp:HyperLink ID="hlNew" NavigateUrl='<%# Eval("Location.Url") %>' Visible='<%# Eval("HasLocation") %>' runat="server">
-							<asp:Image ID="imgIco" ImageUrl='<%# Engine.ManagementPaths.ResolveResourceUrl((string)Eval("Location.IconUrl")) %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+							<asp:Image ID="imgIco" ImageUrl='<%# Engine.ManagementPaths.ResolveResourceUrl((string)Eval("Location.IconUrl")) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("Location.IconUrl")) %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
 							<%# Eval("Location.Title")%>
 						</asp:HyperLink>
 					</ItemTemplate>

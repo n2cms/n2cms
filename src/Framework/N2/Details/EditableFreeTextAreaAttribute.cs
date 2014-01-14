@@ -4,168 +4,183 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit;
-using N2.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using N2.Web;
 using NHibernate.Criterion;
 using System.Web;
+using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
-	/// <summary>
-	/// Rich text editor settings set (toolbars, features).
-	/// </summary>
-	public enum FreeTextAreaSettingsSet
-	{
-		/// <summary>Setting set is defined by configuration, DEFAULT by default.</summary>
-		Undefined,
-		/// <summary>Fixed rich text editor toolbar, basic features, no additional toolbars.</summary>
-		[Obsolete]
-		Fixed,
-		/// <summary>Single line toolbar, no additional toolbars.</summary>
-		Minimal,
-		/// <summary>Single line tooolbar, all other toolbars shown by toogle icon.</summary>
-		Simple,
-		/// <summary>Extended toolbar with all features, less frequently used toolbars shown by toogle icon.</summary>
-		Extended
-	}
 
+    /// <summary>
+    /// Rich text editor settings set (toolbars, features).
+    /// </summary>
+    [Obsolete]
+    public enum FreeTextAreaSettingsSet
+    {
+        /// <summary>Setting set is defined by configuration, DEFAULT by default.</summary>
+        Undefined = 0,
+        /// <summary>Fixed rich text editor toolbar, basic features, no additional toolbars.</summary>
+        [Obsolete]
+        Fixed = 1,
+        /// <summary>Single line toolbar, no additional toolbars.</summary>
+        Minimal = 2,
+        /// <summary>Single line tooolbar, all other toolbars shown by toogle icon.</summary>
+        Simple = 3,
+        /// <summary>Extended toolbar with all features, less frequently used toolbars shown by toogle icon.</summary>
+        Extended = 4
+    }
 
-	/// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="N2.Web.UI.WebControls.FreeTextArea"/> web control as editor.</summary>
-	/// <example>
-	/// [N2.Details.EditableFreeTextArea("Text", 110)] 
-	/// public virtual string Text { get; set; }
-	/// 
-	/// Setting set with full features:
-	/// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextAreaSettingsSet.Extended)]
-	/// 
-	/// Default toolbar mode can be set in Web.config, e.g.
-	/// <![CDATA[ 
-	///  <n2>
-	///   <edit>
-	///     <tinyMCE cssUrl="/Content/myrichtext.css">
-	///       <settings>
-	///         <add key="settings_set" value="Extended" />
-	///       </settings>
-	///   </edit>
-	///  </n2>
-	/// ]]>
-	/// 
-	/// Notes: 
-	/// settings_set property is nonstantard.
-	/// See also standard TinyMCE settings at http://tinymce.moxiecode.com/wiki.php/Configuration
-	/// Toogle toolbars: see PWD plugin at http://www.neele.name/pdw_toggle_toolbars/
-	/// </example>
-	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute, IRelativityTransformer
-	{
-		public EditableFreeTextAreaAttribute()
-			: base(null, 100)
-		{
-		}
+    /// <summary>
+    /// Rich text editor settings set (toolbars, features).
+    /// </summary>
+    public enum EditorModeSetting
+    {
+        Standard = 0,
+        Basic = 3,
+        Full = 4,
+    }
 
-		public EditableFreeTextAreaAttribute(string title, int sortOrder)
-			: base(title, sortOrder)
-		{
-		}
+    /// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="N2.Web.UI.WebControls.FreeTextArea"/> web control as editor.</summary>
+    /// <example>
+    /// Editor with standard toolbars:
+    /// [N2.Details.EditableFreeTextArea("Text", 110)] 
+    /// public virtual string Text { get; set; }
+    /// 
+    /// Editor with full toolbars:
+    /// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextArea.EditorModeSetting.Full)]
+    /// 
+    /// Editor with reduced toolbars:
+    /// [N2.Details.EditableFreeTextArea("Text", 110, FreeTextArea.EditorModeSetting.Basic)]
+    /// 
+    /// Default toolbar mode can be set in Web.config, e.g.
+    /// <![CDATA[ 
+    ///  <n2>
+    ///   <edit>
+    ///     <tinyMCE cssUrl="/Content/myrichtext.css">
+    ///   </edit>
+    ///  </n2>
+    /// ]]>
+    /// 
+    /// </example>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute, IRelativityTransformer
+    {
+        private EditorModeSetting editorMode = EditorModeSetting.Standard;
+        private string additionalFormats = string.Empty;
+        private string useStylesSet = string.Empty;
 
-		public EditableFreeTextAreaAttribute(string title, int sortOrder, FreeTextAreaSettingsSet toolbars)
-			: base(title, sortOrder)
-		{
-			Toolbars = toolbars;
-		}
+        public EditableFreeTextAreaAttribute()
+            : base(null, 100)
+        {
+        }
 
-		/// <summary> Current rich text editor setting set (e.g. basic features with simple toolbar, extended etc) </summary>
-		public FreeTextAreaSettingsSet Toolbars { get; set; }
+        public EditableFreeTextAreaAttribute(string title, int sortOrder)
+            : base(title, sortOrder)
+        {
+        }
 
-		protected override void ModifyEditor(TextBox tb)
-		{
-			// set width and height to control the size of the tinyMCE editor
-			// 1 column is evaluated to 10px
-			// 1 row is evaluated to 20px
-			if (Columns > 0)
-				tb.Style.Add("width", (Columns * 10).ToString() + "px");
-			if (Rows > 0)
-				tb.Style.Add("height", (Rows * 20).ToString() + "px");
-		}
+        [Obsolete("Use EditorMode")]
+        public EditableFreeTextAreaAttribute(string title, int sortOrder, FreeTextAreaSettingsSet toolbars)
+            : base(title, sortOrder)
+        {
+            Toolbars = toolbars;
+        }
 
-		protected override TextBox CreateEditor()
-		{
-			return new FreeTextArea();
-		}
+        public EditorModeSetting EditorMode
+        {
+            get { return editorMode; }
+            set { editorMode = value; }
+        }
 
-		protected override Control AddRequiredFieldValidator(Control container, Control editor)
-		{
-			RequiredFieldValidator rfv = base.AddRequiredFieldValidator(container, editor) as RequiredFieldValidator;
-			rfv.EnableClientScript = false;
-			return rfv;
-		}
+        [Obsolete("Use EditorMode")]
+        public FreeTextAreaSettingsSet Toolbars
+        {
+            get { return (FreeTextAreaSettingsSet)EditorMode; }
+            set { EditorMode = (EditorModeSetting)value; }
+        }
 
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			base.UpdateEditor(item, editor);
+        public string AdditionalFormats
+        {
+            set { additionalFormats = value; }
+        }
 
-			FreeTextArea fta = (FreeTextArea)editor;
+        public string UseStylesSet
+        {
+            set { useStylesSet = value; }
+        }
 
-			if (item is IDocumentBaseSource)
-				fta.DocumentBaseUrl = (item as IDocumentBaseSource).BaseUrl;
+        protected override void ModifyEditor(TextBox tb)
+        {
+            // set width and height to control the size of the ckeditor
+            // 1 column is evaluated to 10px
+            // 1 row is evaluated to 20px
+            if (Columns > 0)
+                tb.Style.Add("width", (Columns * 10).ToString() + "px");
+            if (Rows > 0)
+                tb.Style.Add("height", (Rows * 20).ToString() + "px");
+        }
 
-			string rt_mode = GetSettingsSetString(Toolbars);
-			if (!string.IsNullOrEmpty(rt_mode))
-				fta.CustomOverrides["settings_set"] = rt_mode;
+        protected override TextBox CreateEditor()
+        {
+            FreeTextArea fta = new FreeTextArea();
 
-			string content_css = GetCssFiles(string.Empty);
-			if (!string.IsNullOrEmpty(content_css))
-			{
-				fta.CustomOverrides["content_css"] = content_css;
-			}
-		}
+            fta.EditorMode = editorMode;
+            fta.AdditionalFormats = additionalFormats;
+            fta.UseStylesSet = useStylesSet;
 
-		/// <summary>Stringify current settingset mode.</summary>
-		/// <remarks>Extended class might implement extended logics, 
-		///   e.g. check current site StartPage properties when UNDEFINED. 
-		///   When defined will override default config. value.
-		/// </remarks>
-		protected virtual string GetSettingsSetString(FreeTextAreaSettingsSet settingsSet)
-		{
-			return settingsSet.ToString();
-		}
+            return fta;
+        }
 
-		/// <summary> Comma separated list of CSS file Urls to be used by TinyMCE, defined by application, default empty (unset) </summary>
-		/// <remarks> Extended class might implement extended logics, e.g. to check current site StartPage properties to set site specific styling. 
-		///   When defined will override default config. value.
-		/// </remarks>
-		protected virtual string GetCssFiles(string cssFiles)
-		{
-			return cssFiles;
-		}
+        protected override Control AddRequiredFieldValidator(Control container, Control editor)
+        {
+            RequiredFieldValidator rfv = base.AddRequiredFieldValidator(container, editor) as RequiredFieldValidator;
+            rfv.EnableClientScript = false;
+            return rfv;
+        }
+
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            base.UpdateEditor(item, editor);
+
+            FreeTextArea fta = (FreeTextArea)editor;
+
+            fta.EditorMode = editorMode;
+            fta.AdditionalFormats = additionalFormats;
+            fta.UseStylesSet = useStylesSet;
+
+            if (item is IDocumentBaseSource)
+                fta.DocumentBaseUrl = (item as IDocumentBaseSource).BaseUrl;
+
+        }
 
         public override string GetIndexableText(ContentItem item)
         {
             return HttpUtility.HtmlDecode(base.GetIndexableText(item) ?? "");
         }
 
-		#region IRelativityTransformer Members
+        #region IRelativityTransformer Members
 
-		public RelativityMode RelativeWhen { get; set; }
+        public RelativityMode RelativeWhen { get; set; }
 
-		string IRelativityTransformer.Rebase(string value, string fromAppPath, string toAppPath)
-		{
-			if (value == null || fromAppPath == null)
-				return value;
+        string IRelativityTransformer.Rebase(string value, string fromAppPath, string toAppPath)
+        {
+            if (value == null || fromAppPath == null)
+                return value;
 
-			string from = string.Join("", fromAppPath.Select(c => "[" + c + "]").ToArray());
-			string pattern = string.Format("((href|src)=[\"'](?<url>{0}))", from);
-			string rebased = Regex.Replace(value, pattern, me =>
-			{
-				int urlIndex = me.Groups["url"].Index - me.Index;
-				string before = me.Value.Substring(0, urlIndex);
-				string after = me.Value.Substring(urlIndex + fromAppPath.Length);
-				return before + toAppPath + after;
-			}, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-			return rebased;
-		}
+            string from = string.Join("", fromAppPath.Select(c => "[" + c + "]").ToArray());
+            string pattern = string.Format("((href|src)=[\"'](?<url>{0}))", from);
+            string rebased = Regex.Replace(value, pattern, me =>
+            {
+                int urlIndex = me.Groups["url"].Index - me.Index;
+                string before = me.Value.Substring(0, urlIndex);
+                string after = me.Value.Substring(urlIndex + fromAppPath.Length);
+                return before + toAppPath + after;
+            }, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            return rebased;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

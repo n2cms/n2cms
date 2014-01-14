@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using N2.Engine;
 using N2.Engine.Globalization;
@@ -6,40 +6,40 @@ using N2.Web;
 
 namespace N2.Edit.Globalization
 {
-	[Service]
-	public class GlobalizationOptionProvider : IProvider<ToolbarOption>
-	{
-		ILanguageGateway languages;
+    [Service]
+    public class GlobalizationOptionProvider : IProvider<ToolbarOption>
+    {
+        ILanguageGateway languages;
         IHost host;
-		IContentAdapterProvider adapters;
+        IContentAdapterProvider adapters;
 
-		public GlobalizationOptionProvider(ILanguageGateway languages, IContentAdapterProvider adapters, IHost host)
-		{
-			this.languages = languages;
+        public GlobalizationOptionProvider(ILanguageGateway languages, IContentAdapterProvider adapters, IHost host)
+        {
+            this.languages = languages;
             this.host = host;
-			this.adapters = adapters;
-		}
+            this.adapters = adapters;
+        }
 
-		#region IProvider<ToolbarOption> Members
+        #region IProvider<ToolbarOption> Members
 
-		public ToolbarOption Get()
-		{
-			return GetAll().FirstOrDefault();
-		}
+        public ToolbarOption Get()
+        {
+            return GetAll().FirstOrDefault();
+        }
 
-		public IEnumerable<ToolbarOption> GetAll()
-		{
-			return languages.GetAvailableLanguages()
-				.Where(l => l is ContentItem)
+        public IEnumerable<ToolbarOption> GetAll()
+        {
+            return languages.GetAvailableLanguages()
+                .Where(l => l is ContentItem)
                 .Select((l, i) => new ToolbarOption
-				{
+                {
                     Title = GetHostPrefix((ContentItem)l) + l.LanguageTitle,
-					Target = Targets.Preview,
-					SortOrder = i,
-					Name = l.LanguageCode,
-					Url = adapters.ResolveAdapter<NodeAdapter>((ContentItem)l).GetPreviewUrl((ContentItem)l)
-				});
-		}
+                    Target = Targets.Preview,
+                    SortOrder = i,
+                    Name = l.LanguageCode,
+                    Url = adapters.ResolveAdapter<NodeAdapter>((ContentItem)l).GetPreviewUrl((ContentItem)l)
+                });
+        }
 
         private string GetHostPrefix(ContentItem item)
         {
@@ -50,6 +50,6 @@ namespace N2.Edit.Globalization
             return site.Authority + " / ";
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

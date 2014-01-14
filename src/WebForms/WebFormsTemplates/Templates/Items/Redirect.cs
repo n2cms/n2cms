@@ -12,15 +12,15 @@ namespace N2.Templates.Items
     /// Redirects to somewhere else. Used as a placeholder in the menu.
     /// </summary>
     [PageDefinition("Redirect", 
-		Description = "Redirects to another page or an external address.",
-		SortOrder = 40,
-		IconUrl = "~/Templates/UI/Img/page_go.png")]
+        Description = "Redirects to another page or an external address.",
+        SortOrder = 40,
+        IconUrl = "~/Templates/UI/Img/page_go.png")]
     [WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content),
      WithEditableName("Name", 20, ContainerName = Tabs.Content),
      WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
     [TabContainer(Tabs.Advanced, "Advanced", 100)]
     [RestrictParents(typeof(IStructuralPage))]
-	[ConventionTemplate]
+    [ConventionTemplate]
     public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance, IRedirect
     {
         public override string Url
@@ -58,13 +58,13 @@ namespace N2.Templates.Items
 
         #endregion
 
-		#region IRedirect Members
+        #region IRedirect Members
 
-		public ContentItem RedirectTo
-		{
-			get { return Context.Current.UrlParser.Parse(RedirectUrl); }
-		}
+        public ContentItem RedirectTo
+        {
+            get { return Context.Current.UrlParser.Parse(RedirectUrl); }
+        }
 
-		#endregion
+        #endregion
     }
 }

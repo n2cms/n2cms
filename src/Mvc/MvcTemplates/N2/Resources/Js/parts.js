@@ -2,7 +2,7 @@
 	var isDragging = false;
 	var dialog = null;
 
-	window.n2DragDrop = function (urls, messages, context) {
+	window.n2DragDrop = function(urls, messages, context) {
 		this.urls = $.extend({
 			copy: 'copy.n2.ashx',
 			move: 'move.n2.ashx',
@@ -16,7 +16,7 @@
 		}, messages);
 		this.context = context;
 		this.init();
-	}
+	};
 
 	window.n2DragDrop.prototype = {
 
@@ -31,9 +31,14 @@
 			//});
 			var host = window.location.protocol + "//" + window.location.host + "/";
 			$("a").filter(function () { return this.href.indexOf(host) == 0; })
-				.filter(function () { return this.parentNode.className.indexOf('control') != 0; })
+				.filter(function () { return this.parentNode.className.indexOf('control') < 0; })
+				.filter(function () { return !this.target || this.target == "_self"; })
 				.each(function () {
-					this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
+					var hashIndex = this.href.indexOf("#");
+					if (hashIndex >= 0)
+						this.href = this.href.substr(0, hashIndex) + ((this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag") + this.href.substr(hashIndex);
+					else
+						this.href += (this.href.indexOf('?') >= 0 ? '&' : '?') + "edit=drag";
 				});
 
 			self.makeEditable();
@@ -365,7 +370,8 @@
 	window.frameInteraction = {
 		location: "Organize",
 		ready: true,
-		getActions: function () {
+		getActions: function() {
+
 			function create(commandElement) {
 				return {
 					Title: $(commandElement).attr('title'),
@@ -378,7 +384,7 @@
 			};
 			var actions = [];
 			var idCounter = 0;
-			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function () {
+			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse').each(function() {
 				if (!this.id)
 					this.id = "action" + ++idCounter;
 				actions.push({ Current: create(this) });
@@ -391,13 +397,13 @@
 				Children: actions.slice(1)
 			}];
 		},
-		hideToolbar: function (force) {
+		hideToolbar: function(force) {
 			$('.controlPanel .plugins .control > a').not('.cpView, .cpAdminister, .cpOrganize, .complementary, .authorizedFalse')
 				.parent().hide();
 		},
-		execute: function(selector){
+		execute: function(selector) {
 			window.location = $(selector).attr('href');
 		}
-	}
+	};
 
 })(jQuery);

@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2.Edit.Api
+namespace N2.Management.Api
 {
-	public class InterfaceFlagsAttribute : Attribute
-	{
-		public InterfaceFlagsAttribute(params string[] flags)
-		{
-			Flags = flags;
-		}
+    public class InterfaceFlagsAttribute : Attribute
+    {
+        public InterfaceFlagsAttribute(params string[] additionalFlags)
+        {
+            AdditionalFlags = additionalFlags;
+        }
 
-		public string[] Flags { get; private set; }
-	}
+        public string[] AdditionalFlags { get; private set; }
+        public string[] RemovedFlags { get; set; }
+    }
 }

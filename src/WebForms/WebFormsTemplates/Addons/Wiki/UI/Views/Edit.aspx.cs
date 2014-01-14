@@ -1,6 +1,6 @@
-﻿namespace N2.Addons.Wiki.UI.Views
+namespace N2.Addons.Wiki.UI.Views
 {
-	public partial class EditArticle : WikiTemplatePage
-	{
-	}
+    public partial class EditArticle : WikiTemplatePage
+    {
+    }
 }

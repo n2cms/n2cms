@@ -15,9 +15,10 @@
 		<language>en-US</language>
 		<tags>N2 CMS</tags>
 		<dependencies>
-			<dependency id="N2CMS.Config" version="1.0" /><!-- to minimize corrupted configs, this is updated only rarely! -->
+			<dependency id="N2CMS.Config" version="2.5" />
 			<dependency id="N2CMS.Library" version="{Version}" />
 			<dependency id="N2CMS.Management" version="{Version}" />
+			<dependency id="N2CMS.Search.Lucene" version="{Version}" />
 			<!-- 
 				Due to legacy compatibility the N2CMS package refers to the zipped version of the management interface.
 				

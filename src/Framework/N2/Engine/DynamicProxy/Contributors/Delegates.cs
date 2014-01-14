@@ -14,15 +14,15 @@
 
 namespace Castle.DynamicProxy.Contributors
 {
-	using System.Reflection;
+    using System.Reflection;
 
-	using Castle.DynamicProxy.Generators.Emitters;
-	using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+    using Castle.DynamicProxy.Generators.Emitters;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-	public delegate MethodEmitter OverrideMethodDelegate(
-		string name, MethodAttributes attributes, MethodInfo methodToOverride);
+    public delegate MethodEmitter OverrideMethodDelegate(
+        string name, MethodAttributes attributes, MethodInfo methodToOverride);
 
-	public delegate Expression GetTargetExpressionDelegate(ClassEmitter @class, MethodInfo method);
+    public delegate Expression GetTargetExpressionDelegate(ClassEmitter @class, MethodInfo method);
 
-	public delegate Reference GetTargetReferenceDelegate(ClassEmitter @class, MethodInfo method);
+    public delegate Reference GetTargetReferenceDelegate(ClassEmitter @class, MethodInfo method);
 }

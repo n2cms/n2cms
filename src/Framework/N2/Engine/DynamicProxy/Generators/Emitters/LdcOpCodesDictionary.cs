@@ -14,57 +14,57 @@
 
 namespace Castle.DynamicProxy.Generators.Emitters
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Reflection.Emit;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
-	/// <summary>
-	///   s
-	///   Provides appropriate Ldc.X opcode for the type of primitive value to be loaded.
-	/// </summary>
-	public sealed class LdcOpCodesDictionary : Dictionary<Type, OpCode>
-	{
-		private static readonly LdcOpCodesDictionary dict = new LdcOpCodesDictionary();
+    /// <summary>
+    ///   s
+    ///   Provides appropriate Ldc.X opcode for the type of primitive value to be loaded.
+    /// </summary>
+    public sealed class LdcOpCodesDictionary : Dictionary<Type, OpCode>
+    {
+        private static readonly LdcOpCodesDictionary dict = new LdcOpCodesDictionary();
 
-		// has to be assigned explicitly to suppress compiler warning
-		private static readonly OpCode emptyOpCode = new OpCode();
+        // has to be assigned explicitly to suppress compiler warning
+        private static readonly OpCode emptyOpCode = new OpCode();
 
-		private LdcOpCodesDictionary()
-		{
-			Add(typeof(bool), OpCodes.Ldc_I4);
-			Add(typeof(char), OpCodes.Ldc_I4);
-			Add(typeof(SByte), OpCodes.Ldc_I4);
-			Add(typeof(Int16), OpCodes.Ldc_I4);
-			Add(typeof(Int32), OpCodes.Ldc_I4);
-			Add(typeof(Int64), OpCodes.Ldc_I8);
-			Add(typeof(float), OpCodes.Ldc_R4);
-			Add(typeof(double), OpCodes.Ldc_R8);
-			Add(typeof(byte), OpCodes.Ldc_I4_0);
-			Add(typeof(UInt16), OpCodes.Ldc_I4_0);
-			Add(typeof(UInt32), OpCodes.Ldc_I4_0);
-			Add(typeof(UInt64), OpCodes.Ldc_I4_0);
-		}
+        private LdcOpCodesDictionary()
+        {
+            Add(typeof(bool), OpCodes.Ldc_I4);
+            Add(typeof(char), OpCodes.Ldc_I4);
+            Add(typeof(SByte), OpCodes.Ldc_I4);
+            Add(typeof(Int16), OpCodes.Ldc_I4);
+            Add(typeof(Int32), OpCodes.Ldc_I4);
+            Add(typeof(Int64), OpCodes.Ldc_I8);
+            Add(typeof(float), OpCodes.Ldc_R4);
+            Add(typeof(double), OpCodes.Ldc_R8);
+            Add(typeof(byte), OpCodes.Ldc_I4_0);
+            Add(typeof(UInt16), OpCodes.Ldc_I4_0);
+            Add(typeof(UInt32), OpCodes.Ldc_I4_0);
+            Add(typeof(UInt64), OpCodes.Ldc_I4_0);
+        }
 
-		public new OpCode this[Type type]
-		{
-			get
-			{
-				if (ContainsKey(type))
-				{
-					return base[type];
-				}
-				return EmptyOpCode;
-			}
-		}
+        public new OpCode this[Type type]
+        {
+            get
+            {
+                if (ContainsKey(type))
+                {
+                    return base[type];
+                }
+                return EmptyOpCode;
+            }
+        }
 
-		public static OpCode EmptyOpCode
-		{
-			get { return emptyOpCode; }
-		}
+        public static OpCode EmptyOpCode
+        {
+            get { return emptyOpCode; }
+        }
 
-		public static LdcOpCodesDictionary Instance
-		{
-			get { return dict; }
-		}
-	}
+        public static LdcOpCodesDictionary Instance
+        {
+            get { return dict; }
+        }
+    }
 }

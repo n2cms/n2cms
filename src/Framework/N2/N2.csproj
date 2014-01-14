@@ -41,6 +41,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,9 +73,8 @@
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -85,14 +86,30 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -105,6 +122,7 @@
     <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\AccessiblePageFilter.cs" />
     <Compile Include="Collections\AnyFilter.cs" />
+    <Compile Include="Collections\DetailCollectionList.cs" />
     <Compile Include="Collections\NumericHashtable.cs" />
     <Compile Include="Collections\StateFilter.cs" />
     <Compile Include="Collections\PartFilter.cs" />
@@ -129,16 +147,19 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\ChildrenElement.cs" />
+    <Compile Include="Configuration\CkEditorElement.cs" />
     <Compile Include="Configuration\ClientElement.cs" />
     <Compile Include="Configuration\CollaborationElement.cs" />
-    <Compile Include="Configuration\COnfigurationElement.cs" />
     <Compile Include="Configuration\FileListElement.cs" />
     <Compile Include="Configuration\DocViewerElement.cs" />
+    <Compile Include="Configuration\HtmlSanitizeElement.cs" />
     <Compile Include="Configuration\TargetingCollection.cs" />
     <Compile Include="Configuration\TargetingElement.cs" />
     <Compile Include="Configuration\ExceptionResolutionMode.cs" />
     <Compile Include="Configuration\ServerElement.cs" />
     <Compile Include="Definitions\DefinitionEventArgs.cs" />
+    <Compile Include="Definitions\IPlaceholder.cs" />
+    <Compile Include="Web\IStyleable.cs" />
     <Compile Include="Definitions\ITemplateAggregator.cs" />
     <Compile Include="Definitions\TemplateAggregator.cs" />
     <Compile Include="Details\EditableDirectUrlAttribute.cs" />
@@ -150,7 +171,11 @@
     <Compile Include="Edit\Api\IApiHandler.cs" />
     <Compile Include="Edit\Api\InterfaceBuilder.cs" />
     <Compile Include="Edit\Api\InterfaceFlagsAttribute.cs" />
+    <Compile Include="Edit\Api\IProfileRepository.cs" />
     <Compile Include="Edit\Api\ManagementModule.cs" />
+    <Compile Include="Edit\Api\ProfileHandler.cs" />
+    <Compile Include="Edit\ISafeContentRenderer.cs" />
+    <Compile Include="Edit\SafeContentRenderer.cs" />
     <Compile Include="Edit\Installation\InstallationExtensions.cs" />
     <Compile Include="Edit\Installation\MigrationAttribute.cs" />
     <Compile Include="Edit\MetaInfo.cs" />
@@ -511,7 +536,6 @@
     <Compile Include="Definitions\SiblingInsertionAttribute.cs" />
     <Compile Include="Integrity\RestrictCardinalityAttribute.cs" />
     <Compile Include="Persistence\Behaviors\BehaviorInvoker.cs" />
-    <Compile Include="Obsolete\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -519,13 +543,8 @@
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
-    <Compile Include="Obsolete\DoubleDetail.cs" />
-    <Compile Include="Obsolete\IntegerDetail.cs" />
     <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
     <Compile Include="Details\EditableTextAttribute.cs" />
-    <Compile Include="Obsolete\StringDetail.cs" />
-    <Compile Include="Obsolete\DateTimeDetail.cs" />
-    <Compile Include="Obsolete\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
@@ -552,6 +571,8 @@
     <Compile Include="Persistence\Behaviors\BehaviorContext.cs" />
     <Compile Include="Persistence\ContentBuilder.cs" />
     <Compile Include="Persistence\FilesystemTransaction.cs" />
+    <Compile Include="Persistence\NH\DetailCollectionFactory.cs" />
+    <Compile Include="Persistence\NH\PersistentDetailCollectionList.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlWriter.cs" />
     <Compile Include="Persistence\Serialization\Html\ItemHtmlReader.cs" />
     <Compile Include="Persistence\IContentItemRepository.cs" />
@@ -684,6 +705,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
     <Compile Include="Web\Mvc\ControllerContentHelper.cs" />
+    <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
     <Compile Include="Web\Mvc\Html\HtmlExtensions.cs" />
@@ -692,6 +714,7 @@
     <Compile Include="Web\Mvc\MvcExtensions.cs" />
     <Compile Include="Web\Mvc\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
+    <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\ThemeViewLocationCache.cs" />
     <Compile Include="Web\Mvc\ViewContentHelper.cs" />
     <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
@@ -714,6 +737,8 @@
     <Compile Include="Collections\TraverseHelper.cs" />
     <Compile Include="Web\NonRewritableAttribute.cs" />
     <Compile Include="Web\Parsing\AnalyzerBase.cs" />
+    <Compile Include="Web\Parsing\ElementAnalyzer.cs" />
+    <Compile Include="Web\Parsing\HtmlCommentAnalyzer.cs" />
     <Compile Include="Web\Parsing\Token.cs" />
     <Compile Include="Web\Parsing\TokenType.cs" />
     <Compile Include="Web\Parts\IIntegerityManager.cs" />
@@ -745,6 +770,7 @@
     <Compile Include="Web\UI\RecursiveContainerAttribute.cs" />
     <Compile Include="Web\UI\WebControls\MultiSelect.cs" />
     <Compile Include="Web\UI\WebControls\OrganizeSwitchAttribute.cs" />
+    <Compile Include="Web\UI\WebControls\RequireEitherFieldValidator.cs" />
     <Compile Include="Web\UI\WebControls\SelectingUploadCompositeControl.cs" />
     <Compile Include="Web\UI\WebControls\WebControlsExtensions.cs" />
     <Compile Include="Web\UrlEventArgs.cs" />
@@ -821,7 +847,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -861,7 +886,6 @@
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
-    <Compile Include="Obsolete\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
     <Compile Include="Edit\Web\EditPage.cs">
@@ -1452,6 +1476,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

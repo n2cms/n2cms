@@ -31,10 +31,10 @@ namespace N2.Templates.UI.Parts
             base.OnInit(e);
         }
 
-		private string CacheKey
-		{
-			get { return "RssAggregator.NewsItems" + CurrentItem.ID; }
-		}
+        private string CacheKey
+        {
+            get { return "RssAggregator.NewsItems" + CurrentItem.ID; }
+        }
 
         private static TimeSpan ExpirationTime = TimeSpan.FromMinutes(1);
         private IEnumerable<RssItem> CacheNewsItems(string url, Func<string, IEnumerable<RssItem>> reader)

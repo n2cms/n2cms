@@ -1,4 +1,4 @@
-﻿/*************************************************************************************************
+/*************************************************************************************************
 
 Variable Substituter Utility Class
 Licensed to users of N2CMS under the terms of the Boost Software License
@@ -33,73 +33,68 @@ using System.Text.RegularExpressions;
 namespace N2
 {
 
-	class VariableSubstituter
-	{
-		internal static Regex PropertyReplacementRegex = new Regex("\\$\\$(.*?)\\$\\$");
+    class VariableSubstituter
+    {
+        internal static Regex PropertyReplacementRegex = new Regex("(?:\\$\\$|{{)(.*?)(?:\\$\\$|}})"); // allow {{token}} or $$token$$
 
-		internal static string Substitute(string p, ContentItem item)
-		{
-			return PropertyReplacementRegex.Replace(p, match => ComputeReplacement(item, match));
-		}
+        internal static string Substitute(string p, ContentItem item)
+        {
+            return PropertyReplacementRegex.Replace(p, match => ComputeReplacement(item, match));
+        }
 
-		private static string ComputeReplacement(ContentItem item, Match match)
-		{
-			var pn = match.Groups[1].Value.Split(new[] {':'}, 2);
-			try
-			{
-				var d1 = item.GetDetail(pn[0]);
-				if (d1 == null)
-				{
-					// hard-coded a few properties here to avoid reflection
-					if (pn[0] == "Title")
-						d1 = item.Title;
-					else if (pn[0] == "Url")
-						d1 = item.Url;
-					else if (pn[0] == "Id")
-						d1 = item.ID;
-					else if (pn[0] == "Published")
-						d1 = item.Published;
-					else if (pn[0] == "TranslationKey")
-						d1 = item.TranslationKey;
-					else if (pn[0] == "SavedBy")
-						d1 = item.SavedBy;
-					else if (pn[0] == "Updated")
-						d1 = item.Updated;
-					else if (pn[0] == "Published")
-						d1 = item.Published;
-					else if (pn[0] == "Path")
-						d1 = item.Path;
-					else
-					{
-						// Use Reflection to resolve property. 
-						var type = item.GetType();
-						var props =
-							type.GetProperties().Where(f => f.Name == pn[0]).
-								ToArray();
-						if (props.Length > 0)
-							d1 = props[0].GetValue(item, null);
-							// it's a property
-						else
-						{
-							var fields =
-								type.GetFields().Where(f => f.Name == pn[0]).
-									ToArray();
-							if (fields.Length > 0)
-								d1 = fields[0].GetValue(item); // it's a field
-						}
-					}
-				}
-				if (d1 == null)
-					return String.Concat('{', pn[0], ":null}");
-				return (pn.Length == 2
-					        ? String.Format(
-						        String.Concat("{0:", pn[1], '}'), d1)
-					        : d1.ToString());
-			}
-			catch (Exception err)
-			{
-				return err.ToString();
-			}
-		}
-	}
+        private static string ComputeReplacement(ContentItem item, Match match)
+        {
+            var pn = match.Groups[1].Value.Split(new[] {':','|'}, 2); // allow : or | as token parameter separators
+            try
+            {
+                var d1 = item.GetDetail(pn[0]);
+                if (d1 == null)
+                {
+                    // hard-coded a few properties here to avoid reflection
+                    if (pn[0].Equals("Title", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Title;
+                    else if (pn[0].Equals("Url", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Url;
+                    else if (pn[0].Equals("Id", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.ID;
+                    else if (pn[0].Equals("Published", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Published;
+                    else if (pn[0].Equals("TranslationKey", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.TranslationKey;
+                    else if (pn[0].Equals("SavedBy", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.SavedBy;
+                    else if (pn[0].Equals("Updated", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Updated;
+                    else if (pn[0].Equals("Published", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Published;
+                    else if (pn[0].Equals("Path", StringComparison.OrdinalIgnoreCase))
+                        d1 = item.Path;
+                    else
+                    {
+                        // Use Reflection to resolve property. 
+                        var type = item.GetType();
+                        var props = type.GetProperties().Where(f => f.Name.Equals(pn[0], StringComparison.OrdinalIgnoreCase)).ToArray();
+                        if (props.Length > 0)
+                            d1 = props[0].GetValue(item, null);
+                            // it's a property
+                        else
+                        {
+                            var fields = type.GetFields().Where(f => f.Name.Equals(pn[0], StringComparison.OrdinalIgnoreCase)).ToArray();
+                            if (fields.Length > 0)
+                                d1 = fields[0].GetValue(item); // it's a field
+                        }
+                    }
+                }
+                if (d1 == null)
+                    return String.Concat('{', pn[0], ":null}");
+                return (pn.Length == 2
+                            ? String.Format(String.Concat("{0:", pn[1], '}'), d1)
+                            : d1.ToString());
+            }
+            catch (Exception err)
+            {
+                return err.ToString();
+            }
+        }
+    }
 }

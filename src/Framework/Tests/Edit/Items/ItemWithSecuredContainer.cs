@@ -1,4 +1,4 @@
-﻿using N2.Details;
+using N2.Details;
 using N2.Web.UI;
 
 namespace N2.Tests.Edit.Items

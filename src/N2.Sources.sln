@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\example.web.config = ..\docs\example.web.config
@@ -130,16 +132,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "Mvc\Dinamico\Di
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{4508EBF5-CF13-47DD-942E-72E34B26FE48}"
 	ProjectSection(SolutionItems) = preProject
+		..\build\nuget\BundlesDinamico\N2.Bundles.Dinamico.nuspec = ..\build\nuget\BundlesDinamico\N2.Bundles.Dinamico.nuspec
 		..\build\nuget\Framework\N2.Cms.nuspec = ..\build\nuget\Framework\N2.Cms.nuspec
+		..\build\nuget\Config\N2.Config.nuspec = ..\build\nuget\Config\N2.Config.nuspec
 		..\build\nuget\Dinamico\N2.Dinamico.nuspec = ..\build\nuget\Dinamico\N2.Dinamico.nuspec
 		..\build\nuget\Library\N2.Library.nuspec = ..\build\nuget\Library\N2.Library.nuspec
 		..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec = ..\build\nuget\ManagementLocalizedResources\N2.Management.LocalizedResources.nuspec
 		..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec = ..\build\nuget\ManagementNoZip\N2.Management.NoZip.nuspec
-		..\build\nuget\ManagementTargeting\N2.Management.Targeting.nuspec = ..\build\nuget\ManagementTargeting\N2.Management.Targeting.nuspec
 		..\build\nuget\ManagementZip\N2.Management.Zip.nuspec = ..\build\nuget\ManagementZip\N2.Management.Zip.nuspec
+		..\build\nuget\Mvc\N2.Mvc.nuspec = ..\build\nuget\Mvc\N2.Mvc.nuspec
 		..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec = ..\build\nuget\MongoDB\N2.Persistence.MongoDB.nuspec
 		..\build\nuget\Razor\N2.Razor.nuspec = ..\build\nuget\Razor\N2.Razor.nuspec
 		..\build\nuget\ReusableParts\N2.ReusableParts.nuspec = ..\build\nuget\ReusableParts\N2.ReusableParts.nuspec
+		..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec = ..\build\nuget\LuceneSearch\N2.Search.Lucene.nuspec
 		..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec = ..\build\nuget\RemoteSearch\N2.Search.Remote.nuspec
 		..\build\nuget\SQLite\N2.SQLite.nuspec = ..\build\nuget\SQLite\N2.SQLite.nuspec
 		..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec = ..\build\nuget\IoC.Windsor3\N2.Windsor3.nuspec
@@ -161,7 +166,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Search.Remote.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.ReusableParts", "Framework\ReusableParts\N2.ReusableParts.csproj", "{2F45B409-52CD-4FB9-963A-D20E0B113D26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Targeting", "Mvc\MvcTemplates\N2\Targeting\N2.Management.Targeting.csproj", "{1F422E4F-8B5F-4B50-A521-AC5ED047AFEE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7C88A485-3564-4B34-BEA2-154A08D4B06A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,15 +3,15 @@ using System.Web.UI;
 
 namespace N2.Details
 {
-	/// <summary>Associate a property/detail with a control used for presentation.</summary>
-	[AttributeUsage(AttributeTargets.Property)]
-	public class DisplayableAttribute : AbstractDisplayableAttribute
-	{
-		public DisplayableAttribute(Type controlType, string controlPropertyName)
-		{
-			this.ControlType = controlType;
-			this.ControlPropertyName = controlPropertyName;
-		}
+    /// <summary>Associate a property/detail with a control used for presentation.</summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class DisplayableAttribute : AbstractDisplayableAttribute
+    {
+        public DisplayableAttribute(Type controlType, string controlPropertyName)
+        {
+            this.ControlType = controlType;
+            this.ControlPropertyName = controlPropertyName;
+        }
 
         #region Private Members
         private Type controlType;
@@ -66,16 +66,16 @@ namespace N2.Details
         }
         #endregion
 
-		#region IDisplayable Members
+        #region IDisplayable Members
 
-		public override Control AddTo(ContentItem item, string detailName, Control container)
-		{
-			Control displayer = (Control)Activator.CreateInstance(ControlType);
-			Utility.SetProperty(displayer, ControlPropertyName, item[detailName]);
-			container.Controls.Add(displayer);
-			return displayer;
-		}
+        public override Control AddTo(ContentItem item, string detailName, Control container)
+        {
+            Control displayer = (Control)Activator.CreateInstance(ControlType);
+            Utility.SetProperty(displayer, ControlPropertyName, item[detailName]);
+            container.Controls.Add(displayer);
+            return displayer;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

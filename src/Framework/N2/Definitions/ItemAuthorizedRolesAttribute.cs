@@ -25,31 +25,31 @@ using System.Collections.Generic;
 
 namespace N2.Definitions
 {
-	/// <summary>
-	/// This class is used to restrict access to item types in edit mode. Only 
-	/// allowed roles can create new items decorated with this attribute.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
-	[Obsolete("Use AuthorizedRoles/RequiredPermission property on [(Page/Part)Definition]")]
-	public class ItemAuthorizedRolesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
-	{
-		public string[] Roles { get; set; }
+    /// <summary>
+    /// This class is used to restrict access to item types in edit mode. Only 
+    /// allowed roles can create new items decorated with this attribute.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    [Obsolete("Use AuthorizedRoles/RequiredPermission property on [(Page/Part)Definition]")]
+    public class ItemAuthorizedRolesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
+    {
+        public string[] Roles { get; set; }
 
-		/// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
-		public ItemAuthorizedRolesAttribute()
-		{
-		}
+        /// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
+        public ItemAuthorizedRolesAttribute()
+        {
+        }
 
-		/// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
-		/// <param name="roles">The roles allowed to edit the decorated item.</param>
-		public ItemAuthorizedRolesAttribute(params string[] roles)
-		{
-			Roles = roles;
-		}
+        /// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
+        /// <param name="roles">The roles allowed to edit the decorated item.</param>
+        public ItemAuthorizedRolesAttribute(params string[] roles)
+        {
+            Roles = roles;
+        }
 
-		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
-		{
-			definition.AuthorizedRoles = Roles;
-		}
-	}
+        public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
+        {
+            definition.AuthorizedRoles = Roles;
+        }
+    }
 }

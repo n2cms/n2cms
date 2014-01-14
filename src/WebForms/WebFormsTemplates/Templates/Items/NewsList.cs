@@ -6,9 +6,9 @@ using N2.Templates.Items;
 namespace N2.Templates.Items
 {
     [PartDefinition("News List", 
-		Description = "A news list box that can be displayed in a column.", 
-		SortOrder = 160,
-		IconUrl = "~/Templates/UI/Img/newspaper_go.png")]
+        Description = "A news list box that can be displayed in a column.", 
+        SortOrder = 160,
+        IconUrl = "~/Templates/UI/Img/newspaper_go.png")]
     [WithEditableTitle("Title", 10, Required = false)]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
     public class NewsList : SidebarItem
@@ -35,7 +35,7 @@ namespace N2.Templates.Items
             set { SetDetail("Container", value); }
         }
 
-		[EditableNumber("Max news", 120)]
+        [EditableNumber("Max news", 120)]
         public virtual int MaxNews
         {
             get { return (int) (GetDetail("MaxNews") ?? 3); }

@@ -10,81 +10,81 @@ using Shouldly;
 
 namespace N2.Extensions.Tests.Mvc
 {
-	[TestFixture]
-	public class ContentControllerTests
-	{
-		[Test]
-		public void Returns_PartialView_WhenIndexCalled_OnPartController()
-		{
-			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem();
+    [TestFixture]
+    public class ContentControllerTests
+    {
+        [Test]
+        public void Returns_PartialView_WhenIndexCalled_OnPartController()
+        {
+            var controller = Create<TestItemController>();
+            controller.CurrentItem = new TestItem();
 
-			controller.Index().ShouldBeTypeOf<PartialViewResult>();
-		}
+            controller.Index().ShouldBeTypeOf<PartialViewResult>();
+        }
 
-		[Test]
-		public void Returns_View_WhenIndexCalled_OnPageController()
-		{
-			var controller = Create<RegularController>();
-			controller.CurrentItem = new RegularPage();
+        [Test]
+        public void Returns_View_WhenIndexCalled_OnPageController()
+        {
+            var controller = Create<RegularController>();
+            controller.CurrentItem = new RegularPage();
 
-			controller.Index().ShouldBeTypeOf<ViewResult>();
-		}
+            controller.Index().ShouldBeTypeOf<ViewResult>();
+        }
 
-		[Test]
-		public void ParentPage()
-		{
-			var page = new RegularPage { ID = 123 };
-			var controller = Create<TestItemController>();
-			controller.CurrentPage = page;
+        [Test]
+        public void ParentPage()
+        {
+            var page = new RegularPage { ID = 123 };
+            var controller = Create<TestItemController>();
+            controller.CurrentPage = page;
 
-			Assert.That(controller.CurrentPage, Is.EqualTo(page));
-		}
+            Assert.That(controller.CurrentPage, Is.EqualTo(page));
+        }
 
-		[Test]
-		public void ViewParentPage_WithPage()
-		{
-			var page = new RegularPage();
-			var controller = Create<RegularController>();
-			controller.CurrentItem = page;
+        [Test]
+        public void ViewParentPage_WithPage()
+        {
+            var page = new RegularPage();
+            var controller = Create<RegularController>();
+            controller.CurrentItem = page;
 
-			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
-			
-			Assert.Throws<InvalidOperationException>(() => controller.ViewParentPage());
-		}
+            controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
+            
+            Assert.Throws<InvalidOperationException>(() => controller.ViewParentPage());
+        }
 
-		[Test]
-		public void ViewParentPage_WithItem()
-		{
-			var page = new RegularPage { ID = 123 };
-			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem
-			{
-				Parent = new TestItem { Parent = page },
-			};
-			controller.CurrentPage = page;
-			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
-			var result = controller.ViewParentPage();
+        [Test]
+        public void ViewParentPage_WithItem()
+        {
+            var page = new RegularPage { ID = 123 };
+            var controller = Create<TestItemController>();
+            controller.CurrentItem = new TestItem
+            {
+                Parent = new TestItem { Parent = page },
+            };
+            controller.CurrentPage = page;
+            controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
+            var result = controller.ViewParentPage();
 
-			Assert.That(result.Page, Is.EqualTo(page));
-		}
+            Assert.That(result.Page, Is.EqualTo(page));
+        }
 
-		[Test]
-		public void ViewPage_WithSamePage()
-		{
-			var page = new RegularPage();
-			var controller = Create<RegularController>();
-			controller.CurrentItem = page;
-			controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
+        [Test]
+        public void ViewPage_WithSamePage()
+        {
+            var page = new RegularPage();
+            var controller = Create<RegularController>();
+            controller.CurrentItem = page;
+            controller.Content.Current.Engine = MockRepository.GenerateStub<IEngine>();
 
-			Assert.Throws<InvalidOperationException>(() => controller.ViewPage(page));
-		}
+            Assert.Throws<InvalidOperationException>(() => controller.ViewPage(page));
+        }
 
-		private T Create<T>() where T : Controller, new()
-		{
-			T c = new T();
-			c.ControllerContext = new ControllerContext(new System.Web.Routing.RequestContext(new FakeHttpContext(), new System.Web.Routing.RouteData()), c);
-			return c;
-		}
-	}
+        private T Create<T>() where T : Controller, new()
+        {
+            T c = new T();
+            c.ControllerContext = new ControllerContext(new System.Web.Routing.RequestContext(new FakeHttpContext(), new System.Web.Routing.RouteData()), c);
+            return c;
+        }
+    }
 }

@@ -1,8 +1,8 @@
-<%@ Page MasterPageFile="Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Copy.aspx.cs" Inherits="N2.Edit.Copy" Title="Copy" %>
+﻿<%@ Page MasterPageFile="Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Copy.aspx.cs" Inherits="N2.Edit.Copy" Title="Copy" %>
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-		<asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='../Resources/Icons/page_copy.png' /> Try again</asp:LinkButton>
+		<asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command primary-action"><img src='../Resources/Icons/page_copy.png' /> Try again</asp:LinkButton>
 		<asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel">Cancel</asp:HyperLink>
 </asp:Content>
 

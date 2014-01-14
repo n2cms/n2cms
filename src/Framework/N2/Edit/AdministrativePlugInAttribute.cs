@@ -8,111 +8,111 @@ using N2.Security;
 
 namespace N2.Edit
 {
-	/// <summary>
-	/// Classes extending this abstract class are collected and may be 
-	/// retrieved by user interfaces in the editing interface.
-	/// </summary>
-	public abstract class AdministrativePluginAttribute : Attribute, IPlugin, ISecurable, IPermittable
-	{
-		private bool enabled = true;
-		private int sortOrder = int.MaxValue;
-		private IEngine engine;
+    /// <summary>
+    /// Classes extending this abstract class are collected and may be 
+    /// retrieved by user interfaces in the editing interface.
+    /// </summary>
+    public abstract class AdministrativePluginAttribute : Attribute, IPlugin, ISecurable, IPermittable
+    {
+        private bool enabled = true;
+        private int sortOrder = int.MaxValue;
+        private IEngine engine;
 
-		#region Public Properties
+        #region Public Properties
 
-		public bool Legacy { get; set; }
+        public bool Legacy { get; set; }
 
-		public Type Decorates { get; set; }
+        public Type Decorates { get; set; }
 
-		public string Name { get; set; }
+        public string Name { get; set; }
 
-		public int SortOrder
-		{
-			get { return sortOrder; }
-			set { sortOrder = value; }
-		}
+        public int SortOrder
+        {
+            get { return sortOrder; }
+            set { sortOrder = value; }
+        }
 
-		/// <summary>Specific roles required to use this plugin.</summary>
-		public string[] AuthorizedRoles { get; set; }
+        /// <summary>Specific roles required to use this plugin.</summary>
+        public string[] AuthorizedRoles { get; set; }
 
-		public bool Enabled
-		{
-			get { return enabled; }
-			set { enabled = value; }
-		}
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
 
-		/// <summary>The minimum permission to require to allow this plugin.</summary>
-		public Permission RequiredPermission { get; set; }
+        /// <summary>The minimum permission to require to allow this plugin.</summary>
+        public Permission RequiredPermission { get; set; }
 
-		/// <summary>Url to the anchor's image icon.</summary>
-		public string IconUrl { get; set; }
+        /// <summary>Url to the anchor's image icon.</summary>
+        public string IconUrl { get; set; }
 
-		/// <summary>A css class used to render the icon.</summary>
-		public string IconClass { get; set; }
+        /// <summary>A css class used to render the icon.</summary>
+        public string IconClass { get; set; }
 
-		/// <summary>The current N2 context.</summary>
-		protected internal IEngine Engine
-		{
-			get { return engine ?? (engine = N2.Context.Current); }
-			set { engine = value; }
-		}
+        /// <summary>The current N2 context.</summary>
+        protected internal IEngine Engine
+        {
+            get { return engine ?? (engine = N2.Context.Current); }
+            set { engine = value; }
+        }
 
-		#endregion
+        #endregion
 
-		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
-		/// <param name="user">The user to check.</param>
-		/// <param name="security">The security manager used to check authorization.</param>
-		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
-		public bool IsAuthorized(IPrincipal user, ISecurityManager security)
-		{
-			if (user == null) return true;
+        /// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
+        /// <param name="user">The user to check.</param>
+        /// <param name="security">The security manager used to check authorization.</param>
+        /// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
+        public bool IsAuthorized(IPrincipal user, ISecurityManager security)
+        {
+            if (user == null) return true;
 
-			return security.IsAuthorized(this, user, null);
-		}
+            return security.IsAuthorized(this, user, null);
+        }
 
-		protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)
-		{
-			if (!string.IsNullOrEmpty(IconClass))
-				return string.Format("<b class='{0}'></b> {1}", IconClass, text);
-			if (string.IsNullOrEmpty(iconUrl))
-				return text;
-			return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.Rebase(iconUrl), alt, text);
-		}
+        protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)
+        {
+            if (!string.IsNullOrEmpty(IconClass))
+                return string.Format("<b class='{0}'></b> {1}", IconClass, text);
+            if (string.IsNullOrEmpty(iconUrl))
+                return text;
+            return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.Rebase(iconUrl), alt, text);
+        }
 
-		protected virtual void ApplyStyles(PluginContext pluginContext, WebControl ctrl)
-		{
-			if (!string.IsNullOrEmpty(IconUrl))
-				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = pluginContext.Rebase(IconUrl);
-		}
+        protected virtual void ApplyStyles(PluginContext pluginContext, WebControl ctrl)
+        {
+            if (!string.IsNullOrEmpty(IconUrl))
+                ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = pluginContext.Rebase(IconUrl);
+        }
 
-		public abstract Control AddTo(Control container, PluginContext context);
+        public abstract Control AddTo(Control container, PluginContext context);
 
         #region IComparable<IPlugin> Members
 
         public int CompareTo(IPlugin other)
-		{
-			if(other == null)
-				return 1;
-			int result = SortOrder.CompareTo(other.SortOrder) * 2 + Name.CompareTo(other.Name);
-			return result;
-		}
+        {
+            if(other == null)
+                return 1;
+            int result = SortOrder.CompareTo(other.SortOrder) * 2 + Name.CompareTo(other.Name);
+            return result;
+        }
 
-		#region Equals & GetHashCode Methods
+        #region Equals & GetHashCode Methods
 
-		public override bool Equals(object obj)
-		{
-			if (obj == null || !obj.GetType().IsAssignableFrom(GetType()))
-				return false;
-			return Name == ((AdministrativePluginAttribute) obj).Name;
-		}
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !obj.GetType().IsAssignableFrom(GetType()))
+                return false;
+            return Name == ((AdministrativePluginAttribute) obj).Name;
+        }
 
-		public override int GetHashCode()
-		{
-			return Name.GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
 
-		#endregion
+        #endregion
 
-		#endregion
-	}
+        #endregion
+    }
 }

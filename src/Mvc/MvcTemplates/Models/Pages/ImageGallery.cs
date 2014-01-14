@@ -6,15 +6,15 @@ using System.Collections.Generic;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
-	[PageDefinition("Image Gallery", Description = "Displays an image with next/previous thumbnails", SortOrder = 220,
-		IconClass = "n2-icon-picture shadow")]
-	[RestrictParents(typeof (IStructuralPage))]
-	[TabContainer("images", "Gallery Images", 200)]
-	public class ImageGallery : ContentPageBase
-	{
-		public virtual IEnumerable<GalleryItem> GalleryItems
-		{
-			get { return GetChildren<GalleryItem>(); }
-		}
-	}
+    [PageDefinition("Image Gallery", Description = "Displays an image with next/previous thumbnails", SortOrder = 220,
+        IconClass = "n2-icon-picture shadow")]
+    [RestrictParents(typeof (IStructuralPage))]
+    [TabContainer("images", "Gallery Images", 200)]
+    public class ImageGallery : ContentPageBase
+    {
+        public virtual IEnumerable<GalleryItem> GalleryItems
+        {
+            get { return GetChildren<GalleryItem>(); }
+        }
+    }
 }

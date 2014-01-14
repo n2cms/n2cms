@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 
 namespace N2.Configuration
@@ -33,11 +33,11 @@ namespace N2.Configuration
             set { base["cacheProfile"] = value; }
         }
 
-		[ConfigurationProperty("slidingExpiration")]
-		public System.TimeSpan? SlidingExpiration
-		{
-			get { return (TimeSpan?)base["slidingExpiration"]; }
-			set { base["slidingExpiration"] = value; }
-		}
-	}
+        [ConfigurationProperty("slidingExpiration")]
+        public System.TimeSpan? SlidingExpiration
+        {
+            get { return (TimeSpan?)base["slidingExpiration"]; }
+            set { base["slidingExpiration"] = value; }
+        }
+    }
 }

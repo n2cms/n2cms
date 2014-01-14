@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +14,7 @@ namespace N2.Management.Files.FileSystem
 {
     public partial class FileUpload : System.Web.UI.UserControl
     {
-		private readonly Engine.Logger<FileUpload> logger;
+        private readonly Engine.Logger<FileUpload> logger;
         protected int maxFileSize = 4096 * 1024 - 10000;
         protected SelectionUtility Selection { get; set; }
 
@@ -38,7 +38,7 @@ namespace N2.Management.Files.FileSystem
             }
             catch (Exception ex)
             {
-				logger.Error(ex);
+                logger.Error(ex);
             }
         }
 

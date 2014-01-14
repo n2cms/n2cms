@@ -1,4 +1,4 @@
-﻿using N2.Details;
+using N2.Details;
 using N2.Templates;
 using N2.Templates.Items;
 using N2.Integrity;

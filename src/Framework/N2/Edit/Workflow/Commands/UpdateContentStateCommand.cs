@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 namespace N2.Edit.Workflow.Commands
 {
     public class UpdateContentStateCommand : CommandBase<CommandContext>
@@ -15,13 +15,13 @@ namespace N2.Edit.Workflow.Commands
         public override void Process(CommandContext state)
         {
             changer.ChangeTo(state.Content, toState);
-			foreach (ContentItem item in state.GetItemsToSave().Distinct())
-			{
-				if (item == state.Content)
-					continue;
+            foreach (ContentItem item in state.GetItemsToSave().Distinct())
+            {
+                if (item == state.Content)
+                    continue;
 
-				changer.ChangeTo(item, toState);
-			}
+                changer.ChangeTo(item, toState);
+            }
         }
     }
 }

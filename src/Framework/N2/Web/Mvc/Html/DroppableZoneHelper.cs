@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Web.Mvc;
 using N2.Definitions;
@@ -17,56 +18,69 @@ namespace N2.Web.Mvc.Html
         }
     }
 
-	public class DroppableZoneHelper : ZoneHelper
-	{
-		protected string ZoneTitle { get; set; }
+    public class DroppableZoneHelper : ZoneHelper
+    {
+        protected string ZoneTitle { get; set; }
 
         ControlPanelState state = ControlPanelState.Hidden;
 
         public DroppableZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
             : base(helper, zoneName, currentItem)
-		{
+        {
             state = helper.GetControlPanelState();
         }
 
-		public ZoneHelper Title(string title)
-		{
-			ZoneTitle = title;
+        public ZoneHelper Title(string title)
+        {
+            ZoneTitle = title;
 
-			return this;
-		}
+            return this;
+        }
 
         public override void Render(TextWriter writer)
         {
-			if (state.IsFlagSet(ControlPanelState.DragDrop))
-			{
-				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+            if (writer == null)
+                throw new NullReferenceException("writer cannot be null");
 
-				writer.Write("<div class='" + ZoneName + " dropZone'");
-				if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
-					writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path);
-				else
-				{
-					writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(CurrentItem).Path)
-						.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey())
-						.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
-				}
-				writer.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
-					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem), ZoneName));
-				writer.Write(">");
+            if (state.IsFlagSet(ControlPanelState.DragDrop))
+            {
+                if (String.IsNullOrWhiteSpace(ZoneName))
+                    throw new N2Exception("Zone name cannot be null, empty, or consist only of whitespace.");
+                if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) 
+                    throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+                if (CurrentItem == null)
+                    throw new N2Exception("CurrentItem cannot be null");
+                var dm = Html.ResolveService<IDefinitionManager>();
+                if (dm == null)
+                    throw new N2Exception("Failed to resolve the definition manager.");
+
+
+
+                writer.Write("<div class=\"" + ZoneName + " dropZone\"");
+                if (CurrentItem.ID != 0 && !CurrentItem.VersionOf.HasValue)
+                    writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path);
+                else
+                {
+                    writer.WriteAttribute(PartUtilities.PathAttribute, (Find.ClosestPage(CurrentItem) ?? CurrentItem).Path);
+                    writer.WriteAttribute("data-versionKey", CurrentItem.GetVersionKey());
+                    writer.WriteAttribute("data-versionIndex", CurrentItem.VersionIndex.ToString());
+                }
+                writer.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
+                    .WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
+                    .WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(dm.GetDefinition(CurrentItem), ZoneName));
+                writer.Write(">");
 
                 RenderPreview(writer);
-				
-				writer.Write("</div>");
-			}
+                
+                writer.Write("</div>");
+            }
             else if (state.IsFlagSet(ControlPanelState.Previewing))
             {
                 RenderPreview(writer);
             }
             else
                 base.Render(writer);
-		}
+        }
 
         private void RenderPreview(TextWriter writer)
         {
@@ -86,46 +100,46 @@ namespace N2.Web.Mvc.Html
             return state.GetInterface();
         }
 
-		protected void RenderReplacingPreviewed(TextWriter writer, string preview)
-		{
-			int itemID;
-			if (int.TryParse(preview, out itemID))
-			{
-				ContentItem previewedItem = Html.ResolveService<IPersister>().Get(itemID);
-				if (previewedItem != null && previewedItem.VersionOf.HasValue)
-				{
-					foreach (var child in PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()))
-					{
-						if (previewedItem.VersionOf.Value == child)
-							RenderTemplate(writer, previewedItem);
-						else
-							RenderTemplate(writer, child);
-					}
-				}
-			}
-		}
+        protected void RenderReplacingPreviewed(TextWriter writer, string preview)
+        {
+            int itemID;
+            if (int.TryParse(preview, out itemID))
+            {
+                ContentItem previewedItem = Html.ResolveService<IPersister>().Get(itemID);
+                if (previewedItem != null && previewedItem.VersionOf.HasValue)
+                {
+                    foreach (var child in PartsAdapter.GetParts(CurrentItem, ZoneName, GetInterface()))
+                    {
+                        if (previewedItem.VersionOf.Value == child)
+                            RenderTemplate(writer, previewedItem);
+                        else
+                            RenderTemplate(writer, child);
+                    }
+                }
+            }
+        }
 
         protected override void RenderTemplate(TextWriter writer, ContentItem model)
-        {			
+        {           
             if (state.IsFlagSet(ControlPanelState.DragDrop) && model.Parent == CurrentItem)
             {
-				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
+                ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model);
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
-				if (model.ID != 0 && !model.VersionOf.HasValue)
-					writer.WriteAttribute(PartUtilities.PathAttribute, model.Path);
-				else
-				{
-					writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(model).Path);
-					writer.WriteAttribute("data-versionKey", model.GetVersionKey())
-						.WriteAttribute("data-versionIndex", model.VersionIndex.ToString());
-				}
-				writer.WriteAttribute("data-sortOrder", model.SortOrder.ToString())
-					.WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator);
+                if (model.ID != 0 && !model.VersionOf.HasValue)
+                    writer.WriteAttribute(PartUtilities.PathAttribute, model.Path);
+                else
+                {
+                    writer.WriteAttribute(PartUtilities.PathAttribute, Find.ClosestPage(model).Path);
+                    writer.WriteAttribute("data-versionKey", model.GetVersionKey())
+                        .WriteAttribute("data-versionIndex", model.VersionIndex.ToString());
+                }
+                writer.WriteAttribute("data-sortOrder", model.SortOrder.ToString())
+                    .WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator);
 
-				writer.Write(">");
+                writer.Write(">");
 
-				Html.ResolveService<PartUtilities>().WriteTitleBar(writer, model, Html.ViewContext.HttpContext.Request.RawUrl);
+                Html.ResolveService<PartUtilities>().WriteTitleBar(writer, model, Html.ViewContext.HttpContext.Request.RawUrl);
                 
                 base.RenderTemplate(writer, model);
 
@@ -140,5 +154,5 @@ namespace N2.Web.Mvc.Html
             // TODO: Not implemented
             return this;
         }
-	}
+    }
 }

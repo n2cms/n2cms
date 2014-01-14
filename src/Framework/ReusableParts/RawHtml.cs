@@ -1,4 +1,4 @@
-﻿/*************************************************************************************************
+/*************************************************************************************************
 
 Raw HTML: Generic Model and MVC Adapter
 Licensed to users of N2CMS under the terms of the Boost Software License
@@ -34,7 +34,7 @@ using N2.Web.Parts;
 
 namespace N2.Web
 {
-	[PartDefinition(Title = "Raw HTML", RequiredPermission = N2.Security.Permission.Publish, IconClass = "n2-icon-code")]
+    [PartDefinition(Title = "Raw HTML", RequiredPermission = N2.Security.Permission.Publish, IconClass = "n2-icon-code")]
     public class RawHtml : ContentItem
     {
         [EditableText(Rows = 10, Columns = 50, TextMode = System.Web.UI.WebControls.TextBoxMode.MultiLine)]
@@ -48,8 +48,8 @@ namespace N2.Web
     [Adapts(typeof(RawHtml))]
     public class RawHtmlAdapter : PartsAdapter
     {
-		public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
-		{
+        public override void RenderPart(System.Web.Mvc.HtmlHelper html, ContentItem part, System.IO.TextWriter writer = null)
+        {
             if (!(part is RawHtml))
                 throw new ArgumentException("This adapter can only be used to adapt RawHTML parts.");
             html.ViewContext.Writer.Write((part as RawHtml).HtmlContent);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,121 +17,121 @@ using N2.Tests.Details.Models;
 
 namespace N2.Tests.Details
 {
-	[TestFixture]
+    [TestFixture]
     public class DisplayableTokensTest : ItemTestsBase
     {
-		DisplayableTokensAttribute dta;
-		EnumableItem item;
+        DisplayableTokensAttribute dta;
+        EnumableItem item;
 
-		[SetUp]
-		public override void SetUp()
-		{
-			dta = new DisplayableTokensAttribute { Name = "DaysString" };
-			item = CreateOneItem<EnumableItem>(1, "item", null);
-			base.SetUp();
-		}
+        [SetUp]
+        public override void SetUp()
+        {
+            dta = new DisplayableTokensAttribute { Name = "DaysString" };
+            item = CreateOneItem<EnumableItem>(1, "item", null);
+            base.SetUp();
+        }
 
-		[Test]
-		public void SavingToken_TokenIsAdded_ToDetailCollection()
-		{
-			item.DaysString = "{{token}}";
+        [Test]
+        public void SavingToken_TokenIsAdded_ToDetailCollection()
+        {
+            item.DaysString = "{{token}}";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().StringValue, Is.EqualTo("{{token}}"));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().StringValue, Is.EqualTo("{{token}}"));
+        }
 
-		[Test]
-		public void Tokens_MayHaveData()
-		{
-			item.DaysString = "{{token|with data}}";
+        [Test]
+        public void Tokens_MayHaveData()
+        {
+            item.DaysString = "{{token|with data}}";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().StringValue, Is.EqualTo("{{token|with data}}"));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().StringValue, Is.EqualTo("{{token|with data}}"));
+        }
 
-		[Test]
-		public void MultipleTokens_CanBeAdded()
-		{
-			item.DaysString = "{{token}}{{second}}";
+        [Test]
+        public void MultipleTokens_CanBeAdded()
+        {
+            item.DaysString = "{{token}}{{second}}";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Count, Is.EqualTo(2));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Count, Is.EqualTo(2));
+        }
 
-		[Test]
-		public void Tokens_CanBeRemoved()
-		{
-			item.DaysString = "{{token}}{{second}}";
-			dta.Transform(item);
+        [Test]
+        public void Tokens_CanBeRemoved()
+        {
+            item.DaysString = "{{token}}{{second}}";
+            dta.Transform(item);
 
-			item.DaysString = "{{second}}";
-			dta.Transform(item);
+            item.DaysString = "{{second}}";
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().StringValue, Is.EqualTo("{{second}}"));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().StringValue, Is.EqualTo("{{second}}"));
+        }
 
-		[Test]
-		public void AllTokens_CanBeRemoved()
-		{
-			item.DaysString = "{{token}}{{second}}";
-			dta.Transform(item);
+        [Test]
+        public void AllTokens_CanBeRemoved()
+        {
+            item.DaysString = "{{token}}{{second}}";
+            dta.Transform(item);
 
-			item.DaysString = "";
-			dta.Transform(item);
+            item.DaysString = "";
+            dta.Transform(item);
 
-			var collection = item.GetDetailCollection("DaysString_Tokens", false);
-			Assert.That(collection, Is.Null);
-		}
+            var collection = item.GetDetailCollection("DaysString_Tokens", false);
+            Assert.That(collection, Is.Null);
+        }
 
-		[Test]
-		public void SavingToken_Token_IsGivenIndex()
-		{
-			item.DaysString = "{{token}}";
+        [Test]
+        public void SavingToken_Token_IsGivenIndex()
+        {
+            item.DaysString = "{{token}}";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().IntValue, Is.EqualTo(0));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().IntValue, Is.EqualTo(0));
+        }
 
-		[Test]
-		public void SavingToken_Token_IsGivenIndex_AtBeginning()
-		{
-			item.DaysString = "{{token}}world";
+        [Test]
+        public void SavingToken_Token_IsGivenIndex_AtBeginning()
+        {
+            item.DaysString = "{{token}}world";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().IntValue, Is.EqualTo(0));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().IntValue, Is.EqualTo(0));
+        }
 
-		[Test]
-		public void SavingToken_Token_IsGivenIndex_InMiddle()
-		{
-			item.DaysString = "hello{{token}}world";
+        [Test]
+        public void SavingToken_Token_IsGivenIndex_InMiddle()
+        {
+            item.DaysString = "hello{{token}}world";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().IntValue, Is.EqualTo(5));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().IntValue, Is.EqualTo(5));
+        }
 
-		[Test]
-		public void SavingToken_Token_IsGivenIndex_AtEnd()
-		{
-			item.DaysString = "hello{{token}}";
+        [Test]
+        public void SavingToken_Token_IsGivenIndex_AtEnd()
+        {
+            item.DaysString = "hello{{token}}";
 
-			dta.Transform(item);
+            dta.Transform(item);
 
-			var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
-			Assert.That(details.Single().IntValue, Is.EqualTo(5));
-		}
+            var details = item.GetDetailCollection("DaysString_Tokens", false).Details;
+            Assert.That(details.Single().IntValue, Is.EqualTo(5));
+        }
     }
 }

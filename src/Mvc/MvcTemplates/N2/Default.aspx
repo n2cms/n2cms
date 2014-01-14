@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Management.Default" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -14,15 +13,15 @@
 	<title>N2 Management</title>
 	<meta name="viewport" content="width=device-width">
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="Resources/Js/jquery-1.9.1.min.js"><\/script>')</script>
-	<script src="Resources/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryPath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.JQueryUiPath) %>"></script>
 
-	<script src="Resources/angular-1.1.5/angular.min.js"></script>
-	<script src="Resources/angular-1.1.5/angular-resource.min.js"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularPath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularResourcePath) %>"></script>
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.AngularRoot + "angular-route.js") %>"></script>
 
-	<link href="Resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<script src="Resources/bootstrap/js/bootstrap.min.js"></script>
+	<link href="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapCssPath) %>" rel="stylesheet" />
+	<script src="<%= N2.Web.Url.ResolveTokens(N2.Resources.Register.TwitterBootstrapJsPath) %>"></script>
 
 	<link rel="stylesheet" href="Resources/font-awesome/css/font-awesome.min.css">
 
@@ -58,7 +57,7 @@
 	<% } %>
 	</asp:PlaceHolder>
 </head>
-<body ng-controller="ManagementCtrl" ng-app="n2" x-context-menu-trigger=".item" ng-include src="Context.Partials.Management">
+<body ng-app="n2" ng-view>
 	<%--<div id="debug-context" class="debug" ng-bind-html-unsafe="Context | pretty"></div>--%>
 </body>
 </html>

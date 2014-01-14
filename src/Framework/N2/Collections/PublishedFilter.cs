@@ -10,8 +10,7 @@ namespace N2.Collections
 		/// <returns>True if the item is published</returns>
 		public static bool IsPublished(ContentItem item)
 		{
-			return item.IsPublished()
-				&& !item.IsExpired();
+			return item.IsPublished() && !item.IsExpired();
 		}
 
 		public override bool Match(ContentItem item)

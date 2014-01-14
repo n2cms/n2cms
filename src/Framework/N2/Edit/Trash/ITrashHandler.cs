@@ -2,22 +2,22 @@ using System;
 
 namespace N2.Edit.Trash
 {
-	public class PurgingStatus
-	{
-		public int Deleted { get; set; }
-		public int Remaining { get; set; }
-		
-		public int Total
-		{
-			get { return Deleted + Remaining; }
-		}
-	}
+    public class PurgingStatus
+    {
+        public int Deleted { get; set; }
+        public int Remaining { get; set; }
+        
+        public int Total
+        {
+            get { return Deleted + Remaining; }
+        }
+    }
 
     /// <summary>
     /// Service interface implemented by the trash handler implementation.
     /// </summary>
-	public interface ITrashHandler
-	{
+    public interface ITrashHandler
+    {
         /// <summary>The container of thrown items.</summary>
         ITrashCan TrashContainer { get; }
 
@@ -52,11 +52,11 @@ namespace N2.Edit.Trash
         /// <summary>Occurs after an item has been thrown.</summary>
         event EventHandler<ItemEventArgs> ItemThrowed;
 
-		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
-		void PurgeOldItems();
+        /// <summary>Delete items lying in trash for longer than the specified interval.</summary>
+        void PurgeOldItems();
 
-		void PurgeAll(Action<PurgingStatus> onProgress = null);
+        void PurgeAll(Action<PurgingStatus> onProgress = null);
 
-		void Purge(ContentItem itemToPurge, Action<PurgingStatus> onProgress = null);
-	}
+        void Purge(ContentItem itemToPurge, Action<PurgingStatus> onProgress = null);
+    }
 }

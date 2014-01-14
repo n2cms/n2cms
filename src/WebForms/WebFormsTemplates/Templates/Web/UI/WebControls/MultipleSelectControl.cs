@@ -7,39 +7,41 @@ namespace N2.Templates.Web.UI.WebControls
 {
     public class MultipleSelectControl : Control, IQuestionControl
     {
-		Label l;
-		MultipleSelect item;
+        Label l;
+        MultipleSelect item;
         CheckBoxList list;
-		CustomValidator cv;
+        CustomValidator cv;
 
         public MultipleSelectControl(MultipleSelect item, RepeatDirection direction)
         {
             this.item = item;
 
-			l = new Label();
-			l.Text = item.Title;
-			l.CssClass = "label";
-			l.AssociatedControlID = item.Name;
-			this.Controls.Add(l);
+            l = new Label();
+            l.Text = item.Title;
+            l.CssClass = "label";
+            if (item.ID > 0)
+                l.AssociatedControlID = "q" + item.ID;
+            this.Controls.Add(l);
 
-			list = new CheckBoxList();
-			list.RepeatDirection = direction;
-			list.ID = item.Name;
-			list.CssClass = "alternatives";
-			list.DataSource = item.GetChildren();
-			list.DataTextField = "Title";
-			list.DataValueField = "ID";
-			list.DataBind();
-			this.Controls.Add(list);
+            list = new CheckBoxList();
+            list.RepeatDirection = direction;
+            if (item.ID > 0)
+                list.ID = "q" + item.ID;
+            list.CssClass = "alternatives";
+            list.DataSource = item.GetChildren();
+            list.DataTextField = "Title";
+            list.DataValueField = "ID";
+            list.DataBind();
+            this.Controls.Add(list);
 
-			if (item.Required)
-			{
-				cv = new CustomValidator { Display = ValidatorDisplay.Dynamic, Text = "*" };
-				cv.ErrorMessage = item.Title + " is required";
-				cv.ServerValidate += (s, a) => a.IsValid = !string.IsNullOrEmpty(AnswerText);
-				cv.ValidationGroup = "Form";
-				this.Controls.Add(cv);
-			}
+            if (item.Required)
+            {
+                cv = new CustomValidator { Display = ValidatorDisplay.Dynamic, Text = "*" };
+                cv.ErrorMessage = item.Title + " is required";
+                cv.ServerValidate += (s, a) => a.IsValid = !string.IsNullOrEmpty(AnswerText);
+                cv.ValidationGroup = "Form";
+                this.Controls.Add(cv);
+            }
         }
 
         protected override void Render(HtmlTextWriter writer)

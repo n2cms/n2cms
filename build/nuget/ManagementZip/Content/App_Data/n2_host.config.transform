@@ -1,6 +1,0 @@
-<host>
-	<web extension="" />
-	<vpp><zips>
-		<add name="n2.management" observedPath="~/N2/" filePath="~/N2/N2.zip"/>
-	</zips></vpp>
-</host>

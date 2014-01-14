@@ -6,15 +6,15 @@ using N2.Persistence.Serialization;
 namespace N2.Templates.Items
 {
     [Disable]
-	[PartDefinition("Top",
-		IconUrl = "~/Templates/UI/Img/page_white_star.png")]
+    [PartDefinition("Top",
+        IconUrl = "~/Templates/UI/Img/page_white_star.png")]
     [N2.Web.UI.FieldSetContainer("top", "Top", 100)]
     [RestrictParents(typeof(LanguageRoot))] // The top region is placed on the start page and displayed on all underlying pages
     [AllowedZones("SiteTop")]
     public class Top : AbstractItem
     {
-		[DisplayableHeading(2)]
-		[EditableText("Top text", 40, ContainerName = "top")]
+        [DisplayableHeading(2)]
+        [EditableText("Top text", 40, ContainerName = "top")]
         public override string Title
         {
             get { return base.Title; }
@@ -25,13 +25,13 @@ namespace N2.Templates.Items
         public virtual string TopTextUrl
         {
             get {
-        		string _url = (string)GetDetail("TopTextUrl");
-        		return string.IsNullOrEmpty(_url) ? "~/" : _url;
-        	}
+                string _url = (string)GetDetail("TopTextUrl");
+                return string.IsNullOrEmpty(_url) ? "~/" : _url;
+            }
             set { SetDetail("TopTextUrl", value, "~/"); }
         }
 
-		[FileAttachment, EditableFileUploadAttribute("Logo", 50, ContainerName = "top", Alt = "Logo")]
+        [FileAttachment, EditableFileUploadAttribute("Logo", 50, ContainerName = "top", Alt = "Logo")]
         public virtual string LogoUrl
         {
             get { return (string)(GetDetail("LogoUrl") ?? string.Empty); }

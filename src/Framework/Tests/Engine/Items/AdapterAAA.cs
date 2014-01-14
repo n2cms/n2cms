@@ -3,8 +3,8 @@ using N2.Web;
 
 namespace N2.Tests.Engine.Items
 {
-	[Adapts(typeof(ItemAAA))]
-	public class AdapterAAA : RequestAdapter
-	{
-	}
+    [Adapts(typeof(ItemAAA))]
+    public class AdapterAAA : RequestAdapter
+    {
+    }
 }

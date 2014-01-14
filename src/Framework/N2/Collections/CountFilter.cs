@@ -1,7 +1,9 @@
-using System.Collections.Generic;
-
 namespace N2.Collections
 {
+	using System;
+	using System.Collections.Generic;
+
+
 	/// <summary>
 	/// Filters based on start index and count.
 	/// </summary>
@@ -13,15 +15,15 @@ namespace N2.Collections
 		/// <param name="maxCount">The maximum number of items to leave.</param>
 		public CountFilter(int startIndex, int maxCount)
 		{
-			this.startIndex = startIndex;
-			this.maxCount = maxCount > 0 ? maxCount : int.MaxValue;
-		} 
+			this.startIndex = startIndex >= 0 ? startIndex : 0;
+			this.maxCount = maxCount >= 0 ? maxCount : 0;
+		}
 		#endregion
 
 		#region Private Members
 		private int startIndex;
 		private int maxCount;
-		private int currentIndex; 
+		private int currentIndex;
 		#endregion
 
 		#region Properties
@@ -41,16 +43,28 @@ namespace N2.Collections
 		{
 			get { return currentIndex; }
 			set { currentIndex = value; }
-		} 
+		}
 		#endregion
 
 		#region Methods
 		public override void Filter(IList<ContentItem> items)
 		{
-			while (items.Count > maxCount + startIndex)
-				items.RemoveAt(items.Count - 1);
-			while (items.Count > maxCount)
-				items.RemoveAt(0);
+			int frontSurplus = Math.Min(items.Count, startIndex);
+			int endSurplus = items.Count - frontSurplus - maxCount;
+
+			if (startIndex >= items.Count || maxCount == 0 || frontSurplus + endSurplus >= items.Count)
+			{
+				items.Clear();
+			}
+			else if (startIndex == 0 && maxCount >= items.Count)
+			{
+				// select all, hence do nothing
+			}
+			else
+			{
+				for (int i = 0; i < frontSurplus; i++) items.RemoveAt(0);
+				for (int i = 0; i < endSurplus; i++) items.RemoveAt(items.Count - 1);
+			}
 		}
 
 		/// <summary>This method doesn't consider the input item at all. Instead it increments and compares against this filter's CurrentIndex property.</summary>
@@ -61,14 +75,14 @@ namespace N2.Collections
 
 		public virtual bool Match(int itemIndex)
 		{
-			return itemIndex >= StartIndex 
+			return itemIndex >= StartIndex
 				&& (MaxCount == int.MaxValue || itemIndex < (StartIndex + MaxCount));
 		}
 
 		public virtual void Reset()
 		{
 			CurrentIndex = 0;
-		} 
+		}
 		#endregion
 
 		#region Static Methods

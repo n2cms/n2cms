@@ -8,6 +8,7 @@
 		<Dinamico-DeployFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Mvc</Dinamico-DeployFolder>
 		<Dinamico-DeployFolder-Path>$(Dinamico-DeployFolder)\N2CMS</Dinamico-DeployFolder-Path>
 		<Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Nuget</Dinamico-NugetFolder>
+		<Bundle-Dinamico-NugetFolder>$(DeployFolder)\$(DeployPrefix)BundleDinamico_Nuget</Bundle-Dinamico-NugetFolder>
 	</PropertyGroup>
 
 	<Target Name="Dinamico-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
@@ -68,12 +69,25 @@
 		<CallTarget Targets="Dinamico-RemoveProjectReferences" />
 	</Target>
 
+	<Target Name="Bundle-Dinamico-Nuget">
+		<RemoveDir Directories="$(Bundle-Dinamico-NugetFolder)" Condition="Exists('$(Bundle-Dinamico-NugetFolder)')" ContinueOnError="true" />
+
+		<ItemGroup>
+			<bundlesDinamicoNugetIncludes Include="$(BuildFolder)\Nuget\BundlesDinamico\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(bundlesDinamicoNugetIncludes)" DestinationFolder="$(Bundle-Dinamico-NugetFolder)\%(RecursiveDir)" />
+		<FileUpdate Files="$(Bundle-Dinamico-NugetFolder)\N2.Bundles.Dinamico.nuspec" Regex="{Version}" ReplacementText="$(Version)" />
+
+		<Exec Command="$(BuildFolder)\lib\NuGet.exe pack -OutputDirectory .." WorkingDirectory="$(Bundle-Dinamico-NugetFolder)\" />
+	</Target>
+
 	<Target Name="Dinamico-Nuget" DependsOnTargets="Dinamico-CreateItemGroups;">
 		<RemoveDir Directories="$(Dinamico-NugetFolder)" Condition="Exists('$(Dinamico-NugetFolder)')" ContinueOnError="true" />
 		<ItemGroup>
 			<dinamicoFilesWithExceptions Include="@(dinamicoFiles)" 
 										 Exclude="$(Dinamico-SourceFolder)\bin\**\*;
 												  $(Dinamico-SourceFolder)\Global.*;
+												  $(Dinamico-SourceFolder)\Dinamico.*;
 												  $(Dinamico-SourceFolder)\*.config;
 												  $(Dinamico-SourceFolder)\Properties\*;
 												  $(Dinamico-SourceFolder)\*.log;

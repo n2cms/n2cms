@@ -1,4 +1,4 @@
-﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,43 +14,43 @@
 
 namespace Castle.DynamicProxy.Generators
 {
-	using System.Collections.Generic;
+    using System.Collections.Generic;
 
-	public class MetaType
-	{
-		private readonly ICollection<MetaEvent> events = new TypeElementCollection<MetaEvent>();
-		private readonly ICollection<MetaMethod> methods = new TypeElementCollection<MetaMethod>();
-		private readonly ICollection<MetaProperty> properties = new TypeElementCollection<MetaProperty>();
+    public class MetaType
+    {
+        private readonly ICollection<MetaEvent> events = new TypeElementCollection<MetaEvent>();
+        private readonly ICollection<MetaMethod> methods = new TypeElementCollection<MetaMethod>();
+        private readonly ICollection<MetaProperty> properties = new TypeElementCollection<MetaProperty>();
 
-		public IEnumerable<MetaEvent> Events
-		{
-			get { return events; }
-		}
+        public IEnumerable<MetaEvent> Events
+        {
+            get { return events; }
+        }
 
-		public IEnumerable<MetaMethod> Methods
-		{
-			get { return methods; // NOTE: should be readonly 
-			}
-		}
+        public IEnumerable<MetaMethod> Methods
+        {
+            get { return methods; // NOTE: should be readonly 
+            }
+        }
 
-		public IEnumerable<MetaProperty> Properties
-		{
-			get { return properties; }
-		}
+        public IEnumerable<MetaProperty> Properties
+        {
+            get { return properties; }
+        }
 
-		public void AddEvent(MetaEvent @event)
-		{
-			events.Add(@event);
-		}
+        public void AddEvent(MetaEvent @event)
+        {
+            events.Add(@event);
+        }
 
-		public void AddMethod(MetaMethod method)
-		{
-			methods.Add(method);
-		}
+        public void AddMethod(MetaMethod method)
+        {
+            methods.Add(method);
+        }
 
-		public void AddProperty(MetaProperty property)
-		{
-			properties.Add(property);
-		}
-	}
+        public void AddProperty(MetaProperty property)
+        {
+            properties.Add(property);
+        }
+    }
 }

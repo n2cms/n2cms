@@ -24,6 +24,11 @@ img{ border:none; }
 input[type="checkbox"],
 input[type="radio"] { float: left; margin: 4px; }
 
+.checkBoxList label { float: none !important;display: inline; }
+.checkBoxList input[type="checkbox"],
+.checkBoxList input[type="radio"] {float: none !important; margin: 4px; }
+
+
 /* toolbar */
 body.framed fieldset{
 }
